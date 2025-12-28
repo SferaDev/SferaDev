@@ -29,7 +29,7 @@ export const AuroraBackground = ({ className, ...props }: AuroraBackgroundProps)
         after:bg-size-[200%,100%]
         after:animate-aurora after:bg-fixed dark:after:mix-blend-difference
         pointer-events-none
-        absolute -inset-[10px] opacity-60 dark:opacity-50 will-change-transform`,
+        absolute -inset-[10px] opacity-100 dark:opacity-80 will-change-transform`,
 				)}
 			>
 				<motion.div
