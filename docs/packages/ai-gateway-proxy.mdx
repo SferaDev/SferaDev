@@ -1,0 +1,94 @@
+---
+title: "ai-gateway-proxy"
+description: "A lightweight proxy for Vercel AI Gateway"
+---
+
+A proxy handler for [Vercel AI Gateway](https://vercel.com/docs/ai/ai-gateway) that supports both API key and OIDC authentication methods.
+
+## Installation
+
+<CodeGroup>
+```bash npm
+npm install ai-gateway-proxy
+```
+
+```bash pnpm
+pnpm add ai-gateway-proxy
+```
+
+```bash yarn
+yarn add ai-gateway-proxy
+```
+</CodeGroup>
+
+## Usage
+
+Create a catch-all API route that proxies requests to the Vercel AI Gateway.
+
+### Next.js App Router
+
+Create a route handler at `app/api/ai/[...segments]/route.ts`:
+
+```typescript
+import { createGatewayProxy } from "ai-gateway-proxy";
+
+export const { GET, POST, PUT, DELETE, PATCH } = createGatewayProxy();
+```
+
+### Configuration
+
+You can customize the proxy behavior with options:
+
+```typescript
+import { createGatewayProxy } from "ai-gateway-proxy";
+
+export const { GET, POST, PUT, DELETE, PATCH } = createGatewayProxy({
+  // Custom base URL (defaults to Vercel AI Gateway)
+  baseUrl: "https://ai-gateway.vercel.sh/v1/ai",
+
+  // Additional headers to include in requests
+  headers: {
+    "x-custom-header": "value",
+  },
+
+  // Transform the request body before forwarding
+  transformRequest: (options) => {
+    // Modify options as needed
+    return options;
+  },
+});
+```
+
+## Authentication
+
+The proxy automatically handles authentication using one of the following methods (in order of priority):
+
+### API Key
+
+Set the `AI_GATEWAY_API_KEY` environment variable:
+
+```bash
+AI_GATEWAY_API_KEY=your-api-key
+```
+
+### OIDC (Vercel)
+
+When deployed on Vercel, the proxy automatically uses [Vercel OIDC](https://vercel.com/docs/security/oidc) for authentication. No additional configuration is required.
+
+## API Reference
+
+### `createGatewayProxy(options?)`
+
+Creates a proxy handler for the AI Gateway.
+
+#### Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `baseUrl` | `string` | `"https://ai-gateway.vercel.sh/v1/ai"` | The base URL of the AI Gateway |
+| `headers` | `Record<string, string>` | `{}` | Additional headers to include in requests |
+| `transformRequest` | `(options) => options` | Identity function | Transform the request body before forwarding |
+
+#### Returns
+
+A handler function with named exports for HTTP methods: `GET`, `POST`, `PUT`, `DELETE`, `PATCH`.
