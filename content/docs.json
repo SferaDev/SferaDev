@@ -3,9 +3,9 @@
 	"theme": "maple",
 	"name": "SferaDev",
 	"colors": {
-		"primary": "#6366F1",
-		"light": "#818CF8",
-		"dark": "#4F46E5"
+		"primary": "#525252",
+		"light": "#a3a3a3",
+		"dark": "#171717"
 	},
 	"background": {
 		"decoration": "grid"
