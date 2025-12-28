@@ -9,8 +9,8 @@ const docsHost = isPreview
 
 export const config: VercelConfig = {
   rewrites: [
-    routes.rewrite("/docs", `https://${docsHost}`),
-    routes.rewrite("/docs/:path*", `https://${docsHost}/:path*`),
+    routes.rewrite("/docs", `https://${docsHost}/docs`),
+    routes.rewrite("/docs/:path*", `https://${docsHost}/docs/:path*`),
     routes.rewrite("/_mintlify/:path*", `https://${docsHost}/_mintlify/:path*`),
     routes.rewrite("/api/request", `https://${docsHost}/_mintlify/api/request`),
     routes.rewrite("/docs/llms.txt", `https://${docsHost}/llms.txt`),

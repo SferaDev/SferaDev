@@ -20,14 +20,14 @@
             "group": "Getting Started",
             "icon": "rocket",
             "pages": [
-              "index"
+              "docs/index"
             ]
           },
           {
             "group": "Packages",
             "icon": "box",
             "pages": [
-              "packages/ai-gateway-proxy"
+              "docs/packages/ai-gateway-proxy"
             ]
           }
         ]
