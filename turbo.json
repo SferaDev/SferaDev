@@ -10,8 +10,6 @@
 			"cache": false,
 			"persistent": true
 		},
-		"check": {},
-		"check:fix": {},
 		"tsc": {},
 		"clean": {
 			"cache": false
