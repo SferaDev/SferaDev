@@ -22,12 +22,7 @@ export default function RootLayout({
 	return (
 		<html lang="en" className={cn(GeistSans.variable, GeistMono.variable)} suppressHydrationWarning>
 			<body className="min-h-screen font-mono antialiased">
-				<ThemeProvider
-					attribute="class"
-					defaultTheme="dark"
-					enableSystem
-					disableTransitionOnChange
-				>
+				<ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
 					<div className="min-h-screen bg-background text-foreground">
 						<Header />
 						{children}

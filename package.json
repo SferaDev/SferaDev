@@ -1,31 +1,33 @@
 {
-  "name": "@sferadev/monorepo",
-  "private": true,
-  "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
-    "check": "biome check .",
-    "check:fix": "biome check . --write",
-    "format": "biome format . --write",
-    "tsc": "turbo run tsc",
-    "knip": "knip --config configs/knip.json",
-    "clean": "turbo run clean && rm -rf node_modules",
-    "changeset": "changeset",
-    "version-packages": "changeset version",
-    "release": "turbo run build && changeset publish"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "catalog:",
-    "@changesets/cli": "catalog:",
-    "knip": "catalog:",
-    "turbo": "catalog:",
-    "typescript": "catalog:"
-  },
-  "packageManager": "pnpm@10.26.2",
-  "engines": {
-    "node": ">=22"
-  },
-  "pnpm": {
-    "overrides": {}
-  }
+	"name": "@sferadev/monorepo",
+	"private": true,
+	"scripts": {
+		"build": "turbo run build",
+		"dev": "turbo run dev",
+		"check": "biome check .",
+		"check:fix": "biome check . --write",
+		"format": "biome format . --write",
+		"tsc": "turbo run tsc",
+		"test": "turbo run test",
+		"knip": "knip --config configs/knip.json",
+		"clean": "turbo run clean && rm -rf node_modules",
+		"changeset": "changeset",
+		"version-packages": "changeset version",
+		"release": "turbo run build && changeset publish"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "catalog:",
+		"@changesets/cli": "catalog:",
+		"knip": "catalog:",
+		"lefthook": "catalog:",
+		"turbo": "catalog:",
+		"typescript": "catalog:"
+	},
+	"packageManager": "pnpm@10.26.2",
+	"engines": {
+		"node": ">=22"
+	},
+	"pnpm": {
+		"overrides": {}
+	}
 }
