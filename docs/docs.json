@@ -1,17 +1,20 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
+  "theme": "maple",
   "name": "SferaDev",
   "colors": {
     "primary": "#6366F1",
     "light": "#818CF8",
     "dark": "#4F46E5"
   },
+  "background": {
+    "decoration": "grid"
+  },
   "favicon": "/favicon.svg",
   "navigation": {
-    "tabs": [
+    "dropdowns": [
       {
-        "tab": "Documentation",
+        "dropdown": "Documentation",
         "groups": [
           {
             "group": "Getting Started",
@@ -37,6 +40,10 @@
   "navbar": {
     "links": [
       {
+        "label": "Website",
+        "href": "https://sferadev.com"
+      },
+      {
         "label": "GitHub",
         "href": "https://github.com/SferaDev"
       }
@@ -44,7 +51,15 @@
   },
   "footer": {
     "socials": {
-      "github": "https://github.com/SferaDev"
+      "github": "https://github.com/SferaDev",
+      "linkedin": "https://linkedin.com/in/SferaDev",
+      "x": "https://x.com/SferaDev"
     }
+  },
+  "appearance": {
+    "default": "system"
+  },
+  "search": {
+    "prompt": "Search documentation..."
   }
 }
