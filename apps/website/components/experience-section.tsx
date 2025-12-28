@@ -35,7 +35,7 @@ export function ExperienceSection() {
 		>
 			<h3 className="text-4xl font-bold mb-12 text-center">Work Experience</h3>
 			<motion.div
-				className="space-y-8 relative before:absolute before:inset-0 before:ml-5 before:h-full before:w-0.5 before:bg-linear-to-b before:from-gray-800 before:to-transparent"
+				className="space-y-8 relative before:absolute before:inset-0 before:ml-5 before:h-full before:w-0.5 before:bg-linear-to-b before:from-border before:to-transparent"
 				variants={experienceContainerVariants}
 			>
 				{workExperience.map((job, index) => (
@@ -45,11 +45,11 @@ export function ExperienceSection() {
 						variants={experienceItemVariants}
 					>
 						{index === 0 && (
-							<div className="absolute -left-8.5 top-1 flex h-10 w-10 items-center justify-center rounded-full bg-gray-800">
-								<Triangle className="h-4 w-4 text-white fill-current" />
+							<div className="absolute -left-8.5 top-1 flex h-10 w-10 items-center justify-center rounded-full bg-muted">
+								<Triangle className="h-4 w-4 text-foreground fill-current" />
 							</div>
 						)}
-						<Card className="bg-gray-900/50 border-gray-800 hover:border-blue-500/50 transition-colors duration-300">
+						<Card className="bg-card/50 border-border hover:border-blue-500/50 transition-colors duration-300">
 							<CardHeader>
 								<a
 									href={job.url}
@@ -61,7 +61,7 @@ export function ExperienceSection() {
 										<CardTitle className="text-xl">{job.role}</CardTitle>
 										<CardDescription>{job.company}</CardDescription>
 									</div>
-									<p className="text-sm text-gray-400 mt-2 sm:mt-0">{job.period}</p>
+									<p className="text-sm text-muted-foreground mt-2 sm:mt-0">{job.period}</p>
 								</a>
 							</CardHeader>
 						</Card>

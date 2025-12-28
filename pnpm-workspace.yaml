@@ -2,53 +2,41 @@ packages:
   - apps/*
   - packages/*
   - configs/*
+
 catalog:
-  # Build tools
-  "@changesets/cli": ^2.29.8
-  turbo: ^2.7.2
-  tsup: ^8.5.1
-  typescript: ^5.9.3
-
-  # Biome (linting + formatting)
-  "@biomejs/biome": ^2.3.10
-
-  # React ecosystem
-  react: ^19.2.3
-  react-dom: ^19.2.3
-  "@types/react": ^19.1.8
-  "@types/react-dom": ^19.1.6
-
-  # Next.js
-  next: ^16.1.1
-  "@next/third-parties": ^16.1.1
-
-  # Node types
-  "@types/node": ^24.0.10
-
-  # AI SDK
-  "@ai-sdk/provider": ^2.0.0
-  "@vercel/oidc": ^3.0.3
-
-  # UI Libraries
-  "@radix-ui/react-avatar": ^1.1.11
-  "@radix-ui/react-slot": ^1.2.4
+  '@ai-sdk/provider': ^3.0.0
+  '@biomejs/biome': ^2.3.10
+  '@changesets/cli': ^2.29.8
+  '@next/third-parties': ^16.1.1
+  '@radix-ui/react-avatar': ^1.1.11
+  '@radix-ui/react-slot': ^1.2.4
+  '@tailwindcss/postcss': ^4.1.18
+  '@tailwindcss/typography': ^0.5.16
+  '@types/node': ^25.0.3
+  '@types/react': ^19.1.8
+  '@types/react-dom': ^19.1.6
+  '@vercel/config': ^0.0.24
+  '@vercel/oidc': ^3.0.5
   class-variance-authority: ^0.7.1
   clsx: ^2.1.1
-  tailwind-merge: ^3.3.1
-  lucide-react: ^0.562.0
   framer-motion: ^12.23.26
-
-  # Tailwind CSS
-  tailwindcss: ^4.1.18
-  "@tailwindcss/postcss": ^4.1.18
-  postcss: ^8.5.6
-  "@tailwindcss/typography": ^0.5.16
-  tailwindcss-animate: ^1.0.7
-
-  # Content
-  gray-matter: ^4.0.3
-  markdown-to-jsx: ^7.7.12
   geist: ^1.4.2
-
-  # Dead code detection
+  gray-matter: ^4.0.3
   knip: ^5.78.0
+  lucide-react: ^0.562.0
+  markdown-to-jsx: ^9.5.0
+  next: ^16.1.1
+  next-themes: ^0.4.6
+  postcss: ^8.5.6
+  react: ^19.2.3
+  react-dom: ^19.2.3
+  tailwind-merge: ^3.3.1
+  tailwindcss: ^4.1.18
+  tailwindcss-animate: ^1.0.7
+  tsup: ^8.5.1
+  turbo: ^2.7.2
+  typescript: ^5.9.3
+
+catalogMode: strict
+
+cleanupUnusedCatalogs: true

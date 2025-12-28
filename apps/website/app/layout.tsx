@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import type React from "react";
 import "./globals.css";
 import { Header } from "@/components/header";
+import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -19,12 +20,19 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en" className={cn(GeistSans.variable, GeistMono.variable)}>
+		<html lang="en" className={cn(GeistSans.variable, GeistMono.variable)} suppressHydrationWarning>
 			<body className="min-h-screen font-mono antialiased">
-				<div className="min-h-screen bg-black text-gray-50">
-					<Header />
-					{children}
-				</div>
+				<ThemeProvider
+					attribute="class"
+					defaultTheme="dark"
+					enableSystem
+					disableTransitionOnChange
+				>
+					<div className="min-h-screen bg-background text-foreground">
+						<Header />
+						{children}
+					</div>
+				</ThemeProvider>
 			</body>
 			<GoogleAnalytics gaId="G-BP4YFYF5ZM" />
 		</html>

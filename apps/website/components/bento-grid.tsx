@@ -50,14 +50,14 @@ export const BentoCard = ({
 			variants={variants}
 			className={cn(
 				"group relative col-span-3 flex flex-col justify-between overflow-hidden rounded-xl",
-				"transform-gpu bg-black [box-shadow:0_-20px_80px_-20px_#ffffff1f_inset]",
+				"transform-gpu bg-card border border-border [box-shadow:0_-20px_80px_-20px_hsl(var(--muted))_inset]",
 				className,
 			)}
 		>
-			<div className="pointer-events-none absolute inset-0 z-10 transition-all duration-300 group-hover:bg-black/30" />
+			<div className="pointer-events-none absolute inset-0 z-10 transition-all duration-300 group-hover:bg-background/30" />
 			{background}
 			<div className="pointer-events-none relative z-20 flex transform-gpu flex-col gap-1 p-6 transition-all duration-300">
-				<h3 className="text-xl font-semibold text-neutral-50">{name}</h3>
+				<h3 className="text-xl font-semibold text-foreground">{name}</h3>
 			</div>
 			<div className="relative z-20 p-6 pt-0">{children}</div>
 		</motion.div>
