@@ -1,0 +1,70 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "maple",
+  "name": "SferaDev",
+  "colors": {
+    "primary": "#6366F1",
+    "light": "#818CF8",
+    "dark": "#4F46E5"
+  },
+  "background": {
+    "decoration": "grid"
+  },
+  "favicon": "/favicon.svg",
+  "navigation": {
+    "dropdowns": [
+      {
+        "dropdown": "Documentation",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "icon": "rocket",
+            "pages": [
+              "docs/index"
+            ]
+          },
+          {
+            "group": "Packages",
+            "icon": "box",
+            "pages": [
+              "docs/packages/ai-gateway-proxy"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg",
+    "href": "https://sferadev.com"
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Website",
+        "href": "https://sferadev.com"
+      },
+      {
+        "label": "GitHub",
+        "href": "https://github.com/SferaDev"
+      }
+    ]
+  },
+  "footer": {
+    "socials": {
+      "github": "https://github.com/SferaDev",
+      "linkedin": "https://linkedin.com/in/SferaDev",
+      "x": "https://x.com/SferaDev"
+    }
+  },
+  "appearance": {
+    "default": "system"
+  },
+  "search": {
+    "prompt": "Search..."
+  },
+  "icons": {
+    "library": "fontawesome"
+  }
+}

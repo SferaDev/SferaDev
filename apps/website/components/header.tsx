@@ -46,10 +46,9 @@ export function Header() {
 						<Link href="/blog" className="hover:text-foreground transition-colors">
 							Blog
 						</Link>
-						{/* Hidden docs entry - uncomment when ready */}
-						{/* <Link href="/docs" className="hover:text-foreground transition-colors">
+						<Link href="/docs" className="hover:text-foreground transition-colors">
 							Docs
-						</Link> */}
+						</Link>
 					</nav>
 					<ThemeToggle />
 				</div>
