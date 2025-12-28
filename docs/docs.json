@@ -18,14 +18,16 @@
         "groups": [
           {
             "group": "Getting Started",
+            "icon": "rocket",
             "pages": [
-              "index"
+              "content/index"
             ]
           },
           {
             "group": "Packages",
+            "icon": "box",
             "pages": [
-              "packages/ai-gateway-proxy"
+              "content/packages/ai-gateway-proxy"
             ]
           }
         ]
@@ -60,6 +62,9 @@
     "default": "system"
   },
   "search": {
-    "prompt": "Search documentation..."
+    "prompt": "Search..."
+  },
+  "icons": {
+    "library": "fontawesome"
   }
 }
