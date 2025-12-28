@@ -5,15 +5,15 @@
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "clean": "turbo run clean && rm -rf node_modules",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "format": "biome format --write .",
+    "format:check": "biome format .",
     "changeset": "changeset",
     "version-packages": "changeset version",
     "release": "turbo run build --filter=@sferadev/docs^... && changeset publish"
   },
   "devDependencies": {
+    "@biomejs/biome": "catalog:",
     "@changesets/cli": "catalog:",
-    "eslint": "catalog:",
-    "prettier": "catalog:",
     "turbo": "catalog:"
   },
   "packageManager": "pnpm@10.20.0",

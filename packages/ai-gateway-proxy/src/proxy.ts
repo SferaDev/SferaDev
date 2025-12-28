@@ -1,5 +1,5 @@
-import { getVercelOidcToken } from "@vercel/oidc";
 import type { LanguageModelV2CallOptions } from "@ai-sdk/provider";
+import { getVercelOidcToken } from "@vercel/oidc";
 
 type CreateGatewayProxyOptions = {
   baseUrl?: string;

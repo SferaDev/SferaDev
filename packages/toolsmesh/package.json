@@ -1,0 +1,62 @@
+{
+  "name": "toolsmesh",
+  "version": "1.0.1",
+  "description": "A simulated bash environment with virtual filesystem",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SferaDev/SferaDev.git"
+  },
+  "homepage": "https://github.com/SferaDev/SferaDev/tree/main/packages/toolsmesh#readme",
+  "bugs": {
+    "url": "https://github.com/SferaDev/SferaDev/issues"
+  },
+  "type": "module",
+  "main": "dist/bundle/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/bundle/index.js"
+    }
+  },
+  "peerDependencies": {
+    "ai": "^6.0.0"
+  },
+  "peerDependenciesMeta": {
+    "ai": {
+      "optional": true
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsc && pnpm build:lib && pnpm build:ai && pnpm build:cli && pnpm build:shell && pnpm build:clean",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "knip": "knip",
+    "test": "vitest"
+  },
+  "keywords": [],
+  "author": "SferaDev",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@biomejs/biome": "catalog:",
+    "@types/node": "catalog:",
+    "@types/sprintf-js": "catalog:",
+    "@types/turndown": "catalog:",
+    "ai": "catalog:",
+    "esbuild": "catalog:",
+    "knip": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:",
+    "zod": "catalog:"
+  },
+  "dependencies": {
+    "diff": "catalog:",
+    "minimatch": "catalog:",
+    "sprintf-js": "catalog:",
+    "turndown": "catalog:"
+  }
+}

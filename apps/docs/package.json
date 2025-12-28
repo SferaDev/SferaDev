@@ -6,7 +6,8 @@
     "build": "next build",
     "start": "next start ",
     "dev": "next dev -p 3002",
-    "lint": "next lint",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf .next"
   },
   "dependencies": {
@@ -15,12 +16,11 @@
     "react-dom": "catalog:"
   },
   "devDependencies": {
+    "@biomejs/biome": "catalog:",
     "@sferadev/tsconfig": "workspace:*",
-    "@next/eslint-plugin-next": "catalog:",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
-    "@sferadev/eslint-config": "workspace:*",
     "typescript": "catalog:"
   }
 }

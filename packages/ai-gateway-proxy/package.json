@@ -5,14 +5,15 @@
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "sideEffects": false,
-  "license": "MIT",
+  "license": "Apache-2.0",
   "files": [
     "dist/**"
   ],
   "scripts": {
     "build": "tsup src/index.tsx --format esm,cjs --dts --external react",
     "dev": "tsup src/index.tsx --format esm,cjs --watch --dts --external react",
-    "lint": "eslint \"src/**/*.ts*\"",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {
@@ -20,12 +21,11 @@
     "@vercel/oidc": "catalog:"
   },
   "devDependencies": {
-    "@sferadev/eslint-config": "workspace:*",
+    "@biomejs/biome": "catalog:",
     "@sferadev/tsconfig": "workspace:*",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
-    "eslint": "catalog:",
     "tsup": "catalog:",
     "typescript": "catalog:"
   },
