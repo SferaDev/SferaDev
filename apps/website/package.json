@@ -7,9 +7,6 @@
 		"dev": "next dev",
 		"build": "next build",
 		"start": "next start",
-		"check": "biome check .",
-		"check:fix": "biome check . --write",
-		"format": "biome format . --write",
 		"tsc": "tsc --noEmit"
 	},
 	"dependencies": {
@@ -31,7 +28,6 @@
 		"tailwind-merge": "catalog:"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "catalog:",
 		"@tailwindcss/postcss": "catalog:",
 		"@types/node": "catalog:",
 		"@types/react": "catalog:",
