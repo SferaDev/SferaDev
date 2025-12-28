@@ -1,9 +1,14 @@
 import { routes, type VercelConfig } from "@vercel/config/v1";
 
 const branch = process.env.VERCEL_GIT_COMMIT_REF;
-const isPreview = process.env.VERCEL_ENV === "preview" && branch;
+const prodHost = "sferadev.mintlify.app";
+async function getDocsHost() {
+	const previewHost = `sferadev-${branch}.mintlify.app`;
+	const res = await fetch(`https://${previewHost}/docs`, { method: "HEAD" }).catch(() => null);
+	return res?.ok ? previewHost : prodHost;
+}
 
-const docsHost = isPreview ? `sferadev-${branch}.mintlify.app` : "sferadev.mintlify.app";
+const docsHost = await getDocsHost();
 
 export const config: VercelConfig = {
 	rewrites: [
