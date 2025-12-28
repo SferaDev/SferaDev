@@ -22,7 +22,7 @@ export function HeroSection() {
 					transition={{ duration: 0.8 }}
 				>
 					<motion.div
-						className="relative mx-auto mb-6 border-4 border-gray-800 shadow-lg w-64 h-64 rounded-full overflow-hidden"
+						className="relative mx-auto mb-6 border-4 border-border shadow-lg w-64 h-64 rounded-full overflow-hidden"
 						whileHover={{ scale: 1.05 }}
 					>
 						<Image
@@ -42,7 +42,7 @@ export function HeroSection() {
 					</AnimatedGradientText>
 				</motion.div>
 				<motion.p
-					className="max-w-2xl mx-auto text-lg text-gray-300 my-8"
+					className="max-w-2xl mx-auto text-lg text-muted-foreground my-8"
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.8, delay: 0.2 }}
@@ -55,7 +55,7 @@ export function HeroSection() {
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.8, delay: 0.4 }}
 				>
-					<Button asChild size="lg" className="bg-white text-black hover:bg-gray-200">
+					<Button asChild size="lg" className="bg-foreground text-background hover:bg-foreground/90">
 						<a href={`mailto:${personalInfo.email}`}>
 							<Mail className="mr-2 h-4 w-4" /> Email
 						</a>

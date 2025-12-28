@@ -29,19 +29,19 @@ export function ProjectsSection() {
 						viewport={{ once: true, amount: 0.5 }}
 						transition={{ duration: 0.5, delay: index * 0.1 }}
 					>
-						<Card className="bg-gray-900/50 border-gray-800 hover:border-blue-500/50 transition-colors duration-300 flex flex-col h-full group">
+						<Card className="bg-card/50 border-border hover:border-blue-500/50 transition-colors duration-300 flex flex-col h-full group">
 							<CardHeader>
 								<CardTitle>{project.name}</CardTitle>
 							</CardHeader>
 							<CardContent className="grow">
-								<p className="text-gray-300">{project.description}</p>
+								<p className="text-muted-foreground">{project.description}</p>
 							</CardContent>
 							<CardContent>
 								<a
 									href={project.link}
 									target="_blank"
 									rel="noopener noreferrer"
-									className="text-sm font-semibold text-blue-400 flex items-center gap-1"
+									className="text-sm font-semibold text-blue-500 dark:text-blue-400 flex items-center gap-1"
 									aria-label={`View ${project.name} project`}
 								>
 									View Project{" "}

@@ -9,24 +9,27 @@ interface AuroraBackgroundProps extends React.HTMLAttributes<HTMLDivElement> {}
 export const AuroraBackground = ({ className, ...props }: AuroraBackgroundProps) => {
 	return (
 		<div
-			className={cn("absolute -z-10 inset-0 overflow-hidden transition-bg", className)}
+			className={cn("fixed -z-10 inset-0 overflow-hidden transition-bg", className)}
 			{...props}
 		>
 			<div
 				className={cn(
 					`
-        [--white-gradient:repeating-linear-gradient(100deg,var(--white)_0%,var(--white)_7%,var(--transparent)_10%,var(--transparent)_12%,var(--white)_16%)]
         [--dark-gradient:repeating-linear-gradient(100deg,var(--black)_0%,var(--black)_7%,var(--transparent)_10%,var(--transparent)_12%,var(--black)_16%)]
         [--aurora:repeating-linear-gradient(100deg,var(--blue-500)_10%,var(--indigo-300)_15%,var(--blue-300)_20%,var(--violet-200)_25%,var(--blue-400)_30%)]
-        [background-image:var(--dark-gradient),var(--aurora)]
+        [--aurora-light:repeating-linear-gradient(100deg,var(--blue-200)_10%,var(--indigo-100)_15%,var(--blue-100)_20%,var(--violet-100)_25%,var(--blue-200)_30%)]
+        dark:[background-image:var(--dark-gradient),var(--aurora)]
+        [background-image:var(--aurora-light)]
         bg-size-[300%,200%]
         bg-position-[50%_50%,50%_50%]
         filter-none
-        after:content-[""] after:absolute after:inset-0 after:[background-image:var(--dark-gradient),var(--aurora)] 
-        after:bg-size-[200%,100%] 
-        after:animate-aurora after:bg-fixed after:mix-blend-difference
+        after:content-[""] after:absolute after:inset-0
+        dark:after:[background-image:var(--dark-gradient),var(--aurora)]
+        after:[background-image:var(--aurora-light)]
+        after:bg-size-[200%,100%]
+        after:animate-aurora after:bg-fixed dark:after:mix-blend-difference
         pointer-events-none
-        absolute -inset-[10px] opacity-50 will-change-transform`,
+        absolute -inset-[10px] opacity-100 dark:opacity-80 will-change-transform`,
 				)}
 			>
 				<motion.div
