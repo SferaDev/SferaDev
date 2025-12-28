@@ -246,6 +246,8 @@ export function createStreamTransformer(
 				controller.close();
 			} catch (error) {
 				controller.error(error);
+			} finally {
+				reader.releaseLock();
 			}
 		},
 	});
