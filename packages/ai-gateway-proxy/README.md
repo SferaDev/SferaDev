@@ -1,10 +1,6 @@
----
-title: "ai-gateway-proxy"
-description: "A lightweight proxy for Vercel AI Gateway"
-icon: "bolt"
----
+# ai-gateway-proxy
 
-A proxy handler for [Vercel AI Gateway](https://vercel.com/docs/ai/ai-gateway) that supports both API key and OIDC authentication methods.
+A lightweight proxy handler for [Vercel AI Gateway](https://vercel.com/docs/ai/ai-gateway).
 
 ## Features
 
@@ -14,27 +10,21 @@ A proxy handler for [Vercel AI Gateway](https://vercel.com/docs/ai/ai-gateway) t
 
 ## Installation
 
-<CodeGroup>
-```bash npm
+```bash
 npm install ai-gateway-proxy
 ```
 
-```bash pnpm
+```bash
 pnpm add ai-gateway-proxy
 ```
 
-```bash yarn
+```bash
 yarn add ai-gateway-proxy
 ```
-</CodeGroup>
 
-## Usage
+## Quick Start
 
-Create a catch-all API route that proxies requests to the Vercel AI Gateway.
-
-### Next.js App Router
-
-Create a route handler at `app/api/ai/[...segments]/route.ts`:
+Create a catch-all route at `app/api/ai/[...segments]/route.ts`:
 
 ```typescript
 import { createGatewayProxy } from "ai-gateway-proxy";
@@ -42,47 +32,9 @@ import { createGatewayProxy } from "ai-gateway-proxy";
 export const { GET, POST, PUT, DELETE, PATCH } = createGatewayProxy();
 ```
 
-### Configuration
-
-You can customize the proxy behavior with options:
-
-```typescript
-import { createGatewayProxy } from "ai-gateway-proxy";
-
-export const { GET, POST, PUT, DELETE, PATCH } = createGatewayProxy({
-  // Custom base URL (defaults to Vercel AI Gateway)
-  baseUrl: "https://ai-gateway.vercel.sh/v1/ai",
-
-  // Additional headers to include in requests
-  headers: {
-    "x-custom-header": "value",
-  },
-
-  // Transform the request body before forwarding
-  beforeRequest: ({ request }) => {
-    return {
-      ...request,
-      // Add custom modifications
-    };
-  },
-
-  // Transform the response after receiving (called on stream completion for streaming requests)
-  afterResponse: ({ request, response }) => {
-    console.log("Usage:", response.usage);
-    return response;
-  },
-
-  // Custom error handling
-  onError: ({ request, error, status }) => {
-    console.error("Gateway error:", error);
-    return error;
-  },
-});
-```
-
 ## Authentication
 
-The proxy automatically handles authentication using one of the following methods (in order of priority):
+The proxy automatically handles authentication using one of the following methods (in priority order):
 
 ### API Key
 
@@ -96,6 +48,75 @@ AI_GATEWAY_API_KEY=your-api-key
 
 When deployed on Vercel, the proxy automatically uses [Vercel OIDC](https://vercel.com/docs/security/oidc) for authentication. No additional configuration is required.
 
+## Configuration
+
+### Custom Base URL
+
+```typescript
+createGatewayProxy({
+  baseUrl: "https://ai-gateway.vercel.sh/v1/ai",
+});
+```
+
+### Additional Headers
+
+```typescript
+createGatewayProxy({
+  headers: {
+    "x-custom-header": "value",
+  },
+});
+```
+
+### Request Transformation
+
+Transform the request body before sending to the gateway:
+
+```typescript
+createGatewayProxy({
+  beforeRequest: ({ request }) => {
+    // Modify the request body
+    return {
+      ...request,
+      // Add custom modifications
+    };
+  },
+});
+```
+
+### Response Transformation
+
+Transform the response after receiving from the gateway. For streaming responses, this is called when the stream completes with aggregated content:
+
+```typescript
+createGatewayProxy({
+  afterResponse: ({ request, response }) => {
+    // Log usage, modify metadata, etc.
+    console.log("Usage:", response.usage);
+    return response;
+  },
+});
+```
+
+### Error Handling
+
+Custom error handling with the `onError` hook:
+
+```typescript
+createGatewayProxy({
+  onError: ({ request, error, status }) => {
+    // Log errors, modify error response, or return a custom Response
+    console.error("Gateway error:", error);
+
+    // Return modified error
+    return error;
+
+    // Or return a custom Response
+    // return new Response("Custom error", { status: 500 });
+  },
+});
+```
+
 ## API Reference
 
 ### `createGatewayProxy(options?)`
@@ -108,8 +129,8 @@ Creates a proxy handler for the AI Gateway.
 |--------|------|---------|-------------|
 | `baseUrl` | `string` | `"https://ai-gateway.vercel.sh/v1/ai"` | The base URL of the AI Gateway |
 | `headers` | `Record<string, string>` | `{}` | Additional headers to include in requests |
-| `beforeRequest` | `(ctx) => request` | - | Transform request body before forwarding |
-| `afterResponse` | `(ctx) => response` | - | Transform response after receiving (aggregated for streaming) |
+| `beforeRequest` | `(ctx) => request` | - | Transform request before sending |
+| `afterResponse` | `(ctx) => response` | - | Transform response after receiving |
 | `onError` | `(ctx) => error \| Response` | - | Custom error handling |
 
 #### Returns
@@ -142,3 +163,19 @@ const response = aggregator.getResponse();
 ### `createStreamTransformer(body, requestBody, afterResponse)`
 
 Creates a transform stream that passes through SSE events while aggregating content and calling the `afterResponse` hook on completion.
+
+## Types
+
+```typescript
+import type {
+  CreateGatewayProxyOptions,
+  CreateGatewayProxyFn,
+  CreateGatewayProxyResult,
+  GatewayResponse,
+  GatewayError,
+} from "ai-gateway-proxy";
+```
+
+## License
+
+MIT
