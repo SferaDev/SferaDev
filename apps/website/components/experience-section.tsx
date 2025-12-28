@@ -2,12 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Triangle } from "lucide-react";
-import {
-	Card,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { workExperience } from "@/lib/data";
 
 const sectionVariants = {
@@ -66,9 +61,7 @@ export function ExperienceSection() {
 										<CardTitle className="text-xl">{job.role}</CardTitle>
 										<CardDescription>{job.company}</CardDescription>
 									</div>
-									<p className="text-sm text-gray-400 mt-2 sm:mt-0">
-										{job.period}
-									</p>
+									<p className="text-sm text-gray-400 mt-2 sm:mt-0">{job.period}</p>
 								</a>
 							</CardHeader>
 						</Card>

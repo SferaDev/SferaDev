@@ -1,0 +1,19 @@
+{
+	"$schema": "https://unpkg.com/knip@5/schema.json",
+	"workspaces": {
+		".": {
+			"entry": ["turbo.json"]
+		},
+		"apps/website": {
+			"entry": ["app/**/*.{ts,tsx}", "lib/**/*.ts", "components/**/*.tsx"],
+			"project": ["**/*.{ts,tsx}"],
+			"ignore": ["**/*.d.ts"]
+		},
+		"packages/ai-gateway-proxy": {
+			"entry": ["src/index.tsx"],
+			"project": ["src/**/*.{ts,tsx}"]
+		},
+		"configs/tsconfig": {}
+	},
+	"ignoreWorkspaces": ["configs/tsconfig"]
+}

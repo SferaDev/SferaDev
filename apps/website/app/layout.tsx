@@ -4,8 +4,8 @@ import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
 import type React from "react";
 import "./globals.css";
-import { cn } from "@/lib/utils";
 import { Header } from "@/components/header";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
 	title: "Alexis Rico - SferaDev",

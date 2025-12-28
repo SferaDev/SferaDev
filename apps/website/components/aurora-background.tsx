@@ -6,16 +6,10 @@ import { cn } from "@/lib/utils";
 
 interface AuroraBackgroundProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export const AuroraBackground = ({
-	className,
-	...props
-}: AuroraBackgroundProps) => {
+export const AuroraBackground = ({ className, ...props }: AuroraBackgroundProps) => {
 	return (
 		<div
-			className={cn(
-				"absolute -z-10 inset-0 overflow-hidden transition-bg",
-				className,
-			)}
+			className={cn("absolute -z-10 inset-0 overflow-hidden transition-bg", className)}
 			{...props}
 		>
 			<div

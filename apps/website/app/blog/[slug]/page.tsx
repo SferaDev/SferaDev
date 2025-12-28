@@ -83,8 +83,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 								},
 								p: {
 									props: {
-										className:
-											"text-gray-700 dark:text-gray-300 mb-4 leading-relaxed",
+										className: "text-gray-700 dark:text-gray-300 mb-4 leading-relaxed",
 									},
 								},
 								a: {
@@ -119,8 +118,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 								},
 								li: {
 									props: {
-										className:
-											"text-gray-700 dark:text-gray-300 leading-relaxed",
+										className: "text-gray-700 dark:text-gray-300 leading-relaxed",
 									},
 								},
 								strong: {

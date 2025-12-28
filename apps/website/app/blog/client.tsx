@@ -22,9 +22,7 @@ export function BlogList({ posts, tags }: BlogClientWrapperProps) {
 		<div className="flex gap-8">
 			<div className="w-64 flex-shrink-0">
 				<div className="sticky top-24">
-					<h2 className="text-lg font-semibold mb-4 text-gray-100">
-						Filter by Tag
-					</h2>
+					<h2 className="text-lg font-semibold mb-4 text-gray-100">Filter by Tag</h2>
 					<div className="space-y-2">
 						<button
 							type="button"
@@ -38,9 +36,7 @@ export function BlogList({ posts, tags }: BlogClientWrapperProps) {
 							All Posts ({posts.length})
 						</button>
 						{tags.map((tag) => {
-							const count = posts.filter((post) =>
-								post.tags.includes(tag),
-							).length;
+							const count = posts.filter((post) => post.tags.includes(tag)).length;
 							return (
 								<button
 									key={tag}
@@ -80,15 +76,11 @@ export function BlogList({ posts, tags }: BlogClientWrapperProps) {
 										>
 											{post.title}
 										</Link>
-										{post.originalUrl && (
-											<ExternalLink className="w-4 h-4 text-gray-400" />
-										)}
+										{post.originalUrl && <ExternalLink className="w-4 h-4 text-gray-400" />}
 									</div>
 
 									{post.description && (
-										<p className="text-gray-400 text-sm mb-2 line-clamp-2">
-											{post.description}
-										</p>
+										<p className="text-gray-400 text-sm mb-2 line-clamp-2">{post.description}</p>
 									)}
 
 									<div className="flex items-center gap-4 text-xs">
@@ -120,9 +112,7 @@ export function BlogList({ posts, tags }: BlogClientWrapperProps) {
 
 				{filteredPosts.length === 0 && (
 					<div className="text-center py-12">
-						<p className="text-gray-400">
-							No posts found for tag "{selectedTag}".
-						</p>
+						<p className="text-gray-400">No posts found for tag "{selectedTag}".</p>
 					</div>
 				)}
 			</div>

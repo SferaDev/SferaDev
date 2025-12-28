@@ -26,10 +26,7 @@ export function AboutSection() {
 					background={<div className="absolute inset-0 bg-gray-900/80" />}
 				>
 					{personalInfo.bio.map((paragraph, index) => (
-						<p
-							key={index}
-							className="text-lg text-gray-300 mb-4 text-justify last:mb-0"
-						>
+						<p key={index} className="text-lg text-gray-300 mb-4 text-justify last:mb-0">
 							{paragraph}
 						</p>
 					))}
