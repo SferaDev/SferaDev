@@ -4,13 +4,13 @@ description: "A lightweight proxy for Vercel AI Gateway"
 icon: "bolt"
 ---
 
-A proxy handler for [Vercel AI Gateway](https://vercel.com/docs/ai/ai-gateway) that supports both API key and OIDC authentication methods.
+A proxy handler for [Vercel AI Gateway](https://vercel.com/docs/ai-gateway) that supports both API key and OIDC authentication methods.
 
 ## Features
 
 - **Request/Response Hooks** - Transform requests and responses with `beforeRequest`, `afterResponse`, and `onError` hooks
 - **Streaming Support** - Full SSE streaming with content aggregation using AI SDK V3 protocol
-- **Next.js Integration** - Works seamlessly with Next.js App Router catch-all routes
+- **Framework Agnostic** - Works with Next.js, Hono, Express, and other frameworks
 
 ## Installation
 
@@ -30,11 +30,9 @@ yarn add ai-gateway-proxy
 
 ## Usage
 
-Create a catch-all API route that proxies requests to the Vercel AI Gateway.
-
 ### Next.js App Router
 
-Create a route handler at `app/api/ai/[...segments]/route.ts`:
+Create a catch-all route handler at `app/api/ai/[...segments]/route.ts`:
 
 ```typescript
 import { createGatewayProxy } from "ai-gateway-proxy";
@@ -42,40 +40,129 @@ import { createGatewayProxy } from "ai-gateway-proxy";
 export const { GET, POST, PUT, DELETE, PATCH } = createGatewayProxy();
 ```
 
-### Configuration
+#### Custom Catch-All Parameter Name
 
-You can customize the proxy behavior with options:
+If your route uses a different parameter name (e.g., `app/api/ai/[...path]/route.ts`):
 
 ```typescript
 import { createGatewayProxy } from "ai-gateway-proxy";
 
 export const { GET, POST, PUT, DELETE, PATCH } = createGatewayProxy({
-  // Custom base URL (defaults to Vercel AI Gateway)
-  baseUrl: "https://ai-gateway.vercel.sh/v1/ai",
+  segmentsParam: "path",
+});
+```
 
-  // Additional headers to include in requests
+### Hono
+
+For frameworks without catch-all route support, use the `extractPath` option:
+
+```typescript
+import { Hono } from "hono";
+import { createGatewayProxy } from "ai-gateway-proxy";
+
+const app = new Hono();
+
+const proxy = createGatewayProxy({
+  extractPath: (request) => {
+    const url = new URL(request.url);
+    // Remove the base path prefix to get the gateway path
+    return url.pathname.replace(/^\/api\/ai\//, "");
+  },
+});
+
+// Handle all routes under /api/ai/*
+app.all("/api/ai/*", (c) => proxy(c.req.raw));
+
+export default app;
+```
+
+### Express / Node.js
+
+```typescript
+import express from "express";
+import { createGatewayProxy } from "ai-gateway-proxy";
+
+const app = express();
+
+const proxy = createGatewayProxy({
+  extractPath: (request) => {
+    const url = new URL(request.url);
+    return url.pathname.replace(/^\/api\/ai\//, "");
+  },
+});
+
+app.all("/api/ai/*", async (req, res) => {
+  const response = await proxy(req);
+  // Convert Web Response to Express response
+  res.status(response.status);
+  response.headers.forEach((value, key) => res.setHeader(key, value));
+  const body = await response.arrayBuffer();
+  res.send(Buffer.from(body));
+});
+```
+
+## Configuration
+
+### Custom Base URL
+
+```typescript
+createGatewayProxy({
+  baseUrl: "https://ai-gateway.vercel.sh/v1/ai",
+});
+```
+
+### Additional Headers
+
+```typescript
+createGatewayProxy({
   headers: {
     "x-custom-header": "value",
   },
+});
+```
 
-  // Transform the request body before forwarding
+### Request Transformation
+
+Transform the request body before forwarding to the gateway:
+
+```typescript
+createGatewayProxy({
   beforeRequest: ({ request }) => {
     return {
       ...request,
-      // Add custom modifications
+      maxOutputTokens: 1000,
     };
   },
+});
+```
 
-  // Transform the response after receiving (called on stream completion for streaming requests)
+### Response Transformation
+
+Transform the response after receiving from the gateway. For streaming responses, this is called when the stream completes with aggregated content:
+
+```typescript
+createGatewayProxy({
   afterResponse: ({ request, response }) => {
     console.log("Usage:", response.usage);
     return response;
   },
+});
+```
 
-  // Custom error handling
+### Error Handling
+
+Custom error handling with the `onError` hook:
+
+```typescript
+createGatewayProxy({
   onError: ({ request, error, status }) => {
     console.error("Gateway error:", error);
+
+    // Return modified error
     return error;
+
+    // Or return a custom Response
+    // return new Response("Custom error", { status: 500 });
   },
 });
 ```
@@ -94,7 +181,7 @@ AI_GATEWAY_API_KEY=your-api-key
 
 ### OIDC (Vercel)
 
-When deployed on Vercel, the proxy automatically uses [Vercel OIDC](https://vercel.com/docs/security/oidc) for authentication. No additional configuration is required.
+When deployed on Vercel, the proxy automatically uses [Vercel OIDC](https://vercel.com/docs/oidc) for authentication. No additional configuration is required.
 
 ## API Reference
 
@@ -108,6 +195,8 @@ Creates a proxy handler for the AI Gateway.
 |--------|------|---------|-------------|
 | `baseUrl` | `string` | `"https://ai-gateway.vercel.sh/v1/ai"` | The base URL of the AI Gateway |
 | `headers` | `Record<string, string>` | `{}` | Additional headers to include in requests |
+| `segmentsParam` | `string` | `"segments"` | The name of the catch-all parameter in the route |
+| `extractPath` | `(request: Request) => string \| Promise<string>` | - | Custom function to extract the path from the request. When provided, `segmentsParam` is ignored |
 | `beforeRequest` | `(ctx) => request` | - | Transform request body before forwarding |
 | `afterResponse` | `(ctx) => response` | - | Transform response after receiving (aggregated for streaming) |
 | `onError` | `(ctx) => error \| Response` | - | Custom error handling |
@@ -142,3 +231,15 @@ const response = aggregator.getResponse();
 ### `createStreamTransformer(body, requestBody, afterResponse)`
 
 Creates a transform stream that passes through SSE events while aggregating content and calling the `afterResponse` hook on completion.
+
+## Types
+
+```typescript
+import type {
+  CreateGatewayProxyOptions,
+  CreateGatewayProxyFn,
+  CreateGatewayProxyResult,
+  GatewayResponse,
+  GatewayError,
+} from "ai-gateway-proxy";
+```
