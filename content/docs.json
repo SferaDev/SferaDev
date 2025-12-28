@@ -25,7 +25,7 @@
 					{
 						"group": "Packages",
 						"icon": "box",
-						"pages": ["docs/packages/ai-gateway-proxy"]
+						"pages": ["docs/packages/ai-gateway-proxy", "docs/packages/rollup-plugin-import-cdn"]
 					}
 				]
 			}
