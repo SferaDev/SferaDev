@@ -21,12 +21,14 @@ catalog:
   '@vercel/config': ^0.0.24
   '@vercel/oidc': ^3.0.5
   ai: ^6.0.3
+  bunchee: ^6.5.2
   class-variance-authority: ^0.7.1
   clsx: ^2.1.1
   dotenv: ^16.5.0
   framer-motion: ^12.23.26
   geist: ^1.5.1
   gray-matter: ^4.0.3
+  is-tree-shakable: ^0.4.2
   knip: ^5.78.0
   lefthook: ^2.0.13
   lucide-react: ^0.562.0
@@ -40,7 +42,6 @@ catalog:
   tailwind-merge: ^3.4.0
   tailwindcss: ^4.1.18
   tailwindcss-animate: ^1.0.7
-  tsup: ^8.5.1
   turbo: ^2.7.2
   typescript: ^5.9.3
   vitest: ^3.2.2
