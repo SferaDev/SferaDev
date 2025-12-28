@@ -7,4 +7,5 @@ pre-commit:
       stage_fixed: true
     check:
       glob: "*.{js,ts,tsx,json}"
-      run: pnpm check
+      run: pnpm check:fix
+      stage_fixed: true
