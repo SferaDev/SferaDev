@@ -1,21 +1,15 @@
-import type { VercelConfig } from "@vercel/config/v1";
+import { routes, type VercelConfig } from "@vercel/config/v1";
 
-const branch = process.env.VERCEL_GIT_COMMIT_REF ?? "main";
-const isProduction = process.env.VERCEL_ENV === "production" || branch === "main";
+const branch = process.env.VERCEL_GIT_COMMIT_REF;
+const isPreview = process.env.VERCEL_ENV === "preview" && branch;
 
-const docsHost = isProduction
-  ? "sferadev.mintlify.dev"
-  : `sferadev-${branch}.mintlify.app`;
+const docsHost = isPreview
+  ? `sferadev-${branch}.mintlify.app`
+  : "sferadev.mintlify.dev";
 
 export const config: VercelConfig = {
   rewrites: [
-    {
-      source: "/docs",
-      destination: `https://${docsHost}/docs`,
-    },
-    {
-      source: "/docs/:match*",
-      destination: `https://${docsHost}/docs/:match*`,
-    },
+    routes.rewrite("/docs", `https://${docsHost}/docs`),
+    routes.rewrite("/docs/:match*", `https://${docsHost}/docs/:match*`),
   ],
 };
