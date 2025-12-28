@@ -15,6 +15,7 @@
     "dropdowns": [
       {
         "dropdown": "Documentation",
+        "icon": "book",
         "groups": [
           {
             "group": "Getting Started",

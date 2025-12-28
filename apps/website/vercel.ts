@@ -5,7 +5,7 @@ const isPreview = process.env.VERCEL_ENV === "preview" && branch;
 
 const docsHost = isPreview
   ? `sferadev-${branch}.mintlify.app`
-  : "sferadev.mintlify.dev";
+  : "sferadev.mintlify.app";
 
 export const config: VercelConfig = {
   rewrites: [
