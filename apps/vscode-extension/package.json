@@ -1,0 +1,84 @@
+{
+	"name": "vscode-extension-vercel-ai",
+	"displayName": "Vercel AI Gateway",
+	"description": "VS Code extension that provides Vercel AI models via the Language Model API",
+	"version": "0.2.0",
+	"publisher": "SferaDev",
+	"license": "MIT",
+	"icon": "images/icon.png",
+	"type": "module",
+	"engines": {
+		"vscode": "^1.104.0"
+	},
+	"categories": [
+		"AI",
+		"Chat"
+	],
+	"keywords": [
+		"ai",
+		"vercel",
+		"chat",
+		"gpt",
+		"claude",
+		"gemini",
+		"llm",
+		"tools"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/SferaDev/SferaDev",
+		"directory": "apps/vscode-extension"
+	},
+	"homepage": "https://github.com/SferaDev/SferaDev/tree/main/apps/vscode-extension#readme",
+	"bugs": {
+		"url": "https://github.com/SferaDev/SferaDev/issues"
+	},
+	"main": "./out/extension.js",
+	"activationEvents": [
+		"onLanguageModelChatProvider:vercelAiGateway"
+	],
+	"contributes": {
+		"languageModelChatProviders": [
+			{
+				"vendor": "vercelAiGateway",
+				"displayName": "Vercel AI Gateway"
+			}
+		],
+		"commands": [
+			{
+				"command": "vercelAiGateway.manage",
+				"title": "Manage Authentication",
+				"category": "Vercel AI Gateway"
+			}
+		]
+	},
+	"scripts": {
+		"lint": "eslint src/**/*.ts",
+		"build": "NODE_ENV=production bunchee ./src/extension.ts --format cjs --no-external",
+		"dev": "bunchee ./src/extension.ts --format cjs --watch",
+		"compile": "tsc -p ./",
+		"tsc": "tsc --noEmit",
+		"clean": "rm -rf out",
+		"prepackage": "pnpm run build && pnpm run lint",
+		"package": "vsce package --no-dependencies",
+		"publish": "vsce publish --no-dependencies"
+	},
+	"devDependencies": {
+		"@eslint/js": "^9.35.0",
+		"@stylistic/eslint-plugin": "^5.3.1",
+		"@types/json-schema": "^7.0.15",
+		"@types/node": "^24.3.2",
+		"@types/vscode": "^1.104.0",
+		"@typescript-eslint/eslint-plugin": "^8.43.0",
+		"@typescript-eslint/parser": "^8.43.0",
+		"@vscode/vsce": "^3.6.0",
+		"bunchee": "^6.6.0",
+		"eslint": "^9.35.0",
+		"typescript": "catalog:",
+		"typescript-eslint": "^8.43.0"
+	},
+	"dependencies": {
+		"@ai-sdk/gateway": "^1.0.22",
+		"ai": "^5.0.43"
+	}
+}
