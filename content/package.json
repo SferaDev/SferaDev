@@ -1,0 +1,10 @@
+{
+  "name": "@sferadev/content",
+  "private": true,
+  "scripts": {
+    "broken-links": "mintlify broken-links"
+  },
+  "devDependencies": {
+    "mintlify": "catalog:"
+  }
+}
