@@ -34,7 +34,7 @@ export const createGatewayProxy = ({
 
 		const { segments } = await params;
 		const path = segments?.join("/") ?? "";
-		const searchParams = new URLSearchParams(request.url.split("?")[1]);
+		const searchParams = new URL(request.url).searchParams;
 		const upstream = `${baseUrl}/${path}${searchParams.toString() ? `?${searchParams.toString()}` : ""}`;
 
 		let requestBody: LanguageModelV3CallOptions;
@@ -152,8 +152,7 @@ export const createGatewayProxy = ({
 				statusText: res.statusText,
 				headers: { "content-type": "application/json" },
 			});
-		} catch (error) {
-			console.error("Error proxying request to AI Gateway:", error);
+		} catch {
 			return new Response("Error proxying request to AI Gateway", {
 				status: 500,
 			});

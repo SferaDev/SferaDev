@@ -612,8 +612,6 @@ describe("createGatewayProxy", () => {
 		it("returns 500 on fetch error", async () => {
 			mockFetch.mockRejectedValueOnce(new Error("Network error"));
 
-			const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
-
 			const proxy = createGatewayProxy();
 			const request = createMockRequest("http://localhost/api/chat", {
 				body: { prompt: [] },
@@ -623,9 +621,6 @@ describe("createGatewayProxy", () => {
 
 			expect(response.status).toBe(500);
 			expect(await response.text()).toBe("Error proxying request to AI Gateway");
-			expect(consoleErrorSpy).toHaveBeenCalled();
-
-			consoleErrorSpy.mockRestore();
 		});
 
 		it("handles empty segments", async () => {

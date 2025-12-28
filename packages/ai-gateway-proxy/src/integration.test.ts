@@ -11,7 +11,7 @@ import { createGateway } from "@ai-sdk/gateway";
 import { generateText, streamText } from "ai";
 import { describe, expect, it } from "vitest";
 import { createGatewayProxy } from "./proxy";
-import type { CreateGatewayProxyOptions, GatewayResponse } from "./types";
+import type { GatewayResponse } from "./types";
 
 const hasApiKey = !!process.env.AI_GATEWAY_API_KEY;
 const TEST_MODEL = "google/gemini-2.0-flash";
@@ -248,9 +248,8 @@ describe.skipIf(!hasApiKey)("Integration: AI SDK with Proxy", () => {
 				});
 
 				// Consume the stream first
-				let _fullText = "";
-				for await (const chunk of result.textStream) {
-					_fullText += chunk;
+				for await (const _ of result.textStream) {
+					// consume
 				}
 
 				// afterResponse should have been called with aggregated content
