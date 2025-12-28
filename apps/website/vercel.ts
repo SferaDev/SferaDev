@@ -9,7 +9,7 @@ const docsHost = isPreview
 
 export const config: VercelConfig = {
   rewrites: [
-    routes.rewrite("/docs", `https://${docsHost}/docs`),
-    routes.rewrite("/docs/:match*", `https://${docsHost}/docs/:match*`),
+    routes.rewrite("/docs", `https://${docsHost}`),
+    routes.rewrite("/docs/:match*", `https://${docsHost}/:match*`),
   ],
 };
