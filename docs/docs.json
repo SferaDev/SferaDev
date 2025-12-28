@@ -15,19 +15,20 @@
     "dropdowns": [
       {
         "dropdown": "Documentation",
+        "icon": "book",
         "groups": [
           {
             "group": "Getting Started",
             "icon": "rocket",
             "pages": [
-              "docs/index"
+              "index"
             ]
           },
           {
             "group": "Packages",
             "icon": "box",
             "pages": [
-              "docs/packages/ai-gateway-proxy"
+              "packages/ai-gateway-proxy"
             ]
           }
         ]
