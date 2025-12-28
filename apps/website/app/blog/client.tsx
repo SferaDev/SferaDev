@@ -80,7 +80,9 @@ export function BlogList({ posts, tags }: BlogClientWrapperProps) {
 									</div>
 
 									{post.description && (
-										<p className="text-muted-foreground text-sm mb-2 line-clamp-2">{post.description}</p>
+										<p className="text-muted-foreground text-sm mb-2 line-clamp-2">
+											{post.description}
+										</p>
 									)}
 
 									<div className="flex items-center gap-4 text-xs">

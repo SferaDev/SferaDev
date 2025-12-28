@@ -55,7 +55,11 @@ export function HeroSection() {
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.8, delay: 0.4 }}
 				>
-					<Button asChild size="lg" className="bg-foreground text-background hover:bg-foreground/90">
+					<Button
+						asChild
+						size="lg"
+						className="bg-foreground text-background hover:bg-foreground/90"
+					>
 						<a href={`mailto:${personalInfo.email}`}>
 							<Mail className="mr-2 h-4 w-4" /> Email
 						</a>

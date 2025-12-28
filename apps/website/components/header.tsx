@@ -20,9 +20,7 @@ export function Header() {
 		<header
 			className={cn(
 				"sticky top-0 z-50 w-full transition-all duration-300",
-				scrolled
-					? "bg-background/80 backdrop-blur-lg border-b border-border"
-					: "bg-transparent",
+				scrolled ? "bg-background/80 backdrop-blur-lg border-b border-border" : "bg-transparent",
 			)}
 		>
 			<div className="container h-16 flex items-center justify-between px-6 md:px-8 max-w-none">

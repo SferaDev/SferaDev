@@ -8,10 +8,7 @@ interface AuroraBackgroundProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export const AuroraBackground = ({ className, ...props }: AuroraBackgroundProps) => {
 	return (
-		<div
-			className={cn("fixed -z-10 inset-0 overflow-hidden transition-bg", className)}
-			{...props}
-		>
+		<div className={cn("fixed -z-10 inset-0 overflow-hidden transition-bg", className)} {...props}>
 			<div
 				className={cn(
 					`
