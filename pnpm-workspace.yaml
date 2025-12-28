@@ -3,24 +3,52 @@ packages:
   - packages/*
   - configs/*
 catalog:
+  # Build tools
+  "@changesets/cli": ^2.29.8
+  turbo: ^2.7.2
+  tsup: ^8.5.1
+  typescript: ^5.9.3
+
+  # Biome (linting + formatting)
+  "@biomejs/biome": ^2.3.10
+
+  # React ecosystem
+  react: ^19.2.3
+  react-dom: ^19.2.3
+  "@types/react": ^19.1.8
+  "@types/react-dom": ^19.1.6
+
+  # Next.js
+  next: ^16.1.1
+  "@next/third-parties": ^16.1.1
+
+  # Node types
+  "@types/node": ^24.0.10
+
+  # AI SDK
   "@ai-sdk/provider": ^2.0.0
-  "@changesets/cli": ^2.27.1
-  "@next/eslint-plugin-next": ^14.1.4
-  "@types/node": ^20.11.24
-  "@types/react": ^18.2.61
-  "@types/react-dom": ^18.2.19
-  "@typescript-eslint/eslint-plugin": ^7.1.0
-  "@typescript-eslint/parser": ^7.1.0
   "@vercel/oidc": ^3.0.3
-  "@vercel/style-guide": ^5.2.0
-  eslint: ^8.57.0
-  eslint-config-prettier: ^9.1.0
-  eslint-config-turbo: ^2.0.0
-  eslint-plugin-only-warn: ^1.1.0
-  next: ^14.1.1
-  prettier: ^3.2.5
-  react: ^18.2.0
-  react-dom: ^18.2.0
-  tsup: ^8.0.2
-  turbo: ^2.6.0
-  typescript: 5.5.4
+
+  # UI Libraries
+  "@radix-ui/react-avatar": ^1.1.11
+  "@radix-ui/react-slot": ^1.2.4
+  class-variance-authority: ^0.7.1
+  clsx: ^2.1.1
+  tailwind-merge: ^3.3.1
+  lucide-react: ^0.562.0
+  framer-motion: ^12.23.26
+
+  # Tailwind CSS
+  tailwindcss: ^4.1.18
+  "@tailwindcss/postcss": ^4.1.18
+  postcss: ^8.5.6
+  "@tailwindcss/typography": ^0.5.16
+  tailwindcss-animate: ^1.0.7
+
+  # Content
+  gray-matter: ^4.0.3
+  markdown-to-jsx: ^7.7.12
+  geist: ^1.4.2
+
+  # Dead code detection
+  knip: ^5.78.0

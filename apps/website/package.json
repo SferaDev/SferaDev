@@ -1,0 +1,42 @@
+{
+	"name": "@sferadev/website",
+	"version": "0.1.0",
+	"private": true,
+	"scripts": {
+		"dev": "next dev",
+		"build": "next build",
+		"start": "next start",
+		"check": "biome check .",
+		"check:fix": "biome check . --write",
+		"format": "biome format . --write",
+		"tsc": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@next/third-parties": "catalog:",
+		"@radix-ui/react-avatar": "catalog:",
+		"@radix-ui/react-slot": "catalog:",
+		"@tailwindcss/typography": "catalog:",
+		"class-variance-authority": "catalog:",
+		"clsx": "catalog:",
+		"framer-motion": "catalog:",
+		"geist": "catalog:",
+		"gray-matter": "catalog:",
+		"lucide-react": "catalog:",
+		"markdown-to-jsx": "catalog:",
+		"next": "catalog:",
+		"react": "catalog:",
+		"react-dom": "catalog:",
+		"tailwind-merge": "catalog:"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "catalog:",
+		"@tailwindcss/postcss": "catalog:",
+		"@types/node": "catalog:",
+		"@types/react": "catalog:",
+		"@types/react-dom": "catalog:",
+		"postcss": "catalog:",
+		"tailwindcss": "catalog:",
+		"tailwindcss-animate": "catalog:",
+		"typescript": "catalog:"
+	}
+}

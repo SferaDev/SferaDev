@@ -1,24 +1,28 @@
 {
-  "private": true,
-  "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
-    "lint": "turbo run lint",
-    "clean": "turbo run clean && rm -rf node_modules",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "changeset": "changeset",
-    "version-packages": "changeset version",
-    "release": "turbo run build --filter=@sferadev/docs^... && changeset publish"
-  },
-  "devDependencies": {
-    "@changesets/cli": "catalog:",
-    "eslint": "catalog:",
-    "prettier": "catalog:",
-    "turbo": "catalog:"
-  },
-  "packageManager": "pnpm@10.20.0",
-  "engines": {
-    "node": ">=18"
-  },
-  "name": "with-changesets"
+	"name": "@sferadev/monorepo",
+	"private": true,
+	"scripts": {
+		"build": "turbo run build",
+		"dev": "turbo run dev",
+		"check": "turbo run check",
+		"check:fix": "turbo run check:fix",
+		"format": "biome format . --write",
+		"tsc": "turbo run tsc",
+		"knip": "knip",
+		"clean": "turbo run clean && rm -rf node_modules",
+		"changeset": "changeset",
+		"version-packages": "changeset version",
+		"release": "turbo run build && changeset publish"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "catalog:",
+		"@changesets/cli": "catalog:",
+		"knip": "catalog:",
+		"turbo": "catalog:",
+		"typescript": "catalog:"
+	},
+	"packageManager": "pnpm@10.26.2",
+	"engines": {
+		"node": ">=22"
+	}
 }
