@@ -1,5 +1,6 @@
 {
 	"name": "vscode-extension-vercel-ai",
+	"private": true,
 	"displayName": "Vercel AI Gateway",
 	"description": "VS Code extension that provides Vercel AI models via the Language Model API",
 	"version": "0.2.0",
@@ -61,7 +62,7 @@
 		"clean": "rm -rf out",
 		"prepackage": "pnpm run build && pnpm run lint",
 		"package": "vsce package --no-dependencies",
-		"publish": "vsce publish --no-dependencies"
+		"release": "pnpm run package && vsce publish --no-dependencies"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.35.0",
