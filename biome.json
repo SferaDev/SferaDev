@@ -23,7 +23,8 @@
 			"!packages/zoom-api-js",
 			"!packages/vercel-api-js",
 			"!packages/v0-api",
-			"!packages/openapi-utils"
+			"!packages/openapi-utils",
+			"!apps/openapi"
 		],
 		"maxSize": 5242880
 	},

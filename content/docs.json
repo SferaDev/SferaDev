@@ -28,7 +28,22 @@
 						"pages": [
 							"docs/packages/ai-gateway-proxy",
 							"docs/packages/rollup-plugin-import-cdn",
-							"docs/packages/openapi-clients"
+							{
+								"group": "OpenAPI Clients",
+								"icon": "code",
+								"pages": [
+									"docs/packages/openapi-clients",
+									"docs/packages/vercel-api-js",
+									"docs/packages/v0-api",
+									"docs/packages/cloudflare-api-js",
+									"docs/packages/netlify-api",
+									"docs/packages/zoom-api-js",
+									"docs/packages/keycloak-api",
+									"docs/packages/nuki-api-js",
+									"docs/packages/litellm-api",
+									"docs/packages/dhis2-openapi"
+								]
+							}
 						]
 					}
 				]
