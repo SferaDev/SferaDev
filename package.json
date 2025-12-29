@@ -25,7 +25,8 @@
 		"lefthook": "catalog:",
 		"tsx": "catalog:",
 		"turbo": "catalog:",
-		"typescript": "catalog:"
+		"typescript": "catalog:",
+		"zod": "catalog:"
 	},
 	"packageManager": "pnpm@10.26.2",
 	"engines": {
