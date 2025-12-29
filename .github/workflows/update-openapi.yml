@@ -44,9 +44,12 @@ jobs:
         run: pnpm generate --filter=${{ matrix.package }}
 
       - name: Analyze changes and create changeset
-        run: npx tsx ./.github/workflows/scripts/changes.ts ${{ matrix.package }}
+        run: pnpm tsx ./.github/workflows/scripts/changes.ts ${{ matrix.package }}
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+
+      - name: Format code
+        run: pnpm format
 
       - run: git add .
 

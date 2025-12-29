@@ -19,9 +19,13 @@
 		"generate": "openapi-codegen api"
 	},
 	"devDependencies": {
+		"@openapi-codegen/cli": "catalog:",
+		"@openapi-codegen/typescript": "catalog:",
 		"@sferadev/tsconfig": "workspace:*",
 		"@types/node": "catalog:",
 		"bunchee": "catalog:",
+		"case": "catalog:",
+		"ts-morph": "catalog:",
 		"typescript": "catalog:"
 	},
 	"files": [
