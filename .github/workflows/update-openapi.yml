@@ -5,13 +5,13 @@ on:
   schedule:
     - cron: '25 * * * *'
 
-concurrency:
-  group: ${{ github.workflow }}-${{ matrix.package }}
-  cancel-in-progress: true
-
 jobs:
   openapi-gen:
+    name: Update ${{ matrix.package }}
     runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{ matrix.package }}
+      cancel-in-progress: true
     continue-on-error: true
 
     strategy:
