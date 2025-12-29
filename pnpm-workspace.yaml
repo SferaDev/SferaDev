@@ -44,7 +44,7 @@ catalog:
   tailwind-merge: 3.4.0
   tailwindcss: 4.1.18
   tailwindcss-animate: 1.0.7
-  turbo: 2.7.0
+  turbo: 2.7.2
   typescript: 5.9.3
   vitest: 4.0.16
 
