@@ -55,10 +55,6 @@
 			"entry": ["src/index.ts"],
 			"project": ["src/**/*.ts"]
 		},
-		"packages/dhis2-openapi": {
-			"entry": ["src/index.ts"],
-			"project": ["src/**/*.ts"]
-		},
 		"configs/tsconfig": {}
 	},
 	"ignoreWorkspaces": ["configs/tsconfig"]
