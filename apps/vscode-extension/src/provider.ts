@@ -1,5 +1,5 @@
 import { createGatewayProvider } from "@ai-sdk/gateway";
-import { jsonSchema, type ModelMessage, streamText, type ToolSet, tool } from "ai";
+import { jsonSchema, type ModelMessage, streamText, type ToolSet } from "ai";
 import * as vscode from "vscode";
 import {
 	authentication,
@@ -25,7 +25,7 @@ import { ModelsClient } from "./models";
 export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 	private modelsClient: ModelsClient;
 
-	constructor(private _context: ExtensionContext) {
+	constructor(_context: ExtensionContext) {
 		this.modelsClient = new ModelsClient();
 	}
 
@@ -66,15 +66,17 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 
 			const tools: ToolSet = {};
 			for (const { name, description, inputSchema } of options.tools || []) {
-				tools[name] = tool({
-					name,
+				tools[name] = {
 					description,
 					inputSchema: jsonSchema(inputSchema || { type: "object", properties: {} }),
-					execute: async (input, { toolCallId }) => {
+					execute: async (
+						input: Record<string, unknown>,
+						{ toolCallId }: { toolCallId: string },
+					) => {
 						progress.report(new LanguageModelToolCallPart(toolCallId, name, input));
 						return { toolCallId, name, input };
 					},
-				});
+				} as unknown as ToolSet[string];
 			}
 
 			const response = streamText({
@@ -147,31 +149,37 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 		}
 	}
 
-	private handleReasoningDelta(chunk: any, progress: Progress<LanguageModelResponsePart>): void {
-		const vsAny = vscode as unknown as Record<string, any>;
-		const ThinkingCtor = vsAny["LanguageModelThinkingPart"] as
+	private handleReasoningDelta(
+		chunk: unknown,
+		progress: Progress<LanguageModelResponsePart>,
+	): void {
+		const vsAny = vscode as unknown as Record<string, unknown>;
+		const ThinkingCtor = vsAny.LanguageModelThinkingPart as
 			| (new (
 					text: string,
 					id?: string,
 					metadata?: unknown,
 			  ) => unknown)
 			| undefined;
-		if (ThinkingCtor && chunk.delta) {
+		const chunkObj = chunk as { delta?: string };
+		if (ThinkingCtor && chunkObj.delta) {
 			progress.report(
-				new (ThinkingCtor as any)(chunk.delta) as unknown as LanguageModelResponsePart,
+				new (ThinkingCtor as new (text: string) => LanguageModelResponsePart)(chunkObj.delta),
 			);
 		}
 	}
 
-	private handleErrorChunk(chunk: any, progress: Progress<LanguageModelResponsePart>): void {
-		const errorMessage = chunk.errorText || "Unknown error occurred";
+	private handleErrorChunk(chunk: unknown, progress: Progress<LanguageModelResponsePart>): void {
+		const chunkObj = chunk as { errorText?: string };
+		const errorMessage = chunkObj.errorText || "Unknown error occurred";
 		progress.report(new LanguageModelTextPart(`\n\n**Error:** ${errorMessage}\n\n`));
 	}
 
-	private handleUnknownChunk(chunk: any, progress: Progress<LanguageModelResponsePart>): void {
+	private handleUnknownChunk(chunk: unknown, progress: Progress<LanguageModelResponsePart>): void {
+		const chunkObj = chunk as { type?: string };
 		console.debug(
 			"[VercelAI] Ignored stream chunk type:",
-			chunk.type,
+			chunkObj.type,
 			JSON.stringify(chunk, null, 2),
 		);
 		progress.report(new LanguageModelTextPart(" "));
@@ -246,8 +254,8 @@ function convertSingleMessage(msg: LanguageModelChatMessage): ModelMessage[] {
 	return results;
 }
 
-function isTextPart(part: any): part is { value: string } {
-	return "value" in part && typeof part.value === "string";
+function isTextPart(part: object): part is { value: string } {
+	return "value" in part && typeof (part as { value: unknown }).value === "string";
 }
 
 function extractToolResultTexts(part: LanguageModelToolResultPart): string[] {

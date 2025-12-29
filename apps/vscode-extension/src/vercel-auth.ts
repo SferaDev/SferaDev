@@ -1,6 +1,6 @@
-import * as fs from "fs";
-import * as os from "os";
-import * as path from "path";
+import * as fs from "node:fs";
+import * as os from "node:os";
+import * as path from "node:path";
 import * as vscode from "vscode";
 import { TOKEN_REFRESH_MARGIN } from "./constants";
 
@@ -41,7 +41,7 @@ interface ProjectsResponse {
 }
 
 class VercelOidcTokenError extends Error {
-	constructor(message: string, cause?: any) {
+	constructor(message: string, cause?: unknown) {
 		super(message);
 		this.name = "VercelOidcTokenError";
 		if (cause) {
@@ -150,7 +150,7 @@ async function getVercelOidcToken(
 			throw new VercelOidcTokenError(`Failed to refresh OIDC token: ${res.statusText}`);
 		}
 
-		const tokenRes = (await res.json()) as any;
+		const tokenRes = (await res.json()) as { token?: string };
 
 		if (!tokenRes || typeof tokenRes.token !== "string") {
 			throw new VercelOidcTokenError("Invalid token response from Vercel API");

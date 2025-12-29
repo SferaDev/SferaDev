@@ -54,32 +54,26 @@
 		]
 	},
 	"scripts": {
-		"lint": "eslint src/**/*.ts",
 		"build": "NODE_ENV=production bunchee ./src/extension.ts --format cjs --no-external",
 		"dev": "bunchee ./src/extension.ts --format cjs --watch",
 		"compile": "tsc -p ./",
 		"tsc": "tsc --noEmit",
 		"clean": "rm -rf out",
-		"prepackage": "pnpm run build && pnpm run lint",
+		"prepackage": "pnpm run build",
 		"package": "vsce package --no-dependencies",
 		"release": "pnpm run package && vsce publish --no-dependencies"
 	},
 	"devDependencies": {
-		"@eslint/js": "^9.35.0",
-		"@stylistic/eslint-plugin": "^5.3.1",
-		"@types/json-schema": "^7.0.15",
-		"@types/node": "^24.3.2",
-		"@types/vscode": "^1.104.0",
-		"@typescript-eslint/eslint-plugin": "^8.43.0",
-		"@typescript-eslint/parser": "^8.43.0",
-		"@vscode/vsce": "^3.6.0",
-		"bunchee": "^6.6.0",
-		"eslint": "^9.35.0",
-		"typescript": "catalog:",
-		"typescript-eslint": "^8.43.0"
+		"@sferadev/tsconfig": "workspace:*",
+		"@types/json-schema": "catalog:",
+		"@types/node": "catalog:",
+		"@types/vscode": "catalog:",
+		"@vscode/vsce": "catalog:",
+		"bunchee": "catalog:",
+		"typescript": "catalog:"
 	},
 	"dependencies": {
-		"@ai-sdk/gateway": "^1.0.22",
-		"ai": "^5.0.43"
+		"@ai-sdk/gateway": "catalog:",
+		"ai": "catalog:"
 	}
 }

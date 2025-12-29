@@ -30,8 +30,8 @@ export class ModelsClient {
 	private modelsCache?: ModelsCache;
 
 	async getModels(apiKey: string): Promise<LanguageModelChatInformation[]> {
-		if (this.isModelsCacheFresh()) {
-			return this.modelsCache!.models;
+		if (this.isModelsCacheFresh() && this.modelsCache) {
+			return this.modelsCache.models;
 		}
 
 		const data = await this.fetchModels(apiKey);
