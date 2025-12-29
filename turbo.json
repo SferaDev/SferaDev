@@ -12,7 +12,8 @@
 		},
 		"generate": {
 			"inputs": ["kubb.config.ts", "openapi-codegen.config.ts"],
-			"outputs": ["src/generated/**"]
+			"outputs": ["src/generated/**"],
+			"dependsOn": ["^build"]
 		},
 		"tsc": {},
 		"test": {},
