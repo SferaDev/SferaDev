@@ -13,7 +13,7 @@
 		"clean": "turbo run clean && rm -rf node_modules",
 		"changeset": "changeset",
 		"version-packages": "changeset version",
-		"release": "turbo run build && changeset publish && pnpm --filter vscode-extension-vercel-ai release"
+		"release": "turbo run build && changeset publish"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "catalog:",
