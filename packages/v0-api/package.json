@@ -70,6 +70,36 @@
 				"types": "./dist/mcp.d.cts",
 				"default": "./dist/mcp.cjs"
 			}
+		},
+		"./types": {
+			"import": {
+				"types": "./dist/types.d.mts",
+				"default": "./dist/types.mjs"
+			},
+			"require": {
+				"types": "./dist/types.d.cts",
+				"default": "./dist/types.cjs"
+			}
+		},
+		"./schemas": {
+			"import": {
+				"types": "./dist/schemas.d.mts",
+				"default": "./dist/schemas.mjs"
+			},
+			"require": {
+				"types": "./dist/schemas.d.cts",
+				"default": "./dist/schemas.cjs"
+			}
+		},
+		"./components": {
+			"import": {
+				"types": "./dist/components.d.mts",
+				"default": "./dist/components.mjs"
+			},
+			"require": {
+				"types": "./dist/components.d.cts",
+				"default": "./dist/components.cjs"
+			}
 		}
 	},
 	"publishConfig": {

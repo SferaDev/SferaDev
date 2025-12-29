@@ -1,9 +1,11 @@
-import * as Components from "./generated/components";
-import * as Schemas from "./generated/schemas";
-import * as Types from "./generated/types";
+// Re-export generated files directly for tree-shaking
 
-const { operationsByPath, operationsByTag, tagDictionary, ...Fetchers } = Components;
-const Helpers = { operationsByPath, operationsByTag, tagDictionary };
-
+// Re-export client
 export * from "./client";
-export { Fetchers, Helpers, Schemas, Types };
+export {
+	operationsByPath,
+	operationsByTag,
+	tagDictionary,
+} from "./generated/components";
+export * from "./generated/schemas";
+export * from "./generated/types";
