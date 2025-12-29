@@ -8,6 +8,6 @@ pnpm turbo run build
 pnpm changeset publish
 
 # Package and publish VSCode extension to marketplace
-cd apps/vscode-extension
+cd apps/vscode-ai-gateway
 pnpm package
 pnpm vsce publish --packagePath ./*.vsix
