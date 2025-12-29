@@ -7,7 +7,6 @@ import { getBanner, getFooter, getPathParams, isOptional } from "@kubb/plugin-oa
 import { pluginTsName } from "@kubb/plugin-ts";
 import { pluginZodName } from "@kubb/plugin-zod";
 import { File, FunctionParams, useApp } from "@kubb/react";
-import React from "react";
 import { getParams as getClientParams } from "../components/client-operation";
 
 export const serverGenerator = createReactGenerator<PluginMcp>({

@@ -4,7 +4,6 @@ import type { PluginClient } from "@kubb/plugin-client";
 import type { OperationSchemas } from "@kubb/plugin-oas";
 import { getComments, getPathParams } from "@kubb/plugin-oas/utils";
 import { File, Function as FunctionDeclaration, FunctionParams } from "@kubb/react";
-import React from "react";
 
 export function getParams({
 	paramsCasing,

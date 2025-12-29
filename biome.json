@@ -7,26 +7,8 @@
 	},
 	"files": {
 		"ignoreUnknown": true,
-		"includes": [
-			"**/*.ts",
-			"**/*.tsx",
-			"**/*.js",
-			"**/*.jsx",
-			"**/*.json",
-			"!**/generated",
-			"!packages/cloudflare-api",
-			"!packages/dhis2-openapi",
-			"!packages/keycloak-api",
-			"!packages/litellm-api",
-			"!packages/netlify-api",
-			"!packages/nuki-api-js",
-			"!packages/zoom-api-js",
-			"!packages/vercel-api-js",
-			"!packages/v0-api",
-			"!packages/openapi-utils",
-			"!apps/openapi"
-		],
-		"maxSize": 5242880
+		"includes": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.json", "!**/generated"],
+		"maxSize": 10485760
 	},
 	"formatter": {
 		"enabled": true,
@@ -38,7 +20,14 @@
 		"rules": {
 			"recommended": true,
 			"suspicious": {
-				"noArrayIndexKey": "off"
+				"noArrayIndexKey": "off",
+				"noExplicitAny": "off",
+				"noConfusingVoidType": "off",
+				"noRedeclare": "off"
+			},
+			"complexity": {
+				"noBannedTypes": "off",
+				"useLiteralKeys": "off"
 			}
 		}
 	},

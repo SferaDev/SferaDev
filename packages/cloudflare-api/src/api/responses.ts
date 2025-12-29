@@ -521,10 +521,10 @@ export type RealtimekitGetParticipantDataFromPeerId = {
 					}[];
 					audio_producer_cumulative?: {
 						packet_loss?: {
-							["10_or_greater_event_fraction"]?: number;
-							["25_or_greater_event_fraction"]?: number;
-							["50_or_greater_event_fraction"]?: number;
-							["5_or_greater_event_fraction"]?: number;
+							"10_or_greater_event_fraction"?: number;
+							"25_or_greater_event_fraction"?: number;
+							"50_or_greater_event_fraction"?: number;
+							"5_or_greater_event_fraction"?: number;
 							avg?: number;
 						};
 						quality_mos?: {
@@ -534,9 +534,9 @@ export type RealtimekitGetParticipantDataFromPeerId = {
 							p90?: number;
 						};
 						rtt?: {
-							["100ms_or_greater_event_fraction"]?: number;
-							["250ms_or_greater_event_fraction"]?: number;
-							["500ms_or_greater_event_fraction"]?: number;
+							"100ms_or_greater_event_fraction"?: number;
+							"250ms_or_greater_event_fraction"?: number;
+							"500ms_or_greater_event_fraction"?: number;
 							avg?: number;
 						};
 					};
@@ -817,7 +817,7 @@ export type RealtimekitRegenToken = {
 	success?: boolean;
 };
 
-export type RulesetsEmpty = void;
+export type RulesetsEmpty = undefined;
 
 /**
  * A response object.
