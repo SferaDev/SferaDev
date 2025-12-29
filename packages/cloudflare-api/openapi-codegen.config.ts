@@ -20,32 +20,13 @@ export default defineConfig({
 			context.openAPIDocument = cleanOperationIds({ openAPIDocument: context.openAPIDocument });
 
 			// Remove duplicated schemas
-			const schemaCount: Record<string, number> = {};
-			const rewrites = new Map<string, string>();
-			for (const path of Object.keys(context.openAPIDocument.components?.schemas ?? {})) {
-				const schemaName = Case.pascal(path);
-				if (schemaCount[schemaName] === undefined) {
-					schemaCount[schemaName] = 0;
-				}
+			context.openAPIDocument = deduplicateComponents(context.openAPIDocument, "schemas");
 
-				schemaCount[schemaName] += 1;
-				if (schemaCount[schemaName] > 1 && context.openAPIDocument.components?.schemas?.[path]) {
-					rewrites.set(path, `${path}-${schemaCount[schemaName]}`);
-					context.openAPIDocument.components.schemas[`${path}-${schemaCount[schemaName]}`] =
-						context.openAPIDocument.components.schemas[path];
-					delete context.openAPIDocument.components.schemas[path];
-				}
-			}
+			// Remove duplicated parameters
+			context.openAPIDocument = deduplicateComponents(context.openAPIDocument, "parameters");
 
-			// Rewrite all $ref in components with new schema names
-			for (const [ref, newRef] of rewrites) {
-				context.openAPIDocument = JSON.parse(
-					JSON.stringify(context.openAPIDocument).replace(
-						new RegExp(`"#/components/schemas/${ref}"`, "g"),
-						`"#/components/schemas/${newRef}"`,
-					),
-				);
-			}
+			// Remove duplicated responses
+			context.openAPIDocument = deduplicateComponents(context.openAPIDocument, "responses");
 
 			// Rewrite status code in components response with XX suffix to avoid invalid identifier (4XX -> 400, 5XX -> 500)
 			for (const [_, definition] of Object.entries(context.openAPIDocument.paths ?? {})) {
@@ -127,6 +108,44 @@ function cleanOperationIds({ openAPIDocument }: { openAPIDocument: Context["open
 				};
 			}
 		}
+	}
+
+	return openAPIDocument;
+}
+
+function deduplicateComponents(
+	openAPIDocument: Context["openAPIDocument"],
+	componentType: "schemas" | "parameters" | "responses",
+) {
+	const components = openAPIDocument.components?.[componentType] ?? {};
+	const count: Record<string, number> = {};
+	const rewrites = new Map<string, string>();
+
+	for (const path of Object.keys(components)) {
+		const name = Case.pascal(path);
+		if (count[name] === undefined) {
+			count[name] = 0;
+		}
+
+		count[name] += 1;
+		if (count[name] > 1 && openAPIDocument.components?.[componentType]?.[path]) {
+			const newPath = `${path}-${count[name]}`;
+			rewrites.set(path, newPath);
+			(openAPIDocument.components[componentType] as Record<string, unknown>)[newPath] = (
+				openAPIDocument.components[componentType] as Record<string, unknown>
+			)[path];
+			delete (openAPIDocument.components[componentType] as Record<string, unknown>)[path];
+		}
+	}
+
+	// Rewrite all $ref in the document with new names
+	for (const [ref, newRef] of rewrites) {
+		openAPIDocument = JSON.parse(
+			JSON.stringify(openAPIDocument).replace(
+				new RegExp(`"#/components/${componentType}/${ref}"`, "g"),
+				`"#/components/${componentType}/${newRef}"`,
+			),
+		);
 	}
 
 	return openAPIDocument;
