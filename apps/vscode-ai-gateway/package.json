@@ -3,7 +3,7 @@
 	"private": true,
 	"displayName": "Vercel AI Gateway",
 	"description": "VS Code extension that provides Vercel AI models via the Language Model API",
-	"version": "0.2.0",
+	"version": "0.2.1",
 	"publisher": "SferaDev",
 	"license": "MIT",
 	"icon": "images/icon.png",
@@ -28,9 +28,9 @@
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/SferaDev/SferaDev",
-		"directory": "apps/vscode-extension"
+		"directory": "apps/vscode-ai-gateway"
 	},
-	"homepage": "https://github.com/SferaDev/SferaDev/tree/main/apps/vscode-extension#readme",
+	"homepage": "https://github.com/SferaDev/SferaDev/tree/main/apps/vscode-ai-gateway#readme",
 	"bugs": {
 		"url": "https://github.com/SferaDev/SferaDev/issues"
 	},
@@ -69,7 +69,7 @@
 		"@sferadev/tsconfig": "workspace:*",
 		"@types/json-schema": "catalog:",
 		"@types/node": "catalog:",
-		"@types/vscode": "catalog:",
+		"@types/vscode": "1.104.0",
 		"@vscode/vsce": "catalog:",
 		"bunchee": "catalog:",
 		"typescript": "catalog:",
