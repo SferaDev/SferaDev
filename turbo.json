@@ -4,7 +4,7 @@
 		"build": {
 			"inputs": ["$TURBO_DEFAULT$", ".env*"],
 			"outputs": ["dist/**", ".next/**", "!.next/cache/**", "out/**"],
-			"dependsOn": ["^build", "generate"]
+			"dependsOn": ["^build"]
 		},
 		"dev": {
 			"cache": false,
@@ -12,8 +12,7 @@
 		},
 		"generate": {
 			"inputs": ["kubb.config.ts", "openapi-codegen.config.ts"],
-			"outputs": ["src/generated/**"],
-			"dependsOn": ["^build"]
+			"outputs": ["src/generated/**"]
 		},
 		"tsc": {},
 		"test": {},
