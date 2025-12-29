@@ -7,7 +7,6 @@
 		"generate": "turbo run generate",
 		"check": "biome check . && knip --config configs/knip.json",
 		"check:fix": "biome check . --write",
-		"format": "biome format . --write",
 		"tsc": "turbo run tsc",
 		"test": "turbo run test",
 		"knip": "knip --config configs/knip.json",
