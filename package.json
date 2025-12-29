@@ -17,11 +17,12 @@
 		"release": "./scripts/release.sh"
 	},
 	"devDependencies": {
+		"@ai-sdk/openai": "catalog:",
 		"@biomejs/biome": "catalog:",
 		"@changesets/cli": "catalog:",
+		"ai": "catalog:",
 		"knip": "catalog:",
 		"lefthook": "catalog:",
-		"openai": "catalog:",
 		"tsx": "catalog:",
 		"turbo": "catalog:",
 		"typescript": "catalog:"
