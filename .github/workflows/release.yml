@@ -40,9 +40,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Publish VSCode Extension to Marketplace
-        if: steps.changesets.outputs.published == 'true'
-        run: pnpm --filter vscode-extension-vercel-ai release
-        env:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
