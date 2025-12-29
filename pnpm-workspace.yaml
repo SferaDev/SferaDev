@@ -22,6 +22,7 @@ catalog:
   '@kubb/plugin-ts': 4.12.13
   '@kubb/plugin-zod': 4.12.13
   '@kubb/react': 4.3.1
+  '@kubb/react-fabric': 0.7.4
   '@mcpauth/auth': 0.1.4
   '@modelcontextprotocol/sdk': 1.25.1
   '@next/third-parties': 16.1.1

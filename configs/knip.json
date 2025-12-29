@@ -2,8 +2,7 @@
 	"$schema": "https://unpkg.com/knip@5/schema.json",
 	"workspaces": {
 		".": {
-			"entry": ["turbo.json", ".github/workflows/scripts/*.ts"],
-			"ignoreDependencies": ["zod"]
+			"entry": ["turbo.json", ".github/workflows/scripts/*.ts"]
 		},
 		"apps/website": {
 			"entry": ["app/**/*.{ts,tsx}", "lib/**/*.ts", "components/**/*.tsx", "vercel.ts"],
@@ -81,12 +80,6 @@
 		"packages/litellm-api": {
 			"entry": ["src/index.ts", "openapi-codegen.config.ts"],
 			"project": ["src/**/*.ts"],
-			"includeEntryExports": false
-		},
-		"packages/dhis2-openapi": {
-			"entry": ["src/index.ts", "openapi-codegen.config.ts"],
-			"project": ["src/**/*.ts"],
-			"ignore": ["src/api/**/components.ts", "src/api/**/schemas.ts"],
 			"includeEntryExports": false
 		},
 		"configs/tsconfig": {}

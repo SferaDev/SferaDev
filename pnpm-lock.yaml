@@ -57,6 +57,9 @@ catalogs:
     '@kubb/react':
       specifier: 4.3.1
       version: 4.3.1
+    '@kubb/react-fabric':
+      specifier: 0.7.4
+      version: 0.7.4
     '@mcpauth/auth':
       specifier: 0.1.4
       version: 0.1.4
@@ -280,6 +283,9 @@ importers:
       typescript:
         specifier: 'catalog:'
         version: 5.9.3
+      zod:
+        specifier: 'catalog:'
+        version: 4.2.1
 
   apps/openapi:
     dependencies:
@@ -563,27 +569,6 @@ importers:
         specifier: 'catalog:'
         version: 5.9.3
 
-  packages/dhis2-openapi:
-    devDependencies:
-      '@openapi-codegen/cli':
-        specifier: 'catalog:'
-        version: 3.1.0(@swc/helpers@0.5.18)
-      '@openapi-codegen/typescript':
-        specifier: 'catalog:'
-        version: 11.1.0
-      '@sferadev/tsconfig':
-        specifier: workspace:*
-        version: link:../../configs/tsconfig
-      '@types/node':
-        specifier: 'catalog:'
-        version: 25.0.3
-      bunchee:
-        specifier: 'catalog:'
-        version: 6.8.2(typescript@5.9.3)
-      typescript:
-        specifier: 'catalog:'
-        version: 5.9.3
-
   packages/keycloak-api:
     devDependencies:
       '@openapi-codegen/cli':
@@ -718,9 +703,9 @@ importers:
       '@kubb/plugin-zod':
         specifier: 'catalog:'
         version: 4.12.13(ajv@8.17.1)(typescript@5.9.3)
-      '@kubb/react':
+      '@kubb/react-fabric':
         specifier: 'catalog:'
-        version: 4.3.1
+        version: 0.7.4
       case:
         specifier: 'catalog:'
         version: 1.6.3
