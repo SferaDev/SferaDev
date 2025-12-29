@@ -21,6 +21,8 @@
 		"@changesets/cli": "catalog:",
 		"knip": "catalog:",
 		"lefthook": "catalog:",
+		"openai": "catalog:",
+		"tsx": "catalog:",
 		"turbo": "catalog:",
 		"typescript": "catalog:"
 	},
