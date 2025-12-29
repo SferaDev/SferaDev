@@ -5,7 +5,6 @@ import { getBanner, getFooter } from "@kubb/plugin-oas/utils";
 import { pluginTsName } from "@kubb/plugin-ts";
 import { pluginZodName } from "@kubb/plugin-zod";
 import { File, useApp } from "@kubb/react";
-import React from "react";
 import { ClientOperation } from "../components/client-operation";
 
 export const clientGenerator = createReactGenerator<PluginClient>({

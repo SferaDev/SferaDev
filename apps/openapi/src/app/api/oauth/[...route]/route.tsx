@@ -1,3 +1,3 @@
-import { handlers } from '@/lib/mcpauth';
+import { handlers } from "@/lib/mcpauth";
 
 export const { GET, POST, OPTIONS } = handlers;

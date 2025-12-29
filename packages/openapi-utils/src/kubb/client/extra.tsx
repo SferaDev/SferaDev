@@ -4,7 +4,6 @@ import { useOas, useOperationManager } from "@kubb/plugin-oas/hooks";
 import { getBanner, getFooter } from "@kubb/plugin-oas/utils";
 import { File, useApp } from "@kubb/react";
 import c from "case";
-import React from "react";
 
 export const extraGenerator = createReactGenerator<PluginClient>({
 	name: "extra",

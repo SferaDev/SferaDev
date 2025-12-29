@@ -4,7 +4,6 @@ import { useOas, useOperationManager } from "@kubb/plugin-oas/hooks";
 import { getBanner, getFooter } from "@kubb/plugin-oas/utils";
 import { pluginTsName } from "@kubb/plugin-ts";
 import { File, useApp } from "@kubb/react";
-import React from "react";
 import { ClientOperation } from "../components/client-operation";
 
 export const toolsGenerator = createReactGenerator<PluginMcp>({

@@ -22,9 +22,7 @@
 			"!packages/nuki-api-js",
 			"!packages/zoom-api-js",
 			"!packages/vercel-api-js",
-			"!packages/v0-api",
-			"!packages/openapi-utils",
-			"!apps/openapi"
+			"!packages/v0-api"
 		],
 		"maxSize": 5242880
 	},
@@ -38,7 +36,8 @@
 		"rules": {
 			"recommended": true,
 			"suspicious": {
-				"noArrayIndexKey": "off"
+				"noArrayIndexKey": "off",
+				"noExplicitAny": "off"
 			}
 		}
 	},
