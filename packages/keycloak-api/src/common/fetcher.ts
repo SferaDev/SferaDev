@@ -100,11 +100,7 @@ export async function fetch<
 	}
 }
 
-const resolveUrl = (
-	url: string,
-	queryParams: Record<string, string> = {},
-	pathParams: Record<string, string> = {},
-) => {
+const resolveUrl = (url: string, queryParams: any = {}, pathParams: any = {}) => {
 	let query = new URLSearchParams(queryParams).toString();
 	if (query) query = `?${query}`;
 	return url.replace(/\{\w*\}/g, (key) => pathParams[key.slice(1, -1)] ?? "") + query;

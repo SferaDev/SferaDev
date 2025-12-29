@@ -1,5 +1,8 @@
 export * from "./client";
-
-import type * as Components from "./meeting/components";
-import type * as Schemas from "./meeting/schemas";
-export type { Schemas, Components };
+export {
+	operationsByPath,
+	operationsByTag,
+	tagDictionary,
+} from "./generated/components";
+export * from "./generated/schemas";
+export * from "./generated/types";

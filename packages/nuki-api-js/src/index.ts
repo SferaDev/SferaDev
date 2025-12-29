@@ -1,6 +1,8 @@
 export * from "./client";
-
-import type * as Components from "./api/components";
-import type * as RequestBodies from "./api/requestBodies";
-import type * as Schemas from "./api/schemas";
-export type { Schemas, Components, RequestBodies };
+export {
+	operationsByPath,
+	operationsByTag,
+	tagDictionary,
+} from "./generated/components";
+export * from "./generated/schemas";
+export * from "./generated/types";
