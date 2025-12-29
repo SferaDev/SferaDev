@@ -13,6 +13,9 @@ export const baseConfig: Omit<UserConfig, "input"> = {
 	root: ".",
 	output: {
 		path: "./src/generated",
+		extension: {
+			".ts": "",
+		},
 	},
 	plugins: [
 		pluginOas({
@@ -34,7 +37,6 @@ export const baseConfig: Omit<UserConfig, "input"> = {
 			dateType: "string",
 			unknownType: "unknown",
 			optionalType: "questionTokenAndUndefined",
-			oasType: false,
 		}),
 		pluginClient({
 			output: {
@@ -55,7 +57,7 @@ export const baseConfig: Omit<UserConfig, "input"> = {
 				barrelType: false,
 			},
 			typed: false, // Workaround for https://github.com/kubb-labs/kubb/issues/1775
-			dateType: "date",
+			dateType: "string",
 			unknownType: "unknown",
 			version: "3",
 		}),

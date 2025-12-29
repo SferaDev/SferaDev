@@ -57,6 +57,9 @@ catalogs:
     '@kubb/react':
       specifier: 4.3.1
       version: 4.3.1
+    '@kubb/react-fabric':
+      specifier: 0.7.4
+      version: 0.7.4
     '@mcpauth/auth':
       specifier: 0.1.4
       version: 0.1.4
@@ -715,9 +718,9 @@ importers:
       '@kubb/plugin-zod':
         specifier: 'catalog:'
         version: 4.12.13(ajv@8.17.1)(typescript@5.9.3)
-      '@kubb/react':
+      '@kubb/react-fabric':
         specifier: 'catalog:'
-        version: 4.3.1
+        version: 0.7.4
       case:
         specifier: 'catalog:'
         version: 1.6.3
