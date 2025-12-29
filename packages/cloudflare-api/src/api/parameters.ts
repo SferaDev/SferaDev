@@ -216,9 +216,6 @@ export type RealtimekitEndDate = string;
  */
 export type RealtimekitEndTime = string;
 
-/**
- * @pattern ^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$
- */
 export type RealtimekitMeetingId = string;
 
 /**
@@ -435,3 +432,8 @@ export type WaitingroomPage = number;
  * @minimum 5
  */
 export type WaitingroomPerPage = number;
+
+/**
+ * @pattern ^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$
+ */
+export type RealtimekitMeetingId2 = string;

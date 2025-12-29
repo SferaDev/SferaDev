@@ -1043,3 +1043,5 @@ export type WorkersErrorWorkerNotFound = {
 	 */
 	success?: false;
 };
+
+export type ApiShieldGenericFailure2 = Schemas.ApiShieldApiResponseCommonFailure;
