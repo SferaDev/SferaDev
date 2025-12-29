@@ -388,11 +388,11 @@ export type GetAccountUsersResourceQueryParams = {
 	/**
 	 * The offset of the first user in the collection to return
 	 */
-	offset?: void;
+	offset?: undefined;
 	/**
 	 * The maximum number of users to return. If the value exceeds the maximum, then the maximum value will be used.
 	 */
-	limit?: void;
+	limit?: undefined;
 };
 
 export type GetAccountUsersResourceError = Fetcher.ErrorWrapper<undefined>;
