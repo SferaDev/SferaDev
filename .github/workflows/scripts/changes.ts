@@ -1,9 +1,9 @@
 import { exec } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
-import { OpenAI } from "openai";
-
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+import { openai } from "@ai-sdk/openai";
+import { generateObject } from "ai";
+import { z } from "zod";
 
 async function getChangeDiff() {
 	return new Promise<string>((resolve, reject) => {
@@ -31,6 +31,15 @@ async function writeChangesetFile(projectName: string, type: string, description
 	fs.writeFileSync(changesetPath, content);
 }
 
+const changelogSchema = z.object({
+	changes: z.array(
+		z.object({
+			description: z.string(),
+			type: z.enum(["patch", "minor"]),
+		}),
+	),
+});
+
 async function main() {
 	const projectName = process.argv[2];
 	if (!projectName) throw new Error("Project name not provided");
@@ -50,40 +59,16 @@ async function main() {
     Description must be a short sentence.
     If there's a breaking change, add "[BREAKING]" to the beginning of the description.
     Only use "patch" or "minor" changes in a 0.x.x semver versioning scheme. Unless it's a version bump, everything is a "patch".
-
-    The output should be a JSON object with the following format:
-    Array<{
-        description: string,
-        type: "patch" | "minor"
-    }>
-
-    Example:
-    [
-      {
-        "description": "Add new endpoint to get user info",
-        "type": "minor"
-      },
-      {
-        "description": "Fix bug in user info endpoint",
-        "type": "patch"
-      }
-    ]
   `;
 
-		const completion = await openai.chat.completions.create({
-			messages: [
-				{ role: "system", content: prompt },
-				{ role: "user", content: diff },
-			],
-			model: "gpt-4o",
-			response_format: { type: "json_object" },
+		const { object } = await generateObject({
+			model: openai("gpt-4.1"),
+			schema: changelogSchema,
+			system: prompt,
+			prompt: diff,
 		});
 
-		const { content: output } = completion.choices[0].message;
-		const json = JSON.parse(output ?? "");
-		const changes = Array.isArray(json) ? json : [json];
-
-		for (const { type, description } of changes) {
+		for (const { type, description } of object.changes) {
 			await writeChangesetFile(projectName, type, description);
 		}
 	} catch (error) {

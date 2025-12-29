@@ -48,6 +48,9 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
+      - name: Format code
+        run: pnpm format
+
       - run: git add .
 
       - name: Create Pull Request
