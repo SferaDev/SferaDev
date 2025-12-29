@@ -25,11 +25,13 @@ catalog:
   '@radix-ui/react-slot': 1.2.4
   '@tailwindcss/postcss': 4.1.18
   '@tailwindcss/typography': 0.5.19
+  '@types/json-schema': 7.0.15
   '@types/node': 25.0.3
   '@types/react': 19.2.7
   '@types/react-dom': 19.2.3
   '@vercel/config': 0.0.24
   '@vercel/oidc': 3.0.5
+  '@vscode/vsce': 3.6.0
   ai: 6.0.3
   bunchee: 6.8.2
   case: 1.6.3

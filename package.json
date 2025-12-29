@@ -14,7 +14,7 @@
 		"clean": "turbo run clean && rm -rf node_modules",
 		"changeset": "changeset",
 		"version-packages": "changeset version",
-		"release": "turbo run build && changeset publish"
+		"release": "./scripts/release.sh"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "catalog:",
