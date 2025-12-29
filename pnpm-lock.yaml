@@ -177,7 +177,7 @@ importers:
         specifier: 'catalog:'
         version: 5.9.3
 
-  apps/vscode-extension:
+  apps/vscode-ai-gateway:
     dependencies:
       '@ai-sdk/gateway':
         specifier: 'catalog:'
