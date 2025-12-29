@@ -31,6 +31,11 @@ catalog:
   '@types/react-dom': 19.2.3
   '@vercel/config': 0.0.24
   '@vercel/oidc': 3.0.5
+  '@openapi-codegen/cli': 3.1.0
+  '@openapi-codegen/typescript': 11.1.0
+  ts-morph: 27.0.2
+  openapi3-ts: 4.5.0
+  openai: 6.15.0
   '@vscode/vsce': 3.6.0
   ai: 6.0.3
   bunchee: 6.8.2
@@ -58,6 +63,7 @@ catalog:
   tailwind-merge: 3.4.0
   tailwindcss: 4.1.18
   tailwindcss-animate: 1.0.7
+  tsx: 4.21.0
   turbo: 2.7.2
   typescript: 5.9.3
   vitest: 4.0.16
