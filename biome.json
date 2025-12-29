@@ -7,7 +7,25 @@
 	},
 	"files": {
 		"ignoreUnknown": true,
-		"includes": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.json"]
+		"includes": [
+			"**/*.ts",
+			"**/*.tsx",
+			"**/*.js",
+			"**/*.jsx",
+			"**/*.json",
+			"!**/generated",
+			"!packages/cloudflare-api",
+			"!packages/dhis2-openapi",
+			"!packages/keycloak-api",
+			"!packages/litellm-api",
+			"!packages/netlify-api",
+			"!packages/nuki-api-js",
+			"!packages/zoom-api-js",
+			"!packages/vercel-api-js",
+			"!packages/v0-api",
+			"!packages/openapi-utils"
+		],
+		"maxSize": 5242880
 	},
 	"formatter": {
 		"enabled": true,
