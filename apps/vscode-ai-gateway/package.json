@@ -9,7 +9,7 @@
 	"icon": "images/icon.png",
 	"type": "module",
 	"engines": {
-		"vscode": "^1.104.0"
+		"vscode": "^1.107.0"
 	},
 	"categories": [
 		"AI",
