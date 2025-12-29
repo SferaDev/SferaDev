@@ -43,13 +43,13 @@ jobs:
       - name: Build OpenAPI spec from PR
         run: pnpm generate --filter=${{ matrix.package }}
 
+      - name: Format code
+        run: pnpm check:fix
+
       - name: Analyze changes and create changeset
         run: pnpm tsx ./.github/workflows/scripts/changes.ts ${{ matrix.package }}
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-
-      - name: Format code
-        run: pnpm check:fix
 
       - run: git add .
 
