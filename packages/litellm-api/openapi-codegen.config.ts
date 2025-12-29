@@ -27,6 +27,7 @@ export default defineConfig({
 				},
 			]);
 
+			context.openAPIDocument = normalizeTagCasing(context.openAPIDocument);
 			context.openAPIDocument = removeDuplicatedTags(context.openAPIDocument);
 
 			const filenamePrefix = "";
@@ -36,6 +37,25 @@ export default defineConfig({
 		},
 	},
 });
+
+// Normalize tag casing to prevent duplicate object keys in generated code
+// (e.g., "Guardrails" and "guardrails" would both become "guardrails" key)
+function normalizeTagCasing(openAPIObject: Context["openAPIDocument"]) {
+	return {
+		...openAPIObject,
+		paths: Object.fromEntries(
+			Object.entries(openAPIObject.paths).map(([path, pathItem]) => {
+				for (const method of Object.keys(pathItem)) {
+					const operation = pathItem[method];
+					if (operation.tags) {
+						operation.tags = operation.tags.map((tag: string) => Case.pascal(tag));
+					}
+				}
+				return [path, pathItem];
+			}),
+		),
+	};
+}
 
 // Remove duplicated tags in path components
 function removeDuplicatedTags(openAPIObject: Context["openAPIDocument"]) {
