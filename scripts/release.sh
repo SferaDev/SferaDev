@@ -20,7 +20,26 @@ PUBLISHED_VERSION=$(npx @vscode/vsce show "$EXTENSION_ID" --json 2>/dev/null | n
 if [ "$LOCAL_VERSION" != "$PUBLISHED_VERSION" ]; then
   echo "Publishing VSCode extension: $LOCAL_VERSION (published: ${PUBLISHED_VERSION:-none})"
   pnpm package
-  pnpm vsce publish --packagePath ./*.vsix
+
+  # Attempt to publish, handling race condition where another CI run published first
+  # The "already exists" error means the version is published (possibly by concurrent CI),
+  # which is a success - the goal was to have this version published
+  set +e
+  PUBLISH_OUTPUT=$(pnpm vsce publish --packagePath ./*.vsix 2>&1)
+  PUBLISH_EXIT_CODE=$?
+  set -e
+
+  if [ $PUBLISH_EXIT_CODE -ne 0 ]; then
+    if echo "$PUBLISH_OUTPUT" | grep -q "already exists"; then
+      echo "Version $LOCAL_VERSION was published by a concurrent CI run (was in 'verifying' state during version check)"
+      echo "This is expected during concurrent releases - treating as success"
+    else
+      echo "$PUBLISH_OUTPUT"
+      exit $PUBLISH_EXIT_CODE
+    fi
+  else
+    echo "$PUBLISH_OUTPUT"
+  fi
 else
   echo "VSCode extension version $LOCAL_VERSION already published, skipping"
 fi
