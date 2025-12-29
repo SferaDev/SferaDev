@@ -16,7 +16,8 @@
 	"scripts": {
 		"tsc": "tsc --noEmit",
 		"build": "bunchee",
-		"generate": "rimraf ./src/generated && kubb generate"
+		"generate": "rimraf ./src/generated && kubb generate",
+		"is-tree-shakable": "is-tree-shakable"
 	},
 	"dependencies": {
 		"zod": "catalog:"

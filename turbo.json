@@ -17,6 +17,9 @@
 		},
 		"tsc": {},
 		"test": {},
+		"is-tree-shakable": {
+			"dependsOn": ["build"]
+		},
 		"clean": {
 			"cache": false
 		}
