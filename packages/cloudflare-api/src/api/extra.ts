@@ -322,6 +322,8 @@ import {
 	cloudflareD1ListDatabases,
 	cloudflareD1QueryDatabase,
 	cloudflareD1RawDatabaseQuery,
+	cloudflareD1TimeTravelGetBookmark,
+	cloudflareD1TimeTravelRestore,
 	cloudflareD1UpdateDatabase,
 	cloudflareD1UpdatePartialDatabase,
 	cloudflareImagesBaseImage,
@@ -780,6 +782,7 @@ import {
 	firewallRulesUpdateFirewallRules,
 	firewallRulesUpdatePriorityOfAFirewallRule,
 	firewallRulesUpdatePriorityOfFirewallRules,
+	generateImageRegistryCredentials,
 	getAbuseReport,
 	getAccountEntrypointRuleset,
 	getAccountEntrypointRulesetVersion,
@@ -1399,6 +1402,7 @@ import {
 	postDOSEventCreateBulkWithRelationships,
 	postEventCreate,
 	postEventCreateBulk,
+	postEventDoRevert,
 	postEventGraphQL,
 	postEventMoveToNewDS,
 	postEventRawUpdate,
@@ -1436,6 +1440,7 @@ import {
 	providersPatch,
 	providersRead,
 	providersUpdate,
+	publicListApplications,
 	purgeBuildCache,
 	putAccountsAccountIdLogpushJobsJobId,
 	putV4AccountsByAccountIdPipelinesByPipelineNameDeprecated,
@@ -3300,6 +3305,7 @@ export const operationsByPath = {
 	"GET /accounts/{account_id}/cloudforce-one/events/targetIndustries/catalog":
 		getTargetIndustryListComplete,
 	"DELETE /accounts/{account_id}/cloudforce-one/events/{dataset_id}/delete": deleteEventDeleteDO,
+	"POST /accounts/{account_id}/cloudforce-one/events/{dataset_id}/revert-do": postEventDoRevert,
 	"DELETE /accounts/{account_id}/cloudforce-one/events/{event_id}": deleteEventDelete,
 	"GET /accounts/{account_id}/cloudforce-one/events/{event_id}": getEventReadDeprecated,
 	"PATCH /accounts/{account_id}/cloudforce-one/events/{event_id}": patchEventUpdate,
@@ -3373,6 +3379,9 @@ export const operationsByPath = {
 		connectivityServicesGet,
 	"PUT /accounts/{account_id}/connectivity/directory/services/{service_id}":
 		connectivityServicesPut,
+	"GET /accounts/{account_id}/containers": publicListApplications,
+	"POST /accounts/{account_id}/containers/registries/{domain}/credentials":
+		generateImageRegistryCredentials,
 	"GET /accounts/{account_id}/custom_ns": accountLevelCustomNameserversListAccountCustomNameservers,
 	"POST /accounts/{account_id}/custom_ns": accountLevelCustomNameserversAddAccountCustomNameserver,
 	"DELETE /accounts/{account_id}/custom_ns/{custom_ns_id}":
@@ -3387,6 +3396,10 @@ export const operationsByPath = {
 	"POST /accounts/{account_id}/d1/database/{database_id}/import": cloudflareD1ImportDatabase,
 	"POST /accounts/{account_id}/d1/database/{database_id}/query": cloudflareD1QueryDatabase,
 	"POST /accounts/{account_id}/d1/database/{database_id}/raw": cloudflareD1RawDatabaseQuery,
+	"GET /accounts/{account_id}/d1/database/{database_id}/time_travel/bookmark":
+		cloudflareD1TimeTravelGetBookmark,
+	"POST /accounts/{account_id}/d1/database/{database_id}/time_travel/restore":
+		cloudflareD1TimeTravelRestore,
 	"GET /accounts/{account_id}/devices": devicesListDevices,
 	"GET /accounts/{account_id}/devices/networks": deviceManagedNetworksListDeviceManagedNetworks,
 	"POST /accounts/{account_id}/devices/networks": deviceManagedNetworksCreateDeviceManagedNetwork,
