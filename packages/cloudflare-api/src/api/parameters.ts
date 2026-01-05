@@ -155,6 +155,11 @@ export type BuildsRepoConnectionUuid = string;
  */
 export type BuildsTriggerUuid = string;
 
+/**
+ * @example account-123
+ */
+export type CcAccountId = string;
+
 export type DlsAccountId = Schemas.DlsIdentifier;
 
 export type DlsHostname = Schemas.DlsHostname;

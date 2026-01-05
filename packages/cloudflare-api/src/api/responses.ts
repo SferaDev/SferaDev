@@ -225,6 +225,25 @@ export type BuildsSuccessEmpty = Schemas.BuildsAPIResponse;
 
 export type BuildsUnauthorized = Schemas.BuildsErrorResponse;
 
+/**
+ * Credentials that can be used to interact with the requested image registry.
+ */
+export type CcGenerateImageRegistryCredentialsResponse201 = Schemas.CcV4BaseResponse &
+	Schemas.CcAccountRegistryToken;
+
+export type CcGenerateImageRegistryCredentialsResponse409 = Schemas.CcV4BaseErrorResponse;
+
+export type CcImageRegistryNotFoundResponse404 = Schemas.CcV4BaseErrorResponse;
+
+export type CcPublicBadRequest400 = Schemas.CcV4BaseErrorResponse;
+
+export type CcPublicInternalError500 = Schemas.CcV4BaseErrorResponse;
+
+export type CcPublicListApplicationsResponse200 = Schemas.CcV4BaseResponse &
+	Schemas.CcPublicListApplicationsResult;
+
+export type CcPublicUnauthorized401 = Schemas.CcV4BaseErrorResponse;
+
 export type EmailSecurityClientError = {
 	/**
 	 * @example {"code":7003,"message":"No route for the URI"}
@@ -990,7 +1009,7 @@ export type SnippetsSnippets = {
 };
 
 /**
- * @example {"errors":[],"messages":[],"result":{"created_on":"2022-05-05T05:15:11.602148Z","etag":"777f24a43bef5f69174aa69ceaf1dea67968d510a31d1vw3e49d34a0187c06d1","handlers":["fetch"],"id":"this-is_my_script-01","logpush":false,"modified_on":"2022-05-20T19:02:56.446492Z","placement_mode":"smart","startup_time_ms":10,"tail_consumers":[{"environment":"production","service":"my-log-consumer"}],"usage_model":"standard"},"success":true}
+ * @example {"errors":[],"messages":[],"result":{"created_on":"2022-05-05T05:15:11.602148Z","etag":"777f24a43bef5f69174aa69ceaf1dea67968d510a31d1vw3e49d34a0187c06d1","handlers":["fetch"],"id":"this-is_my_script-01","logpush":false,"modified_on":"2022-05-20T19:02:56.446492Z","placement":{"mode":"smart"},"startup_time_ms":10,"tail_consumers":[{"environment":"production","service":"my-log-consumer"}],"usage_model":"standard"},"success":true}
  */
 export type Workers200 = Schemas.WorkersScriptResponseUploadSingle & Record<string, any>;
 
