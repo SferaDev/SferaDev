@@ -4543,6 +4543,9 @@ export const authTokenSchema = z
 			.number()
 			.describe("Timestamp (in milliseconds) of when the token was most recently used."),
 		createdAt: z.number().describe("Timestamp (in milliseconds) of when the token was created."),
+		leakedAt: z.optional(
+			z.number().describe("Timestamp (in milliseconds) of when the token was marked as leaked."),
+		),
 	})
 	.describe("Authentication token metadata.");
 
@@ -10204,9 +10207,6 @@ export const getProjectsQueryParamsSchema = z
 	})
 	.optional();
 
-/**
- * @description The paginated list of projects
- */
 export const getProjects200Schema = z.unknown();
 
 /**
