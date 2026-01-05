@@ -10325,6 +10325,11 @@ export type AuthToken = {
 	 * @type number
 	 */
 	createdAt: number;
+	/**
+	 * @description Timestamp (in milliseconds) of when the token was marked as leaked.
+	 * @type number | undefined
+	 */
+	leakedAt?: number | undefined;
 };
 
 export const softBlockReasonEnum2 = {
@@ -18412,9 +18417,6 @@ export type GetProjectsQueryParams = {
 	slug?: string | undefined;
 };
 
-/**
- * @description The paginated list of projects
- */
 export type GetProjects200 = unknown;
 
 /**
