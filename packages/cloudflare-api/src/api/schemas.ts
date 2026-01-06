@@ -52814,7 +52814,7 @@ export type TeamsDevicesComponentsSchemasUuid = string;
 /**
  * The configuration object containing third-party integration information.
  *
- * @example {"api_url":"https://as123.awmdm.com/API","auth_url":"https://na.uemauth.vmwservices.com/connect/token","client_id":"example client id","client_secret":"example client secret"}
+ * @example {"api_url":"https://as123.awmdm.com/API","auth_url":"https://na.uemauth.workspaceone.com/connect/token","client_id":"example client id","client_secret":"example client secret"}
  */
 export type TeamsDevicesConfigRequest =
 	| TeamsDevicesWorkspaceOneConfigRequest
@@ -52829,7 +52829,7 @@ export type TeamsDevicesConfigRequest =
 /**
  * The configuration object containing third-party integration information.
  *
- * @example {"api_url":"https://as123.awmdm.com/API","auth_url":"https://na.uemauth.vmwservices.com/connect/token","client_id":"example client id"}
+ * @example {"api_url":"https://as123.awmdm.com/API","auth_url":"https://na.uemauth.workspaceone.com/connect/token","client_id":"example client id"}
  */
 export type TeamsDevicesConfigResponse = TeamsDevicesWorkspaceOneConfigResponse;
 
@@ -53060,7 +53060,6 @@ export type TeamsDevicesDeleted = boolean;
 /**
  * The description of the device posture rule.
  *
- * @default
  * @example The rule for admin serial numbers
  * @x-auditable true
  */
@@ -54889,7 +54888,7 @@ export type TeamsDevicesWorkspaceOneConfigRequest = {
 	/**
 	 * The Workspace One Authorization URL depending on your region.
 	 *
-	 * @example https://na.uemauth.vmwservices.com/connect/token
+	 * @example https://na.uemauth.workspaceone.com/connect/token
 	 */
 	auth_url: string;
 	/**
@@ -54920,7 +54919,7 @@ export type TeamsDevicesWorkspaceOneConfigResponse = {
 	/**
 	 * The Workspace One Authorization URL depending on your region.
 	 *
-	 * @example https://na.uemauth.vmwservices.com/connect/token
+	 * @example https://na.uemauth.workspaceone.com/connect/token
 	 */
 	auth_url: string;
 	/**
