@@ -13560,8 +13560,6 @@ export const deleteDeploymentMutationResponseSchema = z.lazy(() => deleteDeploym
 
 export const getSecretsQueryParamsSchema = z
 	.object({
-		id: z.optional(z.string().describe("Filter out secrets based on comma separated secret ids.")),
-		projectId: z.optional(z.string().describe("Filter out secrets that belong to a project.")),
 		teamId: z.optional(
 			z.string().describe("The Team identifier to perform the request on behalf of."),
 		),
@@ -13569,14 +13567,6 @@ export const getSecretsQueryParamsSchema = z
 	})
 	.optional();
 
-/**
- * @description Successful response retrieving a list of secrets.
- */
-export const getSecrets200Schema = z.unknown();
-
-/**
- * @description One of the provided values in the request query is invalid.
- */
 export const getSecrets400Schema = z.unknown();
 
 /**
@@ -13591,7 +13581,7 @@ export const getSecrets403Schema = z.unknown();
 
 export const getSecrets410Schema = z.unknown();
 
-export const getSecretsQueryResponseSchema = z.lazy(() => getSecrets200Schema);
+export const getSecretsQueryResponseSchema = z.unknown();
 
 export const createSecretPathParamsSchema = z.object({
 	name: z.string(),
@@ -13606,14 +13596,6 @@ export const createSecretQueryParamsSchema = z
 	})
 	.optional();
 
-/**
- * @description Successful response showing the created secret.
- */
-export const createSecret200Schema = z.unknown();
-
-/**
- * @description One of the provided values in the request body is invalid.
- */
 export const createSecret400Schema = z.unknown();
 
 /**
@@ -13622,21 +13604,16 @@ export const createSecret400Schema = z.unknown();
 export const createSecret401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
- */
-export const createSecret402Schema = z.unknown();
-
-/**
  * @description You do not have permission to access this resource.
  */
 export const createSecret403Schema = z.unknown();
 
 export const createSecret410Schema = z.unknown();
 
-export const createSecretMutationResponseSchema = z.lazy(() => createSecret200Schema);
+export const createSecretMutationResponseSchema = z.unknown();
 
 export const renameSecretPathParamsSchema = z.object({
-	name: z.string().describe("The name of the secret."),
+	name: z.string(),
 });
 
 export const renameSecretQueryParamsSchema = z
@@ -13648,11 +13625,6 @@ export const renameSecretQueryParamsSchema = z
 	})
 	.optional();
 
-export const renameSecret200Schema = z.unknown();
-
-/**
- * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
- */
 export const renameSecret400Schema = z.unknown();
 
 /**
@@ -13667,23 +13639,14 @@ export const renameSecret403Schema = z.unknown();
 
 export const renameSecret410Schema = z.unknown();
 
-export const renameSecretMutationResponseSchema = z.lazy(() => renameSecret200Schema);
+export const renameSecretMutationResponseSchema = z.unknown();
 
 export const getSecretPathParamsSchema = z.object({
-	idOrName: z
-		.string()
-		.describe("The name or the unique identifier to which the secret belongs to."),
+	idOrName: z.string(),
 });
 
 export const getSecretQueryParamsSchema = z
 	.object({
-		decrypt: z.optional(
-			z
-				.enum(["true", "false"])
-				.describe(
-					"Whether to try to decrypt the value of the secret. Only works if `decryptable` has been set to `true` when the secret was created.",
-				),
-		),
 		teamId: z.optional(
 			z.string().describe("The Team identifier to perform the request on behalf of."),
 		),
@@ -13691,14 +13654,6 @@ export const getSecretQueryParamsSchema = z
 	})
 	.optional();
 
-/**
- * @description Successful response retrieving a secret.
- */
-export const getSecret200Schema = z.unknown();
-
-/**
- * @description One of the provided values in the request query is invalid.
- */
 export const getSecret400Schema = z.unknown();
 
 /**
@@ -13711,16 +13666,12 @@ export const getSecret401Schema = z.unknown();
  */
 export const getSecret403Schema = z.unknown();
 
-export const getSecret404Schema = z.unknown();
-
 export const getSecret410Schema = z.unknown();
 
-export const getSecretQueryResponseSchema = z.lazy(() => getSecret200Schema);
+export const getSecretQueryResponseSchema = z.unknown();
 
 export const deleteSecretPathParamsSchema = z.object({
-	idOrName: z
-		.string()
-		.describe("The name or the unique identifier to which the secret belongs to."),
+	idOrName: z.string(),
 });
 
 export const deleteSecretQueryParamsSchema = z
@@ -13732,11 +13683,6 @@ export const deleteSecretQueryParamsSchema = z
 	})
 	.optional();
 
-export const deleteSecret200Schema = z.unknown();
-
-/**
- * @description One of the provided values in the request query is invalid.
- */
 export const deleteSecret400Schema = z.unknown();
 
 /**
@@ -13751,4 +13697,4 @@ export const deleteSecret403Schema = z.unknown();
 
 export const deleteSecret410Schema = z.unknown();
 
-export const deleteSecretMutationResponseSchema = z.lazy(() => deleteSecret200Schema);
+export const deleteSecretMutationResponseSchema = z.unknown();

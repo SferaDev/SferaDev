@@ -23313,18 +23313,6 @@ export type DeleteDeploymentMutation = {
 
 export type GetSecretsQueryParams = {
 	/**
-	 * @description Filter out secrets based on comma separated secret ids.
-	 * @deprecated
-	 * @type string | undefined
-	 */
-	id?: string | undefined;
-	/**
-	 * @description Filter out secrets that belong to a project.
-	 * @deprecated
-	 * @type string | undefined
-	 */
-	projectId?: string | undefined;
-	/**
 	 * @description The Team identifier to perform the request on behalf of.
 	 * @type string | undefined
 	 */
@@ -23336,14 +23324,6 @@ export type GetSecretsQueryParams = {
 	slug?: string | undefined;
 };
 
-/**
- * @description Successful response retrieving a list of secrets.
- */
-export type GetSecrets200 = unknown;
-
-/**
- * @description One of the provided values in the request query is invalid.
- */
 export type GetSecrets400 = unknown;
 
 /**
@@ -23358,10 +23338,10 @@ export type GetSecrets403 = unknown;
 
 export type GetSecrets410 = unknown;
 
-export type GetSecretsQueryResponse = GetSecrets200;
+export type GetSecretsQueryResponse = any;
 
 export type GetSecretsQuery = {
-	Response: GetSecrets200;
+	Response: any;
 	QueryParams: GetSecretsQueryParams;
 	Errors: GetSecrets400 | GetSecrets401 | GetSecrets403 | GetSecrets410;
 };
@@ -23386,14 +23366,6 @@ export type CreateSecretQueryParams = {
 	slug?: string | undefined;
 };
 
-/**
- * @description Successful response showing the created secret.
- */
-export type CreateSecret200 = unknown;
-
-/**
- * @description One of the provided values in the request body is invalid.
- */
 export type CreateSecret400 = unknown;
 
 /**
@@ -23402,29 +23374,23 @@ export type CreateSecret400 = unknown;
 export type CreateSecret401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
- */
-export type CreateSecret402 = unknown;
-
-/**
  * @description You do not have permission to access this resource.
  */
 export type CreateSecret403 = unknown;
 
 export type CreateSecret410 = unknown;
 
-export type CreateSecretMutationResponse = CreateSecret200;
+export type CreateSecretMutationResponse = any;
 
 export type CreateSecretMutation = {
-	Response: CreateSecret200;
+	Response: any;
 	PathParams: CreateSecretPathParams;
 	QueryParams: CreateSecretQueryParams;
-	Errors: CreateSecret400 | CreateSecret401 | CreateSecret402 | CreateSecret403 | CreateSecret410;
+	Errors: CreateSecret400 | CreateSecret401 | CreateSecret403 | CreateSecret410;
 };
 
 export type RenameSecretPathParams = {
 	/**
-	 * @description The name of the secret.
 	 * @type string
 	 */
 	name: string;
@@ -23443,11 +23409,6 @@ export type RenameSecretQueryParams = {
 	slug?: string | undefined;
 };
 
-export type RenameSecret200 = unknown;
-
-/**
- * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
- */
 export type RenameSecret400 = unknown;
 
 /**
@@ -23462,10 +23423,10 @@ export type RenameSecret403 = unknown;
 
 export type RenameSecret410 = unknown;
 
-export type RenameSecretMutationResponse = RenameSecret200;
+export type RenameSecretMutationResponse = any;
 
 export type RenameSecretMutation = {
-	Response: RenameSecret200;
+	Response: any;
 	PathParams: RenameSecretPathParams;
 	QueryParams: RenameSecretQueryParams;
 	Errors: RenameSecret400 | RenameSecret401 | RenameSecret403 | RenameSecret410;
@@ -23473,26 +23434,12 @@ export type RenameSecretMutation = {
 
 export type GetSecretPathParams = {
 	/**
-	 * @description The name or the unique identifier to which the secret belongs to.
 	 * @type string
 	 */
 	idOrName: string;
 };
 
-export const getSecretQueryParamsDecryptEnum = {
-	true: "true",
-	false: "false",
-} as const;
-
-export type GetSecretQueryParamsDecryptEnumKey =
-	(typeof getSecretQueryParamsDecryptEnum)[keyof typeof getSecretQueryParamsDecryptEnum];
-
 export type GetSecretQueryParams = {
-	/**
-	 * @description Whether to try to decrypt the value of the secret. Only works if `decryptable` has been set to `true` when the secret was created.
-	 * @type string | undefined
-	 */
-	decrypt?: GetSecretQueryParamsDecryptEnumKey | undefined;
 	/**
 	 * @description The Team identifier to perform the request on behalf of.
 	 * @type string | undefined
@@ -23505,14 +23452,6 @@ export type GetSecretQueryParams = {
 	slug?: string | undefined;
 };
 
-/**
- * @description Successful response retrieving a secret.
- */
-export type GetSecret200 = unknown;
-
-/**
- * @description One of the provided values in the request query is invalid.
- */
 export type GetSecret400 = unknown;
 
 /**
@@ -23525,22 +23464,19 @@ export type GetSecret401 = unknown;
  */
 export type GetSecret403 = unknown;
 
-export type GetSecret404 = unknown;
-
 export type GetSecret410 = unknown;
 
-export type GetSecretQueryResponse = GetSecret200;
+export type GetSecretQueryResponse = any;
 
 export type GetSecretQuery = {
-	Response: GetSecret200;
+	Response: any;
 	PathParams: GetSecretPathParams;
 	QueryParams: GetSecretQueryParams;
-	Errors: GetSecret400 | GetSecret401 | GetSecret403 | GetSecret404 | GetSecret410;
+	Errors: GetSecret400 | GetSecret401 | GetSecret403 | GetSecret410;
 };
 
 export type DeleteSecretPathParams = {
 	/**
-	 * @description The name or the unique identifier to which the secret belongs to.
 	 * @type string
 	 */
 	idOrName: string;
@@ -23559,11 +23495,6 @@ export type DeleteSecretQueryParams = {
 	slug?: string | undefined;
 };
 
-export type DeleteSecret200 = unknown;
-
-/**
- * @description One of the provided values in the request query is invalid.
- */
 export type DeleteSecret400 = unknown;
 
 /**
@@ -23578,10 +23509,10 @@ export type DeleteSecret403 = unknown;
 
 export type DeleteSecret410 = unknown;
 
-export type DeleteSecretMutationResponse = DeleteSecret200;
+export type DeleteSecretMutationResponse = any;
 
 export type DeleteSecretMutation = {
-	Response: DeleteSecret200;
+	Response: any;
 	PathParams: DeleteSecretPathParams;
 	QueryParams: DeleteSecretQueryParams;
 	Errors: DeleteSecret400 | DeleteSecret401 | DeleteSecret403 | DeleteSecret410;
