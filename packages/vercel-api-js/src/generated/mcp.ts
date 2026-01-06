@@ -91,8 +91,6 @@ import {
 	deleteIntegrationLogDrainPathParamsSchema,
 	deleteIntegrationLogDrainQueryParamsSchema,
 	deleteIntegrationResourcePathParamsSchema,
-	deleteProjectClientCertPathParamsSchema,
-	deleteProjectClientCertQueryParamsSchema,
 	deleteProjectPathParamsSchema,
 	deleteProjectQueryParamsSchema,
 	deleteRedirectsQueryParamsSchema,
@@ -191,8 +189,6 @@ import {
 	getMemberPathParamsSchema,
 	getOrderPathParamsSchema,
 	getOrderQueryParamsSchema,
-	getProjectClientCertsPathParamsSchema,
-	getProjectClientCertsQueryParamsSchema,
 	getProjectDomainPathParamsSchema,
 	getProjectDomainQueryParamsSchema,
 	getProjectDomainsPathParamsSchema,
@@ -367,8 +363,6 @@ import {
 	uploadCertQueryParamsSchema,
 	uploadFileHeaderParamsSchema,
 	uploadFileQueryParamsSchema,
-	uploadProjectClientCertPathParamsSchema,
-	uploadProjectClientCertQueryParamsSchema,
 	verifyProjectDomainPathParamsSchema,
 	verifyProjectDomainQueryParamsSchema,
 } from "./schemas";
@@ -767,14 +761,6 @@ import type {
 	DeleteProject401,
 	DeleteProject403,
 	DeleteProject409,
-	DeleteProjectClientCert400,
-	DeleteProjectClientCert401,
-	DeleteProjectClientCert403,
-	DeleteProjectClientCert404,
-	DeleteProjectClientCert409,
-	DeleteProjectClientCertMutationResponse,
-	DeleteProjectClientCertPathParams,
-	DeleteProjectClientCertQueryParams,
 	DeleteProjectMutationResponse,
 	DeleteProjectPathParams,
 	DeleteProjectQueryParams,
@@ -1194,13 +1180,6 @@ import type {
 	GetProject400,
 	GetProject401,
 	GetProject403,
-	GetProjectClientCerts400,
-	GetProjectClientCerts401,
-	GetProjectClientCerts403,
-	GetProjectClientCerts404,
-	GetProjectClientCertsPathParams,
-	GetProjectClientCertsQueryParams,
-	GetProjectClientCertsQueryResponse,
 	GetProjectDomain400,
 	GetProjectDomain401,
 	GetProjectDomain403,
@@ -1977,16 +1956,6 @@ import type {
 	UploadFileHeaderParams,
 	UploadFileMutationResponse,
 	UploadFileQueryParams,
-	UploadProjectClientCert400,
-	UploadProjectClientCert401,
-	UploadProjectClientCert402,
-	UploadProjectClientCert403,
-	UploadProjectClientCert404,
-	UploadProjectClientCert409,
-	UploadProjectClientCert500,
-	UploadProjectClientCertMutationResponse,
-	UploadProjectClientCertPathParams,
-	UploadProjectClientCertQueryParams,
 	VerifyProjectDomain400,
 	VerifyProjectDomain401,
 	VerifyProjectDomain403,
@@ -8277,138 +8246,6 @@ export async function batchRemoveProjectEnv({
 }
 
 /**
- * @description Upload a client certificate for mTLS authentication to external origins.
- * @summary Upload client certificate for egress mTLS
- * {@link /v1/projects/:idOrName/client-cert}
- */
-export async function uploadProjectClientCert({
-	pathParams: { idOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: UploadProjectClientCertPathParams;
-	queryParams?: UploadProjectClientCertQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
-}): Promise<Promise<CallToolResult>> {
-	const { client: request = client, ...requestConfig } = config;
-
-	if (!idOrName) {
-		throw new Error(`Missing required path parameter: idOrName`);
-	}
-	const data = await request<
-		UploadProjectClientCertMutationResponse,
-		ErrorWrapper<
-			| UploadProjectClientCert400
-			| UploadProjectClientCert401
-			| UploadProjectClientCert402
-			| UploadProjectClientCert403
-			| UploadProjectClientCert404
-			| UploadProjectClientCert409
-			| UploadProjectClientCert500
-		>,
-		null,
-		Record<string, string>,
-		UploadProjectClientCertQueryParams,
-		UploadProjectClientCertPathParams
-	>({
-		method: "POST",
-		url: `/v1/projects/${idOrName}/client-cert`,
-		baseUrl: "https://api.vercel.com",
-		queryParams,
-		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
-	});
-	return { content: [{ type: "text", text: JSON.stringify(data) }] };
-}
-
-/**
- * @description Retrieve client certificates configured for a project's mTLS egress authentication.
- * @summary Get client certificates for a project
- * {@link /v1/projects/:idOrName/client-cert}
- */
-export async function getProjectClientCerts({
-	pathParams: { idOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetProjectClientCertsPathParams;
-	queryParams?: GetProjectClientCertsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
-}): Promise<Promise<CallToolResult>> {
-	const { client: request = client, ...requestConfig } = config;
-
-	if (!idOrName) {
-		throw new Error(`Missing required path parameter: idOrName`);
-	}
-	const data = await request<
-		GetProjectClientCertsQueryResponse,
-		ErrorWrapper<
-			| GetProjectClientCerts400
-			| GetProjectClientCerts401
-			| GetProjectClientCerts403
-			| GetProjectClientCerts404
-		>,
-		null,
-		Record<string, string>,
-		GetProjectClientCertsQueryParams,
-		GetProjectClientCertsPathParams
-	>({
-		method: "GET",
-		url: `/v1/projects/${idOrName}/client-cert`,
-		baseUrl: "https://api.vercel.com",
-		queryParams,
-		...requestConfig,
-	});
-	return { content: [{ type: "text", text: JSON.stringify(data) }] };
-}
-
-/**
- * @description Delete a client certificate for mTLS authentication to external origins.
- * @summary Delete client certificate for egress mTLS
- * {@link /v1/projects/:idOrName/client-cert/:certId}
- */
-export async function deleteProjectClientCert({
-	pathParams: { idOrName, certId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: DeleteProjectClientCertPathParams;
-	queryParams?: DeleteProjectClientCertQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
-}): Promise<Promise<CallToolResult>> {
-	const { client: request = client, ...requestConfig } = config;
-
-	if (!idOrName) {
-		throw new Error(`Missing required path parameter: idOrName`);
-	}
-
-	if (!certId) {
-		throw new Error(`Missing required path parameter: certId`);
-	}
-	const data = await request<
-		DeleteProjectClientCertMutationResponse,
-		ErrorWrapper<
-			| DeleteProjectClientCert400
-			| DeleteProjectClientCert401
-			| DeleteProjectClientCert403
-			| DeleteProjectClientCert404
-			| DeleteProjectClientCert409
-		>,
-		null,
-		Record<string, string>,
-		DeleteProjectClientCertQueryParams,
-		DeleteProjectClientCertPathParams
-	>({
-		method: "DELETE",
-		url: `/v1/projects/${idOrName}/client-cert/${certId}`,
-		baseUrl: "https://api.vercel.com",
-		queryParams,
-		...requestConfig,
-	});
-	return { content: [{ type: "text", text: JSON.stringify(data) }] };
-}
-
-/**
  * @description Get the Rolling Releases billing status for a project. The team level billing status is used to determine if the project can be configured for rolling releases.
  * @summary Get rolling release billing status
  * {@link /v1/projects/:idOrName/rolling-release/billing}
@@ -13673,62 +13510,6 @@ export function initMcpTools<Server>(serverLike: Server, config: FetcherConfig) 
 		async ({ idOrName, queryParams }) => {
 			try {
 				return await batchRemoveProjectEnv({ pathParams: { idOrName }, queryParams, config });
-			} catch (error) {
-				return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
-			}
-		},
-	);
-
-	// @ts-expect-error: Type instantiation is excessively deep and possibly infinite
-	server.tool(
-		"uploadProjectClientCert",
-		"Upload a client certificate for mTLS authentication to external origins.",
-		{
-			idOrName: uploadProjectClientCertPathParamsSchema.shape["idOrName"],
-			queryParams: uploadProjectClientCertQueryParamsSchema,
-		},
-		async ({ idOrName, queryParams }) => {
-			try {
-				return await uploadProjectClientCert({ pathParams: { idOrName }, queryParams, config });
-			} catch (error) {
-				return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
-			}
-		},
-	);
-
-	// @ts-expect-error: Type instantiation is excessively deep and possibly infinite
-	server.tool(
-		"getProjectClientCerts",
-		"Retrieve client certificates configured for a project's mTLS egress authentication.",
-		{
-			idOrName: getProjectClientCertsPathParamsSchema.shape["idOrName"],
-			queryParams: getProjectClientCertsQueryParamsSchema,
-		},
-		async ({ idOrName, queryParams }) => {
-			try {
-				return await getProjectClientCerts({ pathParams: { idOrName }, queryParams, config });
-			} catch (error) {
-				return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
-			}
-		},
-	);
-
-	// @ts-expect-error: Type instantiation is excessively deep and possibly infinite
-	server.tool(
-		"deleteProjectClientCert",
-		"Delete a client certificate for mTLS authentication to external origins.",
-		{
-			idOrName: deleteProjectClientCertPathParamsSchema.shape["idOrName"],
-			certId: deleteProjectClientCertPathParamsSchema.shape["certId"],
-			queryParams: deleteProjectClientCertQueryParamsSchema,
-		},
-		async ({ idOrName, certId, queryParams }) => {
-			try {
-				return await deleteProjectClientCert({
-					pathParams: { idOrName, certId },
-					queryParams,
-					config,
-				});
 			} catch (error) {
 				return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
 			}
