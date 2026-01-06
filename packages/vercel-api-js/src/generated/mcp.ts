@@ -617,7 +617,6 @@ import type {
 	CreateRecordQueryParams,
 	CreateSecret400,
 	CreateSecret401,
-	CreateSecret402,
 	CreateSecret403,
 	CreateSecret410,
 	CreateSecretMutationResponse,
@@ -1255,7 +1254,6 @@ import type {
 	GetSecret400,
 	GetSecret401,
 	GetSecret403,
-	GetSecret404,
 	GetSecret410,
 	GetSecretPathParams,
 	GetSecretQueryParams,
@@ -10664,9 +10662,7 @@ export async function createSecret({
 	}
 	const data = await request<
 		CreateSecretMutationResponse,
-		ErrorWrapper<
-			CreateSecret400 | CreateSecret401 | CreateSecret402 | CreateSecret403 | CreateSecret410
-		>,
+		ErrorWrapper<CreateSecret400 | CreateSecret401 | CreateSecret403 | CreateSecret410>,
 		null,
 		Record<string, string>,
 		CreateSecretQueryParams,
@@ -10677,13 +10673,12 @@ export async function createSecret({
 		baseUrl: "https://api.vercel.com",
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
 	});
 	return { content: [{ type: "text", text: JSON.stringify(data) }] };
 }
 
 /**
- * @description Enables to edit the name of a secret. The name has to be unique to the user or team’s secrets.
+ * @description Enables to edit the name of a secret. The name has to be unique to the user or team's secrets.
  * @summary Change secret name
  * {@link /v2/secrets/:name}
  */
@@ -10714,7 +10709,6 @@ export async function renameSecret({
 		baseUrl: "https://api.vercel.com",
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
 	});
 	return { content: [{ type: "text", text: JSON.stringify(data) }] };
 }
@@ -10740,7 +10734,7 @@ export async function getSecret({
 	}
 	const data = await request<
 		GetSecretQueryResponse,
-		ErrorWrapper<GetSecret400 | GetSecret401 | GetSecret403 | GetSecret404 | GetSecret410>,
+		ErrorWrapper<GetSecret400 | GetSecret401 | GetSecret403 | GetSecret410>,
 		null,
 		Record<string, string>,
 		GetSecretQueryParams,
@@ -10756,7 +10750,7 @@ export async function getSecret({
 }
 
 /**
- * @description This deletes the user or team’s secret defined in the URL.
+ * @description This deletes the user or team's secret defined in the URL.
  * @summary Delete a secret
  * {@link /v2/secrets/:idOrName}
  */
@@ -14543,7 +14537,7 @@ export function initMcpTools<Server>(serverLike: Server, config: FetcherConfig) 
 	// @ts-expect-error: Type instantiation is excessively deep and possibly infinite
 	server.tool(
 		"renameSecret",
-		"Enables to edit the name of a secret. The name has to be unique to the user or team’s secrets.",
+		"Enables to edit the name of a secret. The name has to be unique to the user or team's secrets.",
 		{
 			name: renameSecretPathParamsSchema.shape["name"],
 			queryParams: renameSecretQueryParamsSchema,
@@ -14577,7 +14571,7 @@ export function initMcpTools<Server>(serverLike: Server, config: FetcherConfig) 
 	// @ts-expect-error: Type instantiation is excessively deep and possibly infinite
 	server.tool(
 		"deleteSecret",
-		"This deletes the user or team’s secret defined in the URL.",
+		"This deletes the user or team's secret defined in the URL.",
 		{
 			idOrName: deleteSecretPathParamsSchema.shape["idOrName"],
 			queryParams: deleteSecretQueryParamsSchema,

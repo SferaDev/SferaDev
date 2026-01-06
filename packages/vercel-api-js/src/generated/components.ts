@@ -256,7 +256,6 @@ import type {
 	CreateRecordQueryParams,
 	CreateSecret400,
 	CreateSecret401,
-	CreateSecret402,
 	CreateSecret403,
 	CreateSecret410,
 	CreateSecretMutationResponse,
@@ -894,7 +893,6 @@ import type {
 	GetSecret400,
 	GetSecret401,
 	GetSecret403,
-	GetSecret404,
 	GetSecret410,
 	GetSecretPathParams,
 	GetSecretQueryParams,
@@ -9699,25 +9697,17 @@ export async function createSecret({
 	}
 	const data = await request<
 		CreateSecretMutationResponse,
-		ErrorWrapper<
-			CreateSecret400 | CreateSecret401 | CreateSecret402 | CreateSecret403 | CreateSecret410
-		>,
+		ErrorWrapper<CreateSecret400 | CreateSecret401 | CreateSecret403 | CreateSecret410>,
 		null,
 		Record<string, string>,
 		CreateSecretQueryParams,
 		CreateSecretPathParams
-	>({
-		method: "POST",
-		url: `/v2/secrets/${name}`,
-		queryParams,
-		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
-	});
+	>({ method: "POST", url: `/v2/secrets/${name}`, queryParams, ...requestConfig });
 	return data;
 }
 
 /**
- * @description Enables to edit the name of a secret. The name has to be unique to the user or team’s secrets.
+ * @description Enables to edit the name of a secret. The name has to be unique to the user or team's secrets.
  * @summary Change secret name
  * {@link /v2/secrets/:name}
  */
@@ -9742,13 +9732,7 @@ export async function renameSecret({
 		Record<string, string>,
 		RenameSecretQueryParams,
 		RenameSecretPathParams
-	>({
-		method: "PATCH",
-		url: `/v2/secrets/${name}`,
-		queryParams,
-		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
-	});
+	>({ method: "PATCH", url: `/v2/secrets/${name}`, queryParams, ...requestConfig });
 	return data;
 }
 
@@ -9773,7 +9757,7 @@ export async function getSecret({
 	}
 	const data = await request<
 		GetSecretQueryResponse,
-		ErrorWrapper<GetSecret400 | GetSecret401 | GetSecret403 | GetSecret404 | GetSecret410>,
+		ErrorWrapper<GetSecret400 | GetSecret401 | GetSecret403 | GetSecret410>,
 		null,
 		Record<string, string>,
 		GetSecretQueryParams,
@@ -9783,7 +9767,7 @@ export async function getSecret({
 }
 
 /**
- * @description This deletes the user or team’s secret defined in the URL.
+ * @description This deletes the user or team's secret defined in the URL.
  * @summary Delete a secret
  * {@link /v2/secrets/:idOrName}
  */
