@@ -14688,18 +14688,19 @@ export type DeleteConfigurableLogDrainMutation = {
 
 export type GetAllLogDrainsQueryParams = {
 	/**
+	 * @pattern ^[a-zA-z0-9_]+$
 	 * @type string | undefined
 	 */
 	projectId?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	projectIdOrName?: string | undefined;
 	/**
 	 * @default false
 	 * @type boolean | undefined
 	 */
 	includeMetadata?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	projectIdOrName?: string | undefined;
 	/**
 	 * @description The Team identifier to perform the request on behalf of.
 	 * @type string | undefined
@@ -21415,7 +21416,7 @@ export type InviteUserToTeam400 = unknown;
 export type InviteUserToTeam401 = unknown;
 
 /**
- * @description The authenticated user must be a team owner to perform the action\nYou do not have permission to access this resource.
+ * @description You do not have permission to access this resource.\nThe authenticated user must be a team owner to perform the action
  */
 export type InviteUserToTeam403 = unknown;
 

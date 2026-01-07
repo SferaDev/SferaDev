@@ -7690,9 +7690,9 @@ export const deleteConfigurableLogDrainMutationResponseSchema = z.lazy(
 );
 
 export const getAllLogDrainsQueryParamsSchema = z.object({
-	projectId: z.optional(z.string()),
-	includeMetadata: z.boolean().default(false),
+	projectId: z.optional(z.string().regex(/^[a-zA-z0-9_]+$/)),
 	projectIdOrName: z.optional(z.string()),
+	includeMetadata: z.boolean().default(false),
 	teamId: z.optional(
 		z.string().describe("The Team identifier to perform the request on behalf of."),
 	),
@@ -12190,7 +12190,7 @@ export const inviteUserToTeam400Schema = z.unknown();
 export const inviteUserToTeam401Schema = z.unknown();
 
 /**
- * @description The authenticated user must be a team owner to perform the action\nYou do not have permission to access this resource.
+ * @description You do not have permission to access this resource.\nThe authenticated user must be a team owner to perform the action
  */
 export const inviteUserToTeam403Schema = z.unknown();
 
