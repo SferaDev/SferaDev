@@ -254,13 +254,6 @@ import type {
 	CreateRecordMutationResponse,
 	CreateRecordPathParams,
 	CreateRecordQueryParams,
-	CreateSecret400,
-	CreateSecret401,
-	CreateSecret403,
-	CreateSecret410,
-	CreateSecretMutationResponse,
-	CreateSecretPathParams,
-	CreateSecretQueryParams,
 	CreateSharedEnvVariable400,
 	CreateSharedEnvVariable401,
 	CreateSharedEnvVariable402,
@@ -416,13 +409,6 @@ import type {
 	DeleteRollingReleaseConfigMutationResponse,
 	DeleteRollingReleaseConfigPathParams,
 	DeleteRollingReleaseConfigQueryParams,
-	DeleteSecret400,
-	DeleteSecret401,
-	DeleteSecret403,
-	DeleteSecret410,
-	DeleteSecretMutationResponse,
-	DeleteSecretPathParams,
-	DeleteSecretQueryParams,
 	DeleteSharedEnvVariable400,
 	DeleteSharedEnvVariable401,
 	DeleteSharedEnvVariable402,
@@ -477,7 +463,6 @@ import type {
 	EditRedirectQueryParams,
 	ExchangeSsoToken400,
 	ExchangeSsoToken403,
-	ExchangeSsoToken404,
 	ExchangeSsoToken500,
 	ExchangeSsoTokenMutationResponse,
 	FilterProjectEnvs400,
@@ -890,19 +875,6 @@ import type {
 	GetRuntimeLogsPathParams,
 	GetRuntimeLogsQueryParams,
 	GetRuntimeLogsQueryResponse,
-	GetSecret400,
-	GetSecret401,
-	GetSecret403,
-	GetSecret410,
-	GetSecretPathParams,
-	GetSecretQueryParams,
-	GetSecretQueryResponse,
-	GetSecrets400,
-	GetSecrets401,
-	GetSecrets403,
-	GetSecrets410,
-	GetSecretsQueryParams,
-	GetSecretsQueryResponse,
 	GetSharedEnvVar400,
 	GetSharedEnvVar401,
 	GetSharedEnvVar403,
@@ -1243,13 +1215,6 @@ import type {
 	RemoveTeamMemberMutationResponse,
 	RemoveTeamMemberPathParams,
 	RemoveTeamMemberQueryParams,
-	RenameSecret400,
-	RenameSecret401,
-	RenameSecret403,
-	RenameSecret410,
-	RenameSecretMutationResponse,
-	RenameSecretPathParams,
-	RenameSecretQueryParams,
 	RenewDomain400,
 	RenewDomain401,
 	RenewDomain403,
@@ -1553,6 +1518,7 @@ import type {
 	UpdateStaticIps402,
 	UpdateStaticIps403,
 	UpdateStaticIps404,
+	UpdateStaticIps409,
 	UpdateStaticIps500,
 	UpdateStaticIpsMutationResponse,
 	UpdateStaticIpsPathParams,
@@ -6095,9 +6061,7 @@ export async function exchangeSsoToken({
 
 	const data = await request<
 		ExchangeSsoTokenMutationResponse,
-		ErrorWrapper<
-			ExchangeSsoToken400 | ExchangeSsoToken403 | ExchangeSsoToken404 | ExchangeSsoToken500
-		>,
+		ErrorWrapper<ExchangeSsoToken400 | ExchangeSsoToken403 | ExchangeSsoToken500>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
@@ -6724,6 +6688,7 @@ export async function updateStaticIps({
 			| UpdateStaticIps402
 			| UpdateStaticIps403
 			| UpdateStaticIps404
+			| UpdateStaticIps409
 			| UpdateStaticIps500
 		>,
 		null,
@@ -9651,151 +9616,6 @@ export async function deleteDeployment({
 	return data;
 }
 
-/**
- * @description Retrieves the active Vercel secrets for the authenticated user or team. By default it returns 20 secrets. The rest can be retrieved using the pagination options. The body will contain an entry for each secret.
- * @summary List secrets
- * {@link /v3/secrets}
- */
-export async function getSecrets({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: GetSecretsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
-}) {
-	const { client: request = client, ...requestConfig } = config;
-
-	const data = await request<
-		GetSecretsQueryResponse,
-		ErrorWrapper<GetSecrets400 | GetSecrets401 | GetSecrets403 | GetSecrets410>,
-		null,
-		Record<string, string>,
-		GetSecretsQueryParams,
-		Record<string, string>
-	>({ method: "GET", url: `/v3/secrets`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Allows to create a new secret.
- * @summary Create a new secret
- * {@link /v2/secrets/:name}
- */
-export async function createSecret({
-	pathParams: { name },
-	queryParams,
-	config = {},
-}: {
-	pathParams: CreateSecretPathParams;
-	queryParams?: CreateSecretQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
-}) {
-	const { client: request = client, ...requestConfig } = config;
-
-	if (!name) {
-		throw new Error(`Missing required path parameter: name`);
-	}
-	const data = await request<
-		CreateSecretMutationResponse,
-		ErrorWrapper<CreateSecret400 | CreateSecret401 | CreateSecret403 | CreateSecret410>,
-		null,
-		Record<string, string>,
-		CreateSecretQueryParams,
-		CreateSecretPathParams
-	>({ method: "POST", url: `/v2/secrets/${name}`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Enables to edit the name of a secret. The name has to be unique to the user or team's secrets.
- * @summary Change secret name
- * {@link /v2/secrets/:name}
- */
-export async function renameSecret({
-	pathParams: { name },
-	queryParams,
-	config = {},
-}: {
-	pathParams: RenameSecretPathParams;
-	queryParams?: RenameSecretQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
-}) {
-	const { client: request = client, ...requestConfig } = config;
-
-	if (!name) {
-		throw new Error(`Missing required path parameter: name`);
-	}
-	const data = await request<
-		RenameSecretMutationResponse,
-		ErrorWrapper<RenameSecret400 | RenameSecret401 | RenameSecret403 | RenameSecret410>,
-		null,
-		Record<string, string>,
-		RenameSecretQueryParams,
-		RenameSecretPathParams
-	>({ method: "PATCH", url: `/v2/secrets/${name}`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Retrieves the information for a specific secret by passing either the secret id or name in the URL.
- * @summary Get a single secret
- * {@link /v3/secrets/:idOrName}
- */
-export async function getSecret({
-	pathParams: { idOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetSecretPathParams;
-	queryParams?: GetSecretQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
-}) {
-	const { client: request = client, ...requestConfig } = config;
-
-	if (!idOrName) {
-		throw new Error(`Missing required path parameter: idOrName`);
-	}
-	const data = await request<
-		GetSecretQueryResponse,
-		ErrorWrapper<GetSecret400 | GetSecret401 | GetSecret403 | GetSecret410>,
-		null,
-		Record<string, string>,
-		GetSecretQueryParams,
-		GetSecretPathParams
-	>({ method: "GET", url: `/v3/secrets/${idOrName}`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description This deletes the user or team's secret defined in the URL.
- * @summary Delete a secret
- * {@link /v2/secrets/:idOrName}
- */
-export async function deleteSecret({
-	pathParams: { idOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: DeleteSecretPathParams;
-	queryParams?: DeleteSecretQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
-}) {
-	const { client: request = client, ...requestConfig } = config;
-
-	if (!idOrName) {
-		throw new Error(`Missing required path parameter: idOrName`);
-	}
-	const data = await request<
-		DeleteSecretMutationResponse,
-		ErrorWrapper<DeleteSecret400 | DeleteSecret401 | DeleteSecret403 | DeleteSecret410>,
-		null,
-		Record<string, string>,
-		DeleteSecretQueryParams,
-		DeleteSecretPathParams
-	>({ method: "DELETE", url: `/v2/secrets/${idOrName}`, queryParams, ...requestConfig });
-	return data;
-}
-
 export const operationsByPath = {
 	"GET /v1/access-groups/{idOrName}": readAccessGroup,
 	"POST /v1/access-groups/{idOrName}": updateAccessGroup,
@@ -10036,11 +9856,6 @@ export const operationsByPath = {
 	"GET /v8/deployments/{id}/files/{fileId}": getDeploymentFileContents,
 	"GET /v6/deployments": getDeployments,
 	"DELETE /v13/deployments/{id}": deleteDeployment,
-	"GET /v3/secrets": getSecrets,
-	"POST /v2/secrets/{name}": createSecret,
-	"PATCH /v2/secrets/{name}": renameSecret,
-	"GET /v3/secrets/{idOrName}": getSecret,
-	"DELETE /v2/secrets/{idOrName}": deleteSecret,
 };
 
 export const operationsByTag = {
@@ -10325,13 +10140,6 @@ export const operationsByTag = {
 		issueCert,
 		uploadCert,
 	},
-	secrets: {
-		getSecrets,
-		createSecret,
-		renameSecret,
-		getSecret,
-		deleteSecret,
-	},
 };
 
 export const tagDictionary = {
@@ -10594,11 +10402,5 @@ export const tagDictionary = {
 		DELETE: ["removeCert"],
 		POST: ["issueCert"],
 		PUT: ["uploadCert"],
-	},
-	secrets: {
-		GET: ["getSecrets", "getSecret"],
-		POST: ["createSecret"],
-		PATCH: ["renameSecret"],
-		DELETE: ["deleteSecret"],
 	},
 } as const;

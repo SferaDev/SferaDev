@@ -2460,6 +2460,14 @@ export const userEventSchema = z
 					projectIds: z.optional(z.array(z.string())),
 				}),
 				z.object({
+					integrationId: z.string(),
+					configurationId: z.string(),
+					integrationSlug: z.string(),
+					integrationName: z.string(),
+					ownerId: z.string(),
+					projectIds: z.optional(z.union([z.array(z.string()), z.enum(["all"])])),
+				}),
+				z.object({
 					projectId: z.string(),
 					fromDeploymentId: z.string(),
 					toDeploymentId: z.string(),
@@ -9763,8 +9771,6 @@ export const exchangeSsoToken400Schema = z.unknown();
 
 export const exchangeSsoToken403Schema = z.unknown();
 
-export const exchangeSsoToken404Schema = z.unknown();
-
 export const exchangeSsoToken500Schema = z.unknown();
 
 export const exchangeSsoTokenMutationResponseSchema = z.lazy(() => exchangeSsoToken200Schema);
@@ -10437,6 +10443,8 @@ export const updateStaticIps402Schema = z.unknown();
 export const updateStaticIps403Schema = z.unknown();
 
 export const updateStaticIps404Schema = z.unknown();
+
+export const updateStaticIps409Schema = z.unknown();
 
 export const updateStaticIps500Schema = z.unknown();
 
@@ -13557,144 +13565,3 @@ export const deleteDeployment403Schema = z.unknown();
 export const deleteDeployment404Schema = z.unknown();
 
 export const deleteDeploymentMutationResponseSchema = z.lazy(() => deleteDeployment200Schema);
-
-export const getSecretsQueryParamsSchema = z
-	.object({
-		teamId: z.optional(
-			z.string().describe("The Team identifier to perform the request on behalf of."),
-		),
-		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
-	})
-	.optional();
-
-export const getSecrets400Schema = z.unknown();
-
-/**
- * @description The request is not authorized.
- */
-export const getSecrets401Schema = z.unknown();
-
-/**
- * @description You do not have permission to access this resource.
- */
-export const getSecrets403Schema = z.unknown();
-
-export const getSecrets410Schema = z.unknown();
-
-export const getSecretsQueryResponseSchema = z.unknown();
-
-export const createSecretPathParamsSchema = z.object({
-	name: z.string(),
-});
-
-export const createSecretQueryParamsSchema = z
-	.object({
-		teamId: z.optional(
-			z.string().describe("The Team identifier to perform the request on behalf of."),
-		),
-		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
-	})
-	.optional();
-
-export const createSecret400Schema = z.unknown();
-
-/**
- * @description The request is not authorized.
- */
-export const createSecret401Schema = z.unknown();
-
-/**
- * @description You do not have permission to access this resource.
- */
-export const createSecret403Schema = z.unknown();
-
-export const createSecret410Schema = z.unknown();
-
-export const createSecretMutationResponseSchema = z.unknown();
-
-export const renameSecretPathParamsSchema = z.object({
-	name: z.string(),
-});
-
-export const renameSecretQueryParamsSchema = z
-	.object({
-		teamId: z.optional(
-			z.string().describe("The Team identifier to perform the request on behalf of."),
-		),
-		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
-	})
-	.optional();
-
-export const renameSecret400Schema = z.unknown();
-
-/**
- * @description The request is not authorized.
- */
-export const renameSecret401Schema = z.unknown();
-
-/**
- * @description You do not have permission to access this resource.
- */
-export const renameSecret403Schema = z.unknown();
-
-export const renameSecret410Schema = z.unknown();
-
-export const renameSecretMutationResponseSchema = z.unknown();
-
-export const getSecretPathParamsSchema = z.object({
-	idOrName: z.string(),
-});
-
-export const getSecretQueryParamsSchema = z
-	.object({
-		teamId: z.optional(
-			z.string().describe("The Team identifier to perform the request on behalf of."),
-		),
-		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
-	})
-	.optional();
-
-export const getSecret400Schema = z.unknown();
-
-/**
- * @description The request is not authorized.
- */
-export const getSecret401Schema = z.unknown();
-
-/**
- * @description You do not have permission to access this resource.
- */
-export const getSecret403Schema = z.unknown();
-
-export const getSecret410Schema = z.unknown();
-
-export const getSecretQueryResponseSchema = z.unknown();
-
-export const deleteSecretPathParamsSchema = z.object({
-	idOrName: z.string(),
-});
-
-export const deleteSecretQueryParamsSchema = z
-	.object({
-		teamId: z.optional(
-			z.string().describe("The Team identifier to perform the request on behalf of."),
-		),
-		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
-	})
-	.optional();
-
-export const deleteSecret400Schema = z.unknown();
-
-/**
- * @description The request is not authorized.
- */
-export const deleteSecret401Schema = z.unknown();
-
-/**
- * @description You do not have permission to access this resource.
- */
-export const deleteSecret403Schema = z.unknown();
-
-export const deleteSecret410Schema = z.unknown();
-
-export const deleteSecretMutationResponseSchema = z.unknown();
