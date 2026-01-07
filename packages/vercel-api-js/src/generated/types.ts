@@ -1827,6 +1827,13 @@ export const newOwnerVersionEnum = {
 
 export type NewOwnerVersionEnumKey = (typeof newOwnerVersionEnum)[keyof typeof newOwnerVersionEnum];
 
+export const payloadProjectIdsEnum = {
+	all: "all",
+} as const;
+
+export type PayloadProjectIdsEnumKey =
+	(typeof payloadProjectIdsEnum)[keyof typeof payloadProjectIdsEnum];
+
 export const roleEnum = {
 	OWNER: "OWNER",
 	MEMBER: "MEMBER",
@@ -6329,6 +6336,29 @@ export type UserEvent = {
 						 * @type array | undefined
 						 */
 						projectIds?: string[] | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						integrationId: string;
+						/**
+						 * @type string
+						 */
+						configurationId: string;
+						/**
+						 * @type string
+						 */
+						integrationSlug: string;
+						/**
+						 * @type string
+						 */
+						integrationName: string;
+						/**
+						 * @type string
+						 */
+						ownerId: string;
+						projectIds?: (string[] | PayloadProjectIdsEnumKey) | undefined;
 				  }
 				| {
 						/**
@@ -17744,15 +17774,13 @@ export type ExchangeSsoToken400 = unknown;
 
 export type ExchangeSsoToken403 = unknown;
 
-export type ExchangeSsoToken404 = unknown;
-
 export type ExchangeSsoToken500 = unknown;
 
 export type ExchangeSsoTokenMutationResponse = ExchangeSsoToken200;
 
 export type ExchangeSsoTokenMutation = {
 	Response: ExchangeSsoToken200;
-	Errors: ExchangeSsoToken400 | ExchangeSsoToken403 | ExchangeSsoToken404 | ExchangeSsoToken500;
+	Errors: ExchangeSsoToken400 | ExchangeSsoToken403 | ExchangeSsoToken500;
 };
 
 export type GetIntegrationLogDrainsQueryParams = {
@@ -18730,6 +18758,8 @@ export type UpdateStaticIps403 = unknown;
 
 export type UpdateStaticIps404 = unknown;
 
+export type UpdateStaticIps409 = unknown;
+
 export type UpdateStaticIps500 = unknown;
 
 export type UpdateStaticIpsMutationResponse = UpdateStaticIps200;
@@ -18744,6 +18774,7 @@ export type UpdateStaticIpsMutation = {
 		| UpdateStaticIps402
 		| UpdateStaticIps403
 		| UpdateStaticIps404
+		| UpdateStaticIps409
 		| UpdateStaticIps500;
 };
 
@@ -23309,211 +23340,4 @@ export type DeleteDeploymentMutation = {
 	PathParams: DeleteDeploymentPathParams;
 	QueryParams: DeleteDeploymentQueryParams;
 	Errors: DeleteDeployment400 | DeleteDeployment401 | DeleteDeployment403 | DeleteDeployment404;
-};
-
-export type GetSecretsQueryParams = {
-	/**
-	 * @description The Team identifier to perform the request on behalf of.
-	 * @type string | undefined
-	 */
-	teamId?: string | undefined;
-	/**
-	 * @description The Team slug to perform the request on behalf of.
-	 * @type string | undefined
-	 */
-	slug?: string | undefined;
-};
-
-export type GetSecrets400 = unknown;
-
-/**
- * @description The request is not authorized.
- */
-export type GetSecrets401 = unknown;
-
-/**
- * @description You do not have permission to access this resource.
- */
-export type GetSecrets403 = unknown;
-
-export type GetSecrets410 = unknown;
-
-export type GetSecretsQueryResponse = any;
-
-export type GetSecretsQuery = {
-	Response: any;
-	QueryParams: GetSecretsQueryParams;
-	Errors: GetSecrets400 | GetSecrets401 | GetSecrets403 | GetSecrets410;
-};
-
-export type CreateSecretPathParams = {
-	/**
-	 * @type string
-	 */
-	name: string;
-};
-
-export type CreateSecretQueryParams = {
-	/**
-	 * @description The Team identifier to perform the request on behalf of.
-	 * @type string | undefined
-	 */
-	teamId?: string | undefined;
-	/**
-	 * @description The Team slug to perform the request on behalf of.
-	 * @type string | undefined
-	 */
-	slug?: string | undefined;
-};
-
-export type CreateSecret400 = unknown;
-
-/**
- * @description The request is not authorized.
- */
-export type CreateSecret401 = unknown;
-
-/**
- * @description You do not have permission to access this resource.
- */
-export type CreateSecret403 = unknown;
-
-export type CreateSecret410 = unknown;
-
-export type CreateSecretMutationResponse = any;
-
-export type CreateSecretMutation = {
-	Response: any;
-	PathParams: CreateSecretPathParams;
-	QueryParams: CreateSecretQueryParams;
-	Errors: CreateSecret400 | CreateSecret401 | CreateSecret403 | CreateSecret410;
-};
-
-export type RenameSecretPathParams = {
-	/**
-	 * @type string
-	 */
-	name: string;
-};
-
-export type RenameSecretQueryParams = {
-	/**
-	 * @description The Team identifier to perform the request on behalf of.
-	 * @type string | undefined
-	 */
-	teamId?: string | undefined;
-	/**
-	 * @description The Team slug to perform the request on behalf of.
-	 * @type string | undefined
-	 */
-	slug?: string | undefined;
-};
-
-export type RenameSecret400 = unknown;
-
-/**
- * @description The request is not authorized.
- */
-export type RenameSecret401 = unknown;
-
-/**
- * @description You do not have permission to access this resource.
- */
-export type RenameSecret403 = unknown;
-
-export type RenameSecret410 = unknown;
-
-export type RenameSecretMutationResponse = any;
-
-export type RenameSecretMutation = {
-	Response: any;
-	PathParams: RenameSecretPathParams;
-	QueryParams: RenameSecretQueryParams;
-	Errors: RenameSecret400 | RenameSecret401 | RenameSecret403 | RenameSecret410;
-};
-
-export type GetSecretPathParams = {
-	/**
-	 * @type string
-	 */
-	idOrName: string;
-};
-
-export type GetSecretQueryParams = {
-	/**
-	 * @description The Team identifier to perform the request on behalf of.
-	 * @type string | undefined
-	 */
-	teamId?: string | undefined;
-	/**
-	 * @description The Team slug to perform the request on behalf of.
-	 * @type string | undefined
-	 */
-	slug?: string | undefined;
-};
-
-export type GetSecret400 = unknown;
-
-/**
- * @description The request is not authorized.
- */
-export type GetSecret401 = unknown;
-
-/**
- * @description You do not have permission to access this resource.
- */
-export type GetSecret403 = unknown;
-
-export type GetSecret410 = unknown;
-
-export type GetSecretQueryResponse = any;
-
-export type GetSecretQuery = {
-	Response: any;
-	PathParams: GetSecretPathParams;
-	QueryParams: GetSecretQueryParams;
-	Errors: GetSecret400 | GetSecret401 | GetSecret403 | GetSecret410;
-};
-
-export type DeleteSecretPathParams = {
-	/**
-	 * @type string
-	 */
-	idOrName: string;
-};
-
-export type DeleteSecretQueryParams = {
-	/**
-	 * @description The Team identifier to perform the request on behalf of.
-	 * @type string | undefined
-	 */
-	teamId?: string | undefined;
-	/**
-	 * @description The Team slug to perform the request on behalf of.
-	 * @type string | undefined
-	 */
-	slug?: string | undefined;
-};
-
-export type DeleteSecret400 = unknown;
-
-/**
- * @description The request is not authorized.
- */
-export type DeleteSecret401 = unknown;
-
-/**
- * @description You do not have permission to access this resource.
- */
-export type DeleteSecret403 = unknown;
-
-export type DeleteSecret410 = unknown;
-
-export type DeleteSecretMutationResponse = any;
-
-export type DeleteSecretMutation = {
-	Response: any;
-	PathParams: DeleteSecretPathParams;
-	QueryParams: DeleteSecretQueryParams;
-	Errors: DeleteSecret400 | DeleteSecret401 | DeleteSecret403 | DeleteSecret410;
 };

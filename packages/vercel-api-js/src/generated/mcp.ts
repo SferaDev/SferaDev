@@ -58,8 +58,6 @@ import {
 	createProjectTransferRequestQueryParamsSchema,
 	createRecordPathParamsSchema,
 	createRecordQueryParamsSchema,
-	createSecretPathParamsSchema,
-	createSecretQueryParamsSchema,
 	createSharedEnvVariableQueryParamsSchema,
 	createWebhookQueryParamsSchema,
 	dangerouslyDeleteBySrcImagesQueryParamsSchema,
@@ -96,8 +94,6 @@ import {
 	deleteRedirectsQueryParamsSchema,
 	deleteRollingReleaseConfigPathParamsSchema,
 	deleteRollingReleaseConfigQueryParamsSchema,
-	deleteSecretPathParamsSchema,
-	deleteSecretQueryParamsSchema,
 	deleteSharedEnvVariableQueryParamsSchema,
 	deleteTeamInviteCodePathParamsSchema,
 	deleteTeamPathParamsSchema,
@@ -211,9 +207,6 @@ import {
 	getRollingReleaseQueryParamsSchema,
 	getRuntimeLogsPathParamsSchema,
 	getRuntimeLogsQueryParamsSchema,
-	getSecretPathParamsSchema,
-	getSecretQueryParamsSchema,
-	getSecretsQueryParamsSchema,
 	getSharedEnvVarPathParamsSchema,
 	getSharedEnvVarQueryParamsSchema,
 	getSupportedTldsQueryParamsSchema,
@@ -291,8 +284,6 @@ import {
 	removeRecordQueryParamsSchema,
 	removeTeamMemberPathParamsSchema,
 	removeTeamMemberQueryParamsSchema,
-	renameSecretPathParamsSchema,
-	renameSecretQueryParamsSchema,
 	renewDomainPathParamsSchema,
 	renewDomainQueryParamsSchema,
 	requestAccessToTeamPathParamsSchema,
@@ -615,13 +606,6 @@ import type {
 	CreateRecordMutationResponse,
 	CreateRecordPathParams,
 	CreateRecordQueryParams,
-	CreateSecret400,
-	CreateSecret401,
-	CreateSecret403,
-	CreateSecret410,
-	CreateSecretMutationResponse,
-	CreateSecretPathParams,
-	CreateSecretQueryParams,
 	CreateSharedEnvVariable400,
 	CreateSharedEnvVariable401,
 	CreateSharedEnvVariable402,
@@ -777,13 +761,6 @@ import type {
 	DeleteRollingReleaseConfigMutationResponse,
 	DeleteRollingReleaseConfigPathParams,
 	DeleteRollingReleaseConfigQueryParams,
-	DeleteSecret400,
-	DeleteSecret401,
-	DeleteSecret403,
-	DeleteSecret410,
-	DeleteSecretMutationResponse,
-	DeleteSecretPathParams,
-	DeleteSecretQueryParams,
 	DeleteSharedEnvVariable400,
 	DeleteSharedEnvVariable401,
 	DeleteSharedEnvVariable402,
@@ -838,7 +815,6 @@ import type {
 	EditRedirectQueryParams,
 	ExchangeSsoToken400,
 	ExchangeSsoToken403,
-	ExchangeSsoToken404,
 	ExchangeSsoToken500,
 	ExchangeSsoTokenMutationResponse,
 	FilterProjectEnvs400,
@@ -1251,19 +1227,6 @@ import type {
 	GetRuntimeLogsPathParams,
 	GetRuntimeLogsQueryParams,
 	GetRuntimeLogsQueryResponse,
-	GetSecret400,
-	GetSecret401,
-	GetSecret403,
-	GetSecret410,
-	GetSecretPathParams,
-	GetSecretQueryParams,
-	GetSecretQueryResponse,
-	GetSecrets400,
-	GetSecrets401,
-	GetSecrets403,
-	GetSecrets410,
-	GetSecretsQueryParams,
-	GetSecretsQueryResponse,
 	GetSharedEnvVar400,
 	GetSharedEnvVar401,
 	GetSharedEnvVar403,
@@ -1604,13 +1567,6 @@ import type {
 	RemoveTeamMemberMutationResponse,
 	RemoveTeamMemberPathParams,
 	RemoveTeamMemberQueryParams,
-	RenameSecret400,
-	RenameSecret401,
-	RenameSecret403,
-	RenameSecret410,
-	RenameSecretMutationResponse,
-	RenameSecretPathParams,
-	RenameSecretQueryParams,
 	RenewDomain400,
 	RenewDomain401,
 	RenewDomain403,
@@ -1914,6 +1870,7 @@ import type {
 	UpdateStaticIps402,
 	UpdateStaticIps403,
 	UpdateStaticIps404,
+	UpdateStaticIps409,
 	UpdateStaticIps500,
 	UpdateStaticIpsMutationResponse,
 	UpdateStaticIpsPathParams,
@@ -6781,9 +6738,7 @@ export async function exchangeSsoToken({
 
 	const data = await request<
 		ExchangeSsoTokenMutationResponse,
-		ErrorWrapper<
-			ExchangeSsoToken400 | ExchangeSsoToken403 | ExchangeSsoToken404 | ExchangeSsoToken500
-		>,
+		ErrorWrapper<ExchangeSsoToken400 | ExchangeSsoToken403 | ExchangeSsoToken500>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
@@ -7457,6 +7412,7 @@ export async function updateStaticIps({
 			| UpdateStaticIps402
 			| UpdateStaticIps403
 			| UpdateStaticIps404
+			| UpdateStaticIps409
 			| UpdateStaticIps500
 		>,
 		null,
@@ -10603,181 +10559,6 @@ export async function deleteDeployment({
 	>({
 		method: "DELETE",
 		url: `/v13/deployments/${id}`,
-		baseUrl: "https://api.vercel.com",
-		queryParams,
-		...requestConfig,
-	});
-	return { content: [{ type: "text", text: JSON.stringify(data) }] };
-}
-
-/**
- * @description Retrieves the active Vercel secrets for the authenticated user or team. By default it returns 20 secrets. The rest can be retrieved using the pagination options. The body will contain an entry for each secret.
- * @summary List secrets
- * {@link /v3/secrets}
- */
-export async function getSecrets({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: GetSecretsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
-}): Promise<Promise<CallToolResult>> {
-	const { client: request = client, ...requestConfig } = config;
-
-	const data = await request<
-		GetSecretsQueryResponse,
-		ErrorWrapper<GetSecrets400 | GetSecrets401 | GetSecrets403 | GetSecrets410>,
-		null,
-		Record<string, string>,
-		GetSecretsQueryParams,
-		Record<string, string>
-	>({
-		method: "GET",
-		url: `/v3/secrets`,
-		baseUrl: "https://api.vercel.com",
-		queryParams,
-		...requestConfig,
-	});
-	return { content: [{ type: "text", text: JSON.stringify(data) }] };
-}
-
-/**
- * @description Allows to create a new secret.
- * @summary Create a new secret
- * {@link /v2/secrets/:name}
- */
-export async function createSecret({
-	pathParams: { name },
-	queryParams,
-	config = {},
-}: {
-	pathParams: CreateSecretPathParams;
-	queryParams?: CreateSecretQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
-}): Promise<Promise<CallToolResult>> {
-	const { client: request = client, ...requestConfig } = config;
-
-	if (!name) {
-		throw new Error(`Missing required path parameter: name`);
-	}
-	const data = await request<
-		CreateSecretMutationResponse,
-		ErrorWrapper<CreateSecret400 | CreateSecret401 | CreateSecret403 | CreateSecret410>,
-		null,
-		Record<string, string>,
-		CreateSecretQueryParams,
-		CreateSecretPathParams
-	>({
-		method: "POST",
-		url: `/v2/secrets/${name}`,
-		baseUrl: "https://api.vercel.com",
-		queryParams,
-		...requestConfig,
-	});
-	return { content: [{ type: "text", text: JSON.stringify(data) }] };
-}
-
-/**
- * @description Enables to edit the name of a secret. The name has to be unique to the user or team's secrets.
- * @summary Change secret name
- * {@link /v2/secrets/:name}
- */
-export async function renameSecret({
-	pathParams: { name },
-	queryParams,
-	config = {},
-}: {
-	pathParams: RenameSecretPathParams;
-	queryParams?: RenameSecretQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
-}): Promise<Promise<CallToolResult>> {
-	const { client: request = client, ...requestConfig } = config;
-
-	if (!name) {
-		throw new Error(`Missing required path parameter: name`);
-	}
-	const data = await request<
-		RenameSecretMutationResponse,
-		ErrorWrapper<RenameSecret400 | RenameSecret401 | RenameSecret403 | RenameSecret410>,
-		null,
-		Record<string, string>,
-		RenameSecretQueryParams,
-		RenameSecretPathParams
-	>({
-		method: "PATCH",
-		url: `/v2/secrets/${name}`,
-		baseUrl: "https://api.vercel.com",
-		queryParams,
-		...requestConfig,
-	});
-	return { content: [{ type: "text", text: JSON.stringify(data) }] };
-}
-
-/**
- * @description Retrieves the information for a specific secret by passing either the secret id or name in the URL.
- * @summary Get a single secret
- * {@link /v3/secrets/:idOrName}
- */
-export async function getSecret({
-	pathParams: { idOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetSecretPathParams;
-	queryParams?: GetSecretQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
-}): Promise<Promise<CallToolResult>> {
-	const { client: request = client, ...requestConfig } = config;
-
-	if (!idOrName) {
-		throw new Error(`Missing required path parameter: idOrName`);
-	}
-	const data = await request<
-		GetSecretQueryResponse,
-		ErrorWrapper<GetSecret400 | GetSecret401 | GetSecret403 | GetSecret410>,
-		null,
-		Record<string, string>,
-		GetSecretQueryParams,
-		GetSecretPathParams
-	>({
-		method: "GET",
-		url: `/v3/secrets/${idOrName}`,
-		baseUrl: "https://api.vercel.com",
-		queryParams,
-		...requestConfig,
-	});
-	return { content: [{ type: "text", text: JSON.stringify(data) }] };
-}
-
-/**
- * @description This deletes the user or team's secret defined in the URL.
- * @summary Delete a secret
- * {@link /v2/secrets/:idOrName}
- */
-export async function deleteSecret({
-	pathParams: { idOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: DeleteSecretPathParams;
-	queryParams?: DeleteSecretQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
-}): Promise<Promise<CallToolResult>> {
-	const { client: request = client, ...requestConfig } = config;
-
-	if (!idOrName) {
-		throw new Error(`Missing required path parameter: idOrName`);
-	}
-	const data = await request<
-		DeleteSecretMutationResponse,
-		ErrorWrapper<DeleteSecret400 | DeleteSecret401 | DeleteSecret403 | DeleteSecret410>,
-		null,
-		Record<string, string>,
-		DeleteSecretQueryParams,
-		DeleteSecretPathParams
-	>({
-		method: "DELETE",
-		url: `/v2/secrets/${idOrName}`,
 		baseUrl: "https://api.vercel.com",
 		queryParams,
 		...requestConfig,
@@ -14497,88 +14278,6 @@ export function initMcpTools<Server>(serverLike: Server, config: FetcherConfig) 
 		async ({ id, queryParams }) => {
 			try {
 				return await deleteDeployment({ pathParams: { id }, queryParams, config });
-			} catch (error) {
-				return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
-			}
-		},
-	);
-
-	// @ts-expect-error: Type instantiation is excessively deep and possibly infinite
-	server.tool(
-		"getSecrets",
-		"Retrieves the active Vercel secrets for the authenticated user or team. By default it returns 20 secrets. The rest can be retrieved using the pagination options. The body will contain an entry for each secret.",
-		{ queryParams: getSecretsQueryParamsSchema },
-		async ({ queryParams }) => {
-			try {
-				return await getSecrets({ queryParams, config });
-			} catch (error) {
-				return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
-			}
-		},
-	);
-
-	// @ts-expect-error: Type instantiation is excessively deep and possibly infinite
-	server.tool(
-		"createSecret",
-		"Allows to create a new secret.",
-		{
-			name: createSecretPathParamsSchema.shape["name"],
-			queryParams: createSecretQueryParamsSchema,
-		},
-		async ({ name, queryParams }) => {
-			try {
-				return await createSecret({ pathParams: { name }, queryParams, config });
-			} catch (error) {
-				return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
-			}
-		},
-	);
-
-	// @ts-expect-error: Type instantiation is excessively deep and possibly infinite
-	server.tool(
-		"renameSecret",
-		"Enables to edit the name of a secret. The name has to be unique to the user or team's secrets.",
-		{
-			name: renameSecretPathParamsSchema.shape["name"],
-			queryParams: renameSecretQueryParamsSchema,
-		},
-		async ({ name, queryParams }) => {
-			try {
-				return await renameSecret({ pathParams: { name }, queryParams, config });
-			} catch (error) {
-				return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
-			}
-		},
-	);
-
-	// @ts-expect-error: Type instantiation is excessively deep and possibly infinite
-	server.tool(
-		"getSecret",
-		"Retrieves the information for a specific secret by passing either the secret id or name in the URL.",
-		{
-			idOrName: getSecretPathParamsSchema.shape["idOrName"],
-			queryParams: getSecretQueryParamsSchema,
-		},
-		async ({ idOrName, queryParams }) => {
-			try {
-				return await getSecret({ pathParams: { idOrName }, queryParams, config });
-			} catch (error) {
-				return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
-			}
-		},
-	);
-
-	// @ts-expect-error: Type instantiation is excessively deep and possibly infinite
-	server.tool(
-		"deleteSecret",
-		"This deletes the user or team's secret defined in the URL.",
-		{
-			idOrName: deleteSecretPathParamsSchema.shape["idOrName"],
-			queryParams: deleteSecretQueryParamsSchema,
-		},
-		async ({ idOrName, queryParams }) => {
-			try {
-				return await deleteSecret({ pathParams: { idOrName }, queryParams, config });
 			} catch (error) {
 				return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
 			}
