@@ -50,6 +50,7 @@ import {
 	createExperimentationItemPathParamsSchema,
 	createIntegrationStoreDirectQueryParamsSchema,
 	createLogDrainQueryParamsSchema,
+	createNetworkQueryParamsSchema,
 	createOrTransferDomainQueryParamsSchema,
 	createProjectEnvPathParamsSchema,
 	createProjectEnvQueryParamsSchema,
@@ -89,6 +90,8 @@ import {
 	deleteIntegrationLogDrainPathParamsSchema,
 	deleteIntegrationLogDrainQueryParamsSchema,
 	deleteIntegrationResourcePathParamsSchema,
+	deleteNetworkPathParamsSchema,
+	deleteNetworkQueryParamsSchema,
 	deleteProjectPathParamsSchema,
 	deleteProjectQueryParamsSchema,
 	deleteRedirectsQueryParamsSchema,
@@ -241,6 +244,7 @@ import {
 	listDeploymentAliasesQueryParamsSchema,
 	listDeploymentFilesPathParamsSchema,
 	listDeploymentFilesQueryParamsSchema,
+	listNetworksQueryParamsSchema,
 	listPromoteAliasesPathParamsSchema,
 	listPromoteAliasesQueryParamsSchema,
 	listSharedEnvVariableQueryParamsSchema,
@@ -267,6 +271,8 @@ import {
 	readAccessGroupProjectPathParamsSchema,
 	readAccessGroupProjectQueryParamsSchema,
 	readAccessGroupQueryParamsSchema,
+	readNetworkPathParamsSchema,
+	readNetworkQueryParamsSchema,
 	recordEventsHeaderParamsSchema,
 	recordEventsQueryParamsSchema,
 	removeBypassIpQueryParamsSchema,
@@ -328,6 +334,8 @@ import {
 	updateInstallationPathParamsSchema,
 	updateIntegrationDeploymentActionPathParamsSchema,
 	updateInvoicePathParamsSchema,
+	updateNetworkPathParamsSchema,
+	updateNetworkQueryParamsSchema,
 	updateProjectDataCachePathParamsSchema,
 	updateProjectDataCacheQueryParamsSchema,
 	updateProjectDomainPathParamsSchema,
@@ -561,6 +569,14 @@ import type {
 	CreateLogDrain403,
 	CreateLogDrainMutationResponse,
 	CreateLogDrainQueryParams,
+	CreateNetwork400,
+	CreateNetwork401,
+	CreateNetwork402,
+	CreateNetwork403,
+	CreateNetwork404,
+	CreateNetwork409,
+	CreateNetworkMutationResponse,
+	CreateNetworkQueryParams,
 	CreateOrTransferDomain400,
 	CreateOrTransferDomain401,
 	CreateOrTransferDomain402,
@@ -740,6 +756,15 @@ import type {
 	DeleteIntegrationResource404,
 	DeleteIntegrationResourceMutationResponse,
 	DeleteIntegrationResourcePathParams,
+	DeleteNetwork400,
+	DeleteNetwork401,
+	DeleteNetwork402,
+	DeleteNetwork403,
+	DeleteNetwork404,
+	DeleteNetwork409,
+	DeleteNetworkMutationResponse,
+	DeleteNetworkPathParams,
+	DeleteNetworkQueryParams,
 	DeleteProject400,
 	DeleteProject401,
 	DeleteProject403,
@@ -1393,6 +1418,11 @@ import type {
 	ListDeploymentFilesPathParams,
 	ListDeploymentFilesQueryParams,
 	ListDeploymentFilesQueryResponse,
+	ListNetworks400,
+	ListNetworks401,
+	ListNetworks403,
+	ListNetworksQueryParams,
+	ListNetworksQueryResponse,
 	ListPromoteAliases400,
 	ListPromoteAliases401,
 	ListPromoteAliases403,
@@ -1503,6 +1533,12 @@ import type {
 	ReadAccessGroupProjectQueryResponse,
 	ReadAccessGroupQueryParams,
 	ReadAccessGroupQueryResponse,
+	ReadNetwork400,
+	ReadNetwork401,
+	ReadNetwork403,
+	ReadNetworkPathParams,
+	ReadNetworkQueryParams,
+	ReadNetworkQueryResponse,
 	RecordEvents400,
 	RecordEvents401,
 	RecordEvents402,
@@ -1787,6 +1823,12 @@ import type {
 	UpdateInvoice409,
 	UpdateInvoiceMutationResponse,
 	UpdateInvoicePathParams,
+	UpdateNetwork400,
+	UpdateNetwork401,
+	UpdateNetwork403,
+	UpdateNetworkMutationResponse,
+	UpdateNetworkPathParams,
+	UpdateNetworkQueryParams,
 	UpdateProject400,
 	UpdateProject401,
 	UpdateProject402,
@@ -2937,6 +2979,192 @@ export async function rerequestCheck({
 	>({
 		method: "POST",
 		url: `/v1/deployments/${deploymentId}/checks/${checkId}/rerequest`,
+		baseUrl: "https://api.vercel.com",
+		queryParams,
+		...requestConfig,
+	});
+	return { content: [{ type: "text", text: JSON.stringify(data) }] };
+}
+
+/**
+ * @description Allows to list Secure Compute networks.
+ * @summary List Secure Compute networks
+ * {@link /v1/connect/networks}
+ */
+export async function listNetworks({
+	queryParams,
+	config = {},
+}: {
+	queryParams?: ListNetworksQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof client };
+}): Promise<Promise<CallToolResult>> {
+	const { client: request = client, ...requestConfig } = config;
+
+	const data = await request<
+		ListNetworksQueryResponse,
+		ErrorWrapper<ListNetworks400 | ListNetworks401 | ListNetworks403>,
+		null,
+		Record<string, string>,
+		ListNetworksQueryParams,
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/v1/connect/networks`,
+		baseUrl: "https://api.vercel.com",
+		queryParams,
+		...requestConfig,
+	});
+	return { content: [{ type: "text", text: JSON.stringify(data) }] };
+}
+
+/**
+ * @description Allows to create a Secure Compute network.
+ * @summary Create a Secure Compute network
+ * {@link /v1/connect/networks}
+ */
+export async function createNetwork({
+	queryParams,
+	config = {},
+}: {
+	queryParams?: CreateNetworkQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof client };
+}): Promise<Promise<CallToolResult>> {
+	const { client: request = client, ...requestConfig } = config;
+
+	const data = await request<
+		CreateNetworkMutationResponse,
+		ErrorWrapper<
+			| CreateNetwork400
+			| CreateNetwork401
+			| CreateNetwork402
+			| CreateNetwork403
+			| CreateNetwork404
+			| CreateNetwork409
+		>,
+		null,
+		Record<string, string>,
+		CreateNetworkQueryParams,
+		Record<string, string>
+	>({
+		method: "POST",
+		url: `/v1/connect/networks`,
+		baseUrl: "https://api.vercel.com",
+		queryParams,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return { content: [{ type: "text", text: JSON.stringify(data) }] };
+}
+
+/**
+ * @description Allows to delete a Secure Compute network.
+ * @summary Delete a Secure Compute network
+ * {@link /v1/connect/networks/:networkId}
+ */
+export async function deleteNetwork({
+	pathParams: { networkId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: DeleteNetworkPathParams;
+	queryParams?: DeleteNetworkQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof client };
+}): Promise<Promise<CallToolResult>> {
+	const { client: request = client, ...requestConfig } = config;
+
+	if (!networkId) {
+		throw new Error(`Missing required path parameter: networkId`);
+	}
+	const data = await request<
+		DeleteNetworkMutationResponse,
+		ErrorWrapper<
+			| DeleteNetwork400
+			| DeleteNetwork401
+			| DeleteNetwork402
+			| DeleteNetwork403
+			| DeleteNetwork404
+			| DeleteNetwork409
+		>,
+		null,
+		Record<string, string>,
+		DeleteNetworkQueryParams,
+		DeleteNetworkPathParams
+	>({
+		method: "DELETE",
+		url: `/v1/connect/networks/${networkId}`,
+		baseUrl: "https://api.vercel.com",
+		queryParams,
+		...requestConfig,
+	});
+	return { content: [{ type: "text", text: JSON.stringify(data) }] };
+}
+
+/**
+ * @description Allows to update a Secure Compute network.
+ * @summary Update a Secure Compute network
+ * {@link /v1/connect/networks/:networkId}
+ */
+export async function updateNetwork({
+	pathParams: { networkId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: UpdateNetworkPathParams;
+	queryParams?: UpdateNetworkQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof client };
+}): Promise<Promise<CallToolResult>> {
+	const { client: request = client, ...requestConfig } = config;
+
+	if (!networkId) {
+		throw new Error(`Missing required path parameter: networkId`);
+	}
+	const data = await request<
+		UpdateNetworkMutationResponse,
+		ErrorWrapper<UpdateNetwork400 | UpdateNetwork401 | UpdateNetwork403>,
+		null,
+		Record<string, string>,
+		UpdateNetworkQueryParams,
+		UpdateNetworkPathParams
+	>({
+		method: "PATCH",
+		url: `/v1/connect/networks/${networkId}`,
+		baseUrl: "https://api.vercel.com",
+		queryParams,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return { content: [{ type: "text", text: JSON.stringify(data) }] };
+}
+
+/**
+ * @description Allows to read a Secure Compute network.
+ * @summary Read a Secure Compute network
+ * {@link /v1/connect/networks/:networkId}
+ */
+export async function readNetwork({
+	pathParams: { networkId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: ReadNetworkPathParams;
+	queryParams?: ReadNetworkQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof client };
+}): Promise<Promise<CallToolResult>> {
+	const { client: request = client, ...requestConfig } = config;
+
+	if (!networkId) {
+		throw new Error(`Missing required path parameter: networkId`);
+	}
+	const data = await request<
+		ReadNetworkQueryResponse,
+		ErrorWrapper<ReadNetwork400 | ReadNetwork401 | ReadNetwork403>,
+		null,
+		Record<string, string>,
+		ReadNetworkQueryParams,
+		ReadNetworkPathParams
+	>({
+		method: "GET",
+		url: `/v1/connect/networks/${networkId}`,
 		baseUrl: "https://api.vercel.com",
 		queryParams,
 		...requestConfig,
@@ -11029,6 +11257,85 @@ export function initMcpTools<Server>(serverLike: Server, config: FetcherConfig) 
 		async ({ deploymentId, checkId, queryParams }) => {
 			try {
 				return await rerequestCheck({ pathParams: { deploymentId, checkId }, queryParams, config });
+			} catch (error) {
+				return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
+			}
+		},
+	);
+
+	// @ts-expect-error: Type instantiation is excessively deep and possibly infinite
+	server.tool(
+		"listNetworks",
+		"Allows to list Secure Compute networks.",
+		{ queryParams: listNetworksQueryParamsSchema },
+		async ({ queryParams }) => {
+			try {
+				return await listNetworks({ queryParams, config });
+			} catch (error) {
+				return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
+			}
+		},
+	);
+
+	// @ts-expect-error: Type instantiation is excessively deep and possibly infinite
+	server.tool(
+		"createNetwork",
+		"Allows to create a Secure Compute network.",
+		{ queryParams: createNetworkQueryParamsSchema },
+		async ({ queryParams }) => {
+			try {
+				return await createNetwork({ queryParams, config });
+			} catch (error) {
+				return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
+			}
+		},
+	);
+
+	// @ts-expect-error: Type instantiation is excessively deep and possibly infinite
+	server.tool(
+		"deleteNetwork",
+		"Allows to delete a Secure Compute network.",
+		{
+			networkId: deleteNetworkPathParamsSchema.shape["networkId"],
+			queryParams: deleteNetworkQueryParamsSchema,
+		},
+		async ({ networkId, queryParams }) => {
+			try {
+				return await deleteNetwork({ pathParams: { networkId }, queryParams, config });
+			} catch (error) {
+				return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
+			}
+		},
+	);
+
+	// @ts-expect-error: Type instantiation is excessively deep and possibly infinite
+	server.tool(
+		"updateNetwork",
+		"Allows to update a Secure Compute network.",
+		{
+			networkId: updateNetworkPathParamsSchema.shape["networkId"],
+			queryParams: updateNetworkQueryParamsSchema,
+		},
+		async ({ networkId, queryParams }) => {
+			try {
+				return await updateNetwork({ pathParams: { networkId }, queryParams, config });
+			} catch (error) {
+				return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
+			}
+		},
+	);
+
+	// @ts-expect-error: Type instantiation is excessively deep and possibly infinite
+	server.tool(
+		"readNetwork",
+		"Allows to read a Secure Compute network.",
+		{
+			networkId: readNetworkPathParamsSchema.shape["networkId"],
+			queryParams: readNetworkQueryParamsSchema,
+		},
+		async ({ networkId, queryParams }) => {
+			try {
+				return await readNetwork({ pathParams: { networkId }, queryParams, config });
 			} catch (error) {
 				return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
 			}

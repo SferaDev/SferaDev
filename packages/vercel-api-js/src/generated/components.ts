@@ -209,6 +209,14 @@ import type {
 	CreateLogDrain403,
 	CreateLogDrainMutationResponse,
 	CreateLogDrainQueryParams,
+	CreateNetwork400,
+	CreateNetwork401,
+	CreateNetwork402,
+	CreateNetwork403,
+	CreateNetwork404,
+	CreateNetwork409,
+	CreateNetworkMutationResponse,
+	CreateNetworkQueryParams,
 	CreateOrTransferDomain400,
 	CreateOrTransferDomain401,
 	CreateOrTransferDomain402,
@@ -388,6 +396,15 @@ import type {
 	DeleteIntegrationResource404,
 	DeleteIntegrationResourceMutationResponse,
 	DeleteIntegrationResourcePathParams,
+	DeleteNetwork400,
+	DeleteNetwork401,
+	DeleteNetwork402,
+	DeleteNetwork403,
+	DeleteNetwork404,
+	DeleteNetwork409,
+	DeleteNetworkMutationResponse,
+	DeleteNetworkPathParams,
+	DeleteNetworkQueryParams,
 	DeleteProject400,
 	DeleteProject401,
 	DeleteProject403,
@@ -1041,6 +1058,11 @@ import type {
 	ListDeploymentFilesPathParams,
 	ListDeploymentFilesQueryParams,
 	ListDeploymentFilesQueryResponse,
+	ListNetworks400,
+	ListNetworks401,
+	ListNetworks403,
+	ListNetworksQueryParams,
+	ListNetworksQueryResponse,
 	ListPromoteAliases400,
 	ListPromoteAliases401,
 	ListPromoteAliases403,
@@ -1151,6 +1173,12 @@ import type {
 	ReadAccessGroupProjectQueryResponse,
 	ReadAccessGroupQueryParams,
 	ReadAccessGroupQueryResponse,
+	ReadNetwork400,
+	ReadNetwork401,
+	ReadNetwork403,
+	ReadNetworkPathParams,
+	ReadNetworkQueryParams,
+	ReadNetworkQueryResponse,
 	RecordEvents400,
 	RecordEvents401,
 	RecordEvents402,
@@ -1435,6 +1463,12 @@ import type {
 	UpdateInvoice409,
 	UpdateInvoiceMutationResponse,
 	UpdateInvoicePathParams,
+	UpdateNetwork400,
+	UpdateNetwork401,
+	UpdateNetwork403,
+	UpdateNetworkMutationResponse,
+	UpdateNetworkPathParams,
+	UpdateNetworkQueryParams,
 	UpdateProject400,
 	UpdateProject401,
 	UpdateProject402,
@@ -2526,6 +2560,172 @@ export async function rerequestCheck({
 		queryParams,
 		...requestConfig,
 	});
+	return data;
+}
+
+/**
+ * @description Allows to list Secure Compute networks.
+ * @summary List Secure Compute networks
+ * {@link /v1/connect/networks}
+ */
+export async function listNetworks({
+	queryParams,
+	config = {},
+}: {
+	queryParams?: ListNetworksQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof client };
+}) {
+	const { client: request = client, ...requestConfig } = config;
+
+	const data = await request<
+		ListNetworksQueryResponse,
+		ErrorWrapper<ListNetworks400 | ListNetworks401 | ListNetworks403>,
+		null,
+		Record<string, string>,
+		ListNetworksQueryParams,
+		Record<string, string>
+	>({ method: "GET", url: `/v1/connect/networks`, queryParams, ...requestConfig });
+	return data;
+}
+
+/**
+ * @description Allows to create a Secure Compute network.
+ * @summary Create a Secure Compute network
+ * {@link /v1/connect/networks}
+ */
+export async function createNetwork({
+	queryParams,
+	config = {},
+}: {
+	queryParams?: CreateNetworkQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof client };
+}) {
+	const { client: request = client, ...requestConfig } = config;
+
+	const data = await request<
+		CreateNetworkMutationResponse,
+		ErrorWrapper<
+			| CreateNetwork400
+			| CreateNetwork401
+			| CreateNetwork402
+			| CreateNetwork403
+			| CreateNetwork404
+			| CreateNetwork409
+		>,
+		null,
+		Record<string, string>,
+		CreateNetworkQueryParams,
+		Record<string, string>
+	>({
+		method: "POST",
+		url: `/v1/connect/networks`,
+		queryParams,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
+ * @description Allows to delete a Secure Compute network.
+ * @summary Delete a Secure Compute network
+ * {@link /v1/connect/networks/:networkId}
+ */
+export async function deleteNetwork({
+	pathParams: { networkId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: DeleteNetworkPathParams;
+	queryParams?: DeleteNetworkQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof client };
+}) {
+	const { client: request = client, ...requestConfig } = config;
+
+	if (!networkId) {
+		throw new Error(`Missing required path parameter: networkId`);
+	}
+	const data = await request<
+		DeleteNetworkMutationResponse,
+		ErrorWrapper<
+			| DeleteNetwork400
+			| DeleteNetwork401
+			| DeleteNetwork402
+			| DeleteNetwork403
+			| DeleteNetwork404
+			| DeleteNetwork409
+		>,
+		null,
+		Record<string, string>,
+		DeleteNetworkQueryParams,
+		DeleteNetworkPathParams
+	>({ method: "DELETE", url: `/v1/connect/networks/${networkId}`, queryParams, ...requestConfig });
+	return data;
+}
+
+/**
+ * @description Allows to update a Secure Compute network.
+ * @summary Update a Secure Compute network
+ * {@link /v1/connect/networks/:networkId}
+ */
+export async function updateNetwork({
+	pathParams: { networkId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: UpdateNetworkPathParams;
+	queryParams?: UpdateNetworkQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof client };
+}) {
+	const { client: request = client, ...requestConfig } = config;
+
+	if (!networkId) {
+		throw new Error(`Missing required path parameter: networkId`);
+	}
+	const data = await request<
+		UpdateNetworkMutationResponse,
+		ErrorWrapper<UpdateNetwork400 | UpdateNetwork401 | UpdateNetwork403>,
+		null,
+		Record<string, string>,
+		UpdateNetworkQueryParams,
+		UpdateNetworkPathParams
+	>({
+		method: "PATCH",
+		url: `/v1/connect/networks/${networkId}`,
+		queryParams,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
+ * @description Allows to read a Secure Compute network.
+ * @summary Read a Secure Compute network
+ * {@link /v1/connect/networks/:networkId}
+ */
+export async function readNetwork({
+	pathParams: { networkId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: ReadNetworkPathParams;
+	queryParams?: ReadNetworkQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof client };
+}) {
+	const { client: request = client, ...requestConfig } = config;
+
+	if (!networkId) {
+		throw new Error(`Missing required path parameter: networkId`);
+	}
+	const data = await request<
+		ReadNetworkQueryResponse,
+		ErrorWrapper<ReadNetwork400 | ReadNetwork401 | ReadNetwork403>,
+		null,
+		Record<string, string>,
+		ReadNetworkQueryParams,
+		ReadNetworkPathParams
+	>({ method: "GET", url: `/v1/connect/networks/${networkId}`, queryParams, ...requestConfig });
 	return data;
 }
 
@@ -9645,6 +9845,11 @@ export const operationsByPath = {
 	"GET /v1/deployments/{deploymentId}/checks/{checkId}": getCheck,
 	"PATCH /v1/deployments/{deploymentId}/checks/{checkId}": updateCheck,
 	"POST /v1/deployments/{deploymentId}/checks/{checkId}/rerequest": rerequestCheck,
+	"GET /v1/connect/networks": listNetworks,
+	"POST /v1/connect/networks": createNetwork,
+	"DELETE /v1/connect/networks/{networkId}": deleteNetwork,
+	"PATCH /v1/connect/networks/{networkId}": updateNetwork,
+	"GET /v1/connect/networks/{networkId}": readNetwork,
 	"DELETE /data-cache/purge-all": purgeAllDataCache,
 	"PATCH /data-cache/billing-settings": updateDataCacheBillingSettings,
 	"PATCH /v1/data-cache/projects/{projectId}": updateProjectDataCache,
@@ -9895,6 +10100,14 @@ export const operationsByTag = {
 		updateCheck,
 		rerequestCheck,
 	},
+	connect: {
+		listNetworks,
+		createNetwork,
+		deleteNetwork,
+		updateNetwork,
+		readNetwork,
+		updateStaticIps,
+	},
 	projects: {
 		updateProjectDataCache,
 		getProjects,
@@ -10078,9 +10291,6 @@ export const operationsByTag = {
 		addProjectMember,
 		removeProjectMember,
 	},
-	connect: {
-		updateStaticIps,
-	},
 	staticIps: {
 		updateStaticIps,
 	},
@@ -10171,6 +10381,12 @@ export const tagDictionary = {
 		POST: ["createCheck", "rerequestCheck"],
 		GET: ["getAllChecks", "getCheck"],
 		PATCH: ["updateCheck"],
+	},
+	connect: {
+		GET: ["listNetworks", "readNetwork"],
+		POST: ["createNetwork"],
+		DELETE: ["deleteNetwork"],
+		PATCH: ["updateNetwork", "updateStaticIps"],
 	},
 	projects: {
 		PATCH: [
@@ -10349,9 +10565,6 @@ export const tagDictionary = {
 		GET: ["getProjectMembers"],
 		POST: ["addProjectMember"],
 		DELETE: ["removeProjectMember"],
-	},
-	connect: {
-		PATCH: ["updateStaticIps"],
 	},
 	staticIps: {
 		PATCH: ["updateStaticIps"],

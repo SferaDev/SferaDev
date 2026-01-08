@@ -3,6 +3,119 @@
  * Do not edit manually.
  */
 
+export const networkStatusEnum = {
+	create_in_progress: "create_in_progress",
+	delete_in_progress: "delete_in_progress",
+	error: "error",
+	ready: "ready",
+} as const;
+
+export type NetworkStatusEnumKey = (typeof networkStatusEnum)[keyof typeof networkStatusEnum];
+
+export type Network = {
+	/**
+	 * @description The ID of the AWS Account in which the network exists.
+	 * @type string
+	 */
+	awsAccountId: string;
+	/**
+	 * @description The IDs of the AWS Availability Zones in which the network exists, if specified during creation.
+	 * @type array | undefined
+	 */
+	awsAvailabilityZoneIds?: string[] | undefined;
+	/**
+	 * @description The AWS Region in which the network exists.
+	 * @type string
+	 */
+	awsRegion: string;
+	/**
+	 * @description The CIDR range of the Network.
+	 * @type string
+	 */
+	cidr: string;
+	/**
+	 * @description The date at which the Network was created, represented as a UNIX timestamp since EPOCH.
+	 * @type number
+	 */
+	createdAt: number;
+	/**
+	 * @type array | undefined
+	 */
+	egressIpAddresses?: string[] | undefined;
+	/**
+	 * @description Metadata about any AWS Route53 Hosted Zones associated with the Network.
+	 * @type object | undefined
+	 */
+	hostedZones?:
+		| {
+				/**
+				 * @description The number of AWS Route53 Hosted Zones associated with the Network.
+				 * @type number
+				 */
+				count: number;
+		  }
+		| undefined;
+	/**
+	 * @description The unique identifier of the Network.
+	 * @type string
+	 */
+	id: string;
+	/**
+	 * @description The name of the network.
+	 * @type string
+	 */
+	name: string;
+	/**
+	 * @description Metadata about any AWS Route53 Hosted Zones associated with the Network.
+	 * @type object | undefined
+	 */
+	peeringConnections?:
+		| {
+				/**
+				 * @description The number of AWS Route53 Hosted Zones associated with the Network.
+				 * @type number
+				 */
+				count: number;
+		  }
+		| undefined;
+	/**
+	 * @description Metadata about any projects associated with the Network.
+	 * @type object | undefined
+	 */
+	projects?:
+		| {
+				/**
+				 * @type number
+				 */
+				count: number;
+				/**
+				 * @type array
+				 */
+				ids: string[];
+		  }
+		| undefined;
+	/**
+	 * @description The Vercel region in which the Network exists.
+	 * @type string | undefined
+	 */
+	region?: string | undefined;
+	/**
+	 * @description The status of the Network.
+	 * @type string
+	 */
+	status: NetworkStatusEnumKey;
+	/**
+	 * @description The unique identifier of the Team that owns the Network.
+	 * @type string
+	 */
+	teamId: string;
+	/**
+	 * @description The ID of the VPC which hosts the network.
+	 * @type string | undefined
+	 */
+	vpcId?: string | undefined;
+};
+
 export const ACLActionEnum = {
 	create: "create",
 	delete: "delete",
@@ -12523,6 +12636,274 @@ export type RerequestCheckMutation = {
 	PathParams: RerequestCheckPathParams;
 	QueryParams: RerequestCheckQueryParams;
 	Errors: RerequestCheck400 | RerequestCheck401 | RerequestCheck403 | RerequestCheck404;
+};
+
+export type ListNetworksQueryParams = {
+	/**
+	 * @description Whether to include Hosted Zones in the response
+	 * @default true
+	 * @type boolean | undefined
+	 */
+	includeHostedZones?: boolean | undefined;
+	/**
+	 * @description Whether to include VPC Peering connections in the response
+	 * @default true
+	 * @type boolean | undefined
+	 */
+	includePeeringConnections?: boolean | undefined;
+	/**
+	 * @description Whether to include projects in the response
+	 * @default true
+	 * @type boolean | undefined
+	 */
+	includeProjects?: boolean | undefined;
+	/**
+	 * @description The query to use as a filter for returned networks
+	 * @maxLength 255
+	 * @type string | undefined
+	 */
+	search?: string | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type ListNetworks200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type ListNetworks400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type ListNetworks401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type ListNetworks403 = unknown;
+
+export type ListNetworksQueryResponse = ListNetworks200;
+
+export type ListNetworksQuery = {
+	Response: ListNetworks200;
+	QueryParams: ListNetworksQueryParams;
+	Errors: ListNetworks400 | ListNetworks401 | ListNetworks403;
+};
+
+export type CreateNetworkQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type CreateNetwork201 = unknown;
+
+/**
+ * @description One of the provided values in the request body is invalid.
+ */
+export type CreateNetwork400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type CreateNetwork401 = unknown;
+
+/**
+ * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ */
+export type CreateNetwork402 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type CreateNetwork403 = unknown;
+
+export type CreateNetwork404 = unknown;
+
+export type CreateNetwork409 = unknown;
+
+export type CreateNetworkMutationResponse = CreateNetwork201;
+
+export type CreateNetworkMutation = {
+	Response: CreateNetwork201;
+	QueryParams: CreateNetworkQueryParams;
+	Errors:
+		| CreateNetwork400
+		| CreateNetwork401
+		| CreateNetwork402
+		| CreateNetwork403
+		| CreateNetwork404
+		| CreateNetwork409;
+};
+
+export type DeleteNetworkPathParams = {
+	/**
+	 * @description The ID of the network to delete
+	 * @type string
+	 */
+	networkId: string;
+};
+
+export type DeleteNetworkQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type DeleteNetwork204 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type DeleteNetwork400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type DeleteNetwork401 = unknown;
+
+export type DeleteNetwork402 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type DeleteNetwork403 = unknown;
+
+export type DeleteNetwork404 = unknown;
+
+export type DeleteNetwork409 = unknown;
+
+export type DeleteNetworkMutationResponse = DeleteNetwork204;
+
+export type DeleteNetworkMutation = {
+	Response: DeleteNetwork204;
+	PathParams: DeleteNetworkPathParams;
+	QueryParams: DeleteNetworkQueryParams;
+	Errors:
+		| DeleteNetwork400
+		| DeleteNetwork401
+		| DeleteNetwork402
+		| DeleteNetwork403
+		| DeleteNetwork404
+		| DeleteNetwork409;
+};
+
+export type UpdateNetworkPathParams = {
+	/**
+	 * @description The unique identifier of the Secure Compute network
+	 * @type string
+	 */
+	networkId: string;
+};
+
+export type UpdateNetworkQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type UpdateNetwork200 = unknown;
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export type UpdateNetwork400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type UpdateNetwork401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type UpdateNetwork403 = unknown;
+
+export type UpdateNetworkMutationResponse = UpdateNetwork200;
+
+export type UpdateNetworkMutation = {
+	Response: UpdateNetwork200;
+	PathParams: UpdateNetworkPathParams;
+	QueryParams: UpdateNetworkQueryParams;
+	Errors: UpdateNetwork400 | UpdateNetwork401 | UpdateNetwork403;
+};
+
+export type ReadNetworkPathParams = {
+	/**
+	 * @description The unique identifier of the Secure Compute network
+	 * @type string
+	 */
+	networkId: string;
+};
+
+export type ReadNetworkQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type ReadNetwork200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type ReadNetwork400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type ReadNetwork401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type ReadNetwork403 = unknown;
+
+export type ReadNetworkQueryResponse = ReadNetwork200;
+
+export type ReadNetworkQuery = {
+	Response: ReadNetwork200;
+	PathParams: ReadNetworkPathParams;
+	QueryParams: ReadNetworkQueryParams;
+	Errors: ReadNetwork400 | ReadNetwork401 | ReadNetwork403;
 };
 
 export type PurgeAllDataCacheQueryParams = {

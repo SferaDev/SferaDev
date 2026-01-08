@@ -5,6 +5,59 @@
 
 import { z } from "zod";
 
+export const networkSchema = z.object({
+	awsAccountId: z.string().describe("The ID of the AWS Account in which the network exists."),
+	awsAvailabilityZoneIds: z.optional(
+		z
+			.array(z.string())
+			.describe(
+				"The IDs of the AWS Availability Zones in which the network exists, if specified during creation.",
+			),
+	),
+	awsRegion: z.string().describe("The AWS Region in which the network exists."),
+	cidr: z.string().describe("The CIDR range of the Network."),
+	createdAt: z
+		.number()
+		.describe(
+			"The date at which the Network was created, represented as a UNIX timestamp since EPOCH.",
+		),
+	egressIpAddresses: z.optional(z.array(z.string())),
+	hostedZones: z.optional(
+		z
+			.object({
+				count: z
+					.number()
+					.describe("The number of AWS Route53 Hosted Zones associated with the Network."),
+			})
+			.describe("Metadata about any AWS Route53 Hosted Zones associated with the Network."),
+	),
+	id: z.string().describe("The unique identifier of the Network."),
+	name: z.string().describe("The name of the network."),
+	peeringConnections: z.optional(
+		z
+			.object({
+				count: z
+					.number()
+					.describe("The number of AWS Route53 Hosted Zones associated with the Network."),
+			})
+			.describe("Metadata about any AWS Route53 Hosted Zones associated with the Network."),
+	),
+	projects: z.optional(
+		z
+			.object({
+				count: z.number(),
+				ids: z.array(z.string()),
+			})
+			.describe("Metadata about any projects associated with the Network."),
+	),
+	region: z.optional(z.string().describe("The Vercel region in which the Network exists.")),
+	status: z
+		.enum(["create_in_progress", "delete_in_progress", "error", "ready"])
+		.describe("The status of the Network."),
+	teamId: z.string().describe("The unique identifier of the Team that owns the Network."),
+	vpcId: z.optional(z.string().describe("The ID of the VPC which hosts the network.")),
+});
+
 /**
  * @description Enum containing the actions that can be performed against a resource. Group operations are included.
  */
@@ -6157,6 +6210,186 @@ export const rerequestCheck403Schema = z.unknown();
 export const rerequestCheck404Schema = z.unknown();
 
 export const rerequestCheckMutationResponseSchema = z.lazy(() => rerequestCheck200Schema);
+
+export const listNetworksQueryParamsSchema = z.object({
+	includeHostedZones: z
+		.boolean()
+		.default(true)
+		.describe("Whether to include Hosted Zones in the response"),
+	includePeeringConnections: z
+		.boolean()
+		.default(true)
+		.describe("Whether to include VPC Peering connections in the response"),
+	includeProjects: z
+		.boolean()
+		.default(true)
+		.describe("Whether to include projects in the response"),
+	search: z.optional(
+		z.string().max(255).describe("The query to use as a filter for returned networks"),
+	),
+	teamId: z.optional(
+		z.string().describe("The Team identifier to perform the request on behalf of."),
+	),
+	slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+});
+
+export const listNetworks200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export const listNetworks400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const listNetworks401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const listNetworks403Schema = z.unknown();
+
+export const listNetworksQueryResponseSchema = z.lazy(() => listNetworks200Schema);
+
+export const createNetworkQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const createNetwork201Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request body is invalid.
+ */
+export const createNetwork400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const createNetwork401Schema = z.unknown();
+
+/**
+ * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ */
+export const createNetwork402Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const createNetwork403Schema = z.unknown();
+
+export const createNetwork404Schema = z.unknown();
+
+export const createNetwork409Schema = z.unknown();
+
+export const createNetworkMutationResponseSchema = z.lazy(() => createNetwork201Schema);
+
+export const deleteNetworkPathParamsSchema = z.object({
+	networkId: z.string().describe("The ID of the network to delete"),
+});
+
+export const deleteNetworkQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const deleteNetwork204Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export const deleteNetwork400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const deleteNetwork401Schema = z.unknown();
+
+export const deleteNetwork402Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const deleteNetwork403Schema = z.unknown();
+
+export const deleteNetwork404Schema = z.unknown();
+
+export const deleteNetwork409Schema = z.unknown();
+
+export const deleteNetworkMutationResponseSchema = z.lazy(() => deleteNetwork204Schema);
+
+export const updateNetworkPathParamsSchema = z.object({
+	networkId: z.string().describe("The unique identifier of the Secure Compute network"),
+});
+
+export const updateNetworkQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const updateNetwork200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export const updateNetwork400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const updateNetwork401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const updateNetwork403Schema = z.unknown();
+
+export const updateNetworkMutationResponseSchema = z.lazy(() => updateNetwork200Schema);
+
+export const readNetworkPathParamsSchema = z.object({
+	networkId: z.string().describe("The unique identifier of the Secure Compute network"),
+});
+
+export const readNetworkQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const readNetwork200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export const readNetwork400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const readNetwork401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const readNetwork403Schema = z.unknown();
+
+export const readNetworkQueryResponseSchema = z.lazy(() => readNetwork200Schema);
 
 export const purgeAllDataCacheQueryParamsSchema = z.object({
 	projectIdOrName: z.string(),
