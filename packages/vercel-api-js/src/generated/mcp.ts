@@ -263,7 +263,6 @@ import {
 	pauseProjectQueryParamsSchema,
 	postTeamDsyncRolesPathParamsSchema,
 	postTeamDsyncRolesQueryParamsSchema,
-	purgeAllDataCacheQueryParamsSchema,
 	putFirewallConfigQueryParamsSchema,
 	readAccessGroupPathParamsSchema,
 	readAccessGroupProjectPathParamsSchema,
@@ -1378,10 +1377,6 @@ import type {
 	ListAuthTokens401,
 	ListAuthTokens403,
 	ListAuthTokensQueryResponse,
-	ListCerts400,
-	ListCerts401,
-	ListCerts403,
-	ListCertsQueryResponse,
 	ListCustomEnvironments400,
 	ListCustomEnvironments401,
 	ListCustomEnvironments403,
@@ -1491,12 +1486,6 @@ import type {
 	PostTeamDsyncRolesMutationResponse,
 	PostTeamDsyncRolesPathParams,
 	PostTeamDsyncRolesQueryParams,
-	PurgeAllDataCache400,
-	PurgeAllDataCache401,
-	PurgeAllDataCache403,
-	PurgeAllDataCache404,
-	PurgeAllDataCacheMutationResponse,
-	PurgeAllDataCacheQueryParams,
 	PutFirewallConfig400,
 	PutFirewallConfig401,
 	PutFirewallConfig402,
@@ -1728,11 +1717,6 @@ import type {
 	UpdateCustomEnvironmentMutationResponse,
 	UpdateCustomEnvironmentPathParams,
 	UpdateCustomEnvironmentQueryParams,
-	UpdateDataCacheBillingSettings400,
-	UpdateDataCacheBillingSettings401,
-	UpdateDataCacheBillingSettings403,
-	UpdateDataCacheBillingSettings404,
-	UpdateDataCacheBillingSettingsMutationResponse,
 	UpdateDomainAutoRenew400,
 	UpdateDomainAutoRenew401,
 	UpdateDomainAutoRenew403,
@@ -3152,69 +3136,6 @@ export async function readNetwork({
 		baseUrl: "https://api.vercel.com",
 		queryParams,
 		...requestConfig,
-	});
-	return { content: [{ type: "text", text: JSON.stringify(data) }] };
-}
-
-/**
- * {@link /data-cache/purge-all}
- */
-export async function purgeAllDataCache({
-	queryParams,
-	config = {},
-}: {
-	queryParams: PurgeAllDataCacheQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
-}): Promise<Promise<CallToolResult>> {
-	const { client: request = client, ...requestConfig } = config;
-
-	const data = await request<
-		PurgeAllDataCacheMutationResponse,
-		ErrorWrapper<
-			PurgeAllDataCache400 | PurgeAllDataCache401 | PurgeAllDataCache403 | PurgeAllDataCache404
-		>,
-		null,
-		Record<string, string>,
-		PurgeAllDataCacheQueryParams,
-		Record<string, string>
-	>({
-		method: "DELETE",
-		url: `/data-cache/purge-all`,
-		baseUrl: "https://api.vercel.com",
-		queryParams,
-		...requestConfig,
-	});
-	return { content: [{ type: "text", text: JSON.stringify(data) }] };
-}
-
-/**
- * {@link /data-cache/billing-settings}
- */
-export async function updateDataCacheBillingSettings({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof client };
-}): Promise<Promise<CallToolResult>> {
-	const { client: request = client, ...requestConfig } = config;
-
-	const data = await request<
-		UpdateDataCacheBillingSettingsMutationResponse,
-		ErrorWrapper<
-			| UpdateDataCacheBillingSettings400
-			| UpdateDataCacheBillingSettings401
-			| UpdateDataCacheBillingSettings403
-			| UpdateDataCacheBillingSettings404
-		>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		Record<string, string>
-	>({
-		method: "PATCH",
-		url: `/data-cache/billing-settings`,
-		baseUrl: "https://api.vercel.com",
-		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
 	});
 	return { content: [{ type: "text", text: JSON.stringify(data) }] };
 }
@@ -10378,27 +10299,6 @@ export async function patchUrlProtectionBypass({
 }
 
 /**
- * {@link /certs}
- */
-export async function listCerts({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof client };
-}): Promise<Promise<CallToolResult>> {
-	const { client: request = client, ...requestConfig } = config;
-
-	const data = await request<
-		ListCertsQueryResponse,
-		ErrorWrapper<ListCerts400 | ListCerts401 | ListCerts403>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		Record<string, string>
-	>({ method: "GET", url: `/certs`, baseUrl: "https://api.vercel.com", ...requestConfig });
-	return { content: [{ type: "text", text: JSON.stringify(data) }] };
-}
-
-/**
  * @description Get cert by id
  * @summary Get cert by id
  * {@link /v8/certs/:id}
@@ -11246,33 +11146,6 @@ export function initMcpTools<Server>(serverLike: Server, config: FetcherConfig) 
 		async ({ networkId, queryParams }) => {
 			try {
 				return await readNetwork({ pathParams: { networkId }, queryParams, config });
-			} catch (error) {
-				return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
-			}
-		},
-	);
-
-	// @ts-expect-error: Type instantiation is excessively deep and possibly infinite
-	server.tool(
-		"purgeAllDataCache",
-		"Make a DELETE request to /data-cache/purge-all",
-		{ queryParams: purgeAllDataCacheQueryParamsSchema },
-		async ({ queryParams }) => {
-			try {
-				return await purgeAllDataCache({ queryParams, config });
-			} catch (error) {
-				return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
-			}
-		},
-	);
-
-	// @ts-expect-error: Type instantiation is excessively deep and possibly infinite
-	server.tool(
-		"updateDataCacheBillingSettings",
-		"Make a PATCH request to /data-cache/billing-settings",
-		async () => {
-			try {
-				return await updateDataCacheBillingSettings({ config });
 			} catch (error) {
 				return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
 			}
@@ -14341,15 +14214,6 @@ export function initMcpTools<Server>(serverLike: Server, config: FetcherConfig) 
 			}
 		},
 	);
-
-	// @ts-expect-error: Type instantiation is excessively deep and possibly infinite
-	server.tool("listCerts", "Make a GET request to /certs", async () => {
-		try {
-			return await listCerts({ config });
-		} catch (error) {
-			return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
-		}
-	});
 
 	// @ts-expect-error: Type instantiation is excessively deep and possibly infinite
 	server.tool(

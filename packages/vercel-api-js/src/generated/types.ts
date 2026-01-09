@@ -10013,6 +10013,7 @@ export type Team = {
 	 * @type number
 	 */
 	createdAt: number;
+	[key: string]: unknown;
 };
 
 export const teamLimitedLimitedByEnum = {
@@ -11087,6 +11088,85 @@ export type FileTree = {
 	 * @type number
 	 */
 	mode: number;
+};
+
+export type VercelBaseError = {
+	/**
+	 * @type string
+	 */
+	code: string;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
+export type VercelForbiddenError = {
+	error: unknown & {
+		/**
+		 * @type string
+		 */
+		code: string;
+	};
+};
+
+export type VercelNotFoundError = {
+	error: unknown & {
+		/**
+		 * @type string
+		 */
+		code: string;
+		/**
+		 * @type string | undefined
+		 */
+		message?: string | undefined;
+	};
+};
+
+export type VercelBadRequestError = {
+	error: unknown & {
+		/**
+		 * @type string
+		 */
+		code: string;
+		/**
+		 * @type string | undefined
+		 */
+		message?: string | undefined;
+	};
+};
+
+export type VercelRateLimitError = {
+	error: unknown & {
+		/**
+		 * @type string
+		 */
+		code: string;
+		limit?: unknown | undefined;
+	};
+};
+
+export type RateLimitNotice = {
+	/**
+	 * @minLength 0
+	 * @type integer
+	 */
+	remaining: number;
+	/**
+	 * @minLength 0
+	 * @type integer
+	 */
+	reset: number;
+	/**
+	 * @minLength 0
+	 * @type integer
+	 */
+	resetMs: number;
+	/**
+	 * @minLength 0
+	 * @type integer
+	 */
+	total: number;
 };
 
 export type ReadAccessGroupPathParams = {
@@ -12904,70 +12984,6 @@ export type ReadNetworkQuery = {
 	PathParams: ReadNetworkPathParams;
 	QueryParams: ReadNetworkQueryParams;
 	Errors: ReadNetwork400 | ReadNetwork401 | ReadNetwork403;
-};
-
-export type PurgeAllDataCacheQueryParams = {
-	/**
-	 * @type string
-	 */
-	projectIdOrName: string;
-};
-
-export type PurgeAllDataCache200 = unknown;
-
-/**
- * @description One of the provided values in the request query is invalid.
- */
-export type PurgeAllDataCache400 = unknown;
-
-/**
- * @description The request is not authorized.
- */
-export type PurgeAllDataCache401 = unknown;
-
-/**
- * @description You do not have permission to access this resource.
- */
-export type PurgeAllDataCache403 = unknown;
-
-export type PurgeAllDataCache404 = unknown;
-
-export type PurgeAllDataCacheMutationResponse = PurgeAllDataCache200;
-
-export type PurgeAllDataCacheMutation = {
-	Response: PurgeAllDataCache200;
-	QueryParams: PurgeAllDataCacheQueryParams;
-	Errors: PurgeAllDataCache400 | PurgeAllDataCache401 | PurgeAllDataCache403 | PurgeAllDataCache404;
-};
-
-export type UpdateDataCacheBillingSettings200 = unknown;
-
-/**
- * @description One of the provided values in the request body is invalid.
- */
-export type UpdateDataCacheBillingSettings400 = unknown;
-
-/**
- * @description The request is not authorized.
- */
-export type UpdateDataCacheBillingSettings401 = unknown;
-
-/**
- * @description You do not have permission to access this resource.
- */
-export type UpdateDataCacheBillingSettings403 = unknown;
-
-export type UpdateDataCacheBillingSettings404 = unknown;
-
-export type UpdateDataCacheBillingSettingsMutationResponse = UpdateDataCacheBillingSettings200;
-
-export type UpdateDataCacheBillingSettingsMutation = {
-	Response: UpdateDataCacheBillingSettings200;
-	Errors:
-		| UpdateDataCacheBillingSettings400
-		| UpdateDataCacheBillingSettings401
-		| UpdateDataCacheBillingSettings403
-		| UpdateDataCacheBillingSettings404;
 };
 
 export type UpdateProjectDataCachePathParams = {
@@ -16933,9 +16949,6 @@ export type SearchRepoQueryParams = {
 	 * @type string | undefined
 	 */
 	query?: string | undefined;
-	/**
-	 * @type string,number
-	 */
 	namespaceId?: ((string | number) | null) | undefined;
 	provider?: SearchRepoQueryParamsProviderEnumKey | undefined;
 	/**
@@ -19322,7 +19335,7 @@ export type GetProjectDomainsPathParams = {
 	/**
 	 * @description The unique project identifier or the project name
 	 */
-	idOrName: string | number;
+	idOrName: string;
 };
 
 export const getProjectDomainsQueryParamsProductionEnum = {
@@ -21172,6 +21185,7 @@ export type UpdateFirewallConfigMutation = {
 
 export type GetFirewallConfigPathParams = {
 	/**
+	 * @description The deployed configVersion for the firewall configuration
 	 * @type string
 	 */
 	configVersion: string;
@@ -21686,6 +21700,7 @@ export type InviteUserToTeamMutation = {
 
 export type RequestAccessToTeamPathParams = {
 	/**
+	 * @description The unique team identifier
 	 * @type string
 	 */
 	teamId: string;
@@ -21730,10 +21745,12 @@ export type RequestAccessToTeamMutation = {
 
 export type GetTeamAccessRequestPathParams = {
 	/**
+	 * @description The unique user identifier
 	 * @type string
 	 */
 	userId: string;
 	/**
+	 * @description The unique team identifier
 	 * @type string
 	 */
 	teamId: string;
@@ -21775,6 +21792,7 @@ export type GetTeamAccessRequestQuery = {
 
 export type JoinTeamPathParams = {
 	/**
+	 * @description The unique team identifier
 	 * @type string
 	 */
 	teamId: string;
@@ -21816,6 +21834,7 @@ export type UpdateTeamMemberPathParams = {
 	 */
 	uid: string;
 	/**
+	 * @description The unique team identifier
 	 * @type string
 	 */
 	teamId: string;
@@ -21874,6 +21893,7 @@ export type RemoveTeamMemberPathParams = {
 	 */
 	uid: string;
 	/**
+	 * @description The unique team identifier
 	 * @type string
 	 */
 	teamId: string;
@@ -22193,6 +22213,7 @@ export type DeleteTeamInviteCodePathParams = {
 	 */
 	inviteId: string;
 	/**
+	 * @description The Team identifier to perform the request on behalf of.
 	 * @type string
 	 */
 	teamId: string;
@@ -23069,27 +23090,6 @@ export type PatchUrlProtectionBypassMutation = {
 		| PatchUrlProtectionBypass409
 		| PatchUrlProtectionBypass428
 		| PatchUrlProtectionBypass500;
-};
-
-export type ListCerts200 = unknown;
-
-export type ListCerts400 = unknown;
-
-/**
- * @description The request is not authorized.
- */
-export type ListCerts401 = unknown;
-
-/**
- * @description You do not have permission to access this resource.
- */
-export type ListCerts403 = unknown;
-
-export type ListCertsQueryResponse = ListCerts200;
-
-export type ListCertsQuery = {
-	Response: ListCerts200;
-	Errors: ListCerts400 | ListCerts401 | ListCerts403;
 };
 
 export type GetCertByIdPathParams = {

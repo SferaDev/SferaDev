@@ -1020,10 +1020,6 @@ import type {
 	ListAuthTokens401,
 	ListAuthTokens403,
 	ListAuthTokensQueryResponse,
-	ListCerts400,
-	ListCerts401,
-	ListCerts403,
-	ListCertsQueryResponse,
 	ListCustomEnvironments400,
 	ListCustomEnvironments401,
 	ListCustomEnvironments403,
@@ -1133,12 +1129,6 @@ import type {
 	PostTeamDsyncRolesMutationResponse,
 	PostTeamDsyncRolesPathParams,
 	PostTeamDsyncRolesQueryParams,
-	PurgeAllDataCache400,
-	PurgeAllDataCache401,
-	PurgeAllDataCache403,
-	PurgeAllDataCache404,
-	PurgeAllDataCacheMutationResponse,
-	PurgeAllDataCacheQueryParams,
 	PutFirewallConfig400,
 	PutFirewallConfig401,
 	PutFirewallConfig402,
@@ -1370,11 +1360,6 @@ import type {
 	UpdateCustomEnvironmentMutationResponse,
 	UpdateCustomEnvironmentPathParams,
 	UpdateCustomEnvironmentQueryParams,
-	UpdateDataCacheBillingSettings400,
-	UpdateDataCacheBillingSettings401,
-	UpdateDataCacheBillingSettings403,
-	UpdateDataCacheBillingSettings404,
-	UpdateDataCacheBillingSettingsMutationResponse,
 	UpdateDomainAutoRenew400,
 	UpdateDomainAutoRenew401,
 	UpdateDomainAutoRenew403,
@@ -2712,62 +2697,6 @@ export async function readNetwork({
 		ReadNetworkQueryParams,
 		ReadNetworkPathParams
 	>({ method: "GET", url: `/v1/connect/networks/${networkId}`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /data-cache/purge-all}
- */
-export async function purgeAllDataCache({
-	queryParams,
-	config = {},
-}: {
-	queryParams: PurgeAllDataCacheQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
-}) {
-	const { client: request = client, ...requestConfig } = config;
-
-	const data = await request<
-		PurgeAllDataCacheMutationResponse,
-		ErrorWrapper<
-			PurgeAllDataCache400 | PurgeAllDataCache401 | PurgeAllDataCache403 | PurgeAllDataCache404
-		>,
-		null,
-		Record<string, string>,
-		PurgeAllDataCacheQueryParams,
-		Record<string, string>
-	>({ method: "DELETE", url: `/data-cache/purge-all`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /data-cache/billing-settings}
- */
-export async function updateDataCacheBillingSettings({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof client };
-}) {
-	const { client: request = client, ...requestConfig } = config;
-
-	const data = await request<
-		UpdateDataCacheBillingSettingsMutationResponse,
-		ErrorWrapper<
-			| UpdateDataCacheBillingSettings400
-			| UpdateDataCacheBillingSettings401
-			| UpdateDataCacheBillingSettings403
-			| UpdateDataCacheBillingSettings404
-		>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		Record<string, string>
-	>({
-		method: "PATCH",
-		url: `/data-cache/billing-settings`,
-		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
-	});
 	return data;
 }
 
@@ -9452,27 +9381,6 @@ export async function patchUrlProtectionBypass({
 }
 
 /**
- * {@link /certs}
- */
-export async function listCerts({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof client };
-}) {
-	const { client: request = client, ...requestConfig } = config;
-
-	const data = await request<
-		ListCertsQueryResponse,
-		ErrorWrapper<ListCerts400 | ListCerts401 | ListCerts403>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		Record<string, string>
-	>({ method: "GET", url: `/certs`, ...requestConfig });
-	return data;
-}
-
-/**
  * @description Get cert by id
  * @summary Get cert by id
  * {@link /v8/certs/:id}
@@ -9774,8 +9682,6 @@ export const operationsByPath = {
 	"DELETE /v1/connect/networks/{networkId}": deleteNetwork,
 	"PATCH /v1/connect/networks/{networkId}": updateNetwork,
 	"GET /v1/connect/networks/{networkId}": readNetwork,
-	"DELETE /data-cache/purge-all": purgeAllDataCache,
-	"PATCH /data-cache/billing-settings": updateDataCacheBillingSettings,
 	"PATCH /v1/data-cache/projects/{projectId}": updateProjectDataCache,
 	"GET /v3/deployments/{idOrUrl}/events": getDeploymentEvents,
 	"PATCH /v1/deployments/{deploymentId}/integrations/{integrationConfigurationId}/resources/{resourceId}/actions/{action}":
@@ -9974,7 +9880,6 @@ export const operationsByPath = {
 	"GET /v4/aliases/{idOrAlias}": getAlias,
 	"DELETE /v2/aliases/{aliasId}": deleteAlias,
 	"PATCH /aliases/{id}/protection-bypass": patchUrlProtectionBypass,
-	"GET /certs": listCerts,
 	"GET /v8/certs/{id}": getCertById,
 	"DELETE /v8/certs/{id}": removeCert,
 	"POST /v8/certs": issueCert,
