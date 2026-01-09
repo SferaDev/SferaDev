@@ -4853,7 +4853,7 @@ export async function invalidateByTags({
 }
 
 /**
- * @description Marks a cache tag as deleted, causing cache entries associated with that tag to be revalidated in the foreground on the next request. Use this method with caution because one tag can be associated with many paths and deleting the cache can cause many concurrent requests to the origin leading to cache stampede problem. A good use case for deleting the cache is when the origin has also been deleted, for example it returns a 404 or 410 status code.
+ * @description Marks a cache tag as deleted, causing cache entries associated with that tag to be revalidated in the foreground on the next request. Use this method with caution because one tag can be associated with many paths and deleting the cache can cause many concurrent requests to the origin leading to cache stampede problem. This method is for advanced use cases and is not recommended; prefer using `invalidateByTag` instead.
  * @summary Dangerously delete by tag
  * {@link /v1/edge-cache/dangerously-delete-by-tags}
  */
@@ -4928,7 +4928,7 @@ export async function invalidateBySrcImages({
 }
 
 /**
- * @description Marks a source image as deleted, causing cache entries associated with that source image to be revalidated in the foreground on the next request. Use this method with caution because one source image can be associated with many paths and deleting the cache can cause many concurrent requests to the origin leading to cache stampede problem. A good use case for deleting the cache is when the origin has also been deleted, for example it returns a 404 or 410 status code.
+ * @description Marks a source image as deleted, causing cache entries associated with that source image to be revalidated in the foreground on the next request. Use this method with caution because one source image can be associated with many paths and deleting the cache can cause many concurrent requests to the origin leading to cache stampede problem. This method is for advanced use cases and is not recommended; prefer using `invalidateBySrcImage` instead.
  * @summary Dangerously delete by source image
  * {@link /v1/edge-cache/dangerously-delete-by-src-images}
  */
@@ -11949,7 +11949,7 @@ export function initMcpTools<Server>(serverLike: Server, config: FetcherConfig) 
 	// @ts-expect-error: Type instantiation is excessively deep and possibly infinite
 	server.tool(
 		"dangerouslyDeleteByTags",
-		"Marks a cache tag as deleted, causing cache entries associated with that tag to be revalidated in the foreground on the next request. Use this method with caution because one tag can be associated with many paths and deleting the cache can cause many concurrent requests to the origin leading to cache stampede problem. A good use case for deleting the cache is when the origin has also been deleted, for example it returns a 404 or 410 status code.",
+		"Marks a cache tag as deleted, causing cache entries associated with that tag to be revalidated in the foreground on the next request. Use this method with caution because one tag can be associated with many paths and deleting the cache can cause many concurrent requests to the origin leading to cache stampede problem. This method is for advanced use cases and is not recommended; prefer using `invalidateByTag` instead.",
 		{ queryParams: dangerouslyDeleteByTagsQueryParamsSchema },
 		async ({ queryParams }) => {
 			try {
@@ -11977,7 +11977,7 @@ export function initMcpTools<Server>(serverLike: Server, config: FetcherConfig) 
 	// @ts-expect-error: Type instantiation is excessively deep and possibly infinite
 	server.tool(
 		"dangerouslyDeleteBySrcImages",
-		"Marks a source image as deleted, causing cache entries associated with that source image to be revalidated in the foreground on the next request. Use this method with caution because one source image can be associated with many paths and deleting the cache can cause many concurrent requests to the origin leading to cache stampede problem. A good use case for deleting the cache is when the origin has also been deleted, for example it returns a 404 or 410 status code.",
+		"Marks a source image as deleted, causing cache entries associated with that source image to be revalidated in the foreground on the next request. Use this method with caution because one source image can be associated with many paths and deleting the cache can cause many concurrent requests to the origin leading to cache stampede problem. This method is for advanced use cases and is not recommended; prefer using `invalidateBySrcImage` instead.",
 		{ queryParams: dangerouslyDeleteBySrcImagesQueryParamsSchema },
 		async ({ queryParams }) => {
 			try {
