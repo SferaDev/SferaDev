@@ -89,20 +89,6 @@ import type {
 	CancelDeploymentMutationResponse,
 	CancelDeploymentPathParams,
 	CancelDeploymentQueryParams,
-	CheckDomainPrice400,
-	CheckDomainPrice401,
-	CheckDomainPrice403,
-	CheckDomainPrice404,
-	CheckDomainPrice500,
-	CheckDomainPriceQueryParams,
-	CheckDomainPriceQueryResponse,
-	CheckDomainStatus400,
-	CheckDomainStatus401,
-	CheckDomainStatus403,
-	CheckDomainStatus408,
-	CheckDomainStatus500,
-	CheckDomainStatusQueryParams,
-	CheckDomainStatusQueryResponse,
 	CompleteRollingRelease400,
 	CompleteRollingRelease401,
 	CompleteRollingRelease403,
@@ -3008,68 +2994,6 @@ export async function cancelDeployment({
 		CancelDeploymentQueryParams,
 		CancelDeploymentPathParams
 	>({ method: "PATCH", url: `/v12/deployments/${id}/cancel`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description This endpoint is deprecated and replaced with the endpoint [Get price data for a domain](https://vercel.com/docs/rest-api/reference/endpoints/domains-registrar/get-price-data-for-a-domain). Check the price to purchase a domain and how long a single purchase period is.
- * @summary Check the price for a domain (deprecated)
- * {@link /v4/domains/price}
- */
-export async function checkDomainPrice({
-	queryParams,
-	config = {},
-}: {
-	queryParams: CheckDomainPriceQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
-}) {
-	const { client: request = client, ...requestConfig } = config;
-
-	const data = await request<
-		CheckDomainPriceQueryResponse,
-		ErrorWrapper<
-			| CheckDomainPrice400
-			| CheckDomainPrice401
-			| CheckDomainPrice403
-			| CheckDomainPrice404
-			| CheckDomainPrice500
-		>,
-		null,
-		Record<string, string>,
-		CheckDomainPriceQueryParams,
-		Record<string, string>
-	>({ method: "GET", url: `/v4/domains/price`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description This endpoint is deprecated and replaced with the endpoint [Get availability for a domain](https://vercel.com/docs/rest-api/reference/endpoints/domains-registrar/get-availability-for-a-domain). Check if a domain name is available for purchase.
- * @summary Check a Domain Availability (deprecated)
- * {@link /v4/domains/status}
- */
-export async function checkDomainStatus({
-	queryParams,
-	config = {},
-}: {
-	queryParams: CheckDomainStatusQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
-}) {
-	const { client: request = client, ...requestConfig } = config;
-
-	const data = await request<
-		CheckDomainStatusQueryResponse,
-		ErrorWrapper<
-			| CheckDomainStatus400
-			| CheckDomainStatus401
-			| CheckDomainStatus403
-			| CheckDomainStatus408
-			| CheckDomainStatus500
-		>,
-		null,
-		Record<string, string>,
-		CheckDomainStatusQueryParams,
-		Record<string, string>
-	>({ method: "GET", url: `/v4/domains/status`, queryParams, ...requestConfig });
 	return data;
 }
 
@@ -9859,8 +9783,6 @@ export const operationsByPath = {
 	"GET /v13/deployments/{idOrUrl}": getDeployment,
 	"POST /v13/deployments": createDeployment,
 	"PATCH /v12/deployments/{id}/cancel": cancelDeployment,
-	"GET /v4/domains/price": checkDomainPrice,
-	"GET /v4/domains/status": checkDomainStatus,
 	"GET /v4/domains/{domain}/records": getRecords,
 	"POST /v2/domains/{domain}/records": createRecord,
 	"PATCH /v1/domains/records/{recordId}": updateRecord,
@@ -10160,16 +10082,6 @@ export const operationsByTag = {
 		getConfigurationProducts,
 		createIntegrationStoreDirect,
 	},
-	domains: {
-		checkDomainPrice,
-		checkDomainStatus,
-		getDomainConfig,
-		getDomain,
-		getDomains,
-		createOrTransferDomain,
-		patchDomain,
-		deleteDomain,
-	},
 	dns: {
 		getRecords,
 		createRecord,
@@ -10192,6 +10104,14 @@ export const operationsByTag = {
 		updateDomainNameservers,
 		getContactInfoSchema,
 		getOrder,
+	},
+	domains: {
+		getDomainConfig,
+		getDomain,
+		getDomains,
+		createOrTransferDomain,
+		patchDomain,
+		deleteDomain,
 	},
 	logdrains: {
 		getConfigurableLogDrain,
@@ -10444,12 +10364,6 @@ export const tagDictionary = {
 		POST: ["connectIntegrationResourceToProject", "createIntegrationStoreDirect"],
 		DELETE: ["deleteConfiguration"],
 	},
-	domains: {
-		GET: ["checkDomainPrice", "checkDomainStatus", "getDomainConfig", "getDomain", "getDomains"],
-		POST: ["createOrTransferDomain"],
-		PATCH: ["patchDomain"],
-		DELETE: ["deleteDomain"],
-	},
 	dns: {
 		GET: ["getRecords"],
 		POST: ["createRecord"],
@@ -10475,6 +10389,12 @@ export const tagDictionary = {
 			"renewDomain",
 		],
 		PATCH: ["updateDomainAutoRenew", "updateDomainNameservers"],
+	},
+	domains: {
+		GET: ["getDomainConfig", "getDomain", "getDomains"],
+		POST: ["createOrTransferDomain"],
+		PATCH: ["patchDomain"],
+		DELETE: ["deleteDomain"],
 	},
 	logdrains: {
 		GET: ["getConfigurableLogDrain", "getAllLogDrains", "getIntegrationLogDrains"],

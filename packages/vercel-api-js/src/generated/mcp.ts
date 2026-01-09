@@ -26,8 +26,6 @@ import {
 	buySingleDomainQueryParamsSchema,
 	cancelDeploymentPathParamsSchema,
 	cancelDeploymentQueryParamsSchema,
-	checkDomainPriceQueryParamsSchema,
-	checkDomainStatusQueryParamsSchema,
 	completeRollingReleasePathParamsSchema,
 	completeRollingReleaseQueryParamsSchema,
 	connectIntegrationResourceToProjectPathParamsSchema,
@@ -449,20 +447,6 @@ import type {
 	CancelDeploymentMutationResponse,
 	CancelDeploymentPathParams,
 	CancelDeploymentQueryParams,
-	CheckDomainPrice400,
-	CheckDomainPrice401,
-	CheckDomainPrice403,
-	CheckDomainPrice404,
-	CheckDomainPrice500,
-	CheckDomainPriceQueryParams,
-	CheckDomainPriceQueryResponse,
-	CheckDomainStatus400,
-	CheckDomainStatus401,
-	CheckDomainStatus403,
-	CheckDomainStatus408,
-	CheckDomainStatus500,
-	CheckDomainStatusQueryParams,
-	CheckDomainStatusQueryResponse,
 	CompleteRollingRelease400,
 	CompleteRollingRelease401,
 	CompleteRollingRelease403,
@@ -3475,80 +3459,6 @@ export async function cancelDeployment({
 	>({
 		method: "PATCH",
 		url: `/v12/deployments/${id}/cancel`,
-		baseUrl: "https://api.vercel.com",
-		queryParams,
-		...requestConfig,
-	});
-	return { content: [{ type: "text", text: JSON.stringify(data) }] };
-}
-
-/**
- * @description This endpoint is deprecated and replaced with the endpoint [Get price data for a domain](https://vercel.com/docs/rest-api/reference/endpoints/domains-registrar/get-price-data-for-a-domain). Check the price to purchase a domain and how long a single purchase period is.
- * @summary Check the price for a domain (deprecated)
- * {@link /v4/domains/price}
- */
-export async function checkDomainPrice({
-	queryParams,
-	config = {},
-}: {
-	queryParams: CheckDomainPriceQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
-}): Promise<Promise<CallToolResult>> {
-	const { client: request = client, ...requestConfig } = config;
-
-	const data = await request<
-		CheckDomainPriceQueryResponse,
-		ErrorWrapper<
-			| CheckDomainPrice400
-			| CheckDomainPrice401
-			| CheckDomainPrice403
-			| CheckDomainPrice404
-			| CheckDomainPrice500
-		>,
-		null,
-		Record<string, string>,
-		CheckDomainPriceQueryParams,
-		Record<string, string>
-	>({
-		method: "GET",
-		url: `/v4/domains/price`,
-		baseUrl: "https://api.vercel.com",
-		queryParams,
-		...requestConfig,
-	});
-	return { content: [{ type: "text", text: JSON.stringify(data) }] };
-}
-
-/**
- * @description This endpoint is deprecated and replaced with the endpoint [Get availability for a domain](https://vercel.com/docs/rest-api/reference/endpoints/domains-registrar/get-availability-for-a-domain). Check if a domain name is available for purchase.
- * @summary Check a Domain Availability (deprecated)
- * {@link /v4/domains/status}
- */
-export async function checkDomainStatus({
-	queryParams,
-	config = {},
-}: {
-	queryParams: CheckDomainStatusQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
-}): Promise<Promise<CallToolResult>> {
-	const { client: request = client, ...requestConfig } = config;
-
-	const data = await request<
-		CheckDomainStatusQueryResponse,
-		ErrorWrapper<
-			| CheckDomainStatus400
-			| CheckDomainStatus401
-			| CheckDomainStatus403
-			| CheckDomainStatus408
-			| CheckDomainStatus500
-		>,
-		null,
-		Record<string, string>,
-		CheckDomainStatusQueryParams,
-		Record<string, string>
-	>({
-		method: "GET",
-		url: `/v4/domains/status`,
 		baseUrl: "https://api.vercel.com",
 		queryParams,
 		...requestConfig,
@@ -11468,34 +11378,6 @@ export function initMcpTools<Server>(serverLike: Server, config: FetcherConfig) 
 		async ({ id, queryParams }) => {
 			try {
 				return await cancelDeployment({ pathParams: { id }, queryParams, config });
-			} catch (error) {
-				return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
-			}
-		},
-	);
-
-	// @ts-expect-error: Type instantiation is excessively deep and possibly infinite
-	server.tool(
-		"checkDomainPrice",
-		"This endpoint is deprecated and replaced with the endpoint [Get price data for a domain](https://vercel.com/docs/rest-api/reference/endpoints/domains-registrar/get-price-data-for-a-domain). Check the price to purchase a domain and how long a single purchase period is.",
-		{ queryParams: checkDomainPriceQueryParamsSchema },
-		async ({ queryParams }) => {
-			try {
-				return await checkDomainPrice({ queryParams, config });
-			} catch (error) {
-				return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
-			}
-		},
-	);
-
-	// @ts-expect-error: Type instantiation is excessively deep and possibly infinite
-	server.tool(
-		"checkDomainStatus",
-		"This endpoint is deprecated and replaced with the endpoint [Get availability for a domain](https://vercel.com/docs/rest-api/reference/endpoints/domains-registrar/get-availability-for-a-domain). Check if a domain name is available for purchase.",
-		{ queryParams: checkDomainStatusQueryParamsSchema },
-		async ({ queryParams }) => {
-			try {
-				return await checkDomainStatus({ queryParams, config });
 			} catch (error) {
 				return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
 			}
