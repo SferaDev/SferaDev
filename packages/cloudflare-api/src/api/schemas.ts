@@ -63968,6 +63968,35 @@ export type WorkersObservability = {
 	} | null;
 };
 
+export type WorkersPlacementProvider = {
+	/**
+	 * The cloud provider identifier.
+	 *
+	 * @example aws
+	 */
+	id: string;
+	/**
+	 * List of regions available for this provider.
+	 */
+	regions: WorkersPlacementRegion[];
+};
+
+export type WorkersPlacementRegion = {
+	/**
+	 * The region identifier.
+	 *
+	 * @example us-east-1
+	 */
+	id: string;
+};
+
+export type WorkersPlacementRegionsResponse = {
+	/**
+	 * List of cloud providers with their available regions.
+	 */
+	providers: WorkersPlacementProvider[];
+};
+
 /**
  * Configuration for [Smart Placement](https://developers.cloudflare.com/workers/configuration/smart-placement). Specify either mode for Smart Placement, or one of region/hostname/host for targeted placement.
  */
