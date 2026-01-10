@@ -1940,6 +1940,31 @@ export const newOwnerVersionEnum = {
 
 export type NewOwnerVersionEnumKey = (typeof newOwnerVersionEnum)[keyof typeof newOwnerVersionEnum];
 
+export const historyActionEnum = {
+	enabled: "enabled",
+	disabled: "disabled",
+} as const;
+
+export type HistoryActionEnumKey = (typeof historyActionEnum)[keyof typeof historyActionEnum];
+
+export const historyMethodEnum = {
+	totp: "totp",
+	passkey: "passkey",
+	user_disabled: "user_disabled",
+	admin_removal: "admin_removal",
+	unknown: "unknown",
+} as const;
+
+export type HistoryMethodEnumKey = (typeof historyMethodEnum)[keyof typeof historyMethodEnum];
+
+export const historyActorTypeEnum = {
+	user: "user",
+	admin: "admin",
+} as const;
+
+export type HistoryActorTypeEnumKey =
+	(typeof historyActorTypeEnum)[keyof typeof historyActorTypeEnum];
+
 export const payloadProjectIdsEnum = {
 	all: "all",
 } as const;
@@ -6360,6 +6385,44 @@ export type UserEvent = {
 													 */
 													createdAt: number;
 											  }
+											| undefined;
+										/**
+										 * @description History of MFA state changes (enabled/disabled events). Most recent events first.
+										 * @type array | undefined
+										 */
+										history?:
+											| {
+													/**
+													 * @description The action that occurred
+													 * @type string
+													 */
+													action: HistoryActionEnumKey;
+													/**
+													 * @description Unix timestamp (milliseconds) when the change occurred. May be null for events that occurred before history tracking was implemented.
+													 * @type number
+													 */
+													timestamp: number | null;
+													/**
+													 * @description Method used for the state change - \'totp\': User set up TOTP authenticator - \'passkey\': User registered a passkey - \'user_disabled\': User disabled their own MFA - \'admin_removal\': Admin removed MFA via backoffice - \'unknown\': Method unknown (for pre-tracking events)
+													 * @type string
+													 */
+													method: HistoryMethodEnumKey;
+													/**
+													 * @description ID of the actor who made the change - For user actions: the user\'s own ID - For admin actions: the admin\'s user ID
+													 * @type string
+													 */
+													actorId: string;
+													/**
+													 * @description Type of actor
+													 * @type string
+													 */
+													actorType: HistoryActorTypeEnumKey;
+													/**
+													 * @description Optional: Additional context or reason e.g., \"Account recovery request - ticket #12345\"
+													 * @type string | undefined
+													 */
+													reason?: string | undefined;
+											  }[]
 											| undefined;
 								  }
 								| undefined;

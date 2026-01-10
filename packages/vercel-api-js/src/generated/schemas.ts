@@ -2476,6 +2476,54 @@ export const userEventSchema = z
 												createdAt: z.number(),
 											}),
 										),
+										history: z.optional(
+											z
+												.array(
+													z
+														.object({
+															action: z
+																.enum(["enabled", "disabled"])
+																.describe("The action that occurred"),
+															timestamp: z.nullable(
+																z
+																	.number()
+																	.describe(
+																		"Unix timestamp (milliseconds) when the change occurred. May be null for events that occurred before history tracking was implemented.",
+																	),
+															),
+															method: z
+																.enum([
+																	"totp",
+																	"passkey",
+																	"user_disabled",
+																	"admin_removal",
+																	"unknown",
+																])
+																.describe(
+																	"Method used for the state change - 'totp': User set up TOTP authenticator - 'passkey': User registered a passkey - 'user_disabled': User disabled their own MFA - 'admin_removal': Admin removed MFA via backoffice - 'unknown': Method unknown (for pre-tracking events)",
+																),
+															actorId: z
+																.string()
+																.describe(
+																	"ID of the actor who made the change - For user actions: the user's own ID - For admin actions: the admin's user ID",
+																),
+															actorType: z.enum(["user", "admin"]).describe("Type of actor"),
+															reason: z.optional(
+																z
+																	.string()
+																	.describe(
+																		'Optional: Additional context or reason e.g., "Account recovery request - ticket #12345"',
+																	),
+															),
+														})
+														.describe(
+															"History of MFA state changes (enabled/disabled events). Most recent events first.",
+														),
+												)
+												.describe(
+													"History of MFA state changes (enabled/disabled events). Most recent events first.",
+												),
+										),
 									})
 									.describe(
 										"MFA configuration. When enabled, the user will be required to provide a second factor of authentication when logging in.",
