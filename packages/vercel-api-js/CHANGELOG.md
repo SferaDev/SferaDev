@@ -1,5 +1,53 @@
 # vercel-api-js
 
+## 1.1.0
+
+### Minor Changes
+
+- 6e270cb: Added RateLimitNotice schema and type.
+- 5fbafa4: Add types, schemas, and API endpoints for Secure Compute networks, including list, create, delete, update, and read operations.
+- 1e823d5: Added Drains endpoints for log drains: create, retrieve, update, delete, and test Drains.
+- 9b46913: Removed CreateSecret402 and GetSecret404 error types from API methods, types, and schemas.
+- 6e270cb: Added reusable error schemas and types (VercelBaseError, VercelForbiddenError, etc).
+- 1e823d5: Added endpoints for configuring Static IPs in a project and client certificate management for mTLS egress auth.
+- 3b019a4: Added support for projectIds:'all' in UserEvent integration payloads.
+- 9b46913: Removed deprecated 'id' and 'projectId' fields from GetSecretsQueryParams type and related schemas.
+- 1e823d5: Removed deprecated deprecated buyDomain function and related API types.
+- 1e823d5: Added shared environment variable endpoints for teams: create, list, update, delete, retrieve by id, and unlink from project.
+- 1e823d5: Added endpoint for team Directory Sync role mappings update.
+- 74ad091: Migrate OpenAPI clients to SferaDev monorepo with improved build configuration, updated dependencies, and enhanced TypeScript support.
+- 1e823d5: Added integration, billing, and git-related endpoints: marketplace billing plan listing, resource/project connections, update installation, git namespaces, and repo search.
+- 1e823d5: Added bulk redirects endpoints: staging, editing, deleting, restoring, versioning, and promoting project-level redirects.
+- 1e823d5: Added endpoints for edge cache tag/image invalidation and dangerous deletes by tag and by src image.
+- 1e823d5: Added Domains Registrar endpoints: supported TLDs, TLD price, domain availability and price, buy domains (single and multiple), renew, transfer-in, transfer status, order info, update auto-renew and nameservers, contact info schema.
+
+### Patch Changes
+
+- 9200170: Add optional 'leakedAt' field to AuthToken schema and type to indicate when the token was marked as leaked.
+- 0aee180: Added a regex pattern constraint for projectId in GetAllLogDrainsQueryParams to ensure valid project IDs.
+- 6e270cb: Removed the /certs list endpoint and related types and schemas.
+- 9211d88: Added recommendation in documentation comments to prefer using 'invalidateByTag' and 'invalidateBySrcImage' methods over 'dangerouslyDeleteByTags' and 'dangerouslyDeleteBySrcImages' for advanced use cases.
+- 9b46913: Removed unnecessary 'headers' property from request calls in secret-related API methods.
+- 6e270cb: Removed the /data-cache/purge-all endpoint and related types and schemas.
+- 3b019a4: [BREAKING] Removed all Secret-related API endpoints and types, including getSecrets, createSecret, renameSecret, getSecret, and deleteSecret.
+- 1e823d5: Marked some domains endpoints as deprecated and noted their replacements in summary.
+- 5253cb0: Added optional 'history' field to MFA configuration schema to track state changes and relevant details.
+- 1e823d5: Added additional error type handling and enhanced error schemas throughout endpoints.
+- 6e270cb: Allowed arbitrary properties in teamSchema to support unexpected fields.
+- 1e823d5: Set query parameter types to properly handle undefined/optional and removed | undefined where not needed.
+- fae7185: [BREAKING] Removed deprecated checkDomainPrice and checkDomainStatus API endpoints, along with related types and schemas.
+- 3b019a4: Added UpdateStaticIps409 error type to updateStaticIps mutation errors.
+- 3b019a4: Removed ExchangeSsoToken404 error type from exchangeSsoToken mutation errors.
+- f2fd5bb: Removed 'read-write:team' from permissions enums and user event schema.
+- 6e270cb: Removed the /data-cache/billing-settings endpoint and related types and schemas.
+- 144fcba: [BREAKING] Removed all client certificate management endpoints and types for project mTLS egress from the API.
+- 9b46913: Simplified response types and schemas by replacing specific types (e.g., CreateSecret200, RenameSecret200) with generic unknown/any types.
+- 9200170: Remove redundant JSDoc comments from GetProjects200 type and schema.
+- 5c2329b: Added @ts-expect-error comments to suppress TypeScript errors for deep type instantiations in server.tool calls.
+- 6e270cb: Improved schema property descriptions for various team and firewall config path parameters.
+- 0aee180: Updated description for InviteUserToTeam403 to clarify permission requirements.
+- 1e823d5: Improved JSDoc and description accuracy, particularly for new and existing endpoints.
+
 ## 1.0.2
 
 ### Patch Changes
