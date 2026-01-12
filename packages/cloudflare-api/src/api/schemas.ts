@@ -48121,6 +48121,18 @@ export type RulesetsSetConfigRule = {
 		 */
 		polish?: "off" | "lossless" | "lossy" | "webp";
 		/**
+		 * The request body buffering mode.
+		 *
+		 * @example standard
+		 */
+		request_body_buffering?: "none" | "standard" | "full";
+		/**
+		 * The response body buffering mode.
+		 *
+		 * @example standard
+		 */
+		response_body_buffering?: "none" | "standard";
+		/**
 		 * Whether to enable Rocket Loader.
 		 *
 		 * @example true
