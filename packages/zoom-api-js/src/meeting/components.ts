@@ -20044,19 +20044,26 @@ export type ListmeetingsummariesQueryParams = {
 	 */
 	next_page_token?: string;
 	/**
-	 * The start date, in `yyyy-MM-dd'T'HH:mm:ss'Z'` UTC format, used to retrieve the meeting summaries' creation date range.
+	 * The start date, in `yyyy-MM-dd'T'HH:mm:ss'Z'` UTC format. The time field used for filtering is specified by `time_filter_field`.
 	 *
 	 * @format date-time
 	 * @example 2023-10-19T07:00:00Z
 	 */
 	from?: string;
 	/**
-	 * The end date, in `yyyy-MM-dd'T'HH:mm:ss'Z'` UTC format, used to retrieve the meeting summaries' creation date range.
+	 * The end date, in `yyyy-MM-dd'T'HH:mm:ss'Z'` UTC format. The time field used for filtering is specified by `time_filter_field`.
 	 *
 	 * @format date-time
 	 * @example 2023-10-20T07:00:00Z
 	 */
 	to?: string;
+	/**
+	 * Which summary time field to use to filter results by the `from` and `to` parameters.
+	 *
+	 * @example summary_created_time
+	 * @default summary_start_time
+	 */
+	time_filter_field?: "summary_start_time" | "summary_created_time";
 };
 
 export type ListmeetingsummariesError = Fetcher.ErrorWrapper<undefined>;
