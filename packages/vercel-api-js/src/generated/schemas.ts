@@ -1113,7 +1113,7 @@ export const userEventSchema = z
 				}),
 				z.object({
 					created: z.optional(
-						z.string().datetime().describe("The date when the Shared Env Var was created."),
+						z.iso.datetime().describe("The date when the Shared Env Var was created."),
 					),
 					key: z.optional(z.string().describe("The name of the Shared Env Var.")),
 					ownerId: z
@@ -1186,7 +1186,7 @@ export const userEventSchema = z
 					oldEnvVar: z.optional(
 						z.object({
 							created: z.optional(
-								z.string().datetime().describe("The date when the Shared Env Var was created."),
+								z.iso.datetime().describe("The date when the Shared Env Var was created."),
 							),
 							key: z.optional(z.string().describe("The name of the Shared Env Var.")),
 							ownerId: z
@@ -1262,7 +1262,7 @@ export const userEventSchema = z
 					newEnvVar: z.optional(
 						z.object({
 							created: z.optional(
-								z.string().datetime().describe("The date when the Shared Env Var was created."),
+								z.iso.datetime().describe("The date when the Shared Env Var was created."),
 							),
 							key: z.optional(z.string().describe("The name of the Shared Env Var.")),
 							ownerId: z
