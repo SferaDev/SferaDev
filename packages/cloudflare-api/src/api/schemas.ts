@@ -19259,47 +19259,13 @@ export type DlpNewPredefinedProfile = DlpPredefinedProfileUpdate & {
 	profile_id: string;
 };
 
-export type DlpNewSharedEntry =
-	| {
-			enabled: boolean;
-			/**
-			 * @format uuid
-			 */
-			entry_id: string;
-			entry_type: "custom";
-	  }
-	| {
-			enabled: boolean;
-			/**
-			 * @format uuid
-			 */
-			entry_id: string;
-			entry_type: "predefined";
-	  }
-	| {
-			enabled: boolean;
-			/**
-			 * @format uuid
-			 */
-			entry_id: string;
-			entry_type: "integration";
-	  }
-	| {
-			enabled: boolean;
-			/**
-			 * @format uuid
-			 */
-			entry_id: string;
-			entry_type: "exact_data";
-	  }
-	| {
-			enabled: boolean;
-			/**
-			 * @format uuid
-			 */
-			entry_id: string;
-			entry_type: "document_fingerprint";
-	  };
+export type DlpNewSharedEntry = {
+	enabled: boolean;
+	/**
+	 * @format uuid
+	 */
+	entry_id: string;
+};
 
 export type DlpNewWordListEntry = {
 	enabled: boolean;
@@ -19601,39 +19567,13 @@ export type DlpRiskSummary = {
 	users: DlpUserRiskInfo[];
 };
 
-export type DlpSharedEntryUpdate =
-	| {
-			enabled: boolean;
-			/**
-			 * @format uuid
-			 */
-			entry_id: string;
-			entry_type: "predefined";
-	  }
-	| {
-			enabled: boolean;
-			/**
-			 * @format uuid
-			 */
-			entry_id: string;
-			entry_type: "integration";
-	  }
-	| {
-			enabled: boolean;
-			/**
-			 * @format uuid
-			 */
-			entry_id: string;
-			entry_type: "exact_data";
-	  }
-	| {
-			enabled: boolean;
-			/**
-			 * @format uuid
-			 */
-			entry_id: string;
-			entry_type: "document_fingerprint";
-	  };
+export type DlpSharedEntryUpdate = {
+	enabled: boolean;
+	/**
+	 * @format uuid
+	 */
+	entry_id: string;
+};
 
 /**
  * Content types to exclude from context analysis and return all matches.
@@ -35170,8 +35110,21 @@ export type McnCreateOnrampRequest = {
 	adopted_hub_id?: McnResourceId;
 	attached_hubs?: McnResourceId[];
 	attached_vpcs?: McnResourceId[];
+	/**
+	 * the ASN to use on the cloud side. If unset or zero, the cloud's default will be used.
+	 *
+	 * @format uint32
+	 * @x-auditable true
+	 */
+	cloud_asn?: number;
 	cloud_type: McnOnrampCloudType;
 	description?: string;
+	/**
+	 * if set to true, install_routes_in_cloud and install_routes_in_magic_wan should be set to false
+	 *
+	 * @x-auditable true
+	 */
+	dynamic_routing: boolean;
 	hub_provider_id?: McnProviderId;
 	/**
 	 * @x-auditable true
@@ -35272,6 +35225,7 @@ export type McnError = {
 		| 1015
 		| 1016
 		| 1017
+		| 1018
 		| 2001
 		| 2002
 		| 2003
@@ -35395,6 +35349,12 @@ export type McnError = {
 		| 102064
 		| 102065
 		| 102066
+		| 102067
+		| 102068
+		| 102069
+		| 102070
+		| 102071
+		| 102072
 		| 103001
 		| 103002
 		| 103003
@@ -35500,11 +35460,20 @@ export type McnObservation = {
 export type McnOnramp = {
 	attached_hubs?: McnResourceId[];
 	attached_vpcs?: McnResourceId[];
+	/**
+	 * @format uint32
+	 * @x-auditable true
+	 */
+	cloud_asn?: number;
 	cloud_type: McnOnrampCloudType;
 	/**
 	 * @x-auditable true
 	 */
 	description?: string;
+	/**
+	 * @x-auditable true
+	 */
+	dynamic_routing: boolean;
 	hub?: McnResourceId;
 	id: McnOnrampId;
 	/**
@@ -36037,6 +36006,9 @@ export type McnUpdateOnrampRequest = {
 	 * @x-auditable true
 	 */
 	install_routes_in_cloud?: boolean;
+	/**
+	 * @x-auditable true
+	 */
 	install_routes_in_magic_wan?: boolean;
 	manage_hub_to_hub_attachments?: boolean;
 	manage_vpc_to_hub_attachments?: boolean;
