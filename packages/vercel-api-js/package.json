@@ -25,11 +25,6 @@
 	"devDependencies": {
 		"@kubb/cli": "catalog:",
 		"@kubb/core": "catalog:",
-		"@kubb/plugin-client": "catalog:",
-		"@kubb/plugin-mcp": "catalog:",
-		"@kubb/plugin-oas": "catalog:",
-		"@kubb/plugin-ts": "catalog:",
-		"@kubb/plugin-zod": "catalog:",
 		"@modelcontextprotocol/sdk": "catalog:",
 		"@sferadev/openapi-utils": "workspace:*",
 		"@sferadev/tsconfig": "workspace:*",
