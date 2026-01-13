@@ -2165,6 +2165,13 @@ export const payloadTypeEnum2 = {
 
 export type PayloadTypeEnum2Key = (typeof payloadTypeEnum2)[keyof typeof payloadTypeEnum2];
 
+export const payloadAccessEnum = {
+	public: "public",
+	private: "private",
+} as const;
+
+export type PayloadAccessEnumKey = (typeof payloadAccessEnum)[keyof typeof payloadAccessEnum];
+
 export const payloadStoreTypeEnum = {
 	redis: "redis",
 	postgres: "postgres",
@@ -7716,6 +7723,10 @@ export type UserEvent = {
 						 * @type string
 						 */
 						type: PayloadTypeEnum2Key;
+						/**
+						 * @type string | undefined
+						 */
+						access?: PayloadAccessEnumKey | undefined;
 				  }
 				| {
 						/**

@@ -3178,6 +3178,7 @@ export const userEventSchema = z
 					computeUnitsMin: z.optional(z.number()),
 					suspendTimeoutSeconds: z.optional(z.number()),
 					type: z.enum(["redis", "postgres", "edge-config", "blob", "integration"]),
+					access: z.optional(z.enum(["public", "private"])),
 				}),
 				z.object({
 					storeType: z.enum(["redis", "postgres"]),
