@@ -2947,6 +2947,36 @@ export const userEventSchema = z
 				z.object({
 					projectId: z.string(),
 					projectName: z.string(),
+					next: z.object({
+						skewProtectionBoundaryAt: z.number(),
+					}),
+					previous: z.object({
+						skewProtectionBoundaryAt: z.optional(z.number()),
+					}),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					next: z.object({
+						skewProtectionMaxAge: z.number(),
+					}),
+					previous: z.object({
+						skewProtectionMaxAge: z.optional(z.number()),
+					}),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					next: z.object({
+						skewProtectionAllowedDomains: z.optional(z.array(z.string())),
+					}),
+					previous: z.object({
+						skewProtectionAllowedDomains: z.optional(z.array(z.string())),
+					}),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
 					targetDeploymentId: z.optional(z.string()),
 				}),
 				z.object({
@@ -3710,7 +3740,6 @@ export const userEventSchema = z
 							z.enum([
 								"*",
 								"read:user",
-								"read-write:user",
 								"read:domain",
 								"read-write:domain",
 								"read:team",
@@ -3738,7 +3767,6 @@ export const userEventSchema = z
 							z.enum([
 								"*",
 								"read:user",
-								"read-write:user",
 								"read:domain",
 								"read-write:domain",
 								"read:team",
