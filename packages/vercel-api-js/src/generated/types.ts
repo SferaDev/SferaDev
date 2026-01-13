@@ -2264,7 +2264,6 @@ export type PayloadScopesEnumKey = (typeof payloadScopesEnum)[keyof typeof paylo
 export const payloadPermissionsEnum = {
 	"*": "*",
 	"read:user": "read:user",
-	"read-write:user": "read-write:user",
 	"read:domain": "read:domain",
 	"read-write:domain": "read-write:domain",
 	"read:team": "read:team",
@@ -2299,7 +2298,6 @@ export type PayloadNextScopesEnumKey =
 export const payloadNextPermissionsEnum = {
 	"*": "*",
 	"read:user": "read:user",
-	"read-write:user": "read-write:user",
 	"read:domain": "read:domain",
 	"read-write:domain": "read-write:domain",
 	"read:team": "read:team",
@@ -7178,6 +7176,90 @@ export type UserEvent = {
 						 * @type boolean
 						 */
 						oldElasticConcurrencyEnabled: boolean;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type object
+						 */
+						next: {
+							/**
+							 * @type number
+							 */
+							skewProtectionBoundaryAt: number;
+						};
+						/**
+						 * @type object
+						 */
+						previous: {
+							/**
+							 * @type number | undefined
+							 */
+							skewProtectionBoundaryAt?: number | undefined;
+						};
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type object
+						 */
+						next: {
+							/**
+							 * @type number
+							 */
+							skewProtectionMaxAge: number;
+						};
+						/**
+						 * @type object
+						 */
+						previous: {
+							/**
+							 * @type number | undefined
+							 */
+							skewProtectionMaxAge?: number | undefined;
+						};
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type object
+						 */
+						next: {
+							/**
+							 * @type array | undefined
+							 */
+							skewProtectionAllowedDomains?: string[] | undefined;
+						};
+						/**
+						 * @type object
+						 */
+						previous: {
+							/**
+							 * @type array | undefined
+							 */
+							skewProtectionAllowedDomains?: string[] | undefined;
+						};
 				  }
 				| {
 						/**
