@@ -1011,14 +1011,6 @@ export const registrantFieldTypeEnum = {
 export type RegistrantFieldTypeEnumKey =
 	(typeof registrantFieldTypeEnum)[keyof typeof registrantFieldTypeEnum];
 
-export const registrantFieldValidationEnum2 = {
-	valid_email: "valid_email",
-	valid_countries: "valid_countries",
-} as const;
-
-export type RegistrantFieldValidationEnum2Key =
-	(typeof registrantFieldValidationEnum2)[keyof typeof registrantFieldValidationEnum2];
-
 export const registrantFieldTypeEnum2 = {
 	enum: "enum",
 } as const;
@@ -1026,28 +1018,12 @@ export const registrantFieldTypeEnum2 = {
 export type RegistrantFieldTypeEnum2Key =
 	(typeof registrantFieldTypeEnum2)[keyof typeof registrantFieldTypeEnum2];
 
-export const registrantFieldValidationEnum3 = {
-	valid_email: "valid_email",
-	valid_countries: "valid_countries",
-} as const;
-
-export type RegistrantFieldValidationEnum3Key =
-	(typeof registrantFieldValidationEnum3)[keyof typeof registrantFieldValidationEnum3];
-
 export const registrantFieldTypeEnum3 = {
 	acknowledgement: "acknowledgement",
 } as const;
 
 export type RegistrantFieldTypeEnum3Key =
 	(typeof registrantFieldTypeEnum3)[keyof typeof registrantFieldTypeEnum3];
-
-export const registrantFieldValidationEnum4 = {
-	valid_email: "valid_email",
-	valid_countries: "valid_countries",
-} as const;
-
-export type RegistrantFieldValidationEnum4Key =
-	(typeof registrantFieldValidationEnum4)[keyof typeof registrantFieldValidationEnum4];
 
 export const registrantFieldTypeEnum4 = {
 	notice: "notice",
@@ -1126,7 +1102,7 @@ export type RegistrantField =
 			 * @type string | undefined
 			 */
 			label?: string | undefined;
-			validation?: (RegistrantFieldValidationEnum2Key | string | string) | undefined;
+			validation?: (RegistrantFieldValidationEnumKey | string | string) | undefined;
 			requiredWhen?:
 				| (
 						| string
@@ -1177,7 +1153,7 @@ export type RegistrantField =
 			 * @type string | undefined
 			 */
 			label?: string | undefined;
-			validation?: (RegistrantFieldValidationEnum3Key | string | string) | undefined;
+			validation?: (RegistrantFieldValidationEnumKey | string | string) | undefined;
 			requiredWhen?:
 				| (
 						| string
@@ -1211,7 +1187,7 @@ export type RegistrantField =
 			 * @type string | undefined
 			 */
 			label?: string | undefined;
-			validation?: (RegistrantFieldValidationEnum4Key | string | string) | undefined;
+			validation?: (RegistrantFieldValidationEnumKey | string | string) | undefined;
 			requiredWhen?:
 				| (
 						| string
@@ -1985,23 +1961,6 @@ export const roleEnum = {
 
 export type RoleEnumKey = (typeof roleEnum)[keyof typeof roleEnum];
 
-export const joinedFromOriginEnum2 = {
-	teams: "teams",
-	saml: "saml",
-	link: "link",
-	github: "github",
-	gitlab: "gitlab",
-	bitbucket: "bitbucket",
-	mail: "mail",
-	import: "import",
-	dsync: "dsync",
-	feedback: "feedback",
-	"organization-teams": "organization-teams",
-} as const;
-
-export type JoinedFromOriginEnum2Key =
-	(typeof joinedFromOriginEnum2)[keyof typeof joinedFromOriginEnum2];
-
 export const ssoProtectionDeploymentTypeEnum = {
 	all: "all",
 	preview: "preview",
@@ -2196,21 +2155,6 @@ export const budgetPricingPlanEnum = {
 export type BudgetPricingPlanEnumKey =
 	(typeof budgetPricingPlanEnum)[keyof typeof budgetPricingPlanEnum];
 
-export const budgetTypeEnum2 = {
-	fixed: "fixed",
-} as const;
-
-export type BudgetTypeEnum2Key = (typeof budgetTypeEnum2)[keyof typeof budgetTypeEnum2];
-
-export const budgetPricingPlanEnum2 = {
-	plus: "plus",
-	legacy: "legacy",
-	unbundled: "unbundled",
-} as const;
-
-export type BudgetPricingPlanEnum2Key =
-	(typeof budgetPricingPlanEnum2)[keyof typeof budgetPricingPlanEnum2];
-
 export const payloadTypeEnum2 = {
 	redis: "redis",
 	postgres: "postgres",
@@ -2228,19 +2172,6 @@ export const payloadStoreTypeEnum = {
 
 export type PayloadStoreTypeEnumKey =
 	(typeof payloadStoreTypeEnum)[keyof typeof payloadStoreTypeEnum];
-
-export const roleEnum2 = {
-	OWNER: "OWNER",
-	MEMBER: "MEMBER",
-	DEVELOPER: "DEVELOPER",
-	SECURITY: "SECURITY",
-	BILLING: "BILLING",
-	VIEWER: "VIEWER",
-	VIEWER_FOR_PLUS: "VIEWER_FOR_PLUS",
-	CONTRIBUTOR: "CONTRIBUTOR",
-} as const;
-
-export type RoleEnum2Key = (typeof roleEnum2)[keyof typeof roleEnum2];
 
 export const payloadRoleEnum = {
 	OWNER: "OWNER",
@@ -2289,15 +2220,6 @@ export const removedMembershipRoleEnum = {
 
 export type RemovedMembershipRoleEnumKey =
 	(typeof removedMembershipRoleEnum)[keyof typeof removedMembershipRoleEnum];
-
-export const projectMembershipRoleEnum2 = {
-	ADMIN: "ADMIN",
-	PROJECT_DEVELOPER: "PROJECT_DEVELOPER",
-	PROJECT_VIEWER: "PROJECT_VIEWER",
-} as const;
-
-export type ProjectMembershipRoleEnum2Key =
-	(typeof projectMembershipRoleEnum2)[keyof typeof projectMembershipRoleEnum2];
 
 export const projectMembershipPreviousRoleEnum = {
 	ADMIN: "ADMIN",
@@ -2410,30 +2332,6 @@ export const itemsTypeEnum = {
 } as const;
 
 export type ItemsTypeEnumKey = (typeof itemsTypeEnum)[keyof typeof itemsTypeEnum];
-
-export const projectIdsTypeEnum2 = {
-	list: "list",
-} as const;
-
-export type ProjectIdsTypeEnum2Key = (typeof projectIdsTypeEnum2)[keyof typeof projectIdsTypeEnum2];
-
-export const itemsTypeEnum2 = {
-	string: "string",
-} as const;
-
-export type ItemsTypeEnum2Key = (typeof itemsTypeEnum2)[keyof typeof itemsTypeEnum2];
-
-export const projectIdsTypeEnum3 = {
-	list: "list",
-} as const;
-
-export type ProjectIdsTypeEnum3Key = (typeof projectIdsTypeEnum3)[keyof typeof projectIdsTypeEnum3];
-
-export const itemsTypeEnum3 = {
-	string: "string",
-} as const;
-
-export type ItemsTypeEnum3Key = (typeof itemsTypeEnum3)[keyof typeof itemsTypeEnum3];
 
 export const payloadGrantTypeEnum = {
 	authorization_code: "authorization_code",
@@ -6667,7 +6565,7 @@ export type UserEvent = {
 													/**
 													 * @type string
 													 */
-													origin: JoinedFromOriginEnum2Key;
+													origin: JoinedFromOriginEnumKey;
 													/**
 													 * @type string | undefined
 													 */
@@ -7638,7 +7536,7 @@ export type UserEvent = {
 							 * @description The budget type
 							 * @type string
 							 */
-							type: BudgetTypeEnum2Key;
+							type: BudgetTypeEnumKey;
 							/**
 							 * @description Budget amount (USD / dollars)
 							 * @type number
@@ -7688,7 +7586,7 @@ export type UserEvent = {
 							 * @description The acive pricing plan the team is billed with
 							 * @type string | undefined
 							 */
-							pricingPlan?: BudgetPricingPlanEnum2Key | undefined;
+							pricingPlan?: BudgetPricingPlanEnumKey | undefined;
 							/**
 							 * @description Partition key
 							 * @type string
@@ -7809,7 +7707,7 @@ export type UserEvent = {
 										/**
 										 * @type string
 										 */
-										role: RoleEnum2Key;
+										role: RoleEnumKey;
 										/**
 										 * @type boolean
 										 */
@@ -8410,7 +8308,7 @@ export type UserEvent = {
 							/**
 							 * @type string | undefined
 							 */
-							role?: ProjectMembershipRoleEnum2Key | undefined;
+							role?: ProjectMembershipRoleEnumKey | undefined;
 							/**
 							 * @type string | undefined
 							 */
@@ -9077,7 +8975,7 @@ export type UserEvent = {
 													/**
 													 * @type string
 													 */
-													type: ProjectIdsTypeEnum2Key;
+													type: ProjectIdsTypeEnumKey;
 													/**
 													 * @type boolean
 													 */
@@ -9089,7 +8987,7 @@ export type UserEvent = {
 														/**
 														 * @type string
 														 */
-														type: ItemsTypeEnum2Key;
+														type: ItemsTypeEnumKey;
 													};
 												};
 										  }
@@ -9113,7 +9011,7 @@ export type UserEvent = {
 													/**
 													 * @type string
 													 */
-													type: ProjectIdsTypeEnum3Key;
+													type: ProjectIdsTypeEnumKey;
 													/**
 													 * @type boolean
 													 */
@@ -9125,7 +9023,7 @@ export type UserEvent = {
 														/**
 														 * @type string
 														 */
-														type: ItemsTypeEnum3Key;
+														type: ItemsTypeEnumKey;
 													};
 												};
 										  }
@@ -9586,7 +9484,7 @@ export const membershipTeamPermissionsEnum = {
 export type MembershipTeamPermissionsEnumKey =
 	(typeof membershipTeamPermissionsEnum)[keyof typeof membershipTeamPermissionsEnum];
 
-export const joinedFromOriginEnum3 = {
+export const joinedFromOriginEnum2 = {
 	bitbucket: "bitbucket",
 	dsync: "dsync",
 	feedback: "feedback",
@@ -9600,8 +9498,8 @@ export const joinedFromOriginEnum3 = {
 	teams: "teams",
 } as const;
 
-export type JoinedFromOriginEnum3Key =
-	(typeof joinedFromOriginEnum3)[keyof typeof joinedFromOriginEnum3];
+export type JoinedFromOriginEnum2Key =
+	(typeof joinedFromOriginEnum2)[keyof typeof joinedFromOriginEnum2];
 
 /**
  * @description Data representing a Team.
@@ -10030,7 +9928,7 @@ export type Team = {
 					/**
 					 * @type string
 					 */
-					origin: JoinedFromOriginEnum3Key;
+					origin: JoinedFromOriginEnum2Key;
 					/**
 					 * @type string | undefined
 					 */
@@ -10086,65 +9984,6 @@ export const teamLimitedLimitedByEnum = {
 
 export type TeamLimitedLimitedByEnumKey =
 	(typeof teamLimitedLimitedByEnum)[keyof typeof teamLimitedLimitedByEnum];
-
-export const membershipRoleEnum2 = {
-	BILLING: "BILLING",
-	CONTRIBUTOR: "CONTRIBUTOR",
-	DEVELOPER: "DEVELOPER",
-	MEMBER: "MEMBER",
-	OWNER: "OWNER",
-	SECURITY: "SECURITY",
-	VIEWER: "VIEWER",
-	VIEWER_FOR_PLUS: "VIEWER_FOR_PLUS",
-} as const;
-
-export type MembershipRoleEnum2Key = (typeof membershipRoleEnum2)[keyof typeof membershipRoleEnum2];
-
-export const membershipTeamRolesEnum2 = {
-	BILLING: "BILLING",
-	CONTRIBUTOR: "CONTRIBUTOR",
-	DEVELOPER: "DEVELOPER",
-	MEMBER: "MEMBER",
-	OWNER: "OWNER",
-	SECURITY: "SECURITY",
-	VIEWER: "VIEWER",
-	VIEWER_FOR_PLUS: "VIEWER_FOR_PLUS",
-} as const;
-
-export type MembershipTeamRolesEnum2Key =
-	(typeof membershipTeamRolesEnum2)[keyof typeof membershipTeamRolesEnum2];
-
-export const membershipTeamPermissionsEnum2 = {
-	CreateProject: "CreateProject",
-	EnvVariableManager: "EnvVariableManager",
-	EnvironmentManager: "EnvironmentManager",
-	FullProductionDeployment: "FullProductionDeployment",
-	IntegrationManager: "IntegrationManager",
-	UsageViewer: "UsageViewer",
-	V0Builder: "V0Builder",
-	V0Chatter: "V0Chatter",
-	V0Viewer: "V0Viewer",
-} as const;
-
-export type MembershipTeamPermissionsEnum2Key =
-	(typeof membershipTeamPermissionsEnum2)[keyof typeof membershipTeamPermissionsEnum2];
-
-export const joinedFromOriginEnum4 = {
-	bitbucket: "bitbucket",
-	dsync: "dsync",
-	feedback: "feedback",
-	github: "github",
-	gitlab: "gitlab",
-	import: "import",
-	link: "link",
-	mail: "mail",
-	"organization-teams": "organization-teams",
-	saml: "saml",
-	teams: "teams",
-} as const;
-
-export type JoinedFromOriginEnum4Key =
-	(typeof joinedFromOriginEnum4)[keyof typeof joinedFromOriginEnum4];
 
 /**
  * @description A limited form of data representing a Team, due to the authentication token missing privileges to read the full Team data.
@@ -10298,15 +10137,15 @@ export type TeamLimited = {
 		/**
 		 * @type string
 		 */
-		role: MembershipRoleEnum2Key;
+		role: MembershipRoleEnumKey;
 		/**
 		 * @type array | undefined
 		 */
-		teamRoles?: MembershipTeamRolesEnum2Key[] | undefined;
+		teamRoles?: MembershipTeamRolesEnumKey[] | undefined;
 		/**
 		 * @type array | undefined
 		 */
-		teamPermissions?: MembershipTeamPermissionsEnum2Key[] | undefined;
+		teamPermissions?: MembershipTeamPermissionsEnumKey[] | undefined;
 		/**
 		 * @type number
 		 */
@@ -10323,7 +10162,7 @@ export type TeamLimited = {
 					/**
 					 * @type string
 					 */
-					origin: JoinedFromOriginEnum4Key;
+					origin: JoinedFromOriginEnum2Key;
 					/**
 					 * @type string | undefined
 					 */
@@ -10409,24 +10248,6 @@ export const scopesTypeEnum2 = {
 
 export type ScopesTypeEnum2Key = (typeof scopesTypeEnum2)[keyof typeof scopesTypeEnum2];
 
-export const scopesOriginEnum2 = {
-	saml: "saml",
-	github: "github",
-	gitlab: "gitlab",
-	bitbucket: "bitbucket",
-	email: "email",
-	manual: "manual",
-	passkey: "passkey",
-	otp: "otp",
-	sms: "sms",
-	invite: "invite",
-	google: "google",
-	apple: "apple",
-	app: "app",
-} as const;
-
-export type ScopesOriginEnum2Key = (typeof scopesOriginEnum2)[keyof typeof scopesOriginEnum2];
-
 /**
  * @description Authentication token metadata.
  */
@@ -10503,7 +10324,7 @@ export type AuthToken = {
 						/**
 						 * @type string | undefined
 						 */
-						origin?: ScopesOriginEnum2Key | undefined;
+						origin?: ScopesOriginEnumKey | undefined;
 						/**
 						 * @type number
 						 */
