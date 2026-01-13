@@ -7,6 +7,7 @@
 			"dependsOn": ["^build", "^generate", "generate"]
 		},
 		"@sferadev/openapi-website#build": {
+			"dependsOn": ["vercel-api-js#build"],
 			"env": [
 				"AUTH_SECRET",
 				"DATABASE_URL",
