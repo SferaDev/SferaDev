@@ -2125,6 +2125,22 @@ export const payloadReasonCodeEnum2 = {
 export type PayloadReasonCodeEnum2Key =
 	(typeof payloadReasonCodeEnum2)[keyof typeof payloadReasonCodeEnum2];
 
+export const payloadBuildQueueConfigurationEnum = {
+	SKIP_NAMESPACE_QUEUE: "SKIP_NAMESPACE_QUEUE",
+	WAIT_FOR_NAMESPACE_QUEUE: "WAIT_FOR_NAMESPACE_QUEUE",
+} as const;
+
+export type PayloadBuildQueueConfigurationEnumKey =
+	(typeof payloadBuildQueueConfigurationEnum)[keyof typeof payloadBuildQueueConfigurationEnum];
+
+export const payloadOldBuildQueueConfigurationEnum = {
+	SKIP_NAMESPACE_QUEUE: "SKIP_NAMESPACE_QUEUE",
+	WAIT_FOR_NAMESPACE_QUEUE: "WAIT_FOR_NAMESPACE_QUEUE",
+} as const;
+
+export type PayloadOldBuildQueueConfigurationEnumKey =
+	(typeof payloadOldBuildQueueConfigurationEnum)[keyof typeof payloadOldBuildQueueConfigurationEnum];
+
 export const budgetItemTypeEnum = {
 	fixed: "fixed",
 } as const;
@@ -4364,6 +4380,10 @@ export type UserEvent = {
 													 * @type string | undefined
 													 */
 													comment?: string | undefined;
+													/**
+													 * @type boolean | undefined
+													 */
+													ineligibleForAppeal?: boolean | undefined;
 											  }[]
 											| undefined;
 										/**
@@ -7183,6 +7203,14 @@ export type UserEvent = {
 						 * @type boolean
 						 */
 						oldElasticConcurrencyEnabled: boolean;
+						/**
+						 * @type string | undefined
+						 */
+						buildQueueConfiguration?: PayloadBuildQueueConfigurationEnumKey | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						oldBuildQueueConfiguration?: PayloadOldBuildQueueConfigurationEnumKey | undefined;
 				  }
 				| {
 						/**

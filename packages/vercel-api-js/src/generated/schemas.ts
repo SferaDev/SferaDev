@@ -1436,6 +1436,7 @@ export const userEventSchema = z
 														actor: z.optional(z.string()),
 														statusCode: z.optional(z.number()),
 														comment: z.optional(z.string()),
+														ineligibleForAppeal: z.optional(z.boolean()),
 													})
 													.describe("Since June 2023"),
 											)
@@ -2943,6 +2944,12 @@ export const userEventSchema = z
 					projectName: z.string(),
 					elasticConcurrencyEnabled: z.boolean(),
 					oldElasticConcurrencyEnabled: z.boolean(),
+					buildQueueConfiguration: z.optional(
+						z.enum(["SKIP_NAMESPACE_QUEUE", "WAIT_FOR_NAMESPACE_QUEUE"]),
+					),
+					oldBuildQueueConfiguration: z.optional(
+						z.enum(["SKIP_NAMESPACE_QUEUE", "WAIT_FOR_NAMESPACE_QUEUE"]),
+					),
 				}),
 				z.object({
 					projectId: z.string(),
