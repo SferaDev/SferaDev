@@ -51424,13 +51424,38 @@ export type StreamDirectUploadResponse = StreamApiResponseSingle & {
 export type StreamDirectUser = boolean;
 
 /**
+ * Indicates the progress as a percentage between 0 and 100.
+ *
+ * @maximum 100
+ * @minimum 0
+ * @x-auditable true
+ */
+export type StreamDownloadPercentComplete = number;
+
+/**
+ * The status of a generated download.
+ *
+ * @x-auditable true
+ */
+export type StreamDownloadStatus = "ready" | "inprogress" | "error";
+
+/**
  * The type of downloads available are: `default`, `audio`.
  *
  * @default default
  * @example audio
  * @x-auditable true
  */
-export type StreamDownloadType = string;
+export type StreamDownloadType = "default" | "audio";
+
+/**
+ * The URL to access the generated download.
+ *
+ * @example https://customer-m033z5x00ks6nunl.cloudflarestream.com/ea95132c15732412d22c1476fa83f27a/downloads/default.mp4
+ * @format uri
+ * @x-auditable true
+ */
+export type StreamDownloadUrl = string;
 
 /**
  * The source URL for a downloaded image. If the watermark profile was created via direct upload, this field is null.
@@ -51440,8 +51465,30 @@ export type StreamDownloadType = string;
  */
 export type StreamDownloadedFrom = string;
 
+export type StreamDownloads = {
+	percentComplete?: StreamDownloadPercentComplete;
+	status?: StreamDownloadStatus;
+	url?: StreamDownloadUrl;
+};
+
 export type StreamDownloadsResponse = StreamApiResponseSingle & {
-	result?: Record<string, any>;
+	/**
+	 * An object with download type keys. Each key is optional and only present if that download type has been created.
+	 */
+	result?: {
+		/**
+		 * The audio-only download. Only present if this download type has been created.
+		 */
+		audio?: StreamDownloads;
+		/**
+		 * The default video download. Only present if this download type has been created.
+		 */
+		["default"]?: StreamDownloads;
+	};
+};
+
+export type StreamDownloadsResponseSingle = StreamApiResponseSingle & {
+	result?: StreamDownloads;
 };
 
 /**
@@ -51982,7 +52029,7 @@ export type StreamOutputUrl = string;
 export type StreamPadding = number;
 
 /**
- * Indicates the size of the entire upload in bytes. The value must be a non-negative integer.
+ * Indicates the progress as a percentage between 0 and 100.
  *
  * @maximum 100
  * @minimum 0
