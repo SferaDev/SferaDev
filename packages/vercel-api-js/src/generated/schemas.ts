@@ -2936,6 +2936,12 @@ export const userEventSchema = z
 				z.object({
 					projectId: z.string(),
 					projectName: z.string(),
+					previous: z.object({}),
+					next: z.object({}),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
 					buildMachineType: z.optional(z.string()),
 					oldBuildMachineType: z.optional(z.string()),
 				}),
@@ -2975,7 +2981,7 @@ export const userEventSchema = z
 					projectId: z.string(),
 					projectName: z.string(),
 					next: z.object({
-						skewProtectionAllowedDomains: z.optional(z.array(z.string())),
+						skewProtectionAllowedDomains: z.array(z.string()),
 					}),
 					previous: z.object({
 						skewProtectionAllowedDomains: z.optional(z.array(z.string())),

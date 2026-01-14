@@ -7178,6 +7178,24 @@ export type UserEvent = {
 						 */
 						projectName: string;
 						/**
+						 * @type object
+						 */
+						previous: object;
+						/**
+						 * @type object
+						 */
+						next: object;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
 						 * @type string | undefined
 						 */
 						buildMachineType?: string | undefined;
@@ -7282,9 +7300,9 @@ export type UserEvent = {
 						 */
 						next: {
 							/**
-							 * @type array | undefined
+							 * @type array
 							 */
-							skewProtectionAllowedDomains?: string[] | undefined;
+							skewProtectionAllowedDomains: string[];
 						};
 						/**
 						 * @type object
