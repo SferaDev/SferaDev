@@ -1447,13 +1447,6 @@ import type {
 	UpdateProject404,
 	UpdateProject409,
 	UpdateProject428,
-	UpdateProjectDataCache400,
-	UpdateProjectDataCache401,
-	UpdateProjectDataCache403,
-	UpdateProjectDataCache404,
-	UpdateProjectDataCacheMutationResponse,
-	UpdateProjectDataCachePathParams,
-	UpdateProjectDataCacheQueryParams,
 	UpdateProjectDomain400,
 	UpdateProjectDomain401,
 	UpdateProjectDomain403,
@@ -2697,47 +2690,6 @@ export async function readNetwork({
 		ReadNetworkQueryParams,
 		ReadNetworkPathParams
 	>({ method: "GET", url: `/v1/connect/networks/${networkId}`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Update the data cache feature on a project.
- * @summary Update the data cache feature
- * {@link /v1/data-cache/projects/:projectId}
- */
-export async function updateProjectDataCache({
-	pathParams: { projectId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: UpdateProjectDataCachePathParams;
-	queryParams?: UpdateProjectDataCacheQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
-}) {
-	const { client: request = client, ...requestConfig } = config;
-
-	if (!projectId) {
-		throw new Error(`Missing required path parameter: projectId`);
-	}
-	const data = await request<
-		UpdateProjectDataCacheMutationResponse,
-		ErrorWrapper<
-			| UpdateProjectDataCache400
-			| UpdateProjectDataCache401
-			| UpdateProjectDataCache403
-			| UpdateProjectDataCache404
-		>,
-		null,
-		Record<string, string>,
-		UpdateProjectDataCacheQueryParams,
-		UpdateProjectDataCachePathParams
-	>({
-		method: "PATCH",
-		url: `/v1/data-cache/projects/${projectId}`,
-		queryParams,
-		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
-	});
 	return data;
 }
 
@@ -9682,7 +9634,6 @@ export const operationsByPath = {
 	"DELETE /v1/connect/networks/{networkId}": deleteNetwork,
 	"PATCH /v1/connect/networks/{networkId}": updateNetwork,
 	"GET /v1/connect/networks/{networkId}": readNetwork,
-	"PATCH /v1/data-cache/projects/{projectId}": updateProjectDataCache,
 	"GET /v3/deployments/{idOrUrl}/events": getDeploymentEvents,
 	"PATCH /v1/deployments/{deploymentId}/integrations/{integrationConfigurationId}/resources/{resourceId}/actions/{action}":
 		updateIntegrationDeploymentAction,
@@ -9935,34 +9886,6 @@ export const operationsByTag = {
 		readNetwork,
 		updateStaticIps,
 	},
-	projects: {
-		updateProjectDataCache,
-		getProjects,
-		createProject,
-		getProject,
-		updateProject,
-		deleteProject,
-		getProjectDomains,
-		getProjectDomain,
-		updateProjectDomain,
-		removeProjectDomain,
-		addProjectDomain,
-		moveProjectDomain,
-		verifyProjectDomain,
-		filterProjectEnvs,
-		createProjectEnv,
-		getProjectEnv,
-		removeProjectEnv,
-		editProjectEnv,
-		batchRemoveProjectEnv,
-		createProjectTransferRequest,
-		acceptProjectTransferRequest,
-		updateProjectProtectionBypass,
-		requestPromote,
-		listPromoteAliases,
-		pauseProject,
-		unpauseProject,
-	},
 	deployments: {
 		getDeploymentEvents,
 		updateIntegrationDeploymentAction,
@@ -10116,6 +10039,33 @@ export const operationsByTag = {
 		addProjectMember,
 		removeProjectMember,
 	},
+	projects: {
+		getProjects,
+		createProject,
+		getProject,
+		updateProject,
+		deleteProject,
+		getProjectDomains,
+		getProjectDomain,
+		updateProjectDomain,
+		removeProjectDomain,
+		addProjectDomain,
+		moveProjectDomain,
+		verifyProjectDomain,
+		filterProjectEnvs,
+		createProjectEnv,
+		getProjectEnv,
+		removeProjectEnv,
+		editProjectEnv,
+		batchRemoveProjectEnv,
+		createProjectTransferRequest,
+		acceptProjectTransferRequest,
+		updateProjectProtectionBypass,
+		requestPromote,
+		listPromoteAliases,
+		pauseProject,
+		unpauseProject,
+	},
 	staticIps: {
 		updateStaticIps,
 	},
@@ -10212,37 +10162,6 @@ export const tagDictionary = {
 		POST: ["createNetwork"],
 		DELETE: ["deleteNetwork"],
 		PATCH: ["updateNetwork", "updateStaticIps"],
-	},
-	projects: {
-		PATCH: [
-			"updateProjectDataCache",
-			"updateProject",
-			"updateProjectDomain",
-			"editProjectEnv",
-			"updateProjectProtectionBypass",
-		],
-		GET: [
-			"getProjects",
-			"getProject",
-			"getProjectDomains",
-			"getProjectDomain",
-			"filterProjectEnvs",
-			"getProjectEnv",
-			"listPromoteAliases",
-		],
-		POST: [
-			"createProject",
-			"addProjectDomain",
-			"moveProjectDomain",
-			"verifyProjectDomain",
-			"createProjectEnv",
-			"createProjectTransferRequest",
-			"requestPromote",
-			"pauseProject",
-			"unpauseProject",
-		],
-		DELETE: ["deleteProject", "removeProjectDomain", "removeProjectEnv", "batchRemoveProjectEnv"],
-		PUT: ["acceptProjectTransferRequest"],
 	},
 	deployments: {
 		GET: [
@@ -10390,6 +10309,36 @@ export const tagDictionary = {
 		GET: ["getProjectMembers"],
 		POST: ["addProjectMember"],
 		DELETE: ["removeProjectMember"],
+	},
+	projects: {
+		GET: [
+			"getProjects",
+			"getProject",
+			"getProjectDomains",
+			"getProjectDomain",
+			"filterProjectEnvs",
+			"getProjectEnv",
+			"listPromoteAliases",
+		],
+		POST: [
+			"createProject",
+			"addProjectDomain",
+			"moveProjectDomain",
+			"verifyProjectDomain",
+			"createProjectEnv",
+			"createProjectTransferRequest",
+			"requestPromote",
+			"pauseProject",
+			"unpauseProject",
+		],
+		PATCH: [
+			"updateProject",
+			"updateProjectDomain",
+			"editProjectEnv",
+			"updateProjectProtectionBypass",
+		],
+		DELETE: ["deleteProject", "removeProjectDomain", "removeProjectEnv", "batchRemoveProjectEnv"],
+		PUT: ["acceptProjectTransferRequest"],
 	},
 	staticIps: {
 		PATCH: ["updateStaticIps"],
