@@ -333,8 +333,6 @@ import {
 	updateInvoicePathParamsSchema,
 	updateNetworkPathParamsSchema,
 	updateNetworkQueryParamsSchema,
-	updateProjectDataCachePathParamsSchema,
-	updateProjectDataCacheQueryParamsSchema,
 	updateProjectDomainPathParamsSchema,
 	updateProjectDomainQueryParamsSchema,
 	updateProjectPathParamsSchema,
@@ -1804,13 +1802,6 @@ import type {
 	UpdateProject404,
 	UpdateProject409,
 	UpdateProject428,
-	UpdateProjectDataCache400,
-	UpdateProjectDataCache401,
-	UpdateProjectDataCache403,
-	UpdateProjectDataCache404,
-	UpdateProjectDataCacheMutationResponse,
-	UpdateProjectDataCachePathParams,
-	UpdateProjectDataCacheQueryParams,
 	UpdateProjectDomain400,
 	UpdateProjectDomain401,
 	UpdateProjectDomain403,
@@ -3136,48 +3127,6 @@ export async function readNetwork({
 		baseUrl: "https://api.vercel.com",
 		queryParams,
 		...requestConfig,
-	});
-	return { content: [{ type: "text", text: JSON.stringify(data) }] };
-}
-
-/**
- * @description Update the data cache feature on a project.
- * @summary Update the data cache feature
- * {@link /v1/data-cache/projects/:projectId}
- */
-export async function updateProjectDataCache({
-	pathParams: { projectId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: UpdateProjectDataCachePathParams;
-	queryParams?: UpdateProjectDataCacheQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
-}): Promise<Promise<CallToolResult>> {
-	const { client: request = client, ...requestConfig } = config;
-
-	if (!projectId) {
-		throw new Error(`Missing required path parameter: projectId`);
-	}
-	const data = await request<
-		UpdateProjectDataCacheMutationResponse,
-		ErrorWrapper<
-			| UpdateProjectDataCache400
-			| UpdateProjectDataCache401
-			| UpdateProjectDataCache403
-			| UpdateProjectDataCache404
-		>,
-		null,
-		Record<string, string>,
-		UpdateProjectDataCacheQueryParams,
-		UpdateProjectDataCachePathParams
-	>({
-		method: "PATCH",
-		url: `/v1/data-cache/projects/${projectId}`,
-		baseUrl: "https://api.vercel.com",
-		queryParams,
-		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
 	});
 	return { content: [{ type: "text", text: JSON.stringify(data) }] };
 }
@@ -11113,22 +11062,6 @@ export function initMcpTools<Server>(serverLike: Server, config: FetcherConfig) 
 		async ({ networkId, queryParams }) => {
 			try {
 				return await readNetwork({ pathParams: { networkId }, queryParams, config });
-			} catch (error) {
-				return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
-			}
-		},
-	);
-
-	server.tool(
-		"updateProjectDataCache",
-		"Update the data cache feature on a project.",
-		{
-			projectId: updateProjectDataCachePathParamsSchema.shape["projectId"],
-			queryParams: updateProjectDataCacheQueryParamsSchema,
-		},
-		async ({ projectId, queryParams }) => {
-			try {
-				return await updateProjectDataCache({ pathParams: { projectId }, queryParams, config });
 			} catch (error) {
 				return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
 			}
