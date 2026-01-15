@@ -1879,7 +1879,6 @@ export const userEventSchema = z
 									postgresDatabases: z.optional(z.number()),
 									blobStores: z.optional(z.number()),
 									integrationStores: z.optional(z.number()),
-									cronJobs: z.optional(z.number()),
 									cronJobsPerProject: z.optional(z.number()),
 									microfrontendGroupsPerTeam: z.optional(z.number()),
 									microfrontendProjectsPerGroup: z.optional(z.number()),
@@ -5179,13 +5178,6 @@ export const authUserSchema = z
 						),
 				),
 				integrationStores: z.optional(
-					z
-						.number()
-						.describe(
-							"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-						),
-				),
-				cronJobs: z.optional(
 					z
 						.number()
 						.describe(
