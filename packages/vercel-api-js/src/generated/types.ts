@@ -5036,10 +5036,6 @@ export type UserEvent = {
 										/**
 										 * @type number | undefined
 										 */
-										cronJobs?: number | undefined;
-										/**
-										 * @type number | undefined
-										 */
 										cronJobsPerProject?: number | undefined;
 										/**
 										 * @type number | undefined
@@ -11045,11 +11041,6 @@ export type AuthUser = {
 		 * @type number | undefined
 		 */
 		integrationStores?: number | undefined;
-		/**
-		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
-		 * @type number | undefined
-		 */
-		cronJobs?: number | undefined;
 		/**
 		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
 		 * @type number | undefined
