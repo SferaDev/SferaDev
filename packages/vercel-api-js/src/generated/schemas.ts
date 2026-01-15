@@ -3176,8 +3176,18 @@ export const userEventSchema = z
 				z.object({
 					projectId: z.string(),
 					projectName: z.string(),
+					enableAffectedProjectsDeployments: z.boolean(),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
 					previous: z.object({}),
 					next: z.object({}),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					sourceFilesOutsideRootDirectory: z.boolean(),
 				}),
 				z.object({
 					projectId: z.string(),
