@@ -7416,6 +7416,20 @@ export type UserEvent = {
 						 */
 						projectName: string;
 						/**
+						 * @type boolean
+						 */
+						enableAffectedProjectsDeployments: boolean;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
 						 * @type object
 						 */
 						previous: object;
@@ -7423,6 +7437,20 @@ export type UserEvent = {
 						 * @type object
 						 */
 						next: object;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type boolean
+						 */
+						sourceFilesOutsideRootDirectory: boolean;
 				  }
 				| {
 						/**
