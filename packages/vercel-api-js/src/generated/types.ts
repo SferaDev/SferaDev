@@ -2220,6 +2220,25 @@ export const nextGitProviderEnum = {
 
 export type NextGitProviderEnumKey = (typeof nextGitProviderEnum)[keyof typeof nextGitProviderEnum];
 
+export const payloadGitProviderEnum = {
+	github: "github",
+	"github-limited": "github-limited",
+	"github-custom-host": "github-custom-host",
+	gitlab: "gitlab",
+	bitbucket: "bitbucket",
+} as const;
+
+export type PayloadGitProviderEnumKey =
+	(typeof payloadGitProviderEnum)[keyof typeof payloadGitProviderEnum];
+
+export const payloadCreateDeploymentsEnum = {
+	enabled: "enabled",
+	disabled: "disabled",
+} as const;
+
+export type PayloadCreateDeploymentsEnumKey =
+	(typeof payloadCreateDeploymentsEnum)[keyof typeof payloadCreateDeploymentsEnum];
+
 export const ssoProtectionDeploymentTypeEnum = {
 	all: "all",
 	preview: "preview",
@@ -7096,6 +7115,98 @@ export type UserEvent = {
 							 */
 							gitRepositoryName: string;
 						};
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string
+						 */
+						gitProvider: PayloadGitProviderEnumKey;
+						/**
+						 * @type string
+						 */
+						gitRepoId: string;
+						/**
+						 * @type string
+						 */
+						gitRepositoryName: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type boolean
+						 */
+						onPullRequest: boolean;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type boolean
+						 */
+						onCommit: boolean;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type boolean
+						 */
+						disableRepositoryDispatchEvents: boolean;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string
+						 */
+						createDeployments: PayloadCreateDeploymentsEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type boolean
+						 */
+						requireVerifiedCommits: boolean;
 				  }
 				| {
 						/**
