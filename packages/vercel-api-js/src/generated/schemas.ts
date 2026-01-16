@@ -1808,7 +1808,7 @@ export const userEventSchema = z
 							importFlowGitNamespace: z.union([z.string(), z.number()]).nullish(),
 							importFlowGitNamespaceId: z.union([z.string(), z.number()]).nullish(),
 							importFlowGitProvider: z
-								.enum(["github", "gitlab", "bitbucket", "github-limited", "github-custom-host"])
+								.enum(["github", "github-limited", "github-custom-host", "gitlab", "bitbucket"])
 								.nullish(),
 							preferredScopesAndGitNamespaces: z.optional(
 								z.array(
@@ -2941,6 +2941,34 @@ export const userEventSchema = z
 				z.object({
 					projectName: z.optional(z.string()),
 					projectId: z.string(),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					previous: z.optional(
+						z.object({
+							gitProvider: z.enum([
+								"github",
+								"github-limited",
+								"github-custom-host",
+								"gitlab",
+								"bitbucket",
+							]),
+							gitRepoId: z.string(),
+							gitRepositoryName: z.string(),
+						}),
+					),
+					next: z.object({
+						gitProvider: z.enum([
+							"github",
+							"github-limited",
+							"github-custom-host",
+							"gitlab",
+							"bitbucket",
+						]),
+						gitRepoId: z.string(),
+						gitRepositoryName: z.string(),
+					}),
 				}),
 				z.object({
 					projectName: z.string(),
