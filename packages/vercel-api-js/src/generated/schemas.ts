@@ -3009,6 +3009,11 @@ export const userEventSchema = z
 					requireVerifiedCommits: z.boolean(),
 				}),
 				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					gitLFS: z.boolean(),
+				}),
+				z.object({
 					projectName: z.string(),
 					ssoProtection: z.nullable(
 						z.union([
