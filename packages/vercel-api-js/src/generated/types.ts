@@ -1731,10 +1731,10 @@ export type CredentialsTypeEnum2Key =
 
 export const newOwnerImportFlowGitProviderEnum = {
 	github: "github",
-	gitlab: "gitlab",
-	bitbucket: "bitbucket",
 	"github-limited": "github-limited",
 	"github-custom-host": "github-custom-host",
+	gitlab: "gitlab",
+	bitbucket: "bitbucket",
 } as const;
 
 export type NewOwnerImportFlowGitProviderEnumKey =
@@ -2198,6 +2198,27 @@ export const roleEnum = {
 } as const;
 
 export type RoleEnumKey = (typeof roleEnum)[keyof typeof roleEnum];
+
+export const previousGitProviderEnum = {
+	github: "github",
+	"github-limited": "github-limited",
+	"github-custom-host": "github-custom-host",
+	gitlab: "gitlab",
+	bitbucket: "bitbucket",
+} as const;
+
+export type PreviousGitProviderEnumKey =
+	(typeof previousGitProviderEnum)[keyof typeof previousGitProviderEnum];
+
+export const nextGitProviderEnum = {
+	github: "github",
+	"github-limited": "github-limited",
+	"github-custom-host": "github-custom-host",
+	gitlab: "gitlab",
+	bitbucket: "bitbucket",
+} as const;
+
+export type NextGitProviderEnumKey = (typeof nextGitProviderEnum)[keyof typeof nextGitProviderEnum];
 
 export const ssoProtectionDeploymentTypeEnum = {
 	all: "all",
@@ -7029,6 +7050,52 @@ export type UserEvent = {
 						 * @type string
 						 */
 						projectId: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type object | undefined
+						 */
+						previous?:
+							| {
+									/**
+									 * @type string
+									 */
+									gitProvider: PreviousGitProviderEnumKey;
+									/**
+									 * @type string
+									 */
+									gitRepoId: string;
+									/**
+									 * @type string
+									 */
+									gitRepositoryName: string;
+							  }
+							| undefined;
+						/**
+						 * @type object
+						 */
+						next: {
+							/**
+							 * @type string
+							 */
+							gitProvider: NextGitProviderEnumKey;
+							/**
+							 * @type string
+							 */
+							gitRepoId: string;
+							/**
+							 * @type string
+							 */
+							gitRepositoryName: string;
+						};
 				  }
 				| {
 						/**
