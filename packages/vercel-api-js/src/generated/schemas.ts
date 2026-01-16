@@ -2971,6 +2971,44 @@ export const userEventSchema = z
 					}),
 				}),
 				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					gitProvider: z.enum([
+						"github",
+						"github-limited",
+						"github-custom-host",
+						"gitlab",
+						"bitbucket",
+					]),
+					gitRepoId: z.string(),
+					gitRepositoryName: z.string(),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					onPullRequest: z.boolean(),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					onCommit: z.boolean(),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					disableRepositoryDispatchEvents: z.boolean(),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					createDeployments: z.enum(["enabled", "disabled"]),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					requireVerifiedCommits: z.boolean(),
+				}),
+				z.object({
 					projectName: z.string(),
 					ssoProtection: z.nullable(
 						z.union([
