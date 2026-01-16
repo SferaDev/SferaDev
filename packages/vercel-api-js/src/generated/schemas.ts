@@ -1198,6 +1198,12 @@ export const userEventSchema = z
 					bitbucketName: z.optional(z.string()),
 				}),
 				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					hookName: z.string(),
+					ref: z.string(),
+				}),
+				z.object({
 					project: z.object({
 						name: z.string(),
 					}),

@@ -3666,6 +3666,24 @@ export type UserEvent = {
 				  }
 				| {
 						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string
+						 */
+						hookName: string;
+						/**
+						 * @type string
+						 */
+						ref: string;
+				  }
+				| {
+						/**
 						 * @type object
 						 */
 						project: {
