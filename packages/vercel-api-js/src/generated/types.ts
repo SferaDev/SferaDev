@@ -7212,6 +7212,20 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type boolean
+						 */
+						gitLFS: boolean;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
 						projectName: string;
 						ssoProtection:
 							| (
