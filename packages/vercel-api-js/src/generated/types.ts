@@ -116,15 +116,22 @@ export type Network = {
 	vpcId?: string | undefined;
 };
 
+export const flagJSONValueEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type FlagJSONValueEnumKey = (typeof flagJSONValueEnum)[keyof typeof flagJSONValueEnum];
+
 export type FlagJSONValue =
 	| (
 			| string
 			| number
-			| boolean
 			| unknown[]
 			| {
 					[key: string]: unknown;
 			  }
+			| FlagJSONValueEnumKey
 	  )
 	| null;
 
@@ -1443,15 +1450,23 @@ export type RegistrantField =
 			type: RegistrantFieldTypeEnum4Key;
 	  };
 
+export const edgeConfigItemValueEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type EdgeConfigItemValueEnumKey =
+	(typeof edgeConfigItemValueEnum)[keyof typeof edgeConfigItemValueEnum];
+
 export type EdgeConfigItemValue =
 	| (
 			| string
 			| number
-			| boolean
 			| {
 					[key: string]: unknown;
 			  }
 			| unknown[]
+			| EdgeConfigItemValueEnumKey
 	  )
 	| null;
 
@@ -1601,12 +1616,78 @@ export const payloadPreviousRoleEnum = {
 export type PayloadPreviousRoleEnumKey =
 	(typeof payloadPreviousRoleEnum)[keyof typeof payloadPreviousRoleEnum];
 
+export const payloadSystemEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadSystemEnumKey = (typeof payloadSystemEnum)[keyof typeof payloadSystemEnum];
+
 export const payloadActionEnum4 = {
 	created: "created",
 	removed: "removed",
 } as const;
 
 export type PayloadActionEnum4Key = (typeof payloadActionEnum4)[keyof typeof payloadActionEnum4];
+
+export const payloadAutoExposeSystemEnvsEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadAutoExposeSystemEnvsEnumKey =
+	(typeof payloadAutoExposeSystemEnvsEnum)[keyof typeof payloadAutoExposeSystemEnvsEnum];
+
+export const payloadCustomEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadCustomEnumKey = (typeof payloadCustomEnum)[keyof typeof payloadCustomEnum];
+
+export const payloadUpdatedEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadUpdatedEnumKey = (typeof payloadUpdatedEnum)[keyof typeof payloadUpdatedEnum];
+
+export const payloadBuildsEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadBuildsEnabledEnumKey =
+	(typeof payloadBuildsEnabledEnum)[keyof typeof payloadBuildsEnabledEnum];
+
+export const payloadPassiveEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadPassiveEnumKey = (typeof payloadPassiveEnum)[keyof typeof payloadPassiveEnum];
+
+export const payloadForcedEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadForcedEnumKey = (typeof payloadForcedEnum)[keyof typeof payloadForcedEnum];
+
+export const payloadCdnEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadCdnEnabledEnumKey =
+	(typeof payloadCdnEnabledEnum)[keyof typeof payloadCdnEnabledEnum];
+
+export const payloadRenewEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadRenewEnumKey = (typeof payloadRenewEnum)[keyof typeof payloadRenewEnum];
 
 export const payloadTypeEnum = {
 	system: "system",
@@ -1625,6 +1706,22 @@ export const payloadTargetEnum = {
 
 export type PayloadTargetEnumKey = (typeof payloadTargetEnum)[keyof typeof payloadTargetEnum];
 
+export const payloadApplyToAllCustomEnvironmentsEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadApplyToAllCustomEnvironmentsEnumKey =
+	(typeof payloadApplyToAllCustomEnvironmentsEnum)[keyof typeof payloadApplyToAllCustomEnvironmentsEnum];
+
+export const payloadDecryptedEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadDecryptedEnumKey =
+	(typeof payloadDecryptedEnum)[keyof typeof payloadDecryptedEnum];
+
 export const oldEnvVarTypeEnum = {
 	system: "system",
 	encrypted: "encrypted",
@@ -1642,6 +1739,22 @@ export const oldEnvVarTargetEnum = {
 
 export type OldEnvVarTargetEnumKey = (typeof oldEnvVarTargetEnum)[keyof typeof oldEnvVarTargetEnum];
 
+export const oldEnvVarApplyToAllCustomEnvironmentsEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type OldEnvVarApplyToAllCustomEnvironmentsEnumKey =
+	(typeof oldEnvVarApplyToAllCustomEnvironmentsEnum)[keyof typeof oldEnvVarApplyToAllCustomEnvironmentsEnum];
+
+export const oldEnvVarDecryptedEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type OldEnvVarDecryptedEnumKey =
+	(typeof oldEnvVarDecryptedEnum)[keyof typeof oldEnvVarDecryptedEnum];
+
 export const newEnvVarTypeEnum = {
 	system: "system",
 	encrypted: "encrypted",
@@ -1658,6 +1771,22 @@ export const newEnvVarTargetEnum = {
 } as const;
 
 export type NewEnvVarTargetEnumKey = (typeof newEnvVarTargetEnum)[keyof typeof newEnvVarTargetEnum];
+
+export const newEnvVarApplyToAllCustomEnvironmentsEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type NewEnvVarApplyToAllCustomEnvironmentsEnumKey =
+	(typeof newEnvVarApplyToAllCustomEnvironmentsEnum)[keyof typeof newEnvVarApplyToAllCustomEnvironmentsEnum];
+
+export const newEnvVarDecryptedEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type NewEnvVarDecryptedEnumKey =
+	(typeof newEnvVarDecryptedEnum)[keyof typeof newEnvVarDecryptedEnum];
 
 export const updateDiffOldTargetEnum = {
 	production: "production",
@@ -1677,6 +1806,35 @@ export const updateDiffNewTargetEnum = {
 export type UpdateDiffNewTargetEnumKey =
 	(typeof updateDiffNewTargetEnum)[keyof typeof updateDiffNewTargetEnum];
 
+export const updateDiffChangedValueEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type UpdateDiffChangedValueEnumKey =
+	(typeof updateDiffChangedValueEnum)[keyof typeof updateDiffChangedValueEnum];
+
+export const payloadEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadEnabledEnumKey = (typeof payloadEnabledEnum)[keyof typeof payloadEnabledEnum];
+
+export const payloadRestoreEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadRestoreEnumKey = (typeof payloadRestoreEnum)[keyof typeof payloadRestoreEnum];
+
+export const payloadActiveEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadActiveEnumKey = (typeof payloadActiveEnum)[keyof typeof payloadActiveEnum];
+
 export const payloadActionEnum5 = {
 	log: "log",
 	challenge: "challenge",
@@ -1685,6 +1843,13 @@ export const payloadActionEnum5 = {
 
 export type PayloadActionEnum5Key = (typeof payloadActionEnum5)[keyof typeof payloadActionEnum5];
 
+export const activeEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type ActiveEnumKey = (typeof activeEnum)[keyof typeof activeEnum];
+
 export const actionEnum = {
 	log: "log",
 	challenge: "challenge",
@@ -1692,6 +1857,22 @@ export const actionEnum = {
 } as const;
 
 export type ActionEnumKey = (typeof actionEnum)[keyof typeof actionEnum];
+
+export const payloadPrevAttackModeEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadPrevAttackModeEnabledEnumKey =
+	(typeof payloadPrevAttackModeEnabledEnum)[keyof typeof payloadPrevAttackModeEnabledEnum];
+
+export const payloadAttackModeEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadAttackModeEnabledEnumKey =
+	(typeof payloadAttackModeEnabledEnum)[keyof typeof payloadAttackModeEnabledEnum];
 
 export const blockHistoryActionEnum = {
 	blocked: "blocked",
@@ -1702,6 +1883,14 @@ export const blockHistoryActionEnum = {
 
 export type BlockHistoryActionEnumKey =
 	(typeof blockHistoryActionEnum)[keyof typeof blockHistoryActionEnum];
+
+export const blockHistoryIneligibleForAppealEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type BlockHistoryIneligibleForAppealEnumKey =
+	(typeof blockHistoryIneligibleForAppealEnum)[keyof typeof blockHistoryIneligibleForAppealEnum];
 
 export const billingPlanEnum = {
 	pro: "pro",
@@ -1729,6 +1918,14 @@ export const credentialsTypeEnum2 = {
 export type CredentialsTypeEnum2Key =
 	(typeof credentialsTypeEnum2)[keyof typeof credentialsTypeEnum2];
 
+export const dataCacheExcessBillingEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type DataCacheExcessBillingEnabledEnumKey =
+	(typeof dataCacheExcessBillingEnabledEnum)[keyof typeof dataCacheExcessBillingEnabledEnum];
+
 export const newOwnerImportFlowGitProviderEnum = {
 	github: "github",
 	"github-limited": "github-limited",
@@ -1740,6 +1937,54 @@ export const newOwnerImportFlowGitProviderEnum = {
 export type NewOwnerImportFlowGitProviderEnumKey =
 	(typeof newOwnerImportFlowGitProviderEnum)[keyof typeof newOwnerImportFlowGitProviderEnum];
 
+export const newOwnerIsDomainResellerEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type NewOwnerIsDomainResellerEnumKey =
+	(typeof newOwnerIsDomainResellerEnum)[keyof typeof newOwnerIsDomainResellerEnum];
+
+export const newOwnerIsZeitPubEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type NewOwnerIsZeitPubEnumKey =
+	(typeof newOwnerIsZeitPubEnum)[keyof typeof newOwnerIsZeitPubEnum];
+
+export const newOwnerPreventAutoBlockingEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type NewOwnerPreventAutoBlockingEnumKey =
+	(typeof newOwnerPreventAutoBlockingEnum)[keyof typeof newOwnerPreventAutoBlockingEnum];
+
+export const remoteCachingEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type RemoteCachingEnabledEnumKey =
+	(typeof remoteCachingEnabledEnum)[keyof typeof remoteCachingEnabledEnum];
+
+export const resourceConfigElasticConcurrencyEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type ResourceConfigElasticConcurrencyEnabledEnumKey =
+	(typeof resourceConfigElasticConcurrencyEnabledEnum)[keyof typeof resourceConfigElasticConcurrencyEnabledEnum];
+
+export const buildEntitlementsEnhancedBuildsEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type BuildEntitlementsEnhancedBuildsEnumKey =
+	(typeof buildEntitlementsEnhancedBuildsEnum)[keyof typeof buildEntitlementsEnhancedBuildsEnum];
+
 export const buildQueueConfigurationEnum = {
 	SKIP_NAMESPACE_QUEUE: "SKIP_NAMESPACE_QUEUE",
 	WAIT_FOR_NAMESPACE_QUEUE: "WAIT_FOR_NAMESPACE_QUEUE",
@@ -1748,6 +1993,14 @@ export const buildQueueConfigurationEnum = {
 export type BuildQueueConfigurationEnumKey =
 	(typeof buildQueueConfigurationEnum)[keyof typeof buildQueueConfigurationEnum];
 
+export const resourceConfigFlagsExplorerUnlimitedOverridesEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type ResourceConfigFlagsExplorerUnlimitedOverridesEnumKey =
+	(typeof resourceConfigFlagsExplorerUnlimitedOverridesEnum)[keyof typeof resourceConfigFlagsExplorerUnlimitedOverridesEnum];
+
 export const buildMachinePurchaseTypeEnum = {
 	enhanced: "enhanced",
 	turbo: "turbo",
@@ -1755,6 +2008,14 @@ export const buildMachinePurchaseTypeEnum = {
 
 export type BuildMachinePurchaseTypeEnumKey =
 	(typeof buildMachinePurchaseTypeEnum)[keyof typeof buildMachinePurchaseTypeEnum];
+
+export const buildMachineIsDefaultBuildMachineEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type BuildMachineIsDefaultBuildMachineEnumKey =
+	(typeof buildMachineIsDefaultBuildMachineEnum)[keyof typeof buildMachineIsDefaultBuildMachineEnum];
 
 export const activeDashboardViewsViewPreferenceEnum = {
 	list: "list",
@@ -1779,6 +2040,14 @@ export const activeDashboardViewsRecentsViewPreferenceEnum = {
 
 export type ActiveDashboardViewsRecentsViewPreferenceEnumKey =
 	(typeof activeDashboardViewsRecentsViewPreferenceEnum)[keyof typeof activeDashboardViewsRecentsViewPreferenceEnum];
+
+export const secondaryEmailsVerifiedEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type SecondaryEmailsVerifiedEnumKey =
+	(typeof secondaryEmailsVerifiedEnum)[keyof typeof secondaryEmailsVerifiedEnum];
 
 export const siftRouteNameEnum = {
 	string: "string",
@@ -1854,6 +2123,12 @@ export const teamsRoleEnum = {
 } as const;
 
 export type TeamsRoleEnumKey = (typeof teamsRoleEnum)[keyof typeof teamsRoleEnum];
+
+export const teamsConfirmedEnum = {
+	true: true,
+} as const;
+
+export type TeamsConfirmedEnumKey = (typeof teamsConfirmedEnum)[keyof typeof teamsConfirmedEnum];
 
 export const teamsTeamRolesEnum = {
 	OWNER: "OWNER",
@@ -2154,6 +2429,14 @@ export const newOwnerVersionEnum = {
 
 export type NewOwnerVersionEnumKey = (typeof newOwnerVersionEnum)[keyof typeof newOwnerVersionEnum];
 
+export const mfaConfigurationEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type MfaConfigurationEnabledEnumKey =
+	(typeof mfaConfigurationEnabledEnum)[keyof typeof mfaConfigurationEnabledEnum];
+
 export const historyActionEnum = {
 	enabled: "enabled",
 	disabled: "disabled",
@@ -2199,6 +2482,45 @@ export const roleEnum = {
 
 export type RoleEnumKey = (typeof roleEnum)[keyof typeof roleEnum];
 
+export const confirmedEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type ConfirmedEnumKey = (typeof confirmedEnum)[keyof typeof confirmedEnum];
+
+export const payloadIsDowngradeEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadIsDowngradeEnumKey =
+	(typeof payloadIsDowngradeEnum)[keyof typeof payloadIsDowngradeEnum];
+
+export const payloadIsReactivateEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadIsReactivateEnumKey =
+	(typeof payloadIsReactivateEnum)[keyof typeof payloadIsReactivateEnum];
+
+export const payloadIsTrialUpgradeEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadIsTrialUpgradeEnumKey =
+	(typeof payloadIsTrialUpgradeEnum)[keyof typeof payloadIsTrialUpgradeEnum];
+
+export const payloadAutomatedEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadAutomatedEnumKey =
+	(typeof payloadAutomatedEnum)[keyof typeof payloadAutomatedEnum];
+
 export const previousGitProviderEnum = {
 	github: "github",
 	"github-limited": "github-limited",
@@ -2231,6 +2553,29 @@ export const payloadGitProviderEnum = {
 export type PayloadGitProviderEnumKey =
 	(typeof payloadGitProviderEnum)[keyof typeof payloadGitProviderEnum];
 
+export const payloadOnPullRequestEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadOnPullRequestEnumKey =
+	(typeof payloadOnPullRequestEnum)[keyof typeof payloadOnPullRequestEnum];
+
+export const payloadOnCommitEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadOnCommitEnumKey = (typeof payloadOnCommitEnum)[keyof typeof payloadOnCommitEnum];
+
+export const payloadDisableRepositoryDispatchEventsEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadDisableRepositoryDispatchEventsEnumKey =
+	(typeof payloadDisableRepositoryDispatchEventsEnum)[keyof typeof payloadDisableRepositoryDispatchEventsEnum];
+
 export const payloadCreateDeploymentsEnum = {
 	enabled: "enabled",
 	disabled: "disabled",
@@ -2238,6 +2583,21 @@ export const payloadCreateDeploymentsEnum = {
 
 export type PayloadCreateDeploymentsEnumKey =
 	(typeof payloadCreateDeploymentsEnum)[keyof typeof payloadCreateDeploymentsEnum];
+
+export const payloadRequireVerifiedCommitsEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadRequireVerifiedCommitsEnumKey =
+	(typeof payloadRequireVerifiedCommitsEnum)[keyof typeof payloadRequireVerifiedCommitsEnum];
+
+export const payloadGitLFSEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadGitLFSEnumKey = (typeof payloadGitLFSEnum)[keyof typeof payloadGitLFSEnum];
 
 export const ssoProtectionDeploymentTypeEnum = {
 	all: "all",
@@ -2370,6 +2730,13 @@ export const payloadActionEnum6 = {
 
 export type PayloadActionEnum6Key = (typeof payloadActionEnum6)[keyof typeof payloadActionEnum6];
 
+export const payloadIsEnvVarEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadIsEnvVarEnumKey = (typeof payloadIsEnvVarEnum)[keyof typeof payloadIsEnvVarEnum];
+
 export const oldConnectConfigurationsEnvIdEnum = {
 	preview: "preview",
 	production: "production",
@@ -2378,6 +2745,22 @@ export const oldConnectConfigurationsEnvIdEnum = {
 export type OldConnectConfigurationsEnvIdEnumKey =
 	(typeof oldConnectConfigurationsEnvIdEnum)[keyof typeof oldConnectConfigurationsEnvIdEnum];
 
+export const oldConnectConfigurationsPassiveEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type OldConnectConfigurationsPassiveEnumKey =
+	(typeof oldConnectConfigurationsPassiveEnum)[keyof typeof oldConnectConfigurationsPassiveEnum];
+
+export const oldConnectConfigurationsBuildsEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type OldConnectConfigurationsBuildsEnabledEnumKey =
+	(typeof oldConnectConfigurationsBuildsEnabledEnum)[keyof typeof oldConnectConfigurationsBuildsEnabledEnum];
+
 export const newConnectConfigurationsEnvIdEnum = {
 	preview: "preview",
 	production: "production",
@@ -2385,6 +2768,22 @@ export const newConnectConfigurationsEnvIdEnum = {
 
 export type NewConnectConfigurationsEnvIdEnumKey =
 	(typeof newConnectConfigurationsEnvIdEnum)[keyof typeof newConnectConfigurationsEnvIdEnum];
+
+export const newConnectConfigurationsPassiveEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type NewConnectConfigurationsPassiveEnumKey =
+	(typeof newConnectConfigurationsPassiveEnum)[keyof typeof newConnectConfigurationsPassiveEnum];
+
+export const newConnectConfigurationsBuildsEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type NewConnectConfigurationsBuildsEnabledEnumKey =
+	(typeof newConnectConfigurationsBuildsEnabledEnum)[keyof typeof newConnectConfigurationsBuildsEnabledEnum];
 
 export const payloadReasonCodeEnum = {
 	BUDGET_REACHED: "BUDGET_REACHED",
@@ -2403,6 +2802,69 @@ export const payloadReasonCodeEnum2 = {
 export type PayloadReasonCodeEnum2Key =
 	(typeof payloadReasonCodeEnum2)[keyof typeof payloadReasonCodeEnum2];
 
+export const staticIpsBuildsEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type StaticIpsBuildsEnumKey = (typeof staticIpsBuildsEnum)[keyof typeof staticIpsBuildsEnum];
+
+export const staticIpsEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type StaticIpsEnabledEnumKey =
+	(typeof staticIpsEnabledEnum)[keyof typeof staticIpsEnabledEnum];
+
+export const payloadEnableAffectedProjectsDeploymentsEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadEnableAffectedProjectsDeploymentsEnumKey =
+	(typeof payloadEnableAffectedProjectsDeploymentsEnum)[keyof typeof payloadEnableAffectedProjectsDeploymentsEnum];
+
+export const payloadAutoAssignCustomDomainsEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadAutoAssignCustomDomainsEnumKey =
+	(typeof payloadAutoAssignCustomDomainsEnum)[keyof typeof payloadAutoAssignCustomDomainsEnum];
+
+export const payloadProductionDeploymentsFastLaneEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadProductionDeploymentsFastLaneEnumKey =
+	(typeof payloadProductionDeploymentsFastLaneEnum)[keyof typeof payloadProductionDeploymentsFastLaneEnum];
+
+export const payloadSourceFilesOutsideRootDirectoryEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadSourceFilesOutsideRootDirectoryEnumKey =
+	(typeof payloadSourceFilesOutsideRootDirectoryEnum)[keyof typeof payloadSourceFilesOutsideRootDirectoryEnum];
+
+export const payloadElasticConcurrencyEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadElasticConcurrencyEnabledEnumKey =
+	(typeof payloadElasticConcurrencyEnabledEnum)[keyof typeof payloadElasticConcurrencyEnabledEnum];
+
+export const payloadOldElasticConcurrencyEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadOldElasticConcurrencyEnabledEnumKey =
+	(typeof payloadOldElasticConcurrencyEnabledEnum)[keyof typeof payloadOldElasticConcurrencyEnabledEnum];
+
 export const payloadBuildQueueConfigurationEnum = {
 	SKIP_NAMESPACE_QUEUE: "SKIP_NAMESPACE_QUEUE",
 	WAIT_FOR_NAMESPACE_QUEUE: "WAIT_FOR_NAMESPACE_QUEUE",
@@ -2419,11 +2881,42 @@ export const payloadOldBuildQueueConfigurationEnum = {
 export type PayloadOldBuildQueueConfigurationEnumKey =
 	(typeof payloadOldBuildQueueConfigurationEnum)[keyof typeof payloadOldBuildQueueConfigurationEnum];
 
+export const payloadVerifiedEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadVerifiedEnumKey = (typeof payloadVerifiedEnum)[keyof typeof payloadVerifiedEnum];
+
 export const budgetItemTypeEnum = {
 	fixed: "fixed",
 } as const;
 
 export type BudgetItemTypeEnumKey = (typeof budgetItemTypeEnum)[keyof typeof budgetItemTypeEnum];
+
+export const budgetItemWebhookNotifiedEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type BudgetItemWebhookNotifiedEnumKey =
+	(typeof budgetItemWebhookNotifiedEnum)[keyof typeof budgetItemWebhookNotifiedEnum];
+
+export const budgetItemIsActiveEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type BudgetItemIsActiveEnumKey =
+	(typeof budgetItemIsActiveEnum)[keyof typeof budgetItemIsActiveEnum];
+
+export const budgetItemPauseProjectsEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type BudgetItemPauseProjectsEnumKey =
+	(typeof budgetItemPauseProjectsEnum)[keyof typeof budgetItemPauseProjectsEnum];
 
 export const budgetItemPricingPlanEnum = {
 	plus: "plus",
@@ -2439,6 +2932,29 @@ export const budgetTypeEnum = {
 } as const;
 
 export type BudgetTypeEnumKey = (typeof budgetTypeEnum)[keyof typeof budgetTypeEnum];
+
+export const budgetWebhookNotifiedEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type BudgetWebhookNotifiedEnumKey =
+	(typeof budgetWebhookNotifiedEnum)[keyof typeof budgetWebhookNotifiedEnum];
+
+export const budgetIsActiveEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type BudgetIsActiveEnumKey = (typeof budgetIsActiveEnum)[keyof typeof budgetIsActiveEnum];
+
+export const budgetPauseProjectsEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type BudgetPauseProjectsEnumKey =
+	(typeof budgetPauseProjectsEnum)[keyof typeof budgetPauseProjectsEnum];
 
 export const budgetPricingPlanEnum = {
 	plus: "plus",
@@ -2504,6 +3020,59 @@ export const payloadNewPlanEnum = {
 
 export type PayloadNewPlanEnumKey = (typeof payloadNewPlanEnum)[keyof typeof payloadNewPlanEnum];
 
+export const payloadEnforcedEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadEnforcedEnumKey = (typeof payloadEnforcedEnum)[keyof typeof payloadEnforcedEnum];
+
+export const previousEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PreviousEnabledEnumKey = (typeof previousEnabledEnum)[keyof typeof previousEnabledEnum];
+
+export const previousTotpVerifiedEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PreviousTotpVerifiedEnumKey =
+	(typeof previousTotpVerifiedEnum)[keyof typeof previousTotpVerifiedEnum];
+
+export const nextEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type NextEnabledEnumKey = (typeof nextEnabledEnum)[keyof typeof nextEnabledEnum];
+
+export const nextTotpVerifiedEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type NextTotpVerifiedEnumKey =
+	(typeof nextTotpVerifiedEnum)[keyof typeof nextTotpVerifiedEnum];
+
+export const payloadTotpVerifiedEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadTotpVerifiedEnumKey =
+	(typeof payloadTotpVerifiedEnum)[keyof typeof payloadTotpVerifiedEnum];
+
+export const payloadMfaEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadMfaEnabledEnumKey =
+	(typeof payloadMfaEnabledEnum)[keyof typeof payloadMfaEnabledEnum];
+
 export const projectMembershipRoleEnum = {
 	ADMIN: "ADMIN",
 	PROJECT_DEVELOPER: "PROJECT_DEVELOPER",
@@ -2545,6 +3114,80 @@ export const payloadActionEnum7 = {
 } as const;
 
 export type PayloadActionEnum7Key = (typeof payloadActionEnum7)[keyof typeof payloadActionEnum7];
+
+export const microfrontendsIsDefaultAppEnum = {
+	true: true,
+} as const;
+
+export type MicrofrontendsIsDefaultAppEnumKey =
+	(typeof microfrontendsIsDefaultAppEnum)[keyof typeof microfrontendsIsDefaultAppEnum];
+
+export const microfrontendsEnabledEnum = {
+	true: true,
+} as const;
+
+export type MicrofrontendsEnabledEnumKey =
+	(typeof microfrontendsEnabledEnum)[keyof typeof microfrontendsEnabledEnum];
+
+export const microfrontendsFreeProjectForLegacyLimitsEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type MicrofrontendsFreeProjectForLegacyLimitsEnumKey =
+	(typeof microfrontendsFreeProjectForLegacyLimitsEnum)[keyof typeof microfrontendsFreeProjectForLegacyLimitsEnum];
+
+export const microfrontendsIsDefaultAppEnum2 = {
+	false: false,
+} as const;
+
+export type MicrofrontendsIsDefaultAppEnum2Key =
+	(typeof microfrontendsIsDefaultAppEnum2)[keyof typeof microfrontendsIsDefaultAppEnum2];
+
+export const microfrontendsRouteObservabilityToThisProjectEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type MicrofrontendsRouteObservabilityToThisProjectEnumKey =
+	(typeof microfrontendsRouteObservabilityToThisProjectEnum)[keyof typeof microfrontendsRouteObservabilityToThisProjectEnum];
+
+export const microfrontendsDoNotRouteWithMicrofrontendsRoutingEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type MicrofrontendsDoNotRouteWithMicrofrontendsRoutingEnumKey =
+	(typeof microfrontendsDoNotRouteWithMicrofrontendsRoutingEnum)[keyof typeof microfrontendsDoNotRouteWithMicrofrontendsRoutingEnum];
+
+export const microfrontendsEnabledEnum2 = {
+	false: false,
+} as const;
+
+export type MicrofrontendsEnabledEnum2Key =
+	(typeof microfrontendsEnabledEnum2)[keyof typeof microfrontendsEnabledEnum2];
+
+export const microfrontendsFreeProjectForLegacyLimitsEnum2 = {
+	false: false,
+	true: true,
+} as const;
+
+export type MicrofrontendsFreeProjectForLegacyLimitsEnum2Key =
+	(typeof microfrontendsFreeProjectForLegacyLimitsEnum2)[keyof typeof microfrontendsFreeProjectForLegacyLimitsEnum2];
+
+export const projectWebAnalyticsHasDataEnum = {
+	true: true,
+} as const;
+
+export type ProjectWebAnalyticsHasDataEnumKey =
+	(typeof projectWebAnalyticsHasDataEnum)[keyof typeof projectWebAnalyticsHasDataEnum];
+
+export const prevProjectWebAnalyticsHasDataEnum = {
+	true: true,
+} as const;
+
+export type PrevProjectWebAnalyticsHasDataEnumKey =
+	(typeof prevProjectWebAnalyticsHasDataEnum)[keyof typeof prevProjectWebAnalyticsHasDataEnum];
 
 export const payloadTierEnum = {
 	pro: "pro",
@@ -2626,6 +3269,13 @@ export const projectIdsTypeEnum = {
 
 export type ProjectIdsTypeEnumKey = (typeof projectIdsTypeEnum)[keyof typeof projectIdsTypeEnum];
 
+export const projectIdsRequiredEnum = {
+	true: true,
+} as const;
+
+export type ProjectIdsRequiredEnumKey =
+	(typeof projectIdsRequiredEnum)[keyof typeof projectIdsRequiredEnum];
+
 export const itemsTypeEnum = {
 	string: "string",
 } as const;
@@ -2670,6 +3320,14 @@ export const clientAuthenticationUsedMethodEnum = {
 
 export type ClientAuthenticationUsedMethodEnumKey =
 	(typeof clientAuthenticationUsedMethodEnum)[keyof typeof clientAuthenticationUsedMethodEnum];
+
+export const payloadIncludesRefreshTokenEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadIncludesRefreshTokenEnumKey =
+	(typeof payloadIncludesRefreshTokenEnum)[keyof typeof payloadIncludesRefreshTokenEnum];
 
 /**
  * @description Array of events generated by the User.
@@ -3078,7 +3736,7 @@ export type UserEvent = {
 						/**
 						 * @type boolean | undefined
 						 */
-						system?: boolean | undefined;
+						system?: PayloadSystemEnumKey | undefined;
 						/**
 						 * @type number | undefined
 						 */
@@ -3242,7 +3900,7 @@ export type UserEvent = {
 						/**
 						 * @type boolean
 						 */
-						autoExposeSystemEnvs: boolean;
+						autoExposeSystemEnvs: PayloadAutoExposeSystemEnvsEnumKey;
 				  }
 				| {
 						/**
@@ -3304,7 +3962,7 @@ export type UserEvent = {
 						/**
 						 * @type boolean
 						 */
-						custom: boolean;
+						custom: PayloadCustomEnumKey;
 						/**
 						 * @type string | undefined
 						 */
@@ -3402,7 +4060,7 @@ export type UserEvent = {
 						/**
 						 * @type boolean | undefined
 						 */
-						updated?: boolean | undefined;
+						updated?: PayloadUpdatedEnumKey | undefined;
 				  }
 				| {
 						/**
@@ -3506,7 +4164,7 @@ export type UserEvent = {
 						/**
 						 * @type boolean | undefined
 						 */
-						buildsEnabled?: boolean | undefined;
+						buildsEnabled?: PayloadBuildsEnabledEnumKey | undefined;
 				  }
 				| {
 						/**
@@ -3551,11 +4209,11 @@ export type UserEvent = {
 						/**
 						 * @type boolean | undefined
 						 */
-						buildsEnabled?: boolean | undefined;
+						buildsEnabled?: PayloadBuildsEnabledEnumKey | undefined;
 						/**
 						 * @type boolean | undefined
 						 */
-						passive?: boolean | undefined;
+						passive?: PayloadPassiveEnumKey | undefined;
 				  }
 				| {
 						/**
@@ -3768,7 +4426,7 @@ export type UserEvent = {
 						/**
 						 * @type boolean | undefined
 						 */
-						forced?: boolean | undefined;
+						forced?: PayloadForcedEnumKey | undefined;
 						/**
 						 * @type string | undefined
 						 */
@@ -3931,7 +4589,7 @@ export type UserEvent = {
 						/**
 						 * @type boolean
 						 */
-						cdnEnabled: boolean;
+						cdnEnabled: PayloadCdnEnabledEnumKey;
 				  }
 				| {
 						/**
@@ -4035,7 +4693,7 @@ export type UserEvent = {
 						/**
 						 * @type boolean | undefined
 						 */
-						renew?: boolean | undefined;
+						renew?: PayloadRenewEnumKey | undefined;
 						/**
 						 * @type string
 						 */
@@ -4197,12 +4855,12 @@ export type UserEvent = {
 						 * @description whether or not this env varible applies to custom environments
 						 * @type boolean | undefined
 						 */
-						applyToAllCustomEnvironments?: boolean | undefined;
+						applyToAllCustomEnvironments?: PayloadApplyToAllCustomEnvironmentsEnumKey | undefined;
 						/**
 						 * @description whether or not this env variable is decrypted
 						 * @type boolean | undefined
 						 */
-						decrypted?: boolean | undefined;
+						decrypted?: PayloadDecryptedEnumKey | undefined;
 						/**
 						 * @description A user provided comment that describes what this Shared Env Var is for.
 						 * @type string | undefined
@@ -4298,12 +4956,14 @@ export type UserEvent = {
 									 * @description whether or not this env varible applies to custom environments
 									 * @type boolean | undefined
 									 */
-									applyToAllCustomEnvironments?: boolean | undefined;
+									applyToAllCustomEnvironments?:
+										| OldEnvVarApplyToAllCustomEnvironmentsEnumKey
+										| undefined;
 									/**
 									 * @description whether or not this env variable is decrypted
 									 * @type boolean | undefined
 									 */
-									decrypted?: boolean | undefined;
+									decrypted?: OldEnvVarDecryptedEnumKey | undefined;
 									/**
 									 * @description A user provided comment that describes what this Shared Env Var is for.
 									 * @type string | undefined
@@ -4395,12 +5055,14 @@ export type UserEvent = {
 									 * @description whether or not this env varible applies to custom environments
 									 * @type boolean | undefined
 									 */
-									applyToAllCustomEnvironments?: boolean | undefined;
+									applyToAllCustomEnvironments?:
+										| NewEnvVarApplyToAllCustomEnvironmentsEnumKey
+										| undefined;
 									/**
 									 * @description whether or not this env variable is decrypted
 									 * @type boolean | undefined
 									 */
-									decrypted?: boolean | undefined;
+									decrypted?: NewEnvVarDecryptedEnumKey | undefined;
 									/**
 									 * @description A user provided comment that describes what this Shared Env Var is for.
 									 * @type string | undefined
@@ -4479,7 +5141,7 @@ export type UserEvent = {
 									/**
 									 * @type boolean
 									 */
-									changedValue: boolean;
+									changedValue: UpdateDiffChangedValueEnumKey;
 							  }
 							| undefined;
 				  }
@@ -4487,7 +5149,7 @@ export type UserEvent = {
 						/**
 						 * @type boolean
 						 */
-						enabled: boolean;
+						enabled: PayloadEnabledEnumKey;
 						/**
 						 * @type number
 						 */
@@ -4505,7 +5167,7 @@ export type UserEvent = {
 						/**
 						 * @type boolean
 						 */
-						restore: boolean;
+						restore: PayloadRestoreEnumKey;
 						/**
 						 * @type number
 						 */
@@ -4545,7 +5207,7 @@ export type UserEvent = {
 						/**
 						 * @type boolean
 						 */
-						active: boolean;
+						active: PayloadActiveEnumKey;
 						/**
 						 * @type string | undefined
 						 */
@@ -4568,7 +5230,7 @@ export type UserEvent = {
 								/**
 								 * @type boolean
 								 */
-								active: boolean;
+								active: ActiveEnumKey;
 								/**
 								 * @type string | undefined
 								 */
@@ -4584,7 +5246,7 @@ export type UserEvent = {
 						/**
 						 * @type boolean | undefined
 						 */
-						prevAttackModeEnabled?: boolean | undefined;
+						prevAttackModeEnabled?: PayloadPrevAttackModeEnabledEnumKey | undefined;
 						/**
 						 * @type number
 						 */
@@ -4592,7 +5254,7 @@ export type UserEvent = {
 						/**
 						 * @type boolean
 						 */
-						attackModeEnabled: boolean;
+						attackModeEnabled: PayloadAttackModeEnabledEnumKey;
 						/**
 						 * @type number
 						 */
@@ -4679,7 +5341,7 @@ export type UserEvent = {
 													/**
 													 * @type boolean | undefined
 													 */
-													ineligibleForAppeal?: boolean | undefined;
+													ineligibleForAppeal?: BlockHistoryIneligibleForAppealEnumKey | undefined;
 											  }[]
 											| undefined;
 										/**
@@ -4838,7 +5500,7 @@ export type UserEvent = {
 										/**
 										 * @type boolean | undefined
 										 */
-										excessBillingEnabled?: boolean | undefined;
+										excessBillingEnabled?: DataCacheExcessBillingEnabledEnumKey | undefined;
 								  }
 								| undefined;
 							/**
@@ -4921,11 +5583,11 @@ export type UserEvent = {
 							/**
 							 * @type boolean | undefined
 							 */
-							isDomainReseller?: boolean | undefined;
+							isDomainReseller?: NewOwnerIsDomainResellerEnumKey | undefined;
 							/**
 							 * @type boolean | undefined
 							 */
-							isZeitPub?: boolean | undefined;
+							isZeitPub?: NewOwnerIsZeitPubEnumKey | undefined;
 							/**
 							 * @type number | undefined
 							 */
@@ -4942,7 +5604,7 @@ export type UserEvent = {
 							 * @type number
 							 */
 							platformVersion: number | null;
-							preventAutoBlocking?: (number | boolean) | undefined;
+							preventAutoBlocking?: (number | NewOwnerPreventAutoBlockingEnumKey) | undefined;
 							/**
 							 * @description Overrides our DEFAULT project domains limit per account or per project.
 							 * @type number | undefined
@@ -4957,7 +5619,7 @@ export type UserEvent = {
 										/**
 										 * @type boolean | undefined
 										 */
-										enabled?: boolean | undefined;
+										enabled?: RemoteCachingEnabledEnumKey | undefined;
 								  }
 								| undefined;
 							/**
@@ -5016,7 +5678,9 @@ export type UserEvent = {
 										/**
 										 * @type boolean | undefined
 										 */
-										elasticConcurrencyEnabled?: boolean | undefined;
+										elasticConcurrencyEnabled?:
+											| ResourceConfigElasticConcurrencyEnabledEnumKey
+											| undefined;
 										/**
 										 * @type object | undefined
 										 */
@@ -5025,7 +5689,7 @@ export type UserEvent = {
 													/**
 													 * @type boolean | undefined
 													 */
-													enhancedBuilds?: boolean | undefined;
+													enhancedBuilds?: BuildEntitlementsEnhancedBuildsEnumKey | undefined;
 											  }
 											| undefined;
 										/**
@@ -5110,7 +5774,9 @@ export type UserEvent = {
 										/**
 										 * @type boolean | undefined
 										 */
-										flagsExplorerUnlimitedOverrides?: boolean | undefined;
+										flagsExplorerUnlimitedOverrides?:
+											| ResourceConfigFlagsExplorerUnlimitedOverridesEnumKey
+											| undefined;
 										/**
 										 * @type number | undefined
 										 */
@@ -5127,7 +5793,9 @@ export type UserEvent = {
 													/**
 													 * @type boolean | undefined
 													 */
-													isDefaultBuildMachine?: boolean | undefined;
+													isDefaultBuildMachine?:
+														| BuildMachineIsDefaultBuildMachineEnumKey
+														| undefined;
 													/**
 													 * @type number | undefined
 													 */
@@ -5224,7 +5892,7 @@ export type UserEvent = {
 										/**
 										 * @type boolean
 										 */
-										verified: boolean;
+										verified: SecondaryEmailsVerifiedEnumKey;
 								  }[]
 								| undefined;
 							/**
@@ -5348,7 +6016,7 @@ export type UserEvent = {
 										/**
 										 * @type boolean
 										 */
-										confirmed: boolean;
+										confirmed: TeamsConfirmedEnumKey;
 										/**
 										 * @type number
 										 */
@@ -6577,7 +7245,7 @@ export type UserEvent = {
 										/**
 										 * @type boolean
 										 */
-										enabled: boolean;
+										enabled: MfaConfigurationEnabledEnumKey;
 										/**
 										 * @type number | undefined
 										 */
@@ -6869,7 +7537,7 @@ export type UserEvent = {
 										/**
 										 * @type boolean
 										 */
-										confirmed: boolean;
+										confirmed: ConfirmedEnumKey;
 										/**
 										 * @type number | undefined
 										 */
@@ -6936,7 +7604,7 @@ export type UserEvent = {
 						/**
 						 * @type boolean | undefined
 						 */
-						isDowngrade?: boolean | undefined;
+						isDowngrade?: PayloadIsDowngradeEnumKey | undefined;
 						/**
 						 * @type string | undefined
 						 */
@@ -6944,15 +7612,15 @@ export type UserEvent = {
 						/**
 						 * @type boolean | undefined
 						 */
-						isReactivate?: boolean | undefined;
+						isReactivate?: PayloadIsReactivateEnumKey | undefined;
 						/**
 						 * @type boolean | undefined
 						 */
-						isTrialUpgrade?: boolean | undefined;
+						isTrialUpgrade?: PayloadIsTrialUpgradeEnumKey | undefined;
 						/**
 						 * @type boolean | undefined
 						 */
-						automated?: boolean | undefined;
+						automated?: PayloadAutomatedEnumKey | undefined;
 						/**
 						 * @type string | undefined
 						 */
@@ -7168,7 +7836,7 @@ export type UserEvent = {
 						/**
 						 * @type boolean
 						 */
-						onPullRequest: boolean;
+						onPullRequest: PayloadOnPullRequestEnumKey;
 				  }
 				| {
 						/**
@@ -7182,7 +7850,7 @@ export type UserEvent = {
 						/**
 						 * @type boolean
 						 */
-						onCommit: boolean;
+						onCommit: PayloadOnCommitEnumKey;
 				  }
 				| {
 						/**
@@ -7196,7 +7864,7 @@ export type UserEvent = {
 						/**
 						 * @type boolean
 						 */
-						disableRepositoryDispatchEvents: boolean;
+						disableRepositoryDispatchEvents: PayloadDisableRepositoryDispatchEventsEnumKey;
 				  }
 				| {
 						/**
@@ -7224,7 +7892,7 @@ export type UserEvent = {
 						/**
 						 * @type boolean
 						 */
-						requireVerifiedCommits: boolean;
+						requireVerifiedCommits: PayloadRequireVerifiedCommitsEnumKey;
 				  }
 				| {
 						/**
@@ -7238,7 +7906,7 @@ export type UserEvent = {
 						/**
 						 * @type boolean
 						 */
-						gitLFS: boolean;
+						gitLFS: PayloadGitLFSEnumKey;
 				  }
 				| {
 						/**
@@ -7380,7 +8048,7 @@ export type UserEvent = {
 						/**
 						 * @type boolean | undefined
 						 */
-						isEnvVar?: boolean | undefined;
+						isEnvVar?: PayloadIsEnvVarEnumKey | undefined;
 						/**
 						 * @type string | undefined
 						 */
@@ -7439,11 +8107,11 @@ export type UserEvent = {
 										/**
 										 * @type boolean
 										 */
-										passive: boolean;
+										passive: OldConnectConfigurationsPassiveEnumKey;
 										/**
 										 * @type boolean
 										 */
-										buildsEnabled: boolean;
+										buildsEnabled: OldConnectConfigurationsBuildsEnabledEnumKey;
 										/**
 										 * @type object | undefined
 										 */
@@ -7486,11 +8154,11 @@ export type UserEvent = {
 										/**
 										 * @type boolean
 										 */
-										passive: boolean;
+										passive: NewConnectConfigurationsPassiveEnumKey;
 										/**
 										 * @type boolean
 										 */
-										buildsEnabled: boolean;
+										buildsEnabled: NewConnectConfigurationsBuildsEnabledEnumKey;
 										/**
 										 * @type object | undefined
 										 */
@@ -7568,11 +8236,11 @@ export type UserEvent = {
 									/**
 									 * @type boolean | undefined
 									 */
-									builds?: boolean | undefined;
+									builds?: StaticIpsBuildsEnumKey | undefined;
 									/**
 									 * @type boolean
 									 */
-									enabled: boolean;
+									enabled: StaticIpsEnabledEnumKey;
 									/**
 									 * @type array | undefined
 									 */
@@ -7599,11 +8267,11 @@ export type UserEvent = {
 									/**
 									 * @type boolean | undefined
 									 */
-									builds?: boolean | undefined;
+									builds?: StaticIpsBuildsEnumKey | undefined;
 									/**
 									 * @type boolean
 									 */
-									enabled: boolean;
+									enabled: StaticIpsEnabledEnumKey;
 									/**
 									 * @type array | undefined
 									 */
@@ -7624,7 +8292,21 @@ export type UserEvent = {
 						/**
 						 * @type boolean
 						 */
-						enableAffectedProjectsDeployments: boolean;
+						enableAffectedProjectsDeployments: PayloadEnableAffectedProjectsDeploymentsEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type boolean
+						 */
+						autoAssignCustomDomains: PayloadAutoAssignCustomDomainsEnumKey;
 				  }
 				| {
 						/**
@@ -7656,7 +8338,21 @@ export type UserEvent = {
 						/**
 						 * @type boolean
 						 */
-						sourceFilesOutsideRootDirectory: boolean;
+						productionDeploymentsFastLane: PayloadProductionDeploymentsFastLaneEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type boolean
+						 */
+						sourceFilesOutsideRootDirectory: PayloadSourceFilesOutsideRootDirectoryEnumKey;
 				  }
 				| {
 						/**
@@ -7688,11 +8384,11 @@ export type UserEvent = {
 						/**
 						 * @type boolean
 						 */
-						elasticConcurrencyEnabled: boolean;
+						elasticConcurrencyEnabled: PayloadElasticConcurrencyEnabledEnumKey;
 						/**
 						 * @type boolean
 						 */
-						oldElasticConcurrencyEnabled: boolean;
+						oldElasticConcurrencyEnabled: PayloadOldElasticConcurrencyEnabledEnumKey;
 						/**
 						 * @type string | undefined
 						 */
@@ -7701,6 +8397,34 @@ export type UserEvent = {
 						 * @type string | undefined
 						 */
 						oldBuildQueueConfiguration?: PayloadOldBuildQueueConfigurationEnumKey | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type object
+						 */
+						previous: {
+							/**
+							 * @type string | undefined
+							 */
+							commandForIgnoringBuildStep?: string | undefined;
+						};
+						/**
+						 * @type object
+						 */
+						next: {
+							/**
+							 * @type string | undefined
+							 */
+							commandForIgnoringBuildStep?: string | undefined;
+						};
 				  }
 				| {
 						/**
@@ -7850,7 +8574,7 @@ export type UserEvent = {
 						/**
 						 * @type boolean
 						 */
-						verified: boolean;
+						verified: PayloadVerifiedEnumKey;
 				  }
 				| {
 						/**
@@ -8021,7 +8745,7 @@ export type UserEvent = {
 								 * @description Keep track if the webhook has been called for the month
 								 * @type boolean | undefined
 								 */
-								webhookNotified?: boolean | undefined;
+								webhookNotified?: BudgetItemWebhookNotifiedEnumKey | undefined;
 								/**
 								 * @description Date time when budget is created
 								 * @type number
@@ -8036,12 +8760,12 @@ export type UserEvent = {
 								 * @description Is the budget currently active for a customer
 								 * @type boolean
 								 */
-								isActive: boolean;
+								isActive: BudgetItemIsActiveEnumKey;
 								/**
 								 * @description Should all projects be paused if budget is exceeded
 								 * @type boolean | undefined
 								 */
-								pauseProjects?: boolean | undefined;
+								pauseProjects?: BudgetItemPauseProjectsEnumKey | undefined;
 								/**
 								 * @description The acive pricing plan the team is billed with
 								 * @type string | undefined
@@ -8095,7 +8819,7 @@ export type UserEvent = {
 							 * @description Keep track if the webhook has been called for the month
 							 * @type boolean | undefined
 							 */
-							webhookNotified?: boolean | undefined;
+							webhookNotified?: BudgetWebhookNotifiedEnumKey | undefined;
 							/**
 							 * @description Date time when budget is created
 							 * @type number
@@ -8110,12 +8834,12 @@ export type UserEvent = {
 							 * @description Is the budget currently active for a customer
 							 * @type boolean
 							 */
-							isActive: boolean;
+							isActive: BudgetIsActiveEnumKey;
 							/**
 							 * @description Should all projects be paused if budget is exceeded
 							 * @type boolean | undefined
 							 */
-							pauseProjects?: boolean | undefined;
+							pauseProjects?: BudgetPauseProjectsEnumKey | undefined;
 							/**
 							 * @description The acive pricing plan the team is billed with
 							 * @type string | undefined
@@ -8168,7 +8892,7 @@ export type UserEvent = {
 							 * @description Keep track if the webhook has been called for the month
 							 * @type boolean | undefined
 							 */
-							webhookNotified?: boolean | undefined;
+							webhookNotified?: BudgetWebhookNotifiedEnumKey | undefined;
 							/**
 							 * @description Date time when budget is created
 							 * @type number
@@ -8183,12 +8907,12 @@ export type UserEvent = {
 							 * @description Is the budget currently active for a customer
 							 * @type boolean
 							 */
-							isActive: boolean;
+							isActive: BudgetIsActiveEnumKey;
 							/**
 							 * @description Should all projects be paused if budget is exceeded
 							 * @type boolean | undefined
 							 */
-							pauseProjects?: boolean | undefined;
+							pauseProjects?: BudgetPauseProjectsEnumKey | undefined;
 							/**
 							 * @description The acive pricing plan the team is billed with
 							 * @type string | undefined
@@ -8322,7 +9046,7 @@ export type UserEvent = {
 										/**
 										 * @type boolean
 										 */
-										confirmed: boolean;
+										confirmed: ConfirmedEnumKey;
 										/**
 										 * @type number | undefined
 										 */
@@ -8435,7 +9159,7 @@ export type UserEvent = {
 						/**
 						 * @type boolean | undefined
 						 */
-						automated?: boolean | undefined;
+						automated?: PayloadAutomatedEnumKey | undefined;
 				  }
 				| {
 						/**
@@ -8542,7 +9266,7 @@ export type UserEvent = {
 						/**
 						 * @type boolean
 						 */
-						enforced: boolean;
+						enforced: PayloadEnforcedEnumKey;
 				  }
 				| {
 						/**
@@ -8566,7 +9290,7 @@ export type UserEvent = {
 									/**
 									 * @type boolean | undefined
 									 */
-									enabled?: boolean | undefined;
+									enabled?: RemoteCachingEnabledEnumKey | undefined;
 							  }
 							| undefined;
 				  }
@@ -8578,11 +9302,11 @@ export type UserEvent = {
 							/**
 							 * @type boolean
 							 */
-							enabled: boolean;
+							enabled: PreviousEnabledEnumKey;
 							/**
 							 * @type boolean
 							 */
-							totpVerified: boolean;
+							totpVerified: PreviousTotpVerifiedEnumKey;
 						};
 						/**
 						 * @type object
@@ -8591,28 +9315,28 @@ export type UserEvent = {
 							/**
 							 * @type boolean
 							 */
-							enabled: boolean;
+							enabled: NextEnabledEnumKey;
 							/**
 							 * @type boolean
 							 */
-							totpVerified: boolean;
+							totpVerified: NextTotpVerifiedEnumKey;
 						};
 				  }
 				| {
 						/**
 						 * @type boolean
 						 */
-						enabled: boolean;
+						enabled: PayloadEnabledEnumKey;
 						/**
 						 * @type boolean
 						 */
-						totpVerified: boolean;
+						totpVerified: PayloadTotpVerifiedEnumKey;
 				  }
 				| {
 						/**
 						 * @type boolean
 						 */
-						mfaEnabled: boolean;
+						mfaEnabled: PayloadMfaEnabledEnumKey;
 				  }
 				| {
 						/**
@@ -8642,7 +9366,7 @@ export type UserEvent = {
 						/**
 						 * @type boolean | undefined
 						 */
-						enabled?: boolean | undefined;
+						enabled?: PayloadEnabledEnumKey | undefined;
 				  }
 				| {
 						/**
@@ -9142,7 +9866,7 @@ export type UserEvent = {
 												/**
 												 * @type boolean
 												 */
-												isDefaultApp: boolean;
+												isDefaultApp: MicrofrontendsIsDefaultAppEnumKey;
 												/**
 												 * @description Timestamp when the microfrontends settings were last updated.
 												 * @type number
@@ -9152,12 +9876,12 @@ export type UserEvent = {
 												 * @description The group IDs of microfrontends that this project belongs to. Each microfrontend project must belong to a microfrontends group that is the set of microfrontends that are used together.
 												 * @type array
 												 */
-												groupIds: (string | string)[];
+												groupIds: string[];
 												/**
 												 * @description Whether microfrontends are enabled for this project.
 												 * @type boolean
 												 */
-												enabled: boolean;
+												enabled: MicrofrontendsEnabledEnumKey;
 												/**
 												 * @description A path that is used to take screenshots and as the default path in preview links when a domain for this microfrontend is shown in the UI. Includes the leading slash, e.g. `/docs`
 												 * @type string | undefined
@@ -9167,23 +9891,29 @@ export type UserEvent = {
 												 * @description Whether the project was part of the legacy limits for hobby and pro-trial before billing was added. This field is only set when the team is upgraded to a paid plan and we are backfilling the subscription status. We cap the subscription to 2 projects and set this field for the 3rd project. When this field is set, the project is not charged for and we do not call any billing APIs for this project.
 												 * @type boolean | undefined
 												 */
-												freeProjectForLegacyLimits?: boolean | undefined;
+												freeProjectForLegacyLimits?:
+													| MicrofrontendsFreeProjectForLegacyLimitsEnumKey
+													| undefined;
 										  }
 										| {
 												/**
 												 * @type boolean | undefined
 												 */
-												isDefaultApp?: boolean | undefined;
+												isDefaultApp?: MicrofrontendsIsDefaultAppEnum2Key | undefined;
 												/**
 												 * @description Whether observability data should be routed to this microfrontend project or a root project.
 												 * @type boolean | undefined
 												 */
-												routeObservabilityToThisProject?: boolean | undefined;
+												routeObservabilityToThisProject?:
+													| MicrofrontendsRouteObservabilityToThisProjectEnumKey
+													| undefined;
 												/**
 												 * @description Whether to add microfrontends routing to aliases. This means domains in this project will route as a microfrontend.
 												 * @type boolean | undefined
 												 */
-												doNotRouteWithMicrofrontendsRouting?: boolean | undefined;
+												doNotRouteWithMicrofrontendsRouting?:
+													| MicrofrontendsDoNotRouteWithMicrofrontendsRoutingEnumKey
+													| undefined;
 												/**
 												 * @description Timestamp when the microfrontends settings were last updated.
 												 * @type number
@@ -9193,12 +9923,12 @@ export type UserEvent = {
 												 * @description The group IDs of microfrontends that this project belongs to. Each microfrontend project must belong to a microfrontends group that is the set of microfrontends that are used together.
 												 * @type array
 												 */
-												groupIds: (string | string)[];
+												groupIds: string[];
 												/**
 												 * @description Whether microfrontends are enabled for this project.
 												 * @type boolean
 												 */
-												enabled: boolean;
+												enabled: MicrofrontendsEnabledEnumKey;
 												/**
 												 * @description A path that is used to take screenshots and as the default path in preview links when a domain for this microfrontend is shown in the UI. Includes the leading slash, e.g. `/docs`
 												 * @type string | undefined
@@ -9208,7 +9938,9 @@ export type UserEvent = {
 												 * @description Whether the project was part of the legacy limits for hobby and pro-trial before billing was added. This field is only set when the team is upgraded to a paid plan and we are backfilling the subscription status. We cap the subscription to 2 projects and set this field for the 3rd project. When this field is set, the project is not charged for and we do not call any billing APIs for this project.
 												 * @type boolean | undefined
 												 */
-												freeProjectForLegacyLimits?: boolean | undefined;
+												freeProjectForLegacyLimits?:
+													| MicrofrontendsFreeProjectForLegacyLimitsEnumKey
+													| undefined;
 										  }
 										| {
 												/**
@@ -9222,11 +9954,13 @@ export type UserEvent = {
 												/**
 												 * @type boolean
 												 */
-												enabled: boolean;
+												enabled: MicrofrontendsEnabledEnum2Key;
 												/**
 												 * @type boolean | undefined
 												 */
-												freeProjectForLegacyLimits?: boolean | undefined;
+												freeProjectForLegacyLimits?:
+													| MicrofrontendsFreeProjectForLegacyLimitsEnum2Key
+													| undefined;
 										  }
 								  )
 								| undefined;
@@ -9245,7 +9979,7 @@ export type UserEvent = {
 													/**
 													 * @type boolean
 													 */
-													isDefaultApp: boolean;
+													isDefaultApp: MicrofrontendsIsDefaultAppEnumKey;
 													/**
 													 * @description Timestamp when the microfrontends settings were last updated.
 													 * @type number
@@ -9255,12 +9989,12 @@ export type UserEvent = {
 													 * @description The group IDs of microfrontends that this project belongs to. Each microfrontend project must belong to a microfrontends group that is the set of microfrontends that are used together.
 													 * @type array
 													 */
-													groupIds: (string | string)[];
+													groupIds: string[];
 													/**
 													 * @description Whether microfrontends are enabled for this project.
 													 * @type boolean
 													 */
-													enabled: boolean;
+													enabled: MicrofrontendsEnabledEnumKey;
 													/**
 													 * @description A path that is used to take screenshots and as the default path in preview links when a domain for this microfrontend is shown in the UI. Includes the leading slash, e.g. `/docs`
 													 * @type string | undefined
@@ -9270,23 +10004,29 @@ export type UserEvent = {
 													 * @description Whether the project was part of the legacy limits for hobby and pro-trial before billing was added. This field is only set when the team is upgraded to a paid plan and we are backfilling the subscription status. We cap the subscription to 2 projects and set this field for the 3rd project. When this field is set, the project is not charged for and we do not call any billing APIs for this project.
 													 * @type boolean | undefined
 													 */
-													freeProjectForLegacyLimits?: boolean | undefined;
+													freeProjectForLegacyLimits?:
+														| MicrofrontendsFreeProjectForLegacyLimitsEnumKey
+														| undefined;
 											  }
 											| {
 													/**
 													 * @type boolean | undefined
 													 */
-													isDefaultApp?: boolean | undefined;
+													isDefaultApp?: MicrofrontendsIsDefaultAppEnum2Key | undefined;
 													/**
 													 * @description Whether observability data should be routed to this microfrontend project or a root project.
 													 * @type boolean | undefined
 													 */
-													routeObservabilityToThisProject?: boolean | undefined;
+													routeObservabilityToThisProject?:
+														| MicrofrontendsRouteObservabilityToThisProjectEnumKey
+														| undefined;
 													/**
 													 * @description Whether to add microfrontends routing to aliases. This means domains in this project will route as a microfrontend.
 													 * @type boolean | undefined
 													 */
-													doNotRouteWithMicrofrontendsRouting?: boolean | undefined;
+													doNotRouteWithMicrofrontendsRouting?:
+														| MicrofrontendsDoNotRouteWithMicrofrontendsRoutingEnumKey
+														| undefined;
 													/**
 													 * @description Timestamp when the microfrontends settings were last updated.
 													 * @type number
@@ -9296,12 +10036,12 @@ export type UserEvent = {
 													 * @description The group IDs of microfrontends that this project belongs to. Each microfrontend project must belong to a microfrontends group that is the set of microfrontends that are used together.
 													 * @type array
 													 */
-													groupIds: (string | string)[];
+													groupIds: string[];
 													/**
 													 * @description Whether microfrontends are enabled for this project.
 													 * @type boolean
 													 */
-													enabled: boolean;
+													enabled: MicrofrontendsEnabledEnumKey;
 													/**
 													 * @description A path that is used to take screenshots and as the default path in preview links when a domain for this microfrontend is shown in the UI. Includes the leading slash, e.g. `/docs`
 													 * @type string | undefined
@@ -9311,7 +10051,9 @@ export type UserEvent = {
 													 * @description Whether the project was part of the legacy limits for hobby and pro-trial before billing was added. This field is only set when the team is upgraded to a paid plan and we are backfilling the subscription status. We cap the subscription to 2 projects and set this field for the 3rd project. When this field is set, the project is not charged for and we do not call any billing APIs for this project.
 													 * @type boolean | undefined
 													 */
-													freeProjectForLegacyLimits?: boolean | undefined;
+													freeProjectForLegacyLimits?:
+														| MicrofrontendsFreeProjectForLegacyLimitsEnumKey
+														| undefined;
 											  }
 											| {
 													/**
@@ -9325,11 +10067,13 @@ export type UserEvent = {
 													/**
 													 * @type boolean
 													 */
-													enabled: boolean;
+													enabled: MicrofrontendsEnabledEnum2Key;
 													/**
 													 * @type boolean | undefined
 													 */
-													freeProjectForLegacyLimits?: boolean | undefined;
+													freeProjectForLegacyLimits?:
+														| MicrofrontendsFreeProjectForLegacyLimitsEnum2Key
+														| undefined;
 											  }
 									  )
 									| undefined;
@@ -9386,7 +10130,7 @@ export type UserEvent = {
 									/**
 									 * @type boolean | undefined
 									 */
-									hasData?: boolean | undefined;
+									hasData?: ProjectWebAnalyticsHasDataEnumKey | undefined;
 							  }
 							| undefined;
 						/**
@@ -9413,7 +10157,7 @@ export type UserEvent = {
 									/**
 									 * @type boolean | undefined
 									 */
-									hasData?: boolean | undefined;
+									hasData?: PrevProjectWebAnalyticsHasDataEnumKey | undefined;
 							  } | null)
 							| undefined;
 				  }
@@ -9542,7 +10286,7 @@ export type UserEvent = {
 										/**
 										 * @type boolean
 										 */
-										required: boolean;
+										required: ProjectIdsRequiredEnumKey;
 										/**
 										 * @type object
 										 */
@@ -9590,7 +10334,7 @@ export type UserEvent = {
 													/**
 													 * @type boolean
 													 */
-													required: boolean;
+													required: ProjectIdsRequiredEnumKey;
 													/**
 													 * @type object
 													 */
@@ -9626,7 +10370,7 @@ export type UserEvent = {
 													/**
 													 * @type boolean
 													 */
-													required: boolean;
+													required: ProjectIdsRequiredEnumKey;
 													/**
 													 * @type object
 													 */
@@ -9874,7 +10618,7 @@ export type UserEvent = {
 						 * @description optional since entries prior to 2025-10-13 do not contain this field
 						 * @type boolean | undefined
 						 */
-						includesRefreshToken?: boolean | undefined;
+						includesRefreshToken?: PayloadIncludesRefreshTokenEnumKey | undefined;
 						/**
 						 * @description optional since entries prior to 2025-10-13 do not contain this field
 						 * @type string | undefined
@@ -9984,6 +10728,20 @@ export type InvitedTeamMember = {
 	teamPermissions?: InvitedTeamMemberTeamPermissionsEnumKey[] | undefined;
 };
 
+export const connectEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type ConnectEnabledEnumKey = (typeof connectEnabledEnum)[keyof typeof connectEnabledEnum];
+
+export const samlEnforcedEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type SamlEnforcedEnumKey = (typeof samlEnforcedEnum)[keyof typeof samlEnforcedEnum];
+
 export const samlDefaultRedirectUriEnum = {
 	"v0.app": "v0.app",
 	"v0.dev": "v0.dev",
@@ -10035,6 +10793,29 @@ export const defaultRolesTeamPermissionsEnum = {
 export type DefaultRolesTeamPermissionsEnumKey =
 	(typeof defaultRolesTeamPermissionsEnum)[keyof typeof defaultRolesTeamPermissionsEnum];
 
+export const resourceConfigElasticConcurrencyEnabledEnum2 = {
+	false: false,
+	true: true,
+} as const;
+
+export type ResourceConfigElasticConcurrencyEnabledEnum2Key =
+	(typeof resourceConfigElasticConcurrencyEnabledEnum2)[keyof typeof resourceConfigElasticConcurrencyEnabledEnum2];
+
+export const teamPlatformEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type TeamPlatformEnumKey = (typeof teamPlatformEnum)[keyof typeof teamPlatformEnum];
+
+export const teamDisableHardAutoBlocksEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type TeamDisableHardAutoBlocksEnumKey =
+	(typeof teamDisableHardAutoBlocksEnum)[keyof typeof teamDisableHardAutoBlocksEnum];
+
 export const teamEnablePreviewFeedbackEnum = {
 	default: "default",
 	"default-force": "default-force",
@@ -10067,6 +10848,37 @@ export const teamSensitiveEnvironmentVariablePolicyEnum = {
 
 export type TeamSensitiveEnvironmentVariablePolicyEnumKey =
 	(typeof teamSensitiveEnvironmentVariablePolicyEnum)[keyof typeof teamSensitiveEnvironmentVariablePolicyEnum];
+
+export const teamHideIpAddressesEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type TeamHideIpAddressesEnumKey =
+	(typeof teamHideIpAddressesEnum)[keyof typeof teamHideIpAddressesEnum];
+
+export const teamHideIpAddressesInLogDrainsEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type TeamHideIpAddressesInLogDrainsEnumKey =
+	(typeof teamHideIpAddressesInLogDrainsEnum)[keyof typeof teamHideIpAddressesInLogDrainsEnum];
+
+export const strictDeploymentProtectionSettingsEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type StrictDeploymentProtectionSettingsEnabledEnumKey =
+	(typeof strictDeploymentProtectionSettingsEnabledEnum)[keyof typeof strictDeploymentProtectionSettingsEnabledEnum];
+
+export const membershipConfirmedEnum = {
+	true: true,
+} as const;
+
+export type MembershipConfirmedEnumKey =
+	(typeof membershipConfirmedEnum)[keyof typeof membershipConfirmedEnum];
 
 export const membershipRoleEnum = {
 	BILLING: "BILLING",
@@ -10139,7 +10951,7 @@ export type Team = {
 				/**
 				 * @type boolean | undefined
 				 */
-				enabled?: boolean | undefined;
+				enabled?: ConnectEnabledEnumKey | undefined;
 		  }
 		| undefined;
 	/**
@@ -10238,7 +11050,7 @@ export type Team = {
 				 * @description When `true`, interactions with the Team **must** be done with an authentication token that has been authenticated with the Team\'s SAML Single Sign-On provider.
 				 * @type boolean
 				 */
-				enforced: boolean;
+				enforced: SamlEnforcedEnumKey;
 				/**
 				 * @description The default redirect URI to use after successful SAML authentication.
 				 * @type string | undefined
@@ -10307,7 +11119,7 @@ export type Team = {
 				 * @description Whether every build for this team / user has elastic concurrency enabled automatically.
 				 * @type boolean | undefined
 				 */
-				elasticConcurrencyEnabled?: boolean | undefined;
+				elasticConcurrencyEnabled?: ResourceConfigElasticConcurrencyEnabledEnum2Key | undefined;
 				/**
 				 * @description The maximum size in kilobytes of an Edge Config. Only specified if a custom limit is set.
 				 * @type number | undefined
@@ -10341,7 +11153,7 @@ export type Team = {
 							/**
 							 * @type boolean | undefined
 							 */
-							enhancedBuilds?: boolean | undefined;
+							enhancedBuilds?: BuildEntitlementsEnhancedBuildsEnumKey | undefined;
 					  }
 					| undefined;
 		  }
@@ -10355,8 +11167,8 @@ export type Team = {
 	 * @description Whether the team is a platform team.
 	 * @type boolean | undefined
 	 */
-	platform?: boolean | undefined;
-	disableHardAutoBlocks?: (number | boolean) | undefined;
+	platform?: TeamPlatformEnumKey | undefined;
+	disableHardAutoBlocks?: (number | TeamDisableHardAutoBlocksEnumKey) | undefined;
 	/**
 	 * @description Is remote caching enabled for this team
 	 * @type object | undefined
@@ -10366,7 +11178,7 @@ export type Team = {
 				/**
 				 * @type boolean | undefined
 				 */
-				enabled?: boolean | undefined;
+				enabled?: RemoteCachingEnabledEnumKey | undefined;
 		  }
 		| undefined;
 	/**
@@ -10453,12 +11265,12 @@ export type Team = {
 	 * @description Indicates if IP addresses should be accessible in observability (o11y) tooling
 	 * @type boolean
 	 */
-	hideIpAddresses?: (boolean | null) | undefined;
+	hideIpAddresses?: (TeamHideIpAddressesEnumKey | null) | undefined;
 	/**
 	 * @description Indicates if IP addresses should be accessible in log drains
 	 * @type boolean
 	 */
-	hideIpAddressesInLogDrains?: (boolean | null) | undefined;
+	hideIpAddressesInLogDrains?: (TeamHideIpAddressesInLogDrainsEnumKey | null) | undefined;
 	/**
 	 * @type array | undefined
 	 */
@@ -10483,7 +11295,7 @@ export type Team = {
 				/**
 				 * @type boolean
 				 */
-				enabled: boolean;
+				enabled: StrictDeploymentProtectionSettingsEnabledEnumKey;
 				/**
 				 * @type number
 				 */
@@ -10537,7 +11349,7 @@ export type Team = {
 		/**
 		 * @type boolean
 		 */
-		confirmed: boolean;
+		confirmed: MembershipConfirmedEnumKey;
 		/**
 		 * @type number | undefined
 		 */
@@ -10619,6 +11431,13 @@ export type Team = {
 	[key: string]: unknown;
 };
 
+export const teamLimitedLimitedEnum = {
+	true: true,
+} as const;
+
+export type TeamLimitedLimitedEnumKey =
+	(typeof teamLimitedLimitedEnum)[keyof typeof teamLimitedLimitedEnum];
+
 export const teamLimitedLimitedByEnum = {
 	mfa: "mfa",
 	scope: "scope",
@@ -10635,7 +11454,7 @@ export type TeamLimited = {
 	 * @description Property indicating that this Team data contains only limited information, due to the authentication token missing privileges to read the full Team data or due to team having MFA enforced and the user not having MFA enabled. Re-login with the Team\'s configured SAML Single Sign-On provider in order to upgrade the authentication token with the necessary privileges.
 	 * @type boolean
 	 */
-	limited: boolean;
+	limited: TeamLimitedLimitedEnumKey;
 	/**
 	 * @type array
 	 */
@@ -10721,7 +11540,7 @@ export type TeamLimited = {
 				 * @description When `true`, interactions with the Team **must** be done with an authentication token that has been authenticated with the Team\'s SAML Single Sign-On provider.
 				 * @type boolean
 				 */
-				enforced: boolean;
+				enforced: SamlEnforcedEnumKey;
 		  }
 		| undefined;
 	/**
@@ -10771,7 +11590,7 @@ export type TeamLimited = {
 		/**
 		 * @type boolean
 		 */
-		confirmed: boolean;
+		confirmed: MembershipConfirmedEnumKey;
 		/**
 		 * @type number | undefined
 		 */
@@ -11057,6 +11876,22 @@ export const softBlockBlockedDueToOverageTypeEnum2 = {
 export type SoftBlockBlockedDueToOverageTypeEnum2Key =
 	(typeof softBlockBlockedDueToOverageTypeEnum2)[keyof typeof softBlockBlockedDueToOverageTypeEnum2];
 
+export const resourceConfigElasticConcurrencyEnabledEnum3 = {
+	false: false,
+	true: true,
+} as const;
+
+export type ResourceConfigElasticConcurrencyEnabledEnum3Key =
+	(typeof resourceConfigElasticConcurrencyEnabledEnum3)[keyof typeof resourceConfigElasticConcurrencyEnabledEnum3];
+
+export const buildEntitlementsEnhancedBuildsEnum2 = {
+	false: false,
+	true: true,
+} as const;
+
+export type BuildEntitlementsEnhancedBuildsEnum2Key =
+	(typeof buildEntitlementsEnhancedBuildsEnum2)[keyof typeof buildEntitlementsEnhancedBuildsEnum2];
+
 export const buildQueueConfigurationEnum2 = {
 	SKIP_NAMESPACE_QUEUE: "SKIP_NAMESPACE_QUEUE",
 	WAIT_FOR_NAMESPACE_QUEUE: "WAIT_FOR_NAMESPACE_QUEUE",
@@ -11065,6 +11900,14 @@ export const buildQueueConfigurationEnum2 = {
 export type BuildQueueConfigurationEnum2Key =
 	(typeof buildQueueConfigurationEnum2)[keyof typeof buildQueueConfigurationEnum2];
 
+export const resourceConfigFlagsExplorerUnlimitedOverridesEnum2 = {
+	false: false,
+	true: true,
+} as const;
+
+export type ResourceConfigFlagsExplorerUnlimitedOverridesEnum2Key =
+	(typeof resourceConfigFlagsExplorerUnlimitedOverridesEnum2)[keyof typeof resourceConfigFlagsExplorerUnlimitedOverridesEnum2];
+
 export const buildMachinePurchaseTypeEnum2 = {
 	enhanced: "enhanced",
 	turbo: "turbo",
@@ -11072,6 +11915,14 @@ export const buildMachinePurchaseTypeEnum2 = {
 
 export type BuildMachinePurchaseTypeEnum2Key =
 	(typeof buildMachinePurchaseTypeEnum2)[keyof typeof buildMachinePurchaseTypeEnum2];
+
+export const buildMachineIsDefaultBuildMachineEnum2 = {
+	false: false,
+	true: true,
+} as const;
+
+export type BuildMachineIsDefaultBuildMachineEnum2Key =
+	(typeof buildMachineIsDefaultBuildMachineEnum2)[keyof typeof buildMachineIsDefaultBuildMachineEnum2];
 
 export const activeDashboardViewsViewPreferenceEnum2 = {
 	cards: "cards",
@@ -11107,6 +11958,22 @@ export const authUserImportFlowGitProviderEnum = {
 
 export type AuthUserImportFlowGitProviderEnumKey =
 	(typeof authUserImportFlowGitProviderEnum)[keyof typeof authUserImportFlowGitProviderEnum];
+
+export const authUserHasTrialAvailableEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type AuthUserHasTrialAvailableEnumKey =
+	(typeof authUserHasTrialAvailableEnum)[keyof typeof authUserHasTrialAvailableEnum];
+
+export const webAnalyticsIsCurrentlyBlockedEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type WebAnalyticsIsCurrentlyBlockedEnumKey =
+	(typeof webAnalyticsIsCurrentlyBlockedEnum)[keyof typeof webAnalyticsIsCurrentlyBlockedEnum];
 
 /**
  * @description Data for the currently authenticated User.
@@ -11159,7 +12026,7 @@ export type AuthUser = {
 		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
 		 * @type boolean | undefined
 		 */
-		elasticConcurrencyEnabled?: boolean | undefined;
+		elasticConcurrencyEnabled?: ResourceConfigElasticConcurrencyEnabledEnum3Key | undefined;
 		/**
 		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
 		 * @type object | undefined
@@ -11170,7 +12037,7 @@ export type AuthUser = {
 					 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
 					 * @type boolean | undefined
 					 */
-					enhancedBuilds?: boolean | undefined;
+					enhancedBuilds?: BuildEntitlementsEnhancedBuildsEnum2Key | undefined;
 			  }
 			| undefined;
 		/**
@@ -11275,7 +12142,9 @@ export type AuthUser = {
 		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
 		 * @type boolean | undefined
 		 */
-		flagsExplorerUnlimitedOverrides?: boolean | undefined;
+		flagsExplorerUnlimitedOverrides?:
+			| ResourceConfigFlagsExplorerUnlimitedOverridesEnum2Key
+			| undefined;
 		/**
 		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
 		 * @type number | undefined
@@ -11296,7 +12165,7 @@ export type AuthUser = {
 					 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
 					 * @type boolean | undefined
 					 */
-					isDefaultBuildMachine?: boolean | undefined;
+					isDefaultBuildMachine?: BuildMachineIsDefaultBuildMachineEnum2Key | undefined;
 					/**
 					 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
 					 * @type number | undefined
@@ -11439,7 +12308,7 @@ export type AuthUser = {
 	 * @description Whether the user has a trial available for a paid plan subscription.
 	 * @type boolean
 	 */
-	hasTrialAvailable: boolean;
+	hasTrialAvailable: AuthUserHasTrialAvailableEnumKey;
 	/**
 	 * @description remote caching settings
 	 * @type object | undefined
@@ -11449,7 +12318,7 @@ export type AuthUser = {
 				/**
 				 * @type boolean | undefined
 				 */
-				enabled?: boolean | undefined;
+				enabled?: RemoteCachingEnabledEnumKey | undefined;
 		  }
 		| undefined;
 	/**
@@ -11461,7 +12330,7 @@ export type AuthUser = {
 				/**
 				 * @type boolean | undefined
 				 */
-				excessBillingEnabled?: boolean | undefined;
+				excessBillingEnabled?: DataCacheExcessBillingEnabledEnumKey | undefined;
 		  }
 		| undefined;
 	/**
@@ -11486,7 +12355,7 @@ export type AuthUser = {
 							/**
 							 * @type boolean
 							 */
-							isCurrentlyBlocked: boolean;
+							isCurrentlyBlocked: WebAnalyticsIsCurrentlyBlockedEnumKey;
 					  }
 					| undefined;
 		  }
@@ -11523,6 +12392,13 @@ export type AuthUser = {
 	defaultTeamId: string | null;
 };
 
+export const authUserLimitedLimitedEnum = {
+	true: true,
+} as const;
+
+export type AuthUserLimitedLimitedEnumKey =
+	(typeof authUserLimitedLimitedEnum)[keyof typeof authUserLimitedLimitedEnum];
+
 /**
  * @description A limited form of data for the currently authenticated User, due to the authentication token missing privileges to read the full User data.
  */
@@ -11531,7 +12407,7 @@ export type AuthUserLimited = {
 	 * @description Property indicating that this User data contains only limited information, due to the authentication token missing privileges to read the full User data. Re-login with email, GitHub, GitLab or Bitbucket in order to upgrade the authentication token with the necessary privileges.
 	 * @type boolean
 	 */
-	limited: boolean;
+	limited: AuthUserLimitedLimitedEnumKey;
 	/**
 	 * @description The User\'s unique identifier.
 	 * @type string
@@ -18846,6 +19722,62 @@ export type DeleteExperimentationItemMutation = {
 		| DeleteExperimentationItem403
 		| DeleteExperimentationItem404;
 };
+
+export type GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfigPathParams =
+	{
+		/**
+		 * @type string
+		 */
+		integrationConfigurationId: string;
+		/**
+		 * @type string
+		 */
+		resourceId: string;
+	};
+
+/**
+ * @description The Edge Config data
+ */
+export type GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig200 =
+	unknown;
+
+export type GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig304 =
+	unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig400 =
+	unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig401 =
+	unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig403 =
+	unknown;
+
+export type GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig404 =
+	unknown;
+
+export type GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfigQueryResponse =
+	GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig200;
+
+export type GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfigQuery =
+	{
+		Response: GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig200;
+		PathParams: GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfigPathParams;
+		Errors:
+			| GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig400
+			| GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig401
+			| GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig403
+			| GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig404;
+	};
 
 export type UpdateExperimentationEdgeConfigPathParams = {
 	/**
