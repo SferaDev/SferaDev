@@ -60,11 +60,11 @@ export const networkSchema = z.object({
 
 export const flagJSONValueSchema = z
 	.union([
-		z.boolean(),
 		z.array(z.unknown()),
 		z.string(),
 		z.number(),
 		z.object({}).catchall(z.unknown()),
+		z.union([z.literal(false), z.literal(true)]),
 	])
 	.nullable();
 
@@ -748,11 +748,11 @@ export const registrantFieldSchema = z
 
 export const edgeConfigItemValueSchema = z
 	.union([
-		z.boolean(),
 		z.array(z.unknown()),
 		z.string(),
 		z.number(),
 		z.object({}).catchall(z.unknown()),
+		z.union([z.literal(false), z.literal(true)]),
 	])
 	.nullable();
 
@@ -980,7 +980,7 @@ export const userEventSchema = z
 					redirect: z.optional(z.string()),
 					redirectStatusCode: z.number().nullish(),
 					target: z.string().nullish(),
-					system: z.optional(z.boolean()),
+					system: z.optional(z.union([z.literal(false), z.literal(true)])),
 					aliasUpdatedAt: z.optional(z.number()),
 				}),
 				z.object({
@@ -1042,7 +1042,7 @@ export const userEventSchema = z
 				}),
 				z.object({
 					projectName: z.string(),
-					autoExposeSystemEnvs: z.boolean(),
+					autoExposeSystemEnvs: z.union([z.literal(false), z.literal(true)]),
 				}),
 				z.object({
 					avatar: z.optional(z.string()),
@@ -1065,7 +1065,7 @@ export const userEventSchema = z
 				z.object({
 					cn: z.optional(z.string()),
 					cns: z.optional(z.array(z.string())),
-					custom: z.boolean(),
+					custom: z.union([z.literal(false), z.literal(true)]),
 					id: z.optional(z.string()),
 				}),
 				z.object({
@@ -1103,7 +1103,7 @@ export const userEventSchema = z
 					projectId: z.optional(z.string()),
 					projectName: z.optional(z.string()),
 					target: z.optional(z.array(z.string())),
-					updated: z.optional(z.boolean()),
+					updated: z.optional(z.union([z.literal(false), z.literal(true)])),
 				}),
 				z.object({
 					projectId: z.optional(z.string()),
@@ -1141,7 +1141,7 @@ export const userEventSchema = z
 						id: z.string(),
 						name: z.optional(z.string()),
 					}),
-					buildsEnabled: z.optional(z.boolean()),
+					buildsEnabled: z.optional(z.union([z.literal(false), z.literal(true)])),
 				}),
 				z.object({
 					team: z.object({
@@ -1156,8 +1156,8 @@ export const userEventSchema = z
 						id: z.string(),
 						name: z.optional(z.string()),
 					}),
-					buildsEnabled: z.optional(z.boolean()),
-					passive: z.optional(z.boolean()),
+					buildsEnabled: z.optional(z.union([z.literal(false), z.literal(true)])),
+					passive: z.optional(z.union([z.literal(false), z.literal(true)])),
 				}),
 				z.object({
 					team: z.object({
@@ -1230,7 +1230,7 @@ export const userEventSchema = z
 						})
 						.nullish(),
 					url: z.string(),
-					forced: z.optional(z.boolean()),
+					forced: z.optional(z.union([z.literal(false), z.literal(true)])),
 					deploymentId: z.optional(z.string()),
 					plan: z.optional(z.string()),
 					project: z.optional(z.string()),
@@ -1286,7 +1286,7 @@ export const userEventSchema = z
 				}),
 				z.object({
 					name: z.string(),
-					cdnEnabled: z.boolean(),
+					cdnEnabled: z.union([z.literal(false), z.literal(true)]),
 				}),
 				z.object({
 					name: z.string(),
@@ -1327,7 +1327,7 @@ export const userEventSchema = z
 					destinationName: z.string(),
 				}),
 				z.object({
-					renew: z.optional(z.boolean()),
+					renew: z.optional(z.union([z.literal(false), z.literal(true)])),
 					domain: z.string(),
 				}),
 				z.object({
@@ -1413,10 +1413,14 @@ export const userEventSchema = z
 							.describe("environments this env variable targets"),
 					),
 					applyToAllCustomEnvironments: z.optional(
-						z.boolean().describe("whether or not this env varible applies to custom environments"),
+						z
+							.union([z.literal(false), z.literal(true)])
+							.describe("whether or not this env varible applies to custom environments"),
 					),
 					decrypted: z.optional(
-						z.boolean().describe("whether or not this env variable is decrypted"),
+						z
+							.union([z.literal(false), z.literal(true)])
+							.describe("whether or not this env variable is decrypted"),
 					),
 					comment: z.optional(
 						z
@@ -1487,11 +1491,13 @@ export const userEventSchema = z
 							),
 							applyToAllCustomEnvironments: z.optional(
 								z
-									.boolean()
+									.union([z.literal(false), z.literal(true)])
 									.describe("whether or not this env varible applies to custom environments"),
 							),
 							decrypted: z.optional(
-								z.boolean().describe("whether or not this env variable is decrypted"),
+								z
+									.union([z.literal(false), z.literal(true)])
+									.describe("whether or not this env variable is decrypted"),
 							),
 							comment: z.optional(
 								z
@@ -1563,11 +1569,13 @@ export const userEventSchema = z
 							),
 							applyToAllCustomEnvironments: z.optional(
 								z
-									.boolean()
+									.union([z.literal(false), z.literal(true)])
 									.describe("whether or not this env varible applies to custom environments"),
 							),
 							decrypted: z.optional(
-								z.boolean().describe("whether or not this env variable is decrypted"),
+								z
+									.union([z.literal(false), z.literal(true)])
+									.describe("whether or not this env variable is decrypted"),
 							),
 							comment: z.optional(
 								z
@@ -1606,18 +1614,18 @@ export const userEventSchema = z
 									}),
 								),
 							),
-							changedValue: z.boolean(),
+							changedValue: z.union([z.literal(false), z.literal(true)]),
 						}),
 					),
 				}),
 				z.object({
-					enabled: z.boolean(),
+					enabled: z.union([z.literal(false), z.literal(true)]),
 					updatedAt: z.number(),
 					firstEnabledAt: z.optional(z.number()),
 				}),
 				z.object({
 					projectId: z.string(),
-					restore: z.boolean(),
+					restore: z.union([z.literal(false), z.literal(true)]),
 					configVersion: z.number(),
 					configChangeCount: z.number(),
 					configChanges: z.array(z.object({})),
@@ -1630,7 +1638,7 @@ export const userEventSchema = z
 				z.object({
 					projectId: z.string(),
 					rulesetName: z.string(),
-					active: z.boolean(),
+					active: z.union([z.literal(false), z.literal(true)]),
 					action: z.optional(z.enum(["log", "challenge", "deny"])),
 				}),
 				z.object({
@@ -1638,16 +1646,16 @@ export const userEventSchema = z
 					rulesetName: z.string(),
 					ruleGroups: z.object({}).catchall(
 						z.object({
-							active: z.boolean(),
+							active: z.union([z.literal(false), z.literal(true)]),
 							action: z.optional(z.enum(["log", "challenge", "deny"])),
 						}),
 					),
 				}),
 				z.object({
 					projectId: z.string(),
-					prevAttackModeEnabled: z.optional(z.boolean()),
+					prevAttackModeEnabled: z.optional(z.union([z.literal(false), z.literal(true)])),
 					prevAttackModeActiveUntil: z.number().nullish(),
-					attackModeEnabled: z.boolean(),
+					attackModeEnabled: z.union([z.literal(false), z.literal(true)]),
 					attackModeActiveUntil: z.number().nullish(),
 				}),
 				z.object({
@@ -1682,7 +1690,9 @@ export const userEventSchema = z
 														actor: z.optional(z.string()),
 														statusCode: z.optional(z.number()),
 														comment: z.optional(z.string()),
-														ineligibleForAppeal: z.optional(z.boolean()),
+														ineligibleForAppeal: z.optional(
+															z.union([z.literal(false), z.literal(true)]),
+														),
 													})
 													.describe("Since June 2023"),
 											)
@@ -1782,7 +1792,7 @@ export const userEventSchema = z
 							orbCustomerId: z.string().nullish(),
 							dataCache: z.optional(
 								z.object({
-									excessBillingEnabled: z.optional(z.boolean()),
+									excessBillingEnabled: z.optional(z.union([z.literal(false), z.literal(true)])),
 								}),
 							),
 							deletedAt: z.number().nullish(),
@@ -1824,13 +1834,15 @@ export const userEventSchema = z
 									}),
 								),
 							),
-							isDomainReseller: z.optional(z.boolean()),
-							isZeitPub: z.optional(z.boolean()),
+							isDomainReseller: z.optional(z.union([z.literal(false), z.literal(true)])),
+							isZeitPub: z.optional(z.union([z.literal(false), z.literal(true)])),
 							maxActiveSlots: z.optional(z.number()),
 							name: z.optional(z.string()),
 							phoneNumber: z.optional(z.string()),
 							platformVersion: z.nullable(z.number()),
-							preventAutoBlocking: z.optional(z.union([z.boolean(), z.number()])),
+							preventAutoBlocking: z.optional(
+								z.union([z.number(), z.union([z.literal(false), z.literal(true)])]),
+							),
 							projectDomainsLimit: z.optional(
 								z
 									.number()
@@ -1841,7 +1853,7 @@ export const userEventSchema = z
 							remoteCaching: z.optional(
 								z
 									.object({
-										enabled: z.optional(z.boolean()),
+										enabled: z.optional(z.union([z.literal(false), z.literal(true)])),
 									})
 									.describe("Represents configuration for remote caching"),
 							),
@@ -1859,10 +1871,12 @@ export const userEventSchema = z
 								z.object({
 									nodeType: z.optional(z.string()),
 									concurrentBuilds: z.optional(z.number()),
-									elasticConcurrencyEnabled: z.optional(z.boolean()),
+									elasticConcurrencyEnabled: z.optional(
+										z.union([z.literal(false), z.literal(true)]),
+									),
 									buildEntitlements: z.optional(
 										z.object({
-											enhancedBuilds: z.optional(z.boolean()),
+											enhancedBuilds: z.optional(z.union([z.literal(false), z.literal(true)])),
 										}),
 									),
 									buildQueue: z.optional(
@@ -1889,12 +1903,16 @@ export const userEventSchema = z
 									microfrontendGroupsPerTeam: z.optional(z.number()),
 									microfrontendProjectsPerGroup: z.optional(z.number()),
 									flagsExplorerOverridesThreshold: z.optional(z.number()),
-									flagsExplorerUnlimitedOverrides: z.optional(z.boolean()),
+									flagsExplorerUnlimitedOverrides: z.optional(
+										z.union([z.literal(false), z.literal(true)]),
+									),
 									customEnvironmentsPerProject: z.optional(z.number()),
 									buildMachine: z.optional(
 										z.object({
 											purchaseType: z.optional(z.enum(["enhanced", "turbo"])),
-											isDefaultBuildMachine: z.optional(z.boolean()),
+											isDefaultBuildMachine: z.optional(
+												z.union([z.literal(false), z.literal(true)]),
+											),
 											cores: z.optional(z.number()),
 											memory: z.optional(z.number()),
 										}),
@@ -1935,7 +1953,7 @@ export const userEventSchema = z
 								z.array(
 									z.object({
 										email: z.string(),
-										verified: z.boolean(),
+										verified: z.union([z.literal(false), z.literal(true)]),
 									}),
 								),
 							),
@@ -2046,7 +2064,7 @@ export const userEventSchema = z
 												"VIEWER_FOR_PLUS",
 												"CONTRIBUTOR",
 											]),
-											confirmed: z.boolean(),
+											confirmed: z.literal(true),
 											confirmedAt: z.number(),
 											accessRequestedAt: z.optional(z.number()),
 											teamRoles: z.optional(
@@ -2713,7 +2731,7 @@ export const userEventSchema = z
 							mfaConfiguration: z.optional(
 								z
 									.object({
-										enabled: z.boolean(),
+										enabled: z.union([z.literal(false), z.literal(true)]),
 										enabledAt: z.optional(z.number()),
 										recoveryCodes: z.array(z.string()),
 										totp: z.optional(
@@ -2865,7 +2883,7 @@ export const userEventSchema = z
 									"VIEWER_FOR_PLUS",
 									"CONTRIBUTOR",
 								]),
-								confirmed: z.boolean(),
+								confirmed: z.union([z.literal(false), z.literal(true)]),
 								confirmedAt: z.optional(z.number()),
 								joinedFrom: z.optional(
 									z.object({
@@ -2899,11 +2917,11 @@ export const userEventSchema = z
 					),
 					prevPlan: z.optional(z.string()),
 					priorPlan: z.optional(z.string()),
-					isDowngrade: z.optional(z.boolean()),
+					isDowngrade: z.optional(z.union([z.literal(false), z.literal(true)])),
 					userAgent: z.optional(z.string()),
-					isReactivate: z.optional(z.boolean()),
-					isTrialUpgrade: z.optional(z.boolean()),
-					automated: z.optional(z.boolean()),
+					isReactivate: z.optional(z.union([z.literal(false), z.literal(true)])),
+					isTrialUpgrade: z.optional(z.union([z.literal(false), z.literal(true)])),
+					automated: z.optional(z.union([z.literal(false), z.literal(true)])),
 					reason: z.optional(z.string()),
 					timestamp: z.optional(z.number()),
 					removedMemberCount: z.optional(z.number()),
@@ -2992,17 +3010,17 @@ export const userEventSchema = z
 				z.object({
 					projectId: z.string(),
 					projectName: z.string(),
-					onPullRequest: z.boolean(),
+					onPullRequest: z.union([z.literal(false), z.literal(true)]),
 				}),
 				z.object({
 					projectId: z.string(),
 					projectName: z.string(),
-					onCommit: z.boolean(),
+					onCommit: z.union([z.literal(false), z.literal(true)]),
 				}),
 				z.object({
 					projectId: z.string(),
 					projectName: z.string(),
-					disableRepositoryDispatchEvents: z.boolean(),
+					disableRepositoryDispatchEvents: z.union([z.literal(false), z.literal(true)]),
 				}),
 				z.object({
 					projectId: z.string(),
@@ -3012,12 +3030,12 @@ export const userEventSchema = z
 				z.object({
 					projectId: z.string(),
 					projectName: z.string(),
-					requireVerifiedCommits: z.boolean(),
+					requireVerifiedCommits: z.union([z.literal(false), z.literal(true)]),
 				}),
 				z.object({
 					projectId: z.string(),
 					projectName: z.string(),
-					gitLFS: z.boolean(),
+					gitLFS: z.union([z.literal(false), z.literal(true)]),
 				}),
 				z.object({
 					projectName: z.string(),
@@ -3160,7 +3178,7 @@ export const userEventSchema = z
 				z.object({
 					projectName: z.string(),
 					action: z.enum(["enabled", "disabled", "regenerated", "updated"]),
-					isEnvVar: z.optional(z.boolean()),
+					isEnvVar: z.optional(z.union([z.literal(false), z.literal(true)])),
 					note: z.optional(z.string()),
 				}),
 				z.object({
@@ -3181,8 +3199,8 @@ export const userEventSchema = z
 									envId: z.union([z.string(), z.enum(["preview", "production"])]),
 									connectConfigurationId: z.string(),
 									dc: z.optional(z.string()),
-									passive: z.boolean(),
-									buildsEnabled: z.boolean(),
+									passive: z.union([z.literal(false), z.literal(true)]),
+									buildsEnabled: z.union([z.literal(false), z.literal(true)]),
 									aws: z.optional(
 										z.object({
 											subnetIds: z.array(z.string()),
@@ -3200,8 +3218,8 @@ export const userEventSchema = z
 									envId: z.union([z.string(), z.enum(["preview", "production"])]),
 									connectConfigurationId: z.string(),
 									dc: z.optional(z.string()),
-									passive: z.boolean(),
-									buildsEnabled: z.boolean(),
+									passive: z.union([z.literal(false), z.literal(true)]),
+									buildsEnabled: z.union([z.literal(false), z.literal(true)]),
 									aws: z.optional(
 										z.object({
 											subnetIds: z.array(z.string()),
@@ -3232,8 +3250,8 @@ export const userEventSchema = z
 						project: z.object({
 							id: z.string(),
 							staticIps: z.object({
-								builds: z.optional(z.boolean()),
-								enabled: z.boolean(),
+								builds: z.optional(z.union([z.literal(false), z.literal(true)])),
+								enabled: z.union([z.literal(false), z.literal(true)]),
 								regions: z.optional(z.array(z.string())),
 							}),
 						}),
@@ -3242,8 +3260,8 @@ export const userEventSchema = z
 						project: z.object({
 							id: z.string(),
 							staticIps: z.object({
-								builds: z.optional(z.boolean()),
-								enabled: z.boolean(),
+								builds: z.optional(z.union([z.literal(false), z.literal(true)])),
+								enabled: z.union([z.literal(false), z.literal(true)]),
 								regions: z.optional(z.array(z.string())),
 							}),
 						}),
@@ -3252,7 +3270,12 @@ export const userEventSchema = z
 				z.object({
 					projectId: z.string(),
 					projectName: z.string(),
-					enableAffectedProjectsDeployments: z.boolean(),
+					enableAffectedProjectsDeployments: z.union([z.literal(false), z.literal(true)]),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					autoAssignCustomDomains: z.union([z.literal(false), z.literal(true)]),
 				}),
 				z.object({
 					projectId: z.string(),
@@ -3263,7 +3286,12 @@ export const userEventSchema = z
 				z.object({
 					projectId: z.string(),
 					projectName: z.string(),
-					sourceFilesOutsideRootDirectory: z.boolean(),
+					productionDeploymentsFastLane: z.union([z.literal(false), z.literal(true)]),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					sourceFilesOutsideRootDirectory: z.union([z.literal(false), z.literal(true)]),
 				}),
 				z.object({
 					projectId: z.string(),
@@ -3274,14 +3302,24 @@ export const userEventSchema = z
 				z.object({
 					projectId: z.string(),
 					projectName: z.string(),
-					elasticConcurrencyEnabled: z.boolean(),
-					oldElasticConcurrencyEnabled: z.boolean(),
+					elasticConcurrencyEnabled: z.union([z.literal(false), z.literal(true)]),
+					oldElasticConcurrencyEnabled: z.union([z.literal(false), z.literal(true)]),
 					buildQueueConfiguration: z.optional(
 						z.enum(["SKIP_NAMESPACE_QUEUE", "WAIT_FOR_NAMESPACE_QUEUE"]),
 					),
 					oldBuildQueueConfiguration: z.optional(
 						z.enum(["SKIP_NAMESPACE_QUEUE", "WAIT_FOR_NAMESPACE_QUEUE"]),
 					),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					previous: z.object({
+						commandForIgnoringBuildStep: z.optional(z.string()),
+					}),
+					next: z.object({
+						commandForIgnoringBuildStep: z.optional(z.string()),
+					}),
 				}),
 				z.object({
 					projectId: z.string(),
@@ -3335,7 +3373,7 @@ export const userEventSchema = z
 				}),
 				z.object({
 					email: z.string(),
-					verified: z.boolean(),
+					verified: z.union([z.literal(false), z.literal(true)]),
 				}),
 				z.object({
 					email: z.string(),
@@ -3413,13 +3451,19 @@ export const userEventSchema = z
 										),
 								),
 								webhookNotified: z.optional(
-									z.boolean().describe("Keep track if the webhook has been called for the month"),
+									z
+										.union([z.literal(false), z.literal(true)])
+										.describe("Keep track if the webhook has been called for the month"),
 								),
 								createdAt: z.number().describe("Date time when budget is created"),
 								updatedAt: z.optional(z.number().describe("Date time when budget is updated last")),
-								isActive: z.boolean().describe("Is the budget currently active for a customer"),
+								isActive: z
+									.union([z.literal(false), z.literal(true)])
+									.describe("Is the budget currently active for a customer"),
 								pauseProjects: z.optional(
-									z.boolean().describe("Should all projects be paused if budget is exceeded"),
+									z
+										.union([z.literal(false), z.literal(true)])
+										.describe("Should all projects be paused if budget is exceeded"),
 								),
 								pricingPlan: z.optional(
 									z
@@ -3451,13 +3495,19 @@ export const userEventSchema = z
 									),
 							),
 							webhookNotified: z.optional(
-								z.boolean().describe("Keep track if the webhook has been called for the month"),
+								z
+									.union([z.literal(false), z.literal(true)])
+									.describe("Keep track if the webhook has been called for the month"),
 							),
 							createdAt: z.number().describe("Date time when budget is created"),
 							updatedAt: z.optional(z.number().describe("Date time when budget is updated last")),
-							isActive: z.boolean().describe("Is the budget currently active for a customer"),
+							isActive: z
+								.union([z.literal(false), z.literal(true)])
+								.describe("Is the budget currently active for a customer"),
 							pauseProjects: z.optional(
-								z.boolean().describe("Should all projects be paused if budget is exceeded"),
+								z
+									.union([z.literal(false), z.literal(true)])
+									.describe("Should all projects be paused if budget is exceeded"),
 							),
 							pricingPlan: z.optional(
 								z
@@ -3488,13 +3538,19 @@ export const userEventSchema = z
 									),
 							),
 							webhookNotified: z.optional(
-								z.boolean().describe("Keep track if the webhook has been called for the month"),
+								z
+									.union([z.literal(false), z.literal(true)])
+									.describe("Keep track if the webhook has been called for the month"),
 							),
 							createdAt: z.number().describe("Date time when budget is created"),
 							updatedAt: z.optional(z.number().describe("Date time when budget is updated last")),
-							isActive: z.boolean().describe("Is the budget currently active for a customer"),
+							isActive: z
+								.union([z.literal(false), z.literal(true)])
+								.describe("Is the budget currently active for a customer"),
 							pauseProjects: z.optional(
-								z.boolean().describe("Should all projects be paused if budget is exceeded"),
+								z
+									.union([z.literal(false), z.literal(true)])
+									.describe("Should all projects be paused if budget is exceeded"),
 							),
 							pricingPlan: z.optional(
 								z
@@ -3558,7 +3614,7 @@ export const userEventSchema = z
 									"VIEWER_FOR_PLUS",
 									"CONTRIBUTOR",
 								]),
-								confirmed: z.boolean(),
+								confirmed: z.union([z.literal(false), z.literal(true)]),
 								confirmedAt: z.optional(z.number()),
 							}),
 						),
@@ -3607,7 +3663,7 @@ export const userEventSchema = z
 					reason: z.optional(z.string()),
 					previousPlan: z.optional(z.enum(["pro", "enterprise", "hobby"])),
 					newPlan: z.optional(z.enum(["pro", "enterprise", "hobby"])),
-					automated: z.optional(z.boolean()),
+					automated: z.optional(z.union([z.literal(false), z.literal(true)])),
 				}),
 				z.object({
 					role: z.optional(z.string()),
@@ -3645,7 +3701,7 @@ export const userEventSchema = z
 					previousCanceledAt: z.optional(z.string()),
 				}),
 				z.object({
-					enforced: z.boolean(),
+					enforced: z.union([z.literal(false), z.literal(true)]),
 				}),
 				z.object({
 					name: z.optional(z.string()),
@@ -3657,27 +3713,27 @@ export const userEventSchema = z
 					remoteCaching: z.optional(
 						z
 							.object({
-								enabled: z.optional(z.boolean()),
+								enabled: z.optional(z.union([z.literal(false), z.literal(true)])),
 							})
 							.describe("Represents configuration for remote caching"),
 					),
 				}),
 				z.object({
 					previous: z.object({
-						enabled: z.boolean(),
-						totpVerified: z.boolean(),
+						enabled: z.union([z.literal(false), z.literal(true)]),
+						totpVerified: z.union([z.literal(false), z.literal(true)]),
 					}),
 					next: z.object({
-						enabled: z.boolean(),
-						totpVerified: z.boolean(),
+						enabled: z.union([z.literal(false), z.literal(true)]),
+						totpVerified: z.union([z.literal(false), z.literal(true)]),
 					}),
 				}),
 				z.object({
-					enabled: z.boolean(),
-					totpVerified: z.boolean(),
+					enabled: z.union([z.literal(false), z.literal(true)]),
+					totpVerified: z.union([z.literal(false), z.literal(true)]),
 				}),
 				z.object({
-					mfaEnabled: z.boolean(),
+					mfaEnabled: z.union([z.literal(false), z.literal(true)]),
 				}),
 				z.object({
 					email: z.string(),
@@ -3689,7 +3745,7 @@ export const userEventSchema = z
 				z.object({
 					price: z.optional(z.number()),
 					currency: z.optional(z.string()),
-					enabled: z.optional(z.boolean()),
+					enabled: z.optional(z.union([z.literal(false), z.literal(true)])),
 				}),
 				z.object({
 					previewDeploymentSuffix: z.string().nullish(),
@@ -3860,19 +3916,18 @@ export const userEventSchema = z
 						microfrontends: z.optional(
 							z.union([
 								z.object({
-									isDefaultApp: z.boolean(),
+									isDefaultApp: z.literal(true),
 									updatedAt: z
 										.number()
 										.describe("Timestamp when the microfrontends settings were last updated."),
 									groupIds: z
-										.array(z.union([z.string(), z.string()]))
-										.min(2)
-										.max(2)
+										.array(z.string())
+										.min(1)
 										.describe(
 											"The group IDs of microfrontends that this project belongs to. Each microfrontend project must belong to a microfrontends group that is the set of microfrontends that are used together.",
 										),
 									enabled: z
-										.boolean()
+										.literal(true)
 										.describe("Whether microfrontends are enabled for this project."),
 									defaultRoute: z.optional(
 										z
@@ -3883,24 +3938,24 @@ export const userEventSchema = z
 									),
 									freeProjectForLegacyLimits: z.optional(
 										z
-											.boolean()
+											.union([z.literal(false), z.literal(true)])
 											.describe(
 												"Whether the project was part of the legacy limits for hobby and pro-trial before billing was added. This field is only set when the team is upgraded to a paid plan and we are backfilling the subscription status. We cap the subscription to 2 projects and set this field for the 3rd project. When this field is set, the project is not charged for and we do not call any billing APIs for this project.",
 											),
 									),
 								}),
 								z.object({
-									isDefaultApp: z.optional(z.boolean()),
+									isDefaultApp: z.optional(z.literal(false)),
 									routeObservabilityToThisProject: z.optional(
 										z
-											.boolean()
+											.union([z.literal(false), z.literal(true)])
 											.describe(
 												"Whether observability data should be routed to this microfrontend project or a root project.",
 											),
 									),
 									doNotRouteWithMicrofrontendsRouting: z.optional(
 										z
-											.boolean()
+											.union([z.literal(false), z.literal(true)])
 											.describe(
 												"Whether to add microfrontends routing to aliases. This means domains in this project will route as a microfrontend.",
 											),
@@ -3909,14 +3964,13 @@ export const userEventSchema = z
 										.number()
 										.describe("Timestamp when the microfrontends settings were last updated."),
 									groupIds: z
-										.array(z.union([z.string(), z.string()]))
-										.min(2)
-										.max(2)
+										.array(z.string())
+										.min(1)
 										.describe(
 											"The group IDs of microfrontends that this project belongs to. Each microfrontend project must belong to a microfrontends group that is the set of microfrontends that are used together.",
 										),
 									enabled: z
-										.boolean()
+										.literal(true)
 										.describe("Whether microfrontends are enabled for this project."),
 									defaultRoute: z.optional(
 										z
@@ -3927,7 +3981,7 @@ export const userEventSchema = z
 									),
 									freeProjectForLegacyLimits: z.optional(
 										z
-											.boolean()
+											.union([z.literal(false), z.literal(true)])
 											.describe(
 												"Whether the project was part of the legacy limits for hobby and pro-trial before billing was added. This field is only set when the team is upgraded to a paid plan and we are backfilling the subscription status. We cap the subscription to 2 projects and set this field for the 3rd project. When this field is set, the project is not charged for and we do not call any billing APIs for this project.",
 											),
@@ -3939,8 +3993,10 @@ export const userEventSchema = z
 										.array(z.union([z.string(), z.string()]))
 										.min(2)
 										.max(2),
-									enabled: z.boolean(),
-									freeProjectForLegacyLimits: z.optional(z.boolean()),
+									enabled: z.literal(false),
+									freeProjectForLegacyLimits: z.optional(
+										z.union([z.literal(false), z.literal(true)]),
+									),
 								}),
 							]),
 						),
@@ -3950,19 +4006,18 @@ export const userEventSchema = z
 							microfrontends: z.optional(
 								z.union([
 									z.object({
-										isDefaultApp: z.boolean(),
+										isDefaultApp: z.literal(true),
 										updatedAt: z
 											.number()
 											.describe("Timestamp when the microfrontends settings were last updated."),
 										groupIds: z
-											.array(z.union([z.string(), z.string()]))
-											.min(2)
-											.max(2)
+											.array(z.string())
+											.min(1)
 											.describe(
 												"The group IDs of microfrontends that this project belongs to. Each microfrontend project must belong to a microfrontends group that is the set of microfrontends that are used together.",
 											),
 										enabled: z
-											.boolean()
+											.literal(true)
 											.describe("Whether microfrontends are enabled for this project."),
 										defaultRoute: z.optional(
 											z
@@ -3973,24 +4028,24 @@ export const userEventSchema = z
 										),
 										freeProjectForLegacyLimits: z.optional(
 											z
-												.boolean()
+												.union([z.literal(false), z.literal(true)])
 												.describe(
 													"Whether the project was part of the legacy limits for hobby and pro-trial before billing was added. This field is only set when the team is upgraded to a paid plan and we are backfilling the subscription status. We cap the subscription to 2 projects and set this field for the 3rd project. When this field is set, the project is not charged for and we do not call any billing APIs for this project.",
 												),
 										),
 									}),
 									z.object({
-										isDefaultApp: z.optional(z.boolean()),
+										isDefaultApp: z.optional(z.literal(false)),
 										routeObservabilityToThisProject: z.optional(
 											z
-												.boolean()
+												.union([z.literal(false), z.literal(true)])
 												.describe(
 													"Whether observability data should be routed to this microfrontend project or a root project.",
 												),
 										),
 										doNotRouteWithMicrofrontendsRouting: z.optional(
 											z
-												.boolean()
+												.union([z.literal(false), z.literal(true)])
 												.describe(
 													"Whether to add microfrontends routing to aliases. This means domains in this project will route as a microfrontend.",
 												),
@@ -3999,14 +4054,13 @@ export const userEventSchema = z
 											.number()
 											.describe("Timestamp when the microfrontends settings were last updated."),
 										groupIds: z
-											.array(z.union([z.string(), z.string()]))
-											.min(2)
-											.max(2)
+											.array(z.string())
+											.min(1)
 											.describe(
 												"The group IDs of microfrontends that this project belongs to. Each microfrontend project must belong to a microfrontends group that is the set of microfrontends that are used together.",
 											),
 										enabled: z
-											.boolean()
+											.literal(true)
 											.describe("Whether microfrontends are enabled for this project."),
 										defaultRoute: z.optional(
 											z
@@ -4017,7 +4071,7 @@ export const userEventSchema = z
 										),
 										freeProjectForLegacyLimits: z.optional(
 											z
-												.boolean()
+												.union([z.literal(false), z.literal(true)])
 												.describe(
 													"Whether the project was part of the legacy limits for hobby and pro-trial before billing was added. This field is only set when the team is upgraded to a paid plan and we are backfilling the subscription status. We cap the subscription to 2 projects and set this field for the 3rd project. When this field is set, the project is not charged for and we do not call any billing APIs for this project.",
 												),
@@ -4029,8 +4083,10 @@ export const userEventSchema = z
 											.array(z.union([z.string(), z.string()]))
 											.min(2)
 											.max(2),
-										enabled: z.boolean(),
-										freeProjectForLegacyLimits: z.optional(z.boolean()),
+										enabled: z.literal(false),
+										freeProjectForLegacyLimits: z.optional(
+											z.union([z.literal(false), z.literal(true)]),
+										),
 									}),
 								]),
 							),
@@ -4051,7 +4107,7 @@ export const userEventSchema = z
 							disabledAt: z.optional(z.number()),
 							canceledAt: z.optional(z.number()),
 							enabledAt: z.optional(z.number()),
-							hasData: z.optional(z.boolean()),
+							hasData: z.optional(z.literal(true)),
 						}),
 					),
 					prevProjectWebAnalytics: z
@@ -4060,7 +4116,7 @@ export const userEventSchema = z
 							disabledAt: z.optional(z.number()),
 							canceledAt: z.optional(z.number()),
 							enabledAt: z.optional(z.number()),
-							hasData: z.optional(z.boolean()),
+							hasData: z.optional(z.literal(true)),
 						})
 						.nullish(),
 				}),
@@ -4141,7 +4197,7 @@ export const userEventSchema = z
 						z.object({
 							projectIds: z.object({
 								type: z.enum(["list"]),
-								required: z.boolean(),
+								required: z.literal(true),
 								items: z.object({
 									type: z.enum(["string"]),
 								}),
@@ -4159,7 +4215,7 @@ export const userEventSchema = z
 								z.object({
 									projectIds: z.object({
 										type: z.enum(["list"]),
-										required: z.boolean(),
+										required: z.literal(true),
 										items: z.object({
 											type: z.enum(["string"]),
 										}),
@@ -4174,7 +4230,7 @@ export const userEventSchema = z
 								z.object({
 									projectIds: z.object({
 										type: z.enum(["list"]),
-										required: z.boolean(),
+										required: z.literal(true),
 										items: z.object({
 											type: z.enum(["string"]),
 										}),
@@ -4312,7 +4368,7 @@ export const userEventSchema = z
 					),
 					includesRefreshToken: z.optional(
 						z
-							.boolean()
+							.union([z.literal(false), z.literal(true)])
 							.describe("optional since entries prior to 2025-10-13 do not contain this field"),
 					),
 					publicId: z.optional(
@@ -4407,7 +4463,7 @@ export const teamSchema = z
 	.object({
 		connect: z.optional(
 			z.object({
-				enabled: z.optional(z.boolean()),
+				enabled: z.optional(z.union([z.literal(false), z.literal(true)])),
 			}),
 		),
 		creatorId: z.string().describe("The ID of the user who created the Team."),
@@ -4475,7 +4531,7 @@ export const teamSchema = z
 							.describe("Information for the Directory Sync configuration."),
 					),
 					enforced: z
-						.boolean()
+						.union([z.literal(false), z.literal(true)])
 						.describe(
 							"When `true`, interactions with the Team **must** be done with an authentication token that has been authenticated with the Team's SAML Single Sign-On provider.",
 						),
@@ -4560,7 +4616,7 @@ export const teamSchema = z
 				),
 				elasticConcurrencyEnabled: z.optional(
 					z
-						.boolean()
+						.union([z.literal(false), z.literal(true)])
 						.describe(
 							"Whether every build for this team / user has elastic concurrency enabled automatically.",
 						),
@@ -4586,7 +4642,7 @@ export const teamSchema = z
 				),
 				buildEntitlements: z.optional(
 					z.object({
-						enhancedBuilds: z.optional(z.boolean()),
+						enhancedBuilds: z.optional(z.union([z.literal(false), z.literal(true)])),
 					}),
 				),
 			}),
@@ -4595,12 +4651,16 @@ export const teamSchema = z
 			.string()
 			.describe("The hostname that is current set as preview deployment suffix.")
 			.nullish(),
-		platform: z.optional(z.boolean().describe("Whether the team is a platform team.")),
-		disableHardAutoBlocks: z.optional(z.union([z.boolean(), z.number()])),
+		platform: z.optional(
+			z.union([z.literal(false), z.literal(true)]).describe("Whether the team is a platform team."),
+		),
+		disableHardAutoBlocks: z.optional(
+			z.union([z.number(), z.union([z.literal(false), z.literal(true)])]),
+		),
 		remoteCaching: z.optional(
 			z
 				.object({
-					enabled: z.optional(z.boolean()),
+					enabled: z.optional(z.union([z.literal(false), z.literal(true)])),
 				})
 				.describe("Is remote caching enabled for this team"),
 		),
@@ -4668,11 +4728,11 @@ export const teamSchema = z
 			.describe("Sensitive environment variable policy for this team")
 			.nullish(),
 		hideIpAddresses: z
-			.boolean()
+			.union([z.literal(false), z.literal(true)])
 			.describe("Indicates if IP addresses should be accessible in observability (o11y) tooling")
 			.nullish(),
 		hideIpAddressesInLogDrains: z
-			.boolean()
+			.union([z.literal(false), z.literal(true)])
 			.describe("Indicates if IP addresses should be accessible in log drains")
 			.nullish(),
 		ipBuckets: z.optional(
@@ -4686,7 +4746,7 @@ export const teamSchema = z
 		strictDeploymentProtectionSettings: z.optional(
 			z
 				.object({
-					enabled: z.boolean(),
+					enabled: z.union([z.literal(false), z.literal(true)]),
 					updatedAt: z.number(),
 				})
 				.describe(
@@ -4712,7 +4772,7 @@ export const teamSchema = z
 					),
 				),
 				teamId: z.optional(z.string()),
-				confirmed: z.boolean(),
+				confirmed: z.literal(true),
 				accessRequestedAt: z.optional(z.number()),
 				role: z.enum([
 					"BILLING",
@@ -4795,7 +4855,7 @@ export const teamSchema = z
 export const teamLimitedSchema = z
 	.object({
 		limited: z
-			.boolean()
+			.literal(true)
 			.describe(
 				"Property indicating that this Team data contains only limited information, due to the authentication token missing privileges to read the full Team data or due to team having MFA enforced and the user not having MFA enabled. Re-login with the Team's configured SAML Single Sign-On provider in order to upgrade the authentication token with the necessary privileges.",
 			),
@@ -4855,7 +4915,7 @@ export const teamLimitedSchema = z
 							.describe("Information for the Directory Sync configuration."),
 					),
 					enforced: z
-						.boolean()
+						.union([z.literal(false), z.literal(true)])
 						.describe(
 							"When `true`, interactions with the Team **must** be done with an authentication token that has been authenticated with the Team's SAML Single Sign-On provider.",
 						),
@@ -4883,7 +4943,7 @@ export const teamLimitedSchema = z
 					),
 				),
 				teamId: z.optional(z.string()),
-				confirmed: z.boolean(),
+				confirmed: z.literal(true),
 				accessRequestedAt: z.optional(z.number()),
 				role: z.enum([
 					"BILLING",
@@ -5135,7 +5195,7 @@ export const authUserSchema = z
 				),
 				elasticConcurrencyEnabled: z.optional(
 					z
-						.boolean()
+						.union([z.literal(false), z.literal(true)])
 						.describe(
 							"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
 						),
@@ -5145,7 +5205,7 @@ export const authUserSchema = z
 						.object({
 							enhancedBuilds: z.optional(
 								z
-									.boolean()
+									.union([z.literal(false), z.literal(true)])
 									.describe(
 										"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
 									),
@@ -5291,7 +5351,7 @@ export const authUserSchema = z
 				),
 				flagsExplorerUnlimitedOverrides: z.optional(
 					z
-						.boolean()
+						.union([z.literal(false), z.literal(true)])
 						.describe(
 							"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
 						),
@@ -5315,7 +5375,7 @@ export const authUserSchema = z
 							),
 							isDefaultBuildMachine: z.optional(
 								z
-									.boolean()
+									.union([z.literal(false), z.literal(true)])
 									.describe(
 										"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
 									),
@@ -5452,19 +5512,19 @@ export const authUserSchema = z
 				),
 		),
 		hasTrialAvailable: z
-			.boolean()
+			.union([z.literal(false), z.literal(true)])
 			.describe("Whether the user has a trial available for a paid plan subscription."),
 		remoteCaching: z.optional(
 			z
 				.object({
-					enabled: z.optional(z.boolean()),
+					enabled: z.optional(z.union([z.literal(false), z.literal(true)])),
 				})
 				.describe("remote caching settings"),
 		),
 		dataCache: z.optional(
 			z
 				.object({
-					excessBillingEnabled: z.optional(z.boolean()),
+					excessBillingEnabled: z.optional(z.union([z.literal(false), z.literal(true)])),
 				})
 				.describe("data cache settings"),
 		),
@@ -5475,7 +5535,7 @@ export const authUserSchema = z
 						z.object({
 							blockedFrom: z.optional(z.number()),
 							blockedUntil: z.optional(z.number()),
-							isCurrentlyBlocked: z.boolean(),
+							isCurrentlyBlocked: z.union([z.literal(false), z.literal(true)]),
 						}),
 					),
 				})
@@ -5506,7 +5566,7 @@ export const authUserSchema = z
 export const authUserLimitedSchema = z
 	.object({
 		limited: z
-			.boolean()
+			.literal(true)
 			.describe(
 				"Property indicating that this User data contains only limited information, due to the authentication token missing privileges to read the full User data. Re-login with email, GitHub, GitLab or Bitbucket in order to upgrade the authentication token with the necessary privileges.",
 			),
@@ -10552,6 +10612,48 @@ export const deleteExperimentationItem404Schema = z.unknown();
 export const deleteExperimentationItemMutationResponseSchema = z.lazy(
 	() => deleteExperimentationItem204Schema,
 );
+
+export const GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfigPathParamsSchema =
+	z.object({
+		integrationConfigurationId: z.string(),
+		resourceId: z.string(),
+	});
+
+/**
+ * @description The Edge Config data
+ */
+export const GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig200Schema =
+	z.unknown();
+
+export const GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig304Schema =
+	z.unknown();
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export const GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig400Schema =
+	z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig401Schema =
+	z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig403Schema =
+	z.unknown();
+
+export const GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig404Schema =
+	z.unknown();
+
+export const GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfigQueryResponseSchema =
+	z.lazy(
+		() =>
+			GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig200Schema,
+	);
 
 export const updateExperimentationEdgeConfigPathParamsSchema = z.object({
 	integrationConfigurationId: z.string(),

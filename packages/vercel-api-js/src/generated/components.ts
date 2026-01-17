@@ -474,6 +474,12 @@ import type {
 	FilterProjectEnvsPathParams,
 	FilterProjectEnvsQueryParams,
 	FilterProjectEnvsQueryResponse,
+	GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig400,
+	GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig401,
+	GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig403,
+	GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig404,
+	GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfigPathParams,
+	GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfigQueryResponse,
 	GETV1SecurityFirewallEvents400,
 	GETV1SecurityFirewallEvents401,
 	GETV1SecurityFirewallEvents403,
@@ -6346,6 +6352,47 @@ export async function deleteExperimentationItem({
 }
 
 /**
+ * @description When the user enabled Edge Config syncing, then this endpoint can be used by the partner to fetch the contents of the Edge Config.
+ * @summary Get the data of a user-provided Edge Config
+ * {@link /v1/installations/:integrationConfigurationId/resources/:resourceId/experimentation/edge-config}
+ */
+export async function gETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig({
+	pathParams: { integrationConfigurationId, resourceId },
+	config = {},
+}: {
+	pathParams: GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfigPathParams;
+	config?: Partial<FetcherConfig> & { client?: typeof client };
+}) {
+	const { client: request = client, ...requestConfig } = config;
+
+	if (!integrationConfigurationId) {
+		throw new Error(`Missing required path parameter: integrationConfigurationId`);
+	}
+
+	if (!resourceId) {
+		throw new Error(`Missing required path parameter: resourceId`);
+	}
+	const data = await request<
+		GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfigQueryResponse,
+		ErrorWrapper<
+			| GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig400
+			| GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig401
+			| GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig403
+			| GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig404
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfigPathParams
+	>({
+		method: "GET",
+		url: `/v1/installations/${integrationConfigurationId}/resources/${resourceId}/experimentation/edge-config`,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
  * @description When the user enabled Edge Config syncing, then this endpoint can be used by the partner to push their configuration data into the relevant Edge Config.
  * @summary Push data into a user-provided Edge Config
  * {@link /v1/installations/:integrationConfigurationId/resources/:resourceId/experimentation/edge-config}
@@ -9745,6 +9792,8 @@ export const operationsByPath = {
 		updateExperimentationItem,
 	"DELETE /v1/installations/{integrationConfigurationId}/resources/{resourceId}/experimentation/items/{itemId}":
 		deleteExperimentationItem,
+	"GET /v1/installations/{integrationConfigurationId}/resources/{resourceId}/experimentation/edge-config":
+		gETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig,
 	"PUT /v1/installations/{integrationConfigurationId}/resources/{resourceId}/experimentation/edge-config":
 		updateExperimentationEdgeConfig,
 	"GET /v1/projects/{idOrName}/members": getProjectMembers,
@@ -10022,6 +10071,7 @@ export const operationsByTag = {
 		createExperimentationItem,
 		updateExperimentationItem,
 		deleteExperimentationItem,
+		gETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig,
 		updateExperimentationEdgeConfig,
 	},
 	authentication: {
@@ -10279,6 +10329,7 @@ export const tagDictionary = {
 			"getIntegrationResources",
 			"getIntegrationResource",
 			"getInvoice",
+			"gETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig",
 		],
 		POST: [
 			"createEvent",
