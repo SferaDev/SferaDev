@@ -3286,6 +3286,11 @@ export const userEventSchema = z
 				z.object({
 					projectId: z.string(),
 					projectName: z.string(),
+					previewDeploymentsEnabled: z.union([z.literal(false), z.literal(true)]),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
 					productionDeploymentsFastLane: z.union([z.literal(false), z.literal(true)]),
 				}),
 				z.object({
