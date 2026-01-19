@@ -3222,13 +3222,6 @@ export const payloadPermissionsEnum = {
 export type PayloadPermissionsEnumKey =
 	(typeof payloadPermissionsEnum)[keyof typeof payloadPermissionsEnum];
 
-export const acceptedPermissionSetsUserPermissionSetEnum = {
-	"read:user": "read:user",
-} as const;
-
-export type AcceptedPermissionSetsUserPermissionSetEnumKey =
-	(typeof acceptedPermissionSetsUserPermissionSetEnum)[keyof typeof acceptedPermissionSetsUserPermissionSetEnum];
-
 export const payloadNextScopesEnum = {
 	openid: "openid",
 	email: "email",
@@ -3255,13 +3248,6 @@ export const payloadNextPermissionsEnum = {
 
 export type PayloadNextPermissionsEnumKey =
 	(typeof payloadNextPermissionsEnum)[keyof typeof payloadNextPermissionsEnum];
-
-export const nextAcceptedPermissionSetsUserPermissionSetEnum = {
-	"read:user": "read:user",
-} as const;
-
-export type NextAcceptedPermissionSetsUserPermissionSetEnumKey =
-	(typeof nextAcceptedPermissionSetsUserPermissionSetEnum)[keyof typeof nextAcceptedPermissionSetsUserPermissionSetEnum];
 
 export const projectIdsTypeEnum = {
 	list: "list",
@@ -10194,17 +10180,6 @@ export type UserEvent = {
 						 * @type array | undefined
 						 */
 						permissions?: PayloadPermissionsEnumKey[] | undefined;
-						/**
-						 * @type object | undefined
-						 */
-						acceptedPermissionSets?:
-							| {
-									/**
-									 * @type array | undefined
-									 */
-									userPermissionSet?: AcceptedPermissionSetsUserPermissionSetEnumKey[] | undefined;
-							  }
-							| undefined;
 				  }
 				| {
 						/**
@@ -10223,19 +10198,6 @@ export type UserEvent = {
 						 * @type array | undefined
 						 */
 						nextPermissions?: PayloadNextPermissionsEnumKey[] | undefined;
-						/**
-						 * @type object | undefined
-						 */
-						nextAcceptedPermissionSets?:
-							| {
-									/**
-									 * @type array | undefined
-									 */
-									userPermissionSet?:
-										| NextAcceptedPermissionSetsUserPermissionSetEnumKey[]
-										| undefined;
-							  }
-							| undefined;
 				  }
 				| {
 						/**
