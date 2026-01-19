@@ -3291,6 +3291,38 @@ export const userEventSchema = z
 				z.object({
 					projectId: z.string(),
 					projectName: z.string(),
+					customEnvironmentId: z.string(),
+					customEnvironmentSlug: z.string(),
+					previous: z.object({
+						branchMatcher: z.optional(
+							z.object({
+								type: z
+									.enum(["endsWith", "startsWith", "equals"])
+									.describe("The type of matching to perform"),
+								pattern: z.string().describe("The pattern to match against branch names"),
+							}),
+						),
+					}),
+					next: z.object({
+						branchMatcher: z.optional(
+							z.object({
+								type: z
+									.enum(["endsWith", "startsWith", "equals"])
+									.describe("The type of matching to perform"),
+								pattern: z.string().describe("The pattern to match against branch names"),
+							}),
+						),
+					}),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					customEnvironmentId: z.string(),
+					customEnvironmentSlug: z.string(),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
 					productionDeploymentsFastLane: z.union([z.literal(false), z.literal(true)]),
 				}),
 				z.object({

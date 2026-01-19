@@ -2841,6 +2841,15 @@ export const payloadPreviewDeploymentsEnabledEnum = {
 export type PayloadPreviewDeploymentsEnabledEnumKey =
 	(typeof payloadPreviewDeploymentsEnabledEnum)[keyof typeof payloadPreviewDeploymentsEnabledEnum];
 
+export const branchMatcherTypeEnum = {
+	endsWith: "endsWith",
+	startsWith: "startsWith",
+	equals: "equals",
+} as const;
+
+export type BranchMatcherTypeEnumKey =
+	(typeof branchMatcherTypeEnum)[keyof typeof branchMatcherTypeEnum];
+
 export const payloadProductionDeploymentsFastLaneEnum = {
 	false: false,
 	true: true,
@@ -8333,6 +8342,86 @@ export type UserEvent = {
 						 * @type boolean
 						 */
 						previewDeploymentsEnabled: PayloadPreviewDeploymentsEnabledEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string
+						 */
+						customEnvironmentId: string;
+						/**
+						 * @type string
+						 */
+						customEnvironmentSlug: string;
+						/**
+						 * @type object
+						 */
+						previous: {
+							/**
+							 * @type object | undefined
+							 */
+							branchMatcher?:
+								| {
+										/**
+										 * @description The type of matching to perform
+										 * @type string
+										 */
+										type: BranchMatcherTypeEnumKey;
+										/**
+										 * @description The pattern to match against branch names
+										 * @type string
+										 */
+										pattern: string;
+								  }
+								| undefined;
+						};
+						/**
+						 * @type object
+						 */
+						next: {
+							/**
+							 * @type object | undefined
+							 */
+							branchMatcher?:
+								| {
+										/**
+										 * @description The type of matching to perform
+										 * @type string
+										 */
+										type: BranchMatcherTypeEnumKey;
+										/**
+										 * @description The pattern to match against branch names
+										 * @type string
+										 */
+										pattern: string;
+								  }
+								| undefined;
+						};
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string
+						 */
+						customEnvironmentId: string;
+						/**
+						 * @type string
+						 */
+						customEnvironmentSlug: string;
 				  }
 				| {
 						/**
