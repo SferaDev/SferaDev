@@ -7954,6 +7954,10 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
 						projectName: string;
 						ssoProtection:
 							| (
@@ -7994,6 +7998,10 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
 						projectName: string;
 						passwordProtection:
 							| (
@@ -8022,6 +8030,10 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
 						projectName: string;
 						/**
 						 * @type string
@@ -8041,6 +8053,10 @@ export type UserEvent = {
 						removedAddresses?: (string[] | null) | undefined;
 				  }
 				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
 						/**
 						 * @type string
 						 */
@@ -8079,6 +8095,10 @@ export type UserEvent = {
 							| undefined;
 				  }
 				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
 						/**
 						 * @type string
 						 */

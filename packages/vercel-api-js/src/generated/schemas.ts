@@ -3038,6 +3038,7 @@ export const userEventSchema = z
 					gitLFS: z.union([z.literal(false), z.literal(true)]),
 				}),
 				z.object({
+					projectId: z.string(),
 					projectName: z.string(),
 					ssoProtection: z.nullable(
 						z.union([
@@ -3093,6 +3094,7 @@ export const userEventSchema = z
 					),
 				}),
 				z.object({
+					projectId: z.string(),
 					projectName: z.string(),
 					passwordProtection: z.nullable(
 						z.union([
@@ -3132,6 +3134,7 @@ export const userEventSchema = z
 					),
 				}),
 				z.object({
+					projectId: z.string(),
 					projectName: z.string(),
 					trustedIps: z
 						.enum([
@@ -3155,6 +3158,7 @@ export const userEventSchema = z
 					removedAddresses: z.array(z.string()).nullish(),
 				}),
 				z.object({
+					projectId: z.string(),
 					projectName: z.string(),
 					optionsAllowlist: z
 						.object({
@@ -3176,6 +3180,7 @@ export const userEventSchema = z
 						.nullish(),
 				}),
 				z.object({
+					projectId: z.string(),
 					projectName: z.string(),
 					action: z.enum(["enabled", "disabled", "regenerated", "updated"]),
 					isEnvVar: z.optional(z.union([z.literal(false), z.literal(true)])),
