@@ -4148,11 +4148,6 @@ export const userEventSchema = z
 							]),
 						),
 					),
-					acceptedPermissionSets: z.optional(
-						z.object({
-							userPermissionSet: z.optional(z.array(z.enum(["read:user"]))),
-						}),
-					),
 				}),
 				z.object({
 					appName: z.string(),
@@ -4174,11 +4169,6 @@ export const userEventSchema = z
 								"read-write:deployment",
 							]),
 						),
-					),
-					nextAcceptedPermissionSets: z.optional(
-						z.object({
-							userPermissionSet: z.optional(z.array(z.enum(["read:user"]))),
-						}),
 					),
 				}),
 				z.object({
