@@ -2833,6 +2833,14 @@ export const payloadAutoAssignCustomDomainsEnum = {
 export type PayloadAutoAssignCustomDomainsEnumKey =
 	(typeof payloadAutoAssignCustomDomainsEnum)[keyof typeof payloadAutoAssignCustomDomainsEnum];
 
+export const payloadPreviewDeploymentsEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadPreviewDeploymentsEnabledEnumKey =
+	(typeof payloadPreviewDeploymentsEnabledEnum)[keyof typeof payloadPreviewDeploymentsEnabledEnum];
+
 export const payloadProductionDeploymentsFastLaneEnum = {
 	false: false,
 	true: true,
@@ -8311,6 +8319,20 @@ export type UserEvent = {
 						 * @type object
 						 */
 						next: object;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type boolean
+						 */
+						previewDeploymentsEnabled: PayloadPreviewDeploymentsEnabledEnumKey;
 				  }
 				| {
 						/**
