@@ -3367,6 +3367,46 @@ export const userEventSchema = z
 					projectId: z.string(),
 					projectName: z.string(),
 					previous: z.object({
+						functionDefaultTimeout: z.nullable(z.number()),
+					}),
+					next: z.object({
+						functionDefaultTimeout: z.number(),
+					}),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					previous: z.object({
+						functionDefaultMemoryType: z.nullable(z.string()),
+					}),
+					next: z.object({
+						functionDefaultMemoryType: z.string(),
+					}),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					previous: z.object({
+						functionDefaultRegions: z.nullable(z.array(z.string())),
+					}),
+					next: z.object({
+						functionDefaultRegions: z.array(z.string()),
+					}),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					previous: z.object({
+						functionZeroConfigFailover: z.nullable(z.union([z.literal(false), z.literal(true)])),
+					}),
+					next: z.object({
+						functionZeroConfigFailover: z.union([z.literal(false), z.literal(true)]),
+					}),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					previous: z.object({
 						commandForIgnoringBuildStep: z.optional(z.string()),
 					}),
 					next: z.object({

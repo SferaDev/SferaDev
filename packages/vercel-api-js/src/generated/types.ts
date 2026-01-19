@@ -2913,6 +2913,22 @@ export const payloadOldBuildQueueConfigurationEnum = {
 export type PayloadOldBuildQueueConfigurationEnumKey =
 	(typeof payloadOldBuildQueueConfigurationEnum)[keyof typeof payloadOldBuildQueueConfigurationEnum];
 
+export const previousFunctionZeroConfigFailoverEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PreviousFunctionZeroConfigFailoverEnumKey =
+	(typeof previousFunctionZeroConfigFailoverEnum)[keyof typeof previousFunctionZeroConfigFailoverEnum];
+
+export const nextFunctionZeroConfigFailoverEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type NextFunctionZeroConfigFailoverEnumKey =
+	(typeof nextFunctionZeroConfigFailoverEnum)[keyof typeof nextFunctionZeroConfigFailoverEnum];
+
 export const payloadCustomerSupportCodeVisibilityEnum = {
 	false: false,
 	true: true,
@@ -8581,6 +8597,118 @@ export type UserEvent = {
 						 * @type string | undefined
 						 */
 						oldBuildQueueConfiguration?: PayloadOldBuildQueueConfigurationEnumKey | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type object
+						 */
+						previous: {
+							/**
+							 * @type number
+							 */
+							functionDefaultTimeout: number | null;
+						};
+						/**
+						 * @type object
+						 */
+						next: {
+							/**
+							 * @type number
+							 */
+							functionDefaultTimeout: number;
+						};
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type object
+						 */
+						previous: {
+							/**
+							 * @type string
+							 */
+							functionDefaultMemoryType: string | null;
+						};
+						/**
+						 * @type object
+						 */
+						next: {
+							/**
+							 * @type string
+							 */
+							functionDefaultMemoryType: string;
+						};
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type object
+						 */
+						previous: {
+							/**
+							 * @type array
+							 */
+							functionDefaultRegions: string[] | null;
+						};
+						/**
+						 * @type object
+						 */
+						next: {
+							/**
+							 * @type array
+							 */
+							functionDefaultRegions: string[];
+						};
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type object
+						 */
+						previous: {
+							/**
+							 * @type boolean
+							 */
+							functionZeroConfigFailover: PreviousFunctionZeroConfigFailoverEnumKey | null;
+						};
+						/**
+						 * @type object
+						 */
+						next: {
+							/**
+							 * @type boolean
+							 */
+							functionZeroConfigFailover: NextFunctionZeroConfigFailoverEnumKey;
+						};
 				  }
 				| {
 						/**
