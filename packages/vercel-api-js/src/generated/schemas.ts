@@ -3246,6 +3246,16 @@ export const userEventSchema = z
 					projectId: z.string(),
 				}),
 				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					previous: z.object({
+						issuerMode: z.optional(z.enum(["team", "global"])),
+					}),
+					next: z.object({
+						issuerMode: z.enum(["team", "global"]),
+					}),
+				}),
+				z.object({
 					next: z.object({
 						project: z.object({
 							id: z.string(),
@@ -3386,6 +3396,37 @@ export const userEventSchema = z
 					}),
 					previous: z.object({
 						skewProtectionAllowedDomains: z.optional(z.array(z.string())),
+					}),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					customerSupportCodeVisibility: z.union([z.literal(false), z.literal(true)]),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					gitForkProtection: z.union([z.literal(false), z.literal(true)]),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					publicSource: z.union([z.literal(false), z.literal(true)]),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					previous: z.object({
+						expiration: z.optional(z.string()),
+						expirationProduction: z.optional(z.string()),
+						expirationCanceled: z.optional(z.string()),
+						expirationErrored: z.optional(z.string()),
+					}),
+					next: z.object({
+						expiration: z.optional(z.string()),
+						expirationProduction: z.optional(z.string()),
+						expirationCanceled: z.optional(z.string()),
+						expirationErrored: z.optional(z.string()),
 					}),
 				}),
 				z.object({

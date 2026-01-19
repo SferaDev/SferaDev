@@ -2802,6 +2802,21 @@ export const payloadReasonCodeEnum2 = {
 export type PayloadReasonCodeEnum2Key =
 	(typeof payloadReasonCodeEnum2)[keyof typeof payloadReasonCodeEnum2];
 
+export const previousIssuerModeEnum = {
+	team: "team",
+	global: "global",
+} as const;
+
+export type PreviousIssuerModeEnumKey =
+	(typeof previousIssuerModeEnum)[keyof typeof previousIssuerModeEnum];
+
+export const nextIssuerModeEnum = {
+	team: "team",
+	global: "global",
+} as const;
+
+export type NextIssuerModeEnumKey = (typeof nextIssuerModeEnum)[keyof typeof nextIssuerModeEnum];
+
 export const staticIpsBuildsEnum = {
 	false: false,
 	true: true,
@@ -2897,6 +2912,30 @@ export const payloadOldBuildQueueConfigurationEnum = {
 
 export type PayloadOldBuildQueueConfigurationEnumKey =
 	(typeof payloadOldBuildQueueConfigurationEnum)[keyof typeof payloadOldBuildQueueConfigurationEnum];
+
+export const payloadCustomerSupportCodeVisibilityEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadCustomerSupportCodeVisibilityEnumKey =
+	(typeof payloadCustomerSupportCodeVisibilityEnum)[keyof typeof payloadCustomerSupportCodeVisibilityEnum];
+
+export const payloadGitForkProtectionEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadGitForkProtectionEnumKey =
+	(typeof payloadGitForkProtectionEnum)[keyof typeof payloadGitForkProtectionEnum];
+
+export const payloadPublicSourceEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadPublicSourceEnumKey =
+	(typeof payloadPublicSourceEnum)[keyof typeof payloadPublicSourceEnum];
 
 export const payloadVerifiedEnum = {
 	false: false,
@@ -8221,6 +8260,34 @@ export type UserEvent = {
 				  }
 				| {
 						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type object
+						 */
+						previous: {
+							/**
+							 * @type string | undefined
+							 */
+							issuerMode?: PreviousIssuerModeEnumKey | undefined;
+						};
+						/**
+						 * @type object
+						 */
+						next: {
+							/**
+							 * @type string
+							 */
+							issuerMode: NextIssuerModeEnumKey;
+						};
+				  }
+				| {
+						/**
 						 * @type object
 						 */
 						next: {
@@ -8605,6 +8672,100 @@ export type UserEvent = {
 							 * @type array | undefined
 							 */
 							skewProtectionAllowedDomains?: string[] | undefined;
+						};
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type boolean
+						 */
+						customerSupportCodeVisibility: PayloadCustomerSupportCodeVisibilityEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type boolean
+						 */
+						gitForkProtection: PayloadGitForkProtectionEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type boolean
+						 */
+						publicSource: PayloadPublicSourceEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type object
+						 */
+						previous: {
+							/**
+							 * @type string | undefined
+							 */
+							expiration?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							expirationProduction?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							expirationCanceled?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							expirationErrored?: string | undefined;
+						};
+						/**
+						 * @type object
+						 */
+						next: {
+							/**
+							 * @type string | undefined
+							 */
+							expiration?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							expirationProduction?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							expirationCanceled?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							expirationErrored?: string | undefined;
 						};
 				  }
 				| {
