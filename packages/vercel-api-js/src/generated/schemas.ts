@@ -3456,6 +3456,11 @@ export const userEventSchema = z
 				z.object({
 					projectId: z.string(),
 					projectName: z.string(),
+					directoryListing: z.union([z.literal(false), z.literal(true)]),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
 					gitForkProtection: z.union([z.literal(false), z.literal(true)]),
 				}),
 				z.object({
@@ -3749,6 +3754,10 @@ export const userEventSchema = z
 					),
 					removedMemberCount: z.optional(z.number()),
 					timestamp: z.optional(z.number()),
+				}),
+				z.object({
+					deletedCount: z.number(),
+					inviteIds: z.array(z.string()),
 				}),
 				z.object({
 					directoryType: z.optional(z.string()),

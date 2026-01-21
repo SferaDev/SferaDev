@@ -2944,6 +2944,14 @@ export const payloadCustomerSupportCodeVisibilityEnum = {
 export type PayloadCustomerSupportCodeVisibilityEnumKey =
 	(typeof payloadCustomerSupportCodeVisibilityEnum)[keyof typeof payloadCustomerSupportCodeVisibilityEnum];
 
+export const payloadDirectoryListingEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadDirectoryListingEnumKey =
+	(typeof payloadDirectoryListingEnum)[keyof typeof payloadDirectoryListingEnum];
+
 export const payloadGitForkProtectionEnum = {
 	false: false,
 	true: true,
@@ -8869,6 +8877,20 @@ export type UserEvent = {
 						/**
 						 * @type boolean
 						 */
+						directoryListing: PayloadDirectoryListingEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type boolean
+						 */
 						gitForkProtection: PayloadGitForkProtectionEnumKey;
 				  }
 				| {
@@ -9489,6 +9511,16 @@ export type UserEvent = {
 						 * @type number | undefined
 						 */
 						timestamp?: number | undefined;
+				  }
+				| {
+						/**
+						 * @type number
+						 */
+						deletedCount: number;
+						/**
+						 * @type array
+						 */
+						inviteIds: string[];
 				  }
 				| {
 						/**
