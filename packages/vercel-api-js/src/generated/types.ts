@@ -2521,6 +2521,13 @@ export const payloadAutomatedEnum = {
 export type PayloadAutomatedEnumKey =
 	(typeof payloadAutomatedEnum)[keyof typeof payloadAutomatedEnum];
 
+export const payloadActionEnum6 = {
+	enabled: "enabled",
+	disabled: "disabled",
+} as const;
+
+export type PayloadActionEnum6Key = (typeof payloadActionEnum6)[keyof typeof payloadActionEnum6];
+
 export const previousGitProviderEnum = {
 	github: "github",
 	"github-limited": "github-limited",
@@ -2721,14 +2728,14 @@ export const payloadOldTrustedIpsEnum = {
 export type PayloadOldTrustedIpsEnumKey =
 	(typeof payloadOldTrustedIpsEnum)[keyof typeof payloadOldTrustedIpsEnum];
 
-export const payloadActionEnum6 = {
+export const payloadActionEnum7 = {
 	enabled: "enabled",
 	disabled: "disabled",
 	regenerated: "regenerated",
 	updated: "updated",
 } as const;
 
-export type PayloadActionEnum6Key = (typeof payloadActionEnum6)[keyof typeof payloadActionEnum6];
+export type PayloadActionEnum7Key = (typeof payloadActionEnum7)[keyof typeof payloadActionEnum7];
 
 export const payloadIsEnvVarEnum = {
 	false: false,
@@ -3180,12 +3187,12 @@ export const projectRoleEnum = {
 
 export type ProjectRoleEnumKey = (typeof projectRoleEnum)[keyof typeof projectRoleEnum];
 
-export const payloadActionEnum7 = {
+export const payloadActionEnum8 = {
 	enable: "enable",
 	disable: "disable",
 } as const;
 
-export type PayloadActionEnum7Key = (typeof payloadActionEnum7)[keyof typeof payloadActionEnum7];
+export type PayloadActionEnum8Key = (typeof payloadActionEnum8)[keyof typeof payloadActionEnum8];
 
 export const microfrontendsIsDefaultAppEnum = {
 	true: true,
@@ -7824,6 +7831,20 @@ export type UserEvent = {
 						 */
 						projectName: string;
 						/**
+						 * @type string
+						 */
+						action: PayloadActionEnum6Key;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
 						 * @type object | undefined
 						 */
 						previous?:
@@ -8122,7 +8143,7 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
-						action: PayloadActionEnum6Key;
+						action: PayloadActionEnum7Key;
 						/**
 						 * @type boolean | undefined
 						 */
@@ -10170,7 +10191,7 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
-						action: PayloadActionEnum7Key;
+						action: PayloadActionEnum8Key;
 				  }
 				| {
 						/**
