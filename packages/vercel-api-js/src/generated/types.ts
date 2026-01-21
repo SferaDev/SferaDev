@@ -20412,6 +20412,14 @@ export const getProjectsQueryParamsStaticIpsEnabledEnum = {
 export type GetProjectsQueryParamsStaticIpsEnabledEnumKey =
 	(typeof getProjectsQueryParamsStaticIpsEnabledEnum)[keyof typeof getProjectsQueryParamsStaticIpsEnabledEnum];
 
+export const getProjectsQueryParamsBuildQueueConfigurationEnum = {
+	SKIP_NAMESPACE_QUEUE: "SKIP_NAMESPACE_QUEUE",
+	WAIT_FOR_NAMESPACE_QUEUE: "WAIT_FOR_NAMESPACE_QUEUE",
+} as const;
+
+export type GetProjectsQueryParamsBuildQueueConfigurationEnumKey =
+	(typeof getProjectsQueryParamsBuildQueueConfigurationEnum)[keyof typeof getProjectsQueryParamsBuildQueueConfigurationEnum];
+
 export type GetProjectsQueryParams = {
 	/**
 	 * @description Query only projects updated after the given timestamp or continuation token.
@@ -20483,6 +20491,11 @@ export type GetProjectsQueryParams = {
 	 * @type string | undefined
 	 */
 	buildMachineTypes?: string | undefined;
+	/**
+	 * @description Filter results by build queue configuration. SKIP_NAMESPACE_QUEUE includes projects without a configuration set.
+	 * @type string | undefined
+	 */
+	buildQueueConfiguration?: GetProjectsQueryParamsBuildQueueConfigurationEnumKey | undefined;
 	/**
 	 * @description The Team identifier to perform the request on behalf of.
 	 * @type string | undefined
