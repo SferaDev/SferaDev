@@ -10971,6 +10971,13 @@ export const getProjectsQueryParamsSchema = z
 					'Filter results by build machine types. Accepts comma-separated values. Use \\"default\\" for projects without a build machine type set.',
 				),
 		),
+		buildQueueConfiguration: z.optional(
+			z
+				.enum(["SKIP_NAMESPACE_QUEUE", "WAIT_FOR_NAMESPACE_QUEUE"])
+				.describe(
+					"Filter results by build queue configuration. SKIP_NAMESPACE_QUEUE includes projects without a configuration set.",
+				),
+		),
 		teamId: z.optional(
 			z.string().describe("The Team identifier to perform the request on behalf of."),
 		),
