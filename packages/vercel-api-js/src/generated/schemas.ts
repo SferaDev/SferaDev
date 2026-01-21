@@ -2969,6 +2969,11 @@ export const userEventSchema = z
 				z.object({
 					projectId: z.string(),
 					projectName: z.string(),
+					action: z.enum(["enabled", "disabled"]),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
 					previous: z.optional(
 						z.object({
 							gitProvider: z.enum([
