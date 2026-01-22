@@ -3249,11 +3249,27 @@ export const userEventSchema = z
 				}),
 				z.object({
 					projectId: z.string(),
+					projectName: z.string(),
+					enabled: z.nullable(z.union([z.literal(false), z.literal(true)])),
+					environment: z.enum(["preview", "production"]),
+				}),
+				z.object({
+					environment: z.enum(["preview", "production"]),
+					enabled: z.enum(["default", "on", "off", "on-force", "off-force", "default-force"]),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					previewDeploymentSuffix: z.nullable(z.string()),
+				}),
+				z.object({
+					projectId: z.string(),
 					reasonCode: z.optional(z.enum(["PUBLIC_API", "BACKOFFICE"])),
 				}),
 				z.object({
 					source: z.string(),
 					projectId: z.string(),
+					projectName: z.string(),
 				}),
 				z.object({
 					projectId: z.string(),
@@ -3339,6 +3355,11 @@ export const userEventSchema = z
 					projectName: z.string(),
 					customEnvironmentId: z.string(),
 					customEnvironmentSlug: z.string(),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					newProjectName: z.string(),
 				}),
 				z.object({
 					projectId: z.string(),
@@ -9832,7 +9853,18 @@ export const getBillingPlansQueryParamsSchema = z
 	.object({
 		integrationConfigurationId: z.optional(z.string()),
 		metadata: z.optional(z.string()),
-		source: z.optional(z.string()),
+		source: z.optional(
+			z.enum([
+				"marketplace",
+				"deploy-button",
+				"external",
+				"v0",
+				"resource-claims",
+				"cli",
+				"oauth",
+				"backoffice",
+			]),
+		),
 		teamId: z.optional(
 			z.string().describe("The Team identifier to perform the request on behalf of."),
 		),
