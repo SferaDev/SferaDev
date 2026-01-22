@@ -2801,6 +2801,32 @@ export const payloadReasonCodeEnum = {
 export type PayloadReasonCodeEnumKey =
 	(typeof payloadReasonCodeEnum)[keyof typeof payloadReasonCodeEnum];
 
+export const payloadEnabledEnum2 = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadEnabledEnum2Key = (typeof payloadEnabledEnum2)[keyof typeof payloadEnabledEnum2];
+
+export const payloadEnvironmentEnum = {
+	preview: "preview",
+	production: "production",
+} as const;
+
+export type PayloadEnvironmentEnumKey =
+	(typeof payloadEnvironmentEnum)[keyof typeof payloadEnvironmentEnum];
+
+export const payloadEnabledEnum3 = {
+	default: "default",
+	on: "on",
+	off: "off",
+	"on-force": "on-force",
+	"off-force": "off-force",
+	"default-force": "default-force",
+} as const;
+
+export type PayloadEnabledEnum3Key = (typeof payloadEnabledEnum3)[keyof typeof payloadEnabledEnum3];
+
 export const payloadReasonCodeEnum2 = {
 	PUBLIC_API: "PUBLIC_API",
 	BACKOFFICE: "BACKOFFICE",
@@ -8309,6 +8335,48 @@ export type UserEvent = {
 						 */
 						projectId: string;
 						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type boolean
+						 */
+						enabled: PayloadEnabledEnum2Key | null;
+						/**
+						 * @type string
+						 */
+						environment: PayloadEnvironmentEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						environment: PayloadEnvironmentEnumKey;
+						/**
+						 * @type string
+						 */
+						enabled: PayloadEnabledEnum3Key;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string
+						 */
+						previewDeploymentSuffix: string | null;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
 						 * @type string | undefined
 						 */
 						reasonCode?: PayloadReasonCodeEnum2Key | undefined;
@@ -8322,6 +8390,10 @@ export type UserEvent = {
 						 * @type string
 						 */
 						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
 				  }
 				| {
 						/**
@@ -8554,6 +8626,20 @@ export type UserEvent = {
 						 * @type string
 						 */
 						customEnvironmentSlug: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string
+						 */
+						newProjectName: string;
 				  }
 				| {
 						/**
@@ -18796,6 +18882,20 @@ export type GetBillingPlansPathParams = {
 	productIdOrSlug: string;
 };
 
+export const getBillingPlansQueryParamsSourceEnum = {
+	marketplace: "marketplace",
+	"deploy-button": "deploy-button",
+	external: "external",
+	v0: "v0",
+	"resource-claims": "resource-claims",
+	cli: "cli",
+	oauth: "oauth",
+	backoffice: "backoffice",
+} as const;
+
+export type GetBillingPlansQueryParamsSourceEnumKey =
+	(typeof getBillingPlansQueryParamsSourceEnum)[keyof typeof getBillingPlansQueryParamsSourceEnum];
+
 export type GetBillingPlansQueryParams = {
 	/**
 	 * @type string | undefined
@@ -18808,7 +18908,7 @@ export type GetBillingPlansQueryParams = {
 	/**
 	 * @type string | undefined
 	 */
-	source?: string | undefined;
+	source?: GetBillingPlansQueryParamsSourceEnumKey | undefined;
 	/**
 	 * @description The Team identifier to perform the request on behalf of.
 	 * @type string | undefined
