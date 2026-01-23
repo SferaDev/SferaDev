@@ -95,9 +95,6 @@ export type AccessToken = {
 	claims_locales?: string;
 	acr?: string;
 	s_hash?: string;
-	address?: {
-		[key: string]: any;
-	};
 	/**
 	 * @uniqueItems true
 	 */
@@ -812,9 +809,6 @@ export type IDToken = {
 	claims_locales?: string;
 	acr?: string;
 	s_hash?: string;
-	address?: {
-		[key: string]: any;
-	};
 };
 
 export type IdentityProviderMapperRepresentation = {

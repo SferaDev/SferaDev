@@ -11330,6 +11330,160 @@ export const deleteAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAlias = (
 		signal,
 	});
 
+export type GetAdminRealmsRealmOrganizationsOrgIdInvitationsPathParams = {
+	/**
+	 * realm name (not id!)
+	 */
+	realm: string;
+	orgId: string;
+};
+
+export type GetAdminRealmsRealmOrganizationsOrgIdInvitationsQueryParams = {
+	email?: string;
+	/**
+	 * @format int32
+	 */
+	first?: number;
+	firstName?: string;
+	lastName?: string;
+	/**
+	 * @format int32
+	 */
+	max?: number;
+	search?: string;
+	status?: string;
+};
+
+export type GetAdminRealmsRealmOrganizationsOrgIdInvitationsError = Fetcher.ErrorWrapper<undefined>;
+
+export type GetAdminRealmsRealmOrganizationsOrgIdInvitationsResponse =
+	Schemas.OrganizationInvitationRepresentation[];
+
+export type GetAdminRealmsRealmOrganizationsOrgIdInvitationsVariables = {
+	pathParams: GetAdminRealmsRealmOrganizationsOrgIdInvitationsPathParams;
+	queryParams?: GetAdminRealmsRealmOrganizationsOrgIdInvitationsQueryParams;
+} & FetcherExtraProps;
+
+export const getAdminRealmsRealmOrganizationsOrgIdInvitations = (
+	variables: GetAdminRealmsRealmOrganizationsOrgIdInvitationsVariables,
+	signal?: AbortSignal,
+) =>
+	fetch<
+		GetAdminRealmsRealmOrganizationsOrgIdInvitationsResponse,
+		GetAdminRealmsRealmOrganizationsOrgIdInvitationsError,
+		undefined,
+		{},
+		GetAdminRealmsRealmOrganizationsOrgIdInvitationsQueryParams,
+		GetAdminRealmsRealmOrganizationsOrgIdInvitationsPathParams
+	>({
+		url: "/admin/realms/{realm}/organizations/{orgId}/invitations",
+		method: "get",
+		...variables,
+		signal,
+	});
+
+export type GetAdminRealmsRealmOrganizationsOrgIdInvitationsIdPathParams = {
+	/**
+	 * realm name (not id!)
+	 */
+	realm: string;
+	orgId: string;
+	id: string;
+};
+
+export type GetAdminRealmsRealmOrganizationsOrgIdInvitationsIdError =
+	Fetcher.ErrorWrapper<undefined>;
+
+export type GetAdminRealmsRealmOrganizationsOrgIdInvitationsIdVariables = {
+	pathParams: GetAdminRealmsRealmOrganizationsOrgIdInvitationsIdPathParams;
+} & FetcherExtraProps;
+
+export const getAdminRealmsRealmOrganizationsOrgIdInvitationsId = (
+	variables: GetAdminRealmsRealmOrganizationsOrgIdInvitationsIdVariables,
+	signal?: AbortSignal,
+) =>
+	fetch<
+		Schemas.OrganizationInvitationRepresentation,
+		GetAdminRealmsRealmOrganizationsOrgIdInvitationsIdError,
+		undefined,
+		{},
+		{},
+		GetAdminRealmsRealmOrganizationsOrgIdInvitationsIdPathParams
+	>({
+		url: "/admin/realms/{realm}/organizations/{orgId}/invitations/{id}",
+		method: "get",
+		...variables,
+		signal,
+	});
+
+export type DeleteAdminRealmsRealmOrganizationsOrgIdInvitationsIdPathParams = {
+	/**
+	 * realm name (not id!)
+	 */
+	realm: string;
+	orgId: string;
+	id: string;
+};
+
+export type DeleteAdminRealmsRealmOrganizationsOrgIdInvitationsIdError =
+	Fetcher.ErrorWrapper<undefined>;
+
+export type DeleteAdminRealmsRealmOrganizationsOrgIdInvitationsIdVariables = {
+	pathParams: DeleteAdminRealmsRealmOrganizationsOrgIdInvitationsIdPathParams;
+} & FetcherExtraProps;
+
+export const deleteAdminRealmsRealmOrganizationsOrgIdInvitationsId = (
+	variables: DeleteAdminRealmsRealmOrganizationsOrgIdInvitationsIdVariables,
+	signal?: AbortSignal,
+) =>
+	fetch<
+		undefined,
+		DeleteAdminRealmsRealmOrganizationsOrgIdInvitationsIdError,
+		undefined,
+		{},
+		{},
+		DeleteAdminRealmsRealmOrganizationsOrgIdInvitationsIdPathParams
+	>({
+		url: "/admin/realms/{realm}/organizations/{orgId}/invitations/{id}",
+		method: "delete",
+		...variables,
+		signal,
+	});
+
+export type PostAdminRealmsRealmOrganizationsOrgIdInvitationsIdResendPathParams = {
+	/**
+	 * realm name (not id!)
+	 */
+	realm: string;
+	orgId: string;
+	id: string;
+};
+
+export type PostAdminRealmsRealmOrganizationsOrgIdInvitationsIdResendError =
+	Fetcher.ErrorWrapper<undefined>;
+
+export type PostAdminRealmsRealmOrganizationsOrgIdInvitationsIdResendVariables = {
+	pathParams: PostAdminRealmsRealmOrganizationsOrgIdInvitationsIdResendPathParams;
+} & FetcherExtraProps;
+
+export const postAdminRealmsRealmOrganizationsOrgIdInvitationsIdResend = (
+	variables: PostAdminRealmsRealmOrganizationsOrgIdInvitationsIdResendVariables,
+	signal?: AbortSignal,
+) =>
+	fetch<
+		undefined,
+		PostAdminRealmsRealmOrganizationsOrgIdInvitationsIdResendError,
+		undefined,
+		{},
+		{},
+		PostAdminRealmsRealmOrganizationsOrgIdInvitationsIdResendPathParams
+	>({
+		url: "/admin/realms/{realm}/organizations/{orgId}/invitations/{id}/resend",
+		method: "post",
+		...variables,
+		signal,
+	});
+
 export type GetAdminRealmsRealmOrganizationsOrgIdMembersPathParams = {
 	/**
 	 * realm name (not id!)
@@ -15328,6 +15482,10 @@ export const operationsByTag = {
 		postAdminRealmsRealmOrganizationsOrgIdIdentityProviders,
 		getAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAlias,
 		deleteAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAlias,
+		getAdminRealmsRealmOrganizationsOrgIdInvitations,
+		getAdminRealmsRealmOrganizationsOrgIdInvitationsId,
+		deleteAdminRealmsRealmOrganizationsOrgIdInvitationsId,
+		postAdminRealmsRealmOrganizationsOrgIdInvitationsIdResend,
 		getAdminRealmsRealmOrganizationsOrgIdMembers,
 		postAdminRealmsRealmOrganizationsOrgIdMembers,
 		getAdminRealmsRealmOrganizationsOrgIdMembersCount,

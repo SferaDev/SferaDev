@@ -43,6 +43,7 @@ import {
 	deleteAdminRealmsRealmLocalizationLocaleKey,
 	deleteAdminRealmsRealmOrganizationsOrgId,
 	deleteAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAlias,
+	deleteAdminRealmsRealmOrganizationsOrgIdInvitationsId,
 	deleteAdminRealmsRealmOrganizationsOrgIdMembersMemberId,
 	deleteAdminRealmsRealmRolesByIdRoleId,
 	deleteAdminRealmsRealmRolesByIdRoleIdComposites,
@@ -208,6 +209,8 @@ import {
 	getAdminRealmsRealmOrganizationsOrgId,
 	getAdminRealmsRealmOrganizationsOrgIdIdentityProviders,
 	getAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAlias,
+	getAdminRealmsRealmOrganizationsOrgIdInvitations,
+	getAdminRealmsRealmOrganizationsOrgIdInvitationsId,
 	getAdminRealmsRealmOrganizationsOrgIdMembers,
 	getAdminRealmsRealmOrganizationsOrgIdMembersCount,
 	getAdminRealmsRealmOrganizationsOrgIdMembersMemberId,
@@ -311,6 +314,7 @@ import {
 	postAdminRealmsRealmLogoutAll,
 	postAdminRealmsRealmOrganizations,
 	postAdminRealmsRealmOrganizationsOrgIdIdentityProviders,
+	postAdminRealmsRealmOrganizationsOrgIdInvitationsIdResend,
 	postAdminRealmsRealmOrganizationsOrgIdMembers,
 	postAdminRealmsRealmOrganizationsOrgIdMembersInviteExistingUser,
 	postAdminRealmsRealmOrganizationsOrgIdMembersInviteUser,
@@ -900,6 +904,14 @@ export const operationsByPath = {
 		getAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAlias,
 	"DELETE /admin/realms/{realm}/organizations/{org-id}/identity-providers/{alias}":
 		deleteAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAlias,
+	"GET /admin/realms/{realm}/organizations/{org-id}/invitations":
+		getAdminRealmsRealmOrganizationsOrgIdInvitations,
+	"GET /admin/realms/{realm}/organizations/{org-id}/invitations/{id}":
+		getAdminRealmsRealmOrganizationsOrgIdInvitationsId,
+	"DELETE /admin/realms/{realm}/organizations/{org-id}/invitations/{id}":
+		deleteAdminRealmsRealmOrganizationsOrgIdInvitationsId,
+	"POST /admin/realms/{realm}/organizations/{org-id}/invitations/{id}/resend":
+		postAdminRealmsRealmOrganizationsOrgIdInvitationsIdResend,
 	"GET /admin/realms/{realm}/organizations/{org-id}/members":
 		getAdminRealmsRealmOrganizationsOrgIdMembers,
 	"POST /admin/realms/{realm}/organizations/{org-id}/members":
