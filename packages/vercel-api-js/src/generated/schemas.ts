@@ -2857,6 +2857,76 @@ export const userEventSchema = z
 					integrationName: z.optional(z.string()),
 				}),
 				z.object({
+					userAgent: z.optional(z.string()),
+					geolocation: z
+						.object({
+							city: z.optional(
+								z.object({
+									names: z.object({
+										en: z.string(),
+									}),
+								}),
+							),
+							country: z.object({
+								names: z.object({
+									en: z.string(),
+								}),
+							}),
+							mostSpecificSubdivision: z.optional(
+								z.object({
+									names: z.object({
+										en: z.string(),
+									}),
+								}),
+							),
+							regionName: z.optional(z.string()),
+						})
+						.nullish(),
+					viaOTP: z.union([z.literal(false), z.literal(true)]),
+					viaEmailInvite: z.union([z.literal(false), z.literal(true)]),
+					viaGithub: z.union([z.literal(false), z.literal(true)]),
+					viaGitlab: z.union([z.literal(false), z.literal(true)]),
+					viaBitbucket: z.union([z.literal(false), z.literal(true)]),
+					viaGoogle: z.union([z.literal(false), z.literal(true)]),
+					viaApple: z.union([z.literal(false), z.literal(true)]),
+					viaSamlSso: z.union([z.literal(false), z.literal(true)]),
+					viaPasskey: z.union([z.literal(false), z.literal(true)]),
+					ssoType: z.optional(z.string()),
+					env: z.optional(z.string()),
+					os: z.optional(z.string()),
+					username: z.optional(z.string()),
+					factors: z.optional(
+						z.union([
+							z
+								.array(
+									z.object({
+										origin: z.string(),
+										username: z.optional(z.string()),
+										teamId: z.optional(z.string()),
+										legacy: z.optional(z.union([z.literal(false), z.literal(true)])),
+									}),
+								)
+								.min(1)
+								.max(1),
+							z
+								.array(
+									z.union([
+										z.object({
+											origin: z.string(),
+											username: z.optional(z.string()),
+											teamId: z.optional(z.string()),
+										}),
+										z.object({
+											origin: z.string(),
+										}),
+									]),
+								)
+								.min(2)
+								.max(2),
+						]),
+					),
+				}),
+				z.object({
 					drainUrl: z.nullable(z.string()),
 					integrationName: z.optional(z.string()),
 				}),
