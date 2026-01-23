@@ -2469,6 +2469,83 @@ export const payloadProjectIdsEnum = {
 export type PayloadProjectIdsEnumKey =
 	(typeof payloadProjectIdsEnum)[keyof typeof payloadProjectIdsEnum];
 
+export const payloadViaOTPEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadViaOTPEnumKey = (typeof payloadViaOTPEnum)[keyof typeof payloadViaOTPEnum];
+
+export const payloadViaEmailInviteEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadViaEmailInviteEnumKey =
+	(typeof payloadViaEmailInviteEnum)[keyof typeof payloadViaEmailInviteEnum];
+
+export const payloadViaGithubEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadViaGithubEnumKey =
+	(typeof payloadViaGithubEnum)[keyof typeof payloadViaGithubEnum];
+
+export const payloadViaGitlabEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadViaGitlabEnumKey =
+	(typeof payloadViaGitlabEnum)[keyof typeof payloadViaGitlabEnum];
+
+export const payloadViaBitbucketEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadViaBitbucketEnumKey =
+	(typeof payloadViaBitbucketEnum)[keyof typeof payloadViaBitbucketEnum];
+
+export const payloadViaGoogleEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadViaGoogleEnumKey =
+	(typeof payloadViaGoogleEnum)[keyof typeof payloadViaGoogleEnum];
+
+export const payloadViaAppleEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadViaAppleEnumKey = (typeof payloadViaAppleEnum)[keyof typeof payloadViaAppleEnum];
+
+export const payloadViaSamlSsoEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadViaSamlSsoEnumKey =
+	(typeof payloadViaSamlSsoEnum)[keyof typeof payloadViaSamlSsoEnum];
+
+export const payloadViaPasskeyEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadViaPasskeyEnumKey =
+	(typeof payloadViaPasskeyEnum)[keyof typeof payloadViaPasskeyEnum];
+
+export const factorsLegacyEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type FactorsLegacyEnumKey = (typeof factorsLegacyEnum)[keyof typeof factorsLegacyEnum];
+
 export const roleEnum = {
 	OWNER: "OWNER",
 	MEMBER: "MEMBER",
@@ -7587,6 +7664,165 @@ export type UserEvent = {
 						 * @type string | undefined
 						 */
 						integrationName?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						userAgent?: string | undefined;
+						/**
+						 * @type object
+						 */
+						geolocation?:
+							| ({
+									/**
+									 * @type object | undefined
+									 */
+									city?:
+										| {
+												/**
+												 * @type object
+												 */
+												names: {
+													/**
+													 * @type string
+													 */
+													en: string;
+												};
+										  }
+										| undefined;
+									/**
+									 * @type object
+									 */
+									country: {
+										/**
+										 * @type object
+										 */
+										names: {
+											/**
+											 * @type string
+											 */
+											en: string;
+										};
+									};
+									/**
+									 * @type object | undefined
+									 */
+									mostSpecificSubdivision?:
+										| {
+												/**
+												 * @type object
+												 */
+												names: {
+													/**
+													 * @type string
+													 */
+													en: string;
+												};
+										  }
+										| undefined;
+									/**
+									 * @type string | undefined
+									 */
+									regionName?: string | undefined;
+							  } | null)
+							| undefined;
+						/**
+						 * @type boolean
+						 */
+						viaOTP: PayloadViaOTPEnumKey;
+						/**
+						 * @type boolean
+						 */
+						viaEmailInvite: PayloadViaEmailInviteEnumKey;
+						/**
+						 * @type boolean
+						 */
+						viaGithub: PayloadViaGithubEnumKey;
+						/**
+						 * @type boolean
+						 */
+						viaGitlab: PayloadViaGitlabEnumKey;
+						/**
+						 * @type boolean
+						 */
+						viaBitbucket: PayloadViaBitbucketEnumKey;
+						/**
+						 * @type boolean
+						 */
+						viaGoogle: PayloadViaGoogleEnumKey;
+						/**
+						 * @type boolean
+						 */
+						viaApple: PayloadViaAppleEnumKey;
+						/**
+						 * @type boolean
+						 */
+						viaSamlSso: PayloadViaSamlSsoEnumKey;
+						/**
+						 * @type boolean
+						 */
+						viaPasskey: PayloadViaPasskeyEnumKey;
+						/**
+						 * @type string | undefined
+						 */
+						ssoType?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						env?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						os?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						username?: string | undefined;
+						factors?:
+							| (
+									| {
+											/**
+											 * @type string
+											 */
+											origin: string;
+											/**
+											 * @type string | undefined
+											 */
+											username?: string | undefined;
+											/**
+											 * @type string | undefined
+											 */
+											teamId?: string | undefined;
+											/**
+											 * @type boolean | undefined
+											 */
+											legacy?: FactorsLegacyEnumKey | undefined;
+									  }[]
+									| (
+											| {
+													/**
+													 * @type string
+													 */
+													origin: string;
+													/**
+													 * @type string | undefined
+													 */
+													username?: string | undefined;
+													/**
+													 * @type string | undefined
+													 */
+													teamId?: string | undefined;
+											  }
+											| {
+													/**
+													 * @type string
+													 */
+													origin: string;
+											  }
+									  )[]
+							  )
+							| undefined;
 				  }
 				| {
 						/**
