@@ -2423,6 +2423,22 @@ export const microfrontendsRequestBlockReasonEnum = {
 export type MicrofrontendsRequestBlockReasonEnumKey =
 	(typeof microfrontendsRequestBlockReasonEnum)[keyof typeof microfrontendsRequestBlockReasonEnum];
 
+export const workflowStorageBlockReasonEnum = {
+	admin_override: "admin_override",
+	limits_exceeded: "limits_exceeded",
+} as const;
+
+export type WorkflowStorageBlockReasonEnumKey =
+	(typeof workflowStorageBlockReasonEnum)[keyof typeof workflowStorageBlockReasonEnum];
+
+export const workflowStepBlockReasonEnum = {
+	admin_override: "admin_override",
+	limits_exceeded: "limits_exceeded",
+} as const;
+
+export type WorkflowStepBlockReasonEnumKey =
+	(typeof workflowStepBlockReasonEnum)[keyof typeof workflowStepBlockReasonEnum];
+
 export const newOwnerVersionEnum = {
 	northstar: "northstar",
 } as const;
@@ -7352,6 +7368,52 @@ export type UserEvent = {
 													 * @type string
 													 */
 													blockReason: MicrofrontendsRequestBlockReasonEnumKey;
+											  }
+											| undefined;
+										/**
+										 * @type object | undefined
+										 */
+										workflowStorage?:
+											| {
+													/**
+													 * @type number
+													 */
+													updatedAt: number;
+													/**
+													 * @type number | undefined
+													 */
+													blockedFrom?: number | undefined;
+													/**
+													 * @type number | undefined
+													 */
+													blockedUntil?: number | undefined;
+													/**
+													 * @type string
+													 */
+													blockReason: WorkflowStorageBlockReasonEnumKey;
+											  }
+											| undefined;
+										/**
+										 * @type object | undefined
+										 */
+										workflowStep?:
+											| {
+													/**
+													 * @type number
+													 */
+													updatedAt: number;
+													/**
+													 * @type number | undefined
+													 */
+													blockedFrom?: number | undefined;
+													/**
+													 * @type number | undefined
+													 */
+													blockedUntil?: number | undefined;
+													/**
+													 * @type string
+													 */
+													blockReason: WorkflowStepBlockReasonEnumKey;
 											  }
 											| undefined;
 								  }
