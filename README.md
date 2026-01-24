@@ -1,3 +1,5 @@
+[![pkg.pr.new](https://pkg.pr.new/badge/SferaDev/SferaDev)](https://pkg.pr.new/~/SferaDev/SferaDev)
+
 ### Hi there, I'm Alexis! 👋
 
 Staff Software Engineer at [Xata](https://xata.io), building serverless databases and developer tools.
