@@ -2693,6 +2693,22 @@ export const userEventSchema = z
 												blockReason: z.enum(["admin_override", "limits_exceeded"]),
 											}),
 										),
+										workflowStorage: z.optional(
+											z.object({
+												updatedAt: z.number(),
+												blockedFrom: z.optional(z.number()),
+												blockedUntil: z.optional(z.number()),
+												blockReason: z.enum(["admin_override", "limits_exceeded"]),
+											}),
+										),
+										workflowStep: z.optional(
+											z.object({
+												updatedAt: z.number(),
+												blockedFrom: z.optional(z.number()),
+												blockedUntil: z.optional(z.number()),
+												blockReason: z.enum(["admin_override", "limits_exceeded"]),
+											}),
+										),
 									})
 									.describe(
 										"Information about which features are blocked for a user. Blocks can be either soft (the user can still access the feature, but with a warning, e.g. prompting an upgrade) or hard (the user cannot access the feature at all).",
