@@ -1,19 +1,10 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
-
-// Generate a random share token (16 chars)
-function generateShareToken(): string {
-	const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-	let result = "";
-	for (let i = 0; i < 16; i++) {
-		result += chars.charAt(Math.floor(Math.random() * chars.length));
-	}
-	return result;
-}
+import { generateToken, requireAuth, requireEventAccess } from "./lib/auth";
 
 // Generate a human-readable code (ABCD-1234)
 function generateHumanCode(): string {
-	const letters = "ABCDEFGHJKLMNPQRSTUVWXYZ"; // excluded I and O to avoid confusion
+	const letters = "ABCDEFGHJKLMNPQRSTUVWXYZ";
 	const digits = "0123456789";
 
 	let code = "";
@@ -27,32 +18,59 @@ function generateHumanCode(): string {
 	return code;
 }
 
+// Public mutation for kiosk mode
 export const generateUploadUrl = mutation({
-	args: {},
-	handler: async (ctx) => {
+	args: { eventId: v.id("events") },
+	handler: async (ctx, args) => {
+		// Verify event exists and is active
+		const event = await ctx.db.get(args.eventId);
+		if (!event || event.status !== "active") {
+			throw new Error("Event not found or not active");
+		}
+
 		return await ctx.storage.generateUploadUrl();
 	},
 });
 
+// Public mutation for kiosk mode
 export const create = mutation({
 	args: {
+		eventId: v.id("events"),
 		sessionId: v.id("sessions"),
 		storageId: v.id("_storage"),
 		caption: v.optional(v.string()),
 		templateId: v.optional(v.id("templates")),
 		width: v.number(),
 		height: v.number(),
+		sizeBytes: v.number(),
 	},
 	handler: async (ctx, args) => {
-		// Get settings for expiration
-		const settings = await ctx.db.query("settings").first();
-		const expirationDays = settings?.shareExpirationDays;
+		const event = await ctx.db.get(args.eventId);
+		if (!event || event.status !== "active") {
+			throw new Error("Event not found or not active");
+		}
 
-		const shareToken = generateShareToken();
+		const org = await ctx.db.get(event.organizationId);
+		if (!org) {
+			throw new Error("Organization not found");
+		}
+
+		// Check photo limit
+		if (org.maxPhotosPerEvent !== -1 && event.photoCount >= org.maxPhotosPerEvent) {
+			throw new Error("Photo limit reached for this event");
+		}
+
+		// Check storage limit
+		if (org.currentStorageBytes + args.sizeBytes > org.maxStorageBytes) {
+			throw new Error("Storage limit reached. Upgrade your plan for more storage.");
+		}
+
+		const shareToken = generateToken(16);
 		const humanCode = generateHumanCode();
 		const now = Date.now();
 
 		const photoId = await ctx.db.insert("photos", {
+			eventId: args.eventId,
 			sessionId: args.sessionId,
 			storageId: args.storageId,
 			shareToken,
@@ -61,7 +79,31 @@ export const create = mutation({
 			templateId: args.templateId,
 			width: args.width,
 			height: args.height,
-			expiresAt: expirationDays ? now + expirationDays * 24 * 60 * 60 * 1000 : undefined,
+			sizeBytes: args.sizeBytes,
+			expiresAt: event.shareExpirationDays
+				? now + event.shareExpirationDays * 24 * 60 * 60 * 1000
+				: undefined,
+			createdAt: now,
+		});
+
+		// Update event stats
+		await ctx.db.patch(args.eventId, {
+			photoCount: event.photoCount + 1,
+			updatedAt: now,
+		});
+
+		// Update organization storage
+		await ctx.db.patch(org._id, {
+			currentStorageBytes: org.currentStorageBytes + args.sizeBytes,
+			updatedAt: now,
+		});
+
+		// Log usage
+		await ctx.db.insert("usageLogs", {
+			organizationId: org._id,
+			eventId: args.eventId,
+			type: "photo_captured",
+			bytes: args.sizeBytes,
 			createdAt: now,
 		});
 
@@ -69,10 +111,9 @@ export const create = mutation({
 	},
 });
 
+// Public query for share page
 export const getByShareToken = query({
-	args: {
-		shareToken: v.string(),
-	},
+	args: { shareToken: v.string() },
 	handler: async (ctx, args) => {
 		const photo = await ctx.db
 			.query("photos")
@@ -81,20 +122,29 @@ export const getByShareToken = query({
 
 		if (!photo) return null;
 
-		// Check expiration
 		if (photo.expiresAt && photo.expiresAt < Date.now()) {
 			return null;
 		}
 
+		const event = await ctx.db.get(photo.eventId);
+		if (!event) return null;
+
 		const url = await ctx.storage.getUrl(photo.storageId);
-		return { ...photo, url };
+
+		return {
+			...photo,
+			url,
+			eventName: event.name,
+			allowDownload: event.allowDownload,
+			allowPrint: event.allowPrint,
+			showQrCode: event.showQrCode,
+		};
 	},
 });
 
+// Public query for share page
 export const getByHumanCode = query({
-	args: {
-		humanCode: v.string(),
-	},
+	args: { humanCode: v.string() },
 	handler: async (ctx, args) => {
 		const photo = await ctx.db
 			.query("photos")
@@ -103,7 +153,6 @@ export const getByHumanCode = query({
 
 		if (!photo) return null;
 
-		// Check expiration
 		if (photo.expiresAt && photo.expiresAt < Date.now()) {
 			return null;
 		}
@@ -112,24 +161,28 @@ export const getByHumanCode = query({
 	},
 });
 
+// Authenticated queries for admin
 export const list = query({
 	args: {
+		eventId: v.id("events"),
 		limit: v.optional(v.number()),
 		cursor: v.optional(v.string()),
 	},
 	handler: async (ctx, args) => {
+		const userId = await requireAuth(ctx);
+		await requireEventAccess(ctx, userId, args.eventId);
+
 		const limit = args.limit ?? 20;
 
 		const photos = await ctx.db
 			.query("photos")
-			.withIndex("by_created_at")
+			.withIndex("by_event", (q) => q.eq("eventId", args.eventId))
 			.order("desc")
 			.take(limit + 1);
 
 		const hasMore = photos.length > limit;
 		const items = hasMore ? photos.slice(0, limit) : photos;
 
-		// Get URLs for all photos
 		const photosWithUrls = await Promise.all(
 			items.map(async (photo) => {
 				const url = await ctx.storage.getUrl(photo.storageId);
@@ -147,14 +200,18 @@ export const list = query({
 
 export const listRecent = query({
 	args: {
+		eventId: v.id("events"),
 		limit: v.optional(v.number()),
 	},
 	handler: async (ctx, args) => {
+		const userId = await requireAuth(ctx);
+		await requireEventAccess(ctx, userId, args.eventId);
+
 		const limit = args.limit ?? 10;
 
 		const photos = await ctx.db
 			.query("photos")
-			.withIndex("by_created_at")
+			.withIndex("by_event", (q) => q.eq("eventId", args.eventId))
 			.order("desc")
 			.take(limit);
 
@@ -169,13 +226,51 @@ export const listRecent = query({
 	},
 });
 
-export const get = query({
+// Public query for kiosk slideshow
+export const listRecentPublic = query({
 	args: {
-		photoId: v.id("photos"),
+		eventId: v.id("events"),
+		limit: v.optional(v.number()),
 	},
 	handler: async (ctx, args) => {
+		const event = await ctx.db.get(args.eventId);
+		if (!event || event.status !== "active") {
+			return [];
+		}
+
+		const limit = args.limit ?? 10;
+
+		const photos = await ctx.db
+			.query("photos")
+			.withIndex("by_event", (q) => q.eq("eventId", args.eventId))
+			.order("desc")
+			.take(limit);
+
+		const photosWithUrls = await Promise.all(
+			photos.map(async (photo) => {
+				const url = await ctx.storage.getUrl(photo.storageId);
+				return {
+					_id: photo._id,
+					url,
+					humanCode: photo.humanCode,
+					createdAt: photo.createdAt,
+				};
+			}),
+		);
+
+		return photosWithUrls;
+	},
+});
+
+export const get = query({
+	args: { photoId: v.id("photos") },
+	handler: async (ctx, args) => {
+		const userId = await requireAuth(ctx);
+
 		const photo = await ctx.db.get(args.photoId);
 		if (!photo) return null;
+
+		await requireEventAccess(ctx, userId, photo.eventId);
 
 		const url = await ctx.storage.getUrl(photo.storageId);
 		return { ...photo, url };
@@ -183,34 +278,99 @@ export const get = query({
 });
 
 export const remove = mutation({
-	args: {
-		photoId: v.id("photos"),
-	},
+	args: { photoId: v.id("photos") },
 	handler: async (ctx, args) => {
+		const userId = await requireAuth(ctx);
+
 		const photo = await ctx.db.get(args.photoId);
-		if (photo) {
-			await ctx.storage.delete(photo.storageId);
-			await ctx.db.delete(args.photoId);
+		if (!photo) return;
+
+		const { event } = await requireEventAccess(ctx, userId, photo.eventId, ["owner", "admin"]);
+
+		const org = await ctx.db.get(event.organizationId);
+
+		await ctx.storage.delete(photo.storageId);
+		await ctx.db.delete(args.photoId);
+
+		// Update event stats
+		await ctx.db.patch(photo.eventId, {
+			photoCount: Math.max(0, event.photoCount - 1),
+			updatedAt: Date.now(),
+		});
+
+		// Update organization storage
+		if (org) {
+			await ctx.db.patch(org._id, {
+				currentStorageBytes: Math.max(0, org.currentStorageBytes - photo.sizeBytes),
+				updatedAt: Date.now(),
+			});
+
+			// Log usage
+			await ctx.db.insert("usageLogs", {
+				organizationId: org._id,
+				eventId: photo.eventId,
+				type: "storage_removed",
+				bytes: photo.sizeBytes,
+				createdAt: Date.now(),
+			});
 		}
 	},
 });
 
 export const removeAll = mutation({
-	args: {},
-	handler: async (ctx) => {
-		const photos = await ctx.db.query("photos").collect();
+	args: { eventId: v.id("events") },
+	handler: async (ctx, args) => {
+		const userId = await requireAuth(ctx);
+		const { event } = await requireEventAccess(ctx, userId, args.eventId, ["owner", "admin"]);
+
+		const org = await ctx.db.get(event.organizationId);
+
+		const photos = await ctx.db
+			.query("photos")
+			.withIndex("by_event", (q) => q.eq("eventId", args.eventId))
+			.collect();
+
+		let totalStorageFreed = 0;
 		for (const photo of photos) {
 			await ctx.storage.delete(photo.storageId);
+			totalStorageFreed += photo.sizeBytes;
 			await ctx.db.delete(photo._id);
 		}
+
+		// Update event stats
+		await ctx.db.patch(args.eventId, {
+			photoCount: 0,
+			updatedAt: Date.now(),
+		});
+
+		// Update organization storage
+		if (org) {
+			await ctx.db.patch(org._id, {
+				currentStorageBytes: Math.max(0, org.currentStorageBytes - totalStorageFreed),
+				updatedAt: Date.now(),
+			});
+
+			// Log usage
+			await ctx.db.insert("usageLogs", {
+				organizationId: org._id,
+				eventId: args.eventId,
+				type: "storage_removed",
+				bytes: totalStorageFreed,
+				createdAt: Date.now(),
+			});
+		}
+
 		return { deleted: photos.length };
 	},
 });
 
 export const getCount = query({
-	args: {},
-	handler: async (ctx) => {
-		const photos = await ctx.db.query("photos").collect();
-		return photos.length;
+	args: { eventId: v.id("events") },
+	handler: async (ctx, args) => {
+		const userId = await requireAuth(ctx);
+		await requireEventAccess(ctx, userId, args.eventId);
+
+		const event = await ctx.db.get(args.eventId);
+		return event?.photoCount ?? 0;
 	},
 });
