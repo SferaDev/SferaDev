@@ -4,11 +4,13 @@ import type { Metadata } from "next";
 import type React from "react";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/toaster";
 import { cn } from "@/lib/utils";
+import { Providers } from "./providers";
 
 export const metadata: Metadata = {
-	title: "Photocall",
-	description: "Photocall application",
+	title: "Photocall - Wedding Photo Booth",
+	description: "Beautiful wedding photo booth kiosk for capturing and sharing memories",
 };
 
 export default function RootLayout({
@@ -25,7 +27,10 @@ export default function RootLayout({
 					enableSystem
 					disableTransitionOnChange
 				>
-					<div className="min-h-screen bg-background text-foreground">{children}</div>
+					<Providers>
+						<div className="min-h-screen bg-background text-foreground">{children}</div>
+						<Toaster />
+					</Providers>
 				</ThemeProvider>
 			</body>
 		</html>
