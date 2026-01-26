@@ -68,6 +68,7 @@ export class ModelsClient {
 		return data.map((model) => ({
 			id: model.id,
 			name: model.name,
+			detail: "Vercel AI Gateway",
 			family: model.owned_by,
 			version: "1.0",
 			maxInputTokens: model.context_window,
