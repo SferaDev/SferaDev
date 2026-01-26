@@ -1,6 +1,6 @@
 "use client";
 
-import { useConvexAuth, useMutation, useQuery } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { ArrowRight, Building2, Camera, Loader2, Plus, Users } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -17,9 +17,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { api } from "@/convex/_generated/api";
+import { authClient, useSession } from "@/lib/auth-client";
 
 export default function DashboardPage() {
-	const { isAuthenticated, isLoading: authLoading } = useConvexAuth();
+	const { data: session, isPending: authLoading } = useSession();
+	const isAuthenticated = !!session;
 	const router = useRouter();
 	const organizations = useQuery(api.users.getOrganizations);
 	const createOrg = useMutation(api.organizations.create);
@@ -179,18 +181,17 @@ export default function DashboardPage() {
 }
 
 function UserMenu() {
-	const { signOut } = require("@convex-dev/auth/react").useAuthActions();
-	const user = useQuery(api.users.me);
+	const { data: session } = useSession();
 	const router = useRouter();
 
 	const handleSignOut = async () => {
-		await signOut();
+		await authClient.signOut();
 		router.push("/");
 	};
 
 	return (
 		<div className="flex items-center gap-4">
-			<span className="text-sm text-muted-foreground">{user?.user?.email ?? "Loading..."}</span>
+			<span className="text-sm text-muted-foreground">{session?.user?.email ?? "Loading..."}</span>
 			<Button variant="outline" size="sm" onClick={handleSignOut}>
 				Sign Out
 			</Button>

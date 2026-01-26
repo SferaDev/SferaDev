@@ -9,6 +9,20 @@
 			"project": ["**/*.{ts,tsx}"],
 			"ignore": ["**/*.d.ts"]
 		},
+		"apps/photocall": {
+			"entry": [
+				"app/**/*.{ts,tsx}",
+				"components/**/*.tsx",
+				"lib/**/*.ts",
+				"hooks/**/*.ts",
+				"convex/**/*.ts",
+				"scripts/**/*.ts"
+			],
+			"project": ["**/*.{ts,tsx}"],
+			"ignore": ["**/*.d.ts", "convex/_generated/**"],
+			"ignoreDependencies": ["jszip"],
+			"includeEntryExports": false
+		},
 		"apps/openapi": {
 			"entry": ["src/app/**/*.{ts,tsx}", "src/lib/**/*.ts", "src/components/**/*.tsx"],
 			"project": ["src/**/*.{ts,tsx}"],
@@ -41,7 +55,7 @@
 				"src/components.ts"
 			],
 			"project": ["src/**/*.ts"],
-			"ignore": ["src/generated/**"],
+			"ignore": ["src/generated/**", "src/utils/mcp.ts"],
 			"ignoreDependencies": ["@kubb/core", "@sferadev/openapi-utils"],
 			"includeEntryExports": false
 		},
