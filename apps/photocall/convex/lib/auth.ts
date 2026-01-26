@@ -1,43 +1,32 @@
 import type { GenericMutationCtx, GenericQueryCtx } from "convex/server";
 import type { DataModel, Id } from "../_generated/dataModel";
+import { authComponent } from "../auth";
 
 type QueryCtx = GenericQueryCtx<DataModel>;
 type MutationCtx = GenericMutationCtx<DataModel>;
 
-// getAuthUserId placeholder - will be provided by @convex-dev/auth/server
-async function getAuthUserId(ctx: QueryCtx | MutationCtx): Promise<Id<"users"> | null> {
-	// This is a stub. The actual implementation comes from @convex-dev/auth/server
-	const auth = (ctx as any).auth;
-	if (!auth) return null;
-	const identity = await auth.getUserIdentity();
-	if (!identity) return null;
-	return identity.subject as Id<"users">;
-}
-
-export async function requireAuth(ctx: QueryCtx | MutationCtx): Promise<Id<"users">> {
-	const userId = await getAuthUserId(ctx);
-	if (!userId) {
+export async function requireAuth(ctx: QueryCtx | MutationCtx): Promise<string> {
+	const user = await authComponent.getAuthUser(ctx);
+	if (!user) {
 		throw new Error("Unauthorized");
 	}
-	return userId;
+	return user.id;
 }
 
 export async function getUser(ctx: QueryCtx | MutationCtx) {
-	const userId = await getAuthUserId(ctx);
-	if (!userId) return null;
-	return await ctx.db.get(userId);
+	return authComponent.getAuthUser(ctx);
 }
 
-export async function getUserProfile(ctx: QueryCtx | MutationCtx, userId: Id<"users">) {
+export async function getUserProfile(ctx: QueryCtx | MutationCtx, betterAuthUserId: string) {
 	return await ctx.db
 		.query("userProfiles")
-		.withIndex("by_user", (q: any) => q.eq("userId", userId))
+		.withIndex("by_user", (q: any) => q.eq("userId", betterAuthUserId))
 		.unique();
 }
 
 export async function requireOrgMembership(
 	ctx: QueryCtx | MutationCtx,
-	userId: Id<"users">,
+	userId: string,
 	organizationId: Id<"organizations">,
 	requiredRoles?: ("owner" | "admin" | "member")[],
 ) {
@@ -61,7 +50,7 @@ export async function requireOrgMembership(
 
 export async function requireEventAccess(
 	ctx: QueryCtx | MutationCtx,
-	userId: Id<"users">,
+	userId: string,
 	eventId: Id<"events">,
 	requiredRoles?: ("owner" | "admin" | "member")[],
 ) {

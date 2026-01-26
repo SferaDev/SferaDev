@@ -1,17 +1,19 @@
 "use client";
 
-import { useAuthActions } from "@convex-dev/auth/react";
 import { Github, Loader2, Mail } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { authClient } from "@/lib/auth-client";
 
 export function SignInForm() {
-	const { signIn } = useAuthActions();
+	const router = useRouter();
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const [name, setName] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState("");
 	const [mode, setMode] = useState<"signin" | "signup">("signin");
@@ -22,11 +24,28 @@ export function SignInForm() {
 		setError("");
 
 		try {
-			await signIn("password", {
-				email,
-				password,
-				flow: mode === "signup" ? "signUp" : "signIn",
-			});
+			if (mode === "signup") {
+				const result = await authClient.signUp.email({
+					email,
+					password,
+					name: name || email.split("@")[0],
+				});
+				if (result.error) {
+					setError(result.error.message || "Failed to sign up");
+				} else {
+					router.push("/dashboard");
+				}
+			} else {
+				const result = await authClient.signIn.email({
+					email,
+					password,
+				});
+				if (result.error) {
+					setError(result.error.message || "Failed to sign in");
+				} else {
+					router.push("/dashboard");
+				}
+			}
 		} catch (err) {
 			setError(err instanceof Error ? err.message : "An error occurred");
 		} finally {
@@ -39,7 +58,10 @@ export function SignInForm() {
 		setError("");
 
 		try {
-			await signIn(provider);
+			await authClient.signIn.social({
+				provider,
+				callbackURL: "/dashboard",
+			});
 		} catch (err) {
 			setError(err instanceof Error ? err.message : "An error occurred");
 			setIsLoading(false);
@@ -92,6 +114,19 @@ export function SignInForm() {
 			</div>
 
 			<form onSubmit={handleSubmit} className="space-y-4">
+				{mode === "signup" && (
+					<div className="space-y-2">
+						<Label htmlFor="name">Name</Label>
+						<Input
+							id="name"
+							type="text"
+							placeholder="Your name"
+							value={name}
+							onChange={(e) => setName(e.target.value)}
+							disabled={isLoading}
+						/>
+					</div>
+				)}
 				<div className="space-y-2">
 					<Label htmlFor="email">Email</Label>
 					<Input

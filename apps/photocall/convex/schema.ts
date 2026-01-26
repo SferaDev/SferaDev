@@ -1,13 +1,13 @@
-import { authTables } from "@convex-dev/auth/server";
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
-export default defineSchema({
-	...authTables,
+// Note: Better Auth manages its own tables (user, session, account, verification)
+// via the @convex-dev/better-auth component
 
-	// Extended user profile
+export default defineSchema({
+	// Extended user profile (linked to Better Auth user via string ID)
 	userProfiles: defineTable({
-		userId: v.id("users"),
+		userId: v.string(), // Better Auth user ID
 		name: v.optional(v.string()),
 		avatarUrl: v.optional(v.string()),
 		onboardingCompleted: v.boolean(),
@@ -20,7 +20,7 @@ export default defineSchema({
 		name: v.string(),
 		slug: v.string(),
 		logoStorageId: v.optional(v.id("_storage")),
-		ownerId: v.id("users"),
+		ownerId: v.string(), // Better Auth user ID
 		// Subscription
 		subscriptionTier: v.union(v.literal("free"), v.literal("paid")),
 		stripeCustomerId: v.optional(v.string()),
@@ -50,9 +50,9 @@ export default defineSchema({
 	// Organization memberships
 	organizationMembers: defineTable({
 		organizationId: v.id("organizations"),
-		userId: v.id("users"),
+		userId: v.string(), // Better Auth user ID
 		role: v.union(v.literal("owner"), v.literal("admin"), v.literal("member")),
-		invitedBy: v.optional(v.id("users")),
+		invitedBy: v.optional(v.string()), // Better Auth user ID
 		invitedAt: v.optional(v.number()),
 		joinedAt: v.number(),
 	})
@@ -65,7 +65,7 @@ export default defineSchema({
 		organizationId: v.id("organizations"),
 		email: v.string(),
 		role: v.union(v.literal("admin"), v.literal("member")),
-		invitedBy: v.id("users"),
+		invitedBy: v.string(), // Better Auth user ID
 		token: v.string(),
 		expiresAt: v.number(),
 		createdAt: v.number(),
