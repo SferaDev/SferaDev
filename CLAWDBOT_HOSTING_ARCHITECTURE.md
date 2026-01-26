@@ -9,10 +9,12 @@ This document proposes an architecture for a **managed hosting platform for Claw
 | Challenge | Clawdbot Requirement | Implication |
 |-----------|---------------------|-------------|
 | **Long-running process** | WebSocket gateway must stay alive 24/7 | Cannot use purely serverless |
-| **Persistent state** | `~/.clawdbot/` config, credentials, session data | Need durable volumes |
-| **Memory requirements** | 2GB+ RAM recommended | Cannot use lightweight functions |
-| **Network access** | Port 18789 + messaging platform webhooks | Need public endpoints |
-| **Sensitive credentials** | OAuth tokens, API keys, messaging credentials | Need secure secrets management |
+| **Persistent state** | `~/.clawdbot/` config, credentials, WhatsApp sessions | Need durable volumes |
+| **Memory requirements** | 2GB+ RAM recommended, Node.js 22+ required | Cannot use lightweight functions |
+| **Network access** | Port 18789 (gateway) + 18790 (bridge) | Need public endpoints |
+| **Sensitive credentials** | OAuth tokens, API keys, WhatsApp QR sessions | Need secure secrets management |
+| **WhatsApp pairing** | QR-based device linking, session persistence | Requires interactive onboarding flow |
+| **DM pairing system** | 6-digit codes for unknown senders | Need pairing approval workflow |
 
 ### Why Pure Vercel Won't Work
 
@@ -25,6 +27,20 @@ While you have a preference for Vercel products, the research reveals critical l
 | **Vercel Edge** | Limited runtime, no Node.js 22 features |
 
 **Verdict**: Vercel alone cannot host Clawdbot instances. However, Vercel excels at building the **control plane** while we use specialized infrastructure for the **data plane** (actual Clawdbot instances).
+
+### Vercel AI Gateway Opportunity
+
+Clawdbot natively supports **Vercel AI Gateway** as a model provider. This is a major advantage for our hosting platform:
+
+| Benefit | Description |
+|---------|-------------|
+| **Unified billing** | Route all LLM costs through our Vercel account |
+| **Spend monitoring** | Track per-tenant AI usage in Vercel dashboard |
+| **Model flexibility** | Users choose from all AI Gateway models (`creator/model-name` format) |
+| **No API key management** | Users don't need their own Anthropic/OpenAI keys (optional) |
+| **Observability** | Request logging, latency tracking built-in |
+
+This enables a **managed AI billing** tier where users pay us for both hosting + AI usage.
 
 ---
 
@@ -932,70 +948,160 @@ Fly.io provides the actual compute for running Clawdbot instances.
 
 #### 2.2 Custom Clawdbot Docker Image
 
+Based on the [official Clawdbot Docker setup](https://docs.clawd.bot/install/docker):
+
 ```dockerfile
 # Dockerfile for hosted Clawdbot
 FROM node:22-bookworm-slim
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    chromium \
-    ca-certificates \
+# Install system dependencies (configurable via build arg)
+ARG APT_PACKAGES="chromium ca-certificates gettext-base"
+RUN apt-get update && apt-get install -y $APT_PACKAGES \
     && rm -rf /var/lib/apt/lists/*
 
-# Create non-root user
-RUN useradd -m -s /bin/bash clawdbot
-USER clawdbot
-WORKDIR /home/clawdbot
+# Create non-root user (matching official image)
+RUN useradd -m -s /bin/bash node
+USER node
+WORKDIR /home/node
 
-# Install Clawdbot
+# Install Clawdbot globally
 RUN npm install -g clawdbot@latest
 
-# Platform-specific patches
-COPY --chown=clawdbot:clawdbot ./hosting-patches/ ./patches/
+# Hosting platform patches
+COPY --chown=node:node ./hosting-patches/ ./patches/
 
 # Health check endpoint
-COPY --chown=clawdbot:clawdbot ./health-server.js ./
+COPY --chown=node:node ./health-server.js ./
 
-# Volumes
-VOLUME ["/home/clawdbot/.clawdbot", "/home/clawdbot/clawd"]
+# Volumes for persistent data
+# - ~/.clawdbot: Config, credentials, WhatsApp sessions
+# - ~/clawd: Agent workspace
+VOLUME ["/home/node/.clawdbot", "/home/node/clawd"]
 
 # Environment
 ENV NODE_OPTIONS="--max-old-space-size=1536"
-ENV CLAWDBOT_STATE_DIR="/home/clawdbot/.clawdbot"
-ENV CLAWDBOT_WORKSPACE_DIR="/home/clawdbot/clawd"
+ENV HOME="/home/node"
+ENV TERM="xterm-256color"
 
-# Expose gateway port
-EXPOSE 8080
+# Expose ports (gateway + bridge)
+EXPOSE 18789 18790
 
 # Entrypoint with hosting wrapper
-COPY --chown=clawdbot:clawdbot ./entrypoint.sh ./
+COPY --chown=node:node ./entrypoint.sh ./
+RUN chmod +x ./entrypoint.sh
 ENTRYPOINT ["./entrypoint.sh"]
 ```
 
 ```bash
 #!/bin/bash
-# entrypoint.sh
+# entrypoint.sh - Hosted Clawdbot gateway launcher
+
+set -e
+
+CONFIG_DIR="/home/node/.clawdbot"
+CONFIG_FILE="$CONFIG_DIR/clawdbot.json"
 
 # Start health check sidecar
-node /home/clawdbot/health-server.js &
+node /home/node/health-server.js &
 
-# Initialize config if needed
-if [ ! -f "$CLAWDBOT_STATE_DIR/clawdbot.json" ]; then
-  echo "Initializing default config..."
-  cp /home/clawdbot/patches/default-config.json "$CLAWDBOT_STATE_DIR/clawdbot.json"
+# Initialize config directory
+mkdir -p "$CONFIG_DIR"
+
+# Generate config from environment if not exists
+if [ ! -f "$CONFIG_FILE" ]; then
+  echo "Generating initial configuration..."
+  cat > "$CONFIG_FILE" << EOF
+{
+  "gateway": {
+    "mode": "local",
+    "port": ${CLAWDBOT_GATEWAY_PORT:-18789},
+    "bind": "lan",
+    "auth": {
+      "mode": "token",
+      "token": "${CLAWDBOT_GATEWAY_TOKEN}"
+    },
+    "controlUi": {
+      "enabled": true,
+      "allowInsecureAuth": true
+    }
+  },
+  "agent": {
+    "model": "${CLAWDBOT_MODEL:-anthropic/claude-sonnet-4}",
+    "workspace": "/home/node/clawd"
+  },
+  "tools": {
+    "profile": "${CLAWDBOT_TOOL_PROFILE:-coding}"
+  },
+  "session": {
+    "scope": "per-sender"
+  },
+  "logging": {
+    "level": "info",
+    "redact": true
+  }
+}
+EOF
 fi
 
-# Inject secrets from environment
-envsubst < "$CLAWDBOT_STATE_DIR/clawdbot.json.template" > "$CLAWDBOT_STATE_DIR/clawdbot.json"
+# Apply any config patches from environment
+if [ -n "$CLAWDBOT_CONFIG_PATCH" ]; then
+  echo "Applying config patch..."
+  clawdbot config patch "$CLAWDBOT_CONFIG_PATCH"
+fi
 
 # Start Clawdbot gateway
 exec clawdbot gateway \
-  --port "${CLAWDBOT_GATEWAY_PORT:-8080}" \
-  --bind lan \
-  --verbose
+  --port "${CLAWDBOT_GATEWAY_PORT:-18789}" \
+  --bind lan
 ```
 
-#### 2.3 Machine Configuration by Plan
+#### 2.3 Health Check Server
+
+```javascript
+// health-server.js - Sidecar for health monitoring
+const http = require('http');
+const { execSync } = require('child_process');
+
+const HEALTH_PORT = process.env.HEALTH_PORT || 9090;
+
+const server = http.createServer((req, res) => {
+  if (req.url === '/health' || req.url === '/healthz') {
+    try {
+      // Check gateway health via CLI
+      const output = execSync(
+        `clawdbot health --token "${process.env.CLAWDBOT_GATEWAY_TOKEN}"`,
+        { timeout: 5000, encoding: 'utf-8' }
+      );
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({
+        status: 'healthy',
+        gateway: 'running',
+        timestamp: new Date().toISOString(),
+      }));
+    } catch (error) {
+      res.writeHead(503, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString(),
+      }));
+    }
+  } else if (req.url === '/ready') {
+    // Readiness check - is gateway accepting connections?
+    res.writeHead(200);
+    res.end('ready');
+  } else {
+    res.writeHead(404);
+    res.end('Not found');
+  }
+});
+
+server.listen(HEALTH_PORT, () => {
+  console.log(`Health server listening on port ${HEALTH_PORT}`);
+});
+```
+
+#### 2.4 Machine Configuration by Plan
 
 ```typescript
 // lib/fly/machine-specs.ts
@@ -1005,13 +1111,13 @@ export function machineSpecForPlan(plan: 'STARTER' | 'PRO') {
       return {
         cpu_kind: 'shared',
         cpus: 1,
-        memory_mb: 1024, // 1GB - limited functionality
+        memory_mb: 1024, // 1GB - basic chat functionality
       };
     case 'PRO':
       return {
         cpu_kind: 'shared',
         cpus: 2,
-        memory_mb: 2048, // 2GB - recommended for full features
+        memory_mb: 2048, // 2GB - full features + browser automation
       };
     default:
       throw new Error(`Unknown plan: ${plan}`);
@@ -1019,31 +1125,431 @@ export function machineSpecForPlan(plan: 'STARTER' | 'PRO') {
 }
 ```
 
-#### 2.4 Networking & Port Configuration
+#### 2.5 Networking & Port Configuration
+
+Clawdbot uses two ports:
+- **18789**: Gateway (HTTP/WebSocket API, Control UI)
+- **18790**: Bridge (internal services)
 
 ```typescript
 // lib/fly/services-config.ts
 export const servicesConfig = [
   {
-    // Main gateway (HTTPS)
+    // Main gateway (HTTPS) - Port 18789
     ports: [
       { port: 443, handlers: ['tls', 'http'] },
       { port: 80, handlers: ['http'], force_https: true },
     ],
     protocol: 'tcp',
-    internal_port: 8080,
+    internal_port: 18789,
     concurrency: {
       type: 'connections',
       hard_limit: 100,
       soft_limit: 80,
     },
   },
+  {
+    // Bridge port (internal) - Port 18790
+    // Only exposed internally, not to public
+    ports: [],
+    protocol: 'tcp',
+    internal_port: 18790,
+  },
 ];
+
+// Derived ports (from gateway docs):
+// - Control UI: base port (18789)
+// - Browser control URL: base + 2 (18791)
+// - Canvas host: base + 4 (18793)
 ```
 
-### 3. Secrets Management
+### 3. Clawdbot-Specific Configuration
 
-#### 3.1 Architecture Options
+Understanding the Clawdbot configuration schema is critical for the hosting platform.
+
+#### 3.1 Gateway Configuration (`clawdbot.json`)
+
+```typescript
+// lib/clawdbot/config-schema.ts
+import { z } from 'zod';
+
+export const clawdbotConfigSchema = z.object({
+  gateway: z.object({
+    mode: z.literal('local'), // Required for startup
+    port: z.number().default(18789),
+    bind: z.enum(['localhost', 'lan']).default('lan'), // 'lan' for containers
+    auth: z.object({
+      mode: z.enum(['token', 'none']).default('token'),
+      token: z.string().optional(), // Auto-generated
+    }),
+    controlUi: z.object({
+      enabled: z.boolean().default(true),
+      allowInsecureAuth: z.boolean().default(true), // For reverse proxy
+    }),
+    reload: z.object({
+      mode: z.enum(['hybrid', 'hot', 'restart', 'off']).default('hybrid'),
+    }),
+  }),
+
+  agent: z.object({
+    model: z.string().default('anthropic/claude-sonnet-4'),
+    workspace: z.string().default('/home/node/clawd'),
+  }),
+
+  agents: z.object({
+    defaults: z.object({
+      workspace: z.string().default('/home/node/clawd'),
+      model: z.string().optional(),
+      sandbox: z.object({
+        mode: z.enum(['off', 'non-main']).default('off'),
+        scope: z.enum(['agent', 'session', 'shared']).default('agent'),
+      }).optional(),
+      contextPruning: z.object({
+        enabled: z.boolean().default(true),
+      }).optional(),
+    }),
+    list: z.array(z.object({
+      id: z.string(),
+      name: z.string(),
+      model: z.string().optional(),
+    })).optional(),
+  }),
+
+  tools: z.object({
+    profile: z.enum(['minimal', 'coding', 'messaging', 'full']).default('coding'),
+    allow: z.array(z.string()).optional(),
+    deny: z.array(z.string()).optional(),
+    elevated: z.array(z.string()).optional(),
+  }),
+
+  session: z.object({
+    scope: z.enum(['per-sender', 'per-channel-peer', 'global']).default('per-sender'),
+    reset: z.object({
+      daily: z.string().default('04:00'), // Reset at 4 AM
+      idleMinutes: z.number().optional(),
+    }).optional(),
+  }),
+
+  channels: z.object({
+    whatsapp: z.object({
+      enabled: z.boolean().default(false),
+      dmPolicy: z.enum(['pairing', 'allowlist', 'open', 'disabled']).default('pairing'),
+      allowFrom: z.array(z.string()).optional(), // E.164 phone numbers
+      groupPolicy: z.enum(['disabled', 'allowlist', 'open']).default('disabled'),
+    }).optional(),
+    telegram: z.object({
+      enabled: z.boolean().default(false),
+      botToken: z.string().optional(), // From @BotFather
+      dmPolicy: z.enum(['pairing', 'allowlist', 'open', 'disabled']).default('pairing'),
+    }).optional(),
+    discord: z.object({
+      enabled: z.boolean().default(false),
+      botToken: z.string().optional(),
+      dmPolicy: z.enum(['pairing', 'allowlist', 'open', 'disabled']).default('pairing'),
+    }).optional(),
+    slack: z.object({
+      enabled: z.boolean().default(false),
+      botToken: z.string().optional(),
+      appToken: z.string().optional(),
+    }).optional(),
+  }),
+
+  messages: z.object({
+    tts: z.object({
+      enabled: z.boolean().default(false),
+      provider: z.enum(['elevenlabs', 'openai']).optional(),
+    }).optional(),
+  }),
+
+  identity: z.object({
+    name: z.string().default('Clawd'),
+    emoji: z.string().default('🦞'),
+  }).optional(),
+
+  logging: z.object({
+    level: z.enum(['debug', 'info', 'warn', 'error']).default('info'),
+    redact: z.boolean().default(true),
+  }).optional(),
+});
+
+export type ClawdbotConfig = z.infer<typeof clawdbotConfigSchema>;
+```
+
+#### 3.2 Channel Setup Wizards
+
+Each messaging channel requires specific onboarding:
+
+| Channel | Setup Requirement | Hosted Solution |
+|---------|------------------|-----------------|
+| **WhatsApp** | QR code scan from phone | WebSocket stream QR to dashboard |
+| **Telegram** | Bot token from @BotFather | Guided wizard with token input |
+| **Discord** | Bot token + enable intents | OAuth app install flow |
+| **Slack** | Bot token + App token | Slack app manifest install |
+| **Signal** | Phone number + captcha | Complex - may not support |
+| **iMessage** | macOS only | Not supported in hosted |
+
+```typescript
+// app/api/instances/[id]/whatsapp/qr/route.ts
+// Stream WhatsApp QR code to dashboard for pairing
+import { auth } from '@/lib/auth';
+import { headers } from 'next/headers';
+
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const session = await auth.api.getSession({ headers: await headers() });
+  if (!session) return new Response('Unauthorized', { status: 401 });
+
+  const { id } = await params;
+  const instance = await db.instance.findFirst({
+    where: { id, userId: session.user.id },
+  });
+
+  if (!instance) return new Response('Not found', { status: 404 });
+
+  // Connect to instance WebSocket and stream QR events
+  const encoder = new TextEncoder();
+  const stream = new ReadableStream({
+    async start(controller) {
+      const ws = new WebSocket(`wss://${instance.hostname}/gateway`);
+
+      ws.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        if (data.type === 'whatsapp:qr') {
+          controller.enqueue(
+            encoder.encode(`data: ${JSON.stringify({ qr: data.qr })}\n\n`)
+          );
+        }
+        if (data.type === 'whatsapp:ready') {
+          controller.enqueue(
+            encoder.encode(`data: ${JSON.stringify({ ready: true })}\n\n`)
+          );
+          controller.close();
+        }
+      };
+
+      ws.onerror = () => controller.close();
+    },
+  });
+
+  return new Response(stream, {
+    headers: {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      'Connection': 'keep-alive',
+    },
+  });
+}
+```
+
+#### 3.3 DM Pairing Management
+
+Clawdbot uses a pairing system where unknown senders must enter a 6-digit code:
+
+```typescript
+// app/api/instances/[id]/pairing/route.ts
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  // List pending pairing requests
+  const instance = await getAuthorizedInstance(params);
+
+  const response = await fetch(`https://${instance.hostname}/api/pairing/list`, {
+    headers: { Authorization: `Bearer ${instance.gatewayToken}` },
+  });
+
+  return Response.json(await response.json());
+}
+
+export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  // Approve or reject pairing request
+  const instance = await getAuthorizedInstance(params);
+  const { code, action } = await request.json(); // action: 'approve' | 'reject'
+
+  const response = await fetch(`https://${instance.hostname}/api/pairing/${action}`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${instance.gatewayToken}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ code }),
+  });
+
+  return Response.json(await response.json());
+}
+```
+
+#### 3.4 Tool Profiles
+
+Control what tools are available to the AI agent:
+
+| Profile | Allowed Tools | Use Case |
+|---------|--------------|----------|
+| **minimal** | Read-only, no file system | Chat-only bots |
+| **coding** | File read/write, bash (sandboxed) | Developer assistants |
+| **messaging** | + Email, calendar, contacts | Personal assistants |
+| **full** | All tools including browser automation | Power users |
+
+```typescript
+// Dashboard UI for tool profile selection
+const TOOL_PROFILES = {
+  minimal: {
+    label: 'Minimal (Safe)',
+    description: 'Read-only access, no file system modifications',
+    recommendedFor: 'Public-facing bots, customer support',
+  },
+  coding: {
+    label: 'Coding',
+    description: 'File read/write, sandboxed bash execution',
+    recommendedFor: 'Developer assistants, code review bots',
+  },
+  messaging: {
+    label: 'Messaging',
+    description: 'Email, calendar, contacts integration',
+    recommendedFor: 'Personal assistants, scheduling bots',
+  },
+  full: {
+    label: 'Full (Advanced)',
+    description: 'All tools including browser automation',
+    recommendedFor: 'Power users, automation workflows',
+    warning: 'Requires Pro plan for browser automation resources',
+  },
+};
+```
+
+### 4. Vercel AI Gateway Integration
+
+A key advantage: Clawdbot **natively supports Vercel AI Gateway** as a model provider. This enables managed AI billing.
+
+#### 4.1 Configuration for AI Gateway
+
+```typescript
+// lib/clawdbot/ai-gateway-config.ts
+export function generateAIGatewayConfig(instanceId: string) {
+  return {
+    // Clawdbot will route all LLM calls through Vercel AI Gateway
+    models: {
+      providers: {
+        'vercel-ai-gateway': {
+          baseUrl: 'https://api.vercel.com/v1/ai-gateway',
+          apiKey: process.env.VERCEL_AI_GATEWAY_API_KEY,
+          // Pass instance ID for per-tenant tracking
+          headers: {
+            'X-Instance-ID': instanceId,
+          },
+        },
+      },
+    },
+    agent: {
+      // Use AI Gateway model format: creator/model-name
+      model: 'vercel-ai-gateway/anthropic/claude-sonnet-4',
+    },
+  };
+}
+```
+
+#### 4.2 Managed AI Billing Tier
+
+For users who don't want to manage their own API keys:
+
+```typescript
+// lib/plans.ts - Updated with AI Gateway tier
+export const PLAN_LIMITS = {
+  STARTER: {
+    price: 9,
+    instances: 1,
+    // ... other limits
+    aiGateway: {
+      included: false, // BYOK (Bring Your Own Key)
+    },
+  },
+  PRO: {
+    price: 19,
+    instances: 3,
+    // ... other limits
+    aiGateway: {
+      included: false, // BYOK by default
+    },
+  },
+  // New tier: Managed AI
+  PRO_MANAGED: {
+    price: 29, // Base price
+    instances: 3,
+    aiGateway: {
+      included: true,
+      creditsIncluded: 10, // $10 of AI credits
+      overageRate: 1.1, // 10% markup on AI Gateway costs
+    },
+  },
+} as const;
+```
+
+#### 4.3 AI Usage Tracking
+
+```typescript
+// workflows/ai-usage-tracker.ts
+import { serve, sleep } from '@vercel/workflow';
+
+async function fetchAIGatewayUsage(instanceId: string, periodStart: Date) {
+  "use step";
+
+  // Fetch usage from Vercel AI Gateway API
+  const response = await fetch('https://api.vercel.com/v1/ai-gateway/usage', {
+    headers: {
+      Authorization: `Bearer ${process.env.VERCEL_API_TOKEN}`,
+    },
+  });
+
+  const usage = await response.json();
+
+  // Filter by instance ID (passed in X-Instance-ID header)
+  return usage.requests.filter(
+    (r: any) => r.metadata?.instanceId === instanceId &&
+      new Date(r.timestamp) >= periodStart
+  );
+}
+
+async function aiUsageTracker(input: { instanceId: string }) {
+  "use workflow";
+
+  const instance = await db.instance.findUnique({
+    where: { id: input.instanceId },
+  });
+
+  if (!instance || instance.plan !== 'PRO_MANAGED') {
+    return { skipped: true, reason: 'Not on managed AI plan' };
+  }
+
+  // Track daily
+  for (let day = 0; day < 30; day++) {
+    const usage = await fetchAIGatewayUsage(
+      input.instanceId,
+      new Date(Date.now() - 24 * 60 * 60 * 1000)
+    );
+
+    const totalCost = usage.reduce((sum: number, r: any) => sum + r.cost, 0);
+
+    // Record AI usage
+    await db.aiUsageRecord.create({
+      data: {
+        instanceId: input.instanceId,
+        date: new Date(),
+        requests: usage.length,
+        tokens: usage.reduce((sum: number, r: any) => sum + r.tokens, 0),
+        cost: totalCost,
+        billedAmount: totalCost * 1.1, // 10% markup
+      },
+    });
+
+    await sleep("24 hours");
+  }
+}
+
+export const { POST } = serve(aiUsageTracker);
+```
+
+### 5. Secrets Management
+
+#### 5.1 Architecture Options
 
 | Option | Pros | Cons | Best For |
 |--------|------|------|----------|
@@ -1550,6 +2056,15 @@ This architecture leverages your preference for Vercel products where they excel
 
 ## Sources
 
+### Clawdbot Documentation
+- [Clawdbot GitHub Repository](https://github.com/clawdbot/clawdbot)
+- [Clawdbot Docker Deployment](https://docs.clawd.bot/install/docker)
+- [Clawdbot Gateway Configuration](https://docs.clawd.bot/gateway/configuration)
+- [Clawdbot Configuration Examples](https://docs.clawd.bot/gateway/configuration-examples)
+- [Vercel AI Gateway + Clawdbot](https://vercel.com/docs/ai-gateway/chat-platforms/clawd-bot)
+- [Getting Started with Clawdbot (DEV.to)](https://dev.to/ajeetraina/getting-started-with-clawdbot-the-complete-step-by-step-guide-2ffj)
+
+### Infrastructure & Auth
 - [Vercel Workflow DevKit Documentation](https://useworkflow.dev)
 - [Vercel Workflow GitHub](https://github.com/vercel/workflow)
 - [Better Auth Documentation](https://www.better-auth.com/docs/introduction)
