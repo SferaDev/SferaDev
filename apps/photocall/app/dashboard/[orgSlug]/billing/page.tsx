@@ -1,6 +1,7 @@
 "use client";
 
 import { useAction, useConvexAuth, useQuery } from "convex/react";
+import type { FunctionReference } from "convex/server";
 import {
 	Camera,
 	Check,
@@ -17,6 +18,31 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
+import type { BillingSummary, EventBillingSummary } from "@/convex/lib/types";
+
+// Type-safe API references for functions not yet in generated types
+type StripeApi = {
+	getBillingSummary: FunctionReference<
+		"query",
+		"public",
+		{ organizationId: Id<"organizations"> },
+		BillingSummary | null
+	>;
+	purchaseEvent: FunctionReference<
+		"action",
+		"public",
+		{ organizationId: Id<"organizations"> },
+		{ url: string | null }
+	>;
+	createPortalSession: FunctionReference<
+		"action",
+		"public",
+		{ organizationId: Id<"organizations"> },
+		{ url: string }
+	>;
+};
+
+const stripeApi = api.stripe as unknown as StripeApi;
 
 const FREE_FEATURES = ["1 free event", "10 photos included", "Basic templates", "QR code sharing"];
 
@@ -40,12 +66,12 @@ export default function BillingPage() {
 
 	const organization = useQuery(api.organizations.getBySlug, { slug: orgSlug });
 	const billingSummary = useQuery(
-		(api.stripe as any).getBillingSummary,
-		organization ? { organizationId: organization._id as Id<"organizations"> } : "skip",
+		stripeApi.getBillingSummary,
+		organization ? { organizationId: organization._id } : "skip",
 	);
 
-	const purchaseEvent = useAction((api.stripe as any).purchaseEvent);
-	const createPortal = useAction(api.stripe.createPortalSession);
+	const purchaseEvent = useAction(stripeApi.purchaseEvent);
+	const createPortal = useAction(stripeApi.createPortalSession);
 
 	const [isPurchasing, setIsPurchasing] = useState(false);
 
@@ -64,7 +90,7 @@ export default function BillingPage() {
 		setIsPurchasing(true);
 		try {
 			const result = await purchaseEvent({
-				organizationId: organization._id as Id<"organizations">,
+				organizationId: organization._id,
 			});
 			if (result.url) {
 				window.location.href = result.url;
@@ -80,7 +106,7 @@ export default function BillingPage() {
 		if (!organization) return;
 		try {
 			const result = await createPortal({
-				organizationId: organization._id as Id<"organizations">,
+				organizationId: organization._id,
 			});
 			if (result.url) {
 				window.location.href = result.url;
@@ -113,6 +139,12 @@ export default function BillingPage() {
 	}
 
 	const isPaid = billingSummary?.tier === "paid";
+
+	// Calculate total photos with proper typing
+	const totalPhotos = billingSummary?.events.reduce(
+		(sum: number, event: EventBillingSummary) => sum + event.photoCount,
+		0,
+	);
 
 	return (
 		<div className="min-h-screen bg-background">
@@ -223,9 +255,7 @@ export default function BillingPage() {
 							</div>
 							<div className="p-4 border rounded-lg">
 								<div className="text-sm text-muted-foreground mb-1">Total Photos</div>
-								<div className="text-2xl font-bold">
-									{billingSummary.events.reduce((sum: number, e: any) => sum + e.photoCount, 0)}
-								</div>
+								<div className="text-2xl font-bold">{totalPhotos ?? 0}</div>
 							</div>
 							<div className="p-4 border rounded-lg">
 								<div className="text-sm text-muted-foreground mb-1">Total Overages</div>
@@ -251,7 +281,7 @@ export default function BillingPage() {
 										</tr>
 									</thead>
 									<tbody className="divide-y">
-										{billingSummary.events.map((event: any) => (
+										{billingSummary.events.map((event: EventBillingSummary) => (
 											<tr key={event.eventId}>
 												<td className="px-4 py-3 text-sm">
 													<div className="flex items-center gap-2">

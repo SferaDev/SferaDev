@@ -8,6 +8,7 @@ import {
 	OVERAGE_PRICE_CENTS,
 	PLAN_LIMITS,
 } from "./lib/plans";
+import type { BillingSummary, EventBillingSummary, Subscription } from "./lib/types";
 
 // Get Stripe instance (server-side only)
 async function getStripe() {
@@ -273,7 +274,7 @@ export const handlePaymentSuccess = internalMutation({
 
 export const getSubscription = query({
 	args: { organizationId: v.id("organizations") },
-	handler: async (ctx, args) => {
+	handler: async (ctx, args): Promise<Subscription | null> => {
 		const userId = await requireAuth(ctx);
 		await requireOrgMembership(ctx, userId, args.organizationId);
 
@@ -297,7 +298,7 @@ export const getSubscription = query({
 // Get billing summary for an organization
 export const getBillingSummary = query({
 	args: { organizationId: v.id("organizations") },
-	handler: async (ctx, args) => {
+	handler: async (ctx, args): Promise<BillingSummary | null> => {
 		const userId = await requireAuth(ctx);
 		await requireOrgMembership(ctx, userId, args.organizationId);
 
@@ -310,7 +311,7 @@ export const getBillingSummary = query({
 			.withIndex("by_organization", (q) => q.eq("organizationId", args.organizationId))
 			.collect();
 
-		const eventSummaries = events.map((event) => {
+		const eventSummaries: EventBillingSummary[] = events.map((event) => {
 			const overagePhotos = Math.max(0, event.photoCount - INCLUDED_PHOTOS_PER_EVENT);
 			return {
 				eventId: event._id,
