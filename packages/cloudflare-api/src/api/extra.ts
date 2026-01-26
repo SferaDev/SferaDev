@@ -205,12 +205,14 @@ import {
 	aiSearchDeleteTokens,
 	aiSearchFetchInstances,
 	aiSearchFetchTokens,
+	aiSearchInstanceChangeJobStatus,
 	aiSearchInstanceCreateJob,
 	aiSearchInstanceGetItem,
 	aiSearchInstanceGetJob,
 	aiSearchInstanceListItems,
 	aiSearchInstanceListJobLogs,
 	aiSearchInstanceListJobs,
+	aiSearchInstanceSyncItem,
 	aiSearchListInstances,
 	aiSearchListTokens,
 	aiSearchStats,
@@ -475,6 +477,7 @@ import {
 	deleteEnvironmentVariable,
 	deleteEventDelete,
 	deleteEventDeleteDO,
+	deleteEventQueryDelete,
 	deleteEventReferenceDelete,
 	deleteEventTagDelete,
 	deleteHyperdrive,
@@ -782,6 +785,8 @@ import {
 	firewallRulesUpdateFirewallRules,
 	firewallRulesUpdatePriorityOfAFirewallRule,
 	firewallRulesUpdatePriorityOfFirewallRules,
+	fraudDetectionZoneGetSettings,
+	fraudDetectionZoneUpdateSettings,
 	generateImageRegistryCredentials,
 	getAbuseReport,
 	getAccountEntrypointRuleset,
@@ -841,6 +846,8 @@ import {
 	getDnsProtectionRule,
 	getEventAggregate,
 	getEventListGet,
+	getEventQueryList,
+	getEventQueryRead,
 	getEventRawRead,
 	getEventRawReadDS,
 	getEventRead,
@@ -1405,6 +1412,7 @@ import {
 	postEventDoRevert,
 	postEventGraphQL,
 	postEventMoveToNewDS,
+	postEventQueryCreate,
 	postEventRawUpdate,
 	postEventReferenceCreate,
 	postEventTagCreate,
@@ -1827,6 +1835,16 @@ import {
 	secretsStoreSecretCreate,
 	secretsStoreSecretDeleteById,
 	secretsStoreSecretsList,
+	secretsStoreSystemCreate,
+	secretsStoreSystemDeleteBulk,
+	secretsStoreSystemDeleteById,
+	secretsStoreSystemDuplicateById,
+	secretsStoreSystemGetById,
+	secretsStoreSystemList,
+	secretsStoreSystemPatchById,
+	secretsStoreSystemSecretCreate,
+	secretsStoreSystemSecretDeleteById,
+	secretsStoreSystemSecretsList,
 	shareCreate,
 	shareDelete,
 	shareRecipientCreate,
@@ -2168,6 +2186,7 @@ import {
 	worDeleteWorkflow,
 	worDescribeWorkflowInstance,
 	worDescribeWorkflowVersions,
+	worDescribeWorkflowVersionsDag,
 	worGetWorkflowDetails,
 	workerAccountSettingsCreateWorkerAccountSettings,
 	workerAccountSettingsFetchWorkerAccountSettings,
@@ -2235,6 +2254,7 @@ import {
 	workersAiPostRunCfBaaiRayBgeLargeEnV15,
 	workersAiPostRunCfBlackForestLabsFlux1Schnell,
 	workersAiPostRunCfBlackForestLabsFlux2Dev,
+	workersAiPostRunCfBlackForestLabsFlux2Klein4b,
 	workersAiPostRunCfBytedanceStableDiffusionXlLightning,
 	workersAiPostRunCfDeepgramAura1,
 	workersAiPostRunCfDeepgramAura2En,
@@ -2309,7 +2329,6 @@ import {
 	workersAiPostRunHfTheblokeDeepseekCoder67bBaseAwq,
 	workersAiPostRunHfTheblokeDeepseekCoder67bInstructAwq,
 	workersAiPostRunHfTheblokeLlama213bChatAwq,
-	workersAiPostRunHfTheblokeLlamaguard7bAwq,
 	workersAiPostRunHfTheblokeMistral7bInstructV01Awq,
 	workersAiPostRunHfTheblokeNeuralChat7bV31Awq,
 	workersAiPostRunHfTheblokeOpenhermes25Mistral7bAwq,
@@ -2328,6 +2347,7 @@ import {
 	workersAiPostWebsocketRunCfPipecatAiSmartTurnV2,
 	workersAiPostWebsocketRunCfPipecatAiSmartTurnV3,
 	workersAiPostWebsocketRunCfSvenTestPipeHttp,
+	workersAiPostWebsocketRunCfTestHelloWorldCog,
 	workersAiSearchAuthor,
 	workersAiSearchModel,
 	workersAiSearchTask,
@@ -2423,6 +2443,7 @@ import {
 	zeroTrustRotateSshAccountSeed,
 	zeroTrustSeatsUpdateAUserSeat,
 	zeroTrustUpdateAuditSshSettings,
+	zeroTrustUsersCreateUser,
 	zeroTrustUsersGetActiveSession,
 	zeroTrustUsersGetActiveSessions,
 	zeroTrustUsersGetFailedLogins,
@@ -2690,6 +2711,7 @@ export const operationsByPath = {
 	"GET /accounts/{account_id}/access/tags/{tag_name}": accessTagsGetATag,
 	"PUT /accounts/{account_id}/access/tags/{tag_name}": accessTagsUpdateATag,
 	"GET /accounts/{account_id}/access/users": zeroTrustUsersGetUsers,
+	"POST /accounts/{account_id}/access/users": zeroTrustUsersCreateUser,
 	"GET /accounts/{account_id}/access/users/{user_id}/active_sessions":
 		zeroTrustUsersGetActiveSessions,
 	"GET /accounts/{account_id}/access/users/{user_id}/active_sessions/{nonce}":
@@ -2834,9 +2856,12 @@ export const operationsByPath = {
 	"PUT /accounts/{account_id}/ai-search/instances/{id}": aiSearchUpdateInstances,
 	"GET /accounts/{account_id}/ai-search/instances/{id}/items": aiSearchInstanceListItems,
 	"GET /accounts/{account_id}/ai-search/instances/{id}/items/{item_id}": aiSearchInstanceGetItem,
+	"PATCH /accounts/{account_id}/ai-search/instances/{id}/items/{item_id}": aiSearchInstanceSyncItem,
 	"GET /accounts/{account_id}/ai-search/instances/{id}/jobs": aiSearchInstanceListJobs,
 	"POST /accounts/{account_id}/ai-search/instances/{id}/jobs": aiSearchInstanceCreateJob,
 	"GET /accounts/{account_id}/ai-search/instances/{id}/jobs/{job_id}": aiSearchInstanceGetJob,
+	"PATCH /accounts/{account_id}/ai-search/instances/{id}/jobs/{job_id}":
+		aiSearchInstanceChangeJobStatus,
 	"GET /accounts/{account_id}/ai-search/instances/{id}/jobs/{job_id}/logs":
 		aiSearchInstanceListJobLogs,
 	"GET /accounts/{account_id}/ai-search/instances/{id}/stats": aiSearchStats,
@@ -2879,6 +2904,8 @@ export const operationsByPath = {
 		workersAiPostRunCfBlackForestLabsFlux1Schnell,
 	"POST /accounts/{account_id}/ai/run/@cf/black-forest-labs/flux-2-dev":
 		workersAiPostRunCfBlackForestLabsFlux2Dev,
+	"POST /accounts/{account_id}/ai/run/@cf/black-forest-labs/flux-2-klein-4b":
+		workersAiPostRunCfBlackForestLabsFlux2Klein4b,
 	"POST /accounts/{account_id}/ai/run/@cf/bytedance/stable-diffusion-xl-lightning":
 		workersAiPostRunCfBytedanceStableDiffusionXlLightning,
 	"GET /accounts/{account_id}/ai/run/@cf/deepgram/aura": workersAiPostWebsocketRunCfDeepgramAura,
@@ -3012,6 +3039,8 @@ export const operationsByPath = {
 		workersAiPostRunCfStabilityaiStableDiffusionXlBase10,
 	"GET /accounts/{account_id}/ai/run/@cf/sven/test-pipe-http":
 		workersAiPostWebsocketRunCfSvenTestPipeHttp,
+	"GET /accounts/{account_id}/ai/run/@cf/test/hello-world-cog":
+		workersAiPostWebsocketRunCfTestHelloWorldCog,
 	"POST /accounts/{account_id}/ai/run/@cf/thebloke/discolm-german-7b-v1-awq":
 		workersAiPostRunCfTheblokeDiscolmGerman7bV1Awq,
 	"POST /accounts/{account_id}/ai/run/@cf/tiiuae/falcon-7b-instruct":
@@ -3031,8 +3060,6 @@ export const operationsByPath = {
 		workersAiPostRunHfTheblokeDeepseekCoder67bInstructAwq,
 	"POST /accounts/{account_id}/ai/run/@hf/thebloke/llama-2-13b-chat-awq":
 		workersAiPostRunHfTheblokeLlama213bChatAwq,
-	"POST /accounts/{account_id}/ai/run/@hf/thebloke/llamaguard-7b-awq":
-		workersAiPostRunHfTheblokeLlamaguard7bAwq,
 	"POST /accounts/{account_id}/ai/run/@hf/thebloke/mistral-7b-instruct-v0.1-awq":
 		workersAiPostRunHfTheblokeMistral7bInstructV01Awq,
 	"POST /accounts/{account_id}/ai/run/@hf/thebloke/neural-chat-7b-v3-1-awq":
@@ -3285,6 +3312,10 @@ export const operationsByPath = {
 	"GET /accounts/{account_id}/cloudforce-one/events/indicator-types": getIndicatorTypesList,
 	"GET /accounts/{account_id}/cloudforce-one/events/indicatorTypes": getLegacyIndicatorTypesList,
 	"GET /accounts/{account_id}/cloudforce-one/events/indicators": getIndicatorList,
+	"GET /accounts/{account_id}/cloudforce-one/events/queries": getEventQueryList,
+	"POST /accounts/{account_id}/cloudforce-one/events/queries/create": postEventQueryCreate,
+	"DELETE /accounts/{account_id}/cloudforce-one/events/queries/{query_id}": deleteEventQueryDelete,
+	"GET /accounts/{account_id}/cloudforce-one/events/queries/{query_id}": getEventQueryRead,
 	"GET /accounts/{account_id}/cloudforce-one/events/raw/{dataset_id}/{event_id}": getEventRawReadDS,
 	"DELETE /accounts/{account_id}/cloudforce-one/events/relate/{event_id}":
 		deleteEventReferenceDelete,
@@ -3891,7 +3922,7 @@ export const operationsByPath = {
 	"PUT /accounts/{account_id}/intel/indicator-feeds/{feed_id}/snapshot":
 		customIndicatorFeedsUpdateIndicatorFeedData,
 	"GET /accounts/{account_id}/intel/ip": ipIntelligenceGetIpOverview,
-	"GET /accounts/{account_id}/intel/ip-list": ipListGetIpLists,
+	"GET /accounts/{account_id}/intel/ip-lists": ipListGetIpLists,
 	"POST /accounts/{account_id}/intel/miscategorization": miscategorizationCreateMiscategorization,
 	"GET /accounts/{account_id}/intel/sinkholes": sinkholeConfigGetSinkholes,
 	"GET /accounts/{account_id}/intel/whois": whoisRecordGetWhoisRecord,
@@ -4928,6 +4959,8 @@ export const operationsByPath = {
 	"GET /accounts/{account_id}/workflows/{workflow_name}/versions": worListWorkflowVersions,
 	"GET /accounts/{account_id}/workflows/{workflow_name}/versions/{version_id}":
 		worDescribeWorkflowVersions,
+	"GET /accounts/{account_id}/workflows/{workflow_name}/versions/{version_id}/dag":
+		worDescribeWorkflowVersionsDag,
 	"GET /accounts/{account_id}/zerotrust/connectivity_settings":
 		zeroTrustAccountsGetConnectivitySettings,
 	"PATCH /accounts/{account_id}/zerotrust/connectivity_settings":
@@ -5278,6 +5311,20 @@ export const operationsByPath = {
 	"GET /radar/verified_bots/top/categories": radarGetVerifiedBotsTopCategoriesByHttpRequests,
 	"GET /ready": getReady,
 	"GET /signed-url": getSignedUrl,
+	"GET /system/accounts/{account_tag}/stores": secretsStoreSystemList,
+	"POST /system/accounts/{account_tag}/stores": secretsStoreSystemCreate,
+	"DELETE /system/accounts/{account_tag}/stores/{store_id}": secretsStoreSystemDeleteById,
+	"DELETE /system/accounts/{account_tag}/stores/{store_id}/secrets": secretsStoreSystemDeleteBulk,
+	"GET /system/accounts/{account_tag}/stores/{store_id}/secrets": secretsStoreSystemSecretsList,
+	"POST /system/accounts/{account_tag}/stores/{store_id}/secrets": secretsStoreSystemSecretCreate,
+	"DELETE /system/accounts/{account_tag}/stores/{store_id}/secrets/{secret_id}":
+		secretsStoreSystemSecretDeleteById,
+	"GET /system/accounts/{account_tag}/stores/{store_id}/secrets/{secret_id}":
+		secretsStoreSystemGetById,
+	"PATCH /system/accounts/{account_tag}/stores/{store_id}/secrets/{secret_id}":
+		secretsStoreSystemPatchById,
+	"POST /system/accounts/{account_tag}/stores/{store_id}/secrets/{secret_id}/duplicate":
+		secretsStoreSystemDuplicateById,
 	"GET /tenants/{tenant_id}": tenantsRetrieveTenant,
 	"GET /tenants/{tenant_id}/account_types": tenantsValidAccountTypes,
 	"GET /tenants/{tenant_id}/accounts": tenantsListAccounts,
@@ -5667,6 +5714,8 @@ export const operationsByPath = {
 	"GET /zones/{zone_id}/firewall/waf/packages/{package_id}/rules/{rule_id}": wafRulesGetAWafRule,
 	"PATCH /zones/{zone_id}/firewall/waf/packages/{package_id}/rules/{rule_id}":
 		wafRulesUpdateAWafRule,
+	"GET /zones/{zone_id}/fraud_detection/settings": fraudDetectionZoneGetSettings,
+	"PUT /zones/{zone_id}/fraud_detection/settings": fraudDetectionZoneUpdateSettings,
 	"GET /zones/{zone_id}/healthchecks": healthChecksListHealthChecks,
 	"POST /zones/{zone_id}/healthchecks": healthChecksCreateHealthCheck,
 	"POST /zones/{zone_id}/healthchecks/preview": healthChecksCreatePreviewHealthCheck,

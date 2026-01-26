@@ -3821,6 +3821,22 @@ export type AccessDaysUntilNextRotation = number;
 export type AccessDecision = "allow" | "deny" | "non_identity" | "bypass";
 
 /**
+ * Determines whether to deny all requests to Cloudflare-protected resources that lack an associated Access application. If enabled, you must explicitly configure an Access application and policy to allow traffic to your Cloudflare-protected resources. For domains you want to be public across all subdomains, add the domain to the `deny_unmatched_requests_exempted_zone_names` array.
+ *
+ * @example true
+ * @x-auditable true
+ */
+export type AccessDenyUnmatchedRequests = boolean;
+
+/**
+ * Contains zone names to exempt from the `deny_unmatched_requests` feature. Requests to a subdomain in an exempted zone will block unauthenticated traffic by default if there is a configured Access application and policy that matches the request.
+ *
+ * @example example.com
+ * @x-auditable true
+ */
+export type AccessDenyUnmatchedRequestsExemptedZoneNames = string[];
+
+/**
  * List of destinations secured by Access. This supersedes `self_hosted_domains` to allow for more flexibility in defining different types of domains. If `destinations` are provided, then `self_hosted_domains` will be ignored.
  *
  * @example {"type":"public","uri":"test.example.com/admin"}
@@ -5739,6 +5755,8 @@ export type AccessOrganizations = {
 	auto_redirect_to_identity?: AccessAutoRedirectToIdentity;
 	created_at?: AccessCreatedAt;
 	custom_pages?: AccessCustomPages;
+	deny_unmatched_requests?: AccessDenyUnmatchedRequests;
+	deny_unmatched_requests_exempted_zone_names?: AccessDenyUnmatchedRequestsExemptedZoneNames;
 	is_ui_read_only?: AccessIsUiReadOnly;
 	login_design?: AccessLoginDesign;
 	name?: AccessName;
@@ -8224,6 +8242,8 @@ export type AccessSchemasOptionsPreflightBypass = boolean;
 export type AccessSchemasOrganizations = {
 	auth_domain?: AccessSchemasAuthDomain;
 	created_at?: AccessTimestamp;
+	deny_unmatched_requests?: AccessDenyUnmatchedRequests;
+	deny_unmatched_requests_exempted_zone_names?: AccessDenyUnmatchedRequestsExemptedZoneNames;
 	is_ui_read_only?: AccessSchemasIsUiReadOnly;
 	login_design?: AccessSchemasLoginDesign;
 	name?: AccessOrganizationsComponentsSchemasName;
@@ -9313,6 +9333,10 @@ export type AccessSingleResponseUpdate = AccessApiResponseSingle & {
 
 export type AccessSingleResponseWithoutHtml = AccessApiResponseSingle & {
 	result?: AccessCustomPageWithoutHtml;
+};
+
+export type AccessSingleUserResponse = AccessApiResponseSingle & {
+	result?: AccessSchemasUsers;
 };
 
 /**
@@ -19366,8 +19390,13 @@ export type DlpPredefinedProfileConfig = {
 	 * @default low
 	 */
 	confidence_threshold: string | null;
+	/**
+	 * Entries to enable for this predefined profile. Any entries not provided will be disabled.
+	 */
 	enabled_entries: string[];
 	/**
+	 * This field has been deprecated for `enabled_entries`.
+	 *
 	 * @deprecated true
 	 */
 	entries: DlpEntry[];
@@ -23807,7 +23836,7 @@ export type EmailSecurityLink = {
 };
 
 /**
- * @example {"action_log":[],"alert_id":"4Njp3P0STMz2c02Q-2022-12-30T02:44:49","client_recipients":["email@example.com"],"delivery_mode":"DIRECT","detection_reasons":["Selector is a source of spam/uce : Smtp-Helo-Server-Ip=<b>127.0.0[dot]186</b>"],"edf_hash":null,"envelope_from":"d1994@example.com","envelope_to":["email@example.com"],"final_disposition":"MALICIOUS","findings":null,"from":"d1994@example.com","from_name":"Sender Name","htmltext_structure_hash":null,"id":"4Njp3P0STMz2c02Q-2022-12-30T02:44:49-email@example.com","is_phish_submission":false,"is_quarantined":false,"message_id":"<4VAZPrAdg7IGNxdt1DWRNu0gvOeL_iZiwP4BQfo4DaE.Yw-woXuugQbeFhBpzwFQtqq_v2v1HOKznoMBqbciQpE@example.com>","postfix_id":"47JJcT1w6GztQV7","postfix_id_outbound":null,"properties":{},"replyto":"email@example.com","sent_date":"2019-11-21T00:22:01","subject":"listen, I highly recommend u to read that email, just to ensure not a thing will take place","threat_categories":["IPReputation","ASNReputation"],"to":["email@example.com"],"to_name":["Recipient Name"],"ts":"2019-11-20T23:22:01","validation":{"comment":null,"dkim":"pass","dmarc":"none","spf":"fail"}}
+ * @example {"action_log":[],"alert_id":"4Njp3P0STMz2c02Q-2022-12-30T02:44:49","client_recipients":["email@example.com"],"delivery_mode":"DIRECT","detection_reasons":["Selector is a source of spam/uce : Smtp-Helo-Server-Ip=<b>127.0.0[dot]186</b>"],"edf_hash":null,"envelope_from":"d1994@example.com","envelope_to":["email@example.com"],"final_disposition":"MALICIOUS","findings":null,"from":"d1994@example.com","from_name":"Sender Name","htmltext_structure_hash":null,"id":"4Njp3P0STMz2c02Q-2022-12-30T02:44:49-2a539d65","is_phish_submission":false,"is_quarantined":false,"message_id":"<4VAZPrAdg7IGNxdt1DWRNu0gvOeL_iZiwP4BQfo4DaE.Yw-woXuugQbeFhBpzwFQtqq_v2v1HOKznoMBqbciQpE@example.com>","postfix_id":"47JJcT1w6GztQV7","postfix_id_outbound":null,"properties":{},"replyto":"email@example.com","sent_date":"2019-11-21T00:22:01","subject":"listen, I highly recommend u to read that email, just to ensure not a thing will take place","threat_categories":["IPReputation","ASNReputation"],"to":["email@example.com"],"to_name":["Recipient Name"],"ts":"2019-11-20T23:22:01","validation":{"comment":null,"dkim":"pass","dmarc":"none","spf":"fail"}}
  */
 export type EmailSecurityMailsearchMessage = {
 	action_log: void;
@@ -23973,6 +24002,7 @@ export type EmailSecurityReleaseResponse = {
 	delivered?: string[] | null;
 	failed?: string[] | null;
 	undelivered?: string[] | null;
+	id: string;
 	postfix_id: EmailSecurityPostfixId;
 };
 
@@ -25986,6 +26016,87 @@ export type FirewallZonelockdownResponseCollection = FirewallApiResponseCollecti
 export type FirewallZonelockdownResponseSingle = FirewallApiResponseSingle & {
 	result: FirewallZonelockdown;
 };
+
+export type FraudApiResponseCommon = {
+	errors: FraudMessages;
+	messages: FraudMessages;
+	/**
+	 * Whether the API call was successful.
+	 *
+	 * @example true
+	 */
+	success: true;
+};
+
+export type FraudApiResponseCommonFailure = {
+	/**
+	 * @example {"code":7003,"message":"No route for the URI"}
+	 * @minLength 1
+	 */
+	errors: FraudMessages;
+	messages: FraudMessages;
+	result: any | null;
+	/**
+	 * Whether the API call was successful.
+	 *
+	 * @example false
+	 */
+	success: false;
+};
+
+export type FraudApiResponseSingle = FraudApiResponseCommon;
+
+export type FraudFraudSettings = {
+	user_profiles?: FraudUserProfilesStatus;
+	username_expressions?: FraudUsernameExpressions;
+};
+
+export type FraudFraudSettingsResponseBody = FraudApiResponseSingle & {
+	result?: FraudFraudSettings;
+};
+
+/**
+ * Identifier.
+ *
+ * @example 023e105f4ecef8ad9ca31a8372d0c353
+ * @maxLength 32
+ * @x-auditable true
+ */
+export type FraudIdentifier = string;
+
+export type FraudMessages = {
+	/**
+	 * @minimum 1000
+	 */
+	code: number;
+	documentation_url?: string;
+	message: string;
+	source?: {
+		pointer?: string;
+	};
+}[];
+
+/**
+ * Whether Fraud User Profiles is enabled for the zone.
+ *
+ * @example disabled
+ * @x-auditable true
+ */
+export type FraudUserProfilesStatus = "enabled" | "disabled";
+
+/**
+ * List of expressions to detect usernames in write HTTP requests.
+ *
+ * - Maximum of 10 expressions.
+ * - Omit or set to null to leave unchanged on update.
+ * - Provide an empty array `[]` to clear all expressions on update.
+ * - Invalid expressions will result in a 10400 Bad Request with details in the `messages` array.
+ *
+ * @example http.request.body.form["username"][0]
+ * @example lookup_json_string(http.request.body.raw, "username")
+ * @maxItems 10
+ */
+export type FraudUsernameExpressions = string[];
 
 /**
  * The hostname or IP address of the origin server to run health checks on.
@@ -33807,6 +33918,11 @@ export type MagicBgpStatusWithState = {
 };
 
 /**
+ * @example 2
+ */
+export type MagicBondId = number;
+
+/**
  * A valid CIDR notation representing an IP range.
  *
  * @example 192.0.2.0/24
@@ -34208,6 +34324,7 @@ export type MagicIpsecTunnelName = string;
 export type MagicIpsecTunnelUpdateRequest = MagicIpsecTunnelAddSingleRequest;
 
 export type MagicLan = {
+	bond_id?: MagicBondId;
 	/**
 	 * mark true to use this LAN for HA probing. only works for site with HA turned on. only one LAN can be set as the ha_link.
 	 */
@@ -34291,6 +34408,7 @@ export type MagicLanStaticAddressing = {
 };
 
 export type MagicLanUpdateRequest = {
+	bond_id?: MagicBondId;
 	name?: string;
 	nat?: MagicNat;
 	physport?: MagicPort;
@@ -34300,13 +34418,14 @@ export type MagicLanUpdateRequest = {
 };
 
 export type MagicLansAddSingleRequest = {
+	bond_id?: MagicBondId;
 	/**
 	 * mark true to use this LAN for HA probing. only works for site with HA turned on. only one LAN can be set as the ha_link.
 	 */
 	ha_link?: boolean;
 	name?: string;
 	nat?: MagicNat;
-	physport: MagicPort;
+	physport?: MagicPort;
 	routed_subnets?: MagicRoutedSubnet[];
 	static_addressing?: MagicLanStaticAddressing;
 	vlan_tag?: MagicVlanTag;
@@ -37963,6 +38082,14 @@ export type MconnSnapshotTunnel = {
 	 * MTU as measured between the two ends of the tunnel
 	 */
 	probed_mtu?: number;
+	/**
+	 * Number of recent healthy pings for this tunnel
+	 */
+	recent_healthy_pings?: number;
+	/**
+	 * Number of recent unhealthy pings for this tunnel
+	 */
+	recent_unhealthy_pings?: number;
 	/**
 	 * Tunnel identifier
 	 */
@@ -49117,6 +49244,13 @@ export type SecretsStoreSecretStatus = "pending" | "active" | "deleted";
  */
 export type SecretsStoreAccountIdentifier = string;
 
+/**
+ * Account tag identifier
+ *
+ * @example 12a6ed19f349896cfbd6694ba3de8d31
+ */
+export type SecretsStoreAccountTag = string;
+
 export type SecretsStoreApiResponseCollection = SecretsStoreApiResponseCommon & {
 	result_info?: {
 		/**
@@ -49189,6 +49323,22 @@ export type SecretsStoreCreateSecretObject = {
 };
 
 export type SecretsStoreCreateStoreObject = {
+	name: SecretsStoreStoreName;
+};
+
+/**
+ * Request body for creating a store via system API routes
+ */
+export type SecretsStoreCreateStoreObjectSystem = {
+	/**
+	 * Account internal ID (numeric). Required for system API routes.
+	 * This value must remain consistent for all stores within an account
+	 * managed by the same service.
+	 *
+	 * @example 12345
+	 * @format int64
+	 */
+	account_id: number;
 	name: SecretsStoreStoreName;
 };
 
@@ -49349,6 +49499,12 @@ export type SecretsStoreUsageQuotaObject = {
  */
 export type SecretsStoreValue = string;
 
+export type SecurityCenterExternalApiResponseCommon = SecurityCenterApiResponseCommon;
+
+export type SecurityCenterExternalApiResponseCommonFailure = SecurityCenterApiResponseCommonFailure;
+
+export type SecurityCenterExternalApiResponseSingle = SecurityCenterApiResponseSingle;
+
 export type SecurityCenterAccountId = SecurityCenterIdentifier;
 
 export type SecurityCenterApiResponseCommon = {
@@ -49381,7 +49537,7 @@ export type SecurityCenterApiResponseCommonFailure = {
 export type SecurityCenterApiResponseSingle = SecurityCenterApiResponseCommon;
 
 /**
- * Total number of results
+ * Indicates the total number of results.
  *
  * @example 1
  * @x-auditable true
@@ -49417,7 +49573,7 @@ export type SecurityCenterIssue = {
 	issue_type?: SecurityCenterIssueType;
 	payload?: {
 		/**
-		 * Method used to detect insight
+		 * Describes the method used to detect insight.
 		 *
 		 * @example We detected security rules referencing multiple IP addresses directly in the rules.
 		 * @x-auditable true
@@ -49495,14 +49651,14 @@ export type SecurityCenterMessages = {
 }[];
 
 /**
- * Current page within paginated list of results
+ * Specifies the current page within paginated list of results.
  *
  * @example 1
  */
 export type SecurityCenterPage = number;
 
 /**
- * Number of results per page of results
+ * Sets the number of results per page of results.
  *
  * @example 25
  * @maximum 1000
@@ -55827,19 +55983,19 @@ dcWYTthM51JIqRBfNqy4QcBnX+GY05yltEEswQI55wdiS3CjTTA67sdbcQ==
 export type TlsCertificatesAndHostnamesCsr = string;
 
 export type TlsCertificatesAndHostnamesCustomCertificate = {
-	bundle_method: TlsCertificatesAndHostnamesBundleMethod;
-	expires_on: TlsCertificatesAndHostnamesExpiresOn;
+	bundle_method?: TlsCertificatesAndHostnamesBundleMethod;
+	expires_on?: TlsCertificatesAndHostnamesExpiresOn;
 	geo_restrictions?: TlsCertificatesAndHostnamesGeoRestrictions;
-	hosts: TlsCertificatesAndHostnamesHosts;
+	hosts?: TlsCertificatesAndHostnamesHosts;
 	id: TlsCertificatesAndHostnamesIdentifier;
-	issuer: TlsCertificatesAndHostnamesIssuer;
+	issuer?: TlsCertificatesAndHostnamesIssuer;
 	keyless_server?: TlsCertificatesAndHostnamesKeylessCertificate;
-	modified_on: TlsCertificatesAndHostnamesModifiedOn;
+	modified_on?: TlsCertificatesAndHostnamesModifiedOn;
 	policy?: TlsCertificatesAndHostnamesPolicy;
-	priority: TlsCertificatesAndHostnamesPriority;
-	signature: TlsCertificatesAndHostnamesSignature;
-	status: TlsCertificatesAndHostnamesStatus;
-	uploaded_on: TlsCertificatesAndHostnamesUploadedOn;
+	priority?: TlsCertificatesAndHostnamesPriority;
+	signature?: TlsCertificatesAndHostnamesSignature;
+	status?: TlsCertificatesAndHostnamesStatus;
+	uploaded_on?: TlsCertificatesAndHostnamesUploadedOn;
 	zone_id: TlsCertificatesAndHostnamesIdentifier;
 };
 
@@ -61398,6 +61554,16 @@ export type WorkersKvCreateRenameNamespaceBody = {
  */
 export type WorkersKvCursor = string;
 
+export type WorkersKvCursorResultInfo = {
+	/**
+	 * Total results returned based on your list parameters.
+	 *
+	 * @example 1
+	 */
+	count?: number;
+	cursor?: WorkersKvCursor;
+};
+
 /**
  * Expires the key at a certain time, measured in number of seconds since the UNIX epoch.
  *
@@ -62400,17 +62566,7 @@ export type WorkersVersion = {
 	 * The integer version number, starting from one.
 	 */
 	number: number;
-	/**
-	 * Placement settings for the version.
-	 */
-	placement?: {
-		/**
-		 * Placement mode for the version.
-		 *
-		 * @example smart
-		 */
-		mode?: "smart";
-	};
+	placement?: WorkersPlacementInfoNoStatus;
 	/**
 	 * The client used to create the version.
 	 *
@@ -64029,11 +64185,16 @@ export type WorkersPlacementRegionsResponse = {
 };
 
 /**
- * Configuration for [Smart Placement](https://developers.cloudflare.com/workers/configuration/smart-placement). Specify either mode for Smart Placement, or one of region/hostname/host for targeted placement.
+ * Configuration for [Smart Placement](https://developers.cloudflare.com/workers/configuration/smart-placement). Specify mode='smart' for Smart Placement, or one of region/hostname/host.
  */
 export type WorkersPlacementInfo =
 	| {
-			mode: WorkersPlacementMode;
+			/**
+			 * Enables [Smart Placement](https://developers.cloudflare.com/workers/configuration/smart-placement).
+			 *
+			 * @x-auditable true
+			 */
+			mode: "smart";
 	  }
 	| {
 			/**
@@ -64061,14 +64222,80 @@ export type WorkersPlacementInfo =
 			 * @x-auditable true
 			 */
 			host: string;
+	  }
+	| {
+			/**
+			 * Targeted placement mode.
+			 *
+			 * @x-auditable true
+			 */
+			mode: "targeted";
+			/**
+			 * Cloud region for targeted placement in format 'provider:region'.
+			 *
+			 * @example aws:us-east-1
+			 * @x-auditable true
+			 */
+			region: string;
+	  }
+	| {
+			/**
+			 * HTTP hostname for targeted placement.
+			 *
+			 * @example api.example.com
+			 * @x-auditable true
+			 */
+			hostname: string;
+			/**
+			 * Targeted placement mode.
+			 *
+			 * @x-auditable true
+			 */
+			mode: "targeted";
+	  }
+	| {
+			/**
+			 * TCP host and port for targeted placement.
+			 *
+			 * @example db.example.com:5432
+			 * @x-auditable true
+			 */
+			host: string;
+			/**
+			 * Targeted placement mode.
+			 *
+			 * @x-auditable true
+			 */
+			mode: "targeted";
+	  }
+	| {
+			/**
+			 * Targeted placement mode.
+			 *
+			 * @x-auditable true
+			 */
+			mode: "targeted";
+			/**
+			 * Array of placement targets (currently limited to single target).
+			 *
+			 * @maxItems 1
+			 * @minItems 1
+			 * @x-auditable true
+			 */
+			target: WorkersPlacementTarget[];
 	  };
 
 /**
- * Configuration for [Smart Placement](https://developers.cloudflare.com/workers/configuration/smart-placement). Specify either mode for Smart Placement, or one of region/hostname/host for targeted placement.
+ * Configuration for [Smart Placement](https://developers.cloudflare.com/workers/configuration/smart-placement). Specify mode='smart' for Smart Placement, or one of region/hostname/host.
  */
 export type WorkersPlacementInfoNoStatus =
 	| {
-			mode: WorkersPlacementMode;
+			/**
+			 * Enables [Smart Placement](https://developers.cloudflare.com/workers/configuration/smart-placement).
+			 *
+			 * @x-auditable true
+			 */
+			mode: "smart";
 	  }
 	| {
 			/**
@@ -64096,14 +64323,75 @@ export type WorkersPlacementInfoNoStatus =
 			 * @x-auditable true
 			 */
 			host: string;
+	  }
+	| {
+			/**
+			 * Targeted placement mode.
+			 *
+			 * @x-auditable true
+			 */
+			mode: "targeted";
+			/**
+			 * Cloud region for targeted placement in format 'provider:region'.
+			 *
+			 * @example aws:us-east-1
+			 * @x-auditable true
+			 */
+			region: string;
+	  }
+	| {
+			/**
+			 * HTTP hostname for targeted placement.
+			 *
+			 * @example api.example.com
+			 * @x-auditable true
+			 */
+			hostname: string;
+			/**
+			 * Targeted placement mode.
+			 *
+			 * @x-auditable true
+			 */
+			mode: "targeted";
+	  }
+	| {
+			/**
+			 * TCP host and port for targeted placement.
+			 *
+			 * @example db.example.com:5432
+			 * @x-auditable true
+			 */
+			host: string;
+			/**
+			 * Targeted placement mode.
+			 *
+			 * @x-auditable true
+			 */
+			mode: "targeted";
+	  }
+	| {
+			/**
+			 * Targeted placement mode.
+			 *
+			 * @x-auditable true
+			 */
+			mode: "targeted";
+			/**
+			 * Array of placement targets (currently limited to single target).
+			 *
+			 * @maxItems 1
+			 * @minItems 1
+			 * @x-auditable true
+			 */
+			target: WorkersPlacementTarget[];
 	  };
 
 /**
- * Enables [Smart Placement](https://developers.cloudflare.com/workers/configuration/smart-placement).
+ * Configuration for [Smart Placement](https://developers.cloudflare.com/workers/configuration/smart-placement). Specify mode='smart' for Smart Placement, or one of region/hostname/host.
  *
  * @x-auditable true
  */
-export type WorkersPlacementMode = "smart";
+export type WorkersPlacementMode = "smart" | "targeted";
 
 /**
  * Status of [Smart Placement](https://developers.cloudflare.com/workers/configuration/smart-placement).
@@ -64114,6 +64402,35 @@ export type WorkersPlacementStatus =
 	| "SUCCESS"
 	| "UNSUPPORTED_APPLICATION"
 	| "INSUFFICIENT_INVOCATIONS";
+
+/**
+ * A target to run your Worker near.
+ */
+export type WorkersPlacementTarget =
+	| {
+			/**
+			 * Cloud region in format 'provider:region'.
+			 *
+			 * @example aws:us-east-1
+			 */
+			region: string;
+	  }
+	| {
+			/**
+			 * HTTP hostname for targeted placement.
+			 *
+			 * @example api.example.com
+			 */
+			hostname: string;
+	  }
+	| {
+			/**
+			 * TCP host:port for targeted placement.
+			 *
+			 * @example db.example.com:5432
+			 */
+			host: string;
+	  };
 
 export type WorkersRoute = {
 	/**
@@ -64222,7 +64539,7 @@ export type WorkersScriptAndVersionSettingsItem = {
 	migrations?: WorkersSingleStepMigrations | WorkersMultipleStepMigrations;
 	observability?: WorkersObservability;
 	/**
-	 * Configuration for [Smart Placement](https://developers.cloudflare.com/workers/configuration/smart-placement). Specify either mode for Smart Placement, or one of region/hostname/host for targeted placement.
+	 * Configuration for [Smart Placement](https://developers.cloudflare.com/workers/configuration/smart-placement). Specify mode='smart' for Smart Placement, or one of region/hostname/host.
 	 *
 	 * @default {}
 	 */
@@ -64305,7 +64622,7 @@ export type WorkersScriptResponse = {
 	observability?: WorkersObservability;
 	placement?: WorkersPlacementInfo;
 	/**
-	 * Enables [Smart Placement](https://developers.cloudflare.com/workers/configuration/smart-placement).
+	 * Configuration for [Smart Placement](https://developers.cloudflare.com/workers/configuration/smart-placement). Specify mode='smart' for Smart Placement, or one of region/hostname/host.
 	 *
 	 * @x-auditable true
 	 * @deprecated true

@@ -315,6 +315,8 @@ export type ResourceSharingStatus = Schemas.ResourceSharingShareStatus;
 
 export type ResourceSharingTargetType = Schemas.ResourceSharingShareTargetType;
 
+export type SecretsStoreAccountTag = Schemas.SecretsStoreAccountTag;
+
 /**
  * @default desc
  */
