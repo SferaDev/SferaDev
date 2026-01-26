@@ -9,8 +9,11 @@ import { cn } from "@/lib/utils";
 import { Providers } from "./providers";
 
 export const metadata: Metadata = {
-	title: "Photocall - Wedding Photo Booth",
-	description: "Beautiful wedding photo booth kiosk for capturing and sharing memories",
+	title: "Photocall - Photo Booth Kiosk for Events",
+	description:
+		"A modern photo booth kiosk for weddings, parties, corporate events, and celebrations. Easy setup, beautiful templates, instant sharing.",
+	keywords:
+		"photo booth, event photo booth, wedding photo booth, party photos, corporate events, kiosk, photo kiosk, instant photos, QR sharing, event photography",
 };
 
 export default function RootLayout({
