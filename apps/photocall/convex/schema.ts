@@ -22,12 +22,7 @@ export default defineSchema({
 		logoStorageId: v.optional(v.id("_storage")),
 		ownerId: v.id("users"),
 		// Subscription
-		subscriptionTier: v.union(
-			v.literal("free"),
-			v.literal("starter"),
-			v.literal("pro"),
-			v.literal("enterprise"),
-		),
+		subscriptionTier: v.union(v.literal("free"), v.literal("paid")),
 		stripeCustomerId: v.optional(v.string()),
 		stripeSubscriptionId: v.optional(v.string()),
 		subscriptionStatus: v.union(

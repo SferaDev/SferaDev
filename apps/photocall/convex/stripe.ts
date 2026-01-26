@@ -2,7 +2,12 @@ import { v } from "convex/values";
 import { internal } from "./_generated/api";
 import { action, internalMutation, query } from "./_generated/server";
 import { requireAuth, requireOrgMembership } from "./lib/auth";
-import { PLAN_LIMITS, type SubscriptionTier } from "./lib/plans";
+import {
+	EVENT_PRICE_CENTS,
+	INCLUDED_PHOTOS_PER_EVENT,
+	OVERAGE_PRICE_CENTS,
+	PLAN_LIMITS,
+} from "./lib/plans";
 
 // Get Stripe instance (server-side only)
 async function getStripe() {
@@ -14,15 +19,14 @@ async function getStripe() {
 	return new Stripe(apiKey);
 }
 
-export const createCheckoutSession = action({
+// Purchase a new event credit
+export const purchaseEvent = action({
 	args: {
 		organizationId: v.id("organizations"),
-		tier: v.union(v.literal("starter"), v.literal("pro"), v.literal("enterprise")),
-		billingPeriod: v.union(v.literal("monthly"), v.literal("yearly")),
 	},
 	handler: async (ctx, args) => {
 		const userId = await requireAuth(ctx as any);
-		await requireOrgMembership(ctx as any, userId, args.organizationId, ["owner"]);
+		await requireOrgMembership(ctx as any, userId, args.organizationId, ["owner", "admin"]);
 
 		const org = await ctx.runQuery(internal.stripe.getOrganization, {
 			organizationId: args.organizationId,
@@ -50,20 +54,106 @@ export const createCheckoutSession = action({
 			});
 		}
 
-		// Get price ID based on tier and billing period
-		const priceId = getPriceId(args.tier, args.billingPeriod);
+		// Create checkout session for one-time event purchase
+		const session = await stripe.checkout.sessions.create({
+			customer: customerId,
+			mode: "payment",
+			line_items: [
+				{
+					price_data: {
+						currency: "usd",
+						product_data: {
+							name: "Event Credit",
+							description: `Includes ${INCLUDED_PHOTOS_PER_EVENT} photos. Additional photos $${(OVERAGE_PRICE_CENTS / 100).toFixed(2)} each.`,
+						},
+						unit_amount: EVENT_PRICE_CENTS,
+					},
+					quantity: 1,
+				},
+			],
+			success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/${org.slug}/billing?success=true`,
+			cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/${org.slug}/billing?canceled=true`,
+			metadata: {
+				organizationId: args.organizationId,
+				type: "event_purchase",
+			},
+		});
+
+		return { url: session.url };
+	},
+});
+
+// Create checkout for photo overages
+export const payOverages = action({
+	args: {
+		organizationId: v.id("organizations"),
+		eventId: v.id("events"),
+	},
+	handler: async (ctx, args) => {
+		const userId = await requireAuth(ctx as any);
+		await requireOrgMembership(ctx as any, userId, args.organizationId, ["owner", "admin"]);
+
+		const org = await ctx.runQuery(internal.stripe.getOrganization, {
+			organizationId: args.organizationId,
+		});
+
+		if (!org) {
+			throw new Error("Organization not found");
+		}
+
+		const event = await ctx.runQuery(internal.stripe.getEvent, {
+			eventId: args.eventId,
+		});
+
+		if (!event || event.organizationId !== args.organizationId) {
+			throw new Error("Event not found");
+		}
+
+		const overagePhotos = Math.max(0, event.photoCount - INCLUDED_PHOTOS_PER_EVENT);
+		if (overagePhotos === 0) {
+			throw new Error("No overages to pay");
+		}
+
+		const stripe = await getStripe();
+
+		let customerId = org.stripeCustomerId;
+		if (!customerId) {
+			const customer = await stripe.customers.create({
+				metadata: {
+					organizationId: args.organizationId,
+				},
+			});
+			customerId = customer.id;
+
+			await ctx.runMutation(internal.stripe.updateStripeCustomerId, {
+				organizationId: args.organizationId,
+				stripeCustomerId: customerId,
+			});
+		}
 
 		const session = await stripe.checkout.sessions.create({
 			customer: customerId,
-			mode: "subscription",
-			line_items: [{ price: priceId, quantity: 1 }],
-			success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/${org.slug}/settings/billing?success=true`,
-			cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/${org.slug}/settings/billing?canceled=true`,
-			subscription_data: {
-				metadata: {
-					organizationId: args.organizationId,
-					tier: args.tier,
+			mode: "payment",
+			line_items: [
+				{
+					price_data: {
+						currency: "usd",
+						product_data: {
+							name: `Photo Overages - ${event.name}`,
+							description: `${overagePhotos} photos over the ${INCLUDED_PHOTOS_PER_EVENT} included`,
+						},
+						unit_amount: OVERAGE_PRICE_CENTS,
+					},
+					quantity: overagePhotos,
 				},
+			],
+			success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/${org.slug}/billing?success=true`,
+			cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/${org.slug}/billing?canceled=true`,
+			metadata: {
+				organizationId: args.organizationId,
+				eventId: args.eventId,
+				type: "overage_payment",
+				overagePhotos: overagePhotos.toString(),
 			},
 		});
 
@@ -91,7 +181,7 @@ export const createPortalSession = action({
 
 		const session = await stripe.billingPortal.sessions.create({
 			customer: org.stripeCustomerId,
-			return_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/${org.slug}/settings/billing`,
+			return_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/${org.slug}/billing`,
 		});
 
 		return { url: session.url };
@@ -103,6 +193,14 @@ export const getOrganization = query({
 	args: { organizationId: v.id("organizations") },
 	handler: async (ctx, args) => {
 		return await ctx.db.get(args.organizationId);
+	},
+});
+
+// Internal query to get event (used by actions)
+export const getEvent = query({
+	args: { eventId: v.id("events") },
+	handler: async (ctx, args) => {
+		return await ctx.db.get(args.eventId);
 	},
 });
 
@@ -120,15 +218,14 @@ export const updateStripeCustomerId = internalMutation({
 	},
 });
 
-// Webhook handler for subscription updates
-export const handleSubscriptionUpdated = internalMutation({
+// Webhook handler for successful payment (event purchase or overage)
+export const handlePaymentSuccess = internalMutation({
 	args: {
 		stripeEventId: v.string(),
-		stripeSubscriptionId: v.string(),
 		stripeCustomerId: v.string(),
-		status: v.string(),
-		tier: v.string(),
-		currentPeriodEnd: v.number(),
+		type: v.string(),
+		organizationId: v.string(),
+		eventId: v.optional(v.string()),
 	},
 	handler: async (ctx, args) => {
 		// Check idempotency
@@ -138,17 +235,15 @@ export const handleSubscriptionUpdated = internalMutation({
 			.unique();
 
 		if (existingEvent) {
-			return; // Already processed
+			return;
 		}
 
-		// Record event
 		await ctx.db.insert("stripeEvents", {
 			stripeEventId: args.stripeEventId,
-			type: "subscription_updated",
+			type: args.type,
 			processedAt: Date.now(),
 		});
 
-		// Find organization by Stripe customer ID
 		const org = await ctx.db
 			.query("organizations")
 			.withIndex("by_stripe_customer", (q) => q.eq("stripeCustomerId", args.stripeCustomerId))
@@ -159,68 +254,20 @@ export const handleSubscriptionUpdated = internalMutation({
 			return;
 		}
 
-		const tier = args.tier as SubscriptionTier;
-		const limits = PLAN_LIMITS[tier] || PLAN_LIMITS.free;
-
-		const subscriptionStatus = mapStripeStatus(args.status);
-
-		await ctx.db.patch(org._id, {
-			stripeSubscriptionId: args.stripeSubscriptionId,
-			subscriptionTier: tier,
-			subscriptionStatus,
-			maxEvents: limits.maxEvents,
-			maxPhotosPerEvent: limits.maxPhotosPerEvent,
-			maxStorageBytes: limits.maxStorageBytes,
-			maxTeamMembers: limits.maxTeamMembers,
-			updatedAt: Date.now(),
-		});
-	},
-});
-
-// Webhook handler for subscription canceled
-export const handleSubscriptionCanceled = internalMutation({
-	args: {
-		stripeEventId: v.string(),
-		stripeSubscriptionId: v.string(),
-		stripeCustomerId: v.string(),
-	},
-	handler: async (ctx, args) => {
-		// Check idempotency
-		const existingEvent = await ctx.db
-			.query("stripeEvents")
-			.withIndex("by_stripe_event", (q) => q.eq("stripeEventId", args.stripeEventId))
-			.unique();
-
-		if (existingEvent) {
-			return;
+		if (args.type === "event_purchase") {
+			// Upgrade to paid tier and add event credit
+			const paidLimits = PLAN_LIMITS.paid;
+			await ctx.db.patch(org._id, {
+				subscriptionTier: "paid",
+				subscriptionStatus: "active",
+				maxEvents: org.maxEvents + 1,
+				maxPhotosPerEvent: paidLimits.maxPhotosPerEvent,
+				maxStorageBytes: paidLimits.maxStorageBytes,
+				maxTeamMembers: paidLimits.maxTeamMembers,
+				updatedAt: Date.now(),
+			});
 		}
-
-		await ctx.db.insert("stripeEvents", {
-			stripeEventId: args.stripeEventId,
-			type: "subscription_canceled",
-			processedAt: Date.now(),
-		});
-
-		const org = await ctx.db
-			.query("organizations")
-			.withIndex("by_stripe_customer", (q) => q.eq("stripeCustomerId", args.stripeCustomerId))
-			.unique();
-
-		if (!org) {
-			return;
-		}
-
-		const freeLimits = PLAN_LIMITS.free;
-
-		await ctx.db.patch(org._id, {
-			subscriptionTier: "free",
-			subscriptionStatus: "canceled",
-			maxEvents: freeLimits.maxEvents,
-			maxPhotosPerEvent: freeLimits.maxPhotosPerEvent,
-			maxStorageBytes: freeLimits.maxStorageBytes,
-			maxTeamMembers: freeLimits.maxTeamMembers,
-			updatedAt: Date.now(),
-		});
+		// Overage payments don't change org state - they just settle the balance
 	},
 });
 
@@ -247,41 +294,45 @@ export const getSubscription = query({
 	},
 });
 
-// Helper functions
-function getPriceId(
-	tier: "starter" | "pro" | "enterprise",
-	billingPeriod: "monthly" | "yearly",
-): string {
-	const prices: Record<string, Record<string, string>> = {
-		starter: {
-			monthly: process.env.STRIPE_STARTER_MONTHLY_PRICE_ID ?? "price_starter_monthly",
-			yearly: process.env.STRIPE_STARTER_YEARLY_PRICE_ID ?? "price_starter_yearly",
-		},
-		pro: {
-			monthly: process.env.STRIPE_PRO_MONTHLY_PRICE_ID ?? "price_pro_monthly",
-			yearly: process.env.STRIPE_PRO_YEARLY_PRICE_ID ?? "price_pro_yearly",
-		},
-		enterprise: {
-			monthly: process.env.STRIPE_ENTERPRISE_MONTHLY_PRICE_ID ?? "price_enterprise_monthly",
-			yearly: process.env.STRIPE_ENTERPRISE_YEARLY_PRICE_ID ?? "price_enterprise_yearly",
-		},
-	};
+// Get billing summary for an organization
+export const getBillingSummary = query({
+	args: { organizationId: v.id("organizations") },
+	handler: async (ctx, args) => {
+		const userId = await requireAuth(ctx);
+		await requireOrgMembership(ctx, userId, args.organizationId);
 
-	return prices[tier][billingPeriod];
-}
+		const org = await ctx.db.get(args.organizationId);
+		if (!org) return null;
 
-function mapStripeStatus(status: string): "active" | "past_due" | "canceled" | "trialing" | "none" {
-	switch (status) {
-		case "active":
-			return "active";
-		case "past_due":
-			return "past_due";
-		case "canceled":
-		case "unpaid":
-			return "canceled";
-		case "trialing":
-			return "trialing";
-		default:
-			return "none";
-	}
-}
+		// Get all events and calculate overages
+		const events = await ctx.db
+			.query("events")
+			.withIndex("by_organization", (q) => q.eq("organizationId", args.organizationId))
+			.collect();
+
+		const eventSummaries = events.map((event) => {
+			const overagePhotos = Math.max(0, event.photoCount - INCLUDED_PHOTOS_PER_EVENT);
+			return {
+				eventId: event._id,
+				name: event.name,
+				photoCount: event.photoCount,
+				includedPhotos: INCLUDED_PHOTOS_PER_EVENT,
+				overagePhotos,
+				overageCost: overagePhotos * OVERAGE_PRICE_CENTS,
+			};
+		});
+
+		const totalOverageCost = eventSummaries.reduce((sum, e) => sum + e.overageCost, 0);
+
+		return {
+			tier: org.subscriptionTier,
+			eventCredits: org.maxEvents,
+			eventsUsed: events.length,
+			eventPrice: EVENT_PRICE_CENTS,
+			includedPhotosPerEvent: INCLUDED_PHOTOS_PER_EVENT,
+			overagePricePerPhoto: OVERAGE_PRICE_CENTS,
+			events: eventSummaries,
+			totalOverageCost,
+		};
+	},
+});

@@ -1,7 +1,16 @@
 "use client";
 
 import { useAction, useConvexAuth, useQuery } from "convex/react";
-import { Building2, Check, ChevronLeft, CreditCard, Crown, Loader2, Zap } from "lucide-react";
+import {
+	Camera,
+	Check,
+	ChevronLeft,
+	CreditCard,
+	ImageIcon,
+	Loader2,
+	Plus,
+	Sparkles,
+} from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -9,75 +18,17 @@ import { Button } from "@/components/ui/button";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
 
-const PLANS = [
-	{
-		id: "free",
-		name: "Free",
-		price: "$0",
-		period: "forever",
-		icon: Building2,
-		features: [
-			"1 event",
-			"100 photos per event",
-			"500 MB storage",
-			"1 team member",
-			"Basic templates",
-		],
-		cta: "Current Plan",
-		disabled: true,
-	},
-	{
-		id: "starter",
-		name: "Starter",
-		price: "$29",
-		period: "/month",
-		icon: Zap,
-		features: [
-			"5 events",
-			"500 photos per event",
-			"5 GB storage",
-			"3 team members",
-			"Custom branding",
-			"Remove watermark",
-			"Analytics",
-		],
-		cta: "Upgrade",
-		popular: true,
-	},
-	{
-		id: "pro",
-		name: "Pro",
-		price: "$79",
-		period: "/month",
-		icon: Crown,
-		features: [
-			"20 events",
-			"2,000 photos per event",
-			"25 GB storage",
-			"10 team members",
-			"Everything in Starter",
-			"Priority support",
-			"API access",
-		],
-		cta: "Upgrade",
-	},
-	{
-		id: "enterprise",
-		name: "Enterprise",
-		price: "Custom",
-		period: "",
-		icon: Building2,
-		features: [
-			"Unlimited events",
-			"Unlimited photos",
-			"100+ GB storage",
-			"Unlimited team members",
-			"Everything in Pro",
-			"Custom domain",
-			"Dedicated support",
-		],
-		cta: "Contact Sales",
-	},
+const FREE_FEATURES = ["1 free event", "10 photos included", "Basic templates", "QR code sharing"];
+
+const PAID_FEATURES = [
+	"$49 per event",
+	"200 photos included per event",
+	"$0.25 per additional photo",
+	"Custom branding",
+	"Remove watermark",
+	"Priority support",
+	"Analytics dashboard",
+	"10 team members",
 ];
 
 export default function BillingPage() {
@@ -88,19 +39,15 @@ export default function BillingPage() {
 	const orgSlug = params.orgSlug as string;
 
 	const organization = useQuery(api.organizations.getBySlug, { slug: orgSlug });
-	const subscription = useQuery(
-		api.stripe.getSubscription,
-		organization ? { organizationId: organization._id as Id<"organizations"> } : "skip",
-	);
-	const usage = useQuery(
-		api.organizations.getUsage,
+	const billingSummary = useQuery(
+		(api.stripe as any).getBillingSummary,
 		organization ? { organizationId: organization._id as Id<"organizations"> } : "skip",
 	);
 
-	const createCheckout = useAction(api.stripe.createCheckoutSession);
+	const purchaseEvent = useAction((api.stripe as any).purchaseEvent);
 	const createPortal = useAction(api.stripe.createPortalSession);
 
-	const [isUpgrading, setIsUpgrading] = useState<string | null>(null);
+	const [isPurchasing, setIsPurchasing] = useState(false);
 
 	const success = searchParams.get("success");
 	const canceled = searchParams.get("canceled");
@@ -111,20 +58,13 @@ export default function BillingPage() {
 		}
 	}, [isAuthenticated, authLoading, router]);
 
-	const handleUpgrade = async (tier: "starter" | "pro" | "enterprise") => {
+	const handlePurchaseEvent = async () => {
 		if (!organization) return;
 
-		if (tier === "enterprise") {
-			window.location.href = "mailto:sales@photocall.app?subject=Enterprise%20Plan%20Inquiry";
-			return;
-		}
-
-		setIsUpgrading(tier);
+		setIsPurchasing(true);
 		try {
-			const result = await createCheckout({
+			const result = await purchaseEvent({
 				organizationId: organization._id as Id<"organizations">,
-				tier,
-				billingPeriod: "monthly",
 			});
 			if (result.url) {
 				window.location.href = result.url;
@@ -132,7 +72,7 @@ export default function BillingPage() {
 		} catch (error) {
 			console.error("Failed to create checkout:", error);
 		} finally {
-			setIsUpgrading(null);
+			setIsPurchasing(false);
 		}
 	};
 
@@ -172,7 +112,7 @@ export default function BillingPage() {
 		);
 	}
 
-	const currentTier = subscription?.tier ?? "free";
+	const isPaid = billingSummary?.tier === "paid";
 
 	return (
 		<div className="min-h-screen bg-background">
@@ -196,7 +136,7 @@ export default function BillingPage() {
 			<main className="container mx-auto px-4 py-8">
 				{success && (
 					<div className="mb-8 p-4 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded-lg">
-						Successfully upgraded your plan!
+						Payment successful! Your event credit has been added.
 					</div>
 				)}
 				{canceled && (
@@ -205,141 +145,159 @@ export default function BillingPage() {
 					</div>
 				)}
 
-				{/* Current Usage */}
-				{usage && (
-					<div className="mb-8">
-						<h2 className="text-lg font-semibold mb-4">Current Usage</h2>
-						<div className="grid gap-4 md:grid-cols-4">
-							<UsageCard label="Events" used={usage.events.used} limit={usage.events.limit} />
-							<UsageCard
-								label="Storage"
-								used={formatBytes(usage.storage.used)}
-								limit={usage.storage.limit === -1 ? "Unlimited" : formatBytes(usage.storage.limit)}
-								percentage={
-									usage.storage.limit === -1 ? 0 : (usage.storage.used / usage.storage.limit) * 100
-								}
-							/>
-							<UsageCard
-								label="Team Members"
-								used={usage.teamMembers.used}
-								limit={usage.teamMembers.limit}
-							/>
-							<UsageCard label="Total Photos" used={usage.photos} />
+				{/* Pricing Cards */}
+				<div className="grid gap-6 md:grid-cols-2 max-w-4xl mx-auto mb-12">
+					{/* Free Plan */}
+					<div className={`p-6 border rounded-lg ${!isPaid ? "ring-2 ring-primary" : ""}`}>
+						<div className="flex items-center gap-2 mb-4">
+							<Camera className="h-5 w-5" />
+							<h3 className="font-semibold">Free</h3>
+							{!isPaid && (
+								<span className="ml-auto text-xs bg-primary text-primary-foreground px-2 py-1 rounded-full">
+									Current
+								</span>
+							)}
 						</div>
-					</div>
-				)}
-
-				{/* Manage Subscription */}
-				{currentTier !== "free" && (
-					<div className="mb-8 p-4 border rounded-lg flex items-center justify-between">
-						<div>
-							<h3 className="font-semibold">Manage Subscription</h3>
-							<p className="text-sm text-muted-foreground">
-								Update payment method, view invoices, or cancel subscription
-							</p>
+						<div className="mb-4">
+							<span className="text-3xl font-bold">$0</span>
+							<span className="text-muted-foreground"> forever</span>
 						</div>
-						<Button variant="outline" onClick={handleManageBilling}>
-							<CreditCard className="h-4 w-4 mr-2" />
-							Manage Billing
+						<ul className="space-y-2 mb-6">
+							{FREE_FEATURES.map((feature) => (
+								<li key={feature} className="flex items-center gap-2 text-sm">
+									<Check className="h-4 w-4 text-green-500 flex-shrink-0" />
+									{feature}
+								</li>
+							))}
+						</ul>
+						<Button className="w-full" variant="outline" disabled>
+							{!isPaid ? "Current Plan" : "Free tier included"}
 						</Button>
 					</div>
-				)}
 
-				{/* Plans */}
-				<h2 className="text-lg font-semibold mb-4">Plans</h2>
-				<div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-					{PLANS.map((plan) => {
-						const Icon = plan.icon;
-						const isCurrent = plan.id === currentTier;
+					{/* Paid Plan */}
+					<div className={`p-6 border rounded-lg ${isPaid ? "ring-2 ring-primary" : ""}`}>
+						<div className="flex items-center gap-2 mb-4">
+							<Sparkles className="h-5 w-5" />
+							<h3 className="font-semibold">Pay Per Event</h3>
+							{isPaid && (
+								<span className="ml-auto text-xs bg-primary text-primary-foreground px-2 py-1 rounded-full">
+									Active
+								</span>
+							)}
+						</div>
+						<div className="mb-4">
+							<span className="text-3xl font-bold">$49</span>
+							<span className="text-muted-foreground"> / event</span>
+						</div>
+						<ul className="space-y-2 mb-6">
+							{PAID_FEATURES.map((feature) => (
+								<li key={feature} className="flex items-center gap-2 text-sm">
+									<Check className="h-4 w-4 text-green-500 flex-shrink-0" />
+									{feature}
+								</li>
+							))}
+						</ul>
+						<Button className="w-full" onClick={handlePurchaseEvent} disabled={isPurchasing}>
+							{isPurchasing && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+							<Plus className="h-4 w-4 mr-2" />
+							Purchase Event
+						</Button>
+					</div>
+				</div>
 
-						return (
-							<div
-								key={plan.id}
-								className={`relative p-6 border rounded-lg ${
-									plan.popular ? "border-primary ring-2 ring-primary" : ""
-								} ${isCurrent ? "bg-muted/50" : ""}`}
-							>
-								{plan.popular && (
-									<div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-primary text-primary-foreground text-xs font-medium rounded-full">
-										Most Popular
-									</div>
-								)}
-								<div className="flex items-center gap-2 mb-4">
-									<Icon className="h-5 w-5" />
-									<h3 className="font-semibold">{plan.name}</h3>
+				{/* Usage Summary */}
+				{billingSummary && (
+					<div className="max-w-4xl mx-auto">
+						<h2 className="text-lg font-semibold mb-4">Usage Summary</h2>
+
+						<div className="grid gap-4 md:grid-cols-3 mb-8">
+							<div className="p-4 border rounded-lg">
+								<div className="text-sm text-muted-foreground mb-1">Event Credits</div>
+								<div className="text-2xl font-bold">
+									{billingSummary.eventsUsed}
+									<span className="text-sm font-normal text-muted-foreground">
+										/{billingSummary.eventCredits}
+									</span>
 								</div>
-								<div className="mb-4">
-									<span className="text-3xl font-bold">{plan.price}</span>
-									<span className="text-muted-foreground">{plan.period}</span>
+							</div>
+							<div className="p-4 border rounded-lg">
+								<div className="text-sm text-muted-foreground mb-1">Total Photos</div>
+								<div className="text-2xl font-bold">
+									{billingSummary.events.reduce((sum: number, e: any) => sum + e.photoCount, 0)}
 								</div>
-								<ul className="space-y-2 mb-6">
-									{plan.features.map((feature) => (
-										<li key={feature} className="flex items-center gap-2 text-sm">
-											<Check className="h-4 w-4 text-green-500" />
-											{feature}
-										</li>
-									))}
-								</ul>
-								<Button
-									className="w-full"
-									variant={isCurrent ? "outline" : plan.popular ? "default" : "outline"}
-									disabled={isCurrent || plan.disabled || isUpgrading !== null}
-									onClick={() => handleUpgrade(plan.id as "starter" | "pro" | "enterprise")}
-								>
-									{isUpgrading === plan.id && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-									{isCurrent ? "Current Plan" : plan.cta}
+							</div>
+							<div className="p-4 border rounded-lg">
+								<div className="text-sm text-muted-foreground mb-1">Total Overages</div>
+								<div className="text-2xl font-bold">
+									{billingSummary.totalOverageCost > 0
+										? `$${(billingSummary.totalOverageCost / 100).toFixed(2)}`
+										: "$0.00"}
+								</div>
+							</div>
+						</div>
+
+						{/* Event Details */}
+						{billingSummary.events.length > 0 && (
+							<div className="border rounded-lg overflow-hidden">
+								<table className="w-full">
+									<thead className="bg-muted/50">
+										<tr>
+											<th className="px-4 py-3 text-left text-sm font-medium">Event</th>
+											<th className="px-4 py-3 text-right text-sm font-medium">Photos</th>
+											<th className="px-4 py-3 text-right text-sm font-medium">Included</th>
+											<th className="px-4 py-3 text-right text-sm font-medium">Overages</th>
+											<th className="px-4 py-3 text-right text-sm font-medium">Cost</th>
+										</tr>
+									</thead>
+									<tbody className="divide-y">
+										{billingSummary.events.map((event: any) => (
+											<tr key={event.eventId}>
+												<td className="px-4 py-3 text-sm">
+													<div className="flex items-center gap-2">
+														<ImageIcon className="h-4 w-4 text-muted-foreground" />
+														{event.name}
+													</div>
+												</td>
+												<td className="px-4 py-3 text-sm text-right">{event.photoCount}</td>
+												<td className="px-4 py-3 text-sm text-right text-muted-foreground">
+													{event.includedPhotos}
+												</td>
+												<td className="px-4 py-3 text-sm text-right">
+													{event.overagePhotos > 0 ? (
+														<span className="text-orange-600">{event.overagePhotos}</span>
+													) : (
+														<span className="text-muted-foreground">0</span>
+													)}
+												</td>
+												<td className="px-4 py-3 text-sm text-right">
+													{event.overageCost > 0 ? `$${(event.overageCost / 100).toFixed(2)}` : "-"}
+												</td>
+											</tr>
+										))}
+									</tbody>
+								</table>
+							</div>
+						)}
+
+						{/* Manage Billing */}
+						{isPaid && organization.stripeCustomerId && (
+							<div className="mt-8 p-4 border rounded-lg flex items-center justify-between">
+								<div>
+									<h3 className="font-semibold">Payment History</h3>
+									<p className="text-sm text-muted-foreground">
+										View past payments and download invoices
+									</p>
+								</div>
+								<Button variant="outline" onClick={handleManageBilling}>
+									<CreditCard className="h-4 w-4 mr-2" />
+									View Invoices
 								</Button>
 							</div>
-						);
-					})}
-				</div>
+						)}
+					</div>
+				)}
 			</main>
 		</div>
 	);
-}
-
-function UsageCard({
-	label,
-	used,
-	limit,
-	percentage,
-}: {
-	label: string;
-	used: number | string;
-	limit?: number | string;
-	percentage?: number;
-}) {
-	const pct =
-		percentage ??
-		(typeof used === "number" && typeof limit === "number" && limit !== -1
-			? (used / limit) * 100
-			: 0);
-
-	return (
-		<div className="p-4 border rounded-lg">
-			<div className="text-sm text-muted-foreground mb-1">{label}</div>
-			<div className="text-2xl font-bold">
-				{used}
-				{limit !== undefined && limit !== -1 && (
-					<span className="text-sm font-normal text-muted-foreground">/{limit}</span>
-				)}
-			</div>
-			{pct > 0 && (
-				<div className="mt-2 h-2 bg-muted rounded-full overflow-hidden">
-					<div
-						className={`h-full rounded-full ${pct > 80 ? "bg-destructive" : "bg-primary"}`}
-						style={{ width: `${Math.min(pct, 100)}%` }}
-					/>
-				</div>
-			)}
-		</div>
-	);
-}
-
-function formatBytes(bytes: number): string {
-	if (bytes === 0) return "0 B";
-	const k = 1024;
-	const sizes = ["B", "KB", "MB", "GB", "TB"];
-	const i = Math.floor(Math.log(bytes) / Math.log(k));
-	return `${Number.parseFloat((bytes / k ** i).toFixed(1))} ${sizes[i]}`;
 }
