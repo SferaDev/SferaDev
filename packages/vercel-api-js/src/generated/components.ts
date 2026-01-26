@@ -1591,6 +1591,7 @@ export async function readAccessGroup({
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
+
 	const data = await request<
 		ReadAccessGroupQueryResponse,
 		ErrorWrapper<ReadAccessGroup400 | ReadAccessGroup401 | ReadAccessGroup403>,
@@ -1621,6 +1622,7 @@ export async function updateAccessGroup({
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
+
 	const data = await request<
 		UpdateAccessGroupMutationResponse,
 		ErrorWrapper<UpdateAccessGroup400 | UpdateAccessGroup401 | UpdateAccessGroup403>,
@@ -1657,6 +1659,7 @@ export async function deleteAccessGroup({
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
+
 	const data = await request<
 		DeleteAccessGroupMutationResponse,
 		ErrorWrapper<DeleteAccessGroup400 | DeleteAccessGroup401 | DeleteAccessGroup403>,
@@ -1687,6 +1690,7 @@ export async function listAccessGroupMembers({
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
+
 	const data = await request<
 		ListAccessGroupMembersQueryResponse,
 		ErrorWrapper<ListAccessGroupMembers400 | ListAccessGroupMembers401 | ListAccessGroupMembers403>,
@@ -1773,6 +1777,7 @@ export async function listAccessGroupProjects({
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
+
 	const data = await request<
 		ListAccessGroupProjectsQueryResponse,
 		ErrorWrapper<
@@ -1810,6 +1815,7 @@ export async function createAccessGroupProject({
 	if (!accessGroupIdOrName) {
 		throw new Error(`Missing required path parameter: accessGroupIdOrName`);
 	}
+
 	const data = await request<
 		CreateAccessGroupProjectMutationResponse,
 		ErrorWrapper<
@@ -1852,6 +1858,7 @@ export async function readAccessGroupProject({
 	if (!projectId) {
 		throw new Error(`Missing required path parameter: projectId`);
 	}
+
 	const data = await request<
 		ReadAccessGroupProjectQueryResponse,
 		ErrorWrapper<ReadAccessGroupProject400 | ReadAccessGroupProject401 | ReadAccessGroupProject403>,
@@ -1891,6 +1898,7 @@ export async function updateAccessGroupProject({
 	if (!projectId) {
 		throw new Error(`Missing required path parameter: projectId`);
 	}
+
 	const data = await request<
 		UpdateAccessGroupProjectMutationResponse,
 		ErrorWrapper<
@@ -1933,6 +1941,7 @@ export async function deleteAccessGroupProject({
 	if (!projectId) {
 		throw new Error(`Missing required path parameter: projectId`);
 	}
+
 	const data = await request<
 		DeleteAccessGroupProjectMutationResponse,
 		ErrorWrapper<
@@ -2030,6 +2039,7 @@ export async function uploadArtifact({
 	if (!hash) {
 		throw new Error(`Missing required path parameter: hash`);
 	}
+
 	const data = await request<
 		UploadArtifactMutationResponse,
 		ErrorWrapper<UploadArtifact400 | UploadArtifact401 | UploadArtifact402 | UploadArtifact403>,
@@ -2068,6 +2078,7 @@ export async function downloadArtifact({
 	if (!hash) {
 		throw new Error(`Missing required path parameter: hash`);
 	}
+
 	const data = await request<
 		DownloadArtifactQueryResponse,
 		ErrorWrapper<
@@ -2362,6 +2373,7 @@ export async function createCheck({
 	if (!deploymentId) {
 		throw new Error(`Missing required path parameter: deploymentId`);
 	}
+
 	const data = await request<
 		CreateCheckMutationResponse,
 		ErrorWrapper<CreateCheck400 | CreateCheck401 | CreateCheck403 | CreateCheck404>,
@@ -2398,6 +2410,7 @@ export async function getAllChecks({
 	if (!deploymentId) {
 		throw new Error(`Missing required path parameter: deploymentId`);
 	}
+
 	const data = await request<
 		GetAllChecksQueryResponse,
 		ErrorWrapper<GetAllChecks400 | GetAllChecks401 | GetAllChecks403 | GetAllChecks404>,
@@ -2437,6 +2450,7 @@ export async function getCheck({
 	if (!checkId) {
 		throw new Error(`Missing required path parameter: checkId`);
 	}
+
 	const data = await request<
 		GetCheckQueryResponse,
 		ErrorWrapper<GetCheck400 | GetCheck401 | GetCheck403 | GetCheck404>,
@@ -2476,6 +2490,7 @@ export async function updateCheck({
 	if (!checkId) {
 		throw new Error(`Missing required path parameter: checkId`);
 	}
+
 	const data = await request<
 		UpdateCheckMutationResponse,
 		ErrorWrapper<
@@ -2518,6 +2533,7 @@ export async function rerequestCheck({
 	if (!checkId) {
 		throw new Error(`Missing required path parameter: checkId`);
 	}
+
 	const data = await request<
 		RerequestCheckMutationResponse,
 		ErrorWrapper<RerequestCheck400 | RerequestCheck401 | RerequestCheck403 | RerequestCheck404>,
@@ -2616,6 +2632,7 @@ export async function deleteNetwork({
 	if (!networkId) {
 		throw new Error(`Missing required path parameter: networkId`);
 	}
+
 	const data = await request<
 		DeleteNetworkMutationResponse,
 		ErrorWrapper<
@@ -2653,6 +2670,7 @@ export async function updateNetwork({
 	if (!networkId) {
 		throw new Error(`Missing required path parameter: networkId`);
 	}
+
 	const data = await request<
 		UpdateNetworkMutationResponse,
 		ErrorWrapper<UpdateNetwork400 | UpdateNetwork401 | UpdateNetwork403>,
@@ -2689,6 +2707,7 @@ export async function readNetwork({
 	if (!networkId) {
 		throw new Error(`Missing required path parameter: networkId`);
 	}
+
 	const data = await request<
 		ReadNetworkQueryResponse,
 		ErrorWrapper<ReadNetwork400 | ReadNetwork401 | ReadNetwork403>,
@@ -2719,6 +2738,7 @@ export async function getDeploymentEvents({
 	if (!idOrUrl) {
 		throw new Error(`Missing required path parameter: idOrUrl`);
 	}
+
 	const data = await request<
 		GetDeploymentEventsQueryResponse,
 		ErrorWrapper<
@@ -2764,6 +2784,7 @@ export async function updateIntegrationDeploymentAction({
 	if (!action) {
 		throw new Error(`Missing required path parameter: action`);
 	}
+
 	const data = await request<
 		UpdateIntegrationDeploymentActionMutationResponse,
 		ErrorWrapper<
@@ -2803,6 +2824,7 @@ export async function getDeployment({
 	if (!idOrUrl) {
 		throw new Error(`Missing required path parameter: idOrUrl`);
 	}
+
 	const data = await request<
 		GetDeploymentQueryResponse,
 		ErrorWrapper<GetDeployment400 | GetDeployment403 | GetDeployment404>,
@@ -2872,6 +2894,7 @@ export async function cancelDeployment({
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
+
 	const data = await request<
 		CancelDeploymentMutationResponse,
 		ErrorWrapper<
@@ -2904,6 +2927,7 @@ export async function getRecords({
 	if (!domain) {
 		throw new Error(`Missing required path parameter: domain`);
 	}
+
 	const data = await request<
 		GetRecordsQueryResponse,
 		ErrorWrapper<GetRecords400 | GetRecords401 | GetRecords403 | GetRecords404>,
@@ -2934,6 +2958,7 @@ export async function createRecord({
 	if (!domain) {
 		throw new Error(`Missing required path parameter: domain`);
 	}
+
 	const data = await request<
 		CreateRecordMutationResponse,
 		ErrorWrapper<
@@ -2977,6 +3002,7 @@ export async function updateRecord({
 	if (!recordId) {
 		throw new Error(`Missing required path parameter: recordId`);
 	}
+
 	const data = await request<
 		UpdateRecordMutationResponse,
 		ErrorWrapper<
@@ -3024,6 +3050,7 @@ export async function removeRecord({
 	if (!recordId) {
 		throw new Error(`Missing required path parameter: recordId`);
 	}
+
 	const data = await request<
 		RemoveRecordMutationResponse,
 		ErrorWrapper<RemoveRecord400 | RemoveRecord401 | RemoveRecord403 | RemoveRecord404>,
@@ -3090,6 +3117,7 @@ export async function getTldPrice({
 	if (!tld) {
 		throw new Error(`Missing required path parameter: tld`);
 	}
+
 	const data = await request<
 		GetTldPriceQueryResponse,
 		ErrorWrapper<
@@ -3122,6 +3150,7 @@ export async function getDomainAvailability({
 	if (!domain) {
 		throw new Error(`Missing required path parameter: domain`);
 	}
+
 	const data = await request<
 		GetDomainAvailabilityQueryResponse,
 		ErrorWrapper<
@@ -3164,6 +3193,7 @@ export async function getDomainPrice({
 	if (!domain) {
 		throw new Error(`Missing required path parameter: domain`);
 	}
+
 	const data = await request<
 		GetDomainPriceQueryResponse,
 		ErrorWrapper<
@@ -3237,6 +3267,7 @@ export async function getDomainAuthCode({
 	if (!domain) {
 		throw new Error(`Missing required path parameter: domain`);
 	}
+
 	const data = await request<
 		GetDomainAuthCodeQueryResponse,
 		ErrorWrapper<
@@ -3280,6 +3311,7 @@ export async function buySingleDomain({
 	if (!domain) {
 		throw new Error(`Missing required path parameter: domain`);
 	}
+
 	const data = await request<
 		BuySingleDomainMutationResponse,
 		ErrorWrapper<
@@ -3353,6 +3385,7 @@ export async function transferInDomain({
 	if (!domain) {
 		throw new Error(`Missing required path parameter: domain`);
 	}
+
 	const data = await request<
 		TransferInDomainMutationResponse,
 		ErrorWrapper<
@@ -3395,6 +3428,7 @@ export async function getDomainTransferIn({
 	if (!domain) {
 		throw new Error(`Missing required path parameter: domain`);
 	}
+
 	const data = await request<
 		GetDomainTransferInQueryResponse,
 		ErrorWrapper<
@@ -3437,6 +3471,7 @@ export async function renewDomain({
 	if (!domain) {
 		throw new Error(`Missing required path parameter: domain`);
 	}
+
 	const data = await request<
 		RenewDomainMutationResponse,
 		ErrorWrapper<
@@ -3480,6 +3515,7 @@ export async function updateDomainAutoRenew({
 	if (!domain) {
 		throw new Error(`Missing required path parameter: domain`);
 	}
+
 	const data = await request<
 		UpdateDomainAutoRenewMutationResponse,
 		ErrorWrapper<
@@ -3523,6 +3559,7 @@ export async function updateDomainNameservers({
 	if (!domain) {
 		throw new Error(`Missing required path parameter: domain`);
 	}
+
 	const data = await request<
 		UpdateDomainNameserversMutationResponse,
 		ErrorWrapper<
@@ -3566,6 +3603,7 @@ export async function getContactInfoSchema({
 	if (!domain) {
 		throw new Error(`Missing required path parameter: domain`);
 	}
+
 	const data = await request<
 		GetContactInfoSchemaQueryResponse,
 		ErrorWrapper<
@@ -3607,6 +3645,7 @@ export async function getOrder({
 	if (!orderId) {
 		throw new Error(`Missing required path parameter: orderId`);
 	}
+
 	const data = await request<
 		GetOrderQueryResponse,
 		ErrorWrapper<GetOrder400 | GetOrder401 | GetOrder403 | GetOrder404 | GetOrder429 | GetOrder500>,
@@ -3637,6 +3676,7 @@ export async function getDomainConfig({
 	if (!domain) {
 		throw new Error(`Missing required path parameter: domain`);
 	}
+
 	const data = await request<
 		GetDomainConfigQueryResponse,
 		ErrorWrapper<GetDomainConfig400 | GetDomainConfig401 | GetDomainConfig403>,
@@ -3667,6 +3707,7 @@ export async function getDomain({
 	if (!domain) {
 		throw new Error(`Missing required path parameter: domain`);
 	}
+
 	const data = await request<
 		GetDomainQueryResponse,
 		ErrorWrapper<GetDomain400 | GetDomain401 | GetDomain403 | GetDomain404>,
@@ -3760,6 +3801,7 @@ export async function patchDomain({
 	if (!domain) {
 		throw new Error(`Missing required path parameter: domain`);
 	}
+
 	const data = await request<
 		PatchDomainMutationResponse,
 		ErrorWrapper<
@@ -3803,6 +3845,7 @@ export async function deleteDomain({
 	if (!domain) {
 		throw new Error(`Missing required path parameter: domain`);
 	}
+
 	const data = await request<
 		DeleteDomainMutationResponse,
 		ErrorWrapper<
@@ -3835,6 +3878,7 @@ export async function getConfigurableLogDrain({
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
+
 	const data = await request<
 		GetConfigurableLogDrainQueryResponse,
 		ErrorWrapper<
@@ -3870,6 +3914,7 @@ export async function deleteConfigurableLogDrain({
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
+
 	const data = await request<
 		DeleteConfigurableLogDrainMutationResponse,
 		ErrorWrapper<
@@ -4019,6 +4064,7 @@ export async function deleteDrain({
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
+
 	const data = await request<
 		DeleteDrainMutationResponse,
 		ErrorWrapper<DeleteDrain400 | DeleteDrain401 | DeleteDrain403 | DeleteDrain404>,
@@ -4049,6 +4095,7 @@ export async function getDrain({
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
+
 	const data = await request<
 		GetDrainQueryResponse,
 		ErrorWrapper<GetDrain400 | GetDrain401 | GetDrain403 | GetDrain404>,
@@ -4079,6 +4126,7 @@ export async function updateDrain({
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
+
 	const data = await request<
 		UpdateDrainMutationResponse,
 		ErrorWrapper<UpdateDrain400 | UpdateDrain401 | UpdateDrain403 | UpdateDrain404>,
@@ -4347,6 +4395,7 @@ export async function getEdgeConfig({
 	if (!edgeConfigId) {
 		throw new Error(`Missing required path parameter: edgeConfigId`);
 	}
+
 	const data = await request<
 		GetEdgeConfigQueryResponse,
 		ErrorWrapper<GetEdgeConfig400 | GetEdgeConfig401 | GetEdgeConfig403 | GetEdgeConfig404>,
@@ -4377,6 +4426,7 @@ export async function updateEdgeConfig({
 	if (!edgeConfigId) {
 		throw new Error(`Missing required path parameter: edgeConfigId`);
 	}
+
 	const data = await request<
 		UpdateEdgeConfigMutationResponse,
 		ErrorWrapper<
@@ -4420,6 +4470,7 @@ export async function deleteEdgeConfig({
 	if (!edgeConfigId) {
 		throw new Error(`Missing required path parameter: edgeConfigId`);
 	}
+
 	const data = await request<
 		DeleteEdgeConfigMutationResponse,
 		ErrorWrapper<
@@ -4456,6 +4507,7 @@ export async function getEdgeConfigItems({
 	if (!edgeConfigId) {
 		throw new Error(`Missing required path parameter: edgeConfigId`);
 	}
+
 	const data = await request<
 		GetEdgeConfigItemsQueryResponse,
 		ErrorWrapper<
@@ -4488,6 +4540,7 @@ export async function patchEdgeConfigItems({
 	if (!edgeConfigId) {
 		throw new Error(`Missing required path parameter: edgeConfigId`);
 	}
+
 	const data = await request<
 		PatchEdgeConfigItemsMutationResponse,
 		ErrorWrapper<
@@ -4532,6 +4585,7 @@ export async function getEdgeConfigSchema({
 	if (!edgeConfigId) {
 		throw new Error(`Missing required path parameter: edgeConfigId`);
 	}
+
 	const data = await request<
 		GetEdgeConfigSchemaQueryResponse,
 		ErrorWrapper<
@@ -4572,6 +4626,7 @@ export async function patchEdgeConfigSchema({
 	if (!edgeConfigId) {
 		throw new Error(`Missing required path parameter: edgeConfigId`);
 	}
+
 	const data = await request<
 		PatchEdgeConfigSchemaMutationResponse,
 		ErrorWrapper<
@@ -4615,6 +4670,7 @@ export async function deleteEdgeConfigSchema({
 	if (!edgeConfigId) {
 		throw new Error(`Missing required path parameter: edgeConfigId`);
 	}
+
 	const data = await request<
 		DeleteEdgeConfigSchemaMutationResponse,
 		ErrorWrapper<
@@ -4661,6 +4717,7 @@ export async function getEdgeConfigItem({
 	if (!edgeConfigItemKey) {
 		throw new Error(`Missing required path parameter: edgeConfigItemKey`);
 	}
+
 	const data = await request<
 		GetEdgeConfigItemQueryResponse,
 		ErrorWrapper<
@@ -4698,6 +4755,7 @@ export async function getEdgeConfigTokens({
 	if (!edgeConfigId) {
 		throw new Error(`Missing required path parameter: edgeConfigId`);
 	}
+
 	const data = await request<
 		GetEdgeConfigTokensQueryResponse,
 		ErrorWrapper<
@@ -4738,6 +4796,7 @@ export async function deleteEdgeConfigTokens({
 	if (!edgeConfigId) {
 		throw new Error(`Missing required path parameter: edgeConfigId`);
 	}
+
 	const data = await request<
 		DeleteEdgeConfigTokensMutationResponse,
 		ErrorWrapper<
@@ -4785,6 +4844,7 @@ export async function getEdgeConfigToken({
 	if (!token) {
 		throw new Error(`Missing required path parameter: token`);
 	}
+
 	const data = await request<
 		GetEdgeConfigTokenQueryResponse,
 		ErrorWrapper<
@@ -4822,6 +4882,7 @@ export async function createEdgeConfigToken({
 	if (!edgeConfigId) {
 		throw new Error(`Missing required path parameter: edgeConfigId`);
 	}
+
 	const data = await request<
 		CreateEdgeConfigTokenMutationResponse,
 		ErrorWrapper<
@@ -4869,6 +4930,7 @@ export async function getEdgeConfigBackup({
 	if (!edgeConfigBackupVersionId) {
 		throw new Error(`Missing required path parameter: edgeConfigBackupVersionId`);
 	}
+
 	const data = await request<
 		GetEdgeConfigBackupQueryResponse,
 		ErrorWrapper<
@@ -4909,6 +4971,7 @@ export async function getEdgeConfigBackups({
 	if (!edgeConfigId) {
 		throw new Error(`Missing required path parameter: edgeConfigId`);
 	}
+
 	const data = await request<
 		GetEdgeConfigBackupsQueryResponse,
 		ErrorWrapper<
@@ -5087,6 +5150,7 @@ export async function getSharedEnvVar({
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
+
 	const data = await request<
 		GetSharedEnvVarQueryResponse,
 		ErrorWrapper<GetSharedEnvVar400 | GetSharedEnvVar401 | GetSharedEnvVar403>,
@@ -5121,6 +5185,7 @@ export async function unlinkSharedEnvVariable({
 	if (!projectId) {
 		throw new Error(`Missing required path parameter: projectId`);
 	}
+
 	const data = await request<
 		UnlinkSharedEnvVariableMutationResponse,
 		ErrorWrapper<
@@ -5241,6 +5306,7 @@ export async function getBillingPlans({
 	if (!productIdOrSlug) {
 		throw new Error(`Missing required path parameter: productIdOrSlug`);
 	}
+
 	const data = await request<
 		GetBillingPlansQueryResponse,
 		ErrorWrapper<GetBillingPlans400 | GetBillingPlans401 | GetBillingPlans403 | GetBillingPlans404>,
@@ -5280,6 +5346,7 @@ export async function connectIntegrationResourceToProject({
 	if (!resourceId) {
 		throw new Error(`Missing required path parameter: resourceId`);
 	}
+
 	const data = await request<
 		ConnectIntegrationResourceToProjectMutationResponse,
 		ErrorWrapper<
@@ -5319,6 +5386,7 @@ export async function updateInstallation({
 	if (!integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
 	}
+
 	const data = await request<
 		UpdateInstallationMutationResponse,
 		ErrorWrapper<
@@ -5354,6 +5422,7 @@ export async function getAccountInfo({
 	if (!integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
 	}
+
 	const data = await request<
 		GetAccountInfoQueryResponse,
 		ErrorWrapper<GetAccountInfo400 | GetAccountInfo401 | GetAccountInfo403 | GetAccountInfo404>,
@@ -5390,6 +5459,7 @@ export async function getMember({
 	if (!memberId) {
 		throw new Error(`Missing required path parameter: memberId`);
 	}
+
 	const data = await request<
 		GetMemberQueryResponse,
 		ErrorWrapper<GetMember400 | GetMember401 | GetMember403 | GetMember404>,
@@ -5422,6 +5492,7 @@ export async function createEvent({
 	if (!integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
 	}
+
 	const data = await request<
 		CreateEventMutationResponse,
 		ErrorWrapper<CreateEvent400 | CreateEvent401 | CreateEvent403 | CreateEvent404>,
@@ -5455,6 +5526,7 @@ export async function getIntegrationResources({
 	if (!integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
 	}
+
 	const data = await request<
 		GetIntegrationResourcesQueryResponse,
 		ErrorWrapper<
@@ -5496,6 +5568,7 @@ export async function getIntegrationResource({
 	if (!resourceId) {
 		throw new Error(`Missing required path parameter: resourceId`);
 	}
+
 	const data = await request<
 		GetIntegrationResourceQueryResponse,
 		ErrorWrapper<
@@ -5537,6 +5610,7 @@ export async function deleteIntegrationResource({
 	if (!resourceId) {
 		throw new Error(`Missing required path parameter: resourceId`);
 	}
+
 	const data = await request<
 		DeleteIntegrationResourceMutationResponse,
 		ErrorWrapper<
@@ -5578,6 +5652,7 @@ export async function importResource({
 	if (!resourceId) {
 		throw new Error(`Missing required path parameter: resourceId`);
 	}
+
 	const data = await request<
 		ImportResourceMutationResponse,
 		ErrorWrapper<
@@ -5623,6 +5698,7 @@ export async function updateResource({
 	if (!resourceId) {
 		throw new Error(`Missing required path parameter: resourceId`);
 	}
+
 	const data = await request<
 		UpdateResourceMutationResponse,
 		ErrorWrapper<
@@ -5663,6 +5739,7 @@ export async function submitBillingData({
 	if (!integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
 	}
+
 	const data = await request<
 		SubmitBillingDataMutationResponse,
 		ErrorWrapper<
@@ -5698,6 +5775,7 @@ export async function submitInvoice({
 	if (!integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
 	}
+
 	const data = await request<
 		SubmitInvoiceMutationResponse,
 		ErrorWrapper<
@@ -5737,6 +5815,7 @@ export async function getInvoice({
 	if (!invoiceId) {
 		throw new Error(`Missing required path parameter: invoiceId`);
 	}
+
 	const data = await request<
 		GetInvoiceQueryResponse,
 		ErrorWrapper<GetInvoice400 | GetInvoice401 | GetInvoice403 | GetInvoice404>,
@@ -5773,6 +5852,7 @@ export async function updateInvoice({
 	if (!invoiceId) {
 		throw new Error(`Missing required path parameter: invoiceId`);
 	}
+
 	const data = await request<
 		UpdateInvoiceMutationResponse,
 		ErrorWrapper<
@@ -5808,6 +5888,7 @@ export async function submitPrepaymentBalances({
 	if (!integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
 	}
+
 	const data = await request<
 		SubmitPrepaymentBalancesMutationResponse,
 		ErrorWrapper<
@@ -5854,6 +5935,7 @@ export async function updateResourceSecrets({
 	if (!resourceId) {
 		throw new Error(`Missing required path parameter: resourceId`);
 	}
+
 	const data = await request<
 		UpdateResourceSecretsMutationResponse,
 		ErrorWrapper<
@@ -5898,6 +5980,7 @@ export async function updateResourceSecretsById({
 	if (!resourceId) {
 		throw new Error(`Missing required path parameter: resourceId`);
 	}
+
 	const data = await request<
 		UpdateResourceSecretsByIdMutationResponse,
 		ErrorWrapper<
@@ -5965,6 +6048,7 @@ export async function getConfiguration({
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
+
 	const data = await request<
 		GetConfigurationQueryResponse,
 		ErrorWrapper<
@@ -5997,6 +6081,7 @@ export async function deleteConfiguration({
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
+
 	const data = await request<
 		DeleteConfigurationMutationResponse,
 		ErrorWrapper<
@@ -6037,6 +6122,7 @@ export async function getConfigurationProducts({
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
+
 	const data = await request<
 		GetConfigurationProductsQueryResponse,
 		ErrorWrapper<
@@ -6164,6 +6250,7 @@ export async function deleteIntegrationLogDrain({
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
+
 	const data = await request<
 		DeleteIntegrationLogDrainMutationResponse,
 		ErrorWrapper<
@@ -6203,6 +6290,7 @@ export async function getRuntimeLogs({
 	if (!deploymentId) {
 		throw new Error(`Missing required path parameter: deploymentId`);
 	}
+
 	const data = await request<
 		GetRuntimeLogsQueryResponse,
 		ErrorWrapper<GetRuntimeLogs400 | GetRuntimeLogs401 | GetRuntimeLogs403>,
@@ -6240,6 +6328,7 @@ export async function createExperimentationItem({
 	if (!resourceId) {
 		throw new Error(`Missing required path parameter: resourceId`);
 	}
+
 	const data = await request<
 		CreateExperimentationItemMutationResponse,
 		ErrorWrapper<
@@ -6286,6 +6375,7 @@ export async function updateExperimentationItem({
 	if (!itemId) {
 		throw new Error(`Missing required path parameter: itemId`);
 	}
+
 	const data = await request<
 		UpdateExperimentationItemMutationResponse,
 		ErrorWrapper<
@@ -6332,6 +6422,7 @@ export async function deleteExperimentationItem({
 	if (!itemId) {
 		throw new Error(`Missing required path parameter: itemId`);
 	}
+
 	const data = await request<
 		DeleteExperimentationItemMutationResponse,
 		ErrorWrapper<
@@ -6373,6 +6464,7 @@ export async function gETV1InstallationsIntegrationConfigurationIdResourcesResou
 	if (!resourceId) {
 		throw new Error(`Missing required path parameter: resourceId`);
 	}
+
 	const data = await request<
 		GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfigQueryResponse,
 		ErrorWrapper<
@@ -6414,6 +6506,7 @@ export async function updateExperimentationEdgeConfig({
 	if (!resourceId) {
 		throw new Error(`Missing required path parameter: resourceId`);
 	}
+
 	const data = await request<
 		UpdateExperimentationEdgeConfigMutationResponse,
 		ErrorWrapper<
@@ -6456,6 +6549,7 @@ export async function getProjectMembers({
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
+
 	const data = await request<
 		GetProjectMembersQueryResponse,
 		ErrorWrapper<GetProjectMembers400 | GetProjectMembers401 | GetProjectMembers403>,
@@ -6486,6 +6580,7 @@ export async function addProjectMember({
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
+
 	const data = await request<
 		AddProjectMemberMutationResponse,
 		ErrorWrapper<
@@ -6528,6 +6623,7 @@ export async function removeProjectMember({
 	if (!uid) {
 		throw new Error(`Missing required path parameter: uid`);
 	}
+
 	const data = await request<
 		RemoveProjectMemberMutationResponse,
 		ErrorWrapper<RemoveProjectMember400 | RemoveProjectMember401 | RemoveProjectMember403>,
@@ -6629,6 +6725,7 @@ export async function getProject({
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
+
 	const data = await request<
 		GetProjectQueryResponse,
 		ErrorWrapper<GetProject400 | GetProject401 | GetProject403>,
@@ -6659,6 +6756,7 @@ export async function updateProject({
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
+
 	const data = await request<
 		UpdateProjectMutationResponse,
 		ErrorWrapper<
@@ -6703,6 +6801,7 @@ export async function deleteProject({
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
+
 	const data = await request<
 		DeleteProjectMutationResponse,
 		ErrorWrapper<DeleteProject400 | DeleteProject401 | DeleteProject403 | DeleteProject409>,
@@ -6733,6 +6832,7 @@ export async function updateStaticIps({
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
+
 	const data = await request<
 		UpdateStaticIpsMutationResponse,
 		ErrorWrapper<
@@ -6777,6 +6877,7 @@ export async function createCustomEnvironment({
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
+
 	const data = await request<
 		CreateCustomEnvironmentMutationResponse,
 		ErrorWrapper<
@@ -6819,6 +6920,7 @@ export async function listCustomEnvironments({
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
+
 	const data = await request<
 		ListCustomEnvironmentsQueryResponse,
 		ErrorWrapper<ListCustomEnvironments400 | ListCustomEnvironments401 | ListCustomEnvironments403>,
@@ -6858,6 +6960,7 @@ export async function getCustomEnvironment({
 	if (!environmentSlugOrId) {
 		throw new Error(`Missing required path parameter: environmentSlugOrId`);
 	}
+
 	const data = await request<
 		GetCustomEnvironmentQueryResponse,
 		ErrorWrapper<
@@ -6902,6 +7005,7 @@ export async function updateCustomEnvironment({
 	if (!environmentSlugOrId) {
 		throw new Error(`Missing required path parameter: environmentSlugOrId`);
 	}
+
 	const data = await request<
 		UpdateCustomEnvironmentMutationResponse,
 		ErrorWrapper<
@@ -6948,6 +7052,7 @@ export async function removeCustomEnvironment({
 	if (!environmentSlugOrId) {
 		throw new Error(`Missing required path parameter: environmentSlugOrId`);
 	}
+
 	const data = await request<
 		RemoveCustomEnvironmentMutationResponse,
 		ErrorWrapper<
@@ -6986,6 +7091,7 @@ export async function getProjectDomains({
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
+
 	const data = await request<
 		GetProjectDomainsQueryResponse,
 		ErrorWrapper<GetProjectDomains400 | GetProjectDomains401 | GetProjectDomains403>,
@@ -7020,6 +7126,7 @@ export async function getProjectDomain({
 	if (!domain) {
 		throw new Error(`Missing required path parameter: domain`);
 	}
+
 	const data = await request<
 		GetProjectDomainQueryResponse,
 		ErrorWrapper<GetProjectDomain400 | GetProjectDomain401 | GetProjectDomain403>,
@@ -7059,6 +7166,7 @@ export async function updateProjectDomain({
 	if (!domain) {
 		throw new Error(`Missing required path parameter: domain`);
 	}
+
 	const data = await request<
 		UpdateProjectDomainMutationResponse,
 		ErrorWrapper<
@@ -7104,6 +7212,7 @@ export async function removeProjectDomain({
 	if (!domain) {
 		throw new Error(`Missing required path parameter: domain`);
 	}
+
 	const data = await request<
 		RemoveProjectDomainMutationResponse,
 		ErrorWrapper<
@@ -7146,6 +7255,7 @@ export async function addProjectDomain({
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
+
 	const data = await request<
 		AddProjectDomainMutationResponse,
 		ErrorWrapper<
@@ -7192,6 +7302,7 @@ export async function moveProjectDomain({
 	if (!domain) {
 		throw new Error(`Missing required path parameter: domain`);
 	}
+
 	const data = await request<
 		MoveProjectDomainMutationResponse,
 		ErrorWrapper<
@@ -7234,6 +7345,7 @@ export async function verifyProjectDomain({
 	if (!domain) {
 		throw new Error(`Missing required path parameter: domain`);
 	}
+
 	const data = await request<
 		VerifyProjectDomainMutationResponse,
 		ErrorWrapper<VerifyProjectDomain400 | VerifyProjectDomain401 | VerifyProjectDomain403>,
@@ -7269,6 +7381,7 @@ export async function filterProjectEnvs({
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
+
 	const data = await request<
 		FilterProjectEnvsQueryResponse,
 		ErrorWrapper<FilterProjectEnvs400 | FilterProjectEnvs401 | FilterProjectEnvs403>,
@@ -7299,6 +7412,7 @@ export async function createProjectEnv({
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
+
 	const data = await request<
 		CreateProjectEnvMutationResponse,
 		ErrorWrapper<
@@ -7348,6 +7462,7 @@ export async function getProjectEnv({
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
+
 	const data = await request<
 		GetProjectEnvQueryResponse,
 		ErrorWrapper<GetProjectEnv400 | GetProjectEnv401 | GetProjectEnv403>,
@@ -7382,6 +7497,7 @@ export async function removeProjectEnv({
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
+
 	const data = await request<
 		RemoveProjectEnvMutationResponse,
 		ErrorWrapper<
@@ -7422,6 +7538,7 @@ export async function editProjectEnv({
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
+
 	const data = await request<
 		EditProjectEnvMutationResponse,
 		ErrorWrapper<
@@ -7466,6 +7583,7 @@ export async function batchRemoveProjectEnv({
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
+
 	const data = await request<
 		BatchRemoveProjectEnvMutationResponse,
 		ErrorWrapper<
@@ -7508,6 +7626,7 @@ export async function getRollingReleaseBillingStatus({
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
+
 	const data = await request<
 		GetRollingReleaseBillingStatusQueryResponse,
 		ErrorWrapper<
@@ -7548,6 +7667,7 @@ export async function getRollingReleaseConfig({
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
+
 	const data = await request<
 		GetRollingReleaseConfigQueryResponse,
 		ErrorWrapper<
@@ -7588,6 +7708,7 @@ export async function deleteRollingReleaseConfig({
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
+
 	const data = await request<
 		DeleteRollingReleaseConfigMutationResponse,
 		ErrorWrapper<
@@ -7628,6 +7749,7 @@ export async function updateRollingReleaseConfig({
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
+
 	const data = await request<
 		UpdateRollingReleaseConfigMutationResponse,
 		ErrorWrapper<
@@ -7668,6 +7790,7 @@ export async function getRollingRelease({
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
+
 	const data = await request<
 		GetRollingReleaseQueryResponse,
 		ErrorWrapper<
@@ -7705,6 +7828,7 @@ export async function approveRollingReleaseStage({
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
+
 	const data = await request<
 		ApproveRollingReleaseStageMutationResponse,
 		ErrorWrapper<
@@ -7747,6 +7871,7 @@ export async function completeRollingRelease({
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
+
 	const data = await request<
 		CompleteRollingReleaseMutationResponse,
 		ErrorWrapper<
@@ -7788,6 +7913,7 @@ export async function createProjectTransferRequest({
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
+
 	const data = await request<
 		CreateProjectTransferRequestMutationResponse,
 		ErrorWrapper<
@@ -7828,6 +7954,7 @@ export async function acceptProjectTransferRequest({
 	if (!code) {
 		throw new Error(`Missing required path parameter: code`);
 	}
+
 	const data = await request<
 		AcceptProjectTransferRequestMutationResponse,
 		ErrorWrapper<
@@ -7870,6 +7997,7 @@ export async function updateProjectProtectionBypass({
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
+
 	const data = await request<
 		UpdateProjectProtectionBypassMutationResponse,
 		ErrorWrapper<
@@ -7916,6 +8044,7 @@ export async function requestPromote({
 	if (!deploymentId) {
 		throw new Error(`Missing required path parameter: deploymentId`);
 	}
+
 	const data = await request<
 		RequestPromoteMutationResponse,
 		ErrorWrapper<RequestPromote400 | RequestPromote401 | RequestPromote403 | RequestPromote409>,
@@ -7951,6 +8080,7 @@ export async function listPromoteAliases({
 	if (!projectId) {
 		throw new Error(`Missing required path parameter: projectId`);
 	}
+
 	const data = await request<
 		ListPromoteAliasesQueryResponse,
 		ErrorWrapper<
@@ -7988,6 +8118,7 @@ export async function pauseProject({
 	if (!projectId) {
 		throw new Error(`Missing required path parameter: projectId`);
 	}
+
 	const data = await request<
 		PauseProjectMutationResponse,
 		ErrorWrapper<PauseProject400 | PauseProject401 | PauseProject403 | PauseProject500>,
@@ -8018,6 +8149,7 @@ export async function unpauseProject({
 	if (!projectId) {
 		throw new Error(`Missing required path parameter: projectId`);
 	}
+
 	const data = await request<
 		UnpauseProjectMutationResponse,
 		ErrorWrapper<UnpauseProject400 | UnpauseProject401 | UnpauseProject403 | UnpauseProject500>,
@@ -8160,6 +8292,7 @@ export async function getFirewallConfig({
 	if (!configVersion) {
 		throw new Error(`Missing required path parameter: configVersion`);
 	}
+
 	const data = await request<
 		GetFirewallConfigQueryResponse,
 		ErrorWrapper<
@@ -8395,6 +8528,7 @@ export async function getTeamMembers({
 	if (!teamId) {
 		throw new Error(`Missing required path parameter: teamId`);
 	}
+
 	const data = await request<
 		GetTeamMembersQueryResponse,
 		ErrorWrapper<GetTeamMembers400 | GetTeamMembers401 | GetTeamMembers403 | GetTeamMembers404>,
@@ -8423,6 +8557,7 @@ export async function inviteUserToTeam({
 	if (!teamId) {
 		throw new Error(`Missing required path parameter: teamId`);
 	}
+
 	const data = await request<
 		InviteUserToTeamMutationResponse,
 		ErrorWrapper<
@@ -8458,6 +8593,7 @@ export async function requestAccessToTeam({
 	if (!teamId) {
 		throw new Error(`Missing required path parameter: teamId`);
 	}
+
 	const data = await request<
 		RequestAccessToTeamMutationResponse,
 		ErrorWrapper<
@@ -8501,6 +8637,7 @@ export async function getTeamAccessRequest({
 	if (!teamId) {
 		throw new Error(`Missing required path parameter: teamId`);
 	}
+
 	const data = await request<
 		GetTeamAccessRequestQueryResponse,
 		ErrorWrapper<
@@ -8534,6 +8671,7 @@ export async function joinTeam({
 	if (!teamId) {
 		throw new Error(`Missing required path parameter: teamId`);
 	}
+
 	const data = await request<
 		JoinTeamMutationResponse,
 		ErrorWrapper<JoinTeam400 | JoinTeam401 | JoinTeam402 | JoinTeam403 | JoinTeam404>,
@@ -8571,6 +8709,7 @@ export async function updateTeamMember({
 	if (!teamId) {
 		throw new Error(`Missing required path parameter: teamId`);
 	}
+
 	const data = await request<
 		UpdateTeamMemberMutationResponse,
 		ErrorWrapper<
@@ -8618,6 +8757,7 @@ export async function removeTeamMember({
 	if (!teamId) {
 		throw new Error(`Missing required path parameter: teamId`);
 	}
+
 	const data = await request<
 		RemoveTeamMemberMutationResponse,
 		ErrorWrapper<
@@ -8654,6 +8794,7 @@ export async function getTeam({
 	if (!teamId) {
 		throw new Error(`Missing required path parameter: teamId`);
 	}
+
 	const data = await request<
 		GetTeamQueryResponse,
 		ErrorWrapper<GetTeam400 | GetTeam401 | GetTeam403 | GetTeam404>,
@@ -8684,6 +8825,7 @@ export async function patchTeam({
 	if (!teamId) {
 		throw new Error(`Missing required path parameter: teamId`);
 	}
+
 	const data = await request<
 		PatchTeamMutationResponse,
 		ErrorWrapper<PatchTeam400 | PatchTeam401 | PatchTeam402 | PatchTeam403 | PatchTeam428>,
@@ -8773,6 +8915,7 @@ export async function postTeamDsyncRoles({
 	if (!teamId) {
 		throw new Error(`Missing required path parameter: teamId`);
 	}
+
 	const data = await request<
 		PostTeamDsyncRolesMutationResponse,
 		ErrorWrapper<PostTeamDsyncRoles400 | PostTeamDsyncRoles401 | PostTeamDsyncRoles403>,
@@ -8809,6 +8952,7 @@ export async function deleteTeam({
 	if (!teamId) {
 		throw new Error(`Missing required path parameter: teamId`);
 	}
+
 	const data = await request<
 		DeleteTeamMutationResponse,
 		ErrorWrapper<DeleteTeam400 | DeleteTeam401 | DeleteTeam402 | DeleteTeam403 | DeleteTeam409>,
@@ -8847,6 +8991,7 @@ export async function deleteTeamInviteCode({
 	if (!teamId) {
 		throw new Error(`Missing required path parameter: teamId`);
 	}
+
 	const data = await request<
 		DeleteTeamInviteCodeMutationResponse,
 		ErrorWrapper<
@@ -8967,6 +9112,7 @@ export async function getAuthToken({
 	if (!tokenId) {
 		throw new Error(`Missing required path parameter: tokenId`);
 	}
+
 	const data = await request<
 		GetAuthTokenQueryResponse,
 		ErrorWrapper<GetAuthToken400 | GetAuthToken401 | GetAuthToken403 | GetAuthToken404>,
@@ -8995,6 +9141,7 @@ export async function deleteAuthToken({
 	if (!tokenId) {
 		throw new Error(`Missing required path parameter: tokenId`);
 	}
+
 	const data = await request<
 		DeleteAuthTokenMutationResponse,
 		ErrorWrapper<DeleteAuthToken400 | DeleteAuthToken401 | DeleteAuthToken403 | DeleteAuthToken404>,
@@ -9132,6 +9279,7 @@ export async function getWebhook({
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
+
 	const data = await request<
 		GetWebhookQueryResponse,
 		ErrorWrapper<GetWebhook400 | GetWebhook401 | GetWebhook403>,
@@ -9162,6 +9310,7 @@ export async function deleteWebhook({
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
+
 	const data = await request<
 		DeleteWebhookMutationResponse,
 		ErrorWrapper<DeleteWebhook400 | DeleteWebhook401 | DeleteWebhook403>,
@@ -9192,6 +9341,7 @@ export async function listDeploymentAliases({
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
+
 	const data = await request<
 		ListDeploymentAliasesQueryResponse,
 		ErrorWrapper<
@@ -9227,6 +9377,7 @@ export async function assignAlias({
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
+
 	const data = await request<
 		AssignAliasMutationResponse,
 		ErrorWrapper<
@@ -9295,6 +9446,7 @@ export async function getAlias({
 	if (!idOrAlias) {
 		throw new Error(`Missing required path parameter: idOrAlias`);
 	}
+
 	const data = await request<
 		GetAliasQueryResponse,
 		ErrorWrapper<GetAlias400 | GetAlias401 | GetAlias403 | GetAlias404>,
@@ -9325,6 +9477,7 @@ export async function deleteAlias({
 	if (!aliasId) {
 		throw new Error(`Missing required path parameter: aliasId`);
 	}
+
 	const data = await request<
 		DeleteAliasMutationResponse,
 		ErrorWrapper<DeleteAlias400 | DeleteAlias401 | DeleteAlias403 | DeleteAlias404>,
@@ -9355,6 +9508,7 @@ export async function patchUrlProtectionBypass({
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
+
 	const data = await request<
 		PatchUrlProtectionBypassMutationResponse,
 		ErrorWrapper<
@@ -9399,6 +9553,7 @@ export async function getCertById({
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
+
 	const data = await request<
 		GetCertByIdQueryResponse,
 		ErrorWrapper<GetCertById400 | GetCertById401 | GetCertById403 | GetCertById404>,
@@ -9429,6 +9584,7 @@ export async function removeCert({
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
+
 	const data = await request<
 		RemoveCertMutationResponse,
 		ErrorWrapper<RemoveCert400 | RemoveCert401 | RemoveCert403 | RemoveCert404>,
@@ -9529,6 +9685,7 @@ export async function listDeploymentFiles({
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
+
 	const data = await request<
 		ListDeploymentFilesQueryResponse,
 		ErrorWrapper<
@@ -9568,6 +9725,7 @@ export async function getDeploymentFileContents({
 	if (!fileId) {
 		throw new Error(`Missing required path parameter: fileId`);
 	}
+
 	const data = await request<
 		GetDeploymentFileContentsQueryResponse,
 		ErrorWrapper<
@@ -9635,6 +9793,7 @@ export async function deleteDeployment({
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
+
 	const data = await request<
 		DeleteDeploymentMutationResponse,
 		ErrorWrapper<
