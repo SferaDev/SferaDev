@@ -55,7 +55,7 @@
 				"src/components.ts"
 			],
 			"project": ["src/**/*.ts"],
-			"ignore": ["src/generated/**"],
+			"ignore": ["src/generated/**", "src/utils/mcp.ts"],
 			"ignoreDependencies": ["@kubb/core", "@sferadev/openapi-utils"],
 			"includeEntryExports": false
 		},
