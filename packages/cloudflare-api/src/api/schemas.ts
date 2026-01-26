@@ -2822,6 +2822,7 @@ export type AccessAppRequest =
 			 * @example self_hosted
 			 */
 			type: AccessType & void;
+			use_clientless_isolation_app_launcher_url?: AccessUseClientlessIsolationAppLauncherUrl;
 			/**
 			 * The policies that Access applies to the application, in ascending order of precedence. Items can reference existing policies or create new policies exclusive to the application.
 			 */
@@ -2866,7 +2867,7 @@ export type AccessAppRequest =
 	| (AccessWarpProps & AccessAppReqEmbeddedPolicies)
 	| (AccessBisoProps & AccessAppReqEmbeddedPolicies)
 	| (AccessProxyEndpointProps & AccessAppReqEmbeddedPolicies)
-	| AccessBookmarkProps
+	| (AccessBookmarkProps & AccessAppReqEmbeddedPolicies)
 	| (AccessInfraProps & AccessInfraAppReqEmbeddedPolicies)
 	| (AccessRdpProps & AccessAppReqEmbeddedPolicies);
 
@@ -2900,7 +2901,7 @@ export type AccessAppResponse =
 	| (AccessBasicAppResponseProps & AccessWarpProps & AccessAppRespEmbeddedPolicies)
 	| (AccessBasicAppResponseProps & AccessBisoProps & AccessAppRespEmbeddedPolicies)
 	| (AccessBasicAppResponseProps & AccessProxyEndpointProps & AccessAppRespEmbeddedPolicies)
-	| (AccessBasicAppResponseProps & AccessBookmarkProps)
+	| (AccessBasicAppResponseProps & AccessBookmarkProps & AccessAppRespEmbeddedPolicies)
 	| (AccessBasicAppResponseProps & AccessInfraProps & AccessInfraAppRespEmbeddedPolicies)
 	| (AccessBasicAppResponseProps & AccessRdpProps & AccessAppRespEmbeddedPolicies);
 
@@ -6197,6 +6198,7 @@ export type AccessRdpProps = {
 	 * @example rdp
 	 */
 	type: AccessType & void;
+	use_clientless_isolation_app_launcher_url?: AccessUseClientlessIsolationAppLauncherUrl;
 };
 
 /**
@@ -8746,6 +8748,7 @@ export type AccessSchemasSelfHostedProps = {
 	 * @example self_hosted
 	 */
 	type: string;
+	use_clientless_isolation_app_launcher_url?: AccessUseClientlessIsolationAppLauncherUrl;
 };
 
 export type AccessSchemasServiceTokens = {
@@ -8823,6 +8826,7 @@ export type AccessSchemasSshProps = {
 	 * @example ssh
 	 */
 	type: string;
+	use_clientless_isolation_app_launcher_url?: AccessUseClientlessIsolationAppLauncherUrl;
 };
 
 /**
@@ -8885,6 +8889,7 @@ export type AccessSchemasVncProps = {
 	 * @example vnc
 	 */
 	type: string;
+	use_clientless_isolation_app_launcher_url?: AccessUseClientlessIsolationAppLauncherUrl;
 };
 
 export type AccessSchemasWarpProps = {
@@ -9221,6 +9226,7 @@ export type AccessSelfHostedProps = {
 	 * @example self_hosted
 	 */
 	type: AccessType & void;
+	use_clientless_isolation_app_launcher_url?: AccessUseClientlessIsolationAppLauncherUrl;
 };
 
 export type AccessServiceTokens = {
@@ -9387,6 +9393,7 @@ export type AccessSshProps = {
 	 * @example ssh
 	 */
 	type: AccessType & void;
+	use_clientless_isolation_app_launcher_url?: AccessUseClientlessIsolationAppLauncherUrl;
 };
 
 /**
@@ -9519,6 +9526,7 @@ export type AccessType =
  * A description of the reason why the UI read only field is being toggled.
  *
  * @example Temporarily turn off the UI read only lock to make a change via the UI
+ * @x-stainless-terraform-configurability computed_optional
  */
 export type AccessUiReadOnlyToggleReason = string;
 
@@ -9550,6 +9558,16 @@ export type AccessUpdateStatus = "blocked" | "processing" | "exceeded time" | "c
  * @x-auditable true
  */
 export type AccessUpdatedAt = void & AccessTimestamp;
+
+/**
+ * Determines if users can access this application via a clientless browser isolation URL.
+ * This allows users to access private domains without connecting to Gateway. The option requires
+ * Clientless Browser Isolation to be set up with policies that allow users of this application.
+ *
+ * @default false
+ * @example false
+ */
+export type AccessUseClientlessIsolationAppLauncherUrl = boolean;
 
 /**
  * The UUID of the authenticating user.
@@ -9756,6 +9774,7 @@ export type AccessVncProps = {
 	 * @example vnc
 	 */
 	type: AccessType & void;
+	use_clientless_isolation_app_launcher_url?: AccessUseClientlessIsolationAppLauncherUrl;
 };
 
 /**
