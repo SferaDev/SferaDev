@@ -3474,6 +3474,51 @@ export const itemsTypeEnum = {
 
 export type ItemsTypeEnumKey = (typeof itemsTypeEnum)[keyof typeof itemsTypeEnum];
 
+export const payloadPermissionsEnum2 = {
+	"read:domain": "read:domain",
+	"read-write:domain": "read-write:domain",
+	"read:team": "read:team",
+	"read:billing": "read:billing",
+	"read-write:ai-gateway-api-key": "read-write:ai-gateway-api-key",
+	"read:project": "read:project",
+	"read-write:project": "read-write:project",
+	"read:deployment": "read:deployment",
+	"read-write:deployment": "read-write:deployment",
+} as const;
+
+export type PayloadPermissionsEnum2Key =
+	(typeof payloadPermissionsEnum2)[keyof typeof payloadPermissionsEnum2];
+
+export const beforePermissionsEnum = {
+	"read:domain": "read:domain",
+	"read-write:domain": "read-write:domain",
+	"read:team": "read:team",
+	"read:billing": "read:billing",
+	"read-write:ai-gateway-api-key": "read-write:ai-gateway-api-key",
+	"read:project": "read:project",
+	"read-write:project": "read-write:project",
+	"read:deployment": "read:deployment",
+	"read-write:deployment": "read-write:deployment",
+} as const;
+
+export type BeforePermissionsEnumKey =
+	(typeof beforePermissionsEnum)[keyof typeof beforePermissionsEnum];
+
+export const afterPermissionsEnum = {
+	"read:domain": "read:domain",
+	"read-write:domain": "read-write:domain",
+	"read:team": "read:team",
+	"read:billing": "read:billing",
+	"read-write:ai-gateway-api-key": "read-write:ai-gateway-api-key",
+	"read:project": "read:project",
+	"read-write:project": "read-write:project",
+	"read:deployment": "read:deployment",
+	"read-write:deployment": "read-write:deployment",
+} as const;
+
+export type AfterPermissionsEnumKey =
+	(typeof afterPermissionsEnum)[keyof typeof afterPermissionsEnum];
+
 export const payloadGrantTypeEnum = {
 	authorization_code: "authorization_code",
 	"urn:ietf:params:oauth:grant-type:device_code": "urn:ietf:params:oauth:grant-type:device_code",
@@ -11118,6 +11163,10 @@ export type UserEvent = {
 									};
 							  }
 							| undefined;
+						/**
+						 * @type array | undefined
+						 */
+						permissions?: PayloadPermissionsEnum2Key[] | undefined;
 				  }
 				| {
 						/**
@@ -11166,6 +11215,10 @@ export type UserEvent = {
 												};
 										  }
 										| undefined;
+									/**
+									 * @type array | undefined
+									 */
+									permissions?: BeforePermissionsEnumKey[] | undefined;
 							  }
 							| undefined;
 						/**
@@ -11202,6 +11255,10 @@ export type UserEvent = {
 												};
 										  }
 										| undefined;
+									/**
+									 * @type array | undefined
+									 */
+									permissions?: AfterPermissionsEnumKey[] | undefined;
 							  }
 							| undefined;
 				  }

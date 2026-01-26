@@ -4438,6 +4438,21 @@ export const userEventSchema = z
 							}),
 						}),
 					),
+					permissions: z.optional(
+						z.array(
+							z.enum([
+								"read:domain",
+								"read-write:domain",
+								"read:team",
+								"read:billing",
+								"read-write:ai-gateway-api-key",
+								"read:project",
+								"read-write:project",
+								"read:deployment",
+								"read-write:deployment",
+							]),
+						),
+					),
 				}),
 				z.object({
 					appName: z.string(),
@@ -4456,6 +4471,21 @@ export const userEventSchema = z
 									}),
 								}),
 							),
+							permissions: z.optional(
+								z.array(
+									z.enum([
+										"read:domain",
+										"read-write:domain",
+										"read:team",
+										"read:billing",
+										"read-write:ai-gateway-api-key",
+										"read:project",
+										"read-write:project",
+										"read:deployment",
+										"read-write:deployment",
+									]),
+								),
+							),
 						}),
 					),
 					after: z.optional(
@@ -4470,6 +4500,21 @@ export const userEventSchema = z
 										}),
 									}),
 								}),
+							),
+							permissions: z.optional(
+								z.array(
+									z.enum([
+										"read:domain",
+										"read-write:domain",
+										"read:team",
+										"read:billing",
+										"read-write:ai-gateway-api-key",
+										"read:project",
+										"read-write:project",
+										"read:deployment",
+										"read-write:deployment",
+									]),
+								),
 							),
 						}),
 					),
