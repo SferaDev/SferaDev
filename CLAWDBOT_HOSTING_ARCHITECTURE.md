@@ -46,11 +46,13 @@ While you have a preference for Vercel products, the research reveals critical l
 │  │  │ • Config editor │  │ • Auto-scaling   │  │ • PUT /api/instances/:id    │   │ │
 │  │  │ • Billing UI    │  │ • Backup jobs    │  │ • DELETE /api/instances/:id │   │ │
 │  │  │ • Logs viewer   │  │ • Notifications  │  │ • POST /api/config          │   │ │
+│  │  │ • Usage/Overage │  │ • Usage tracking │  │ • GET /api/usage            │   │ │
 │  │  └─────────────────┘  └──────────────────┘  └─────────────────────────────┘   │ │
 │  │                                                                                 │ │
 │  │  ┌─────────────────────────────────────────────────────────────────────────┐   │ │
-│  │  │                      Vercel KV / Postgres                               │   │ │
-│  │  │  • User accounts        • Instance metadata        • Billing records    │   │ │
+│  │  │                    PostgreSQL (Generic / Neon / Supabase)               │   │ │
+│  │  │  • User accounts    • Instance metadata    • Usage records & overages   │   │ │
+│  │  │  • Billing records  • Session data         • Plan limits & quotas       │   │ │
 │  │  └─────────────────────────────────────────────────────────────────────────┘   │ │
 │  └────────────────────────────────────────────────────────────────────────────────┘ │
 │                                         │                                            │
@@ -74,7 +76,7 @@ While you have a preference for Vercel products, the research reveals critical l
 │  │  │ │(MicroVM)│ │        │ │(MicroVM)│ │        │ │(MicroVM)│ │                 │ │
 │  │  │ ├─────────┤ │        │ ├─────────┤ │        │ ├─────────┤ │                 │ │
 │  │  │ │Volume   │ │        │ │Volume   │ │        │ │Volume   │ │                 │ │
-│  │  │ │(1-10GB) │ │        │ │(1-10GB) │ │        │ │(1-10GB) │ │                 │ │
+│  │  │ │(1-5GB)  │ │        │ │(1-5GB)  │ │        │ │(1-5GB)  │ │                 │ │
 │  │  │ └─────────┘ │        │ └─────────┘ │        │ └─────────┘ │                 │ │
 │  │  │ ┌─────────┐ │        │ ┌─────────┐ │        │ ┌─────────┐ │                 │ │
 │  │  │ │Instance │ │        │ │Instance │ │        │ │Instance │ │                 │ │
@@ -105,13 +107,262 @@ While you have a preference for Vercel products, the research reveals critical l
 
 The control plane handles all user-facing functionality and orchestration logic.
 
-#### 1.1 Next.js Dashboard Application
+#### 1.1 Database: Generic PostgreSQL with Prisma
+
+We use a generic PostgreSQL database (can be hosted on Neon, Supabase, Railway, or self-hosted) with Prisma ORM for type-safe queries.
+
+```typescript
+// lib/db.ts
+import { PrismaClient } from '@prisma/client';
+
+const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
+
+export const db = globalForPrisma.prisma || new PrismaClient();
+
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = db;
+```
+
+```prisma
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Better Auth tables (auto-generated via CLI)
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  emailVerified Boolean   @default(false)
+  name          String?
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  sessions      Session[]
+  accounts      Account[]
+  instances     Instance[]
+  usageRecords  UsageRecord[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Account {
+  id                    String  @id @default(cuid())
+  userId                String
+  accountId             String
+  providerId            String
+  accessToken           String?
+  refreshToken          String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  idToken               String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([providerId, accountId])
+}
+
+model Verification {
+  id         String   @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+// Application tables
+model Instance {
+  id          String   @id @default(cuid())
+  userId      String
+  machineId   String   @unique
+  volumeId    String?
+  region      String
+  hostname    String   @unique
+  plan        Plan     @default(STARTER)
+  status      InstanceStatus @default(PROVISIONING)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  usageRecords UsageRecord[]
+
+  @@index([userId])
+}
+
+model UsageRecord {
+  id          String   @id @default(cuid())
+  userId      String
+  instanceId  String
+  periodStart DateTime
+  periodEnd   DateTime
+
+  // Metered usage
+  uptimeMinutes    Int @default(0)
+  bandwidthMB      Int @default(0)
+  storageGB        Float @default(0)
+  messagesProcessed Int @default(0)
+
+  // Computed costs
+  baseCost         Float @default(0)
+  overageCost      Float @default(0)
+  totalCost        Float @default(0)
+
+  createdAt   DateTime @default(now())
+
+  user     User     @relation(fields: [userId], references: [id])
+  instance Instance @relation(fields: [instanceId], references: [id])
+
+  @@unique([instanceId, periodStart])
+  @@index([userId, periodStart])
+}
+
+enum Plan {
+  STARTER
+  PRO
+}
+
+enum InstanceStatus {
+  PROVISIONING
+  RUNNING
+  STOPPED
+  FAILED
+  DELETED
+}
+```
+
+#### 1.2 Authentication: Better Auth
+
+Better Auth is a framework-agnostic authentication library that gives us full control over the auth flow while supporting all major providers.
+
+```typescript
+// lib/auth.ts
+import { betterAuth } from 'better-auth';
+import { prismaAdapter } from 'better-auth/adapters/prisma';
+import { db } from './db';
+
+export const auth = betterAuth({
+  database: prismaAdapter(db, {
+    provider: 'postgresql',
+  }),
+
+  emailAndPassword: {
+    enabled: true,
+    requireEmailVerification: true,
+  },
+
+  socialProviders: {
+    github: {
+      clientId: process.env.GITHUB_CLIENT_ID!,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+    },
+    google: {
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    },
+  },
+
+  session: {
+    expiresIn: 60 * 60 * 24 * 7, // 7 days
+    updateAge: 60 * 60 * 24, // 1 day
+  },
+});
+```
+
+```typescript
+// app/api/auth/[...all]/route.ts
+import { auth } from '@/lib/auth';
+import { toNextJsHandler } from 'better-auth/next-js';
+
+export const { POST, GET } = toNextJsHandler(auth);
+```
+
+```typescript
+// lib/auth-client.ts
+import { createAuthClient } from 'better-auth/react';
+
+export const authClient = createAuthClient({
+  baseURL: process.env.NEXT_PUBLIC_APP_URL!,
+});
+
+export const { signIn, signUp, signOut, useSession } = authClient;
+```
+
+```typescript
+// middleware.ts
+import { auth } from '@/lib/auth';
+import { NextRequest, NextResponse } from 'next/server';
+
+const publicPaths = ['/', '/sign-in', '/sign-up', '/api/auth', '/api/webhooks'];
+
+export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
+  // Allow public paths
+  if (publicPaths.some(path => pathname.startsWith(path))) {
+    return NextResponse.next();
+  }
+
+  // Verify session
+  const session = await auth.api.getSession({
+    headers: request.headers,
+  });
+
+  if (!session) {
+    return NextResponse.redirect(new URL('/sign-in', request.url));
+  }
+
+  return NextResponse.next();
+}
+
+export const config = {
+  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
+};
+```
+
+#### 1.3 Next.js Dashboard Application
 
 ```typescript
 // app/dashboard/instances/page.tsx
+import { auth } from '@/lib/auth';
+import { headers } from 'next/headers';
+import { db } from '@/lib/db';
+import { InstanceCard } from '@/components/InstanceCard';
+
 export default async function InstancesPage() {
-  const instances = await db.instances.findMany({
-    where: { userId: auth().userId }
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session) {
+    redirect('/sign-in');
+  }
+
+  const instances = await db.instance.findMany({
+    where: { userId: session.user.id },
+    include: {
+      usageRecords: {
+        take: 1,
+        orderBy: { periodStart: 'desc' },
+      },
+    },
   });
 
   return (
@@ -120,9 +371,6 @@ export default async function InstancesPage() {
         <InstanceCard
           key={instance.id}
           instance={instance}
-          onStart={() => startInstance(instance.id)}
-          onStop={() => stopInstance(instance.id)}
-          onConfigure={() => router.push(`/instances/${instance.id}/config`)}
         />
       ))}
     </div>
@@ -131,162 +379,538 @@ export default async function InstancesPage() {
 ```
 
 **Features:**
-- **Authentication**: Clerk or Auth.js with OAuth providers
+- **Authentication**: Better Auth with email/password + OAuth providers
 - **Instance Management**: Create, start, stop, delete instances
 - **Configuration Editor**: Visual editor for `clawdbot.json`
 - **Logs Viewer**: Real-time log streaming from instances
-- **Billing**: Stripe integration for usage-based billing
+- **Billing & Overage**: Stripe integration with usage-based overage billing
 - **Messaging Setup Wizards**: Guided setup for WhatsApp, Telegram, etc.
 
-#### 1.2 Vercel Workflows (Orchestration)
+#### 1.4 Vercel Workflows (Orchestration)
 
-Workflows provide durable execution for long-running operations:
+Workflows provide durable execution for long-running operations. The `"use workflow"` directive makes an async function durable, and `"use step"` marks individual retriable steps.
 
 ```typescript
-// app/api/workflows/provision-instance.ts
-'use workflow';
-
-import { sleep, step } from '@vercel/workflow';
+// workflows/provision-instance.ts
+import { serve } from '@vercel/workflow';
 import { flyClient } from '@/lib/fly';
 import { db } from '@/lib/db';
 
-export async function provisionInstance(input: {
-  userId: string;
+// Step functions must be in the same file for bundler discovery
+async function createMachine(input: {
   region: string;
-  plan: 'starter' | 'pro' | 'enterprise';
+  plan: 'STARTER' | 'PRO';
+  instanceId: string;
 }) {
-  'use step';
-  // Step 1: Create Fly.io Machine
-  const machine = await step('create-machine', async () => {
-    return flyClient.machines.create({
-      app: 'clawdbot-instances',
-      region: input.region,
-      config: {
-        image: 'registry.fly.io/clawdbot-gateway:latest',
-        guest: machineSpecForPlan(input.plan),
-        env: {
-          CLAWDBOT_INSTANCE_ID: generateId(),
-          CLAWDBOT_GATEWAY_PORT: '8080',
-        },
-        services: [{
-          ports: [{ port: 443, handlers: ['tls', 'http'] }],
-          protocol: 'tcp',
-          internal_port: 8080,
-        }],
-        mounts: [{
-          volume: await createVolume(input.region),
-          path: '/home/node/.clawdbot',
-        }],
-      },
-    });
-  });
+  "use step";
 
-  'use step';
-  // Step 2: Wait for machine to be ready
-  await step('wait-for-ready', async () => {
-    let ready = false;
-    while (!ready) {
-      const status = await flyClient.machines.get(machine.id);
-      ready = status.state === 'started';
-      if (!ready) await sleep('5 seconds');
+  return flyClient.machines.create({
+    app: 'clawdbot-instances',
+    region: input.region,
+    config: {
+      image: 'registry.fly.io/clawdbot-gateway:latest',
+      guest: machineSpecForPlan(input.plan),
+      env: {
+        CLAWDBOT_INSTANCE_ID: input.instanceId,
+        CLAWDBOT_GATEWAY_PORT: '8080',
+      },
+      services: [{
+        ports: [{ port: 443, handlers: ['tls', 'http'] }],
+        protocol: 'tcp',
+        internal_port: 8080,
+      }],
+    },
+  });
+}
+
+async function createVolume(region: string) {
+  "use step";
+
+  return flyClient.volumes.create({
+    app: 'clawdbot-instances',
+    region,
+    size_gb: 1,
+    name: `vol-${crypto.randomUUID().slice(0, 8)}`,
+  });
+}
+
+async function waitForMachineReady(machineId: string) {
+  "use step";
+
+  let ready = false;
+  let attempts = 0;
+
+  while (!ready && attempts < 30) {
+    const status = await flyClient.machines.get(machineId);
+    ready = status.state === 'started';
+    if (!ready) {
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      attempts++;
     }
+  }
+
+  if (!ready) {
+    throw new Error('Machine failed to start within timeout');
+  }
+
+  return true;
+}
+
+async function configureDns(userId: string) {
+  "use step";
+
+  const subdomain = `${userId.slice(0, 8)}-${crypto.randomUUID().slice(0, 4)}`;
+  const hostname = `${subdomain}.clawdbot.cloud`;
+
+  await flyClient.certificates.create({
+    app: 'clawdbot-instances',
+    hostname,
   });
 
-  'use step';
-  // Step 3: Configure DNS
-  const hostname = await step('configure-dns', async () => {
-    const subdomain = `${input.userId}-clawdbot`;
-    await flyClient.certificates.create({
-      app: 'clawdbot-instances',
-      hostname: `${subdomain}.clawdbot.cloud`,
-    });
-    return `${subdomain}.clawdbot.cloud`;
+  return hostname;
+}
+
+async function saveInstance(data: {
+  id: string;
+  userId: string;
+  machineId: string;
+  volumeId: string;
+  region: string;
+  hostname: string;
+  plan: 'STARTER' | 'PRO';
+}) {
+  "use step";
+
+  return db.instance.update({
+    where: { id: data.id },
+    data: {
+      machineId: data.machineId,
+      volumeId: data.volumeId,
+      hostname: data.hostname,
+      status: 'RUNNING',
+    },
+  });
+}
+
+async function sendWelcomeEmail(email: string, hostname: string) {
+  "use step";
+
+  // Use Resend, Postmark, or similar
+  await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      from: 'Clawdbot Cloud <noreply@clawdbot.cloud>',
+      to: email,
+      subject: 'Your Clawdbot instance is ready!',
+      html: `<p>Your instance is live at <a href="https://${hostname}">${hostname}</a></p>`,
+    }),
+  });
+}
+
+// Main workflow function
+async function provisionInstance(input: {
+  instanceId: string;
+  userId: string;
+  email: string;
+  region: string;
+  plan: 'STARTER' | 'PRO';
+}) {
+  "use workflow";
+
+  // Step 1: Create volume for persistent storage
+  const volume = await createVolume(input.region);
+
+  // Step 2: Create the Fly.io machine
+  const machine = await createMachine({
+    region: input.region,
+    plan: input.plan,
+    instanceId: input.instanceId,
   });
 
-  'use step';
-  // Step 4: Store in database
-  await step('save-to-db', async () => {
-    return db.instances.create({
-      data: {
-        userId: input.userId,
-        machineId: machine.id,
-        region: input.region,
-        hostname,
-        plan: input.plan,
-        status: 'running',
-      },
-    });
+  // Step 3: Wait for machine to be ready
+  await waitForMachineReady(machine.id);
+
+  // Step 4: Configure DNS and TLS
+  const hostname = await configureDns(input.userId);
+
+  // Step 5: Update database record
+  await saveInstance({
+    id: input.instanceId,
+    userId: input.userId,
+    machineId: machine.id,
+    volumeId: volume.id,
+    region: input.region,
+    hostname,
+    plan: input.plan,
   });
 
-  'use step';
-  // Step 5: Send welcome notification
-  await step('notify-user', async () => {
-    await sendEmail({
-      to: input.userId,
-      template: 'instance-ready',
-      data: { hostname },
-    });
-  });
+  // Step 6: Send welcome email
+  await sendWelcomeEmail(input.email, hostname);
 
   return { machineId: machine.id, hostname };
 }
+
+// Export the workflow handler
+export const { POST } = serve(provisionInstance);
+```
+
+```typescript
+// workflows/health-monitor.ts
+import { serve, sleep } from '@vercel/workflow';
+import { db } from '@/lib/db';
+import { flyClient } from '@/lib/fly';
+
+async function checkHealth(hostname: string) {
+  "use step";
+
+  try {
+    const response = await fetch(`https://${hostname}/health`, {
+      signal: AbortSignal.timeout(10000),
+    });
+    return {
+      healthy: response.ok,
+      statusCode: response.status,
+      checkedAt: new Date().toISOString(),
+    };
+  } catch (error) {
+    return {
+      healthy: false,
+      statusCode: 0,
+      checkedAt: new Date().toISOString(),
+    };
+  }
+}
+
+async function restartMachine(machineId: string) {
+  "use step";
+
+  await flyClient.machines.restart(machineId);
+}
+
+async function sendAlert(userId: string, message: string) {
+  "use step";
+
+  // Send email/SMS/push notification
+  console.log(`Alert for user ${userId}: ${message}`);
+}
+
+async function healthMonitor(input: { instanceId: string }) {
+  "use workflow";
+
+  const instance = await db.instance.findUnique({
+    where: { id: input.instanceId },
+    include: { user: true },
+  });
+
+  if (!instance || instance.status !== 'RUNNING') {
+    return { stopped: true, reason: 'Instance not running' };
+  }
+
+  let consecutiveFailures = 0;
+
+  // Monitor for 24 hours, then workflow completes and a new one is scheduled
+  for (let i = 0; i < 1440; i++) { // 1440 minutes = 24 hours
+    const health = await checkHealth(instance.hostname);
+
+    if (!health.healthy) {
+      consecutiveFailures++;
+
+      if (consecutiveFailures >= 3) {
+        await restartMachine(instance.machineId);
+        await sendAlert(
+          instance.userId,
+          `Your instance ${instance.hostname} was automatically restarted after 3 consecutive health check failures.`
+        );
+        consecutiveFailures = 0;
+      }
+    } else {
+      consecutiveFailures = 0;
+    }
+
+    // Wait 1 minute before next check (durable sleep - no compute cost)
+    await sleep("1 minute");
+  }
+
+  return { completed: true, checksPerformed: 1440 };
+}
+
+export const { POST } = serve(healthMonitor);
+```
+
+```typescript
+// workflows/usage-aggregator.ts
+import { serve, sleep } from '@vercel/workflow';
+import { db } from '@/lib/db';
+import { flyClient } from '@/lib/fly';
+import { PLAN_LIMITS } from '@/lib/plans';
+
+async function fetchMachineMetrics(machineId: string) {
+  "use step";
+
+  // Fetch metrics from Fly.io
+  const metrics = await flyClient.machines.metrics(machineId);
+  return metrics;
+}
+
+async function calculateOverages(
+  usage: { uptimeMinutes: number; bandwidthMB: number; storageGB: number; messagesProcessed: number },
+  plan: 'STARTER' | 'PRO'
+) {
+  "use step";
+
+  const limits = PLAN_LIMITS[plan];
+  const overages = {
+    uptimeOverageMinutes: Math.max(0, usage.uptimeMinutes - limits.uptimeMinutes),
+    bandwidthOverageMB: Math.max(0, usage.bandwidthMB - limits.bandwidthMB),
+    storageOverageGB: Math.max(0, usage.storageGB - limits.storageGB),
+    messagesOverage: Math.max(0, usage.messagesProcessed - limits.messages),
+  };
+
+  // Calculate overage costs
+  const overageCost =
+    (overages.uptimeOverageMinutes * 0.001) +  // $0.001 per extra minute
+    (overages.bandwidthOverageMB * 0.0001) +   // $0.0001 per MB
+    (overages.storageOverageGB * 0.10) +       // $0.10 per GB
+    (overages.messagesOverage * 0.0005);       // $0.0005 per message
+
+  return { overages, overageCost };
+}
+
+async function saveUsageRecord(data: {
+  userId: string;
+  instanceId: string;
+  periodStart: Date;
+  periodEnd: Date;
+  uptimeMinutes: number;
+  bandwidthMB: number;
+  storageGB: number;
+  messagesProcessed: number;
+  baseCost: number;
+  overageCost: number;
+}) {
+  "use step";
+
+  return db.usageRecord.upsert({
+    where: {
+      instanceId_periodStart: {
+        instanceId: data.instanceId,
+        periodStart: data.periodStart,
+      },
+    },
+    create: {
+      ...data,
+      totalCost: data.baseCost + data.overageCost,
+    },
+    update: {
+      ...data,
+      totalCost: data.baseCost + data.overageCost,
+    },
+  });
+}
+
+async function usageAggregator(input: { instanceId: string; periodStart: string }) {
+  "use workflow";
+
+  const instance = await db.instance.findUnique({
+    where: { id: input.instanceId },
+  });
+
+  if (!instance) {
+    return { error: 'Instance not found' };
+  }
+
+  const periodStart = new Date(input.periodStart);
+  const periodEnd = new Date(periodStart);
+  periodEnd.setMonth(periodEnd.getMonth() + 1);
+
+  // Aggregate hourly for 30 days
+  let totalUsage = {
+    uptimeMinutes: 0,
+    bandwidthMB: 0,
+    storageGB: 0,
+    messagesProcessed: 0,
+  };
+
+  for (let hour = 0; hour < 720; hour++) { // 720 hours = 30 days
+    if (instance.status === 'RUNNING') {
+      const metrics = await fetchMachineMetrics(instance.machineId);
+      totalUsage.uptimeMinutes += 60;
+      totalUsage.bandwidthMB += metrics.bandwidthMB || 0;
+      totalUsage.storageGB = metrics.storageGB || totalUsage.storageGB;
+      totalUsage.messagesProcessed += metrics.messages || 0;
+    }
+
+    await sleep("1 hour");
+  }
+
+  // Calculate overages and costs
+  const { overages, overageCost } = await calculateOverages(totalUsage, instance.plan);
+  const baseCost = instance.plan === 'STARTER' ? 9 : 19;
+
+  // Save final usage record
+  await saveUsageRecord({
+    userId: instance.userId,
+    instanceId: instance.id,
+    periodStart,
+    periodEnd,
+    ...totalUsage,
+    baseCost,
+    overageCost,
+  });
+
+  return { totalUsage, overages, overageCost, totalCost: baseCost + overageCost };
+}
+
+export const { POST } = serve(usageAggregator);
 ```
 
 **Workflow Use Cases:**
 - **Instance Provisioning**: Multi-step machine creation with retries
 - **Health Monitoring**: Periodic checks that survive deployments
+- **Usage Aggregation**: Hourly metrics collection for overage billing
 - **Backup Scheduling**: Daily/weekly volume snapshots
-- **Scaling Operations**: Auto-scale based on usage metrics
-- **Onboarding Flows**: Multi-day email sequences
 
-#### 1.3 API Routes
+#### 1.5 API Routes
 
 ```typescript
 // app/api/instances/route.ts
-import { auth } from '@clerk/nextjs';
-import { flyClient } from '@/lib/fly';
+import { auth } from '@/lib/auth';
+import { headers } from 'next/headers';
+import { db } from '@/lib/db';
+import { PLAN_LIMITS } from '@/lib/plans';
 
 export async function POST(request: Request) {
-  const { userId } = auth();
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session) {
+    return Response.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   const body = await request.json();
+  const plan = body.plan || 'STARTER';
 
   // Validate plan limits
-  const existingCount = await db.instances.count({ where: { userId } });
-  const limit = await getUserPlanLimit(userId);
+  const existingCount = await db.instance.count({
+    where: { userId: session.user.id, status: { not: 'DELETED' } },
+  });
+
+  const limit = PLAN_LIMITS[plan].instances;
   if (existingCount >= limit) {
     return Response.json({ error: 'Instance limit reached' }, { status: 403 });
   }
 
-  // Trigger provisioning workflow
-  const { runId } = await startWorkflow('provision-instance', {
-    userId,
-    region: body.region || 'iad',
-    plan: body.plan || 'starter',
+  // Create instance record in pending state
+  const instance = await db.instance.create({
+    data: {
+      userId: session.user.id,
+      machineId: '', // Will be set by workflow
+      region: body.region || 'iad',
+      hostname: '', // Will be set by workflow
+      plan,
+      status: 'PROVISIONING',
+    },
   });
 
-  return Response.json({ workflowRunId: runId, status: 'provisioning' });
+  // Trigger provisioning workflow
+  const workflowResponse = await fetch(`${process.env.VERCEL_URL}/workflows/provision-instance`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      instanceId: instance.id,
+      userId: session.user.id,
+      email: session.user.email,
+      region: body.region || 'iad',
+      plan,
+    }),
+  });
+
+  const { runId } = await workflowResponse.json();
+
+  return Response.json({
+    instanceId: instance.id,
+    workflowRunId: runId,
+    status: 'provisioning',
+  });
 }
 
 export async function GET(request: Request) {
-  const { userId } = auth();
-  const instances = await db.instances.findMany({
-    where: { userId },
-    include: { metrics: { take: 1, orderBy: { createdAt: 'desc' } } },
+  const session = await auth.api.getSession({
+    headers: await headers(),
   });
 
-  // Enrich with real-time status from Fly.io
-  const enriched = await Promise.all(
-    instances.map(async (instance) => {
-      const machine = await flyClient.machines.get(instance.machineId);
-      return {
-        ...instance,
-        realTimeStatus: machine.state,
-        uptime: machine.created_at,
-      };
-    })
+  if (!session) {
+    return Response.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  const instances = await db.instance.findMany({
+    where: { userId: session.user.id, status: { not: 'DELETED' } },
+    include: {
+      usageRecords: {
+        take: 1,
+        orderBy: { periodStart: 'desc' },
+      },
+    },
+  });
+
+  return Response.json(instances);
+}
+```
+
+```typescript
+// app/api/usage/route.ts
+import { auth } from '@/lib/auth';
+import { headers } from 'next/headers';
+import { db } from '@/lib/db';
+
+export async function GET(request: Request) {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session) {
+    return Response.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  const { searchParams } = new URL(request.url);
+  const instanceId = searchParams.get('instanceId');
+  const period = searchParams.get('period') || 'current';
+
+  const now = new Date();
+  const periodStart = new Date(now.getFullYear(), now.getMonth(), 1);
+
+  const usage = await db.usageRecord.findMany({
+    where: {
+      userId: session.user.id,
+      ...(instanceId && { instanceId }),
+      periodStart: { gte: periodStart },
+    },
+    include: {
+      instance: {
+        select: { hostname: true, plan: true, region: true },
+      },
+    },
+  });
+
+  // Aggregate totals
+  const totals = usage.reduce(
+    (acc, record) => ({
+      baseCost: acc.baseCost + record.baseCost,
+      overageCost: acc.overageCost + record.overageCost,
+      totalCost: acc.totalCost + record.totalCost,
+      uptimeMinutes: acc.uptimeMinutes + record.uptimeMinutes,
+      bandwidthMB: acc.bandwidthMB + record.bandwidthMB,
+      messagesProcessed: acc.messagesProcessed + record.messagesProcessed,
+    }),
+    { baseCost: 0, overageCost: 0, totalCost: 0, uptimeMinutes: 0, bandwidthMB: 0, messagesProcessed: 0 }
   );
 
-  return Response.json(enriched);
+  return Response.json({ records: usage, totals });
 }
 ```
 
@@ -375,25 +999,19 @@ exec clawdbot gateway \
 
 ```typescript
 // lib/fly/machine-specs.ts
-export function machineSpecForPlan(plan: string) {
+export function machineSpecForPlan(plan: 'STARTER' | 'PRO') {
   switch (plan) {
-    case 'starter':
+    case 'STARTER':
       return {
         cpu_kind: 'shared',
         cpus: 1,
         memory_mb: 1024, // 1GB - limited functionality
       };
-    case 'pro':
+    case 'PRO':
       return {
         cpu_kind: 'shared',
         cpus: 2,
-        memory_mb: 2048, // 2GB - recommended
-      };
-    case 'enterprise':
-      return {
-        cpu_kind: 'performance', // Dedicated CPU
-        cpus: 4,
-        memory_mb: 4096, // 4GB - full features + browser automation
+        memory_mb: 2048, // 2GB - recommended for full features
       };
     default:
       throw new Error(`Unknown plan: ${plan}`);
@@ -419,12 +1037,6 @@ export const servicesConfig = [
       hard_limit: 100,
       soft_limit: 80,
     },
-  },
-  {
-    // WebSocket upgrade path
-    ports: [{ port: 443, handlers: ['tls'] }],
-    protocol: 'tcp',
-    internal_port: 8080,
   },
 ];
 ```
@@ -479,192 +1091,9 @@ export async function setInstanceSecret(
 }
 ```
 
-#### 3.3 Secret Categories for Clawdbot
+### 4. Authentication Flow
 
-```typescript
-// types/secrets.ts
-export interface ClawdbotSecrets {
-  // AI Providers
-  ANTHROPIC_API_KEY?: string;
-  OPENAI_API_KEY?: string;
-  OPENROUTER_API_KEY?: string;
-
-  // Messaging Platforms
-  TELEGRAM_BOT_TOKEN?: string;
-  DISCORD_TOKEN?: string;
-  SLACK_BOT_TOKEN?: string;
-  SLACK_APP_TOKEN?: string;
-
-  // Voice
-  ELEVENLABS_API_KEY?: string;
-  DEEPGRAM_API_KEY?: string;
-
-  // Platform
-  CLAWDBOT_GATEWAY_TOKEN: string; // Auto-generated
-
-  // Custom user secrets
-  [key: string]: string | undefined;
-}
-```
-
-### 4. Configuration Management
-
-#### 4.1 Visual Config Editor
-
-```typescript
-// components/config-editor/ClawdbotConfigEditor.tsx
-'use client';
-
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { clawdbotConfigSchema } from '@/lib/schemas/clawdbot-config';
-
-export function ClawdbotConfigEditor({ instanceId, initialConfig }) {
-  const form = useForm({
-    resolver: zodResolver(clawdbotConfigSchema),
-    defaultValues: initialConfig,
-  });
-
-  return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        {/* AI Provider Section */}
-        <ConfigSection title="AI Provider">
-          <SelectField
-            name="model"
-            label="Default Model"
-            options={[
-              { value: 'anthropic/claude-sonnet-4', label: 'Claude Sonnet 4' },
-              { value: 'anthropic/claude-opus-4', label: 'Claude Opus 4' },
-              { value: 'openai/gpt-4o', label: 'GPT-4o' },
-            ]}
-          />
-          <NumberField
-            name="maxTokens"
-            label="Max Tokens"
-            min={1000}
-            max={200000}
-          />
-        </ConfigSection>
-
-        {/* Messaging Channels Section */}
-        <ConfigSection title="Messaging Channels">
-          <ChannelToggle channel="telegram" />
-          <ChannelToggle channel="discord" />
-          <ChannelToggle channel="whatsapp" />
-          <ChannelToggle channel="slack" />
-        </ConfigSection>
-
-        {/* Security Section */}
-        <ConfigSection title="Security">
-          <SelectField
-            name="gateway.auth.mode"
-            label="Auth Mode"
-            options={[
-              { value: 'token', label: 'Token (Recommended)' },
-              { value: 'none', label: 'None (Not Recommended)' },
-            ]}
-          />
-          <TextField
-            name="pairing.allowlist"
-            label="Allowed Contacts"
-            placeholder="+1234567890, user@example.com"
-          />
-        </ConfigSection>
-
-        {/* Tool Permissions */}
-        <ConfigSection title="Tool Permissions">
-          <SelectField
-            name="toolProfile"
-            label="Tool Profile"
-            options={[
-              { value: 'minimal', label: 'Minimal (Safe)' },
-              { value: 'coding', label: 'Coding (File Access)' },
-              { value: 'full', label: 'Full (All Tools)' },
-            ]}
-          />
-        </ConfigSection>
-
-        <Button type="submit">Save & Restart</Button>
-      </form>
-    </Form>
-  );
-}
-```
-
-#### 4.2 Config Validation Schema
-
-```typescript
-// lib/schemas/clawdbot-config.ts
-import { z } from 'zod';
-
-export const clawdbotConfigSchema = z.object({
-  model: z.string().default('anthropic/claude-sonnet-4'),
-  maxTokens: z.number().min(1000).max(200000).default(8192),
-
-  gateway: z.object({
-    port: z.number().default(8080),
-    auth: z.object({
-      mode: z.enum(['token', 'none']).default('token'),
-    }),
-  }),
-
-  channels: z.object({
-    telegram: z.object({
-      enabled: z.boolean().default(false),
-      botUsername: z.string().optional(),
-    }),
-    discord: z.object({
-      enabled: z.boolean().default(false),
-      guildId: z.string().optional(),
-    }),
-    whatsapp: z.object({
-      enabled: z.boolean().default(false),
-      phoneNumber: z.string().optional(),
-    }),
-    slack: z.object({
-      enabled: z.boolean().default(false),
-      workspaceId: z.string().optional(),
-    }),
-  }),
-
-  security: z.object({
-    toolProfile: z.enum(['minimal', 'coding', 'messaging', 'full']).default('minimal'),
-    allowedTools: z.array(z.string()).optional(),
-    deniedTools: z.array(z.string()).optional(),
-  }),
-
-  features: z.object({
-    browserAutomation: z.boolean().default(false),
-    voiceMode: z.boolean().default(false),
-    canvas: z.boolean().default(false),
-  }),
-});
-```
-
-### 5. Authentication Flow
-
-#### 5.1 User Authentication (Clerk)
-
-```typescript
-// middleware.ts
-import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
-
-const isPublicRoute = createRouteMatcher([
-  '/',
-  '/sign-in(.*)',
-  '/sign-up(.*)',
-  '/api/webhooks(.*)',
-]);
-
-export default clerkMiddleware(async (auth, request) => {
-  if (!isPublicRoute(request)) {
-    await auth.protect();
-  }
-});
-```
-
-#### 5.2 Instance Access Flow
+#### 4.1 User Authentication (Better Auth)
 
 ```
 ┌──────────┐       ┌─────────────┐       ┌──────────────┐       ┌─────────────┐
@@ -672,17 +1101,17 @@ export default clerkMiddleware(async (auth, request) => {
 │ Browser  │       │  (Vercel)   │       │  (Vercel)    │       │  (Fly.io)   │
 └────┬─────┘       └──────┬──────┘       └──────┬───────┘       └──────┬──────┘
      │                    │                     │                      │
-     │ 1. Login via Clerk │                     │                      │
+     │ 1. Login (Better Auth)                   │                      │
      │───────────────────>│                     │                      │
      │                    │                     │                      │
-     │ 2. JWT Token       │                     │                      │
+     │ 2. Session Cookie  │                     │                      │
      │<───────────────────│                     │                      │
      │                    │                     │                      │
      │ 3. Request instance access               │                      │
      │───────────────────────────────────────-->│                      │
      │                    │                     │                      │
-     │                    │  4. Verify ownership│                      │
-     │                    │     (DB lookup)     │                      │
+     │                    │  4. Verify session  │                      │
+     │                    │     + ownership     │                      │
      │                    │                     │                      │
      │                    │  5. Generate short-lived token             │
      │                    │───────────────────────────────────────────>│
@@ -697,27 +1126,37 @@ export default clerkMiddleware(async (auth, request) => {
 
 ```typescript
 // app/api/instances/[id]/access/route.ts
-import { auth } from '@clerk/nextjs';
+import { auth } from '@/lib/auth';
+import { headers } from 'next/headers';
 import { SignJWT } from 'jose';
+import { db } from '@/lib/db';
 
 export async function POST(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const { userId } = auth();
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session) {
+    return Response.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  const { id } = await params;
 
   // Verify ownership
-  const instance = await db.instances.findFirst({
-    where: { id: params.id, userId },
+  const instance = await db.instance.findFirst({
+    where: { id, userId: session.user.id },
   });
 
   if (!instance) {
     return Response.json({ error: 'Not found' }, { status: 404 });
   }
 
-  // Generate short-lived access token
+  // Generate short-lived access token for the Clawdbot instance
   const accessToken = await new SignJWT({
-    sub: userId,
+    sub: session.user.id,
     instanceId: instance.id,
     permissions: ['connect', 'configure'],
   })
@@ -734,9 +1173,9 @@ export async function POST(
 }
 ```
 
-### 6. Monitoring & Observability
+### 5. Monitoring & Observability
 
-#### 6.1 Health Checks
+#### 5.1 Health Checks
 
 ```typescript
 // deployed in each Clawdbot instance: health-server.js
@@ -765,7 +1204,7 @@ const server = http.createServer((req, res) => {
 server.listen(9090);
 ```
 
-#### 6.2 Centralized Logging
+#### 5.2 Centralized Logging
 
 ```typescript
 // lib/logging/axiom.ts
@@ -783,108 +1222,164 @@ export async function ingestLogs(instanceId: string, logs: string[]) {
     message: log,
   })));
 }
-
-// Stream logs from instance
-export async function streamLogs(instanceId: string) {
-  const instance = await db.instances.findUnique({ where: { id: instanceId } });
-
-  // Connect to Fly.io log stream
-  const logStream = await flyClient.machines.logs(instance.machineId, {
-    follow: true,
-  });
-
-  for await (const log of logStream) {
-    await ingestLogs(instanceId, [log]);
-    yield log; // For real-time streaming to dashboard
-  }
-}
-```
-
-#### 6.3 Alerting Workflow
-
-```typescript
-// app/api/workflows/health-monitor.ts
-'use workflow';
-
-import { sleep, step } from '@vercel/workflow';
-
-export async function healthMonitor(input: { instanceId: string }) {
-  while (true) {
-    'use step';
-    const health = await step('check-health', async () => {
-      const instance = await db.instances.findUnique({
-        where: { id: input.instanceId },
-      });
-
-      const response = await fetch(`https://${instance.hostname}/health`);
-      return {
-        healthy: response.ok,
-        statusCode: response.status,
-        checkedAt: new Date().toISOString(),
-      };
-    });
-
-    if (!health.healthy) {
-      'use step';
-      await step('handle-unhealthy', async () => {
-        // Increment failure counter
-        const failures = await redis.incr(`health:failures:${input.instanceId}`);
-
-        if (failures >= 3) {
-          // Auto-restart after 3 failures
-          await restartInstance(input.instanceId);
-          await redis.set(`health:failures:${input.instanceId}`, 0);
-
-          // Notify user
-          await sendAlert({
-            instanceId: input.instanceId,
-            type: 'auto-restart',
-            message: 'Your instance was automatically restarted due to health check failures',
-          });
-        }
-      });
-    } else {
-      // Reset failure counter on success
-      await redis.set(`health:failures:${input.instanceId}`, 0);
-    }
-
-    // Check every 60 seconds
-    await sleep('60 seconds');
-  }
-}
 ```
 
 ---
 
-## Pricing Model
+## Pricing Model with Overage Tracking
+
+### Plan Limits
+
+```typescript
+// lib/plans.ts
+export const PLAN_LIMITS = {
+  STARTER: {
+    price: 9, // USD/month
+    instances: 1,
+    uptimeMinutes: 43200, // 30 days
+    bandwidthMB: 5120, // 5GB
+    storageGB: 1,
+    messages: 10000,
+  },
+  PRO: {
+    price: 19, // USD/month
+    instances: 3,
+    uptimeMinutes: 43200, // 30 days per instance
+    bandwidthMB: 20480, // 20GB
+    storageGB: 5,
+    messages: 50000,
+  },
+} as const;
+
+export const OVERAGE_RATES = {
+  uptimePerMinute: 0.001, // $0.001/minute ($0.06/hour)
+  bandwidthPerMB: 0.0001, // $0.0001/MB ($0.10/GB)
+  storagePerGB: 0.10, // $0.10/GB/month
+  messagePerUnit: 0.0005, // $0.0005/message
+} as const;
+```
 
 ### Cost Structure
 
-| Component | Cost Basis | Estimated per Instance |
-|-----------|-----------|----------------------|
-| **Fly.io Machine (Starter)** | $5.70/mo (shared-cpu-1x, 1GB) | $5.70 |
-| **Fly.io Machine (Pro)** | $10.70/mo (shared-cpu-2x, 2GB) | $10.70 |
-| **Fly.io Volume (1GB)** | $0.15/GB/mo | $0.15 |
-| **Fly.io Bandwidth** | $0.02/GB after 100GB | ~$0.50 |
-| **Vercel (Control Plane)** | Pro plan $20/mo | $0.20 (amortized) |
-| **Doppler (Secrets)** | $6/user/mo | $0.50 (amortized) |
+| Component | Cost Basis | Starter Instance | Pro Instance |
+|-----------|-----------|-----------------|--------------|
+| **Fly.io Machine** | Compute | $5.70/mo | $10.70/mo |
+| **Fly.io Volume** | Storage | $0.15/GB | $0.75/5GB |
+| **Fly.io Bandwidth** | Egress | ~$0.50 (5GB) | ~$2.00 (20GB) |
+| **Platform overhead** | Amortized | $0.50 | $0.50 |
+| **Total cost** | | ~$6.85 | ~$13.95 |
 
-### Suggested Pricing Tiers
+### Pricing Tiers
 
-| Tier | Price | Specs | Target |
-|------|-------|-------|--------|
-| **Starter** | $9/mo | 1 vCPU, 1GB RAM, 1GB storage | Personal use |
-| **Pro** | $19/mo | 2 vCPU, 2GB RAM, 5GB storage | Power users |
-| **Team** | $49/mo | 2 vCPU, 4GB RAM, 10GB storage, priority support | Small teams |
-| **Enterprise** | Custom | Dedicated CPU, custom limits, SLA | Organizations |
+| Tier | Price | Included | Overage |
+|------|-------|----------|---------|
+| **Starter** | $9/mo | 1 instance, 1 vCPU, 1GB RAM, 1GB storage, 5GB bandwidth, 10K messages | Per-unit rates above |
+| **Pro** | $19/mo | 3 instances, 2 vCPU, 2GB RAM, 5GB storage, 20GB bandwidth, 50K messages | Per-unit rates above |
 
 ### Margin Analysis
 
-| Tier | Revenue | Cost | Gross Margin |
-|------|---------|------|--------------|
-| Starter | $9 | ~$6.50 | 28% |
-| Pro | $19 | ~$11.50 | 40% |
-| Team | $49 | ~$20 | 59% |
+| Tier | Revenue | Base Cost | Margin | Break-even Overage |
+|------|---------|-----------|--------|-------------------|
+| **Starter** | $9 | $6.85 | 24% (~$2.15) | N/A |
+| **Pro** | $19 | $13.95 | 27% (~$5.05) | N/A |
+
+**Overage Profit**: All overage revenue is ~90% margin (metering cost only).
+
+### Usage Dashboard Component
+
+```typescript
+// components/UsageDashboard.tsx
+'use client';
+
+import { useQuery } from '@tanstack/react-query';
+import { PLAN_LIMITS, OVERAGE_RATES } from '@/lib/plans';
+
+export function UsageDashboard({ instanceId }: { instanceId: string }) {
+  const { data: usage } = useQuery({
+    queryKey: ['usage', instanceId],
+    queryFn: () => fetch(`/api/usage?instanceId=${instanceId}`).then(r => r.json()),
+  });
+
+  if (!usage) return <div>Loading...</div>;
+
+  const plan = usage.records[0]?.instance.plan || 'STARTER';
+  const limits = PLAN_LIMITS[plan];
+
+  return (
+    <div className="grid gap-4">
+      <h2 className="text-xl font-bold">Current Period Usage</h2>
+
+      <UsageBar
+        label="Uptime"
+        current={usage.totals.uptimeMinutes}
+        limit={limits.uptimeMinutes}
+        unit="minutes"
+        overageRate={OVERAGE_RATES.uptimePerMinute}
+      />
+
+      <UsageBar
+        label="Bandwidth"
+        current={usage.totals.bandwidthMB}
+        limit={limits.bandwidthMB}
+        unit="MB"
+        overageRate={OVERAGE_RATES.bandwidthPerMB}
+      />
+
+      <UsageBar
+        label="Messages"
+        current={usage.totals.messagesProcessed}
+        limit={limits.messages}
+        unit="messages"
+        overageRate={OVERAGE_RATES.messagePerUnit}
+      />
+
+      <div className="border-t pt-4 mt-4">
+        <div className="flex justify-between">
+          <span>Base cost</span>
+          <span>${usage.totals.baseCost.toFixed(2)}</span>
+        </div>
+        <div className="flex justify-between text-amber-600">
+          <span>Overage cost</span>
+          <span>${usage.totals.overageCost.toFixed(2)}</span>
+        </div>
+        <div className="flex justify-between font-bold text-lg mt-2">
+          <span>Total</span>
+          <span>${usage.totals.totalCost.toFixed(2)}</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function UsageBar({ label, current, limit, unit, overageRate }) {
+  const percentage = Math.min((current / limit) * 100, 100);
+  const overage = Math.max(0, current - limit);
+  const isOverLimit = current > limit;
+
+  return (
+    <div>
+      <div className="flex justify-between text-sm mb-1">
+        <span>{label}</span>
+        <span className={isOverLimit ? 'text-amber-600' : ''}>
+          {current.toLocaleString()} / {limit.toLocaleString()} {unit}
+          {overage > 0 && ` (+${overage.toLocaleString()} overage)`}
+        </span>
+      </div>
+      <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+        <div
+          className={`h-full ${isOverLimit ? 'bg-amber-500' : 'bg-green-500'}`}
+          style={{ width: `${percentage}%` }}
+        />
+      </div>
+      {overage > 0 && (
+        <div className="text-xs text-amber-600 mt-1">
+          Overage: ${(overage * overageRate).toFixed(2)}
+        </div>
+      )}
+    </div>
+  );
+}
+```
 
 ---
 
@@ -894,15 +1389,16 @@ export async function healthMonitor(input: { instanceId: string }) {
 
 **Goal**: Allow users to deploy and manage a single Clawdbot instance
 
-- [ ] Vercel project setup with Next.js 15
-- [ ] Clerk authentication integration
+- [ ] Next.js 15 project setup with App Router
+- [ ] PostgreSQL database (Neon/Supabase) + Prisma
+- [ ] Better Auth integration (email + GitHub OAuth)
 - [ ] Fly.io Machines API integration
-- [ ] Basic provisioning workflow
+- [ ] Basic provisioning workflow (Vercel Workflows)
 - [ ] Instance start/stop/restart
 - [ ] Simple config editor
 - [ ] Fly.io volume management
-- [ ] Basic health monitoring
-- [ ] Stripe billing integration
+- [ ] Basic health monitoring workflow
+- [ ] Stripe billing integration with usage tracking
 
 ### Phase 2: Configuration & Channels
 
@@ -913,30 +1409,31 @@ export async function healthMonitor(input: { instanceId: string }) {
 - [ ] WhatsApp Business API integration guide
 - [ ] Slack app installation flow
 - [ ] Secrets management (Doppler integration)
-- [ ] Visual config editor
-- [ ] Config validation
+- [ ] Visual config editor with validation
+- [ ] Config import/export
 
-### Phase 3: Observability & Operations
+### Phase 3: Observability & Billing
 
-**Goal**: Production-ready monitoring and operations
+**Goal**: Production-ready monitoring and overage billing
 
 - [ ] Real-time log streaming
 - [ ] Metrics dashboard (CPU, memory, messages)
-- [ ] Alerting system
+- [ ] Usage aggregation workflow (hourly)
+- [ ] Overage calculation and display
+- [ ] Stripe metered billing webhooks
 - [ ] Auto-restart on failures
 - [ ] Volume backup/restore
-- [ ] Instance cloning
 
-### Phase 4: Advanced Features
+### Phase 4: Scale & Polish
 
-**Goal**: Differentiated features for higher tiers
+**Goal**: Growth features
 
 - [ ] Multi-region deployment
 - [ ] Custom domain support
-- [ ] Team/organization accounts
 - [ ] API access for automation
-- [ ] Browser automation tier
-- [ ] Voice mode support
+- [ ] Browser automation (Pro only)
+- [ ] Voice mode support (Pro only)
+- [ ] Referral program
 
 ---
 
@@ -985,20 +1482,6 @@ export async function healthMonitor(input: { instanceId: string }) {
 
 **Verdict**: **Not viable** for Clawdbot hosting
 
-### Option D: Self-Managed Firecracker
-
-**Pros:**
-- Maximum isolation
-- Lowest cost at scale
-- Full control
-
-**Cons:**
-- Massive engineering investment
-- Need to build orchestration from scratch
-- Long time to market
-
-**Verdict**: Only if building this as core business
-
 ---
 
 ## Security Considerations
@@ -1027,7 +1510,7 @@ export async function healthMonitor(input: { instanceId: string }) {
 │                                                                 │
 │  5. Access Control                                              │
 │     └── Database-enforced ownership checks                      │
-│     └── Short-lived access tokens                               │
+│     └── Short-lived access tokens (1 hour)                      │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 ```
@@ -1050,8 +1533,8 @@ The proposed **hybrid architecture** using **Vercel for the control plane** and 
 
 1. **Durability**: Vercel Workflows for orchestration, Fly.io for 24/7 instances
 2. **Security**: MicroVM isolation, per-tenant secrets, short-lived tokens
-3. **Developer Experience**: Modern Next.js dashboard, visual config editor
-4. **Cost Efficiency**: Usage-based pricing, reasonable margins
+3. **Developer Experience**: Modern Next.js dashboard, Better Auth for flexibility
+4. **Cost Efficiency**: Usage-based pricing with overage tracking for healthy margins
 5. **Scalability**: Can grow from 10 to 10,000 instances without architecture changes
 
 This architecture leverages your preference for Vercel products where they excel (frontend, workflows, edge) while using purpose-built infrastructure (Fly.io) for the workloads that require persistent compute.
@@ -1062,3 +1545,14 @@ This architecture leverages your preference for Vercel products where they excel
 2. **User Research**: Interview potential customers about pricing/features
 3. **Legal Review**: Terms of Service for hosted AI assistants
 4. **Partnership**: Reach out to Clawdbot team about official hosting partnership
+
+---
+
+## Sources
+
+- [Vercel Workflow DevKit Documentation](https://useworkflow.dev)
+- [Vercel Workflow GitHub](https://github.com/vercel/workflow)
+- [Better Auth Documentation](https://www.better-auth.com/docs/introduction)
+- [Better Auth Installation Guide](https://www.better-auth.com/docs/installation)
+- [Fly.io Machines API](https://fly.io/docs/machines/api/)
+- [Fly.io Architecture Reference](https://fly.io/docs/reference/architecture/)
