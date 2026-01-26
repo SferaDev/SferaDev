@@ -34,7 +34,7 @@ export const createAuth = (ctx: GenericCtx<DataModel>) => {
 
 export const getCurrentUser = query({
 	args: {},
-	handler: async (ctx) => {
+	handler: async (ctx: GenericCtx<DataModel>) => {
 		return authComponent.getAuthUser(ctx);
 	},
 });

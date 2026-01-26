@@ -6,6 +6,7 @@ export declare const api: {
 	auth: {
 		signIn: any;
 		signOut: any;
+		getCurrentUser: any;
 	};
 	events: {
 		create: any;
@@ -87,11 +88,16 @@ export declare const api: {
 	};
 };
 
+export declare const components: {
+	betterAuth: any;
+};
+
 export declare const internal: {
 	stripe: {
 		getOrganization: any;
 		updateStripeCustomerId: any;
 		handleSubscriptionUpdated: any;
 		handleSubscriptionCanceled: any;
+		handlePaymentSuccess: any;
 	};
 };

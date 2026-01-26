@@ -10,7 +10,8 @@ export async function requireAuth(ctx: QueryCtx | MutationCtx): Promise<string> 
 	if (!user) {
 		throw new Error("Unauthorized");
 	}
-	return user.id;
+	// Better Auth user has _id field (Convex document ID)
+	return user._id;
 }
 
 export async function getUser(ctx: QueryCtx | MutationCtx) {
