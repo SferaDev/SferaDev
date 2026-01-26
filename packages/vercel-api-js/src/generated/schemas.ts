@@ -5008,6 +5008,13 @@ export const teamSchema = z
 					"When enabled, deployment protection settings require stricter permissions (owner-only).",
 				),
 		),
+		nsnbConfig: z.optional(
+			z
+				.object({
+					preference: z.enum(["auto-approval", "block", "manual-approval"]),
+				})
+				.describe("NSNB configuration for the team."),
+		),
 		id: z.string().describe("The Team's unique identifier."),
 		slug: z.string().describe("The Team's slug, which is unique across the Vercel platform."),
 		name: z.nullable(

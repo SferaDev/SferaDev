@@ -11753,6 +11753,15 @@ export const strictDeploymentProtectionSettingsEnabledEnum = {
 export type StrictDeploymentProtectionSettingsEnabledEnumKey =
 	(typeof strictDeploymentProtectionSettingsEnabledEnum)[keyof typeof strictDeploymentProtectionSettingsEnabledEnum];
 
+export const nsnbConfigPreferenceEnum = {
+	"auto-approval": "auto-approval",
+	block: "block",
+	"manual-approval": "manual-approval",
+} as const;
+
+export type NsnbConfigPreferenceEnumKey =
+	(typeof nsnbConfigPreferenceEnum)[keyof typeof nsnbConfigPreferenceEnum];
+
 export const membershipConfirmedEnum = {
 	true: true,
 } as const;
@@ -12180,6 +12189,18 @@ export type Team = {
 				 * @type number
 				 */
 				updatedAt: number;
+		  }
+		| undefined;
+	/**
+	 * @description NSNB configuration for the team.
+	 * @type object | undefined
+	 */
+	nsnbConfig?:
+		| {
+				/**
+				 * @type string
+				 */
+				preference: NsnbConfigPreferenceEnumKey;
 		  }
 		| undefined;
 	/**
