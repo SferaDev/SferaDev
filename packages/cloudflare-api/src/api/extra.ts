@@ -1487,6 +1487,7 @@ import {
 	r2GetBucket,
 	r2GetBucketCorsPolicy,
 	r2GetBucketLifecycleConfiguration,
+	r2GetBucketLocalUploadsConfiguration,
 	r2GetBucketLockConfiguration,
 	r2GetBucketPublicPolicy,
 	r2GetBucketSippyConfig,
@@ -1498,6 +1499,7 @@ import {
 	r2PatchBucket,
 	r2PutBucketCorsPolicy,
 	r2PutBucketLifecycleConfiguration,
+	r2PutBucketLocalUploadsConfiguration,
 	r2PutBucketLockConfiguration,
 	r2PutBucketPublicPolicy,
 	r2PutBucketSippyConfig,
@@ -4394,6 +4396,10 @@ export const operationsByPath = {
 		r2GetBucketLifecycleConfiguration,
 	"PUT /accounts/{account_id}/r2/buckets/{bucket_name}/lifecycle":
 		r2PutBucketLifecycleConfiguration,
+	"GET /accounts/{account_id}/r2/buckets/{bucket_name}/local-uploads":
+		r2GetBucketLocalUploadsConfiguration,
+	"PUT /accounts/{account_id}/r2/buckets/{bucket_name}/local-uploads":
+		r2PutBucketLocalUploadsConfiguration,
 	"GET /accounts/{account_id}/r2/buckets/{bucket_name}/lock": r2GetBucketLockConfiguration,
 	"PUT /accounts/{account_id}/r2/buckets/{bucket_name}/lock": r2PutBucketLockConfiguration,
 	"DELETE /accounts/{account_id}/r2/buckets/{bucket_name}/sippy": r2DeleteBucketSippyConfig,

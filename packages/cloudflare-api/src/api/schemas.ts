@@ -42712,6 +42712,18 @@ export type R2ListCustomDomainsResponse = {
 };
 
 /**
+ * Configuration for local uploads on a bucket.
+ */
+export type R2LocalUploadsConfiguration = {
+	/**
+	 * Whether local uploads is enabled for this bucket. When enabled, object's data is written to the nearest region first, then asynchronously replicated to the bucket's primary region.
+	 *
+	 * @x-auditable true
+	 */
+	enabled?: boolean;
+};
+
+/**
  * Condition to apply a lock rule to an object for how long in seconds.
  */
 export type R2LockRuleAgeCondition = {
