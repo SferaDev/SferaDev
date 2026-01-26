@@ -1,5 +1,4 @@
 import { Camera, Check, Download, QrCode, Settings, Sparkles } from "lucide-react";
-import type { Metadata } from "next";
 import Link from "next/link";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { LocaleSwitcher } from "@/components/locale-switcher";
