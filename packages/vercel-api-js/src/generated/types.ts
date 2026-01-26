@@ -1241,14 +1241,6 @@ export type DomainAlreadyRenewing = {
  */
 export type Nameserver = string;
 
-export const registrantFieldValidationEnum = {
-	valid_email: "valid_email",
-	valid_countries: "valid_countries",
-} as const;
-
-export type RegistrantFieldValidationEnumKey =
-	(typeof registrantFieldValidationEnum)[keyof typeof registrantFieldValidationEnum];
-
 export const registrantFieldTypeEnum = {
 	string: "string",
 } as const;
@@ -1294,7 +1286,10 @@ export type RegistrantField =
 			 * @type string | undefined
 			 */
 			label?: string | undefined;
-			validation?: (RegistrantFieldValidationEnumKey | string | string) | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			validation?: string | undefined;
 			requiredWhen?:
 				| (
 						| string
@@ -1347,7 +1342,10 @@ export type RegistrantField =
 			 * @type string | undefined
 			 */
 			label?: string | undefined;
-			validation?: (RegistrantFieldValidationEnumKey | string | string) | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			validation?: string | undefined;
 			requiredWhen?:
 				| (
 						| string
@@ -1398,7 +1396,10 @@ export type RegistrantField =
 			 * @type string | undefined
 			 */
 			label?: string | undefined;
-			validation?: (RegistrantFieldValidationEnumKey | string | string) | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			validation?: string | undefined;
 			requiredWhen?:
 				| (
 						| string
@@ -1432,7 +1433,10 @@ export type RegistrantField =
 			 * @type string | undefined
 			 */
 			label?: string | undefined;
-			validation?: (RegistrantFieldValidationEnumKey | string | string) | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			validation?: string | undefined;
 			requiredWhen?:
 				| (
 						| string

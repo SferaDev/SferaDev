@@ -644,13 +644,7 @@ export const registrantFieldSchema = z
 			description: z.string(),
 			required: z.boolean(),
 			label: z.optional(z.string()),
-			validation: z.optional(
-				z.union([
-					z.enum(["valid_email", "valid_countries"]),
-					z.string().regex(/^regex:[\s\S]*?$/),
-					z.string().regex(/^min_length:[\s\S]*?$/),
-				]),
-			),
+			validation: z.optional(z.string()),
 			requiredWhen: z.optional(
 				z.union([
 					z.string(),
@@ -675,13 +669,7 @@ export const registrantFieldSchema = z
 			description: z.string(),
 			required: z.boolean(),
 			label: z.optional(z.string()),
-			validation: z.optional(
-				z.union([
-					z.enum(["valid_email", "valid_countries"]),
-					z.string().regex(/^regex:[\s\S]*?$/),
-					z.string().regex(/^min_length:[\s\S]*?$/),
-				]),
-			),
+			validation: z.optional(z.string()),
 			requiredWhen: z.optional(
 				z.union([
 					z.string(),
@@ -704,13 +692,7 @@ export const registrantFieldSchema = z
 			description: z.string(),
 			required: z.boolean(),
 			label: z.optional(z.string()),
-			validation: z.optional(
-				z.union([
-					z.enum(["valid_email", "valid_countries"]),
-					z.string().regex(/^regex:[\s\S]*?$/),
-					z.string().regex(/^min_length:[\s\S]*?$/),
-				]),
-			),
+			validation: z.optional(z.string()),
 			requiredWhen: z.optional(
 				z.union([
 					z.string(),
@@ -726,13 +708,7 @@ export const registrantFieldSchema = z
 			description: z.string(),
 			required: z.boolean(),
 			label: z.optional(z.string()),
-			validation: z.optional(
-				z.union([
-					z.enum(["valid_email", "valid_countries"]),
-					z.string().regex(/^regex:[\s\S]*?$/),
-					z.string().regex(/^min_length:[\s\S]*?$/),
-				]),
-			),
+			validation: z.optional(z.string()),
 			requiredWhen: z.optional(
 				z.union([
 					z.string(),
