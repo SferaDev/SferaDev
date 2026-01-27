@@ -2174,6 +2174,7 @@ export const joinedFromOriginEnum = {
 	dsync: "dsync",
 	feedback: "feedback",
 	"organization-teams": "organization-teams",
+	"nsnb-auto-approve": "nsnb-auto-approve",
 } as const;
 
 export type JoinedFromOriginEnumKey =
@@ -11820,6 +11821,7 @@ export const joinedFromOriginEnum2 = {
 	import: "import",
 	link: "link",
 	mail: "mail",
+	"nsnb-auto-approve": "nsnb-auto-approve",
 	"organization-teams": "organization-teams",
 	saml: "saml",
 	teams: "teams",
