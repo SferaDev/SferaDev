@@ -11,6 +11,7 @@ export interface Model {
 	context_window: number;
 	max_tokens: number;
 	type: string;
+	tags?: string[];
 	pricing: {
 		input: string;
 		output: string;
@@ -68,14 +69,18 @@ export class ModelsClient {
 		return data.map((model) => ({
 			id: model.id,
 			name: model.name,
+			detail: "Vercel AI Gateway",
 			family: model.owned_by,
 			version: "1.0",
-			maxInputTokens: model.context_window,
+			maxInputTokens: Math.floor(model.context_window * 0.85),
 			maxOutputTokens: model.max_tokens,
 			tooltip: model.description || "No description available.",
 			capabilities: {
-				imageInput: model.description?.toLowerCase().includes("image") || false,
-				toolCalling: true,
+				// Check tags array for capabilities - only advertise what the model actually supports
+				imageInput: model.tags?.includes("vision") || model.tags?.includes("file-input") || false,
+				// Only advertise tool calling if explicitly supported via tags
+				// Defaulting to true could cause issues with models that don't support tools
+				toolCalling: model.tags?.includes("tool-use") || false,
 			},
 		}));
 	}
