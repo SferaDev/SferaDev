@@ -939,6 +939,39 @@ export const userEventSchema = z
 					previousRole: z.optional(z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_VIEWER"])),
 				}),
 				z.object({
+					previous: z.optional(
+						z
+							.object({
+								enabled: z
+									.union([z.literal(false), z.literal(true)])
+									.describe("Whether automatic code reviews are enabled"),
+								scope: z
+									.enum(["public", "all", "private"])
+									.describe("Which repository visibilities get automatic reviews"),
+								includeDrafts: z
+									.union([z.literal(false), z.literal(true)])
+									.describe("Whether to include draft pull requests in automatic reviews"),
+							})
+							.describe("Automatic code review settings"),
+					),
+					next: z
+						.object({
+							enabled: z
+								.union([z.literal(false), z.literal(true)])
+								.describe("Whether automatic code reviews are enabled"),
+							scope: z
+								.enum(["public", "all", "private"])
+								.describe("Which repository visibilities get automatic reviews"),
+							includeDrafts: z
+								.union([z.literal(false), z.literal(true)])
+								.describe("Whether to include draft pull requests in automatic reviews"),
+						})
+						.describe("Automatic code review settings"),
+				}),
+				z.object({
+					enabled: z.union([z.literal(false), z.literal(true)]),
+				}),
+				z.object({
 					alias: z.optional(z.string()),
 					deployment: z
 						.object({
