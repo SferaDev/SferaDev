@@ -111,7 +111,7 @@ aliases = ["phase-config-schema"]
 [[epochs.phases.tasks]]
 id = "model-filters"
 label = "Add model filter configuration"
-status = "pending"
+status = "completed"
 ulid = "01KG0K3GP3J9KQ54AANGZ2YY43"
 slug = "model-filters"
 aliases = ["model-filters"]
@@ -119,7 +119,7 @@ aliases = ["model-filters"]
 [[epochs.phases.tasks]]
 id = "estimation-modes"
 label = "Add token estimation mode configuration"
-status = "pending"
+status = "completed"
 ulid = "01KG0K3GP3KNB7K9K5YJB7H21H"
 slug = "estimation-modes"
 aliases = ["estimation-modes"]
@@ -127,7 +127,7 @@ aliases = ["estimation-modes"]
 [[epochs.phases.tasks]]
 id = "logging-levels"
 label = "Add configurable logging levels"
-status = "pending"
+status = "completed"
 ulid = "01KG0K3GP3YH641ACJWA56FZV3"
 slug = "logging-levels"
 aliases = ["logging-levels"]
