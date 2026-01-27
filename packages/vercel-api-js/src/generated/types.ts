@@ -1620,6 +1620,59 @@ export const payloadPreviousRoleEnum = {
 export type PayloadPreviousRoleEnumKey =
 	(typeof payloadPreviousRoleEnum)[keyof typeof payloadPreviousRoleEnum];
 
+export const previousEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PreviousEnabledEnumKey = (typeof previousEnabledEnum)[keyof typeof previousEnabledEnum];
+
+export const previousScopeEnum = {
+	public: "public",
+	all: "all",
+	private: "private",
+} as const;
+
+export type PreviousScopeEnumKey = (typeof previousScopeEnum)[keyof typeof previousScopeEnum];
+
+export const previousIncludeDraftsEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PreviousIncludeDraftsEnumKey =
+	(typeof previousIncludeDraftsEnum)[keyof typeof previousIncludeDraftsEnum];
+
+export const nextEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type NextEnabledEnumKey = (typeof nextEnabledEnum)[keyof typeof nextEnabledEnum];
+
+export const nextScopeEnum = {
+	public: "public",
+	all: "all",
+	private: "private",
+} as const;
+
+export type NextScopeEnumKey = (typeof nextScopeEnum)[keyof typeof nextScopeEnum];
+
+export const nextIncludeDraftsEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type NextIncludeDraftsEnumKey =
+	(typeof nextIncludeDraftsEnum)[keyof typeof nextIncludeDraftsEnum];
+
+export const payloadEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadEnabledEnumKey = (typeof payloadEnabledEnum)[keyof typeof payloadEnabledEnum];
+
 export const payloadSystemEnum = {
 	false: false,
 	true: true,
@@ -1817,13 +1870,6 @@ export const updateDiffChangedValueEnum = {
 
 export type UpdateDiffChangedValueEnumKey =
 	(typeof updateDiffChangedValueEnum)[keyof typeof updateDiffChangedValueEnum];
-
-export const payloadEnabledEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type PayloadEnabledEnumKey = (typeof payloadEnabledEnum)[keyof typeof payloadEnabledEnum];
 
 export const payloadRestoreEnum = {
 	false: false,
@@ -3246,12 +3292,13 @@ export const payloadEnforcedEnum = {
 
 export type PayloadEnforcedEnumKey = (typeof payloadEnforcedEnum)[keyof typeof payloadEnforcedEnum];
 
-export const previousEnabledEnum = {
+export const previousEnabledEnum2 = {
 	false: false,
 	true: true,
 } as const;
 
-export type PreviousEnabledEnumKey = (typeof previousEnabledEnum)[keyof typeof previousEnabledEnum];
+export type PreviousEnabledEnum2Key =
+	(typeof previousEnabledEnum2)[keyof typeof previousEnabledEnum2];
 
 export const previousTotpVerifiedEnum = {
 	false: false,
@@ -3261,12 +3308,12 @@ export const previousTotpVerifiedEnum = {
 export type PreviousTotpVerifiedEnumKey =
 	(typeof previousTotpVerifiedEnum)[keyof typeof previousTotpVerifiedEnum];
 
-export const nextEnabledEnum = {
+export const nextEnabledEnum2 = {
 	false: false,
 	true: true,
 } as const;
 
-export type NextEnabledEnumKey = (typeof nextEnabledEnum)[keyof typeof nextEnabledEnum];
+export type NextEnabledEnum2Key = (typeof nextEnabledEnum2)[keyof typeof nextEnabledEnum2];
 
 export const nextTotpVerifiedEnum = {
 	false: false,
@@ -3920,6 +3967,58 @@ export type UserEvent = {
 						 * @type string | undefined
 						 */
 						previousRole?: PayloadPreviousRoleEnumKey | undefined;
+				  }
+				| {
+						/**
+						 * @description Automatic code review settings
+						 * @type object | undefined
+						 */
+						previous?:
+							| {
+									/**
+									 * @description Whether automatic code reviews are enabled
+									 * @type boolean
+									 */
+									enabled: PreviousEnabledEnumKey;
+									/**
+									 * @description Which repository visibilities get automatic reviews
+									 * @type string
+									 */
+									scope: PreviousScopeEnumKey;
+									/**
+									 * @description Whether to include draft pull requests in automatic reviews
+									 * @type boolean
+									 */
+									includeDrafts: PreviousIncludeDraftsEnumKey;
+							  }
+							| undefined;
+						/**
+						 * @description Automatic code review settings
+						 * @type object
+						 */
+						next: {
+							/**
+							 * @description Whether automatic code reviews are enabled
+							 * @type boolean
+							 */
+							enabled: NextEnabledEnumKey;
+							/**
+							 * @description Which repository visibilities get automatic reviews
+							 * @type string
+							 */
+							scope: NextScopeEnumKey;
+							/**
+							 * @description Whether to include draft pull requests in automatic reviews
+							 * @type boolean
+							 */
+							includeDrafts: NextIncludeDraftsEnumKey;
+						};
+				  }
+				| {
+						/**
+						 * @type boolean
+						 */
+						enabled: PayloadEnabledEnumKey;
 				  }
 				| {
 						/**
@@ -10217,7 +10316,7 @@ export type UserEvent = {
 							/**
 							 * @type boolean
 							 */
-							enabled: PreviousEnabledEnumKey;
+							enabled: PreviousEnabledEnum2Key;
 							/**
 							 * @type boolean
 							 */
@@ -10230,7 +10329,7 @@ export type UserEvent = {
 							/**
 							 * @type boolean
 							 */
-							enabled: NextEnabledEnumKey;
+							enabled: NextEnabledEnum2Key;
 							/**
 							 * @type boolean
 							 */
