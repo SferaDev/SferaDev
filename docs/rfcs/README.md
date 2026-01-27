@@ -11,9 +11,10 @@ This directory contains Request for Comments (RFC) documents for converting the 
 
 ## In Progress
 
-| RFC                                     | Title                   | Status | Summary                                             | Depends On |
-| --------------------------------------- | ----------------------- | ------ | --------------------------------------------------- | ---------- |
-| [005a](./005a-configuration-logging.md) | Configuration & Logging | Draft  | Configuration schema, model filters, logging system | —          |
+| RFC                                         | Title                       | Status          | Summary                                             | Depends On |
+| ------------------------------------------- | --------------------------- | --------------- | --------------------------------------------------- | ---------- |
+| [005a](./005a-configuration-logging.md)     | Configuration & Logging     | Ready for Review | Configuration schema, model filters, logging system | —          |
+| [008](./008-high-fidelity-model-mapping.md) | High-Fidelity Model Mapping | Draft           | Accurate model identity, token limits, capabilities | —          |
 
 ## Next Up
 
