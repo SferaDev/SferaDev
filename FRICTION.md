@@ -202,11 +202,62 @@ After creating this file, LM tools correctly identified the SferaDev project.
 
 ---
 
+### F007: RFC Files Not Organized by Stage Directories
+
+**What happened**: After creating RFCs and using `exo rfc promote 005a`, the CLI automatically moved the promoted RFC to a `stage-1/` subdirectory. However, the stage-0 RFCs remained in the root `docs/rfcs/` directory instead of being in a `stage-0/` subdirectory.
+
+**Why it happened**:
+
+1. Initial RFC creation put all files in the root of `docs/rfcs/`
+2. The `exo rfc` CLI expects stage-based directory organization: `stage-0/`, `stage-1/`, `stage-2/`, etc.
+3. When promoting an RFC, the CLI automatically moves the file to the next stage directory
+4. But there was no documentation about this expected structure
+5. The root `docs/rfcs/` directory had mixed content (README.md, stage-0 RFCs, and a stage-1 subdirectory)
+
+**Symptoms**:
+
+- Files not organized according to RFC lifecycle stages
+- Inconsistent structure after promotion
+- No clear visual organization of draft vs. accepted vs. implemented RFCs
+
+**Fix applied**:
+
+1. Created stage directories: `mkdir -p docs/rfcs/{stage-0,stage-1,stage-2,stage-3,stage-4,withdrawn}`
+2. Moved all draft RFCs to `stage-0/`: 001, 002, 003a, 003b, 004, 005b, 005c, 007, 008, ref-stream-mapping
+3. Verified 005a was already in `stage-1/` after promotion
+4. Moved archived RFCs to `withdrawn/`: 003-streaming-package.md.archived, 005-configuration-enterprise.md.archived
+5. Updated `docs/rfcs/README.md` to document the stage-based organization with links to stage directories
+6. Removed duplicate RFC files that appeared in the root after promotion
+
+**Fix category**: Documentation / Project Structure
+
+**Proposed upstream documentation**:
+
+- Document the RFC stage directory structure in the `exo rfc` help or initialization guide
+- When running `exo rfc promote`, mention that the file will be moved to the next stage directory
+- Update init scaffolding to create empty stage-0 through stage-4 directories
+- Provide `exo rfc organize` command to automatically reorganize RFCs by stage
+
+**Lessons learned**:
+
+- The exo RFC CLI is opinionated about directory structure (stage-based organization)
+- Promotion operations have side effects (moving files), which isn't immediately obvious
+- README documentation should reflect the directory structure users will see after operations
+
+---
+
 ## Summary
 
-**Bootstrap Success Rate**: 60% (exo initialized and CLI works, but VS Code extension is fragile)
+**Bootstrap Success Rate**: 85% (exo initialized, CLI works well, RFC system organized, VS Code extension needs care)
 
-**Time Lost to Friction**: ~25 minutes (4 init attempts, 2 window reloads, file watching crash recovery, debugging wrong workspace)
+**Time Lost to Friction**: ~35 minutes (4 init attempts, 2 window reloads, file watching crash recovery, debugging wrong workspace, RFC directory reorganization)
+
+**Current Status**:
+- ✅ Exo CLI functional and well-integrated
+- ✅ RFC system properly organized by stage
+- ✅ Plan.toml with epochs, phases, tasks successfully managing project
+- ⚠️ VS Code extension fragile (restart limits, file watcher issues)
+- ⚠️ LM tools work but can have workspace detection issues
 
 **Recommended Next Steps**:
 
