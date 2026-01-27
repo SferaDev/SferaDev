@@ -926,7 +926,12 @@ describe("Fixture-based tests", () => {
 
 		expect(toolResult).toBeDefined();
 		if (toolResult && Array.isArray(toolResult.content)) {
-			expect(toolResult.content[0].toolName).toBe("searchDocs");
+			const toolResultPart = toolResult.content[0];
+			expect(toolResultPart.type).toBe("tool-result");
+			expect("toolName" in toolResultPart).toBe(true);
+			if ("toolName" in toolResultPart) {
+				expect(toolResultPart.toolName).toBe("searchDocs");
+			}
 		}
 	});
 });

@@ -31,6 +31,7 @@ type StreamChunk = TextStreamPart<ToolSet>;
 
 import { VERCEL_AI_AUTH_PROVIDER_ID } from "./auth";
 import { ERROR_MESSAGES } from "./constants";
+import { extractErrorMessage, logError } from "./logger";
 import { ModelsClient } from "./models";
 
 /**
@@ -143,13 +144,14 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 			const estimatedTokens = await this.estimateTotalInputTokens(model, chatMessages, token);
 			const maxInputTokens = model.maxInputTokens;
 
+			// Pre-flight check: warn if estimated tokens exceed model limit
+			// Let the API handle the actual error - estimation may be imprecise
+			// and VS Code/consumers may implement their own compaction
 			if (estimatedTokens > maxInputTokens) {
-				const errorMsg =
-					`Input too long: estimated ${estimatedTokens} tokens exceeds model limit of ${maxInputTokens}. ` +
-					`Please reduce the context or use a model with a larger context window.`;
-				console.error(`[VercelAI] ${errorMsg}`);
-				progress.report(new LanguageModelTextPart(`\n\n**Error:** ${errorMsg}\n\n`));
-				return;
+				console.warn(
+					`[VercelAI] Estimated ${estimatedTokens} tokens exceeds model limit of ${maxInputTokens}. ` +
+						`Proceeding anyway - actual token count may differ from estimate.`,
+				);
 			}
 
 			// Warn if we're close to the limit (>80%)
@@ -198,6 +200,19 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 				"You are being accessed through the Vercel AI Gateway VS Code extension. The user is interacting with you via VS Code's chat interface.",
 			);
 
+			// Build provider options - add context management for Anthropic models
+			const providerOptions = this.isAnthropicModel(model)
+				? {
+						anthropic: {
+							// Enable automatic context management to clear old tool uses
+							// when approaching context limits
+							contextManagement: {
+								enabled: true,
+							},
+						},
+					}
+				: undefined;
+
 			const response = streamText({
 				model: gateway(model.id),
 				system:
@@ -205,9 +220,10 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 				messages: convertMessages(chatMessages),
 				toolChoice,
 				temperature: options.modelOptions?.temperature ?? 0.7,
-				maxTokens: options.modelOptions?.maxOutputTokens ?? 4096,
+				maxOutputTokens: options.modelOptions?.maxOutputTokens ?? 4096,
 				tools: Object.keys(tools).length > 0 ? tools : undefined,
 				abortSignal: abortController.signal,
+				...(providerOptions && { providerOptions }),
 			});
 
 			// Use fullStream instead of toUIMessageStream() to get tool-call events.
@@ -226,8 +242,8 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 				return;
 			}
 
-			console.error("[VercelAI] Exception during streaming:", error);
-			const errorMessage = this.extractErrorMessage(error);
+			logError("Exception during streaming", error);
+			const errorMessage = extractErrorMessage(error);
 			progress.report(new LanguageModelTextPart(`\n\n**Error:** ${errorMessage}\n\n`));
 		} finally {
 			abortSubscription.dispose();
@@ -247,6 +263,20 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 			);
 		}
 		return false;
+	}
+
+	/**
+	 * Check if a model is an Anthropic/Claude model.
+	 */
+	private isAnthropicModel(model: LanguageModelChatInformation): boolean {
+		const family = model.family.toLowerCase();
+		const id = model.id.toLowerCase();
+		return (
+			family.includes("anthropic") ||
+			family.includes("claude") ||
+			id.includes("claude") ||
+			id.includes("anthropic")
+		);
 	}
 
 	/**
@@ -654,12 +684,8 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 		chunk: { type: "error"; error: unknown },
 		progress: Progress<LanguageModelResponsePart>,
 	): void {
-		const errorMessage =
-			chunk.error instanceof Error
-				? chunk.error.message
-				: chunk.error
-					? String(chunk.error)
-					: "Unknown error occurred";
+		logError("Stream error chunk received", chunk.error);
+		const errorMessage = extractErrorMessage(chunk.error);
 		progress.report(new LanguageModelTextPart(`\n\n**Error:** ${errorMessage}\n\n`));
 	}
 
