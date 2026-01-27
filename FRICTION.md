@@ -253,6 +253,7 @@ After creating this file, LM tools correctly identified the SferaDev project.
 **Time Lost to Friction**: ~35 minutes (4 init attempts, 2 window reloads, file watching crash recovery, debugging wrong workspace, RFC directory reorganization)
 
 **Current Status**:
+
 - ✅ Exo CLI functional and well-integrated
 - ✅ RFC system properly organized by stage
 - ✅ Plan.toml with epochs, phases, tasks successfully managing project
