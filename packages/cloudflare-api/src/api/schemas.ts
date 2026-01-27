@@ -39499,6 +39499,16 @@ export type OrganizationsApiProfile = {
 	external_metadata: string;
 };
 
+export type OrganizationsApiProfileResponse = {
+	/**
+	 * @maxItems 0
+	 */
+	errors: Record<string, any>[];
+	messages: OrganizationsApiV4Message[];
+	result: OrganizationsApiProfile;
+	success: true;
+};
+
 export type OrganizationsApiTenant = {
 	/**
 	 * @format date-time
