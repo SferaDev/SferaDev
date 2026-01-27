@@ -95,7 +95,7 @@ aliases = ["logger-implementation"]
 [[epochs]]
 id = "config-epoch"
 title = "Configuration & Logging Expansion"
-status = "active"
+status = "completed"
 ulid = "01KG0K3GP3XDN9JDJ02ZWQWEGF"
 slug = "config-epoch"
 aliases = ["config-epoch"]
@@ -103,7 +103,7 @@ aliases = ["config-epoch"]
 [[epochs.phases]]
 id = "phase-config-schema"
 title = "Configuration Schema (RFC 005a)"
-status = "active"
+status = "completed"
 ulid = "01KG0K3GP3NR9S4K4KKBWD1N1Z"
 slug = "phase-config-schema"
 aliases = ["phase-config-schema"]
