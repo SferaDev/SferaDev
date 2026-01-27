@@ -3084,6 +3084,14 @@ export const payloadGitForkProtectionEnum = {
 export type PayloadGitForkProtectionEnumKey =
 	(typeof payloadGitForkProtectionEnum)[keyof typeof payloadGitForkProtectionEnum];
 
+export const payloadProtectedSourcemapsEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadProtectedSourcemapsEnumKey =
+	(typeof payloadProtectedSourcemapsEnum)[keyof typeof payloadProtectedSourcemapsEnum];
+
 export const payloadPublicSourceEnum = {
 	false: false,
 	true: true,
@@ -9326,6 +9334,20 @@ export type UserEvent = {
 						 * @type boolean
 						 */
 						gitForkProtection: PayloadGitForkProtectionEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type boolean
+						 */
+						protectedSourcemaps: PayloadProtectedSourcemapsEnumKey;
 				  }
 				| {
 						/**

@@ -3551,6 +3551,11 @@ export const userEventSchema = z
 				z.object({
 					projectId: z.string(),
 					projectName: z.string(),
+					protectedSourcemaps: z.union([z.literal(false), z.literal(true)]),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
 					publicSource: z.union([z.literal(false), z.literal(true)]),
 				}),
 				z.object({
