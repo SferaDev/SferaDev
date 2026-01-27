@@ -1,3 +1,6 @@
+---
+stage: 1
+---
 # RFC 005a: Configuration & Logging
 
 **Status:** Ready for Review  
