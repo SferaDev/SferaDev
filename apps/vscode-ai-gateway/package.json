@@ -3,7 +3,7 @@
 	"private": true,
 	"displayName": "Vercel AI Gateway",
 	"description": "VS Code extension that provides Vercel AI models via the Language Model API",
-	"version": "0.2.2",
+	"version": "0.2.3",
 	"publisher": "SferaDev",
 	"license": "MIT",
 	"icon": "images/icon.png",
@@ -51,7 +51,22 @@
 				"title": "Manage Authentication",
 				"category": "Vercel AI Gateway"
 			}
-		]
+		],
+		"configuration": {
+			"title": "Vercel AI Gateway",
+			"properties": {
+				"vercelAiGateway.systemPrompt.enabled": {
+					"type": "boolean",
+					"default": false,
+					"description": "Inject a system prompt identifying the Vercel AI Gateway to the model."
+				},
+				"vercelAiGateway.systemPrompt.message": {
+					"type": "string",
+					"default": "You are being accessed through the Vercel AI Gateway VS Code extension. The user is interacting with you via VS Code's chat interface.",
+					"description": "The system prompt message to inject when enabled."
+				}
+			}
+		}
 	},
 	"scripts": {
 		"build": "NODE_ENV=production bunchee ./src/extension.ts --format cjs --no-external",
@@ -72,6 +87,7 @@
 		"@types/vscode": "^1.108.1",
 		"@vscode/vsce": "catalog:",
 		"bunchee": "catalog:",
+		"fast-check": "catalog:",
 		"typescript": "catalog:",
 		"vitest": "catalog:"
 	},

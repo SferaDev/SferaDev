@@ -1,4 +1,13 @@
+import { streamText } from "ai";
+import fc from "fast-check";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import type { ExtensionContext, LanguageModelChatMessage } from "vscode";
+import {
+	convertMessages,
+	convertSingleMessage,
+	isValidMimeType,
+	VercelAIChatModelProvider,
+} from "./provider";
 
 // Create hoisted mock functions
 const hoisted = vi.hoisted(() => {
@@ -15,6 +24,7 @@ const hoisted = vi.hoisted(() => {
 
 	const mockGetSession = vi.fn();
 	const mockShowErrorMessage = vi.fn();
+	const mockGetConfiguration = vi.fn();
 
 	// Mock LanguageModel* part constructors
 	class MockLanguageModelTextPart {
@@ -41,6 +51,10 @@ const hoisted = vi.hoisted(() => {
 			public data: Uint8Array,
 			public mimeType: string,
 		) {}
+
+		static image(data: Uint8Array, mimeType: string) {
+			return new MockLanguageModelDataPart(data, mimeType);
+		}
 
 		static text(value: string, mimeType: string) {
 			return new MockLanguageModelDataPart(new TextEncoder().encode(value), mimeType);
@@ -70,6 +84,7 @@ const hoisted = vi.hoisted(() => {
 		mockDisposable,
 		mockGetSession,
 		mockShowErrorMessage,
+		mockGetConfiguration,
 		MockLanguageModelTextPart,
 		MockLanguageModelToolCallPart,
 		MockLanguageModelToolResultPart,
@@ -86,6 +101,9 @@ vi.mock("vscode", () => ({
 	},
 	window: {
 		showErrorMessage: hoisted.mockShowErrorMessage,
+	},
+	workspace: {
+		getConfiguration: hoisted.mockGetConfiguration,
 	},
 	LanguageModelTextPart: hoisted.MockLanguageModelTextPart,
 	LanguageModelToolCallPart: hoisted.MockLanguageModelToolCallPart,
@@ -117,6 +135,12 @@ vi.mock("ai", () => ({
 	streamText: vi.fn(),
 }));
 
+vi.mock("./models", () => ({
+	ModelsClient: class {
+		getModels = vi.fn();
+	},
+}));
+
 // Import types for testing
 interface MockChunk {
 	type: string;
@@ -131,6 +155,26 @@ function createMockProgress() {
 	return { report };
 }
 
+function createProvider() {
+	const context = {
+		workspaceState: {
+			get: vi.fn(),
+			update: vi.fn(),
+		},
+	} as unknown as ExtensionContext;
+
+	return new VercelAIChatModelProvider(context);
+}
+
+const DEFAULT_SYSTEM_PROMPT =
+	"You are being accessed through the Vercel AI Gateway VS Code extension. The user is interacting with you via VS Code's chat interface.";
+
+function createEmptyStream() {
+	return {
+		fullStream: (async function* () {})(),
+	};
+}
+
 /**
  * Test the chunk type classification based on the SILENTLY_IGNORED_CHUNK_TYPES set
  * from the provider implementation.
@@ -142,11 +186,12 @@ describe("Stream Chunk Type Coverage", () => {
 	describe("Mapped chunk types", () => {
 		it("text-delta should emit LanguageModelTextPart", () => {
 			const progress = createMockProgress();
-			const chunk: MockChunk = { type: "text-delta", delta: "Hello, world!" };
+			// fullStream TextStreamPart uses 'text' field, not 'textDelta'
+			const chunk: MockChunk = { type: "text-delta", text: "Hello, world!" };
 
 			// Simulate the handler logic
-			if (chunk.type === "text-delta" && chunk.delta) {
-				progress.report(new hoisted.MockLanguageModelTextPart(chunk.delta as string));
+			if (chunk.type === "text-delta" && chunk.text) {
+				progress.report(new hoisted.MockLanguageModelTextPart(chunk.text as string));
 			}
 
 			expect(progress.report).toHaveBeenCalledTimes(1);
@@ -157,11 +202,12 @@ describe("Stream Chunk Type Coverage", () => {
 
 		it("text-delta with empty string should not emit", () => {
 			const progress = createMockProgress();
-			const chunk: MockChunk = { type: "text-delta", delta: "" };
+			// fullStream TextStreamPart uses 'text' field, not 'textDelta'
+			const chunk: MockChunk = { type: "text-delta", text: "" };
 
 			// Simulate the handler logic
-			if (chunk.type === "text-delta" && chunk.delta) {
-				progress.report(new hoisted.MockLanguageModelTextPart(chunk.delta as string));
+			if (chunk.type === "text-delta" && chunk.text) {
+				progress.report(new hoisted.MockLanguageModelTextPart(chunk.text as string));
 			}
 
 			expect(progress.report).not.toHaveBeenCalled();
@@ -169,16 +215,17 @@ describe("Stream Chunk Type Coverage", () => {
 
 		it("reasoning-delta should emit LanguageModelThinkingPart when available", () => {
 			const progress = createMockProgress();
+			// fullStream TextStreamPart uses 'text' field for reasoning-delta, not 'delta'
 			const chunk: MockChunk = {
 				type: "reasoning-delta",
-				delta: "Let me think...",
+				text: "Let me think...",
 				id: "reasoning-1",
 			};
 
 			// Simulate the handler logic with ThinkingPart available
 			const ThinkingCtor = hoisted.MockLanguageModelThinkingPart;
-			if (ThinkingCtor && chunk.delta) {
-				progress.report(new ThinkingCtor(chunk.delta as string));
+			if (ThinkingCtor && chunk.text) {
+				progress.report(new ThinkingCtor(chunk.text as string));
 			}
 
 			expect(progress.report).toHaveBeenCalledTimes(1);
@@ -222,12 +269,17 @@ describe("Stream Chunk Type Coverage", () => {
 			const progress = createMockProgress();
 			const chunk: MockChunk = {
 				type: "error",
-				errorText: "Rate limit exceeded",
+				error: "Rate limit exceeded",
 			};
 
 			// Simulate the handler logic
 			if (chunk.type === "error") {
-				const errorMessage = chunk.errorText || "Unknown error occurred";
+				const errorMessage =
+					chunk.error instanceof Error
+						? chunk.error.message
+						: chunk.error
+							? String(chunk.error)
+							: "Unknown error occurred";
 				progress.report(
 					new hoisted.MockLanguageModelTextPart(`\n\n**Error:** ${errorMessage}\n\n`),
 				);
@@ -320,7 +372,12 @@ describe("Stream Chunk Type Coverage", () => {
 			const chunk: MockChunk = { type: "error" };
 
 			if (chunk.type === "error") {
-				const errorMessage = chunk.errorText || "Unknown error occurred";
+				const errorMessage =
+					chunk.error instanceof Error
+						? chunk.error.message
+						: chunk.error
+							? String(chunk.error)
+							: "Unknown error occurred";
 				progress.report(
 					new hoisted.MockLanguageModelTextPart(`\n\n**Error:** ${errorMessage}\n\n`),
 				);
@@ -461,5 +518,415 @@ describe("UIMessageChunk Type Completeness", () => {
 
 	it("should handle tool-input-available via callback", () => {
 		expect(chunkTypeHandling["tool-input-available"]).toBe("callback");
+	});
+});
+
+describe("System prompt configuration", () => {
+	const model = {
+		id: "test-model",
+		maxInputTokens: 10000,
+		family: "openai",
+	} as any;
+
+	const token = {
+		onCancellationRequested: () => ({ dispose: vi.fn() }),
+	} as any;
+
+	const options = {
+		toolMode: "auto",
+		tools: [],
+		modelOptions: {},
+	} as any;
+
+	const chatMessages = [
+		{
+			role: 1,
+			content: [new hoisted.MockLanguageModelTextPart("Hello")],
+		} as unknown as LanguageModelChatMessage,
+	];
+
+	beforeEach(() => {
+		vi.clearAllMocks();
+		hoisted.mockGetSession.mockResolvedValue({ accessToken: "token" });
+		(streamText as unknown as { mockReturnValue: Function }).mockReturnValue(createEmptyStream());
+	});
+
+	it("passes system prompt when enabled", async () => {
+		hoisted.mockGetConfiguration.mockReturnValue({
+			get: (key: string, defaultValue?: unknown) => {
+				if (key === "systemPrompt.enabled") return true;
+				if (key === "systemPrompt.message") return "Use the system prompt.";
+				return defaultValue;
+			},
+		});
+
+		const provider = createProvider();
+		const progress = createMockProgress();
+
+		await provider.provideLanguageModelChatResponse(model, chatMessages, options, progress, token);
+
+		const callArgs = (streamText as unknown as { mock: { calls: any[] } }).mock.calls[0][0];
+		expect(callArgs.system).toBe("Use the system prompt.");
+	});
+
+	it("omits system prompt when disabled", async () => {
+		hoisted.mockGetConfiguration.mockReturnValue({
+			get: (key: string, defaultValue?: unknown) => {
+				if (key === "systemPrompt.enabled") return false;
+				if (key === "systemPrompt.message") return "Use the system prompt.";
+				return defaultValue;
+			},
+		});
+
+		const provider = createProvider();
+		const progress = createMockProgress();
+
+		await provider.provideLanguageModelChatResponse(model, chatMessages, options, progress, token);
+
+		const callArgs = (streamText as unknown as { mock: { calls: any[] } }).mock.calls[0][0];
+		expect(callArgs.system).toBeUndefined();
+	});
+
+	it("falls back to the default system prompt when no message is set", async () => {
+		hoisted.mockGetConfiguration.mockReturnValue({
+			get: (key: string, defaultValue?: unknown) => {
+				if (key === "systemPrompt.enabled") return true;
+				if (key === "systemPrompt.message") return defaultValue;
+				return defaultValue;
+			},
+		});
+
+		const provider = createProvider();
+		const progress = createMockProgress();
+
+		await provider.provideLanguageModelChatResponse(model, chatMessages, options, progress, token);
+
+		const callArgs = (streamText as unknown as { mock: { calls: any[] } }).mock.calls[0][0];
+		expect(callArgs.system).toBe(DEFAULT_SYSTEM_PROMPT);
+	});
+});
+
+describe("Property-based tests", () => {
+	it("accepts valid MIME types", () => {
+		const lowerAlpha = fc.constantFrom(..."abcdefghijklmnopqrstuvwxyz".split(""));
+		const subtypeChar = fc.constantFrom(..."abcdefghijklmnopqrstuvwxyz0123456789.+-".split(""));
+		const typeArb = fc.stringOf(lowerAlpha, { minLength: 1 });
+		const subtypeArb = fc.stringOf(subtypeChar, { minLength: 1 });
+
+		const validMimeTypeArb = fc
+			.tuple(typeArb, subtypeArb)
+			.map(([type, subtype]) => `${type}/${subtype}`);
+
+		fc.assert(
+			fc.property(validMimeTypeArb, (mimeType) => {
+				expect(isValidMimeType(mimeType)).toBe(true);
+			}),
+		);
+	});
+
+	it("rejects invalid MIME types", () => {
+		const lowerAlpha = fc.constantFrom(..."abcdefghijklmnopqrstuvwxyz".split(""));
+		const subtypeChar = fc.constantFrom(..."abcdefghijklmnopqrstuvwxyz0123456789.+-".split(""));
+		const typeArb = fc.stringOf(lowerAlpha, { minLength: 1 });
+		const subtypeArb = fc.stringOf(subtypeChar, { minLength: 1 });
+		const typeWithUnderscoreArb = fc
+			.stringOf(fc.constantFrom(..."abcdefghijklmnopqrstuvwxyz_".split("")), {
+				minLength: 1,
+			})
+			.filter((value) => value.includes("_"));
+		const subtypeWithUnderscoreArb = fc
+			.stringOf(fc.constantFrom(..."abcdefghijklmnopqrstuvwxyz0123456789.+-_".split("")), {
+				minLength: 1,
+			})
+			.filter((value) => value.includes("_"));
+
+		const invalidMimeTypeArb = fc.oneof(
+			fc.constant("cache_control"),
+			fc.tuple(typeArb, subtypeArb).map(([type, subtype]) => `${type}${subtype}`),
+			typeArb.map((type) => `${type}/`),
+			subtypeArb.map((subtype) => `/${subtype}`),
+			fc.tuple(typeWithUnderscoreArb, subtypeArb).map(([type, subtype]) => `${type}/${subtype}`),
+			fc.tuple(typeArb, subtypeWithUnderscoreArb).map(([type, subtype]) => `${type}/${subtype}`),
+		);
+
+		fc.assert(
+			fc.property(invalidMimeTypeArb, (mimeType) => {
+				expect(isValidMimeType(mimeType)).toBe(false);
+			}),
+		);
+	});
+
+	it("stream chunk handler should not crash on unexpected fields", () => {
+		const provider = createProvider();
+		const progress = createMockProgress();
+		const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+
+		fc.assert(
+			fc.property(fc.string(), fc.dictionary(fc.string(), fc.anything()), (type, extra) => {
+				expect(() =>
+					(provider as unknown as { handleStreamChunk: Function }).handleStreamChunk(
+						{ type, ...extra } as unknown,
+						progress,
+					),
+				).not.toThrow();
+			}),
+		);
+
+		warnSpy.mockRestore();
+	});
+
+	it("ignored chunk types never report progress", () => {
+		const provider = createProvider();
+		const ignoredTypes = [
+			"start",
+			"start-step",
+			"abort",
+			"finish",
+			"finish-step",
+			"text-start",
+			"text-end",
+			"reasoning-start",
+			"reasoning-end",
+			"source",
+			"tool-result",
+			"tool-input-start",
+			"tool-input-delta",
+		];
+
+		fc.assert(
+			fc.property(fc.constantFrom(...ignoredTypes), (type) => {
+				const progress = createMockProgress();
+				(provider as unknown as { handleStreamChunk: Function }).handleStreamChunk(
+					{ type } as unknown,
+					progress,
+				);
+				expect(progress.report).not.toHaveBeenCalled();
+			}),
+		);
+	});
+
+	it("text-delta reports exactly one LanguageModelTextPart when text is non-empty", () => {
+		const provider = createProvider();
+
+		fc.assert(
+			fc.property(fc.string({ minLength: 1 }), (text) => {
+				const progress = createMockProgress();
+				(provider as unknown as { handleStreamChunk: Function }).handleStreamChunk(
+					{ type: "text-delta", text } as unknown,
+					progress,
+				);
+				expect(progress.report).toHaveBeenCalledTimes(1);
+				const reported = progress.report.mock.calls[0][0];
+				expect(reported).toBeInstanceOf(hoisted.MockLanguageModelTextPart);
+			}),
+		);
+	});
+
+	it("tool-call chunks always report LanguageModelToolCallPart", () => {
+		const provider = createProvider();
+
+		fc.assert(
+			fc.property(
+				fc.uuid(),
+				fc.string({ minLength: 1 }),
+				fc.dictionary(fc.string(), fc.anything()),
+				(callId, name, input) => {
+					const progress = createMockProgress();
+					(provider as unknown as { handleStreamChunk: Function }).handleStreamChunk(
+						{
+							type: "tool-call",
+							toolCallId: callId,
+							toolName: name,
+							input,
+						} as unknown,
+						progress,
+					);
+					expect(progress.report).toHaveBeenCalledTimes(1);
+					const reported = progress.report.mock.calls[0][0];
+					expect(reported).toBeInstanceOf(hoisted.MockLanguageModelToolCallPart);
+					expect(reported.callId).toBe(callId);
+					expect(reported.name).toBe(name);
+				},
+			),
+		);
+	});
+
+	it("message conversion should not crash on varied content shapes", () => {
+		const textPartArb = fc.string().map((value) => new hoisted.MockLanguageModelTextPart(value));
+		const dataPartArb = fc
+			.uint8Array()
+			.map((data) => new hoisted.MockLanguageModelDataPart(data, "text/plain"));
+		const toolCallArb = fc
+			.record({
+				callId: fc.uuid(),
+				name: fc.string(),
+				input: fc.dictionary(fc.string(), fc.anything()),
+			})
+			.map(
+				({ callId, name, input }) => new hoisted.MockLanguageModelToolCallPart(callId, name, input),
+			);
+		const toolResultArb = fc
+			.record({
+				callId: fc.uuid(),
+				content: fc.array(
+					fc.oneof(fc.record({ value: fc.string() }), fc.dictionary(fc.string(), fc.anything())),
+				),
+			})
+			.map(({ callId, content }) => new hoisted.MockLanguageModelToolResultPart(callId, content));
+
+		const contentPartArb = fc.oneof(
+			fc.string(),
+			fc.integer(),
+			fc.boolean(),
+			fc.constant(null),
+			fc.dictionary(fc.string(), fc.anything()),
+			textPartArb,
+			dataPartArb,
+			toolCallArb,
+			toolResultArb,
+		);
+
+		fc.assert(
+			fc.property(fc.array(contentPartArb), (content) => {
+				const msg = {
+					role: 1,
+					content,
+				} as unknown as LanguageModelChatMessage;
+
+				expect(() => convertSingleMessage(msg, {})).not.toThrow();
+			}),
+		);
+	});
+});
+
+describe("Fixture-based tests", () => {
+	beforeEach(() => {
+		vi.restoreAllMocks();
+	});
+
+	it("skips cache_control metadata in file chunks", () => {
+		const provider = createProvider();
+		const progress = createMockProgress();
+		const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+
+		(provider as unknown as { handleStreamChunk: Function }).handleStreamChunk(
+			{
+				type: "file",
+				file: {
+					base64: "",
+					uint8Array: new Uint8Array([1, 2, 3]),
+					mediaType: "cache_control",
+				},
+			},
+			progress,
+		);
+
+		expect(progress.report).not.toHaveBeenCalled();
+		expect(warnSpy).toHaveBeenCalledWith("[VercelAI] Unsupported file mime type: cache_control");
+	});
+
+	it("handles file chunks with valid and invalid MIME types", () => {
+		const provider = createProvider();
+		const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+
+		const fixtures = [
+			{
+				label: "image",
+				mimeType: "image/png",
+				data: new Uint8Array([137, 80, 78, 71]),
+				shouldReport: true,
+			},
+			{
+				label: "text",
+				mimeType: "text/plain",
+				data: new TextEncoder().encode("hello"),
+				shouldReport: true,
+			},
+			{
+				label: "json",
+				mimeType: "application/json",
+				data: new TextEncoder().encode(JSON.stringify({ ok: true })),
+				shouldReport: true,
+			},
+			{
+				label: "invalid",
+				mimeType: "cache_control",
+				data: new Uint8Array([1]),
+				shouldReport: false,
+			},
+		];
+
+		for (const fixture of fixtures) {
+			const progress = createMockProgress();
+			(provider as unknown as { handleStreamChunk: Function }).handleStreamChunk(
+				{
+					type: "file",
+					file: {
+						base64: "",
+						uint8Array: fixture.data,
+						mediaType: fixture.mimeType,
+					},
+				},
+				progress,
+			);
+
+			if (fixture.shouldReport) {
+				expect(progress.report).toHaveBeenCalledTimes(1);
+				const reported = progress.report.mock.calls[0][0];
+				expect(reported).toBeInstanceOf(hoisted.MockLanguageModelDataPart);
+			} else {
+				expect(progress.report).not.toHaveBeenCalled();
+			}
+		}
+
+		expect(warnSpy).toHaveBeenCalledWith("[VercelAI] Unsupported file mime type: cache_control");
+	});
+
+	it("handles tool call streaming chunks", () => {
+		const provider = createProvider();
+		const progress = createMockProgress();
+
+		(provider as unknown as { handleStreamChunk: Function }).handleStreamChunk(
+			{
+				type: "tool-call",
+				toolCallId: "call-1",
+				toolName: "searchDocs",
+				input: { query: "test" },
+			},
+			progress,
+		);
+
+		expect(progress.report).toHaveBeenCalledTimes(1);
+		const reported = progress.report.mock.calls[0][0];
+		expect(reported).toBeInstanceOf(hoisted.MockLanguageModelToolCallPart);
+		expect(reported.name).toBe("searchDocs");
+	});
+
+	it("maps tool result names using the prior tool call", () => {
+		const messages = [
+			{
+				role: 2,
+				content: [
+					new hoisted.MockLanguageModelToolCallPart("test-call-1", "searchDocs", { query: "test" }),
+				],
+			} as unknown as LanguageModelChatMessage,
+			{
+				role: 2,
+				content: [
+					new hoisted.MockLanguageModelToolResultPart("test-call-1", [{ value: "result" }]),
+				],
+			} as unknown as LanguageModelChatMessage,
+		];
+
+		const converted = convertMessages(messages);
+		const toolResult = converted.find(
+			(msg) =>
+				msg.role === "tool" && Array.isArray(msg.content) && msg.content[0]?.type === "tool-result",
+		);
+
+		expect(toolResult).toBeDefined();
+		if (toolResult && Array.isArray(toolResult.content)) {
+			expect(toolResult.content[0].toolName).toBe("searchDocs");
+		}
 	});
 });
