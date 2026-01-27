@@ -1,0 +1,204 @@
+# Vercel VS Code AI Gateway Extension - Project Plan
+# Converted from SferaDev/SferaDev monorepo
+
+surgical_strikes = []
+
+[meta]
+schema_version = "1.0.0"
+exo_version = "0.1.0"
+
+# ============================================================================
+# COMPLETED: Stream Handling & Token Estimation
+# ============================================================================
+
+[[epochs]]
+id = "stream-handling-epoch"
+title = "Stream Handling & Token Estimation"
+status = "completed"
+
+[[epochs.phases]]
+id = "phase-stream-adapter"
+title = "Stream Adapter Implementation (RFC 003a)"
+status = "completed"
+
+[[epochs.phases.tasks]]
+id = "vscode-stream-adapter"
+label = "Implement VSCodeStreamAdapter with chunk handlers"
+status = "completed"
+
+[[epochs.phases.tasks]]
+id = "chunk-type-handlers"
+label = "Handle all AI SDK chunk types (text-delta, tool-call, reasoning, etc.)"
+status = "completed"
+
+[[epochs.phases.tasks]]
+id = "usage-tracking"
+label = "Track token usage from finish chunks"
+status = "completed"
+
+[[epochs.phases]]
+id = "phase-token-estimation"
+title = "Token Estimation & Message Conversion (RFC 003b)"
+status = "completed"
+
+[[epochs.phases.tasks]]
+id = "hybrid-estimation"
+label = "Implement hybrid token estimation (tiktoken + heuristic)"
+status = "completed"
+
+[[epochs.phases.tasks]]
+id = "message-conversion"
+label = "Convert VS Code messages to AI SDK format"
+status = "completed"
+
+[[epochs.phases.tasks]]
+id = "mime-handling"
+label = "Handle MIME types for tool results"
+status = "completed"
+
+[[epochs.phases]]
+id = "phase-logging"
+title = "Structured Logging"
+status = "completed"
+
+[[epochs.phases.tasks]]
+id = "logger-implementation"
+label = "Implement logger.ts with Output Channel support"
+status = "completed"
+
+# ============================================================================
+# ACTIVE: Configuration & Logging Expansion
+# ============================================================================
+
+[[epochs]]
+id = "config-epoch"
+title = "Configuration & Logging Expansion"
+status = "active"
+
+[[epochs.phases]]
+id = "phase-config-schema"
+title = "Configuration Schema (RFC 005a)"
+status = "active"
+
+[[epochs.phases.tasks]]
+id = "model-filters"
+label = "Add model filter configuration"
+status = "pending"
+
+[[epochs.phases.tasks]]
+id = "estimation-modes"
+label = "Add token estimation mode configuration"
+status = "pending"
+
+[[epochs.phases.tasks]]
+id = "logging-levels"
+label = "Add configurable logging levels"
+status = "pending"
+
+# ============================================================================
+# PENDING: Vercel Transition
+# ============================================================================
+
+[[epochs]]
+id = "vercel-transition-epoch"
+title = "Vercel Transition"
+status = "pending"
+
+[[epochs.phases]]
+id = "phase-branding"
+title = "Branding & Identity (RFC 002)"
+status = "pending"
+
+[[epochs.phases.tasks]]
+id = "publisher-change"
+label = "Change publisher from SferaDev to vercel"
+status = "pending"
+
+[[epochs.phases.tasks]]
+id = "namespace-change"
+label = "Change vendor namespace from vercelAiGateway to vercel.ai"
+status = "pending"
+
+[[epochs.phases.tasks]]
+id = "visual-identity"
+label = "Update icons and visual assets"
+status = "pending"
+
+[[epochs.phases]]
+id = "phase-repository"
+title = "Standalone Repository (RFC 001)"
+status = "pending"
+
+[[epochs.phases.tasks]]
+id = "repo-extraction"
+label = "Extract to vercel/vscode-ai-gateway repository"
+status = "pending"
+
+[[epochs.phases.tasks]]
+id = "ci-setup"
+label = "Set up GitHub Actions CI/CD"
+status = "pending"
+
+[[epochs.phases.tasks]]
+id = "marketplace-publishing"
+label = "Configure Marketplace publishing"
+status = "pending"
+
+[[epochs.phases]]
+id = "phase-migration"
+title = "Migration & Deprecation (RFC 007)"
+status = "pending"
+
+[[epochs.phases.tasks]]
+id = "settings-migration"
+label = "Implement settings migration script"
+status = "pending"
+
+[[epochs.phases.tasks]]
+id = "deprecation-notices"
+label = "Add deprecation notices to SferaDev extension"
+status = "pending"
+
+[[epochs.phases.tasks]]
+id = "parallel-operation"
+label = "90-day parallel operation period"
+status = "pending"
+
+# ============================================================================
+# TRIAGE: Ideas needing product decisions
+# ============================================================================
+
+[[epochs]]
+id = "triage-epoch"
+title = "Ideas to Triage"
+status = "pending"
+
+[[epochs.phases]]
+id = "phase-auth-triage"
+title = "Authentication (RFC 005b - Triage)"
+status = "pending"
+
+[[epochs.phases.tasks]]
+id = "evaluate-enterprise-oidc"
+label = "Evaluate need for enterprise OIDC configuration"
+status = "pending"
+
+[[epochs.phases]]
+id = "phase-telemetry-triage"
+title = "Telemetry & Privacy (RFC 005c - Triage)"
+status = "pending"
+
+[[epochs.phases.tasks]]
+id = "telemetry-decision"
+label = "Product decision on telemetry requirements"
+status = "pending"
+
+[[epochs.phases]]
+id = "phase-openresponses-triage"
+title = "OpenResponses API (RFC 004 - Triage)"
+status = "pending"
+
+[[epochs.phases.tasks]]
+id = "wait-for-sdk"
+label = "Wait for AI SDK OpenResponses support to stabilize"
+status = "pending"
