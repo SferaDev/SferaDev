@@ -11584,6 +11584,16 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
+						id: string;
+						/**
+						 * @type string
+						 */
+						url: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
 						grantType: PayloadGrantTypeEnumKey;
 						/**
 						 * @description the app\'s name at the time the event was published (it could have changed since then)

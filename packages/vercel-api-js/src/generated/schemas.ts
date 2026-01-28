@@ -4624,6 +4624,10 @@ export const userEventSchema = z
 					newName: z.optional(z.string()),
 				}),
 				z.object({
+					id: z.string(),
+					url: z.string(),
+				}),
+				z.object({
 					grantType: z.enum(["authorization_code", "urn:ietf:params:oauth:grant-type:device_code"]),
 					appName: z
 						.string()
