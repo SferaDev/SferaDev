@@ -144,47 +144,78 @@ For selected models (e.g., user's preferred model), fetch additional metadata:
 
 ```typescript
 // GET /v1/models/{creator}/{model}/endpoints
-interface ModelEndpointDetails {
-  context_length: number;
-  max_completion_tokens: number;
-  supported_parameters: string[];
-  supports_implicit_caching: boolean;
+// Actual API response structure (discovered 2026-01-28):
+interface EnrichmentResponse {
+  data: {
+    id: string;                    // e.g., "openai/gpt-4o"
+    name: string;                  // e.g., "GPT-4o"
+    description: string;
+    architecture: {
+      modality: string;
+      input_modalities: string[];  // e.g., ["text", "image"]
+      output_modalities: string[]; // e.g., ["text"]
+    };
+    endpoints: ModelEndpoint[];    // Multiple providers per model
+  };
 }
 
+interface ModelEndpoint {
+  name: string;                    // Provider name
+  context_length: number;          // e.g., 128000
+  max_completion_tokens: number;   // e.g., 16384
+  supported_parameters: string[];  // e.g., ["max_tokens", "temperature", "tools"]
+  supports_implicit_caching: boolean;
+  // Additional fields (not used in MVP):
+  // pricing: { prompt, completion, ... }
+  // latency_last_1h: { p50, p95 }
+  // throughput_last_1h: { p50, p95 }
+}
+
+// Simplified implementation: use first endpoint, in-memory cache only
 async function enrichModelMetadata(
   modelId: string,
   baseMetadata: VercelModel,
 ): Promise<EnrichedModel> {
   // Only enrich on-demand to avoid rate limits
-  const details = await fetchModelEndpoints(modelId);
+  const response = await fetchModelEndpoints(modelId);
+  const endpoint = response.data.endpoints[0]; // Use first provider
 
   return {
     ...baseMetadata,
-    contextLength: details.context_length ?? baseMetadata.context_window,
+    contextLength: endpoint?.context_length ?? baseMetadata.context_window,
     maxCompletionTokens:
-      details.max_completion_tokens ?? baseMetadata.max_output_tokens,
-    supportedParameters: details.supported_parameters ?? [],
-    supportsImplicitCaching: details.supports_implicit_caching ?? false,
+      endpoint?.max_completion_tokens ?? baseMetadata.max_output_tokens,
+    supportedParameters: endpoint?.supported_parameters ?? [],
+    supportsImplicitCaching: endpoint?.supports_implicit_caching ?? false,
+    // Bonus: refine capabilities from architecture
+    inputModalities: response.data.architecture?.input_modalities ?? [],
   };
 }
 ```
 
 **Discovery Note (2026-01-28):** The enrichment endpoint exists and is functional on Vercel AI Gateway. Testing confirms:
 
-- Endpoint: `GET /v1/models/{creator}/{model}/endpoints` returns expected Phase 5 fields
+- Endpoint: `GET /v1/models/{creator}/{model}/endpoints` returns nested `data.endpoints[]` array
 - Example: `openai/gpt-4o/endpoints` returns `context_length: 128000`, `max_completion_tokens: 16384`, `supported_parameters`, `supports_implicit_caching`
+- Multi-provider: Each model can have multiple endpoints (azure, openai, etc.) — use first endpoint for MVP
 - Behavior: Returns 404 for invalid/retired models (e.g., `openai/gpt-4`), so graceful fallback to base model data is required
-- Recommendation: Implement lazy/on-demand loading with caching to avoid rate limits and performance impact
+- Recommendation: Implement lazy/on-demand loading with in-memory caching (no persistence needed)
+
+**Simplifying Assumptions for MVP:**
+1. Use first endpoint only (multi-provider aggregation can be added later)
+2. In-memory cache with same TTL as models cache (5 min) — no persistence
+3. Extract core 4 fields only: `context_length`, `max_completion_tokens`, `supported_parameters`, `supports_implicit_caching`
+4. On-demand enrichment for selected model only, not all models
 
 ## Implementation Checklist
 
-- [ ] Add `parseModelIdentity()` function with tests
-- [ ] Update `provideLanguageModels()` to use parsed `family` and `version`
-- [ ] Change `maxInputTokens` to use true `context_window`
-- [ ] Add preflight token budget validation with warning
-- [ ] Filter models by `type === 'language'`
-- [ ] Expand capability detection to include `reasoning`, `web-search`
-- [ ] (Optional) Add on-demand endpoint enrichment for selected models
+- [x] Add `parseModelIdentity()` function with tests *(Implemented in `models/identity.ts`)*
+- [x] Update `provideLanguageModels()` to use parsed `family` and `version` *(Implemented in `models.ts`)*
+- [x] Change `maxInputTokens` to use true `context_window` *(Implemented)*
+- [x] Add preflight token budget validation with warning *(Implemented in token counting)*
+- [x] Filter models by `type === 'language'` *(Implemented in `models.ts`)*
+- [x] Expand capability detection to include `reasoning`, `web-search` *(Implemented in `models.ts`)*
+- [ ] (Phase 5) Add on-demand endpoint enrichment for selected models
 
 ## Drawbacks
 
