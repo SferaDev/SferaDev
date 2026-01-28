@@ -5,7 +5,6 @@ import {
 	DEFAULT_SYSTEM_PROMPT_MESSAGE,
 	DEFAULT_TIMEOUT_MS,
 } from "./constants";
-import { logger } from "./logger";
 
 export type ReasoningEffort = "low" | "medium" | "high";
 export type LogLevel = "off" | "error" | "warn" | "info" | "debug" | "trace";
@@ -21,11 +20,12 @@ export class ConfigService implements vscode.Disposable {
 		this.disposable = vscode.workspace.onDidChangeConfiguration((event) => {
 			if (event.affectsConfiguration("vercelAiGateway")) {
 				this.config = vscode.workspace.getConfiguration("vercelAiGateway");
-				logger.info("Configuration changed: vercelAiGateway");
+				// Note: Can't use logger here due to circular dependency
+				// Logger depends on ConfigService for configuration
 				this.emitter.fire();
 			}
 		});
-		logger.debug("ConfigService initialized");
+		// Note: Can't log here - circular dependency with logger.ts
 	}
 
 	get onDidChange(): vscode.Event<void> {

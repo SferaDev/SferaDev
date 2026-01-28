@@ -44,12 +44,28 @@ function canCreateOutputChannel(): boolean {
 	}
 }
 
-function createOutputChannelSafely(): vscode.OutputChannel | null {
+// Module-level singleton for output channel to prevent duplicates
+let _sharedOutputChannel: vscode.OutputChannel | null = null;
+
+function getOrCreateOutputChannel(): vscode.OutputChannel | null {
+	if (_sharedOutputChannel) {
+		return _sharedOutputChannel;
+	}
 	try {
-		return vscode.window.createOutputChannel("Vercel AI Gateway");
+		_sharedOutputChannel = vscode.window.createOutputChannel("Vercel AI Gateway");
+		return _sharedOutputChannel;
 	} catch {
 		return null;
 	}
+}
+
+/**
+ * Reset the shared output channel singleton.
+ * Only for testing - allows tests to verify output channel creation.
+ * @internal
+ */
+export function _resetOutputChannelForTesting(): void {
+	_sharedOutputChannel = null;
 }
 
 export class Logger {
@@ -73,7 +89,7 @@ export class Logger {
 		const useOutputChannel = this.configService.logOutputChannel ?? true;
 		const canUseOutputChannel = canCreateOutputChannel();
 		if (useOutputChannel && canUseOutputChannel && !this.outputChannel) {
-			this.outputChannel = createOutputChannelSafely();
+			this.outputChannel = getOrCreateOutputChannel();
 		} else if ((!useOutputChannel || !canUseOutputChannel) && this.outputChannel) {
 			this.outputChannel.dispose();
 			this.outputChannel = null;

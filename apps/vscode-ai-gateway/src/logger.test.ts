@@ -63,11 +63,13 @@ vi.mock("vscode", () => ({
 }));
 
 // Import after mocking
-import { LOG_LEVELS, Logger, type LogLevel } from "./logger";
+import { _resetOutputChannelForTesting, LOG_LEVELS, Logger } from "./logger";
 
 describe("Logger", () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
+		// Reset the output channel singleton so each test can verify channel creation
+		_resetOutputChannelForTesting();
 		// Default configuration
 		hoisted.mockGetConfiguration.mockReturnValue({
 			get: vi.fn((key: string, defaultValue: unknown) => {
