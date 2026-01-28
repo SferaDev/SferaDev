@@ -30,7 +30,7 @@ import {
 type StreamChunk = TextStreamPart<ToolSet>;
 
 import { VERCEL_AI_AUTH_PROVIDER_ID } from "./auth";
-import { ERROR_MESSAGES } from "./constants";
+import { ERROR_MESSAGES, LAST_SELECTED_MODEL_KEY } from "./constants";
 import { extractErrorMessage, logError, logger } from "./logger";
 import { ModelsClient } from "./models";
 import { parseModelIdentity } from "./models/identity";
@@ -105,10 +105,6 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 	private modelsClient: ModelsClient;
 	private tokenCache: TokenCache;
 	private tokenCounter: TokenCounter;
-	// Track actual token usage from completed requests
-	private lastRequestInputTokens: number | null = null;
-	private lastRequestOutputTokens: number | null = null;
-	private lastRequestMessageCount: number = 0;
 	private correctionFactor: number = 1.0;
 	private lastEstimatedInputTokens: number = 0;
 	// Track current request for caching API actuals
@@ -180,8 +176,8 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 				);
 			}
 
-			// Warn if we're close to the limit (>80%)
-			if (estimatedTokens > maxInputTokens * 0.8) {
+			// Warn if we're close to the limit (>90%)
+			if (estimatedTokens > maxInputTokens * 0.9) {
 				logger.warn(
 					`Input is ${Math.round((estimatedTokens / maxInputTokens) * 100)}% of max tokens. ` +
 						`Consider reducing context to avoid potential issues.`,
@@ -259,8 +255,7 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 				this.handleStreamChunk(chunk, progress);
 			}
 
-			// Track message count for hybrid token estimation
-			this.lastRequestMessageCount = chatMessages.length;
+			await this.context.workspaceState.update(LAST_SELECTED_MODEL_KEY, model.id);
 			logger.info(`Chat request completed for ${model.id}`);
 		} catch (error) {
 			// Don't report abort/cancellation as an error - it's expected behavior
@@ -331,7 +326,9 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 		if (typeof text === "string") {
 			// Use tiktoken for text strings
 			const estimated = this.tokenCounter.estimateTextTokens(text, model.family);
-			return this.tokenCounter.applySafetyMargin(estimated, 0.05);
+			const corrected = estimated * this.correctionFactor;
+			const margin = this.tokenCounter.usesCharacterFallback(model.family) ? 0.1 : 0.05;
+			return this.tokenCounter.applySafetyMargin(corrected, margin);
 		}
 
 		// Check cache for API actuals first (ground truth)
@@ -343,50 +340,9 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 
 		// Use tiktoken-based estimation for unsent messages
 		const estimated = this.tokenCounter.estimateMessageTokens(text, model.family);
-		return this.tokenCounter.applySafetyMargin(estimated, 0.05);
-	}
-
-	/**
-	 * Estimate tokens for an image based on the model family.
-	 *
-	 * Different providers have different image token costs:
-	 * - Anthropic: ~1600 tokens per image (fixed)
-	 * - OpenAI: Tile-based (~85 tokens per 512x512 tile, min 85, max ~1700)
-	 * - Google: Similar to OpenAI tile-based
-	 * - Others: Use conservative estimate of 1000 tokens
-	 */
-	private estimateImageTokens(
-		model: LanguageModelChatInformation,
-		imagePart: LanguageModelDataPart,
-	): number {
-		const family = model.family.toLowerCase();
-
-		// Anthropic uses fixed ~1600 tokens per image
-		if (family.includes("anthropic") || family.includes("claude")) {
-			return 1600;
-		}
-
-		// OpenAI and similar use tile-based counting
-		// Without knowing image dimensions, estimate based on data size
-		// A typical JPEG is ~10-50KB, PNG can be larger
-		const dataSize = imagePart.data.byteLength;
-
-		// Estimate dimensions from file size (very rough)
-		// Assume ~3 bytes per pixel for compressed image
-		const estimatedPixels = dataSize / 3;
-		const estimatedDimension = Math.sqrt(estimatedPixels);
-
-		// OpenAI tiles are 512x512, ~85 tokens each
-		// Images are scaled to fit within 2048x2048 first
-		const scaledDimension = Math.min(estimatedDimension, 2048);
-		const tilesPerSide = Math.ceil(scaledDimension / 512);
-		const totalTiles = tilesPerSide * tilesPerSide;
-
-		// 85 tokens per tile, plus 85 base tokens
-		const openAITokens = 85 + totalTiles * 85;
-
-		// Cap at reasonable maximum (high-res image)
-		return Math.min(openAITokens, 1700);
+		const corrected = estimated * this.correctionFactor;
+		const margin = this.tokenCounter.usesCharacterFallback(model.family) ? 0.1 : 0.05;
+		return this.tokenCounter.applySafetyMargin(corrected, margin);
 	}
 
 	/**
@@ -398,30 +354,7 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 		messages: readonly LanguageModelChatMessage[],
 		token: CancellationToken,
 	): Promise<number> {
-		// If we have actual data from a previous request in this conversation
-		// and new messages have been added (not edited/removed)
-		if (
-			this.lastRequestInputTokens !== null &&
-			messages.length > this.lastRequestMessageCount &&
-			this.lastRequestMessageCount > 0
-		) {
-			// Use actual tokens for known messages, estimate only new ones
-			const newMessages = messages.slice(this.lastRequestMessageCount);
-			let newTokenEstimate = 0;
-			for (const message of newMessages) {
-				newTokenEstimate += await this.provideTokenCount(model, message, token);
-			}
-			// Add overhead for new message structure
-			newTokenEstimate += newMessages.length * 4;
-
-			logger.debug(
-				`Hybrid token estimation: ${this.lastRequestInputTokens} actual + ${newTokenEstimate} estimated = ${this.lastRequestInputTokens + newTokenEstimate} total`,
-			);
-
-			return this.lastRequestInputTokens + newTokenEstimate;
-		}
-
-		// Fall back to pure estimation for first request or changed conversation
+		// Estimate based on cached actuals and tiktoken/character fallback
 		let total = 0;
 		for (const message of messages) {
 			total += await this.provideTokenCount(model, message, token);
@@ -495,17 +428,8 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 		);
 	}
 
-	private getCachedTokenCount(msg: LanguageModelChatRequestMessage): number | undefined {
-		const key = `lm.tokens.${hashMessage(msg)}`;
-		return this.context.workspaceState.get<number>(key);
-	}
-
-	private async setCachedTokenCount(
-		msg: LanguageModelChatRequestMessage,
-		tokens: number,
-	): Promise<void> {
-		const key = `lm.tokens.${hashMessage(msg)}`;
-		await this.context.workspaceState.update(key, tokens);
+	public getLastSelectedModelId(): string | undefined {
+		return this.context.workspaceState.get<string>(LAST_SELECTED_MODEL_KEY);
 	}
 
 	private async getApiKey(silent: boolean): Promise<string | undefined> {
@@ -573,16 +497,6 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 				break;
 
 			case "finish-step": {
-				const finishChunk = chunk as {
-					type: "finish-step";
-					usage?: { inputTokens?: number; outputTokens?: number };
-				};
-				if (finishChunk.usage?.inputTokens !== undefined) {
-					this.lastRequestInputTokens = finishChunk.usage.inputTokens;
-				}
-				if (finishChunk.usage?.outputTokens !== undefined) {
-					this.lastRequestOutputTokens = finishChunk.usage.outputTokens;
-				}
 				break;
 			}
 
@@ -591,22 +505,19 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 					type: "finish";
 					totalUsage?: { inputTokens?: number; outputTokens?: number };
 				};
-				if (finishChunk.totalUsage?.inputTokens !== undefined) {
-					this.lastRequestInputTokens = finishChunk.totalUsage.inputTokens;
+				const actualInputTokens = finishChunk.totalUsage?.inputTokens;
+				if (actualInputTokens !== undefined) {
 					// Cache actual token counts for each message (for future cache lookups)
 					if (this.currentRequestMessages && this.currentRequestModelFamily) {
 						this.cacheMessageTokenCounts(
 							this.currentRequestMessages,
 							this.currentRequestModelFamily,
-							finishChunk.totalUsage.inputTokens,
+							actualInputTokens,
 						);
 					}
 				}
-				if (finishChunk.totalUsage?.outputTokens !== undefined) {
-					this.lastRequestOutputTokens = finishChunk.totalUsage.outputTokens;
-				}
-				if (this.lastEstimatedInputTokens > 0 && this.lastRequestInputTokens !== null) {
-					const newFactor = this.lastRequestInputTokens / this.lastEstimatedInputTokens;
+				if (this.lastEstimatedInputTokens > 0 && actualInputTokens !== undefined) {
+					const newFactor = actualInputTokens / this.lastEstimatedInputTokens;
 					this.correctionFactor = this.correctionFactor * 0.7 + newFactor * 0.3;
 					logger.debug(`Correction factor updated: ${this.correctionFactor.toFixed(3)}`);
 				}
@@ -801,19 +712,6 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 				JSON.stringify(chunk, null, 2),
 			);
 		}
-	}
-
-	private extractErrorMessage(error: unknown): string {
-		if (error instanceof Error) {
-			return error.message;
-		}
-		if (typeof error === "string") {
-			return error;
-		}
-		if (error && typeof error === "object" && "message" in error) {
-			return String(error.message);
-		}
-		return "An unexpected error occurred";
 	}
 }
 
