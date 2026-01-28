@@ -53,16 +53,28 @@ function canCreateOutputChannel(): boolean {
 
 // Module-level singleton for output channel to prevent duplicates
 let _sharedOutputChannel: vscode.OutputChannel | null = null;
+let _outputChannelRefCount = 0;
 
 function getOrCreateOutputChannel(): vscode.OutputChannel | null {
 	if (_sharedOutputChannel) {
+		_outputChannelRefCount++;
 		return _sharedOutputChannel;
 	}
 	try {
 		_sharedOutputChannel = vscode.window.createOutputChannel("Vercel AI Gateway");
+		_outputChannelRefCount = 1;
 		return _sharedOutputChannel;
 	} catch {
 		return null;
+	}
+}
+
+function releaseOutputChannel(): void {
+	_outputChannelRefCount--;
+	if (_outputChannelRefCount <= 0) {
+		_sharedOutputChannel?.dispose();
+		_sharedOutputChannel = null;
+		_outputChannelRefCount = 0;
 	}
 }
 
@@ -72,7 +84,9 @@ function getOrCreateOutputChannel(): vscode.OutputChannel | null {
  * @internal
  */
 export function _resetOutputChannelForTesting(): void {
+	_sharedOutputChannel?.dispose();
 	_sharedOutputChannel = null;
+	_outputChannelRefCount = 0;
 }
 
 export class Logger {
@@ -102,7 +116,7 @@ export class Logger {
 		if (useOutputChannel && canUseOutputChannel && !this.outputChannel) {
 			this.outputChannel = getOrCreateOutputChannel();
 		} else if ((!useOutputChannel || !canUseOutputChannel) && this.outputChannel) {
-			this.outputChannel.dispose();
+			releaseOutputChannel();
 			this.outputChannel = null;
 		}
 
@@ -251,7 +265,10 @@ export class Logger {
 
 	dispose(): void {
 		this.disposable.dispose();
-		this.outputChannel?.dispose();
+		if (this.outputChannel) {
+			releaseOutputChannel();
+			this.outputChannel = null;
+		}
 	}
 
 	/**
