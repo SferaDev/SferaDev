@@ -240,9 +240,20 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 		progress: Progress<LanguageModelResponsePart>,
 		token: CancellationToken,
 	): Promise<void> {
+		// Generate a simple chat ID for per-chat logging (first 8 chars of hash + timestamp)
+		const chatHash = createHash("sha256")
+			.update(chatMessages.map((m) => m.role + JSON.stringify(m.content)).join("|"))
+			.digest("hex")
+			.substring(0, 8);
+		const chatId = `chat-${chatHash}-${Date.now()}`;
+
 		logger.info(`Chat request to ${model.id} with ${chatMessages.length} messages`);
+		logger.debug(`Chat ID: ${chatId}`);
+
 		const abortController = new AbortController();
 		const abortSubscription = token.onCancellationRequested(() => abortController.abort());
+
+		let responseSent = false;
 
 		try {
 			// Track current request for caching API actuals after response
@@ -347,8 +358,32 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 			// Use fullStream instead of toUIMessageStream() to get tool-call events.
 			// toUIMessageStream() hides tool calls and is designed for UI rendering,
 			// while fullStream exposes all events needed for VS Code tool execution.
+			let chunkCount = 0;
 			for await (const chunk of response.fullStream) {
 				this.handleStreamChunk(chunk, progress);
+				// Track if we've emitted any response content
+				if (
+					(chunk as { type?: string }).type === "text-delta" ||
+					(chunk as { type?: string }).type === "tool-call" ||
+					(chunk as { type?: string }).type === "tool-result"
+				) {
+					responseSent = true;
+				}
+				chunkCount += 1;
+			}
+
+			// Safety check: if we got no chunks or no response was sent, emit something
+			if (!responseSent && chunkCount === 0) {
+				logger.error(`Stream completed with no chunks for chat ${chatId}`);
+				progress.report(
+					new LanguageModelTextPart(
+						`**Error**: No response received from model. Please try again.`,
+					),
+				);
+			} else if (!responseSent) {
+				logger.warn(
+					`Stream completed with ${chunkCount} chunks but no content emitted for chat ${chatId}`,
+				);
 			}
 
 			await this.context.workspaceState.update(LAST_SELECTED_MODEL_KEY, model.id);
@@ -362,6 +397,12 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 
 			logError("Exception during streaming", error);
 			const errorMessage = extractErrorMessage(error);
+
+			// CRITICAL: Always emit an error response to prevent "no response returned" error.
+			// If nothing has been sent yet, this is the only response VS Code will see.
+			if (!responseSent) {
+				logger.error(`Emitting error response for chat ${chatId} due to: ${errorMessage}`);
+			}
 			progress.report(new LanguageModelTextPart(`\n\n**Error:** ${errorMessage}\n\n`));
 		} finally {
 			// Clear current request tracking

@@ -82,6 +82,7 @@ export class Logger {
 	private readonly disposable: { dispose: () => void };
 	private logFileDirectory: string = "";
 	private fileLoggingInitialized = false;
+	private fileLoggingOverridePath: string | undefined;
 
 	constructor(configService?: LoggerConfigSource) {
 		this.configService = configService ?? createConfigServiceSafely();
@@ -169,13 +170,15 @@ export class Logger {
 		if (!logDir) return;
 
 		try {
-			const currentLogPath = path.join(logDir, "current.log");
-			fs.appendFileSync(currentLogPath, formatted + "\n");
+			// Use override path if set (per-chat logging), otherwise default to current.log
+			const fileName = this.fileLoggingOverridePath || "current.log";
+			const currentLogPath = path.join(logDir, fileName);
+			fs.appendFileSync(currentLogPath, `${formatted}\n`);
 
 			// Also write errors to errors.log for quick access
 			if (level === "error") {
 				const errorsLogPath = path.join(logDir, "errors.log");
-				fs.appendFileSync(errorsLogPath, formatted + "\n");
+				fs.appendFileSync(errorsLogPath, `${formatted}\n`);
 			}
 		} catch {
 			// Silently fail - don't let file logging errors break the extension
@@ -249,6 +252,18 @@ export class Logger {
 	dispose(): void {
 		this.disposable.dispose();
 		this.outputChannel?.dispose();
+	}
+
+	/**
+	 * Create a per-chat logger for debugging individual conversations.
+	 * Useful for diagnosing issues in specific chats.
+	 */
+	createChatLogger(chatId: string): Logger {
+		const chatLogger = new Logger(this.configService);
+		// Set the same directory but override the file path to per-chat log
+		chatLogger.logFileDirectory = this.logFileDirectory;
+		chatLogger.setFileLoggingPath(`${chatId}.log`);
+		return chatLogger;
 	}
 }
 
