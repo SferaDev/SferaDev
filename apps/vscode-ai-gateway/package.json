@@ -113,6 +113,11 @@
 					"default": true,
 					"description": "Show logs in 'Vercel AI Gateway' output channel."
 				},
+				"vercelAiGateway.logging.fileDirectory": {
+					"type": "string",
+					"default": "",
+					"description": "Directory for log files. When set and log level is debug/trace, logs are written to files. Use an absolute path or path relative to workspace root."
+				},
 				"vercelAiGateway.models.allowlist": {
 					"type": "array",
 					"items": {

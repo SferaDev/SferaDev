@@ -70,6 +70,10 @@ export class ConfigService implements vscode.Disposable {
 		return this.config.get("logging.outputChannel", true);
 	}
 
+	get logFileDirectory(): string {
+		return this.config.get("logging.fileDirectory", "");
+	}
+
 	get modelsAllowlist(): string[] {
 		return this.config.get("models.allowlist", []);
 	}
