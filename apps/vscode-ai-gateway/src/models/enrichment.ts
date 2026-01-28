@@ -158,6 +158,7 @@ export class ModelEnricher {
 					logger.warn(`Enrichment endpoint returned 404 for ${modelId}`);
 					const entry = { fetchedAt: Date.now(), data: null };
 					this.cache.set(modelId, entry);
+					await this.persistToStorage();
 					return null;
 				}
 
@@ -173,6 +174,7 @@ export class ModelEnricher {
 				logger.warn(`No endpoints returned for ${modelId}`);
 				const entry = { fetchedAt: Date.now(), data: null };
 				this.cache.set(modelId, entry);
+				await this.persistToStorage();
 				return null;
 			}
 

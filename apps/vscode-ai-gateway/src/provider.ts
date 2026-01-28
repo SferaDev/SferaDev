@@ -617,7 +617,11 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 		messages: readonly LanguageModelChatMessage[],
 		token: CancellationToken,
 		options?: {
-			tools?: readonly { name: string; description?: string; inputSchema?: unknown }[];
+			tools?: readonly {
+				name: string;
+				description?: string;
+				inputSchema?: unknown;
+			}[];
 			systemPrompt?: string;
 		},
 	): Promise<number> {

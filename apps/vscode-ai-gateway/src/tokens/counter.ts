@@ -1,3 +1,4 @@
+import * as crypto from "node:crypto";
 import { getEncoding } from "js-tiktoken";
 import * as vscode from "vscode";
 import { logger } from "../logger";
@@ -38,7 +39,8 @@ export class TokenCounter {
 
 	estimateTextTokens(text: string, modelFamily: string): number {
 		if (!text) return 0;
-		const cacheKey = `${modelFamily}:${text}`;
+		const textHash = crypto.createHash("sha256").update(text).digest("hex").slice(0, 16);
+		const cacheKey = `${modelFamily}:${textHash}`;
 		const cached = this.textCache.get(cacheKey);
 		if (cached !== undefined) {
 			return cached;
@@ -110,7 +112,7 @@ export class TokenCounter {
 			numTokens += this.estimateTextTokens(JSON.stringify(tool.inputSchema ?? {}), modelFamily);
 		}
 
-		const result = Math.floor(numTokens * TOOL_SAFETY_MULTIPLIER);
+		const result = Math.ceil(numTokens * TOOL_SAFETY_MULTIPLIER);
 		logger.debug(
 			`Tool schema token estimate: ${result} tokens for ${tools.length} tools (family: ${modelFamily})`,
 		);
