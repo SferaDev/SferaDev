@@ -1,7 +1,10 @@
+import type * as vscode from "vscode";
 import { ConfigService } from "../config";
 import { ENRICHMENT_CACHE_TTL_MS, ENRICHMENT_ENDPOINT_PATTERN } from "../constants";
 import { logger } from "../logger";
 import { parseModelIdentity } from "./identity";
+
+const ENRICHMENT_CACHE_KEY = "vercelAiGateway.enrichmentCache";
 
 export interface EnrichmentResponse {
 	data: {
@@ -30,11 +33,19 @@ export interface EnrichedModelData {
 	max_completion_tokens: number | null;
 	supported_parameters: string[];
 	supports_implicit_caching: boolean;
+	/** Input modalities supported by the model (e.g., ["text", "image"]) */
+	input_modalities: string[];
 }
 
 interface EnrichmentCacheEntry {
 	fetchedAt: number;
 	data: EnrichedModelData | null;
+}
+
+/** Serializable format for persistent storage */
+interface PersistedEnrichmentCache {
+	version: 1;
+	entries: Record<string, EnrichmentCacheEntry>;
 }
 
 export function extractCreatorAndModel(modelId: string): { creator: string; model: string } | null {
@@ -57,9 +68,55 @@ export function extractCreatorAndModel(modelId: string): { creator: string; mode
 export class ModelEnricher {
 	private cache = new Map<string, EnrichmentCacheEntry>();
 	private configService: ConfigService;
+	private globalState: vscode.Memento | null = null;
+	private persistenceLoaded = false;
 
 	constructor(configService: ConfigService = new ConfigService()) {
 		this.configService = configService;
+	}
+
+	/**
+	 * Initialize with extension context for persistent caching.
+	 * Call this on extension activation to restore cache from previous session.
+	 */
+	initializePersistence(globalState: vscode.Memento): void {
+		this.globalState = globalState;
+		this.loadFromPersistence();
+	}
+
+	private loadFromPersistence(): void {
+		if (!this.globalState || this.persistenceLoaded) return;
+
+		try {
+			const persisted = this.globalState.get<PersistedEnrichmentCache>(ENRICHMENT_CACHE_KEY);
+			if (persisted?.version === 1 && persisted.entries) {
+				for (const [modelId, entry] of Object.entries(persisted.entries)) {
+					// Only restore entries that haven't expired
+					if (Date.now() - entry.fetchedAt < ENRICHMENT_CACHE_TTL_MS) {
+						this.cache.set(modelId, entry);
+					}
+				}
+				logger.debug(`Restored ${this.cache.size} enrichment cache entries from storage`);
+			}
+		} catch (error) {
+			logger.warn("Failed to load enrichment cache from storage", error);
+		}
+		this.persistenceLoaded = true;
+	}
+
+	private async persistToStorage(): Promise<void> {
+		if (!this.globalState) return;
+
+		try {
+			const entries: Record<string, EnrichmentCacheEntry> = {};
+			for (const [modelId, entry] of this.cache.entries()) {
+				entries[modelId] = entry;
+			}
+			const persisted: PersistedEnrichmentCache = { version: 1, entries };
+			await this.globalState.update(ENRICHMENT_CACHE_KEY, persisted);
+		} catch (error) {
+			logger.warn("Failed to persist enrichment cache to storage", error);
+		}
 	}
 
 	async enrichModel(modelId: string, apiKey: string): Promise<EnrichedModelData | null> {
@@ -120,13 +177,27 @@ export class ModelEnricher {
 				max_completion_tokens: endpoint.max_completion_tokens ?? null,
 				supported_parameters: endpoint.supported_parameters ?? [],
 				supports_implicit_caching: endpoint.supports_implicit_caching ?? false,
+				input_modalities: body.data.architecture?.input_modalities ?? [],
 			};
 
 			this.cache.set(modelId, { fetchedAt: Date.now(), data });
+			// Persist to storage for faster startup next session
+			await this.persistToStorage();
 			return data;
 		} catch (error) {
 			logger.warn(`Failed to fetch enrichment for ${modelId}`, error);
 			return null;
 		}
+	}
+
+	/**
+	 * Clear all cached enrichment data (both in-memory and persisted).
+	 */
+	async clearCache(): Promise<void> {
+		this.cache.clear();
+		if (this.globalState) {
+			await this.globalState.update(ENRICHMENT_CACHE_KEY, undefined);
+		}
+		logger.debug("Enrichment cache cleared");
 	}
 }

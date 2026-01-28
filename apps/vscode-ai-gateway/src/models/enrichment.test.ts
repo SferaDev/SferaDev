@@ -104,6 +104,7 @@ describe("ModelEnricher", () => {
 			max_completion_tokens: 16384,
 			supported_parameters: ["max_tokens", "temperature", "tools"],
 			supports_implicit_caching: true,
+			input_modalities: ["text", "image"],
 		});
 		expect(mockFetch).toHaveBeenCalledWith(
 			"https://example.test/v1/models/openai/gpt-4o/endpoints",
@@ -176,5 +177,98 @@ describe("ModelEnricher", () => {
 		const result = await enricher.enrichModel("openai:gpt-4o-2024-11-20", "test-api-key");
 
 		expect(result).toBeNull();
+	});
+
+	it("persists cache to globalState and restores on initialization", async () => {
+		vi.useFakeTimers();
+		vi.setSystemTime(new Date("2026-01-01T00:00:00Z"));
+
+		const storage = new Map<string, unknown>();
+		const mockGlobalState = {
+			get: vi.fn((key: string) => storage.get(key)),
+			update: vi.fn(async (key: string, value: unknown) => {
+				storage.set(key, value);
+			}),
+		};
+
+		const mockFetch = vi.fn().mockResolvedValue({
+			ok: true,
+			json: async () => ({
+				data: {
+					id: "openai/gpt-4o",
+					name: "GPT-4o",
+					architecture: { input_modalities: ["text", "image"] },
+					endpoints: [
+						{
+							context_length: 128000,
+							max_completion_tokens: 16384,
+							supported_parameters: ["max_tokens"],
+							supports_implicit_caching: true,
+						},
+					],
+				},
+			}),
+		});
+
+		globalThis.fetch = mockFetch as unknown as typeof fetch;
+
+		// First enricher: fetch and persist
+		const enricher1 = new ModelEnricher();
+		enricher1.initializePersistence(mockGlobalState as unknown as import("vscode").Memento);
+		await enricher1.enrichModel("openai:gpt-4o-2024-11-20", "test-api-key");
+
+		expect(mockGlobalState.update).toHaveBeenCalled();
+
+		// Second enricher: should restore from persistence without fetching
+		const enricher2 = new ModelEnricher();
+		enricher2.initializePersistence(mockGlobalState as unknown as import("vscode").Memento);
+		const result = await enricher2.enrichModel("openai:gpt-4o-2024-11-20", "test-api-key");
+
+		// Should only have fetched once (first enricher)
+		expect(mockFetch).toHaveBeenCalledTimes(1);
+		expect(result).toEqual({
+			context_length: 128000,
+			max_completion_tokens: 16384,
+			supported_parameters: ["max_tokens"],
+			supports_implicit_caching: true,
+			input_modalities: ["text", "image"],
+		});
+	});
+
+	it("clears cache from both memory and storage", async () => {
+		const storage = new Map<string, unknown>();
+		const mockGlobalState = {
+			get: vi.fn((key: string) => storage.get(key)),
+			update: vi.fn(async (key: string, value: unknown) => {
+				if (value === undefined) {
+					storage.delete(key);
+				} else {
+					storage.set(key, value);
+				}
+			}),
+		};
+
+		const mockFetch = vi.fn().mockResolvedValue({
+			ok: true,
+			json: async () => ({
+				data: {
+					id: "openai/gpt-4o",
+					name: "GPT-4o",
+					endpoints: [{ context_length: 128000 }],
+				},
+			}),
+		});
+
+		globalThis.fetch = mockFetch as unknown as typeof fetch;
+
+		const enricher = new ModelEnricher();
+		enricher.initializePersistence(mockGlobalState as unknown as import("vscode").Memento);
+		await enricher.enrichModel("openai:gpt-4o-2024-11-20", "test-api-key");
+
+		expect(storage.size).toBe(1);
+
+		await enricher.clearCache();
+
+		expect(storage.size).toBe(0);
 	});
 });
