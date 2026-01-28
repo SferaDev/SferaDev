@@ -38,6 +38,7 @@ import {
 } from "./constants";
 import { extractErrorMessage, logError, logger } from "./logger";
 import { ModelsClient } from "./models";
+import { type EnrichedModelData, ModelEnricher } from "./models/enrichment";
 import { parseModelIdentity } from "./models/identity";
 import { TokenCache } from "./tokens/cache";
 import { TokenCounter } from "./tokens/counter";
@@ -113,6 +114,7 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 	private correctionFactor: number = 1.0;
 	private lastEstimatedInputTokens: number = 0;
 	private configService: ConfigService;
+	private enricher: ModelEnricher;
 	// Track current request for caching API actuals
 	private currentRequestMessages: readonly LanguageModelChatMessage[] | null = null;
 	private currentRequestModelFamily: string | null = null;
@@ -125,6 +127,8 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 	 * - Clear on abort/error (finally block) to avoid stale entries.
 	 */
 	private toolCallBuffer: Map<string, { toolName: string; argsText: string }> = new Map();
+	/** Cache of enriched model data for the session */
+	private enrichedModels: Map<string, EnrichedModelData> = new Map();
 
 	constructor(context: ExtensionContext, configService: ConfigService = new ConfigService()) {
 		this.context = context;
@@ -132,6 +136,9 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 		this.modelsClient = new ModelsClient(configService);
 		this.tokenCache = new TokenCache();
 		this.tokenCounter = new TokenCounter();
+		this.enricher = new ModelEnricher(configService);
+		// Initialize enricher persistence for faster startup
+		this.enricher.initializePersistence(context.globalState);
 	}
 
 	async provideLanguageModelChatInformation(
@@ -206,6 +213,9 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 			if (!apiKey) {
 				throw new Error(ERROR_MESSAGES.API_KEY_NOT_FOUND);
 			}
+
+			// Lazy enrichment: fetch additional metadata on first use of each model
+			await this.enrichModelIfNeeded(model.id, apiKey);
 
 			const gateway = createGatewayProvider({
 				apiKey,
@@ -517,6 +527,45 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 			}
 			return undefined;
 		}
+	}
+
+	/**
+	 * Enrich model metadata on first use.
+	 *
+	 * Fetches additional metadata (context_length, input_modalities, etc.)
+	 * from the enrichment endpoint and caches it for the session.
+	 * This enables more accurate token limits and capability detection.
+	 *
+	 * @param modelId - The model ID to enrich
+	 * @param apiKey - API key for authentication
+	 */
+	private async enrichModelIfNeeded(modelId: string, apiKey: string): Promise<void> {
+		// Skip if already enriched this session
+		if (this.enrichedModels.has(modelId)) {
+			return;
+		}
+
+		try {
+			const enriched = await this.enricher.enrichModel(modelId, apiKey);
+			if (enriched) {
+				this.enrichedModels.set(modelId, enriched);
+				logger.debug(`Enriched model ${modelId}:`, {
+					context_length: enriched.context_length,
+					input_modalities: enriched.input_modalities,
+					supports_implicit_caching: enriched.supports_implicit_caching,
+				});
+			}
+		} catch (error) {
+			// Non-blocking: enrichment failure shouldn't prevent chat
+			logger.warn(`Failed to enrich model ${modelId}`, error);
+		}
+	}
+
+	/**
+	 * Get enriched data for a model, if available.
+	 */
+	public getEnrichedModelData(modelId: string): EnrichedModelData | undefined {
+		return this.enrichedModels.get(modelId);
 	}
 
 	/**

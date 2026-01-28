@@ -147,23 +147,23 @@ For selected models (e.g., user's preferred model), fetch additional metadata:
 // Actual API response structure (discovered 2026-01-28):
 interface EnrichmentResponse {
   data: {
-    id: string;                    // e.g., "openai/gpt-4o"
-    name: string;                  // e.g., "GPT-4o"
+    id: string; // e.g., "openai/gpt-4o"
+    name: string; // e.g., "GPT-4o"
     description: string;
     architecture: {
       modality: string;
-      input_modalities: string[];  // e.g., ["text", "image"]
+      input_modalities: string[]; // e.g., ["text", "image"]
       output_modalities: string[]; // e.g., ["text"]
     };
-    endpoints: ModelEndpoint[];    // Multiple providers per model
+    endpoints: ModelEndpoint[]; // Multiple providers per model
   };
 }
 
 interface ModelEndpoint {
-  name: string;                    // Provider name
-  context_length: number;          // e.g., 128000
-  max_completion_tokens: number;   // e.g., 16384
-  supported_parameters: string[];  // e.g., ["max_tokens", "temperature", "tools"]
+  name: string; // Provider name
+  context_length: number; // e.g., 128000
+  max_completion_tokens: number; // e.g., 16384
+  supported_parameters: string[]; // e.g., ["max_tokens", "temperature", "tools"]
   supports_implicit_caching: boolean;
   // Additional fields (not used in MVP):
   // pricing: { prompt, completion, ... }
@@ -202,20 +202,31 @@ async function enrichModelMetadata(
 - Recommendation: Implement lazy/on-demand loading with in-memory caching (no persistence needed)
 
 **Simplifying Assumptions for MVP:**
+
 1. Use first endpoint only (multi-provider aggregation can be added later)
-2. In-memory cache with same TTL as models cache (5 min) — no persistence
-3. Extract core 4 fields only: `context_length`, `max_completion_tokens`, `supported_parameters`, `supports_implicit_caching`
+2. ~~In-memory cache with same TTL as models cache (5 min) — no persistence~~ **Updated:** Persistent caching via `globalState` for faster startup
+3. Extract core fields: `context_length`, `max_completion_tokens`, `supported_parameters`, `supports_implicit_caching`, `input_modalities`
 4. On-demand enrichment for selected model only, not all models
+
+**Integration Strategy (2026-01-28):**
+
+1. **Initialization:** Create singleton `ModelEnricher` in extension activation, call `initializePersistence(globalState)` to restore cache from previous session
+2. **Lazy enrichment:** Call `enrichModel()` in `provideLanguageModelChatResponse()` before making API call — enriches on first use of each model
+3. **Capability refinement:** Use `input_modalities` to update `imageInput` capability; use `context_length` for more accurate token limits
+4. **Graceful fallback:** If enrichment fails, use base model metadata without blocking the request
 
 ## Implementation Checklist
 
-- [x] Add `parseModelIdentity()` function with tests *(Implemented in `models/identity.ts`)*
-- [x] Update `provideLanguageModels()` to use parsed `family` and `version` *(Implemented in `models.ts`)*
-- [x] Change `maxInputTokens` to use true `context_window` *(Implemented)*
-- [x] Add preflight token budget validation with warning *(Implemented in token counting)*
-- [x] Filter models by `type === 'language'` *(Implemented in `models.ts`)*
-- [x] Expand capability detection to include `reasoning`, `web-search` *(Implemented in `models.ts`)*
-- [ ] (Phase 5) Add on-demand endpoint enrichment for selected models
+- [x] Add `parseModelIdentity()` function with tests _(Implemented in `models/identity.ts`)_
+- [x] Update `provideLanguageModels()` to use parsed `family` and `version` _(Implemented in `models.ts`)_
+- [x] Change `maxInputTokens` to use true `context_window` _(Implemented)_
+- [x] Add preflight token budget validation with warning _(Implemented in token counting)_
+- [x] Filter models by `type === 'language'` _(Implemented in `models.ts`)_
+- [x] Expand capability detection to include `reasoning`, `web-search` _(Implemented in `models.ts`)_
+- [x] (Phase 5) Add enrichment module with caching _(Implemented in `models/enrichment.ts`)_
+- [x] (Phase 5) Add `input_modalities` extraction _(Implemented)_
+- [x] (Phase 5) Add persistent caching via `globalState` _(Implemented)_
+- [ ] (Phase 5) Wire enricher into extension activation and provider flow
 
 ## Drawbacks
 
