@@ -98,7 +98,9 @@ export class ModelsClient {
 		const webSearchTags = new Set(["web-search", "web_search", "search", "grounding"]);
 
 		return data
-			.filter((model) => model.type === "chat" || model.type === undefined)
+			.filter(
+				(model) => model.type === "chat" || model.type === "language" || model.type === undefined,
+			)
 			.map((model) => {
 				const identity = parseModelIdentity(model.id);
 				const tags = (model.tags ?? []).map((tag) => tag.toLowerCase());
