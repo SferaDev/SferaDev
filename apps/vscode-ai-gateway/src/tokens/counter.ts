@@ -1,6 +1,7 @@
 import { getEncoding } from "js-tiktoken";
 import * as vscode from "vscode";
 import { logger } from "../logger";
+import { LRUCache } from "./lru-cache";
 
 type Encoding = {
 	encode: (text: string) => number[];
@@ -33,21 +34,29 @@ const TOOL_SAFETY_MULTIPLIER = 1.1;
 
 export class TokenCounter {
 	private encodings = new Map<string, Encoding>();
+	private textCache = new LRUCache<number>(5000);
 
 	estimateTextTokens(text: string, modelFamily: string): number {
 		if (!text) return 0;
+		const cacheKey = `${modelFamily}:${text}`;
+		const cached = this.textCache.get(cacheKey);
+		if (cached !== undefined) {
+			return cached;
+		}
 		const encoding = this.getEncodingForFamily(modelFamily);
 		if (encoding) {
 			const count = encoding.encode(text).length;
 			logger.trace(
 				`Text token estimate: ${count} tokens for ${text.length} chars (family: ${modelFamily})`,
 			);
+			this.textCache.put(cacheKey, count);
 			return count;
 		}
 		const count = this.estimateByChars(text);
 		logger.trace(
 			`Text token estimate: ${count} tokens for ${text.length} chars (family: ${modelFamily})`,
 		);
+		this.textCache.put(cacheKey, count);
 		return count;
 	}
 

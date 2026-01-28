@@ -119,6 +119,26 @@ describe("TokenCounter", () => {
 		expect(result).toBe(5);
 		expect(tiktokenHoisted.mockEncode).toHaveBeenCalled();
 	});
+
+	it("caches text tokenization results", () => {
+		tiktokenHoisted.mockEncode.mockClear();
+		const counter = new TokenCounter();
+
+		counter.estimateTextTokens("hello", "gpt-4");
+		counter.estimateTextTokens("hello", "gpt-4");
+
+		expect(tiktokenHoisted.mockEncode).toHaveBeenCalledTimes(1);
+	});
+
+	it("uses separate cache entries per model family", () => {
+		tiktokenHoisted.mockEncode.mockClear();
+		const counter = new TokenCounter();
+
+		counter.estimateTextTokens("hello", "gpt-4");
+		counter.estimateTextTokens("hello", "claude-3-5-sonnet");
+
+		expect(tiktokenHoisted.mockEncode).toHaveBeenCalledTimes(2);
+	});
 });
 
 describe("countToolsTokens", () => {
