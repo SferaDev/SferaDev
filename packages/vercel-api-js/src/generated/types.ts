@@ -1724,6 +1724,18 @@ export const payloadPassiveEnum = {
 
 export type PayloadPassiveEnumKey = (typeof payloadPassiveEnum)[keyof typeof payloadPassiveEnum];
 
+export const payloadProviderEnum = {
+	github: "github",
+	"github-limited": "github-limited",
+	"github-custom-host": "github-custom-host",
+	gitlab: "gitlab",
+	bitbucket: "bitbucket",
+	google: "google",
+	apple: "apple",
+} as const;
+
+export type PayloadProviderEnumKey = (typeof payloadProviderEnum)[keyof typeof payloadProviderEnum];
+
 export const payloadForcedEnum = {
 	false: false,
 	true: true,
@@ -3594,13 +3606,13 @@ export const payloadAuthMethodEnum = {
 	github: "github",
 	gitlab: "gitlab",
 	bitbucket: "bitbucket",
+	google: "google",
+	apple: "apple",
 	manual: "manual",
 	passkey: "passkey",
 	otp: "otp",
 	sms: "sms",
 	invite: "invite",
-	google: "google",
-	apple: "apple",
 } as const;
 
 export type PayloadAuthMethodEnumKey =
@@ -4670,6 +4682,16 @@ export type UserEvent = {
 						 * @type string | undefined
 						 */
 						bitbucketName?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						provider: PayloadProviderEnumKey;
+						/**
+						 * @type string
+						 */
+						login: string;
 				  }
 				| {
 						/**

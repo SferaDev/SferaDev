@@ -1207,6 +1207,18 @@ export const userEventSchema = z
 					bitbucketName: z.optional(z.string()),
 				}),
 				z.object({
+					provider: z.enum([
+						"github",
+						"github-limited",
+						"github-custom-host",
+						"gitlab",
+						"bitbucket",
+						"google",
+						"apple",
+					]),
+					login: z.string(),
+				}),
+				z.object({
 					projectId: z.string(),
 					projectName: z.string(),
 					hookName: z.string(),
@@ -4628,13 +4640,13 @@ export const userEventSchema = z
 						"github",
 						"gitlab",
 						"bitbucket",
+						"google",
+						"apple",
 						"manual",
 						"passkey",
 						"otp",
 						"sms",
 						"invite",
-						"google",
-						"apple",
 					]),
 					app: z.optional(
 						z
