@@ -383,7 +383,18 @@ export function logError(context: string, error: unknown): void {
 }
 
 /**
+ * Clean up error messages that have malformed prefixes like "undefined: ".
+ */
+function cleanErrorMessage(message: string): string {
+	// Remove "undefined: " prefix that can come from some providers (e.g., AWS Bedrock)
+	return message.replace(/^undefined:\s*/i, "");
+}
+
+/**
  * Extract a user-friendly error message from various error types.
+ *
+ * For Vercel AI Gateway errors, attempts to find the most informative error
+ * from provider routing attempts (e.g., Anthropic's "prompt is too long: X tokens > Y maximum").
  */
 export function extractErrorMessage(error: unknown): string {
 	if (error && typeof error === "object") {
@@ -393,8 +404,34 @@ export function extractErrorMessage(error: unknown): string {
 		if ("responseBody" in errorObj && typeof errorObj.responseBody === "string") {
 			try {
 				const parsed = JSON.parse(errorObj.responseBody);
+
+				// Try to find the best error from routing attempts
+				// Prefer the first error with specific details over generic ones
+				const attempts = parsed.providerMetadata?.gateway?.routing?.attempts;
+				if (Array.isArray(attempts)) {
+					for (const attempt of attempts) {
+						if (attempt.error && typeof attempt.error === "string") {
+							const cleaned = cleanErrorMessage(attempt.error);
+							// Prefer more informative errors (e.g., with token counts)
+							if (
+								cleaned.includes("tokens") ||
+								cleaned.includes("too long") ||
+								cleaned.includes("exceeds")
+							) {
+								return cleaned;
+							}
+						}
+					}
+					// Fall back to first attempt's error if no informative one found
+					const firstError = attempts[0]?.error;
+					if (firstError && typeof firstError === "string") {
+						return cleanErrorMessage(firstError);
+					}
+				}
+
+				// Fall back to top-level error message
 				if (parsed.error?.message) {
-					return parsed.error.message;
+					return cleanErrorMessage(parsed.error.message);
 				}
 			} catch {
 				// Fall through to other extraction methods
@@ -403,17 +440,69 @@ export function extractErrorMessage(error: unknown): string {
 
 		// Use error message if available
 		if ("message" in errorObj && typeof errorObj.message === "string") {
-			return errorObj.message;
+			return cleanErrorMessage(errorObj.message);
 		}
 	}
 
 	if (error instanceof Error) {
-		return error.message;
+		return cleanErrorMessage(error.message);
 	}
 
 	if (typeof error === "string") {
-		return error;
+		return cleanErrorMessage(error);
 	}
 
 	return "An unexpected error occurred";
+}
+
+/**
+ * Token count information extracted from an error message.
+ */
+export interface ExtractedTokenInfo {
+	/** The actual number of input tokens that caused the error */
+	actualTokens: number;
+	/** The maximum allowed tokens (if parseable) */
+	maxTokens?: number;
+}
+
+/**
+ * Extract actual token count from "input too long" error messages.
+ *
+ * Parses errors like:
+ * - "prompt is too long: 204716 tokens > 200000 maximum"
+ * - "Input is too long for requested model."
+ *
+ * Returns the actual token count if parseable, undefined otherwise.
+ */
+export function extractTokenCountFromError(error: unknown): ExtractedTokenInfo | undefined {
+	// First, get the error message using existing extraction logic
+	const message = extractErrorMessage(error);
+
+	// Pattern: "prompt is too long: 204716 tokens > 200000 maximum"
+	const tokenPattern = /(\d+)\s*tokens?\s*>\s*(\d+)/i;
+	const match = message.match(tokenPattern);
+
+	if (match) {
+		const actualTokens = parseInt(match[1], 10);
+		const maxTokens = parseInt(match[2], 10);
+		if (!isNaN(actualTokens) && actualTokens > 0) {
+			return {
+				actualTokens,
+				maxTokens: !isNaN(maxTokens) ? maxTokens : undefined,
+			};
+		}
+	}
+
+	// Pattern: "exceeds context window of X tokens" or similar
+	const exceedsPattern = /exceeds.*?(\d+)\s*tokens?/i;
+	const exceedsMatch = message.match(exceedsPattern);
+	if (exceedsMatch) {
+		const maxTokens = parseInt(exceedsMatch[1], 10);
+		// We don't know the actual count, but we know the max
+		if (!isNaN(maxTokens)) {
+			return { actualTokens: maxTokens + 1, maxTokens };
+		}
+	}
+
+	return undefined;
 }

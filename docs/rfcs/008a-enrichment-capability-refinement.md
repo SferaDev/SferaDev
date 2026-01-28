@@ -1,7 +1,8 @@
 # RFC 008a: Enrichment-Based Capability Refinement
 
-**Status**: Stage 1 (Proposal)  
+**Status**: ✅ Partially Implemented  
 **Created**: 2026-01-28  
+**Updated**: 2026-01-28  
 **Parent RFC**: [RFC 008: High-Fidelity Model Mapping](./008-high-fidelity-model-mapping.md)
 
 ## Summary
@@ -10,7 +11,7 @@ Refine VS Code's `LanguageModelChatInformation` capabilities and token limits us
 
 ## Motivation
 
-### Current State
+### Current State (✅ Updated 2026-01-28)
 
 RFC 008 Phase 5 implemented the `ModelEnricher` class that fetches per-model metadata including:
 
@@ -20,7 +21,12 @@ RFC 008 Phase 5 implemented the `ModelEnricher` class that fetches per-model met
 - `supported_parameters`: Model-specific parameters
 - `supports_implicit_caching`: Prompt caching support
 
-However, this enriched data is currently **fetched but not used to refine capabilities**. The current flow:
+**Implementation status:**
+
+- ✅ Enrichment data is fetched via `ModelEnricher` ([models/enrichment.ts](../../apps/vscode-ai-gateway/src/models/enrichment.ts))
+- ✅ Enrichment is applied to model list in `applyEnrichmentToModels()` ([provider.ts#L150-L181](../../apps/vscode-ai-gateway/src/provider.ts#L150-L181))
+- ✅ `onDidChangeLanguageModelChatInformation` fires after enrichment to refresh VS Code
+- ✅ Configuration toggle exists (`models.enrichmentEnabled`)
 
 1. `provideLanguageModelChatInformation()` calls `ModelsClient.getModels()` which returns models with:
    - `maxInputTokens` from `context_window` field (already accurate from `/v1/models`)
@@ -99,9 +105,9 @@ The RFC proposes two viable ways to apply enrichment to the model list:
 
 **When to use**: If responsiveness is the priority (recommended default).
 
-### Configuration
+### Configuration (✅ Implemented)
 
-Add new setting to enable/disable enrichment:
+Setting exists to enable/disable enrichment ([config.ts](../../apps/vscode-ai-gateway/src/config.ts), [package.json](../../apps/vscode-ai-gateway/package.json)):
 
 ```json
 {
@@ -127,11 +133,9 @@ get modelsEnrichmentEnabled(): boolean {
 - Disable if enrichment endpoint is unreachable
 - Disable to test fallback behavior
 
-### Token Limit Handling
+### Token Limit Handling (✅ Implemented)
 
-The current code already maps `/v1/models` `context_window` directly to `maxInputTokens` in `ModelsClient.transformToVSCodeModels()`. No subtraction is required here because the endpoint already returns the correct input limit for the model picker.
-
-Use enrichment `context_length` **only if it differs from** or corrects the base `context_window` value. Otherwise, keep the base value as-is.
+The implementation maps `/v1/models` `context_window` directly to `maxInputTokens` in `ModelsClient.transformToVSCodeModels()`. Enrichment `context_length` overrides are applied in `applyEnrichmentToModels()` ([provider.ts#L150-L181](../../apps/vscode-ai-gateway/src/provider.ts#L150-L181)).
 
 ### Image Capability Detection
 

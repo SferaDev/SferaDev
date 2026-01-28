@@ -36,7 +36,7 @@ import {
 	ERROR_MESSAGES,
 	LAST_SELECTED_MODEL_KEY,
 } from "./constants";
-import { extractErrorMessage, logError, logger } from "./logger";
+import { extractErrorMessage, extractTokenCountFromError, logError, logger } from "./logger";
 import { ModelsClient } from "./models";
 import { type EnrichedModelData, ModelEnricher } from "./models/enrichment";
 import { parseModelIdentity } from "./models/identity";
@@ -118,6 +118,15 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 	// Track current request for caching API actuals
 	private currentRequestMessages: readonly LanguageModelChatMessage[] | null = null;
 	private currentRequestModelFamily: string | null = null;
+	/**
+	 * Learned actual token total from "input too long" errors.
+	 * When set, this is distributed across messages proportionally to trigger VS Code summarization.
+	 * Keyed by conversation hash to avoid cross-conversation pollution.
+	 */
+	private learnedTokenTotal: {
+		conversationHash: string;
+		actualTokens: number;
+	} | null = null;
 	/**
 	 * Tool-call streaming buffer keyed by `toolCallId`.
 	 *
@@ -260,8 +269,21 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 			this.currentRequestMessages = chatMessages;
 			this.currentRequestModelFamily = model.family;
 
+			// Get system prompt configuration for token estimation
+			const systemPromptEnabled = this.configService.systemPromptEnabled;
+			const systemPromptMessage = this.configService.systemPromptMessage;
+			const systemPrompt = systemPromptEnabled
+				? systemPromptMessage?.trim()
+					? systemPromptMessage
+					: DEFAULT_SYSTEM_PROMPT_MESSAGE
+				: undefined;
+
 			// Pre-flight check: estimate total tokens and validate against model limit
-			const estimatedTokens = await this.estimateTotalInputTokens(model, chatMessages, token);
+			// Now includes tool schemas (can be 50k+ tokens) and system prompt overhead
+			const estimatedTokens = await this.estimateTotalInputTokens(model, chatMessages, token, {
+				tools: options.tools,
+				systemPrompt,
+			});
 			const maxInputTokens = model.maxInputTokens;
 			logger.debug(
 				`Token estimate: ${estimatedTokens}/${maxInputTokens} (${Math.round((estimatedTokens / maxInputTokens) * 100)}%)`,
@@ -323,19 +345,10 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 				toolChoice = "none";
 			}
 
-			// Get system prompt configuration
-			const systemPromptEnabled = this.configService.systemPromptEnabled;
-			const systemPromptMessage = this.configService.systemPromptMessage;
-
 			// Build provider options - add context management for Anthropic models
 			const providerOptions = this.buildProviderOptions(model);
 
-			const systemPrompt = systemPromptEnabled
-				? systemPromptMessage?.trim()
-					? systemPromptMessage
-					: DEFAULT_SYSTEM_PROMPT_MESSAGE
-				: undefined;
-
+			// Note: systemPrompt is computed earlier for token estimation
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			const streamOptions: any = {
 				model: gateway(model.id),
@@ -398,6 +411,24 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 			logError("Exception during streaming", error);
 			const errorMessage = extractErrorMessage(error);
 
+			// Check if this is a "too long" error we can learn from
+			const tokenInfo = extractTokenCountFromError(error);
+			if (tokenInfo && this.currentRequestMessages) {
+				// Learn the actual token count so we can report accurate counts on retry
+				const conversationHash = this.hashConversation(this.currentRequestMessages);
+				this.learnedTokenTotal = {
+					conversationHash,
+					actualTokens: tokenInfo.actualTokens,
+				};
+				logger.info(
+					`Learned actual token count from error: ${tokenInfo.actualTokens} tokens. ` +
+						`Firing model info change to trigger VS Code re-evaluation.`,
+				);
+				// Fire the event so VS Code re-queries token counts
+				// This should trigger summarization before the next request
+				this.modelInfoChangeEmitter.fire();
+			}
+
 			// CRITICAL: Always emit an error response to prevent "no response returned" error.
 			// If nothing has been sent yet, this is the only response VS Code will see.
 			if (!responseSent) {
@@ -426,6 +457,18 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 			);
 		}
 		return false;
+	}
+
+	/**
+	 * Create a hash of the conversation for identifying when learned token counts apply.
+	 * Uses the first few and last messages to create a stable identifier.
+	 */
+	private hashConversation(messages: readonly LanguageModelChatMessage[]): string {
+		// Use first 2 and last 2 messages for a stable hash
+		// This way the hash changes if messages are added but remains stable for same conversation
+		const relevant = [...messages.slice(0, 2), ...messages.slice(-2)].filter(Boolean);
+		const hashes = relevant.map((msg) => hashMessage(msg as LanguageModelChatRequestMessage));
+		return createHash("sha256").update(hashes.join(":")).digest("hex").slice(0, 16);
 	}
 
 	/**
@@ -505,45 +548,78 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 	 * "input too long" errors.
 	 *
 	 * Token counting strategy:
-	 * 1. Check cache for API actuals (ground truth from previous requests)
-	 * 2. Use tiktoken for precise estimation (unsent messages)
-	 * 3. Apply safety margins (2% on actuals, 5% on estimates)
+	 * 1. Check if we learned actual counts from a previous "too long" error
+	 * 2. Check cache for API actuals (ground truth from previous requests)
+	 * 3. Use tiktoken for precise estimation (unsent messages)
+	 * 4. Apply safety margins (2% on actuals, 5% on estimates)
 	 */
 	async provideTokenCount(
 		model: LanguageModelChatInformation,
 		text: string | LanguageModelChatMessage,
 		_token: CancellationToken,
 	): Promise<number> {
+		// Calculate base estimate first
+		let baseEstimate: number;
+
 		if (typeof text === "string") {
 			// Use tiktoken for text strings
 			const estimated = this.tokenCounter.estimateTextTokens(text, model.family);
-			const corrected = estimated * this.correctionFactor;
-			const margin = this.tokenCounter.usesCharacterFallback(model.family) ? 0.1 : 0.05;
-			return this.tokenCounter.applySafetyMargin(corrected, margin);
+			baseEstimate = estimated * this.correctionFactor;
+		} else {
+			// Check cache for API actuals first (ground truth)
+			const cached = this.tokenCache.getCached(text, model.family);
+			if (cached !== undefined) {
+				// We have ground truth from a previous API response - use with minimal margin
+				baseEstimate = cached;
+			} else {
+				// Use tiktoken-based estimation for unsent messages
+				const estimated = this.tokenCounter.estimateMessageTokens(text, model.family);
+				baseEstimate = estimated * this.correctionFactor;
+			}
 		}
 
-		// Check cache for API actuals first (ground truth)
-		const cached = this.tokenCache.getCached(text, model.family);
-		if (cached !== undefined) {
-			// We have ground truth from a previous API response - use with minimal margin
-			return Math.ceil(cached * 1.02);
+		// If we learned from a "too long" error, apply a correction multiplier
+		// This ensures VS Code sees token counts that will trigger summarization
+		if (this.learnedTokenTotal) {
+			// Apply a 1.5x multiplier to compensate for the underestimate
+			// The goal is to make the sum exceed maxInputTokens so VS Code summarizes
+			const inflated = baseEstimate * 1.5;
+			logger.trace(
+				`Applying learned token correction: ${baseEstimate} -> ${Math.ceil(inflated)} ` +
+					`(learned actual total: ${this.learnedTokenTotal.actualTokens})`,
+			);
+			return Math.ceil(inflated);
 		}
 
-		// Use tiktoken-based estimation for unsent messages
-		const estimated = this.tokenCounter.estimateMessageTokens(text, model.family);
-		const corrected = estimated * this.correctionFactor;
-		const margin = this.tokenCounter.usesCharacterFallback(model.family) ? 0.1 : 0.05;
-		return this.tokenCounter.applySafetyMargin(corrected, margin);
+		// Apply standard safety margins
+		const margin =
+			typeof text === "string" ||
+			!this.tokenCache.getCached(text as LanguageModelChatMessage, model.family)
+				? this.tokenCounter.usesCharacterFallback(model.family)
+					? 0.1
+					: 0.05
+				: 0.02;
+		return this.tokenCounter.applySafetyMargin(baseEstimate, margin);
 	}
 
 	/**
 	 * Estimate total input tokens for all messages.
 	 * Used for pre-flight validation before sending to the API.
+	 *
+	 * Includes:
+	 * - Message content tokens (from cache or estimation)
+	 * - Message structure overhead (4 tokens/message)
+	 * - Tool schema tokens (16 + 8/tool + content × 1.1)
+	 * - System prompt tokens (content + 28 overhead)
 	 */
 	private async estimateTotalInputTokens(
 		model: LanguageModelChatInformation,
 		messages: readonly LanguageModelChatMessage[],
 		token: CancellationToken,
+		options?: {
+			tools?: readonly { name: string; description?: string; inputSchema?: unknown }[];
+			systemPrompt?: string;
+		},
 	): Promise<number> {
 		// Estimate based on cached actuals and tiktoken/character fallback
 		let total = 0;
@@ -553,7 +629,24 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 		// Add overhead for message structure (~4 tokens per message)
 		total += messages.length * 4;
 
-		logger.debug(`Pure estimation: ${total} tokens`);
+		// Add tool schema tokens (critical - can be 50k+ tokens)
+		if (options?.tools && options.tools.length > 0) {
+			const toolTokens = this.tokenCounter.countToolsTokens(options.tools, model.family);
+			total += toolTokens;
+			logger.debug(`Added ${toolTokens} tokens for ${options.tools.length} tool schemas`);
+		}
+
+		// Add system prompt tokens (including 28-token structural overhead)
+		if (options?.systemPrompt) {
+			const systemTokens = this.tokenCounter.countSystemPromptTokens(
+				options.systemPrompt,
+				model.family,
+			);
+			total += systemTokens;
+			logger.debug(`Added ${systemTokens} tokens for system prompt`);
+		}
+
+		logger.debug(`Total input token estimate: ${total} tokens`);
 
 		return total;
 	}
@@ -753,6 +846,13 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 			case "finish": {
 				// Flush any buffered tool calls before finishing
 				this.flushToolCallBuffer(progress);
+
+				// Clear learned token total since the request succeeded
+				// (VS Code must have summarized successfully if we got here)
+				if (this.learnedTokenTotal) {
+					logger.info("Request succeeded after learning token count - clearing learned total");
+					this.learnedTokenTotal = null;
+				}
 
 				const finishChunk = chunk as {
 					type: "finish";

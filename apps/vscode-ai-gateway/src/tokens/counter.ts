@@ -9,6 +9,28 @@ type Encoding = {
 
 const FALLBACK_CHARS_PER_TOKEN = 3.5;
 
+/**
+ * Structural overhead for system prompt (Anthropic SDK wrapping).
+ * Based on GCMP research: system message formatting adds ~28 tokens.
+ */
+const SYSTEM_PROMPT_OVERHEAD = 28;
+
+/**
+ * Base overhead for the tools array structure.
+ */
+const TOOLS_BASE_OVERHEAD = 16;
+
+/**
+ * Per-tool structural overhead.
+ */
+const PER_TOOL_OVERHEAD = 8;
+
+/**
+ * Safety multiplier for tool token estimates.
+ * From official vscode-copilot-chat implementation.
+ */
+const TOOL_SAFETY_MULTIPLIER = 1.1;
+
 export class TokenCounter {
 	private encodings = new Map<string, Encoding>();
 
@@ -54,6 +76,52 @@ export class TokenCounter {
 	applySafetyMargin(tokens: number, margin: number): number {
 		const result = Math.ceil(tokens * (1 + margin));
 		logger.trace(`Applied ${margin * 100}% safety margin: ${tokens} -> ${result}`);
+		return result;
+	}
+
+	/**
+	 * Count tokens for tool schemas.
+	 *
+	 * Formula from GCMP research: 16 base + 8/tool + content × 1.1
+	 * This is CRITICAL - tool schemas can be 50k+ tokens and are the
+	 * primary cause of token underestimation.
+	 */
+	countToolsTokens(
+		tools: readonly { name: string; description?: string; inputSchema?: unknown }[] | undefined,
+		modelFamily: string,
+	): number {
+		if (!tools || tools.length === 0) return 0;
+
+		let numTokens = TOOLS_BASE_OVERHEAD;
+
+		for (const tool of tools) {
+			numTokens += PER_TOOL_OVERHEAD;
+			numTokens += this.estimateTextTokens(tool.name, modelFamily);
+			numTokens += this.estimateTextTokens(tool.description || "", modelFamily);
+			numTokens += this.estimateTextTokens(JSON.stringify(tool.inputSchema ?? {}), modelFamily);
+		}
+
+		const result = Math.floor(numTokens * TOOL_SAFETY_MULTIPLIER);
+		logger.debug(
+			`Tool schema token estimate: ${result} tokens for ${tools.length} tools (family: ${modelFamily})`,
+		);
+		return result;
+	}
+
+	/**
+	 * Count tokens for system prompt including structural overhead.
+	 *
+	 * The 28-token overhead accounts for Anthropic SDK system message
+	 * formatting and structural wrapping.
+	 */
+	countSystemPromptTokens(systemPrompt: string | undefined, modelFamily: string): number {
+		if (!systemPrompt) return 0;
+
+		const textTokens = this.estimateTextTokens(systemPrompt, modelFamily);
+		const result = textTokens + SYSTEM_PROMPT_OVERHEAD;
+		logger.debug(
+			`System prompt token estimate: ${result} tokens (${textTokens} text + ${SYSTEM_PROMPT_OVERHEAD} overhead)`,
+		);
 		return result;
 	}
 

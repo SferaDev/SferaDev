@@ -1,9 +1,9 @@
 # RFC 008: High-Fidelity Model Mapping
 
-**Status:** Draft  
+**Status:** ✅ Implemented  
 **Author:** Vercel AI Team  
 **Created:** 2026-01-27  
-**Updated:** 2026-01-27
+**Updated:** 2026-01-28
 
 ## Summary
 
@@ -11,15 +11,15 @@ Improve the fidelity of model metadata fetching from Vercel AI Gateway and mappi
 
 ## Motivation
 
-The current implementation has several fidelity gaps that affect user experience and VS Code's ability to manage models correctly:
+The original implementation had several fidelity gaps. This RFC proposed fixes that have now been implemented:
 
-1. **Incorrect `family` property** - Uses `creator` (org name) instead of model family, breaking VS Code selectors like `@family:gpt-4o`
-2. **Hardcoded `version`** - Always `"1.0"` instead of actual model version
-3. **Understated `maxInputTokens`** - Uses 85% of context window, triggering premature context compaction
-4. **Missing model type filter** - Embedding and image models appear in chat model list
-5. **Incomplete capability detection** - Only `vision` and `tool-use` tags used; `reasoning`, `web-search` ignored
+1. **✅ `family` parsing** — Implemented via `parseModelIdentity()` ([models/identity.ts](../../apps/vscode-ai-gateway/src/models/identity.ts))
+2. **✅ `version` parsing** — Implemented in same function with date/version regex
+3. **✅ `maxInputTokens`** — Now uses full `context_window` ([models.ts#L122](../../apps/vscode-ai-gateway/src/models.ts#L122))
+4. **✅ Model type filtering** — Filters to `chat`, `language`, or unspecified types ([models.ts#L106-L107](../../apps/vscode-ai-gateway/src/models.ts#L106-L107))
+5. **✅ Capability detection** — Includes `reasoning`, `web-search` tags ([models.ts#L117-L134](../../apps/vscode-ai-gateway/src/models.ts#L117-L134))
 
-These issues reduce the effectiveness of VS Code's model selection UI and can cause suboptimal behavior during conversations.
+~~These issues reduce the effectiveness of VS Code's model selection UI and can cause suboptimal behavior during conversations.~~
 
 ## Detailed Design
 
@@ -63,19 +63,17 @@ function parseModelIdentity(modelId: string): ParsedModelIdentity {
 | `google:gemini-2.0-flash`              | google    | gemini-2.0-flash  | latest     |
 | `mistral:mistral-large-2411`           | mistral   | mistral-large     | 2411       |
 
-### Phase 2: Accurate Token Limits
+### Phase 2: Accurate Token Limits (✅ Implemented)
 
-Use the true `context_window` value for `maxInputTokens`:
+Now uses the true `context_window` value for `maxInputTokens` ([models.ts#L122](../../apps/vscode-ai-gateway/src/models.ts#L122)):
 
 ```typescript
-// Before (conservative but inaccurate)
-maxInputTokens: Math.floor(model.context_window * 0.85);
-
-// After (accurate, handle margins in preflight)
-maxInputTokens: model.context_window;
+// Current implementation:
+maxInputTokens: model.context_window,
+maxOutputTokens: model.max_tokens,
 ```
 
-Add preflight validation in the request path to warn when approaching limits:
+Preflight validation in the request path warns when approaching limits ([provider.ts#L264-L283](../../apps/vscode-ai-gateway/src/provider.ts#L264-L283)):
 
 ```typescript
 const TOKEN_WARNING_THRESHOLD = 0.9; // 90% of limit
@@ -95,9 +93,9 @@ function validateTokenBudget(
 }
 ```
 
-### Phase 3: Model Type Filtering
+### Phase 3: Model Type Filtering (✅ Implemented)
 
-Filter models by `type` field to only include language models in chat:
+Models are filtered by `type` field to only include language models in chat ([models.ts#L106-L107](../../apps/vscode-ai-gateway/src/models.ts#L106-L107)):
 
 ```typescript
 interface VercelModel {
@@ -112,9 +110,9 @@ function filterChatModels(models: VercelModel[]): VercelModel[] {
 }
 ```
 
-### Phase 4: Enhanced Capability Detection
+### Phase 4: Enhanced Capability Detection (✅ Implemented)
 
-Expand capability detection beyond `vision` and `tool-use`:
+Capability detection now includes all supported tags ([models.ts#L117-L134](../../apps/vscode-ai-gateway/src/models.ts#L117-L134)):
 
 ```typescript
 interface ModelCapabilities {
@@ -138,7 +136,13 @@ function detectCapabilities(model: VercelModel): ModelCapabilities {
 }
 ```
 
-### Phase 5: Optional Per-Model Enrichment
+### Phase 5: Optional Per-Model Enrichment (✅ Implemented)
+
+Per-model enrichment is implemented via `ModelEnricher` class ([models/enrichment.ts](../../apps/vscode-ai-gateway/src/models/enrichment.ts)) with:
+
+- In-memory + persistent caching via `globalState`
+- Configurable TTL (5 minutes default)
+- Event-based refresh via `onDidChangeLanguageModelChatInformation`
 
 For selected models (e.g., user's preferred model), fetch additional metadata:
 
