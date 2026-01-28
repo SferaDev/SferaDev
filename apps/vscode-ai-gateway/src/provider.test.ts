@@ -1032,6 +1032,126 @@ describe("Tool-call streaming buffer", () => {
 		errorSpy.mockRestore();
 	});
 
+	it("should clear buffer on abort chunk", () => {
+		const provider = createProviderWithConfig();
+		const progress = createMockProgress();
+		const toolCallBuffer = (provider as unknown as { toolCallBuffer: Map<string, unknown> })
+			.toolCallBuffer;
+
+		(provider as unknown as { handleStreamChunk: Function }).handleStreamChunk(
+			{
+				type: "tool-call-streaming-start",
+				toolCallId: "call-abort",
+				toolName: "searchDocs",
+			},
+			progress,
+		);
+
+		expect(toolCallBuffer.size).toBe(1);
+
+		(provider as unknown as { handleStreamChunk: Function }).handleStreamChunk(
+			{ type: "abort" } as unknown,
+			progress,
+		);
+
+		expect(toolCallBuffer.size).toBe(0);
+		expect(progress.report).not.toHaveBeenCalled();
+	});
+
+	it("should clear buffer when stream finishes even if no tool calls", () => {
+		const provider = createProviderWithConfig();
+		const progress = createMockProgress();
+		const toolCallBuffer = (provider as unknown as { toolCallBuffer: Map<string, unknown> })
+			.toolCallBuffer;
+
+		(provider as unknown as { handleStreamChunk: Function }).handleStreamChunk(
+			{
+				type: "tool-call-streaming-start",
+				toolCallId: "call-finish",
+				toolName: "searchDocs",
+			},
+			progress,
+		);
+
+		expect(toolCallBuffer.size).toBe(1);
+
+		(provider as unknown as { handleStreamChunk: Function }).handleStreamChunk(
+			{ type: "finish" } as unknown,
+			progress,
+		);
+
+		expect(toolCallBuffer.size).toBe(0);
+		expect(progress.report).toHaveBeenCalledTimes(1);
+		const reported = progress.report.mock.calls[0][0];
+		expect(reported).toBeInstanceOf(hoisted.MockLanguageModelToolCallPart);
+		expect(reported.callId).toBe("call-finish");
+		expect(reported.name).toBe("searchDocs");
+		expect(reported.input).toEqual({});
+	});
+
+	it("should not emit stale tool calls from previous request", () => {
+		const provider = createProviderWithConfig();
+		const progress = createMockProgress();
+		const toolCallBuffer = (provider as unknown as { toolCallBuffer: Map<string, unknown> })
+			.toolCallBuffer;
+
+		(provider as unknown as { handleStreamChunk: Function }).handleStreamChunk(
+			{
+				type: "tool-call-streaming-start",
+				toolCallId: "call-stale",
+				toolName: "searchDocs",
+			},
+			progress,
+		);
+
+		(provider as unknown as { handleStreamChunk: Function }).handleStreamChunk(
+			{
+				type: "tool-call-delta",
+				toolCallId: "call-stale",
+				argsTextDelta: '{"query": "stale"}',
+			},
+			progress,
+		);
+
+		(provider as unknown as { handleStreamChunk: Function }).handleStreamChunk(
+			{ type: "abort" } as unknown,
+			progress,
+		);
+
+		expect(toolCallBuffer.size).toBe(0);
+		expect(progress.report).not.toHaveBeenCalled();
+
+		(provider as unknown as { handleStreamChunk: Function }).handleStreamChunk(
+			{
+				type: "tool-call-streaming-start",
+				toolCallId: "call-fresh",
+				toolName: "searchDocs",
+			},
+			progress,
+		);
+
+		(provider as unknown as { handleStreamChunk: Function }).handleStreamChunk(
+			{
+				type: "tool-call-delta",
+				toolCallId: "call-fresh",
+				argsTextDelta: '{"query": "fresh"}',
+			},
+			progress,
+		);
+
+		(provider as unknown as { handleStreamChunk: Function }).handleStreamChunk(
+			{ type: "finish" } as unknown,
+			progress,
+		);
+
+		expect(toolCallBuffer.size).toBe(0);
+		expect(progress.report).toHaveBeenCalledTimes(1);
+		const reported = progress.report.mock.calls[0][0];
+		expect(reported).toBeInstanceOf(hoisted.MockLanguageModelToolCallPart);
+		expect(reported.callId).toBe("call-fresh");
+		expect(reported.input).toEqual({ query: "fresh" });
+	});
+
 	it("should warn for delta with unknown toolCallId", () => {
 		const provider = createProviderWithConfig();
 		const progress = createMockProgress();
