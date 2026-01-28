@@ -1,0 +1,14 @@
+# Exosuit project marker for VS Code AI Gateway Extension
+# This file marks the root of the exo project and prevents
+# the extension from walking up to parent directories.
+
+[tasks]
+build = { cmd = "pnpm build", desc = "Build the extension", cwd = "apps/vscode-ai-gateway" }
+test = { cmd = "pnpm test", desc = "Run tests", cwd = "apps/vscode-ai-gateway" }
+lint = { cmd = "pnpm lint", desc = "Run linter", cwd = "root" }
+
+[tdd]
+[[tdd.runners]]
+glob = "apps/vscode-ai-gateway/**/*.ts"
+command = "pnpm exec vitest run {relative_file}"
+cwd = "apps/vscode-ai-gateway"

@@ -1,0 +1,13 @@
+# READ-ONLY: Use 'exo' CLI to modify this file.
+# Exosuit Prompt Configuration
+# This file allows you to customize the prompts used by the Exosuit extension.
+
+[global]
+style = "Be concise and evidence-based."
+
+[meta]
+schema_version = "1.0.0"
+exo_version = "0.1.0"
+
+# Project-specific prompt overrides go here.
+# See docs for available options.

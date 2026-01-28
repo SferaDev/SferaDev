@@ -1,27 +1,45 @@
 import * as vscode from "vscode";
 import { VercelAIAuthenticationProvider } from "./auth";
+import { ConfigService } from "./config";
 import { EXTENSION_ID } from "./constants";
+import { initializeOutputChannel, logger } from "./logger";
 import { VercelAIChatModelProvider } from "./provider";
 
 export function activate(context: vscode.ExtensionContext) {
+	// Initialize the shared output channel FIRST - before any logging
+	// This ensures there's exactly one output channel per VS Code window
+	const outputChannelDisposable = initializeOutputChannel();
+	context.subscriptions.push(outputChannelDisposable);
+
+	logger.info("Vercel AI Gateway extension activating...");
+
 	// Register the authentication provider
 	const authProvider = new VercelAIAuthenticationProvider(context);
 	context.subscriptions.push(authProvider);
+	logger.debug("Authentication provider registered");
+
+	const configService = new ConfigService();
+	context.subscriptions.push(configService);
 
 	// Register the language model chat provider
-	const provider = new VercelAIChatModelProvider(context);
+	const provider = new VercelAIChatModelProvider(context, configService);
+	context.subscriptions.push(provider);
 	const providerDisposable = vscode.lm.registerLanguageModelChatProvider(EXTENSION_ID, provider);
 	context.subscriptions.push(providerDisposable);
+	logger.debug("Language model chat provider registered");
 
 	// Register command to manage authentication
 	const commandDisposable = vscode.commands.registerCommand(`${EXTENSION_ID}.manage`, () => {
 		authProvider.manageAuthentication();
 	});
-
 	context.subscriptions.push(commandDisposable);
+
+	logger.info("Vercel AI Gateway extension activated successfully");
 
 	// Export auth provider for use by other components
 	return { authProvider };
 }
 
-export function deactivate() {}
+export function deactivate() {
+	logger.info("Vercel AI Gateway extension deactivating...");
+}

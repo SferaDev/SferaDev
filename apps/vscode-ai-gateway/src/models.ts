@@ -1,5 +1,9 @@
 import type { LanguageModelChatInformation } from "vscode";
-import { BASE_URL, MODELS_CACHE_TTL_MS, MODELS_ENDPOINT } from "./constants";
+import { ConfigService } from "./config";
+import { MODELS_CACHE_TTL_MS, MODELS_ENDPOINT } from "./constants";
+import { logger } from "./logger";
+import { ModelFilter } from "./models/filter";
+import { parseModelIdentity } from "./models/identity";
 
 export interface Model {
 	id: string;
@@ -10,7 +14,8 @@ export interface Model {
 	description: string;
 	context_window: number;
 	max_tokens: number;
-	type: string;
+	type?: string;
+	tags?: string[];
 	pricing: {
 		input: string;
 		output: string;
@@ -28,21 +33,31 @@ interface ModelsCache {
 
 export class ModelsClient {
 	private modelsCache?: ModelsCache;
+	private modelFilter: ModelFilter;
+	private configService: ConfigService;
+
+	constructor(configService: ConfigService = new ConfigService()) {
+		this.configService = configService;
+		this.modelFilter = new ModelFilter(configService);
+	}
 
 	async getModels(apiKey: string): Promise<LanguageModelChatInformation[]> {
 		if (this.isModelsCacheFresh() && this.modelsCache) {
 			return this.modelsCache.models;
 		}
-
+		const startTime = Date.now();
+		const url = `${this.configService.endpoint}${MODELS_ENDPOINT}`;
+		logger.info(`Fetching models from ${url}`);
 		const data = await this.fetchModels(apiKey);
 		const models = this.transformToVSCodeModels(data);
+		logger.info(`Models fetched in ${Date.now() - startTime}ms, count: ${models.length}`);
 
 		this.modelsCache = { fetchedAt: Date.now(), models };
 		return models;
 	}
 
 	private async fetchModels(apiKey: string): Promise<Model[]> {
-		const response = await fetch(`${BASE_URL}${MODELS_ENDPOINT}`, {
+		const response = await fetch(`${this.configService.endpoint}${MODELS_ENDPOINT}`, {
 			headers: apiKey
 				? {
 						Authorization: `Bearer ${apiKey}`,
@@ -55,7 +70,7 @@ export class ModelsClient {
 		}
 
 		const { data } = (await response.json()) as ModelsResponse;
-		return data;
+		return this.modelFilter.filterModels(data);
 	}
 
 	private isModelsCacheFresh(): boolean {
@@ -65,18 +80,58 @@ export class ModelsClient {
 	}
 
 	private transformToVSCodeModels(data: Model[]): LanguageModelChatInformation[] {
-		return data.map((model) => ({
-			id: model.id,
-			name: model.name,
-			family: model.owned_by,
-			version: "1.0",
-			maxInputTokens: model.context_window,
-			maxOutputTokens: model.max_tokens,
-			tooltip: model.description || "No description available.",
-			capabilities: {
-				imageInput: model.description?.toLowerCase().includes("image") || false,
-				toolCalling: true,
-			},
-		}));
+		const imageInputTags = new Set(["vision", "image", "image-input", "file-input", "multimodal"]);
+		const toolCallingTags = new Set([
+			"tool-use",
+			"tool_use",
+			"tool-calling",
+			"function_calling",
+			"function-calling",
+			"function_call",
+			"tools",
+			"json_mode",
+			"json-mode",
+		]);
+		const reasoningTags = new Set([
+			"reasoning",
+			"o1",
+			"o3",
+			"extended-thinking",
+			"extended_thinking",
+		]);
+		const webSearchTags = new Set(["web-search", "web_search", "search", "grounding"]);
+
+		return data
+			.filter(
+				(model) => model.type === "chat" || model.type === "language" || model.type === undefined,
+			)
+			.map((model) => {
+				const identity = parseModelIdentity(model.id);
+				const tags = (model.tags ?? []).map((tag) => tag.toLowerCase());
+				const hasImageInput = tags.some((tag) => imageInputTags.has(tag));
+				const hasToolCalling = tags.some((tag) => toolCallingTags.has(tag));
+				const hasReasoning = tags.some((tag) => reasoningTags.has(tag));
+				const hasWebSearch = tags.some((tag) => webSearchTags.has(tag));
+
+				return {
+					id: model.id,
+					name: model.name,
+					detail: "Vercel AI Gateway",
+					family: identity.family,
+					version: identity.version,
+					maxInputTokens: model.context_window,
+					maxOutputTokens: model.max_tokens,
+					tooltip: model.description || "No description available.",
+					capabilities: {
+						// Check tags array for capabilities - only advertise what the model actually supports
+						imageInput: hasImageInput || false,
+						// Only advertise tool calling if explicitly supported via tags
+						// Defaulting to true could cause issues with models that don't support tools
+						toolCalling: hasToolCalling || false,
+						reasoning: hasReasoning || false,
+						webSearch: hasWebSearch || false,
+					},
+				};
+			});
 	}
 }

@@ -1,0 +1,7 @@
+[meta]
+schema_version = "1.0.0"
+exo_version = "0.1.0"
+# READ-ONLY: Use 'exo' CLI to modify this file.
+# System Axioms
+
+# Add system-level invariants here (runtime, architecture, platform constraints).

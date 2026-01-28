@@ -12,3 +12,7 @@ server/dist
 public/dist
 .turbo
 json/
+.recovered/
+.context/
+.logs/
+.reference/
