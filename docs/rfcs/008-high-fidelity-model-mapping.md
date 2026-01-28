@@ -169,6 +169,13 @@ async function enrichModelMetadata(
 }
 ```
 
+**Discovery Note (2026-01-28):** The enrichment endpoint exists and is functional on Vercel AI Gateway. Testing confirms:
+
+- Endpoint: `GET /v1/models/{creator}/{model}/endpoints` returns expected Phase 5 fields
+- Example: `openai/gpt-4o/endpoints` returns `context_length: 128000`, `max_completion_tokens: 16384`, `supported_parameters`, `supports_implicit_caching`
+- Behavior: Returns 404 for invalid/retired models (e.g., `openai/gpt-4`), so graceful fallback to base model data is required
+- Recommendation: Implement lazy/on-demand loading with caching to avoid rate limits and performance impact
+
 ## Implementation Checklist
 
 - [ ] Add `parseModelIdentity()` function with tests

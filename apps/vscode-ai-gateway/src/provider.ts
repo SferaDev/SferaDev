@@ -116,6 +116,8 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 	// Track current request for caching API actuals
 	private currentRequestMessages: readonly LanguageModelChatMessage[] | null = null;
 	private currentRequestModelFamily: string | null = null;
+	// Tool-call streaming buffer: tracks partial tool calls by toolCallId
+	private toolCallBuffer: Map<string, { toolName: string; argsText: string }> = new Map();
 
 	constructor(context: ExtensionContext, configService: ConfigService = new ConfigService()) {
 		this.context = context;
@@ -525,12 +527,15 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 		progress: Progress<LanguageModelResponsePart>,
 	): void {
 		switch (chunk.type) {
-			case "text-delta":
-				// fullStream TextStreamPart uses 'text' field, not 'textDelta'
-				if (chunk.text) {
-					progress.report(new LanguageModelTextPart(chunk.text));
+			case "text-delta": {
+				// Accept both 'textDelta' (SDK standard) and 'text' (legacy) field names
+				const chunkWithText = chunk as { textDelta?: string; text?: string };
+				const textContent = chunkWithText.textDelta ?? chunkWithText.text;
+				if (textContent) {
+					progress.report(new LanguageModelTextPart(textContent));
 				}
 				break;
+			}
 
 			case "reasoning-delta":
 				this.handleReasoningChunk(chunk, progress);
@@ -551,6 +556,16 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 				this.handleToolCall(chunk, progress);
 				break;
 
+			case "tool-call-streaming-start":
+				// Start buffering a new streaming tool call
+				this.handleToolCallStreamingStart(chunk);
+				break;
+
+			case "tool-call-delta":
+				// Accumulate streaming tool call arguments
+				this.handleToolCallDelta(chunk, progress);
+				break;
+
 			// Lifecycle events - no content to emit
 			case "start":
 			case "start-step":
@@ -562,6 +577,9 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 			}
 
 			case "finish": {
+				// Flush any buffered tool calls before finishing
+				this.flushToolCallBuffer(progress);
+
 				const finishChunk = chunk as {
 					type: "finish";
 					totalUsage?: { inputTokens?: number; outputTokens?: number };
@@ -622,7 +640,7 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 	 * (there's no equivalent stable API surface).
 	 */
 	private handleReasoningChunk(
-		chunk: { type: "reasoning-delta"; text: string },
+		chunk: { type: "reasoning-delta"; delta?: string; text?: string },
 		progress: Progress<LanguageModelResponsePart>,
 	): void {
 		const vsAny = vscode as unknown as Record<string, unknown>;
@@ -634,10 +652,11 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 			  ) => unknown)
 			| undefined;
 
-		// fullStream TextStreamPart uses 'text' field for reasoning-delta
-		if (ThinkingCtor && chunk.text) {
+		// Accept both 'delta' (SDK standard) and 'text' (legacy) field names
+		const reasoningText = chunk.delta ?? chunk.text;
+		if (ThinkingCtor && reasoningText) {
 			progress.report(
-				new (ThinkingCtor as new (text: string) => LanguageModelResponsePart)(chunk.text),
+				new (ThinkingCtor as new (text: string) => LanguageModelResponsePart)(reasoningText),
 			);
 		}
 		// If ThinkingCtor doesn't exist, silently skip - no stable API equivalent
@@ -655,17 +674,91 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 			type: "tool-call";
 			toolCallId: string;
 			toolName: string;
-			input: unknown;
+			args?: unknown;
+			input?: unknown;
 		},
 		progress: Progress<LanguageModelResponsePart>,
 	): void {
-		progress.report(
-			new LanguageModelToolCallPart(
-				chunk.toolCallId,
-				chunk.toolName,
-				chunk.input as Record<string, unknown>,
-			),
+		// If this tool call was buffered from streaming, remove it from buffer
+		// to avoid duplicate emission
+		if (this.toolCallBuffer.has(chunk.toolCallId)) {
+			this.toolCallBuffer.delete(chunk.toolCallId);
+		}
+
+		// Accept both 'args' (new SDK) and 'input' (legacy) field names
+		const toolInput = (chunk.args ?? chunk.input) as Record<string, unknown>;
+
+		progress.report(new LanguageModelToolCallPart(chunk.toolCallId, chunk.toolName, toolInput));
+	}
+
+	/**
+	 * Handle tool-call-streaming-start by initializing a buffer entry.
+	 */
+	private handleToolCallStreamingStart(chunk: {
+		type: "tool-call-streaming-start";
+		toolCallId: string;
+		toolName: string;
+	}): void {
+		this.toolCallBuffer.set(chunk.toolCallId, {
+			toolName: chunk.toolName,
+			argsText: "",
+		});
+		logger.debug(`Tool call streaming started: ${chunk.toolCallId} (${chunk.toolName})`);
+	}
+
+	/**
+	 * Handle tool-call-delta by accumulating arguments text.
+	 * Emit complete tool call if this is the final delta (no more deltas expected).
+	 */
+	private handleToolCallDelta(
+		chunk: {
+			type: "tool-call-delta";
+			toolCallId: string;
+			argsTextDelta: string;
+		},
+		progress: Progress<LanguageModelResponsePart>,
+	): void {
+		const buffered = this.toolCallBuffer.get(chunk.toolCallId);
+		if (!buffered) {
+			logger.warn(`Tool call delta for unknown toolCallId: ${chunk.toolCallId}`);
+			return;
+		}
+
+		// Accumulate the delta
+		buffered.argsText += chunk.argsTextDelta;
+		logger.debug(
+			`Tool call delta accumulated: ${chunk.toolCallId} (${buffered.argsText.length} chars)`,
 		);
+
+		// Note: We don't emit here - we wait for either:
+		// 1. A final 'tool-call' chunk (which will find and remove from buffer)
+		// 2. Stream 'finish' event (which flushes all buffered calls)
+		// This prevents emitting incomplete tool calls
+	}
+
+	/**
+	 * Flush any remaining buffered tool calls at stream end.
+	 * This handles cases where streaming started but no final 'tool-call' chunk arrived.
+	 */
+	private flushToolCallBuffer(progress: Progress<LanguageModelResponsePart>): void {
+		for (const [toolCallId, buffered] of this.toolCallBuffer.entries()) {
+			try {
+				// Parse accumulated args text as JSON
+				const toolInput = JSON.parse(buffered.argsText || "{}") as Record<string, unknown>;
+
+				progress.report(new LanguageModelToolCallPart(toolCallId, buffered.toolName, toolInput));
+
+				logger.debug(`Flushed buffered tool call: ${toolCallId} (${buffered.toolName})`);
+			} catch (error) {
+				logger.error(
+					`Failed to parse buffered tool call args for ${toolCallId}: ${buffered.argsText}`,
+					error,
+				);
+			}
+		}
+
+		// Clear buffer after flushing
+		this.toolCallBuffer.clear();
 	}
 
 	/**
