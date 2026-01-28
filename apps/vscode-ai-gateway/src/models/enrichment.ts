@@ -120,11 +120,14 @@ export class ModelEnricher {
 	}
 
 	async enrichModel(modelId: string, apiKey: string): Promise<EnrichedModelData | null> {
+		logger.trace(`Checking enrichment cache for ${modelId}`);
 		const cached = this.cache.get(modelId);
 		if (cached && Date.now() - cached.fetchedAt < ENRICHMENT_CACHE_TTL_MS) {
+			logger.debug(`Enrichment cache hit for ${modelId}`);
 			return cached.data;
 		}
 
+		logger.debug(`Enrichment cache miss for ${modelId}, fetching...`);
 		if (cached) {
 			this.cache.delete(modelId);
 		}
@@ -140,6 +143,7 @@ export class ModelEnricher {
 			creator,
 		)}/${encodeURIComponent(model)}/endpoints`;
 
+		const startTime = Date.now();
 		try {
 			const response = await fetch(url, {
 				headers: apiKey
@@ -183,6 +187,7 @@ export class ModelEnricher {
 			this.cache.set(modelId, { fetchedAt: Date.now(), data });
 			// Persist to storage for faster startup next session
 			await this.persistToStorage();
+			logger.info(`Enriched ${modelId} in ${Date.now() - startTime}ms`);
 			return data;
 		} catch (error) {
 			logger.warn(`Failed to fetch enrichment for ${modelId}`, error);

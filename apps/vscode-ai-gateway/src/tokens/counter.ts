@@ -1,5 +1,6 @@
 import { getEncoding } from "js-tiktoken";
 import * as vscode from "vscode";
+import { logger } from "../logger";
 
 type Encoding = {
 	encode: (text: string) => number[];
@@ -15,9 +16,17 @@ export class TokenCounter {
 		if (!text) return 0;
 		const encoding = this.getEncodingForFamily(modelFamily);
 		if (encoding) {
-			return encoding.encode(text).length;
+			const count = encoding.encode(text).length;
+			logger.trace(
+				`Text token estimate: ${count} tokens for ${text.length} chars (family: ${modelFamily})`,
+			);
+			return count;
 		}
-		return this.estimateByChars(text);
+		const count = this.estimateByChars(text);
+		logger.trace(
+			`Text token estimate: ${count} tokens for ${text.length} chars (family: ${modelFamily})`,
+		);
+		return count;
 	}
 
 	estimateMessageTokens(message: vscode.LanguageModelChatMessage, modelFamily: string): number {
@@ -38,15 +47,22 @@ export class TokenCounter {
 				total += this.estimateToolResultTokens(part, modelFamily);
 			}
 		}
+		logger.trace(`Message token estimate: ${total} tokens (family: ${modelFamily})`);
 		return total;
 	}
 
 	applySafetyMargin(tokens: number, margin: number): number {
-		return Math.ceil(tokens * (1 + margin));
+		const result = Math.ceil(tokens * (1 + margin));
+		logger.trace(`Applied ${margin * 100}% safety margin: ${tokens} -> ${result}`);
+		return result;
 	}
 
 	usesCharacterFallback(modelFamily: string): boolean {
-		return this.getEncodingForFamily(modelFamily) === undefined;
+		const fallback = this.getEncodingForFamily(modelFamily) === undefined;
+		if (fallback) {
+			logger.debug(`Using character fallback for family: ${modelFamily}`);
+		}
+		return fallback;
 	}
 
 	private estimateByChars(text: string): number {

@@ -837,6 +837,7 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 		}
 
 		progress.report(new LanguageModelToolCallPart(chunk.toolCallId, chunk.toolName, toolInput));
+		logger.debug(`Tool call emitted: ${chunk.toolName} (${chunk.toolCallId})`);
 	}
 
 	/**
