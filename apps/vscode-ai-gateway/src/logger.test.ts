@@ -63,7 +63,12 @@ vi.mock("vscode", () => ({
 }));
 
 // Import after mocking
-import { _resetOutputChannelForTesting, LOG_LEVELS, Logger } from "./logger";
+import {
+	_resetOutputChannelForTesting,
+	initializeOutputChannel,
+	LOG_LEVELS,
+	Logger,
+} from "./logger";
 
 describe("Logger", () => {
 	beforeEach(() => {
@@ -97,13 +102,34 @@ describe("Logger", () => {
 		});
 	});
 
+	describe("initializeOutputChannel", () => {
+		it("should create output channel when called", () => {
+			initializeOutputChannel();
+			expect(hoisted.mockCreateOutputChannel).toHaveBeenCalledWith("Vercel AI Gateway");
+		});
+
+		it("should return a disposable that cleans up the channel", () => {
+			const disposable = initializeOutputChannel();
+			expect(hoisted.mockCreateOutputChannel).toHaveBeenCalled();
+
+			disposable.dispose();
+			expect(hoisted.mockOutputChannelDispose).toHaveBeenCalled();
+		});
+
+		it("should only create one channel even if called multiple times", () => {
+			initializeOutputChannel();
+			initializeOutputChannel();
+			expect(hoisted.mockCreateOutputChannel).toHaveBeenCalledTimes(1);
+		});
+	});
+
 	describe("constructor", () => {
 		it("should load configuration on creation", () => {
 			new Logger();
 			expect(hoisted.mockGetConfiguration).toHaveBeenCalledWith("vercelAiGateway");
 		});
 
-		it("should create output channel when enabled", () => {
+		it("should use shared output channel when enabled and initialized", () => {
 			hoisted.mockGetConfiguration.mockReturnValue({
 				get: vi.fn((key: string) => {
 					if (key === "logging.level") return "warn";
@@ -112,11 +138,16 @@ describe("Logger", () => {
 				}),
 			});
 
+			// Initialize the shared channel first (simulates extension activation)
+			initializeOutputChannel();
+			expect(hoisted.mockCreateOutputChannel).toHaveBeenCalledTimes(1);
+
+			// Creating a logger should NOT create another channel
 			new Logger();
-			expect(hoisted.mockCreateOutputChannel).toHaveBeenCalledWith("Vercel AI Gateway");
+			expect(hoisted.mockCreateOutputChannel).toHaveBeenCalledTimes(1);
 		});
 
-		it("should not create output channel when disabled", () => {
+		it("should not use output channel when disabled", () => {
 			hoisted.mockGetConfiguration.mockReturnValue({
 				get: vi.fn((key: string) => {
 					if (key === "logging.level") return "warn";
@@ -125,8 +156,11 @@ describe("Logger", () => {
 				}),
 			});
 
-			new Logger();
-			expect(hoisted.mockCreateOutputChannel).not.toHaveBeenCalled();
+			initializeOutputChannel();
+			const logger = new Logger();
+			logger.info("test");
+			// Should not write to output channel when disabled
+			expect(hoisted.mockOutputChannelAppendLine).not.toHaveBeenCalled();
 		});
 
 		it("should register configuration change listener", () => {
@@ -283,6 +317,7 @@ describe("Logger", () => {
 				}),
 			});
 
+			initializeOutputChannel();
 			const logger = new Logger();
 			vi.spyOn(console, "debug").mockImplementation(() => {});
 
@@ -299,6 +334,7 @@ describe("Logger", () => {
 				}),
 			});
 
+			initializeOutputChannel();
 			const logger = new Logger();
 			vi.spyOn(console, "info").mockImplementation(() => {});
 
@@ -319,6 +355,7 @@ describe("Logger", () => {
 				}),
 			});
 
+			initializeOutputChannel();
 			const logger = new Logger();
 			vi.spyOn(console, "info").mockImplementation(() => {});
 
@@ -340,6 +377,8 @@ describe("Logger", () => {
 				}),
 			});
 
+			// Initialize the shared channel first
+			initializeOutputChannel();
 			const logger = new Logger();
 			logger.show();
 
@@ -361,7 +400,7 @@ describe("Logger", () => {
 	});
 
 	describe("dispose()", () => {
-		it("should dispose output channel when called", () => {
+		it("should not dispose shared output channel (managed by extension context)", () => {
 			hoisted.mockGetConfiguration.mockReturnValue({
 				get: vi.fn((key: string) => {
 					if (key === "logging.level") return "warn";
@@ -370,10 +409,13 @@ describe("Logger", () => {
 				}),
 			});
 
+			initializeOutputChannel();
 			const logger = new Logger();
 			logger.dispose();
 
-			expect(hoisted.mockOutputChannelDispose).toHaveBeenCalled();
+			// Logger.dispose() should NOT dispose the shared channel
+			// The channel is managed by initializeOutputChannel()'s disposable
+			expect(hoisted.mockOutputChannelDispose).not.toHaveBeenCalled();
 		});
 
 		it("should not throw when output channel is disabled", () => {

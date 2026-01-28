@@ -51,31 +51,52 @@ function canCreateOutputChannel(): boolean {
 	}
 }
 
-// Module-level singleton for output channel to prevent duplicates
+/**
+ * Shared output channel instance.
+ *
+ * VS Code best practice: Create the output channel ONCE during extension activation
+ * and pass it to components via dependency injection. The output channel should be
+ * added to context.subscriptions for automatic disposal.
+ *
+ * This module-level variable is set by initializeOutputChannel() which should be
+ * called exactly once from activate().
+ */
 let _sharedOutputChannel: vscode.OutputChannel | null = null;
-let _outputChannelRefCount = 0;
 
-function getOrCreateOutputChannel(): vscode.OutputChannel | null {
+/**
+ * Initialize the shared output channel.
+ * Call this ONCE from extension activate() and add the returned disposable to context.subscriptions.
+ *
+ * @returns A disposable that cleans up the output channel
+ */
+export function initializeOutputChannel(): vscode.Disposable {
 	if (_sharedOutputChannel) {
-		_outputChannelRefCount++;
-		return _sharedOutputChannel;
+		// Already initialized - this shouldn't happen in normal operation
+		// but can happen in tests or if activate() is called multiple times
+		return { dispose: () => {} };
 	}
+
 	try {
 		_sharedOutputChannel = vscode.window.createOutputChannel("Vercel AI Gateway");
-		_outputChannelRefCount = 1;
-		return _sharedOutputChannel;
 	} catch {
-		return null;
+		// Can't create output channel (e.g., in tests without VS Code context)
+		return { dispose: () => {} };
 	}
+
+	return {
+		dispose: () => {
+			_sharedOutputChannel?.dispose();
+			_sharedOutputChannel = null;
+		},
+	};
 }
 
-function releaseOutputChannel(): void {
-	_outputChannelRefCount--;
-	if (_outputChannelRefCount <= 0) {
-		_sharedOutputChannel?.dispose();
-		_sharedOutputChannel = null;
-		_outputChannelRefCount = 0;
-	}
+/**
+ * Get the shared output channel, if initialized.
+ * Returns null if initializeOutputChannel() hasn't been called or if in a test environment.
+ */
+function getSharedOutputChannel(): vscode.OutputChannel | null {
+	return _sharedOutputChannel;
 }
 
 /**
@@ -86,7 +107,6 @@ function releaseOutputChannel(): void {
 export function _resetOutputChannelForTesting(): void {
 	_sharedOutputChannel?.dispose();
 	_sharedOutputChannel = null;
-	_outputChannelRefCount = 0;
 }
 
 export class Logger {
@@ -114,9 +134,10 @@ export class Logger {
 		const useOutputChannel = this.configService.logOutputChannel ?? true;
 		const canUseOutputChannel = canCreateOutputChannel();
 		if (useOutputChannel && canUseOutputChannel && !this.outputChannel) {
-			this.outputChannel = getOrCreateOutputChannel();
-		} else if ((!useOutputChannel || !canUseOutputChannel) && this.outputChannel) {
-			releaseOutputChannel();
+			// Use the shared output channel initialized during extension activation
+			this.outputChannel = getSharedOutputChannel();
+		} else if (!useOutputChannel && this.outputChannel) {
+			// Don't dispose the shared channel - just stop using it
 			this.outputChannel = null;
 		}
 
@@ -265,10 +286,9 @@ export class Logger {
 
 	dispose(): void {
 		this.disposable.dispose();
-		if (this.outputChannel) {
-			releaseOutputChannel();
-			this.outputChannel = null;
-		}
+		// Don't dispose the shared output channel here - it's managed by context.subscriptions
+		// via initializeOutputChannel(). Just clear our reference.
+		this.outputChannel = null;
 	}
 
 	/**
