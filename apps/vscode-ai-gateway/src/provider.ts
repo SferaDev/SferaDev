@@ -116,7 +116,14 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 	// Track current request for caching API actuals
 	private currentRequestMessages: readonly LanguageModelChatMessage[] | null = null;
 	private currentRequestModelFamily: string | null = null;
-	// Tool-call streaming buffer: tracks partial tool calls by toolCallId
+	/**
+	 * Tool-call streaming buffer keyed by `toolCallId`.
+	 *
+	 * Lifecycle:
+	 * - Buffer partial tool calls during streaming.
+	 * - Flush on stream finish to emit complete tool calls.
+	 * - Clear on abort/error (finally block) to avoid stale entries.
+	 */
 	private toolCallBuffer: Map<string, { toolName: string; argsText: string }> = new Map();
 
 	constructor(context: ExtensionContext, configService: ConfigService = new ConfigService()) {
@@ -281,6 +288,7 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 			// Clear current request tracking
 			this.currentRequestMessages = null;
 			this.currentRequestModelFamily = null;
+			this.toolCallBuffer.clear();
 			abortSubscription.dispose();
 		}
 	}
@@ -569,7 +577,11 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 			// Lifecycle events - no content to emit
 			case "start":
 			case "start-step":
+				break;
+
 			case "abort":
+				// Abort means the request was cancelled - discard incomplete tool calls.
+				this.toolCallBuffer.clear();
 				break;
 
 			case "finish-step": {
@@ -679,14 +691,29 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 		},
 		progress: Progress<LanguageModelResponsePart>,
 	): void {
-		// If this tool call was buffered from streaming, remove it from buffer
-		// to avoid duplicate emission
-		if (this.toolCallBuffer.has(chunk.toolCallId)) {
-			this.toolCallBuffer.delete(chunk.toolCallId);
-		}
+		const buffered = this.toolCallBuffer.get(chunk.toolCallId);
 
 		// Accept both 'args' (new SDK) and 'input' (legacy) field names
-		const toolInput = (chunk.args ?? chunk.input) as Record<string, unknown>;
+		let toolInput = (chunk.args ?? chunk.input) as Record<string, unknown> | undefined;
+
+		// Fallback to buffered args if the final tool-call chunk omits args/input
+		if (toolInput === undefined && buffered) {
+			try {
+				toolInput = JSON.parse(buffered.argsText || "{}") as Record<string, unknown>;
+			} catch (error) {
+				logger.error(
+					`Failed to parse buffered tool call args for ${chunk.toolCallId}: ${buffered.argsText}`,
+					error,
+				);
+				toolInput = {};
+			}
+		}
+
+		// If this tool call was buffered from streaming, remove it from buffer
+		// to avoid duplicate emission
+		if (buffered) {
+			this.toolCallBuffer.delete(chunk.toolCallId);
+		}
 
 		progress.report(new LanguageModelToolCallPart(chunk.toolCallId, chunk.toolName, toolInput));
 	}
