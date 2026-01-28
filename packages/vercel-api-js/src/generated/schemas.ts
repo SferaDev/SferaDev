@@ -12334,6 +12334,76 @@ export const updateProjectProtectionBypassMutationResponseSchema = z.lazy(
 	() => updateProjectProtectionBypass200Schema,
 );
 
+export const requestRollbackPathParamsSchema = z.object({
+	projectId: z.string(),
+	deploymentId: z.string().describe("The ID of the deployment to rollback *to*"),
+});
+
+export const requestRollbackQueryParamsSchema = z
+	.object({
+		description: z.optional(z.string().describe("The reason for the rollback")),
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const requestRollback201Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export const requestRollback400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const requestRollback401Schema = z.unknown();
+
+export const requestRollback402Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const requestRollback403Schema = z.unknown();
+
+export const requestRollback409Schema = z.unknown();
+
+export const requestRollback422Schema = z.unknown();
+
+export const requestRollbackMutationResponseSchema = z.lazy(() => requestRollback201Schema);
+
+export const PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionPathParamsSchema =
+	z.object({
+		projectId: z.string(),
+		deploymentId: z.string(),
+	});
+
+export const PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export const PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription403Schema = z.unknown();
+
+export const PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription409Schema = z.unknown();
+
+export const PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription422Schema = z.unknown();
+
+export const PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionMutationResponseSchema =
+	z.lazy(() => PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription200Schema);
+
 export const requestPromotePathParamsSchema = z.object({
 	projectId: z.string(),
 	deploymentId: z.string(),
