@@ -162,6 +162,7 @@ import {
 	listSharedEnvVariable,
 	listUserEvents,
 	moveProjectDomain,
+	pATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription,
 	patchDomain,
 	patchEdgeConfigItems,
 	patchEdgeConfigSchema,
@@ -186,6 +187,7 @@ import {
 	requestAccessToTeam,
 	requestDelete,
 	requestPromote,
+	requestRollback,
 	rerequestCheck,
 	restoreRedirects,
 	searchRepo,
@@ -475,6 +477,7 @@ import {
 	listUserEventsQueryParamsSchema,
 	moveProjectDomainPathParamsSchema,
 	moveProjectDomainQueryParamsSchema,
+	PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionPathParamsSchema,
 	patchDomainPathParamsSchema,
 	patchDomainQueryParamsSchema,
 	patchEdgeConfigItemsPathParamsSchema,
@@ -518,6 +521,8 @@ import {
 	requestAccessToTeamPathParamsSchema,
 	requestPromotePathParamsSchema,
 	requestPromoteQueryParamsSchema,
+	requestRollbackPathParamsSchema,
+	requestRollbackQueryParamsSchema,
 	rerequestCheckPathParamsSchema,
 	rerequestCheckQueryParamsSchema,
 	restoreRedirectsQueryParamsSchema,
@@ -3342,6 +3347,52 @@ export function initMcpTools<Server>(serverLike: Server, config: FetcherConfig) 
 				return await updateProjectProtectionBypass({
 					pathParams: { idOrName },
 					queryParams,
+					config,
+				});
+			} catch (error) {
+				return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
+			}
+		},
+	);
+
+	server.tool(
+		"requestRollback",
+		"Allows users to rollback to a deployment.",
+		{
+			projectId: requestRollbackPathParamsSchema.shape["projectId"],
+			deploymentId: requestRollbackPathParamsSchema.shape["deploymentId"],
+			queryParams: requestRollbackQueryParamsSchema,
+		},
+		async ({ projectId, deploymentId, queryParams }) => {
+			try {
+				return await requestRollback({
+					pathParams: { projectId, deploymentId },
+					queryParams,
+					config,
+				});
+			} catch (error) {
+				return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
+			}
+		},
+	);
+
+	server.tool(
+		"pATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription",
+		"Updates the reason for a rollback, without changing the rollback status itself.",
+		{
+			projectId:
+				PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionPathParamsSchema.shape[
+					"projectId"
+				],
+			deploymentId:
+				PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionPathParamsSchema.shape[
+					"deploymentId"
+				],
+		},
+		async ({ projectId, deploymentId }) => {
+			try {
+				return await pATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription({
+					pathParams: { projectId, deploymentId },
 					config,
 				});
 			} catch (error) {

@@ -1077,6 +1077,13 @@ import type {
 	MoveProjectDomainMutationResponse,
 	MoveProjectDomainPathParams,
 	MoveProjectDomainQueryParams,
+	PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription400,
+	PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription401,
+	PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription403,
+	PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription409,
+	PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription422,
+	PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionMutationResponse,
+	PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionPathParams,
 	PatchDomain400,
 	PatchDomain401,
 	PatchDomain403,
@@ -1254,6 +1261,15 @@ import type {
 	RequestPromoteMutationResponse,
 	RequestPromotePathParams,
 	RequestPromoteQueryParams,
+	RequestRollback400,
+	RequestRollback401,
+	RequestRollback402,
+	RequestRollback403,
+	RequestRollback409,
+	RequestRollback422,
+	RequestRollbackMutationResponse,
+	RequestRollbackPathParams,
+	RequestRollbackQueryParams,
 	RerequestCheck400,
 	RerequestCheck401,
 	RerequestCheck403,
@@ -8022,6 +8038,97 @@ export async function updateProjectProtectionBypass({
 }
 
 /**
+ * @description Allows users to rollback to a deployment.
+ * @summary Points all production domains for a project to the given deploy
+ * {@link /v1/projects/:projectId/rollback/:deploymentId}
+ */
+export async function requestRollback({
+	pathParams: { projectId, deploymentId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: RequestRollbackPathParams;
+	queryParams?: RequestRollbackQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof client };
+}) {
+	const { client: request = client, ...requestConfig } = config;
+
+	if (!projectId) {
+		throw new Error(`Missing required path parameter: projectId`);
+	}
+
+	if (!deploymentId) {
+		throw new Error(`Missing required path parameter: deploymentId`);
+	}
+
+	const data = await request<
+		RequestRollbackMutationResponse,
+		ErrorWrapper<
+			| RequestRollback400
+			| RequestRollback401
+			| RequestRollback402
+			| RequestRollback403
+			| RequestRollback409
+			| RequestRollback422
+		>,
+		null,
+		Record<string, string>,
+		RequestRollbackQueryParams,
+		RequestRollbackPathParams
+	>({
+		method: "POST",
+		url: `/v1/projects/${projectId}/rollback/${deploymentId}`,
+		queryParams,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Updates the reason for a rollback, without changing the rollback status itself.
+ * @summary Updates the description for a rollback
+ * {@link /v1/projects/:projectId/rollback/:deploymentId/update-description}
+ */
+export async function pATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription({
+	pathParams: { projectId, deploymentId },
+	config = {},
+}: {
+	pathParams: PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionPathParams;
+	config?: Partial<FetcherConfig> & { client?: typeof client };
+}) {
+	const { client: request = client, ...requestConfig } = config;
+
+	if (!projectId) {
+		throw new Error(`Missing required path parameter: projectId`);
+	}
+
+	if (!deploymentId) {
+		throw new Error(`Missing required path parameter: deploymentId`);
+	}
+
+	const data = await request<
+		PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionMutationResponse,
+		ErrorWrapper<
+			| PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription400
+			| PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription401
+			| PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription403
+			| PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription409
+			| PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription422
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionPathParams
+	>({
+		method: "PATCH",
+		url: `/v1/projects/${projectId}/rollback/${deploymentId}/update-description`,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
  * @description Allows users to promote a deployment to production. Note: This does NOT rebuild the deployment. If you need that, then call create-deployments endpoint.
  * @summary Points all production domains for a project to the given deploy
  * {@link /v10/projects/:projectId/promote/:deploymentId}
@@ -9995,6 +10102,9 @@ export const operationsByPath = {
 	"POST /projects/{idOrName}/transfer-request": createProjectTransferRequest,
 	"PUT /projects/transfer-request/{code}": acceptProjectTransferRequest,
 	"PATCH /v1/projects/{idOrName}/protection-bypass": updateProjectProtectionBypass,
+	"POST /v1/projects/{projectId}/rollback/{deploymentId}": requestRollback,
+	"PATCH /v1/projects/{projectId}/rollback/{deploymentId}/update-description":
+		pATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription,
 	"POST /v10/projects/{projectId}/promote/{deploymentId}": requestPromote,
 	"GET /v1/projects/{projectId}/promote/aliases": listPromoteAliases,
 	"POST /v1/projects/{projectId}/pause": pauseProject,
@@ -10271,6 +10381,7 @@ export const operationsByTag = {
 		createProjectTransferRequest,
 		acceptProjectTransferRequest,
 		updateProjectProtectionBypass,
+		requestRollback,
 		requestPromote,
 		listPromoteAliases,
 		pauseProject,
@@ -10538,6 +10649,7 @@ export const tagDictionary = {
 			"verifyProjectDomain",
 			"createProjectEnv",
 			"createProjectTransferRequest",
+			"requestRollback",
 			"requestPromote",
 			"pauseProject",
 			"unpauseProject",

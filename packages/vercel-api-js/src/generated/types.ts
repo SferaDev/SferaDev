@@ -23034,6 +23034,120 @@ export type UpdateProjectProtectionBypassMutation = {
 		| UpdateProjectProtectionBypass409;
 };
 
+export type RequestRollbackPathParams = {
+	/**
+	 * @type string
+	 */
+	projectId: string;
+	/**
+	 * @description The ID of the deployment to rollback *to*
+	 * @type string
+	 */
+	deploymentId: string;
+};
+
+export type RequestRollbackQueryParams = {
+	/**
+	 * @description The reason for the rollback
+	 * @type string | undefined
+	 */
+	description?: string | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type RequestRollback201 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type RequestRollback400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type RequestRollback401 = unknown;
+
+export type RequestRollback402 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type RequestRollback403 = unknown;
+
+export type RequestRollback409 = unknown;
+
+export type RequestRollback422 = unknown;
+
+export type RequestRollbackMutationResponse = RequestRollback201;
+
+export type RequestRollbackMutation = {
+	Response: RequestRollback201;
+	PathParams: RequestRollbackPathParams;
+	QueryParams: RequestRollbackQueryParams;
+	Errors:
+		| RequestRollback400
+		| RequestRollback401
+		| RequestRollback402
+		| RequestRollback403
+		| RequestRollback409
+		| RequestRollback422;
+};
+
+export type PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionPathParams = {
+	/**
+	 * @type string
+	 */
+	projectId: string;
+	/**
+	 * @type string
+	 */
+	deploymentId: string;
+};
+
+export type PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription200 = unknown;
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export type PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription403 = unknown;
+
+export type PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription409 = unknown;
+
+export type PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription422 = unknown;
+
+export type PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionMutationResponse =
+	PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription200;
+
+export type PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionMutation = {
+	Response: PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription200;
+	PathParams: PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionPathParams;
+	Errors:
+		| PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription400
+		| PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription401
+		| PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription403
+		| PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription409
+		| PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription422;
+};
+
 export type RequestPromotePathParams = {
 	/**
 	 * @type string
