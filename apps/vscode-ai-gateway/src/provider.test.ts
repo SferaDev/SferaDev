@@ -1359,7 +1359,9 @@ describe("Fixture-based tests", () => {
 		);
 
 		expect(progress.report).not.toHaveBeenCalled();
-		expect(warnSpy).toHaveBeenCalledWith("[VercelAI] Unsupported file mime type: cache_control");
+		expect(warnSpy).toHaveBeenCalledWith(
+			expect.stringContaining("Unsupported file mime type: cache_control"),
+		);
 	});
 
 	it("handles file chunks with valid and invalid MIME types", () => {
@@ -1416,7 +1418,9 @@ describe("Fixture-based tests", () => {
 			}
 		}
 
-		expect(warnSpy).toHaveBeenCalledWith("[VercelAI] Unsupported file mime type: cache_control");
+		expect(warnSpy).toHaveBeenCalledWith(
+			expect.stringContaining("Unsupported file mime type: cache_control"),
+		);
 	});
 
 	it("handles tool call streaming chunks", () => {

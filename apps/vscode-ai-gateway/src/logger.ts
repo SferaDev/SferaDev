@@ -15,16 +15,51 @@ export const LOG_LEVELS: Record<LogLevel, number> = {
 	warn: 2,
 	info: 3,
 	debug: 4,
+	trace: 5,
 };
+
+type LoggerConfigSource = Pick<ConfigService, "logLevel" | "logOutputChannel" | "onDidChange">;
+
+function createFallbackConfigService(): LoggerConfigSource {
+	return {
+		logLevel: "info",
+		logOutputChannel: false,
+		onDidChange: () => ({ dispose: () => undefined }),
+	};
+}
+
+function createConfigServiceSafely(): LoggerConfigSource {
+	try {
+		return new ConfigService();
+	} catch {
+		return createFallbackConfigService();
+	}
+}
+
+function canCreateOutputChannel(): boolean {
+	try {
+		return typeof vscode.window?.createOutputChannel === "function";
+	} catch {
+		return false;
+	}
+}
+
+function createOutputChannelSafely(): vscode.OutputChannel | null {
+	try {
+		return vscode.window.createOutputChannel("Vercel AI Gateway");
+	} catch {
+		return null;
+	}
+}
 
 export class Logger {
 	private outputChannel: vscode.OutputChannel | null = null;
 	private level: LogLevel = "info"; // Default to info for better visibility
-	private configService: ConfigService;
+	private configService: LoggerConfigSource;
 	private readonly disposable: { dispose: () => void };
 
-	constructor(configService: ConfigService = new ConfigService()) {
-		this.configService = configService;
+	constructor(configService?: LoggerConfigSource) {
+		this.configService = configService ?? createConfigServiceSafely();
 		this.loadConfig();
 
 		this.disposable = this.configService.onDidChange(() => {
@@ -36,9 +71,10 @@ export class Logger {
 		this.level = this.configService.logLevel ?? "info";
 
 		const useOutputChannel = this.configService.logOutputChannel ?? true;
-		if (useOutputChannel && !this.outputChannel) {
-			this.outputChannel = vscode.window.createOutputChannel("Vercel AI Gateway");
-		} else if (!useOutputChannel && this.outputChannel) {
+		const canUseOutputChannel = canCreateOutputChannel();
+		if (useOutputChannel && canUseOutputChannel && !this.outputChannel) {
+			this.outputChannel = createOutputChannelSafely();
+		} else if ((!useOutputChannel || !canUseOutputChannel) && this.outputChannel) {
 			this.outputChannel.dispose();
 			this.outputChannel = null;
 		}
@@ -68,6 +104,9 @@ export class Logger {
 			case "debug":
 				console.debug(formatted, ...args);
 				break;
+			case "trace":
+				console.debug(formatted, ...args);
+				break;
 		}
 
 		if (this.outputChannel) {
@@ -90,6 +129,10 @@ export class Logger {
 
 	debug(message: string, ...args: unknown[]): void {
 		this.log("debug", message, ...args);
+	}
+
+	trace(message: string, ...args: unknown[]): void {
+		this.log("trace", message, ...args);
 	}
 
 	show(): void {
@@ -129,6 +172,9 @@ export const logger = {
 	debug(message: string, ...args: unknown[]): void {
 		getLogger().debug(message, ...args);
 	},
+	trace(message: string, ...args: unknown[]): void {
+		getLogger().trace(message, ...args);
+	},
 	show(): void {
 		getLogger().show();
 	},
@@ -147,7 +193,7 @@ export const logger = {
  * - Standard Error: Stack trace and message
  */
 export function logError(context: string, error: unknown): void {
-	console.error(`[VercelAI] ${context}:`, error);
+	logger.error(`${context}:`, error);
 
 	if (error && typeof error === "object") {
 		const errorObj = error as Record<string, unknown>;
@@ -167,12 +213,12 @@ export function logError(context: string, error: unknown): void {
 		if ("generationId" in errorObj) details.generationId = errorObj.generationId;
 
 		if (Object.keys(details).length > 0) {
-			console.error(`[VercelAI] ${context} - Details:`, details);
+			logger.error(`${context} - Details:`, details);
 		}
 
 		// Log stack trace if available
 		if (error instanceof Error && error.stack) {
-			console.debug(`[VercelAI] ${context} - Stack:`, error.stack);
+			logger.debug(`${context} - Stack:`, error.stack);
 		}
 	}
 }

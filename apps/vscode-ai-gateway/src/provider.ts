@@ -591,7 +591,7 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 			return session?.accessToken;
 		} catch (error) {
 			if (!silent) {
-				console.error("Failed to get authentication session:", error);
+				logger.error("Failed to get authentication session:", error);
 				window.showErrorMessage(ERROR_MESSAGES.AUTH_FAILED);
 			}
 			return undefined;
@@ -932,7 +932,7 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 	): void {
 		const mimeType = chunk.file?.mediaType;
 		if (!mimeType || !isValidMimeType(mimeType)) {
-			console.warn(`[VercelAI] Unsupported file mime type: ${mimeType ?? "unknown"}`);
+			logger.warn(`Unsupported file mime type: ${mimeType ?? "unknown"}`);
 			return;
 		}
 
@@ -940,7 +940,7 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 			const dataPart = this.createDataPartForMimeType(chunk.file.uint8Array, mimeType);
 			progress.report(dataPart);
 		} catch (error) {
-			console.warn("[VercelAI] Failed to process file chunk:", error);
+			logger.warn("Failed to process file chunk:", error);
 		}
 	}
 
@@ -1002,17 +1002,13 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 
 		if (chunkType && SILENTLY_IGNORED_CHUNK_TYPES.has(chunkType)) {
 			// Expected chunk type with no VS Code equivalent - debug log only
-			console.debug("[VercelAI] Ignored expected chunk type:", chunkType);
+			logger.trace(`Ignored expected chunk type: ${chunkType}`);
 		} else if (chunkType?.startsWith("data-")) {
 			// Custom data chunks - silently ignore
-			console.debug("[VercelAI] Ignored data chunk type:", chunkType);
+			logger.trace(`Ignored data chunk type: ${chunkType}`);
 		} else {
 			// Truly unknown chunk type - warn to help identify API changes
-			console.warn(
-				"[VercelAI] Unknown stream chunk type:",
-				chunkType,
-				JSON.stringify(chunk, null, 2),
-			);
+			logger.warn(`Unknown stream chunk type: ${chunkType}`, chunk);
 		}
 	}
 }
@@ -1097,7 +1093,7 @@ export function convertSingleMessage(
 					// Look up the tool name from the mapping built in convertMessages
 					const toolName = toolNameMap[part.callId] || "unknown_tool";
 					if (!toolNameMap[part.callId]) {
-						console.warn(`[VercelAI] No tool name found for callId ${part.callId}, using fallback`);
+						logger.warn(`No tool name found for callId ${part.callId}, using fallback`);
 					}
 					results.push({
 						role: "tool",
@@ -1124,7 +1120,7 @@ export function convertSingleMessage(
 	}
 
 	if (results.length === 0) {
-		console.debug("[VercelAI] Message had no valid content, creating placeholder");
+		logger.debug("Message had no valid content, creating placeholder");
 		results.push({ role, content: "" });
 	}
 
@@ -1172,9 +1168,7 @@ function createMultiModalMessage(
 	}
 
 	// For non-user roles, convert images to placeholder text
-	console.warn(
-		`[VercelAI] Images in ${role} messages are not supported, converting to placeholder`,
-	);
+	logger.warn(`Images in ${role} messages are not supported, converting to placeholder`);
 	return {
 		role,
 		content: parts.map((p) => (p.type === "text" ? p.text : "[Image content]")).join(""),

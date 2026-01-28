@@ -7,7 +7,7 @@ import {
 } from "./constants";
 
 export type ReasoningEffort = "low" | "medium" | "high";
-export type LogLevel = "off" | "error" | "warn" | "info" | "debug";
+export type LogLevel = "off" | "error" | "warn" | "info" | "debug" | "trace";
 export type EstimationMode = "conservative" | "balanced" | "aggressive";
 
 export class ConfigService implements vscode.Disposable {

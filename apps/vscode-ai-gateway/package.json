@@ -94,7 +94,8 @@
 						"error",
 						"warn",
 						"info",
-						"debug"
+						"debug",
+						"trace"
 					],
 					"default": "warn",
 					"description": "Logging verbosity level.",
@@ -103,7 +104,8 @@
 						"Log only errors",
 						"Log errors and warnings",
 						"Log errors, warnings, and info messages",
-						"Log everything including debug messages"
+						"Log everything including debug messages",
+						"Log everything including trace-level diagnostic messages"
 					]
 				},
 				"vercelAiGateway.logging.outputChannel": {
