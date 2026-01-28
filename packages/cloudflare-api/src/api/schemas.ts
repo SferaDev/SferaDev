@@ -10633,6 +10633,272 @@ export type AddressingVerifiedAt = string | null;
  */
 export type AddressingZoneIdentifier = string;
 
+export type AlexandriaApiResponseCollection = AlexandriaApiResponseCommon & {
+	result_info?: {
+		/**
+		 * Returns the total number of results for the requested service.
+		 *
+		 * @example 1
+		 */
+		count?: number;
+		/**
+		 * Returns the current page within paginated list of results.
+		 *
+		 * @example 1
+		 */
+		page?: number;
+		/**
+		 * Returns the number of results per page of results.
+		 *
+		 * @example 20
+		 */
+		per_page?: number;
+		/**
+		 * Returns the total results available without any search parameters.
+		 *
+		 * @example 2000
+		 */
+		total_count?: number;
+	};
+};
+
+export type AlexandriaApiResponseCommon = {
+	errors: AlexandriaMessages;
+	messages: AlexandriaMessages;
+	/**
+	 * Indicates whether the API call was successful.
+	 *
+	 * @example true
+	 */
+	success: true;
+};
+
+export type AlexandriaApiResponseCommonFailure = {
+	/**
+	 * @example {"code":7003,"message":"No route for the URI"}
+	 * @minLength 1
+	 */
+	errors: AlexandriaMessages;
+	messages: AlexandriaMessages;
+	result: any | null;
+	/**
+	 * Indicates whether the API call was successful.
+	 *
+	 * @example false
+	 */
+	success: false;
+};
+
+export type AlexandriaApplication = {
+	application_source: AlexandriaApplicationSource;
+	application_type: AlexandriaApplicationType;
+	application_type_description: AlexandriaApplicationTypeDescription;
+	created_at: AlexandriaApplicationCreatedAt;
+	hostnames: AlexandriaApplicationHostnames;
+	human_id: AlexandriaApplicationHumanId;
+	id: AlexandriaApplicationId;
+	ip_subnets: AlexandriaApplicationIpSubnets;
+	name: AlexandriaApplicationName;
+	port_protocols: AlexandriaApplicationPortProtocols;
+	support_domains: AlexandriaApplicationSupportDomains;
+	updated_at: AlexandriaApplicationUpdatedAt;
+	version: AlexandriaApplicationVersion;
+};
+
+/**
+ * Returns the application creation time.
+ *
+ * @example 2025-01-01T00:00:00Z
+ */
+export type AlexandriaApplicationCreatedAt = string;
+
+/**
+ * Returns the list of hostnames for the application.
+ *
+ * @example example.com
+ * @example foo.com
+ */
+export type AlexandriaApplicationHostnames = string[];
+
+/**
+ * Returns the human readable ID.
+ *
+ * @example HR
+ */
+export type AlexandriaApplicationHumanId = string;
+
+/**
+ * Returns the application ID.
+ *
+ * @example 12345678-1234-1234-1234-123456789012
+ */
+export type AlexandriaApplicationId = string;
+
+/**
+ * Returns the list of IP subnets for the application.
+ *
+ * @example 192.168.1.0/24
+ * @example 10.0.0.0/8
+ */
+export type AlexandriaApplicationIpSubnets = string[];
+
+/**
+ * Returns the application name.
+ *
+ * @example HR
+ */
+export type AlexandriaApplicationName = string;
+
+/**
+ * Returns the list of port protocols for the application.
+ *
+ * @example tcp/80
+ * @example tcp/443
+ */
+export type AlexandriaApplicationPortProtocols = string[];
+
+/**
+ * Returns the application source.
+ *
+ * @example cloudflare
+ */
+export type AlexandriaApplicationSource = string;
+
+/**
+ * Returns the list of support domains for the application.
+ *
+ * @example example.com
+ * @example foo.com
+ */
+export type AlexandriaApplicationSupportDomains = string[];
+
+/**
+ * Returns the application type.
+ *
+ * @example Human Resources
+ */
+export type AlexandriaApplicationType = string;
+
+/**
+ * Returns the application type description.
+ *
+ * @example Applications used to manage employees and workforce tools.
+ */
+export type AlexandriaApplicationTypeDescription = string;
+
+/**
+ * Returns the application update time.
+ *
+ * @example 2025-01-01T00:00:00Z
+ */
+export type AlexandriaApplicationUpdatedAt = string;
+
+/**
+ * Returns the application version.
+ *
+ * @example 2025-01-01T00:00:00Z
+ */
+export type AlexandriaApplicationVersion = string;
+
+/**
+ * Returns the list of applications.
+ */
+export type AlexandriaApplications = AlexandriaApplication[];
+
+/**
+ * Returns the list of categories.
+ */
+export type AlexandriaCategories = AlexandriaCategory[];
+
+export type AlexandriaCategory = {
+	created_at: AlexandriaCategoryCreatedAt;
+	description: AlexandriaCategoryDescription;
+	id: AlexandriaCategoryId;
+	name: AlexandriaCategoryName;
+};
+
+/**
+ * Returns the category creation time.
+ *
+ * @example 2025-01-01T00:00:00Z
+ */
+export type AlexandriaCategoryCreatedAt = string;
+
+/**
+ * Returns the category description.
+ *
+ * @example Category description
+ */
+export type AlexandriaCategoryDescription = string;
+
+/**
+ * Returns the category ID.
+ *
+ * @example 12345678-1234-1234-1234-123456789012
+ */
+export type AlexandriaCategoryId = string;
+
+/**
+ * Returns the category name.
+ *
+ * @example Category name
+ */
+export type AlexandriaCategoryName = string;
+
+export type AlexandriaCreateApplicationRequest = {
+	/**
+	 * Provide as string to perform a lookup to check if the source exists.
+	 */
+	application_type_id: string;
+	/**
+	 * Provide data while creating the application.
+	 *
+	 * @example example.com
+	 * @example foo.com
+	 */
+	hostnames?: never;
+	human_id: AlexandriaApplicationHumanId;
+	ip_subnets?: AlexandriaApplicationIpSubnets;
+	name: AlexandriaApplicationName;
+	port_protocols?: AlexandriaApplicationPortProtocols;
+	support_domains?: AlexandriaApplicationSupportDomains;
+};
+
+export type AlexandriaGetApplicationResponse = AlexandriaApiResponseCommon & {
+	result?: AlexandriaApplication;
+};
+
+export type AlexandriaGetApplicationsResponse = AlexandriaApiResponseCollection & {
+	result?: AlexandriaApplications;
+};
+
+export type AlexandriaGetCategoriesResponse = AlexandriaApiResponseCommon & {
+	result?: AlexandriaCategories;
+};
+
+export type AlexandriaGetCategoryResponse = AlexandriaApiResponseCommon & {
+	result?: AlexandriaCategory;
+};
+
+export type AlexandriaMessages = {
+	/**
+	 * @minimum 1000
+	 */
+	code: number;
+	documentation_url?: string;
+	message: string;
+	source?: {
+		pointer?: string;
+	};
+}[];
+
+export type AlexandriaUpdateApplicationVersionRequest = {
+	hostnames?: AlexandriaApplicationHostnames;
+	ip_subnets?: AlexandriaApplicationIpSubnets;
+	port_protocols?: AlexandriaApplicationPortProtocols;
+	support_domains?: AlexandriaApplicationSupportDomains;
+};
+
 /**
  * A Token Validation rule that can enforce security policies using JWT Tokens.
  */
@@ -36345,7 +36611,6 @@ export type MconnAdminDevice = {
 	 */
 	last_crypt_key?: string;
 	last_updated: string;
-	license_key_sha256?: string;
 	metadata: string;
 	pki_rotation_finished_at?: string;
 	pki_rotation_output?: string;
@@ -36397,7 +36662,6 @@ export type MconnAdminDeviceFields = {
 	 */
 	last_crypt_key?: string;
 	last_updated?: string;
-	license_key_sha256?: string;
 	metadata?: string;
 	pki_rotation_finished_at?: string;
 	pki_rotation_output?: string;
@@ -36620,7 +36884,6 @@ export type MconnControllerDevice = {
 	 * @x-sensitive true
 	 */
 	last_crypt_key?: string;
-	license_key_sha256?: string;
 	serial_number?: string;
 };
 
@@ -69623,8 +69886,7 @@ export type ZonesDisableApps = {
 export type ZonesDisablePerformance = {
 	/**
 	 * Turn off
-	 * [Rocket Loader](https://developers.cloudflare.com/speed/optimization/content/rocket-loader/),
-	 * [Mirage](https://developers.cloudflare.com/speed/optimization/images/mirage/), and
+	 * [Rocket Loader](https://developers.cloudflare.com/speed/optimization/content/rocket-loader/), and
 	 * [Polish](https://developers.cloudflare.com/images/polish/).
 	 *
 	 * @x-auditable true
@@ -70145,6 +70407,11 @@ export type ZonesMinTlsVersion = {
  */
 export type ZonesMinTlsVersionValue = "1.0" | "1.1" | "1.2" | "1.3";
 
+/**
+ * @deprecated true
+ * @x-stainless-deprecation-message Mirage is deprecated. This functionality is no longer supported. 
+See https://developers.cloudflare.com/fundamentals/api/reference/deprecations/#2025-11-03 for further details.
+ */
 export type ZonesMirage = {
 	/**
 	 * Cloudflare Mirage reduces bandwidth used by images in mobile browsers.
