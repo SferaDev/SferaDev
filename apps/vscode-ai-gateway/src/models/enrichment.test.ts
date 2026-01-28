@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import type { ExtensionContext, LanguageModelChatInformation } from "vscode";
 import { ENRICHMENT_CACHE_TTL_MS } from "../constants";
 
 const hoisted = vi.hoisted(() => {
@@ -7,6 +8,34 @@ const hoisted = vi.hoisted(() => {
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		(_callback?: unknown) => ({ dispose: vi.fn() }),
 	);
+	const mockGetSession = vi.fn();
+	const mockShowErrorMessage = vi.fn();
+
+	class MockLanguageModelTextPart {
+		constructor(public value: string) {}
+	}
+
+	class MockLanguageModelDataPart {
+		constructor(
+			public data: Uint8Array,
+			public mimeType: string,
+		) {}
+	}
+
+	class MockLanguageModelToolCallPart {
+		constructor(
+			public callId: string,
+			public name: string,
+			public input: unknown,
+		) {}
+	}
+
+	class MockLanguageModelToolResultPart {
+		constructor(
+			public callId: string,
+			public content: unknown[],
+		) {}
+	}
 
 	class MockEventEmitter {
 		private listeners: Set<(...args: unknown[]) => void> = new Set();
@@ -34,7 +63,13 @@ const hoisted = vi.hoisted(() => {
 	return {
 		mockGetConfiguration,
 		mockOnDidChangeConfiguration,
+		mockGetSession,
+		mockShowErrorMessage,
 		MockEventEmitter,
+		MockLanguageModelTextPart,
+		MockLanguageModelDataPart,
+		MockLanguageModelToolCallPart,
+		MockLanguageModelToolResultPart,
 		mockCreateOutputChannel,
 	};
 });
@@ -46,11 +81,28 @@ vi.mock("vscode", () => ({
 	},
 	window: {
 		createOutputChannel: hoisted.mockCreateOutputChannel,
+		showErrorMessage: hoisted.mockShowErrorMessage,
+	},
+	authentication: {
+		getSession: hoisted.mockGetSession,
 	},
 	EventEmitter: hoisted.MockEventEmitter,
+	LanguageModelTextPart: hoisted.MockLanguageModelTextPart,
+	LanguageModelDataPart: hoisted.MockLanguageModelDataPart,
+	LanguageModelToolCallPart: hoisted.MockLanguageModelToolCallPart,
+	LanguageModelToolResultPart: hoisted.MockLanguageModelToolResultPart,
+	LanguageModelChatMessageRole: {
+		User: 1,
+		Assistant: 2,
+	},
+	LanguageModelChatToolMode: {
+		Auto: "auto",
+		Required: "required",
+	},
 }));
 
-import { ModelEnricher } from "./enrichment";
+import { VercelAIChatModelProvider } from "../provider";
+import { type EnrichedModelData, ModelEnricher } from "./enrichment";
 
 describe("ModelEnricher", () => {
 	let originalFetch: typeof fetch;
@@ -63,6 +115,7 @@ describe("ModelEnricher", () => {
 				if (key === "endpoint") return "https://example.test";
 				if (key === "logging.level") return "off";
 				if (key === "logging.outputChannel") return false;
+				if (key === "models.enrichmentEnabled") return true;
 				return defaultValue;
 			}),
 		});
@@ -270,5 +323,160 @@ describe("ModelEnricher", () => {
 		await enricher.clearCache();
 
 		expect(storage.size).toBe(0);
+	});
+});
+
+describe("Enrichment-based capability refinement", () => {
+	function createProvider() {
+		const context = {
+			workspaceState: {
+				get: vi.fn(),
+				update: vi.fn(),
+			},
+			globalState: {
+				get: vi.fn(),
+				update: vi.fn(),
+			},
+		} as unknown as ExtensionContext;
+
+		return new VercelAIChatModelProvider(context);
+	}
+
+	function setEnriched(
+		provider: VercelAIChatModelProvider,
+		modelId: string,
+		overrides: Partial<EnrichedModelData>,
+	) {
+		const enriched: EnrichedModelData = {
+			context_length: null,
+			max_completion_tokens: null,
+			supported_parameters: [],
+			supports_implicit_caching: false,
+			input_modalities: [],
+			...overrides,
+		};
+		(
+			provider as unknown as {
+				enrichedModels: Map<string, EnrichedModelData>;
+			}
+		).enrichedModels.set(modelId, enriched);
+	}
+
+	it("sets imageInput when input_modalities includes image", () => {
+		const provider = createProvider();
+		setEnriched(provider, "openai/gpt-4o", {
+			input_modalities: ["text", "image"],
+		});
+
+		const models = [
+			{
+				id: "openai/gpt-4o",
+				maxInputTokens: 8000,
+				capabilities: { imageInput: false },
+			} as LanguageModelChatInformation,
+		];
+
+		const refined = (
+			provider as unknown as {
+				applyEnrichmentToModels: (
+					models: LanguageModelChatInformation[],
+				) => LanguageModelChatInformation[];
+			}
+		).applyEnrichmentToModels(models);
+
+		expect(refined[0].capabilities?.imageInput).toBe(true);
+	});
+
+	it("does not modify capabilities when input_modalities is missing", () => {
+		const provider = createProvider();
+		setEnriched(provider, "openai/gpt-4o", {
+			input_modalities: [],
+		});
+
+		const models = [
+			{
+				id: "openai/gpt-4o",
+				maxInputTokens: 8000,
+				capabilities: { imageInput: false },
+			} as LanguageModelChatInformation,
+		];
+
+		const refined = (
+			provider as unknown as {
+				applyEnrichmentToModels: (
+					models: LanguageModelChatInformation[],
+				) => LanguageModelChatInformation[];
+			}
+		).applyEnrichmentToModels(models);
+
+		expect(refined[0].capabilities?.imageInput).toBe(false);
+	});
+
+	it("overrides maxInputTokens when context_length differs", () => {
+		const provider = createProvider();
+		setEnriched(provider, "openai/gpt-4o", {
+			context_length: 128000,
+		});
+
+		const models = [
+			{
+				id: "openai/gpt-4o",
+				maxInputTokens: 8000,
+			} as LanguageModelChatInformation,
+		];
+
+		const refined = (
+			provider as unknown as {
+				applyEnrichmentToModels: (
+					models: LanguageModelChatInformation[],
+				) => LanguageModelChatInformation[];
+			}
+		).applyEnrichmentToModels(models);
+
+		expect(refined[0].maxInputTokens).toBe(128000);
+	});
+
+	it("skips refinement when enrichment is disabled", async () => {
+		hoisted.mockGetConfiguration.mockReturnValue({
+			get: vi.fn((key: string, defaultValue: unknown) => {
+				if (key === "endpoint") return "https://example.test";
+				if (key === "logging.level") return "off";
+				if (key === "logging.outputChannel") return false;
+				if (key === "models.enrichmentEnabled") return false;
+				return defaultValue;
+			}),
+		});
+
+		hoisted.mockGetSession.mockResolvedValue({ accessToken: "test-token" });
+
+		const provider = createProvider();
+		setEnriched(provider, "openai/gpt-4o", {
+			context_length: 128000,
+			input_modalities: ["image"],
+		});
+
+		const models = [
+			{
+				id: "openai/gpt-4o",
+				maxInputTokens: 8000,
+				capabilities: { imageInput: false },
+			} as LanguageModelChatInformation,
+		];
+
+		(
+			provider as unknown as {
+				modelsClient: {
+					getModels: (apiKey: string) => Promise<LanguageModelChatInformation[]>;
+				};
+			}
+		).modelsClient.getModels = vi.fn().mockResolvedValue(models);
+
+		const result = await provider.provideLanguageModelChatInformation(
+			{ silent: true },
+			{} as import("vscode").CancellationToken,
+		);
+
+		expect(result[0].maxInputTokens).toBe(8000);
+		expect(result[0].capabilities?.imageInput).toBe(false);
 	});
 });

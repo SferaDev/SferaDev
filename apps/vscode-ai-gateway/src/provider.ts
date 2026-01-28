@@ -129,6 +129,8 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 	private toolCallBuffer: Map<string, { toolName: string; argsText: string }> = new Map();
 	/** Cache of enriched model data for the session */
 	private enrichedModels: Map<string, EnrichedModelData> = new Map();
+	private readonly modelInfoChangeEmitter = new vscode.EventEmitter<void>();
+	readonly onDidChangeLanguageModelChatInformation = this.modelInfoChangeEmitter.event;
 
 	constructor(context: ExtensionContext, configService: ConfigService = new ConfigService()) {
 		this.context = context;
@@ -139,6 +141,39 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 		this.enricher = new ModelEnricher(configService);
 		// Initialize enricher persistence for faster startup
 		this.enricher.initializePersistence(context.globalState);
+	}
+
+	dispose(): void {
+		this.modelInfoChangeEmitter.dispose();
+	}
+
+	private applyEnrichmentToModels(
+		models: LanguageModelChatInformation[],
+	): LanguageModelChatInformation[] {
+		return models.map((model) => {
+			const enriched = this.enrichedModels.get(model.id);
+			if (!enriched) {
+				return model;
+			}
+
+			let hasChanges = false;
+			const refined: LanguageModelChatInformation = { ...model };
+
+			if (enriched.context_length && enriched.context_length !== model.maxInputTokens) {
+				refined.maxInputTokens = enriched.context_length;
+				hasChanges = true;
+			}
+
+			if (enriched.input_modalities?.includes("image")) {
+				refined.capabilities = {
+					...(model.capabilities ?? {}),
+					imageInput: true,
+				};
+				hasChanges = true;
+			}
+
+			return hasChanges ? refined : model;
+		});
 	}
 
 	async provideLanguageModelChatInformation(
@@ -159,11 +194,43 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 				"Available models",
 				models.map((m) => m.id),
 			);
+			if (this.configService.modelsEnrichmentEnabled) {
+				const enrichedModels = this.applyEnrichmentToModels(models);
+				this.triggerBackgroundEnrichment(models, apiKey);
+				return enrichedModels;
+			}
+
 			return models;
 		} catch (error) {
 			logger.error(ERROR_MESSAGES.MODELS_FETCH_FAILED, error);
 			return [];
 		}
+	}
+
+	private triggerBackgroundEnrichment(
+		models: LanguageModelChatInformation[],
+		apiKey: string,
+	): void {
+		const modelsToEnrich = models.filter((model) => !this.enrichedModels.has(model.id));
+
+		if (modelsToEnrich.length === 0) {
+			return;
+		}
+
+		Promise.allSettled(
+			modelsToEnrich.map((model) => this.enrichModelIfNeeded(model.id, apiKey)),
+		).then((results) => {
+			const enrichedCount = results.filter(
+				(result) => result.status === "fulfilled" && result.value,
+			).length;
+
+			if (enrichedCount > 0) {
+				logger.debug(
+					`Background enrichment completed for ${enrichedCount} models, firing refresh event`,
+				);
+				this.modelInfoChangeEmitter.fire();
+			}
+		});
 	}
 
 	async provideLanguageModelChatResponse(
@@ -215,7 +282,9 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 			}
 
 			// Lazy enrichment: fetch additional metadata on first use of each model
-			await this.enrichModelIfNeeded(model.id, apiKey);
+			if (this.configService.modelsEnrichmentEnabled) {
+				await this.enrichModelIfNeeded(model.id, apiKey);
+			}
 
 			const gateway = createGatewayProvider({
 				apiKey,
@@ -539,10 +608,10 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 	 * @param modelId - The model ID to enrich
 	 * @param apiKey - API key for authentication
 	 */
-	private async enrichModelIfNeeded(modelId: string, apiKey: string): Promise<void> {
+	private async enrichModelIfNeeded(modelId: string, apiKey: string): Promise<boolean> {
 		// Skip if already enriched this session
 		if (this.enrichedModels.has(modelId)) {
-			return;
+			return false;
 		}
 
 		try {
@@ -554,11 +623,14 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 					input_modalities: enriched.input_modalities,
 					supports_implicit_caching: enriched.supports_implicit_caching,
 				});
+				return true;
 			}
 		} catch (error) {
 			// Non-blocking: enrichment failure shouldn't prevent chat
 			logger.warn(`Failed to enrich model ${modelId}`, error);
 		}
+
+		return false;
 	}
 
 	/**

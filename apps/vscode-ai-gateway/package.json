@@ -163,6 +163,11 @@
 					"description": "Override characters per token for estimation. Lower = more conservative.",
 					"minimum": 2,
 					"maximum": 6
+				},
+				"vercelAiGateway.models.enrichmentEnabled": {
+					"type": "boolean",
+					"default": true,
+					"description": "Fetch per-model metadata to refine capabilities and token limits"
 				}
 			}
 		}

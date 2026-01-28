@@ -18,6 +18,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// Register the language model chat provider
 	const provider = new VercelAIChatModelProvider(context, configService);
+	context.subscriptions.push(provider);
 	const providerDisposable = vscode.lm.registerLanguageModelChatProvider(EXTENSION_ID, provider);
 	context.subscriptions.push(providerDisposable);
 	logger.debug("Language model chat provider registered");

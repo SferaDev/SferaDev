@@ -226,7 +226,9 @@ async function enrichModelMetadata(
 - [x] (Phase 5) Add enrichment module with caching _(Implemented in `models/enrichment.ts`)_
 - [x] (Phase 5) Add `input_modalities` extraction _(Implemented)_
 - [x] (Phase 5) Add persistent caching via `globalState` _(Implemented)_
-- [ ] (Phase 5) Wire enricher into extension activation and provider flow
+- [x] (Phase 5) Wire enricher into extension activation and provider flow _(Implemented in `provider.ts`)_
+
+**Note:** See [RFC 008a](./008a-enrichment-capability-refinement.md) for using enrichment data to refine capabilities and token limits.
 
 ## Drawbacks
 

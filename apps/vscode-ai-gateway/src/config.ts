@@ -90,4 +90,8 @@ export class ConfigService implements vscode.Disposable {
 	get tokensCharsPerToken(): number | undefined {
 		return this.config.get("tokens.charsPerToken", undefined);
 	}
+
+	get modelsEnrichmentEnabled(): boolean {
+		return this.config.get("models.enrichmentEnabled", true);
+	}
 }
