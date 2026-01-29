@@ -2422,7 +2422,10 @@ import {
 	zeroTrustGatewayLocationsUpdateZeroTrustGatewayLocation,
 	zeroTrustGatewayLocationsZeroTrustGatewayLocationDetails,
 	zeroTrustGatewayPacfilesCreatePacfile,
+	zeroTrustGatewayPacfilesDelete,
+	zeroTrustGatewayPacfilesDetails,
 	zeroTrustGatewayPacfilesList,
+	zeroTrustGatewayPacfilesUpdate,
 	zeroTrustGatewayProxyEndpointsCreateProxyEndpoint,
 	zeroTrustGatewayProxyEndpointsDeleteProxyEndpoint,
 	zeroTrustGatewayProxyEndpointsListProxyEndpoints,
@@ -3837,6 +3840,9 @@ export const operationsByPath = {
 		zeroTrustAccountsUpdateLoggingSettingsForTheZeroTrustAccount,
 	"GET /accounts/{account_id}/gateway/pacfiles": zeroTrustGatewayPacfilesList,
 	"POST /accounts/{account_id}/gateway/pacfiles": zeroTrustGatewayPacfilesCreatePacfile,
+	"DELETE /accounts/{account_id}/gateway/pacfiles/{pacfile_id}": zeroTrustGatewayPacfilesDelete,
+	"GET /accounts/{account_id}/gateway/pacfiles/{pacfile_id}": zeroTrustGatewayPacfilesDetails,
+	"PUT /accounts/{account_id}/gateway/pacfiles/{pacfile_id}": zeroTrustGatewayPacfilesUpdate,
 	"GET /accounts/{account_id}/gateway/proxy_endpoints":
 		zeroTrustGatewayProxyEndpointsListProxyEndpoints,
 	"POST /accounts/{account_id}/gateway/proxy_endpoints":
