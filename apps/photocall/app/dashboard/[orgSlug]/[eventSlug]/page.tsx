@@ -1,5 +1,7 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import { useConvexAuth, useMutation, useQuery } from "convex/react";
 import {
 	Camera,

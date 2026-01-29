@@ -1,5 +1,7 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import { useMutation, useQuery } from "convex/react";
 import { ArrowLeft, Camera, Loader2, RefreshCw } from "lucide-react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";

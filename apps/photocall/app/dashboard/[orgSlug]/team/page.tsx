@@ -1,5 +1,7 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import { useConvexAuth, useMutation, useQuery } from "convex/react";
 import { ChevronLeft, Crown, Loader2, Mail, Plus, Shield, Trash2, User, X } from "lucide-react";
 import Link from "next/link";

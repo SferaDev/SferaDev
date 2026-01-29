@@ -1,5 +1,7 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import { useAction, useConvexAuth, useQuery } from "convex/react";
 import type { FunctionReference } from "convex/server";
 import {
