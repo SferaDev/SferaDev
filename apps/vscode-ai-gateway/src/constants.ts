@@ -14,6 +14,11 @@ export const DEFAULT_SYSTEM_PROMPT_MESSAGE =
 // Token estimation constants
 export const MESSAGE_OVERHEAD_TOKENS = 4;
 export const TOKEN_WARNING_THRESHOLD = 0.9;
+export const CORRECTION_FACTOR_MIN = 0.5;
+export const CORRECTION_FACTOR_MAX = 2.0;
+
+// Background enrichment
+export const ENRICHMENT_CONCURRENCY = 5;
 
 export const ERROR_MESSAGES = {
 	AUTH_FAILED: "Failed to authenticate with Vercel AI Gateway. Please try again.",

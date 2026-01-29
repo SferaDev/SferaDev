@@ -25,7 +25,10 @@ import {
 import { VERCEL_AI_AUTH_PROVIDER_ID } from "./auth";
 import { ConfigService } from "./config";
 import {
+	CORRECTION_FACTOR_MAX,
+	CORRECTION_FACTOR_MIN,
 	DEFAULT_SYSTEM_PROMPT_MESSAGE,
+	ENRICHMENT_CONCURRENCY,
 	ERROR_MESSAGES,
 	LAST_SELECTED_MODEL_KEY,
 	MESSAGE_OVERHEAD_TOKENS,
@@ -128,18 +131,27 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 		const modelsToEnrich = models.filter((model) => !this.enrichedModels.has(model.id));
 		if (modelsToEnrich.length === 0) return;
 
-		Promise.allSettled(
-			modelsToEnrich.map((model) => this.enrichModelIfNeeded(model.id, apiKey)),
-		).then((results) => {
-			const enrichedCount = results.filter(
-				(result) => result.status === "fulfilled" && result.value,
-			).length;
+		this.enrichModelsInBatches(modelsToEnrich, apiKey);
+	}
 
-			if (enrichedCount > 0) {
-				logger.debug(`Background enrichment completed for ${enrichedCount} models`);
-				this.modelInfoChangeEmitter.fire();
-			}
-		});
+	private async enrichModelsInBatches(
+		models: LanguageModelChatInformation[],
+		apiKey: string,
+	): Promise<void> {
+		let enrichedCount = 0;
+
+		for (let i = 0; i < models.length; i += ENRICHMENT_CONCURRENCY) {
+			const batch = models.slice(i, i + ENRICHMENT_CONCURRENCY);
+			const results = await Promise.allSettled(
+				batch.map((model) => this.enrichModelIfNeeded(model.id, apiKey)),
+			);
+			enrichedCount += results.filter((r) => r.status === "fulfilled" && r.value).length;
+		}
+
+		if (enrichedCount > 0) {
+			logger.debug(`Background enrichment completed for ${enrichedCount} models`);
+			this.modelInfoChangeEmitter.fire();
+		}
 	}
 
 	async provideLanguageModelChatResponse(
@@ -523,7 +535,11 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 
 		if (actualInputTokens !== undefined && this.lastEstimatedInputTokens > 0) {
 			const newFactor = actualInputTokens / this.lastEstimatedInputTokens;
-			this.correctionFactor = this.correctionFactor * 0.7 + newFactor * 0.3;
+			const smoothedFactor = this.correctionFactor * 0.7 + newFactor * 0.3;
+			this.correctionFactor = Math.max(
+				CORRECTION_FACTOR_MIN,
+				Math.min(CORRECTION_FACTOR_MAX, smoothedFactor),
+			);
 			logger.debug(`Correction factor: ${this.correctionFactor.toFixed(3)}`);
 		}
 	}

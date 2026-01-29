@@ -128,10 +128,6 @@ export class ModelEnricher {
 		}
 
 		logger.debug(`Enrichment cache miss for ${modelId}, fetching...`);
-		if (cached) {
-			this.cache.delete(modelId);
-		}
-
 		const parsed = extractCreatorAndModel(modelId);
 		if (!parsed) {
 			logger.warn(`Unable to extract creator/model from model id: ${modelId}`);
