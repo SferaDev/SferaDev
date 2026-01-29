@@ -1,33 +1,12 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-const hoisted = vi.hoisted(() => {
-	const mockGetConfiguration = vi.fn();
-
-	class MockEventEmitter {
-		private listeners: Set<(...args: unknown[]) => void> = new Set();
-		event = (listener: (...args: unknown[]) => void) => {
-			this.listeners.add(listener);
-			return { dispose: () => this.listeners.delete(listener) };
-		};
-		fire = (...args: unknown[]) => {
-			for (const listener of this.listeners) listener(...args);
-		};
-		dispose = () => {
-			this.listeners.clear();
-		};
-	}
-
-	return {
-		mockGetConfiguration,
-		MockEventEmitter,
-	};
-});
-
 vi.mock("vscode", () => ({
-	workspace: {
-		getConfiguration: hoisted.mockGetConfiguration,
+	workspace: { getConfiguration: vi.fn(() => ({ get: vi.fn((_, d) => d) })) },
+	EventEmitter: class {
+		event = vi.fn();
+		fire = vi.fn();
+		dispose = vi.fn();
 	},
-	EventEmitter: hoisted.MockEventEmitter,
 }));
 
 import { type Model, ModelsClient } from "./models";
@@ -37,18 +16,13 @@ describe("ModelsClient", () => {
 
 	beforeEach(() => {
 		originalFetch = globalThis.fetch;
-		vi.clearAllMocks();
-		hoisted.mockGetConfiguration.mockReturnValue({
-			get: vi.fn((_key: string, defaultValue: unknown) => defaultValue),
-		});
 	});
 
 	afterEach(() => {
 		globalThis.fetch = originalFetch;
-		vi.restoreAllMocks();
 	});
 
-	it("parses family/version and uses full context window", async () => {
+	it("parses models with correct family, version, and capabilities", async () => {
 		const models: Model[] = [
 			{
 				id: "openai:gpt-4o-2024-11-20",
@@ -56,191 +30,97 @@ describe("ModelsClient", () => {
 				created: 0,
 				owned_by: "openai",
 				name: "GPT-4o",
-				description: "Latest GPT-4o model",
+				description: "GPT-4o",
 				context_window: 128000,
 				max_tokens: 4096,
 				type: "chat",
-				tags: ["vision", "function_calling", "json_mode"],
-				pricing: {
-					input: "0",
-					output: "0",
-				},
+				tags: ["vision", "function_calling"],
+				pricing: { input: "0", output: "0" },
 			},
-		];
-
-		const mockFetch = vi.fn().mockResolvedValue({
-			ok: true,
-			json: async () => ({ data: models }),
-		});
-
-		globalThis.fetch = mockFetch as unknown as typeof fetch;
-
-		const client = new ModelsClient();
-		const result = await client.getModels("test-api-key");
-
-		expect(result).toHaveLength(1);
-		expect(result[0].family).toBe("gpt-4o");
-		expect(result[0].version).toBe("2024-11-20");
-		expect(result[0].maxInputTokens).toBe(128000);
-		expect(result[0].capabilities.imageInput).toBe(true);
-		expect(result[0].capabilities.toolCalling).toBe(true);
-	});
-
-	it("filters out non-chat models and keeps undefined types", async () => {
-		const models: Model[] = [
-			{
-				id: "openai:gpt-4o-2024-11-20",
-				object: "model",
-				created: 0,
-				owned_by: "openai",
-				name: "GPT-4o",
-				description: "Latest GPT-4o model",
-				context_window: 128000,
-				max_tokens: 4096,
-				type: "chat",
-				tags: [],
-				pricing: {
-					input: "0",
-					output: "0",
-				},
-			},
-			{
-				id: "openai:text-embedding-3-large",
-				object: "model",
-				created: 0,
-				owned_by: "openai",
-				name: "Embedding 3 Large",
-				description: "Embedding model",
-				context_window: 8192,
-				max_tokens: 2048,
-				type: "embedding",
-				tags: [],
-				pricing: {
-					input: "0",
-					output: "0",
-				},
-			},
-			{
-				id: "anthropic:claude-3-opus-20240229",
-				object: "model",
-				created: 0,
-				owned_by: "anthropic",
-				name: "Claude 3 Opus",
-				description: "Claude 3 Opus",
-				context_window: 200000,
-				max_tokens: 4096,
-				type: undefined as unknown as string,
-				tags: [],
-				pricing: {
-					input: "0",
-					output: "0",
-				},
-			},
-		];
-
-		const mockFetch = vi.fn().mockResolvedValue({
-			ok: true,
-			json: async () => ({ data: models }),
-		});
-
-		globalThis.fetch = mockFetch as unknown as typeof fetch;
-
-		const client = new ModelsClient();
-		const result = await client.getModels("test-api-key");
-
-		expect(result).toHaveLength(2);
-		expect(result.map((model) => model.id)).toEqual([
-			"openai:gpt-4o-2024-11-20",
-			"anthropic:claude-3-opus-20240229",
-		]);
-	});
-
-	it("detects reasoning and web-search capabilities from tags", async () => {
-		const models: Model[] = [
 			{
 				id: "openai:o3-mini",
 				object: "model",
 				created: 0,
 				owned_by: "openai",
 				name: "o3-mini",
-				description: "Reasoning model with web search",
+				description: "Reasoning",
 				context_window: 32768,
 				max_tokens: 4096,
 				type: "chat",
 				tags: ["o3", "web-search"],
-				pricing: {
-					input: "0",
-					output: "0",
-				},
+				pricing: { input: "0", output: "0" },
 			},
 		];
 
-		const mockFetch = vi.fn().mockResolvedValue({
+		globalThis.fetch = vi.fn().mockResolvedValue({
 			ok: true,
 			json: async () => ({ data: models }),
-		});
-
-		globalThis.fetch = mockFetch as unknown as typeof fetch;
+		}) as unknown as typeof fetch;
 
 		const client = new ModelsClient();
-		const result = await client.getModels("test-api-key");
-
-		expect(result).toHaveLength(1);
-		const capabilities = result[0].capabilities as Record<string, boolean>;
-		expect(capabilities.reasoning).toBe(true);
-		expect(capabilities.webSearch).toBe(true);
-	});
-
-	it("returns all models from the API", async () => {
-		const models: Model[] = [
-			{
-				id: "openai:gpt-4o-2024-11-20",
-				object: "model",
-				created: 0,
-				owned_by: "openai",
-				name: "GPT-4o",
-				description: "Latest GPT-4o model",
-				context_window: 128000,
-				max_tokens: 4096,
-				type: "chat",
-				tags: [],
-				pricing: {
-					input: "0",
-					output: "0",
-				},
-			},
-			{
-				id: "anthropic:claude-3-opus-20240229",
-				object: "model",
-				created: 0,
-				owned_by: "anthropic",
-				name: "Claude 3 Opus",
-				description: "Claude 3 Opus",
-				context_window: 200000,
-				max_tokens: 4096,
-				type: "chat",
-				tags: [],
-				pricing: {
-					input: "0",
-					output: "0",
-				},
-			},
-		];
-
-		const mockFetch = vi.fn().mockResolvedValue({
-			ok: true,
-			json: async () => ({ data: models }),
-		});
-
-		globalThis.fetch = mockFetch as unknown as typeof fetch;
-
-		const client = new ModelsClient();
-		const result = await client.getModels("test-api-key");
+		const result = await client.getModels("test-key");
 
 		expect(result).toHaveLength(2);
-		expect(result.map((model) => model.id)).toEqual([
-			"openai:gpt-4o-2024-11-20",
-			"anthropic:claude-3-opus-20240229",
-		]);
+		expect(result[0]).toMatchObject({
+			family: "gpt-4o",
+			version: "2024-11-20",
+			maxInputTokens: 128000,
+		});
+		expect(result[0].capabilities).toMatchObject({ imageInput: true, toolCalling: true });
+		expect(result[1].capabilities).toMatchObject({ reasoning: true, webSearch: true });
+	});
+
+	it("filters out non-chat models, keeps undefined type", async () => {
+		const models: Model[] = [
+			{
+				id: "a:chat",
+				object: "model",
+				created: 0,
+				owned_by: "a",
+				name: "Chat",
+				description: "",
+				context_window: 1000,
+				max_tokens: 100,
+				type: "chat",
+				tags: [],
+				pricing: { input: "0", output: "0" },
+			},
+			{
+				id: "b:embed",
+				object: "model",
+				created: 0,
+				owned_by: "b",
+				name: "Embed",
+				description: "",
+				context_window: 1000,
+				max_tokens: 100,
+				type: "embedding",
+				tags: [],
+				pricing: { input: "0", output: "0" },
+			},
+			{
+				id: "c:undef",
+				object: "model",
+				created: 0,
+				owned_by: "c",
+				name: "Undef",
+				description: "",
+				context_window: 1000,
+				max_tokens: 100,
+				type: undefined as unknown as string,
+				tags: [],
+				pricing: { input: "0", output: "0" },
+			},
+		];
+
+		globalThis.fetch = vi.fn().mockResolvedValue({
+			ok: true,
+			json: async () => ({ data: models }),
+		}) as unknown as typeof fetch;
+
+		const client = new ModelsClient();
+		const result = await client.getModels("test-key");
+
+		expect(result.map((m) => m.id)).toEqual(["a:chat", "c:undef"]);
 	});
 });

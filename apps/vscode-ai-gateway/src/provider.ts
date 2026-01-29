@@ -4,7 +4,6 @@ import * as vscode from "vscode";
 import {
 	authentication,
 	type CancellationToken,
-	type ExtensionContext,
 	type LanguageModelChatInformation,
 	type LanguageModelChatMessage,
 	LanguageModelChatMessageRole,
@@ -37,10 +36,6 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider, vsc
 	private modelsClient = new ModelsClient();
 	private readonly modelInfoChangeEmitter = new vscode.EventEmitter<void>();
 	readonly onDidChangeLanguageModelChatInformation = this.modelInfoChangeEmitter.event;
-
-	constructor(_context: ExtensionContext) {
-		// Context reserved for future use
-	}
 
 	dispose(): void {
 		this.modelInfoChangeEmitter.dispose();
@@ -380,6 +375,9 @@ export function convertSingleMessage(
 			const texts = extractToolResultTexts(part);
 			if (texts.length > 0) {
 				const toolName = toolNameMap[part.callId] || "unknown_tool";
+				if (toolName === "unknown_tool") {
+					logger.warn(`Tool result references unknown callId: ${part.callId}`);
+				}
 				results.push({
 					role: "tool",
 					content: [

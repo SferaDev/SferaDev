@@ -13,7 +13,7 @@ export function activate(context: vscode.ExtensionContext) {
 	const authProvider = new VercelAIAuthenticationProvider(context);
 	context.subscriptions.push(authProvider);
 
-	const provider = new VercelAIChatModelProvider(context);
+	const provider = new VercelAIChatModelProvider();
 	context.subscriptions.push(provider);
 	const providerDisposable = vscode.lm.registerLanguageModelChatProvider(EXTENSION_ID, provider);
 	context.subscriptions.push(providerDisposable);

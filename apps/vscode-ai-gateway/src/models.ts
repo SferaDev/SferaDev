@@ -4,6 +4,22 @@ import { DEFAULT_BASE_URL, MODELS_CACHE_TTL_MS, MODELS_ENDPOINT } from "./consta
 import { logger } from "./logger";
 import { parseModelIdentity } from "./models/identity";
 
+// Capability detection tag sets (module-level for performance)
+const IMAGE_INPUT_TAGS = new Set(["vision", "image", "image-input", "file-input", "multimodal"]);
+const TOOL_CALLING_TAGS = new Set([
+	"tool-use",
+	"tool_use",
+	"tool-calling",
+	"function_calling",
+	"function-calling",
+	"function_call",
+	"tools",
+	"json_mode",
+	"json-mode",
+]);
+const REASONING_TAGS = new Set(["reasoning", "o1", "o3", "extended-thinking", "extended_thinking"]);
+const WEB_SEARCH_TAGS = new Set(["web-search", "web_search", "search", "grounding"]);
+
 export interface Model {
 	id: string;
 	object: string;
@@ -76,27 +92,6 @@ export class ModelsClient {
 	}
 
 	private transformToVSCodeModels(data: Model[]): LanguageModelChatInformation[] {
-		const imageInputTags = new Set(["vision", "image", "image-input", "file-input", "multimodal"]);
-		const toolCallingTags = new Set([
-			"tool-use",
-			"tool_use",
-			"tool-calling",
-			"function_calling",
-			"function-calling",
-			"function_call",
-			"tools",
-			"json_mode",
-			"json-mode",
-		]);
-		const reasoningTags = new Set([
-			"reasoning",
-			"o1",
-			"o3",
-			"extended-thinking",
-			"extended_thinking",
-		]);
-		const webSearchTags = new Set(["web-search", "web_search", "search", "grounding"]);
-
 		return data
 			.filter(
 				(model) => model.type === "chat" || model.type === "language" || model.type === undefined,
@@ -104,10 +99,10 @@ export class ModelsClient {
 			.map((model) => {
 				const identity = parseModelIdentity(model.id);
 				const tags = (model.tags ?? []).map((tag) => tag.toLowerCase());
-				const hasImageInput = tags.some((tag) => imageInputTags.has(tag));
-				const hasToolCalling = tags.some((tag) => toolCallingTags.has(tag));
-				const hasReasoning = tags.some((tag) => reasoningTags.has(tag));
-				const hasWebSearch = tags.some((tag) => webSearchTags.has(tag));
+				const hasImageInput = tags.some((tag) => IMAGE_INPUT_TAGS.has(tag));
+				const hasToolCalling = tags.some((tag) => TOOL_CALLING_TAGS.has(tag));
+				const hasReasoning = tags.some((tag) => REASONING_TAGS.has(tag));
+				const hasWebSearch = tags.some((tag) => WEB_SEARCH_TAGS.has(tag));
 
 				return {
 					id: model.id,
