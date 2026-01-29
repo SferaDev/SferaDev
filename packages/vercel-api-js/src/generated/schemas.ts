@@ -682,8 +682,12 @@ export const userEventSchema = z
 						id: z.string(),
 						name: z.optional(z.string()),
 					}),
-					nextRole: z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_VIEWER"]).nullish(),
-					previousRole: z.optional(z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_VIEWER"])),
+					nextRole: z
+						.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_VIEWER", "PROJECT_GUEST"])
+						.nullish(),
+					previousRole: z.optional(
+						z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_VIEWER", "PROJECT_GUEST"]),
+					),
 				}),
 				z.object({
 					previous: z.optional(
@@ -2899,8 +2903,8 @@ export const userEventSchema = z
 					gitLFS: z.union([z.literal(false), z.literal(true)]),
 				}),
 				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
+					projectId: z.optional(z.string()),
+					projectName: z.optional(z.string()),
 					ssoProtection: z.nullable(
 						z.union([
 							z.object({
@@ -2955,8 +2959,8 @@ export const userEventSchema = z
 					),
 				}),
 				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
+					projectId: z.optional(z.string()),
+					projectName: z.optional(z.string()),
 					passwordProtection: z.nullable(
 						z.union([
 							z.object({
@@ -3138,9 +3142,11 @@ export const userEventSchema = z
 					}),
 				}),
 				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
 					next: z.object({
 						project: z.object({
-							id: z.string(),
+							id: z.optional(z.string()),
 							staticIps: z.object({
 								builds: z.optional(z.union([z.literal(false), z.literal(true)])),
 								enabled: z.union([z.literal(false), z.literal(true)]),
@@ -3150,7 +3156,7 @@ export const userEventSchema = z
 					}),
 					previous: z.object({
 						project: z.object({
-							id: z.string(),
+							id: z.optional(z.string()),
 							staticIps: z.object({
 								builds: z.optional(z.union([z.literal(false), z.literal(true)])),
 								enabled: z.union([z.literal(false), z.literal(true)]),
@@ -3351,8 +3357,8 @@ export const userEventSchema = z
 					publicSource: z.union([z.literal(false), z.literal(true)]),
 				}),
 				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
+					projectId: z.optional(z.string()),
+					projectName: z.optional(z.string()),
 					previous: z.object({
 						expiration: z.optional(z.string()),
 						expirationProduction: z.optional(z.string()),
@@ -3832,7 +3838,7 @@ export const userEventSchema = z
 					}),
 					projectMembership: z.nullable(
 						z.object({
-							role: z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_VIEWER"]),
+							role: z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_VIEWER", "PROJECT_GUEST"]),
 							uid: z.string(),
 							createdAt: z.number(),
 							username: z.optional(z.string()),
@@ -3845,7 +3851,7 @@ export const userEventSchema = z
 						id: z.optional(z.string()),
 					}),
 					removedMembership: z.object({
-						role: z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_VIEWER"]),
+						role: z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_VIEWER", "PROJECT_GUEST"]),
 						uid: z.string(),
 						createdAt: z.number(),
 						username: z.optional(z.string()),
@@ -3857,17 +3863,21 @@ export const userEventSchema = z
 						name: z.string(),
 					}),
 					projectMembership: z.object({
-						role: z.optional(z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_VIEWER"])),
+						role: z.optional(
+							z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_VIEWER", "PROJECT_GUEST"]),
+						),
 						uid: z.optional(z.string()),
 						createdAt: z.optional(z.number()),
 						username: z.optional(z.string()),
-						previousRole: z.optional(z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_VIEWER"])),
+						previousRole: z.optional(
+							z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_VIEWER", "PROJECT_GUEST"]),
+						),
 					}),
 				}),
 				z.object({
 					project: z.object({
 						name: z.string(),
-						role: z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_VIEWER"]),
+						role: z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_VIEWER", "PROJECT_GUEST"]),
 						invitedUserName: z.string(),
 						id: z.optional(z.string()),
 						invitedUserId: z.optional(z.string()),
@@ -4373,6 +4383,136 @@ export const userEventSchema = z
 				z.object({
 					id: z.string(),
 					url: z.string(),
+				}),
+				z.object({
+					enabled: z.enum(["default", "on", "off"]),
+				}),
+				z.object({
+					enabled: z.union([z.literal(false), z.literal(true)]),
+					scope: z.enum(["dashboard", "log-drains"]),
+				}),
+				z.object({
+					previous: z.optional(
+						z.object({}).catchall(
+							z.union([
+								z.object({
+									accessGroupId: z.string(),
+								}),
+								z.enum([
+									"OWNER",
+									"MEMBER",
+									"DEVELOPER",
+									"SECURITY",
+									"BILLING",
+									"VIEWER",
+									"VIEWER_FOR_PLUS",
+									"CONTRIBUTOR",
+								]),
+							]),
+						),
+					),
+					next: z.optional(
+						z.object({}).catchall(
+							z.union([
+								z.object({
+									accessGroupId: z.string(),
+								}),
+								z.enum([
+									"OWNER",
+									"MEMBER",
+									"DEVELOPER",
+									"SECURITY",
+									"BILLING",
+									"VIEWER",
+									"VIEWER_FOR_PLUS",
+									"CONTRIBUTOR",
+								]),
+							]),
+						),
+					),
+				}),
+				z.object({
+					domain: z.string(),
+					ips: z.array(z.string()),
+				}),
+				z.object({
+					exportId: z.string(),
+					from: z.number(),
+					to: z.number(),
+					format: z.string(),
+				}),
+				z.object({
+					fileId: z.string(),
+				}),
+				z.object({
+					ruleName: z.string(),
+				}),
+				z.object({
+					projectId: z.optional(z.string()),
+					projectName: z.optional(z.string()),
+					analyticsId: z.optional(z.string()),
+					sampleRatePercent: z.nullable(z.number()),
+					spendLimitInDollars: z.nullable(z.number()),
+					previous: z.object({
+						sampleRatePercent: z.nullable(z.number()),
+						spendLimitInDollars: z.nullable(z.number()),
+					}),
+				}),
+				z.object({
+					ownerId: z.string(),
+					source: z.string(),
+					cause: z.string(),
+					blockReason: z.optional(z.string()),
+					siftRoute: z.optional(
+						z.object({
+							name: z.string(),
+						}),
+					),
+				}),
+				z.object({
+					ownerId: z.string(),
+					source: z.string(),
+					cause: z.string(),
+					reason: z.string().nullish(),
+				}),
+				z.object({
+					ownerId: z.string(),
+					source: z.string(),
+					cause: z.string(),
+					blockReason: z.optional(z.string()),
+				}),
+				z.object({
+					ownerId: z.string(),
+					source: z.string(),
+					cause: z.string(),
+				}),
+				z.object({
+					edgeConfigId: z.string(),
+					edgeConfigSlug: z.string(),
+					edgeConfigSchema: z.optional(z.object({})),
+				}),
+				z.object({
+					edgeConfigId: z.string(),
+					edgeConfigSlug: z.string(),
+					edgeConfigDigest: z.optional(z.string()),
+				}),
+				z.object({
+					edgeConfig: z.object({
+						id: z.string(),
+						slug: z.string(),
+					}),
+					fromAccount: z.object({
+						id: z.string(),
+						type: z.enum(["team", "user"]),
+						slug: z.optional(z.string()),
+						username: z.optional(z.string()),
+					}),
+					toAccount: z.object({
+						id: z.string(),
+						type: z.enum(["team", "user"]),
+						slug: z.optional(z.string()),
+						username: z.optional(z.string()),
+					}),
 				}),
 				z.object({
 					grantType: z.enum(["authorization_code", "urn:ietf:params:oauth:grant-type:device_code"]),

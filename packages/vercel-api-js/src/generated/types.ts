@@ -1352,6 +1352,7 @@ export const payloadNextRoleEnum = {
 	ADMIN: "ADMIN",
 	PROJECT_DEVELOPER: "PROJECT_DEVELOPER",
 	PROJECT_VIEWER: "PROJECT_VIEWER",
+	PROJECT_GUEST: "PROJECT_GUEST",
 } as const;
 
 export type PayloadNextRoleEnumKey = (typeof payloadNextRoleEnum)[keyof typeof payloadNextRoleEnum];
@@ -1360,6 +1361,7 @@ export const payloadPreviousRoleEnum = {
 	ADMIN: "ADMIN",
 	PROJECT_DEVELOPER: "PROJECT_DEVELOPER",
 	PROJECT_VIEWER: "PROJECT_VIEWER",
+	PROJECT_GUEST: "PROJECT_GUEST",
 } as const;
 
 export type PayloadPreviousRoleEnumKey =
@@ -3100,6 +3102,7 @@ export const projectMembershipRoleEnum = {
 	ADMIN: "ADMIN",
 	PROJECT_DEVELOPER: "PROJECT_DEVELOPER",
 	PROJECT_VIEWER: "PROJECT_VIEWER",
+	PROJECT_GUEST: "PROJECT_GUEST",
 } as const;
 
 export type ProjectMembershipRoleEnumKey =
@@ -3109,6 +3112,7 @@ export const removedMembershipRoleEnum = {
 	ADMIN: "ADMIN",
 	PROJECT_DEVELOPER: "PROJECT_DEVELOPER",
 	PROJECT_VIEWER: "PROJECT_VIEWER",
+	PROJECT_GUEST: "PROJECT_GUEST",
 } as const;
 
 export type RemovedMembershipRoleEnumKey =
@@ -3118,6 +3122,7 @@ export const projectMembershipPreviousRoleEnum = {
 	ADMIN: "ADMIN",
 	PROJECT_DEVELOPER: "PROJECT_DEVELOPER",
 	PROJECT_VIEWER: "PROJECT_VIEWER",
+	PROJECT_GUEST: "PROJECT_GUEST",
 } as const;
 
 export type ProjectMembershipPreviousRoleEnumKey =
@@ -3127,6 +3132,7 @@ export const projectRoleEnum = {
 	ADMIN: "ADMIN",
 	PROJECT_DEVELOPER: "PROJECT_DEVELOPER",
 	PROJECT_VIEWER: "PROJECT_VIEWER",
+	PROJECT_GUEST: "PROJECT_GUEST",
 } as const;
 
 export type ProjectRoleEnumKey = (typeof projectRoleEnum)[keyof typeof projectRoleEnum];
@@ -3335,6 +3341,61 @@ export const afterPermissionsEnum = {
 
 export type AfterPermissionsEnumKey =
 	(typeof afterPermissionsEnum)[keyof typeof afterPermissionsEnum];
+
+export const payloadEnabledEnum4 = {
+	default: "default",
+	on: "on",
+	off: "off",
+} as const;
+
+export type PayloadEnabledEnum4Key = (typeof payloadEnabledEnum4)[keyof typeof payloadEnabledEnum4];
+
+export const payloadScopeEnum = {
+	dashboard: "dashboard",
+	"log-drains": "log-drains",
+} as const;
+
+export type PayloadScopeEnumKey = (typeof payloadScopeEnum)[keyof typeof payloadScopeEnum];
+
+export const previousEnum = {
+	OWNER: "OWNER",
+	MEMBER: "MEMBER",
+	DEVELOPER: "DEVELOPER",
+	SECURITY: "SECURITY",
+	BILLING: "BILLING",
+	VIEWER: "VIEWER",
+	VIEWER_FOR_PLUS: "VIEWER_FOR_PLUS",
+	CONTRIBUTOR: "CONTRIBUTOR",
+} as const;
+
+export type PreviousEnumKey = (typeof previousEnum)[keyof typeof previousEnum];
+
+export const nextEnum = {
+	OWNER: "OWNER",
+	MEMBER: "MEMBER",
+	DEVELOPER: "DEVELOPER",
+	SECURITY: "SECURITY",
+	BILLING: "BILLING",
+	VIEWER: "VIEWER",
+	VIEWER_FOR_PLUS: "VIEWER_FOR_PLUS",
+	CONTRIBUTOR: "CONTRIBUTOR",
+} as const;
+
+export type NextEnumKey = (typeof nextEnum)[keyof typeof nextEnum];
+
+export const fromAccountTypeEnum = {
+	team: "team",
+	user: "user",
+} as const;
+
+export type FromAccountTypeEnumKey = (typeof fromAccountTypeEnum)[keyof typeof fromAccountTypeEnum];
+
+export const toAccountTypeEnum = {
+	team: "team",
+	user: "user",
+} as const;
+
+export type ToAccountTypeEnumKey = (typeof toAccountTypeEnum)[keyof typeof toAccountTypeEnum];
 
 export const payloadGrantTypeEnum = {
 	authorization_code: "authorization_code",
@@ -8245,13 +8306,13 @@ export type UserEvent = {
 				  }
 				| {
 						/**
-						 * @type string
+						 * @type string | undefined
 						 */
-						projectId: string;
+						projectId?: string | undefined;
 						/**
-						 * @type string
+						 * @type string | undefined
 						 */
-						projectName: string;
+						projectName?: string | undefined;
 						ssoProtection:
 							| (
 									| {
@@ -8289,13 +8350,13 @@ export type UserEvent = {
 				  }
 				| {
 						/**
-						 * @type string
+						 * @type string | undefined
 						 */
-						projectId: string;
+						projectId?: string | undefined;
 						/**
-						 * @type string
+						 * @type string | undefined
 						 */
-						projectName: string;
+						projectName?: string | undefined;
 						passwordProtection:
 							| (
 									| {
@@ -8647,6 +8708,14 @@ export type UserEvent = {
 				  }
 				| {
 						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
 						 * @type object
 						 */
 						next: {
@@ -8655,9 +8724,9 @@ export type UserEvent = {
 							 */
 							project: {
 								/**
-								 * @type string
+								 * @type string | undefined
 								 */
-								id: string;
+								id?: string | undefined;
 								/**
 								 * @type object
 								 */
@@ -8686,9 +8755,9 @@ export type UserEvent = {
 							 */
 							project: {
 								/**
-								 * @type string
+								 * @type string | undefined
 								 */
-								id: string;
+								id?: string | undefined;
 								/**
 								 * @type object
 								 */
@@ -9231,13 +9300,13 @@ export type UserEvent = {
 				  }
 				| {
 						/**
-						 * @type string
+						 * @type string | undefined
 						 */
-						projectId: string;
+						projectId?: string | undefined;
 						/**
-						 * @type string
+						 * @type string | undefined
 						 */
-						projectName: string;
+						projectName?: string | undefined;
 						/**
 						 * @type object
 						 */
@@ -11334,6 +11403,293 @@ export type UserEvent = {
 						 * @type string
 						 */
 						url: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						enabled: PayloadEnabledEnum4Key;
+				  }
+				| {
+						/**
+						 * @type boolean
+						 */
+						enabled: PayloadEnabledEnumKey;
+						/**
+						 * @type string
+						 */
+						scope: PayloadScopeEnumKey;
+				  }
+				| {
+						/**
+						 * @type object | undefined
+						 */
+						previous?:
+							| {
+									[key: string]:
+										| {
+												/**
+												 * @type string
+												 */
+												accessGroupId: string;
+										  }
+										| PreviousEnumKey;
+							  }
+							| undefined;
+						/**
+						 * @type object | undefined
+						 */
+						next?:
+							| {
+									[key: string]:
+										| {
+												/**
+												 * @type string
+												 */
+												accessGroupId: string;
+										  }
+										| NextEnumKey;
+							  }
+							| undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						domain: string;
+						/**
+						 * @type array
+						 */
+						ips: string[];
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						exportId: string;
+						/**
+						 * @type number
+						 */
+						from: number;
+						/**
+						 * @type number
+						 */
+						to: number;
+						/**
+						 * @type string
+						 */
+						format: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						fileId: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						ruleName: string;
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						projectId?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						projectName?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						analyticsId?: string | undefined;
+						/**
+						 * @type number
+						 */
+						sampleRatePercent: number | null;
+						/**
+						 * @type number
+						 */
+						spendLimitInDollars: number | null;
+						/**
+						 * @type object
+						 */
+						previous: {
+							/**
+							 * @type number
+							 */
+							sampleRatePercent: number | null;
+							/**
+							 * @type number
+							 */
+							spendLimitInDollars: number | null;
+						};
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						ownerId: string;
+						/**
+						 * @type string
+						 */
+						source: string;
+						/**
+						 * @type string
+						 */
+						cause: string;
+						/**
+						 * @type string | undefined
+						 */
+						blockReason?: string | undefined;
+						/**
+						 * @type object | undefined
+						 */
+						siftRoute?:
+							| {
+									/**
+									 * @type string
+									 */
+									name: string;
+							  }
+							| undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						ownerId: string;
+						/**
+						 * @type string
+						 */
+						source: string;
+						/**
+						 * @type string
+						 */
+						cause: string;
+						/**
+						 * @type string
+						 */
+						reason?: (string | null) | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						ownerId: string;
+						/**
+						 * @type string
+						 */
+						source: string;
+						/**
+						 * @type string
+						 */
+						cause: string;
+						/**
+						 * @type string | undefined
+						 */
+						blockReason?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						ownerId: string;
+						/**
+						 * @type string
+						 */
+						source: string;
+						/**
+						 * @type string
+						 */
+						cause: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						edgeConfigId: string;
+						/**
+						 * @type string
+						 */
+						edgeConfigSlug: string;
+						/**
+						 * @type object | undefined
+						 */
+						edgeConfigSchema?: object | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						edgeConfigId: string;
+						/**
+						 * @type string
+						 */
+						edgeConfigSlug: string;
+						/**
+						 * @type string | undefined
+						 */
+						edgeConfigDigest?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type object
+						 */
+						edgeConfig: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string
+							 */
+							slug: string;
+						};
+						/**
+						 * @type object
+						 */
+						fromAccount: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string
+							 */
+							type: FromAccountTypeEnumKey;
+							/**
+							 * @type string | undefined
+							 */
+							slug?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							username?: string | undefined;
+						};
+						/**
+						 * @type object
+						 */
+						toAccount: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string
+							 */
+							type: ToAccountTypeEnumKey;
+							/**
+							 * @type string | undefined
+							 */
+							slug?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							username?: string | undefined;
+						};
 				  }
 				| {
 						/**
