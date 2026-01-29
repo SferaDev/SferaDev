@@ -46,7 +46,7 @@ describe("ModelsClient", () => {
 		originalFetch = globalThis.fetch;
 		vi.clearAllMocks();
 		hoisted.mockGetConfiguration.mockReturnValue({
-			get: vi.fn((key: string, defaultValue: unknown) => defaultValue),
+			get: vi.fn((_key: string, defaultValue: unknown) => defaultValue),
 		});
 	});
 

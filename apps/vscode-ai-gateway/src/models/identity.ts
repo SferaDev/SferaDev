@@ -66,34 +66,6 @@ export function parseModelIdentity(modelId: string): ParsedModelIdentity {
 }
 
 /**
- * Extracts the model family from a model ID.
- *
- * @param modelId - The full model ID
- * @returns The family portion of the model ID
- *
- * @example
- * parseModelFamily("openai:gpt-4o-2024-11-20") // => "gpt-4o"
- * parseModelFamily("google:gemini-2.0-flash") // => "gemini-2.0-flash"
- */
-export function parseModelFamily(modelId: string): string {
-	return parseModelIdentity(modelId).family;
-}
-
-/**
- * Extracts the version from a model ID.
- *
- * @param modelId - The full model ID
- * @returns The version portion, or "latest" if no version is found
- *
- * @example
- * parseModelVersion("openai:gpt-4o-2024-11-20") // => "2024-11-20"
- * parseModelVersion("google:gemini-2.0-flash") // => "latest"
- */
-export function parseModelVersion(modelId: string): string {
-	return parseModelIdentity(modelId).version;
-}
-
-/**
  * Extracts family and version from the model part (after the provider colon).
  */
 function extractFamilyAndVersion(modelPart: string): {

@@ -292,6 +292,14 @@ export class Logger {
 	}
 
 	/**
+	 * Set a custom file path for logging (used for per-chat logs).
+	 * @param path - The file name to use within the log directory
+	 */
+	setFileLoggingPath(path: string): void {
+		this.fileLoggingOverridePath = path;
+	}
+
+	/**
 	 * Create a per-chat logger for debugging individual conversations.
 	 * Useful for diagnosing issues in specific chats.
 	 */
@@ -485,10 +493,10 @@ export function extractTokenCountFromError(error: unknown): ExtractedTokenInfo |
 	if (match) {
 		const actualTokens = parseInt(match[1], 10);
 		const maxTokens = parseInt(match[2], 10);
-		if (!isNaN(actualTokens) && actualTokens > 0) {
+		if (!Number.isNaN(actualTokens) && actualTokens > 0) {
 			return {
 				actualTokens,
-				maxTokens: !isNaN(maxTokens) ? maxTokens : undefined,
+				maxTokens: !Number.isNaN(maxTokens) ? maxTokens : undefined,
 			};
 		}
 	}
@@ -499,7 +507,7 @@ export function extractTokenCountFromError(error: unknown): ExtractedTokenInfo |
 	if (exceedsMatch) {
 		const maxTokens = parseInt(exceedsMatch[1], 10);
 		// We don't know the actual count, but we know the max
-		if (!isNaN(maxTokens)) {
+		if (!Number.isNaN(maxTokens)) {
 			return { actualTokens: maxTokens + 1, maxTokens };
 		}
 	}

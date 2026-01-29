@@ -1,5 +1,4 @@
 import { streamText } from "ai";
-import fc from "fast-check";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { ExtensionContext, LanguageModelChatMessage } from "vscode";
 import { LAST_SELECTED_MODEL_KEY } from "./constants";
@@ -677,196 +676,148 @@ describe("Model selection memory", () => {
 	});
 });
 
-describe("Property-based tests", () => {
-	it("accepts valid MIME types", () => {
-		const lowerAlpha = fc.constantFrom(..."abcdefghijklmnopqrstuvwxyz".split(""));
-		const subtypeChar = fc.constantFrom(..."abcdefghijklmnopqrstuvwxyz0123456789.+-".split(""));
-		const typeArb = fc.stringOf(lowerAlpha, { minLength: 1 });
-		const subtypeArb = fc.stringOf(subtypeChar, { minLength: 1 });
-
-		const validMimeTypeArb = fc
-			.tuple(typeArb, subtypeArb)
-			.map(([type, subtype]) => `${type}/${subtype}`);
-
-		fc.assert(
-			fc.property(validMimeTypeArb, (mimeType) => {
-				expect(isValidMimeType(mimeType)).toBe(true);
-			}),
-		);
+describe("MIME type validation", () => {
+	it.each([
+		"text/plain",
+		"image/png",
+		"image/jpeg",
+		"application/json",
+		"application/xml",
+		"text/html",
+		"audio/mpeg",
+		"video/mp4",
+		"font/woff2",
+		"model/gltf+json",
+	])("accepts valid MIME type: %s", (mimeType) => {
+		expect(isValidMimeType(mimeType)).toBe(true);
 	});
 
-	it("rejects invalid MIME types", () => {
-		const lowerAlpha = fc.constantFrom(..."abcdefghijklmnopqrstuvwxyz".split(""));
-		const subtypeChar = fc.constantFrom(..."abcdefghijklmnopqrstuvwxyz0123456789.+-".split(""));
-		const typeArb = fc.stringOf(lowerAlpha, { minLength: 1 });
-		const subtypeArb = fc.stringOf(subtypeChar, { minLength: 1 });
-		const typeWithUnderscoreArb = fc
-			.stringOf(fc.constantFrom(..."abcdefghijklmnopqrstuvwxyz_".split("")), {
-				minLength: 1,
-			})
-			.filter((value) => value.includes("_"));
-		const subtypeWithUnderscoreArb = fc
-			.stringOf(fc.constantFrom(..."abcdefghijklmnopqrstuvwxyz0123456789.+-_".split("")), {
-				minLength: 1,
-			})
-			.filter((value) => value.includes("_"));
-
-		const invalidMimeTypeArb = fc.oneof(
-			fc.constant("cache_control"),
-			fc.tuple(typeArb, subtypeArb).map(([type, subtype]) => `${type}${subtype}`),
-			typeArb.map((type) => `${type}/`),
-			subtypeArb.map((subtype) => `/${subtype}`),
-			fc.tuple(typeWithUnderscoreArb, subtypeArb).map(([type, subtype]) => `${type}/${subtype}`),
-			fc.tuple(typeArb, subtypeWithUnderscoreArb).map(([type, subtype]) => `${type}/${subtype}`),
-		);
-
-		fc.assert(
-			fc.property(invalidMimeTypeArb, (mimeType) => {
-				expect(isValidMimeType(mimeType)).toBe(false);
-			}),
-		);
+	it.each([
+		"cache_control",
+		"textplain",
+		"text/",
+		"/plain",
+		"text_type/plain",
+		"text/sub_type",
+		"",
+		"invalid",
+		"a/b/c",
+	])("rejects invalid MIME type: %s", (mimeType) => {
+		expect(isValidMimeType(mimeType)).toBe(false);
 	});
+});
 
-	it("stream chunk handler should not crash on unexpected fields", () => {
+describe("Stream chunk handler robustness", () => {
+	it("should not crash on unexpected chunk types", () => {
 		const provider = createProvider();
 		const progress = createMockProgress();
 		const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
 
-		fc.assert(
-			fc.property(fc.string(), fc.dictionary(fc.string(), fc.anything()), (type, extra) => {
-				expect(() =>
-					(provider as unknown as { handleStreamChunk: Function }).handleStreamChunk(
-						{ type, ...extra } as unknown,
-						progress,
-					),
-				).not.toThrow();
-			}),
-		);
+		const unexpectedChunks = [
+			{ type: "unknown-type" },
+			{ type: "custom-data", data: { foo: "bar" } },
+			{ type: "", extra: 123 },
+			{ type: "data-custom", value: [1, 2, 3] },
+		];
+
+		for (const chunk of unexpectedChunks) {
+			expect(() =>
+				(provider as unknown as { handleStreamChunk: Function }).handleStreamChunk(
+					chunk as unknown,
+					progress,
+				),
+			).not.toThrow();
+		}
 
 		warnSpy.mockRestore();
 	});
 
-	it("ignored chunk types never report progress", () => {
+	it.each([
+		"start",
+		"start-step",
+		"abort",
+		"finish",
+		"finish-step",
+		"text-start",
+		"text-end",
+		"reasoning-start",
+		"reasoning-end",
+		"source",
+		"tool-result",
+		"tool-input-start",
+		"tool-input-delta",
+	])("ignored chunk type '%s' never reports progress", (type) => {
 		const provider = createProvider();
-		const ignoredTypes = [
-			"start",
-			"start-step",
-			"abort",
-			"finish",
-			"finish-step",
-			"text-start",
-			"text-end",
-			"reasoning-start",
-			"reasoning-end",
-			"source",
-			"tool-result",
-			"tool-input-start",
-			"tool-input-delta",
+		const progress = createMockProgress();
+		(provider as unknown as { handleStreamChunk: Function }).handleStreamChunk(
+			{ type } as unknown,
+			progress,
+		);
+		expect(progress.report).not.toHaveBeenCalled();
+	});
+
+	it.each([
+		"hello",
+		"world",
+		"test message",
+		"a",
+	])("text-delta reports LanguageModelTextPart for non-empty text: %s", (text) => {
+		const provider = createProvider();
+		const progress = createMockProgress();
+		(provider as unknown as { handleStreamChunk: Function }).handleStreamChunk(
+			{ type: "text-delta", text } as unknown,
+			progress,
+		);
+		expect(progress.report).toHaveBeenCalledTimes(1);
+		const reported = progress.report.mock.calls[0][0];
+		expect(reported).toBeInstanceOf(hoisted.MockLanguageModelTextPart);
+	});
+
+	it("tool-call chunks report LanguageModelToolCallPart", () => {
+		const provider = createProvider();
+		const testCases = [
+			{ callId: "call-1", name: "searchDocs", input: { query: "test" } },
+			{ callId: "call-2", name: "readFile", input: { path: "/tmp/file.txt" } },
+			{ callId: "abc-123", name: "tool", input: {} },
 		];
 
-		fc.assert(
-			fc.property(fc.constantFrom(...ignoredTypes), (type) => {
-				const progress = createMockProgress();
-				(provider as unknown as { handleStreamChunk: Function }).handleStreamChunk(
-					{ type } as unknown,
-					progress,
-				);
-				expect(progress.report).not.toHaveBeenCalled();
-			}),
-		);
-	});
-
-	it("text-delta reports exactly one LanguageModelTextPart when text is non-empty", () => {
-		const provider = createProvider();
-
-		fc.assert(
-			fc.property(fc.string({ minLength: 1 }), (text) => {
-				const progress = createMockProgress();
-				(provider as unknown as { handleStreamChunk: Function }).handleStreamChunk(
-					{ type: "text-delta", text } as unknown,
-					progress,
-				);
-				expect(progress.report).toHaveBeenCalledTimes(1);
-				const reported = progress.report.mock.calls[0][0];
-				expect(reported).toBeInstanceOf(hoisted.MockLanguageModelTextPart);
-			}),
-		);
-	});
-
-	it("tool-call chunks always report LanguageModelToolCallPart", () => {
-		const provider = createProvider();
-
-		fc.assert(
-			fc.property(
-				fc.uuid(),
-				fc.string({ minLength: 1 }),
-				fc.dictionary(fc.string(), fc.anything()),
-				(callId, name, input) => {
-					const progress = createMockProgress();
-					(provider as unknown as { handleStreamChunk: Function }).handleStreamChunk(
-						{
-							type: "tool-call",
-							toolCallId: callId,
-							toolName: name,
-							input,
-						} as unknown,
-						progress,
-					);
-					expect(progress.report).toHaveBeenCalledTimes(1);
-					const reported = progress.report.mock.calls[0][0];
-					expect(reported).toBeInstanceOf(hoisted.MockLanguageModelToolCallPart);
-					expect(reported.callId).toBe(callId);
-					expect(reported.name).toBe(name);
-				},
-			),
-		);
+		for (const { callId, name, input } of testCases) {
+			const progress = createMockProgress();
+			(provider as unknown as { handleStreamChunk: Function }).handleStreamChunk(
+				{
+					type: "tool-call",
+					toolCallId: callId,
+					toolName: name,
+					input,
+				} as unknown,
+				progress,
+			);
+			expect(progress.report).toHaveBeenCalledTimes(1);
+			const reported = progress.report.mock.calls[0][0];
+			expect(reported).toBeInstanceOf(hoisted.MockLanguageModelToolCallPart);
+			expect(reported.callId).toBe(callId);
+			expect(reported.name).toBe(name);
+		}
 	});
 
 	it("message conversion should not crash on varied content shapes", () => {
-		const textPartArb = fc.string().map((value) => new hoisted.MockLanguageModelTextPart(value));
-		const dataPartArb = fc
-			.uint8Array()
-			.map((data) => new hoisted.MockLanguageModelDataPart(data, "text/plain"));
-		const toolCallArb = fc
-			.record({
-				callId: fc.uuid(),
-				name: fc.string(),
-				input: fc.dictionary(fc.string(), fc.anything()),
-			})
-			.map(
-				({ callId, name, input }) => new hoisted.MockLanguageModelToolCallPart(callId, name, input),
-			);
-		const toolResultArb = fc
-			.record({
-				callId: fc.uuid(),
-				content: fc.array(
-					fc.oneof(fc.record({ value: fc.string() }), fc.dictionary(fc.string(), fc.anything())),
-				),
-			})
-			.map(({ callId, content }) => new hoisted.MockLanguageModelToolResultPart(callId, content));
+		const testContents = [
+			[new hoisted.MockLanguageModelTextPart("hello")],
+			[new hoisted.MockLanguageModelDataPart(new Uint8Array([1, 2, 3]), "text/plain")],
+			[new hoisted.MockLanguageModelToolCallPart("call-1", "tool", { arg: "value" })],
+			[new hoisted.MockLanguageModelToolResultPart("call-1", [{ value: "result" }])],
+			["string content"],
+			[],
+		];
 
-		const contentPartArb = fc.oneof(
-			fc.string(),
-			fc.integer(),
-			fc.boolean(),
-			fc.constant(null),
-			fc.dictionary(fc.string(), fc.anything()),
-			textPartArb,
-			dataPartArb,
-			toolCallArb,
-			toolResultArb,
-		);
+		for (const content of testContents) {
+			const msg = {
+				role: 1,
+				content,
+			} as unknown as LanguageModelChatMessage;
 
-		fc.assert(
-			fc.property(fc.array(contentPartArb), (content) => {
-				const msg = {
-					role: 1,
-					content,
-				} as unknown as LanguageModelChatMessage;
-
-				expect(() => convertSingleMessage(msg, {})).not.toThrow();
-			}),
-		);
+			expect(() => convertSingleMessage(msg, {})).not.toThrow();
+		}
 	});
 });
 

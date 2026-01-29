@@ -198,7 +198,6 @@
 		"@types/vscode": "^1.108.1",
 		"@vscode/vsce": "catalog:",
 		"esbuild": "^0.24.0",
-		"fast-check": "catalog:",
 		"typescript": "catalog:",
 		"vitest": "catalog:"
 	},

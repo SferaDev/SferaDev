@@ -141,9 +141,6 @@ catalogs:
     es-module-lexer:
       specifier: 2.0.0
       version: 2.0.0
-    fast-check:
-      specifier: 3.23.2
-      version: 3.23.2
     framer-motion:
       specifier: 12.29.0
       version: 12.29.0
@@ -531,9 +528,6 @@ importers:
       esbuild:
         specifier: '>=0.25.0'
         version: 0.27.2
-      fast-check:
-        specifier: 'catalog:'
-        version: 3.23.2
       typescript:
         specifier: 'catalog:'
         version: 5.9.3
@@ -5543,10 +5537,6 @@ packages:
     engines: {node: '>= 10.17.0'}
     hasBin: true
 
-  fast-check@3.23.2:
-    resolution: {integrity: sha512-h5+1OzzfCC3Ef7VbtKdcv7zsstUQwUDlYpUTvjeUsJAssPgLn7QzbboPtL5ro04Mq0rPOsMzl7q5hIbRs2wD1A==}
-    engines: {node: '>=8.0.0'}
-
   fast-content-type-parse@2.0.1:
     resolution: {integrity: sha512-nGqtvLrj5w0naR6tDPfB4cUmYCqouzyQiz6C5y/LtcDllJdrcc6WaWW6iXyIIOErTa/XRybj28aasdn4LkVk6Q==}
 
@@ -7729,9 +7719,6 @@ packages:
     engines: {node: '>=18'}
     deprecated: < 24.15.0 is no longer supported
     hasBin: true
-
-  pure-rand@6.1.0:
-    resolution: {integrity: sha512-bVWawvoZoBYpp6yIoQtQXHZjmz35RSVHnUOTefl8Vcjr8snTPY1wnpSPMWekcFwbxI6gtmT7rSYPFvz71ldiOA==}
 
   pvtsutils@1.3.6:
     resolution: {integrity: sha512-PLgQXQ6H2FWCaeRak8vvk1GW462lMxB5s3Jm673N82zI4vqtVUPuZdffdZbPDFRoU8kAhItWFtPCWiPpp4/EDg==}
@@ -14403,10 +14390,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  fast-check@3.23.2:
-    dependencies:
-      pure-rand: 6.1.0
-
   fast-content-type-parse@2.0.1: {}
 
   fast-deep-equal@3.1.3: {}
@@ -17049,8 +17032,6 @@ snapshots:
       - supports-color
       - typescript
       - utf-8-validate
-
-  pure-rand@6.1.0: {}
 
   pvtsutils@1.3.6:
     dependencies:
