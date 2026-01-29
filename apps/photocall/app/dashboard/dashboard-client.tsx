@@ -136,7 +136,7 @@ export default function DashboardClient() {
 					</div>
 				) : (
 					<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-						{organizations.map((org) => (
+						{organizations.map((org: any) => (
 							<button
 								key={org._id}
 								type="button"
