@@ -1,7 +1,7 @@
 "use client";
 
-import type { FunctionReturnType } from "convex/server";
 import { useConvexAuth, useMutation, useQuery } from "convex/react";
+import type { FunctionReturnType } from "convex/server";
 import {
 	BarChart3,
 	Calendar,

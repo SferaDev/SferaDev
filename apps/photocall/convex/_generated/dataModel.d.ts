@@ -6,6 +6,6 @@ import type { GenericId, GenericDataModel, GenericDocument } from "convex/values
 
 export type Id<TableName extends string> = GenericId<TableName>;
 
-export type Doc<TableName extends string> = GenericDocument;
+export type Doc<_TableName extends string> = GenericDocument;
 
 export type DataModel = GenericDataModel;

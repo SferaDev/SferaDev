@@ -3,13 +3,13 @@
 // Running `npx convex dev` will generate the actual file with proper types
 
 export {
-	query,
-	mutation,
-	internalQuery,
-	internalMutation,
 	action,
-	internalAction,
 	httpAction,
+	internalAction,
+	internalMutation,
+	internalQuery,
+	mutation,
+	query,
 } from "convex/server";
 
 import type { GenericQueryCtx, GenericMutationCtx, GenericActionCtx } from "convex/server";
