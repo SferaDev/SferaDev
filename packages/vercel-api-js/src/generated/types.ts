@@ -11580,6 +11580,14 @@ export const resourceConfigElasticConcurrencyEnabledEnum2 = {
 export type ResourceConfigElasticConcurrencyEnabledEnum2Key =
 	(typeof resourceConfigElasticConcurrencyEnabledEnum2)[keyof typeof resourceConfigElasticConcurrencyEnabledEnum2];
 
+export const buildEntitlementsEnhancedBuildsEnum2 = {
+	false: false,
+	true: true,
+} as const;
+
+export type BuildEntitlementsEnhancedBuildsEnum2Key =
+	(typeof buildEntitlementsEnhancedBuildsEnum2)[keyof typeof buildEntitlementsEnhancedBuildsEnum2];
+
 export const teamPlatformEnum = {
 	false: false,
 	true: true,
@@ -11594,6 +11602,14 @@ export const teamDisableHardAutoBlocksEnum = {
 
 export type TeamDisableHardAutoBlocksEnumKey =
 	(typeof teamDisableHardAutoBlocksEnum)[keyof typeof teamDisableHardAutoBlocksEnum];
+
+export const remoteCachingEnabledEnum2 = {
+	false: false,
+	true: true,
+} as const;
+
+export type RemoteCachingEnabledEnum2Key =
+	(typeof remoteCachingEnabledEnum2)[keyof typeof remoteCachingEnabledEnum2];
 
 export const teamEnablePreviewFeedbackEnum = {
 	default: "default",
@@ -11942,7 +11958,7 @@ export type Team = {
 							/**
 							 * @type boolean | undefined
 							 */
-							enhancedBuilds?: BuildEntitlementsEnhancedBuildsEnumKey | undefined;
+							enhancedBuilds?: BuildEntitlementsEnhancedBuildsEnum2Key | undefined;
 					  }
 					| undefined;
 		  }
@@ -11967,7 +11983,7 @@ export type Team = {
 				/**
 				 * @type boolean | undefined
 				 */
-				enabled?: RemoteCachingEnabledEnumKey | undefined;
+				enabled?: RemoteCachingEnabledEnum2Key | undefined;
 		  }
 		| undefined;
 	/**
@@ -12247,6 +12263,80 @@ export const teamLimitedLimitedByEnum = {
 export type TeamLimitedLimitedByEnumKey =
 	(typeof teamLimitedLimitedByEnum)[keyof typeof teamLimitedLimitedByEnum];
 
+export const samlEnforcedEnum2 = {
+	false: false,
+	true: true,
+} as const;
+
+export type SamlEnforcedEnum2Key = (typeof samlEnforcedEnum2)[keyof typeof samlEnforcedEnum2];
+
+export const membershipConfirmedEnum2 = {
+	true: true,
+} as const;
+
+export type MembershipConfirmedEnum2Key =
+	(typeof membershipConfirmedEnum2)[keyof typeof membershipConfirmedEnum2];
+
+export const membershipRoleEnum2 = {
+	BILLING: "BILLING",
+	CONTRIBUTOR: "CONTRIBUTOR",
+	DEVELOPER: "DEVELOPER",
+	MEMBER: "MEMBER",
+	OWNER: "OWNER",
+	SECURITY: "SECURITY",
+	VIEWER: "VIEWER",
+	VIEWER_FOR_PLUS: "VIEWER_FOR_PLUS",
+} as const;
+
+export type MembershipRoleEnum2Key = (typeof membershipRoleEnum2)[keyof typeof membershipRoleEnum2];
+
+export const membershipTeamRolesEnum2 = {
+	BILLING: "BILLING",
+	CONTRIBUTOR: "CONTRIBUTOR",
+	DEVELOPER: "DEVELOPER",
+	MEMBER: "MEMBER",
+	OWNER: "OWNER",
+	SECURITY: "SECURITY",
+	VIEWER: "VIEWER",
+	VIEWER_FOR_PLUS: "VIEWER_FOR_PLUS",
+} as const;
+
+export type MembershipTeamRolesEnum2Key =
+	(typeof membershipTeamRolesEnum2)[keyof typeof membershipTeamRolesEnum2];
+
+export const membershipTeamPermissionsEnum2 = {
+	CreateProject: "CreateProject",
+	EnvVariableManager: "EnvVariableManager",
+	EnvironmentManager: "EnvironmentManager",
+	FullProductionDeployment: "FullProductionDeployment",
+	IntegrationManager: "IntegrationManager",
+	UsageViewer: "UsageViewer",
+	V0Builder: "V0Builder",
+	V0Chatter: "V0Chatter",
+	V0Viewer: "V0Viewer",
+} as const;
+
+export type MembershipTeamPermissionsEnum2Key =
+	(typeof membershipTeamPermissionsEnum2)[keyof typeof membershipTeamPermissionsEnum2];
+
+export const joinedFromOriginEnum3 = {
+	bitbucket: "bitbucket",
+	dsync: "dsync",
+	feedback: "feedback",
+	github: "github",
+	gitlab: "gitlab",
+	import: "import",
+	link: "link",
+	mail: "mail",
+	"nsnb-auto-approve": "nsnb-auto-approve",
+	"organization-teams": "organization-teams",
+	saml: "saml",
+	teams: "teams",
+} as const;
+
+export type JoinedFromOriginEnum3Key =
+	(typeof joinedFromOriginEnum3)[keyof typeof joinedFromOriginEnum3];
+
 /**
  * @description A limited form of data representing a Team, due to the authentication token missing privileges to read the full Team data.
  */
@@ -12341,7 +12431,7 @@ export type TeamLimited = {
 				 * @description When `true`, interactions with the Team **must** be done with an authentication token that has been authenticated with the Team\'s SAML Single Sign-On provider.
 				 * @type boolean
 				 */
-				enforced: SamlEnforcedEnumKey;
+				enforced: SamlEnforcedEnum2Key;
 		  }
 		| undefined;
 	/**
@@ -12391,7 +12481,7 @@ export type TeamLimited = {
 		/**
 		 * @type boolean
 		 */
-		confirmed: MembershipConfirmedEnumKey;
+		confirmed: MembershipConfirmedEnum2Key;
 		/**
 		 * @type number | undefined
 		 */
@@ -12399,15 +12489,15 @@ export type TeamLimited = {
 		/**
 		 * @type string
 		 */
-		role: MembershipRoleEnumKey;
+		role: MembershipRoleEnum2Key;
 		/**
 		 * @type array | undefined
 		 */
-		teamRoles?: MembershipTeamRolesEnumKey[] | undefined;
+		teamRoles?: MembershipTeamRolesEnum2Key[] | undefined;
 		/**
 		 * @type array | undefined
 		 */
-		teamPermissions?: MembershipTeamPermissionsEnumKey[] | undefined;
+		teamPermissions?: MembershipTeamPermissionsEnum2Key[] | undefined;
 		/**
 		 * @type number
 		 */
@@ -12424,7 +12514,7 @@ export type TeamLimited = {
 					/**
 					 * @type string
 					 */
-					origin: JoinedFromOriginEnum2Key;
+					origin: JoinedFromOriginEnum3Key;
 					/**
 					 * @type string | undefined
 					 */
@@ -12685,13 +12775,13 @@ export const resourceConfigElasticConcurrencyEnabledEnum3 = {
 export type ResourceConfigElasticConcurrencyEnabledEnum3Key =
 	(typeof resourceConfigElasticConcurrencyEnabledEnum3)[keyof typeof resourceConfigElasticConcurrencyEnabledEnum3];
 
-export const buildEntitlementsEnhancedBuildsEnum2 = {
+export const buildEntitlementsEnhancedBuildsEnum3 = {
 	false: false,
 	true: true,
 } as const;
 
-export type BuildEntitlementsEnhancedBuildsEnum2Key =
-	(typeof buildEntitlementsEnhancedBuildsEnum2)[keyof typeof buildEntitlementsEnhancedBuildsEnum2];
+export type BuildEntitlementsEnhancedBuildsEnum3Key =
+	(typeof buildEntitlementsEnhancedBuildsEnum3)[keyof typeof buildEntitlementsEnhancedBuildsEnum3];
 
 export const buildQueueConfigurationEnum2 = {
 	SKIP_NAMESPACE_QUEUE: "SKIP_NAMESPACE_QUEUE",
@@ -12768,6 +12858,22 @@ export const authUserHasTrialAvailableEnum = {
 export type AuthUserHasTrialAvailableEnumKey =
 	(typeof authUserHasTrialAvailableEnum)[keyof typeof authUserHasTrialAvailableEnum];
 
+export const remoteCachingEnabledEnum3 = {
+	false: false,
+	true: true,
+} as const;
+
+export type RemoteCachingEnabledEnum3Key =
+	(typeof remoteCachingEnabledEnum3)[keyof typeof remoteCachingEnabledEnum3];
+
+export const dataCacheExcessBillingEnabledEnum2 = {
+	false: false,
+	true: true,
+} as const;
+
+export type DataCacheExcessBillingEnabledEnum2Key =
+	(typeof dataCacheExcessBillingEnabledEnum2)[keyof typeof dataCacheExcessBillingEnabledEnum2];
+
 export const webAnalyticsIsCurrentlyBlockedEnum = {
 	false: false,
 	true: true,
@@ -12838,7 +12944,7 @@ export type AuthUser = {
 					 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
 					 * @type boolean | undefined
 					 */
-					enhancedBuilds?: BuildEntitlementsEnhancedBuildsEnum2Key | undefined;
+					enhancedBuilds?: BuildEntitlementsEnhancedBuildsEnum3Key | undefined;
 			  }
 			| undefined;
 		/**
@@ -13119,7 +13225,7 @@ export type AuthUser = {
 				/**
 				 * @type boolean | undefined
 				 */
-				enabled?: RemoteCachingEnabledEnumKey | undefined;
+				enabled?: RemoteCachingEnabledEnum3Key | undefined;
 		  }
 		| undefined;
 	/**
@@ -13131,7 +13237,7 @@ export type AuthUser = {
 				/**
 				 * @type boolean | undefined
 				 */
-				excessBillingEnabled?: DataCacheExcessBillingEnabledEnumKey | undefined;
+				excessBillingEnabled?: DataCacheExcessBillingEnabledEnum2Key | undefined;
 		  }
 		| undefined;
 	/**
