@@ -1077,6 +1077,13 @@ import type {
 	MoveProjectDomainMutationResponse,
 	MoveProjectDomainPathParams,
 	MoveProjectDomainQueryParams,
+	PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription400,
+	PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription401,
+	PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription403,
+	PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription409,
+	PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription422,
+	PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionMutationResponse,
+	PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionPathParams,
 	PatchDomain400,
 	PatchDomain401,
 	PatchDomain403,
@@ -1254,6 +1261,15 @@ import type {
 	RequestPromoteMutationResponse,
 	RequestPromotePathParams,
 	RequestPromoteQueryParams,
+	RequestRollback400,
+	RequestRollback401,
+	RequestRollback402,
+	RequestRollback403,
+	RequestRollback409,
+	RequestRollback422,
+	RequestRollbackMutationResponse,
+	RequestRollbackPathParams,
+	RequestRollbackQueryParams,
 	RerequestCheck400,
 	RerequestCheck401,
 	RerequestCheck403,
@@ -7731,7 +7747,7 @@ export async function deleteRollingReleaseConfig({
 }
 
 /**
- * @description Update (or disable) Rolling Releases for a project. Changing the config never alters a rollout that's already in-flight. It only affects the next production deployment. This also applies to disabling Rolling Releases. If you want to also stop the current rollout, call this endpoint to disable the feature, and then call either the /complete or /abort endpoint. Note: Enabling Rolling Releases automatically enables skew protection on the project with the default value if it wasn't configured already.
+ * @description Update (or disable) Rolling Releases for a project. When disabling with the resolve-on-disable feature flag enabled, any active rolling release document is resolved using the disableRolloutAction parameter: "abort" to roll back (default), or "complete" to promote the canary to production. When enabling or updating config, changes only affect the next production deployment and do not alter a rollout that's already in-flight. Note: Enabling Rolling Releases automatically enables skew protection on the project with the default value if it wasn't configured already.
  * @summary Update the rolling release settings for the project
  * {@link /v1/projects/:idOrName/rolling-release/config}
  */
@@ -8015,6 +8031,97 @@ export async function updateProjectProtectionBypass({
 		method: "PATCH",
 		url: `/v1/projects/${idOrName}/protection-bypass`,
 		queryParams,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
+ * @description Allows users to rollback to a deployment.
+ * @summary Points all production domains for a project to the given deploy
+ * {@link /v1/projects/:projectId/rollback/:deploymentId}
+ */
+export async function requestRollback({
+	pathParams: { projectId, deploymentId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: RequestRollbackPathParams;
+	queryParams?: RequestRollbackQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof client };
+}) {
+	const { client: request = client, ...requestConfig } = config;
+
+	if (!projectId) {
+		throw new Error(`Missing required path parameter: projectId`);
+	}
+
+	if (!deploymentId) {
+		throw new Error(`Missing required path parameter: deploymentId`);
+	}
+
+	const data = await request<
+		RequestRollbackMutationResponse,
+		ErrorWrapper<
+			| RequestRollback400
+			| RequestRollback401
+			| RequestRollback402
+			| RequestRollback403
+			| RequestRollback409
+			| RequestRollback422
+		>,
+		null,
+		Record<string, string>,
+		RequestRollbackQueryParams,
+		RequestRollbackPathParams
+	>({
+		method: "POST",
+		url: `/v1/projects/${projectId}/rollback/${deploymentId}`,
+		queryParams,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Updates the reason for a rollback, without changing the rollback status itself.
+ * @summary Updates the description for a rollback
+ * {@link /v1/projects/:projectId/rollback/:deploymentId/update-description}
+ */
+export async function pATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription({
+	pathParams: { projectId, deploymentId },
+	config = {},
+}: {
+	pathParams: PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionPathParams;
+	config?: Partial<FetcherConfig> & { client?: typeof client };
+}) {
+	const { client: request = client, ...requestConfig } = config;
+
+	if (!projectId) {
+		throw new Error(`Missing required path parameter: projectId`);
+	}
+
+	if (!deploymentId) {
+		throw new Error(`Missing required path parameter: deploymentId`);
+	}
+
+	const data = await request<
+		PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionMutationResponse,
+		ErrorWrapper<
+			| PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription400
+			| PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription401
+			| PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription403
+			| PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription409
+			| PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription422
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionPathParams
+	>({
+		method: "PATCH",
+		url: `/v1/projects/${projectId}/rollback/${deploymentId}/update-description`,
 		...requestConfig,
 		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
 	});
@@ -9995,6 +10102,9 @@ export const operationsByPath = {
 	"POST /projects/{idOrName}/transfer-request": createProjectTransferRequest,
 	"PUT /projects/transfer-request/{code}": acceptProjectTransferRequest,
 	"PATCH /v1/projects/{idOrName}/protection-bypass": updateProjectProtectionBypass,
+	"POST /v1/projects/{projectId}/rollback/{deploymentId}": requestRollback,
+	"PATCH /v1/projects/{projectId}/rollback/{deploymentId}/update-description":
+		pATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription,
 	"POST /v10/projects/{projectId}/promote/{deploymentId}": requestPromote,
 	"GET /v1/projects/{projectId}/promote/aliases": listPromoteAliases,
 	"POST /v1/projects/{projectId}/pause": pauseProject,
@@ -10271,6 +10381,7 @@ export const operationsByTag = {
 		createProjectTransferRequest,
 		acceptProjectTransferRequest,
 		updateProjectProtectionBypass,
+		requestRollback,
 		requestPromote,
 		listPromoteAliases,
 		pauseProject,
@@ -10538,6 +10649,7 @@ export const tagDictionary = {
 			"verifyProjectDomain",
 			"createProjectEnv",
 			"createProjectTransferRequest",
+			"requestRollback",
 			"requestPromote",
 			"pauseProject",
 			"unpauseProject",

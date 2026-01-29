@@ -249,260 +249,7 @@ export const e164PhoneNumberSchema = z
 /**
  * @description A valid ISO 3166-1 alpha-2 country code
  */
-export const countryCodeSchema = z
-	.enum([
-		"AD",
-		"AE",
-		"AF",
-		"AG",
-		"AI",
-		"AL",
-		"AM",
-		"AO",
-		"AQ",
-		"AR",
-		"AS",
-		"AT",
-		"AU",
-		"AW",
-		"AX",
-		"AZ",
-		"BA",
-		"BB",
-		"BD",
-		"BE",
-		"BF",
-		"BG",
-		"BH",
-		"BI",
-		"BJ",
-		"BL",
-		"BM",
-		"BN",
-		"BO",
-		"BQ",
-		"BR",
-		"BS",
-		"BT",
-		"BV",
-		"BW",
-		"BY",
-		"BZ",
-		"CA",
-		"CC",
-		"CD",
-		"CF",
-		"CG",
-		"CH",
-		"CI",
-		"CK",
-		"CL",
-		"CM",
-		"CN",
-		"CO",
-		"CR",
-		"CU",
-		"CV",
-		"CW",
-		"CX",
-		"CY",
-		"CZ",
-		"DE",
-		"DJ",
-		"DK",
-		"DM",
-		"DO",
-		"DZ",
-		"EC",
-		"EE",
-		"EG",
-		"EH",
-		"ER",
-		"ES",
-		"ET",
-		"FI",
-		"FJ",
-		"FK",
-		"FM",
-		"FO",
-		"FR",
-		"GA",
-		"GB",
-		"GD",
-		"GE",
-		"GF",
-		"GG",
-		"GH",
-		"GI",
-		"GL",
-		"GM",
-		"GN",
-		"GP",
-		"GQ",
-		"GR",
-		"GS",
-		"GT",
-		"GU",
-		"GW",
-		"GY",
-		"HK",
-		"HM",
-		"HN",
-		"HR",
-		"HT",
-		"HU",
-		"ID",
-		"IE",
-		"IL",
-		"IM",
-		"IN",
-		"IO",
-		"IQ",
-		"IR",
-		"IS",
-		"IT",
-		"JE",
-		"JM",
-		"JO",
-		"JP",
-		"KE",
-		"KG",
-		"KH",
-		"KI",
-		"KM",
-		"KN",
-		"KP",
-		"KR",
-		"KW",
-		"KY",
-		"KZ",
-		"LA",
-		"LB",
-		"LC",
-		"LI",
-		"LK",
-		"LR",
-		"LS",
-		"LT",
-		"LU",
-		"LV",
-		"LY",
-		"MA",
-		"MC",
-		"MD",
-		"ME",
-		"MF",
-		"MG",
-		"MH",
-		"MK",
-		"ML",
-		"MM",
-		"MN",
-		"MO",
-		"MP",
-		"MQ",
-		"MR",
-		"MS",
-		"MT",
-		"MU",
-		"MV",
-		"MW",
-		"MX",
-		"MY",
-		"MZ",
-		"NA",
-		"NC",
-		"NE",
-		"NF",
-		"NG",
-		"NI",
-		"NL",
-		"NO",
-		"NP",
-		"NR",
-		"NU",
-		"NZ",
-		"OM",
-		"PA",
-		"PE",
-		"PF",
-		"PG",
-		"PH",
-		"PK",
-		"PL",
-		"PM",
-		"PN",
-		"PR",
-		"PS",
-		"PT",
-		"PW",
-		"PY",
-		"QA",
-		"RE",
-		"RO",
-		"RS",
-		"RU",
-		"RW",
-		"SA",
-		"SB",
-		"SC",
-		"SD",
-		"SE",
-		"SG",
-		"SH",
-		"SI",
-		"SJ",
-		"SK",
-		"SL",
-		"SM",
-		"SN",
-		"SO",
-		"SR",
-		"SS",
-		"ST",
-		"SV",
-		"SX",
-		"SY",
-		"SZ",
-		"TC",
-		"TD",
-		"TF",
-		"TG",
-		"TH",
-		"TJ",
-		"TK",
-		"TL",
-		"TM",
-		"TN",
-		"TO",
-		"TR",
-		"TT",
-		"TV",
-		"TW",
-		"TZ",
-		"UA",
-		"UG",
-		"UM",
-		"US",
-		"UY",
-		"UZ",
-		"VA",
-		"VC",
-		"VE",
-		"VG",
-		"VI",
-		"VN",
-		"VU",
-		"WF",
-		"WS",
-		"XK",
-		"YE",
-		"YT",
-		"ZA",
-		"ZM",
-		"ZW",
-	])
-	.describe("A valid ISO 3166-1 alpha-2 country code");
+export const countryCodeSchema = z.string().describe("A valid ISO 3166-1 alpha-2 country code");
 
 /**
  * @description A valid order ID
@@ -939,6 +686,39 @@ export const userEventSchema = z
 					previousRole: z.optional(z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_VIEWER"])),
 				}),
 				z.object({
+					previous: z.optional(
+						z
+							.object({
+								enabled: z
+									.union([z.literal(false), z.literal(true)])
+									.describe("Whether automatic code reviews are enabled"),
+								scope: z
+									.enum(["public", "all", "private"])
+									.describe("Which repository visibilities get automatic reviews"),
+								includeDrafts: z
+									.union([z.literal(false), z.literal(true)])
+									.describe("Whether to include draft pull requests in automatic reviews"),
+							})
+							.describe("Automatic code review settings"),
+					),
+					next: z
+						.object({
+							enabled: z
+								.union([z.literal(false), z.literal(true)])
+								.describe("Whether automatic code reviews are enabled"),
+							scope: z
+								.enum(["public", "all", "private"])
+								.describe("Which repository visibilities get automatic reviews"),
+							includeDrafts: z
+								.union([z.literal(false), z.literal(true)])
+								.describe("Whether to include draft pull requests in automatic reviews"),
+						})
+						.describe("Automatic code review settings"),
+				}),
+				z.object({
+					enabled: z.union([z.literal(false), z.literal(true)]),
+				}),
+				z.object({
 					alias: z.optional(z.string()),
 					deployment: z
 						.object({
@@ -1172,6 +952,18 @@ export const userEventSchema = z
 					bitbucketEmail: z.string(),
 					bitbucketLogin: z.string(),
 					bitbucketName: z.optional(z.string()),
+				}),
+				z.object({
+					provider: z.enum([
+						"github",
+						"github-limited",
+						"github-custom-host",
+						"gitlab",
+						"bitbucket",
+						"google",
+						"apple",
+					]),
+					login: z.string(),
 				}),
 				z.object({
 					projectId: z.string(),
@@ -4579,6 +4371,10 @@ export const userEventSchema = z
 					newName: z.optional(z.string()),
 				}),
 				z.object({
+					id: z.string(),
+					url: z.string(),
+				}),
+				z.object({
 					grantType: z.enum(["authorization_code", "urn:ietf:params:oauth:grant-type:device_code"]),
 					appName: z
 						.string()
@@ -4595,13 +4391,13 @@ export const userEventSchema = z
 						"github",
 						"gitlab",
 						"bitbucket",
+						"google",
+						"apple",
 						"manual",
 						"passkey",
 						"otp",
 						"sms",
 						"invite",
-						"google",
-						"apple",
 					]),
 					app: z.optional(
 						z
@@ -12537,6 +12333,76 @@ export const updateProjectProtectionBypass409Schema = z.unknown();
 export const updateProjectProtectionBypassMutationResponseSchema = z.lazy(
 	() => updateProjectProtectionBypass200Schema,
 );
+
+export const requestRollbackPathParamsSchema = z.object({
+	projectId: z.string(),
+	deploymentId: z.string().describe("The ID of the deployment to rollback *to*"),
+});
+
+export const requestRollbackQueryParamsSchema = z
+	.object({
+		description: z.optional(z.string().describe("The reason for the rollback")),
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const requestRollback201Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export const requestRollback400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const requestRollback401Schema = z.unknown();
+
+export const requestRollback402Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const requestRollback403Schema = z.unknown();
+
+export const requestRollback409Schema = z.unknown();
+
+export const requestRollback422Schema = z.unknown();
+
+export const requestRollbackMutationResponseSchema = z.lazy(() => requestRollback201Schema);
+
+export const PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionPathParamsSchema =
+	z.object({
+		projectId: z.string(),
+		deploymentId: z.string(),
+	});
+
+export const PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export const PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription403Schema = z.unknown();
+
+export const PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription409Schema = z.unknown();
+
+export const PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription422Schema = z.unknown();
+
+export const PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionMutationResponseSchema =
+	z.lazy(() => PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription200Schema);
 
 export const requestPromotePathParamsSchema = z.object({
 	projectId: z.string(),

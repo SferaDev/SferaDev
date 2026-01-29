@@ -619,265 +619,10 @@ export type EmailAddress = string;
  */
 export type E164PhoneNumber = string;
 
-export const countryCodeEnum = {
-	AD: "AD",
-	AE: "AE",
-	AF: "AF",
-	AG: "AG",
-	AI: "AI",
-	AL: "AL",
-	AM: "AM",
-	AO: "AO",
-	AQ: "AQ",
-	AR: "AR",
-	AS: "AS",
-	AT: "AT",
-	AU: "AU",
-	AW: "AW",
-	AX: "AX",
-	AZ: "AZ",
-	BA: "BA",
-	BB: "BB",
-	BD: "BD",
-	BE: "BE",
-	BF: "BF",
-	BG: "BG",
-	BH: "BH",
-	BI: "BI",
-	BJ: "BJ",
-	BL: "BL",
-	BM: "BM",
-	BN: "BN",
-	BO: "BO",
-	BQ: "BQ",
-	BR: "BR",
-	BS: "BS",
-	BT: "BT",
-	BV: "BV",
-	BW: "BW",
-	BY: "BY",
-	BZ: "BZ",
-	CA: "CA",
-	CC: "CC",
-	CD: "CD",
-	CF: "CF",
-	CG: "CG",
-	CH: "CH",
-	CI: "CI",
-	CK: "CK",
-	CL: "CL",
-	CM: "CM",
-	CN: "CN",
-	CO: "CO",
-	CR: "CR",
-	CU: "CU",
-	CV: "CV",
-	CW: "CW",
-	CX: "CX",
-	CY: "CY",
-	CZ: "CZ",
-	DE: "DE",
-	DJ: "DJ",
-	DK: "DK",
-	DM: "DM",
-	DO: "DO",
-	DZ: "DZ",
-	EC: "EC",
-	EE: "EE",
-	EG: "EG",
-	EH: "EH",
-	ER: "ER",
-	ES: "ES",
-	ET: "ET",
-	FI: "FI",
-	FJ: "FJ",
-	FK: "FK",
-	FM: "FM",
-	FO: "FO",
-	FR: "FR",
-	GA: "GA",
-	GB: "GB",
-	GD: "GD",
-	GE: "GE",
-	GF: "GF",
-	GG: "GG",
-	GH: "GH",
-	GI: "GI",
-	GL: "GL",
-	GM: "GM",
-	GN: "GN",
-	GP: "GP",
-	GQ: "GQ",
-	GR: "GR",
-	GS: "GS",
-	GT: "GT",
-	GU: "GU",
-	GW: "GW",
-	GY: "GY",
-	HK: "HK",
-	HM: "HM",
-	HN: "HN",
-	HR: "HR",
-	HT: "HT",
-	HU: "HU",
-	ID: "ID",
-	IE: "IE",
-	IL: "IL",
-	IM: "IM",
-	IN: "IN",
-	IO: "IO",
-	IQ: "IQ",
-	IR: "IR",
-	IS: "IS",
-	IT: "IT",
-	JE: "JE",
-	JM: "JM",
-	JO: "JO",
-	JP: "JP",
-	KE: "KE",
-	KG: "KG",
-	KH: "KH",
-	KI: "KI",
-	KM: "KM",
-	KN: "KN",
-	KP: "KP",
-	KR: "KR",
-	KW: "KW",
-	KY: "KY",
-	KZ: "KZ",
-	LA: "LA",
-	LB: "LB",
-	LC: "LC",
-	LI: "LI",
-	LK: "LK",
-	LR: "LR",
-	LS: "LS",
-	LT: "LT",
-	LU: "LU",
-	LV: "LV",
-	LY: "LY",
-	MA: "MA",
-	MC: "MC",
-	MD: "MD",
-	ME: "ME",
-	MF: "MF",
-	MG: "MG",
-	MH: "MH",
-	MK: "MK",
-	ML: "ML",
-	MM: "MM",
-	MN: "MN",
-	MO: "MO",
-	MP: "MP",
-	MQ: "MQ",
-	MR: "MR",
-	MS: "MS",
-	MT: "MT",
-	MU: "MU",
-	MV: "MV",
-	MW: "MW",
-	MX: "MX",
-	MY: "MY",
-	MZ: "MZ",
-	NA: "NA",
-	NC: "NC",
-	NE: "NE",
-	NF: "NF",
-	NG: "NG",
-	NI: "NI",
-	NL: "NL",
-	NO: "NO",
-	NP: "NP",
-	NR: "NR",
-	NU: "NU",
-	NZ: "NZ",
-	OM: "OM",
-	PA: "PA",
-	PE: "PE",
-	PF: "PF",
-	PG: "PG",
-	PH: "PH",
-	PK: "PK",
-	PL: "PL",
-	PM: "PM",
-	PN: "PN",
-	PR: "PR",
-	PS: "PS",
-	PT: "PT",
-	PW: "PW",
-	PY: "PY",
-	QA: "QA",
-	RE: "RE",
-	RO: "RO",
-	RS: "RS",
-	RU: "RU",
-	RW: "RW",
-	SA: "SA",
-	SB: "SB",
-	SC: "SC",
-	SD: "SD",
-	SE: "SE",
-	SG: "SG",
-	SH: "SH",
-	SI: "SI",
-	SJ: "SJ",
-	SK: "SK",
-	SL: "SL",
-	SM: "SM",
-	SN: "SN",
-	SO: "SO",
-	SR: "SR",
-	SS: "SS",
-	ST: "ST",
-	SV: "SV",
-	SX: "SX",
-	SY: "SY",
-	SZ: "SZ",
-	TC: "TC",
-	TD: "TD",
-	TF: "TF",
-	TG: "TG",
-	TH: "TH",
-	TJ: "TJ",
-	TK: "TK",
-	TL: "TL",
-	TM: "TM",
-	TN: "TN",
-	TO: "TO",
-	TR: "TR",
-	TT: "TT",
-	TV: "TV",
-	TW: "TW",
-	TZ: "TZ",
-	UA: "UA",
-	UG: "UG",
-	UM: "UM",
-	US: "US",
-	UY: "UY",
-	UZ: "UZ",
-	VA: "VA",
-	VC: "VC",
-	VE: "VE",
-	VG: "VG",
-	VI: "VI",
-	VN: "VN",
-	VU: "VU",
-	WF: "WF",
-	WS: "WS",
-	XK: "XK",
-	YE: "YE",
-	YT: "YT",
-	ZA: "ZA",
-	ZM: "ZM",
-	ZW: "ZW",
-} as const;
-
-export type CountryCodeEnumKey = (typeof countryCodeEnum)[keyof typeof countryCodeEnum];
-
 /**
  * @description A valid ISO 3166-1 alpha-2 country code
  */
-export type CountryCode = CountryCodeEnumKey;
+export type CountryCode = string;
 
 /**
  * @description A valid order ID
@@ -1620,6 +1365,59 @@ export const payloadPreviousRoleEnum = {
 export type PayloadPreviousRoleEnumKey =
 	(typeof payloadPreviousRoleEnum)[keyof typeof payloadPreviousRoleEnum];
 
+export const previousEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PreviousEnabledEnumKey = (typeof previousEnabledEnum)[keyof typeof previousEnabledEnum];
+
+export const previousScopeEnum = {
+	public: "public",
+	all: "all",
+	private: "private",
+} as const;
+
+export type PreviousScopeEnumKey = (typeof previousScopeEnum)[keyof typeof previousScopeEnum];
+
+export const previousIncludeDraftsEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PreviousIncludeDraftsEnumKey =
+	(typeof previousIncludeDraftsEnum)[keyof typeof previousIncludeDraftsEnum];
+
+export const nextEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type NextEnabledEnumKey = (typeof nextEnabledEnum)[keyof typeof nextEnabledEnum];
+
+export const nextScopeEnum = {
+	public: "public",
+	all: "all",
+	private: "private",
+} as const;
+
+export type NextScopeEnumKey = (typeof nextScopeEnum)[keyof typeof nextScopeEnum];
+
+export const nextIncludeDraftsEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type NextIncludeDraftsEnumKey =
+	(typeof nextIncludeDraftsEnum)[keyof typeof nextIncludeDraftsEnum];
+
+export const payloadEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadEnabledEnumKey = (typeof payloadEnabledEnum)[keyof typeof payloadEnabledEnum];
+
 export const payloadSystemEnum = {
 	false: false,
 	true: true,
@@ -1670,6 +1468,18 @@ export const payloadPassiveEnum = {
 } as const;
 
 export type PayloadPassiveEnumKey = (typeof payloadPassiveEnum)[keyof typeof payloadPassiveEnum];
+
+export const payloadProviderEnum = {
+	github: "github",
+	"github-limited": "github-limited",
+	"github-custom-host": "github-custom-host",
+	gitlab: "gitlab",
+	bitbucket: "bitbucket",
+	google: "google",
+	apple: "apple",
+} as const;
+
+export type PayloadProviderEnumKey = (typeof payloadProviderEnum)[keyof typeof payloadProviderEnum];
 
 export const payloadForcedEnum = {
 	false: false,
@@ -1817,13 +1627,6 @@ export const updateDiffChangedValueEnum = {
 
 export type UpdateDiffChangedValueEnumKey =
 	(typeof updateDiffChangedValueEnum)[keyof typeof updateDiffChangedValueEnum];
-
-export const payloadEnabledEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type PayloadEnabledEnumKey = (typeof payloadEnabledEnum)[keyof typeof payloadEnabledEnum];
 
 export const payloadRestoreEnum = {
 	false: false,
@@ -3246,12 +3049,13 @@ export const payloadEnforcedEnum = {
 
 export type PayloadEnforcedEnumKey = (typeof payloadEnforcedEnum)[keyof typeof payloadEnforcedEnum];
 
-export const previousEnabledEnum = {
+export const previousEnabledEnum2 = {
 	false: false,
 	true: true,
 } as const;
 
-export type PreviousEnabledEnumKey = (typeof previousEnabledEnum)[keyof typeof previousEnabledEnum];
+export type PreviousEnabledEnum2Key =
+	(typeof previousEnabledEnum2)[keyof typeof previousEnabledEnum2];
 
 export const previousTotpVerifiedEnum = {
 	false: false,
@@ -3261,12 +3065,12 @@ export const previousTotpVerifiedEnum = {
 export type PreviousTotpVerifiedEnumKey =
 	(typeof previousTotpVerifiedEnum)[keyof typeof previousTotpVerifiedEnum];
 
-export const nextEnabledEnum = {
+export const nextEnabledEnum2 = {
 	false: false,
 	true: true,
 } as const;
 
-export type NextEnabledEnumKey = (typeof nextEnabledEnum)[keyof typeof nextEnabledEnum];
+export type NextEnabledEnum2Key = (typeof nextEnabledEnum2)[keyof typeof nextEnabledEnum2];
 
 export const nextTotpVerifiedEnum = {
 	false: false,
@@ -3547,13 +3351,13 @@ export const payloadAuthMethodEnum = {
 	github: "github",
 	gitlab: "gitlab",
 	bitbucket: "bitbucket",
+	google: "google",
+	apple: "apple",
 	manual: "manual",
 	passkey: "passkey",
 	otp: "otp",
 	sms: "sms",
 	invite: "invite",
-	google: "google",
-	apple: "apple",
 } as const;
 
 export type PayloadAuthMethodEnumKey =
@@ -3920,6 +3724,58 @@ export type UserEvent = {
 						 * @type string | undefined
 						 */
 						previousRole?: PayloadPreviousRoleEnumKey | undefined;
+				  }
+				| {
+						/**
+						 * @description Automatic code review settings
+						 * @type object | undefined
+						 */
+						previous?:
+							| {
+									/**
+									 * @description Whether automatic code reviews are enabled
+									 * @type boolean
+									 */
+									enabled: PreviousEnabledEnumKey;
+									/**
+									 * @description Which repository visibilities get automatic reviews
+									 * @type string
+									 */
+									scope: PreviousScopeEnumKey;
+									/**
+									 * @description Whether to include draft pull requests in automatic reviews
+									 * @type boolean
+									 */
+									includeDrafts: PreviousIncludeDraftsEnumKey;
+							  }
+							| undefined;
+						/**
+						 * @description Automatic code review settings
+						 * @type object
+						 */
+						next: {
+							/**
+							 * @description Whether automatic code reviews are enabled
+							 * @type boolean
+							 */
+							enabled: NextEnabledEnumKey;
+							/**
+							 * @description Which repository visibilities get automatic reviews
+							 * @type string
+							 */
+							scope: NextScopeEnumKey;
+							/**
+							 * @description Whether to include draft pull requests in automatic reviews
+							 * @type boolean
+							 */
+							includeDrafts: NextIncludeDraftsEnumKey;
+						};
+				  }
+				| {
+						/**
+						 * @type boolean
+						 */
+						enabled: PayloadEnabledEnumKey;
 				  }
 				| {
 						/**
@@ -4571,6 +4427,16 @@ export type UserEvent = {
 						 * @type string | undefined
 						 */
 						bitbucketName?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						provider: PayloadProviderEnumKey;
+						/**
+						 * @type string
+						 */
+						login: string;
 				  }
 				| {
 						/**
@@ -10217,7 +10083,7 @@ export type UserEvent = {
 							/**
 							 * @type boolean
 							 */
-							enabled: PreviousEnabledEnumKey;
+							enabled: PreviousEnabledEnum2Key;
 							/**
 							 * @type boolean
 							 */
@@ -10230,7 +10096,7 @@ export type UserEvent = {
 							/**
 							 * @type boolean
 							 */
-							enabled: NextEnabledEnumKey;
+							enabled: NextEnabledEnum2Key;
 							/**
 							 * @type boolean
 							 */
@@ -11458,6 +11324,16 @@ export type UserEvent = {
 						 * @type string | undefined
 						 */
 						newName?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						id: string;
+						/**
+						 * @type string
+						 */
+						url: string;
 				  }
 				| {
 						/**
@@ -23156,6 +23032,120 @@ export type UpdateProjectProtectionBypassMutation = {
 		| UpdateProjectProtectionBypass403
 		| UpdateProjectProtectionBypass404
 		| UpdateProjectProtectionBypass409;
+};
+
+export type RequestRollbackPathParams = {
+	/**
+	 * @type string
+	 */
+	projectId: string;
+	/**
+	 * @description The ID of the deployment to rollback *to*
+	 * @type string
+	 */
+	deploymentId: string;
+};
+
+export type RequestRollbackQueryParams = {
+	/**
+	 * @description The reason for the rollback
+	 * @type string | undefined
+	 */
+	description?: string | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type RequestRollback201 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type RequestRollback400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type RequestRollback401 = unknown;
+
+export type RequestRollback402 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type RequestRollback403 = unknown;
+
+export type RequestRollback409 = unknown;
+
+export type RequestRollback422 = unknown;
+
+export type RequestRollbackMutationResponse = RequestRollback201;
+
+export type RequestRollbackMutation = {
+	Response: RequestRollback201;
+	PathParams: RequestRollbackPathParams;
+	QueryParams: RequestRollbackQueryParams;
+	Errors:
+		| RequestRollback400
+		| RequestRollback401
+		| RequestRollback402
+		| RequestRollback403
+		| RequestRollback409
+		| RequestRollback422;
+};
+
+export type PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionPathParams = {
+	/**
+	 * @type string
+	 */
+	projectId: string;
+	/**
+	 * @type string
+	 */
+	deploymentId: string;
+};
+
+export type PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription200 = unknown;
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export type PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription403 = unknown;
+
+export type PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription409 = unknown;
+
+export type PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription422 = unknown;
+
+export type PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionMutationResponse =
+	PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription200;
+
+export type PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionMutation = {
+	Response: PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription200;
+	PathParams: PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionPathParams;
+	Errors:
+		| PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription400
+		| PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription401
+		| PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription403
+		| PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription409
+		| PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription422;
 };
 
 export type RequestPromotePathParams = {
