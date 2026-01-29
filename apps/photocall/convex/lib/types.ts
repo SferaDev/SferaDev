@@ -134,6 +134,22 @@ export interface Event {
 	updatedAt: number;
 }
 
+// Template types
+export interface Template {
+	_id: Id<"templates">;
+	eventId: Id<"events">;
+	name: string;
+	enabled: boolean;
+	order: number;
+	createdAt: number;
+	updatedAt: number;
+}
+
+export interface TemplateWithUrls extends Template {
+	url: string;
+	thumbnailUrl?: string;
+}
+
 // Organization types
 export interface Organization {
 	_id: Id<"organizations">;
@@ -150,6 +166,11 @@ export interface Organization {
 	stripeCustomerId?: string;
 	createdAt: number;
 	updatedAt: number;
+}
+
+export interface OrganizationWithRole extends Organization {
+	role: MemberRole;
+	logoUrl: string | null;
 }
 
 // Type guards for organization types

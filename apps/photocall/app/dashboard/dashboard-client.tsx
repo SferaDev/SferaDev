@@ -17,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { api } from "@/convex/_generated/api";
+import type { OrganizationWithRole } from "@/convex/lib/types";
 import { authClient, useSession } from "@/lib/auth-client";
 
 export default function DashboardClient() {
@@ -136,7 +137,7 @@ export default function DashboardClient() {
 					</div>
 				) : (
 					<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-						{organizations.map((org: any) => (
+						{organizations.map((org: OrganizationWithRole) => (
 							<button
 								key={org._id}
 								type="button"

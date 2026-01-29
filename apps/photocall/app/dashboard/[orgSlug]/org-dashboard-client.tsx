@@ -31,6 +31,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
+import type { Event } from "@/convex/lib/types";
 
 export default function OrganizationDashboard() {
 	const { isAuthenticated, isLoading: authLoading } = useConvexAuth();
@@ -73,7 +74,7 @@ export default function OrganizationDashboard() {
 			setNewEventName("");
 			setDialogOpen(false);
 			// Navigate to the new event
-			const newEvent = events?.find((e: any) => e._id === eventId);
+			const newEvent = events?.find((e: Event) => e._id === eventId);
 			if (newEvent) {
 				router.push(`/dashboard/${orgSlug}/${newEvent.slug}`);
 			}
@@ -245,7 +246,7 @@ export default function OrganizationDashboard() {
 					</div>
 				) : (
 					<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-						{events.map((event: any) => (
+						{events.map((event: Event) => (
 							<div
 								key={event._id}
 								className="p-6 border rounded-lg hover:border-primary transition-colors"

@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/select";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
+import type { Invitation, OrganizationMember } from "@/convex/lib/types";
 
 export default function TeamPage() {
 	const { isAuthenticated, isLoading: authLoading } = useConvexAuth();
@@ -206,7 +207,7 @@ export default function TeamPage() {
 				<div className="mb-8">
 					<h2 className="text-lg font-semibold mb-4">Members ({members?.length ?? 0})</h2>
 					<div className="border rounded-lg divide-y">
-						{members?.map((member: any) => (
+						{members?.map((member: OrganizationMember) => (
 							<div key={member._id} className="p-4 flex items-center justify-between">
 								<div className="flex items-center gap-3">
 									<Avatar>
@@ -246,7 +247,7 @@ export default function TeamPage() {
 							Pending Invitations ({invitations.length})
 						</h2>
 						<div className="border rounded-lg divide-y">
-							{invitations.map((invitation: any) => (
+							{invitations.map((invitation: Invitation) => (
 								<div key={invitation._id} className="p-4 flex items-center justify-between">
 									<div className="flex items-center gap-3">
 										<div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center">
