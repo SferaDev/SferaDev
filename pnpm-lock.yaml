@@ -201,6 +201,9 @@ catalogs:
     lefthook:
       specifier: 2.0.16
       version: 2.0.16
+    lru-cache:
+      specifier: 11.1.0
+      version: 11.1.0
     lucide-react:
       specifier: 0.563.0
       version: 0.563.0
@@ -556,12 +559,18 @@ importers:
       '@ai-sdk/gateway':
         specifier: 'catalog:'
         version: 3.0.27(zod@4.3.6)
+      '@ai-sdk/provider':
+        specifier: 'catalog:'
+        version: 3.0.5
       ai:
         specifier: 'catalog:'
         version: 6.0.59(zod@4.3.6)
       js-tiktoken:
         specifier: 'catalog:'
         version: 1.0.21
+      lru-cache:
+        specifier: 'catalog:'
+        version: 11.1.0
     devDependencies:
       '@sferadev/tsconfig':
         specifier: workspace:*
@@ -6726,8 +6735,8 @@ packages:
   lru-cache@10.4.3:
     resolution: {integrity: sha512-JNAzZcXrCt42VGLuYz0zfAzDfAvJWW6AfYlDBQyDV5DClI2m5sAmK+OIO7s59XfsRsWHp02jAJrRadPRGTt6SQ==}
 
-  lru-cache@11.2.5:
-    resolution: {integrity: sha512-vFrFJkWtJvJnD5hg+hJvVE8Lh/TcMzKnTgCWmtBipwI5yLX/iX+5UB2tfuyODF5E7k9xEzMdYgGqaSb1c0c5Yw==}
+  lru-cache@11.1.0:
+    resolution: {integrity: sha512-QIXZUBJUx+2zHUdQujWejBkcD9+cs94tLn0+YL8UrCh+D5sCXZ4c7LaEH48pNwRY3MLDgqUFyhlCyjJPf1WP0A==}
     engines: {node: 20 || >=22}
 
   lru-cache@6.0.0:
@@ -15877,7 +15886,7 @@ snapshots:
 
   lru-cache@10.4.3: {}
 
-  lru-cache@11.2.5: {}
+  lru-cache@11.1.0: {}
 
   lru-cache@6.0.0:
     dependencies:
@@ -17033,7 +17042,7 @@ snapshots:
 
   path-scurry@2.0.1:
     dependencies:
-      lru-cache: 11.2.5
+      lru-cache: 11.1.0
       minipass: 7.1.2
 
   path-to-regexp@3.3.0: {}

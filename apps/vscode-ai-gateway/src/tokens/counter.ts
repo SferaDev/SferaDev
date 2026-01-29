@@ -1,12 +1,6 @@
-import * as crypto from "node:crypto";
-import { getEncoding } from "js-tiktoken";
+import { getEncoding, type Tiktoken } from "js-tiktoken";
+import { LRUCache } from "lru-cache";
 import * as vscode from "vscode";
-import { logger } from "../logger";
-import { LRUCache } from "./lru-cache";
-
-type Encoding = {
-	encode: (text: string) => number[];
-};
 
 const CHARS_PER_TOKEN = 3.5;
 const SYSTEM_PROMPT_OVERHEAD = 28;
@@ -14,14 +8,17 @@ const TOOLS_BASE_OVERHEAD = 16;
 const PER_TOOL_OVERHEAD = 8;
 const TOOL_SAFETY_MULTIPLIER = 1.1;
 
+/** Maximum text length to use as cache key directly */
+const MAX_DIRECT_KEY_LENGTH = 200;
+
 export class TokenCounter {
-	private encodings = new Map<string, Encoding>();
-	private textCache = new LRUCache<number>(5000);
+	private encodings = new Map<string, Tiktoken>();
+	private textCache = new LRUCache<string, number>({ max: 5000 });
 
 	estimateTextTokens(text: string, modelFamily: string): number {
 		if (!text) return 0;
 
-		const cacheKey = `${modelFamily}:${crypto.createHash("sha256").update(text).digest("hex").slice(0, 16)}`;
+		const cacheKey = this.getCacheKey(text, modelFamily);
 		const cached = this.textCache.get(cacheKey);
 		if (cached !== undefined) return cached;
 
@@ -30,7 +27,7 @@ export class TokenCounter {
 			? encoding.encode(text).length
 			: Math.ceil(text.length / CHARS_PER_TOKEN);
 
-		this.textCache.put(cacheKey, count);
+		this.textCache.set(cacheKey, count);
 		return count;
 	}
 
@@ -82,6 +79,18 @@ export class TokenCounter {
 		return this.estimateTextTokens(systemPrompt, modelFamily) + SYSTEM_PROMPT_OVERHEAD;
 	}
 
+	private getCacheKey(text: string, modelFamily: string): string {
+		// For short texts, use directly as key (fast path)
+		if (text.length <= MAX_DIRECT_KEY_LENGTH) {
+			return `${modelFamily}:${text}`;
+		}
+		// For longer texts, use length + first/last chars as a fingerprint
+		// This is a reasonable tradeoff between collisions and performance
+		const prefix = text.slice(0, 50);
+		const suffix = text.slice(-50);
+		return `${modelFamily}:${text.length}:${prefix}:${suffix}`;
+	}
+
 	private estimateToolResultTokens(
 		part: vscode.LanguageModelToolResultPart,
 		modelFamily: string,
@@ -101,27 +110,26 @@ export class TokenCounter {
 	private estimateImageTokens(modelFamily: string, dataSize: number): number {
 		const family = modelFamily.toLowerCase();
 
-		// Anthropic uses fixed token count for images
+		// Anthropic uses fixed token count for images (conservative estimate)
 		if (family.includes("anthropic") || family.includes("claude")) {
 			return 1600;
 		}
 
-		// OpenAI tile-based calculation
+		// OpenAI tile-based calculation (simplified)
 		const estimatedDimension = Math.sqrt(dataSize / 3);
 		const scaledDimension = Math.min(estimatedDimension, 2048);
 		const tiles = Math.ceil(scaledDimension / 512) ** 2;
 		return Math.min(85 + tiles * 85, 1700);
 	}
 
-	private getEncoding(modelFamily: string): Encoding | undefined {
+	private getEncoding(modelFamily: string): Tiktoken | undefined {
 		const name = this.resolveEncodingName(modelFamily);
 
-		if (this.encodings.has(name)) {
-			return this.encodings.get(name);
-		}
+		const cached = this.encodings.get(name);
+		if (cached) return cached;
 
 		try {
-			const encoding = getEncoding(name) as Encoding;
+			const encoding = getEncoding(name);
 			this.encodings.set(name, encoding);
 			return encoding;
 		} catch {
@@ -131,7 +139,7 @@ export class TokenCounter {
 
 	private resolveEncodingName(modelFamily: string): "o200k_base" | "cl100k_base" {
 		const family = modelFamily.toLowerCase();
-		if (family.includes("gpt-4o") || family.includes("o1")) {
+		if (family.includes("gpt-4o") || family.includes("o1") || family.includes("o3")) {
 			return "o200k_base";
 		}
 		return "cl100k_base";

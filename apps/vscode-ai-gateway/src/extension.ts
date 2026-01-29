@@ -2,14 +2,14 @@ import * as vscode from "vscode";
 import { VercelAIAuthenticationProvider } from "./auth";
 import { ConfigService } from "./config";
 import { EXTENSION_ID } from "./constants";
-import { initializeOutputChannel, logger } from "./logger";
+import { initializeLogger, logger } from "./logger";
 import { VercelAIChatModelProvider } from "./provider";
 
 export function activate(context: vscode.ExtensionContext) {
-	// Initialize the shared output channel FIRST - before any logging
-	// This ensures there's exactly one output channel per VS Code window
-	const outputChannelDisposable = initializeOutputChannel();
-	context.subscriptions.push(outputChannelDisposable);
+	// Initialize the logger FIRST - before any logging
+	// Uses VS Code's native LogOutputChannel for structured logging
+	const loggerDisposable = initializeLogger();
+	context.subscriptions.push(loggerDisposable);
 
 	logger.info("Vercel AI Gateway extension activating...");
 

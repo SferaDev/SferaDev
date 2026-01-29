@@ -87,37 +87,6 @@
 					"default": "medium",
 					"description": "Default reasoning effort level for models that support it."
 				},
-				"vercelAiGateway.logging.level": {
-					"type": "string",
-					"enum": [
-						"off",
-						"error",
-						"warn",
-						"info",
-						"debug",
-						"trace"
-					],
-					"default": "warn",
-					"description": "Logging verbosity level.",
-					"enumDescriptions": [
-						"Disable all logging",
-						"Log only errors",
-						"Log errors and warnings",
-						"Log errors, warnings, and info messages",
-						"Log everything including debug messages",
-						"Log everything including trace-level diagnostic messages"
-					]
-				},
-				"vercelAiGateway.logging.outputChannel": {
-					"type": "boolean",
-					"default": true,
-					"description": "Show logs in 'Vercel AI Gateway' output channel."
-				},
-				"vercelAiGateway.logging.fileDirectory": {
-					"type": "string",
-					"default": "",
-					"description": "Directory for log files. When set and log level is debug/trace, logs are written to files. Use an absolute path or path relative to workspace root."
-				},
 				"vercelAiGateway.models.allowlist": {
 					"type": "array",
 					"items": {
@@ -203,7 +172,9 @@
 	},
 	"dependencies": {
 		"@ai-sdk/gateway": "catalog:",
+		"@ai-sdk/provider": "catalog:",
 		"ai": "catalog:",
-		"js-tiktoken": "catalog:"
+		"js-tiktoken": "catalog:",
+		"lru-cache": "catalog:"
 	}
 }

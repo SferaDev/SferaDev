@@ -829,7 +829,6 @@ describe("Fixture-based tests", () => {
 	it("skips cache_control metadata in file chunks", () => {
 		const provider = createProvider();
 		const progress = createMockProgress();
-		const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
 
 		(provider as unknown as { handleStreamChunk: Function }).handleStreamChunk(
 			{
@@ -844,14 +843,10 @@ describe("Fixture-based tests", () => {
 		);
 
 		expect(progress.report).not.toHaveBeenCalled();
-		expect(warnSpy).toHaveBeenCalledWith(
-			expect.stringContaining("Unsupported file mime type: cache_control"),
-		);
 	});
 
 	it("handles file chunks with valid and invalid MIME types", () => {
 		const provider = createProvider();
-		const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
 
 		const fixtures = [
 			{
@@ -902,10 +897,6 @@ describe("Fixture-based tests", () => {
 				expect(progress.report).not.toHaveBeenCalled();
 			}
 		}
-
-		expect(warnSpy).toHaveBeenCalledWith(
-			expect.stringContaining("Unsupported file mime type: cache_control"),
-		);
 	});
 
 	it("handles tool call chunks", () => {

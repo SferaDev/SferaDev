@@ -70,6 +70,7 @@ catalog:
   jszip: 3.10.1
   knip: 5.82.1
   lefthook: 2.0.16
+  lru-cache: 11.1.0
   lucide-react: 0.563.0
   markdown-to-jsx: 9.6.1
   mcp-handler: 1.0.7

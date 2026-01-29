@@ -57,8 +57,6 @@ describe("ConfigService", () => {
 				if (key === "reasoning.defaultEffort") return "high";
 				if (key === "systemPrompt.enabled") return true;
 				if (key === "systemPrompt.message") return "Custom system prompt";
-				if (key === "logging.level") return "debug";
-				if (key === "logging.outputChannel") return false;
 				if (key === "models.allowlist") return ["openai/*"];
 				if (key === "models.denylist") return ["anthropic/*"];
 				if (key === "models.fallbacks") return { "openai/gpt-4": ["openai/gpt-3.5"] };
@@ -77,8 +75,6 @@ describe("ConfigService", () => {
 		expect(config.reasoningEffort).toBe("high");
 		expect(config.systemPromptEnabled).toBe(true);
 		expect(config.systemPromptMessage).toBe("Custom system prompt");
-		expect(config.logLevel).toBe("debug");
-		expect(config.logOutputChannel).toBe(false);
 		expect(config.modelsAllowlist).toEqual(["openai/*"]);
 		expect(config.modelsDenylist).toEqual(["anthropic/*"]);
 		expect(config.modelsFallbacks).toEqual({ "openai/gpt-4": ["openai/gpt-3.5"] });

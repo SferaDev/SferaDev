@@ -1,295 +1,79 @@
 /**
  * Logging utilities for the Vercel AI Gateway extension.
  *
- * Provides configurable logging with level filtering and VS Code output channel support.
- * Optionally writes to log files when log level is debug/trace and a file directory is configured.
+ * Uses VS Code's native LogOutputChannel for structured logging with
+ * automatic level filtering, timestamping, and storage management.
  */
 
-import * as fs from "node:fs";
-import * as path from "node:path";
 import * as vscode from "vscode";
-import { ConfigService, type LogLevel } from "./config";
 
-export type { LogLevel } from "./config";
-
-export const LOG_LEVELS: Record<LogLevel, number> = {
-	off: 0,
-	error: 1,
-	warn: 2,
-	info: 3,
-	debug: 4,
-	trace: 5,
-};
-
-type LoggerConfigSource = Pick<
-	ConfigService,
-	"logLevel" | "logOutputChannel" | "logFileDirectory" | "onDidChange"
->;
-
-function createFallbackConfigService(): LoggerConfigSource {
-	return {
-		logLevel: "info",
-		logOutputChannel: false,
-		logFileDirectory: "",
-		onDidChange: () => ({ dispose: () => undefined }),
-	};
-}
-
-function createConfigServiceSafely(): LoggerConfigSource {
-	try {
-		return new ConfigService();
-	} catch {
-		return createFallbackConfigService();
-	}
-}
-
-function canCreateOutputChannel(): boolean {
-	try {
-		return typeof vscode.window?.createOutputChannel === "function";
-	} catch {
-		return false;
-	}
-}
+export type LogLevel = "off" | "error" | "warn" | "info" | "debug" | "trace";
 
 /**
- * Shared output channel instance.
- * Set by initializeOutputChannel() which should be called once from activate().
+ * Shared log output channel instance.
+ * Initialized by initializeLogger() which should be called once from activate().
  */
-let _sharedOutputChannel: vscode.OutputChannel | null = null;
+let _logChannel: vscode.LogOutputChannel | null = null;
 
 /**
- * Initialize the shared output channel.
+ * Initialize the shared log output channel.
  * Call this ONCE from extension activate() and add the returned disposable to context.subscriptions.
  */
-export function initializeOutputChannel(): vscode.Disposable {
-	if (_sharedOutputChannel) {
+export function initializeLogger(): vscode.Disposable {
+	if (_logChannel) {
 		return { dispose: () => {} };
 	}
 
 	try {
-		_sharedOutputChannel = vscode.window.createOutputChannel("Vercel AI Gateway");
+		_logChannel = vscode.window.createOutputChannel("Vercel AI Gateway", { log: true });
 	} catch {
+		// Fallback for environments where LogOutputChannel isn't available
 		return { dispose: () => {} };
 	}
 
 	return {
 		dispose: () => {
-			_sharedOutputChannel?.dispose();
-			_sharedOutputChannel = null;
+			_logChannel?.dispose();
+			_logChannel = null;
 		},
 	};
 }
 
-function getSharedOutputChannel(): vscode.OutputChannel | null {
-	return _sharedOutputChannel;
+/**
+ * Reset the logger singleton (for testing only).
+ * @internal
+ */
+export function _resetLoggerForTesting(): void {
+	_logChannel?.dispose();
+	_logChannel = null;
 }
 
 /**
- * Reset the shared output channel singleton (for testing only).
- * @internal
+ * Get the current log output channel, if initialized.
  */
-export function _resetOutputChannelForTesting(): void {
-	_sharedOutputChannel?.dispose();
-	_sharedOutputChannel = null;
+export function getLogChannel(): vscode.LogOutputChannel | null {
+	return _logChannel;
 }
 
-export class Logger {
-	private outputChannel: vscode.OutputChannel | null = null;
-	private level: LogLevel = "info";
-	private configService: LoggerConfigSource;
-	private readonly disposable: { dispose: () => void };
-	private logFileDirectory: string = "";
-	private fileLoggingInitialized = false;
-
-	constructor(configService?: LoggerConfigSource) {
-		this.configService = configService ?? createConfigServiceSafely();
-		this.loadConfig();
-
-		this.disposable = this.configService.onDidChange(() => {
-			this.loadConfig();
-		});
-	}
-
-	private loadConfig(): void {
-		this.level = this.configService.logLevel ?? "info";
-		this.logFileDirectory = this.configService.logFileDirectory ?? "";
-
-		const useOutputChannel = this.configService.logOutputChannel ?? true;
-		const canUseOutputChannel = canCreateOutputChannel();
-		if (useOutputChannel && canUseOutputChannel && !this.outputChannel) {
-			this.outputChannel = getSharedOutputChannel();
-		} else if (!useOutputChannel && this.outputChannel) {
-			this.outputChannel = null;
-		}
-
-		if (this.shouldUseFileLogging() && !this.fileLoggingInitialized) {
-			this.initializeFileLogging();
-		}
-	}
-
-	private shouldUseFileLogging(): boolean {
-		return this.logFileDirectory !== "" && (this.level === "debug" || this.level === "trace");
-	}
-
-	private getResolvedLogDirectory(): string | null {
-		if (!this.logFileDirectory) return null;
-
-		if (path.isAbsolute(this.logFileDirectory)) {
-			return this.logFileDirectory;
-		}
-
-		const workspaceFolders = vscode.workspace.workspaceFolders;
-		if (workspaceFolders && workspaceFolders.length > 0) {
-			return path.join(workspaceFolders[0].uri.fsPath, this.logFileDirectory);
-		}
-
-		return null;
-	}
-
-	private initializeFileLogging(): void {
-		const logDir = this.getResolvedLogDirectory();
-		if (!logDir) return;
-
-		try {
-			if (!fs.existsSync(logDir)) {
-				fs.mkdirSync(logDir, { recursive: true });
-			}
-
-			const currentLogPath = path.join(logDir, "current.log");
-			const previousLogPath = path.join(logDir, "previous.log");
-
-			if (fs.existsSync(currentLogPath)) {
-				fs.renameSync(currentLogPath, previousLogPath);
-			}
-
-			const sessionStart = `\n${"=".repeat(80)}\nSession started: ${new Date().toISOString()}\n${"=".repeat(80)}\n\n`;
-			fs.writeFileSync(currentLogPath, sessionStart);
-
-			this.fileLoggingInitialized = true;
-		} catch {
-			this.fileLoggingInitialized = false;
-		}
-	}
-
-	private writeToFile(level: LogLevel, formatted: string): void {
-		if (!this.shouldUseFileLogging()) return;
-
-		const logDir = this.getResolvedLogDirectory();
-		if (!logDir) return;
-
-		try {
-			const currentLogPath = path.join(logDir, "current.log");
-			fs.appendFileSync(currentLogPath, `${formatted}\n`);
-
-			if (level === "error") {
-				const errorsLogPath = path.join(logDir, "errors.log");
-				fs.appendFileSync(errorsLogPath, `${formatted}\n`);
-			}
-		} catch {
-			// Silently fail
-		}
-	}
-
-	private shouldLog(level: LogLevel): boolean {
-		return LOG_LEVELS[level] <= LOG_LEVELS[this.level];
-	}
-
-	private log(level: LogLevel, message: string, ...args: unknown[]): void {
-		if (!this.shouldLog(level)) return;
-
-		const timestamp = new Date().toISOString();
-		const prefix = `[${timestamp}] [${level.toUpperCase()}]`;
-		const formatted = `${prefix} ${message}`;
-
-		switch (level) {
-			case "error":
-				console.error(formatted, ...args);
-				break;
-			case "warn":
-				console.warn(formatted, ...args);
-				break;
-			case "info":
-				console.info(formatted, ...args);
-				break;
-			case "debug":
-			case "trace":
-				console.debug(formatted, ...args);
-				break;
-		}
-
-		const argsStr = args.length > 0 ? ` ${JSON.stringify(args)}` : "";
-		const fullFormatted = formatted + argsStr;
-
-		if (this.outputChannel) {
-			this.outputChannel.appendLine(fullFormatted);
-		}
-
-		this.writeToFile(level, fullFormatted);
-	}
-
-	error(message: string, ...args: unknown[]): void {
-		this.log("error", message, ...args);
-	}
-
-	warn(message: string, ...args: unknown[]): void {
-		this.log("warn", message, ...args);
-	}
-
-	info(message: string, ...args: unknown[]): void {
-		this.log("info", message, ...args);
-	}
-
-	debug(message: string, ...args: unknown[]): void {
-		this.log("debug", message, ...args);
-	}
-
-	trace(message: string, ...args: unknown[]): void {
-		this.log("trace", message, ...args);
-	}
-
-	show(): void {
-		this.outputChannel?.show();
-	}
-
-	dispose(): void {
-		this.disposable.dispose();
-		this.outputChannel = null;
-	}
-}
-
-// Lazy singleton logger instance
-let _logger: Logger | null = null;
-
-function getLogger(): Logger {
-	if (!_logger) {
-		_logger = new Logger();
-	}
-	return _logger;
-}
-
-// Main logger export - simple proxy to singleton
+// Main logger export - proxies to the shared LogOutputChannel
 export const logger = {
 	error(message: string, ...args: unknown[]): void {
-		getLogger().error(message, ...args);
+		_logChannel?.error(message, ...args);
 	},
 	warn(message: string, ...args: unknown[]): void {
-		getLogger().warn(message, ...args);
+		_logChannel?.warn(message, ...args);
 	},
 	info(message: string, ...args: unknown[]): void {
-		getLogger().info(message, ...args);
+		_logChannel?.info(message, ...args);
 	},
 	debug(message: string, ...args: unknown[]): void {
-		getLogger().debug(message, ...args);
+		_logChannel?.debug(message, ...args);
 	},
 	trace(message: string, ...args: unknown[]): void {
-		getLogger().trace(message, ...args);
+		_logChannel?.trace(message, ...args);
 	},
 	show(): void {
-		getLogger().show();
-	},
-	dispose(): void {
-		getLogger().dispose();
-		_logger = null;
+		_logChannel?.show();
 	},
 };
 
@@ -312,11 +96,11 @@ export function logError(context: string, error: unknown): void {
 		if ("cause" in errorObj) details.cause = errorObj.cause;
 
 		if (Object.keys(details).length > 0) {
-			logger.error(`${context} - Details:`, details);
+			logger.debug(`${context} - Details:`, details);
 		}
 
 		if (error instanceof Error && error.stack) {
-			logger.debug(`${context} - Stack:`, error.stack);
+			logger.trace(`${context} - Stack:`, error.stack);
 		}
 	}
 }

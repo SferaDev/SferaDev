@@ -7,7 +7,6 @@ import {
 } from "./constants";
 
 export type ReasoningEffort = "low" | "medium" | "high";
-export type LogLevel = "off" | "error" | "warn" | "info" | "debug" | "trace";
 export type EstimationMode = "conservative" | "balanced" | "aggressive";
 
 export class ConfigService implements vscode.Disposable {
@@ -20,12 +19,9 @@ export class ConfigService implements vscode.Disposable {
 		this.disposable = vscode.workspace.onDidChangeConfiguration((event) => {
 			if (event.affectsConfiguration("vercelAiGateway")) {
 				this.config = vscode.workspace.getConfiguration("vercelAiGateway");
-				// Note: Can't use logger here due to circular dependency
-				// Logger depends on ConfigService for configuration
 				this.emitter.fire();
 			}
 		});
-		// Note: Can't log here - circular dependency with logger.ts
 	}
 
 	get onDidChange(): vscode.Event<void> {
@@ -60,18 +56,6 @@ export class ConfigService implements vscode.Disposable {
 
 	get systemPromptMessage(): string {
 		return this.config.get("systemPrompt.message", DEFAULT_SYSTEM_PROMPT_MESSAGE);
-	}
-
-	get logLevel(): LogLevel {
-		return this.config.get("logging.level", "warn");
-	}
-
-	get logOutputChannel(): boolean {
-		return this.config.get("logging.outputChannel", true);
-	}
-
-	get logFileDirectory(): string {
-		return this.config.get("logging.fileDirectory", "");
 	}
 
 	get modelsAllowlist(): string[] {

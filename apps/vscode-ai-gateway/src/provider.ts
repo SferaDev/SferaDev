@@ -1,5 +1,7 @@
 import { createGatewayProvider } from "@ai-sdk/gateway";
+import type { SharedV3ProviderOptions } from "@ai-sdk/provider";
 import { jsonSchema, type ModelMessage, streamText, type TextStreamPart, type ToolSet } from "ai";
+import { LRUCache } from "lru-cache";
 import * as vscode from "vscode";
 import {
 	authentication,
@@ -51,7 +53,7 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 	private lastEstimatedInputTokens = 0;
 	private configService: ConfigService;
 	private enricher: ModelEnricher;
-	private enrichedModels = new Map<string, EnrichedModelData>();
+	private enrichedModels = new LRUCache<string, EnrichedModelData>({ max: 200 });
 	private readonly modelInfoChangeEmitter = new vscode.EventEmitter<void>();
 	readonly onDidChangeLanguageModelChatInformation = this.modelInfoChangeEmitter.event;
 
@@ -188,7 +190,7 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 
 			const tools = this.buildToolSet(options.tools);
 			const toolChoice = this.getToolChoice(options.toolMode, tools);
-			const providerOptions = this.buildProviderOptions(model);
+			const providerOptions = this.buildSharedV3ProviderOptions(model);
 
 			const response = streamText({
 				model: gateway(model.id),
@@ -285,10 +287,10 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 		return "auto";
 	}
 
-	private buildProviderOptions(
+	private buildSharedV3ProviderOptions(
 		model: LanguageModelChatInformation,
-	): Record<string, unknown> | undefined {
-		const options: Record<string, unknown> = {};
+	): SharedV3ProviderOptions | undefined {
+		const options: SharedV3ProviderOptions = {};
 
 		if (this.isAnthropicModel(model)) {
 			options.anthropic = { contextManagement: { enabled: true } };
