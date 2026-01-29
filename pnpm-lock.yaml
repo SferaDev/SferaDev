@@ -189,9 +189,6 @@ catalogs:
     is-tree-shakable:
       specifier: 0.4.2
       version: 0.4.2
-    js-tiktoken:
-      specifier: 1.0.21
-      version: 1.0.21
     jszip:
       specifier: 3.10.1
       version: 3.10.1
@@ -201,9 +198,6 @@ catalogs:
     lefthook:
       specifier: 2.0.16
       version: 2.0.16
-    lru-cache:
-      specifier: 11.1.0
-      version: 11.1.0
     lucide-react:
       specifier: 0.563.0
       version: 0.563.0
@@ -559,18 +553,9 @@ importers:
       '@ai-sdk/gateway':
         specifier: 'catalog:'
         version: 3.0.27(zod@4.3.6)
-      '@ai-sdk/provider':
-        specifier: 'catalog:'
-        version: 3.0.5
       ai:
         specifier: 'catalog:'
         version: 6.0.59(zod@4.3.6)
-      js-tiktoken:
-        specifier: 'catalog:'
-        version: 1.0.21
-      lru-cache:
-        specifier: 'catalog:'
-        version: 11.1.0
     devDependencies:
       '@sferadev/tsconfig':
         specifier: workspace:*
@@ -6401,9 +6386,6 @@ packages:
   js-runtime@0.0.8:
     resolution: {integrity: sha512-/nxfuHRkzajgNgGP/7j2A9y8k54XtTWizq+vEGrWh3eBWlSqFhwgToXHAGZeHX3wRMTC3VFBw1iVeemlX4qxZw==}
     engines: {node: '>=18', pnpm: '>=8.3.0'}
-
-  js-tiktoken@1.0.21:
-    resolution: {integrity: sha512-biOj/6M5qdgx5TKjDnFT1ymSpM5tbd3ylwDtrQvFQSu0Z7bBYko2dF+W/aUkXUPuk6IVpRxk/3Q2sHOzGlS36g==}
 
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
@@ -15583,10 +15565,6 @@ snapshots:
   js-levenshtein@1.1.6: {}
 
   js-runtime@0.0.8: {}
-
-  js-tiktoken@1.0.21:
-    dependencies:
-      base64-js: 1.5.1
 
   js-tokens@4.0.0: {}
 

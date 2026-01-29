@@ -2,23 +2,8 @@ export const EXTENSION_ID = "vercelAiGateway";
 export const DEFAULT_BASE_URL = "https://ai-gateway.vercel.sh";
 export const MODELS_ENDPOINT = "/v1/models";
 export const MODELS_CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
-export const ENRICHMENT_ENDPOINT_PATTERN = "/v1/models";
-export const ENRICHMENT_CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
 export const TOKEN_REFRESH_MARGIN = 15 * 60 * 1000; // 15 minutes
-export const LAST_SELECTED_MODEL_KEY = "vercelAiGateway.lastSelectedModel";
 export const DEFAULT_TIMEOUT_MS = 30000;
-export const DEFAULT_REASONING_EFFORT = "medium" as const;
-export const DEFAULT_SYSTEM_PROMPT_MESSAGE =
-	"You are being accessed through the Vercel AI Gateway VS Code extension. The user is interacting with you via VS Code's chat interface.";
-
-// Token estimation constants
-export const MESSAGE_OVERHEAD_TOKENS = 4;
-export const TOKEN_WARNING_THRESHOLD = 0.9;
-export const CORRECTION_FACTOR_MIN = 0.5;
-export const CORRECTION_FACTOR_MAX = 2.0;
-
-// Background enrichment
-export const ENRICHMENT_CONCURRENCY = 5;
 
 export const ERROR_MESSAGES = {
 	AUTH_FAILED: "Failed to authenticate with Vercel AI Gateway. Please try again.",

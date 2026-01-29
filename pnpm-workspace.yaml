@@ -66,11 +66,9 @@ catalog:
   geist: 1.5.1
   gray-matter: 4.0.3
   is-tree-shakable: 0.4.2
-  js-tiktoken: 1.0.21
   jszip: 3.10.1
   knip: 5.82.1
   lefthook: 2.0.16
-  lru-cache: 11.1.0
   lucide-react: 0.563.0
   markdown-to-jsx: 9.6.1
   mcp-handler: 1.0.7

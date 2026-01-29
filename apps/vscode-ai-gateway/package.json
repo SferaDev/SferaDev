@@ -66,84 +66,6 @@
 					"description": "Request timeout in milliseconds.",
 					"minimum": 5000,
 					"maximum": 300000
-				},
-				"vercelAiGateway.systemPrompt.enabled": {
-					"type": "boolean",
-					"default": false,
-					"description": "Inject a system prompt identifying the Vercel AI Gateway to the model."
-				},
-				"vercelAiGateway.systemPrompt.message": {
-					"type": "string",
-					"default": "You are being accessed through the Vercel AI Gateway VS Code extension. The user is interacting with you via VS Code's chat interface.",
-					"description": "The system prompt message to inject when enabled."
-				},
-				"vercelAiGateway.reasoning.defaultEffort": {
-					"type": "string",
-					"enum": [
-						"low",
-						"medium",
-						"high"
-					],
-					"default": "medium",
-					"description": "Default reasoning effort level for models that support it."
-				},
-				"vercelAiGateway.models.allowlist": {
-					"type": "array",
-					"items": {
-						"type": "string"
-					},
-					"default": [],
-					"description": "Restrict available models to this list. Supports wildcards (e.g., 'openai/*'). Empty means all models are available."
-				},
-				"vercelAiGateway.models.denylist": {
-					"type": "array",
-					"items": {
-						"type": "string"
-					},
-					"default": [],
-					"description": "Hide these models from the model picker. Supports wildcards (e.g., 'anthropic/*')."
-				},
-				"vercelAiGateway.models.fallbacks": {
-					"type": "object",
-					"additionalProperties": {
-						"type": "array",
-						"items": {
-							"type": "string"
-						}
-					},
-					"default": {},
-					"description": "Fallback models for each primary model. Example: { \"openai/gpt-4\": [\"openai/gpt-3.5\"] }"
-				},
-				"vercelAiGateway.models.default": {
-					"type": "string",
-					"default": "",
-					"description": "Default model ID (e.g., 'anthropic/claude-sonnet-4-20250514'). Leave empty to show model picker."
-				},
-				"vercelAiGateway.tokens.estimationMode": {
-					"type": "string",
-					"enum": [
-						"conservative",
-						"balanced",
-						"aggressive"
-					],
-					"default": "balanced",
-					"description": "Token estimation strategy.",
-					"enumDescriptions": [
-						"Overestimate tokens to avoid context overflow (3 chars/token)",
-						"Balance between accuracy and safety (4 chars/token)",
-						"Underestimate tokens for maximum context usage (5 chars/token)"
-					]
-				},
-				"vercelAiGateway.tokens.charsPerToken": {
-					"type": "number",
-					"description": "Override characters per token for estimation. Lower = more conservative.",
-					"minimum": 2,
-					"maximum": 6
-				},
-				"vercelAiGateway.models.enrichmentEnabled": {
-					"type": "boolean",
-					"default": true,
-					"description": "Fetch per-model metadata to refine capabilities and token limits"
 				}
 			}
 		}
@@ -172,9 +94,6 @@
 	},
 	"dependencies": {
 		"@ai-sdk/gateway": "catalog:",
-		"@ai-sdk/provider": "catalog:",
-		"ai": "catalog:",
-		"js-tiktoken": "catalog:",
-		"lru-cache": "catalog:"
+		"ai": "catalog:"
 	}
 }

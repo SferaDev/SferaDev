@@ -1,8 +1,7 @@
 import type { LanguageModelChatInformation } from "vscode";
-import { ConfigService } from "./config";
-import { MODELS_CACHE_TTL_MS, MODELS_ENDPOINT } from "./constants";
+import * as vscode from "vscode";
+import { DEFAULT_BASE_URL, MODELS_CACHE_TTL_MS, MODELS_ENDPOINT } from "./constants";
 import { logger } from "./logger";
-import { ModelFilter } from "./models/filter";
 import { parseModelIdentity } from "./models/identity";
 
 export interface Model {
@@ -33,12 +32,9 @@ interface ModelsCache {
 
 export class ModelsClient {
 	private modelsCache?: ModelsCache;
-	private modelFilter: ModelFilter;
-	private configService: ConfigService;
 
-	constructor(configService: ConfigService = new ConfigService()) {
-		this.configService = configService;
-		this.modelFilter = new ModelFilter(configService);
+	private get endpoint(): string {
+		return vscode.workspace.getConfiguration("vercelAiGateway").get("endpoint", DEFAULT_BASE_URL);
 	}
 
 	async getModels(apiKey: string): Promise<LanguageModelChatInformation[]> {
@@ -46,7 +42,7 @@ export class ModelsClient {
 			return this.modelsCache.models;
 		}
 		const startTime = Date.now();
-		const url = `${this.configService.endpoint}${MODELS_ENDPOINT}`;
+		const url = `${this.endpoint}${MODELS_ENDPOINT}`;
 		logger.info(`Fetching models from ${url}`);
 		const data = await this.fetchModels(apiKey);
 		const models = this.transformToVSCodeModels(data);
@@ -57,7 +53,7 @@ export class ModelsClient {
 	}
 
 	private async fetchModels(apiKey: string): Promise<Model[]> {
-		const response = await fetch(`${this.configService.endpoint}${MODELS_ENDPOINT}`, {
+		const response = await fetch(`${this.endpoint}${MODELS_ENDPOINT}`, {
 			headers: apiKey
 				? {
 						Authorization: `Bearer ${apiKey}`,
@@ -70,7 +66,7 @@ export class ModelsClient {
 		}
 
 		const { data } = (await response.json()) as ModelsResponse;
-		return this.modelFilter.filterModels(data);
+		return data;
 	}
 
 	private isModelsCacheFresh(): boolean {
@@ -123,10 +119,7 @@ export class ModelsClient {
 					maxOutputTokens: model.max_tokens,
 					tooltip: model.description || "No description available.",
 					capabilities: {
-						// Check tags array for capabilities - only advertise what the model actually supports
 						imageInput: hasImageInput || false,
-						// Only advertise tool calling if explicitly supported via tags
-						// Defaulting to true could cause issues with models that don't support tools
 						toolCalling: hasToolCalling || false,
 						reasoning: hasReasoning || false,
 						webSearch: hasWebSearch || false,

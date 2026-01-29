@@ -2,9 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const hoisted = vi.hoisted(() => {
 	const mockGetConfiguration = vi.fn();
-	const mockOnDidChangeConfiguration = vi.fn((_callback?: unknown) => ({ dispose: vi.fn() }));
 
-	// Mock EventEmitter class - must be inside hoisted
 	class MockEventEmitter {
 		private listeners: Set<(...args: unknown[]) => void> = new Set();
 		event = (listener: (...args: unknown[]) => void) => {
@@ -21,7 +19,6 @@ const hoisted = vi.hoisted(() => {
 
 	return {
 		mockGetConfiguration,
-		mockOnDidChangeConfiguration,
 		MockEventEmitter,
 	};
 });
@@ -29,7 +26,6 @@ const hoisted = vi.hoisted(() => {
 vi.mock("vscode", () => ({
 	workspace: {
 		getConfiguration: hoisted.mockGetConfiguration,
-		onDidChangeConfiguration: hoisted.mockOnDidChangeConfiguration,
 	},
 	EventEmitter: hoisted.MockEventEmitter,
 }));
@@ -195,121 +191,7 @@ describe("ModelsClient", () => {
 		expect(capabilities.webSearch).toBe(true);
 	});
 
-	it("filters models using allowlist config", async () => {
-		hoisted.mockGetConfiguration.mockReturnValue({
-			get: vi.fn((key: string, defaultValue: unknown) => {
-				if (key === "models.allowlist") return ["openai:*"];
-				return defaultValue;
-			}),
-		});
-
-		const models: Model[] = [
-			{
-				id: "openai:gpt-4o-2024-11-20",
-				object: "model",
-				created: 0,
-				owned_by: "openai",
-				name: "GPT-4o",
-				description: "Latest GPT-4o model",
-				context_window: 128000,
-				max_tokens: 4096,
-				type: "chat",
-				tags: [],
-				pricing: {
-					input: "0",
-					output: "0",
-				},
-			},
-			{
-				id: "anthropic:claude-3-opus-20240229",
-				object: "model",
-				created: 0,
-				owned_by: "anthropic",
-				name: "Claude 3 Opus",
-				description: "Claude 3 Opus",
-				context_window: 200000,
-				max_tokens: 4096,
-				type: "chat",
-				tags: [],
-				pricing: {
-					input: "0",
-					output: "0",
-				},
-			},
-		];
-
-		const mockFetch = vi.fn().mockResolvedValue({
-			ok: true,
-			json: async () => ({ data: models }),
-		});
-
-		globalThis.fetch = mockFetch as unknown as typeof fetch;
-
-		const client = new ModelsClient();
-		const result = await client.getModels("test-api-key");
-
-		expect(result).toHaveLength(1);
-		expect(result[0].id).toBe("openai:gpt-4o-2024-11-20");
-	});
-
-	it("filters models using denylist config", async () => {
-		hoisted.mockGetConfiguration.mockReturnValue({
-			get: vi.fn((key: string, defaultValue: unknown) => {
-				if (key === "models.denylist") return ["anthropic:*"];
-				return defaultValue;
-			}),
-		});
-
-		const models: Model[] = [
-			{
-				id: "openai:gpt-4o-2024-11-20",
-				object: "model",
-				created: 0,
-				owned_by: "openai",
-				name: "GPT-4o",
-				description: "Latest GPT-4o model",
-				context_window: 128000,
-				max_tokens: 4096,
-				type: "chat",
-				tags: [],
-				pricing: {
-					input: "0",
-					output: "0",
-				},
-			},
-			{
-				id: "anthropic:claude-3-opus-20240229",
-				object: "model",
-				created: 0,
-				owned_by: "anthropic",
-				name: "Claude 3 Opus",
-				description: "Claude 3 Opus",
-				context_window: 200000,
-				max_tokens: 4096,
-				type: "chat",
-				tags: [],
-				pricing: {
-					input: "0",
-					output: "0",
-				},
-			},
-		];
-
-		const mockFetch = vi.fn().mockResolvedValue({
-			ok: true,
-			json: async () => ({ data: models }),
-		});
-
-		globalThis.fetch = mockFetch as unknown as typeof fetch;
-
-		const client = new ModelsClient();
-		const result = await client.getModels("test-api-key");
-
-		expect(result).toHaveLength(1);
-		expect(result[0].id).toBe("openai:gpt-4o-2024-11-20");
-	});
-
-	it("returns all models when no filter config is set", async () => {
+	it("returns all models from the API", async () => {
 		const models: Model[] = [
 			{
 				id: "openai:gpt-4o-2024-11-20",

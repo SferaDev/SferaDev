@@ -1,7 +1,5 @@
 import { createGatewayProvider } from "@ai-sdk/gateway";
-import type { SharedV3ProviderOptions } from "@ai-sdk/provider";
 import { jsonSchema, type ModelMessage, streamText, type TextStreamPart, type ToolSet } from "ai";
-import { LRUCache } from "lru-cache";
 import * as vscode from "vscode";
 import {
 	authentication,
@@ -23,22 +21,9 @@ import {
 } from "vscode";
 
 import { VERCEL_AI_AUTH_PROVIDER_ID } from "./auth";
-import { ConfigService } from "./config";
-import {
-	CORRECTION_FACTOR_MAX,
-	CORRECTION_FACTOR_MIN,
-	DEFAULT_SYSTEM_PROMPT_MESSAGE,
-	ENRICHMENT_CONCURRENCY,
-	ERROR_MESSAGES,
-	LAST_SELECTED_MODEL_KEY,
-	MESSAGE_OVERHEAD_TOKENS,
-	TOKEN_WARNING_THRESHOLD,
-} from "./constants";
-import { extractErrorMessage, logError, logger } from "./logger";
+import { DEFAULT_BASE_URL, DEFAULT_TIMEOUT_MS, ERROR_MESSAGES } from "./constants";
+import { extractErrorMessage, logger } from "./logger";
 import { ModelsClient } from "./models";
-import { type EnrichedModelData, ModelEnricher } from "./models/enrichment";
-import { parseModelIdentity } from "./models/identity";
-import { TokenCounter } from "./tokens/counter";
 
 type StreamChunk = TextStreamPart<ToolSet>;
 
@@ -48,109 +33,43 @@ export function isValidMimeType(mimeType: string): boolean {
 	return MIME_TYPE_PATTERN.test(mimeType);
 }
 
-export class VercelAIChatModelProvider implements LanguageModelChatProvider {
-	private context: ExtensionContext;
-	private modelsClient: ModelsClient;
-	private tokenCounter: TokenCounter;
-	private correctionFactor = 1.0;
-	private lastEstimatedInputTokens = 0;
-	private configService: ConfigService;
-	private enricher: ModelEnricher;
-	private enrichedModels = new LRUCache<string, EnrichedModelData>({ max: 200 });
+export class VercelAIChatModelProvider implements LanguageModelChatProvider, vscode.Disposable {
+	private modelsClient = new ModelsClient();
 	private readonly modelInfoChangeEmitter = new vscode.EventEmitter<void>();
 	readonly onDidChangeLanguageModelChatInformation = this.modelInfoChangeEmitter.event;
 
-	constructor(context: ExtensionContext, configService: ConfigService = new ConfigService()) {
-		this.context = context;
-		this.configService = configService;
-		this.modelsClient = new ModelsClient(configService);
-		this.tokenCounter = new TokenCounter();
-		this.enricher = new ModelEnricher(configService);
-		this.enricher.initializePersistence(context.globalState);
+	constructor(_context: ExtensionContext) {
+		// Context reserved for future use
 	}
 
 	dispose(): void {
 		this.modelInfoChangeEmitter.dispose();
 	}
 
+	private get endpoint(): string {
+		return vscode.workspace.getConfiguration("vercelAiGateway").get("endpoint", DEFAULT_BASE_URL);
+	}
+
+	private get timeout(): number {
+		return vscode.workspace.getConfiguration("vercelAiGateway").get("timeout", DEFAULT_TIMEOUT_MS);
+	}
+
 	async provideLanguageModelChatInformation(
 		options: { silent: boolean },
 		_token: CancellationToken,
 	): Promise<LanguageModelChatInformation[]> {
-		logger.debug("Fetching available models", { silent: options.silent });
 		const apiKey = await this.getApiKey(options.silent);
 		if (!apiKey) {
-			logger.debug("No API key available, returning empty model list");
 			return [];
 		}
 
 		try {
 			const models = await this.modelsClient.getModels(apiKey);
 			logger.info(`Loaded ${models.length} models from Vercel AI Gateway`);
-
-			if (this.configService.modelsEnrichmentEnabled) {
-				const enrichedModels = this.applyEnrichmentToModels(models);
-				this.triggerBackgroundEnrichment(models, apiKey);
-				return enrichedModels;
-			}
-
 			return models;
 		} catch (error) {
 			logger.error(ERROR_MESSAGES.MODELS_FETCH_FAILED, error);
 			return [];
-		}
-	}
-
-	private applyEnrichmentToModels(
-		models: LanguageModelChatInformation[],
-	): LanguageModelChatInformation[] {
-		return models.map((model) => {
-			const enriched = this.enrichedModels.get(model.id);
-			if (!enriched) return model;
-
-			const hasContextChange =
-				enriched.context_length && enriched.context_length !== model.maxInputTokens;
-			const hasImageCapability = enriched.input_modalities?.includes("image");
-
-			if (!hasContextChange && !hasImageCapability) return model;
-
-			return {
-				...model,
-				maxInputTokens: hasContextChange ? enriched.context_length! : model.maxInputTokens,
-				capabilities: hasImageCapability
-					? { ...(model.capabilities ?? {}), imageInput: true }
-					: model.capabilities,
-			};
-		});
-	}
-
-	private triggerBackgroundEnrichment(
-		models: LanguageModelChatInformation[],
-		apiKey: string,
-	): void {
-		const modelsToEnrich = models.filter((model) => !this.enrichedModels.has(model.id));
-		if (modelsToEnrich.length === 0) return;
-
-		this.enrichModelsInBatches(modelsToEnrich, apiKey);
-	}
-
-	private async enrichModelsInBatches(
-		models: LanguageModelChatInformation[],
-		apiKey: string,
-	): Promise<void> {
-		let enrichedCount = 0;
-
-		for (let i = 0; i < models.length; i += ENRICHMENT_CONCURRENCY) {
-			const batch = models.slice(i, i + ENRICHMENT_CONCURRENCY);
-			const results = await Promise.allSettled(
-				batch.map((model) => this.enrichModelIfNeeded(model.id, apiKey)),
-			);
-			enrichedCount += results.filter((r) => r.status === "fulfilled" && r.value).length;
-		}
-
-		if (enrichedCount > 0) {
-			logger.debug(`Background enrichment completed for ${enrichedCount} models`);
-			this.modelInfoChangeEmitter.fire();
 		}
 	}
 
@@ -168,53 +87,28 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 		let responseSent = false;
 
 		try {
-			const systemPrompt = this.getSystemPrompt();
-			const estimatedTokens = this.estimateTotalInputTokens(model, chatMessages, {
-				tools: options.tools,
-				systemPrompt,
-			});
-
-			logger.debug(
-				`Token estimate: ${estimatedTokens}/${model.maxInputTokens} (${Math.round((estimatedTokens / model.maxInputTokens) * 100)}%)`,
-			);
-
-			if (estimatedTokens > model.maxInputTokens * TOKEN_WARNING_THRESHOLD) {
-				logger.warn(
-					`Input is ${Math.round((estimatedTokens / model.maxInputTokens) * 100)}% of max tokens`,
-				);
-			}
-
-			this.lastEstimatedInputTokens = estimatedTokens;
-
 			const apiKey = await this.getApiKey(false);
 			if (!apiKey) {
 				throw new Error(ERROR_MESSAGES.API_KEY_NOT_FOUND);
 			}
 
-			if (this.configService.modelsEnrichmentEnabled) {
-				await this.enrichModelIfNeeded(model.id, apiKey);
-			}
-
 			const gateway = createGatewayProvider({
 				apiKey,
-				baseURL: this.configService.gatewayBaseUrl,
+				baseURL: `${this.endpoint.replace(/\/+$/, "")}/v1/ai`,
 			});
 
 			const tools = this.buildToolSet(options.tools);
 			const toolChoice = this.getToolChoice(options.toolMode, tools);
-			const providerOptions = this.buildSharedV3ProviderOptions(model);
 
 			const response = streamText({
 				model: gateway(model.id),
-				system: systemPrompt,
 				messages: convertMessages(chatMessages),
 				toolChoice,
 				temperature: options.modelOptions?.temperature ?? 0.7,
 				maxOutputTokens: options.modelOptions?.maxOutputTokens ?? 4096,
 				tools: Object.keys(tools).length > 0 ? tools : undefined,
 				abortSignal: abortController.signal,
-				timeout: this.configService.timeout,
-				providerOptions,
+				timeout: this.timeout,
 			});
 
 			for await (const chunk of response.fullStream) {
@@ -227,7 +121,6 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 				progress.report(new LanguageModelTextPart("**Error**: No response received from model."));
 			}
 
-			await this.context.workspaceState.update(LAST_SELECTED_MODEL_KEY, model.id);
 			logger.info(`Chat request completed for ${model.id}`);
 		} catch (error) {
 			if (this.isAbortError(error)) {
@@ -235,12 +128,8 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 				return;
 			}
 
-			logError("Exception during streaming", error);
+			logger.error("Exception during streaming:", error);
 			const errorMessage = extractErrorMessage(error);
-
-			if (!responseSent) {
-				logger.error(`Emitting error response: ${errorMessage}`);
-			}
 			progress.report(new LanguageModelTextPart(`\n\n**Error:** ${errorMessage}\n\n`));
 		} finally {
 			abortSubscription.dispose();
@@ -248,33 +137,21 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 	}
 
 	async provideTokenCount(
-		model: LanguageModelChatInformation,
+		_model: LanguageModelChatInformation,
 		text: string | LanguageModelChatMessage,
 		_token: CancellationToken,
 	): Promise<number> {
 		if (typeof text === "string") {
-			return Math.ceil(
-				this.tokenCounter.estimateTextTokens(text, model.family) * this.correctionFactor,
-			);
+			return Math.ceil(text.length / 4);
 		}
 
-		const estimated = this.tokenCounter.estimateMessageTokens(text, model.family);
-		return Math.ceil(estimated * this.correctionFactor);
-	}
-
-	public getLastSelectedModelId(): string | undefined {
-		return this.context.workspaceState.get<string>(LAST_SELECTED_MODEL_KEY);
-	}
-
-	public getEnrichedModelData(modelId: string): EnrichedModelData | undefined {
-		return this.enrichedModels.get(modelId);
-	}
-
-	private getSystemPrompt(): string | undefined {
-		if (!this.configService.systemPromptEnabled) return undefined;
-
-		const message = this.configService.systemPromptMessage?.trim();
-		return message || DEFAULT_SYSTEM_PROMPT_MESSAGE;
+		let total = 0;
+		for (const part of text.content) {
+			if (part instanceof LanguageModelTextPart) {
+				total += Math.ceil(part.value.length / 4);
+			}
+		}
+		return total;
 	}
 
 	private buildToolSet(
@@ -297,69 +174,6 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 		if (toolMode === LanguageModelChatToolMode.Required) return "required";
 		if (Object.keys(tools).length === 0) return "none";
 		return "auto";
-	}
-
-	private buildSharedV3ProviderOptions(
-		model: LanguageModelChatInformation,
-	): SharedV3ProviderOptions | undefined {
-		const options: SharedV3ProviderOptions = {};
-
-		if (this.isAnthropicModel(model)) {
-			options.anthropic = { contextManagement: { enabled: true } };
-		}
-
-		const reasoningOptions = this.getReasoningEffortOptions(model);
-		if (reasoningOptions) {
-			options.openai = reasoningOptions;
-		}
-
-		return Object.keys(options).length > 0 ? options : undefined;
-	}
-
-	private isAnthropicModel(model: LanguageModelChatInformation): boolean {
-		const identity = parseModelIdentity(model.id);
-		const id = model.id.toLowerCase();
-		return (
-			identity.provider.toLowerCase() === "anthropic" ||
-			id.includes("claude") ||
-			id.includes("anthropic")
-		);
-	}
-
-	private getReasoningEffortOptions(
-		model: LanguageModelChatInformation,
-	): { reasoningEffort: string } | undefined {
-		const id = model.id.toLowerCase();
-		const supportsReasoning = id.includes("o1") || id.includes("o3");
-		if (!supportsReasoning) return undefined;
-
-		return { reasoningEffort: this.configService.reasoningEffort };
-	}
-
-	private estimateTotalInputTokens(
-		model: LanguageModelChatInformation,
-		messages: readonly LanguageModelChatMessage[],
-		options?: {
-			tools?: readonly { name: string; description?: string; inputSchema?: unknown }[];
-			systemPrompt?: string;
-		},
-	): number {
-		let total = 0;
-
-		for (const message of messages) {
-			total += this.tokenCounter.estimateMessageTokens(message, model.family);
-		}
-		total += messages.length * MESSAGE_OVERHEAD_TOKENS;
-
-		if (options?.tools && options.tools.length > 0) {
-			total += this.tokenCounter.countToolsTokens(options.tools, model.family);
-		}
-
-		if (options?.systemPrompt) {
-			total += this.tokenCounter.countSystemPromptTokens(options.systemPrompt, model.family);
-		}
-
-		return Math.ceil(total * this.correctionFactor);
 	}
 
 	private isAbortError(error: unknown): boolean {
@@ -388,30 +202,10 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 		}
 	}
 
-	private async enrichModelIfNeeded(modelId: string, apiKey: string): Promise<boolean> {
-		if (this.enrichedModels.has(modelId)) return false;
-
-		try {
-			const enriched = await this.enricher.enrichModel(modelId, apiKey);
-			if (enriched) {
-				this.enrichedModels.set(modelId, enriched);
-				logger.debug(`Enriched model ${modelId}`);
-				return true;
-			}
-		} catch (error) {
-			logger.warn(`Failed to enrich model ${modelId}`, error);
-		}
-
-		return false;
-	}
-
 	/**
 	 * Handle a stream chunk and return whether content was emitted.
 	 */
-	private handleStreamChunk(
-		chunk: StreamChunk,
-		progress: Progress<LanguageModelResponsePart>,
-	): boolean {
+	handleStreamChunk(chunk: StreamChunk, progress: Progress<LanguageModelResponsePart>): boolean {
 		switch (chunk.type) {
 			case "text-delta": {
 				const text =
@@ -438,12 +232,9 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 				this.handleToolCall(chunk, progress);
 				return true;
 
-			case "finish":
-				this.handleFinishChunk(chunk);
-				return false;
-
 			// Lifecycle events - no content
 			case "start":
+			case "finish":
 			case "start-step":
 			case "finish-step":
 			case "abort":
@@ -524,24 +315,9 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider {
 		chunk: { type: "error"; error: unknown },
 		progress: Progress<LanguageModelResponsePart>,
 	): void {
-		logError("Stream error", chunk.error);
+		logger.error("Stream error:", chunk.error);
 		const errorMessage = extractErrorMessage(chunk.error);
 		progress.report(new LanguageModelTextPart(`\n\n**Error:** ${errorMessage}\n\n`));
-	}
-
-	private handleFinishChunk(chunk: StreamChunk): void {
-		const finishChunk = chunk as { totalUsage?: { inputTokens?: number } };
-		const actualInputTokens = finishChunk.totalUsage?.inputTokens;
-
-		if (actualInputTokens !== undefined && this.lastEstimatedInputTokens > 0) {
-			const newFactor = actualInputTokens / this.lastEstimatedInputTokens;
-			const smoothedFactor = this.correctionFactor * 0.7 + newFactor * 0.3;
-			this.correctionFactor = Math.max(
-				CORRECTION_FACTOR_MIN,
-				Math.min(CORRECTION_FACTOR_MAX, smoothedFactor),
-			);
-			logger.debug(`Correction factor: ${this.correctionFactor.toFixed(3)}`);
-		}
 	}
 }
 

@@ -2,13 +2,10 @@
 "vscode-extension-vercel-ai": minor
 ---
 
-feat(vscode-ai-gateway): token counting & logging improvements
+feat(vscode-ai-gateway): improved streaming and logging
 
-- Add tool schema counting with GCMP formula (16 base + 8/tool + content × 1.1)
-- Add system prompt counting with 28-token SDK overhead
-- Add 5000-entry LRU text cache for tokenization performance
-- Add reactive error learning from "input too long" errors
-- Add structured logging with 5 levels (ERROR, WARN, INFO, DEBUG, TRACE)
-- Add file-based logging for DEBUG/TRACE levels
-- Add model enrichment with event-based capability refinement
-- Add tool-call buffering for streaming fidelity
+- Add structured logging using VS Code's native LogOutputChannel
+- Add proper stream chunk handling for text, reasoning, files, tool calls, and errors
+- Add model identity parsing for better family/version extraction
+- Add configurable endpoint and timeout settings
+- Improve message conversion with proper tool result mapping
