@@ -31,10 +31,7 @@ const hoisted = vi.hoisted(() => {
 		dispose: mockOutputChannelDispose,
 	}));
 	const mockGetConfiguration = vi.fn();
-	const mockOnDidChangeConfiguration = vi.fn(
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		(_callback?: unknown) => ({ dispose: vi.fn() }),
-	);
+	const mockOnDidChangeConfiguration = vi.fn((_callback?: unknown) => ({ dispose: vi.fn() }));
 
 	return {
 		mockEventEmitterFire,
