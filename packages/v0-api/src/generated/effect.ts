@@ -6,11 +6,6 @@
 import {
 	ApiClient,
 	type ApiError,
-	createClient,
-	makeApiClientFromEnv,
-	makeApiClientLive,
-	NetworkError,
-	runWithClient,
 	serializeQueryParams,
 	ValidationError,
 } from "@sferadev/openapi-utils/effect";
@@ -549,7 +544,7 @@ export function chatsFind({
 
 		const url = "/chats";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -931,7 +926,7 @@ export function chatsFindMessages({
 
 		const url = `/chats/${chatId}/messages`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -1089,7 +1084,7 @@ export function chatsFindVersions({
 
 		const url = `/chats/${chatId}/versions`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -1149,7 +1144,7 @@ export function chatsGetVersion({
 
 		const url = `/chats/${chatId}/versions/${versionId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -1266,7 +1261,7 @@ export function chatsDownloadVersion({
 
 		const url = `/chats/${chatId}/versions/${versionId}/download`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -1364,7 +1359,7 @@ export function deploymentsFind({
 
 		const url = "/deployments";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -1550,7 +1545,7 @@ export function deploymentsFindLogs({
 
 		const url = `/deployments/${deploymentId}/logs`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -2210,7 +2205,7 @@ export function projectsFindEnvVars({
 
 		const url = `/projects/${projectId}/env-vars`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -2262,7 +2257,7 @@ export function projectsCreateEnvVars({
 
 		const url = `/projects/${projectId}/env-vars`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -2314,7 +2309,7 @@ export function projectsUpdateEnvVars({
 
 		const url = `/projects/${projectId}/env-vars`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -2423,7 +2418,7 @@ export function projectsGetEnvVar({
 
 		const url = `/projects/${projectId}/env-vars/${environmentVariableId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -2464,7 +2459,7 @@ export function rateLimitsFind({
 
 		const url = "/rate-limits";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -2541,7 +2536,7 @@ export function userGetBilling({
 
 		const url = "/user/billing";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -2654,7 +2649,7 @@ export function reportsGetUsage({
 
 		const url = "/reports/usage";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",

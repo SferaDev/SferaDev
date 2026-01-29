@@ -28,6 +28,18 @@
 			"complexity": {
 				"noBannedTypes": "off",
 				"useLiteralKeys": "off"
+			},
+			"style": {
+				"useTemplate": {
+					"level": "warn",
+					"fix": "safe"
+				}
+			},
+			"correctness": {
+				"noUnusedImports": {
+					"level": "warn",
+					"fix": "safe"
+				}
 			}
 		}
 	},

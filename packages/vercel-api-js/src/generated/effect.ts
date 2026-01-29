@@ -6,11 +6,6 @@
 import {
 	ApiClient,
 	type ApiError,
-	createClient,
-	makeApiClientFromEnv,
-	makeApiClientLive,
-	NetworkError,
-	runWithClient,
 	serializeQueryParams,
 	ValidationError,
 } from "@sferadev/openapi-utils/effect";
@@ -1612,7 +1607,7 @@ export function readAccessGroup({
 
 		const url = `/v1/access-groups/${idOrName}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -1655,7 +1650,7 @@ export function updateAccessGroup({
 
 		const url = `/v1/access-groups/${idOrName}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -1698,7 +1693,7 @@ export function deleteAccessGroup({
 
 		const url = `/v1/access-groups/${idOrName}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -1745,7 +1740,7 @@ export function listAccessGroupMembers({
 
 		const url = `/v1/access-groups/${idOrName}/members`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -1777,7 +1772,7 @@ export function listAccessGroups({
 
 		const url = "/v1/access-groups";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -1809,7 +1804,7 @@ export function createAccessGroup({
 
 		const url = "/v1/access-groups";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -1856,7 +1851,7 @@ export function listAccessGroupProjects({
 
 		const url = `/v1/access-groups/${idOrName}/projects`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -1903,7 +1898,7 @@ export function createAccessGroupProject({
 
 		const url = `/v1/access-groups/${accessGroupIdOrName}/projects`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -1958,7 +1953,7 @@ export function readAccessGroupProject({
 
 		const url = `/v1/access-groups/${accessGroupIdOrName}/projects/${projectId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -2013,7 +2008,7 @@ export function updateAccessGroupProject({
 
 		const url = `/v1/access-groups/${accessGroupIdOrName}/projects/${projectId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -2068,7 +2063,7 @@ export function deleteAccessGroupProject({
 
 		const url = `/v1/access-groups/${accessGroupIdOrName}/projects/${projectId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -2107,7 +2102,7 @@ export function recordEvents({
 
 		const url = "/v8/artifacts/events";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -2139,7 +2134,7 @@ export function status({
 
 		const url = "/v8/artifacts/status";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -2189,7 +2184,7 @@ export function uploadArtifact({
 
 		const url = `/v8/artifacts/${hash}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "PUT",
@@ -2240,7 +2235,7 @@ export function downloadArtifact({
 
 		const url = `/v8/artifacts/${hash}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -2277,7 +2272,7 @@ export function artifactQuery({
 
 		const url = "/v8/artifacts";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -2314,7 +2309,7 @@ export function stageRedirects({
 
 		const url = "/v1/bulk-redirects";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "PUT",
@@ -2351,7 +2346,7 @@ export function getRedirects({
 
 		const url = "/v1/bulk-redirects";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -2389,7 +2384,7 @@ export function deleteRedirects({
 
 		const url = "/v1/bulk-redirects";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -2427,7 +2422,7 @@ export function editRedirect({
 
 		const url = "/v1/bulk-redirects";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -2465,7 +2460,7 @@ export function restoreRedirects({
 
 		const url = "/v1/bulk-redirects/restore";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -2497,7 +2492,7 @@ export function getVersions({
 
 		const url = "/v1/bulk-redirects/versions";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -2535,7 +2530,7 @@ export function updateVersion({
 
 		const url = "/v1/bulk-redirects/versions";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -2578,7 +2573,7 @@ export function createCheck({
 
 		const url = `/v1/deployments/${deploymentId}/checks`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -2626,7 +2621,7 @@ export function getAllChecks({
 
 		const url = `/v1/deployments/${deploymentId}/checks`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -2677,7 +2672,7 @@ export function getCheck({
 
 		const url = `/v1/deployments/${deploymentId}/checks/${checkId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -2734,7 +2729,7 @@ export function updateCheck({
 
 		const url = `/v1/deployments/${deploymentId}/checks/${checkId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -2790,7 +2785,7 @@ export function rerequestCheck({
 
 		const url = `/v1/deployments/${deploymentId}/checks/${checkId}/rerequest`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -2822,7 +2817,7 @@ export function listNetworks({
 
 		const url = "/v1/connect/networks";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -2861,7 +2856,7 @@ export function createNetwork({
 
 		const url = "/v1/connect/networks";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -2911,7 +2906,7 @@ export function deleteNetwork({
 
 		const url = `/v1/connect/networks/${networkId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -2954,7 +2949,7 @@ export function updateNetwork({
 
 		const url = `/v1/connect/networks/${networkId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -2997,7 +2992,7 @@ export function readNetwork({
 
 		const url = `/v1/connect/networks/${networkId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -3045,7 +3040,7 @@ export function updateProjectDataCache({
 
 		const url = `/v1/data-cache/projects/${projectId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -3093,7 +3088,7 @@ export function getDeploymentEvents({
 
 		const url = `/v3/deployments/${idOrUrl}/events`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -3204,7 +3199,7 @@ export function getDeployment({
 
 		const url = `/v13/deployments/${idOrUrl}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -3244,7 +3239,7 @@ export function createDeployment({
 
 		const url = "/v13/deployments";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -3292,7 +3287,7 @@ export function cancelDeployment({
 
 		const url = `/v12/deployments/${id}/cancel`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -3335,7 +3330,7 @@ export function getRecords({
 
 		const url = `/v4/domains/${domain}/records`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -3385,7 +3380,7 @@ export function createRecord({
 
 		const url = `/v2/domains/${domain}/records`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -3435,7 +3430,7 @@ export function updateRecord({
 
 		const url = `/v1/domains/records/${recordId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -3491,7 +3486,7 @@ export function removeRecord({
 
 		const url = `/v2/domains/${domain}/records/${recordId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -3529,7 +3524,7 @@ export function getSupportedTlds({
 
 		const url = "/v1/registrar/tlds/supported";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -3578,7 +3573,7 @@ export function getTldPrice({
 
 		const url = `/v1/registrar/tlds/${tld}/price`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -3628,7 +3623,7 @@ export function getDomainAvailability({
 
 		const url = `/v1/registrar/domains/${domain}/availability`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -3677,7 +3672,7 @@ export function getDomainPrice({
 
 		const url = `/v1/registrar/domains/${domain}/price`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -3715,7 +3710,7 @@ export function getBulkAvailability({
 
 		const url = "/v1/registrar/domains/availability";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -3766,7 +3761,7 @@ export function getDomainAuthCode({
 
 		const url = `/v1/registrar/domains/${domain}/auth-code`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -3815,7 +3810,7 @@ export function buySingleDomain({
 
 		const url = `/v1/registrar/domains/${domain}/buy`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -3853,7 +3848,7 @@ export function buyDomains({
 
 		const url = "/v1/registrar/domains/buy";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -3902,7 +3897,7 @@ export function transferInDomain({
 
 		const url = `/v1/registrar/domains/${domain}/transfer`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -3952,7 +3947,7 @@ export function getDomainTransferIn({
 
 		const url = `/v1/registrar/domains/${domain}/transfer`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -4002,7 +3997,7 @@ export function renewDomain({
 
 		const url = `/v1/registrar/domains/${domain}/renew`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -4052,7 +4047,7 @@ export function updateDomainAutoRenew({
 
 		const url = `/v1/registrar/domains/${domain}/auto-renew`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -4102,7 +4097,7 @@ export function updateDomainNameservers({
 
 		const url = `/v1/registrar/domains/${domain}/nameservers`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -4151,7 +4146,7 @@ export function getContactInfoSchema({
 
 		const url = `/v1/registrar/domains/${domain}/contact-info/schema`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -4201,7 +4196,7 @@ export function getOrder({
 
 		const url = `/v1/registrar/orders/${orderId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -4244,7 +4239,7 @@ export function getDomainConfig({
 
 		const url = `/v6/domains/${domain}/config`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -4287,7 +4282,7 @@ export function getDomain({
 
 		const url = `/v5/domains/${domain}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -4319,7 +4314,7 @@ export function getDomains({
 
 		const url = "/v5/domains";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -4358,7 +4353,7 @@ export function createOrTransferDomain({
 
 		const url = "/v7/domains";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -4408,7 +4403,7 @@ export function patchDomain({
 
 		const url = `/v3/domains/${domain}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -4457,7 +4452,7 @@ export function deleteDomain({
 
 		const url = `/v6/domains/${domain}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -4505,7 +4500,7 @@ export function getConfigurableLogDrain({
 
 		const url = `/v1/log-drains/${id}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -4553,7 +4548,7 @@ export function deleteConfigurableLogDrain({
 
 		const url = `/v1/log-drains/${id}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -4590,7 +4585,7 @@ export function getAllLogDrains({
 
 		const url = "/v1/log-drains";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -4626,7 +4621,7 @@ export function createConfigurableLogDrain({
 
 		const url = "/v1/log-drains";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -4658,7 +4653,7 @@ export function createDrain({
 
 		const url = "/v1/drains";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -4690,7 +4685,7 @@ export function getDrains({
 
 		const url = "/v1/drains";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -4733,7 +4728,7 @@ export function deleteDrain({
 
 		const url = `/v1/drains/${id}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -4776,7 +4771,7 @@ export function getDrain({
 
 		const url = `/v1/drains/${id}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -4819,7 +4814,7 @@ export function updateDrain({
 
 		const url = `/v1/drains/${id}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -4851,7 +4846,7 @@ export function testDrain({
 
 		const url = "/v1/drains/test";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -4888,7 +4883,7 @@ export function invalidateByTags({
 
 		const url = "/v1/edge-cache/invalidate-by-tags";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -4925,7 +4920,7 @@ export function dangerouslyDeleteByTags({
 
 		const url = "/v1/edge-cache/dangerously-delete-by-tags";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -4963,7 +4958,7 @@ export function invalidateBySrcImages({
 
 		const url = "/v1/edge-cache/invalidate-by-src-images";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -5001,7 +4996,7 @@ export function dangerouslyDeleteBySrcImages({
 
 		const url = "/v1/edge-cache/dangerously-delete-by-src-images";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -5033,7 +5028,7 @@ export function getEdgeConfigs({
 
 		const url = "/v1/edge-config";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -5070,7 +5065,7 @@ export function createEdgeConfig({
 
 		const url = "/v1/edge-config";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -5118,7 +5113,7 @@ export function getEdgeConfig({
 
 		const url = `/v1/edge-config/${edgeConfigId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -5168,7 +5163,7 @@ export function updateEdgeConfig({
 
 		const url = `/v1/edge-config/${edgeConfigId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "PUT",
@@ -5217,7 +5212,7 @@ export function deleteEdgeConfig({
 
 		const url = `/v1/edge-config/${edgeConfigId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -5265,7 +5260,7 @@ export function getEdgeConfigItems({
 
 		const url = `/v1/edge-config/${edgeConfigId}/items`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -5316,7 +5311,7 @@ export function patchEdgeConfigItems({
 
 		const url = `/v1/edge-config/${edgeConfigId}/items`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -5364,7 +5359,7 @@ export function getEdgeConfigSchema({
 
 		const url = `/v1/edge-config/${edgeConfigId}/schema`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -5414,7 +5409,7 @@ export function patchEdgeConfigSchema({
 
 		const url = `/v1/edge-config/${edgeConfigId}/schema`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -5464,7 +5459,7 @@ export function deleteEdgeConfigSchema({
 
 		const url = `/v1/edge-config/${edgeConfigId}/schema`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -5520,7 +5515,7 @@ export function getEdgeConfigItem({
 
 		const url = `/v1/edge-config/${edgeConfigId}/item/${edgeConfigItemKey}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -5568,7 +5563,7 @@ export function getEdgeConfigTokens({
 
 		const url = `/v1/edge-config/${edgeConfigId}/tokens`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -5618,7 +5613,7 @@ export function deleteEdgeConfigTokens({
 
 		const url = `/v1/edge-config/${edgeConfigId}/tokens`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -5674,7 +5669,7 @@ export function getEdgeConfigToken({
 
 		const url = `/v1/edge-config/${edgeConfigId}/token/${token}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -5724,7 +5719,7 @@ export function createEdgeConfigToken({
 
 		const url = `/v1/edge-config/${edgeConfigId}/token`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -5780,7 +5775,7 @@ export function getEdgeConfigBackup({
 
 		const url = `/v1/edge-config/${edgeConfigId}/backups/${edgeConfigBackupVersionId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -5828,7 +5823,7 @@ export function getEdgeConfigBackups({
 
 		const url = `/v1/edge-config/${edgeConfigId}/backups`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -5865,7 +5860,7 @@ export function createSharedEnvVariable({
 
 		const url = "/v1/env";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -5902,7 +5897,7 @@ export function listSharedEnvVariable({
 
 		const url = "/v1/env";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -5939,7 +5934,7 @@ export function updateSharedEnvVariable({
 
 		const url = "/v1/env";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -5976,7 +5971,7 @@ export function deleteSharedEnvVariable({
 
 		const url = "/v1/env";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -6019,7 +6014,7 @@ export function getSharedEnvVar({
 
 		const url = `/v1/env/${id}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -6074,7 +6069,7 @@ export function unlinkSharedEnvVariable({
 
 		const url = `/v1/env/${id}/unlink/${projectId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -6106,7 +6101,7 @@ export function listUserEvents({
 
 		const url = "/v3/events";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -6145,7 +6140,7 @@ export function gitNamespaces({
 
 		const url = "/v1/integrations/git-namespaces";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -6184,7 +6179,7 @@ export function searchRepo({
 
 		const url = "/v1/integrations/search-repo";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -6240,7 +6235,7 @@ export function getBillingPlans({
 
 		const url = `/v1/integrations/integration/${integrationIdOrSlug}/products/${productIdOrSlug}/plans`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -6296,7 +6291,7 @@ export function connectIntegrationResourceToProject({
 
 		const url = `/v1/integrations/installations/${integrationConfigurationId}/resources/${resourceId}/connections`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -7124,7 +7119,7 @@ export function getConfigurations({
 
 		const url = "/v1/integrations/configurations";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -7172,7 +7167,7 @@ export function getConfiguration({
 
 		const url = `/v1/integrations/configuration/${id}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -7220,7 +7215,7 @@ export function deleteConfiguration({
 
 		const url = `/v1/integrations/configuration/${id}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -7269,7 +7264,7 @@ export function getConfigurationProducts({
 
 		const url = `/v1/integrations/configuration/${id}/products`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -7332,7 +7327,7 @@ export function getIntegrationLogDrains({
 
 		const url = "/v2/integrations/log-drains";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -7364,7 +7359,7 @@ export function createLogDrain({
 
 		const url = "/v2/integrations/log-drains";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -7412,7 +7407,7 @@ export function deleteIntegrationLogDrain({
 
 		const url = `/v1/integrations/log-drains/${id}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -7463,7 +7458,7 @@ export function getRuntimeLogs({
 
 		const url = `/v1/projects/${projectId}/deployments/${deploymentId}/runtime-logs`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -7736,7 +7731,7 @@ export function getProjectMembers({
 
 		const url = `/v1/projects/${idOrName}/members`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -7784,7 +7779,7 @@ export function addProjectMember({
 
 		const url = `/v1/projects/${idOrName}/members`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -7839,7 +7834,7 @@ export function removeProjectMember({
 
 		const url = `/v1/projects/${idOrName}/members/${uid}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -7871,7 +7866,7 @@ export function getProjects({
 
 		const url = "/v10/projects";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -7913,7 +7908,7 @@ export function createProject({
 
 		const url = "/v11/projects";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -7956,7 +7951,7 @@ export function getProject({
 
 		const url = `/v9/projects/${idOrName}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -8007,7 +8002,7 @@ export function updateProject({
 
 		const url = `/v9/projects/${idOrName}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -8055,7 +8050,7 @@ export function deleteProject({
 
 		const url = `/v9/projects/${idOrName}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -8106,7 +8101,7 @@ export function updateStaticIps({
 
 		const url = `/v1/projects/${idOrName}/shared-connect-links`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -8155,7 +8150,7 @@ export function createCustomEnvironment({
 
 		const url = `/v9/projects/${idOrName}/custom-environments`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -8202,7 +8197,7 @@ export function listCustomEnvironments({
 
 		const url = `/v9/projects/${idOrName}/custom-environments`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -8258,7 +8253,7 @@ export function getCustomEnvironment({
 
 		const url = `/v9/projects/${idOrName}/custom-environments/${environmentSlugOrId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -8315,7 +8310,7 @@ export function updateCustomEnvironment({
 
 		const url = `/v9/projects/${idOrName}/custom-environments/${environmentSlugOrId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -8370,7 +8365,7 @@ export function removeCustomEnvironment({
 
 		const url = `/v9/projects/${idOrName}/custom-environments/${environmentSlugOrId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -8413,7 +8408,7 @@ export function getProjectDomains({
 
 		const url = `/v9/projects/${idOrName}/domains`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -8464,7 +8459,7 @@ export function getProjectDomain({
 
 		const url = `/v9/projects/${idOrName}/domains/${domain}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -8520,7 +8515,7 @@ export function updateProjectDomain({
 
 		const url = `/v9/projects/${idOrName}/domains/${domain}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -8577,7 +8572,7 @@ export function removeProjectDomain({
 
 		const url = `/v9/projects/${idOrName}/domains/${domain}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -8626,7 +8621,7 @@ export function addProjectDomain({
 
 		const url = `/v10/projects/${idOrName}/domains`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -8682,7 +8677,7 @@ export function moveProjectDomain({
 
 		const url = `/v1/projects/${idOrName}/domains/${domain}/move`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -8737,7 +8732,7 @@ export function verifyProjectDomain({
 
 		const url = `/v9/projects/${idOrName}/domains/${domain}/verify`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -8780,7 +8775,7 @@ export function filterProjectEnvs({
 
 		const url = `/v10/projects/${idOrName}/env`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -8832,7 +8827,7 @@ export function createProjectEnv({
 
 		const url = `/v10/projects/${idOrName}/env`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -8883,7 +8878,7 @@ export function getProjectEnv({
 
 		const url = `/v1/projects/${idOrName}/env/${id}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -8940,7 +8935,7 @@ export function removeProjectEnv({
 
 		const url = `/v9/projects/${idOrName}/env/${id}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -8999,7 +8994,7 @@ export function editProjectEnv({
 
 		const url = `/v9/projects/${idOrName}/env/${id}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -9048,7 +9043,7 @@ export function batchRemoveProjectEnv({
 
 		const url = `/v1/projects/${idOrName}/env`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -9096,7 +9091,7 @@ export function getRollingReleaseBillingStatus({
 
 		const url = `/v1/projects/${idOrName}/rolling-release/billing`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -9144,7 +9139,7 @@ export function getRollingReleaseConfig({
 
 		const url = `/v1/projects/${idOrName}/rolling-release/config`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -9192,7 +9187,7 @@ export function deleteRollingReleaseConfig({
 
 		const url = `/v1/projects/${idOrName}/rolling-release/config`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -9240,7 +9235,7 @@ export function updateRollingReleaseConfig({
 
 		const url = `/v1/projects/${idOrName}/rolling-release/config`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -9288,7 +9283,7 @@ export function getRollingRelease({
 
 		const url = `/v1/projects/${idOrName}/rolling-release`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -9337,7 +9332,7 @@ export function approveRollingReleaseStage({
 
 		const url = `/v1/projects/${idOrName}/rolling-release/approve-stage`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -9385,7 +9380,7 @@ export function completeRollingRelease({
 
 		const url = `/v1/projects/${idOrName}/rolling-release/complete`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -9432,7 +9427,7 @@ export function createProjectTransferRequest({
 
 		const url = `/projects/${idOrName}/transfer-request`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -9481,7 +9476,7 @@ export function acceptProjectTransferRequest({
 
 		const url = `/projects/transfer-request/${code}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "PUT",
@@ -9530,7 +9525,7 @@ export function updateProjectProtectionBypass({
 
 		const url = `/v1/projects/${idOrName}/protection-bypass`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -9586,7 +9581,7 @@ export function requestPromote({
 
 		const url = `/v10/projects/${projectId}/promote/${deploymentId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -9634,7 +9629,7 @@ export function listPromoteAliases({
 
 		const url = `/v1/projects/${projectId}/promote/aliases`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -9682,7 +9677,7 @@ export function pauseProject({
 
 		const url = `/v1/projects/${projectId}/pause`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -9730,7 +9725,7 @@ export function unpauseProject({
 
 		const url = `/v1/projects/${projectId}/unpause`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -9767,7 +9762,7 @@ export function updateAttackChallengeMode({
 
 		const url = "/v1/security/attack-mode";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -9806,7 +9801,7 @@ export function putFirewallConfig({
 
 		const url = "/v1/security/firewall/config";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "PUT",
@@ -9845,7 +9840,7 @@ export function updateFirewallConfig({
 
 		const url = "/v1/security/firewall/config";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -9893,7 +9888,7 @@ export function getFirewallConfig({
 
 		const url = `/v1/security/firewall/config/${configVersion}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -9930,7 +9925,7 @@ export function getActiveAttackStatus({
 
 		const url = "/v1/security/firewall/attack-status";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -9968,7 +9963,7 @@ export function getBypassIp({
 
 		const url = "/v1/security/firewall/bypass";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -10006,7 +10001,7 @@ export function addBypassIp({
 
 		const url = "/v1/security/firewall/bypass";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -10044,7 +10039,7 @@ export function removeBypassIp({
 
 		const url = "/v1/security/firewall/bypass";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -10082,7 +10077,7 @@ export function gETV1SecurityFirewallEvents({
 
 		const url = "/v1/security/firewall/events";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -10123,7 +10118,7 @@ export function createIntegrationStoreDirect({
 
 		const url = "/v1/storage/stores/integration/direct";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -10171,7 +10166,7 @@ export function getTeamMembers({
 
 		const url = `/v3/teams/${teamId}/members`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -10468,7 +10463,7 @@ export function removeTeamMember({
 
 		const url = `/v1/teams/${teamId}/members/${uid}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -10511,7 +10506,7 @@ export function getTeam({
 
 		const url = `/v2/teams/${teamId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -10560,7 +10555,7 @@ export function patchTeam({
 
 		const url = `/v2/teams/${teamId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -10592,7 +10587,7 @@ export function getTeams({
 
 		const url = "/v2/teams";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -10666,7 +10661,7 @@ export function postTeamDsyncRoles({
 
 		const url = `/v1/teams/${teamId}/dsync-roles`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -10715,7 +10710,7 @@ export function deleteTeam({
 
 		const url = `/v1/teams/${teamId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -10802,7 +10797,7 @@ export function uploadFile({
 
 		const url = "/v2/files";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -10861,7 +10856,7 @@ export function createAuthToken({
 
 		const url = "/v3/user/tokens";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -11042,7 +11037,7 @@ export function createWebhook({
 
 		const url = "/v1/webhooks";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -11074,7 +11069,7 @@ export function getWebhooks({
 
 		const url = "/v1/webhooks";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -11117,7 +11112,7 @@ export function getWebhook({
 
 		const url = `/v1/webhooks/${id}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -11160,7 +11155,7 @@ export function deleteWebhook({
 
 		const url = `/v1/webhooks/${id}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -11208,7 +11203,7 @@ export function listDeploymentAliases({
 
 		const url = `/v2/deployments/${id}/aliases`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -11258,7 +11253,7 @@ export function assignAlias({
 
 		const url = `/v2/deployments/${id}/aliases`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -11290,7 +11285,7 @@ export function listAliases({
 
 		const url = "/v4/aliases";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -11333,7 +11328,7 @@ export function getAlias({
 
 		const url = `/v4/aliases/${idOrAlias}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -11376,7 +11371,7 @@ export function deleteAlias({
 
 		const url = `/v2/aliases/${aliasId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -11427,7 +11422,7 @@ export function patchUrlProtectionBypass({
 
 		const url = `/aliases/${id}/protection-bypass`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -11470,7 +11465,7 @@ export function getCertById({
 
 		const url = `/v8/certs/${id}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -11513,7 +11508,7 @@ export function removeCert({
 
 		const url = `/v8/certs/${id}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -11553,7 +11548,7 @@ export function issueCert({
 
 		const url = "/v8/certs";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -11585,7 +11580,7 @@ export function uploadCert({
 
 		const url = "/v8/certs";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "PUT",
@@ -11633,7 +11628,7 @@ export function listDeploymentFiles({
 
 		const url = `/v6/deployments/${id}/files`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -11690,7 +11685,7 @@ export function getDeploymentFileContents({
 
 		const url = `/v8/deployments/${id}/files/${fileId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -11728,7 +11723,7 @@ export function getDeployments({
 
 		const url = "/v6/deployments";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -11776,7 +11771,7 @@ export function deleteDeployment({
 
 		const url = `/v13/deployments/${id}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
