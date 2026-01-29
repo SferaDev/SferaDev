@@ -50,7 +50,7 @@ catalog:
   drizzle-kit: 0.31.8
   drizzle-orm: 0.45.1
   es-module-lexer: 2.0.0
-  fast-check: ^3.23.2
+  fast-check: 3.23.2
   framer-motion: 12.29.0
   geist: 1.5.1
   gray-matter: 4.0.3

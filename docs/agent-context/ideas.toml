@@ -1,7 +1,0 @@
-[meta]
-schema_version = "1.0.0"
-exo_version = "0.1.0"
-# READ-ONLY: Use 'exo' CLI to modify this file.
-# Ideas Backlog
-
-# Add ideas using: exo idea "Your idea title"
