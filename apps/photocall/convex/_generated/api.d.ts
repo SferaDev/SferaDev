@@ -1,10 +1,8 @@
 /* eslint-disable */
-// This file is a stub for builds before running convex dev
+// This file is a stub for TypeScript checking before running convex dev
 // Running `npx convex dev` will generate the actual file with proper types
 
-import { anyApi } from "convex/server";
-
-export const api = anyApi as {
+export declare const api: {
 	auth: {
 		signIn: any;
 		signOut: any;
@@ -90,11 +88,11 @@ export const api = anyApi as {
 	};
 };
 
-export const components = anyApi as {
+export declare const components: {
 	betterAuth: any;
 };
 
-export const internal = anyApi as {
+export declare const internal: {
 	stripe: {
 		getOrganization: any;
 		updateStripeCustomerId: any;

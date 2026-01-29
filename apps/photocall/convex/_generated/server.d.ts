@@ -1,5 +1,5 @@
 /* eslint-disable */
-// This file is a stub for builds before running convex dev
+// This file is a stub for TypeScript checking before running convex dev
 // Running `npx convex dev` will generate the actual file with proper types
 
 export {
