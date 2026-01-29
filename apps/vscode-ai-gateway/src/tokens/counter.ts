@@ -6,31 +6,12 @@ import { LRUCache } from "./lru-cache";
 
 type Encoding = {
 	encode: (text: string) => number[];
-	free?: () => void;
 };
 
-const FALLBACK_CHARS_PER_TOKEN = 3.5;
-
-/**
- * Structural overhead for system prompt (Anthropic SDK wrapping).
- * Based on GCMP research: system message formatting adds ~28 tokens.
- */
+const CHARS_PER_TOKEN = 3.5;
 const SYSTEM_PROMPT_OVERHEAD = 28;
-
-/**
- * Base overhead for the tools array structure.
- */
 const TOOLS_BASE_OVERHEAD = 16;
-
-/**
- * Per-tool structural overhead.
- */
 const PER_TOOL_OVERHEAD = 8;
-
-/**
- * Safety multiplier for tool token estimates.
- * From official vscode-copilot-chat implementation.
- */
 const TOOL_SAFETY_MULTIPLIER = 1.1;
 
 export class TokenCounter {
@@ -39,166 +20,109 @@ export class TokenCounter {
 
 	estimateTextTokens(text: string, modelFamily: string): number {
 		if (!text) return 0;
-		const textHash = crypto.createHash("sha256").update(text).digest("hex").slice(0, 16);
-		const cacheKey = `${modelFamily}:${textHash}`;
+
+		const cacheKey = `${modelFamily}:${crypto.createHash("sha256").update(text).digest("hex").slice(0, 16)}`;
 		const cached = this.textCache.get(cacheKey);
-		if (cached !== undefined) {
-			return cached;
-		}
-		const encoding = this.getEncodingForFamily(modelFamily);
-		if (encoding) {
-			const count = encoding.encode(text).length;
-			logger.trace(
-				`Text token estimate: ${count} tokens for ${text.length} chars (family: ${modelFamily})`,
-			);
-			this.textCache.put(cacheKey, count);
-			return count;
-		}
-		const count = this.estimateByChars(text);
-		logger.trace(
-			`Text token estimate: ${count} tokens for ${text.length} chars (family: ${modelFamily})`,
-		);
+		if (cached !== undefined) return cached;
+
+		const encoding = this.getEncoding(modelFamily);
+		const count = encoding
+			? encoding.encode(text).length
+			: Math.ceil(text.length / CHARS_PER_TOKEN);
+
 		this.textCache.put(cacheKey, count);
 		return count;
 	}
 
 	estimateMessageTokens(message: vscode.LanguageModelChatMessage, modelFamily: string): number {
 		let total = 0;
+
 		for (const part of message.content) {
 			if (part instanceof vscode.LanguageModelTextPart) {
 				total += this.estimateTextTokens(part.value, modelFamily);
 			} else if (part instanceof vscode.LanguageModelDataPart) {
 				if (part.mimeType.startsWith("image/")) {
-					total += this.estimateImageTokens(modelFamily, part);
+					total += this.estimateImageTokens(modelFamily, part.data.byteLength);
 				} else {
-					const decoded = new TextDecoder().decode(part.data);
-					total += this.estimateTextTokens(decoded, modelFamily);
+					total += this.estimateTextTokens(new TextDecoder().decode(part.data), modelFamily);
 				}
 			} else if (part instanceof vscode.LanguageModelToolCallPart) {
-				total += this.estimateToolCallTokens(part, modelFamily);
+				total +=
+					this.estimateTextTokens(
+						`${part.name}\n${JSON.stringify(part.input ?? {})}`,
+						modelFamily,
+					) + 4;
 			} else if (part instanceof vscode.LanguageModelToolResultPart) {
 				total += this.estimateToolResultTokens(part, modelFamily);
 			}
 		}
-		logger.trace(`Message token estimate: ${total} tokens (family: ${modelFamily})`);
+
 		return total;
 	}
 
-	applySafetyMargin(tokens: number, margin: number): number {
-		const result = Math.ceil(tokens * (1 + margin));
-		logger.trace(`Applied ${margin * 100}% safety margin: ${tokens} -> ${result}`);
-		return result;
-	}
-
-	/**
-	 * Count tokens for tool schemas.
-	 *
-	 * Formula from GCMP research: 16 base + 8/tool + content × 1.1
-	 * This is CRITICAL - tool schemas can be 50k+ tokens and are the
-	 * primary cause of token underestimation.
-	 */
 	countToolsTokens(
 		tools: readonly { name: string; description?: string; inputSchema?: unknown }[] | undefined,
 		modelFamily: string,
 	): number {
 		if (!tools || tools.length === 0) return 0;
 
-		let numTokens = TOOLS_BASE_OVERHEAD;
-
+		let tokens = TOOLS_BASE_OVERHEAD;
 		for (const tool of tools) {
-			numTokens += PER_TOOL_OVERHEAD;
-			numTokens += this.estimateTextTokens(tool.name, modelFamily);
-			numTokens += this.estimateTextTokens(tool.description || "", modelFamily);
-			numTokens += this.estimateTextTokens(JSON.stringify(tool.inputSchema ?? {}), modelFamily);
+			tokens += PER_TOOL_OVERHEAD;
+			tokens += this.estimateTextTokens(tool.name, modelFamily);
+			tokens += this.estimateTextTokens(tool.description || "", modelFamily);
+			tokens += this.estimateTextTokens(JSON.stringify(tool.inputSchema ?? {}), modelFamily);
 		}
 
-		const result = Math.ceil(numTokens * TOOL_SAFETY_MULTIPLIER);
-		logger.debug(
-			`Tool schema token estimate: ${result} tokens for ${tools.length} tools (family: ${modelFamily})`,
-		);
-		return result;
+		return Math.ceil(tokens * TOOL_SAFETY_MULTIPLIER);
 	}
 
-	/**
-	 * Count tokens for system prompt including structural overhead.
-	 *
-	 * The 28-token overhead accounts for Anthropic SDK system message
-	 * formatting and structural wrapping.
-	 */
 	countSystemPromptTokens(systemPrompt: string | undefined, modelFamily: string): number {
 		if (!systemPrompt) return 0;
-
-		const textTokens = this.estimateTextTokens(systemPrompt, modelFamily);
-		const result = textTokens + SYSTEM_PROMPT_OVERHEAD;
-		logger.debug(
-			`System prompt token estimate: ${result} tokens (${textTokens} text + ${SYSTEM_PROMPT_OVERHEAD} overhead)`,
-		);
-		return result;
-	}
-
-	usesCharacterFallback(modelFamily: string): boolean {
-		const fallback = this.getEncodingForFamily(modelFamily) === undefined;
-		if (fallback) {
-			logger.debug(`Using character fallback for family: ${modelFamily}`);
-		}
-		return fallback;
-	}
-
-	private estimateByChars(text: string): number {
-		return Math.ceil(text.length / FALLBACK_CHARS_PER_TOKEN);
-	}
-
-	private estimateToolCallTokens(
-		part: vscode.LanguageModelToolCallPart,
-		modelFamily: string,
-	): number {
-		const inputJson = JSON.stringify(part.input ?? {});
-		const payload = `${part.name}\n${inputJson}`;
-		return this.estimateTextTokens(payload, modelFamily) + 4;
+		return this.estimateTextTokens(systemPrompt, modelFamily) + SYSTEM_PROMPT_OVERHEAD;
 	}
 
 	private estimateToolResultTokens(
 		part: vscode.LanguageModelToolResultPart,
 		modelFamily: string,
 	): number {
-		let total = this.estimateTextTokens(part.callId ?? "", modelFamily) + 4;
+		let total = 4;
 		for (const resultPart of part.content) {
 			if (typeof resultPart === "object" && resultPart !== null && "value" in resultPart) {
-				total += this.estimateTextTokens(String(resultPart.value), modelFamily);
+				total += this.estimateTextTokens(
+					String((resultPart as { value: unknown }).value),
+					modelFamily,
+				);
 			}
 		}
 		return total;
 	}
 
-	private estimateImageTokens(
-		modelFamily: string,
-		imagePart: vscode.LanguageModelDataPart,
-	): number {
+	private estimateImageTokens(modelFamily: string, dataSize: number): number {
 		const family = modelFamily.toLowerCase();
 
+		// Anthropic uses fixed token count for images
 		if (family.includes("anthropic") || family.includes("claude")) {
 			return 1600;
 		}
 
-		const dataSize = imagePart.data.byteLength;
-		const estimatedPixels = dataSize / 3;
-		const estimatedDimension = Math.sqrt(estimatedPixels);
+		// OpenAI tile-based calculation
+		const estimatedDimension = Math.sqrt(dataSize / 3);
 		const scaledDimension = Math.min(estimatedDimension, 2048);
-		const tilesPerSide = Math.ceil(scaledDimension / 512);
-		const totalTiles = tilesPerSide * tilesPerSide;
-		const openAITokens = 85 + totalTiles * 85;
-
-		return Math.min(openAITokens, 1700);
+		const tiles = Math.ceil(scaledDimension / 512) ** 2;
+		return Math.min(85 + tiles * 85, 1700);
 	}
 
-	private getEncodingForFamily(modelFamily: string): Encoding | undefined {
-		const encodingName = this.resolveEncodingName(modelFamily);
-		if (this.encodings.has(encodingName)) {
-			return this.encodings.get(encodingName);
+	private getEncoding(modelFamily: string): Encoding | undefined {
+		const name = this.resolveEncodingName(modelFamily);
+
+		if (this.encodings.has(name)) {
+			return this.encodings.get(name);
 		}
+
 		try {
-			const encoding = getEncoding(encodingName) as Encoding;
-			this.encodings.set(encodingName, encoding);
+			const encoding = getEncoding(name) as Encoding;
+			this.encodings.set(name, encoding);
 			return encoding;
 		} catch {
 			return undefined;

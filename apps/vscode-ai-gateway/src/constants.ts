@@ -12,20 +12,8 @@ export const DEFAULT_SYSTEM_PROMPT_MESSAGE =
 	"You are being accessed through the Vercel AI Gateway VS Code extension. The user is interacting with you via VS Code's chat interface.";
 
 // Token estimation constants
-/** Overhead tokens per message for structural formatting (~4 tokens/message) */
 export const MESSAGE_OVERHEAD_TOKENS = 4;
-/** Multiplier applied to token estimates after learning from "input too long" errors */
-export const LEARNED_TOKEN_CORRECTION_MULTIPLIER = 1.5;
-/** Threshold (as fraction of max) above which to warn about token usage */
 export const TOKEN_WARNING_THRESHOLD = 0.9;
-
-// Safety margin constants for token estimation
-/** Safety margin for cached/actual token counts (2%) */
-export const SAFETY_MARGIN_CACHED = 0.02;
-/** Safety margin for tiktoken-estimated counts (5%) */
-export const SAFETY_MARGIN_ESTIMATED = 0.05;
-/** Safety margin for character-based fallback estimates (10%) */
-export const SAFETY_MARGIN_CHARACTER_FALLBACK = 0.1;
 
 export const ERROR_MESSAGES = {
 	AUTH_FAILED: "Failed to authenticate with Vercel AI Gateway. Please try again.",
