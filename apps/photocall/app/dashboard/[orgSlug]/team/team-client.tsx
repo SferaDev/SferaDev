@@ -1,5 +1,6 @@
 "use client";
 
+import type { FunctionReturnType } from "convex/server";
 import { useConvexAuth, useMutation, useQuery } from "convex/react";
 import { ChevronLeft, Crown, Loader2, Mail, Plus, Shield, Trash2, User, X } from "lucide-react";
 import Link from "next/link";
@@ -27,7 +28,9 @@ import {
 } from "@/components/ui/select";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
-import type { Invitation, OrganizationMember } from "@/convex/lib/types";
+
+type Member = NonNullable<FunctionReturnType<typeof api.organizations.getMembers>>[number];
+type Invitation = NonNullable<FunctionReturnType<typeof api.organizations.getInvitations>>[number];
 
 export default function TeamPage() {
 	const { isAuthenticated, isLoading: authLoading } = useConvexAuth();
@@ -207,7 +210,7 @@ export default function TeamPage() {
 				<div className="mb-8">
 					<h2 className="text-lg font-semibold mb-4">Members ({members?.length ?? 0})</h2>
 					<div className="border rounded-lg divide-y">
-						{members?.map((member: OrganizationMember) => (
+						{members?.map((member: Member) => (
 							<div key={member._id} className="p-4 flex items-center justify-between">
 								<div className="flex items-center gap-3">
 									<Avatar>

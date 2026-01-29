@@ -1,5 +1,6 @@
 "use client";
 
+import type { FunctionReturnType } from "convex/server";
 import { useMutation, useQuery } from "convex/react";
 import { ArrowRight, Building2, Camera, Loader2, Plus, Users } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -17,8 +18,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { api } from "@/convex/_generated/api";
-import type { OrganizationWithRole } from "@/convex/lib/types";
 import { authClient, useSession } from "@/lib/auth-client";
+
+type Organization = NonNullable<FunctionReturnType<typeof api.users.getOrganizations>>[number];
 
 export default function DashboardClient() {
 	const { data: session, isPending: authLoading } = useSession();
@@ -137,7 +139,7 @@ export default function DashboardClient() {
 					</div>
 				) : (
 					<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-						{organizations.map((org: OrganizationWithRole) => (
+						{organizations.map((org: Organization) => (
 							<button
 								key={org._id}
 								type="button"

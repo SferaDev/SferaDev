@@ -1,5 +1,6 @@
 "use client";
 
+import type { FunctionReturnType } from "convex/server";
 import { useConvexAuth, useMutation, useQuery } from "convex/react";
 import {
 	BarChart3,
@@ -31,7 +32,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
-import type { Event } from "@/convex/lib/types";
+
+type Event = NonNullable<FunctionReturnType<typeof api.events.list>>[number];
 
 export default function OrganizationDashboard() {
 	const { isAuthenticated, isLoading: authLoading } = useConvexAuth();

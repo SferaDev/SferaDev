@@ -1,12 +1,14 @@
 "use client";
 
+import type { FunctionReturnType } from "convex/server";
 import { useMutation, useQuery } from "convex/react";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
-import type { TemplateWithUrls } from "@/convex/lib/types";
+
+type Template = NonNullable<FunctionReturnType<typeof api.templates.listPublic>>[number];
 
 export default function KioskSelectPage() {
 	const router = useRouter();
@@ -88,7 +90,7 @@ export default function KioskSelectPage() {
 					</div>
 				) : (
 					<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-						{templates.map((template: TemplateWithUrls) => (
+						{templates.map((template: Template) => (
 							<button
 								key={template._id}
 								type="button"
