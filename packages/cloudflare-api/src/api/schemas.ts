@@ -63300,6 +63300,7 @@ export type WorkersBindingItem =
 	| WorkersBindingKindPlainText
 	| WorkersBindingKindPipelines
 	| WorkersBindingKindQueue
+	| WorkersBindingKindRatelimit
 	| WorkersBindingKindR2Bucket
 	| WorkersBindingKindSecretText
 	| WorkersBindingKindSendEmail
@@ -63653,6 +63654,42 @@ export type WorkersBindingKindR2Bucket = {
 	 * @x-auditable true
 	 */
 	type: "r2_bucket";
+};
+
+export type WorkersBindingKindRatelimit = {
+	name: WorkersBindingName;
+	/**
+	 * Identifier of the rate limit namespace to bind to.
+	 *
+	 * @example 1234
+	 * @x-auditable true
+	 */
+	namespace_id: string;
+	/**
+	 * The rate limit configuration.
+	 */
+	simple: {
+		/**
+		 * The limit (requests per period).
+		 *
+		 * @example 100
+		 * @x-auditable true
+		 */
+		limit: number;
+		/**
+		 * The period in seconds.
+		 *
+		 * @example 60
+		 * @x-auditable true
+		 */
+		period: number;
+	};
+	/**
+	 * The kind of resource that the binding provides.
+	 *
+	 * @x-auditable true
+	 */
+	type: "ratelimit";
 };
 
 export type WorkersBindingKindSecretKey = {
