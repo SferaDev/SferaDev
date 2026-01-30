@@ -4700,6 +4700,13 @@ export const teamSchema = z
 											"Timestamp (in milliseconds) of when the last directory sync was performed.",
 										),
 								),
+								syncState: z.optional(
+									z
+										.enum(["ACTIVE", "SETUP"])
+										.describe(
+											"Controls whether directory sync events are processed. - 'SETUP': Directory connected but role mappings not yet configured. Events are acknowledged but not processed. - 'ACTIVE': Fully configured. Events are processed normally. - undefined: Legacy directory (pre-feature), treat as 'ACTIVE' for backwards compatibility.",
+										),
+								),
 							})
 							.describe("Information for the SAML Single Sign-On configuration."),
 					),
@@ -4723,6 +4730,13 @@ export const teamSchema = z
 										.number()
 										.describe(
 											"Timestamp (in milliseconds) of when the last directory sync was performed.",
+										),
+								),
+								syncState: z.optional(
+									z
+										.enum(["ACTIVE", "SETUP"])
+										.describe(
+											"Controls whether directory sync events are processed. - 'SETUP': Directory connected but role mappings not yet configured. Events are acknowledged but not processed. - 'ACTIVE': Fully configured. Events are processed normally. - undefined: Legacy directory (pre-feature), treat as 'ACTIVE' for backwards compatibility.",
 										),
 								),
 							})
@@ -5092,6 +5106,13 @@ export const teamLimitedSchema = z
 											"Timestamp (in milliseconds) of when the last directory sync was performed.",
 										),
 								),
+								syncState: z.optional(
+									z
+										.enum(["ACTIVE", "SETUP"])
+										.describe(
+											"Controls whether directory sync events are processed. - 'SETUP': Directory connected but role mappings not yet configured. Events are acknowledged but not processed. - 'ACTIVE': Fully configured. Events are processed normally. - undefined: Legacy directory (pre-feature), treat as 'ACTIVE' for backwards compatibility.",
+										),
+								),
 							})
 							.describe("Information for the SAML Single Sign-On configuration."),
 					),
@@ -5115,6 +5136,13 @@ export const teamLimitedSchema = z
 										.number()
 										.describe(
 											"Timestamp (in milliseconds) of when the last directory sync was performed.",
+										),
+								),
+								syncState: z.optional(
+									z
+										.enum(["ACTIVE", "SETUP"])
+										.describe(
+											"Controls whether directory sync events are processed. - 'SETUP': Directory connected but role mappings not yet configured. Events are acknowledged but not processed. - 'ACTIVE': Fully configured. Events are processed normally. - undefined: Legacy directory (pre-feature), treat as 'ACTIVE' for backwards compatibility.",
 										),
 								),
 							})

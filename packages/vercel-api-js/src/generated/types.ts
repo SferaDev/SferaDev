@@ -11870,6 +11870,22 @@ export const connectEnabledEnum = {
 
 export type ConnectEnabledEnumKey = (typeof connectEnabledEnum)[keyof typeof connectEnabledEnum];
 
+export const connectionSyncStateEnum = {
+	ACTIVE: "ACTIVE",
+	SETUP: "SETUP",
+} as const;
+
+export type ConnectionSyncStateEnumKey =
+	(typeof connectionSyncStateEnum)[keyof typeof connectionSyncStateEnum];
+
+export const directorySyncStateEnum = {
+	ACTIVE: "ACTIVE",
+	SETUP: "SETUP",
+} as const;
+
+export type DirectorySyncStateEnumKey =
+	(typeof directorySyncStateEnum)[keyof typeof directorySyncStateEnum];
+
 export const samlEnforcedEnum = {
 	false: false,
 	true: true,
@@ -12172,6 +12188,11 @@ export type Team = {
 							 * @type number | undefined
 							 */
 							lastSyncedAt?: number | undefined;
+							/**
+							 * @description Controls whether directory sync events are processed. - \'SETUP\': Directory connected but role mappings not yet configured. Events are acknowledged but not processed. - \'ACTIVE\': Fully configured. Events are processed normally. - undefined: Legacy directory (pre-feature), treat as \'ACTIVE\' for backwards compatibility.
+							 * @type string | undefined
+							 */
+							syncState?: ConnectionSyncStateEnumKey | undefined;
 					  }
 					| undefined;
 				/**
@@ -12205,6 +12226,11 @@ export type Team = {
 							 * @type number | undefined
 							 */
 							lastSyncedAt?: number | undefined;
+							/**
+							 * @description Controls whether directory sync events are processed. - \'SETUP\': Directory connected but role mappings not yet configured. Events are acknowledged but not processed. - \'ACTIVE\': Fully configured. Events are processed normally. - undefined: Legacy directory (pre-feature), treat as \'ACTIVE\' for backwards compatibility.
+							 * @type string | undefined
+							 */
+							syncState?: DirectorySyncStateEnumKey | undefined;
 					  }
 					| undefined;
 				/**
@@ -12619,6 +12645,22 @@ export const teamLimitedLimitedByEnum = {
 export type TeamLimitedLimitedByEnumKey =
 	(typeof teamLimitedLimitedByEnum)[keyof typeof teamLimitedLimitedByEnum];
 
+export const connectionSyncStateEnum2 = {
+	ACTIVE: "ACTIVE",
+	SETUP: "SETUP",
+} as const;
+
+export type ConnectionSyncStateEnum2Key =
+	(typeof connectionSyncStateEnum2)[keyof typeof connectionSyncStateEnum2];
+
+export const directorySyncStateEnum2 = {
+	ACTIVE: "ACTIVE",
+	SETUP: "SETUP",
+} as const;
+
+export type DirectorySyncStateEnum2Key =
+	(typeof directorySyncStateEnum2)[keyof typeof directorySyncStateEnum2];
+
 export const samlEnforcedEnum2 = {
 	false: false,
 	true: true,
@@ -12748,6 +12790,11 @@ export type TeamLimited = {
 							 * @type number | undefined
 							 */
 							lastSyncedAt?: number | undefined;
+							/**
+							 * @description Controls whether directory sync events are processed. - \'SETUP\': Directory connected but role mappings not yet configured. Events are acknowledged but not processed. - \'ACTIVE\': Fully configured. Events are processed normally. - undefined: Legacy directory (pre-feature), treat as \'ACTIVE\' for backwards compatibility.
+							 * @type string | undefined
+							 */
+							syncState?: ConnectionSyncStateEnum2Key | undefined;
 					  }
 					| undefined;
 				/**
@@ -12781,6 +12828,11 @@ export type TeamLimited = {
 							 * @type number | undefined
 							 */
 							lastSyncedAt?: number | undefined;
+							/**
+							 * @description Controls whether directory sync events are processed. - \'SETUP\': Directory connected but role mappings not yet configured. Events are acknowledged but not processed. - \'ACTIVE\': Fully configured. Events are processed normally. - undefined: Legacy directory (pre-feature), treat as \'ACTIVE\' for backwards compatibility.
+							 * @type string | undefined
+							 */
+							syncState?: DirectorySyncStateEnum2Key | undefined;
 					  }
 					| undefined;
 				/**
