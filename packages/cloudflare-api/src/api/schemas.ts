@@ -17812,7 +17812,26 @@ export type DigitalExperienceMonitoringColo = string;
 /**
  * array of colos.
  */
-export type DigitalExperienceMonitoringColosResponse = Record<string, any>[];
+export type DigitalExperienceMonitoringColosResponse = {
+	/**
+	 * Airport code
+	 *
+	 * @example SFO
+	 */
+	airportCode: string;
+	/**
+	 * City
+	 *
+	 * @example San Francisco
+	 */
+	city: string;
+	/**
+	 * Country code
+	 *
+	 * @example US
+	 */
+	countryCode: string;
+}[];
 
 /**
  * Unique identifier for a command
@@ -17853,13 +17872,6 @@ export type DigitalExperienceMonitoringCommandsDevicesResponse = {
 	}[];
 };
 
-export type DigitalExperienceMonitoringCommandsUsersResponse = {
-	/**
-	 * List of user emails
-	 */
-	userEmails?: string[];
-};
-
 export type DigitalExperienceMonitoringCpuPctByApp = {
 	/**
 	 * @format float
@@ -17867,6 +17879,23 @@ export type DigitalExperienceMonitoringCpuPctByApp = {
 	cpu_pct?: number;
 	name?: string;
 }[];
+
+export type DigitalExperienceMonitoringCreateRuleBody = {
+	/**
+	 * @x-auditable true
+	 */
+	description?: string;
+	/**
+	 * The wirefilter expression to match.
+	 */
+	match: string;
+	/**
+	 * The name of the Rule.
+	 *
+	 * @x-auditable true
+	 */
+	name: string;
+};
 
 export type DigitalExperienceMonitoringDevice = {
 	alwaysOn?: boolean | null;
@@ -17964,20 +17993,23 @@ export type DigitalExperienceMonitoringDeviceDexTestSchemasData = {
 	 * The desired endpoint to test.
 	 *
 	 * @example https://dash.cloudflare.com
+	 * @x-auditable true
 	 */
-	host?: string;
+	host: string;
 	/**
 	 * The type of test.
 	 *
 	 * @example http
+	 * @x-auditable true
 	 */
-	kind?: string;
+	kind: "http" | "traceroute";
 	/**
 	 * The HTTP request method type.
 	 *
 	 * @example GET
+	 * @x-auditable true
 	 */
-	method?: string;
+	method?: "GET";
 };
 
 /**
@@ -18001,6 +18033,9 @@ export type DigitalExperienceMonitoringDeviceDexTestSchemasHttp = {
 	interval: DigitalExperienceMonitoringDeviceDexTestSchemasInterval;
 	name: DigitalExperienceMonitoringDeviceDexTestSchemasName;
 	target_policies?: DigitalExperienceMonitoringDeviceDexTestTargetPolicies;
+	/**
+	 * @x-stainless-terraform-configurability computed
+	 */
 	targeted?: boolean;
 	test_id?: DigitalExperienceMonitoringSchemasTestId;
 };
@@ -18044,22 +18079,66 @@ export type DigitalExperienceMonitoringDexResponseCollection =
 		result?: DigitalExperienceMonitoringDeviceDexTestSchemasHttp[];
 	};
 
+export type DigitalExperienceMonitoringDexRule = {
+	/**
+	 * @example 2023-07-16 15:00:00+00
+	 * @x-auditable true
+	 * @x-stainless-terraform-configurability computed
+	 */
+	created_at: string;
+	description?: string;
+	id: DigitalExperienceMonitoringUuid;
+	match: string;
+	/**
+	 * @x-auditable true
+	 */
+	name: string;
+	/**
+	 * @x-auditable true
+	 * @x-stainless-terraform-configurability computed
+	 */
+	targeted_tests?: DigitalExperienceMonitoringDexTargetedTest[];
+	/**
+	 * @example 2023-07-16 15:00:00+00
+	 * @x-auditable true
+	 * @x-stainless-terraform-configurability computed
+	 */
+	updated_at?: string;
+};
+
 export type DigitalExperienceMonitoringDexSingleResponse =
 	DigitalExperienceMonitoringApiResponseSingle & {
 		result?: DigitalExperienceMonitoringDeviceDexTestSchemasHttp;
 	};
 
+export type DigitalExperienceMonitoringDexTargetedTest = {
+	data: DigitalExperienceMonitoringDeviceDexTestSchemasData;
+	/**
+	 * @x-auditable true
+	 */
+	enabled: boolean;
+	/**
+	 * @x-auditable true
+	 */
+	name: string;
+	/**
+	 * @x-auditable true
+	 */
+	test_id: string;
+};
+
 export type DigitalExperienceMonitoringDexTargetPolicy = {
 	/**
 	 * Whether the DEX rule is the account default
+	 *
+	 * @x-stainless-terraform-configurability computed
 	 */
 	["default"]?: boolean;
-	/**
-	 * The id of the DEX rule
-	 */
-	id?: string;
+	id: DigitalExperienceMonitoringUuid;
 	/**
 	 * The name of the DEX rule
+	 *
+	 * @x-stainless-terraform-configurability computed
 	 */
 	name?: string;
 };
@@ -18078,6 +18157,17 @@ export type DigitalExperienceMonitoringFleetStatusLiveResponse =
 				byPlatform?: DigitalExperienceMonitoringLiveStat[] | null;
 				byStatus?: DigitalExperienceMonitoringLiveStat[] | null;
 				byVersion?: DigitalExperienceMonitoringLiveStat[] | null;
+				uniqueDevicesTotal?: DigitalExperienceMonitoringUniqueDevicesTotal;
+			};
+		};
+	};
+
+export type DigitalExperienceMonitoringFleetStatusOverTimeResponse =
+	DigitalExperienceMonitoringApiResponseCollection & {
+		result?: {
+			deviceStats?: {
+				byMode?: DigitalExperienceMonitoringSchemasAggregateStat[];
+				byStatus?: DigitalExperienceMonitoringSchemasAggregateStat[];
 				uniqueDevicesTotal?: DigitalExperienceMonitoringUniqueDevicesTotal;
 			};
 		};
@@ -18205,7 +18295,7 @@ export type DigitalExperienceMonitoringHttpDetailsResponse = {
 				 * Whether the policy is the default for the account
 				 */
 				["default"]: boolean;
-				id: string;
+				id: DigitalExperienceMonitoringUuid;
 				name: string;
 		  }[]
 		| null;
@@ -18224,6 +18314,10 @@ export type DigitalExperienceMonitoringIpInfo = {
 	};
 	netmask?: string | null;
 	version?: string | null;
+};
+
+export type DigitalExperienceMonitoringListRulesResponse = {
+	rules?: DigitalExperienceMonitoringDexRule[];
 };
 
 export type DigitalExperienceMonitoringLiveStat = {
@@ -18258,6 +18352,23 @@ export type DigitalExperienceMonitoringMode = string;
  * @minimum 1
  */
 export type DigitalExperienceMonitoringPage = number;
+
+export type DigitalExperienceMonitoringPatchRuleBody = {
+	/**
+	 * @x-auditable true
+	 */
+	description?: string;
+	/**
+	 * The wirefilter expression to match.
+	 */
+	match?: string;
+	/**
+	 * The name of the Rule.
+	 *
+	 * @x-auditable true
+	 */
+	name?: string;
+};
 
 /**
  * Number of items per page
@@ -18336,6 +18447,12 @@ export type DigitalExperienceMonitoringRamUsedPctByApp = {
 	 */
 	ram_used_pct?: number;
 }[];
+
+export type DigitalExperienceMonitoringSchemasAggregateStat = {
+	timestamp?: DigitalExperienceMonitoringTimestamp;
+	uniqueDevicesTotal?: DigitalExperienceMonitoringUniqueDevicesTotal;
+	value?: string;
+};
 
 /**
  * The unique identifier for the test.
@@ -18508,7 +18625,7 @@ export type DigitalExperienceMonitoringTestsResponse = {
 					 * Whether the policy is the default for the account
 					 */
 					["default"]: boolean;
-					id: string;
+					id: DigitalExperienceMonitoringUuid;
 					name: string;
 			  }[]
 			| null;
@@ -18584,7 +18701,7 @@ export type DigitalExperienceMonitoringTracerouteDetailsResponse = {
 				 * Whether the policy is the default for the account
 				 */
 				["default"]: boolean;
-				id: string;
+				id: DigitalExperienceMonitoringUuid;
 				name: string;
 		  }[]
 		| null;
