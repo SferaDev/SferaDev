@@ -475,6 +475,18 @@ import type {
 	FilterProjectEnvsPathParams,
 	FilterProjectEnvsQueryParams,
 	FilterProjectEnvsQueryResponse,
+	GETV1BillingCharges400,
+	GETV1BillingCharges401,
+	GETV1BillingCharges403,
+	GETV1BillingCharges404,
+	GETV1BillingCharges500,
+	GETV1BillingCharges503,
+	GETV1BillingChargesQueryResponse,
+	GETV1BillingContractCommitments400,
+	GETV1BillingContractCommitments401,
+	GETV1BillingContractCommitments403,
+	GETV1BillingContractCommitments404,
+	GETV1BillingContractCommitmentsQueryResponse,
 	GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig400,
 	GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig401,
 	GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig403,
@@ -2146,6 +2158,64 @@ export async function artifactQuery({
 		...requestConfig,
 		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
 	});
+	return data;
+}
+
+/**
+ * @description Returns the billing charge data in FOCUS v1.3 JSONL format for a specified Vercel `teamId`, in a date range `from` and `to` (inclusive).
+ * @summary Get FOCUS v1.3 compliant usage cost metrics
+ * {@link /v1/billing/charges}
+ */
+export async function gETV1BillingCharges({
+	config = {},
+}: {
+	config?: Partial<FetcherConfig> & { client?: typeof client };
+}) {
+	const { client: request = client, ...requestConfig } = config;
+
+	const data = await request<
+		GETV1BillingChargesQueryResponse,
+		ErrorWrapper<
+			| GETV1BillingCharges400
+			| GETV1BillingCharges401
+			| GETV1BillingCharges403
+			| GETV1BillingCharges404
+			| GETV1BillingCharges500
+			| GETV1BillingCharges503
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		Record<string, string>
+	>({ method: "GET", url: `/v1/billing/charges`, ...requestConfig });
+	return data;
+}
+
+/**
+ * @description Returns commitment allocations per contract period in FOCUS v1.3 JSONL format for a specified Vercel `teamId`. Returns `null` for non-enterprise teams.
+ * @summary Get FOCUS v1.3 compliant contract commitments
+ * {@link /v1/billing/contract-commitments}
+ */
+export async function gETV1BillingContractCommitments({
+	config = {},
+}: {
+	config?: Partial<FetcherConfig> & { client?: typeof client };
+}) {
+	const { client: request = client, ...requestConfig } = config;
+
+	const data = await request<
+		GETV1BillingContractCommitmentsQueryResponse,
+		ErrorWrapper<
+			| GETV1BillingContractCommitments400
+			| GETV1BillingContractCommitments401
+			| GETV1BillingContractCommitments403
+			| GETV1BillingContractCommitments404
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		Record<string, string>
+	>({ method: "GET", url: `/v1/billing/contract-commitments`, ...requestConfig });
 	return data;
 }
 
@@ -9931,6 +10001,8 @@ export const operationsByPath = {
 	"PUT /v8/artifacts/{hash}": uploadArtifact,
 	"GET /v8/artifacts/{hash}": downloadArtifact,
 	"POST /v8/artifacts": artifactQuery,
+	"GET /v1/billing/charges": gETV1BillingCharges,
+	"GET /v1/billing/contract-commitments": gETV1BillingContractCommitments,
 	"PUT /v1/bulk-redirects": stageRedirects,
 	"GET /v1/bulk-redirects": getRedirects,
 	"DELETE /v1/bulk-redirects": deleteRedirects,
@@ -10180,6 +10252,10 @@ export const operationsByTag = {
 		uploadArtifact,
 		downloadArtifact,
 		artifactQuery,
+	},
+	apiBilling: {
+		gETV1BillingCharges,
+		gETV1BillingContractCommitments,
 	},
 	bulkRedirects: {
 		stageRedirects,
@@ -10465,6 +10541,9 @@ export const tagDictionary = {
 		POST: ["recordEvents", "artifactQuery"],
 		GET: ["status", "downloadArtifact"],
 		PUT: ["uploadArtifact"],
+	},
+	apiBilling: {
+		GET: ["gETV1BillingCharges", "gETV1BillingContractCommitments"],
 	},
 	bulkRedirects: {
 		PUT: ["stageRedirects"],

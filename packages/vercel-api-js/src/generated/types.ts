@@ -14766,6 +14766,62 @@ export type ArtifactQueryMutation = {
 	Errors: ArtifactQuery400 | ArtifactQuery401 | ArtifactQuery402 | ArtifactQuery403;
 };
 
+export type GETV1BillingCharges400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type GETV1BillingCharges401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type GETV1BillingCharges403 = unknown;
+
+export type GETV1BillingCharges404 = unknown;
+
+export type GETV1BillingCharges500 = unknown;
+
+export type GETV1BillingCharges503 = unknown;
+
+export type GETV1BillingChargesQueryResponse = any;
+
+export type GETV1BillingChargesQuery = {
+	Response: any;
+	Errors:
+		| GETV1BillingCharges400
+		| GETV1BillingCharges401
+		| GETV1BillingCharges403
+		| GETV1BillingCharges404
+		| GETV1BillingCharges500
+		| GETV1BillingCharges503;
+};
+
+export type GETV1BillingContractCommitments400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type GETV1BillingContractCommitments401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type GETV1BillingContractCommitments403 = unknown;
+
+export type GETV1BillingContractCommitments404 = unknown;
+
+export type GETV1BillingContractCommitmentsQueryResponse = any;
+
+export type GETV1BillingContractCommitmentsQuery = {
+	Response: any;
+	Errors:
+		| GETV1BillingContractCommitments400
+		| GETV1BillingContractCommitments401
+		| GETV1BillingContractCommitments403
+		| GETV1BillingContractCommitments404;
+};
+
 export type StageRedirectsQueryParams = {
 	/**
 	 * @description The Team identifier to perform the request on behalf of.

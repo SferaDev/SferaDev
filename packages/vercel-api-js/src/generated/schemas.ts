@@ -6569,6 +6569,42 @@ export const artifactQuery403Schema = z.unknown();
 
 export const artifactQueryMutationResponseSchema = z.lazy(() => artifactQuery200Schema);
 
+export const GETV1BillingCharges400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const GETV1BillingCharges401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const GETV1BillingCharges403Schema = z.unknown();
+
+export const GETV1BillingCharges404Schema = z.unknown();
+
+export const GETV1BillingCharges500Schema = z.unknown();
+
+export const GETV1BillingCharges503Schema = z.unknown();
+
+export const GETV1BillingChargesQueryResponseSchema = z.unknown();
+
+export const GETV1BillingContractCommitments400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const GETV1BillingContractCommitments401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const GETV1BillingContractCommitments403Schema = z.unknown();
+
+export const GETV1BillingContractCommitments404Schema = z.unknown();
+
+export const GETV1BillingContractCommitmentsQueryResponseSchema = z.unknown();
+
 export const stageRedirectsQueryParamsSchema = z
 	.object({
 		teamId: z.optional(
