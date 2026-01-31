@@ -71,6 +71,8 @@ import {
 	editRedirect,
 	exchangeSsoToken,
 	filterProjectEnvs,
+	gETV1BillingCharges,
+	gETV1BillingContractCommitments,
 	gETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig,
 	gETV1SecurityFirewallEvents,
 	getAccountInfo,
@@ -851,6 +853,30 @@ export function initMcpTools<Server>(serverLike: Server, config: FetcherConfig) 
 		async ({ queryParams }) => {
 			try {
 				return await artifactQuery({ queryParams, config });
+			} catch (error) {
+				return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
+			}
+		},
+	);
+
+	server.tool(
+		"gETV1BillingCharges",
+		"Returns the billing charge data in FOCUS v1.3 JSONL format for a specified Vercel `teamId`, in a date range `from` and `to` (inclusive).",
+		async () => {
+			try {
+				return await gETV1BillingCharges({ config });
+			} catch (error) {
+				return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
+			}
+		},
+	);
+
+	server.tool(
+		"gETV1BillingContractCommitments",
+		"Returns commitment allocations per contract period in FOCUS v1.3 JSONL format for a specified Vercel `teamId`. Returns `null` for non-enterprise teams.",
+		async () => {
+			try {
+				return await gETV1BillingContractCommitments({ config });
 			} catch (error) {
 				return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
 			}
