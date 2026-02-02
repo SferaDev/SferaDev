@@ -2207,6 +2207,7 @@ import {
 	worDescribeWorkflowInstance,
 	worDescribeWorkflowVersions,
 	worDescribeWorkflowVersionsDag,
+	worDescribeWorkflowVersionsGraph,
 	worGetWorkflowDetails,
 	workerAccountSettingsCreateWorkerAccountSettings,
 	workerAccountSettingsFetchWorkerAccountSettings,
@@ -5010,6 +5011,8 @@ export const operationsByPath = {
 		worDescribeWorkflowVersions,
 	"GET /accounts/{account_id}/workflows/{workflow_name}/versions/{version_id}/dag":
 		worDescribeWorkflowVersionsDag,
+	"GET /accounts/{account_id}/workflows/{workflow_name}/versions/{version_id}/graph":
+		worDescribeWorkflowVersionsGraph,
 	"GET /accounts/{account_id}/zerotrust/connectivity_settings":
 		zeroTrustAccountsGetConnectivitySettings,
 	"PATCH /accounts/{account_id}/zerotrust/connectivity_settings":
