@@ -54098,6 +54098,8 @@ export type TeamsDevicesExcludeOfficeIps = boolean;
 
 /**
  * List of routes excluded in the WARP client's tunnel. Both 'exclude' and 'include' cannot be set in the same request.
+ *
+ * @x-stainless-terraform-configurability computed_optional
  */
 export type TeamsDevicesExcludeRequest = TeamsDevicesSplitTunnel[];
 
@@ -54263,6 +54265,8 @@ export type TeamsDevicesInclude = TeamsDevicesSplitTunnelInclude[];
 
 /**
  * List of routes included in the WARP client's tunnel. Both 'exclude' and 'include' cannot be set in the same request.
+ *
+ * @x-stainless-terraform-configurability computed_optional
  */
 export type TeamsDevicesIncludeRequest = TeamsDevicesSplitTunnelInclude[];
 
@@ -54270,6 +54274,7 @@ export type TeamsDevicesIncludeRequest = TeamsDevicesSplitTunnelInclude[];
  * The address in CIDR format to include in the tunnel. If `address` is present, `host` must not be present.
  *
  * @example 192.0.2.0/24
+ * @x-stainless-terraform-configurability computed_optional
  */
 export type TeamsDevicesIncludeSplitTunnelAddress = string;
 
@@ -54278,6 +54283,7 @@ export type TeamsDevicesIncludeSplitTunnelAddress = string;
  *
  * @example Include testing domains in the tunnel
  * @maxLength 100
+ * @x-stainless-terraform-configurability computed_optional
  */
 export type TeamsDevicesIncludeSplitTunnelDescription = string;
 
@@ -54285,6 +54291,7 @@ export type TeamsDevicesIncludeSplitTunnelDescription = string;
  * The domain name to include in the tunnel. If `host` is present, `address` must not be present.
  *
  * @example *.example.com
+ * @x-stainless-terraform-configurability computed_optional
  */
 export type TeamsDevicesIncludeSplitTunnelHost = string;
 
@@ -55169,12 +55176,16 @@ export type TeamsDevicesSentineloneS2sInputRequest = {
  */
 export type TeamsDevicesSerialNumber = string;
 
+/**
+ * @x-stainless-terraform-configurability computed_optional
+ */
 export type TeamsDevicesServiceModeV2 = {
 	/**
 	 * The mode to run the WARP client under.
 	 *
 	 * @example proxy
 	 * @x-auditable true
+	 * @x-stainless-terraform-configurability computed_optional
 	 */
 	mode?: string;
 	/**
@@ -55182,6 +55193,7 @@ export type TeamsDevicesServiceModeV2 = {
 	 *
 	 * @example 3000
 	 * @x-auditable true
+	 * @x-stainless-terraform-configurability computed_optional
 	 */
 	port?: number;
 };
@@ -55198,6 +55210,7 @@ export type TeamsDevicesSplitTunnel =
  * The address in CIDR format to exclude from the tunnel. If `address` is present, `host` must not be present.
  *
  * @example 192.0.2.0/24
+ * @x-stainless-terraform-configurability computed_optional
  */
 export type TeamsDevicesSplitTunnelAddress = string;
 
@@ -55206,6 +55219,7 @@ export type TeamsDevicesSplitTunnelAddress = string;
  *
  * @example Exclude testing domains from the tunnel
  * @maxLength 100
+ * @x-stainless-terraform-configurability computed_optional
  */
 export type TeamsDevicesSplitTunnelDescription = string;
 
@@ -55213,6 +55227,7 @@ export type TeamsDevicesSplitTunnelDescription = string;
  * The domain name to exclude from the tunnel. If `host` is present, `address` must not be present.
  *
  * @example *.example.com
+ * @x-stainless-terraform-configurability computed_optional
  */
 export type TeamsDevicesSplitTunnelHost = string;
 
