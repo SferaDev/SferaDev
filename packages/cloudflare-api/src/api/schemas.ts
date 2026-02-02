@@ -69994,6 +69994,41 @@ export type ZonesComponentsSchemasApiResponseCommonFailure = {
 };
 
 /**
+ * When enabled and the client sends an Accept header requesting text/markdown,
+ * Cloudflare will convert HTML responses to Markdown format using the toMarkdown() service.
+ * Refer to the [developer documentation](https://developers.cloudflare.com/workers-ai/features/markdown-conversion/) for more information.
+ */
+export type ZonesContentConverter = {
+	/**
+	 * Whether or not this setting can be modified for this zone (based on your Cloudflare plan level).
+	 *
+	 * @default true
+	 */
+	editable?: true | false;
+	/**
+	 * ID of the zone setting.
+	 *
+	 * @example content_converter
+	 */
+	id: "content_converter";
+	/**
+	 * last time this setting was modified.
+	 *
+	 * @example 2014-01-01T05:20:00.12345Z
+	 * @format date-time
+	 */
+	modified_on?: string | null;
+	value: ZonesContentConverterValue;
+};
+
+/**
+ * Value of the zone setting.
+ *
+ * @default off
+ */
+export type ZonesContentConverterValue = "off" | "on";
+
+/**
  * The timestamp of when the Page Rule was created.
  *
  * @example 2014-01-01T05:20:00.12345Z
@@ -70630,6 +70665,7 @@ export type ZonesMultipleSettings = (
 	| ZonesSchemasCacheLevel
 	| ZonesChallengeTtl
 	| ZonesChinaNetworkEnabled
+	| ZonesContentConverter
 	| ZonesCiphers
 	| ZonesCnameFlattening
 	| ZonesDevelopmentMode
@@ -71963,6 +71999,7 @@ export type ZonesSetting =
 	| ZonesSchemasCacheLevel
 	| ZonesChallengeTtl
 	| ZonesChinaNetworkEnabled
+	| ZonesContentConverter
 	| ZonesCiphers
 	| ZonesCnameFlattening
 	| ZonesDevelopmentMode
@@ -72039,6 +72076,7 @@ export type ZonesSettingValue =
 	| ZonesCacheLevelValue
 	| ZonesChallengeTtlValue
 	| ZonesChinaNetworkEnabledValue
+	| ZonesContentConverterValue
 	| ZonesCiphersValue
 	| ZonesCnameFlatteningValue
 	| ZonesDevelopmentModeValue
@@ -72868,6 +72906,7 @@ export type ZonesZoneSettingsResponseCollection =
 			| ZonesSchemasCacheLevel
 			| ZonesChallengeTtl
 			| ZonesCiphers
+			| ZonesContentConverter
 			| ZonesCnameFlattening
 			| ZonesDevelopmentMode
 			| ZonesEarlyHints
