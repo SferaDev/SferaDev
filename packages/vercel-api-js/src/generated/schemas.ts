@@ -1681,6 +1681,7 @@ export const userEventSchema = z
 									customEnvironmentsPerProject: z.optional(z.number()),
 									buildMachine: z.optional(
 										z.object({
+											default: z.optional(z.enum(["enhanced", "turbo", "standard"])),
 											purchaseType: z.optional(z.enum(["enhanced", "turbo"])),
 											isDefaultBuildMachine: z.optional(
 												z.union([z.literal(false), z.literal(true)]),
@@ -4857,6 +4858,17 @@ export const teamSchema = z
 						enhancedBuilds: z.optional(z.union([z.literal(false), z.literal(true)])),
 					}),
 				),
+				buildMachine: z.optional(
+					z
+						.object({
+							default: z.optional(
+								z
+									.enum(["enhanced", "standard", "turbo"])
+									.describe("Default build machine type for new builds"),
+							),
+						})
+						.describe("Build machine configuration"),
+				),
 			}),
 		),
 		previewDeploymentSuffix: z
@@ -5601,6 +5613,13 @@ export const authUserSchema = z
 				buildMachine: z.optional(
 					z
 						.object({
+							default: z.optional(
+								z
+									.enum(["enhanced", "standard", "turbo"])
+									.describe(
+										"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
+									),
+							),
 							purchaseType: z.optional(
 								z
 									.enum(["enhanced", "turbo"])
@@ -6569,41 +6588,66 @@ export const artifactQuery403Schema = z.unknown();
 
 export const artifactQueryMutationResponseSchema = z.lazy(() => artifactQuery200Schema);
 
-export const GETV1BillingCharges400Schema = z.unknown();
+export const listBillingChargesQueryParamsSchema = z.object({
+	from: z
+		.string()
+		.describe("Inclusive start of the date range as an ISO 8601 date-time string in UTC."),
+	to: z
+		.string()
+		.describe("Exclusive end of the date range as an ISO 8601 date-time string in UTC."),
+	teamId: z.optional(
+		z.string().describe("The Team identifier to perform the request on behalf of."),
+	),
+	slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+});
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export const listBillingCharges400Schema = z.unknown();
 
 /**
  * @description The request is not authorized.
  */
-export const GETV1BillingCharges401Schema = z.unknown();
+export const listBillingCharges401Schema = z.unknown();
 
 /**
  * @description You do not have permission to access this resource.
  */
-export const GETV1BillingCharges403Schema = z.unknown();
+export const listBillingCharges403Schema = z.unknown();
 
-export const GETV1BillingCharges404Schema = z.unknown();
+export const listBillingCharges404Schema = z.unknown();
 
-export const GETV1BillingCharges500Schema = z.unknown();
+export const listBillingCharges500Schema = z.unknown();
 
-export const GETV1BillingCharges503Schema = z.unknown();
+export const listBillingCharges503Schema = z.unknown();
 
-export const GETV1BillingChargesQueryResponseSchema = z.unknown();
+export const listBillingChargesQueryResponseSchema = z.unknown();
 
-export const GETV1BillingContractCommitments400Schema = z.unknown();
+export const listContractCommitmentsQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const listContractCommitments400Schema = z.unknown();
 
 /**
  * @description The request is not authorized.
  */
-export const GETV1BillingContractCommitments401Schema = z.unknown();
+export const listContractCommitments401Schema = z.unknown();
 
 /**
  * @description You do not have permission to access this resource.
  */
-export const GETV1BillingContractCommitments403Schema = z.unknown();
+export const listContractCommitments403Schema = z.unknown();
 
-export const GETV1BillingContractCommitments404Schema = z.unknown();
+export const listContractCommitments404Schema = z.unknown();
 
-export const GETV1BillingContractCommitmentsQueryResponseSchema = z.unknown();
+export const listContractCommitmentsQueryResponseSchema = z.unknown();
 
 export const stageRedirectsQueryParamsSchema = z
 	.object({

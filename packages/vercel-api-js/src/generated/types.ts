@@ -1810,6 +1810,15 @@ export const resourceConfigFlagsExplorerUnlimitedOverridesEnum = {
 export type ResourceConfigFlagsExplorerUnlimitedOverridesEnumKey =
 	(typeof resourceConfigFlagsExplorerUnlimitedOverridesEnum)[keyof typeof resourceConfigFlagsExplorerUnlimitedOverridesEnum];
 
+export const buildMachineDefaultEnum = {
+	enhanced: "enhanced",
+	turbo: "turbo",
+	standard: "standard",
+} as const;
+
+export type BuildMachineDefaultEnumKey =
+	(typeof buildMachineDefaultEnum)[keyof typeof buildMachineDefaultEnum];
+
 export const buildMachinePurchaseTypeEnum = {
 	enhanced: "enhanced",
 	turbo: "turbo",
@@ -5963,6 +5972,10 @@ export type UserEvent = {
 										 */
 										buildMachine?:
 											| {
+													/**
+													 * @type string | undefined
+													 */
+													default?: BuildMachineDefaultEnumKey | undefined;
 													/**
 													 * @type string | undefined
 													 */
@@ -11960,6 +11973,15 @@ export const buildEntitlementsEnhancedBuildsEnum2 = {
 export type BuildEntitlementsEnhancedBuildsEnum2Key =
 	(typeof buildEntitlementsEnhancedBuildsEnum2)[keyof typeof buildEntitlementsEnhancedBuildsEnum2];
 
+export const buildMachineDefaultEnum2 = {
+	enhanced: "enhanced",
+	standard: "standard",
+	turbo: "turbo",
+} as const;
+
+export type BuildMachineDefaultEnum2Key =
+	(typeof buildMachineDefaultEnum2)[keyof typeof buildMachineDefaultEnum2];
+
 export const teamPlatformEnum = {
 	false: false,
 	true: true,
@@ -12341,6 +12363,19 @@ export type Team = {
 							 * @type boolean | undefined
 							 */
 							enhancedBuilds?: BuildEntitlementsEnhancedBuildsEnum2Key | undefined;
+					  }
+					| undefined;
+				/**
+				 * @description Build machine configuration
+				 * @type object | undefined
+				 */
+				buildMachine?:
+					| {
+							/**
+							 * @description Default build machine type for new builds
+							 * @type string | undefined
+							 */
+							default?: BuildMachineDefaultEnum2Key | undefined;
 					  }
 					| undefined;
 		  }
@@ -13207,6 +13242,15 @@ export const resourceConfigFlagsExplorerUnlimitedOverridesEnum2 = {
 export type ResourceConfigFlagsExplorerUnlimitedOverridesEnum2Key =
 	(typeof resourceConfigFlagsExplorerUnlimitedOverridesEnum2)[keyof typeof resourceConfigFlagsExplorerUnlimitedOverridesEnum2];
 
+export const buildMachineDefaultEnum3 = {
+	enhanced: "enhanced",
+	standard: "standard",
+	turbo: "turbo",
+} as const;
+
+export type BuildMachineDefaultEnum3Key =
+	(typeof buildMachineDefaultEnum3)[keyof typeof buildMachineDefaultEnum3];
+
 export const buildMachinePurchaseTypeEnum2 = {
 	enhanced: "enhanced",
 	turbo: "turbo",
@@ -13471,6 +13515,11 @@ export type AuthUser = {
 		 */
 		buildMachine?:
 			| {
+					/**
+					 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
+					 * @type string | undefined
+					 */
+					default?: BuildMachineDefaultEnum3Key | undefined;
 					/**
 					 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
 					 * @type string | undefined
@@ -14766,60 +14815,101 @@ export type ArtifactQueryMutation = {
 	Errors: ArtifactQuery400 | ArtifactQuery401 | ArtifactQuery402 | ArtifactQuery403;
 };
 
-export type GETV1BillingCharges400 = unknown;
-
-/**
- * @description The request is not authorized.
- */
-export type GETV1BillingCharges401 = unknown;
-
-/**
- * @description You do not have permission to access this resource.
- */
-export type GETV1BillingCharges403 = unknown;
-
-export type GETV1BillingCharges404 = unknown;
-
-export type GETV1BillingCharges500 = unknown;
-
-export type GETV1BillingCharges503 = unknown;
-
-export type GETV1BillingChargesQueryResponse = any;
-
-export type GETV1BillingChargesQuery = {
-	Response: any;
-	Errors:
-		| GETV1BillingCharges400
-		| GETV1BillingCharges401
-		| GETV1BillingCharges403
-		| GETV1BillingCharges404
-		| GETV1BillingCharges500
-		| GETV1BillingCharges503;
+export type ListBillingChargesQueryParams = {
+	/**
+	 * @description Inclusive start of the date range as an ISO 8601 date-time string in UTC.
+	 * @type string
+	 */
+	from: string;
+	/**
+	 * @description Exclusive end of the date range as an ISO 8601 date-time string in UTC.
+	 * @type string
+	 */
+	to: string;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
 };
 
-export type GETV1BillingContractCommitments400 = unknown;
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type ListBillingCharges400 = unknown;
 
 /**
  * @description The request is not authorized.
  */
-export type GETV1BillingContractCommitments401 = unknown;
+export type ListBillingCharges401 = unknown;
 
 /**
  * @description You do not have permission to access this resource.
  */
-export type GETV1BillingContractCommitments403 = unknown;
+export type ListBillingCharges403 = unknown;
 
-export type GETV1BillingContractCommitments404 = unknown;
+export type ListBillingCharges404 = unknown;
 
-export type GETV1BillingContractCommitmentsQueryResponse = any;
+export type ListBillingCharges500 = unknown;
 
-export type GETV1BillingContractCommitmentsQuery = {
+export type ListBillingCharges503 = unknown;
+
+export type ListBillingChargesQueryResponse = any;
+
+export type ListBillingChargesQuery = {
 	Response: any;
+	QueryParams: ListBillingChargesQueryParams;
 	Errors:
-		| GETV1BillingContractCommitments400
-		| GETV1BillingContractCommitments401
-		| GETV1BillingContractCommitments403
-		| GETV1BillingContractCommitments404;
+		| ListBillingCharges400
+		| ListBillingCharges401
+		| ListBillingCharges403
+		| ListBillingCharges404
+		| ListBillingCharges500
+		| ListBillingCharges503;
+};
+
+export type ListContractCommitmentsQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type ListContractCommitments400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type ListContractCommitments401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type ListContractCommitments403 = unknown;
+
+export type ListContractCommitments404 = unknown;
+
+export type ListContractCommitmentsQueryResponse = any;
+
+export type ListContractCommitmentsQuery = {
+	Response: any;
+	QueryParams: ListContractCommitmentsQueryParams;
+	Errors:
+		| ListContractCommitments400
+		| ListContractCommitments401
+		| ListContractCommitments403
+		| ListContractCommitments404;
 };
 
 export type StageRedirectsQueryParams = {

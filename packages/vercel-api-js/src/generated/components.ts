@@ -474,18 +474,6 @@ import type {
 	FilterProjectEnvsPathParams,
 	FilterProjectEnvsQueryParams,
 	FilterProjectEnvsQueryResponse,
-	GETV1BillingCharges400,
-	GETV1BillingCharges401,
-	GETV1BillingCharges403,
-	GETV1BillingCharges404,
-	GETV1BillingCharges500,
-	GETV1BillingCharges503,
-	GETV1BillingChargesQueryResponse,
-	GETV1BillingContractCommitments400,
-	GETV1BillingContractCommitments401,
-	GETV1BillingContractCommitments403,
-	GETV1BillingContractCommitments404,
-	GETV1BillingContractCommitmentsQueryResponse,
 	GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig400,
 	GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig401,
 	GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig403,
@@ -1038,6 +1026,20 @@ import type {
 	ListAuthTokens401,
 	ListAuthTokens403,
 	ListAuthTokensQueryResponse,
+	ListBillingCharges400,
+	ListBillingCharges401,
+	ListBillingCharges403,
+	ListBillingCharges404,
+	ListBillingCharges500,
+	ListBillingCharges503,
+	ListBillingChargesQueryParams,
+	ListBillingChargesQueryResponse,
+	ListContractCommitments400,
+	ListContractCommitments401,
+	ListContractCommitments403,
+	ListContractCommitments404,
+	ListContractCommitmentsQueryParams,
+	ListContractCommitmentsQueryResponse,
 	ListCustomEnvironments400,
 	ListCustomEnvironments401,
 	ListCustomEnvironments403,
@@ -2161,60 +2163,64 @@ export async function artifactQuery({
 }
 
 /**
- * @description Returns the billing charge data in FOCUS v1.3 JSONL format for a specified Vercel `teamId`, in a date range `from` and `to` (inclusive).
- * @summary Get FOCUS v1.3 compliant usage cost metrics
+ * @description Returns the billing charge data in FOCUS v1.3 JSONL format for a specified Vercel team, within a date range specified by `from` and `to` query parameters. Supports 1-day granularity with a maximum date range of 1 year. The response is streamed as newline-delimited JSON (JSONL) and can be optionally compressed with gzip if the `Accept-Encoding: gzip` header is provided.
+ * @summary List FOCUS billing charges
  * {@link /v1/billing/charges}
  */
-export async function gETV1BillingCharges({
+export async function listBillingCharges({
+	queryParams,
 	config = {},
 }: {
+	queryParams: ListBillingChargesQueryParams;
 	config?: Partial<FetcherConfig> & { client?: typeof client };
 }) {
 	const { client: request = client, ...requestConfig } = config;
 
 	const data = await request<
-		GETV1BillingChargesQueryResponse,
+		ListBillingChargesQueryResponse,
 		ErrorWrapper<
-			| GETV1BillingCharges400
-			| GETV1BillingCharges401
-			| GETV1BillingCharges403
-			| GETV1BillingCharges404
-			| GETV1BillingCharges500
-			| GETV1BillingCharges503
+			| ListBillingCharges400
+			| ListBillingCharges401
+			| ListBillingCharges403
+			| ListBillingCharges404
+			| ListBillingCharges500
+			| ListBillingCharges503
 		>,
 		null,
 		Record<string, string>,
-		Record<string, string>,
+		ListBillingChargesQueryParams,
 		Record<string, string>
-	>({ method: "GET", url: `/v1/billing/charges`, ...requestConfig });
+	>({ method: "GET", url: `/v1/billing/charges`, queryParams, ...requestConfig });
 	return data;
 }
 
 /**
- * @description Returns commitment allocations per contract period in FOCUS v1.3 JSONL format for a specified Vercel `teamId`. Returns `null` for non-enterprise teams.
- * @summary Get FOCUS v1.3 compliant contract commitments
+ * @description Returns commitment allocations per contract period in FOCUS v1.3 JSONL format for a specified Vercel team. The response is streamed as newline-delimited JSON (JSONL). This endpoint is only applicable to Enterprise Vercel customers. An empty response is returned for non-Enterprise (Pro/Flex) customers.
+ * @summary List FOCUS contract commitments
  * {@link /v1/billing/contract-commitments}
  */
-export async function gETV1BillingContractCommitments({
+export async function listContractCommitments({
+	queryParams,
 	config = {},
 }: {
+	queryParams?: ListContractCommitmentsQueryParams;
 	config?: Partial<FetcherConfig> & { client?: typeof client };
 }) {
 	const { client: request = client, ...requestConfig } = config;
 
 	const data = await request<
-		GETV1BillingContractCommitmentsQueryResponse,
+		ListContractCommitmentsQueryResponse,
 		ErrorWrapper<
-			| GETV1BillingContractCommitments400
-			| GETV1BillingContractCommitments401
-			| GETV1BillingContractCommitments403
-			| GETV1BillingContractCommitments404
+			| ListContractCommitments400
+			| ListContractCommitments401
+			| ListContractCommitments403
+			| ListContractCommitments404
 		>,
 		null,
 		Record<string, string>,
-		Record<string, string>,
+		ListContractCommitmentsQueryParams,
 		Record<string, string>
-	>({ method: "GET", url: `/v1/billing/contract-commitments`, ...requestConfig });
+	>({ method: "GET", url: `/v1/billing/contract-commitments`, queryParams, ...requestConfig });
 	return data;
 }
 
@@ -10000,8 +10006,8 @@ export const operationsByPath = {
 	"PUT /v8/artifacts/{hash}": uploadArtifact,
 	"GET /v8/artifacts/{hash}": downloadArtifact,
 	"POST /v8/artifacts": artifactQuery,
-	"GET /v1/billing/charges": gETV1BillingCharges,
-	"GET /v1/billing/contract-commitments": gETV1BillingContractCommitments,
+	"GET /v1/billing/charges": listBillingCharges,
+	"GET /v1/billing/contract-commitments": listContractCommitments,
 	"PUT /v1/bulk-redirects": stageRedirects,
 	"GET /v1/bulk-redirects": getRedirects,
 	"DELETE /v1/bulk-redirects": deleteRedirects,
@@ -10252,9 +10258,9 @@ export const operationsByTag = {
 		downloadArtifact,
 		artifactQuery,
 	},
-	apiBilling: {
-		gETV1BillingCharges,
-		gETV1BillingContractCommitments,
+	billing: {
+		listBillingCharges,
+		listContractCommitments,
 	},
 	bulkRedirects: {
 		stageRedirects,
@@ -10541,8 +10547,8 @@ export const tagDictionary = {
 		GET: ["status", "downloadArtifact"],
 		PUT: ["uploadArtifact"],
 	},
-	apiBilling: {
-		GET: ["gETV1BillingCharges", "gETV1BillingContractCommitments"],
+	billing: {
+		GET: ["listBillingCharges", "listContractCommitments"],
 	},
 	bulkRedirects: {
 		PUT: ["stageRedirects"],
