@@ -17425,7 +17425,7 @@ export type D1ApiResponseCommonFailure = {
 export type D1BatchQuery =
 	| D1SingleQuery
 	| {
-			batch?: D1SingleQuery[];
+			batch: D1SingleQuery[];
 	  };
 
 /**
