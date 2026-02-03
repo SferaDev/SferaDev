@@ -14840,6 +14840,8 @@ export type ListBillingChargesQueryParams = {
 	slug?: string | undefined;
 };
 
+export type ListBillingCharges200 = unknown;
+
 /**
  * @description One of the provided values in the request query is invalid.
  */
@@ -14861,10 +14863,10 @@ export type ListBillingCharges500 = unknown;
 
 export type ListBillingCharges503 = unknown;
 
-export type ListBillingChargesQueryResponse = any;
+export type ListBillingChargesQueryResponse = ListBillingCharges200;
 
 export type ListBillingChargesQuery = {
-	Response: any;
+	Response: ListBillingCharges200;
 	QueryParams: ListBillingChargesQueryParams;
 	Errors:
 		| ListBillingCharges400
@@ -14888,6 +14890,8 @@ export type ListContractCommitmentsQueryParams = {
 	slug?: string | undefined;
 };
 
+export type ListContractCommitments200 = unknown;
+
 export type ListContractCommitments400 = unknown;
 
 /**
@@ -14902,10 +14906,10 @@ export type ListContractCommitments403 = unknown;
 
 export type ListContractCommitments404 = unknown;
 
-export type ListContractCommitmentsQueryResponse = any;
+export type ListContractCommitmentsQueryResponse = ListContractCommitments200;
 
 export type ListContractCommitmentsQuery = {
-	Response: any;
+	Response: ListContractCommitments200;
 	QueryParams: ListContractCommitmentsQueryParams;
 	Errors:
 		| ListContractCommitments400

@@ -6601,6 +6601,8 @@ export const listBillingChargesQueryParamsSchema = z.object({
 	slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
 });
 
+export const listBillingCharges200Schema = z.unknown();
+
 /**
  * @description One of the provided values in the request query is invalid.
  */
@@ -6622,7 +6624,7 @@ export const listBillingCharges500Schema = z.unknown();
 
 export const listBillingCharges503Schema = z.unknown();
 
-export const listBillingChargesQueryResponseSchema = z.unknown();
+export const listBillingChargesQueryResponseSchema = z.lazy(() => listBillingCharges200Schema);
 
 export const listContractCommitmentsQueryParamsSchema = z
 	.object({
@@ -6632,6 +6634,8 @@ export const listContractCommitmentsQueryParamsSchema = z
 		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
 	})
 	.optional();
+
+export const listContractCommitments200Schema = z.unknown();
 
 export const listContractCommitments400Schema = z.unknown();
 
@@ -6647,7 +6651,9 @@ export const listContractCommitments403Schema = z.unknown();
 
 export const listContractCommitments404Schema = z.unknown();
 
-export const listContractCommitmentsQueryResponseSchema = z.unknown();
+export const listContractCommitmentsQueryResponseSchema = z.lazy(
+	() => listContractCommitments200Schema,
+);
 
 export const stageRedirectsQueryParamsSchema = z
 	.object({
