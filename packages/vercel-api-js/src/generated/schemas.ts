@@ -1681,8 +1681,8 @@ export const userEventSchema = z
 									customEnvironmentsPerProject: z.optional(z.number()),
 									buildMachine: z.optional(
 										z.object({
-											default: z.optional(z.enum(["enhanced", "turbo", "standard"])),
-											purchaseType: z.optional(z.enum(["enhanced", "turbo"])),
+											default: z.optional(z.enum(["standard", "enhanced", "turbo"])),
+											purchaseType: z.optional(z.enum(["standard", "enhanced", "turbo"])),
 											isDefaultBuildMachine: z.optional(
 												z.union([z.literal(false), z.literal(true)]),
 											),
@@ -5622,7 +5622,7 @@ export const authUserSchema = z
 							),
 							purchaseType: z.optional(
 								z
-									.enum(["enhanced", "turbo"])
+									.enum(["enhanced", "standard", "turbo"])
 									.describe(
 										"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
 									),
