@@ -1811,15 +1811,16 @@ export type ResourceConfigFlagsExplorerUnlimitedOverridesEnumKey =
 	(typeof resourceConfigFlagsExplorerUnlimitedOverridesEnum)[keyof typeof resourceConfigFlagsExplorerUnlimitedOverridesEnum];
 
 export const buildMachineDefaultEnum = {
+	standard: "standard",
 	enhanced: "enhanced",
 	turbo: "turbo",
-	standard: "standard",
 } as const;
 
 export type BuildMachineDefaultEnumKey =
 	(typeof buildMachineDefaultEnum)[keyof typeof buildMachineDefaultEnum];
 
 export const buildMachinePurchaseTypeEnum = {
+	standard: "standard",
 	enhanced: "enhanced",
 	turbo: "turbo",
 } as const;
@@ -13253,6 +13254,7 @@ export type BuildMachineDefaultEnum3Key =
 
 export const buildMachinePurchaseTypeEnum2 = {
 	enhanced: "enhanced",
+	standard: "standard",
 	turbo: "turbo",
 } as const;
 
