@@ -237,6 +237,8 @@ import {
 	listAccessGroupProjectsQueryParamsSchema,
 	listAccessGroupsQueryParamsSchema,
 	listAliasesQueryParamsSchema,
+	listBillingChargesQueryParamsSchema,
+	listContractCommitmentsQueryParamsSchema,
 	listCustomEnvironmentsPathParamsSchema,
 	listCustomEnvironmentsQueryParamsSchema,
 	listDeploymentAliasesPathParamsSchema,
@@ -833,18 +835,6 @@ import type {
 	FilterProjectEnvsPathParams,
 	FilterProjectEnvsQueryParams,
 	FilterProjectEnvsQueryResponse,
-	GETV1BillingCharges400,
-	GETV1BillingCharges401,
-	GETV1BillingCharges403,
-	GETV1BillingCharges404,
-	GETV1BillingCharges500,
-	GETV1BillingCharges503,
-	GETV1BillingChargesQueryResponse,
-	GETV1BillingContractCommitments400,
-	GETV1BillingContractCommitments401,
-	GETV1BillingContractCommitments403,
-	GETV1BillingContractCommitments404,
-	GETV1BillingContractCommitmentsQueryResponse,
 	GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig400,
 	GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig401,
 	GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig403,
@@ -1397,6 +1387,20 @@ import type {
 	ListAuthTokens401,
 	ListAuthTokens403,
 	ListAuthTokensQueryResponse,
+	ListBillingCharges400,
+	ListBillingCharges401,
+	ListBillingCharges403,
+	ListBillingCharges404,
+	ListBillingCharges500,
+	ListBillingCharges503,
+	ListBillingChargesQueryParams,
+	ListBillingChargesQueryResponse,
+	ListContractCommitments400,
+	ListContractCommitments401,
+	ListContractCommitments403,
+	ListContractCommitments404,
+	ListContractCommitmentsQueryParams,
+	ListContractCommitmentsQueryResponse,
 	ListCustomEnvironments400,
 	ListCustomEnvironments401,
 	ListCustomEnvironments403,
@@ -2561,68 +2565,74 @@ export async function artifactQuery({
 }
 
 /**
- * @description Returns the billing charge data in FOCUS v1.3 JSONL format for a specified Vercel `teamId`, in a date range `from` and `to` (inclusive).
- * @summary Get FOCUS v1.3 compliant usage cost metrics
+ * @description Returns the billing charge data in FOCUS v1.3 JSONL format for a specified Vercel team, within a date range specified by `from` and `to` query parameters. Supports 1-day granularity with a maximum date range of 1 year. The response is streamed as newline-delimited JSON (JSONL) and can be optionally compressed with gzip if the `Accept-Encoding: gzip` header is provided.
+ * @summary List FOCUS billing charges
  * {@link /v1/billing/charges}
  */
-export async function gETV1BillingCharges({
+export async function listBillingCharges({
+	queryParams,
 	config = {},
 }: {
+	queryParams: ListBillingChargesQueryParams;
 	config?: Partial<FetcherConfig> & { client?: typeof client };
 }): Promise<Promise<CallToolResult>> {
 	const { client: request = client, ...requestConfig } = config;
 
 	const data = await request<
-		GETV1BillingChargesQueryResponse,
+		ListBillingChargesQueryResponse,
 		ErrorWrapper<
-			| GETV1BillingCharges400
-			| GETV1BillingCharges401
-			| GETV1BillingCharges403
-			| GETV1BillingCharges404
-			| GETV1BillingCharges500
-			| GETV1BillingCharges503
+			| ListBillingCharges400
+			| ListBillingCharges401
+			| ListBillingCharges403
+			| ListBillingCharges404
+			| ListBillingCharges500
+			| ListBillingCharges503
 		>,
 		null,
 		Record<string, string>,
-		Record<string, string>,
+		ListBillingChargesQueryParams,
 		Record<string, string>
 	>({
 		method: "GET",
 		url: `/v1/billing/charges`,
 		baseUrl: "https://api.vercel.com",
+		queryParams,
 		...requestConfig,
 	});
 	return { content: [{ type: "text", text: JSON.stringify(data) }] };
 }
 
 /**
- * @description Returns commitment allocations per contract period in FOCUS v1.3 JSONL format for a specified Vercel `teamId`. Returns `null` for non-enterprise teams.
- * @summary Get FOCUS v1.3 compliant contract commitments
+ * @description Returns commitment allocations per contract period in FOCUS v1.3 JSONL format for a specified Vercel team. The response is streamed as newline-delimited JSON (JSONL). This endpoint is only applicable to Enterprise Vercel customers. An empty response is returned for non-Enterprise (Pro/Flex) customers.
+ * @summary List FOCUS contract commitments
  * {@link /v1/billing/contract-commitments}
  */
-export async function gETV1BillingContractCommitments({
+export async function listContractCommitments({
+	queryParams,
 	config = {},
 }: {
+	queryParams?: ListContractCommitmentsQueryParams;
 	config?: Partial<FetcherConfig> & { client?: typeof client };
 }): Promise<Promise<CallToolResult>> {
 	const { client: request = client, ...requestConfig } = config;
 
 	const data = await request<
-		GETV1BillingContractCommitmentsQueryResponse,
+		ListContractCommitmentsQueryResponse,
 		ErrorWrapper<
-			| GETV1BillingContractCommitments400
-			| GETV1BillingContractCommitments401
-			| GETV1BillingContractCommitments403
-			| GETV1BillingContractCommitments404
+			| ListContractCommitments400
+			| ListContractCommitments401
+			| ListContractCommitments403
+			| ListContractCommitments404
 		>,
 		null,
 		Record<string, string>,
-		Record<string, string>,
+		ListContractCommitmentsQueryParams,
 		Record<string, string>
 	>({
 		method: "GET",
 		url: `/v1/billing/contract-commitments`,
 		baseUrl: "https://api.vercel.com",
+		queryParams,
 		...requestConfig,
 	});
 	return { content: [{ type: "text", text: JSON.stringify(data) }] };
@@ -11221,11 +11231,12 @@ export function initMcpTools<Server>(serverLike: Server, config: FetcherConfig) 
 	);
 
 	server.tool(
-		"gETV1BillingCharges",
-		"Returns the billing charge data in FOCUS v1.3 JSONL format for a specified Vercel `teamId`, in a date range `from` and `to` (inclusive).",
-		async () => {
+		"listBillingCharges",
+		"Returns the billing charge data in FOCUS v1.3 JSONL format for a specified Vercel team, within a date range specified by `from` and `to` query parameters. Supports 1-day granularity with a maximum date range of 1 year. The response is streamed as newline-delimited JSON (JSONL) and can be optionally compressed with gzip if the `Accept-Encoding: gzip` header is provided.",
+		{ queryParams: listBillingChargesQueryParamsSchema },
+		async ({ queryParams }) => {
 			try {
-				return await gETV1BillingCharges({ config });
+				return await listBillingCharges({ queryParams, config });
 			} catch (error) {
 				return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
 			}
@@ -11233,11 +11244,12 @@ export function initMcpTools<Server>(serverLike: Server, config: FetcherConfig) 
 	);
 
 	server.tool(
-		"gETV1BillingContractCommitments",
-		"Returns commitment allocations per contract period in FOCUS v1.3 JSONL format for a specified Vercel `teamId`. Returns `null` for non-enterprise teams.",
-		async () => {
+		"listContractCommitments",
+		"Returns commitment allocations per contract period in FOCUS v1.3 JSONL format for a specified Vercel team. The response is streamed as newline-delimited JSON (JSONL). This endpoint is only applicable to Enterprise Vercel customers. An empty response is returned for non-Enterprise (Pro/Flex) customers.",
+		{ queryParams: listContractCommitmentsQueryParamsSchema },
+		async ({ queryParams }) => {
 			try {
-				return await gETV1BillingContractCommitments({ config });
+				return await listContractCommitments({ queryParams, config });
 			} catch (error) {
 				return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
 			}
