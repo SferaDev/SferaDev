@@ -3407,6 +3407,15 @@ export const toAccountTypeEnum = {
 
 export type ToAccountTypeEnumKey = (typeof toAccountTypeEnum)[keyof typeof toAccountTypeEnum];
 
+export const projectsRoleEnum = {
+	ADMIN: "ADMIN",
+	PROJECT_DEVELOPER: "PROJECT_DEVELOPER",
+	PROJECT_VIEWER: "PROJECT_VIEWER",
+	PROJECT_GUEST: "PROJECT_GUEST",
+} as const;
+
+export type ProjectsRoleEnumKey = (typeof projectsRoleEnum)[keyof typeof projectsRoleEnum];
+
 export const payloadGrantTypeEnum = {
 	authorization_code: "authorization_code",
 	"urn:ietf:params:oauth:grant-type:device_code": "urn:ietf:params:oauth:grant-type:device_code",
@@ -11704,6 +11713,159 @@ export type UserEvent = {
 							 */
 							username?: string | undefined;
 						};
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string
+						 */
+						domain: string;
+						/**
+						 * @type string
+						 */
+						target: string;
+						/**
+						 * @type string
+						 */
+						redirect: string | null;
+						/**
+						 * @type number
+						 */
+						redirectStatusCode: number | null;
+						/**
+						 * @type string
+						 */
+						gitBranch: string | null;
+						/**
+						 * @type string | undefined
+						 */
+						configuredBy?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string
+						 */
+						domain: string;
+						/**
+						 * @type string
+						 */
+						target: string;
+						/**
+						 * @type string
+						 */
+						redirect?: (string | null) | undefined;
+						/**
+						 * @type number
+						 */
+						redirectStatusCode?: (number | null) | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						oldProjectId: string;
+						/**
+						 * @type string
+						 */
+						oldProjectName: string;
+						/**
+						 * @type string
+						 */
+						newProjectId: string;
+						/**
+						 * @type string
+						 */
+						newProjectName: string;
+						/**
+						 * @type string
+						 */
+						domain: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string
+						 */
+						domain: string;
+						/**
+						 * @type string
+						 */
+						redirect?: (string | null) | undefined;
+						/**
+						 * @type number
+						 */
+						redirectStatusCode?: (number | null) | undefined;
+				  }
+				| {
+						/**
+						 * @type array
+						 */
+						projects: {
+							/**
+							 * @type string
+							 */
+							projectId: string;
+							/**
+							 * @type string
+							 */
+							role: ProjectsRoleEnumKey;
+							/**
+							 * @type number
+							 */
+							membershipCreatedAt: number;
+						}[];
+						/**
+						 * @type string
+						 */
+						uid: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string
+						 */
+						target: string;
+						/**
+						 * @type string
+						 */
+						domain: string;
+						/**
+						 * @type string
+						 */
+						configuredBy?: (string | null) | undefined;
+						/**
+						 * @type string
+						 */
+						prevConfiguredBy?: (string | null) | undefined;
 				  }
 				| {
 						/**
