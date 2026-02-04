@@ -18,6 +18,8 @@ import "@xyflow/react/dist/style.css";
 import { toPng } from "html-to-image";
 import { jsPDF } from "jspdf";
 import {
+	Check,
+	Copy,
 	Download,
 	FileText,
 	ImageIcon,
@@ -38,6 +40,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { loadData, saveData } from "@/lib/storage";
 import type { Guest, GuestGroup, SeatingData, Table } from "@/lib/types";
 import { GuestPanel } from "./guest-panel";
+import { OnboardingModal } from "./onboarding-modal";
 import { TableNode } from "./table-node";
 
 const nodeTypes = {
@@ -77,6 +80,7 @@ function SeatingPlannerInner() {
 	const [isDragging, setIsDragging] = useState(false);
 	const { resolvedTheme, setTheme } = useTheme();
 	const [themeMounted, setThemeMounted] = useState(false);
+	const [linkCopied, setLinkCopied] = useState(false);
 
 	useEffect(() => {
 		setThemeMounted(true);
@@ -150,6 +154,22 @@ function SeatingPlannerInner() {
 	}, []);
 
 	useEffect(() => {
+		// Check for shared data in URL
+		const params = new URLSearchParams(window.location.search);
+		const sharedData = params.get("data");
+		if (sharedData) {
+			try {
+				const decoded = JSON.parse(atob(sharedData)) as SeatingData;
+				setGuests(decoded.guests);
+				setTables(decoded.tables);
+				// Clear the URL params after loading
+				window.history.replaceState({}, "", window.location.pathname);
+				setIsLoaded(true);
+				return;
+			} catch {
+				// Invalid data, fall through to load from storage
+			}
+		}
 		const data = loadData();
 		setGuests(data.guests);
 		setTables(data.tables);
@@ -849,10 +869,21 @@ function SeatingPlannerInner() {
 		}, 50);
 	}, [tables, nodes, getNodeBounds, fitView]);
 
+	const handleShareLink = useCallback(() => {
+		const data: SeatingData = { guests, tables };
+		const encoded = btoa(JSON.stringify(data));
+		const url = `${window.location.origin}${window.location.pathname}?data=${encoded}`;
+		navigator.clipboard.writeText(url).then(() => {
+			setLinkCopied(true);
+			setTimeout(() => setLinkCopied(false), 2000);
+		});
+	}, [guests, tables]);
+
 	const unseatedGuests = guests.filter((g) => g.tableId === null);
 
 	return (
 		<div className="flex flex-col h-dvh overflow-hidden bg-background">
+			<OnboardingModal />
 			<input
 				ref={fileInputRef}
 				type="file"
@@ -938,6 +969,12 @@ function SeatingPlannerInner() {
 							</ControlButton>
 							<ControlButton onClick={handleAutoArrange} title="Auto Arrange">
 								<LayoutGrid className="w-4 h-4" />
+							</ControlButton>
+							<ControlButton
+								onClick={handleShareLink}
+								title={linkCopied ? "Link Copied!" : "Copy Shareable Link"}
+							>
+								{linkCopied ? <Check className="w-4 h-4" /> : <Link className="w-4 h-4" />}
 							</ControlButton>
 							<ControlButton
 								onClick={toggleFullscreen}
