@@ -893,24 +893,22 @@ function SeatingPlannerInner() {
 			/>
 
 			<div className="flex flex-1 overflow-hidden relative">
-				<Button
-					variant="outline"
-					size="icon"
-					className="absolute left-2 top-2 z-20 lg:hidden shadow-md bg-card"
-					onClick={() => setIsPanelOpen(!isPanelOpen)}
-				>
-					{isPanelOpen ? (
-						<PanelLeftClose className="w-5 h-5" />
-					) : (
+				{!isPanelOpen && (
+					<Button
+						variant="outline"
+						size="icon"
+						className="absolute left-2 top-2 z-20 md:hidden shadow-md bg-card"
+						onClick={() => setIsPanelOpen(true)}
+					>
 						<PanelLeftOpen className="w-5 h-5" />
-					)}
-				</Button>
+					</Button>
+				)}
 
 				<div
 					className={`
-            absolute lg:relative inset-y-0 left-0 z-10 
+            absolute md:relative inset-y-0 left-0 z-10 
             transition-transform duration-300 ease-in-out
-            ${isPanelOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+            ${isPanelOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
           `}
 				>
 					<GuestPanel
@@ -926,9 +924,12 @@ function SeatingPlannerInner() {
 				</div>
 
 				{isPanelOpen && (
-					<div
-						className="absolute inset-0 bg-black/20 z-5 lg:hidden"
+					<button
+						type="button"
+						className="absolute inset-0 bg-black/20 z-5 md:hidden cursor-default"
 						onClick={() => setIsPanelOpen(false)}
+						onKeyDown={(e) => e.key === "Escape" && setIsPanelOpen(false)}
+						aria-label="Close panel"
 					/>
 				)}
 

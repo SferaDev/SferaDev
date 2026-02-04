@@ -144,7 +144,7 @@ export function GuestPanel({
 	const tablesWithSpace = getTablesWithSpace();
 
 	return (
-		<div className="w-80 max-w-[85vw] h-full border-r border-border bg-card flex flex-col shadow-xl lg:shadow-none">
+		<div className="w-80 max-w-[85vw] h-full border-r border-border bg-card flex flex-col shadow-xl md:shadow-none">
 			{cropperImage && (
 				<ImageCropper
 					image={cropperImage}
@@ -160,7 +160,7 @@ export function GuestPanel({
 				onImport={handleImportGuests}
 			/>
 
-			<div className="flex items-center justify-between p-3 border-b border-border lg:hidden">
+			<div className="flex items-center justify-between p-3 border-b border-border md:hidden">
 				<span className="font-semibold text-foreground">Guest Manager</span>
 				<Button variant="ghost" size="icon" onClick={onClose} className="h-9 w-9">
 					<X className="w-5 h-5" />
