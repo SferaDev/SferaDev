@@ -3235,8 +3235,8 @@ export const userEventSchema = z
 					sourceFilesOutsideRootDirectory: z.union([z.literal(false), z.literal(true)]),
 				}),
 				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
+					projectId: z.optional(z.string()),
+					projectName: z.optional(z.string()),
 					buildMachineType: z.optional(z.string()),
 					oldBuildMachineType: z.optional(z.string()),
 				}),
@@ -4564,6 +4564,32 @@ export const userEventSchema = z
 					domain: z.string(),
 					configuredBy: z.string().nullish(),
 					prevConfiguredBy: z.string().nullish(),
+				}),
+				z.object({
+					plan: z.enum(["pro", "enterprise", "hobby"]),
+					trial: z
+						.object({
+							start: z.number(),
+							end: z.number(),
+						})
+						.nullish(),
+				}),
+				z.object({
+					invoiceId: z.string(),
+					convertedFromTrial: z.union([z.literal(false), z.literal(true)]),
+					plan: z.enum(["pro", "enterprise", "hobby"]),
+				}),
+				z.object({
+					emailDomain: z.string().nullish(),
+				}),
+				z.object({
+					inviteCode: z.optional(z.string()),
+				}),
+				z.object({
+					trialCreditsIssuedAt: z.number(),
+					expiresAt: z.string(),
+					amount: z.string(),
+					currency: z.string(),
 				}),
 				z.object({
 					grantType: z.enum(["authorization_code", "urn:ietf:params:oauth:grant-type:device_code"]),

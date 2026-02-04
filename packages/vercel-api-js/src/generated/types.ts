@@ -3416,6 +3416,22 @@ export const projectsRoleEnum = {
 
 export type ProjectsRoleEnumKey = (typeof projectsRoleEnum)[keyof typeof projectsRoleEnum];
 
+export const payloadPlanEnum = {
+	pro: "pro",
+	enterprise: "enterprise",
+	hobby: "hobby",
+} as const;
+
+export type PayloadPlanEnumKey = (typeof payloadPlanEnum)[keyof typeof payloadPlanEnum];
+
+export const payloadConvertedFromTrialEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadConvertedFromTrialEnumKey =
+	(typeof payloadConvertedFromTrialEnum)[keyof typeof payloadConvertedFromTrialEnum];
+
 export const payloadGrantTypeEnum = {
 	authorization_code: "authorization_code",
 	"urn:ietf:params:oauth:grant-type:device_code": "urn:ietf:params:oauth:grant-type:device_code",
@@ -8985,13 +9001,13 @@ export type UserEvent = {
 				  }
 				| {
 						/**
-						 * @type string
+						 * @type string | undefined
 						 */
-						projectId: string;
+						projectId?: string | undefined;
 						/**
-						 * @type string
+						 * @type string | undefined
 						 */
-						projectName: string;
+						projectName?: string | undefined;
 						/**
 						 * @type string | undefined
 						 */
@@ -11866,6 +11882,71 @@ export type UserEvent = {
 						 * @type string
 						 */
 						prevConfiguredBy?: (string | null) | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						plan: PayloadPlanEnumKey;
+						/**
+						 * @type object
+						 */
+						trial?:
+							| ({
+									/**
+									 * @type number
+									 */
+									start: number;
+									/**
+									 * @type number
+									 */
+									end: number;
+							  } | null)
+							| undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						invoiceId: string;
+						/**
+						 * @type boolean
+						 */
+						convertedFromTrial: PayloadConvertedFromTrialEnumKey;
+						/**
+						 * @type string
+						 */
+						plan: PayloadPlanEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						emailDomain?: (string | null) | undefined;
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						inviteCode?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type number
+						 */
+						trialCreditsIssuedAt: number;
+						/**
+						 * @type string
+						 */
+						expiresAt: string;
+						/**
+						 * @type string
+						 */
+						amount: string;
+						/**
+						 * @type string
+						 */
+						currency: string;
 				  }
 				| {
 						/**
