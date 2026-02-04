@@ -4516,6 +4516,56 @@ export const userEventSchema = z
 					}),
 				}),
 				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					domain: z.string(),
+					target: z.string(),
+					redirect: z.nullable(z.string()),
+					redirectStatusCode: z.nullable(z.number()),
+					gitBranch: z.nullable(z.string()),
+					configuredBy: z.optional(z.string()),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					domain: z.string(),
+					target: z.string(),
+					redirect: z.string().nullish(),
+					redirectStatusCode: z.number().nullish(),
+				}),
+				z.object({
+					oldProjectId: z.string(),
+					oldProjectName: z.string(),
+					newProjectId: z.string(),
+					newProjectName: z.string(),
+					domain: z.string(),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					domain: z.string(),
+					redirect: z.string().nullish(),
+					redirectStatusCode: z.number().nullish(),
+				}),
+				z.object({
+					projects: z.array(
+						z.object({
+							projectId: z.string(),
+							role: z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_VIEWER", "PROJECT_GUEST"]),
+							membershipCreatedAt: z.number(),
+						}),
+					),
+					uid: z.string(),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					target: z.string(),
+					domain: z.string(),
+					configuredBy: z.string().nullish(),
+					prevConfiguredBy: z.string().nullish(),
+				}),
+				z.object({
 					grantType: z.enum(["authorization_code", "urn:ietf:params:oauth:grant-type:device_code"]),
 					appName: z
 						.string()
