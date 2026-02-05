@@ -2583,6 +2583,13 @@ export const userEventSchema = z
 										"MFA configuration. When enabled, the user will be required to provide a second factor of authentication when logging in.",
 									),
 							),
+							isEnterpriseManaged: z.optional(
+								z
+									.union([z.literal(false), z.literal(true)])
+									.describe(
+										"Indicates that the underlying user entity is a managed user for the enterprise it's associated with The intention is that this field is only set to true for users that are provisioned by the enterprise which means that the domain associated with the user's email is the same domain associated with the team Allowing us to query information about the user's team at login time through the domain verification service",
+									),
+							),
 						}),
 					),
 				}),
@@ -4615,6 +4622,7 @@ export const userEventSchema = z
 						"otp",
 						"sms",
 						"invite",
+						"emu",
 					]),
 					app: z.optional(
 						z
@@ -5382,6 +5390,7 @@ export const authTokenSchema = z
 									"google",
 									"apple",
 									"app",
+									"emu",
 								]),
 							),
 							createdAt: z.number(),
@@ -5405,6 +5414,7 @@ export const authTokenSchema = z
 									"google",
 									"apple",
 									"app",
+									"emu",
 								]),
 							),
 							createdAt: z.number(),
