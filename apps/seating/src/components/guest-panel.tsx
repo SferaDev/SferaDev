@@ -2,6 +2,7 @@
 
 import {
 	Circle,
+	FileSpreadsheet,
 	ImagePlus,
 	Plus,
 	RectangleHorizontal,
@@ -13,6 +14,7 @@ import {
 import type React from "react";
 import { useRef, useState } from "react";
 import { ImageCropper } from "@/components/image-cropper";
+import { ImportGuestsDialog } from "@/components/import-guests-dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -25,13 +27,13 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import type { Guest, Table } from "@/lib/types";
+import { GUEST_GROUPS, type Guest, type GuestGroup, type Table } from "@/lib/types";
 
 interface GuestPanelProps {
 	guests: Guest[];
 	tables: Table[];
 	allGuests: Guest[];
-	onAddGuest: (name: string, photo: string | null) => void;
+	onAddGuest: (name: string, photo: string | null, group?: GuestGroup) => void;
 	onRemoveGuest: (guestId: string) => void;
 	onAddTable: (
 		name: string,
@@ -55,6 +57,7 @@ export function GuestPanel({
 }: GuestPanelProps) {
 	const [guestName, setGuestName] = useState("");
 	const [guestPhoto, setGuestPhoto] = useState<string | null>(null);
+	const [guestGroup, setGuestGroup] = useState<GuestGroup | "">("");
 	const [tableName, setTableName] = useState("");
 	const [tableSeats, setTableSeats] = useState("8");
 	const [tableShape, setTableShape] = useState<"round" | "rectangle">("round");
@@ -64,12 +67,14 @@ export function GuestPanel({
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const [cropperImage, setCropperImage] = useState<string | null>(null);
 	const [showCropper, setShowCropper] = useState(false);
+	const [showImportDialog, setShowImportDialog] = useState(false);
 
 	const handleAddGuest = () => {
 		if (guestName.trim()) {
-			onAddGuest(guestName.trim(), guestPhoto);
+			onAddGuest(guestName.trim(), guestPhoto, guestGroup || undefined);
 			setGuestName("");
 			setGuestPhoto(null);
+			setGuestGroup("");
 		}
 	};
 
@@ -114,6 +119,12 @@ export function GuestPanel({
 		setCropperImage(null);
 	};
 
+	const handleImportGuests = (importedGuests: Array<{ name: string; photo: string | null }>) => {
+		for (const guest of importedGuests) {
+			onAddGuest(guest.name, guest.photo, undefined);
+		}
+	};
+
 	const getInitials = (name: string) => {
 		return name
 			.split(" ")
@@ -133,7 +144,7 @@ export function GuestPanel({
 	const tablesWithSpace = getTablesWithSpace();
 
 	return (
-		<div className="w-80 max-w-[85vw] h-full border-r border-border bg-card flex flex-col shadow-xl lg:shadow-none">
+		<div className="w-80 max-w-[85vw] h-full border-r border-border bg-card flex flex-col shadow-xl md:shadow-none">
 			{cropperImage && (
 				<ImageCropper
 					image={cropperImage}
@@ -143,7 +154,13 @@ export function GuestPanel({
 				/>
 			)}
 
-			<div className="flex items-center justify-between p-3 border-b border-border lg:hidden">
+			<ImportGuestsDialog
+				open={showImportDialog}
+				onClose={() => setShowImportDialog(false)}
+				onImport={handleImportGuests}
+			/>
+
+			<div className="flex items-center justify-between p-3 border-b border-border md:hidden">
 				<span className="font-semibold text-foreground">Guest Manager</span>
 				<Button variant="ghost" size="icon" onClick={onClose} className="h-9 w-9">
 					<X className="w-5 h-5" />
@@ -218,9 +235,38 @@ export function GuestPanel({
 								</div>
 							</div>
 
+							<div className="space-y-2">
+								<Label htmlFor="guest-group">Group (optional)</Label>
+								<Select
+									value={guestGroup || "none"}
+									onValueChange={(v) => setGuestGroup(v === "none" ? "" : (v as GuestGroup))}
+								>
+									<SelectTrigger id="guest-group">
+										<SelectValue placeholder="Select a group..." />
+									</SelectTrigger>
+									<SelectContent>
+										<SelectItem value="none">No group</SelectItem>
+										{GUEST_GROUPS.map((group) => (
+											<SelectItem key={group} value={group}>
+												{group}
+											</SelectItem>
+										))}
+									</SelectContent>
+								</Select>
+							</div>
+
 							<Button onClick={handleAddGuest} className="w-full gap-2">
 								<Plus className="w-4 h-4" />
 								Add Guest
+							</Button>
+
+							<Button
+								variant="outline"
+								onClick={() => setShowImportDialog(true)}
+								className="w-full gap-2"
+							>
+								<FileSpreadsheet className="w-4 h-4" />
+								Import Guests
 							</Button>
 						</CardContent>
 					</Card>
