@@ -13410,6 +13410,16 @@ export type AuthToken = {
 	 * @type number | undefined
 	 */
 	leakedAt?: number | undefined;
+	/**
+	 * @description URL where the token was discovered as leaked.
+	 * @type string | undefined
+	 */
+	leakedUrl?: string | undefined;
+	/**
+	 * @description The last few characters of the token, for identification purposes.
+	 * @type string | undefined
+	 */
+	suffix?: string | undefined;
 };
 
 export const softBlockReasonEnum2 = {
