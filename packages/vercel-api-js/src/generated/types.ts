@@ -2298,6 +2298,14 @@ export const historyActorTypeEnum = {
 export type HistoryActorTypeEnumKey =
 	(typeof historyActorTypeEnum)[keyof typeof historyActorTypeEnum];
 
+export const newOwnerIsEnterpriseManagedEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type NewOwnerIsEnterpriseManagedEnumKey =
+	(typeof newOwnerIsEnterpriseManagedEnum)[keyof typeof newOwnerIsEnterpriseManagedEnum];
+
 export const payloadProjectIdsEnum = {
 	all: "all",
 } as const;
@@ -3454,6 +3462,7 @@ export const payloadAuthMethodEnum = {
 	otp: "otp",
 	sms: "sms",
 	invite: "invite",
+	emu: "emu",
 } as const;
 
 export type PayloadAuthMethodEnumKey =
@@ -7571,6 +7580,11 @@ export type UserEvent = {
 											| undefined;
 								  }
 								| undefined;
+							/**
+							 * @description Indicates that the underlying user entity is a managed user for the enterprise it\'s associated with The intention is that this field is only set to true for users that are provisioned by the enterprise which means that the domain associated with the user\'s email is the same domain associated with the team Allowing us to query information about the user\'s team at login time through the domain verification service
+							 * @type boolean | undefined
+							 */
+							isEnterpriseManaged?: NewOwnerIsEnterpriseManagedEnumKey | undefined;
 						} | null;
 				  }
 				| {
@@ -13277,6 +13291,7 @@ export const scopesOriginEnum = {
 	google: "google",
 	apple: "apple",
 	app: "app",
+	emu: "emu",
 } as const;
 
 export type ScopesOriginEnumKey = (typeof scopesOriginEnum)[keyof typeof scopesOriginEnum];
