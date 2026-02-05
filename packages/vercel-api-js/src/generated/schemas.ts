@@ -5434,6 +5434,10 @@ export const authTokenSchema = z
 		leakedAt: z.optional(
 			z.number().describe("Timestamp (in milliseconds) of when the token was marked as leaked."),
 		),
+		leakedUrl: z.optional(z.string().describe("URL where the token was discovered as leaked.")),
+		suffix: z.optional(
+			z.string().describe("The last few characters of the token, for identification purposes."),
+		),
 	})
 	.describe("Authentication token metadata.");
 
