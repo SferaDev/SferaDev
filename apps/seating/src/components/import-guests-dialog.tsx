@@ -117,10 +117,7 @@ export function ImportGuestsDialog({ open, onClose, onImport }: ImportGuestsDial
 	const validGuests = parsedGuests.filter((g) => g.isValid);
 	const invalidGuests = parsedGuests.filter((g) => !g.isValid);
 
-	const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const file = e.target.files?.[0];
-		if (!file) return;
-
+	const processFile = (file: File) => {
 		setFileName(file.name);
 		setParseError(null);
 
@@ -145,11 +142,22 @@ export function ImportGuestsDialog({ open, onClose, onImport }: ImportGuestsDial
 			setParsedGuests([]);
 		};
 		reader.readAsText(file);
+	};
 
+	const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const file = e.target.files?.[0];
+		if (!file) return;
+		processFile(file);
 		// Reset file input
 		if (fileInputRef.current) {
 			fileInputRef.current.value = "";
 		}
+	};
+
+	const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+		e.preventDefault();
+		const file = e.dataTransfer.files[0];
+		if (file) processFile(file);
 	};
 
 	const handleImport = () => {
@@ -190,6 +198,8 @@ export function ImportGuestsDialog({ open, onClose, onImport }: ImportGuestsDial
 							<div
 								className="border-2 border-dashed border-muted-foreground/30 rounded-lg p-8 text-center hover:border-primary/50 transition-colors cursor-pointer"
 								onClick={() => fileInputRef.current?.click()}
+								onDrop={handleDrop}
+								onDragOver={(e) => e.preventDefault()}
 							>
 								<Upload className="w-10 h-10 mx-auto mb-3 text-muted-foreground" />
 								<p className="text-sm font-medium mb-1">

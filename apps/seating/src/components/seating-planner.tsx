@@ -83,7 +83,6 @@ function SeatingPlannerInner() {
 	const toggleTheme = useCallback(() => {
 		setTheme(resolvedTheme === "dark" ? "light" : "dark");
 	}, [resolvedTheme, setTheme]);
-	const [_overlappingNodeIds, setOverlappingNodeIds] = useState<Set<string>>(new Set());
 	const reactFlowWrapper = useRef<HTMLDivElement>(null);
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const { getNodes, fitView } = useReactFlow();
@@ -153,7 +152,10 @@ function SeatingPlannerInner() {
 		const sharedData = params.get("data");
 		if (sharedData) {
 			try {
-				const decoded = JSON.parse(atob(sharedData)) as SeatingData;
+				const decoded = JSON.parse(decodeURIComponent(escape(atob(sharedData)))) as SeatingData;
+				if (!Array.isArray(decoded.guests) || !Array.isArray(decoded.tables)) {
+					throw new Error("Invalid data structure");
+				}
 				setGuests(decoded.guests);
 				setTables(decoded.tables);
 				// Clear the URL params after loading
@@ -432,38 +434,6 @@ function SeatingPlannerInner() {
 		},
 		[nodes, getNodeBounds],
 	);
-	const checkOverlaps = useCallback(
-		(draggingNodeId: string, position: { x: number; y: number }) => {
-			const otherNodes = nodes.filter((n) => n.id !== draggingNodeId);
-			if (otherNodes.length === 0) return new Set<string>();
-
-			const draggingNode = nodes.find((n) => n.id === draggingNodeId);
-			if (!draggingNode) return new Set<string>();
-
-			const draggingBounds = getNodeBounds({ ...draggingNode, position });
-			const overlapping = new Set<string>();
-
-			for (const otherNode of otherNodes) {
-				const otherBounds = getNodeBounds(otherNode);
-
-				// Check if rectangles overlap
-				const overlaps =
-					draggingBounds.x < otherBounds.x + otherBounds.width &&
-					draggingBounds.x + draggingBounds.width > otherBounds.x &&
-					draggingBounds.y < otherBounds.y + otherBounds.height &&
-					draggingBounds.y + draggingBounds.height > otherBounds.y;
-
-				if (overlaps) {
-					overlapping.add(draggingNodeId);
-					overlapping.add(otherNode.id);
-				}
-			}
-
-			return overlapping;
-		},
-		[nodes, getNodeBounds],
-	);
-
 	const onNodesChange = useCallback(
 		(changes: NodeChange[]) => {
 			const updatedChanges = changes;
@@ -479,15 +449,10 @@ function SeatingPlannerInner() {
 							);
 							change.position = snappedPosition;
 							setAlignmentLines(lines);
-
-							// Check for overlaps
-							const overlapping = checkOverlaps(change.id, snappedPosition);
-							setOverlappingNodeIds(overlapping);
 						}
 					} else {
 						setIsDragging(false);
 						setAlignmentLines([]);
-						setOverlappingNodeIds(new Set());
 					}
 				}
 			});
@@ -501,7 +466,7 @@ function SeatingPlannerInner() {
 				}
 			});
 		},
-		[snapToAlignment, checkOverlaps],
+		[snapToAlignment],
 	);
 
 	const handleAddGuest = useCallback((name: string, photo: string | null, group?: GuestGroup) => {
@@ -557,13 +522,15 @@ function SeatingPlannerInner() {
 		[tables, guests],
 	);
 
-	const toggleFullscreen = useCallback(() => {
-		if (!document.fullscreenElement) {
-			reactFlowWrapper.current?.requestFullscreen();
-			setIsFullscreen(true);
-		} else {
-			document.exitFullscreen();
-			setIsFullscreen(false);
+	const toggleFullscreen = useCallback(async () => {
+		try {
+			if (!document.fullscreenElement) {
+				await reactFlowWrapper.current?.requestFullscreen();
+			} else {
+				await document.exitFullscreen();
+			}
+		} catch {
+			// Fullscreen not supported or permission denied
 		}
 	}, []);
 
@@ -750,7 +717,8 @@ function SeatingPlannerInner() {
 			} else {
 				for (const guest of tableGuests) {
 					const seatNum = guest.seatIndex !== null ? guest.seatIndex + 1 : "-";
-					doc.text(`  Seat ${seatNum}: ${guest.name}`, margin, yPosition);
+					const groupLabel = guest.group ? ` (${guest.group})` : "";
+					doc.text(`  Seat ${seatNum}: ${guest.name}${groupLabel}`, margin, yPosition);
 					yPosition += 7;
 				}
 			}
@@ -817,7 +785,6 @@ function SeatingPlannerInner() {
 				setTables(data.tables);
 			} catch (error) {
 				console.error("Failed to import JSON:", error);
-				alert("Failed to import file. Please ensure it's a valid seating plan JSON file.");
 			}
 		};
 		reader.readAsText(file);
@@ -863,14 +830,25 @@ function SeatingPlannerInner() {
 		}, 50);
 	}, [tables, nodes, getNodeBounds, fitView]);
 
-	const handleShareLink = useCallback(() => {
+	const handleShareLink = useCallback(async () => {
 		const data: SeatingData = { guests, tables };
-		const encoded = btoa(JSON.stringify(data));
+		const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
 		const url = `${window.location.origin}${window.location.pathname}?data=${encoded}`;
-		navigator.clipboard.writeText(url).then(() => {
+		try {
+			await navigator.clipboard.writeText(url);
 			setLinkCopied(true);
 			setTimeout(() => setLinkCopied(false), 2000);
-		});
+		} catch {
+			// Fallback: select text from a temporary input
+			const input = document.createElement("input");
+			input.value = url;
+			document.body.appendChild(input);
+			input.select();
+			document.execCommand("copy");
+			document.body.removeChild(input);
+			setLinkCopied(true);
+			setTimeout(() => setLinkCopied(false), 2000);
+		}
 	}, [guests, tables]);
 
 	const unseatedGuests = guests.filter((g) => g.tableId === null);

@@ -385,6 +385,9 @@ export function GuestPanel({
 
 											<div className="flex-1 min-w-0">
 												<p className="text-sm font-medium truncate">{guest.name}</p>
+												{guest.group && (
+													<span className="text-xs text-muted-foreground">{guest.group}</span>
+												)}
 												{tablesWithSpace.length > 0 ? (
 													<Select onValueChange={(tableId) => onAssignGuest(guest.id, tableId)}>
 														<SelectTrigger className="h-7 text-xs mt-1">

@@ -22,7 +22,6 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
 
 const STORAGE_KEY = "seating-onboarding-complete";
 
@@ -122,7 +121,6 @@ const steps: OnboardingStep[] = [
 export function OnboardingModal() {
 	const [isOpen, setIsOpen] = useState(false);
 	const [currentStep, setCurrentStep] = useState(0);
-	const [dontShowAgain, setDontShowAgain] = useState(false);
 
 	useEffect(() => {
 		const hasSeenOnboarding = localStorage.getItem(STORAGE_KEY);
@@ -132,13 +130,6 @@ export function OnboardingModal() {
 	}, []);
 
 	const handleClose = useCallback(() => {
-		if (dontShowAgain || currentStep === steps.length - 1) {
-			localStorage.setItem(STORAGE_KEY, "true");
-		}
-		setIsOpen(false);
-	}, [dontShowAgain, currentStep]);
-
-	const handleSkip = useCallback(() => {
 		localStorage.setItem(STORAGE_KEY, "true");
 		setIsOpen(false);
 	}, []);
@@ -161,7 +152,7 @@ export function OnboardingModal() {
 	const isLastStep = currentStep === steps.length - 1;
 
 	return (
-		<Dialog open={isOpen} onOpenChange={setIsOpen}>
+		<Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
 			<DialogContent className="sm:max-w-md">
 				<DialogHeader>
 					<div className="flex items-center gap-3">
@@ -195,26 +186,8 @@ export function OnboardingModal() {
 					))}
 				</div>
 
-				{isLastStep && (
-					<div className="flex items-center gap-2 py-2">
-						<input
-							type="checkbox"
-							id="dont-show-again"
-							checked={dontShowAgain}
-							onChange={(e) => setDontShowAgain(e.target.checked)}
-							className="h-4 w-4 rounded border-input"
-						/>
-						<Label
-							htmlFor="dont-show-again"
-							className="text-sm text-muted-foreground cursor-pointer"
-						>
-							Don't show this again
-						</Label>
-					</div>
-				)}
-
 				<DialogFooter className="flex-row justify-between sm:justify-between gap-2">
-					<Button variant="ghost" onClick={handleSkip} className="text-muted-foreground">
+					<Button variant="ghost" onClick={handleClose} className="text-muted-foreground">
 						Skip
 					</Button>
 					<div className="flex gap-2">
