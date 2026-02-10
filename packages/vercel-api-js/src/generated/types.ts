@@ -1378,6 +1378,7 @@ export const previousScopeEnum = {
 	public: "public",
 	all: "all",
 	private: "private",
+	selected_repos: "selected_repos",
 } as const;
 
 export type PreviousScopeEnumKey = (typeof previousScopeEnum)[keyof typeof previousScopeEnum];
@@ -1401,6 +1402,7 @@ export const nextScopeEnum = {
 	public: "public",
 	all: "all",
 	private: "private",
+	selected_repos: "selected_repos",
 } as const;
 
 export type NextScopeEnumKey = (typeof nextScopeEnum)[keyof typeof nextScopeEnum];
@@ -2297,6 +2299,14 @@ export const historyActorTypeEnum = {
 
 export type HistoryActorTypeEnumKey =
 	(typeof historyActorTypeEnum)[keyof typeof historyActorTypeEnum];
+
+export const newOwnerIsEnterpriseManagedEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type NewOwnerIsEnterpriseManagedEnumKey =
+	(typeof newOwnerIsEnterpriseManagedEnum)[keyof typeof newOwnerIsEnterpriseManagedEnum];
 
 export const payloadProjectIdsEnum = {
 	all: "all",
@@ -3245,7 +3255,6 @@ export const payloadScopesEnum = {
 export type PayloadScopesEnumKey = (typeof payloadScopesEnum)[keyof typeof payloadScopesEnum];
 
 export const payloadPermissionsEnum = {
-	"*": "*",
 	"read:user": "read:user",
 	"read:domain": "read:domain",
 	"read-write:domain": "read-write:domain",
@@ -3272,7 +3281,6 @@ export type PayloadNextScopesEnumKey =
 	(typeof payloadNextScopesEnum)[keyof typeof payloadNextScopesEnum];
 
 export const payloadNextPermissionsEnum = {
-	"*": "*",
 	"read:user": "read:user",
 	"read:domain": "read:domain",
 	"read-write:domain": "read-write:domain",
@@ -3416,6 +3424,166 @@ export const projectsRoleEnum = {
 
 export type ProjectsRoleEnumKey = (typeof projectsRoleEnum)[keyof typeof projectsRoleEnum];
 
+export const payloadPlanEnum = {
+	pro: "pro",
+	enterprise: "enterprise",
+	hobby: "hobby",
+} as const;
+
+export type PayloadPlanEnumKey = (typeof payloadPlanEnum)[keyof typeof payloadPlanEnum];
+
+export const payloadConvertedFromTrialEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadConvertedFromTrialEnumKey =
+	(typeof payloadConvertedFromTrialEnum)[keyof typeof payloadConvertedFromTrialEnum];
+
+export const jobTypeEnum = {
+	"bitbucket-push": "bitbucket-push",
+} as const;
+
+export type JobTypeEnumKey = (typeof jobTypeEnum)[keyof typeof jobTypeEnum];
+
+export const jobAuthorizedEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type JobAuthorizedEnumKey = (typeof jobAuthorizedEnum)[keyof typeof jobAuthorizedEnum];
+
+export const gitCommentsOnPullRequestEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type GitCommentsOnPullRequestEnumKey =
+	(typeof gitCommentsOnPullRequestEnum)[keyof typeof gitCommentsOnPullRequestEnum];
+
+export const gitCommentsOnCommitEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type GitCommentsOnCommitEnumKey =
+	(typeof gitCommentsOnCommitEnum)[keyof typeof gitCommentsOnCommitEnum];
+
+export const jobIsManualGitDeployEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type JobIsManualGitDeployEnumKey =
+	(typeof jobIsManualGitDeployEnum)[keyof typeof jobIsManualGitDeployEnum];
+
+export const jobCommitVerificationEnum = {
+	unknown: "unknown",
+	verified: "verified",
+	unverified: "unverified",
+} as const;
+
+export type JobCommitVerificationEnumKey =
+	(typeof jobCommitVerificationEnum)[keyof typeof jobCommitVerificationEnum];
+
+export const jobEventfulEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type JobEventfulEnumKey = (typeof jobEventfulEnum)[keyof typeof jobEventfulEnum];
+
+export const jobForceNewEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type JobForceNewEnumKey = (typeof jobForceNewEnum)[keyof typeof jobForceNewEnum];
+
+export const jobSilentEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type JobSilentEnumKey = (typeof jobSilentEnum)[keyof typeof jobSilentEnum];
+
+export const jobWithCacheEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type JobWithCacheEnumKey = (typeof jobWithCacheEnum)[keyof typeof jobWithCacheEnum];
+
+export const jobProviderEnum = {
+	bitbucket: "bitbucket",
+} as const;
+
+export type JobProviderEnumKey = (typeof jobProviderEnum)[keyof typeof jobProviderEnum];
+
+export const jobTypeEnum2 = {
+	"bitbucket-now-comment": "bitbucket-now-comment",
+} as const;
+
+export type JobTypeEnum2Key = (typeof jobTypeEnum2)[keyof typeof jobTypeEnum2];
+
+export const jobTypeEnum3 = {
+	pr: "pr",
+} as const;
+
+export type JobTypeEnum3Key = (typeof jobTypeEnum3)[keyof typeof jobTypeEnum3];
+
+export const jobIsPrivateEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type JobIsPrivateEnumKey = (typeof jobIsPrivateEnum)[keyof typeof jobIsPrivateEnum];
+
+export const jobProviderEnum2 = {
+	github: "github",
+	"github-limited": "github-limited",
+	"github-custom-host": "github-custom-host",
+} as const;
+
+export type JobProviderEnum2Key = (typeof jobProviderEnum2)[keyof typeof jobProviderEnum2];
+
+export const jobForcedEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type JobForcedEnumKey = (typeof jobForcedEnum)[keyof typeof jobForcedEnum];
+
+export const jobTypeEnum4 = {
+	push: "push",
+} as const;
+
+export type JobTypeEnum4Key = (typeof jobTypeEnum4)[keyof typeof jobTypeEnum4];
+
+export const jobTypeEnum5 = {
+	"now-comment": "now-comment",
+} as const;
+
+export type JobTypeEnum5Key = (typeof jobTypeEnum5)[keyof typeof jobTypeEnum5];
+
+export const jobTypeEnum6 = {
+	"gitlab-push": "gitlab-push",
+} as const;
+
+export type JobTypeEnum6Key = (typeof jobTypeEnum6)[keyof typeof jobTypeEnum6];
+
+export const jobProviderEnum3 = {
+	gitlab: "gitlab",
+} as const;
+
+export type JobProviderEnum3Key = (typeof jobProviderEnum3)[keyof typeof jobProviderEnum3];
+
+export const jobTypeEnum7 = {
+	"gitlab-now-comment": "gitlab-now-comment",
+} as const;
+
+export type JobTypeEnum7Key = (typeof jobTypeEnum7)[keyof typeof jobTypeEnum7];
+
 export const payloadGrantTypeEnum = {
 	authorization_code: "authorization_code",
 	"urn:ietf:params:oauth:grant-type:device_code": "urn:ietf:params:oauth:grant-type:device_code",
@@ -3438,6 +3606,7 @@ export const payloadAuthMethodEnum = {
 	otp: "otp",
 	sms: "sms",
 	invite: "invite",
+	emu: "emu",
 } as const;
 
 export type PayloadAuthMethodEnumKey =
@@ -3827,6 +3996,11 @@ export type UserEvent = {
 									 * @type boolean
 									 */
 									includeDrafts: PreviousIncludeDraftsEnumKey;
+									/**
+									 * @description GitHub repos to scope automatic reviews to. Format: \"owner/repo\" (lowercase). Only used when scope=\'selected_repos\'.
+									 * @type array
+									 */
+									selectedRepos?: (string[] | null) | undefined;
 							  }
 							| undefined;
 						/**
@@ -3849,6 +4023,11 @@ export type UserEvent = {
 							 * @type boolean
 							 */
 							includeDrafts: NextIncludeDraftsEnumKey;
+							/**
+							 * @description GitHub repos to scope automatic reviews to. Format: \"owner/repo\" (lowercase). Only used when scope=\'selected_repos\'.
+							 * @type array
+							 */
+							selectedRepos?: (string[] | null) | undefined;
 						};
 				  }
 				| {
@@ -4908,6 +5087,48 @@ export type UserEvent = {
 						 * @type string | undefined
 						 */
 						currency?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						previousServiceType: string;
+						/**
+						 * @type string
+						 */
+						serviceType: string;
+						/**
+						 * @type string
+						 */
+						id: string;
+						/**
+						 * @type string
+						 */
+						name: string;
+						/**
+						 * @type array
+						 */
+						nameservers: string[];
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						domain: string;
+						/**
+						 * @type array
+						 */
+						customNameservers: string[] | null;
+						/**
+						 * @type array
+						 */
+						prevCustomNameservers: string[] | null;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						domain: string;
 				  }
 				| {
 						/**
@@ -7555,6 +7776,11 @@ export type UserEvent = {
 											| undefined;
 								  }
 								| undefined;
+							/**
+							 * @description Indicates that the underlying user entity is a managed user for the enterprise it\'s associated with The intention is that this field is only set to true for users that are provisioned by the enterprise which means that the domain associated with the user\'s email is the same domain associated with the team Allowing us to query information about the user\'s team at login time through the domain verification service
+							 * @type boolean | undefined
+							 */
+							isEnterpriseManaged?: NewOwnerIsEnterpriseManagedEnumKey | undefined;
 						} | null;
 				  }
 				| {
@@ -8985,13 +9211,13 @@ export type UserEvent = {
 				  }
 				| {
 						/**
-						 * @type string
+						 * @type string | undefined
 						 */
-						projectId: string;
+						projectId?: string | undefined;
 						/**
-						 * @type string
+						 * @type string | undefined
 						 */
-						projectName: string;
+						projectName?: string | undefined;
 						/**
 						 * @type string | undefined
 						 */
@@ -10566,6 +10792,20 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
 						projectName: string;
 						/**
 						 * @type array
@@ -10577,6 +10817,10 @@ export type UserEvent = {
 						target?: string | undefined;
 				  }
 				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
 						/**
 						 * @type string
 						 */
@@ -11866,6 +12110,1323 @@ export type UserEvent = {
 						 * @type string
 						 */
 						prevConfiguredBy?: (string | null) | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						plan: PayloadPlanEnumKey;
+						/**
+						 * @type object
+						 */
+						trial?:
+							| ({
+									/**
+									 * @type number
+									 */
+									start: number;
+									/**
+									 * @type number
+									 */
+									end: number;
+							  } | null)
+							| undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						invoiceId: string;
+						/**
+						 * @type boolean
+						 */
+						convertedFromTrial: PayloadConvertedFromTrialEnumKey;
+						/**
+						 * @type string
+						 */
+						plan: PayloadPlanEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						emailDomain?: (string | null) | undefined;
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						inviteCode?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type number
+						 */
+						trialCreditsIssuedAt: number;
+						/**
+						 * @type string
+						 */
+						expiresAt: string;
+						/**
+						 * @type string
+						 */
+						amount: string;
+						/**
+						 * @type string
+						 */
+						currency: string;
+				  }
+				| {
+						job:
+							| {
+									/**
+									 * @type string
+									 */
+									type: JobTypeEnumKey;
+									/**
+									 * @type boolean | undefined
+									 */
+									authorized?: JobAuthorizedEnumKey | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									authorizedBy?: string | undefined;
+									/**
+									 * @description Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.
+									 * @type array | undefined
+									 */
+									jobProjectIds?: string[] | undefined;
+									/**
+									 * @description Since December 2022 Pairs of projects and owner ids to build for this build request.
+									 * @type array | undefined
+									 */
+									jobPairs?: (string | string)[][] | undefined;
+									/**
+									 * @description Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.
+									 * @type array | undefined
+									 */
+									skippedJobPairs?: (string | string)[][] | undefined;
+									/**
+									 * @description Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING
+									 * @type array | undefined
+									 */
+									gitHashtagVercel?: string[] | undefined;
+									/**
+									 * @description Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.
+									 * @type number | undefined
+									 */
+									connectedProjectCount?: number | undefined;
+									/**
+									 * @description Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.
+									 * @type number | undefined
+									 */
+									prIdOrZero?: number | undefined;
+									/**
+									 * @description Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.
+									 * @type object | undefined
+									 */
+									gitComments?:
+										| {
+												/**
+												 * @type boolean
+												 */
+												onPullRequest: GitCommentsOnPullRequestEnumKey;
+												/**
+												 * @type boolean
+												 */
+												onCommit: GitCommentsOnCommitEnumKey;
+										  }
+										| undefined;
+									/**
+									 * @description Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment
+									 * @type boolean | undefined
+									 */
+									isManualGitDeploy?: JobIsManualGitDeployEnumKey | undefined;
+									/**
+									 * @description Since 6 Nov 2025 The verification status of the commit. - \'verified\' if the commit is verified - \'unverified\' if the commit is not verified - \'unknown\' if the commit verification status is unknown or not supported
+									 * @type string | undefined
+									 */
+									commitVerification?: JobCommitVerificationEnumKey | undefined;
+									/**
+									 * @type number | undefined
+									 */
+									createdAt?: number | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									deploymentId?: string | undefined;
+									/**
+									 * @type object | undefined
+									 */
+									deployHook?:
+										| {
+												/**
+												 * @type number
+												 */
+												createdAt: number;
+												/**
+												 * @type string
+												 */
+												id: string;
+												/**
+												 * @type string
+												 */
+												name: string;
+												/**
+												 * @type string
+												 */
+												ref: string;
+										  }
+										| undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									eventful?: JobEventfulEnumKey | undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									forceNew?: JobForceNewEnumKey | undefined;
+									/**
+									 * @type object
+									 */
+									headInfo: {
+										/**
+										 * @type string
+										 */
+										owner: string;
+										/**
+										 * @type string
+										 */
+										ref: string;
+										/**
+										 * @type string
+										 */
+										repoUuid: string;
+										/**
+										 * @type string
+										 */
+										sha: string;
+										/**
+										 * @type string
+										 */
+										slug: string;
+									};
+									/**
+									 * @type string | undefined
+									 */
+									linkedProjectId?: string | undefined;
+									/**
+									 * @type string
+									 */
+									name: string;
+									/**
+									 * @type string
+									 */
+									owner: string;
+									/**
+									 * @type number | undefined
+									 */
+									prId?: number | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									projectId?: string | undefined;
+									/**
+									 * @type string
+									 */
+									customEnvId?: (string | null) | undefined;
+									/**
+									 * @type string
+									 */
+									ref: string;
+									/**
+									 * @type number
+									 */
+									repoPushedAt?: (number | null) | undefined;
+									/**
+									 * @type string
+									 */
+									repoUuid: string;
+									/**
+									 * @type string
+									 */
+									sha: string;
+									/**
+									 * @type boolean | undefined
+									 */
+									silent?: JobSilentEnumKey | undefined;
+									/**
+									 * @type string
+									 */
+									slug: string;
+									/**
+									 * @type string
+									 */
+									target?: (string | null) | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									url?: string | undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									withCache?: JobWithCacheEnumKey | undefined;
+									/**
+									 * @type string
+									 */
+									workspaceUuid: string;
+									/**
+									 * @type string
+									 */
+									provider: JobProviderEnumKey;
+							  }
+							| {
+									/**
+									 * @type number | undefined
+									 */
+									createdAt?: number | undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									eventful?: JobEventfulEnumKey | undefined;
+									/**
+									 * @type object
+									 */
+									headInfo: {
+										/**
+										 * @type string
+										 */
+										owner: string;
+										/**
+										 * @type string
+										 */
+										ref: string;
+										/**
+										 * @type string
+										 */
+										repoUuid: string;
+										/**
+										 * @type string
+										 */
+										sha: string;
+										/**
+										 * @type string
+										 */
+										slug: string;
+									};
+									/**
+									 * @type string | undefined
+									 */
+									linkedProjectId?: string | undefined;
+									/**
+									 * @type string
+									 */
+									name: string;
+									/**
+									 * @type string
+									 */
+									owner: string;
+									/**
+									 * @type number
+									 */
+									prId: number;
+									/**
+									 * @type string | undefined
+									 */
+									projectId?: string | undefined;
+									/**
+									 * @type string
+									 */
+									customEnvId?: (string | null) | undefined;
+									/**
+									 * @type string
+									 */
+									ref: string;
+									/**
+									 * @type string
+									 */
+									repoUuid: string;
+									/**
+									 * @type string
+									 */
+									sha: string;
+									/**
+									 * @type string
+									 */
+									slug: string;
+									/**
+									 * @type string
+									 */
+									type: JobTypeEnum2Key;
+									/**
+									 * @type string
+									 */
+									workspaceUuid: string;
+									/**
+									 * @type object | undefined
+									 */
+									gitComments?:
+										| {
+												/**
+												 * @type boolean
+												 */
+												onPullRequest: GitCommentsOnPullRequestEnumKey;
+												/**
+												 * @type boolean
+												 */
+												onCommit: GitCommentsOnCommitEnumKey;
+										  }
+										| undefined;
+									/**
+									 * @type string
+									 */
+									provider: JobProviderEnumKey;
+							  }
+							| {
+									/**
+									 * @type number
+									 */
+									prId: number;
+									/**
+									 * @type string
+									 */
+									type: JobTypeEnum3Key;
+									/**
+									 * @type boolean | undefined
+									 */
+									authorized?: JobAuthorizedEnumKey | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									authorizedBy?: string | undefined;
+									/**
+									 * @description Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.
+									 * @type array | undefined
+									 */
+									jobProjectIds?: string[] | undefined;
+									/**
+									 * @description Since December 2022 Pairs of projects and owner ids to build for this build request.
+									 * @type array | undefined
+									 */
+									jobPairs?: (string | string)[][] | undefined;
+									/**
+									 * @description Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.
+									 * @type array | undefined
+									 */
+									skippedJobPairs?: (string | string)[][] | undefined;
+									/**
+									 * @description Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING
+									 * @type array | undefined
+									 */
+									gitHashtagVercel?: string[] | undefined;
+									/**
+									 * @description Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.
+									 * @type number | undefined
+									 */
+									connectedProjectCount?: number | undefined;
+									/**
+									 * @description Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.
+									 * @type number | undefined
+									 */
+									prIdOrZero?: number | undefined;
+									/**
+									 * @description Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.
+									 * @type object | undefined
+									 */
+									gitComments?:
+										| {
+												/**
+												 * @type boolean
+												 */
+												onPullRequest: GitCommentsOnPullRequestEnumKey;
+												/**
+												 * @type boolean
+												 */
+												onCommit: GitCommentsOnCommitEnumKey;
+										  }
+										| undefined;
+									/**
+									 * @description Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment
+									 * @type boolean | undefined
+									 */
+									isManualGitDeploy?: JobIsManualGitDeployEnumKey | undefined;
+									/**
+									 * @description Since 6 Nov 2025 The verification status of the commit. - \'verified\' if the commit is verified - \'unverified\' if the commit is not verified - \'unknown\' if the commit verification status is unknown or not supported
+									 * @type string | undefined
+									 */
+									commitVerification?: JobCommitVerificationEnumKey | undefined;
+									/**
+									 * @description Remote account id of the committer details (github id etc, not vercel). Note that the committer name/email are user input verbatim and not verified. Github does appear to resolve the given email to the username so we can trust that. If the username matches that of the sender, which is verified info, then we can use the account id and account type. See api-incoming, where we determine and set this property Note that even with that, the account may still have been spoofed.
+									 * @type number | undefined
+									 */
+									committerGitUserId?: number | undefined;
+									/**
+									 * @description Remote account type of the committer details (github type etc, not vercel). Note that the committer name/email are user input verbatim and not verified. Github does appear to resolve the given email to the username so we can trust that. If the username matches that of the sender, which is verified info, then we can use the account id and account type. See api-incoming, where we determine and set this property Note that even with that, the account may still have been spoofed.
+									 * @type string | undefined
+									 */
+									committerGitUserType?: string | undefined;
+									/**
+									 * @type number | undefined
+									 */
+									createdAt?: number | undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									forceNew?: JobForceNewEnumKey | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									deploymentId?: string | undefined;
+									/**
+									 * @type object | undefined
+									 */
+									deployHook?:
+										| {
+												/**
+												 * @type number
+												 */
+												createdAt: number;
+												/**
+												 * @type string
+												 */
+												id: string;
+												/**
+												 * @type string
+												 */
+												name: string;
+												/**
+												 * @type string
+												 */
+												ref: string;
+										  }
+										| undefined;
+									/**
+									 * @type string | undefined
+									 */
+									beforeSha?: string | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									defaultBranch?: string | undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									eventful?: JobEventfulEnumKey | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									githubDeploymentId?: string | undefined;
+									/**
+									 * @description Information about the head commit/branch for a GitHub repository
+									 * @type object
+									 */
+									headInfo: {
+										/**
+										 * @type string
+										 */
+										org: string;
+										/**
+										 * @type string
+										 */
+										ref: string;
+										/**
+										 * @type string
+										 */
+										repo: string;
+										/**
+										 * @type number
+										 */
+										repoId: number;
+										/**
+										 * @type string
+										 */
+										sha: string;
+									};
+									/**
+									 * @type number
+									 */
+									installationId: number;
+									/**
+									 * @type boolean
+									 */
+									isPrivate: JobIsPrivateEnumKey;
+									/**
+									 * @type string | undefined
+									 */
+									linkedProjectId?: string | undefined;
+									/**
+									 * @type string
+									 */
+									org: string;
+									/**
+									 * @type string | undefined
+									 */
+									projectId?: string | undefined;
+									/**
+									 * @type string
+									 */
+									customEnvId?: (string | null) | undefined;
+									/**
+									 * @type string
+									 */
+									repo: string;
+									/**
+									 * @type number
+									 */
+									repoId: number;
+									/**
+									 * @type string
+									 */
+									target?: (string | null) | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									url?: string | undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									withCache?: JobWithCacheEnumKey | undefined;
+									/**
+									 * @type string
+									 */
+									provider: JobProviderEnum2Key;
+									/**
+									 * @type string | undefined
+									 */
+									customHost?: string | undefined;
+							  }
+							| {
+									/**
+									 * @type number
+									 */
+									repoPushedAt: number | null;
+									/**
+									 * @type object | undefined
+									 */
+									commitInfo?:
+										| {
+												/**
+												 * @type number
+												 */
+												total: number;
+												/**
+												 * @type string | undefined
+												 */
+												earliestSha?: string | undefined;
+										  }
+										| undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									forced?: JobForcedEnumKey | undefined;
+									/**
+									 * @type string
+									 */
+									type: JobTypeEnum4Key;
+									/**
+									 * @type boolean | undefined
+									 */
+									authorized?: JobAuthorizedEnumKey | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									authorizedBy?: string | undefined;
+									/**
+									 * @description Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.
+									 * @type array | undefined
+									 */
+									jobProjectIds?: string[] | undefined;
+									/**
+									 * @description Since December 2022 Pairs of projects and owner ids to build for this build request.
+									 * @type array | undefined
+									 */
+									jobPairs?: (string | string)[][] | undefined;
+									/**
+									 * @description Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.
+									 * @type array | undefined
+									 */
+									skippedJobPairs?: (string | string)[][] | undefined;
+									/**
+									 * @description Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING
+									 * @type array | undefined
+									 */
+									gitHashtagVercel?: string[] | undefined;
+									/**
+									 * @description Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.
+									 * @type number | undefined
+									 */
+									connectedProjectCount?: number | undefined;
+									/**
+									 * @description Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.
+									 * @type number | undefined
+									 */
+									prIdOrZero?: number | undefined;
+									/**
+									 * @description Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.
+									 * @type object | undefined
+									 */
+									gitComments?:
+										| {
+												/**
+												 * @type boolean
+												 */
+												onPullRequest: GitCommentsOnPullRequestEnumKey;
+												/**
+												 * @type boolean
+												 */
+												onCommit: GitCommentsOnCommitEnumKey;
+										  }
+										| undefined;
+									/**
+									 * @description Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment
+									 * @type boolean | undefined
+									 */
+									isManualGitDeploy?: JobIsManualGitDeployEnumKey | undefined;
+									/**
+									 * @description Since 6 Nov 2025 The verification status of the commit. - \'verified\' if the commit is verified - \'unverified\' if the commit is not verified - \'unknown\' if the commit verification status is unknown or not supported
+									 * @type string | undefined
+									 */
+									commitVerification?: JobCommitVerificationEnumKey | undefined;
+									/**
+									 * @description Remote account id of the committer details (github id etc, not vercel). Note that the committer name/email are user input verbatim and not verified. Github does appear to resolve the given email to the username so we can trust that. If the username matches that of the sender, which is verified info, then we can use the account id and account type. See api-incoming, where we determine and set this property Note that even with that, the account may still have been spoofed.
+									 * @type number | undefined
+									 */
+									committerGitUserId?: number | undefined;
+									/**
+									 * @description Remote account type of the committer details (github type etc, not vercel). Note that the committer name/email are user input verbatim and not verified. Github does appear to resolve the given email to the username so we can trust that. If the username matches that of the sender, which is verified info, then we can use the account id and account type. See api-incoming, where we determine and set this property Note that even with that, the account may still have been spoofed.
+									 * @type string | undefined
+									 */
+									committerGitUserType?: string | undefined;
+									/**
+									 * @type number | undefined
+									 */
+									createdAt?: number | undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									forceNew?: JobForceNewEnumKey | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									deploymentId?: string | undefined;
+									/**
+									 * @type object | undefined
+									 */
+									deployHook?:
+										| {
+												/**
+												 * @type number
+												 */
+												createdAt: number;
+												/**
+												 * @type string
+												 */
+												id: string;
+												/**
+												 * @type string
+												 */
+												name: string;
+												/**
+												 * @type string
+												 */
+												ref: string;
+										  }
+										| undefined;
+									/**
+									 * @type string | undefined
+									 */
+									beforeSha?: string | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									defaultBranch?: string | undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									eventful?: JobEventfulEnumKey | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									githubDeploymentId?: string | undefined;
+									/**
+									 * @description Information about the head commit/branch for a GitHub repository
+									 * @type object
+									 */
+									headInfo: {
+										/**
+										 * @type string
+										 */
+										org: string;
+										/**
+										 * @type string
+										 */
+										ref: string;
+										/**
+										 * @type string
+										 */
+										repo: string;
+										/**
+										 * @type number
+										 */
+										repoId: number;
+										/**
+										 * @type string
+										 */
+										sha: string;
+									};
+									/**
+									 * @type number
+									 */
+									installationId: number;
+									/**
+									 * @type boolean
+									 */
+									isPrivate: JobIsPrivateEnumKey;
+									/**
+									 * @type string | undefined
+									 */
+									linkedProjectId?: string | undefined;
+									/**
+									 * @type string
+									 */
+									org: string;
+									/**
+									 * @type number
+									 */
+									prId: number | null;
+									/**
+									 * @type string | undefined
+									 */
+									projectId?: string | undefined;
+									/**
+									 * @type string
+									 */
+									customEnvId?: (string | null) | undefined;
+									/**
+									 * @type string
+									 */
+									repo: string;
+									/**
+									 * @type number
+									 */
+									repoId: number;
+									/**
+									 * @type string
+									 */
+									target?: (string | null) | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									url?: string | undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									withCache?: JobWithCacheEnumKey | undefined;
+									/**
+									 * @type string
+									 */
+									provider: JobProviderEnum2Key;
+									/**
+									 * @type string | undefined
+									 */
+									customHost?: string | undefined;
+							  }
+							| {
+									/**
+									 * @type number | undefined
+									 */
+									createdAt?: number | undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									eventful?: JobEventfulEnumKey | undefined;
+									/**
+									 * @description Information about the head commit/branch for a GitHub repository
+									 * @type object
+									 */
+									headInfo: {
+										/**
+										 * @type string
+										 */
+										org: string;
+										/**
+										 * @type string
+										 */
+										ref: string;
+										/**
+										 * @type string
+										 */
+										repo: string;
+										/**
+										 * @type number
+										 */
+										repoId: number;
+										/**
+										 * @type string
+										 */
+										sha: string;
+									};
+									/**
+									 * @type string | undefined
+									 */
+									beforeSha?: string | undefined;
+									/**
+									 * @type number
+									 */
+									installationId: number;
+									/**
+									 * @type boolean
+									 */
+									isPrivate: JobIsPrivateEnumKey;
+									/**
+									 * @type string | undefined
+									 */
+									linkedProjectId?: string | undefined;
+									/**
+									 * @type string
+									 */
+									org: string;
+									/**
+									 * @type number
+									 */
+									prId: number;
+									projectId: unknown | null;
+									customEnvId?: (unknown | null) | undefined;
+									/**
+									 * @type string
+									 */
+									repo: string;
+									/**
+									 * @type number
+									 */
+									repoId: number;
+									/**
+									 * @type string
+									 */
+									type: JobTypeEnum5Key;
+									/**
+									 * @type object | undefined
+									 */
+									gitComments?:
+										| {
+												/**
+												 * @type boolean
+												 */
+												onPullRequest: GitCommentsOnPullRequestEnumKey;
+												/**
+												 * @type boolean
+												 */
+												onCommit: GitCommentsOnCommitEnumKey;
+										  }
+										| undefined;
+									/**
+									 * @type string
+									 */
+									provider: JobProviderEnum2Key;
+									/**
+									 * @type string | undefined
+									 */
+									customHost?: string | undefined;
+							  }
+							| {
+									/**
+									 * @type string
+									 */
+									type: JobTypeEnum6Key;
+									/**
+									 * @type boolean | undefined
+									 */
+									authorized?: JobAuthorizedEnumKey | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									authorizedBy?: string | undefined;
+									/**
+									 * @description Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.
+									 * @type array | undefined
+									 */
+									jobProjectIds?: string[] | undefined;
+									/**
+									 * @description Since December 2022 Pairs of projects and owner ids to build for this build request.
+									 * @type array | undefined
+									 */
+									jobPairs?: (string | string)[][] | undefined;
+									/**
+									 * @description Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.
+									 * @type array | undefined
+									 */
+									skippedJobPairs?: (string | string)[][] | undefined;
+									/**
+									 * @description Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING
+									 * @type array | undefined
+									 */
+									gitHashtagVercel?: string[] | undefined;
+									/**
+									 * @description Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.
+									 * @type number | undefined
+									 */
+									connectedProjectCount?: number | undefined;
+									/**
+									 * @description Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.
+									 * @type number | undefined
+									 */
+									prIdOrZero?: number | undefined;
+									/**
+									 * @description Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.
+									 * @type object | undefined
+									 */
+									gitComments?:
+										| {
+												/**
+												 * @type boolean
+												 */
+												onPullRequest: GitCommentsOnPullRequestEnumKey;
+												/**
+												 * @type boolean
+												 */
+												onCommit: GitCommentsOnCommitEnumKey;
+										  }
+										| undefined;
+									/**
+									 * @description Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment
+									 * @type boolean | undefined
+									 */
+									isManualGitDeploy?: JobIsManualGitDeployEnumKey | undefined;
+									/**
+									 * @description Since 6 Nov 2025 The verification status of the commit. - \'verified\' if the commit is verified - \'unverified\' if the commit is not verified - \'unknown\' if the commit verification status is unknown or not supported
+									 * @type string | undefined
+									 */
+									commitVerification?: JobCommitVerificationEnumKey | undefined;
+									/**
+									 * @type object | undefined
+									 */
+									commit?:
+										| {
+												/**
+												 * @type string
+												 */
+												id: string;
+												/**
+												 * @type string
+												 */
+												authorAvatar?: (string | null) | undefined;
+												/**
+												 * @type string
+												 */
+												authorEmail?: (string | null) | undefined;
+												/**
+												 * @type number
+												 */
+												authorId?: (number | null) | undefined;
+												/**
+												 * @type string
+												 */
+												authorLogin?: (string | null) | undefined;
+												/**
+												 * @type string
+												 */
+												authorName?: (string | null) | undefined;
+										  }
+										| undefined;
+									/**
+									 * @type number | undefined
+									 */
+									createdAt?: number | undefined;
+									/**
+									 * @type object | undefined
+									 */
+									deployHook?:
+										| {
+												/**
+												 * @type number
+												 */
+												createdAt: number;
+												/**
+												 * @type string
+												 */
+												id: string;
+												/**
+												 * @type string
+												 */
+												name: string;
+												/**
+												 * @type string
+												 */
+												ref: string;
+										  }
+										| undefined;
+									/**
+									 * @type string | undefined
+									 */
+									deploymentId?: string | undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									eventful?: JobEventfulEnumKey | undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									forceNew?: JobForceNewEnumKey | undefined;
+									/**
+									 * @description GitLab
+									 * @type object
+									 */
+									headInfo: {
+										/**
+										 * @type object
+										 */
+										project: {
+											/**
+											 * @type string
+											 */
+											defaultBranch?: (string | null) | undefined;
+											/**
+											 * @type string
+											 */
+											id: string;
+											/**
+											 * @type string
+											 */
+											name?: (string | null) | undefined;
+											/**
+											 * @type string
+											 */
+											namespace?: (string | null) | undefined;
+											/**
+											 * @type string
+											 */
+											path?: (string | null) | undefined;
+											/**
+											 * @type string
+											 */
+											url?: (string | null) | undefined;
+										};
+										/**
+										 * @type string
+										 */
+										ref: string;
+										/**
+										 * @type string
+										 */
+										sha: string;
+									};
+									/**
+									 * @type string | undefined
+									 */
+									linkedProjectId?: string | undefined;
+									/**
+									 * @type number | undefined
+									 */
+									prId?: number | undefined;
+									/**
+									 * @type object
+									 */
+									project: {
+										/**
+										 * @type string
+										 */
+										defaultBranch?: (string | null) | undefined;
+										/**
+										 * @type string
+										 */
+										id: string;
+										/**
+										 * @type string
+										 */
+										name?: (string | null) | undefined;
+										/**
+										 * @type string
+										 */
+										namespace?: (string | null) | undefined;
+										/**
+										 * @type string
+										 */
+										path?: (string | null) | undefined;
+										/**
+										 * @type string
+										 */
+										url?: (string | null) | undefined;
+									};
+									/**
+									 * @type string | undefined
+									 */
+									projectId?: string | undefined;
+									/**
+									 * @type string
+									 */
+									customEnvId?: (string | null) | undefined;
+									/**
+									 * @type string
+									 */
+									ref: string;
+									/**
+									 * @type number
+									 */
+									repoPushedAt?: (number | null) | undefined;
+									/**
+									 * @type string
+									 */
+									sha: string;
+									/**
+									 * @type boolean | undefined
+									 */
+									silent?: JobSilentEnumKey | undefined;
+									/**
+									 * @type string
+									 */
+									target?: (string | null) | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									url?: string | undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									withCache?: JobWithCacheEnumKey | undefined;
+									/**
+									 * @type string
+									 */
+									provider: JobProviderEnum3Key;
+							  }
+							| {
+									/**
+									 * @type number | undefined
+									 */
+									createdAt?: number | undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									eventful?: JobEventfulEnumKey | undefined;
+									/**
+									 * @description GitLab
+									 * @type object
+									 */
+									headInfo: {
+										/**
+										 * @type object
+										 */
+										project: {
+											/**
+											 * @type string
+											 */
+											defaultBranch?: (string | null) | undefined;
+											/**
+											 * @type string
+											 */
+											id: string;
+											/**
+											 * @type string
+											 */
+											name?: (string | null) | undefined;
+											/**
+											 * @type string
+											 */
+											namespace?: (string | null) | undefined;
+											/**
+											 * @type string
+											 */
+											path?: (string | null) | undefined;
+											/**
+											 * @type string
+											 */
+											url?: (string | null) | undefined;
+										};
+										/**
+										 * @type string
+										 */
+										ref: string;
+										/**
+										 * @type string
+										 */
+										sha: string;
+									};
+									/**
+									 * @type string | undefined
+									 */
+									linkedProjectId?: string | undefined;
+									/**
+									 * @type number
+									 */
+									prId: number;
+									/**
+									 * @type object
+									 */
+									project: {
+										/**
+										 * @type string
+										 */
+										defaultBranch?: (string | null) | undefined;
+										/**
+										 * @type string
+										 */
+										id: string;
+										/**
+										 * @type string
+										 */
+										name?: (string | null) | undefined;
+										/**
+										 * @type string
+										 */
+										namespace?: (string | null) | undefined;
+										/**
+										 * @type string
+										 */
+										path?: (string | null) | undefined;
+										/**
+										 * @type string
+										 */
+										url?: (string | null) | undefined;
+									};
+									/**
+									 * @type string | undefined
+									 */
+									projectId?: string | undefined;
+									/**
+									 * @type string
+									 */
+									customEnvId?: (string | null) | undefined;
+									/**
+									 * @type string
+									 */
+									ref: string;
+									/**
+									 * @type string
+									 */
+									sha: string;
+									/**
+									 * @type string
+									 */
+									type: JobTypeEnum7Key;
+									/**
+									 * @type object | undefined
+									 */
+									gitComments?:
+										| {
+												/**
+												 * @type boolean
+												 */
+												onPullRequest: GitCommentsOnPullRequestEnumKey;
+												/**
+												 * @type boolean
+												 */
+												onCommit: GitCommentsOnCommitEnumKey;
+										  }
+										| undefined;
+									/**
+									 * @type string
+									 */
+									provider: JobProviderEnum3Key;
+							  };
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						deploymentId: string;
+						/**
+						 * @type string
+						 */
+						projectId: string;
 				  }
 				| {
 						/**
@@ -13196,6 +14757,7 @@ export const scopesOriginEnum = {
 	google: "google",
 	apple: "apple",
 	app: "app",
+	emu: "emu",
 } as const;
 
 export type ScopesOriginEnumKey = (typeof scopesOriginEnum)[keyof typeof scopesOriginEnum];
@@ -13314,6 +14876,16 @@ export type AuthToken = {
 	 * @type number | undefined
 	 */
 	leakedAt?: number | undefined;
+	/**
+	 * @description URL where the token was discovered as leaked.
+	 * @type string | undefined
+	 */
+	leakedUrl?: string | undefined;
+	/**
+	 * @description The last few characters of the token, for identification purposes.
+	 * @type string | undefined
+	 */
+	suffix?: string | undefined;
 };
 
 export const softBlockReasonEnum2 = {
@@ -16243,33 +17815,15 @@ export type GetDeploymentQuery = {
 	Errors: GetDeployment400 | GetDeployment403 | GetDeployment404;
 };
 
-export const createDeploymentQueryParamsForceNewEnum = {
-	"0": "0",
-	"1": "1",
-} as const;
-
-export type CreateDeploymentQueryParamsForceNewEnumKey =
-	(typeof createDeploymentQueryParamsForceNewEnum)[keyof typeof createDeploymentQueryParamsForceNewEnum];
-
-export const createDeploymentQueryParamsSkipAutoDetectionConfirmationEnum = {
-	"0": "0",
-	"1": "1",
-} as const;
-
-export type CreateDeploymentQueryParamsSkipAutoDetectionConfirmationEnumKey =
-	(typeof createDeploymentQueryParamsSkipAutoDetectionConfirmationEnum)[keyof typeof createDeploymentQueryParamsSkipAutoDetectionConfirmationEnum];
-
 export type CreateDeploymentQueryParams = {
 	/**
 	 * @description Forces a new deployment even if there is a previous similar deployment
 	 */
-	forceNew?: CreateDeploymentQueryParamsForceNewEnumKey | undefined;
+	forceNew?: unknown | undefined;
 	/**
 	 * @description Allows to skip framework detection so the API would not fail to ask for confirmation
 	 */
-	skipAutoDetectionConfirmation?:
-		| CreateDeploymentQueryParamsSkipAutoDetectionConfirmationEnumKey
-		| undefined;
+	skipAutoDetectionConfirmation?: unknown | undefined;
 	/**
 	 * @description The Team identifier to perform the request on behalf of.
 	 * @type string | undefined
@@ -16316,6 +17870,8 @@ export type CreateDeployment409 = unknown;
 
 export type CreateDeployment500 = unknown;
 
+export type CreateDeployment503 = unknown;
+
 export type CreateDeploymentMutationResponse = CreateDeployment200;
 
 export type CreateDeploymentMutation = {
@@ -16328,7 +17884,8 @@ export type CreateDeploymentMutation = {
 		| CreateDeployment403
 		| CreateDeployment404
 		| CreateDeployment409
-		| CreateDeployment500;
+		| CreateDeployment500
+		| CreateDeployment503;
 };
 
 export type CancelDeploymentPathParams = {
@@ -21649,30 +23206,6 @@ export type RemoveProjectMemberMutation = {
 	Errors: RemoveProjectMember400 | RemoveProjectMember401 | RemoveProjectMember403;
 };
 
-export const getProjectsQueryParamsGitForkProtectionEnum = {
-	"1": "1",
-	"0": "0",
-} as const;
-
-export type GetProjectsQueryParamsGitForkProtectionEnumKey =
-	(typeof getProjectsQueryParamsGitForkProtectionEnum)[keyof typeof getProjectsQueryParamsGitForkProtectionEnum];
-
-export const getProjectsQueryParamsElasticConcurrencyEnabledEnum = {
-	"1": "1",
-	"0": "0",
-} as const;
-
-export type GetProjectsQueryParamsElasticConcurrencyEnabledEnumKey =
-	(typeof getProjectsQueryParamsElasticConcurrencyEnabledEnum)[keyof typeof getProjectsQueryParamsElasticConcurrencyEnabledEnum];
-
-export const getProjectsQueryParamsStaticIpsEnabledEnum = {
-	"0": "0",
-	"1": "1",
-} as const;
-
-export type GetProjectsQueryParamsStaticIpsEnabledEnumKey =
-	(typeof getProjectsQueryParamsStaticIpsEnabledEnum)[keyof typeof getProjectsQueryParamsStaticIpsEnabledEnum];
-
 export const getProjectsQueryParamsBuildQueueConfigurationEnum = {
 	SKIP_NAMESPACE_QUEUE: "SKIP_NAMESPACE_QUEUE",
 	WAIT_FOR_NAMESPACE_QUEUE: "WAIT_FOR_NAMESPACE_QUEUE",
@@ -21691,7 +23224,7 @@ export type GetProjectsQueryParams = {
 	 * @description Specifies whether PRs from Git forks should require a team member\'s authorization before it can be deployed
 	 * @type string | undefined
 	 */
-	gitForkProtection?: GetProjectsQueryParamsGitForkProtectionEnumKey | undefined;
+	gitForkProtection?: string | undefined;
 	/**
 	 * @description Limit the number of projects returned
 	 * @type string | undefined
@@ -21741,12 +23274,12 @@ export type GetProjectsQueryParams = {
 	 * @description Filter results by projects with elastic concurrency enabled
 	 * @type string | undefined
 	 */
-	elasticConcurrencyEnabled?: GetProjectsQueryParamsElasticConcurrencyEnabledEnumKey | undefined;
+	elasticConcurrencyEnabled?: string | undefined;
 	/**
 	 * @description Filter results by projects with Static IPs enabled
 	 * @type string | undefined
 	 */
-	staticIpsEnabled?: GetProjectsQueryParamsStaticIpsEnabledEnumKey | undefined;
+	staticIpsEnabled?: string | undefined;
 	/**
 	 * @description Filter results by build machine types. Accepts comma-separated values. Use \\\"default\\\" for projects without a build machine type set.
 	 * @type string | undefined

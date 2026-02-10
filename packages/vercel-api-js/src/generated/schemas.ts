@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import { z } from "zod";
+import * as z from "zod";
 
 export const networkSchema = z.object({
 	awsAccountId: z.string().describe("The ID of the AWS Account in which the network exists."),
@@ -697,11 +697,17 @@ export const userEventSchema = z
 									.union([z.literal(false), z.literal(true)])
 									.describe("Whether automatic code reviews are enabled"),
 								scope: z
-									.enum(["public", "all", "private"])
+									.enum(["public", "all", "private", "selected_repos"])
 									.describe("Which repository visibilities get automatic reviews"),
 								includeDrafts: z
 									.union([z.literal(false), z.literal(true)])
 									.describe("Whether to include draft pull requests in automatic reviews"),
+								selectedRepos: z
+									.array(z.string())
+									.describe(
+										"GitHub repos to scope automatic reviews to. Format: \"owner/repo\" (lowercase). Only used when scope='selected_repos'.",
+									)
+									.nullish(),
 							})
 							.describe("Automatic code review settings"),
 					),
@@ -711,11 +717,17 @@ export const userEventSchema = z
 								.union([z.literal(false), z.literal(true)])
 								.describe("Whether automatic code reviews are enabled"),
 							scope: z
-								.enum(["public", "all", "private"])
+								.enum(["public", "all", "private", "selected_repos"])
 								.describe("Which repository visibilities get automatic reviews"),
 							includeDrafts: z
 								.union([z.literal(false), z.literal(true)])
 								.describe("Whether to include draft pull requests in automatic reviews"),
+							selectedRepos: z
+								.array(z.string())
+								.describe(
+									"GitHub repos to scope automatic reviews to. Format: \"owner/repo\" (lowercase). Only used when scope='selected_repos'.",
+								)
+								.nullish(),
 						})
 						.describe("Automatic code review settings"),
 				}),
@@ -1106,6 +1118,21 @@ export const userEventSchema = z
 					name: z.string(),
 					price: z.optional(z.number()),
 					currency: z.optional(z.string()),
+				}),
+				z.object({
+					previousServiceType: z.string(),
+					serviceType: z.string(),
+					id: z.string(),
+					name: z.string(),
+					nameservers: z.array(z.string()),
+				}),
+				z.object({
+					domain: z.string(),
+					customNameservers: z.nullable(z.array(z.string())),
+					prevCustomNameservers: z.nullable(z.array(z.string())),
+				}),
+				z.object({
+					domain: z.string(),
 				}),
 				z.object({
 					sha: z.string(),
@@ -2583,6 +2610,13 @@ export const userEventSchema = z
 										"MFA configuration. When enabled, the user will be required to provide a second factor of authentication when logging in.",
 									),
 							),
+							isEnterpriseManaged: z.optional(
+								z
+									.union([z.literal(false), z.literal(true)])
+									.describe(
+										"Indicates that the underlying user entity is a managed user for the enterprise it's associated with The intention is that this field is only set to true for users that are provisioned by the enterprise which means that the domain associated with the user's email is the same domain associated with the team Allowing us to query information about the user's team at login time through the domain verification service",
+									),
+							),
 						}),
 					),
 				}),
@@ -3235,8 +3269,8 @@ export const userEventSchema = z
 					sourceFilesOutsideRootDirectory: z.union([z.literal(false), z.literal(true)]),
 				}),
 				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
+					projectId: z.optional(z.string()),
+					projectName: z.optional(z.string()),
 					buildMachineType: z.optional(z.string()),
 					oldBuildMachineType: z.optional(z.string()),
 				}),
@@ -3885,11 +3919,17 @@ export const userEventSchema = z
 					}),
 				}),
 				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+				}),
+				z.object({
+					projectId: z.string(),
 					projectName: z.string(),
 					tags: z.array(z.string()),
 					target: z.optional(z.string()),
 				}),
 				z.object({
+					projectId: z.string(),
 					projectName: z.string(),
 					srcImages: z.array(z.string()),
 				}),
@@ -4164,7 +4204,6 @@ export const userEventSchema = z
 					permissions: z.optional(
 						z.array(
 							z.enum([
-								"*",
 								"read:user",
 								"read:domain",
 								"read-write:domain",
@@ -4186,7 +4225,6 @@ export const userEventSchema = z
 					nextPermissions: z.optional(
 						z.array(
 							z.enum([
-								"*",
 								"read:user",
 								"read:domain",
 								"read-write:domain",
@@ -4566,6 +4604,718 @@ export const userEventSchema = z
 					prevConfiguredBy: z.string().nullish(),
 				}),
 				z.object({
+					plan: z.enum(["pro", "enterprise", "hobby"]),
+					trial: z
+						.object({
+							start: z.number(),
+							end: z.number(),
+						})
+						.nullish(),
+				}),
+				z.object({
+					invoiceId: z.string(),
+					convertedFromTrial: z.union([z.literal(false), z.literal(true)]),
+					plan: z.enum(["pro", "enterprise", "hobby"]),
+				}),
+				z.object({
+					emailDomain: z.string().nullish(),
+				}),
+				z.object({
+					inviteCode: z.optional(z.string()),
+				}),
+				z.object({
+					trialCreditsIssuedAt: z.number(),
+					expiresAt: z.string(),
+					amount: z.string(),
+					currency: z.string(),
+				}),
+				z.object({
+					job: z.union([
+						z.object({
+							type: z.enum(["bitbucket-push"]),
+							authorized: z.optional(z.union([z.literal(false), z.literal(true)])),
+							authorizedBy: z.optional(z.string()),
+							jobProjectIds: z.optional(
+								z
+									.array(z.string())
+									.describe(
+										"Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.",
+									),
+							),
+							jobPairs: z.optional(
+								z
+									.array(
+										z
+											.array(z.union([z.string(), z.string()]))
+											.min(2)
+											.max(2)
+											.describe(
+												"Since December 2022 Pairs of projects and owner ids to build for this build request.",
+											),
+									)
+									.describe(
+										"Since December 2022 Pairs of projects and owner ids to build for this build request.",
+									),
+							),
+							skippedJobPairs: z.optional(
+								z
+									.array(
+										z
+											.array(z.union([z.string(), z.string()]))
+											.min(2)
+											.max(2)
+											.describe(
+												"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
+											),
+									)
+									.describe(
+										"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
+									),
+							),
+							gitHashtagVercel: z.optional(
+								z
+									.array(
+										z
+											.string()
+											.describe(
+												"Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING",
+											),
+									)
+									.describe(
+										"Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING",
+									),
+							),
+							connectedProjectCount: z.optional(
+								z
+									.number()
+									.describe(
+										"Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.",
+									),
+							),
+							prIdOrZero: z.optional(
+								z
+									.number()
+									.describe(
+										"Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.",
+									),
+							),
+							gitComments: z.optional(
+								z
+									.object({
+										onPullRequest: z.union([z.literal(false), z.literal(true)]),
+										onCommit: z.union([z.literal(false), z.literal(true)]),
+									})
+									.describe(
+										"Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.",
+									),
+							),
+							isManualGitDeploy: z.optional(
+								z
+									.union([z.literal(false), z.literal(true)])
+									.describe(
+										"Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment",
+									),
+							),
+							commitVerification: z.optional(
+								z
+									.enum(["unknown", "verified", "unverified"])
+									.describe(
+										"Since 6 Nov 2025 The verification status of the commit. - 'verified' if the commit is verified - 'unverified' if the commit is not verified - 'unknown' if the commit verification status is unknown or not supported",
+									),
+							),
+							createdAt: z.optional(z.number()),
+							deploymentId: z.optional(z.string()),
+							deployHook: z.optional(
+								z.object({
+									createdAt: z.number(),
+									id: z.string(),
+									name: z.string(),
+									ref: z.string(),
+								}),
+							),
+							eventful: z.optional(z.union([z.literal(false), z.literal(true)])),
+							forceNew: z.optional(z.union([z.literal(false), z.literal(true)])),
+							headInfo: z.object({
+								owner: z.string(),
+								ref: z.string(),
+								repoUuid: z.string(),
+								sha: z.string(),
+								slug: z.string(),
+							}),
+							linkedProjectId: z.optional(z.string()),
+							name: z.string(),
+							owner: z.string(),
+							prId: z.optional(z.number()),
+							projectId: z.optional(z.string()),
+							customEnvId: z.string().nullish(),
+							ref: z.string(),
+							repoPushedAt: z.number().nullish(),
+							repoUuid: z.string(),
+							sha: z.string(),
+							silent: z.optional(z.union([z.literal(false), z.literal(true)])),
+							slug: z.string(),
+							target: z.string().nullish(),
+							url: z.optional(z.string()),
+							withCache: z.optional(z.union([z.literal(false), z.literal(true)])),
+							workspaceUuid: z.string(),
+							provider: z.enum(["bitbucket"]),
+						}),
+						z.object({
+							createdAt: z.optional(z.number()),
+							eventful: z.optional(z.union([z.literal(false), z.literal(true)])),
+							headInfo: z.object({
+								owner: z.string(),
+								ref: z.string(),
+								repoUuid: z.string(),
+								sha: z.string(),
+								slug: z.string(),
+							}),
+							linkedProjectId: z.optional(z.string()),
+							name: z.string(),
+							owner: z.string(),
+							prId: z.number(),
+							projectId: z.optional(z.string()),
+							customEnvId: z.string().nullish(),
+							ref: z.string(),
+							repoUuid: z.string(),
+							sha: z.string(),
+							slug: z.string(),
+							type: z.enum(["bitbucket-now-comment"]),
+							workspaceUuid: z.string(),
+							gitComments: z.optional(
+								z.object({
+									onPullRequest: z.union([z.literal(false), z.literal(true)]),
+									onCommit: z.union([z.literal(false), z.literal(true)]),
+								}),
+							),
+							provider: z.enum(["bitbucket"]),
+						}),
+						z.object({
+							prId: z.number(),
+							type: z.enum(["pr"]),
+							authorized: z.optional(z.union([z.literal(false), z.literal(true)])),
+							authorizedBy: z.optional(z.string()),
+							jobProjectIds: z.optional(
+								z
+									.array(z.string())
+									.describe(
+										"Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.",
+									),
+							),
+							jobPairs: z.optional(
+								z
+									.array(
+										z
+											.array(z.union([z.string(), z.string()]))
+											.min(2)
+											.max(2)
+											.describe(
+												"Since December 2022 Pairs of projects and owner ids to build for this build request.",
+											),
+									)
+									.describe(
+										"Since December 2022 Pairs of projects and owner ids to build for this build request.",
+									),
+							),
+							skippedJobPairs: z.optional(
+								z
+									.array(
+										z
+											.array(z.union([z.string(), z.string()]))
+											.min(2)
+											.max(2)
+											.describe(
+												"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
+											),
+									)
+									.describe(
+										"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
+									),
+							),
+							gitHashtagVercel: z.optional(
+								z
+									.array(
+										z
+											.string()
+											.describe(
+												"Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING",
+											),
+									)
+									.describe(
+										"Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING",
+									),
+							),
+							connectedProjectCount: z.optional(
+								z
+									.number()
+									.describe(
+										"Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.",
+									),
+							),
+							prIdOrZero: z.optional(
+								z
+									.number()
+									.describe(
+										"Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.",
+									),
+							),
+							gitComments: z.optional(
+								z
+									.object({
+										onPullRequest: z.union([z.literal(false), z.literal(true)]),
+										onCommit: z.union([z.literal(false), z.literal(true)]),
+									})
+									.describe(
+										"Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.",
+									),
+							),
+							isManualGitDeploy: z.optional(
+								z
+									.union([z.literal(false), z.literal(true)])
+									.describe(
+										"Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment",
+									),
+							),
+							commitVerification: z.optional(
+								z
+									.enum(["unknown", "verified", "unverified"])
+									.describe(
+										"Since 6 Nov 2025 The verification status of the commit. - 'verified' if the commit is verified - 'unverified' if the commit is not verified - 'unknown' if the commit verification status is unknown or not supported",
+									),
+							),
+							committerGitUserId: z.optional(
+								z
+									.number()
+									.describe(
+										"Remote account id of the committer details (github id etc, not vercel). Note that the committer name/email are user input verbatim and not verified. Github does appear to resolve the given email to the username so we can trust that. If the username matches that of the sender, which is verified info, then we can use the account id and account type. See api-incoming, where we determine and set this property Note that even with that, the account may still have been spoofed.",
+									),
+							),
+							committerGitUserType: z.optional(
+								z
+									.string()
+									.describe(
+										"Remote account type of the committer details (github type etc, not vercel). Note that the committer name/email are user input verbatim and not verified. Github does appear to resolve the given email to the username so we can trust that. If the username matches that of the sender, which is verified info, then we can use the account id and account type. See api-incoming, where we determine and set this property Note that even with that, the account may still have been spoofed.",
+									),
+							),
+							createdAt: z.optional(z.number()),
+							forceNew: z.optional(z.union([z.literal(false), z.literal(true)])),
+							deploymentId: z.optional(z.string()),
+							deployHook: z.optional(
+								z.object({
+									createdAt: z.number(),
+									id: z.string(),
+									name: z.string(),
+									ref: z.string(),
+								}),
+							),
+							beforeSha: z.optional(z.string()),
+							defaultBranch: z.optional(z.string()),
+							eventful: z.optional(z.union([z.literal(false), z.literal(true)])),
+							githubDeploymentId: z.optional(z.string()),
+							headInfo: z
+								.object({
+									org: z.string(),
+									ref: z.string(),
+									repo: z.string(),
+									repoId: z.number(),
+									sha: z.string(),
+								})
+								.describe("Information about the head commit/branch for a GitHub repository"),
+							installationId: z.number(),
+							isPrivate: z.union([z.literal(false), z.literal(true)]),
+							linkedProjectId: z.optional(z.string()),
+							org: z.string(),
+							projectId: z.optional(z.string()),
+							customEnvId: z.string().nullish(),
+							repo: z.string(),
+							repoId: z.number(),
+							target: z.string().nullish(),
+							url: z.optional(z.string()),
+							withCache: z.optional(z.union([z.literal(false), z.literal(true)])),
+							provider: z.enum(["github", "github-limited", "github-custom-host"]),
+							customHost: z.optional(z.string()),
+						}),
+						z.object({
+							repoPushedAt: z.nullable(z.number()),
+							commitInfo: z.optional(
+								z.object({
+									total: z.number(),
+									earliestSha: z.optional(z.string()),
+								}),
+							),
+							forced: z.optional(z.union([z.literal(false), z.literal(true)])),
+							type: z.enum(["push"]),
+							authorized: z.optional(z.union([z.literal(false), z.literal(true)])),
+							authorizedBy: z.optional(z.string()),
+							jobProjectIds: z.optional(
+								z
+									.array(z.string())
+									.describe(
+										"Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.",
+									),
+							),
+							jobPairs: z.optional(
+								z
+									.array(
+										z
+											.array(z.union([z.string(), z.string()]))
+											.min(2)
+											.max(2)
+											.describe(
+												"Since December 2022 Pairs of projects and owner ids to build for this build request.",
+											),
+									)
+									.describe(
+										"Since December 2022 Pairs of projects and owner ids to build for this build request.",
+									),
+							),
+							skippedJobPairs: z.optional(
+								z
+									.array(
+										z
+											.array(z.union([z.string(), z.string()]))
+											.min(2)
+											.max(2)
+											.describe(
+												"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
+											),
+									)
+									.describe(
+										"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
+									),
+							),
+							gitHashtagVercel: z.optional(
+								z
+									.array(
+										z
+											.string()
+											.describe(
+												"Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING",
+											),
+									)
+									.describe(
+										"Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING",
+									),
+							),
+							connectedProjectCount: z.optional(
+								z
+									.number()
+									.describe(
+										"Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.",
+									),
+							),
+							prIdOrZero: z.optional(
+								z
+									.number()
+									.describe(
+										"Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.",
+									),
+							),
+							gitComments: z.optional(
+								z
+									.object({
+										onPullRequest: z.union([z.literal(false), z.literal(true)]),
+										onCommit: z.union([z.literal(false), z.literal(true)]),
+									})
+									.describe(
+										"Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.",
+									),
+							),
+							isManualGitDeploy: z.optional(
+								z
+									.union([z.literal(false), z.literal(true)])
+									.describe(
+										"Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment",
+									),
+							),
+							commitVerification: z.optional(
+								z
+									.enum(["unknown", "verified", "unverified"])
+									.describe(
+										"Since 6 Nov 2025 The verification status of the commit. - 'verified' if the commit is verified - 'unverified' if the commit is not verified - 'unknown' if the commit verification status is unknown or not supported",
+									),
+							),
+							committerGitUserId: z.optional(
+								z
+									.number()
+									.describe(
+										"Remote account id of the committer details (github id etc, not vercel). Note that the committer name/email are user input verbatim and not verified. Github does appear to resolve the given email to the username so we can trust that. If the username matches that of the sender, which is verified info, then we can use the account id and account type. See api-incoming, where we determine and set this property Note that even with that, the account may still have been spoofed.",
+									),
+							),
+							committerGitUserType: z.optional(
+								z
+									.string()
+									.describe(
+										"Remote account type of the committer details (github type etc, not vercel). Note that the committer name/email are user input verbatim and not verified. Github does appear to resolve the given email to the username so we can trust that. If the username matches that of the sender, which is verified info, then we can use the account id and account type. See api-incoming, where we determine and set this property Note that even with that, the account may still have been spoofed.",
+									),
+							),
+							createdAt: z.optional(z.number()),
+							forceNew: z.optional(z.union([z.literal(false), z.literal(true)])),
+							deploymentId: z.optional(z.string()),
+							deployHook: z.optional(
+								z.object({
+									createdAt: z.number(),
+									id: z.string(),
+									name: z.string(),
+									ref: z.string(),
+								}),
+							),
+							beforeSha: z.optional(z.string()),
+							defaultBranch: z.optional(z.string()),
+							eventful: z.optional(z.union([z.literal(false), z.literal(true)])),
+							githubDeploymentId: z.optional(z.string()),
+							headInfo: z
+								.object({
+									org: z.string(),
+									ref: z.string(),
+									repo: z.string(),
+									repoId: z.number(),
+									sha: z.string(),
+								})
+								.describe("Information about the head commit/branch for a GitHub repository"),
+							installationId: z.number(),
+							isPrivate: z.union([z.literal(false), z.literal(true)]),
+							linkedProjectId: z.optional(z.string()),
+							org: z.string(),
+							prId: z.nullable(z.number()),
+							projectId: z.optional(z.string()),
+							customEnvId: z.string().nullish(),
+							repo: z.string(),
+							repoId: z.number(),
+							target: z.string().nullish(),
+							url: z.optional(z.string()),
+							withCache: z.optional(z.union([z.literal(false), z.literal(true)])),
+							provider: z.enum(["github", "github-limited", "github-custom-host"]),
+							customHost: z.optional(z.string()),
+						}),
+						z.object({
+							createdAt: z.optional(z.number()),
+							eventful: z.optional(z.union([z.literal(false), z.literal(true)])),
+							headInfo: z
+								.object({
+									org: z.string(),
+									ref: z.string(),
+									repo: z.string(),
+									repoId: z.number(),
+									sha: z.string(),
+								})
+								.describe("Information about the head commit/branch for a GitHub repository"),
+							beforeSha: z.optional(z.string()),
+							installationId: z.number(),
+							isPrivate: z.union([z.literal(false), z.literal(true)]),
+							linkedProjectId: z.optional(z.string()),
+							org: z.string(),
+							prId: z.number(),
+							projectId: z.nullable(z.unknown()),
+							customEnvId: z.unknown().nullish(),
+							repo: z.string(),
+							repoId: z.number(),
+							type: z.enum(["now-comment"]),
+							gitComments: z.optional(
+								z.object({
+									onPullRequest: z.union([z.literal(false), z.literal(true)]),
+									onCommit: z.union([z.literal(false), z.literal(true)]),
+								}),
+							),
+							provider: z.enum(["github", "github-limited", "github-custom-host"]),
+							customHost: z.optional(z.string()),
+						}),
+						z.object({
+							type: z.enum(["gitlab-push"]),
+							authorized: z.optional(z.union([z.literal(false), z.literal(true)])),
+							authorizedBy: z.optional(z.string()),
+							jobProjectIds: z.optional(
+								z
+									.array(z.string())
+									.describe(
+										"Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.",
+									),
+							),
+							jobPairs: z.optional(
+								z
+									.array(
+										z
+											.array(z.union([z.string(), z.string()]))
+											.min(2)
+											.max(2)
+											.describe(
+												"Since December 2022 Pairs of projects and owner ids to build for this build request.",
+											),
+									)
+									.describe(
+										"Since December 2022 Pairs of projects and owner ids to build for this build request.",
+									),
+							),
+							skippedJobPairs: z.optional(
+								z
+									.array(
+										z
+											.array(z.union([z.string(), z.string()]))
+											.min(2)
+											.max(2)
+											.describe(
+												"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
+											),
+									)
+									.describe(
+										"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
+									),
+							),
+							gitHashtagVercel: z.optional(
+								z
+									.array(
+										z
+											.string()
+											.describe(
+												"Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING",
+											),
+									)
+									.describe(
+										"Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING",
+									),
+							),
+							connectedProjectCount: z.optional(
+								z
+									.number()
+									.describe(
+										"Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.",
+									),
+							),
+							prIdOrZero: z.optional(
+								z
+									.number()
+									.describe(
+										"Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.",
+									),
+							),
+							gitComments: z.optional(
+								z
+									.object({
+										onPullRequest: z.union([z.literal(false), z.literal(true)]),
+										onCommit: z.union([z.literal(false), z.literal(true)]),
+									})
+									.describe(
+										"Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.",
+									),
+							),
+							isManualGitDeploy: z.optional(
+								z
+									.union([z.literal(false), z.literal(true)])
+									.describe(
+										"Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment",
+									),
+							),
+							commitVerification: z.optional(
+								z
+									.enum(["unknown", "verified", "unverified"])
+									.describe(
+										"Since 6 Nov 2025 The verification status of the commit. - 'verified' if the commit is verified - 'unverified' if the commit is not verified - 'unknown' if the commit verification status is unknown or not supported",
+									),
+							),
+							commit: z.optional(
+								z.object({
+									id: z.string(),
+									authorAvatar: z.string().nullish(),
+									authorEmail: z.string().nullish(),
+									authorId: z.number().nullish(),
+									authorLogin: z.string().nullish(),
+									authorName: z.string().nullish(),
+								}),
+							),
+							createdAt: z.optional(z.number()),
+							deployHook: z.optional(
+								z.object({
+									createdAt: z.number(),
+									id: z.string(),
+									name: z.string(),
+									ref: z.string(),
+								}),
+							),
+							deploymentId: z.optional(z.string()),
+							eventful: z.optional(z.union([z.literal(false), z.literal(true)])),
+							forceNew: z.optional(z.union([z.literal(false), z.literal(true)])),
+							headInfo: z
+								.object({
+									project: z.object({
+										defaultBranch: z.string().nullish(),
+										id: z.string(),
+										name: z.string().nullish(),
+										namespace: z.string().nullish(),
+										path: z.string().nullish(),
+										url: z.string().nullish(),
+									}),
+									ref: z.string(),
+									sha: z.string(),
+								})
+								.describe("GitLab"),
+							linkedProjectId: z.optional(z.string()),
+							prId: z.optional(z.number()),
+							project: z.object({
+								defaultBranch: z.string().nullish(),
+								id: z.string(),
+								name: z.string().nullish(),
+								namespace: z.string().nullish(),
+								path: z.string().nullish(),
+								url: z.string().nullish(),
+							}),
+							projectId: z.optional(z.string()),
+							customEnvId: z.string().nullish(),
+							ref: z.string(),
+							repoPushedAt: z.number().nullish(),
+							sha: z.string(),
+							silent: z.optional(z.union([z.literal(false), z.literal(true)])),
+							target: z.string().nullish(),
+							url: z.optional(z.string()),
+							withCache: z.optional(z.union([z.literal(false), z.literal(true)])),
+							provider: z.enum(["gitlab"]),
+						}),
+						z.object({
+							createdAt: z.optional(z.number()),
+							eventful: z.optional(z.union([z.literal(false), z.literal(true)])),
+							headInfo: z
+								.object({
+									project: z.object({
+										defaultBranch: z.string().nullish(),
+										id: z.string(),
+										name: z.string().nullish(),
+										namespace: z.string().nullish(),
+										path: z.string().nullish(),
+										url: z.string().nullish(),
+									}),
+									ref: z.string(),
+									sha: z.string(),
+								})
+								.describe("GitLab"),
+							linkedProjectId: z.optional(z.string()),
+							prId: z.number(),
+							project: z.object({
+								defaultBranch: z.string().nullish(),
+								id: z.string(),
+								name: z.string().nullish(),
+								namespace: z.string().nullish(),
+								path: z.string().nullish(),
+								url: z.string().nullish(),
+							}),
+							projectId: z.optional(z.string()),
+							customEnvId: z.string().nullish(),
+							ref: z.string(),
+							sha: z.string(),
+							type: z.enum(["gitlab-now-comment"]),
+							gitComments: z.optional(
+								z.object({
+									onPullRequest: z.union([z.literal(false), z.literal(true)]),
+									onCommit: z.union([z.literal(false), z.literal(true)]),
+								}),
+							),
+							provider: z.enum(["gitlab"]),
+						}),
+					]),
+				}),
+				z.object({
+					deploymentId: z.string(),
+					projectId: z.string(),
+				}),
+				z.object({
 					grantType: z.enum(["authorization_code", "urn:ietf:params:oauth:grant-type:device_code"]),
 					appName: z
 						.string()
@@ -4589,6 +5339,7 @@ export const userEventSchema = z
 						"otp",
 						"sms",
 						"invite",
+						"emu",
 					]),
 					app: z.optional(
 						z
@@ -5356,6 +6107,7 @@ export const authTokenSchema = z
 									"google",
 									"apple",
 									"app",
+									"emu",
 								]),
 							),
 							createdAt: z.number(),
@@ -5379,6 +6131,7 @@ export const authTokenSchema = z
 									"google",
 									"apple",
 									"app",
+									"emu",
 								]),
 							),
 							createdAt: z.number(),
@@ -5397,6 +6150,10 @@ export const authTokenSchema = z
 		createdAt: z.number().describe("Timestamp (in milliseconds) of when the token was created."),
 		leakedAt: z.optional(
 			z.number().describe("Timestamp (in milliseconds) of when the token was marked as leaked."),
+		),
+		leakedUrl: z.optional(z.string().describe("URL where the token was discovered as leaked.")),
+		suffix: z.optional(
+			z.string().describe("The last few characters of the token, for identification purposes."),
 		),
 	})
 	.describe("Authentication token metadata.");
@@ -7426,12 +8183,12 @@ export const createDeploymentQueryParamsSchema = z
 	.object({
 		forceNew: z.optional(
 			z
-				.enum(["0", "1"])
+				.unknown()
 				.describe("Forces a new deployment even if there is a previous similar deployment"),
 		),
 		skipAutoDetectionConfirmation: z.optional(
 			z
-				.enum(["0", "1"])
+				.unknown()
 				.describe(
 					"Allows to skip framework detection so the API would not fail to ask for confirmation",
 				),
@@ -7476,6 +8233,8 @@ export const createDeployment404Schema = z.unknown();
 export const createDeployment409Schema = z.unknown();
 
 export const createDeployment500Schema = z.unknown();
+
+export const createDeployment503Schema = z.unknown();
 
 export const createDeploymentMutationResponseSchema = z.lazy(() => createDeployment200Schema);
 
@@ -11209,7 +11968,7 @@ export const getProjectsQueryParamsSchema = z
 		),
 		gitForkProtection: z.optional(
 			z
-				.enum(["1", "0"])
+				.string()
 				.describe(
 					"Specifies whether PRs from Git forks should require a team member's authorization before it can be deployed",
 				),
@@ -11228,10 +11987,10 @@ export const getProjectsQueryParamsSchema = z
 		),
 		deprecated: z.optional(z.boolean()),
 		elasticConcurrencyEnabled: z.optional(
-			z.enum(["1", "0"]).describe("Filter results by projects with elastic concurrency enabled"),
+			z.string().describe("Filter results by projects with elastic concurrency enabled"),
 		),
 		staticIpsEnabled: z.optional(
-			z.enum(["0", "1"]).describe("Filter results by projects with Static IPs enabled"),
+			z.string().describe("Filter results by projects with Static IPs enabled"),
 		),
 		buildMachineTypes: z.optional(
 			z
