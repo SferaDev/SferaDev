@@ -15065,8 +15065,6 @@ export const patchUrlProtectionBypass409Schema = z.unknown();
 
 export const patchUrlProtectionBypass428Schema = z.unknown();
 
-export const patchUrlProtectionBypass500Schema = z.unknown();
-
 export const patchUrlProtectionBypassMutationResponseSchema = z.lazy(
 	() => patchUrlProtectionBypass200Schema,
 );
