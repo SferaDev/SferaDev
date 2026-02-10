@@ -984,6 +984,7 @@ import type {
 	InviteUserToTeam503,
 	InviteUserToTeamMutationResponse,
 	InviteUserToTeamPathParams,
+	InviteUserToTeamQueryParams,
 	IssueCert400,
 	IssueCert401,
 	IssueCert402,
@@ -8730,9 +8731,11 @@ export async function getTeamMembers({
  */
 export async function inviteUserToTeam({
 	pathParams: { teamId },
+	queryParams,
 	config = {},
 }: {
 	pathParams: InviteUserToTeamPathParams;
+	queryParams?: InviteUserToTeamQueryParams;
 	config?: Partial<FetcherConfig> & { client?: typeof client };
 }) {
 	const { client: request = client, ...requestConfig } = config;
@@ -8748,11 +8751,12 @@ export async function inviteUserToTeam({
 		>,
 		null,
 		Record<string, string>,
-		Record<string, string>,
+		InviteUserToTeamQueryParams,
 		InviteUserToTeamPathParams
 	>({
 		method: "POST",
 		url: `/v2/teams/${teamId}/members`,
+		queryParams,
 		...requestConfig,
 		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
 	});
