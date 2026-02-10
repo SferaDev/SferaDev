@@ -507,6 +507,7 @@ import type {
 	CreateDeployment404,
 	CreateDeployment409,
 	CreateDeployment500,
+	CreateDeployment503,
 	CreateDeploymentMutationResponse,
 	CreateDeploymentQueryParams,
 	CreateDrain400,
@@ -3420,6 +3421,7 @@ export async function createDeployment({
 			| CreateDeployment404
 			| CreateDeployment409
 			| CreateDeployment500
+			| CreateDeployment503
 		>,
 		null,
 		Record<string, string>,

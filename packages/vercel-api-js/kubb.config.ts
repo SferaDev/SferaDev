@@ -39,6 +39,9 @@ export default defineConfig(async () => {
 	// Fix constraints on union types
 	openAPIDocument = fixUnionConstraints(openAPIDocument);
 
+	// Remove enum values that can't be valid unquoted JS object keys (e.g. #-prefixed)
+	openAPIDocument = sanitizeEnumValues(openAPIDocument);
+
 	// Camel case all properties except path strings
 	openAPIDocument = camelCaseProperties(openAPIDocument, false);
 
@@ -245,6 +248,16 @@ function fixUnionConstraints(obj: any): any {
 		}, {} as any);
 	}
 	return obj;
+}
+
+function sanitizeEnumValues(openAPIDocument: OpenAPIObject) {
+	return JSON.parse(JSON.stringify(openAPIDocument), (key, value) => {
+		if (key === "enum" && Array.isArray(value)) {
+			const filtered = value.filter((v) => typeof v !== "string" || /^[a-zA-Z_$]/.test(v));
+			return filtered.length > 0 ? filtered : undefined;
+		}
+		return value;
+	});
 }
 
 function camelCaseProperties(obj: any, isPathsObject = false): any {
