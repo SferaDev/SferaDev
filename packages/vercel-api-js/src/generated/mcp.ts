@@ -1501,7 +1501,6 @@ import type {
 	PatchUrlProtectionBypass404,
 	PatchUrlProtectionBypass409,
 	PatchUrlProtectionBypass428,
-	PatchUrlProtectionBypass500,
 	PatchUrlProtectionBypassMutationResponse,
 	PatchUrlProtectionBypassPathParams,
 	PatchUrlProtectionBypassQueryParams,
@@ -10637,7 +10636,6 @@ export async function patchUrlProtectionBypass({
 			| PatchUrlProtectionBypass404
 			| PatchUrlProtectionBypass409
 			| PatchUrlProtectionBypass428
-			| PatchUrlProtectionBypass500
 		>,
 		null,
 		Record<string, string>,

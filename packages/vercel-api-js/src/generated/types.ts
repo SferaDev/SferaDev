@@ -27777,8 +27777,6 @@ export type PatchUrlProtectionBypass409 = unknown;
 
 export type PatchUrlProtectionBypass428 = unknown;
 
-export type PatchUrlProtectionBypass500 = unknown;
-
 export type PatchUrlProtectionBypassMutationResponse = PatchUrlProtectionBypass200;
 
 export type PatchUrlProtectionBypassMutation = {
@@ -27791,8 +27789,7 @@ export type PatchUrlProtectionBypassMutation = {
 		| PatchUrlProtectionBypass403
 		| PatchUrlProtectionBypass404
 		| PatchUrlProtectionBypass409
-		| PatchUrlProtectionBypass428
-		| PatchUrlProtectionBypass500;
+		| PatchUrlProtectionBypass428;
 };
 
 export type GetCertByIdPathParams = {
