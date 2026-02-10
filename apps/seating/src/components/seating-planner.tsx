@@ -19,7 +19,6 @@ import { toPng } from "html-to-image";
 import { jsPDF } from "jspdf";
 import {
 	Check,
-	Copy,
 	Download,
 	FileText,
 	ImageIcon,
@@ -28,24 +27,19 @@ import {
 	Maximize,
 	Minimize,
 	Moon,
-	PanelLeftClose,
 	PanelLeftOpen,
-	Printer,
 	Sun,
 	Upload,
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { loadData, saveData } from "@/lib/storage";
 import type { Guest, GuestGroup, SeatingData, Table } from "@/lib/types";
 import { GuestPanel } from "./guest-panel";
 import { OnboardingModal } from "./onboarding-modal";
 import { TableNode } from "./table-node";
 
-const nodeTypes = {
-	tableNode: TableNode,
-};
+const nodeTypes = { tableNode: TableNode };
 
 function generateId() {
 	return Math.random().toString(36).substring(2, 9);
@@ -89,7 +83,7 @@ function SeatingPlannerInner() {
 	const toggleTheme = useCallback(() => {
 		setTheme(resolvedTheme === "dark" ? "light" : "dark");
 	}, [resolvedTheme, setTheme]);
-	const [overlappingNodeIds, setOverlappingNodeIds] = useState<Set<string>>(new Set());
+	const [_overlappingNodeIds, setOverlappingNodeIds] = useState<Set<string>>(new Set());
 	const reactFlowWrapper = useRef<HTMLDivElement>(null);
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const { getNodes, fitView } = useReactFlow();
@@ -936,6 +930,7 @@ function SeatingPlannerInner() {
 				<div ref={reactFlowWrapper} className="flex-1 bg-muted/30 relative">
 					<ReactFlow
 						nodes={nodes}
+						nodeTypes={nodeTypes}
 						onNodesChange={onNodesChange}
 						fitView
 						className="bg-muted/30"
