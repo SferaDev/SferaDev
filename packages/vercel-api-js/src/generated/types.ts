@@ -1992,6 +1992,7 @@ export const joinedFromOriginEnum = {
 	feedback: "feedback",
 	"organization-teams": "organization-teams",
 	"nsnb-auto-approve": "nsnb-auto-approve",
+	"nsnb-viewer-upgrade": "nsnb-viewer-upgrade",
 } as const;
 
 export type JoinedFromOriginEnumKey =
@@ -2315,20 +2316,44 @@ export const payloadProjectIdsEnum = {
 export type PayloadProjectIdsEnumKey =
 	(typeof payloadProjectIdsEnum)[keyof typeof payloadProjectIdsEnum];
 
+export const factorsOriginEnum = {
+	email: "email",
+	saml: "saml",
+	github: "github",
+	gitlab: "gitlab",
+	bitbucket: "bitbucket",
+	google: "google",
+	apple: "apple",
+	webauthn: "webauthn",
+	otp: "otp",
+	invite: "invite",
+	"otp-link": "otp-link",
+	"magic-link": "magic-link",
+} as const;
+
+export type FactorsOriginEnumKey = (typeof factorsOriginEnum)[keyof typeof factorsOriginEnum];
+
+export const factorsLegacyEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type FactorsLegacyEnumKey = (typeof factorsLegacyEnum)[keyof typeof factorsLegacyEnum];
+
+export const factorsOriginEnum2 = {
+	totp: "totp",
+	webauthn: "webauthn",
+	"recovery-code": "recovery-code",
+} as const;
+
+export type FactorsOriginEnum2Key = (typeof factorsOriginEnum2)[keyof typeof factorsOriginEnum2];
+
 export const payloadViaOTPEnum = {
 	false: false,
 	true: true,
 } as const;
 
 export type PayloadViaOTPEnumKey = (typeof payloadViaOTPEnum)[keyof typeof payloadViaOTPEnum];
-
-export const payloadViaEmailInviteEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type PayloadViaEmailInviteEnumKey =
-	(typeof payloadViaEmailInviteEnum)[keyof typeof payloadViaEmailInviteEnum];
 
 export const payloadViaGithubEnum = {
 	false: false,
@@ -2385,12 +2410,18 @@ export const payloadViaPasskeyEnum = {
 export type PayloadViaPasskeyEnumKey =
 	(typeof payloadViaPasskeyEnum)[keyof typeof payloadViaPasskeyEnum];
 
-export const factorsLegacyEnum = {
-	false: false,
-	true: true,
+export const factorsOriginEnum3 = {
+	email: "email",
+	saml: "saml",
+	github: "github",
+	gitlab: "gitlab",
+	bitbucket: "bitbucket",
+	google: "google",
+	apple: "apple",
+	otp: "otp",
 } as const;
 
-export type FactorsLegacyEnumKey = (typeof factorsLegacyEnum)[keyof typeof factorsLegacyEnum];
+export type FactorsOriginEnum3Key = (typeof factorsOriginEnum3)[keyof typeof factorsOriginEnum3];
 
 export const roleEnum = {
 	OWNER: "OWNER",
@@ -8024,46 +8055,6 @@ export type UserEvent = {
 							  } | null)
 							| undefined;
 						/**
-						 * @type boolean
-						 */
-						viaOTP: PayloadViaOTPEnumKey;
-						/**
-						 * @type boolean
-						 */
-						viaEmailInvite: PayloadViaEmailInviteEnumKey;
-						/**
-						 * @type boolean
-						 */
-						viaGithub: PayloadViaGithubEnumKey;
-						/**
-						 * @type boolean
-						 */
-						viaGitlab: PayloadViaGitlabEnumKey;
-						/**
-						 * @type boolean
-						 */
-						viaBitbucket: PayloadViaBitbucketEnumKey;
-						/**
-						 * @type boolean
-						 */
-						viaGoogle: PayloadViaGoogleEnumKey;
-						/**
-						 * @type boolean
-						 */
-						viaApple: PayloadViaAppleEnumKey;
-						/**
-						 * @type boolean
-						 */
-						viaSamlSso: PayloadViaSamlSsoEnumKey;
-						/**
-						 * @type boolean
-						 */
-						viaPasskey: PayloadViaPasskeyEnumKey;
-						/**
-						 * @type string | undefined
-						 */
-						ssoType?: string | undefined;
-						/**
 						 * @type string | undefined
 						 */
 						env?: string | undefined;
@@ -8075,13 +8066,39 @@ export type UserEvent = {
 						 * @type string | undefined
 						 */
 						username?: string | undefined;
-						factors?:
+						/**
+						 * @type string | undefined
+						 */
+						ssoType?: string | undefined;
+						factors:
+							| {
+									/**
+									 * @type string
+									 */
+									origin: FactorsOriginEnumKey;
+									/**
+									 * @type string | undefined
+									 */
+									username?: string | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									teamId?: string | undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									legacy?: FactorsLegacyEnumKey | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									ssoType?: string | undefined;
+							  }[]
 							| (
 									| {
 											/**
 											 * @type string
 											 */
-											origin: string;
+											origin: FactorsOriginEnumKey;
 											/**
 											 * @type string | undefined
 											 */
@@ -8094,31 +8111,256 @@ export type UserEvent = {
 											 * @type boolean | undefined
 											 */
 											legacy?: FactorsLegacyEnumKey | undefined;
-									  }[]
-									| (
-											| {
+											/**
+											 * @type string | undefined
+											 */
+											ssoType?: string | undefined;
+									  }
+									| {
+											/**
+											 * @type string
+											 */
+											origin: FactorsOriginEnum2Key;
+									  }
+							  )[];
+						/**
+						 * @type boolean | undefined
+						 */
+						viaOTP?: PayloadViaOTPEnumKey | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						viaGithub?: PayloadViaGithubEnumKey | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						viaGitlab?: PayloadViaGitlabEnumKey | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						viaBitbucket?: PayloadViaBitbucketEnumKey | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						viaGoogle?: PayloadViaGoogleEnumKey | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						viaApple?: PayloadViaAppleEnumKey | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						viaSamlSso?: PayloadViaSamlSsoEnumKey | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						viaPasskey?: PayloadViaPasskeyEnumKey | undefined;
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						userAgent?: string | undefined;
+						/**
+						 * @type object
+						 */
+						geolocation?:
+							| ({
+									/**
+									 * @type object | undefined
+									 */
+									city?:
+										| {
+												/**
+												 * @type object
+												 */
+												names: {
 													/**
 													 * @type string
 													 */
-													origin: string;
-													/**
-													 * @type string | undefined
-													 */
-													username?: string | undefined;
-													/**
-													 * @type string | undefined
-													 */
-													teamId?: string | undefined;
-											  }
-											| {
+													en: string;
+												};
+										  }
+										| undefined;
+									/**
+									 * @type object
+									 */
+									country: {
+										/**
+										 * @type object
+										 */
+										names: {
+											/**
+											 * @type string
+											 */
+											en: string;
+										};
+									};
+									/**
+									 * @type object | undefined
+									 */
+									mostSpecificSubdivision?:
+										| {
+												/**
+												 * @type object
+												 */
+												names: {
 													/**
 													 * @type string
 													 */
-													origin: string;
-											  }
-									  )[]
-							  )
+													en: string;
+												};
+										  }
+										| undefined;
+									/**
+									 * @type string | undefined
+									 */
+									regionName?: string | undefined;
+							  } | null)
 							| undefined;
+						/**
+						 * @type string | undefined
+						 */
+						env?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						os?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						username?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						ssoType?: string | undefined;
+						/**
+						 * @type array
+						 */
+						factors: {
+							/**
+							 * @type string
+							 */
+							origin: FactorsOriginEnum3Key;
+							/**
+							 * @type string | undefined
+							 */
+							username?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							teamId?: string | undefined;
+							/**
+							 * @type boolean | undefined
+							 */
+							legacy?: FactorsLegacyEnumKey | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							ssoType?: string | undefined;
+						}[];
+						/**
+						 * @type boolean | undefined
+						 */
+						viaOTP?: PayloadViaOTPEnumKey | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						viaGithub?: PayloadViaGithubEnumKey | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						viaGitlab?: PayloadViaGitlabEnumKey | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						viaBitbucket?: PayloadViaBitbucketEnumKey | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						viaGoogle?: PayloadViaGoogleEnumKey | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						viaApple?: PayloadViaAppleEnumKey | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						viaSamlSso?: PayloadViaSamlSsoEnumKey | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						viaPasskey?: PayloadViaPasskeyEnumKey | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						email: string;
+						/**
+						 * @type string
+						 */
+						bitbucketLogin: string;
+						/**
+						 * @type string
+						 */
+						bitbucketEmail: string;
+						/**
+						 * @type string
+						 */
+						bitbucketName: string;
+						/**
+						 * @type string
+						 */
+						zeitAccount: string;
+						/**
+						 * @type string
+						 */
+						zeitAccountType: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						email: string;
+						/**
+						 * @type string
+						 */
+						githubLogin: string;
+						/**
+						 * @type string
+						 */
+						zeitAccount: string;
+						/**
+						 * @type string
+						 */
+						zeitAccountType: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						email: string;
+						/**
+						 * @type string
+						 */
+						gitlabLogin: string;
+						/**
+						 * @type string
+						 */
+						gitlabEmail: string;
+						/**
+						 * @type string
+						 */
+						gitlabName: string;
+						/**
+						 * @type string
+						 */
+						zeitAccount: string;
+						/**
+						 * @type string
+						 */
+						zeitAccountType: string;
 				  }
 				| {
 						/**
@@ -13854,6 +14096,7 @@ export const joinedFromOriginEnum2 = {
 	link: "link",
 	mail: "mail",
 	"nsnb-auto-approve": "nsnb-auto-approve",
+	"nsnb-viewer-upgrade": "nsnb-viewer-upgrade",
 	"organization-teams": "organization-teams",
 	saml: "saml",
 	teams: "teams",
@@ -14486,6 +14729,7 @@ export const joinedFromOriginEnum3 = {
 	link: "link",
 	mail: "mail",
 	"nsnb-auto-approve": "nsnb-auto-approve",
+	"nsnb-viewer-upgrade": "nsnb-viewer-upgrade",
 	"organization-teams": "organization-teams",
 	saml: "saml",
 	teams: "teams",
@@ -26281,6 +26525,7 @@ export type CreateIntegrationStoreDirectMutation = {
 
 export type GetTeamMembersPathParams = {
 	/**
+	 * @description The Team identifier to perform the request on behalf of.
 	 * @type string
 	 */
 	teamId: string;
@@ -26337,6 +26582,11 @@ export type GetTeamMembersQueryParams = {
 	 * @type string | undefined
 	 */
 	eligibleMembersForProjectId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
 };
 
 export type GetTeamMembers200 = unknown;
@@ -26369,9 +26619,18 @@ export type GetTeamMembersQuery = {
 
 export type InviteUserToTeamPathParams = {
 	/**
+	 * @description The Team identifier to perform the request on behalf of.
 	 * @type string
 	 */
 	teamId: string;
+};
+
+export type InviteUserToTeamQueryParams = {
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
 };
 
 export type InviteUserToTeam200 = unknown;
@@ -26398,6 +26657,7 @@ export type InviteUserToTeamMutationResponse = InviteUserToTeam200;
 export type InviteUserToTeamMutation = {
 	Response: InviteUserToTeam200;
 	PathParams: InviteUserToTeamPathParams;
+	QueryParams: InviteUserToTeamQueryParams;
 	Errors: InviteUserToTeam400 | InviteUserToTeam401 | InviteUserToTeam403 | InviteUserToTeam503;
 };
 

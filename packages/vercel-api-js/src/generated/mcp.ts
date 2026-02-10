@@ -229,6 +229,7 @@ import {
 	invalidateBySrcImagesQueryParamsSchema,
 	invalidateByTagsQueryParamsSchema,
 	inviteUserToTeamPathParamsSchema,
+	inviteUserToTeamQueryParamsSchema,
 	issueCertQueryParamsSchema,
 	joinTeamPathParamsSchema,
 	listAccessGroupMembersPathParamsSchema,
@@ -1345,6 +1346,7 @@ import type {
 	InviteUserToTeam503,
 	InviteUserToTeamMutationResponse,
 	InviteUserToTeamPathParams,
+	InviteUserToTeamQueryParams,
 	IssueCert400,
 	IssueCert401,
 	IssueCert402,
@@ -9572,9 +9574,11 @@ export async function getTeamMembers({
  */
 export async function inviteUserToTeam({
 	pathParams: { teamId },
+	queryParams,
 	config = {},
 }: {
 	pathParams: InviteUserToTeamPathParams;
+	queryParams?: InviteUserToTeamQueryParams;
 	config?: Partial<FetcherConfig> & { client?: typeof client };
 }): Promise<Promise<CallToolResult>> {
 	const { client: request = client, ...requestConfig } = config;
@@ -9590,12 +9594,13 @@ export async function inviteUserToTeam({
 		>,
 		null,
 		Record<string, string>,
-		Record<string, string>,
+		InviteUserToTeamQueryParams,
 		InviteUserToTeamPathParams
 	>({
 		method: "POST",
 		url: `/v2/teams/${teamId}/members`,
 		baseUrl: "https://api.vercel.com",
+		queryParams,
 		...requestConfig,
 		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
 	});
@@ -14021,10 +14026,13 @@ export function initMcpTools<Server>(serverLike: Server, config: FetcherConfig) 
 	server.tool(
 		"inviteUserToTeam",
 		"Invite a user to join the team specified in the URL. The authenticated user needs to be an `OWNER` in order to successfully invoke this endpoint. The user to be invited must be specified by email.",
-		{ teamId: inviteUserToTeamPathParamsSchema.shape["teamId"] },
-		async ({ teamId }) => {
+		{
+			teamId: inviteUserToTeamPathParamsSchema.shape["teamId"],
+			queryParams: inviteUserToTeamQueryParamsSchema,
+		},
+		async ({ teamId, queryParams }) => {
 			try {
-				return await inviteUserToTeam({ pathParams: { teamId }, config });
+				return await inviteUserToTeam({ pathParams: { teamId }, queryParams, config });
 			} catch (error) {
 				return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
 			}

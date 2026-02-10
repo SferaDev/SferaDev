@@ -1911,6 +1911,7 @@ export const userEventSchema = z
 														"feedback",
 														"organization-teams",
 														"nsnb-auto-approve",
+														"nsnb-viewer-upgrade",
 													]),
 													commitId: z.optional(z.string()),
 													repoId: z.optional(z.string()),
@@ -2706,49 +2707,157 @@ export const userEventSchema = z
 							regionName: z.optional(z.string()),
 						})
 						.nullish(),
-					viaOTP: z.union([z.literal(false), z.literal(true)]),
-					viaEmailInvite: z.union([z.literal(false), z.literal(true)]),
-					viaGithub: z.union([z.literal(false), z.literal(true)]),
-					viaGitlab: z.union([z.literal(false), z.literal(true)]),
-					viaBitbucket: z.union([z.literal(false), z.literal(true)]),
-					viaGoogle: z.union([z.literal(false), z.literal(true)]),
-					viaApple: z.union([z.literal(false), z.literal(true)]),
-					viaSamlSso: z.union([z.literal(false), z.literal(true)]),
-					viaPasskey: z.union([z.literal(false), z.literal(true)]),
-					ssoType: z.optional(z.string()),
 					env: z.optional(z.string()),
 					os: z.optional(z.string()),
 					username: z.optional(z.string()),
-					factors: z.optional(
-						z.union([
-							z
-								.array(
+					ssoType: z.optional(z.string()),
+					factors: z.union([
+						z
+							.array(
+								z.object({
+									origin: z.enum([
+										"email",
+										"saml",
+										"github",
+										"gitlab",
+										"bitbucket",
+										"google",
+										"apple",
+										"webauthn",
+										"otp",
+										"invite",
+										"otp-link",
+										"magic-link",
+									]),
+									username: z.optional(z.string()),
+									teamId: z.optional(z.string()),
+									legacy: z.optional(z.union([z.literal(false), z.literal(true)])),
+									ssoType: z.optional(z.string()),
+								}),
+							)
+							.min(1)
+							.max(1),
+						z
+							.array(
+								z.union([
 									z.object({
-										origin: z.string(),
+										origin: z.enum([
+											"email",
+											"saml",
+											"github",
+											"gitlab",
+											"bitbucket",
+											"google",
+											"apple",
+											"webauthn",
+											"otp",
+											"invite",
+											"otp-link",
+											"magic-link",
+										]),
 										username: z.optional(z.string()),
 										teamId: z.optional(z.string()),
 										legacy: z.optional(z.union([z.literal(false), z.literal(true)])),
+										ssoType: z.optional(z.string()),
 									}),
-								)
-								.min(1)
-								.max(1),
-							z
-								.array(
-									z.union([
-										z.object({
-											origin: z.string(),
-											username: z.optional(z.string()),
-											teamId: z.optional(z.string()),
-										}),
-										z.object({
-											origin: z.string(),
-										}),
-									]),
-								)
-								.min(2)
-								.max(2),
-						]),
-					),
+									z.object({
+										origin: z.enum(["totp", "webauthn", "recovery-code"]),
+									}),
+								]),
+							)
+							.min(2)
+							.max(2),
+					]),
+					viaOTP: z.optional(z.union([z.literal(false), z.literal(true)])),
+					viaGithub: z.optional(z.union([z.literal(false), z.literal(true)])),
+					viaGitlab: z.optional(z.union([z.literal(false), z.literal(true)])),
+					viaBitbucket: z.optional(z.union([z.literal(false), z.literal(true)])),
+					viaGoogle: z.optional(z.union([z.literal(false), z.literal(true)])),
+					viaApple: z.optional(z.union([z.literal(false), z.literal(true)])),
+					viaSamlSso: z.optional(z.union([z.literal(false), z.literal(true)])),
+					viaPasskey: z.optional(z.union([z.literal(false), z.literal(true)])),
+				}),
+				z.object({
+					userAgent: z.optional(z.string()),
+					geolocation: z
+						.object({
+							city: z.optional(
+								z.object({
+									names: z.object({
+										en: z.string(),
+									}),
+								}),
+							),
+							country: z.object({
+								names: z.object({
+									en: z.string(),
+								}),
+							}),
+							mostSpecificSubdivision: z.optional(
+								z.object({
+									names: z.object({
+										en: z.string(),
+									}),
+								}),
+							),
+							regionName: z.optional(z.string()),
+						})
+						.nullish(),
+					env: z.optional(z.string()),
+					os: z.optional(z.string()),
+					username: z.optional(z.string()),
+					ssoType: z.optional(z.string()),
+					factors: z
+						.array(
+							z.object({
+								origin: z.enum([
+									"email",
+									"saml",
+									"github",
+									"gitlab",
+									"bitbucket",
+									"google",
+									"apple",
+									"otp",
+								]),
+								username: z.optional(z.string()),
+								teamId: z.optional(z.string()),
+								legacy: z.optional(z.union([z.literal(false), z.literal(true)])),
+								ssoType: z.optional(z.string()),
+							}),
+						)
+						.min(1)
+						.max(1),
+					viaOTP: z.optional(z.union([z.literal(false), z.literal(true)])),
+					viaGithub: z.optional(z.union([z.literal(false), z.literal(true)])),
+					viaGitlab: z.optional(z.union([z.literal(false), z.literal(true)])),
+					viaBitbucket: z.optional(z.union([z.literal(false), z.literal(true)])),
+					viaGoogle: z.optional(z.union([z.literal(false), z.literal(true)])),
+					viaApple: z.optional(z.union([z.literal(false), z.literal(true)])),
+					viaSamlSso: z.optional(z.union([z.literal(false), z.literal(true)])),
+					viaPasskey: z.optional(z.union([z.literal(false), z.literal(true)])),
+				}),
+				z.object({
+					email: z.string(),
+					bitbucketLogin: z.string(),
+					bitbucketEmail: z.string(),
+					bitbucketName: z.string(),
+					zeitAccount: z.string(),
+					zeitAccountType: z.string(),
+				}),
+				z.object({
+					email: z.string(),
+					githubLogin: z.string(),
+					zeitAccount: z.string(),
+					zeitAccountType: z.string(),
+				}),
+				z.object({
+					email: z.string(),
+					gitlabLogin: z.string(),
+					gitlabEmail: z.string(),
+					gitlabName: z.string(),
+					zeitAccount: z.string(),
+					zeitAccountType: z.string(),
 				}),
 				z.object({
 					drainUrl: z.nullable(z.string()),
@@ -2794,6 +2903,7 @@ export const userEventSchema = z
 											"feedback",
 											"organization-teams",
 											"nsnb-auto-approve",
+											"nsnb-viewer-upgrade",
 										]),
 										commitId: z.optional(z.string()),
 										repoId: z.optional(z.string()),
@@ -5859,6 +5969,7 @@ export const teamSchema = z
 							"link",
 							"mail",
 							"nsnb-auto-approve",
+							"nsnb-viewer-upgrade",
 							"organization-teams",
 							"saml",
 							"teams",
@@ -6045,6 +6156,7 @@ export const teamLimitedSchema = z
 							"link",
 							"mail",
 							"nsnb-auto-approve",
+							"nsnb-viewer-upgrade",
 							"organization-teams",
 							"saml",
 							"teams",
@@ -13976,7 +14088,7 @@ export const createIntegrationStoreDirectMutationResponseSchema = z.lazy(
 );
 
 export const getTeamMembersPathParamsSchema = z.object({
-	teamId: z.string(),
+	teamId: z.string().describe("The Team identifier to perform the request on behalf of."),
 });
 
 export const getTeamMembersQueryParamsSchema = z
@@ -14017,6 +14129,7 @@ export const getTeamMembersQueryParamsSchema = z
 				.string()
 				.describe("Include team members who are eligible to be members of the specified project."),
 		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
 	})
 	.optional();
 
@@ -14042,8 +14155,14 @@ export const getTeamMembers404Schema = z.unknown();
 export const getTeamMembersQueryResponseSchema = z.lazy(() => getTeamMembers200Schema);
 
 export const inviteUserToTeamPathParamsSchema = z.object({
-	teamId: z.string(),
+	teamId: z.string().describe("The Team identifier to perform the request on behalf of."),
 });
+
+export const inviteUserToTeamQueryParamsSchema = z
+	.object({
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
 
 export const inviteUserToTeam200Schema = z.unknown();
 
