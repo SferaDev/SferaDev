@@ -1935,6 +1935,7 @@ export const userEventSchema = z
 														"organization-teams",
 														"nsnb-auto-approve",
 														"nsnb-viewer-upgrade",
+														"nsnb-invite",
 													]),
 													commitId: z.optional(z.string()),
 													repoId: z.optional(z.string()),
@@ -2931,6 +2932,7 @@ export const userEventSchema = z
 											"organization-teams",
 											"nsnb-auto-approve",
 											"nsnb-viewer-upgrade",
+											"nsnb-invite",
 										]),
 										commitId: z.optional(z.string()),
 										repoId: z.optional(z.string()),
@@ -6007,6 +6009,7 @@ export const teamSchema = z
 							"link",
 							"mail",
 							"nsnb-auto-approve",
+							"nsnb-invite",
 							"nsnb-viewer-upgrade",
 							"organization-teams",
 							"saml",
@@ -6194,6 +6197,7 @@ export const teamLimitedSchema = z
 							"link",
 							"mail",
 							"nsnb-auto-approve",
+							"nsnb-invite",
 							"nsnb-viewer-upgrade",
 							"organization-teams",
 							"saml",
@@ -8097,8 +8101,6 @@ export const createNetwork402Schema = z.unknown();
  */
 export const createNetwork403Schema = z.unknown();
 
-export const createNetwork404Schema = z.unknown();
-
 export const createNetwork409Schema = z.unknown();
 
 export const createNetworkMutationResponseSchema = z.lazy(() => createNetwork201Schema);
@@ -8134,8 +8136,6 @@ export const deleteNetwork402Schema = z.unknown();
  * @description You do not have permission to access this resource.
  */
 export const deleteNetwork403Schema = z.unknown();
-
-export const deleteNetwork404Schema = z.unknown();
 
 export const deleteNetwork409Schema = z.unknown();
 
@@ -8327,6 +8327,8 @@ export const getDeployment403Schema = z.unknown();
  */
 export const getDeployment404Schema = z.unknown();
 
+export const getDeployment429Schema = z.unknown();
+
 export const getDeploymentQueryResponseSchema = z.lazy(() => getDeployment200Schema);
 
 export const createDeploymentQueryParamsSchema = z
@@ -8381,6 +8383,8 @@ export const createDeployment404Schema = z.unknown();
  * @description The deployment project is being transferred
  */
 export const createDeployment409Schema = z.unknown();
+
+export const createDeployment429Schema = z.unknown();
 
 export const createDeployment500Schema = z.unknown();
 
@@ -14248,6 +14252,8 @@ export const requestAccessToTeam403Schema = z.unknown();
  * @description The team was not found.
  */
 export const requestAccessToTeam404Schema = z.unknown();
+
+export const requestAccessToTeam429Schema = z.unknown();
 
 export const requestAccessToTeam503Schema = z.unknown();
 

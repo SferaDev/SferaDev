@@ -507,6 +507,7 @@ import type {
 	CreateDeployment403,
 	CreateDeployment404,
 	CreateDeployment409,
+	CreateDeployment429,
 	CreateDeployment500,
 	CreateDeployment503,
 	CreateDeploymentMutationResponse,
@@ -562,7 +563,6 @@ import type {
 	CreateNetwork401,
 	CreateNetwork402,
 	CreateNetwork403,
-	CreateNetwork404,
 	CreateNetwork409,
 	CreateNetworkMutationResponse,
 	CreateNetworkQueryParams,
@@ -749,7 +749,6 @@ import type {
 	DeleteNetwork401,
 	DeleteNetwork402,
 	DeleteNetwork403,
-	DeleteNetwork404,
 	DeleteNetwork409,
 	DeleteNetworkMutationResponse,
 	DeleteNetworkPathParams,
@@ -973,6 +972,7 @@ import type {
 	GetDeployment400,
 	GetDeployment403,
 	GetDeployment404,
+	GetDeployment429,
 	GetDeploymentEvents400,
 	GetDeploymentEvents401,
 	GetDeploymentEvents403,
@@ -1622,6 +1622,7 @@ import type {
 	RequestAccessToTeam401,
 	RequestAccessToTeam403,
 	RequestAccessToTeam404,
+	RequestAccessToTeam429,
 	RequestAccessToTeam503,
 	RequestAccessToTeamMutationResponse,
 	RequestAccessToTeamPathParams,
@@ -3127,12 +3128,7 @@ export async function createNetwork({
 	const data = await request<
 		CreateNetworkMutationResponse,
 		ErrorWrapper<
-			| CreateNetwork400
-			| CreateNetwork401
-			| CreateNetwork402
-			| CreateNetwork403
-			| CreateNetwork404
-			| CreateNetwork409
+			CreateNetwork400 | CreateNetwork401 | CreateNetwork402 | CreateNetwork403 | CreateNetwork409
 		>,
 		null,
 		Record<string, string>,
@@ -3172,12 +3168,7 @@ export async function deleteNetwork({
 	const data = await request<
 		DeleteNetworkMutationResponse,
 		ErrorWrapper<
-			| DeleteNetwork400
-			| DeleteNetwork401
-			| DeleteNetwork402
-			| DeleteNetwork403
-			| DeleteNetwork404
-			| DeleteNetwork409
+			DeleteNetwork400 | DeleteNetwork401 | DeleteNetwork402 | DeleteNetwork403 | DeleteNetwork409
 		>,
 		null,
 		Record<string, string>,
@@ -3383,7 +3374,7 @@ export async function getDeployment({
 
 	const data = await request<
 		GetDeploymentQueryResponse,
-		ErrorWrapper<GetDeployment400 | GetDeployment403 | GetDeployment404>,
+		ErrorWrapper<GetDeployment400 | GetDeployment403 | GetDeployment404 | GetDeployment429>,
 		null,
 		Record<string, string>,
 		GetDeploymentQueryParams,
@@ -3421,6 +3412,7 @@ export async function createDeployment({
 			| CreateDeployment403
 			| CreateDeployment404
 			| CreateDeployment409
+			| CreateDeployment429
 			| CreateDeployment500
 			| CreateDeployment503
 		>,
@@ -9632,6 +9624,7 @@ export async function requestAccessToTeam({
 			| RequestAccessToTeam401
 			| RequestAccessToTeam403
 			| RequestAccessToTeam404
+			| RequestAccessToTeam429
 			| RequestAccessToTeam503
 		>,
 		null,
