@@ -1993,6 +1993,7 @@ export const joinedFromOriginEnum = {
 	"organization-teams": "organization-teams",
 	"nsnb-auto-approve": "nsnb-auto-approve",
 	"nsnb-viewer-upgrade": "nsnb-viewer-upgrade",
+	"nsnb-invite": "nsnb-invite",
 } as const;
 
 export type JoinedFromOriginEnumKey =
@@ -14210,6 +14211,7 @@ export const joinedFromOriginEnum2 = {
 	link: "link",
 	mail: "mail",
 	"nsnb-auto-approve": "nsnb-auto-approve",
+	"nsnb-invite": "nsnb-invite",
 	"nsnb-viewer-upgrade": "nsnb-viewer-upgrade",
 	"organization-teams": "organization-teams",
 	saml: "saml",
@@ -14843,6 +14845,7 @@ export const joinedFromOriginEnum3 = {
 	link: "link",
 	mail: "mail",
 	"nsnb-auto-approve": "nsnb-auto-approve",
+	"nsnb-invite": "nsnb-invite",
 	"nsnb-viewer-upgrade": "nsnb-viewer-upgrade",
 	"organization-teams": "organization-teams",
 	saml: "saml",
@@ -17771,8 +17774,6 @@ export type CreateNetwork402 = unknown;
  */
 export type CreateNetwork403 = unknown;
 
-export type CreateNetwork404 = unknown;
-
 export type CreateNetwork409 = unknown;
 
 export type CreateNetworkMutationResponse = CreateNetwork201;
@@ -17785,7 +17786,6 @@ export type CreateNetworkMutation = {
 		| CreateNetwork401
 		| CreateNetwork402
 		| CreateNetwork403
-		| CreateNetwork404
 		| CreateNetwork409;
 };
 
@@ -17829,8 +17829,6 @@ export type DeleteNetwork402 = unknown;
  */
 export type DeleteNetwork403 = unknown;
 
-export type DeleteNetwork404 = unknown;
-
 export type DeleteNetwork409 = unknown;
 
 export type DeleteNetworkMutationResponse = DeleteNetwork204;
@@ -17844,7 +17842,6 @@ export type DeleteNetworkMutation = {
 		| DeleteNetwork401
 		| DeleteNetwork402
 		| DeleteNetwork403
-		| DeleteNetwork404
 		| DeleteNetwork409;
 };
 
@@ -18164,13 +18161,15 @@ export type GetDeployment403 = unknown;
  */
 export type GetDeployment404 = unknown;
 
+export type GetDeployment429 = unknown;
+
 export type GetDeploymentQueryResponse = GetDeployment200;
 
 export type GetDeploymentQuery = {
 	Response: GetDeployment200;
 	PathParams: GetDeploymentPathParams;
 	QueryParams: GetDeploymentQueryParams;
-	Errors: GetDeployment400 | GetDeployment403 | GetDeployment404;
+	Errors: GetDeployment400 | GetDeployment403 | GetDeployment404 | GetDeployment429;
 };
 
 export type CreateDeploymentQueryParams = {
@@ -18226,6 +18225,8 @@ export type CreateDeployment404 = unknown;
  */
 export type CreateDeployment409 = unknown;
 
+export type CreateDeployment429 = unknown;
+
 export type CreateDeployment500 = unknown;
 
 export type CreateDeployment503 = unknown;
@@ -18242,6 +18243,7 @@ export type CreateDeploymentMutation = {
 		| CreateDeployment403
 		| CreateDeployment404
 		| CreateDeployment409
+		| CreateDeployment429
 		| CreateDeployment500
 		| CreateDeployment503;
 };
@@ -26805,6 +26807,8 @@ export type RequestAccessToTeam403 = unknown;
  */
 export type RequestAccessToTeam404 = unknown;
 
+export type RequestAccessToTeam429 = unknown;
+
 export type RequestAccessToTeam503 = unknown;
 
 export type RequestAccessToTeamMutationResponse = RequestAccessToTeam200;
@@ -26817,6 +26821,7 @@ export type RequestAccessToTeamMutation = {
 		| RequestAccessToTeam401
 		| RequestAccessToTeam403
 		| RequestAccessToTeam404
+		| RequestAccessToTeam429
 		| RequestAccessToTeam503;
 };
 
