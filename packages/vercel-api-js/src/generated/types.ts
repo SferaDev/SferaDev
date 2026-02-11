@@ -9111,9 +9111,9 @@ export type UserEvent = {
 													 */
 													subnetIds: string[];
 													/**
-													 * @type string
+													 * @type string | undefined
 													 */
-													securityGroupId: string;
+													securityGroupId?: string | undefined;
 											  }
 											| undefined;
 										/**
@@ -9158,9 +9158,9 @@ export type UserEvent = {
 													 */
 													subnetIds: string[];
 													/**
-													 * @type string
+													 * @type string | undefined
 													 */
-													securityGroupId: string;
+													securityGroupId?: string | undefined;
 											  }
 											| undefined;
 										/**
