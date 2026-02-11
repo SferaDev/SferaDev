@@ -3246,7 +3246,7 @@ export const userEventSchema = z
 									aws: z.optional(
 										z.object({
 											subnetIds: z.array(z.string()),
-											securityGroupId: z.string(),
+											securityGroupId: z.optional(z.string()),
 										}),
 									),
 									createdAt: z.number(),
@@ -3265,7 +3265,7 @@ export const userEventSchema = z
 									aws: z.optional(
 										z.object({
 											subnetIds: z.array(z.string()),
-											securityGroupId: z.string(),
+											securityGroupId: z.optional(z.string()),
 										}),
 									),
 									createdAt: z.number(),
