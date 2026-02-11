@@ -847,6 +847,11 @@ export const userEventSchema = z
 				}),
 				z.object({
 					id: z.string(),
+					cns: z.array(z.string()),
+					custom: z.union([z.literal(false), z.literal(true)]),
+				}),
+				z.object({
+					id: z.string(),
 					oldTeam: z.optional(
 						z.object({
 							name: z.string(),
@@ -893,6 +898,10 @@ export const userEventSchema = z
 				}),
 				z.object({
 					suffix: z.string(),
+				}),
+				z.object({
+					previousConcurrentBuilds: z.number(),
+					nextConcurrentBuilds: z.number(),
 				}),
 				z.object({
 					configuration: z.object({
@@ -960,14 +969,28 @@ export const userEventSchema = z
 					githubLogin: z.string(),
 				}),
 				z.object({
+					githubLogin: z.string(),
+					host: z.string(),
+				}),
+				z.object({
 					gitlabLogin: z.string(),
 					gitlabEmail: z.string(),
 					gitlabName: z.optional(z.string()),
+					zeitAccount: z.optional(z.string()),
+					zeitAccountType: z.optional(z.string()),
+				}),
+				z.object({
+					gitlabLogin: z.string(),
+					gitlabUserId: z.number(),
 				}),
 				z.object({
 					bitbucketEmail: z.string(),
 					bitbucketLogin: z.string(),
 					bitbucketName: z.optional(z.string()),
+				}),
+				z.object({
+					bitbucketLogin: z.string(),
+					bitbucketAccountId: z.string(),
 				}),
 				z.object({
 					provider: z.enum([
@@ -2711,35 +2734,10 @@ export const userEventSchema = z
 					os: z.optional(z.string()),
 					username: z.optional(z.string()),
 					ssoType: z.optional(z.string()),
-					factors: z.union([
-						z
-							.array(
-								z.object({
-									origin: z.enum([
-										"email",
-										"saml",
-										"github",
-										"gitlab",
-										"bitbucket",
-										"google",
-										"apple",
-										"webauthn",
-										"otp",
-										"invite",
-										"otp-link",
-										"magic-link",
-									]),
-									username: z.optional(z.string()),
-									teamId: z.optional(z.string()),
-									legacy: z.optional(z.union([z.literal(false), z.literal(true)])),
-									ssoType: z.optional(z.string()),
-								}),
-							)
-							.min(1)
-							.max(1),
-						z
-							.array(
-								z.union([
+					factors: z.optional(
+						z.union([
+							z
+								.array(
 									z.object({
 										origin: z.enum([
 											"email",
@@ -2760,14 +2758,41 @@ export const userEventSchema = z
 										legacy: z.optional(z.union([z.literal(false), z.literal(true)])),
 										ssoType: z.optional(z.string()),
 									}),
-									z.object({
-										origin: z.enum(["totp", "webauthn", "recovery-code"]),
-									}),
-								]),
-							)
-							.min(2)
-							.max(2),
-					]),
+								)
+								.min(1)
+								.max(1),
+							z
+								.array(
+									z.union([
+										z.object({
+											origin: z.enum([
+												"email",
+												"saml",
+												"github",
+												"gitlab",
+												"bitbucket",
+												"google",
+												"apple",
+												"webauthn",
+												"otp",
+												"invite",
+												"otp-link",
+												"magic-link",
+											]),
+											username: z.optional(z.string()),
+											teamId: z.optional(z.string()),
+											legacy: z.optional(z.union([z.literal(false), z.literal(true)])),
+											ssoType: z.optional(z.string()),
+										}),
+										z.object({
+											origin: z.enum(["totp", "webauthn", "recovery-code"]),
+										}),
+									]),
+								)
+								.min(2)
+								.max(2),
+						]),
+					),
 					viaOTP: z.optional(z.union([z.literal(false), z.literal(true)])),
 					viaGithub: z.optional(z.union([z.literal(false), z.literal(true)])),
 					viaGitlab: z.optional(z.union([z.literal(false), z.literal(true)])),
@@ -2807,27 +2832,29 @@ export const userEventSchema = z
 					os: z.optional(z.string()),
 					username: z.optional(z.string()),
 					ssoType: z.optional(z.string()),
-					factors: z
-						.array(
-							z.object({
-								origin: z.enum([
-									"email",
-									"saml",
-									"github",
-									"gitlab",
-									"bitbucket",
-									"google",
-									"apple",
-									"otp",
-								]),
-								username: z.optional(z.string()),
-								teamId: z.optional(z.string()),
-								legacy: z.optional(z.union([z.literal(false), z.literal(true)])),
-								ssoType: z.optional(z.string()),
-							}),
-						)
-						.min(1)
-						.max(1),
+					factors: z.optional(
+						z
+							.array(
+								z.object({
+									origin: z.enum([
+										"email",
+										"saml",
+										"github",
+										"gitlab",
+										"bitbucket",
+										"google",
+										"apple",
+										"otp",
+									]),
+									username: z.optional(z.string()),
+									teamId: z.optional(z.string()),
+									legacy: z.optional(z.union([z.literal(false), z.literal(true)])),
+									ssoType: z.optional(z.string()),
+								}),
+							)
+							.min(1)
+							.max(1),
+					),
 					viaOTP: z.optional(z.union([z.literal(false), z.literal(true)])),
 					viaGithub: z.optional(z.union([z.literal(false), z.literal(true)])),
 					viaGitlab: z.optional(z.union([z.literal(false), z.literal(true)])),
@@ -3906,8 +3933,19 @@ export const userEventSchema = z
 					mfaEnabled: z.union([z.literal(false), z.literal(true)]),
 				}),
 				z.object({
+					totp: z.union([z.literal(false), z.literal(true)]),
+					recoveryCodes: z.number(),
+					actorId: z.optional(z.string()),
+					actorType: z.optional(z.enum(["user", "admin"])),
+					reason: z.optional(z.string()),
+				}),
+				z.object({
 					email: z.string(),
 					prevEmail: z.string(),
+				}),
+				z.object({
+					deletedAt: z.number().nullish(),
+					username: z.string(),
 				}),
 				z.object({
 					username: z.string(),

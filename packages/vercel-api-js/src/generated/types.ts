@@ -3149,6 +3149,21 @@ export const payloadMfaEnabledEnum = {
 export type PayloadMfaEnabledEnumKey =
 	(typeof payloadMfaEnabledEnum)[keyof typeof payloadMfaEnabledEnum];
 
+export const payloadTotpEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadTotpEnumKey = (typeof payloadTotpEnum)[keyof typeof payloadTotpEnum];
+
+export const payloadActorTypeEnum = {
+	user: "user",
+	admin: "admin",
+} as const;
+
+export type PayloadActorTypeEnumKey =
+	(typeof payloadActorTypeEnum)[keyof typeof payloadActorTypeEnum];
+
 export const projectMembershipRoleEnum = {
 	ADMIN: "ADMIN",
 	PROJECT_DEVELOPER: "PROJECT_DEVELOPER",
@@ -4384,6 +4399,20 @@ export type UserEvent = {
 						 */
 						id: string;
 						/**
+						 * @type array
+						 */
+						cns: string[];
+						/**
+						 * @type boolean
+						 */
+						custom: PayloadCustomEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						id: string;
+						/**
 						 * @type object | undefined
 						 */
 						oldTeam?:
@@ -4501,6 +4530,16 @@ export type UserEvent = {
 						 * @type string
 						 */
 						suffix: string;
+				  }
+				| {
+						/**
+						 * @type number
+						 */
+						previousConcurrentBuilds: number;
+						/**
+						 * @type number
+						 */
+						nextConcurrentBuilds: number;
 				  }
 				| {
 						/**
@@ -4694,6 +4733,16 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
+						githubLogin: string;
+						/**
+						 * @type string
+						 */
+						host: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
 						gitlabLogin: string;
 						/**
 						 * @type string
@@ -4703,6 +4752,24 @@ export type UserEvent = {
 						 * @type string | undefined
 						 */
 						gitlabName?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						zeitAccount?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						zeitAccountType?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						gitlabLogin: string;
+						/**
+						 * @type number
+						 */
+						gitlabUserId: number;
 				  }
 				| {
 						/**
@@ -4717,6 +4784,16 @@ export type UserEvent = {
 						 * @type string | undefined
 						 */
 						bitbucketName?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						bitbucketLogin: string;
+						/**
+						 * @type string
+						 */
+						bitbucketAccountId: string;
 				  }
 				| {
 						/**
@@ -8070,29 +8147,7 @@ export type UserEvent = {
 						 * @type string | undefined
 						 */
 						ssoType?: string | undefined;
-						factors:
-							| {
-									/**
-									 * @type string
-									 */
-									origin: FactorsOriginEnumKey;
-									/**
-									 * @type string | undefined
-									 */
-									username?: string | undefined;
-									/**
-									 * @type string | undefined
-									 */
-									teamId?: string | undefined;
-									/**
-									 * @type boolean | undefined
-									 */
-									legacy?: FactorsLegacyEnumKey | undefined;
-									/**
-									 * @type string | undefined
-									 */
-									ssoType?: string | undefined;
-							  }[]
+						factors?:
 							| (
 									| {
 											/**
@@ -8115,14 +8170,39 @@ export type UserEvent = {
 											 * @type string | undefined
 											 */
 											ssoType?: string | undefined;
-									  }
-									| {
-											/**
-											 * @type string
-											 */
-											origin: FactorsOriginEnum2Key;
-									  }
-							  )[];
+									  }[]
+									| (
+											| {
+													/**
+													 * @type string
+													 */
+													origin: FactorsOriginEnumKey;
+													/**
+													 * @type string | undefined
+													 */
+													username?: string | undefined;
+													/**
+													 * @type string | undefined
+													 */
+													teamId?: string | undefined;
+													/**
+													 * @type boolean | undefined
+													 */
+													legacy?: FactorsLegacyEnumKey | undefined;
+													/**
+													 * @type string | undefined
+													 */
+													ssoType?: string | undefined;
+											  }
+											| {
+													/**
+													 * @type string
+													 */
+													origin: FactorsOriginEnum2Key;
+											  }
+									  )[]
+							  )
+							| undefined;
 						/**
 						 * @type boolean | undefined
 						 */
@@ -8235,30 +8315,32 @@ export type UserEvent = {
 						 */
 						ssoType?: string | undefined;
 						/**
-						 * @type array
+						 * @type array | undefined
 						 */
-						factors: {
-							/**
-							 * @type string
-							 */
-							origin: FactorsOriginEnum3Key;
-							/**
-							 * @type string | undefined
-							 */
-							username?: string | undefined;
-							/**
-							 * @type string | undefined
-							 */
-							teamId?: string | undefined;
-							/**
-							 * @type boolean | undefined
-							 */
-							legacy?: FactorsLegacyEnumKey | undefined;
-							/**
-							 * @type string | undefined
-							 */
-							ssoType?: string | undefined;
-						}[];
+						factors?:
+							| {
+									/**
+									 * @type string
+									 */
+									origin: FactorsOriginEnum3Key;
+									/**
+									 * @type string | undefined
+									 */
+									username?: string | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									teamId?: string | undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									legacy?: FactorsLegacyEnumKey | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									ssoType?: string | undefined;
+							  }[]
+							| undefined;
 						/**
 						 * @type boolean | undefined
 						 */
@@ -10681,6 +10763,28 @@ export type UserEvent = {
 				  }
 				| {
 						/**
+						 * @type boolean
+						 */
+						totp: PayloadTotpEnumKey;
+						/**
+						 * @type number
+						 */
+						recoveryCodes: number;
+						/**
+						 * @type string | undefined
+						 */
+						actorId?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						actorType?: PayloadActorTypeEnumKey | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						reason?: string | undefined;
+				  }
+				| {
+						/**
 						 * @type string
 						 */
 						email: string;
@@ -10688,6 +10792,16 @@ export type UserEvent = {
 						 * @type string
 						 */
 						prevEmail: string;
+				  }
+				| {
+						/**
+						 * @type number
+						 */
+						deletedAt?: (number | null) | undefined;
+						/**
+						 * @type string
+						 */
+						username: string;
 				  }
 				| {
 						/**
