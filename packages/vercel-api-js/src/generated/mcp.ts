@@ -218,8 +218,10 @@ import {
 	getTeamPathParamsSchema,
 	getTeamQueryParamsSchema,
 	getTeamsQueryParamsSchema,
+	getTldPathParamsSchema,
 	getTldPricePathParamsSchema,
 	getTldPriceQueryParamsSchema,
+	getTldQueryParamsSchema,
 	getVersionsQueryParamsSchema,
 	getWebhookPathParamsSchema,
 	getWebhookQueryParamsSchema,
@@ -1285,6 +1287,12 @@ import type {
 	GetTeams403,
 	GetTeamsQueryParams,
 	GetTeamsQueryResponse,
+	GetTld400,
+	GetTld401,
+	GetTld403,
+	GetTld429,
+	GetTld500,
+	GetTldPathParams,
 	GetTldPrice400,
 	GetTldPrice401,
 	GetTldPrice403,
@@ -1293,6 +1301,8 @@ import type {
 	GetTldPricePathParams,
 	GetTldPriceQueryParams,
 	GetTldPriceQueryResponse,
+	GetTldQueryParams,
+	GetTldQueryResponse,
 	GetVersions400,
 	GetVersions401,
 	GetVersions403,
@@ -3668,6 +3678,43 @@ export async function getSupportedTlds({
 	>({
 		method: "GET",
 		url: `/v1/registrar/tlds/supported`,
+		baseUrl: "https://api.vercel.com",
+		queryParams,
+		...requestConfig,
+	});
+	return { content: [{ type: "text", text: JSON.stringify(data) }] };
+}
+
+/**
+ * @description Get the metadata for a specific TLD.
+ * @summary Get TLD
+ * {@link /v1/registrar/tlds/:tld}
+ */
+export async function getTld({
+	pathParams: { tld },
+	queryParams,
+	config = {},
+}: {
+	pathParams: GetTldPathParams;
+	queryParams?: GetTldQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof client };
+}): Promise<Promise<CallToolResult>> {
+	const { client: request = client, ...requestConfig } = config;
+
+	if (!tld) {
+		throw new Error(`Missing required path parameter: tld`);
+	}
+
+	const data = await request<
+		GetTldQueryResponse,
+		ErrorWrapper<GetTld400 | GetTld401 | GetTld403 | GetTld429 | GetTld500>,
+		null,
+		Record<string, string>,
+		GetTldQueryParams,
+		GetTldPathParams
+	>({
+		method: "GET",
+		url: `/v1/registrar/tlds/${tld}`,
 		baseUrl: "https://api.vercel.com",
 		queryParams,
 		...requestConfig,
@@ -11657,6 +11704,19 @@ export function initMcpTools<Server>(serverLike: Server, config: FetcherConfig) 
 		async ({ queryParams }) => {
 			try {
 				return await getSupportedTlds({ queryParams, config });
+			} catch (error) {
+				return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
+			}
+		},
+	);
+
+	server.tool(
+		"getTld",
+		"Get the metadata for a specific TLD.",
+		{ tld: getTldPathParamsSchema.shape["tld"], queryParams: getTldQueryParamsSchema },
+		async ({ tld, queryParams }) => {
+			try {
+				return await getTld({ pathParams: { tld }, queryParams, config });
 			} catch (error) {
 				return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
 			}

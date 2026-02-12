@@ -923,6 +923,12 @@ import type {
 	GetTeams403,
 	GetTeamsQueryParams,
 	GetTeamsQueryResponse,
+	GetTld400,
+	GetTld401,
+	GetTld403,
+	GetTld429,
+	GetTld500,
+	GetTldPathParams,
 	GetTldPrice400,
 	GetTldPrice401,
 	GetTldPrice403,
@@ -931,6 +937,8 @@ import type {
 	GetTldPricePathParams,
 	GetTldPriceQueryParams,
 	GetTldPriceQueryResponse,
+	GetTldQueryParams,
+	GetTldQueryResponse,
 	GetVersions400,
 	GetVersions401,
 	GetVersions403,
@@ -3180,6 +3188,37 @@ export async function getSupportedTlds({
 		GetSupportedTldsQueryParams,
 		Record<string, string>
 	>({ method: "GET", url: `/v1/registrar/tlds/supported`, queryParams, ...requestConfig });
+	return data;
+}
+
+/**
+ * @description Get the metadata for a specific TLD.
+ * @summary Get TLD
+ * {@link /v1/registrar/tlds/:tld}
+ */
+export async function getTld({
+	pathParams: { tld },
+	queryParams,
+	config = {},
+}: {
+	pathParams: GetTldPathParams;
+	queryParams?: GetTldQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof client };
+}) {
+	const { client: request = client, ...requestConfig } = config;
+
+	if (!tld) {
+		throw new Error(`Missing required path parameter: tld`);
+	}
+
+	const data = await request<
+		GetTldQueryResponse,
+		ErrorWrapper<GetTld400 | GetTld401 | GetTld403 | GetTld429 | GetTld500>,
+		null,
+		Record<string, string>,
+		GetTldQueryParams,
+		GetTldPathParams
+	>({ method: "GET", url: `/v1/registrar/tlds/${tld}`, queryParams, ...requestConfig });
 	return data;
 }
 
@@ -10033,6 +10072,7 @@ export const operationsByPath = {
 	"PATCH /v1/domains/records/{recordId}": updateRecord,
 	"DELETE /v2/domains/{domain}/records/{recordId}": removeRecord,
 	"GET /v1/registrar/tlds/supported": getSupportedTlds,
+	"GET /v1/registrar/tlds/{tld}": getTld,
 	"GET /v1/registrar/tlds/{tld}/price": getTldPrice,
 	"GET /v1/registrar/domains/{domain}/availability": getDomainAvailability,
 	"GET /v1/registrar/domains/{domain}/price": getDomainPrice,
@@ -10315,6 +10355,7 @@ export const operationsByTag = {
 	},
 	domainsRegistrar: {
 		getSupportedTlds,
+		getTld,
 		getTldPrice,
 		getDomainAvailability,
 		getDomainPrice,
@@ -10600,6 +10641,7 @@ export const tagDictionary = {
 	domainsRegistrar: {
 		GET: [
 			"getSupportedTlds",
+			"getTld",
 			"getTldPrice",
 			"getDomainAvailability",
 			"getDomainPrice",

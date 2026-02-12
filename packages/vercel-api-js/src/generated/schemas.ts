@@ -257,6 +257,17 @@ export const countryCodeSchema = z.string().describe("A valid ISO 3166-1 alpha-2
 export const orderIdSchema = z.string().describe("A valid order ID");
 
 /**
+ * @description A language code is required for punycode domains.
+ */
+export const languageCodeRequiredSchema = z
+	.object({
+		status: z.literal(400),
+		code: z.enum(["language_code_required"]),
+		message: z.string(),
+	})
+	.describe("A language code is required for punycode domains.");
+
+/**
  * @description The domain is not available.
  */
 export const domainNotAvailableSchema = z
@@ -1934,6 +1945,7 @@ export const userEventSchema = z
 														"feedback",
 														"organization-teams",
 														"nsnb-auto-approve",
+														"nsnb-request-access",
 														"nsnb-viewer-upgrade",
 														"nsnb-invite",
 													]),
@@ -2931,6 +2943,7 @@ export const userEventSchema = z
 											"feedback",
 											"organization-teams",
 											"nsnb-auto-approve",
+											"nsnb-request-access",
 											"nsnb-viewer-upgrade",
 											"nsnb-invite",
 										]),
@@ -6010,6 +6023,7 @@ export const teamSchema = z
 							"mail",
 							"nsnb-auto-approve",
 							"nsnb-invite",
+							"nsnb-request-access",
 							"nsnb-viewer-upgrade",
 							"organization-teams",
 							"saml",
@@ -6198,6 +6212,7 @@ export const teamLimitedSchema = z
 							"mail",
 							"nsnb-auto-approve",
 							"nsnb-invite",
+							"nsnb-request-access",
 							"nsnb-viewer-upgrade",
 							"organization-teams",
 							"saml",
@@ -8626,6 +8641,48 @@ export const getSupportedTlds429Schema = z.unknown();
 export const getSupportedTlds500Schema = z.unknown();
 
 export const getSupportedTldsQueryResponseSchema = z.lazy(() => getSupportedTlds200Schema);
+
+export const getTldPathParamsSchema = z.object({
+	tld: z.string(),
+});
+
+export const getTldQueryParamsSchema = z
+	.object({
+		teamId: z.optional(z.string()),
+	})
+	.optional();
+
+/**
+ * @description Success
+ */
+export const getTld200Schema = z.unknown();
+
+/**
+ * @description There was something wrong with the request
+ */
+export const getTld400Schema = z.unknown();
+
+/**
+ * @description Unauthorized
+ */
+export const getTld401Schema = z.unknown();
+
+/**
+ * @description NotAuthorizedForScope
+ */
+export const getTld403Schema = z.unknown();
+
+/**
+ * @description TooManyRequests
+ */
+export const getTld429Schema = z.unknown();
+
+/**
+ * @description InternalServerError
+ */
+export const getTld500Schema = z.unknown();
+
+export const getTldQueryResponseSchema = z.lazy(() => getTld200Schema);
 
 export const getTldPricePathParamsSchema = z.object({
 	tld: z.string(),

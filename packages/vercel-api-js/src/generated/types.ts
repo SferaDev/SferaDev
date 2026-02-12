@@ -629,6 +629,38 @@ export type CountryCode = string;
  */
 export type OrderId = string;
 
+export const languageCodeRequiredStatusEnum = {
+	"400": 400,
+} as const;
+
+export type LanguageCodeRequiredStatusEnumKey =
+	(typeof languageCodeRequiredStatusEnum)[keyof typeof languageCodeRequiredStatusEnum];
+
+export const languageCodeRequiredCodeEnum = {
+	language_code_required: "language_code_required",
+} as const;
+
+export type LanguageCodeRequiredCodeEnumKey =
+	(typeof languageCodeRequiredCodeEnum)[keyof typeof languageCodeRequiredCodeEnum];
+
+/**
+ * @description A language code is required for punycode domains.
+ */
+export type LanguageCodeRequired = {
+	/**
+	 * @type number
+	 */
+	status: LanguageCodeRequiredStatusEnumKey;
+	/**
+	 * @type string
+	 */
+	code: LanguageCodeRequiredCodeEnumKey;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
 export const domainNotAvailableStatusEnum = {
 	"400": 400,
 } as const;
@@ -1992,6 +2024,7 @@ export const joinedFromOriginEnum = {
 	feedback: "feedback",
 	"organization-teams": "organization-teams",
 	"nsnb-auto-approve": "nsnb-auto-approve",
+	"nsnb-request-access": "nsnb-request-access",
 	"nsnb-viewer-upgrade": "nsnb-viewer-upgrade",
 	"nsnb-invite": "nsnb-invite",
 } as const;
@@ -14212,6 +14245,7 @@ export const joinedFromOriginEnum2 = {
 	mail: "mail",
 	"nsnb-auto-approve": "nsnb-auto-approve",
 	"nsnb-invite": "nsnb-invite",
+	"nsnb-request-access": "nsnb-request-access",
 	"nsnb-viewer-upgrade": "nsnb-viewer-upgrade",
 	"organization-teams": "organization-teams",
 	saml: "saml",
@@ -14846,6 +14880,7 @@ export const joinedFromOriginEnum3 = {
 	mail: "mail",
 	"nsnb-auto-approve": "nsnb-auto-approve",
 	"nsnb-invite": "nsnb-invite",
+	"nsnb-request-access": "nsnb-request-access",
 	"nsnb-viewer-upgrade": "nsnb-viewer-upgrade",
 	"organization-teams": "organization-teams",
 	saml: "saml",
@@ -18593,6 +18628,59 @@ export type GetSupportedTldsQuery = {
 		| GetSupportedTlds403
 		| GetSupportedTlds429
 		| GetSupportedTlds500;
+};
+
+export type GetTldPathParams = {
+	/**
+	 * @type string
+	 */
+	tld: string;
+};
+
+export type GetTldQueryParams = {
+	/**
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+};
+
+/**
+ * @description Success
+ */
+export type GetTld200 = unknown;
+
+/**
+ * @description There was something wrong with the request
+ */
+export type GetTld400 = unknown;
+
+/**
+ * @description Unauthorized
+ */
+export type GetTld401 = unknown;
+
+/**
+ * @description NotAuthorizedForScope
+ */
+export type GetTld403 = unknown;
+
+/**
+ * @description TooManyRequests
+ */
+export type GetTld429 = unknown;
+
+/**
+ * @description InternalServerError
+ */
+export type GetTld500 = unknown;
+
+export type GetTldQueryResponse = GetTld200;
+
+export type GetTldQuery = {
+	Response: GetTld200;
+	PathParams: GetTldPathParams;
+	QueryParams: GetTldQueryParams;
+	Errors: GetTld400 | GetTld401 | GetTld403 | GetTld429 | GetTld500;
 };
 
 export type GetTldPricePathParams = {
