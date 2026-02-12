@@ -21857,6 +21857,41 @@ export type ListUserEventsQuery = {
 	Errors: ListUserEvents400 | ListUserEvents401 | ListUserEvents403;
 };
 
+export type ListEventTypesQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type ListEventTypes200 = unknown;
+
+export type ListEventTypes400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type ListEventTypes401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type ListEventTypes403 = unknown;
+
+export type ListEventTypesQueryResponse = ListEventTypes200;
+
+export type ListEventTypesQuery = {
+	Response: ListEventTypes200;
+	QueryParams: ListEventTypesQueryParams;
+	Errors: ListEventTypes400 | ListEventTypes401 | ListEventTypes403;
+};
+
 export const gitNamespacesQueryParamsProviderEnum = {
 	github: "github",
 	"github-limited": "github-limited",

@@ -1071,6 +1071,11 @@ import type {
 	ListDeploymentFilesPathParams,
 	ListDeploymentFilesQueryParams,
 	ListDeploymentFilesQueryResponse,
+	ListEventTypes400,
+	ListEventTypes401,
+	ListEventTypes403,
+	ListEventTypesQueryParams,
+	ListEventTypesQueryResponse,
 	ListNetworks400,
 	ListNetworks401,
 	ListNetworks403,
@@ -5346,6 +5351,31 @@ export async function listUserEvents({
 		ListUserEventsQueryParams,
 		Record<string, string>
 	>({ method: "GET", url: `/v3/events`, queryParams, ...requestConfig });
+	return data;
+}
+
+/**
+ * @description Returns the list of user-facing event types with descriptions.
+ * @summary List Event Types
+ * {@link /events/types}
+ */
+export async function listEventTypes({
+	queryParams,
+	config = {},
+}: {
+	queryParams?: ListEventTypesQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof client };
+}) {
+	const { client: request = client, ...requestConfig } = config;
+
+	const data = await request<
+		ListEventTypesQueryResponse,
+		ErrorWrapper<ListEventTypes400 | ListEventTypes401 | ListEventTypes403>,
+		null,
+		Record<string, string>,
+		ListEventTypesQueryParams,
+		Record<string, string>
+	>({ method: "GET", url: `/events/types`, queryParams, ...requestConfig });
 	return data;
 }
 
@@ -10132,6 +10162,7 @@ export const operationsByPath = {
 	"GET /v1/env/{id}": getSharedEnvVar,
 	"PATCH /v1/env/{id}/unlink/{projectId}": unlinkSharedEnvVariable,
 	"GET /v3/events": listUserEvents,
+	"GET /events/types": listEventTypes,
 	"GET /v1/integrations/git-namespaces": gitNamespaces,
 	"GET /v1/integrations/search-repo": searchRepo,
 	"GET /v1/integrations/integration/{integrationIdOrSlug}/products/{productIdOrSlug}/plans":
@@ -10437,6 +10468,7 @@ export const operationsByTag = {
 	},
 	user: {
 		listUserEvents,
+		listEventTypes,
 		getAuthUser,
 		requestDelete,
 	},
@@ -10714,7 +10746,7 @@ export const tagDictionary = {
 		DELETE: ["deleteSharedEnvVariable", "removeCustomEnvironment"],
 	},
 	user: {
-		GET: ["listUserEvents", "getAuthUser"],
+		GET: ["listUserEvents", "listEventTypes", "getAuthUser"],
 		DELETE: ["requestDelete"],
 	},
 	marketplace: {

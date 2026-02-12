@@ -248,6 +248,7 @@ import {
 	listDeploymentAliasesQueryParamsSchema,
 	listDeploymentFilesPathParamsSchema,
 	listDeploymentFilesQueryParamsSchema,
+	listEventTypesQueryParamsSchema,
 	listNetworksQueryParamsSchema,
 	listPromoteAliasesPathParamsSchema,
 	listPromoteAliasesQueryParamsSchema,
@@ -1435,6 +1436,11 @@ import type {
 	ListDeploymentFilesPathParams,
 	ListDeploymentFilesQueryParams,
 	ListDeploymentFilesQueryResponse,
+	ListEventTypes400,
+	ListEventTypes401,
+	ListEventTypes403,
+	ListEventTypesQueryParams,
+	ListEventTypesQueryResponse,
 	ListNetworks400,
 	ListNetworks401,
 	ListNetworks403,
@@ -6005,6 +6011,37 @@ export async function listUserEvents({
 	>({
 		method: "GET",
 		url: `/v3/events`,
+		baseUrl: "https://api.vercel.com",
+		queryParams,
+		...requestConfig,
+	});
+	return { content: [{ type: "text", text: JSON.stringify(data) }] };
+}
+
+/**
+ * @description Returns the list of user-facing event types with descriptions.
+ * @summary List Event Types
+ * {@link /events/types}
+ */
+export async function listEventTypes({
+	queryParams,
+	config = {},
+}: {
+	queryParams?: ListEventTypesQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof client };
+}): Promise<Promise<CallToolResult>> {
+	const { client: request = client, ...requestConfig } = config;
+
+	const data = await request<
+		ListEventTypesQueryResponse,
+		ErrorWrapper<ListEventTypes400 | ListEventTypes401 | ListEventTypes403>,
+		null,
+		Record<string, string>,
+		ListEventTypesQueryParams,
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/events/types`,
 		baseUrl: "https://api.vercel.com",
 		queryParams,
 		...requestConfig,
@@ -12589,6 +12626,19 @@ export function initMcpTools<Server>(serverLike: Server, config: FetcherConfig) 
 		async ({ queryParams }) => {
 			try {
 				return await listUserEvents({ queryParams, config });
+			} catch (error) {
+				return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
+			}
+		},
+	);
+
+	server.tool(
+		"listEventTypes",
+		"Returns the list of user-facing event types with descriptions.",
+		{ queryParams: listEventTypesQueryParamsSchema },
+		async ({ queryParams }) => {
+			try {
+				return await listEventTypes({ queryParams, config });
 			} catch (error) {
 				return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
 			}
