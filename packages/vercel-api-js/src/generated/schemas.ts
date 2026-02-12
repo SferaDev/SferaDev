@@ -10956,6 +10956,31 @@ export const listUserEvents403Schema = z.unknown();
 
 export const listUserEventsQueryResponseSchema = z.lazy(() => listUserEvents200Schema);
 
+export const listEventTypesQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const listEventTypes200Schema = z.unknown();
+
+export const listEventTypes400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const listEventTypes401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const listEventTypes403Schema = z.unknown();
+
+export const listEventTypesQueryResponseSchema = z.lazy(() => listEventTypes200Schema);
+
 export const gitNamespacesQueryParamsSchema = z
 	.object({
 		host: z.optional(
