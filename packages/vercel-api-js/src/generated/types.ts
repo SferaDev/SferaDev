@@ -15466,6 +15466,14 @@ export const webAnalyticsIsCurrentlyBlockedEnum = {
 export type WebAnalyticsIsCurrentlyBlockedEnumKey =
 	(typeof webAnalyticsIsCurrentlyBlockedEnum)[keyof typeof webAnalyticsIsCurrentlyBlockedEnum];
 
+export const authUserIsEnterpriseManagedEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type AuthUserIsEnterpriseManagedEnumKey =
+	(typeof authUserIsEnterpriseManagedEnum)[keyof typeof authUserIsEnterpriseManagedEnum];
+
 /**
  * @description Data for the currently authenticated User.
  */
@@ -15886,6 +15894,11 @@ export type AuthUser = {
 	 * @type string
 	 */
 	defaultTeamId: string | null;
+	/**
+	 * @description Indicates whether the user is managed by an enterprise.
+	 * @type boolean | undefined
+	 */
+	isEnterpriseManaged?: AuthUserIsEnterpriseManagedEnumKey | undefined;
 };
 
 export const authUserLimitedLimitedEnum = {
@@ -15894,6 +15907,14 @@ export const authUserLimitedLimitedEnum = {
 
 export type AuthUserLimitedLimitedEnumKey =
 	(typeof authUserLimitedLimitedEnum)[keyof typeof authUserLimitedLimitedEnum];
+
+export const authUserLimitedIsEnterpriseManagedEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type AuthUserLimitedIsEnterpriseManagedEnumKey =
+	(typeof authUserLimitedIsEnterpriseManagedEnum)[keyof typeof authUserLimitedIsEnterpriseManagedEnum];
 
 /**
  * @description A limited form of data for the currently authenticated User, due to the authentication token missing privileges to read the full User data.
@@ -15934,6 +15955,11 @@ export type AuthUserLimited = {
 	 * @type string
 	 */
 	defaultTeamId: string | null;
+	/**
+	 * @description Indicates whether the user is managed by an enterprise.
+	 * @type boolean | undefined
+	 */
+	isEnterpriseManaged?: AuthUserLimitedIsEnterpriseManagedEnumKey | undefined;
 };
 
 export const fileTreeTypeEnum = {

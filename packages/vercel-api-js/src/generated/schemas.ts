@@ -6787,6 +6787,11 @@ export const authUserSchema = z
 				),
 		),
 		defaultTeamId: z.nullable(z.string().describe("The user's default team.")),
+		isEnterpriseManaged: z.optional(
+			z
+				.union([z.literal(false), z.literal(true)])
+				.describe("Indicates whether the user is managed by an enterprise."),
+		),
 	})
 	.describe("Data for the currently authenticated User.");
 
@@ -6816,6 +6821,11 @@ export const authUserLimitedSchema = z
 				),
 		),
 		defaultTeamId: z.nullable(z.string().describe("The user's default team.")),
+		isEnterpriseManaged: z.optional(
+			z
+				.union([z.literal(false), z.literal(true)])
+				.describe("Indicates whether the user is managed by an enterprise."),
+		),
 	})
 	.describe(
 		"A limited form of data for the currently authenticated User, due to the authentication token missing privileges to read the full User data.",
