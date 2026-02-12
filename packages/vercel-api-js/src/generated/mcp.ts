@@ -481,6 +481,7 @@ import type {
 	CreateAuthToken400,
 	CreateAuthToken401,
 	CreateAuthToken403,
+	CreateAuthToken404,
 	CreateAuthTokenMutationResponse,
 	CreateAuthTokenQueryParams,
 	CreateCheck400,
@@ -10187,7 +10188,7 @@ export async function createAuthToken({
 
 	const data = await request<
 		CreateAuthTokenMutationResponse,
-		ErrorWrapper<CreateAuthToken400 | CreateAuthToken401 | CreateAuthToken403>,
+		ErrorWrapper<CreateAuthToken400 | CreateAuthToken401 | CreateAuthToken403 | CreateAuthToken404>,
 		null,
 		Record<string, string>,
 		CreateAuthTokenQueryParams,

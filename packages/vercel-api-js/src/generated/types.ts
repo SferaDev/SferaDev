@@ -27549,12 +27549,14 @@ export type CreateAuthToken401 = unknown;
  */
 export type CreateAuthToken403 = unknown;
 
+export type CreateAuthToken404 = unknown;
+
 export type CreateAuthTokenMutationResponse = CreateAuthToken200;
 
 export type CreateAuthTokenMutation = {
 	Response: CreateAuthToken200;
 	QueryParams: CreateAuthTokenQueryParams;
-	Errors: CreateAuthToken400 | CreateAuthToken401 | CreateAuthToken403;
+	Errors: CreateAuthToken400 | CreateAuthToken401 | CreateAuthToken403 | CreateAuthToken404;
 };
 
 export type GetAuthTokenPathParams = {

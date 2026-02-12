@@ -14771,6 +14771,8 @@ export const createAuthToken401Schema = z.unknown();
  */
 export const createAuthToken403Schema = z.unknown();
 
+export const createAuthToken404Schema = z.unknown();
+
 export const createAuthTokenMutationResponseSchema = z.lazy(() => createAuthToken200Schema);
 
 export const getAuthTokenPathParamsSchema = z.object({
