@@ -1628,6 +1628,34 @@ export type AbuseReportsDiffEmailError = string;
  */
 export type AbuseReportsEmailError = string;
 
+/**
+ * An email sent to the customer for an abuse report.
+ */
+export type AbuseReportsEmailListItem = {
+	/**
+	 * Body content of the email.
+	 */
+	body: string;
+	/**
+	 * Unique identifier of the email.
+	 */
+	id: string;
+	/**
+	 * Email address of the recipient.
+	 */
+	recipient: string;
+	/**
+	 * When the email was sent. Time in RFC 3339 format (https://www.rfc-editor.org/rfc/rfc3339.html)
+	 *
+	 * @example 2009-11-10T23:00:00Z
+	 */
+	sent_at: string;
+	/**
+	 * Subject line of the email.
+	 */
+	subject: string;
+};
+
 export type AbuseReportsErrorCode =
 	| AbuseReportsBadActError
 	| AbuseReportsBadAddressError
@@ -15256,6 +15284,18 @@ export type CcAccountRegistryToken = {
 };
 
 /**
+ * Egress settings for an application
+ */
+export type CcApplicationEgress = {
+	/**
+	 * The bandwidth limit for egress traffic in Megabits per second (Mbps).
+	 * "unlimited" when no throttling is applied.
+	 * A number when throttling is enabled, calculated as max(vCPUs * 1000, 100).
+	 */
+	bandwidth_limit_mbps: "unlimited" | number;
+};
+
+/**
  * Shows a count of application instance states.
  */
 export type CcApplicationHealthInstances = {
@@ -15396,6 +15436,7 @@ export type CcObservabilityLogs = {
 export type CcPublicApplication = {
 	created_at: CcISO8601Timestamp;
 	durable_object?: CcDurableObjectsConfigurationNamespaceId;
+	egress?: CcApplicationEgress;
 	health: CcApplicationHealthInstances;
 	id: CcApplicationID;
 	image: CcImage;
@@ -18996,6 +19037,10 @@ export type DlpCustomEntry = {
 	 * @format date-time
 	 */
 	created_at: string;
+	description?: string | null;
+	/**
+	 * @deprecated true
+	 */
 	enabled: boolean;
 	/**
 	 * @format uuid
@@ -19004,6 +19049,7 @@ export type DlpCustomEntry = {
 	name: string;
 	pattern: DlpPattern;
 	/**
+	 * @deprecated true
 	 * @format uuid
 	 */
 	profile_id?: string | null;
@@ -19018,6 +19064,7 @@ export type DlpCustomEntryUpdate = DlpCustomEntryUpdateType & {
 };
 
 export type DlpCustomEntryUpdateType = {
+	description?: string | null;
 	name: string;
 	pattern: DlpPattern;
 };
@@ -19052,6 +19099,9 @@ export type DlpCustomProfile = {
 	 * The description of the profile.
 	 */
 	description?: string | null;
+	/**
+	 * @deprecated true
+	 */
 	entries?: DlpEntry[];
 	/**
 	 * The id of the profile (uuid).
@@ -19069,6 +19119,10 @@ export type DlpCustomProfile = {
 	 * @default false
 	 */
 	ocr_enabled: boolean;
+	/**
+	 * @x-stainless-terraform-configurability computed
+	 */
+	shared_entries?: DlpEntry[];
 	/**
 	 * When the profile was lasted updated.
 	 *
@@ -19521,12 +19575,19 @@ export type DlpIntegrationProfile = {
 	 * The description of the profile.
 	 */
 	description?: string | null;
+	/**
+	 * @deprecated true
+	 */
 	entries: DlpEntry[];
 	/**
 	 * @format uuid
 	 */
 	id: string;
 	name: string;
+	/**
+	 * @x-stainless-terraform-configurability computed
+	 */
+	shared_entries: DlpEntry[];
 	/**
 	 * @format date-time
 	 */
@@ -19542,6 +19603,7 @@ export type DlpLimits = {
 };
 
 export type DlpNewCustomEntry = {
+	description?: string | null;
 	enabled: boolean;
 	name: string;
 	pattern: DlpPattern;
@@ -19648,6 +19710,7 @@ export type DlpNewDocumentFingerprint = {
 };
 
 export type DlpNewEntry = {
+	description?: string | null;
 	enabled: boolean;
 	name: string;
 	pattern: DlpPattern;
@@ -19728,6 +19791,7 @@ export type DlpPredefinedEntry = {
 	id: string;
 	name: string;
 	/**
+	 * @deprecated true
 	 * @format uuid
 	 */
 	profile_id?: string | null;
@@ -19758,6 +19822,9 @@ export type DlpPredefinedProfile = {
 	 */
 	confidence_threshold?: DlpConfidence;
 	context_awareness?: DlpContextAwareness;
+	/**
+	 * @deprecated true
+	 */
 	entries: DlpEntry[];
 	/**
 	 * The id of the predefined profile (uuid).
@@ -27190,6 +27257,7 @@ export type IamAccount = {
 		 *
 		 * @default false
 		 * @x-auditable true
+		 * @x-stainless-terraform-configurability computed_optional
 		 */
 		enforce_twofactor?: boolean;
 	};
@@ -27339,6 +27407,8 @@ export type IamCreateAccount = {
 	type?: IamAccountType;
 	/**
 	 * information related to the tenant unit, and optionally, an id of the unit to create the account on. see https://developers.cloudflare.com/tenant/how-to/manage-accounts/
+	 *
+	 * @x-stainless-terraform-configurability computed_optional
 	 */
 	unit?: {
 		/**
@@ -27346,6 +27416,7 @@ export type IamCreateAccount = {
 		 *
 		 * @example f267e341f3dd4697bd3b9f71dd96247f
 		 * @x-auditable true
+		 * @x-stainless-terraform-configurability computed_optional
 		 */
 		id?: string;
 	};
@@ -27357,11 +27428,7 @@ export type IamCreateMemberWithPolicies = {
 	 * Array of policies associated with this member.
 	 */
 	policies: IamCreateMemberPolicy[];
-	/**
-	 * @default pending
-	 * @x-auditable true
-	 */
-	status?: "accepted" | "pending";
+	status?: IamMemberInvitationStatus;
 };
 
 export type IamCreateMemberWithRoles = {
@@ -27370,11 +27437,7 @@ export type IamCreateMemberWithRoles = {
 	 * Array of roles associated with this member.
 	 */
 	roles: IamRoleComponentsSchemasIdentifier[];
-	/**
-	 * @default pending
-	 * @x-auditable true
-	 */
-	status?: "accepted" | "pending";
+	status?: IamMemberInvitationStatus;
 };
 
 /**
@@ -27565,6 +27628,15 @@ export type IamListMemberPolicy = {
 	permission_groups?: IamPermissionGroups;
 	resource_groups?: IamResourceGroups;
 };
+
+/**
+ * Status of the member invitation. If not provided during creation, defaults to 'pending'.
+ * Changing from 'accepted' back to 'pending' will trigger a replacement of the member resource in Terraform.
+ *
+ * @x-auditable true
+ * @x-stainless-terraform-configurability computed_optional
+ */
+export type IamMemberInvitationStatus = "accepted" | "pending";
 
 /**
  * A group of permissions.
@@ -28435,6 +28507,7 @@ export type IamUpdateUserGroupBody = {
  *
  * @default false
  * @example false
+ * @x-stainless-terraform-configurability computed_optional
  */
 export type IamUseFedrampLanguage = boolean;
 
@@ -38549,7 +38622,21 @@ export type MqApiV4Success = {
  */
 export type MqBatchSize = number;
 
-export type MqConsumer = MqWorkerConsumer | MqHttpConsumer;
+/**
+ * Request body for creating or updating a consumer
+ */
+export type MqConsumerRequest = MqWorkerConsumerRequest | MqHttpConsumerRequest;
+
+/**
+ * Response body representing a consumer
+ */
+export type MqConsumerResponse =
+	| (Omit<MqWorkerConsumerResponse, "type"> & {
+			type: "worker";
+	  })
+	| (Omit<MqHttpConsumerResponse, "type"> & {
+			type: "http_pull";
+	  });
 
 /**
  * Destination configuration for the subscription
@@ -38718,13 +38805,34 @@ export type MqEventSubscription = {
 	source: MqEventSource;
 };
 
-export type MqHttpConsumer = {
-	consumer_id?: MqIdentifier;
+export type MqHttpConsumerRequest = {
+	dead_letter_queue?: MqQueueName;
+	settings?: {
+		batch_size?: MqBatchSize;
+		max_retries?: MqMaxRetries;
+		retry_delay?: MqRetryDelay;
+		visibility_timeout_ms?: MqVisibilityTimeout;
+	};
 	/**
 	 * @x-auditable true
 	 */
+	type: "http_pull";
+};
+
+export type MqHttpConsumerResponse = {
+	consumer_id?: MqIdentifier;
+	/**
+	 * @format date-time
+	 * @x-auditable true
+	 */
 	created_on?: string;
-	queue_id?: MqIdentifier;
+	/**
+	 * Name of the dead letter queue, or empty string if not configured
+	 *
+	 * @x-auditable true
+	 */
+	dead_letter_queue?: string;
+	queue_name?: MqQueueName;
 	settings?: {
 		batch_size?: MqBatchSize;
 		max_retries?: MqMaxRetries;
@@ -38781,7 +38889,7 @@ export type MqMaxWaitTime = number;
 export type MqProducer = MqWorkerProducer | MqR2Producer;
 
 export type MqQueue = {
-	consumers?: MqConsumer[];
+	consumers?: MqConsumerResponse[];
 	consumers_total_count?: number;
 	/**
 	 * @x-auditable true
@@ -38925,27 +39033,37 @@ export type MqScriptName = string;
  */
 export type MqVisibilityTimeout = number;
 
-export type MqWorkerConsumer = {
+export type MqWorkerConsumerRequest = {
+	dead_letter_queue?: MqQueueName;
+	script_name: MqScriptName;
+	settings?: {
+		batch_size?: MqBatchSize;
+		max_concurrency?: MqMaxConcurrency;
+		max_retries?: MqMaxRetries;
+		max_wait_time_ms?: MqMaxWaitTime;
+		retry_delay?: MqRetryDelay;
+	};
+	/**
+	 * @x-auditable true
+	 */
+	type: "worker";
+};
+
+export type MqWorkerConsumerResponse = {
 	consumer_id?: MqIdentifier;
 	/**
+	 * @format date-time
 	 * @x-auditable true
 	 */
 	created_on?: string;
-	queue_id?: MqIdentifier;
 	/**
-	 * Name of a Worker
-	 *
-	 * @example my-consumer-worker
-	 * @x-auditable true
-	 */
-	script?: MqScriptName & string;
-	/**
-	 * Name of a Worker
+	 * Name of the dead letter queue, or empty string if not configured
 	 *
 	 * @x-auditable true
-	 * @example my-consumer-worker
 	 */
-	script_name?: MqScriptName & string;
+	dead_letter_queue?: string;
+	queue_name?: MqQueueName;
+	script_name?: MqScriptName;
 	settings?: {
 		batch_size?: MqBatchSize;
 		max_concurrency?: MqMaxConcurrency;
@@ -39717,6 +39835,9 @@ export type OrganizationsApiBatchAccountMoveResponse = {
 };
 
 export type OrganizationsApiBatchCreateMembersRequest = {
+	/**
+	 * @maxItems 10
+	 */
 	members: OrganizationsApiCreateSingleMember[];
 };
 
@@ -42304,6 +42425,10 @@ export type R2SlurperGCSLikeCredsSchema = {
 
 export type R2SlurperGCSSourceSchema = {
 	bucket: string;
+	/**
+	 * @maxItems 10000
+	 */
+	keys?: string[] | null;
 	pathPrefix?: string | null;
 	secret: R2SlurperGCSLikeCredsSchema;
 	vendor: "gcs";
@@ -42383,6 +42508,10 @@ export type R2SlurperJurisdiction = "default" | "eu" | "fedramp";
 export type R2SlurperR2SourceSchema = {
 	bucket: string;
 	jurisdiction?: R2SlurperJurisdiction;
+	/**
+	 * @maxItems 10000
+	 */
+	keys?: string[] | null;
 	pathPrefix?: string | null;
 	secret: R2SlurperS3LikeCredsSchema;
 	vendor: "r2";
@@ -42406,6 +42535,10 @@ export type R2SlurperS3LikeCredsSchema = {
 export type R2SlurperS3SourceSchema = {
 	bucket: string;
 	endpoint?: string | null;
+	/**
+	 * @maxItems 10000
+	 */
+	keys?: string[] | null;
 	pathPrefix?: string | null;
 	region?: string | null;
 	secret: R2SlurperS3LikeCredsSchema;
@@ -48584,6 +48717,12 @@ export type RulesetsSetConfigRule = {
 		 */
 		bic?: boolean;
 		/**
+		 * Whether to enable content conversion (e.g., HTML to Markdown).
+		 *
+		 * @example true
+		 */
+		content_converter?: boolean;
+		/**
 		 * Whether to disable Cloudflare Apps.
 		 *
 		 * @deprecated true
@@ -50793,23 +50932,23 @@ export type SmartshieldTimestamp = string;
 export type SmartshieldType = string;
 
 /**
- * A list of error messages.
+ * Lists error messages.
  */
 export type SnippetsErrors = SnippetsMessage[];
 
 /**
- * A message.
+ * Describes an API message.
  */
 export type SnippetsMessage = {
 	/**
-	 * A unique code for this message.
+	 * Identify the message code.
 	 *
 	 * @example 10000
 	 * @x-auditable true
 	 */
 	code?: number;
 	/**
-	 * A text description of this message.
+	 * Describes the message text.
 	 *
 	 * @example something bad happened
 	 * @minLength 1
@@ -50819,12 +50958,12 @@ export type SnippetsMessage = {
 };
 
 /**
- * A list of warning messages.
+ * Contain warning messages.
  */
 export type SnippetsMessages = SnippetsMessage[];
 
 /**
- * The current page number.
+ * Specifies the current page number.
  *
  * @default 1
  * @example 1
@@ -50834,7 +50973,7 @@ export type SnippetsMessages = SnippetsMessage[];
 export type SnippetsPage = number;
 
 /**
- * The number of results to return per page.
+ * Specifies how many results to return per page.
  *
  * @default 25
  * @example 25
@@ -50844,17 +50983,17 @@ export type SnippetsPage = number;
 export type SnippetsPerPage = number;
 
 /**
- * A response object.
+ * Return all API responses using this object.
  */
 export type SnippetsResponse = {
 	errors: SnippetsErrors;
 	messages: SnippetsMessages;
 	/**
-	 * A result.
+	 * Contain the response result.
 	 */
-	result: void;
+	result: Record<string, any>;
 	/**
-	 * Whether the API call was successful.
+	 * Indicate whether the API call was successful.
 	 *
 	 * @x-auditable true
 	 */
@@ -50866,7 +51005,7 @@ export type SnippetsResponse = {
  */
 export type SnippetsResultInfo = {
 	/**
-	 * The number of results in the current page.
+	 * Specify the number of results in the current page.
 	 *
 	 * @example 25
 	 * @minimum 0
@@ -50876,7 +51015,7 @@ export type SnippetsResultInfo = {
 	page: SnippetsPage;
 	per_page: SnippetsPerPage;
 	/**
-	 * The total number of results.
+	 * Specify the total number of results.
 	 *
 	 * @example 100
 	 * @minimum 0
@@ -50884,7 +51023,7 @@ export type SnippetsResultInfo = {
 	 */
 	total_count: number;
 	/**
-	 * The total number of pages.
+	 * Specify the total number of pages.
 	 *
 	 * @example 10
 	 * @minimum 1
@@ -50894,11 +51033,11 @@ export type SnippetsResultInfo = {
 };
 
 /**
- * A snippet object.
+ * Define a snippet.
  */
 export type SnippetsSnippet = {
 	/**
-	 * The timestamp of when the snippet was created.
+	 * Indicates when the snippet was created.
 	 *
 	 * @example 2000-01-01T00:00:00.000000Z
 	 * @format date-time
@@ -50906,7 +51045,7 @@ export type SnippetsSnippet = {
 	 */
 	created_on: string;
 	/**
-	 * The timestamp of when the snippet was last modified.
+	 * Indicates when the snippet was last modified.
 	 *
 	 * @example 2000-01-01T00:00:00.000000Z
 	 * @format date-time
@@ -50917,14 +51056,14 @@ export type SnippetsSnippet = {
 };
 
 /**
- * The list of files belonging to the snippet.
+ * Contain files belonging to the snippet.
  *
  * @minItems 1
  */
 export type SnippetsSnippetFiles = Blob[];
 
 /**
- * Name of the file that contains the main module of the snippet.
+ * Specify the name of the file that contains the main module of the snippet.
  *
  * @example main.js
  * @minLength 1
@@ -50933,7 +51072,7 @@ export type SnippetsSnippetFiles = Blob[];
 export type SnippetsSnippetMainModule = string;
 
 /**
- * The identifying name of the snippet.
+ * Identify the snippet.
  *
  * @example my_snippet
  * @pattern ^[A-Za-z0-9_]+$
@@ -50942,11 +51081,11 @@ export type SnippetsSnippetMainModule = string;
 export type SnippetsSnippetName = string;
 
 /**
- * A list of snippet rules.
+ * Lists snippet rules.
  */
 export type SnippetsSnippetRules = {
 	/**
-	 * An informative description of the rule.
+	 * Provide an informative description of the rule.
 	 *
 	 * @default
 	 * @example Execute my_snippet when IP address is 1.1.1.1.
@@ -50954,7 +51093,7 @@ export type SnippetsSnippetRules = {
 	 */
 	description?: string;
 	/**
-	 * Whether the rule should be executed.
+	 * Indicate whether to execute the rule.
 	 *
 	 * @default false
 	 * @example true
@@ -50962,7 +51101,7 @@ export type SnippetsSnippetRules = {
 	 */
 	enabled?: boolean;
 	/**
-	 * The expression defining which traffic will match the rule.
+	 * Define the expression that determines which traffic matches the rule.
 	 *
 	 * @example ip.src eq 1.1.1.1
 	 * @minLength 1
@@ -50970,7 +51109,7 @@ export type SnippetsSnippetRules = {
 	 */
 	expression: string;
 	/**
-	 * The unique ID of the rule.
+	 * Specify the unique ID of the rule.
 	 *
 	 * @example 3a03d665bac047339bb530ecb439a90d
 	 * @pattern ^[0-9a-f]{32}$
@@ -50978,7 +51117,7 @@ export type SnippetsSnippetRules = {
 	 */
 	id: string;
 	/**
-	 * The timestamp of when the rule was last modified.
+	 * Specify the timestamp of when the rule was last modified.
 	 *
 	 * @example 2000-01-01T00:00:00.000000Z
 	 * @format date-time
@@ -50989,7 +51128,7 @@ export type SnippetsSnippetRules = {
 }[];
 
 /**
- * The unique ID of the zone.
+ * Use this field to specify the unique ID of the zone.
  *
  * @example 9f1839b6152d298aca64c4e906b6d074
  * @pattern ^[0-9a-f]{32}$
@@ -54393,6 +54532,126 @@ export type TeamsDevicesIntuneInputRequest = {
  */
 export type TeamsDevicesIp = string;
 
+export type TeamsDevicesIpProfile = {
+	created_at: TeamsDevicesIpProfileCreatedAt;
+	description: TeamsDevicesIpProfileDescription;
+	enabled: TeamsDevicesIpProfileEnabled;
+	id: TeamsDevicesIpProfileId;
+	match: TeamsDevicesIpProfileMatch;
+	name: TeamsDevicesIpProfileName;
+	precedence: TeamsDevicesIpProfilePrecedence;
+	subnet_id: TeamsDevicesIpProfileSubnetId;
+	updated_at: TeamsDevicesIpProfileUpdatedAt;
+};
+
+export type TeamsDevicesIpProfileCreateRequest = {
+	/**
+	 * An optional description of the Device IP profile.
+	 *
+	 * @example example comment
+	 * @x-auditable true
+	 */
+	description?: string | null;
+	/**
+	 * Whether the Device IP profile will be applied to matching devices.
+	 *
+	 * @default true
+	 * @example true
+	 * @x-auditable true
+	 */
+	enabled?: boolean;
+	match: TeamsDevicesIpProfileMatch;
+	name: TeamsDevicesIpProfileName;
+	precedence: TeamsDevicesIpProfilePrecedence;
+	subnet_id: TeamsDevicesIpProfileSubnetId;
+};
+
+/**
+ * The RFC3339Nano timestamp when the Device IP profile was created.
+ *
+ * @example 2025-02-14T13:17:00.123456789Z
+ */
+export type TeamsDevicesIpProfileCreatedAt = string;
+
+/**
+ * An optional description of the Device IP profile.
+ *
+ * @example example comment
+ * @x-auditable true
+ */
+export type TeamsDevicesIpProfileDescription = string | null;
+
+/**
+ * Whether the Device IP profile is enabled.
+ *
+ * @example true
+ * @x-auditable true
+ */
+export type TeamsDevicesIpProfileEnabled = boolean;
+
+/**
+ * The ID of the Device IP profile.
+ *
+ * @example f70ff985-a4ef-4643-bbbc-4a0ed4fc8415
+ * @x-auditable true
+ */
+export type TeamsDevicesIpProfileId = string;
+
+/**
+ * The wirefilter expression to match registrations. Available values: "identity.name", "identity.email", "identity.groups.id", "identity.groups.name", "identity.groups.email", "identity.saml_attributes".
+ *
+ * @example identity.email == "test@cloudflare.com"
+ * @maxLength 10000
+ * @x-auditable true
+ */
+export type TeamsDevicesIpProfileMatch = string;
+
+/**
+ * A user-friendly name for the Device IP profile.
+ *
+ * @example IPv4 Cloudflare Source IPs
+ * @x-auditable true
+ */
+export type TeamsDevicesIpProfileName = string;
+
+/**
+ * The precedence of the Device IP profile. Lower values indicate higher precedence. Device IP profile will be evaluated in ascending order of this field.
+ *
+ * @example 100
+ * @x-auditable true
+ */
+export type TeamsDevicesIpProfilePrecedence = number;
+
+/**
+ * The ID of the Subnet.
+ *
+ * @example b70ff985-a4ef-4643-bbbc-4a0ed4fc8415
+ * @x-auditable true
+ */
+export type TeamsDevicesIpProfileSubnetId = string;
+
+export type TeamsDevicesIpProfileUpdateRequest = {
+	/**
+	 * An optional description of the Device IP profile.
+	 *
+	 * @example example comment
+	 * @x-auditable true
+	 */
+	description?: string;
+	enabled?: TeamsDevicesIpProfileEnabled;
+	match?: TeamsDevicesIpProfileMatch;
+	name?: TeamsDevicesIpProfileName;
+	precedence?: TeamsDevicesIpProfilePrecedence;
+	subnet_id?: TeamsDevicesIpProfileSubnetId;
+};
+
+/**
+ * The RFC3339Nano timestamp when the Device IP profile was last updated.
+ *
+ * @example 2025-02-14T13:17:00.123456789Z
+ */
+export type TeamsDevicesIpProfileUpdatedAt = string;
+
 /**
  * Reasoning for setting the Global WARP override state. This will be surfaced in the audit log.
  *
@@ -54611,6 +54870,32 @@ export type TeamsDevicesOverrideCodesResponse = TeamsDevicesApiResponseCollectio
 	result?: {
 		disable_for_time?: TeamsDevicesDisableForTime;
 	};
+};
+
+/**
+ * @example {"count":1,"page":1,"per_page":10,"total_count":10,"total_pages":1}
+ */
+export type TeamsDevicesPaginationInfo = {
+	/**
+	 * Number of records in the response.
+	 */
+	count: number;
+	/**
+	 * The page size number of the response.
+	 */
+	page: number;
+	/**
+	 * The limit for the number of records in the response.
+	 */
+	per_page: number;
+	/**
+	 * Total number of records available.
+	 */
+	total_count: number;
+	/**
+	 * Total number of pages available.
+	 */
+	total_pages?: number;
 };
 
 /**
@@ -55938,6 +56223,10 @@ export type TlsCertificatesAndHostnamesCertificatePack = {
 	 */
 	certificates: TlsCertificatesAndHostnamesCertificatePackCertificate[];
 	cloudflare_branding?: TlsCertificatesAndHostnamesCloudflareBranding;
+	/**
+	 * DCV Delegation records for domain validation.
+	 */
+	dcv_delegation_records?: TlsCertificatesAndHostnamesValidationRecord[];
 	hosts: TlsCertificatesAndHostnamesSchemasHosts;
 	id: TlsCertificatesAndHostnamesIdentifier;
 	primary_certificate?: TlsCertificatesAndHostnamesPrimary;
@@ -56427,7 +56716,7 @@ export type TlsCertificatesAndHostnamesCustomCertificate = {
 	issuer?: TlsCertificatesAndHostnamesIssuer;
 	keyless_server?: TlsCertificatesAndHostnamesKeylessCertificate;
 	modified_on?: TlsCertificatesAndHostnamesModifiedOn;
-	policy?: TlsCertificatesAndHostnamesPolicy;
+	policy_restrictions?: TlsCertificatesAndHostnamesPolicyRestrictions;
 	priority?: TlsCertificatesAndHostnamesPriority;
 	signature?: TlsCertificatesAndHostnamesSignature;
 	status?: TlsCertificatesAndHostnamesStatus;
@@ -56444,7 +56733,7 @@ export type TlsCertificatesAndHostnamesCustomHostname = {
 	id: TlsCertificatesAndHostnamesIdentifier;
 	ownership_verification?: TlsCertificatesAndHostnamesOwnershipVerification;
 	ownership_verification_http?: TlsCertificatesAndHostnamesOwnershipVerificationHttp;
-	ssl: TlsCertificatesAndHostnamesSsl;
+	ssl?: TlsCertificatesAndHostnamesSsl;
 	status?: TlsCertificatesAndHostnamesComponentsSchemasStatus;
 	verification_errors?: TlsCertificatesAndHostnamesVerificationErrors;
 };
@@ -56592,6 +56881,15 @@ export type TlsCertificatesAndHostnamesDeleteAdvancedCertificatePackResponseSing
 			id?: TlsCertificatesAndHostnamesIdentifier;
 		};
 	};
+
+/**
+ * The environment to deploy the certificate to, defaults to production
+ *
+ * @default production
+ * @example staging
+ * @x-auditable true
+ */
+export type TlsCertificatesAndHostnamesDeploy = "staging" | "production";
 
 /**
  * Whether or not the Keyless SSL is on or off.
@@ -57175,11 +57473,24 @@ export type TlsCertificatesAndHostnamesPerHostnameSettingsResponseDelete =
 
 /**
  * Specify the policy that determines the region where your private key will be held locally. HTTPS connections to any excluded data center will still be fully encrypted, but will incur some latency while Keyless SSL is used to complete the handshake with the nearest allowed data center. Any combination of countries, specified by their two letter country code (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements) can be chosen, such as 'country: IN', as well as 'region: EU' which refers to the EU region. If there are too few data centers satisfying the policy, it will be rejected.
+ * Note: The API accepts this field as either "policy" or "policy_restrictions" in requests. Responses return this field as "policy_restrictions". example: "(country: US) or (region: EU)"
  *
- * @example (country: US) or (region: EU)
  * @x-auditable true
  */
 export type TlsCertificatesAndHostnamesPolicy = string;
+
+/**
+ * The policy restrictions returned by the API. This field is returned in responses
+ * when a policy has been set. The API accepts the "policy" field in requests but
+ * returns this field as "policy_restrictions" in responses.
+ *
+ * Specifies the region(s) where your private key can be held locally for optimal
+ * TLS performance. Format is a boolean expression, for example:
+ * "(country: US) or (region: EU)"
+ *
+ * @example (country: US) or (region: EU)
+ */
+export type TlsCertificatesAndHostnamesPolicyRestrictions = string;
 
 /**
  * The keyless SSL port used to communicate between Cloudflare and the client's Keyless SSL server.
@@ -57652,6 +57963,10 @@ export type TlsCertificatesAndHostnamesSsl = {
      */
 	custom_key?: string;
 	/**
+	 * DCV Delegation records for domain validation.
+	 */
+	dcv_delegation_records?: TlsCertificatesAndHostnamesValidationRecord[];
+	/**
 	 * The time the custom certificate expires on.
 	 *
 	 * @example 2021-02-06T18:11:23.531995Z
@@ -58019,6 +58334,20 @@ export type TlsCertificatesAndHostnamesValidationMethodDefinition =
  */
 export type TlsCertificatesAndHostnamesValidationRecord = {
 	/**
+	 * The CNAME record hostname for DCV delegation.
+	 *
+	 * @example _acme-challenge.example.com
+	 * @x-auditable true
+	 */
+	cname?: string;
+	/**
+	 * The CNAME record target value for DCV delegation.
+	 *
+	 * @example dcv.cloudflare.com
+	 * @x-auditable true
+	 */
+	cname_target?: string;
+	/**
 	 * The set of email addresses that the certificate authority (CA) will use to complete domain validation.
 	 *
 	 * @example administrator@example.com
@@ -58037,6 +58366,12 @@ export type TlsCertificatesAndHostnamesValidationRecord = {
 	 * @example http://app.example.com/.well-known/pki-validation/ca3-da12a1c25e7b48cf80408c6c1763b8a2.txt
 	 */
 	http_url?: string;
+	/**
+	 * Status of the validation record.
+	 *
+	 * @example pending
+	 */
+	status?: string;
 	/**
 	 * The hostname that the certificate authority (CA) will check for a TXT record during domain validation .
 	 *
@@ -59053,13 +59388,38 @@ export type TunnelSubnetResponseSingle = {
 	success: true;
 };
 
+export type TunnelSubnetResponseSingleNullable = {
+	errors: TunnelMessages;
+	messages: TunnelMessages;
+	result:
+		| {
+				comment?: TunnelSubnetComment;
+				created_at?: TunnelCreatedAt;
+				deleted_at?: TunnelDeletedAt;
+				id?: TunnelSubnetId;
+				is_default_network?: TunnelSubnetIsDefaultNetwork;
+				name?: TunnelSubnetName;
+				network?: TunnelSubnetIpNetwork;
+				subnet_type?: TunnelSubnetType;
+		  }
+		| any[]
+		| string
+		| null;
+	/**
+	 * Whether the API call was successful
+	 *
+	 * @example true
+	 */
+	success: true;
+};
+
 /**
  * The type of subnet.
  *
  * @example cloudflare_source
  * @x-auditable true
  */
-export type TunnelSubnetType = "cloudflare_source";
+export type TunnelSubnetType = "cloudflare_source" | "warp";
 
 export type TunnelTeamnet = {
 	comment?: TunnelRouteComment;
@@ -70714,7 +71074,7 @@ export type ZonesMultipleSettings = (
 )[];
 
 /**
- * The domain name.
+ * The domain name. Per [RFC 1035](https://datatracker.ietf.org/doc/html/rfc1035#section-2.3.4) the overall zone name can be up to 253 characters, with each segment ("label") not exceeding 63 characters.
  *
  * @example example.com
  * @maxLength 253
@@ -72725,7 +73085,7 @@ export type ZonesZone = {
 	 */
 	modified_on: string;
 	/**
-	 * The domain name.
+	 * The domain name. Per [RFC 1035](https://datatracker.ietf.org/doc/html/rfc1035#section-2.3.4) the overall zone name can be up to 253 characters, with each segment ("label") not exceeding 63 characters.
 	 *
 	 * @example example.com
 	 * @maxLength 253

@@ -225,11 +225,9 @@ export type BuildsSuccessEmpty = Schemas.BuildsAPIResponse;
 
 export type BuildsUnauthorized = Schemas.BuildsErrorResponse;
 
-/**
- * Credentials that can be used to interact with the requested image registry.
- */
-export type CcGenerateImageRegistryCredentialsResponse201 = Schemas.CcV4BaseResponse &
-	Schemas.CcAccountRegistryToken;
+export type CcGenerateImageRegistryCredentialsResponse201 = Schemas.CcV4BaseResponse & {
+	result: Schemas.CcAccountRegistryToken;
+};
 
 export type CcGenerateImageRegistryCredentialsResponse409 = Schemas.CcV4BaseErrorResponse;
 
@@ -913,19 +911,19 @@ export type RulesetsUrlNormalization = {
 };
 
 /**
- * A response object.
+ * Return all API responses using this object.
  */
 export type SnippetsFailure = {
 	errors: Schemas.SnippetsErrors;
 	messages: Schemas.SnippetsMessages;
 	/**
-	 * A result.
+	 * Contain the response result.
 	 *
 	 * @x-auditable true
 	 */
-	result: any;
+	result: any | null;
 	/**
-	 * Whether the API call was successful.
+	 * Indicate whether the API call was successful.
 	 *
 	 * @x-auditable true
 	 */
@@ -933,19 +931,19 @@ export type SnippetsFailure = {
 };
 
 /**
- * A response object.
+ * Return all API responses using this object.
  */
 export type SnippetsNull = {
 	errors: Schemas.SnippetsErrors;
 	messages: Schemas.SnippetsMessages;
 	/**
-	 * A result.
+	 * Contain the response result.
 	 *
 	 * @x-auditable true
 	 */
-	result: any;
+	result: any | null;
 	/**
-	 * Whether the API call was successful.
+	 * Indicate whether the API call was successful.
 	 *
 	 * @x-auditable true
 	 */
@@ -953,14 +951,14 @@ export type SnippetsNull = {
 };
 
 /**
- * A response object.
+ * Return all API responses using this object.
  */
 export type SnippetsSnippet = {
 	errors: Schemas.SnippetsErrors;
 	messages: Schemas.SnippetsMessages;
 	result: Schemas.SnippetsSnippet;
 	/**
-	 * Whether the API call was successful.
+	 * Indicate whether the API call was successful.
 	 *
 	 * @x-auditable true
 	 */
@@ -968,21 +966,21 @@ export type SnippetsSnippet = {
 };
 
 /**
- * A snippet content response object.
+ * Contain the snippet content response data.
  */
 export type SnippetsSnippetContent = {
 	[key: string]: Schemas.SnippetsSnippetFiles;
 };
 
 /**
- * A response object.
+ * Return all API responses using this object.
  */
 export type SnippetsSnippetRules = {
 	errors: Schemas.SnippetsErrors;
 	messages: Schemas.SnippetsMessages;
 	result: Schemas.SnippetsSnippetRules;
 	/**
-	 * Whether the API call was successful.
+	 * Indicate whether the API call was successful.
 	 *
 	 * @x-auditable true
 	 */
@@ -990,17 +988,17 @@ export type SnippetsSnippetRules = {
 };
 
 /**
- * A response object.
+ * Return all API responses using this object.
  */
 export type SnippetsSnippets = {
 	errors: Schemas.SnippetsErrors;
 	messages: Schemas.SnippetsMessages;
 	/**
-	 * A list of snippets.
+	 * Contain snippets.
 	 */
-	result: Schemas.SnippetsSnippet[];
+	result: never;
 	/**
-	 * Whether the API call was successful.
+	 * Indicate whether the API call was successful.
 	 *
 	 * @x-auditable true
 	 */
