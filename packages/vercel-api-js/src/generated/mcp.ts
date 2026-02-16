@@ -6021,7 +6021,7 @@ export async function listUserEvents({
 /**
  * @description Returns the list of user-facing event types with descriptions.
  * @summary List Event Types
- * {@link /events/types}
+ * {@link /v1/events/types}
  */
 export async function listEventTypes({
 	queryParams,
@@ -6041,7 +6041,7 @@ export async function listEventTypes({
 		Record<string, string>
 	>({
 		method: "GET",
-		url: `/events/types`,
+		url: `/v1/events/types`,
 		baseUrl: "https://api.vercel.com",
 		queryParams,
 		...requestConfig,

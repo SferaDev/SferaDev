@@ -5357,7 +5357,7 @@ export async function listUserEvents({
 /**
  * @description Returns the list of user-facing event types with descriptions.
  * @summary List Event Types
- * {@link /events/types}
+ * {@link /v1/events/types}
  */
 export async function listEventTypes({
 	queryParams,
@@ -5375,7 +5375,7 @@ export async function listEventTypes({
 		Record<string, string>,
 		ListEventTypesQueryParams,
 		Record<string, string>
-	>({ method: "GET", url: `/events/types`, queryParams, ...requestConfig });
+	>({ method: "GET", url: `/v1/events/types`, queryParams, ...requestConfig });
 	return data;
 }
 
@@ -10162,7 +10162,7 @@ export const operationsByPath = {
 	"GET /v1/env/{id}": getSharedEnvVar,
 	"PATCH /v1/env/{id}/unlink/{projectId}": unlinkSharedEnvVariable,
 	"GET /v3/events": listUserEvents,
-	"GET /events/types": listEventTypes,
+	"GET /v1/events/types": listEventTypes,
 	"GET /v1/integrations/git-namespaces": gitNamespaces,
 	"GET /v1/integrations/search-repo": searchRepo,
 	"GET /v1/integrations/integration/{integrationIdOrSlug}/products/{productIdOrSlug}/plans":
