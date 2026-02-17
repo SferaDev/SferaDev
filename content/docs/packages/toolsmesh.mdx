@@ -1,0 +1,187 @@
+---
+title: "toolsmesh"
+description: "Virtual filesystem wrapper for AI SDK tools"
+icon: "folder-tree"
+---
+
+A middleware that converts tools into a discoverable virtual filesystem for AI models. Instead of loading all tool schemas into context, models explore and discover tools on-demand.
+
+## How It Works
+
+Traditional approach loads all tool schemas upfront, consuming thousands of tokens. Toolsmesh instead:
+
+1. Creates a virtual filesystem where each tool is a TypeScript file
+2. Replaces tools with two mesh tools: `mesh_bash` and `mesh_exec`
+3. Injects a system prompt teaching the model to discover and use tools
+
+The model explores using familiar bash commands:
+
+```bash
+ls /tools              # List available tools
+grep -r "email" /tools # Search by functionality
+cat /tools/sendEmail.ts # Read full interface
+```
+
+Then executes TypeScript code that calls the actual tools:
+
+```typescript
+const user = await createUser({ name: "Alice", email: "alice@example.com" });
+await sendEmail({ to: user.email, subject: "Welcome!", body: "Hello!" });
+```
+
+## Usage
+
+### With AI SDK Middleware
+
+```typescript
+import { wrapLanguageModel } from "ai";
+import { createToolsmeshMiddleware } from "toolsmesh";
+import { z } from "zod";
+
+const tools = {
+  createUser: {
+    description: "Create a new user account",
+    parameters: z.object({
+      name: z.string(),
+      email: z.string().email(),
+    }),
+    execute: async ({ name, email }) => {
+      return { id: crypto.randomUUID(), name, email };
+    },
+  },
+};
+
+const middleware = createToolsmeshMiddleware({
+  tools,
+  sandbox: { dangerouslyAllowLocalExecution: true },
+});
+
+const model = wrapLanguageModel({
+  model: yourBaseModel,
+  middleware,
+});
+```
+
+### Manual Integration
+
+```typescript
+import { createToolsmesh } from "toolsmesh";
+
+const mesh = createToolsmesh({ tools });
+
+console.log(mesh.systemPrompt);
+
+const result = await mesh.tools.mesh_bash.execute({
+  command: 'grep -r "user" /tools',
+});
+```
+
+## Mesh Tools
+
+### mesh_bash
+
+Execute bash commands against the virtual filesystem. Powered by [just-bash](https://github.com/vercel-labs/just-bash).
+
+| Command | Example | Description |
+|---------|---------|-------------|
+| `ls` | `ls -la /tools` | List files with details |
+| `cat` | `cat /tools/myTool.ts` | Read file contents |
+| `grep` | `grep -r "pattern" /tools` | Search file contents |
+| `find` | `find /tools -name "*User*"` | Find files by name |
+| `head` | `head -20 /tools/myTool.ts` | Show first N lines |
+| `tail` | `tail -10 /tools/myTool.ts` | Show last N lines |
+| `tree` | `tree` | Show directory structure |
+| `pwd` | `pwd` | Print working directory |
+| `wc` | `wc /tools/myTool.ts` | Count lines/words/chars |
+
+### mesh_exec
+
+Execute TypeScript code that calls tools from the mesh. Tools are available as typed async functions.
+
+```typescript
+const user = await createUser({
+  name: "John",
+  email: "john@example.com"
+});
+
+const data = await fetchData({ source: "api" });
+const processed = await processData({ input: data });
+return processed;
+```
+
+## Configuration
+
+```typescript
+createToolsmeshMiddleware({
+  tools: myTools,
+  namespace: "api",           // Directory name (default: "tools")
+  includeSchemas: true,       // JSON schemas in tool files (default: true)
+  systemPromptPrefix: "...",  // Custom system prompt prefix
+  systemPromptSuffix: "...",  // Custom system prompt suffix
+  sandbox: {
+    dangerouslyAllowLocalExecution: true,
+  },
+});
+```
+
+## Compaction
+
+Long-running conversations accumulate tool results that consume context. Toolsmesh provides compaction utilities that leverage the virtual filesystem to offload large results while keeping them accessible via `mesh_bash`.
+
+### Strategies
+
+| Strategy | Description | Use Case |
+|----------|-------------|----------|
+| `write-to-filesystem` | Store results in virtual filesystem with references | When results may be needed later |
+| `drop-results` | Remove results entirely with placeholder | When results are only needed immediately |
+
+### Usage
+
+```typescript
+import { compact, createCompactor, createToolsmesh } from "toolsmesh";
+
+const mesh = createToolsmesh({ tools });
+
+const { messages: compacted, bytesSaved } = compact(
+  messages,
+  mesh.filesystem,
+  {
+    strategy: "write-to-filesystem",
+    minSize: 500,
+  }
+);
+```
+
+## Code Execution
+
+Toolsmesh uses [just-bash](https://github.com/vercel-labs/just-bash) for simulating bash commands against the virtual filesystem.
+
+For TypeScript execution via `mesh_exec`, you must enable local execution:
+
+```typescript
+const middleware = createToolsmeshMiddleware({
+  tools: myTools,
+  sandbox: {
+    dangerouslyAllowLocalExecution: true,
+  },
+});
+```
+
+### Security Considerations
+
+When `dangerouslyAllowLocalExecution: true`:
+- TypeScript code runs via `new Function()` with access to `globalThis`
+- Only use with trusted AI models
+- Tool parameters are validated against Zod schemas before execution
+- Bash commands run in an isolated in-memory filesystem (no host access)
+
+## When to Use
+
+Toolsmesh is ideal when you have:
+
+- **Many tools** (10+) where loading all schemas wastes context
+- **Diverse tools** where models benefit from searching by functionality
+- **Complex workflows** requiring multiple tool calls in sequence
+- **Token constraints** requiring efficient context usage
+
+For simpler cases with few tools, direct tool calling may be more appropriate.

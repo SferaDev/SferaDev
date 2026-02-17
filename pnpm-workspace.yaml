@@ -70,6 +70,7 @@ catalog:
   html-to-image: 1.11.13
   is-tree-shakable: 0.4.2
   jszip: 3.10.1
+  just-bash: 1.0.1
   knip: 5.83.1
   lefthook: 2.1.1
   lucide-react: 0.564.0
