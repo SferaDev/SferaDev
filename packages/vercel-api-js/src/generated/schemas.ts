@@ -6634,6 +6634,10 @@ export const authTokenSchema = z
 		id: z.string().describe("The unique identifier of the token."),
 		name: z.string().describe("The human-readable name of the token."),
 		type: z.string().describe("The type of the token."),
+		prefix: z.optional(z.string().describe("The token's prefix, for identification purposes.")),
+		suffix: z.optional(
+			z.string().describe("The last few characters of the token, for identification purposes."),
+		),
 		origin: z.optional(z.string().describe("The origin of how the token was created.")),
 		scopes: z.optional(
 			z
@@ -6698,20 +6702,17 @@ export const authTokenSchema = z
 				)
 				.describe("The access scopes granted to the token."),
 		),
-		expiresAt: z.optional(
-			z.number().describe("Timestamp (in milliseconds) of when the token expires."),
-		),
+		createdAt: z.number().describe("Timestamp (in milliseconds) of when the token was created."),
 		activeAt: z
 			.number()
 			.describe("Timestamp (in milliseconds) of when the token was most recently used."),
-		createdAt: z.number().describe("Timestamp (in milliseconds) of when the token was created."),
+		expiresAt: z.optional(
+			z.number().describe("Timestamp (in milliseconds) of when the token expires."),
+		),
 		leakedAt: z.optional(
 			z.number().describe("Timestamp (in milliseconds) of when the token was marked as leaked."),
 		),
 		leakedUrl: z.optional(z.string().describe("URL where the token was discovered as leaked.")),
-		suffix: z.optional(
-			z.string().describe("The last few characters of the token, for identification purposes."),
-		),
 	})
 	.describe("Authentication token metadata.");
 
