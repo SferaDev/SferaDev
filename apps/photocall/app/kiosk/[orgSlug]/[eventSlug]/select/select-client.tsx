@@ -95,7 +95,7 @@ export default function KioskSelectPage() {
 								key={template._id}
 								type="button"
 								onClick={() => handleSelect(template._id as Id<"templates">)}
-								className="aspect-[3/4] rounded-lg overflow-hidden border-2 border-transparent hover:border-white transition-colors"
+								className="aspect-3/4 rounded-lg overflow-hidden border-2 border-transparent hover:border-white transition-colors"
 							>
 								{template.thumbnailUrl && (
 									<img

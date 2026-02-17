@@ -31,7 +31,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 						Back to Blog
 					</Link>
 
-					<h1 className="text-2xl md:text-3xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent leading-tight">
+					<h1 className="text-2xl md:text-3xl font-bold mb-4 bg-linear-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent leading-tight">
 						{post.title}
 					</h1>
 

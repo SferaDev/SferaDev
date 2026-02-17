@@ -221,7 +221,7 @@ export default function KioskResultPage() {
 
 						<div className="grid md:grid-cols-2 gap-8">
 							{/* Photo Preview */}
-							<div className="aspect-[3/4] bg-muted rounded-lg overflow-hidden">
+							<div className="aspect-3/4 bg-muted rounded-lg overflow-hidden">
 								{finalImageUrl && (
 									<img
 										src={finalImageUrl}

@@ -308,7 +308,7 @@ function TemplatesTab({
 				{templates.map((template) => (
 					<div
 						key={template._id}
-						className="relative group aspect-[3/4] rounded-lg overflow-hidden bg-muted border"
+						className="relative group aspect-3/4 rounded-lg overflow-hidden bg-muted border"
 					>
 						{template.thumbnailUrl && (
 							<img
@@ -324,7 +324,7 @@ function TemplatesTab({
 								</Link>
 							</Button>
 						</div>
-						<div className="absolute bottom-0 inset-x-0 p-2 bg-gradient-to-t from-black/80 to-transparent">
+						<div className="absolute bottom-0 inset-x-0 p-2 bg-linear-to-t from-black/80 to-transparent">
 							<p className="text-sm text-white font-medium truncate">{template.name}</p>
 							<p className="text-xs text-white/60">{template.enabled ? "Enabled" : "Disabled"}</p>
 						</div>
