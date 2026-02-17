@@ -20,7 +20,7 @@ export function BlogList({ posts, tags }: BlogClientWrapperProps) {
 
 	return (
 		<div className="flex gap-8">
-			<div className="w-64 flex-shrink-0">
+			<div className="w-64 shrink-0">
 				<div className="sticky top-24">
 					<h2 className="text-lg font-semibold mb-4 text-foreground">Filter by Tag</h2>
 					<div className="space-y-2">

@@ -20,7 +20,7 @@ export function HeroHeader() {
 	return (
 		<>
 			{/* Hero Section */}
-			<section className="relative bg-gradient-to-b from-background to-background/50 border-b">
+			<section className="relative bg-linear-to-b from-background to-background/50 border-b">
 				<div className="container mx-auto px-4 max-w-7xl">
 					<div className="text-center pt-16 pb-8">
 						<h1 className="text-4xl md:text-6xl font-bold tracking-tighter mb-6">
@@ -37,7 +37,7 @@ export function HeroHeader() {
 			<nav
 				className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
 					isScrolled
-						? "translate-y-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b shadow-sm"
+						? "translate-y-0 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 border-b shadow-sm"
 						: "-translate-y-full"
 				}`}
 			>
