@@ -33,6 +33,7 @@ import {
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { loadData, saveData } from "@/lib/storage";
 import type { Guest, GuestGroup, SeatingData, Table } from "@/lib/types";
 import { GuestPanel } from "./guest-panel";
@@ -924,47 +925,88 @@ function SeatingPlannerInner() {
 							className="bg-card border border-border rounded-lg shadow-lg"
 							showInteractive={false}
 						>
-							<ControlButton onClick={handleExportImage} title="Export as Image">
-								<ImageIcon className="w-4 h-4" />
-							</ControlButton>
-							<ControlButton onClick={handleExportJSON} title="Export as JSON">
-								<Download className="w-4 h-4" />
-							</ControlButton>
-							<ControlButton onClick={handleExportPDF} title="Export as PDF">
-								<FileText className="w-4 h-4" />
-							</ControlButton>
-							<ControlButton onClick={handleImportJSON} title="Import JSON">
-								<Upload className="w-4 h-4" />
-							</ControlButton>
-							<ControlButton onClick={handleAutoArrange} title="Auto Arrange">
-								<LayoutGrid className="w-4 h-4" />
-							</ControlButton>
-							<ControlButton
-								onClick={handleShareLink}
-								title={linkCopied ? "Link Copied!" : "Copy Shareable Link"}
-							>
-								{linkCopied ? <Check className="w-4 h-4" /> : <Link className="w-4 h-4" />}
-							</ControlButton>
-							<ControlButton
-								onClick={toggleFullscreen}
-								title={isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
-							>
-								{isFullscreen ? <Minimize className="w-4 h-4" /> : <Maximize className="w-4 h-4" />}
-							</ControlButton>
-							<ControlButton
-								onClick={toggleTheme}
-								title={
-									themeMounted && resolvedTheme === "dark"
-										? "Switch to light mode"
-										: "Switch to dark mode"
-								}
-							>
-								{themeMounted && resolvedTheme === "dark" ? (
-									<Sun className="w-4 h-4" />
-								) : (
-									<Moon className="w-4 h-4" />
-								)}
-							</ControlButton>
+							<TooltipProvider>
+								<Tooltip>
+									<TooltipTrigger asChild>
+										<ControlButton onClick={handleExportImage}>
+											<ImageIcon className="w-4 h-4" />
+										</ControlButton>
+									</TooltipTrigger>
+									<TooltipContent side="left">Export as Image</TooltipContent>
+								</Tooltip>
+								<Tooltip>
+									<TooltipTrigger asChild>
+										<ControlButton onClick={handleExportJSON}>
+											<Download className="w-4 h-4" />
+										</ControlButton>
+									</TooltipTrigger>
+									<TooltipContent side="left">Export as JSON</TooltipContent>
+								</Tooltip>
+								<Tooltip>
+									<TooltipTrigger asChild>
+										<ControlButton onClick={handleExportPDF}>
+											<FileText className="w-4 h-4" />
+										</ControlButton>
+									</TooltipTrigger>
+									<TooltipContent side="left">Export as PDF</TooltipContent>
+								</Tooltip>
+								<Tooltip>
+									<TooltipTrigger asChild>
+										<ControlButton onClick={handleImportJSON}>
+											<Upload className="w-4 h-4" />
+										</ControlButton>
+									</TooltipTrigger>
+									<TooltipContent side="left">Import JSON</TooltipContent>
+								</Tooltip>
+								<Tooltip>
+									<TooltipTrigger asChild>
+										<ControlButton onClick={handleAutoArrange}>
+											<LayoutGrid className="w-4 h-4" />
+										</ControlButton>
+									</TooltipTrigger>
+									<TooltipContent side="left">Auto Arrange</TooltipContent>
+								</Tooltip>
+								<Tooltip>
+									<TooltipTrigger asChild>
+										<ControlButton onClick={handleShareLink}>
+											{linkCopied ? <Check className="w-4 h-4" /> : <Link className="w-4 h-4" />}
+										</ControlButton>
+									</TooltipTrigger>
+									<TooltipContent side="left">
+										{linkCopied ? "Link Copied!" : "Copy Shareable Link"}
+									</TooltipContent>
+								</Tooltip>
+								<Tooltip>
+									<TooltipTrigger asChild>
+										<ControlButton onClick={toggleFullscreen}>
+											{isFullscreen ? (
+												<Minimize className="w-4 h-4" />
+											) : (
+												<Maximize className="w-4 h-4" />
+											)}
+										</ControlButton>
+									</TooltipTrigger>
+									<TooltipContent side="left">
+										{isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
+									</TooltipContent>
+								</Tooltip>
+								<Tooltip>
+									<TooltipTrigger asChild>
+										<ControlButton onClick={toggleTheme}>
+											{themeMounted && resolvedTheme === "dark" ? (
+												<Sun className="w-4 h-4" />
+											) : (
+												<Moon className="w-4 h-4" />
+											)}
+										</ControlButton>
+									</TooltipTrigger>
+									<TooltipContent side="left">
+										{themeMounted && resolvedTheme === "dark"
+											? "Switch to light mode"
+											: "Switch to dark mode"}
+									</TooltipContent>
+								</Tooltip>
+							</TooltipProvider>
 						</Controls>
 
 						{isDragging && alignmentLines.length > 0 && (
