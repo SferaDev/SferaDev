@@ -15584,6 +15584,16 @@ export type AuthToken = {
 	 */
 	type: string;
 	/**
+	 * @description The token\'s prefix, for identification purposes.
+	 * @type string | undefined
+	 */
+	prefix?: string | undefined;
+	/**
+	 * @description The last few characters of the token, for identification purposes.
+	 * @type string | undefined
+	 */
+	suffix?: string | undefined;
+	/**
 	 * @description The origin of how the token was created.
 	 * @type string | undefined
 	 */
@@ -15653,20 +15663,20 @@ export type AuthToken = {
 		  )[]
 		| undefined;
 	/**
-	 * @description Timestamp (in milliseconds) of when the token expires.
-	 * @type number | undefined
+	 * @description Timestamp (in milliseconds) of when the token was created.
+	 * @type number
 	 */
-	expiresAt?: number | undefined;
+	createdAt: number;
 	/**
 	 * @description Timestamp (in milliseconds) of when the token was most recently used.
 	 * @type number
 	 */
 	activeAt: number;
 	/**
-	 * @description Timestamp (in milliseconds) of when the token was created.
-	 * @type number
+	 * @description Timestamp (in milliseconds) of when the token expires.
+	 * @type number | undefined
 	 */
-	createdAt: number;
+	expiresAt?: number | undefined;
 	/**
 	 * @description Timestamp (in milliseconds) of when the token was marked as leaked.
 	 * @type number | undefined
@@ -15677,11 +15687,6 @@ export type AuthToken = {
 	 * @type string | undefined
 	 */
 	leakedUrl?: string | undefined;
-	/**
-	 * @description The last few characters of the token, for identification purposes.
-	 * @type string | undefined
-	 */
-	suffix?: string | undefined;
 };
 
 export const softBlockReasonEnum2 = {
