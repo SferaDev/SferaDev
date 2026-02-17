@@ -16,24 +16,31 @@ import type React from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import "@xyflow/react/dist/style.css";
 import { toPng } from "html-to-image";
+import { jsPDF } from "jspdf";
 import {
+	Check,
 	Download,
+	FileText,
 	ImageIcon,
+	LayoutGrid,
+	Link,
 	Maximize,
 	Minimize,
-	PanelLeftClose,
+	Moon,
 	PanelLeftOpen,
+	Sun,
 	Upload,
 } from "lucide-react";
+import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { loadData, saveData } from "@/lib/storage";
-import type { Guest, SeatingData, Table } from "@/lib/types";
+import type { Guest, GuestGroup, SeatingData, Table } from "@/lib/types";
 import { GuestPanel } from "./guest-panel";
+import { OnboardingModal } from "./onboarding-modal";
 import { TableNode } from "./table-node";
 
-const nodeTypes = {
-	tableNode: TableNode,
-};
+const nodeTypes = { tableNode: TableNode };
 
 function generateId() {
 	return Math.random().toString(36).substring(2, 9);
@@ -66,6 +73,17 @@ function SeatingPlannerInner() {
 	const [isFullscreen, setIsFullscreen] = useState(false);
 	const [alignmentLines, setAlignmentLines] = useState<AlignmentLine[]>([]);
 	const [isDragging, setIsDragging] = useState(false);
+	const { resolvedTheme, setTheme } = useTheme();
+	const [themeMounted, setThemeMounted] = useState(false);
+	const [linkCopied, setLinkCopied] = useState(false);
+
+	useEffect(() => {
+		setThemeMounted(true);
+	}, []);
+
+	const toggleTheme = useCallback(() => {
+		setTheme(resolvedTheme === "dark" ? "light" : "dark");
+	}, [resolvedTheme, setTheme]);
 	const reactFlowWrapper = useRef<HTMLDivElement>(null);
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const { getNodes, fitView } = useReactFlow();
@@ -130,6 +148,27 @@ function SeatingPlannerInner() {
 	}, []);
 
 	useEffect(() => {
+		// Check for shared data in URL
+		const params = new URLSearchParams(window.location.search);
+		const sharedData = params.get("data");
+		if (sharedData) {
+			try {
+				const decoded = JSON.parse(
+					new TextDecoder().decode(Uint8Array.from(atob(sharedData), (c) => c.charCodeAt(0))),
+				) as SeatingData;
+				if (!Array.isArray(decoded.guests) || !Array.isArray(decoded.tables)) {
+					throw new Error("Invalid data structure");
+				}
+				setGuests(decoded.guests);
+				setTables(decoded.tables);
+				// Clear the URL params after loading
+				window.history.replaceState({}, "", window.location.pathname);
+				setIsLoaded(true);
+				return;
+			} catch {
+				// Invalid data, fall through to load from storage
+			}
+		}
 		const data = loadData();
 		setGuests(data.guests);
 		setTables(data.tables);
@@ -157,16 +196,14 @@ function SeatingPlannerInner() {
 				onSwapGuests: handleSwapGuests,
 				onUpdateTable: handleUpdateTable,
 				onAssignGuest: (guestId: string) => {
-					const table_t = tables.find((t) => t.id === table.id);
-					if (!table_t) return;
-					const seatedGuests = guests.filter((g) => g.tableId === table.id);
-					if (seatedGuests.length >= table_t.seats) return;
-					const takenSeats = seatedGuests.map((g) => g.seatIndex);
-					let seatIndex = 0;
-					while (takenSeats.includes(seatIndex)) seatIndex++;
-					setGuests((prev) =>
-						prev.map((g) => (g.id === guestId ? { ...g, tableId: table.id, seatIndex } : g)),
-					);
+					setGuests((prev) => {
+						const seatedGuests = prev.filter((g) => g.tableId === table.id);
+						if (seatedGuests.length >= table.seats) return prev;
+						const takenSeats = seatedGuests.map((g) => g.seatIndex);
+						let seatIndex = 0;
+						while (takenSeats.includes(seatIndex)) seatIndex++;
+						return prev.map((g) => (g.id === guestId ? { ...g, tableId: table.id, seatIndex } : g));
+					});
 				},
 				onUpdateGuestPhoto: handleUpdateGuestPhoto,
 			},
@@ -183,14 +220,6 @@ function SeatingPlannerInner() {
 		handleUpdateTable,
 		handleUpdateGuestPhoto,
 	]);
-
-	useEffect(() => {
-		const handler = (e: CustomEvent<{ guestId: string; photo: string }>) => {
-			handleUpdateGuestPhoto(e.detail.guestId, e.detail.photo);
-		};
-		window.addEventListener("updateGuestPhoto", handler as EventListener);
-		return () => window.removeEventListener("updateGuestPhoto", handler as EventListener);
-	}, [handleUpdateGuestPhoto]);
 
 	const getNodeBounds = useCallback(
 		(node: Node) => {
@@ -398,12 +427,9 @@ function SeatingPlannerInner() {
 		},
 		[nodes, getNodeBounds],
 	);
-
 	const onNodesChange = useCallback(
 		(changes: NodeChange[]) => {
-			const updatedChanges = changes;
-
-			changes.forEach((change) => {
+			const updatedChanges = changes.map((change) => {
 				if (change.type === "position") {
 					if (change.dragging) {
 						setIsDragging(true);
@@ -412,19 +438,20 @@ function SeatingPlannerInner() {
 								change.id,
 								change.position,
 							);
-							change.position = snappedPosition;
 							setAlignmentLines(lines);
+							return { ...change, position: snappedPosition };
 						}
 					} else {
 						setIsDragging(false);
 						setAlignmentLines([]);
 					}
 				}
+				return change;
 			});
 
 			setNodes((nds) => applyNodeChanges(updatedChanges, nds));
 
-			changes.forEach((change) => {
+			updatedChanges.forEach((change) => {
 				if (change.type === "position" && change.dragging === false && change.position) {
 					const { x, y } = change.position;
 					setTables((prev) => prev.map((t) => (t.id === change.id ? { ...t, x, y } : t)));
@@ -434,13 +461,14 @@ function SeatingPlannerInner() {
 		[snapToAlignment],
 	);
 
-	const handleAddGuest = useCallback((name: string, photo: string | null) => {
+	const handleAddGuest = useCallback((name: string, photo: string | null, group?: GuestGroup) => {
 		const newGuest: Guest = {
 			id: generateId(),
 			name,
 			photo,
 			tableId: null,
 			seatIndex: null,
+			group,
 		};
 		setGuests((prev) => [...prev, newGuest]);
 	}, []);
@@ -472,27 +500,31 @@ function SeatingPlannerInner() {
 
 	const handleAssignGuest = useCallback(
 		(guestId: string, tableId: string) => {
-			const table = tables.find((t) => t.id === tableId);
-			if (!table) return;
+			setGuests((prev) => {
+				const table = tables.find((t) => t.id === tableId);
+				if (!table) return prev;
 
-			const seatedGuests = guests.filter((g) => g.tableId === tableId);
-			if (seatedGuests.length >= table.seats) return;
+				const seatedGuests = prev.filter((g) => g.tableId === tableId);
+				if (seatedGuests.length >= table.seats) return prev;
 
-			const takenSeats = seatedGuests.map((g) => g.seatIndex);
-			let seatIndex = 0;
-			while (takenSeats.includes(seatIndex)) seatIndex++;
-			setGuests((prev) => prev.map((g) => (g.id === guestId ? { ...g, tableId, seatIndex } : g)));
+				const takenSeats = seatedGuests.map((g) => g.seatIndex);
+				let seatIndex = 0;
+				while (takenSeats.includes(seatIndex)) seatIndex++;
+				return prev.map((g) => (g.id === guestId ? { ...g, tableId, seatIndex } : g));
+			});
 		},
-		[tables, guests],
+		[tables],
 	);
 
-	const toggleFullscreen = useCallback(() => {
-		if (!document.fullscreenElement) {
-			reactFlowWrapper.current?.requestFullscreen();
-			setIsFullscreen(true);
-		} else {
-			document.exitFullscreen();
-			setIsFullscreen(false);
+	const toggleFullscreen = useCallback(async () => {
+		try {
+			if (!document.fullscreenElement) {
+				await reactFlowWrapper.current?.requestFullscreen();
+			} else {
+				await document.exitFullscreen();
+			}
+		} catch {
+			// Fullscreen not supported or permission denied
 		}
 	}, []);
 
@@ -507,6 +539,8 @@ function SeatingPlannerInner() {
 	const handleExportImage = useCallback(async () => {
 		const currentNodes = getNodes();
 		if (currentNodes.length === 0) return;
+
+		const exportBg = resolvedTheme === "dark" ? "#1f1c18" : "#faf8f5";
 
 		const bounds = getNodesBounds(currentNodes);
 		const padding = 80;
@@ -536,7 +570,7 @@ function SeatingPlannerInner() {
 		if (!flowElement) return;
 
 		const originalBg = flowElement.style.backgroundColor;
-		flowElement.style.backgroundColor = "#faf8f5";
+		flowElement.style.backgroundColor = exportBg;
 
 		fitView();
 
@@ -550,7 +584,7 @@ function SeatingPlannerInner() {
 			tempContainer.style.top = "0";
 			tempContainer.style.width = `${contentWidth}px`;
 			tempContainer.style.height = `${contentHeight}px`;
-			tempContainer.style.backgroundColor = "#faf8f5";
+			tempContainer.style.backgroundColor = exportBg;
 			tempContainer.style.zIndex = "-9999";
 			tempContainer.style.overflow = "visible";
 			document.body.appendChild(tempContainer);
@@ -570,7 +604,7 @@ function SeatingPlannerInner() {
 			tempContainer.appendChild(clonedNodes);
 
 			const dataUrl = await toPng(tempContainer, {
-				backgroundColor: "#faf8f5",
+				backgroundColor: exportBg,
 				quality: 1,
 				pixelRatio: 3,
 				skipFonts: true,
@@ -593,7 +627,7 @@ function SeatingPlannerInner() {
 			});
 			flowElement.style.backgroundColor = originalBg;
 		}
-	}, [getNodes, tables, fitView]);
+	}, [getNodes, tables, fitView, resolvedTheme]);
 
 	const handleExportJSON = useCallback(() => {
 		const data: SeatingData = { guests, tables };
@@ -607,6 +641,123 @@ function SeatingPlannerInner() {
 		link.click();
 
 		URL.revokeObjectURL(url);
+	}, [guests, tables]);
+
+	const handleExportPDF = useCallback(() => {
+		const doc = new jsPDF();
+		const pageWidth = doc.internal.pageSize.getWidth();
+		const margin = 20;
+		let yPosition = 20;
+
+		// Title
+		doc.setFontSize(24);
+		doc.setFont("helvetica", "bold");
+		doc.text("Wedding Seating Plan", pageWidth / 2, yPosition, { align: "center" });
+		yPosition += 15;
+
+		// Date
+		doc.setFontSize(12);
+		doc.setFont("helvetica", "normal");
+		const today = new Date().toLocaleDateString("en-US", {
+			weekday: "long",
+			year: "numeric",
+			month: "long",
+			day: "numeric",
+		});
+		doc.text(today, pageWidth / 2, yPosition, { align: "center" });
+		yPosition += 20;
+
+		// Separator line
+		doc.setDrawColor(196, 164, 132);
+		doc.setLineWidth(0.5);
+		doc.line(margin, yPosition, pageWidth - margin, yPosition);
+		yPosition += 15;
+
+		// Tables section
+		const sortedTables = [...tables].sort((a, b) => a.name.localeCompare(b.name));
+
+		for (const table of sortedTables) {
+			const tableGuests = guests
+				.filter((g) => g.tableId === table.id)
+				.sort((a, b) => (a.seatIndex ?? 0) - (b.seatIndex ?? 0));
+
+			// Check if we need a new page
+			const estimatedHeight = 25 + tableGuests.length * 8;
+			if (yPosition + estimatedHeight > doc.internal.pageSize.getHeight() - 30) {
+				doc.addPage();
+				yPosition = 20;
+			}
+
+			// Table name
+			doc.setFontSize(14);
+			doc.setFont("helvetica", "bold");
+			doc.setTextColor(122, 86, 56);
+			doc.text(table.name, margin, yPosition);
+
+			// Table info (shape, seats)
+			doc.setFontSize(10);
+			doc.setFont("helvetica", "normal");
+			doc.setTextColor(128, 128, 128);
+			const tableInfo = `${table.shape === "round" ? "Round" : "Rectangle"} - ${table.seats} seats`;
+			doc.text(tableInfo, pageWidth - margin, yPosition, { align: "right" });
+			yPosition += 8;
+
+			// Guests list
+			doc.setTextColor(0, 0, 0);
+			doc.setFontSize(11);
+
+			if (tableGuests.length === 0) {
+				doc.setTextColor(150, 150, 150);
+				doc.text("  No guests assigned", margin, yPosition);
+				yPosition += 7;
+			} else {
+				for (const guest of tableGuests) {
+					const seatNum = guest.seatIndex !== null ? guest.seatIndex + 1 : "-";
+					const groupLabel = guest.group ? ` (${guest.group})` : "";
+					doc.text(`  Seat ${seatNum}: ${guest.name}${groupLabel}`, margin, yPosition);
+					yPosition += 7;
+				}
+			}
+
+			yPosition += 8;
+		}
+
+		// Summary section
+		if (yPosition + 50 > doc.internal.pageSize.getHeight() - 30) {
+			doc.addPage();
+			yPosition = 20;
+		}
+
+		// Separator line
+		doc.setDrawColor(196, 164, 132);
+		doc.line(margin, yPosition, pageWidth - margin, yPosition);
+		yPosition += 15;
+
+		// Summary
+		doc.setFontSize(14);
+		doc.setFont("helvetica", "bold");
+		doc.setTextColor(122, 86, 56);
+		doc.text("Summary", margin, yPosition);
+		yPosition += 10;
+
+		doc.setFontSize(11);
+		doc.setFont("helvetica", "normal");
+		doc.setTextColor(0, 0, 0);
+
+		const seatedGuests = guests.filter((g) => g.tableId !== null).length;
+		const unseatedGuestsCount = guests.filter((g) => g.tableId === null).length;
+		const totalSeats = tables.reduce((sum, t) => sum + t.seats, 0);
+
+		doc.text(`Total Tables: ${tables.length}`, margin, yPosition);
+		yPosition += 7;
+		doc.text(`Total Seats: ${totalSeats}`, margin, yPosition);
+		yPosition += 7;
+		doc.text(`Seated Guests: ${seatedGuests}`, margin, yPosition);
+		yPosition += 7;
+		doc.text(`Unseated Guests: ${unseatedGuestsCount}`, margin, yPosition);
+
+		// Save the PDF
+		doc.save("wedding-seating-plan.pdf");
 	}, [guests, tables]);
 
 	const handleImportJSON = useCallback(() => {
@@ -630,7 +781,6 @@ function SeatingPlannerInner() {
 				setTables(data.tables);
 			} catch (error) {
 				console.error("Failed to import JSON:", error);
-				alert("Failed to import file. Please ensure it's a valid seating plan JSON file.");
 			}
 		};
 		reader.readAsText(file);
@@ -638,10 +788,70 @@ function SeatingPlannerInner() {
 		e.target.value = "";
 	}, []);
 
+	const handleAutoArrange = useCallback(() => {
+		if (tables.length === 0) return;
+
+		// Calculate the maximum width and height of all tables using getNodeBounds
+		let maxWidth = 0;
+		let maxHeight = 0;
+		for (const table of tables) {
+			const node = nodes.find((n) => n.id === table.id);
+			if (node) {
+				const bounds = getNodeBounds(node);
+				maxWidth = Math.max(maxWidth, bounds.width);
+				maxHeight = Math.max(maxHeight, bounds.height);
+			}
+		}
+
+		// Calculate grid layout
+		const cols = Math.ceil(Math.sqrt(tables.length));
+		const spacing = 150;
+
+		// Update table positions
+		setTables((prev) =>
+			prev.map((table, i) => {
+				const col = i % cols;
+				const row = Math.floor(i / cols);
+				return {
+					...table,
+					x: col * (maxWidth + spacing) + 100,
+					y: row * (maxHeight + spacing) + 100,
+				};
+			}),
+		);
+
+		// Fit view after a short delay to allow state to update
+		setTimeout(() => {
+			fitView({ padding: 0.2, duration: 300 });
+		}, 50);
+	}, [tables, nodes, getNodeBounds, fitView]);
+
+	const handleShareLink = useCallback(async () => {
+		const data: SeatingData = { guests, tables };
+		const encoded = btoa(String.fromCharCode(...new TextEncoder().encode(JSON.stringify(data))));
+		const url = `${window.location.origin}${window.location.pathname}?data=${encoded}`;
+		try {
+			await navigator.clipboard.writeText(url);
+			setLinkCopied(true);
+			setTimeout(() => setLinkCopied(false), 2000);
+		} catch {
+			// Fallback: select text from a temporary input
+			const input = document.createElement("input");
+			input.value = url;
+			document.body.appendChild(input);
+			input.select();
+			document.execCommand("copy");
+			document.body.removeChild(input);
+			setLinkCopied(true);
+			setTimeout(() => setLinkCopied(false), 2000);
+		}
+	}, [guests, tables]);
+
 	const unseatedGuests = guests.filter((g) => g.tableId === null);
 
 	return (
 		<div className="flex flex-col h-dvh overflow-hidden bg-background">
+			<OnboardingModal />
 			<input
 				ref={fileInputRef}
 				type="file"
@@ -651,24 +861,22 @@ function SeatingPlannerInner() {
 			/>
 
 			<div className="flex flex-1 overflow-hidden relative">
-				<Button
-					variant="outline"
-					size="icon"
-					className="absolute left-2 top-2 z-20 lg:hidden shadow-md bg-card"
-					onClick={() => setIsPanelOpen(!isPanelOpen)}
-				>
-					{isPanelOpen ? (
-						<PanelLeftClose className="w-5 h-5" />
-					) : (
+				{!isPanelOpen && (
+					<Button
+						variant="outline"
+						size="icon"
+						className="absolute left-2 top-2 z-20 md:hidden shadow-md bg-card"
+						onClick={() => setIsPanelOpen(true)}
+					>
 						<PanelLeftOpen className="w-5 h-5" />
-					)}
-				</Button>
+					</Button>
+				)}
 
 				<div
 					className={`
-            absolute lg:relative inset-y-0 left-0 z-10 
+            absolute md:relative inset-y-0 left-0 z-10 
             transition-transform duration-300 ease-in-out
-            ${isPanelOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+            ${isPanelOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
           `}
 				>
 					<GuestPanel
@@ -684,17 +892,20 @@ function SeatingPlannerInner() {
 				</div>
 
 				{isPanelOpen && (
-					<div
-						className="absolute inset-0 bg-black/20 z-5 lg:hidden"
+					<button
+						type="button"
+						className="absolute inset-0 bg-black/20 z-5 md:hidden cursor-default"
 						onClick={() => setIsPanelOpen(false)}
+						onKeyDown={(e) => e.key === "Escape" && setIsPanelOpen(false)}
+						aria-label="Close panel"
 					/>
 				)}
 
 				<div ref={reactFlowWrapper} className="flex-1 bg-muted/30 relative">
 					<ReactFlow
 						nodes={nodes}
-						onNodesChange={onNodesChange}
 						nodeTypes={nodeTypes}
+						onNodesChange={onNodesChange}
 						fitView
 						className="bg-muted/30"
 						panOnScroll={false}
@@ -714,21 +925,88 @@ function SeatingPlannerInner() {
 							className="bg-card border border-border rounded-lg shadow-lg"
 							showInteractive={false}
 						>
-							<ControlButton onClick={handleExportImage} title="Export as Image">
-								<ImageIcon className="w-4 h-4" />
-							</ControlButton>
-							<ControlButton onClick={handleExportJSON} title="Export as JSON">
-								<Download className="w-4 h-4" />
-							</ControlButton>
-							<ControlButton onClick={handleImportJSON} title="Import JSON">
-								<Upload className="w-4 h-4" />
-							</ControlButton>
-							<ControlButton
-								onClick={toggleFullscreen}
-								title={isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
-							>
-								{isFullscreen ? <Minimize className="w-4 h-4" /> : <Maximize className="w-4 h-4" />}
-							</ControlButton>
+							<TooltipProvider>
+								<Tooltip>
+									<TooltipTrigger asChild>
+										<ControlButton onClick={handleExportImage}>
+											<ImageIcon className="w-4 h-4" />
+										</ControlButton>
+									</TooltipTrigger>
+									<TooltipContent side="left">Export as Image</TooltipContent>
+								</Tooltip>
+								<Tooltip>
+									<TooltipTrigger asChild>
+										<ControlButton onClick={handleExportJSON}>
+											<Download className="w-4 h-4" />
+										</ControlButton>
+									</TooltipTrigger>
+									<TooltipContent side="left">Export as JSON</TooltipContent>
+								</Tooltip>
+								<Tooltip>
+									<TooltipTrigger asChild>
+										<ControlButton onClick={handleExportPDF}>
+											<FileText className="w-4 h-4" />
+										</ControlButton>
+									</TooltipTrigger>
+									<TooltipContent side="left">Export as PDF</TooltipContent>
+								</Tooltip>
+								<Tooltip>
+									<TooltipTrigger asChild>
+										<ControlButton onClick={handleImportJSON}>
+											<Upload className="w-4 h-4" />
+										</ControlButton>
+									</TooltipTrigger>
+									<TooltipContent side="left">Import JSON</TooltipContent>
+								</Tooltip>
+								<Tooltip>
+									<TooltipTrigger asChild>
+										<ControlButton onClick={handleAutoArrange}>
+											<LayoutGrid className="w-4 h-4" />
+										</ControlButton>
+									</TooltipTrigger>
+									<TooltipContent side="left">Auto Arrange</TooltipContent>
+								</Tooltip>
+								<Tooltip>
+									<TooltipTrigger asChild>
+										<ControlButton onClick={handleShareLink}>
+											{linkCopied ? <Check className="w-4 h-4" /> : <Link className="w-4 h-4" />}
+										</ControlButton>
+									</TooltipTrigger>
+									<TooltipContent side="left">
+										{linkCopied ? "Link Copied!" : "Copy Shareable Link"}
+									</TooltipContent>
+								</Tooltip>
+								<Tooltip>
+									<TooltipTrigger asChild>
+										<ControlButton onClick={toggleFullscreen}>
+											{isFullscreen ? (
+												<Minimize className="w-4 h-4" />
+											) : (
+												<Maximize className="w-4 h-4" />
+											)}
+										</ControlButton>
+									</TooltipTrigger>
+									<TooltipContent side="left">
+										{isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
+									</TooltipContent>
+								</Tooltip>
+								<Tooltip>
+									<TooltipTrigger asChild>
+										<ControlButton onClick={toggleTheme}>
+											{themeMounted && resolvedTheme === "dark" ? (
+												<Sun className="w-4 h-4" />
+											) : (
+												<Moon className="w-4 h-4" />
+											)}
+										</ControlButton>
+									</TooltipTrigger>
+									<TooltipContent side="left">
+										{themeMounted && resolvedTheme === "dark"
+											? "Switch to light mode"
+											: "Switch to dark mode"}
+									</TooltipContent>
+								</Tooltip>
+							</TooltipProvider>
 						</Controls>
 
 						{isDragging && alignmentLines.length > 0 && (
