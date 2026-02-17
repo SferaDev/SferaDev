@@ -28,7 +28,7 @@ export default function SharePage({ params }: { params: Promise<{ token: string 
 	// Loading state
 	if (photo === undefined) {
 		return (
-			<div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-rose-50 to-white dark:from-rose-950 dark:to-background">
+			<div className="flex min-h-screen items-center justify-center bg-linear-to-b from-rose-50 to-white dark:from-rose-950 dark:to-background">
 				<div className="h-12 w-12 animate-spin rounded-full border-4 border-rose-500 border-t-transparent" />
 			</div>
 		);
@@ -37,7 +37,7 @@ export default function SharePage({ params }: { params: Promise<{ token: string 
 	// Not found state
 	if (photo === null) {
 		return (
-			<div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-gradient-to-b from-rose-50 to-white p-8 dark:from-rose-950 dark:to-background">
+			<div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-linear-to-b from-rose-50 to-white p-8 dark:from-rose-950 dark:to-background">
 				<Camera className="h-20 w-20 text-muted-foreground" />
 				<div className="text-center">
 					<h1 className="mb-2 text-2xl font-bold">Photo Not Found</h1>
@@ -54,7 +54,7 @@ export default function SharePage({ params }: { params: Promise<{ token: string 
 	}
 
 	return (
-		<div className="min-h-screen bg-gradient-to-b from-rose-50 to-white dark:from-rose-950 dark:to-background">
+		<div className="min-h-screen bg-linear-to-b from-rose-50 to-white dark:from-rose-950 dark:to-background">
 			{/* Header */}
 			<header className="border-b bg-background/80 backdrop-blur-sm">
 				<div className="container mx-auto flex items-center justify-between px-4 py-4">
@@ -68,7 +68,7 @@ export default function SharePage({ params }: { params: Promise<{ token: string 
 			<main className="container mx-auto flex flex-col items-center gap-8 px-4 py-8">
 				{/* Photo Card */}
 				<Card className="w-full max-w-2xl overflow-hidden">
-					<div className="relative aspect-[3/4] w-full bg-muted">
+					<div className="relative aspect-3/4 w-full bg-muted">
 						{/* eslint-disable-next-line @next/next/no-img-element */}
 						<img
 							src={photo.url ?? ""}

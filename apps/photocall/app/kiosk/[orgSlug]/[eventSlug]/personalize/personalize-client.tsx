@@ -88,7 +88,7 @@ export default function KioskPersonalizePage() {
 
 				<div className="grid md:grid-cols-2 gap-8">
 					{/* Preview */}
-					<div className="aspect-[3/4] bg-muted rounded-lg overflow-hidden">
+					<div className="aspect-3/4 bg-muted rounded-lg overflow-hidden">
 						{session.capturedImageUrl && (
 							<img
 								src={session.capturedImageUrl}

@@ -16,7 +16,7 @@ export default async function LandingPage({ params }: Props) {
 	const t = await getTranslations();
 
 	return (
-		<div className="min-h-screen bg-gradient-to-b from-rose-50 to-white dark:from-rose-950 dark:to-background">
+		<div className="min-h-screen bg-linear-to-b from-rose-50 to-white dark:from-rose-950 dark:to-background">
 			{/* Hero Section */}
 			<header className="container mx-auto px-4 py-6">
 				<nav className="flex items-center justify-between">
@@ -42,7 +42,7 @@ export default async function LandingPage({ params }: Props) {
 					<div className="mx-auto max-w-3xl">
 						<h1 className="mb-6 text-5xl font-bold tracking-tight md:text-6xl">
 							{t("hero.title")}
-							<span className="bg-gradient-to-r from-rose-500 to-pink-500 bg-clip-text text-transparent">
+							<span className="bg-linear-to-r from-rose-500 to-pink-500 bg-clip-text text-transparent">
 								{" "}
 								{t("hero.titleHighlight")}
 							</span>
@@ -145,7 +145,7 @@ export default async function LandingPage({ params }: Props) {
 									<ul className="space-y-3">
 										{(t.raw("pricing.free.features") as string[]).map((feature, index) => (
 											<li key={index} className="flex items-center gap-2">
-												<Check className="h-4 w-4 text-green-500 flex-shrink-0" />
+												<Check className="h-4 w-4 text-green-500 shrink-0" />
 												<span className="text-sm">{feature}</span>
 											</li>
 										))}
@@ -176,7 +176,7 @@ export default async function LandingPage({ params }: Props) {
 									<ul className="space-y-3">
 										{(t.raw("pricing.paid.features") as string[]).map((feature, index) => (
 											<li key={index} className="flex items-center gap-2">
-												<Check className="h-4 w-4 text-green-500 flex-shrink-0" />
+												<Check className="h-4 w-4 text-green-500 shrink-0" />
 												<span className="text-sm">{feature}</span>
 											</li>
 										))}
@@ -222,7 +222,7 @@ export default async function LandingPage({ params }: Props) {
 
 				{/* CTA */}
 				<section className="container mx-auto px-4 py-20 text-center">
-					<Card className="mx-auto max-w-2xl bg-gradient-to-r from-rose-500 to-pink-500 text-white">
+					<Card className="mx-auto max-w-2xl bg-linear-to-r from-rose-500 to-pink-500 text-white">
 						<CardContent className="p-10">
 							<h2 className="mb-4 text-3xl font-bold">{t("cta.title")}</h2>
 							<p className="mb-6 text-rose-100">{t("cta.subtitle")}</p>
