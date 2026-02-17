@@ -57926,7 +57926,10 @@ export type TlsCertificatesAndHostnamesSettingObjectDelete = {
 };
 
 /**
- * The TLS Setting name.
+ * The TLS Setting name. The value type depends on the setting:
+ * - `ciphers`: value is an array of cipher suite strings (e.g., `["ECDHE-RSA-AES128-GCM-SHA256", "AES128-GCM-SHA256"]`)
+ * - `min_tls_version`: value is a TLS version string (`"1.0"`, `"1.1"`, `"1.2"`, or `"1.3"`)
+ * - `http2`: value is `"on"` or `"off"`
  *
  * @x-auditable true
  */
@@ -58447,12 +58450,15 @@ export type TlsCertificatesAndHostnamesValidityDays = 14 | 30 | 90 | 365;
 export type TlsCertificatesAndHostnamesValidityPeriod = 90;
 
 /**
- * The tls setting value.
- *
- * @example ECDHE-RSA-AES128-GCM-SHA256
- * @example AES128-GCM-SHA256
+ * The TLS setting value. The type depends on the `setting_id` used in the request path:
+ * - `ciphers`: an array of allowed cipher suite strings in BoringSSL format (e.g., `["ECDHE-RSA-AES128-GCM-SHA256", "AES128-GCM-SHA256"]`)
+ * - `min_tls_version`: a string indicating the minimum TLS version — one of `"1.0"`, `"1.1"`, `"1.2"`, or `"1.3"` (e.g., `"1.2"`)
+ * - `http2`: a string indicating whether HTTP/2 is enabled — `"on"` or `"off"` (e.g., `"on"`)
  */
-export type TlsCertificatesAndHostnamesValue = number | string | string[];
+export type TlsCertificatesAndHostnamesValue =
+	| string[]
+	| ("1.0" | "1.1" | "1.2" | "1.3")
+	| ("on" | "off");
 
 export type TlsCertificatesAndHostnamesVerification = {
 	brand_check?: TlsCertificatesAndHostnamesBrandCheck;
