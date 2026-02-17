@@ -152,7 +152,9 @@ function SeatingPlannerInner() {
 		const sharedData = params.get("data");
 		if (sharedData) {
 			try {
-				const decoded = JSON.parse(decodeURIComponent(escape(atob(sharedData)))) as SeatingData;
+				const decoded = JSON.parse(
+					new TextDecoder().decode(Uint8Array.from(atob(sharedData), (c) => c.charCodeAt(0))),
+				) as SeatingData;
 				if (!Array.isArray(decoded.guests) || !Array.isArray(decoded.tables)) {
 					throw new Error("Invalid data structure");
 				}
@@ -193,16 +195,14 @@ function SeatingPlannerInner() {
 				onSwapGuests: handleSwapGuests,
 				onUpdateTable: handleUpdateTable,
 				onAssignGuest: (guestId: string) => {
-					const table_t = tables.find((t) => t.id === table.id);
-					if (!table_t) return;
-					const seatedGuests = guests.filter((g) => g.tableId === table.id);
-					if (seatedGuests.length >= table_t.seats) return;
-					const takenSeats = seatedGuests.map((g) => g.seatIndex);
-					let seatIndex = 0;
-					while (takenSeats.includes(seatIndex)) seatIndex++;
-					setGuests((prev) =>
-						prev.map((g) => (g.id === guestId ? { ...g, tableId: table.id, seatIndex } : g)),
-					);
+					setGuests((prev) => {
+						const seatedGuests = prev.filter((g) => g.tableId === table.id);
+						if (seatedGuests.length >= table.seats) return prev;
+						const takenSeats = seatedGuests.map((g) => g.seatIndex);
+						let seatIndex = 0;
+						while (takenSeats.includes(seatIndex)) seatIndex++;
+						return prev.map((g) => (g.id === guestId ? { ...g, tableId: table.id, seatIndex } : g));
+					});
 				},
 				onUpdateGuestPhoto: handleUpdateGuestPhoto,
 			},
@@ -219,14 +219,6 @@ function SeatingPlannerInner() {
 		handleUpdateTable,
 		handleUpdateGuestPhoto,
 	]);
-
-	useEffect(() => {
-		const handler = (e: CustomEvent<{ guestId: string; photo: string }>) => {
-			handleUpdateGuestPhoto(e.detail.guestId, e.detail.photo);
-		};
-		window.addEventListener("updateGuestPhoto", handler as EventListener);
-		return () => window.removeEventListener("updateGuestPhoto", handler as EventListener);
-	}, [handleUpdateGuestPhoto]);
 
 	const getNodeBounds = useCallback(
 		(node: Node) => {
@@ -436,9 +428,7 @@ function SeatingPlannerInner() {
 	);
 	const onNodesChange = useCallback(
 		(changes: NodeChange[]) => {
-			const updatedChanges = changes;
-
-			changes.forEach((change) => {
+			const updatedChanges = changes.map((change) => {
 				if (change.type === "position") {
 					if (change.dragging) {
 						setIsDragging(true);
@@ -447,19 +437,20 @@ function SeatingPlannerInner() {
 								change.id,
 								change.position,
 							);
-							change.position = snappedPosition;
 							setAlignmentLines(lines);
+							return { ...change, position: snappedPosition };
 						}
 					} else {
 						setIsDragging(false);
 						setAlignmentLines([]);
 					}
 				}
+				return change;
 			});
 
 			setNodes((nds) => applyNodeChanges(updatedChanges, nds));
 
-			changes.forEach((change) => {
+			updatedChanges.forEach((change) => {
 				if (change.type === "position" && change.dragging === false && change.position) {
 					const { x, y } = change.position;
 					setTables((prev) => prev.map((t) => (t.id === change.id ? { ...t, x, y } : t)));
@@ -508,18 +499,20 @@ function SeatingPlannerInner() {
 
 	const handleAssignGuest = useCallback(
 		(guestId: string, tableId: string) => {
-			const table = tables.find((t) => t.id === tableId);
-			if (!table) return;
+			setGuests((prev) => {
+				const table = tables.find((t) => t.id === tableId);
+				if (!table) return prev;
 
-			const seatedGuests = guests.filter((g) => g.tableId === tableId);
-			if (seatedGuests.length >= table.seats) return;
+				const seatedGuests = prev.filter((g) => g.tableId === tableId);
+				if (seatedGuests.length >= table.seats) return prev;
 
-			const takenSeats = seatedGuests.map((g) => g.seatIndex);
-			let seatIndex = 0;
-			while (takenSeats.includes(seatIndex)) seatIndex++;
-			setGuests((prev) => prev.map((g) => (g.id === guestId ? { ...g, tableId, seatIndex } : g)));
+				const takenSeats = seatedGuests.map((g) => g.seatIndex);
+				let seatIndex = 0;
+				while (takenSeats.includes(seatIndex)) seatIndex++;
+				return prev.map((g) => (g.id === guestId ? { ...g, tableId, seatIndex } : g));
+			});
 		},
-		[tables, guests],
+		[tables],
 	);
 
 	const toggleFullscreen = useCallback(async () => {
@@ -545,6 +538,8 @@ function SeatingPlannerInner() {
 	const handleExportImage = useCallback(async () => {
 		const currentNodes = getNodes();
 		if (currentNodes.length === 0) return;
+
+		const exportBg = resolvedTheme === "dark" ? "#1f1c18" : "#faf8f5";
 
 		const bounds = getNodesBounds(currentNodes);
 		const padding = 80;
@@ -574,7 +569,7 @@ function SeatingPlannerInner() {
 		if (!flowElement) return;
 
 		const originalBg = flowElement.style.backgroundColor;
-		flowElement.style.backgroundColor = "#faf8f5";
+		flowElement.style.backgroundColor = exportBg;
 
 		fitView();
 
@@ -588,7 +583,7 @@ function SeatingPlannerInner() {
 			tempContainer.style.top = "0";
 			tempContainer.style.width = `${contentWidth}px`;
 			tempContainer.style.height = `${contentHeight}px`;
-			tempContainer.style.backgroundColor = "#faf8f5";
+			tempContainer.style.backgroundColor = exportBg;
 			tempContainer.style.zIndex = "-9999";
 			tempContainer.style.overflow = "visible";
 			document.body.appendChild(tempContainer);
@@ -608,7 +603,7 @@ function SeatingPlannerInner() {
 			tempContainer.appendChild(clonedNodes);
 
 			const dataUrl = await toPng(tempContainer, {
-				backgroundColor: "#faf8f5",
+				backgroundColor: exportBg,
 				quality: 1,
 				pixelRatio: 3,
 				skipFonts: true,
@@ -631,7 +626,7 @@ function SeatingPlannerInner() {
 			});
 			flowElement.style.backgroundColor = originalBg;
 		}
-	}, [getNodes, tables, fitView]);
+	}, [getNodes, tables, fitView, resolvedTheme]);
 
 	const handleExportJSON = useCallback(() => {
 		const data: SeatingData = { guests, tables };
@@ -832,7 +827,7 @@ function SeatingPlannerInner() {
 
 	const handleShareLink = useCallback(async () => {
 		const data: SeatingData = { guests, tables };
-		const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+		const encoded = btoa(String.fromCharCode(...new TextEncoder().encode(JSON.stringify(data))));
 		const url = `${window.location.origin}${window.location.pathname}?data=${encoded}`;
 		try {
 			await navigator.clipboard.writeText(url);
