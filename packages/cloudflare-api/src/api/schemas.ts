@@ -56438,8 +56438,10 @@ export type TlsCertificatesAndHostnamesCertificatesComponentsSchemasCertificate 
 
 /**
  * The Client Certificate PEM
- *
- * @example -----BEGIN CERTIFICATE-----\nMIIDmDCCAoC...dhDDE\n-----END CERTIFICATE-----
+ * 
+ * @example -----BEGIN CERTIFICATE-----
+MIIDmDCCAoC...dhDDE
+-----END CERTIFICATE-----
  */
 export type TlsCertificatesAndHostnamesClientCertificatesComponentsSchemasCertificate = string;
 
@@ -57624,8 +57626,29 @@ export type TlsCertificatesAndHostnamesRevokedAt = string;
 
 /**
  * The zone's SSL certificate or SSL certificate and intermediate(s).
- *
- * @example -----BEGIN CERTIFICATE----- MIIDtTCCAp2gAwIBAgIJAM15n7fdxhRtMA0GCSqGSIb3DQEBBQUAMEUxCzAJBgNV BAYTAlVTMRMwEQYDVQQIEwpTb21lLVN0YXRlMSEwHwYDVQQKExhJbnRlcm5ldCBX aWRnaXRzIFB0eSBMdGQwHhcNMTQwMzExMTkyMTU5WhcNMTQwNDEwMTkyMTU5WjBF MQswCQYDVQQGEwJVUzETMBEGA1UECBMKU29tZS1TdGF0ZTEhMB8GA1UEChMYSW50 ZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIB CgKCAQEAvq3sKsHpeduJHimOK+fvQdKsI8z8A05MZyyLp2/R/GE8FjNv+hkVY1WQ LIyTNNQH7CJecE1nbTfo8Y56S7x/rhxC6/DJ8MIulapFPnorq46KU6yRxiM0MQ3N nTJHlHA2ozZta6YBBfVfhHWl1F0IfNbXCLKvGwWWMbCx43OfW6KTkbRnE6gFWKuO fSO5h2u5TaWVuSIzBvYs7Vza6m+gtYAvKAJV2nSZ+eSEFPDo29corOy8+huEOUL8 5FAw4BFPsr1TlrlGPFitduQUHGrSL7skk1ESGza0to3bOtrodKei2s9bk5MXm7lZ qI+WZJX4Zu9+mzZhc9pCVi8r/qlXuQIDAQABo4GnMIGkMB0GA1UdDgQWBBRvavf+ sWM4IwKiH9X9w1vl6nUVRDB1BgNVHSMEbjBsgBRvavf+sWM4IwKiH9X9w1vl6nUV RKFJpEcwRTELMAkGA1UEBhMCVVMxEzARBgNVBAgTClNvbWUtU3RhdGUxITAfBgNV BAoTGEludGVybmV0IFdpZGdpdHMgUHR5IEx0ZIIJAM15n7fdxhRtMAwGA1UdEwQF MAMBAf8wDQYJKoZIhvcNAQEFBQADggEBABY2ZzBaW0dMsAAT7tPJzrVWVzQx6KU4 UEBLudIlWPlkAwTnINCWR/8eNjCCmGA4heUdHmazdpPa8RzwOmc0NT1NQqzSyktt vTqb4iHD7+8f9MqJ9/FssCfTtqr/Qst/hGH4Wmdf1EJ/6FqYAAb5iRlPgshFZxU8 uXtA8hWn6fK6eISD9HBdcAFToUvKNZ1BIDPvh9f95Ine8ar6yGd56TUNrHR8eHBs ESxz5ddVR/oWRysNJ+aGAyYqHS8S/ttmC7r4XCAHqXptkHPCGRqkAhsterYhd4I8 /cBzejUobNCjjHFbtkAL/SjxZOLW+pNkZwfeYdM8iPkD54Uua1v2tdw= -----END CERTIFICATE-----
+ * 
+ * @example -----BEGIN CERTIFICATE-----
+MIIDtTCCAp2gAwIBAgIJAM15n7fdxhRtMA0GCSqGSIb3DQEBBQUAMEUxCzAJBgNV
+BAYTAlVTMRMwEQYDVQQIEwpTb21lLVN0YXRlMSEwHwYDVQQKExhJbnRlcm5ldCBX
+aWRnaXRzIFB0eSBMdGQwHhcNMTQwMzExMTkyMTU5WhcNMTQwNDEwMTkyMTU5WjBF
+MQswCQYDVQQGEwJVUzETMBEGA1UECBMKU29tZS1TdGF0ZTEhMB8GA1UEChMYSW50
+ZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIB
+CgKCAQEAvq3sKsHpeduJHimOK+fvQdKsI8z8A05MZyyLp2/R/GE8FjNv+hkVY1WQ
+LIyTNNQH7CJecE1nbTfo8Y56S7x/rhxC6/DJ8MIulapFPnorq46KU6yRxiM0MQ3N
+nTJHlHA2ozZta6YBBfVfhHWl1F0IfNbXCLKvGwWWMbCx43OfW6KTkbRnE6gFWKuO
+fSO5h2u5TaWVuSIzBvYs7Vza6m+gtYAvKAJV2nSZ+eSEFPDo29corOy8+huEOUL8
+5FAw4BFPsr1TlrlGPFitduQUHGrSL7skk1ESGza0to3bOtrodKei2s9bk5MXm7lZ
+qI+WZJX4Zu9+mzZhc9pCVi8r/qlXuQIDAQABo4GnMIGkMB0GA1UdDgQWBBRvavf+
+sWM4IwKiH9X9w1vl6nUVRDB1BgNVHSMEbjBsgBRvavf+sWM4IwKiH9X9w1vl6nUV
+RKFJpEcwRTELMAkGA1UEBhMCVVMxEzARBgNVBAgTClNvbWUtU3RhdGUxITAfBgNV
+BAoTGEludGVybmV0IFdpZGdpdHMgUHR5IEx0ZIIJAM15n7fdxhRtMAwGA1UdEwQF
+MAMBAf8wDQYJKoZIhvcNAQEFBQADggEBABY2ZzBaW0dMsAAT7tPJzrVWVzQx6KU4
+UEBLudIlWPlkAwTnINCWR/8eNjCCmGA4heUdHmazdpPa8RzwOmc0NT1NQqzSyktt
+vTqb4iHD7+8f9MqJ9/FssCfTtqr/Qst/hGH4Wmdf1EJ/6FqYAAb5iRlPgshFZxU8
+uXtA8hWn6fK6eISD9HBdcAFToUvKNZ1BIDPvh9f95Ine8ar6yGd56TUNrHR8eHBs
+ESxz5ddVR/oWRysNJ+aGAyYqHS8S/ttmC7r4XCAHqXptkHPCGRqkAhsterYhd4I8
+/cBzejUobNCjjHFbtkAL/SjxZOLW+pNkZwfeYdM8iPkD54Uua1v2tdw=
+-----END CERTIFICATE-----
  */
 export type TlsCertificatesAndHostnamesSchemasCertificate = string;
 
@@ -57701,8 +57724,10 @@ export type TlsCertificatesAndHostnamesSchemasCreatedAt = string;
 
 /**
  * The Certificate Signing Request (CSR). Must be newline-encoded.
- *
- * @example -----BEGIN CERTIFICATE REQUEST-----\nMIICY....\n-----END CERTIFICATE REQUEST-----\n
+ * 
+ * @example -----BEGIN CERTIFICATE REQUEST-----
+MIICY....
+-----END CERTIFICATE REQUEST-----
  * @x-auditable true
  */
 export type TlsCertificatesAndHostnamesSchemasCsr = string;
@@ -57965,10 +57990,14 @@ export type TlsCertificatesAndHostnamesSsl = {
 	bundle_method?: "ubiquitous" | "optimal" | "force";
 	certificate_authority?: TlsCertificatesAndHostnamesCertificateAuthority;
 	/**
-	 * If a custom uploaded certificate is used.
-	 *
-	 * @example -----BEGIN CERTIFICATE-----\nMIIFJDCCBAygAwIBAgIQD0ifmj/Yi5NP/2gdUySbfzANBgkqhkiG9w0BAQsFADBN\nMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMScwJQYDVQQDEx5E...SzSHfXp5lnu/3V08I72q1QNzOCgY1XeL4GKVcj4or6cT6tX6oJH7ePPmfrBfqI/O\nOeH8gMJ+FuwtXYEPa4hBf38M5eU5xWG7\n-----END CERTIFICATE-----\n
-	 */
+     * If a custom uploaded certificate is used.
+     *
+     * @example -----BEGIN CERTIFICATE-----
+    MIIFJDCCBAygAwIBAgIQD0ifmj/Yi5NP/2gdUySbfzANBgkqhkiG9w0BAQsFADBN
+    MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMScwJQYDVQQDEx5E...SzSHfXp5lnu/3V08I72q1QNzOCgY1XeL4GKVcj4or6cT6tX6oJH7ePPmfrBfqI/O
+    OeH8gMJ+FuwtXYEPa4hBf38M5eU5xWG7
+    -----END CERTIFICATE-----
+     */
 	custom_certificate?: string;
 	/**
 	 * The identifier for the Custom CSR that was used.
@@ -58171,11 +58200,15 @@ export type TlsCertificatesAndHostnamesSslpost = {
 	cloudflare_branding?: boolean;
 	custom_cert_bundle?: TlsCertificatesAndHostnamesCustomCertBundle;
 	/**
-	 * If a custom uploaded certificate is used.
-	 *
-	 * @example -----BEGIN CERTIFICATE-----\nMIIFJDCCBAygAwIBAgIQD0ifmj/Yi5NP/2gdUySbfzANBgkqhkiG9w0BAQsFADBN\nMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMScwJQYDVQQDEx5E...SzSHfXp5lnu/3V08I72q1QNzOCgY1XeL4GKVcj4or6cT6tX6oJH7ePPmfrBfqI/O\nOeH8gMJ+FuwtXYEPa4hBf38M5eU5xWG7\n-----END CERTIFICATE-----\n
-	 * @x-auditable true
-	 */
+     * If a custom uploaded certificate is used.
+     *
+     * @example -----BEGIN CERTIFICATE-----
+    MIIFJDCCBAygAwIBAgIQD0ifmj/Yi5NP/2gdUySbfzANBgkqhkiG9w0BAQsFADBN
+    MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMScwJQYDVQQDEx5E...SzSHfXp5lnu/3V08I72q1QNzOCgY1XeL4GKVcj4or6cT6tX6oJH7ePPmfrBfqI/O
+    OeH8gMJ+FuwtXYEPa4hBf38M5eU5xWG7
+    -----END CERTIFICATE-----
+     * @x-auditable true
+     */
 	custom_certificate?: string;
 	/**
      * The key for a custom uploaded certificate.
@@ -62577,6 +62610,9 @@ export type WorkersObservabilityPerformanceInformation = {
 };
 
 export type WorkersObservabilityQuery = {
+	/**
+	 * @format date-time
+	 */
 	created: string;
 	/**
 	 * @example Query description
@@ -62749,6 +62785,9 @@ export type WorkersObservabilityQuery = {
 			value: string;
 		};
 	};
+	/**
+	 * @format date-time
+	 */
 	updated: string;
 	/**
 	 * @example JY2UKXLO60AEV94R
@@ -63954,11 +63993,25 @@ export type WorkersBindingKindDispatchNamespace = {
 		/**
 		 * Pass information from the Dispatch Worker to the Outbound Worker through the parameters.
 		 */
-		params?: string[];
+		params?: {
+			/**
+			 * Name of the parameter.
+			 *
+			 * @example customer_name
+			 * @x-auditable true
+			 */
+			name: string;
+		}[];
 		/**
 		 * Outbound worker.
 		 */
 		worker?: {
+			/**
+			 * Entrypoint to invoke on the outbound worker.
+			 *
+			 * @x-auditable true
+			 */
+			entrypoint?: string;
 			/**
 			 * Environment of the outbound worker.
 			 *
@@ -64085,9 +64138,9 @@ export type WorkersBindingKindJson = {
 	/**
 	 * JSON data to use.
 	 *
-	 * @example { "message": "Hello, world!" }
+	 * @x-stainless-any true
 	 */
-	json: string;
+	json: Record<string, any>;
 	name: WorkersBindingName;
 	/**
 	 * The kind of resource that the binding provides.
