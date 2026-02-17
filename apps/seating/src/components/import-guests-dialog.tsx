@@ -218,7 +218,7 @@ export function ImportGuestsDialog({ open, onClose, onImport }: ImportGuestsDial
 
 							{parseError && (
 								<div className="flex items-center gap-2 p-3 bg-destructive/10 text-destructive rounded-lg text-sm">
-									<AlertCircle className="w-4 h-4 flex-shrink-0" />
+									<AlertCircle className="w-4 h-4 shrink-0" />
 									{parseError}
 								</div>
 							)}
@@ -264,7 +264,7 @@ Jane Doe,`}
 											guest.isValid ? "" : "bg-destructive/5"
 										}`}
 									>
-										<Avatar className="w-9 h-9 border bg-white">
+										<Avatar className="w-9 h-9 border bg-card">
 											<AvatarImage src={guest.photoUrl || undefined} />
 											<AvatarFallback className="bg-primary/10 text-primary text-xs">
 												{guest.name ? getInitials(guest.name) : "?"}
@@ -283,9 +283,9 @@ Jane Doe,`}
 										</div>
 										<span className="text-xs text-muted-foreground">Row {guest.rowNumber}</span>
 										{guest.isValid ? (
-											<CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0" />
+											<CheckCircle className="w-4 h-4 text-green-600 shrink-0" />
 										) : (
-											<AlertCircle className="w-4 h-4 text-destructive flex-shrink-0" />
+											<AlertCircle className="w-4 h-4 text-destructive shrink-0" />
 										)}
 									</div>
 								))}

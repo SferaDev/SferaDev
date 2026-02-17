@@ -158,6 +158,22 @@ body {
   touch-action: none;
 }
 
+/* Override React Flow panel and controls for theme support */
+.react-flow__panel {
+  background: transparent !important;
+}
+
+.react-flow__controls button {
+  background-color: var(--card) !important;
+  color: var(--card-foreground) !important;
+  border-bottom-color: var(--border) !important;
+  fill: var(--card-foreground) !important;
+}
+
+.react-flow__controls button:hover {
+  background-color: var(--muted) !important;
+}
+
 /* Smooth scrolling in scroll areas */
 .scroll-area-touch {
   -webkit-overflow-scrolling: touch;

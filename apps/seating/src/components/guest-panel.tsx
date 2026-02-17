@@ -162,7 +162,13 @@ export function GuestPanel({
 
 			<div className="flex items-center justify-between p-3 border-b border-border md:hidden">
 				<span className="font-semibold text-foreground">Guest Manager</span>
-				<Button variant="ghost" size="icon" onClick={onClose} className="h-9 w-9">
+				<Button
+					variant="ghost"
+					size="icon"
+					onClick={onClose}
+					className="h-9 w-9"
+					aria-label="Close panel"
+				>
 					<X className="w-5 h-5" />
 				</Button>
 			</div>
@@ -197,7 +203,7 @@ export function GuestPanel({
 								<div className="flex items-center gap-3">
 									{guestPhoto ? (
 										<Avatar className="w-12 h-12 border-2 border-primary/20">
-											<AvatarImage src={guestPhoto ?? undefined} />
+											<AvatarImage src={guestPhoto} />
 										</Avatar>
 									) : (
 										<div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center">
@@ -376,7 +382,7 @@ export function GuestPanel({
 											key={guest.id}
 											className="flex items-center gap-3 p-2 rounded-lg bg-muted/50 hover:bg-muted transition-colors"
 										>
-											<Avatar className="w-10 h-10 border-2 border-primary/20 bg-white">
+											<Avatar className="w-10 h-10 border-2 border-primary/20 bg-card">
 												<AvatarImage src={guest.photo || undefined} />
 												<AvatarFallback className="bg-primary/10 text-primary text-xs">
 													{getInitials(guest.name)}
