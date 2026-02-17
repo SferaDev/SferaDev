@@ -19,7 +19,6 @@ const getProviders = (versions: Record<string, string>) =>
 
 const vercel = new VercelApi({ token: "token" });
 const { projects } = await vercel.api.projects.getProjects();`,
-			hasMcp: true,
 		},
 		{
 			id: "v0",

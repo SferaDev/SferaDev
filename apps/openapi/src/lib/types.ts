@@ -4,5 +4,4 @@ export interface Provider {
 	packageName: string;
 	version: string;
 	usage: string;
-	hasMcp?: boolean;
 }

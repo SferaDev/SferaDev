@@ -23,8 +23,6 @@ catalog:
   '@kubb/plugin-zod': 4.23.0
   '@kubb/react': 4.3.1
   '@kubb/react-fabric': 0.12.11
-  '@mcpauth/auth': 0.1.4
-  '@modelcontextprotocol/sdk': 1.26.0
   '@next/third-parties': 16.1.6
   '@radix-ui/react-avatar': 1.1.11
   '@radix-ui/react-dialog': 1.1.15
@@ -71,7 +69,6 @@ catalog:
   lefthook: 2.1.1
   lucide-react: 0.564.0
   markdown-to-jsx: 9.7.4
-  mcp-handler: 1.0.7
   mintlify: 4.2.348
   next: 16.1.6
   next-auth: 5.0.0-beta.29
