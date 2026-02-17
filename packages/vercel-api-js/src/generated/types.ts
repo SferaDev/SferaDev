@@ -629,6 +629,38 @@ export type CountryCode = string;
  */
 export type OrderId = string;
 
+export const languageCodeRequiredStatusEnum = {
+	"400": 400,
+} as const;
+
+export type LanguageCodeRequiredStatusEnumKey =
+	(typeof languageCodeRequiredStatusEnum)[keyof typeof languageCodeRequiredStatusEnum];
+
+export const languageCodeRequiredCodeEnum = {
+	language_code_required: "language_code_required",
+} as const;
+
+export type LanguageCodeRequiredCodeEnumKey =
+	(typeof languageCodeRequiredCodeEnum)[keyof typeof languageCodeRequiredCodeEnum];
+
+/**
+ * @description A language code is required for punycode domains.
+ */
+export type LanguageCodeRequired = {
+	/**
+	 * @type number
+	 */
+	status: LanguageCodeRequiredStatusEnumKey;
+	/**
+	 * @type string
+	 */
+	code: LanguageCodeRequiredCodeEnumKey;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
 export const domainNotAvailableStatusEnum = {
 	"400": 400,
 } as const;
@@ -1299,6 +1331,401 @@ export const entitiesTypeEnum = {
 } as const;
 
 export type EntitiesTypeEnumKey = (typeof entitiesTypeEnum)[keyof typeof entitiesTypeEnum];
+
+export const userEventTypeEnum = {
+	"access-group-created": "access-group-created",
+	"access-group-deleted": "access-group-deleted",
+	"access-group-project-updated": "access-group-project-updated",
+	"access-group-user-added": "access-group-user-added",
+	"access-group-user-removed": "access-group-user-removed",
+	"ai-alert-investigation": "ai-alert-investigation",
+	"ai-code-review": "ai-code-review",
+	"alert-rule-created": "alert-rule-created",
+	"alert-rule-deleted": "alert-rule-deleted",
+	"alert-rule-updated": "alert-rule-updated",
+	alias: "alias",
+	"alias-chown": "alias-chown",
+	"alias-delete": "alias-delete",
+	"alias-invite-created": "alias-invite-created",
+	"alias-invite-joined": "alias-invite-joined",
+	"alias-invite-revoked": "alias-invite-revoked",
+	"alias-protection-bypass-created": "alias-protection-bypass-created",
+	"alias-protection-bypass-exception": "alias-protection-bypass-exception",
+	"alias-protection-bypass-regenerated": "alias-protection-bypass-regenerated",
+	"alias-protection-bypass-revoked": "alias-protection-bypass-revoked",
+	"alias-system": "alias-system",
+	"alias-user-scoped-access-denied": "alias-user-scoped-access-denied",
+	"alias-user-scoped-access-granted": "alias-user-scoped-access-granted",
+	"alias-user-scoped-access-requested": "alias-user-scoped-access-requested",
+	"alias-user-scoped-access-revoked": "alias-user-scoped-access-revoked",
+	"attack-mode-disabled": "attack-mode-disabled",
+	"attack-mode-enabled": "attack-mode-enabled",
+	"audit-log-export-downloaded": "audit-log-export-downloaded",
+	"audit-log-export-requested": "audit-log-export-requested",
+	"authorize-git-deployment": "authorize-git-deployment",
+	"auto-expose-system-envs": "auto-expose-system-envs",
+	avatar: "avatar",
+	"bulk-redirects-settings-updated": "bulk-redirects-settings-updated",
+	"bulk-redirects-version-promoted": "bulk-redirects-version-promoted",
+	"bulk-redirects-version-restored": "bulk-redirects-version-restored",
+	cert: "cert",
+	"cert-autorenew": "cert-autorenew",
+	"cert-chown": "cert-chown",
+	"cert-clone": "cert-clone",
+	"cert-delete": "cert-delete",
+	"cert-renew": "cert-renew",
+	"cert-replace": "cert-replace",
+	"cert-system-create": "cert-system-create",
+	"concurrent-builds-update": "concurrent-builds-update",
+	"connect-bitbucket": "connect-bitbucket",
+	"connect-bitbucket-app": "connect-bitbucket-app",
+	"connect-configuration-created": "connect-configuration-created",
+	"connect-configuration-deleted": "connect-configuration-deleted",
+	"connect-configuration-link-updated": "connect-configuration-link-updated",
+	"connect-configuration-linked": "connect-configuration-linked",
+	"connect-configuration-unlinked": "connect-configuration-unlinked",
+	"connect-configuration-updated": "connect-configuration-updated",
+	"connect-github": "connect-github",
+	"connect-github-custom-host": "connect-github-custom-host",
+	"connect-github-limited": "connect-github-limited",
+	"connect-gitlab": "connect-gitlab",
+	"connect-gitlab-app": "connect-gitlab-app",
+	"custom-suffix-clear": "custom-suffix-clear",
+	"custom-suffix-disable": "custom-suffix-disable",
+	"custom-suffix-enable": "custom-suffix-enable",
+	"custom-suffix-pending": "custom-suffix-pending",
+	"custom-suffix-ready": "custom-suffix-ready",
+	"deploy-hook-created": "deploy-hook-created",
+	"deploy-hook-deduped": "deploy-hook-deduped",
+	"deploy-hook-deleted": "deploy-hook-deleted",
+	"deploy-hook-processed": "deploy-hook-processed",
+	deployment: "deployment",
+	"deployment-chown": "deployment-chown",
+	"deployment-creation-blocked": "deployment-creation-blocked",
+	"deployment-delete": "deployment-delete",
+	"disabled-integration-installation-removed": "disabled-integration-installation-removed",
+	"disconnect-bitbucket-app": "disconnect-bitbucket-app",
+	"disconnect-github": "disconnect-github",
+	"disconnect-github-custom-host": "disconnect-github-custom-host",
+	"disconnect-github-limited": "disconnect-github-limited",
+	"disconnect-gitlab-app": "disconnect-gitlab-app",
+	"dns-add": "dns-add",
+	"dns-delete": "dns-delete",
+	"dns-update": "dns-update",
+	"dns-zonefile-import": "dns-zonefile-import",
+	domain: "domain",
+	"domain-buy": "domain-buy",
+	"domain-cdn": "domain-cdn",
+	"domain-chown": "domain-chown",
+	"domain-custom-ns-change": "domain-custom-ns-change",
+	"domain-delegated": "domain-delegated",
+	"domain-delete": "domain-delete",
+	"domain-move-in": "domain-move-in",
+	"domain-move-out": "domain-move-out",
+	"domain-move-out-request-sent": "domain-move-out-request-sent",
+	"domain-renew-change": "domain-renew-change",
+	"domain-service-type-updated": "domain-service-type-updated",
+	"domain-transfer-in": "domain-transfer-in",
+	"domain-transfer-in-canceled": "domain-transfer-in-canceled",
+	"domain-transfer-in-completed": "domain-transfer-in-completed",
+	"drain-created": "drain-created",
+	"drain-deleted": "drain-deleted",
+	"drain-disabled": "drain-disabled",
+	"drain-enabled": "drain-enabled",
+	"drain-updated": "drain-updated",
+	"edge-cache-dangerously-delete-by-src-images": "edge-cache-dangerously-delete-by-src-images",
+	"edge-cache-dangerously-delete-by-tags": "edge-cache-dangerously-delete-by-tags",
+	"edge-cache-invalidate-by-src-images": "edge-cache-invalidate-by-src-images",
+	"edge-cache-invalidate-by-tags": "edge-cache-invalidate-by-tags",
+	"edge-cache-purge-all": "edge-cache-purge-all",
+	"edge-cache-rollback-purge": "edge-cache-rollback-purge",
+	"edge-config-created": "edge-config-created",
+	"edge-config-deleted": "edge-config-deleted",
+	"edge-config-items-updated": "edge-config-items-updated",
+	"edge-config-schema-deleted": "edge-config-schema-deleted",
+	"edge-config-schema-updated": "edge-config-schema-updated",
+	"edge-config-token-created": "edge-config-token-created",
+	"edge-config-token-deleted": "edge-config-token-deleted",
+	"edge-config-transfer-in": "edge-config-transfer-in",
+	"edge-config-transfer-out": "edge-config-transfer-out",
+	"edge-config-updated": "edge-config-updated",
+	email: "email",
+	"email-notification-rule-removed": "email-notification-rule-removed",
+	"email-notification-rule-updated": "email-notification-rule-updated",
+	"enforce-sensitive-environment-variables": "enforce-sensitive-environment-variables",
+	"env-variable-add": "env-variable-add",
+	"env-variable-delete": "env-variable-delete",
+	"env-variable-edit": "env-variable-edit",
+	"env-variable-read": "env-variable-read",
+	"env-variable-read:cli:dev": "env-variable-read:cli:dev",
+	"env-variable-read:cli:env:add": "env-variable-read:cli:env:add",
+	"env-variable-read:cli:env:ls": "env-variable-read:cli:env:ls",
+	"env-variable-read:cli:env:pull": "env-variable-read:cli:env:pull",
+	"env-variable-read:cli:env:rm": "env-variable-read:cli:env:rm",
+	"env-variable-read:cli:pull": "env-variable-read:cli:pull",
+	"env-variable-read:unknown-source": "env-variable-read:unknown-source",
+	"env-variable-read:v0:env:pull": "env-variable-read:v0:env:pull",
+	"firewall-bypass-created": "firewall-bypass-created",
+	"firewall-bypass-deleted": "firewall-bypass-deleted",
+	"firewall-config-promoted": "firewall-config-promoted",
+	"firewall-managed-rulegroup-updated": "firewall-managed-rulegroup-updated",
+	"firewall-managed-ruleset-updated": "firewall-managed-ruleset-updated",
+	flag: "flag",
+	"flags-explorer-subscription": "flags-explorer-subscription",
+	"flags-sdk-key": "flags-sdk-key",
+	"flags-segment": "flags-segment",
+	"flags-settings": "flags-settings",
+	"instant-rollback-created": "instant-rollback-created",
+	"integration-configuration-owner-changed": "integration-configuration-owner-changed",
+	"integration-configuration-scope-change-confirmed":
+		"integration-configuration-scope-change-confirmed",
+	"integration-configurations-disabled": "integration-configurations-disabled",
+	"integration-installation-billing-plan-updated": "integration-installation-billing-plan-updated",
+	"integration-installation-completed": "integration-installation-completed",
+	"integration-installation-permission-updated": "integration-installation-permission-updated",
+	"integration-installation-removed": "integration-installation-removed",
+	"integration-scope-changed": "integration-scope-changed",
+	"log-drain-created": "log-drain-created",
+	"log-drain-deleted": "log-drain-deleted",
+	"log-drain-disabled": "log-drain-disabled",
+	"log-drain-enabled": "log-drain-enabled",
+	login: "login",
+	"manual-deployment-promotion-created": "manual-deployment-promotion-created",
+	"microfrontend-group-added": "microfrontend-group-added",
+	"microfrontend-group-deleted": "microfrontend-group-deleted",
+	"microfrontend-group-updated": "microfrontend-group-updated",
+	"microfrontend-project-added-to-group": "microfrontend-project-added-to-group",
+	"microfrontend-project-removed-from-group": "microfrontend-project-removed-from-group",
+	"microfrontend-project-updated": "microfrontend-project-updated",
+	"monitoring-disabled": "monitoring-disabled",
+	"monitoring-enabled": "monitoring-enabled",
+	"oauth-app-connection-created": "oauth-app-connection-created",
+	"oauth-app-connection-removed": "oauth-app-connection-removed",
+	"oauth-app-connection-updated": "oauth-app-connection-updated",
+	"oauth-app-created": "oauth-app-created",
+	"oauth-app-deleted": "oauth-app-deleted",
+	"oauth-app-secret-deleted": "oauth-app-secret-deleted",
+	"oauth-app-secret-generated": "oauth-app-secret-generated",
+	"oauth-app-token-created": "oauth-app-token-created",
+	"oauth-app-updated": "oauth-app-updated",
+	"observability-disabled": "observability-disabled",
+	"observability-enabled": "observability-enabled",
+	"observability-plus-project-disabled": "observability-plus-project-disabled",
+	"observability-plus-project-enabled": "observability-plus-project-enabled",
+	"owner-blocked": "owner-blocked",
+	"owner-soft-blocked": "owner-soft-blocked",
+	"owner-soft-unblocked": "owner-soft-unblocked",
+	"owner-unblocked": "owner-unblocked",
+	"passkey-created": "passkey-created",
+	"passkey-deleted": "passkey-deleted",
+	"passkey-updated": "passkey-updated",
+	"password-protection-disabled": "password-protection-disabled",
+	"password-protection-enabled": "password-protection-enabled",
+	plan: "plan",
+	"preview-deployment-suffix-disabled": "preview-deployment-suffix-disabled",
+	"preview-deployment-suffix-enabled": "preview-deployment-suffix-enabled",
+	"preview-deployment-suffix-update": "preview-deployment-suffix-update",
+	"production-branch-updated": "production-branch-updated",
+	"project-add-alias": "project-add-alias",
+	"project-add-redirect": "project-add-redirect",
+	"project-affected-projects-deployments-updated": "project-affected-projects-deployments-updated",
+	"project-alias-configured-change": "project-alias-configured-change",
+	"project-analytics-disabled": "project-analytics-disabled",
+	"project-analytics-enabled": "project-analytics-enabled",
+	"project-auto-assign-custom-production-domains-updated":
+		"project-auto-assign-custom-production-domains-updated",
+	"project-automation-bypass": "project-automation-bypass",
+	"project-build-command-updated": "project-build-command-updated",
+	"project-build-logs-and-source-protection-updated":
+		"project-build-logs-and-source-protection-updated",
+	"project-build-machine-updated": "project-build-machine-updated",
+	"project-client-cert-delete": "project-client-cert-delete",
+	"project-client-cert-upload": "project-client-cert-upload",
+	"project-connect-configurations": "project-connect-configurations",
+	"project-created": "project-created",
+	"project-cron-jobs-toggled": "project-cron-jobs-toggled",
+	"project-custom-environment-created": "project-custom-environment-created",
+	"project-custom-environment-deleted": "project-custom-environment-deleted",
+	"project-custom-environment-updated": "project-custom-environment-updated",
+	"project-customer-success-code-visibility-updated":
+		"project-customer-success-code-visibility-updated",
+	"project-delete": "project-delete",
+	"project-deployment-retention-updated": "project-deployment-retention-updated",
+	"project-directory-listing": "project-directory-listing",
+	"project-domain-deleted": "project-domain-deleted",
+	"project-domain-moved": "project-domain-moved",
+	"project-domain-unverified": "project-domain-unverified",
+	"project-domain-updated": "project-domain-updated",
+	"project-domain-verified": "project-domain-verified",
+	"project-elastic-concurrency-updated": "project-elastic-concurrency-updated",
+	"project-framework-updated": "project-framework-updated",
+	"project-function-cpu-memory": "project-function-cpu-memory",
+	"project-function-failover": "project-function-failover",
+	"project-function-max-duration": "project-function-max-duration",
+	"project-function-regions": "project-function-regions",
+	"project-functions-fluid-disabled": "project-functions-fluid-disabled",
+	"project-functions-fluid-enabled": "project-functions-fluid-enabled",
+	"project-git-commit-comments-toggled": "project-git-commit-comments-toggled",
+	"project-git-create-deployments-toggled": "project-git-create-deployments-toggled",
+	"project-git-fork-protection-updated": "project-git-fork-protection-updated",
+	"project-git-lfs-toggled": "project-git-lfs-toggled",
+	"project-git-pr-comments-toggled": "project-git-pr-comments-toggled",
+	"project-git-repository-connected": "project-git-repository-connected",
+	"project-git-repository-disconnected": "project-git-repository-disconnected",
+	"project-git-repository-dispatch-events-toggled":
+		"project-git-repository-dispatch-events-toggled",
+	"project-git-require-verified-commits-toggled": "project-git-require-verified-commits-toggled",
+	"project-ignored-build-step-updated": "project-ignored-build-step-updated",
+	"project-install-command-updated": "project-install-command-updated",
+	"project-member-added": "project-member-added",
+	"project-member-invited": "project-member-invited",
+	"project-member-removed": "project-member-removed",
+	"project-member-removed-batch": "project-member-removed-batch",
+	"project-member-updated": "project-member-updated",
+	"project-move-in-success": "project-move-in-success",
+	"project-move-out-failed": "project-move-out-failed",
+	"project-move-out-started": "project-move-out-started",
+	"project-move-out-success": "project-move-out-success",
+	"project-name": "project-name",
+	"project-node-version-updated": "project-node-version-updated",
+	"project-oidc-issuer-mode-updated": "project-oidc-issuer-mode-updated",
+	"project-oidc-token-created": "project-oidc-token-created",
+	"project-options-allowlist": "project-options-allowlist",
+	"project-output-directory-updated": "project-output-directory-updated",
+	"project-password-protection": "project-password-protection",
+	"project-paused": "project-paused",
+	"project-preview-deployment-suffix": "project-preview-deployment-suffix",
+	"project-preview-environment-branch-tracking-updated":
+		"project-preview-environment-branch-tracking-updated",
+	"project-prioritize-production-builds-updated": "project-prioritize-production-builds-updated",
+	"project-protected-sourcemaps-updated": "project-protected-sourcemaps-updated",
+	"project-rolling-release-aborted": "project-rolling-release-aborted",
+	"project-rolling-release-approved": "project-rolling-release-approved",
+	"project-rolling-release-completed": "project-rolling-release-completed",
+	"project-rolling-release-configured": "project-rolling-release-configured",
+	"project-rolling-release-disabled": "project-rolling-release-disabled",
+	"project-rolling-release-enabled": "project-rolling-release-enabled",
+	"project-rolling-release-started": "project-rolling-release-started",
+	"project-rolling-release-timer": "project-rolling-release-timer",
+	"project-root-directory-updated": "project-root-directory-updated",
+	"project-routes-version-promoted": "project-routes-version-promoted",
+	"project-routes-version-restored": "project-routes-version-restored",
+	"project-skew-protection-allowed-domains-updated":
+		"project-skew-protection-allowed-domains-updated",
+	"project-skew-protection-max-age-updated": "project-skew-protection-max-age-updated",
+	"project-skew-protection-threshold-updated": "project-skew-protection-threshold-updated",
+	"project-source-files-outside-root-directory-updated":
+		"project-source-files-outside-root-directory-updated",
+	"project-speed-insights-disabled": "project-speed-insights-disabled",
+	"project-speed-insights-enabled": "project-speed-insights-enabled",
+	"project-sso-protection": "project-sso-protection",
+	"project-static-ips-updated": "project-static-ips-updated",
+	"project-trusted-ips": "project-trusted-ips",
+	"project-unpaused": "project-unpaused",
+	"project-web-analytics-disabled": "project-web-analytics-disabled",
+	"project-web-analytics-enabled": "project-web-analytics-enabled",
+	"protected-git-scope-added": "protected-git-scope-added",
+	"protected-git-scope-removed": "protected-git-scope-removed",
+	"runtime-cache-purge-all": "runtime-cache-purge-all",
+	scale: "scale",
+	"scale-auto": "scale-auto",
+	"secondary-email-added": "secondary-email-added",
+	"secondary-email-removed": "secondary-email-removed",
+	"secondary-email-verified": "secondary-email-verified",
+	"secret-add": "secret-add",
+	"secret-delete": "secret-delete",
+	"secret-rename": "secret-rename",
+	"security-plus-updated": "security-plus-updated",
+	"set-bio": "set-bio",
+	"set-name": "set-name",
+	"set-profiles": "set-profiles",
+	"set-scale": "set-scale",
+	"shared-env-variable-create": "shared-env-variable-create",
+	"shared-env-variable-delete": "shared-env-variable-delete",
+	"shared-env-variable-read": "shared-env-variable-read",
+	"shared-env-variable-update": "shared-env-variable-update",
+	"show-ip-addresses": "show-ip-addresses",
+	signup: "signup",
+	"signup-via-bitbucket": "signup-via-bitbucket",
+	"signup-via-github": "signup-via-github",
+	"signup-via-gitlab": "signup-via-gitlab",
+	"speed-insights-settings-updated": "speed-insights-settings-updated",
+	"spend-created": "spend-created",
+	"spend-deleted": "spend-deleted",
+	"spend-updated": "spend-updated",
+	"storage-accept-tos": "storage-accept-tos",
+	"storage-access-token-set": "storage-access-token-set",
+	"storage-accessed-data-browser": "storage-accessed-data-browser",
+	"storage-connect-project": "storage-connect-project",
+	"storage-create": "storage-create",
+	"storage-delete": "storage-delete",
+	"storage-disconnect-project": "storage-disconnect-project",
+	"storage-disconnect-projects": "storage-disconnect-projects",
+	"storage-inactive-store-deleted": "storage-inactive-store-deleted",
+	"storage-reset-credentials": "storage-reset-credentials",
+	"storage-resource-repl-command": "storage-resource-repl-command",
+	"storage-update": "storage-update",
+	"storage-update-project-connection": "storage-update-project-connection",
+	"storage-view-secret": "storage-view-secret",
+	"strict-deployment-protection-settings": "strict-deployment-protection-settings",
+	team: "team",
+	"team-avatar-update": "team-avatar-update",
+	"team-delete": "team-delete",
+	"team-email-domain-update": "team-email-domain-update",
+	"team-ended-trial": "team-ended-trial",
+	"team-invite-bulk-delete": "team-invite-bulk-delete",
+	"team-invite-code-reset": "team-invite-code-reset",
+	"team-ip-blocking-rules-created": "team-ip-blocking-rules-created",
+	"team-ip-blocking-rules-removed": "team-ip-blocking-rules-removed",
+	"team-member-add": "team-member-add",
+	"team-member-confirm-request": "team-member-confirm-request",
+	"team-member-decline-request": "team-member-decline-request",
+	"team-member-delete": "team-member-delete",
+	"team-member-entitlement-added": "team-member-entitlement-added",
+	"team-member-entitlement-canceled": "team-member-entitlement-canceled",
+	"team-member-entitlement-reactivated": "team-member-entitlement-reactivated",
+	"team-member-entitlement-removed": "team-member-entitlement-removed",
+	"team-member-join": "team-member-join",
+	"team-member-leave": "team-member-leave",
+	"team-member-request-access": "team-member-request-access",
+	"team-member-role-update": "team-member-role-update",
+	"team-mfa-enforcement-updated": "team-mfa-enforcement-updated",
+	"team-name-update": "team-name-update",
+	"team-paid-invoice": "team-paid-invoice",
+	"team-remote-caching-update": "team-remote-caching-update",
+	"team-saml-enforced": "team-saml-enforced",
+	"team-saml-roles": "team-saml-roles",
+	"team-slug-update": "team-slug-update",
+	"unlink-login-connection": "unlink-login-connection",
+	"user-delete": "user-delete",
+	"user-mfa-challenge-verified": "user-mfa-challenge-verified",
+	"user-mfa-configuration-updated": "user-mfa-configuration-updated",
+	"user-mfa-recovery-codes-regenerated": "user-mfa-recovery-codes-regenerated",
+	"user-mfa-removed": "user-mfa-removed",
+	"user-mfa-totp-verification-started": "user-mfa-totp-verification-started",
+	"user-mfa-totp-verified": "user-mfa-totp-verified",
+	"user-primary-email-updated": "user-primary-email-updated",
+	username: "username",
+	"vercel-agent-team-trial-credits-applied": "vercel-agent-team-trial-credits-applied",
+	"vercel-app-installation-request-dismissed": "vercel-app-installation-request-dismissed",
+	"vercel-app-installation-requested": "vercel-app-installation-requested",
+	"vercel-app-installation-updated": "vercel-app-installation-updated",
+	"vercel-app-installed": "vercel-app-installed",
+	"vercel-app-tokens-revoked": "vercel-app-tokens-revoked",
+	"vercel-app-uninstalled": "vercel-app-uninstalled",
+	"vercel-toolbar": "vercel-toolbar",
+	"vpc-peering-connection-accepted": "vpc-peering-connection-accepted",
+	"vpc-peering-connection-deleted": "vpc-peering-connection-deleted",
+	"vpc-peering-connection-rejected": "vpc-peering-connection-rejected",
+	"vpc-peering-connection-updated": "vpc-peering-connection-updated",
+	"web-analytics-tier-updated": "web-analytics-tier-updated",
+	"webhook-created": "webhook-created",
+	"webhook-deleted": "webhook-deleted",
+	"webhook-updated": "webhook-updated",
+	"workflow-deployment-key-accessed": "workflow-deployment-key-accessed",
+} as const;
+
+export type UserEventTypeEnumKey = (typeof userEventTypeEnum)[keyof typeof userEventTypeEnum];
 
 export const principalTypeEnum = {
 	user: "user",
@@ -1992,6 +2419,9 @@ export const joinedFromOriginEnum = {
 	feedback: "feedback",
 	"organization-teams": "organization-teams",
 	"nsnb-auto-approve": "nsnb-auto-approve",
+	"nsnb-request-access": "nsnb-request-access",
+	"nsnb-viewer-upgrade": "nsnb-viewer-upgrade",
+	"nsnb-invite": "nsnb-invite",
 } as const;
 
 export type JoinedFromOriginEnumKey =
@@ -2315,20 +2745,44 @@ export const payloadProjectIdsEnum = {
 export type PayloadProjectIdsEnumKey =
 	(typeof payloadProjectIdsEnum)[keyof typeof payloadProjectIdsEnum];
 
+export const factorsOriginEnum = {
+	email: "email",
+	saml: "saml",
+	github: "github",
+	gitlab: "gitlab",
+	bitbucket: "bitbucket",
+	google: "google",
+	apple: "apple",
+	webauthn: "webauthn",
+	otp: "otp",
+	invite: "invite",
+	"otp-link": "otp-link",
+	"magic-link": "magic-link",
+} as const;
+
+export type FactorsOriginEnumKey = (typeof factorsOriginEnum)[keyof typeof factorsOriginEnum];
+
+export const factorsLegacyEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type FactorsLegacyEnumKey = (typeof factorsLegacyEnum)[keyof typeof factorsLegacyEnum];
+
+export const factorsOriginEnum2 = {
+	totp: "totp",
+	webauthn: "webauthn",
+	"recovery-code": "recovery-code",
+} as const;
+
+export type FactorsOriginEnum2Key = (typeof factorsOriginEnum2)[keyof typeof factorsOriginEnum2];
+
 export const payloadViaOTPEnum = {
 	false: false,
 	true: true,
 } as const;
 
 export type PayloadViaOTPEnumKey = (typeof payloadViaOTPEnum)[keyof typeof payloadViaOTPEnum];
-
-export const payloadViaEmailInviteEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type PayloadViaEmailInviteEnumKey =
-	(typeof payloadViaEmailInviteEnum)[keyof typeof payloadViaEmailInviteEnum];
 
 export const payloadViaGithubEnum = {
 	false: false,
@@ -2385,12 +2839,18 @@ export const payloadViaPasskeyEnum = {
 export type PayloadViaPasskeyEnumKey =
 	(typeof payloadViaPasskeyEnum)[keyof typeof payloadViaPasskeyEnum];
 
-export const factorsLegacyEnum = {
-	false: false,
-	true: true,
+export const factorsOriginEnum3 = {
+	email: "email",
+	saml: "saml",
+	github: "github",
+	gitlab: "gitlab",
+	bitbucket: "bitbucket",
+	google: "google",
+	apple: "apple",
+	otp: "otp",
 } as const;
 
-export type FactorsLegacyEnumKey = (typeof factorsLegacyEnum)[keyof typeof factorsLegacyEnum];
+export type FactorsOriginEnum3Key = (typeof factorsOriginEnum3)[keyof typeof factorsOriginEnum3];
 
 export const roleEnum = {
 	OWNER: "OWNER",
@@ -3118,6 +3578,21 @@ export const payloadMfaEnabledEnum = {
 export type PayloadMfaEnabledEnumKey =
 	(typeof payloadMfaEnabledEnum)[keyof typeof payloadMfaEnabledEnum];
 
+export const payloadTotpEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadTotpEnumKey = (typeof payloadTotpEnum)[keyof typeof payloadTotpEnum];
+
+export const payloadActorTypeEnum = {
+	user: "user",
+	admin: "admin",
+} as const;
+
+export type PayloadActorTypeEnumKey =
+	(typeof payloadActorTypeEnum)[keyof typeof payloadActorTypeEnum];
+
 export const projectMembershipRoleEnum = {
 	ADMIN: "ADMIN",
 	PROJECT_DEVELOPER: "PROJECT_DEVELOPER",
@@ -3667,6 +4142,11 @@ export type UserEvent = {
 		 */
 		end: number;
 	}[];
+	/**
+	 * @description The type of the event.
+	 * @type string | undefined
+	 */
+	type?: UserEventTypeEnumKey | undefined;
 	/**
 	 * @description Timestamp (in milliseconds) of when the event was generated.
 	 * @type number
@@ -4353,6 +4833,20 @@ export type UserEvent = {
 						 */
 						id: string;
 						/**
+						 * @type array
+						 */
+						cns: string[];
+						/**
+						 * @type boolean
+						 */
+						custom: PayloadCustomEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						id: string;
+						/**
 						 * @type object | undefined
 						 */
 						oldTeam?:
@@ -4470,6 +4964,16 @@ export type UserEvent = {
 						 * @type string
 						 */
 						suffix: string;
+				  }
+				| {
+						/**
+						 * @type number
+						 */
+						previousConcurrentBuilds: number;
+						/**
+						 * @type number
+						 */
+						nextConcurrentBuilds: number;
 				  }
 				| {
 						/**
@@ -4663,6 +5167,16 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
+						githubLogin: string;
+						/**
+						 * @type string
+						 */
+						host: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
 						gitlabLogin: string;
 						/**
 						 * @type string
@@ -4672,6 +5186,24 @@ export type UserEvent = {
 						 * @type string | undefined
 						 */
 						gitlabName?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						zeitAccount?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						zeitAccountType?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						gitlabLogin: string;
+						/**
+						 * @type number
+						 */
+						gitlabUserId: number;
 				  }
 				| {
 						/**
@@ -4686,6 +5218,16 @@ export type UserEvent = {
 						 * @type string | undefined
 						 */
 						bitbucketName?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						bitbucketLogin: string;
+						/**
+						 * @type string
+						 */
+						bitbucketAccountId: string;
 				  }
 				| {
 						/**
@@ -8024,46 +8566,6 @@ export type UserEvent = {
 							  } | null)
 							| undefined;
 						/**
-						 * @type boolean
-						 */
-						viaOTP: PayloadViaOTPEnumKey;
-						/**
-						 * @type boolean
-						 */
-						viaEmailInvite: PayloadViaEmailInviteEnumKey;
-						/**
-						 * @type boolean
-						 */
-						viaGithub: PayloadViaGithubEnumKey;
-						/**
-						 * @type boolean
-						 */
-						viaGitlab: PayloadViaGitlabEnumKey;
-						/**
-						 * @type boolean
-						 */
-						viaBitbucket: PayloadViaBitbucketEnumKey;
-						/**
-						 * @type boolean
-						 */
-						viaGoogle: PayloadViaGoogleEnumKey;
-						/**
-						 * @type boolean
-						 */
-						viaApple: PayloadViaAppleEnumKey;
-						/**
-						 * @type boolean
-						 */
-						viaSamlSso: PayloadViaSamlSsoEnumKey;
-						/**
-						 * @type boolean
-						 */
-						viaPasskey: PayloadViaPasskeyEnumKey;
-						/**
-						 * @type string | undefined
-						 */
-						ssoType?: string | undefined;
-						/**
 						 * @type string | undefined
 						 */
 						env?: string | undefined;
@@ -8075,13 +8577,17 @@ export type UserEvent = {
 						 * @type string | undefined
 						 */
 						username?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						ssoType?: string | undefined;
 						factors?:
 							| (
 									| {
 											/**
 											 * @type string
 											 */
-											origin: string;
+											origin: FactorsOriginEnumKey;
 											/**
 											 * @type string | undefined
 											 */
@@ -8094,13 +8600,17 @@ export type UserEvent = {
 											 * @type boolean | undefined
 											 */
 											legacy?: FactorsLegacyEnumKey | undefined;
+											/**
+											 * @type string | undefined
+											 */
+											ssoType?: string | undefined;
 									  }[]
 									| (
 											| {
 													/**
 													 * @type string
 													 */
-													origin: string;
+													origin: FactorsOriginEnumKey;
 													/**
 													 * @type string | undefined
 													 */
@@ -8109,16 +8619,264 @@ export type UserEvent = {
 													 * @type string | undefined
 													 */
 													teamId?: string | undefined;
+													/**
+													 * @type boolean | undefined
+													 */
+													legacy?: FactorsLegacyEnumKey | undefined;
+													/**
+													 * @type string | undefined
+													 */
+													ssoType?: string | undefined;
 											  }
 											| {
 													/**
 													 * @type string
 													 */
-													origin: string;
+													origin: FactorsOriginEnum2Key;
 											  }
 									  )[]
 							  )
 							| undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						viaOTP?: PayloadViaOTPEnumKey | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						viaGithub?: PayloadViaGithubEnumKey | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						viaGitlab?: PayloadViaGitlabEnumKey | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						viaBitbucket?: PayloadViaBitbucketEnumKey | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						viaGoogle?: PayloadViaGoogleEnumKey | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						viaApple?: PayloadViaAppleEnumKey | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						viaSamlSso?: PayloadViaSamlSsoEnumKey | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						viaPasskey?: PayloadViaPasskeyEnumKey | undefined;
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						userAgent?: string | undefined;
+						/**
+						 * @type object
+						 */
+						geolocation?:
+							| ({
+									/**
+									 * @type object | undefined
+									 */
+									city?:
+										| {
+												/**
+												 * @type object
+												 */
+												names: {
+													/**
+													 * @type string
+													 */
+													en: string;
+												};
+										  }
+										| undefined;
+									/**
+									 * @type object
+									 */
+									country: {
+										/**
+										 * @type object
+										 */
+										names: {
+											/**
+											 * @type string
+											 */
+											en: string;
+										};
+									};
+									/**
+									 * @type object | undefined
+									 */
+									mostSpecificSubdivision?:
+										| {
+												/**
+												 * @type object
+												 */
+												names: {
+													/**
+													 * @type string
+													 */
+													en: string;
+												};
+										  }
+										| undefined;
+									/**
+									 * @type string | undefined
+									 */
+									regionName?: string | undefined;
+							  } | null)
+							| undefined;
+						/**
+						 * @type string | undefined
+						 */
+						env?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						os?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						username?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						ssoType?: string | undefined;
+						/**
+						 * @type array | undefined
+						 */
+						factors?:
+							| {
+									/**
+									 * @type string
+									 */
+									origin: FactorsOriginEnum3Key;
+									/**
+									 * @type string | undefined
+									 */
+									username?: string | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									teamId?: string | undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									legacy?: FactorsLegacyEnumKey | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									ssoType?: string | undefined;
+							  }[]
+							| undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						viaOTP?: PayloadViaOTPEnumKey | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						viaGithub?: PayloadViaGithubEnumKey | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						viaGitlab?: PayloadViaGitlabEnumKey | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						viaBitbucket?: PayloadViaBitbucketEnumKey | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						viaGoogle?: PayloadViaGoogleEnumKey | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						viaApple?: PayloadViaAppleEnumKey | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						viaSamlSso?: PayloadViaSamlSsoEnumKey | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						viaPasskey?: PayloadViaPasskeyEnumKey | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						email: string;
+						/**
+						 * @type string
+						 */
+						bitbucketLogin: string;
+						/**
+						 * @type string
+						 */
+						bitbucketEmail: string;
+						/**
+						 * @type string
+						 */
+						bitbucketName: string;
+						/**
+						 * @type string
+						 */
+						zeitAccount: string;
+						/**
+						 * @type string
+						 */
+						zeitAccountType: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						email: string;
+						/**
+						 * @type string
+						 */
+						githubLogin: string;
+						/**
+						 * @type string
+						 */
+						zeitAccount: string;
+						/**
+						 * @type string
+						 */
+						zeitAccountType: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						email: string;
+						/**
+						 * @type string
+						 */
+						gitlabLogin: string;
+						/**
+						 * @type string
+						 */
+						gitlabEmail: string;
+						/**
+						 * @type string
+						 */
+						gitlabName: string;
+						/**
+						 * @type string
+						 */
+						zeitAccount: string;
+						/**
+						 * @type string
+						 */
+						zeitAccountType: string;
 				  }
 				| {
 						/**
@@ -8787,9 +9545,9 @@ export type UserEvent = {
 													 */
 													subnetIds: string[];
 													/**
-													 * @type string
+													 * @type string | undefined
 													 */
-													securityGroupId: string;
+													securityGroupId?: string | undefined;
 											  }
 											| undefined;
 										/**
@@ -8834,9 +9592,9 @@ export type UserEvent = {
 													 */
 													subnetIds: string[];
 													/**
-													 * @type string
+													 * @type string | undefined
 													 */
-													securityGroupId: string;
+													securityGroupId?: string | undefined;
 											  }
 											| undefined;
 										/**
@@ -10439,6 +11197,28 @@ export type UserEvent = {
 				  }
 				| {
 						/**
+						 * @type boolean
+						 */
+						totp: PayloadTotpEnumKey;
+						/**
+						 * @type number
+						 */
+						recoveryCodes: number;
+						/**
+						 * @type string | undefined
+						 */
+						actorId?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						actorType?: PayloadActorTypeEnumKey | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						reason?: string | undefined;
+				  }
+				| {
+						/**
 						 * @type string
 						 */
 						email: string;
@@ -10446,6 +11226,16 @@ export type UserEvent = {
 						 * @type string
 						 */
 						prevEmail: string;
+				  }
+				| {
+						/**
+						 * @type number
+						 */
+						deletedAt?: (number | null) | undefined;
+						/**
+						 * @type string
+						 */
+						username: string;
 				  }
 				| {
 						/**
@@ -13854,6 +14644,9 @@ export const joinedFromOriginEnum2 = {
 	link: "link",
 	mail: "mail",
 	"nsnb-auto-approve": "nsnb-auto-approve",
+	"nsnb-invite": "nsnb-invite",
+	"nsnb-request-access": "nsnb-request-access",
+	"nsnb-viewer-upgrade": "nsnb-viewer-upgrade",
 	"organization-teams": "organization-teams",
 	saml: "saml",
 	teams: "teams",
@@ -14486,6 +15279,9 @@ export const joinedFromOriginEnum3 = {
 	link: "link",
 	mail: "mail",
 	"nsnb-auto-approve": "nsnb-auto-approve",
+	"nsnb-invite": "nsnb-invite",
+	"nsnb-request-access": "nsnb-request-access",
+	"nsnb-viewer-upgrade": "nsnb-viewer-upgrade",
 	"organization-teams": "organization-teams",
 	saml: "saml",
 	teams: "teams",
@@ -14788,6 +15584,16 @@ export type AuthToken = {
 	 */
 	type: string;
 	/**
+	 * @description The token\'s prefix, for identification purposes.
+	 * @type string | undefined
+	 */
+	prefix?: string | undefined;
+	/**
+	 * @description The last few characters of the token, for identification purposes.
+	 * @type string | undefined
+	 */
+	suffix?: string | undefined;
+	/**
 	 * @description The origin of how the token was created.
 	 * @type string | undefined
 	 */
@@ -14857,20 +15663,20 @@ export type AuthToken = {
 		  )[]
 		| undefined;
 	/**
-	 * @description Timestamp (in milliseconds) of when the token expires.
-	 * @type number | undefined
+	 * @description Timestamp (in milliseconds) of when the token was created.
+	 * @type number
 	 */
-	expiresAt?: number | undefined;
+	createdAt: number;
 	/**
 	 * @description Timestamp (in milliseconds) of when the token was most recently used.
 	 * @type number
 	 */
 	activeAt: number;
 	/**
-	 * @description Timestamp (in milliseconds) of when the token was created.
-	 * @type number
+	 * @description Timestamp (in milliseconds) of when the token expires.
+	 * @type number | undefined
 	 */
-	createdAt: number;
+	expiresAt?: number | undefined;
 	/**
 	 * @description Timestamp (in milliseconds) of when the token was marked as leaked.
 	 * @type number | undefined
@@ -14881,11 +15687,6 @@ export type AuthToken = {
 	 * @type string | undefined
 	 */
 	leakedUrl?: string | undefined;
-	/**
-	 * @description The last few characters of the token, for identification purposes.
-	 * @type string | undefined
-	 */
-	suffix?: string | undefined;
 };
 
 export const softBlockReasonEnum2 = {
@@ -15069,6 +15870,14 @@ export const webAnalyticsIsCurrentlyBlockedEnum = {
 
 export type WebAnalyticsIsCurrentlyBlockedEnumKey =
 	(typeof webAnalyticsIsCurrentlyBlockedEnum)[keyof typeof webAnalyticsIsCurrentlyBlockedEnum];
+
+export const authUserIsEnterpriseManagedEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type AuthUserIsEnterpriseManagedEnumKey =
+	(typeof authUserIsEnterpriseManagedEnum)[keyof typeof authUserIsEnterpriseManagedEnum];
 
 /**
  * @description Data for the currently authenticated User.
@@ -15490,6 +16299,11 @@ export type AuthUser = {
 	 * @type string
 	 */
 	defaultTeamId: string | null;
+	/**
+	 * @description Indicates whether the user is managed by an enterprise.
+	 * @type boolean | undefined
+	 */
+	isEnterpriseManaged?: AuthUserIsEnterpriseManagedEnumKey | undefined;
 };
 
 export const authUserLimitedLimitedEnum = {
@@ -15498,6 +16312,14 @@ export const authUserLimitedLimitedEnum = {
 
 export type AuthUserLimitedLimitedEnumKey =
 	(typeof authUserLimitedLimitedEnum)[keyof typeof authUserLimitedLimitedEnum];
+
+export const authUserLimitedIsEnterpriseManagedEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type AuthUserLimitedIsEnterpriseManagedEnumKey =
+	(typeof authUserLimitedIsEnterpriseManagedEnum)[keyof typeof authUserLimitedIsEnterpriseManagedEnum];
 
 /**
  * @description A limited form of data for the currently authenticated User, due to the authentication token missing privileges to read the full User data.
@@ -15538,6 +16360,11 @@ export type AuthUserLimited = {
 	 * @type string
 	 */
 	defaultTeamId: string | null;
+	/**
+	 * @description Indicates whether the user is managed by an enterprise.
+	 * @type boolean | undefined
+	 */
+	isEnterpriseManaged?: AuthUserLimitedIsEnterpriseManagedEnumKey | undefined;
 };
 
 export const fileTreeTypeEnum = {
@@ -17413,8 +18240,6 @@ export type CreateNetwork402 = unknown;
  */
 export type CreateNetwork403 = unknown;
 
-export type CreateNetwork404 = unknown;
-
 export type CreateNetwork409 = unknown;
 
 export type CreateNetworkMutationResponse = CreateNetwork201;
@@ -17427,7 +18252,6 @@ export type CreateNetworkMutation = {
 		| CreateNetwork401
 		| CreateNetwork402
 		| CreateNetwork403
-		| CreateNetwork404
 		| CreateNetwork409;
 };
 
@@ -17471,8 +18295,6 @@ export type DeleteNetwork402 = unknown;
  */
 export type DeleteNetwork403 = unknown;
 
-export type DeleteNetwork404 = unknown;
-
 export type DeleteNetwork409 = unknown;
 
 export type DeleteNetworkMutationResponse = DeleteNetwork204;
@@ -17486,7 +18308,6 @@ export type DeleteNetworkMutation = {
 		| DeleteNetwork401
 		| DeleteNetwork402
 		| DeleteNetwork403
-		| DeleteNetwork404
 		| DeleteNetwork409;
 };
 
@@ -17806,13 +18627,15 @@ export type GetDeployment403 = unknown;
  */
 export type GetDeployment404 = unknown;
 
+export type GetDeployment429 = unknown;
+
 export type GetDeploymentQueryResponse = GetDeployment200;
 
 export type GetDeploymentQuery = {
 	Response: GetDeployment200;
 	PathParams: GetDeploymentPathParams;
 	QueryParams: GetDeploymentQueryParams;
-	Errors: GetDeployment400 | GetDeployment403 | GetDeployment404;
+	Errors: GetDeployment400 | GetDeployment403 | GetDeployment404 | GetDeployment429;
 };
 
 export type CreateDeploymentQueryParams = {
@@ -17868,6 +18691,8 @@ export type CreateDeployment404 = unknown;
  */
 export type CreateDeployment409 = unknown;
 
+export type CreateDeployment429 = unknown;
+
 export type CreateDeployment500 = unknown;
 
 export type CreateDeployment503 = unknown;
@@ -17884,6 +18709,7 @@ export type CreateDeploymentMutation = {
 		| CreateDeployment403
 		| CreateDeployment404
 		| CreateDeployment409
+		| CreateDeployment429
 		| CreateDeployment500
 		| CreateDeployment503;
 };
@@ -18233,6 +19059,59 @@ export type GetSupportedTldsQuery = {
 		| GetSupportedTlds403
 		| GetSupportedTlds429
 		| GetSupportedTlds500;
+};
+
+export type GetTldPathParams = {
+	/**
+	 * @type string
+	 */
+	tld: string;
+};
+
+export type GetTldQueryParams = {
+	/**
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+};
+
+/**
+ * @description Success
+ */
+export type GetTld200 = unknown;
+
+/**
+ * @description There was something wrong with the request
+ */
+export type GetTld400 = unknown;
+
+/**
+ * @description Unauthorized
+ */
+export type GetTld401 = unknown;
+
+/**
+ * @description NotAuthorizedForScope
+ */
+export type GetTld403 = unknown;
+
+/**
+ * @description TooManyRequests
+ */
+export type GetTld429 = unknown;
+
+/**
+ * @description InternalServerError
+ */
+export type GetTld500 = unknown;
+
+export type GetTldQueryResponse = GetTld200;
+
+export type GetTldQuery = {
+	Response: GetTld200;
+	PathParams: GetTldPathParams;
+	QueryParams: GetTldQueryParams;
+	Errors: GetTld400 | GetTld401 | GetTld403 | GetTld429 | GetTld500;
 };
 
 export type GetTldPricePathParams = {
@@ -21407,6 +22286,41 @@ export type ListUserEventsQuery = {
 	Response: ListUserEvents200;
 	QueryParams: ListUserEventsQueryParams;
 	Errors: ListUserEvents400 | ListUserEvents401 | ListUserEvents403;
+};
+
+export type ListEventTypesQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type ListEventTypes200 = unknown;
+
+export type ListEventTypes400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type ListEventTypes401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type ListEventTypes403 = unknown;
+
+export type ListEventTypesQueryResponse = ListEventTypes200;
+
+export type ListEventTypesQuery = {
+	Response: ListEventTypes200;
+	QueryParams: ListEventTypesQueryParams;
+	Errors: ListEventTypes400 | ListEventTypes401 | ListEventTypes403;
 };
 
 export const gitNamespacesQueryParamsProviderEnum = {
@@ -26281,6 +27195,7 @@ export type CreateIntegrationStoreDirectMutation = {
 
 export type GetTeamMembersPathParams = {
 	/**
+	 * @description The Team identifier to perform the request on behalf of.
 	 * @type string
 	 */
 	teamId: string;
@@ -26337,6 +27252,11 @@ export type GetTeamMembersQueryParams = {
 	 * @type string | undefined
 	 */
 	eligibleMembersForProjectId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
 };
 
 export type GetTeamMembers200 = unknown;
@@ -26369,9 +27289,18 @@ export type GetTeamMembersQuery = {
 
 export type InviteUserToTeamPathParams = {
 	/**
+	 * @description The Team identifier to perform the request on behalf of.
 	 * @type string
 	 */
 	teamId: string;
+};
+
+export type InviteUserToTeamQueryParams = {
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
 };
 
 export type InviteUserToTeam200 = unknown;
@@ -26398,6 +27327,7 @@ export type InviteUserToTeamMutationResponse = InviteUserToTeam200;
 export type InviteUserToTeamMutation = {
 	Response: InviteUserToTeam200;
 	PathParams: InviteUserToTeamPathParams;
+	QueryParams: InviteUserToTeamQueryParams;
 	Errors: InviteUserToTeam400 | InviteUserToTeam401 | InviteUserToTeam403 | InviteUserToTeam503;
 };
 
@@ -26431,6 +27361,8 @@ export type RequestAccessToTeam403 = unknown;
  */
 export type RequestAccessToTeam404 = unknown;
 
+export type RequestAccessToTeam429 = unknown;
+
 export type RequestAccessToTeam503 = unknown;
 
 export type RequestAccessToTeamMutationResponse = RequestAccessToTeam200;
@@ -26443,6 +27375,7 @@ export type RequestAccessToTeamMutation = {
 		| RequestAccessToTeam401
 		| RequestAccessToTeam403
 		| RequestAccessToTeam404
+		| RequestAccessToTeam429
 		| RequestAccessToTeam503;
 };
 
@@ -27082,12 +28015,14 @@ export type CreateAuthToken401 = unknown;
  */
 export type CreateAuthToken403 = unknown;
 
+export type CreateAuthToken404 = unknown;
+
 export type CreateAuthTokenMutationResponse = CreateAuthToken200;
 
 export type CreateAuthTokenMutation = {
 	Response: CreateAuthToken200;
 	QueryParams: CreateAuthTokenQueryParams;
-	Errors: CreateAuthToken400 | CreateAuthToken401 | CreateAuthToken403;
+	Errors: CreateAuthToken400 | CreateAuthToken401 | CreateAuthToken403 | CreateAuthToken404;
 };
 
 export type GetAuthTokenPathParams = {
@@ -27777,8 +28712,6 @@ export type PatchUrlProtectionBypass409 = unknown;
 
 export type PatchUrlProtectionBypass428 = unknown;
 
-export type PatchUrlProtectionBypass500 = unknown;
-
 export type PatchUrlProtectionBypassMutationResponse = PatchUrlProtectionBypass200;
 
 export type PatchUrlProtectionBypassMutation = {
@@ -27791,8 +28724,7 @@ export type PatchUrlProtectionBypassMutation = {
 		| PatchUrlProtectionBypass403
 		| PatchUrlProtectionBypass404
 		| PatchUrlProtectionBypass409
-		| PatchUrlProtectionBypass428
-		| PatchUrlProtectionBypass500;
+		| PatchUrlProtectionBypass428;
 };
 
 export type GetCertByIdPathParams = {

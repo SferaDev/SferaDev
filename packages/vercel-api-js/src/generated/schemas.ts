@@ -257,6 +257,17 @@ export const countryCodeSchema = z.string().describe("A valid ISO 3166-1 alpha-2
 export const orderIdSchema = z.string().describe("A valid order ID");
 
 /**
+ * @description A language code is required for punycode domains.
+ */
+export const languageCodeRequiredSchema = z
+	.object({
+		status: z.literal(400),
+		code: z.enum(["language_code_required"]),
+		message: z.string(),
+	})
+	.describe("A language code is required for punycode domains.");
+
+/**
  * @description The domain is not available.
  */
 export const domainNotAvailableSchema = z
@@ -559,6 +570,394 @@ export const userEventSchema = z
 			.describe(
 				'A list of "entities" within the event `text`. Useful for enhancing the displayed text with additional styling and links.',
 			),
+		type: z.optional(
+			z
+				.enum([
+					"access-group-created",
+					"access-group-deleted",
+					"access-group-project-updated",
+					"access-group-user-added",
+					"access-group-user-removed",
+					"ai-alert-investigation",
+					"ai-code-review",
+					"alert-rule-created",
+					"alert-rule-deleted",
+					"alert-rule-updated",
+					"alias",
+					"alias-chown",
+					"alias-delete",
+					"alias-invite-created",
+					"alias-invite-joined",
+					"alias-invite-revoked",
+					"alias-protection-bypass-created",
+					"alias-protection-bypass-exception",
+					"alias-protection-bypass-regenerated",
+					"alias-protection-bypass-revoked",
+					"alias-system",
+					"alias-user-scoped-access-denied",
+					"alias-user-scoped-access-granted",
+					"alias-user-scoped-access-requested",
+					"alias-user-scoped-access-revoked",
+					"attack-mode-disabled",
+					"attack-mode-enabled",
+					"audit-log-export-downloaded",
+					"audit-log-export-requested",
+					"authorize-git-deployment",
+					"auto-expose-system-envs",
+					"avatar",
+					"bulk-redirects-settings-updated",
+					"bulk-redirects-version-promoted",
+					"bulk-redirects-version-restored",
+					"cert",
+					"cert-autorenew",
+					"cert-chown",
+					"cert-clone",
+					"cert-delete",
+					"cert-renew",
+					"cert-replace",
+					"cert-system-create",
+					"concurrent-builds-update",
+					"connect-bitbucket",
+					"connect-bitbucket-app",
+					"connect-configuration-created",
+					"connect-configuration-deleted",
+					"connect-configuration-link-updated",
+					"connect-configuration-linked",
+					"connect-configuration-unlinked",
+					"connect-configuration-updated",
+					"connect-github",
+					"connect-github-custom-host",
+					"connect-github-limited",
+					"connect-gitlab",
+					"connect-gitlab-app",
+					"custom-suffix-clear",
+					"custom-suffix-disable",
+					"custom-suffix-enable",
+					"custom-suffix-pending",
+					"custom-suffix-ready",
+					"deploy-hook-created",
+					"deploy-hook-deduped",
+					"deploy-hook-deleted",
+					"deploy-hook-processed",
+					"deployment",
+					"deployment-chown",
+					"deployment-creation-blocked",
+					"deployment-delete",
+					"disabled-integration-installation-removed",
+					"disconnect-bitbucket-app",
+					"disconnect-github",
+					"disconnect-github-custom-host",
+					"disconnect-github-limited",
+					"disconnect-gitlab-app",
+					"dns-add",
+					"dns-delete",
+					"dns-update",
+					"dns-zonefile-import",
+					"domain",
+					"domain-buy",
+					"domain-cdn",
+					"domain-chown",
+					"domain-custom-ns-change",
+					"domain-delegated",
+					"domain-delete",
+					"domain-move-in",
+					"domain-move-out",
+					"domain-move-out-request-sent",
+					"domain-renew-change",
+					"domain-service-type-updated",
+					"domain-transfer-in",
+					"domain-transfer-in-canceled",
+					"domain-transfer-in-completed",
+					"drain-created",
+					"drain-deleted",
+					"drain-disabled",
+					"drain-enabled",
+					"drain-updated",
+					"edge-cache-dangerously-delete-by-src-images",
+					"edge-cache-dangerously-delete-by-tags",
+					"edge-cache-invalidate-by-src-images",
+					"edge-cache-invalidate-by-tags",
+					"edge-cache-purge-all",
+					"edge-cache-rollback-purge",
+					"edge-config-created",
+					"edge-config-deleted",
+					"edge-config-items-updated",
+					"edge-config-schema-deleted",
+					"edge-config-schema-updated",
+					"edge-config-token-created",
+					"edge-config-token-deleted",
+					"edge-config-transfer-in",
+					"edge-config-transfer-out",
+					"edge-config-updated",
+					"email",
+					"email-notification-rule-removed",
+					"email-notification-rule-updated",
+					"enforce-sensitive-environment-variables",
+					"env-variable-add",
+					"env-variable-delete",
+					"env-variable-edit",
+					"env-variable-read",
+					"env-variable-read:cli:dev",
+					"env-variable-read:cli:env:add",
+					"env-variable-read:cli:env:ls",
+					"env-variable-read:cli:env:pull",
+					"env-variable-read:cli:env:rm",
+					"env-variable-read:cli:pull",
+					"env-variable-read:unknown-source",
+					"env-variable-read:v0:env:pull",
+					"firewall-bypass-created",
+					"firewall-bypass-deleted",
+					"firewall-config-promoted",
+					"firewall-managed-rulegroup-updated",
+					"firewall-managed-ruleset-updated",
+					"flag",
+					"flags-explorer-subscription",
+					"flags-sdk-key",
+					"flags-segment",
+					"flags-settings",
+					"instant-rollback-created",
+					"integration-configuration-owner-changed",
+					"integration-configuration-scope-change-confirmed",
+					"integration-configurations-disabled",
+					"integration-installation-billing-plan-updated",
+					"integration-installation-completed",
+					"integration-installation-permission-updated",
+					"integration-installation-removed",
+					"integration-scope-changed",
+					"log-drain-created",
+					"log-drain-deleted",
+					"log-drain-disabled",
+					"log-drain-enabled",
+					"login",
+					"manual-deployment-promotion-created",
+					"microfrontend-group-added",
+					"microfrontend-group-deleted",
+					"microfrontend-group-updated",
+					"microfrontend-project-added-to-group",
+					"microfrontend-project-removed-from-group",
+					"microfrontend-project-updated",
+					"monitoring-disabled",
+					"monitoring-enabled",
+					"oauth-app-connection-created",
+					"oauth-app-connection-removed",
+					"oauth-app-connection-updated",
+					"oauth-app-created",
+					"oauth-app-deleted",
+					"oauth-app-secret-deleted",
+					"oauth-app-secret-generated",
+					"oauth-app-token-created",
+					"oauth-app-updated",
+					"observability-disabled",
+					"observability-enabled",
+					"observability-plus-project-disabled",
+					"observability-plus-project-enabled",
+					"owner-blocked",
+					"owner-soft-blocked",
+					"owner-soft-unblocked",
+					"owner-unblocked",
+					"passkey-created",
+					"passkey-deleted",
+					"passkey-updated",
+					"password-protection-disabled",
+					"password-protection-enabled",
+					"plan",
+					"preview-deployment-suffix-disabled",
+					"preview-deployment-suffix-enabled",
+					"preview-deployment-suffix-update",
+					"production-branch-updated",
+					"project-add-alias",
+					"project-add-redirect",
+					"project-affected-projects-deployments-updated",
+					"project-alias-configured-change",
+					"project-analytics-disabled",
+					"project-analytics-enabled",
+					"project-auto-assign-custom-production-domains-updated",
+					"project-automation-bypass",
+					"project-build-command-updated",
+					"project-build-logs-and-source-protection-updated",
+					"project-build-machine-updated",
+					"project-client-cert-delete",
+					"project-client-cert-upload",
+					"project-connect-configurations",
+					"project-created",
+					"project-cron-jobs-toggled",
+					"project-custom-environment-created",
+					"project-custom-environment-deleted",
+					"project-custom-environment-updated",
+					"project-customer-success-code-visibility-updated",
+					"project-delete",
+					"project-deployment-retention-updated",
+					"project-directory-listing",
+					"project-domain-deleted",
+					"project-domain-moved",
+					"project-domain-unverified",
+					"project-domain-updated",
+					"project-domain-verified",
+					"project-elastic-concurrency-updated",
+					"project-framework-updated",
+					"project-function-cpu-memory",
+					"project-function-failover",
+					"project-function-max-duration",
+					"project-function-regions",
+					"project-functions-fluid-disabled",
+					"project-functions-fluid-enabled",
+					"project-git-commit-comments-toggled",
+					"project-git-create-deployments-toggled",
+					"project-git-fork-protection-updated",
+					"project-git-lfs-toggled",
+					"project-git-pr-comments-toggled",
+					"project-git-repository-connected",
+					"project-git-repository-disconnected",
+					"project-git-repository-dispatch-events-toggled",
+					"project-git-require-verified-commits-toggled",
+					"project-ignored-build-step-updated",
+					"project-install-command-updated",
+					"project-member-added",
+					"project-member-invited",
+					"project-member-removed",
+					"project-member-removed-batch",
+					"project-member-updated",
+					"project-move-in-success",
+					"project-move-out-failed",
+					"project-move-out-started",
+					"project-move-out-success",
+					"project-name",
+					"project-node-version-updated",
+					"project-oidc-issuer-mode-updated",
+					"project-oidc-token-created",
+					"project-options-allowlist",
+					"project-output-directory-updated",
+					"project-password-protection",
+					"project-paused",
+					"project-preview-deployment-suffix",
+					"project-preview-environment-branch-tracking-updated",
+					"project-prioritize-production-builds-updated",
+					"project-protected-sourcemaps-updated",
+					"project-rolling-release-aborted",
+					"project-rolling-release-approved",
+					"project-rolling-release-completed",
+					"project-rolling-release-configured",
+					"project-rolling-release-disabled",
+					"project-rolling-release-enabled",
+					"project-rolling-release-started",
+					"project-rolling-release-timer",
+					"project-root-directory-updated",
+					"project-routes-version-promoted",
+					"project-routes-version-restored",
+					"project-skew-protection-allowed-domains-updated",
+					"project-skew-protection-max-age-updated",
+					"project-skew-protection-threshold-updated",
+					"project-source-files-outside-root-directory-updated",
+					"project-speed-insights-disabled",
+					"project-speed-insights-enabled",
+					"project-sso-protection",
+					"project-static-ips-updated",
+					"project-trusted-ips",
+					"project-unpaused",
+					"project-web-analytics-disabled",
+					"project-web-analytics-enabled",
+					"protected-git-scope-added",
+					"protected-git-scope-removed",
+					"runtime-cache-purge-all",
+					"scale",
+					"scale-auto",
+					"secondary-email-added",
+					"secondary-email-removed",
+					"secondary-email-verified",
+					"secret-add",
+					"secret-delete",
+					"secret-rename",
+					"security-plus-updated",
+					"set-bio",
+					"set-name",
+					"set-profiles",
+					"set-scale",
+					"shared-env-variable-create",
+					"shared-env-variable-delete",
+					"shared-env-variable-read",
+					"shared-env-variable-update",
+					"show-ip-addresses",
+					"signup",
+					"signup-via-bitbucket",
+					"signup-via-github",
+					"signup-via-gitlab",
+					"speed-insights-settings-updated",
+					"spend-created",
+					"spend-deleted",
+					"spend-updated",
+					"storage-accept-tos",
+					"storage-access-token-set",
+					"storage-accessed-data-browser",
+					"storage-connect-project",
+					"storage-create",
+					"storage-delete",
+					"storage-disconnect-project",
+					"storage-disconnect-projects",
+					"storage-inactive-store-deleted",
+					"storage-reset-credentials",
+					"storage-resource-repl-command",
+					"storage-update",
+					"storage-update-project-connection",
+					"storage-view-secret",
+					"strict-deployment-protection-settings",
+					"team",
+					"team-avatar-update",
+					"team-delete",
+					"team-email-domain-update",
+					"team-ended-trial",
+					"team-invite-bulk-delete",
+					"team-invite-code-reset",
+					"team-ip-blocking-rules-created",
+					"team-ip-blocking-rules-removed",
+					"team-member-add",
+					"team-member-confirm-request",
+					"team-member-decline-request",
+					"team-member-delete",
+					"team-member-entitlement-added",
+					"team-member-entitlement-canceled",
+					"team-member-entitlement-reactivated",
+					"team-member-entitlement-removed",
+					"team-member-join",
+					"team-member-leave",
+					"team-member-request-access",
+					"team-member-role-update",
+					"team-mfa-enforcement-updated",
+					"team-name-update",
+					"team-paid-invoice",
+					"team-remote-caching-update",
+					"team-saml-enforced",
+					"team-saml-roles",
+					"team-slug-update",
+					"unlink-login-connection",
+					"user-delete",
+					"user-mfa-challenge-verified",
+					"user-mfa-configuration-updated",
+					"user-mfa-recovery-codes-regenerated",
+					"user-mfa-removed",
+					"user-mfa-totp-verification-started",
+					"user-mfa-totp-verified",
+					"user-primary-email-updated",
+					"username",
+					"vercel-agent-team-trial-credits-applied",
+					"vercel-app-installation-request-dismissed",
+					"vercel-app-installation-requested",
+					"vercel-app-installation-updated",
+					"vercel-app-installed",
+					"vercel-app-tokens-revoked",
+					"vercel-app-uninstalled",
+					"vercel-toolbar",
+					"vpc-peering-connection-accepted",
+					"vpc-peering-connection-deleted",
+					"vpc-peering-connection-rejected",
+					"vpc-peering-connection-updated",
+					"web-analytics-tier-updated",
+					"webhook-created",
+					"webhook-deleted",
+					"webhook-updated",
+					"workflow-deployment-key-accessed",
+				])
+				.describe("The type of the event."),
+		),
 		createdAt: z.number().describe("Timestamp (in milliseconds) of when the event was generated."),
 		user: z.optional(
 			z
@@ -847,6 +1246,11 @@ export const userEventSchema = z
 				}),
 				z.object({
 					id: z.string(),
+					cns: z.array(z.string()),
+					custom: z.union([z.literal(false), z.literal(true)]),
+				}),
+				z.object({
+					id: z.string(),
 					oldTeam: z.optional(
 						z.object({
 							name: z.string(),
@@ -893,6 +1297,10 @@ export const userEventSchema = z
 				}),
 				z.object({
 					suffix: z.string(),
+				}),
+				z.object({
+					previousConcurrentBuilds: z.number(),
+					nextConcurrentBuilds: z.number(),
 				}),
 				z.object({
 					configuration: z.object({
@@ -960,14 +1368,28 @@ export const userEventSchema = z
 					githubLogin: z.string(),
 				}),
 				z.object({
+					githubLogin: z.string(),
+					host: z.string(),
+				}),
+				z.object({
 					gitlabLogin: z.string(),
 					gitlabEmail: z.string(),
 					gitlabName: z.optional(z.string()),
+					zeitAccount: z.optional(z.string()),
+					zeitAccountType: z.optional(z.string()),
+				}),
+				z.object({
+					gitlabLogin: z.string(),
+					gitlabUserId: z.number(),
 				}),
 				z.object({
 					bitbucketEmail: z.string(),
 					bitbucketLogin: z.string(),
 					bitbucketName: z.optional(z.string()),
+				}),
+				z.object({
+					bitbucketLogin: z.string(),
+					bitbucketAccountId: z.string(),
 				}),
 				z.object({
 					provider: z.enum([
@@ -1911,6 +2333,9 @@ export const userEventSchema = z
 														"feedback",
 														"organization-teams",
 														"nsnb-auto-approve",
+														"nsnb-request-access",
+														"nsnb-viewer-upgrade",
+														"nsnb-invite",
 													]),
 													commitId: z.optional(z.string()),
 													repoId: z.optional(z.string()),
@@ -2706,28 +3131,33 @@ export const userEventSchema = z
 							regionName: z.optional(z.string()),
 						})
 						.nullish(),
-					viaOTP: z.union([z.literal(false), z.literal(true)]),
-					viaEmailInvite: z.union([z.literal(false), z.literal(true)]),
-					viaGithub: z.union([z.literal(false), z.literal(true)]),
-					viaGitlab: z.union([z.literal(false), z.literal(true)]),
-					viaBitbucket: z.union([z.literal(false), z.literal(true)]),
-					viaGoogle: z.union([z.literal(false), z.literal(true)]),
-					viaApple: z.union([z.literal(false), z.literal(true)]),
-					viaSamlSso: z.union([z.literal(false), z.literal(true)]),
-					viaPasskey: z.union([z.literal(false), z.literal(true)]),
-					ssoType: z.optional(z.string()),
 					env: z.optional(z.string()),
 					os: z.optional(z.string()),
 					username: z.optional(z.string()),
+					ssoType: z.optional(z.string()),
 					factors: z.optional(
 						z.union([
 							z
 								.array(
 									z.object({
-										origin: z.string(),
+										origin: z.enum([
+											"email",
+											"saml",
+											"github",
+											"gitlab",
+											"bitbucket",
+											"google",
+											"apple",
+											"webauthn",
+											"otp",
+											"invite",
+											"otp-link",
+											"magic-link",
+										]),
 										username: z.optional(z.string()),
 										teamId: z.optional(z.string()),
 										legacy: z.optional(z.union([z.literal(false), z.literal(true)])),
+										ssoType: z.optional(z.string()),
 									}),
 								)
 								.min(1)
@@ -2736,12 +3166,27 @@ export const userEventSchema = z
 								.array(
 									z.union([
 										z.object({
-											origin: z.string(),
+											origin: z.enum([
+												"email",
+												"saml",
+												"github",
+												"gitlab",
+												"bitbucket",
+												"google",
+												"apple",
+												"webauthn",
+												"otp",
+												"invite",
+												"otp-link",
+												"magic-link",
+											]),
 											username: z.optional(z.string()),
 											teamId: z.optional(z.string()),
+											legacy: z.optional(z.union([z.literal(false), z.literal(true)])),
+											ssoType: z.optional(z.string()),
 										}),
 										z.object({
-											origin: z.string(),
+											origin: z.enum(["totp", "webauthn", "recovery-code"]),
 										}),
 									]),
 								)
@@ -2749,6 +3194,98 @@ export const userEventSchema = z
 								.max(2),
 						]),
 					),
+					viaOTP: z.optional(z.union([z.literal(false), z.literal(true)])),
+					viaGithub: z.optional(z.union([z.literal(false), z.literal(true)])),
+					viaGitlab: z.optional(z.union([z.literal(false), z.literal(true)])),
+					viaBitbucket: z.optional(z.union([z.literal(false), z.literal(true)])),
+					viaGoogle: z.optional(z.union([z.literal(false), z.literal(true)])),
+					viaApple: z.optional(z.union([z.literal(false), z.literal(true)])),
+					viaSamlSso: z.optional(z.union([z.literal(false), z.literal(true)])),
+					viaPasskey: z.optional(z.union([z.literal(false), z.literal(true)])),
+				}),
+				z.object({
+					userAgent: z.optional(z.string()),
+					geolocation: z
+						.object({
+							city: z.optional(
+								z.object({
+									names: z.object({
+										en: z.string(),
+									}),
+								}),
+							),
+							country: z.object({
+								names: z.object({
+									en: z.string(),
+								}),
+							}),
+							mostSpecificSubdivision: z.optional(
+								z.object({
+									names: z.object({
+										en: z.string(),
+									}),
+								}),
+							),
+							regionName: z.optional(z.string()),
+						})
+						.nullish(),
+					env: z.optional(z.string()),
+					os: z.optional(z.string()),
+					username: z.optional(z.string()),
+					ssoType: z.optional(z.string()),
+					factors: z.optional(
+						z
+							.array(
+								z.object({
+									origin: z.enum([
+										"email",
+										"saml",
+										"github",
+										"gitlab",
+										"bitbucket",
+										"google",
+										"apple",
+										"otp",
+									]),
+									username: z.optional(z.string()),
+									teamId: z.optional(z.string()),
+									legacy: z.optional(z.union([z.literal(false), z.literal(true)])),
+									ssoType: z.optional(z.string()),
+								}),
+							)
+							.min(1)
+							.max(1),
+					),
+					viaOTP: z.optional(z.union([z.literal(false), z.literal(true)])),
+					viaGithub: z.optional(z.union([z.literal(false), z.literal(true)])),
+					viaGitlab: z.optional(z.union([z.literal(false), z.literal(true)])),
+					viaBitbucket: z.optional(z.union([z.literal(false), z.literal(true)])),
+					viaGoogle: z.optional(z.union([z.literal(false), z.literal(true)])),
+					viaApple: z.optional(z.union([z.literal(false), z.literal(true)])),
+					viaSamlSso: z.optional(z.union([z.literal(false), z.literal(true)])),
+					viaPasskey: z.optional(z.union([z.literal(false), z.literal(true)])),
+				}),
+				z.object({
+					email: z.string(),
+					bitbucketLogin: z.string(),
+					bitbucketEmail: z.string(),
+					bitbucketName: z.string(),
+					zeitAccount: z.string(),
+					zeitAccountType: z.string(),
+				}),
+				z.object({
+					email: z.string(),
+					githubLogin: z.string(),
+					zeitAccount: z.string(),
+					zeitAccountType: z.string(),
+				}),
+				z.object({
+					email: z.string(),
+					gitlabLogin: z.string(),
+					gitlabEmail: z.string(),
+					gitlabName: z.string(),
+					zeitAccount: z.string(),
+					zeitAccountType: z.string(),
 				}),
 				z.object({
 					drainUrl: z.nullable(z.string()),
@@ -2794,6 +3331,9 @@ export const userEventSchema = z
 											"feedback",
 											"organization-teams",
 											"nsnb-auto-approve",
+											"nsnb-request-access",
+											"nsnb-viewer-upgrade",
+											"nsnb-invite",
 										]),
 										commitId: z.optional(z.string()),
 										repoId: z.optional(z.string()),
@@ -3109,7 +3649,7 @@ export const userEventSchema = z
 									aws: z.optional(
 										z.object({
 											subnetIds: z.array(z.string()),
-											securityGroupId: z.string(),
+											securityGroupId: z.optional(z.string()),
 										}),
 									),
 									createdAt: z.number(),
@@ -3128,7 +3668,7 @@ export const userEventSchema = z
 									aws: z.optional(
 										z.object({
 											subnetIds: z.array(z.string()),
-											securityGroupId: z.string(),
+											securityGroupId: z.optional(z.string()),
 										}),
 									),
 									createdAt: z.number(),
@@ -3796,8 +4336,19 @@ export const userEventSchema = z
 					mfaEnabled: z.union([z.literal(false), z.literal(true)]),
 				}),
 				z.object({
+					totp: z.union([z.literal(false), z.literal(true)]),
+					recoveryCodes: z.number(),
+					actorId: z.optional(z.string()),
+					actorType: z.optional(z.enum(["user", "admin"])),
+					reason: z.optional(z.string()),
+				}),
+				z.object({
 					email: z.string(),
 					prevEmail: z.string(),
+				}),
+				z.object({
+					deletedAt: z.number().nullish(),
+					username: z.string(),
 				}),
 				z.object({
 					username: z.string(),
@@ -5859,6 +6410,9 @@ export const teamSchema = z
 							"link",
 							"mail",
 							"nsnb-auto-approve",
+							"nsnb-invite",
+							"nsnb-request-access",
+							"nsnb-viewer-upgrade",
 							"organization-teams",
 							"saml",
 							"teams",
@@ -6045,6 +6599,9 @@ export const teamLimitedSchema = z
 							"link",
 							"mail",
 							"nsnb-auto-approve",
+							"nsnb-invite",
+							"nsnb-request-access",
+							"nsnb-viewer-upgrade",
 							"organization-teams",
 							"saml",
 							"teams",
@@ -6077,6 +6634,10 @@ export const authTokenSchema = z
 		id: z.string().describe("The unique identifier of the token."),
 		name: z.string().describe("The human-readable name of the token."),
 		type: z.string().describe("The type of the token."),
+		prefix: z.optional(z.string().describe("The token's prefix, for identification purposes.")),
+		suffix: z.optional(
+			z.string().describe("The last few characters of the token, for identification purposes."),
+		),
 		origin: z.optional(z.string().describe("The origin of how the token was created.")),
 		scopes: z.optional(
 			z
@@ -6141,20 +6702,17 @@ export const authTokenSchema = z
 				)
 				.describe("The access scopes granted to the token."),
 		),
-		expiresAt: z.optional(
-			z.number().describe("Timestamp (in milliseconds) of when the token expires."),
-		),
+		createdAt: z.number().describe("Timestamp (in milliseconds) of when the token was created."),
 		activeAt: z
 			.number()
 			.describe("Timestamp (in milliseconds) of when the token was most recently used."),
-		createdAt: z.number().describe("Timestamp (in milliseconds) of when the token was created."),
+		expiresAt: z.optional(
+			z.number().describe("Timestamp (in milliseconds) of when the token expires."),
+		),
 		leakedAt: z.optional(
 			z.number().describe("Timestamp (in milliseconds) of when the token was marked as leaked."),
 		),
 		leakedUrl: z.optional(z.string().describe("URL where the token was discovered as leaked.")),
-		suffix: z.optional(
-			z.string().describe("The last few characters of the token, for identification purposes."),
-		),
 	})
 	.describe("Authentication token metadata.");
 
@@ -6618,6 +7176,11 @@ export const authUserSchema = z
 				),
 		),
 		defaultTeamId: z.nullable(z.string().describe("The user's default team.")),
+		isEnterpriseManaged: z.optional(
+			z
+				.union([z.literal(false), z.literal(true)])
+				.describe("Indicates whether the user is managed by an enterprise."),
+		),
 	})
 	.describe("Data for the currently authenticated User.");
 
@@ -6647,6 +7210,11 @@ export const authUserLimitedSchema = z
 				),
 		),
 		defaultTeamId: z.nullable(z.string().describe("The user's default team.")),
+		isEnterpriseManaged: z.optional(
+			z
+				.union([z.literal(false), z.literal(true)])
+				.describe("Indicates whether the user is managed by an enterprise."),
+		),
 	})
 	.describe(
 		"A limited form of data for the currently authenticated User, due to the authentication token missing privileges to read the full User data.",
@@ -7947,8 +8515,6 @@ export const createNetwork402Schema = z.unknown();
  */
 export const createNetwork403Schema = z.unknown();
 
-export const createNetwork404Schema = z.unknown();
-
 export const createNetwork409Schema = z.unknown();
 
 export const createNetworkMutationResponseSchema = z.lazy(() => createNetwork201Schema);
@@ -7984,8 +8550,6 @@ export const deleteNetwork402Schema = z.unknown();
  * @description You do not have permission to access this resource.
  */
 export const deleteNetwork403Schema = z.unknown();
-
-export const deleteNetwork404Schema = z.unknown();
 
 export const deleteNetwork409Schema = z.unknown();
 
@@ -8177,6 +8741,8 @@ export const getDeployment403Schema = z.unknown();
  */
 export const getDeployment404Schema = z.unknown();
 
+export const getDeployment429Schema = z.unknown();
+
 export const getDeploymentQueryResponseSchema = z.lazy(() => getDeployment200Schema);
 
 export const createDeploymentQueryParamsSchema = z
@@ -8231,6 +8797,8 @@ export const createDeployment404Schema = z.unknown();
  * @description The deployment project is being transferred
  */
 export const createDeployment409Schema = z.unknown();
+
+export const createDeployment429Schema = z.unknown();
 
 export const createDeployment500Schema = z.unknown();
 
@@ -8472,6 +9040,48 @@ export const getSupportedTlds429Schema = z.unknown();
 export const getSupportedTlds500Schema = z.unknown();
 
 export const getSupportedTldsQueryResponseSchema = z.lazy(() => getSupportedTlds200Schema);
+
+export const getTldPathParamsSchema = z.object({
+	tld: z.string(),
+});
+
+export const getTldQueryParamsSchema = z
+	.object({
+		teamId: z.optional(z.string()),
+	})
+	.optional();
+
+/**
+ * @description Success
+ */
+export const getTld200Schema = z.unknown();
+
+/**
+ * @description There was something wrong with the request
+ */
+export const getTld400Schema = z.unknown();
+
+/**
+ * @description Unauthorized
+ */
+export const getTld401Schema = z.unknown();
+
+/**
+ * @description NotAuthorizedForScope
+ */
+export const getTld403Schema = z.unknown();
+
+/**
+ * @description TooManyRequests
+ */
+export const getTld429Schema = z.unknown();
+
+/**
+ * @description InternalServerError
+ */
+export const getTld500Schema = z.unknown();
+
+export const getTldQueryResponseSchema = z.lazy(() => getTld200Schema);
 
 export const getTldPricePathParamsSchema = z.object({
 	tld: z.string(),
@@ -10744,6 +11354,31 @@ export const listUserEvents401Schema = z.unknown();
 export const listUserEvents403Schema = z.unknown();
 
 export const listUserEventsQueryResponseSchema = z.lazy(() => listUserEvents200Schema);
+
+export const listEventTypesQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const listEventTypes200Schema = z.unknown();
+
+export const listEventTypes400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const listEventTypes401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const listEventTypes403Schema = z.unknown();
+
+export const listEventTypesQueryResponseSchema = z.lazy(() => listEventTypes200Schema);
 
 export const gitNamespacesQueryParamsSchema = z
 	.object({
@@ -13976,7 +14611,7 @@ export const createIntegrationStoreDirectMutationResponseSchema = z.lazy(
 );
 
 export const getTeamMembersPathParamsSchema = z.object({
-	teamId: z.string(),
+	teamId: z.string().describe("The Team identifier to perform the request on behalf of."),
 });
 
 export const getTeamMembersQueryParamsSchema = z
@@ -14017,6 +14652,7 @@ export const getTeamMembersQueryParamsSchema = z
 				.string()
 				.describe("Include team members who are eligible to be members of the specified project."),
 		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
 	})
 	.optional();
 
@@ -14042,8 +14678,14 @@ export const getTeamMembers404Schema = z.unknown();
 export const getTeamMembersQueryResponseSchema = z.lazy(() => getTeamMembers200Schema);
 
 export const inviteUserToTeamPathParamsSchema = z.object({
-	teamId: z.string(),
+	teamId: z.string().describe("The Team identifier to perform the request on behalf of."),
 });
+
+export const inviteUserToTeamQueryParamsSchema = z
+	.object({
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
 
 export const inviteUserToTeam200Schema = z.unknown();
 
@@ -14091,6 +14733,8 @@ export const requestAccessToTeam403Schema = z.unknown();
  * @description The team was not found.
  */
 export const requestAccessToTeam404Schema = z.unknown();
+
+export const requestAccessToTeam429Schema = z.unknown();
 
 export const requestAccessToTeam503Schema = z.unknown();
 
@@ -14550,6 +15194,8 @@ export const createAuthToken401Schema = z.unknown();
  * @description You do not have permission to access this resource.
  */
 export const createAuthToken403Schema = z.unknown();
+
+export const createAuthToken404Schema = z.unknown();
 
 export const createAuthTokenMutationResponseSchema = z.lazy(() => createAuthToken200Schema);
 
@@ -15064,8 +15710,6 @@ export const patchUrlProtectionBypass404Schema = z.unknown();
 export const patchUrlProtectionBypass409Schema = z.unknown();
 
 export const patchUrlProtectionBypass428Schema = z.unknown();
-
-export const patchUrlProtectionBypass500Schema = z.unknown();
 
 export const patchUrlProtectionBypassMutationResponseSchema = z.lazy(
 	() => patchUrlProtectionBypass200Schema,

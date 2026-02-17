@@ -218,8 +218,10 @@ import {
 	getTeamPathParamsSchema,
 	getTeamQueryParamsSchema,
 	getTeamsQueryParamsSchema,
+	getTldPathParamsSchema,
 	getTldPricePathParamsSchema,
 	getTldPriceQueryParamsSchema,
+	getTldQueryParamsSchema,
 	getVersionsQueryParamsSchema,
 	getWebhookPathParamsSchema,
 	getWebhookQueryParamsSchema,
@@ -229,6 +231,7 @@ import {
 	invalidateBySrcImagesQueryParamsSchema,
 	invalidateByTagsQueryParamsSchema,
 	inviteUserToTeamPathParamsSchema,
+	inviteUserToTeamQueryParamsSchema,
 	issueCertQueryParamsSchema,
 	joinTeamPathParamsSchema,
 	listAccessGroupMembersPathParamsSchema,
@@ -245,6 +248,7 @@ import {
 	listDeploymentAliasesQueryParamsSchema,
 	listDeploymentFilesPathParamsSchema,
 	listDeploymentFilesQueryParamsSchema,
+	listEventTypesQueryParamsSchema,
 	listNetworksQueryParamsSchema,
 	listPromoteAliasesPathParamsSchema,
 	listPromoteAliasesQueryParamsSchema,
@@ -478,6 +482,7 @@ import type {
 	CreateAuthToken400,
 	CreateAuthToken401,
 	CreateAuthToken403,
+	CreateAuthToken404,
 	CreateAuthTokenMutationResponse,
 	CreateAuthTokenQueryParams,
 	CreateCheck400,
@@ -506,6 +511,7 @@ import type {
 	CreateDeployment403,
 	CreateDeployment404,
 	CreateDeployment409,
+	CreateDeployment429,
 	CreateDeployment500,
 	CreateDeployment503,
 	CreateDeploymentMutationResponse,
@@ -561,7 +567,6 @@ import type {
 	CreateNetwork401,
 	CreateNetwork402,
 	CreateNetwork403,
-	CreateNetwork404,
 	CreateNetwork409,
 	CreateNetworkMutationResponse,
 	CreateNetworkQueryParams,
@@ -748,7 +753,6 @@ import type {
 	DeleteNetwork401,
 	DeleteNetwork402,
 	DeleteNetwork403,
-	DeleteNetwork404,
 	DeleteNetwork409,
 	DeleteNetworkMutationResponse,
 	DeleteNetworkPathParams,
@@ -972,6 +976,7 @@ import type {
 	GetDeployment400,
 	GetDeployment403,
 	GetDeployment404,
+	GetDeployment429,
 	GetDeploymentEvents400,
 	GetDeploymentEvents401,
 	GetDeploymentEvents403,
@@ -1284,6 +1289,12 @@ import type {
 	GetTeams403,
 	GetTeamsQueryParams,
 	GetTeamsQueryResponse,
+	GetTld400,
+	GetTld401,
+	GetTld403,
+	GetTld429,
+	GetTld500,
+	GetTldPathParams,
 	GetTldPrice400,
 	GetTldPrice401,
 	GetTldPrice403,
@@ -1292,6 +1303,8 @@ import type {
 	GetTldPricePathParams,
 	GetTldPriceQueryParams,
 	GetTldPriceQueryResponse,
+	GetTldQueryParams,
+	GetTldQueryResponse,
 	GetVersions400,
 	GetVersions401,
 	GetVersions403,
@@ -1345,6 +1358,7 @@ import type {
 	InviteUserToTeam503,
 	InviteUserToTeamMutationResponse,
 	InviteUserToTeamPathParams,
+	InviteUserToTeamQueryParams,
 	IssueCert400,
 	IssueCert401,
 	IssueCert402,
@@ -1422,6 +1436,11 @@ import type {
 	ListDeploymentFilesPathParams,
 	ListDeploymentFilesQueryParams,
 	ListDeploymentFilesQueryResponse,
+	ListEventTypes400,
+	ListEventTypes401,
+	ListEventTypes403,
+	ListEventTypesQueryParams,
+	ListEventTypesQueryResponse,
 	ListNetworks400,
 	ListNetworks401,
 	ListNetworks403,
@@ -1501,7 +1520,6 @@ import type {
 	PatchUrlProtectionBypass404,
 	PatchUrlProtectionBypass409,
 	PatchUrlProtectionBypass428,
-	PatchUrlProtectionBypass500,
 	PatchUrlProtectionBypassMutationResponse,
 	PatchUrlProtectionBypassPathParams,
 	PatchUrlProtectionBypassQueryParams,
@@ -1621,6 +1639,7 @@ import type {
 	RequestAccessToTeam401,
 	RequestAccessToTeam403,
 	RequestAccessToTeam404,
+	RequestAccessToTeam429,
 	RequestAccessToTeam503,
 	RequestAccessToTeamMutationResponse,
 	RequestAccessToTeamPathParams,
@@ -3126,12 +3145,7 @@ export async function createNetwork({
 	const data = await request<
 		CreateNetworkMutationResponse,
 		ErrorWrapper<
-			| CreateNetwork400
-			| CreateNetwork401
-			| CreateNetwork402
-			| CreateNetwork403
-			| CreateNetwork404
-			| CreateNetwork409
+			CreateNetwork400 | CreateNetwork401 | CreateNetwork402 | CreateNetwork403 | CreateNetwork409
 		>,
 		null,
 		Record<string, string>,
@@ -3171,12 +3185,7 @@ export async function deleteNetwork({
 	const data = await request<
 		DeleteNetworkMutationResponse,
 		ErrorWrapper<
-			| DeleteNetwork400
-			| DeleteNetwork401
-			| DeleteNetwork402
-			| DeleteNetwork403
-			| DeleteNetwork404
-			| DeleteNetwork409
+			DeleteNetwork400 | DeleteNetwork401 | DeleteNetwork402 | DeleteNetwork403 | DeleteNetwork409
 		>,
 		null,
 		Record<string, string>,
@@ -3382,7 +3391,7 @@ export async function getDeployment({
 
 	const data = await request<
 		GetDeploymentQueryResponse,
-		ErrorWrapper<GetDeployment400 | GetDeployment403 | GetDeployment404>,
+		ErrorWrapper<GetDeployment400 | GetDeployment403 | GetDeployment404 | GetDeployment429>,
 		null,
 		Record<string, string>,
 		GetDeploymentQueryParams,
@@ -3420,6 +3429,7 @@ export async function createDeployment({
 			| CreateDeployment403
 			| CreateDeployment404
 			| CreateDeployment409
+			| CreateDeployment429
 			| CreateDeployment500
 			| CreateDeployment503
 		>,
@@ -3675,6 +3685,43 @@ export async function getSupportedTlds({
 	>({
 		method: "GET",
 		url: `/v1/registrar/tlds/supported`,
+		baseUrl: "https://api.vercel.com",
+		queryParams,
+		...requestConfig,
+	});
+	return { content: [{ type: "text", text: JSON.stringify(data) }] };
+}
+
+/**
+ * @description Get the metadata for a specific TLD.
+ * @summary Get TLD
+ * {@link /v1/registrar/tlds/:tld}
+ */
+export async function getTld({
+	pathParams: { tld },
+	queryParams,
+	config = {},
+}: {
+	pathParams: GetTldPathParams;
+	queryParams?: GetTldQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof client };
+}): Promise<Promise<CallToolResult>> {
+	const { client: request = client, ...requestConfig } = config;
+
+	if (!tld) {
+		throw new Error(`Missing required path parameter: tld`);
+	}
+
+	const data = await request<
+		GetTldQueryResponse,
+		ErrorWrapper<GetTld400 | GetTld401 | GetTld403 | GetTld429 | GetTld500>,
+		null,
+		Record<string, string>,
+		GetTldQueryParams,
+		GetTldPathParams
+	>({
+		method: "GET",
+		url: `/v1/registrar/tlds/${tld}`,
 		baseUrl: "https://api.vercel.com",
 		queryParams,
 		...requestConfig,
@@ -5964,6 +6011,37 @@ export async function listUserEvents({
 	>({
 		method: "GET",
 		url: `/v3/events`,
+		baseUrl: "https://api.vercel.com",
+		queryParams,
+		...requestConfig,
+	});
+	return { content: [{ type: "text", text: JSON.stringify(data) }] };
+}
+
+/**
+ * @description Returns the list of user-facing event types with descriptions.
+ * @summary List Event Types
+ * {@link /v1/events/types}
+ */
+export async function listEventTypes({
+	queryParams,
+	config = {},
+}: {
+	queryParams?: ListEventTypesQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof client };
+}): Promise<Promise<CallToolResult>> {
+	const { client: request = client, ...requestConfig } = config;
+
+	const data = await request<
+		ListEventTypesQueryResponse,
+		ErrorWrapper<ListEventTypes400 | ListEventTypes401 | ListEventTypes403>,
+		null,
+		Record<string, string>,
+		ListEventTypesQueryParams,
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/v1/events/types`,
 		baseUrl: "https://api.vercel.com",
 		queryParams,
 		...requestConfig,
@@ -9573,9 +9651,11 @@ export async function getTeamMembers({
  */
 export async function inviteUserToTeam({
 	pathParams: { teamId },
+	queryParams,
 	config = {},
 }: {
 	pathParams: InviteUserToTeamPathParams;
+	queryParams?: InviteUserToTeamQueryParams;
 	config?: Partial<FetcherConfig> & { client?: typeof client };
 }): Promise<Promise<CallToolResult>> {
 	const { client: request = client, ...requestConfig } = config;
@@ -9591,12 +9671,13 @@ export async function inviteUserToTeam({
 		>,
 		null,
 		Record<string, string>,
-		Record<string, string>,
+		InviteUserToTeamQueryParams,
 		InviteUserToTeamPathParams
 	>({
 		method: "POST",
 		url: `/v2/teams/${teamId}/members`,
 		baseUrl: "https://api.vercel.com",
+		queryParams,
 		...requestConfig,
 		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
 	});
@@ -9628,6 +9709,7 @@ export async function requestAccessToTeam({
 			| RequestAccessToTeam401
 			| RequestAccessToTeam403
 			| RequestAccessToTeam404
+			| RequestAccessToTeam429
 			| RequestAccessToTeam503
 		>,
 		null,
@@ -10143,7 +10225,7 @@ export async function createAuthToken({
 
 	const data = await request<
 		CreateAuthTokenMutationResponse,
-		ErrorWrapper<CreateAuthToken400 | CreateAuthToken401 | CreateAuthToken403>,
+		ErrorWrapper<CreateAuthToken400 | CreateAuthToken401 | CreateAuthToken403 | CreateAuthToken404>,
 		null,
 		Record<string, string>,
 		CreateAuthTokenQueryParams,
@@ -10637,7 +10719,6 @@ export async function patchUrlProtectionBypass({
 			| PatchUrlProtectionBypass404
 			| PatchUrlProtectionBypass409
 			| PatchUrlProtectionBypass428
-			| PatchUrlProtectionBypass500
 		>,
 		null,
 		Record<string, string>,
@@ -11668,6 +11749,19 @@ export function initMcpTools<Server>(serverLike: Server, config: FetcherConfig) 
 	);
 
 	server.tool(
+		"getTld",
+		"Get the metadata for a specific TLD.",
+		{ tld: getTldPathParamsSchema.shape["tld"], queryParams: getTldQueryParamsSchema },
+		async ({ tld, queryParams }) => {
+			try {
+				return await getTld({ pathParams: { tld }, queryParams, config });
+			} catch (error) {
+				return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
+			}
+		},
+	);
+
+	server.tool(
 		"getTldPrice",
 		"Get price data for a specific TLD. This only reflects base prices for the given TLD. Premium domains may have different prices. Use the [Get price data for a domain](https://vercel.com/docs/rest-api/reference/endpoints/domains-registrar/get-price-data-for-a-domain) endpoint to get the price data for a specific domain.",
 		{ tld: getTldPricePathParamsSchema.shape["tld"], queryParams: getTldPriceQueryParamsSchema },
@@ -12532,6 +12626,19 @@ export function initMcpTools<Server>(serverLike: Server, config: FetcherConfig) 
 		async ({ queryParams }) => {
 			try {
 				return await listUserEvents({ queryParams, config });
+			} catch (error) {
+				return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
+			}
+		},
+	);
+
+	server.tool(
+		"listEventTypes",
+		"Returns the list of user-facing event types with descriptions.",
+		{ queryParams: listEventTypesQueryParamsSchema },
+		async ({ queryParams }) => {
+			try {
+				return await listEventTypes({ queryParams, config });
 			} catch (error) {
 				return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
 			}
@@ -14023,10 +14130,13 @@ export function initMcpTools<Server>(serverLike: Server, config: FetcherConfig) 
 	server.tool(
 		"inviteUserToTeam",
 		"Invite a user to join the team specified in the URL. The authenticated user needs to be an `OWNER` in order to successfully invoke this endpoint. The user to be invited must be specified by email.",
-		{ teamId: inviteUserToTeamPathParamsSchema.shape["teamId"] },
-		async ({ teamId }) => {
+		{
+			teamId: inviteUserToTeamPathParamsSchema.shape["teamId"],
+			queryParams: inviteUserToTeamQueryParamsSchema,
+		},
+		async ({ teamId, queryParams }) => {
 			try {
-				return await inviteUserToTeam({ pathParams: { teamId }, config });
+				return await inviteUserToTeam({ pathParams: { teamId }, queryParams, config });
 			} catch (error) {
 				return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
 			}

@@ -1628,6 +1628,34 @@ export type AbuseReportsDiffEmailError = string;
  */
 export type AbuseReportsEmailError = string;
 
+/**
+ * An email sent to the customer for an abuse report.
+ */
+export type AbuseReportsEmailListItem = {
+	/**
+	 * Body content of the email.
+	 */
+	body: string;
+	/**
+	 * Unique identifier of the email.
+	 */
+	id: string;
+	/**
+	 * Email address of the recipient.
+	 */
+	recipient: string;
+	/**
+	 * When the email was sent. Time in RFC 3339 format (https://www.rfc-editor.org/rfc/rfc3339.html)
+	 *
+	 * @example 2009-11-10T23:00:00Z
+	 */
+	sent_at: string;
+	/**
+	 * Subject line of the email.
+	 */
+	subject: string;
+};
+
 export type AbuseReportsErrorCode =
 	| AbuseReportsBadActError
 	| AbuseReportsBadAddressError
@@ -15256,6 +15284,18 @@ export type CcAccountRegistryToken = {
 };
 
 /**
+ * Egress settings for an application
+ */
+export type CcApplicationEgress = {
+	/**
+	 * The bandwidth limit for egress traffic in Megabits per second (Mbps).
+	 * "unlimited" when no throttling is applied.
+	 * A number when throttling is enabled, calculated as max(vCPUs * 1000, 100).
+	 */
+	bandwidth_limit_mbps: "unlimited" | number;
+};
+
+/**
  * Shows a count of application instance states.
  */
 export type CcApplicationHealthInstances = {
@@ -15396,6 +15436,7 @@ export type CcObservabilityLogs = {
 export type CcPublicApplication = {
 	created_at: CcISO8601Timestamp;
 	durable_object?: CcDurableObjectsConfigurationNamespaceId;
+	egress?: CcApplicationEgress;
 	health: CcApplicationHealthInstances;
 	id: CcApplicationID;
 	image: CcImage;
@@ -18996,6 +19037,10 @@ export type DlpCustomEntry = {
 	 * @format date-time
 	 */
 	created_at: string;
+	description?: string | null;
+	/**
+	 * @deprecated true
+	 */
 	enabled: boolean;
 	/**
 	 * @format uuid
@@ -19004,6 +19049,7 @@ export type DlpCustomEntry = {
 	name: string;
 	pattern: DlpPattern;
 	/**
+	 * @deprecated true
 	 * @format uuid
 	 */
 	profile_id?: string | null;
@@ -19018,6 +19064,7 @@ export type DlpCustomEntryUpdate = DlpCustomEntryUpdateType & {
 };
 
 export type DlpCustomEntryUpdateType = {
+	description?: string | null;
 	name: string;
 	pattern: DlpPattern;
 };
@@ -19052,6 +19099,9 @@ export type DlpCustomProfile = {
 	 * The description of the profile.
 	 */
 	description?: string | null;
+	/**
+	 * @deprecated true
+	 */
 	entries?: DlpEntry[];
 	/**
 	 * The id of the profile (uuid).
@@ -19069,6 +19119,10 @@ export type DlpCustomProfile = {
 	 * @default false
 	 */
 	ocr_enabled: boolean;
+	/**
+	 * @x-stainless-terraform-configurability computed
+	 */
+	shared_entries?: DlpEntry[];
 	/**
 	 * When the profile was lasted updated.
 	 *
@@ -19521,12 +19575,19 @@ export type DlpIntegrationProfile = {
 	 * The description of the profile.
 	 */
 	description?: string | null;
+	/**
+	 * @deprecated true
+	 */
 	entries: DlpEntry[];
 	/**
 	 * @format uuid
 	 */
 	id: string;
 	name: string;
+	/**
+	 * @x-stainless-terraform-configurability computed
+	 */
+	shared_entries: DlpEntry[];
 	/**
 	 * @format date-time
 	 */
@@ -19542,6 +19603,7 @@ export type DlpLimits = {
 };
 
 export type DlpNewCustomEntry = {
+	description?: string | null;
 	enabled: boolean;
 	name: string;
 	pattern: DlpPattern;
@@ -19648,6 +19710,7 @@ export type DlpNewDocumentFingerprint = {
 };
 
 export type DlpNewEntry = {
+	description?: string | null;
 	enabled: boolean;
 	name: string;
 	pattern: DlpPattern;
@@ -19707,7 +19770,21 @@ export type DlpPattern = {
 	validation?: DlpValidation;
 };
 
+/**
+ * Masking level for payload logs.
+ *
+ * - `full`: The entire payload is masked.
+ * - `partial`: Only partial payload content is masked.
+ * - `clear`: No masking is applied to the payload content.
+ * - `default`: DLP uses its default masking behavior.
+ */
+export type DlpPayloadLogMaskingLevel = "full" | "partial" | "clear" | "default";
+
 export type DlpPayloadLogSetting = {
+	masking_level: DlpPayloadLogMaskingLevel;
+	/**
+	 * Base64-encoded public key for encrypting payload logs. Null when payload logging is disabled.
+	 */
 	public_key?: string | null;
 	/**
 	 * @format date-time
@@ -19715,7 +19792,31 @@ export type DlpPayloadLogSetting = {
 	updated_at: string;
 };
 
+/**
+ * Request model for updating payload log settings - supports partial updates.
+ */
 export type DlpPayloadLogSettingUpdate = {
+	/**
+	 * Masking level for payload logs.
+	 *
+	 * - `full`: The entire payload is masked.
+	 * - `partial`: Only partial payload content is masked.
+	 * - `clear`: No masking is applied to the payload content.
+	 * - `default`: DLP uses its default masking behavior.
+	 */
+	masking_level?: DlpPayloadLogMaskingLevel;
+	/**
+	 * Base64-encoded public key for encrypting payload logs.
+	 *
+	 * - Set to null or empty string to disable payload logging.
+	 * - Set to a non-empty base64 string to enable payload logging with the given key.
+	 *
+	 * For customers with configurable payload masking feature rolled out:
+	 * - If the field is missing, the existing setting will be kept. Note that this is different from setting to null or empty string.
+	 *
+	 * For all other customers:
+	 * - If the field is missing, the existing setting will be cleared.
+	 */
 	public_key?: string | null;
 };
 
@@ -19728,6 +19829,7 @@ export type DlpPredefinedEntry = {
 	id: string;
 	name: string;
 	/**
+	 * @deprecated true
 	 * @format uuid
 	 */
 	profile_id?: string | null;
@@ -19758,6 +19860,9 @@ export type DlpPredefinedProfile = {
 	 */
 	confidence_threshold?: DlpConfidence;
 	context_awareness?: DlpContextAwareness;
+	/**
+	 * @deprecated true
+	 */
 	entries: DlpEntry[];
 	/**
 	 * The id of the predefined profile (uuid).
@@ -27190,6 +27295,7 @@ export type IamAccount = {
 		 *
 		 * @default false
 		 * @x-auditable true
+		 * @x-stainless-terraform-configurability computed_optional
 		 */
 		enforce_twofactor?: boolean;
 	};
@@ -27339,6 +27445,8 @@ export type IamCreateAccount = {
 	type?: IamAccountType;
 	/**
 	 * information related to the tenant unit, and optionally, an id of the unit to create the account on. see https://developers.cloudflare.com/tenant/how-to/manage-accounts/
+	 *
+	 * @x-stainless-terraform-configurability computed_optional
 	 */
 	unit?: {
 		/**
@@ -27346,6 +27454,7 @@ export type IamCreateAccount = {
 		 *
 		 * @example f267e341f3dd4697bd3b9f71dd96247f
 		 * @x-auditable true
+		 * @x-stainless-terraform-configurability computed_optional
 		 */
 		id?: string;
 	};
@@ -27357,11 +27466,7 @@ export type IamCreateMemberWithPolicies = {
 	 * Array of policies associated with this member.
 	 */
 	policies: IamCreateMemberPolicy[];
-	/**
-	 * @default pending
-	 * @x-auditable true
-	 */
-	status?: "accepted" | "pending";
+	status?: IamMemberInvitationStatus;
 };
 
 export type IamCreateMemberWithRoles = {
@@ -27370,11 +27475,7 @@ export type IamCreateMemberWithRoles = {
 	 * Array of roles associated with this member.
 	 */
 	roles: IamRoleComponentsSchemasIdentifier[];
-	/**
-	 * @default pending
-	 * @x-auditable true
-	 */
-	status?: "accepted" | "pending";
+	status?: IamMemberInvitationStatus;
 };
 
 /**
@@ -27565,6 +27666,15 @@ export type IamListMemberPolicy = {
 	permission_groups?: IamPermissionGroups;
 	resource_groups?: IamResourceGroups;
 };
+
+/**
+ * Status of the member invitation. If not provided during creation, defaults to 'pending'.
+ * Changing from 'accepted' back to 'pending' will trigger a replacement of the member resource in Terraform.
+ *
+ * @x-auditable true
+ * @x-stainless-terraform-configurability computed_optional
+ */
+export type IamMemberInvitationStatus = "accepted" | "pending";
 
 /**
  * A group of permissions.
@@ -28435,6 +28545,7 @@ export type IamUpdateUserGroupBody = {
  *
  * @default false
  * @example false
+ * @x-stainless-terraform-configurability computed_optional
  */
 export type IamUseFedrampLanguage = boolean;
 
@@ -35632,7 +35743,7 @@ export type McnCreateOnrampRequest = {
 	attached_hubs?: McnResourceId[];
 	attached_vpcs?: McnResourceId[];
 	/**
-	 * the ASN to use on the cloud side. If unset or zero, the cloud's default will be used.
+	 * Sets the cloud-side ASN. If unset or zero, the cloud's default ASN takes effect.
 	 *
 	 * @format uint32
 	 * @x-auditable true
@@ -35641,7 +35752,7 @@ export type McnCreateOnrampRequest = {
 	cloud_type: McnOnrampCloudType;
 	description?: string;
 	/**
-	 * if set to true, install_routes_in_cloud and install_routes_in_magic_wan should be set to false
+	 * Enables BGP routing. When enabling this feature, set both install_routes_in_cloud and install_routes_in_magic_wan to false.
 	 *
 	 * @x-auditable true
 	 */
@@ -36476,7 +36587,7 @@ export type McnResultInfo = {
 	 */
 	page: number;
 	/**
-	 * The maximum numnber of items per page.
+	 * The maximum number of items per page.
 	 *
 	 * @example 20
 	 */
@@ -38549,7 +38660,21 @@ export type MqApiV4Success = {
  */
 export type MqBatchSize = number;
 
-export type MqConsumer = MqWorkerConsumer | MqHttpConsumer;
+/**
+ * Request body for creating or updating a consumer
+ */
+export type MqConsumerRequest = MqWorkerConsumerRequest | MqHttpConsumerRequest;
+
+/**
+ * Response body representing a consumer
+ */
+export type MqConsumerResponse =
+	| (Omit<MqWorkerConsumerResponse, "type"> & {
+			type: "worker";
+	  })
+	| (Omit<MqHttpConsumerResponse, "type"> & {
+			type: "http_pull";
+	  });
 
 /**
  * Destination configuration for the subscription
@@ -38718,13 +38843,34 @@ export type MqEventSubscription = {
 	source: MqEventSource;
 };
 
-export type MqHttpConsumer = {
-	consumer_id?: MqIdentifier;
+export type MqHttpConsumerRequest = {
+	dead_letter_queue?: MqQueueName;
+	settings?: {
+		batch_size?: MqBatchSize;
+		max_retries?: MqMaxRetries;
+		retry_delay?: MqRetryDelay;
+		visibility_timeout_ms?: MqVisibilityTimeout;
+	};
 	/**
 	 * @x-auditable true
 	 */
+	type: "http_pull";
+};
+
+export type MqHttpConsumerResponse = {
+	consumer_id?: MqIdentifier;
+	/**
+	 * @format date-time
+	 * @x-auditable true
+	 */
 	created_on?: string;
-	queue_id?: MqIdentifier;
+	/**
+	 * Name of the dead letter queue, or empty string if not configured
+	 *
+	 * @x-auditable true
+	 */
+	dead_letter_queue?: string;
+	queue_name?: MqQueueName;
 	settings?: {
 		batch_size?: MqBatchSize;
 		max_retries?: MqMaxRetries;
@@ -38781,7 +38927,7 @@ export type MqMaxWaitTime = number;
 export type MqProducer = MqWorkerProducer | MqR2Producer;
 
 export type MqQueue = {
-	consumers?: MqConsumer[];
+	consumers?: MqConsumerResponse[];
 	consumers_total_count?: number;
 	/**
 	 * @x-auditable true
@@ -38925,27 +39071,37 @@ export type MqScriptName = string;
  */
 export type MqVisibilityTimeout = number;
 
-export type MqWorkerConsumer = {
+export type MqWorkerConsumerRequest = {
+	dead_letter_queue?: MqQueueName;
+	script_name: MqScriptName;
+	settings?: {
+		batch_size?: MqBatchSize;
+		max_concurrency?: MqMaxConcurrency;
+		max_retries?: MqMaxRetries;
+		max_wait_time_ms?: MqMaxWaitTime;
+		retry_delay?: MqRetryDelay;
+	};
+	/**
+	 * @x-auditable true
+	 */
+	type: "worker";
+};
+
+export type MqWorkerConsumerResponse = {
 	consumer_id?: MqIdentifier;
 	/**
+	 * @format date-time
 	 * @x-auditable true
 	 */
 	created_on?: string;
-	queue_id?: MqIdentifier;
 	/**
-	 * Name of a Worker
-	 *
-	 * @example my-consumer-worker
-	 * @x-auditable true
-	 */
-	script?: MqScriptName & string;
-	/**
-	 * Name of a Worker
+	 * Name of the dead letter queue, or empty string if not configured
 	 *
 	 * @x-auditable true
-	 * @example my-consumer-worker
 	 */
-	script_name?: MqScriptName & string;
+	dead_letter_queue?: string;
+	queue_name?: MqQueueName;
+	script_name?: MqScriptName;
 	settings?: {
 		batch_size?: MqBatchSize;
 		max_concurrency?: MqMaxConcurrency;
@@ -39717,6 +39873,9 @@ export type OrganizationsApiBatchAccountMoveResponse = {
 };
 
 export type OrganizationsApiBatchCreateMembersRequest = {
+	/**
+	 * @maxItems 10
+	 */
 	members: OrganizationsApiCreateSingleMember[];
 };
 
@@ -42304,6 +42463,10 @@ export type R2SlurperGCSLikeCredsSchema = {
 
 export type R2SlurperGCSSourceSchema = {
 	bucket: string;
+	/**
+	 * @maxItems 10000
+	 */
+	keys?: string[] | null;
 	pathPrefix?: string | null;
 	secret: R2SlurperGCSLikeCredsSchema;
 	vendor: "gcs";
@@ -42383,6 +42546,10 @@ export type R2SlurperJurisdiction = "default" | "eu" | "fedramp";
 export type R2SlurperR2SourceSchema = {
 	bucket: string;
 	jurisdiction?: R2SlurperJurisdiction;
+	/**
+	 * @maxItems 10000
+	 */
+	keys?: string[] | null;
 	pathPrefix?: string | null;
 	secret: R2SlurperS3LikeCredsSchema;
 	vendor: "r2";
@@ -42406,6 +42573,10 @@ export type R2SlurperS3LikeCredsSchema = {
 export type R2SlurperS3SourceSchema = {
 	bucket: string;
 	endpoint?: string | null;
+	/**
+	 * @maxItems 10000
+	 */
+	keys?: string[] | null;
 	pathPrefix?: string | null;
 	region?: string | null;
 	secret: R2SlurperS3LikeCredsSchema;
@@ -48584,6 +48755,12 @@ export type RulesetsSetConfigRule = {
 		 */
 		bic?: boolean;
 		/**
+		 * Whether to enable content conversion (e.g., HTML to Markdown).
+		 *
+		 * @example true
+		 */
+		content_converter?: boolean;
+		/**
 		 * Whether to disable Cloudflare Apps.
 		 *
 		 * @deprecated true
@@ -50793,23 +50970,23 @@ export type SmartshieldTimestamp = string;
 export type SmartshieldType = string;
 
 /**
- * A list of error messages.
+ * Lists error messages.
  */
 export type SnippetsErrors = SnippetsMessage[];
 
 /**
- * A message.
+ * Describes an API message.
  */
 export type SnippetsMessage = {
 	/**
-	 * A unique code for this message.
+	 * Identify the message code.
 	 *
 	 * @example 10000
 	 * @x-auditable true
 	 */
 	code?: number;
 	/**
-	 * A text description of this message.
+	 * Describes the message text.
 	 *
 	 * @example something bad happened
 	 * @minLength 1
@@ -50819,12 +50996,12 @@ export type SnippetsMessage = {
 };
 
 /**
- * A list of warning messages.
+ * Contain warning messages.
  */
 export type SnippetsMessages = SnippetsMessage[];
 
 /**
- * The current page number.
+ * Specifies the current page number.
  *
  * @default 1
  * @example 1
@@ -50834,7 +51011,7 @@ export type SnippetsMessages = SnippetsMessage[];
 export type SnippetsPage = number;
 
 /**
- * The number of results to return per page.
+ * Specifies how many results to return per page.
  *
  * @default 25
  * @example 25
@@ -50844,17 +51021,17 @@ export type SnippetsPage = number;
 export type SnippetsPerPage = number;
 
 /**
- * A response object.
+ * Return all API responses using this object.
  */
 export type SnippetsResponse = {
 	errors: SnippetsErrors;
 	messages: SnippetsMessages;
 	/**
-	 * A result.
+	 * Contain the response result.
 	 */
-	result: void;
+	result: Record<string, any>;
 	/**
-	 * Whether the API call was successful.
+	 * Indicate whether the API call was successful.
 	 *
 	 * @x-auditable true
 	 */
@@ -50866,7 +51043,7 @@ export type SnippetsResponse = {
  */
 export type SnippetsResultInfo = {
 	/**
-	 * The number of results in the current page.
+	 * Specify the number of results in the current page.
 	 *
 	 * @example 25
 	 * @minimum 0
@@ -50876,7 +51053,7 @@ export type SnippetsResultInfo = {
 	page: SnippetsPage;
 	per_page: SnippetsPerPage;
 	/**
-	 * The total number of results.
+	 * Specify the total number of results.
 	 *
 	 * @example 100
 	 * @minimum 0
@@ -50884,7 +51061,7 @@ export type SnippetsResultInfo = {
 	 */
 	total_count: number;
 	/**
-	 * The total number of pages.
+	 * Specify the total number of pages.
 	 *
 	 * @example 10
 	 * @minimum 1
@@ -50894,11 +51071,11 @@ export type SnippetsResultInfo = {
 };
 
 /**
- * A snippet object.
+ * Define a snippet.
  */
 export type SnippetsSnippet = {
 	/**
-	 * The timestamp of when the snippet was created.
+	 * Indicates when the snippet was created.
 	 *
 	 * @example 2000-01-01T00:00:00.000000Z
 	 * @format date-time
@@ -50906,7 +51083,7 @@ export type SnippetsSnippet = {
 	 */
 	created_on: string;
 	/**
-	 * The timestamp of when the snippet was last modified.
+	 * Indicates when the snippet was last modified.
 	 *
 	 * @example 2000-01-01T00:00:00.000000Z
 	 * @format date-time
@@ -50917,14 +51094,14 @@ export type SnippetsSnippet = {
 };
 
 /**
- * The list of files belonging to the snippet.
+ * Contain files belonging to the snippet.
  *
  * @minItems 1
  */
 export type SnippetsSnippetFiles = Blob[];
 
 /**
- * Name of the file that contains the main module of the snippet.
+ * Specify the name of the file that contains the main module of the snippet.
  *
  * @example main.js
  * @minLength 1
@@ -50933,7 +51110,7 @@ export type SnippetsSnippetFiles = Blob[];
 export type SnippetsSnippetMainModule = string;
 
 /**
- * The identifying name of the snippet.
+ * Identify the snippet.
  *
  * @example my_snippet
  * @pattern ^[A-Za-z0-9_]+$
@@ -50942,11 +51119,11 @@ export type SnippetsSnippetMainModule = string;
 export type SnippetsSnippetName = string;
 
 /**
- * A list of snippet rules.
+ * Lists snippet rules.
  */
 export type SnippetsSnippetRules = {
 	/**
-	 * An informative description of the rule.
+	 * Provide an informative description of the rule.
 	 *
 	 * @default
 	 * @example Execute my_snippet when IP address is 1.1.1.1.
@@ -50954,7 +51131,7 @@ export type SnippetsSnippetRules = {
 	 */
 	description?: string;
 	/**
-	 * Whether the rule should be executed.
+	 * Indicate whether to execute the rule.
 	 *
 	 * @default false
 	 * @example true
@@ -50962,7 +51139,7 @@ export type SnippetsSnippetRules = {
 	 */
 	enabled?: boolean;
 	/**
-	 * The expression defining which traffic will match the rule.
+	 * Define the expression that determines which traffic matches the rule.
 	 *
 	 * @example ip.src eq 1.1.1.1
 	 * @minLength 1
@@ -50970,7 +51147,7 @@ export type SnippetsSnippetRules = {
 	 */
 	expression: string;
 	/**
-	 * The unique ID of the rule.
+	 * Specify the unique ID of the rule.
 	 *
 	 * @example 3a03d665bac047339bb530ecb439a90d
 	 * @pattern ^[0-9a-f]{32}$
@@ -50978,7 +51155,7 @@ export type SnippetsSnippetRules = {
 	 */
 	id: string;
 	/**
-	 * The timestamp of when the rule was last modified.
+	 * Specify the timestamp of when the rule was last modified.
 	 *
 	 * @example 2000-01-01T00:00:00.000000Z
 	 * @format date-time
@@ -50989,7 +51166,7 @@ export type SnippetsSnippetRules = {
 }[];
 
 /**
- * The unique ID of the zone.
+ * Use this field to specify the unique ID of the zone.
  *
  * @example 9f1839b6152d298aca64c4e906b6d074
  * @pattern ^[0-9a-f]{32}$
@@ -54393,6 +54570,126 @@ export type TeamsDevicesIntuneInputRequest = {
  */
 export type TeamsDevicesIp = string;
 
+export type TeamsDevicesIpProfile = {
+	created_at: TeamsDevicesIpProfileCreatedAt;
+	description: TeamsDevicesIpProfileDescription;
+	enabled: TeamsDevicesIpProfileEnabled;
+	id: TeamsDevicesIpProfileId;
+	match: TeamsDevicesIpProfileMatch;
+	name: TeamsDevicesIpProfileName;
+	precedence: TeamsDevicesIpProfilePrecedence;
+	subnet_id: TeamsDevicesIpProfileSubnetId;
+	updated_at: TeamsDevicesIpProfileUpdatedAt;
+};
+
+export type TeamsDevicesIpProfileCreateRequest = {
+	/**
+	 * An optional description of the Device IP profile.
+	 *
+	 * @example example comment
+	 * @x-auditable true
+	 */
+	description?: string | null;
+	/**
+	 * Whether the Device IP profile will be applied to matching devices.
+	 *
+	 * @default true
+	 * @example true
+	 * @x-auditable true
+	 */
+	enabled?: boolean;
+	match: TeamsDevicesIpProfileMatch;
+	name: TeamsDevicesIpProfileName;
+	precedence: TeamsDevicesIpProfilePrecedence;
+	subnet_id: TeamsDevicesIpProfileSubnetId;
+};
+
+/**
+ * The RFC3339Nano timestamp when the Device IP profile was created.
+ *
+ * @example 2025-02-14T13:17:00.123456789Z
+ */
+export type TeamsDevicesIpProfileCreatedAt = string;
+
+/**
+ * An optional description of the Device IP profile.
+ *
+ * @example example comment
+ * @x-auditable true
+ */
+export type TeamsDevicesIpProfileDescription = string | null;
+
+/**
+ * Whether the Device IP profile is enabled.
+ *
+ * @example true
+ * @x-auditable true
+ */
+export type TeamsDevicesIpProfileEnabled = boolean;
+
+/**
+ * The ID of the Device IP profile.
+ *
+ * @example f70ff985-a4ef-4643-bbbc-4a0ed4fc8415
+ * @x-auditable true
+ */
+export type TeamsDevicesIpProfileId = string;
+
+/**
+ * The wirefilter expression to match registrations. Available values: "identity.name", "identity.email", "identity.groups.id", "identity.groups.name", "identity.groups.email", "identity.saml_attributes".
+ *
+ * @example identity.email == "test@cloudflare.com"
+ * @maxLength 10000
+ * @x-auditable true
+ */
+export type TeamsDevicesIpProfileMatch = string;
+
+/**
+ * A user-friendly name for the Device IP profile.
+ *
+ * @example IPv4 Cloudflare Source IPs
+ * @x-auditable true
+ */
+export type TeamsDevicesIpProfileName = string;
+
+/**
+ * The precedence of the Device IP profile. Lower values indicate higher precedence. Device IP profile will be evaluated in ascending order of this field.
+ *
+ * @example 100
+ * @x-auditable true
+ */
+export type TeamsDevicesIpProfilePrecedence = number;
+
+/**
+ * The ID of the Subnet.
+ *
+ * @example b70ff985-a4ef-4643-bbbc-4a0ed4fc8415
+ * @x-auditable true
+ */
+export type TeamsDevicesIpProfileSubnetId = string;
+
+export type TeamsDevicesIpProfileUpdateRequest = {
+	/**
+	 * An optional description of the Device IP profile.
+	 *
+	 * @example example comment
+	 * @x-auditable true
+	 */
+	description?: string;
+	enabled?: TeamsDevicesIpProfileEnabled;
+	match?: TeamsDevicesIpProfileMatch;
+	name?: TeamsDevicesIpProfileName;
+	precedence?: TeamsDevicesIpProfilePrecedence;
+	subnet_id?: TeamsDevicesIpProfileSubnetId;
+};
+
+/**
+ * The RFC3339Nano timestamp when the Device IP profile was last updated.
+ *
+ * @example 2025-02-14T13:17:00.123456789Z
+ */
+export type TeamsDevicesIpProfileUpdatedAt = string;
+
 /**
  * Reasoning for setting the Global WARP override state. This will be surfaced in the audit log.
  *
@@ -54611,6 +54908,32 @@ export type TeamsDevicesOverrideCodesResponse = TeamsDevicesApiResponseCollectio
 	result?: {
 		disable_for_time?: TeamsDevicesDisableForTime;
 	};
+};
+
+/**
+ * @example {"count":1,"page":1,"per_page":10,"total_count":10,"total_pages":1}
+ */
+export type TeamsDevicesPaginationInfo = {
+	/**
+	 * Number of records in the response.
+	 */
+	count: number;
+	/**
+	 * The page size number of the response.
+	 */
+	page: number;
+	/**
+	 * The limit for the number of records in the response.
+	 */
+	per_page: number;
+	/**
+	 * Total number of records available.
+	 */
+	total_count: number;
+	/**
+	 * Total number of pages available.
+	 */
+	total_pages?: number;
 };
 
 /**
@@ -55938,6 +56261,10 @@ export type TlsCertificatesAndHostnamesCertificatePack = {
 	 */
 	certificates: TlsCertificatesAndHostnamesCertificatePackCertificate[];
 	cloudflare_branding?: TlsCertificatesAndHostnamesCloudflareBranding;
+	/**
+	 * DCV Delegation records for domain validation.
+	 */
+	dcv_delegation_records?: TlsCertificatesAndHostnamesValidationRecord[];
 	hosts: TlsCertificatesAndHostnamesSchemasHosts;
 	id: TlsCertificatesAndHostnamesIdentifier;
 	primary_certificate?: TlsCertificatesAndHostnamesPrimary;
@@ -56149,8 +56476,10 @@ export type TlsCertificatesAndHostnamesCertificatesComponentsSchemasCertificate 
 
 /**
  * The Client Certificate PEM
- *
- * @example -----BEGIN CERTIFICATE-----\nMIIDmDCCAoC...dhDDE\n-----END CERTIFICATE-----
+ * 
+ * @example -----BEGIN CERTIFICATE-----
+MIIDmDCCAoC...dhDDE
+-----END CERTIFICATE-----
  */
 export type TlsCertificatesAndHostnamesClientCertificatesComponentsSchemasCertificate = string;
 
@@ -56308,7 +56637,32 @@ export type TlsCertificatesAndHostnamesComponentsSchemasHostname = string;
  * The private key for the certificate. This field is only needed for specific use cases such as using a custom certificate with Zero Trust's block page.
  * 
  * @example -----BEGIN PRIVATE KEY-----
-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
+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
+vvfp9DWo1IS3EnQRrz6WMYA=
 -----END PRIVATE KEY-----
  * @x-sensitive true
  */
@@ -56427,7 +56781,7 @@ export type TlsCertificatesAndHostnamesCustomCertificate = {
 	issuer?: TlsCertificatesAndHostnamesIssuer;
 	keyless_server?: TlsCertificatesAndHostnamesKeylessCertificate;
 	modified_on?: TlsCertificatesAndHostnamesModifiedOn;
-	policy?: TlsCertificatesAndHostnamesPolicy;
+	policy_restrictions?: TlsCertificatesAndHostnamesPolicyRestrictions;
 	priority?: TlsCertificatesAndHostnamesPriority;
 	signature?: TlsCertificatesAndHostnamesSignature;
 	status?: TlsCertificatesAndHostnamesStatus;
@@ -56444,7 +56798,7 @@ export type TlsCertificatesAndHostnamesCustomHostname = {
 	id: TlsCertificatesAndHostnamesIdentifier;
 	ownership_verification?: TlsCertificatesAndHostnamesOwnershipVerification;
 	ownership_verification_http?: TlsCertificatesAndHostnamesOwnershipVerificationHttp;
-	ssl: TlsCertificatesAndHostnamesSsl;
+	ssl?: TlsCertificatesAndHostnamesSsl;
 	status?: TlsCertificatesAndHostnamesComponentsSchemasStatus;
 	verification_errors?: TlsCertificatesAndHostnamesVerificationErrors;
 };
@@ -56592,6 +56946,15 @@ export type TlsCertificatesAndHostnamesDeleteAdvancedCertificatePackResponseSing
 			id?: TlsCertificatesAndHostnamesIdentifier;
 		};
 	};
+
+/**
+ * The environment to deploy the certificate to, defaults to production
+ *
+ * @default production
+ * @example staging
+ * @x-auditable true
+ */
+export type TlsCertificatesAndHostnamesDeploy = "staging" | "production";
 
 /**
  * Whether or not the Keyless SSL is on or off.
@@ -56742,7 +57105,7 @@ export type TlsCertificatesAndHostnamesHostnameAuthenticatedOriginPullComponents
 
 export type TlsCertificatesAndHostnamesHostnameAuthenticatedOriginPullComponentsSchemasCertificateResponseCollection =
 	TlsCertificatesAndHostnamesApiResponseCollection & {
-		result?: TlsCertificatesAndHostnamesHostnameAuthenticatedOriginPull[];
+		result?: TlsCertificatesAndHostnamesSchemasCertificateObject[];
 	};
 
 export type TlsCertificatesAndHostnamesHostnameAuthenticatedOriginPullComponentsSchemasCertificateResponseSingle =
@@ -56873,10 +57236,14 @@ export type TlsCertificatesAndHostnamesHostnameCertidObject = {
 export type TlsCertificatesAndHostnamesHostnamePost = string;
 
 /**
- * Array of hostnames or wildcard names (e.g., *.example.com) bound to the certificate.
+ * Array of hostnames or wildcard names bound to the certificate.
+ * Hostnames must be fully qualified domain names (FQDNs) belonging to zones on your account (e.g., `example.com` or `sub.example.com`). Wildcards are supported only as a `*.` prefix for a single level (e.g., `*.example.com`). Double wildcards (`*.*.example.com`) and interior wildcards (`foo.*.example.com`) are not allowed. The wildcard suffix must be a multi-label domain (`*.example.com` is valid, but `*.com` is not). Unicode/IDN hostnames are accepted and automatically converted to punycode.
  *
  * @example example.com
  * @example *.example.com
+ * @example sub.example.com
+ * @maxItems 100
+ * @minItems 1
  */
 export type TlsCertificatesAndHostnamesHostnames = string[];
 
@@ -57175,11 +57542,24 @@ export type TlsCertificatesAndHostnamesPerHostnameSettingsResponseDelete =
 
 /**
  * Specify the policy that determines the region where your private key will be held locally. HTTPS connections to any excluded data center will still be fully encrypted, but will incur some latency while Keyless SSL is used to complete the handshake with the nearest allowed data center. Any combination of countries, specified by their two letter country code (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements) can be chosen, such as 'country: IN', as well as 'region: EU' which refers to the EU region. If there are too few data centers satisfying the policy, it will be rejected.
+ * Note: The API accepts this field as either "policy" or "policy_restrictions" in requests. Responses return this field as "policy_restrictions". example: "(country: US) or (region: EU)"
  *
- * @example (country: US) or (region: EU)
  * @x-auditable true
  */
 export type TlsCertificatesAndHostnamesPolicy = string;
+
+/**
+ * The policy restrictions returned by the API. This field is returned in responses
+ * when a policy has been set. The API accepts the "policy" field in requests but
+ * returns this field as "policy_restrictions" in responses.
+ *
+ * Specifies the region(s) where your private key can be held locally for optimal
+ * TLS performance. Format is a boolean expression, for example:
+ * "(country: US) or (region: EU)"
+ *
+ * @example (country: US) or (region: EU)
+ */
+export type TlsCertificatesAndHostnamesPolicyRestrictions = string;
 
 /**
  * The keyless SSL port used to communicate between Cloudflare and the client's Keyless SSL server.
@@ -57288,8 +57668,29 @@ export type TlsCertificatesAndHostnamesRevokedAt = string;
 
 /**
  * The zone's SSL certificate or SSL certificate and intermediate(s).
- *
- * @example -----BEGIN CERTIFICATE----- MIIDtTCCAp2gAwIBAgIJAM15n7fdxhRtMA0GCSqGSIb3DQEBBQUAMEUxCzAJBgNV BAYTAlVTMRMwEQYDVQQIEwpTb21lLVN0YXRlMSEwHwYDVQQKExhJbnRlcm5ldCBX aWRnaXRzIFB0eSBMdGQwHhcNMTQwMzExMTkyMTU5WhcNMTQwNDEwMTkyMTU5WjBF MQswCQYDVQQGEwJVUzETMBEGA1UECBMKU29tZS1TdGF0ZTEhMB8GA1UEChMYSW50 ZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIB CgKCAQEAvq3sKsHpeduJHimOK+fvQdKsI8z8A05MZyyLp2/R/GE8FjNv+hkVY1WQ LIyTNNQH7CJecE1nbTfo8Y56S7x/rhxC6/DJ8MIulapFPnorq46KU6yRxiM0MQ3N nTJHlHA2ozZta6YBBfVfhHWl1F0IfNbXCLKvGwWWMbCx43OfW6KTkbRnE6gFWKuO fSO5h2u5TaWVuSIzBvYs7Vza6m+gtYAvKAJV2nSZ+eSEFPDo29corOy8+huEOUL8 5FAw4BFPsr1TlrlGPFitduQUHGrSL7skk1ESGza0to3bOtrodKei2s9bk5MXm7lZ qI+WZJX4Zu9+mzZhc9pCVi8r/qlXuQIDAQABo4GnMIGkMB0GA1UdDgQWBBRvavf+ sWM4IwKiH9X9w1vl6nUVRDB1BgNVHSMEbjBsgBRvavf+sWM4IwKiH9X9w1vl6nUV RKFJpEcwRTELMAkGA1UEBhMCVVMxEzARBgNVBAgTClNvbWUtU3RhdGUxITAfBgNV BAoTGEludGVybmV0IFdpZGdpdHMgUHR5IEx0ZIIJAM15n7fdxhRtMAwGA1UdEwQF MAMBAf8wDQYJKoZIhvcNAQEFBQADggEBABY2ZzBaW0dMsAAT7tPJzrVWVzQx6KU4 UEBLudIlWPlkAwTnINCWR/8eNjCCmGA4heUdHmazdpPa8RzwOmc0NT1NQqzSyktt vTqb4iHD7+8f9MqJ9/FssCfTtqr/Qst/hGH4Wmdf1EJ/6FqYAAb5iRlPgshFZxU8 uXtA8hWn6fK6eISD9HBdcAFToUvKNZ1BIDPvh9f95Ine8ar6yGd56TUNrHR8eHBs ESxz5ddVR/oWRysNJ+aGAyYqHS8S/ttmC7r4XCAHqXptkHPCGRqkAhsterYhd4I8 /cBzejUobNCjjHFbtkAL/SjxZOLW+pNkZwfeYdM8iPkD54Uua1v2tdw= -----END CERTIFICATE-----
+ * 
+ * @example -----BEGIN CERTIFICATE-----
+MIIDtTCCAp2gAwIBAgIJAM15n7fdxhRtMA0GCSqGSIb3DQEBBQUAMEUxCzAJBgNV
+BAYTAlVTMRMwEQYDVQQIEwpTb21lLVN0YXRlMSEwHwYDVQQKExhJbnRlcm5ldCBX
+aWRnaXRzIFB0eSBMdGQwHhcNMTQwMzExMTkyMTU5WhcNMTQwNDEwMTkyMTU5WjBF
+MQswCQYDVQQGEwJVUzETMBEGA1UECBMKU29tZS1TdGF0ZTEhMB8GA1UEChMYSW50
+ZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIB
+CgKCAQEAvq3sKsHpeduJHimOK+fvQdKsI8z8A05MZyyLp2/R/GE8FjNv+hkVY1WQ
+LIyTNNQH7CJecE1nbTfo8Y56S7x/rhxC6/DJ8MIulapFPnorq46KU6yRxiM0MQ3N
+nTJHlHA2ozZta6YBBfVfhHWl1F0IfNbXCLKvGwWWMbCx43OfW6KTkbRnE6gFWKuO
+fSO5h2u5TaWVuSIzBvYs7Vza6m+gtYAvKAJV2nSZ+eSEFPDo29corOy8+huEOUL8
+5FAw4BFPsr1TlrlGPFitduQUHGrSL7skk1ESGza0to3bOtrodKei2s9bk5MXm7lZ
+qI+WZJX4Zu9+mzZhc9pCVi8r/qlXuQIDAQABo4GnMIGkMB0GA1UdDgQWBBRvavf+
+sWM4IwKiH9X9w1vl6nUVRDB1BgNVHSMEbjBsgBRvavf+sWM4IwKiH9X9w1vl6nUV
+RKFJpEcwRTELMAkGA1UEBhMCVVMxEzARBgNVBAgTClNvbWUtU3RhdGUxITAfBgNV
+BAoTGEludGVybmV0IFdpZGdpdHMgUHR5IEx0ZIIJAM15n7fdxhRtMAwGA1UdEwQF
+MAMBAf8wDQYJKoZIhvcNAQEFBQADggEBABY2ZzBaW0dMsAAT7tPJzrVWVzQx6KU4
+UEBLudIlWPlkAwTnINCWR/8eNjCCmGA4heUdHmazdpPa8RzwOmc0NT1NQqzSyktt
+vTqb4iHD7+8f9MqJ9/FssCfTtqr/Qst/hGH4Wmdf1EJ/6FqYAAb5iRlPgshFZxU8
+uXtA8hWn6fK6eISD9HBdcAFToUvKNZ1BIDPvh9f95Ine8ar6yGd56TUNrHR8eHBs
+ESxz5ddVR/oWRysNJ+aGAyYqHS8S/ttmC7r4XCAHqXptkHPCGRqkAhsterYhd4I8
+/cBzejUobNCjjHFbtkAL/SjxZOLW+pNkZwfeYdM8iPkD54Uua1v2tdw=
+-----END CERTIFICATE-----
  */
 export type TlsCertificatesAndHostnamesSchemasCertificate = string;
 
@@ -57301,6 +57702,7 @@ export type TlsCertificatesAndHostnamesSchemasCertificateObject = {
 	serial_number?: TlsCertificatesAndHostnamesSerialNumber;
 	signature?: TlsCertificatesAndHostnamesSignature;
 	status?: TlsCertificatesAndHostnamesHostnameAuthenticatedOriginPullComponentsSchemasStatus;
+	updated_at?: TlsCertificatesAndHostnamesComponentsSchemasUpdatedAt;
 	uploaded_on?: TlsCertificatesAndHostnamesComponentsSchemasUploadedOn;
 };
 
@@ -57329,7 +57731,26 @@ export type TlsCertificatesAndHostnamesSchemasCertificateResponseSingle =
  * The uploaded root CA certificate.
  * 
  * @example -----BEGIN CERTIFICATE-----
-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
+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
+JhqeoTewsxndhDDE
 -----END CERTIFICATE-----
  */
 export type TlsCertificatesAndHostnamesSchemasCertificates = string;
@@ -57345,8 +57766,10 @@ export type TlsCertificatesAndHostnamesSchemasCreatedAt = string;
 
 /**
  * The Certificate Signing Request (CSR). Must be newline-encoded.
- *
- * @example -----BEGIN CERTIFICATE REQUEST-----\nMIICY....\n-----END CERTIFICATE REQUEST-----\n
+ * 
+ * @example -----BEGIN CERTIFICATE REQUEST-----
+MIICY....
+-----END CERTIFICATE REQUEST-----
  * @x-auditable true
  */
 export type TlsCertificatesAndHostnamesSchemasCsr = string;
@@ -57570,7 +57993,10 @@ export type TlsCertificatesAndHostnamesSettingObjectDelete = {
 };
 
 /**
- * The TLS Setting name.
+ * The TLS Setting name. The value type depends on the setting:
+ * - `ciphers`: value is an array of cipher suite strings (e.g., `["ECDHE-RSA-AES128-GCM-SHA256", "AES128-GCM-SHA256"]`)
+ * - `min_tls_version`: value is a TLS version string (`"1.0"`, `"1.1"`, `"1.2"`, or `"1.3"`)
+ * - `http2`: value is `"on"` or `"off"`
  *
  * @x-auditable true
  */
@@ -57606,10 +58032,14 @@ export type TlsCertificatesAndHostnamesSsl = {
 	bundle_method?: "ubiquitous" | "optimal" | "force";
 	certificate_authority?: TlsCertificatesAndHostnamesCertificateAuthority;
 	/**
-	 * If a custom uploaded certificate is used.
-	 *
-	 * @example -----BEGIN CERTIFICATE-----\nMIIFJDCCBAygAwIBAgIQD0ifmj/Yi5NP/2gdUySbfzANBgkqhkiG9w0BAQsFADBN\nMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMScwJQYDVQQDEx5E...SzSHfXp5lnu/3V08I72q1QNzOCgY1XeL4GKVcj4or6cT6tX6oJH7ePPmfrBfqI/O\nOeH8gMJ+FuwtXYEPa4hBf38M5eU5xWG7\n-----END CERTIFICATE-----\n
-	 */
+     * If a custom uploaded certificate is used.
+     *
+     * @example -----BEGIN CERTIFICATE-----
+    MIIFJDCCBAygAwIBAgIQD0ifmj/Yi5NP/2gdUySbfzANBgkqhkiG9w0BAQsFADBN
+    MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMScwJQYDVQQDEx5E...SzSHfXp5lnu/3V08I72q1QNzOCgY1XeL4GKVcj4or6cT6tX6oJH7ePPmfrBfqI/O
+    OeH8gMJ+FuwtXYEPa4hBf38M5eU5xWG7
+    -----END CERTIFICATE-----
+     */
 	custom_certificate?: string;
 	/**
 	 * The identifier for the Custom CSR that was used.
@@ -57651,6 +58081,10 @@ export type TlsCertificatesAndHostnamesSsl = {
      * @x-sensitive true
      */
 	custom_key?: string;
+	/**
+	 * DCV Delegation records for domain validation.
+	 */
+	dcv_delegation_records?: TlsCertificatesAndHostnamesValidationRecord[];
 	/**
 	 * The time the custom certificate expires on.
 	 *
@@ -57808,11 +58242,15 @@ export type TlsCertificatesAndHostnamesSslpost = {
 	cloudflare_branding?: boolean;
 	custom_cert_bundle?: TlsCertificatesAndHostnamesCustomCertBundle;
 	/**
-	 * If a custom uploaded certificate is used.
-	 *
-	 * @example -----BEGIN CERTIFICATE-----\nMIIFJDCCBAygAwIBAgIQD0ifmj/Yi5NP/2gdUySbfzANBgkqhkiG9w0BAQsFADBN\nMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMScwJQYDVQQDEx5E...SzSHfXp5lnu/3V08I72q1QNzOCgY1XeL4GKVcj4or6cT6tX6oJH7ePPmfrBfqI/O\nOeH8gMJ+FuwtXYEPa4hBf38M5eU5xWG7\n-----END CERTIFICATE-----\n
-	 * @x-auditable true
-	 */
+     * If a custom uploaded certificate is used.
+     *
+     * @example -----BEGIN CERTIFICATE-----
+    MIIFJDCCBAygAwIBAgIQD0ifmj/Yi5NP/2gdUySbfzANBgkqhkiG9w0BAQsFADBN
+    MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMScwJQYDVQQDEx5E...SzSHfXp5lnu/3V08I72q1QNzOCgY1XeL4GKVcj4or6cT6tX6oJH7ePPmfrBfqI/O
+    OeH8gMJ+FuwtXYEPa4hBf38M5eU5xWG7
+    -----END CERTIFICATE-----
+     * @x-auditable true
+     */
 	custom_certificate?: string;
 	/**
      * The key for a custom uploaded certificate.
@@ -58019,6 +58457,20 @@ export type TlsCertificatesAndHostnamesValidationMethodDefinition =
  */
 export type TlsCertificatesAndHostnamesValidationRecord = {
 	/**
+	 * The CNAME record hostname for DCV delegation.
+	 *
+	 * @example _acme-challenge.example.com
+	 * @x-auditable true
+	 */
+	cname?: string;
+	/**
+	 * The CNAME record target value for DCV delegation.
+	 *
+	 * @example dcv.cloudflare.com
+	 * @x-auditable true
+	 */
+	cname_target?: string;
+	/**
 	 * The set of email addresses that the certificate authority (CA) will use to complete domain validation.
 	 *
 	 * @example administrator@example.com
@@ -58037,6 +58489,12 @@ export type TlsCertificatesAndHostnamesValidationRecord = {
 	 * @example http://app.example.com/.well-known/pki-validation/ca3-da12a1c25e7b48cf80408c6c1763b8a2.txt
 	 */
 	http_url?: string;
+	/**
+	 * Status of the validation record.
+	 *
+	 * @example pending
+	 */
+	status?: string;
 	/**
 	 * The hostname that the certificate authority (CA) will check for a TXT record during domain validation .
 	 *
@@ -58067,12 +58525,15 @@ export type TlsCertificatesAndHostnamesValidityDays = 14 | 30 | 90 | 365;
 export type TlsCertificatesAndHostnamesValidityPeriod = 90;
 
 /**
- * The tls setting value.
- *
- * @example ECDHE-RSA-AES128-GCM-SHA256
- * @example AES128-GCM-SHA256
+ * The TLS setting value. The type depends on the `setting_id` used in the request path:
+ * - `ciphers`: an array of allowed cipher suite strings in BoringSSL format (e.g., `["ECDHE-RSA-AES128-GCM-SHA256", "AES128-GCM-SHA256"]`)
+ * - `min_tls_version`: a string indicating the minimum TLS version — one of `"1.0"`, `"1.1"`, `"1.2"`, or `"1.3"` (e.g., `"1.2"`)
+ * - `http2`: a string indicating whether HTTP/2 is enabled — `"on"` or `"off"` (e.g., `"on"`)
  */
-export type TlsCertificatesAndHostnamesValue = number | string | string[];
+export type TlsCertificatesAndHostnamesValue =
+	| string[]
+	| ("1.0" | "1.1" | "1.2" | "1.3")
+	| ("on" | "off");
 
 export type TlsCertificatesAndHostnamesVerification = {
 	brand_check?: TlsCertificatesAndHostnamesBrandCheck;
@@ -59053,13 +59514,38 @@ export type TunnelSubnetResponseSingle = {
 	success: true;
 };
 
+export type TunnelSubnetResponseSingleNullable = {
+	errors: TunnelMessages;
+	messages: TunnelMessages;
+	result:
+		| {
+				comment?: TunnelSubnetComment;
+				created_at?: TunnelCreatedAt;
+				deleted_at?: TunnelDeletedAt;
+				id?: TunnelSubnetId;
+				is_default_network?: TunnelSubnetIsDefaultNetwork;
+				name?: TunnelSubnetName;
+				network?: TunnelSubnetIpNetwork;
+				subnet_type?: TunnelSubnetType;
+		  }
+		| any[]
+		| string
+		| null;
+	/**
+	 * Whether the API call was successful
+	 *
+	 * @example true
+	 */
+	success: true;
+};
+
 /**
  * The type of subnet.
  *
  * @example cloudflare_source
  * @x-auditable true
  */
-export type TunnelSubnetType = "cloudflare_source";
+export type TunnelSubnetType = "cloudflare_source" | "warp";
 
 export type TunnelTeamnet = {
 	comment?: TunnelRouteComment;
@@ -62166,6 +62652,9 @@ export type WorkersObservabilityPerformanceInformation = {
 };
 
 export type WorkersObservabilityQuery = {
+	/**
+	 * @format date-time
+	 */
 	created: string;
 	/**
 	 * @example Query description
@@ -62338,6 +62827,9 @@ export type WorkersObservabilityQuery = {
 			value: string;
 		};
 	};
+	/**
+	 * @format date-time
+	 */
 	updated: string;
 	/**
 	 * @example JY2UKXLO60AEV94R
@@ -63543,11 +64035,25 @@ export type WorkersBindingKindDispatchNamespace = {
 		/**
 		 * Pass information from the Dispatch Worker to the Outbound Worker through the parameters.
 		 */
-		params?: string[];
+		params?: {
+			/**
+			 * Name of the parameter.
+			 *
+			 * @example customer_name
+			 * @x-auditable true
+			 */
+			name: string;
+		}[];
 		/**
 		 * Outbound worker.
 		 */
 		worker?: {
+			/**
+			 * Entrypoint to invoke on the outbound worker.
+			 *
+			 * @x-auditable true
+			 */
+			entrypoint?: string;
 			/**
 			 * Environment of the outbound worker.
 			 *
@@ -63674,9 +64180,9 @@ export type WorkersBindingKindJson = {
 	/**
 	 * JSON data to use.
 	 *
-	 * @example { "message": "Hello, world!" }
+	 * @x-stainless-any true
 	 */
-	json: string;
+	json: Record<string, any>;
 	name: WorkersBindingName;
 	/**
 	 * The kind of resource that the binding provides.
@@ -70714,7 +71220,7 @@ export type ZonesMultipleSettings = (
 )[];
 
 /**
- * The domain name.
+ * The domain name. Per [RFC 1035](https://datatracker.ietf.org/doc/html/rfc1035#section-2.3.4) the overall zone name can be up to 253 characters, with each segment ("label") not exceeding 63 characters.
  *
  * @example example.com
  * @maxLength 253
@@ -72725,7 +73231,7 @@ export type ZonesZone = {
 	 */
 	modified_on: string;
 	/**
-	 * The domain name.
+	 * The domain name. Per [RFC 1035](https://datatracker.ietf.org/doc/html/rfc1035#section-2.3.4) the overall zone name can be up to 253 characters, with each segment ("label") not exceeding 63 characters.
 	 *
 	 * @example example.com
 	 * @maxLength 253

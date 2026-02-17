@@ -117,6 +117,7 @@ import type {
 	CreateAuthToken400,
 	CreateAuthToken401,
 	CreateAuthToken403,
+	CreateAuthToken404,
 	CreateAuthTokenMutationResponse,
 	CreateAuthTokenQueryParams,
 	CreateCheck400,
@@ -145,6 +146,7 @@ import type {
 	CreateDeployment403,
 	CreateDeployment404,
 	CreateDeployment409,
+	CreateDeployment429,
 	CreateDeployment500,
 	CreateDeployment503,
 	CreateDeploymentMutationResponse,
@@ -200,7 +202,6 @@ import type {
 	CreateNetwork401,
 	CreateNetwork402,
 	CreateNetwork403,
-	CreateNetwork404,
 	CreateNetwork409,
 	CreateNetworkMutationResponse,
 	CreateNetworkQueryParams,
@@ -387,7 +388,6 @@ import type {
 	DeleteNetwork401,
 	DeleteNetwork402,
 	DeleteNetwork403,
-	DeleteNetwork404,
 	DeleteNetwork409,
 	DeleteNetworkMutationResponse,
 	DeleteNetworkPathParams,
@@ -611,6 +611,7 @@ import type {
 	GetDeployment400,
 	GetDeployment403,
 	GetDeployment404,
+	GetDeployment429,
 	GetDeploymentEvents400,
 	GetDeploymentEvents401,
 	GetDeploymentEvents403,
@@ -923,6 +924,12 @@ import type {
 	GetTeams403,
 	GetTeamsQueryParams,
 	GetTeamsQueryResponse,
+	GetTld400,
+	GetTld401,
+	GetTld403,
+	GetTld429,
+	GetTld500,
+	GetTldPathParams,
 	GetTldPrice400,
 	GetTldPrice401,
 	GetTldPrice403,
@@ -931,6 +938,8 @@ import type {
 	GetTldPricePathParams,
 	GetTldPriceQueryParams,
 	GetTldPriceQueryResponse,
+	GetTldQueryParams,
+	GetTldQueryResponse,
 	GetVersions400,
 	GetVersions401,
 	GetVersions403,
@@ -984,6 +993,7 @@ import type {
 	InviteUserToTeam503,
 	InviteUserToTeamMutationResponse,
 	InviteUserToTeamPathParams,
+	InviteUserToTeamQueryParams,
 	IssueCert400,
 	IssueCert401,
 	IssueCert402,
@@ -1061,6 +1071,11 @@ import type {
 	ListDeploymentFilesPathParams,
 	ListDeploymentFilesQueryParams,
 	ListDeploymentFilesQueryResponse,
+	ListEventTypes400,
+	ListEventTypes401,
+	ListEventTypes403,
+	ListEventTypesQueryParams,
+	ListEventTypesQueryResponse,
 	ListNetworks400,
 	ListNetworks401,
 	ListNetworks403,
@@ -1140,7 +1155,6 @@ import type {
 	PatchUrlProtectionBypass404,
 	PatchUrlProtectionBypass409,
 	PatchUrlProtectionBypass428,
-	PatchUrlProtectionBypass500,
 	PatchUrlProtectionBypassMutationResponse,
 	PatchUrlProtectionBypassPathParams,
 	PatchUrlProtectionBypassQueryParams,
@@ -1260,6 +1274,7 @@ import type {
 	RequestAccessToTeam401,
 	RequestAccessToTeam403,
 	RequestAccessToTeam404,
+	RequestAccessToTeam429,
 	RequestAccessToTeam503,
 	RequestAccessToTeamMutationResponse,
 	RequestAccessToTeamPathParams,
@@ -2684,12 +2699,7 @@ export async function createNetwork({
 	const data = await request<
 		CreateNetworkMutationResponse,
 		ErrorWrapper<
-			| CreateNetwork400
-			| CreateNetwork401
-			| CreateNetwork402
-			| CreateNetwork403
-			| CreateNetwork404
-			| CreateNetwork409
+			CreateNetwork400 | CreateNetwork401 | CreateNetwork402 | CreateNetwork403 | CreateNetwork409
 		>,
 		null,
 		Record<string, string>,
@@ -2728,12 +2738,7 @@ export async function deleteNetwork({
 	const data = await request<
 		DeleteNetworkMutationResponse,
 		ErrorWrapper<
-			| DeleteNetwork400
-			| DeleteNetwork401
-			| DeleteNetwork402
-			| DeleteNetwork403
-			| DeleteNetwork404
-			| DeleteNetwork409
+			DeleteNetwork400 | DeleteNetwork401 | DeleteNetwork402 | DeleteNetwork403 | DeleteNetwork409
 		>,
 		null,
 		Record<string, string>,
@@ -2919,7 +2924,7 @@ export async function getDeployment({
 
 	const data = await request<
 		GetDeploymentQueryResponse,
-		ErrorWrapper<GetDeployment400 | GetDeployment403 | GetDeployment404>,
+		ErrorWrapper<GetDeployment400 | GetDeployment403 | GetDeployment404 | GetDeployment429>,
 		null,
 		Record<string, string>,
 		GetDeploymentQueryParams,
@@ -2951,6 +2956,7 @@ export async function createDeployment({
 			| CreateDeployment403
 			| CreateDeployment404
 			| CreateDeployment409
+			| CreateDeployment429
 			| CreateDeployment500
 			| CreateDeployment503
 		>,
@@ -3188,6 +3194,37 @@ export async function getSupportedTlds({
 		GetSupportedTldsQueryParams,
 		Record<string, string>
 	>({ method: "GET", url: `/v1/registrar/tlds/supported`, queryParams, ...requestConfig });
+	return data;
+}
+
+/**
+ * @description Get the metadata for a specific TLD.
+ * @summary Get TLD
+ * {@link /v1/registrar/tlds/:tld}
+ */
+export async function getTld({
+	pathParams: { tld },
+	queryParams,
+	config = {},
+}: {
+	pathParams: GetTldPathParams;
+	queryParams?: GetTldQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof client };
+}) {
+	const { client: request = client, ...requestConfig } = config;
+
+	if (!tld) {
+		throw new Error(`Missing required path parameter: tld`);
+	}
+
+	const data = await request<
+		GetTldQueryResponse,
+		ErrorWrapper<GetTld400 | GetTld401 | GetTld403 | GetTld429 | GetTld500>,
+		null,
+		Record<string, string>,
+		GetTldQueryParams,
+		GetTldPathParams
+	>({ method: "GET", url: `/v1/registrar/tlds/${tld}`, queryParams, ...requestConfig });
 	return data;
 }
 
@@ -5314,6 +5351,31 @@ export async function listUserEvents({
 		ListUserEventsQueryParams,
 		Record<string, string>
 	>({ method: "GET", url: `/v3/events`, queryParams, ...requestConfig });
+	return data;
+}
+
+/**
+ * @description Returns the list of user-facing event types with descriptions.
+ * @summary List Event Types
+ * {@link /v1/events/types}
+ */
+export async function listEventTypes({
+	queryParams,
+	config = {},
+}: {
+	queryParams?: ListEventTypesQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof client };
+}) {
+	const { client: request = client, ...requestConfig } = config;
+
+	const data = await request<
+		ListEventTypesQueryResponse,
+		ErrorWrapper<ListEventTypes400 | ListEventTypes401 | ListEventTypes403>,
+		null,
+		Record<string, string>,
+		ListEventTypesQueryParams,
+		Record<string, string>
+	>({ method: "GET", url: `/v1/events/types`, queryParams, ...requestConfig });
 	return data;
 }
 
@@ -8731,9 +8793,11 @@ export async function getTeamMembers({
  */
 export async function inviteUserToTeam({
 	pathParams: { teamId },
+	queryParams,
 	config = {},
 }: {
 	pathParams: InviteUserToTeamPathParams;
+	queryParams?: InviteUserToTeamQueryParams;
 	config?: Partial<FetcherConfig> & { client?: typeof client };
 }) {
 	const { client: request = client, ...requestConfig } = config;
@@ -8749,11 +8813,12 @@ export async function inviteUserToTeam({
 		>,
 		null,
 		Record<string, string>,
-		Record<string, string>,
+		InviteUserToTeamQueryParams,
 		InviteUserToTeamPathParams
 	>({
 		method: "POST",
 		url: `/v2/teams/${teamId}/members`,
+		queryParams,
 		...requestConfig,
 		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
 	});
@@ -8785,6 +8850,7 @@ export async function requestAccessToTeam({
 			| RequestAccessToTeam401
 			| RequestAccessToTeam403
 			| RequestAccessToTeam404
+			| RequestAccessToTeam429
 			| RequestAccessToTeam503
 		>,
 		null,
@@ -9264,7 +9330,7 @@ export async function createAuthToken({
 
 	const data = await request<
 		CreateAuthTokenMutationResponse,
-		ErrorWrapper<CreateAuthToken400 | CreateAuthToken401 | CreateAuthToken403>,
+		ErrorWrapper<CreateAuthToken400 | CreateAuthToken401 | CreateAuthToken403 | CreateAuthToken404>,
 		null,
 		Record<string, string>,
 		CreateAuthTokenQueryParams,
@@ -9702,7 +9768,6 @@ export async function patchUrlProtectionBypass({
 			| PatchUrlProtectionBypass404
 			| PatchUrlProtectionBypass409
 			| PatchUrlProtectionBypass428
-			| PatchUrlProtectionBypass500
 		>,
 		null,
 		Record<string, string>,
@@ -10038,6 +10103,7 @@ export const operationsByPath = {
 	"PATCH /v1/domains/records/{recordId}": updateRecord,
 	"DELETE /v2/domains/{domain}/records/{recordId}": removeRecord,
 	"GET /v1/registrar/tlds/supported": getSupportedTlds,
+	"GET /v1/registrar/tlds/{tld}": getTld,
 	"GET /v1/registrar/tlds/{tld}/price": getTldPrice,
 	"GET /v1/registrar/domains/{domain}/availability": getDomainAvailability,
 	"GET /v1/registrar/domains/{domain}/price": getDomainPrice,
@@ -10096,6 +10162,7 @@ export const operationsByPath = {
 	"GET /v1/env/{id}": getSharedEnvVar,
 	"PATCH /v1/env/{id}/unlink/{projectId}": unlinkSharedEnvVariable,
 	"GET /v3/events": listUserEvents,
+	"GET /v1/events/types": listEventTypes,
 	"GET /v1/integrations/git-namespaces": gitNamespaces,
 	"GET /v1/integrations/search-repo": searchRepo,
 	"GET /v1/integrations/integration/{integrationIdOrSlug}/products/{productIdOrSlug}/plans":
@@ -10320,6 +10387,7 @@ export const operationsByTag = {
 	},
 	domainsRegistrar: {
 		getSupportedTlds,
+		getTld,
 		getTldPrice,
 		getDomainAvailability,
 		getDomainPrice,
@@ -10400,6 +10468,7 @@ export const operationsByTag = {
 	},
 	user: {
 		listUserEvents,
+		listEventTypes,
 		getAuthUser,
 		requestDelete,
 	},
@@ -10605,6 +10674,7 @@ export const tagDictionary = {
 	domainsRegistrar: {
 		GET: [
 			"getSupportedTlds",
+			"getTld",
 			"getTldPrice",
 			"getDomainAvailability",
 			"getDomainPrice",
@@ -10676,7 +10746,7 @@ export const tagDictionary = {
 		DELETE: ["deleteSharedEnvVariable", "removeCustomEnvironment"],
 	},
 	user: {
-		GET: ["listUserEvents", "getAuthUser"],
+		GET: ["listUserEvents", "listEventTypes", "getAuthUser"],
 		DELETE: ["requestDelete"],
 	},
 	marketplace: {

@@ -419,11 +419,11 @@ export type RulesetsUpdateRuleset = Schemas.RulesetsRuleset & {
 export type RulesetsUrlNormalization = Schemas.RulesetsUrlNormalization;
 
 /**
- * A snippet object.
+ * Define a snippet object.
  */
 export type SnippetsSnippet = {
 	/**
-	 * Metadata about the snippet.
+	 * Provide metadata about the snippet.
 	 */
 	metadata: {
 		main_module: Schemas.SnippetsSnippetMainModule;
@@ -433,7 +433,7 @@ export type SnippetsSnippet = {
 };
 
 /**
- * A snippet rules object.
+ * Define a snippet rules object.
  */
 export type SnippetsSnippetRules = {
 	rules: Schemas.SnippetsSnippetRules;
