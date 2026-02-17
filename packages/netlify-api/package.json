@@ -16,16 +16,30 @@
 	"scripts": {
 		"tsc": "tsc --noEmit",
 		"build": "bunchee",
-		"generate": "openapi-codegen netlify"
+		"generate": "rimraf ./src/generated && kubb generate",
+		"is-tree-shakable": "is-tree-shakable"
+	},
+	"dependencies": {
+		"zod": "catalog:"
 	},
 	"devDependencies": {
-		"@openapi-codegen/cli": "catalog:",
-		"@openapi-codegen/typescript": "catalog:",
+		"@kubb/cli": "catalog:",
+		"@kubb/core": "catalog:",
+		"@modelcontextprotocol/sdk": "catalog:",
+		"@sferadev/openapi-utils": "workspace:*",
 		"@sferadev/tsconfig": "workspace:*",
 		"@types/node": "catalog:",
 		"bunchee": "catalog:",
-		"ts-morph": "catalog:",
+		"rimraf": "catalog:",
 		"typescript": "catalog:"
+	},
+	"peerDependencies": {
+		"@modelcontextprotocol/sdk": "^1.15.1"
+	},
+	"peerDependenciesMeta": {
+		"@modelcontextprotocol/sdk": {
+			"optional": true
+		}
 	},
 	"files": [
 		"dist"
@@ -37,14 +51,29 @@
 	"exports": {
 		"./package.json": "./package.json",
 		".": {
-			"import": {
-				"types": "./dist/index.d.mts",
-				"default": "./dist/index.mjs"
-			},
-			"require": {
-				"types": "./dist/index.d.cts",
-				"default": "./dist/index.cjs"
-			}
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.mjs",
+			"require": "./dist/index.cjs"
+		},
+		"./mcp": {
+			"types": "./dist/mcp.d.mts",
+			"import": "./dist/mcp.mjs",
+			"require": "./dist/mcp.cjs"
+		},
+		"./types": {
+			"types": "./dist/types.d.mts",
+			"import": "./dist/types.mjs",
+			"require": "./dist/types.cjs"
+		},
+		"./schemas": {
+			"types": "./dist/schemas.d.mts",
+			"import": "./dist/schemas.mjs",
+			"require": "./dist/schemas.cjs"
+		},
+		"./components": {
+			"types": "./dist/components.d.mts",
+			"import": "./dist/components.mjs",
+			"require": "./dist/components.cjs"
 		}
 	},
 	"publishConfig": {

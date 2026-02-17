@@ -1,10 +1,13 @@
-import type { FetchImpl } from "../utils/fetch";
-import { compactObject } from "../utils/lang";
+import type { FetchImpl } from "./fetch";
+import { compactObject } from "./lang";
 
-export type FetcherExtraProps = {
-	baseUrl: string;
-	token: string | null;
-	fetchImpl: FetchImpl;
+const defaultBaseUrl = "https://api.cloudflare.com/client/v4";
+
+export type FetcherConfig = {
+	baseUrl?: string;
+	token?: string | null;
+	fetchImpl?: FetchImpl;
+	headers?: Record<string, any>;
 };
 
 export type ErrorWrapper<TError> = TError | { status: "unknown"; payload: string };
@@ -17,16 +20,9 @@ export type FetcherOptions<TBody, THeaders, TQueryParams, TPathParams> = {
 	queryParams?: TQueryParams | undefined;
 	pathParams?: TPathParams | undefined;
 	signal?: AbortSignal | undefined;
-} & FetcherExtraProps;
+} & FetcherConfig;
 
-export async function fetch<
-	TData,
-	TError,
-	TBody extends {} | FormData | undefined | null,
-	THeaders extends {},
-	TQueryParams extends {},
-	TPathParams extends {},
->({
+export async function client<TData, TError, TBody, THeaders, TQueryParams, TPathParams>({
 	url,
 	method,
 	body,
@@ -34,15 +30,14 @@ export async function fetch<
 	pathParams,
 	queryParams,
 	signal,
-	baseUrl,
-	token,
-	fetchImpl,
+	baseUrl = defaultBaseUrl,
+	token = null,
+	fetchImpl = fetch as FetchImpl,
 }: FetcherOptions<TBody, THeaders, TQueryParams, TPathParams>): Promise<TData> {
 	try {
 		const requestHeaders: HeadersInit = compactObject({
 			"Content-Type": "application/json",
 			Authorization: token ? `Bearer ${token}` : undefined,
-			Accept: "application/json",
 			...headers,
 		});
 
@@ -61,9 +56,11 @@ export async function fetch<
 				? body
 				: requestHeaders["Content-Type"] === "application/json"
 					? JSON.stringify(body)
-					: (body as string);
+					: (body as unknown as string);
 
-		const response = await fetchImpl(`${baseUrl}${resolveUrl(url, queryParams, pathParams)}`, {
+		const fullUrl = `${baseUrl}${resolveUrl(url, queryParams, pathParams)}`;
+
+		const response = await fetchImpl(fullUrl, {
 			signal,
 			method: method.toUpperCase(),
 			body: payload,
@@ -80,7 +77,6 @@ export async function fetch<
 					payload: e instanceof Error ? `Unexpected error (${e.message})` : "Unexpected error",
 				};
 			}
-
 			throw error;
 		}
 
@@ -93,15 +89,20 @@ export async function fetch<
 	} catch (e) {
 		const errorObject: Error = {
 			name: "unknown" as const,
-			message: e instanceof Error ? `Network error (${e.message})` : "Network error",
-			stack: e as string,
+			message: (e as any)?.message ? `${(e as any)?.message}` : "Network error",
 		};
 		throw errorObject;
 	}
 }
 
 const resolveUrl = (url: string, queryParams: any = {}, pathParams: any = {}) => {
+	let pathUrl = url;
+	for (const [key, value] of Object.entries(pathParams)) {
+		pathUrl = pathUrl.replace(`{${key}}`, encodeURIComponent(String(value)));
+	}
 	let query = new URLSearchParams(queryParams).toString();
 	if (query) query = `?${query}`;
-	return url.replace(/\{\w*\}/g, (key) => pathParams[key.slice(1, -1)] ?? "") + query;
+	return pathUrl + query;
 };
+
+export default client;
