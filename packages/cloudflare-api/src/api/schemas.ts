@@ -19770,7 +19770,21 @@ export type DlpPattern = {
 	validation?: DlpValidation;
 };
 
+/**
+ * Masking level for payload logs.
+ *
+ * - `full`: The entire payload is masked.
+ * - `partial`: Only partial payload content is masked.
+ * - `clear`: No masking is applied to the payload content.
+ * - `default`: DLP uses its default masking behavior.
+ */
+export type DlpPayloadLogMaskingLevel = "full" | "partial" | "clear" | "default";
+
 export type DlpPayloadLogSetting = {
+	masking_level: DlpPayloadLogMaskingLevel;
+	/**
+	 * Base64-encoded public key for encrypting payload logs. Null when payload logging is disabled.
+	 */
 	public_key?: string | null;
 	/**
 	 * @format date-time
@@ -19778,7 +19792,31 @@ export type DlpPayloadLogSetting = {
 	updated_at: string;
 };
 
+/**
+ * Request model for updating payload log settings - supports partial updates.
+ */
 export type DlpPayloadLogSettingUpdate = {
+	/**
+	 * Masking level for payload logs.
+	 *
+	 * - `full`: The entire payload is masked.
+	 * - `partial`: Only partial payload content is masked.
+	 * - `clear`: No masking is applied to the payload content.
+	 * - `default`: DLP uses its default masking behavior.
+	 */
+	masking_level?: DlpPayloadLogMaskingLevel;
+	/**
+	 * Base64-encoded public key for encrypting payload logs.
+	 *
+	 * - Set to null or empty string to disable payload logging.
+	 * - Set to a non-empty base64 string to enable payload logging with the given key.
+	 *
+	 * For customers with configurable payload masking feature rolled out:
+	 * - If the field is missing, the existing setting will be kept. Note that this is different from setting to null or empty string.
+	 *
+	 * For all other customers:
+	 * - If the field is missing, the existing setting will be cleared.
+	 */
 	public_key?: string | null;
 };
 
@@ -35705,7 +35743,7 @@ export type McnCreateOnrampRequest = {
 	attached_hubs?: McnResourceId[];
 	attached_vpcs?: McnResourceId[];
 	/**
-	 * the ASN to use on the cloud side. If unset or zero, the cloud's default will be used.
+	 * Sets the cloud-side ASN. If unset or zero, the cloud's default ASN takes effect.
 	 *
 	 * @format uint32
 	 * @x-auditable true
@@ -35714,7 +35752,7 @@ export type McnCreateOnrampRequest = {
 	cloud_type: McnOnrampCloudType;
 	description?: string;
 	/**
-	 * if set to true, install_routes_in_cloud and install_routes_in_magic_wan should be set to false
+	 * Enables BGP routing. When enabling this feature, set both install_routes_in_cloud and install_routes_in_magic_wan to false.
 	 *
 	 * @x-auditable true
 	 */
@@ -36549,7 +36587,7 @@ export type McnResultInfo = {
 	 */
 	page: number;
 	/**
-	 * The maximum numnber of items per page.
+	 * The maximum number of items per page.
 	 *
 	 * @example 20
 	 */
@@ -57198,10 +57236,14 @@ export type TlsCertificatesAndHostnamesHostnameCertidObject = {
 export type TlsCertificatesAndHostnamesHostnamePost = string;
 
 /**
- * Array of hostnames or wildcard names (e.g., *.example.com) bound to the certificate.
+ * Array of hostnames or wildcard names bound to the certificate.
+ * Hostnames must be fully qualified domain names (FQDNs) belonging to zones on your account (e.g., `example.com` or `sub.example.com`). Wildcards are supported only as a `*.` prefix for a single level (e.g., `*.example.com`). Double wildcards (`*.*.example.com`) and interior wildcards (`foo.*.example.com`) are not allowed. The wildcard suffix must be a multi-label domain (`*.example.com` is valid, but `*.com` is not). Unicode/IDN hostnames are accepted and automatically converted to punycode.
  *
  * @example example.com
  * @example *.example.com
+ * @example sub.example.com
+ * @maxItems 100
+ * @minItems 1
  */
 export type TlsCertificatesAndHostnamesHostnames = string[];
 
