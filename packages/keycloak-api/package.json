@@ -25,7 +25,6 @@
 	"devDependencies": {
 		"@kubb/cli": "catalog:",
 		"@kubb/core": "catalog:",
-		"@modelcontextprotocol/sdk": "catalog:",
 		"@sferadev/openapi-utils": "workspace:*",
 		"@sferadev/tsconfig": "workspace:*",
 		"@types/node": "catalog:",
@@ -35,14 +34,6 @@
 		"rimraf": "catalog:",
 		"typescript": "catalog:",
 		"yaml": "catalog:"
-	},
-	"peerDependencies": {
-		"@modelcontextprotocol/sdk": "^1.15.1"
-	},
-	"peerDependenciesMeta": {
-		"@modelcontextprotocol/sdk": {
-			"optional": true
-		}
 	},
 	"files": [
 		"dist"

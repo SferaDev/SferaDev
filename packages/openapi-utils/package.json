@@ -22,7 +22,6 @@
 		"@kubb/core": "catalog:",
 		"@kubb/oas": "catalog:",
 		"@kubb/plugin-client": "catalog:",
-		"@kubb/plugin-mcp": "catalog:",
 		"@kubb/plugin-oas": "catalog:",
 		"@kubb/plugin-ts": "catalog:",
 		"@kubb/plugin-zod": "catalog:",

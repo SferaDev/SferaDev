@@ -45,9 +45,6 @@ catalogs:
     '@kubb/plugin-client':
       specifier: 4.23.0
       version: 4.23.0
-    '@kubb/plugin-mcp':
-      specifier: 4.23.0
-      version: 4.23.0
     '@kubb/plugin-oas':
       specifier: 4.23.0
       version: 4.23.0
@@ -785,9 +782,6 @@ importers:
       '@kubb/core':
         specifier: 'catalog:'
         version: 4.23.0(@kubb/react-fabric@0.12.11)
-      '@modelcontextprotocol/sdk':
-        specifier: 'catalog:'
-        version: 1.26.0(zod@4.3.6)
       '@sferadev/openapi-utils':
         specifier: workspace:*
         version: link:../openapi-utils
@@ -825,9 +819,6 @@ importers:
       '@kubb/core':
         specifier: 'catalog:'
         version: 4.23.0(@kubb/react-fabric@0.12.11)
-      '@modelcontextprotocol/sdk':
-        specifier: 'catalog:'
-        version: 1.26.0(zod@4.3.6)
       '@sferadev/openapi-utils':
         specifier: workspace:*
         version: link:../openapi-utils
@@ -868,9 +859,6 @@ importers:
       '@kubb/core':
         specifier: 'catalog:'
         version: 4.23.0(@kubb/react-fabric@0.12.11)
-      '@modelcontextprotocol/sdk':
-        specifier: 'catalog:'
-        version: 1.26.0(zod@4.3.6)
       '@sferadev/openapi-utils':
         specifier: workspace:*
         version: link:../openapi-utils
@@ -902,9 +890,6 @@ importers:
       '@kubb/core':
         specifier: 'catalog:'
         version: 4.23.0(@kubb/react-fabric@0.12.11)
-      '@modelcontextprotocol/sdk':
-        specifier: 'catalog:'
-        version: 1.26.0(zod@4.3.6)
       '@sferadev/openapi-utils':
         specifier: workspace:*
         version: link:../openapi-utils
@@ -936,9 +921,6 @@ importers:
       '@kubb/core':
         specifier: 'catalog:'
         version: 4.23.0(@kubb/react-fabric@0.12.11)
-      '@modelcontextprotocol/sdk':
-        specifier: 'catalog:'
-        version: 1.26.0(zod@4.3.6)
       '@sferadev/openapi-utils':
         specifier: workspace:*
         version: link:../openapi-utils
@@ -975,9 +957,6 @@ importers:
       '@kubb/plugin-client':
         specifier: 'catalog:'
         version: 4.23.0(@kubb/react-fabric@0.12.11)(axios@1.13.5)(typescript@5.9.3)
-      '@kubb/plugin-mcp':
-        specifier: 'catalog:'
-        version: 4.23.0(axios@1.13.5)(typescript@5.9.3)
       '@kubb/plugin-oas':
         specifier: 'catalog:'
         version: 4.23.0(@kubb/react-fabric@0.12.11)
@@ -1062,9 +1041,6 @@ importers:
       '@kubb/react':
         specifier: 'catalog:'
         version: 4.3.1
-      '@modelcontextprotocol/sdk':
-        specifier: 'catalog:'
-        version: 1.26.0(zod@4.3.6)
       '@sferadev/openapi-utils':
         specifier: workspace:*
         version: link:../openapi-utils
@@ -1096,9 +1072,6 @@ importers:
       '@kubb/core':
         specifier: 'catalog:'
         version: 4.23.0(@kubb/react-fabric@0.12.11)
-      '@modelcontextprotocol/sdk':
-        specifier: 'catalog:'
-        version: 1.26.0(zod@4.3.6)
       '@sferadev/openapi-utils':
         specifier: workspace:*
         version: link:../openapi-utils
@@ -1130,9 +1103,6 @@ importers:
       '@kubb/core':
         specifier: 'catalog:'
         version: 4.23.0(@kubb/react-fabric@0.12.11)
-      '@modelcontextprotocol/sdk':
-        specifier: 'catalog:'
-        version: 1.26.0(zod@4.3.6)
       '@sferadev/openapi-utils':
         specifier: workspace:*
         version: link:../openapi-utils
@@ -2447,10 +2417,6 @@ packages:
     peerDependenciesMeta:
       axios:
         optional: true
-
-  '@kubb/plugin-mcp@4.23.0':
-    resolution: {integrity: sha512-cpSMu0wN7q6+FFEhJfJ/+6J0mU8qrUOr9FQ4za92O25c+tTWgcoKQqowRWV9tP/tbeFvNBxdiHRer8PHH30gmA==}
-    engines: {node: '>=20'}
 
   '@kubb/plugin-oas@4.23.0':
     resolution: {integrity: sha512-3YTeQBZIKnrlfc/1aM3NbwU/XbMaCRlduIDnru7o5S8iRJ+YLBANMGBV4ZZvOVLQjobjPYP+VXYAnouzpZJ85g==}
@@ -10973,22 +10939,6 @@ snapshots:
     optionalDependencies:
       axios: 1.13.5
     transitivePeerDependencies:
-      - bufferutil
-      - encoding
-      - typescript
-      - utf-8-validate
-
-  '@kubb/plugin-mcp@4.23.0(axios@1.13.5)(typescript@5.9.3)':
-    dependencies:
-      '@kubb/core': 4.23.0(@kubb/react-fabric@0.12.11)
-      '@kubb/oas': 4.23.0(@kubb/react-fabric@0.12.11)
-      '@kubb/plugin-client': 4.23.0(@kubb/react-fabric@0.12.11)(axios@1.13.5)(typescript@5.9.3)
-      '@kubb/plugin-oas': 4.23.0(@kubb/react-fabric@0.12.11)
-      '@kubb/plugin-ts': 4.23.0(@kubb/react-fabric@0.12.11)(typescript@5.9.3)
-      '@kubb/plugin-zod': 4.23.0(typescript@5.9.3)
-      '@kubb/react-fabric': 0.12.11
-    transitivePeerDependencies:
-      - axios
       - bufferutil
       - encoding
       - typescript
