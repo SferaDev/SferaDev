@@ -16,12 +16,11 @@
 	"scripts": {
 		"tsc": "tsc --noEmit",
 		"build": "bunchee",
-		"generate": "rimraf ./src/generated && kubb generate",
+		"generate": "[ -d ./src/generated ] && echo 'Generated files exist, skipping. Run generate:force to regenerate.' || (rimraf ./src/generated && kubb generate)",
+		"generate:force": "rimraf ./src/generated && kubb generate",
 		"is-tree-shakable": "is-tree-shakable"
 	},
-	"dependencies": {
-		"zod": "catalog:"
-	},
+	"dependencies": {},
 	"devDependencies": {
 		"@kubb/cli": "catalog:",
 		"@kubb/core": "catalog:",
@@ -52,11 +51,6 @@
 			"types": "./dist/types.d.mts",
 			"import": "./dist/types.mjs",
 			"require": "./dist/types.cjs"
-		},
-		"./schemas": {
-			"types": "./dist/schemas.d.mts",
-			"import": "./dist/schemas.mjs",
-			"require": "./dist/schemas.cjs"
 		},
 		"./components": {
 			"types": "./dist/components.d.mts",

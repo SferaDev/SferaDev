@@ -35,6 +35,9 @@ export const extraGenerator: ReturnType<typeof createReactGenerator<PluginClient
 				),
 			);
 
+			const getOpName = (operation: (typeof operations)[number]) =>
+				getName(operation, { type: "function" });
+
 			const operationsByPath = Object.fromEntries(
 				operations
 					.filter(
@@ -44,7 +47,7 @@ export const extraGenerator: ReturnType<typeof createReactGenerator<PluginClient
 					)
 					.map((operation) => [
 						`${operation.method.toUpperCase()} ${operation.path}`,
-						operation.getOperationId(),
+						getOpName(operation),
 					]),
 			);
 
@@ -58,7 +61,7 @@ export const extraGenerator: ReturnType<typeof createReactGenerator<PluginClient
 								.map((tag: { name: string }) => tag.name)
 								.includes(name);
 						})
-						.map((operation) => operation.getOperationId()),
+						.map((operation) => getOpName(operation)),
 				]),
 			);
 
@@ -77,7 +80,7 @@ export const extraGenerator: ReturnType<typeof createReactGenerator<PluginClient
 								operation?.getOperationId() !== undefined
 							) {
 								acc[upperMethod] = acc[upperMethod] ?? [];
-								acc[upperMethod].push(operation.getOperationId());
+								acc[upperMethod].push(getOpName(operation));
 							}
 
 							return acc;
@@ -92,7 +95,6 @@ export const extraGenerator: ReturnType<typeof createReactGenerator<PluginClient
 					baseName={file.baseName}
 					path={file.path}
 					meta={file.meta}
-					// @ts-expect-error conflict with react-fabric types
 					banner={getBanner({ oas, output: plugin.options.output, config: pluginManager.config })}
 					footer={getFooter({ oas, output: plugin.options.output })}
 				>

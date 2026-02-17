@@ -1,10 +1,10 @@
 import { defineConfig } from "@kubb/core";
-import { baseConfig } from "@sferadev/openapi-utils";
-import type { OpenAPIObject } from "openapi3-ts/oas30";
+import { baseConfig, fetchSpec, renameReservedWords } from "@sferadev/openapi-utils";
 
 export default defineConfig(async () => {
-	const response = await fetch("https://open-api.netlify.com/swagger.json");
-	const openAPIDocument: OpenAPIObject = await response.json();
+	let openAPIDocument = await fetchSpec("https://open-api.netlify.com/swagger.json");
+
+	openAPIDocument = renameReservedWords(openAPIDocument);
 
 	return {
 		...baseConfig,

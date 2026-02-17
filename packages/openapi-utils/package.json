@@ -26,7 +26,8 @@
 		"@kubb/plugin-ts": "catalog:",
 		"@kubb/plugin-zod": "catalog:",
 		"@kubb/react-fabric": "catalog:",
-		"case": "catalog:"
+		"case": "catalog:",
+		"openapi3-ts": "catalog:"
 	},
 	"devDependencies": {
 		"@sferadev/tsconfig": "workspace:*",

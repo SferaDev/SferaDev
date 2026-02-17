@@ -4,7 +4,7 @@
  */
 
 import type { ErrorWrapper, FetcherConfig } from "../utils/fetcher";
-import client from "../utils/fetcher";
+import defaultClient from "../utils/fetcher";
 import type {
 	AcceptProjectTransferRequest400,
 	AcceptProjectTransferRequest401,
@@ -1629,9 +1629,9 @@ export async function readAccessGroup({
 }: {
 	pathParams: ReadAccessGroupPathParams;
 	queryParams?: ReadAccessGroupQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
@@ -1660,9 +1660,9 @@ export async function updateAccessGroup({
 }: {
 	pathParams: UpdateAccessGroupPathParams;
 	queryParams?: UpdateAccessGroupQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
@@ -1697,9 +1697,9 @@ export async function deleteAccessGroup({
 }: {
 	pathParams: DeleteAccessGroupPathParams;
 	queryParams?: DeleteAccessGroupQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
@@ -1728,9 +1728,9 @@ export async function listAccessGroupMembers({
 }: {
 	pathParams: ListAccessGroupMembersPathParams;
 	queryParams?: ListAccessGroupMembersQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
@@ -1757,9 +1757,9 @@ export async function listAccessGroups({
 	config = {},
 }: {
 	queryParams?: ListAccessGroupsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		ListAccessGroupsQueryResponse,
@@ -1782,9 +1782,9 @@ export async function createAccessGroup({
 	config = {},
 }: {
 	queryParams?: CreateAccessGroupQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		CreateAccessGroupMutationResponse,
@@ -1815,9 +1815,9 @@ export async function listAccessGroupProjects({
 }: {
 	pathParams: ListAccessGroupProjectsPathParams;
 	queryParams?: ListAccessGroupProjectsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
@@ -1853,9 +1853,9 @@ export async function createAccessGroupProject({
 }: {
 	pathParams: CreateAccessGroupProjectPathParams;
 	queryParams?: CreateAccessGroupProjectQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!accessGroupIdOrName) {
 		throw new Error(`Missing required path parameter: accessGroupIdOrName`);
@@ -1892,9 +1892,9 @@ export async function readAccessGroupProject({
 }: {
 	pathParams: ReadAccessGroupProjectPathParams;
 	queryParams?: ReadAccessGroupProjectQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!accessGroupIdOrName) {
 		throw new Error(`Missing required path parameter: accessGroupIdOrName`);
@@ -1932,9 +1932,9 @@ export async function updateAccessGroupProject({
 }: {
 	pathParams: UpdateAccessGroupProjectPathParams;
 	queryParams?: UpdateAccessGroupProjectQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!accessGroupIdOrName) {
 		throw new Error(`Missing required path parameter: accessGroupIdOrName`);
@@ -1975,9 +1975,9 @@ export async function deleteAccessGroupProject({
 }: {
 	pathParams: DeleteAccessGroupProjectPathParams;
 	queryParams?: DeleteAccessGroupProjectQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!accessGroupIdOrName) {
 		throw new Error(`Missing required path parameter: accessGroupIdOrName`);
@@ -2017,9 +2017,9 @@ export async function recordEvents({
 }: {
 	queryParams?: RecordEventsQueryParams;
 	headers?: RecordEventsHeaderParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		RecordEventsMutationResponse,
@@ -2048,9 +2048,9 @@ export async function status({
 	config = {},
 }: {
 	queryParams?: StatusQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		StatusQueryResponse,
@@ -2077,9 +2077,9 @@ export async function uploadArtifact({
 	pathParams: UploadArtifactPathParams;
 	headers: UploadArtifactHeaderParams;
 	queryParams?: UploadArtifactQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!hash) {
 		throw new Error(`Missing required path parameter: hash`);
@@ -2116,9 +2116,9 @@ export async function downloadArtifact({
 	pathParams: DownloadArtifactPathParams;
 	queryParams?: DownloadArtifactQueryParams;
 	headers?: DownloadArtifactHeaderParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!hash) {
 		throw new Error(`Missing required path parameter: hash`);
@@ -2157,9 +2157,9 @@ export async function artifactQuery({
 	config = {},
 }: {
 	queryParams?: ArtifactQueryQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		ArtifactQueryMutationResponse,
@@ -2188,9 +2188,9 @@ export async function listBillingCharges({
 	config = {},
 }: {
 	queryParams: ListBillingChargesQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		ListBillingChargesQueryResponse,
@@ -2220,9 +2220,9 @@ export async function listContractCommitments({
 	config = {},
 }: {
 	queryParams?: ListContractCommitmentsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		ListContractCommitmentsQueryResponse,
@@ -2250,9 +2250,9 @@ export async function stageRedirects({
 	config = {},
 }: {
 	queryParams?: StageRedirectsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		StageRedirectsMutationResponse,
@@ -2281,9 +2281,9 @@ export async function getRedirects({
 	config = {},
 }: {
 	queryParams: GetRedirectsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		GetRedirectsQueryResponse,
@@ -2306,9 +2306,9 @@ export async function deleteRedirects({
 	config = {},
 }: {
 	queryParams: DeleteRedirectsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		DeleteRedirectsMutationResponse,
@@ -2343,9 +2343,9 @@ export async function editRedirect({
 	config = {},
 }: {
 	queryParams: EditRedirectQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		EditRedirectMutationResponse,
@@ -2376,9 +2376,9 @@ export async function restoreRedirects({
 	config = {},
 }: {
 	queryParams: RestoreRedirectsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		RestoreRedirectsMutationResponse,
@@ -2413,9 +2413,9 @@ export async function getVersions({
 	config = {},
 }: {
 	queryParams: GetVersionsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		GetVersionsQueryResponse,
@@ -2438,9 +2438,9 @@ export async function updateVersion({
 	config = {},
 }: {
 	queryParams: UpdateVersionQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		UpdateVersionMutationResponse,
@@ -2473,9 +2473,9 @@ export async function createCheck({
 }: {
 	pathParams: CreateCheckPathParams;
 	queryParams?: CreateCheckQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!deploymentId) {
 		throw new Error(`Missing required path parameter: deploymentId`);
@@ -2510,9 +2510,9 @@ export async function getAllChecks({
 }: {
 	pathParams: GetAllChecksPathParams;
 	queryParams?: GetAllChecksQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!deploymentId) {
 		throw new Error(`Missing required path parameter: deploymentId`);
@@ -2546,9 +2546,9 @@ export async function getCheck({
 }: {
 	pathParams: GetCheckPathParams;
 	queryParams?: GetCheckQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!deploymentId) {
 		throw new Error(`Missing required path parameter: deploymentId`);
@@ -2586,9 +2586,9 @@ export async function updateCheck({
 }: {
 	pathParams: UpdateCheckPathParams;
 	queryParams?: UpdateCheckQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!deploymentId) {
 		throw new Error(`Missing required path parameter: deploymentId`);
@@ -2629,9 +2629,9 @@ export async function rerequestCheck({
 }: {
 	pathParams: RerequestCheckPathParams;
 	queryParams?: RerequestCheckQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!deploymentId) {
 		throw new Error(`Missing required path parameter: deploymentId`);
@@ -2667,9 +2667,9 @@ export async function listNetworks({
 	config = {},
 }: {
 	queryParams?: ListNetworksQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		ListNetworksQueryResponse,
@@ -2692,9 +2692,9 @@ export async function createNetwork({
 	config = {},
 }: {
 	queryParams?: CreateNetworkQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		CreateNetworkMutationResponse,
@@ -2727,9 +2727,9 @@ export async function deleteNetwork({
 }: {
 	pathParams: DeleteNetworkPathParams;
 	queryParams?: DeleteNetworkQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!networkId) {
 		throw new Error(`Missing required path parameter: networkId`);
@@ -2760,9 +2760,9 @@ export async function updateNetwork({
 }: {
 	pathParams: UpdateNetworkPathParams;
 	queryParams?: UpdateNetworkQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!networkId) {
 		throw new Error(`Missing required path parameter: networkId`);
@@ -2797,9 +2797,9 @@ export async function readNetwork({
 }: {
 	pathParams: ReadNetworkPathParams;
 	queryParams?: ReadNetworkQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!networkId) {
 		throw new Error(`Missing required path parameter: networkId`);
@@ -2828,9 +2828,9 @@ export async function getDeploymentEvents({
 }: {
 	pathParams: GetDeploymentEventsPathParams;
 	queryParams?: GetDeploymentEventsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!idOrUrl) {
 		throw new Error(`Missing required path parameter: idOrUrl`);
@@ -2862,9 +2862,9 @@ export async function updateIntegrationDeploymentAction({
 	config = {},
 }: {
 	pathParams: UpdateIntegrationDeploymentActionPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!deploymentId) {
 		throw new Error(`Missing required path parameter: deploymentId`);
@@ -2914,9 +2914,9 @@ export async function getDeployment({
 }: {
 	pathParams: GetDeploymentPathParams;
 	queryParams?: GetDeploymentQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!idOrUrl) {
 		throw new Error(`Missing required path parameter: idOrUrl`);
@@ -2943,9 +2943,9 @@ export async function createDeployment({
 	config = {},
 }: {
 	queryParams?: CreateDeploymentQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		CreateDeploymentMutationResponse,
@@ -2986,9 +2986,9 @@ export async function cancelDeployment({
 }: {
 	pathParams: CancelDeploymentPathParams;
 	queryParams?: CancelDeploymentQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
@@ -3019,9 +3019,9 @@ export async function getRecords({
 }: {
 	pathParams: GetRecordsPathParams;
 	queryParams?: GetRecordsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!domain) {
 		throw new Error(`Missing required path parameter: domain`);
@@ -3050,9 +3050,9 @@ export async function createRecord({
 }: {
 	pathParams: CreateRecordPathParams;
 	queryParams?: CreateRecordQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!domain) {
 		throw new Error(`Missing required path parameter: domain`);
@@ -3094,9 +3094,9 @@ export async function updateRecord({
 }: {
 	pathParams: UpdateRecordPathParams;
 	queryParams?: UpdateRecordQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!recordId) {
 		throw new Error(`Missing required path parameter: recordId`);
@@ -3138,9 +3138,9 @@ export async function removeRecord({
 }: {
 	pathParams: RemoveRecordPathParams;
 	queryParams?: RemoveRecordQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!domain) {
 		throw new Error(`Missing required path parameter: domain`);
@@ -3176,9 +3176,9 @@ export async function getSupportedTlds({
 	config = {},
 }: {
 	queryParams?: GetSupportedTldsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		GetSupportedTldsQueryResponse,
@@ -3209,9 +3209,9 @@ export async function getTld({
 }: {
 	pathParams: GetTldPathParams;
 	queryParams?: GetTldQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!tld) {
 		throw new Error(`Missing required path parameter: tld`);
@@ -3240,9 +3240,9 @@ export async function getTldPrice({
 }: {
 	pathParams: GetTldPricePathParams;
 	queryParams?: GetTldPriceQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!tld) {
 		throw new Error(`Missing required path parameter: tld`);
@@ -3273,9 +3273,9 @@ export async function getDomainAvailability({
 }: {
 	pathParams: GetDomainAvailabilityPathParams;
 	queryParams?: GetDomainAvailabilityQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!domain) {
 		throw new Error(`Missing required path parameter: domain`);
@@ -3316,9 +3316,9 @@ export async function getDomainPrice({
 }: {
 	pathParams: GetDomainPricePathParams;
 	queryParams?: GetDomainPriceQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!domain) {
 		throw new Error(`Missing required path parameter: domain`);
@@ -3351,9 +3351,9 @@ export async function getBulkAvailability({
 	config = {},
 }: {
 	queryParams?: GetBulkAvailabilityQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		GetBulkAvailabilityMutationResponse,
@@ -3390,9 +3390,9 @@ export async function getDomainAuthCode({
 }: {
 	pathParams: GetDomainAuthCodePathParams;
 	queryParams?: GetDomainAuthCodeQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!domain) {
 		throw new Error(`Missing required path parameter: domain`);
@@ -3434,9 +3434,9 @@ export async function buySingleDomain({
 }: {
 	pathParams: BuySingleDomainPathParams;
 	queryParams?: BuySingleDomainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!domain) {
 		throw new Error(`Missing required path parameter: domain`);
@@ -3475,9 +3475,9 @@ export async function buyDomains({
 	config = {},
 }: {
 	queryParams?: BuyDomainsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		BuyDomainsMutationResponse,
@@ -3508,9 +3508,9 @@ export async function transferInDomain({
 }: {
 	pathParams: TransferInDomainPathParams;
 	queryParams?: TransferInDomainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!domain) {
 		throw new Error(`Missing required path parameter: domain`);
@@ -3551,9 +3551,9 @@ export async function getDomainTransferIn({
 }: {
 	pathParams: GetDomainTransferInPathParams;
 	queryParams?: GetDomainTransferInQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!domain) {
 		throw new Error(`Missing required path parameter: domain`);
@@ -3594,9 +3594,9 @@ export async function renewDomain({
 }: {
 	pathParams: RenewDomainPathParams;
 	queryParams?: RenewDomainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!domain) {
 		throw new Error(`Missing required path parameter: domain`);
@@ -3638,9 +3638,9 @@ export async function updateDomainAutoRenew({
 }: {
 	pathParams: UpdateDomainAutoRenewPathParams;
 	queryParams?: UpdateDomainAutoRenewQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!domain) {
 		throw new Error(`Missing required path parameter: domain`);
@@ -3682,9 +3682,9 @@ export async function updateDomainNameservers({
 }: {
 	pathParams: UpdateDomainNameserversPathParams;
 	queryParams?: UpdateDomainNameserversQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!domain) {
 		throw new Error(`Missing required path parameter: domain`);
@@ -3726,9 +3726,9 @@ export async function getContactInfoSchema({
 }: {
 	pathParams: GetContactInfoSchemaPathParams;
 	queryParams?: GetContactInfoSchemaQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!domain) {
 		throw new Error(`Missing required path parameter: domain`);
@@ -3768,9 +3768,9 @@ export async function getOrder({
 }: {
 	pathParams: GetOrderPathParams;
 	queryParams?: GetOrderQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!orderId) {
 		throw new Error(`Missing required path parameter: orderId`);
@@ -3799,9 +3799,9 @@ export async function getDomainConfig({
 }: {
 	pathParams: GetDomainConfigPathParams;
 	queryParams?: GetDomainConfigQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!domain) {
 		throw new Error(`Missing required path parameter: domain`);
@@ -3830,9 +3830,9 @@ export async function getDomain({
 }: {
 	pathParams: GetDomainPathParams;
 	queryParams?: GetDomainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!domain) {
 		throw new Error(`Missing required path parameter: domain`);
@@ -3859,9 +3859,9 @@ export async function getDomains({
 	config = {},
 }: {
 	queryParams?: GetDomainsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		GetDomainsQueryResponse,
@@ -3884,9 +3884,9 @@ export async function createOrTransferDomain({
 	config = {},
 }: {
 	queryParams?: CreateOrTransferDomainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		CreateOrTransferDomainMutationResponse,
@@ -3924,9 +3924,9 @@ export async function patchDomain({
 }: {
 	pathParams: PatchDomainPathParams;
 	queryParams?: PatchDomainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!domain) {
 		throw new Error(`Missing required path parameter: domain`);
@@ -3968,9 +3968,9 @@ export async function deleteDomain({
 }: {
 	pathParams: DeleteDomainPathParams;
 	queryParams?: DeleteDomainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!domain) {
 		throw new Error(`Missing required path parameter: domain`);
@@ -4001,9 +4001,9 @@ export async function getConfigurableLogDrain({
 }: {
 	pathParams: GetConfigurableLogDrainPathParams;
 	queryParams?: GetConfigurableLogDrainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
@@ -4037,9 +4037,9 @@ export async function deleteConfigurableLogDrain({
 }: {
 	pathParams: DeleteConfigurableLogDrainPathParams;
 	queryParams?: DeleteConfigurableLogDrainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
@@ -4071,9 +4071,9 @@ export async function getAllLogDrains({
 	config = {},
 }: {
 	queryParams?: GetAllLogDrainsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		GetAllLogDrainsQueryResponse,
@@ -4096,9 +4096,9 @@ export async function createConfigurableLogDrain({
 	config = {},
 }: {
 	queryParams?: CreateConfigurableLogDrainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		CreateConfigurableLogDrainMutationResponse,
@@ -4129,9 +4129,9 @@ export async function createDrain({
 	config = {},
 }: {
 	queryParams?: CreateDrainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		CreateDrainMutationResponse,
@@ -4160,9 +4160,9 @@ export async function getDrains({
 	config = {},
 }: {
 	queryParams?: GetDrainsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		GetDrainsQueryResponse,
@@ -4187,9 +4187,9 @@ export async function deleteDrain({
 }: {
 	pathParams: DeleteDrainPathParams;
 	queryParams?: DeleteDrainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
@@ -4218,9 +4218,9 @@ export async function getDrain({
 }: {
 	pathParams: GetDrainPathParams;
 	queryParams?: GetDrainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
@@ -4249,9 +4249,9 @@ export async function updateDrain({
 }: {
 	pathParams: UpdateDrainPathParams;
 	queryParams?: UpdateDrainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
@@ -4284,9 +4284,9 @@ export async function testDrain({
 	config = {},
 }: {
 	queryParams?: TestDrainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		TestDrainMutationResponse,
@@ -4315,9 +4315,9 @@ export async function invalidateByTags({
 	config = {},
 }: {
 	queryParams: InvalidateByTagsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		InvalidateByTagsMutationResponse,
@@ -4348,9 +4348,9 @@ export async function dangerouslyDeleteByTags({
 	config = {},
 }: {
 	queryParams: DangerouslyDeleteByTagsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		DangerouslyDeleteByTagsMutationResponse,
@@ -4384,9 +4384,9 @@ export async function invalidateBySrcImages({
 	config = {},
 }: {
 	queryParams: InvalidateBySrcImagesQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		InvalidateBySrcImagesMutationResponse,
@@ -4421,9 +4421,9 @@ export async function dangerouslyDeleteBySrcImages({
 	config = {},
 }: {
 	queryParams: DangerouslyDeleteBySrcImagesQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		DangerouslyDeleteBySrcImagesMutationResponse,
@@ -4458,9 +4458,9 @@ export async function getEdgeConfigs({
 	config = {},
 }: {
 	queryParams?: GetEdgeConfigsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		GetEdgeConfigsQueryResponse,
@@ -4483,9 +4483,9 @@ export async function createEdgeConfig({
 	config = {},
 }: {
 	queryParams?: CreateEdgeConfigQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		CreateEdgeConfigMutationResponse,
@@ -4518,9 +4518,9 @@ export async function getEdgeConfig({
 }: {
 	pathParams: GetEdgeConfigPathParams;
 	queryParams?: GetEdgeConfigQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!edgeConfigId) {
 		throw new Error(`Missing required path parameter: edgeConfigId`);
@@ -4549,9 +4549,9 @@ export async function updateEdgeConfig({
 }: {
 	pathParams: UpdateEdgeConfigPathParams;
 	queryParams?: UpdateEdgeConfigQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!edgeConfigId) {
 		throw new Error(`Missing required path parameter: edgeConfigId`);
@@ -4593,9 +4593,9 @@ export async function deleteEdgeConfig({
 }: {
 	pathParams: DeleteEdgeConfigPathParams;
 	queryParams?: DeleteEdgeConfigQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!edgeConfigId) {
 		throw new Error(`Missing required path parameter: edgeConfigId`);
@@ -4630,9 +4630,9 @@ export async function getEdgeConfigItems({
 }: {
 	pathParams: GetEdgeConfigItemsPathParams;
 	queryParams?: GetEdgeConfigItemsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!edgeConfigId) {
 		throw new Error(`Missing required path parameter: edgeConfigId`);
@@ -4663,9 +4663,9 @@ export async function patchEdgeConfigItems({
 }: {
 	pathParams: PatchEdgeConfigItemsPathParams;
 	queryParams?: PatchEdgeConfigItemsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!edgeConfigId) {
 		throw new Error(`Missing required path parameter: edgeConfigId`);
@@ -4708,9 +4708,9 @@ export async function getEdgeConfigSchema({
 }: {
 	pathParams: GetEdgeConfigSchemaPathParams;
 	queryParams?: GetEdgeConfigSchemaQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!edgeConfigId) {
 		throw new Error(`Missing required path parameter: edgeConfigId`);
@@ -4749,9 +4749,9 @@ export async function patchEdgeConfigSchema({
 }: {
 	pathParams: PatchEdgeConfigSchemaPathParams;
 	queryParams?: PatchEdgeConfigSchemaQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!edgeConfigId) {
 		throw new Error(`Missing required path parameter: edgeConfigId`);
@@ -4793,9 +4793,9 @@ export async function deleteEdgeConfigSchema({
 }: {
 	pathParams: DeleteEdgeConfigSchemaPathParams;
 	queryParams?: DeleteEdgeConfigSchemaQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!edgeConfigId) {
 		throw new Error(`Missing required path parameter: edgeConfigId`);
@@ -4836,9 +4836,9 @@ export async function getEdgeConfigItem({
 }: {
 	pathParams: GetEdgeConfigItemPathParams;
 	queryParams?: GetEdgeConfigItemQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!edgeConfigId) {
 		throw new Error(`Missing required path parameter: edgeConfigId`);
@@ -4878,9 +4878,9 @@ export async function getEdgeConfigTokens({
 }: {
 	pathParams: GetEdgeConfigTokensPathParams;
 	queryParams?: GetEdgeConfigTokensQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!edgeConfigId) {
 		throw new Error(`Missing required path parameter: edgeConfigId`);
@@ -4919,9 +4919,9 @@ export async function deleteEdgeConfigTokens({
 }: {
 	pathParams: DeleteEdgeConfigTokensPathParams;
 	queryParams?: DeleteEdgeConfigTokensQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!edgeConfigId) {
 		throw new Error(`Missing required path parameter: edgeConfigId`);
@@ -4963,9 +4963,9 @@ export async function getEdgeConfigToken({
 }: {
 	pathParams: GetEdgeConfigTokenPathParams;
 	queryParams?: GetEdgeConfigTokenQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!edgeConfigId) {
 		throw new Error(`Missing required path parameter: edgeConfigId`);
@@ -5005,9 +5005,9 @@ export async function createEdgeConfigToken({
 }: {
 	pathParams: CreateEdgeConfigTokenPathParams;
 	queryParams?: CreateEdgeConfigTokenQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!edgeConfigId) {
 		throw new Error(`Missing required path parameter: edgeConfigId`);
@@ -5049,9 +5049,9 @@ export async function getEdgeConfigBackup({
 }: {
 	pathParams: GetEdgeConfigBackupPathParams;
 	queryParams?: GetEdgeConfigBackupQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!edgeConfigId) {
 		throw new Error(`Missing required path parameter: edgeConfigId`);
@@ -5094,9 +5094,9 @@ export async function getEdgeConfigBackups({
 }: {
 	pathParams: GetEdgeConfigBackupsPathParams;
 	queryParams?: GetEdgeConfigBackupsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!edgeConfigId) {
 		throw new Error(`Missing required path parameter: edgeConfigId`);
@@ -5133,9 +5133,9 @@ export async function createSharedEnvVariable({
 	config = {},
 }: {
 	queryParams?: CreateSharedEnvVariableQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		CreateSharedEnvVariableMutationResponse,
@@ -5169,9 +5169,9 @@ export async function listSharedEnvVariable({
 	config = {},
 }: {
 	queryParams?: ListSharedEnvVariableQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		ListSharedEnvVariableQueryResponse,
@@ -5199,9 +5199,9 @@ export async function updateSharedEnvVariable({
 	config = {},
 }: {
 	queryParams?: UpdateSharedEnvVariableQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		UpdateSharedEnvVariableMutationResponse,
@@ -5235,9 +5235,9 @@ export async function deleteSharedEnvVariable({
 	config = {},
 }: {
 	queryParams?: DeleteSharedEnvVariableQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		DeleteSharedEnvVariableMutationResponse,
@@ -5273,9 +5273,9 @@ export async function getSharedEnvVar({
 }: {
 	pathParams: GetSharedEnvVarPathParams;
 	queryParams?: GetSharedEnvVarQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
@@ -5304,9 +5304,9 @@ export async function unlinkSharedEnvVariable({
 }: {
 	pathParams: UnlinkSharedEnvVariablePathParams;
 	queryParams?: UnlinkSharedEnvVariableQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
@@ -5339,9 +5339,9 @@ export async function listUserEvents({
 	config = {},
 }: {
 	queryParams?: ListUserEventsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		ListUserEventsQueryResponse,
@@ -5364,9 +5364,9 @@ export async function listEventTypes({
 	config = {},
 }: {
 	queryParams?: ListEventTypesQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		ListEventTypesQueryResponse,
@@ -5389,9 +5389,9 @@ export async function gitNamespaces({
 	config = {},
 }: {
 	queryParams?: GitNamespacesQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		GitNamespacesQueryResponse,
@@ -5421,9 +5421,9 @@ export async function searchRepo({
 	config = {},
 }: {
 	queryParams?: SearchRepoQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		SearchRepoQueryResponse,
@@ -5450,9 +5450,9 @@ export async function getBillingPlans({
 }: {
 	pathParams: GetBillingPlansPathParams;
 	queryParams?: GetBillingPlansQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!integrationIdOrSlug) {
 		throw new Error(`Missing required path parameter: integrationIdOrSlug`);
@@ -5490,9 +5490,9 @@ export async function connectIntegrationResourceToProject({
 }: {
 	pathParams: ConnectIntegrationResourceToProjectPathParams;
 	queryParams?: ConnectIntegrationResourceToProjectQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
@@ -5534,9 +5534,9 @@ export async function updateInstallation({
 	config = {},
 }: {
 	pathParams: UpdateInstallationPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
@@ -5570,9 +5570,9 @@ export async function getAccountInfo({
 	config = {},
 }: {
 	pathParams: GetAccountInfoPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
@@ -5603,9 +5603,9 @@ export async function getMember({
 	config = {},
 }: {
 	pathParams: GetMemberPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
@@ -5640,9 +5640,9 @@ export async function createEvent({
 	config = {},
 }: {
 	pathParams: CreateEventPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
@@ -5674,9 +5674,9 @@ export async function getIntegrationResources({
 	config = {},
 }: {
 	pathParams: GetIntegrationResourcesPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
@@ -5712,9 +5712,9 @@ export async function getIntegrationResource({
 	config = {},
 }: {
 	pathParams: GetIntegrationResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
@@ -5754,9 +5754,9 @@ export async function deleteIntegrationResource({
 	config = {},
 }: {
 	pathParams: DeleteIntegrationResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
@@ -5796,9 +5796,9 @@ export async function importResource({
 	config = {},
 }: {
 	pathParams: ImportResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
@@ -5842,9 +5842,9 @@ export async function updateResource({
 	config = {},
 }: {
 	pathParams: UpdateResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
@@ -5887,9 +5887,9 @@ export async function submitBillingData({
 	config = {},
 }: {
 	pathParams: SubmitBillingDataPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
@@ -5923,9 +5923,9 @@ export async function submitInvoice({
 	config = {},
 }: {
 	pathParams: SubmitInvoicePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
@@ -5959,9 +5959,9 @@ export async function getInvoice({
 	config = {},
 }: {
 	pathParams: GetInvoicePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
@@ -5996,9 +5996,9 @@ export async function updateInvoice({
 	config = {},
 }: {
 	pathParams: UpdateInvoicePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
@@ -6036,9 +6036,9 @@ export async function submitPrepaymentBalances({
 	config = {},
 }: {
 	pathParams: SubmitPrepaymentBalancesPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
@@ -6075,9 +6075,9 @@ export async function updateResourceSecrets({
 	config = {},
 }: {
 	pathParams: UpdateResourceSecretsPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
@@ -6124,9 +6124,9 @@ export async function updateResourceSecretsById({
 	config = {},
 }: {
 	pathParams: UpdateResourceSecretsByIdPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
@@ -6169,9 +6169,9 @@ export async function getConfigurations({
 	config = {},
 }: {
 	queryParams: GetConfigurationsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		GetConfigurationsQueryResponse,
@@ -6196,9 +6196,9 @@ export async function getConfiguration({
 }: {
 	pathParams: GetConfigurationPathParams;
 	queryParams?: GetConfigurationQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
@@ -6229,9 +6229,9 @@ export async function deleteConfiguration({
 }: {
 	pathParams: DeleteConfigurationPathParams;
 	queryParams?: DeleteConfigurationQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
@@ -6270,9 +6270,9 @@ export async function getConfigurationProducts({
 }: {
 	pathParams: GetConfigurationProductsPathParams;
 	queryParams?: GetConfigurationProductsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
@@ -6308,9 +6308,9 @@ export async function getConfigurationProducts({
 export async function exchangeSsoToken({
 	config = {},
 }: {
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		ExchangeSsoTokenMutationResponse,
@@ -6338,9 +6338,9 @@ export async function getIntegrationLogDrains({
 	config = {},
 }: {
 	queryParams?: GetIntegrationLogDrainsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		GetIntegrationLogDrainsQueryResponse,
@@ -6365,9 +6365,9 @@ export async function createLogDrain({
 	config = {},
 }: {
 	queryParams?: CreateLogDrainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		CreateLogDrainMutationResponse,
@@ -6398,9 +6398,9 @@ export async function deleteIntegrationLogDrain({
 }: {
 	pathParams: DeleteIntegrationLogDrainPathParams;
 	queryParams?: DeleteIntegrationLogDrainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
@@ -6434,9 +6434,9 @@ export async function getRuntimeLogs({
 }: {
 	pathParams: GetRuntimeLogsPathParams;
 	queryParams?: GetRuntimeLogsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!projectId) {
 		throw new Error(`Missing required path parameter: projectId`);
@@ -6472,9 +6472,9 @@ export async function createExperimentationItem({
 	config = {},
 }: {
 	pathParams: CreateExperimentationItemPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
@@ -6515,9 +6515,9 @@ export async function updateExperimentationItem({
 	config = {},
 }: {
 	pathParams: UpdateExperimentationItemPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
@@ -6562,9 +6562,9 @@ export async function deleteExperimentationItem({
 	config = {},
 }: {
 	pathParams: DeleteExperimentationItemPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
@@ -6608,9 +6608,9 @@ export async function gETV1InstallationsIntegrationConfigurationIdResourcesResou
 	config = {},
 }: {
 	pathParams: GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfigPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
@@ -6650,9 +6650,9 @@ export async function updateExperimentationEdgeConfig({
 	config = {},
 }: {
 	pathParams: UpdateExperimentationEdgeConfigPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
@@ -6697,9 +6697,9 @@ export async function getProjectMembers({
 }: {
 	pathParams: GetProjectMembersPathParams;
 	queryParams?: GetProjectMembersQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
@@ -6728,9 +6728,9 @@ export async function addProjectMember({
 }: {
 	pathParams: AddProjectMemberPathParams;
 	queryParams?: AddProjectMemberQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
@@ -6767,9 +6767,9 @@ export async function removeProjectMember({
 }: {
 	pathParams: RemoveProjectMemberPathParams;
 	queryParams?: RemoveProjectMemberQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
@@ -6805,9 +6805,9 @@ export async function getProjects({
 	config = {},
 }: {
 	queryParams?: GetProjectsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		GetProjectsQueryResponse,
@@ -6830,9 +6830,9 @@ export async function createProject({
 	config = {},
 }: {
 	queryParams?: CreateProjectQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		CreateProjectMutationResponse,
@@ -6873,9 +6873,9 @@ export async function getProject({
 }: {
 	pathParams: GetProjectPathParams;
 	queryParams?: GetProjectQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
@@ -6904,9 +6904,9 @@ export async function updateProject({
 }: {
 	pathParams: UpdateProjectPathParams;
 	queryParams?: UpdateProjectQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
@@ -6949,9 +6949,9 @@ export async function deleteProject({
 }: {
 	pathParams: DeleteProjectPathParams;
 	queryParams?: DeleteProjectQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
@@ -6980,9 +6980,9 @@ export async function updateStaticIps({
 }: {
 	pathParams: UpdateStaticIpsPathParams;
 	queryParams?: UpdateStaticIpsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
@@ -7025,9 +7025,9 @@ export async function createCustomEnvironment({
 }: {
 	pathParams: CreateCustomEnvironmentPathParams;
 	queryParams?: CreateCustomEnvironmentQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
@@ -7068,9 +7068,9 @@ export async function listCustomEnvironments({
 }: {
 	pathParams: ListCustomEnvironmentsPathParams;
 	queryParams?: ListCustomEnvironmentsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
@@ -7104,9 +7104,9 @@ export async function getCustomEnvironment({
 }: {
 	pathParams: GetCustomEnvironmentPathParams;
 	queryParams?: GetCustomEnvironmentQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
@@ -7149,9 +7149,9 @@ export async function updateCustomEnvironment({
 }: {
 	pathParams: UpdateCustomEnvironmentPathParams;
 	queryParams?: UpdateCustomEnvironmentQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
@@ -7196,9 +7196,9 @@ export async function removeCustomEnvironment({
 }: {
 	pathParams: RemoveCustomEnvironmentPathParams;
 	queryParams?: RemoveCustomEnvironmentQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
@@ -7239,9 +7239,9 @@ export async function getProjectDomains({
 }: {
 	pathParams: GetProjectDomainsPathParams;
 	queryParams?: GetProjectDomainsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
@@ -7270,9 +7270,9 @@ export async function getProjectDomain({
 }: {
 	pathParams: GetProjectDomainPathParams;
 	queryParams?: GetProjectDomainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
@@ -7310,9 +7310,9 @@ export async function updateProjectDomain({
 }: {
 	pathParams: UpdateProjectDomainPathParams;
 	queryParams?: UpdateProjectDomainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
@@ -7356,9 +7356,9 @@ export async function removeProjectDomain({
 }: {
 	pathParams: RemoveProjectDomainPathParams;
 	queryParams?: RemoveProjectDomainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
@@ -7403,9 +7403,9 @@ export async function addProjectDomain({
 }: {
 	pathParams: AddProjectDomainPathParams;
 	queryParams?: AddProjectDomainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
@@ -7446,9 +7446,9 @@ export async function moveProjectDomain({
 }: {
 	pathParams: MoveProjectDomainPathParams;
 	queryParams?: MoveProjectDomainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
@@ -7489,9 +7489,9 @@ export async function verifyProjectDomain({
 }: {
 	pathParams: VerifyProjectDomainPathParams;
 	queryParams?: VerifyProjectDomainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
@@ -7529,9 +7529,9 @@ export async function filterProjectEnvs({
 }: {
 	pathParams: FilterProjectEnvsPathParams;
 	queryParams?: FilterProjectEnvsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
@@ -7560,9 +7560,9 @@ export async function createProjectEnv({
 }: {
 	pathParams: CreateProjectEnvPathParams;
 	queryParams?: CreateProjectEnvQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
@@ -7606,9 +7606,9 @@ export async function getProjectEnv({
 }: {
 	pathParams: GetProjectEnvPathParams;
 	queryParams?: GetProjectEnvQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
@@ -7641,9 +7641,9 @@ export async function removeProjectEnv({
 }: {
 	pathParams: RemoveProjectEnvPathParams;
 	queryParams?: RemoveProjectEnvQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
@@ -7682,9 +7682,9 @@ export async function editProjectEnv({
 }: {
 	pathParams: EditProjectEnvPathParams;
 	queryParams?: EditProjectEnvQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
@@ -7731,9 +7731,9 @@ export async function batchRemoveProjectEnv({
 }: {
 	pathParams: BatchRemoveProjectEnvPathParams;
 	queryParams?: BatchRemoveProjectEnvQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
@@ -7774,9 +7774,9 @@ export async function getRollingReleaseBillingStatus({
 }: {
 	pathParams: GetRollingReleaseBillingStatusPathParams;
 	queryParams?: GetRollingReleaseBillingStatusQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
@@ -7815,9 +7815,9 @@ export async function getRollingReleaseConfig({
 }: {
 	pathParams: GetRollingReleaseConfigPathParams;
 	queryParams?: GetRollingReleaseConfigQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
@@ -7856,9 +7856,9 @@ export async function deleteRollingReleaseConfig({
 }: {
 	pathParams: DeleteRollingReleaseConfigPathParams;
 	queryParams?: DeleteRollingReleaseConfigQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
@@ -7897,9 +7897,9 @@ export async function updateRollingReleaseConfig({
 }: {
 	pathParams: UpdateRollingReleaseConfigPathParams;
 	queryParams?: UpdateRollingReleaseConfigQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
@@ -7938,9 +7938,9 @@ export async function getRollingRelease({
 }: {
 	pathParams: GetRollingReleasePathParams;
 	queryParams?: GetRollingReleaseQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
@@ -7976,9 +7976,9 @@ export async function approveRollingReleaseStage({
 }: {
 	pathParams: ApproveRollingReleaseStagePathParams;
 	queryParams?: ApproveRollingReleaseStageQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
@@ -8019,9 +8019,9 @@ export async function completeRollingRelease({
 }: {
 	pathParams: CompleteRollingReleasePathParams;
 	queryParams?: CompleteRollingReleaseQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
@@ -8061,9 +8061,9 @@ export async function createProjectTransferRequest({
 }: {
 	pathParams: CreateProjectTransferRequestPathParams;
 	queryParams?: CreateProjectTransferRequestQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
@@ -8102,9 +8102,9 @@ export async function acceptProjectTransferRequest({
 }: {
 	pathParams: AcceptProjectTransferRequestPathParams;
 	queryParams?: AcceptProjectTransferRequestQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!code) {
 		throw new Error(`Missing required path parameter: code`);
@@ -8145,9 +8145,9 @@ export async function updateProjectProtectionBypass({
 }: {
 	pathParams: UpdateProjectProtectionBypassPathParams;
 	queryParams?: UpdateProjectProtectionBypassQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
@@ -8188,9 +8188,9 @@ export async function requestRollback({
 }: {
 	pathParams: RequestRollbackPathParams;
 	queryParams?: RequestRollbackQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!projectId) {
 		throw new Error(`Missing required path parameter: projectId`);
@@ -8233,9 +8233,9 @@ export async function pATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescript
 	config = {},
 }: {
 	pathParams: PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!projectId) {
 		throw new Error(`Missing required path parameter: projectId`);
@@ -8279,9 +8279,9 @@ export async function requestPromote({
 }: {
 	pathParams: RequestPromotePathParams;
 	queryParams?: RequestPromoteQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!projectId) {
 		throw new Error(`Missing required path parameter: projectId`);
@@ -8319,9 +8319,9 @@ export async function listPromoteAliases({
 }: {
 	pathParams: ListPromoteAliasesPathParams;
 	queryParams?: ListPromoteAliasesQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!projectId) {
 		throw new Error(`Missing required path parameter: projectId`);
@@ -8357,9 +8357,9 @@ export async function pauseProject({
 }: {
 	pathParams: PauseProjectPathParams;
 	queryParams?: PauseProjectQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!projectId) {
 		throw new Error(`Missing required path parameter: projectId`);
@@ -8388,9 +8388,9 @@ export async function unpauseProject({
 }: {
 	pathParams: UnpauseProjectPathParams;
 	queryParams?: UnpauseProjectQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!projectId) {
 		throw new Error(`Missing required path parameter: projectId`);
@@ -8417,9 +8417,9 @@ export async function updateAttackChallengeMode({
 	config = {},
 }: {
 	queryParams?: UpdateAttackChallengeModeQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		UpdateAttackChallengeModeMutationResponse,
@@ -8453,9 +8453,9 @@ export async function putFirewallConfig({
 	config = {},
 }: {
 	queryParams: PutFirewallConfigQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		PutFirewallConfigMutationResponse,
@@ -8491,9 +8491,9 @@ export async function updateFirewallConfig({
 	config = {},
 }: {
 	queryParams: UpdateFirewallConfigQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		UpdateFirewallConfigMutationResponse,
@@ -8531,9 +8531,9 @@ export async function getFirewallConfig({
 }: {
 	pathParams: GetFirewallConfigPathParams;
 	queryParams: GetFirewallConfigQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!configVersion) {
 		throw new Error(`Missing required path parameter: configVersion`);
@@ -8567,9 +8567,9 @@ export async function getActiveAttackStatus({
 	config = {},
 }: {
 	queryParams: GetActiveAttackStatusQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		GetActiveAttackStatusQueryResponse,
@@ -8597,9 +8597,9 @@ export async function getBypassIp({
 	config = {},
 }: {
 	queryParams: GetBypassIpQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		GetBypassIpQueryResponse,
@@ -8624,9 +8624,9 @@ export async function addBypassIp({
 	config = {},
 }: {
 	queryParams: AddBypassIpQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		AddBypassIpMutationResponse,
@@ -8657,9 +8657,9 @@ export async function removeBypassIp({
 	config = {},
 }: {
 	queryParams: RemoveBypassIpQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		RemoveBypassIpMutationResponse,
@@ -8694,9 +8694,9 @@ export async function gETV1SecurityFirewallEvents({
 	config = {},
 }: {
 	queryParams: GETV1SecurityFirewallEventsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		GETV1SecurityFirewallEventsQueryResponse,
@@ -8725,9 +8725,9 @@ export async function createIntegrationStoreDirect({
 	config = {},
 }: {
 	queryParams?: CreateIntegrationStoreDirectQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		CreateIntegrationStoreDirectMutationResponse,
@@ -8767,9 +8767,9 @@ export async function getTeamMembers({
 }: {
 	pathParams: GetTeamMembersPathParams;
 	queryParams?: GetTeamMembersQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!teamId) {
 		throw new Error(`Missing required path parameter: teamId`);
@@ -8798,9 +8798,9 @@ export async function inviteUserToTeam({
 }: {
 	pathParams: InviteUserToTeamPathParams;
 	queryParams?: InviteUserToTeamQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!teamId) {
 		throw new Error(`Missing required path parameter: teamId`);
@@ -8835,9 +8835,9 @@ export async function requestAccessToTeam({
 	config = {},
 }: {
 	pathParams: RequestAccessToTeamPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!teamId) {
 		throw new Error(`Missing required path parameter: teamId`);
@@ -8876,9 +8876,9 @@ export async function getTeamAccessRequest({
 	config = {},
 }: {
 	pathParams: GetTeamAccessRequestPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!userId) {
 		throw new Error(`Missing required path parameter: userId`);
@@ -8914,9 +8914,9 @@ export async function joinTeam({
 	config = {},
 }: {
 	pathParams: JoinTeamPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!teamId) {
 		throw new Error(`Missing required path parameter: teamId`);
@@ -8948,9 +8948,9 @@ export async function updateTeamMember({
 	config = {},
 }: {
 	pathParams: UpdateTeamMemberPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!uid) {
 		throw new Error(`Missing required path parameter: uid`);
@@ -8996,9 +8996,9 @@ export async function removeTeamMember({
 }: {
 	pathParams: RemoveTeamMemberPathParams;
 	queryParams?: RemoveTeamMemberQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!uid) {
 		throw new Error(`Missing required path parameter: uid`);
@@ -9037,9 +9037,9 @@ export async function getTeam({
 }: {
 	pathParams: GetTeamPathParams;
 	queryParams?: GetTeamQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!teamId) {
 		throw new Error(`Missing required path parameter: teamId`);
@@ -9068,9 +9068,9 @@ export async function patchTeam({
 }: {
 	pathParams: PatchTeamPathParams;
 	queryParams?: PatchTeamQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!teamId) {
 		throw new Error(`Missing required path parameter: teamId`);
@@ -9103,9 +9103,9 @@ export async function getTeams({
 	config = {},
 }: {
 	queryParams?: GetTeamsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		GetTeamsQueryResponse,
@@ -9126,9 +9126,9 @@ export async function getTeams({
 export async function createTeam({
 	config = {},
 }: {
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		CreateTeamMutationResponse,
@@ -9158,9 +9158,9 @@ export async function postTeamDsyncRoles({
 }: {
 	pathParams: PostTeamDsyncRolesPathParams;
 	queryParams?: PostTeamDsyncRolesQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!teamId) {
 		throw new Error(`Missing required path parameter: teamId`);
@@ -9195,9 +9195,9 @@ export async function deleteTeam({
 }: {
 	pathParams: DeleteTeamPathParams;
 	queryParams?: DeleteTeamQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!teamId) {
 		throw new Error(`Missing required path parameter: teamId`);
@@ -9230,9 +9230,9 @@ export async function deleteTeamInviteCode({
 	config = {},
 }: {
 	pathParams: DeleteTeamInviteCodePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!inviteId) {
 		throw new Error(`Missing required path parameter: inviteId`);
@@ -9270,9 +9270,9 @@ export async function uploadFile({
 }: {
 	queryParams?: UploadFileQueryParams;
 	headers?: UploadFileHeaderParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		UploadFileMutationResponse,
@@ -9299,9 +9299,9 @@ export async function uploadFile({
 export async function listAuthTokens({
 	config = {},
 }: {
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		ListAuthTokensQueryResponse,
@@ -9324,9 +9324,9 @@ export async function createAuthToken({
 	config = {},
 }: {
 	queryParams?: CreateAuthTokenQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		CreateAuthTokenMutationResponse,
@@ -9355,9 +9355,9 @@ export async function getAuthToken({
 	config = {},
 }: {
 	pathParams: GetAuthTokenPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!tokenId) {
 		throw new Error(`Missing required path parameter: tokenId`);
@@ -9384,9 +9384,9 @@ export async function deleteAuthToken({
 	config = {},
 }: {
 	pathParams: DeleteAuthTokenPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!tokenId) {
 		throw new Error(`Missing required path parameter: tokenId`);
@@ -9411,9 +9411,9 @@ export async function deleteAuthToken({
 export async function getAuthUser({
 	config = {},
 }: {
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		GetAuthUserQueryResponse,
@@ -9434,9 +9434,9 @@ export async function getAuthUser({
 export async function requestDelete({
 	config = {},
 }: {
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		RequestDeleteMutationResponse,
@@ -9464,9 +9464,9 @@ export async function createWebhook({
 	config = {},
 }: {
 	queryParams?: CreateWebhookQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		CreateWebhookMutationResponse,
@@ -9495,9 +9495,9 @@ export async function getWebhooks({
 	config = {},
 }: {
 	queryParams?: GetWebhooksQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		GetWebhooksQueryResponse,
@@ -9522,9 +9522,9 @@ export async function getWebhook({
 }: {
 	pathParams: GetWebhookPathParams;
 	queryParams?: GetWebhookQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
@@ -9553,9 +9553,9 @@ export async function deleteWebhook({
 }: {
 	pathParams: DeleteWebhookPathParams;
 	queryParams?: DeleteWebhookQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
@@ -9584,9 +9584,9 @@ export async function listDeploymentAliases({
 }: {
 	pathParams: ListDeploymentAliasesPathParams;
 	queryParams?: ListDeploymentAliasesQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
@@ -9620,9 +9620,9 @@ export async function assignAlias({
 }: {
 	pathParams: AssignAliasPathParams;
 	queryParams?: AssignAliasQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
@@ -9662,9 +9662,9 @@ export async function listAliases({
 	config = {},
 }: {
 	queryParams?: ListAliasesQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		ListAliasesQueryResponse,
@@ -9689,9 +9689,9 @@ export async function getAlias({
 }: {
 	pathParams: GetAliasPathParams;
 	queryParams?: GetAliasQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!idOrAlias) {
 		throw new Error(`Missing required path parameter: idOrAlias`);
@@ -9720,9 +9720,9 @@ export async function deleteAlias({
 }: {
 	pathParams: DeleteAliasPathParams;
 	queryParams?: DeleteAliasQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!aliasId) {
 		throw new Error(`Missing required path parameter: aliasId`);
@@ -9751,9 +9751,9 @@ export async function patchUrlProtectionBypass({
 }: {
 	pathParams: PatchUrlProtectionBypassPathParams;
 	queryParams?: PatchUrlProtectionBypassQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
@@ -9795,9 +9795,9 @@ export async function getCertById({
 }: {
 	pathParams: GetCertByIdPathParams;
 	queryParams?: GetCertByIdQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
@@ -9826,9 +9826,9 @@ export async function removeCert({
 }: {
 	pathParams: RemoveCertPathParams;
 	queryParams?: RemoveCertQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
@@ -9855,9 +9855,9 @@ export async function issueCert({
 	config = {},
 }: {
 	queryParams?: IssueCertQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		IssueCertMutationResponse,
@@ -9894,9 +9894,9 @@ export async function uploadCert({
 	config = {},
 }: {
 	queryParams?: UploadCertQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		UploadCertMutationResponse,
@@ -9927,9 +9927,9 @@ export async function listDeploymentFiles({
 }: {
 	pathParams: ListDeploymentFilesPathParams;
 	queryParams?: ListDeploymentFilesQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
@@ -9963,9 +9963,9 @@ export async function getDeploymentFileContents({
 }: {
 	pathParams: GetDeploymentFileContentsPathParams;
 	queryParams?: GetDeploymentFileContentsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
@@ -10002,9 +10002,9 @@ export async function getDeployments({
 	config = {},
 }: {
 	queryParams?: GetDeploymentsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		GetDeploymentsQueryResponse,
@@ -10035,9 +10035,9 @@ export async function deleteDeployment({
 }: {
 	pathParams: DeleteDeploymentPathParams;
 	queryParams?: DeleteDeploymentQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof client };
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
-	const { client: request = client, ...requestConfig } = config;
+	const { client: request = defaultClient, ...requestConfig } = config;
 
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);

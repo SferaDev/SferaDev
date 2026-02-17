@@ -1,25 +1,14 @@
 import { defineConfig } from "@kubb/core";
-import { baseConfig } from "@sferadev/openapi-utils";
-import c from "case";
+import { baseConfig, cleanOperationIds, fetchSpec } from "@sferadev/openapi-utils";
 import type { OpenAPIObject, PathItemObject } from "openapi3-ts/oas30";
 
 export default defineConfig(async () => {
-	const response = await fetch("https://www.demo.litellm.ai/openapi.json");
-	let openAPIDocument: OpenAPIObject = await response.json();
+	let openAPIDocument = await fetchSpec("https://www.demo.litellm.ai/openapi.json");
 
-	// Remove all pass-through paths that end with {endpoint}
 	openAPIDocument = ignorePassThroughPaths(openAPIDocument);
-
-	// Move inline $defs to #/components/schemas
 	openAPIDocument = moveDefsToComponents(openAPIDocument);
-
-	// Deduplicate operation IDs
 	openAPIDocument = deduplicateOperationIds(openAPIDocument);
-
-	// Fix empty response schemas
 	openAPIDocument = pathReturnFixCatchAll(openAPIDocument);
-
-	// Fix specific API returns
 	openAPIDocument = fixAPIReturns(openAPIDocument, [
 		{
 			paths: ["/model/info/", "/v1/model/info"],
@@ -29,11 +18,7 @@ export default defineConfig(async () => {
 			},
 		},
 	]);
-
-	// Remove duplicated tags
 	openAPIDocument = removeDuplicatedTags(openAPIDocument);
-
-	// Clean operation IDs
 	openAPIDocument = cleanOperationIds(openAPIDocument);
 
 	return {
@@ -69,11 +54,7 @@ function deduplicateOperationIds(openAPIObject: OpenAPIObject) {
 			if (!operation?.operationId) continue;
 
 			const originalId = operation.operationId;
-			if (operationIdCount[originalId] === undefined) {
-				operationIdCount[originalId] = 0;
-			}
-			operationIdCount[originalId] += 1;
-
+			operationIdCount[originalId] = (operationIdCount[originalId] ?? 0) + 1;
 			if (operationIdCount[originalId] > 1) {
 				operation.operationId = `${originalId}_${operationIdCount[originalId]}`;
 			}
@@ -85,10 +66,11 @@ function deduplicateOperationIds(openAPIObject: OpenAPIObject) {
 
 function ignorePassThroughPaths(openAPIObject: OpenAPIObject) {
 	const paths = openAPIObject.paths ?? {};
-	const filteredPaths = Object.keys(paths).filter((path) => !path.endsWith("{endpoint}"));
 	return {
 		...openAPIObject,
-		paths: Object.fromEntries(filteredPaths.map((path) => [path, paths[path]])),
+		paths: Object.fromEntries(
+			Object.entries(paths).filter(([path]) => !path.endsWith("{endpoint}")),
+		),
 	} as OpenAPIObject;
 }
 
@@ -97,10 +79,7 @@ function moveDefsToComponents(openAPIObject: OpenAPIObject) {
 
 	function collectDefs(obj: any): any {
 		if (typeof obj !== "object" || obj === null) return obj;
-
-		if (Array.isArray(obj)) {
-			return obj.map(collectDefs);
-		}
+		if (Array.isArray(obj)) return obj.map(collectDefs);
 
 		const result: Record<string, any> = {};
 		for (const [key, value] of Object.entries(obj)) {
@@ -115,10 +94,7 @@ function moveDefsToComponents(openAPIObject: OpenAPIObject) {
 
 	function updateRefs(obj: any): any {
 		if (typeof obj !== "object" || obj === null) return obj;
-
-		if (Array.isArray(obj)) {
-			return obj.map(updateRefs);
-		}
+		if (Array.isArray(obj)) return obj.map(updateRefs);
 
 		const result: Record<string, any> = {};
 		for (const [key, value] of Object.entries(obj)) {
@@ -148,7 +124,6 @@ function moveDefsToComponents(openAPIObject: OpenAPIObject) {
 function pathReturnFixCatchAll(openAPIObject: OpenAPIObject) {
 	const catchAll = { type: "object", properties: {}, additionalProperties: true };
 	const methods = ["get", "post", "put", "delete"];
-	const JSON_CONTENT_TYPE = "application/json";
 
 	for (const pathItem of Object.values(openAPIObject.paths ?? {})) {
 		for (const method of methods) {
@@ -157,11 +132,11 @@ function pathReturnFixCatchAll(openAPIObject: OpenAPIObject) {
 
 			for (const responseItem of Object.values(methodItem.responses)) {
 				const content = (responseItem as any).content;
-				if (!content?.[JSON_CONTENT_TYPE]) continue;
+				if (!content?.["application/json"]) continue;
 
-				const schema = content[JSON_CONTENT_TYPE].schema;
+				const schema = content["application/json"].schema;
 				if (schema && Object.keys(schema).length === 0) {
-					content[JSON_CONTENT_TYPE].schema = catchAll;
+					content["application/json"].schema = catchAll;
 				}
 			}
 		}
@@ -187,12 +162,9 @@ function fixAPIReturns(openAPIObject: OpenAPIObject, apiUpdates: ResponseUpdate[
 				if (!methodItem?.responses) continue;
 
 				for (const [code, schema] of Object.entries(update.responses)) {
-					const responseItem = methodItem.responses[code];
-					if (responseItem) {
-						const content = responseItem.content;
-						if (content?.["application/json"]) {
-							content["application/json"].schema = schema;
-						}
+					const content = methodItem.responses[code]?.content;
+					if (content?.["application/json"]) {
+						content["application/json"].schema = schema;
 					}
 				}
 			}
@@ -202,37 +174,12 @@ function fixAPIReturns(openAPIObject: OpenAPIObject, apiUpdates: ResponseUpdate[
 	return openAPIObject;
 }
 
-function cleanOperationIds(openAPIDocument: OpenAPIObject) {
-	for (const [key, path] of Object.entries(
-		openAPIDocument.paths as Record<string, PathItemObject>,
-	)) {
-		for (const method of ["get", "put", "post", "patch", "delete"] as const) {
-			if (path[method]) {
-				const operationId = path[method].operationId ?? `${method} ${key}`;
-				openAPIDocument.paths[key][method] = {
-					...openAPIDocument.paths[key][method],
-					operationId: c.camel(operationId),
-				};
-			}
-		}
-	}
-
-	return openAPIDocument;
-}
-
 function obj(properties: Record<string, any>) {
-	return {
-		type: "object",
-		properties,
-		additionalProperties: true,
-	};
+	return { type: "object", properties, additionalProperties: true };
 }
 
 function arrayOf(type: any) {
-	return {
-		type: "array",
-		items: type,
-	};
+	return { type: "array", items: type };
 }
 
 function schemaRef(ref: string) {
