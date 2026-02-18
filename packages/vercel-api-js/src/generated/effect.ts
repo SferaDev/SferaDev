@@ -6,6 +6,11 @@
 import {
 	ApiClient,
 	type ApiError,
+	createClient,
+	makeApiClientFromEnv,
+	makeApiClientLive,
+	NetworkError,
+	runWithClient,
 	serializeQueryParams,
 	ValidationError,
 } from "@sferadev/openapi-utils/effect";
@@ -122,6 +127,7 @@ import type {
 	CreateAuthToken400,
 	CreateAuthToken401,
 	CreateAuthToken403,
+	CreateAuthToken404,
 	CreateAuthTokenMutationResponse,
 	CreateAuthTokenQueryParams,
 	CreateCheck400,
@@ -150,7 +156,9 @@ import type {
 	CreateDeployment403,
 	CreateDeployment404,
 	CreateDeployment409,
+	CreateDeployment429,
 	CreateDeployment500,
+	CreateDeployment503,
 	CreateDeploymentMutationResponse,
 	CreateDeploymentQueryParams,
 	CreateDrain400,
@@ -204,7 +212,6 @@ import type {
 	CreateNetwork401,
 	CreateNetwork402,
 	CreateNetwork403,
-	CreateNetwork404,
 	CreateNetwork409,
 	CreateNetworkMutationResponse,
 	CreateNetworkQueryParams,
@@ -391,7 +398,6 @@ import type {
 	DeleteNetwork401,
 	DeleteNetwork402,
 	DeleteNetwork403,
-	DeleteNetwork404,
 	DeleteNetwork409,
 	DeleteNetworkMutationResponse,
 	DeleteNetworkPathParams,
@@ -479,6 +485,18 @@ import type {
 	FilterProjectEnvsPathParams,
 	FilterProjectEnvsQueryParams,
 	FilterProjectEnvsQueryResponse,
+	FinalizeInstallation400,
+	FinalizeInstallation401,
+	FinalizeInstallation403,
+	FinalizeInstallation404,
+	FinalizeInstallationMutationResponse,
+	FinalizeInstallationPathParams,
+	GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig400,
+	GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig401,
+	GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig403,
+	GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig404,
+	GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfigPathParams,
+	GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfigQueryResponse,
 	GETV1SecurityFirewallEvents400,
 	GETV1SecurityFirewallEvents401,
 	GETV1SecurityFirewallEvents403,
@@ -609,6 +627,7 @@ import type {
 	GetDeployment400,
 	GetDeployment403,
 	GetDeployment404,
+	GetDeployment429,
 	GetDeploymentEvents400,
 	GetDeploymentEvents401,
 	GetDeploymentEvents403,
@@ -921,6 +940,12 @@ import type {
 	GetTeams403,
 	GetTeamsQueryParams,
 	GetTeamsQueryResponse,
+	GetTld400,
+	GetTld401,
+	GetTld403,
+	GetTld429,
+	GetTld500,
+	GetTldPathParams,
 	GetTldPrice400,
 	GetTldPrice401,
 	GetTldPrice403,
@@ -929,6 +954,8 @@ import type {
 	GetTldPricePathParams,
 	GetTldPriceQueryParams,
 	GetTldPriceQueryResponse,
+	GetTldQueryParams,
+	GetTldQueryResponse,
 	GetVersions400,
 	GetVersions401,
 	GetVersions403,
@@ -982,6 +1009,7 @@ import type {
 	InviteUserToTeam503,
 	InviteUserToTeamMutationResponse,
 	InviteUserToTeamPathParams,
+	InviteUserToTeamQueryParams,
 	IssueCert400,
 	IssueCert401,
 	IssueCert402,
@@ -1025,6 +1053,20 @@ import type {
 	ListAuthTokens401,
 	ListAuthTokens403,
 	ListAuthTokensQueryResponse,
+	ListBillingCharges400,
+	ListBillingCharges401,
+	ListBillingCharges403,
+	ListBillingCharges404,
+	ListBillingCharges500,
+	ListBillingCharges503,
+	ListBillingChargesQueryParams,
+	ListBillingChargesQueryResponse,
+	ListContractCommitments400,
+	ListContractCommitments401,
+	ListContractCommitments403,
+	ListContractCommitments404,
+	ListContractCommitmentsQueryParams,
+	ListContractCommitmentsQueryResponse,
 	ListCustomEnvironments400,
 	ListCustomEnvironments401,
 	ListCustomEnvironments403,
@@ -1045,6 +1087,11 @@ import type {
 	ListDeploymentFilesPathParams,
 	ListDeploymentFilesQueryParams,
 	ListDeploymentFilesQueryResponse,
+	ListEventTypes400,
+	ListEventTypes401,
+	ListEventTypes403,
+	ListEventTypesQueryParams,
+	ListEventTypesQueryResponse,
 	ListNetworks400,
 	ListNetworks401,
 	ListNetworks403,
@@ -1075,6 +1122,13 @@ import type {
 	MoveProjectDomainMutationResponse,
 	MoveProjectDomainPathParams,
 	MoveProjectDomainQueryParams,
+	PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription400,
+	PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription401,
+	PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription403,
+	PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription409,
+	PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription422,
+	PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionMutationResponse,
+	PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionPathParams,
 	PatchDomain400,
 	PatchDomain401,
 	PatchDomain403,
@@ -1117,7 +1171,6 @@ import type {
 	PatchUrlProtectionBypass404,
 	PatchUrlProtectionBypass409,
 	PatchUrlProtectionBypass428,
-	PatchUrlProtectionBypass500,
 	PatchUrlProtectionBypassMutationResponse,
 	PatchUrlProtectionBypassPathParams,
 	PatchUrlProtectionBypassQueryParams,
@@ -1237,6 +1290,7 @@ import type {
 	RequestAccessToTeam401,
 	RequestAccessToTeam403,
 	RequestAccessToTeam404,
+	RequestAccessToTeam429,
 	RequestAccessToTeam503,
 	RequestAccessToTeamMutationResponse,
 	RequestAccessToTeamPathParams,
@@ -1252,6 +1306,15 @@ import type {
 	RequestPromoteMutationResponse,
 	RequestPromotePathParams,
 	RequestPromoteQueryParams,
+	RequestRollback400,
+	RequestRollback401,
+	RequestRollback402,
+	RequestRollback403,
+	RequestRollback409,
+	RequestRollback422,
+	RequestRollbackMutationResponse,
+	RequestRollbackPathParams,
+	RequestRollbackQueryParams,
 	RerequestCheck400,
 	RerequestCheck401,
 	RerequestCheck403,
@@ -1452,13 +1515,6 @@ import type {
 	UpdateProject404,
 	UpdateProject409,
 	UpdateProject428,
-	UpdateProjectDataCache400,
-	UpdateProjectDataCache401,
-	UpdateProjectDataCache403,
-	UpdateProjectDataCache404,
-	UpdateProjectDataCacheMutationResponse,
-	UpdateProjectDataCachePathParams,
-	UpdateProjectDataCacheQueryParams,
 	UpdateProjectDomain400,
 	UpdateProjectDomain401,
 	UpdateProjectDomain403,
@@ -1607,7 +1663,7 @@ export function readAccessGroup({
 
 		const url = `/v1/access-groups/${idOrName}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -1650,7 +1706,7 @@ export function updateAccessGroup({
 
 		const url = `/v1/access-groups/${idOrName}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -1693,7 +1749,7 @@ export function deleteAccessGroup({
 
 		const url = `/v1/access-groups/${idOrName}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -1740,7 +1796,7 @@ export function listAccessGroupMembers({
 
 		const url = `/v1/access-groups/${idOrName}/members`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -1772,7 +1828,7 @@ export function listAccessGroups({
 
 		const url = "/v1/access-groups";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -1804,7 +1860,7 @@ export function createAccessGroup({
 
 		const url = "/v1/access-groups";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -1851,7 +1907,7 @@ export function listAccessGroupProjects({
 
 		const url = `/v1/access-groups/${idOrName}/projects`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -1898,7 +1954,7 @@ export function createAccessGroupProject({
 
 		const url = `/v1/access-groups/${accessGroupIdOrName}/projects`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -1953,7 +2009,7 @@ export function readAccessGroupProject({
 
 		const url = `/v1/access-groups/${accessGroupIdOrName}/projects/${projectId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -2008,7 +2064,7 @@ export function updateAccessGroupProject({
 
 		const url = `/v1/access-groups/${accessGroupIdOrName}/projects/${projectId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -2063,7 +2119,7 @@ export function deleteAccessGroupProject({
 
 		const url = `/v1/access-groups/${accessGroupIdOrName}/projects/${projectId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -2102,7 +2158,7 @@ export function recordEvents({
 
 		const url = "/v8/artifacts/events";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -2134,7 +2190,7 @@ export function status({
 
 		const url = "/v8/artifacts/status";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -2184,7 +2240,7 @@ export function uploadArtifact({
 
 		const url = `/v8/artifacts/${hash}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "PUT",
@@ -2235,7 +2291,7 @@ export function downloadArtifact({
 
 		const url = `/v8/artifacts/${hash}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -2272,7 +2328,7 @@ export function artifactQuery({
 
 		const url = "/v8/artifacts";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -2282,6 +2338,82 @@ export function artifactQuery({
 		});
 
 		return response as ArtifactQueryMutationResponse;
+	});
+}
+
+/**
+ * @description Returns the billing charge data in FOCUS v1.3 JSONL format for a specified Vercel team, within a date range specified by `from` and `to` query parameters. Supports 1-day granularity with a maximum date range of 1 year. The response is streamed as newline-delimited JSON (JSONL) and can be optionally compressed with gzip if the `Accept-Encoding: gzip` header is provided.
+ * @summary List FOCUS billing charges
+ * {@link /v1/billing/charges}
+ */
+export function listBillingCharges({
+	queryParams,
+}: {
+	queryParams: ListBillingChargesQueryParams;
+}): Effect.Effect<
+	ListBillingChargesQueryResponse,
+	| ApiError
+	| ValidationError
+	| ListBillingCharges400
+	| ListBillingCharges401
+	| ListBillingCharges403
+	| ListBillingCharges404
+	| ListBillingCharges500
+	| ListBillingCharges503,
+	ApiClient
+> {
+	return Effect.gen(function* () {
+		const client = yield* ApiClient;
+
+		const url = "/v1/billing/charges";
+		const searchParams = serializeQueryParams(queryParams);
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+
+		const response = yield* client.request({
+			method: "GET",
+			url: fullUrl,
+
+			headers: {},
+		});
+
+		return response as ListBillingChargesQueryResponse;
+	});
+}
+
+/**
+ * @description Returns commitment allocations per contract period in FOCUS v1.3 JSONL format for a specified Vercel team. The response is streamed as newline-delimited JSON (JSONL). This endpoint is only applicable to Enterprise Vercel customers. An empty response is returned for non-Enterprise (Pro/Flex) customers.
+ * @summary List FOCUS contract commitments
+ * {@link /v1/billing/contract-commitments}
+ */
+export function listContractCommitments({
+	queryParams,
+}: {
+	queryParams?: ListContractCommitmentsQueryParams;
+}): Effect.Effect<
+	ListContractCommitmentsQueryResponse,
+	| ApiError
+	| ValidationError
+	| ListContractCommitments400
+	| ListContractCommitments401
+	| ListContractCommitments403
+	| ListContractCommitments404,
+	ApiClient
+> {
+	return Effect.gen(function* () {
+		const client = yield* ApiClient;
+
+		const url = "/v1/billing/contract-commitments";
+		const searchParams = serializeQueryParams(queryParams);
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+
+		const response = yield* client.request({
+			method: "GET",
+			url: fullUrl,
+
+			headers: {},
+		});
+
+		return response as ListContractCommitmentsQueryResponse;
 	});
 }
 
@@ -2309,7 +2441,7 @@ export function stageRedirects({
 
 		const url = "/v1/bulk-redirects";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "PUT",
@@ -2346,7 +2478,7 @@ export function getRedirects({
 
 		const url = "/v1/bulk-redirects";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -2384,7 +2516,7 @@ export function deleteRedirects({
 
 		const url = "/v1/bulk-redirects";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -2422,7 +2554,7 @@ export function editRedirect({
 
 		const url = "/v1/bulk-redirects";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -2460,7 +2592,7 @@ export function restoreRedirects({
 
 		const url = "/v1/bulk-redirects/restore";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -2492,7 +2624,7 @@ export function getVersions({
 
 		const url = "/v1/bulk-redirects/versions";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -2530,7 +2662,7 @@ export function updateVersion({
 
 		const url = "/v1/bulk-redirects/versions";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -2573,7 +2705,7 @@ export function createCheck({
 
 		const url = `/v1/deployments/${deploymentId}/checks`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -2621,7 +2753,7 @@ export function getAllChecks({
 
 		const url = `/v1/deployments/${deploymentId}/checks`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -2672,7 +2804,7 @@ export function getCheck({
 
 		const url = `/v1/deployments/${deploymentId}/checks/${checkId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -2729,7 +2861,7 @@ export function updateCheck({
 
 		const url = `/v1/deployments/${deploymentId}/checks/${checkId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -2785,7 +2917,7 @@ export function rerequestCheck({
 
 		const url = `/v1/deployments/${deploymentId}/checks/${checkId}/rerequest`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -2817,7 +2949,7 @@ export function listNetworks({
 
 		const url = "/v1/connect/networks";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -2847,7 +2979,6 @@ export function createNetwork({
 	| CreateNetwork401
 	| CreateNetwork402
 	| CreateNetwork403
-	| CreateNetwork404
 	| CreateNetwork409,
 	ApiClient
 > {
@@ -2856,7 +2987,7 @@ export function createNetwork({
 
 		const url = "/v1/connect/networks";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -2888,7 +3019,6 @@ export function deleteNetwork({
 	| DeleteNetwork401
 	| DeleteNetwork402
 	| DeleteNetwork403
-	| DeleteNetwork404
 	| DeleteNetwork409,
 	ApiClient
 > {
@@ -2906,7 +3036,7 @@ export function deleteNetwork({
 
 		const url = `/v1/connect/networks/${networkId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -2949,7 +3079,7 @@ export function updateNetwork({
 
 		const url = `/v1/connect/networks/${networkId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -2992,7 +3122,7 @@ export function readNetwork({
 
 		const url = `/v1/connect/networks/${networkId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -3002,54 +3132,6 @@ export function readNetwork({
 		});
 
 		return response as ReadNetworkQueryResponse;
-	});
-}
-
-/**
- * @description Update the data cache feature on a project.
- * @summary Update the data cache feature
- * {@link /v1/data-cache/projects/:projectId}
- */
-export function updateProjectDataCache({
-	pathParams: { projectId },
-	queryParams,
-}: {
-	pathParams: UpdateProjectDataCachePathParams;
-	queryParams?: UpdateProjectDataCacheQueryParams;
-}): Effect.Effect<
-	UpdateProjectDataCacheMutationResponse,
-	| ApiError
-	| ValidationError
-	| UpdateProjectDataCache400
-	| UpdateProjectDataCache401
-	| UpdateProjectDataCache403
-	| UpdateProjectDataCache404,
-	ApiClient
-> {
-	return Effect.gen(function* () {
-		const client = yield* ApiClient;
-
-		if (projectId === undefined) {
-			return yield* Effect.fail(
-				new ValidationError({
-					field: "projectId",
-					reason: "Missing required path parameter",
-				}),
-			);
-		}
-
-		const url = `/v1/data-cache/projects/${projectId}`;
-		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
-
-		const response = yield* client.request({
-			method: "PATCH",
-			url: fullUrl,
-
-			headers: { "Content-Type": "applicationJson" },
-		});
-
-		return response as UpdateProjectDataCacheMutationResponse;
 	});
 }
 
@@ -3088,7 +3170,7 @@ export function getDeploymentEvents({
 
 		const url = `/v3/deployments/${idOrUrl}/events`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -3182,7 +3264,12 @@ export function getDeployment({
 	queryParams?: GetDeploymentQueryParams;
 }): Effect.Effect<
 	GetDeploymentQueryResponse,
-	ApiError | ValidationError | GetDeployment400 | GetDeployment403 | GetDeployment404,
+	| ApiError
+	| ValidationError
+	| GetDeployment400
+	| GetDeployment403
+	| GetDeployment404
+	| GetDeployment429,
 	ApiClient
 > {
 	return Effect.gen(function* () {
@@ -3199,7 +3286,7 @@ export function getDeployment({
 
 		const url = `/v13/deployments/${idOrUrl}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -3231,7 +3318,9 @@ export function createDeployment({
 	| CreateDeployment403
 	| CreateDeployment404
 	| CreateDeployment409
-	| CreateDeployment500,
+	| CreateDeployment429
+	| CreateDeployment500
+	| CreateDeployment503,
 	ApiClient
 > {
 	return Effect.gen(function* () {
@@ -3239,7 +3328,7 @@ export function createDeployment({
 
 		const url = "/v13/deployments";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -3287,7 +3376,7 @@ export function cancelDeployment({
 
 		const url = `/v12/deployments/${id}/cancel`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -3330,7 +3419,7 @@ export function getRecords({
 
 		const url = `/v4/domains/${domain}/records`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -3380,7 +3469,7 @@ export function createRecord({
 
 		const url = `/v2/domains/${domain}/records`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -3430,7 +3519,7 @@ export function updateRecord({
 
 		const url = `/v1/domains/records/${recordId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -3486,7 +3575,7 @@ export function removeRecord({
 
 		const url = `/v2/domains/${domain}/records/${recordId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -3524,7 +3613,7 @@ export function getSupportedTlds({
 
 		const url = "/v1/registrar/tlds/supported";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -3534,6 +3623,49 @@ export function getSupportedTlds({
 		});
 
 		return response as GetSupportedTldsQueryResponse;
+	});
+}
+
+/**
+ * @description Get the metadata for a specific TLD.
+ * @summary Get TLD
+ * {@link /v1/registrar/tlds/:tld}
+ */
+export function getTld({
+	pathParams: { tld },
+	queryParams,
+}: {
+	pathParams: GetTldPathParams;
+	queryParams?: GetTldQueryParams;
+}): Effect.Effect<
+	GetTldQueryResponse,
+	ApiError | ValidationError | GetTld400 | GetTld401 | GetTld403 | GetTld429 | GetTld500,
+	ApiClient
+> {
+	return Effect.gen(function* () {
+		const client = yield* ApiClient;
+
+		if (tld === undefined) {
+			return yield* Effect.fail(
+				new ValidationError({
+					field: "tld",
+					reason: "Missing required path parameter",
+				}),
+			);
+		}
+
+		const url = `/v1/registrar/tlds/${tld}`;
+		const searchParams = serializeQueryParams(queryParams);
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+
+		const response = yield* client.request({
+			method: "GET",
+			url: fullUrl,
+
+			headers: {},
+		});
+
+		return response as GetTldQueryResponse;
 	});
 }
 
@@ -3573,7 +3705,7 @@ export function getTldPrice({
 
 		const url = `/v1/registrar/tlds/${tld}/price`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -3623,7 +3755,7 @@ export function getDomainAvailability({
 
 		const url = `/v1/registrar/domains/${domain}/availability`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -3672,7 +3804,7 @@ export function getDomainPrice({
 
 		const url = `/v1/registrar/domains/${domain}/price`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -3710,7 +3842,7 @@ export function getBulkAvailability({
 
 		const url = "/v1/registrar/domains/availability";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -3761,7 +3893,7 @@ export function getDomainAuthCode({
 
 		const url = `/v1/registrar/domains/${domain}/auth-code`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -3810,7 +3942,7 @@ export function buySingleDomain({
 
 		const url = `/v1/registrar/domains/${domain}/buy`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -3848,7 +3980,7 @@ export function buyDomains({
 
 		const url = "/v1/registrar/domains/buy";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -3897,7 +4029,7 @@ export function transferInDomain({
 
 		const url = `/v1/registrar/domains/${domain}/transfer`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -3947,7 +4079,7 @@ export function getDomainTransferIn({
 
 		const url = `/v1/registrar/domains/${domain}/transfer`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -3997,7 +4129,7 @@ export function renewDomain({
 
 		const url = `/v1/registrar/domains/${domain}/renew`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -4047,7 +4179,7 @@ export function updateDomainAutoRenew({
 
 		const url = `/v1/registrar/domains/${domain}/auto-renew`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -4097,7 +4229,7 @@ export function updateDomainNameservers({
 
 		const url = `/v1/registrar/domains/${domain}/nameservers`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -4146,7 +4278,7 @@ export function getContactInfoSchema({
 
 		const url = `/v1/registrar/domains/${domain}/contact-info/schema`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -4196,7 +4328,7 @@ export function getOrder({
 
 		const url = `/v1/registrar/orders/${orderId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -4239,7 +4371,7 @@ export function getDomainConfig({
 
 		const url = `/v6/domains/${domain}/config`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -4282,7 +4414,7 @@ export function getDomain({
 
 		const url = `/v5/domains/${domain}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -4314,7 +4446,7 @@ export function getDomains({
 
 		const url = "/v5/domains";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -4353,7 +4485,7 @@ export function createOrTransferDomain({
 
 		const url = "/v7/domains";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -4403,7 +4535,7 @@ export function patchDomain({
 
 		const url = `/v3/domains/${domain}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -4452,7 +4584,7 @@ export function deleteDomain({
 
 		const url = `/v6/domains/${domain}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -4500,7 +4632,7 @@ export function getConfigurableLogDrain({
 
 		const url = `/v1/log-drains/${id}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -4548,7 +4680,7 @@ export function deleteConfigurableLogDrain({
 
 		const url = `/v1/log-drains/${id}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -4585,7 +4717,7 @@ export function getAllLogDrains({
 
 		const url = "/v1/log-drains";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -4621,7 +4753,7 @@ export function createConfigurableLogDrain({
 
 		const url = "/v1/log-drains";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -4653,7 +4785,7 @@ export function createDrain({
 
 		const url = "/v1/drains";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -4685,7 +4817,7 @@ export function getDrains({
 
 		const url = "/v1/drains";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -4728,7 +4860,7 @@ export function deleteDrain({
 
 		const url = `/v1/drains/${id}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -4771,7 +4903,7 @@ export function getDrain({
 
 		const url = `/v1/drains/${id}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -4814,7 +4946,7 @@ export function updateDrain({
 
 		const url = `/v1/drains/${id}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -4846,7 +4978,7 @@ export function testDrain({
 
 		const url = "/v1/drains/test";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -4883,7 +5015,7 @@ export function invalidateByTags({
 
 		const url = "/v1/edge-cache/invalidate-by-tags";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -4920,7 +5052,7 @@ export function dangerouslyDeleteByTags({
 
 		const url = "/v1/edge-cache/dangerously-delete-by-tags";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -4958,7 +5090,7 @@ export function invalidateBySrcImages({
 
 		const url = "/v1/edge-cache/invalidate-by-src-images";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -4996,7 +5128,7 @@ export function dangerouslyDeleteBySrcImages({
 
 		const url = "/v1/edge-cache/dangerously-delete-by-src-images";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -5028,7 +5160,7 @@ export function getEdgeConfigs({
 
 		const url = "/v1/edge-config";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -5065,7 +5197,7 @@ export function createEdgeConfig({
 
 		const url = "/v1/edge-config";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -5113,7 +5245,7 @@ export function getEdgeConfig({
 
 		const url = `/v1/edge-config/${edgeConfigId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -5163,7 +5295,7 @@ export function updateEdgeConfig({
 
 		const url = `/v1/edge-config/${edgeConfigId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "PUT",
@@ -5212,7 +5344,7 @@ export function deleteEdgeConfig({
 
 		const url = `/v1/edge-config/${edgeConfigId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -5260,7 +5392,7 @@ export function getEdgeConfigItems({
 
 		const url = `/v1/edge-config/${edgeConfigId}/items`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -5311,7 +5443,7 @@ export function patchEdgeConfigItems({
 
 		const url = `/v1/edge-config/${edgeConfigId}/items`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -5359,7 +5491,7 @@ export function getEdgeConfigSchema({
 
 		const url = `/v1/edge-config/${edgeConfigId}/schema`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -5409,7 +5541,7 @@ export function patchEdgeConfigSchema({
 
 		const url = `/v1/edge-config/${edgeConfigId}/schema`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -5459,7 +5591,7 @@ export function deleteEdgeConfigSchema({
 
 		const url = `/v1/edge-config/${edgeConfigId}/schema`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -5515,7 +5647,7 @@ export function getEdgeConfigItem({
 
 		const url = `/v1/edge-config/${edgeConfigId}/item/${edgeConfigItemKey}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -5563,7 +5695,7 @@ export function getEdgeConfigTokens({
 
 		const url = `/v1/edge-config/${edgeConfigId}/tokens`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -5613,7 +5745,7 @@ export function deleteEdgeConfigTokens({
 
 		const url = `/v1/edge-config/${edgeConfigId}/tokens`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -5669,7 +5801,7 @@ export function getEdgeConfigToken({
 
 		const url = `/v1/edge-config/${edgeConfigId}/token/${token}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -5719,7 +5851,7 @@ export function createEdgeConfigToken({
 
 		const url = `/v1/edge-config/${edgeConfigId}/token`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -5775,7 +5907,7 @@ export function getEdgeConfigBackup({
 
 		const url = `/v1/edge-config/${edgeConfigId}/backups/${edgeConfigBackupVersionId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -5823,7 +5955,7 @@ export function getEdgeConfigBackups({
 
 		const url = `/v1/edge-config/${edgeConfigId}/backups`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -5860,7 +5992,7 @@ export function createSharedEnvVariable({
 
 		const url = "/v1/env";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -5897,7 +6029,7 @@ export function listSharedEnvVariable({
 
 		const url = "/v1/env";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -5934,7 +6066,7 @@ export function updateSharedEnvVariable({
 
 		const url = "/v1/env";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -5971,7 +6103,7 @@ export function deleteSharedEnvVariable({
 
 		const url = "/v1/env";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -6014,7 +6146,7 @@ export function getSharedEnvVar({
 
 		const url = `/v1/env/${id}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -6069,7 +6201,7 @@ export function unlinkSharedEnvVariable({
 
 		const url = `/v1/env/${id}/unlink/${projectId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -6101,7 +6233,7 @@ export function listUserEvents({
 
 		const url = "/v3/events";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -6111,6 +6243,38 @@ export function listUserEvents({
 		});
 
 		return response as ListUserEventsQueryResponse;
+	});
+}
+
+/**
+ * @description Returns the list of user-facing event types with descriptions.
+ * @summary List Event Types
+ * {@link /v1/events/types}
+ */
+export function listEventTypes({
+	queryParams,
+}: {
+	queryParams?: ListEventTypesQueryParams;
+}): Effect.Effect<
+	ListEventTypesQueryResponse,
+	ApiError | ValidationError | ListEventTypes400 | ListEventTypes401 | ListEventTypes403,
+	ApiClient
+> {
+	return Effect.gen(function* () {
+		const client = yield* ApiClient;
+
+		const url = "/v1/events/types";
+		const searchParams = serializeQueryParams(queryParams);
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+
+		const response = yield* client.request({
+			method: "GET",
+			url: fullUrl,
+
+			headers: {},
+		});
+
+		return response as ListEventTypesQueryResponse;
 	});
 }
 
@@ -6140,7 +6304,7 @@ export function gitNamespaces({
 
 		const url = "/v1/integrations/git-namespaces";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -6179,7 +6343,7 @@ export function searchRepo({
 
 		const url = "/v1/integrations/search-repo";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -6235,7 +6399,7 @@ export function getBillingPlans({
 
 		const url = `/v1/integrations/integration/${integrationIdOrSlug}/products/${productIdOrSlug}/plans`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -6291,7 +6455,7 @@ export function connectIntegrationResourceToProject({
 
 		const url = `/v1/integrations/installations/${integrationConfigurationId}/resources/${resourceId}/connections`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -6836,6 +7000,51 @@ export function submitInvoice({
 }
 
 /**
+ * @description This endpoint allows the partner to mark an installation as finalized. This means you will not send any more invoices for the installation. Use this after a customer has requested uninstall and you have sent any remaining invoices. This will allow the uninstall process to proceed immediately after all invoices have been paid. <br/> Use the `credentials.access_token` we provided in the [Upsert Installation](#upsert-installation) body to authorize this request.
+ * @summary Finalize Installation
+ * {@link /v1/installations/:integrationConfigurationId/billing/finalize}
+ */
+export function finalizeInstallation({
+	pathParams: { integrationConfigurationId },
+}: {
+	pathParams: FinalizeInstallationPathParams;
+}): Effect.Effect<
+	FinalizeInstallationMutationResponse,
+	| ApiError
+	| ValidationError
+	| FinalizeInstallation400
+	| FinalizeInstallation401
+	| FinalizeInstallation403
+	| FinalizeInstallation404,
+	ApiClient
+> {
+	return Effect.gen(function* () {
+		const client = yield* ApiClient;
+
+		if (integrationConfigurationId === undefined) {
+			return yield* Effect.fail(
+				new ValidationError({
+					field: "integrationConfigurationId",
+					reason: "Missing required path parameter",
+				}),
+			);
+		}
+
+		const url = `/v1/installations/${integrationConfigurationId}/billing/finalize`;
+		const fullUrl = url;
+
+		const response = yield* client.request({
+			method: "POST",
+			url: fullUrl,
+
+			headers: {},
+		});
+
+		return response as FinalizeInstallationMutationResponse;
+	});
+}
+
+/**
  * @description Get Invoice details and status for a given invoice ID.<br/> <br/> See Billing Events with Webhooks documentation on how to receive invoice events. This endpoint is used to retrieve the invoice details.
  * @summary Get Invoice
  * {@link /v1/installations/:integrationConfigurationId/billing/invoices/:invoiceId}
@@ -7119,7 +7328,7 @@ export function getConfigurations({
 
 		const url = "/v1/integrations/configurations";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -7167,7 +7376,7 @@ export function getConfiguration({
 
 		const url = `/v1/integrations/configuration/${id}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -7215,7 +7424,7 @@ export function deleteConfiguration({
 
 		const url = `/v1/integrations/configuration/${id}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -7229,7 +7438,7 @@ export function deleteConfiguration({
 }
 
 /**
- * @description Lists all products available for an integration configuration. Use this endpoint to discover what integration products are available for your integration configuration. The returned product IDs or slugs can then be used with storage provisioning endpoints like `POST /v1/storage/stores/integration/direct`. ## Workflow 1. Get your integration configurations: `GET /v1/integrations/configurations` 2. **Use this endpoint**: Get products for a configuration: `GET /v1/integrations/configuration/{id}/products` 3. Create storage resource: `POST /v1/storage/stores/integration/direct` ## Response Returns an array of products with their IDs, slugs, names, supported protocols, and metadata requirements. Each product represents a different type of resource you can provision. The `metadataSchema` field contains a JSON Schema that defines: - **Required metadata**: Fields that must be provided during storage creation - **Optional metadata**: Fields that can be provided but are not mandatory - **Field validation**: Data types, allowed values, and constraints Use this schema to validate metadata before calling the storage creation endpoint.
+ * @description Returns products available for an integration configuration. Each product includes a `metadataSchema` field with the JSON Schema for required and optional metadata fields.
  * @summary List products for integration configuration
  * {@link /v1/integrations/configuration/:id/products}
  */
@@ -7264,7 +7473,7 @@ export function getConfigurationProducts({
 
 		const url = `/v1/integrations/configuration/${id}/products`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -7327,7 +7536,7 @@ export function getIntegrationLogDrains({
 
 		const url = "/v2/integrations/log-drains";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -7359,7 +7568,7 @@ export function createLogDrain({
 
 		const url = "/v2/integrations/log-drains";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -7407,7 +7616,7 @@ export function deleteIntegrationLogDrain({
 
 		const url = `/v1/integrations/log-drains/${id}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -7458,7 +7667,7 @@ export function getRuntimeLogs({
 
 		const url = `/v1/projects/${projectId}/deployments/${deploymentId}/runtime-logs`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -7647,6 +7856,59 @@ export function deleteExperimentationItem({
 }
 
 /**
+ * @description When the user enabled Edge Config syncing, then this endpoint can be used by the partner to fetch the contents of the Edge Config.
+ * @summary Get the data of a user-provided Edge Config
+ * {@link /v1/installations/:integrationConfigurationId/resources/:resourceId/experimentation/edge-config}
+ */
+export function gETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig({
+	pathParams: { integrationConfigurationId, resourceId },
+}: {
+	pathParams: GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfigPathParams;
+}): Effect.Effect<
+	GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfigQueryResponse,
+	| ApiError
+	| ValidationError
+	| GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig400
+	| GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig401
+	| GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig403
+	| GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig404,
+	ApiClient
+> {
+	return Effect.gen(function* () {
+		const client = yield* ApiClient;
+
+		if (integrationConfigurationId === undefined) {
+			return yield* Effect.fail(
+				new ValidationError({
+					field: "integrationConfigurationId",
+					reason: "Missing required path parameter",
+				}),
+			);
+		}
+		if (resourceId === undefined) {
+			return yield* Effect.fail(
+				new ValidationError({
+					field: "resourceId",
+					reason: "Missing required path parameter",
+				}),
+			);
+		}
+
+		const url = `/v1/installations/${integrationConfigurationId}/resources/${resourceId}/experimentation/edge-config`;
+		const fullUrl = url;
+
+		const response = yield* client.request({
+			method: "GET",
+			url: fullUrl,
+
+			headers: {},
+		});
+
+		return response as GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfigQueryResponse;
+	});
+}
+
+/**
  * @description When the user enabled Edge Config syncing, then this endpoint can be used by the partner to push their configuration data into the relevant Edge Config.
  * @summary Push data into a user-provided Edge Config
  * {@link /v1/installations/:integrationConfigurationId/resources/:resourceId/experimentation/edge-config}
@@ -7731,7 +7993,7 @@ export function getProjectMembers({
 
 		const url = `/v1/projects/${idOrName}/members`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -7779,7 +8041,7 @@ export function addProjectMember({
 
 		const url = `/v1/projects/${idOrName}/members`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -7834,7 +8096,7 @@ export function removeProjectMember({
 
 		const url = `/v1/projects/${idOrName}/members/${uid}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -7866,7 +8128,7 @@ export function getProjects({
 
 		const url = "/v10/projects";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -7908,7 +8170,7 @@ export function createProject({
 
 		const url = "/v11/projects";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -7951,7 +8213,7 @@ export function getProject({
 
 		const url = `/v9/projects/${idOrName}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -8002,7 +8264,7 @@ export function updateProject({
 
 		const url = `/v9/projects/${idOrName}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -8050,7 +8312,7 @@ export function deleteProject({
 
 		const url = `/v9/projects/${idOrName}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -8101,7 +8363,7 @@ export function updateStaticIps({
 
 		const url = `/v1/projects/${idOrName}/shared-connect-links`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -8150,7 +8412,7 @@ export function createCustomEnvironment({
 
 		const url = `/v9/projects/${idOrName}/custom-environments`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -8197,7 +8459,7 @@ export function listCustomEnvironments({
 
 		const url = `/v9/projects/${idOrName}/custom-environments`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -8253,7 +8515,7 @@ export function getCustomEnvironment({
 
 		const url = `/v9/projects/${idOrName}/custom-environments/${environmentSlugOrId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -8310,7 +8572,7 @@ export function updateCustomEnvironment({
 
 		const url = `/v9/projects/${idOrName}/custom-environments/${environmentSlugOrId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -8365,7 +8627,7 @@ export function removeCustomEnvironment({
 
 		const url = `/v9/projects/${idOrName}/custom-environments/${environmentSlugOrId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -8408,7 +8670,7 @@ export function getProjectDomains({
 
 		const url = `/v9/projects/${idOrName}/domains`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -8459,7 +8721,7 @@ export function getProjectDomain({
 
 		const url = `/v9/projects/${idOrName}/domains/${domain}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -8515,7 +8777,7 @@ export function updateProjectDomain({
 
 		const url = `/v9/projects/${idOrName}/domains/${domain}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -8572,7 +8834,7 @@ export function removeProjectDomain({
 
 		const url = `/v9/projects/${idOrName}/domains/${domain}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -8621,7 +8883,7 @@ export function addProjectDomain({
 
 		const url = `/v10/projects/${idOrName}/domains`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -8677,7 +8939,7 @@ export function moveProjectDomain({
 
 		const url = `/v1/projects/${idOrName}/domains/${domain}/move`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -8732,7 +8994,7 @@ export function verifyProjectDomain({
 
 		const url = `/v9/projects/${idOrName}/domains/${domain}/verify`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -8775,7 +9037,7 @@ export function filterProjectEnvs({
 
 		const url = `/v10/projects/${idOrName}/env`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -8827,7 +9089,7 @@ export function createProjectEnv({
 
 		const url = `/v10/projects/${idOrName}/env`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -8878,7 +9140,7 @@ export function getProjectEnv({
 
 		const url = `/v1/projects/${idOrName}/env/${id}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -8935,7 +9197,7 @@ export function removeProjectEnv({
 
 		const url = `/v9/projects/${idOrName}/env/${id}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -8994,7 +9256,7 @@ export function editProjectEnv({
 
 		const url = `/v9/projects/${idOrName}/env/${id}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -9043,7 +9305,7 @@ export function batchRemoveProjectEnv({
 
 		const url = `/v1/projects/${idOrName}/env`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -9091,7 +9353,7 @@ export function getRollingReleaseBillingStatus({
 
 		const url = `/v1/projects/${idOrName}/rolling-release/billing`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -9139,7 +9401,7 @@ export function getRollingReleaseConfig({
 
 		const url = `/v1/projects/${idOrName}/rolling-release/config`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -9187,7 +9449,7 @@ export function deleteRollingReleaseConfig({
 
 		const url = `/v1/projects/${idOrName}/rolling-release/config`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -9201,7 +9463,7 @@ export function deleteRollingReleaseConfig({
 }
 
 /**
- * @description Update (or disable) Rolling Releases for a project. Changing the config never alters a rollout that's already in-flight. It only affects the next production deployment. This also applies to disabling Rolling Releases. If you want to also stop the current rollout, call this endpoint to disable the feature, and then call either the /complete or /abort endpoint. Note: Enabling Rolling Releases automatically enables skew protection on the project with the default value if it wasn't configured already.
+ * @description Update (or disable) Rolling Releases for a project. When disabling with the resolve-on-disable feature flag enabled, any active rolling release document is resolved using the disableRolloutAction parameter: "abort" to roll back (default), or "complete" to promote the canary to production. When enabling or updating config, changes only affect the next production deployment and do not alter a rollout that's already in-flight. Note: Enabling Rolling Releases automatically enables skew protection on the project with the default value if it wasn't configured already.
  * @summary Update the rolling release settings for the project
  * {@link /v1/projects/:idOrName/rolling-release/config}
  */
@@ -9235,7 +9497,7 @@ export function updateRollingReleaseConfig({
 
 		const url = `/v1/projects/${idOrName}/rolling-release/config`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -9283,7 +9545,7 @@ export function getRollingRelease({
 
 		const url = `/v1/projects/${idOrName}/rolling-release`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -9332,7 +9594,7 @@ export function approveRollingReleaseStage({
 
 		const url = `/v1/projects/${idOrName}/rolling-release/approve-stage`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -9380,7 +9642,7 @@ export function completeRollingRelease({
 
 		const url = `/v1/projects/${idOrName}/rolling-release/complete`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -9427,7 +9689,7 @@ export function createProjectTransferRequest({
 
 		const url = `/projects/${idOrName}/transfer-request`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -9476,7 +9738,7 @@ export function acceptProjectTransferRequest({
 
 		const url = `/projects/transfer-request/${code}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "PUT",
@@ -9525,7 +9787,7 @@ export function updateProjectProtectionBypass({
 
 		const url = `/v1/projects/${idOrName}/protection-bypass`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -9535,6 +9797,118 @@ export function updateProjectProtectionBypass({
 		});
 
 		return response as UpdateProjectProtectionBypassMutationResponse;
+	});
+}
+
+/**
+ * @description Allows users to rollback to a deployment.
+ * @summary Points all production domains for a project to the given deploy
+ * {@link /v1/projects/:projectId/rollback/:deploymentId}
+ */
+export function requestRollback({
+	pathParams: { projectId, deploymentId },
+	queryParams,
+}: {
+	pathParams: RequestRollbackPathParams;
+	queryParams?: RequestRollbackQueryParams;
+}): Effect.Effect<
+	RequestRollbackMutationResponse,
+	| ApiError
+	| ValidationError
+	| RequestRollback400
+	| RequestRollback401
+	| RequestRollback402
+	| RequestRollback403
+	| RequestRollback409
+	| RequestRollback422,
+	ApiClient
+> {
+	return Effect.gen(function* () {
+		const client = yield* ApiClient;
+
+		if (projectId === undefined) {
+			return yield* Effect.fail(
+				new ValidationError({
+					field: "projectId",
+					reason: "Missing required path parameter",
+				}),
+			);
+		}
+		if (deploymentId === undefined) {
+			return yield* Effect.fail(
+				new ValidationError({
+					field: "deploymentId",
+					reason: "Missing required path parameter",
+				}),
+			);
+		}
+
+		const url = `/v1/projects/${projectId}/rollback/${deploymentId}`;
+		const searchParams = serializeQueryParams(queryParams);
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+
+		const response = yield* client.request({
+			method: "POST",
+			url: fullUrl,
+
+			headers: {},
+		});
+
+		return response as RequestRollbackMutationResponse;
+	});
+}
+
+/**
+ * @description Updates the reason for a rollback, without changing the rollback status itself.
+ * @summary Updates the description for a rollback
+ * {@link /v1/projects/:projectId/rollback/:deploymentId/update-description}
+ */
+export function pATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription({
+	pathParams: { projectId, deploymentId },
+}: {
+	pathParams: PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionPathParams;
+}): Effect.Effect<
+	PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionMutationResponse,
+	| ApiError
+	| ValidationError
+	| PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription400
+	| PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription401
+	| PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription403
+	| PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription409
+	| PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription422,
+	ApiClient
+> {
+	return Effect.gen(function* () {
+		const client = yield* ApiClient;
+
+		if (projectId === undefined) {
+			return yield* Effect.fail(
+				new ValidationError({
+					field: "projectId",
+					reason: "Missing required path parameter",
+				}),
+			);
+		}
+		if (deploymentId === undefined) {
+			return yield* Effect.fail(
+				new ValidationError({
+					field: "deploymentId",
+					reason: "Missing required path parameter",
+				}),
+			);
+		}
+
+		const url = `/v1/projects/${projectId}/rollback/${deploymentId}/update-description`;
+		const fullUrl = url;
+
+		const response = yield* client.request({
+			method: "PATCH",
+			url: fullUrl,
+
+			headers: { "Content-Type": "applicationJson" },
+		});
+
+		return response as PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionMutationResponse;
 	});
 }
 
@@ -9581,7 +9955,7 @@ export function requestPromote({
 
 		const url = `/v10/projects/${projectId}/promote/${deploymentId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -9629,7 +10003,7 @@ export function listPromoteAliases({
 
 		const url = `/v1/projects/${projectId}/promote/aliases`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -9677,7 +10051,7 @@ export function pauseProject({
 
 		const url = `/v1/projects/${projectId}/pause`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -9725,7 +10099,7 @@ export function unpauseProject({
 
 		const url = `/v1/projects/${projectId}/unpause`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -9762,7 +10136,7 @@ export function updateAttackChallengeMode({
 
 		const url = "/v1/security/attack-mode";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -9801,7 +10175,7 @@ export function putFirewallConfig({
 
 		const url = "/v1/security/firewall/config";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "PUT",
@@ -9840,7 +10214,7 @@ export function updateFirewallConfig({
 
 		const url = "/v1/security/firewall/config";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -9888,7 +10262,7 @@ export function getFirewallConfig({
 
 		const url = `/v1/security/firewall/config/${configVersion}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -9925,7 +10299,7 @@ export function getActiveAttackStatus({
 
 		const url = "/v1/security/firewall/attack-status";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -9963,7 +10337,7 @@ export function getBypassIp({
 
 		const url = "/v1/security/firewall/bypass";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -10001,7 +10375,7 @@ export function addBypassIp({
 
 		const url = "/v1/security/firewall/bypass";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -10039,7 +10413,7 @@ export function removeBypassIp({
 
 		const url = "/v1/security/firewall/bypass";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -10077,7 +10451,7 @@ export function gETV1SecurityFirewallEvents({
 
 		const url = "/v1/security/firewall/events";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -10091,7 +10465,7 @@ export function gETV1SecurityFirewallEvents({
 }
 
 /**
- * @description Creates an integration store for both FREE and PAID billing plans. This simplified endpoint automatically provisions real integration storage resources while handling billing complexity behind the scenes. It supports both free and paid billing plans with automatic authorization creation for paid resources. ## How it works 1. Validates the integration configuration and product 2. For free resources: Auto-discovers available free billing plans 3. For paid resources: Creates billing authorization inline using provided billingPlanId 4. Provisions real resources through the Vercel Marketplace 5. Returns the created store with connection details ## Workflow Before using this endpoint, discover available products and billing plans: 1. List your configurations: `GET /v1/integrations/configurations` 2. Get products for a configuration: `GET /v1/integrations/configuration/{id}/products` 3. Get billing plans for a product: `GET /integrations/integration/{integrationId}/products/{productId}/plans` 4. Review the `metadataSchema` for each product to understand required metadata 5. Create storage with discovered product: `POST /v1/storage/stores/integration/direct` ## Usage Patterns - **Free resources**: Omit `billingPlanId` - endpoint will auto-discover free plans - **Paid resources**: Provide `billingPlanId` from billing plans discovery - **Prepayment plans**: Also provide `prepaymentAmountCents` for variable amount plans ## Limitations - **Admin access required**: Only integration configuration admins can create stores - **Storage limits apply**: Subject to your team's storage quotas - **Payment method required**: For paid plans, ensure valid payment method is configured ## Error Responses - `400 Bad Request`: Invalid input, no plans available, or billing issues - `403 Forbidden`: Insufficient permissions (non-admin users) - `404 Not Found`: Integration configuration or product not found - `429 Too Many Requests`: Rate limit exceeded
+ * @description Creates an integration store with automatic billing plan handling. For free resources, omit `billingPlanId` to auto-discover free plans. For paid resources, provide a `billingPlanId` from the billing plans endpoint.
  * @summary Create integration store (free and paid plans)
  * {@link /v1/storage/stores/integration/direct}
  */
@@ -10118,7 +10492,7 @@ export function createIntegrationStoreDirect({
 
 		const url = "/v1/storage/stores/integration/direct";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -10166,7 +10540,7 @@ export function getTeamMembers({
 
 		const url = `/v3/teams/${teamId}/members`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -10186,8 +10560,10 @@ export function getTeamMembers({
  */
 export function inviteUserToTeam({
 	pathParams: { teamId },
+	queryParams,
 }: {
 	pathParams: InviteUserToTeamPathParams;
+	queryParams?: InviteUserToTeamQueryParams;
 }): Effect.Effect<
 	InviteUserToTeamMutationResponse,
 	| ApiError
@@ -10211,7 +10587,8 @@ export function inviteUserToTeam({
 		}
 
 		const url = `/v2/teams/${teamId}/members`;
-		const fullUrl = url;
+		const searchParams = serializeQueryParams(queryParams);
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -10241,6 +10618,7 @@ export function requestAccessToTeam({
 	| RequestAccessToTeam401
 	| RequestAccessToTeam403
 	| RequestAccessToTeam404
+	| RequestAccessToTeam429
 	| RequestAccessToTeam503,
 	ApiClient
 > {
@@ -10463,7 +10841,7 @@ export function removeTeamMember({
 
 		const url = `/v1/teams/${teamId}/members/${uid}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -10506,7 +10884,7 @@ export function getTeam({
 
 		const url = `/v2/teams/${teamId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -10555,7 +10933,7 @@ export function patchTeam({
 
 		const url = `/v2/teams/${teamId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -10587,7 +10965,7 @@ export function getTeams({
 
 		const url = "/v2/teams";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -10661,7 +11039,7 @@ export function postTeamDsyncRoles({
 
 		const url = `/v1/teams/${teamId}/dsync-roles`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -10710,7 +11088,7 @@ export function deleteTeam({
 
 		const url = `/v1/teams/${teamId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -10797,7 +11175,7 @@ export function uploadFile({
 
 		const url = "/v2/files";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -10848,7 +11226,12 @@ export function createAuthToken({
 	queryParams?: CreateAuthTokenQueryParams;
 }): Effect.Effect<
 	CreateAuthTokenMutationResponse,
-	ApiError | ValidationError | CreateAuthToken400 | CreateAuthToken401 | CreateAuthToken403,
+	| ApiError
+	| ValidationError
+	| CreateAuthToken400
+	| CreateAuthToken401
+	| CreateAuthToken403
+	| CreateAuthToken404,
 	ApiClient
 > {
 	return Effect.gen(function* () {
@@ -10856,7 +11239,7 @@ export function createAuthToken({
 
 		const url = "/v3/user/tokens";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -11037,7 +11420,7 @@ export function createWebhook({
 
 		const url = "/v1/webhooks";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -11069,7 +11452,7 @@ export function getWebhooks({
 
 		const url = "/v1/webhooks";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -11112,7 +11495,7 @@ export function getWebhook({
 
 		const url = `/v1/webhooks/${id}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -11155,7 +11538,7 @@ export function deleteWebhook({
 
 		const url = `/v1/webhooks/${id}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -11203,7 +11586,7 @@ export function listDeploymentAliases({
 
 		const url = `/v2/deployments/${id}/aliases`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -11253,7 +11636,7 @@ export function assignAlias({
 
 		const url = `/v2/deployments/${id}/aliases`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -11285,7 +11668,7 @@ export function listAliases({
 
 		const url = "/v4/aliases";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -11328,7 +11711,7 @@ export function getAlias({
 
 		const url = `/v4/aliases/${idOrAlias}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -11371,7 +11754,7 @@ export function deleteAlias({
 
 		const url = `/v2/aliases/${aliasId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -11404,8 +11787,7 @@ export function patchUrlProtectionBypass({
 	| PatchUrlProtectionBypass403
 	| PatchUrlProtectionBypass404
 	| PatchUrlProtectionBypass409
-	| PatchUrlProtectionBypass428
-	| PatchUrlProtectionBypass500,
+	| PatchUrlProtectionBypass428,
 	ApiClient
 > {
 	return Effect.gen(function* () {
@@ -11422,7 +11804,7 @@ export function patchUrlProtectionBypass({
 
 		const url = `/aliases/${id}/protection-bypass`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "PATCH",
@@ -11465,7 +11847,7 @@ export function getCertById({
 
 		const url = `/v8/certs/${id}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -11508,7 +11890,7 @@ export function removeCert({
 
 		const url = `/v8/certs/${id}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -11548,7 +11930,7 @@ export function issueCert({
 
 		const url = "/v8/certs";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "POST",
@@ -11580,7 +11962,7 @@ export function uploadCert({
 
 		const url = "/v8/certs";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "PUT",
@@ -11628,7 +12010,7 @@ export function listDeploymentFiles({
 
 		const url = `/v6/deployments/${id}/files`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -11685,7 +12067,7 @@ export function getDeploymentFileContents({
 
 		const url = `/v8/deployments/${id}/files/${fileId}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -11723,7 +12105,7 @@ export function getDeployments({
 
 		const url = "/v6/deployments";
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "GET",
@@ -11771,7 +12153,7 @@ export function deleteDeployment({
 
 		const url = `/v13/deployments/${id}`;
 		const searchParams = serializeQueryParams(queryParams);
-		const fullUrl = url + (searchParams ? `?${searchParams}` : "");
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
 
 		const response = yield* client.request({
 			method: "DELETE",
@@ -11907,6 +12289,16 @@ export const ArtifactsService = {
 		artifactQuery({ queryParams }),
 } as const;
 
+export const BillingService = {
+	listBillingCharges: ({ queryParams }: { queryParams: ListBillingChargesQueryParams }) =>
+		listBillingCharges({ queryParams }),
+	listContractCommitments: ({
+		queryParams,
+	}: {
+		queryParams?: ListContractCommitmentsQueryParams;
+	}) => listContractCommitments({ queryParams }),
+} as const;
+
 export const BulkRedirectsService = {
 	stageRedirects: ({ queryParams }: { queryParams?: StageRedirectsQueryParams }) =>
 		stageRedirects({ queryParams }),
@@ -11995,181 +12387,6 @@ export const ConnectService = {
 		pathParams: UpdateStaticIpsPathParams;
 		queryParams?: UpdateStaticIpsQueryParams;
 	}) => updateStaticIps({ pathParams: { idOrName }, queryParams }),
-} as const;
-
-export const ProjectsService = {
-	updateProjectDataCache: ({
-		pathParams: { projectId },
-		queryParams,
-	}: {
-		pathParams: UpdateProjectDataCachePathParams;
-		queryParams?: UpdateProjectDataCacheQueryParams;
-	}) => updateProjectDataCache({ pathParams: { projectId }, queryParams }),
-	getProjects: ({ queryParams }: { queryParams?: GetProjectsQueryParams }) =>
-		getProjects({ queryParams }),
-	createProject: ({ queryParams }: { queryParams?: CreateProjectQueryParams }) =>
-		createProject({ queryParams }),
-	getProject: ({
-		pathParams: { idOrName },
-		queryParams,
-	}: {
-		pathParams: GetProjectPathParams;
-		queryParams?: GetProjectQueryParams;
-	}) => getProject({ pathParams: { idOrName }, queryParams }),
-	updateProject: ({
-		pathParams: { idOrName },
-		queryParams,
-	}: {
-		pathParams: UpdateProjectPathParams;
-		queryParams?: UpdateProjectQueryParams;
-	}) => updateProject({ pathParams: { idOrName }, queryParams }),
-	deleteProject: ({
-		pathParams: { idOrName },
-		queryParams,
-	}: {
-		pathParams: DeleteProjectPathParams;
-		queryParams?: DeleteProjectQueryParams;
-	}) => deleteProject({ pathParams: { idOrName }, queryParams }),
-	getProjectDomains: ({
-		pathParams: { idOrName },
-		queryParams,
-	}: {
-		pathParams: GetProjectDomainsPathParams;
-		queryParams?: GetProjectDomainsQueryParams;
-	}) => getProjectDomains({ pathParams: { idOrName }, queryParams }),
-	getProjectDomain: ({
-		pathParams: { idOrName, domain },
-		queryParams,
-	}: {
-		pathParams: GetProjectDomainPathParams;
-		queryParams?: GetProjectDomainQueryParams;
-	}) => getProjectDomain({ pathParams: { idOrName, domain }, queryParams }),
-	updateProjectDomain: ({
-		pathParams: { idOrName, domain },
-		queryParams,
-	}: {
-		pathParams: UpdateProjectDomainPathParams;
-		queryParams?: UpdateProjectDomainQueryParams;
-	}) => updateProjectDomain({ pathParams: { idOrName, domain }, queryParams }),
-	removeProjectDomain: ({
-		pathParams: { idOrName, domain },
-		queryParams,
-	}: {
-		pathParams: RemoveProjectDomainPathParams;
-		queryParams?: RemoveProjectDomainQueryParams;
-	}) => removeProjectDomain({ pathParams: { idOrName, domain }, queryParams }),
-	addProjectDomain: ({
-		pathParams: { idOrName },
-		queryParams,
-	}: {
-		pathParams: AddProjectDomainPathParams;
-		queryParams?: AddProjectDomainQueryParams;
-	}) => addProjectDomain({ pathParams: { idOrName }, queryParams }),
-	moveProjectDomain: ({
-		pathParams: { idOrName, domain },
-		queryParams,
-	}: {
-		pathParams: MoveProjectDomainPathParams;
-		queryParams?: MoveProjectDomainQueryParams;
-	}) => moveProjectDomain({ pathParams: { idOrName, domain }, queryParams }),
-	verifyProjectDomain: ({
-		pathParams: { idOrName, domain },
-		queryParams,
-	}: {
-		pathParams: VerifyProjectDomainPathParams;
-		queryParams?: VerifyProjectDomainQueryParams;
-	}) => verifyProjectDomain({ pathParams: { idOrName, domain }, queryParams }),
-	filterProjectEnvs: ({
-		pathParams: { idOrName },
-		queryParams,
-	}: {
-		pathParams: FilterProjectEnvsPathParams;
-		queryParams?: FilterProjectEnvsQueryParams;
-	}) => filterProjectEnvs({ pathParams: { idOrName }, queryParams }),
-	createProjectEnv: ({
-		pathParams: { idOrName },
-		queryParams,
-	}: {
-		pathParams: CreateProjectEnvPathParams;
-		queryParams?: CreateProjectEnvQueryParams;
-	}) => createProjectEnv({ pathParams: { idOrName }, queryParams }),
-	getProjectEnv: ({
-		pathParams: { idOrName, id },
-		queryParams,
-	}: {
-		pathParams: GetProjectEnvPathParams;
-		queryParams?: GetProjectEnvQueryParams;
-	}) => getProjectEnv({ pathParams: { idOrName, id }, queryParams }),
-	removeProjectEnv: ({
-		pathParams: { idOrName, id },
-		queryParams,
-	}: {
-		pathParams: RemoveProjectEnvPathParams;
-		queryParams?: RemoveProjectEnvQueryParams;
-	}) => removeProjectEnv({ pathParams: { idOrName, id }, queryParams }),
-	editProjectEnv: ({
-		pathParams: { idOrName, id },
-		queryParams,
-	}: {
-		pathParams: EditProjectEnvPathParams;
-		queryParams?: EditProjectEnvQueryParams;
-	}) => editProjectEnv({ pathParams: { idOrName, id }, queryParams }),
-	batchRemoveProjectEnv: ({
-		pathParams: { idOrName },
-		queryParams,
-	}: {
-		pathParams: BatchRemoveProjectEnvPathParams;
-		queryParams?: BatchRemoveProjectEnvQueryParams;
-	}) => batchRemoveProjectEnv({ pathParams: { idOrName }, queryParams }),
-	createProjectTransferRequest: ({
-		pathParams: { idOrName },
-		queryParams,
-	}: {
-		pathParams: CreateProjectTransferRequestPathParams;
-		queryParams?: CreateProjectTransferRequestQueryParams;
-	}) => createProjectTransferRequest({ pathParams: { idOrName }, queryParams }),
-	acceptProjectTransferRequest: ({
-		pathParams: { code },
-		queryParams,
-	}: {
-		pathParams: AcceptProjectTransferRequestPathParams;
-		queryParams?: AcceptProjectTransferRequestQueryParams;
-	}) => acceptProjectTransferRequest({ pathParams: { code }, queryParams }),
-	updateProjectProtectionBypass: ({
-		pathParams: { idOrName },
-		queryParams,
-	}: {
-		pathParams: UpdateProjectProtectionBypassPathParams;
-		queryParams?: UpdateProjectProtectionBypassQueryParams;
-	}) => updateProjectProtectionBypass({ pathParams: { idOrName }, queryParams }),
-	requestPromote: ({
-		pathParams: { projectId, deploymentId },
-		queryParams,
-	}: {
-		pathParams: RequestPromotePathParams;
-		queryParams?: RequestPromoteQueryParams;
-	}) => requestPromote({ pathParams: { projectId, deploymentId }, queryParams }),
-	listPromoteAliases: ({
-		pathParams: { projectId },
-		queryParams,
-	}: {
-		pathParams: ListPromoteAliasesPathParams;
-		queryParams?: ListPromoteAliasesQueryParams;
-	}) => listPromoteAliases({ pathParams: { projectId }, queryParams }),
-	pauseProject: ({
-		pathParams: { projectId },
-		queryParams,
-	}: {
-		pathParams: PauseProjectPathParams;
-		queryParams?: PauseProjectQueryParams;
-	}) => pauseProject({ pathParams: { projectId }, queryParams }),
-	unpauseProject: ({
-		pathParams: { projectId },
-		queryParams,
-	}: {
-		pathParams: UnpauseProjectPathParams;
-		queryParams?: UnpauseProjectQueryParams;
-	}) => unpauseProject({ pathParams: { projectId }, queryParams }),
 } as const;
 
 export const DeploymentsService = {
@@ -12270,6 +12487,13 @@ export const DnsService = {
 export const DomainsRegistrarService = {
 	getSupportedTlds: ({ queryParams }: { queryParams?: GetSupportedTldsQueryParams }) =>
 		getSupportedTlds({ queryParams }),
+	getTld: ({
+		pathParams: { tld },
+		queryParams,
+	}: {
+		pathParams: GetTldPathParams;
+		queryParams?: GetTldQueryParams;
+	}) => getTld({ pathParams: { tld }, queryParams }),
 	getTldPrice: ({
 		pathParams: { tld },
 		queryParams,
@@ -12662,6 +12886,8 @@ export const EnvironmentService = {
 export const UserService = {
 	listUserEvents: ({ queryParams }: { queryParams?: ListUserEventsQueryParams }) =>
 		listUserEvents({ queryParams }),
+	listEventTypes: ({ queryParams }: { queryParams?: ListEventTypesQueryParams }) =>
+		listEventTypes({ queryParams }),
 	getAuthUser: () => getAuthUser(),
 	requestDelete: () => requestDelete(),
 } as const;
@@ -12775,6 +13001,11 @@ export const MarketplaceService = {
 	}: {
 		pathParams: SubmitInvoicePathParams;
 	}) => submitInvoice({ pathParams: { integrationConfigurationId } }),
+	finalizeInstallation: ({
+		pathParams: { integrationConfigurationId },
+	}: {
+		pathParams: FinalizeInstallationPathParams;
+	}) => finalizeInstallation({ pathParams: { integrationConfigurationId } }),
 	getInvoice: ({
 		pathParams: { integrationConfigurationId, invoiceId },
 	}: {
@@ -12820,6 +13051,14 @@ export const MarketplaceService = {
 		pathParams: DeleteExperimentationItemPathParams;
 	}) =>
 		deleteExperimentationItem({ pathParams: { integrationConfigurationId, resourceId, itemId } }),
+	gETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig: ({
+		pathParams: { integrationConfigurationId, resourceId },
+	}: {
+		pathParams: GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfigPathParams;
+	}) =>
+		gETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig({
+			pathParams: { integrationConfigurationId, resourceId },
+		}),
 	updateExperimentationEdgeConfig: ({
 		pathParams: { integrationConfigurationId, resourceId },
 	}: {
@@ -12870,6 +13109,189 @@ export const ProjectMembersService = {
 		pathParams: RemoveProjectMemberPathParams;
 		queryParams?: RemoveProjectMemberQueryParams;
 	}) => removeProjectMember({ pathParams: { idOrName, uid }, queryParams }),
+} as const;
+
+export const ProjectsService = {
+	getProjects: ({ queryParams }: { queryParams?: GetProjectsQueryParams }) =>
+		getProjects({ queryParams }),
+	createProject: ({ queryParams }: { queryParams?: CreateProjectQueryParams }) =>
+		createProject({ queryParams }),
+	getProject: ({
+		pathParams: { idOrName },
+		queryParams,
+	}: {
+		pathParams: GetProjectPathParams;
+		queryParams?: GetProjectQueryParams;
+	}) => getProject({ pathParams: { idOrName }, queryParams }),
+	updateProject: ({
+		pathParams: { idOrName },
+		queryParams,
+	}: {
+		pathParams: UpdateProjectPathParams;
+		queryParams?: UpdateProjectQueryParams;
+	}) => updateProject({ pathParams: { idOrName }, queryParams }),
+	deleteProject: ({
+		pathParams: { idOrName },
+		queryParams,
+	}: {
+		pathParams: DeleteProjectPathParams;
+		queryParams?: DeleteProjectQueryParams;
+	}) => deleteProject({ pathParams: { idOrName }, queryParams }),
+	getProjectDomains: ({
+		pathParams: { idOrName },
+		queryParams,
+	}: {
+		pathParams: GetProjectDomainsPathParams;
+		queryParams?: GetProjectDomainsQueryParams;
+	}) => getProjectDomains({ pathParams: { idOrName }, queryParams }),
+	getProjectDomain: ({
+		pathParams: { idOrName, domain },
+		queryParams,
+	}: {
+		pathParams: GetProjectDomainPathParams;
+		queryParams?: GetProjectDomainQueryParams;
+	}) => getProjectDomain({ pathParams: { idOrName, domain }, queryParams }),
+	updateProjectDomain: ({
+		pathParams: { idOrName, domain },
+		queryParams,
+	}: {
+		pathParams: UpdateProjectDomainPathParams;
+		queryParams?: UpdateProjectDomainQueryParams;
+	}) => updateProjectDomain({ pathParams: { idOrName, domain }, queryParams }),
+	removeProjectDomain: ({
+		pathParams: { idOrName, domain },
+		queryParams,
+	}: {
+		pathParams: RemoveProjectDomainPathParams;
+		queryParams?: RemoveProjectDomainQueryParams;
+	}) => removeProjectDomain({ pathParams: { idOrName, domain }, queryParams }),
+	addProjectDomain: ({
+		pathParams: { idOrName },
+		queryParams,
+	}: {
+		pathParams: AddProjectDomainPathParams;
+		queryParams?: AddProjectDomainQueryParams;
+	}) => addProjectDomain({ pathParams: { idOrName }, queryParams }),
+	moveProjectDomain: ({
+		pathParams: { idOrName, domain },
+		queryParams,
+	}: {
+		pathParams: MoveProjectDomainPathParams;
+		queryParams?: MoveProjectDomainQueryParams;
+	}) => moveProjectDomain({ pathParams: { idOrName, domain }, queryParams }),
+	verifyProjectDomain: ({
+		pathParams: { idOrName, domain },
+		queryParams,
+	}: {
+		pathParams: VerifyProjectDomainPathParams;
+		queryParams?: VerifyProjectDomainQueryParams;
+	}) => verifyProjectDomain({ pathParams: { idOrName, domain }, queryParams }),
+	filterProjectEnvs: ({
+		pathParams: { idOrName },
+		queryParams,
+	}: {
+		pathParams: FilterProjectEnvsPathParams;
+		queryParams?: FilterProjectEnvsQueryParams;
+	}) => filterProjectEnvs({ pathParams: { idOrName }, queryParams }),
+	createProjectEnv: ({
+		pathParams: { idOrName },
+		queryParams,
+	}: {
+		pathParams: CreateProjectEnvPathParams;
+		queryParams?: CreateProjectEnvQueryParams;
+	}) => createProjectEnv({ pathParams: { idOrName }, queryParams }),
+	getProjectEnv: ({
+		pathParams: { idOrName, id },
+		queryParams,
+	}: {
+		pathParams: GetProjectEnvPathParams;
+		queryParams?: GetProjectEnvQueryParams;
+	}) => getProjectEnv({ pathParams: { idOrName, id }, queryParams }),
+	removeProjectEnv: ({
+		pathParams: { idOrName, id },
+		queryParams,
+	}: {
+		pathParams: RemoveProjectEnvPathParams;
+		queryParams?: RemoveProjectEnvQueryParams;
+	}) => removeProjectEnv({ pathParams: { idOrName, id }, queryParams }),
+	editProjectEnv: ({
+		pathParams: { idOrName, id },
+		queryParams,
+	}: {
+		pathParams: EditProjectEnvPathParams;
+		queryParams?: EditProjectEnvQueryParams;
+	}) => editProjectEnv({ pathParams: { idOrName, id }, queryParams }),
+	batchRemoveProjectEnv: ({
+		pathParams: { idOrName },
+		queryParams,
+	}: {
+		pathParams: BatchRemoveProjectEnvPathParams;
+		queryParams?: BatchRemoveProjectEnvQueryParams;
+	}) => batchRemoveProjectEnv({ pathParams: { idOrName }, queryParams }),
+	createProjectTransferRequest: ({
+		pathParams: { idOrName },
+		queryParams,
+	}: {
+		pathParams: CreateProjectTransferRequestPathParams;
+		queryParams?: CreateProjectTransferRequestQueryParams;
+	}) => createProjectTransferRequest({ pathParams: { idOrName }, queryParams }),
+	acceptProjectTransferRequest: ({
+		pathParams: { code },
+		queryParams,
+	}: {
+		pathParams: AcceptProjectTransferRequestPathParams;
+		queryParams?: AcceptProjectTransferRequestQueryParams;
+	}) => acceptProjectTransferRequest({ pathParams: { code }, queryParams }),
+	updateProjectProtectionBypass: ({
+		pathParams: { idOrName },
+		queryParams,
+	}: {
+		pathParams: UpdateProjectProtectionBypassPathParams;
+		queryParams?: UpdateProjectProtectionBypassQueryParams;
+	}) => updateProjectProtectionBypass({ pathParams: { idOrName }, queryParams }),
+	requestRollback: ({
+		pathParams: { projectId, deploymentId },
+		queryParams,
+	}: {
+		pathParams: RequestRollbackPathParams;
+		queryParams?: RequestRollbackQueryParams;
+	}) => requestRollback({ pathParams: { projectId, deploymentId }, queryParams }),
+	pATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription: ({
+		pathParams: { projectId, deploymentId },
+	}: {
+		pathParams: PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionPathParams;
+	}) =>
+		pATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription({
+			pathParams: { projectId, deploymentId },
+		}),
+	requestPromote: ({
+		pathParams: { projectId, deploymentId },
+		queryParams,
+	}: {
+		pathParams: RequestPromotePathParams;
+		queryParams?: RequestPromoteQueryParams;
+	}) => requestPromote({ pathParams: { projectId, deploymentId }, queryParams }),
+	listPromoteAliases: ({
+		pathParams: { projectId },
+		queryParams,
+	}: {
+		pathParams: ListPromoteAliasesPathParams;
+		queryParams?: ListPromoteAliasesQueryParams;
+	}) => listPromoteAliases({ pathParams: { projectId }, queryParams }),
+	pauseProject: ({
+		pathParams: { projectId },
+		queryParams,
+	}: {
+		pathParams: PauseProjectPathParams;
+		queryParams?: PauseProjectQueryParams;
+	}) => pauseProject({ pathParams: { projectId }, queryParams }),
+	unpauseProject: ({
+		pathParams: { projectId },
+		queryParams,
+	}: {
+		pathParams: UnpauseProjectPathParams;
+		queryParams?: UnpauseProjectQueryParams;
+	}) => unpauseProject({ pathParams: { projectId }, queryParams }),
 } as const;
 
 export const RollingReleaseService = {
@@ -12964,8 +13386,13 @@ export const TeamsService = {
 		pathParams: GetTeamMembersPathParams;
 		queryParams?: GetTeamMembersQueryParams;
 	}) => getTeamMembers({ pathParams: { teamId }, queryParams }),
-	inviteUserToTeam: ({ pathParams: { teamId } }: { pathParams: InviteUserToTeamPathParams }) =>
-		inviteUserToTeam({ pathParams: { teamId } }),
+	inviteUserToTeam: ({
+		pathParams: { teamId },
+		queryParams,
+	}: {
+		pathParams: InviteUserToTeamPathParams;
+		queryParams?: InviteUserToTeamQueryParams;
+	}) => inviteUserToTeam({ pathParams: { teamId }, queryParams }),
 	requestAccessToTeam: ({
 		pathParams: { teamId },
 	}: {
@@ -13133,10 +13560,10 @@ export const CertsService = {
 export const ApiService = {
 	accessGroups: AccessGroupsService,
 	artifacts: ArtifactsService,
+	billing: BillingService,
 	bulkRedirects: BulkRedirectsService,
 	checks: ChecksService,
 	connect: ConnectService,
-	projects: ProjectsService,
 	deployments: DeploymentsService,
 	dns: DnsService,
 	domainsRegistrar: DomainsRegistrarService,
@@ -13152,6 +13579,7 @@ export const ApiService = {
 	authentication: AuthenticationService,
 	logs: LogsService,
 	projectMembers: ProjectMembersService,
+	projects: ProjectsService,
 	rollingRelease: RollingReleaseService,
 	security: SecurityService,
 	teams: TeamsService,
@@ -13222,6 +13650,8 @@ export type OperationsByPath = {
 	"GET /v1/access-groups/{idOrName}": typeof readAccessGroup;
 	"GET /v1/access-groups/{idOrName}/members": typeof listAccessGroupMembers;
 	"GET /v1/access-groups/{idOrName}/projects": typeof listAccessGroupProjects;
+	"GET /v1/billing/charges": typeof listBillingCharges;
+	"GET /v1/billing/contract-commitments": typeof listContractCommitments;
 	"GET /v1/bulk-redirects": typeof getRedirects;
 	"GET /v1/bulk-redirects/versions": typeof getVersions;
 	"GET /v1/connect/networks": typeof listNetworks;
@@ -13241,11 +13671,13 @@ export type OperationsByPath = {
 	"GET /v1/edge-config/{edgeConfigId}/tokens": typeof getEdgeConfigTokens;
 	"GET /v1/env": typeof listSharedEnvVariable;
 	"GET /v1/env/{id}": typeof getSharedEnvVar;
+	"GET /v1/events/types": typeof listEventTypes;
 	"GET /v1/installations/{integrationConfigurationId}/account": typeof getAccountInfo;
 	"GET /v1/installations/{integrationConfigurationId}/billing/invoices/{invoiceId}": typeof getInvoice;
 	"GET /v1/installations/{integrationConfigurationId}/member/{memberId}": typeof getMember;
 	"GET /v1/installations/{integrationConfigurationId}/resources": typeof getIntegrationResources;
 	"GET /v1/installations/{integrationConfigurationId}/resources/{resourceId}": typeof getIntegrationResource;
+	"GET /v1/installations/{integrationConfigurationId}/resources/{resourceId}/experimentation/edge-config": typeof gETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig;
 	"GET /v1/integrations/configuration/{id}": typeof getConfiguration;
 	"GET /v1/integrations/configuration/{id}/products": typeof getConfigurationProducts;
 	"GET /v1/integrations/configurations": typeof getConfigurations;
@@ -13267,6 +13699,7 @@ export type OperationsByPath = {
 	"GET /v1/registrar/domains/{domain}/price": typeof getDomainPrice;
 	"GET /v1/registrar/domains/{domain}/transfer": typeof getDomainTransferIn;
 	"GET /v1/registrar/orders/{orderId}": typeof getOrder;
+	"GET /v1/registrar/tlds/{tld}": typeof getTld;
 	"GET /v1/registrar/tlds/{tld}/price": typeof getTldPrice;
 	"GET /v1/registrar/tlds/supported": typeof getSupportedTlds;
 	"GET /v1/security/firewall/attack-status": typeof getActiveAttackStatus;
@@ -13310,7 +13743,6 @@ export type OperationsByPath = {
 	"PATCH /v1/access-groups/{accessGroupIdOrName}/projects/{projectId}": typeof updateAccessGroupProject;
 	"PATCH /v1/bulk-redirects": typeof editRedirect;
 	"PATCH /v1/connect/networks/{networkId}": typeof updateNetwork;
-	"PATCH /v1/data-cache/projects/{projectId}": typeof updateProjectDataCache;
 	"PATCH /v1/deployments/{deploymentId}/checks/{checkId}": typeof updateCheck;
 	"PATCH /v1/deployments/{deploymentId}/integrations/{integrationConfigurationId}/resources/{resourceId}/actions/{action}": typeof updateIntegrationDeploymentAction;
 	"PATCH /v1/domains/records/{recordId}": typeof updateRecord;
@@ -13324,6 +13756,7 @@ export type OperationsByPath = {
 	"PATCH /v1/projects/{idOrName}/protection-bypass": typeof updateProjectProtectionBypass;
 	"PATCH /v1/projects/{idOrName}/rolling-release/config": typeof updateRollingReleaseConfig;
 	"PATCH /v1/projects/{idOrName}/shared-connect-links": typeof updateStaticIps;
+	"PATCH /v1/projects/{projectId}/rollback/{deploymentId}/update-description": typeof pATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription;
 	"PATCH /v1/registrar/domains/{domain}/auto-renew": typeof updateDomainAutoRenew;
 	"PATCH /v1/registrar/domains/{domain}/nameservers": typeof updateDomainNameservers;
 	"PATCH /v1/security/firewall/config": typeof updateFirewallConfig;
@@ -13356,6 +13789,7 @@ export type OperationsByPath = {
 	"POST /v1/env": typeof createSharedEnvVariable;
 	"POST /v1/installations/{integrationConfigurationId}/billing": typeof submitBillingData;
 	"POST /v1/installations/{integrationConfigurationId}/billing/balance": typeof submitPrepaymentBalances;
+	"POST /v1/installations/{integrationConfigurationId}/billing/finalize": typeof finalizeInstallation;
 	"POST /v1/installations/{integrationConfigurationId}/billing/invoices": typeof submitInvoice;
 	"POST /v1/installations/{integrationConfigurationId}/billing/invoices/{invoiceId}/actions": typeof updateInvoice;
 	"POST /v1/installations/{integrationConfigurationId}/events": typeof createEvent;
@@ -13368,6 +13802,7 @@ export type OperationsByPath = {
 	"POST /v1/projects/{idOrName}/rolling-release/approve-stage": typeof approveRollingReleaseStage;
 	"POST /v1/projects/{idOrName}/rolling-release/complete": typeof completeRollingRelease;
 	"POST /v1/projects/{projectId}/pause": typeof pauseProject;
+	"POST /v1/projects/{projectId}/rollback/{deploymentId}": typeof requestRollback;
 	"POST /v1/projects/{projectId}/unpause": typeof unpauseProject;
 	"POST /v1/registrar/domains/{domain}/buy": typeof buySingleDomain;
 	"POST /v1/registrar/domains/{domain}/renew": typeof renewDomain;
@@ -13453,6 +13888,8 @@ export const operationsByPath: OperationsByPath = {
 	"GET /v1/access-groups/{idOrName}": readAccessGroup,
 	"GET /v1/access-groups/{idOrName}/members": listAccessGroupMembers,
 	"GET /v1/access-groups/{idOrName}/projects": listAccessGroupProjects,
+	"GET /v1/billing/charges": listBillingCharges,
+	"GET /v1/billing/contract-commitments": listContractCommitments,
 	"GET /v1/bulk-redirects": getRedirects,
 	"GET /v1/bulk-redirects/versions": getVersions,
 	"GET /v1/connect/networks": listNetworks,
@@ -13472,12 +13909,15 @@ export const operationsByPath: OperationsByPath = {
 	"GET /v1/edge-config/{edgeConfigId}/tokens": getEdgeConfigTokens,
 	"GET /v1/env": listSharedEnvVariable,
 	"GET /v1/env/{id}": getSharedEnvVar,
+	"GET /v1/events/types": listEventTypes,
 	"GET /v1/installations/{integrationConfigurationId}/account": getAccountInfo,
 	"GET /v1/installations/{integrationConfigurationId}/billing/invoices/{invoiceId}": getInvoice,
 	"GET /v1/installations/{integrationConfigurationId}/member/{memberId}": getMember,
 	"GET /v1/installations/{integrationConfigurationId}/resources": getIntegrationResources,
 	"GET /v1/installations/{integrationConfigurationId}/resources/{resourceId}":
 		getIntegrationResource,
+	"GET /v1/installations/{integrationConfigurationId}/resources/{resourceId}/experimentation/edge-config":
+		gETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig,
 	"GET /v1/integrations/configuration/{id}": getConfiguration,
 	"GET /v1/integrations/configuration/{id}/products": getConfigurationProducts,
 	"GET /v1/integrations/configurations": getConfigurations,
@@ -13500,6 +13940,7 @@ export const operationsByPath: OperationsByPath = {
 	"GET /v1/registrar/domains/{domain}/price": getDomainPrice,
 	"GET /v1/registrar/domains/{domain}/transfer": getDomainTransferIn,
 	"GET /v1/registrar/orders/{orderId}": getOrder,
+	"GET /v1/registrar/tlds/{tld}": getTld,
 	"GET /v1/registrar/tlds/{tld}/price": getTldPrice,
 	"GET /v1/registrar/tlds/supported": getSupportedTlds,
 	"GET /v1/security/firewall/attack-status": getActiveAttackStatus,
@@ -13543,7 +13984,6 @@ export const operationsByPath: OperationsByPath = {
 	"PATCH /v1/access-groups/{accessGroupIdOrName}/projects/{projectId}": updateAccessGroupProject,
 	"PATCH /v1/bulk-redirects": editRedirect,
 	"PATCH /v1/connect/networks/{networkId}": updateNetwork,
-	"PATCH /v1/data-cache/projects/{projectId}": updateProjectDataCache,
 	"PATCH /v1/deployments/{deploymentId}/checks/{checkId}": updateCheck,
 	"PATCH /v1/deployments/{deploymentId}/integrations/{integrationConfigurationId}/resources/{resourceId}/actions/{action}":
 		updateIntegrationDeploymentAction,
@@ -13559,6 +13999,8 @@ export const operationsByPath: OperationsByPath = {
 	"PATCH /v1/projects/{idOrName}/protection-bypass": updateProjectProtectionBypass,
 	"PATCH /v1/projects/{idOrName}/rolling-release/config": updateRollingReleaseConfig,
 	"PATCH /v1/projects/{idOrName}/shared-connect-links": updateStaticIps,
+	"PATCH /v1/projects/{projectId}/rollback/{deploymentId}/update-description":
+		pATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription,
 	"PATCH /v1/registrar/domains/{domain}/auto-renew": updateDomainAutoRenew,
 	"PATCH /v1/registrar/domains/{domain}/nameservers": updateDomainNameservers,
 	"PATCH /v1/security/firewall/config": updateFirewallConfig,
@@ -13592,6 +14034,7 @@ export const operationsByPath: OperationsByPath = {
 	"POST /v1/env": createSharedEnvVariable,
 	"POST /v1/installations/{integrationConfigurationId}/billing": submitBillingData,
 	"POST /v1/installations/{integrationConfigurationId}/billing/balance": submitPrepaymentBalances,
+	"POST /v1/installations/{integrationConfigurationId}/billing/finalize": finalizeInstallation,
 	"POST /v1/installations/{integrationConfigurationId}/billing/invoices": submitInvoice,
 	"POST /v1/installations/{integrationConfigurationId}/billing/invoices/{invoiceId}/actions":
 		updateInvoice,
@@ -13607,6 +14050,7 @@ export const operationsByPath: OperationsByPath = {
 	"POST /v1/projects/{idOrName}/rolling-release/approve-stage": approveRollingReleaseStage,
 	"POST /v1/projects/{idOrName}/rolling-release/complete": completeRollingRelease,
 	"POST /v1/projects/{projectId}/pause": pauseProject,
+	"POST /v1/projects/{projectId}/rollback/{deploymentId}": requestRollback,
 	"POST /v1/projects/{projectId}/unpause": unpauseProject,
 	"POST /v1/registrar/domains/{domain}/buy": buySingleDomain,
 	"POST /v1/registrar/domains/{domain}/renew": renewDomain,
