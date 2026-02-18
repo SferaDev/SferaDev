@@ -35,9 +35,18 @@
 		"@types/react": "catalog:",
 		"@types/react-dom": "catalog:",
 		"bunchee": "catalog:",
+		"effect": "catalog:",
 		"react": "catalog:",
 		"react-dom": "catalog:",
 		"typescript": "catalog:"
+	},
+	"peerDependencies": {
+		"effect": "^3.0.0"
+	},
+	"peerDependenciesMeta": {
+		"effect": {
+			"optional": true
+		}
 	},
 	"files": [
 		"dist"
@@ -55,6 +64,16 @@
 			"require": {
 				"types": "./dist/index.d.cts",
 				"default": "./dist/index.cjs"
+			}
+		},
+		"./effect": {
+			"import": {
+				"types": "./dist/effect/index.d.mts",
+				"default": "./dist/effect/index.mjs"
+			},
+			"require": {
+				"types": "./dist/effect/index.d.cts",
+				"default": "./dist/effect/index.cjs"
 			}
 		}
 	}

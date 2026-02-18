@@ -20,18 +20,27 @@
 		"is-tree-shakable": "is-tree-shakable"
 	},
 	"dependencies": {
+		"@sferadev/openapi-utils": "workspace:*",
 		"zod": "catalog:"
 	},
 	"devDependencies": {
 		"@kubb/cli": "catalog:",
 		"@kubb/core": "catalog:",
-		"@sferadev/openapi-utils": "workspace:*",
 		"@sferadev/tsconfig": "workspace:*",
 		"openapi3-ts": "catalog:",
 		"@types/node": "catalog:",
 		"bunchee": "catalog:",
+		"effect": "catalog:",
 		"rimraf": "catalog:",
 		"typescript": "catalog:"
+	},
+	"peerDependencies": {
+		"effect": "^3.0.0"
+	},
+	"peerDependenciesMeta": {
+		"effect": {
+			"optional": true
+		}
 	},
 	"files": [
 		"dist"
@@ -61,6 +70,11 @@
 			"types": "./dist/components.d.mts",
 			"import": "./dist/components.mjs",
 			"require": "./dist/components.cjs"
+		},
+		"./effect": {
+			"types": "./dist/effect.d.mts",
+			"import": "./dist/effect.mjs",
+			"require": "./dist/effect.cjs"
 		}
 	},
 	"publishConfig": {
