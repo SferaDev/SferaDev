@@ -758,7 +758,7 @@ export const deploySchema = z.object({
 export const deployEnvironmentVariableSchema = z.object({
 	key: z.string(),
 	value: z.string(),
-	is_secret: z.optional(z.boolean()),
+	is_secret: z.boolean(),
 	scopes: z.array(z.enum(["builds", "functions", "runtime", "post-processing"])),
 });
 
@@ -861,7 +861,7 @@ export const deployFilesSchema = z
 					z.object({
 						key: z.string(),
 						value: z.string(),
-						is_secret: z.optional(z.boolean()),
+						is_secret: z.boolean(),
 						scopes: z.array(z.enum(["builds", "functions", "runtime", "post-processing"])),
 					}),
 				)
@@ -1879,7 +1879,7 @@ export const createSiteDeployDeploySchema = z
 					z.object({
 						key: z.string(),
 						value: z.string(),
-						is_secret: z.optional(z.boolean()),
+						is_secret: z.boolean(),
 						scopes: z.array(z.enum(["builds", "functions", "runtime", "post-processing"])),
 					}),
 				)
@@ -4732,7 +4732,7 @@ export const createSiteDeployMutationRequestSchema = z
 					z.object({
 						key: z.string(),
 						value: z.string(),
-						is_secret: z.optional(z.boolean()),
+						is_secret: z.boolean(),
 						scopes: z.array(z.enum(["builds", "functions", "runtime", "post-processing"])),
 					}),
 				)
@@ -4965,7 +4965,7 @@ export const updateSiteDeployMutationRequestSchema = z
 					z.object({
 						key: z.string(),
 						value: z.string(),
-						is_secret: z.optional(z.boolean()),
+						is_secret: z.boolean(),
 						scopes: z.array(z.enum(["builds", "functions", "runtime", "post-processing"])),
 					}),
 				)

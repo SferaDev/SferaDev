@@ -1815,9 +1815,9 @@ export type DeployEnvironmentVariable = {
 	 */
 	value: string;
 	/**
-	 * @type boolean | undefined
+	 * @type boolean
 	 */
-	is_secret?: boolean | undefined;
+	is_secret: boolean;
 	/**
 	 * @type array
 	 */
@@ -2064,9 +2064,9 @@ export type DeployFiles = {
 				 */
 				value: string;
 				/**
-				 * @type boolean | undefined
+				 * @type boolean
 				 */
-				is_secret?: boolean | undefined;
+				is_secret: boolean;
 				/**
 				 * @type array
 				 */
@@ -4984,9 +4984,9 @@ export type CreateSiteDeployDeploy = {
 				 */
 				value: string;
 				/**
-				 * @type boolean | undefined
+				 * @type boolean
 				 */
-				is_secret?: boolean | undefined;
+				is_secret: boolean;
 				/**
 				 * @type array
 				 */
@@ -11040,9 +11040,9 @@ export type CreateSiteDeployMutationRequest = {
 				 */
 				value: string;
 				/**
-				 * @type boolean | undefined
+				 * @type boolean
 				 */
-				is_secret?: boolean | undefined;
+				is_secret: boolean;
 				/**
 				 * @type array
 				 */
@@ -11645,9 +11645,9 @@ export type UpdateSiteDeployMutationRequest = {
 				 */
 				value: string;
 				/**
-				 * @type boolean | undefined
+				 * @type boolean
 				 */
-				is_secret?: boolean | undefined;
+				is_secret: boolean;
 				/**
 				 * @type array
 				 */
