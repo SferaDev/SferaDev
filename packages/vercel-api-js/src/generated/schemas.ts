@@ -1855,6 +1855,12 @@ export const userEventSchema = z
 					projectId: z.string(),
 					scope: z.string(),
 					source: z.string(),
+					expiresAt: z.number().nullish(),
+				}),
+				z.object({
+					projectId: z.string(),
+					scope: z.string(),
+					source: z.string(),
 				}),
 				z.object({
 					projectId: z.string(),
@@ -5865,6 +5871,7 @@ export const userEventSchema = z
 				z.object({
 					deploymentId: z.string(),
 					projectId: z.string(),
+					runId: z.string(),
 				}),
 				z.object({
 					grantType: z.enum(["authorization_code", "urn:ietf:params:oauth:grant-type:device_code"]),
@@ -11848,6 +11855,33 @@ export const submitInvoice404Schema = z.unknown();
 export const submitInvoice409Schema = z.unknown();
 
 export const submitInvoiceMutationResponseSchema = z.lazy(() => submitInvoice200Schema);
+
+export const finalizeInstallationPathParamsSchema = z.object({
+	integrationConfigurationId: z.string(),
+});
+
+export const finalizeInstallation204Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export const finalizeInstallation400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const finalizeInstallation401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const finalizeInstallation403Schema = z.unknown();
+
+export const finalizeInstallation404Schema = z.unknown();
+
+export const finalizeInstallationMutationResponseSchema = z.lazy(
+	() => finalizeInstallation204Schema,
+);
 
 export const getInvoicePathParamsSchema = z.object({
 	integrationConfigurationId: z.string(),
