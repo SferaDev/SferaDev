@@ -159,6 +159,14 @@ import type {
 	CreateDeployment429,
 	CreateDeployment500,
 	CreateDeployment503,
+	CreateDeploymentCheckRun400,
+	CreateDeploymentCheckRun401,
+	CreateDeploymentCheckRun403,
+	CreateDeploymentCheckRun404,
+	CreateDeploymentCheckRun500,
+	CreateDeploymentCheckRunMutationResponse,
+	CreateDeploymentCheckRunPathParams,
+	CreateDeploymentCheckRunQueryParams,
 	CreateDeploymentMutationResponse,
 	CreateDeploymentQueryParams,
 	CreateDrain400,
@@ -232,6 +240,13 @@ import type {
 	CreateProject428,
 	CreateProject429,
 	CreateProject500,
+	CreateProjectCheck400,
+	CreateProjectCheck401,
+	CreateProjectCheck403,
+	CreateProjectCheck500,
+	CreateProjectCheckMutationResponse,
+	CreateProjectCheckPathParams,
+	CreateProjectCheckQueryParams,
 	CreateProjectEnv400,
 	CreateProjectEnv401,
 	CreateProjectEnv402,
@@ -406,6 +421,14 @@ import type {
 	DeleteProject401,
 	DeleteProject403,
 	DeleteProject409,
+	DeleteProjectCheck400,
+	DeleteProjectCheck401,
+	DeleteProjectCheck403,
+	DeleteProjectCheck404,
+	DeleteProjectCheck500,
+	DeleteProjectCheckMutationResponse,
+	DeleteProjectCheckPathParams,
+	DeleteProjectCheckQueryParams,
 	DeleteProjectMutationResponse,
 	DeleteProjectPathParams,
 	DeleteProjectQueryParams,
@@ -628,6 +651,14 @@ import type {
 	GetDeployment403,
 	GetDeployment404,
 	GetDeployment429,
+	GetDeploymentCheckRun400,
+	GetDeploymentCheckRun401,
+	GetDeploymentCheckRun403,
+	GetDeploymentCheckRun404,
+	GetDeploymentCheckRun500,
+	GetDeploymentCheckRunPathParams,
+	GetDeploymentCheckRunQueryParams,
+	GetDeploymentCheckRunQueryResponse,
 	GetDeploymentEvents400,
 	GetDeploymentEvents401,
 	GetDeploymentEvents403,
@@ -830,6 +861,13 @@ import type {
 	GetProject400,
 	GetProject401,
 	GetProject403,
+	GetProjectCheck400,
+	GetProjectCheck401,
+	GetProjectCheck403,
+	GetProjectCheck500,
+	GetProjectCheckPathParams,
+	GetProjectCheckQueryParams,
+	GetProjectCheckQueryResponse,
 	GetProjectDomain400,
 	GetProjectDomain401,
 	GetProjectDomain403,
@@ -1061,6 +1099,13 @@ import type {
 	ListBillingCharges503,
 	ListBillingChargesQueryParams,
 	ListBillingChargesQueryResponse,
+	ListCheckRuns400,
+	ListCheckRuns401,
+	ListCheckRuns403,
+	ListCheckRuns500,
+	ListCheckRunsPathParams,
+	ListCheckRunsQueryParams,
+	ListCheckRunsQueryResponse,
 	ListContractCommitments400,
 	ListContractCommitments401,
 	ListContractCommitments403,
@@ -1080,6 +1125,13 @@ import type {
 	ListDeploymentAliasesPathParams,
 	ListDeploymentAliasesQueryParams,
 	ListDeploymentAliasesQueryResponse,
+	ListDeploymentCheckRuns400,
+	ListDeploymentCheckRuns401,
+	ListDeploymentCheckRuns403,
+	ListDeploymentCheckRuns500,
+	ListDeploymentCheckRunsPathParams,
+	ListDeploymentCheckRunsQueryParams,
+	ListDeploymentCheckRunsQueryResponse,
 	ListDeploymentFiles400,
 	ListDeploymentFiles401,
 	ListDeploymentFiles403,
@@ -1097,6 +1149,13 @@ import type {
 	ListNetworks403,
 	ListNetworksQueryParams,
 	ListNetworksQueryResponse,
+	ListProjectChecks400,
+	ListProjectChecks401,
+	ListProjectChecks403,
+	ListProjectChecks500,
+	ListProjectChecksPathParams,
+	ListProjectChecksQueryParams,
+	ListProjectChecksQueryResponse,
 	ListPromoteAliases400,
 	ListPromoteAliases401,
 	ListPromoteAliases403,
@@ -1428,6 +1487,14 @@ import type {
 	UpdateCustomEnvironmentMutationResponse,
 	UpdateCustomEnvironmentPathParams,
 	UpdateCustomEnvironmentQueryParams,
+	UpdateDeploymentCheckRun400,
+	UpdateDeploymentCheckRun401,
+	UpdateDeploymentCheckRun403,
+	UpdateDeploymentCheckRun413,
+	UpdateDeploymentCheckRun500,
+	UpdateDeploymentCheckRunMutationResponse,
+	UpdateDeploymentCheckRunPathParams,
+	UpdateDeploymentCheckRunQueryParams,
 	UpdateDomainAutoRenew400,
 	UpdateDomainAutoRenew401,
 	UpdateDomainAutoRenew403,
@@ -1515,6 +1582,14 @@ import type {
 	UpdateProject404,
 	UpdateProject409,
 	UpdateProject428,
+	UpdateProjectCheck400,
+	UpdateProjectCheck401,
+	UpdateProjectCheck403,
+	UpdateProjectCheck404,
+	UpdateProjectCheck500,
+	UpdateProjectCheckMutationResponse,
+	UpdateProjectCheckPathParams,
+	UpdateProjectCheckQueryParams,
 	UpdateProjectDomain400,
 	UpdateProjectDomain401,
 	UpdateProjectDomain403,
@@ -2672,6 +2747,539 @@ export function updateVersion({
 		});
 
 		return response as UpdateVersionMutationResponse;
+	});
+}
+
+/**
+ * @description List all checks for a project, optionally filtered by target.
+ * @summary List all checks for a project
+ * {@link /v2/projects/:projectIdOrName/checks}
+ */
+export function listProjectChecks({
+	pathParams: { projectIdOrName },
+	queryParams,
+}: {
+	pathParams: ListProjectChecksPathParams;
+	queryParams?: ListProjectChecksQueryParams;
+}): Effect.Effect<
+	ListProjectChecksQueryResponse,
+	| ApiError
+	| ValidationError
+	| ListProjectChecks400
+	| ListProjectChecks401
+	| ListProjectChecks403
+	| ListProjectChecks500,
+	ApiClient
+> {
+	return Effect.gen(function* () {
+		const client = yield* ApiClient;
+
+		if (projectIdOrName === undefined) {
+			return yield* Effect.fail(
+				new ValidationError({
+					field: "projectIdOrName",
+					reason: "Missing required path parameter",
+				}),
+			);
+		}
+
+		const url = `/v2/projects/${projectIdOrName}/checks`;
+		const searchParams = serializeQueryParams(queryParams);
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+
+		const response = yield* client.request({
+			method: "GET",
+			url: fullUrl,
+
+			headers: {},
+		});
+
+		return response as ListProjectChecksQueryResponse;
+	});
+}
+
+/**
+ * @description Creates a new check for a project.
+ * @summary Create a check
+ * {@link /v2/projects/:projectIdOrName/checks}
+ */
+export function createProjectCheck({
+	pathParams: { projectIdOrName },
+	queryParams,
+}: {
+	pathParams: CreateProjectCheckPathParams;
+	queryParams?: CreateProjectCheckQueryParams;
+}): Effect.Effect<
+	CreateProjectCheckMutationResponse,
+	| ApiError
+	| ValidationError
+	| CreateProjectCheck400
+	| CreateProjectCheck401
+	| CreateProjectCheck403
+	| CreateProjectCheck500,
+	ApiClient
+> {
+	return Effect.gen(function* () {
+		const client = yield* ApiClient;
+
+		if (projectIdOrName === undefined) {
+			return yield* Effect.fail(
+				new ValidationError({
+					field: "projectIdOrName",
+					reason: "Missing required path parameter",
+				}),
+			);
+		}
+
+		const url = `/v2/projects/${projectIdOrName}/checks`;
+		const searchParams = serializeQueryParams(queryParams);
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+
+		const response = yield* client.request({
+			method: "POST",
+			url: fullUrl,
+
+			headers: { "Content-Type": "applicationJson" },
+		});
+
+		return response as CreateProjectCheckMutationResponse;
+	});
+}
+
+/**
+ * @description Return a detailed response for a single check.
+ * @summary Get a check
+ * {@link /v2/projects/:projectIdOrName/checks/:checkId}
+ */
+export function getProjectCheck({
+	pathParams: { projectIdOrName, checkId },
+	queryParams,
+}: {
+	pathParams: GetProjectCheckPathParams;
+	queryParams?: GetProjectCheckQueryParams;
+}): Effect.Effect<
+	GetProjectCheckQueryResponse,
+	| ApiError
+	| ValidationError
+	| GetProjectCheck400
+	| GetProjectCheck401
+	| GetProjectCheck403
+	| GetProjectCheck500,
+	ApiClient
+> {
+	return Effect.gen(function* () {
+		const client = yield* ApiClient;
+
+		if (projectIdOrName === undefined) {
+			return yield* Effect.fail(
+				new ValidationError({
+					field: "projectIdOrName",
+					reason: "Missing required path parameter",
+				}),
+			);
+		}
+		if (checkId === undefined) {
+			return yield* Effect.fail(
+				new ValidationError({
+					field: "checkId",
+					reason: "Missing required path parameter",
+				}),
+			);
+		}
+
+		const url = `/v2/projects/${projectIdOrName}/checks/${checkId}`;
+		const searchParams = serializeQueryParams(queryParams);
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+
+		const response = yield* client.request({
+			method: "GET",
+			url: fullUrl,
+
+			headers: {},
+		});
+
+		return response as GetProjectCheckQueryResponse;
+	});
+}
+
+/**
+ * @description Update an existing check.
+ * @summary Update a check
+ * {@link /v2/projects/:projectIdOrName/checks/:checkId}
+ */
+export function updateProjectCheck({
+	pathParams: { projectIdOrName, checkId },
+	queryParams,
+}: {
+	pathParams: UpdateProjectCheckPathParams;
+	queryParams?: UpdateProjectCheckQueryParams;
+}): Effect.Effect<
+	UpdateProjectCheckMutationResponse,
+	| ApiError
+	| ValidationError
+	| UpdateProjectCheck400
+	| UpdateProjectCheck401
+	| UpdateProjectCheck403
+	| UpdateProjectCheck404
+	| UpdateProjectCheck500,
+	ApiClient
+> {
+	return Effect.gen(function* () {
+		const client = yield* ApiClient;
+
+		if (projectIdOrName === undefined) {
+			return yield* Effect.fail(
+				new ValidationError({
+					field: "projectIdOrName",
+					reason: "Missing required path parameter",
+				}),
+			);
+		}
+		if (checkId === undefined) {
+			return yield* Effect.fail(
+				new ValidationError({
+					field: "checkId",
+					reason: "Missing required path parameter",
+				}),
+			);
+		}
+
+		const url = `/v2/projects/${projectIdOrName}/checks/${checkId}`;
+		const searchParams = serializeQueryParams(queryParams);
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+
+		const response = yield* client.request({
+			method: "PATCH",
+			url: fullUrl,
+
+			headers: { "Content-Type": "applicationJson" },
+		});
+
+		return response as UpdateProjectCheckMutationResponse;
+	});
+}
+
+/**
+ * @description Delete an existing check and all of its runs.
+ * @summary Delete a check
+ * {@link /v2/projects/:projectIdOrName/checks/:checkId}
+ */
+export function deleteProjectCheck({
+	pathParams: { projectIdOrName, checkId },
+	queryParams,
+}: {
+	pathParams: DeleteProjectCheckPathParams;
+	queryParams?: DeleteProjectCheckQueryParams;
+}): Effect.Effect<
+	DeleteProjectCheckMutationResponse,
+	| ApiError
+	| ValidationError
+	| DeleteProjectCheck400
+	| DeleteProjectCheck401
+	| DeleteProjectCheck403
+	| DeleteProjectCheck404
+	| DeleteProjectCheck500,
+	ApiClient
+> {
+	return Effect.gen(function* () {
+		const client = yield* ApiClient;
+
+		if (projectIdOrName === undefined) {
+			return yield* Effect.fail(
+				new ValidationError({
+					field: "projectIdOrName",
+					reason: "Missing required path parameter",
+				}),
+			);
+		}
+		if (checkId === undefined) {
+			return yield* Effect.fail(
+				new ValidationError({
+					field: "checkId",
+					reason: "Missing required path parameter",
+				}),
+			);
+		}
+
+		const url = `/v2/projects/${projectIdOrName}/checks/${checkId}`;
+		const searchParams = serializeQueryParams(queryParams);
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+
+		const response = yield* client.request({
+			method: "DELETE",
+			url: fullUrl,
+
+			headers: {},
+		});
+
+		return response as DeleteProjectCheckMutationResponse;
+	});
+}
+
+/**
+ * @description List all runs associated with a given check.
+ * @summary List runs for a check
+ * {@link /v2/projects/:projectIdOrName/checks/:checkId/runs}
+ */
+export function listCheckRuns({
+	pathParams: { projectIdOrName, checkId },
+	queryParams,
+}: {
+	pathParams: ListCheckRunsPathParams;
+	queryParams?: ListCheckRunsQueryParams;
+}): Effect.Effect<
+	ListCheckRunsQueryResponse,
+	| ApiError
+	| ValidationError
+	| ListCheckRuns400
+	| ListCheckRuns401
+	| ListCheckRuns403
+	| ListCheckRuns500,
+	ApiClient
+> {
+	return Effect.gen(function* () {
+		const client = yield* ApiClient;
+
+		if (projectIdOrName === undefined) {
+			return yield* Effect.fail(
+				new ValidationError({
+					field: "projectIdOrName",
+					reason: "Missing required path parameter",
+				}),
+			);
+		}
+		if (checkId === undefined) {
+			return yield* Effect.fail(
+				new ValidationError({
+					field: "checkId",
+					reason: "Missing required path parameter",
+				}),
+			);
+		}
+
+		const url = `/v2/projects/${projectIdOrName}/checks/${checkId}/runs`;
+		const searchParams = serializeQueryParams(queryParams);
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+
+		const response = yield* client.request({
+			method: "GET",
+			url: fullUrl,
+
+			headers: {},
+		});
+
+		return response as ListCheckRunsQueryResponse;
+	});
+}
+
+/**
+ * @description List all check runs for a deployment.
+ * @summary List check runs for a deployment
+ * {@link /v2/deployments/:deploymentId/check-runs}
+ */
+export function listDeploymentCheckRuns({
+	pathParams: { deploymentId },
+	queryParams,
+}: {
+	pathParams: ListDeploymentCheckRunsPathParams;
+	queryParams?: ListDeploymentCheckRunsQueryParams;
+}): Effect.Effect<
+	ListDeploymentCheckRunsQueryResponse,
+	| ApiError
+	| ValidationError
+	| ListDeploymentCheckRuns400
+	| ListDeploymentCheckRuns401
+	| ListDeploymentCheckRuns403
+	| ListDeploymentCheckRuns500,
+	ApiClient
+> {
+	return Effect.gen(function* () {
+		const client = yield* ApiClient;
+
+		if (deploymentId === undefined) {
+			return yield* Effect.fail(
+				new ValidationError({
+					field: "deploymentId",
+					reason: "Missing required path parameter",
+				}),
+			);
+		}
+
+		const url = `/v2/deployments/${deploymentId}/check-runs`;
+		const searchParams = serializeQueryParams(queryParams);
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+
+		const response = yield* client.request({
+			method: "GET",
+			url: fullUrl,
+
+			headers: {},
+		});
+
+		return response as ListDeploymentCheckRunsQueryResponse;
+	});
+}
+
+/**
+ * @description Creates a new check run for a deployment.
+ * @summary Create a check run
+ * {@link /v2/deployments/:deploymentId/check-runs}
+ */
+export function createDeploymentCheckRun({
+	pathParams: { deploymentId },
+	queryParams,
+}: {
+	pathParams: CreateDeploymentCheckRunPathParams;
+	queryParams?: CreateDeploymentCheckRunQueryParams;
+}): Effect.Effect<
+	CreateDeploymentCheckRunMutationResponse,
+	| ApiError
+	| ValidationError
+	| CreateDeploymentCheckRun400
+	| CreateDeploymentCheckRun401
+	| CreateDeploymentCheckRun403
+	| CreateDeploymentCheckRun404
+	| CreateDeploymentCheckRun500,
+	ApiClient
+> {
+	return Effect.gen(function* () {
+		const client = yield* ApiClient;
+
+		if (deploymentId === undefined) {
+			return yield* Effect.fail(
+				new ValidationError({
+					field: "deploymentId",
+					reason: "Missing required path parameter",
+				}),
+			);
+		}
+
+		const url = `/v2/deployments/${deploymentId}/check-runs`;
+		const searchParams = serializeQueryParams(queryParams);
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+
+		const response = yield* client.request({
+			method: "POST",
+			url: fullUrl,
+
+			headers: { "Content-Type": "applicationJson" },
+		});
+
+		return response as CreateDeploymentCheckRunMutationResponse;
+	});
+}
+
+/**
+ * @description Return a detailed response for a single check run.
+ * @summary Get a check run
+ * {@link /v2/deployments/:deploymentId/check-runs/:checkRunId}
+ */
+export function getDeploymentCheckRun({
+	pathParams: { deploymentId, checkRunId },
+	queryParams,
+}: {
+	pathParams: GetDeploymentCheckRunPathParams;
+	queryParams?: GetDeploymentCheckRunQueryParams;
+}): Effect.Effect<
+	GetDeploymentCheckRunQueryResponse,
+	| ApiError
+	| ValidationError
+	| GetDeploymentCheckRun400
+	| GetDeploymentCheckRun401
+	| GetDeploymentCheckRun403
+	| GetDeploymentCheckRun404
+	| GetDeploymentCheckRun500,
+	ApiClient
+> {
+	return Effect.gen(function* () {
+		const client = yield* ApiClient;
+
+		if (deploymentId === undefined) {
+			return yield* Effect.fail(
+				new ValidationError({
+					field: "deploymentId",
+					reason: "Missing required path parameter",
+				}),
+			);
+		}
+		if (checkRunId === undefined) {
+			return yield* Effect.fail(
+				new ValidationError({
+					field: "checkRunId",
+					reason: "Missing required path parameter",
+				}),
+			);
+		}
+
+		const url = `/v2/deployments/${deploymentId}/check-runs/${checkRunId}`;
+		const searchParams = serializeQueryParams(queryParams);
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+
+		const response = yield* client.request({
+			method: "GET",
+			url: fullUrl,
+
+			headers: {},
+		});
+
+		return response as GetDeploymentCheckRunQueryResponse;
+	});
+}
+
+/**
+ * @description Update an existing check run for a deployment.
+ * @summary Update a check run
+ * {@link /v2/deployments/:deploymentId/check-runs/:checkRunId}
+ */
+export function updateDeploymentCheckRun({
+	pathParams: { deploymentId, checkRunId },
+	queryParams,
+}: {
+	pathParams: UpdateDeploymentCheckRunPathParams;
+	queryParams?: UpdateDeploymentCheckRunQueryParams;
+}): Effect.Effect<
+	UpdateDeploymentCheckRunMutationResponse,
+	| ApiError
+	| ValidationError
+	| UpdateDeploymentCheckRun400
+	| UpdateDeploymentCheckRun401
+	| UpdateDeploymentCheckRun403
+	| UpdateDeploymentCheckRun413
+	| UpdateDeploymentCheckRun500,
+	ApiClient
+> {
+	return Effect.gen(function* () {
+		const client = yield* ApiClient;
+
+		if (deploymentId === undefined) {
+			return yield* Effect.fail(
+				new ValidationError({
+					field: "deploymentId",
+					reason: "Missing required path parameter",
+				}),
+			);
+		}
+		if (checkRunId === undefined) {
+			return yield* Effect.fail(
+				new ValidationError({
+					field: "checkRunId",
+					reason: "Missing required path parameter",
+				}),
+			);
+		}
+
+		const url = `/v2/deployments/${deploymentId}/check-runs/${checkRunId}`;
+		const searchParams = serializeQueryParams(queryParams);
+		const fullUrl = url + (searchParams ? "?" + searchParams : "");
+
+		const response = yield* client.request({
+			method: "PATCH",
+			url: fullUrl,
+
+			headers: { "Content-Type": "applicationJson" },
+		});
+
+		return response as UpdateDeploymentCheckRunMutationResponse;
 	});
 }
 
@@ -12316,6 +12924,79 @@ export const BulkRedirectsService = {
 		updateVersion({ queryParams }),
 } as const;
 
+export const ChecksV2Service = {
+	listProjectChecks: ({
+		pathParams: { projectIdOrName },
+		queryParams,
+	}: {
+		pathParams: ListProjectChecksPathParams;
+		queryParams?: ListProjectChecksQueryParams;
+	}) => listProjectChecks({ pathParams: { projectIdOrName }, queryParams }),
+	createProjectCheck: ({
+		pathParams: { projectIdOrName },
+		queryParams,
+	}: {
+		pathParams: CreateProjectCheckPathParams;
+		queryParams?: CreateProjectCheckQueryParams;
+	}) => createProjectCheck({ pathParams: { projectIdOrName }, queryParams }),
+	getProjectCheck: ({
+		pathParams: { projectIdOrName, checkId },
+		queryParams,
+	}: {
+		pathParams: GetProjectCheckPathParams;
+		queryParams?: GetProjectCheckQueryParams;
+	}) => getProjectCheck({ pathParams: { projectIdOrName, checkId }, queryParams }),
+	updateProjectCheck: ({
+		pathParams: { projectIdOrName, checkId },
+		queryParams,
+	}: {
+		pathParams: UpdateProjectCheckPathParams;
+		queryParams?: UpdateProjectCheckQueryParams;
+	}) => updateProjectCheck({ pathParams: { projectIdOrName, checkId }, queryParams }),
+	deleteProjectCheck: ({
+		pathParams: { projectIdOrName, checkId },
+		queryParams,
+	}: {
+		pathParams: DeleteProjectCheckPathParams;
+		queryParams?: DeleteProjectCheckQueryParams;
+	}) => deleteProjectCheck({ pathParams: { projectIdOrName, checkId }, queryParams }),
+	listCheckRuns: ({
+		pathParams: { projectIdOrName, checkId },
+		queryParams,
+	}: {
+		pathParams: ListCheckRunsPathParams;
+		queryParams?: ListCheckRunsQueryParams;
+	}) => listCheckRuns({ pathParams: { projectIdOrName, checkId }, queryParams }),
+	listDeploymentCheckRuns: ({
+		pathParams: { deploymentId },
+		queryParams,
+	}: {
+		pathParams: ListDeploymentCheckRunsPathParams;
+		queryParams?: ListDeploymentCheckRunsQueryParams;
+	}) => listDeploymentCheckRuns({ pathParams: { deploymentId }, queryParams }),
+	createDeploymentCheckRun: ({
+		pathParams: { deploymentId },
+		queryParams,
+	}: {
+		pathParams: CreateDeploymentCheckRunPathParams;
+		queryParams?: CreateDeploymentCheckRunQueryParams;
+	}) => createDeploymentCheckRun({ pathParams: { deploymentId }, queryParams }),
+	getDeploymentCheckRun: ({
+		pathParams: { deploymentId, checkRunId },
+		queryParams,
+	}: {
+		pathParams: GetDeploymentCheckRunPathParams;
+		queryParams?: GetDeploymentCheckRunQueryParams;
+	}) => getDeploymentCheckRun({ pathParams: { deploymentId, checkRunId }, queryParams }),
+	updateDeploymentCheckRun: ({
+		pathParams: { deploymentId, checkRunId },
+		queryParams,
+	}: {
+		pathParams: UpdateDeploymentCheckRunPathParams;
+		queryParams?: UpdateDeploymentCheckRunQueryParams;
+	}) => updateDeploymentCheckRun({ pathParams: { deploymentId, checkRunId }, queryParams }),
+} as const;
+
 export const ChecksService = {
 	createCheck: ({
 		pathParams: { deploymentId },
@@ -13562,6 +14243,7 @@ export const ApiService = {
 	artifacts: ArtifactsService,
 	billing: BillingService,
 	bulkRedirects: BulkRedirectsService,
+	checksV2: ChecksV2Service,
 	checks: ChecksService,
 	connect: ConnectService,
 	deployments: DeploymentsService,
@@ -13638,6 +14320,7 @@ export type OperationsByPath = {
 	"DELETE /v13/deployments/{id}": typeof deleteDeployment;
 	"DELETE /v2/aliases/{aliasId}": typeof deleteAlias;
 	"DELETE /v2/domains/{domain}/records/{recordId}": typeof removeRecord;
+	"DELETE /v2/projects/{projectIdOrName}/checks/{checkId}": typeof deleteProjectCheck;
 	"DELETE /v3/user/tokens/{tokenId}": typeof deleteAuthToken;
 	"DELETE /v6/domains/{domain}": typeof deleteDomain;
 	"DELETE /v8/certs/{id}": typeof removeCert;
@@ -13712,8 +14395,13 @@ export type OperationsByPath = {
 	"GET /v10/projects": typeof getProjects;
 	"GET /v10/projects/{idOrName}/env": typeof filterProjectEnvs;
 	"GET /v13/deployments/{idOrUrl}": typeof getDeployment;
+	"GET /v2/deployments/{deploymentId}/check-runs": typeof listDeploymentCheckRuns;
+	"GET /v2/deployments/{deploymentId}/check-runs/{checkRunId}": typeof getDeploymentCheckRun;
 	"GET /v2/deployments/{id}/aliases": typeof listDeploymentAliases;
 	"GET /v2/integrations/log-drains": typeof getIntegrationLogDrains;
+	"GET /v2/projects/{projectIdOrName}/checks": typeof listProjectChecks;
+	"GET /v2/projects/{projectIdOrName}/checks/{checkId}": typeof getProjectCheck;
+	"GET /v2/projects/{projectIdOrName}/checks/{checkId}/runs": typeof listCheckRuns;
 	"GET /v2/teams": typeof getTeams;
 	"GET /v2/teams/{teamId}": typeof getTeam;
 	"GET /v2/user": typeof getAuthUser;
@@ -13762,6 +14450,8 @@ export type OperationsByPath = {
 	"PATCH /v1/security/firewall/config": typeof updateFirewallConfig;
 	"PATCH /v1/teams/{teamId}/members/{uid}": typeof updateTeamMember;
 	"PATCH /v12/deployments/{id}/cancel": typeof cancelDeployment;
+	"PATCH /v2/deployments/{deploymentId}/check-runs/{checkRunId}": typeof updateDeploymentCheckRun;
+	"PATCH /v2/projects/{projectIdOrName}/checks/{checkId}": typeof updateProjectCheck;
 	"PATCH /v2/teams/{teamId}": typeof patchTeam;
 	"PATCH /v3/domains/{domain}": typeof patchDomain;
 	"PATCH /v9/projects/{idOrName}": typeof updateProject;
@@ -13822,10 +14512,12 @@ export type OperationsByPath = {
 	"POST /v10/projects/{projectId}/promote/{deploymentId}": typeof requestPromote;
 	"POST /v11/projects": typeof createProject;
 	"POST /v13/deployments": typeof createDeployment;
+	"POST /v2/deployments/{deploymentId}/check-runs": typeof createDeploymentCheckRun;
 	"POST /v2/deployments/{id}/aliases": typeof assignAlias;
 	"POST /v2/domains/{domain}/records": typeof createRecord;
 	"POST /v2/files": typeof uploadFile;
 	"POST /v2/integrations/log-drains": typeof createLogDrain;
+	"POST /v2/projects/{projectIdOrName}/checks": typeof createProjectCheck;
 	"POST /v2/teams/{teamId}/members": typeof inviteUserToTeam;
 	"POST /v3/user/tokens": typeof createAuthToken;
 	"POST /v7/domains": typeof createOrTransferDomain;
@@ -13875,6 +14567,7 @@ export const operationsByPath: OperationsByPath = {
 	"DELETE /v13/deployments/{id}": deleteDeployment,
 	"DELETE /v2/aliases/{aliasId}": deleteAlias,
 	"DELETE /v2/domains/{domain}/records/{recordId}": removeRecord,
+	"DELETE /v2/projects/{projectIdOrName}/checks/{checkId}": deleteProjectCheck,
 	"DELETE /v3/user/tokens/{tokenId}": deleteAuthToken,
 	"DELETE /v6/domains/{domain}": deleteDomain,
 	"DELETE /v8/certs/{id}": removeCert,
@@ -13953,8 +14646,13 @@ export const operationsByPath: OperationsByPath = {
 	"GET /v10/projects": getProjects,
 	"GET /v10/projects/{idOrName}/env": filterProjectEnvs,
 	"GET /v13/deployments/{idOrUrl}": getDeployment,
+	"GET /v2/deployments/{deploymentId}/check-runs": listDeploymentCheckRuns,
+	"GET /v2/deployments/{deploymentId}/check-runs/{checkRunId}": getDeploymentCheckRun,
 	"GET /v2/deployments/{id}/aliases": listDeploymentAliases,
 	"GET /v2/integrations/log-drains": getIntegrationLogDrains,
+	"GET /v2/projects/{projectIdOrName}/checks": listProjectChecks,
+	"GET /v2/projects/{projectIdOrName}/checks/{checkId}": getProjectCheck,
+	"GET /v2/projects/{projectIdOrName}/checks/{checkId}/runs": listCheckRuns,
 	"GET /v2/teams": getTeams,
 	"GET /v2/teams/{teamId}": getTeam,
 	"GET /v2/user": getAuthUser,
@@ -14006,6 +14704,8 @@ export const operationsByPath: OperationsByPath = {
 	"PATCH /v1/security/firewall/config": updateFirewallConfig,
 	"PATCH /v1/teams/{teamId}/members/{uid}": updateTeamMember,
 	"PATCH /v12/deployments/{id}/cancel": cancelDeployment,
+	"PATCH /v2/deployments/{deploymentId}/check-runs/{checkRunId}": updateDeploymentCheckRun,
+	"PATCH /v2/projects/{projectIdOrName}/checks/{checkId}": updateProjectCheck,
 	"PATCH /v2/teams/{teamId}": patchTeam,
 	"PATCH /v3/domains/{domain}": patchDomain,
 	"PATCH /v9/projects/{idOrName}": updateProject,
@@ -14070,10 +14770,12 @@ export const operationsByPath: OperationsByPath = {
 	"POST /v10/projects/{projectId}/promote/{deploymentId}": requestPromote,
 	"POST /v11/projects": createProject,
 	"POST /v13/deployments": createDeployment,
+	"POST /v2/deployments/{deploymentId}/check-runs": createDeploymentCheckRun,
 	"POST /v2/deployments/{id}/aliases": assignAlias,
 	"POST /v2/domains/{domain}/records": createRecord,
 	"POST /v2/files": uploadFile,
 	"POST /v2/integrations/log-drains": createLogDrain,
+	"POST /v2/projects/{projectIdOrName}/checks": createProjectCheck,
 	"POST /v2/teams/{teamId}/members": inviteUserToTeam,
 	"POST /v3/user/tokens": createAuthToken,
 	"POST /v7/domains": createOrTransferDomain,

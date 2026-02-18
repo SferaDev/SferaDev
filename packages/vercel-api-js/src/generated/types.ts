@@ -17880,6 +17880,574 @@ export type UpdateVersionMutation = {
 		| UpdateVersion500;
 };
 
+export type ListProjectChecksPathParams = {
+	/**
+	 * @type string
+	 */
+	projectIdOrName: string;
+};
+
+export const listProjectChecksQueryParamsBlocksEnum = {
+	"build-start": "build-start",
+	"deployment-start": "deployment-start",
+	"deployment-alias": "deployment-alias",
+	"deployment-promotion": "deployment-promotion",
+	none: "none",
+} as const;
+
+export type ListProjectChecksQueryParamsBlocksEnumKey =
+	(typeof listProjectChecksQueryParamsBlocksEnum)[keyof typeof listProjectChecksQueryParamsBlocksEnum];
+
+export type ListProjectChecksQueryParams = {
+	/**
+	 * @type string | undefined
+	 */
+	blocks?: ListProjectChecksQueryParamsBlocksEnumKey | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type ListProjectChecks200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type ListProjectChecks400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type ListProjectChecks401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type ListProjectChecks403 = unknown;
+
+export type ListProjectChecks500 = unknown;
+
+export type ListProjectChecksQueryResponse = ListProjectChecks200;
+
+export type ListProjectChecksQuery = {
+	Response: ListProjectChecks200;
+	PathParams: ListProjectChecksPathParams;
+	QueryParams: ListProjectChecksQueryParams;
+	Errors: ListProjectChecks400 | ListProjectChecks401 | ListProjectChecks403 | ListProjectChecks500;
+};
+
+export type CreateProjectCheckPathParams = {
+	/**
+	 * @type string
+	 */
+	projectIdOrName: string;
+};
+
+export type CreateProjectCheckQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type CreateProjectCheck200 = unknown;
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export type CreateProjectCheck400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type CreateProjectCheck401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type CreateProjectCheck403 = unknown;
+
+export type CreateProjectCheck500 = unknown;
+
+export type CreateProjectCheckMutationResponse = CreateProjectCheck200;
+
+export type CreateProjectCheckMutation = {
+	Response: CreateProjectCheck200;
+	PathParams: CreateProjectCheckPathParams;
+	QueryParams: CreateProjectCheckQueryParams;
+	Errors:
+		| CreateProjectCheck400
+		| CreateProjectCheck401
+		| CreateProjectCheck403
+		| CreateProjectCheck500;
+};
+
+export type GetProjectCheckPathParams = {
+	/**
+	 * @type string
+	 */
+	projectIdOrName: string;
+	/**
+	 * @description The ID of the resource that will be updated.
+	 * @type string
+	 */
+	checkId: string;
+};
+
+export type GetProjectCheckQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type GetProjectCheck200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type GetProjectCheck400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type GetProjectCheck401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type GetProjectCheck403 = unknown;
+
+export type GetProjectCheck500 = unknown;
+
+export type GetProjectCheckQueryResponse = GetProjectCheck200;
+
+export type GetProjectCheckQuery = {
+	Response: GetProjectCheck200;
+	PathParams: GetProjectCheckPathParams;
+	QueryParams: GetProjectCheckQueryParams;
+	Errors: GetProjectCheck400 | GetProjectCheck401 | GetProjectCheck403 | GetProjectCheck500;
+};
+
+export type UpdateProjectCheckPathParams = {
+	/**
+	 * @type string
+	 */
+	projectIdOrName: string;
+	/**
+	 * @type string
+	 */
+	checkId: string;
+};
+
+export type UpdateProjectCheckQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type UpdateProjectCheck200 = unknown;
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export type UpdateProjectCheck400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type UpdateProjectCheck401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type UpdateProjectCheck403 = unknown;
+
+export type UpdateProjectCheck404 = unknown;
+
+export type UpdateProjectCheck500 = unknown;
+
+export type UpdateProjectCheckMutationResponse = UpdateProjectCheck200;
+
+export type UpdateProjectCheckMutation = {
+	Response: UpdateProjectCheck200;
+	PathParams: UpdateProjectCheckPathParams;
+	QueryParams: UpdateProjectCheckQueryParams;
+	Errors:
+		| UpdateProjectCheck400
+		| UpdateProjectCheck401
+		| UpdateProjectCheck403
+		| UpdateProjectCheck404
+		| UpdateProjectCheck500;
+};
+
+export type DeleteProjectCheckPathParams = {
+	/**
+	 * @type string
+	 */
+	projectIdOrName: string;
+	/**
+	 * @type string
+	 */
+	checkId: string;
+};
+
+export type DeleteProjectCheckQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type DeleteProjectCheck200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type DeleteProjectCheck400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type DeleteProjectCheck401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type DeleteProjectCheck403 = unknown;
+
+export type DeleteProjectCheck404 = unknown;
+
+export type DeleteProjectCheck500 = unknown;
+
+export type DeleteProjectCheckMutationResponse = DeleteProjectCheck200;
+
+export type DeleteProjectCheckMutation = {
+	Response: DeleteProjectCheck200;
+	PathParams: DeleteProjectCheckPathParams;
+	QueryParams: DeleteProjectCheckQueryParams;
+	Errors:
+		| DeleteProjectCheck400
+		| DeleteProjectCheck401
+		| DeleteProjectCheck403
+		| DeleteProjectCheck404
+		| DeleteProjectCheck500;
+};
+
+export type ListCheckRunsPathParams = {
+	/**
+	 * @type string
+	 */
+	projectIdOrName: string;
+	/**
+	 * @description The ID of the resource that will be updated.
+	 * @type string
+	 */
+	checkId: string;
+};
+
+export type ListCheckRunsQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type ListCheckRuns200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type ListCheckRuns400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type ListCheckRuns401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type ListCheckRuns403 = unknown;
+
+export type ListCheckRuns500 = unknown;
+
+export type ListCheckRunsQueryResponse = ListCheckRuns200;
+
+export type ListCheckRunsQuery = {
+	Response: ListCheckRuns200;
+	PathParams: ListCheckRunsPathParams;
+	QueryParams: ListCheckRunsQueryParams;
+	Errors: ListCheckRuns400 | ListCheckRuns401 | ListCheckRuns403 | ListCheckRuns500;
+};
+
+export type ListDeploymentCheckRunsPathParams = {
+	/**
+	 * @type string
+	 */
+	deploymentId: string;
+};
+
+export type ListDeploymentCheckRunsQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type ListDeploymentCheckRuns200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type ListDeploymentCheckRuns400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type ListDeploymentCheckRuns401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type ListDeploymentCheckRuns403 = unknown;
+
+export type ListDeploymentCheckRuns500 = unknown;
+
+export type ListDeploymentCheckRunsQueryResponse = ListDeploymentCheckRuns200;
+
+export type ListDeploymentCheckRunsQuery = {
+	Response: ListDeploymentCheckRuns200;
+	PathParams: ListDeploymentCheckRunsPathParams;
+	QueryParams: ListDeploymentCheckRunsQueryParams;
+	Errors:
+		| ListDeploymentCheckRuns400
+		| ListDeploymentCheckRuns401
+		| ListDeploymentCheckRuns403
+		| ListDeploymentCheckRuns500;
+};
+
+export type CreateDeploymentCheckRunPathParams = {
+	/**
+	 * @type string
+	 */
+	deploymentId: string;
+};
+
+export type CreateDeploymentCheckRunQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type CreateDeploymentCheckRun200 = unknown;
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export type CreateDeploymentCheckRun400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type CreateDeploymentCheckRun401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type CreateDeploymentCheckRun403 = unknown;
+
+export type CreateDeploymentCheckRun404 = unknown;
+
+export type CreateDeploymentCheckRun500 = unknown;
+
+export type CreateDeploymentCheckRunMutationResponse = CreateDeploymentCheckRun200;
+
+export type CreateDeploymentCheckRunMutation = {
+	Response: CreateDeploymentCheckRun200;
+	PathParams: CreateDeploymentCheckRunPathParams;
+	QueryParams: CreateDeploymentCheckRunQueryParams;
+	Errors:
+		| CreateDeploymentCheckRun400
+		| CreateDeploymentCheckRun401
+		| CreateDeploymentCheckRun403
+		| CreateDeploymentCheckRun404
+		| CreateDeploymentCheckRun500;
+};
+
+export type GetDeploymentCheckRunPathParams = {
+	/**
+	 * @type string
+	 */
+	deploymentId: string;
+	/**
+	 * @description The ID of the resource that will be updated.
+	 * @type string
+	 */
+	checkRunId: string;
+};
+
+export type GetDeploymentCheckRunQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type GetDeploymentCheckRun200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type GetDeploymentCheckRun400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type GetDeploymentCheckRun401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type GetDeploymentCheckRun403 = unknown;
+
+export type GetDeploymentCheckRun404 = unknown;
+
+export type GetDeploymentCheckRun500 = unknown;
+
+export type GetDeploymentCheckRunQueryResponse = GetDeploymentCheckRun200;
+
+export type GetDeploymentCheckRunQuery = {
+	Response: GetDeploymentCheckRun200;
+	PathParams: GetDeploymentCheckRunPathParams;
+	QueryParams: GetDeploymentCheckRunQueryParams;
+	Errors:
+		| GetDeploymentCheckRun400
+		| GetDeploymentCheckRun401
+		| GetDeploymentCheckRun403
+		| GetDeploymentCheckRun404
+		| GetDeploymentCheckRun500;
+};
+
+export type UpdateDeploymentCheckRunPathParams = {
+	/**
+	 * @type string
+	 */
+	deploymentId: string;
+	/**
+	 * @type string
+	 */
+	checkRunId: string;
+};
+
+export type UpdateDeploymentCheckRunQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type UpdateDeploymentCheckRun200 = unknown;
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export type UpdateDeploymentCheckRun400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type UpdateDeploymentCheckRun401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type UpdateDeploymentCheckRun403 = unknown;
+
+/**
+ * @description The output provided is too large
+ */
+export type UpdateDeploymentCheckRun413 = unknown;
+
+export type UpdateDeploymentCheckRun500 = unknown;
+
+export type UpdateDeploymentCheckRunMutationResponse = UpdateDeploymentCheckRun200;
+
+export type UpdateDeploymentCheckRunMutation = {
+	Response: UpdateDeploymentCheckRun200;
+	PathParams: UpdateDeploymentCheckRunPathParams;
+	QueryParams: UpdateDeploymentCheckRunQueryParams;
+	Errors:
+		| UpdateDeploymentCheckRun400
+		| UpdateDeploymentCheckRun401
+		| UpdateDeploymentCheckRun403
+		| UpdateDeploymentCheckRun413
+		| UpdateDeploymentCheckRun500;
+};
+
 export type CreateCheckPathParams = {
 	/**
 	 * @description The deployment to create the check for.
