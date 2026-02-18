@@ -109,6 +109,7 @@ import {
 	editRedirectQueryParamsSchema,
 	filterProjectEnvsPathParamsSchema,
 	filterProjectEnvsQueryParamsSchema,
+	finalizeInstallationPathParamsSchema,
 	GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfigPathParamsSchema,
 	GETV1SecurityFirewallEventsQueryParamsSchema,
 	getAccountInfoPathParamsSchema,
@@ -840,6 +841,12 @@ import type {
 	FilterProjectEnvsPathParams,
 	FilterProjectEnvsQueryParams,
 	FilterProjectEnvsQueryResponse,
+	FinalizeInstallation400,
+	FinalizeInstallation401,
+	FinalizeInstallation403,
+	FinalizeInstallation404,
+	FinalizeInstallationMutationResponse,
+	FinalizeInstallationPathParams,
 	GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig400,
 	GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig401,
 	GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig403,
@@ -6640,6 +6647,45 @@ export async function submitInvoice({
 		baseUrl: "https://api.vercel.com",
 		...requestConfig,
 		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return { content: [{ type: "text", text: JSON.stringify(data) }] };
+}
+
+/**
+ * @description This endpoint allows the partner to mark an installation as finalized. This means you will not send any more invoices for the installation. Use this after a customer has requested uninstall and you have sent any remaining invoices. This will allow the uninstall process to proceed immediately after all invoices have been paid. <br/> Use the `credentials.access_token` we provided in the [Upsert Installation](#upsert-installation) body to authorize this request.
+ * @summary Finalize Installation
+ * {@link /v1/installations/:integrationConfigurationId/billing/finalize}
+ */
+export async function finalizeInstallation({
+	pathParams: { integrationConfigurationId },
+	config = {},
+}: {
+	pathParams: FinalizeInstallationPathParams;
+	config?: Partial<FetcherConfig> & { client?: typeof client };
+}): Promise<Promise<CallToolResult>> {
+	const { client: request = client, ...requestConfig } = config;
+
+	if (!integrationConfigurationId) {
+		throw new Error(`Missing required path parameter: integrationConfigurationId`);
+	}
+
+	const data = await request<
+		FinalizeInstallationMutationResponse,
+		ErrorWrapper<
+			| FinalizeInstallation400
+			| FinalizeInstallation401
+			| FinalizeInstallation403
+			| FinalizeInstallation404
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		FinalizeInstallationPathParams
+	>({
+		method: "POST",
+		url: `/v1/installations/${integrationConfigurationId}/billing/finalize`,
+		baseUrl: "https://api.vercel.com",
+		...requestConfig,
 	});
 	return { content: [{ type: "text", text: JSON.stringify(data) }] };
 }
@@ -12899,6 +12945,22 @@ export function initMcpTools<Server>(serverLike: Server, config: FetcherConfig) 
 		async ({ integrationConfigurationId }) => {
 			try {
 				return await submitInvoice({ pathParams: { integrationConfigurationId }, config });
+			} catch (error) {
+				return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
+			}
+		},
+	);
+
+	server.tool(
+		"finalizeInstallation",
+		"This endpoint allows the partner to mark an installation as finalized. This means you will not send any more invoices for the installation. Use this after a customer has requested uninstall and you have sent any remaining invoices. This will allow the uninstall process to proceed immediately after all invoices have been paid. <br/> Use the `credentials.access_token` we provided in the [Upsert Installation](#upsert-installation) body to authorize this request.",
+		{
+			integrationConfigurationId:
+				finalizeInstallationPathParamsSchema.shape["integrationConfigurationId"],
+		},
+		async ({ integrationConfigurationId }) => {
+			try {
+				return await finalizeInstallation({ pathParams: { integrationConfigurationId }, config });
 			} catch (error) {
 				return { isError: true, content: [{ type: "text", text: JSON.stringify(error) }] };
 			}

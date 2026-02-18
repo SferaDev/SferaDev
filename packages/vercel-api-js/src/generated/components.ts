@@ -475,6 +475,12 @@ import type {
 	FilterProjectEnvsPathParams,
 	FilterProjectEnvsQueryParams,
 	FilterProjectEnvsQueryResponse,
+	FinalizeInstallation400,
+	FinalizeInstallation401,
+	FinalizeInstallation403,
+	FinalizeInstallation404,
+	FinalizeInstallationMutationResponse,
+	FinalizeInstallationPathParams,
 	GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig400,
 	GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig401,
 	GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig403,
@@ -5950,6 +5956,44 @@ export async function submitInvoice({
 }
 
 /**
+ * @description This endpoint allows the partner to mark an installation as finalized. This means you will not send any more invoices for the installation. Use this after a customer has requested uninstall and you have sent any remaining invoices. This will allow the uninstall process to proceed immediately after all invoices have been paid. <br/> Use the `credentials.access_token` we provided in the [Upsert Installation](#upsert-installation) body to authorize this request.
+ * @summary Finalize Installation
+ * {@link /v1/installations/:integrationConfigurationId/billing/finalize}
+ */
+export async function finalizeInstallation({
+	pathParams: { integrationConfigurationId },
+	config = {},
+}: {
+	pathParams: FinalizeInstallationPathParams;
+	config?: Partial<FetcherConfig> & { client?: typeof client };
+}) {
+	const { client: request = client, ...requestConfig } = config;
+
+	if (!integrationConfigurationId) {
+		throw new Error(`Missing required path parameter: integrationConfigurationId`);
+	}
+
+	const data = await request<
+		FinalizeInstallationMutationResponse,
+		ErrorWrapper<
+			| FinalizeInstallation400
+			| FinalizeInstallation401
+			| FinalizeInstallation403
+			| FinalizeInstallation404
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		FinalizeInstallationPathParams
+	>({
+		method: "POST",
+		url: `/v1/installations/${integrationConfigurationId}/billing/finalize`,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
  * @description Get Invoice details and status for a given invoice ID.<br/> <br/> See Billing Events with Webhooks documentation on how to receive invoice events. This endpoint is used to retrieve the invoice details.
  * @summary Get Invoice
  * {@link /v1/installations/:integrationConfigurationId/billing/invoices/:invoiceId}
@@ -10182,6 +10226,7 @@ export const operationsByPath = {
 	"PATCH /v1/installations/{integrationConfigurationId}/resources/{resourceId}": updateResource,
 	"POST /v1/installations/{integrationConfigurationId}/billing": submitBillingData,
 	"POST /v1/installations/{integrationConfigurationId}/billing/invoices": submitInvoice,
+	"POST /v1/installations/{integrationConfigurationId}/billing/finalize": finalizeInstallation,
 	"GET /v1/installations/{integrationConfigurationId}/billing/invoices/{invoiceId}": getInvoice,
 	"POST /v1/installations/{integrationConfigurationId}/billing/invoices/{invoiceId}/actions":
 		updateInvoice,
@@ -10484,6 +10529,7 @@ export const operationsByTag = {
 		updateResource,
 		submitBillingData,
 		submitInvoice,
+		finalizeInstallation,
 		getInvoice,
 		updateInvoice,
 		submitPrepaymentBalances,
@@ -10763,6 +10809,7 @@ export const tagDictionary = {
 			"createEvent",
 			"submitBillingData",
 			"submitInvoice",
+			"finalizeInstallation",
 			"updateInvoice",
 			"submitPrepaymentBalances",
 			"exchangeSsoToken",

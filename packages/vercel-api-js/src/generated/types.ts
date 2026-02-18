@@ -6153,6 +6153,24 @@ export type UserEvent = {
 						 * @type string
 						 */
 						source: string;
+						/**
+						 * @type number
+						 */
+						expiresAt?: (number | null) | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						scope: string;
+						/**
+						 * @type string
+						 */
+						source: string;
 				  }
 				| {
 						/**
@@ -14217,6 +14235,10 @@ export type UserEvent = {
 						 * @type string
 						 */
 						projectId: string;
+						/**
+						 * @type string
+						 */
+						runId: string;
 				  }
 				| {
 						/**
@@ -23025,6 +23047,44 @@ export type SubmitInvoiceMutation = {
 		| SubmitInvoice403
 		| SubmitInvoice404
 		| SubmitInvoice409;
+};
+
+export type FinalizeInstallationPathParams = {
+	/**
+	 * @type string
+	 */
+	integrationConfigurationId: string;
+};
+
+export type FinalizeInstallation204 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type FinalizeInstallation400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type FinalizeInstallation401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type FinalizeInstallation403 = unknown;
+
+export type FinalizeInstallation404 = unknown;
+
+export type FinalizeInstallationMutationResponse = FinalizeInstallation204;
+
+export type FinalizeInstallationMutation = {
+	Response: FinalizeInstallation204;
+	PathParams: FinalizeInstallationPathParams;
+	Errors:
+		| FinalizeInstallation400
+		| FinalizeInstallation401
+		| FinalizeInstallation403
+		| FinalizeInstallation404;
 };
 
 export type GetInvoicePathParams = {
