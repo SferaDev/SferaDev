@@ -149,6 +149,14 @@ import type {
 	CreateDeployment429,
 	CreateDeployment500,
 	CreateDeployment503,
+	CreateDeploymentCheckRun400,
+	CreateDeploymentCheckRun401,
+	CreateDeploymentCheckRun403,
+	CreateDeploymentCheckRun404,
+	CreateDeploymentCheckRun500,
+	CreateDeploymentCheckRunMutationResponse,
+	CreateDeploymentCheckRunPathParams,
+	CreateDeploymentCheckRunQueryParams,
 	CreateDeploymentMutationResponse,
 	CreateDeploymentQueryParams,
 	CreateDrain400,
@@ -222,6 +230,13 @@ import type {
 	CreateProject428,
 	CreateProject429,
 	CreateProject500,
+	CreateProjectCheck400,
+	CreateProjectCheck401,
+	CreateProjectCheck403,
+	CreateProjectCheck500,
+	CreateProjectCheckMutationResponse,
+	CreateProjectCheckPathParams,
+	CreateProjectCheckQueryParams,
 	CreateProjectEnv400,
 	CreateProjectEnv401,
 	CreateProjectEnv402,
@@ -396,6 +411,14 @@ import type {
 	DeleteProject401,
 	DeleteProject403,
 	DeleteProject409,
+	DeleteProjectCheck400,
+	DeleteProjectCheck401,
+	DeleteProjectCheck403,
+	DeleteProjectCheck404,
+	DeleteProjectCheck500,
+	DeleteProjectCheckMutationResponse,
+	DeleteProjectCheckPathParams,
+	DeleteProjectCheckQueryParams,
 	DeleteProjectMutationResponse,
 	DeleteProjectPathParams,
 	DeleteProjectQueryParams,
@@ -618,6 +641,14 @@ import type {
 	GetDeployment403,
 	GetDeployment404,
 	GetDeployment429,
+	GetDeploymentCheckRun400,
+	GetDeploymentCheckRun401,
+	GetDeploymentCheckRun403,
+	GetDeploymentCheckRun404,
+	GetDeploymentCheckRun500,
+	GetDeploymentCheckRunPathParams,
+	GetDeploymentCheckRunQueryParams,
+	GetDeploymentCheckRunQueryResponse,
 	GetDeploymentEvents400,
 	GetDeploymentEvents401,
 	GetDeploymentEvents403,
@@ -820,6 +851,13 @@ import type {
 	GetProject400,
 	GetProject401,
 	GetProject403,
+	GetProjectCheck400,
+	GetProjectCheck401,
+	GetProjectCheck403,
+	GetProjectCheck500,
+	GetProjectCheckPathParams,
+	GetProjectCheckQueryParams,
+	GetProjectCheckQueryResponse,
 	GetProjectDomain400,
 	GetProjectDomain401,
 	GetProjectDomain403,
@@ -1051,6 +1089,13 @@ import type {
 	ListBillingCharges503,
 	ListBillingChargesQueryParams,
 	ListBillingChargesQueryResponse,
+	ListCheckRuns400,
+	ListCheckRuns401,
+	ListCheckRuns403,
+	ListCheckRuns500,
+	ListCheckRunsPathParams,
+	ListCheckRunsQueryParams,
+	ListCheckRunsQueryResponse,
 	ListContractCommitments400,
 	ListContractCommitments401,
 	ListContractCommitments403,
@@ -1070,6 +1115,13 @@ import type {
 	ListDeploymentAliasesPathParams,
 	ListDeploymentAliasesQueryParams,
 	ListDeploymentAliasesQueryResponse,
+	ListDeploymentCheckRuns400,
+	ListDeploymentCheckRuns401,
+	ListDeploymentCheckRuns403,
+	ListDeploymentCheckRuns500,
+	ListDeploymentCheckRunsPathParams,
+	ListDeploymentCheckRunsQueryParams,
+	ListDeploymentCheckRunsQueryResponse,
 	ListDeploymentFiles400,
 	ListDeploymentFiles401,
 	ListDeploymentFiles403,
@@ -1087,6 +1139,13 @@ import type {
 	ListNetworks403,
 	ListNetworksQueryParams,
 	ListNetworksQueryResponse,
+	ListProjectChecks400,
+	ListProjectChecks401,
+	ListProjectChecks403,
+	ListProjectChecks500,
+	ListProjectChecksPathParams,
+	ListProjectChecksQueryParams,
+	ListProjectChecksQueryResponse,
 	ListPromoteAliases400,
 	ListPromoteAliases401,
 	ListPromoteAliases403,
@@ -1418,6 +1477,14 @@ import type {
 	UpdateCustomEnvironmentMutationResponse,
 	UpdateCustomEnvironmentPathParams,
 	UpdateCustomEnvironmentQueryParams,
+	UpdateDeploymentCheckRun400,
+	UpdateDeploymentCheckRun401,
+	UpdateDeploymentCheckRun403,
+	UpdateDeploymentCheckRun413,
+	UpdateDeploymentCheckRun500,
+	UpdateDeploymentCheckRunMutationResponse,
+	UpdateDeploymentCheckRunPathParams,
+	UpdateDeploymentCheckRunQueryParams,
 	UpdateDomainAutoRenew400,
 	UpdateDomainAutoRenew401,
 	UpdateDomainAutoRenew403,
@@ -1505,6 +1572,14 @@ import type {
 	UpdateProject404,
 	UpdateProject409,
 	UpdateProject428,
+	UpdateProjectCheck400,
+	UpdateProjectCheck401,
+	UpdateProjectCheck403,
+	UpdateProjectCheck404,
+	UpdateProjectCheck500,
+	UpdateProjectCheckMutationResponse,
+	UpdateProjectCheckPathParams,
+	UpdateProjectCheckQueryParams,
 	UpdateProjectDomain400,
 	UpdateProjectDomain401,
 	UpdateProjectDomain403,
@@ -2460,6 +2535,433 @@ export async function updateVersion({
 	>({
 		method: "POST",
 		url: `/v1/bulk-redirects/versions`,
+		queryParams,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
+ * @description List all checks for a project, optionally filtered by target.
+ * @summary List all checks for a project
+ * {@link /v2/projects/:projectIdOrName/checks}
+ */
+export async function listProjectChecks({
+	pathParams: { projectIdOrName },
+	queryParams,
+	config = {},
+}: {
+	pathParams: ListProjectChecksPathParams;
+	queryParams?: ListProjectChecksQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!projectIdOrName) {
+		throw new Error(`Missing required path parameter: projectIdOrName`);
+	}
+
+	const data = await request<
+		ListProjectChecksQueryResponse,
+		ErrorWrapper<
+			ListProjectChecks400 | ListProjectChecks401 | ListProjectChecks403 | ListProjectChecks500
+		>,
+		null,
+		Record<string, string>,
+		ListProjectChecksQueryParams,
+		ListProjectChecksPathParams
+	>({
+		method: "GET",
+		url: `/v2/projects/${projectIdOrName}/checks`,
+		queryParams,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Creates a new check for a project.
+ * @summary Create a check
+ * {@link /v2/projects/:projectIdOrName/checks}
+ */
+export async function createProjectCheck({
+	pathParams: { projectIdOrName },
+	queryParams,
+	config = {},
+}: {
+	pathParams: CreateProjectCheckPathParams;
+	queryParams?: CreateProjectCheckQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!projectIdOrName) {
+		throw new Error(`Missing required path parameter: projectIdOrName`);
+	}
+
+	const data = await request<
+		CreateProjectCheckMutationResponse,
+		ErrorWrapper<
+			CreateProjectCheck400 | CreateProjectCheck401 | CreateProjectCheck403 | CreateProjectCheck500
+		>,
+		null,
+		Record<string, string>,
+		CreateProjectCheckQueryParams,
+		CreateProjectCheckPathParams
+	>({
+		method: "POST",
+		url: `/v2/projects/${projectIdOrName}/checks`,
+		queryParams,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
+ * @description Return a detailed response for a single check.
+ * @summary Get a check
+ * {@link /v2/projects/:projectIdOrName/checks/:checkId}
+ */
+export async function getProjectCheck({
+	pathParams: { projectIdOrName, checkId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: GetProjectCheckPathParams;
+	queryParams?: GetProjectCheckQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!projectIdOrName) {
+		throw new Error(`Missing required path parameter: projectIdOrName`);
+	}
+
+	if (!checkId) {
+		throw new Error(`Missing required path parameter: checkId`);
+	}
+
+	const data = await request<
+		GetProjectCheckQueryResponse,
+		ErrorWrapper<GetProjectCheck400 | GetProjectCheck401 | GetProjectCheck403 | GetProjectCheck500>,
+		null,
+		Record<string, string>,
+		GetProjectCheckQueryParams,
+		GetProjectCheckPathParams
+	>({
+		method: "GET",
+		url: `/v2/projects/${projectIdOrName}/checks/${checkId}`,
+		queryParams,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Update an existing check.
+ * @summary Update a check
+ * {@link /v2/projects/:projectIdOrName/checks/:checkId}
+ */
+export async function updateProjectCheck({
+	pathParams: { projectIdOrName, checkId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: UpdateProjectCheckPathParams;
+	queryParams?: UpdateProjectCheckQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!projectIdOrName) {
+		throw new Error(`Missing required path parameter: projectIdOrName`);
+	}
+
+	if (!checkId) {
+		throw new Error(`Missing required path parameter: checkId`);
+	}
+
+	const data = await request<
+		UpdateProjectCheckMutationResponse,
+		ErrorWrapper<
+			| UpdateProjectCheck400
+			| UpdateProjectCheck401
+			| UpdateProjectCheck403
+			| UpdateProjectCheck404
+			| UpdateProjectCheck500
+		>,
+		null,
+		Record<string, string>,
+		UpdateProjectCheckQueryParams,
+		UpdateProjectCheckPathParams
+	>({
+		method: "PATCH",
+		url: `/v2/projects/${projectIdOrName}/checks/${checkId}`,
+		queryParams,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
+ * @description Delete an existing check and all of its runs.
+ * @summary Delete a check
+ * {@link /v2/projects/:projectIdOrName/checks/:checkId}
+ */
+export async function deleteProjectCheck({
+	pathParams: { projectIdOrName, checkId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: DeleteProjectCheckPathParams;
+	queryParams?: DeleteProjectCheckQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!projectIdOrName) {
+		throw new Error(`Missing required path parameter: projectIdOrName`);
+	}
+
+	if (!checkId) {
+		throw new Error(`Missing required path parameter: checkId`);
+	}
+
+	const data = await request<
+		DeleteProjectCheckMutationResponse,
+		ErrorWrapper<
+			| DeleteProjectCheck400
+			| DeleteProjectCheck401
+			| DeleteProjectCheck403
+			| DeleteProjectCheck404
+			| DeleteProjectCheck500
+		>,
+		null,
+		Record<string, string>,
+		DeleteProjectCheckQueryParams,
+		DeleteProjectCheckPathParams
+	>({
+		method: "DELETE",
+		url: `/v2/projects/${projectIdOrName}/checks/${checkId}`,
+		queryParams,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description List all runs associated with a given check.
+ * @summary List runs for a check
+ * {@link /v2/projects/:projectIdOrName/checks/:checkId/runs}
+ */
+export async function listCheckRuns({
+	pathParams: { projectIdOrName, checkId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: ListCheckRunsPathParams;
+	queryParams?: ListCheckRunsQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!projectIdOrName) {
+		throw new Error(`Missing required path parameter: projectIdOrName`);
+	}
+
+	if (!checkId) {
+		throw new Error(`Missing required path parameter: checkId`);
+	}
+
+	const data = await request<
+		ListCheckRunsQueryResponse,
+		ErrorWrapper<ListCheckRuns400 | ListCheckRuns401 | ListCheckRuns403 | ListCheckRuns500>,
+		null,
+		Record<string, string>,
+		ListCheckRunsQueryParams,
+		ListCheckRunsPathParams
+	>({
+		method: "GET",
+		url: `/v2/projects/${projectIdOrName}/checks/${checkId}/runs`,
+		queryParams,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description List all check runs for a deployment.
+ * @summary List check runs for a deployment
+ * {@link /v2/deployments/:deploymentId/check-runs}
+ */
+export async function listDeploymentCheckRuns({
+	pathParams: { deploymentId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: ListDeploymentCheckRunsPathParams;
+	queryParams?: ListDeploymentCheckRunsQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!deploymentId) {
+		throw new Error(`Missing required path parameter: deploymentId`);
+	}
+
+	const data = await request<
+		ListDeploymentCheckRunsQueryResponse,
+		ErrorWrapper<
+			| ListDeploymentCheckRuns400
+			| ListDeploymentCheckRuns401
+			| ListDeploymentCheckRuns403
+			| ListDeploymentCheckRuns500
+		>,
+		null,
+		Record<string, string>,
+		ListDeploymentCheckRunsQueryParams,
+		ListDeploymentCheckRunsPathParams
+	>({
+		method: "GET",
+		url: `/v2/deployments/${deploymentId}/check-runs`,
+		queryParams,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Creates a new check run for a deployment.
+ * @summary Create a check run
+ * {@link /v2/deployments/:deploymentId/check-runs}
+ */
+export async function createDeploymentCheckRun({
+	pathParams: { deploymentId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: CreateDeploymentCheckRunPathParams;
+	queryParams?: CreateDeploymentCheckRunQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!deploymentId) {
+		throw new Error(`Missing required path parameter: deploymentId`);
+	}
+
+	const data = await request<
+		CreateDeploymentCheckRunMutationResponse,
+		ErrorWrapper<
+			| CreateDeploymentCheckRun400
+			| CreateDeploymentCheckRun401
+			| CreateDeploymentCheckRun403
+			| CreateDeploymentCheckRun404
+			| CreateDeploymentCheckRun500
+		>,
+		null,
+		Record<string, string>,
+		CreateDeploymentCheckRunQueryParams,
+		CreateDeploymentCheckRunPathParams
+	>({
+		method: "POST",
+		url: `/v2/deployments/${deploymentId}/check-runs`,
+		queryParams,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
+ * @description Return a detailed response for a single check run.
+ * @summary Get a check run
+ * {@link /v2/deployments/:deploymentId/check-runs/:checkRunId}
+ */
+export async function getDeploymentCheckRun({
+	pathParams: { deploymentId, checkRunId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: GetDeploymentCheckRunPathParams;
+	queryParams?: GetDeploymentCheckRunQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!deploymentId) {
+		throw new Error(`Missing required path parameter: deploymentId`);
+	}
+
+	if (!checkRunId) {
+		throw new Error(`Missing required path parameter: checkRunId`);
+	}
+
+	const data = await request<
+		GetDeploymentCheckRunQueryResponse,
+		ErrorWrapper<
+			| GetDeploymentCheckRun400
+			| GetDeploymentCheckRun401
+			| GetDeploymentCheckRun403
+			| GetDeploymentCheckRun404
+			| GetDeploymentCheckRun500
+		>,
+		null,
+		Record<string, string>,
+		GetDeploymentCheckRunQueryParams,
+		GetDeploymentCheckRunPathParams
+	>({
+		method: "GET",
+		url: `/v2/deployments/${deploymentId}/check-runs/${checkRunId}`,
+		queryParams,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Update an existing check run for a deployment.
+ * @summary Update a check run
+ * {@link /v2/deployments/:deploymentId/check-runs/:checkRunId}
+ */
+export async function updateDeploymentCheckRun({
+	pathParams: { deploymentId, checkRunId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: UpdateDeploymentCheckRunPathParams;
+	queryParams?: UpdateDeploymentCheckRunQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!deploymentId) {
+		throw new Error(`Missing required path parameter: deploymentId`);
+	}
+
+	if (!checkRunId) {
+		throw new Error(`Missing required path parameter: checkRunId`);
+	}
+
+	const data = await request<
+		UpdateDeploymentCheckRunMutationResponse,
+		ErrorWrapper<
+			| UpdateDeploymentCheckRun400
+			| UpdateDeploymentCheckRun401
+			| UpdateDeploymentCheckRun403
+			| UpdateDeploymentCheckRun413
+			| UpdateDeploymentCheckRun500
+		>,
+		null,
+		Record<string, string>,
+		UpdateDeploymentCheckRunQueryParams,
+		UpdateDeploymentCheckRunPathParams
+	>({
+		method: "PATCH",
+		url: `/v2/deployments/${deploymentId}/check-runs/${checkRunId}`,
 		queryParams,
 		...requestConfig,
 		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
@@ -10126,6 +10628,16 @@ export const operationsByPath = {
 	"POST /v1/bulk-redirects/restore": restoreRedirects,
 	"GET /v1/bulk-redirects/versions": getVersions,
 	"POST /v1/bulk-redirects/versions": updateVersion,
+	"GET /v2/projects/{projectIdOrName}/checks": listProjectChecks,
+	"POST /v2/projects/{projectIdOrName}/checks": createProjectCheck,
+	"GET /v2/projects/{projectIdOrName}/checks/{checkId}": getProjectCheck,
+	"PATCH /v2/projects/{projectIdOrName}/checks/{checkId}": updateProjectCheck,
+	"DELETE /v2/projects/{projectIdOrName}/checks/{checkId}": deleteProjectCheck,
+	"GET /v2/projects/{projectIdOrName}/checks/{checkId}/runs": listCheckRuns,
+	"GET /v2/deployments/{deploymentId}/check-runs": listDeploymentCheckRuns,
+	"POST /v2/deployments/{deploymentId}/check-runs": createDeploymentCheckRun,
+	"GET /v2/deployments/{deploymentId}/check-runs/{checkRunId}": getDeploymentCheckRun,
+	"PATCH /v2/deployments/{deploymentId}/check-runs/{checkRunId}": updateDeploymentCheckRun,
 	"POST /v1/deployments/{deploymentId}/checks": createCheck,
 	"GET /v1/deployments/{deploymentId}/checks": getAllChecks,
 	"GET /v1/deployments/{deploymentId}/checks/{checkId}": getCheck,
@@ -10384,6 +10896,18 @@ export const operationsByTag = {
 		restoreRedirects,
 		getVersions,
 		updateVersion,
+	},
+	checksV2: {
+		listProjectChecks,
+		createProjectCheck,
+		getProjectCheck,
+		updateProjectCheck,
+		deleteProjectCheck,
+		listCheckRuns,
+		listDeploymentCheckRuns,
+		createDeploymentCheckRun,
+		getDeploymentCheckRun,
+		updateDeploymentCheckRun,
 	},
 	checks: {
 		createCheck,
@@ -10674,6 +11198,18 @@ export const tagDictionary = {
 		DELETE: ["deleteRedirects"],
 		PATCH: ["editRedirect"],
 		POST: ["restoreRedirects", "updateVersion"],
+	},
+	checksV2: {
+		GET: [
+			"listProjectChecks",
+			"getProjectCheck",
+			"listCheckRuns",
+			"listDeploymentCheckRuns",
+			"getDeploymentCheckRun",
+		],
+		POST: ["createProjectCheck", "createDeploymentCheckRun"],
+		PATCH: ["updateProjectCheck", "updateDeploymentCheckRun"],
+		DELETE: ["deleteProjectCheck"],
 	},
 	checks: {
 		POST: ["createCheck", "rerequestCheck"],

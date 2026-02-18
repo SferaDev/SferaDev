@@ -8256,6 +8256,382 @@ export const updateVersion500Schema = z.unknown();
 
 export const updateVersionMutationResponseSchema = z.lazy(() => updateVersion200Schema);
 
+export const listProjectChecksPathParamsSchema = z.object({
+	projectIdOrName: z.string(),
+});
+
+export const listProjectChecksQueryParamsSchema = z
+	.object({
+		blocks: z.optional(
+			z.enum([
+				"build-start",
+				"deployment-start",
+				"deployment-alias",
+				"deployment-promotion",
+				"none",
+			]),
+		),
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const listProjectChecks200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export const listProjectChecks400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const listProjectChecks401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const listProjectChecks403Schema = z.unknown();
+
+export const listProjectChecks500Schema = z.unknown();
+
+export const listProjectChecksQueryResponseSchema = z.lazy(() => listProjectChecks200Schema);
+
+export const createProjectCheckPathParamsSchema = z.object({
+	projectIdOrName: z.string(),
+});
+
+export const createProjectCheckQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const createProjectCheck200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export const createProjectCheck400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const createProjectCheck401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const createProjectCheck403Schema = z.unknown();
+
+export const createProjectCheck500Schema = z.unknown();
+
+export const createProjectCheckMutationResponseSchema = z.lazy(() => createProjectCheck200Schema);
+
+export const getProjectCheckPathParamsSchema = z.object({
+	projectIdOrName: z.string(),
+	checkId: z.string().describe("The ID of the resource that will be updated."),
+});
+
+export const getProjectCheckQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const getProjectCheck200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export const getProjectCheck400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const getProjectCheck401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const getProjectCheck403Schema = z.unknown();
+
+export const getProjectCheck500Schema = z.unknown();
+
+export const getProjectCheckQueryResponseSchema = z.lazy(() => getProjectCheck200Schema);
+
+export const updateProjectCheckPathParamsSchema = z.object({
+	projectIdOrName: z.string(),
+	checkId: z.string(),
+});
+
+export const updateProjectCheckQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const updateProjectCheck200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export const updateProjectCheck400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const updateProjectCheck401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const updateProjectCheck403Schema = z.unknown();
+
+export const updateProjectCheck404Schema = z.unknown();
+
+export const updateProjectCheck500Schema = z.unknown();
+
+export const updateProjectCheckMutationResponseSchema = z.lazy(() => updateProjectCheck200Schema);
+
+export const deleteProjectCheckPathParamsSchema = z.object({
+	projectIdOrName: z.string(),
+	checkId: z.string(),
+});
+
+export const deleteProjectCheckQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const deleteProjectCheck200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export const deleteProjectCheck400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const deleteProjectCheck401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const deleteProjectCheck403Schema = z.unknown();
+
+export const deleteProjectCheck404Schema = z.unknown();
+
+export const deleteProjectCheck500Schema = z.unknown();
+
+export const deleteProjectCheckMutationResponseSchema = z.lazy(() => deleteProjectCheck200Schema);
+
+export const listCheckRunsPathParamsSchema = z.object({
+	projectIdOrName: z.string(),
+	checkId: z.string().describe("The ID of the resource that will be updated."),
+});
+
+export const listCheckRunsQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const listCheckRuns200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export const listCheckRuns400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const listCheckRuns401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const listCheckRuns403Schema = z.unknown();
+
+export const listCheckRuns500Schema = z.unknown();
+
+export const listCheckRunsQueryResponseSchema = z.lazy(() => listCheckRuns200Schema);
+
+export const listDeploymentCheckRunsPathParamsSchema = z.object({
+	deploymentId: z.string(),
+});
+
+export const listDeploymentCheckRunsQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const listDeploymentCheckRuns200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export const listDeploymentCheckRuns400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const listDeploymentCheckRuns401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const listDeploymentCheckRuns403Schema = z.unknown();
+
+export const listDeploymentCheckRuns500Schema = z.unknown();
+
+export const listDeploymentCheckRunsQueryResponseSchema = z.lazy(
+	() => listDeploymentCheckRuns200Schema,
+);
+
+export const createDeploymentCheckRunPathParamsSchema = z.object({
+	deploymentId: z.string(),
+});
+
+export const createDeploymentCheckRunQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const createDeploymentCheckRun200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export const createDeploymentCheckRun400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const createDeploymentCheckRun401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const createDeploymentCheckRun403Schema = z.unknown();
+
+export const createDeploymentCheckRun404Schema = z.unknown();
+
+export const createDeploymentCheckRun500Schema = z.unknown();
+
+export const createDeploymentCheckRunMutationResponseSchema = z.lazy(
+	() => createDeploymentCheckRun200Schema,
+);
+
+export const getDeploymentCheckRunPathParamsSchema = z.object({
+	deploymentId: z.string(),
+	checkRunId: z.string().describe("The ID of the resource that will be updated."),
+});
+
+export const getDeploymentCheckRunQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const getDeploymentCheckRun200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export const getDeploymentCheckRun400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const getDeploymentCheckRun401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const getDeploymentCheckRun403Schema = z.unknown();
+
+export const getDeploymentCheckRun404Schema = z.unknown();
+
+export const getDeploymentCheckRun500Schema = z.unknown();
+
+export const getDeploymentCheckRunQueryResponseSchema = z.lazy(
+	() => getDeploymentCheckRun200Schema,
+);
+
+export const updateDeploymentCheckRunPathParamsSchema = z.object({
+	deploymentId: z.string(),
+	checkRunId: z.string(),
+});
+
+export const updateDeploymentCheckRunQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const updateDeploymentCheckRun200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export const updateDeploymentCheckRun400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const updateDeploymentCheckRun401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const updateDeploymentCheckRun403Schema = z.unknown();
+
+/**
+ * @description The output provided is too large
+ */
+export const updateDeploymentCheckRun413Schema = z.unknown();
+
+export const updateDeploymentCheckRun500Schema = z.unknown();
+
+export const updateDeploymentCheckRunMutationResponseSchema = z.lazy(
+	() => updateDeploymentCheckRun200Schema,
+);
+
 export const createCheckPathParamsSchema = z.object({
 	deploymentId: z.string().describe("The deployment to create the check for."),
 });
