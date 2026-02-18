@@ -54,9 +54,6 @@ catalogs:
     '@kubb/plugin-zod':
       specifier: 4.23.0
       version: 4.23.0
-    '@kubb/react':
-      specifier: 4.3.1
-      version: 4.3.1
     '@kubb/react-fabric':
       specifier: 0.12.11
       version: 0.12.11
@@ -815,9 +812,6 @@ importers:
       bunchee:
         specifier: 'catalog:'
         version: 6.9.4(typescript@5.9.3)
-      case:
-        specifier: 'catalog:'
-        version: 1.6.3
       openapi3-ts:
         specifier: 'catalog:'
         version: 4.5.0
@@ -855,9 +849,6 @@ importers:
       bunchee:
         specifier: 'catalog:'
         version: 6.9.4(typescript@5.9.3)
-      case:
-        specifier: 'catalog:'
-        version: 1.6.3
       openapi3-ts:
         specifier: 'catalog:'
         version: 4.5.0
@@ -892,9 +883,6 @@ importers:
       bunchee:
         specifier: 'catalog:'
         version: 6.9.4(typescript@5.9.3)
-      openapi3-ts:
-        specifier: 'catalog:'
-        version: 4.5.0
       rimraf:
         specifier: 'catalog:'
         version: 6.1.3
@@ -1031,12 +1019,6 @@ importers:
       '@kubb/core':
         specifier: 'catalog:'
         version: 4.23.0(@kubb/react-fabric@0.12.11)
-      '@kubb/plugin-zod':
-        specifier: 'catalog:'
-        version: 4.23.0(typescript@5.9.3)
-      '@kubb/react':
-        specifier: 'catalog:'
-        version: 4.3.1
       '@sferadev/openapi-utils':
         specifier: workspace:*
         version: link:../openapi-utils
@@ -1049,6 +1031,9 @@ importers:
       bunchee:
         specifier: 'catalog:'
         version: 6.9.4(typescript@5.9.3)
+      openapi3-ts:
+        specifier: 'catalog:'
+        version: 4.5.0
       rimraf:
         specifier: 'catalog:'
         version: 6.1.3
@@ -1080,6 +1065,9 @@ importers:
       bunchee:
         specifier: 'catalog:'
         version: 6.9.4(typescript@5.9.3)
+      openapi3-ts:
+        specifier: 'catalog:'
+        version: 4.5.0
       rimraf:
         specifier: 'catalog:'
         version: 6.1.3
@@ -1111,12 +1099,6 @@ importers:
       bunchee:
         specifier: 'catalog:'
         version: 6.9.4(typescript@5.9.3)
-      case:
-        specifier: 'catalog:'
-        version: 1.6.3
-      openapi3-ts:
-        specifier: 'catalog:'
-        version: 4.5.0
       rimraf:
         specifier: 'catalog:'
         version: 6.1.3
@@ -2392,10 +2374,6 @@ packages:
     peerDependencies:
       '@kubb/react-fabric': 0.12.10
 
-  '@kubb/fabric-core@0.1.5':
-    resolution: {integrity: sha512-JM6/++uT+vWEF3WQLyNijfp4Jw5mzgVEWswqAcSXtdNifl2qT1eZuqMhI6aB6/Qc4KlaE7k7QXfs8CUjuLs8GQ==}
-    engines: {node: '>=20'}
-
   '@kubb/fabric-core@0.12.11':
     resolution: {integrity: sha512-RjWEwdglJFc9s4Ph+A2CX1bUAPFhIH9KkRldoUv3VOsmfMpgFKncQIgHYLFU9W0hcGQjvWMkOyU0qxKKcRvQ8Q==}
     engines: {node: '>=20'}
@@ -2431,16 +2409,8 @@ packages:
     resolution: {integrity: sha512-D+DmsGR8uKn4iek9ojrC6aC/gY0+gfYri7tw8PXcjyYFIrLbIy7ZmsVe1Rz7X5N859d8D0N3J0jYv9nTD440uw==}
     engines: {node: '>=20'}
 
-  '@kubb/react-fabric@0.1.5':
-    resolution: {integrity: sha512-70rmNabvi8kwTRUAGwKeqq7DxYKfAFouedhf+zGU8wifUTcgRnzoXCRXKQKS8kE5ADmv8lggUwNoQcS5TMQJ0w==}
-    engines: {node: '>=20'}
-
   '@kubb/react-fabric@0.12.11':
     resolution: {integrity: sha512-87TFhccWE5c56xDX9QTGbMw1cO0DiqoJeZsppLRMgQEI+ErrgROA2F6u3XQSDMU+ctMoiot9kHVcuzWZyp3HZw==}
-    engines: {node: '>=20'}
-
-  '@kubb/react@4.3.1':
-    resolution: {integrity: sha512-ualdjCmiKPPxEHRv4p+clW9qK8dfK3AFxmDXVnDb2MiPWzd6MsvsPzRmqVzVFyOrpFtY8ByzuZCLIBT1cYEXlg==}
     engines: {node: '>=20'}
 
   '@leichtgewicht/ip-codec@2.0.5':
@@ -5492,14 +5462,6 @@ packages:
     resolution: {integrity: sha512-aW35yZM6Bb/4oJlZncMH2LCoZtJXTRxES17vE3hoRiowU2kWHaJKFkSBDnDR+cm9J+9QhXmREyIfv0pji9ejCQ==}
     engines: {node: '>=10'}
 
-  dedent@1.7.1:
-    resolution: {integrity: sha512-9JmrhGZpOlEgOLdQgSm0zxFaYoQon408V1v49aqTWuXENVlnCuY9JBZcXZiCsZQWDjTm5Qf/nIvAy77mXDAjEg==}
-    peerDependencies:
-      babel-plugin-macros: ^3.1.0
-    peerDependenciesMeta:
-      babel-plugin-macros:
-        optional: true
-
   deep-extend@0.6.0:
     resolution: {integrity: sha512-LOHxIOaPYdHlJRtCQfDIVZtfw/ufM8+rVj649RIHzcm/vGwQRXFt6OPqIFWsm2XEMrNIEtWR64sY1LEKD2vAOA==}
     engines: {node: '>=4.0.0'}
@@ -8203,9 +8165,6 @@ packages:
   react-devtools-core@6.1.5:
     resolution: {integrity: sha512-ePrwPfxAnB+7hgnEr8vpKxL9cmnp7F322t8oqcPshbIQQhDKgFDW4tjhF2wjVbdXF9O/nyuy3sQWd9JGpiLPvA==}
 
-  react-devtools-inline@7.0.1:
-    resolution: {integrity: sha512-sOcLqXE5lgq/trUiqIuf8UtPWeI7WA8K7lM/xBrF3QfhaOZraIkOAbTS8gnOoKnQrF0MByXnU/PD1N4ffKog3Q==}
-
   react-dom@19.2.4:
     resolution: {integrity: sha512-AXJdLo8kgMbimY95O2aKQqsz2iWi9jMgKJhRBAxECE4IFxfcazB2LmzloIoibJI3C12IlY20+KFaLv+71bUJeQ==}
     peerDependencies:
@@ -8747,10 +8706,6 @@ packages:
   socks@2.8.7:
     resolution: {integrity: sha512-HLpt+uLy/pxB+bum/9DzAgiKS8CX1EvbWxI4zlmgGCExImLdiad2iCwXT5Z4c9c3Eq8rP2318mPW2c+QbtjK8A==}
     engines: {node: '>= 10.0.0', npm: '>= 3.0.0'}
-
-  source-map-js@0.6.2:
-    resolution: {integrity: sha512-/3GptzWzu0+0MBQFrDKzw/DvvMTUORvgY6k6jd/VS6iCR4RDTKWH6v6WPwQoUO8667uQEf9Oe38DxAYWY5F/Ug==}
-    engines: {node: '>=0.10.0'}
 
   source-map-js@1.2.1:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
@@ -10845,15 +10800,6 @@ snapshots:
       remeda: 2.33.6
       semver: 7.7.4
 
-  '@kubb/fabric-core@0.1.5':
-    dependencies:
-      fs-extra: 11.3.3
-      js-runtime: 0.0.8
-      natural-orderby: 5.0.0
-      p-limit: 7.3.0
-      remeda: 2.33.6
-      typescript: 5.9.3
-
   '@kubb/fabric-core@0.12.11':
     dependencies:
       '@clack/prompts': 1.0.1
@@ -10938,23 +10884,6 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  '@kubb/react-fabric@0.1.5':
-    dependencies:
-      '@kubb/fabric-core': 0.1.5
-      dedent: 1.7.1
-      execa: 9.6.1
-      indent-string: 5.0.0
-      natural-orderby: 5.0.0
-      react: 19.2.4
-      react-devtools-inline: 7.0.1
-      react-reconciler: 0.32.0(react@19.2.4)
-      signal-exit: 4.1.0
-      ws: 8.19.0
-    transitivePeerDependencies:
-      - babel-plugin-macros
-      - bufferutil
-      - utf-8-validate
-
   '@kubb/react-fabric@0.12.11':
     dependencies:
       '@kubb/fabric-core': 0.12.11
@@ -10965,14 +10894,6 @@ snapshots:
       signal-exit: 4.1.0
       ws: 8.18.0
     transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
-
-  '@kubb/react@4.3.1':
-    dependencies:
-      '@kubb/react-fabric': 0.1.5
-    transitivePeerDependencies:
-      - babel-plugin-macros
       - bufferutil
       - utf-8-validate
 
@@ -14621,8 +14542,6 @@ snapshots:
     dependencies:
       mimic-response: 3.1.0
 
-  dedent@1.7.1: {}
-
   deep-extend@0.6.0: {}
 
   deepmerge@4.3.1: {}
@@ -17971,11 +17890,6 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  react-devtools-inline@7.0.1:
-    dependencies:
-      '@jridgewell/sourcemap-codec': 1.5.5
-      source-map-js: 0.6.2
-
   react-dom@19.2.4(react@19.2.3):
     dependencies:
       react: 19.2.3
@@ -17989,11 +17903,6 @@ snapshots:
   react-reconciler@0.32.0(react@19.2.3):
     dependencies:
       react: 19.2.3
-      scheduler: 0.26.0
-
-  react-reconciler@0.32.0(react@19.2.4):
-    dependencies:
-      react: 19.2.4
       scheduler: 0.26.0
 
   react-remove-scroll-bar@2.3.8(@types/react@19.2.14)(react@19.2.3):
@@ -18840,8 +18749,6 @@ snapshots:
     dependencies:
       ip-address: 10.1.0
       smart-buffer: 4.2.0
-
-  source-map-js@0.6.2: {}
 
   source-map-js@1.2.1: {}
 

@@ -47,26 +47,6 @@
 			"ignoreDependencies": ["@types/react", "@types/react-dom", "react", "react-dom"]
 		},
 		"packages/vercel-api-js": {
-			"entry": ["src/index.ts", "src/types.ts", "src/schemas.ts", "src/components.ts"],
-			"project": ["src/**/*.ts"],
-			"ignore": ["src/generated/**"],
-			"ignoreDependencies": ["@kubb/core", "@sferadev/openapi-utils", "zod"],
-			"includeEntryExports": false
-		},
-		"packages/v0-api": {
-			"entry": ["src/index.ts", "src/types.ts", "src/schemas.ts", "src/components.ts"],
-			"project": ["src/**/*.ts"],
-			"ignore": ["src/generated/**"],
-			"ignoreDependencies": [
-				"@kubb/core",
-				"@kubb/plugin-zod",
-				"@kubb/react",
-				"@sferadev/openapi-utils",
-				"zod"
-			],
-			"includeEntryExports": false
-		},
-		"packages/cloudflare-api": {
 			"entry": [
 				"src/index.ts",
 				"src/types.ts",
@@ -76,7 +56,24 @@
 			],
 			"project": ["src/**/*.ts"],
 			"ignore": ["src/generated/**"],
-			"ignoreDependencies": ["@kubb/core", "@sferadev/openapi-utils", "zod", "case", "openapi3-ts"],
+			"includeEntryExports": false
+		},
+		"packages/v0-api": {
+			"entry": [
+				"src/index.ts",
+				"src/types.ts",
+				"src/schemas.ts",
+				"src/components.ts",
+				"kubb.config.ts"
+			],
+			"project": ["src/**/*.ts"],
+			"ignore": ["src/generated/**"],
+			"includeEntryExports": false
+		},
+		"packages/cloudflare-api": {
+			"entry": ["src/index.ts", "src/types.ts", "src/components.ts", "kubb.config.ts"],
+			"project": ["src/**/*.ts"],
+			"ignore": ["src/generated/**"],
 			"includeEntryExports": false
 		},
 		"packages/netlify-api": {
@@ -89,7 +86,6 @@
 			],
 			"project": ["src/**/*.ts"],
 			"ignore": ["src/generated/**"],
-			"ignoreDependencies": ["@kubb/core", "@sferadev/openapi-utils", "zod"],
 			"includeEntryExports": false
 		},
 		"packages/zoom-api-js": {
@@ -102,7 +98,6 @@
 			],
 			"project": ["src/**/*.ts"],
 			"ignore": ["src/generated/**"],
-			"ignoreDependencies": ["@kubb/core", "@sferadev/openapi-utils", "zod"],
 			"includeEntryExports": false
 		},
 		"packages/keycloak-api": {
@@ -118,14 +113,6 @@
 			],
 			"project": ["src/**/*.ts"],
 			"ignore": ["src/admin/generated/**", "src/account/generated/**"],
-			"ignoreDependencies": [
-				"@kubb/core",
-				"@sferadev/openapi-utils",
-				"zod",
-				"case",
-				"openapi3-ts",
-				"yaml"
-			],
 			"includeEntryExports": false
 		},
 		"packages/nuki-api-js": {
@@ -138,7 +125,6 @@
 			],
 			"project": ["src/**/*.ts"],
 			"ignore": ["src/generated/**"],
-			"ignoreDependencies": ["@kubb/core", "@sferadev/openapi-utils", "zod", "case", "openapi3-ts"],
 			"includeEntryExports": false
 		},
 		"packages/litellm-api": {
@@ -151,7 +137,6 @@
 			],
 			"project": ["src/**/*.ts"],
 			"ignore": ["src/generated/**"],
-			"ignoreDependencies": ["@kubb/core", "@sferadev/openapi-utils", "zod"],
 			"includeEntryExports": false
 		},
 		"configs/tsconfig": {}

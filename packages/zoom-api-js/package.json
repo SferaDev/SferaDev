@@ -29,8 +29,6 @@
 		"@sferadev/tsconfig": "workspace:*",
 		"@types/node": "catalog:",
 		"bunchee": "catalog:",
-		"case": "catalog:",
-		"openapi3-ts": "catalog:",
 		"rimraf": "catalog:",
 		"typescript": "catalog:"
 	},
