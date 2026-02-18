@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import { z } from "zod";
+import * as z from "zod";
 
 /**
  * @description Detailed representation of a chat, including its messages, files, versions, and model configuration.
@@ -96,10 +96,11 @@ export const chatDetailSchema = z
 										z.tuple([
 											z.literal(1),
 											z.object({
-												standard: z.optional(z.string()),
+												toJSONSchema: z.string(),
 												def: z.string(),
 												type: z.string(),
 												check: z.string(),
+												with: z.string(),
 												clone: z.string(),
 												brand: z.string(),
 												register: z.string(),
@@ -120,6 +121,7 @@ export const chatDetailSchema = z
 												superRefine: z.string(),
 												overwrite: z.string(),
 												optional: z.string(),
+												exactOptional: z.string(),
 												nullable: z.string(),
 												nullish: z.string(),
 												nonoptional: z.string(),
@@ -136,6 +138,7 @@ export const chatDetailSchema = z
 												meta: z.string(),
 												isOptional: z.string(),
 												isNullable: z.string(),
+												apply: z.string(),
 												keyof: z.string(),
 												catchall: z.string(),
 												passthrough: z.string(),
@@ -171,6 +174,7 @@ export const chatDetailSchema = z
 								"added-integration",
 								"answered-questions",
 								"auto-fix-with-v0",
+								"cloned-repo",
 								"deleted-file",
 								"edited-file",
 								"fix-cve",
@@ -195,20 +199,12 @@ export const chatDetailSchema = z
 							.describe("Specifies whether the message was sent by the user or the assistant."),
 						finishReason: z.optional(
 							z
-								.enum([
-									"content-filter",
-									"error",
-									"length",
-									"other",
-									"stop",
-									"tool-calls",
-									"unknown",
-								])
+								.enum(["content-filter", "error", "length", "other", "stop", "tool-calls"])
 								.describe("The reason why the message generation finished."),
 						),
 						apiUrl: z.string().describe("API URL to access this message via the API."),
 						authorId: z.nullable(z.string().describe("The ID of the user who sent the message.")),
-						parentId: z.optional(z.string().describe("The ID of the parent message.")),
+						parentId: z.string().describe("The ID of the parent message.").nullish(),
 						attachments: z.optional(
 							z.array(
 								z.object({
@@ -270,7 +266,7 @@ export const chatDetailSchema = z
 				.object({
 					modelId: z.optional(
 						z
-							.enum(["v0-max", "v0-mini", "v0-pro"])
+							.enum(["v0-max", "v0-max-fast", "v0-mini", "v0-pro"])
 							.default("v0-pro")
 							.describe("Deprecated Model ID field preserved for backward compatibility."),
 					),
@@ -683,10 +679,11 @@ export const messageDetailSchema = z
 						z.tuple([
 							z.literal(1),
 							z.object({
-								standard: z.optional(z.string()),
+								toJSONSchema: z.string(),
 								def: z.string(),
 								type: z.string(),
 								check: z.string(),
+								with: z.string(),
 								clone: z.string(),
 								brand: z.string(),
 								register: z.string(),
@@ -707,6 +704,7 @@ export const messageDetailSchema = z
 								superRefine: z.string(),
 								overwrite: z.string(),
 								optional: z.string(),
+								exactOptional: z.string(),
 								nullable: z.string(),
 								nullish: z.string(),
 								nonoptional: z.string(),
@@ -723,6 +721,7 @@ export const messageDetailSchema = z
 								meta: z.string(),
 								isOptional: z.string(),
 								isNullable: z.string(),
+								apply: z.string(),
 								keyof: z.string(),
 								catchall: z.string(),
 								passthrough: z.string(),
@@ -756,6 +755,7 @@ export const messageDetailSchema = z
 				"added-integration",
 				"answered-questions",
 				"auto-fix-with-v0",
+				"cloned-repo",
 				"deleted-file",
 				"edited-file",
 				"fix-cve",
@@ -778,12 +778,12 @@ export const messageDetailSchema = z
 			.describe("Specifies whether the message was sent by the user or the assistant."),
 		finishReason: z.optional(
 			z
-				.enum(["content-filter", "error", "length", "other", "stop", "tool-calls", "unknown"])
+				.enum(["content-filter", "error", "length", "other", "stop", "tool-calls"])
 				.describe("The reason why the message generation finished."),
 		),
 		apiUrl: z.string().describe("API URL to access this message via the API."),
 		authorId: z.nullable(z.string().describe("The ID of the user who sent the message.")),
-		parentId: z.optional(z.string().describe("The ID of the parent message.")),
+		parentId: z.string().describe("The ID of the parent message.").nullish(),
 		attachments: z.optional(
 			z.array(
 				z.object({
@@ -826,10 +826,11 @@ export const messageSummarySchema = z
 						z.tuple([
 							z.literal(1),
 							z.object({
-								standard: z.optional(z.string()),
+								toJSONSchema: z.string(),
 								def: z.string(),
 								type: z.string(),
 								check: z.string(),
+								with: z.string(),
 								clone: z.string(),
 								brand: z.string(),
 								register: z.string(),
@@ -850,6 +851,7 @@ export const messageSummarySchema = z
 								superRefine: z.string(),
 								overwrite: z.string(),
 								optional: z.string(),
+								exactOptional: z.string(),
 								nullable: z.string(),
 								nullish: z.string(),
 								nonoptional: z.string(),
@@ -866,6 +868,7 @@ export const messageSummarySchema = z
 								meta: z.string(),
 								isOptional: z.string(),
 								isNullable: z.string(),
+								apply: z.string(),
 								keyof: z.string(),
 								catchall: z.string(),
 								passthrough: z.string(),
@@ -899,6 +902,7 @@ export const messageSummarySchema = z
 				"added-integration",
 				"answered-questions",
 				"auto-fix-with-v0",
+				"cloned-repo",
 				"deleted-file",
 				"edited-file",
 				"fix-cve",
@@ -921,12 +925,12 @@ export const messageSummarySchema = z
 			.describe("Specifies whether the message was sent by the user or the assistant."),
 		finishReason: z.optional(
 			z
-				.enum(["content-filter", "error", "length", "other", "stop", "tool-calls", "unknown"])
+				.enum(["content-filter", "error", "length", "other", "stop", "tool-calls"])
 				.describe("The reason why the message generation finished."),
 		),
 		apiUrl: z.string().describe("API URL to access this message via the API."),
 		authorId: z.nullable(z.string().describe("The ID of the user who sent the message.")),
-		parentId: z.optional(z.string().describe("The ID of the parent message.")),
+		parentId: z.string().describe("The ID of the parent message.").nullish(),
 		attachments: z.optional(
 			z.array(
 				z.object({
@@ -977,10 +981,11 @@ export const messageSummaryListSchema = z
 										z.tuple([
 											z.literal(1),
 											z.object({
-												standard: z.optional(z.string()),
+												toJSONSchema: z.string(),
 												def: z.string(),
 												type: z.string(),
 												check: z.string(),
+												with: z.string(),
 												clone: z.string(),
 												brand: z.string(),
 												register: z.string(),
@@ -1001,6 +1006,7 @@ export const messageSummaryListSchema = z
 												superRefine: z.string(),
 												overwrite: z.string(),
 												optional: z.string(),
+												exactOptional: z.string(),
 												nullable: z.string(),
 												nullish: z.string(),
 												nonoptional: z.string(),
@@ -1017,6 +1023,7 @@ export const messageSummaryListSchema = z
 												meta: z.string(),
 												isOptional: z.string(),
 												isNullable: z.string(),
+												apply: z.string(),
 												keyof: z.string(),
 												catchall: z.string(),
 												passthrough: z.string(),
@@ -1052,6 +1059,7 @@ export const messageSummaryListSchema = z
 								"added-integration",
 								"answered-questions",
 								"auto-fix-with-v0",
+								"cloned-repo",
 								"deleted-file",
 								"edited-file",
 								"fix-cve",
@@ -1076,20 +1084,12 @@ export const messageSummaryListSchema = z
 							.describe("Specifies whether the message was sent by the user or the assistant."),
 						finishReason: z.optional(
 							z
-								.enum([
-									"content-filter",
-									"error",
-									"length",
-									"other",
-									"stop",
-									"tool-calls",
-									"unknown",
-								])
+								.enum(["content-filter", "error", "length", "other", "stop", "tool-calls"])
 								.describe("The reason why the message generation finished."),
 						),
 						apiUrl: z.string().describe("API URL to access this message via the API."),
 						authorId: z.nullable(z.string().describe("The ID of the user who sent the message.")),
-						parentId: z.optional(z.string().describe("The ID of the parent message.")),
+						parentId: z.string().describe("The ID of the parent message.").nullish(),
 						attachments: z.optional(
 							z.array(
 								z.object({
@@ -3518,6 +3518,15 @@ export const projectsDeletePathParamsSchema = z.object({
 		.string()
 		.describe(
 			"The unique identifier of the project to delete. This must be passed as a path parameter in the URL.",
+		),
+});
+
+export const projectsDeleteQueryParamsSchema = z.object({
+	deleteAllChats: z
+		.enum(["true", "false"])
+		.default("false")
+		.describe(
+			"If true, deletes all the chats associated with the given project ID. Deleting is permanent. Defaults to false.",
 		),
 });
 

@@ -16,17 +16,21 @@
 	"scripts": {
 		"tsc": "tsc --noEmit",
 		"build": "bunchee",
-		"generate": "openapi-codegen cloudflare"
+		"generate": "[ -d ./src/generated ] && echo 'Generated files exist, skipping. Run generate:force to regenerate.' || (rimraf ./src/generated && kubb generate)",
+		"generate:force": "rimraf ./src/generated && kubb generate",
+		"is-tree-shakable": "is-tree-shakable"
 	},
+	"dependencies": {},
 	"devDependencies": {
-		"@openapi-codegen/cli": "catalog:",
-		"@openapi-codegen/typescript": "catalog:",
+		"@kubb/cli": "catalog:",
+		"@kubb/core": "catalog:",
+		"@sferadev/openapi-utils": "workspace:*",
 		"@sferadev/tsconfig": "workspace:*",
 		"@types/node": "catalog:",
 		"bunchee": "catalog:",
 		"case": "catalog:",
 		"openapi3-ts": "catalog:",
-		"ts-morph": "catalog:",
+		"rimraf": "catalog:",
 		"typescript": "catalog:"
 	},
 	"files": [
@@ -39,14 +43,19 @@
 	"exports": {
 		"./package.json": "./package.json",
 		".": {
-			"import": {
-				"types": "./dist/index.d.mts",
-				"default": "./dist/index.mjs"
-			},
-			"require": {
-				"types": "./dist/index.d.cts",
-				"default": "./dist/index.cjs"
-			}
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.mjs",
+			"require": "./dist/index.cjs"
+		},
+		"./types": {
+			"types": "./dist/types.d.mts",
+			"import": "./dist/types.mjs",
+			"require": "./dist/types.cjs"
+		},
+		"./components": {
+			"types": "./dist/components.d.mts",
+			"import": "./dist/components.mjs",
+			"require": "./dist/components.cjs"
 		}
 	},
 	"publishConfig": {

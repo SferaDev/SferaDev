@@ -22,12 +22,12 @@
 		"@kubb/core": "catalog:",
 		"@kubb/oas": "catalog:",
 		"@kubb/plugin-client": "catalog:",
-		"@kubb/plugin-mcp": "catalog:",
 		"@kubb/plugin-oas": "catalog:",
 		"@kubb/plugin-ts": "catalog:",
 		"@kubb/plugin-zod": "catalog:",
 		"@kubb/react-fabric": "catalog:",
-		"case": "catalog:"
+		"case": "catalog:",
+		"openapi3-ts": "catalog:"
 	},
 	"devDependencies": {
 		"@sferadev/tsconfig": "workspace:*",

@@ -47,7 +47,7 @@ export function getParams({
 					: undefined,
 				config: {
 					mode: "inlineSpread",
-					type: "Partial<FetcherConfig> & { client?: typeof client }",
+					type: "Partial<FetcherConfig> & { client?: typeof defaultClient }",
 					default: "{}",
 					optional: true,
 				},
@@ -147,8 +147,9 @@ export function ClientOperation({
 		},
 	});
 
-	const formData = isFormData
-		? `
+	const formData =
+		isFormData && typeSchemas.request?.name
+			? `
    const formData = new FormData()
    if(body) {
     Object.keys(body).forEach((key) => {
@@ -159,7 +160,7 @@ export function ClientOperation({
     })
    }
   `
-		: "";
+			: "";
 
 	const childrenElement = children ? (
 		children
@@ -182,7 +183,7 @@ export function ClientOperation({
 				}}
 				returnType={returnType}
 			>
-				{"const { client: request = client, ...requestConfig } = config;"}
+				{"const { client: request = defaultClient, ...requestConfig } = config;"}
 				<br />
 				<br />
 				{typeSchemas.pathParams?.schema &&

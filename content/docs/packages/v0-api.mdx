@@ -1,16 +1,15 @@
 ---
 title: "v0-api"
-description: "Type-safe v0 API client with MCP support"
+description: "Type-safe v0 API client"
 icon: "wand-magic-sparkles"
 ---
 
-A type-safe API client for the [v0 by Vercel](https://v0.dev) API, auto-generated from the official OpenAPI specification with full TypeScript support and MCP integration.
+A type-safe API client for the [v0 by Vercel](https://v0.dev) API, auto-generated from the official OpenAPI specification with full TypeScript support.
 
 ## Features
 
 - **Type-Safe** - Full TypeScript support with auto-generated types from OpenAPI spec
 - **Zod Schemas** - Runtime validation with Zod schemas for all API types
-- **MCP Support** - Model Context Protocol integration for AI assistants
 - **Auto-Updated** - Daily regeneration from upstream OpenAPI specs
 
 ## Installation
@@ -70,40 +69,6 @@ import { Schemas } from "v0-api";
 // Validate API responses at runtime
 const projectSchema = Schemas.project;
 const validated = projectSchema.parse(response);
-```
-
-## MCP Integration
-
-The package includes MCP (Model Context Protocol) support for AI assistants.
-
-### Remote MCP Server
-
-Add to your MCP client configuration:
-
-```json
-{
-  "mcpServers": {
-    "v0": {
-      "url": "https://openapi.sferadev.com/api/v0/mcp"
-    }
-  }
-}
-```
-
-### Local MCP Server
-
-```typescript
-import { initMcpTools } from "v0-api/mcp";
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-
-const server = new McpServer({ name: "v0" });
-
-initMcpTools(server, {
-  baseUrl: "https://api.v0.dev",
-  headers: {
-    Authorization: `Bearer ${process.env.V0_TOKEN}`,
-  },
-});
 ```
 
 ## API Reference

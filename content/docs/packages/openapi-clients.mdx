@@ -10,8 +10,8 @@ A collection of type-safe OpenAPI clients automatically generated from their res
 
 | Package | Description | npm |
 |---------|-------------|-----|
-| `vercel-api-js` | Vercel Platform API client with MCP support | [![npm](https://img.shields.io/npm/v/vercel-api-js.svg)](https://npmjs.com/package/vercel-api-js) |
-| `v0-api` | Vercel v0 API client with MCP support | [![npm](https://img.shields.io/npm/v/v0-api.svg)](https://npmjs.com/package/v0-api) |
+| `vercel-api-js` | Vercel Platform API client | [![npm](https://img.shields.io/npm/v/vercel-api-js.svg)](https://npmjs.com/package/vercel-api-js) |
+| `v0-api` | Vercel v0 API client | [![npm](https://img.shields.io/npm/v/v0-api.svg)](https://npmjs.com/package/v0-api) |
 | `cloudflare-api-js` | Cloudflare API client | [![npm](https://img.shields.io/npm/v/cloudflare-api-js.svg)](https://npmjs.com/package/cloudflare-api-js) |
 | `netlify-api` | Netlify API client | [![npm](https://img.shields.io/npm/v/netlify-api.svg)](https://npmjs.com/package/netlify-api) |
 | `zoom-api-js` | Zoom API client | [![npm](https://img.shields.io/npm/v/zoom-api-js.svg)](https://npmjs.com/package/zoom-api-js) |
@@ -58,24 +58,6 @@ const client = Fetchers.createClient({
 const projects = await client.listProjects();
 ```
 
-### With MCP (Model Context Protocol)
-
-Some clients (`vercel-api-js`, `v0-api`) include MCP server support for AI assistants:
-
-```typescript
-import { initMcpTools } from "vercel-api-js/mcp";
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-
-const server = new McpServer({ name: "vercel" });
-
-initMcpTools(server, {
-  baseUrl: "https://api.vercel.com",
-  headers: {
-    Authorization: `Bearer ${process.env.VERCEL_TOKEN}`,
-  },
-});
-```
-
 ### Type Exports
 
 Each client exports TypeScript types for all API schemas:
@@ -94,7 +76,6 @@ const projectSchema = Schemas.project;
 
 - **Type-Safe** - Full TypeScript support with auto-generated types
 - **Zod Schemas** - Runtime validation with Zod schemas for all API types
-- **MCP Support** - Model Context Protocol integration for AI assistants (select packages)
 - **Auto-Updated** - Daily regeneration from upstream OpenAPI specs
 - **Tree-Shakeable** - Only import what you need
 
@@ -105,6 +86,4 @@ These clients are generated using [Kubb](https://kubb.dev) from OpenAPI specific
 1. Fetches the latest OpenAPI spec from the API provider
 2. Cleans and normalizes operation IDs and schemas
 3. Generates TypeScript types, Zod schemas, and fetch clients
-4. Creates MCP tool definitions for supported APIs
-
 Updates are automated via GitHub Actions that run hourly to check for spec changes.

@@ -28,6 +28,7 @@ export const messagesTypeEnum = {
 	"added-integration": "added-integration",
 	"answered-questions": "answered-questions",
 	"auto-fix-with-v0": "auto-fix-with-v0",
+	"cloned-repo": "cloned-repo",
 	"deleted-file": "deleted-file",
 	"edited-file": "edited-file",
 	"fix-cve": "fix-cve",
@@ -61,7 +62,6 @@ export const messagesFinishReasonEnum = {
 	other: "other",
 	stop: "stop",
 	"tool-calls": "tool-calls",
-	unknown: "unknown",
 } as const;
 
 export type MessagesFinishReasonEnumKey =
@@ -77,6 +77,7 @@ export type AttachmentsTypeEnumKey = (typeof attachmentsTypeEnum)[keyof typeof a
 
 export const modelConfigurationModelIdEnum = {
 	"v0-max": "v0-max",
+	"v0-max-fast": "v0-max-fast",
 	"v0-mini": "v0-mini",
 	"v0-pro": "v0-pro",
 } as const;
@@ -260,9 +261,9 @@ export type ChatDetail = {
 							1,
 							{
 								/**
-								 * @type string | undefined
+								 * @type string
 								 */
-								standard?: string | undefined;
+								toJSONSchema: string;
 								/**
 								 * @type string
 								 */
@@ -275,6 +276,10 @@ export type ChatDetail = {
 								 * @type string
 								 */
 								check: string;
+								/**
+								 * @type string
+								 */
+								with: string;
 								/**
 								 * @type string
 								 */
@@ -358,6 +363,10 @@ export type ChatDetail = {
 								/**
 								 * @type string
 								 */
+								exactOptional: string;
+								/**
+								 * @type string
+								 */
 								nullable: string;
 								/**
 								 * @type string
@@ -419,6 +428,10 @@ export type ChatDetail = {
 								 * @type string
 								 */
 								isNullable: string;
+								/**
+								 * @type string
+								 */
+								apply: string;
 								/**
 								 * @type string
 								 */
@@ -513,7 +526,7 @@ export type ChatDetail = {
 		authorId: string | null;
 		/**
 		 * @description The ID of the parent message.
-		 * @type null,string | undefined
+		 * @type null,string
 		 */
 		parentId?: (string | null) | undefined;
 		/**
@@ -640,6 +653,15 @@ export const chatSummaryPrivacyEnum = {
 export type ChatSummaryPrivacyEnumKey =
 	(typeof chatSummaryPrivacyEnum)[keyof typeof chatSummaryPrivacyEnum];
 
+export const latestVersionStatusEnum2 = {
+	completed: "completed",
+	failed: "failed",
+	pending: "pending",
+} as const;
+
+export type LatestVersionStatusEnum2Key =
+	(typeof latestVersionStatusEnum2)[keyof typeof latestVersionStatusEnum2];
+
 /**
  * @description Summary of a chat, including metadata like privacy, author, latest version, and URLs.
  */
@@ -730,7 +752,7 @@ export type ChatSummary = {
 				 * @description The current status of the version generation process.
 				 * @type string
 				 */
-				status: LatestVersionStatusEnumKey;
+				status: LatestVersionStatusEnum2Key;
 				/**
 				 * @description Optional URL for previewing the generated output.
 				 * @type string | undefined
@@ -1416,6 +1438,7 @@ export const messageDetailTypeEnum = {
 	"added-integration": "added-integration",
 	"answered-questions": "answered-questions",
 	"auto-fix-with-v0": "auto-fix-with-v0",
+	"cloned-repo": "cloned-repo",
 	"deleted-file": "deleted-file",
 	"edited-file": "edited-file",
 	"fix-cve": "fix-cve",
@@ -1451,11 +1474,19 @@ export const messageDetailFinishReasonEnum = {
 	other: "other",
 	stop: "stop",
 	"tool-calls": "tool-calls",
-	unknown: "unknown",
 } as const;
 
 export type MessageDetailFinishReasonEnumKey =
 	(typeof messageDetailFinishReasonEnum)[keyof typeof messageDetailFinishReasonEnum];
+
+export const attachmentsTypeEnum2 = {
+	figma: "figma",
+	screenshot: "screenshot",
+	zip: "zip",
+} as const;
+
+export type AttachmentsTypeEnum2Key =
+	(typeof attachmentsTypeEnum2)[keyof typeof attachmentsTypeEnum2];
 
 /**
  * @description Detailed message object extending MessageSummary with chat metadata.
@@ -1487,9 +1518,9 @@ export type MessageDetail = {
 						1,
 						{
 							/**
-							 * @type string | undefined
+							 * @type string
 							 */
-							standard?: string | undefined;
+							toJSONSchema: string;
 							/**
 							 * @type string
 							 */
@@ -1502,6 +1533,10 @@ export type MessageDetail = {
 							 * @type string
 							 */
 							check: string;
+							/**
+							 * @type string
+							 */
+							with: string;
 							/**
 							 * @type string
 							 */
@@ -1585,6 +1620,10 @@ export type MessageDetail = {
 							/**
 							 * @type string
 							 */
+							exactOptional: string;
+							/**
+							 * @type string
+							 */
 							nullable: string;
 							/**
 							 * @type string
@@ -1646,6 +1685,10 @@ export type MessageDetail = {
 							 * @type string
 							 */
 							isNullable: string;
+							/**
+							 * @type string
+							 */
+							apply: string;
 							/**
 							 * @type string
 							 */
@@ -1740,7 +1783,7 @@ export type MessageDetail = {
 	authorId: string | null;
 	/**
 	 * @description The ID of the parent message.
-	 * @type null,string | undefined
+	 * @type null,string
 	 */
 	parentId?: (string | null) | undefined;
 	/**
@@ -1777,7 +1820,7 @@ export type MessageDetail = {
 				 * @description Optional v0-specific attachment type for enhanced processing.
 				 * @type string | undefined
 				 */
-				type?: AttachmentsTypeEnumKey | undefined;
+				type?: AttachmentsTypeEnum2Key | undefined;
 		  }[]
 		| undefined;
 	/**
@@ -1792,6 +1835,7 @@ export const messageSummaryTypeEnum = {
 	"added-integration": "added-integration",
 	"answered-questions": "answered-questions",
 	"auto-fix-with-v0": "auto-fix-with-v0",
+	"cloned-repo": "cloned-repo",
 	"deleted-file": "deleted-file",
 	"edited-file": "edited-file",
 	"fix-cve": "fix-cve",
@@ -1827,11 +1871,19 @@ export const messageSummaryFinishReasonEnum = {
 	other: "other",
 	stop: "stop",
 	"tool-calls": "tool-calls",
-	unknown: "unknown",
 } as const;
 
 export type MessageSummaryFinishReasonEnumKey =
 	(typeof messageSummaryFinishReasonEnum)[keyof typeof messageSummaryFinishReasonEnum];
+
+export const attachmentsTypeEnum3 = {
+	figma: "figma",
+	screenshot: "screenshot",
+	zip: "zip",
+} as const;
+
+export type AttachmentsTypeEnum3Key =
+	(typeof attachmentsTypeEnum3)[keyof typeof attachmentsTypeEnum3];
 
 /**
  * @description Summary of a single message within a chat, including role, content, type, timestamp, and API URL.
@@ -1863,9 +1915,9 @@ export type MessageSummary = {
 						1,
 						{
 							/**
-							 * @type string | undefined
+							 * @type string
 							 */
-							standard?: string | undefined;
+							toJSONSchema: string;
 							/**
 							 * @type string
 							 */
@@ -1878,6 +1930,10 @@ export type MessageSummary = {
 							 * @type string
 							 */
 							check: string;
+							/**
+							 * @type string
+							 */
+							with: string;
 							/**
 							 * @type string
 							 */
@@ -1961,6 +2017,10 @@ export type MessageSummary = {
 							/**
 							 * @type string
 							 */
+							exactOptional: string;
+							/**
+							 * @type string
+							 */
 							nullable: string;
 							/**
 							 * @type string
@@ -2022,6 +2082,10 @@ export type MessageSummary = {
 							 * @type string
 							 */
 							isNullable: string;
+							/**
+							 * @type string
+							 */
+							apply: string;
 							/**
 							 * @type string
 							 */
@@ -2116,7 +2180,7 @@ export type MessageSummary = {
 	authorId: string | null;
 	/**
 	 * @description The ID of the parent message.
-	 * @type null,string | undefined
+	 * @type null,string
 	 */
 	parentId?: (string | null) | undefined;
 	/**
@@ -2153,7 +2217,7 @@ export type MessageSummary = {
 				 * @description Optional v0-specific attachment type for enhanced processing.
 				 * @type string | undefined
 				 */
-				type?: AttachmentsTypeEnumKey | undefined;
+				type?: AttachmentsTypeEnum3Key | undefined;
 		  }[]
 		| undefined;
 };
@@ -2163,6 +2227,7 @@ export const dataTypeEnum = {
 	"added-integration": "added-integration",
 	"answered-questions": "answered-questions",
 	"auto-fix-with-v0": "auto-fix-with-v0",
+	"cloned-repo": "cloned-repo",
 	"deleted-file": "deleted-file",
 	"edited-file": "edited-file",
 	"fix-cve": "fix-cve",
@@ -2196,11 +2261,19 @@ export const dataFinishReasonEnum = {
 	other: "other",
 	stop: "stop",
 	"tool-calls": "tool-calls",
-	unknown: "unknown",
 } as const;
 
 export type DataFinishReasonEnumKey =
 	(typeof dataFinishReasonEnum)[keyof typeof dataFinishReasonEnum];
+
+export const attachmentsTypeEnum4 = {
+	figma: "figma",
+	screenshot: "screenshot",
+	zip: "zip",
+} as const;
+
+export type AttachmentsTypeEnum4Key =
+	(typeof attachmentsTypeEnum4)[keyof typeof attachmentsTypeEnum4];
 
 /**
  * @description List response containing multiple message summaries with cursor-based pagination.
@@ -2242,9 +2315,9 @@ export type MessageSummaryList = {
 							1,
 							{
 								/**
-								 * @type string | undefined
+								 * @type string
 								 */
-								standard?: string | undefined;
+								toJSONSchema: string;
 								/**
 								 * @type string
 								 */
@@ -2257,6 +2330,10 @@ export type MessageSummaryList = {
 								 * @type string
 								 */
 								check: string;
+								/**
+								 * @type string
+								 */
+								with: string;
 								/**
 								 * @type string
 								 */
@@ -2340,6 +2417,10 @@ export type MessageSummaryList = {
 								/**
 								 * @type string
 								 */
+								exactOptional: string;
+								/**
+								 * @type string
+								 */
 								nullable: string;
 								/**
 								 * @type string
@@ -2401,6 +2482,10 @@ export type MessageSummaryList = {
 								 * @type string
 								 */
 								isNullable: string;
+								/**
+								 * @type string
+								 */
+								apply: string;
 								/**
 								 * @type string
 								 */
@@ -2495,7 +2580,7 @@ export type MessageSummaryList = {
 		authorId: string | null;
 		/**
 		 * @description The ID of the parent message.
-		 * @type null,string | undefined
+		 * @type null,string
 		 */
 		parentId?: (string | null) | undefined;
 		/**
@@ -2532,7 +2617,7 @@ export type MessageSummaryList = {
 					 * @description Optional v0-specific attachment type for enhanced processing.
 					 * @type string | undefined
 					 */
-					type?: AttachmentsTypeEnumKey | undefined;
+					type?: AttachmentsTypeEnum4Key | undefined;
 			  }[]
 			| undefined;
 	}[];
@@ -2717,6 +2802,15 @@ export const chatsPrivacyEnum = {
 
 export type ChatsPrivacyEnumKey = (typeof chatsPrivacyEnum)[keyof typeof chatsPrivacyEnum];
 
+export const latestVersionStatusEnum3 = {
+	completed: "completed",
+	failed: "failed",
+	pending: "pending",
+} as const;
+
+export type LatestVersionStatusEnum3Key =
+	(typeof latestVersionStatusEnum3)[keyof typeof latestVersionStatusEnum3];
+
 /**
  * @description Full representation of a project, including its associated chats.
  */
@@ -2867,7 +2961,7 @@ export type ProjectDetail = {
 					 * @description The current status of the version generation process.
 					 * @type string
 					 */
-					status: LatestVersionStatusEnumKey;
+					status: LatestVersionStatusEnum3Key;
 					/**
 					 * @description Optional URL for previewing the generated output.
 					 * @type string | undefined
@@ -5981,6 +6075,23 @@ export type ProjectsDeletePathParams = {
 	projectId: string;
 };
 
+export const projectsDeleteQueryParamsDeleteAllChatsEnum = {
+	true: "true",
+	false: "false",
+} as const;
+
+export type ProjectsDeleteQueryParamsDeleteAllChatsEnumKey =
+	(typeof projectsDeleteQueryParamsDeleteAllChatsEnum)[keyof typeof projectsDeleteQueryParamsDeleteAllChatsEnum];
+
+export type ProjectsDeleteQueryParams = {
+	/**
+	 * @description If true, deletes all the chats associated with the given project ID. Deleting is permanent. Defaults to false.
+	 * @default "false"
+	 * @type string | undefined
+	 */
+	deleteAllChats?: ProjectsDeleteQueryParamsDeleteAllChatsEnumKey | undefined;
+};
+
 /**
  * @description Success
  */
@@ -6031,6 +6142,7 @@ export type ProjectsDeleteMutationResponse = ProjectsDelete200;
 export type ProjectsDeleteMutation = {
 	Response: ProjectsDelete200;
 	PathParams: ProjectsDeletePathParams;
+	QueryParams: ProjectsDeleteQueryParams;
 	Errors:
 		| ProjectsDelete401
 		| ProjectsDelete403

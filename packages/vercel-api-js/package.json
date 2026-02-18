@@ -25,21 +25,13 @@
 	"devDependencies": {
 		"@kubb/cli": "catalog:",
 		"@kubb/core": "catalog:",
-		"@modelcontextprotocol/sdk": "catalog:",
 		"@sferadev/openapi-utils": "workspace:*",
 		"@sferadev/tsconfig": "workspace:*",
+		"openapi3-ts": "catalog:",
 		"@types/node": "catalog:",
 		"bunchee": "catalog:",
 		"rimraf": "catalog:",
 		"typescript": "catalog:"
-	},
-	"peerDependencies": {
-		"@modelcontextprotocol/sdk": "^1.15.1"
-	},
-	"peerDependenciesMeta": {
-		"@modelcontextprotocol/sdk": {
-			"optional": true
-		}
 	},
 	"files": [
 		"dist"
@@ -54,11 +46,6 @@
 			"types": "./dist/index.d.ts",
 			"import": "./dist/index.mjs",
 			"require": "./dist/index.cjs"
-		},
-		"./mcp": {
-			"types": "./dist/mcp.d.mts",
-			"import": "./dist/mcp.mjs",
-			"require": "./dist/mcp.cjs"
 		},
 		"./types": {
 			"types": "./dist/types.d.mts",

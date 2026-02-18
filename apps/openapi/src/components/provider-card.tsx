@@ -1,6 +1,6 @@
 "use client";
 
-import { BotMessageSquare, CodeXml } from "lucide-react";
+import { CodeXml } from "lucide-react";
 import { useEffect, useState } from "react";
 import { CodeBlock } from "@/components/code-block";
 import { Badge } from "@/components/ui/badge";
@@ -11,14 +11,6 @@ import type { Provider } from "@/lib/types";
 interface UnifiedProviderInterfaceProps {
 	providers: Provider[];
 }
-
-const generateMcpConfig = (provider: Provider) => `{
-  "mcpServers": {
-    "${provider.id}": {
-      "url": "https://openapi.sferadev.com/api/${provider.id}/mcp"
-    }
-  }
-}`;
 
 export function UnifiedProviderInterface({ providers }: UnifiedProviderInterfaceProps) {
 	const [activeTab, setActiveTab] = useState(() => {
@@ -56,9 +48,7 @@ export function UnifiedProviderInterface({ providers }: UnifiedProviderInterface
 			{/* Content Sections */}
 			{providers.map((provider) => (
 				<div key={provider.id} className={`${activeTab === provider.id ? "block" : "hidden"}`}>
-					<div
-						className={`grid grid-cols-1 gap-6 h-full ${provider.hasMcp ? "xl:grid-cols-2" : "xl:grid-cols-1"}`}
-					>
+					<div className="grid grid-cols-1 gap-6 h-full">
 						{/* TypeScript SDK Section */}
 						<Card className="flex flex-col">
 							<CardHeader className="flex flex-row items-center justify-center gap-3 pb-4">
@@ -100,22 +90,6 @@ export function UnifiedProviderInterface({ providers }: UnifiedProviderInterface
 								</div>
 							</CardContent>
 						</Card>
-
-						{/* MCP Integration Section - Only show if provider has MCP */}
-						{provider.hasMcp && (
-							<Card className="flex flex-col">
-								<CardHeader className="flex flex-row items-center justify-center gap-3 pb-4">
-									<BotMessageSquare className="h-6 w-6" />
-									<CardTitle className="text-xl font-bold tracking-tight">MCP Server</CardTitle>
-								</CardHeader>
-								<CardContent className="flex-1">
-									<div>
-										<h3 className="text-base font-semibold mb-2">Configuration</h3>
-										<CodeBlock language="json" code={generateMcpConfig(provider)} />
-									</div>
-								</CardContent>
-							</Card>
-						)}
 					</div>
 				</div>
 			))}
