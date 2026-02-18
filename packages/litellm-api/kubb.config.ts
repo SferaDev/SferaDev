@@ -1,6 +1,6 @@
 import { defineConfig } from "@kubb/core";
 import { baseConfig, cleanOperationIds, fetchSpec } from "@sferadev/openapi-utils";
-import type { OpenAPIObject, PathItemObject } from "openapi3-ts/oas30";
+import type { OpenAPIObject } from "openapi3-ts/oas30";
 
 export default defineConfig(async () => {
 	let openAPIDocument = await fetchSpec("https://www.demo.litellm.ai/openapi.json");
