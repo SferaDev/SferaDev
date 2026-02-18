@@ -15284,18 +15284,6 @@ export type CcAccountRegistryToken = {
 };
 
 /**
- * Egress settings for an application
- */
-export type CcApplicationEgress = {
-	/**
-	 * The bandwidth limit for egress traffic in Megabits per second (Mbps).
-	 * "unlimited" when no throttling is applied.
-	 * A number when throttling is enabled, calculated as max(vCPUs * 1000, 100).
-	 */
-	bandwidth_limit_mbps: "unlimited" | number;
-};
-
-/**
  * Shows a count of application instance states.
  */
 export type CcApplicationHealthInstances = {
@@ -15309,6 +15297,18 @@ export type CcApplicationHealthInstances = {
  * An Application ID represents an identifier of an application
  */
 export type CcApplicationID = string;
+
+/**
+ * Network settings for an application
+ */
+export type CcApplicationNetwork = {
+	/**
+	 * The network bandwidth limit per container in Megabits per second (Mbps).
+	 *
+	 * @minimum 1
+	 */
+	bandwidth_limit_mbps: number;
+};
 
 /**
  * Grace period for active instances to stay alive before becoming eligible for shutdown signal due to a rollout, in seconds.
@@ -15436,7 +15436,6 @@ export type CcObservabilityLogs = {
 export type CcPublicApplication = {
 	created_at: CcISO8601Timestamp;
 	durable_object?: CcDurableObjectsConfigurationNamespaceId;
-	egress?: CcApplicationEgress;
 	health: CcApplicationHealthInstances;
 	id: CcApplicationID;
 	image: CcImage;
@@ -15449,6 +15448,7 @@ export type CcPublicApplication = {
 	 * The name of the application.
 	 */
 	name: string;
+	network?: CcApplicationNetwork;
 	observability?: CcObservability;
 	rollout_active_grace_period?: CcApplicationRolloutActiveGracePeriod;
 	updated_at: CcISO8601Timestamp;
