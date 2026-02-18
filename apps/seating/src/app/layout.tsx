@@ -2,6 +2,7 @@ import { Analytics } from "@vercel/analytics/next";
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond } from "next/font/google";
 import type React from "react";
+import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -25,10 +26,17 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en" className={cormorant.variable}>
+		<html lang="en" className={cormorant.variable} suppressHydrationWarning>
 			<body className="font-sans antialiased">
-				{children}
-				<Analytics />
+				<ThemeProvider
+					attribute="class"
+					defaultTheme="system"
+					enableSystem
+					disableTransitionOnChange
+				>
+					{children}
+					<Analytics />
+				</ThemeProvider>
 			</body>
 		</html>
 	);

@@ -29,6 +29,7 @@ interface TableNodeProps {
 		onSwapGuests: (guestId: string, tableId: string, seatIndex: number) => void;
 		onUpdateTable: (tableId: string, updates: Partial<Table>) => void;
 		onAssignGuest: (guestId: string) => void;
+		onUpdateGuestPhoto: (guestId: string, photo: string) => void;
 	};
 }
 
@@ -43,6 +44,7 @@ function TableNodeComponent({ data }: TableNodeProps) {
 		onSwapGuests,
 		onUpdateTable,
 		onAssignGuest,
+		onUpdateGuestPhoto,
 	} = data;
 	const [isEditing, setIsEditing] = useState(false);
 	const [editName, setEditName] = useState(table.name);
@@ -383,12 +385,7 @@ function TableNodeComponent({ data }: TableNodeProps) {
 
 	const handleCropComplete = (croppedImage: string) => {
 		if (editingGuestId) {
-			// Update guest photo through parent - we need a new callback for this
-			// For now, we'll update via the allGuests reference
-			const event = new CustomEvent("updateGuestPhoto", {
-				detail: { guestId: editingGuestId, photo: croppedImage },
-			});
-			window.dispatchEvent(event);
+			onUpdateGuestPhoto(editingGuestId, croppedImage);
 		}
 		setCropperOpen(false);
 		setCropperImage(null);
@@ -666,7 +663,7 @@ function TableNodeComponent({ data }: TableNodeProps) {
 										}}
 									>
 										<Avatar
-											className="border-[3px] border-primary/60 shadow-lg pointer-events-none bg-white"
+											className="border-[3px] border-primary/60 shadow-lg pointer-events-none bg-card"
 											style={{ width: seatSize, height: seatSize }}
 										>
 											<AvatarImage src={guest.photo || undefined} className="object-cover" />
@@ -676,6 +673,7 @@ function TableNodeComponent({ data }: TableNodeProps) {
 										</Avatar>
 
 										<label
+											aria-label="Upload guest photo"
 											className="export-hide absolute -bottom-1 -right-1 h-6 w-6 rounded-full bg-card border border-border text-muted-foreground flex items-center justify-center
                     opacity-100 md:opacity-0 md:group-hover/seat:opacity-100 transition-opacity shadow-sm cursor-pointer nodrag nopan hover:bg-muted"
 											onPointerDown={(e) => e.stopPropagation()}
