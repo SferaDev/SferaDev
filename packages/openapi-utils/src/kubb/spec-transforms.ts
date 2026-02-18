@@ -205,6 +205,16 @@ export function sanitizeEnumValues(openAPIDocument: OpenAPIObject): OpenAPIObjec
 export function camelCasePathParams(openAPIDocument: OpenAPIObject): OpenAPIObject {
 	const pathRenames: Array<[string, string]> = [];
 
+	// Rename path parameters in components/parameters (handles $ref)
+	const componentParams = (openAPIDocument.components as any)?.parameters;
+	if (componentParams) {
+		for (const param of Object.values(componentParams) as any[]) {
+			if (param.in === "path" && param.name !== c.camel(param.name)) {
+				param.name = c.camel(param.name);
+			}
+		}
+	}
+
 	for (const [pathKey, pathItem] of Object.entries(openAPIDocument.paths ?? {})) {
 		const paramMatches = pathKey.match(/\{([^}]+)\}/g)?.map((p) => p.slice(1, -1)) ?? [];
 		const needsRename = paramMatches.filter((p) => p !== c.camel(p));

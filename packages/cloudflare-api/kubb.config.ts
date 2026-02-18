@@ -1,5 +1,10 @@
 import { defineConfig } from "@kubb/core";
-import { cleanOperationIds, createConfig, fetchSpec } from "@sferadev/openapi-utils";
+import {
+	camelCasePathParams,
+	cleanOperationIds,
+	createConfig,
+	fetchSpec,
+} from "@sferadev/openapi-utils";
 import c from "case";
 import type { OpenAPIObject, OperationObject, PathItemObject } from "openapi3-ts/oas30";
 
@@ -9,6 +14,7 @@ export default defineConfig(async () => {
 	);
 
 	openAPIDocument = cleanOperationIds(openAPIDocument);
+	openAPIDocument = camelCasePathParams(openAPIDocument);
 
 	openAPIDocument = deduplicateComponents(openAPIDocument, "schemas");
 	openAPIDocument = deduplicateComponents(openAPIDocument, "parameters");
