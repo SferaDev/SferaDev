@@ -1488,6 +1488,8 @@ export const userEventTypeEnum = {
 	"integration-installation-permission-updated": "integration-installation-permission-updated",
 	"integration-installation-removed": "integration-installation-removed",
 	"integration-scope-changed": "integration-scope-changed",
+	"invoice-modified": "invoice-modified",
+	"invoice-refunded": "invoice-refunded",
 	"log-drain-created": "log-drain-created",
 	"log-drain-deleted": "log-drain-deleted",
 	"log-drain-disabled": "log-drain-disabled",
@@ -3611,6 +3613,14 @@ export const payloadActorTypeEnum = {
 
 export type PayloadActorTypeEnumKey =
 	(typeof payloadActorTypeEnum)[keyof typeof payloadActorTypeEnum];
+
+export const payloadSettlementMethodEnum = {
+	"refunded-paid": "refunded-paid",
+	"credited-paid": "credited-paid",
+} as const;
+
+export type PayloadSettlementMethodEnumKey =
+	(typeof payloadSettlementMethodEnum)[keyof typeof payloadSettlementMethodEnum];
 
 export const payloadActionEnum8 = {
 	cancel_plan: "cancel_plan",
@@ -11348,6 +11358,42 @@ export type UserEvent = {
 						 * @type string | undefined
 						 */
 						currency?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						invoiceId: string;
+						/**
+						 * @type number
+						 */
+						amount: number;
+						/**
+						 * @type string
+						 */
+						refundReason: string;
+						/**
+						 * @type number
+						 */
+						lineItemCount: number;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						invoiceId: string;
+						/**
+						 * @type string
+						 */
+						newInvoiceId: string;
+						/**
+						 * @type string
+						 */
+						settlementMethod: PayloadSettlementMethodEnumKey;
+						/**
+						 * @type number
+						 */
+						amount: number;
 				  }
 				| {
 						/**
