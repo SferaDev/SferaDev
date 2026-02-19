@@ -46,11 +46,10 @@ export const clientGenerator: ReturnType<typeof createReactGenerator<PluginClien
 					baseName={client.file.baseName}
 					path={client.file.path}
 					meta={client.file.meta}
-					// @ts-expect-error conflict with react-fabric types
 					banner={getBanner({ oas, output, config: pluginManager.config })}
 					footer={getFooter({ oas, output })}
 				>
-					<File.Import name={"client"} path={options.importPath ?? ""} />
+					<File.Import name={"defaultClient"} path={options.importPath ?? ""} />
 					<File.Import
 						name={["FetcherConfig", "ErrorWrapper"]}
 						path={options.importPath ?? ""}

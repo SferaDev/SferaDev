@@ -1,0 +1,37 @@
+{
+	"name": "@sferadev/seating",
+	"version": "0.1.0",
+	"private": true,
+	"license": "MIT",
+	"scripts": {
+		"dev": "next dev --turbopack",
+		"build": "next build",
+		"start": "next start",
+		"tsc": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@vercel/analytics": "catalog:",
+		"@xyflow/react": "catalog:",
+		"class-variance-authority": "catalog:",
+		"clsx": "catalog:",
+		"html-to-image": "catalog:",
+		"jspdf": "catalog:",
+		"lucide-react": "catalog:",
+		"next": "catalog:",
+		"next-themes": "catalog:",
+		"radix-ui": "catalog:",
+		"react": "catalog:",
+		"react-dom": "catalog:",
+		"tailwind-merge": "catalog:"
+	},
+	"devDependencies": {
+		"@tailwindcss/postcss": "catalog:",
+		"@types/node": "catalog:",
+		"@types/react": "catalog:",
+		"@types/react-dom": "catalog:",
+		"postcss": "catalog:",
+		"tailwindcss": "catalog:",
+		"tw-animate-css": "catalog:",
+		"typescript": "catalog:"
+	}
+}

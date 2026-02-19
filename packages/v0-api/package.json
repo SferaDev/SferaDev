@@ -20,26 +20,25 @@
 		"is-tree-shakable": "is-tree-shakable"
 	},
 	"dependencies": {
+		"@sferadev/openapi-utils": "workspace:*",
 		"zod": "catalog:"
 	},
 	"devDependencies": {
 		"@kubb/cli": "catalog:",
 		"@kubb/core": "catalog:",
-		"@kubb/plugin-zod": "catalog:",
-		"@kubb/react": "catalog:",
-		"@modelcontextprotocol/sdk": "catalog:",
-		"@sferadev/openapi-utils": "workspace:*",
 		"@sferadev/tsconfig": "workspace:*",
+		"openapi3-ts": "catalog:",
 		"@types/node": "catalog:",
 		"bunchee": "catalog:",
+		"effect": "catalog:",
 		"rimraf": "catalog:",
 		"typescript": "catalog:"
 	},
 	"peerDependencies": {
-		"@modelcontextprotocol/sdk": "^1.15.1"
+		"effect": "^3.0.0"
 	},
 	"peerDependenciesMeta": {
-		"@modelcontextprotocol/sdk": {
+		"effect": {
 			"optional": true
 		}
 	},
@@ -60,16 +59,6 @@
 			"require": {
 				"types": "./dist/index.d.cts",
 				"default": "./dist/index.cjs"
-			}
-		},
-		"./mcp": {
-			"import": {
-				"types": "./dist/mcp.d.mts",
-				"default": "./dist/mcp.mjs"
-			},
-			"require": {
-				"types": "./dist/mcp.d.cts",
-				"default": "./dist/mcp.cjs"
 			}
 		},
 		"./types": {
@@ -100,6 +89,16 @@
 			"require": {
 				"types": "./dist/components.d.cts",
 				"default": "./dist/components.cjs"
+			}
+		},
+		"./effect": {
+			"import": {
+				"types": "./dist/effect.d.mts",
+				"default": "./dist/effect.mjs"
+			},
+			"require": {
+				"types": "./dist/effect.d.cts",
+				"default": "./dist/effect.cjs"
 			}
 		}
 	},

@@ -16,16 +16,30 @@
 	"scripts": {
 		"tsc": "tsc --noEmit",
 		"build": "bunchee",
-		"generate": "openapi-codegen netlify"
+		"generate": "rimraf ./src/generated && kubb generate",
+		"is-tree-shakable": "is-tree-shakable"
+	},
+	"dependencies": {
+		"@sferadev/openapi-utils": "workspace:*",
+		"zod": "catalog:"
 	},
 	"devDependencies": {
-		"@openapi-codegen/cli": "catalog:",
-		"@openapi-codegen/typescript": "catalog:",
+		"@kubb/cli": "catalog:",
+		"@kubb/core": "catalog:",
+		"effect": "catalog:",
 		"@sferadev/tsconfig": "workspace:*",
 		"@types/node": "catalog:",
 		"bunchee": "catalog:",
-		"ts-morph": "catalog:",
+		"rimraf": "catalog:",
 		"typescript": "catalog:"
+	},
+	"peerDependencies": {
+		"effect": "^3.0.0"
+	},
+	"peerDependenciesMeta": {
+		"effect": {
+			"optional": true
+		}
 	},
 	"files": [
 		"dist"
@@ -37,14 +51,29 @@
 	"exports": {
 		"./package.json": "./package.json",
 		".": {
-			"import": {
-				"types": "./dist/index.d.mts",
-				"default": "./dist/index.mjs"
-			},
-			"require": {
-				"types": "./dist/index.d.cts",
-				"default": "./dist/index.cjs"
-			}
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.mjs",
+			"require": "./dist/index.cjs"
+		},
+		"./types": {
+			"types": "./dist/types.d.mts",
+			"import": "./dist/types.mjs",
+			"require": "./dist/types.cjs"
+		},
+		"./schemas": {
+			"types": "./dist/schemas.d.mts",
+			"import": "./dist/schemas.mjs",
+			"require": "./dist/schemas.cjs"
+		},
+		"./components": {
+			"types": "./dist/components.d.mts",
+			"import": "./dist/components.mjs",
+			"require": "./dist/components.cjs"
+		},
+		"./effect": {
+			"types": "./dist/effect.d.mts",
+			"import": "./dist/effect.mjs",
+			"require": "./dist/effect.cjs"
 		}
 	},
 	"publishConfig": {

@@ -1,17 +1,15 @@
-export * from "./client";
-
-import type * as AccountComponents from "./account/components";
-import * as AccountExtra from "./account/extra";
-import type * as AccountSchemas from "./account/schemas";
-import type * as AdminComponents from "./admin/components";
-import * as AdminExtra from "./admin/extra";
-import type * as AdminSchemas from "./admin/schemas";
-
 export {
-	type AdminSchemas,
-	type AdminComponents,
-	type AccountSchemas,
-	type AccountComponents,
-	AdminExtra,
-	AccountExtra,
-};
+	operationsByPath as accountOperationsByPath,
+	operationsByTag as accountOperationsByTag,
+	tagDictionary as accountTagDictionary,
+} from "./account/generated/components";
+export * as accountSchemas from "./account/generated/schemas";
+export * as accountTypes from "./account/generated/types";
+export {
+	operationsByPath as adminOperationsByPath,
+	operationsByTag as adminOperationsByTag,
+	tagDictionary as adminTagDictionary,
+} from "./admin/generated/components";
+export * as adminSchemas from "./admin/generated/schemas";
+export * as adminTypes from "./admin/generated/types";
+export * from "./client";

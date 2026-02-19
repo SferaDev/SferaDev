@@ -1,16 +1,15 @@
 ---
 title: "vercel-api-js"
-description: "Type-safe Vercel API client with MCP support"
+description: "Type-safe Vercel API client"
 icon: "triangle"
 ---
 
-A type-safe API client for the [Vercel Platform API](https://vercel.com/docs/rest-api), auto-generated from the official OpenAPI specification with full TypeScript support and MCP integration.
+A type-safe API client for the [Vercel Platform API](https://vercel.com/docs/rest-api), auto-generated from the official OpenAPI specification with full TypeScript support.
 
 ## Features
 
 - **Type-Safe** - Full TypeScript support with auto-generated types from OpenAPI spec
 - **Zod Schemas** - Runtime validation with Zod schemas for all API types
-- **MCP Support** - Model Context Protocol integration for AI assistants
 - **Auto-Updated** - Daily regeneration from upstream OpenAPI specs
 
 ## Installation
@@ -87,40 +86,6 @@ import { Schemas } from "vercel-api-js";
 // Validate API responses
 const projectSchema = Schemas.getProjectResponseBody;
 const validated = projectSchema.parse(response);
-```
-
-## MCP Integration
-
-The package includes MCP (Model Context Protocol) support for AI assistants.
-
-### Remote MCP Server
-
-Add to your MCP client configuration:
-
-```json
-{
-  "mcpServers": {
-    "vercel": {
-      "url": "https://openapi.sferadev.com/api/vercel/mcp"
-    }
-  }
-}
-```
-
-### Local MCP Server
-
-```typescript
-import { initMcpTools } from "vercel-api-js/mcp";
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-
-const server = new McpServer({ name: "vercel" });
-
-initMcpTools(server, {
-  baseUrl: "https://api.vercel.com",
-  headers: {
-    Authorization: `Bearer ${process.env.VERCEL_TOKEN}`,
-  },
-});
 ```
 
 ## API Reference

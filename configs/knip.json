@@ -42,69 +42,106 @@
 			"project": ["src/**/*.ts"]
 		},
 		"packages/openapi-utils": {
-			"entry": ["src/index.ts"],
+			"entry": ["src/index.ts", "src/effect/index.ts"],
 			"project": ["src/**/*.{ts,tsx}"],
 			"ignoreDependencies": ["@types/react", "@types/react-dom", "react", "react-dom"]
 		},
 		"packages/vercel-api-js": {
 			"entry": [
 				"src/index.ts",
-				"src/mcp.ts",
 				"src/types.ts",
 				"src/schemas.ts",
-				"src/components.ts"
+				"src/components.ts",
+				"src/effect.ts",
+				"kubb.config.ts"
 			],
 			"project": ["src/**/*.ts"],
-			"ignore": ["src/generated/**", "src/utils/mcp.ts"],
-			"ignoreDependencies": ["@kubb/core", "@sferadev/openapi-utils"],
+			"ignore": ["src/generated/**"],
 			"includeEntryExports": false
 		},
 		"packages/v0-api": {
 			"entry": [
 				"src/index.ts",
-				"src/mcp.ts",
 				"src/types.ts",
 				"src/schemas.ts",
-				"src/components.ts"
+				"src/components.ts",
+				"src/effect.ts",
+				"kubb.config.ts"
 			],
 			"project": ["src/**/*.ts"],
 			"ignore": ["src/generated/**"],
-			"ignoreDependencies": [
-				"@kubb/core",
-				"@kubb/plugin-zod",
-				"@kubb/react",
-				"@sferadev/openapi-utils"
-			],
 			"includeEntryExports": false
 		},
-		"packages/cloudflare-api": {
-			"entry": ["src/index.ts", "openapi-codegen.config.ts"],
+		"packages/cloudflare-api-js": {
+			"entry": ["src/index.ts", "src/types.ts", "src/components.ts", "kubb.config.ts"],
 			"project": ["src/**/*.ts"],
+			"ignore": ["src/generated/**"],
 			"includeEntryExports": false
 		},
 		"packages/netlify-api": {
-			"entry": ["src/index.ts", "openapi-codegen.config.ts"],
+			"entry": [
+				"src/index.ts",
+				"src/types.ts",
+				"src/schemas.ts",
+				"src/components.ts",
+				"src/effect.ts",
+				"kubb.config.ts"
+			],
 			"project": ["src/**/*.ts"],
+			"ignore": ["src/generated/**"],
 			"includeEntryExports": false
 		},
 		"packages/zoom-api-js": {
-			"entry": ["src/index.ts", "openapi-codegen.config.ts"],
+			"entry": [
+				"src/index.ts",
+				"src/types.ts",
+				"src/schemas.ts",
+				"src/components.ts",
+				"src/effect.ts",
+				"kubb.config.ts"
+			],
 			"project": ["src/**/*.ts"],
+			"ignore": ["src/generated/**"],
 			"includeEntryExports": false
 		},
 		"packages/keycloak-api": {
-			"entry": ["src/index.ts", "openapi-codegen.config.ts"],
+			"entry": [
+				"src/index.ts",
+				"src/admin/types.ts",
+				"src/admin/schemas.ts",
+				"src/admin/components.ts",
+				"src/account/types.ts",
+				"src/account/schemas.ts",
+				"src/account/components.ts",
+				"kubb.config.ts"
+			],
 			"project": ["src/**/*.ts"],
+			"ignore": ["src/admin/generated/**", "src/account/generated/**"],
 			"includeEntryExports": false
 		},
 		"packages/nuki-api-js": {
-			"entry": ["src/index.ts", "openapi-codegen.config.ts"],
+			"entry": [
+				"src/index.ts",
+				"src/types.ts",
+				"src/schemas.ts",
+				"src/components.ts",
+				"src/effect.ts",
+				"kubb.config.ts"
+			],
 			"project": ["src/**/*.ts"],
+			"ignore": ["src/generated/**"],
 			"includeEntryExports": false
 		},
 		"packages/litellm-api": {
-			"entry": ["src/index.ts", "openapi-codegen.config.ts"],
+			"entry": [
+				"src/index.ts",
+				"src/types.ts",
+				"src/schemas.ts",
+				"src/components.ts",
+				"kubb.config.ts"
+			],
 			"project": ["src/**/*.ts"],
+			"ignore": ["src/generated/**"],
 			"includeEntryExports": false
 		},
 		"configs/tsconfig": {}

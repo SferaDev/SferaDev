@@ -16,18 +16,23 @@
 	"scripts": {
 		"tsc": "tsc --noEmit",
 		"build": "bunchee",
-		"generate": "openapi-codegen admin && openapi-codegen account"
+		"generate": "rimraf ./src/admin/generated ./src/account/generated && kubb generate",
+		"is-tree-shakable": "is-tree-shakable"
+	},
+	"dependencies": {
+		"zod": "catalog:"
 	},
 	"devDependencies": {
-		"@openapi-codegen/cli": "catalog:",
-		"@openapi-codegen/typescript": "catalog:",
+		"@kubb/cli": "catalog:",
+		"@kubb/core": "catalog:",
+		"@sferadev/openapi-utils": "workspace:*",
 		"@sferadev/tsconfig": "workspace:*",
 		"@types/node": "catalog:",
 		"bunchee": "catalog:",
-		"case": "catalog:",
 		"openapi3-ts": "catalog:",
-		"ts-morph": "catalog:",
-		"typescript": "catalog:"
+		"rimraf": "catalog:",
+		"typescript": "catalog:",
+		"yaml": "catalog:"
 	},
 	"files": [
 		"dist"
@@ -39,14 +44,39 @@
 	"exports": {
 		"./package.json": "./package.json",
 		".": {
-			"import": {
-				"types": "./dist/index.d.mts",
-				"default": "./dist/index.mjs"
-			},
-			"require": {
-				"types": "./dist/index.d.cts",
-				"default": "./dist/index.cjs"
-			}
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.mjs",
+			"require": "./dist/index.cjs"
+		},
+		"./admin/types": {
+			"types": "./dist/admin/types.d.mts",
+			"import": "./dist/admin/types.mjs",
+			"require": "./dist/admin/types.cjs"
+		},
+		"./admin/schemas": {
+			"types": "./dist/admin/schemas.d.mts",
+			"import": "./dist/admin/schemas.mjs",
+			"require": "./dist/admin/schemas.cjs"
+		},
+		"./admin/components": {
+			"types": "./dist/admin/components.d.mts",
+			"import": "./dist/admin/components.mjs",
+			"require": "./dist/admin/components.cjs"
+		},
+		"./account/types": {
+			"types": "./dist/account/types.d.mts",
+			"import": "./dist/account/types.mjs",
+			"require": "./dist/account/types.cjs"
+		},
+		"./account/schemas": {
+			"types": "./dist/account/schemas.d.mts",
+			"import": "./dist/account/schemas.mjs",
+			"require": "./dist/account/schemas.cjs"
+		},
+		"./account/components": {
+			"types": "./dist/account/components.d.mts",
+			"import": "./dist/account/components.mjs",
+			"require": "./dist/account/components.cjs"
 		}
 	},
 	"publishConfig": {
