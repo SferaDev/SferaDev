@@ -1679,6 +1679,7 @@ export type RegistrantsStatusEnumKey =
 	(typeof registrantsStatusEnum)[keyof typeof registrantsStatusEnum];
 
 /**
+ * Meeting cloud recording registration
  * @description **HTTP Status Code:** `200`   \n \n Registrants returned.
  */
 export type MeetingRecordingRegistrants200 = {
@@ -2103,6 +2104,7 @@ export type QuestionsFieldNameEnumKey =
 	(typeof questionsFieldNameEnum)[keyof typeof questionsFieldNameEnum];
 
 /**
+ * Recording registrant questions
  * @description **HTTP Status Code:** `200`  \n \nRecording registrant question object returned.
  */
 export type RecordingRegistrantsQuestionsGet200 = {
@@ -2372,6 +2374,7 @@ export type RecordingSettingUpdate200ShareRecordingEnumKey =
 	(typeof recordingSettingUpdate200ShareRecordingEnum)[keyof typeof recordingSettingUpdate200ShareRecordingEnum];
 
 /**
+ * Recording settings
  * @description **HTTP Status Code:** `200`    Meeting recording settings returned.
  */
 export type RecordingSettingUpdate200 = {
@@ -2508,6 +2511,9 @@ export const recordingSettingsUpdateMutationRequestShareRecordingEnum = {
 export type RecordingSettingsUpdateMutationRequestShareRecordingEnumKey =
 	(typeof recordingSettingsUpdateMutationRequestShareRecordingEnum)[keyof typeof recordingSettingsUpdateMutationRequestShareRecordingEnum];
 
+/**
+ * Recording settings
+ */
 export type RecordingSettingsUpdateMutationRequest = {
 	/**
 	 * @description The approval type for the registration.  \n \n`0`- Automatically approve the registration when a user registers.  \n \n`1` - Manually approve or deny the registration of a user.  \n \n`2` - No registration required to view the recording.
@@ -4432,6 +4438,7 @@ export const devicesProtocolEnum = {
 export type DevicesProtocolEnumKey = (typeof devicesProtocolEnum)[keyof typeof devicesProtocolEnum];
 
 /**
+ * H.323/SIP Device List
  * @description **HTTP Status Code:** `200`  \n \nList of H.323/SIP devices returned.  \n \n**Error Code:** `200`  \n \nNo permission.
  */
 export type DeviceList200 = {
@@ -4620,6 +4627,7 @@ export type DeviceCreateMutationRequestProtocolEnumKey =
 	(typeof deviceCreateMutationRequestProtocolEnum)[keyof typeof deviceCreateMutationRequestProtocolEnum];
 
 /**
+ * The H.323/SIP device object.
  * @description H.323/SIP device.
  */
 export type DeviceCreateMutationRequest = {
@@ -4755,6 +4763,9 @@ export const deviceUpdateMutationRequestProtocolEnum = {
 export type DeviceUpdateMutationRequestProtocolEnumKey =
 	(typeof deviceUpdateMutationRequestProtocolEnum)[keyof typeof deviceUpdateMutationRequestProtocolEnum];
 
+/**
+ * The H.323/SIP device object.
+ */
 export type DeviceUpdateMutationRequest = {
 	/**
 	 * @description Device encryption:  \n `auto` - auto.  \n `yes` - yes.  \n `no` - no.
@@ -5451,6 +5462,7 @@ export type MeetingInvitationPathParams = {
 };
 
 /**
+ * Meeting Invitation
  * @description **HTTP Status Code:** `200`  \n \nMeeting invitation returned.
  */
 export type MeetingInvitation200 = {
@@ -5498,6 +5510,7 @@ export type MeetingInviteLinksCreatePathParams = {
 };
 
 /**
+ * Invite Links
  * @description **HTTP Status Code:** `201`   \n \nMeeting invitation links created.
  */
 export type MeetingInviteLinksCreate201 = {
@@ -5536,6 +5549,9 @@ export type MeetingInviteLinksCreate404 = unknown;
  */
 export type MeetingInviteLinksCreate429 = unknown;
 
+/**
+ * Invite Links
+ */
 export type MeetingInviteLinksCreateMutationRequest = {
 	/**
 	 * @description The attendees list.
@@ -5677,6 +5693,7 @@ export type RegistrantsStatusEnum2Key =
 	(typeof registrantsStatusEnum2)[keyof typeof registrantsStatusEnum2];
 
 /**
+ * Registration List
  * @description **HTTP Status Code:** `200`  \n \nSuccessfully listed meeting registrants.
  */
 export type MeetingRegistrants200 = {
@@ -6537,6 +6554,7 @@ export type MeetingRegistrantGet200StatusEnum2Key =
 	(typeof meetingRegistrantGet200StatusEnum2)[keyof typeof meetingRegistrantGet200StatusEnum2];
 
 /**
+ * Meeting Registrant
  * @description Success.
  */
 export type MeetingRegistrantGet200 = {
@@ -9642,6 +9660,7 @@ export type PastMeetingsPathParams = {
 };
 
 /**
+ * Meeting instances
  * @description **HTTP Status Code:** `200`   \n \n List of ended meeting instances returned.
  */
 export type PastMeetings200 = {
@@ -12788,6 +12807,7 @@ export const questionsTypeEnum3 = {
 export type QuestionsTypeEnum3Key = (typeof questionsTypeEnum3)[keyof typeof questionsTypeEnum3];
 
 /**
+ * Poll List
  * @description **HTTP Status Code:**   \n \nList polls of a Meeting  returned
  */
 export type MeetingPolls200 = {
@@ -18614,6 +18634,7 @@ export const questionsTypeEnum8 = {
 export type QuestionsTypeEnum8Key = (typeof questionsTypeEnum8)[keyof typeof questionsTypeEnum8];
 
 /**
+ * Meeting Survey Object
  * @description **HTTP Status Code:** `200`   \n \n Meeting survey object returned.
  */
 export type MeetingSurveyGet200 = {
@@ -18853,6 +18874,9 @@ export const questionsTypeEnum9 = {
 
 export type QuestionsTypeEnum9Key = (typeof questionsTypeEnum9)[keyof typeof questionsTypeEnum9];
 
+/**
+ * Meeting Survey Object
+ */
 export type MeetingSurveyUpdateMutationRequest = {
 	/**
 	 * @description Information about the customized meeting survey.
@@ -19399,6 +19423,9 @@ export const userTSPCreateMutationRequestTspBridgeEnum = {
 export type UserTSPCreateMutationRequestTspBridgeEnumKey =
 	(typeof userTSPCreateMutationRequestTspBridgeEnum)[keyof typeof userTSPCreateMutationRequestTspBridgeEnum];
 
+/**
+ * TSP Accounts List
+ */
 export type UserTSPCreateMutationRequest = {
 	/**
 	 * @description Conference code. A numeric value, with a length less than 16.
@@ -19491,6 +19518,7 @@ export type TspUrlUpdate404 = unknown;
 export type TspUrlUpdate429 = unknown;
 
 /**
+ * TSP Global Dial-In URL Setting
  * @description The user\'s global dial-in URL.
  */
 export type TspUrlUpdateMutationRequest = {
@@ -19550,6 +19578,7 @@ export type UserTSP200TspBridgeEnumKey =
 	(typeof userTSP200TspBridgeEnum)[keyof typeof userTSP200TspBridgeEnum];
 
 /**
+ * TSP Account
  * @description **HTTP Status Code:** `200`  \n \nTSP account retrieved successfully.
  */
 export type UserTSP200 = {
@@ -19742,6 +19771,7 @@ export type UserTSPUpdateMutationRequestTspBridgeEnumKey =
 	(typeof userTSPUpdateMutationRequestTspBridgeEnum)[keyof typeof userTSPUpdateMutationRequestTspBridgeEnum];
 
 /**
+ * TSP Account
  * @description TSP account.
  */
 export type UserTSPUpdateMutationRequest = {
@@ -20037,6 +20067,7 @@ export type TrackingfieldCreate201 = {
 export type TrackingfieldCreate429 = unknown;
 
 /**
+ * Tracking Field
  * @description Tracking Field
  */
 export type TrackingfieldCreateMutationRequest = {
@@ -20079,6 +20110,7 @@ export type TrackingfieldGetPathParams = {
 };
 
 /**
+ * Tracking field
  * @description **HTTP Status Code:** `200` Tracking field object returned.
  */
 export type TrackingfieldGet200 = {
@@ -20186,6 +20218,9 @@ export type TrackingfieldUpdate404 = unknown;
  */
 export type TrackingfieldUpdate429 = unknown;
 
+/**
+ * Tracking field
+ */
 export type TrackingfieldUpdateMutationRequest = {
 	/**
 	 * @description Label or name for the tracking field.
@@ -20345,6 +20380,7 @@ export type RegistrantsStatusEnum3Key =
 	(typeof registrantsStatusEnum3)[keyof typeof registrantsStatusEnum3];
 
 /**
+ * Registration List
  * @description **HTTP Status Code:** `200`  \n \nSuccess.  \n **Error Code:** `200`  \n \nWebinar plan subscription is missing. Enable webinar for this user once the subscription is added:{userId}.
  */
 export type WebinarAbsentees200 = {
@@ -20548,6 +20584,7 @@ export type PastWebinarsPathParams = {
 };
 
 /**
+ * Webinar instances
  * @description **HTTP Status Code:** `200`  \n \nList of past webinar instances returned.
  */
 export type PastWebinars200 = {
@@ -25210,6 +25247,7 @@ export type WebinarInviteLinksCreatePathParams = {
 };
 
 /**
+ * Invite Links
  * @description **HTTP Status Code:** `201` Webinar Invite Links Created
  */
 export type WebinarInviteLinksCreate201 = {
@@ -25249,6 +25287,7 @@ export type WebinarInviteLinksCreate404 = unknown;
 export type WebinarInviteLinksCreate429 = unknown;
 
 /**
+ * Invite links
  * @description Webinar invite link object.
  */
 export type WebinarInviteLinksCreateMutationRequest = {
@@ -25987,6 +26026,7 @@ export const questionsTypeEnum10 = {
 export type QuestionsTypeEnum10Key = (typeof questionsTypeEnum10)[keyof typeof questionsTypeEnum10];
 
 /**
+ * Poll List
  * @description **HTTP Status Code:** `200`  \n \nList polls of a Webinar  returned
  */
 export type WebinarPolls200 = {
@@ -27018,6 +27058,7 @@ export type RegistrantsStatusEnum4Key =
 	(typeof registrantsStatusEnum4)[keyof typeof registrantsStatusEnum4];
 
 /**
+ * Registration list
  * @description **HTTP Status Code:** `200`  \n \nWebinar plan subscription is missing. Enable webinar for this user once the subscription is added:{userId}.
  */
 export type WebinarRegistrants200 = {
@@ -27893,6 +27934,7 @@ export type WebinarRegistrantGet200LanguageEnumKey =
 	(typeof webinarRegistrantGet200LanguageEnum)[keyof typeof webinarRegistrantGet200LanguageEnum];
 
 /**
+ * Webinar Registrant
  * @description Success.
  */
 export type WebinarRegistrantGet200 = {
@@ -28235,6 +28277,7 @@ export const questionsTypeEnum15 = {
 export type QuestionsTypeEnum15Key = (typeof questionsTypeEnum15)[keyof typeof questionsTypeEnum15];
 
 /**
+ * Webinar survey object
  * @description **HTTP Status Code:** `200`   \n \n Webinar survey object returned.
  */
 export type WebinarSurveyGet200 = {
