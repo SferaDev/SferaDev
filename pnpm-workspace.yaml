@@ -5,22 +5,22 @@ packages:
   - content
 
 catalog:
-  '@ai-sdk/gateway': 3.0.46
-  '@ai-sdk/openai': 3.0.29
+  '@ai-sdk/gateway': 3.0.50
+  '@ai-sdk/openai': 3.0.30
   '@ai-sdk/provider': 3.0.8
   '@ai-sdk/provider-utils': 4.0.15
   '@auth/core': 0.41.1
   '@auth/drizzle-adapter': 1.11.1
-  '@biomejs/biome': 2.4.0
+  '@biomejs/biome': 2.4.2
   '@changesets/cli': 2.29.8
   '@convex-dev/better-auth': 0.10.10
-  '@kubb/cli': 4.23.0
-  '@kubb/core': 4.23.0
-  '@kubb/oas': 4.23.0
-  '@kubb/plugin-client': 4.23.0
-  '@kubb/plugin-oas': 4.23.0
-  '@kubb/plugin-ts': 4.23.0
-  '@kubb/plugin-zod': 4.23.0
+  '@kubb/cli': 4.24.1
+  '@kubb/core': 4.24.1
+  '@kubb/oas': 4.24.1
+  '@kubb/plugin-client': 4.24.1
+  '@kubb/plugin-oas': 4.24.1
+  '@kubb/plugin-ts': 4.24.1
+  '@kubb/plugin-zod': 4.24.1
   '@kubb/react-fabric': 0.12.11
   '@next/third-parties': 16.1.6
   '@radix-ui/react-avatar': 1.1.11
@@ -33,47 +33,47 @@ catalog:
   '@radix-ui/react-switch': 1.2.6
   '@radix-ui/react-tabs': 1.1.13
   '@radix-ui/react-toast': 1.2.15
-  '@tailwindcss/postcss': 4.1.18
+  '@tailwindcss/postcss': 4.2.0
   '@tailwindcss/typography': 0.5.19
   '@types/json-schema': 7.0.15
-  '@types/node': 25.2.3
+  '@types/node': 25.3.0
   '@types/pg': 8.16.0
   '@types/qrcode': 1.5.6
   '@types/react': 19.2.14
   '@types/react-dom': 19.2.3
   '@types/vscode': 1.109.0
   '@vercel/analytics': 1.6.1
-  '@vercel/config': 0.0.30
+  '@vercel/config': 0.0.31
   '@vercel/oidc': 3.2.0
   '@vscode/vsce': 3.7.1
   '@xyflow/react': 12.10.0
-  ai: 6.0.86
+  ai: 6.0.91
   better-auth: 1.4.18
   bunchee: 6.9.4
   case: 1.6.3
   class-variance-authority: 0.7.1
   clsx: 2.1.1
-  convex: 1.31.7
+  convex: 1.32.0
   dotenv: 17.3.1
   drizzle-kit: 0.31.9
   drizzle-orm: 0.45.1
-  effect: 3.15.3
+  effect: 3.19.18
   es-module-lexer: 2.0.0
-  framer-motion: 12.34.0
+  framer-motion: 12.34.2
   geist: 1.7.0
   gray-matter: 4.0.3
   html-to-image: 1.11.13
   is-tree-shakable: 0.4.2
   jspdf: 4.1.0
   jszip: 3.10.1
-  knip: 5.83.1
+  knip: 5.84.1
   lefthook: 2.1.1
-  lucide-react: 0.564.0
+  lucide-react: 0.574.0
   markdown-to-jsx: 9.7.4
-  mintlify: 4.2.348
+  mintlify: 4.2.363
   next: 16.1.6
   next-auth: 5.0.0-beta.29
-  next-intl: 4.8.2
+  next-intl: 4.8.3
   next-themes: 0.4.6
   npm-run-all: 4.1.5
   openapi3-ts: 4.5.0
@@ -86,15 +86,15 @@ catalog:
   rimraf: 6.1.3
   rollup: 4.57.1
   stripe: 20.3.1
-  tailwind-merge: 3.4.1
-  tailwindcss: 4.1.18
+  tailwind-merge: 3.5.0
+  tailwindcss: 4.2.0
   tailwindcss-animate: 1.0.7
   tsx: 4.21.0
-  turbo: 2.8.9
+  turbo: 2.8.10
   tw-animate-css: 1.4.0
   typescript: 5.9.3
   vitest: 4.0.18
-  yaml: 2.8.0
+  yaml: 2.8.2
   zod: 4.3.6
 
 catalogMode: strict
