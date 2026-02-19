@@ -1524,6 +1524,9 @@ export const userEventTypeEnum = {
 	"passkey-updated": "passkey-updated",
 	"password-protection-disabled": "password-protection-disabled",
 	"password-protection-enabled": "password-protection-enabled",
+	"payment-method-added": "payment-method-added",
+	"payment-method-default-updated": "payment-method-default-updated",
+	"payment-method-removed": "payment-method-removed",
 	plan: "plan",
 	"preview-deployment-suffix-disabled": "preview-deployment-suffix-disabled",
 	"preview-deployment-suffix-enabled": "preview-deployment-suffix-enabled",
@@ -1671,6 +1674,10 @@ export const userEventTypeEnum = {
 	"storage-update-project-connection": "storage-update-project-connection",
 	"storage-view-secret": "storage-view-secret",
 	"strict-deployment-protection-settings": "strict-deployment-protection-settings",
+	"subscription-created": "subscription-created",
+	"subscription-product-added": "subscription-product-added",
+	"subscription-product-removed": "subscription-product-removed",
+	"subscription-updated": "subscription-updated",
 	team: "team",
 	"team-avatar-update": "team-avatar-update",
 	"team-delete": "team-delete",
@@ -3605,6 +3612,37 @@ export const payloadActorTypeEnum = {
 export type PayloadActorTypeEnumKey =
 	(typeof payloadActorTypeEnum)[keyof typeof payloadActorTypeEnum];
 
+export const payloadActionEnum8 = {
+	cancel_plan: "cancel_plan",
+} as const;
+
+export type PayloadActionEnum8Key = (typeof payloadActionEnum8)[keyof typeof payloadActionEnum8];
+
+export const dataPlanSlugEnum = {
+	v0_teams: "v0_teams",
+	v0_business: "v0_business",
+} as const;
+
+export type DataPlanSlugEnumKey = (typeof dataPlanSlugEnum)[keyof typeof dataPlanSlugEnum];
+
+export const dataReasonEnum = {
+	"non-payment": "non-payment",
+} as const;
+
+export type DataReasonEnumKey = (typeof dataReasonEnum)[keyof typeof dataReasonEnum];
+
+export const payloadActionEnum9 = {
+	resume_plan: "resume_plan",
+} as const;
+
+export type PayloadActionEnum9Key = (typeof payloadActionEnum9)[keyof typeof payloadActionEnum9];
+
+export const payloadActionEnum10 = {
+	mutate: "mutate",
+} as const;
+
+export type PayloadActionEnum10Key = (typeof payloadActionEnum10)[keyof typeof payloadActionEnum10];
+
 export const projectMembershipRoleEnum = {
 	ADMIN: "ADMIN",
 	PROJECT_DEVELOPER: "PROJECT_DEVELOPER",
@@ -3644,12 +3682,12 @@ export const projectRoleEnum = {
 
 export type ProjectRoleEnumKey = (typeof projectRoleEnum)[keyof typeof projectRoleEnum];
 
-export const payloadActionEnum8 = {
+export const payloadActionEnum11 = {
 	enable: "enable",
 	disable: "disable",
 } as const;
 
-export type PayloadActionEnum8Key = (typeof payloadActionEnum8)[keyof typeof payloadActionEnum8];
+export type PayloadActionEnum11Key = (typeof payloadActionEnum11)[keyof typeof payloadActionEnum11];
 
 export const microfrontendsIsDefaultAppEnum = {
 	true: true,
@@ -11315,6 +11353,98 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
+						paymentMethodId: string;
+						/**
+						 * @type string | undefined
+						 */
+						brand?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						last4?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						subscriptionId?: string | undefined;
+						/**
+						 * @type string
+						 */
+						planSlug: string;
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						subscriptionId?: string | undefined;
+						/**
+						 * @type string
+						 */
+						action: PayloadActionEnum8Key;
+						/**
+						 * @type object
+						 */
+						data: {
+							/**
+							 * @type string
+							 */
+							planSlug: DataPlanSlugEnumKey;
+							/**
+							 * @type string | undefined
+							 */
+							reason?: DataReasonEnumKey | undefined;
+						};
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						subscriptionId?: string | undefined;
+						/**
+						 * @type string
+						 */
+						action: PayloadActionEnum9Key;
+						/**
+						 * @type object
+						 */
+						data: {
+							/**
+							 * @type string
+							 */
+							planSlug: DataPlanSlugEnumKey;
+						};
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						subscriptionId?: string | undefined;
+						/**
+						 * @type string
+						 */
+						action: PayloadActionEnum10Key;
+						/**
+						 * @type object
+						 */
+						data: {
+							[key: string]: unknown;
+						};
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						subscriptionId?: string | undefined;
+						/**
+						 * @type array
+						 */
+						productAliases: string[];
+				  }
+				| {
+						/**
+						 * @type string
+						 */
 						teamName: string;
 						/**
 						 * @type string | undefined
@@ -11705,7 +11835,7 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
-						action: PayloadActionEnum8Key;
+						action: PayloadActionEnum11Key;
 				  }
 				| {
 						/**
