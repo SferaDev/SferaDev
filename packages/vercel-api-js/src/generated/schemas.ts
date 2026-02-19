@@ -760,6 +760,9 @@ export const userEventSchema = z
 					"passkey-updated",
 					"password-protection-disabled",
 					"password-protection-enabled",
+					"payment-method-added",
+					"payment-method-default-updated",
+					"payment-method-removed",
 					"plan",
 					"preview-deployment-suffix-disabled",
 					"preview-deployment-suffix-enabled",
@@ -900,6 +903,10 @@ export const userEventSchema = z
 					"storage-update-project-connection",
 					"storage-view-secret",
 					"strict-deployment-protection-settings",
+					"subscription-created",
+					"subscription-product-added",
+					"subscription-product-removed",
+					"subscription-updated",
 					"team",
 					"team-avatar-update",
 					"team-delete",
@@ -4372,6 +4379,39 @@ export const userEventSchema = z
 				z.object({
 					price: z.optional(z.number()),
 					currency: z.optional(z.string()),
+				}),
+				z.object({
+					paymentMethodId: z.string(),
+					brand: z.optional(z.string()),
+					last4: z.optional(z.string()),
+				}),
+				z.object({
+					subscriptionId: z.optional(z.string()),
+					planSlug: z.string(),
+				}),
+				z.object({
+					subscriptionId: z.optional(z.string()),
+					action: z.enum(["cancel_plan"]),
+					data: z.object({
+						planSlug: z.enum(["v0_teams", "v0_business"]),
+						reason: z.optional(z.enum(["non-payment"])),
+					}),
+				}),
+				z.object({
+					subscriptionId: z.optional(z.string()),
+					action: z.enum(["resume_plan"]),
+					data: z.object({
+						planSlug: z.enum(["v0_teams", "v0_business"]),
+					}),
+				}),
+				z.object({
+					subscriptionId: z.optional(z.string()),
+					action: z.enum(["mutate"]),
+					data: z.object({}).catchall(z.unknown()),
+				}),
+				z.object({
+					subscriptionId: z.optional(z.string()),
+					productAliases: z.array(z.string()),
 				}),
 				z.object({
 					teamName: z.string(),
