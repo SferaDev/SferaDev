@@ -341,11 +341,11 @@ export const bodyUploadLogoUploadLogoPostSchema = z.object({
 });
 
 export const bodyVideoGenerationV1VideosPostSchema = z.object({
-	input_reference: z.optional(z.union([z.null()])),
+	input_reference: z.optional(z.union([z.instanceof(File), z.null()])),
 });
 
 export const bodyVideoGenerationVideosPostSchema = z.object({
-	input_reference: z.optional(z.union([z.null()])),
+	input_reference: z.optional(z.union([z.instanceof(File), z.null()])),
 });
 
 export const spendMetricsSchema = z.object({
