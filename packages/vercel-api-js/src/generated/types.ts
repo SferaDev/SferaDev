@@ -2260,6 +2260,15 @@ export const buildMachinePurchaseTypeEnum = {
 export type BuildMachinePurchaseTypeEnumKey =
 	(typeof buildMachinePurchaseTypeEnum)[keyof typeof buildMachinePurchaseTypeEnum];
 
+export const buildMachineDefaultPurchaseTypeEnum = {
+	standard: "standard",
+	enhanced: "enhanced",
+	turbo: "turbo",
+} as const;
+
+export type BuildMachineDefaultPurchaseTypeEnumKey =
+	(typeof buildMachineDefaultPurchaseTypeEnum)[keyof typeof buildMachineDefaultPurchaseTypeEnum];
+
 export const buildMachineIsDefaultBuildMachineEnum = {
 	false: false,
 	true: true,
@@ -6774,6 +6783,10 @@ export type UserEvent = {
 													 * @type string | undefined
 													 */
 													purchaseType?: BuildMachinePurchaseTypeEnumKey | undefined;
+													/**
+													 * @type string | undefined
+													 */
+													defaultPurchaseType?: BuildMachineDefaultPurchaseTypeEnumKey | undefined;
 													/**
 													 * @type boolean | undefined
 													 */
@@ -15821,6 +15834,15 @@ export const buildMachinePurchaseTypeEnum2 = {
 export type BuildMachinePurchaseTypeEnum2Key =
 	(typeof buildMachinePurchaseTypeEnum2)[keyof typeof buildMachinePurchaseTypeEnum2];
 
+export const buildMachineDefaultPurchaseTypeEnum2 = {
+	enhanced: "enhanced",
+	standard: "standard",
+	turbo: "turbo",
+} as const;
+
+export type BuildMachineDefaultPurchaseTypeEnum2Key =
+	(typeof buildMachineDefaultPurchaseTypeEnum2)[keyof typeof buildMachineDefaultPurchaseTypeEnum2];
+
 export const buildMachineIsDefaultBuildMachineEnum2 = {
 	false: false,
 	true: true,
@@ -16095,6 +16117,11 @@ export type AuthUser = {
 					 * @type string | undefined
 					 */
 					purchaseType?: BuildMachinePurchaseTypeEnum2Key | undefined;
+					/**
+					 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
+					 * @type string | undefined
+					 */
+					defaultPurchaseType?: BuildMachineDefaultPurchaseTypeEnum2Key | undefined;
 					/**
 					 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
 					 * @type boolean | undefined
