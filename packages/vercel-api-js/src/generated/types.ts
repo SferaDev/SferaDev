@@ -600,6 +600,7 @@ export type DomainCannotBeTransferedOutUntil = {
 };
 
 /**
+ * nonEmptyString
  * @description a non empty string
  * @minLength 1
  * @pattern ^\S[\s\S]*\S$|^\S$|^$
@@ -607,12 +608,14 @@ export type DomainCannotBeTransferedOutUntil = {
 export type NonEmptyTrimmedString = string;
 
 /**
+ * nonEmptyString
  * @description A valid RFC 5322 email address
  * @minLength 1
  */
 export type EmailAddress = string;
 
 /**
+ * nonEmptyString
  * @description A valid E.164 phone number
  * @minLength 1
  * @pattern ^(?=(?:\D*\d){8,15}$)\+[1-9]\d{0,2}\.?\d+$
