@@ -20,7 +20,8 @@ import {
 } from "vscode";
 
 import { VERCEL_AI_AUTH_PROVIDER_ID } from "./auth";
-import { DEFAULT_BASE_URL, DEFAULT_TIMEOUT_MS, ERROR_MESSAGES } from "./constants";
+import { getConfig } from "./config";
+import { ERROR_MESSAGES } from "./constants";
 import { extractErrorMessage, logger } from "./logger";
 import { ModelsClient } from "./models";
 
@@ -39,14 +40,6 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider, vsc
 
 	dispose(): void {
 		this.modelInfoChangeEmitter.dispose();
-	}
-
-	private get endpoint(): string {
-		return vscode.workspace.getConfiguration("vercelAiGateway").get("endpoint", DEFAULT_BASE_URL);
-	}
-
-	private get timeout(): number {
-		return vscode.workspace.getConfiguration("vercelAiGateway").get("timeout", DEFAULT_TIMEOUT_MS);
 	}
 
 	async provideLanguageModelChatInformation(
@@ -87,9 +80,10 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider, vsc
 				throw new Error(ERROR_MESSAGES.API_KEY_NOT_FOUND);
 			}
 
+			const config = getConfig();
 			const gateway = createGatewayProvider({
 				apiKey,
-				baseURL: `${this.endpoint.replace(/\/+$/, "")}/v1/ai`,
+				baseURL: `${config.endpoint.replace(/\/+$/, "")}/v1/ai`,
 			});
 
 			const tools = this.buildToolSet(options.tools);
@@ -103,7 +97,7 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider, vsc
 				maxOutputTokens: options.modelOptions?.maxOutputTokens ?? 4096,
 				tools: Object.keys(tools).length > 0 ? tools : undefined,
 				abortSignal: abortController.signal,
-				timeout: this.timeout,
+				timeout: config.timeout,
 			});
 
 			for await (const chunk of response.fullStream) {
@@ -153,10 +147,12 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider, vsc
 		tools?: readonly { name: string; description?: string; inputSchema?: unknown }[],
 	): ToolSet {
 		const toolSet: ToolSet = {};
-		for (const { name, description, inputSchema } of tools || []) {
+		for (const { name, description, inputSchema } of tools ?? []) {
+			// ToolSet's complex union type requires a cast here; the shape is correct
+			// (inputSchema from jsonSchema() satisfies Tool's FlexibleSchema requirement)
 			toolSet[name] = {
 				description,
-				inputSchema: jsonSchema(inputSchema || { type: "object", properties: {} }),
+				inputSchema: jsonSchema(inputSchema ?? { type: "object", properties: {} }),
 			} as ToolSet[string];
 		}
 		return toolSet;
@@ -197,37 +193,41 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider, vsc
 		}
 	}
 
-	/**
-	 * Handle a stream chunk and return whether content was emitted.
-	 */
 	handleStreamChunk(chunk: StreamChunk, progress: Progress<LanguageModelResponsePart>): boolean {
 		switch (chunk.type) {
 			case "text-delta": {
-				const text =
-					(chunk as { textDelta?: string; text?: string }).textDelta ??
-					(chunk as { text?: string }).text;
-				if (text) {
-					progress.report(new LanguageModelTextPart(text));
+				if (chunk.text) {
+					progress.report(new LanguageModelTextPart(chunk.text));
 					return true;
 				}
 				return false;
 			}
 
 			case "reasoning-delta":
-				return this.handleReasoningChunk(chunk, progress);
+				return this.handleReasoningChunk(chunk.text, progress);
 
 			case "file":
-				return this.handleFileChunk(chunk, progress);
+				return this.handleFileChunk(chunk.file, progress);
 
 			case "error":
-				this.handleErrorChunk(chunk, progress);
+				this.reportError(chunk.error, progress);
 				return true;
 
-			case "tool-call":
-				this.handleToolCall(chunk, progress);
+			case "tool-call": {
+				progress.report(
+					new LanguageModelToolCallPart(chunk.toolCallId, chunk.toolName, chunk.input),
+				);
+				logger.debug(`Tool call: ${chunk.toolName} (${chunk.toolCallId})`);
 				return true;
+			}
 
-			// Lifecycle events - no content
+			case "tool-error": {
+				logger.error(`Tool error in ${chunk.toolName}:`, chunk.error);
+				this.reportError(chunk.error, progress);
+				return true;
+			}
+
+			// Lifecycle events — no content to emit
 			case "start":
 			case "finish":
 			case "start-step":
@@ -241,6 +241,8 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider, vsc
 			case "tool-result":
 			case "tool-input-start":
 			case "tool-input-delta":
+			case "tool-input-end":
+			case "tool-output-denied":
 				return false;
 
 			default:
@@ -249,9 +251,10 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider, vsc
 	}
 
 	private handleReasoningChunk(
-		chunk: { type: "reasoning-delta"; delta?: string; text?: string },
+		text: string,
 		progress: Progress<LanguageModelResponsePart>,
 	): boolean {
+		// LanguageModelThinkingPart may not exist in older VS Code versions
 		const vsAny = vscode as Record<string, unknown>;
 		const ThinkingCtor = vsAny.LanguageModelThinkingPart as
 			| (new (
@@ -259,7 +262,6 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider, vsc
 			  ) => LanguageModelResponsePart)
 			| undefined;
 
-		const text = chunk.delta ?? chunk.text;
 		if (ThinkingCtor && text) {
 			progress.report(new ThinkingCtor(text));
 			return true;
@@ -267,37 +269,26 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider, vsc
 		return false;
 	}
 
-	private handleToolCall(
-		chunk: { type: "tool-call"; toolCallId: string; toolName: string; args?: unknown },
-		progress: Progress<LanguageModelResponsePart>,
-	): void {
-		const input = (chunk.args ?? {}) as Record<string, unknown>;
-		progress.report(new LanguageModelToolCallPart(chunk.toolCallId, chunk.toolName, input));
-		logger.debug(`Tool call: ${chunk.toolName} (${chunk.toolCallId})`);
-	}
-
 	private handleFileChunk(
-		chunk: { type: "file"; file: { uint8Array: Uint8Array; mediaType: string } },
+		file: { uint8Array: Uint8Array; mediaType: string },
 		progress: Progress<LanguageModelResponsePart>,
 	): boolean {
-		const mimeType = chunk.file?.mediaType;
-		if (!mimeType || !isValidMimeType(mimeType)) {
-			logger.warn(`Unsupported file mime type: ${mimeType ?? "unknown"}`);
+		const { mediaType, uint8Array: data } = file;
+		if (!mediaType || !isValidMimeType(mediaType)) {
+			logger.warn(`Unsupported file mime type: ${mediaType ?? "unknown"}`);
 			return false;
 		}
 
 		try {
-			const data = chunk.file.uint8Array;
-
-			if (mimeType.startsWith("image/")) {
-				progress.report(LanguageModelDataPart.image(data, mimeType));
-			} else if (mimeType === "application/json" || mimeType.endsWith("+json")) {
+			if (mediaType.startsWith("image/")) {
+				progress.report(LanguageModelDataPart.image(data, mediaType));
+			} else if (mediaType === "application/json" || mediaType.endsWith("+json")) {
 				const jsonValue = JSON.parse(new TextDecoder().decode(data));
-				progress.report(LanguageModelDataPart.json(jsonValue, mimeType));
-			} else if (mimeType.startsWith("text/")) {
-				progress.report(LanguageModelDataPart.text(new TextDecoder().decode(data), mimeType));
+				progress.report(LanguageModelDataPart.json(jsonValue, mediaType));
+			} else if (mediaType.startsWith("text/")) {
+				progress.report(LanguageModelDataPart.text(new TextDecoder().decode(data), mediaType));
 			} else {
-				progress.report(new LanguageModelDataPart(data, mimeType));
+				progress.report(new LanguageModelDataPart(data, mediaType));
 			}
 			return true;
 		} catch (error) {
@@ -306,13 +297,10 @@ export class VercelAIChatModelProvider implements LanguageModelChatProvider, vsc
 		}
 	}
 
-	private handleErrorChunk(
-		chunk: { type: "error"; error: unknown },
-		progress: Progress<LanguageModelResponsePart>,
-	): void {
-		logger.error("Stream error:", chunk.error);
-		const errorMessage = extractErrorMessage(chunk.error);
-		progress.report(new LanguageModelTextPart(`\n\n**Error:** ${errorMessage}\n\n`));
+	private reportError(error: unknown, progress: Progress<LanguageModelResponsePart>): void {
+		logger.error("Stream error:", error);
+		const message = extractErrorMessage(error);
+		progress.report(new LanguageModelTextPart(`\n\n**Error:** ${message}\n\n`));
 	}
 }
 
@@ -374,7 +362,7 @@ export function convertSingleMessage(
 			}
 			const texts = extractToolResultTexts(part);
 			if (texts.length > 0) {
-				const toolName = toolNameMap[part.callId] || "unknown_tool";
+				const toolName = toolNameMap[part.callId] ?? "unknown_tool";
 				if (toolName === "unknown_tool") {
 					logger.warn(`Tool result references unknown callId: ${part.callId}`);
 				}
@@ -445,8 +433,10 @@ function isValidMessage(msg: ModelMessage): boolean {
 function fixSystemMessages(result: ModelMessage[]): void {
 	const firstUserIndex = result.findIndex((msg) => msg.role === "user");
 	for (let i = 0; i < firstUserIndex; i++) {
-		if (result[i].role === "assistant") {
-			result[i].role = "system";
+		const msg = result[i];
+		// Only convert to system if content is a string (SystemModelMessage requires string content)
+		if (msg.role === "assistant" && typeof msg.content === "string") {
+			result[i] = { role: "system", content: msg.content };
 		}
 	}
 }

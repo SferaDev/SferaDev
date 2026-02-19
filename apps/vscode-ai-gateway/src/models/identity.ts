@@ -14,11 +14,12 @@ export interface ParsedModelIdentity {
  * Version pattern regex that matches:
  * - Date: YYYY-MM-DD (e.g., 2024-11-20)
  * - Compact date: YYYYMMDD (e.g., 20241022)
- * - Short date: YYMM or YYYYMM (e.g., 2411, 202411)
+ * - Short date: YYYYMM (e.g., 202411)
  * - Year only: YYYY (e.g., 2024)
- * - Semantic: X.Y.Z or X.Y (e.g., 0.1.0, 1.0)
+ * - Semantic: X.Y.Z (e.g., 0.1.0) — X.Y alone is excluded as it's ambiguous
+ *   with model series names (e.g., gemini-1.5, gemini-2.0)
  */
-const VERSION_PATTERN = /[-_](\d{4}-\d{2}-\d{2}|\d{4,8}|\d+\.\d+(?:\.\d+)?)$/;
+const VERSION_PATTERN = /[-_](\d{4}-\d{2}-\d{2}|\d{4,8}|\d+\.\d+\.\d+)$/;
 
 /**
  * Parses a model ID into its constituent parts.

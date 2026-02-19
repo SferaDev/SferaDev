@@ -7,13 +7,14 @@ describe("parseModelIdentity", () => {
 		["openai:gpt-4o-2024-11-20", "openai", "gpt-4o", "2024-11-20"],
 		["anthropic:claude-3-opus-20240229", "anthropic", "claude-3-opus", "20240229"],
 		["anthropic:claude-3-5-sonnet-20241022", "anthropic", "claude-3-5-sonnet", "20241022"],
-		// Semantic versions
+		// Semantic versions (X.Y.Z only — X.Y is treated as model series)
 		["mistral:mistral-large-0.1.0", "mistral", "mistral-large", "0.1.0"],
-		["google:gemini-1.5", "google", "gemini", "1.5"],
+		// Model series numbers (X.Y) should NOT be parsed as versions
+		["google:gemini-1.5", "google", "gemini-1.5", "latest"],
+		["google:gemini-2.0-flash", "google", "gemini-2.0-flash", "latest"],
 		// No version (returns "latest")
 		["openai:gpt-4o-mini", "openai", "gpt-4o-mini", "latest"],
 		["openai:o3-mini", "openai", "o3-mini", "latest"],
-		["google:gemini-2.0-flash", "google", "gemini-2.0-flash", "latest"],
 		// Slash format (gateway style)
 		["openai/gpt-4o", "openai", "gpt-4o", "latest"],
 		// No provider

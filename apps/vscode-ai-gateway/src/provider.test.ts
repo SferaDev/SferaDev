@@ -111,12 +111,24 @@ describe("handleStreamChunk", () => {
 	it("ignores lifecycle events without reporting", () => {
 		const provider = createProvider();
 		const progress = { report: vi.fn() };
-		const ignored = ["start", "finish", "abort", "text-start", "text-end", "source", "tool-result"];
+		const ignored = [
+			"start",
+			"finish",
+			"abort",
+			"text-start",
+			"text-end",
+			"source",
+			"tool-result",
+			"tool-input-start",
+			"tool-input-delta",
+			"tool-input-end",
+			"tool-output-denied",
+		];
 		for (const type of ignored) provider.handleStreamChunk({ type } as any, progress);
 		expect(progress.report).not.toHaveBeenCalled();
 	});
 
-	it("reports text-delta chunks", () => {
+	it("reports text-delta chunks using chunk.text", () => {
 		const provider = createProvider();
 		const progress = { report: vi.fn() };
 		provider.handleStreamChunk({ type: "text-delta", text: "hello" } as any, progress);
@@ -124,15 +136,29 @@ describe("handleStreamChunk", () => {
 		expect(progress.report.mock.calls[0][0]).toBeInstanceOf(hoisted.MockLanguageModelTextPart);
 	});
 
-	it("reports tool-call chunks", () => {
+	it("reports tool-call chunks using chunk.input", () => {
 		const provider = createProvider();
 		const progress = { report: vi.fn() };
 		provider.handleStreamChunk(
-			{ type: "tool-call", toolCallId: "c1", toolName: "search", args: {} } as any,
+			{ type: "tool-call", toolCallId: "c1", toolName: "search", input: { query: "test" } } as any,
 			progress,
 		);
 		expect(progress.report).toHaveBeenCalledTimes(1);
-		expect(progress.report.mock.calls[0][0]).toBeInstanceOf(hoisted.MockLanguageModelToolCallPart);
+		const reported = progress.report.mock.calls[0][0];
+		expect(reported).toBeInstanceOf(hoisted.MockLanguageModelToolCallPart);
+		expect(reported.input).toEqual({ query: "test" });
+	});
+
+	it("reports tool-error chunks as errors", () => {
+		const provider = createProvider();
+		const progress = { report: vi.fn() };
+		const result = provider.handleStreamChunk(
+			{ type: "tool-error", toolCallId: "c1", toolName: "search", error: new Error("fail") } as any,
+			progress,
+		);
+		expect(result).toBe(true);
+		expect(progress.report).toHaveBeenCalledTimes(1);
+		expect(progress.report.mock.calls[0][0].value).toContain("fail");
 	});
 
 	it("handles file chunks with valid MIME types, skips invalid", () => {

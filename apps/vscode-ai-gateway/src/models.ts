@@ -1,10 +1,9 @@
 import type { LanguageModelChatInformation } from "vscode";
-import * as vscode from "vscode";
-import { DEFAULT_BASE_URL, MODELS_CACHE_TTL_MS, MODELS_ENDPOINT } from "./constants";
+import { getConfig } from "./config";
+import { MODELS_CACHE_TTL_MS, MODELS_ENDPOINT } from "./constants";
 import { logger } from "./logger";
 import { parseModelIdentity } from "./models/identity";
 
-// Capability detection tag sets (module-level for performance)
 const IMAGE_INPUT_TAGS = new Set(["vision", "image", "image-input", "file-input", "multimodal"]);
 const TOOL_CALLING_TAGS = new Set([
 	"tool-use",
@@ -46,35 +45,48 @@ interface ModelsCache {
 	models: LanguageModelChatInformation[];
 }
 
+function hasTag(tags: string[], tagSet: Set<string>): boolean {
+	return tags.some((tag) => tagSet.has(tag));
+}
+
 export class ModelsClient {
 	private modelsCache?: ModelsCache;
-
-	private get endpoint(): string {
-		return vscode.workspace.getConfiguration("vercelAiGateway").get("endpoint", DEFAULT_BASE_URL);
-	}
+	private inflightFetch?: Promise<LanguageModelChatInformation[]>;
 
 	async getModels(apiKey: string): Promise<LanguageModelChatInformation[]> {
 		if (this.isModelsCacheFresh() && this.modelsCache) {
 			return this.modelsCache.models;
 		}
-		const startTime = Date.now();
-		const url = `${this.endpoint}${MODELS_ENDPOINT}`;
-		logger.info(`Fetching models from ${url}`);
-		const data = await this.fetchModels(apiKey);
-		const models = this.transformToVSCodeModels(data);
-		logger.info(`Models fetched in ${Date.now() - startTime}ms, count: ${models.length}`);
 
+		if (this.inflightFetch) {
+			return this.inflightFetch;
+		}
+
+		this.inflightFetch = this.fetchAndTransform(apiKey).finally(() => {
+			this.inflightFetch = undefined;
+		});
+
+		return this.inflightFetch;
+	}
+
+	private async fetchAndTransform(apiKey: string): Promise<LanguageModelChatInformation[]> {
+		const { endpoint } = getConfig();
+		const url = `${endpoint}${MODELS_ENDPOINT}`;
+
+		const startTime = Date.now();
+		logger.info(`Fetching models from ${url}`);
+
+		const data = await this.fetchModels(apiKey, url);
+		const models = this.transformToVSCodeModels(data);
+
+		logger.info(`Models fetched in ${Date.now() - startTime}ms, count: ${models.length}`);
 		this.modelsCache = { fetchedAt: Date.now(), models };
 		return models;
 	}
 
-	private async fetchModels(apiKey: string): Promise<Model[]> {
-		const response = await fetch(`${this.endpoint}${MODELS_ENDPOINT}`, {
-			headers: apiKey
-				? {
-						Authorization: `Bearer ${apiKey}`,
-					}
-				: {},
+	private async fetchModels(apiKey: string, url: string): Promise<Model[]> {
+		const response = await fetch(url, {
+			headers: apiKey ? { Authorization: `Bearer ${apiKey}` } : {},
 		});
 
 		if (!response.ok) {
@@ -99,10 +111,6 @@ export class ModelsClient {
 			.map((model) => {
 				const identity = parseModelIdentity(model.id);
 				const tags = (model.tags ?? []).map((tag) => tag.toLowerCase());
-				const hasImageInput = tags.some((tag) => IMAGE_INPUT_TAGS.has(tag));
-				const hasToolCalling = tags.some((tag) => TOOL_CALLING_TAGS.has(tag));
-				const hasReasoning = tags.some((tag) => REASONING_TAGS.has(tag));
-				const hasWebSearch = tags.some((tag) => WEB_SEARCH_TAGS.has(tag));
 
 				return {
 					id: model.id,
@@ -114,10 +122,10 @@ export class ModelsClient {
 					maxOutputTokens: model.max_tokens,
 					tooltip: model.description || "No description available.",
 					capabilities: {
-						imageInput: hasImageInput || false,
-						toolCalling: hasToolCalling || false,
-						reasoning: hasReasoning || false,
-						webSearch: hasWebSearch || false,
+						imageInput: hasTag(tags, IMAGE_INPUT_TAGS),
+						toolCalling: hasTag(tags, TOOL_CALLING_TAGS),
+						reasoning: hasTag(tags, REASONING_TAGS),
+						webSearch: hasTag(tags, WEB_SEARCH_TAGS),
 					},
 				};
 			});
