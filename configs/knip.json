@@ -72,7 +72,7 @@
 			"ignore": ["src/generated/**"],
 			"includeEntryExports": false
 		},
-		"packages/cloudflare-api": {
+		"packages/cloudflare-api-js": {
 			"entry": ["src/index.ts", "src/types.ts", "src/components.ts", "kubb.config.ts"],
 			"project": ["src/**/*.ts"],
 			"ignore": ["src/generated/**"],

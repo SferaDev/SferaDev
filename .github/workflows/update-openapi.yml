@@ -23,6 +23,8 @@ jobs:
           - keycloak-api
           - cloudflare-api-js
           - nuki-api-js
+          - litellm-api
+          - v0-api
 
     steps:
       - name: Checkout repo
