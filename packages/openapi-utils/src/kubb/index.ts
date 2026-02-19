@@ -5,7 +5,6 @@ import { pluginTs } from "@kubb/plugin-ts";
 import { pluginZod } from "@kubb/plugin-zod";
 import { extraGenerator } from "./client/extra";
 import { clientGenerator } from "./client/operations";
-import { effectOperationsGenerator, effectServiceGenerator } from "./effect";
 
 interface ConfigOptions {
 	outputPath?: string;
@@ -77,19 +76,6 @@ function buildConfig({
 							version: "4",
 						}),
 					]),
-			// Effect-TS service generation
-			pluginClient({
-				output: {
-					path: "./effect.ts",
-					barrelType: false,
-				},
-				client: "fetch",
-				dataReturnType: "data",
-				pathParamsType: "object",
-				paramsType: "object",
-				importPath: "@sferadev/openapi-utils/effect",
-				generators: [effectOperationsGenerator, effectServiceGenerator] as any[],
-			}),
 		],
 	};
 }

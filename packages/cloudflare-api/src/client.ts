@@ -83,8 +83,10 @@ export class CloudflareApi {
 	}
 
 	get api() {
-		const token = this.#token;
-		const fetchImpl = this.#fetch;
+		const getConfig = async (): Promise<FetcherConfig> => ({
+			token: this.#token,
+			fetchImpl: this.#fetch,
+		});
 
 		return new Proxy(
 			{},
@@ -108,7 +110,7 @@ export class CloudflareApi {
 								const method = operationsByTag[namespace][operation] as any;
 
 								return async (params: Record<string, unknown>) => {
-									return await method({ ...params, token, fetchImpl });
+									return await method({ ...params, config: await getConfig() });
 								};
 							},
 						},

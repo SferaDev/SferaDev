@@ -1,4 +1,12 @@
-import { Context, Data, Effect, Layer, Schema } from "effect";
+import { Context, Effect, Layer, Schema } from "effect";
+
+// ============================================================================
+// Re-export errors, ApiConfig, and proxy utilities
+// ============================================================================
+
+export { ApiConfig, ApiError, makeApiLayer, NetworkError, ValidationError } from "./errors";
+export type { EffectApi, EffectByPath } from "./proxy";
+export { createEffectApi, createEffectByPath } from "./proxy";
 
 // ============================================================================
 // Configuration Schema
@@ -36,58 +44,14 @@ export const ApiClientRequest = Schema.Struct({
 export type ApiClientRequest = typeof ApiClientRequest.Type;
 
 // ============================================================================
-// Error Types
+// API Client Service (legacy — kept for backwards compatibility)
 // ============================================================================
 
-/**
- * Validation error for client-side input validation failures.
- * Use this for missing required parameters or invalid input formats.
- */
-export class ValidationError extends Data.TaggedError("ValidationError")<{
-	readonly field: string;
-	readonly reason: string;
-}> {
-	override get message(): string {
-		return `Validation error for '${this.field}': ${this.reason}`;
-	}
-}
-
-/**
- * API error with status code and error payload.
- * Uses Effect's Data.TaggedError for pattern matching support.
- */
-export class ApiError extends Data.TaggedError("ApiError")<{
-	readonly status: number;
-	readonly error: unknown;
-}> {
-	override get message(): string {
-		if (this.error && typeof this.error === "object" && "message" in this.error) {
-			return String((this.error as { message: unknown }).message);
-		}
-		return `API Error: ${this.status}`;
-	}
-}
-
-/**
- * Network error for fetch failures (timeouts, DNS errors, etc).
- */
-export class NetworkError extends Data.TaggedError("NetworkError")<{
-	readonly cause: unknown;
-}> {
-	override get message(): string {
-		if (this.cause instanceof Error) {
-			return `Network error: ${this.cause.message}`;
-		}
-		return "Network error";
-	}
-}
-
-// ============================================================================
-// API Client Service
-// ============================================================================
+import { ApiError, NetworkError, ValidationError } from "./errors";
 
 /**
  * API client service interface for making HTTP requests.
+ * @deprecated Use ApiConfig with proxy-based Effect APIs instead.
  */
 export type ApiClientService = {
 	readonly request: <T>(
@@ -97,6 +61,7 @@ export type ApiClientService = {
 
 /**
  * Effect Context tag for the API client service.
+ * @deprecated Use ApiConfig with proxy-based Effect APIs instead.
  */
 export class ApiClient extends Context.Tag("ApiClient")<ApiClient, ApiClientService>() {}
 
@@ -117,14 +82,12 @@ export function serializeQueryParams(params: Record<string, unknown> | undefined
 		if (value === undefined || value === null) return;
 
 		if (Array.isArray(value)) {
-			// Handle arrays: ?ids=1&ids=2&ids=3
 			for (const item of value) {
 				if (item !== undefined && item !== null) {
 					searchParams.append(key, String(item));
 				}
 			}
 		} else if (typeof value === "object") {
-			// Handle nested objects: ?filter[status]=active&filter[type]=user
 			for (const [nestedKey, nestedValue] of Object.entries(value)) {
 				appendParam(`${key}[${nestedKey}]`, nestedValue);
 			}
@@ -141,14 +104,12 @@ export function serializeQueryParams(params: Record<string, unknown> | undefined
 }
 
 // ============================================================================
-// API Client Implementation
+// API Client Implementation (legacy — kept for backwards compatibility)
 // ============================================================================
 
 /**
  * Create a live implementation of the API client.
- *
- * @param config - Configuration for the API client
- * @returns A Layer that provides the ApiClient service
+ * @deprecated Use makeApiLayer with proxy-based Effect APIs instead.
  */
 export const makeApiClientLive = (config: {
 	baseUrl: string;
@@ -156,7 +117,6 @@ export const makeApiClientLive = (config: {
 	headers?: Record<string, string>;
 	timeout?: number;
 }): Layer.Layer<ApiClient> => {
-	// Validate config at runtime
 	const validatedConfig = Schema.decodeUnknownSync(ApiClientConfig)(config);
 
 	return Layer.succeed(
@@ -167,7 +127,6 @@ export const makeApiClientLive = (config: {
 			): Effect.Effect<T, ApiError | NetworkError | ValidationError> =>
 				Effect.tryPromise({
 					try: async () => {
-						// Convert all header values to strings
 						const stringifyHeaders = (
 							headers: Record<string, string | number> | undefined,
 						): Record<string, string> => {
@@ -187,7 +146,6 @@ export const makeApiClientLive = (config: {
 							(headers as Record<string, string>).Authorization = `Bearer ${validatedConfig.token}`;
 						}
 
-						// Handle multipart/form-data - browser sets boundary automatically
 						if (
 							typeof headers === "object" &&
 							"Content-Type" in headers &&
@@ -205,7 +163,6 @@ export const makeApiClientLive = (config: {
 
 						const fullUrl = `${validatedConfig.baseUrl}${options.url}`;
 
-						// Create abort controller for timeout
 						const controller = new AbortController();
 						let timeoutId: ReturnType<typeof setTimeout> | undefined;
 
@@ -257,14 +214,13 @@ export const makeApiClientLive = (config: {
 };
 
 // ============================================================================
-// Cached API Client (for ApiClientLive)
+// Cached API Client (legacy)
 // ============================================================================
 
 let cachedEnvLayer: Layer.Layer<ApiClient> | null = null;
 
 /**
- * Default API client layer using environment variables.
- * The layer is cached after first use for efficiency.
+ * @deprecated Use makeApiLayer with proxy-based Effect APIs instead.
  */
 export const makeApiClientFromEnv = (
 	envTokenKey: string,
@@ -280,12 +236,11 @@ export const makeApiClientFromEnv = (
 };
 
 // ============================================================================
-// Utility Functions
+// Utility Functions (legacy)
 // ============================================================================
 
 /**
- * Run an Effect program with the API client configured.
- * Best for one-off API calls or scripts.
+ * @deprecated Use makeApiLayer with proxy-based Effect APIs instead.
  */
 export const runWithClient = <A, E>(
 	config: {
@@ -300,8 +255,7 @@ export const runWithClient = <A, E>(
 };
 
 /**
- * Create a reusable API client for making multiple requests.
- * Ideal for applications that need to make many API calls.
+ * @deprecated Use makeApiLayer with proxy-based Effect APIs instead.
  */
 export const createClient = (config: {
 	baseUrl: string;
@@ -312,22 +266,12 @@ export const createClient = (config: {
 	const layer = makeApiClientLive(config);
 
 	return {
-		/**
-		 * Run an Effect program with this client's configuration.
-		 */
 		run: <A, E>(effect: Effect.Effect<A, E, ApiClient>): Promise<A> =>
 			effect.pipe(Effect.provide(layer), Effect.runPromise),
 
-		/**
-		 * Run an Effect program, returning an Exit (success or failure).
-		 * Useful when you want to handle errors without throwing.
-		 */
 		runExit: <A, E>(effect: Effect.Effect<A, E, ApiClient>) =>
 			effect.pipe(Effect.provide(layer), Effect.runPromiseExit),
 
-		/**
-		 * Get the Layer for advanced composition scenarios.
-		 */
 		layer,
 	};
 };
