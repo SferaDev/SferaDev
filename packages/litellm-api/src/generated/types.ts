@@ -4,6 +4,7 @@
  */
 
 /**
+ * AccessControl_UI_AccessMode
  * @description Model for Controlling UI Access Mode via SSO Groups
  */
 export type AccessControlUIAccessMode = {
@@ -22,6 +23,7 @@ export type AccessControlUIAccessMode = {
 };
 
 /**
+ * TagActiveUsersResponse
  * @description Response for tag active users metrics
  */
 export type TagActiveUsersResponse = {
@@ -42,6 +44,7 @@ export type TagActiveUsersResponse = {
 };
 
 /**
+ * ActiveUsersAnalyticsResponse
  * @description Response for active users analytics
  */
 export type ActiveUsersAnalyticsResponse = {
@@ -60,6 +63,9 @@ export const addTeamCallbackCallbackTypeEnum = {
 export type AddTeamCallbackCallbackTypeEnumKey =
 	(typeof addTeamCallbackCallbackTypeEnum)[keyof typeof addTeamCallbackCallbackTypeEnum];
 
+/**
+ * AddTeamCallback
+ */
 export type AddTeamCallback = {
 	/**
 	 * @type string
@@ -85,6 +91,9 @@ export const allowedVectorStoreIndexItemIndexPermissionsEnum = {
 export type AllowedVectorStoreIndexItemIndexPermissionsEnumKey =
 	(typeof allowedVectorStoreIndexItemIndexPermissionsEnum)[keyof typeof allowedVectorStoreIndexItemIndexPermissionsEnum];
 
+/**
+ * AllowedVectorStoreIndexItem
+ */
 export type AllowedVectorStoreIndexItem = {
 	/**
 	 * @type string
@@ -140,8 +149,14 @@ export const piiEntityTypeEnum = {
 
 export type PiiEntityTypeEnumKey = (typeof piiEntityTypeEnum)[keyof typeof piiEntityTypeEnum];
 
+/**
+ * PiiEntityType
+ */
 export type PiiEntityType = PiiEntityTypeEnumKey;
 
+/**
+ * ApplyGuardrailRequest
+ */
 export type ApplyGuardrailRequest = {
 	/**
 	 * @type string
@@ -155,6 +170,9 @@ export type ApplyGuardrailRequest = {
 	entities?: (PiiEntityType[] | null) | undefined;
 };
 
+/**
+ * ApplyGuardrailResponse
+ */
 export type ApplyGuardrailResponse = {
 	/**
 	 * @type string
@@ -163,6 +181,7 @@ export type ApplyGuardrailResponse = {
 };
 
 /**
+ * AuditLogResponse
  * @description Response model for a single audit log entry
  */
 export type AuditLogResponse = {
@@ -198,6 +217,9 @@ export type AuditLogResponse = {
 	updated_values?: (object | null) | undefined;
 };
 
+/**
+ * LakeraCategoryThresholds
+ */
 export type LakeraCategoryThresholds = {
 	/**
 	 * @type number | undefined
@@ -209,6 +231,9 @@ export type LakeraCategoryThresholds = {
 	jailbreak?: number | undefined;
 };
 
+/**
+ * BaseLitellmParams
+ */
 export type BaseLitellmParams = {
 	/**
 	 * @description API key for the guardrail service
@@ -278,6 +303,9 @@ export type BaseLitellmParams = {
 	[key: string]: unknown;
 };
 
+/**
+ * BlockKeyRequest
+ */
 export type BlockKeyRequest = {
 	/**
 	 * @type string
@@ -285,6 +313,9 @@ export type BlockKeyRequest = {
 	key: string;
 };
 
+/**
+ * BlockTeamRequest
+ */
 export type BlockTeamRequest = {
 	/**
 	 * @type string
@@ -292,6 +323,9 @@ export type BlockTeamRequest = {
 	team_id: string;
 };
 
+/**
+ * BlockUsers
+ */
 export type BlockUsers = {
 	/**
 	 * @type array
@@ -308,11 +342,13 @@ export type ContentFilterActionEnumKey =
 	(typeof contentFilterActionEnum)[keyof typeof contentFilterActionEnum];
 
 /**
+ * ContentFilterAction
  * @description Action to take when content filter detects a match
  */
 export type ContentFilterAction = ContentFilterActionEnumKey;
 
 /**
+ * BlockedWord
  * @description Represents a blocked word with its action and optional description
  */
 export type BlockedWord = {
@@ -332,6 +368,9 @@ export type BlockedWord = {
 	description?: (string | null) | undefined;
 };
 
+/**
+ * Body_audio_transcriptions_audio_transcriptions_post
+ */
 export type BodyAudioTranscriptionsAudioTranscriptionsPost = {
 	/**
 	 * @type string, binary
@@ -339,6 +378,9 @@ export type BodyAudioTranscriptionsAudioTranscriptionsPost = {
 	file: Blob;
 };
 
+/**
+ * Body_audio_transcriptions_v1_audio_transcriptions_post
+ */
 export type BodyAudioTranscriptionsV1AudioTranscriptionsPost = {
 	/**
 	 * @type string, binary
@@ -346,6 +388,9 @@ export type BodyAudioTranscriptionsV1AudioTranscriptionsPost = {
 	file: Blob;
 };
 
+/**
+ * Body_convert_prompt_file_to_json_utils_dotprompt_json_converter_post
+ */
 export type BodyConvertPromptFileToJsonUtilsDotpromptJsonConverterPost = {
 	/**
 	 * @type string, binary
@@ -353,6 +398,9 @@ export type BodyConvertPromptFileToJsonUtilsDotpromptJsonConverterPost = {
 	file: Blob;
 };
 
+/**
+ * Body_create_file__provider__v1_files_post
+ */
 export type BodyCreateFileProviderV1FilesPost = {
 	/**
 	 * @type string
@@ -374,6 +422,9 @@ export type BodyCreateFileProviderV1FilesPost = {
 	file: Blob;
 };
 
+/**
+ * Body_create_file_files_post
+ */
 export type BodyCreateFileFilesPost = {
 	/**
 	 * @type string
@@ -395,6 +446,9 @@ export type BodyCreateFileFilesPost = {
 	file: Blob;
 };
 
+/**
+ * Body_create_file_v1_files_post
+ */
 export type BodyCreateFileV1FilesPost = {
 	/**
 	 * @type string
@@ -416,6 +470,9 @@ export type BodyCreateFileV1FilesPost = {
 	file: Blob;
 };
 
+/**
+ * Body_image_edit_api_images_edits_post
+ */
 export type BodyImageEditApiImagesEditsPost = {
 	/**
 	 * @type array
@@ -424,6 +481,9 @@ export type BodyImageEditApiImagesEditsPost = {
 	mask?: (Blob[] | null) | undefined;
 };
 
+/**
+ * Body_image_edit_api_openai_deployments__model__images_edits_post
+ */
 export type BodyImageEditApiOpenaiDeploymentsModelImagesEditsPost = {
 	/**
 	 * @type array
@@ -432,6 +492,9 @@ export type BodyImageEditApiOpenaiDeploymentsModelImagesEditsPost = {
 	mask?: (Blob[] | null) | undefined;
 };
 
+/**
+ * Body_image_edit_api_v1_images_edits_post
+ */
 export type BodyImageEditApiV1ImagesEditsPost = {
 	/**
 	 * @type array
@@ -458,6 +521,9 @@ export const bodyTestModelConnectionHealthTestConnectionPostModeEnum = {
 export type BodyTestModelConnectionHealthTestConnectionPostModeEnumKey =
 	(typeof bodyTestModelConnectionHealthTestConnectionPostModeEnum)[keyof typeof bodyTestModelConnectionHealthTestConnectionPostModeEnum];
 
+/**
+ * Body_test_model_connection_health_test_connection_post
+ */
 export type BodyTestModelConnectionHealthTestConnectionPost = {
 	/**
 	 * @description The mode to test the model with
@@ -476,6 +542,9 @@ export type BodyTestModelConnectionHealthTestConnectionPost = {
 	model_info?: object | undefined;
 };
 
+/**
+ * Body_token_endpoint__mcp_server_name__token_post
+ */
 export type BodyTokenEndpointMcpServerNameTokenPost = {
 	/**
 	 * @type string
@@ -500,6 +569,9 @@ export type BodyTokenEndpointMcpServerNameTokenPost = {
 	code_verifier?: string | undefined;
 };
 
+/**
+ * Body_token_endpoint_token_post
+ */
 export type BodyTokenEndpointTokenPost = {
 	/**
 	 * @type string
@@ -524,6 +596,9 @@ export type BodyTokenEndpointTokenPost = {
 	code_verifier?: string | undefined;
 };
 
+/**
+ * Body_upload_logo_upload_logo_post
+ */
 export type BodyUploadLogoUploadLogoPost = {
 	/**
 	 * @type string, binary
@@ -531,14 +606,23 @@ export type BodyUploadLogoUploadLogoPost = {
 	file: Blob;
 };
 
+/**
+ * Body_video_generation_v1_videos_post
+ */
 export type BodyVideoGenerationV1VideosPost = {
-	input_reference?: null | undefined;
+	input_reference?: (Blob | null) | undefined;
 };
 
+/**
+ * Body_video_generation_videos_post
+ */
 export type BodyVideoGenerationVideosPost = {
-	input_reference?: null | undefined;
+	input_reference?: (Blob | null) | undefined;
 };
 
+/**
+ * SpendMetrics
+ */
 export type SpendMetrics = {
 	/**
 	 * @default 0
@@ -588,6 +672,7 @@ export type SpendMetrics = {
 };
 
 /**
+ * KeyMetadata
  * @description Metadata for a key
  */
 export type KeyMetadata = {
@@ -596,6 +681,7 @@ export type KeyMetadata = {
 };
 
 /**
+ * KeyMetricWithMetadata
  * @description Base class for metrics with additional metadata
  */
 export type KeyMetricWithMetadata = {
@@ -610,6 +696,9 @@ export type KeyMetricWithMetadata = {
 	metadata?: KeyMetadata | undefined;
 };
 
+/**
+ * MetricWithMetadata
+ */
 export type MetricWithMetadataInput = {
 	/**
 	 * @type object
@@ -630,6 +719,7 @@ export type MetricWithMetadataInput = {
 };
 
 /**
+ * BreakdownMetrics
  * @description Breakdown of spend by different dimensions
  */
 export type BreakdownMetricsInput = {
@@ -683,6 +773,9 @@ export type BreakdownMetricsInput = {
 		| undefined;
 };
 
+/**
+ * MetricWithMetadata
+ */
 export type MetricWithMetadataOutput = {
 	/**
 	 * @type object
@@ -703,6 +796,7 @@ export type MetricWithMetadataOutput = {
 };
 
 /**
+ * BreakdownMetrics
  * @description Breakdown of spend by different dimensions
  */
 export type BreakdownMetricsOutput = {
@@ -756,6 +850,9 @@ export type BreakdownMetricsOutput = {
 		| undefined;
 };
 
+/**
+ * BudgetConfig
+ */
 export type BudgetConfig = {
 	max_budget?: (number | null) | undefined;
 	budget_duration?: (string | null) | undefined;
@@ -763,6 +860,9 @@ export type BudgetConfig = {
 	rpm_limit?: (number | null) | undefined;
 };
 
+/**
+ * BudgetDeleteRequest
+ */
 export type BudgetDeleteRequest = {
 	/**
 	 * @type string
@@ -770,6 +870,9 @@ export type BudgetDeleteRequest = {
 	id: string;
 };
 
+/**
+ * BudgetNewRequest
+ */
 export type BudgetNewRequest = {
 	/**
 	 * @description The unique budget id.
@@ -813,6 +916,9 @@ export type BudgetNewRequest = {
 	budget_reset_at?: (string | null) | undefined;
 };
 
+/**
+ * BudgetRequest
+ */
 export type BudgetRequest = {
 	/**
 	 * @type array
@@ -827,6 +933,9 @@ export const memberRoleEnum = {
 
 export type MemberRoleEnumKey = (typeof memberRoleEnum)[keyof typeof memberRoleEnum];
 
+/**
+ * Member
+ */
 export type Member = {
 	/**
 	 * @description The unique ID of the user to add. Either user_id or user_email must be provided
@@ -844,6 +953,7 @@ export type Member = {
 };
 
 /**
+ * BulkTeamMemberAddRequest
  * @description Request for bulk team member addition
  */
 export type BulkTeamMemberAddRequest = {
@@ -860,6 +970,7 @@ export type BulkTeamMemberAddRequest = {
 };
 
 /**
+ * TeamMemberAddResult
  * @description Result of a single team member add operation
  */
 export type TeamMemberAddResult = {
@@ -875,6 +986,7 @@ export type TeamMemberAddResult = {
 };
 
 /**
+ * BulkTeamMemberAddResponse
  * @description Response for bulk team member add operations
  */
 export type BulkTeamMemberAddResponse = {
@@ -901,6 +1013,9 @@ export type BulkTeamMemberAddResponse = {
 	updated_team?: (object | null) | undefined;
 };
 
+/**
+ * LiteLLM_ObjectPermissionBase
+ */
 export type LiteLLMObjectPermissionBase = {
 	mcp_servers?: (string[] | null) | undefined;
 	mcp_access_groups?: (string[] | null) | undefined;
@@ -922,6 +1037,9 @@ export const updateUserRequestUserRoleEnum = {
 export type UpdateUserRequestUserRoleEnumKey =
 	(typeof updateUserRequestUserRoleEnum)[keyof typeof updateUserRequestUserRoleEnum];
 
+/**
+ * UpdateUserRequest
+ */
 export type UpdateUserRequest = {
 	key_alias?: (string | null) | undefined;
 	duration?: (string | null) | undefined;
@@ -973,6 +1091,9 @@ export const updateUserRequestNoUserIDorEmailUserRoleEnum = {
 export type UpdateUserRequestNoUserIDorEmailUserRoleEnumKey =
 	(typeof updateUserRequestNoUserIDorEmailUserRoleEnum)[keyof typeof updateUserRequestNoUserIDorEmailUserRoleEnum];
 
+/**
+ * UpdateUserRequestNoUserIDorEmail
+ */
 export type UpdateUserRequestNoUserIDorEmail = {
 	key_alias?: (string | null) | undefined;
 	duration?: (string | null) | undefined;
@@ -1014,6 +1135,7 @@ export type UpdateUserRequestNoUserIDorEmail = {
 };
 
 /**
+ * BulkUpdateUserRequest
  * @description Request for bulk user updates
  */
 export type BulkUpdateUserRequest = {
@@ -1026,6 +1148,7 @@ export type BulkUpdateUserRequest = {
 };
 
 /**
+ * UserUpdateResult
  * @description Result of a single user update operation
  */
 export type UserUpdateResult = {
@@ -1040,6 +1163,7 @@ export type UserUpdateResult = {
 };
 
 /**
+ * BulkUpdateUserResponse
  * @description Response for bulk user update operations
  */
 export type BulkUpdateUserResponse = {
@@ -1061,6 +1185,9 @@ export type BulkUpdateUserResponse = {
 	failed_updates: number;
 };
 
+/**
+ * CachePingResponse
+ */
 export type CachePingResponse = {
 	/**
 	 * @type string
@@ -1076,6 +1203,9 @@ export type CachePingResponse = {
 	health_check_cache_params?: (object | null) | undefined;
 };
 
+/**
+ * CacheSettingsField
+ */
 export type CacheSettingsField = {
 	/**
 	 * @type string
@@ -1100,6 +1230,9 @@ export type CacheSettingsField = {
 	redis_type?: (string | null) | undefined;
 };
 
+/**
+ * CacheSettingsResponse
+ */
 export type CacheSettingsResponse = {
 	/**
 	 * @description List of all configurable cache settings with metadata
@@ -1120,6 +1253,9 @@ export type CacheSettingsResponse = {
 	};
 };
 
+/**
+ * CacheSettingsUpdateRequest
+ */
 export type CacheSettingsUpdateRequest = {
 	/**
 	 * @description Cache settings to save
@@ -1128,6 +1264,9 @@ export type CacheSettingsUpdateRequest = {
 	cache_settings: object;
 };
 
+/**
+ * CacheTestRequest
+ */
 export type CacheTestRequest = {
 	/**
 	 * @description Cache settings to test connection with
@@ -1136,6 +1275,9 @@ export type CacheTestRequest = {
 	cache_settings: object;
 };
 
+/**
+ * CacheTestResponse
+ */
 export type CacheTestResponse = {
 	/**
 	 * @description Connection status: \'success\' or \'failed\'
@@ -1253,8 +1395,14 @@ export const callTypesEnum = {
 
 export type CallTypesEnumKey = (typeof callTypesEnum)[keyof typeof callTypesEnum];
 
+/**
+ * CallTypes
+ */
 export type CallTypes = CallTypesEnumKey;
 
+/**
+ * CallbacksByType
+ */
 export type CallbacksByType = {
 	/**
 	 * @type array
@@ -1270,6 +1418,9 @@ export type CallbacksByType = {
 	success_and_failure: string[];
 };
 
+/**
+ * ChatCompletionAnnotationURLCitation
+ */
 export type ChatCompletionAnnotationURLCitation = {
 	/**
 	 * @type integer | undefined
@@ -1289,6 +1440,9 @@ export type ChatCompletionAnnotationURLCitation = {
 	url?: string | undefined;
 };
 
+/**
+ * ChatCompletionAnnotation
+ */
 export type ChatCompletionAnnotation = {
 	/**
 	 * @type string | undefined
@@ -1300,6 +1454,9 @@ export type ChatCompletionAnnotation = {
 	url_citation?: ChatCompletionAnnotationURLCitation | undefined;
 };
 
+/**
+ * ChatCompletionAudioResponse
+ */
 export type ChatCompletionAudioResponse = {
 	/**
 	 * @type string
@@ -1320,6 +1477,9 @@ export type ChatCompletionAudioResponse = {
 	[key: string]: unknown;
 };
 
+/**
+ * ChatCompletionCachedContent
+ */
 export type ChatCompletionCachedContent = {
 	/**
 	 * @type string
@@ -1327,10 +1487,16 @@ export type ChatCompletionCachedContent = {
 	type: "ephemeral";
 };
 
+/**
+ * ChatCompletionMessageToolCall
+ */
 export type ChatCompletionMessageToolCall = {
 	[key: string]: unknown;
 };
 
+/**
+ * ChatCompletionRedactedThinkingBlock
+ */
 export type ChatCompletionRedactedThinkingBlock = {
 	/**
 	 * @type string
@@ -1343,6 +1509,9 @@ export type ChatCompletionRedactedThinkingBlock = {
 	cache_control?: (object | ChatCompletionCachedContent | null) | undefined;
 };
 
+/**
+ * ChatCompletionThinkingBlock
+ */
 export type ChatCompletionThinkingBlock = {
 	/**
 	 * @type string
@@ -1359,6 +1528,9 @@ export type ChatCompletionThinkingBlock = {
 	cache_control?: (object | ChatCompletionCachedContent | null) | undefined;
 };
 
+/**
+ * TopLogprob
+ */
 export type TopLogprob = {
 	/**
 	 * @type string
@@ -1372,6 +1544,9 @@ export type TopLogprob = {
 	[key: string]: unknown;
 };
 
+/**
+ * ChatCompletionTokenLogprob
+ */
 export type ChatCompletionTokenLogprob = {
 	/**
 	 * @type string
@@ -1389,11 +1564,17 @@ export type ChatCompletionTokenLogprob = {
 	[key: string]: unknown;
 };
 
+/**
+ * ChoiceLogprobs
+ */
 export type ChoiceLogprobs = {
 	content?: (ChatCompletionTokenLogprob[] | null) | undefined;
 	[key: string]: unknown;
 };
 
+/**
+ * FunctionCall
+ */
 export type FunctionCall = {
 	/**
 	 * @type string
@@ -1403,6 +1584,9 @@ export type FunctionCall = {
 	[key: string]: unknown;
 };
 
+/**
+ * ImageURLObject
+ */
 export type ImageURLObject = {
 	/**
 	 * @type string
@@ -1411,6 +1595,9 @@ export type ImageURLObject = {
 	detail?: (string | null) | undefined;
 };
 
+/**
+ * ImageURLListItem
+ */
 export type ImageURLListItem = {
 	/**
 	 * @type object
@@ -1436,6 +1623,9 @@ export const messageRoleEnum = {
 
 export type MessageRoleEnumKey = (typeof messageRoleEnum)[keyof typeof messageRoleEnum];
 
+/**
+ * Message
+ */
 export type Message = {
 	content: string | null;
 	/**
@@ -1455,6 +1645,9 @@ export type Message = {
 	[key: string]: unknown;
 };
 
+/**
+ * Choices
+ */
 export type Choices = {
 	/**
 	 * @type string
@@ -1474,6 +1667,7 @@ export type Choices = {
 };
 
 /**
+ * CloudZeroExportRequest
  * @description Request model for CloudZero export operations
  */
 export type CloudZeroExportRequest = {
@@ -1498,6 +1692,7 @@ export type CloudZeroExportRequest = {
 };
 
 /**
+ * CloudZeroExportResponse
  * @description Response model for CloudZero export operations
  */
 export type CloudZeroExportResponse = {
@@ -1521,6 +1716,7 @@ export type CloudZeroExportResponse = {
 };
 
 /**
+ * CloudZeroInitRequest
  * @description Request model for initializing CloudZero settings
  */
 export type CloudZeroInitRequest = {
@@ -1543,6 +1739,7 @@ export type CloudZeroInitRequest = {
 };
 
 /**
+ * CloudZeroInitResponse
  * @description Response model for CloudZero initialization
  */
 export type CloudZeroInitResponse = {
@@ -1557,6 +1754,7 @@ export type CloudZeroInitResponse = {
 };
 
 /**
+ * CloudZeroSettingsUpdate
  * @description Request model for updating CloudZero settings
  */
 export type CloudZeroSettingsUpdate = {
@@ -1575,6 +1773,7 @@ export type CloudZeroSettingsUpdate = {
 };
 
 /**
+ * CloudZeroSettingsView
  * @description Response model for viewing CloudZero settings with masked API key
  */
 export type CloudZeroSettingsView = {
@@ -1600,6 +1799,9 @@ export type CloudZeroSettingsView = {
 	status: string;
 };
 
+/**
+ * ConfigurableClientsideParamsCustomAuth
+ */
 export type ConfigurableClientsideParamsCustomAuth = {
 	/**
 	 * @type string
@@ -1616,6 +1818,7 @@ export type ContentFilterPatternPatternTypeEnumKey =
 	(typeof contentFilterPatternPatternTypeEnum)[keyof typeof contentFilterPatternPatternTypeEnum];
 
 /**
+ * ContentFilterPattern
  * @description Represents a content filter pattern (prebuilt or custom regex)
  */
 export type ContentFilterPattern = {
@@ -1643,6 +1846,9 @@ export type ContentFilterPattern = {
 	action: ContentFilterAction;
 };
 
+/**
+ * CreateCredentialItem
+ */
 export type CreateCredentialItem = {
 	/**
 	 * @type string
@@ -1657,6 +1863,7 @@ export type CreateCredentialItem = {
 };
 
 /**
+ * GraySwanGuardrailConfigModelOptionalParams
  * @description Optional parameters for the Gray Swan guardrail.
  */
 export type GraySwanGuardrailConfigModelOptionalParams = {
@@ -1695,8 +1902,14 @@ export const piiActionEnum = {
 
 export type PiiActionEnumKey = (typeof piiActionEnum)[keyof typeof piiActionEnum];
 
+/**
+ * PiiAction
+ */
 export type PiiAction = PiiActionEnumKey;
 
+/**
+ * Mode
+ */
 export type Mode = {
 	/**
 	 * @description Tags for the guardrail mode
@@ -1711,6 +1924,9 @@ export type Mode = {
 	default?: (string | null) | undefined;
 };
 
+/**
+ * LitellmParams
+ */
 export type LitellmParams = {
 	/**
 	 * @description Authorization bearer token for IBM Guardrails API. Reads from IBM_GUARDRAILS_AUTH_TOKEN env var if None.
@@ -2027,6 +2243,9 @@ export type LitellmParams = {
 	[key: string]: unknown;
 };
 
+/**
+ * Guardrail
+ */
 export type Guardrail = {
 	guardrail_id?: (string | null) | undefined;
 	/**
@@ -2042,6 +2261,9 @@ export type Guardrail = {
 	updated_at?: (string | null) | undefined;
 };
 
+/**
+ * CreateGuardrailRequest
+ */
 export type CreateGuardrailRequest = {
 	/**
 	 * @type object
@@ -2050,6 +2272,7 @@ export type CreateGuardrailRequest = {
 };
 
 /**
+ * SearchToolLiteLLMParams
  * @description LiteLLM params for search tools configuration.
  */
 export type SearchToolLiteLLMParams = {
@@ -2064,6 +2287,7 @@ export type SearchToolLiteLLMParams = {
 };
 
 /**
+ * SearchTool
  * @description Search tool configuration.\n\nExample:\n    {\n        \"search_tool_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n        \"search_tool_name\": \"litellm-search\",\n        \"litellm_params\": {\n            \"search_provider\": \"perplexity\",\n            \"api_key\": \"sk-...\"\n        },\n        \"search_tool_info\": {\n            \"description\": \"Perplexity search tool\"\n        }\n    }
  */
 export type SearchTool = {
@@ -2082,6 +2306,9 @@ export type SearchTool = {
 	updated_at?: (string | null) | undefined;
 };
 
+/**
+ * CreateSearchToolRequest
+ */
 export type CreateSearchToolRequest = {
 	/**
 	 * @description Search tool configuration.\n\nExample:\n    {\n        \"search_tool_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n        \"search_tool_name\": \"litellm-search\",\n        \"litellm_params\": {\n            \"search_provider\": \"perplexity\",\n            \"api_key\": \"sk-...\"\n        },\n        \"search_tool_info\": {\n            \"description\": \"Perplexity search tool\"\n        }\n    }
@@ -2090,6 +2317,9 @@ export type CreateSearchToolRequest = {
 	search_tool: SearchTool;
 };
 
+/**
+ * CredentialItem
+ */
 export type CredentialItem = {
 	/**
 	 * @type string
@@ -2105,6 +2335,9 @@ export type CredentialItem = {
 	credential_values: object;
 };
 
+/**
+ * DailySpendData
+ */
 export type DailySpendDataInput = {
 	/**
 	 * @type string, date
@@ -2121,6 +2354,9 @@ export type DailySpendDataInput = {
 	breakdown?: BreakdownMetricsInput | undefined;
 };
 
+/**
+ * DailySpendData
+ */
 export type DailySpendDataOutput = {
 	/**
 	 * @type string, date
@@ -2137,6 +2373,9 @@ export type DailySpendDataOutput = {
 	breakdown?: BreakdownMetricsOutput | undefined;
 };
 
+/**
+ * DailySpendMetadata
+ */
 export type DailySpendMetadata = {
 	/**
 	 * @default 0
@@ -2208,6 +2447,9 @@ export const newUserRequestTeamUserRoleEnum = {
 export type NewUserRequestTeamUserRoleEnumKey =
 	(typeof newUserRequestTeamUserRoleEnum)[keyof typeof newUserRequestTeamUserRoleEnum];
 
+/**
+ * NewUserRequestTeam
+ */
 export type NewUserRequestTeam = {
 	/**
 	 * @type string
@@ -2232,6 +2474,7 @@ export type DefaultInternalUserParamsUserRoleEnumKey =
 	(typeof defaultInternalUserParamsUserRoleEnum)[keyof typeof defaultInternalUserParamsUserRoleEnum];
 
 /**
+ * DefaultInternalUserParams
  * @description Default parameters to apply when a new user signs in via SSO or is created on the /user/new API endpoint
  */
 export type DefaultInternalUserParams = {
@@ -2259,6 +2502,7 @@ export type DefaultInternalUserParams = {
 };
 
 /**
+ * DefaultTeamSSOParams
  * @description Default parameters to apply when a new team is automatically created by LiteLLM via SSO Groups
  */
 export type DefaultTeamSSOParams = {
@@ -2286,6 +2530,7 @@ export type DefaultTeamSSOParams = {
 };
 
 /**
+ * DefaultTeamSettingsResponse
  * @description Response model for default team settings
  */
 export type DefaultTeamSettingsResponse = {
@@ -2300,6 +2545,7 @@ export type DefaultTeamSettingsResponse = {
 };
 
 /**
+ * DeleteCustomerRequest
  * @description Delete multiple Customers
  */
 export type DeleteCustomerRequest = {
@@ -2309,6 +2555,9 @@ export type DeleteCustomerRequest = {
 	user_ids: string[];
 };
 
+/**
+ * DeleteOrganizationRequest
+ */
 export type DeleteOrganizationRequest = {
 	/**
 	 * @type array
@@ -2316,6 +2565,9 @@ export type DeleteOrganizationRequest = {
 	organization_ids: string[];
 };
 
+/**
+ * DeleteTeamRequest
+ */
 export type DeleteTeamRequest = {
 	/**
 	 * @type array
@@ -2323,6 +2575,9 @@ export type DeleteTeamRequest = {
 	team_ids: string[];
 };
 
+/**
+ * DeleteUserRequest
+ */
 export type DeleteUserRequest = {
 	/**
 	 * @type array
@@ -2330,10 +2585,16 @@ export type DeleteUserRequest = {
 	user_ids: string[];
 };
 
+/**
+ * StreamingChoices
+ */
 export type StreamingChoices = {
 	[key: string]: unknown;
 };
 
+/**
+ * ModelResponse
+ */
 export type ModelResponse = {
 	/**
 	 * @type string
@@ -2357,6 +2618,7 @@ export type ModelResponse = {
 };
 
 /**
+ * LiteLLM_Params
  * @description LiteLLM Params with \'model\' requirement - used for completions
  */
 export type LiteLLMParams = {
@@ -2470,6 +2732,9 @@ export const modelInfoTierEnum = {
 
 export type ModelInfoTierEnumKey = (typeof modelInfoTierEnum)[keyof typeof modelInfoTierEnum];
 
+/**
+ * ModelInfo
+ */
 export type ModelInfo = {
 	id: string | null;
 	/**
@@ -2488,6 +2753,9 @@ export type ModelInfo = {
 	[key: string]: unknown;
 };
 
+/**
+ * Deployment
+ */
 export type Deployment = {
 	/**
 	 * @type string
@@ -2506,6 +2774,7 @@ export type Deployment = {
 };
 
 /**
+ * DistinctTagResponse
  * @description Response for distinct user agent tags
  */
 export type DistinctTagResponse = {
@@ -2516,6 +2785,7 @@ export type DistinctTagResponse = {
 };
 
 /**
+ * DistinctTagsResponse
  * @description Response for all distinct user agent tags
  */
 export type DistinctTagsResponse = {
@@ -2532,8 +2802,14 @@ export const emailEventEnum = {
 
 export type EmailEventEnumKey = (typeof emailEventEnum)[keyof typeof emailEventEnum];
 
+/**
+ * EmailEvent
+ */
 export type EmailEvent = EmailEventEnumKey;
 
+/**
+ * EmailEventSettings
+ */
 export type EmailEventSettings = {
 	/**
 	 * @type string
@@ -2545,6 +2821,9 @@ export type EmailEventSettings = {
 	enabled: boolean;
 };
 
+/**
+ * EmailEventSettingsResponse
+ */
 export type EmailEventSettingsResponse = {
 	/**
 	 * @type array
@@ -2552,6 +2831,9 @@ export type EmailEventSettingsResponse = {
 	settings: EmailEventSettings[];
 };
 
+/**
+ * EmailEventSettingsUpdateRequest
+ */
 export type EmailEventSettingsUpdateRequest = {
 	/**
 	 * @type array
@@ -2559,6 +2841,9 @@ export type EmailEventSettingsUpdateRequest = {
 	settings: EmailEventSettings[];
 };
 
+/**
+ * ErrorResponse
+ */
 export type ErrorResponse = {
 	/**
 	 * @type object
@@ -2574,6 +2859,9 @@ export const GUARDRAILDEFINITIONLOCATIONEnum = {
 export type GUARDRAILDEFINITIONLOCATIONEnumKey =
 	(typeof GUARDRAILDEFINITIONLOCATIONEnum)[keyof typeof GUARDRAILDEFINITIONLOCATIONEnum];
 
+/**
+ * GUARDRAIL_DEFINITION_LOCATION
+ */
 export type GUARDRAILDEFINITIONLOCATION = GUARDRAILDEFINITIONLOCATIONEnumKey;
 
 export const liteLLMKeyTypeEnum = {
@@ -2586,6 +2874,7 @@ export const liteLLMKeyTypeEnum = {
 export type LiteLLMKeyTypeEnumKey = (typeof liteLLMKeyTypeEnum)[keyof typeof liteLLMKeyTypeEnum];
 
 /**
+ * LiteLLMKeyType
  * @description Enum for key types that determine what routes a key can access
  */
 export type LiteLLMKeyType = LiteLLMKeyTypeEnumKey;
@@ -2608,6 +2897,9 @@ export const generateKeyRequestTpmLimitTypeEnum = {
 export type GenerateKeyRequestTpmLimitTypeEnumKey =
 	(typeof generateKeyRequestTpmLimitTypeEnum)[keyof typeof generateKeyRequestTpmLimitTypeEnum];
 
+/**
+ * GenerateKeyRequest
+ */
 export type GenerateKeyRequest = {
 	key_alias?: (string | null) | undefined;
 	duration?: (string | null) | undefined;
@@ -2696,6 +2988,9 @@ export const generateKeyResponseTpmLimitTypeEnum = {
 export type GenerateKeyResponseTpmLimitTypeEnumKey =
 	(typeof generateKeyResponseTpmLimitTypeEnum)[keyof typeof generateKeyResponseTpmLimitTypeEnum];
 
+/**
+ * GenerateKeyResponse
+ */
 export type GenerateKeyResponse = {
 	key_alias?: (string | null) | undefined;
 	duration?: (string | null) | undefined;
@@ -2763,6 +3058,7 @@ export type GenerateKeyResponse = {
 };
 
 /**
+ * GetTeamMemberPermissionsResponse
  * @description Response to get the team member permissions for a team
  */
 export type GetTeamMemberPermissionsResponse = {
@@ -2777,6 +3073,9 @@ export type GetTeamMemberPermissionsResponse = {
 	all_available_permissions: string[];
 };
 
+/**
+ * GuardrailInfoResponse
+ */
 export type GuardrailInfoResponseInput = {
 	guardrail_id?: (string | null) | undefined;
 	/**
@@ -2793,6 +3092,9 @@ export type GuardrailInfoResponseInput = {
 	guardrail_definition_location?: GUARDRAILDEFINITIONLOCATION | undefined;
 };
 
+/**
+ * GuardrailInfoResponse
+ */
 export type GuardrailInfoResponseOutput = {
 	guardrail_id?: (string | null) | undefined;
 	/**
@@ -2809,6 +3111,9 @@ export type GuardrailInfoResponseOutput = {
 	guardrail_definition_location?: GUARDRAILDEFINITIONLOCATION | undefined;
 };
 
+/**
+ * ValidationError
+ */
 export type ValidationError = {
 	/**
 	 * @type array
@@ -2824,6 +3129,9 @@ export type ValidationError = {
 	type: string;
 };
 
+/**
+ * HTTPValidationError
+ */
 export type HTTPValidationError = {
 	/**
 	 * @type array | undefined
@@ -2831,12 +3139,18 @@ export type HTTPValidationError = {
 	detail?: ValidationError[] | undefined;
 };
 
+/**
+ * Hyperparameters
+ */
 export type Hyperparameters = {
 	batch_size?: (string | number | null) | undefined;
 	learning_rate_multiplier?: (string | number | null) | undefined;
 	n_epochs?: (string | number | null) | undefined;
 };
 
+/**
+ * IPAddress
+ */
 export type IPAddress = {
 	/**
 	 * @type string
@@ -2844,6 +3158,9 @@ export type IPAddress = {
 	ip: string;
 };
 
+/**
+ * IndexCreateLiteLLMParams
+ */
 export type IndexCreateLiteLLMParams = {
 	/**
 	 * @type string
@@ -2855,6 +3172,9 @@ export type IndexCreateLiteLLMParams = {
 	vector_store_name: string;
 };
 
+/**
+ * IndexCreateRequest
+ */
 export type IndexCreateRequest = {
 	/**
 	 * @type string
@@ -2868,6 +3188,7 @@ export type IndexCreateRequest = {
 };
 
 /**
+ * InternalUserSettingsResponse
  * @description Response model for internal user settings
  */
 export type InternalUserSettingsResponse = {
@@ -2889,6 +3210,9 @@ export const loggingCallbackStatusStatusEnum = {
 export type LoggingCallbackStatusStatusEnumKey =
 	(typeof loggingCallbackStatusStatusEnum)[keyof typeof loggingCallbackStatusStatusEnum];
 
+/**
+ * LoggingCallbackStatus
+ */
 export type LoggingCallbackStatus = {
 	/**
 	 * @type array | undefined
@@ -2909,6 +3233,9 @@ export const keyHealthResponseKeyEnum = {
 export type KeyHealthResponseKeyEnumKey =
 	(typeof keyHealthResponseKeyEnum)[keyof typeof keyHealthResponseKeyEnum];
 
+/**
+ * KeyHealthResponse
+ */
 export type KeyHealthResponse = {
 	/**
 	 * @type string | undefined
@@ -2918,6 +3245,7 @@ export type KeyHealthResponse = {
 };
 
 /**
+ * LiteLLM_ObjectPermissionTable
  * @description Represents a LiteLLM_ObjectPermissionTable record
  */
 export type LiteLLMObjectPermissionTable = {
@@ -2949,6 +3277,7 @@ export type LitellmUserRolesEnumKey =
 	(typeof litellmUserRolesEnum)[keyof typeof litellmUserRolesEnum];
 
 /**
+ * LitellmUserRoles
  * @description Admin Roles:\nPROXY_ADMIN: admin over the platform\nPROXY_ADMIN_VIEW_ONLY: can login, view all own keys, view all spend\nORG_ADMIN: admin over a specific organization, can create teams, users only within their organization\n\nInternal User Roles:\nINTERNAL_USER: can login, view/create/delete their own keys, view their spend\nINTERNAL_USER_VIEW_ONLY: can login, view their own keys, view their own spend\n\n\nTeam Roles:\nTEAM: used for JWT auth\n\n\nCustomer Roles:\nCUSTOMER: External users -> these are customers
  */
 export type LitellmUserRoles = LitellmUserRolesEnumKey;
@@ -2962,6 +3291,7 @@ export type UserAPIKeyAuthAllowedModelRegionEnumKey =
 	(typeof userAPIKeyAuthAllowedModelRegionEnum)[keyof typeof userAPIKeyAuthAllowedModelRegionEnum];
 
 /**
+ * UserAPIKeyAuth
  * @description Return the row in the db
  */
 export type UserAPIKeyAuth = {
@@ -3093,6 +3423,9 @@ export type UserAPIKeyAuth = {
 	request_route?: (string | null) | undefined;
 };
 
+/**
+ * KeyListResponseObject
+ */
 export type KeyListResponseObject = {
 	/**
 	 * @type array | undefined
@@ -3103,11 +3436,17 @@ export type KeyListResponseObject = {
 	total_pages?: (number | null) | undefined;
 };
 
+/**
+ * KeyRequest
+ */
 export type KeyRequest = {
 	keys?: (string[] | null) | undefined;
 	key_aliases?: (string[] | null) | undefined;
 };
 
+/**
+ * ListGuardrailsResponse
+ */
 export type ListGuardrailsResponse = {
 	/**
 	 * @type array
@@ -3115,6 +3454,9 @@ export type ListGuardrailsResponse = {
 	guardrails: GuardrailInfoResponseOutput[];
 };
 
+/**
+ * PromptLiteLLMParams
+ */
 export type PromptLiteLLMParams = {
 	/**
 	 * @type string
@@ -3135,6 +3477,9 @@ export const promptInfoPromptTypeEnum = {
 export type PromptInfoPromptTypeEnumKey =
 	(typeof promptInfoPromptTypeEnum)[keyof typeof promptInfoPromptTypeEnum];
 
+/**
+ * PromptInfo
+ */
 export type PromptInfo = {
 	/**
 	 * @type string
@@ -3143,6 +3488,9 @@ export type PromptInfo = {
 	[key: string]: unknown;
 };
 
+/**
+ * PromptSpec
+ */
 export type PromptSpec = {
 	/**
 	 * @type string
@@ -3160,6 +3508,9 @@ export type PromptSpec = {
 	updated_at?: (string | null) | undefined;
 };
 
+/**
+ * ListPromptsResponse
+ */
 export type ListPromptsResponse = {
 	/**
 	 * @type array
@@ -3168,6 +3519,7 @@ export type ListPromptsResponse = {
 };
 
 /**
+ * SearchToolInfoResponse
  * @description Response model for search tool information.
  */
 export type SearchToolInfoResponse = {
@@ -3186,6 +3538,7 @@ export type SearchToolInfoResponse = {
 };
 
 /**
+ * ListSearchToolsResponse
  * @description Response model for listing search tools.
  */
 export type ListSearchToolsResponse = {
@@ -3204,6 +3557,9 @@ export const liteLLMFineTuningJobCreateCustomLlmProviderEnum = {
 export type LiteLLMFineTuningJobCreateCustomLlmProviderEnumKey =
 	(typeof liteLLMFineTuningJobCreateCustomLlmProviderEnum)[keyof typeof liteLLMFineTuningJobCreateCustomLlmProviderEnum];
 
+/**
+ * LiteLLMFineTuningJobCreate
+ */
 export type LiteLLMFineTuningJobCreate = {
 	/**
 	 * @type string
@@ -3223,6 +3579,7 @@ export type LiteLLMFineTuningJobCreate = {
 };
 
 /**
+ * LiteLLM_BudgetTable
  * @description Represents user-controllable params for a LiteLLM_BudgetTable record
  */
 export type LiteLLMBudgetTable = {
@@ -3244,6 +3601,9 @@ export const liteLLMEndUserTableAllowedModelRegionEnum = {
 export type LiteLLMEndUserTableAllowedModelRegionEnumKey =
 	(typeof liteLLMEndUserTableAllowedModelRegionEnum)[keyof typeof liteLLMEndUserTableAllowedModelRegionEnum];
 
+/**
+ * LiteLLM_EndUserTable
+ */
 export type LiteLLMEndUserTable = {
 	/**
 	 * @type string
@@ -3264,6 +3624,9 @@ export type LiteLLMEndUserTable = {
 	litellm_budget_table?: (LiteLLMBudgetTable | null) | undefined;
 };
 
+/**
+ * MCPCredentials
+ */
 export type MCPCredentials = {
 	auth_value?: (string | null) | undefined;
 	client_id?: (string | null) | undefined;
@@ -3302,6 +3665,7 @@ export type LiteLLMMCPServerTableStatusEnumKey =
 	(typeof liteLLMMCPServerTableStatusEnum)[keyof typeof liteLLMMCPServerTableStatusEnum];
 
 /**
+ * LiteLLM_MCPServerTable
  * @description Represents a LiteLLM_MCPServerTable record
  */
 export type LiteLLMMCPServerTable = {
@@ -3372,6 +3736,7 @@ export type LiteLLMMCPServerTable = {
 };
 
 /**
+ * LiteLLM_ManagedVectorStore
  * @description LiteLLM managed vector store object - this is is the object stored in the database
  */
 export type LiteLLMManagedVectorStore = {
@@ -3393,6 +3758,7 @@ export type LiteLLMManagedVectorStore = {
 };
 
 /**
+ * LiteLLM_ManagedVectorStoreListResponse
  * @description Response format for listing vector stores
  */
 export type LiteLLMManagedVectorStoreListResponse = {
@@ -3409,6 +3775,9 @@ export type LiteLLMManagedVectorStoreListResponse = {
 	total_pages?: (number | null) | undefined;
 };
 
+/**
+ * LiteLLM_TeamTable
+ */
 export type LiteLLMTeamTableInput = {
 	team_alias?: (string | null) | undefined;
 	/**
@@ -3454,6 +3823,9 @@ export type LiteLLMTeamTableInput = {
 	object_permission_id?: (string | null) | undefined;
 };
 
+/**
+ * LiteLLM_ModelTable
+ */
 export type LiteLLMModelTableInput = {
 	id?: (number | null) | undefined;
 	model_aliases?: (string | object | null) | undefined;
@@ -3468,6 +3840,9 @@ export type LiteLLMModelTableInput = {
 	team?: (LiteLLMTeamTableInput | null) | undefined;
 };
 
+/**
+ * LiteLLM_TeamTable
+ */
 export type LiteLLMTeamTableOutput = {
 	team_alias?: (string | null) | undefined;
 	/**
@@ -3513,6 +3888,9 @@ export type LiteLLMTeamTableOutput = {
 	object_permission_id?: (string | null) | undefined;
 };
 
+/**
+ * LiteLLM_ModelTable
+ */
 export type LiteLLMModelTableOutput = {
 	id?: (number | null) | undefined;
 	model_aliases?: (string | object | null) | undefined;
@@ -3528,6 +3906,7 @@ export type LiteLLMModelTableOutput = {
 };
 
 /**
+ * LiteLLM_OrganizationMembershipTable
  * @description This is the table that track what organizations a user belongs to and users spend within the organization
  */
 export type LiteLLMOrganizationMembershipTable = {
@@ -3558,6 +3937,9 @@ export type LiteLLMOrganizationMembershipTable = {
 	litellm_budget_table?: (LiteLLMBudgetTable | null) | undefined;
 };
 
+/**
+ * LiteLLM_UserTable
+ */
 export type LiteLLMUserTableOutput = {
 	/**
 	 * @type string
@@ -3601,6 +3983,7 @@ export type LiteLLMUserTableOutput = {
 };
 
 /**
+ * LiteLLM_OrganizationTableWithMembers
  * @description Returned by the /organization/info endpoint and /organization/list endpoint
  */
 export type LiteLLMOrganizationTableWithMembers = {
@@ -3650,6 +4033,9 @@ export type LiteLLMOrganizationTableWithMembers = {
 	updated_at: string;
 };
 
+/**
+ * LiteLLM_SpendLogs
+ */
 export type LiteLLMSpendLogsInput = {
 	/**
 	 * @type string
@@ -3708,6 +4094,9 @@ export type LiteLLMSpendLogsInput = {
 	response: string | unknown[] | object | null;
 };
 
+/**
+ * LiteLLM_SpendLogs
+ */
 export type LiteLLMSpendLogsOutput = {
 	/**
 	 * @type string
@@ -3766,6 +4155,9 @@ export type LiteLLMSpendLogsOutput = {
 	response: string | unknown[] | object | null;
 };
 
+/**
+ * LiteLLM_TeamMembership
+ */
 export type LiteLLMTeamMembership = {
 	/**
 	 * @type string
@@ -3783,6 +4175,9 @@ export type LiteLLMTeamMembership = {
 	litellm_budget_table: LiteLLMBudgetTable | null;
 };
 
+/**
+ * LiteLLM_UserTable
+ */
 export type LiteLLMUserTableInput = {
 	/**
 	 * @type string
@@ -3825,6 +4220,9 @@ export type LiteLLMUserTableInput = {
 	object_permission?: (LiteLLMObjectPermissionTable | null) | undefined;
 };
 
+/**
+ * LiteLLM_UserTableWithKeyCount
+ */
 export type LiteLLMUserTableWithKeyCountInput = {
 	/**
 	 * @type string
@@ -3872,6 +4270,9 @@ export type LiteLLMUserTableWithKeyCountInput = {
 	key_count?: number | undefined;
 };
 
+/**
+ * LiteLLM_UserTableWithKeyCount
+ */
 export type LiteLLMUserTableWithKeyCountOutput = {
 	/**
 	 * @type string
@@ -3919,6 +4320,9 @@ export type LiteLLMUserTableWithKeyCountOutput = {
 	key_count?: number | undefined;
 };
 
+/**
+ * LiteLLM_VerificationToken
+ */
 export type LiteLLMVerificationToken = {
 	token?: (string | null) | undefined;
 	key_name?: (string | null) | undefined;
@@ -4013,6 +4417,9 @@ export const modelGroupInfoProxyModeEnum = {
 export type ModelGroupInfoProxyModeEnumKey =
 	(typeof modelGroupInfoProxyModeEnum)[keyof typeof modelGroupInfoProxyModeEnum];
 
+/**
+ * ModelGroupInfoProxy
+ */
 export type ModelGroupInfoProxy = {
 	/**
 	 * @type string
@@ -4074,6 +4481,9 @@ export type ModelGroupInfoProxy = {
 	is_public_model_group?: boolean | undefined;
 };
 
+/**
+ * ModelInfoDelete
+ */
 export type ModelInfoDelete = {
 	/**
 	 * @type string
@@ -4090,6 +4500,7 @@ export type NewCustomerRequestAllowedModelRegionEnumKey =
 	(typeof newCustomerRequestAllowedModelRegionEnum)[keyof typeof newCustomerRequestAllowedModelRegionEnum];
 
 /**
+ * NewCustomerRequest
  * @description Create a new customer, allocate a budget to them
  */
 export type NewCustomerRequest = {
@@ -4166,6 +4577,9 @@ export const newMCPServerRequestAuthTypeEnum = {
 export type NewMCPServerRequestAuthTypeEnumKey =
 	(typeof newMCPServerRequestAuthTypeEnum)[keyof typeof newMCPServerRequestAuthTypeEnum];
 
+/**
+ * NewMCPServerRequest
+ */
 export type NewMCPServerRequest = {
 	server_id?: (string | null) | undefined;
 	server_name?: (string | null) | undefined;
@@ -4206,6 +4620,9 @@ export type NewMCPServerRequest = {
 		| undefined;
 };
 
+/**
+ * NewOrganizationRequest
+ */
 export type NewOrganizationRequest = {
 	budget_id?: (string | null) | undefined;
 	soft_budget?: (number | null) | undefined;
@@ -4238,6 +4655,9 @@ export type NewOrganizationRequest = {
 	object_permission?: (LiteLLMObjectPermissionBase | null) | undefined;
 };
 
+/**
+ * NewOrganizationResponse
+ */
 export type NewOrganizationResponse = {
 	/**
 	 * @type string
@@ -4296,6 +4716,9 @@ export const newTeamRequestTpmLimitTypeEnum = {
 export type NewTeamRequestTpmLimitTypeEnumKey =
 	(typeof newTeamRequestTpmLimitTypeEnum)[keyof typeof newTeamRequestTpmLimitTypeEnum];
 
+/**
+ * NewTeamRequest
+ */
 export type NewTeamRequest = {
 	team_alias?: (string | null) | undefined;
 	team_id?: (string | null) | undefined;
@@ -4362,6 +4785,9 @@ export const newUserRequestUserRoleEnum = {
 export type NewUserRequestUserRoleEnumKey =
 	(typeof newUserRequestUserRoleEnum)[keyof typeof newUserRequestUserRoleEnum];
 
+/**
+ * NewUserRequest
+ */
 export type NewUserRequest = {
 	key_alias?: (string | null) | undefined;
 	duration?: (string | null) | undefined;
@@ -4446,6 +4872,9 @@ export const newUserResponseUserRoleEnum = {
 export type NewUserResponseUserRoleEnumKey =
 	(typeof newUserResponseUserRoleEnum)[keyof typeof newUserResponseUserRoleEnum];
 
+/**
+ * NewUserResponse
+ */
 export type NewUserResponse = {
 	key_alias?: (string | null) | undefined;
 	duration?: (string | null) | undefined;
@@ -4521,6 +4950,9 @@ export const orgMemberRoleEnum = {
 
 export type OrgMemberRoleEnumKey = (typeof orgMemberRoleEnum)[keyof typeof orgMemberRoleEnum];
 
+/**
+ * OrgMember
+ */
 export type OrgMember = {
 	/**
 	 * @description The unique ID of the user to add. Either user_id or user_email must be provided
@@ -4536,6 +4968,9 @@ export type OrgMember = {
 	role: OrgMemberRoleEnumKey;
 };
 
+/**
+ * OrganizationAddMemberResponse
+ */
 export type OrganizationAddMemberResponse = {
 	/**
 	 * @type string
@@ -4551,6 +4986,9 @@ export type OrganizationAddMemberResponse = {
 	updated_organization_memberships: LiteLLMOrganizationMembershipTable[];
 };
 
+/**
+ * OrganizationMemberAddRequest
+ */
 export type OrganizationMemberAddRequest = {
 	member: OrgMember[] | OrgMember;
 	/**
@@ -4560,6 +4998,9 @@ export type OrganizationMemberAddRequest = {
 	max_budget_in_organization?: (number | null) | undefined;
 };
 
+/**
+ * OrganizationMemberDeleteRequest
+ */
 export type OrganizationMemberDeleteRequest = {
 	user_id?: (string | null) | undefined;
 	user_email?: (string | null) | undefined;
@@ -4569,6 +5010,9 @@ export type OrganizationMemberDeleteRequest = {
 	organization_id: string;
 };
 
+/**
+ * OrganizationMemberUpdateRequest
+ */
 export type OrganizationMemberUpdateRequest = {
 	user_id?: (string | null) | undefined;
 	user_email?: (string | null) | undefined;
@@ -4580,6 +5024,9 @@ export type OrganizationMemberUpdateRequest = {
 	role?: (LitellmUserRoles | null) | undefined;
 };
 
+/**
+ * OrganizationRequest
+ */
 export type OrganizationRequest = {
 	/**
 	 * @type array
@@ -4588,6 +5035,7 @@ export type OrganizationRequest = {
 };
 
 /**
+ * PaginatedAuditLogResponse
  * @description Response model for paginated audit logs
  */
 export type PaginatedAuditLogResponse = {
@@ -4617,6 +5065,9 @@ export type PaginatedAuditLogResponse = {
 	total_pages: number;
 };
 
+/**
+ * PassThroughGenericEndpoint
+ */
 export type PassThroughGenericEndpoint = {
 	/**
 	 * @description Optional unique identifier for the pass-through endpoint. If not provided, endpoints will be identified by path for backwards compatibility.
@@ -4658,6 +5109,9 @@ export type PassThroughGenericEndpoint = {
 	auth?: boolean | undefined;
 };
 
+/**
+ * PassThroughEndpointResponse
+ */
 export type PassThroughEndpointResponse = {
 	/**
 	 * @type array
@@ -4665,18 +5119,25 @@ export type PassThroughEndpointResponse = {
 	endpoints: PassThroughGenericEndpoint[];
 };
 
+/**
+ * PatchGuardrailRequest
+ */
 export type PatchGuardrailRequest = {
 	guardrail_name?: (string | null) | undefined;
 	litellm_params?: (BaseLitellmParams | null) | undefined;
 	guardrail_info?: (object | null) | undefined;
 };
 
+/**
+ * PatchPromptRequest
+ */
 export type PatchPromptRequest = {
 	litellm_params?: (PromptLiteLLMParams | null) | undefined;
 	prompt_info?: (PromptInfo | null) | undefined;
 };
 
 /**
+ * PerUserMetrics
  * @description Metrics for individual user
  */
 export type PerUserMetrics = {
@@ -4714,6 +5175,7 @@ export type PerUserMetrics = {
 };
 
 /**
+ * PerUserAnalyticsResponse
  * @description Response for per-user analytics
  */
 export type PerUserAnalyticsResponse = {
@@ -4739,6 +5201,9 @@ export type PerUserAnalyticsResponse = {
 	total_pages: number;
 };
 
+/**
+ * Prompt
+ */
 export type Prompt = {
 	/**
 	 * @type string
@@ -4751,6 +5216,9 @@ export type Prompt = {
 	prompt_info?: (PromptInfo | null) | undefined;
 };
 
+/**
+ * PromptTemplateBase
+ */
 export type PromptTemplateBase = {
 	/**
 	 * @type string
@@ -4763,6 +5231,9 @@ export type PromptTemplateBase = {
 	metadata?: (object | null) | undefined;
 };
 
+/**
+ * PromptInfoResponse
+ */
 export type PromptInfoResponse = {
 	/**
 	 * @type object
@@ -4781,6 +5252,9 @@ export const promptTokensDetailsModalityEnum = {
 export type PromptTokensDetailsModalityEnumKey =
 	(typeof promptTokensDetailsModalityEnum)[keyof typeof promptTokensDetailsModalityEnum];
 
+/**
+ * PromptTokensDetails
+ */
 export type PromptTokensDetails = {
 	/**
 	 * @type string
@@ -4793,6 +5267,7 @@ export type PromptTokensDetails = {
 };
 
 /**
+ * ProviderBudgetResponseObject
  * @description Configuration for a single provider\'s budget settings
  */
 export type ProviderBudgetResponseObject = {
@@ -4806,6 +5281,7 @@ export type ProviderBudgetResponseObject = {
 };
 
 /**
+ * ProviderBudgetResponse
  * @description Complete provider budget configuration and status.\nMaps provider names to their budget configs.
  */
 export type ProviderBudgetResponse = {
@@ -4820,6 +5296,9 @@ export type ProviderBudgetResponse = {
 		| undefined;
 };
 
+/**
+ * PublicModelHubInfo
+ */
 export type PublicModelHubInfo = {
 	/**
 	 * @type string
@@ -4835,6 +5314,9 @@ export type PublicModelHubInfo = {
 	} | null;
 };
 
+/**
+ * RawRequestTypedDict
+ */
 export type RawRequestTypedDict = {
 	raw_request_api_base?: (string | null) | undefined;
 	raw_request_body?: (object | null) | undefined;
@@ -4860,6 +5342,9 @@ export const regenerateKeyRequestTpmLimitTypeEnum = {
 export type RegenerateKeyRequestTpmLimitTypeEnumKey =
 	(typeof regenerateKeyRequestTpmLimitTypeEnum)[keyof typeof regenerateKeyRequestTpmLimitTypeEnum];
 
+/**
+ * RegenerateKeyRequest
+ */
 export type RegenerateKeyRequest = {
 	key_alias?: (string | null) | undefined;
 	duration?: (string | null) | undefined;
@@ -4926,6 +5411,9 @@ export type RegenerateKeyRequest = {
 	new_master_key?: (string | null) | undefined;
 };
 
+/**
+ * RouterSettingsField
+ */
 export type RouterSettingsField = {
 	/**
 	 * @type string
@@ -4949,6 +5437,9 @@ export type RouterSettingsField = {
 	link?: (string | null) | undefined;
 };
 
+/**
+ * RouterSettingsResponse
+ */
 export type RouterSettingsResponse = {
 	/**
 	 * @description List of all configurable router settings with metadata
@@ -4969,6 +5460,9 @@ export type RouterSettingsResponse = {
 	};
 };
 
+/**
+ * SCIMFeature
+ */
 export type SCIMFeature = {
 	/**
 	 * @type boolean
@@ -4979,6 +5473,9 @@ export type SCIMFeature = {
 	maxResults?: (number | null) | undefined;
 };
 
+/**
+ * SCIMMember
+ */
 export type SCIMMember = {
 	/**
 	 * @type string
@@ -4987,6 +5484,9 @@ export type SCIMMember = {
 	display?: (string | null) | undefined;
 };
 
+/**
+ * SCIMGroup
+ */
 export type SCIMGroup = {
 	/**
 	 * @type array
@@ -5002,6 +5502,9 @@ export type SCIMGroup = {
 	members?: (SCIMMember[] | null) | undefined;
 };
 
+/**
+ * SCIMUserName
+ */
 export type SCIMUserName = {
 	familyName?: (string | null) | undefined;
 	givenName?: (string | null) | undefined;
@@ -5011,6 +5514,9 @@ export type SCIMUserName = {
 	honorificSuffix?: (string | null) | undefined;
 };
 
+/**
+ * SCIMUserEmail
+ */
 export type SCIMUserEmail = {
 	/**
 	 * @type string, email
@@ -5020,6 +5526,9 @@ export type SCIMUserEmail = {
 	primary?: (boolean | null) | undefined;
 };
 
+/**
+ * SCIMUserGroup
+ */
 export type SCIMUserGroup = {
 	/**
 	 * @type string
@@ -5032,6 +5541,9 @@ export type SCIMUserGroup = {
 	type?: (string | null) | undefined;
 };
 
+/**
+ * SCIMUser
+ */
 export type SCIMUser = {
 	/**
 	 * @type array
@@ -5052,6 +5564,9 @@ export type SCIMUser = {
 	groups?: (SCIMUserGroup[] | null) | undefined;
 };
 
+/**
+ * SCIMListResponse
+ */
 export type SCIMListResponse = {
 	/**
 	 * @type array | undefined
@@ -5072,6 +5587,9 @@ export type SCIMListResponse = {
 	Resources: SCIMUser[] | SCIMGroup[];
 };
 
+/**
+ * SCIMPatchOperation
+ */
 export type SCIMPatchOperation = {
 	/**
 	 * @type string
@@ -5081,6 +5599,9 @@ export type SCIMPatchOperation = {
 	value?: (unknown | null) | undefined;
 };
 
+/**
+ * SCIMPatchOp
+ */
 export type SCIMPatchOp = {
 	/**
 	 * @type array | undefined
@@ -5092,6 +5613,9 @@ export type SCIMPatchOp = {
 	Operations: SCIMPatchOperation[];
 };
 
+/**
+ * SCIMServiceProviderConfig
+ */
 export type SCIMServiceProviderConfig = {
 	/**
 	 * @type array | undefined
@@ -5126,6 +5650,7 @@ export type SCIMServiceProviderConfig = {
 };
 
 /**
+ * SSOConfig
  * @description Configuration for SSO environment variables and settings
  */
 export type SSOConfig = {
@@ -5184,6 +5709,7 @@ export type SSOConfig = {
 };
 
 /**
+ * SSOSettingsResponse
  * @description Response model for SSO settings
  */
 export type SSOSettingsResponse = {
@@ -5197,6 +5723,9 @@ export type SSOSettingsResponse = {
 	field_schema: object;
 };
 
+/**
+ * SpendAnalyticsPaginatedResponse
+ */
 export type SpendAnalyticsPaginatedResponse = {
 	/**
 	 * @type array
@@ -5208,12 +5737,18 @@ export type SpendAnalyticsPaginatedResponse = {
 	metadata?: DailySpendMetadata | undefined;
 };
 
+/**
+ * SpendCalculateRequest
+ */
 export type SpendCalculateRequest = {
 	model?: (string | null) | undefined;
 	messages?: (unknown[] | null) | undefined;
 	completion_response?: (object | null) | undefined;
 };
 
+/**
+ * TagDeleteRequest
+ */
 export type TagDeleteRequest = {
 	/**
 	 * @type string
@@ -5221,6 +5756,9 @@ export type TagDeleteRequest = {
 	name: string;
 };
 
+/**
+ * TagInfoRequest
+ */
 export type TagInfoRequest = {
 	/**
 	 * @type array
@@ -5228,6 +5766,9 @@ export type TagInfoRequest = {
 	names: string[];
 };
 
+/**
+ * TagNewRequest
+ */
 export type TagNewRequest = {
 	/**
 	 * @type string
@@ -5251,6 +5792,7 @@ export type TagNewRequest = {
 };
 
 /**
+ * TagSummaryMetrics
  * @description Summary metrics for a tag
  */
 export type TagSummaryMetrics = {
@@ -5285,6 +5827,7 @@ export type TagSummaryMetrics = {
 };
 
 /**
+ * TagSummaryResponse
  * @description Response for tag summary analytics
  */
 export type TagSummaryResponse = {
@@ -5294,6 +5837,9 @@ export type TagSummaryResponse = {
 	results: TagSummaryMetrics[];
 };
 
+/**
+ * TagUpdateRequest
+ */
 export type TagUpdateRequest = {
 	/**
 	 * @type string
@@ -5316,6 +5862,9 @@ export type TagUpdateRequest = {
 	budget_duration?: (string | null) | undefined;
 };
 
+/**
+ * TeamAddMemberResponse
+ */
 export type TeamAddMemberResponse = {
 	team_alias?: (string | null) | undefined;
 	/**
@@ -5370,6 +5919,7 @@ export type TeamAddMemberResponse = {
 };
 
 /**
+ * TeamListResponse
  * @description Response to get the list of teams
  */
 export type TeamListResponse = {
@@ -5396,6 +5946,7 @@ export type TeamListResponse = {
 };
 
 /**
+ * TeamMemberAddRequest
  * @description Request body for adding members to a team.\n\nExample:\n```json\n{\n    \"team_id\": \"45e3e396-ee08-4a61-a88e-16b3ce7e0849\",\n    \"member\": {\n        \"role\": \"user\",\n        \"user_id\": \"user123\"\n    },\n    \"max_budget_in_team\": 100.0\n}\n```
  */
 export type TeamMemberAddRequest = {
@@ -5414,6 +5965,9 @@ export type TeamMemberAddRequest = {
 	max_budget_in_team?: (number | null) | undefined;
 };
 
+/**
+ * TeamMemberDeleteRequest
+ */
 export type TeamMemberDeleteRequest = {
 	user_id?: (string | null) | undefined;
 	user_email?: (string | null) | undefined;
@@ -5431,6 +5985,9 @@ export const teamMemberUpdateRequestRoleEnum = {
 export type TeamMemberUpdateRequestRoleEnumKey =
 	(typeof teamMemberUpdateRequestRoleEnum)[keyof typeof teamMemberUpdateRequestRoleEnum];
 
+/**
+ * TeamMemberUpdateRequest
+ */
 export type TeamMemberUpdateRequest = {
 	user_id?: (string | null) | undefined;
 	user_email?: (string | null) | undefined;
@@ -5450,6 +6007,9 @@ export type TeamMemberUpdateRequest = {
 	rpm_limit?: (number | null) | undefined;
 };
 
+/**
+ * TeamMemberUpdateResponse
+ */
 export type TeamMemberUpdateResponse = {
 	/**
 	 * @type string
@@ -5466,6 +6026,7 @@ export type TeamMemberUpdateResponse = {
 };
 
 /**
+ * TeamModelAddRequest
  * @description Request to add models to a team
  */
 export type TeamModelAddRequest = {
@@ -5480,6 +6041,7 @@ export type TeamModelAddRequest = {
 };
 
 /**
+ * TeamModelDeleteRequest
  * @description Request to delete models from a team
  */
 export type TeamModelDeleteRequest = {
@@ -5493,6 +6055,9 @@ export type TeamModelDeleteRequest = {
 	models: string[];
 };
 
+/**
+ * TestSearchToolConnectionRequest
+ */
 export type TestSearchToolConnectionRequest = {
 	/**
 	 * @type object
@@ -5501,6 +6066,7 @@ export type TestSearchToolConnectionRequest = {
 };
 
 /**
+ * TokenCountDetailsResponse
  * @description Response structure for token count details with modality breakdown.\n\nExample:\n    {\'totalTokens\': 12, \'promptTokensDetails\': [{\'modality\': \'TEXT\', \'tokenCount\': 12}]}
  */
 export type TokenCountDetailsResponse = {
@@ -5514,6 +6080,9 @@ export type TokenCountDetailsResponse = {
 	promptTokensDetails: PromptTokensDetails[];
 };
 
+/**
+ * TokenCountRequest
+ */
 export type TokenCountRequest = {
 	/**
 	 * @type string
@@ -5524,6 +6093,9 @@ export type TokenCountRequest = {
 	contents?: (object[] | null) | undefined;
 };
 
+/**
+ * TokenCountResponse
+ */
 export type TokenCountResponse = {
 	/**
 	 * @type integer
@@ -5544,6 +6116,9 @@ export type TokenCountResponse = {
 	original_response?: (object | null) | undefined;
 };
 
+/**
+ * TransformRequestBody
+ */
 export type TransformRequestBody = {
 	/**
 	 * @type string
@@ -5556,6 +6131,7 @@ export type TransformRequestBody = {
 };
 
 /**
+ * UIThemeConfig
  * @description Configuration for UI theme customization
  */
 export type UIThemeConfig = {
@@ -5566,6 +6142,7 @@ export type UIThemeConfig = {
 };
 
 /**
+ * UIThemeSettingsResponse
  * @description Response model for UI theme settings
  */
 export type UIThemeSettingsResponse = {
@@ -5579,6 +6156,9 @@ export type UIThemeSettingsResponse = {
 	field_schema: object;
 };
 
+/**
+ * UiDiscoveryEndpoints
+ */
 export type UiDiscoveryEndpoints = {
 	/**
 	 * @type string
@@ -5596,6 +6176,7 @@ export type UpdateCustomerRequestAllowedModelRegionEnumKey =
 	(typeof updateCustomerRequestAllowedModelRegionEnum)[keyof typeof updateCustomerRequestAllowedModelRegionEnum];
 
 /**
+ * UpdateCustomerRequest
  * @description Update a Customer, use this to update customer budgets etc
  */
 export type UpdateCustomerRequest = {
@@ -5615,6 +6196,9 @@ export type UpdateCustomerRequest = {
 	default_model?: (string | null) | undefined;
 };
 
+/**
+ * UpdateGuardrailRequest
+ */
 export type UpdateGuardrailRequest = {
 	/**
 	 * @type object
@@ -5640,6 +6224,9 @@ export const updateKeyRequestTpmLimitTypeEnum = {
 export type UpdateKeyRequestTpmLimitTypeEnumKey =
 	(typeof updateKeyRequestTpmLimitTypeEnum)[keyof typeof updateKeyRequestTpmLimitTypeEnum];
 
+/**
+ * UpdateKeyRequest
+ */
 export type UpdateKeyRequest = {
 	key_alias?: (string | null) | undefined;
 	duration?: (string | null) | undefined;
@@ -5715,6 +6302,9 @@ export const updateMCPServerRequestAuthTypeEnum = {
 export type UpdateMCPServerRequestAuthTypeEnumKey =
 	(typeof updateMCPServerRequestAuthTypeEnum)[keyof typeof updateMCPServerRequestAuthTypeEnum];
 
+/**
+ * UpdateMCPServerRequest
+ */
 export type UpdateMCPServerRequest = {
 	/**
 	 * @type string
@@ -5757,6 +6347,7 @@ export type UpdateMCPServerRequest = {
 };
 
 /**
+ * UpdatePublicModelGroupsRequest
  * @description Request model for updating public model groups
  */
 export type UpdatePublicModelGroupsRequest = {
@@ -5767,6 +6358,9 @@ export type UpdatePublicModelGroupsRequest = {
 	model_groups: string[];
 };
 
+/**
+ * UpdateSearchToolRequest
+ */
 export type UpdateSearchToolRequest = {
 	/**
 	 * @description Search tool configuration.\n\nExample:\n    {\n        \"search_tool_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n        \"search_tool_name\": \"litellm-search\",\n        \"litellm_params\": {\n            \"search_provider\": \"perplexity\",\n            \"api_key\": \"sk-...\"\n        },\n        \"search_tool_info\": {\n            \"description\": \"Perplexity search tool\"\n        }\n    }
@@ -5776,6 +6370,7 @@ export type UpdateSearchToolRequest = {
 };
 
 /**
+ * UpdateTeamMemberPermissionsRequest
  * @description Request to update the team member permissions for a team
  */
 export type UpdateTeamMemberPermissionsRequest = {
@@ -5790,6 +6385,7 @@ export type UpdateTeamMemberPermissionsRequest = {
 };
 
 /**
+ * UpdateTeamRequest
  * @description UpdateTeamRequest, used by /team/update when you need to update a team\n\nteam_id: str\nteam_alias: Optional[str] = None\norganization_id: Optional[str] = None\nmetadata: Optional[dict] = None\ntpm_limit: Optional[int] = None\nrpm_limit: Optional[int] = None\nmax_budget: Optional[float] = None\nmodels: Optional[list] = None\nblocked: Optional[bool] = None\nbudget_duration: Optional[str] = None\nguardrails: Optional[List[str]] = None
  */
 export type UpdateTeamRequest = {
@@ -5828,6 +6424,9 @@ export type UpdateTeamRequest = {
 	allowed_vector_store_indexes?: (AllowedVectorStoreIndexItem[] | null) | undefined;
 };
 
+/**
+ * UpdateUsefulLinksRequest
+ */
 export type UpdateUsefulLinksRequest = {
 	/**
 	 * @type object
@@ -5838,6 +6437,7 @@ export type UpdateUsefulLinksRequest = {
 };
 
 /**
+ * UserListResponse
  * @description Response model for the user list endpoint
  */
 export type UserListResponse = {
@@ -5863,6 +6463,9 @@ export type UserListResponse = {
 	total_pages: number;
 };
 
+/**
+ * VectorStoreDeleteRequest
+ */
 export type VectorStoreDeleteRequest = {
 	/**
 	 * @type string
@@ -5870,6 +6473,9 @@ export type VectorStoreDeleteRequest = {
 	vector_store_id: string;
 };
 
+/**
+ * VectorStoreInfoRequest
+ */
 export type VectorStoreInfoRequest = {
 	/**
 	 * @type string
@@ -5877,6 +6483,9 @@ export type VectorStoreInfoRequest = {
 	vector_store_id: string;
 };
 
+/**
+ * VectorStoreUpdateRequest
+ */
 export type VectorStoreUpdateRequest = {
 	/**
 	 * @type string
@@ -5888,6 +6497,9 @@ export type VectorStoreUpdateRequest = {
 	vector_store_metadata?: (object | null) | undefined;
 };
 
+/**
+ * updateLiteLLMParams
+ */
 export type UpdateLiteLLMParams = {
 	input_cost_per_token?: (number | null) | undefined;
 	output_cost_per_token?: (number | null) | undefined;
@@ -5989,12 +6601,18 @@ export type UpdateLiteLLMParams = {
 	[key: string]: unknown;
 };
 
+/**
+ * updateDeployment
+ */
 export type UpdateDeployment = {
 	model_name?: (string | null) | undefined;
 	litellm_params?: (UpdateLiteLLMParams | null) | undefined;
 	model_info?: (ModelInfo | null) | undefined;
 };
 
+/**
+ * ChatCompletionTextObject
+ */
 export type ChatCompletionTextObject = {
 	/**
 	 * @type string
@@ -6010,6 +6628,9 @@ export type ChatCompletionTextObject = {
 	cache_control?: ChatCompletionCachedContent | undefined;
 };
 
+/**
+ * ChatCompletionImageUrlObject
+ */
 export type ChatCompletionImageUrlObject = {
 	/**
 	 * @type string
@@ -6025,6 +6646,9 @@ export type ChatCompletionImageUrlObject = {
 	format?: string | undefined;
 };
 
+/**
+ * ChatCompletionImageObject
+ */
 export type ChatCompletionImageObject = {
 	/**
 	 * @type string
@@ -6041,6 +6665,9 @@ export const inputAudioFormatEnum = {
 export type InputAudioFormatEnumKey =
 	(typeof inputAudioFormatEnum)[keyof typeof inputAudioFormatEnum];
 
+/**
+ * InputAudio
+ */
 export type InputAudio = {
 	/**
 	 * @type string
@@ -6052,6 +6679,9 @@ export type InputAudio = {
 	format: InputAudioFormatEnumKey;
 };
 
+/**
+ * ChatCompletionAudioObject
+ */
 export type ChatCompletionAudioObject = {
 	/**
 	 * @type object
@@ -6063,6 +6693,9 @@ export type ChatCompletionAudioObject = {
 	type: "input_audio";
 };
 
+/**
+ * DocumentObject
+ */
 export type DocumentObject = {
 	/**
 	 * @type string
@@ -6078,6 +6711,9 @@ export type DocumentObject = {
 	data: string;
 };
 
+/**
+ * CitationsObject
+ */
 export type CitationsObject = {
 	/**
 	 * @type boolean
@@ -6085,6 +6721,9 @@ export type CitationsObject = {
 	enabled: boolean;
 };
 
+/**
+ * ChatCompletionDocumentObject
+ */
 export type ChatCompletionDocumentObject = {
 	/**
 	 * @type string
@@ -6105,6 +6744,9 @@ export type ChatCompletionDocumentObject = {
 	citations: CitationsObject | null;
 };
 
+/**
+ * ChatCompletionVideoUrlObject
+ */
 export type ChatCompletionVideoUrlObject = {
 	/**
 	 * @type string
@@ -6116,6 +6758,9 @@ export type ChatCompletionVideoUrlObject = {
 	detail?: string | undefined;
 };
 
+/**
+ * ChatCompletionVideoObject
+ */
 export type ChatCompletionVideoObject = {
 	/**
 	 * @type string
@@ -6124,6 +6769,9 @@ export type ChatCompletionVideoObject = {
 	video_url: string | ChatCompletionVideoUrlObject;
 };
 
+/**
+ * ChatCompletionFileObjectFile
+ */
 export type ChatCompletionFileObjectFile = {
 	/**
 	 * @type string | undefined
@@ -6143,6 +6791,9 @@ export type ChatCompletionFileObjectFile = {
 	format?: string | undefined;
 };
 
+/**
+ * ChatCompletionFileObject
+ */
 export type ChatCompletionFileObject = {
 	/**
 	 * @type string
@@ -6154,6 +6805,9 @@ export type ChatCompletionFileObject = {
 	file: ChatCompletionFileObjectFile;
 };
 
+/**
+ * ChatCompletionUserMessage
+ */
 export type ChatCompletionUserMessage = {
 	/**
 	 * @type string
@@ -6175,6 +6829,9 @@ export type ChatCompletionUserMessage = {
 	cache_control?: ChatCompletionCachedContent | undefined;
 };
 
+/**
+ * ChatCompletionToolCallFunctionChunk
+ */
 export type ChatCompletionToolCallFunctionChunk = {
 	name?: (string | null) | undefined;
 	/**
@@ -6183,6 +6840,9 @@ export type ChatCompletionToolCallFunctionChunk = {
 	arguments?: string | undefined;
 };
 
+/**
+ * ChatCompletionAssistantToolCall
+ */
 export type ChatCompletionAssistantToolCall = {
 	id: string | null;
 	/**
@@ -6195,6 +6855,9 @@ export type ChatCompletionAssistantToolCall = {
 	function: ChatCompletionToolCallFunctionChunk;
 };
 
+/**
+ * ChatCompletionAssistantMessage
+ */
 export type ChatCompletionAssistantMessage = {
 	/**
 	 * @type string
@@ -6216,6 +6879,9 @@ export type ChatCompletionAssistantMessage = {
 		| undefined;
 };
 
+/**
+ * ChatCompletionToolMessage
+ */
 export type ChatCompletionToolMessage = {
 	/**
 	 * @type string
@@ -6228,6 +6894,9 @@ export type ChatCompletionToolMessage = {
 	tool_call_id: string;
 };
 
+/**
+ * ChatCompletionSystemMessage
+ */
 export type ChatCompletionSystemMessage = {
 	/**
 	 * @type string
@@ -6244,6 +6913,9 @@ export type ChatCompletionSystemMessage = {
 	cache_control?: ChatCompletionCachedContent | undefined;
 };
 
+/**
+ * ChatCompletionFunctionMessage
+ */
 export type ChatCompletionFunctionMessage = {
 	/**
 	 * @type string
@@ -6257,6 +6929,9 @@ export type ChatCompletionFunctionMessage = {
 	tool_call_id: string | null;
 };
 
+/**
+ * ChatCompletionDeveloperMessage
+ */
 export type ChatCompletionDeveloperMessage = {
 	/**
 	 * @type string
@@ -6274,6 +6949,7 @@ export type ChatCompletionDeveloperMessage = {
 };
 
 /**
+ * ProxyChatCompletionRequest
  * @description Pydantic model for chat completion requests that includes both OpenAI standard fields\nand LiteLLM-specific parameters. This replaces the previous TypedDict version.
  */
 export type ProxyChatCompletionRequest = {
@@ -6410,6 +7086,9 @@ export type ProxyChatCompletionRequest = {
 	fallbacks?: (string[] | null) | undefined;
 };
 
+/**
+ * EmbeddingRequest
+ */
 export type EmbeddingRequest = {
 	/**
 	 * @type string
@@ -6497,6 +7176,7 @@ export type ModelListModelsGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type ModelListModelsGet422 = HTTPValidationError;
@@ -6538,6 +7218,7 @@ export type ModelListV1ModelsGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type ModelListV1ModelsGet422 = HTTPValidationError;
@@ -6565,6 +7246,7 @@ export type ModelInfoModelsModelIdGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type ModelInfoModelsModelIdGet422 = HTTPValidationError;
@@ -6592,6 +7274,7 @@ export type ModelInfoV1ModelsModelIdGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type ModelInfoV1ModelsModelIdGet422 = HTTPValidationError;
@@ -6616,46 +7299,55 @@ export type ChatCompletionOpenaiDeploymentsModelChatCompletionsPost200 = {
 };
 
 /**
+ * ErrorResponse
  * @description ContentPolicyViolationError
  */
 export type ChatCompletionOpenaiDeploymentsModelChatCompletionsPost400 = ErrorResponse;
 
 /**
+ * ErrorResponse
  * @description AuthenticationError
  */
 export type ChatCompletionOpenaiDeploymentsModelChatCompletionsPost401 = ErrorResponse;
 
 /**
+ * ErrorResponse
  * @description PermissionDeniedError
  */
 export type ChatCompletionOpenaiDeploymentsModelChatCompletionsPost403 = ErrorResponse;
 
 /**
+ * ErrorResponse
  * @description NotFoundError
  */
 export type ChatCompletionOpenaiDeploymentsModelChatCompletionsPost404 = ErrorResponse;
 
 /**
+ * ErrorResponse
  * @description Timeout
  */
 export type ChatCompletionOpenaiDeploymentsModelChatCompletionsPost408 = ErrorResponse;
 
 /**
+ * ErrorResponse
  * @description UnprocessableEntityError
  */
 export type ChatCompletionOpenaiDeploymentsModelChatCompletionsPost422 = ErrorResponse;
 
 /**
+ * ErrorResponse
  * @description RateLimitError
  */
 export type ChatCompletionOpenaiDeploymentsModelChatCompletionsPost429 = ErrorResponse;
 
 /**
+ * ErrorResponse
  * @description JSONSchemaValidationError
  */
 export type ChatCompletionOpenaiDeploymentsModelChatCompletionsPost500 = ErrorResponse;
 
 /**
+ * ErrorResponse
  * @description APIConnectionError
  */
 export type ChatCompletionOpenaiDeploymentsModelChatCompletionsPost503 = ErrorResponse;
@@ -6825,6 +7517,7 @@ export type ChatCompletionEnginesModelChatCompletionsPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type ChatCompletionEnginesModelChatCompletionsPost422 = HTTPValidationError;
@@ -6981,6 +7674,7 @@ export type ChatCompletionChatCompletionsPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type ChatCompletionChatCompletionsPost422 = HTTPValidationError;
@@ -7136,6 +7830,7 @@ export type ChatCompletionV1ChatCompletionsPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type ChatCompletionV1ChatCompletionsPost422 = HTTPValidationError;
@@ -7295,6 +7990,7 @@ export type CompletionOpenaiDeploymentsModelCompletionsPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type CompletionOpenaiDeploymentsModelCompletionsPost422 = HTTPValidationError;
@@ -7320,6 +8016,7 @@ export type CompletionEnginesModelCompletionsPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type CompletionEnginesModelCompletionsPost422 = HTTPValidationError;
@@ -7345,6 +8042,7 @@ export type CompletionCompletionsPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type CompletionCompletionsPost422 = HTTPValidationError;
@@ -7369,6 +8067,7 @@ export type CompletionV1CompletionsPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type CompletionV1CompletionsPost422 = HTTPValidationError;
@@ -7393,6 +8092,7 @@ export type EmbeddingsOpenaiDeploymentsModelEmbeddingsPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type EmbeddingsOpenaiDeploymentsModelEmbeddingsPost422 = HTTPValidationError;
@@ -7476,6 +8176,7 @@ export type EmbeddingsEnginesModelEmbeddingsPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type EmbeddingsEnginesModelEmbeddingsPost422 = HTTPValidationError;
@@ -7555,6 +8256,7 @@ export type EmbeddingsEmbeddingsPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type EmbeddingsEmbeddingsPost422 = HTTPValidationError;
@@ -7632,6 +8334,7 @@ export type EmbeddingsV1EmbeddingsPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type EmbeddingsV1EmbeddingsPost422 = HTTPValidationError;
@@ -7765,6 +8468,7 @@ export type AudioTranscriptionsAudioTranscriptionsPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type AudioTranscriptionsAudioTranscriptionsPost422 = HTTPValidationError;
@@ -7785,6 +8489,7 @@ export type AudioTranscriptionsV1AudioTranscriptionsPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type AudioTranscriptionsV1AudioTranscriptionsPost422 = HTTPValidationError;
@@ -7868,6 +8573,7 @@ export type DeleteAssistantAssistantsAssistantIdDelete200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type DeleteAssistantAssistantsAssistantIdDelete422 = HTTPValidationError;
@@ -7896,6 +8602,7 @@ export type DeleteAssistantV1AssistantsAssistantIdDelete200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type DeleteAssistantV1AssistantsAssistantIdDelete422 = HTTPValidationError;
@@ -7952,6 +8659,7 @@ export type GetThreadThreadsThreadIdGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetThreadThreadsThreadIdGet422 = HTTPValidationError;
@@ -7979,6 +8687,7 @@ export type GetThreadV1ThreadsThreadIdGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetThreadV1ThreadsThreadIdGet422 = HTTPValidationError;
@@ -8006,6 +8715,7 @@ export type AddMessagesThreadsThreadIdMessagesPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type AddMessagesThreadsThreadIdMessagesPost422 = HTTPValidationError;
@@ -8034,6 +8744,7 @@ export type GetMessagesThreadsThreadIdMessagesGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetMessagesThreadsThreadIdMessagesGet422 = HTTPValidationError;
@@ -8062,6 +8773,7 @@ export type AddMessagesV1ThreadsThreadIdMessagesPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type AddMessagesV1ThreadsThreadIdMessagesPost422 = HTTPValidationError;
@@ -8090,6 +8802,7 @@ export type GetMessagesV1ThreadsThreadIdMessagesGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetMessagesV1ThreadsThreadIdMessagesGet422 = HTTPValidationError;
@@ -8118,6 +8831,7 @@ export type RunThreadThreadsThreadIdRunsPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type RunThreadThreadsThreadIdRunsPost422 = HTTPValidationError;
@@ -8145,6 +8859,7 @@ export type RunThreadV1ThreadsThreadIdRunsPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type RunThreadV1ThreadsThreadIdRunsPost422 = HTTPValidationError;
@@ -8167,15 +8882,20 @@ export type TokenCounterUtilsTokenCounterPostQueryParams = {
 };
 
 /**
+ * TokenCountResponse
  * @description Successful Response
  */
 export type TokenCounterUtilsTokenCounterPost200 = TokenCountResponse;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type TokenCounterUtilsTokenCounterPost422 = HTTPValidationError;
 
+/**
+ * TokenCountRequest
+ */
 export type TokenCounterUtilsTokenCounterPostMutationRequest = TokenCountRequest;
 
 export type TokenCounterUtilsTokenCounterPostMutationResponse =
@@ -8203,6 +8923,7 @@ export type SupportedOpenaiParamsUtilsSupportedOpenaiParamsGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type SupportedOpenaiParamsUtilsSupportedOpenaiParamsGet422 = HTTPValidationError;
@@ -8217,15 +8938,20 @@ export type SupportedOpenaiParamsUtilsSupportedOpenaiParamsGetQuery = {
 };
 
 /**
+ * RawRequestTypedDict
  * @description Successful Response
  */
 export type TransformRequestUtilsTransformRequestPost200 = RawRequestTypedDict;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type TransformRequestUtilsTransformRequestPost422 = HTTPValidationError;
 
+/**
+ * TransformRequestBody
+ */
 export type TransformRequestUtilsTransformRequestPostMutationRequest = TransformRequestBody;
 
 export type TransformRequestUtilsTransformRequestPostMutationResponse =
@@ -8253,6 +8979,7 @@ export type ModelInfoV1V1ModelInfoGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type ModelInfoV1V1ModelInfoGet422 = HTTPValidationError;
@@ -8277,6 +9004,7 @@ export type ModelInfoV1ModelInfoGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type ModelInfoV1ModelInfoGet422 = HTTPValidationError;
@@ -8301,6 +9029,7 @@ export type ModelGroupInfoModelGroupInfoGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type ModelGroupInfoModelGroupInfoGet422 = HTTPValidationError;
@@ -8399,6 +9128,7 @@ export type GetResponseOpenaiV1ResponsesResponseIdGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetResponseOpenaiV1ResponsesResponseIdGet422 = HTTPValidationError;
@@ -8427,6 +9157,7 @@ export type DeleteResponseOpenaiV1ResponsesResponseIdDelete200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type DeleteResponseOpenaiV1ResponsesResponseIdDelete422 = HTTPValidationError;
@@ -8455,6 +9186,7 @@ export type GetResponseResponsesResponseIdGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetResponseResponsesResponseIdGet422 = HTTPValidationError;
@@ -8482,6 +9214,7 @@ export type DeleteResponseResponsesResponseIdDelete200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type DeleteResponseResponsesResponseIdDelete422 = HTTPValidationError;
@@ -8510,6 +9243,7 @@ export type GetResponseV1ResponsesResponseIdGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetResponseV1ResponsesResponseIdGet422 = HTTPValidationError;
@@ -8538,6 +9272,7 @@ export type DeleteResponseV1ResponsesResponseIdDelete200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type DeleteResponseV1ResponsesResponseIdDelete422 = HTTPValidationError;
@@ -8566,6 +9301,7 @@ export type GetResponseInputItemsOpenaiV1ResponsesResponseIdInputItemsGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetResponseInputItemsOpenaiV1ResponsesResponseIdInputItemsGet422 = HTTPValidationError;
@@ -8594,6 +9330,7 @@ export type GetResponseInputItemsResponsesResponseIdInputItemsGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetResponseInputItemsResponsesResponseIdInputItemsGet422 = HTTPValidationError;
@@ -8622,6 +9359,7 @@ export type GetResponseInputItemsV1ResponsesResponseIdInputItemsGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetResponseInputItemsV1ResponsesResponseIdInputItemsGet422 = HTTPValidationError;
@@ -8650,6 +9388,7 @@ export type CancelResponseOpenaiV1ResponsesResponseIdCancelPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type CancelResponseOpenaiV1ResponsesResponseIdCancelPost422 = HTTPValidationError;
@@ -8678,6 +9417,7 @@ export type CancelResponseResponsesResponseIdCancelPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type CancelResponseResponsesResponseIdCancelPost422 = HTTPValidationError;
@@ -8706,6 +9446,7 @@ export type CancelResponseV1ResponsesResponseIdCancelPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type CancelResponseV1ResponsesResponseIdCancelPost422 = HTTPValidationError;
@@ -8731,6 +9472,7 @@ export type CreateBatchBatchesPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type CreateBatchBatchesPost422 = HTTPValidationError;
@@ -8758,6 +9500,7 @@ export type ListBatchesBatchesGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type ListBatchesBatchesGet422 = HTTPValidationError;
@@ -8782,6 +9525,7 @@ export type CreateBatchV1BatchesPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type CreateBatchV1BatchesPost422 = HTTPValidationError;
@@ -8809,6 +9553,7 @@ export type ListBatchesV1BatchesGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type ListBatchesV1BatchesGet422 = HTTPValidationError;
@@ -8833,6 +9578,7 @@ export type CreateBatchProviderV1BatchesPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type CreateBatchProviderV1BatchesPost422 = HTTPValidationError;
@@ -8863,6 +9609,7 @@ export type ListBatchesProviderV1BatchesGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type ListBatchesProviderV1BatchesGet422 = HTTPValidationError;
@@ -8896,6 +9643,7 @@ export type RetrieveBatchBatchesBatchIdGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type RetrieveBatchBatchesBatchIdGet422 = HTTPValidationError;
@@ -8929,6 +9677,7 @@ export type RetrieveBatchV1BatchesBatchIdGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type RetrieveBatchV1BatchesBatchIdGet422 = HTTPValidationError;
@@ -8959,6 +9708,7 @@ export type RetrieveBatchProviderV1BatchesBatchIdGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type RetrieveBatchProviderV1BatchesBatchIdGet422 = HTTPValidationError;
@@ -8991,6 +9741,7 @@ export type CancelBatchBatchesBatchIdCancelPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type CancelBatchBatchesBatchIdCancelPost422 = HTTPValidationError;
@@ -9024,6 +9775,7 @@ export type CancelBatchV1BatchesBatchIdCancelPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type CancelBatchV1BatchesBatchIdCancelPost422 = HTTPValidationError;
@@ -9054,6 +9806,7 @@ export type CancelBatchProviderV1BatchesBatchIdCancelPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type CancelBatchProviderV1BatchesBatchIdCancelPost422 = HTTPValidationError;
@@ -9068,6 +9821,7 @@ export type CancelBatchProviderV1BatchesBatchIdCancelPostMutation = {
 };
 
 /**
+ * Response Public Model Hub Public Model Hub Get
  * @description Successful Response
  */
 export type PublicModelHubPublicModelHubGet200 = ModelGroupInfoProxy[];
@@ -9080,6 +9834,7 @@ export type PublicModelHubPublicModelHubGetQuery = {
 };
 
 /**
+ * PublicModelHubInfo
  * @description Successful Response
  */
 export type PublicModelHubInfoPublicModelHubInfoGet200 = PublicModelHubInfo;
@@ -9184,6 +9939,7 @@ export type VideoGenerationVideosPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type VideoGenerationVideosPost422 = HTTPValidationError;
@@ -9217,6 +9973,7 @@ export type VideoGenerationV1VideosPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type VideoGenerationV1VideosPost422 = HTTPValidationError;
@@ -9243,6 +10000,7 @@ export type VideoStatusVideosVideoIdGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type VideoStatusVideosVideoIdGet422 = HTTPValidationError;
@@ -9270,6 +10028,7 @@ export type VideoStatusV1VideosVideoIdGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type VideoStatusV1VideosVideoIdGet422 = HTTPValidationError;
@@ -9295,6 +10054,7 @@ export type VideoContentVideosVideoIdContentGetPathParams = {
 export type VideoContentVideosVideoIdContentGet200 = unknown;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type VideoContentVideosVideoIdContentGet422 = HTTPValidationError;
@@ -9321,6 +10081,7 @@ export type VideoContentV1VideosVideoIdContentGetPathParams = {
 export type VideoContentV1VideosVideoIdContentGet200 = unknown;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type VideoContentV1VideosVideoIdContentGet422 = HTTPValidationError;
@@ -9349,6 +10110,7 @@ export type VideoRemixVideosVideoIdRemixPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type VideoRemixVideosVideoIdRemixPost422 = HTTPValidationError;
@@ -9376,6 +10138,7 @@ export type VideoRemixV1VideosVideoIdRemixPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type VideoRemixV1VideosVideoIdRemixPost422 = HTTPValidationError;
@@ -9460,6 +10223,7 @@ export type RetrieveContainerContainersContainerIdGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type RetrieveContainerContainersContainerIdGet422 = HTTPValidationError;
@@ -9488,6 +10252,7 @@ export type DeleteContainerContainersContainerIdDelete200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type DeleteContainerContainersContainerIdDelete422 = HTTPValidationError;
@@ -9516,6 +10281,7 @@ export type RetrieveContainerV1ContainersContainerIdGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type RetrieveContainerV1ContainersContainerIdGet422 = HTTPValidationError;
@@ -9544,6 +10310,7 @@ export type DeleteContainerV1ContainersContainerIdDelete200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type DeleteContainerV1ContainersContainerIdDelete422 = HTTPValidationError;
@@ -9569,6 +10336,7 @@ export type SearchSearchPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type SearchSearchPost422 = HTTPValidationError;
@@ -9593,6 +10361,7 @@ export type SearchV1SearchPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type SearchV1SearchPost422 = HTTPValidationError;
@@ -9617,6 +10386,7 @@ export type SearchSearchSearchToolNamePost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type SearchSearchSearchToolNamePost422 = HTTPValidationError;
@@ -9641,6 +10411,7 @@ export type SearchV1SearchSearchToolNamePost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type SearchV1SearchSearchToolNamePost422 = HTTPValidationError;
@@ -9665,6 +10436,7 @@ export type ImageGenerationOpenaiDeploymentsModelImagesGenerationsPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type ImageGenerationOpenaiDeploymentsModelImagesGenerationsPost422 = HTTPValidationError;
@@ -9690,6 +10462,7 @@ export type ImageGenerationImagesGenerationsPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type ImageGenerationImagesGenerationsPost422 = HTTPValidationError;
@@ -9715,6 +10488,7 @@ export type ImageGenerationV1ImagesGenerationsPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type ImageGenerationV1ImagesGenerationsPost422 = HTTPValidationError;
@@ -9740,6 +10514,7 @@ export type ImageEditApiOpenaiDeploymentsModelImagesEditsPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type ImageEditApiOpenaiDeploymentsModelImagesEditsPost422 = HTTPValidationError;
@@ -9765,6 +10540,7 @@ export type ImageEditApiImagesEditsPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type ImageEditApiImagesEditsPost422 = HTTPValidationError;
@@ -9789,6 +10565,7 @@ export type ImageEditApiV1ImagesEditsPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type ImageEditApiV1ImagesEditsPost422 = HTTPValidationError;
@@ -9809,10 +10586,14 @@ export type CreateFineTuningJobFineTuningJobsPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type CreateFineTuningJobFineTuningJobsPost422 = HTTPValidationError;
 
+/**
+ * LiteLLMFineTuningJobCreate
+ */
 export type CreateFineTuningJobFineTuningJobsPostMutationRequest = LiteLLMFineTuningJobCreate;
 
 export type CreateFineTuningJobFineTuningJobsPostMutationResponse =
@@ -9852,6 +10633,7 @@ export type ListFineTuningJobsFineTuningJobsGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type ListFineTuningJobsFineTuningJobsGet422 = HTTPValidationError;
@@ -9873,10 +10655,14 @@ export type CreateFineTuningJobV1FineTuningJobsPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type CreateFineTuningJobV1FineTuningJobsPost422 = HTTPValidationError;
 
+/**
+ * LiteLLMFineTuningJobCreate
+ */
 export type CreateFineTuningJobV1FineTuningJobsPostMutationRequest = LiteLLMFineTuningJobCreate;
 
 export type CreateFineTuningJobV1FineTuningJobsPostMutationResponse =
@@ -9916,6 +10702,7 @@ export type ListFineTuningJobsV1FineTuningJobsGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type ListFineTuningJobsV1FineTuningJobsGet422 = HTTPValidationError;
@@ -9959,6 +10746,7 @@ export type RetrieveFineTuningJobFineTuningJobsFineTuningJobIdGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type RetrieveFineTuningJobFineTuningJobsFineTuningJobIdGet422 = HTTPValidationError;
@@ -10003,6 +10791,7 @@ export type RetrieveFineTuningJobV1FineTuningJobsFineTuningJobIdGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type RetrieveFineTuningJobV1FineTuningJobsFineTuningJobIdGet422 = HTTPValidationError;
@@ -10032,6 +10821,7 @@ export type CancelFineTuningJobFineTuningJobsFineTuningJobIdCancelPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type CancelFineTuningJobFineTuningJobsFineTuningJobIdCancelPost422 = HTTPValidationError;
@@ -10060,6 +10850,7 @@ export type CancelFineTuningJobV1FineTuningJobsFineTuningJobIdCancelPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type CancelFineTuningJobV1FineTuningJobsFineTuningJobIdCancelPost422 = HTTPValidationError;
@@ -10088,6 +10879,7 @@ export type VectorStoreSearchVectorStoresVectorStoreIdSearchPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type VectorStoreSearchVectorStoresVectorStoreIdSearchPost422 = HTTPValidationError;
@@ -10116,6 +10908,7 @@ export type VectorStoreSearchV1VectorStoresVectorStoreIdSearchPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type VectorStoreSearchV1VectorStoresVectorStoreIdSearchPost422 = HTTPValidationError;
@@ -10167,10 +10960,14 @@ export type IndexCreateV1IndexesPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type IndexCreateV1IndexesPost422 = HTTPValidationError;
 
+/**
+ * IndexCreateRequest
+ */
 export type IndexCreateV1IndexesPostMutationRequest = IndexCreateRequest;
 
 export type IndexCreateV1IndexesPostMutationResponse = IndexCreateV1IndexesPost200;
@@ -10203,10 +11000,14 @@ export type CreateCredentialCredentialsPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type CreateCredentialCredentialsPost422 = HTTPValidationError;
 
+/**
+ * CreateCredentialItem
+ */
 export type CreateCredentialCredentialsPostMutationRequest = CreateCredentialItem;
 
 export type CreateCredentialCredentialsPostMutationResponse = CreateCredentialCredentialsPost200;
@@ -10227,11 +11028,13 @@ export type GetCredentialCredentialsByModelModelIdGetPathParams = {
 };
 
 /**
+ * CredentialItem
  * @description Successful Response
  */
 export type GetCredentialCredentialsByModelModelIdGet200 = CredentialItem;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetCredentialCredentialsByModelModelIdGet422 = HTTPValidationError;
@@ -10258,11 +11061,13 @@ export type GetCredentialCredentialsByNameCredentialNameGetQueryParams = {
 };
 
 /**
+ * CredentialItem
  * @description Successful Response
  */
 export type GetCredentialCredentialsByNameCredentialNameGet200 = CredentialItem;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetCredentialCredentialsByNameCredentialNameGet422 = HTTPValidationError;
@@ -10293,6 +11098,7 @@ export type DeleteCredentialCredentialsCredentialNameDelete200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type DeleteCredentialCredentialsCredentialNameDelete422 = HTTPValidationError;
@@ -10320,10 +11126,14 @@ export type UpdateCredentialCredentialsCredentialNamePatchPathParams = {
 export type UpdateCredentialCredentialsCredentialNamePatch200 = unknown;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type UpdateCredentialCredentialsCredentialNamePatch422 = HTTPValidationError;
 
+/**
+ * CredentialItem
+ */
 export type UpdateCredentialCredentialsCredentialNamePatchMutationRequest = CredentialItem;
 
 export type UpdateCredentialCredentialsCredentialNamePatchMutationResponse =
@@ -10380,6 +11190,7 @@ export type HealthCheckMcpServerV1McpServerServerIdHealthGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type HealthCheckMcpServerV1McpServerServerIdHealthGet422 = HTTPValidationError;
@@ -10409,6 +11220,7 @@ export type HealthCheckAllMcpServersV1McpServerHealthGetQuery = {
 };
 
 /**
+ * Response Fetch All Mcp Servers V1 Mcp Server Get
  * @description Successful Response
  */
 export type FetchAllMcpServersV1McpServerGet200 = LiteLLMMCPServerTable[];
@@ -10428,15 +11240,20 @@ export type AddMcpServerV1McpServerPostHeaderParams = {
 };
 
 /**
+ * LiteLLM_MCPServerTable
  * @description Successful Response
  */
 export type AddMcpServerV1McpServerPost201 = LiteLLMMCPServerTable;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type AddMcpServerV1McpServerPost422 = HTTPValidationError;
 
+/**
+ * NewMCPServerRequest
+ */
 export type AddMcpServerV1McpServerPostMutationRequest = NewMCPServerRequest;
 
 export type AddMcpServerV1McpServerPostMutationResponse = AddMcpServerV1McpServerPost201;
@@ -10456,15 +11273,20 @@ export type EditMcpServerV1McpServerPutHeaderParams = {
 };
 
 /**
+ * LiteLLM_MCPServerTable
  * @description Successful Response
  */
 export type EditMcpServerV1McpServerPut202 = LiteLLMMCPServerTable;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type EditMcpServerV1McpServerPut422 = HTTPValidationError;
 
+/**
+ * UpdateMCPServerRequest
+ */
 export type EditMcpServerV1McpServerPutMutationRequest = UpdateMCPServerRequest;
 
 export type EditMcpServerV1McpServerPutMutationResponse = EditMcpServerV1McpServerPut202;
@@ -10484,11 +11306,13 @@ export type FetchMcpServerV1McpServerServerIdGetPathParams = {
 };
 
 /**
+ * LiteLLM_MCPServerTable
  * @description Successful Response
  */
 export type FetchMcpServerV1McpServerServerIdGet200 = LiteLLMMCPServerTable;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type FetchMcpServerV1McpServerServerIdGet422 = HTTPValidationError;
@@ -10524,6 +11348,7 @@ export type RemoveMcpServerV1McpServerServerIdDelete202 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type RemoveMcpServerV1McpServerServerIdDelete422 = HTTPValidationError;
@@ -10582,6 +11407,7 @@ export type GoogleGenerateContentModelsModelNameGenerateContentPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GoogleGenerateContentModelsModelNameGenerateContentPost422 = HTTPValidationError;
@@ -10610,6 +11436,7 @@ export type GoogleGenerateContentV1BetaModelsModelNameGenerateContentPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GoogleGenerateContentV1BetaModelsModelNameGenerateContentPost422 = HTTPValidationError;
@@ -10638,6 +11465,7 @@ export type GoogleStreamGenerateContentModelsModelNameStreamGenerateContentPost2
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GoogleStreamGenerateContentModelsModelNameStreamGenerateContentPost422 =
@@ -10667,6 +11495,7 @@ export type GoogleStreamGenerateContentV1BetaModelsModelNameStreamGenerateConten
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GoogleStreamGenerateContentV1BetaModelsModelNameStreamGenerateContentPost422 =
@@ -10689,11 +11518,13 @@ export type GoogleCountTokensModelsModelNameCountTokensPostPathParams = {
 };
 
 /**
+ * TokenCountDetailsResponse
  * @description Successful Response
  */
 export type GoogleCountTokensModelsModelNameCountTokensPost200 = TokenCountDetailsResponse;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GoogleCountTokensModelsModelNameCountTokensPost422 = HTTPValidationError;
@@ -10715,11 +11546,13 @@ export type GoogleCountTokensV1BetaModelsModelNameCountTokensPostPathParams = {
 };
 
 /**
+ * TokenCountDetailsResponse
  * @description Successful Response
  */
 export type GoogleCountTokensV1BetaModelsModelNameCountTokensPost200 = TokenCountDetailsResponse;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GoogleCountTokensV1BetaModelsModelNameCountTokensPost422 = HTTPValidationError;
@@ -10742,12 +11575,14 @@ export type GetPassThroughEndpointsConfigPassThroughEndpointTeamTeamIdGetQueryPa
 };
 
 /**
+ * PassThroughEndpointResponse
  * @description Successful Response
  */
 export type GetPassThroughEndpointsConfigPassThroughEndpointTeamTeamIdGet200 =
 	PassThroughEndpointResponse;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetPassThroughEndpointsConfigPassThroughEndpointTeamTeamIdGet422 = HTTPValidationError;
@@ -10768,11 +11603,13 @@ export type GetPassThroughEndpointsConfigPassThroughEndpointGetQueryParams = {
 };
 
 /**
+ * PassThroughEndpointResponse
  * @description Successful Response
  */
 export type GetPassThroughEndpointsConfigPassThroughEndpointGet200 = PassThroughEndpointResponse;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetPassThroughEndpointsConfigPassThroughEndpointGet422 = HTTPValidationError;
@@ -10794,10 +11631,14 @@ export type CreatePassThroughEndpointsConfigPassThroughEndpointPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type CreatePassThroughEndpointsConfigPassThroughEndpointPost422 = HTTPValidationError;
 
+/**
+ * PassThroughGenericEndpoint
+ */
 export type CreatePassThroughEndpointsConfigPassThroughEndpointPostMutationRequest =
 	PassThroughGenericEndpoint;
 
@@ -10818,12 +11659,14 @@ export type DeletePassThroughEndpointsConfigPassThroughEndpointDeleteQueryParams
 };
 
 /**
+ * PassThroughEndpointResponse
  * @description Successful Response
  */
 export type DeletePassThroughEndpointsConfigPassThroughEndpointDelete200 =
 	PassThroughEndpointResponse;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type DeletePassThroughEndpointsConfigPassThroughEndpointDelete422 = HTTPValidationError;
@@ -10852,11 +11695,15 @@ export type UpdatePassThroughEndpointsConfigPassThroughEndpointEndpointIdPost200
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type UpdatePassThroughEndpointsConfigPassThroughEndpointEndpointIdPost422 =
 	HTTPValidationError;
 
+/**
+ * PassThroughGenericEndpoint
+ */
 export type UpdatePassThroughEndpointsConfigPassThroughEndpointEndpointIdPostMutationRequest =
 	PassThroughGenericEndpoint;
 
@@ -10915,6 +11762,7 @@ export type HealthServicesEndpointHealthServicesGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type HealthServicesEndpointHealthServicesGet422 = HTTPValidationError;
@@ -10947,6 +11795,7 @@ export type HealthEndpointHealthGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type HealthEndpointHealthGet422 = HTTPValidationError;
@@ -10993,6 +11842,7 @@ export type HealthCheckHistoryEndpointHealthHistoryGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type HealthCheckHistoryEndpointHealthHistoryGet422 = HTTPValidationError;
@@ -11154,10 +12004,14 @@ export type TestModelConnectionHealthTestConnectionPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type TestModelConnectionHealthTestConnectionPost422 = HTTPValidationError;
 
+/**
+ * Body_test_model_connection_health_test_connection_post
+ */
 export type TestModelConnectionHealthTestConnectionPostMutationRequest =
 	BodyTestModelConnectionHealthTestConnectionPost;
 
@@ -11178,15 +12032,20 @@ export type GenerateKeyFnKeyGeneratePostHeaderParams = {
 };
 
 /**
+ * GenerateKeyResponse
  * @description Successful Response
  */
 export type GenerateKeyFnKeyGeneratePost200 = GenerateKeyResponse;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GenerateKeyFnKeyGeneratePost422 = HTTPValidationError;
 
+/**
+ * GenerateKeyRequest
+ */
 export type GenerateKeyFnKeyGeneratePostMutationRequest = GenerateKeyRequest;
 
 export type GenerateKeyFnKeyGeneratePostMutationResponse = GenerateKeyFnKeyGeneratePost200;
@@ -11213,10 +12072,14 @@ export type GenerateServiceAccountKeyFnKeyServiceAccountGeneratePost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GenerateServiceAccountKeyFnKeyServiceAccountGeneratePost422 = HTTPValidationError;
 
+/**
+ * GenerateKeyRequest
+ */
 export type GenerateServiceAccountKeyFnKeyServiceAccountGeneratePostMutationRequest =
 	GenerateKeyRequest;
 
@@ -11245,10 +12108,14 @@ export type UpdateKeyFnKeyUpdatePost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type UpdateKeyFnKeyUpdatePost422 = HTTPValidationError;
 
+/**
+ * UpdateKeyRequest
+ */
 export type UpdateKeyFnKeyUpdatePostMutationRequest = UpdateKeyRequest;
 
 export type UpdateKeyFnKeyUpdatePostMutationResponse = UpdateKeyFnKeyUpdatePost200;
@@ -11275,10 +12142,14 @@ export type DeleteKeyFnKeyDeletePost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type DeleteKeyFnKeyDeletePost422 = HTTPValidationError;
 
+/**
+ * KeyRequest
+ */
 export type DeleteKeyFnKeyDeletePostMutationRequest = KeyRequest;
 
 export type DeleteKeyFnKeyDeletePostMutationResponse = DeleteKeyFnKeyDeletePost200;
@@ -11305,6 +12176,7 @@ export type InfoKeyFnKeyInfoGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type InfoKeyFnKeyInfoGet422 = HTTPValidationError;
@@ -11329,15 +12201,20 @@ export type RegenerateKeyFnKeyRegeneratePostHeaderParams = {
 };
 
 /**
+ * Response Regenerate Key Fn Key Regenerate Post
  * @description Successful Response
  */
 export type RegenerateKeyFnKeyRegeneratePost200 = GenerateKeyResponse | null;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type RegenerateKeyFnKeyRegeneratePost422 = HTTPValidationError;
 
+/**
+ * Data
+ */
 export type RegenerateKeyFnKeyRegeneratePostMutationRequest = RegenerateKeyRequest | null;
 
 export type RegenerateKeyFnKeyRegeneratePostMutationResponse = RegenerateKeyFnKeyRegeneratePost200;
@@ -11362,15 +12239,20 @@ export type RegenerateKeyFnKeyKeyRegeneratePostHeaderParams = {
 };
 
 /**
+ * Response Regenerate Key Fn Key  Key  Regenerate Post
  * @description Successful Response
  */
 export type RegenerateKeyFnKeyKeyRegeneratePost200 = GenerateKeyResponse | null;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type RegenerateKeyFnKeyKeyRegeneratePost422 = HTTPValidationError;
 
+/**
+ * Data
+ */
 export type RegenerateKeyFnKeyKeyRegeneratePostMutationRequest = RegenerateKeyRequest | null;
 
 export type RegenerateKeyFnKeyKeyRegeneratePostMutationResponse =
@@ -11451,11 +12333,13 @@ export type ListKeysKeyListGetQueryParams = {
 };
 
 /**
+ * KeyListResponseObject
  * @description Successful Response
  */
 export type ListKeysKeyListGet200 = KeyListResponseObject;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type ListKeysKeyListGet422 = HTTPValidationError;
@@ -11469,6 +12353,7 @@ export type ListKeysKeyListGetQuery = {
 };
 
 /**
+ * Response Key Aliases Key Aliases Get
  * @description Successful Response
  */
 export type KeyAliasesKeyAliasesGet200 = {
@@ -11490,15 +12375,20 @@ export type BlockKeyKeyBlockPostHeaderParams = {
 };
 
 /**
+ * Response Block Key Key Block Post
  * @description Successful Response
  */
 export type BlockKeyKeyBlockPost200 = LiteLLMVerificationToken | null;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type BlockKeyKeyBlockPost422 = HTTPValidationError;
 
+/**
+ * BlockKeyRequest
+ */
 export type BlockKeyKeyBlockPostMutationRequest = BlockKeyRequest;
 
 export type BlockKeyKeyBlockPostMutationResponse = BlockKeyKeyBlockPost200;
@@ -11525,10 +12415,14 @@ export type UnblockKeyKeyUnblockPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type UnblockKeyKeyUnblockPost422 = HTTPValidationError;
 
+/**
+ * BlockKeyRequest
+ */
 export type UnblockKeyKeyUnblockPostMutationRequest = BlockKeyRequest;
 
 export type UnblockKeyKeyUnblockPostMutationResponse = UnblockKeyKeyUnblockPost200;
@@ -11541,6 +12435,7 @@ export type UnblockKeyKeyUnblockPostMutation = {
 };
 
 /**
+ * KeyHealthResponse
  * @description Successful Response
  */
 export type KeyHealthKeyHealthPost200 = KeyHealthResponse;
@@ -11553,15 +12448,20 @@ export type KeyHealthKeyHealthPostMutation = {
 };
 
 /**
+ * NewUserResponse
  * @description Successful Response
  */
 export type NewUserUserNewPost200 = NewUserResponse;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type NewUserUserNewPost422 = HTTPValidationError;
 
+/**
+ * NewUserRequest
+ */
 export type NewUserUserNewPostMutationRequest = NewUserRequest;
 
 export type NewUserUserNewPostMutationResponse = NewUserUserNewPost200;
@@ -11587,6 +12487,7 @@ export type UserInfoUserInfoGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type UserInfoUserInfoGet422 = HTTPValidationError;
@@ -11607,10 +12508,14 @@ export type UserUpdateUserUpdatePost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type UserUpdateUserUpdatePost422 = HTTPValidationError;
 
+/**
+ * UpdateUserRequest
+ */
 export type UserUpdateUserUpdatePostMutationRequest = UpdateUserRequest;
 
 export type UserUpdateUserUpdatePostMutationResponse = UserUpdateUserUpdatePost200;
@@ -11629,15 +12534,20 @@ export type BulkUserUpdateUserBulkUpdatePostHeaderParams = {
 };
 
 /**
+ * BulkUpdateUserResponse
  * @description Successful Response
  */
 export type BulkUserUpdateUserBulkUpdatePost200 = BulkUpdateUserResponse;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type BulkUserUpdateUserBulkUpdatePost422 = HTTPValidationError;
 
+/**
+ * BulkUpdateUserRequest
+ */
 export type BulkUserUpdateUserBulkUpdatePostMutationRequest = BulkUpdateUserRequest;
 
 export type BulkUserUpdateUserBulkUpdatePostMutationResponse = BulkUserUpdateUserBulkUpdatePost200;
@@ -11698,11 +12608,13 @@ export type GetUsersUserListGetQueryParams = {
 };
 
 /**
+ * UserListResponse
  * @description Successful Response
  */
 export type GetUsersUserListGet200 = UserListResponse;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetUsersUserListGet422 = HTTPValidationError;
@@ -11730,10 +12642,14 @@ export type DeleteUserUserDeletePost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type DeleteUserUserDeletePost422 = HTTPValidationError;
 
+/**
+ * DeleteUserRequest
+ */
 export type DeleteUserUserDeletePostMutationRequest = DeleteUserRequest;
 
 export type DeleteUserUserDeletePostMutationResponse = DeleteUserUserDeletePost200;
@@ -11780,11 +12696,13 @@ export type GetUserDailyActivityUserDailyActivityGetQueryParams = {
 };
 
 /**
+ * SpendAnalyticsPaginatedResponse
  * @description Successful Response
  */
 export type GetUserDailyActivityUserDailyActivityGet200 = SpendAnalyticsPaginatedResponse;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetUserDailyActivityUserDailyActivityGet422 = HTTPValidationError;
@@ -11818,12 +12736,14 @@ export type GetUserDailyActivityAggregatedUserDailyActivityAggregatedGetQueryPar
 };
 
 /**
+ * SpendAnalyticsPaginatedResponse
  * @description Successful Response
  */
 export type GetUserDailyActivityAggregatedUserDailyActivityAggregatedGet200 =
 	SpendAnalyticsPaginatedResponse;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetUserDailyActivityAggregatedUserDailyActivityAggregatedGet422 = HTTPValidationError;
@@ -11845,15 +12765,20 @@ export type NewTeamTeamNewPostHeaderParams = {
 };
 
 /**
+ * LiteLLM_TeamTable
  * @description Successful Response
  */
 export type NewTeamTeamNewPost200 = LiteLLMTeamTableOutput;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type NewTeamTeamNewPost422 = HTTPValidationError;
 
+/**
+ * NewTeamRequest
+ */
 export type NewTeamTeamNewPostMutationRequest = NewTeamRequest;
 
 export type NewTeamTeamNewPostMutationResponse = NewTeamTeamNewPost200;
@@ -11880,10 +12805,14 @@ export type UpdateTeamTeamUpdatePost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type UpdateTeamTeamUpdatePost422 = HTTPValidationError;
 
+/**
+ * UpdateTeamRequest
+ */
 export type UpdateTeamTeamUpdatePostMutationRequest = UpdateTeamRequest;
 
 export type UpdateTeamTeamUpdatePostMutationResponse = UpdateTeamTeamUpdatePost200;
@@ -11896,15 +12825,20 @@ export type UpdateTeamTeamUpdatePostMutation = {
 };
 
 /**
+ * TeamAddMemberResponse
  * @description Successful Response
  */
 export type TeamMemberAddTeamMemberAddPost200 = TeamAddMemberResponse;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type TeamMemberAddTeamMemberAddPost422 = HTTPValidationError;
 
+/**
+ * TeamMemberAddRequest
+ */
 export type TeamMemberAddTeamMemberAddPostMutationRequest = TeamMemberAddRequest;
 
 export type TeamMemberAddTeamMemberAddPostMutationResponse = TeamMemberAddTeamMemberAddPost200;
@@ -11923,10 +12857,14 @@ export type TeamMemberDeleteTeamMemberDeletePost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type TeamMemberDeleteTeamMemberDeletePost422 = HTTPValidationError;
 
+/**
+ * TeamMemberDeleteRequest
+ */
 export type TeamMemberDeleteTeamMemberDeletePostMutationRequest = TeamMemberDeleteRequest;
 
 export type TeamMemberDeleteTeamMemberDeletePostMutationResponse =
@@ -11939,15 +12877,20 @@ export type TeamMemberDeleteTeamMemberDeletePostMutation = {
 };
 
 /**
+ * TeamMemberUpdateResponse
  * @description Successful Response
  */
 export type TeamMemberUpdateTeamMemberUpdatePost200 = TeamMemberUpdateResponse;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type TeamMemberUpdateTeamMemberUpdatePost422 = HTTPValidationError;
 
+/**
+ * TeamMemberUpdateRequest
+ */
 export type TeamMemberUpdateTeamMemberUpdatePostMutationRequest = TeamMemberUpdateRequest;
 
 export type TeamMemberUpdateTeamMemberUpdatePostMutationResponse =
@@ -11960,15 +12903,20 @@ export type TeamMemberUpdateTeamMemberUpdatePostMutation = {
 };
 
 /**
+ * BulkTeamMemberAddResponse
  * @description Successful Response
  */
 export type BulkTeamMemberAddTeamBulkMemberAddPost200 = BulkTeamMemberAddResponse;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type BulkTeamMemberAddTeamBulkMemberAddPost422 = HTTPValidationError;
 
+/**
+ * BulkTeamMemberAddRequest
+ */
 export type BulkTeamMemberAddTeamBulkMemberAddPostMutationRequest = BulkTeamMemberAddRequest;
 
 export type BulkTeamMemberAddTeamBulkMemberAddPostMutationResponse =
@@ -11995,10 +12943,14 @@ export type DeleteTeamTeamDeletePost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type DeleteTeamTeamDeletePost422 = HTTPValidationError;
 
+/**
+ * DeleteTeamRequest
+ */
 export type DeleteTeamTeamDeletePostMutationRequest = DeleteTeamRequest;
 
 export type DeleteTeamTeamDeletePostMutationResponse = DeleteTeamTeamDeletePost200;
@@ -12026,6 +12978,7 @@ export type TeamInfoTeamInfoGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type TeamInfoTeamInfoGet422 = HTTPValidationError;
@@ -12046,10 +12999,14 @@ export type BlockTeamTeamBlockPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type BlockTeamTeamBlockPost422 = HTTPValidationError;
 
+/**
+ * BlockTeamRequest
+ */
 export type BlockTeamTeamBlockPostMutationRequest = BlockTeamRequest;
 
 export type BlockTeamTeamBlockPostMutationResponse = BlockTeamTeamBlockPost200;
@@ -12068,10 +13025,14 @@ export type UnblockTeamTeamUnblockPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type UnblockTeamTeamUnblockPost422 = HTTPValidationError;
 
+/**
+ * BlockTeamRequest
+ */
 export type UnblockTeamTeamUnblockPostMutationRequest = BlockTeamRequest;
 
 export type UnblockTeamTeamUnblockPostMutationResponse = UnblockTeamTeamUnblockPost200;
@@ -12094,6 +13055,7 @@ export type ListAvailableTeamsTeamAvailableGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type ListAvailableTeamsTeamAvailableGet422 = HTTPValidationError;
@@ -12151,11 +13113,13 @@ export type ListTeamV2V2TeamListGetQueryParams = {
 };
 
 /**
+ * TeamListResponse
  * @description Successful Response
  */
 export type ListTeamV2V2TeamListGet200 = TeamListResponse;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type ListTeamV2V2TeamListGet422 = HTTPValidationError;
@@ -12184,6 +13148,7 @@ export type ListTeamTeamListGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type ListTeamTeamListGet422 = HTTPValidationError;
@@ -12204,10 +13169,14 @@ export type TeamModelAddTeamModelAddPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type TeamModelAddTeamModelAddPost422 = HTTPValidationError;
 
+/**
+ * TeamModelAddRequest
+ */
 export type TeamModelAddTeamModelAddPostMutationRequest = TeamModelAddRequest;
 
 export type TeamModelAddTeamModelAddPostMutationResponse = TeamModelAddTeamModelAddPost200;
@@ -12226,10 +13195,14 @@ export type TeamModelDeleteTeamModelDeletePost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type TeamModelDeleteTeamModelDeletePost422 = HTTPValidationError;
 
+/**
+ * TeamModelDeleteRequest
+ */
 export type TeamModelDeleteTeamModelDeletePostMutationRequest = TeamModelDeleteRequest;
 
 export type TeamModelDeleteTeamModelDeletePostMutationResponse =
@@ -12250,11 +13223,13 @@ export type TeamMemberPermissionsTeamPermissionsListGetQueryParams = {
 };
 
 /**
+ * GetTeamMemberPermissionsResponse
  * @description Successful Response
  */
 export type TeamMemberPermissionsTeamPermissionsListGet200 = GetTeamMemberPermissionsResponse;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type TeamMemberPermissionsTeamPermissionsListGet422 = HTTPValidationError;
@@ -12269,15 +13244,20 @@ export type TeamMemberPermissionsTeamPermissionsListGetQuery = {
 };
 
 /**
+ * LiteLLM_TeamTable
  * @description Successful Response
  */
 export type UpdateTeamMemberPermissionsTeamPermissionsUpdatePost200 = LiteLLMTeamTableOutput;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type UpdateTeamMemberPermissionsTeamPermissionsUpdatePost422 = HTTPValidationError;
 
+/**
+ * UpdateTeamMemberPermissionsRequest
+ */
 export type UpdateTeamMemberPermissionsTeamPermissionsUpdatePostMutationRequest =
 	UpdateTeamMemberPermissionsRequest;
 
@@ -12310,11 +13290,13 @@ export type GetTeamDailyActivityTeamDailyActivityGetQueryParams = {
 };
 
 /**
+ * SpendAnalyticsPaginatedResponse
  * @description Successful Response
  */
 export type GetTeamDailyActivityTeamDailyActivityGet200 = SpendAnalyticsPaginatedResponse;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetTeamDailyActivityTeamDailyActivityGet422 = HTTPValidationError;
@@ -12333,11 +13315,13 @@ export type GetServiceProviderConfigScimV2ServiceProviderConfigGetQueryParams = 
 };
 
 /**
+ * SCIMServiceProviderConfig
  * @description Successful Response
  */
 export type GetServiceProviderConfigScimV2ServiceProviderConfigGet200 = SCIMServiceProviderConfig;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetServiceProviderConfigScimV2ServiceProviderConfigGet422 = HTTPValidationError;
@@ -12370,11 +13354,13 @@ export type GetUsersScimV2UsersGetQueryParams = {
 };
 
 /**
+ * SCIMListResponse
  * @description Successful Response
  */
 export type GetUsersScimV2UsersGet200 = SCIMListResponse;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetUsersScimV2UsersGet422 = HTTPValidationError;
@@ -12392,15 +13378,20 @@ export type CreateUserScimV2UsersPostQueryParams = {
 };
 
 /**
+ * SCIMUser
  * @description Successful Response
  */
 export type CreateUserScimV2UsersPost201 = SCIMUser;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type CreateUserScimV2UsersPost422 = HTTPValidationError;
 
+/**
+ * SCIMUser
+ */
 export type CreateUserScimV2UsersPostMutationRequest = SCIMUser;
 
 export type CreateUserScimV2UsersPostMutationResponse = CreateUserScimV2UsersPost201;
@@ -12424,11 +13415,13 @@ export type GetUserScimV2UsersUserIdGetQueryParams = {
 };
 
 /**
+ * SCIMUser
  * @description Successful Response
  */
 export type GetUserScimV2UsersUserIdGet200 = SCIMUser;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetUserScimV2UsersUserIdGet422 = HTTPValidationError;
@@ -12454,15 +13447,20 @@ export type UpdateUserScimV2UsersUserIdPutQueryParams = {
 };
 
 /**
+ * SCIMUser
  * @description Successful Response
  */
 export type UpdateUserScimV2UsersUserIdPut200 = SCIMUser;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type UpdateUserScimV2UsersUserIdPut422 = HTTPValidationError;
 
+/**
+ * SCIMUser
+ */
 export type UpdateUserScimV2UsersUserIdPutMutationRequest = SCIMUser;
 
 export type UpdateUserScimV2UsersUserIdPutMutationResponse = UpdateUserScimV2UsersUserIdPut200;
@@ -12492,6 +13490,7 @@ export type DeleteUserScimV2UsersUserIdDeleteQueryParams = {
 export type DeleteUserScimV2UsersUserIdDelete204 = unknown;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type DeleteUserScimV2UsersUserIdDelete422 = HTTPValidationError;
@@ -12518,15 +13517,20 @@ export type PatchUserScimV2UsersUserIdPatchQueryParams = {
 };
 
 /**
+ * SCIMUser
  * @description Successful Response
  */
 export type PatchUserScimV2UsersUserIdPatch200 = SCIMUser;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type PatchUserScimV2UsersUserIdPatch422 = HTTPValidationError;
 
+/**
+ * SCIMPatchOp
+ */
 export type PatchUserScimV2UsersUserIdPatchMutationRequest = SCIMPatchOp;
 
 export type PatchUserScimV2UsersUserIdPatchMutationResponse = PatchUserScimV2UsersUserIdPatch200;
@@ -12558,11 +13562,13 @@ export type GetGroupsScimV2GroupsGetQueryParams = {
 };
 
 /**
+ * SCIMListResponse
  * @description Successful Response
  */
 export type GetGroupsScimV2GroupsGet200 = SCIMListResponse;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetGroupsScimV2GroupsGet422 = HTTPValidationError;
@@ -12580,15 +13586,20 @@ export type CreateGroupScimV2GroupsPostQueryParams = {
 };
 
 /**
+ * SCIMGroup
  * @description Successful Response
  */
 export type CreateGroupScimV2GroupsPost201 = SCIMGroup;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type CreateGroupScimV2GroupsPost422 = HTTPValidationError;
 
+/**
+ * SCIMGroup
+ */
 export type CreateGroupScimV2GroupsPostMutationRequest = SCIMGroup;
 
 export type CreateGroupScimV2GroupsPostMutationResponse = CreateGroupScimV2GroupsPost201;
@@ -12612,11 +13623,13 @@ export type GetGroupScimV2GroupsGroupIdGetQueryParams = {
 };
 
 /**
+ * SCIMGroup
  * @description Successful Response
  */
 export type GetGroupScimV2GroupsGroupIdGet200 = SCIMGroup;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetGroupScimV2GroupsGroupIdGet422 = HTTPValidationError;
@@ -12642,15 +13655,20 @@ export type UpdateGroupScimV2GroupsGroupIdPutQueryParams = {
 };
 
 /**
+ * SCIMGroup
  * @description Successful Response
  */
 export type UpdateGroupScimV2GroupsGroupIdPut200 = SCIMGroup;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type UpdateGroupScimV2GroupsGroupIdPut422 = HTTPValidationError;
 
+/**
+ * SCIMGroup
+ */
 export type UpdateGroupScimV2GroupsGroupIdPutMutationRequest = SCIMGroup;
 
 export type UpdateGroupScimV2GroupsGroupIdPutMutationResponse =
@@ -12681,6 +13699,7 @@ export type DeleteGroupScimV2GroupsGroupIdDeleteQueryParams = {
 export type DeleteGroupScimV2GroupsGroupIdDelete204 = unknown;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type DeleteGroupScimV2GroupsGroupIdDelete422 = HTTPValidationError;
@@ -12707,15 +13726,20 @@ export type PatchGroupScimV2GroupsGroupIdPatchQueryParams = {
 };
 
 /**
+ * SCIMGroup
  * @description Successful Response
  */
 export type PatchGroupScimV2GroupsGroupIdPatch200 = SCIMGroup;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type PatchGroupScimV2GroupsGroupIdPatch422 = HTTPValidationError;
 
+/**
+ * SCIMPatchOp
+ */
 export type PatchGroupScimV2GroupsGroupIdPatchMutationRequest = SCIMPatchOp;
 
 export type PatchGroupScimV2GroupsGroupIdPatchMutationResponse =
@@ -12730,15 +13754,20 @@ export type PatchGroupScimV2GroupsGroupIdPatchMutation = {
 };
 
 /**
+ * NewOrganizationResponse
  * @description Successful Response
  */
 export type NewOrganizationOrganizationNewPost200 = NewOrganizationResponse;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type NewOrganizationOrganizationNewPost422 = HTTPValidationError;
 
+/**
+ * NewOrganizationRequest
+ */
 export type NewOrganizationOrganizationNewPostMutationRequest = NewOrganizationRequest;
 
 export type NewOrganizationOrganizationNewPostMutationResponse =
@@ -12751,6 +13780,7 @@ export type NewOrganizationOrganizationNewPostMutation = {
 };
 
 /**
+ * LiteLLM_OrganizationTableWithMembers
  * @description Successful Response
  */
 export type UpdateOrganizationOrganizationUpdatePatch200 = LiteLLMOrganizationTableWithMembers;
@@ -12764,15 +13794,20 @@ export type UpdateOrganizationOrganizationUpdatePatchMutation = {
 };
 
 /**
+ * Response Delete Organization Organization Delete Delete
  * @description Successful Response
  */
 export type DeleteOrganizationOrganizationDeleteDelete200 = LiteLLMOrganizationTableWithMembers[];
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type DeleteOrganizationOrganizationDeleteDelete422 = HTTPValidationError;
 
+/**
+ * DeleteOrganizationRequest
+ */
 export type DeleteOrganizationOrganizationDeleteDeleteMutationRequest = DeleteOrganizationRequest;
 
 export type DeleteOrganizationOrganizationDeleteDeleteMutationResponse =
@@ -12785,6 +13820,7 @@ export type DeleteOrganizationOrganizationDeleteDeleteMutation = {
 };
 
 /**
+ * Response List Organization Organization List Get
  * @description Successful Response
  */
 export type ListOrganizationOrganizationListGet200 = LiteLLMOrganizationTableWithMembers[];
@@ -12805,11 +13841,13 @@ export type InfoOrganizationOrganizationInfoGetQueryParams = {
 };
 
 /**
+ * LiteLLM_OrganizationTableWithMembers
  * @description Successful Response
  */
 export type InfoOrganizationOrganizationInfoGet200 = LiteLLMOrganizationTableWithMembers;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type InfoOrganizationOrganizationInfoGet422 = HTTPValidationError;
@@ -12831,10 +13869,14 @@ export type DeprecatedInfoOrganizationOrganizationInfoPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type DeprecatedInfoOrganizationOrganizationInfoPost422 = HTTPValidationError;
 
+/**
+ * OrganizationRequest
+ */
 export type DeprecatedInfoOrganizationOrganizationInfoPostMutationRequest = OrganizationRequest;
 
 export type DeprecatedInfoOrganizationOrganizationInfoPostMutationResponse =
@@ -12847,15 +13889,20 @@ export type DeprecatedInfoOrganizationOrganizationInfoPostMutation = {
 };
 
 /**
+ * OrganizationAddMemberResponse
  * @description Successful Response
  */
 export type OrganizationMemberAddOrganizationMemberAddPost200 = OrganizationAddMemberResponse;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type OrganizationMemberAddOrganizationMemberAddPost422 = HTTPValidationError;
 
+/**
+ * OrganizationMemberAddRequest
+ */
 export type OrganizationMemberAddOrganizationMemberAddPostMutationRequest =
 	OrganizationMemberAddRequest;
 
@@ -12869,16 +13916,21 @@ export type OrganizationMemberAddOrganizationMemberAddPostMutation = {
 };
 
 /**
+ * LiteLLM_OrganizationMembershipTable
  * @description Successful Response
  */
 export type OrganizationMemberUpdateOrganizationMemberUpdatePatch200 =
 	LiteLLMOrganizationMembershipTable;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type OrganizationMemberUpdateOrganizationMemberUpdatePatch422 = HTTPValidationError;
 
+/**
+ * OrganizationMemberUpdateRequest
+ */
 export type OrganizationMemberUpdateOrganizationMemberUpdatePatchMutationRequest =
 	OrganizationMemberUpdateRequest;
 
@@ -12899,10 +13951,14 @@ export type OrganizationMemberDeleteOrganizationMemberDeleteDelete200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type OrganizationMemberDeleteOrganizationMemberDeleteDelete422 = HTTPValidationError;
 
+/**
+ * OrganizationMemberDeleteRequest
+ */
 export type OrganizationMemberDeleteOrganizationMemberDeleteDeleteMutationRequest =
 	OrganizationMemberDeleteRequest;
 
@@ -12923,10 +13979,14 @@ export type BlockUserCustomerBlockPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type BlockUserCustomerBlockPost422 = HTTPValidationError;
 
+/**
+ * BlockUsers
+ */
 export type BlockUserCustomerBlockPostMutationRequest = BlockUsers;
 
 export type BlockUserCustomerBlockPostMutationResponse = BlockUserCustomerBlockPost200;
@@ -12945,10 +14005,14 @@ export type UnblockUserCustomerUnblockPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type UnblockUserCustomerUnblockPost422 = HTTPValidationError;
 
+/**
+ * BlockUsers
+ */
 export type UnblockUserCustomerUnblockPostMutationRequest = BlockUsers;
 
 export type UnblockUserCustomerUnblockPostMutationResponse = UnblockUserCustomerUnblockPost200;
@@ -12967,10 +14031,14 @@ export type NewEndUserCustomerNewPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type NewEndUserCustomerNewPost422 = HTTPValidationError;
 
+/**
+ * NewCustomerRequest
+ */
 export type NewEndUserCustomerNewPostMutationRequest = NewCustomerRequest;
 
 export type NewEndUserCustomerNewPostMutationResponse = NewEndUserCustomerNewPost200;
@@ -12990,11 +14058,13 @@ export type EndUserInfoCustomerInfoGetQueryParams = {
 };
 
 /**
+ * LiteLLM_EndUserTable
  * @description Successful Response
  */
 export type EndUserInfoCustomerInfoGet200 = LiteLLMEndUserTable;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type EndUserInfoCustomerInfoGet422 = HTTPValidationError;
@@ -13015,10 +14085,14 @@ export type UpdateEndUserCustomerUpdatePost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type UpdateEndUserCustomerUpdatePost422 = HTTPValidationError;
 
+/**
+ * UpdateCustomerRequest
+ */
 export type UpdateEndUserCustomerUpdatePostMutationRequest = UpdateCustomerRequest;
 
 export type UpdateEndUserCustomerUpdatePostMutationResponse = UpdateEndUserCustomerUpdatePost200;
@@ -13037,10 +14111,14 @@ export type DeleteEndUserCustomerDeletePost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type DeleteEndUserCustomerDeletePost422 = HTTPValidationError;
 
+/**
+ * DeleteCustomerRequest
+ */
 export type DeleteEndUserCustomerDeletePostMutationRequest = DeleteCustomerRequest;
 
 export type DeleteEndUserCustomerDeletePostMutationResponse = DeleteEndUserCustomerDeletePost200;
@@ -13052,6 +14130,7 @@ export type DeleteEndUserCustomerDeletePostMutation = {
 };
 
 /**
+ * Response List End User Customer List Get
  * @description Successful Response
  */
 export type ListEndUserCustomerListGet200 = LiteLLMEndUserTable[];
@@ -13075,11 +14154,13 @@ export type ViewSpendTagsSpendTagsGetQueryParams = {
 };
 
 /**
+ * Response 200 View Spend Tags Spend Tags Get
  * @description Successful Response
  */
 export type ViewSpendTagsSpendTagsGet200 = LiteLLMSpendLogsOutput[];
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type ViewSpendTagsSpendTagsGet422 = HTTPValidationError;
@@ -13134,11 +14215,13 @@ export type GetGlobalSpendReportGlobalSpendReportGetQueryParams = {
 };
 
 /**
+ * Response 200 Get Global Spend Report Global Spend Report Get
  * @description Successful Response
  */
 export type GetGlobalSpendReportGlobalSpendReportGet200 = LiteLLMSpendLogsOutput[];
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetGlobalSpendReportGlobalSpendReportGet422 = HTTPValidationError;
@@ -13168,11 +14251,13 @@ export type GlobalViewSpendTagsGlobalSpendTagsGetQueryParams = {
 };
 
 /**
+ * Response 200 Global View Spend Tags Global Spend Tags Get
  * @description Successful Response
  */
 export type GlobalViewSpendTagsGlobalSpendTagsGet200 = LiteLLMSpendLogsOutput[];
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GlobalViewSpendTagsGlobalSpendTagsGet422 = HTTPValidationError;
@@ -13194,10 +14279,14 @@ export type CalculateSpendSpendCalculatePost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type CalculateSpendSpendCalculatePost422 = HTTPValidationError;
 
+/**
+ * SpendCalculateRequest
+ */
 export type CalculateSpendSpendCalculatePostMutationRequest = SpendCalculateRequest;
 
 export type CalculateSpendSpendCalculatePostMutationResponse = CalculateSpendSpendCalculatePost200;
@@ -13238,11 +14327,13 @@ export type ViewSpendLogsSpendLogsGetQueryParams = {
 };
 
 /**
+ * Response 200 View Spend Logs Spend Logs Get
  * @description Successful Response
  */
 export type ViewSpendLogsSpendLogsGet200 = LiteLLMSpendLogsOutput[];
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type ViewSpendLogsSpendLogsGet422 = HTTPValidationError;
@@ -13271,6 +14362,7 @@ export type GlobalSpendResetGlobalSpendResetPostMutation = {
 };
 
 /**
+ * ProviderBudgetResponse
  * @description Successful Response
  */
 export type ProviderBudgetsProviderBudgetsGet200 = ProviderBudgetResponse;
@@ -13283,6 +14375,7 @@ export type ProviderBudgetsProviderBudgetsGetQuery = {
 };
 
 /**
+ * CloudZeroSettingsView
  * @description Successful Response
  */
 export type GetCloudzeroSettingsCloudzeroSettingsGet200 = CloudZeroSettingsView;
@@ -13296,15 +14389,20 @@ export type GetCloudzeroSettingsCloudzeroSettingsGetQuery = {
 };
 
 /**
+ * CloudZeroInitResponse
  * @description Successful Response
  */
 export type UpdateCloudzeroSettingsCloudzeroSettingsPut200 = CloudZeroInitResponse;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type UpdateCloudzeroSettingsCloudzeroSettingsPut422 = HTTPValidationError;
 
+/**
+ * CloudZeroSettingsUpdate
+ */
 export type UpdateCloudzeroSettingsCloudzeroSettingsPutMutationRequest = CloudZeroSettingsUpdate;
 
 export type UpdateCloudzeroSettingsCloudzeroSettingsPutMutationResponse =
@@ -13317,15 +14415,20 @@ export type UpdateCloudzeroSettingsCloudzeroSettingsPutMutation = {
 };
 
 /**
+ * CloudZeroInitResponse
  * @description Successful Response
  */
 export type InitCloudzeroSettingsCloudzeroInitPost200 = CloudZeroInitResponse;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type InitCloudzeroSettingsCloudzeroInitPost422 = HTTPValidationError;
 
+/**
+ * CloudZeroInitRequest
+ */
 export type InitCloudzeroSettingsCloudzeroInitPostMutationRequest = CloudZeroInitRequest;
 
 export type InitCloudzeroSettingsCloudzeroInitPostMutationResponse =
@@ -13338,15 +14441,20 @@ export type InitCloudzeroSettingsCloudzeroInitPostMutation = {
 };
 
 /**
+ * CloudZeroExportResponse
  * @description Successful Response
  */
 export type CloudzeroDryRunExportCloudzeroDryRunPost200 = CloudZeroExportResponse;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type CloudzeroDryRunExportCloudzeroDryRunPost422 = HTTPValidationError;
 
+/**
+ * CloudZeroExportRequest
+ */
 export type CloudzeroDryRunExportCloudzeroDryRunPostMutationRequest = CloudZeroExportRequest;
 
 export type CloudzeroDryRunExportCloudzeroDryRunPostMutationResponse =
@@ -13359,15 +14467,20 @@ export type CloudzeroDryRunExportCloudzeroDryRunPostMutation = {
 };
 
 /**
+ * CloudZeroExportResponse
  * @description Successful Response
  */
 export type CloudzeroExportCloudzeroExportPost200 = CloudZeroExportResponse;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type CloudzeroExportCloudzeroExportPost422 = HTTPValidationError;
 
+/**
+ * CloudZeroExportRequest
+ */
 export type CloudzeroExportCloudzeroExportPostMutationRequest = CloudZeroExportRequest;
 
 export type CloudzeroExportCloudzeroExportPostMutationResponse =
@@ -13380,6 +14493,7 @@ export type CloudzeroExportCloudzeroExportPostMutation = {
 };
 
 /**
+ * CachePingResponse
  * @description Successful Response
  */
 export type CachePingCachePingGet200 = CachePingResponse;
@@ -13434,6 +14548,7 @@ export type CacheFlushallCacheFlushallPostMutation = {
 };
 
 /**
+ * ListGuardrailsResponse
  * @description Successful Response
  */
 export type ListGuardrailsGuardrailsListGet200 = ListGuardrailsResponse;
@@ -13446,6 +14561,7 @@ export type ListGuardrailsGuardrailsListGetQuery = {
 };
 
 /**
+ * ListGuardrailsResponse
  * @description Successful Response
  */
 export type ListGuardrailsV2V2GuardrailsListGet200 = ListGuardrailsResponse;
@@ -13466,10 +14582,14 @@ export type CreateGuardrailGuardrailsPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type CreateGuardrailGuardrailsPost422 = HTTPValidationError;
 
+/**
+ * CreateGuardrailRequest
+ */
 export type CreateGuardrailGuardrailsPostMutationRequest = CreateGuardrailRequest;
 
 export type CreateGuardrailGuardrailsPostMutationResponse = CreateGuardrailGuardrailsPost200;
@@ -13495,10 +14615,14 @@ export type UpdateGuardrailGuardrailsGuardrailIdPut200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type UpdateGuardrailGuardrailsGuardrailIdPut422 = HTTPValidationError;
 
+/**
+ * UpdateGuardrailRequest
+ */
 export type UpdateGuardrailGuardrailsGuardrailIdPutMutationRequest = UpdateGuardrailRequest;
 
 export type UpdateGuardrailGuardrailsGuardrailIdPutMutationResponse =
@@ -13526,6 +14650,7 @@ export type DeleteGuardrailGuardrailsGuardrailIdDelete200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type DeleteGuardrailGuardrailsGuardrailIdDelete422 = HTTPValidationError;
@@ -13552,10 +14677,14 @@ export type PatchGuardrailGuardrailsGuardrailIdPatchPathParams = {
 export type PatchGuardrailGuardrailsGuardrailIdPatch200 = unknown;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type PatchGuardrailGuardrailsGuardrailIdPatch422 = HTTPValidationError;
 
+/**
+ * PatchGuardrailRequest
+ */
 export type PatchGuardrailGuardrailsGuardrailIdPatchMutationRequest = PatchGuardrailRequest;
 
 export type PatchGuardrailGuardrailsGuardrailIdPatchMutationResponse =
@@ -13583,6 +14712,7 @@ export type GetGuardrailInfoGuardrailsGuardrailIdGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetGuardrailInfoGuardrailsGuardrailIdGet422 = HTTPValidationError;
@@ -13611,6 +14741,7 @@ export type GetGuardrailInfoGuardrailsGuardrailIdInfoGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetGuardrailInfoGuardrailsGuardrailIdInfoGet422 = HTTPValidationError;
@@ -13647,10 +14778,14 @@ export type ValidateBlockedWordsFileGuardrailsValidateBlockedWordsFilePost200 = 
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type ValidateBlockedWordsFileGuardrailsValidateBlockedWordsFilePost422 = HTTPValidationError;
 
+/**
+ * Request
+ */
 export type ValidateBlockedWordsFileGuardrailsValidateBlockedWordsFilePostMutationRequest = {
 	[key: string]: string;
 };
@@ -13680,15 +14815,20 @@ export type GetProviderSpecificParamsGuardrailsUiProviderSpecificParamsGetQuery 
 };
 
 /**
+ * ApplyGuardrailResponse
  * @description Successful Response
  */
 export type ApplyGuardrailApplyGuardrailPost200 = ApplyGuardrailResponse;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type ApplyGuardrailApplyGuardrailPost422 = HTTPValidationError;
 
+/**
+ * ApplyGuardrailRequest
+ */
 export type ApplyGuardrailApplyGuardrailPostMutationRequest = ApplyGuardrailRequest;
 
 export type ApplyGuardrailApplyGuardrailPostMutationResponse = ApplyGuardrailApplyGuardrailPost200;
@@ -13700,15 +14840,20 @@ export type ApplyGuardrailApplyGuardrailPostMutation = {
 };
 
 /**
+ * ApplyGuardrailResponse
  * @description Successful Response
  */
 export type ApplyGuardrailGuardrailsApplyGuardrailPost200 = ApplyGuardrailResponse;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type ApplyGuardrailGuardrailsApplyGuardrailPost422 = HTTPValidationError;
 
+/**
+ * ApplyGuardrailRequest
+ */
 export type ApplyGuardrailGuardrailsApplyGuardrailPostMutationRequest = ApplyGuardrailRequest;
 
 export type ApplyGuardrailGuardrailsApplyGuardrailPostMutationResponse =
@@ -13721,6 +14866,7 @@ export type ApplyGuardrailGuardrailsApplyGuardrailPostMutation = {
 };
 
 /**
+ * ListSearchToolsResponse
  * @description Successful Response
  */
 export type ListSearchToolsSearchToolsListGet200 = ListSearchToolsResponse;
@@ -13740,10 +14886,14 @@ export type CreateSearchToolSearchToolsPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type CreateSearchToolSearchToolsPost422 = HTTPValidationError;
 
+/**
+ * CreateSearchToolRequest
+ */
 export type CreateSearchToolSearchToolsPostMutationRequest = CreateSearchToolRequest;
 
 export type CreateSearchToolSearchToolsPostMutationResponse = CreateSearchToolSearchToolsPost200;
@@ -13769,10 +14919,14 @@ export type UpdateSearchToolSearchToolsSearchToolIdPut200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type UpdateSearchToolSearchToolsSearchToolIdPut422 = HTTPValidationError;
 
+/**
+ * UpdateSearchToolRequest
+ */
 export type UpdateSearchToolSearchToolsSearchToolIdPutMutationRequest = UpdateSearchToolRequest;
 
 export type UpdateSearchToolSearchToolsSearchToolIdPutMutationResponse =
@@ -13800,6 +14954,7 @@ export type DeleteSearchToolSearchToolsSearchToolIdDelete200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type DeleteSearchToolSearchToolsSearchToolIdDelete422 = HTTPValidationError;
@@ -13828,6 +14983,7 @@ export type GetSearchToolInfoSearchToolsSearchToolIdGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetSearchToolInfoSearchToolsSearchToolIdGet422 = HTTPValidationError;
@@ -13849,10 +15005,14 @@ export type TestSearchToolConnectionSearchToolsTestConnectionPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type TestSearchToolConnectionSearchToolsTestConnectionPost422 = HTTPValidationError;
 
+/**
+ * TestSearchToolConnectionRequest
+ */
 export type TestSearchToolConnectionSearchToolsTestConnectionPostMutationRequest =
 	TestSearchToolConnectionRequest;
 
@@ -13881,6 +15041,7 @@ export type GetAvailableSearchProvidersSearchToolsUiAvailableProvidersGetQuery =
 };
 
 /**
+ * ListPromptsResponse
  * @description Successful Response
  */
 export type ListPromptsPromptsListGet200 = ListPromptsResponse;
@@ -13900,11 +15061,13 @@ export type GetPromptInfoPromptsPromptIdInfoGetPathParams = {
 };
 
 /**
+ * PromptInfoResponse
  * @description Successful Response
  */
 export type GetPromptInfoPromptsPromptIdInfoGet200 = PromptInfoResponse;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetPromptInfoPromptsPromptIdInfoGet422 = HTTPValidationError;
@@ -13926,11 +15089,13 @@ export type GetPromptInfoPromptsPromptIdGetPathParams = {
 };
 
 /**
+ * PromptInfoResponse
  * @description Successful Response
  */
 export type GetPromptInfoPromptsPromptIdGet200 = PromptInfoResponse;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetPromptInfoPromptsPromptIdGet422 = HTTPValidationError;
@@ -13958,10 +15123,14 @@ export type UpdatePromptPromptsPromptIdPut200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type UpdatePromptPromptsPromptIdPut422 = HTTPValidationError;
 
+/**
+ * Prompt
+ */
 export type UpdatePromptPromptsPromptIdPutMutationRequest = Prompt;
 
 export type UpdatePromptPromptsPromptIdPutMutationResponse = UpdatePromptPromptsPromptIdPut200;
@@ -13988,6 +15157,7 @@ export type DeletePromptPromptsPromptIdDelete200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type DeletePromptPromptsPromptIdDelete422 = HTTPValidationError;
@@ -14014,10 +15184,14 @@ export type PatchPromptPromptsPromptIdPatchPathParams = {
 export type PatchPromptPromptsPromptIdPatch200 = unknown;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type PatchPromptPromptsPromptIdPatch422 = HTTPValidationError;
 
+/**
+ * PatchPromptRequest
+ */
 export type PatchPromptPromptsPromptIdPatchMutationRequest = PatchPromptRequest;
 
 export type PatchPromptPromptsPromptIdPatchMutationResponse = PatchPromptPromptsPromptIdPatch200;
@@ -14037,10 +15211,14 @@ export type CreatePromptPromptsPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type CreatePromptPromptsPost422 = HTTPValidationError;
 
+/**
+ * Prompt
+ */
 export type CreatePromptPromptsPostMutationRequest = Prompt;
 
 export type CreatePromptPromptsPostMutationResponse = CreatePromptPromptsPost200;
@@ -14052,11 +15230,13 @@ export type CreatePromptPromptsPostMutation = {
 };
 
 /**
+ * Response Convert Prompt File To Json Utils Dotprompt Json Converter Post
  * @description Successful Response
  */
 export type ConvertPromptFileToJsonUtilsDotpromptJsonConverterPost200 = object;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type ConvertPromptFileToJsonUtilsDotpromptJsonConverterPost422 = HTTPValidationError;
@@ -14070,6 +15250,7 @@ export type ConvertPromptFileToJsonUtilsDotpromptJsonConverterPostMutation = {
 };
 
 /**
+ * CallbacksByType
  * @description Successful Response
  */
 export type ListCallbacksCallbacksListGet200 = CallbacksByType;
@@ -14104,10 +15285,14 @@ export type AddAllowedIpAddAllowedIpPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type AddAllowedIpAddAllowedIpPost422 = HTTPValidationError;
 
+/**
+ * IPAddress
+ */
 export type AddAllowedIpAddAllowedIpPostMutationRequest = IPAddress;
 
 export type AddAllowedIpAddAllowedIpPostMutationResponse = AddAllowedIpAddAllowedIpPost200;
@@ -14126,10 +15311,14 @@ export type DeleteAllowedIpDeleteAllowedIpPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type DeleteAllowedIpDeleteAllowedIpPost422 = HTTPValidationError;
 
+/**
+ * IPAddress
+ */
 export type DeleteAllowedIpDeleteAllowedIpPostMutationRequest = IPAddress;
 
 export type DeleteAllowedIpDeleteAllowedIpPostMutationResponse =
@@ -14142,6 +15331,7 @@ export type DeleteAllowedIpDeleteAllowedIpPostMutation = {
 };
 
 /**
+ * InternalUserSettingsResponse
  * @description Successful Response
  */
 export type GetInternalUserSettingsGetInternalUserSettingsGet200 = InternalUserSettingsResponse;
@@ -14155,6 +15345,7 @@ export type GetInternalUserSettingsGetInternalUserSettingsGetQuery = {
 };
 
 /**
+ * DefaultTeamSettingsResponse
  * @description Successful Response
  */
 export type GetDefaultTeamSettingsGetDefaultTeamSettingsGet200 = DefaultTeamSettingsResponse;
@@ -14173,10 +15364,14 @@ export type GetDefaultTeamSettingsGetDefaultTeamSettingsGetQuery = {
 export type UpdateInternalUserSettingsUpdateInternalUserSettingsPatch200 = unknown;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type UpdateInternalUserSettingsUpdateInternalUserSettingsPatch422 = HTTPValidationError;
 
+/**
+ * DefaultInternalUserParams
+ */
 export type UpdateInternalUserSettingsUpdateInternalUserSettingsPatchMutationRequest =
 	DefaultInternalUserParams;
 
@@ -14195,10 +15390,14 @@ export type UpdateInternalUserSettingsUpdateInternalUserSettingsPatchMutation = 
 export type UpdateDefaultTeamSettingsUpdateDefaultTeamSettingsPatch200 = unknown;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type UpdateDefaultTeamSettingsUpdateDefaultTeamSettingsPatch422 = HTTPValidationError;
 
+/**
+ * DefaultTeamSSOParams
+ */
 export type UpdateDefaultTeamSettingsUpdateDefaultTeamSettingsPatchMutationRequest =
 	DefaultTeamSSOParams;
 
@@ -14212,6 +15411,7 @@ export type UpdateDefaultTeamSettingsUpdateDefaultTeamSettingsPatchMutation = {
 };
 
 /**
+ * SSOSettingsResponse
  * @description Successful Response
  */
 export type GetSsoSettingsGetSsoSettingsGet200 = SSOSettingsResponse;
@@ -14229,10 +15429,14 @@ export type GetSsoSettingsGetSsoSettingsGetQuery = {
 export type UpdateSsoSettingsUpdateSsoSettingsPatch200 = unknown;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type UpdateSsoSettingsUpdateSsoSettingsPatch422 = HTTPValidationError;
 
+/**
+ * SSOConfig
+ */
 export type UpdateSsoSettingsUpdateSsoSettingsPatchMutationRequest = SSOConfig;
 
 export type UpdateSsoSettingsUpdateSsoSettingsPatchMutationResponse =
@@ -14245,6 +15449,7 @@ export type UpdateSsoSettingsUpdateSsoSettingsPatchMutation = {
 };
 
 /**
+ * UIThemeSettingsResponse
  * @description Successful Response
  */
 export type GetUiThemeSettingsGetUiThemeSettingsGet200 = UIThemeSettingsResponse;
@@ -14263,10 +15468,14 @@ export type GetUiThemeSettingsGetUiThemeSettingsGetQuery = {
 export type UpdateUiThemeSettingsUpdateUiThemeSettingsPatch200 = unknown;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type UpdateUiThemeSettingsUpdateUiThemeSettingsPatch422 = HTTPValidationError;
 
+/**
+ * UIThemeConfig
+ */
 export type UpdateUiThemeSettingsUpdateUiThemeSettingsPatchMutationRequest = UIThemeConfig;
 
 export type UpdateUiThemeSettingsUpdateUiThemeSettingsPatchMutationResponse =
@@ -14286,6 +15495,7 @@ export type UploadLogoUploadLogoPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type UploadLogoUploadLogoPost422 = HTTPValidationError;
@@ -14309,6 +15519,7 @@ export type CreateFileFilesPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type CreateFileFilesPost422 = HTTPValidationError;
@@ -14335,6 +15546,7 @@ export type ListFilesFilesGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type ListFilesFilesGet422 = HTTPValidationError;
@@ -14359,6 +15571,7 @@ export type CreateFileV1FilesPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type CreateFileV1FilesPost422 = HTTPValidationError;
@@ -14385,6 +15598,7 @@ export type ListFilesV1FilesGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type ListFilesV1FilesGet422 = HTTPValidationError;
@@ -14409,6 +15623,7 @@ export type CreateFileProviderV1FilesPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type CreateFileProviderV1FilesPost422 = HTTPValidationError;
@@ -14438,6 +15653,7 @@ export type ListFilesProviderV1FilesGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type ListFilesProviderV1FilesGet422 = HTTPValidationError;
@@ -14470,6 +15686,7 @@ export type GetFileContentFilesFileIdContentGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetFileContentFilesFileIdContentGet422 = HTTPValidationError;
@@ -14503,6 +15720,7 @@ export type GetFileContentV1FilesFileIdContentGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetFileContentV1FilesFileIdContentGet422 = HTTPValidationError;
@@ -14533,6 +15751,7 @@ export type GetFileContentProviderV1FilesFileIdContentGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetFileContentProviderV1FilesFileIdContentGet422 = HTTPValidationError;
@@ -14565,6 +15784,7 @@ export type GetFileFilesFileIdGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetFileFilesFileIdGet422 = HTTPValidationError;
@@ -14597,6 +15817,7 @@ export type DeleteFileFilesFileIdDelete200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type DeleteFileFilesFileIdDelete422 = HTTPValidationError;
@@ -14629,6 +15850,7 @@ export type GetFileV1FilesFileIdGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetFileV1FilesFileIdGet422 = HTTPValidationError;
@@ -14661,6 +15883,7 @@ export type DeleteFileV1FilesFileIdDelete200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type DeleteFileV1FilesFileIdDelete422 = HTTPValidationError;
@@ -14690,6 +15913,7 @@ export type GetFileProviderV1FilesFileIdGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetFileProviderV1FilesFileIdGet422 = HTTPValidationError;
@@ -14718,6 +15942,7 @@ export type DeleteFileProviderV1FilesFileIdDelete200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type DeleteFileProviderV1FilesFileIdDelete422 = HTTPValidationError;
@@ -14753,10 +15978,14 @@ export type AddTeamCallbacksTeamTeamIdCallbackPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type AddTeamCallbacksTeamTeamIdCallbackPost422 = HTTPValidationError;
 
+/**
+ * AddTeamCallback
+ */
 export type AddTeamCallbacksTeamTeamIdCallbackPostMutationRequest = AddTeamCallback;
 
 export type AddTeamCallbacksTeamTeamIdCallbackPostMutationResponse =
@@ -14785,6 +16014,7 @@ export type GetTeamCallbacksTeamTeamIdCallbackGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetTeamCallbacksTeamTeamIdCallbackGet422 = HTTPValidationError;
@@ -14813,6 +16043,7 @@ export type DisableTeamLoggingTeamTeamIdDisableLoggingPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type DisableTeamLoggingTeamTeamIdDisableLoggingPost422 = HTTPValidationError;
@@ -14834,10 +16065,14 @@ export type NewBudgetBudgetNewPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type NewBudgetBudgetNewPost422 = HTTPValidationError;
 
+/**
+ * BudgetNewRequest
+ */
 export type NewBudgetBudgetNewPostMutationRequest = BudgetNewRequest;
 
 export type NewBudgetBudgetNewPostMutationResponse = NewBudgetBudgetNewPost200;
@@ -14856,10 +16091,14 @@ export type UpdateBudgetBudgetUpdatePost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type UpdateBudgetBudgetUpdatePost422 = HTTPValidationError;
 
+/**
+ * BudgetNewRequest
+ */
 export type UpdateBudgetBudgetUpdatePostMutationRequest = BudgetNewRequest;
 
 export type UpdateBudgetBudgetUpdatePostMutationResponse = UpdateBudgetBudgetUpdatePost200;
@@ -14878,10 +16117,14 @@ export type InfoBudgetBudgetInfoPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type InfoBudgetBudgetInfoPost422 = HTTPValidationError;
 
+/**
+ * BudgetRequest
+ */
 export type InfoBudgetBudgetInfoPostMutationRequest = BudgetRequest;
 
 export type InfoBudgetBudgetInfoPostMutationResponse = InfoBudgetBudgetInfoPost200;
@@ -14907,6 +16150,7 @@ export type BudgetSettingsBudgetSettingsGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type BudgetSettingsBudgetSettingsGet422 = HTTPValidationError;
@@ -14941,10 +16185,14 @@ export type DeleteBudgetBudgetDeletePost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type DeleteBudgetBudgetDeletePost422 = HTTPValidationError;
 
+/**
+ * BudgetDeleteRequest
+ */
 export type DeleteBudgetBudgetDeletePostMutationRequest = BudgetDeleteRequest;
 
 export type DeleteBudgetBudgetDeletePostMutationResponse = DeleteBudgetBudgetDeletePost200;
@@ -14968,10 +16216,14 @@ export type PatchModelModelModelIdUpdatePatchPathParams = {
 export type PatchModelModelModelIdUpdatePatch200 = unknown;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type PatchModelModelModelIdUpdatePatch422 = HTTPValidationError;
 
+/**
+ * updateDeployment
+ */
 export type PatchModelModelModelIdUpdatePatchMutationRequest = UpdateDeployment;
 
 export type PatchModelModelModelIdUpdatePatchMutationResponse =
@@ -14992,10 +16244,14 @@ export type DeleteModelModelDeletePost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type DeleteModelModelDeletePost422 = HTTPValidationError;
 
+/**
+ * ModelInfoDelete
+ */
 export type DeleteModelModelDeletePostMutationRequest = ModelInfoDelete;
 
 export type DeleteModelModelDeletePostMutationResponse = DeleteModelModelDeletePost200;
@@ -15014,10 +16270,14 @@ export type AddNewModelModelNewPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type AddNewModelModelNewPost422 = HTTPValidationError;
 
+/**
+ * Deployment
+ */
 export type AddNewModelModelNewPostMutationRequest = Deployment;
 
 export type AddNewModelModelNewPostMutationResponse = AddNewModelModelNewPost200;
@@ -15036,10 +16296,14 @@ export type UpdateModelModelUpdatePost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type UpdateModelModelUpdatePost422 = HTTPValidationError;
 
+/**
+ * updateDeployment
+ */
 export type UpdateModelModelUpdatePostMutationRequest = UpdateDeployment;
 
 export type UpdateModelModelUpdatePostMutationResponse = UpdateModelModelUpdatePost200;
@@ -15058,10 +16322,14 @@ export type UpdatePublicModelGroupsModelGroupMakePublicPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type UpdatePublicModelGroupsModelGroupMakePublicPost422 = HTTPValidationError;
 
+/**
+ * UpdatePublicModelGroupsRequest
+ */
 export type UpdatePublicModelGroupsModelGroupMakePublicPostMutationRequest =
 	UpdatePublicModelGroupsRequest;
 
@@ -15082,10 +16350,14 @@ export type UpdateUsefulLinksModelHubUpdateUsefulLinksPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type UpdateUsefulLinksModelHubUpdateUsefulLinksPost422 = HTTPValidationError;
 
+/**
+ * UpdateUsefulLinksRequest
+ */
 export type UpdateUsefulLinksModelHubUpdateUsefulLinksPostMutationRequest =
 	UpdateUsefulLinksRequest;
 
@@ -15106,10 +16378,14 @@ export type NewTagTagNewPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type NewTagTagNewPost422 = HTTPValidationError;
 
+/**
+ * TagNewRequest
+ */
 export type NewTagTagNewPostMutationRequest = TagNewRequest;
 
 export type NewTagTagNewPostMutationResponse = NewTagTagNewPost200;
@@ -15128,10 +16404,14 @@ export type UpdateTagTagUpdatePost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type UpdateTagTagUpdatePost422 = HTTPValidationError;
 
+/**
+ * TagUpdateRequest
+ */
 export type UpdateTagTagUpdatePostMutationRequest = TagUpdateRequest;
 
 export type UpdateTagTagUpdatePostMutationResponse = UpdateTagTagUpdatePost200;
@@ -15150,10 +16430,14 @@ export type InfoTagTagInfoPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type InfoTagTagInfoPost422 = HTTPValidationError;
 
+/**
+ * TagInfoRequest
+ */
 export type InfoTagTagInfoPostMutationRequest = TagInfoRequest;
 
 export type InfoTagTagInfoPostMutationResponse = InfoTagTagInfoPost200;
@@ -15186,10 +16470,14 @@ export type DeleteTagTagDeletePost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type DeleteTagTagDeletePost422 = HTTPValidationError;
 
+/**
+ * TagDeleteRequest
+ */
 export type DeleteTagTagDeletePostMutationRequest = TagDeleteRequest;
 
 export type DeleteTagTagDeletePostMutationResponse = DeleteTagTagDeletePost200;
@@ -15219,11 +16507,13 @@ export type GetTagDailyActivityTagDailyActivityGetQueryParams = {
 };
 
 /**
+ * SpendAnalyticsPaginatedResponse
  * @description Successful Response
  */
 export type GetTagDailyActivityTagDailyActivityGet200 = SpendAnalyticsPaginatedResponse;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetTagDailyActivityTagDailyActivityGet422 = HTTPValidationError;
@@ -15258,10 +16548,14 @@ export type GetCostDiscountConfigConfigCostDiscountConfigGetQuery = {
 export type UpdateCostDiscountConfigConfigCostDiscountConfigPatch200 = unknown;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type UpdateCostDiscountConfigConfigCostDiscountConfigPatch422 = HTTPValidationError;
 
+/**
+ * Cost Discount Config
+ */
 export type UpdateCostDiscountConfigConfigCostDiscountConfigPatchMutationRequest = {
 	[key: string]: number;
 };
@@ -15276,6 +16570,7 @@ export type UpdateCostDiscountConfigConfigCostDiscountConfigPatchMutation = {
 };
 
 /**
+ * RouterSettingsResponse
  * @description Successful Response
  */
 export type GetRouterSettingsRouterSettingsGet200 = RouterSettingsResponse;
@@ -15288,6 +16583,7 @@ export type GetRouterSettingsRouterSettingsGetQuery = {
 };
 
 /**
+ * CacheSettingsResponse
  * @description Successful Response
  */
 export type GetCacheSettingsCacheSettingsGet200 = CacheSettingsResponse;
@@ -15307,10 +16603,14 @@ export type UpdateCacheSettingsCacheSettingsPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type UpdateCacheSettingsCacheSettingsPost422 = HTTPValidationError;
 
+/**
+ * CacheSettingsUpdateRequest
+ */
 export type UpdateCacheSettingsCacheSettingsPostMutationRequest = CacheSettingsUpdateRequest;
 
 export type UpdateCacheSettingsCacheSettingsPostMutationResponse =
@@ -15323,15 +16623,20 @@ export type UpdateCacheSettingsCacheSettingsPostMutation = {
 };
 
 /**
+ * CacheTestResponse
  * @description Successful Response
  */
 export type TestCacheConnectionCacheSettingsTestPost200 = CacheTestResponse;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type TestCacheConnectionCacheSettingsTestPost422 = HTTPValidationError;
 
+/**
+ * CacheTestRequest
+ */
 export type TestCacheConnectionCacheSettingsTestPostMutationRequest = CacheTestRequest;
 
 export type TestCacheConnectionCacheSettingsTestPostMutationResponse =
@@ -15344,6 +16649,7 @@ export type TestCacheConnectionCacheSettingsTestPostMutation = {
 };
 
 /**
+ * DistinctTagsResponse
  * @description Successful Response
  */
 export type GetDistinctUserAgentTagsTagDistinctGet200 = DistinctTagsResponse;
@@ -15368,11 +16674,13 @@ export type GetDailyActiveUsersTagDauGetQueryParams = {
 };
 
 /**
+ * ActiveUsersAnalyticsResponse
  * @description Successful Response
  */
 export type GetDailyActiveUsersTagDauGet200 = ActiveUsersAnalyticsResponse;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetDailyActiveUsersTagDauGet422 = HTTPValidationError;
@@ -15397,11 +16705,13 @@ export type GetWeeklyActiveUsersTagWauGetQueryParams = {
 };
 
 /**
+ * ActiveUsersAnalyticsResponse
  * @description Successful Response
  */
 export type GetWeeklyActiveUsersTagWauGet200 = ActiveUsersAnalyticsResponse;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetWeeklyActiveUsersTagWauGet422 = HTTPValidationError;
@@ -15426,11 +16736,13 @@ export type GetMonthlyActiveUsersTagMauGetQueryParams = {
 };
 
 /**
+ * ActiveUsersAnalyticsResponse
  * @description Successful Response
  */
 export type GetMonthlyActiveUsersTagMauGet200 = ActiveUsersAnalyticsResponse;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetMonthlyActiveUsersTagMauGet422 = HTTPValidationError;
@@ -15465,11 +16777,13 @@ export type GetTagSummaryTagSummaryGetQueryParams = {
 };
 
 /**
+ * TagSummaryResponse
  * @description Successful Response
  */
 export type GetTagSummaryTagSummaryGet200 = TagSummaryResponse;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetTagSummaryTagSummaryGet422 = HTTPValidationError;
@@ -15509,11 +16823,13 @@ export type GetPerUserAnalyticsTagUserAgentPerUserAnalyticsGetQueryParams = {
 };
 
 /**
+ * PerUserAnalyticsResponse
  * @description Successful Response
  */
 export type GetPerUserAnalyticsTagUserAgentPerUserAnalyticsGet200 = PerUserAnalyticsResponse;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetPerUserAnalyticsTagUserAgentPerUserAnalyticsGet422 = HTTPValidationError;
@@ -15535,10 +16851,14 @@ export type NewVectorStoreVectorStoreNewPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type NewVectorStoreVectorStoreNewPost422 = HTTPValidationError;
 
+/**
+ * LiteLLM_ManagedVectorStore
+ */
 export type NewVectorStoreVectorStoreNewPostMutationRequest = LiteLLMManagedVectorStore;
 
 export type NewVectorStoreVectorStoreNewPostMutationResponse = NewVectorStoreVectorStoreNewPost200;
@@ -15563,11 +16883,13 @@ export type ListVectorStoresVectorStoreListGetQueryParams = {
 };
 
 /**
+ * LiteLLM_ManagedVectorStoreListResponse
  * @description Successful Response
  */
 export type ListVectorStoresVectorStoreListGet200 = LiteLLMManagedVectorStoreListResponse;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type ListVectorStoresVectorStoreListGet422 = HTTPValidationError;
@@ -15588,10 +16910,14 @@ export type DeleteVectorStoreVectorStoreDeletePost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type DeleteVectorStoreVectorStoreDeletePost422 = HTTPValidationError;
 
+/**
+ * VectorStoreDeleteRequest
+ */
 export type DeleteVectorStoreVectorStoreDeletePostMutationRequest = VectorStoreDeleteRequest;
 
 export type DeleteVectorStoreVectorStoreDeletePostMutationResponse =
@@ -15611,10 +16937,14 @@ export type GetVectorStoreInfoVectorStoreInfoPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetVectorStoreInfoVectorStoreInfoPost422 = HTTPValidationError;
 
+/**
+ * VectorStoreInfoRequest
+ */
 export type GetVectorStoreInfoVectorStoreInfoPostMutationRequest = VectorStoreInfoRequest;
 
 export type GetVectorStoreInfoVectorStoreInfoPostMutationResponse =
@@ -15634,10 +16964,14 @@ export type UpdateVectorStoreVectorStoreUpdatePost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type UpdateVectorStoreVectorStoreUpdatePost422 = HTTPValidationError;
 
+/**
+ * VectorStoreUpdateRequest
+ */
 export type UpdateVectorStoreVectorStoreUpdatePostMutationRequest = VectorStoreUpdateRequest;
 
 export type UpdateVectorStoreVectorStoreUpdatePostMutationResponse =
@@ -15650,6 +16984,7 @@ export type UpdateVectorStoreVectorStoreUpdatePostMutation = {
 };
 
 /**
+ * EmailEventSettingsResponse
  * @description Successful Response
  */
 export type GetEmailEventSettingsEmailEventSettingsGet200 = EmailEventSettingsResponse;
@@ -15668,10 +17003,14 @@ export type GetEmailEventSettingsEmailEventSettingsGetQuery = {
 export type UpdateEventSettingsEmailEventSettingsPatch200 = unknown;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type UpdateEventSettingsEmailEventSettingsPatch422 = HTTPValidationError;
 
+/**
+ * EmailEventSettingsUpdateRequest
+ */
 export type UpdateEventSettingsEmailEventSettingsPatchMutationRequest =
 	EmailEventSettingsUpdateRequest;
 
@@ -15754,11 +17093,13 @@ export type GetAuditLogsAuditGetQueryParams = {
 };
 
 /**
+ * PaginatedAuditLogResponse
  * @description Successful Response
  */
 export type GetAuditLogsAuditGet200 = PaginatedAuditLogResponse;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetAuditLogsAuditGet422 = HTTPValidationError;
@@ -15779,6 +17120,7 @@ export type GetAuditLogByIdAuditIdGetPathParams = {
 };
 
 /**
+ * AuditLogResponse
  * @description Successful Response
  */
 export type GetAuditLogByIdAuditIdGet200 = AuditLogResponse;
@@ -15789,6 +17131,7 @@ export type GetAuditLogByIdAuditIdGet200 = AuditLogResponse;
 export type GetAuditLogByIdAuditIdGet404 = unknown;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type GetAuditLogByIdAuditIdGet422 = HTTPValidationError;
@@ -15839,6 +17182,7 @@ export type GetRobotsRobotsTxtGetQuery = {
 };
 
 /**
+ * UiDiscoveryEndpoints
  * @description Successful Response
  */
 export type GetUiConfigLitellmWellKnownLitellmUiConfigGet200 = UiDiscoveryEndpoints;
@@ -15852,6 +17196,7 @@ export type GetUiConfigLitellmWellKnownLitellmUiConfigGetQuery = {
 };
 
 /**
+ * UiDiscoveryEndpoints
  * @description Successful Response
  */
 export type GetUiConfigWellKnownLitellmUiConfigGet200 = UiDiscoveryEndpoints;
@@ -15879,6 +17224,7 @@ export type DynamicMcpRouteMcpServerNameMcpPost2200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type DynamicMcpRouteMcpServerNameMcpPost2422 = HTTPValidationError;
@@ -15907,6 +17253,7 @@ export type DynamicMcpRouteMcpServerNameMcpPost5200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type DynamicMcpRouteMcpServerNameMcpPost5422 = HTTPValidationError;
@@ -15935,6 +17282,7 @@ export type DynamicMcpRouteMcpServerNameMcpPost3200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type DynamicMcpRouteMcpServerNameMcpPost3422 = HTTPValidationError;
@@ -15963,6 +17311,7 @@ export type DynamicMcpRouteMcpServerNameMcpPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type DynamicMcpRouteMcpServerNameMcpPost422 = HTTPValidationError;
@@ -15989,6 +17338,7 @@ export type DynamicMcpRouteMcpServerNameMcpPost4PathParams = {
 export type DynamicMcpRouteMcpServerNameMcpPost4200 = unknown;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type DynamicMcpRouteMcpServerNameMcpPost4422 = HTTPValidationError;
@@ -16019,11 +17369,13 @@ export type ListToolRestApiMcpRestToolsListGetQueryParams = {
 };
 
 /**
+ * Response List Tool Rest Api Mcp Rest Tools List Get
  * @description Successful Response
  */
 export type ListToolRestApiMcpRestToolsListGet200 = object;
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type ListToolRestApiMcpRestToolsListGet422 = HTTPValidationError;
@@ -16059,10 +17411,14 @@ export type TestConnectionMcpRestTestConnectionPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type TestConnectionMcpRestTestConnectionPost422 = HTTPValidationError;
 
+/**
+ * NewMCPServerRequest
+ */
 export type TestConnectionMcpRestTestConnectionPostMutationRequest = NewMCPServerRequest;
 
 export type TestConnectionMcpRestTestConnectionPostMutationResponse =
@@ -16082,10 +17438,14 @@ export type TestToolsListMcpRestTestToolsListPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type TestToolsListMcpRestTestToolsListPost422 = HTTPValidationError;
 
+/**
+ * NewMCPServerRequest
+ */
 export type TestToolsListMcpRestTestToolsListPostMutationRequest = NewMCPServerRequest;
 
 export type TestToolsListMcpRestTestToolsListPostMutationResponse =
@@ -16126,6 +17486,7 @@ export type AuthorizeAuthorizeGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type AuthorizeAuthorizeGet422 = HTTPValidationError;
@@ -16170,6 +17531,7 @@ export type AuthorizeMcpServerNameAuthorizeGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type AuthorizeMcpServerNameAuthorizeGet422 = HTTPValidationError;
@@ -16195,6 +17557,7 @@ export type TokenEndpointTokenPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type TokenEndpointTokenPost422 = HTTPValidationError;
@@ -16219,6 +17582,7 @@ export type TokenEndpointMcpServerNameTokenPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type TokenEndpointMcpServerNameTokenPost422 = HTTPValidationError;
@@ -16251,6 +17615,7 @@ export type CallbackCallbackGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type CallbackCallbackGet422 = HTTPValidationError;
@@ -16275,6 +17640,7 @@ export type OauthProtectedResourceMcpWellKnownOauthProtectedResourceGet200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type OauthProtectedResourceMcpWellKnownOauthProtectedResourceGet422 = HTTPValidationError;
@@ -16301,6 +17667,7 @@ export type OauthProtectedResourceMcpWellKnownOauthProtectedResourceMcpServerNam
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type OauthProtectedResourceMcpWellKnownOauthProtectedResourceMcpServerNameMcpGet422 =
@@ -16327,6 +17694,7 @@ export type OauthAuthorizationServerRootWellKnownOauthAuthorizationServerGet200 
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type OauthAuthorizationServerRootWellKnownOauthAuthorizationServerGet422 =
@@ -16354,6 +17722,7 @@ export type OauthAuthorizationServerMcpWellKnownOauthAuthorizationServerMcpServe
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type OauthAuthorizationServerMcpWellKnownOauthAuthorizationServerMcpServerNameGet422 =
@@ -16396,6 +17765,7 @@ export type OauthAuthorizationServerRootWellKnownOauthAuthorizationServerMcpServ
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type OauthAuthorizationServerRootWellKnownOauthAuthorizationServerMcpServerNameMcpGet422 =
@@ -16423,6 +17793,7 @@ export type RegisterClientRegisterPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type RegisterClientRegisterPost422 = HTTPValidationError;
@@ -16447,6 +17818,7 @@ export type RegisterClientMcpServerNameRegisterPost200 = {
 };
 
 /**
+ * HTTPValidationError
  * @description Validation Error
  */
 export type RegisterClientMcpServerNameRegisterPost422 = HTTPValidationError;
