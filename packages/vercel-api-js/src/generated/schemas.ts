@@ -724,6 +724,8 @@ export const userEventSchema = z
 					"integration-installation-permission-updated",
 					"integration-installation-removed",
 					"integration-scope-changed",
+					"invoice-modified",
+					"invoice-refunded",
 					"log-drain-created",
 					"log-drain-deleted",
 					"log-drain-disabled",
@@ -4379,6 +4381,18 @@ export const userEventSchema = z
 				z.object({
 					price: z.optional(z.number()),
 					currency: z.optional(z.string()),
+				}),
+				z.object({
+					invoiceId: z.string(),
+					amount: z.number(),
+					refundReason: z.string(),
+					lineItemCount: z.number(),
+				}),
+				z.object({
+					invoiceId: z.string(),
+					newInvoiceId: z.string(),
+					settlementMethod: z.enum(["refunded-paid", "credited-paid"]),
+					amount: z.number(),
 				}),
 				z.object({
 					paymentMethodId: z.string(),
