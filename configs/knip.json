@@ -44,7 +44,7 @@
 		"packages/openapi-utils": {
 			"entry": ["src/index.ts", "src/effect/index.ts"],
 			"project": ["src/**/*.{ts,tsx}"],
-			"ignoreDependencies": ["@types/react", "@types/react-dom", "react", "react-dom", "effect"]
+			"ignoreDependencies": ["@types/react", "@types/react-dom", "react", "react-dom"]
 		},
 		"packages/vercel-api-js": {
 			"entry": [
@@ -84,6 +84,7 @@
 				"src/types.ts",
 				"src/schemas.ts",
 				"src/components.ts",
+				"src/effect.ts",
 				"kubb.config.ts"
 			],
 			"project": ["src/**/*.ts"],
@@ -96,6 +97,7 @@
 				"src/types.ts",
 				"src/schemas.ts",
 				"src/components.ts",
+				"src/effect.ts",
 				"kubb.config.ts"
 			],
 			"project": ["src/**/*.ts"],
@@ -123,6 +125,7 @@
 				"src/types.ts",
 				"src/schemas.ts",
 				"src/components.ts",
+				"src/effect.ts",
 				"kubb.config.ts"
 			],
 			"project": ["src/**/*.ts"],
