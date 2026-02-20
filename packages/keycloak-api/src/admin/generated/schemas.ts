@@ -756,8 +756,6 @@ export const credentialRepresentationSchema = z.object({
 
 export const decisionEffectSchema = z.enum(["DENY", "PERMIT"]);
 
-export const enforcementModeSchema = z.enum(["DISABLED", "ENFORCING", "PERMISSIVE"]);
-
 export const errorRepresentationSchema = z.object({
 	field: z.optional(z.string()),
 	errorMessage: z.optional(z.string()),
@@ -936,81 +934,6 @@ export const identityProviderRepresentationSchema = z.object({
 	config: z.optional(z.object({}).catchall(z.string())),
 	types: z.optional(z.array(z.string())),
 	updateProfileFirstLogin: z.optional(z.boolean()),
-});
-
-export const scopeEnforcementModeSchema = z.enum(["ALL", "ANY", "DISABLED"]);
-
-export const methodConfigSchema = z.object({
-	method: z.optional(z.string()),
-	scopes: z.optional(z.array(z.string())),
-	get "scopes-enforcement-mode"() {
-		return scopeEnforcementModeSchema.optional();
-	},
-});
-
-export const pathConfigSchema = z.object({
-	name: z.optional(z.string()),
-	type: z.optional(z.string()),
-	path: z.optional(z.string()),
-	get methods() {
-		return z.array(methodConfigSchema).optional();
-	},
-	scopes: z.optional(z.array(z.string())),
-	id: z.optional(z.string()),
-	get "enforcement-mode"() {
-		return enforcementModeSchema.optional();
-	},
-	"claim-information-point": z.optional(z.object({}).catchall(z.object({}).catchall(z.unknown()))),
-	invalidated: z.optional(z.boolean()),
-	staticPath: z.optional(z.boolean()),
-	static: z.optional(z.boolean()),
-});
-
-export const pathCacheConfigSchema = z.object({
-	"max-entries": z.optional(z.int()),
-	lifespan: z.optional(z.int()),
-});
-
-export const userManagedAccessConfigSchema = z.object({});
-
-export const policyEnforcerConfigSchema = z.object({
-	get "enforcement-mode"() {
-		return enforcementModeSchema.optional();
-	},
-	get paths() {
-		return z.array(pathConfigSchema).optional();
-	},
-	get "path-cache"() {
-		return pathCacheConfigSchema.optional();
-	},
-	"lazy-load-paths": z.optional(z.boolean()),
-	"on-deny-redirect-to": z.optional(z.string()),
-	get "user-managed-access"() {
-		return userManagedAccessConfigSchema.optional();
-	},
-	"claim-information-point": z.optional(z.object({}).catchall(z.object({}).catchall(z.unknown()))),
-	"http-method-as-scope": z.optional(z.boolean()),
-	realm: z.optional(z.string()),
-	"auth-server-url": z.optional(z.string()),
-	credentials: z.optional(z.object({}).catchall(z.unknown())),
-	resource: z.optional(z.string()),
-});
-
-export const installationAdapterConfigSchema = z.object({
-	realm: z.optional(z.string()),
-	"realm-public-key": z.optional(z.string()),
-	"auth-server-url": z.optional(z.string()),
-	"ssl-required": z.optional(z.string()),
-	"bearer-only": z.optional(z.boolean()),
-	resource: z.optional(z.string()),
-	"public-client": z.optional(z.boolean()),
-	"verify-token-audience": z.optional(z.boolean()),
-	credentials: z.optional(z.object({}).catchall(z.unknown())),
-	"use-resource-role-mappings": z.optional(z.boolean()),
-	"confidential-port": z.optional(z.int()),
-	get "policy-enforcer"() {
-		return policyEnforcerConfigSchema.optional();
-	},
 });
 
 export const keyUseSchema = z.enum(["ENC", "JWT_SVID", "SIG"]);
