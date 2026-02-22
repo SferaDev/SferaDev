@@ -159,6 +159,14 @@ import type {
 	CreateDeploymentCheckRunQueryParams,
 	CreateDeploymentMutationResponse,
 	CreateDeploymentQueryParams,
+	CreateDirectory400,
+	CreateDirectory401,
+	CreateDirectory403,
+	CreateDirectory410,
+	CreateDirectory422,
+	CreateDirectoryMutationResponse,
+	CreateDirectoryPathParams,
+	CreateDirectoryQueryParams,
 	CreateDrain400,
 	CreateDrain401,
 	CreateDrain403,
@@ -191,6 +199,26 @@ import type {
 	CreateExperimentationItem404,
 	CreateExperimentationItemMutationResponse,
 	CreateExperimentationItemPathParams,
+	CreateFlag400,
+	CreateFlag401,
+	CreateFlag402,
+	CreateFlag403,
+	CreateFlag404,
+	CreateFlag409,
+	CreateFlag412,
+	CreateFlagMutationResponse,
+	CreateFlagPathParams,
+	CreateFlagQueryParams,
+	CreateFlagSegment400,
+	CreateFlagSegment401,
+	CreateFlagSegment402,
+	CreateFlagSegment403,
+	CreateFlagSegment404,
+	CreateFlagSegment409,
+	CreateFlagSegment412,
+	CreateFlagSegmentMutationResponse,
+	CreateFlagSegmentPathParams,
+	CreateFlagSegmentQueryParams,
 	CreateIntegrationStoreDirect400,
 	CreateIntegrationStoreDirect401,
 	CreateIntegrationStoreDirect402,
@@ -265,12 +293,39 @@ import type {
 	CreateRecordMutationResponse,
 	CreateRecordPathParams,
 	CreateRecordQueryParams,
+	CreateSandbox400,
+	CreateSandbox401,
+	CreateSandbox402,
+	CreateSandbox403,
+	CreateSandbox404,
+	CreateSandbox429,
+	CreateSandbox500,
+	CreateSandboxMutationResponse,
+	CreateSandboxQueryParams,
+	CreateSdkKey400,
+	CreateSdkKey401,
+	CreateSdkKey402,
+	CreateSdkKey403,
+	CreateSdkKey404,
+	CreateSdkKey409,
+	CreateSdkKeyMutationResponse,
+	CreateSdkKeyPathParams,
+	CreateSdkKeyQueryParams,
 	CreateSharedEnvVariable400,
 	CreateSharedEnvVariable401,
 	CreateSharedEnvVariable402,
 	CreateSharedEnvVariable403,
 	CreateSharedEnvVariableMutationResponse,
 	CreateSharedEnvVariableQueryParams,
+	CreateSnapshot400,
+	CreateSnapshot401,
+	CreateSnapshot402,
+	CreateSnapshot403,
+	CreateSnapshot410,
+	CreateSnapshot422,
+	CreateSnapshotMutationResponse,
+	CreateSnapshotPathParams,
+	CreateSnapshotQueryParams,
 	CreateTeam400,
 	CreateTeam401,
 	CreateTeam403,
@@ -386,6 +441,26 @@ import type {
 	DeleteExperimentationItem404,
 	DeleteExperimentationItemMutationResponse,
 	DeleteExperimentationItemPathParams,
+	DeleteFlag400,
+	DeleteFlag401,
+	DeleteFlag402,
+	DeleteFlag403,
+	DeleteFlag404,
+	DeleteFlag409,
+	DeleteFlag412,
+	DeleteFlagMutationResponse,
+	DeleteFlagPathParams,
+	DeleteFlagQueryParams,
+	DeleteFlagSegment400,
+	DeleteFlagSegment401,
+	DeleteFlagSegment402,
+	DeleteFlagSegment403,
+	DeleteFlagSegment404,
+	DeleteFlagSegment409,
+	DeleteFlagSegment412,
+	DeleteFlagSegmentMutationResponse,
+	DeleteFlagSegmentPathParams,
+	DeleteFlagSegmentQueryParams,
 	DeleteIntegrationLogDrain400,
 	DeleteIntegrationLogDrain401,
 	DeleteIntegrationLogDrain403,
@@ -436,12 +511,28 @@ import type {
 	DeleteRollingReleaseConfigMutationResponse,
 	DeleteRollingReleaseConfigPathParams,
 	DeleteRollingReleaseConfigQueryParams,
+	DeleteSdkKey400,
+	DeleteSdkKey401,
+	DeleteSdkKey402,
+	DeleteSdkKey403,
+	DeleteSdkKey404,
+	DeleteSdkKey409,
+	DeleteSdkKeyMutationResponse,
+	DeleteSdkKeyPathParams,
+	DeleteSdkKeyQueryParams,
 	DeleteSharedEnvVariable400,
 	DeleteSharedEnvVariable401,
 	DeleteSharedEnvVariable402,
 	DeleteSharedEnvVariable403,
 	DeleteSharedEnvVariableMutationResponse,
 	DeleteSharedEnvVariableQueryParams,
+	DeleteSnapshot400,
+	DeleteSnapshot401,
+	DeleteSnapshot403,
+	DeleteSnapshot404,
+	DeleteSnapshotMutationResponse,
+	DeleteSnapshotPathParams,
+	DeleteSnapshotQueryParams,
 	DeleteTeam400,
 	DeleteTeam401,
 	DeleteTeam402,
@@ -492,6 +583,14 @@ import type {
 	ExchangeSsoToken403,
 	ExchangeSsoToken500,
 	ExchangeSsoTokenMutationResponse,
+	ExtendSandboxTimeout400,
+	ExtendSandboxTimeout401,
+	ExtendSandboxTimeout403,
+	ExtendSandboxTimeout410,
+	ExtendSandboxTimeout422,
+	ExtendSandboxTimeoutMutationResponse,
+	ExtendSandboxTimeoutPathParams,
+	ExtendSandboxTimeoutQueryParams,
 	FilterProjectEnvs400,
 	FilterProjectEnvs401,
 	FilterProjectEnvs403,
@@ -595,6 +694,22 @@ import type {
 	GetCheckPathParams,
 	GetCheckQueryParams,
 	GetCheckQueryResponse,
+	GetCommand400,
+	GetCommand401,
+	GetCommand403,
+	GetCommand410,
+	GetCommand422,
+	GetCommandLogs400,
+	GetCommandLogs401,
+	GetCommandLogs403,
+	GetCommandLogs410,
+	GetCommandLogs422,
+	GetCommandLogsPathParams,
+	GetCommandLogsQueryParams,
+	GetCommandLogsQueryResponse,
+	GetCommandPathParams,
+	GetCommandQueryParams,
+	GetCommandQueryResponse,
 	GetConfigurableLogDrain400,
 	GetConfigurableLogDrain401,
 	GetConfigurableLogDrain403,
@@ -656,6 +771,13 @@ import type {
 	GetDeploymentEventsPathParams,
 	GetDeploymentEventsQueryParams,
 	GetDeploymentEventsQueryResponse,
+	GetDeploymentFeatureFlags400,
+	GetDeploymentFeatureFlags401,
+	GetDeploymentFeatureFlags403,
+	GetDeploymentFeatureFlags404,
+	GetDeploymentFeatureFlagsPathParams,
+	GetDeploymentFeatureFlagsQueryParams,
+	GetDeploymentFeatureFlagsQueryResponse,
 	GetDeploymentFileContents400,
 	GetDeploymentFileContents401,
 	GetDeploymentFileContents403,
@@ -810,6 +932,30 @@ import type {
 	GetFirewallConfigPathParams,
 	GetFirewallConfigQueryParams,
 	GetFirewallConfigQueryResponse,
+	GetFlag400,
+	GetFlag401,
+	GetFlag402,
+	GetFlag403,
+	GetFlag404,
+	GetFlagPathParams,
+	GetFlagQueryParams,
+	GetFlagQueryResponse,
+	GetFlagSegment400,
+	GetFlagSegment401,
+	GetFlagSegment402,
+	GetFlagSegment403,
+	GetFlagSegment404,
+	GetFlagSegmentPathParams,
+	GetFlagSegmentQueryParams,
+	GetFlagSegmentQueryResponse,
+	GetFlagSettings400,
+	GetFlagSettings401,
+	GetFlagSettings402,
+	GetFlagSettings403,
+	GetFlagSettings404,
+	GetFlagSettingsPathParams,
+	GetFlagSettingsQueryParams,
+	GetFlagSettingsQueryResponse,
 	GetIntegrationLogDrains400,
 	GetIntegrationLogDrains401,
 	GetIntegrationLogDrains403,
@@ -930,12 +1076,35 @@ import type {
 	GetRuntimeLogsPathParams,
 	GetRuntimeLogsQueryParams,
 	GetRuntimeLogsQueryResponse,
+	GetSandbox400,
+	GetSandbox401,
+	GetSandbox403,
+	GetSandbox410,
+	GetSandbox422,
+	GetSandboxPathParams,
+	GetSandboxQueryParams,
+	GetSandboxQueryResponse,
+	GetSdkKeys400,
+	GetSdkKeys401,
+	GetSdkKeys402,
+	GetSdkKeys403,
+	GetSdkKeys404,
+	GetSdkKeysPathParams,
+	GetSdkKeysQueryParams,
+	GetSdkKeysQueryResponse,
 	GetSharedEnvVar400,
 	GetSharedEnvVar401,
 	GetSharedEnvVar403,
 	GetSharedEnvVarPathParams,
 	GetSharedEnvVarQueryParams,
 	GetSharedEnvVarQueryResponse,
+	GetSnapshot400,
+	GetSnapshot401,
+	GetSnapshot403,
+	GetSnapshot404,
+	GetSnapshotPathParams,
+	GetSnapshotQueryParams,
+	GetSnapshotQueryResponse,
 	GetSupportedTlds400,
 	GetSupportedTlds401,
 	GetSupportedTlds403,
@@ -1054,6 +1223,15 @@ import type {
 	JoinTeam404,
 	JoinTeamMutationResponse,
 	JoinTeamPathParams,
+	KillCommand400,
+	KillCommand401,
+	KillCommand403,
+	KillCommand404,
+	KillCommand410,
+	KillCommand422,
+	KillCommandMutationResponse,
+	KillCommandPathParams,
+	KillCommandQueryParams,
 	ListAccessGroupMembers400,
 	ListAccessGroupMembers401,
 	ListAccessGroupMembers403,
@@ -1096,6 +1274,12 @@ import type {
 	ListCheckRunsPathParams,
 	ListCheckRunsQueryParams,
 	ListCheckRunsQueryResponse,
+	ListCommands400,
+	ListCommands401,
+	ListCommands403,
+	ListCommandsPathParams,
+	ListCommandsQueryParams,
+	ListCommandsQueryResponse,
 	ListContractCommitments400,
 	ListContractCommitments401,
 	ListContractCommitments403,
@@ -1134,6 +1318,30 @@ import type {
 	ListEventTypes403,
 	ListEventTypesQueryParams,
 	ListEventTypesQueryResponse,
+	ListFlagSegments400,
+	ListFlagSegments401,
+	ListFlagSegments402,
+	ListFlagSegments403,
+	ListFlagSegments404,
+	ListFlagSegmentsPathParams,
+	ListFlagSegmentsQueryParams,
+	ListFlagSegmentsQueryResponse,
+	ListFlags400,
+	ListFlags401,
+	ListFlags402,
+	ListFlags403,
+	ListFlags404,
+	ListFlagsPathParams,
+	ListFlagsQueryParams,
+	ListFlagsQueryResponse,
+	ListFlagVersions400,
+	ListFlagVersions401,
+	ListFlagVersions402,
+	ListFlagVersions403,
+	ListFlagVersions404,
+	ListFlagVersionsPathParams,
+	ListFlagVersionsQueryParams,
+	ListFlagVersionsQueryResponse,
 	ListNetworks400,
 	ListNetworks401,
 	ListNetworks403,
@@ -1153,12 +1361,36 @@ import type {
 	ListPromoteAliasesPathParams,
 	ListPromoteAliasesQueryParams,
 	ListPromoteAliasesQueryResponse,
+	ListSandboxes400,
+	ListSandboxes401,
+	ListSandboxes403,
+	ListSandboxes404,
+	ListSandboxesQueryParams,
+	ListSandboxesQueryResponse,
 	ListSharedEnvVariable400,
 	ListSharedEnvVariable401,
 	ListSharedEnvVariable403,
 	ListSharedEnvVariable404,
 	ListSharedEnvVariableQueryParams,
 	ListSharedEnvVariableQueryResponse,
+	ListSnapshots400,
+	ListSnapshots401,
+	ListSnapshots403,
+	ListSnapshots404,
+	ListSnapshotsQueryParams,
+	ListSnapshotsQueryResponse,
+	ListTeamFlagSettings400,
+	ListTeamFlagSettings401,
+	ListTeamFlagSettings403,
+	ListTeamFlagSettingsPathParams,
+	ListTeamFlagSettingsQueryParams,
+	ListTeamFlagSettingsQueryResponse,
+	ListTeamFlags400,
+	ListTeamFlags401,
+	ListTeamFlags403,
+	ListTeamFlagsPathParams,
+	ListTeamFlagsQueryParams,
+	ListTeamFlagsQueryResponse,
 	ListUserEvents400,
 	ListUserEvents401,
 	ListUserEvents403,
@@ -1256,6 +1488,15 @@ import type {
 	ReadAccessGroupProjectQueryResponse,
 	ReadAccessGroupQueryParams,
 	ReadAccessGroupQueryResponse,
+	ReadFile400,
+	ReadFile401,
+	ReadFile403,
+	ReadFile404,
+	ReadFile410,
+	ReadFile422,
+	ReadFileMutationResponse,
+	ReadFilePathParams,
+	ReadFileQueryParams,
 	ReadNetwork400,
 	ReadNetwork401,
 	ReadNetwork403,
@@ -1378,6 +1619,14 @@ import type {
 	RestoreRedirects500,
 	RestoreRedirectsMutationResponse,
 	RestoreRedirectsQueryParams,
+	RunCommand400,
+	RunCommand401,
+	RunCommand403,
+	RunCommand410,
+	RunCommand422,
+	RunCommandMutationResponse,
+	RunCommandPathParams,
+	RunCommandQueryParams,
 	SearchRepo400,
 	SearchRepo401,
 	SearchRepo403,
@@ -1398,6 +1647,14 @@ import type {
 	Status403,
 	StatusQueryParams,
 	StatusQueryResponse,
+	StopSandbox400,
+	StopSandbox401,
+	StopSandbox403,
+	StopSandbox410,
+	StopSandbox422,
+	StopSandboxMutationResponse,
+	StopSandboxPathParams,
+	StopSandboxQueryParams,
 	SubmitBillingData400,
 	SubmitBillingData401,
 	SubmitBillingData403,
@@ -1541,6 +1798,36 @@ import type {
 	UpdateFirewallConfig500,
 	UpdateFirewallConfigMutationResponse,
 	UpdateFirewallConfigQueryParams,
+	UpdateFlag400,
+	UpdateFlag401,
+	UpdateFlag402,
+	UpdateFlag403,
+	UpdateFlag404,
+	UpdateFlag409,
+	UpdateFlag412,
+	UpdateFlagMutationResponse,
+	UpdateFlagPathParams,
+	UpdateFlagQueryParams,
+	UpdateFlagSegment400,
+	UpdateFlagSegment401,
+	UpdateFlagSegment402,
+	UpdateFlagSegment403,
+	UpdateFlagSegment404,
+	UpdateFlagSegment409,
+	UpdateFlagSegment412,
+	UpdateFlagSegmentMutationResponse,
+	UpdateFlagSegmentPathParams,
+	UpdateFlagSegmentQueryParams,
+	UpdateFlagSettings400,
+	UpdateFlagSettings401,
+	UpdateFlagSettings402,
+	UpdateFlagSettings403,
+	UpdateFlagSettings404,
+	UpdateFlagSettings409,
+	UpdateFlagSettings412,
+	UpdateFlagSettingsMutationResponse,
+	UpdateFlagSettingsPathParams,
+	UpdateFlagSettingsQueryParams,
 	UpdateInstallation400,
 	UpdateInstallation401,
 	UpdateInstallation403,
@@ -1564,6 +1851,14 @@ import type {
 	UpdateNetwork403,
 	UpdateNetworkMutationResponse,
 	UpdateNetworkPathParams,
+	UpdateNetworkPolicy400,
+	UpdateNetworkPolicy401,
+	UpdateNetworkPolicy403,
+	UpdateNetworkPolicy410,
+	UpdateNetworkPolicy422,
+	UpdateNetworkPolicyMutationResponse,
+	UpdateNetworkPolicyPathParams,
+	UpdateNetworkPolicyQueryParams,
 	UpdateNetworkQueryParams,
 	UpdateProject400,
 	UpdateProject401,
@@ -1696,6 +1991,15 @@ import type {
 	VerifyProjectDomainMutationResponse,
 	VerifyProjectDomainPathParams,
 	VerifyProjectDomainQueryParams,
+	WriteFiles400,
+	WriteFiles401,
+	WriteFiles403,
+	WriteFiles410,
+	WriteFiles422,
+	WriteFilesHeaderParams,
+	WriteFilesMutationResponse,
+	WriteFilesPathParams,
+	WriteFilesQueryParams,
 } from "./types";
 
 /**
@@ -2260,7 +2564,7 @@ export async function artifactQuery({
 }
 
 /**
- * @description Returns the billing charge data in FOCUS v1.3 JSONL format for a specified Vercel team, within a date range specified by `from` and `to` query parameters. Supports 1-day granularity with a maximum date range of 1 year. The response is streamed as newline-delimited JSON (JSONL) and can be optionally compressed with gzip if the `Accept-Encoding: gzip` header is provided.
+ * @description Returns the billing charge data in FOCUS v1.3 JSONL format for a specified Vercel team, within a date range specified by `from` and `to` query parameters. Supports 1-day granularity with a maximum date range of 1 year. The response is streamed as newline-delimited JSON (JSONL) and can be optionally compressed with gzip if the `Accept-Encoding: gzip` header is provided. This is only available for Owner, Member, Developer, Security, Billing, and Enterprise Viewer roles for the supplied team.
  * @summary List FOCUS billing charges
  * {@link /v1/billing/charges}
  */
@@ -5888,6 +6192,827 @@ export async function listEventTypes({
 }
 
 /**
+ * @description Retrieve all feature flags for a project. The list can be filtered by state.
+ * @summary List all flags
+ * {@link /v1/projects/:projectIdOrName/feature-flags/flags}
+ */
+export async function listFlags({
+	pathParams: { projectIdOrName },
+	queryParams,
+	config = {},
+}: {
+	pathParams: ListFlagsPathParams;
+	queryParams?: ListFlagsQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!projectIdOrName) {
+		throw new Error(`Missing required path parameter: projectIdOrName`);
+	}
+
+	const data = await request<
+		ListFlagsQueryResponse,
+		ErrorWrapper<ListFlags400 | ListFlags401 | ListFlags402 | ListFlags403 | ListFlags404>,
+		null,
+		Record<string, string>,
+		ListFlagsQueryParams,
+		ListFlagsPathParams
+	>({
+		method: "GET",
+		url: `/v1/projects/${projectIdOrName}/feature-flags/flags`,
+		queryParams,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Create a new feature flag for a project. The flag must have a unique slug within the project and specify its kind (boolean, string, or number).
+ * @summary Create a flag
+ * {@link /v1/projects/:projectIdOrName/feature-flags/flags}
+ */
+export async function createFlag({
+	pathParams: { projectIdOrName },
+	queryParams,
+	config = {},
+}: {
+	pathParams: CreateFlagPathParams;
+	queryParams?: CreateFlagQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!projectIdOrName) {
+		throw new Error(`Missing required path parameter: projectIdOrName`);
+	}
+
+	const data = await request<
+		CreateFlagMutationResponse,
+		ErrorWrapper<
+			| CreateFlag400
+			| CreateFlag401
+			| CreateFlag402
+			| CreateFlag403
+			| CreateFlag404
+			| CreateFlag409
+			| CreateFlag412
+		>,
+		null,
+		Record<string, string>,
+		CreateFlagQueryParams,
+		CreateFlagPathParams
+	>({
+		method: "PUT",
+		url: `/v1/projects/${projectIdOrName}/feature-flags/flags`,
+		queryParams,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
+ * @description Retrieve a specific feature flag by its ID or slug.
+ * @summary Get a flag
+ * {@link /v1/projects/:projectIdOrName/feature-flags/flags/:flagIdOrSlug}
+ */
+export async function getFlag({
+	pathParams: { projectIdOrName, flagIdOrSlug },
+	queryParams,
+	config = {},
+}: {
+	pathParams: GetFlagPathParams;
+	queryParams?: GetFlagQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!projectIdOrName) {
+		throw new Error(`Missing required path parameter: projectIdOrName`);
+	}
+
+	if (!flagIdOrSlug) {
+		throw new Error(`Missing required path parameter: flagIdOrSlug`);
+	}
+
+	const data = await request<
+		GetFlagQueryResponse,
+		ErrorWrapper<GetFlag400 | GetFlag401 | GetFlag402 | GetFlag403 | GetFlag404>,
+		null,
+		Record<string, string>,
+		GetFlagQueryParams,
+		GetFlagPathParams
+	>({
+		method: "GET",
+		url: `/v1/projects/${projectIdOrName}/feature-flags/flags/${flagIdOrSlug}`,
+		queryParams,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Update an existing feature flag. This endpoint supports partial updates, allowing you to modify specific properties like variants, environments, or state without providing the full flag configuration.
+ * @summary Update a flag
+ * {@link /v1/projects/:projectIdOrName/feature-flags/flags/:flagIdOrSlug}
+ */
+export async function updateFlag({
+	pathParams: { projectIdOrName, flagIdOrSlug },
+	queryParams,
+	config = {},
+}: {
+	pathParams: UpdateFlagPathParams;
+	queryParams?: UpdateFlagQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!projectIdOrName) {
+		throw new Error(`Missing required path parameter: projectIdOrName`);
+	}
+
+	if (!flagIdOrSlug) {
+		throw new Error(`Missing required path parameter: flagIdOrSlug`);
+	}
+
+	const data = await request<
+		UpdateFlagMutationResponse,
+		ErrorWrapper<
+			| UpdateFlag400
+			| UpdateFlag401
+			| UpdateFlag402
+			| UpdateFlag403
+			| UpdateFlag404
+			| UpdateFlag409
+			| UpdateFlag412
+		>,
+		null,
+		Record<string, string>,
+		UpdateFlagQueryParams,
+		UpdateFlagPathParams
+	>({
+		method: "PATCH",
+		url: `/v1/projects/${projectIdOrName}/feature-flags/flags/${flagIdOrSlug}`,
+		queryParams,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
+ * @description Permanently delete a feature flag from the project. This action cannot be undone. Consider archiving the flag instead if you may need it in the future.
+ * @summary Delete a flag
+ * {@link /v1/projects/:projectIdOrName/feature-flags/flags/:flagIdOrSlug}
+ */
+export async function deleteFlag({
+	pathParams: { projectIdOrName, flagIdOrSlug },
+	queryParams,
+	config = {},
+}: {
+	pathParams: DeleteFlagPathParams;
+	queryParams?: DeleteFlagQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!projectIdOrName) {
+		throw new Error(`Missing required path parameter: projectIdOrName`);
+	}
+
+	if (!flagIdOrSlug) {
+		throw new Error(`Missing required path parameter: flagIdOrSlug`);
+	}
+
+	const data = await request<
+		DeleteFlagMutationResponse,
+		ErrorWrapper<
+			| DeleteFlag400
+			| DeleteFlag401
+			| DeleteFlag402
+			| DeleteFlag403
+			| DeleteFlag404
+			| DeleteFlag409
+			| DeleteFlag412
+		>,
+		null,
+		Record<string, string>,
+		DeleteFlagQueryParams,
+		DeleteFlagPathParams
+	>({
+		method: "DELETE",
+		url: `/v1/projects/${projectIdOrName}/feature-flags/flags/${flagIdOrSlug}`,
+		queryParams,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Lists flag versions for a given flag.
+ * @summary List flag versions
+ * {@link /v1/projects/:projectIdOrName/feature-flags/flags/:flagIdOrSlug/versions}
+ */
+export async function listFlagVersions({
+	pathParams: { projectIdOrName, flagIdOrSlug },
+	queryParams,
+	config = {},
+}: {
+	pathParams: ListFlagVersionsPathParams;
+	queryParams?: ListFlagVersionsQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!projectIdOrName) {
+		throw new Error(`Missing required path parameter: projectIdOrName`);
+	}
+
+	if (!flagIdOrSlug) {
+		throw new Error(`Missing required path parameter: flagIdOrSlug`);
+	}
+
+	const data = await request<
+		ListFlagVersionsQueryResponse,
+		ErrorWrapper<
+			| ListFlagVersions400
+			| ListFlagVersions401
+			| ListFlagVersions402
+			| ListFlagVersions403
+			| ListFlagVersions404
+		>,
+		null,
+		Record<string, string>,
+		ListFlagVersionsQueryParams,
+		ListFlagVersionsPathParams
+	>({
+		method: "GET",
+		url: `/v1/projects/${projectIdOrName}/feature-flags/flags/${flagIdOrSlug}/versions`,
+		queryParams,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Retrieve feature flag settings for a project.
+ * @summary Get project flag settings
+ * {@link /v1/projects/:projectIdOrName/feature-flags/settings}
+ */
+export async function getFlagSettings({
+	pathParams: { projectIdOrName },
+	queryParams,
+	config = {},
+}: {
+	pathParams: GetFlagSettingsPathParams;
+	queryParams?: GetFlagSettingsQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!projectIdOrName) {
+		throw new Error(`Missing required path parameter: projectIdOrName`);
+	}
+
+	const data = await request<
+		GetFlagSettingsQueryResponse,
+		ErrorWrapper<
+			| GetFlagSettings400
+			| GetFlagSettings401
+			| GetFlagSettings402
+			| GetFlagSettings403
+			| GetFlagSettings404
+		>,
+		null,
+		Record<string, string>,
+		GetFlagSettingsQueryParams,
+		GetFlagSettingsPathParams
+	>({
+		method: "GET",
+		url: `/v1/projects/${projectIdOrName}/feature-flags/settings`,
+		queryParams,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Update feature flag settings for a project.
+ * @summary Update project flag settings
+ * {@link /v1/projects/:projectIdOrName/feature-flags/settings}
+ */
+export async function updateFlagSettings({
+	pathParams: { projectIdOrName },
+	queryParams,
+	config = {},
+}: {
+	pathParams: UpdateFlagSettingsPathParams;
+	queryParams?: UpdateFlagSettingsQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!projectIdOrName) {
+		throw new Error(`Missing required path parameter: projectIdOrName`);
+	}
+
+	const data = await request<
+		UpdateFlagSettingsMutationResponse,
+		ErrorWrapper<
+			| UpdateFlagSettings400
+			| UpdateFlagSettings401
+			| UpdateFlagSettings402
+			| UpdateFlagSettings403
+			| UpdateFlagSettings404
+			| UpdateFlagSettings409
+			| UpdateFlagSettings412
+		>,
+		null,
+		Record<string, string>,
+		UpdateFlagSettingsQueryParams,
+		UpdateFlagSettingsPathParams
+	>({
+		method: "PATCH",
+		url: `/v1/projects/${projectIdOrName}/feature-flags/settings`,
+		queryParams,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
+ * @description Retrieve feature flag settings for projects in a team.
+ * @summary List team project flag settings
+ * {@link /v1/teams/:teamId/feature-flags/settings}
+ */
+export async function listTeamFlagSettings({
+	pathParams: { teamId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: ListTeamFlagSettingsPathParams;
+	queryParams?: ListTeamFlagSettingsQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!teamId) {
+		throw new Error(`Missing required path parameter: teamId`);
+	}
+
+	const data = await request<
+		ListTeamFlagSettingsQueryResponse,
+		ErrorWrapper<ListTeamFlagSettings400 | ListTeamFlagSettings401 | ListTeamFlagSettings403>,
+		null,
+		Record<string, string>,
+		ListTeamFlagSettingsQueryParams,
+		ListTeamFlagSettingsPathParams
+	>({
+		method: "GET",
+		url: `/v1/teams/${teamId}/feature-flags/settings`,
+		queryParams,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Retrieve all feature flags for a team across all projects. The list can be filtered by state and supports pagination.
+ * @summary List all flags for a team
+ * {@link /v1/teams/:teamId/feature-flags/flags}
+ */
+export async function listTeamFlags({
+	pathParams: { teamId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: ListTeamFlagsPathParams;
+	queryParams?: ListTeamFlagsQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!teamId) {
+		throw new Error(`Missing required path parameter: teamId`);
+	}
+
+	const data = await request<
+		ListTeamFlagsQueryResponse,
+		ErrorWrapper<ListTeamFlags400 | ListTeamFlags401 | ListTeamFlags403>,
+		null,
+		Record<string, string>,
+		ListTeamFlagsQueryParams,
+		ListTeamFlagsPathParams
+	>({
+		method: "GET",
+		url: `/v1/teams/${teamId}/feature-flags/flags`,
+		queryParams,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Create a new feature flag segment.
+ * @summary Create a segment
+ * {@link /v1/projects/:projectIdOrName/feature-flags/segments}
+ */
+export async function createFlagSegment({
+	pathParams: { projectIdOrName },
+	queryParams,
+	config = {},
+}: {
+	pathParams: CreateFlagSegmentPathParams;
+	queryParams?: CreateFlagSegmentQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!projectIdOrName) {
+		throw new Error(`Missing required path parameter: projectIdOrName`);
+	}
+
+	const data = await request<
+		CreateFlagSegmentMutationResponse,
+		ErrorWrapper<
+			| CreateFlagSegment400
+			| CreateFlagSegment401
+			| CreateFlagSegment402
+			| CreateFlagSegment403
+			| CreateFlagSegment404
+			| CreateFlagSegment409
+			| CreateFlagSegment412
+		>,
+		null,
+		Record<string, string>,
+		CreateFlagSegmentQueryParams,
+		CreateFlagSegmentPathParams
+	>({
+		method: "PUT",
+		url: `/v1/projects/${projectIdOrName}/feature-flags/segments`,
+		queryParams,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
+ * @description List all feature flag segments for a project.
+ * @summary List segments
+ * {@link /v1/projects/:projectIdOrName/feature-flags/segments}
+ */
+export async function listFlagSegments({
+	pathParams: { projectIdOrName },
+	queryParams,
+	config = {},
+}: {
+	pathParams: ListFlagSegmentsPathParams;
+	queryParams?: ListFlagSegmentsQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!projectIdOrName) {
+		throw new Error(`Missing required path parameter: projectIdOrName`);
+	}
+
+	const data = await request<
+		ListFlagSegmentsQueryResponse,
+		ErrorWrapper<
+			| ListFlagSegments400
+			| ListFlagSegments401
+			| ListFlagSegments402
+			| ListFlagSegments403
+			| ListFlagSegments404
+		>,
+		null,
+		Record<string, string>,
+		ListFlagSegmentsQueryParams,
+		ListFlagSegmentsPathParams
+	>({
+		method: "GET",
+		url: `/v1/projects/${projectIdOrName}/feature-flags/segments`,
+		queryParams,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Retrieve a feature flag segment by ID or slug.
+ * @summary Get a segment
+ * {@link /v1/projects/:projectIdOrName/feature-flags/segments/:segmentIdOrSlug}
+ */
+export async function getFlagSegment({
+	pathParams: { projectIdOrName, segmentIdOrSlug },
+	queryParams,
+	config = {},
+}: {
+	pathParams: GetFlagSegmentPathParams;
+	queryParams?: GetFlagSegmentQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!projectIdOrName) {
+		throw new Error(`Missing required path parameter: projectIdOrName`);
+	}
+
+	if (!segmentIdOrSlug) {
+		throw new Error(`Missing required path parameter: segmentIdOrSlug`);
+	}
+
+	const data = await request<
+		GetFlagSegmentQueryResponse,
+		ErrorWrapper<
+			| GetFlagSegment400
+			| GetFlagSegment401
+			| GetFlagSegment402
+			| GetFlagSegment403
+			| GetFlagSegment404
+		>,
+		null,
+		Record<string, string>,
+		GetFlagSegmentQueryParams,
+		GetFlagSegmentPathParams
+	>({
+		method: "GET",
+		url: `/v1/projects/${projectIdOrName}/feature-flags/segments/${segmentIdOrSlug}`,
+		queryParams,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Delete a feature flag segment.
+ * @summary Delete a segment
+ * {@link /v1/projects/:projectIdOrName/feature-flags/segments/:segmentIdOrSlug}
+ */
+export async function deleteFlagSegment({
+	pathParams: { projectIdOrName, segmentIdOrSlug },
+	queryParams,
+	config = {},
+}: {
+	pathParams: DeleteFlagSegmentPathParams;
+	queryParams?: DeleteFlagSegmentQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!projectIdOrName) {
+		throw new Error(`Missing required path parameter: projectIdOrName`);
+	}
+
+	if (!segmentIdOrSlug) {
+		throw new Error(`Missing required path parameter: segmentIdOrSlug`);
+	}
+
+	const data = await request<
+		DeleteFlagSegmentMutationResponse,
+		ErrorWrapper<
+			| DeleteFlagSegment400
+			| DeleteFlagSegment401
+			| DeleteFlagSegment402
+			| DeleteFlagSegment403
+			| DeleteFlagSegment404
+			| DeleteFlagSegment409
+			| DeleteFlagSegment412
+		>,
+		null,
+		Record<string, string>,
+		DeleteFlagSegmentQueryParams,
+		DeleteFlagSegmentPathParams
+	>({
+		method: "DELETE",
+		url: `/v1/projects/${projectIdOrName}/feature-flags/segments/${segmentIdOrSlug}`,
+		queryParams,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Update an existing feature flag segment.
+ * @summary Update a segment
+ * {@link /v1/projects/:projectIdOrName/feature-flags/segments/:segmentIdOrSlug}
+ */
+export async function updateFlagSegment({
+	pathParams: { projectIdOrName, segmentIdOrSlug },
+	queryParams,
+	config = {},
+}: {
+	pathParams: UpdateFlagSegmentPathParams;
+	queryParams?: UpdateFlagSegmentQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!projectIdOrName) {
+		throw new Error(`Missing required path parameter: projectIdOrName`);
+	}
+
+	if (!segmentIdOrSlug) {
+		throw new Error(`Missing required path parameter: segmentIdOrSlug`);
+	}
+
+	const data = await request<
+		UpdateFlagSegmentMutationResponse,
+		ErrorWrapper<
+			| UpdateFlagSegment400
+			| UpdateFlagSegment401
+			| UpdateFlagSegment402
+			| UpdateFlagSegment403
+			| UpdateFlagSegment404
+			| UpdateFlagSegment409
+			| UpdateFlagSegment412
+		>,
+		null,
+		Record<string, string>,
+		UpdateFlagSegmentQueryParams,
+		UpdateFlagSegmentPathParams
+	>({
+		method: "PATCH",
+		url: `/v1/projects/${projectIdOrName}/feature-flags/segments/${segmentIdOrSlug}`,
+		queryParams,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
+ * @description Retrieve the feature flags of a deployment.
+ * @summary Retrieve the feature flags of a deployment
+ * {@link /v1/deployments/:deploymentId/feature-flags}
+ */
+export async function getDeploymentFeatureFlags({
+	pathParams: { deploymentId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: GetDeploymentFeatureFlagsPathParams;
+	queryParams?: GetDeploymentFeatureFlagsQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!deploymentId) {
+		throw new Error(`Missing required path parameter: deploymentId`);
+	}
+
+	const data = await request<
+		GetDeploymentFeatureFlagsQueryResponse,
+		ErrorWrapper<
+			| GetDeploymentFeatureFlags400
+			| GetDeploymentFeatureFlags401
+			| GetDeploymentFeatureFlags403
+			| GetDeploymentFeatureFlags404
+		>,
+		null,
+		Record<string, string>,
+		GetDeploymentFeatureFlagsQueryParams,
+		GetDeploymentFeatureFlagsPathParams
+	>({
+		method: "GET",
+		url: `/v1/deployments/${deploymentId}/feature-flags`,
+		queryParams,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Gets all SDK keys for a project.
+ * @summary Get all SDK keys
+ * {@link /v1/projects/:projectIdOrName/feature-flags/sdk-keys}
+ */
+export async function getSdkKeys({
+	pathParams: { projectIdOrName },
+	queryParams,
+	config = {},
+}: {
+	pathParams: GetSdkKeysPathParams;
+	queryParams?: GetSdkKeysQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!projectIdOrName) {
+		throw new Error(`Missing required path parameter: projectIdOrName`);
+	}
+
+	const data = await request<
+		GetSdkKeysQueryResponse,
+		ErrorWrapper<GetSdkKeys400 | GetSdkKeys401 | GetSdkKeys402 | GetSdkKeys403 | GetSdkKeys404>,
+		null,
+		Record<string, string>,
+		GetSdkKeysQueryParams,
+		GetSdkKeysPathParams
+	>({
+		method: "GET",
+		url: `/v1/projects/${projectIdOrName}/feature-flags/sdk-keys`,
+		queryParams,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Creates an SDK key.
+ * @summary Create an SDK key
+ * {@link /v1/projects/:projectIdOrName/feature-flags/sdk-keys}
+ */
+export async function createSdkKey({
+	pathParams: { projectIdOrName },
+	queryParams,
+	config = {},
+}: {
+	pathParams: CreateSdkKeyPathParams;
+	queryParams?: CreateSdkKeyQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!projectIdOrName) {
+		throw new Error(`Missing required path parameter: projectIdOrName`);
+	}
+
+	const data = await request<
+		CreateSdkKeyMutationResponse,
+		ErrorWrapper<
+			| CreateSdkKey400
+			| CreateSdkKey401
+			| CreateSdkKey402
+			| CreateSdkKey403
+			| CreateSdkKey404
+			| CreateSdkKey409
+		>,
+		null,
+		Record<string, string>,
+		CreateSdkKeyQueryParams,
+		CreateSdkKeyPathParams
+	>({
+		method: "PUT",
+		url: `/v1/projects/${projectIdOrName}/feature-flags/sdk-keys`,
+		queryParams,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
+ * @description Deletes an SDK key.
+ * @summary Delete an SDK key
+ * {@link /v1/projects/:projectIdOrName/feature-flags/sdk-keys/:hashKey}
+ */
+export async function deleteSdkKey({
+	pathParams: { projectIdOrName, hashKey },
+	queryParams,
+	config = {},
+}: {
+	pathParams: DeleteSdkKeyPathParams;
+	queryParams?: DeleteSdkKeyQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!projectIdOrName) {
+		throw new Error(`Missing required path parameter: projectIdOrName`);
+	}
+
+	if (!hashKey) {
+		throw new Error(`Missing required path parameter: hashKey`);
+	}
+
+	const data = await request<
+		DeleteSdkKeyMutationResponse,
+		ErrorWrapper<
+			| DeleteSdkKey400
+			| DeleteSdkKey401
+			| DeleteSdkKey402
+			| DeleteSdkKey403
+			| DeleteSdkKey404
+			| DeleteSdkKey409
+		>,
+		null,
+		Record<string, string>,
+		DeleteSdkKeyQueryParams,
+		DeleteSdkKeyPathParams
+	>({
+		method: "DELETE",
+		url: `/v1/projects/${projectIdOrName}/feature-flags/sdk-keys/${hashKey}`,
+		queryParams,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
  * @description Lists git namespaces for a supported provider. Supported providers are `github`, `gitlab` and `bitbucket`. If the provider is not provided, it will try to obtain it from the user that authenticated the request.
  * @summary List git namespaces by provider
  * {@link /v1/integrations/git-namespaces}
@@ -8954,6 +10079,677 @@ export async function unpauseProject({
 }
 
 /**
+ * @description Retrieves a paginated list of sandboxes belonging to a specific project. Results can be filtered by creation time using the `since` and `until` parameters.
+ * @summary List sandboxes
+ * {@link /v1/sandboxes}
+ */
+export async function listSandboxes({
+	queryParams,
+	config = {},
+}: {
+	queryParams?: ListSandboxesQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	const data = await request<
+		ListSandboxesQueryResponse,
+		ErrorWrapper<ListSandboxes400 | ListSandboxes401 | ListSandboxes403 | ListSandboxes404>,
+		null,
+		Record<string, string>,
+		ListSandboxesQueryParams,
+		Record<string, string>
+	>({ method: "GET", url: `/v1/sandboxes`, queryParams, ...requestConfig });
+	return data;
+}
+
+/**
+ * @description Creates a new sandbox environment for executing code in an isolated virtual machine. A sandbox can be initialized from various sources including Git repositories, tarballs, or existing snapshots. Once created, you can execute commands, read/write files, and manage the sandbox lifecycle.
+ * @summary Create a sandbox
+ * {@link /v1/sandboxes}
+ */
+export async function createSandbox({
+	queryParams,
+	config = {},
+}: {
+	queryParams?: CreateSandboxQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	const data = await request<
+		CreateSandboxMutationResponse,
+		ErrorWrapper<
+			| CreateSandbox400
+			| CreateSandbox401
+			| CreateSandbox402
+			| CreateSandbox403
+			| CreateSandbox404
+			| CreateSandbox429
+			| CreateSandbox500
+		>,
+		null,
+		Record<string, string>,
+		CreateSandboxQueryParams,
+		Record<string, string>
+	>({
+		method: "POST",
+		url: `/v1/sandboxes`,
+		queryParams,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
+ * @description Retrieves a paginated list of snapshots for a specific project.
+ * @summary List snapshots
+ * {@link /v1/sandboxes/snapshots}
+ */
+export async function listSnapshots({
+	queryParams,
+	config = {},
+}: {
+	queryParams?: ListSnapshotsQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	const data = await request<
+		ListSnapshotsQueryResponse,
+		ErrorWrapper<ListSnapshots400 | ListSnapshots401 | ListSnapshots403 | ListSnapshots404>,
+		null,
+		Record<string, string>,
+		ListSnapshotsQueryParams,
+		Record<string, string>
+	>({ method: "GET", url: `/v1/sandboxes/snapshots`, queryParams, ...requestConfig });
+	return data;
+}
+
+/**
+ * @description Retrieves detailed information about a specific sandbox, including its current status, resource configuration, and exposed routes.
+ * @summary Get a sandbox
+ * {@link /v1/sandboxes/:sandboxId}
+ */
+export async function getSandbox({
+	pathParams: { sandboxId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: GetSandboxPathParams;
+	queryParams?: GetSandboxQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!sandboxId) {
+		throw new Error(`Missing required path parameter: sandboxId`);
+	}
+
+	const data = await request<
+		GetSandboxQueryResponse,
+		ErrorWrapper<GetSandbox400 | GetSandbox401 | GetSandbox403 | GetSandbox410 | GetSandbox422>,
+		null,
+		Record<string, string>,
+		GetSandboxQueryParams,
+		GetSandboxPathParams
+	>({ method: "GET", url: `/v1/sandboxes/${sandboxId}`, queryParams, ...requestConfig });
+	return data;
+}
+
+/**
+ * @description Retrieves a list of all commands that have been executed in a sandbox, including their current status, exit codes, and execution times.
+ * @summary List commands
+ * {@link /v1/sandboxes/:sandboxId/cmd}
+ */
+export async function listCommands({
+	pathParams: { sandboxId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: ListCommandsPathParams;
+	queryParams?: ListCommandsQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!sandboxId) {
+		throw new Error(`Missing required path parameter: sandboxId`);
+	}
+
+	const data = await request<
+		ListCommandsQueryResponse,
+		ErrorWrapper<ListCommands400 | ListCommands401 | ListCommands403>,
+		null,
+		Record<string, string>,
+		ListCommandsQueryParams,
+		ListCommandsPathParams
+	>({ method: "GET", url: `/v1/sandboxes/${sandboxId}/cmd`, queryParams, ...requestConfig });
+	return data;
+}
+
+/**
+ * @description Executes a shell command inside a running sandbox. The command runs asynchronously and returns immediately with a command ID that can be used to track its progress and retrieve its output. Optionally, use the `wait` parameter to stream the command status until completion.
+ * @summary Execute a command
+ * {@link /v1/sandboxes/:sandboxId/cmd}
+ */
+export async function runCommand({
+	pathParams: { sandboxId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: RunCommandPathParams;
+	queryParams?: RunCommandQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!sandboxId) {
+		throw new Error(`Missing required path parameter: sandboxId`);
+	}
+
+	const data = await request<
+		RunCommandMutationResponse,
+		ErrorWrapper<RunCommand400 | RunCommand401 | RunCommand403 | RunCommand410 | RunCommand422>,
+		null,
+		Record<string, string>,
+		RunCommandQueryParams,
+		RunCommandPathParams
+	>({
+		method: "POST",
+		url: `/v1/sandboxes/${sandboxId}/cmd`,
+		queryParams,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
+ * @description Sends a signal to terminate a running command in a sandbox. The signal can be used to gracefully stop (SIGTERM) or forcefully kill (SIGKILL) the process. The command must still be running for this operation to succeed.
+ * @summary Kill a command
+ * {@link /v1/sandboxes/:sandboxId/:cmdId/kill}
+ */
+export async function killCommand({
+	pathParams: { cmdId, sandboxId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: KillCommandPathParams;
+	queryParams?: KillCommandQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!cmdId) {
+		throw new Error(`Missing required path parameter: cmdId`);
+	}
+
+	if (!sandboxId) {
+		throw new Error(`Missing required path parameter: sandboxId`);
+	}
+
+	const data = await request<
+		KillCommandMutationResponse,
+		ErrorWrapper<
+			| KillCommand400
+			| KillCommand401
+			| KillCommand403
+			| KillCommand404
+			| KillCommand410
+			| KillCommand422
+		>,
+		null,
+		Record<string, string>,
+		KillCommandQueryParams,
+		KillCommandPathParams
+	>({
+		method: "POST",
+		url: `/v1/sandboxes/${sandboxId}/${cmdId}/kill`,
+		queryParams,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
+ * @description Stops a running sandbox and releases its allocated resources. All running processes within the sandbox will be terminated. This action cannot be undone. A stopped sandbox cannot be restarted.
+ * @summary Stop a sandbox
+ * {@link /v1/sandboxes/:sandboxId/stop}
+ */
+export async function stopSandbox({
+	pathParams: { sandboxId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: StopSandboxPathParams;
+	queryParams?: StopSandboxQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!sandboxId) {
+		throw new Error(`Missing required path parameter: sandboxId`);
+	}
+
+	const data = await request<
+		StopSandboxMutationResponse,
+		ErrorWrapper<
+			StopSandbox400 | StopSandbox401 | StopSandbox403 | StopSandbox410 | StopSandbox422
+		>,
+		null,
+		Record<string, string>,
+		StopSandboxQueryParams,
+		StopSandboxPathParams
+	>({ method: "POST", url: `/v1/sandboxes/${sandboxId}/stop`, queryParams, ...requestConfig });
+	return data;
+}
+
+/**
+ * @description Extends the maximum execution time of a running sandbox. The sandbox must be active and able to accept commands. The total timeout cannot exceed the maximum allowed limit for your account.
+ * @summary Extend sandbox timeout
+ * {@link /v1/sandboxes/:sandboxId/extend-timeout}
+ */
+export async function extendSandboxTimeout({
+	pathParams: { sandboxId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: ExtendSandboxTimeoutPathParams;
+	queryParams?: ExtendSandboxTimeoutQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!sandboxId) {
+		throw new Error(`Missing required path parameter: sandboxId`);
+	}
+
+	const data = await request<
+		ExtendSandboxTimeoutMutationResponse,
+		ErrorWrapper<
+			| ExtendSandboxTimeout400
+			| ExtendSandboxTimeout401
+			| ExtendSandboxTimeout403
+			| ExtendSandboxTimeout410
+			| ExtendSandboxTimeout422
+		>,
+		null,
+		Record<string, string>,
+		ExtendSandboxTimeoutQueryParams,
+		ExtendSandboxTimeoutPathParams
+	>({
+		method: "POST",
+		url: `/v1/sandboxes/${sandboxId}/extend-timeout`,
+		queryParams,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
+ * @description Replaces the network access policy of a running sandbox. Use this to control which external hosts the sandbox can communicate with. This is a full replacement. Any previously configured network rules will be overwritten.
+ * @summary Update network policy
+ * {@link /v1/sandboxes/:sandboxId/network-policy}
+ */
+export async function updateNetworkPolicy({
+	pathParams: { sandboxId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: UpdateNetworkPolicyPathParams;
+	queryParams?: UpdateNetworkPolicyQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!sandboxId) {
+		throw new Error(`Missing required path parameter: sandboxId`);
+	}
+
+	const data = await request<
+		UpdateNetworkPolicyMutationResponse,
+		ErrorWrapper<
+			| UpdateNetworkPolicy400
+			| UpdateNetworkPolicy401
+			| UpdateNetworkPolicy403
+			| UpdateNetworkPolicy410
+			| UpdateNetworkPolicy422
+		>,
+		null,
+		Record<string, string>,
+		UpdateNetworkPolicyQueryParams,
+		UpdateNetworkPolicyPathParams
+	>({
+		method: "POST",
+		url: `/v1/sandboxes/${sandboxId}/network-policy`,
+		queryParams,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
+ * @description Retrieves the current status and details of a command executed in a sandbox. Use the `wait` parameter to block until the command finishes execution.
+ * @summary Get a command
+ * {@link /v1/sandboxes/:sandboxId/cmd/:cmdId}
+ */
+export async function getCommand({
+	pathParams: { sandboxId, cmdId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: GetCommandPathParams;
+	queryParams?: GetCommandQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!sandboxId) {
+		throw new Error(`Missing required path parameter: sandboxId`);
+	}
+
+	if (!cmdId) {
+		throw new Error(`Missing required path parameter: cmdId`);
+	}
+
+	const data = await request<
+		GetCommandQueryResponse,
+		ErrorWrapper<GetCommand400 | GetCommand401 | GetCommand403 | GetCommand410 | GetCommand422>,
+		null,
+		Record<string, string>,
+		GetCommandQueryParams,
+		GetCommandPathParams
+	>({
+		method: "GET",
+		url: `/v1/sandboxes/${sandboxId}/cmd/${cmdId}`,
+		queryParams,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Streams the output of a command in real-time using newline-delimited JSON (ND-JSON). Each entry includes the output data and stream type. Stream types include `stdout`, `stderr`, and `error` (for stream failures).
+ * @summary Stream command logs
+ * {@link /v1/sandboxes/:sandboxId/cmd/:cmdId/logs}
+ */
+export async function getCommandLogs({
+	pathParams: { sandboxId, cmdId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: GetCommandLogsPathParams;
+	queryParams?: GetCommandLogsQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!sandboxId) {
+		throw new Error(`Missing required path parameter: sandboxId`);
+	}
+
+	if (!cmdId) {
+		throw new Error(`Missing required path parameter: cmdId`);
+	}
+
+	const data = await request<
+		GetCommandLogsQueryResponse,
+		ErrorWrapper<
+			| GetCommandLogs400
+			| GetCommandLogs401
+			| GetCommandLogs403
+			| GetCommandLogs410
+			| GetCommandLogs422
+		>,
+		null,
+		Record<string, string>,
+		GetCommandLogsQueryParams,
+		GetCommandLogsPathParams
+	>({
+		method: "GET",
+		url: `/v1/sandboxes/${sandboxId}/cmd/${cmdId}/logs`,
+		queryParams,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Downloads the contents of a file from a sandbox's filesystem. The file content is returned as a binary stream with appropriate Content-Disposition headers for file download.
+ * @summary Read a file
+ * {@link /v1/sandboxes/:sandboxId/fs/read}
+ */
+export async function readFile({
+	pathParams: { sandboxId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: ReadFilePathParams;
+	queryParams?: ReadFileQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!sandboxId) {
+		throw new Error(`Missing required path parameter: sandboxId`);
+	}
+
+	const data = await request<
+		ReadFileMutationResponse,
+		ErrorWrapper<ReadFile400 | ReadFile401 | ReadFile403 | ReadFile404 | ReadFile410 | ReadFile422>,
+		null,
+		Record<string, string>,
+		ReadFileQueryParams,
+		ReadFilePathParams
+	>({
+		method: "POST",
+		url: `/v1/sandboxes/${sandboxId}/fs/read`,
+		queryParams,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
+ * @description Creates a new directory in a sandbox's filesystem. By default, parent directories are created recursively if they don't exist (similar to `mkdir -p`).
+ * @summary Create a directory
+ * {@link /v1/sandboxes/:sandboxId/fs/mkdir}
+ */
+export async function createDirectory({
+	pathParams: { sandboxId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: CreateDirectoryPathParams;
+	queryParams?: CreateDirectoryQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!sandboxId) {
+		throw new Error(`Missing required path parameter: sandboxId`);
+	}
+
+	const data = await request<
+		CreateDirectoryMutationResponse,
+		ErrorWrapper<
+			| CreateDirectory400
+			| CreateDirectory401
+			| CreateDirectory403
+			| CreateDirectory410
+			| CreateDirectory422
+		>,
+		null,
+		Record<string, string>,
+		CreateDirectoryQueryParams,
+		CreateDirectoryPathParams
+	>({
+		method: "POST",
+		url: `/v1/sandboxes/${sandboxId}/fs/mkdir`,
+		queryParams,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
+ * @description Uploads and extracts files to a sandbox's filesystem. Files must be uploaded as a gzipped tarball (`.tar.gz`) with the `Content-Type` header set to `application/gzip`. The tarball contents are extracted to the sandbox's working directory, or to a custom directory specified via the `x-cwd` header.
+ * @summary Write files
+ * {@link /v1/sandboxes/:sandboxId/fs/write}
+ */
+export async function writeFiles({
+	pathParams: { sandboxId },
+	queryParams,
+	headers,
+	config = {},
+}: {
+	pathParams: WriteFilesPathParams;
+	queryParams?: WriteFilesQueryParams;
+	headers?: WriteFilesHeaderParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!sandboxId) {
+		throw new Error(`Missing required path parameter: sandboxId`);
+	}
+
+	const data = await request<
+		WriteFilesMutationResponse,
+		ErrorWrapper<WriteFiles400 | WriteFiles401 | WriteFiles403 | WriteFiles410 | WriteFiles422>,
+		null,
+		WriteFilesHeaderParams,
+		WriteFilesQueryParams,
+		WriteFilesPathParams
+	>({
+		method: "POST",
+		url: `/v1/sandboxes/${sandboxId}/fs/write`,
+		queryParams,
+		...requestConfig,
+		headers: { ...headers, ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
+ * @description Retrieves detailed information about a specific snapshot, including its creation time, size, expiration date, and the source sandbox it was created from.
+ * @summary Get a snapshot
+ * {@link /v1/sandboxes/snapshots/:snapshotId}
+ */
+export async function getSnapshot({
+	pathParams: { snapshotId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: GetSnapshotPathParams;
+	queryParams?: GetSnapshotQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!snapshotId) {
+		throw new Error(`Missing required path parameter: snapshotId`);
+	}
+
+	const data = await request<
+		GetSnapshotQueryResponse,
+		ErrorWrapper<GetSnapshot400 | GetSnapshot401 | GetSnapshot403 | GetSnapshot404>,
+		null,
+		Record<string, string>,
+		GetSnapshotQueryParams,
+		GetSnapshotPathParams
+	>({ method: "GET", url: `/v1/sandboxes/snapshots/${snapshotId}`, queryParams, ...requestConfig });
+	return data;
+}
+
+/**
+ * @description Permanently deletes a snapshot and frees its associated storage. This action cannot be undone. After deletion, the snapshot can no longer be used to create new sandboxes.
+ * @summary Delete a snapshot
+ * {@link /v1/sandboxes/snapshots/:snapshotId}
+ */
+export async function deleteSnapshot({
+	pathParams: { snapshotId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: DeleteSnapshotPathParams;
+	queryParams?: DeleteSnapshotQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!snapshotId) {
+		throw new Error(`Missing required path parameter: snapshotId`);
+	}
+
+	const data = await request<
+		DeleteSnapshotMutationResponse,
+		ErrorWrapper<DeleteSnapshot400 | DeleteSnapshot401 | DeleteSnapshot403 | DeleteSnapshot404>,
+		null,
+		Record<string, string>,
+		DeleteSnapshotQueryParams,
+		DeleteSnapshotPathParams
+	>({
+		method: "DELETE",
+		url: `/v1/sandboxes/snapshots/${snapshotId}`,
+		queryParams,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Creates a point-in-time snapshot of a running sandbox's filesystem. Snapshots can be used to quickly restore a sandbox to a previous state or to create new sandboxes with pre-configured environments. The sandbox must be running and able to accept commands for a snapshot to be created. The sandbox will be terminated after the snapshot is created.
+ * @summary Create a snapshot
+ * {@link /v1/sandboxes/:sandboxId/snapshot}
+ */
+export async function createSnapshot({
+	pathParams: { sandboxId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: CreateSnapshotPathParams;
+	queryParams?: CreateSnapshotQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!sandboxId) {
+		throw new Error(`Missing required path parameter: sandboxId`);
+	}
+
+	const data = await request<
+		CreateSnapshotMutationResponse,
+		ErrorWrapper<
+			| CreateSnapshot400
+			| CreateSnapshot401
+			| CreateSnapshot402
+			| CreateSnapshot403
+			| CreateSnapshot410
+			| CreateSnapshot422
+		>,
+		null,
+		Record<string, string>,
+		CreateSnapshotQueryParams,
+		CreateSnapshotPathParams
+	>({
+		method: "POST",
+		url: `/v1/sandboxes/${sandboxId}/snapshot`,
+		queryParams,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
  * @description Update the setting for determining if the project has Attack Challenge mode enabled.
  * @summary Update Attack Challenge mode
  * {@link /v1/security/attack-mode}
@@ -10719,6 +12515,28 @@ export const operationsByPath = {
 	"PATCH /v1/env/{id}/unlink/{projectId}": unlinkSharedEnvVariable,
 	"GET /v3/events": listUserEvents,
 	"GET /v1/events/types": listEventTypes,
+	"GET /v1/projects/{projectIdOrName}/feature-flags/flags": listFlags,
+	"PUT /v1/projects/{projectIdOrName}/feature-flags/flags": createFlag,
+	"GET /v1/projects/{projectIdOrName}/feature-flags/flags/{flagIdOrSlug}": getFlag,
+	"PATCH /v1/projects/{projectIdOrName}/feature-flags/flags/{flagIdOrSlug}": updateFlag,
+	"DELETE /v1/projects/{projectIdOrName}/feature-flags/flags/{flagIdOrSlug}": deleteFlag,
+	"GET /v1/projects/{projectIdOrName}/feature-flags/flags/{flagIdOrSlug}/versions":
+		listFlagVersions,
+	"GET /v1/projects/{projectIdOrName}/feature-flags/settings": getFlagSettings,
+	"PATCH /v1/projects/{projectIdOrName}/feature-flags/settings": updateFlagSettings,
+	"GET /v1/teams/{teamId}/feature-flags/settings": listTeamFlagSettings,
+	"GET /v1/teams/{teamId}/feature-flags/flags": listTeamFlags,
+	"PUT /v1/projects/{projectIdOrName}/feature-flags/segments": createFlagSegment,
+	"GET /v1/projects/{projectIdOrName}/feature-flags/segments": listFlagSegments,
+	"GET /v1/projects/{projectIdOrName}/feature-flags/segments/{segmentIdOrSlug}": getFlagSegment,
+	"DELETE /v1/projects/{projectIdOrName}/feature-flags/segments/{segmentIdOrSlug}":
+		deleteFlagSegment,
+	"PATCH /v1/projects/{projectIdOrName}/feature-flags/segments/{segmentIdOrSlug}":
+		updateFlagSegment,
+	"GET /v1/deployments/{deploymentId}/feature-flags": getDeploymentFeatureFlags,
+	"GET /v1/projects/{projectIdOrName}/feature-flags/sdk-keys": getSdkKeys,
+	"PUT /v1/projects/{projectIdOrName}/feature-flags/sdk-keys": createSdkKey,
+	"DELETE /v1/projects/{projectIdOrName}/feature-flags/sdk-keys/{hashKey}": deleteSdkKey,
 	"GET /v1/integrations/git-namespaces": gitNamespaces,
 	"GET /v1/integrations/search-repo": searchRepo,
 	"GET /v1/integrations/integration/{integrationIdOrSlug}/products/{productIdOrSlug}/plans":
@@ -10812,6 +12630,24 @@ export const operationsByPath = {
 	"GET /v1/projects/{projectId}/promote/aliases": listPromoteAliases,
 	"POST /v1/projects/{projectId}/pause": pauseProject,
 	"POST /v1/projects/{projectId}/unpause": unpauseProject,
+	"GET /v1/sandboxes": listSandboxes,
+	"POST /v1/sandboxes": createSandbox,
+	"GET /v1/sandboxes/snapshots": listSnapshots,
+	"GET /v1/sandboxes/{sandboxId}": getSandbox,
+	"GET /v1/sandboxes/{sandboxId}/cmd": listCommands,
+	"POST /v1/sandboxes/{sandboxId}/cmd": runCommand,
+	"POST /v1/sandboxes/{sandboxId}/{cmdId}/kill": killCommand,
+	"POST /v1/sandboxes/{sandboxId}/stop": stopSandbox,
+	"POST /v1/sandboxes/{sandboxId}/extend-timeout": extendSandboxTimeout,
+	"POST /v1/sandboxes/{sandboxId}/network-policy": updateNetworkPolicy,
+	"GET /v1/sandboxes/{sandboxId}/cmd/{cmdId}": getCommand,
+	"GET /v1/sandboxes/{sandboxId}/cmd/{cmdId}/logs": getCommandLogs,
+	"POST /v1/sandboxes/{sandboxId}/fs/read": readFile,
+	"POST /v1/sandboxes/{sandboxId}/fs/mkdir": createDirectory,
+	"POST /v1/sandboxes/{sandboxId}/fs/write": writeFiles,
+	"GET /v1/sandboxes/snapshots/{snapshotId}": getSnapshot,
+	"DELETE /v1/sandboxes/snapshots/{snapshotId}": deleteSnapshot,
+	"POST /v1/sandboxes/{sandboxId}/snapshot": createSnapshot,
 	"POST /v1/security/attack-mode": updateAttackChallengeMode,
 	"PUT /v1/security/firewall/config": putFirewallConfig,
 	"PATCH /v1/security/firewall/config": updateFirewallConfig,
@@ -11041,6 +12877,27 @@ export const operationsByTag = {
 		getAuthUser,
 		requestDelete,
 	},
+	featureFlags: {
+		listFlags,
+		createFlag,
+		getFlag,
+		updateFlag,
+		deleteFlag,
+		listFlagVersions,
+		getFlagSettings,
+		updateFlagSettings,
+		listTeamFlagSettings,
+		listTeamFlags,
+		createFlagSegment,
+		listFlagSegments,
+		getFlagSegment,
+		deleteFlagSegment,
+		updateFlagSegment,
+		getDeploymentFeatureFlags,
+		getSdkKeys,
+		createSdkKey,
+		deleteSdkKey,
+	},
 	marketplace: {
 		updateInstallation,
 		getAccountInfo,
@@ -11121,6 +12978,26 @@ export const operationsByTag = {
 		getRollingRelease,
 		approveRollingReleaseStage,
 		completeRollingRelease,
+	},
+	sandboxes: {
+		listSandboxes,
+		createSandbox,
+		listSnapshots,
+		getSandbox,
+		listCommands,
+		runCommand,
+		killCommand,
+		stopSandbox,
+		extendSandboxTimeout,
+		updateNetworkPolicy,
+		getCommand,
+		getCommandLogs,
+		readFile,
+		createDirectory,
+		writeFiles,
+		getSnapshot,
+		deleteSnapshot,
+		createSnapshot,
 	},
 	security: {
 		updateAttackChallengeMode,
@@ -11331,6 +13208,23 @@ export const tagDictionary = {
 		GET: ["listUserEvents", "listEventTypes", "getAuthUser"],
 		DELETE: ["requestDelete"],
 	},
+	featureFlags: {
+		GET: [
+			"listFlags",
+			"getFlag",
+			"listFlagVersions",
+			"getFlagSettings",
+			"listTeamFlagSettings",
+			"listTeamFlags",
+			"listFlagSegments",
+			"getFlagSegment",
+			"getDeploymentFeatureFlags",
+			"getSdkKeys",
+		],
+		PUT: ["createFlag", "createFlagSegment", "createSdkKey"],
+		PATCH: ["updateFlag", "updateFlagSettings", "updateFlagSegment"],
+		DELETE: ["deleteFlag", "deleteFlagSegment", "deleteSdkKey"],
+	},
 	marketplace: {
 		PATCH: ["updateInstallation", "updateResource", "updateExperimentationItem"],
 		GET: [
@@ -11412,6 +13306,30 @@ export const tagDictionary = {
 		DELETE: ["deleteRollingReleaseConfig"],
 		PATCH: ["updateRollingReleaseConfig"],
 		POST: ["approveRollingReleaseStage", "completeRollingRelease"],
+	},
+	sandboxes: {
+		GET: [
+			"listSandboxes",
+			"listSnapshots",
+			"getSandbox",
+			"listCommands",
+			"getCommand",
+			"getCommandLogs",
+			"getSnapshot",
+		],
+		POST: [
+			"createSandbox",
+			"runCommand",
+			"killCommand",
+			"stopSandbox",
+			"extendSandboxTimeout",
+			"updateNetworkPolicy",
+			"readFile",
+			"createDirectory",
+			"writeFiles",
+			"createSnapshot",
+		],
+		DELETE: ["deleteSnapshot"],
 	},
 	security: {
 		POST: ["updateAttackChallengeMode", "addBypassIp"],

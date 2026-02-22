@@ -2278,14 +2278,6 @@ export const buildMachineDefaultPurchaseTypeEnum = {
 export type BuildMachineDefaultPurchaseTypeEnumKey =
 	(typeof buildMachineDefaultPurchaseTypeEnum)[keyof typeof buildMachineDefaultPurchaseTypeEnum];
 
-export const buildMachineIsDefaultBuildMachineEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type BuildMachineIsDefaultBuildMachineEnumKey =
-	(typeof buildMachineIsDefaultBuildMachineEnum)[keyof typeof buildMachineIsDefaultBuildMachineEnum];
-
 export const activeDashboardViewsViewPreferenceEnum = {
 	list: "list",
 	cards: "cards",
@@ -2443,6 +2435,7 @@ export const joinedFromOriginEnum = {
 	"nsnb-request-access": "nsnb-request-access",
 	"nsnb-viewer-upgrade": "nsnb-viewer-upgrade",
 	"nsnb-invite": "nsnb-invite",
+	"nsnb-redeploy": "nsnb-redeploy",
 } as const;
 
 export type JoinedFromOriginEnumKey =
@@ -6836,12 +6829,6 @@ export type UserEvent = {
 													 */
 													defaultPurchaseType?: BuildMachineDefaultPurchaseTypeEnumKey | undefined;
 													/**
-													 * @type boolean | undefined
-													 */
-													isDefaultBuildMachine?:
-														| BuildMachineIsDefaultBuildMachineEnumKey
-														| undefined;
-													/**
 													 * @type number | undefined
 													 */
 													cores?: number | undefined;
@@ -11158,6 +11145,10 @@ export type UserEvent = {
 						 * @type string | undefined
 						 */
 						updatedUid?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						origin?: string | undefined;
 				  }
 				| {
 						/**
@@ -14510,6 +14501,873 @@ export type UserEvent = {
 		| undefined;
 };
 
+export const variantsValueEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type VariantsValueEnumKey = (typeof variantsValueEnum)[keyof typeof variantsValueEnum];
+
+export const reuseActiveEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type ReuseActiveEnumKey = (typeof reuseActiveEnum)[keyof typeof reuseActiveEnum];
+
+export const pausedOutcomeTypeEnum = {
+	variant: "variant",
+} as const;
+
+export type PausedOutcomeTypeEnumKey =
+	(typeof pausedOutcomeTypeEnum)[keyof typeof pausedOutcomeTypeEnum];
+
+export const fallthroughTypeEnum = {
+	variant: "variant",
+} as const;
+
+export type FallthroughTypeEnumKey = (typeof fallthroughTypeEnum)[keyof typeof fallthroughTypeEnum];
+
+export const fallthroughTypeEnum2 = {
+	split: "split",
+} as const;
+
+export type FallthroughTypeEnum2Key =
+	(typeof fallthroughTypeEnum2)[keyof typeof fallthroughTypeEnum2];
+
+export const baseTypeEnum = {
+	entity: "entity",
+} as const;
+
+export type BaseTypeEnumKey = (typeof baseTypeEnum)[keyof typeof baseTypeEnum];
+
+export const activeEnum2 = {
+	false: false,
+	true: true,
+} as const;
+
+export type ActiveEnum2Key = (typeof activeEnum2)[keyof typeof activeEnum2];
+
+export const outcomeTypeEnum = {
+	variant: "variant",
+} as const;
+
+export type OutcomeTypeEnumKey = (typeof outcomeTypeEnum)[keyof typeof outcomeTypeEnum];
+
+export const outcomeTypeEnum2 = {
+	split: "split",
+} as const;
+
+export type OutcomeTypeEnum2Key = (typeof outcomeTypeEnum2)[keyof typeof outcomeTypeEnum2];
+
+export const rhsTypeEnum = {
+	"list/inline": "list/inline",
+	list: "list",
+} as const;
+
+export type RhsTypeEnumKey = (typeof rhsTypeEnum)[keyof typeof rhsTypeEnum];
+
+export const rhsTypeEnum2 = {
+	regex: "regex",
+} as const;
+
+export type RhsTypeEnum2Key = (typeof rhsTypeEnum2)[keyof typeof rhsTypeEnum2];
+
+export const conditionsRhsEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type ConditionsRhsEnumKey = (typeof conditionsRhsEnum)[keyof typeof conditionsRhsEnum];
+
+export const lhsTypeEnum = {
+	segment: "segment",
+} as const;
+
+export type LhsTypeEnumKey = (typeof lhsTypeEnum)[keyof typeof lhsTypeEnum];
+
+export const lhsTypeEnum2 = {
+	entity: "entity",
+} as const;
+
+export type LhsTypeEnum2Key = (typeof lhsTypeEnum2)[keyof typeof lhsTypeEnum2];
+
+export const conditionsCmpEnum = {
+	after: "after",
+	before: "before",
+	containsAllOf: "containsAllOf",
+	containsAnyOf: "containsAnyOf",
+	containsNoneOf: "containsNoneOf",
+	endsWith: "endsWith",
+	eq: "eq",
+	ex: "ex",
+	gt: "gt",
+	gte: "gte",
+	lt: "lt",
+	lte: "lte",
+	oneOf: "oneOf",
+	regex: "regex",
+	startsWith: "startsWith",
+} as const;
+
+export type ConditionsCmpEnumKey = (typeof conditionsCmpEnum)[keyof typeof conditionsCmpEnum];
+
+export const flagKindEnum = {
+	boolean: "boolean",
+	number: "number",
+	string: "string",
+} as const;
+
+export type FlagKindEnumKey = (typeof flagKindEnum)[keyof typeof flagKindEnum];
+
+export const flagStateEnum = {
+	active: "active",
+	archived: "archived",
+} as const;
+
+export type FlagStateEnumKey = (typeof flagStateEnum)[keyof typeof flagStateEnum];
+
+export const flagTypeNameEnum = {
+	flag: "flag",
+} as const;
+
+export type FlagTypeNameEnumKey = (typeof flagTypeNameEnum)[keyof typeof flagTypeNameEnum];
+
+export type Flag = {
+	/**
+	 * @type string | undefined
+	 */
+	description?: string | undefined;
+	/**
+	 * @type array
+	 */
+	variants: {
+		/**
+		 * @type string | undefined
+		 */
+		description?: string | undefined;
+		/**
+		 * @type string | undefined
+		 */
+		label?: string | undefined;
+		value: string | number | VariantsValueEnumKey;
+		/**
+		 * @type string
+		 */
+		id: string;
+	}[];
+	/**
+	 * @type string
+	 */
+	id: string;
+	/**
+	 * @type object
+	 */
+	environments: {
+		[key: string]: {
+			/**
+			 * @type object | undefined
+			 */
+			reuse?:
+				| {
+						/**
+						 * @type boolean
+						 */
+						active: ReuseActiveEnumKey;
+						/**
+						 * @type string
+						 */
+						environment: string;
+				  }
+				| undefined;
+			/**
+			 * @type object | undefined
+			 */
+			targets?:
+				| {
+						[key: string]: {
+							[key: string]: {
+								[key: string]: {
+									/**
+									 * @type string | undefined
+									 */
+									note?: string | undefined;
+									/**
+									 * @type string
+									 */
+									value: string;
+								}[];
+							};
+						};
+				  }
+				| undefined;
+			/**
+			 * @type number | undefined
+			 */
+			revision?: number | undefined;
+			/**
+			 * @type object
+			 */
+			pausedOutcome: {
+				/**
+				 * @type string
+				 */
+				type: PausedOutcomeTypeEnumKey;
+				/**
+				 * @type string
+				 */
+				variantId: string;
+			};
+			fallthrough:
+				| {
+						/**
+						 * @type string
+						 */
+						type: FallthroughTypeEnumKey;
+						/**
+						 * @type string
+						 */
+						variantId: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						type: FallthroughTypeEnum2Key;
+						/**
+						 * @type object
+						 */
+						base: {
+							/**
+							 * @type string
+							 */
+							type: BaseTypeEnumKey;
+							/**
+							 * @type string
+							 */
+							kind: string;
+							/**
+							 * @type string
+							 */
+							attribute: string;
+						};
+						/**
+						 * @type object
+						 */
+						weights: {
+							[key: string]: number;
+						};
+						/**
+						 * @type string
+						 */
+						defaultVariantId: string;
+				  };
+			/**
+			 * @type boolean
+			 */
+			active: ActiveEnum2Key;
+			/**
+			 * @type array
+			 */
+			rules: {
+				/**
+				 * @type string
+				 */
+				id: string;
+				outcome:
+					| {
+							/**
+							 * @type string
+							 */
+							type: OutcomeTypeEnumKey;
+							/**
+							 * @type string
+							 */
+							variantId: string;
+					  }
+					| {
+							/**
+							 * @type string
+							 */
+							type: OutcomeTypeEnum2Key;
+							/**
+							 * @type object
+							 */
+							base: {
+								/**
+								 * @type string
+								 */
+								type: BaseTypeEnumKey;
+								/**
+								 * @type string
+								 */
+								kind: string;
+								/**
+								 * @type string
+								 */
+								attribute: string;
+							};
+							/**
+							 * @type object
+							 */
+							weights: {
+								[key: string]: number;
+							};
+							/**
+							 * @type string
+							 */
+							defaultVariantId: string;
+					  };
+				/**
+				 * @type array
+				 */
+				conditions: {
+					rhs?:
+						| (
+								| string
+								| number
+								| {
+										/**
+										 * @type string
+										 */
+										type: RhsTypeEnumKey;
+										/**
+										 * @type array
+										 */
+										items: (
+											| {
+													/**
+													 * @type string | undefined
+													 */
+													label?: string | undefined;
+													/**
+													 * @type string | undefined
+													 */
+													note?: string | undefined;
+													/**
+													 * @type number
+													 */
+													value: number;
+											  }
+											| {
+													/**
+													 * @type string | undefined
+													 */
+													label?: string | undefined;
+													/**
+													 * @type string | undefined
+													 */
+													note?: string | undefined;
+													/**
+													 * @type string
+													 */
+													value: string;
+											  }
+										)[];
+								  }
+								| {
+										/**
+										 * @type string
+										 */
+										type: RhsTypeEnum2Key;
+										/**
+										 * @type string
+										 */
+										pattern: string;
+										/**
+										 * @type string
+										 */
+										flags: string;
+								  }
+								| ConditionsRhsEnumKey
+						  )
+						| undefined;
+					lhs:
+						| {
+								/**
+								 * @type string
+								 */
+								type: LhsTypeEnumKey;
+						  }
+						| {
+								/**
+								 * @type string
+								 */
+								type: LhsTypeEnum2Key;
+								/**
+								 * @type string
+								 */
+								kind: string;
+								/**
+								 * @type string
+								 */
+								attribute: string;
+						  };
+					/**
+					 * @type string
+					 */
+					cmp: ConditionsCmpEnumKey;
+				}[];
+			}[];
+		};
+	};
+	/**
+	 * @type string
+	 */
+	kind: FlagKindEnumKey;
+	/**
+	 * @type number
+	 */
+	revision: number;
+	/**
+	 * @type number
+	 */
+	seed: number;
+	/**
+	 * @type string
+	 */
+	state: FlagStateEnumKey;
+	/**
+	 * @type string
+	 */
+	slug: string;
+	/**
+	 * @type number
+	 */
+	createdAt: number;
+	/**
+	 * @type number
+	 */
+	updatedAt: number;
+	/**
+	 * @type string
+	 */
+	createdBy: string;
+	/**
+	 * @type string
+	 */
+	ownerId: string;
+	/**
+	 * @type string
+	 */
+	projectId: string;
+	/**
+	 * @type string
+	 */
+	typeName: FlagTypeNameEnumKey;
+	/**
+	 * @type object | undefined
+	 */
+	metadata?:
+		| {
+				/**
+				 * @type object | undefined
+				 */
+				creator?:
+					| {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string
+							 */
+							name: string;
+					  }
+					| undefined;
+		  }
+		| undefined;
+};
+
+export const segmentTypeNameEnum = {
+	segment: "segment",
+} as const;
+
+export type SegmentTypeNameEnumKey = (typeof segmentTypeNameEnum)[keyof typeof segmentTypeNameEnum];
+
+export const outcomeTypeEnum3 = {
+	all: "all",
+} as const;
+
+export type OutcomeTypeEnum3Key = (typeof outcomeTypeEnum3)[keyof typeof outcomeTypeEnum3];
+
+export const outcomeTypeEnum4 = {
+	split: "split",
+} as const;
+
+export type OutcomeTypeEnum4Key = (typeof outcomeTypeEnum4)[keyof typeof outcomeTypeEnum4];
+
+export const baseTypeEnum2 = {
+	entity: "entity",
+} as const;
+
+export type BaseTypeEnum2Key = (typeof baseTypeEnum2)[keyof typeof baseTypeEnum2];
+
+export const rhsTypeEnum3 = {
+	"list/inline": "list/inline",
+	list: "list",
+} as const;
+
+export type RhsTypeEnum3Key = (typeof rhsTypeEnum3)[keyof typeof rhsTypeEnum3];
+
+export const rhsTypeEnum4 = {
+	regex: "regex",
+} as const;
+
+export type RhsTypeEnum4Key = (typeof rhsTypeEnum4)[keyof typeof rhsTypeEnum4];
+
+export const conditionsRhsEnum2 = {
+	false: false,
+	true: true,
+} as const;
+
+export type ConditionsRhsEnum2Key = (typeof conditionsRhsEnum2)[keyof typeof conditionsRhsEnum2];
+
+export const lhsTypeEnum3 = {
+	segment: "segment",
+} as const;
+
+export type LhsTypeEnum3Key = (typeof lhsTypeEnum3)[keyof typeof lhsTypeEnum3];
+
+export const lhsTypeEnum4 = {
+	entity: "entity",
+} as const;
+
+export type LhsTypeEnum4Key = (typeof lhsTypeEnum4)[keyof typeof lhsTypeEnum4];
+
+export const conditionsCmpEnum2 = {
+	after: "after",
+	before: "before",
+	containsAllOf: "containsAllOf",
+	containsAnyOf: "containsAnyOf",
+	containsNoneOf: "containsNoneOf",
+	endsWith: "endsWith",
+	eq: "eq",
+	ex: "ex",
+	gt: "gt",
+	gte: "gte",
+	lt: "lt",
+	lte: "lte",
+	oneOf: "oneOf",
+	regex: "regex",
+	startsWith: "startsWith",
+} as const;
+
+export type ConditionsCmpEnum2Key = (typeof conditionsCmpEnum2)[keyof typeof conditionsCmpEnum2];
+
+export type Segment = {
+	/**
+	 * @type string | undefined
+	 */
+	description?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	createdBy?: string | undefined;
+	/**
+	 * @type array | undefined
+	 */
+	usedByFlags?: string[] | undefined;
+	/**
+	 * @type array | undefined
+	 */
+	usedBySegments?: string[] | undefined;
+	/**
+	 * @type string
+	 */
+	id: string;
+	/**
+	 * @type string
+	 */
+	label: string;
+	/**
+	 * @type string
+	 */
+	slug: string;
+	/**
+	 * @type number
+	 */
+	createdAt: number;
+	/**
+	 * @type number
+	 */
+	updatedAt: number;
+	/**
+	 * @type string
+	 */
+	projectId: string;
+	/**
+	 * @type string
+	 */
+	typeName: SegmentTypeNameEnumKey;
+	/**
+	 * @type object
+	 */
+	data: {
+		/**
+		 * @type array | undefined
+		 */
+		rules?:
+			| {
+					/**
+					 * @type string
+					 */
+					id: string;
+					outcome:
+						| {
+								/**
+								 * @type string
+								 */
+								type: OutcomeTypeEnum3Key;
+						  }
+						| {
+								/**
+								 * @type string
+								 */
+								type: OutcomeTypeEnum4Key;
+								/**
+								 * @type object
+								 */
+								base: {
+									/**
+									 * @type string
+									 */
+									type: BaseTypeEnum2Key;
+									/**
+									 * @type string
+									 */
+									kind: string;
+									/**
+									 * @type string
+									 */
+									attribute: string;
+								};
+								/**
+								 * @type number
+								 */
+								passPromille: number;
+						  };
+					/**
+					 * @type array
+					 */
+					conditions: {
+						rhs?:
+							| (
+									| string
+									| number
+									| {
+											/**
+											 * @type string
+											 */
+											type: RhsTypeEnum3Key;
+											/**
+											 * @type array
+											 */
+											items: (
+												| {
+														/**
+														 * @type string | undefined
+														 */
+														label?: string | undefined;
+														/**
+														 * @type string | undefined
+														 */
+														note?: string | undefined;
+														/**
+														 * @type number
+														 */
+														value: number;
+												  }
+												| {
+														/**
+														 * @type string | undefined
+														 */
+														label?: string | undefined;
+														/**
+														 * @type string | undefined
+														 */
+														note?: string | undefined;
+														/**
+														 * @type string
+														 */
+														value: string;
+												  }
+											)[];
+									  }
+									| {
+											/**
+											 * @type string
+											 */
+											type: RhsTypeEnum4Key;
+											/**
+											 * @type string
+											 */
+											pattern: string;
+											/**
+											 * @type string
+											 */
+											flags: string;
+									  }
+									| ConditionsRhsEnum2Key
+							  )
+							| undefined;
+						lhs:
+							| {
+									/**
+									 * @type string
+									 */
+									type: LhsTypeEnum3Key;
+							  }
+							| {
+									/**
+									 * @type string
+									 */
+									type: LhsTypeEnum4Key;
+									/**
+									 * @type string
+									 */
+									kind: string;
+									/**
+									 * @type string
+									 */
+									attribute: string;
+							  };
+						/**
+						 * @type string
+						 */
+						cmp: ConditionsCmpEnum2Key;
+					}[];
+			  }[]
+			| undefined;
+		/**
+		 * @type object | undefined
+		 */
+		include?:
+			| {
+					[key: string]: {
+						[key: string]: {
+							/**
+							 * @type string | undefined
+							 */
+							note?: string | undefined;
+							/**
+							 * @type string
+							 */
+							value: string;
+						}[];
+					};
+			  }
+			| undefined;
+		/**
+		 * @type object | undefined
+		 */
+		exclude?:
+			| {
+					[key: string]: {
+						[key: string]: {
+							/**
+							 * @type string | undefined
+							 */
+							note?: string | undefined;
+							/**
+							 * @type string
+							 */
+							value: string;
+						}[];
+					};
+			  }
+			| undefined;
+	};
+	/**
+	 * @type string
+	 */
+	hint: string;
+	/**
+	 * @type object | undefined
+	 */
+	metadata?:
+		| {
+				/**
+				 * @type object | undefined
+				 */
+				creator?:
+					| {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string
+							 */
+							name: string;
+					  }
+					| undefined;
+		  }
+		| undefined;
+};
+
+export const flagsSdkKeyTypeEnum = {
+	client: "client",
+	mobile: "mobile",
+	server: "server",
+} as const;
+
+export type FlagsSdkKeyTypeEnumKey = (typeof flagsSdkKeyTypeEnum)[keyof typeof flagsSdkKeyTypeEnum];
+
+export type FlagsSdkKey = {
+	/**
+	 * @type string
+	 */
+	hashKey: string;
+	/**
+	 * @type string
+	 */
+	projectId: string;
+	/**
+	 * @type string
+	 */
+	type: FlagsSdkKeyTypeEnumKey;
+	/**
+	 * @type string
+	 */
+	environment: string;
+	/**
+	 * @type string
+	 */
+	createdBy: string;
+	/**
+	 * @type number
+	 */
+	createdAt: number;
+	/**
+	 * @type number
+	 */
+	updatedAt: number;
+	/**
+	 * @type string | undefined
+	 */
+	label?: string | undefined;
+	/**
+	 * @type number | undefined
+	 */
+	deletedAt?: number | undefined;
+	/**
+	 * @description Cleartext value of the SDK key
+	 * @type string | undefined
+	 */
+	keyValue?: string | undefined;
+	/**
+	 * @description Cleartext value of the Edge Config token
+	 * @type string | undefined
+	 */
+	tokenValue?: string | undefined;
+	/**
+	 * @description Connection string for the SDK
+	 * @type string | undefined
+	 */
+	connectionString?: string | undefined;
+};
+
 export const ACLActionEnum = {
 	create: "create",
 	delete: "delete",
@@ -14524,6 +15382,299 @@ export type ACLActionEnumKey = (typeof ACLActionEnum)[keyof typeof ACLActionEnum
  * @description Enum containing the actions that can be performed against a resource. Group operations are included.
  */
 export type ACLAction = ACLActionEnumKey;
+
+/**
+ * @description HTTP header injection rules for outgoing requests matching specific domains.
+ */
+export type SandboxInjectionRule = {
+	/**
+	 * @description The domain (or pattern) that this injection rule applies to. Supports wildcards like *.vercel.com.
+	 * @type string
+	 */
+	domain: string;
+	/**
+	 * @description The names of HTTP headers that have value that will be injected for requests to this domain.
+	 * @type array | undefined
+	 */
+	headerNames?: string[] | undefined;
+};
+
+export const sandboxNetworkPolicyModeEnum = {
+	"allow-all": "allow-all",
+	custom: "custom",
+	"deny-all": "deny-all",
+} as const;
+
+export type SandboxNetworkPolicyModeEnumKey =
+	(typeof sandboxNetworkPolicyModeEnum)[keyof typeof sandboxNetworkPolicyModeEnum];
+
+/**
+ * @description The network policy applied to this sandbox, if any.
+ */
+export type SandboxNetworkPolicy = {
+	/**
+	 * @description The network policy mode. - \'allow-all\': All traffic is allowed. - \'deny-all\': All traffic is blocked. - \'custom\': Traffic is controlled by explicit allow/deny rules.
+	 * @type string
+	 */
+	mode: SandboxNetworkPolicyModeEnumKey;
+	/**
+	 * @description List of domain names the sandbox is allowed to connect to. Supports wildcard patterns (e.g., \"*.vercel.com\" matches all subdomains).
+	 * @type array | undefined
+	 */
+	allowedDomains?: string[] | undefined;
+	/**
+	 * @description List of IP address ranges (in CIDR notation) the sandbox is allowed to connect to.
+	 * @type array | undefined
+	 */
+	allowedCIDRs?: string[] | undefined;
+	/**
+	 * @description List of IP address ranges (in CIDR notation) the sandbox is blocked from connecting to. These rules take precedence over all allowed rules.
+	 * @type array | undefined
+	 */
+	deniedCIDRs?: string[] | undefined;
+	/**
+	 * @description HTTP header injection rules for outgoing requests matching specific domains.
+	 * @type array | undefined
+	 */
+	injectionRules?: unknown[] | undefined;
+};
+
+export const sandboxStatusEnum = {
+	aborted: "aborted",
+	failed: "failed",
+	pending: "pending",
+	running: "running",
+	snapshotting: "snapshotting",
+	stopped: "stopped",
+	stopping: "stopping",
+} as const;
+
+export type SandboxStatusEnumKey = (typeof sandboxStatusEnum)[keyof typeof sandboxStatusEnum];
+
+/**
+ * @description This object contains information related to a Vercel Sandbox.
+ */
+export type Sandbox = {
+	/**
+	 * @description The unique identifier of the sandbox.
+	 * @type string
+	 */
+	id: string;
+	/**
+	 * @description Memory allocated to this sandbox in MB.
+	 * @type number
+	 */
+	memory: number;
+	/**
+	 * @description Number of vCPUs allocated to this sandbox.
+	 * @type number
+	 */
+	vcpus: number;
+	/**
+	 * @description The region where the sandbox is hosted.
+	 * @type string
+	 */
+	region: string;
+	/**
+	 * @description The runtime of the sandbox.
+	 * @type string
+	 */
+	runtime: string;
+	/**
+	 * @description The maximum amount of time the sandbox will run for in milliseconds.
+	 * @type number
+	 */
+	timeout: number;
+	/**
+	 * @description The status of the sandbox.
+	 * @type string
+	 */
+	status: SandboxStatusEnumKey;
+	/**
+	 * @description The time when the sandbox was requested, in milliseconds since the epoch.
+	 * @type number
+	 */
+	requestedAt: number;
+	/**
+	 * @description The time when the sandbox was started, in milliseconds since the epoch.
+	 * @type number | undefined
+	 */
+	startedAt?: number | undefined;
+	/**
+	 * @description The working directory of the sandbox.
+	 * @type string
+	 */
+	cwd: string;
+	/**
+	 * @description The time when the sandbox was requested to stop, in milliseconds since the epoch.
+	 * @type number | undefined
+	 */
+	requestedStopAt?: number | undefined;
+	/**
+	 * @description The time when the sandbox was stopped, in milliseconds since the epoch.
+	 * @type number | undefined
+	 */
+	stoppedAt?: number | undefined;
+	/**
+	 * @description The time when the sandbox was aborted, in milliseconds since the epoch.
+	 * @type number | undefined
+	 */
+	abortedAt?: number | undefined;
+	/**
+	 * @description The duration of the sandbox in milliseconds.
+	 * @type number | undefined
+	 */
+	duration?: number | undefined;
+	/**
+	 * @description The unique identifier of the snapshot associated with this sandbox, if any.
+	 * @type string | undefined
+	 */
+	sourceSnapshotId?: string | undefined;
+	/**
+	 * @description The time when a snapshot was requested, in milliseconds since the epoch.
+	 * @type number | undefined
+	 */
+	snapshottedAt?: number | undefined;
+	/**
+	 * @description The time when the sandbox was created, in milliseconds since the epoch.
+	 * @type number
+	 */
+	createdAt: number;
+	/**
+	 * @description The last time the sandbox was updated, in milliseconds since the epoch.
+	 * @type number
+	 */
+	updatedAt: number;
+	networkPolicy?: unknown | undefined;
+};
+
+export const snapshotStatusEnum = {
+	created: "created",
+	deleted: "deleted",
+	failed: "failed",
+} as const;
+
+export type SnapshotStatusEnumKey = (typeof snapshotStatusEnum)[keyof typeof snapshotStatusEnum];
+
+/**
+ * @description This object contains information related to a Snapshot of a Vercel Sandbox.
+ */
+export type Snapshot = {
+	/**
+	 * @description The unique identifier of the snapshot.
+	 * @type string
+	 */
+	id: string;
+	/**
+	 * @description The unique identifier of the sandbox from which the snapshot was created.
+	 * @type string
+	 */
+	sourceSandboxId: string;
+	/**
+	 * @description The region where the snapshot is stored.
+	 * @type string
+	 */
+	region: string;
+	/**
+	 * @description The status of the snapshot.
+	 * @type string
+	 */
+	status: SnapshotStatusEnumKey;
+	/**
+	 * @description The size of the snapshot in bytes.
+	 * @type number
+	 */
+	sizeBytes: number;
+	/**
+	 * @description The time when the snapshot will expire, in milliseconds since the epoch. If not set, the snapshot does not have any expiration.
+	 * @type number | undefined
+	 */
+	expiresAt?: number | undefined;
+	/**
+	 * @description The time when the snapshot was created, in milliseconds since the epoch.
+	 * @type number
+	 */
+	createdAt: number;
+	/**
+	 * @description The last time the snapshot was updated, in milliseconds since the epoch.
+	 * @type number
+	 */
+	updatedAt: number;
+};
+
+export const sandboxPublicRouteSystemEnum = {
+	true: true,
+} as const;
+
+export type SandboxPublicRouteSystemEnumKey =
+	(typeof sandboxPublicRouteSystemEnum)[keyof typeof sandboxPublicRouteSystemEnum];
+
+/**
+ * @description This object represents a public route in a Vercel Sandbox.
+ */
+export type SandboxPublicRoute = {
+	/**
+	 * @description A public URL to access the corresponding port in the Sandbox.
+	 * @type string
+	 */
+	url: string;
+	/**
+	 * @description The user port number that the route is mapped to.
+	 * @type number
+	 */
+	port: number;
+	/**
+	 * @description The subdomain assigned to this route.
+	 * @type string
+	 */
+	subdomain: string;
+	/**
+	 * @description Whether the route is reserved by the system (e.g. for internal use).
+	 * @type boolean | undefined
+	 */
+	system?: SandboxPublicRouteSystemEnumKey | undefined;
+};
+
+/**
+ * @description This object represents command run in a Vercel Sandbox.
+ */
+export type SandboxCommand = {
+	/**
+	 * @description The ID of the command.
+	 * @type string
+	 */
+	id: string;
+	/**
+	 * @description The name of the command.
+	 * @type string
+	 */
+	name: string;
+	/**
+	 * @description The arguments of the command.
+	 * @type array
+	 */
+	args: string[];
+	/**
+	 * @description The current working directory of the command.
+	 * @type string
+	 */
+	cwd: string;
+	/**
+	 * @description The ID of the sandbox associated with the command.
+	 * @type string
+	 */
+	sandboxId: string;
+	/**
+	 * @description If the command did finish, the exit code.
+	 * @type number
+	 */
+	exitCode: number | null;
+	/**
+	 * @description When the command was started, in milliseconds since the epoch.
+	 * @type number
+	 */
+	startedAt: number;
+};
 
 export const invitedTeamMemberRoleEnum = {
 	BILLING: "BILLING",
@@ -14859,6 +16010,7 @@ export const joinedFromOriginEnum2 = {
 	mail: "mail",
 	"nsnb-auto-approve": "nsnb-auto-approve",
 	"nsnb-invite": "nsnb-invite",
+	"nsnb-redeploy": "nsnb-redeploy",
 	"nsnb-request-access": "nsnb-request-access",
 	"nsnb-viewer-upgrade": "nsnb-viewer-upgrade",
 	"organization-teams": "organization-teams",
@@ -15494,6 +16646,7 @@ export const joinedFromOriginEnum3 = {
 	mail: "mail",
 	"nsnb-auto-approve": "nsnb-auto-approve",
 	"nsnb-invite": "nsnb-invite",
+	"nsnb-redeploy": "nsnb-redeploy",
 	"nsnb-request-access": "nsnb-request-access",
 	"nsnb-viewer-upgrade": "nsnb-viewer-upgrade",
 	"organization-teams": "organization-teams",
@@ -16019,14 +17172,6 @@ export const buildMachineDefaultPurchaseTypeEnum2 = {
 export type BuildMachineDefaultPurchaseTypeEnum2Key =
 	(typeof buildMachineDefaultPurchaseTypeEnum2)[keyof typeof buildMachineDefaultPurchaseTypeEnum2];
 
-export const buildMachineIsDefaultBuildMachineEnum2 = {
-	false: false,
-	true: true,
-} as const;
-
-export type BuildMachineIsDefaultBuildMachineEnum2Key =
-	(typeof buildMachineIsDefaultBuildMachineEnum2)[keyof typeof buildMachineIsDefaultBuildMachineEnum2];
-
 export const activeDashboardViewsViewPreferenceEnum2 = {
 	cards: "cards",
 	list: "list",
@@ -16298,11 +17443,6 @@ export type AuthUser = {
 					 * @type string | undefined
 					 */
 					defaultPurchaseType?: BuildMachineDefaultPurchaseTypeEnum2Key | undefined;
-					/**
-					 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
-					 * @type boolean | undefined
-					 */
-					isDefaultBuildMachine?: BuildMachineIsDefaultBuildMachineEnum2Key | undefined;
 					/**
 					 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
 					 * @type number | undefined
@@ -23119,6 +24259,1323 @@ export type ListEventTypesQuery = {
 	Errors: ListEventTypes400 | ListEventTypes401 | ListEventTypes403;
 };
 
+export type ListFlagsPathParams = {
+	/**
+	 * @description The project id or name
+	 * @type string
+	 */
+	projectIdOrName: string;
+};
+
+export const listFlagsQueryParamsStateEnum = {
+	active: "active",
+	archived: "archived",
+} as const;
+
+export type ListFlagsQueryParamsStateEnumKey =
+	(typeof listFlagsQueryParamsStateEnum)[keyof typeof listFlagsQueryParamsStateEnum];
+
+export type ListFlagsQueryParams = {
+	/**
+	 * @description The state of the flags to retrieve. Defaults to `active`.
+	 * @type string | undefined
+	 */
+	state?: ListFlagsQueryParamsStateEnumKey | undefined;
+	/**
+	 * @description Whether to include metadata in the response
+	 * @type boolean | undefined
+	 */
+	withMetadata?: boolean | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type ListFlags200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type ListFlags400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type ListFlags401 = unknown;
+
+/**
+ * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ */
+export type ListFlags402 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type ListFlags403 = unknown;
+
+export type ListFlags404 = unknown;
+
+export type ListFlagsQueryResponse = ListFlags200;
+
+export type ListFlagsQuery = {
+	Response: ListFlags200;
+	PathParams: ListFlagsPathParams;
+	QueryParams: ListFlagsQueryParams;
+	Errors: ListFlags400 | ListFlags401 | ListFlags402 | ListFlags403 | ListFlags404;
+};
+
+export type CreateFlagPathParams = {
+	/**
+	 * @description The project id or name
+	 * @type string
+	 */
+	projectIdOrName: string;
+};
+
+export type CreateFlagQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type CreateFlag201 = unknown;
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export type CreateFlag400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type CreateFlag401 = unknown;
+
+/**
+ * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ */
+export type CreateFlag402 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type CreateFlag403 = unknown;
+
+export type CreateFlag404 = unknown;
+
+export type CreateFlag409 = unknown;
+
+export type CreateFlag412 = unknown;
+
+export type CreateFlagMutationResponse = CreateFlag201;
+
+export type CreateFlagMutation = {
+	Response: CreateFlag201;
+	PathParams: CreateFlagPathParams;
+	QueryParams: CreateFlagQueryParams;
+	Errors:
+		| CreateFlag400
+		| CreateFlag401
+		| CreateFlag402
+		| CreateFlag403
+		| CreateFlag404
+		| CreateFlag409
+		| CreateFlag412;
+};
+
+export type GetFlagPathParams = {
+	/**
+	 * @description The project id or name
+	 * @type string
+	 */
+	projectIdOrName: string;
+	/**
+	 * @description The flag id or name
+	 * @type string
+	 */
+	flagIdOrSlug: string;
+};
+
+export type GetFlagQueryParams = {
+	/**
+	 * @description Etag to match, can be used interchangeably with the `if-match` header
+	 * @type string | undefined
+	 */
+	ifMatch?: string | undefined;
+	/**
+	 * @description Whether to include metadata in the response
+	 * @type boolean | undefined
+	 */
+	withMetadata?: boolean | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type GetFlag200 = unknown;
+
+export type GetFlag304 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type GetFlag400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type GetFlag401 = unknown;
+
+/**
+ * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ */
+export type GetFlag402 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type GetFlag403 = unknown;
+
+export type GetFlag404 = unknown;
+
+export type GetFlagQueryResponse = GetFlag200;
+
+export type GetFlagQuery = {
+	Response: GetFlag200;
+	PathParams: GetFlagPathParams;
+	QueryParams: GetFlagQueryParams;
+	Errors: GetFlag400 | GetFlag401 | GetFlag402 | GetFlag403 | GetFlag404;
+};
+
+export type UpdateFlagPathParams = {
+	/**
+	 * @description The project id or name
+	 * @type string
+	 */
+	projectIdOrName: string;
+	/**
+	 * @description The flag id or name
+	 * @type string
+	 */
+	flagIdOrSlug: string;
+};
+
+export type UpdateFlagQueryParams = {
+	/**
+	 * @description Etag to match, can be used interchangeably with the `if-match` header
+	 * @type string | undefined
+	 */
+	ifMatch?: string | undefined;
+	/**
+	 * @description Whether to include metadata in the response
+	 * @type boolean | undefined
+	 */
+	withMetadata?: boolean | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type UpdateFlag200 = unknown;
+
+export type UpdateFlag304 = unknown;
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export type UpdateFlag400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type UpdateFlag401 = unknown;
+
+/**
+ * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ */
+export type UpdateFlag402 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type UpdateFlag403 = unknown;
+
+export type UpdateFlag404 = unknown;
+
+export type UpdateFlag409 = unknown;
+
+export type UpdateFlag412 = unknown;
+
+export type UpdateFlagMutationResponse = UpdateFlag200;
+
+export type UpdateFlagMutation = {
+	Response: UpdateFlag200;
+	PathParams: UpdateFlagPathParams;
+	QueryParams: UpdateFlagQueryParams;
+	Errors:
+		| UpdateFlag400
+		| UpdateFlag401
+		| UpdateFlag402
+		| UpdateFlag403
+		| UpdateFlag404
+		| UpdateFlag409
+		| UpdateFlag412;
+};
+
+export type DeleteFlagPathParams = {
+	/**
+	 * @description The project id or name
+	 * @type string
+	 */
+	projectIdOrName: string;
+	/**
+	 * @description The flag id or name
+	 * @type string
+	 */
+	flagIdOrSlug: string;
+};
+
+export type DeleteFlagQueryParams = {
+	/**
+	 * @description Etag to match, can be used interchangeably with the `if-match` header
+	 * @type string | undefined
+	 */
+	ifMatch?: string | undefined;
+	/**
+	 * @description Whether to include metadata in the response
+	 * @type boolean | undefined
+	 */
+	withMetadata?: boolean | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type DeleteFlag204 = unknown;
+
+export type DeleteFlag304 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type DeleteFlag400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type DeleteFlag401 = unknown;
+
+/**
+ * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ */
+export type DeleteFlag402 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type DeleteFlag403 = unknown;
+
+export type DeleteFlag404 = unknown;
+
+export type DeleteFlag409 = unknown;
+
+export type DeleteFlag412 = unknown;
+
+export type DeleteFlagMutationResponse = DeleteFlag204;
+
+export type DeleteFlagMutation = {
+	Response: DeleteFlag204;
+	PathParams: DeleteFlagPathParams;
+	QueryParams: DeleteFlagQueryParams;
+	Errors:
+		| DeleteFlag400
+		| DeleteFlag401
+		| DeleteFlag402
+		| DeleteFlag403
+		| DeleteFlag404
+		| DeleteFlag409
+		| DeleteFlag412;
+};
+
+export type ListFlagVersionsPathParams = {
+	/**
+	 * @type string
+	 */
+	projectIdOrName: string;
+	/**
+	 * @type string
+	 */
+	flagIdOrSlug: string;
+};
+
+export type ListFlagVersionsQueryParams = {
+	/**
+	 * @minLength 1
+	 * @maxLength 100
+	 * @default 20
+	 * @type number | undefined
+	 */
+	limit?: number | undefined;
+	/**
+	 * @description Pagination cursor
+	 * @type string | undefined
+	 */
+	cursor?: string | undefined;
+	/**
+	 * @description Environment to filter by
+	 * @type string | undefined
+	 */
+	environment?: string | undefined;
+	/**
+	 * @description Whether to include metadata
+	 * @default false
+	 * @type boolean | undefined
+	 */
+	withMetadata?: boolean | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type ListFlagVersions200 = unknown;
+
+export type ListFlagVersions304 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type ListFlagVersions400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type ListFlagVersions401 = unknown;
+
+/**
+ * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ */
+export type ListFlagVersions402 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type ListFlagVersions403 = unknown;
+
+export type ListFlagVersions404 = unknown;
+
+export type ListFlagVersionsQueryResponse = ListFlagVersions200;
+
+export type ListFlagVersionsQuery = {
+	Response: ListFlagVersions200;
+	PathParams: ListFlagVersionsPathParams;
+	QueryParams: ListFlagVersionsQueryParams;
+	Errors:
+		| ListFlagVersions400
+		| ListFlagVersions401
+		| ListFlagVersions402
+		| ListFlagVersions403
+		| ListFlagVersions404;
+};
+
+export type GetFlagSettingsPathParams = {
+	/**
+	 * @description The project id or name
+	 * @type string
+	 */
+	projectIdOrName: string;
+};
+
+export type GetFlagSettingsQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type GetFlagSettings200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type GetFlagSettings400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type GetFlagSettings401 = unknown;
+
+/**
+ * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ */
+export type GetFlagSettings402 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type GetFlagSettings403 = unknown;
+
+export type GetFlagSettings404 = unknown;
+
+export type GetFlagSettingsQueryResponse = GetFlagSettings200;
+
+export type GetFlagSettingsQuery = {
+	Response: GetFlagSettings200;
+	PathParams: GetFlagSettingsPathParams;
+	QueryParams: GetFlagSettingsQueryParams;
+	Errors:
+		| GetFlagSettings400
+		| GetFlagSettings401
+		| GetFlagSettings402
+		| GetFlagSettings403
+		| GetFlagSettings404;
+};
+
+export type UpdateFlagSettingsPathParams = {
+	/**
+	 * @description The project id or name
+	 * @type string
+	 */
+	projectIdOrName: string;
+};
+
+export type UpdateFlagSettingsQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type UpdateFlagSettings201 = unknown;
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export type UpdateFlagSettings400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type UpdateFlagSettings401 = unknown;
+
+/**
+ * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ */
+export type UpdateFlagSettings402 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type UpdateFlagSettings403 = unknown;
+
+export type UpdateFlagSettings404 = unknown;
+
+export type UpdateFlagSettings409 = unknown;
+
+export type UpdateFlagSettings412 = unknown;
+
+export type UpdateFlagSettingsMutationResponse = UpdateFlagSettings201;
+
+export type UpdateFlagSettingsMutation = {
+	Response: UpdateFlagSettings201;
+	PathParams: UpdateFlagSettingsPathParams;
+	QueryParams: UpdateFlagSettingsQueryParams;
+	Errors:
+		| UpdateFlagSettings400
+		| UpdateFlagSettings401
+		| UpdateFlagSettings402
+		| UpdateFlagSettings403
+		| UpdateFlagSettings404
+		| UpdateFlagSettings409
+		| UpdateFlagSettings412;
+};
+
+export type ListTeamFlagSettingsPathParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string
+	 */
+	teamId: string;
+};
+
+export type ListTeamFlagSettingsQueryParams = {
+	/**
+	 * @description Maximum number of settings to return.
+	 * @minLength 1
+	 * @maxLength 100
+	 * @default 20
+	 * @type integer | undefined
+	 */
+	limit?: number | undefined;
+	/**
+	 * @description Pagination cursor to continue from.
+	 * @type string | undefined
+	 */
+	cursor?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type ListTeamFlagSettings200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type ListTeamFlagSettings400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type ListTeamFlagSettings401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type ListTeamFlagSettings403 = unknown;
+
+export type ListTeamFlagSettingsQueryResponse = ListTeamFlagSettings200;
+
+export type ListTeamFlagSettingsQuery = {
+	Response: ListTeamFlagSettings200;
+	PathParams: ListTeamFlagSettingsPathParams;
+	QueryParams: ListTeamFlagSettingsQueryParams;
+	Errors: ListTeamFlagSettings400 | ListTeamFlagSettings401 | ListTeamFlagSettings403;
+};
+
+export type ListTeamFlagsPathParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string
+	 */
+	teamId: string;
+};
+
+export const listTeamFlagsQueryParamsStateEnum = {
+	active: "active",
+	archived: "archived",
+} as const;
+
+export type ListTeamFlagsQueryParamsStateEnumKey =
+	(typeof listTeamFlagsQueryParamsStateEnum)[keyof typeof listTeamFlagsQueryParamsStateEnum];
+
+export const listTeamFlagsQueryParamsKindEnum = {
+	boolean: "boolean",
+	string: "string",
+	number: "number",
+} as const;
+
+export type ListTeamFlagsQueryParamsKindEnumKey =
+	(typeof listTeamFlagsQueryParamsKindEnum)[keyof typeof listTeamFlagsQueryParamsKindEnum];
+
+export type ListTeamFlagsQueryParams = {
+	/**
+	 * @description The state of the flags to retrieve. Defaults to `active`.
+	 * @type string | undefined
+	 */
+	state?: ListTeamFlagsQueryParamsStateEnumKey | undefined;
+	/**
+	 * @description Whether to include metadata in the response
+	 * @type boolean | undefined
+	 */
+	withMetadata?: boolean | undefined;
+	/**
+	 * @description Maximum number of flags to return.
+	 * @minLength 1
+	 * @maxLength 100
+	 * @default 20
+	 * @type integer | undefined
+	 */
+	limit?: number | undefined;
+	/**
+	 * @description Pagination cursor to continue from.
+	 * @type string | undefined
+	 */
+	cursor?: string | undefined;
+	/**
+	 * @description Search flags by their slug or description. Case-insensitive.
+	 * @type string | undefined
+	 */
+	search?: string | undefined;
+	/**
+	 * @description The kind of flags to retrieve.
+	 * @type string | undefined
+	 */
+	kind?: ListTeamFlagsQueryParamsKindEnumKey | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type ListTeamFlags200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type ListTeamFlags400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type ListTeamFlags401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type ListTeamFlags403 = unknown;
+
+export type ListTeamFlagsQueryResponse = ListTeamFlags200;
+
+export type ListTeamFlagsQuery = {
+	Response: ListTeamFlags200;
+	PathParams: ListTeamFlagsPathParams;
+	QueryParams: ListTeamFlagsQueryParams;
+	Errors: ListTeamFlags400 | ListTeamFlags401 | ListTeamFlags403;
+};
+
+export type CreateFlagSegmentPathParams = {
+	/**
+	 * @description The project id or name
+	 * @type string
+	 */
+	projectIdOrName: string;
+};
+
+export type CreateFlagSegmentQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type CreateFlagSegment201 = unknown;
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export type CreateFlagSegment400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type CreateFlagSegment401 = unknown;
+
+/**
+ * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ */
+export type CreateFlagSegment402 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type CreateFlagSegment403 = unknown;
+
+export type CreateFlagSegment404 = unknown;
+
+export type CreateFlagSegment409 = unknown;
+
+export type CreateFlagSegment412 = unknown;
+
+export type CreateFlagSegmentMutationResponse = CreateFlagSegment201;
+
+export type CreateFlagSegmentMutation = {
+	Response: CreateFlagSegment201;
+	PathParams: CreateFlagSegmentPathParams;
+	QueryParams: CreateFlagSegmentQueryParams;
+	Errors:
+		| CreateFlagSegment400
+		| CreateFlagSegment401
+		| CreateFlagSegment402
+		| CreateFlagSegment403
+		| CreateFlagSegment404
+		| CreateFlagSegment409
+		| CreateFlagSegment412;
+};
+
+export type ListFlagSegmentsPathParams = {
+	/**
+	 * @description The project id or name
+	 * @type string
+	 */
+	projectIdOrName: string;
+};
+
+export type ListFlagSegmentsQueryParams = {
+	/**
+	 * @description Whether to include metadata
+	 * @default false
+	 * @type boolean | undefined
+	 */
+	withMetadata?: boolean | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type ListFlagSegments200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type ListFlagSegments400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type ListFlagSegments401 = unknown;
+
+/**
+ * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ */
+export type ListFlagSegments402 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type ListFlagSegments403 = unknown;
+
+export type ListFlagSegments404 = unknown;
+
+export type ListFlagSegmentsQueryResponse = ListFlagSegments200;
+
+export type ListFlagSegmentsQuery = {
+	Response: ListFlagSegments200;
+	PathParams: ListFlagSegmentsPathParams;
+	QueryParams: ListFlagSegmentsQueryParams;
+	Errors:
+		| ListFlagSegments400
+		| ListFlagSegments401
+		| ListFlagSegments402
+		| ListFlagSegments403
+		| ListFlagSegments404;
+};
+
+export type GetFlagSegmentPathParams = {
+	/**
+	 * @description The project id or name
+	 * @type string
+	 */
+	projectIdOrName: string;
+	/**
+	 * @description The segment slug
+	 * @type string
+	 */
+	segmentIdOrSlug: string;
+};
+
+export type GetFlagSegmentQueryParams = {
+	/**
+	 * @description Whether to include metadata
+	 * @default false
+	 * @type boolean | undefined
+	 */
+	withMetadata?: boolean | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type GetFlagSegment200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type GetFlagSegment400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type GetFlagSegment401 = unknown;
+
+/**
+ * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ */
+export type GetFlagSegment402 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type GetFlagSegment403 = unknown;
+
+export type GetFlagSegment404 = unknown;
+
+export type GetFlagSegmentQueryResponse = GetFlagSegment200;
+
+export type GetFlagSegmentQuery = {
+	Response: GetFlagSegment200;
+	PathParams: GetFlagSegmentPathParams;
+	QueryParams: GetFlagSegmentQueryParams;
+	Errors:
+		| GetFlagSegment400
+		| GetFlagSegment401
+		| GetFlagSegment402
+		| GetFlagSegment403
+		| GetFlagSegment404;
+};
+
+export type DeleteFlagSegmentPathParams = {
+	/**
+	 * @description The project id or name
+	 * @type string
+	 */
+	projectIdOrName: string;
+	/**
+	 * @description The segment slug
+	 * @type string
+	 */
+	segmentIdOrSlug: string;
+};
+
+export type DeleteFlagSegmentQueryParams = {
+	/**
+	 * @description Whether to include metadata
+	 * @default false
+	 * @type boolean | undefined
+	 */
+	withMetadata?: boolean | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type DeleteFlagSegment204 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type DeleteFlagSegment400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type DeleteFlagSegment401 = unknown;
+
+/**
+ * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ */
+export type DeleteFlagSegment402 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type DeleteFlagSegment403 = unknown;
+
+export type DeleteFlagSegment404 = unknown;
+
+export type DeleteFlagSegment409 = unknown;
+
+export type DeleteFlagSegment412 = unknown;
+
+export type DeleteFlagSegmentMutationResponse = DeleteFlagSegment204;
+
+export type DeleteFlagSegmentMutation = {
+	Response: DeleteFlagSegment204;
+	PathParams: DeleteFlagSegmentPathParams;
+	QueryParams: DeleteFlagSegmentQueryParams;
+	Errors:
+		| DeleteFlagSegment400
+		| DeleteFlagSegment401
+		| DeleteFlagSegment402
+		| DeleteFlagSegment403
+		| DeleteFlagSegment404
+		| DeleteFlagSegment409
+		| DeleteFlagSegment412;
+};
+
+export type UpdateFlagSegmentPathParams = {
+	/**
+	 * @description The project id or name
+	 * @type string
+	 */
+	projectIdOrName: string;
+	/**
+	 * @description The segment slug
+	 * @type string
+	 */
+	segmentIdOrSlug: string;
+};
+
+export type UpdateFlagSegmentQueryParams = {
+	/**
+	 * @description Whether to include metadata
+	 * @default false
+	 * @type boolean | undefined
+	 */
+	withMetadata?: boolean | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type UpdateFlagSegment200 = unknown;
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export type UpdateFlagSegment400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type UpdateFlagSegment401 = unknown;
+
+/**
+ * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ */
+export type UpdateFlagSegment402 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type UpdateFlagSegment403 = unknown;
+
+export type UpdateFlagSegment404 = unknown;
+
+export type UpdateFlagSegment409 = unknown;
+
+export type UpdateFlagSegment412 = unknown;
+
+export type UpdateFlagSegmentMutationResponse = UpdateFlagSegment200;
+
+export type UpdateFlagSegmentMutation = {
+	Response: UpdateFlagSegment200;
+	PathParams: UpdateFlagSegmentPathParams;
+	QueryParams: UpdateFlagSegmentQueryParams;
+	Errors:
+		| UpdateFlagSegment400
+		| UpdateFlagSegment401
+		| UpdateFlagSegment402
+		| UpdateFlagSegment403
+		| UpdateFlagSegment404
+		| UpdateFlagSegment409
+		| UpdateFlagSegment412;
+};
+
+export type GetDeploymentFeatureFlagsPathParams = {
+	/**
+	 * @type string
+	 */
+	deploymentId: string;
+};
+
+export type GetDeploymentFeatureFlagsQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type GetDeploymentFeatureFlags200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type GetDeploymentFeatureFlags400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type GetDeploymentFeatureFlags401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type GetDeploymentFeatureFlags403 = unknown;
+
+export type GetDeploymentFeatureFlags404 = unknown;
+
+export type GetDeploymentFeatureFlagsQueryResponse = GetDeploymentFeatureFlags200;
+
+export type GetDeploymentFeatureFlagsQuery = {
+	Response: GetDeploymentFeatureFlags200;
+	PathParams: GetDeploymentFeatureFlagsPathParams;
+	QueryParams: GetDeploymentFeatureFlagsQueryParams;
+	Errors:
+		| GetDeploymentFeatureFlags400
+		| GetDeploymentFeatureFlags401
+		| GetDeploymentFeatureFlags403
+		| GetDeploymentFeatureFlags404;
+};
+
+export type GetSdkKeysPathParams = {
+	/**
+	 * @description The project id or name
+	 * @type string
+	 */
+	projectIdOrName: string;
+};
+
+export type GetSdkKeysQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type GetSdkKeys200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type GetSdkKeys400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type GetSdkKeys401 = unknown;
+
+/**
+ * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ */
+export type GetSdkKeys402 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type GetSdkKeys403 = unknown;
+
+export type GetSdkKeys404 = unknown;
+
+export type GetSdkKeysQueryResponse = GetSdkKeys200;
+
+export type GetSdkKeysQuery = {
+	Response: GetSdkKeys200;
+	PathParams: GetSdkKeysPathParams;
+	QueryParams: GetSdkKeysQueryParams;
+	Errors: GetSdkKeys400 | GetSdkKeys401 | GetSdkKeys402 | GetSdkKeys403 | GetSdkKeys404;
+};
+
+export type CreateSdkKeyPathParams = {
+	/**
+	 * @description The project id or name
+	 * @type string
+	 */
+	projectIdOrName: string;
+};
+
+export type CreateSdkKeyQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type CreateSdkKey200 = unknown;
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export type CreateSdkKey400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type CreateSdkKey401 = unknown;
+
+/**
+ * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ */
+export type CreateSdkKey402 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type CreateSdkKey403 = unknown;
+
+export type CreateSdkKey404 = unknown;
+
+export type CreateSdkKey409 = unknown;
+
+export type CreateSdkKeyMutationResponse = CreateSdkKey200;
+
+export type CreateSdkKeyMutation = {
+	Response: CreateSdkKey200;
+	PathParams: CreateSdkKeyPathParams;
+	QueryParams: CreateSdkKeyQueryParams;
+	Errors:
+		| CreateSdkKey400
+		| CreateSdkKey401
+		| CreateSdkKey402
+		| CreateSdkKey403
+		| CreateSdkKey404
+		| CreateSdkKey409;
+};
+
+export type DeleteSdkKeyPathParams = {
+	/**
+	 * @description The project id or name
+	 * @type string
+	 */
+	projectIdOrName: string;
+	/**
+	 * @description The SDK key hash key to delete
+	 * @type string
+	 */
+	hashKey: string;
+};
+
+export type DeleteSdkKeyQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type DeleteSdkKey204 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type DeleteSdkKey400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type DeleteSdkKey401 = unknown;
+
+/**
+ * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ */
+export type DeleteSdkKey402 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type DeleteSdkKey403 = unknown;
+
+export type DeleteSdkKey404 = unknown;
+
+export type DeleteSdkKey409 = unknown;
+
+export type DeleteSdkKeyMutationResponse = DeleteSdkKey204;
+
+export type DeleteSdkKeyMutation = {
+	Response: DeleteSdkKey204;
+	PathParams: DeleteSdkKeyPathParams;
+	QueryParams: DeleteSdkKeyQueryParams;
+	Errors:
+		| DeleteSdkKey400
+		| DeleteSdkKey401
+		| DeleteSdkKey402
+		| DeleteSdkKey403
+		| DeleteSdkKey404
+		| DeleteSdkKey409;
+};
+
 export const gitNamespacesQueryParamsProviderEnum = {
 	github: "github",
 	"github-limited": "github-limited",
@@ -27480,6 +29937,1129 @@ export type UnpauseProjectMutation = {
 	PathParams: UnpauseProjectPathParams;
 	QueryParams: UnpauseProjectQueryParams;
 	Errors: UnpauseProject400 | UnpauseProject401 | UnpauseProject403 | UnpauseProject500;
+};
+
+export type ListSandboxesQueryParams = {
+	/**
+	 * @description The unique identifier or name of the project to list sandboxes for.
+	 * @type string | undefined
+	 */
+	project?: string | undefined;
+	/**
+	 * @description Maximum number of sandboxes to return in the response. Used for pagination.
+	 * @type number | undefined
+	 */
+	limit?: number | undefined;
+	/**
+	 * @description Filter sandboxes created after this timestamp. Specified as Unix time in milliseconds.
+	 * @type number | undefined
+	 */
+	since?: number | undefined;
+	/**
+	 * @description Filter sandboxes created before this timestamp. Specified as Unix time in milliseconds.
+	 * @type number | undefined
+	 */
+	until?: number | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+/**
+ * @description The list of sandboxes matching the request filters.
+ */
+export type ListSandboxes200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type ListSandboxes400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type ListSandboxes401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type ListSandboxes403 = unknown;
+
+/**
+ * @description The project does not exist or the team does not have access to it.
+ */
+export type ListSandboxes404 = unknown;
+
+export type ListSandboxesQueryResponse = ListSandboxes200;
+
+export type ListSandboxesQuery = {
+	Response: ListSandboxes200;
+	QueryParams: ListSandboxesQueryParams;
+	Errors: ListSandboxes400 | ListSandboxes401 | ListSandboxes403 | ListSandboxes404;
+};
+
+export type CreateSandboxQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+/**
+ * @description The sandbox was created successfully.
+ */
+export type CreateSandbox200 = unknown;
+
+/**
+ * @description One of the provided values in the request body is invalid.
+ */
+export type CreateSandbox400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type CreateSandbox401 = unknown;
+
+/**
+ * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ */
+export type CreateSandbox402 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type CreateSandbox403 = unknown;
+
+/**
+ * @description The project does not exist or the team does not have access to it.
+ */
+export type CreateSandbox404 = unknown;
+
+/**
+ * @description The concurrency limit has been exceeded.
+ */
+export type CreateSandbox429 = unknown;
+
+export type CreateSandbox500 = unknown;
+
+export type CreateSandboxMutationResponse = CreateSandbox200;
+
+export type CreateSandboxMutation = {
+	Response: CreateSandbox200;
+	QueryParams: CreateSandboxQueryParams;
+	Errors:
+		| CreateSandbox400
+		| CreateSandbox401
+		| CreateSandbox402
+		| CreateSandbox403
+		| CreateSandbox404
+		| CreateSandbox429
+		| CreateSandbox500;
+};
+
+export type ListSnapshotsQueryParams = {
+	/**
+	 * @description The unique identifier or name of the project to list snapshots for.
+	 * @type string | undefined
+	 */
+	project?: string | undefined;
+	/**
+	 * @description Maximum number of snapshots to return in the response. Used for pagination.
+	 * @type number | undefined
+	 */
+	limit?: number | undefined;
+	/**
+	 * @description Filter snapshots created after this timestamp. Specified as Unix time in milliseconds.
+	 * @type number | undefined
+	 */
+	since?: number | undefined;
+	/**
+	 * @description Filter snapshots created before this timestamp. Specified as Unix time in milliseconds.
+	 * @type number | undefined
+	 */
+	until?: number | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type ListSnapshots200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type ListSnapshots400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type ListSnapshots401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type ListSnapshots403 = unknown;
+
+export type ListSnapshots404 = unknown;
+
+export type ListSnapshotsQueryResponse = ListSnapshots200;
+
+export type ListSnapshotsQuery = {
+	Response: ListSnapshots200;
+	QueryParams: ListSnapshotsQueryParams;
+	Errors: ListSnapshots400 | ListSnapshots401 | ListSnapshots403 | ListSnapshots404;
+};
+
+export type GetSandboxPathParams = {
+	/**
+	 * @description The unique identifier of the sandbox to retrieve.
+	 * @type string
+	 */
+	sandboxId: string;
+};
+
+export type GetSandboxQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type GetSandbox200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type GetSandbox400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type GetSandbox401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type GetSandbox403 = unknown;
+
+/**
+ * @description The Sandbox has stopped execution and is no longer available.
+ */
+export type GetSandbox410 = unknown;
+
+/**
+ * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
+ */
+export type GetSandbox422 = unknown;
+
+export type GetSandboxQueryResponse = GetSandbox200;
+
+export type GetSandboxQuery = {
+	Response: GetSandbox200;
+	PathParams: GetSandboxPathParams;
+	QueryParams: GetSandboxQueryParams;
+	Errors: GetSandbox400 | GetSandbox401 | GetSandbox403 | GetSandbox410 | GetSandbox422;
+};
+
+export type ListCommandsPathParams = {
+	/**
+	 * @description The unique identifier of the sandbox to list commands for.
+	 * @type string
+	 */
+	sandboxId: string;
+};
+
+export type ListCommandsQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+/**
+ * @description The list of commands executed in the sandbox.
+ */
+export type ListCommands200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type ListCommands400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type ListCommands401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type ListCommands403 = unknown;
+
+export type ListCommandsQueryResponse = ListCommands200;
+
+export type ListCommandsQuery = {
+	Response: ListCommands200;
+	PathParams: ListCommandsPathParams;
+	QueryParams: ListCommandsQueryParams;
+	Errors: ListCommands400 | ListCommands401 | ListCommands403;
+};
+
+export type RunCommandPathParams = {
+	/**
+	 * @description The unique identifier of the sandbox in which to execute the command.
+	 * @type string
+	 */
+	sandboxId: string;
+};
+
+export type RunCommandQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type RunCommand200 = unknown;
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export type RunCommand400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type RunCommand401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type RunCommand403 = unknown;
+
+/**
+ * @description The Sandbox has stopped execution and is no longer available.
+ */
+export type RunCommand410 = unknown;
+
+/**
+ * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
+ */
+export type RunCommand422 = unknown;
+
+export type RunCommandMutationResponse = RunCommand200;
+
+export type RunCommandMutation = {
+	Response: RunCommand200;
+	PathParams: RunCommandPathParams;
+	QueryParams: RunCommandQueryParams;
+	Errors: RunCommand400 | RunCommand401 | RunCommand403 | RunCommand410 | RunCommand422;
+};
+
+export type KillCommandPathParams = {
+	/**
+	 * @description The unique identifier of the command to terminate.
+	 * @type string
+	 */
+	cmdId: string;
+	/**
+	 * @description The unique identifier of the sandbox containing the command.
+	 * @type string
+	 */
+	sandboxId: string;
+};
+
+export type KillCommandQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+/**
+ * @description The command was terminated successfully.
+ */
+export type KillCommand200 = unknown;
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export type KillCommand400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type KillCommand401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type KillCommand403 = unknown;
+
+export type KillCommand404 = unknown;
+
+/**
+ * @description The Sandbox has stopped execution and is no longer available.
+ */
+export type KillCommand410 = unknown;
+
+/**
+ * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
+ */
+export type KillCommand422 = unknown;
+
+export type KillCommandMutationResponse = KillCommand200;
+
+export type KillCommandMutation = {
+	Response: KillCommand200;
+	PathParams: KillCommandPathParams;
+	QueryParams: KillCommandQueryParams;
+	Errors:
+		| KillCommand400
+		| KillCommand401
+		| KillCommand403
+		| KillCommand404
+		| KillCommand410
+		| KillCommand422;
+};
+
+export type StopSandboxPathParams = {
+	/**
+	 * @description The unique identifier of the sandbox to stop.
+	 * @type string
+	 */
+	sandboxId: string;
+};
+
+export type StopSandboxQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+/**
+ * @description The sandbox was stopped successfully.
+ */
+export type StopSandbox200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type StopSandbox400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type StopSandbox401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type StopSandbox403 = unknown;
+
+/**
+ * @description The Sandbox has stopped execution and is no longer available.
+ */
+export type StopSandbox410 = unknown;
+
+/**
+ * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
+ */
+export type StopSandbox422 = unknown;
+
+export type StopSandboxMutationResponse = StopSandbox200;
+
+export type StopSandboxMutation = {
+	Response: StopSandbox200;
+	PathParams: StopSandboxPathParams;
+	QueryParams: StopSandboxQueryParams;
+	Errors: StopSandbox400 | StopSandbox401 | StopSandbox403 | StopSandbox410 | StopSandbox422;
+};
+
+export type ExtendSandboxTimeoutPathParams = {
+	/**
+	 * @description The unique identifier of the sandbox to extend the timeout for.
+	 * @type string
+	 */
+	sandboxId: string;
+};
+
+export type ExtendSandboxTimeoutQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+/**
+ * @description The sandbox timeout was extended successfully.
+ */
+export type ExtendSandboxTimeout200 = unknown;
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export type ExtendSandboxTimeout400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type ExtendSandboxTimeout401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type ExtendSandboxTimeout403 = unknown;
+
+/**
+ * @description The Sandbox has stopped execution and is no longer available.
+ */
+export type ExtendSandboxTimeout410 = unknown;
+
+/**
+ * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
+ */
+export type ExtendSandboxTimeout422 = unknown;
+
+export type ExtendSandboxTimeoutMutationResponse = ExtendSandboxTimeout200;
+
+export type ExtendSandboxTimeoutMutation = {
+	Response: ExtendSandboxTimeout200;
+	PathParams: ExtendSandboxTimeoutPathParams;
+	QueryParams: ExtendSandboxTimeoutQueryParams;
+	Errors:
+		| ExtendSandboxTimeout400
+		| ExtendSandboxTimeout401
+		| ExtendSandboxTimeout403
+		| ExtendSandboxTimeout410
+		| ExtendSandboxTimeout422;
+};
+
+export type UpdateNetworkPolicyPathParams = {
+	/**
+	 * @description The unique identifier of the sandbox to update the network policy for.
+	 * @type string
+	 */
+	sandboxId: string;
+};
+
+export type UpdateNetworkPolicyQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+/**
+ * @description The sandbox network policy was updated successfully.
+ */
+export type UpdateNetworkPolicy200 = unknown;
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export type UpdateNetworkPolicy400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type UpdateNetworkPolicy401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type UpdateNetworkPolicy403 = unknown;
+
+/**
+ * @description The Sandbox has stopped execution and is no longer available.
+ */
+export type UpdateNetworkPolicy410 = unknown;
+
+/**
+ * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
+ */
+export type UpdateNetworkPolicy422 = unknown;
+
+export type UpdateNetworkPolicyMutationResponse = UpdateNetworkPolicy200;
+
+export type UpdateNetworkPolicyMutation = {
+	Response: UpdateNetworkPolicy200;
+	PathParams: UpdateNetworkPolicyPathParams;
+	QueryParams: UpdateNetworkPolicyQueryParams;
+	Errors:
+		| UpdateNetworkPolicy400
+		| UpdateNetworkPolicy401
+		| UpdateNetworkPolicy403
+		| UpdateNetworkPolicy410
+		| UpdateNetworkPolicy422;
+};
+
+export type GetCommandPathParams = {
+	/**
+	 * @description The unique identifier of the sandbox containing the command.
+	 * @type string
+	 */
+	sandboxId: string;
+	/**
+	 * @description The unique identifier of the command to retrieve.
+	 * @type string
+	 */
+	cmdId: string;
+};
+
+export const getCommandQueryParamsWaitEnum = {
+	true: "true",
+	false: "false",
+} as const;
+
+export type GetCommandQueryParamsWaitEnumKey =
+	(typeof getCommandQueryParamsWaitEnum)[keyof typeof getCommandQueryParamsWaitEnum];
+
+export type GetCommandQueryParams = {
+	/**
+	 * @description If set to \\\"true\\\", the request will block until the command finishes execution. Useful for synchronously waiting for command completion.
+	 * @default "false"
+	 * @type string | undefined
+	 */
+	wait?: GetCommandQueryParamsWaitEnumKey | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+/**
+ * @description The command data along with the exit code if the command did finish.
+ */
+export type GetCommand200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type GetCommand400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type GetCommand401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type GetCommand403 = unknown;
+
+/**
+ * @description The Sandbox has stopped execution and is no longer available.
+ */
+export type GetCommand410 = unknown;
+
+/**
+ * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
+ */
+export type GetCommand422 = unknown;
+
+export type GetCommandQueryResponse = GetCommand200;
+
+export type GetCommandQuery = {
+	Response: GetCommand200;
+	PathParams: GetCommandPathParams;
+	QueryParams: GetCommandQueryParams;
+	Errors: GetCommand400 | GetCommand401 | GetCommand403 | GetCommand410 | GetCommand422;
+};
+
+export type GetCommandLogsPathParams = {
+	/**
+	 * @description The unique identifier of the sandbox containing the command.
+	 * @type string
+	 */
+	sandboxId: string;
+	/**
+	 * @description The unique identifier of the command to stream logs for.
+	 * @type string
+	 */
+	cmdId: string;
+};
+
+export type GetCommandLogsQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type GetCommandLogs200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type GetCommandLogs400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type GetCommandLogs401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type GetCommandLogs403 = unknown;
+
+/**
+ * @description The Sandbox has stopped execution and is no longer available.
+ */
+export type GetCommandLogs410 = unknown;
+
+/**
+ * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
+ */
+export type GetCommandLogs422 = unknown;
+
+export type GetCommandLogsQueryResponse = GetCommandLogs200;
+
+export type GetCommandLogsQuery = {
+	Response: GetCommandLogs200;
+	PathParams: GetCommandLogsPathParams;
+	QueryParams: GetCommandLogsQueryParams;
+	Errors:
+		| GetCommandLogs400
+		| GetCommandLogs401
+		| GetCommandLogs403
+		| GetCommandLogs410
+		| GetCommandLogs422;
+};
+
+export type ReadFilePathParams = {
+	/**
+	 * @description The unique identifier of the sandbox to read the file from.
+	 * @type string
+	 */
+	sandboxId: string;
+};
+
+export type ReadFileQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type ReadFile200 = unknown;
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export type ReadFile400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type ReadFile401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type ReadFile403 = unknown;
+
+export type ReadFile404 = unknown;
+
+/**
+ * @description The Sandbox has stopped execution and is no longer available.
+ */
+export type ReadFile410 = unknown;
+
+/**
+ * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
+ */
+export type ReadFile422 = unknown;
+
+export type ReadFileMutationResponse = ReadFile200;
+
+export type ReadFileMutation = {
+	Response: ReadFile200;
+	PathParams: ReadFilePathParams;
+	QueryParams: ReadFileQueryParams;
+	Errors: ReadFile400 | ReadFile401 | ReadFile403 | ReadFile404 | ReadFile410 | ReadFile422;
+};
+
+export type CreateDirectoryPathParams = {
+	/**
+	 * @description The unique identifier of the sandbox to create the directory in.
+	 * @type string
+	 */
+	sandboxId: string;
+};
+
+export type CreateDirectoryQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+/**
+ * @description The directory was created successfully.
+ */
+export type CreateDirectory200 = unknown;
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export type CreateDirectory400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type CreateDirectory401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type CreateDirectory403 = unknown;
+
+/**
+ * @description The Sandbox has stopped execution and is no longer available.
+ */
+export type CreateDirectory410 = unknown;
+
+/**
+ * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
+ */
+export type CreateDirectory422 = unknown;
+
+export type CreateDirectoryMutationResponse = CreateDirectory200;
+
+export type CreateDirectoryMutation = {
+	Response: CreateDirectory200;
+	PathParams: CreateDirectoryPathParams;
+	QueryParams: CreateDirectoryQueryParams;
+	Errors:
+		| CreateDirectory400
+		| CreateDirectory401
+		| CreateDirectory403
+		| CreateDirectory410
+		| CreateDirectory422;
+};
+
+export type WriteFilesPathParams = {
+	/**
+	 * @description The unique identifier of the sandbox to write files to.
+	 * @type string
+	 */
+	sandboxId: string;
+};
+
+export type WriteFilesQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type WriteFilesHeaderParams = {
+	/**
+	 * @description The target directory where the tarball contents will be extracted. If not specified, files are extracted to the sandbox home directory.
+	 * @type string | undefined
+	 */
+	"x-cwd"?: string | undefined;
+};
+
+/**
+ * @description The files were successfully written to the sandbox.
+ */
+export type WriteFiles200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.\nOne of the provided values in the headers is invalid
+ */
+export type WriteFiles400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type WriteFiles401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type WriteFiles403 = unknown;
+
+/**
+ * @description The Sandbox has stopped execution and is no longer available.
+ */
+export type WriteFiles410 = unknown;
+
+/**
+ * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
+ */
+export type WriteFiles422 = unknown;
+
+export type WriteFilesMutationResponse = WriteFiles200;
+
+export type WriteFilesMutation = {
+	Response: WriteFiles200;
+	PathParams: WriteFilesPathParams;
+	QueryParams: WriteFilesQueryParams;
+	HeaderParams: WriteFilesHeaderParams;
+	Errors: WriteFiles400 | WriteFiles401 | WriteFiles403 | WriteFiles410 | WriteFiles422;
+};
+
+export type GetSnapshotPathParams = {
+	/**
+	 * @description The unique identifier of the snapshot to retrieve.
+	 * @type string
+	 */
+	snapshotId: string;
+};
+
+export type GetSnapshotQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type GetSnapshot200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type GetSnapshot400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type GetSnapshot401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type GetSnapshot403 = unknown;
+
+export type GetSnapshot404 = unknown;
+
+export type GetSnapshotQueryResponse = GetSnapshot200;
+
+export type GetSnapshotQuery = {
+	Response: GetSnapshot200;
+	PathParams: GetSnapshotPathParams;
+	QueryParams: GetSnapshotQueryParams;
+	Errors: GetSnapshot400 | GetSnapshot401 | GetSnapshot403 | GetSnapshot404;
+};
+
+export type DeleteSnapshotPathParams = {
+	/**
+	 * @description The unique identifier of the snapshot to delete.
+	 * @type string
+	 */
+	snapshotId: string;
+};
+
+export type DeleteSnapshotQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type DeleteSnapshot200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type DeleteSnapshot400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type DeleteSnapshot401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type DeleteSnapshot403 = unknown;
+
+export type DeleteSnapshot404 = unknown;
+
+export type DeleteSnapshotMutationResponse = DeleteSnapshot200;
+
+export type DeleteSnapshotMutation = {
+	Response: DeleteSnapshot200;
+	PathParams: DeleteSnapshotPathParams;
+	QueryParams: DeleteSnapshotQueryParams;
+	Errors: DeleteSnapshot400 | DeleteSnapshot401 | DeleteSnapshot403 | DeleteSnapshot404;
+};
+
+export type CreateSnapshotPathParams = {
+	/**
+	 * @description The unique identifier of the sandbox to snapshot.
+	 * @type string
+	 */
+	sandboxId: string;
+};
+
+export type CreateSnapshotQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type CreateSnapshot201 = unknown;
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export type CreateSnapshot400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type CreateSnapshot401 = unknown;
+
+/**
+ * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ */
+export type CreateSnapshot402 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type CreateSnapshot403 = unknown;
+
+/**
+ * @description The Sandbox has stopped execution and is no longer available.
+ */
+export type CreateSnapshot410 = unknown;
+
+/**
+ * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
+ */
+export type CreateSnapshot422 = unknown;
+
+export type CreateSnapshotMutationResponse = CreateSnapshot201;
+
+export type CreateSnapshotMutation = {
+	Response: CreateSnapshot201;
+	PathParams: CreateSnapshotPathParams;
+	QueryParams: CreateSnapshotQueryParams;
+	Errors:
+		| CreateSnapshot400
+		| CreateSnapshot401
+		| CreateSnapshot402
+		| CreateSnapshot403
+		| CreateSnapshot410
+		| CreateSnapshot422;
 };
 
 export type UpdateAttackChallengeModeQueryParams = {
