@@ -6192,8 +6192,8 @@ export async function listEventTypes({
 }
 
 /**
- * @description Retrieve all feature flags for a project. The list can be filtered by state.
- * @summary List all flags
+ * @description Retrieve feature flags for a project. The list can be filtered by state and supports pagination.
+ * @summary List flags
  * {@link /v1/projects/:projectIdOrName/feature-flags/flags}
  */
 export async function listFlags({

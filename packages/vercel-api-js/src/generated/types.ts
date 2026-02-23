@@ -24287,6 +24287,23 @@ export type ListFlagsQueryParams = {
 	 */
 	withMetadata?: boolean | undefined;
 	/**
+	 * @description Maximum number of flags to return. When not set, all flags are returned.
+	 * @minLength 1
+	 * @maxLength 100
+	 * @type integer | undefined
+	 */
+	limit?: number | undefined;
+	/**
+	 * @description Pagination cursor to continue from.
+	 * @type string | undefined
+	 */
+	cursor?: string | undefined;
+	/**
+	 * @description Search flags by their slug or description. Case-insensitive.
+	 * @type string | undefined
+	 */
+	search?: string | undefined;
+	/**
 	 * @description The Team identifier to perform the request on behalf of.
 	 * @type string | undefined
 	 */
