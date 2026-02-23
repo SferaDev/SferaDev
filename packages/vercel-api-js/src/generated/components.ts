@@ -1853,6 +1853,7 @@ import type {
 	UpdateNetworkPathParams,
 	UpdateNetworkPolicy400,
 	UpdateNetworkPolicy401,
+	UpdateNetworkPolicy402,
 	UpdateNetworkPolicy403,
 	UpdateNetworkPolicy410,
 	UpdateNetworkPolicy422,
@@ -10415,6 +10416,7 @@ export async function updateNetworkPolicy({
 		ErrorWrapper<
 			| UpdateNetworkPolicy400
 			| UpdateNetworkPolicy401
+			| UpdateNetworkPolicy402
 			| UpdateNetworkPolicy403
 			| UpdateNetworkPolicy410
 			| UpdateNetworkPolicy422
