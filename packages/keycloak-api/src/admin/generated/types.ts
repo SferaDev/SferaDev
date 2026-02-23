@@ -295,15 +295,15 @@ export type AccessToken = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	exp?: number | undefined;
+	exp?: bigint | undefined;
 	/**
 	 * @type integer | undefined, int64
 	 */
-	nbf?: number | undefined;
+	nbf?: bigint | undefined;
 	/**
 	 * @type integer | undefined, int64
 	 */
-	iat?: number | undefined;
+	iat?: bigint | undefined;
 	/**
 	 * @type string | undefined
 	 */
@@ -335,7 +335,7 @@ export type AccessToken = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	auth_time?: number | undefined;
+	auth_time?: bigint | undefined;
 	/**
 	 * @type string | undefined
 	 */
@@ -419,7 +419,7 @@ export type AccessToken = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	updated_at?: number | undefined;
+	updated_at?: bigint | undefined;
 	/**
 	 * @type string | undefined
 	 */
@@ -493,7 +493,7 @@ export type AdminEventRepresentation = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	time?: number | undefined;
+	time?: bigint | undefined;
 	/**
 	 * @type string | undefined
 	 */
@@ -1852,7 +1852,7 @@ export type CredentialRepresentation = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	createdDate?: number | undefined;
+	createdDate?: bigint | undefined;
 	/**
 	 * @type string | undefined
 	 */
@@ -2010,7 +2010,7 @@ export type EventRepresentation = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	time?: number | undefined;
+	time?: bigint | undefined;
 	/**
 	 * @type string | undefined
 	 */
@@ -2099,7 +2099,7 @@ export type GroupRepresentation = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	subGroupCount?: number | undefined;
+	subGroupCount?: bigint | undefined;
 	/**
 	 * @type array | undefined
 	 */
@@ -2142,15 +2142,15 @@ export type IDToken = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	exp?: number | undefined;
+	exp?: bigint | undefined;
 	/**
 	 * @type integer | undefined, int64
 	 */
-	nbf?: number | undefined;
+	nbf?: bigint | undefined;
 	/**
 	 * @type integer | undefined, int64
 	 */
-	iat?: number | undefined;
+	iat?: bigint | undefined;
 	/**
 	 * @type string | undefined
 	 */
@@ -2182,7 +2182,7 @@ export type IDToken = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	auth_time?: number | undefined;
+	auth_time?: bigint | undefined;
 	/**
 	 * @type string | undefined
 	 */
@@ -2266,7 +2266,7 @@ export type IDToken = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	updated_at?: number | undefined;
+	updated_at?: bigint | undefined;
 	/**
 	 * @type string | undefined
 	 */
@@ -2430,7 +2430,7 @@ export type KeyMetadataRepresentation = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	providerPriority?: number | undefined;
+	providerPriority?: bigint | undefined;
 	/**
 	 * @type string | undefined
 	 */
@@ -2462,7 +2462,7 @@ export type KeyMetadataRepresentation = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	validTo?: number | undefined;
+	validTo?: bigint | undefined;
 };
 
 export type KeyStoreConfig = {
@@ -2644,11 +2644,11 @@ export type UserConsentRepresentation = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	createdDate?: number | undefined;
+	createdDate?: bigint | undefined;
 	/**
 	 * @type integer | undefined, int64
 	 */
-	lastUpdatedDate?: number | undefined;
+	lastUpdatedDate?: bigint | undefined;
 	/**
 	 * @deprecated
 	 * @type array | undefined
@@ -2732,7 +2732,7 @@ export type MemberRepresentation = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	createdTimestamp?: number | undefined;
+	createdTimestamp?: bigint | undefined;
 	/**
 	 * @type boolean | undefined
 	 */
@@ -3257,7 +3257,7 @@ export type RealmEventsConfigRepresentation = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	eventsExpiration?: number | undefined;
+	eventsExpiration?: bigint | undefined;
 	/**
 	 * @type array | undefined
 	 */
@@ -3352,7 +3352,7 @@ export type UserRepresentation = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	createdTimestamp?: number | undefined;
+	createdTimestamp?: bigint | undefined;
 	/**
 	 * @type boolean | undefined
 	 */
@@ -3753,7 +3753,7 @@ export type RealmRepresentation = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	quickLoginCheckMilliSeconds?: number | undefined;
+	quickLoginCheckMilliSeconds?: bigint | undefined;
 	/**
 	 * @type integer | undefined, int32
 	 */
@@ -4041,7 +4041,7 @@ export type RealmRepresentation = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	eventsExpiration?: number | undefined;
+	eventsExpiration?: bigint | undefined;
 	/**
 	 * @type array | undefined
 	 */
@@ -4372,11 +4372,11 @@ export type UserSessionRepresentation = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	start?: number | undefined;
+	start?: bigint | undefined;
 	/**
 	 * @type integer | undefined, int64
 	 */
-	lastAccess?: number | undefined;
+	lastAccess?: bigint | undefined;
 	/**
 	 * @type boolean | undefined
 	 */
@@ -4429,7 +4429,7 @@ export type WorkflowStepRepresentation = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	"scheduled-at"?: number | undefined;
+	"scheduled-at"?: bigint | undefined;
 	/**
 	 * @type string | undefined
 	 */
@@ -7320,7 +7320,7 @@ export type GETAdminRealmsRealmGroupsCountQueryParams = {
  * @description OK
  */
 export type GETAdminRealmsRealmGroupsCount200 = {
-	[key: string]: number;
+	[key: string]: bigint;
 };
 
 export type GETAdminRealmsRealmGroupsCountQueryResponse = GETAdminRealmsRealmGroupsCount200;
@@ -8317,7 +8317,7 @@ export type GETAdminRealmsRealmOrganizationsCountQueryParams = {
 /**
  * @description OK
  */
-export type GETAdminRealmsRealmOrganizationsCount200 = number;
+export type GETAdminRealmsRealmOrganizationsCount200 = bigint;
 
 export type GETAdminRealmsRealmOrganizationsCountQueryResponse =
 	GETAdminRealmsRealmOrganizationsCount200;
@@ -13264,7 +13264,7 @@ export type GETAdminRealmsRealmClientsClientUuidOfflineSessionCountPathParams = 
  * @description OK
  */
 export type GETAdminRealmsRealmClientsClientUuidOfflineSessionCount200 = {
-	[key: string]: number;
+	[key: string]: bigint;
 };
 
 export type GETAdminRealmsRealmClientsClientUuidOfflineSessionCountQueryResponse =
@@ -14776,7 +14776,7 @@ export type GETAdminRealmsRealmClientsClientUuidSessionCountPathParams = {
  * @description OK
  */
 export type GETAdminRealmsRealmClientsClientUuidSessionCount200 = {
-	[key: string]: number;
+	[key: string]: bigint;
 };
 
 export type GETAdminRealmsRealmClientsClientUuidSessionCountQueryResponse =
@@ -16149,7 +16149,7 @@ export type GETAdminRealmsRealmOrganizationsOrgIdMembersCountPathParams = {
 	orgId: string;
 };
 
-export type GETAdminRealmsRealmOrganizationsOrgIdMembersCount200 = number;
+export type GETAdminRealmsRealmOrganizationsOrgIdMembersCount200 = bigint;
 
 export type GETAdminRealmsRealmOrganizationsOrgIdMembersCountQueryResponse =
 	GETAdminRealmsRealmOrganizationsOrgIdMembersCount200;
@@ -17945,7 +17945,7 @@ export type GETAdminRealmsRealmUsersUserIdGroupsCountQueryParams = {
  * @description OK
  */
 export type GETAdminRealmsRealmUsersUserIdGroupsCount200 = {
-	[key: string]: number;
+	[key: string]: bigint;
 };
 
 /**

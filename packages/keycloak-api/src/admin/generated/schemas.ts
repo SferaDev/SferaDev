@@ -194,16 +194,16 @@ export const confirmationSchema = z.object({
 
 export const accessTokenSchema = z.object({
 	jti: z.optional(z.string()),
-	exp: z.optional(z.int()),
-	nbf: z.optional(z.int()),
-	iat: z.optional(z.int()),
+	exp: z.optional(z.bigint()),
+	nbf: z.optional(z.bigint()),
+	iat: z.optional(z.bigint()),
 	iss: z.optional(z.string()),
 	sub: z.optional(z.string()),
 	typ: z.optional(z.string()),
 	azp: z.optional(z.string()),
 	otherClaims: z.optional(z.object({}).catchall(z.unknown())),
 	nonce: z.optional(z.string()),
-	auth_time: z.optional(z.int()),
+	auth_time: z.optional(z.bigint()),
 	sid: z.optional(z.string()),
 	at_hash: z.optional(z.string()),
 	c_hash: z.optional(z.string()),
@@ -224,7 +224,7 @@ export const accessTokenSchema = z.object({
 	locale: z.optional(z.string()),
 	phone_number: z.optional(z.string()),
 	phone_number_verified: z.optional(z.boolean()),
-	updated_at: z.optional(z.int()),
+	updated_at: z.optional(z.bigint()),
 	claims_locales: z.optional(z.string()),
 	acr: z.optional(z.string()),
 	s_hash: z.optional(z.string()),
@@ -260,7 +260,7 @@ export const authDetailsRepresentationSchema = z.object({
 
 export const adminEventRepresentationSchema = z.object({
 	id: z.optional(z.string()),
-	time: z.optional(z.int()),
+	time: z.optional(z.bigint()),
 	realmId: z.optional(z.string()),
 	get authDetails() {
 		return authDetailsRepresentationSchema.optional();
@@ -734,7 +734,7 @@ export const credentialRepresentationSchema = z.object({
 	id: z.optional(z.string()),
 	type: z.optional(z.string()),
 	userLabel: z.optional(z.string()),
-	createdDate: z.optional(z.int()),
+	createdDate: z.optional(z.bigint()),
 	secretData: z.optional(z.string()),
 	credentialData: z.optional(z.string()),
 	priority: z.optional(z.int()),
@@ -821,7 +821,7 @@ export const evaluationResultRepresentationSchema = z.object({
 
 export const eventRepresentationSchema = z.object({
 	id: z.optional(z.string()),
-	time: z.optional(z.int()),
+	time: z.optional(z.bigint()),
 	type: z.optional(z.string()),
 	realmId: z.optional(z.string()),
 	clientId: z.optional(z.string()),
@@ -849,7 +849,7 @@ export const groupRepresentationSchema = z.object({
 	description: z.optional(z.string()),
 	path: z.optional(z.string()),
 	parentId: z.optional(z.string()),
-	subGroupCount: z.optional(z.int()),
+	subGroupCount: z.optional(z.bigint()),
 	get subGroups() {
 		return z.array(groupRepresentationSchema).optional();
 	},
@@ -861,16 +861,16 @@ export const groupRepresentationSchema = z.object({
 
 export const IDTokenSchema = z.object({
 	jti: z.optional(z.string()),
-	exp: z.optional(z.int()),
-	nbf: z.optional(z.int()),
-	iat: z.optional(z.int()),
+	exp: z.optional(z.bigint()),
+	nbf: z.optional(z.bigint()),
+	iat: z.optional(z.bigint()),
 	iss: z.optional(z.string()),
 	sub: z.optional(z.string()),
 	typ: z.optional(z.string()),
 	azp: z.optional(z.string()),
 	otherClaims: z.optional(z.object({}).catchall(z.unknown())),
 	nonce: z.optional(z.string()),
-	auth_time: z.optional(z.int()),
+	auth_time: z.optional(z.bigint()),
 	sid: z.optional(z.string()),
 	at_hash: z.optional(z.string()),
 	c_hash: z.optional(z.string()),
@@ -891,7 +891,7 @@ export const IDTokenSchema = z.object({
 	locale: z.optional(z.string()),
 	phone_number: z.optional(z.string()),
 	phone_number_verified: z.optional(z.boolean()),
-	updated_at: z.optional(z.int()),
+	updated_at: z.optional(z.bigint()),
 	claims_locales: z.optional(z.string()),
 	acr: z.optional(z.string()),
 	s_hash: z.optional(z.string()),
@@ -940,7 +940,7 @@ export const keyUseSchema = z.enum(["ENC", "JWT_SVID", "SIG"]);
 
 export const keyMetadataRepresentationSchema = z.object({
 	providerId: z.optional(z.string()),
-	providerPriority: z.optional(z.int()),
+	providerPriority: z.optional(z.bigint()),
 	kid: z.optional(z.string()),
 	status: z.optional(z.string()),
 	type: z.optional(z.string()),
@@ -950,7 +950,7 @@ export const keyMetadataRepresentationSchema = z.object({
 	get use() {
 		return keyUseSchema.optional();
 	},
-	validTo: z.optional(z.int()),
+	validTo: z.optional(z.bigint()),
 });
 
 export const keyStoreConfigSchema = z.object({
@@ -1017,8 +1017,8 @@ export const userProfileMetadataSchema = z.object({
 export const userConsentRepresentationSchema = z.object({
 	clientId: z.optional(z.string()),
 	grantedClientScopes: z.optional(z.array(z.string())),
-	createdDate: z.optional(z.int()),
-	lastUpdatedDate: z.optional(z.int()),
+	createdDate: z.optional(z.bigint()),
+	lastUpdatedDate: z.optional(z.bigint()),
 	grantedRealmRoles: z.optional(z.array(z.string())),
 });
 
@@ -1044,7 +1044,7 @@ export const memberRepresentationSchema = z.object({
 	enabled: z.optional(z.boolean()),
 	self: z.optional(z.string()),
 	origin: z.optional(z.string()),
-	createdTimestamp: z.optional(z.int()),
+	createdTimestamp: z.optional(z.bigint()),
 	totp: z.optional(z.boolean()),
 	federationLink: z.optional(z.string()),
 	serviceAccountClientId: z.optional(z.string()),
@@ -1226,7 +1226,7 @@ export const publishedRealmRepresentationSchema = z.object({
 
 export const realmEventsConfigRepresentationSchema = z.object({
 	eventsEnabled: z.optional(z.boolean()),
-	eventsExpiration: z.optional(z.int()),
+	eventsExpiration: z.optional(z.bigint()),
 	eventsListeners: z.optional(z.array(z.string())),
 	enabledEventTypes: z.optional(z.array(z.string())),
 	adminEventsEnabled: z.optional(z.boolean()),
@@ -1255,7 +1255,7 @@ export const userRepresentationSchema = z.object({
 	enabled: z.optional(z.boolean()),
 	self: z.optional(z.string()),
 	origin: z.optional(z.string()),
-	createdTimestamp: z.optional(z.int()),
+	createdTimestamp: z.optional(z.bigint()),
 	totp: z.optional(z.boolean()),
 	federationLink: z.optional(z.string()),
 	serviceAccountClientId: z.optional(z.string()),
@@ -1377,7 +1377,7 @@ export const realmRepresentationSchema = z.object({
 	maxFailureWaitSeconds: z.optional(z.int()),
 	minimumQuickLoginWaitSeconds: z.optional(z.int()),
 	waitIncrementSeconds: z.optional(z.int()),
-	quickLoginCheckMilliSeconds: z.optional(z.int()),
+	quickLoginCheckMilliSeconds: z.optional(z.bigint()),
 	maxDeltaTimeSeconds: z.optional(z.int()),
 	failureFactor: z.optional(z.int()),
 	privateKey: z.optional(z.string()),
@@ -1475,7 +1475,7 @@ export const realmRepresentationSchema = z.object({
 	adminTheme: z.optional(z.string()),
 	emailTheme: z.optional(z.string()),
 	eventsEnabled: z.optional(z.boolean()),
-	eventsExpiration: z.optional(z.int()),
+	eventsExpiration: z.optional(z.bigint()),
 	eventsListeners: z.optional(z.array(z.string())),
 	enabledEventTypes: z.optional(z.array(z.string())),
 	adminEventsEnabled: z.optional(z.boolean()),
@@ -1630,8 +1630,8 @@ export const userSessionRepresentationSchema = z.object({
 	username: z.optional(z.string()),
 	userId: z.optional(z.string()),
 	ipAddress: z.optional(z.string()),
-	start: z.optional(z.int()),
-	lastAccess: z.optional(z.int()),
+	start: z.optional(z.bigint()),
+	lastAccess: z.optional(z.bigint()),
 	rememberMe: z.optional(z.boolean()),
 	clients: z.optional(z.object({}).catchall(z.string())),
 	transientUser: z.optional(z.boolean()),
@@ -1650,7 +1650,7 @@ export const workflowScheduleRepresentationSchema = z.object({
 export const workflowStepRepresentationSchema = z.object({
 	uses: z.optional(z.string()),
 	after: z.optional(z.string()),
-	"scheduled-at": z.optional(z.int()),
+	"scheduled-at": z.optional(z.bigint()),
 	id: z.optional(z.string()),
 	get config() {
 		return multivaluedHashMapStringStringSchema.optional();
@@ -3477,7 +3477,7 @@ export const GETAdminRealmsRealmGroupsCountQueryParamsSchema = z.object({
 /**
  * @description OK
  */
-export const GETAdminRealmsRealmGroupsCount200Schema = z.object({}).catchall(z.int());
+export const GETAdminRealmsRealmGroupsCount200Schema = z.object({}).catchall(z.bigint());
 
 export const GETAdminRealmsRealmGroupsCountQueryResponseSchema = z.lazy(
 	() => GETAdminRealmsRealmGroupsCount200Schema,
@@ -4119,7 +4119,7 @@ export const GETAdminRealmsRealmOrganizationsCountQueryParamsSchema = z
 /**
  * @description OK
  */
-export const GETAdminRealmsRealmOrganizationsCount200Schema = z.int();
+export const GETAdminRealmsRealmOrganizationsCount200Schema = z.bigint();
 
 export const GETAdminRealmsRealmOrganizationsCountQueryResponseSchema = z.lazy(
 	() => GETAdminRealmsRealmOrganizationsCount200Schema,
@@ -7064,7 +7064,7 @@ export const GETAdminRealmsRealmClientsClientUuidOfflineSessionCountPathParamsSc
  */
 export const GETAdminRealmsRealmClientsClientUuidOfflineSessionCount200Schema = z
 	.object({})
-	.catchall(z.int());
+	.catchall(z.bigint());
 
 export const GETAdminRealmsRealmClientsClientUuidOfflineSessionCountQueryResponseSchema = z.lazy(
 	() => GETAdminRealmsRealmClientsClientUuidOfflineSessionCount200Schema,
@@ -7956,7 +7956,7 @@ export const GETAdminRealmsRealmClientsClientUuidSessionCountPathParamsSchema = 
  */
 export const GETAdminRealmsRealmClientsClientUuidSessionCount200Schema = z
 	.object({})
-	.catchall(z.int());
+	.catchall(z.bigint());
 
 export const GETAdminRealmsRealmClientsClientUuidSessionCountQueryResponseSchema = z.lazy(
 	() => GETAdminRealmsRealmClientsClientUuidSessionCount200Schema,
@@ -8814,7 +8814,7 @@ export const GETAdminRealmsRealmOrganizationsOrgIdMembersCountPathParamsSchema =
 	orgId: z.string(),
 });
 
-export const GETAdminRealmsRealmOrganizationsOrgIdMembersCount200Schema = z.int();
+export const GETAdminRealmsRealmOrganizationsOrgIdMembersCount200Schema = z.bigint();
 
 export const GETAdminRealmsRealmOrganizationsOrgIdMembersCountQueryResponseSchema = z.lazy(
 	() => GETAdminRealmsRealmOrganizationsOrgIdMembersCount200Schema,
@@ -9987,7 +9987,7 @@ export const GETAdminRealmsRealmUsersUserIdGroupsCountQueryParamsSchema = z
 /**
  * @description OK
  */
-export const GETAdminRealmsRealmUsersUserIdGroupsCount200Schema = z.object({}).catchall(z.int());
+export const GETAdminRealmsRealmUsersUserIdGroupsCount200Schema = z.object({}).catchall(z.bigint());
 
 /**
  * @description Forbidden
