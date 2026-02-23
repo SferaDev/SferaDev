@@ -16104,9 +16104,6 @@ export const createSandboxQueryParamsSchema = z
 	})
 	.optional();
 
-/**
- * @description The sandbox was created successfully.
- */
 export const createSandbox200Schema = z.unknown();
 
 /**
