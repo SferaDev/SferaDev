@@ -12323,6 +12323,18 @@ export const listFlagsQueryParamsSchema = z
 				.describe("The state of the flags to retrieve. Defaults to `active`."),
 		),
 		withMetadata: z.optional(z.boolean().describe("Whether to include metadata in the response")),
+		limit: z.optional(
+			z.coerce
+				.number()
+				.int()
+				.min(1)
+				.max(100)
+				.describe("Maximum number of flags to return. When not set, all flags are returned."),
+		),
+		cursor: z.optional(z.string().describe("Pagination cursor to continue from.")),
+		search: z.optional(
+			z.string().describe("Search flags by their slug or description. Case-insensitive."),
+		),
 		teamId: z.optional(
 			z.string().describe("The Team identifier to perform the request on behalf of."),
 		),
