@@ -4868,6 +4868,80 @@ export type ChatsDownloadVersionQuery = {
 		| ChatsDownloadVersion500;
 };
 
+export type ChatsDeleteVersionFilesPathParams = {
+	/**
+	 * @description The unique identifier of the chat containing the version to delete files from.
+	 * @type string
+	 */
+	chatId: string;
+	/**
+	 * @description The unique identifier of the version (block) to delete files from.
+	 * @type string
+	 */
+	versionId: string;
+};
+
+/**
+ * @description Success
+ */
+export type ChatsDeleteVersionFiles200 = unknown;
+
+/**
+ * @description Unauthorized
+ */
+export type ChatsDeleteVersionFiles401 = unknown;
+
+/**
+ * @description Forbidden
+ */
+export type ChatsDeleteVersionFiles403 = unknown;
+
+/**
+ * @description Not Found
+ */
+export type ChatsDeleteVersionFiles404 = unknown;
+
+/**
+ * @description Conflict
+ */
+export type ChatsDeleteVersionFiles409 = unknown;
+
+/**
+ * @description Payload Too Large
+ */
+export type ChatsDeleteVersionFiles413 = unknown;
+
+/**
+ * @description Unprocessable Entity
+ */
+export type ChatsDeleteVersionFiles422 = unknown;
+
+/**
+ * @description Too Many Requests
+ */
+export type ChatsDeleteVersionFiles429 = unknown;
+
+/**
+ * @description Internal Server Error
+ */
+export type ChatsDeleteVersionFiles500 = unknown;
+
+export type ChatsDeleteVersionFilesMutationResponse = ChatsDeleteVersionFiles200;
+
+export type ChatsDeleteVersionFilesMutation = {
+	Response: ChatsDeleteVersionFiles200;
+	PathParams: ChatsDeleteVersionFilesPathParams;
+	Errors:
+		| ChatsDeleteVersionFiles401
+		| ChatsDeleteVersionFiles403
+		| ChatsDeleteVersionFiles404
+		| ChatsDeleteVersionFiles409
+		| ChatsDeleteVersionFiles413
+		| ChatsDeleteVersionFiles422
+		| ChatsDeleteVersionFiles429
+		| ChatsDeleteVersionFiles500;
+};
+
 export type ChatsResumePathParams = {
 	/**
 	 * @description The unique identifier of the chat containing the message to resume. Provided as a path parameter.

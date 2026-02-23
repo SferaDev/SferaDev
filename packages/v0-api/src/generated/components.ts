@@ -25,6 +25,16 @@ import type {
 	ChatsDelete500,
 	ChatsDeleteMutationResponse,
 	ChatsDeletePathParams,
+	ChatsDeleteVersionFiles401,
+	ChatsDeleteVersionFiles403,
+	ChatsDeleteVersionFiles404,
+	ChatsDeleteVersionFiles409,
+	ChatsDeleteVersionFiles413,
+	ChatsDeleteVersionFiles422,
+	ChatsDeleteVersionFiles429,
+	ChatsDeleteVersionFiles500,
+	ChatsDeleteVersionFilesMutationResponse,
+	ChatsDeleteVersionFilesPathParams,
 	ChatsDownloadVersion401,
 	ChatsDownloadVersion403,
 	ChatsDownloadVersion404,
@@ -1133,6 +1143,53 @@ export async function chatsDownloadVersion({
 		url: `/chats/${chatId}/versions/${versionId}/download`,
 		queryParams,
 		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Deletes source files from a specific chat version (block). Files are removed from the version and a new source version is created.
+ * @summary Delete Chat Version Files
+ * {@link /chats/:chatId/versions/:versionId/files/delete}
+ */
+export async function chatsDeleteVersionFiles({
+	pathParams: { chatId, versionId },
+	config = {},
+}: {
+	pathParams: ChatsDeleteVersionFilesPathParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!chatId) {
+		throw new Error(`Missing required path parameter: chatId`);
+	}
+
+	if (!versionId) {
+		throw new Error(`Missing required path parameter: versionId`);
+	}
+
+	const data = await request<
+		ChatsDeleteVersionFilesMutationResponse,
+		ErrorWrapper<
+			| ChatsDeleteVersionFiles401
+			| ChatsDeleteVersionFiles403
+			| ChatsDeleteVersionFiles404
+			| ChatsDeleteVersionFiles409
+			| ChatsDeleteVersionFiles413
+			| ChatsDeleteVersionFiles422
+			| ChatsDeleteVersionFiles429
+			| ChatsDeleteVersionFiles500
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		ChatsDeleteVersionFilesPathParams
+	>({
+		method: "POST",
+		url: `/chats/${chatId}/versions/${versionId}/files/delete`,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
 	});
 	return data;
 }
@@ -2333,6 +2390,7 @@ export const operationsByPath = {
 	"GET /chats/{chatId}/versions/{versionId}": chatsGetVersion,
 	"PATCH /chats/{chatId}/versions/{versionId}": chatsUpdateVersion,
 	"GET /chats/{chatId}/versions/{versionId}/download": chatsDownloadVersion,
+	"POST /chats/{chatId}/versions/{versionId}/files/delete": chatsDeleteVersionFiles,
 	"POST /chats/{chatId}/messages/{messageId}/resume": chatsResume,
 	"GET /deployments": deploymentsFind,
 	"POST /deployments": deploymentsCreate,
@@ -2383,6 +2441,7 @@ export const operationsByTag = {
 		chatsGetVersion,
 		chatsUpdateVersion,
 		chatsDownloadVersion,
+		chatsDeleteVersionFiles,
 		chatsResume,
 	},
 	projects: {
@@ -2434,7 +2493,14 @@ export const operationsByTag = {
 
 export const tagDictionary = {
 	chats: {
-		POST: ["chatsCreate", "chatsInit", "chatsFork", "chatsSendMessage", "chatsResume"],
+		POST: [
+			"chatsCreate",
+			"chatsInit",
+			"chatsFork",
+			"chatsSendMessage",
+			"chatsDeleteVersionFiles",
+			"chatsResume",
+		],
 		GET: [
 			"chatsFind",
 			"chatsGetById",

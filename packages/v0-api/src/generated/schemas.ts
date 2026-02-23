@@ -2590,6 +2590,64 @@ export const chatsDownloadVersion500Schema = z.unknown();
 
 export const chatsDownloadVersionQueryResponseSchema = z.lazy(() => chatsDownloadVersion200Schema);
 
+export const chatsDeleteVersionFilesPathParamsSchema = z.object({
+	chatId: z
+		.string()
+		.describe("The unique identifier of the chat containing the version to delete files from."),
+	versionId: z
+		.string()
+		.describe("The unique identifier of the version (block) to delete files from."),
+});
+
+/**
+ * @description Success
+ */
+export const chatsDeleteVersionFiles200Schema = z.unknown();
+
+/**
+ * @description Unauthorized
+ */
+export const chatsDeleteVersionFiles401Schema = z.unknown();
+
+/**
+ * @description Forbidden
+ */
+export const chatsDeleteVersionFiles403Schema = z.unknown();
+
+/**
+ * @description Not Found
+ */
+export const chatsDeleteVersionFiles404Schema = z.unknown();
+
+/**
+ * @description Conflict
+ */
+export const chatsDeleteVersionFiles409Schema = z.unknown();
+
+/**
+ * @description Payload Too Large
+ */
+export const chatsDeleteVersionFiles413Schema = z.unknown();
+
+/**
+ * @description Unprocessable Entity
+ */
+export const chatsDeleteVersionFiles422Schema = z.unknown();
+
+/**
+ * @description Too Many Requests
+ */
+export const chatsDeleteVersionFiles429Schema = z.unknown();
+
+/**
+ * @description Internal Server Error
+ */
+export const chatsDeleteVersionFiles500Schema = z.unknown();
+
+export const chatsDeleteVersionFilesMutationResponseSchema = z.lazy(
+	() => chatsDeleteVersionFiles200Schema,
+);
+
 export const chatsResumePathParamsSchema = z.object({
 	chatId: z
 		.string()
