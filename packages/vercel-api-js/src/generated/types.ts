@@ -30542,6 +30542,8 @@ export type UpdateNetworkPolicy400 = unknown;
  */
 export type UpdateNetworkPolicy401 = unknown;
 
+export type UpdateNetworkPolicy402 = unknown;
+
 /**
  * @description You do not have permission to access this resource.
  */
@@ -30566,6 +30568,7 @@ export type UpdateNetworkPolicyMutation = {
 	Errors:
 		| UpdateNetworkPolicy400
 		| UpdateNetworkPolicy401
+		| UpdateNetworkPolicy402
 		| UpdateNetworkPolicy403
 		| UpdateNetworkPolicy410
 		| UpdateNetworkPolicy422;

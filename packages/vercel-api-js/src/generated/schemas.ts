@@ -16483,6 +16483,8 @@ export const updateNetworkPolicy400Schema = z.unknown();
  */
 export const updateNetworkPolicy401Schema = z.unknown();
 
+export const updateNetworkPolicy402Schema = z.unknown();
+
 /**
  * @description You do not have permission to access this resource.
  */
