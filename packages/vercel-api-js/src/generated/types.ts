@@ -30035,9 +30035,6 @@ export type CreateSandboxQueryParams = {
 	slug?: string | undefined;
 };
 
-/**
- * @description The sandbox was created successfully.
- */
 export type CreateSandbox200 = unknown;
 
 /**
