@@ -5,22 +5,22 @@ packages:
   - content
 
 catalog:
-  '@ai-sdk/gateway': 3.0.50
+  '@ai-sdk/gateway': 3.0.53
   '@ai-sdk/openai': 3.0.30
   '@ai-sdk/provider': 3.0.8
   '@ai-sdk/provider-utils': 4.0.15
   '@auth/core': 0.41.1
   '@auth/drizzle-adapter': 1.11.1
-  '@biomejs/biome': 2.4.2
+  '@biomejs/biome': 2.4.4
   '@changesets/cli': 2.29.8
-  '@convex-dev/better-auth': 0.10.10
-  '@kubb/cli': 4.24.1
-  '@kubb/core': 4.24.1
-  '@kubb/oas': 4.24.1
-  '@kubb/plugin-client': 4.24.1
-  '@kubb/plugin-oas': 4.24.1
-  '@kubb/plugin-ts': 4.24.1
-  '@kubb/plugin-zod': 4.24.1
+  '@convex-dev/better-auth': 0.10.11
+  '@kubb/cli': 4.27.2
+  '@kubb/core': 4.27.2
+  '@kubb/oas': 4.27.2
+  '@kubb/plugin-client': 4.27.2
+  '@kubb/plugin-oas': 4.27.2
+  '@kubb/plugin-ts': 4.27.2
+  '@kubb/plugin-zod': 4.27.2
   '@kubb/react-fabric': 0.12.11
   '@next/third-parties': 16.1.6
   '@radix-ui/react-avatar': 1.1.11
@@ -43,11 +43,11 @@ catalog:
   '@types/react-dom': 19.2.3
   '@types/vscode': 1.109.0
   '@vercel/analytics': 1.6.1
-  '@vercel/config': 0.0.31
+  '@vercel/config': 0.0.33
   '@vercel/oidc': 3.2.0
   '@vscode/vsce': 3.7.1
-  '@xyflow/react': 12.10.0
-  ai: 6.0.91
+  '@xyflow/react': 12.10.1
+  ai: 6.0.97
   better-auth: 1.4.18
   bunchee: 6.9.4
   case: 1.6.3
@@ -57,20 +57,20 @@ catalog:
   dotenv: 17.3.1
   drizzle-kit: 0.31.9
   drizzle-orm: 0.45.1
-  effect: 3.19.18
+  effect: 3.19.19
   es-module-lexer: 2.0.0
-  framer-motion: 12.34.2
+  framer-motion: 12.34.3
   geist: 1.7.0
   gray-matter: 4.0.3
   html-to-image: 1.11.13
   is-tree-shakable: 0.4.2
-  jspdf: 4.1.0
+  jspdf: 4.2.0
   jszip: 3.10.1
-  knip: 5.84.1
+  knip: 5.85.0
   lefthook: 2.1.1
-  lucide-react: 0.574.0
-  markdown-to-jsx: 9.7.4
-  mintlify: 4.2.363
+  lucide-react: 0.575.0
+  markdown-to-jsx: 9.7.6
+  mintlify: 4.2.375
   next: 16.1.6
   next-auth: 5.0.0-beta.29
   next-intl: 4.8.3
@@ -84,7 +84,7 @@ catalog:
   react: 19.2.4
   react-dom: 19.2.4
   rimraf: 6.1.3
-  rollup: 4.57.1
+  rollup: 4.59.0
   stripe: 20.3.1
   tailwind-merge: 3.5.0
   tailwindcss: 4.2.0
