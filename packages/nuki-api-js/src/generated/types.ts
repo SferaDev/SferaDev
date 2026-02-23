@@ -311,7 +311,7 @@ export type StaleDevice = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	smartlockId?: number | undefined;
+	smartlockId?: bigint | undefined;
 	/**
 	 * @type string | undefined
 	 */
@@ -627,7 +627,7 @@ export type Address = {
 	 * @description The smartlocks for this address
 	 * @type array
 	 */
-	smartlockIds: number[];
+	smartlockIds: bigint[];
 	/**
 	 * @description The optional service id if the address is from an partner service
 	 * @type string | undefined
@@ -679,7 +679,7 @@ export type AddressCreate = {
 	 * @description The smartlocks for this address
 	 * @type array
 	 */
-	smartlockIds: number[];
+	smartlockIds: bigint[];
 };
 
 export const addressReservationStateEnum = {
@@ -954,7 +954,7 @@ export type AddressUpdate = {
 	 * @description The smartlocks for this address
 	 * @type array | undefined
 	 */
-	smartlockIds?: number[] | undefined;
+	smartlockIds?: bigint[] | undefined;
 	/**
 	 * @description The optional settings
 	 * @type object | undefined
@@ -1324,7 +1324,7 @@ export type ApiKeyAdvanced = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	lastPostDuration?: number | undefined;
+	lastPostDuration?: bigint | undefined;
 	/**
 	 * @type boolean | undefined
 	 */
@@ -2347,7 +2347,7 @@ export type EncoderService = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	minimumSize?: number | undefined;
+	minimumSize?: bigint | undefined;
 	/**
 	 * @type boolean | undefined
 	 */
@@ -2493,7 +2493,7 @@ export type WebConfigRequest = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	smartlockId?: number | undefined;
+	smartlockId?: bigint | undefined;
 	/**
 	 * @type object | undefined
 	 */
@@ -2677,7 +2677,7 @@ export type ChallengeResponse = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	timeIssued?: number | undefined;
+	timeIssued?: bigint | undefined;
 	/**
 	 * @type object | undefined
 	 */
@@ -3265,7 +3265,7 @@ export type NotificationSetting = {
 	 * @description The smartlock ID, if not set all Smart Locks of the account  are enabled for push notifications
 	 * @type integer | undefined, int64
 	 */
-	smartlockId?: number | undefined;
+	smartlockId?: bigint | undefined;
 	/**
 	 * @description A set on which push notifications should be triggered: lock, unlock, unlatch, lockngo, open, ring, doorsensor, warnings, smartlock
 	 * @type array
@@ -3338,7 +3338,7 @@ export type ObjectId = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	time?: number | undefined;
+	time?: bigint | undefined;
 	/**
 	 * @type string | undefined, date-time
 	 */
@@ -3457,7 +3457,7 @@ export type Pagination = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	totalItems?: number | undefined;
+	totalItems?: bigint | undefined;
 	/**
 	 * @type integer | undefined, int32
 	 */
@@ -3510,15 +3510,15 @@ export type Range = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	index?: number | undefined;
+	index?: bigint | undefined;
 	/**
 	 * @type integer | undefined, int64
 	 */
-	instanceSize?: number | undefined;
+	instanceSize?: bigint | undefined;
 	/**
 	 * @type integer | undefined, int64
 	 */
-	size?: number | undefined;
+	size?: bigint | undefined;
 	/**
 	 * @type string | undefined
 	 */
@@ -3663,7 +3663,7 @@ export type Representation = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	size?: number | undefined;
+	size?: bigint | undefined;
 	/**
 	 * @type boolean | undefined
 	 */
@@ -3687,7 +3687,7 @@ export type Representation = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	availableSize?: number | undefined;
+	availableSize?: bigint | undefined;
 	/**
 	 * @type object | undefined
 	 */
@@ -4880,7 +4880,7 @@ export type Smartlock = {
 	 * @description The smartlock id
 	 * @type integer, int64
 	 */
-	smartlockId: number;
+	smartlockId: bigint;
 	/**
 	 * @description The account id
 	 * @type integer, int32
@@ -5058,7 +5058,7 @@ export type SmartlockAuth = {
 	 * @description The smartlock id
 	 * @type integer, int64
 	 */
-	smartlockId: number;
+	smartlockId: bigint;
 	/**
 	 * @description The id of the linked account user
 	 * @type integer | undefined, int32
@@ -5440,7 +5440,7 @@ export type SmartlockLog = {
 	 * @description The smartlock id
 	 * @type integer, int64
 	 */
-	smartlockId: number;
+	smartlockId: bigint;
 	/**
 	 * @description The device type: 0 .. smartlock and box, 2 .. opener, 3 .. smartdoor
 	 * @type integer, int32
@@ -5568,7 +5568,7 @@ export type SmartlocksAuthAdvancedCreate = {
 	 * @description The list of smartlock ids
 	 * @type array
 	 */
-	smartlockIds: number[];
+	smartlockIds: bigint[];
 	/**
 	 * @description True if the auth has remote access
 	 * @type boolean
@@ -5623,7 +5623,7 @@ export type SmartlocksAuthCreate = {
 	 * @description The list of smartlock ids
 	 * @type array | undefined
 	 */
-	smartlockIds?: number[] | undefined;
+	smartlockIds?: bigint[] | undefined;
 	/**
 	 * @description True if the auth has remote access
 	 * @type boolean
@@ -5723,7 +5723,7 @@ export type WebhookLog = {
 	 * @description The duration of the webhook in milli seconds
 	 * @type integer | undefined, int64
 	 */
-	duration?: number | undefined;
+	duration?: bigint | undefined;
 	/**
 	 * @description The account id
 	 * @type integer, int32
