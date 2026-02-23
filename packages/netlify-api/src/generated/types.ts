@@ -1593,7 +1593,7 @@ export type File = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	size?: number | undefined;
+	size?: bigint | undefined;
 };
 
 export type Function = {
@@ -2340,11 +2340,11 @@ export type DnsZones = {
 				/**
 				 * @type integer | undefined, int64
 				 */
-				ttl?: number | undefined;
+				ttl?: bigint | undefined;
 				/**
 				 * @type integer | undefined, int64
 				 */
-				priority?: number | undefined;
+				priority?: bigint | undefined;
 				/**
 				 * @type string | undefined
 				 */
@@ -2454,11 +2454,11 @@ export type DnsZone = {
 				/**
 				 * @type integer | undefined, int64
 				 */
-				ttl?: number | undefined;
+				ttl?: bigint | undefined;
 				/**
 				 * @type integer | undefined, int64
 				 */
-				priority?: number | undefined;
+				priority?: bigint | undefined;
 				/**
 				 * @type string | undefined
 				 */
@@ -2531,23 +2531,23 @@ export type DnsRecordCreate = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	ttl?: number | undefined;
+	ttl?: bigint | undefined;
 	/**
 	 * @type integer | undefined, int64
 	 */
-	priority?: number | undefined;
+	priority?: bigint | undefined;
 	/**
 	 * @type integer | undefined, int64
 	 */
-	weight?: number | undefined;
+	weight?: bigint | undefined;
 	/**
 	 * @type integer | undefined, int64
 	 */
-	port?: number | undefined;
+	port?: bigint | undefined;
 	/**
 	 * @type integer | undefined, int64
 	 */
-	flag?: number | undefined;
+	flag?: bigint | undefined;
 	/**
 	 * @type string | undefined
 	 */
@@ -2574,11 +2574,11 @@ export type DnsRecords = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	ttl?: number | undefined;
+	ttl?: bigint | undefined;
 	/**
 	 * @type integer | undefined, int64
 	 */
-	priority?: number | undefined;
+	priority?: bigint | undefined;
 	/**
 	 * @type string | undefined
 	 */
@@ -2621,11 +2621,11 @@ export type DnsRecord = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	ttl?: number | undefined;
+	ttl?: bigint | undefined;
 	/**
 	 * @type integer | undefined, int64
 	 */
-	priority?: number | undefined;
+	priority?: bigint | undefined;
 	/**
 	 * @type string | undefined
 	 */
@@ -2753,7 +2753,7 @@ export type Asset = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	size?: number | undefined;
+	size?: bigint | undefined;
 	/**
 	 * @type string | undefined, dateTime
 	 */
@@ -2843,7 +2843,7 @@ export type AssetSignature = {
 				/**
 				 * @type integer | undefined, int64
 				 */
-				size?: number | undefined;
+				size?: bigint | undefined;
 				/**
 				 * @type string | undefined, dateTime
 				 */
@@ -3660,7 +3660,7 @@ export type User = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	site_count?: number | undefined;
+	site_count?: bigint | undefined;
 	/**
 	 * @type string | undefined, dateTime
 	 */
@@ -3690,7 +3690,7 @@ export type Error = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -4203,7 +4203,7 @@ export type AiGatewayToken = {
 	 * @description Unix timestamp when the token expires
 	 * @type integer | undefined, int64
 	 */
-	expires_at?: number | undefined;
+	expires_at?: bigint | undefined;
 };
 
 export type UpdateSiteMetadataMetadata = object;
@@ -5448,7 +5448,7 @@ export type ListSitesError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -5865,7 +5865,7 @@ export type CreateSiteError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -6749,7 +6749,7 @@ export type GetSiteError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -7167,7 +7167,7 @@ export type UpdateSiteError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -7661,7 +7661,7 @@ export type DeleteSiteError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -7739,7 +7739,7 @@ export type ProvisionSiteTLSCertificateError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -7795,7 +7795,7 @@ export type ShowSiteTLSCertificateError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -7951,7 +7951,7 @@ export type GetEnvVarsError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -8017,7 +8017,7 @@ export type CreateEnvVarsError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -8135,7 +8135,7 @@ export type GetSiteEnvVarsError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -8282,7 +8282,7 @@ export type GetEnvVarError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -8429,7 +8429,7 @@ export type UpdateEnvVarError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -8644,7 +8644,7 @@ export type SetEnvVarValueError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -8725,7 +8725,7 @@ export type DeleteEnvVarError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -8779,7 +8779,7 @@ export type DeleteEnvVarValueError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -8846,7 +8846,7 @@ export type SearchSiteFunctionsError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -8910,7 +8910,7 @@ export type ListSiteFormsError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -8948,7 +8948,7 @@ export type DeleteSiteFormError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -9042,7 +9042,7 @@ export type ListSiteSubmissionsError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -9088,7 +9088,7 @@ export type ListSiteFiles200 = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	size?: number | undefined;
+	size?: bigint | undefined;
 }[];
 
 /**
@@ -9098,7 +9098,7 @@ export type ListSiteFilesError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -9163,7 +9163,7 @@ export type ListSiteAssets200 = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	size?: number | undefined;
+	size?: bigint | undefined;
 	/**
 	 * @type string | undefined, dateTime
 	 */
@@ -9181,7 +9181,7 @@ export type ListSiteAssetsError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -9211,7 +9211,7 @@ export type CreateSiteAssetQueryParams = {
 	/**
 	 * @type integer, int64
 	 */
-	size: number;
+	size: bigint;
 	/**
 	 * @type string
 	 */
@@ -9289,7 +9289,7 @@ export type CreateSiteAsset201 = {
 				/**
 				 * @type integer | undefined, int64
 				 */
-				size?: number | undefined;
+				size?: bigint | undefined;
 				/**
 				 * @type string | undefined, dateTime
 				 */
@@ -9309,7 +9309,7 @@ export type CreateSiteAssetError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -9379,7 +9379,7 @@ export type GetSiteAssetInfo200 = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	size?: number | undefined;
+	size?: bigint | undefined;
 	/**
 	 * @type string | undefined, dateTime
 	 */
@@ -9397,7 +9397,7 @@ export type GetSiteAssetInfoError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -9473,7 +9473,7 @@ export type UpdateSiteAsset200 = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	size?: number | undefined;
+	size?: bigint | undefined;
 	/**
 	 * @type string | undefined, dateTime
 	 */
@@ -9491,7 +9491,7 @@ export type UpdateSiteAssetError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -9530,7 +9530,7 @@ export type DeleteSiteAssetError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -9573,7 +9573,7 @@ export type GetSiteAssetPublicSignatureError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -9622,7 +9622,7 @@ export type GetSiteFileByPathName200 = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	size?: number | undefined;
+	size?: bigint | undefined;
 };
 
 /**
@@ -9632,7 +9632,7 @@ export type GetSiteFileByPathNameError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -9733,7 +9733,7 @@ export type ListSiteSnippetsError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -9796,7 +9796,7 @@ export type CreateSiteSnippetError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -9895,7 +9895,7 @@ export type GetSiteSnippetError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -9933,7 +9933,7 @@ export type UpdateSiteSnippetError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -10003,7 +10003,7 @@ export type DeleteSiteSnippetError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -10037,7 +10037,7 @@ export type GetSiteMetadataError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -10071,7 +10071,7 @@ export type UpdateSiteMetadataError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -10133,7 +10133,7 @@ export type ListSiteBuildHooksError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -10192,7 +10192,7 @@ export type CreateSiteBuildHookError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -10267,7 +10267,7 @@ export type GetSiteBuildHookError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -10305,7 +10305,7 @@ export type UpdateSiteBuildHookError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -10355,7 +10355,7 @@ export type DeleteSiteBuildHookError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -10577,7 +10577,7 @@ export type ListSiteDeploysError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -10796,7 +10796,7 @@ export type CreateSiteDeployError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -11220,7 +11220,7 @@ export type GetSiteDeployError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -11401,7 +11401,7 @@ export type UpdateSiteDeployError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -11689,7 +11689,7 @@ export type DeleteSiteDeployError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -11859,7 +11859,7 @@ export type CancelSiteDeployError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -12033,7 +12033,7 @@ export type RestoreSiteDeployError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -12103,7 +12103,7 @@ export type ListSiteBuildsError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -12206,7 +12206,7 @@ export type CreateSiteBuildError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -12266,7 +12266,7 @@ export type ListSiteDeployedBranchesError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -12708,7 +12708,7 @@ export type EnableSite422 = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -12722,7 +12722,7 @@ export type EnableSiteError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -12764,7 +12764,7 @@ export type DisableSiteError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -12824,7 +12824,7 @@ export type GetSiteBuildError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -12858,7 +12858,7 @@ export type UpdateSiteBuildLogError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -12907,7 +12907,7 @@ export type NotifyBuildStartError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -12998,7 +12998,7 @@ export type GetAccountBuildStatusError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -13076,11 +13076,11 @@ export type GetDNSForSite200 = {
 				/**
 				 * @type integer | undefined, int64
 				 */
-				ttl?: number | undefined;
+				ttl?: bigint | undefined;
 				/**
 				 * @type integer | undefined, int64
 				 */
-				priority?: number | undefined;
+				priority?: bigint | undefined;
 				/**
 				 * @type string | undefined
 				 */
@@ -13144,7 +13144,7 @@ export type GetDNSForSiteError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -13222,11 +13222,11 @@ export type ConfigureDNSForSite200 = {
 				/**
 				 * @type integer | undefined, int64
 				 */
-				ttl?: number | undefined;
+				ttl?: bigint | undefined;
 				/**
 				 * @type integer | undefined, int64
 				 */
-				priority?: number | undefined;
+				priority?: bigint | undefined;
 				/**
 				 * @type string | undefined
 				 */
@@ -13290,7 +13290,7 @@ export type ConfigureDNSForSiteError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -13324,7 +13324,7 @@ export type RollbackSiteDeployError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -13494,7 +13494,7 @@ export type GetDeployError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -13528,7 +13528,7 @@ export type DeleteDeployError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -13755,7 +13755,7 @@ export type LockDeployError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -13925,7 +13925,7 @@ export type UnlockDeployError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -13981,7 +13981,7 @@ export type UploadDeployFile200 = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	size?: number | undefined;
+	size?: bigint | undefined;
 };
 
 /**
@@ -13991,7 +13991,7 @@ export type UploadDeployFileError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -14069,7 +14069,7 @@ export type UploadDeployFunctionError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -14149,7 +14149,7 @@ export type GetLatestPluginRunsError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -14217,7 +14217,7 @@ export type CreatePluginRunError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -14343,7 +14343,7 @@ export type ListFormSubmissionsError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -14411,7 +14411,7 @@ export type ListHooksBySiteIdError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -14478,7 +14478,7 @@ export type CreateHookBySiteIdError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -14581,7 +14581,7 @@ export type GetHookError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -14648,7 +14648,7 @@ export type UpdateHookError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -14771,7 +14771,7 @@ export type EnableHookError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -14811,7 +14811,7 @@ export type ListHookTypesError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -14861,7 +14861,7 @@ export type CreateTicketError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -14912,7 +14912,7 @@ export type ShowTicketError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -14967,7 +14967,7 @@ export type ExchangeTicketError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -15007,7 +15007,7 @@ export type ListDeployKeysError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -15046,7 +15046,7 @@ export type CreateDeployKeyError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -15092,7 +15092,7 @@ export type GetDeployKeyError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -15126,7 +15126,7 @@ export type DeleteDeployKeyError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -15550,7 +15550,7 @@ export type CreateSiteInTeamError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -16443,7 +16443,7 @@ export type ListSitesForAccountError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -16499,7 +16499,7 @@ export type ListMembersForAccountError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -16554,7 +16554,7 @@ export type AddMemberToAccountError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -16635,7 +16635,7 @@ export type GetAccountMemberError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -16694,7 +16694,7 @@ export type UpdateAccountMemberError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -16767,7 +16767,7 @@ export type RemoveAccountMemberError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -16838,7 +16838,7 @@ export type ListPaymentMethodsForUserError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -16897,7 +16897,7 @@ export type ListAccountTypesForUserError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -17028,7 +17028,7 @@ export type ListAccountsForUserError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -17153,7 +17153,7 @@ export type CreateAccountError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -17316,7 +17316,7 @@ export type GetAccountError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -17448,7 +17448,7 @@ export type UpdateAccountError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -17514,7 +17514,7 @@ export type CancelAccountError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -17608,7 +17608,7 @@ export type ListAccountAuditEventsError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -17819,7 +17819,7 @@ export type ListAgentRunnersError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -18027,7 +18027,7 @@ export type CreateAgentRunnerError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -18079,7 +18079,7 @@ export type CreateAgentRunnerUploadUrlError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -18245,7 +18245,7 @@ export type GetAgentRunnerError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -18411,7 +18411,7 @@ export type UpdateAgentRunnerError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -18445,7 +18445,7 @@ export type DeleteAgentRunnerError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -18489,7 +18489,7 @@ export type ArchiveAgentRunnerError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -18538,7 +18538,7 @@ export type AgentRunnerPullRequestError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -18594,7 +18594,7 @@ export type AgentRunnerCommitToBranchError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -18801,7 +18801,7 @@ export type ListAgentRunnerSessionsError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -18991,7 +18991,7 @@ export type CreateAgentRunnerSessionError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -19156,7 +19156,7 @@ export type GetAgentRunnerSessionError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -19327,7 +19327,7 @@ export type UpdateAgentRunnerSessionError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -19366,7 +19366,7 @@ export type DeleteAgentRunnerSessionError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -19464,7 +19464,7 @@ export type ListFormSubmissionError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -19499,7 +19499,7 @@ export type DeleteSubmissionError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -19582,7 +19582,7 @@ export type ListServiceInstancesForSiteError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -19669,7 +19669,7 @@ export type CreateServiceInstanceError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -19763,7 +19763,7 @@ export type ShowServiceInstanceError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -19805,7 +19805,7 @@ export type UpdateServiceInstanceError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -19850,7 +19850,7 @@ export type DeleteServiceInstanceError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -19937,7 +19937,7 @@ export type GetServicesError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -20024,7 +20024,7 @@ export type ShowServiceError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -20058,7 +20058,7 @@ export type ShowServiceManifestError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -20104,7 +20104,7 @@ export type GetCurrentUser200 = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	site_count?: number | undefined;
+	site_count?: bigint | undefined;
 	/**
 	 * @type string | undefined, dateTime
 	 */
@@ -20137,7 +20137,7 @@ export type GetCurrentUserError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -20207,7 +20207,7 @@ export type CreateSplitTestError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -20286,7 +20286,7 @@ export type GetSplitTestsError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -20361,7 +20361,7 @@ export type UpdateSplitTestError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -20444,7 +20444,7 @@ export type GetSplitTestError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -20482,7 +20482,7 @@ export type EnableSplitTestError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -20520,7 +20520,7 @@ export type DisableSplitTestError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -20591,11 +20591,11 @@ export type CreateDnsZone201 = {
 				/**
 				 * @type integer | undefined, int64
 				 */
-				ttl?: number | undefined;
+				ttl?: bigint | undefined;
 				/**
 				 * @type integer | undefined, int64
 				 */
-				priority?: number | undefined;
+				priority?: bigint | undefined;
 				/**
 				 * @type string | undefined
 				 */
@@ -20659,7 +20659,7 @@ export type CreateDnsZoneError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -20752,11 +20752,11 @@ export type GetDnsZones200 = {
 				/**
 				 * @type integer | undefined, int64
 				 */
-				ttl?: number | undefined;
+				ttl?: bigint | undefined;
 				/**
 				 * @type integer | undefined, int64
 				 */
-				priority?: number | undefined;
+				priority?: bigint | undefined;
 				/**
 				 * @type string | undefined
 				 */
@@ -20820,7 +20820,7 @@ export type GetDnsZonesError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -20898,11 +20898,11 @@ export type GetDnsZone200 = {
 				/**
 				 * @type integer | undefined, int64
 				 */
-				ttl?: number | undefined;
+				ttl?: bigint | undefined;
 				/**
 				 * @type integer | undefined, int64
 				 */
-				priority?: number | undefined;
+				priority?: bigint | undefined;
 				/**
 				 * @type string | undefined
 				 */
@@ -20966,7 +20966,7 @@ export type GetDnsZoneError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -21000,7 +21000,7 @@ export type DeleteDnsZoneError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -21096,11 +21096,11 @@ export type TransferDnsZone200 = {
 				/**
 				 * @type integer | undefined, int64
 				 */
-				ttl?: number | undefined;
+				ttl?: bigint | undefined;
 				/**
 				 * @type integer | undefined, int64
 				 */
-				priority?: number | undefined;
+				priority?: bigint | undefined;
 				/**
 				 * @type string | undefined
 				 */
@@ -21164,7 +21164,7 @@ export type TransferDnsZoneError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -21210,11 +21210,11 @@ export type GetDnsRecords200 = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	ttl?: number | undefined;
+	ttl?: bigint | undefined;
 	/**
 	 * @type integer | undefined, int64
 	 */
-	priority?: number | undefined;
+	priority?: bigint | undefined;
 	/**
 	 * @type string | undefined
 	 */
@@ -21244,7 +21244,7 @@ export type GetDnsRecordsError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -21289,11 +21289,11 @@ export type CreateDnsRecord201 = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	ttl?: number | undefined;
+	ttl?: bigint | undefined;
 	/**
 	 * @type integer | undefined, int64
 	 */
-	priority?: number | undefined;
+	priority?: bigint | undefined;
 	/**
 	 * @type string | undefined
 	 */
@@ -21323,7 +21323,7 @@ export type CreateDnsRecordError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -21346,23 +21346,23 @@ export type CreateDnsRecordMutationRequest = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	ttl?: number | undefined;
+	ttl?: bigint | undefined;
 	/**
 	 * @type integer | undefined, int64
 	 */
-	priority?: number | undefined;
+	priority?: bigint | undefined;
 	/**
 	 * @type integer | undefined, int64
 	 */
-	weight?: number | undefined;
+	weight?: bigint | undefined;
 	/**
 	 * @type integer | undefined, int64
 	 */
-	port?: number | undefined;
+	port?: bigint | undefined;
 	/**
 	 * @type integer | undefined, int64
 	 */
-	flag?: number | undefined;
+	flag?: bigint | undefined;
 	/**
 	 * @type string | undefined
 	 */
@@ -21412,11 +21412,11 @@ export type GetIndividualDnsRecord200 = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	ttl?: number | undefined;
+	ttl?: bigint | undefined;
 	/**
 	 * @type integer | undefined, int64
 	 */
-	priority?: number | undefined;
+	priority?: bigint | undefined;
 	/**
 	 * @type string | undefined
 	 */
@@ -21446,7 +21446,7 @@ export type GetIndividualDnsRecordError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -21484,7 +21484,7 @@ export type DeleteDnsRecordError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -21578,7 +21578,7 @@ export type ListSiteDevServersError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -21669,7 +21669,7 @@ export type CreateSiteDevServerError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -21711,7 +21711,7 @@ export type DeleteSiteDevServersError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -21955,7 +21955,7 @@ export type ListSiteDevServerHooksError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -22026,7 +22026,7 @@ export type CreateSiteDevServerHookError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -22125,7 +22125,7 @@ export type GetSiteDevServerHookError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -22163,7 +22163,7 @@ export type UpdateSiteDevServerHookError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -22225,7 +22225,7 @@ export type DeleteSiteDevServerHookError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -22271,7 +22271,7 @@ export type GetAIGatewayProvidersError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -22311,7 +22311,7 @@ export type GetAIGatewayToken200 = {
 	 * @description Unix timestamp when the token expires
 	 * @type integer | undefined, int64
 	 */
-	expires_at?: number | undefined;
+	expires_at?: bigint | undefined;
 };
 
 /**
@@ -22326,7 +22326,7 @@ export type GetAIGatewayTokenError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -22377,7 +22377,7 @@ export type CreateSiteDatabaseError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -22426,7 +22426,7 @@ export type GetSiteDatabaseError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -22460,7 +22460,7 @@ export type DeleteSiteDatabaseError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -22511,7 +22511,7 @@ export type CreateSiteDatabaseBranchError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -22577,7 +22577,7 @@ export type GetSiteDatabaseBranchError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -22616,7 +22616,7 @@ export type DeleteSiteDatabaseBranchError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -22666,7 +22666,7 @@ export type CreateSiteDatabaseSnapshotError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -22738,7 +22738,7 @@ export type ListSiteDatabaseSnapshotsError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -22777,7 +22777,7 @@ export type DeleteSiteDatabaseSnapshotError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -22816,7 +22816,7 @@ export type RestoreSiteDatabaseSnapshotError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -22872,7 +22872,7 @@ export type UpdatePluginError = {
 	/**
 	 * @type integer | undefined, int64
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */

@@ -689,7 +689,7 @@ export const fileSchema = z.object({
 	path: z.optional(z.string()),
 	sha: z.optional(z.string()),
 	mime_type: z.optional(z.string()),
-	size: z.optional(z.int()),
+	size: z.optional(z.bigint()),
 });
 
 export const functionSchema = z.object({
@@ -964,8 +964,8 @@ export const dnsZonesSchema = z.array(
 					hostname: z.optional(z.string()),
 					type: z.optional(z.string()),
 					value: z.optional(z.string()),
-					ttl: z.optional(z.int()),
-					priority: z.optional(z.int()),
+					ttl: z.optional(z.bigint()),
+					priority: z.optional(z.bigint()),
 					dns_zone_id: z.optional(z.string()),
 					site_id: z.optional(z.string()),
 					flag: z.optional(z.int()),
@@ -1000,8 +1000,8 @@ export const dnsZoneSchema = z.object({
 				hostname: z.optional(z.string()),
 				type: z.optional(z.string()),
 				value: z.optional(z.string()),
-				ttl: z.optional(z.int()),
-				priority: z.optional(z.int()),
+				ttl: z.optional(z.bigint()),
+				priority: z.optional(z.bigint()),
 				dns_zone_id: z.optional(z.string()),
 				site_id: z.optional(z.string()),
 				flag: z.optional(z.int()),
@@ -1024,11 +1024,11 @@ export const dnsRecordCreateSchema = z.object({
 	type: z.optional(z.string()),
 	hostname: z.optional(z.string()),
 	value: z.optional(z.string()),
-	ttl: z.optional(z.int()),
-	priority: z.optional(z.int()),
-	weight: z.optional(z.int()),
-	port: z.optional(z.int()),
-	flag: z.optional(z.int()),
+	ttl: z.optional(z.bigint()),
+	priority: z.optional(z.bigint()),
+	weight: z.optional(z.bigint()),
+	port: z.optional(z.bigint()),
+	flag: z.optional(z.bigint()),
 	tag: z.optional(z.string()),
 });
 
@@ -1038,8 +1038,8 @@ export const dnsRecordsSchema = z.array(
 		hostname: z.optional(z.string()),
 		type: z.optional(z.string()),
 		value: z.optional(z.string()),
-		ttl: z.optional(z.int()),
-		priority: z.optional(z.int()),
+		ttl: z.optional(z.bigint()),
+		priority: z.optional(z.bigint()),
 		dns_zone_id: z.optional(z.string()),
 		site_id: z.optional(z.string()),
 		flag: z.optional(z.int()),
@@ -1053,8 +1053,8 @@ export const dnsRecordSchema = z.object({
 	hostname: z.optional(z.string()),
 	type: z.optional(z.string()),
 	value: z.optional(z.string()),
-	ttl: z.optional(z.int()),
-	priority: z.optional(z.int()),
+	ttl: z.optional(z.bigint()),
+	priority: z.optional(z.bigint()),
 	dns_zone_id: z.optional(z.string()),
 	site_id: z.optional(z.string()),
 	flag: z.optional(z.int()),
@@ -1095,7 +1095,7 @@ export const assetSchema = z.object({
 	url: z.optional(z.string()),
 	key: z.optional(z.string()),
 	visibility: z.optional(z.string()),
-	size: z.optional(z.int()),
+	size: z.optional(z.bigint()),
 	created_at: z.optional(z.string()),
 	updated_at: z.optional(z.string()),
 });
@@ -1123,7 +1123,7 @@ export const assetSignatureSchema = z.object({
 			url: z.optional(z.string()),
 			key: z.optional(z.string()),
 			visibility: z.optional(z.string()),
-			size: z.optional(z.int()),
+			size: z.optional(z.bigint()),
 			created_at: z.optional(z.string()),
 			updated_at: z.optional(z.string()),
 		}),
@@ -1393,7 +1393,7 @@ export const userSchema = z.object({
 	avatar_url: z.optional(z.string()),
 	email: z.optional(z.string()),
 	affiliate_id: z.optional(z.string()),
-	site_count: z.optional(z.int()),
+	site_count: z.optional(z.bigint()),
 	created_at: z.optional(z.string()),
 	last_login: z.optional(z.string()),
 	login_providers: z.optional(z.array(z.string())),
@@ -1405,7 +1405,7 @@ export const userSchema = z.object({
 });
 
 export const errorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -1583,7 +1583,7 @@ export const providerDefinitionSchema = z.object({
 export const aiGatewayTokenSchema = z.object({
 	token: z.optional(z.string().describe("The AI Gateway authentication token")),
 	url: z.optional(z.string().describe("AI gateway base url")),
-	expires_at: z.optional(z.int().describe("Unix timestamp when the token expires")),
+	expires_at: z.optional(z.bigint().describe("Unix timestamp when the token expires")),
 });
 
 export const updateSiteMetadataMetadataSchema = z.object({});
@@ -2049,7 +2049,7 @@ export const listSites200Schema = z.array(
  * @description error
  */
 export const listSitesErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -2197,7 +2197,7 @@ export const createSite201Schema = z.object({
  * @description error
  */
 export const createSiteErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -2515,7 +2515,7 @@ export const getSite200Schema = z.object({
  * @description error
  */
 export const getSiteErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -2661,7 +2661,7 @@ export const updateSite200Schema = z.object({
  * @description error
  */
 export const updateSiteErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -2846,7 +2846,7 @@ export const deleteSite204Schema = z.unknown();
  * @description error
  */
 export const deleteSiteErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -2898,7 +2898,7 @@ export const provisionSiteTLSCertificate422Schema = z.unknown();
  * @description error
  */
 export const provisionSiteTLSCertificateErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -2925,7 +2925,7 @@ export const showSiteTLSCertificate200Schema = z.object({
  * @description error
  */
 export const showSiteTLSCertificateErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -3064,7 +3064,7 @@ export const getEnvVars200Schema = z.array(
  * @description error
  */
 export const getEnvVarsErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -3164,7 +3164,7 @@ export const createEnvVars201Schema = z.array(
  * @description error
  */
 export const createEnvVarsErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -3321,7 +3321,7 @@ export const getSiteEnvVars200Schema = z.array(
  * @description error
  */
 export const getSiteEnvVarsErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -3420,7 +3420,7 @@ export const getEnvVar200Schema = z
  * @description error
  */
 export const getEnvVarErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -3515,7 +3515,7 @@ export const updateEnvVar200Schema = z
  * @description error
  */
 export const updateEnvVarErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -3664,7 +3664,7 @@ export const setEnvVarValue201Schema = z
  * @description error
  */
 export const setEnvVarValueErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -3710,7 +3710,7 @@ export const deleteEnvVar204Schema = z.unknown();
  * @description error
  */
 export const deleteEnvVarErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -3741,7 +3741,7 @@ export const deleteEnvVarValue204Schema = z.unknown();
  * @description error
  */
 export const deleteEnvVarValueErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -3775,7 +3775,7 @@ export const searchSiteFunctions200Schema = z.array(
  * @description error
  */
 export const searchSiteFunctionsErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -3804,7 +3804,7 @@ export const listSiteForms200Schema = z.array(
  * @description error
  */
 export const listSiteFormsErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -3824,7 +3824,7 @@ export const deleteSiteForm204Schema = z.unknown();
  * @description error
  */
 export const deleteSiteFormErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -3865,7 +3865,7 @@ export const listSiteSubmissions200Schema = z.array(
  * @description error
  */
 export const listSiteSubmissionsErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -3884,7 +3884,7 @@ export const listSiteFiles200Schema = z.array(
 		path: z.optional(z.string()),
 		sha: z.optional(z.string()),
 		mime_type: z.optional(z.string()),
-		size: z.optional(z.int()),
+		size: z.optional(z.bigint()),
 	}),
 );
 
@@ -3892,7 +3892,7 @@ export const listSiteFiles200Schema = z.array(
  * @description error
  */
 export const listSiteFilesErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -3916,7 +3916,7 @@ export const listSiteAssets200Schema = z.array(
 		url: z.optional(z.string()),
 		key: z.optional(z.string()),
 		visibility: z.optional(z.string()),
-		size: z.optional(z.int()),
+		size: z.optional(z.bigint()),
 		created_at: z.optional(z.string()),
 		updated_at: z.optional(z.string()),
 	}),
@@ -3926,7 +3926,7 @@ export const listSiteAssets200Schema = z.array(
  * @description error
  */
 export const listSiteAssetsErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -3938,7 +3938,7 @@ export const createSiteAssetPathParamsSchema = z.object({
 
 export const createSiteAssetQueryParamsSchema = z.object({
 	name: z.string(),
-	size: z.coerce.number().int(),
+	size: z.coerce.bigint(),
 	content_type: z.string(),
 	visibility: z.optional(z.string()),
 });
@@ -3964,7 +3964,7 @@ export const createSiteAsset201Schema = z.object({
 			url: z.optional(z.string()),
 			key: z.optional(z.string()),
 			visibility: z.optional(z.string()),
-			size: z.optional(z.int()),
+			size: z.optional(z.bigint()),
 			created_at: z.optional(z.string()),
 			updated_at: z.optional(z.string()),
 		}),
@@ -3975,7 +3975,7 @@ export const createSiteAsset201Schema = z.object({
  * @description error
  */
 export const createSiteAssetErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -3999,7 +3999,7 @@ export const getSiteAssetInfo200Schema = z.object({
 	url: z.optional(z.string()),
 	key: z.optional(z.string()),
 	visibility: z.optional(z.string()),
-	size: z.optional(z.int()),
+	size: z.optional(z.bigint()),
 	created_at: z.optional(z.string()),
 	updated_at: z.optional(z.string()),
 });
@@ -4008,7 +4008,7 @@ export const getSiteAssetInfo200Schema = z.object({
  * @description error
  */
 export const getSiteAssetInfoErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -4036,7 +4036,7 @@ export const updateSiteAsset200Schema = z.object({
 	url: z.optional(z.string()),
 	key: z.optional(z.string()),
 	visibility: z.optional(z.string()),
-	size: z.optional(z.int()),
+	size: z.optional(z.bigint()),
 	created_at: z.optional(z.string()),
 	updated_at: z.optional(z.string()),
 });
@@ -4045,7 +4045,7 @@ export const updateSiteAsset200Schema = z.object({
  * @description error
  */
 export const updateSiteAssetErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -4065,7 +4065,7 @@ export const deleteSiteAsset204Schema = z.unknown();
  * @description error
  */
 export const deleteSiteAssetErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -4087,7 +4087,7 @@ export const getSiteAssetPublicSignature200Schema = z.object({
  * @description error
  */
 export const getSiteAssetPublicSignatureErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -4108,14 +4108,14 @@ export const getSiteFileByPathName200Schema = z.object({
 	path: z.optional(z.string()),
 	sha: z.optional(z.string()),
 	mime_type: z.optional(z.string()),
-	size: z.optional(z.int()),
+	size: z.optional(z.bigint()),
 });
 
 /**
  * @description error
  */
 export const getSiteFileByPathNameErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -4169,7 +4169,7 @@ export const listSiteSnippets200Schema = z.array(
  * @description error
  */
 export const listSiteSnippetsErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -4196,7 +4196,7 @@ export const createSiteSnippet201Schema = z.object({
  * @description error
  */
 export const createSiteSnippetErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -4234,7 +4234,7 @@ export const getSiteSnippet200Schema = z.object({
  * @description error
  */
 export const getSiteSnippetErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -4254,7 +4254,7 @@ export const updateSiteSnippet204Schema = z.unknown();
  * @description error
  */
 export const updateSiteSnippetErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -4284,7 +4284,7 @@ export const deleteSiteSnippet204Schema = z.unknown();
  * @description error
  */
 export const deleteSiteSnippetErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -4303,7 +4303,7 @@ export const getSiteMetadata200Schema = z.object({});
  * @description error
  */
 export const getSiteMetadataErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -4322,7 +4322,7 @@ export const updateSiteMetadata204Schema = z.unknown();
  * @description error
  */
 export const updateSiteMetadataErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -4352,7 +4352,7 @@ export const listSiteBuildHooks200Schema = z.array(
  * @description error
  */
 export const listSiteBuildHooksErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -4378,7 +4378,7 @@ export const createSiteBuildHook201Schema = z.object({
  * @description error
  */
 export const createSiteBuildHookErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -4410,7 +4410,7 @@ export const getSiteBuildHook200Schema = z.object({
  * @description error
  */
 export const getSiteBuildHookErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -4430,7 +4430,7 @@ export const updateSiteBuildHook204Schema = z.unknown();
  * @description error
  */
 export const updateSiteBuildHookErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -4455,7 +4455,7 @@ export const deleteSiteBuildHook204Schema = z.unknown();
  * @description error
  */
 export const deleteSiteBuildHookErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -4545,7 +4545,7 @@ export const listSiteDeploys200Schema = z.array(
  * @description error
  */
 export const listSiteDeploysErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -4632,7 +4632,7 @@ export const createSiteDeploy200Schema = z.object({
  * @description error
  */
 export const createSiteDeployErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -4800,7 +4800,7 @@ export const getSiteDeploy200Schema = z.object({
  * @description error
  */
 export const getSiteDeployErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -4865,7 +4865,7 @@ export const updateSiteDeploy200Schema = z.object({
  * @description error
  */
 export const updateSiteDeployErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -4994,7 +4994,7 @@ export const deleteSiteDeploy204Schema = z.unknown();
  * @description error
  */
 export const deleteSiteDeployErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -5052,7 +5052,7 @@ export const cancelSiteDeploy201Schema = z.object({
  * @description error
  */
 export const cancelSiteDeployErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -5111,7 +5111,7 @@ export const restoreSiteDeploy201Schema = z.object({
  * @description error
  */
 export const restoreSiteDeployErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -5146,7 +5146,7 @@ export const listSiteBuilds200Schema = z.array(
  * @description error
  */
 export const listSiteBuildsErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -5205,7 +5205,7 @@ export const createSiteBuild422Schema = z.unknown();
  * @description error
  */
 export const createSiteBuildErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -5233,7 +5233,7 @@ export const listSiteDeployedBranches200Schema = z.array(
  * @description error
  */
 export const listSiteDeployedBranchesErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -5397,7 +5397,7 @@ export const enableSite204Schema = z.unknown();
  * @description Cannot enable this site
  */
 export const enableSite422Schema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -5405,7 +5405,7 @@ export const enableSite422Schema = z.object({
  * @description error
  */
 export const enableSiteErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -5428,7 +5428,7 @@ export const disableSite204Schema = z.unknown();
  * @description error
  */
 export const disableSiteErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -5454,7 +5454,7 @@ export const getSiteBuild200Schema = z.object({
  * @description error
  */
 export const getSiteBuildErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -5473,7 +5473,7 @@ export const updateSiteBuildLog204Schema = z.unknown();
  * @description error
  */
 export const updateSiteBuildLogErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -5500,7 +5500,7 @@ export const notifyBuildStart204Schema = z.unknown();
  * @description error
  */
 export const notifyBuildStartErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -5538,7 +5538,7 @@ export const getAccountBuildStatus200Schema = z.array(
  * @description error
  */
 export const getAccountBuildStatusErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -5569,8 +5569,8 @@ export const getDNSForSite200Schema = z.array(
 					hostname: z.optional(z.string()),
 					type: z.optional(z.string()),
 					value: z.optional(z.string()),
-					ttl: z.optional(z.int()),
-					priority: z.optional(z.int()),
+					ttl: z.optional(z.bigint()),
+					priority: z.optional(z.bigint()),
 					dns_zone_id: z.optional(z.string()),
 					site_id: z.optional(z.string()),
 					flag: z.optional(z.int()),
@@ -5594,7 +5594,7 @@ export const getDNSForSite200Schema = z.array(
  * @description error
  */
 export const getDNSForSiteErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -5623,8 +5623,8 @@ export const configureDNSForSite200Schema = z.array(
 					hostname: z.optional(z.string()),
 					type: z.optional(z.string()),
 					value: z.optional(z.string()),
-					ttl: z.optional(z.int()),
-					priority: z.optional(z.int()),
+					ttl: z.optional(z.bigint()),
+					priority: z.optional(z.bigint()),
 					dns_zone_id: z.optional(z.string()),
 					site_id: z.optional(z.string()),
 					flag: z.optional(z.int()),
@@ -5648,7 +5648,7 @@ export const configureDNSForSite200Schema = z.array(
  * @description error
  */
 export const configureDNSForSiteErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -5667,7 +5667,7 @@ export const rollbackSiteDeploy204Schema = z.unknown();
  * @description error
  */
 export const rollbackSiteDeployErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -5725,7 +5725,7 @@ export const getDeploy200Schema = z.object({
  * @description error
  */
 export const getDeployErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -5744,7 +5744,7 @@ export const deleteDeploy204Schema = z.unknown();
  * @description error
  */
 export const deleteDeployErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -5830,7 +5830,7 @@ export const lockDeploy200Schema = z.object({
  * @description error
  */
 export const lockDeployErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -5888,7 +5888,7 @@ export const unlockDeploy200Schema = z.object({
  * @description error
  */
 export const unlockDeployErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -5913,14 +5913,14 @@ export const uploadDeployFile200Schema = z.object({
 	path: z.optional(z.string()),
 	sha: z.optional(z.string()),
 	mime_type: z.optional(z.string()),
-	size: z.optional(z.int()),
+	size: z.optional(z.bigint()),
 });
 
 /**
  * @description error
  */
 export const uploadDeployFileErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -5959,7 +5959,7 @@ export const uploadDeployFunction200Schema = z.object({
  * @description error
  */
 export const uploadDeployFunctionErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -5996,7 +5996,7 @@ export const getLatestPluginRuns200Schema = z.array(
  * @description error
  */
 export const getLatestPluginRunsErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -6024,7 +6024,7 @@ export const createPluginRun201Schema = z.object({
  * @description error
  */
 export const createPluginRunErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -6075,7 +6075,7 @@ export const listFormSubmissions200Schema = z.array(
  * @description error
  */
 export const listFormSubmissionsErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -6105,7 +6105,7 @@ export const listHooksBySiteId200Schema = z.array(
  * @description error
  */
 export const listHooksBySiteIdErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -6133,7 +6133,7 @@ export const createHookBySiteId201Schema = z.object({
  * @description error
  */
 export const createHookBySiteIdErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -6172,7 +6172,7 @@ export const getHook200Schema = z.object({
  * @description error
  */
 export const getHookErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -6200,7 +6200,7 @@ export const updateHook200Schema = z.object({
  * @description error
  */
 export const updateHookErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -6250,7 +6250,7 @@ export const enableHook200Schema = z.object({
  * @description error
  */
 export const enableHookErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -6271,7 +6271,7 @@ export const listHookTypes200Schema = z.array(
  * @description error
  */
 export const listHookTypesErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -6295,7 +6295,7 @@ export const createTicket201Schema = z.object({
  * @description error
  */
 export const createTicketErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -6319,7 +6319,7 @@ export const showTicket200Schema = z.object({
  * @description error
  */
 export const showTicketErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -6344,7 +6344,7 @@ export const exchangeTicket201Schema = z.object({
  * @description error
  */
 export const exchangeTicketErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -6365,7 +6365,7 @@ export const listDeployKeys200Schema = z.array(
  * @description error
  */
 export const listDeployKeysErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -6384,7 +6384,7 @@ export const createDeployKey201Schema = z.object({
  * @description error
  */
 export const createDeployKeyErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -6407,7 +6407,7 @@ export const getDeployKey200Schema = z.object({
  * @description error
  */
 export const getDeployKeyErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -6426,7 +6426,7 @@ export const deleteDeployKey204Schema = z.unknown();
  * @description error
  */
 export const deleteDeployKeyErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -6578,7 +6578,7 @@ export const createSiteInTeam201Schema = z.object({
  * @description error
  */
 export const createSiteInTeamErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -6900,7 +6900,7 @@ export const listSitesForAccount200Schema = z.array(
  * @description error
  */
 export const listSitesForAccountErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -6927,7 +6927,7 @@ export const listMembersForAccount200Schema = z.array(
  * @description error
  */
 export const listMembersForAccountErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -6956,7 +6956,7 @@ export const addMemberToAccount200Schema = z.array(
  * @description error
  */
 export const addMemberToAccountErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -6987,7 +6987,7 @@ export const getAccountMember200Schema = z.object({
  * @description error
  */
 export const getAccountMemberErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -7013,7 +7013,7 @@ export const updateAccountMember200Schema = z.object({
  * @description error
  */
 export const updateAccountMemberErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -7039,7 +7039,7 @@ export const removeAccountMember204Schema = z.unknown();
  * @description error
  */
 export const removeAccountMemberErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -7070,7 +7070,7 @@ export const listPaymentMethodsForUser200Schema = z.array(
  * @description error
  */
 export const listPaymentMethodsForUserErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -7098,7 +7098,7 @@ export const listAccountTypesForUser200Schema = z.array(
  * @description error
  */
 export const listAccountTypesForUserErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -7155,7 +7155,7 @@ export const listAccountsForUser200Schema = z.array(
  * @description error
  */
 export const listAccountsForUserErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -7202,7 +7202,7 @@ export const createAccount201Schema = z.object({
  * @description error
  */
 export const createAccountErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -7261,7 +7261,7 @@ export const getAccount200Schema = z.object({
  * @description error
  */
 export const getAccountErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -7312,7 +7312,7 @@ export const updateAccount200Schema = z.object({
  * @description error
  */
 export const updateAccountErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -7341,7 +7341,7 @@ export const cancelAccount204Schema = z.unknown();
  * @description error
  */
 export const cancelAccountErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -7386,7 +7386,7 @@ export const listAccountAuditEvents200Schema = z.array(
  * @description error
  */
 export const listAccountAuditEventsErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -7454,7 +7454,7 @@ export const listAgentRunners200Schema = z.array(
  * @description error
  */
 export const listAgentRunnersErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -7527,7 +7527,7 @@ export const createAgentRunner422Schema = z.unknown();
  * @description error
  */
 export const createAgentRunnerErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -7558,7 +7558,7 @@ export const createAgentRunnerUploadUrl422Schema = z.unknown();
  * @description error
  */
 export const createAgentRunnerUploadUrlErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -7615,7 +7615,7 @@ export const getAgentRunner200Schema = z.object({
  * @description error
  */
 export const getAgentRunnerErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -7670,7 +7670,7 @@ export const updateAgentRunner200Schema = z.object({
  * @description error
  */
 export const updateAgentRunnerErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -7689,7 +7689,7 @@ export const deleteAgentRunner202Schema = z.unknown();
  * @description error
  */
 export const deleteAgentRunnerErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -7718,7 +7718,7 @@ export const archiveAgentRunner422Schema = z.unknown();
  * @description error
  */
 export const archiveAgentRunnerErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -7752,7 +7752,7 @@ export const agentRunnerPullRequest422Schema = z.unknown();
  * @description error
  */
 export const agentRunnerPullRequestErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -7792,7 +7792,7 @@ export const agentRunnerCommitToBranch422Schema = z.unknown();
  * @description error
  */
 export const agentRunnerCommitToBranchErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -7867,7 +7867,7 @@ export const listAgentRunnerSessions200Schema = z.array(
  * @description error
  */
 export const listAgentRunnerSessionsErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -7948,7 +7948,7 @@ export const createAgentRunnerSession422Schema = z.unknown();
  * @description error
  */
 export const createAgentRunnerSessionErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -8011,7 +8011,7 @@ export const getAgentRunnerSession200Schema = z.object({
  * @description error
  */
 export const getAgentRunnerSessionErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -8080,7 +8080,7 @@ export const updateAgentRunnerSession200Schema = z.object({
  * @description error
  */
 export const updateAgentRunnerSessionErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -8102,7 +8102,7 @@ export const deleteAgentRunnerSession202Schema = z.unknown();
  * @description error
  */
 export const deleteAgentRunnerSessionErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -8146,7 +8146,7 @@ export const listFormSubmission200Schema = z.array(
  * @description error
  */
 export const listFormSubmissionErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -8165,7 +8165,7 @@ export const deleteSubmission204Schema = z.unknown();
  * @description error
  */
 export const deleteSubmissionErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -8199,7 +8199,7 @@ export const listServiceInstancesForSite200Schema = z.array(
  * @description error
  */
 export const listServiceInstancesForSiteErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -8234,7 +8234,7 @@ export const createServiceInstance201Schema = z.object({
  * @description error
  */
 export const createServiceInstanceErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -8272,7 +8272,7 @@ export const showServiceInstance200Schema = z.object({
  * @description error
  */
 export const showServiceInstanceErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -8293,7 +8293,7 @@ export const updateServiceInstance204Schema = z.unknown();
  * @description error
  */
 export const updateServiceInstanceErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -8318,7 +8318,7 @@ export const deleteServiceInstance204Schema = z.unknown();
  * @description error
  */
 export const deleteServiceInstanceErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -8357,7 +8357,7 @@ export const getServices200Schema = z.array(
  * @description error
  */
 export const getServicesErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -8390,7 +8390,7 @@ export const showService200Schema = z.object({
  * @description error
  */
 export const showServiceErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -8409,7 +8409,7 @@ export const showServiceManifest201Schema = z.object({});
  * @description error
  */
 export const showServiceManifestErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -8425,7 +8425,7 @@ export const getCurrentUser200Schema = z.object({
 	avatar_url: z.optional(z.string()),
 	email: z.optional(z.string()),
 	affiliate_id: z.optional(z.string()),
-	site_count: z.optional(z.int()),
+	site_count: z.optional(z.bigint()),
 	created_at: z.optional(z.string()),
 	last_login: z.optional(z.string()),
 	login_providers: z.optional(z.array(z.string())),
@@ -8440,7 +8440,7 @@ export const getCurrentUser200Schema = z.object({
  * @description error
  */
 export const getCurrentUserErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -8469,7 +8469,7 @@ export const createSplitTest201Schema = z.object({
  * @description error
  */
 export const createSplitTestErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -8504,7 +8504,7 @@ export const getSplitTests200Schema = z.array(
  * @description error
  */
 export const getSplitTestsErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -8534,7 +8534,7 @@ export const updateSplitTest201Schema = z.object({
  * @description error
  */
 export const updateSplitTestErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -8568,7 +8568,7 @@ export const getSplitTest200Schema = z.object({
  * @description error
  */
 export const getSplitTestErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -8588,7 +8588,7 @@ export const enableSplitTest204Schema = z.unknown();
  * @description error
  */
 export const enableSplitTestErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -8608,7 +8608,7 @@ export const disableSplitTest204Schema = z.unknown();
  * @description error
  */
 export const disableSplitTestErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -8632,8 +8632,8 @@ export const createDnsZone201Schema = z.object({
 				hostname: z.optional(z.string()),
 				type: z.optional(z.string()),
 				value: z.optional(z.string()),
-				ttl: z.optional(z.int()),
-				priority: z.optional(z.int()),
+				ttl: z.optional(z.bigint()),
+				priority: z.optional(z.bigint()),
 				dns_zone_id: z.optional(z.string()),
 				site_id: z.optional(z.string()),
 				flag: z.optional(z.int()),
@@ -8656,7 +8656,7 @@ export const createDnsZone201Schema = z.object({
  * @description error
  */
 export const createDnsZoneErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -8693,8 +8693,8 @@ export const getDnsZones200Schema = z.array(
 					hostname: z.optional(z.string()),
 					type: z.optional(z.string()),
 					value: z.optional(z.string()),
-					ttl: z.optional(z.int()),
-					priority: z.optional(z.int()),
+					ttl: z.optional(z.bigint()),
+					priority: z.optional(z.bigint()),
 					dns_zone_id: z.optional(z.string()),
 					site_id: z.optional(z.string()),
 					flag: z.optional(z.int()),
@@ -8718,7 +8718,7 @@ export const getDnsZones200Schema = z.array(
  * @description error
  */
 export const getDnsZonesErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -8746,8 +8746,8 @@ export const getDnsZone200Schema = z.object({
 				hostname: z.optional(z.string()),
 				type: z.optional(z.string()),
 				value: z.optional(z.string()),
-				ttl: z.optional(z.int()),
-				priority: z.optional(z.int()),
+				ttl: z.optional(z.bigint()),
+				priority: z.optional(z.bigint()),
 				dns_zone_id: z.optional(z.string()),
 				site_id: z.optional(z.string()),
 				flag: z.optional(z.int()),
@@ -8770,7 +8770,7 @@ export const getDnsZone200Schema = z.object({
  * @description error
  */
 export const getDnsZoneErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -8789,7 +8789,7 @@ export const deleteDnsZone204Schema = z.unknown();
  * @description error
  */
 export const deleteDnsZoneErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -8823,8 +8823,8 @@ export const transferDnsZone200Schema = z.object({
 				hostname: z.optional(z.string()),
 				type: z.optional(z.string()),
 				value: z.optional(z.string()),
-				ttl: z.optional(z.int()),
-				priority: z.optional(z.int()),
+				ttl: z.optional(z.bigint()),
+				priority: z.optional(z.bigint()),
 				dns_zone_id: z.optional(z.string()),
 				site_id: z.optional(z.string()),
 				flag: z.optional(z.int()),
@@ -8847,7 +8847,7 @@ export const transferDnsZone200Schema = z.object({
  * @description error
  */
 export const transferDnsZoneErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -8866,8 +8866,8 @@ export const getDnsRecords200Schema = z.array(
 		hostname: z.optional(z.string()),
 		type: z.optional(z.string()),
 		value: z.optional(z.string()),
-		ttl: z.optional(z.int()),
-		priority: z.optional(z.int()),
+		ttl: z.optional(z.bigint()),
+		priority: z.optional(z.bigint()),
 		dns_zone_id: z.optional(z.string()),
 		site_id: z.optional(z.string()),
 		flag: z.optional(z.int()),
@@ -8880,7 +8880,7 @@ export const getDnsRecords200Schema = z.array(
  * @description error
  */
 export const getDnsRecordsErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -8898,8 +8898,8 @@ export const createDnsRecord201Schema = z.object({
 	hostname: z.optional(z.string()),
 	type: z.optional(z.string()),
 	value: z.optional(z.string()),
-	ttl: z.optional(z.int()),
-	priority: z.optional(z.int()),
+	ttl: z.optional(z.bigint()),
+	priority: z.optional(z.bigint()),
 	dns_zone_id: z.optional(z.string()),
 	site_id: z.optional(z.string()),
 	flag: z.optional(z.int()),
@@ -8911,7 +8911,7 @@ export const createDnsRecord201Schema = z.object({
  * @description error
  */
 export const createDnsRecordErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -8919,11 +8919,11 @@ export const createDnsRecordMutationRequestSchema = z.object({
 	type: z.optional(z.string()),
 	hostname: z.optional(z.string()),
 	value: z.optional(z.string()),
-	ttl: z.optional(z.int()),
-	priority: z.optional(z.int()),
-	weight: z.optional(z.int()),
-	port: z.optional(z.int()),
-	flag: z.optional(z.int()),
+	ttl: z.optional(z.bigint()),
+	priority: z.optional(z.bigint()),
+	weight: z.optional(z.bigint()),
+	port: z.optional(z.bigint()),
+	flag: z.optional(z.bigint()),
 	tag: z.optional(z.string()),
 });
 
@@ -8942,8 +8942,8 @@ export const getIndividualDnsRecord200Schema = z.object({
 	hostname: z.optional(z.string()),
 	type: z.optional(z.string()),
 	value: z.optional(z.string()),
-	ttl: z.optional(z.int()),
-	priority: z.optional(z.int()),
+	ttl: z.optional(z.bigint()),
+	priority: z.optional(z.bigint()),
 	dns_zone_id: z.optional(z.string()),
 	site_id: z.optional(z.string()),
 	flag: z.optional(z.int()),
@@ -8955,7 +8955,7 @@ export const getIndividualDnsRecord200Schema = z.object({
  * @description error
  */
 export const getIndividualDnsRecordErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -8977,7 +8977,7 @@ export const deleteDnsRecord204Schema = z.unknown();
  * @description error
  */
 export const deleteDnsRecordErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -9018,7 +9018,7 @@ export const listSiteDevServers200Schema = z.array(
  * @description error
  */
 export const listSiteDevServersErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -9058,7 +9058,7 @@ export const createSiteDevServer200Schema = z.array(
  * @description error
  */
 export const createSiteDevServerErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -9083,7 +9083,7 @@ export const deleteSiteDevServers202Schema = z.unknown();
  * @description error
  */
 export const deleteSiteDevServersErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -9191,7 +9191,7 @@ export const listSiteDevServerHooks200Schema = z.array(
  * @description error
  */
 export const listSiteDevServerHooksErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -9220,7 +9220,7 @@ export const createSiteDevServerHook201Schema = z.object({
  * @description error
  */
 export const createSiteDevServerHookErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -9256,7 +9256,7 @@ export const getSiteDevServerHook200Schema = z.object({
  * @description error
  */
 export const getSiteDevServerHookErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -9276,7 +9276,7 @@ export const updateSiteDevServerHook204Schema = z.unknown();
  * @description error
  */
 export const updateSiteDevServerHookErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -9304,7 +9304,7 @@ export const deleteSiteDevServerHook204Schema = z.unknown();
  * @description error
  */
 export const deleteSiteDevServerHookErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -9331,7 +9331,7 @@ export const getAIGatewayProviders200Schema = z.object({
  * @description error
  */
 export const getAIGatewayProvidersErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -9349,7 +9349,7 @@ export const getAIGatewayTokenPathParamsSchema = z.object({
 export const getAIGatewayToken200Schema = z.object({
 	token: z.optional(z.string().describe("The AI Gateway authentication token")),
 	url: z.optional(z.string().describe("AI gateway base url")),
-	expires_at: z.optional(z.int().describe("Unix timestamp when the token expires")),
+	expires_at: z.optional(z.bigint().describe("Unix timestamp when the token expires")),
 });
 
 /**
@@ -9361,7 +9361,7 @@ export const getAIGatewayToken404Schema = z.unknown();
  * @description error
  */
 export const getAIGatewayTokenErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -9393,7 +9393,7 @@ export const createSiteDatabase201Schema = z
  * @description error
  */
 export const createSiteDatabaseErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -9431,7 +9431,7 @@ export const getSiteDatabase200Schema = z
  * @description error
  */
 export const getSiteDatabaseErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -9450,7 +9450,7 @@ export const deleteSiteDatabase204Schema = z.unknown();
  * @description error
  */
 export const deleteSiteDatabaseErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -9486,7 +9486,7 @@ export const createSiteDatabaseBranch201Schema = z
  * @description error
  */
 export const createSiteDatabaseBranchErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -9533,7 +9533,7 @@ export const getSiteDatabaseBranch404Schema = z.unknown();
  * @description error
  */
 export const getSiteDatabaseBranchErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -9555,7 +9555,7 @@ export const deleteSiteDatabaseBranch204Schema = z.unknown();
  * @description error
  */
 export const deleteSiteDatabaseBranchErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -9582,7 +9582,7 @@ export const createSiteDatabaseSnapshot201Schema = z
  * @description error
  */
 export const createSiteDatabaseSnapshotErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -9634,7 +9634,7 @@ export const listSiteDatabaseSnapshots200Schema = z
  * @description error
  */
 export const listSiteDatabaseSnapshotsErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -9656,7 +9656,7 @@ export const deleteSiteDatabaseSnapshot204Schema = z.unknown();
  * @description error
  */
 export const deleteSiteDatabaseSnapshotErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -9678,7 +9678,7 @@ export const restoreSiteDatabaseSnapshot200Schema = z.unknown();
  * @description error
  */
 export const restoreSiteDatabaseSnapshotErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
@@ -9715,7 +9715,7 @@ export const updatePlugin200Schema = z.object({
  * @description error
  */
 export const updatePluginErrorSchema = z.object({
-	code: z.optional(z.int()),
+	code: z.optional(z.bigint()),
 	message: z.string(),
 });
 
