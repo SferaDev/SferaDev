@@ -269,7 +269,7 @@ export type ListArchivedFiles200 = {
 				 * @description The meeting or webinar ID, either `meetingId` or `webinarId`.
 				 * @type integer, int64
 				 */
-				id: number;
+				id: bigint;
 				/**
 				 * @description Whether the room is a [breakout room](https://support.zoom.us/hc/en-us/articles/115005769646-Participating-in-breakout-rooms).
 				 * @type boolean
@@ -558,7 +558,7 @@ export type MeetingLocalArchivingArchiveTokenPathParams = {
 	 * @description The meeting\'s ID. \n\n When storing this value in your database, you must store it as a long format integer and **not** an integer. Meeting IDs can exceed 10 digits.
 	 * @type integer, int64
 	 */
-	meetingId: number;
+	meetingId: bigint;
 };
 
 export const meetingLocalArchivingArchiveToken200ExpireInEnum = {
@@ -825,7 +825,7 @@ export type GetArchivedFiles200 = {
 	 * @description The meeting or webinar ID, either `meetingId` or `webinarId`.
 	 * @type integer, int64
 	 */
-	id: number;
+	id: bigint;
 	/**
 	 * @description Whether the room is a [breakout room](https://support.zoom.us/hc/en-us/articles/115005769646-Participating-in-breakout-rooms).
 	 * @type boolean
@@ -1194,7 +1194,7 @@ export type RecordingGet200 = ({
 	 * @description The recording\'s total file size. This includes the `recording_files` and `participant_audio_files` files.
 	 * @type integer | undefined, int64
 	 */
-	total_size?: number | undefined;
+	total_size?: bigint | undefined;
 	/**
 	 * @description The recording\'s associated type of meeting or webinar. \n\nIf the recording is of a meeting: \n* `1` - Instant meeting. \n* `2` - Scheduled meeting. \n* `3` - A recurring meeting with no fixed time. \n* `4` - A meeting created via PMI (Personal Meeting ID). \n* `7` - A [Personal Audio Conference](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0060449) (PAC). \n* `8` - Recurring meeting with a fixed time. \n\nIf the recording is of a webinar: \n* `5` - A webinar. \n* `6` - A recurring webinar without a fixed time \n* `9` - A recurring webinar with a fixed time.\n\nIf the recording is **not** from a meeting or webinar: \n\n* `99` - A recording uploaded via the [**Recordings**](https://zoom.us/recording) interface on the Zoom Web Portal.
 	 * @type string | undefined
@@ -1594,7 +1594,7 @@ export type MeetingRecordingRegistrantsPathParams = {
 	 * @description The meeting\'s ID. \n\n When storing this value in your database, you must store it as a long format integer and **not** an integer. Meeting IDs can exceed 10 digits.
 	 * @type integer, int64
 	 */
-	meetingId: number;
+	meetingId: bigint;
 };
 
 export const meetingRecordingRegistrantsQueryParamsStatusEnum = {
@@ -1859,7 +1859,7 @@ export type MeetingRecordingRegistrantCreatePathParams = {
 	 * @description The meeting\'s ID. \n\n When storing this value in your database, you must store it as a long format integer and **not** an integer. Meeting IDs can exceed 10 digits.
 	 * @type integer, int64
 	 */
-	meetingId: number;
+	meetingId: bigint;
 };
 
 /**
@@ -1870,7 +1870,7 @@ export type MeetingRecordingRegistrantCreate201 = {
 	 * @description [Meeting ID](https://support.zoom.us/hc/en-us/articles/201362373-What-is-a-Meeting-ID-): Unique identifier of the meeting in &quot;**long**&quot; format(represented as int64 data type in JSON), also known as the meeting number.
 	 * @type integer | undefined, int64
 	 */
-	id?: number | undefined;
+	id?: bigint | undefined;
 	/**
 	 * @description Registrant ID
 	 * @type string | undefined
@@ -2293,7 +2293,7 @@ export type MeetingRecordingRegistrantStatusPathParams = {
 	 * @description The meeting\'s ID. \n\n When storing this value in your database, you must store it as a long format integer and **not** an integer. Meeting IDs can exceed 10 digits.
 	 * @type integer, int64
 	 */
-	meetingId: number;
+	meetingId: bigint;
 };
 
 /**
@@ -3185,7 +3185,7 @@ export type RecordingsList200 = {
 				 * @description The total file size of the recording. This includes the `recording_files` and `participant_audio_files` files.
 				 * @type integer | undefined, int64
 				 */
-				total_size?: number | undefined;
+				total_size?: bigint | undefined;
 				/**
 				 * @description The recording\'s associated type of meeting or webinar: \n\nIf the recording is of a meeting: \n* `1` - Instant meeting. \n* `2` - Scheduled meeting. \n* `3` - A recurring meeting with no fixed time. \n* `4` - A meeting created viaPersonal Meeting ID (PMI). \n* `7` - A [Personal Audio Conference](https://support.zoom.us/hc/en-us/articles/204517069-Getting-Started-with-Personal-Audio-Conference) (PAC). \n* `8` - Recurring meeting with a fixed time. \n\nIf the recording is of a webinar: \n* `5` - A webinar. \n* `6` - A recurring webinar without a fixed time \n* `9` - A recurring webinar with a fixed time.\n\nIf the recording is **not** from a meeting or webinar: \n\n* `99` - A recording uploaded via the [**Recordings**](https://zoom.us/recording) interface on the Zoom Web Portal.
 				 * @type string | undefined
@@ -4804,7 +4804,7 @@ export type MeetingAppAddPathParams = {
 	 * @description The meeting\'s ID. \n\n When storing this value in your database, you must store it as a long format integer and **not** an integer. Meeting IDs can exceed 10 digits.
 	 * @type integer, int64
 	 */
-	meetingId: number;
+	meetingId: bigint;
 };
 
 /**
@@ -4815,7 +4815,7 @@ export type MeetingAppAdd201 = {
 	 * @description The [meeting ID](https://support.zoom.us/hc/en-us/articles/201362373-What-is-a-Meeting-ID-): Unique identifier of the meeting in **long** format(represented as int64 data type in JSON), also known as the meeting number.
 	 * @type integer | undefined, int64
 	 */
-	id?: number | undefined;
+	id?: bigint | undefined;
 	/**
 	 * @description For scheduled meetings only. Meeting start date-time in UTC/GMT, such as `2020-03-31T12:02:00Z`.
 	 * @type string | undefined, date-time
@@ -4856,7 +4856,7 @@ export type MeetingAppDeletePathParams = {
 	 * @description The meeting\'s ID. \n\n When storing this value in your database, you must store it as a long format integer and **not** an integer. Meeting IDs can exceed 10 digits.
 	 * @type integer, int64
 	 */
-	meetingId: number;
+	meetingId: bigint;
 };
 
 /**
@@ -4892,7 +4892,7 @@ export type DeleteMeetingChatMessageByIdPathParams = {
 	 * @description The meeting\'s ID. \n\n When storing this value in your database, store it as a long-format integer and **not** an integer. Meeting IDs can be more than 10 digits.
 	 * @type integer, int64
 	 */
-	meetingId: number;
+	meetingId: bigint;
 	/**
 	 * @description The live meeting chat message\'s unique identifier (UUID), in base64-encoded format.
 	 * @type string
@@ -4945,7 +4945,7 @@ export type UpdateMeetingChatMessageByIdPathParams = {
 	 * @description The meeting\'s ID. \n\n When storing this value in your database, store it as a long-format integer and **not** an integer. Meeting IDs can exceed 10 digits.
 	 * @type integer, int64
 	 */
-	meetingId: number;
+	meetingId: bigint;
 	/**
 	 * @description The live meeting chat message\'s unique identifier (UUID), in base64-encoded format.
 	 * @type string
@@ -5233,7 +5233,7 @@ export type MeetingLocalRecordingJoinTokenPathParams = {
 	 * @description The meeting\'s ID. \n\n When storing this value in your database, you must store it as a long format integer and **not** an integer. Meeting IDs can exceed 10 digits.
 	 * @type integer, int64
 	 */
-	meetingId: number;
+	meetingId: bigint;
 };
 
 export type MeetingLocalRecordingJoinTokenQueryParams = {
@@ -5299,7 +5299,7 @@ export type MeetingTokenPathParams = {
 	 * @description The meeting\'s ID. \n\n When storing this value in your database, you must store it as a long format integer and **not** an integer. Meeting IDs can exceed 10 digits.
 	 * @type integer, int64
 	 */
-	meetingId: number;
+	meetingId: bigint;
 };
 
 export const meetingTokenQueryParamsTypeEnum = {
@@ -5389,7 +5389,7 @@ export type AddBatchRegistrants201 = {
 				 * @description The participant PIN code is used to authenticate audio participants before they join the meeting.
 				 * @type integer | undefined, int64
 				 */
-				participant_pin_code?: number | undefined;
+				participant_pin_code?: bigint | undefined;
 		  }[]
 		| undefined;
 };
@@ -5458,7 +5458,7 @@ export type MeetingInvitationPathParams = {
 	 * @description The meeting\'s ID. \n\n When storing this value in your database, you must store it as a long format integer, not a simple integer. Meeting IDs can exceed 10 digits.
 	 * @type integer, int64
 	 */
-	meetingId: number;
+	meetingId: bigint;
 };
 
 /**
@@ -5506,7 +5506,7 @@ export type MeetingInviteLinksCreatePathParams = {
 	 * @description The meeting\'s ID. \n\n When storing this value in your database, you must store it as a long format integer and **not** an integer. Meeting IDs can exceed 10 digits.
 	 * @type integer, int64
 	 */
-	meetingId: number;
+	meetingId: bigint;
 };
 
 /**
@@ -5586,7 +5586,7 @@ export type MeetingInviteLinksCreateMutationRequest = {
 	 * @default 7200
 	 * @type integer | undefined, int64
 	 */
-	ttl?: number | undefined;
+	ttl?: bigint | undefined;
 };
 
 export type MeetingInviteLinksCreateMutationResponse = MeetingInviteLinksCreate201;
@@ -5603,7 +5603,7 @@ export type MeetingRegistrantsPathParams = {
 	 * @description The meeting\'s ID. \n\n When storing this value in your database, store it as a long format integer, not an integer. Meeting IDs can exceed 10 digits.
 	 * @type integer, int64
 	 */
-	meetingId: number;
+	meetingId: bigint;
 };
 
 export const meetingRegistrantsQueryParamsStatusEnum = {
@@ -5864,7 +5864,7 @@ export type MeetingRegistrants200 = {
 				 * @description The participant PIN code is used to authenticate audio participants before they join the meeting.
 				 * @type integer | undefined, int64
 				 */
-				participant_pin_code?: number | undefined;
+				participant_pin_code?: bigint | undefined;
 		  })[]
 		| undefined;
 };
@@ -5898,7 +5898,7 @@ export type MeetingRegistrantCreatePathParams = {
 	 * @description The meeting\'s ID. \n\n When storing this value in your database, you must store it as a long format integer and **not** an integer. Meeting IDs can exceed 10 digits.
 	 * @type integer, int64
 	 */
-	meetingId: number;
+	meetingId: bigint;
 };
 
 export type MeetingRegistrantCreateQueryParams = {
@@ -5917,7 +5917,7 @@ export type MeetingRegistrantCreate201 = {
 	 * @description The meeting ID.
 	 * @type integer | undefined, int64
 	 */
-	id?: number | undefined;
+	id?: bigint | undefined;
 	/**
 	 * @description The URL the registrant can use to join the meeting. \n\nThe API will not return this field if the meeting was [created](/docs/api-reference/zoom-api/methods#operation/meetingCreate) with the `approval_type` field value of `1` (manual approval).
 	 * @type string | undefined
@@ -5971,7 +5971,7 @@ export type MeetingRegistrantCreate201 = {
 	 * @description The participant PIN code is used to authenticate audio participants before they join the meeting.
 	 * @type integer | undefined, int64
 	 */
-	participant_pin_code?: number | undefined;
+	participant_pin_code?: bigint | undefined;
 };
 
 /**
@@ -6178,7 +6178,7 @@ export type MeetingRegistrantsQuestionsGetPathParams = {
 	 * @description The meeting\'s ID. \n\n When storing this value in your database, store it as a long format integer, not a simple integer. Meeting IDs can exceed 10 digits.
 	 * @type integer, int64
 	 */
-	meetingId: number;
+	meetingId: bigint;
 };
 
 export const customQuestionsTypeEnum3 = {
@@ -6292,7 +6292,7 @@ export type MeetingRegistrantQuestionUpdatePathParams = {
 	 * @description The meeting\'s ID. \n\n When storing this value in your database, you must store it as a long format integer and **not** an integer. Meeting IDs can exceed 10 digits.
 	 * @type integer, int64
 	 */
-	meetingId: number;
+	meetingId: bigint;
 };
 
 /**
@@ -6412,7 +6412,7 @@ export type MeetingRegistrantStatusPathParams = {
 	 * @description The meeting\'s ID. \n\n When storing this value in your database, store it as a `long` format integer, not as a simple integer. Meeting IDs can exceed 10 digits.
 	 * @type integer, int64
 	 */
-	meetingId: number;
+	meetingId: bigint;
 };
 
 export type MeetingRegistrantStatusQueryParams = {
@@ -6491,7 +6491,7 @@ export type MeetingRegistrantGetPathParams = {
 	 * @description The meeting\'s ID. \n\n When storing this value in your database, you must store it as a long format integer and **not** an integer. Meeting IDs can exceed 10 digits.
 	 * @type integer, int64
 	 */
-	meetingId: number;
+	meetingId: bigint;
 	/**
 	 * @description The registrant ID.
 	 * @type string
@@ -6689,7 +6689,7 @@ export type MeetingRegistrantGet200 = {
 	 * @description The participant PIN code is used to authenticate audio participants before they join the meeting.
 	 * @type integer | undefined, int64
 	 */
-	participant_pin_code?: number | undefined;
+	participant_pin_code?: bigint | undefined;
 };
 
 /**
@@ -6770,7 +6770,7 @@ export type MeetingLiveStreamingJoinTokenPathParams = {
 	 * @description The meeting\'s ID. \n\n When storing this value in your database, you must store it as a long format integer and **not** an integer. Meeting IDs can exceed 10 digits.
 	 * @type integer, int64
 	 */
-	meetingId: number;
+	meetingId: bigint;
 };
 
 export const meetingLiveStreamingJoinToken200ExpireInEnum = {
@@ -6887,7 +6887,7 @@ export type MeetingLiveStreamUpdatePathParams = {
 	 * @description The meeting\'s ID. \n\n When storing this value in your database, you must store it as a long format integer and **not** an integer. Meeting IDs can exceed 10 digits.
 	 * @type integer, int64
 	 */
-	meetingId: number;
+	meetingId: bigint;
 };
 
 /**
@@ -6953,7 +6953,7 @@ export type MeetingLiveStreamStatusUpdatePathParams = {
 	 * @description The meeting\'s ID. \n\n When storing this value in your database, you must store it as a long format integer and **not** an integer. Meeting IDs can exceed 10 digits.
 	 * @type integer, int64
 	 */
-	meetingId: number;
+	meetingId: bigint;
 };
 
 /**
@@ -7062,7 +7062,7 @@ export type MeetingRTMSStatusUpdatePathParams = {
 	 * @description The meeting\'s ID.\n\nWhen storing this value in your database, store it as a long format integer and **not** an integer. Meeting IDs can exceed 10 digits.
 	 * @type integer, int64
 	 */
-	meetingId: number;
+	meetingId: bigint;
 };
 
 /**
@@ -7147,7 +7147,7 @@ export type MeetingPathParams = {
 	 * @description The meeting\'s ID. \n\n When storing this value in your database, store it as a long format integer and **not** an integer. Meeting IDs can be more than 10 digits.
 	 * @type integer, int64
 	 */
-	meetingId: number;
+	meetingId: bigint;
 };
 
 export type MeetingQueryParams = {
@@ -7407,7 +7407,7 @@ export type Meeting200 = {
 	 * @description [Meeting ID](https://support.zoom.us/hc/en-us/articles/201362373-What-is-a-Meeting-ID-): Unique identifier of the meeting in **long** format, represented as int64 data type in JSON, also known as the meeting number.
 	 * @type integer | undefined, int64
 	 */
-	id?: number | undefined;
+	id?: bigint | undefined;
 	/**
 	 * @description Unique meeting ID. Each meeting instance generates its own meeting UUID - after a meeting ends, a new UUID is generated for the next instance of the meeting. Retrieve a list of UUIDs from past meeting instances using the [**List past meeting instances**](/docs/api/rest/reference/zoom-api/methods#operation/pastMeetings) API. [Double encode](/docs/api/rest/using-zoom-apis/#meeting-id-and-uuid) your UUID when using it for API calls if the UUID begins with a `/` or contains `//` in it.\n
 	 * @type string | undefined
@@ -8328,7 +8328,7 @@ export type MeetingDeletePathParams = {
 	 * @description The meeting\'s ID. \n\n When storing this value in your database, you must store it as a long format integer and **not** an integer. Meeting IDs can exceed 10 digits.
 	 * @type integer, int64
 	 */
-	meetingId: number;
+	meetingId: bigint;
 };
 
 export type MeetingDeleteQueryParams = {
@@ -8383,7 +8383,7 @@ export type MeetingUpdatePathParams = {
 	 * @description The meeting\'s ID. \n\n When storing this value in your database, store it as a long format integer and **not** an integer. Meeting IDs can be greater than 10 digits.
 	 * @type integer, int64
 	 */
-	meetingId: number;
+	meetingId: bigint;
 };
 
 export type MeetingUpdateQueryParams = {
@@ -9409,7 +9409,7 @@ export type GetSipDialingWithPasscodePathParams = {
 	 * @description The meeting\'s ID. \n\n When storing this value in your database, you must store it as a long format integer and **not** an integer. Meeting IDs can exceed 10 digits.
 	 * @type integer, int64
 	 */
-	meetingId: number;
+	meetingId: bigint;
 };
 
 /**
@@ -9435,7 +9435,7 @@ export type GetSipDialingWithPasscode200 = {
 	 * @description The number of seconds the encoded SIP URI is valid before it expires.
 	 * @type integer | undefined, int64
 	 */
-	expire_in?: number | undefined;
+	expire_in?: bigint | undefined;
 };
 
 /**
@@ -9478,7 +9478,7 @@ export type MeetingStatusPathParams = {
 	 * @description The meeting\'s ID. \n\n When storing this value in your database, you must store it as a `long` format integer and not an integer. Meeting IDs can exceed 10 digits.
 	 * @type integer, int64
 	 */
-	meetingId: number;
+	meetingId: bigint;
 };
 
 /**
@@ -9555,7 +9555,7 @@ export type PastMeetingDetails200 = {
 	 * @description The [meeting ID](https://support.zoom.us/hc/en-us/articles/201362373-What-is-a-Meeting-ID).
 	 * @type integer | undefined, int64
 	 */
-	id?: number | undefined;
+	id?: bigint | undefined;
 	/**
 	 * @description The meeting\'s UUID. You must [double encode](https://marketplace.zoom.us/docs/api-reference/using-zoom-apis/#meeting-id-and-uuid) this value if the meeting UUID begins with a `/` character or contains the `//` character.
 	 * @type string | undefined
@@ -9656,7 +9656,7 @@ export type PastMeetingsPathParams = {
 	 * @description The past meeting\'s ID.
 	 * @type integer, int64
 	 */
-	meetingId: number;
+	meetingId: bigint;
 };
 
 /**
@@ -9865,7 +9865,7 @@ export type ListPastMeetingQA200 = {
 	 * @description [Meeting ID](https://support.zoom.us/hc/en-us/articles/201362373-What-is-a-Meeting-ID-): Unique identifier of the meeting in **long** format, represented as int64 data type in JSON, also known as the meeting number.
 	 * @type integer | undefined, int64
 	 */
-	id?: number | undefined;
+	id?: bigint | undefined;
 	/**
 	 * @type array | undefined
 	 */
@@ -10066,7 +10066,7 @@ export type Meetings200 = {
 				 * @description Meeting ID - also known as the meeting number in long (int64) format.
 				 * @type integer | undefined, int64
 				 */
-				id?: number | undefined;
+				id?: bigint | undefined;
 				/**
 				 * @description URL using which participants can join a meeting.
 				 * @type string | undefined
@@ -10383,7 +10383,7 @@ export type MeetingCreate201 = {
 	 * @description The [meeting ID](https://support.zoom.us/hc/en-us/articles/201362373-What-is-a-Meeting-ID-): Unique identifier of the meeting in **long** format(represented as int64 data type in JSON), also known as the meeting number.
 	 * @type integer | undefined, int64
 	 */
-	id?: number | undefined;
+	id?: bigint | undefined;
 	/**
 	 * @description Unique meeting ID. Each meeting instance generates its own meeting UUID - after a meeting ends, a new UUID is generated for the next instance of the meeting. Retrieve a list of UUIDs from past meeting instances using the [**List past meeting instances**](/docs/api/rest/reference/zoom-api/methods#operation/pastMeetings) API. [Double encode](/docs/api/rest/using-zoom-apis/#meeting-id-and-uuid) your UUID when using it for API calls if the UUID begins with a `/` or contains `//` in it.
 	 * @type string | undefined
@@ -12238,7 +12238,7 @@ export type ListUpcomingMeeting200 = {
 				 * @description The [meeting ID](https://support.zoom.us/hc/en-us/articles/201362373-What-is-a-Meeting-ID-) - a unique identifier of the meeting in **long** format, represented as int64 data type in JSON. Also known as the meeting number.
 				 * @type integer | undefined, int64
 				 */
-				id?: number | undefined;
+				id?: bigint | undefined;
 				/**
 				 * @description The meeting topic.
 				 * @type string | undefined
@@ -12338,7 +12338,7 @@ export type UserPACs200 = {
 				 * @description The conference ID.
 				 * @type integer | undefined, int64
 				 */
-				conference_id?: number | undefined;
+				conference_id?: bigint | undefined;
 				/**
 				 * @description Information about the account\'s dedicated dial-in numbers.
 				 * @type array | undefined
@@ -12764,7 +12764,7 @@ export type MeetingPollsPathParams = {
 	 * @description The meeting\'s ID. \n\n When storing this value in your database, you must store it as a long format integer and **not** an integer. Meeting IDs can exceed 10 digits.
 	 * @type integer, int64
 	 */
-	meetingId: number;
+	meetingId: bigint;
 };
 
 export type MeetingPollsQueryParams = {
@@ -12980,7 +12980,7 @@ export type MeetingPollCreatePathParams = {
 	 * @description The meeting\'s ID. \n\n When storing this value in your database, you must store it as a long format integer and **not** an integer. Meeting IDs can exceed 10 digits.
 	 * @type integer, int64
 	 */
-	meetingId: number;
+	meetingId: bigint;
 };
 
 export const meetingPollCreate201StatusEnum = {
@@ -13318,7 +13318,7 @@ export type MeetingPollGetPathParams = {
 	 * @description The meeting\'s ID. \n\n When storing this value in your database, store it as a `long` format integer, not a simple integer. Meeting IDs can exceed 10 digits.
 	 * @type integer, int64
 	 */
-	meetingId: number;
+	meetingId: bigint;
 	/**
 	 * @description The poll ID.
 	 * @type string
@@ -13518,7 +13518,7 @@ export type MeetingPollUpdatePathParams = {
 	 * @description The meeting\'s ID. \n\n When storing this value in your database, you must store it as a long format integer and **not** an integer. Meeting IDs can exceed 10 digits.
 	 * @type integer, int64
 	 */
-	meetingId: number;
+	meetingId: bigint;
 	/**
 	 * @description The poll ID.
 	 * @type string
@@ -13703,7 +13703,7 @@ export type MeetingPollDeletePathParams = {
 	 * @description The meeting\'s ID. \n\n When storing this value in your database, you must store it as a long format integer and **not** an integer. Meeting IDs can exceed 10 digits.
 	 * @type integer, int64
 	 */
-	meetingId: number;
+	meetingId: bigint;
 	/**
 	 * @description The poll ID
 	 * @type string
@@ -13755,7 +13755,7 @@ export type ListPastMeetingPolls200 = {
 	 * @description [Meeting ID](https://support.zoom.us/hc/en-us/articles/201362373-What-is-a-Meeting-ID-): Unique identifier of the meeting in **long** format(represented as int64 data type in JSON), also known as the meeting number.
 	 * @type integer | undefined, int64
 	 */
-	id?: number | undefined;
+	id?: bigint | undefined;
 	/**
 	 * @type array | undefined
 	 */
@@ -14429,7 +14429,7 @@ export type Gethistorymeetingandwebinarlist200 = {
 				 * @description The [meeting ID](https://support.zoom.us/hc/en-us/articles/201362373-What-is-a-Meeting-ID-): Unique identifier of the meeting in &quot;**long**&quot; format(represented as int64 data type in JSON), also known as the meeting number.
 				 * @type integer | undefined, int64
 				 */
-				meeting_id?: number | undefined;
+				meeting_id?: bigint | undefined;
 				/**
 				 * @description The meeting type, either Meeting or Webinar.
 				 * @type string | undefined
@@ -14963,7 +14963,7 @@ export type ReportMeetingDetails200 = {
 	 * @description [Meeting ID](https://support.zoom.us/hc/en-us/articles/201362373-What-is-a-Meeting-ID-): Unique identifier of the meeting in &quot;**long**&quot; format(represented as int64 data type in JSON), also known as the meeting number.
 	 * @type integer | undefined, int64
 	 */
-	id?: number | undefined;
+	id?: bigint | undefined;
 	/**
 	 * @description Number of meeting participants.
 	 * @type integer | undefined
@@ -15234,7 +15234,7 @@ export type ReportMeetingPolls200 = {
 	 * @description The [meeting ID](https://support.zoom.us/hc/en-us/articles/201362373-What-is-a-Meeting-ID).
 	 * @type integer | undefined, int64
 	 */
-	id?: number | undefined;
+	id?: bigint | undefined;
 	/**
 	 * @description The meeting\'s universally unique identifier (UUID). Each meeting instance generates a meeting UUID.
 	 * @type string | undefined
@@ -15364,7 +15364,7 @@ export type ReportMeetingQA200 = {
 	 * @description The meeting ID in `long` format, represented as int64 data type in JSON. Also known as the meeting number.
 	 * @type integer | undefined, int64
 	 */
-	id?: number | undefined;
+	id?: bigint | undefined;
 	/**
 	 * @description Array of meeting question objects.
 	 * @type array | undefined
@@ -15513,7 +15513,7 @@ export type ReportMeetingSurvey200 = {
 	 * @description The meeting ID.
 	 * @type integer | undefined, int64
 	 */
-	meeting_id?: number | undefined;
+	meeting_id?: bigint | undefined;
 	/**
 	 * @description The meeting\'s universally unique identifier (UUID). Each meeting instance generates a meeting UUID.
 	 * @type string | undefined
@@ -16032,7 +16032,7 @@ export type ReportTelephone200 = {
 				 * @description [Meeting ID](https://support.zoom.us/hc/en-us/articles/201362373-What-is-a-Meeting-ID-): Unique identifier of the meeting in &quot;**long**&quot; format(represented as int64 data type in JSON), also known as the meeting number.
 				 * @type integer | undefined, int64
 				 */
-				meeting_id?: number | undefined;
+				meeting_id?: bigint | undefined;
 				/**
 				 * @description Meeting type.
 				 * @type string | undefined
@@ -16769,7 +16769,7 @@ export type ReportWebinarDetails200 = {
 	 * @description [Meeting ID](https://support.zoom.us/hc/en-us/articles/201362373-What-is-a-Meeting-ID-): Unique identifier of the meeting in &quot;**long**&quot; format(represented as int64 data type in JSON), also known as the meeting number.
 	 * @type integer | undefined, int64
 	 */
-	id?: number | undefined;
+	id?: bigint | undefined;
 	/**
 	 * @description Number of meeting participants.
 	 * @type integer | undefined
@@ -17042,7 +17042,7 @@ export type ReportWebinarPolls200 = {
 	 * @description The webinar ID.
 	 * @type integer | undefined, int64
 	 */
-	id?: number | undefined;
+	id?: bigint | undefined;
 	/**
 	 * @description Information about the webinar questions.
 	 * @type array | undefined
@@ -17172,7 +17172,7 @@ export type ReportWebinarQA200 = {
 	 * @description Webinar ID in `long` format, represented as int64 data type in JSON. Also known as the webinar number.
 	 * @type integer | undefined, int64
 	 */
-	id?: number | undefined;
+	id?: bigint | undefined;
 	/**
 	 * @description Array of webinar question objects.
 	 * @type array | undefined
@@ -17321,7 +17321,7 @@ export type ReportWebinarSurvey200 = {
 	 * @description The webinar ID.
 	 * @type integer | undefined, int64
 	 */
-	webinar_id?: number | undefined;
+	webinar_id?: bigint | undefined;
 	/**
 	 * @description The webinar\'s universally unique identifier (UUID). Each webinar instance generates a webinar UUID.
 	 * @type string | undefined
@@ -18323,7 +18323,7 @@ export type Listmeetingsummaries200 = {
 				 * @description [Meeting ID](https://support.zoom.us/hc/en-us/articles/201362373-What-is-a-Meeting-ID-) - the meeting\'s unique identifier in **long** format, represented as int64 data type in JSON, also known as the meeting number.
 				 * @type integer | undefined, int64
 				 */
-				meeting_id?: number | undefined;
+				meeting_id?: bigint | undefined;
 				/**
 				 * @description Meeting topic.
 				 * @type string | undefined
@@ -18417,7 +18417,7 @@ export type Getameetingsummary200 = {
 	 * @description [The meeting ID](https://support.zoom.us/hc/en-us/articles/201362373-What-is-a-Meeting-ID-) \nThe meeting\'s unique identifier in **long** format, represented as int64 data type in JSON. Also known as the meeting number.
 	 * @type integer | undefined, int64
 	 */
-	meeting_id?: number | undefined;
+	meeting_id?: bigint | undefined;
 	/**
 	 * @description The meeting topic.
 	 * @type string | undefined
@@ -18617,7 +18617,7 @@ export type MeetingSurveyGetPathParams = {
 	 * @description The meeting\'s ID. \n\n When storing this value in your database, store it as a long-format integer and **not** a simple integer. Meeting IDs can be more than 10 digits.
 	 * @type integer, int64
 	 */
-	meetingId: number;
+	meetingId: bigint;
 };
 
 export const questionsTypeEnum8 = {
@@ -18802,7 +18802,7 @@ export type MeetingSurveyDeletePathParams = {
 	 * @description The meeting\'s ID. \n\n When storing this value in your database, you must store it as a long format integer and **not** an integer. Meeting IDs can exceed 10 digits.
 	 * @type integer, int64
 	 */
-	meetingId: number;
+	meetingId: bigint;
 };
 
 /**
@@ -18838,7 +18838,7 @@ export type MeetingSurveyUpdatePathParams = {
 	 * @description The meeting\'s ID. \n\n When storing this value in your database, store it as a long-format integer and **not** a simple integer. Meeting IDs can be over 10 digits.
 	 * @type integer, int64
 	 */
-	meetingId: number;
+	meetingId: bigint;
 };
 
 /**
@@ -19945,7 +19945,7 @@ export type MeetingTemplateCreateMutationRequest = {
 	 * @description The meeting ID - the meeting number in long (int64) format.
 	 * @type integer | undefined, int64
 	 */
-	meeting_id?: number | undefined;
+	meeting_id?: bigint | undefined;
 	/**
 	 * @description The template name.
 	 * @type string | undefined
@@ -20258,7 +20258,7 @@ export type DeleteWebinarChatMessageByIdPathParams = {
 	 * @description The webinar\'s ID.
 	 * @type integer, int64
 	 */
-	webinarId: number;
+	webinarId: bigint;
 	/**
 	 * @description The live webinar chat message\'s unique identifier (UUID), in base64-encoded format.
 	 * @type string
@@ -20580,7 +20580,7 @@ export type PastWebinarsPathParams = {
 	 * @description The webinar\'s ID.
 	 * @type integer, int64
 	 */
-	webinarId: number;
+	webinarId: bigint;
 };
 
 /**
@@ -20794,7 +20794,7 @@ export type ListPastWebinarPollResults200 = {
 	 * @description Webinar ID in **long** format, represented as int64 data type in JSON, also known as the webinar number.
 	 * @type integer | undefined, int64
 	 */
-	id?: number | undefined;
+	id?: bigint | undefined;
 	/**
 	 * @type array | undefined
 	 */
@@ -20893,7 +20893,7 @@ export type ListPastWebinarQA200 = {
 	 * @description Webinar ID in **long** format, represented as int64 data type in JSON, also known as the webinar number.
 	 * @type integer | undefined, int64
 	 */
-	id?: number | undefined;
+	id?: bigint | undefined;
 	/**
 	 * @type array | undefined
 	 */
@@ -21072,7 +21072,7 @@ export type WebinarTemplateCreateMutationRequest = {
 	 * @description The webinar ID in long (int64) format.
 	 * @type integer | undefined, int64
 	 */
-	webinar_id?: number | undefined;
+	webinar_id?: bigint | undefined;
 	/**
 	 * @description The webinar template\'s name.
 	 * @type string | undefined
@@ -21210,7 +21210,7 @@ export type Webinars200 = {
 				 * @description The webinar ID.
 				 * @type integer | undefined, int64
 				 */
-				id?: number | undefined;
+				id?: bigint | undefined;
 				/**
 				 * @description The URL to join the webinar.
 				 * @type string | undefined
@@ -21454,7 +21454,7 @@ export type WebinarCreate201 = {
 	 * @description Webinar ID in **long** format, represented as int64 data type in JSON. Also known as the webinar number.
 	 * @type integer | undefined, int64
 	 */
-	id?: number | undefined;
+	id?: bigint | undefined;
 	/**
 	 * @description The webinar template\'s unique identifier. Use this field only if you would like to [schedule the webinar using an existing template](https://support.zoom.us/hc/en-us/articles/115001079746-Webinar-Templates#schedule). The value of this field can be retrieved from [**List webinar templates**](/docs/api/rest/reference/zoom-api/methods#operation/listWebinarTemplates) API.\nYou must provide the user ID of the host instead of the email address in the `userId` path parameter in order to use a template for scheduling a Webinar.
 	 * @type string | undefined
@@ -23038,7 +23038,7 @@ export type Webinar200 = {
 	 * @description The webinar ID in **long** format, represented as int64 data type in JSON, also known as the webinar number.
 	 * @type integer | undefined, int64
 	 */
-	id?: number | undefined;
+	id?: bigint | undefined;
 	/**
 	 * @description The webinar template\'s unique identifier. Use this field only if you would like to [schedule the webinar using an existing template](https://support.zoom.us/hc/en-us/articles/115001079746-Webinar-Templates#schedule). The value of this field can be retrieved from [**List webinar templates**](/docs/api/rest/reference/zoom-api/methods#operation/listWebinarTemplates) API.\nYou must provide the user ID of the host instead of the email address in the `userId` path parameter in order to use a template for scheduling a webinar.
 	 * @type string | undefined
@@ -23730,7 +23730,7 @@ export type WebinarDeletePathParams = {
 	 * @description The webinar\'s ID.
 	 * @type integer, int64
 	 */
-	webinarId: number;
+	webinarId: bigint;
 };
 
 export type WebinarDeleteQueryParams = {
@@ -23780,7 +23780,7 @@ export type WebinarUpdatePathParams = {
 	 * @description The webinar\'s ID.
 	 * @type integer, int64
 	 */
-	webinarId: number;
+	webinarId: bigint;
 };
 
 export type WebinarUpdateQueryParams = {
@@ -24628,7 +24628,7 @@ export type GetWebinarBrandingPathParams = {
 	 * @description The webinar\'s ID.
 	 * @type integer, int64
 	 */
-	webinarId: number;
+	webinarId: bigint;
 };
 
 /**
@@ -24739,7 +24739,7 @@ export type CreateWebinarBrandingNameTagPathParams = {
 	 * @description The webinar\'s ID.
 	 * @type integer, int64
 	 */
-	webinarId: number;
+	webinarId: bigint;
 };
 
 /**
@@ -24845,7 +24845,7 @@ export type DeleteWebinarBrandingNameTagPathParams = {
 	 * @description The webinar\'s ID.
 	 * @type integer, int64
 	 */
-	webinarId: number;
+	webinarId: bigint;
 };
 
 export type DeleteWebinarBrandingNameTagQueryParams = {
@@ -24893,7 +24893,7 @@ export type UpdateWebinarBrandingNameTagPathParams = {
 	 * @description The webinar\'s ID.
 	 * @type integer, int64
 	 */
-	webinarId: number;
+	webinarId: bigint;
 	/**
 	 * @description The name tag\'s ID.
 	 * @type string
@@ -24973,7 +24973,7 @@ export type UploadWebinarBrandingVBPathParams = {
 	 * @description The webinar\'s ID.
 	 * @type integer, int64
 	 */
-	webinarId: number;
+	webinarId: bigint;
 };
 
 export const uploadWebinarBrandingVB201TypeEnum = {
@@ -25042,7 +25042,7 @@ export type DeleteWebinarBrandingVBPathParams = {
 	 * @description The webinar\'s ID.
 	 * @type integer, int64
 	 */
-	webinarId: number;
+	webinarId: bigint;
 };
 
 export type DeleteWebinarBrandingVBQueryParams = {
@@ -25087,7 +25087,7 @@ export type SetWebinarBrandingVBPathParams = {
 	 * @description The webinar\'s ID.
 	 * @type integer, int64
 	 */
-	webinarId: number;
+	webinarId: bigint;
 };
 
 export type SetWebinarBrandingVBQueryParams = {
@@ -25137,7 +25137,7 @@ export type UploadWebinarBrandingWallpaperPathParams = {
 	 * @description The webinar\'s ID.
 	 * @type integer, int64
 	 */
-	webinarId: number;
+	webinarId: bigint;
 };
 
 export const uploadWebinarBrandingWallpaper201TypeEnum = {
@@ -25204,7 +25204,7 @@ export type DeleteWebinarBrandingWallpaperPathParams = {
 	 * @description The webinar\'s ID.
 	 * @type integer, int64
 	 */
-	webinarId: number;
+	webinarId: bigint;
 };
 
 /**
@@ -25243,7 +25243,7 @@ export type WebinarInviteLinksCreatePathParams = {
 	 * @description The webinar\'s ID.
 	 * @type integer, int64
 	 */
-	webinarId: number;
+	webinarId: bigint;
 };
 
 /**
@@ -25324,7 +25324,7 @@ export type WebinarInviteLinksCreateMutationRequest = {
 	 * @default 7200
 	 * @type integer | undefined, int64
 	 */
-	ttl?: number | undefined;
+	ttl?: bigint | undefined;
 };
 
 export type WebinarInviteLinksCreateMutationResponse = WebinarInviteLinksCreate201;
@@ -25341,7 +25341,7 @@ export type WebinarLiveStreamingJoinTokenPathParams = {
 	 * @description The webinar\'s ID.
 	 * @type integer, int64
 	 */
-	webinarId: number;
+	webinarId: bigint;
 };
 
 export const webinarLiveStreamingJoinToken200ExpireInEnum = {
@@ -25398,7 +25398,7 @@ export type WebinarLocalArchivingArchiveTokenPathParams = {
 	 * @description The webinar\'s ID.
 	 * @type integer, int64
 	 */
-	webinarId: number;
+	webinarId: bigint;
 };
 
 export const webinarLocalArchivingArchiveToken200ExpireInEnum = {
@@ -25455,7 +25455,7 @@ export type WebinarLocalRecordingJoinTokenPathParams = {
 	 * @description The webinar\'s ID.
 	 * @type integer, int64
 	 */
-	webinarId: number;
+	webinarId: bigint;
 };
 
 export const webinarLocalRecordingJoinToken200ExpireInEnum = {
@@ -25572,7 +25572,7 @@ export type WebinarLiveStreamUpdatePathParams = {
 	 * @description The webinar\'s ID.
 	 * @type integer, int64
 	 */
-	webinarId: number;
+	webinarId: bigint;
 };
 
 /**
@@ -25638,7 +25638,7 @@ export type WebinarLiveStreamStatusUpdatePathParams = {
 	 * @description The webinar\'s ID.
 	 * @type integer, int64
 	 */
-	webinarId: number;
+	webinarId: bigint;
 };
 
 /**
@@ -25717,7 +25717,7 @@ export type WebinarPanelistsPathParams = {
 	 * @description The webinar\'s ID.
 	 * @type integer, int64
 	 */
-	webinarId: number;
+	webinarId: bigint;
 };
 
 /**
@@ -25812,7 +25812,7 @@ export type WebinarPanelistCreatePathParams = {
 	 * @description The webinar\'s ID.
 	 * @type integer, int64
 	 */
-	webinarId: number;
+	webinarId: bigint;
 };
 
 /**
@@ -25906,7 +25906,7 @@ export type WebinarPanelistsDeletePathParams = {
 	 * @description The webinar\'s ID.
 	 * @type integer, int64
 	 */
-	webinarId: number;
+	webinarId: bigint;
 };
 
 /**
@@ -25942,7 +25942,7 @@ export type WebinarPanelistDeletePathParams = {
 	 * @description The webinar\'s ID.
 	 * @type integer, int64
 	 */
-	webinarId: number;
+	webinarId: bigint;
 	/**
 	 * @description The panelist\'s ID or email.
 	 * @type string
@@ -25983,7 +25983,7 @@ export type WebinarPollsPathParams = {
 	 * @description The webinar\'s ID.
 	 * @type integer, int64
 	 */
-	webinarId: number;
+	webinarId: bigint;
 };
 
 export type WebinarPollsQueryParams = {
@@ -26199,7 +26199,7 @@ export type WebinarPollCreatePathParams = {
 	 * @description The webinar\'s ID.
 	 * @type integer, int64
 	 */
-	webinarId: number;
+	webinarId: bigint;
 };
 
 export const webinarPollCreate201StatusEnum = {
@@ -26537,7 +26537,7 @@ export type WebinarPollGetPathParams = {
 	 * @description The webinar\'s ID.
 	 * @type integer, int64
 	 */
-	webinarId: number;
+	webinarId: bigint;
 	/**
 	 * @description The poll ID.
 	 * @type string
@@ -26737,7 +26737,7 @@ export type WebinarPollUpdatePathParams = {
 	 * @description The webinar\'s ID.
 	 * @type integer, int64
 	 */
-	webinarId: number;
+	webinarId: bigint;
 	/**
 	 * @description The poll ID.
 	 * @type string
@@ -26922,7 +26922,7 @@ export type WebinarPollDeletePathParams = {
 	 * @description The webinar\'s ID.
 	 * @type integer, int64
 	 */
-	webinarId: number;
+	webinarId: bigint;
 	/**
 	 * @description The poll ID
 	 * @type string
@@ -26963,7 +26963,7 @@ export type WebinarRegistrantsPathParams = {
 	 * @description The webinar\'s ID.
 	 * @type integer, int64
 	 */
-	webinarId: number;
+	webinarId: bigint;
 };
 
 export const webinarRegistrantsQueryParamsStatusEnum = {
@@ -27258,7 +27258,7 @@ export type WebinarRegistrantCreatePathParams = {
 	 * @description The webinar\'s ID.
 	 * @type integer, int64
 	 */
-	webinarId: number;
+	webinarId: bigint;
 };
 
 export type WebinarRegistrantCreateQueryParams = {
@@ -27277,7 +27277,7 @@ export type WebinarRegistrantCreate201 = {
 	 * @description The webinar\'s ID.
 	 * @type integer | undefined, int64
 	 */
-	id?: number | undefined;
+	id?: bigint | undefined;
 	/**
 	 * @description The URL the registrant can use to join the webinar.
 	 * @type string | undefined
@@ -27533,7 +27533,7 @@ export type WebinarRegistrantsQuestionsGetPathParams = {
 	 * @description The webinar\'s ID.
 	 * @type integer, int64
 	 */
-	webinarId: number;
+	webinarId: bigint;
 };
 
 export const customQuestionsTypeEnum5 = {
@@ -27649,7 +27649,7 @@ export type WebinarRegistrantQuestionUpdatePathParams = {
 	 * @description The webinar\'s ID.
 	 * @type integer, int64
 	 */
-	webinarId: number;
+	webinarId: bigint;
 };
 
 /**
@@ -27771,7 +27771,7 @@ export type WebinarRegistrantStatusPathParams = {
 	 * @description The webinar\'s ID.
 	 * @type integer, int64
 	 */
-	webinarId: number;
+	webinarId: bigint;
 };
 
 export type WebinarRegistrantStatusQueryParams = {
@@ -27852,7 +27852,7 @@ export type WebinarRegistrantGetPathParams = {
 	 * @description The webinar\'s ID.
 	 * @type integer, int64
 	 */
-	webinarId: number;
+	webinarId: bigint;
 	/**
 	 * @description The registrant ID.
 	 * @type string
@@ -28148,7 +28148,7 @@ export type GetWebinarSipDialingWithPasscodePathParams = {
 	 * @description The webinar\'s ID. \n\n When storing this value in your database, store it as a long format integer and **not** an integer. Webinar IDs can exceed 10 digits.
 	 * @type integer, int64
 	 */
-	webinarId: number;
+	webinarId: bigint;
 };
 
 /**
@@ -28174,7 +28174,7 @@ export type GetWebinarSipDialingWithPasscode201 = {
 	 * @description The number of seconds the encoded SIP URI is valid before it expires.
 	 * @type integer | undefined, int64
 	 */
-	expire_in?: number | undefined;
+	expire_in?: bigint | undefined;
 };
 
 /**
@@ -28209,7 +28209,7 @@ export type WebinarStatusPathParams = {
 	 * @description The webinar\'s ID.
 	 * @type integer, int64
 	 */
-	webinarId: number;
+	webinarId: bigint;
 };
 
 /**
@@ -28260,7 +28260,7 @@ export type WebinarSurveyGetPathParams = {
 	 * @description The webinar\'s ID.
 	 * @type integer, int64
 	 */
-	webinarId: number;
+	webinarId: bigint;
 };
 
 export const questionsTypeEnum15 = {
@@ -28451,7 +28451,7 @@ export type WebinarSurveyDeletePathParams = {
 	 * @description The webinar\'s ID.
 	 * @type integer, int64
 	 */
-	webinarId: number;
+	webinarId: bigint;
 };
 
 /**
@@ -28487,7 +28487,7 @@ export type WebinarSurveyUpdatePathParams = {
 	 * @description The webinar\'s ID.
 	 * @type integer, int64
 	 */
-	webinarId: number;
+	webinarId: bigint;
 };
 
 /**
@@ -28680,7 +28680,7 @@ export type WebinarTokenPathParams = {
 	 * @description The webinar\'s ID.
 	 * @type integer, int64
 	 */
-	webinarId: number;
+	webinarId: bigint;
 };
 
 export const webinarTokenQueryParamsTypeEnum = {
@@ -28739,7 +28739,7 @@ export type GetTrackingSourcesPathParams = {
 	 * @description The webinar\'s ID.
 	 * @type integer, int64
 	 */
-	webinarId: number;
+	webinarId: bigint;
 };
 
 /**
