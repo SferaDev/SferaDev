@@ -682,10 +682,10 @@ export const restletSchema = z.object({
 	get logger() {
 		return loggerSchema.optional();
 	},
-	stopped: z.optional(z.boolean()),
 	get application() {
 		return applicationSchema.optional();
 	},
+	stopped: z.optional(z.boolean()),
 });
 
 export const parameterSchema = z.object({
@@ -791,7 +791,6 @@ export const referenceSchema = z.object({
 	schemeSpecificPart: z.optional(z.string()),
 	fragment: z.optional(z.string()),
 	extensions: z.optional(z.string()),
-	identifier: z.optional(z.string()),
 	matrix: z.optional(z.string()),
 	get matrixAsForm() {
 		return z.array(parameterSchema).optional();
@@ -821,6 +820,7 @@ export const referenceSchema = z.object({
 		return referenceSchema.optional();
 	},
 	hierarchical: z.optional(z.boolean()),
+	identifier: z.optional(z.string()),
 });
 
 export const metadataSchema = z.object({
@@ -1059,10 +1059,10 @@ export const applicationSchema = z.object({
 	get logger() {
 		return loggerSchema.optional();
 	},
-	stopped: z.optional(z.boolean()),
 	get application() {
 		return applicationSchema.optional();
 	},
+	stopped: z.optional(z.boolean()),
 });
 
 export const authenticationInfoSchema = z.object({
@@ -1804,10 +1804,10 @@ export const requestSchema = z.object({
 	entityAvailable: z.optional(z.boolean()),
 	expectingResponse: z.optional(z.boolean()),
 	synchronous: z.optional(z.boolean()),
+	entityAsText: z.optional(z.string()),
 	get headers() {
 		return z.array(headerSchema).optional();
 	},
-	entityAsText: z.optional(z.string()),
 });
 
 export const reservationAccessTimesUpdateSchema = z.object({
@@ -1923,11 +1923,11 @@ export const responseSchema = z.object({
 	final: z.optional(z.boolean()),
 	confidential: z.optional(z.boolean()),
 	provisional: z.optional(z.boolean()),
+	entityAvailable: z.optional(z.boolean()),
+	entityAsText: z.optional(z.string()),
 	get headers() {
 		return z.array(headerSchema).optional();
 	},
-	entityAvailable: z.optional(z.boolean()),
-	entityAsText: z.optional(z.string()),
 });
 
 export const shsSubscriptionSchema = z.object({

@@ -1647,13 +1647,13 @@ export type Restlet = {
 	 */
 	logger?: Logger | undefined;
 	/**
-	 * @type boolean | undefined
-	 */
-	stopped?: boolean | undefined;
-	/**
 	 * @type object | undefined
 	 */
 	application?: Application | undefined;
+	/**
+	 * @type boolean | undefined
+	 */
+	stopped?: boolean | undefined;
 };
 
 export type Parameter = {
@@ -1884,10 +1884,6 @@ export type Reference = {
 	/**
 	 * @type string | undefined
 	 */
-	identifier?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	matrix?: string | undefined;
 	/**
 	 * @type array | undefined
@@ -1953,6 +1949,10 @@ export type Reference = {
 	 * @type boolean | undefined
 	 */
 	hierarchical?: boolean | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	identifier?: string | undefined;
 };
 
 export type Metadata = {
@@ -2444,13 +2444,13 @@ export type Application = {
 	 */
 	logger?: Logger | undefined;
 	/**
-	 * @type boolean | undefined
-	 */
-	stopped?: boolean | undefined;
-	/**
 	 * @type object | undefined
 	 */
 	application?: Application | undefined;
+	/**
+	 * @type boolean | undefined
+	 */
+	stopped?: boolean | undefined;
 };
 
 export type AuthenticationInfo = {
@@ -3970,13 +3970,13 @@ export type Request = {
 	 */
 	synchronous?: boolean | undefined;
 	/**
-	 * @type array | undefined
-	 */
-	headers?: Header[] | undefined;
-	/**
 	 * @type string | undefined
 	 */
 	entityAsText?: string | undefined;
+	/**
+	 * @type array | undefined
+	 */
+	headers?: Header[] | undefined;
 };
 
 export type ReservationAccessTimesUpdate = {
@@ -4157,10 +4157,6 @@ export type Response = {
 	 */
 	provisional?: boolean | undefined;
 	/**
-	 * @type array | undefined
-	 */
-	headers?: Header[] | undefined;
-	/**
 	 * @type boolean | undefined
 	 */
 	entityAvailable?: boolean | undefined;
@@ -4168,6 +4164,10 @@ export type Response = {
 	 * @type string | undefined
 	 */
 	entityAsText?: string | undefined;
+	/**
+	 * @type array | undefined
+	 */
+	headers?: Header[] | undefined;
 };
 
 export const shsSubscriptionTypeEnum = {
