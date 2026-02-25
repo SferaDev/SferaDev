@@ -30057,9 +30057,6 @@ export type CreateSandbox402 = unknown;
  */
 export type CreateSandbox403 = unknown;
 
-/**
- * @description The project does not exist or the team does not have access to it.
- */
 export type CreateSandbox404 = unknown;
 
 /**
