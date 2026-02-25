@@ -16126,9 +16126,6 @@ export const createSandbox402Schema = z.unknown();
  */
 export const createSandbox403Schema = z.unknown();
 
-/**
- * @description The project does not exist or the team does not have access to it.
- */
 export const createSandbox404Schema = z.unknown();
 
 /**
