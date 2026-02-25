@@ -641,6 +641,13 @@ export type ChatDetail = {
 		 */
 		write: boolean;
 	};
+	/**
+	 * @description Arbitrary key-value data associated with this chat.
+	 * @type object
+	 */
+	metadata: {
+		[key: string]: string;
+	};
 };
 
 export const chatSummaryPrivacyEnum = {
