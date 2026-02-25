@@ -289,6 +289,10 @@ export const chatDetailSchema = z
 		permissions: z.object({
 			write: z.boolean().describe("If true, the user has write access to the chat."),
 		}),
+		metadata: z
+			.object({})
+			.catchall(z.string())
+			.describe("Arbitrary key-value data associated with this chat."),
 	})
 	.describe(
 		"Detailed representation of a chat, including its messages, files, versions, and model configuration.",
