@@ -2462,6 +2462,7 @@ export type NewOwnerEnablePreviewFeedbackEnumKey =
 export const webAnalyticsBlockReasonEnum = {
 	admin_override: "admin_override",
 	limits_exceeded: "limits_exceeded",
+	hard_blocked: "hard_blocked",
 } as const;
 
 export type WebAnalyticsBlockReasonEnumKey =
@@ -2470,6 +2471,7 @@ export type WebAnalyticsBlockReasonEnumKey =
 export const monitoringBlockReasonEnum = {
 	admin_override: "admin_override",
 	limits_exceeded: "limits_exceeded",
+	hard_blocked: "hard_blocked",
 } as const;
 
 export type MonitoringBlockReasonEnumKey =
@@ -2486,6 +2488,7 @@ export type MonitoringBlockTypeEnumKey =
 export const observabilityPlusBlockReasonEnum = {
 	admin_override: "admin_override",
 	limits_exceeded: "limits_exceeded",
+	hard_blocked: "hard_blocked",
 } as const;
 
 export type ObservabilityPlusBlockReasonEnumKey =
@@ -2502,6 +2505,7 @@ export type ObservabilityPlusBlockTypeEnumKey =
 export const dataCacheBlockReasonEnum = {
 	admin_override: "admin_override",
 	limits_exceeded: "limits_exceeded",
+	hard_blocked: "hard_blocked",
 } as const;
 
 export type DataCacheBlockReasonEnumKey =
@@ -2510,6 +2514,7 @@ export type DataCacheBlockReasonEnumKey =
 export const imageOptimizationTransformationBlockReasonEnum = {
 	admin_override: "admin_override",
 	limits_exceeded: "limits_exceeded",
+	hard_blocked: "hard_blocked",
 } as const;
 
 export type ImageOptimizationTransformationBlockReasonEnumKey =
@@ -2518,13 +2523,13 @@ export type ImageOptimizationTransformationBlockReasonEnumKey =
 export const sourceImagesBlockReasonEnum = {
 	admin_override: "admin_override",
 	limits_exceeded: "limits_exceeded",
+	hard_blocked: "hard_blocked",
 } as const;
 
 export type SourceImagesBlockReasonEnumKey =
 	(typeof sourceImagesBlockReasonEnum)[keyof typeof sourceImagesBlockReasonEnum];
 
 export const blobBlockReasonEnum = {
-	admin_override: "admin_override",
 	limits_exceeded: "limits_exceeded",
 } as const;
 
@@ -2575,8 +2580,15 @@ export const blobOverageReasonEnum = {
 export type BlobOverageReasonEnumKey =
 	(typeof blobOverageReasonEnum)[keyof typeof blobOverageReasonEnum];
 
-export const postgresBlockReasonEnum = {
+export const blobBlockReasonEnum2 = {
 	admin_override: "admin_override",
+	hard_blocked: "hard_blocked",
+} as const;
+
+export type BlobBlockReasonEnum2Key =
+	(typeof blobBlockReasonEnum2)[keyof typeof blobBlockReasonEnum2];
+
+export const postgresBlockReasonEnum = {
 	limits_exceeded: "limits_exceeded",
 } as const;
 
@@ -2628,8 +2640,15 @@ export const postgresOverageReasonEnum = {
 export type PostgresOverageReasonEnumKey =
 	(typeof postgresOverageReasonEnum)[keyof typeof postgresOverageReasonEnum];
 
-export const redisBlockReasonEnum = {
+export const postgresBlockReasonEnum2 = {
 	admin_override: "admin_override",
+	hard_blocked: "hard_blocked",
+} as const;
+
+export type PostgresBlockReasonEnum2Key =
+	(typeof postgresBlockReasonEnum2)[keyof typeof postgresBlockReasonEnum2];
+
+export const redisBlockReasonEnum = {
 	limits_exceeded: "limits_exceeded",
 } as const;
 
@@ -2681,9 +2700,18 @@ export const redisOverageReasonEnum = {
 export type RedisOverageReasonEnumKey =
 	(typeof redisOverageReasonEnum)[keyof typeof redisOverageReasonEnum];
 
+export const redisBlockReasonEnum2 = {
+	admin_override: "admin_override",
+	hard_blocked: "hard_blocked",
+} as const;
+
+export type RedisBlockReasonEnum2Key =
+	(typeof redisBlockReasonEnum2)[keyof typeof redisBlockReasonEnum2];
+
 export const microfrontendsRequestBlockReasonEnum = {
 	admin_override: "admin_override",
 	limits_exceeded: "limits_exceeded",
+	hard_blocked: "hard_blocked",
 } as const;
 
 export type MicrofrontendsRequestBlockReasonEnumKey =
@@ -2692,6 +2720,7 @@ export type MicrofrontendsRequestBlockReasonEnumKey =
 export const workflowStorageBlockReasonEnum = {
 	admin_override: "admin_override",
 	limits_exceeded: "limits_exceeded",
+	hard_blocked: "hard_blocked",
 } as const;
 
 export type WorkflowStorageBlockReasonEnumKey =
@@ -2700,6 +2729,7 @@ export type WorkflowStorageBlockReasonEnumKey =
 export const workflowStepBlockReasonEnum = {
 	admin_override: "admin_override",
 	limits_exceeded: "limits_exceeded",
+	hard_blocked: "hard_blocked",
 } as const;
 
 export type WorkflowStepBlockReasonEnumKey =
@@ -3537,6 +3567,14 @@ export const payloadNewPlanEnum = {
 } as const;
 
 export type PayloadNewPlanEnumKey = (typeof payloadNewPlanEnum)[keyof typeof payloadNewPlanEnum];
+
+export const payloadAutomatedEnum2 = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadAutomatedEnum2Key =
+	(typeof payloadAutomatedEnum2)[keyof typeof payloadAutomatedEnum2];
 
 export const payloadEnforcedEnum = {
 	false: false,
@@ -8111,86 +8149,137 @@ export type UserEvent = {
 													blockReason: SourceImagesBlockReasonEnumKey;
 											  }
 											| undefined;
-										/**
-										 * @type object | undefined
-										 */
 										blob?:
-											| {
-													/**
-													 * @type number
-													 */
-													updatedAt: number;
-													/**
-													 * @type number | undefined
-													 */
-													blockedFrom?: number | undefined;
-													/**
-													 * @type number | undefined
-													 */
-													blockedUntil?: number | undefined;
-													/**
-													 * @type string
-													 */
-													blockReason: BlobBlockReasonEnumKey;
-													/**
-													 * @type string
-													 */
-													overageReason: BlobOverageReasonEnumKey;
-											  }
+											| (
+													| {
+															/**
+															 * @type number
+															 */
+															updatedAt: number;
+															/**
+															 * @type number | undefined
+															 */
+															blockedFrom?: number | undefined;
+															/**
+															 * @type number | undefined
+															 */
+															blockedUntil?: number | undefined;
+															/**
+															 * @type string
+															 */
+															blockReason: BlobBlockReasonEnumKey;
+															/**
+															 * @type string
+															 */
+															overageReason: BlobOverageReasonEnumKey;
+													  }
+													| {
+															/**
+															 * @type number
+															 */
+															updatedAt: number;
+															/**
+															 * @type number | undefined
+															 */
+															blockedFrom?: number | undefined;
+															/**
+															 * @type number | undefined
+															 */
+															blockedUntil?: number | undefined;
+															/**
+															 * @type string
+															 */
+															blockReason: BlobBlockReasonEnum2Key;
+													  }
+											  )
 											| undefined;
-										/**
-										 * @type object | undefined
-										 */
 										postgres?:
-											| {
-													/**
-													 * @type number
-													 */
-													updatedAt: number;
-													/**
-													 * @type number | undefined
-													 */
-													blockedFrom?: number | undefined;
-													/**
-													 * @type number | undefined
-													 */
-													blockedUntil?: number | undefined;
-													/**
-													 * @type string
-													 */
-													blockReason: PostgresBlockReasonEnumKey;
-													/**
-													 * @type string
-													 */
-													overageReason: PostgresOverageReasonEnumKey;
-											  }
+											| (
+													| {
+															/**
+															 * @type number
+															 */
+															updatedAt: number;
+															/**
+															 * @type number | undefined
+															 */
+															blockedFrom?: number | undefined;
+															/**
+															 * @type number | undefined
+															 */
+															blockedUntil?: number | undefined;
+															/**
+															 * @type string
+															 */
+															blockReason: PostgresBlockReasonEnumKey;
+															/**
+															 * @type string
+															 */
+															overageReason: PostgresOverageReasonEnumKey;
+													  }
+													| {
+															/**
+															 * @type number
+															 */
+															updatedAt: number;
+															/**
+															 * @type number | undefined
+															 */
+															blockedFrom?: number | undefined;
+															/**
+															 * @type number | undefined
+															 */
+															blockedUntil?: number | undefined;
+															/**
+															 * @type string
+															 */
+															blockReason: PostgresBlockReasonEnum2Key;
+													  }
+											  )
 											| undefined;
-										/**
-										 * @type object | undefined
-										 */
 										redis?:
-											| {
-													/**
-													 * @type number
-													 */
-													updatedAt: number;
-													/**
-													 * @type number | undefined
-													 */
-													blockedFrom?: number | undefined;
-													/**
-													 * @type number | undefined
-													 */
-													blockedUntil?: number | undefined;
-													/**
-													 * @type string
-													 */
-													blockReason: RedisBlockReasonEnumKey;
-													/**
-													 * @type string
-													 */
-													overageReason: RedisOverageReasonEnumKey;
-											  }
+											| (
+													| {
+															/**
+															 * @type number
+															 */
+															updatedAt: number;
+															/**
+															 * @type number | undefined
+															 */
+															blockedFrom?: number | undefined;
+															/**
+															 * @type number | undefined
+															 */
+															blockedUntil?: number | undefined;
+															/**
+															 * @type string
+															 */
+															blockReason: RedisBlockReasonEnumKey;
+															/**
+															 * @type string
+															 */
+															overageReason: RedisOverageReasonEnumKey;
+													  }
+													| {
+															/**
+															 * @type number
+															 */
+															updatedAt: number;
+															/**
+															 * @type number | undefined
+															 */
+															blockedFrom?: number | undefined;
+															/**
+															 * @type number | undefined
+															 */
+															blockedUntil?: number | undefined;
+															/**
+															 * @type string
+															 */
+															blockReason: RedisBlockReasonEnum2Key;
+													  }
+											  )
 											| undefined;
 										/**
 										 * @type object | undefined
@@ -9081,10 +9170,12 @@ export type UserEvent = {
 						 */
 						isTrialUpgrade?: PayloadIsTrialUpgradeEnumKey | undefined;
 						/**
+						 * @description Whether the plan change was system-initiated rather than human-initiated.
 						 * @type boolean | undefined
 						 */
 						automated?: PayloadAutomatedEnumKey | undefined;
 						/**
+						 * @description Why the plan changed. For downgrades, this is a {@link DowngradeReason} from `@api/pubsub-types` (e.g. `user_downgrade`, `trial_expired`).
 						 * @type string | undefined
 						 */
 						reason?: string | undefined;
@@ -11076,6 +11167,7 @@ export type UserEvent = {
 						 */
 						role?: PayloadRoleEnumKey | undefined;
 						/**
+						 * @description Why the member was removed. When removed due to a plan downgrade, this is a {@link DowngradeReason} from `@api/pubsub-types` (e.g. `trial_expired`, `user_downgrade`).
 						 * @type string | undefined
 						 */
 						reason?: string | undefined;
@@ -11088,9 +11180,10 @@ export type UserEvent = {
 						 */
 						newPlan?: PayloadNewPlanEnumKey | undefined;
 						/**
+						 * @description Whether the removal was system-initiated rather than human-initiated.
 						 * @type boolean | undefined
 						 */
-						automated?: PayloadAutomatedEnumKey | undefined;
+						automated?: PayloadAutomatedEnum2Key | undefined;
 				  }
 				| {
 						/**
