@@ -267,7 +267,7 @@ export const chatDetailSchema = z
 				.object({
 					modelId: z.optional(
 						z
-							.enum(["v0-max", "v0-max-fast", "v0-mini", "v0-pro"])
+							.enum(["v0-auto", "v0-max", "v0-max-fast", "v0-mini", "v0-pro"])
 							.default("v0-pro")
 							.describe("Deprecated Model ID field preserved for backward compatibility."),
 					),
