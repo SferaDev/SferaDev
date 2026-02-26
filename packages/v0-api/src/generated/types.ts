@@ -7145,3 +7145,77 @@ export type ReportsGetUsageQuery = {
 		| ReportsGetUsage429
 		| ReportsGetUsage500;
 };
+
+export type ReportsGetUserActivityQueryParams = {
+	/**
+	 * @description Query parameter \"startDate\"
+	 * @type string | undefined, date-time
+	 */
+	startDate?: string | undefined;
+	/**
+	 * @description Query parameter \"endDate\"
+	 * @type string | undefined, date-time
+	 */
+	endDate?: string | undefined;
+};
+
+/**
+ * @description Success
+ */
+export type ReportsGetUserActivity200 = unknown;
+
+/**
+ * @description Unauthorized
+ */
+export type ReportsGetUserActivity401 = unknown;
+
+/**
+ * @description Forbidden
+ */
+export type ReportsGetUserActivity403 = unknown;
+
+/**
+ * @description Not Found
+ */
+export type ReportsGetUserActivity404 = unknown;
+
+/**
+ * @description Conflict
+ */
+export type ReportsGetUserActivity409 = unknown;
+
+/**
+ * @description Payload Too Large
+ */
+export type ReportsGetUserActivity413 = unknown;
+
+/**
+ * @description Unprocessable Entity
+ */
+export type ReportsGetUserActivity422 = unknown;
+
+/**
+ * @description Too Many Requests
+ */
+export type ReportsGetUserActivity429 = unknown;
+
+/**
+ * @description Internal Server Error
+ */
+export type ReportsGetUserActivity500 = unknown;
+
+export type ReportsGetUserActivityQueryResponse = ReportsGetUserActivity200;
+
+export type ReportsGetUserActivityQuery = {
+	Response: ReportsGetUserActivity200;
+	QueryParams: ReportsGetUserActivityQueryParams;
+	Errors:
+		| ReportsGetUserActivity401
+		| ReportsGetUserActivity403
+		| ReportsGetUserActivity404
+		| ReportsGetUserActivity409
+		| ReportsGetUserActivity413
+		| ReportsGetUserActivity422
+		| ReportsGetUserActivity429
+		| ReportsGetUserActivity500;
+};
