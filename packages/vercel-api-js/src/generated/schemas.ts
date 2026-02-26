@@ -16269,6 +16269,16 @@ export const listCommands401Schema = z.unknown();
  */
 export const listCommands403Schema = z.unknown();
 
+/**
+ * @description The Sandbox has stopped execution and is no longer available.
+ */
+export const listCommands410Schema = z.unknown();
+
+/**
+ * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
+ */
+export const listCommands422Schema = z.unknown();
+
 export const listCommandsQueryResponseSchema = z.lazy(() => listCommands200Schema);
 
 export const runCommandPathParamsSchema = z.object({

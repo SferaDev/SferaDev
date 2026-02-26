@@ -30244,13 +30244,23 @@ export type ListCommands401 = unknown;
  */
 export type ListCommands403 = unknown;
 
+/**
+ * @description The Sandbox has stopped execution and is no longer available.
+ */
+export type ListCommands410 = unknown;
+
+/**
+ * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
+ */
+export type ListCommands422 = unknown;
+
 export type ListCommandsQueryResponse = ListCommands200;
 
 export type ListCommandsQuery = {
 	Response: ListCommands200;
 	PathParams: ListCommandsPathParams;
 	QueryParams: ListCommandsQueryParams;
-	Errors: ListCommands400 | ListCommands401 | ListCommands403;
+	Errors: ListCommands400 | ListCommands401 | ListCommands403 | ListCommands410 | ListCommands422;
 };
 
 export type RunCommandPathParams = {
