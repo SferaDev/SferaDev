@@ -1277,6 +1277,8 @@ import type {
 	ListCommands400,
 	ListCommands401,
 	ListCommands403,
+	ListCommands410,
+	ListCommands422,
 	ListCommandsPathParams,
 	ListCommandsQueryParams,
 	ListCommandsQueryResponse,
@@ -10221,7 +10223,9 @@ export async function listCommands({
 
 	const data = await request<
 		ListCommandsQueryResponse,
-		ErrorWrapper<ListCommands400 | ListCommands401 | ListCommands403>,
+		ErrorWrapper<
+			ListCommands400 | ListCommands401 | ListCommands403 | ListCommands410 | ListCommands422
+		>,
 		null,
 		Record<string, string>,
 		ListCommandsQueryParams,
