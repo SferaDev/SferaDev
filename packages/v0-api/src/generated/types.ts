@@ -77,6 +77,7 @@ export const attachmentsTypeEnum = {
 export type AttachmentsTypeEnumKey = (typeof attachmentsTypeEnum)[keyof typeof attachmentsTypeEnum];
 
 export const modelConfigurationModelIdEnum = {
+	"v0-auto": "v0-auto",
 	"v0-max": "v0-max",
 	"v0-max-fast": "v0-max-fast",
 	"v0-mini": "v0-mini",
