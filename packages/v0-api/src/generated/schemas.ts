@@ -4329,3 +4329,59 @@ export const reportsGetUsage429Schema = z.unknown();
 export const reportsGetUsage500Schema = z.unknown();
 
 export const reportsGetUsageQueryResponseSchema = z.lazy(() => reportsGetUsage200Schema);
+
+export const reportsGetUserActivityQueryParamsSchema = z
+	.object({
+		startDate: z.optional(z.iso.datetime().describe('Query parameter "startDate"')),
+		endDate: z.optional(z.iso.datetime().describe('Query parameter "endDate"')),
+	})
+	.optional();
+
+/**
+ * @description Success
+ */
+export const reportsGetUserActivity200Schema = z.unknown();
+
+/**
+ * @description Unauthorized
+ */
+export const reportsGetUserActivity401Schema = z.unknown();
+
+/**
+ * @description Forbidden
+ */
+export const reportsGetUserActivity403Schema = z.unknown();
+
+/**
+ * @description Not Found
+ */
+export const reportsGetUserActivity404Schema = z.unknown();
+
+/**
+ * @description Conflict
+ */
+export const reportsGetUserActivity409Schema = z.unknown();
+
+/**
+ * @description Payload Too Large
+ */
+export const reportsGetUserActivity413Schema = z.unknown();
+
+/**
+ * @description Unprocessable Entity
+ */
+export const reportsGetUserActivity422Schema = z.unknown();
+
+/**
+ * @description Too Many Requests
+ */
+export const reportsGetUserActivity429Schema = z.unknown();
+
+/**
+ * @description Internal Server Error
+ */
+export const reportsGetUserActivity500Schema = z.unknown();
+
+export const reportsGetUserActivityQueryResponseSchema = z.lazy(
+	() => reportsGetUserActivity200Schema,
+);

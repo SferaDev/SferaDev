@@ -447,6 +447,16 @@ import type {
 	ReportsGetUsage500,
 	ReportsGetUsageQueryParams,
 	ReportsGetUsageQueryResponse,
+	ReportsGetUserActivity401,
+	ReportsGetUserActivity403,
+	ReportsGetUserActivity404,
+	ReportsGetUserActivity409,
+	ReportsGetUserActivity413,
+	ReportsGetUserActivity422,
+	ReportsGetUserActivity429,
+	ReportsGetUserActivity500,
+	ReportsGetUserActivityQueryParams,
+	ReportsGetUserActivityQueryResponse,
 	UserGet401,
 	UserGet403,
 	UserGet404,
@@ -2373,6 +2383,40 @@ export async function reportsGetUsage({
 	return data;
 }
 
+/**
+ * @description Retrieves aggregated user activity data for team members, including chat counts, message counts, and activity timestamps. Only available for Enterprise teams with OWNER or BILLING role. Shows the same data as displayed in the Usage settings for Enterprise teams.
+ * @summary Get User Activity Report
+ * {@link /reports/user-activity}
+ */
+export async function reportsGetUserActivity({
+	queryParams,
+	config = {},
+}: {
+	queryParams?: ReportsGetUserActivityQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	const data = await request<
+		ReportsGetUserActivityQueryResponse,
+		ErrorWrapper<
+			| ReportsGetUserActivity401
+			| ReportsGetUserActivity403
+			| ReportsGetUserActivity404
+			| ReportsGetUserActivity409
+			| ReportsGetUserActivity413
+			| ReportsGetUserActivity422
+			| ReportsGetUserActivity429
+			| ReportsGetUserActivity500
+		>,
+		null,
+		Record<string, string>,
+		ReportsGetUserActivityQueryParams,
+		Record<string, string>
+	>({ method: "GET", url: `/reports/user-activity`, queryParams, ...requestConfig });
+	return data;
+}
+
 export const operationsByPath = {
 	"POST /chats": chatsCreate,
 	"GET /chats": chatsFind,
@@ -2422,6 +2466,7 @@ export const operationsByPath = {
 	"GET /user/plan": userGetPlan,
 	"GET /user/scopes": userGetScopes,
 	"GET /reports/usage": reportsGetUsage,
+	"GET /reports/user-activity": reportsGetUserActivity,
 };
 
 export const operationsByTag = {
@@ -2488,6 +2533,7 @@ export const operationsByTag = {
 	},
 	reports: {
 		reportsGetUsage,
+		reportsGetUserActivity,
 	},
 };
 
@@ -2548,6 +2594,6 @@ export const tagDictionary = {
 		GET: ["userGet", "userGetBilling", "userGetPlan", "userGetScopes"],
 	},
 	reports: {
-		GET: ["reportsGetUsage"],
+		GET: ["reportsGetUsage", "reportsGetUserActivity"],
 	},
 } as const;
