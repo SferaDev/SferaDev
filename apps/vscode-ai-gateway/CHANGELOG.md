@@ -1,5 +1,17 @@
 # vscode-extension-vercel-ai
 
+## 0.3.0
+
+### Minor Changes
+
+- 53537b0: feat(vscode-ai-gateway): improved streaming and logging
+
+  - Add structured logging using VS Code's native LogOutputChannel
+  - Add proper stream chunk handling for text, reasoning, files, tool calls, and errors
+  - Add model identity parsing for better family/version extraction
+  - Add configurable endpoint and timeout settings
+  - Improve message conversion with proper tool result mapping
+
 ## 0.2.2
 
 ### Patch Changes
