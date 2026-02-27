@@ -1774,8 +1774,8 @@ export const payloadActionEnum = {
 export type PayloadActionEnumKey = (typeof payloadActionEnum)[keyof typeof payloadActionEnum];
 
 export const payloadActionEnum2 = {
-	added: "added",
 	deleted: "deleted",
+	added: "added",
 	rotated: "rotated",
 } as const;
 
@@ -1815,8 +1815,8 @@ export type PreviousEnabledEnumKey = (typeof previousEnabledEnum)[keyof typeof p
 
 export const previousScopeEnum = {
 	public: "public",
-	all: "all",
 	private: "private",
+	all: "all",
 	selected_repos: "selected_repos",
 } as const;
 
@@ -1839,8 +1839,8 @@ export type NextEnabledEnumKey = (typeof nextEnabledEnum)[keyof typeof nextEnabl
 
 export const nextScopeEnum = {
 	public: "public",
-	all: "all",
 	private: "private",
+	all: "all",
 	selected_repos: "selected_repos",
 } as const;
 
@@ -2420,14 +2420,14 @@ export type TeamsTeamPermissionsEnumKey =
 	(typeof teamsTeamPermissionsEnum)[keyof typeof teamsTeamPermissionsEnum];
 
 export const joinedFromOriginEnum = {
+	link: "link",
+	import: "import",
 	teams: "teams",
 	saml: "saml",
-	link: "link",
 	github: "github",
 	gitlab: "gitlab",
 	bitbucket: "bitbucket",
 	mail: "mail",
-	import: "import",
 	dsync: "dsync",
 	feedback: "feedback",
 	"organization-teams": "organization-teams",
@@ -3134,22 +3134,22 @@ export type PayloadOldPasswordProtectionEnumKey =
 	(typeof payloadOldPasswordProtectionEnum)[keyof typeof payloadOldPasswordProtectionEnum];
 
 export const payloadTrustedIpsEnum = {
+	production: "production",
 	all: "all",
 	preview: "preview",
 	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
 	all_except_custom_domains: "all_except_custom_domains",
-	production: "production",
 } as const;
 
 export type PayloadTrustedIpsEnumKey =
 	(typeof payloadTrustedIpsEnum)[keyof typeof payloadTrustedIpsEnum];
 
 export const payloadOldTrustedIpsEnum = {
+	production: "production",
 	all: "all",
 	preview: "preview",
 	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
 	all_except_custom_domains: "all_except_custom_domains",
-	production: "production",
 } as const;
 
 export type PayloadOldTrustedIpsEnumKey =
@@ -3172,8 +3172,8 @@ export const payloadIsEnvVarEnum = {
 export type PayloadIsEnvVarEnumKey = (typeof payloadIsEnvVarEnum)[keyof typeof payloadIsEnvVarEnum];
 
 export const oldConnectConfigurationsEnvIdEnum = {
-	preview: "preview",
 	production: "production",
+	preview: "preview",
 } as const;
 
 export type OldConnectConfigurationsEnvIdEnumKey =
@@ -3196,8 +3196,8 @@ export type OldConnectConfigurationsBuildsEnabledEnumKey =
 	(typeof oldConnectConfigurationsBuildsEnabledEnum)[keyof typeof oldConnectConfigurationsBuildsEnabledEnum];
 
 export const newConnectConfigurationsEnvIdEnum = {
-	preview: "preview",
 	production: "production",
+	preview: "preview",
 } as const;
 
 export type NewConnectConfigurationsEnvIdEnumKey =
@@ -3236,8 +3236,8 @@ export const payloadEnabledEnum2 = {
 export type PayloadEnabledEnum2Key = (typeof payloadEnabledEnum2)[keyof typeof payloadEnabledEnum2];
 
 export const payloadEnvironmentEnum = {
-	preview: "preview",
 	production: "production",
+	preview: "preview",
 } as const;
 
 export type PayloadEnvironmentEnumKey =
@@ -3514,11 +3514,11 @@ export type BudgetPricingPlanEnumKey =
 	(typeof budgetPricingPlanEnum)[keyof typeof budgetPricingPlanEnum];
 
 export const payloadTypeEnum2 = {
+	integration: "integration",
 	redis: "redis",
 	postgres: "postgres",
 	"edge-config": "edge-config",
 	blob: "blob",
-	integration: "integration",
 } as const;
 
 export type PayloadTypeEnum2Key = (typeof payloadTypeEnum2)[keyof typeof payloadTypeEnum2];
@@ -3973,15 +3973,15 @@ export const nextEnum = {
 export type NextEnumKey = (typeof nextEnum)[keyof typeof nextEnum];
 
 export const fromAccountTypeEnum = {
-	team: "team",
 	user: "user",
+	team: "team",
 } as const;
 
 export type FromAccountTypeEnumKey = (typeof fromAccountTypeEnum)[keyof typeof fromAccountTypeEnum];
 
 export const toAccountTypeEnum = {
-	team: "team",
 	user: "user",
+	team: "team",
 } as const;
 
 export type ToAccountTypeEnumKey = (typeof toAccountTypeEnum)[keyof typeof toAccountTypeEnum];
@@ -4049,8 +4049,8 @@ export type JobIsManualGitDeployEnumKey =
 	(typeof jobIsManualGitDeployEnum)[keyof typeof jobIsManualGitDeployEnum];
 
 export const jobCommitVerificationEnum = {
-	unknown: "unknown",
 	verified: "verified",
+	unknown: "unknown",
 	unverified: "unverified",
 } as const;
 
@@ -4184,12 +4184,12 @@ export type PayloadAuthMethodEnumKey =
 	(typeof payloadAuthMethodEnum)[keyof typeof payloadAuthMethodEnum];
 
 export const clientAuthenticationUsedMethodEnum = {
-	none: "none",
 	client_secret_basic: "client_secret_basic",
 	client_secret_post: "client_secret_post",
 	client_secret_jwt: "client_secret_jwt",
 	private_key_jwt: "private_key_jwt",
 	oidc_token: "oidc_token",
+	none: "none",
 } as const;
 
 export type ClientAuthenticationUsedMethodEnumKey =
@@ -4255,9 +4255,9 @@ export type UserEvent = {
 	user?:
 		| {
 				/**
-				 * @type string
+				 * @type string | undefined
 				 */
-				username: string;
+				slug?: string | undefined;
 				/**
 				 * @type string
 				 */
@@ -4265,11 +4265,11 @@ export type UserEvent = {
 				/**
 				 * @type string
 				 */
-				email: string;
+				username: string;
 				/**
-				 * @type string | undefined
+				 * @type string
 				 */
-				slug?: string | undefined;
+				email: string;
 				/**
 				 * @type string
 				 */
@@ -5507,15 +5507,15 @@ export type UserEvent = {
 							 */
 							name: string;
 							/**
-							 * @type string
-							 */
-							url: string;
-							/**
 							 * @type object
 							 */
 							meta: {
 								[key: string]: string;
 							};
+							/**
+							 * @type string
+							 */
+							url: string;
 						};
 						/**
 						 * @type string
@@ -7075,15 +7075,15 @@ export type UserEvent = {
 										/**
 										 * @type number
 										 */
-										created: number;
-										/**
-										 * @type number
-										 */
 										createdAt: number;
 										/**
 										 * @type string
 										 */
 										teamId: string;
+										/**
+										 * @type number
+										 */
+										created: number;
 										/**
 										 * @type string
 										 */

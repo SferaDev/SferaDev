@@ -971,10 +971,10 @@ export const userEventSchema = z
 		user: z.optional(
 			z
 				.object({
-					username: z.string(),
-					avatar: z.string(),
-					email: z.string(),
 					slug: z.optional(z.string()),
+					avatar: z.string(),
+					username: z.string(),
+					email: z.string(),
 					uid: z.string(),
 				})
 				.describe("Metadata for {@link userId}."),
@@ -1045,7 +1045,7 @@ export const userEventSchema = z
 					projectName: z.optional(z.string()),
 				}),
 				z.object({
-					action: z.enum(["added", "deleted", "rotated"]),
+					action: z.enum(["deleted", "added", "rotated"]),
 					label: z.optional(z.string()),
 					projectName: z.optional(z.string()),
 					projectId: z.optional(z.string()),
@@ -1105,7 +1105,7 @@ export const userEventSchema = z
 									.union([z.literal(false), z.literal(true)])
 									.describe("Whether automatic code reviews are enabled"),
 								scope: z
-									.enum(["public", "all", "private", "selected_repos"])
+									.enum(["public", "private", "all", "selected_repos"])
 									.describe("Which repository visibilities get automatic reviews"),
 								includeDrafts: z
 									.union([z.literal(false), z.literal(true)])
@@ -1125,7 +1125,7 @@ export const userEventSchema = z
 								.union([z.literal(false), z.literal(true)])
 								.describe("Whether automatic code reviews are enabled"),
 							scope: z
-								.enum(["public", "all", "private", "selected_repos"])
+								.enum(["public", "private", "all", "selected_repos"])
 								.describe("Which repository visibilities get automatic reviews"),
 							includeDrafts: z
 								.union([z.literal(false), z.literal(true)])
@@ -1470,8 +1470,8 @@ export const userEventSchema = z
 					deployment: z.object({
 						id: z.string(),
 						name: z.string(),
-						url: z.string(),
 						meta: z.object({}).catchall(z.string()),
+						url: z.string(),
 					}),
 					deploymentId: z.string(),
 					url: z.string(),
@@ -2286,9 +2286,9 @@ export const userEventSchema = z
 								z
 									.array(
 										z.object({
-											created: z.number(),
 											createdAt: z.number(),
 											teamId: z.string(),
+											created: z.number(),
 											role: z.enum([
 												"OWNER",
 												"MEMBER",
@@ -2334,14 +2334,14 @@ export const userEventSchema = z
 											joinedFrom: z.optional(
 												z.object({
 													origin: z.enum([
+														"link",
+														"import",
 														"teams",
 														"saml",
-														"link",
 														"github",
 														"gitlab",
 														"bitbucket",
 														"mail",
-														"import",
 														"dsync",
 														"feedback",
 														"organization-teams",
@@ -3361,14 +3361,14 @@ export const userEventSchema = z
 								joinedFrom: z.optional(
 									z.object({
 										origin: z.enum([
+											"link",
+											"import",
 											"teams",
 											"saml",
-											"link",
 											"github",
 											"gitlab",
 											"bitbucket",
 											"mail",
-											"import",
 											"dsync",
 											"feedback",
 											"organization-teams",
@@ -3633,20 +3633,20 @@ export const userEventSchema = z
 					projectName: z.string(),
 					trustedIps: z
 						.enum([
+							"production",
 							"all",
 							"preview",
 							"prod_deployment_urls_and_all_previews",
 							"all_except_custom_domains",
-							"production",
 						])
 						.nullish(),
 					oldTrustedIps: z
 						.enum([
+							"production",
 							"all",
 							"preview",
 							"prod_deployment_urls_and_all_previews",
 							"all_except_custom_domains",
-							"production",
 						])
 						.nullish(),
 					addedAddresses: z.array(z.string()).nullish(),
@@ -3696,7 +3696,7 @@ export const userEventSchema = z
 						oldConnectConfigurations: z.nullable(
 							z.array(
 								z.object({
-									envId: z.union([z.string(), z.enum(["preview", "production"])]),
+									envId: z.union([z.string(), z.enum(["production", "preview"])]),
 									connectConfigurationId: z.string(),
 									dc: z.optional(z.string()),
 									passive: z.union([z.literal(false), z.literal(true)]),
@@ -3715,7 +3715,7 @@ export const userEventSchema = z
 						newConnectConfigurations: z.nullable(
 							z.array(
 								z.object({
-									envId: z.union([z.string(), z.enum(["preview", "production"])]),
+									envId: z.union([z.string(), z.enum(["production", "preview"])]),
 									connectConfigurationId: z.string(),
 									dc: z.optional(z.string()),
 									passive: z.union([z.literal(false), z.literal(true)]),
@@ -3741,10 +3741,10 @@ export const userEventSchema = z
 					projectId: z.string(),
 					projectName: z.string(),
 					enabled: z.nullable(z.union([z.literal(false), z.literal(true)])),
-					environment: z.enum(["preview", "production"]),
+					environment: z.enum(["production", "preview"]),
 				}),
 				z.object({
-					environment: z.enum(["preview", "production"]),
+					environment: z.enum(["production", "preview"]),
 					enabled: z.enum(["default", "on", "off", "on-force", "off-force", "default-force"]),
 				}),
 				z.object({
@@ -4223,7 +4223,7 @@ export const userEventSchema = z
 					computeUnitsMax: z.optional(z.number()),
 					computeUnitsMin: z.optional(z.number()),
 					suspendTimeoutSeconds: z.optional(z.number()),
-					type: z.enum(["redis", "postgres", "edge-config", "blob", "integration"]),
+					type: z.enum(["integration", "redis", "postgres", "edge-config", "blob"]),
 					access: z.optional(z.enum(["public", "private"])),
 				}),
 				z.object({
@@ -5209,13 +5209,13 @@ export const userEventSchema = z
 					}),
 					fromAccount: z.object({
 						id: z.string(),
-						type: z.enum(["team", "user"]),
+						type: z.enum(["user", "team"]),
 						slug: z.optional(z.string()),
 						username: z.optional(z.string()),
 					}),
 					toAccount: z.object({
 						id: z.string(),
-						type: z.enum(["team", "user"]),
+						type: z.enum(["user", "team"]),
 						slug: z.optional(z.string()),
 						username: z.optional(z.string()),
 					}),
@@ -5385,7 +5385,7 @@ export const userEventSchema = z
 							),
 							commitVerification: z.optional(
 								z
-									.enum(["unknown", "verified", "unverified"])
+									.enum(["verified", "unknown", "unverified"])
 									.describe(
 										"Since 6 Nov 2025 The verification status of the commit. - 'verified' if the commit is verified - 'unverified' if the commit is not verified - 'unknown' if the commit verification status is unknown or not supported",
 									),
@@ -5545,7 +5545,7 @@ export const userEventSchema = z
 							),
 							commitVerification: z.optional(
 								z
-									.enum(["unknown", "verified", "unverified"])
+									.enum(["verified", "unknown", "unverified"])
 									.describe(
 										"Since 6 Nov 2025 The verification status of the commit. - 'verified' if the commit is verified - 'unverified' if the commit is not verified - 'unknown' if the commit verification status is unknown or not supported",
 									),
@@ -5697,7 +5697,7 @@ export const userEventSchema = z
 							),
 							commitVerification: z.optional(
 								z
-									.enum(["unknown", "verified", "unverified"])
+									.enum(["verified", "unknown", "unverified"])
 									.describe(
 										"Since 6 Nov 2025 The verification status of the commit. - 'verified' if the commit is verified - 'unverified' if the commit is not verified - 'unknown' if the commit verification status is unknown or not supported",
 									),
@@ -5874,7 +5874,7 @@ export const userEventSchema = z
 							),
 							commitVerification: z.optional(
 								z
-									.enum(["unknown", "verified", "unverified"])
+									.enum(["verified", "unknown", "unverified"])
 									.describe(
 										"Since 6 Nov 2025 The verification status of the commit. - 'verified' if the commit is verified - 'unverified' if the commit is not verified - 'unknown' if the commit verification status is unknown or not supported",
 									),
@@ -6020,12 +6020,12 @@ export const userEventSchema = z
 									),
 								clientAuthenticationUsed: z.object({
 									method: z.enum([
-										"none",
 										"client_secret_basic",
 										"client_secret_post",
 										"client_secret_jwt",
 										"private_key_jwt",
 										"oidc_token",
+										"none",
 									]),
 									secretId: z.optional(z.string()),
 								}),
