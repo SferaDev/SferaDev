@@ -1,5 +1,32 @@
 # nuki-api-js
 
+## 1.0.0
+
+### Major Changes
+
+- 05e1980: Migrate from openapi-codegen to kubb for code generation.
+
+  Breaking changes:
+
+  - Generated code is now in `./src/generated/` instead of `./src/api/` or other locations
+  - Export structure changed: now exports `Fetchers`, `Helpers`, `Schemas`, `Types` instead of previous structure
+  - `FetcherExtraProps` renamed to `FetcherConfig`
+  - Added new type exports: `ApiClient`, `ApiOperation`, `ApiOperationParams`, `ApiOperationResult`, `ApiOperationByMethod`
+
+### Minor Changes
+
+- 74ad091: Migrate OpenAPI clients to SferaDev monorepo with improved build configuration, updated dependencies, and enhanced TypeScript support.
+
+### Patch Changes
+
+- bb09568: Update OpenAPI generated code version from 4.4.1 to 4.5.0 in components, requestBodies, and schemas files.
+- bb09568: Reorder 'currentlyRevokingAuth' and 'currentlyIssuingAuth' in AddressReservation type to match updated schema.
+- bb09568: Reorder fields in Application, Request, Response, and Restlet types to match updated schema.
+- 887d4d2: Changed the types for 'offset' and 'limit' in GetAccountUsersResourceQueryParams from undefined to void for increased type clarity.
+- 8c8e5d6: Changed various API fields from number (int) to bigint (int64) for improved large integer support.
+- cec32f5: Reordered several optional properties in schemas and types for better consistency with generated API definitions.
+- bb09568: Add 'identifier' field to Reference type and adjust field order to match updated schema.
+
 ## 0.2.1
 
 ### Patch Changes

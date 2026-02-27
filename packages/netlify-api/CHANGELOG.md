@@ -1,5 +1,35 @@
 # netlify-api
 
+## 1.0.0
+
+### Major Changes
+
+- 05e1980: Migrate from openapi-codegen to kubb for code generation.
+
+  Breaking changes:
+
+  - Generated code is now in `./src/generated/` instead of `./src/api/` or other locations
+  - Export structure changed: now exports `Fetchers`, `Helpers`, `Schemas`, `Types` instead of previous structure
+  - `FetcherExtraProps` renamed to `FetcherConfig`
+  - Added new type exports: `ApiClient`, `ApiOperation`, `ApiOperationParams`, `ApiOperationResult`, `ApiOperationByMethod`
+
+### Minor Changes
+
+- d00bfdd: Add database management API, including endpoints for creating, listing, deleting, and restoring databases, branches, and snapshots for sites.
+- 74ad091: Migrate OpenAPI clients to SferaDev monorepo with improved build configuration, updated dependencies, and enhanced TypeScript support.
+- 2914e61: Added support for specifying deploy-specific environment variable data in deploy APIs.
+- 792bd66: Bump OpenAPI codegen version to 2.46.0 in generated API files.
+
+### Patch Changes
+
+- 0e8e708: Changed the BuildLogMsg.section type to use a multi-line union for clarity.
+- 0e8e708: Refactored API function parameter formatting to use multi-line style for improved readability.
+- ba7618b: Changed integer fields (such as size, ttl, priority, code, etc.) in schemas and types to bigint to support larger values.
+- 0e8e708: Reformated union string types in query parameters for better readability.
+- f2384dc: [BREAKING] Change is_secret field from optional to required in schemas and types for deploy environment variables and related objects.
+- 0e8e708: Ensured consistent ordering and grouping of exports in api/extra.ts for maintainability.
+- bcb7969: Bump generated OpenAPI version from 2.48.0 to 2.49.0 across API source files.
+
 ## 0.10.2
 
 ### Patch Changes
