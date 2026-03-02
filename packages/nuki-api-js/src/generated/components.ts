@@ -741,7 +741,7 @@ export async function putAccountSettingResource({
 	body,
 	config = {},
 }: {
-	body?: PutAccountSettingResourceMutationRequest;
+	body: PutAccountSettingResourceMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -999,7 +999,7 @@ export async function postAccountUserResource({
 	config = {},
 }: {
 	pathParams: PostAccountUserResourcePathParams;
-	body?: PostAccountUserResourceMutationRequest;
+	body: PostAccountUserResourceMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -1195,7 +1195,7 @@ export async function postAddressResource({
 	config = {},
 }: {
 	pathParams: PostAddressResourcePathParams;
-	body?: PostAddressResourceMutationRequest;
+	body: PostAddressResourceMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -1345,7 +1345,7 @@ export async function postReservationAccessTimesUpdateResource({
 	config = {},
 }: {
 	pathParams: PostReservationAccessTimesUpdateResourcePathParams;
-	body?: PostReservationAccessTimesUpdateResourceMutationRequest;
+	body: PostReservationAccessTimesUpdateResourceMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -1474,7 +1474,7 @@ export async function deleteAddressUnitsResource({
 	config = {},
 }: {
 	pathParams: DeleteAddressUnitsResourcePathParams;
-	body?: DeleteAddressUnitsResourceMutationRequest;
+	body: DeleteAddressUnitsResourceMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -1641,7 +1641,7 @@ export async function putApiKeysResource({
 	body,
 	config = {},
 }: {
-	body?: PutApiKeysResourceMutationRequest;
+	body: PutApiKeysResourceMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -1667,7 +1667,7 @@ export async function postApiKeyResource({
 	config = {},
 }: {
 	pathParams: PostApiKeyResourcePathParams;
-	body?: PostApiKeyResourceMutationRequest;
+	body: PostApiKeyResourceMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -1899,7 +1899,7 @@ export async function putApiKeyTokensResource({
 	config = {},
 }: {
 	pathParams: PutApiKeyTokensResourcePathParams;
-	body?: PutApiKeyTokensResourceMutationRequest;
+	body: PutApiKeyTokensResourceMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -1929,7 +1929,7 @@ export async function postApiKeyTokenResource({
 	config = {},
 }: {
 	pathParams: PostApiKeyTokenResourcePathParams;
-	body?: PostApiKeyTokenResourceMutationRequest;
+	body: PostApiKeyTokenResourceMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -2023,7 +2023,7 @@ export async function postSmartlockBulkWebConfigResource({
 	body,
 	config = {},
 }: {
-	body?: PostSmartlockBulkWebConfigResourceMutationRequest;
+	body: PostSmartlockBulkWebConfigResourceMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -2497,7 +2497,7 @@ export async function postSmartlocksAuthsResource({
 	body,
 	config = {},
 }: {
-	body?: PostSmartlocksAuthsResourceMutationRequest;
+	body: PostSmartlocksAuthsResourceMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -2556,7 +2556,7 @@ export async function deleteSmartlocksAuthsResource({
 	body,
 	config = {},
 }: {
-	body?: DeleteSmartlocksAuthsResourceMutationRequest;
+	body: DeleteSmartlocksAuthsResourceMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -2692,7 +2692,7 @@ export async function postSmartlockResource({
 	config = {},
 }: {
 	pathParams: PostSmartlockResourcePathParams;
-	body?: PostSmartlockResourceMutationRequest;
+	body: PostSmartlockResourceMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -3381,7 +3381,7 @@ export async function postSmartlockWebConfigResource({
 	config = {},
 }: {
 	pathParams: PostSmartlockWebConfigResourcePathParams;
-	body?: PostSmartlockWebConfigResourceMutationRequest;
+	body: PostSmartlockWebConfigResourceMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
