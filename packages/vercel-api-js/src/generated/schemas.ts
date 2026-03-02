@@ -576,6 +576,7 @@ export const userEventSchema = z
 					"access-group-created",
 					"access-group-deleted",
 					"access-group-project-updated",
+					"access-group-updated",
 					"access-group-user-added",
 					"access-group-user-removed",
 					"ai-alert-investigation",
@@ -1062,6 +1063,9 @@ export const userEventSchema = z
 						id: z.string(),
 						name: z.string(),
 					}),
+					teamRoles: z.optional(z.array(z.string())),
+					teamPermissions: z.optional(z.array(z.string())),
+					entitlements: z.optional(z.array(z.string())),
 				}),
 				z.object({
 					author: z.string(),
@@ -1069,6 +1073,20 @@ export const userEventSchema = z
 						id: z.string(),
 						name: z.string(),
 					}),
+				}),
+				z.object({
+					accessGroup: z.object({
+						id: z.string(),
+						name: z.string(),
+					}),
+					name: z.optional(z.string()),
+					previousName: z.optional(z.string()),
+					teamRoles: z.optional(z.array(z.string())),
+					previousTeamRoles: z.optional(z.array(z.string())),
+					teamPermissions: z.optional(z.array(z.string())),
+					previousTeamPermissions: z.optional(z.array(z.string())),
+					entitlementsAdded: z.optional(z.array(z.string())),
+					entitlementsRemoved: z.optional(z.array(z.string())),
 				}),
 				z.object({
 					accessGroup: z.object({

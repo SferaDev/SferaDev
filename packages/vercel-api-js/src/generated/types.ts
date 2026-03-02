@@ -1339,6 +1339,7 @@ export const userEventTypeEnum = {
 	"access-group-created": "access-group-created",
 	"access-group-deleted": "access-group-deleted",
 	"access-group-project-updated": "access-group-project-updated",
+	"access-group-updated": "access-group-updated",
 	"access-group-user-added": "access-group-user-added",
 	"access-group-user-removed": "access-group-user-removed",
 	"ai-alert-investigation": "ai-alert-investigation",
@@ -4462,6 +4463,18 @@ export type UserEvent = {
 							 */
 							name: string;
 						};
+						/**
+						 * @type array | undefined
+						 */
+						teamRoles?: string[] | undefined;
+						/**
+						 * @type array | undefined
+						 */
+						teamPermissions?: string[] | undefined;
+						/**
+						 * @type array | undefined
+						 */
+						entitlements?: string[] | undefined;
 				  }
 				| {
 						/**
@@ -4481,6 +4494,53 @@ export type UserEvent = {
 							 */
 							name: string;
 						};
+				  }
+				| {
+						/**
+						 * @type object
+						 */
+						accessGroup: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string
+							 */
+							name: string;
+						};
+						/**
+						 * @type string | undefined
+						 */
+						name?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						previousName?: string | undefined;
+						/**
+						 * @type array | undefined
+						 */
+						teamRoles?: string[] | undefined;
+						/**
+						 * @type array | undefined
+						 */
+						previousTeamRoles?: string[] | undefined;
+						/**
+						 * @type array | undefined
+						 */
+						teamPermissions?: string[] | undefined;
+						/**
+						 * @type array | undefined
+						 */
+						previousTeamPermissions?: string[] | undefined;
+						/**
+						 * @type array | undefined
+						 */
+						entitlementsAdded?: string[] | undefined;
+						/**
+						 * @type array | undefined
+						 */
+						entitlementsRemoved?: string[] | undefined;
 				  }
 				| {
 						/**
