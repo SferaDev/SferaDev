@@ -76,7 +76,7 @@ export async function updateAccount({
 	body,
 	config = {},
 }: {
-	body?: UpdateAccountMutationRequest;
+	body: UpdateAccountMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;

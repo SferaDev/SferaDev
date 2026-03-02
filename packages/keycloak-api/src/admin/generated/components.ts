@@ -12740,7 +12740,7 @@ export async function pOSTAdminRealmsRealmOrganizationsOrgIdIdentityProviders({
 	config = {},
 }: {
 	pathParams: POSTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersPathParams;
-	body?: POSTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersMutationRequest;
+	body: POSTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -13067,7 +13067,7 @@ export async function pOSTAdminRealmsRealmOrganizationsOrgIdMembers({
 	config = {},
 }: {
 	pathParams: POSTAdminRealmsRealmOrganizationsOrgIdMembersPathParams;
-	body?: POSTAdminRealmsRealmOrganizationsOrgIdMembersMutationRequest;
+	body: POSTAdminRealmsRealmOrganizationsOrgIdMembersMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
