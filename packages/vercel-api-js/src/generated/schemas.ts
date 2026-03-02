@@ -12726,6 +12726,8 @@ export const updateFlagSettingsQueryParamsSchema = z
 	})
 	.optional();
 
+export const updateFlagSettings200Schema = z.unknown();
+
 export const updateFlagSettings201Schema = z.unknown();
 
 /**
@@ -12754,7 +12756,10 @@ export const updateFlagSettings409Schema = z.unknown();
 
 export const updateFlagSettings412Schema = z.unknown();
 
-export const updateFlagSettingsMutationResponseSchema = z.lazy(() => updateFlagSettings201Schema);
+export const updateFlagSettingsMutationResponseSchema = z.union([
+	z.lazy(() => updateFlagSettings200Schema),
+	z.lazy(() => updateFlagSettings201Schema),
+]);
 
 export const listTeamFlagSettingsPathParamsSchema = z.object({
 	teamId: z.string().describe("The Team identifier to perform the request on behalf of."),
