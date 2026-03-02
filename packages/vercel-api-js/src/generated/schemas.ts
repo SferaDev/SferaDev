@@ -16307,6 +16307,8 @@ export const getSandbox410Schema = z.unknown();
  */
 export const getSandbox422Schema = z.unknown();
 
+export const getSandbox429Schema = z.unknown();
+
 export const getSandboxQueryResponseSchema = z.lazy(() => getSandbox200Schema);
 
 export const listCommandsPathParamsSchema = z.object({

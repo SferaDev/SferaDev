@@ -30349,13 +30349,21 @@ export type GetSandbox410 = unknown;
  */
 export type GetSandbox422 = unknown;
 
+export type GetSandbox429 = unknown;
+
 export type GetSandboxQueryResponse = GetSandbox200;
 
 export type GetSandboxQuery = {
 	Response: GetSandbox200;
 	PathParams: GetSandboxPathParams;
 	QueryParams: GetSandboxQueryParams;
-	Errors: GetSandbox400 | GetSandbox401 | GetSandbox403 | GetSandbox410 | GetSandbox422;
+	Errors:
+		| GetSandbox400
+		| GetSandbox401
+		| GetSandbox403
+		| GetSandbox410
+		| GetSandbox422
+		| GetSandbox429;
 };
 
 export type ListCommandsPathParams = {
