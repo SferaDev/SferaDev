@@ -5587,7 +5587,7 @@ export async function addMcpServerV1McpServerPost({
 	headers,
 	config = {},
 }: {
-	body?: AddMcpServerV1McpServerPostMutationRequest;
+	body: AddMcpServerV1McpServerPostMutationRequest;
 	headers?: AddMcpServerV1McpServerPostHeaderParams;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
@@ -6605,7 +6605,7 @@ export async function generateKeyFnKeyGeneratePost({
 	headers,
 	config = {},
 }: {
-	body?: GenerateKeyFnKeyGeneratePostMutationRequest;
+	body: GenerateKeyFnKeyGeneratePostMutationRequest;
 	headers?: GenerateKeyFnKeyGeneratePostHeaderParams;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
@@ -6686,7 +6686,7 @@ export async function generateServiceAccountKeyFnKeyServiceAccountGeneratePost({
 	headers,
 	config = {},
 }: {
-	body?: GenerateServiceAccountKeyFnKeyServiceAccountGeneratePostMutationRequest;
+	body: GenerateServiceAccountKeyFnKeyServiceAccountGeneratePostMutationRequest;
 	headers?: GenerateServiceAccountKeyFnKeyServiceAccountGeneratePostHeaderParams;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
@@ -6817,7 +6817,7 @@ export async function deleteKeyFnKeyDeletePost({
 	headers,
 	config = {},
 }: {
-	body?: DeleteKeyFnKeyDeletePostMutationRequest;
+	body: DeleteKeyFnKeyDeletePostMutationRequest;
 	headers?: DeleteKeyFnKeyDeletePostHeaderParams;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
@@ -7285,7 +7285,7 @@ export async function newUserUserNewPost({
 	body,
 	config = {},
 }: {
-	body?: NewUserUserNewPostMutationRequest;
+	body: NewUserUserNewPostMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -7379,7 +7379,7 @@ export async function userUpdateUserUpdatePost({
 	body,
 	config = {},
 }: {
-	body?: UserUpdateUserUpdatePostMutationRequest;
+	body: UserUpdateUserUpdatePostMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -7443,7 +7443,7 @@ export async function bulkUserUpdateUserBulkUpdatePost({
 	headers,
 	config = {},
 }: {
-	body?: BulkUserUpdateUserBulkUpdatePostMutationRequest;
+	body: BulkUserUpdateUserBulkUpdatePostMutationRequest;
 	headers?: BulkUserUpdateUserBulkUpdatePostHeaderParams;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
@@ -7681,7 +7681,7 @@ export async function newTeamTeamNewPost({
 	headers,
 	config = {},
 }: {
-	body?: NewTeamTeamNewPostMutationRequest;
+	body: NewTeamTeamNewPostMutationRequest;
 	headers?: NewTeamTeamNewPostHeaderParams;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
@@ -9419,7 +9419,7 @@ export async function calculateSpendSpendCalculatePost({
 	body,
 	config = {},
 }: {
-	body?: CalculateSpendSpendCalculatePostMutationRequest;
+	body: CalculateSpendSpendCalculatePostMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -9611,7 +9611,7 @@ export async function updateCloudzeroSettingsCloudzeroSettingsPut({
 	body,
 	config = {},
 }: {
-	body?: UpdateCloudzeroSettingsCloudzeroSettingsPutMutationRequest;
+	body: UpdateCloudzeroSettingsCloudzeroSettingsPutMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -9677,7 +9677,7 @@ export async function cloudzeroDryRunExportCloudzeroDryRunPost({
 	body,
 	config = {},
 }: {
-	body?: CloudzeroDryRunExportCloudzeroDryRunPostMutationRequest;
+	body: CloudzeroDryRunExportCloudzeroDryRunPostMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -9707,7 +9707,7 @@ export async function cloudzeroExportCloudzeroExportPost({
 	body,
 	config = {},
 }: {
-	body?: CloudzeroExportCloudzeroExportPostMutationRequest;
+	body: CloudzeroExportCloudzeroExportPostMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -10154,7 +10154,7 @@ export async function patchGuardrailGuardrailsGuardrailIdPatch({
 	config = {},
 }: {
 	pathParams: PatchGuardrailGuardrailsGuardrailIdPatchPathParams;
-	body?: PatchGuardrailGuardrailsGuardrailIdPatchMutationRequest;
+	body: PatchGuardrailGuardrailsGuardrailIdPatchMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -10343,7 +10343,7 @@ export async function validateBlockedWordsFileGuardrailsValidateBlockedWordsFile
 	body,
 	config = {},
 }: {
-	body?: ValidateBlockedWordsFileGuardrailsValidateBlockedWordsFilePostMutationRequest;
+	body: ValidateBlockedWordsFileGuardrailsValidateBlockedWordsFilePostMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -11112,7 +11112,7 @@ export async function patchPromptPromptsPromptIdPatch({
 	config = {},
 }: {
 	pathParams: PatchPromptPromptsPromptIdPatchPathParams;
-	body?: PatchPromptPromptsPromptIdPatchMutationRequest;
+	body: PatchPromptPromptsPromptIdPatchMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -11362,7 +11362,7 @@ export async function updateInternalUserSettingsUpdateInternalUserSettingsPatch(
 	body,
 	config = {},
 }: {
-	body?: UpdateInternalUserSettingsUpdateInternalUserSettingsPatchMutationRequest;
+	body: UpdateInternalUserSettingsUpdateInternalUserSettingsPatchMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -11388,7 +11388,7 @@ export async function updateDefaultTeamSettingsUpdateDefaultTeamSettingsPatch({
 	body,
 	config = {},
 }: {
-	body?: UpdateDefaultTeamSettingsUpdateDefaultTeamSettingsPatchMutationRequest;
+	body: UpdateDefaultTeamSettingsUpdateDefaultTeamSettingsPatchMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -11437,7 +11437,7 @@ export async function updateSsoSettingsUpdateSsoSettingsPatch({
 	body,
 	config = {},
 }: {
-	body?: UpdateSsoSettingsUpdateSsoSettingsPatchMutationRequest;
+	body: UpdateSsoSettingsUpdateSsoSettingsPatchMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -11489,7 +11489,7 @@ export async function updateUiThemeSettingsUpdateUiThemeSettingsPatch({
 	body,
 	config = {},
 }: {
-	body?: UpdateUiThemeSettingsUpdateUiThemeSettingsPatchMutationRequest;
+	body: UpdateUiThemeSettingsUpdateUiThemeSettingsPatchMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -12250,7 +12250,7 @@ export async function newBudgetBudgetNewPost({
 	body,
 	config = {},
 }: {
-	body?: NewBudgetBudgetNewPostMutationRequest;
+	body: NewBudgetBudgetNewPostMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -12285,7 +12285,7 @@ export async function updateBudgetBudgetUpdatePost({
 	body,
 	config = {},
 }: {
-	body?: UpdateBudgetBudgetUpdatePostMutationRequest;
+	body: UpdateBudgetBudgetUpdatePostMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -12427,7 +12427,7 @@ export async function patchModelModelModelIdUpdatePatch({
 	config = {},
 }: {
 	pathParams: PatchModelModelModelIdUpdatePatchPathParams;
-	body?: PatchModelModelModelIdUpdatePatchMutationRequest;
+	body: PatchModelModelModelIdUpdatePatchMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -12506,7 +12506,7 @@ export async function updateModelModelUpdatePost({
 	body,
 	config = {},
 }: {
-	body?: UpdateModelModelUpdatePostMutationRequest;
+	body: UpdateModelModelUpdatePostMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -12803,7 +12803,7 @@ export async function updateCostDiscountConfigConfigCostDiscountConfigPatch({
 	body,
 	config = {},
 }: {
-	body?: UpdateCostDiscountConfigConfigCostDiscountConfigPatchMutationRequest;
+	body: UpdateCostDiscountConfigConfigCostDiscountConfigPatchMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -13140,7 +13140,7 @@ export async function newVectorStoreVectorStoreNewPost({
 	body,
 	config = {},
 }: {
-	body?: NewVectorStoreVectorStoreNewPostMutationRequest;
+	body: NewVectorStoreVectorStoreNewPostMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -13705,7 +13705,7 @@ export async function testConnectionMcpRestTestConnectionPost({
 	body,
 	config = {},
 }: {
-	body?: TestConnectionMcpRestTestConnectionPostMutationRequest;
+	body: TestConnectionMcpRestTestConnectionPostMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -13730,7 +13730,7 @@ export async function testToolsListMcpRestTestToolsListPost({
 	body,
 	config = {},
 }: {
-	body?: TestToolsListMcpRestTestToolsListPostMutationRequest;
+	body: TestToolsListMcpRestTestToolsListPostMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
