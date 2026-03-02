@@ -171,6 +171,9 @@ import type {
 	EnableSplitTestPathParams,
 	ExchangeTicketMutationResponse,
 	ExchangeTicketPathParams,
+	GetAccountAIGatewayToken404,
+	GetAccountAIGatewayTokenPathParams,
+	GetAccountAIGatewayTokenQueryResponse,
 	GetAccountBuildStatusPathParams,
 	GetAccountBuildStatusQueryResponse,
 	GetAccountMemberPathParams,
@@ -4948,6 +4951,34 @@ export async function getAIGatewayToken({
 }
 
 /**
+ * @description Returns an AI Gateway token scoped to an account
+ * {@link /accounts/:account_id/ai-gateway/token}
+ */
+export async function getAccountAIGatewayToken({
+	pathParams: { account_id },
+	config = {},
+}: {
+	pathParams: GetAccountAIGatewayTokenPathParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!account_id) {
+		throw new Error(`Missing required path parameter: account_id`);
+	}
+
+	const data = await request<
+		GetAccountAIGatewayTokenQueryResponse,
+		ErrorWrapper<GetAccountAIGatewayToken404>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		GetAccountAIGatewayTokenPathParams
+	>({ method: "GET", url: `/accounts/${account_id}/ai-gateway/token`, ...requestConfig });
+	return data;
+}
+
+/**
  * @description Creates a new database for the specified site. If a database already exists, returns the existing connection string. The database region defaults to the site's functions region if not specified.
  * {@link /sites/:site_id/database}
  */
@@ -5450,6 +5481,7 @@ export const operationsByPath = {
 	"DELETE /sites/{site_id}/dev_server_hooks/{id}": deleteSiteDevServerHook,
 	"GET /ai-gateway/providers": getAIGatewayProviders,
 	"GET /sites/{site_id}/ai-gateway/token": getAIGatewayToken,
+	"GET /accounts/{account_id}/ai-gateway/token": getAccountAIGatewayToken,
 	"POST /sites/{site_id}/database": createSiteDatabase,
 	"GET /sites/{site_id}/database": getSiteDatabase,
 	"DELETE /sites/{site_id}/database": deleteSiteDatabase,
@@ -5693,6 +5725,7 @@ export const operationsByTag = {
 	aigateway: {
 		getAIGatewayProviders,
 		getAIGatewayToken,
+		getAccountAIGatewayToken,
 	},
 	database: {
 		createSiteDatabase,
@@ -5894,7 +5927,7 @@ export const tagDictionary = {
 		DELETE: ["deleteSiteDevServerHook"],
 	},
 	aigateway: {
-		GET: ["getAIGatewayProviders", "getAIGatewayToken"],
+		GET: ["getAIGatewayProviders", "getAIGatewayToken", "getAccountAIGatewayToken"],
 	},
 	database: {
 		POST: [

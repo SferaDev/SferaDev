@@ -9367,6 +9367,36 @@ export const getAIGatewayTokenErrorSchema = z.object({
 
 export const getAIGatewayTokenQueryResponseSchema = z.lazy(() => getAIGatewayToken200Schema);
 
+export const getAccountAIGatewayTokenPathParamsSchema = z.object({
+	account_id: z.string().describe("The account ID"),
+});
+
+/**
+ * @description AI Gateway token for the account
+ */
+export const getAccountAIGatewayToken200Schema = z.object({
+	token: z.optional(z.string().describe("The AI Gateway authentication token")),
+	url: z.optional(z.string().describe("AI gateway base url")),
+	expires_at: z.optional(z.int().describe("Unix timestamp when the token expires")),
+});
+
+/**
+ * @description AI Gateway not available for this account
+ */
+export const getAccountAIGatewayToken404Schema = z.unknown();
+
+/**
+ * @description error
+ */
+export const getAccountAIGatewayTokenErrorSchema = z.object({
+	code: z.optional(z.int()),
+	message: z.string(),
+});
+
+export const getAccountAIGatewayTokenQueryResponseSchema = z.lazy(
+	() => getAccountAIGatewayToken200Schema,
+);
+
 export const createSiteDatabasePathParamsSchema = z.object({
 	site_id: z.string(),
 });

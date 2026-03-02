@@ -22341,6 +22341,62 @@ export type GetAIGatewayTokenQuery = {
 	Errors: GetAIGatewayToken404;
 };
 
+export type GetAccountAIGatewayTokenPathParams = {
+	/**
+	 * @description The account ID
+	 * @type string
+	 */
+	account_id: string;
+};
+
+/**
+ * @description AI Gateway token for the account
+ */
+export type GetAccountAIGatewayToken200 = {
+	/**
+	 * @description The AI Gateway authentication token
+	 * @type string | undefined
+	 */
+	token?: string | undefined;
+	/**
+	 * @description AI gateway base url
+	 * @type string | undefined
+	 */
+	url?: string | undefined;
+	/**
+	 * @description Unix timestamp when the token expires
+	 * @type integer | undefined, int64
+	 */
+	expires_at?: number | undefined;
+};
+
+/**
+ * @description AI Gateway not available for this account
+ */
+export type GetAccountAIGatewayToken404 = unknown;
+
+/**
+ * @description error
+ */
+export type GetAccountAIGatewayTokenError = {
+	/**
+	 * @type integer | undefined, int64
+	 */
+	code?: number | undefined;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
+export type GetAccountAIGatewayTokenQueryResponse = GetAccountAIGatewayToken200;
+
+export type GetAccountAIGatewayTokenQuery = {
+	Response: GetAccountAIGatewayToken200;
+	PathParams: GetAccountAIGatewayTokenPathParams;
+	Errors: GetAccountAIGatewayToken404;
+};
+
 export type CreateSiteDatabasePathParams = {
 	/**
 	 * @type string
