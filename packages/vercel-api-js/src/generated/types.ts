@@ -24973,6 +24973,8 @@ export type UpdateFlagSettingsQueryParams = {
 	slug?: string | undefined;
 };
 
+export type UpdateFlagSettings200 = unknown;
+
 export type UpdateFlagSettings201 = unknown;
 
 /**
@@ -25001,10 +25003,10 @@ export type UpdateFlagSettings409 = unknown;
 
 export type UpdateFlagSettings412 = unknown;
 
-export type UpdateFlagSettingsMutationResponse = UpdateFlagSettings201;
+export type UpdateFlagSettingsMutationResponse = UpdateFlagSettings200 | UpdateFlagSettings201;
 
 export type UpdateFlagSettingsMutation = {
-	Response: UpdateFlagSettings201;
+	Response: UpdateFlagSettings200 | UpdateFlagSettings201;
 	PathParams: UpdateFlagSettingsPathParams;
 	QueryParams: UpdateFlagSettingsQueryParams;
 	Errors:
