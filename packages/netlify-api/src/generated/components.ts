@@ -461,7 +461,7 @@ export async function createSite({
 	queryParams,
 	config = {},
 }: {
-	body?: CreateSiteMutationRequest;
+	body: CreateSiteMutationRequest;
 	queryParams?: CreateSiteQueryParams;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
@@ -518,7 +518,7 @@ export async function updateSite({
 	config = {},
 }: {
 	pathParams: UpdateSitePathParams;
-	body?: UpdateSiteMutationRequest;
+	body: UpdateSiteMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -1312,7 +1312,7 @@ export async function purgeCache({
 	body,
 	config = {},
 }: {
-	body?: PurgeCacheMutationRequest;
+	body: PurgeCacheMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -1364,7 +1364,7 @@ export async function createSiteSnippet({
 	config = {},
 }: {
 	pathParams: CreateSiteSnippetPathParams;
-	body?: CreateSiteSnippetMutationRequest;
+	body: CreateSiteSnippetMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -1424,7 +1424,7 @@ export async function updateSiteSnippet({
 	config = {},
 }: {
 	pathParams: UpdateSiteSnippetPathParams;
-	body?: UpdateSiteSnippetMutationRequest;
+	body: UpdateSiteSnippetMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -1515,7 +1515,7 @@ export async function updateSiteMetadata({
 	config = {},
 }: {
 	pathParams: UpdateSiteMetadataPathParams;
-	body?: UpdateSiteMetadataMutationRequest;
+	body: UpdateSiteMetadataMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -1571,7 +1571,7 @@ export async function createSiteBuildHook({
 	config = {},
 }: {
 	pathParams: CreateSiteBuildHookPathParams;
-	body?: CreateSiteBuildHookMutationRequest;
+	body: CreateSiteBuildHookMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -1631,7 +1631,7 @@ export async function updateSiteBuildHook({
 	config = {},
 }: {
 	pathParams: UpdateSiteBuildHookPathParams;
-	body?: UpdateSiteBuildHookMutationRequest;
+	body: UpdateSiteBuildHookMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -1725,7 +1725,7 @@ export async function createSiteDeploy({
 	config = {},
 }: {
 	pathParams: CreateSiteDeployPathParams;
-	body?: CreateSiteDeployMutationRequest;
+	body: CreateSiteDeployMutationRequest;
 	queryParams?: CreateSiteDeployQueryParams;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
@@ -1787,7 +1787,7 @@ export async function updateSiteDeploy({
 	config = {},
 }: {
 	pathParams: UpdateSiteDeployPathParams;
-	body?: UpdateSiteDeployMutationRequest;
+	body: UpdateSiteDeployMutationRequest;
 	queryParams?: UpdateSiteDeployQueryParams;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
@@ -2347,7 +2347,7 @@ export async function updateDeployValidations({
 	config = {},
 }: {
 	pathParams: UpdateDeployValidationsPathParams;
-	body?: UpdateDeployValidationsMutationRequest;
+	body: UpdateDeployValidationsMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -2617,12 +2617,12 @@ export async function listHooksBySiteId({
  * {@link /hooks}
  */
 export async function createHookBySiteId({
-	queryParams,
 	body,
+	queryParams,
 	config = {},
 }: {
+	body: CreateHookBySiteIdMutationRequest;
 	queryParams: CreateHookBySiteIdQueryParams;
-	body?: CreateHookBySiteIdMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -2674,7 +2674,7 @@ export async function updateHook({
 	config = {},
 }: {
 	pathParams: UpdateHookPathParams;
-	body?: UpdateHookMutationRequest;
+	body: UpdateHookMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -3040,7 +3040,7 @@ export async function addMemberToAccount({
 	config = {},
 }: {
 	pathParams: AddMemberToAccountPathParams;
-	body?: AddMemberToAccountMutationRequest;
+	body: AddMemberToAccountMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -3100,7 +3100,7 @@ export async function updateAccountMember({
 	config = {},
 }: {
 	pathParams: UpdateAccountMemberPathParams;
-	body?: UpdateAccountMemberMutationRequest;
+	body: UpdateAccountMemberMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -3863,7 +3863,7 @@ export async function createServiceInstance({
 	config = {},
 }: {
 	pathParams: CreateServiceInstancePathParams;
-	body?: CreateServiceInstanceMutationRequest;
+	body: CreateServiceInstanceMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -3940,7 +3940,7 @@ export async function updateServiceInstance({
 	config = {},
 }: {
 	pathParams: UpdateServiceInstancePathParams;
-	body?: UpdateServiceInstanceMutationRequest;
+	body: UpdateServiceInstanceMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -4119,7 +4119,7 @@ export async function createSplitTest({
 	config = {},
 }: {
 	pathParams: CreateSplitTestPathParams;
-	body?: CreateSplitTestMutationRequest;
+	body: CreateSplitTestMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -4175,7 +4175,7 @@ export async function updateSplitTest({
 	config = {},
 }: {
 	pathParams: UpdateSplitTestPathParams;
-	body?: UpdateSplitTestMutationRequest;
+	body: UpdateSplitTestMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -4312,7 +4312,7 @@ export async function createDnsZone({
 	body,
 	config = {},
 }: {
-	body?: CreateDnsZoneMutationRequest;
+	body: CreateDnsZoneMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -4470,7 +4470,7 @@ export async function createDnsRecord({
 	config = {},
 }: {
 	pathParams: CreateDnsRecordPathParams;
-	body?: CreateDnsRecordMutationRequest;
+	body: CreateDnsRecordMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -4783,7 +4783,7 @@ export async function createSiteDevServerHook({
 	config = {},
 }: {
 	pathParams: CreateSiteDevServerHookPathParams;
-	body?: CreateSiteDevServerHookMutationRequest;
+	body: CreateSiteDevServerHookMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -4843,7 +4843,7 @@ export async function updateSiteDevServerHook({
 	config = {},
 }: {
 	pathParams: UpdateSiteDevServerHookPathParams;
-	body?: UpdateSiteDevServerHookMutationRequest;
+	body: UpdateSiteDevServerHookMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
