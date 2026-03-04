@@ -1807,61 +1807,6 @@ export const payloadPreviousRoleEnum = {
 export type PayloadPreviousRoleEnumKey =
 	(typeof payloadPreviousRoleEnum)[keyof typeof payloadPreviousRoleEnum];
 
-export const previousEnabledEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type PreviousEnabledEnumKey = (typeof previousEnabledEnum)[keyof typeof previousEnabledEnum];
-
-export const previousScopeEnum = {
-	public: "public",
-	private: "private",
-	all: "all",
-	selected_repos: "selected_repos",
-} as const;
-
-export type PreviousScopeEnumKey = (typeof previousScopeEnum)[keyof typeof previousScopeEnum];
-
-export const previousIncludeDraftsEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type PreviousIncludeDraftsEnumKey =
-	(typeof previousIncludeDraftsEnum)[keyof typeof previousIncludeDraftsEnum];
-
-export const nextEnabledEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type NextEnabledEnumKey = (typeof nextEnabledEnum)[keyof typeof nextEnabledEnum];
-
-export const nextScopeEnum = {
-	public: "public",
-	private: "private",
-	all: "all",
-	selected_repos: "selected_repos",
-} as const;
-
-export type NextScopeEnumKey = (typeof nextScopeEnum)[keyof typeof nextScopeEnum];
-
-export const nextIncludeDraftsEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type NextIncludeDraftsEnumKey =
-	(typeof nextIncludeDraftsEnum)[keyof typeof nextIncludeDraftsEnum];
-
-export const payloadEnabledEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type PayloadEnabledEnumKey = (typeof payloadEnabledEnum)[keyof typeof payloadEnabledEnum];
-
 export const payloadSystemEnum = {
 	false: false,
 	true: true,
@@ -1876,6 +1821,147 @@ export const payloadActionEnum4 = {
 
 export type PayloadActionEnum4Key = (typeof payloadActionEnum4)[keyof typeof payloadActionEnum4];
 
+export const payloadScopesEnum = {
+	openid: "openid",
+	email: "email",
+	profile: "profile",
+	offline_access: "offline_access",
+} as const;
+
+export type PayloadScopesEnumKey = (typeof payloadScopesEnum)[keyof typeof payloadScopesEnum];
+
+export const payloadPermissionsEnum = {
+	"read:user": "read:user",
+	"read:domain": "read:domain",
+	"read-write:domain": "read-write:domain",
+	"read:team": "read:team",
+	"read:billing": "read:billing",
+	"read-write:billing": "read-write:billing",
+	"read-write:ai-gateway-api-key": "read-write:ai-gateway-api-key",
+	"read-write:project-env-vars": "read-write:project-env-vars",
+	"read:project": "read:project",
+	"read-write:project": "read-write:project",
+	"read:deployment": "read:deployment",
+	"read-write:deployment": "read-write:deployment",
+} as const;
+
+export type PayloadPermissionsEnumKey =
+	(typeof payloadPermissionsEnum)[keyof typeof payloadPermissionsEnum];
+
+export const payloadNextScopesEnum = {
+	openid: "openid",
+	email: "email",
+	profile: "profile",
+	offline_access: "offline_access",
+} as const;
+
+export type PayloadNextScopesEnumKey =
+	(typeof payloadNextScopesEnum)[keyof typeof payloadNextScopesEnum];
+
+export const payloadNextPermissionsEnum = {
+	"read:user": "read:user",
+	"read:domain": "read:domain",
+	"read-write:domain": "read-write:domain",
+	"read:team": "read:team",
+	"read:billing": "read:billing",
+	"read-write:billing": "read-write:billing",
+	"read-write:ai-gateway-api-key": "read-write:ai-gateway-api-key",
+	"read-write:project-env-vars": "read-write:project-env-vars",
+	"read:project": "read:project",
+	"read-write:project": "read-write:project",
+	"read:deployment": "read:deployment",
+	"read-write:deployment": "read-write:deployment",
+} as const;
+
+export type PayloadNextPermissionsEnumKey =
+	(typeof payloadNextPermissionsEnum)[keyof typeof payloadNextPermissionsEnum];
+
+export const projectIdsTypeEnum = {
+	list: "list",
+} as const;
+
+export type ProjectIdsTypeEnumKey = (typeof projectIdsTypeEnum)[keyof typeof projectIdsTypeEnum];
+
+export const projectIdsRequiredEnum = {
+	true: true,
+} as const;
+
+export type ProjectIdsRequiredEnumKey =
+	(typeof projectIdsRequiredEnum)[keyof typeof projectIdsRequiredEnum];
+
+export const itemsTypeEnum = {
+	string: "string",
+} as const;
+
+export type ItemsTypeEnumKey = (typeof itemsTypeEnum)[keyof typeof itemsTypeEnum];
+
+export const beforePermissionsEnum = {
+	"read:domain": "read:domain",
+	"read-write:domain": "read-write:domain",
+	"read:team": "read:team",
+	"read:billing": "read:billing",
+	"read-write:billing": "read-write:billing",
+	"read-write:ai-gateway-api-key": "read-write:ai-gateway-api-key",
+	"read-write:project-env-vars": "read-write:project-env-vars",
+	"read:project": "read:project",
+	"read-write:project": "read-write:project",
+	"read:deployment": "read:deployment",
+	"read-write:deployment": "read-write:deployment",
+} as const;
+
+export type BeforePermissionsEnumKey =
+	(typeof beforePermissionsEnum)[keyof typeof beforePermissionsEnum];
+
+export const afterPermissionsEnum = {
+	"read:domain": "read:domain",
+	"read-write:domain": "read-write:domain",
+	"read:team": "read:team",
+	"read:billing": "read:billing",
+	"read-write:billing": "read-write:billing",
+	"read-write:ai-gateway-api-key": "read-write:ai-gateway-api-key",
+	"read-write:project-env-vars": "read-write:project-env-vars",
+	"read:project": "read:project",
+	"read-write:project": "read-write:project",
+	"read:deployment": "read:deployment",
+	"read-write:deployment": "read-write:deployment",
+} as const;
+
+export type AfterPermissionsEnumKey =
+	(typeof afterPermissionsEnum)[keyof typeof afterPermissionsEnum];
+
+export const payloadPermissionsEnum2 = {
+	"read:domain": "read:domain",
+	"read-write:domain": "read-write:domain",
+	"read:team": "read:team",
+	"read:billing": "read:billing",
+	"read-write:billing": "read-write:billing",
+	"read-write:ai-gateway-api-key": "read-write:ai-gateway-api-key",
+	"read-write:project-env-vars": "read-write:project-env-vars",
+	"read:project": "read:project",
+	"read-write:project": "read-write:project",
+	"read:deployment": "read:deployment",
+	"read-write:deployment": "read-write:deployment",
+} as const;
+
+export type PayloadPermissionsEnum2Key =
+	(typeof payloadPermissionsEnum2)[keyof typeof payloadPermissionsEnum2];
+
+export const payloadPrevAttackModeEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadPrevAttackModeEnabledEnumKey =
+	(typeof payloadPrevAttackModeEnabledEnum)[keyof typeof payloadPrevAttackModeEnabledEnum];
+
+export const payloadAttackModeEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadAttackModeEnabledEnumKey =
+	(typeof payloadAttackModeEnabledEnum)[keyof typeof payloadAttackModeEnabledEnum];
+
 export const payloadAutoExposeSystemEnvsEnum = {
 	false: false,
 	true: true,
@@ -1884,19 +1970,51 @@ export const payloadAutoExposeSystemEnvsEnum = {
 export type PayloadAutoExposeSystemEnvsEnumKey =
 	(typeof payloadAutoExposeSystemEnvsEnum)[keyof typeof payloadAutoExposeSystemEnvsEnum];
 
+export const payloadSettlementMethodEnum = {
+	"refunded-paid": "refunded-paid",
+	"credited-paid": "credited-paid",
+} as const;
+
+export type PayloadSettlementMethodEnumKey =
+	(typeof payloadSettlementMethodEnum)[keyof typeof payloadSettlementMethodEnum];
+
+export const payloadActionEnum5 = {
+	cancel_plan: "cancel_plan",
+} as const;
+
+export type PayloadActionEnum5Key = (typeof payloadActionEnum5)[keyof typeof payloadActionEnum5];
+
+export const dataPlanSlugEnum = {
+	v0_teams: "v0_teams",
+	v0_business: "v0_business",
+} as const;
+
+export type DataPlanSlugEnumKey = (typeof dataPlanSlugEnum)[keyof typeof dataPlanSlugEnum];
+
+export const dataReasonEnum = {
+	"non-payment": "non-payment",
+} as const;
+
+export type DataReasonEnumKey = (typeof dataReasonEnum)[keyof typeof dataReasonEnum];
+
+export const payloadActionEnum6 = {
+	resume_plan: "resume_plan",
+} as const;
+
+export type PayloadActionEnum6Key = (typeof payloadActionEnum6)[keyof typeof payloadActionEnum6];
+
+export const payloadActionEnum7 = {
+	mutate: "mutate",
+} as const;
+
+export type PayloadActionEnum7Key = (typeof payloadActionEnum7)[keyof typeof payloadActionEnum7];
+
 export const payloadCustomEnum = {
 	false: false,
 	true: true,
 } as const;
 
 export type PayloadCustomEnumKey = (typeof payloadCustomEnum)[keyof typeof payloadCustomEnum];
-
-export const payloadUpdatedEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type PayloadUpdatedEnumKey = (typeof payloadUpdatedEnum)[keyof typeof payloadUpdatedEnum];
 
 export const payloadBuildsEnabledEnum = {
 	false: false,
@@ -1913,24 +2031,156 @@ export const payloadPassiveEnum = {
 
 export type PayloadPassiveEnumKey = (typeof payloadPassiveEnum)[keyof typeof payloadPassiveEnum];
 
-export const payloadProviderEnum = {
-	github: "github",
-	"github-limited": "github-limited",
-	"github-custom-host": "github-custom-host",
-	gitlab: "gitlab",
-	bitbucket: "bitbucket",
-	google: "google",
-	apple: "apple",
-} as const;
-
-export type PayloadProviderEnumKey = (typeof payloadProviderEnum)[keyof typeof payloadProviderEnum];
-
 export const payloadForcedEnum = {
 	false: false,
 	true: true,
 } as const;
 
 export type PayloadForcedEnumKey = (typeof payloadForcedEnum)[keyof typeof payloadForcedEnum];
+
+export const jobTypeEnum = {
+	"bitbucket-push": "bitbucket-push",
+} as const;
+
+export type JobTypeEnumKey = (typeof jobTypeEnum)[keyof typeof jobTypeEnum];
+
+export const jobAuthorizedEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type JobAuthorizedEnumKey = (typeof jobAuthorizedEnum)[keyof typeof jobAuthorizedEnum];
+
+export const gitCommentsOnPullRequestEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type GitCommentsOnPullRequestEnumKey =
+	(typeof gitCommentsOnPullRequestEnum)[keyof typeof gitCommentsOnPullRequestEnum];
+
+export const gitCommentsOnCommitEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type GitCommentsOnCommitEnumKey =
+	(typeof gitCommentsOnCommitEnum)[keyof typeof gitCommentsOnCommitEnum];
+
+export const jobIsManualGitDeployEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type JobIsManualGitDeployEnumKey =
+	(typeof jobIsManualGitDeployEnum)[keyof typeof jobIsManualGitDeployEnum];
+
+export const jobCommitVerificationEnum = {
+	verified: "verified",
+	unverified: "unverified",
+	unknown: "unknown",
+} as const;
+
+export type JobCommitVerificationEnumKey =
+	(typeof jobCommitVerificationEnum)[keyof typeof jobCommitVerificationEnum];
+
+export const jobEventfulEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type JobEventfulEnumKey = (typeof jobEventfulEnum)[keyof typeof jobEventfulEnum];
+
+export const jobForceNewEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type JobForceNewEnumKey = (typeof jobForceNewEnum)[keyof typeof jobForceNewEnum];
+
+export const jobSilentEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type JobSilentEnumKey = (typeof jobSilentEnum)[keyof typeof jobSilentEnum];
+
+export const jobWithCacheEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type JobWithCacheEnumKey = (typeof jobWithCacheEnum)[keyof typeof jobWithCacheEnum];
+
+export const jobProviderEnum = {
+	bitbucket: "bitbucket",
+} as const;
+
+export type JobProviderEnumKey = (typeof jobProviderEnum)[keyof typeof jobProviderEnum];
+
+export const jobTypeEnum2 = {
+	"bitbucket-now-comment": "bitbucket-now-comment",
+} as const;
+
+export type JobTypeEnum2Key = (typeof jobTypeEnum2)[keyof typeof jobTypeEnum2];
+
+export const jobTypeEnum3 = {
+	pr: "pr",
+} as const;
+
+export type JobTypeEnum3Key = (typeof jobTypeEnum3)[keyof typeof jobTypeEnum3];
+
+export const jobIsPrivateEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type JobIsPrivateEnumKey = (typeof jobIsPrivateEnum)[keyof typeof jobIsPrivateEnum];
+
+export const jobProviderEnum2 = {
+	github: "github",
+	"github-limited": "github-limited",
+	"github-custom-host": "github-custom-host",
+} as const;
+
+export type JobProviderEnum2Key = (typeof jobProviderEnum2)[keyof typeof jobProviderEnum2];
+
+export const jobForcedEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type JobForcedEnumKey = (typeof jobForcedEnum)[keyof typeof jobForcedEnum];
+
+export const jobTypeEnum4 = {
+	push: "push",
+} as const;
+
+export type JobTypeEnum4Key = (typeof jobTypeEnum4)[keyof typeof jobTypeEnum4];
+
+export const jobTypeEnum5 = {
+	"now-comment": "now-comment",
+} as const;
+
+export type JobTypeEnum5Key = (typeof jobTypeEnum5)[keyof typeof jobTypeEnum5];
+
+export const jobTypeEnum6 = {
+	"gitlab-push": "gitlab-push",
+} as const;
+
+export type JobTypeEnum6Key = (typeof jobTypeEnum6)[keyof typeof jobTypeEnum6];
+
+export const jobProviderEnum3 = {
+	gitlab: "gitlab",
+} as const;
+
+export type JobProviderEnum3Key = (typeof jobProviderEnum3)[keyof typeof jobProviderEnum3];
+
+export const jobTypeEnum7 = {
+	"gitlab-now-comment": "gitlab-now-comment",
+} as const;
+
+export type JobTypeEnum7Key = (typeof jobTypeEnum7)[keyof typeof jobTypeEnum7];
 
 export const payloadCdnEnabledEnum = {
 	false: false,
@@ -1946,6 +2196,20 @@ export const payloadRenewEnum = {
 } as const;
 
 export type PayloadRenewEnumKey = (typeof payloadRenewEnum)[keyof typeof payloadRenewEnum];
+
+export const fromAccountTypeEnum = {
+	user: "user",
+	team: "team",
+} as const;
+
+export type FromAccountTypeEnumKey = (typeof fromAccountTypeEnum)[keyof typeof fromAccountTypeEnum];
+
+export const toAccountTypeEnum = {
+	user: "user",
+	team: "team",
+} as const;
+
+export type ToAccountTypeEnumKey = (typeof toAccountTypeEnum)[keyof typeof toAccountTypeEnum];
 
 export const payloadTypeEnum = {
 	system: "system",
@@ -2079,21 +2343,6 @@ export const payloadRestoreEnum = {
 
 export type PayloadRestoreEnumKey = (typeof payloadRestoreEnum)[keyof typeof payloadRestoreEnum];
 
-export const payloadActiveEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type PayloadActiveEnumKey = (typeof payloadActiveEnum)[keyof typeof payloadActiveEnum];
-
-export const payloadActionEnum5 = {
-	log: "log",
-	challenge: "challenge",
-	deny: "deny",
-} as const;
-
-export type PayloadActionEnum5Key = (typeof payloadActionEnum5)[keyof typeof payloadActionEnum5];
-
 export const activeEnum = {
 	false: false,
 	true: true,
@@ -2109,21 +2358,27 @@ export const actionEnum = {
 
 export type ActionEnumKey = (typeof actionEnum)[keyof typeof actionEnum];
 
-export const payloadPrevAttackModeEnabledEnum = {
+export const payloadActiveEnum = {
 	false: false,
 	true: true,
 } as const;
 
-export type PayloadPrevAttackModeEnabledEnumKey =
-	(typeof payloadPrevAttackModeEnabledEnum)[keyof typeof payloadPrevAttackModeEnabledEnum];
+export type PayloadActiveEnumKey = (typeof payloadActiveEnum)[keyof typeof payloadActiveEnum];
 
-export const payloadAttackModeEnabledEnum = {
-	false: false,
-	true: true,
+export const payloadActionEnum8 = {
+	log: "log",
+	challenge: "challenge",
+	deny: "deny",
 } as const;
 
-export type PayloadAttackModeEnabledEnumKey =
-	(typeof payloadAttackModeEnabledEnum)[keyof typeof payloadAttackModeEnabledEnum];
+export type PayloadActionEnum8Key = (typeof payloadActionEnum8)[keyof typeof payloadActionEnum8];
+
+export const payloadActionEnum9 = {
+	enable: "enable",
+	disable: "disable",
+} as const;
+
+export type PayloadActionEnum9Key = (typeof payloadActionEnum9)[keyof typeof payloadActionEnum9];
 
 export const blockHistoryActionEnum = {
 	blocked: "blocked",
@@ -2253,27 +2508,28 @@ export type ResourceConfigFlagsExplorerUnlimitedOverridesEnumKey =
 	(typeof resourceConfigFlagsExplorerUnlimitedOverridesEnum)[keyof typeof resourceConfigFlagsExplorerUnlimitedOverridesEnum];
 
 export const buildMachineDefaultEnum = {
-	standard: "standard",
 	enhanced: "enhanced",
 	turbo: "turbo",
+	standard: "standard",
+	elastic: "elastic",
 } as const;
 
 export type BuildMachineDefaultEnumKey =
 	(typeof buildMachineDefaultEnum)[keyof typeof buildMachineDefaultEnum];
 
 export const buildMachinePurchaseTypeEnum = {
-	standard: "standard",
 	enhanced: "enhanced",
 	turbo: "turbo",
+	standard: "standard",
 } as const;
 
 export type BuildMachinePurchaseTypeEnumKey =
 	(typeof buildMachinePurchaseTypeEnum)[keyof typeof buildMachinePurchaseTypeEnum];
 
 export const buildMachineDefaultPurchaseTypeEnum = {
-	standard: "standard",
 	enhanced: "enhanced",
 	turbo: "turbo",
+	standard: "standard",
 } as const;
 
 export type BuildMachineDefaultPurchaseTypeEnumKey =
@@ -2760,9 +3016,9 @@ export type HistoryActionEnumKey = (typeof historyActionEnum)[keyof typeof histo
 export const historyMethodEnum = {
 	totp: "totp",
 	passkey: "passkey",
+	unknown: "unknown",
 	user_disabled: "user_disabled",
 	admin_removal: "admin_removal",
-	unknown: "unknown",
 } as const;
 
 export type HistoryMethodEnumKey = (typeof historyMethodEnum)[keyof typeof historyMethodEnum];
@@ -2884,18 +3140,65 @@ export const payloadViaPasskeyEnum = {
 export type PayloadViaPasskeyEnumKey =
 	(typeof payloadViaPasskeyEnum)[keyof typeof payloadViaPasskeyEnum];
 
-export const factorsOriginEnum3 = {
-	email: "email",
-	saml: "saml",
-	github: "github",
-	gitlab: "gitlab",
-	bitbucket: "bitbucket",
-	google: "google",
-	apple: "apple",
-	otp: "otp",
+export const microfrontendsIsDefaultAppEnum = {
+	true: true,
 } as const;
 
-export type FactorsOriginEnum3Key = (typeof factorsOriginEnum3)[keyof typeof factorsOriginEnum3];
+export type MicrofrontendsIsDefaultAppEnumKey =
+	(typeof microfrontendsIsDefaultAppEnum)[keyof typeof microfrontendsIsDefaultAppEnum];
+
+export const microfrontendsEnabledEnum = {
+	true: true,
+} as const;
+
+export type MicrofrontendsEnabledEnumKey =
+	(typeof microfrontendsEnabledEnum)[keyof typeof microfrontendsEnabledEnum];
+
+export const microfrontendsFreeProjectForLegacyLimitsEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type MicrofrontendsFreeProjectForLegacyLimitsEnumKey =
+	(typeof microfrontendsFreeProjectForLegacyLimitsEnum)[keyof typeof microfrontendsFreeProjectForLegacyLimitsEnum];
+
+export const microfrontendsIsDefaultAppEnum2 = {
+	false: false,
+} as const;
+
+export type MicrofrontendsIsDefaultAppEnum2Key =
+	(typeof microfrontendsIsDefaultAppEnum2)[keyof typeof microfrontendsIsDefaultAppEnum2];
+
+export const microfrontendsRouteObservabilityToThisProjectEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type MicrofrontendsRouteObservabilityToThisProjectEnumKey =
+	(typeof microfrontendsRouteObservabilityToThisProjectEnum)[keyof typeof microfrontendsRouteObservabilityToThisProjectEnum];
+
+export const microfrontendsDoNotRouteWithMicrofrontendsRoutingEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type MicrofrontendsDoNotRouteWithMicrofrontendsRoutingEnumKey =
+	(typeof microfrontendsDoNotRouteWithMicrofrontendsRoutingEnum)[keyof typeof microfrontendsDoNotRouteWithMicrofrontendsRoutingEnum];
+
+export const microfrontendsEnabledEnum2 = {
+	false: false,
+} as const;
+
+export type MicrofrontendsEnabledEnum2Key =
+	(typeof microfrontendsEnabledEnum2)[keyof typeof microfrontendsEnabledEnum2];
+
+export const microfrontendsFreeProjectForLegacyLimitsEnum2 = {
+	false: false,
+	true: true,
+} as const;
+
+export type MicrofrontendsFreeProjectForLegacyLimitsEnum2Key =
+	(typeof microfrontendsFreeProjectForLegacyLimitsEnum2)[keyof typeof microfrontendsFreeProjectForLegacyLimitsEnum2];
 
 export const roleEnum = {
 	OWNER: "OWNER",
@@ -2949,12 +3252,195 @@ export const payloadAutomatedEnum = {
 export type PayloadAutomatedEnumKey =
 	(typeof payloadAutomatedEnum)[keyof typeof payloadAutomatedEnum];
 
-export const payloadActionEnum6 = {
+export const payloadEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadEnabledEnumKey = (typeof payloadEnabledEnum)[keyof typeof payloadEnabledEnum];
+
+export const payloadDirectoryListingEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadDirectoryListingEnumKey =
+	(typeof payloadDirectoryListingEnum)[keyof typeof payloadDirectoryListingEnum];
+
+export const payloadActionEnum10 = {
+	enabled: "enabled",
+	disabled: "disabled",
+	regenerated: "regenerated",
+	updated: "updated",
+} as const;
+
+export type PayloadActionEnum10Key = (typeof payloadActionEnum10)[keyof typeof payloadActionEnum10];
+
+export const payloadIsEnvVarEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadIsEnvVarEnumKey = (typeof payloadIsEnvVarEnum)[keyof typeof payloadIsEnvVarEnum];
+
+export const payloadEnableAffectedProjectsDeploymentsEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadEnableAffectedProjectsDeploymentsEnumKey =
+	(typeof payloadEnableAffectedProjectsDeploymentsEnum)[keyof typeof payloadEnableAffectedProjectsDeploymentsEnum];
+
+export const payloadProductionDeploymentsFastLaneEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadProductionDeploymentsFastLaneEnumKey =
+	(typeof payloadProductionDeploymentsFastLaneEnum)[keyof typeof payloadProductionDeploymentsFastLaneEnum];
+
+export const payloadSourceFilesOutsideRootDirectoryEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadSourceFilesOutsideRootDirectoryEnumKey =
+	(typeof payloadSourceFilesOutsideRootDirectoryEnum)[keyof typeof payloadSourceFilesOutsideRootDirectoryEnum];
+
+export const payloadUpdatedEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadUpdatedEnumKey = (typeof payloadUpdatedEnum)[keyof typeof payloadUpdatedEnum];
+
+export const oldConnectConfigurationsEnvIdEnum = {
+	production: "production",
+	preview: "preview",
+} as const;
+
+export type OldConnectConfigurationsEnvIdEnumKey =
+	(typeof oldConnectConfigurationsEnvIdEnum)[keyof typeof oldConnectConfigurationsEnvIdEnum];
+
+export const oldConnectConfigurationsPassiveEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type OldConnectConfigurationsPassiveEnumKey =
+	(typeof oldConnectConfigurationsPassiveEnum)[keyof typeof oldConnectConfigurationsPassiveEnum];
+
+export const oldConnectConfigurationsBuildsEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type OldConnectConfigurationsBuildsEnabledEnumKey =
+	(typeof oldConnectConfigurationsBuildsEnabledEnum)[keyof typeof oldConnectConfigurationsBuildsEnabledEnum];
+
+export const newConnectConfigurationsEnvIdEnum = {
+	production: "production",
+	preview: "preview",
+} as const;
+
+export type NewConnectConfigurationsEnvIdEnumKey =
+	(typeof newConnectConfigurationsEnvIdEnum)[keyof typeof newConnectConfigurationsEnvIdEnum];
+
+export const newConnectConfigurationsPassiveEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type NewConnectConfigurationsPassiveEnumKey =
+	(typeof newConnectConfigurationsPassiveEnum)[keyof typeof newConnectConfigurationsPassiveEnum];
+
+export const newConnectConfigurationsBuildsEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type NewConnectConfigurationsBuildsEnabledEnumKey =
+	(typeof newConnectConfigurationsBuildsEnabledEnum)[keyof typeof newConnectConfigurationsBuildsEnabledEnum];
+
+export const payloadActionEnum11 = {
 	enabled: "enabled",
 	disabled: "disabled",
 } as const;
 
-export type PayloadActionEnum6Key = (typeof payloadActionEnum6)[keyof typeof payloadActionEnum6];
+export type PayloadActionEnum11Key = (typeof payloadActionEnum11)[keyof typeof payloadActionEnum11];
+
+export const payloadElasticConcurrencyEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadElasticConcurrencyEnabledEnumKey =
+	(typeof payloadElasticConcurrencyEnabledEnum)[keyof typeof payloadElasticConcurrencyEnabledEnum];
+
+export const payloadOldElasticConcurrencyEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadOldElasticConcurrencyEnabledEnumKey =
+	(typeof payloadOldElasticConcurrencyEnabledEnum)[keyof typeof payloadOldElasticConcurrencyEnabledEnum];
+
+export const payloadBuildQueueConfigurationEnum = {
+	SKIP_NAMESPACE_QUEUE: "SKIP_NAMESPACE_QUEUE",
+	WAIT_FOR_NAMESPACE_QUEUE: "WAIT_FOR_NAMESPACE_QUEUE",
+} as const;
+
+export type PayloadBuildQueueConfigurationEnumKey =
+	(typeof payloadBuildQueueConfigurationEnum)[keyof typeof payloadBuildQueueConfigurationEnum];
+
+export const payloadOldBuildQueueConfigurationEnum = {
+	SKIP_NAMESPACE_QUEUE: "SKIP_NAMESPACE_QUEUE",
+	WAIT_FOR_NAMESPACE_QUEUE: "WAIT_FOR_NAMESPACE_QUEUE",
+} as const;
+
+export type PayloadOldBuildQueueConfigurationEnumKey =
+	(typeof payloadOldBuildQueueConfigurationEnum)[keyof typeof payloadOldBuildQueueConfigurationEnum];
+
+export const payloadAutoAssignCustomDomainsEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadAutoAssignCustomDomainsEnumKey =
+	(typeof payloadAutoAssignCustomDomainsEnum)[keyof typeof payloadAutoAssignCustomDomainsEnum];
+
+export const payloadPreviewDeploymentsEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadPreviewDeploymentsEnabledEnumKey =
+	(typeof payloadPreviewDeploymentsEnabledEnum)[keyof typeof payloadPreviewDeploymentsEnabledEnum];
+
+export const branchMatcherTypeEnum = {
+	endsWith: "endsWith",
+	startsWith: "startsWith",
+	equals: "equals",
+} as const;
+
+export type BranchMatcherTypeEnumKey =
+	(typeof branchMatcherTypeEnum)[keyof typeof branchMatcherTypeEnum];
+
+export const previousFunctionZeroConfigFailoverEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PreviousFunctionZeroConfigFailoverEnumKey =
+	(typeof previousFunctionZeroConfigFailoverEnum)[keyof typeof previousFunctionZeroConfigFailoverEnum];
+
+export const nextFunctionZeroConfigFailoverEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type NextFunctionZeroConfigFailoverEnumKey =
+	(typeof nextFunctionZeroConfigFailoverEnum)[keyof typeof nextFunctionZeroConfigFailoverEnum];
 
 export const previousGitProviderEnum = {
 	github: "github",
@@ -3034,6 +3520,150 @@ export const payloadGitLFSEnum = {
 
 export type PayloadGitLFSEnumKey = (typeof payloadGitLFSEnum)[keyof typeof payloadGitLFSEnum];
 
+export const projectsRoleEnum = {
+	ADMIN: "ADMIN",
+	PROJECT_DEVELOPER: "PROJECT_DEVELOPER",
+	PROJECT_VIEWER: "PROJECT_VIEWER",
+	PROJECT_GUEST: "PROJECT_GUEST",
+} as const;
+
+export type ProjectsRoleEnumKey = (typeof projectsRoleEnum)[keyof typeof projectsRoleEnum];
+
+export const projectMembershipRoleEnum = {
+	ADMIN: "ADMIN",
+	PROJECT_DEVELOPER: "PROJECT_DEVELOPER",
+	PROJECT_VIEWER: "PROJECT_VIEWER",
+	PROJECT_GUEST: "PROJECT_GUEST",
+} as const;
+
+export type ProjectMembershipRoleEnumKey =
+	(typeof projectMembershipRoleEnum)[keyof typeof projectMembershipRoleEnum];
+
+export const projectRoleEnum = {
+	ADMIN: "ADMIN",
+	PROJECT_DEVELOPER: "PROJECT_DEVELOPER",
+	PROJECT_VIEWER: "PROJECT_VIEWER",
+	PROJECT_GUEST: "PROJECT_GUEST",
+} as const;
+
+export type ProjectRoleEnumKey = (typeof projectRoleEnum)[keyof typeof projectRoleEnum];
+
+export const removedMembershipRoleEnum = {
+	ADMIN: "ADMIN",
+	PROJECT_DEVELOPER: "PROJECT_DEVELOPER",
+	PROJECT_VIEWER: "PROJECT_VIEWER",
+	PROJECT_GUEST: "PROJECT_GUEST",
+} as const;
+
+export type RemovedMembershipRoleEnumKey =
+	(typeof removedMembershipRoleEnum)[keyof typeof removedMembershipRoleEnum];
+
+export const projectMembershipPreviousRoleEnum = {
+	ADMIN: "ADMIN",
+	PROJECT_DEVELOPER: "PROJECT_DEVELOPER",
+	PROJECT_VIEWER: "PROJECT_VIEWER",
+	PROJECT_GUEST: "PROJECT_GUEST",
+} as const;
+
+export type ProjectMembershipPreviousRoleEnumKey =
+	(typeof projectMembershipPreviousRoleEnum)[keyof typeof projectMembershipPreviousRoleEnum];
+
+export const passwordProtectionDeploymentTypeEnum = {
+	all: "all",
+	preview: "preview",
+	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
+	all_except_custom_domains: "all_except_custom_domains",
+} as const;
+
+export type PasswordProtectionDeploymentTypeEnumKey =
+	(typeof passwordProtectionDeploymentTypeEnum)[keyof typeof passwordProtectionDeploymentTypeEnum];
+
+export const payloadPasswordProtectionEnum = {
+	all: "all",
+	preview: "preview",
+	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
+	all_except_custom_domains: "all_except_custom_domains",
+} as const;
+
+export type PayloadPasswordProtectionEnumKey =
+	(typeof payloadPasswordProtectionEnum)[keyof typeof payloadPasswordProtectionEnum];
+
+export const oldPasswordProtectionDeploymentTypeEnum = {
+	all: "all",
+	preview: "preview",
+	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
+	all_except_custom_domains: "all_except_custom_domains",
+} as const;
+
+export type OldPasswordProtectionDeploymentTypeEnumKey =
+	(typeof oldPasswordProtectionDeploymentTypeEnum)[keyof typeof oldPasswordProtectionDeploymentTypeEnum];
+
+export const payloadOldPasswordProtectionEnum = {
+	all: "all",
+	preview: "preview",
+	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
+	all_except_custom_domains: "all_except_custom_domains",
+} as const;
+
+export type PayloadOldPasswordProtectionEnumKey =
+	(typeof payloadOldPasswordProtectionEnum)[keyof typeof payloadOldPasswordProtectionEnum];
+
+export const payloadReasonCodeEnum = {
+	BUDGET_REACHED: "BUDGET_REACHED",
+	PUBLIC_API: "PUBLIC_API",
+	BACKOFFICE: "BACKOFFICE",
+} as const;
+
+export type PayloadReasonCodeEnumKey =
+	(typeof payloadReasonCodeEnum)[keyof typeof payloadReasonCodeEnum];
+
+export const previousIssuerModeEnum = {
+	team: "team",
+	global: "global",
+} as const;
+
+export type PreviousIssuerModeEnumKey =
+	(typeof previousIssuerModeEnum)[keyof typeof previousIssuerModeEnum];
+
+export const nextIssuerModeEnum = {
+	team: "team",
+	global: "global",
+} as const;
+
+export type NextIssuerModeEnumKey = (typeof nextIssuerModeEnum)[keyof typeof nextIssuerModeEnum];
+
+export const payloadCustomerSupportCodeVisibilityEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadCustomerSupportCodeVisibilityEnumKey =
+	(typeof payloadCustomerSupportCodeVisibilityEnum)[keyof typeof payloadCustomerSupportCodeVisibilityEnum];
+
+export const payloadGitForkProtectionEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadGitForkProtectionEnumKey =
+	(typeof payloadGitForkProtectionEnum)[keyof typeof payloadGitForkProtectionEnum];
+
+export const payloadProtectedSourcemapsEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadProtectedSourcemapsEnumKey =
+	(typeof payloadProtectedSourcemapsEnum)[keyof typeof payloadProtectedSourcemapsEnum];
+
+export const payloadPublicSourceEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadPublicSourceEnumKey =
+	(typeof payloadPublicSourceEnum)[keyof typeof payloadPublicSourceEnum];
+
 export const ssoProtectionDeploymentTypeEnum = {
 	all: "all",
 	preview: "preview",
@@ -3094,45 +3724,20 @@ export const payloadOldSsoProtectionEnum = {
 export type PayloadOldSsoProtectionEnumKey =
 	(typeof payloadOldSsoProtectionEnum)[keyof typeof payloadOldSsoProtectionEnum];
 
-export const passwordProtectionDeploymentTypeEnum = {
-	all: "all",
-	preview: "preview",
-	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
-	all_except_custom_domains: "all_except_custom_domains",
+export const staticIpsBuildsEnum = {
+	false: false,
+	true: true,
 } as const;
 
-export type PasswordProtectionDeploymentTypeEnumKey =
-	(typeof passwordProtectionDeploymentTypeEnum)[keyof typeof passwordProtectionDeploymentTypeEnum];
+export type StaticIpsBuildsEnumKey = (typeof staticIpsBuildsEnum)[keyof typeof staticIpsBuildsEnum];
 
-export const payloadPasswordProtectionEnum = {
-	all: "all",
-	preview: "preview",
-	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
-	all_except_custom_domains: "all_except_custom_domains",
+export const staticIpsEnabledEnum = {
+	false: false,
+	true: true,
 } as const;
 
-export type PayloadPasswordProtectionEnumKey =
-	(typeof payloadPasswordProtectionEnum)[keyof typeof payloadPasswordProtectionEnum];
-
-export const oldPasswordProtectionDeploymentTypeEnum = {
-	all: "all",
-	preview: "preview",
-	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
-	all_except_custom_domains: "all_except_custom_domains",
-} as const;
-
-export type OldPasswordProtectionDeploymentTypeEnumKey =
-	(typeof oldPasswordProtectionDeploymentTypeEnum)[keyof typeof oldPasswordProtectionDeploymentTypeEnum];
-
-export const payloadOldPasswordProtectionEnum = {
-	all: "all",
-	preview: "preview",
-	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
-	all_except_custom_domains: "all_except_custom_domains",
-} as const;
-
-export type PayloadOldPasswordProtectionEnumKey =
-	(typeof payloadOldPasswordProtectionEnum)[keyof typeof payloadOldPasswordProtectionEnum];
+export type StaticIpsEnabledEnumKey =
+	(typeof staticIpsEnabledEnum)[keyof typeof staticIpsEnabledEnum];
 
 export const payloadTrustedIpsEnum = {
 	production: "production",
@@ -3156,105 +3761,6 @@ export const payloadOldTrustedIpsEnum = {
 export type PayloadOldTrustedIpsEnumKey =
 	(typeof payloadOldTrustedIpsEnum)[keyof typeof payloadOldTrustedIpsEnum];
 
-export const payloadActionEnum7 = {
-	enabled: "enabled",
-	disabled: "disabled",
-	regenerated: "regenerated",
-	updated: "updated",
-} as const;
-
-export type PayloadActionEnum7Key = (typeof payloadActionEnum7)[keyof typeof payloadActionEnum7];
-
-export const payloadIsEnvVarEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type PayloadIsEnvVarEnumKey = (typeof payloadIsEnvVarEnum)[keyof typeof payloadIsEnvVarEnum];
-
-export const oldConnectConfigurationsEnvIdEnum = {
-	production: "production",
-	preview: "preview",
-} as const;
-
-export type OldConnectConfigurationsEnvIdEnumKey =
-	(typeof oldConnectConfigurationsEnvIdEnum)[keyof typeof oldConnectConfigurationsEnvIdEnum];
-
-export const oldConnectConfigurationsPassiveEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type OldConnectConfigurationsPassiveEnumKey =
-	(typeof oldConnectConfigurationsPassiveEnum)[keyof typeof oldConnectConfigurationsPassiveEnum];
-
-export const oldConnectConfigurationsBuildsEnabledEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type OldConnectConfigurationsBuildsEnabledEnumKey =
-	(typeof oldConnectConfigurationsBuildsEnabledEnum)[keyof typeof oldConnectConfigurationsBuildsEnabledEnum];
-
-export const newConnectConfigurationsEnvIdEnum = {
-	production: "production",
-	preview: "preview",
-} as const;
-
-export type NewConnectConfigurationsEnvIdEnumKey =
-	(typeof newConnectConfigurationsEnvIdEnum)[keyof typeof newConnectConfigurationsEnvIdEnum];
-
-export const newConnectConfigurationsPassiveEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type NewConnectConfigurationsPassiveEnumKey =
-	(typeof newConnectConfigurationsPassiveEnum)[keyof typeof newConnectConfigurationsPassiveEnum];
-
-export const newConnectConfigurationsBuildsEnabledEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type NewConnectConfigurationsBuildsEnabledEnumKey =
-	(typeof newConnectConfigurationsBuildsEnabledEnum)[keyof typeof newConnectConfigurationsBuildsEnabledEnum];
-
-export const payloadReasonCodeEnum = {
-	BUDGET_REACHED: "BUDGET_REACHED",
-	PUBLIC_API: "PUBLIC_API",
-	BACKOFFICE: "BACKOFFICE",
-} as const;
-
-export type PayloadReasonCodeEnumKey =
-	(typeof payloadReasonCodeEnum)[keyof typeof payloadReasonCodeEnum];
-
-export const payloadEnabledEnum2 = {
-	false: false,
-	true: true,
-} as const;
-
-export type PayloadEnabledEnum2Key = (typeof payloadEnabledEnum2)[keyof typeof payloadEnabledEnum2];
-
-export const payloadEnvironmentEnum = {
-	production: "production",
-	preview: "preview",
-} as const;
-
-export type PayloadEnvironmentEnumKey =
-	(typeof payloadEnvironmentEnum)[keyof typeof payloadEnvironmentEnum];
-
-export const payloadEnabledEnum3 = {
-	default: "default",
-	on: "on",
-	off: "off",
-	"on-force": "on-force",
-	"off-force": "off-force",
-	"default-force": "default-force",
-} as const;
-
-export type PayloadEnabledEnum3Key = (typeof payloadEnabledEnum3)[keyof typeof payloadEnabledEnum3];
-
 export const payloadReasonCodeEnum2 = {
 	PUBLIC_API: "PUBLIC_API",
 	BACKOFFICE: "BACKOFFICE",
@@ -3263,172 +3769,19 @@ export const payloadReasonCodeEnum2 = {
 export type PayloadReasonCodeEnum2Key =
 	(typeof payloadReasonCodeEnum2)[keyof typeof payloadReasonCodeEnum2];
 
-export const previousIssuerModeEnum = {
-	team: "team",
-	global: "global",
-} as const;
-
-export type PreviousIssuerModeEnumKey =
-	(typeof previousIssuerModeEnum)[keyof typeof previousIssuerModeEnum];
-
-export const nextIssuerModeEnum = {
-	team: "team",
-	global: "global",
-} as const;
-
-export type NextIssuerModeEnumKey = (typeof nextIssuerModeEnum)[keyof typeof nextIssuerModeEnum];
-
-export const staticIpsBuildsEnum = {
-	false: false,
+export const projectWebAnalyticsHasDataEnum = {
 	true: true,
 } as const;
 
-export type StaticIpsBuildsEnumKey = (typeof staticIpsBuildsEnum)[keyof typeof staticIpsBuildsEnum];
+export type ProjectWebAnalyticsHasDataEnumKey =
+	(typeof projectWebAnalyticsHasDataEnum)[keyof typeof projectWebAnalyticsHasDataEnum];
 
-export const staticIpsEnabledEnum = {
-	false: false,
+export const prevProjectWebAnalyticsHasDataEnum = {
 	true: true,
 } as const;
 
-export type StaticIpsEnabledEnumKey =
-	(typeof staticIpsEnabledEnum)[keyof typeof staticIpsEnabledEnum];
-
-export const payloadEnableAffectedProjectsDeploymentsEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type PayloadEnableAffectedProjectsDeploymentsEnumKey =
-	(typeof payloadEnableAffectedProjectsDeploymentsEnum)[keyof typeof payloadEnableAffectedProjectsDeploymentsEnum];
-
-export const payloadAutoAssignCustomDomainsEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type PayloadAutoAssignCustomDomainsEnumKey =
-	(typeof payloadAutoAssignCustomDomainsEnum)[keyof typeof payloadAutoAssignCustomDomainsEnum];
-
-export const payloadPreviewDeploymentsEnabledEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type PayloadPreviewDeploymentsEnabledEnumKey =
-	(typeof payloadPreviewDeploymentsEnabledEnum)[keyof typeof payloadPreviewDeploymentsEnabledEnum];
-
-export const branchMatcherTypeEnum = {
-	endsWith: "endsWith",
-	startsWith: "startsWith",
-	equals: "equals",
-} as const;
-
-export type BranchMatcherTypeEnumKey =
-	(typeof branchMatcherTypeEnum)[keyof typeof branchMatcherTypeEnum];
-
-export const payloadProductionDeploymentsFastLaneEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type PayloadProductionDeploymentsFastLaneEnumKey =
-	(typeof payloadProductionDeploymentsFastLaneEnum)[keyof typeof payloadProductionDeploymentsFastLaneEnum];
-
-export const payloadSourceFilesOutsideRootDirectoryEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type PayloadSourceFilesOutsideRootDirectoryEnumKey =
-	(typeof payloadSourceFilesOutsideRootDirectoryEnum)[keyof typeof payloadSourceFilesOutsideRootDirectoryEnum];
-
-export const payloadElasticConcurrencyEnabledEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type PayloadElasticConcurrencyEnabledEnumKey =
-	(typeof payloadElasticConcurrencyEnabledEnum)[keyof typeof payloadElasticConcurrencyEnabledEnum];
-
-export const payloadOldElasticConcurrencyEnabledEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type PayloadOldElasticConcurrencyEnabledEnumKey =
-	(typeof payloadOldElasticConcurrencyEnabledEnum)[keyof typeof payloadOldElasticConcurrencyEnabledEnum];
-
-export const payloadBuildQueueConfigurationEnum = {
-	SKIP_NAMESPACE_QUEUE: "SKIP_NAMESPACE_QUEUE",
-	WAIT_FOR_NAMESPACE_QUEUE: "WAIT_FOR_NAMESPACE_QUEUE",
-} as const;
-
-export type PayloadBuildQueueConfigurationEnumKey =
-	(typeof payloadBuildQueueConfigurationEnum)[keyof typeof payloadBuildQueueConfigurationEnum];
-
-export const payloadOldBuildQueueConfigurationEnum = {
-	SKIP_NAMESPACE_QUEUE: "SKIP_NAMESPACE_QUEUE",
-	WAIT_FOR_NAMESPACE_QUEUE: "WAIT_FOR_NAMESPACE_QUEUE",
-} as const;
-
-export type PayloadOldBuildQueueConfigurationEnumKey =
-	(typeof payloadOldBuildQueueConfigurationEnum)[keyof typeof payloadOldBuildQueueConfigurationEnum];
-
-export const previousFunctionZeroConfigFailoverEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type PreviousFunctionZeroConfigFailoverEnumKey =
-	(typeof previousFunctionZeroConfigFailoverEnum)[keyof typeof previousFunctionZeroConfigFailoverEnum];
-
-export const nextFunctionZeroConfigFailoverEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type NextFunctionZeroConfigFailoverEnumKey =
-	(typeof nextFunctionZeroConfigFailoverEnum)[keyof typeof nextFunctionZeroConfigFailoverEnum];
-
-export const payloadCustomerSupportCodeVisibilityEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type PayloadCustomerSupportCodeVisibilityEnumKey =
-	(typeof payloadCustomerSupportCodeVisibilityEnum)[keyof typeof payloadCustomerSupportCodeVisibilityEnum];
-
-export const payloadDirectoryListingEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type PayloadDirectoryListingEnumKey =
-	(typeof payloadDirectoryListingEnum)[keyof typeof payloadDirectoryListingEnum];
-
-export const payloadGitForkProtectionEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type PayloadGitForkProtectionEnumKey =
-	(typeof payloadGitForkProtectionEnum)[keyof typeof payloadGitForkProtectionEnum];
-
-export const payloadProtectedSourcemapsEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type PayloadProtectedSourcemapsEnumKey =
-	(typeof payloadProtectedSourcemapsEnum)[keyof typeof payloadProtectedSourcemapsEnum];
-
-export const payloadPublicSourceEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type PayloadPublicSourceEnumKey =
-	(typeof payloadPublicSourceEnum)[keyof typeof payloadPublicSourceEnum];
+export type PrevProjectWebAnalyticsHasDataEnumKey =
+	(typeof prevProjectWebAnalyticsHasDataEnum)[keyof typeof prevProjectWebAnalyticsHasDataEnum];
 
 export const payloadVerifiedEnum = {
 	false: false,
@@ -3436,6 +3789,19 @@ export const payloadVerifiedEnum = {
 } as const;
 
 export type PayloadVerifiedEnumKey = (typeof payloadVerifiedEnum)[keyof typeof payloadVerifiedEnum];
+
+export const factorsOriginEnum3 = {
+	email: "email",
+	saml: "saml",
+	github: "github",
+	gitlab: "gitlab",
+	bitbucket: "bitbucket",
+	google: "google",
+	apple: "apple",
+	otp: "otp",
+} as const;
+
+export type FactorsOriginEnum3Key = (typeof factorsOriginEnum3)[keyof typeof factorsOriginEnum3];
 
 export const budgetItemTypeEnum = {
 	fixed: "fixed",
@@ -3514,6 +3880,14 @@ export const budgetPricingPlanEnum = {
 export type BudgetPricingPlanEnumKey =
 	(typeof budgetPricingPlanEnum)[keyof typeof budgetPricingPlanEnum];
 
+export const payloadStoreTypeEnum = {
+	redis: "redis",
+	postgres: "postgres",
+} as const;
+
+export type PayloadStoreTypeEnumKey =
+	(typeof payloadStoreTypeEnum)[keyof typeof payloadStoreTypeEnum];
+
 export const payloadTypeEnum2 = {
 	integration: "integration",
 	redis: "redis",
@@ -3531,13 +3905,79 @@ export const payloadAccessEnum = {
 
 export type PayloadAccessEnumKey = (typeof payloadAccessEnum)[keyof typeof payloadAccessEnum];
 
-export const payloadStoreTypeEnum = {
-	redis: "redis",
-	postgres: "postgres",
+export const previousEnabledEnum = {
+	false: false,
+	true: true,
 } as const;
 
-export type PayloadStoreTypeEnumKey =
-	(typeof payloadStoreTypeEnum)[keyof typeof payloadStoreTypeEnum];
+export type PreviousEnabledEnumKey = (typeof previousEnabledEnum)[keyof typeof previousEnabledEnum];
+
+export const previousScopeEnum = {
+	public: "public",
+	private: "private",
+	all: "all",
+	selected_repos: "selected_repos",
+} as const;
+
+export type PreviousScopeEnumKey = (typeof previousScopeEnum)[keyof typeof previousScopeEnum];
+
+export const previousIncludeDraftsEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PreviousIncludeDraftsEnumKey =
+	(typeof previousIncludeDraftsEnum)[keyof typeof previousIncludeDraftsEnum];
+
+export const nextEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type NextEnabledEnumKey = (typeof nextEnabledEnum)[keyof typeof nextEnabledEnum];
+
+export const nextScopeEnum = {
+	public: "public",
+	private: "private",
+	all: "all",
+	selected_repos: "selected_repos",
+} as const;
+
+export type NextScopeEnumKey = (typeof nextScopeEnum)[keyof typeof nextScopeEnum];
+
+export const nextIncludeDraftsEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type NextIncludeDraftsEnumKey =
+	(typeof nextIncludeDraftsEnum)[keyof typeof nextIncludeDraftsEnum];
+
+export const payloadEnabledEnum2 = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadEnabledEnum2Key = (typeof payloadEnabledEnum2)[keyof typeof payloadEnabledEnum2];
+
+export const payloadEnvironmentEnum = {
+	production: "production",
+	preview: "preview",
+} as const;
+
+export type PayloadEnvironmentEnumKey =
+	(typeof payloadEnvironmentEnum)[keyof typeof payloadEnvironmentEnum];
+
+export const payloadEnabledEnum3 = {
+	default: "default",
+	on: "on",
+	off: "off",
+	"on-force": "on-force",
+	"off-force": "off-force",
+	"default-force": "default-force",
+} as const;
+
+export type PayloadEnabledEnum3Key = (typeof payloadEnabledEnum3)[keyof typeof payloadEnabledEnum3];
 
 export const payloadRoleEnum = {
 	OWNER: "OWNER",
@@ -3584,353 +4024,21 @@ export const payloadEnforcedEnum = {
 
 export type PayloadEnforcedEnumKey = (typeof payloadEnforcedEnum)[keyof typeof payloadEnforcedEnum];
 
-export const previousEnabledEnum2 = {
-	false: false,
-	true: true,
-} as const;
-
-export type PreviousEnabledEnum2Key =
-	(typeof previousEnabledEnum2)[keyof typeof previousEnabledEnum2];
-
-export const previousTotpVerifiedEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type PreviousTotpVerifiedEnumKey =
-	(typeof previousTotpVerifiedEnum)[keyof typeof previousTotpVerifiedEnum];
-
-export const nextEnabledEnum2 = {
-	false: false,
-	true: true,
-} as const;
-
-export type NextEnabledEnum2Key = (typeof nextEnabledEnum2)[keyof typeof nextEnabledEnum2];
-
-export const nextTotpVerifiedEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type NextTotpVerifiedEnumKey =
-	(typeof nextTotpVerifiedEnum)[keyof typeof nextTotpVerifiedEnum];
-
-export const payloadTotpVerifiedEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type PayloadTotpVerifiedEnumKey =
-	(typeof payloadTotpVerifiedEnum)[keyof typeof payloadTotpVerifiedEnum];
-
-export const payloadMfaEnabledEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type PayloadMfaEnabledEnumKey =
-	(typeof payloadMfaEnabledEnum)[keyof typeof payloadMfaEnabledEnum];
-
-export const payloadTotpEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type PayloadTotpEnumKey = (typeof payloadTotpEnum)[keyof typeof payloadTotpEnum];
-
-export const payloadActorTypeEnum = {
-	user: "user",
-	admin: "admin",
-} as const;
-
-export type PayloadActorTypeEnumKey =
-	(typeof payloadActorTypeEnum)[keyof typeof payloadActorTypeEnum];
-
-export const payloadSettlementMethodEnum = {
-	"refunded-paid": "refunded-paid",
-	"credited-paid": "credited-paid",
-} as const;
-
-export type PayloadSettlementMethodEnumKey =
-	(typeof payloadSettlementMethodEnum)[keyof typeof payloadSettlementMethodEnum];
-
-export const payloadActionEnum8 = {
-	cancel_plan: "cancel_plan",
-} as const;
-
-export type PayloadActionEnum8Key = (typeof payloadActionEnum8)[keyof typeof payloadActionEnum8];
-
-export const dataPlanSlugEnum = {
-	v0_teams: "v0_teams",
-	v0_business: "v0_business",
-} as const;
-
-export type DataPlanSlugEnumKey = (typeof dataPlanSlugEnum)[keyof typeof dataPlanSlugEnum];
-
-export const dataReasonEnum = {
-	"non-payment": "non-payment",
-} as const;
-
-export type DataReasonEnumKey = (typeof dataReasonEnum)[keyof typeof dataReasonEnum];
-
-export const payloadActionEnum9 = {
-	resume_plan: "resume_plan",
-} as const;
-
-export type PayloadActionEnum9Key = (typeof payloadActionEnum9)[keyof typeof payloadActionEnum9];
-
-export const payloadActionEnum10 = {
-	mutate: "mutate",
-} as const;
-
-export type PayloadActionEnum10Key = (typeof payloadActionEnum10)[keyof typeof payloadActionEnum10];
-
-export const projectMembershipRoleEnum = {
-	ADMIN: "ADMIN",
-	PROJECT_DEVELOPER: "PROJECT_DEVELOPER",
-	PROJECT_VIEWER: "PROJECT_VIEWER",
-	PROJECT_GUEST: "PROJECT_GUEST",
-} as const;
-
-export type ProjectMembershipRoleEnumKey =
-	(typeof projectMembershipRoleEnum)[keyof typeof projectMembershipRoleEnum];
-
-export const removedMembershipRoleEnum = {
-	ADMIN: "ADMIN",
-	PROJECT_DEVELOPER: "PROJECT_DEVELOPER",
-	PROJECT_VIEWER: "PROJECT_VIEWER",
-	PROJECT_GUEST: "PROJECT_GUEST",
-} as const;
-
-export type RemovedMembershipRoleEnumKey =
-	(typeof removedMembershipRoleEnum)[keyof typeof removedMembershipRoleEnum];
-
-export const projectMembershipPreviousRoleEnum = {
-	ADMIN: "ADMIN",
-	PROJECT_DEVELOPER: "PROJECT_DEVELOPER",
-	PROJECT_VIEWER: "PROJECT_VIEWER",
-	PROJECT_GUEST: "PROJECT_GUEST",
-} as const;
-
-export type ProjectMembershipPreviousRoleEnumKey =
-	(typeof projectMembershipPreviousRoleEnum)[keyof typeof projectMembershipPreviousRoleEnum];
-
-export const projectRoleEnum = {
-	ADMIN: "ADMIN",
-	PROJECT_DEVELOPER: "PROJECT_DEVELOPER",
-	PROJECT_VIEWER: "PROJECT_VIEWER",
-	PROJECT_GUEST: "PROJECT_GUEST",
-} as const;
-
-export type ProjectRoleEnumKey = (typeof projectRoleEnum)[keyof typeof projectRoleEnum];
-
-export const payloadActionEnum11 = {
-	enable: "enable",
-	disable: "disable",
-} as const;
-
-export type PayloadActionEnum11Key = (typeof payloadActionEnum11)[keyof typeof payloadActionEnum11];
-
-export const microfrontendsIsDefaultAppEnum = {
-	true: true,
-} as const;
-
-export type MicrofrontendsIsDefaultAppEnumKey =
-	(typeof microfrontendsIsDefaultAppEnum)[keyof typeof microfrontendsIsDefaultAppEnum];
-
-export const microfrontendsEnabledEnum = {
-	true: true,
-} as const;
-
-export type MicrofrontendsEnabledEnumKey =
-	(typeof microfrontendsEnabledEnum)[keyof typeof microfrontendsEnabledEnum];
-
-export const microfrontendsFreeProjectForLegacyLimitsEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type MicrofrontendsFreeProjectForLegacyLimitsEnumKey =
-	(typeof microfrontendsFreeProjectForLegacyLimitsEnum)[keyof typeof microfrontendsFreeProjectForLegacyLimitsEnum];
-
-export const microfrontendsIsDefaultAppEnum2 = {
-	false: false,
-} as const;
-
-export type MicrofrontendsIsDefaultAppEnum2Key =
-	(typeof microfrontendsIsDefaultAppEnum2)[keyof typeof microfrontendsIsDefaultAppEnum2];
-
-export const microfrontendsRouteObservabilityToThisProjectEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type MicrofrontendsRouteObservabilityToThisProjectEnumKey =
-	(typeof microfrontendsRouteObservabilityToThisProjectEnum)[keyof typeof microfrontendsRouteObservabilityToThisProjectEnum];
-
-export const microfrontendsDoNotRouteWithMicrofrontendsRoutingEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type MicrofrontendsDoNotRouteWithMicrofrontendsRoutingEnumKey =
-	(typeof microfrontendsDoNotRouteWithMicrofrontendsRoutingEnum)[keyof typeof microfrontendsDoNotRouteWithMicrofrontendsRoutingEnum];
-
-export const microfrontendsEnabledEnum2 = {
-	false: false,
-} as const;
-
-export type MicrofrontendsEnabledEnum2Key =
-	(typeof microfrontendsEnabledEnum2)[keyof typeof microfrontendsEnabledEnum2];
-
-export const microfrontendsFreeProjectForLegacyLimitsEnum2 = {
-	false: false,
-	true: true,
-} as const;
-
-export type MicrofrontendsFreeProjectForLegacyLimitsEnum2Key =
-	(typeof microfrontendsFreeProjectForLegacyLimitsEnum2)[keyof typeof microfrontendsFreeProjectForLegacyLimitsEnum2];
-
-export const projectWebAnalyticsHasDataEnum = {
-	true: true,
-} as const;
-
-export type ProjectWebAnalyticsHasDataEnumKey =
-	(typeof projectWebAnalyticsHasDataEnum)[keyof typeof projectWebAnalyticsHasDataEnum];
-
-export const prevProjectWebAnalyticsHasDataEnum = {
-	true: true,
-} as const;
-
-export type PrevProjectWebAnalyticsHasDataEnumKey =
-	(typeof prevProjectWebAnalyticsHasDataEnum)[keyof typeof prevProjectWebAnalyticsHasDataEnum];
-
-export const payloadTierEnum = {
+export const payloadPlanEnum = {
 	pro: "pro",
-	plus: "plus",
+	enterprise: "enterprise",
+	hobby: "hobby",
 } as const;
 
-export type PayloadTierEnumKey = (typeof payloadTierEnum)[keyof typeof payloadTierEnum];
+export type PayloadPlanEnumKey = (typeof payloadPlanEnum)[keyof typeof payloadPlanEnum];
 
-export const payloadScopesEnum = {
-	openid: "openid",
-	email: "email",
-	profile: "profile",
-	offline_access: "offline_access",
-} as const;
-
-export type PayloadScopesEnumKey = (typeof payloadScopesEnum)[keyof typeof payloadScopesEnum];
-
-export const payloadPermissionsEnum = {
-	"read:user": "read:user",
-	"read:domain": "read:domain",
-	"read-write:domain": "read-write:domain",
-	"read:team": "read:team",
-	"read:billing": "read:billing",
-	"read-write:billing": "read-write:billing",
-	"read-write:ai-gateway-api-key": "read-write:ai-gateway-api-key",
-	"read:project": "read:project",
-	"read-write:project": "read-write:project",
-	"read:deployment": "read:deployment",
-	"read-write:deployment": "read-write:deployment",
-} as const;
-
-export type PayloadPermissionsEnumKey =
-	(typeof payloadPermissionsEnum)[keyof typeof payloadPermissionsEnum];
-
-export const payloadNextScopesEnum = {
-	openid: "openid",
-	email: "email",
-	profile: "profile",
-	offline_access: "offline_access",
-} as const;
-
-export type PayloadNextScopesEnumKey =
-	(typeof payloadNextScopesEnum)[keyof typeof payloadNextScopesEnum];
-
-export const payloadNextPermissionsEnum = {
-	"read:user": "read:user",
-	"read:domain": "read:domain",
-	"read-write:domain": "read-write:domain",
-	"read:team": "read:team",
-	"read:billing": "read:billing",
-	"read-write:billing": "read-write:billing",
-	"read-write:ai-gateway-api-key": "read-write:ai-gateway-api-key",
-	"read:project": "read:project",
-	"read-write:project": "read-write:project",
-	"read:deployment": "read:deployment",
-	"read-write:deployment": "read-write:deployment",
-} as const;
-
-export type PayloadNextPermissionsEnumKey =
-	(typeof payloadNextPermissionsEnum)[keyof typeof payloadNextPermissionsEnum];
-
-export const projectIdsTypeEnum = {
-	list: "list",
-} as const;
-
-export type ProjectIdsTypeEnumKey = (typeof projectIdsTypeEnum)[keyof typeof projectIdsTypeEnum];
-
-export const projectIdsRequiredEnum = {
+export const payloadConvertedFromTrialEnum = {
+	false: false,
 	true: true,
 } as const;
 
-export type ProjectIdsRequiredEnumKey =
-	(typeof projectIdsRequiredEnum)[keyof typeof projectIdsRequiredEnum];
-
-export const itemsTypeEnum = {
-	string: "string",
-} as const;
-
-export type ItemsTypeEnumKey = (typeof itemsTypeEnum)[keyof typeof itemsTypeEnum];
-
-export const payloadPermissionsEnum2 = {
-	"read:domain": "read:domain",
-	"read-write:domain": "read-write:domain",
-	"read:team": "read:team",
-	"read:billing": "read:billing",
-	"read-write:billing": "read-write:billing",
-	"read-write:ai-gateway-api-key": "read-write:ai-gateway-api-key",
-	"read:project": "read:project",
-	"read-write:project": "read-write:project",
-	"read:deployment": "read:deployment",
-	"read-write:deployment": "read-write:deployment",
-} as const;
-
-export type PayloadPermissionsEnum2Key =
-	(typeof payloadPermissionsEnum2)[keyof typeof payloadPermissionsEnum2];
-
-export const beforePermissionsEnum = {
-	"read:domain": "read:domain",
-	"read-write:domain": "read-write:domain",
-	"read:team": "read:team",
-	"read:billing": "read:billing",
-	"read-write:billing": "read-write:billing",
-	"read-write:ai-gateway-api-key": "read-write:ai-gateway-api-key",
-	"read:project": "read:project",
-	"read-write:project": "read-write:project",
-	"read:deployment": "read:deployment",
-	"read-write:deployment": "read-write:deployment",
-} as const;
-
-export type BeforePermissionsEnumKey =
-	(typeof beforePermissionsEnum)[keyof typeof beforePermissionsEnum];
-
-export const afterPermissionsEnum = {
-	"read:domain": "read:domain",
-	"read-write:domain": "read-write:domain",
-	"read:team": "read:team",
-	"read:billing": "read:billing",
-	"read-write:billing": "read-write:billing",
-	"read-write:ai-gateway-api-key": "read-write:ai-gateway-api-key",
-	"read:project": "read:project",
-	"read-write:project": "read-write:project",
-	"read:deployment": "read:deployment",
-	"read-write:deployment": "read-write:deployment",
-} as const;
-
-export type AfterPermissionsEnumKey =
-	(typeof afterPermissionsEnum)[keyof typeof afterPermissionsEnum];
+export type PayloadConvertedFromTrialEnumKey =
+	(typeof payloadConvertedFromTrialEnum)[keyof typeof payloadConvertedFromTrialEnum];
 
 export const payloadEnabledEnum4 = {
 	default: "default",
@@ -3973,188 +4081,86 @@ export const nextEnum = {
 
 export type NextEnumKey = (typeof nextEnum)[keyof typeof nextEnum];
 
-export const fromAccountTypeEnum = {
-	user: "user",
-	team: "team",
-} as const;
-
-export type FromAccountTypeEnumKey = (typeof fromAccountTypeEnum)[keyof typeof fromAccountTypeEnum];
-
-export const toAccountTypeEnum = {
-	user: "user",
-	team: "team",
-} as const;
-
-export type ToAccountTypeEnumKey = (typeof toAccountTypeEnum)[keyof typeof toAccountTypeEnum];
-
-export const projectsRoleEnum = {
-	ADMIN: "ADMIN",
-	PROJECT_DEVELOPER: "PROJECT_DEVELOPER",
-	PROJECT_VIEWER: "PROJECT_VIEWER",
-	PROJECT_GUEST: "PROJECT_GUEST",
-} as const;
-
-export type ProjectsRoleEnumKey = (typeof projectsRoleEnum)[keyof typeof projectsRoleEnum];
-
-export const payloadPlanEnum = {
-	pro: "pro",
-	enterprise: "enterprise",
-	hobby: "hobby",
-} as const;
-
-export type PayloadPlanEnumKey = (typeof payloadPlanEnum)[keyof typeof payloadPlanEnum];
-
-export const payloadConvertedFromTrialEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type PayloadConvertedFromTrialEnumKey =
-	(typeof payloadConvertedFromTrialEnum)[keyof typeof payloadConvertedFromTrialEnum];
-
-export const jobTypeEnum = {
-	"bitbucket-push": "bitbucket-push",
-} as const;
-
-export type JobTypeEnumKey = (typeof jobTypeEnum)[keyof typeof jobTypeEnum];
-
-export const jobAuthorizedEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type JobAuthorizedEnumKey = (typeof jobAuthorizedEnum)[keyof typeof jobAuthorizedEnum];
-
-export const gitCommentsOnPullRequestEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type GitCommentsOnPullRequestEnumKey =
-	(typeof gitCommentsOnPullRequestEnum)[keyof typeof gitCommentsOnPullRequestEnum];
-
-export const gitCommentsOnCommitEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type GitCommentsOnCommitEnumKey =
-	(typeof gitCommentsOnCommitEnum)[keyof typeof gitCommentsOnCommitEnum];
-
-export const jobIsManualGitDeployEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type JobIsManualGitDeployEnumKey =
-	(typeof jobIsManualGitDeployEnum)[keyof typeof jobIsManualGitDeployEnum];
-
-export const jobCommitVerificationEnum = {
-	verified: "verified",
-	unknown: "unknown",
-	unverified: "unverified",
-} as const;
-
-export type JobCommitVerificationEnumKey =
-	(typeof jobCommitVerificationEnum)[keyof typeof jobCommitVerificationEnum];
-
-export const jobEventfulEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type JobEventfulEnumKey = (typeof jobEventfulEnum)[keyof typeof jobEventfulEnum];
-
-export const jobForceNewEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type JobForceNewEnumKey = (typeof jobForceNewEnum)[keyof typeof jobForceNewEnum];
-
-export const jobSilentEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type JobSilentEnumKey = (typeof jobSilentEnum)[keyof typeof jobSilentEnum];
-
-export const jobWithCacheEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type JobWithCacheEnumKey = (typeof jobWithCacheEnum)[keyof typeof jobWithCacheEnum];
-
-export const jobProviderEnum = {
-	bitbucket: "bitbucket",
-} as const;
-
-export type JobProviderEnumKey = (typeof jobProviderEnum)[keyof typeof jobProviderEnum];
-
-export const jobTypeEnum2 = {
-	"bitbucket-now-comment": "bitbucket-now-comment",
-} as const;
-
-export type JobTypeEnum2Key = (typeof jobTypeEnum2)[keyof typeof jobTypeEnum2];
-
-export const jobTypeEnum3 = {
-	pr: "pr",
-} as const;
-
-export type JobTypeEnum3Key = (typeof jobTypeEnum3)[keyof typeof jobTypeEnum3];
-
-export const jobIsPrivateEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type JobIsPrivateEnumKey = (typeof jobIsPrivateEnum)[keyof typeof jobIsPrivateEnum];
-
-export const jobProviderEnum2 = {
+export const payloadProviderEnum = {
 	github: "github",
 	"github-limited": "github-limited",
 	"github-custom-host": "github-custom-host",
+	gitlab: "gitlab",
+	bitbucket: "bitbucket",
+	google: "google",
+	apple: "apple",
 } as const;
 
-export type JobProviderEnum2Key = (typeof jobProviderEnum2)[keyof typeof jobProviderEnum2];
+export type PayloadProviderEnumKey = (typeof payloadProviderEnum)[keyof typeof payloadProviderEnum];
 
-export const jobForcedEnum = {
+export const payloadTotpEnum = {
 	false: false,
 	true: true,
 } as const;
 
-export type JobForcedEnumKey = (typeof jobForcedEnum)[keyof typeof jobForcedEnum];
+export type PayloadTotpEnumKey = (typeof payloadTotpEnum)[keyof typeof payloadTotpEnum];
 
-export const jobTypeEnum4 = {
-	push: "push",
+export const payloadActorTypeEnum = {
+	user: "user",
+	admin: "admin",
 } as const;
 
-export type JobTypeEnum4Key = (typeof jobTypeEnum4)[keyof typeof jobTypeEnum4];
+export type PayloadActorTypeEnumKey =
+	(typeof payloadActorTypeEnum)[keyof typeof payloadActorTypeEnum];
 
-export const jobTypeEnum5 = {
-	"now-comment": "now-comment",
+export const previousEnabledEnum2 = {
+	false: false,
+	true: true,
 } as const;
 
-export type JobTypeEnum5Key = (typeof jobTypeEnum5)[keyof typeof jobTypeEnum5];
+export type PreviousEnabledEnum2Key =
+	(typeof previousEnabledEnum2)[keyof typeof previousEnabledEnum2];
 
-export const jobTypeEnum6 = {
-	"gitlab-push": "gitlab-push",
+export const previousTotpVerifiedEnum = {
+	false: false,
+	true: true,
 } as const;
 
-export type JobTypeEnum6Key = (typeof jobTypeEnum6)[keyof typeof jobTypeEnum6];
+export type PreviousTotpVerifiedEnumKey =
+	(typeof previousTotpVerifiedEnum)[keyof typeof previousTotpVerifiedEnum];
 
-export const jobProviderEnum3 = {
-	gitlab: "gitlab",
+export const nextEnabledEnum2 = {
+	false: false,
+	true: true,
 } as const;
 
-export type JobProviderEnum3Key = (typeof jobProviderEnum3)[keyof typeof jobProviderEnum3];
+export type NextEnabledEnum2Key = (typeof nextEnabledEnum2)[keyof typeof nextEnabledEnum2];
 
-export const jobTypeEnum7 = {
-	"gitlab-now-comment": "gitlab-now-comment",
+export const nextTotpVerifiedEnum = {
+	false: false,
+	true: true,
 } as const;
 
-export type JobTypeEnum7Key = (typeof jobTypeEnum7)[keyof typeof jobTypeEnum7];
+export type NextTotpVerifiedEnumKey =
+	(typeof nextTotpVerifiedEnum)[keyof typeof nextTotpVerifiedEnum];
+
+export const payloadMfaEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadMfaEnabledEnumKey =
+	(typeof payloadMfaEnabledEnum)[keyof typeof payloadMfaEnabledEnum];
+
+export const payloadTotpVerifiedEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadTotpVerifiedEnumKey =
+	(typeof payloadTotpVerifiedEnum)[keyof typeof payloadTotpVerifiedEnum];
+
+export const payloadTierEnum = {
+	pro: "pro",
+	plus: "plus",
+} as const;
+
+export type PayloadTierEnumKey = (typeof payloadTierEnum)[keyof typeof payloadTierEnum];
 
 export const payloadGrantTypeEnum = {
 	authorization_code: "authorization_code",
@@ -4266,11 +4272,11 @@ export type UserEvent = {
 				/**
 				 * @type string
 				 */
-				username: string;
+				email: string;
 				/**
 				 * @type string
 				 */
-				email: string;
+				username: string;
 				/**
 				 * @type string
 				 */
@@ -4510,6 +4516,42 @@ export type UserEvent = {
 							name: string;
 						};
 						/**
+						 * @type object
+						 */
+						project: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string | undefined
+							 */
+							name?: string | undefined;
+						};
+						/**
+						 * @type string
+						 */
+						nextRole?: (PayloadNextRoleEnumKey | null) | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						previousRole?: PayloadPreviousRoleEnumKey | undefined;
+				  }
+				| {
+						/**
+						 * @type object
+						 */
+						accessGroup: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string
+							 */
+							name: string;
+						};
+						/**
 						 * @type string | undefined
 						 */
 						name?: string | undefined;
@@ -4576,101 +4618,13 @@ export type UserEvent = {
 				  }
 				| {
 						/**
-						 * @type object
+						 * @type number | undefined
 						 */
-						accessGroup: {
-							/**
-							 * @type string
-							 */
-							id: string;
-							/**
-							 * @type string
-							 */
-							name: string;
-						};
-						/**
-						 * @type object
-						 */
-						project: {
-							/**
-							 * @type string
-							 */
-							id: string;
-							/**
-							 * @type string | undefined
-							 */
-							name?: string | undefined;
-						};
-						/**
-						 * @type string
-						 */
-						nextRole?: (PayloadNextRoleEnumKey | null) | undefined;
+						price?: number | undefined;
 						/**
 						 * @type string | undefined
 						 */
-						previousRole?: PayloadPreviousRoleEnumKey | undefined;
-				  }
-				| {
-						/**
-						 * @description Automatic code review settings
-						 * @type object | undefined
-						 */
-						previous?:
-							| {
-									/**
-									 * @description Whether automatic code reviews are enabled
-									 * @type boolean
-									 */
-									enabled: PreviousEnabledEnumKey;
-									/**
-									 * @description Which repository visibilities get automatic reviews
-									 * @type string
-									 */
-									scope: PreviousScopeEnumKey;
-									/**
-									 * @description Whether to include draft pull requests in automatic reviews
-									 * @type boolean
-									 */
-									includeDrafts: PreviousIncludeDraftsEnumKey;
-									/**
-									 * @description GitHub repos to scope automatic reviews to. Format: \"owner/repo\" (lowercase). Only used when scope=\'selected_repos\'.
-									 * @type array
-									 */
-									selectedRepos?: (string[] | null) | undefined;
-							  }
-							| undefined;
-						/**
-						 * @description Automatic code review settings
-						 * @type object
-						 */
-						next: {
-							/**
-							 * @description Whether automatic code reviews are enabled
-							 * @type boolean
-							 */
-							enabled: NextEnabledEnumKey;
-							/**
-							 * @description Which repository visibilities get automatic reviews
-							 * @type string
-							 */
-							scope: NextScopeEnumKey;
-							/**
-							 * @description Whether to include draft pull requests in automatic reviews
-							 * @type boolean
-							 */
-							includeDrafts: NextIncludeDraftsEnumKey;
-							/**
-							 * @description GitHub repos to scope automatic reviews to. Format: \"owner/repo\" (lowercase). Only used when scope=\'selected_repos\'.
-							 * @type array
-							 */
-							selectedRepos?: (string[] | null) | undefined;
-						};
-				  }
-				| {
-						/**
-						 * @type boolean
-						 */
-						enabled: PayloadEnabledEnumKey;
+						currency?: string | undefined;
 				  }
 				| {
 						/**
@@ -4747,96 +4701,6 @@ export type UserEvent = {
 						/**
 						 * @type string | undefined
 						 */
-						aliasId?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						alias?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						projectName?: string | undefined;
-				  }
-				| {
-						/**
-						 * @type string | undefined
-						 */
-						alias?: string | undefined;
-				  }
-				| {
-						/**
-						 * @type string | undefined
-						 */
-						alias?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						userId?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						username?: string | undefined;
-				  }
-				| {
-						/**
-						 * @type string | undefined
-						 */
-						alias?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						aliasId?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						userId?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						username?: string | undefined;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type string
-						 */
-						alias: string;
-						/**
-						 * @type string
-						 */
-						action: PayloadActionEnum4Key;
-				  }
-				| {
-						/**
-						 * @type string | undefined
-						 */
-						alias?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						email?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						username?: string | undefined;
-				  }
-				| {
-						/**
-						 * @type string | undefined
-						 */
-						alias?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						email?: string | undefined;
-				  }
-				| {
-						/**
-						 * @type string | undefined
-						 */
 						name?: string | undefined;
 						/**
 						 * @type string
@@ -4885,6 +4749,64 @@ export type UserEvent = {
 				  }
 				| {
 						/**
+						 * @type string | undefined
+						 */
+						alias?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						email?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						username?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						alias?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						alias?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						email?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						aliasId?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						alias?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						projectName?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string
+						 */
+						alias: string;
+						/**
+						 * @type string
+						 */
+						action: PayloadActionEnum4Key;
+				  }
+				| {
+						/**
 						 * @type string
 						 */
 						alias: string;
@@ -4892,6 +4814,292 @@ export type UserEvent = {
 						 * @type string
 						 */
 						deploymentUrl: string;
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						alias?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						userId?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						username?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						alias?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						aliasId?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						userId?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						username?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						appName: string;
+						/**
+						 * @type string | undefined
+						 */
+						appId?: string | undefined;
+						/**
+						 * @type array
+						 */
+						scopes: PayloadScopesEnumKey[];
+						/**
+						 * @type array | undefined
+						 */
+						permissions?: PayloadPermissionsEnumKey[] | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						appName: string;
+						/**
+						 * @type string | undefined
+						 */
+						appId?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						appName: string;
+						/**
+						 * @type string | undefined
+						 */
+						appId?: string | undefined;
+						/**
+						 * @type array
+						 */
+						nextScopes: PayloadNextScopesEnumKey[];
+						/**
+						 * @type array | undefined
+						 */
+						nextPermissions?: PayloadNextPermissionsEnumKey[] | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						appName: string;
+						/**
+						 * @type string | undefined
+						 */
+						appId?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						installationId?: string | undefined;
+						/**
+						 * @type object | undefined
+						 */
+						before?:
+							| {
+									/**
+									 * @type object | undefined
+									 */
+									resources?:
+										| {
+												/**
+												 * @type object
+												 */
+												projectIds: {
+													/**
+													 * @type string
+													 */
+													type: ProjectIdsTypeEnumKey;
+													/**
+													 * @type boolean
+													 */
+													required: ProjectIdsRequiredEnumKey;
+													/**
+													 * @type object
+													 */
+													items: {
+														/**
+														 * @type string
+														 */
+														type: ItemsTypeEnumKey;
+													};
+												};
+										  }
+										| undefined;
+									/**
+									 * @type array | undefined
+									 */
+									permissions?: BeforePermissionsEnumKey[] | undefined;
+							  }
+							| undefined;
+						/**
+						 * @type object | undefined
+						 */
+						after?:
+							| {
+									/**
+									 * @type object | undefined
+									 */
+									resources?:
+										| {
+												/**
+												 * @type object
+												 */
+												projectIds: {
+													/**
+													 * @type string
+													 */
+													type: ProjectIdsTypeEnumKey;
+													/**
+													 * @type boolean
+													 */
+													required: ProjectIdsRequiredEnumKey;
+													/**
+													 * @type object
+													 */
+													items: {
+														/**
+														 * @type string
+														 */
+														type: ItemsTypeEnumKey;
+													};
+												};
+										  }
+										| undefined;
+									/**
+									 * @type array | undefined
+									 */
+									permissions?: AfterPermissionsEnumKey[] | undefined;
+							  }
+							| undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						appName: string;
+						/**
+						 * @type string | undefined
+						 */
+						appId?: string | undefined;
+						/**
+						 * @type object | undefined
+						 */
+						resources?:
+							| {
+									/**
+									 * @type object
+									 */
+									projectIds: {
+										/**
+										 * @type string
+										 */
+										type: ProjectIdsTypeEnumKey;
+										/**
+										 * @type boolean
+										 */
+										required: ProjectIdsRequiredEnumKey;
+										/**
+										 * @type object
+										 */
+										items: {
+											/**
+											 * @type string
+											 */
+											type: ItemsTypeEnumKey;
+										};
+									};
+							  }
+							| undefined;
+						/**
+						 * @type array | undefined
+						 */
+						permissions?: PayloadPermissionsEnum2Key[] | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						appName: string;
+						/**
+						 * @type string | undefined
+						 */
+						appId?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						secretLastFourChars?: string | undefined;
+				  }
+				| {
+						/**
+						 * @description The App\'s name at the moment this even was published (it may have changed since then).
+						 * @type string
+						 */
+						appName: string;
+						/**
+						 * @description The App\'s ID. Note that not all historical events have this field.
+						 * @type string | undefined
+						 */
+						appId?: string | undefined;
+						/**
+						 * @description Note that not all historical events have this field.
+						 * @type object | undefined
+						 */
+						app?:
+							| {
+									/**
+									 * @description The App\'s ID.
+									 * @type string
+									 */
+									id: string;
+									/**
+									 * @description The App\'s name at the moment this even was published (it may have changed since then).
+									 * @type string
+									 */
+									name: string;
+							  }
+							| undefined;
+						/**
+						 * @description UNIX timestamp in seconds. Tokens issued before this timestamp will be revoked. Note that not all historical events have this field.
+						 * @type number | undefined
+						 */
+						issuedBefore?: number | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type boolean | undefined
+						 */
+						prevAttackModeEnabled?: PayloadPrevAttackModeEnabledEnumKey | undefined;
+						/**
+						 * @type number
+						 */
+						prevAttackModeActiveUntil?: (number | null) | undefined;
+						/**
+						 * @type boolean
+						 */
+						attackModeEnabled: PayloadAttackModeEnabledEnumKey;
+						/**
+						 * @type number
+						 */
+						attackModeActiveUntil?: (number | null) | undefined;
 				  }
 				| {
 						/**
@@ -4908,6 +5116,134 @@ export type UserEvent = {
 						 * @type string | undefined
 						 */
 						avatar?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						invoiceId: string;
+						/**
+						 * @type number
+						 */
+						amount: number;
+						/**
+						 * @type string
+						 */
+						refundReason: string;
+						/**
+						 * @type number
+						 */
+						lineItemCount: number;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						invoiceId: string;
+						/**
+						 * @type string
+						 */
+						newInvoiceId: string;
+						/**
+						 * @type string
+						 */
+						settlementMethod: PayloadSettlementMethodEnumKey;
+						/**
+						 * @type number
+						 */
+						amount: number;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						paymentMethodId: string;
+						/**
+						 * @type string | undefined
+						 */
+						brand?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						last4?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						subscriptionId?: string | undefined;
+						/**
+						 * @type string
+						 */
+						planSlug: string;
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						subscriptionId?: string | undefined;
+						/**
+						 * @type string
+						 */
+						action: PayloadActionEnum5Key;
+						/**
+						 * @type object
+						 */
+						data: {
+							/**
+							 * @type string
+							 */
+							planSlug: DataPlanSlugEnumKey;
+							/**
+							 * @type string | undefined
+							 */
+							reason?: DataReasonEnumKey | undefined;
+						};
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						subscriptionId?: string | undefined;
+						/**
+						 * @type string
+						 */
+						action: PayloadActionEnum6Key;
+						/**
+						 * @type object
+						 */
+						data: {
+							/**
+							 * @type string
+							 */
+							planSlug: DataPlanSlugEnumKey;
+						};
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						subscriptionId?: string | undefined;
+						/**
+						 * @type string
+						 */
+						action: PayloadActionEnum7Key;
+						/**
+						 * @type object
+						 */
+						data: {
+							[key: string]: unknown;
+						};
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						subscriptionId?: string | undefined;
+						/**
+						 * @type array
+						 */
+						productAliases: string[];
 				  }
 				| {
 						/**
@@ -4971,20 +5307,6 @@ export type UserEvent = {
 				  }
 				| {
 						/**
-						 * @type string | undefined
-						 */
-						cn?: string | undefined;
-						/**
-						 * @type array | undefined
-						 */
-						cns?: string[] | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						id?: string | undefined;
-				  }
-				| {
-						/**
 						 * @type string
 						 */
 						id: string;
@@ -4996,6 +5318,20 @@ export type UserEvent = {
 						 * @type boolean
 						 */
 						custom: PayloadCustomEnumKey;
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						cn?: string | undefined;
+						/**
+						 * @type array | undefined
+						 */
+						cns?: string[] | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						id?: string | undefined;
 				  }
 				| {
 						/**
@@ -5058,78 +5394,6 @@ export type UserEvent = {
 						 * @type array | undefined
 						 */
 						cns?: string[] | undefined;
-				  }
-				| {
-						/**
-						 * @type string | undefined
-						 */
-						projectId?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						projectName?: string | undefined;
-						/**
-						 * @type array | undefined
-						 */
-						target?: string[] | undefined;
-						/**
-						 * @type boolean | undefined
-						 */
-						updated?: PayloadUpdatedEnumKey | undefined;
-				  }
-				| {
-						/**
-						 * @type string | undefined
-						 */
-						projectId?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						projectName?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						certId?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						origin?: string | undefined;
-				  }
-				| {
-						/**
-						 * @type string | undefined
-						 */
-						reason?: string | undefined;
-						/**
-						 * @type string
-						 */
-						suffix: string;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						status: string;
-						/**
-						 * @type string
-						 */
-						suffix: string;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						suffix: string;
-				  }
-				| {
-						/**
-						 * @type number
-						 */
-						previousConcurrentBuilds: number;
-						/**
-						 * @type number
-						 */
-						nextConcurrentBuilds: number;
 				  }
 				| {
 						/**
@@ -5387,13 +5651,29 @@ export type UserEvent = {
 				  }
 				| {
 						/**
-						 * @type string
+						 * @type string | undefined
 						 */
-						provider: PayloadProviderEnumKey;
+						reason?: string | undefined;
 						/**
 						 * @type string
 						 */
-						login: string;
+						suffix: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						status: string;
+						/**
+						 * @type string
+						 */
+						suffix: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						suffix: string;
 				  }
 				| {
 						/**
@@ -5526,6 +5806,1248 @@ export type UserEvent = {
 						type?: string | undefined;
 				  }
 				| {
+						job:
+							| {
+									/**
+									 * @type string
+									 */
+									type: JobTypeEnumKey;
+									/**
+									 * @type boolean | undefined
+									 */
+									authorized?: JobAuthorizedEnumKey | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									authorizedBy?: string | undefined;
+									/**
+									 * @description Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.
+									 * @type array | undefined
+									 */
+									jobProjectIds?: string[] | undefined;
+									/**
+									 * @description Since December 2022 Pairs of projects and owner ids to build for this build request.
+									 * @type array | undefined
+									 */
+									jobPairs?: (string | string)[][] | undefined;
+									/**
+									 * @description Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.
+									 * @type array | undefined
+									 */
+									skippedJobPairs?: (string | string)[][] | undefined;
+									/**
+									 * @description Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING
+									 * @type array | undefined
+									 */
+									gitHashtagVercel?: string[] | undefined;
+									/**
+									 * @description Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.
+									 * @type number | undefined
+									 */
+									connectedProjectCount?: number | undefined;
+									/**
+									 * @description Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.
+									 * @type number | undefined
+									 */
+									prIdOrZero?: number | undefined;
+									/**
+									 * @description Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.
+									 * @type object | undefined
+									 */
+									gitComments?:
+										| {
+												/**
+												 * @type boolean
+												 */
+												onPullRequest: GitCommentsOnPullRequestEnumKey;
+												/**
+												 * @type boolean
+												 */
+												onCommit: GitCommentsOnCommitEnumKey;
+										  }
+										| undefined;
+									/**
+									 * @description Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment
+									 * @type boolean | undefined
+									 */
+									isManualGitDeploy?: JobIsManualGitDeployEnumKey | undefined;
+									/**
+									 * @description Since 6 Nov 2025 The verification status of the commit. - \'verified\' if the commit is verified - \'unverified\' if the commit is not verified - \'unknown\' if the commit verification status is unknown or not supported
+									 * @type string | undefined
+									 */
+									commitVerification?: JobCommitVerificationEnumKey | undefined;
+									/**
+									 * @type number | undefined
+									 */
+									createdAt?: number | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									deploymentId?: string | undefined;
+									/**
+									 * @type object | undefined
+									 */
+									deployHook?:
+										| {
+												/**
+												 * @type number
+												 */
+												createdAt: number;
+												/**
+												 * @type string
+												 */
+												id: string;
+												/**
+												 * @type string
+												 */
+												name: string;
+												/**
+												 * @type string
+												 */
+												ref: string;
+										  }
+										| undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									eventful?: JobEventfulEnumKey | undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									forceNew?: JobForceNewEnumKey | undefined;
+									/**
+									 * @type object
+									 */
+									headInfo: {
+										/**
+										 * @type string
+										 */
+										owner: string;
+										/**
+										 * @type string
+										 */
+										ref: string;
+										/**
+										 * @type string
+										 */
+										repoUuid: string;
+										/**
+										 * @type string
+										 */
+										sha: string;
+										/**
+										 * @type string
+										 */
+										slug: string;
+									};
+									/**
+									 * @type string | undefined
+									 */
+									linkedProjectId?: string | undefined;
+									/**
+									 * @type string
+									 */
+									name: string;
+									/**
+									 * @type string
+									 */
+									owner: string;
+									/**
+									 * @type number | undefined
+									 */
+									prId?: number | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									projectId?: string | undefined;
+									/**
+									 * @type string
+									 */
+									customEnvId?: (string | null) | undefined;
+									/**
+									 * @type string
+									 */
+									ref: string;
+									/**
+									 * @type number
+									 */
+									repoPushedAt?: (number | null) | undefined;
+									/**
+									 * @type string
+									 */
+									repoUuid: string;
+									/**
+									 * @type string
+									 */
+									sha: string;
+									/**
+									 * @type boolean | undefined
+									 */
+									silent?: JobSilentEnumKey | undefined;
+									/**
+									 * @type string
+									 */
+									slug: string;
+									/**
+									 * @type string
+									 */
+									target?: (string | null) | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									url?: string | undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									withCache?: JobWithCacheEnumKey | undefined;
+									/**
+									 * @type string
+									 */
+									workspaceUuid: string;
+									/**
+									 * @type string
+									 */
+									provider: JobProviderEnumKey;
+							  }
+							| {
+									/**
+									 * @type number | undefined
+									 */
+									createdAt?: number | undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									eventful?: JobEventfulEnumKey | undefined;
+									/**
+									 * @type object
+									 */
+									headInfo: {
+										/**
+										 * @type string
+										 */
+										owner: string;
+										/**
+										 * @type string
+										 */
+										ref: string;
+										/**
+										 * @type string
+										 */
+										repoUuid: string;
+										/**
+										 * @type string
+										 */
+										sha: string;
+										/**
+										 * @type string
+										 */
+										slug: string;
+									};
+									/**
+									 * @type string | undefined
+									 */
+									linkedProjectId?: string | undefined;
+									/**
+									 * @type string
+									 */
+									name: string;
+									/**
+									 * @type string
+									 */
+									owner: string;
+									/**
+									 * @type number
+									 */
+									prId: number;
+									/**
+									 * @type string | undefined
+									 */
+									projectId?: string | undefined;
+									/**
+									 * @type string
+									 */
+									customEnvId?: (string | null) | undefined;
+									/**
+									 * @type string
+									 */
+									ref: string;
+									/**
+									 * @type string
+									 */
+									repoUuid: string;
+									/**
+									 * @type string
+									 */
+									sha: string;
+									/**
+									 * @type string
+									 */
+									slug: string;
+									/**
+									 * @type string
+									 */
+									type: JobTypeEnum2Key;
+									/**
+									 * @type string
+									 */
+									workspaceUuid: string;
+									/**
+									 * @type object | undefined
+									 */
+									gitComments?:
+										| {
+												/**
+												 * @type boolean
+												 */
+												onPullRequest: GitCommentsOnPullRequestEnumKey;
+												/**
+												 * @type boolean
+												 */
+												onCommit: GitCommentsOnCommitEnumKey;
+										  }
+										| undefined;
+									/**
+									 * @type string
+									 */
+									provider: JobProviderEnumKey;
+							  }
+							| {
+									/**
+									 * @type number
+									 */
+									prId: number;
+									/**
+									 * @type string
+									 */
+									type: JobTypeEnum3Key;
+									/**
+									 * @type boolean | undefined
+									 */
+									authorized?: JobAuthorizedEnumKey | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									authorizedBy?: string | undefined;
+									/**
+									 * @description Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.
+									 * @type array | undefined
+									 */
+									jobProjectIds?: string[] | undefined;
+									/**
+									 * @description Since December 2022 Pairs of projects and owner ids to build for this build request.
+									 * @type array | undefined
+									 */
+									jobPairs?: (string | string)[][] | undefined;
+									/**
+									 * @description Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.
+									 * @type array | undefined
+									 */
+									skippedJobPairs?: (string | string)[][] | undefined;
+									/**
+									 * @description Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING
+									 * @type array | undefined
+									 */
+									gitHashtagVercel?: string[] | undefined;
+									/**
+									 * @description Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.
+									 * @type number | undefined
+									 */
+									connectedProjectCount?: number | undefined;
+									/**
+									 * @description Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.
+									 * @type number | undefined
+									 */
+									prIdOrZero?: number | undefined;
+									/**
+									 * @description Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.
+									 * @type object | undefined
+									 */
+									gitComments?:
+										| {
+												/**
+												 * @type boolean
+												 */
+												onPullRequest: GitCommentsOnPullRequestEnumKey;
+												/**
+												 * @type boolean
+												 */
+												onCommit: GitCommentsOnCommitEnumKey;
+										  }
+										| undefined;
+									/**
+									 * @description Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment
+									 * @type boolean | undefined
+									 */
+									isManualGitDeploy?: JobIsManualGitDeployEnumKey | undefined;
+									/**
+									 * @description Since 6 Nov 2025 The verification status of the commit. - \'verified\' if the commit is verified - \'unverified\' if the commit is not verified - \'unknown\' if the commit verification status is unknown or not supported
+									 * @type string | undefined
+									 */
+									commitVerification?: JobCommitVerificationEnumKey | undefined;
+									/**
+									 * @description Remote account id of the committer details (github id etc, not vercel). Note that the committer name/email are user input verbatim and not verified. Github does appear to resolve the given email to the username so we can trust that. If the username matches that of the sender, which is verified info, then we can use the account id and account type. See api-incoming, where we determine and set this property Note that even with that, the account may still have been spoofed.
+									 * @type number | undefined
+									 */
+									committerGitUserId?: number | undefined;
+									/**
+									 * @description Remote account type of the committer details (github type etc, not vercel). Note that the committer name/email are user input verbatim and not verified. Github does appear to resolve the given email to the username so we can trust that. If the username matches that of the sender, which is verified info, then we can use the account id and account type. See api-incoming, where we determine and set this property Note that even with that, the account may still have been spoofed.
+									 * @type string | undefined
+									 */
+									committerGitUserType?: string | undefined;
+									/**
+									 * @type number | undefined
+									 */
+									createdAt?: number | undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									forceNew?: JobForceNewEnumKey | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									deploymentId?: string | undefined;
+									/**
+									 * @type object | undefined
+									 */
+									deployHook?:
+										| {
+												/**
+												 * @type number
+												 */
+												createdAt: number;
+												/**
+												 * @type string
+												 */
+												id: string;
+												/**
+												 * @type string
+												 */
+												name: string;
+												/**
+												 * @type string
+												 */
+												ref: string;
+										  }
+										| undefined;
+									/**
+									 * @type string | undefined
+									 */
+									beforeSha?: string | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									defaultBranch?: string | undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									eventful?: JobEventfulEnumKey | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									githubDeploymentId?: string | undefined;
+									/**
+									 * @description Information about the head commit/branch for a GitHub repository
+									 * @type object
+									 */
+									headInfo: {
+										/**
+										 * @type string
+										 */
+										org: string;
+										/**
+										 * @type string
+										 */
+										ref: string;
+										/**
+										 * @type string
+										 */
+										repo: string;
+										/**
+										 * @type number
+										 */
+										repoId: number;
+										/**
+										 * @type string
+										 */
+										sha: string;
+									};
+									/**
+									 * @type number
+									 */
+									installationId: number;
+									/**
+									 * @type boolean
+									 */
+									isPrivate: JobIsPrivateEnumKey;
+									/**
+									 * @type string | undefined
+									 */
+									linkedProjectId?: string | undefined;
+									/**
+									 * @type string
+									 */
+									org: string;
+									/**
+									 * @type string | undefined
+									 */
+									projectId?: string | undefined;
+									/**
+									 * @type string
+									 */
+									customEnvId?: (string | null) | undefined;
+									/**
+									 * @type string
+									 */
+									repo: string;
+									/**
+									 * @type number
+									 */
+									repoId: number;
+									/**
+									 * @type string
+									 */
+									target?: (string | null) | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									url?: string | undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									withCache?: JobWithCacheEnumKey | undefined;
+									/**
+									 * @type string
+									 */
+									provider: JobProviderEnum2Key;
+									/**
+									 * @type string | undefined
+									 */
+									customHost?: string | undefined;
+							  }
+							| {
+									/**
+									 * @type number
+									 */
+									repoPushedAt: number | null;
+									/**
+									 * @type object | undefined
+									 */
+									commitInfo?:
+										| {
+												/**
+												 * @type number
+												 */
+												total: number;
+												/**
+												 * @type string | undefined
+												 */
+												earliestSha?: string | undefined;
+										  }
+										| undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									forced?: JobForcedEnumKey | undefined;
+									/**
+									 * @type string
+									 */
+									type: JobTypeEnum4Key;
+									/**
+									 * @type boolean | undefined
+									 */
+									authorized?: JobAuthorizedEnumKey | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									authorizedBy?: string | undefined;
+									/**
+									 * @description Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.
+									 * @type array | undefined
+									 */
+									jobProjectIds?: string[] | undefined;
+									/**
+									 * @description Since December 2022 Pairs of projects and owner ids to build for this build request.
+									 * @type array | undefined
+									 */
+									jobPairs?: (string | string)[][] | undefined;
+									/**
+									 * @description Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.
+									 * @type array | undefined
+									 */
+									skippedJobPairs?: (string | string)[][] | undefined;
+									/**
+									 * @description Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING
+									 * @type array | undefined
+									 */
+									gitHashtagVercel?: string[] | undefined;
+									/**
+									 * @description Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.
+									 * @type number | undefined
+									 */
+									connectedProjectCount?: number | undefined;
+									/**
+									 * @description Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.
+									 * @type number | undefined
+									 */
+									prIdOrZero?: number | undefined;
+									/**
+									 * @description Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.
+									 * @type object | undefined
+									 */
+									gitComments?:
+										| {
+												/**
+												 * @type boolean
+												 */
+												onPullRequest: GitCommentsOnPullRequestEnumKey;
+												/**
+												 * @type boolean
+												 */
+												onCommit: GitCommentsOnCommitEnumKey;
+										  }
+										| undefined;
+									/**
+									 * @description Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment
+									 * @type boolean | undefined
+									 */
+									isManualGitDeploy?: JobIsManualGitDeployEnumKey | undefined;
+									/**
+									 * @description Since 6 Nov 2025 The verification status of the commit. - \'verified\' if the commit is verified - \'unverified\' if the commit is not verified - \'unknown\' if the commit verification status is unknown or not supported
+									 * @type string | undefined
+									 */
+									commitVerification?: JobCommitVerificationEnumKey | undefined;
+									/**
+									 * @description Remote account id of the committer details (github id etc, not vercel). Note that the committer name/email are user input verbatim and not verified. Github does appear to resolve the given email to the username so we can trust that. If the username matches that of the sender, which is verified info, then we can use the account id and account type. See api-incoming, where we determine and set this property Note that even with that, the account may still have been spoofed.
+									 * @type number | undefined
+									 */
+									committerGitUserId?: number | undefined;
+									/**
+									 * @description Remote account type of the committer details (github type etc, not vercel). Note that the committer name/email are user input verbatim and not verified. Github does appear to resolve the given email to the username so we can trust that. If the username matches that of the sender, which is verified info, then we can use the account id and account type. See api-incoming, where we determine and set this property Note that even with that, the account may still have been spoofed.
+									 * @type string | undefined
+									 */
+									committerGitUserType?: string | undefined;
+									/**
+									 * @type number | undefined
+									 */
+									createdAt?: number | undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									forceNew?: JobForceNewEnumKey | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									deploymentId?: string | undefined;
+									/**
+									 * @type object | undefined
+									 */
+									deployHook?:
+										| {
+												/**
+												 * @type number
+												 */
+												createdAt: number;
+												/**
+												 * @type string
+												 */
+												id: string;
+												/**
+												 * @type string
+												 */
+												name: string;
+												/**
+												 * @type string
+												 */
+												ref: string;
+										  }
+										| undefined;
+									/**
+									 * @type string | undefined
+									 */
+									beforeSha?: string | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									defaultBranch?: string | undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									eventful?: JobEventfulEnumKey | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									githubDeploymentId?: string | undefined;
+									/**
+									 * @description Information about the head commit/branch for a GitHub repository
+									 * @type object
+									 */
+									headInfo: {
+										/**
+										 * @type string
+										 */
+										org: string;
+										/**
+										 * @type string
+										 */
+										ref: string;
+										/**
+										 * @type string
+										 */
+										repo: string;
+										/**
+										 * @type number
+										 */
+										repoId: number;
+										/**
+										 * @type string
+										 */
+										sha: string;
+									};
+									/**
+									 * @type number
+									 */
+									installationId: number;
+									/**
+									 * @type boolean
+									 */
+									isPrivate: JobIsPrivateEnumKey;
+									/**
+									 * @type string | undefined
+									 */
+									linkedProjectId?: string | undefined;
+									/**
+									 * @type string
+									 */
+									org: string;
+									/**
+									 * @type number
+									 */
+									prId: number | null;
+									/**
+									 * @type string | undefined
+									 */
+									projectId?: string | undefined;
+									/**
+									 * @type string
+									 */
+									customEnvId?: (string | null) | undefined;
+									/**
+									 * @type string
+									 */
+									repo: string;
+									/**
+									 * @type number
+									 */
+									repoId: number;
+									/**
+									 * @type string
+									 */
+									target?: (string | null) | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									url?: string | undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									withCache?: JobWithCacheEnumKey | undefined;
+									/**
+									 * @type string
+									 */
+									provider: JobProviderEnum2Key;
+									/**
+									 * @type string | undefined
+									 */
+									customHost?: string | undefined;
+							  }
+							| {
+									/**
+									 * @type number | undefined
+									 */
+									createdAt?: number | undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									eventful?: JobEventfulEnumKey | undefined;
+									/**
+									 * @description Information about the head commit/branch for a GitHub repository
+									 * @type object
+									 */
+									headInfo: {
+										/**
+										 * @type string
+										 */
+										org: string;
+										/**
+										 * @type string
+										 */
+										ref: string;
+										/**
+										 * @type string
+										 */
+										repo: string;
+										/**
+										 * @type number
+										 */
+										repoId: number;
+										/**
+										 * @type string
+										 */
+										sha: string;
+									};
+									/**
+									 * @type string | undefined
+									 */
+									beforeSha?: string | undefined;
+									/**
+									 * @type number
+									 */
+									installationId: number;
+									/**
+									 * @type boolean
+									 */
+									isPrivate: JobIsPrivateEnumKey;
+									/**
+									 * @type string | undefined
+									 */
+									linkedProjectId?: string | undefined;
+									/**
+									 * @type string
+									 */
+									org: string;
+									/**
+									 * @type number
+									 */
+									prId: number;
+									projectId: unknown | null;
+									customEnvId?: (unknown | null) | undefined;
+									/**
+									 * @type string
+									 */
+									repo: string;
+									/**
+									 * @type number
+									 */
+									repoId: number;
+									/**
+									 * @type string
+									 */
+									type: JobTypeEnum5Key;
+									/**
+									 * @type object | undefined
+									 */
+									gitComments?:
+										| {
+												/**
+												 * @type boolean
+												 */
+												onPullRequest: GitCommentsOnPullRequestEnumKey;
+												/**
+												 * @type boolean
+												 */
+												onCommit: GitCommentsOnCommitEnumKey;
+										  }
+										| undefined;
+									/**
+									 * @type string
+									 */
+									provider: JobProviderEnum2Key;
+									/**
+									 * @type string | undefined
+									 */
+									customHost?: string | undefined;
+							  }
+							| {
+									/**
+									 * @type string
+									 */
+									type: JobTypeEnum6Key;
+									/**
+									 * @type boolean | undefined
+									 */
+									authorized?: JobAuthorizedEnumKey | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									authorizedBy?: string | undefined;
+									/**
+									 * @description Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.
+									 * @type array | undefined
+									 */
+									jobProjectIds?: string[] | undefined;
+									/**
+									 * @description Since December 2022 Pairs of projects and owner ids to build for this build request.
+									 * @type array | undefined
+									 */
+									jobPairs?: (string | string)[][] | undefined;
+									/**
+									 * @description Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.
+									 * @type array | undefined
+									 */
+									skippedJobPairs?: (string | string)[][] | undefined;
+									/**
+									 * @description Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING
+									 * @type array | undefined
+									 */
+									gitHashtagVercel?: string[] | undefined;
+									/**
+									 * @description Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.
+									 * @type number | undefined
+									 */
+									connectedProjectCount?: number | undefined;
+									/**
+									 * @description Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.
+									 * @type number | undefined
+									 */
+									prIdOrZero?: number | undefined;
+									/**
+									 * @description Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.
+									 * @type object | undefined
+									 */
+									gitComments?:
+										| {
+												/**
+												 * @type boolean
+												 */
+												onPullRequest: GitCommentsOnPullRequestEnumKey;
+												/**
+												 * @type boolean
+												 */
+												onCommit: GitCommentsOnCommitEnumKey;
+										  }
+										| undefined;
+									/**
+									 * @description Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment
+									 * @type boolean | undefined
+									 */
+									isManualGitDeploy?: JobIsManualGitDeployEnumKey | undefined;
+									/**
+									 * @description Since 6 Nov 2025 The verification status of the commit. - \'verified\' if the commit is verified - \'unverified\' if the commit is not verified - \'unknown\' if the commit verification status is unknown or not supported
+									 * @type string | undefined
+									 */
+									commitVerification?: JobCommitVerificationEnumKey | undefined;
+									/**
+									 * @type object | undefined
+									 */
+									commit?:
+										| {
+												/**
+												 * @type string
+												 */
+												id: string;
+												/**
+												 * @type string
+												 */
+												authorAvatar?: (string | null) | undefined;
+												/**
+												 * @type string
+												 */
+												authorEmail?: (string | null) | undefined;
+												/**
+												 * @type number
+												 */
+												authorId?: (number | null) | undefined;
+												/**
+												 * @type string
+												 */
+												authorLogin?: (string | null) | undefined;
+												/**
+												 * @type string
+												 */
+												authorName?: (string | null) | undefined;
+										  }
+										| undefined;
+									/**
+									 * @type number | undefined
+									 */
+									createdAt?: number | undefined;
+									/**
+									 * @type object | undefined
+									 */
+									deployHook?:
+										| {
+												/**
+												 * @type number
+												 */
+												createdAt: number;
+												/**
+												 * @type string
+												 */
+												id: string;
+												/**
+												 * @type string
+												 */
+												name: string;
+												/**
+												 * @type string
+												 */
+												ref: string;
+										  }
+										| undefined;
+									/**
+									 * @type string | undefined
+									 */
+									deploymentId?: string | undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									eventful?: JobEventfulEnumKey | undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									forceNew?: JobForceNewEnumKey | undefined;
+									/**
+									 * @description GitLab
+									 * @type object
+									 */
+									headInfo: {
+										/**
+										 * @type object
+										 */
+										project: {
+											/**
+											 * @type string
+											 */
+											defaultBranch?: (string | null) | undefined;
+											/**
+											 * @type string
+											 */
+											id: string;
+											/**
+											 * @type string
+											 */
+											name?: (string | null) | undefined;
+											/**
+											 * @type string
+											 */
+											namespace?: (string | null) | undefined;
+											/**
+											 * @type string
+											 */
+											path?: (string | null) | undefined;
+											/**
+											 * @type string
+											 */
+											url?: (string | null) | undefined;
+										};
+										/**
+										 * @type string
+										 */
+										ref: string;
+										/**
+										 * @type string
+										 */
+										sha: string;
+									};
+									/**
+									 * @type string | undefined
+									 */
+									linkedProjectId?: string | undefined;
+									/**
+									 * @type number | undefined
+									 */
+									prId?: number | undefined;
+									/**
+									 * @type object
+									 */
+									project: {
+										/**
+										 * @type string
+										 */
+										defaultBranch?: (string | null) | undefined;
+										/**
+										 * @type string
+										 */
+										id: string;
+										/**
+										 * @type string
+										 */
+										name?: (string | null) | undefined;
+										/**
+										 * @type string
+										 */
+										namespace?: (string | null) | undefined;
+										/**
+										 * @type string
+										 */
+										path?: (string | null) | undefined;
+										/**
+										 * @type string
+										 */
+										url?: (string | null) | undefined;
+									};
+									/**
+									 * @type string | undefined
+									 */
+									projectId?: string | undefined;
+									/**
+									 * @type string
+									 */
+									customEnvId?: (string | null) | undefined;
+									/**
+									 * @type string
+									 */
+									ref: string;
+									/**
+									 * @type number
+									 */
+									repoPushedAt?: (number | null) | undefined;
+									/**
+									 * @type string
+									 */
+									sha: string;
+									/**
+									 * @type boolean | undefined
+									 */
+									silent?: JobSilentEnumKey | undefined;
+									/**
+									 * @type string
+									 */
+									target?: (string | null) | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									url?: string | undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									withCache?: JobWithCacheEnumKey | undefined;
+									/**
+									 * @type string
+									 */
+									provider: JobProviderEnum3Key;
+							  }
+							| {
+									/**
+									 * @type number | undefined
+									 */
+									createdAt?: number | undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									eventful?: JobEventfulEnumKey | undefined;
+									/**
+									 * @description GitLab
+									 * @type object
+									 */
+									headInfo: {
+										/**
+										 * @type object
+										 */
+										project: {
+											/**
+											 * @type string
+											 */
+											defaultBranch?: (string | null) | undefined;
+											/**
+											 * @type string
+											 */
+											id: string;
+											/**
+											 * @type string
+											 */
+											name?: (string | null) | undefined;
+											/**
+											 * @type string
+											 */
+											namespace?: (string | null) | undefined;
+											/**
+											 * @type string
+											 */
+											path?: (string | null) | undefined;
+											/**
+											 * @type string
+											 */
+											url?: (string | null) | undefined;
+										};
+										/**
+										 * @type string
+										 */
+										ref: string;
+										/**
+										 * @type string
+										 */
+										sha: string;
+									};
+									/**
+									 * @type string | undefined
+									 */
+									linkedProjectId?: string | undefined;
+									/**
+									 * @type number
+									 */
+									prId: number;
+									/**
+									 * @type object
+									 */
+									project: {
+										/**
+										 * @type string
+										 */
+										defaultBranch?: (string | null) | undefined;
+										/**
+										 * @type string
+										 */
+										id: string;
+										/**
+										 * @type string
+										 */
+										name?: (string | null) | undefined;
+										/**
+										 * @type string
+										 */
+										namespace?: (string | null) | undefined;
+										/**
+										 * @type string
+										 */
+										path?: (string | null) | undefined;
+										/**
+										 * @type string
+										 */
+										url?: (string | null) | undefined;
+									};
+									/**
+									 * @type string | undefined
+									 */
+									projectId?: string | undefined;
+									/**
+									 * @type string
+									 */
+									customEnvId?: (string | null) | undefined;
+									/**
+									 * @type string
+									 */
+									ref: string;
+									/**
+									 * @type string
+									 */
+									sha: string;
+									/**
+									 * @type string
+									 */
+									type: JobTypeEnum7Key;
+									/**
+									 * @type object | undefined
+									 */
+									gitComments?:
+										| {
+												/**
+												 * @type boolean
+												 */
+												onPullRequest: GitCommentsOnPullRequestEnumKey;
+												/**
+												 * @type boolean
+												 */
+												onCommit: GitCommentsOnCommitEnumKey;
+										  }
+										| undefined;
+									/**
+									 * @type string
+									 */
+									provider: JobProviderEnum3Key;
+							  };
+				  }
+				| {
 						/**
 						 * @type string
 						 */
@@ -5552,6 +7074,28 @@ export type UserEvent = {
 									name: string;
 							  }
 							| undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						sha: string;
+						/**
+						 * @type string
+						 */
+						gitUserPlatform: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string
+						 */
+						gitCommitterName: string;
+						/**
+						 * @type string
+						 */
+						source: string;
 				  }
 				| {
 						/**
@@ -5585,6 +7129,32 @@ export type UserEvent = {
 						 * @type string
 						 */
 						url: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						integrationId: string;
+						/**
+						 * @type string
+						 */
+						configurationId: string;
+						/**
+						 * @type string
+						 */
+						integrationSlug: string;
+						/**
+						 * @type string
+						 */
+						integrationName: string;
+						/**
+						 * @type string
+						 */
+						ownerId: string;
+						/**
+						 * @type array | undefined
+						 */
+						projectIds?: string[] | undefined;
 				  }
 				| {
 						/**
@@ -5670,24 +7240,6 @@ export type UserEvent = {
 						 */
 						name: string;
 						/**
-						 * @type string
-						 */
-						userId: string;
-						/**
-						 * @type string
-						 */
-						teamId: string;
-						/**
-						 * @type string
-						 */
-						ownerName: string;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						name: string;
-						/**
 						 * @type object | undefined
 						 */
 						oldTeam?:
@@ -5714,11 +7266,71 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
+						name: string;
+						/**
+						 * @type string
+						 */
+						userId: string;
+						/**
+						 * @type string
+						 */
+						teamId: string;
+						/**
+						 * @type string
+						 */
+						ownerName: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
 						domainId: string;
 						/**
 						 * @type string
 						 */
 						name: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						previousServiceType: string;
+						/**
+						 * @type string
+						 */
+						serviceType: string;
+						/**
+						 * @type string
+						 */
+						id: string;
+						/**
+						 * @type string
+						 */
+						name: string;
+						/**
+						 * @type array
+						 */
+						nameservers: string[];
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						domain: string;
+						/**
+						 * @type array
+						 */
+						customNameservers: string[] | null;
+						/**
+						 * @type array
+						 */
+						prevCustomNameservers: string[] | null;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						domain: string;
 				  }
 				| {
 						/**
@@ -5790,65 +7402,185 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
-						previousServiceType: string;
+						drainUrl: string | null;
 						/**
-						 * @type string
+						 * @type string | undefined
 						 */
-						serviceType: string;
-						/**
-						 * @type string
-						 */
-						id: string;
-						/**
-						 * @type string
-						 */
-						name: string;
-						/**
-						 * @type array
-						 */
-						nameservers: string[];
+						integrationName?: string | undefined;
 				  }
 				| {
 						/**
 						 * @type string
 						 */
-						domain: string;
-						/**
-						 * @type array
-						 */
-						customNameservers: string[] | null;
-						/**
-						 * @type array
-						 */
-						prevCustomNameservers: string[] | null;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						domain: string;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						sha: string;
-						/**
-						 * @type string
-						 */
-						gitUserPlatform: string;
+						projectId: string;
 						/**
 						 * @type string
 						 */
 						projectName: string;
 						/**
-						 * @type string
+						 * @type array
 						 */
-						gitCommitterName: string;
+						srcImages: string[];
+				  }
+				| {
 						/**
 						 * @type string
 						 */
-						source: string;
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type array
+						 */
+						tags: string[];
+						/**
+						 * @type string | undefined
+						 */
+						target?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						edgeConfigId: string;
+						/**
+						 * @type string
+						 */
+						edgeConfigSlug: string;
+						/**
+						 * @type string
+						 */
+						edgeConfigDigest: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						edgeConfigId: string;
+						/**
+						 * @type string
+						 */
+						edgeConfigSlug: string;
+						/**
+						 * @type object | undefined
+						 */
+						edgeConfigSchema?: object | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						edgeConfigId: string;
+						/**
+						 * @type string
+						 */
+						edgeConfigSlug: string;
+						/**
+						 * @type string | undefined
+						 */
+						edgeConfigDigest?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type object
+						 */
+						edgeConfig: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string
+							 */
+							slug: string;
+						};
+						/**
+						 * @type object
+						 */
+						fromAccount: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string
+							 */
+							type: FromAccountTypeEnumKey;
+							/**
+							 * @type string | undefined
+							 */
+							slug?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							username?: string | undefined;
+						};
+						/**
+						 * @type object
+						 */
+						toAccount: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string
+							 */
+							type: ToAccountTypeEnumKey;
+							/**
+							 * @type string | undefined
+							 */
+							slug?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							username?: string | undefined;
+						};
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						edgeConfigId: string;
+						/**
+						 * @type string
+						 */
+						edgeConfigSlug: string;
+						/**
+						 * @type string
+						 */
+						edgeConfigTokenId: string;
+						/**
+						 * @type string
+						 */
+						label: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						edgeConfigId: string;
+						/**
+						 * @type string
+						 */
+						edgeConfigSlug: string;
+						/**
+						 * @description ids of deleted tokens
+						 * @type array
+						 */
+						edgeConfigTokenIds: string[];
 				  }
 				| {
 						/**
@@ -5859,6 +7591,67 @@ export type UserEvent = {
 						 * @type string
 						 */
 						name: string;
+				  }
+				| {
+						/**
+						 * @type object
+						 */
+						team: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string | undefined
+							 */
+							name?: string | undefined;
+						};
+						/**
+						 * @type object
+						 */
+						previousRule: {
+							/**
+							 * @type string
+							 */
+							email: string;
+						};
+				  }
+				| {
+						/**
+						 * @type object
+						 */
+						team: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string | undefined
+							 */
+							name?: string | undefined;
+						};
+						/**
+						 * @type object | undefined
+						 */
+						previousRule?:
+							| {
+									/**
+									 * @type string
+									 */
+									email: string;
+							  }
+							| undefined;
+						/**
+						 * @type object | undefined
+						 */
+						nextRule?:
+							| {
+									/**
+									 * @type string
+									 */
+									email: string;
+							  }
+							| undefined;
 				  }
 				| {
 						/**
@@ -6262,42 +8055,6 @@ export type UserEvent = {
 				  }
 				| {
 						/**
-						 * @type boolean
-						 */
-						enabled: PayloadEnabledEnumKey;
-						/**
-						 * @type number
-						 */
-						updatedAt: number;
-						/**
-						 * @type number | undefined
-						 */
-						firstEnabledAt?: number | undefined;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type boolean
-						 */
-						restore: PayloadRestoreEnumKey;
-						/**
-						 * @type number
-						 */
-						configVersion: number;
-						/**
-						 * @type number
-						 */
-						configChangeCount: number;
-						/**
-						 * @type array
-						 */
-						configChanges: object[];
-				  }
-				| {
-						/**
 						 * @type string
 						 */
 						projectId: string;
@@ -6334,17 +8091,21 @@ export type UserEvent = {
 						 */
 						projectId: string;
 						/**
-						 * @type string
-						 */
-						rulesetName: string;
-						/**
 						 * @type boolean
 						 */
-						active: PayloadActiveEnumKey;
+						restore: PayloadRestoreEnumKey;
 						/**
-						 * @type string | undefined
+						 * @type number
 						 */
-						action?: PayloadActionEnum5Key | undefined;
+						configVersion: number;
+						/**
+						 * @type number
+						 */
+						configChangeCount: number;
+						/**
+						 * @type array
+						 */
+						configChanges: object[];
 				  }
 				| {
 						/**
@@ -6377,35 +8138,45 @@ export type UserEvent = {
 						 */
 						projectId: string;
 						/**
-						 * @type boolean | undefined
+						 * @type string
 						 */
-						prevAttackModeEnabled?: PayloadPrevAttackModeEnabledEnumKey | undefined;
-						/**
-						 * @type number
-						 */
-						prevAttackModeActiveUntil?: (number | null) | undefined;
+						rulesetName: string;
 						/**
 						 * @type boolean
 						 */
-						attackModeEnabled: PayloadAttackModeEnabledEnumKey;
+						active: PayloadActiveEnumKey;
 						/**
-						 * @type number
+						 * @type string | undefined
 						 */
-						attackModeActiveUntil?: (number | null) | undefined;
+						action?: PayloadActionEnum8Key | undefined;
 				  }
 				| {
 						/**
 						 * @type string
 						 */
-						integrationId: string;
+						action: PayloadActionEnum9Key;
+				  }
+				| {
 						/**
 						 * @type string
 						 */
-						integrationSlug: string;
+						projectId: string;
 						/**
 						 * @type string
 						 */
-						integrationName: string;
+						fromDeploymentId: string;
+						/**
+						 * @type string
+						 */
+						toDeploymentId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string | undefined
+						 */
+						reason?: string | undefined;
 				  }
 				| {
 						/**
@@ -8550,6 +10321,36 @@ export type UserEvent = {
 				  }
 				| {
 						/**
+						 * @type string
+						 */
+						integrationId: string;
+						/**
+						 * @type string
+						 */
+						configurationId: string;
+						/**
+						 * @type string
+						 */
+						integrationSlug: string;
+						/**
+						 * @type string
+						 */
+						integrationName: string;
+						/**
+						 * @type string
+						 */
+						ownerId: string;
+						/**
+						 * @type array | undefined
+						 */
+						projectIds?: string[] | undefined;
+						/**
+						 * @type array
+						 */
+						confirmedScopes: string[];
+				  }
+				| {
+						/**
 						 * @type array
 						 */
 						configurations: {
@@ -8626,65 +10427,13 @@ export type UserEvent = {
 						 * @type string
 						 */
 						ownerId: string;
-						/**
-						 * @type array | undefined
-						 */
-						projectIds?: string[] | undefined;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						integrationId: string;
-						/**
-						 * @type string
-						 */
-						configurationId: string;
-						/**
-						 * @type string
-						 */
-						integrationSlug: string;
-						/**
-						 * @type string
-						 */
-						integrationName: string;
-						/**
-						 * @type string
-						 */
-						ownerId: string;
 						projectIds?: (string[] | PayloadProjectIdsEnumKey) | undefined;
 				  }
 				| {
 						/**
 						 * @type string
 						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						fromDeploymentId: string;
-						/**
-						 * @type string
-						 */
-						toDeploymentId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type string | undefined
-						 */
-						reason?: string | undefined;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
 						integrationId: string;
-						/**
-						 * @type string
-						 */
-						configurationId: string;
 						/**
 						 * @type string
 						 */
@@ -8693,18 +10442,6 @@ export type UserEvent = {
 						 * @type string
 						 */
 						integrationName: string;
-						/**
-						 * @type string
-						 */
-						ownerId: string;
-						/**
-						 * @type array | undefined
-						 */
-						projectIds?: string[] | undefined;
-						/**
-						 * @type array
-						 */
-						confirmedScopes: string[];
 				  }
 				| {
 						/**
@@ -8895,224 +10632,6 @@ export type UserEvent = {
 				  }
 				| {
 						/**
-						 * @type string | undefined
-						 */
-						userAgent?: string | undefined;
-						/**
-						 * @type object
-						 */
-						geolocation?:
-							| ({
-									/**
-									 * @type object | undefined
-									 */
-									city?:
-										| {
-												/**
-												 * @type object
-												 */
-												names: {
-													/**
-													 * @type string
-													 */
-													en: string;
-												};
-										  }
-										| undefined;
-									/**
-									 * @type object
-									 */
-									country: {
-										/**
-										 * @type object
-										 */
-										names: {
-											/**
-											 * @type string
-											 */
-											en: string;
-										};
-									};
-									/**
-									 * @type object | undefined
-									 */
-									mostSpecificSubdivision?:
-										| {
-												/**
-												 * @type object
-												 */
-												names: {
-													/**
-													 * @type string
-													 */
-													en: string;
-												};
-										  }
-										| undefined;
-									/**
-									 * @type string | undefined
-									 */
-									regionName?: string | undefined;
-							  } | null)
-							| undefined;
-						/**
-						 * @type string | undefined
-						 */
-						env?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						os?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						username?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						ssoType?: string | undefined;
-						/**
-						 * @type array | undefined
-						 */
-						factors?:
-							| {
-									/**
-									 * @type string
-									 */
-									origin: FactorsOriginEnum3Key;
-									/**
-									 * @type string | undefined
-									 */
-									username?: string | undefined;
-									/**
-									 * @type string | undefined
-									 */
-									teamId?: string | undefined;
-									/**
-									 * @type boolean | undefined
-									 */
-									legacy?: FactorsLegacyEnumKey | undefined;
-									/**
-									 * @type string | undefined
-									 */
-									ssoType?: string | undefined;
-							  }[]
-							| undefined;
-						/**
-						 * @type boolean | undefined
-						 */
-						viaOTP?: PayloadViaOTPEnumKey | undefined;
-						/**
-						 * @type boolean | undefined
-						 */
-						viaGithub?: PayloadViaGithubEnumKey | undefined;
-						/**
-						 * @type boolean | undefined
-						 */
-						viaGitlab?: PayloadViaGitlabEnumKey | undefined;
-						/**
-						 * @type boolean | undefined
-						 */
-						viaBitbucket?: PayloadViaBitbucketEnumKey | undefined;
-						/**
-						 * @type boolean | undefined
-						 */
-						viaGoogle?: PayloadViaGoogleEnumKey | undefined;
-						/**
-						 * @type boolean | undefined
-						 */
-						viaApple?: PayloadViaAppleEnumKey | undefined;
-						/**
-						 * @type boolean | undefined
-						 */
-						viaSamlSso?: PayloadViaSamlSsoEnumKey | undefined;
-						/**
-						 * @type boolean | undefined
-						 */
-						viaPasskey?: PayloadViaPasskeyEnumKey | undefined;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						email: string;
-						/**
-						 * @type string
-						 */
-						bitbucketLogin: string;
-						/**
-						 * @type string
-						 */
-						bitbucketEmail: string;
-						/**
-						 * @type string
-						 */
-						bitbucketName: string;
-						/**
-						 * @type string
-						 */
-						zeitAccount: string;
-						/**
-						 * @type string
-						 */
-						zeitAccountType: string;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						email: string;
-						/**
-						 * @type string
-						 */
-						githubLogin: string;
-						/**
-						 * @type string
-						 */
-						zeitAccount: string;
-						/**
-						 * @type string
-						 */
-						zeitAccountType: string;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						email: string;
-						/**
-						 * @type string
-						 */
-						gitlabLogin: string;
-						/**
-						 * @type string
-						 */
-						gitlabEmail: string;
-						/**
-						 * @type string
-						 */
-						gitlabName: string;
-						/**
-						 * @type string
-						 */
-						zeitAccount: string;
-						/**
-						 * @type string
-						 */
-						zeitAccountType: string;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						drainUrl: string | null;
-						/**
-						 * @type string | undefined
-						 */
-						integrationName?: string | undefined;
-				  }
-				| {
-						/**
 						 * @type string
 						 */
 						projectId: string;
@@ -9124,2913 +10643,6 @@ export type UserEvent = {
 						 * @type string
 						 */
 						projectName: string;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectName: string;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						plan: string;
-						/**
-						 * @type object | undefined
-						 */
-						removedUsers?:
-							| {
-									[key: string]: {
-										/**
-										 * @type string
-										 */
-										role: RoleEnumKey;
-										/**
-										 * @type boolean
-										 */
-										confirmed: ConfirmedEnumKey;
-										/**
-										 * @type number | undefined
-										 */
-										confirmedAt?: number | undefined;
-										/**
-										 * @type object | undefined
-										 */
-										joinedFrom?:
-											| {
-													/**
-													 * @type string
-													 */
-													origin: JoinedFromOriginEnumKey;
-													/**
-													 * @type string | undefined
-													 */
-													commitId?: string | undefined;
-													/**
-													 * @type string | undefined
-													 */
-													repoId?: string | undefined;
-													/**
-													 * @type string | undefined
-													 */
-													repoPath?: string | undefined;
-													gitUserId?: (string | number) | undefined;
-													/**
-													 * @type string | undefined
-													 */
-													gitUserLogin?: string | undefined;
-													/**
-													 * @type string | undefined
-													 */
-													ssoUserId?: string | undefined;
-													/**
-													 * @type number | undefined
-													 */
-													ssoConnectedAt?: number | undefined;
-													/**
-													 * @type string | undefined
-													 */
-													idpUserId?: string | undefined;
-													/**
-													 * @type string | undefined
-													 */
-													dsyncUserId?: string | undefined;
-													/**
-													 * @type number | undefined
-													 */
-													dsyncConnectedAt?: number | undefined;
-											  }
-											| undefined;
-									};
-							  }
-							| undefined;
-						/**
-						 * @type string | undefined
-						 */
-						prevPlan?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						priorPlan?: string | undefined;
-						/**
-						 * @type boolean | undefined
-						 */
-						isDowngrade?: PayloadIsDowngradeEnumKey | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						userAgent?: string | undefined;
-						/**
-						 * @type boolean | undefined
-						 */
-						isReactivate?: PayloadIsReactivateEnumKey | undefined;
-						/**
-						 * @type boolean | undefined
-						 */
-						isTrialUpgrade?: PayloadIsTrialUpgradeEnumKey | undefined;
-						/**
-						 * @description Whether the plan change was system-initiated rather than human-initiated.
-						 * @type boolean | undefined
-						 */
-						automated?: PayloadAutomatedEnumKey | undefined;
-						/**
-						 * @description Why the plan changed. For downgrades, this is a {@link DowngradeReason} from `@api/pubsub-types` (e.g. `user_downgrade`, `trial_expired`).
-						 * @type string | undefined
-						 */
-						reason?: string | undefined;
-						/**
-						 * @type number | undefined
-						 */
-						timestamp?: number | undefined;
-						/**
-						 * @type number | undefined
-						 */
-						removedMemberCount?: number | undefined;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type string
-						 */
-						branch: string;
-				  }
-				| {
-						/**
-						 * @type string | undefined
-						 */
-						projectName?: string | undefined;
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type object
-						 */
-						projectAnalytics: {
-							/**
-							 * @type string
-							 */
-							id: string;
-							/**
-							 * @type number
-							 */
-							canceledAt?: (number | null) | undefined;
-							/**
-							 * @type number
-							 */
-							disabledAt: number;
-							/**
-							 * @type number
-							 */
-							enabledAt: number;
-							/**
-							 * @type number | undefined
-							 */
-							paidAt?: number | undefined;
-							/**
-							 * @type number
-							 */
-							sampleRatePercent?: (number | null) | undefined;
-							/**
-							 * @type number
-							 */
-							spendLimitInDollars?: (number | null) | undefined;
-						} | null;
-						/**
-						 * @type object
-						 */
-						prevProjectAnalytics: {
-							/**
-							 * @type string
-							 */
-							id: string;
-							/**
-							 * @type number
-							 */
-							canceledAt?: (number | null) | undefined;
-							/**
-							 * @type number
-							 */
-							disabledAt: number;
-							/**
-							 * @type number
-							 */
-							enabledAt: number;
-							/**
-							 * @type number | undefined
-							 */
-							paidAt?: number | undefined;
-							/**
-							 * @type number
-							 */
-							sampleRatePercent?: (number | null) | undefined;
-							/**
-							 * @type number
-							 */
-							spendLimitInDollars?: (number | null) | undefined;
-						} | null;
-				  }
-				| {
-						/**
-						 * @type string | undefined
-						 */
-						projectName?: string | undefined;
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type object | undefined
-						 */
-						projectAnalytics?:
-							| {
-									[key: string]: unknown;
-							  }
-							| undefined;
-						/**
-						 * @type object
-						 */
-						prevProjectAnalytics?:
-							| ({
-									[key: string]: unknown;
-							  } | null)
-							| undefined;
-				  }
-				| {
-						/**
-						 * @type string | undefined
-						 */
-						projectName?: string | undefined;
-						/**
-						 * @type string
-						 */
-						projectId: string;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type string
-						 */
-						action: PayloadActionEnum6Key;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type object | undefined
-						 */
-						previous?:
-							| {
-									/**
-									 * @type string
-									 */
-									gitProvider: PreviousGitProviderEnumKey;
-									/**
-									 * @type string
-									 */
-									gitRepoId: string;
-									/**
-									 * @type string
-									 */
-									gitRepositoryName: string;
-							  }
-							| undefined;
-						/**
-						 * @type object
-						 */
-						next: {
-							/**
-							 * @type string
-							 */
-							gitProvider: NextGitProviderEnumKey;
-							/**
-							 * @type string
-							 */
-							gitRepoId: string;
-							/**
-							 * @type string
-							 */
-							gitRepositoryName: string;
-						};
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type string
-						 */
-						gitProvider: PayloadGitProviderEnumKey;
-						/**
-						 * @type string
-						 */
-						gitRepoId: string;
-						/**
-						 * @type string
-						 */
-						gitRepositoryName: string;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type boolean
-						 */
-						onPullRequest: PayloadOnPullRequestEnumKey;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type boolean
-						 */
-						onCommit: PayloadOnCommitEnumKey;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type boolean
-						 */
-						disableRepositoryDispatchEvents: PayloadDisableRepositoryDispatchEventsEnumKey;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type string
-						 */
-						createDeployments: PayloadCreateDeploymentsEnumKey;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type boolean
-						 */
-						requireVerifiedCommits: PayloadRequireVerifiedCommitsEnumKey;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type boolean
-						 */
-						gitLFS: PayloadGitLFSEnumKey;
-				  }
-				| {
-						/**
-						 * @type string | undefined
-						 */
-						projectId?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						projectName?: string | undefined;
-						ssoProtection:
-							| (
-									| {
-											/**
-											 * @type string
-											 */
-											deploymentType: SsoProtectionDeploymentTypeEnumKey;
-											/**
-											 * @type string
-											 */
-											cve55182MigrationAppliedFrom?:
-												| (SsoProtectionCve55182MigrationAppliedFromEnumKey | null)
-												| undefined;
-									  }
-									| PayloadSsoProtectionEnumKey
-							  )
-							| null;
-						oldSsoProtection:
-							| (
-									| {
-											/**
-											 * @type string
-											 */
-											deploymentType: OldSsoProtectionDeploymentTypeEnumKey;
-											/**
-											 * @type string
-											 */
-											cve55182MigrationAppliedFrom?:
-												| (OldSsoProtectionCve55182MigrationAppliedFromEnumKey | null)
-												| undefined;
-									  }
-									| PayloadOldSsoProtectionEnumKey
-							  )
-							| null;
-				  }
-				| {
-						/**
-						 * @type string | undefined
-						 */
-						projectId?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						projectName?: string | undefined;
-						passwordProtection:
-							| (
-									| {
-											/**
-											 * @type string
-											 */
-											deploymentType: PasswordProtectionDeploymentTypeEnumKey;
-									  }
-									| PayloadPasswordProtectionEnumKey
-							  )
-							| null;
-						oldPasswordProtection:
-							| (
-									| {
-											/**
-											 * @type string
-											 */
-											deploymentType: OldPasswordProtectionDeploymentTypeEnumKey;
-									  }
-									| PayloadOldPasswordProtectionEnumKey
-							  )
-							| null;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type string
-						 */
-						trustedIps?: (PayloadTrustedIpsEnumKey | null) | undefined;
-						/**
-						 * @type string
-						 */
-						oldTrustedIps?: (PayloadOldTrustedIpsEnumKey | null) | undefined;
-						/**
-						 * @type array
-						 */
-						addedAddresses?: (string[] | null) | undefined;
-						/**
-						 * @type array
-						 */
-						removedAddresses?: (string[] | null) | undefined;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type object
-						 */
-						optionsAllowlist?:
-							| ({
-									/**
-									 * @type array
-									 */
-									paths: {
-										/**
-										 * @type string
-										 */
-										value: string;
-									}[];
-							  } | null)
-							| undefined;
-						/**
-						 * @type object
-						 */
-						oldOptionsAllowlist?:
-							| ({
-									/**
-									 * @type array
-									 */
-									paths: {
-										/**
-										 * @type string
-										 */
-										value: string;
-									}[];
-							  } | null)
-							| undefined;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type string
-						 */
-						action: PayloadActionEnum7Key;
-						/**
-						 * @type boolean | undefined
-						 */
-						isEnvVar?: PayloadIsEnvVarEnumKey | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						note?: string | undefined;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						name: string;
-						/**
-						 * @type string
-						 */
-						ownerId: string;
-				  }
-				| {
-						/**
-						 * @type object
-						 */
-						team: {
-							/**
-							 * @type string
-							 */
-							id: string;
-							/**
-							 * @type string
-							 */
-							name: string;
-						};
-						/**
-						 * @type object
-						 */
-						project: {
-							/**
-							 * @type string
-							 */
-							id: string;
-							/**
-							 * @type string | undefined
-							 */
-							name?: string | undefined;
-							/**
-							 * @type array
-							 */
-							oldConnectConfigurations:
-								| {
-										envId: string | OldConnectConfigurationsEnvIdEnumKey;
-										/**
-										 * @type string
-										 */
-										connectConfigurationId: string;
-										/**
-										 * @type string | undefined
-										 */
-										dc?: string | undefined;
-										/**
-										 * @type boolean
-										 */
-										passive: OldConnectConfigurationsPassiveEnumKey;
-										/**
-										 * @type boolean
-										 */
-										buildsEnabled: OldConnectConfigurationsBuildsEnabledEnumKey;
-										/**
-										 * @type object | undefined
-										 */
-										aws?:
-											| {
-													/**
-													 * @type array
-													 */
-													subnetIds: string[];
-													/**
-													 * @type string | undefined
-													 */
-													securityGroupId?: string | undefined;
-											  }
-											| undefined;
-										/**
-										 * @type number
-										 */
-										createdAt: number;
-										/**
-										 * @type number
-										 */
-										updatedAt: number;
-								  }[]
-								| null;
-							/**
-							 * @type array
-							 */
-							newConnectConfigurations:
-								| {
-										envId: string | NewConnectConfigurationsEnvIdEnumKey;
-										/**
-										 * @type string
-										 */
-										connectConfigurationId: string;
-										/**
-										 * @type string | undefined
-										 */
-										dc?: string | undefined;
-										/**
-										 * @type boolean
-										 */
-										passive: NewConnectConfigurationsPassiveEnumKey;
-										/**
-										 * @type boolean
-										 */
-										buildsEnabled: NewConnectConfigurationsBuildsEnabledEnumKey;
-										/**
-										 * @type object | undefined
-										 */
-										aws?:
-											| {
-													/**
-													 * @type array
-													 */
-													subnetIds: string[];
-													/**
-													 * @type string | undefined
-													 */
-													securityGroupId?: string | undefined;
-											  }
-											| undefined;
-										/**
-										 * @type number
-										 */
-										createdAt: number;
-										/**
-										 * @type number
-										 */
-										updatedAt: number;
-								  }[]
-								| null;
-						};
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string | undefined
-						 */
-						reasonCode?: PayloadReasonCodeEnumKey | undefined;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type boolean
-						 */
-						enabled: PayloadEnabledEnum2Key | null;
-						/**
-						 * @type string
-						 */
-						environment: PayloadEnvironmentEnumKey;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						environment: PayloadEnvironmentEnumKey;
-						/**
-						 * @type string
-						 */
-						enabled: PayloadEnabledEnum3Key;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type string
-						 */
-						previewDeploymentSuffix: string | null;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string | undefined
-						 */
-						reasonCode?: PayloadReasonCodeEnum2Key | undefined;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						source: string;
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type object
-						 */
-						previous: {
-							/**
-							 * @type string | undefined
-							 */
-							issuerMode?: PreviousIssuerModeEnumKey | undefined;
-						};
-						/**
-						 * @type object
-						 */
-						next: {
-							/**
-							 * @type string
-							 */
-							issuerMode: NextIssuerModeEnumKey;
-						};
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type object
-						 */
-						next: {
-							/**
-							 * @type object
-							 */
-							project: {
-								/**
-								 * @type string | undefined
-								 */
-								id?: string | undefined;
-								/**
-								 * @type object
-								 */
-								staticIps: {
-									/**
-									 * @type boolean | undefined
-									 */
-									builds?: StaticIpsBuildsEnumKey | undefined;
-									/**
-									 * @type boolean
-									 */
-									enabled: StaticIpsEnabledEnumKey;
-									/**
-									 * @type array | undefined
-									 */
-									regions?: string[] | undefined;
-								};
-							};
-						};
-						/**
-						 * @type object
-						 */
-						previous: {
-							/**
-							 * @type object
-							 */
-							project: {
-								/**
-								 * @type string | undefined
-								 */
-								id?: string | undefined;
-								/**
-								 * @type object
-								 */
-								staticIps: {
-									/**
-									 * @type boolean | undefined
-									 */
-									builds?: StaticIpsBuildsEnumKey | undefined;
-									/**
-									 * @type boolean
-									 */
-									enabled: StaticIpsEnabledEnumKey;
-									/**
-									 * @type array | undefined
-									 */
-									regions?: string[] | undefined;
-								};
-							};
-						};
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type boolean
-						 */
-						enableAffectedProjectsDeployments: PayloadEnableAffectedProjectsDeploymentsEnumKey;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type boolean
-						 */
-						autoAssignCustomDomains: PayloadAutoAssignCustomDomainsEnumKey;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type object
-						 */
-						previous: object;
-						/**
-						 * @type object
-						 */
-						next: object;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type boolean
-						 */
-						previewDeploymentsEnabled: PayloadPreviewDeploymentsEnabledEnumKey;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type string
-						 */
-						customEnvironmentId: string;
-						/**
-						 * @type string
-						 */
-						customEnvironmentSlug: string;
-						/**
-						 * @type object
-						 */
-						previous: {
-							/**
-							 * @type object | undefined
-							 */
-							branchMatcher?:
-								| {
-										/**
-										 * @description The type of matching to perform
-										 * @type string
-										 */
-										type: BranchMatcherTypeEnumKey;
-										/**
-										 * @description The pattern to match against branch names
-										 * @type string
-										 */
-										pattern: string;
-								  }
-								| undefined;
-						};
-						/**
-						 * @type object
-						 */
-						next: {
-							/**
-							 * @type object | undefined
-							 */
-							branchMatcher?:
-								| {
-										/**
-										 * @description The type of matching to perform
-										 * @type string
-										 */
-										type: BranchMatcherTypeEnumKey;
-										/**
-										 * @description The pattern to match against branch names
-										 * @type string
-										 */
-										pattern: string;
-								  }
-								| undefined;
-						};
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type string
-						 */
-						customEnvironmentId: string;
-						/**
-						 * @type string
-						 */
-						customEnvironmentSlug: string;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type string
-						 */
-						newProjectName: string;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type boolean
-						 */
-						productionDeploymentsFastLane: PayloadProductionDeploymentsFastLaneEnumKey;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type boolean
-						 */
-						sourceFilesOutsideRootDirectory: PayloadSourceFilesOutsideRootDirectoryEnumKey;
-				  }
-				| {
-						/**
-						 * @type string | undefined
-						 */
-						projectId?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						projectName?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						buildMachineType?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						oldBuildMachineType?: string | undefined;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type boolean
-						 */
-						elasticConcurrencyEnabled: PayloadElasticConcurrencyEnabledEnumKey;
-						/**
-						 * @type boolean
-						 */
-						oldElasticConcurrencyEnabled: PayloadOldElasticConcurrencyEnabledEnumKey;
-						/**
-						 * @type string | undefined
-						 */
-						buildQueueConfiguration?: PayloadBuildQueueConfigurationEnumKey | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						oldBuildQueueConfiguration?: PayloadOldBuildQueueConfigurationEnumKey | undefined;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type object
-						 */
-						previous: {
-							/**
-							 * @type number
-							 */
-							functionDefaultTimeout: number | null;
-						};
-						/**
-						 * @type object
-						 */
-						next: {
-							/**
-							 * @type number
-							 */
-							functionDefaultTimeout: number;
-						};
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type object
-						 */
-						previous: {
-							/**
-							 * @type string
-							 */
-							functionDefaultMemoryType: string | null;
-						};
-						/**
-						 * @type object
-						 */
-						next: {
-							/**
-							 * @type string
-							 */
-							functionDefaultMemoryType: string;
-						};
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type object
-						 */
-						previous: {
-							/**
-							 * @type array
-							 */
-							functionDefaultRegions: string[] | null;
-						};
-						/**
-						 * @type object
-						 */
-						next: {
-							/**
-							 * @type array
-							 */
-							functionDefaultRegions: string[];
-						};
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type object
-						 */
-						previous: {
-							/**
-							 * @type boolean
-							 */
-							functionZeroConfigFailover: PreviousFunctionZeroConfigFailoverEnumKey | null;
-						};
-						/**
-						 * @type object
-						 */
-						next: {
-							/**
-							 * @type boolean
-							 */
-							functionZeroConfigFailover: NextFunctionZeroConfigFailoverEnumKey;
-						};
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type object
-						 */
-						previous: {
-							/**
-							 * @type string | undefined
-							 */
-							commandForIgnoringBuildStep?: string | undefined;
-						};
-						/**
-						 * @type object
-						 */
-						next: {
-							/**
-							 * @type string | undefined
-							 */
-							commandForIgnoringBuildStep?: string | undefined;
-						};
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type object
-						 */
-						next: {
-							/**
-							 * @type number
-							 */
-							skewProtectionBoundaryAt: number;
-						};
-						/**
-						 * @type object
-						 */
-						previous: {
-							/**
-							 * @type number | undefined
-							 */
-							skewProtectionBoundaryAt?: number | undefined;
-						};
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type object
-						 */
-						next: {
-							/**
-							 * @type number
-							 */
-							skewProtectionMaxAge: number;
-						};
-						/**
-						 * @type object
-						 */
-						previous: {
-							/**
-							 * @type number | undefined
-							 */
-							skewProtectionMaxAge?: number | undefined;
-						};
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type object
-						 */
-						next: {
-							/**
-							 * @type array
-							 */
-							skewProtectionAllowedDomains: string[];
-						};
-						/**
-						 * @type object
-						 */
-						previous: {
-							/**
-							 * @type array | undefined
-							 */
-							skewProtectionAllowedDomains?: string[] | undefined;
-						};
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type boolean
-						 */
-						customerSupportCodeVisibility: PayloadCustomerSupportCodeVisibilityEnumKey;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type boolean
-						 */
-						directoryListing: PayloadDirectoryListingEnumKey;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type boolean
-						 */
-						gitForkProtection: PayloadGitForkProtectionEnumKey;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type boolean
-						 */
-						protectedSourcemaps: PayloadProtectedSourcemapsEnumKey;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type boolean
-						 */
-						publicSource: PayloadPublicSourceEnumKey;
-				  }
-				| {
-						/**
-						 * @type string | undefined
-						 */
-						projectId?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						projectName?: string | undefined;
-						/**
-						 * @type object
-						 */
-						previous: {
-							/**
-							 * @type string | undefined
-							 */
-							expiration?: string | undefined;
-							/**
-							 * @type string | undefined
-							 */
-							expirationProduction?: string | undefined;
-							/**
-							 * @type string | undefined
-							 */
-							expirationCanceled?: string | undefined;
-							/**
-							 * @type string | undefined
-							 */
-							expirationErrored?: string | undefined;
-						};
-						/**
-						 * @type object
-						 */
-						next: {
-							/**
-							 * @type string | undefined
-							 */
-							expiration?: string | undefined;
-							/**
-							 * @type string | undefined
-							 */
-							expirationProduction?: string | undefined;
-							/**
-							 * @type string | undefined
-							 */
-							expirationCanceled?: string | undefined;
-							/**
-							 * @type string | undefined
-							 */
-							expirationErrored?: string | undefined;
-						};
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type string | undefined
-						 */
-						targetDeploymentId?: string | undefined;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type string | undefined
-						 */
-						targetDeploymentId?: string | undefined;
-						/**
-						 * @type number | undefined
-						 */
-						newTargetPercentage?: number | undefined;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						gitProvider: string;
-						/**
-						 * @type string
-						 */
-						gitProviderGroupDescriptor: string;
-						/**
-						 * @type string
-						 */
-						gitScope: string;
-				  }
-				| {
-						/**
-						 * @type number
-						 */
-						instances: number;
-						/**
-						 * @type string
-						 */
-						url: string;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						email: string;
-						/**
-						 * @type boolean
-						 */
-						verified: PayloadVerifiedEnumKey;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						email: string;
-				  }
-				| {
-						/**
-						 * @type object
-						 */
-						team: {
-							/**
-							 * @type string
-							 */
-							id: string;
-							/**
-							 * @type string | undefined
-							 */
-							name?: string | undefined;
-						};
-						/**
-						 * @type object | undefined
-						 */
-						previousRule?:
-							| {
-									/**
-									 * @type string
-									 */
-									email: string;
-							  }
-							| undefined;
-						/**
-						 * @type object | undefined
-						 */
-						nextRule?:
-							| {
-									/**
-									 * @type string
-									 */
-									email: string;
-							  }
-							| undefined;
-				  }
-				| {
-						/**
-						 * @type object
-						 */
-						team: {
-							/**
-							 * @type string
-							 */
-							id: string;
-							/**
-							 * @type string | undefined
-							 */
-							name?: string | undefined;
-						};
-						/**
-						 * @type object
-						 */
-						previousRule: {
-							/**
-							 * @type string
-							 */
-							email: string;
-						};
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						uid: string;
-						name:
-							| string
-							| {
-									/**
-									 * @type string
-									 */
-									name: string;
-							  };
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						oldName: string;
-						/**
-						 * @type string
-						 */
-						newName: string;
-						/**
-						 * @type string | undefined
-						 */
-						uid?: string | undefined;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						bio: string;
-				  }
-				| {
-						/**
-						 * @type object
-						 */
-						scalingRules: {
-							[key: string]: {
-								/**
-								 * @type number
-								 */
-								min: number;
-								/**
-								 * @type number
-								 */
-								max: number;
-							};
-						};
-						/**
-						 * @type number
-						 */
-						min: number;
-						/**
-						 * @type number
-						 */
-						max: number;
-						/**
-						 * @type string
-						 */
-						url: string;
-				  }
-				| {
-						/**
-						 * @type object
-						 */
-						budget: {
-							/**
-							 * @description Represents a budget for tracking and notifying teams on their spending.
-							 * @type object
-							 */
-							budgetItem: {
-								/**
-								 * @description The budget type
-								 * @type string
-								 */
-								type: BudgetItemTypeEnumKey;
-								/**
-								 * @description Budget amount (USD / dollars)
-								 * @type number
-								 */
-								fixedBudget: number;
-								/**
-								 * @description Array of the last 3 months of spend data
-								 * @type array
-								 */
-								previousSpend: number[];
-								/**
-								 * @description Array of 50, 75, 100 to keep track of notifications sent out
-								 * @type array
-								 */
-								notifiedAt: number[];
-								/**
-								 * @description Webhook id that corresponds to a webhook in Cosmos webhook collection
-								 * @type string | undefined
-								 */
-								webhookId?: string | undefined;
-								/**
-								 * @description Keep track if the webhook has been called for the month
-								 * @type boolean | undefined
-								 */
-								webhookNotified?: BudgetItemWebhookNotifiedEnumKey | undefined;
-								/**
-								 * @description Date time when budget is created
-								 * @type number
-								 */
-								createdAt: number;
-								/**
-								 * @description Date time when budget is updated last
-								 * @type number | undefined
-								 */
-								updatedAt?: number | undefined;
-								/**
-								 * @description Is the budget currently active for a customer
-								 * @type boolean
-								 */
-								isActive: BudgetItemIsActiveEnumKey;
-								/**
-								 * @description Should all projects be paused if budget is exceeded
-								 * @type boolean | undefined
-								 */
-								pauseProjects?: BudgetItemPauseProjectsEnumKey | undefined;
-								/**
-								 * @description The acive pricing plan the team is billed with
-								 * @type string | undefined
-								 */
-								pricingPlan?: BudgetItemPricingPlanEnumKey | undefined;
-								/**
-								 * @description Partition key
-								 * @type string
-								 */
-								teamId: string;
-								/**
-								 * @description Sort key that needs to be unique per teamId
-								 * @type string
-								 */
-								id: string;
-							};
-						};
-				  }
-				| {
-						/**
-						 * @description Represents a budget for tracking and notifying teams on their spending.
-						 * @type object
-						 */
-						budget: {
-							/**
-							 * @description The budget type
-							 * @type string
-							 */
-							type: BudgetTypeEnumKey;
-							/**
-							 * @description Budget amount (USD / dollars)
-							 * @type number
-							 */
-							fixedBudget: number;
-							/**
-							 * @description Array of the last 3 months of spend data
-							 * @type array
-							 */
-							previousSpend: number[];
-							/**
-							 * @description Array of 50, 75, 100 to keep track of notifications sent out
-							 * @type array
-							 */
-							notifiedAt: number[];
-							/**
-							 * @description Webhook id that corresponds to a webhook in Cosmos webhook collection
-							 * @type string | undefined
-							 */
-							webhookId?: string | undefined;
-							/**
-							 * @description Keep track if the webhook has been called for the month
-							 * @type boolean | undefined
-							 */
-							webhookNotified?: BudgetWebhookNotifiedEnumKey | undefined;
-							/**
-							 * @description Date time when budget is created
-							 * @type number
-							 */
-							createdAt: number;
-							/**
-							 * @description Date time when budget is updated last
-							 * @type number | undefined
-							 */
-							updatedAt?: number | undefined;
-							/**
-							 * @description Is the budget currently active for a customer
-							 * @type boolean
-							 */
-							isActive: BudgetIsActiveEnumKey;
-							/**
-							 * @description Should all projects be paused if budget is exceeded
-							 * @type boolean | undefined
-							 */
-							pauseProjects?: BudgetPauseProjectsEnumKey | undefined;
-							/**
-							 * @description The acive pricing plan the team is billed with
-							 * @type string | undefined
-							 */
-							pricingPlan?: BudgetPricingPlanEnumKey | undefined;
-							/**
-							 * @description Partition key
-							 * @type string
-							 */
-							teamId: string;
-							/**
-							 * @description Sort key that needs to be unique per teamId
-							 * @type string
-							 */
-							id: string;
-						};
-				  }
-				| {
-						/**
-						 * @description Represents a budget for tracking and notifying teams on their spending.
-						 * @type object
-						 */
-						budget: {
-							/**
-							 * @description The budget type
-							 * @type string
-							 */
-							type: BudgetTypeEnumKey;
-							/**
-							 * @description Budget amount (USD / dollars)
-							 * @type number
-							 */
-							fixedBudget: number;
-							/**
-							 * @description Array of the last 3 months of spend data
-							 * @type array
-							 */
-							previousSpend: number[];
-							/**
-							 * @description Array of 50, 75, 100 to keep track of notifications sent out
-							 * @type array
-							 */
-							notifiedAt: number[];
-							/**
-							 * @description Webhook id that corresponds to a webhook in Cosmos webhook collection
-							 * @type string | undefined
-							 */
-							webhookId?: string | undefined;
-							/**
-							 * @description Keep track if the webhook has been called for the month
-							 * @type boolean | undefined
-							 */
-							webhookNotified?: BudgetWebhookNotifiedEnumKey | undefined;
-							/**
-							 * @description Date time when budget is created
-							 * @type number
-							 */
-							createdAt: number;
-							/**
-							 * @description Date time when budget is updated last
-							 * @type number | undefined
-							 */
-							updatedAt?: number | undefined;
-							/**
-							 * @description Is the budget currently active for a customer
-							 * @type boolean
-							 */
-							isActive: BudgetIsActiveEnumKey;
-							/**
-							 * @description Should all projects be paused if budget is exceeded
-							 * @type boolean | undefined
-							 */
-							pauseProjects?: BudgetPauseProjectsEnumKey | undefined;
-							/**
-							 * @description The acive pricing plan the team is billed with
-							 * @type string | undefined
-							 */
-							pricingPlan?: BudgetPricingPlanEnumKey | undefined;
-							/**
-							 * @description Partition key
-							 * @type string
-							 */
-							teamId: string;
-							/**
-							 * @description Sort key that needs to be unique per teamId
-							 * @type string
-							 */
-							id: string;
-						};
-						/**
-						 * @type string | undefined
-						 */
-						webhookUrl?: string | undefined;
-				  }
-				| {
-						/**
-						 * @type string | undefined
-						 */
-						webhookUrl?: string | undefined;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						id: string;
-						/**
-						 * @type string | undefined
-						 */
-						name?: string | undefined;
-						/**
-						 * @type number | undefined
-						 */
-						computeUnitsMax?: number | undefined;
-						/**
-						 * @type number | undefined
-						 */
-						computeUnitsMin?: number | undefined;
-						/**
-						 * @type number | undefined
-						 */
-						suspendTimeoutSeconds?: number | undefined;
-						/**
-						 * @type string
-						 */
-						type: PayloadTypeEnum2Key;
-						/**
-						 * @type string | undefined
-						 */
-						access?: PayloadAccessEnumKey | undefined;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						storeType: PayloadStoreTypeEnumKey;
-				  }
-				| {
-						/**
-						 * @type object
-						 */
-						store: {
-							/**
-							 * @type string
-							 */
-							name: string;
-							/**
-							 * @type string
-							 */
-							id: string;
-						};
-						/**
-						 * @type string | undefined
-						 */
-						ownerId?: string | undefined;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						slug: string;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						slug: string;
-						/**
-						 * @type string
-						 */
-						teamId: string;
-						/**
-						 * @type string
-						 */
-						by: string;
-						/**
-						 * @type string | undefined
-						 */
-						byUid?: string | undefined;
-						/**
-						 * @type array | undefined
-						 */
-						reasons?:
-							| {
-									/**
-									 * @type string
-									 */
-									slug: string;
-									/**
-									 * @type string
-									 */
-									description: string;
-							  }[]
-							| undefined;
-						/**
-						 * @type object | undefined
-						 */
-						removedUsers?:
-							| {
-									[key: string]: {
-										/**
-										 * @type string
-										 */
-										role: RoleEnumKey;
-										/**
-										 * @type boolean
-										 */
-										confirmed: ConfirmedEnumKey;
-										/**
-										 * @type number | undefined
-										 */
-										confirmedAt?: number | undefined;
-									};
-							  }
-							| undefined;
-						/**
-						 * @type number | undefined
-						 */
-						removedMemberCount?: number | undefined;
-						/**
-						 * @type number | undefined
-						 */
-						timestamp?: number | undefined;
-				  }
-				| {
-						/**
-						 * @type number
-						 */
-						deletedCount: number;
-						/**
-						 * @type array
-						 */
-						inviteIds: string[];
-				  }
-				| {
-						/**
-						 * @type string | undefined
-						 */
-						directoryType?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						ssoType?: string | undefined;
-						/**
-						 * @type object | undefined
-						 */
-						invitedUser?:
-							| {
-									/**
-									 * @type string
-									 */
-									username: string;
-									/**
-									 * @type string
-									 */
-									email: string;
-							  }
-							| undefined;
-						/**
-						 * @type string | undefined
-						 */
-						invitedEmail?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						invitationRole?: string | undefined;
-						/**
-						 * @type array | undefined
-						 */
-						entitlements?: string[] | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						invitedUid?: string | undefined;
-				  }
-				| {
-						/**
-						 * @type object | undefined
-						 */
-						deletedUser?:
-							| {
-									/**
-									 * @type string
-									 */
-									username: string;
-									/**
-									 * @type string
-									 */
-									email: string;
-							  }
-							| undefined;
-						/**
-						 * @type string | undefined
-						 */
-						deletedUid?: string | undefined;
-						/**
-						 * @type string
-						 */
-						githubUsername?: (string | null) | undefined;
-						/**
-						 * @type string
-						 */
-						gitlabUsername?: (string | null) | undefined;
-						/**
-						 * @type string
-						 */
-						bitbucketUsername?: (string | null) | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						directoryType?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						role?: PayloadRoleEnumKey | undefined;
-						/**
-						 * @description Why the member was removed. When removed due to a plan downgrade, this is a {@link DowngradeReason} from `@api/pubsub-types` (e.g. `trial_expired`, `user_downgrade`).
-						 * @type string | undefined
-						 */
-						reason?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						previousPlan?: PayloadPreviousPlanEnumKey | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						newPlan?: PayloadNewPlanEnumKey | undefined;
-						/**
-						 * @description Whether the removal was system-initiated rather than human-initiated.
-						 * @type boolean | undefined
-						 */
-						automated?: PayloadAutomatedEnum2Key | undefined;
-				  }
-				| {
-						/**
-						 * @type string | undefined
-						 */
-						role?: string | undefined;
-						/**
-						 * @type string
-						 */
-						uid: string;
-						/**
-						 * @type string | undefined
-						 */
-						origin?: string | undefined;
-						/**
-						 * @type array | undefined
-						 */
-						teamRoles?: string[] | undefined;
-						/**
-						 * @type array | undefined
-						 */
-						teamPermissions?: string[] | undefined;
-						/**
-						 * @type array | undefined
-						 */
-						entitlements?: string[] | undefined;
-				  }
-				| {
-						/**
-						 * @type string | undefined
-						 */
-						directoryType?: string | undefined;
-						/**
-						 * @type object | undefined
-						 */
-						updatedUser?:
-							| {
-									/**
-									 * @type string
-									 */
-									username: string;
-									/**
-									 * @type string
-									 */
-									email: string;
-							  }
-							| undefined;
-						/**
-						 * @type string | undefined
-						 */
-						role?: string | undefined;
-						/**
-						 * @type string
-						 */
-						previousRole: string;
-						/**
-						 * @type string | undefined
-						 */
-						updatedUid?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						origin?: string | undefined;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						entitlement: string;
-						/**
-						 * @type object
-						 */
-						user: {
-							/**
-							 * @type string
-							 */
-							id: string;
-							/**
-							 * @type string
-							 */
-							username: string;
-						};
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						entitlement: string;
-						/**
-						 * @type object
-						 */
-						user: {
-							/**
-							 * @type string
-							 */
-							id: string;
-							/**
-							 * @type string
-							 */
-							username: string;
-						};
-						/**
-						 * @type string | undefined
-						 */
-						previousCanceledAt?: string | undefined;
-				  }
-				| {
-						/**
-						 * @type boolean
-						 */
-						enforced: PayloadEnforcedEnumKey;
-				  }
-				| {
-						/**
-						 * @type string | undefined
-						 */
-						name?: string | undefined;
-				  }
-				| {
-						/**
-						 * @type string | undefined
-						 */
-						slug?: string | undefined;
-				  }
-				| {
-						/**
-						 * @description Represents configuration for remote caching
-						 * @type object | undefined
-						 */
-						remoteCaching?:
-							| {
-									/**
-									 * @type boolean | undefined
-									 */
-									enabled?: RemoteCachingEnabledEnumKey | undefined;
-							  }
-							| undefined;
-				  }
-				| {
-						/**
-						 * @type object
-						 */
-						previous: {
-							/**
-							 * @type boolean
-							 */
-							enabled: PreviousEnabledEnum2Key;
-							/**
-							 * @type boolean
-							 */
-							totpVerified: PreviousTotpVerifiedEnumKey;
-						};
-						/**
-						 * @type object
-						 */
-						next: {
-							/**
-							 * @type boolean
-							 */
-							enabled: NextEnabledEnum2Key;
-							/**
-							 * @type boolean
-							 */
-							totpVerified: NextTotpVerifiedEnumKey;
-						};
-				  }
-				| {
-						/**
-						 * @type boolean
-						 */
-						enabled: PayloadEnabledEnumKey;
-						/**
-						 * @type boolean
-						 */
-						totpVerified: PayloadTotpVerifiedEnumKey;
-				  }
-				| {
-						/**
-						 * @type boolean
-						 */
-						mfaEnabled: PayloadMfaEnabledEnumKey;
-				  }
-				| {
-						/**
-						 * @type boolean
-						 */
-						totp: PayloadTotpEnumKey;
-						/**
-						 * @type number
-						 */
-						recoveryCodes: number;
-						/**
-						 * @type string | undefined
-						 */
-						actorId?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						actorType?: PayloadActorTypeEnumKey | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						reason?: string | undefined;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						email: string;
-						/**
-						 * @type string
-						 */
-						prevEmail: string;
-				  }
-				| {
-						/**
-						 * @type number
-						 */
-						deletedAt?: (number | null) | undefined;
-						/**
-						 * @type string
-						 */
-						username: string;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						username: string;
-				  }
-				| {
-						/**
-						 * @type number | undefined
-						 */
-						price?: number | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						currency?: string | undefined;
-						/**
-						 * @type boolean | undefined
-						 */
-						enabled?: PayloadEnabledEnumKey | undefined;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						previewDeploymentSuffix?: (string | null) | undefined;
-						/**
-						 * @type string
-						 */
-						previousPreviewDeploymentSuffix?: (string | null) | undefined;
-				  }
-				| {
-						/**
-						 * @type number | undefined
-						 */
-						price?: number | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						currency?: string | undefined;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						invoiceId: string;
-						/**
-						 * @type number
-						 */
-						amount: number;
-						/**
-						 * @type string
-						 */
-						refundReason: string;
-						/**
-						 * @type number
-						 */
-						lineItemCount: number;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						invoiceId: string;
-						/**
-						 * @type string
-						 */
-						newInvoiceId: string;
-						/**
-						 * @type string
-						 */
-						settlementMethod: PayloadSettlementMethodEnumKey;
-						/**
-						 * @type number
-						 */
-						amount: number;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						paymentMethodId: string;
-						/**
-						 * @type string | undefined
-						 */
-						brand?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						last4?: string | undefined;
-				  }
-				| {
-						/**
-						 * @type string | undefined
-						 */
-						subscriptionId?: string | undefined;
-						/**
-						 * @type string
-						 */
-						planSlug: string;
-				  }
-				| {
-						/**
-						 * @type string | undefined
-						 */
-						subscriptionId?: string | undefined;
-						/**
-						 * @type string
-						 */
-						action: PayloadActionEnum8Key;
-						/**
-						 * @type object
-						 */
-						data: {
-							/**
-							 * @type string
-							 */
-							planSlug: DataPlanSlugEnumKey;
-							/**
-							 * @type string | undefined
-							 */
-							reason?: DataReasonEnumKey | undefined;
-						};
-				  }
-				| {
-						/**
-						 * @type string | undefined
-						 */
-						subscriptionId?: string | undefined;
-						/**
-						 * @type string
-						 */
-						action: PayloadActionEnum9Key;
-						/**
-						 * @type object
-						 */
-						data: {
-							/**
-							 * @type string
-							 */
-							planSlug: DataPlanSlugEnumKey;
-						};
-				  }
-				| {
-						/**
-						 * @type string | undefined
-						 */
-						subscriptionId?: string | undefined;
-						/**
-						 * @type string
-						 */
-						action: PayloadActionEnum10Key;
-						/**
-						 * @type object
-						 */
-						data: {
-							[key: string]: unknown;
-						};
-				  }
-				| {
-						/**
-						 * @type string | undefined
-						 */
-						subscriptionId?: string | undefined;
-						/**
-						 * @type array
-						 */
-						productAliases: string[];
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						teamName: string;
-						/**
-						 * @type string | undefined
-						 */
-						username?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						gitUsername?: string | undefined;
-						/**
-						 * @type string
-						 */
-						githubUsername?: (string | null) | undefined;
-						/**
-						 * @type string
-						 */
-						gitlabUsername?: (string | null) | undefined;
-						/**
-						 * @type string
-						 */
-						bitbucketUsername?: (string | null) | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						updatedUid?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						teamId?: string | undefined;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						teamName: string;
-						/**
-						 * @type string | undefined
-						 */
-						username?: string | undefined;
-						/**
-						 * @type string
-						 */
-						gitUsername?: (string | null) | undefined;
-						/**
-						 * @type string
-						 */
-						githubUsername?: (string | null) | undefined;
-						/**
-						 * @type string
-						 */
-						gitlabUsername?: (string | null) | undefined;
-						/**
-						 * @type string
-						 */
-						bitbucketUsername?: (string | null) | undefined;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						requestedTeamName: string;
-						/**
-						 * @type string | undefined
-						 */
-						requestedUserName?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						gitUsername?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						githubUsername?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						gitlabUsername?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						bitbucketUsername?: string | undefined;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type string
-						 */
-						originAccountName: string;
-						/**
-						 * @type string
-						 */
-						destinationAccountName: string;
-						/**
-						 * @type string
-						 */
-						destinationAccountId: string;
-						/**
-						 * @type string | undefined
-						 */
-						transferId?: string | undefined;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type string
-						 */
-						destinationAccountName: string | null;
-						/**
-						 * @type string | undefined
-						 */
-						transferId?: string | undefined;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						previousProjectName: string;
-						/**
-						 * @type string
-						 */
-						newProjectName: string;
-						/**
-						 * @type string
-						 */
-						destinationAccountName: string;
-						/**
-						 * @type string | undefined
-						 */
-						transferId?: string | undefined;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						previousProjectName: string;
-						/**
-						 * @type string
-						 */
-						newProjectName: string;
-						/**
-						 * @type string
-						 */
-						originAccountName: string;
-						/**
-						 * @type string | undefined
-						 */
-						transferId?: string | undefined;
-				  }
-				| {
-						/**
-						 * @type object
-						 */
-						project: {
-							/**
-							 * @type string
-							 */
-							name: string;
-							/**
-							 * @type string | undefined
-							 */
-							id?: string | undefined;
-						};
-						/**
-						 * @type object
-						 */
-						projectMembership: {
-							/**
-							 * @type string
-							 */
-							role: ProjectMembershipRoleEnumKey;
-							/**
-							 * @type string
-							 */
-							uid: string;
-							/**
-							 * @type number
-							 */
-							createdAt: number;
-							/**
-							 * @type string | undefined
-							 */
-							username?: string | undefined;
-						} | null;
-				  }
-				| {
-						/**
-						 * @type object
-						 */
-						project: {
-							/**
-							 * @type string
-							 */
-							name: string;
-							/**
-							 * @type string | undefined
-							 */
-							id?: string | undefined;
-						};
-						/**
-						 * @type object
-						 */
-						removedMembership: {
-							/**
-							 * @type string
-							 */
-							role: RemovedMembershipRoleEnumKey;
-							/**
-							 * @type string
-							 */
-							uid: string;
-							/**
-							 * @type number
-							 */
-							createdAt: number;
-							/**
-							 * @type string | undefined
-							 */
-							username?: string | undefined;
-						};
-				  }
-				| {
-						/**
-						 * @type object
-						 */
-						project: {
-							/**
-							 * @type string
-							 */
-							id: string;
-							/**
-							 * @type string
-							 */
-							name: string;
-						};
-						/**
-						 * @type object
-						 */
-						projectMembership: {
-							/**
-							 * @type string | undefined
-							 */
-							role?: ProjectMembershipRoleEnumKey | undefined;
-							/**
-							 * @type string | undefined
-							 */
-							uid?: string | undefined;
-							/**
-							 * @type number | undefined
-							 */
-							createdAt?: number | undefined;
-							/**
-							 * @type string | undefined
-							 */
-							username?: string | undefined;
-							/**
-							 * @type string | undefined
-							 */
-							previousRole?: ProjectMembershipPreviousRoleEnumKey | undefined;
-						};
-				  }
-				| {
-						/**
-						 * @type object
-						 */
-						project: {
-							/**
-							 * @type string
-							 */
-							name: string;
-							/**
-							 * @type string
-							 */
-							role: ProjectRoleEnumKey;
-							/**
-							 * @type string
-							 */
-							invitedUserName: string;
-							/**
-							 * @type string | undefined
-							 */
-							id?: string | undefined;
-							/**
-							 * @type string | undefined
-							 */
-							invitedUserId?: string | undefined;
-						};
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type array
-						 */
-						tags: string[];
-						/**
-						 * @type string | undefined
-						 */
-						target?: string | undefined;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type array
-						 */
-						srcImages: string[];
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						edgeConfigId: string;
-						/**
-						 * @type string
-						 */
-						edgeConfigSlug: string;
-						/**
-						 * @type string
-						 */
-						edgeConfigDigest: string;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						edgeConfigId: string;
-						/**
-						 * @type string
-						 */
-						edgeConfigSlug: string;
-						/**
-						 * @type string
-						 */
-						edgeConfigTokenId: string;
-						/**
-						 * @type string
-						 */
-						label: string;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						edgeConfigId: string;
-						/**
-						 * @type string
-						 */
-						edgeConfigSlug: string;
-						/**
-						 * @description ids of deleted tokens
-						 * @type array
-						 */
-						edgeConfigTokenIds: string[];
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						action: PayloadActionEnum11Key;
 				  }
 				| {
 						/**
@@ -12367,581 +10979,7 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
 						projectName: string;
-						/**
-						 * @type object | undefined
-						 */
-						projectWebAnalytics?:
-							| {
-									/**
-									 * @type string
-									 */
-									id: string;
-									/**
-									 * @type number | undefined
-									 */
-									disabledAt?: number | undefined;
-									/**
-									 * @type number | undefined
-									 */
-									canceledAt?: number | undefined;
-									/**
-									 * @type number | undefined
-									 */
-									enabledAt?: number | undefined;
-									/**
-									 * @type boolean | undefined
-									 */
-									hasData?: ProjectWebAnalyticsHasDataEnumKey | undefined;
-							  }
-							| undefined;
-						/**
-						 * @type object
-						 */
-						prevProjectWebAnalytics?:
-							| ({
-									/**
-									 * @type string
-									 */
-									id: string;
-									/**
-									 * @type number | undefined
-									 */
-									disabledAt?: number | undefined;
-									/**
-									 * @type number | undefined
-									 */
-									canceledAt?: number | undefined;
-									/**
-									 * @type number | undefined
-									 */
-									enabledAt?: number | undefined;
-									/**
-									 * @type boolean | undefined
-									 */
-									hasData?: PrevProjectWebAnalyticsHasDataEnumKey | undefined;
-							  } | null)
-							| undefined;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						tier: PayloadTierEnumKey;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						oldName: string;
-						/**
-						 * @type string
-						 */
-						newName: string;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						appName: string;
-						/**
-						 * @type string | undefined
-						 */
-						appId?: string | undefined;
-						/**
-						 * @type array
-						 */
-						scopes: PayloadScopesEnumKey[];
-						/**
-						 * @type array | undefined
-						 */
-						permissions?: PayloadPermissionsEnumKey[] | undefined;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						appName: string;
-						/**
-						 * @type string | undefined
-						 */
-						appId?: string | undefined;
-						/**
-						 * @type array
-						 */
-						nextScopes: PayloadNextScopesEnumKey[];
-						/**
-						 * @type array | undefined
-						 */
-						nextPermissions?: PayloadNextPermissionsEnumKey[] | undefined;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						appName: string;
-						/**
-						 * @type string | undefined
-						 */
-						appId?: string | undefined;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						appName: string;
-						/**
-						 * @type string | undefined
-						 */
-						appId?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						secretLastFourChars?: string | undefined;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						appName: string;
-						/**
-						 * @type string | undefined
-						 */
-						appId?: string | undefined;
-						/**
-						 * @type object | undefined
-						 */
-						resources?:
-							| {
-									/**
-									 * @type object
-									 */
-									projectIds: {
-										/**
-										 * @type string
-										 */
-										type: ProjectIdsTypeEnumKey;
-										/**
-										 * @type boolean
-										 */
-										required: ProjectIdsRequiredEnumKey;
-										/**
-										 * @type object
-										 */
-										items: {
-											/**
-											 * @type string
-											 */
-											type: ItemsTypeEnumKey;
-										};
-									};
-							  }
-							| undefined;
-						/**
-						 * @type array | undefined
-						 */
-						permissions?: PayloadPermissionsEnum2Key[] | undefined;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						appName: string;
-						/**
-						 * @type string | undefined
-						 */
-						appId?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						installationId?: string | undefined;
-						/**
-						 * @type object | undefined
-						 */
-						before?:
-							| {
-									/**
-									 * @type object | undefined
-									 */
-									resources?:
-										| {
-												/**
-												 * @type object
-												 */
-												projectIds: {
-													/**
-													 * @type string
-													 */
-													type: ProjectIdsTypeEnumKey;
-													/**
-													 * @type boolean
-													 */
-													required: ProjectIdsRequiredEnumKey;
-													/**
-													 * @type object
-													 */
-													items: {
-														/**
-														 * @type string
-														 */
-														type: ItemsTypeEnumKey;
-													};
-												};
-										  }
-										| undefined;
-									/**
-									 * @type array | undefined
-									 */
-									permissions?: BeforePermissionsEnumKey[] | undefined;
-							  }
-							| undefined;
-						/**
-						 * @type object | undefined
-						 */
-						after?:
-							| {
-									/**
-									 * @type object | undefined
-									 */
-									resources?:
-										| {
-												/**
-												 * @type object
-												 */
-												projectIds: {
-													/**
-													 * @type string
-													 */
-													type: ProjectIdsTypeEnumKey;
-													/**
-													 * @type boolean
-													 */
-													required: ProjectIdsRequiredEnumKey;
-													/**
-													 * @type object
-													 */
-													items: {
-														/**
-														 * @type string
-														 */
-														type: ItemsTypeEnumKey;
-													};
-												};
-										  }
-										| undefined;
-									/**
-									 * @type array | undefined
-									 */
-									permissions?: AfterPermissionsEnumKey[] | undefined;
-							  }
-							| undefined;
-				  }
-				| {
-						/**
-						 * @description The App\'s name at the moment this even was published (it may have changed since then).
-						 * @type string
-						 */
-						appName: string;
-						/**
-						 * @description The App\'s ID. Note that not all historical events have this field.
-						 * @type string | undefined
-						 */
-						appId?: string | undefined;
-						/**
-						 * @description Note that not all historical events have this field.
-						 * @type object | undefined
-						 */
-						app?:
-							| {
-									/**
-									 * @description The App\'s ID.
-									 * @type string
-									 */
-									id: string;
-									/**
-									 * @description The App\'s name at the moment this even was published (it may have changed since then).
-									 * @type string
-									 */
-									name: string;
-							  }
-							| undefined;
-						/**
-						 * @description UNIX timestamp in seconds. Tokens issued before this timestamp will be revoked. Note that not all historical events have this field.
-						 * @type number | undefined
-						 */
-						issuedBefore?: number | undefined;
-				  }
-				| {
-						/**
-						 * @type object
-						 */
-						team: {
-							/**
-							 * @type string
-							 */
-							id: string;
-							/**
-							 * @type string
-							 */
-							name: string;
-						};
-						/**
-						 * @type object
-						 */
-						configuration: {
-							/**
-							 * @type string
-							 */
-							id: string;
-							/**
-							 * @type string | undefined
-							 */
-							name?: string | undefined;
-						};
-						/**
-						 * @type object
-						 */
-						peering: {
-							/**
-							 * @type string
-							 */
-							id: string;
-							/**
-							 * @type string
-							 */
-							accountId: string;
-							/**
-							 * @type string
-							 */
-							region: string;
-							/**
-							 * @type string
-							 */
-							vpcId: string;
-						};
-				  }
-				| {
-						/**
-						 * @type object
-						 */
-						team: {
-							/**
-							 * @type string
-							 */
-							id: string;
-							/**
-							 * @type string
-							 */
-							name: string;
-						};
-						/**
-						 * @type object
-						 */
-						configuration: {
-							/**
-							 * @type string
-							 */
-							id: string;
-							/**
-							 * @type string | undefined
-							 */
-							name?: string | undefined;
-						};
-						/**
-						 * @type object
-						 */
-						peering: {
-							/**
-							 * @type string
-							 */
-							id: string;
-							/**
-							 * @type string | undefined
-							 */
-							name?: string | undefined;
-						};
-				  }
-				| {
-						/**
-						 * @type object
-						 */
-						team: {
-							/**
-							 * @type string
-							 */
-							id: string;
-							/**
-							 * @type string
-							 */
-							name: string;
-						};
-						/**
-						 * @type object
-						 */
-						configuration: {
-							/**
-							 * @type string
-							 */
-							id: string;
-							/**
-							 * @type string | undefined
-							 */
-							name?: string | undefined;
-						};
-						/**
-						 * @type object
-						 */
-						peering: {
-							/**
-							 * @type string
-							 */
-							id: string;
-							/**
-							 * @type string | undefined
-							 */
-							name?: string | undefined;
-						};
-						/**
-						 * @type string | undefined
-						 */
-						newName?: string | undefined;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						id: string;
-						/**
-						 * @type string
-						 */
-						url: string;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						enabled: PayloadEnabledEnum4Key;
-				  }
-				| {
-						/**
-						 * @type boolean
-						 */
-						enabled: PayloadEnabledEnumKey;
-						/**
-						 * @type string
-						 */
-						scope: PayloadScopeEnumKey;
-				  }
-				| {
-						/**
-						 * @type object | undefined
-						 */
-						previous?:
-							| {
-									[key: string]:
-										| {
-												/**
-												 * @type string
-												 */
-												accessGroupId: string;
-										  }
-										| PreviousEnumKey;
-							  }
-							| undefined;
-						/**
-						 * @type object | undefined
-						 */
-						next?:
-							| {
-									[key: string]:
-										| {
-												/**
-												 * @type string
-												 */
-												accessGroupId: string;
-										  }
-										| NextEnumKey;
-							  }
-							| undefined;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						domain: string;
-						/**
-						 * @type array
-						 */
-						ips: string[];
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						exportId: string;
-						/**
-						 * @type number
-						 */
-						from: number;
-						/**
-						 * @type number
-						 */
-						to: number;
-						/**
-						 * @type string
-						 */
-						format: string;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						fileId: string;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						ruleName: string;
-				  }
-				| {
-						/**
-						 * @type string | undefined
-						 */
-						projectId?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						projectName?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						analyticsId?: string | undefined;
-						/**
-						 * @type number
-						 */
-						sampleRatePercent: number | null;
-						/**
-						 * @type number
-						 */
-						spendLimitInDollars: number | null;
-						/**
-						 * @type object
-						 */
-						previous: {
-							/**
-							 * @type number
-							 */
-							sampleRatePercent: number | null;
-							/**
-							 * @type number
-							 */
-							spendLimitInDollars: number | null;
-						};
 				  }
 				| {
 						/**
@@ -13026,35 +11064,420 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
-						edgeConfigId: string;
+						oldName: string;
 						/**
 						 * @type string
 						 */
-						edgeConfigSlug: string;
+						newName: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						plan: string;
 						/**
 						 * @type object | undefined
 						 */
-						edgeConfigSchema?: object | undefined;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						edgeConfigId: string;
-						/**
-						 * @type string
-						 */
-						edgeConfigSlug: string;
+						removedUsers?:
+							| {
+									[key: string]: {
+										/**
+										 * @type string
+										 */
+										role: RoleEnumKey;
+										/**
+										 * @type boolean
+										 */
+										confirmed: ConfirmedEnumKey;
+										/**
+										 * @type number | undefined
+										 */
+										confirmedAt?: number | undefined;
+										/**
+										 * @type object | undefined
+										 */
+										joinedFrom?:
+											| {
+													/**
+													 * @type string
+													 */
+													origin: JoinedFromOriginEnumKey;
+													/**
+													 * @type string | undefined
+													 */
+													commitId?: string | undefined;
+													/**
+													 * @type string | undefined
+													 */
+													repoId?: string | undefined;
+													/**
+													 * @type string | undefined
+													 */
+													repoPath?: string | undefined;
+													gitUserId?: (string | number) | undefined;
+													/**
+													 * @type string | undefined
+													 */
+													gitUserLogin?: string | undefined;
+													/**
+													 * @type string | undefined
+													 */
+													ssoUserId?: string | undefined;
+													/**
+													 * @type number | undefined
+													 */
+													ssoConnectedAt?: number | undefined;
+													/**
+													 * @type string | undefined
+													 */
+													idpUserId?: string | undefined;
+													/**
+													 * @type string | undefined
+													 */
+													dsyncUserId?: string | undefined;
+													/**
+													 * @type number | undefined
+													 */
+													dsyncConnectedAt?: number | undefined;
+											  }
+											| undefined;
+									};
+							  }
+							| undefined;
 						/**
 						 * @type string | undefined
 						 */
-						edgeConfigDigest?: string | undefined;
+						prevPlan?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						priorPlan?: string | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						isDowngrade?: PayloadIsDowngradeEnumKey | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						userAgent?: string | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						isReactivate?: PayloadIsReactivateEnumKey | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						isTrialUpgrade?: PayloadIsTrialUpgradeEnumKey | undefined;
+						/**
+						 * @description Whether the plan change was system-initiated rather than human-initiated.
+						 * @type boolean | undefined
+						 */
+						automated?: PayloadAutomatedEnumKey | undefined;
+						/**
+						 * @description Why the plan changed. For downgrades, this is a {@link DowngradeReason} from `@api/pubsub-types` (e.g. `user_downgrade`, `trial_expired`).
+						 * @type string | undefined
+						 */
+						reason?: string | undefined;
+						/**
+						 * @type number | undefined
+						 */
+						timestamp?: number | undefined;
+						/**
+						 * @type number | undefined
+						 */
+						removedMemberCount?: number | undefined;
+				  }
+				| {
+						/**
+						 * @type number | undefined
+						 */
+						price?: number | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						currency?: string | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						enabled?: PayloadEnabledEnumKey | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						previewDeploymentSuffix?: (string | null) | undefined;
+						/**
+						 * @type string
+						 */
+						previousPreviewDeploymentSuffix?: (string | null) | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string
+						 */
+						branch: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type boolean
+						 */
+						directoryListing: PayloadDirectoryListingEnumKey;
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						projectName?: string | undefined;
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type object
+						 */
+						projectAnalytics: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type number
+							 */
+							canceledAt?: (number | null) | undefined;
+							/**
+							 * @type number
+							 */
+							disabledAt: number;
+							/**
+							 * @type number
+							 */
+							enabledAt: number;
+							/**
+							 * @type number | undefined
+							 */
+							paidAt?: number | undefined;
+							/**
+							 * @type number
+							 */
+							sampleRatePercent?: (number | null) | undefined;
+							/**
+							 * @type number
+							 */
+							spendLimitInDollars?: (number | null) | undefined;
+						} | null;
+						/**
+						 * @type object
+						 */
+						prevProjectAnalytics: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type number
+							 */
+							canceledAt?: (number | null) | undefined;
+							/**
+							 * @type number
+							 */
+							disabledAt: number;
+							/**
+							 * @type number
+							 */
+							enabledAt: number;
+							/**
+							 * @type number | undefined
+							 */
+							paidAt?: number | undefined;
+							/**
+							 * @type number
+							 */
+							sampleRatePercent?: (number | null) | undefined;
+							/**
+							 * @type number
+							 */
+							spendLimitInDollars?: (number | null) | undefined;
+						} | null;
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						projectName?: string | undefined;
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type object | undefined
+						 */
+						projectAnalytics?:
+							| {
+									[key: string]: unknown;
+							  }
+							| undefined;
+						/**
+						 * @type object
+						 */
+						prevProjectAnalytics?:
+							| ({
+									[key: string]: unknown;
+							  } | null)
+							| undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string
+						 */
+						action: PayloadActionEnum10Key;
+						/**
+						 * @type boolean | undefined
+						 */
+						isEnvVar?: PayloadIsEnvVarEnumKey | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						note?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type boolean
+						 */
+						enableAffectedProjectsDeployments: PayloadEnableAffectedProjectsDeploymentsEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type object
+						 */
+						previous: object;
+						/**
+						 * @type object
+						 */
+						next: object;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type boolean
+						 */
+						productionDeploymentsFastLane: PayloadProductionDeploymentsFastLaneEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type boolean
+						 */
+						sourceFilesOutsideRootDirectory: PayloadSourceFilesOutsideRootDirectoryEnumKey;
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						projectId?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						projectName?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						buildMachineType?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						oldBuildMachineType?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						projectId?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						projectName?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						certId?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						origin?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						projectId?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						projectName?: string | undefined;
+						/**
+						 * @type array | undefined
+						 */
+						target?: string[] | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						updated?: PayloadUpdatedEnumKey | undefined;
 				  }
 				| {
 						/**
 						 * @type object
 						 */
-						edgeConfig: {
+						team: {
 							/**
 							 * @type string
 							 */
@@ -13062,49 +11485,602 @@ export type UserEvent = {
 							/**
 							 * @type string
 							 */
-							slug: string;
+							name: string;
 						};
 						/**
 						 * @type object
 						 */
-						fromAccount: {
+						project: {
 							/**
 							 * @type string
 							 */
 							id: string;
 							/**
-							 * @type string
-							 */
-							type: FromAccountTypeEnumKey;
-							/**
 							 * @type string | undefined
 							 */
-							slug?: string | undefined;
+							name?: string | undefined;
 							/**
-							 * @type string | undefined
+							 * @type array
 							 */
-							username?: string | undefined;
+							oldConnectConfigurations:
+								| {
+										envId: string | OldConnectConfigurationsEnvIdEnumKey;
+										/**
+										 * @type string
+										 */
+										connectConfigurationId: string;
+										/**
+										 * @type string | undefined
+										 */
+										dc?: string | undefined;
+										/**
+										 * @type boolean
+										 */
+										passive: OldConnectConfigurationsPassiveEnumKey;
+										/**
+										 * @type boolean
+										 */
+										buildsEnabled: OldConnectConfigurationsBuildsEnabledEnumKey;
+										/**
+										 * @type object | undefined
+										 */
+										aws?:
+											| {
+													/**
+													 * @type array
+													 */
+													subnetIds: string[];
+													/**
+													 * @type string | undefined
+													 */
+													securityGroupId?: string | undefined;
+											  }
+											| undefined;
+										/**
+										 * @type number
+										 */
+										createdAt: number;
+										/**
+										 * @type number
+										 */
+										updatedAt: number;
+								  }[]
+								| null;
+							/**
+							 * @type array
+							 */
+							newConnectConfigurations:
+								| {
+										envId: string | NewConnectConfigurationsEnvIdEnumKey;
+										/**
+										 * @type string
+										 */
+										connectConfigurationId: string;
+										/**
+										 * @type string | undefined
+										 */
+										dc?: string | undefined;
+										/**
+										 * @type boolean
+										 */
+										passive: NewConnectConfigurationsPassiveEnumKey;
+										/**
+										 * @type boolean
+										 */
+										buildsEnabled: NewConnectConfigurationsBuildsEnabledEnumKey;
+										/**
+										 * @type object | undefined
+										 */
+										aws?:
+											| {
+													/**
+													 * @type array
+													 */
+													subnetIds: string[];
+													/**
+													 * @type string | undefined
+													 */
+													securityGroupId?: string | undefined;
+											  }
+											| undefined;
+										/**
+										 * @type number
+										 */
+										createdAt: number;
+										/**
+										 * @type number
+										 */
+										updatedAt: number;
+								  }[]
+								| null;
+						};
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						projectName?: string | undefined;
+						/**
+						 * @type string
+						 */
+						projectId: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string
+						 */
+						action: PayloadActionEnum11Key;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						name: string;
+						/**
+						 * @type string
+						 */
+						ownerId: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type boolean
+						 */
+						elasticConcurrencyEnabled: PayloadElasticConcurrencyEnabledEnumKey;
+						/**
+						 * @type boolean
+						 */
+						oldElasticConcurrencyEnabled: PayloadOldElasticConcurrencyEnabledEnumKey;
+						/**
+						 * @type string | undefined
+						 */
+						buildQueueConfiguration?: PayloadBuildQueueConfigurationEnumKey | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						oldBuildQueueConfiguration?: PayloadOldBuildQueueConfigurationEnumKey | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type boolean
+						 */
+						autoAssignCustomDomains: PayloadAutoAssignCustomDomainsEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type boolean
+						 */
+						previewDeploymentsEnabled: PayloadPreviewDeploymentsEnabledEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string
+						 */
+						customEnvironmentId: string;
+						/**
+						 * @type string
+						 */
+						customEnvironmentSlug: string;
+						/**
+						 * @type object
+						 */
+						previous: {
+							/**
+							 * @type object | undefined
+							 */
+							branchMatcher?:
+								| {
+										/**
+										 * @description The type of matching to perform
+										 * @type string
+										 */
+										type: BranchMatcherTypeEnumKey;
+										/**
+										 * @description The pattern to match against branch names
+										 * @type string
+										 */
+										pattern: string;
+								  }
+								| undefined;
 						};
 						/**
 						 * @type object
 						 */
-						toAccount: {
+						next: {
+							/**
+							 * @type object | undefined
+							 */
+							branchMatcher?:
+								| {
+										/**
+										 * @description The type of matching to perform
+										 * @type string
+										 */
+										type: BranchMatcherTypeEnumKey;
+										/**
+										 * @description The pattern to match against branch names
+										 * @type string
+										 */
+										pattern: string;
+								  }
+								| undefined;
+						};
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string
+						 */
+						customEnvironmentId: string;
+						/**
+						 * @type string
+						 */
+						customEnvironmentSlug: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type object
+						 */
+						previous: {
+							/**
+							 * @type number
+							 */
+							functionDefaultTimeout: number | null;
+						};
+						/**
+						 * @type object
+						 */
+						next: {
+							/**
+							 * @type number
+							 */
+							functionDefaultTimeout: number;
+						};
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type object
+						 */
+						previous: {
 							/**
 							 * @type string
 							 */
-							id: string;
+							functionDefaultMemoryType: string | null;
+						};
+						/**
+						 * @type object
+						 */
+						next: {
 							/**
 							 * @type string
 							 */
-							type: ToAccountTypeEnumKey;
+							functionDefaultMemoryType: string;
+						};
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type object
+						 */
+						previous: {
+							/**
+							 * @type array
+							 */
+							functionDefaultRegions: string[] | null;
+						};
+						/**
+						 * @type object
+						 */
+						next: {
+							/**
+							 * @type array
+							 */
+							functionDefaultRegions: string[];
+						};
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type object
+						 */
+						previous: {
+							/**
+							 * @type boolean
+							 */
+							functionZeroConfigFailover: PreviousFunctionZeroConfigFailoverEnumKey | null;
+						};
+						/**
+						 * @type object
+						 */
+						next: {
+							/**
+							 * @type boolean
+							 */
+							functionZeroConfigFailover: NextFunctionZeroConfigFailoverEnumKey;
+						};
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string
+						 */
+						previewDeploymentSuffix: string | null;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string
+						 */
+						newProjectName: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type object | undefined
+						 */
+						previous?:
+							| {
+									/**
+									 * @type string
+									 */
+									gitProvider: PreviousGitProviderEnumKey;
+									/**
+									 * @type string
+									 */
+									gitRepoId: string;
+									/**
+									 * @type string
+									 */
+									gitRepositoryName: string;
+							  }
+							| undefined;
+						/**
+						 * @type object
+						 */
+						next: {
+							/**
+							 * @type string
+							 */
+							gitProvider: NextGitProviderEnumKey;
+							/**
+							 * @type string
+							 */
+							gitRepoId: string;
+							/**
+							 * @type string
+							 */
+							gitRepositoryName: string;
+						};
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string
+						 */
+						gitProvider: PayloadGitProviderEnumKey;
+						/**
+						 * @type string
+						 */
+						gitRepoId: string;
+						/**
+						 * @type string
+						 */
+						gitRepositoryName: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type boolean
+						 */
+						onPullRequest: PayloadOnPullRequestEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type boolean
+						 */
+						onCommit: PayloadOnCommitEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type boolean
+						 */
+						disableRepositoryDispatchEvents: PayloadDisableRepositoryDispatchEventsEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string
+						 */
+						createDeployments: PayloadCreateDeploymentsEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type boolean
+						 */
+						requireVerifiedCommits: PayloadRequireVerifiedCommitsEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type boolean
+						 */
+						gitLFS: PayloadGitLFSEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type object
+						 */
+						previous: {
 							/**
 							 * @type string | undefined
 							 */
-							slug?: string | undefined;
+							commandForIgnoringBuildStep?: string | undefined;
+						};
+						/**
+						 * @type object
+						 */
+						next: {
 							/**
 							 * @type string | undefined
 							 */
-							username?: string | undefined;
+							commandForIgnoringBuildStep?: string | undefined;
 						};
 				  }
 				| {
@@ -13262,6 +12238,1935 @@ export type UserEvent = {
 				  }
 				| {
 						/**
+						 * @type object
+						 */
+						project: {
+							/**
+							 * @type string
+							 */
+							name: string;
+							/**
+							 * @type string | undefined
+							 */
+							id?: string | undefined;
+						};
+						/**
+						 * @type object
+						 */
+						projectMembership: {
+							/**
+							 * @type string
+							 */
+							role: ProjectMembershipRoleEnumKey;
+							/**
+							 * @type string
+							 */
+							uid: string;
+							/**
+							 * @type number
+							 */
+							createdAt: number;
+							/**
+							 * @type string | undefined
+							 */
+							username?: string | undefined;
+						} | null;
+				  }
+				| {
+						/**
+						 * @type object
+						 */
+						project: {
+							/**
+							 * @type string
+							 */
+							name: string;
+							/**
+							 * @type string
+							 */
+							role: ProjectRoleEnumKey;
+							/**
+							 * @type string
+							 */
+							invitedUserName: string;
+							/**
+							 * @type string | undefined
+							 */
+							id?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							invitedUserId?: string | undefined;
+						};
+				  }
+				| {
+						/**
+						 * @type object
+						 */
+						project: {
+							/**
+							 * @type string
+							 */
+							name: string;
+							/**
+							 * @type string | undefined
+							 */
+							id?: string | undefined;
+						};
+						/**
+						 * @type object
+						 */
+						removedMembership: {
+							/**
+							 * @type string
+							 */
+							role: RemovedMembershipRoleEnumKey;
+							/**
+							 * @type string
+							 */
+							uid: string;
+							/**
+							 * @type number
+							 */
+							createdAt: number;
+							/**
+							 * @type string | undefined
+							 */
+							username?: string | undefined;
+						};
+				  }
+				| {
+						/**
+						 * @type object
+						 */
+						project: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string
+							 */
+							name: string;
+						};
+						/**
+						 * @type object
+						 */
+						projectMembership: {
+							/**
+							 * @type string | undefined
+							 */
+							role?: ProjectMembershipRoleEnumKey | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							uid?: string | undefined;
+							/**
+							 * @type number | undefined
+							 */
+							createdAt?: number | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							username?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							previousRole?: ProjectMembershipPreviousRoleEnumKey | undefined;
+						};
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						previousProjectName: string;
+						/**
+						 * @type string
+						 */
+						newProjectName: string;
+						/**
+						 * @type string
+						 */
+						originAccountName: string;
+						/**
+						 * @type string | undefined
+						 */
+						transferId?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string
+						 */
+						destinationAccountName: string | null;
+						/**
+						 * @type string | undefined
+						 */
+						transferId?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string
+						 */
+						originAccountName: string;
+						/**
+						 * @type string
+						 */
+						destinationAccountName: string;
+						/**
+						 * @type string
+						 */
+						destinationAccountId: string;
+						/**
+						 * @type string | undefined
+						 */
+						transferId?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						previousProjectName: string;
+						/**
+						 * @type string
+						 */
+						newProjectName: string;
+						/**
+						 * @type string
+						 */
+						destinationAccountName: string;
+						/**
+						 * @type string | undefined
+						 */
+						transferId?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						source: string;
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type object
+						 */
+						optionsAllowlist?:
+							| ({
+									/**
+									 * @type array
+									 */
+									paths: {
+										/**
+										 * @type string
+										 */
+										value: string;
+									}[];
+							  } | null)
+							| undefined;
+						/**
+						 * @type object
+						 */
+						oldOptionsAllowlist?:
+							| ({
+									/**
+									 * @type array
+									 */
+									paths: {
+										/**
+										 * @type string
+										 */
+										value: string;
+									}[];
+							  } | null)
+							| undefined;
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						projectId?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						projectName?: string | undefined;
+						passwordProtection:
+							| (
+									| {
+											/**
+											 * @type string
+											 */
+											deploymentType: PasswordProtectionDeploymentTypeEnumKey;
+									  }
+									| PayloadPasswordProtectionEnumKey
+							  )
+							| null;
+						oldPasswordProtection:
+							| (
+									| {
+											/**
+											 * @type string
+											 */
+											deploymentType: OldPasswordProtectionDeploymentTypeEnumKey;
+									  }
+									| PayloadOldPasswordProtectionEnumKey
+							  )
+							| null;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string | undefined
+						 */
+						reasonCode?: PayloadReasonCodeEnumKey | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string | undefined
+						 */
+						targetDeploymentId?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string | undefined
+						 */
+						targetDeploymentId?: string | undefined;
+						/**
+						 * @type number | undefined
+						 */
+						newTargetPercentage?: number | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type object
+						 */
+						previous: {
+							/**
+							 * @type string | undefined
+							 */
+							issuerMode?: PreviousIssuerModeEnumKey | undefined;
+						};
+						/**
+						 * @type object
+						 */
+						next: {
+							/**
+							 * @type string
+							 */
+							issuerMode: NextIssuerModeEnumKey;
+						};
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type boolean
+						 */
+						customerSupportCodeVisibility: PayloadCustomerSupportCodeVisibilityEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type boolean
+						 */
+						gitForkProtection: PayloadGitForkProtectionEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type boolean
+						 */
+						protectedSourcemaps: PayloadProtectedSourcemapsEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type boolean
+						 */
+						publicSource: PayloadPublicSourceEnumKey;
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						projectId?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						projectName?: string | undefined;
+						/**
+						 * @type object
+						 */
+						previous: {
+							/**
+							 * @type string | undefined
+							 */
+							expiration?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							expirationProduction?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							expirationCanceled?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							expirationErrored?: string | undefined;
+						};
+						/**
+						 * @type object
+						 */
+						next: {
+							/**
+							 * @type string | undefined
+							 */
+							expiration?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							expirationProduction?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							expirationCanceled?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							expirationErrored?: string | undefined;
+						};
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type object
+						 */
+						next: {
+							/**
+							 * @type number
+							 */
+							skewProtectionBoundaryAt: number;
+						};
+						/**
+						 * @type object
+						 */
+						previous: {
+							/**
+							 * @type number | undefined
+							 */
+							skewProtectionBoundaryAt?: number | undefined;
+						};
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type object
+						 */
+						next: {
+							/**
+							 * @type number
+							 */
+							skewProtectionMaxAge: number;
+						};
+						/**
+						 * @type object
+						 */
+						previous: {
+							/**
+							 * @type number | undefined
+							 */
+							skewProtectionMaxAge?: number | undefined;
+						};
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type object
+						 */
+						next: {
+							/**
+							 * @type array
+							 */
+							skewProtectionAllowedDomains: string[];
+						};
+						/**
+						 * @type object
+						 */
+						previous: {
+							/**
+							 * @type array | undefined
+							 */
+							skewProtectionAllowedDomains?: string[] | undefined;
+						};
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						projectId?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						projectName?: string | undefined;
+						ssoProtection:
+							| (
+									| {
+											/**
+											 * @type string
+											 */
+											deploymentType: SsoProtectionDeploymentTypeEnumKey;
+											/**
+											 * @type string
+											 */
+											cve55182MigrationAppliedFrom?:
+												| (SsoProtectionCve55182MigrationAppliedFromEnumKey | null)
+												| undefined;
+									  }
+									| PayloadSsoProtectionEnumKey
+							  )
+							| null;
+						oldSsoProtection:
+							| (
+									| {
+											/**
+											 * @type string
+											 */
+											deploymentType: OldSsoProtectionDeploymentTypeEnumKey;
+											/**
+											 * @type string
+											 */
+											cve55182MigrationAppliedFrom?:
+												| (OldSsoProtectionCve55182MigrationAppliedFromEnumKey | null)
+												| undefined;
+									  }
+									| PayloadOldSsoProtectionEnumKey
+							  )
+							| null;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type object
+						 */
+						next: {
+							/**
+							 * @type object
+							 */
+							project: {
+								/**
+								 * @type string | undefined
+								 */
+								id?: string | undefined;
+								/**
+								 * @type object
+								 */
+								staticIps: {
+									/**
+									 * @type boolean | undefined
+									 */
+									builds?: StaticIpsBuildsEnumKey | undefined;
+									/**
+									 * @type boolean
+									 */
+									enabled: StaticIpsEnabledEnumKey;
+									/**
+									 * @type array | undefined
+									 */
+									regions?: string[] | undefined;
+								};
+							};
+						};
+						/**
+						 * @type object
+						 */
+						previous: {
+							/**
+							 * @type object
+							 */
+							project: {
+								/**
+								 * @type string | undefined
+								 */
+								id?: string | undefined;
+								/**
+								 * @type object
+								 */
+								staticIps: {
+									/**
+									 * @type boolean | undefined
+									 */
+									builds?: StaticIpsBuildsEnumKey | undefined;
+									/**
+									 * @type boolean
+									 */
+									enabled: StaticIpsEnabledEnumKey;
+									/**
+									 * @type array | undefined
+									 */
+									regions?: string[] | undefined;
+								};
+							};
+						};
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string
+						 */
+						trustedIps?: (PayloadTrustedIpsEnumKey | null) | undefined;
+						/**
+						 * @type string
+						 */
+						oldTrustedIps?: (PayloadOldTrustedIpsEnumKey | null) | undefined;
+						/**
+						 * @type array
+						 */
+						addedAddresses?: (string[] | null) | undefined;
+						/**
+						 * @type array
+						 */
+						removedAddresses?: (string[] | null) | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string | undefined
+						 */
+						reasonCode?: PayloadReasonCodeEnum2Key | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type object | undefined
+						 */
+						projectWebAnalytics?:
+							| {
+									/**
+									 * @type string
+									 */
+									id: string;
+									/**
+									 * @type number | undefined
+									 */
+									disabledAt?: number | undefined;
+									/**
+									 * @type number | undefined
+									 */
+									canceledAt?: number | undefined;
+									/**
+									 * @type number | undefined
+									 */
+									enabledAt?: number | undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									hasData?: ProjectWebAnalyticsHasDataEnumKey | undefined;
+							  }
+							| undefined;
+						/**
+						 * @type object
+						 */
+						prevProjectWebAnalytics?:
+							| ({
+									/**
+									 * @type string
+									 */
+									id: string;
+									/**
+									 * @type number | undefined
+									 */
+									disabledAt?: number | undefined;
+									/**
+									 * @type number | undefined
+									 */
+									canceledAt?: number | undefined;
+									/**
+									 * @type number | undefined
+									 */
+									enabledAt?: number | undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									hasData?: PrevProjectWebAnalyticsHasDataEnumKey | undefined;
+							  } | null)
+							| undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						gitProvider: string;
+						/**
+						 * @type string
+						 */
+						gitProviderGroupDescriptor: string;
+						/**
+						 * @type string
+						 */
+						gitScope: string;
+				  }
+				| {
+						/**
+						 * @type number
+						 */
+						instances: number;
+						/**
+						 * @type string
+						 */
+						url: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						email: string;
+						/**
+						 * @type boolean
+						 */
+						verified: PayloadVerifiedEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						email: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						uid: string;
+						name:
+							| string
+							| {
+									/**
+									 * @type string
+									 */
+									name: string;
+							  };
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						oldName: string;
+						/**
+						 * @type string
+						 */
+						newName: string;
+						/**
+						 * @type string | undefined
+						 */
+						uid?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type boolean
+						 */
+						enabled: PayloadEnabledEnumKey;
+						/**
+						 * @type number
+						 */
+						updatedAt: number;
+						/**
+						 * @type number | undefined
+						 */
+						firstEnabledAt?: number | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						bio: string;
+				  }
+				| {
+						/**
+						 * @type object
+						 */
+						scalingRules: {
+							[key: string]: {
+								/**
+								 * @type number
+								 */
+								min: number;
+								/**
+								 * @type number
+								 */
+								max: number;
+							};
+						};
+						/**
+						 * @type number
+						 */
+						min: number;
+						/**
+						 * @type number
+						 */
+						max: number;
+						/**
+						 * @type string
+						 */
+						url: string;
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						userAgent?: string | undefined;
+						/**
+						 * @type object
+						 */
+						geolocation?:
+							| ({
+									/**
+									 * @type object | undefined
+									 */
+									city?:
+										| {
+												/**
+												 * @type object
+												 */
+												names: {
+													/**
+													 * @type string
+													 */
+													en: string;
+												};
+										  }
+										| undefined;
+									/**
+									 * @type object
+									 */
+									country: {
+										/**
+										 * @type object
+										 */
+										names: {
+											/**
+											 * @type string
+											 */
+											en: string;
+										};
+									};
+									/**
+									 * @type object | undefined
+									 */
+									mostSpecificSubdivision?:
+										| {
+												/**
+												 * @type object
+												 */
+												names: {
+													/**
+													 * @type string
+													 */
+													en: string;
+												};
+										  }
+										| undefined;
+									/**
+									 * @type string | undefined
+									 */
+									regionName?: string | undefined;
+							  } | null)
+							| undefined;
+						/**
+						 * @type string | undefined
+						 */
+						env?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						os?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						username?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						ssoType?: string | undefined;
+						/**
+						 * @type array | undefined
+						 */
+						factors?:
+							| {
+									/**
+									 * @type string
+									 */
+									origin: FactorsOriginEnum3Key;
+									/**
+									 * @type string | undefined
+									 */
+									username?: string | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									teamId?: string | undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									legacy?: FactorsLegacyEnumKey | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									ssoType?: string | undefined;
+							  }[]
+							| undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						viaOTP?: PayloadViaOTPEnumKey | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						viaGithub?: PayloadViaGithubEnumKey | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						viaGitlab?: PayloadViaGitlabEnumKey | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						viaBitbucket?: PayloadViaBitbucketEnumKey | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						viaGoogle?: PayloadViaGoogleEnumKey | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						viaApple?: PayloadViaAppleEnumKey | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						viaSamlSso?: PayloadViaSamlSsoEnumKey | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						viaPasskey?: PayloadViaPasskeyEnumKey | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						email: string;
+						/**
+						 * @type string
+						 */
+						bitbucketLogin: string;
+						/**
+						 * @type string
+						 */
+						bitbucketEmail: string;
+						/**
+						 * @type string
+						 */
+						bitbucketName: string;
+						/**
+						 * @type string
+						 */
+						zeitAccount: string;
+						/**
+						 * @type string
+						 */
+						zeitAccountType: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						email: string;
+						/**
+						 * @type string
+						 */
+						githubLogin: string;
+						/**
+						 * @type string
+						 */
+						zeitAccount: string;
+						/**
+						 * @type string
+						 */
+						zeitAccountType: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						email: string;
+						/**
+						 * @type string
+						 */
+						gitlabLogin: string;
+						/**
+						 * @type string
+						 */
+						gitlabEmail: string;
+						/**
+						 * @type string
+						 */
+						gitlabName: string;
+						/**
+						 * @type string
+						 */
+						zeitAccount: string;
+						/**
+						 * @type string
+						 */
+						zeitAccountType: string;
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						projectId?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						projectName?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						analyticsId?: string | undefined;
+						/**
+						 * @type number
+						 */
+						sampleRatePercent: number | null;
+						/**
+						 * @type number
+						 */
+						spendLimitInDollars: number | null;
+						/**
+						 * @type object
+						 */
+						previous: {
+							/**
+							 * @type number
+							 */
+							sampleRatePercent: number | null;
+							/**
+							 * @type number
+							 */
+							spendLimitInDollars: number | null;
+						};
+				  }
+				| {
+						/**
+						 * @type object
+						 */
+						budget: {
+							/**
+							 * @description Represents a budget for tracking and notifying teams on their spending.
+							 * @type object
+							 */
+							budgetItem: {
+								/**
+								 * @description The budget type
+								 * @type string
+								 */
+								type: BudgetItemTypeEnumKey;
+								/**
+								 * @description Budget amount (USD / dollars)
+								 * @type number
+								 */
+								fixedBudget: number;
+								/**
+								 * @description Array of the last 3 months of spend data
+								 * @type array
+								 */
+								previousSpend: number[];
+								/**
+								 * @description Array of 50, 75, 100 to keep track of notifications sent out
+								 * @type array
+								 */
+								notifiedAt: number[];
+								/**
+								 * @description Webhook id that corresponds to a webhook in Cosmos webhook collection
+								 * @type string | undefined
+								 */
+								webhookId?: string | undefined;
+								/**
+								 * @description Keep track if the webhook has been called for the month
+								 * @type boolean | undefined
+								 */
+								webhookNotified?: BudgetItemWebhookNotifiedEnumKey | undefined;
+								/**
+								 * @description Date time when budget is created
+								 * @type number
+								 */
+								createdAt: number;
+								/**
+								 * @description Date time when budget is updated last
+								 * @type number | undefined
+								 */
+								updatedAt?: number | undefined;
+								/**
+								 * @description Is the budget currently active for a customer
+								 * @type boolean
+								 */
+								isActive: BudgetItemIsActiveEnumKey;
+								/**
+								 * @description Should all projects be paused if budget is exceeded
+								 * @type boolean | undefined
+								 */
+								pauseProjects?: BudgetItemPauseProjectsEnumKey | undefined;
+								/**
+								 * @description The acive pricing plan the team is billed with
+								 * @type string | undefined
+								 */
+								pricingPlan?: BudgetItemPricingPlanEnumKey | undefined;
+								/**
+								 * @description Partition key
+								 * @type string
+								 */
+								teamId: string;
+								/**
+								 * @description Sort key that needs to be unique per teamId
+								 * @type string
+								 */
+								id: string;
+							};
+						};
+				  }
+				| {
+						/**
+						 * @description Represents a budget for tracking and notifying teams on their spending.
+						 * @type object
+						 */
+						budget: {
+							/**
+							 * @description The budget type
+							 * @type string
+							 */
+							type: BudgetTypeEnumKey;
+							/**
+							 * @description Budget amount (USD / dollars)
+							 * @type number
+							 */
+							fixedBudget: number;
+							/**
+							 * @description Array of the last 3 months of spend data
+							 * @type array
+							 */
+							previousSpend: number[];
+							/**
+							 * @description Array of 50, 75, 100 to keep track of notifications sent out
+							 * @type array
+							 */
+							notifiedAt: number[];
+							/**
+							 * @description Webhook id that corresponds to a webhook in Cosmos webhook collection
+							 * @type string | undefined
+							 */
+							webhookId?: string | undefined;
+							/**
+							 * @description Keep track if the webhook has been called for the month
+							 * @type boolean | undefined
+							 */
+							webhookNotified?: BudgetWebhookNotifiedEnumKey | undefined;
+							/**
+							 * @description Date time when budget is created
+							 * @type number
+							 */
+							createdAt: number;
+							/**
+							 * @description Date time when budget is updated last
+							 * @type number | undefined
+							 */
+							updatedAt?: number | undefined;
+							/**
+							 * @description Is the budget currently active for a customer
+							 * @type boolean
+							 */
+							isActive: BudgetIsActiveEnumKey;
+							/**
+							 * @description Should all projects be paused if budget is exceeded
+							 * @type boolean | undefined
+							 */
+							pauseProjects?: BudgetPauseProjectsEnumKey | undefined;
+							/**
+							 * @description The acive pricing plan the team is billed with
+							 * @type string | undefined
+							 */
+							pricingPlan?: BudgetPricingPlanEnumKey | undefined;
+							/**
+							 * @description Partition key
+							 * @type string
+							 */
+							teamId: string;
+							/**
+							 * @description Sort key that needs to be unique per teamId
+							 * @type string
+							 */
+							id: string;
+						};
+				  }
+				| {
+						/**
+						 * @description Represents a budget for tracking and notifying teams on their spending.
+						 * @type object
+						 */
+						budget: {
+							/**
+							 * @description The budget type
+							 * @type string
+							 */
+							type: BudgetTypeEnumKey;
+							/**
+							 * @description Budget amount (USD / dollars)
+							 * @type number
+							 */
+							fixedBudget: number;
+							/**
+							 * @description Array of the last 3 months of spend data
+							 * @type array
+							 */
+							previousSpend: number[];
+							/**
+							 * @description Array of 50, 75, 100 to keep track of notifications sent out
+							 * @type array
+							 */
+							notifiedAt: number[];
+							/**
+							 * @description Webhook id that corresponds to a webhook in Cosmos webhook collection
+							 * @type string | undefined
+							 */
+							webhookId?: string | undefined;
+							/**
+							 * @description Keep track if the webhook has been called for the month
+							 * @type boolean | undefined
+							 */
+							webhookNotified?: BudgetWebhookNotifiedEnumKey | undefined;
+							/**
+							 * @description Date time when budget is created
+							 * @type number
+							 */
+							createdAt: number;
+							/**
+							 * @description Date time when budget is updated last
+							 * @type number | undefined
+							 */
+							updatedAt?: number | undefined;
+							/**
+							 * @description Is the budget currently active for a customer
+							 * @type boolean
+							 */
+							isActive: BudgetIsActiveEnumKey;
+							/**
+							 * @description Should all projects be paused if budget is exceeded
+							 * @type boolean | undefined
+							 */
+							pauseProjects?: BudgetPauseProjectsEnumKey | undefined;
+							/**
+							 * @description The acive pricing plan the team is billed with
+							 * @type string | undefined
+							 */
+							pricingPlan?: BudgetPricingPlanEnumKey | undefined;
+							/**
+							 * @description Partition key
+							 * @type string
+							 */
+							teamId: string;
+							/**
+							 * @description Sort key that needs to be unique per teamId
+							 * @type string
+							 */
+							id: string;
+						};
+						/**
+						 * @type string | undefined
+						 */
+						webhookUrl?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						webhookUrl?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						storeType: PayloadStoreTypeEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						id: string;
+						/**
+						 * @type string | undefined
+						 */
+						name?: string | undefined;
+						/**
+						 * @type number | undefined
+						 */
+						computeUnitsMax?: number | undefined;
+						/**
+						 * @type number | undefined
+						 */
+						computeUnitsMin?: number | undefined;
+						/**
+						 * @type number | undefined
+						 */
+						suspendTimeoutSeconds?: number | undefined;
+						/**
+						 * @type string
+						 */
+						type: PayloadTypeEnum2Key;
+						/**
+						 * @type string | undefined
+						 */
+						access?: PayloadAccessEnumKey | undefined;
+				  }
+				| {
+						/**
+						 * @type object
+						 */
+						store: {
+							/**
+							 * @type string
+							 */
+							name: string;
+							/**
+							 * @type string
+							 */
+							id: string;
+						};
+						/**
+						 * @type string | undefined
+						 */
+						ownerId?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						slug: string;
+				  }
+				| {
+						/**
+						 * @description Automatic code review settings
+						 * @type object | undefined
+						 */
+						previous?:
+							| {
+									/**
+									 * @description Whether automatic code reviews are enabled
+									 * @type boolean
+									 */
+									enabled: PreviousEnabledEnumKey;
+									/**
+									 * @description Which repository visibilities get automatic reviews
+									 * @type string
+									 */
+									scope: PreviousScopeEnumKey;
+									/**
+									 * @description Whether to include draft pull requests in automatic reviews
+									 * @type boolean
+									 */
+									includeDrafts: PreviousIncludeDraftsEnumKey;
+									/**
+									 * @description GitHub repos to scope automatic reviews to. Format: \"owner/repo\" (lowercase). Only used when scope=\'selected_repos\'.
+									 * @type array
+									 */
+									selectedRepos?: (string[] | null) | undefined;
+							  }
+							| undefined;
+						/**
+						 * @description Automatic code review settings
+						 * @type object
+						 */
+						next: {
+							/**
+							 * @description Whether automatic code reviews are enabled
+							 * @type boolean
+							 */
+							enabled: NextEnabledEnumKey;
+							/**
+							 * @description Which repository visibilities get automatic reviews
+							 * @type string
+							 */
+							scope: NextScopeEnumKey;
+							/**
+							 * @description Whether to include draft pull requests in automatic reviews
+							 * @type boolean
+							 */
+							includeDrafts: NextIncludeDraftsEnumKey;
+							/**
+							 * @description GitHub repos to scope automatic reviews to. Format: \"owner/repo\" (lowercase). Only used when scope=\'selected_repos\'.
+							 * @type array
+							 */
+							selectedRepos?: (string[] | null) | undefined;
+						};
+				  }
+				| {
+						/**
+						 * @type boolean
+						 */
+						enabled: PayloadEnabledEnumKey;
+				  }
+				| {
+						/**
+						 * @type number
+						 */
+						trialCreditsIssuedAt: number;
+						/**
+						 * @type string
+						 */
+						expiresAt: string;
+						/**
+						 * @type string
+						 */
+						amount: string;
+						/**
+						 * @type string
+						 */
+						currency: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						slug: string;
+						/**
+						 * @type string
+						 */
+						teamId: string;
+						/**
+						 * @type string
+						 */
+						by: string;
+						/**
+						 * @type string | undefined
+						 */
+						byUid?: string | undefined;
+						/**
+						 * @type array | undefined
+						 */
+						reasons?:
+							| {
+									/**
+									 * @type string
+									 */
+									slug: string;
+									/**
+									 * @type string
+									 */
+									description: string;
+							  }[]
+							| undefined;
+						/**
+						 * @type object | undefined
+						 */
+						removedUsers?:
+							| {
+									[key: string]: {
+										/**
+										 * @type string
+										 */
+										role: RoleEnumKey;
+										/**
+										 * @type boolean
+										 */
+										confirmed: ConfirmedEnumKey;
+										/**
+										 * @type number | undefined
+										 */
+										confirmedAt?: number | undefined;
+									};
+							  }
+							| undefined;
+						/**
+						 * @type number | undefined
+						 */
+						removedMemberCount?: number | undefined;
+						/**
+						 * @type number | undefined
+						 */
+						timestamp?: number | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type boolean
+						 */
+						enabled: PayloadEnabledEnum2Key | null;
+						/**
+						 * @type string
+						 */
+						environment: PayloadEnvironmentEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						environment: PayloadEnvironmentEnumKey;
+						/**
+						 * @type string
+						 */
+						enabled: PayloadEnabledEnum3Key;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						emailDomain?: (string | null) | undefined;
+				  }
+				| {
+						/**
+						 * @type number
+						 */
+						deletedCount: number;
+						/**
+						 * @type array
+						 */
+						inviteIds: string[];
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						directoryType?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						ssoType?: string | undefined;
+						/**
+						 * @type object | undefined
+						 */
+						invitedUser?:
+							| {
+									/**
+									 * @type string
+									 */
+									username: string;
+									/**
+									 * @type string
+									 */
+									email: string;
+							  }
+							| undefined;
+						/**
+						 * @type string | undefined
+						 */
+						invitedEmail?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						invitationRole?: string | undefined;
+						/**
+						 * @type array | undefined
+						 */
+						entitlements?: string[] | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						invitedUid?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						teamName: string;
+						/**
+						 * @type string | undefined
+						 */
+						username?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						gitUsername?: string | undefined;
+						/**
+						 * @type string
+						 */
+						githubUsername?: (string | null) | undefined;
+						/**
+						 * @type string
+						 */
+						gitlabUsername?: (string | null) | undefined;
+						/**
+						 * @type string
+						 */
+						bitbucketUsername?: (string | null) | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						updatedUid?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						teamId?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						teamName: string;
+						/**
+						 * @type string | undefined
+						 */
+						username?: string | undefined;
+						/**
+						 * @type string
+						 */
+						gitUsername?: (string | null) | undefined;
+						/**
+						 * @type string
+						 */
+						githubUsername?: (string | null) | undefined;
+						/**
+						 * @type string
+						 */
+						gitlabUsername?: (string | null) | undefined;
+						/**
+						 * @type string
+						 */
+						bitbucketUsername?: (string | null) | undefined;
+				  }
+				| {
+						/**
+						 * @type object | undefined
+						 */
+						deletedUser?:
+							| {
+									/**
+									 * @type string
+									 */
+									username: string;
+									/**
+									 * @type string
+									 */
+									email: string;
+							  }
+							| undefined;
+						/**
+						 * @type string | undefined
+						 */
+						deletedUid?: string | undefined;
+						/**
+						 * @type string
+						 */
+						githubUsername?: (string | null) | undefined;
+						/**
+						 * @type string
+						 */
+						gitlabUsername?: (string | null) | undefined;
+						/**
+						 * @type string
+						 */
+						bitbucketUsername?: (string | null) | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						directoryType?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						role?: PayloadRoleEnumKey | undefined;
+						/**
+						 * @description Why the member was removed. When removed due to a plan downgrade, this is a {@link DowngradeReason} from `@api/pubsub-types` (e.g. `trial_expired`, `user_downgrade`).
+						 * @type string | undefined
+						 */
+						reason?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						previousPlan?: PayloadPreviousPlanEnumKey | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						newPlan?: PayloadNewPlanEnumKey | undefined;
+						/**
+						 * @description Whether the removal was system-initiated rather than human-initiated.
+						 * @type boolean | undefined
+						 */
+						automated?: PayloadAutomatedEnum2Key | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						entitlement: string;
+						/**
+						 * @type object
+						 */
+						user: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string
+							 */
+							username: string;
+						};
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						entitlement: string;
+						/**
+						 * @type object
+						 */
+						user: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string
+							 */
+							username: string;
+						};
+						/**
+						 * @type string | undefined
+						 */
+						previousCanceledAt?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						role?: string | undefined;
+						/**
+						 * @type string
+						 */
+						uid: string;
+						/**
+						 * @type string | undefined
+						 */
+						origin?: string | undefined;
+						/**
+						 * @type array | undefined
+						 */
+						teamRoles?: string[] | undefined;
+						/**
+						 * @type array | undefined
+						 */
+						teamPermissions?: string[] | undefined;
+						/**
+						 * @type array | undefined
+						 */
+						entitlements?: string[] | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						requestedTeamName: string;
+						/**
+						 * @type string | undefined
+						 */
+						requestedUserName?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						gitUsername?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						githubUsername?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						gitlabUsername?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						bitbucketUsername?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						directoryType?: string | undefined;
+						/**
+						 * @type object | undefined
+						 */
+						updatedUser?:
+							| {
+									/**
+									 * @type string
+									 */
+									username: string;
+									/**
+									 * @type string
+									 */
+									email: string;
+							  }
+							| undefined;
+						/**
+						 * @type string | undefined
+						 */
+						role?: string | undefined;
+						/**
+						 * @type string
+						 */
+						previousRole: string;
+						/**
+						 * @type string | undefined
+						 */
+						updatedUid?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						origin?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type boolean
+						 */
+						enforced: PayloadEnforcedEnumKey;
+				  }
+				| {
+						/**
+						 * @type number
+						 */
+						previousConcurrentBuilds: number;
+						/**
+						 * @type number
+						 */
+						nextConcurrentBuilds: number;
+				  }
+				| {
+						/**
 						 * @type string
 						 */
 						plan: PayloadPlanEnumKey;
@@ -13297,1275 +14202,376 @@ export type UserEvent = {
 				  }
 				| {
 						/**
-						 * @type string
-						 */
-						emailDomain?: (string | null) | undefined;
-				  }
-				| {
-						/**
 						 * @type string | undefined
 						 */
 						inviteCode?: string | undefined;
 				  }
 				| {
 						/**
-						 * @type number
+						 * @type string | undefined
 						 */
-						trialCreditsIssuedAt: number;
-						/**
-						 * @type string
-						 */
-						expiresAt: string;
-						/**
-						 * @type string
-						 */
-						amount: string;
-						/**
-						 * @type string
-						 */
-						currency: string;
+						name?: string | undefined;
 				  }
 				| {
-						job:
+						/**
+						 * @description Represents configuration for remote caching
+						 * @type object | undefined
+						 */
+						remoteCaching?:
 							| {
 									/**
-									 * @type string
-									 */
-									type: JobTypeEnumKey;
-									/**
 									 * @type boolean | undefined
 									 */
-									authorized?: JobAuthorizedEnumKey | undefined;
-									/**
-									 * @type string | undefined
-									 */
-									authorizedBy?: string | undefined;
-									/**
-									 * @description Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.
-									 * @type array | undefined
-									 */
-									jobProjectIds?: string[] | undefined;
-									/**
-									 * @description Since December 2022 Pairs of projects and owner ids to build for this build request.
-									 * @type array | undefined
-									 */
-									jobPairs?: (string | string)[][] | undefined;
-									/**
-									 * @description Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.
-									 * @type array | undefined
-									 */
-									skippedJobPairs?: (string | string)[][] | undefined;
-									/**
-									 * @description Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING
-									 * @type array | undefined
-									 */
-									gitHashtagVercel?: string[] | undefined;
-									/**
-									 * @description Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.
-									 * @type number | undefined
-									 */
-									connectedProjectCount?: number | undefined;
-									/**
-									 * @description Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.
-									 * @type number | undefined
-									 */
-									prIdOrZero?: number | undefined;
-									/**
-									 * @description Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.
-									 * @type object | undefined
-									 */
-									gitComments?:
-										| {
-												/**
-												 * @type boolean
-												 */
-												onPullRequest: GitCommentsOnPullRequestEnumKey;
-												/**
-												 * @type boolean
-												 */
-												onCommit: GitCommentsOnCommitEnumKey;
-										  }
-										| undefined;
-									/**
-									 * @description Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment
-									 * @type boolean | undefined
-									 */
-									isManualGitDeploy?: JobIsManualGitDeployEnumKey | undefined;
-									/**
-									 * @description Since 6 Nov 2025 The verification status of the commit. - \'verified\' if the commit is verified - \'unverified\' if the commit is not verified - \'unknown\' if the commit verification status is unknown or not supported
-									 * @type string | undefined
-									 */
-									commitVerification?: JobCommitVerificationEnumKey | undefined;
-									/**
-									 * @type number | undefined
-									 */
-									createdAt?: number | undefined;
-									/**
-									 * @type string | undefined
-									 */
-									deploymentId?: string | undefined;
-									/**
-									 * @type object | undefined
-									 */
-									deployHook?:
-										| {
-												/**
-												 * @type number
-												 */
-												createdAt: number;
-												/**
-												 * @type string
-												 */
-												id: string;
-												/**
-												 * @type string
-												 */
-												name: string;
-												/**
-												 * @type string
-												 */
-												ref: string;
-										  }
-										| undefined;
-									/**
-									 * @type boolean | undefined
-									 */
-									eventful?: JobEventfulEnumKey | undefined;
-									/**
-									 * @type boolean | undefined
-									 */
-									forceNew?: JobForceNewEnumKey | undefined;
-									/**
-									 * @type object
-									 */
-									headInfo: {
-										/**
-										 * @type string
-										 */
-										owner: string;
-										/**
-										 * @type string
-										 */
-										ref: string;
-										/**
-										 * @type string
-										 */
-										repoUuid: string;
-										/**
-										 * @type string
-										 */
-										sha: string;
-										/**
-										 * @type string
-										 */
-										slug: string;
-									};
-									/**
-									 * @type string | undefined
-									 */
-									linkedProjectId?: string | undefined;
-									/**
-									 * @type string
-									 */
-									name: string;
-									/**
-									 * @type string
-									 */
-									owner: string;
-									/**
-									 * @type number | undefined
-									 */
-									prId?: number | undefined;
-									/**
-									 * @type string | undefined
-									 */
-									projectId?: string | undefined;
-									/**
-									 * @type string
-									 */
-									customEnvId?: (string | null) | undefined;
-									/**
-									 * @type string
-									 */
-									ref: string;
-									/**
-									 * @type number
-									 */
-									repoPushedAt?: (number | null) | undefined;
-									/**
-									 * @type string
-									 */
-									repoUuid: string;
-									/**
-									 * @type string
-									 */
-									sha: string;
-									/**
-									 * @type boolean | undefined
-									 */
-									silent?: JobSilentEnumKey | undefined;
-									/**
-									 * @type string
-									 */
-									slug: string;
-									/**
-									 * @type string
-									 */
-									target?: (string | null) | undefined;
-									/**
-									 * @type string | undefined
-									 */
-									url?: string | undefined;
-									/**
-									 * @type boolean | undefined
-									 */
-									withCache?: JobWithCacheEnumKey | undefined;
-									/**
-									 * @type string
-									 */
-									workspaceUuid: string;
-									/**
-									 * @type string
-									 */
-									provider: JobProviderEnumKey;
+									enabled?: RemoteCachingEnabledEnumKey | undefined;
 							  }
+							| undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						enabled: PayloadEnabledEnum4Key;
+				  }
+				| {
+						/**
+						 * @type boolean
+						 */
+						enabled: PayloadEnabledEnumKey;
+						/**
+						 * @type string
+						 */
+						scope: PayloadScopeEnumKey;
+				  }
+				| {
+						/**
+						 * @type object | undefined
+						 */
+						previous?:
 							| {
-									/**
-									 * @type number | undefined
-									 */
-									createdAt?: number | undefined;
-									/**
-									 * @type boolean | undefined
-									 */
-									eventful?: JobEventfulEnumKey | undefined;
-									/**
-									 * @type object
-									 */
-									headInfo: {
-										/**
-										 * @type string
-										 */
-										owner: string;
-										/**
-										 * @type string
-										 */
-										ref: string;
-										/**
-										 * @type string
-										 */
-										repoUuid: string;
-										/**
-										 * @type string
-										 */
-										sha: string;
-										/**
-										 * @type string
-										 */
-										slug: string;
-									};
-									/**
-									 * @type string | undefined
-									 */
-									linkedProjectId?: string | undefined;
-									/**
-									 * @type string
-									 */
-									name: string;
-									/**
-									 * @type string
-									 */
-									owner: string;
-									/**
-									 * @type number
-									 */
-									prId: number;
-									/**
-									 * @type string | undefined
-									 */
-									projectId?: string | undefined;
-									/**
-									 * @type string
-									 */
-									customEnvId?: (string | null) | undefined;
-									/**
-									 * @type string
-									 */
-									ref: string;
-									/**
-									 * @type string
-									 */
-									repoUuid: string;
-									/**
-									 * @type string
-									 */
-									sha: string;
-									/**
-									 * @type string
-									 */
-									slug: string;
-									/**
-									 * @type string
-									 */
-									type: JobTypeEnum2Key;
-									/**
-									 * @type string
-									 */
-									workspaceUuid: string;
-									/**
-									 * @type object | undefined
-									 */
-									gitComments?:
+									[key: string]:
 										| {
 												/**
-												 * @type boolean
+												 * @type string
 												 */
-												onPullRequest: GitCommentsOnPullRequestEnumKey;
-												/**
-												 * @type boolean
-												 */
-												onCommit: GitCommentsOnCommitEnumKey;
+												accessGroupId: string;
 										  }
-										| undefined;
-									/**
-									 * @type string
-									 */
-									provider: JobProviderEnumKey;
+										| PreviousEnumKey;
 							  }
+							| undefined;
+						/**
+						 * @type object | undefined
+						 */
+						next?:
 							| {
-									/**
-									 * @type number
-									 */
-									prId: number;
-									/**
-									 * @type string
-									 */
-									type: JobTypeEnum3Key;
-									/**
-									 * @type boolean | undefined
-									 */
-									authorized?: JobAuthorizedEnumKey | undefined;
-									/**
-									 * @type string | undefined
-									 */
-									authorizedBy?: string | undefined;
-									/**
-									 * @description Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.
-									 * @type array | undefined
-									 */
-									jobProjectIds?: string[] | undefined;
-									/**
-									 * @description Since December 2022 Pairs of projects and owner ids to build for this build request.
-									 * @type array | undefined
-									 */
-									jobPairs?: (string | string)[][] | undefined;
-									/**
-									 * @description Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.
-									 * @type array | undefined
-									 */
-									skippedJobPairs?: (string | string)[][] | undefined;
-									/**
-									 * @description Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING
-									 * @type array | undefined
-									 */
-									gitHashtagVercel?: string[] | undefined;
-									/**
-									 * @description Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.
-									 * @type number | undefined
-									 */
-									connectedProjectCount?: number | undefined;
-									/**
-									 * @description Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.
-									 * @type number | undefined
-									 */
-									prIdOrZero?: number | undefined;
-									/**
-									 * @description Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.
-									 * @type object | undefined
-									 */
-									gitComments?:
+									[key: string]:
 										| {
 												/**
-												 * @type boolean
+												 * @type string
 												 */
-												onPullRequest: GitCommentsOnPullRequestEnumKey;
-												/**
-												 * @type boolean
-												 */
-												onCommit: GitCommentsOnCommitEnumKey;
+												accessGroupId: string;
 										  }
-										| undefined;
-									/**
-									 * @description Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment
-									 * @type boolean | undefined
-									 */
-									isManualGitDeploy?: JobIsManualGitDeployEnumKey | undefined;
-									/**
-									 * @description Since 6 Nov 2025 The verification status of the commit. - \'verified\' if the commit is verified - \'unverified\' if the commit is not verified - \'unknown\' if the commit verification status is unknown or not supported
-									 * @type string | undefined
-									 */
-									commitVerification?: JobCommitVerificationEnumKey | undefined;
-									/**
-									 * @description Remote account id of the committer details (github id etc, not vercel). Note that the committer name/email are user input verbatim and not verified. Github does appear to resolve the given email to the username so we can trust that. If the username matches that of the sender, which is verified info, then we can use the account id and account type. See api-incoming, where we determine and set this property Note that even with that, the account may still have been spoofed.
-									 * @type number | undefined
-									 */
-									committerGitUserId?: number | undefined;
-									/**
-									 * @description Remote account type of the committer details (github type etc, not vercel). Note that the committer name/email are user input verbatim and not verified. Github does appear to resolve the given email to the username so we can trust that. If the username matches that of the sender, which is verified info, then we can use the account id and account type. See api-incoming, where we determine and set this property Note that even with that, the account may still have been spoofed.
-									 * @type string | undefined
-									 */
-									committerGitUserType?: string | undefined;
-									/**
-									 * @type number | undefined
-									 */
-									createdAt?: number | undefined;
-									/**
-									 * @type boolean | undefined
-									 */
-									forceNew?: JobForceNewEnumKey | undefined;
-									/**
-									 * @type string | undefined
-									 */
-									deploymentId?: string | undefined;
-									/**
-									 * @type object | undefined
-									 */
-									deployHook?:
-										| {
-												/**
-												 * @type number
-												 */
-												createdAt: number;
-												/**
-												 * @type string
-												 */
-												id: string;
-												/**
-												 * @type string
-												 */
-												name: string;
-												/**
-												 * @type string
-												 */
-												ref: string;
-										  }
-										| undefined;
-									/**
-									 * @type string | undefined
-									 */
-									beforeSha?: string | undefined;
-									/**
-									 * @type string | undefined
-									 */
-									defaultBranch?: string | undefined;
-									/**
-									 * @type boolean | undefined
-									 */
-									eventful?: JobEventfulEnumKey | undefined;
-									/**
-									 * @type string | undefined
-									 */
-									githubDeploymentId?: string | undefined;
-									/**
-									 * @description Information about the head commit/branch for a GitHub repository
-									 * @type object
-									 */
-									headInfo: {
-										/**
-										 * @type string
-										 */
-										org: string;
-										/**
-										 * @type string
-										 */
-										ref: string;
-										/**
-										 * @type string
-										 */
-										repo: string;
-										/**
-										 * @type number
-										 */
-										repoId: number;
-										/**
-										 * @type string
-										 */
-										sha: string;
-									};
-									/**
-									 * @type number
-									 */
-									installationId: number;
-									/**
-									 * @type boolean
-									 */
-									isPrivate: JobIsPrivateEnumKey;
-									/**
-									 * @type string | undefined
-									 */
-									linkedProjectId?: string | undefined;
-									/**
-									 * @type string
-									 */
-									org: string;
-									/**
-									 * @type string | undefined
-									 */
-									projectId?: string | undefined;
-									/**
-									 * @type string
-									 */
-									customEnvId?: (string | null) | undefined;
-									/**
-									 * @type string
-									 */
-									repo: string;
-									/**
-									 * @type number
-									 */
-									repoId: number;
-									/**
-									 * @type string
-									 */
-									target?: (string | null) | undefined;
-									/**
-									 * @type string | undefined
-									 */
-									url?: string | undefined;
-									/**
-									 * @type boolean | undefined
-									 */
-									withCache?: JobWithCacheEnumKey | undefined;
-									/**
-									 * @type string
-									 */
-									provider: JobProviderEnum2Key;
-									/**
-									 * @type string | undefined
-									 */
-									customHost?: string | undefined;
+										| NextEnumKey;
 							  }
-							| {
-									/**
-									 * @type number
-									 */
-									repoPushedAt: number | null;
-									/**
-									 * @type object | undefined
-									 */
-									commitInfo?:
-										| {
-												/**
-												 * @type number
-												 */
-												total: number;
-												/**
-												 * @type string | undefined
-												 */
-												earliestSha?: string | undefined;
-										  }
-										| undefined;
-									/**
-									 * @type boolean | undefined
-									 */
-									forced?: JobForcedEnumKey | undefined;
-									/**
-									 * @type string
-									 */
-									type: JobTypeEnum4Key;
-									/**
-									 * @type boolean | undefined
-									 */
-									authorized?: JobAuthorizedEnumKey | undefined;
-									/**
-									 * @type string | undefined
-									 */
-									authorizedBy?: string | undefined;
-									/**
-									 * @description Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.
-									 * @type array | undefined
-									 */
-									jobProjectIds?: string[] | undefined;
-									/**
-									 * @description Since December 2022 Pairs of projects and owner ids to build for this build request.
-									 * @type array | undefined
-									 */
-									jobPairs?: (string | string)[][] | undefined;
-									/**
-									 * @description Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.
-									 * @type array | undefined
-									 */
-									skippedJobPairs?: (string | string)[][] | undefined;
-									/**
-									 * @description Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING
-									 * @type array | undefined
-									 */
-									gitHashtagVercel?: string[] | undefined;
-									/**
-									 * @description Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.
-									 * @type number | undefined
-									 */
-									connectedProjectCount?: number | undefined;
-									/**
-									 * @description Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.
-									 * @type number | undefined
-									 */
-									prIdOrZero?: number | undefined;
-									/**
-									 * @description Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.
-									 * @type object | undefined
-									 */
-									gitComments?:
-										| {
-												/**
-												 * @type boolean
-												 */
-												onPullRequest: GitCommentsOnPullRequestEnumKey;
-												/**
-												 * @type boolean
-												 */
-												onCommit: GitCommentsOnCommitEnumKey;
-										  }
-										| undefined;
-									/**
-									 * @description Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment
-									 * @type boolean | undefined
-									 */
-									isManualGitDeploy?: JobIsManualGitDeployEnumKey | undefined;
-									/**
-									 * @description Since 6 Nov 2025 The verification status of the commit. - \'verified\' if the commit is verified - \'unverified\' if the commit is not verified - \'unknown\' if the commit verification status is unknown or not supported
-									 * @type string | undefined
-									 */
-									commitVerification?: JobCommitVerificationEnumKey | undefined;
-									/**
-									 * @description Remote account id of the committer details (github id etc, not vercel). Note that the committer name/email are user input verbatim and not verified. Github does appear to resolve the given email to the username so we can trust that. If the username matches that of the sender, which is verified info, then we can use the account id and account type. See api-incoming, where we determine and set this property Note that even with that, the account may still have been spoofed.
-									 * @type number | undefined
-									 */
-									committerGitUserId?: number | undefined;
-									/**
-									 * @description Remote account type of the committer details (github type etc, not vercel). Note that the committer name/email are user input verbatim and not verified. Github does appear to resolve the given email to the username so we can trust that. If the username matches that of the sender, which is verified info, then we can use the account id and account type. See api-incoming, where we determine and set this property Note that even with that, the account may still have been spoofed.
-									 * @type string | undefined
-									 */
-									committerGitUserType?: string | undefined;
-									/**
-									 * @type number | undefined
-									 */
-									createdAt?: number | undefined;
-									/**
-									 * @type boolean | undefined
-									 */
-									forceNew?: JobForceNewEnumKey | undefined;
-									/**
-									 * @type string | undefined
-									 */
-									deploymentId?: string | undefined;
-									/**
-									 * @type object | undefined
-									 */
-									deployHook?:
-										| {
-												/**
-												 * @type number
-												 */
-												createdAt: number;
-												/**
-												 * @type string
-												 */
-												id: string;
-												/**
-												 * @type string
-												 */
-												name: string;
-												/**
-												 * @type string
-												 */
-												ref: string;
-										  }
-										| undefined;
-									/**
-									 * @type string | undefined
-									 */
-									beforeSha?: string | undefined;
-									/**
-									 * @type string | undefined
-									 */
-									defaultBranch?: string | undefined;
-									/**
-									 * @type boolean | undefined
-									 */
-									eventful?: JobEventfulEnumKey | undefined;
-									/**
-									 * @type string | undefined
-									 */
-									githubDeploymentId?: string | undefined;
-									/**
-									 * @description Information about the head commit/branch for a GitHub repository
-									 * @type object
-									 */
-									headInfo: {
-										/**
-										 * @type string
-										 */
-										org: string;
-										/**
-										 * @type string
-										 */
-										ref: string;
-										/**
-										 * @type string
-										 */
-										repo: string;
-										/**
-										 * @type number
-										 */
-										repoId: number;
-										/**
-										 * @type string
-										 */
-										sha: string;
-									};
-									/**
-									 * @type number
-									 */
-									installationId: number;
-									/**
-									 * @type boolean
-									 */
-									isPrivate: JobIsPrivateEnumKey;
-									/**
-									 * @type string | undefined
-									 */
-									linkedProjectId?: string | undefined;
-									/**
-									 * @type string
-									 */
-									org: string;
-									/**
-									 * @type number
-									 */
-									prId: number | null;
-									/**
-									 * @type string | undefined
-									 */
-									projectId?: string | undefined;
-									/**
-									 * @type string
-									 */
-									customEnvId?: (string | null) | undefined;
-									/**
-									 * @type string
-									 */
-									repo: string;
-									/**
-									 * @type number
-									 */
-									repoId: number;
-									/**
-									 * @type string
-									 */
-									target?: (string | null) | undefined;
-									/**
-									 * @type string | undefined
-									 */
-									url?: string | undefined;
-									/**
-									 * @type boolean | undefined
-									 */
-									withCache?: JobWithCacheEnumKey | undefined;
-									/**
-									 * @type string
-									 */
-									provider: JobProviderEnum2Key;
-									/**
-									 * @type string | undefined
-									 */
-									customHost?: string | undefined;
-							  }
-							| {
-									/**
-									 * @type number | undefined
-									 */
-									createdAt?: number | undefined;
-									/**
-									 * @type boolean | undefined
-									 */
-									eventful?: JobEventfulEnumKey | undefined;
-									/**
-									 * @description Information about the head commit/branch for a GitHub repository
-									 * @type object
-									 */
-									headInfo: {
-										/**
-										 * @type string
-										 */
-										org: string;
-										/**
-										 * @type string
-										 */
-										ref: string;
-										/**
-										 * @type string
-										 */
-										repo: string;
-										/**
-										 * @type number
-										 */
-										repoId: number;
-										/**
-										 * @type string
-										 */
-										sha: string;
-									};
-									/**
-									 * @type string | undefined
-									 */
-									beforeSha?: string | undefined;
-									/**
-									 * @type number
-									 */
-									installationId: number;
-									/**
-									 * @type boolean
-									 */
-									isPrivate: JobIsPrivateEnumKey;
-									/**
-									 * @type string | undefined
-									 */
-									linkedProjectId?: string | undefined;
-									/**
-									 * @type string
-									 */
-									org: string;
-									/**
-									 * @type number
-									 */
-									prId: number;
-									projectId: unknown | null;
-									customEnvId?: (unknown | null) | undefined;
-									/**
-									 * @type string
-									 */
-									repo: string;
-									/**
-									 * @type number
-									 */
-									repoId: number;
-									/**
-									 * @type string
-									 */
-									type: JobTypeEnum5Key;
-									/**
-									 * @type object | undefined
-									 */
-									gitComments?:
-										| {
-												/**
-												 * @type boolean
-												 */
-												onPullRequest: GitCommentsOnPullRequestEnumKey;
-												/**
-												 * @type boolean
-												 */
-												onCommit: GitCommentsOnCommitEnumKey;
-										  }
-										| undefined;
-									/**
-									 * @type string
-									 */
-									provider: JobProviderEnum2Key;
-									/**
-									 * @type string | undefined
-									 */
-									customHost?: string | undefined;
-							  }
-							| {
-									/**
-									 * @type string
-									 */
-									type: JobTypeEnum6Key;
-									/**
-									 * @type boolean | undefined
-									 */
-									authorized?: JobAuthorizedEnumKey | undefined;
-									/**
-									 * @type string | undefined
-									 */
-									authorizedBy?: string | undefined;
-									/**
-									 * @description Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.
-									 * @type array | undefined
-									 */
-									jobProjectIds?: string[] | undefined;
-									/**
-									 * @description Since December 2022 Pairs of projects and owner ids to build for this build request.
-									 * @type array | undefined
-									 */
-									jobPairs?: (string | string)[][] | undefined;
-									/**
-									 * @description Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.
-									 * @type array | undefined
-									 */
-									skippedJobPairs?: (string | string)[][] | undefined;
-									/**
-									 * @description Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING
-									 * @type array | undefined
-									 */
-									gitHashtagVercel?: string[] | undefined;
-									/**
-									 * @description Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.
-									 * @type number | undefined
-									 */
-									connectedProjectCount?: number | undefined;
-									/**
-									 * @description Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.
-									 * @type number | undefined
-									 */
-									prIdOrZero?: number | undefined;
-									/**
-									 * @description Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.
-									 * @type object | undefined
-									 */
-									gitComments?:
-										| {
-												/**
-												 * @type boolean
-												 */
-												onPullRequest: GitCommentsOnPullRequestEnumKey;
-												/**
-												 * @type boolean
-												 */
-												onCommit: GitCommentsOnCommitEnumKey;
-										  }
-										| undefined;
-									/**
-									 * @description Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment
-									 * @type boolean | undefined
-									 */
-									isManualGitDeploy?: JobIsManualGitDeployEnumKey | undefined;
-									/**
-									 * @description Since 6 Nov 2025 The verification status of the commit. - \'verified\' if the commit is verified - \'unverified\' if the commit is not verified - \'unknown\' if the commit verification status is unknown or not supported
-									 * @type string | undefined
-									 */
-									commitVerification?: JobCommitVerificationEnumKey | undefined;
-									/**
-									 * @type object | undefined
-									 */
-									commit?:
-										| {
-												/**
-												 * @type string
-												 */
-												id: string;
-												/**
-												 * @type string
-												 */
-												authorAvatar?: (string | null) | undefined;
-												/**
-												 * @type string
-												 */
-												authorEmail?: (string | null) | undefined;
-												/**
-												 * @type number
-												 */
-												authorId?: (number | null) | undefined;
-												/**
-												 * @type string
-												 */
-												authorLogin?: (string | null) | undefined;
-												/**
-												 * @type string
-												 */
-												authorName?: (string | null) | undefined;
-										  }
-										| undefined;
-									/**
-									 * @type number | undefined
-									 */
-									createdAt?: number | undefined;
-									/**
-									 * @type object | undefined
-									 */
-									deployHook?:
-										| {
-												/**
-												 * @type number
-												 */
-												createdAt: number;
-												/**
-												 * @type string
-												 */
-												id: string;
-												/**
-												 * @type string
-												 */
-												name: string;
-												/**
-												 * @type string
-												 */
-												ref: string;
-										  }
-										| undefined;
-									/**
-									 * @type string | undefined
-									 */
-									deploymentId?: string | undefined;
-									/**
-									 * @type boolean | undefined
-									 */
-									eventful?: JobEventfulEnumKey | undefined;
-									/**
-									 * @type boolean | undefined
-									 */
-									forceNew?: JobForceNewEnumKey | undefined;
-									/**
-									 * @description GitLab
-									 * @type object
-									 */
-									headInfo: {
-										/**
-										 * @type object
-										 */
-										project: {
-											/**
-											 * @type string
-											 */
-											defaultBranch?: (string | null) | undefined;
-											/**
-											 * @type string
-											 */
-											id: string;
-											/**
-											 * @type string
-											 */
-											name?: (string | null) | undefined;
-											/**
-											 * @type string
-											 */
-											namespace?: (string | null) | undefined;
-											/**
-											 * @type string
-											 */
-											path?: (string | null) | undefined;
-											/**
-											 * @type string
-											 */
-											url?: (string | null) | undefined;
-										};
-										/**
-										 * @type string
-										 */
-										ref: string;
-										/**
-										 * @type string
-										 */
-										sha: string;
-									};
-									/**
-									 * @type string | undefined
-									 */
-									linkedProjectId?: string | undefined;
-									/**
-									 * @type number | undefined
-									 */
-									prId?: number | undefined;
-									/**
-									 * @type object
-									 */
-									project: {
-										/**
-										 * @type string
-										 */
-										defaultBranch?: (string | null) | undefined;
-										/**
-										 * @type string
-										 */
-										id: string;
-										/**
-										 * @type string
-										 */
-										name?: (string | null) | undefined;
-										/**
-										 * @type string
-										 */
-										namespace?: (string | null) | undefined;
-										/**
-										 * @type string
-										 */
-										path?: (string | null) | undefined;
-										/**
-										 * @type string
-										 */
-										url?: (string | null) | undefined;
-									};
-									/**
-									 * @type string | undefined
-									 */
-									projectId?: string | undefined;
-									/**
-									 * @type string
-									 */
-									customEnvId?: (string | null) | undefined;
-									/**
-									 * @type string
-									 */
-									ref: string;
-									/**
-									 * @type number
-									 */
-									repoPushedAt?: (number | null) | undefined;
-									/**
-									 * @type string
-									 */
-									sha: string;
-									/**
-									 * @type boolean | undefined
-									 */
-									silent?: JobSilentEnumKey | undefined;
-									/**
-									 * @type string
-									 */
-									target?: (string | null) | undefined;
-									/**
-									 * @type string | undefined
-									 */
-									url?: string | undefined;
-									/**
-									 * @type boolean | undefined
-									 */
-									withCache?: JobWithCacheEnumKey | undefined;
-									/**
-									 * @type string
-									 */
-									provider: JobProviderEnum3Key;
-							  }
-							| {
-									/**
-									 * @type number | undefined
-									 */
-									createdAt?: number | undefined;
-									/**
-									 * @type boolean | undefined
-									 */
-									eventful?: JobEventfulEnumKey | undefined;
-									/**
-									 * @description GitLab
-									 * @type object
-									 */
-									headInfo: {
-										/**
-										 * @type object
-										 */
-										project: {
-											/**
-											 * @type string
-											 */
-											defaultBranch?: (string | null) | undefined;
-											/**
-											 * @type string
-											 */
-											id: string;
-											/**
-											 * @type string
-											 */
-											name?: (string | null) | undefined;
-											/**
-											 * @type string
-											 */
-											namespace?: (string | null) | undefined;
-											/**
-											 * @type string
-											 */
-											path?: (string | null) | undefined;
-											/**
-											 * @type string
-											 */
-											url?: (string | null) | undefined;
-										};
-										/**
-										 * @type string
-										 */
-										ref: string;
-										/**
-										 * @type string
-										 */
-										sha: string;
-									};
-									/**
-									 * @type string | undefined
-									 */
-									linkedProjectId?: string | undefined;
-									/**
-									 * @type number
-									 */
-									prId: number;
-									/**
-									 * @type object
-									 */
-									project: {
-										/**
-										 * @type string
-										 */
-										defaultBranch?: (string | null) | undefined;
-										/**
-										 * @type string
-										 */
-										id: string;
-										/**
-										 * @type string
-										 */
-										name?: (string | null) | undefined;
-										/**
-										 * @type string
-										 */
-										namespace?: (string | null) | undefined;
-										/**
-										 * @type string
-										 */
-										path?: (string | null) | undefined;
-										/**
-										 * @type string
-										 */
-										url?: (string | null) | undefined;
-									};
-									/**
-									 * @type string | undefined
-									 */
-									projectId?: string | undefined;
-									/**
-									 * @type string
-									 */
-									customEnvId?: (string | null) | undefined;
-									/**
-									 * @type string
-									 */
-									ref: string;
-									/**
-									 * @type string
-									 */
-									sha: string;
-									/**
-									 * @type string
-									 */
-									type: JobTypeEnum7Key;
-									/**
-									 * @type object | undefined
-									 */
-									gitComments?:
-										| {
-												/**
-												 * @type boolean
-												 */
-												onPullRequest: GitCommentsOnPullRequestEnumKey;
-												/**
-												 * @type boolean
-												 */
-												onCommit: GitCommentsOnCommitEnumKey;
-										  }
-										| undefined;
-									/**
-									 * @type string
-									 */
-									provider: JobProviderEnum3Key;
-							  };
+							| undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						domain: string;
+						/**
+						 * @type array
+						 */
+						ips: string[];
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						exportId: string;
+						/**
+						 * @type number
+						 */
+						from: number;
+						/**
+						 * @type number
+						 */
+						to: number;
+						/**
+						 * @type string
+						 */
+						format: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						fileId: string;
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						slug?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						provider: PayloadProviderEnumKey;
+						/**
+						 * @type string
+						 */
+						login: string;
+				  }
+				| {
+						/**
+						 * @type boolean
+						 */
+						totp: PayloadTotpEnumKey;
+						/**
+						 * @type number
+						 */
+						recoveryCodes: number;
+						/**
+						 * @type string | undefined
+						 */
+						actorId?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						actorType?: PayloadActorTypeEnumKey | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						reason?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type number
+						 */
+						deletedAt?: (number | null) | undefined;
+						/**
+						 * @type string
+						 */
+						username: string;
+				  }
+				| {
+						/**
+						 * @type object
+						 */
+						previous: {
+							/**
+							 * @type boolean
+							 */
+							enabled: PreviousEnabledEnum2Key;
+							/**
+							 * @type boolean
+							 */
+							totpVerified: PreviousTotpVerifiedEnumKey;
+						};
+						/**
+						 * @type object
+						 */
+						next: {
+							/**
+							 * @type boolean
+							 */
+							enabled: NextEnabledEnum2Key;
+							/**
+							 * @type boolean
+							 */
+							totpVerified: NextTotpVerifiedEnumKey;
+						};
+				  }
+				| {
+						/**
+						 * @type boolean
+						 */
+						mfaEnabled: PayloadMfaEnabledEnumKey;
+				  }
+				| {
+						/**
+						 * @type boolean
+						 */
+						enabled: PayloadEnabledEnumKey;
+						/**
+						 * @type boolean
+						 */
+						totpVerified: PayloadTotpVerifiedEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						email: string;
+						/**
+						 * @type string
+						 */
+						prevEmail: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						username: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						ruleName: string;
+				  }
+				| {
+						/**
+						 * @type object
+						 */
+						team: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string
+							 */
+							name: string;
+						};
+						/**
+						 * @type object
+						 */
+						configuration: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string | undefined
+							 */
+							name?: string | undefined;
+						};
+						/**
+						 * @type object
+						 */
+						peering: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string
+							 */
+							accountId: string;
+							/**
+							 * @type string
+							 */
+							region: string;
+							/**
+							 * @type string
+							 */
+							vpcId: string;
+						};
+				  }
+				| {
+						/**
+						 * @type object
+						 */
+						team: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string
+							 */
+							name: string;
+						};
+						/**
+						 * @type object
+						 */
+						configuration: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string | undefined
+							 */
+							name?: string | undefined;
+						};
+						/**
+						 * @type object
+						 */
+						peering: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string | undefined
+							 */
+							name?: string | undefined;
+						};
+				  }
+				| {
+						/**
+						 * @type object
+						 */
+						team: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string
+							 */
+							name: string;
+						};
+						/**
+						 * @type object
+						 */
+						configuration: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string | undefined
+							 */
+							name?: string | undefined;
+						};
+						/**
+						 * @type object
+						 */
+						peering: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string | undefined
+							 */
+							name?: string | undefined;
+						};
+						/**
+						 * @type string | undefined
+						 */
+						newName?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						tier: PayloadTierEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						id: string;
+						/**
+						 * @type string
+						 */
+						url: string;
 				  }
 				| {
 						/**
@@ -16011,6 +16017,7 @@ export type BuildEntitlementsEnhancedBuildsEnum2Key =
 	(typeof buildEntitlementsEnhancedBuildsEnum2)[keyof typeof buildEntitlementsEnhancedBuildsEnum2];
 
 export const buildMachineDefaultEnum2 = {
+	elastic: "elastic",
 	enhanced: "enhanced",
 	standard: "standard",
 	turbo: "turbo",
@@ -17304,6 +17311,7 @@ export type ResourceConfigFlagsExplorerUnlimitedOverridesEnum2Key =
 	(typeof resourceConfigFlagsExplorerUnlimitedOverridesEnum2)[keyof typeof resourceConfigFlagsExplorerUnlimitedOverridesEnum2];
 
 export const buildMachineDefaultEnum3 = {
+	elastic: "elastic",
 	enhanced: "enhanced",
 	standard: "standard",
 	turbo: "turbo",
@@ -30220,6 +30228,16 @@ export type CreateSandbox403 = unknown;
 export type CreateSandbox404 = unknown;
 
 /**
+ * @description The Sandbox has stopped execution and is no longer available.
+ */
+export type CreateSandbox410 = unknown;
+
+/**
+ * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
+ */
+export type CreateSandbox422 = unknown;
+
+/**
  * @description The concurrency limit has been exceeded.
  */
 export type CreateSandbox429 = unknown;
@@ -30237,6 +30255,8 @@ export type CreateSandboxMutation = {
 		| CreateSandbox402
 		| CreateSandbox403
 		| CreateSandbox404
+		| CreateSandbox410
+		| CreateSandbox422
 		| CreateSandbox429
 		| CreateSandbox500;
 };

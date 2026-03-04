@@ -974,8 +974,8 @@ export const userEventSchema = z
 				.object({
 					slug: z.optional(z.string()),
 					avatar: z.string(),
-					username: z.string(),
 					email: z.string(),
+					username: z.string(),
 					uid: z.string(),
 				})
 				.describe("Metadata for {@link userId}."),
@@ -1079,6 +1079,22 @@ export const userEventSchema = z
 						id: z.string(),
 						name: z.string(),
 					}),
+					project: z.object({
+						id: z.string(),
+						name: z.optional(z.string()),
+					}),
+					nextRole: z
+						.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_VIEWER", "PROJECT_GUEST"])
+						.nullish(),
+					previousRole: z.optional(
+						z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_VIEWER", "PROJECT_GUEST"]),
+					),
+				}),
+				z.object({
+					accessGroup: z.object({
+						id: z.string(),
+						name: z.string(),
+					}),
 					name: z.optional(z.string()),
 					previousName: z.optional(z.string()),
 					teamRoles: z.optional(z.array(z.string())),
@@ -1100,65 +1116,8 @@ export const userEventSchema = z
 					directoryType: z.optional(z.string()),
 				}),
 				z.object({
-					accessGroup: z.object({
-						id: z.string(),
-						name: z.string(),
-					}),
-					project: z.object({
-						id: z.string(),
-						name: z.optional(z.string()),
-					}),
-					nextRole: z
-						.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_VIEWER", "PROJECT_GUEST"])
-						.nullish(),
-					previousRole: z.optional(
-						z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_VIEWER", "PROJECT_GUEST"]),
-					),
-				}),
-				z.object({
-					previous: z.optional(
-						z
-							.object({
-								enabled: z
-									.union([z.literal(false), z.literal(true)])
-									.describe("Whether automatic code reviews are enabled"),
-								scope: z
-									.enum(["public", "private", "all", "selected_repos"])
-									.describe("Which repository visibilities get automatic reviews"),
-								includeDrafts: z
-									.union([z.literal(false), z.literal(true)])
-									.describe("Whether to include draft pull requests in automatic reviews"),
-								selectedRepos: z
-									.array(z.string())
-									.describe(
-										"GitHub repos to scope automatic reviews to. Format: \"owner/repo\" (lowercase). Only used when scope='selected_repos'.",
-									)
-									.nullish(),
-							})
-							.describe("Automatic code review settings"),
-					),
-					next: z
-						.object({
-							enabled: z
-								.union([z.literal(false), z.literal(true)])
-								.describe("Whether automatic code reviews are enabled"),
-							scope: z
-								.enum(["public", "private", "all", "selected_repos"])
-								.describe("Which repository visibilities get automatic reviews"),
-							includeDrafts: z
-								.union([z.literal(false), z.literal(true)])
-								.describe("Whether to include draft pull requests in automatic reviews"),
-							selectedRepos: z
-								.array(z.string())
-								.describe(
-									"GitHub repos to scope automatic reviews to. Format: \"owner/repo\" (lowercase). Only used when scope='selected_repos'.",
-								)
-								.nullish(),
-						})
-						.describe("Automatic code review settings"),
-				}),
-				z.object({
-					enabled: z.union([z.literal(false), z.literal(true)]),
+					price: z.optional(z.number()),
+					currency: z.optional(z.string()),
 				}),
 				z.object({
 					alias: z.optional(z.string()),
@@ -1182,39 +1141,6 @@ export const userEventSchema = z
 					aliasUpdatedAt: z.optional(z.number()),
 				}),
 				z.object({
-					aliasId: z.optional(z.string()),
-					alias: z.optional(z.string()),
-					projectName: z.optional(z.string()),
-				}),
-				z.object({
-					alias: z.optional(z.string()),
-				}),
-				z.object({
-					alias: z.optional(z.string()),
-					userId: z.optional(z.string()),
-					username: z.optional(z.string()),
-				}),
-				z.object({
-					alias: z.optional(z.string()),
-					aliasId: z.optional(z.string()),
-					userId: z.optional(z.string()),
-					username: z.optional(z.string()),
-				}),
-				z.object({
-					projectName: z.string(),
-					alias: z.string(),
-					action: z.enum(["created", "removed"]),
-				}),
-				z.object({
-					alias: z.optional(z.string()),
-					email: z.optional(z.string()),
-					username: z.optional(z.string()),
-				}),
-				z.object({
-					alias: z.optional(z.string()),
-					email: z.optional(z.string()),
-				}),
-				z.object({
 					name: z.optional(z.string()),
 					alias: z.string(),
 					oldTeam: z.optional(
@@ -1235,8 +1161,235 @@ export const userEventSchema = z
 					deploymentId: z.nullable(z.string()),
 				}),
 				z.object({
+					alias: z.optional(z.string()),
+					email: z.optional(z.string()),
+					username: z.optional(z.string()),
+				}),
+				z.object({
+					alias: z.optional(z.string()),
+				}),
+				z.object({
+					alias: z.optional(z.string()),
+					email: z.optional(z.string()),
+				}),
+				z.object({
+					aliasId: z.optional(z.string()),
+					alias: z.optional(z.string()),
+					projectName: z.optional(z.string()),
+				}),
+				z.object({
+					projectName: z.string(),
+					alias: z.string(),
+					action: z.enum(["created", "removed"]),
+				}),
+				z.object({
 					alias: z.string(),
 					deploymentUrl: z.string(),
+				}),
+				z.object({
+					alias: z.optional(z.string()),
+					userId: z.optional(z.string()),
+					username: z.optional(z.string()),
+				}),
+				z.object({
+					alias: z.optional(z.string()),
+					aliasId: z.optional(z.string()),
+					userId: z.optional(z.string()),
+					username: z.optional(z.string()),
+				}),
+				z.object({
+					appName: z.string(),
+					appId: z.optional(z.string()),
+					scopes: z.array(z.enum(["openid", "email", "profile", "offline_access"])),
+					permissions: z.optional(
+						z.array(
+							z.enum([
+								"read:user",
+								"read:domain",
+								"read-write:domain",
+								"read:team",
+								"read:billing",
+								"read-write:billing",
+								"read-write:ai-gateway-api-key",
+								"read-write:project-env-vars",
+								"read:project",
+								"read-write:project",
+								"read:deployment",
+								"read-write:deployment",
+							]),
+						),
+					),
+				}),
+				z.object({
+					appName: z.string(),
+					appId: z.optional(z.string()),
+				}),
+				z.object({
+					appName: z.string(),
+					appId: z.optional(z.string()),
+					nextScopes: z.array(z.enum(["openid", "email", "profile", "offline_access"])),
+					nextPermissions: z.optional(
+						z.array(
+							z.enum([
+								"read:user",
+								"read:domain",
+								"read-write:domain",
+								"read:team",
+								"read:billing",
+								"read-write:billing",
+								"read-write:ai-gateway-api-key",
+								"read-write:project-env-vars",
+								"read:project",
+								"read-write:project",
+								"read:deployment",
+								"read-write:deployment",
+							]),
+						),
+					),
+				}),
+				z.object({
+					appName: z.string(),
+					appId: z.optional(z.string()),
+					installationId: z.optional(z.string()),
+					before: z.optional(
+						z.object({
+							resources: z.optional(
+								z.object({
+									projectIds: z.object({
+										type: z.enum(["list"]),
+										required: z.literal(true),
+										items: z.object({
+											type: z.enum(["string"]),
+										}),
+									}),
+								}),
+							),
+							permissions: z.optional(
+								z.array(
+									z.enum([
+										"read:domain",
+										"read-write:domain",
+										"read:team",
+										"read:billing",
+										"read-write:billing",
+										"read-write:ai-gateway-api-key",
+										"read-write:project-env-vars",
+										"read:project",
+										"read-write:project",
+										"read:deployment",
+										"read-write:deployment",
+									]),
+								),
+							),
+						}),
+					),
+					after: z.optional(
+						z.object({
+							resources: z.optional(
+								z.object({
+									projectIds: z.object({
+										type: z.enum(["list"]),
+										required: z.literal(true),
+										items: z.object({
+											type: z.enum(["string"]),
+										}),
+									}),
+								}),
+							),
+							permissions: z.optional(
+								z.array(
+									z.enum([
+										"read:domain",
+										"read-write:domain",
+										"read:team",
+										"read:billing",
+										"read-write:billing",
+										"read-write:ai-gateway-api-key",
+										"read-write:project-env-vars",
+										"read:project",
+										"read-write:project",
+										"read:deployment",
+										"read-write:deployment",
+									]),
+								),
+							),
+						}),
+					),
+				}),
+				z.object({
+					appName: z.string(),
+					appId: z.optional(z.string()),
+					resources: z.optional(
+						z.object({
+							projectIds: z.object({
+								type: z.enum(["list"]),
+								required: z.literal(true),
+								items: z.object({
+									type: z.enum(["string"]),
+								}),
+							}),
+						}),
+					),
+					permissions: z.optional(
+						z.array(
+							z.enum([
+								"read:domain",
+								"read-write:domain",
+								"read:team",
+								"read:billing",
+								"read-write:billing",
+								"read-write:ai-gateway-api-key",
+								"read-write:project-env-vars",
+								"read:project",
+								"read-write:project",
+								"read:deployment",
+								"read-write:deployment",
+							]),
+						),
+					),
+				}),
+				z.object({
+					appName: z.string(),
+					appId: z.optional(z.string()),
+					secretLastFourChars: z.optional(z.string()),
+				}),
+				z.object({
+					appName: z
+						.string()
+						.describe(
+							"The App's name at the moment this even was published (it may have changed since then).",
+						),
+					appId: z.optional(
+						z
+							.string()
+							.describe("The App's ID. Note that not all historical events have this field."),
+					),
+					app: z.optional(
+						z
+							.object({
+								id: z.string().describe("The App's ID."),
+								name: z
+									.string()
+									.describe(
+										"The App's name at the moment this even was published (it may have changed since then).",
+									),
+							})
+							.describe("Note that not all historical events have this field."),
+					),
+					issuedBefore: z.optional(
+						z
+							.number()
+							.describe(
+								"UNIX timestamp in seconds. Tokens issued before this timestamp will be revoked. Note that not all historical events have this field.",
+							),
+					),
+				}),
+				z.object({
+					projectId: z.string(),
+					prevAttackModeEnabled: z.optional(z.union([z.literal(false), z.literal(true)])),
+					prevAttackModeActiveUntil: z.number().nullish(),
+					attackModeEnabled: z.union([z.literal(false), z.literal(true)]),
+					attackModeActiveUntil: z.number().nullish(),
 				}),
 				z.object({
 					projectName: z.string(),
@@ -1244,6 +1397,51 @@ export const userEventSchema = z
 				}),
 				z.object({
 					avatar: z.optional(z.string()),
+				}),
+				z.object({
+					invoiceId: z.string(),
+					amount: z.number(),
+					refundReason: z.string(),
+					lineItemCount: z.number(),
+				}),
+				z.object({
+					invoiceId: z.string(),
+					newInvoiceId: z.string(),
+					settlementMethod: z.enum(["refunded-paid", "credited-paid"]),
+					amount: z.number(),
+				}),
+				z.object({
+					paymentMethodId: z.string(),
+					brand: z.optional(z.string()),
+					last4: z.optional(z.string()),
+				}),
+				z.object({
+					subscriptionId: z.optional(z.string()),
+					planSlug: z.string(),
+				}),
+				z.object({
+					subscriptionId: z.optional(z.string()),
+					action: z.enum(["cancel_plan"]),
+					data: z.object({
+						planSlug: z.enum(["v0_teams", "v0_business"]),
+						reason: z.optional(z.enum(["non-payment"])),
+					}),
+				}),
+				z.object({
+					subscriptionId: z.optional(z.string()),
+					action: z.enum(["resume_plan"]),
+					data: z.object({
+						planSlug: z.enum(["v0_teams", "v0_business"]),
+					}),
+				}),
+				z.object({
+					subscriptionId: z.optional(z.string()),
+					action: z.enum(["mutate"]),
+					data: z.object({}).catchall(z.unknown()),
+				}),
+				z.object({
+					subscriptionId: z.optional(z.string()),
+					productAliases: z.array(z.string()),
 				}),
 				z.object({
 					project: z.object({
@@ -1267,14 +1465,14 @@ export const userEventSchema = z
 					id: z.optional(z.string()),
 				}),
 				z.object({
-					cn: z.optional(z.string()),
-					cns: z.optional(z.array(z.string())),
-					id: z.optional(z.string()),
-				}),
-				z.object({
 					id: z.string(),
 					cns: z.array(z.string()),
 					custom: z.union([z.literal(false), z.literal(true)]),
+				}),
+				z.object({
+					cn: z.optional(z.string()),
+					cns: z.optional(z.array(z.string())),
+					id: z.optional(z.string()),
 				}),
 				z.object({
 					id: z.string(),
@@ -1301,33 +1499,6 @@ export const userEventSchema = z
 				z.object({
 					cn: z.optional(z.string()),
 					cns: z.optional(z.array(z.string())),
-				}),
-				z.object({
-					projectId: z.optional(z.string()),
-					projectName: z.optional(z.string()),
-					target: z.optional(z.array(z.string())),
-					updated: z.optional(z.union([z.literal(false), z.literal(true)])),
-				}),
-				z.object({
-					projectId: z.optional(z.string()),
-					projectName: z.optional(z.string()),
-					certId: z.optional(z.string()),
-					origin: z.optional(z.string()),
-				}),
-				z.object({
-					reason: z.optional(z.string()),
-					suffix: z.string(),
-				}),
-				z.object({
-					status: z.string(),
-					suffix: z.string(),
-				}),
-				z.object({
-					suffix: z.string(),
-				}),
-				z.object({
-					previousConcurrentBuilds: z.number(),
-					nextConcurrentBuilds: z.number(),
 				}),
 				z.object({
 					configuration: z.object({
@@ -1419,16 +1590,15 @@ export const userEventSchema = z
 					bitbucketAccountId: z.string(),
 				}),
 				z.object({
-					provider: z.enum([
-						"github",
-						"github-limited",
-						"github-custom-host",
-						"gitlab",
-						"bitbucket",
-						"google",
-						"apple",
-					]),
-					login: z.string(),
+					reason: z.optional(z.string()),
+					suffix: z.string(),
+				}),
+				z.object({
+					status: z.string(),
+					suffix: z.string(),
+				}),
+				z.object({
+					suffix: z.string(),
 				}),
 				z.object({
 					projectId: z.string(),
@@ -1472,6 +1642,688 @@ export const userEventSchema = z
 					type: z.optional(z.string()),
 				}),
 				z.object({
+					job: z.union([
+						z.object({
+							type: z.enum(["bitbucket-push"]),
+							authorized: z.optional(z.union([z.literal(false), z.literal(true)])),
+							authorizedBy: z.optional(z.string()),
+							jobProjectIds: z.optional(
+								z
+									.array(z.string())
+									.describe(
+										"Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.",
+									),
+							),
+							jobPairs: z.optional(
+								z
+									.array(
+										z
+											.array(z.union([z.string(), z.string()]))
+											.min(2)
+											.max(2)
+											.describe(
+												"Since December 2022 Pairs of projects and owner ids to build for this build request.",
+											),
+									)
+									.describe(
+										"Since December 2022 Pairs of projects and owner ids to build for this build request.",
+									),
+							),
+							skippedJobPairs: z.optional(
+								z
+									.array(
+										z
+											.array(z.union([z.string(), z.string()]))
+											.min(2)
+											.max(2)
+											.describe(
+												"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
+											),
+									)
+									.describe(
+										"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
+									),
+							),
+							gitHashtagVercel: z.optional(
+								z
+									.array(
+										z
+											.string()
+											.describe(
+												"Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING",
+											),
+									)
+									.describe(
+										"Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING",
+									),
+							),
+							connectedProjectCount: z.optional(
+								z
+									.number()
+									.describe(
+										"Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.",
+									),
+							),
+							prIdOrZero: z.optional(
+								z
+									.number()
+									.describe(
+										"Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.",
+									),
+							),
+							gitComments: z.optional(
+								z
+									.object({
+										onPullRequest: z.union([z.literal(false), z.literal(true)]),
+										onCommit: z.union([z.literal(false), z.literal(true)]),
+									})
+									.describe(
+										"Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.",
+									),
+							),
+							isManualGitDeploy: z.optional(
+								z
+									.union([z.literal(false), z.literal(true)])
+									.describe(
+										"Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment",
+									),
+							),
+							commitVerification: z.optional(
+								z
+									.enum(["verified", "unverified", "unknown"])
+									.describe(
+										"Since 6 Nov 2025 The verification status of the commit. - 'verified' if the commit is verified - 'unverified' if the commit is not verified - 'unknown' if the commit verification status is unknown or not supported",
+									),
+							),
+							createdAt: z.optional(z.number()),
+							deploymentId: z.optional(z.string()),
+							deployHook: z.optional(
+								z.object({
+									createdAt: z.number(),
+									id: z.string(),
+									name: z.string(),
+									ref: z.string(),
+								}),
+							),
+							eventful: z.optional(z.union([z.literal(false), z.literal(true)])),
+							forceNew: z.optional(z.union([z.literal(false), z.literal(true)])),
+							headInfo: z.object({
+								owner: z.string(),
+								ref: z.string(),
+								repoUuid: z.string(),
+								sha: z.string(),
+								slug: z.string(),
+							}),
+							linkedProjectId: z.optional(z.string()),
+							name: z.string(),
+							owner: z.string(),
+							prId: z.optional(z.number()),
+							projectId: z.optional(z.string()),
+							customEnvId: z.string().nullish(),
+							ref: z.string(),
+							repoPushedAt: z.number().nullish(),
+							repoUuid: z.string(),
+							sha: z.string(),
+							silent: z.optional(z.union([z.literal(false), z.literal(true)])),
+							slug: z.string(),
+							target: z.string().nullish(),
+							url: z.optional(z.string()),
+							withCache: z.optional(z.union([z.literal(false), z.literal(true)])),
+							workspaceUuid: z.string(),
+							provider: z.enum(["bitbucket"]),
+						}),
+						z.object({
+							createdAt: z.optional(z.number()),
+							eventful: z.optional(z.union([z.literal(false), z.literal(true)])),
+							headInfo: z.object({
+								owner: z.string(),
+								ref: z.string(),
+								repoUuid: z.string(),
+								sha: z.string(),
+								slug: z.string(),
+							}),
+							linkedProjectId: z.optional(z.string()),
+							name: z.string(),
+							owner: z.string(),
+							prId: z.number(),
+							projectId: z.optional(z.string()),
+							customEnvId: z.string().nullish(),
+							ref: z.string(),
+							repoUuid: z.string(),
+							sha: z.string(),
+							slug: z.string(),
+							type: z.enum(["bitbucket-now-comment"]),
+							workspaceUuid: z.string(),
+							gitComments: z.optional(
+								z.object({
+									onPullRequest: z.union([z.literal(false), z.literal(true)]),
+									onCommit: z.union([z.literal(false), z.literal(true)]),
+								}),
+							),
+							provider: z.enum(["bitbucket"]),
+						}),
+						z.object({
+							prId: z.number(),
+							type: z.enum(["pr"]),
+							authorized: z.optional(z.union([z.literal(false), z.literal(true)])),
+							authorizedBy: z.optional(z.string()),
+							jobProjectIds: z.optional(
+								z
+									.array(z.string())
+									.describe(
+										"Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.",
+									),
+							),
+							jobPairs: z.optional(
+								z
+									.array(
+										z
+											.array(z.union([z.string(), z.string()]))
+											.min(2)
+											.max(2)
+											.describe(
+												"Since December 2022 Pairs of projects and owner ids to build for this build request.",
+											),
+									)
+									.describe(
+										"Since December 2022 Pairs of projects and owner ids to build for this build request.",
+									),
+							),
+							skippedJobPairs: z.optional(
+								z
+									.array(
+										z
+											.array(z.union([z.string(), z.string()]))
+											.min(2)
+											.max(2)
+											.describe(
+												"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
+											),
+									)
+									.describe(
+										"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
+									),
+							),
+							gitHashtagVercel: z.optional(
+								z
+									.array(
+										z
+											.string()
+											.describe(
+												"Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING",
+											),
+									)
+									.describe(
+										"Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING",
+									),
+							),
+							connectedProjectCount: z.optional(
+								z
+									.number()
+									.describe(
+										"Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.",
+									),
+							),
+							prIdOrZero: z.optional(
+								z
+									.number()
+									.describe(
+										"Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.",
+									),
+							),
+							gitComments: z.optional(
+								z
+									.object({
+										onPullRequest: z.union([z.literal(false), z.literal(true)]),
+										onCommit: z.union([z.literal(false), z.literal(true)]),
+									})
+									.describe(
+										"Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.",
+									),
+							),
+							isManualGitDeploy: z.optional(
+								z
+									.union([z.literal(false), z.literal(true)])
+									.describe(
+										"Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment",
+									),
+							),
+							commitVerification: z.optional(
+								z
+									.enum(["verified", "unverified", "unknown"])
+									.describe(
+										"Since 6 Nov 2025 The verification status of the commit. - 'verified' if the commit is verified - 'unverified' if the commit is not verified - 'unknown' if the commit verification status is unknown or not supported",
+									),
+							),
+							committerGitUserId: z.optional(
+								z
+									.number()
+									.describe(
+										"Remote account id of the committer details (github id etc, not vercel). Note that the committer name/email are user input verbatim and not verified. Github does appear to resolve the given email to the username so we can trust that. If the username matches that of the sender, which is verified info, then we can use the account id and account type. See api-incoming, where we determine and set this property Note that even with that, the account may still have been spoofed.",
+									),
+							),
+							committerGitUserType: z.optional(
+								z
+									.string()
+									.describe(
+										"Remote account type of the committer details (github type etc, not vercel). Note that the committer name/email are user input verbatim and not verified. Github does appear to resolve the given email to the username so we can trust that. If the username matches that of the sender, which is verified info, then we can use the account id and account type. See api-incoming, where we determine and set this property Note that even with that, the account may still have been spoofed.",
+									),
+							),
+							createdAt: z.optional(z.number()),
+							forceNew: z.optional(z.union([z.literal(false), z.literal(true)])),
+							deploymentId: z.optional(z.string()),
+							deployHook: z.optional(
+								z.object({
+									createdAt: z.number(),
+									id: z.string(),
+									name: z.string(),
+									ref: z.string(),
+								}),
+							),
+							beforeSha: z.optional(z.string()),
+							defaultBranch: z.optional(z.string()),
+							eventful: z.optional(z.union([z.literal(false), z.literal(true)])),
+							githubDeploymentId: z.optional(z.string()),
+							headInfo: z
+								.object({
+									org: z.string(),
+									ref: z.string(),
+									repo: z.string(),
+									repoId: z.number(),
+									sha: z.string(),
+								})
+								.describe("Information about the head commit/branch for a GitHub repository"),
+							installationId: z.number(),
+							isPrivate: z.union([z.literal(false), z.literal(true)]),
+							linkedProjectId: z.optional(z.string()),
+							org: z.string(),
+							projectId: z.optional(z.string()),
+							customEnvId: z.string().nullish(),
+							repo: z.string(),
+							repoId: z.number(),
+							target: z.string().nullish(),
+							url: z.optional(z.string()),
+							withCache: z.optional(z.union([z.literal(false), z.literal(true)])),
+							provider: z.enum(["github", "github-limited", "github-custom-host"]),
+							customHost: z.optional(z.string()),
+						}),
+						z.object({
+							repoPushedAt: z.nullable(z.number()),
+							commitInfo: z.optional(
+								z.object({
+									total: z.number(),
+									earliestSha: z.optional(z.string()),
+								}),
+							),
+							forced: z.optional(z.union([z.literal(false), z.literal(true)])),
+							type: z.enum(["push"]),
+							authorized: z.optional(z.union([z.literal(false), z.literal(true)])),
+							authorizedBy: z.optional(z.string()),
+							jobProjectIds: z.optional(
+								z
+									.array(z.string())
+									.describe(
+										"Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.",
+									),
+							),
+							jobPairs: z.optional(
+								z
+									.array(
+										z
+											.array(z.union([z.string(), z.string()]))
+											.min(2)
+											.max(2)
+											.describe(
+												"Since December 2022 Pairs of projects and owner ids to build for this build request.",
+											),
+									)
+									.describe(
+										"Since December 2022 Pairs of projects and owner ids to build for this build request.",
+									),
+							),
+							skippedJobPairs: z.optional(
+								z
+									.array(
+										z
+											.array(z.union([z.string(), z.string()]))
+											.min(2)
+											.max(2)
+											.describe(
+												"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
+											),
+									)
+									.describe(
+										"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
+									),
+							),
+							gitHashtagVercel: z.optional(
+								z
+									.array(
+										z
+											.string()
+											.describe(
+												"Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING",
+											),
+									)
+									.describe(
+										"Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING",
+									),
+							),
+							connectedProjectCount: z.optional(
+								z
+									.number()
+									.describe(
+										"Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.",
+									),
+							),
+							prIdOrZero: z.optional(
+								z
+									.number()
+									.describe(
+										"Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.",
+									),
+							),
+							gitComments: z.optional(
+								z
+									.object({
+										onPullRequest: z.union([z.literal(false), z.literal(true)]),
+										onCommit: z.union([z.literal(false), z.literal(true)]),
+									})
+									.describe(
+										"Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.",
+									),
+							),
+							isManualGitDeploy: z.optional(
+								z
+									.union([z.literal(false), z.literal(true)])
+									.describe(
+										"Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment",
+									),
+							),
+							commitVerification: z.optional(
+								z
+									.enum(["verified", "unverified", "unknown"])
+									.describe(
+										"Since 6 Nov 2025 The verification status of the commit. - 'verified' if the commit is verified - 'unverified' if the commit is not verified - 'unknown' if the commit verification status is unknown or not supported",
+									),
+							),
+							committerGitUserId: z.optional(
+								z
+									.number()
+									.describe(
+										"Remote account id of the committer details (github id etc, not vercel). Note that the committer name/email are user input verbatim and not verified. Github does appear to resolve the given email to the username so we can trust that. If the username matches that of the sender, which is verified info, then we can use the account id and account type. See api-incoming, where we determine and set this property Note that even with that, the account may still have been spoofed.",
+									),
+							),
+							committerGitUserType: z.optional(
+								z
+									.string()
+									.describe(
+										"Remote account type of the committer details (github type etc, not vercel). Note that the committer name/email are user input verbatim and not verified. Github does appear to resolve the given email to the username so we can trust that. If the username matches that of the sender, which is verified info, then we can use the account id and account type. See api-incoming, where we determine and set this property Note that even with that, the account may still have been spoofed.",
+									),
+							),
+							createdAt: z.optional(z.number()),
+							forceNew: z.optional(z.union([z.literal(false), z.literal(true)])),
+							deploymentId: z.optional(z.string()),
+							deployHook: z.optional(
+								z.object({
+									createdAt: z.number(),
+									id: z.string(),
+									name: z.string(),
+									ref: z.string(),
+								}),
+							),
+							beforeSha: z.optional(z.string()),
+							defaultBranch: z.optional(z.string()),
+							eventful: z.optional(z.union([z.literal(false), z.literal(true)])),
+							githubDeploymentId: z.optional(z.string()),
+							headInfo: z
+								.object({
+									org: z.string(),
+									ref: z.string(),
+									repo: z.string(),
+									repoId: z.number(),
+									sha: z.string(),
+								})
+								.describe("Information about the head commit/branch for a GitHub repository"),
+							installationId: z.number(),
+							isPrivate: z.union([z.literal(false), z.literal(true)]),
+							linkedProjectId: z.optional(z.string()),
+							org: z.string(),
+							prId: z.nullable(z.number()),
+							projectId: z.optional(z.string()),
+							customEnvId: z.string().nullish(),
+							repo: z.string(),
+							repoId: z.number(),
+							target: z.string().nullish(),
+							url: z.optional(z.string()),
+							withCache: z.optional(z.union([z.literal(false), z.literal(true)])),
+							provider: z.enum(["github", "github-limited", "github-custom-host"]),
+							customHost: z.optional(z.string()),
+						}),
+						z.object({
+							createdAt: z.optional(z.number()),
+							eventful: z.optional(z.union([z.literal(false), z.literal(true)])),
+							headInfo: z
+								.object({
+									org: z.string(),
+									ref: z.string(),
+									repo: z.string(),
+									repoId: z.number(),
+									sha: z.string(),
+								})
+								.describe("Information about the head commit/branch for a GitHub repository"),
+							beforeSha: z.optional(z.string()),
+							installationId: z.number(),
+							isPrivate: z.union([z.literal(false), z.literal(true)]),
+							linkedProjectId: z.optional(z.string()),
+							org: z.string(),
+							prId: z.number(),
+							projectId: z.nullable(z.unknown()),
+							customEnvId: z.unknown().nullish(),
+							repo: z.string(),
+							repoId: z.number(),
+							type: z.enum(["now-comment"]),
+							gitComments: z.optional(
+								z.object({
+									onPullRequest: z.union([z.literal(false), z.literal(true)]),
+									onCommit: z.union([z.literal(false), z.literal(true)]),
+								}),
+							),
+							provider: z.enum(["github", "github-limited", "github-custom-host"]),
+							customHost: z.optional(z.string()),
+						}),
+						z.object({
+							type: z.enum(["gitlab-push"]),
+							authorized: z.optional(z.union([z.literal(false), z.literal(true)])),
+							authorizedBy: z.optional(z.string()),
+							jobProjectIds: z.optional(
+								z
+									.array(z.string())
+									.describe(
+										"Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.",
+									),
+							),
+							jobPairs: z.optional(
+								z
+									.array(
+										z
+											.array(z.union([z.string(), z.string()]))
+											.min(2)
+											.max(2)
+											.describe(
+												"Since December 2022 Pairs of projects and owner ids to build for this build request.",
+											),
+									)
+									.describe(
+										"Since December 2022 Pairs of projects and owner ids to build for this build request.",
+									),
+							),
+							skippedJobPairs: z.optional(
+								z
+									.array(
+										z
+											.array(z.union([z.string(), z.string()]))
+											.min(2)
+											.max(2)
+											.describe(
+												"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
+											),
+									)
+									.describe(
+										"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
+									),
+							),
+							gitHashtagVercel: z.optional(
+								z
+									.array(
+										z
+											.string()
+											.describe(
+												"Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING",
+											),
+									)
+									.describe(
+										"Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING",
+									),
+							),
+							connectedProjectCount: z.optional(
+								z
+									.number()
+									.describe(
+										"Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.",
+									),
+							),
+							prIdOrZero: z.optional(
+								z
+									.number()
+									.describe(
+										"Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.",
+									),
+							),
+							gitComments: z.optional(
+								z
+									.object({
+										onPullRequest: z.union([z.literal(false), z.literal(true)]),
+										onCommit: z.union([z.literal(false), z.literal(true)]),
+									})
+									.describe(
+										"Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.",
+									),
+							),
+							isManualGitDeploy: z.optional(
+								z
+									.union([z.literal(false), z.literal(true)])
+									.describe(
+										"Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment",
+									),
+							),
+							commitVerification: z.optional(
+								z
+									.enum(["verified", "unverified", "unknown"])
+									.describe(
+										"Since 6 Nov 2025 The verification status of the commit. - 'verified' if the commit is verified - 'unverified' if the commit is not verified - 'unknown' if the commit verification status is unknown or not supported",
+									),
+							),
+							commit: z.optional(
+								z.object({
+									id: z.string(),
+									authorAvatar: z.string().nullish(),
+									authorEmail: z.string().nullish(),
+									authorId: z.number().nullish(),
+									authorLogin: z.string().nullish(),
+									authorName: z.string().nullish(),
+								}),
+							),
+							createdAt: z.optional(z.number()),
+							deployHook: z.optional(
+								z.object({
+									createdAt: z.number(),
+									id: z.string(),
+									name: z.string(),
+									ref: z.string(),
+								}),
+							),
+							deploymentId: z.optional(z.string()),
+							eventful: z.optional(z.union([z.literal(false), z.literal(true)])),
+							forceNew: z.optional(z.union([z.literal(false), z.literal(true)])),
+							headInfo: z
+								.object({
+									project: z.object({
+										defaultBranch: z.string().nullish(),
+										id: z.string(),
+										name: z.string().nullish(),
+										namespace: z.string().nullish(),
+										path: z.string().nullish(),
+										url: z.string().nullish(),
+									}),
+									ref: z.string(),
+									sha: z.string(),
+								})
+								.describe("GitLab"),
+							linkedProjectId: z.optional(z.string()),
+							prId: z.optional(z.number()),
+							project: z.object({
+								defaultBranch: z.string().nullish(),
+								id: z.string(),
+								name: z.string().nullish(),
+								namespace: z.string().nullish(),
+								path: z.string().nullish(),
+								url: z.string().nullish(),
+							}),
+							projectId: z.optional(z.string()),
+							customEnvId: z.string().nullish(),
+							ref: z.string(),
+							repoPushedAt: z.number().nullish(),
+							sha: z.string(),
+							silent: z.optional(z.union([z.literal(false), z.literal(true)])),
+							target: z.string().nullish(),
+							url: z.optional(z.string()),
+							withCache: z.optional(z.union([z.literal(false), z.literal(true)])),
+							provider: z.enum(["gitlab"]),
+						}),
+						z.object({
+							createdAt: z.optional(z.number()),
+							eventful: z.optional(z.union([z.literal(false), z.literal(true)])),
+							headInfo: z
+								.object({
+									project: z.object({
+										defaultBranch: z.string().nullish(),
+										id: z.string(),
+										name: z.string().nullish(),
+										namespace: z.string().nullish(),
+										path: z.string().nullish(),
+										url: z.string().nullish(),
+									}),
+									ref: z.string(),
+									sha: z.string(),
+								})
+								.describe("GitLab"),
+							linkedProjectId: z.optional(z.string()),
+							prId: z.number(),
+							project: z.object({
+								defaultBranch: z.string().nullish(),
+								id: z.string(),
+								name: z.string().nullish(),
+								namespace: z.string().nullish(),
+								path: z.string().nullish(),
+								url: z.string().nullish(),
+							}),
+							projectId: z.optional(z.string()),
+							customEnvId: z.string().nullish(),
+							ref: z.string(),
+							sha: z.string(),
+							type: z.enum(["gitlab-now-comment"]),
+							gitComments: z.optional(
+								z.object({
+									onPullRequest: z.union([z.literal(false), z.literal(true)]),
+									onCommit: z.union([z.literal(false), z.literal(true)]),
+								}),
+							),
+							provider: z.enum(["gitlab"]),
+						}),
+					]),
+				}),
+				z.object({
 					url: z.string(),
 					oldTeam: z.optional(
 						z.object({
@@ -1485,6 +2337,13 @@ export const userEventSchema = z
 					),
 				}),
 				z.object({
+					sha: z.string(),
+					gitUserPlatform: z.string(),
+					projectName: z.string(),
+					gitCommitterName: z.string(),
+					source: z.string(),
+				}),
+				z.object({
 					deployment: z.object({
 						id: z.string(),
 						name: z.string(),
@@ -1493,6 +2352,14 @@ export const userEventSchema = z
 					}),
 					deploymentId: z.string(),
 					url: z.string(),
+				}),
+				z.object({
+					integrationId: z.string(),
+					configurationId: z.string(),
+					integrationSlug: z.string(),
+					integrationName: z.string(),
+					ownerId: z.string(),
+					projectIds: z.optional(z.array(z.string())),
 				}),
 				z.object({
 					id: z.string(),
@@ -1523,12 +2390,6 @@ export const userEventSchema = z
 				}),
 				z.object({
 					name: z.string(),
-					userId: z.string(),
-					teamId: z.string(),
-					ownerName: z.string(),
-				}),
-				z.object({
-					name: z.string(),
 					oldTeam: z.optional(
 						z.object({
 							name: z.string(),
@@ -1541,8 +2402,29 @@ export const userEventSchema = z
 					),
 				}),
 				z.object({
+					name: z.string(),
+					userId: z.string(),
+					teamId: z.string(),
+					ownerName: z.string(),
+				}),
+				z.object({
 					domainId: z.string(),
 					name: z.string(),
+				}),
+				z.object({
+					previousServiceType: z.string(),
+					serviceType: z.string(),
+					id: z.string(),
+					name: z.string(),
+					nameservers: z.array(z.string()),
+				}),
+				z.object({
+					domain: z.string(),
+					customNameservers: z.nullable(z.array(z.string())),
+					prevCustomNameservers: z.nullable(z.array(z.string())),
+				}),
+				z.object({
+					domain: z.string(),
 				}),
 				z.object({
 					name: z.string(),
@@ -1569,30 +2451,96 @@ export const userEventSchema = z
 					currency: z.optional(z.string()),
 				}),
 				z.object({
-					previousServiceType: z.string(),
-					serviceType: z.string(),
-					id: z.string(),
-					name: z.string(),
-					nameservers: z.array(z.string()),
+					drainUrl: z.nullable(z.string()),
+					integrationName: z.optional(z.string()),
 				}),
 				z.object({
-					domain: z.string(),
-					customNameservers: z.nullable(z.array(z.string())),
-					prevCustomNameservers: z.nullable(z.array(z.string())),
-				}),
-				z.object({
-					domain: z.string(),
-				}),
-				z.object({
-					sha: z.string(),
-					gitUserPlatform: z.string(),
+					projectId: z.string(),
 					projectName: z.string(),
-					gitCommitterName: z.string(),
-					source: z.string(),
+					srcImages: z.array(z.string()),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					tags: z.array(z.string()),
+					target: z.optional(z.string()),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+				}),
+				z.object({
+					edgeConfigId: z.string(),
+					edgeConfigSlug: z.string(),
+					edgeConfigDigest: z.string(),
+				}),
+				z.object({
+					edgeConfigId: z.string(),
+					edgeConfigSlug: z.string(),
+					edgeConfigSchema: z.optional(z.object({})),
+				}),
+				z.object({
+					edgeConfigId: z.string(),
+					edgeConfigSlug: z.string(),
+					edgeConfigDigest: z.optional(z.string()),
+				}),
+				z.object({
+					edgeConfig: z.object({
+						id: z.string(),
+						slug: z.string(),
+					}),
+					fromAccount: z.object({
+						id: z.string(),
+						type: z.enum(["user", "team"]),
+						slug: z.optional(z.string()),
+						username: z.optional(z.string()),
+					}),
+					toAccount: z.object({
+						id: z.string(),
+						type: z.enum(["user", "team"]),
+						slug: z.optional(z.string()),
+						username: z.optional(z.string()),
+					}),
+				}),
+				z.object({
+					edgeConfigId: z.string(),
+					edgeConfigSlug: z.string(),
+					edgeConfigTokenId: z.string(),
+					label: z.string(),
+				}),
+				z.object({
+					edgeConfigId: z.string(),
+					edgeConfigSlug: z.string(),
+					edgeConfigTokenIds: z.array(z.string()).describe("ids of deleted tokens"),
 				}),
 				z.object({
 					email: z.string(),
 					name: z.string(),
+				}),
+				z.object({
+					team: z.object({
+						id: z.string(),
+						name: z.optional(z.string()),
+					}),
+					previousRule: z.object({
+						email: z.string(),
+					}),
+				}),
+				z.object({
+					team: z.object({
+						id: z.string(),
+						name: z.optional(z.string()),
+					}),
+					previousRule: z.optional(
+						z.object({
+							email: z.string(),
+						}),
+					),
+					nextRule: z.optional(
+						z.object({
+							email: z.string(),
+						}),
+					),
 				}),
 				z.object({
 					key: z.optional(z.string()),
@@ -1867,18 +2815,6 @@ export const userEventSchema = z
 					),
 				}),
 				z.object({
-					enabled: z.union([z.literal(false), z.literal(true)]),
-					updatedAt: z.number(),
-					firstEnabledAt: z.optional(z.number()),
-				}),
-				z.object({
-					projectId: z.string(),
-					restore: z.union([z.literal(false), z.literal(true)]),
-					configVersion: z.number(),
-					configChangeCount: z.number(),
-					configChanges: z.array(z.object({})),
-				}),
-				z.object({
 					projectId: z.string(),
 					scope: z.string(),
 					source: z.string(),
@@ -1891,9 +2827,10 @@ export const userEventSchema = z
 				}),
 				z.object({
 					projectId: z.string(),
-					rulesetName: z.string(),
-					active: z.union([z.literal(false), z.literal(true)]),
-					action: z.optional(z.enum(["log", "challenge", "deny"])),
+					restore: z.union([z.literal(false), z.literal(true)]),
+					configVersion: z.number(),
+					configChangeCount: z.number(),
+					configChanges: z.array(z.object({})),
 				}),
 				z.object({
 					projectId: z.string(),
@@ -1907,15 +2844,19 @@ export const userEventSchema = z
 				}),
 				z.object({
 					projectId: z.string(),
-					prevAttackModeEnabled: z.optional(z.union([z.literal(false), z.literal(true)])),
-					prevAttackModeActiveUntil: z.number().nullish(),
-					attackModeEnabled: z.union([z.literal(false), z.literal(true)]),
-					attackModeActiveUntil: z.number().nullish(),
+					rulesetName: z.string(),
+					active: z.union([z.literal(false), z.literal(true)]),
+					action: z.optional(z.enum(["log", "challenge", "deny"])),
 				}),
 				z.object({
-					integrationId: z.string(),
-					integrationSlug: z.string(),
-					integrationName: z.string(),
+					action: z.enum(["enable", "disable"]),
+				}),
+				z.object({
+					projectId: z.string(),
+					fromDeploymentId: z.string(),
+					toDeploymentId: z.string(),
+					projectName: z.string(),
+					reason: z.optional(z.string()),
 				}),
 				z.object({
 					userId: z.string(),
@@ -2163,9 +3104,9 @@ export const userEventSchema = z
 									customEnvironmentsPerProject: z.optional(z.number()),
 									buildMachine: z.optional(
 										z.object({
-											default: z.optional(z.enum(["standard", "enhanced", "turbo"])),
-											purchaseType: z.optional(z.enum(["standard", "enhanced", "turbo"])),
-											defaultPurchaseType: z.optional(z.enum(["standard", "enhanced", "turbo"])),
+											default: z.optional(z.enum(["enhanced", "turbo", "standard", "elastic"])),
+											purchaseType: z.optional(z.enum(["enhanced", "turbo", "standard"])),
+											defaultPurchaseType: z.optional(z.enum(["enhanced", "turbo", "standard"])),
 											cores: z.optional(z.number()),
 											memory: z.optional(z.number()),
 										}),
@@ -3061,9 +4002,9 @@ export const userEventSchema = z
 																.enum([
 																	"totp",
 																	"passkey",
+																	"unknown",
 																	"user_disabled",
 																	"admin_removal",
-																	"unknown",
 																])
 																.describe(
 																	"Method used for the state change - 'totp': User set up TOTP authenticator - 'passkey': User registered a passkey - 'user_disabled': User disabled their own MFA - 'admin_removal': Admin removed MFA via backoffice - 'unknown': Method unknown (for pre-tracking events)",
@@ -3106,6 +4047,15 @@ export const userEventSchema = z
 					),
 				}),
 				z.object({
+					integrationId: z.string(),
+					configurationId: z.string(),
+					integrationSlug: z.string(),
+					integrationName: z.string(),
+					ownerId: z.string(),
+					projectIds: z.optional(z.array(z.string())),
+					confirmedScopes: z.array(z.string()),
+				}),
+				z.object({
 					configurations: z.array(
 						z.object({
 							integrationId: z.string(),
@@ -3131,31 +4081,12 @@ export const userEventSchema = z
 					integrationSlug: z.string(),
 					integrationName: z.string(),
 					ownerId: z.string(),
-					projectIds: z.optional(z.array(z.string())),
-				}),
-				z.object({
-					integrationId: z.string(),
-					configurationId: z.string(),
-					integrationSlug: z.string(),
-					integrationName: z.string(),
-					ownerId: z.string(),
 					projectIds: z.optional(z.union([z.array(z.string()), z.enum(["all"])])),
 				}),
 				z.object({
-					projectId: z.string(),
-					fromDeploymentId: z.string(),
-					toDeploymentId: z.string(),
-					projectName: z.string(),
-					reason: z.optional(z.string()),
-				}),
-				z.object({
 					integrationId: z.string(),
-					configurationId: z.string(),
 					integrationSlug: z.string(),
 					integrationName: z.string(),
-					ownerId: z.string(),
-					projectIds: z.optional(z.array(z.string())),
-					confirmedScopes: z.array(z.string()),
 				}),
 				z.object({
 					logDrainUrl: z.nullable(z.string()),
@@ -3264,1373 +4195,9 @@ export const userEventSchema = z
 					viaPasskey: z.optional(z.union([z.literal(false), z.literal(true)])),
 				}),
 				z.object({
-					userAgent: z.optional(z.string()),
-					geolocation: z
-						.object({
-							city: z.optional(
-								z.object({
-									names: z.object({
-										en: z.string(),
-									}),
-								}),
-							),
-							country: z.object({
-								names: z.object({
-									en: z.string(),
-								}),
-							}),
-							mostSpecificSubdivision: z.optional(
-								z.object({
-									names: z.object({
-										en: z.string(),
-									}),
-								}),
-							),
-							regionName: z.optional(z.string()),
-						})
-						.nullish(),
-					env: z.optional(z.string()),
-					os: z.optional(z.string()),
-					username: z.optional(z.string()),
-					ssoType: z.optional(z.string()),
-					factors: z.optional(
-						z
-							.array(
-								z.object({
-									origin: z.enum([
-										"email",
-										"saml",
-										"github",
-										"gitlab",
-										"bitbucket",
-										"google",
-										"apple",
-										"otp",
-									]),
-									username: z.optional(z.string()),
-									teamId: z.optional(z.string()),
-									legacy: z.optional(z.union([z.literal(false), z.literal(true)])),
-									ssoType: z.optional(z.string()),
-								}),
-							)
-							.min(1)
-							.max(1),
-					),
-					viaOTP: z.optional(z.union([z.literal(false), z.literal(true)])),
-					viaGithub: z.optional(z.union([z.literal(false), z.literal(true)])),
-					viaGitlab: z.optional(z.union([z.literal(false), z.literal(true)])),
-					viaBitbucket: z.optional(z.union([z.literal(false), z.literal(true)])),
-					viaGoogle: z.optional(z.union([z.literal(false), z.literal(true)])),
-					viaApple: z.optional(z.union([z.literal(false), z.literal(true)])),
-					viaSamlSso: z.optional(z.union([z.literal(false), z.literal(true)])),
-					viaPasskey: z.optional(z.union([z.literal(false), z.literal(true)])),
-				}),
-				z.object({
-					email: z.string(),
-					bitbucketLogin: z.string(),
-					bitbucketEmail: z.string(),
-					bitbucketName: z.string(),
-					zeitAccount: z.string(),
-					zeitAccountType: z.string(),
-				}),
-				z.object({
-					email: z.string(),
-					githubLogin: z.string(),
-					zeitAccount: z.string(),
-					zeitAccountType: z.string(),
-				}),
-				z.object({
-					email: z.string(),
-					gitlabLogin: z.string(),
-					gitlabEmail: z.string(),
-					gitlabName: z.string(),
-					zeitAccount: z.string(),
-					zeitAccountType: z.string(),
-				}),
-				z.object({
-					drainUrl: z.nullable(z.string()),
-					integrationName: z.optional(z.string()),
-				}),
-				z.object({
 					projectId: z.string(),
 					toDeploymentId: z.string(),
 					projectName: z.string(),
-				}),
-				z.object({
-					projectName: z.string(),
-				}),
-				z.object({
-					plan: z.string(),
-					removedUsers: z.optional(
-						z.object({}).catchall(
-							z.object({
-								role: z.enum([
-									"OWNER",
-									"MEMBER",
-									"DEVELOPER",
-									"SECURITY",
-									"BILLING",
-									"VIEWER",
-									"VIEWER_FOR_PLUS",
-									"CONTRIBUTOR",
-								]),
-								confirmed: z.union([z.literal(false), z.literal(true)]),
-								confirmedAt: z.optional(z.number()),
-								joinedFrom: z.optional(
-									z.object({
-										origin: z.enum([
-											"link",
-											"import",
-											"teams",
-											"saml",
-											"github",
-											"gitlab",
-											"bitbucket",
-											"mail",
-											"dsync",
-											"feedback",
-											"organization-teams",
-											"nsnb-auto-approve",
-											"nsnb-request-access",
-											"nsnb-viewer-upgrade",
-											"nsnb-invite",
-											"nsnb-redeploy",
-										]),
-										commitId: z.optional(z.string()),
-										repoId: z.optional(z.string()),
-										repoPath: z.optional(z.string()),
-										gitUserId: z.optional(z.union([z.string(), z.number()])),
-										gitUserLogin: z.optional(z.string()),
-										ssoUserId: z.optional(z.string()),
-										ssoConnectedAt: z.optional(z.number()),
-										idpUserId: z.optional(z.string()),
-										dsyncUserId: z.optional(z.string()),
-										dsyncConnectedAt: z.optional(z.number()),
-									}),
-								),
-							}),
-						),
-					),
-					prevPlan: z.optional(z.string()),
-					priorPlan: z.optional(z.string()),
-					isDowngrade: z.optional(z.union([z.literal(false), z.literal(true)])),
-					userAgent: z.optional(z.string()),
-					isReactivate: z.optional(z.union([z.literal(false), z.literal(true)])),
-					isTrialUpgrade: z.optional(z.union([z.literal(false), z.literal(true)])),
-					automated: z.optional(
-						z
-							.union([z.literal(false), z.literal(true)])
-							.describe(
-								"Whether the plan change was system-initiated rather than human-initiated.",
-							),
-					),
-					reason: z.optional(
-						z
-							.string()
-							.describe(
-								"Why the plan changed. For downgrades, this is a {@link DowngradeReason} from `@api/pubsub-types` (e.g. `user_downgrade`, `trial_expired`).",
-							),
-					),
-					timestamp: z.optional(z.number()),
-					removedMemberCount: z.optional(z.number()),
-				}),
-				z.object({
-					projectName: z.string(),
-					branch: z.string(),
-				}),
-				z.object({
-					projectName: z.optional(z.string()),
-					projectId: z.string(),
-					projectAnalytics: z.nullable(
-						z.object({
-							id: z.string(),
-							canceledAt: z.number().nullish(),
-							disabledAt: z.number(),
-							enabledAt: z.number(),
-							paidAt: z.optional(z.number()),
-							sampleRatePercent: z.number().nullish(),
-							spendLimitInDollars: z.number().nullish(),
-						}),
-					),
-					prevProjectAnalytics: z.nullable(
-						z.object({
-							id: z.string(),
-							canceledAt: z.number().nullish(),
-							disabledAt: z.number(),
-							enabledAt: z.number(),
-							paidAt: z.optional(z.number()),
-							sampleRatePercent: z.number().nullish(),
-							spendLimitInDollars: z.number().nullish(),
-						}),
-					),
-				}),
-				z.object({
-					projectName: z.optional(z.string()),
-					projectId: z.string(),
-					projectAnalytics: z.optional(z.object({}).catchall(z.unknown())),
-					prevProjectAnalytics: z.object({}).catchall(z.unknown()).nullish(),
-				}),
-				z.object({
-					projectName: z.optional(z.string()),
-					projectId: z.string(),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					action: z.enum(["enabled", "disabled"]),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					previous: z.optional(
-						z.object({
-							gitProvider: z.enum([
-								"github",
-								"github-limited",
-								"github-custom-host",
-								"gitlab",
-								"bitbucket",
-							]),
-							gitRepoId: z.string(),
-							gitRepositoryName: z.string(),
-						}),
-					),
-					next: z.object({
-						gitProvider: z.enum([
-							"github",
-							"github-limited",
-							"github-custom-host",
-							"gitlab",
-							"bitbucket",
-						]),
-						gitRepoId: z.string(),
-						gitRepositoryName: z.string(),
-					}),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					gitProvider: z.enum([
-						"github",
-						"github-limited",
-						"github-custom-host",
-						"gitlab",
-						"bitbucket",
-					]),
-					gitRepoId: z.string(),
-					gitRepositoryName: z.string(),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					onPullRequest: z.union([z.literal(false), z.literal(true)]),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					onCommit: z.union([z.literal(false), z.literal(true)]),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					disableRepositoryDispatchEvents: z.union([z.literal(false), z.literal(true)]),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					createDeployments: z.enum(["enabled", "disabled"]),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					requireVerifiedCommits: z.union([z.literal(false), z.literal(true)]),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					gitLFS: z.union([z.literal(false), z.literal(true)]),
-				}),
-				z.object({
-					projectId: z.optional(z.string()),
-					projectName: z.optional(z.string()),
-					ssoProtection: z.nullable(
-						z.union([
-							z.object({
-								deploymentType: z.enum([
-									"all",
-									"preview",
-									"prod_deployment_urls_and_all_previews",
-									"all_except_custom_domains",
-								]),
-								cve55182MigrationAppliedFrom: z
-									.enum([
-										"all",
-										"preview",
-										"prod_deployment_urls_and_all_previews",
-										"all_except_custom_domains",
-									])
-									.nullish(),
-							}),
-							z.enum([
-								"all",
-								"preview",
-								"prod_deployment_urls_and_all_previews",
-								"all_except_custom_domains",
-							]),
-						]),
-					),
-					oldSsoProtection: z.nullable(
-						z.union([
-							z.object({
-								deploymentType: z.enum([
-									"all",
-									"preview",
-									"prod_deployment_urls_and_all_previews",
-									"all_except_custom_domains",
-								]),
-								cve55182MigrationAppliedFrom: z
-									.enum([
-										"all",
-										"preview",
-										"prod_deployment_urls_and_all_previews",
-										"all_except_custom_domains",
-									])
-									.nullish(),
-							}),
-							z.enum([
-								"all",
-								"preview",
-								"prod_deployment_urls_and_all_previews",
-								"all_except_custom_domains",
-							]),
-						]),
-					),
-				}),
-				z.object({
-					projectId: z.optional(z.string()),
-					projectName: z.optional(z.string()),
-					passwordProtection: z.nullable(
-						z.union([
-							z.object({
-								deploymentType: z.enum([
-									"all",
-									"preview",
-									"prod_deployment_urls_and_all_previews",
-									"all_except_custom_domains",
-								]),
-							}),
-							z.enum([
-								"all",
-								"preview",
-								"prod_deployment_urls_and_all_previews",
-								"all_except_custom_domains",
-							]),
-						]),
-					),
-					oldPasswordProtection: z.nullable(
-						z.union([
-							z.object({
-								deploymentType: z.enum([
-									"all",
-									"preview",
-									"prod_deployment_urls_and_all_previews",
-									"all_except_custom_domains",
-								]),
-							}),
-							z.enum([
-								"all",
-								"preview",
-								"prod_deployment_urls_and_all_previews",
-								"all_except_custom_domains",
-							]),
-						]),
-					),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					trustedIps: z
-						.enum([
-							"production",
-							"all",
-							"preview",
-							"prod_deployment_urls_and_all_previews",
-							"all_except_custom_domains",
-						])
-						.nullish(),
-					oldTrustedIps: z
-						.enum([
-							"production",
-							"all",
-							"preview",
-							"prod_deployment_urls_and_all_previews",
-							"all_except_custom_domains",
-						])
-						.nullish(),
-					addedAddresses: z.array(z.string()).nullish(),
-					removedAddresses: z.array(z.string()).nullish(),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					optionsAllowlist: z
-						.object({
-							paths: z.array(
-								z.object({
-									value: z.string(),
-								}),
-							),
-						})
-						.nullish(),
-					oldOptionsAllowlist: z
-						.object({
-							paths: z.array(
-								z.object({
-									value: z.string(),
-								}),
-							),
-						})
-						.nullish(),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					action: z.enum(["enabled", "disabled", "regenerated", "updated"]),
-					isEnvVar: z.optional(z.union([z.literal(false), z.literal(true)])),
-					note: z.optional(z.string()),
-				}),
-				z.object({
-					name: z.string(),
-					ownerId: z.string(),
-				}),
-				z.object({
-					team: z.object({
-						id: z.string(),
-						name: z.string(),
-					}),
-					project: z.object({
-						id: z.string(),
-						name: z.optional(z.string()),
-						oldConnectConfigurations: z.nullable(
-							z.array(
-								z.object({
-									envId: z.union([z.string(), z.enum(["production", "preview"])]),
-									connectConfigurationId: z.string(),
-									dc: z.optional(z.string()),
-									passive: z.union([z.literal(false), z.literal(true)]),
-									buildsEnabled: z.union([z.literal(false), z.literal(true)]),
-									aws: z.optional(
-										z.object({
-											subnetIds: z.array(z.string()),
-											securityGroupId: z.optional(z.string()),
-										}),
-									),
-									createdAt: z.number(),
-									updatedAt: z.number(),
-								}),
-							),
-						),
-						newConnectConfigurations: z.nullable(
-							z.array(
-								z.object({
-									envId: z.union([z.string(), z.enum(["production", "preview"])]),
-									connectConfigurationId: z.string(),
-									dc: z.optional(z.string()),
-									passive: z.union([z.literal(false), z.literal(true)]),
-									buildsEnabled: z.union([z.literal(false), z.literal(true)]),
-									aws: z.optional(
-										z.object({
-											subnetIds: z.array(z.string()),
-											securityGroupId: z.optional(z.string()),
-										}),
-									),
-									createdAt: z.number(),
-									updatedAt: z.number(),
-								}),
-							),
-						),
-					}),
-				}),
-				z.object({
-					projectId: z.string(),
-					reasonCode: z.optional(z.enum(["BUDGET_REACHED", "PUBLIC_API", "BACKOFFICE"])),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					enabled: z.nullable(z.union([z.literal(false), z.literal(true)])),
-					environment: z.enum(["production", "preview"]),
-				}),
-				z.object({
-					environment: z.enum(["production", "preview"]),
-					enabled: z.enum(["default", "on", "off", "on-force", "off-force", "default-force"]),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					previewDeploymentSuffix: z.nullable(z.string()),
-				}),
-				z.object({
-					projectId: z.string(),
-					reasonCode: z.optional(z.enum(["PUBLIC_API", "BACKOFFICE"])),
-				}),
-				z.object({
-					source: z.string(),
-					projectId: z.string(),
-					projectName: z.string(),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					previous: z.object({
-						issuerMode: z.optional(z.enum(["team", "global"])),
-					}),
-					next: z.object({
-						issuerMode: z.enum(["team", "global"]),
-					}),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					next: z.object({
-						project: z.object({
-							id: z.optional(z.string()),
-							staticIps: z.object({
-								builds: z.optional(z.union([z.literal(false), z.literal(true)])),
-								enabled: z.union([z.literal(false), z.literal(true)]),
-								regions: z.optional(z.array(z.string())),
-							}),
-						}),
-					}),
-					previous: z.object({
-						project: z.object({
-							id: z.optional(z.string()),
-							staticIps: z.object({
-								builds: z.optional(z.union([z.literal(false), z.literal(true)])),
-								enabled: z.union([z.literal(false), z.literal(true)]),
-								regions: z.optional(z.array(z.string())),
-							}),
-						}),
-					}),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					enableAffectedProjectsDeployments: z.union([z.literal(false), z.literal(true)]),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					autoAssignCustomDomains: z.union([z.literal(false), z.literal(true)]),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					previous: z.object({}),
-					next: z.object({}),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					previewDeploymentsEnabled: z.union([z.literal(false), z.literal(true)]),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					customEnvironmentId: z.string(),
-					customEnvironmentSlug: z.string(),
-					previous: z.object({
-						branchMatcher: z.optional(
-							z.object({
-								type: z
-									.enum(["endsWith", "startsWith", "equals"])
-									.describe("The type of matching to perform"),
-								pattern: z.string().describe("The pattern to match against branch names"),
-							}),
-						),
-					}),
-					next: z.object({
-						branchMatcher: z.optional(
-							z.object({
-								type: z
-									.enum(["endsWith", "startsWith", "equals"])
-									.describe("The type of matching to perform"),
-								pattern: z.string().describe("The pattern to match against branch names"),
-							}),
-						),
-					}),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					customEnvironmentId: z.string(),
-					customEnvironmentSlug: z.string(),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					newProjectName: z.string(),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					productionDeploymentsFastLane: z.union([z.literal(false), z.literal(true)]),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					sourceFilesOutsideRootDirectory: z.union([z.literal(false), z.literal(true)]),
-				}),
-				z.object({
-					projectId: z.optional(z.string()),
-					projectName: z.optional(z.string()),
-					buildMachineType: z.optional(z.string()),
-					oldBuildMachineType: z.optional(z.string()),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					elasticConcurrencyEnabled: z.union([z.literal(false), z.literal(true)]),
-					oldElasticConcurrencyEnabled: z.union([z.literal(false), z.literal(true)]),
-					buildQueueConfiguration: z.optional(
-						z.enum(["SKIP_NAMESPACE_QUEUE", "WAIT_FOR_NAMESPACE_QUEUE"]),
-					),
-					oldBuildQueueConfiguration: z.optional(
-						z.enum(["SKIP_NAMESPACE_QUEUE", "WAIT_FOR_NAMESPACE_QUEUE"]),
-					),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					previous: z.object({
-						functionDefaultTimeout: z.nullable(z.number()),
-					}),
-					next: z.object({
-						functionDefaultTimeout: z.number(),
-					}),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					previous: z.object({
-						functionDefaultMemoryType: z.nullable(z.string()),
-					}),
-					next: z.object({
-						functionDefaultMemoryType: z.string(),
-					}),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					previous: z.object({
-						functionDefaultRegions: z.nullable(z.array(z.string())),
-					}),
-					next: z.object({
-						functionDefaultRegions: z.array(z.string()),
-					}),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					previous: z.object({
-						functionZeroConfigFailover: z.nullable(z.union([z.literal(false), z.literal(true)])),
-					}),
-					next: z.object({
-						functionZeroConfigFailover: z.union([z.literal(false), z.literal(true)]),
-					}),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					previous: z.object({
-						commandForIgnoringBuildStep: z.optional(z.string()),
-					}),
-					next: z.object({
-						commandForIgnoringBuildStep: z.optional(z.string()),
-					}),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					next: z.object({
-						skewProtectionBoundaryAt: z.number(),
-					}),
-					previous: z.object({
-						skewProtectionBoundaryAt: z.optional(z.number()),
-					}),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					next: z.object({
-						skewProtectionMaxAge: z.number(),
-					}),
-					previous: z.object({
-						skewProtectionMaxAge: z.optional(z.number()),
-					}),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					next: z.object({
-						skewProtectionAllowedDomains: z.array(z.string()),
-					}),
-					previous: z.object({
-						skewProtectionAllowedDomains: z.optional(z.array(z.string())),
-					}),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					customerSupportCodeVisibility: z.union([z.literal(false), z.literal(true)]),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					directoryListing: z.union([z.literal(false), z.literal(true)]),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					gitForkProtection: z.union([z.literal(false), z.literal(true)]),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					protectedSourcemaps: z.union([z.literal(false), z.literal(true)]),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					publicSource: z.union([z.literal(false), z.literal(true)]),
-				}),
-				z.object({
-					projectId: z.optional(z.string()),
-					projectName: z.optional(z.string()),
-					previous: z.object({
-						expiration: z.optional(z.string()),
-						expirationProduction: z.optional(z.string()),
-						expirationCanceled: z.optional(z.string()),
-						expirationErrored: z.optional(z.string()),
-					}),
-					next: z.object({
-						expiration: z.optional(z.string()),
-						expirationProduction: z.optional(z.string()),
-						expirationCanceled: z.optional(z.string()),
-						expirationErrored: z.optional(z.string()),
-					}),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					targetDeploymentId: z.optional(z.string()),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					targetDeploymentId: z.optional(z.string()),
-					newTargetPercentage: z.optional(z.number()),
-				}),
-				z.object({
-					gitProvider: z.string(),
-					gitProviderGroupDescriptor: z.string(),
-					gitScope: z.string(),
-				}),
-				z.object({
-					instances: z.number(),
-					url: z.string(),
-				}),
-				z.object({
-					email: z.string(),
-					verified: z.union([z.literal(false), z.literal(true)]),
-				}),
-				z.object({
-					email: z.string(),
-				}),
-				z.object({
-					team: z.object({
-						id: z.string(),
-						name: z.optional(z.string()),
-					}),
-					previousRule: z.optional(
-						z.object({
-							email: z.string(),
-						}),
-					),
-					nextRule: z.optional(
-						z.object({
-							email: z.string(),
-						}),
-					),
-				}),
-				z.object({
-					team: z.object({
-						id: z.string(),
-						name: z.optional(z.string()),
-					}),
-					previousRule: z.object({
-						email: z.string(),
-					}),
-				}),
-				z.object({
-					uid: z.string(),
-					name: z.union([
-						z.string(),
-						z.object({
-							name: z.string(),
-						}),
-					]),
-				}),
-				z.object({
-					oldName: z.string(),
-					newName: z.string(),
-					uid: z.optional(z.string()),
-				}),
-				z.object({
-					bio: z.string(),
-				}),
-				z.object({
-					scalingRules: z.object({}).catchall(
-						z.object({
-							min: z.number(),
-							max: z.number(),
-						}),
-					),
-					min: z.number(),
-					max: z.number(),
-					url: z.string(),
-				}),
-				z.object({
-					budget: z.object({
-						budgetItem: z
-							.object({
-								type: z.enum(["fixed"]).describe("The budget type"),
-								fixedBudget: z.number().describe("Budget amount (USD / dollars)"),
-								previousSpend: z
-									.array(z.number())
-									.describe("Array of the last 3 months of spend data"),
-								notifiedAt: z
-									.array(z.number())
-									.describe("Array of 50, 75, 100 to keep track of notifications sent out"),
-								webhookId: z.optional(
-									z
-										.string()
-										.describe(
-											"Webhook id that corresponds to a webhook in Cosmos webhook collection",
-										),
-								),
-								webhookNotified: z.optional(
-									z
-										.union([z.literal(false), z.literal(true)])
-										.describe("Keep track if the webhook has been called for the month"),
-								),
-								createdAt: z.number().describe("Date time when budget is created"),
-								updatedAt: z.optional(z.number().describe("Date time when budget is updated last")),
-								isActive: z
-									.union([z.literal(false), z.literal(true)])
-									.describe("Is the budget currently active for a customer"),
-								pauseProjects: z.optional(
-									z
-										.union([z.literal(false), z.literal(true)])
-										.describe("Should all projects be paused if budget is exceeded"),
-								),
-								pricingPlan: z.optional(
-									z
-										.enum(["plus", "legacy", "unbundled"])
-										.describe("The acive pricing plan the team is billed with"),
-								),
-								teamId: z.string().describe("Partition key"),
-								id: z.string().describe("Sort key that needs to be unique per teamId"),
-							})
-							.describe("Represents a budget for tracking and notifying teams on their spending."),
-					}),
-				}),
-				z.object({
-					budget: z
-						.object({
-							type: z.enum(["fixed"]).describe("The budget type"),
-							fixedBudget: z.number().describe("Budget amount (USD / dollars)"),
-							previousSpend: z
-								.array(z.number())
-								.describe("Array of the last 3 months of spend data"),
-							notifiedAt: z
-								.array(z.number())
-								.describe("Array of 50, 75, 100 to keep track of notifications sent out"),
-							webhookId: z.optional(
-								z
-									.string()
-									.describe(
-										"Webhook id that corresponds to a webhook in Cosmos webhook collection",
-									),
-							),
-							webhookNotified: z.optional(
-								z
-									.union([z.literal(false), z.literal(true)])
-									.describe("Keep track if the webhook has been called for the month"),
-							),
-							createdAt: z.number().describe("Date time when budget is created"),
-							updatedAt: z.optional(z.number().describe("Date time when budget is updated last")),
-							isActive: z
-								.union([z.literal(false), z.literal(true)])
-								.describe("Is the budget currently active for a customer"),
-							pauseProjects: z.optional(
-								z
-									.union([z.literal(false), z.literal(true)])
-									.describe("Should all projects be paused if budget is exceeded"),
-							),
-							pricingPlan: z.optional(
-								z
-									.enum(["plus", "legacy", "unbundled"])
-									.describe("The acive pricing plan the team is billed with"),
-							),
-							teamId: z.string().describe("Partition key"),
-							id: z.string().describe("Sort key that needs to be unique per teamId"),
-						})
-						.describe("Represents a budget for tracking and notifying teams on their spending."),
-				}),
-				z.object({
-					budget: z
-						.object({
-							type: z.enum(["fixed"]).describe("The budget type"),
-							fixedBudget: z.number().describe("Budget amount (USD / dollars)"),
-							previousSpend: z
-								.array(z.number())
-								.describe("Array of the last 3 months of spend data"),
-							notifiedAt: z
-								.array(z.number())
-								.describe("Array of 50, 75, 100 to keep track of notifications sent out"),
-							webhookId: z.optional(
-								z
-									.string()
-									.describe(
-										"Webhook id that corresponds to a webhook in Cosmos webhook collection",
-									),
-							),
-							webhookNotified: z.optional(
-								z
-									.union([z.literal(false), z.literal(true)])
-									.describe("Keep track if the webhook has been called for the month"),
-							),
-							createdAt: z.number().describe("Date time when budget is created"),
-							updatedAt: z.optional(z.number().describe("Date time when budget is updated last")),
-							isActive: z
-								.union([z.literal(false), z.literal(true)])
-								.describe("Is the budget currently active for a customer"),
-							pauseProjects: z.optional(
-								z
-									.union([z.literal(false), z.literal(true)])
-									.describe("Should all projects be paused if budget is exceeded"),
-							),
-							pricingPlan: z.optional(
-								z
-									.enum(["plus", "legacy", "unbundled"])
-									.describe("The acive pricing plan the team is billed with"),
-							),
-							teamId: z.string().describe("Partition key"),
-							id: z.string().describe("Sort key that needs to be unique per teamId"),
-						})
-						.describe("Represents a budget for tracking and notifying teams on their spending."),
-					webhookUrl: z.optional(z.string()),
-				}),
-				z.object({
-					webhookUrl: z.optional(z.string()),
-				}),
-				z.object({
-					id: z.string(),
-					name: z.optional(z.string()),
-					computeUnitsMax: z.optional(z.number()),
-					computeUnitsMin: z.optional(z.number()),
-					suspendTimeoutSeconds: z.optional(z.number()),
-					type: z.enum(["integration", "redis", "postgres", "edge-config", "blob"]),
-					access: z.optional(z.enum(["public", "private"])),
-				}),
-				z.object({
-					storeType: z.enum(["redis", "postgres"]),
-				}),
-				z.object({
-					store: z.object({
-						name: z.string(),
-						id: z.string(),
-					}),
-					ownerId: z.optional(z.string()),
-				}),
-				z.object({
-					slug: z.string(),
-				}),
-				z.object({
-					slug: z.string(),
-					teamId: z.string(),
-					by: z.string(),
-					byUid: z.optional(z.string()),
-					reasons: z.optional(
-						z.array(
-							z.object({
-								slug: z.string(),
-								description: z.string(),
-							}),
-						),
-					),
-					removedUsers: z.optional(
-						z.object({}).catchall(
-							z.object({
-								role: z.enum([
-									"OWNER",
-									"MEMBER",
-									"DEVELOPER",
-									"SECURITY",
-									"BILLING",
-									"VIEWER",
-									"VIEWER_FOR_PLUS",
-									"CONTRIBUTOR",
-								]),
-								confirmed: z.union([z.literal(false), z.literal(true)]),
-								confirmedAt: z.optional(z.number()),
-							}),
-						),
-					),
-					removedMemberCount: z.optional(z.number()),
-					timestamp: z.optional(z.number()),
-				}),
-				z.object({
-					deletedCount: z.number(),
-					inviteIds: z.array(z.string()),
-				}),
-				z.object({
-					directoryType: z.optional(z.string()),
-					ssoType: z.optional(z.string()),
-					invitedUser: z.optional(
-						z.object({
-							username: z.string(),
-							email: z.string(),
-						}),
-					),
-					invitedEmail: z.optional(z.string()),
-					invitationRole: z.optional(z.string()),
-					entitlements: z.optional(z.array(z.string())),
-					invitedUid: z.optional(z.string()),
-				}),
-				z.object({
-					deletedUser: z.optional(
-						z.object({
-							username: z.string(),
-							email: z.string(),
-						}),
-					),
-					deletedUid: z.optional(z.string()),
-					githubUsername: z.string().nullish(),
-					gitlabUsername: z.string().nullish(),
-					bitbucketUsername: z.string().nullish(),
-					directoryType: z.optional(z.string()),
-					role: z.optional(
-						z.enum([
-							"OWNER",
-							"MEMBER",
-							"DEVELOPER",
-							"SECURITY",
-							"BILLING",
-							"VIEWER",
-							"VIEWER_FOR_PLUS",
-							"CONTRIBUTOR",
-						]),
-					),
-					reason: z.optional(
-						z
-							.string()
-							.describe(
-								"Why the member was removed. When removed due to a plan downgrade, this is a {@link DowngradeReason} from `@api/pubsub-types` (e.g. `trial_expired`, `user_downgrade`).",
-							),
-					),
-					previousPlan: z.optional(z.enum(["pro", "enterprise", "hobby"])),
-					newPlan: z.optional(z.enum(["pro", "enterprise", "hobby"])),
-					automated: z.optional(
-						z
-							.union([z.literal(false), z.literal(true)])
-							.describe("Whether the removal was system-initiated rather than human-initiated."),
-					),
-				}),
-				z.object({
-					role: z.optional(z.string()),
-					uid: z.string(),
-					origin: z.optional(z.string()),
-					teamRoles: z.optional(z.array(z.string())),
-					teamPermissions: z.optional(z.array(z.string())),
-					entitlements: z.optional(z.array(z.string())),
-				}),
-				z.object({
-					directoryType: z.optional(z.string()),
-					updatedUser: z.optional(
-						z.object({
-							username: z.string(),
-							email: z.string(),
-						}),
-					),
-					role: z.optional(z.string()),
-					previousRole: z.string(),
-					updatedUid: z.optional(z.string()),
-					origin: z.optional(z.string()),
-				}),
-				z.object({
-					entitlement: z.string(),
-					user: z.object({
-						id: z.string(),
-						username: z.string(),
-					}),
-				}),
-				z.object({
-					entitlement: z.string(),
-					user: z.object({
-						id: z.string(),
-						username: z.string(),
-					}),
-					previousCanceledAt: z.optional(z.string()),
-				}),
-				z.object({
-					enforced: z.union([z.literal(false), z.literal(true)]),
-				}),
-				z.object({
-					name: z.optional(z.string()),
-				}),
-				z.object({
-					slug: z.optional(z.string()),
-				}),
-				z.object({
-					remoteCaching: z.optional(
-						z
-							.object({
-								enabled: z.optional(z.union([z.literal(false), z.literal(true)])),
-							})
-							.describe("Represents configuration for remote caching"),
-					),
-				}),
-				z.object({
-					previous: z.object({
-						enabled: z.union([z.literal(false), z.literal(true)]),
-						totpVerified: z.union([z.literal(false), z.literal(true)]),
-					}),
-					next: z.object({
-						enabled: z.union([z.literal(false), z.literal(true)]),
-						totpVerified: z.union([z.literal(false), z.literal(true)]),
-					}),
-				}),
-				z.object({
-					enabled: z.union([z.literal(false), z.literal(true)]),
-					totpVerified: z.union([z.literal(false), z.literal(true)]),
-				}),
-				z.object({
-					mfaEnabled: z.union([z.literal(false), z.literal(true)]),
-				}),
-				z.object({
-					totp: z.union([z.literal(false), z.literal(true)]),
-					recoveryCodes: z.number(),
-					actorId: z.optional(z.string()),
-					actorType: z.optional(z.enum(["user", "admin"])),
-					reason: z.optional(z.string()),
-				}),
-				z.object({
-					email: z.string(),
-					prevEmail: z.string(),
-				}),
-				z.object({
-					deletedAt: z.number().nullish(),
-					username: z.string(),
-				}),
-				z.object({
-					username: z.string(),
-				}),
-				z.object({
-					price: z.optional(z.number()),
-					currency: z.optional(z.string()),
-					enabled: z.optional(z.union([z.literal(false), z.literal(true)])),
-				}),
-				z.object({
-					previewDeploymentSuffix: z.string().nullish(),
-					previousPreviewDeploymentSuffix: z.string().nullish(),
-				}),
-				z.object({
-					price: z.optional(z.number()),
-					currency: z.optional(z.string()),
-				}),
-				z.object({
-					invoiceId: z.string(),
-					amount: z.number(),
-					refundReason: z.string(),
-					lineItemCount: z.number(),
-				}),
-				z.object({
-					invoiceId: z.string(),
-					newInvoiceId: z.string(),
-					settlementMethod: z.enum(["refunded-paid", "credited-paid"]),
-					amount: z.number(),
-				}),
-				z.object({
-					paymentMethodId: z.string(),
-					brand: z.optional(z.string()),
-					last4: z.optional(z.string()),
-				}),
-				z.object({
-					subscriptionId: z.optional(z.string()),
-					planSlug: z.string(),
-				}),
-				z.object({
-					subscriptionId: z.optional(z.string()),
-					action: z.enum(["cancel_plan"]),
-					data: z.object({
-						planSlug: z.enum(["v0_teams", "v0_business"]),
-						reason: z.optional(z.enum(["non-payment"])),
-					}),
-				}),
-				z.object({
-					subscriptionId: z.optional(z.string()),
-					action: z.enum(["resume_plan"]),
-					data: z.object({
-						planSlug: z.enum(["v0_teams", "v0_business"]),
-					}),
-				}),
-				z.object({
-					subscriptionId: z.optional(z.string()),
-					action: z.enum(["mutate"]),
-					data: z.object({}).catchall(z.unknown()),
-				}),
-				z.object({
-					subscriptionId: z.optional(z.string()),
-					productAliases: z.array(z.string()),
-				}),
-				z.object({
-					teamName: z.string(),
-					username: z.optional(z.string()),
-					gitUsername: z.optional(z.string()),
-					githubUsername: z.string().nullish(),
-					gitlabUsername: z.string().nullish(),
-					bitbucketUsername: z.string().nullish(),
-					updatedUid: z.optional(z.string()),
-					teamId: z.optional(z.string()),
-				}),
-				z.object({
-					teamName: z.string(),
-					username: z.optional(z.string()),
-					gitUsername: z.string().nullish(),
-					githubUsername: z.string().nullish(),
-					gitlabUsername: z.string().nullish(),
-					bitbucketUsername: z.string().nullish(),
-				}),
-				z.object({
-					requestedTeamName: z.string(),
-					requestedUserName: z.optional(z.string()),
-					gitUsername: z.optional(z.string()),
-					githubUsername: z.optional(z.string()),
-					gitlabUsername: z.optional(z.string()),
-					bitbucketUsername: z.optional(z.string()),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					originAccountName: z.string(),
-					destinationAccountName: z.string(),
-					destinationAccountId: z.string(),
-					transferId: z.optional(z.string()),
-				}),
-				z.object({
-					projectName: z.string(),
-					destinationAccountName: z.nullable(z.string()),
-					transferId: z.optional(z.string()),
-				}),
-				z.object({
-					previousProjectName: z.string(),
-					newProjectName: z.string(),
-					destinationAccountName: z.string(),
-					transferId: z.optional(z.string()),
-				}),
-				z.object({
-					previousProjectName: z.string(),
-					newProjectName: z.string(),
-					originAccountName: z.string(),
-					transferId: z.optional(z.string()),
-				}),
-				z.object({
-					project: z.object({
-						name: z.string(),
-						id: z.optional(z.string()),
-					}),
-					projectMembership: z.nullable(
-						z.object({
-							role: z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_VIEWER", "PROJECT_GUEST"]),
-							uid: z.string(),
-							createdAt: z.number(),
-							username: z.optional(z.string()),
-						}),
-					),
-				}),
-				z.object({
-					project: z.object({
-						name: z.string(),
-						id: z.optional(z.string()),
-					}),
-					removedMembership: z.object({
-						role: z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_VIEWER", "PROJECT_GUEST"]),
-						uid: z.string(),
-						createdAt: z.number(),
-						username: z.optional(z.string()),
-					}),
-				}),
-				z.object({
-					project: z.object({
-						id: z.string(),
-						name: z.string(),
-					}),
-					projectMembership: z.object({
-						role: z.optional(
-							z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_VIEWER", "PROJECT_GUEST"]),
-						),
-						uid: z.optional(z.string()),
-						createdAt: z.optional(z.number()),
-						username: z.optional(z.string()),
-						previousRole: z.optional(
-							z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_VIEWER", "PROJECT_GUEST"]),
-						),
-					}),
-				}),
-				z.object({
-					project: z.object({
-						name: z.string(),
-						role: z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_VIEWER", "PROJECT_GUEST"]),
-						invitedUserName: z.string(),
-						id: z.optional(z.string()),
-						invitedUserId: z.optional(z.string()),
-					}),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					tags: z.array(z.string()),
-					target: z.optional(z.string()),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					srcImages: z.array(z.string()),
-				}),
-				z.object({
-					edgeConfigId: z.string(),
-					edgeConfigSlug: z.string(),
-					edgeConfigDigest: z.string(),
-				}),
-				z.object({
-					edgeConfigId: z.string(),
-					edgeConfigSlug: z.string(),
-					edgeConfigTokenId: z.string(),
-					label: z.string(),
-				}),
-				z.object({
-					edgeConfigId: z.string(),
-					edgeConfigSlug: z.string(),
-					edgeConfigTokenIds: z.array(z.string()).describe("ids of deleted tokens"),
-				}),
-				z.object({
-					action: z.enum(["enable", "disable"]),
 				}),
 				z.object({
 					id: z.string(),
@@ -4849,6 +4416,851 @@ export const userEventSchema = z
 					}),
 				}),
 				z.object({
+					projectName: z.string(),
+				}),
+				z.object({
+					ownerId: z.string(),
+					source: z.string(),
+					cause: z.string(),
+					blockReason: z.optional(z.string()),
+					siftRoute: z.optional(
+						z.object({
+							name: z.string(),
+						}),
+					),
+				}),
+				z.object({
+					ownerId: z.string(),
+					source: z.string(),
+					cause: z.string(),
+					reason: z.string().nullish(),
+				}),
+				z.object({
+					ownerId: z.string(),
+					source: z.string(),
+					cause: z.string(),
+					blockReason: z.optional(z.string()),
+				}),
+				z.object({
+					ownerId: z.string(),
+					source: z.string(),
+					cause: z.string(),
+				}),
+				z.object({
+					oldName: z.string(),
+					newName: z.string(),
+				}),
+				z.object({
+					plan: z.string(),
+					removedUsers: z.optional(
+						z.object({}).catchall(
+							z.object({
+								role: z.enum([
+									"OWNER",
+									"MEMBER",
+									"DEVELOPER",
+									"SECURITY",
+									"BILLING",
+									"VIEWER",
+									"VIEWER_FOR_PLUS",
+									"CONTRIBUTOR",
+								]),
+								confirmed: z.union([z.literal(false), z.literal(true)]),
+								confirmedAt: z.optional(z.number()),
+								joinedFrom: z.optional(
+									z.object({
+										origin: z.enum([
+											"link",
+											"import",
+											"teams",
+											"saml",
+											"github",
+											"gitlab",
+											"bitbucket",
+											"mail",
+											"dsync",
+											"feedback",
+											"organization-teams",
+											"nsnb-auto-approve",
+											"nsnb-request-access",
+											"nsnb-viewer-upgrade",
+											"nsnb-invite",
+											"nsnb-redeploy",
+										]),
+										commitId: z.optional(z.string()),
+										repoId: z.optional(z.string()),
+										repoPath: z.optional(z.string()),
+										gitUserId: z.optional(z.union([z.string(), z.number()])),
+										gitUserLogin: z.optional(z.string()),
+										ssoUserId: z.optional(z.string()),
+										ssoConnectedAt: z.optional(z.number()),
+										idpUserId: z.optional(z.string()),
+										dsyncUserId: z.optional(z.string()),
+										dsyncConnectedAt: z.optional(z.number()),
+									}),
+								),
+							}),
+						),
+					),
+					prevPlan: z.optional(z.string()),
+					priorPlan: z.optional(z.string()),
+					isDowngrade: z.optional(z.union([z.literal(false), z.literal(true)])),
+					userAgent: z.optional(z.string()),
+					isReactivate: z.optional(z.union([z.literal(false), z.literal(true)])),
+					isTrialUpgrade: z.optional(z.union([z.literal(false), z.literal(true)])),
+					automated: z.optional(
+						z
+							.union([z.literal(false), z.literal(true)])
+							.describe(
+								"Whether the plan change was system-initiated rather than human-initiated.",
+							),
+					),
+					reason: z.optional(
+						z
+							.string()
+							.describe(
+								"Why the plan changed. For downgrades, this is a {@link DowngradeReason} from `@api/pubsub-types` (e.g. `user_downgrade`, `trial_expired`).",
+							),
+					),
+					timestamp: z.optional(z.number()),
+					removedMemberCount: z.optional(z.number()),
+				}),
+				z.object({
+					price: z.optional(z.number()),
+					currency: z.optional(z.string()),
+					enabled: z.optional(z.union([z.literal(false), z.literal(true)])),
+				}),
+				z.object({
+					previewDeploymentSuffix: z.string().nullish(),
+					previousPreviewDeploymentSuffix: z.string().nullish(),
+				}),
+				z.object({
+					projectName: z.string(),
+					branch: z.string(),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					directoryListing: z.union([z.literal(false), z.literal(true)]),
+				}),
+				z.object({
+					projectName: z.optional(z.string()),
+					projectId: z.string(),
+					projectAnalytics: z.nullable(
+						z.object({
+							id: z.string(),
+							canceledAt: z.number().nullish(),
+							disabledAt: z.number(),
+							enabledAt: z.number(),
+							paidAt: z.optional(z.number()),
+							sampleRatePercent: z.number().nullish(),
+							spendLimitInDollars: z.number().nullish(),
+						}),
+					),
+					prevProjectAnalytics: z.nullable(
+						z.object({
+							id: z.string(),
+							canceledAt: z.number().nullish(),
+							disabledAt: z.number(),
+							enabledAt: z.number(),
+							paidAt: z.optional(z.number()),
+							sampleRatePercent: z.number().nullish(),
+							spendLimitInDollars: z.number().nullish(),
+						}),
+					),
+				}),
+				z.object({
+					projectName: z.optional(z.string()),
+					projectId: z.string(),
+					projectAnalytics: z.optional(z.object({}).catchall(z.unknown())),
+					prevProjectAnalytics: z.object({}).catchall(z.unknown()).nullish(),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					action: z.enum(["enabled", "disabled", "regenerated", "updated"]),
+					isEnvVar: z.optional(z.union([z.literal(false), z.literal(true)])),
+					note: z.optional(z.string()),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					enableAffectedProjectsDeployments: z.union([z.literal(false), z.literal(true)]),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					previous: z.object({}),
+					next: z.object({}),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					productionDeploymentsFastLane: z.union([z.literal(false), z.literal(true)]),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					sourceFilesOutsideRootDirectory: z.union([z.literal(false), z.literal(true)]),
+				}),
+				z.object({
+					projectId: z.optional(z.string()),
+					projectName: z.optional(z.string()),
+					buildMachineType: z.optional(z.string()),
+					oldBuildMachineType: z.optional(z.string()),
+				}),
+				z.object({
+					projectId: z.optional(z.string()),
+					projectName: z.optional(z.string()),
+					certId: z.optional(z.string()),
+					origin: z.optional(z.string()),
+				}),
+				z.object({
+					projectId: z.optional(z.string()),
+					projectName: z.optional(z.string()),
+					target: z.optional(z.array(z.string())),
+					updated: z.optional(z.union([z.literal(false), z.literal(true)])),
+				}),
+				z.object({
+					team: z.object({
+						id: z.string(),
+						name: z.string(),
+					}),
+					project: z.object({
+						id: z.string(),
+						name: z.optional(z.string()),
+						oldConnectConfigurations: z.nullable(
+							z.array(
+								z.object({
+									envId: z.union([z.string(), z.enum(["production", "preview"])]),
+									connectConfigurationId: z.string(),
+									dc: z.optional(z.string()),
+									passive: z.union([z.literal(false), z.literal(true)]),
+									buildsEnabled: z.union([z.literal(false), z.literal(true)]),
+									aws: z.optional(
+										z.object({
+											subnetIds: z.array(z.string()),
+											securityGroupId: z.optional(z.string()),
+										}),
+									),
+									createdAt: z.number(),
+									updatedAt: z.number(),
+								}),
+							),
+						),
+						newConnectConfigurations: z.nullable(
+							z.array(
+								z.object({
+									envId: z.union([z.string(), z.enum(["production", "preview"])]),
+									connectConfigurationId: z.string(),
+									dc: z.optional(z.string()),
+									passive: z.union([z.literal(false), z.literal(true)]),
+									buildsEnabled: z.union([z.literal(false), z.literal(true)]),
+									aws: z.optional(
+										z.object({
+											subnetIds: z.array(z.string()),
+											securityGroupId: z.optional(z.string()),
+										}),
+									),
+									createdAt: z.number(),
+									updatedAt: z.number(),
+								}),
+							),
+						),
+					}),
+				}),
+				z.object({
+					projectName: z.optional(z.string()),
+					projectId: z.string(),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					action: z.enum(["enabled", "disabled"]),
+				}),
+				z.object({
+					name: z.string(),
+					ownerId: z.string(),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					elasticConcurrencyEnabled: z.union([z.literal(false), z.literal(true)]),
+					oldElasticConcurrencyEnabled: z.union([z.literal(false), z.literal(true)]),
+					buildQueueConfiguration: z.optional(
+						z.enum(["SKIP_NAMESPACE_QUEUE", "WAIT_FOR_NAMESPACE_QUEUE"]),
+					),
+					oldBuildQueueConfiguration: z.optional(
+						z.enum(["SKIP_NAMESPACE_QUEUE", "WAIT_FOR_NAMESPACE_QUEUE"]),
+					),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					autoAssignCustomDomains: z.union([z.literal(false), z.literal(true)]),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					previewDeploymentsEnabled: z.union([z.literal(false), z.literal(true)]),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					customEnvironmentId: z.string(),
+					customEnvironmentSlug: z.string(),
+					previous: z.object({
+						branchMatcher: z.optional(
+							z.object({
+								type: z
+									.enum(["endsWith", "startsWith", "equals"])
+									.describe("The type of matching to perform"),
+								pattern: z.string().describe("The pattern to match against branch names"),
+							}),
+						),
+					}),
+					next: z.object({
+						branchMatcher: z.optional(
+							z.object({
+								type: z
+									.enum(["endsWith", "startsWith", "equals"])
+									.describe("The type of matching to perform"),
+								pattern: z.string().describe("The pattern to match against branch names"),
+							}),
+						),
+					}),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					customEnvironmentId: z.string(),
+					customEnvironmentSlug: z.string(),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					previous: z.object({
+						functionDefaultTimeout: z.nullable(z.number()),
+					}),
+					next: z.object({
+						functionDefaultTimeout: z.number(),
+					}),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					previous: z.object({
+						functionDefaultMemoryType: z.nullable(z.string()),
+					}),
+					next: z.object({
+						functionDefaultMemoryType: z.string(),
+					}),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					previous: z.object({
+						functionDefaultRegions: z.nullable(z.array(z.string())),
+					}),
+					next: z.object({
+						functionDefaultRegions: z.array(z.string()),
+					}),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					previous: z.object({
+						functionZeroConfigFailover: z.nullable(z.union([z.literal(false), z.literal(true)])),
+					}),
+					next: z.object({
+						functionZeroConfigFailover: z.union([z.literal(false), z.literal(true)]),
+					}),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					previewDeploymentSuffix: z.nullable(z.string()),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					newProjectName: z.string(),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					previous: z.optional(
+						z.object({
+							gitProvider: z.enum([
+								"github",
+								"github-limited",
+								"github-custom-host",
+								"gitlab",
+								"bitbucket",
+							]),
+							gitRepoId: z.string(),
+							gitRepositoryName: z.string(),
+						}),
+					),
+					next: z.object({
+						gitProvider: z.enum([
+							"github",
+							"github-limited",
+							"github-custom-host",
+							"gitlab",
+							"bitbucket",
+						]),
+						gitRepoId: z.string(),
+						gitRepositoryName: z.string(),
+					}),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					gitProvider: z.enum([
+						"github",
+						"github-limited",
+						"github-custom-host",
+						"gitlab",
+						"bitbucket",
+					]),
+					gitRepoId: z.string(),
+					gitRepositoryName: z.string(),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					onPullRequest: z.union([z.literal(false), z.literal(true)]),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					onCommit: z.union([z.literal(false), z.literal(true)]),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					disableRepositoryDispatchEvents: z.union([z.literal(false), z.literal(true)]),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					createDeployments: z.enum(["enabled", "disabled"]),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					requireVerifiedCommits: z.union([z.literal(false), z.literal(true)]),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					gitLFS: z.union([z.literal(false), z.literal(true)]),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					previous: z.object({
+						commandForIgnoringBuildStep: z.optional(z.string()),
+					}),
+					next: z.object({
+						commandForIgnoringBuildStep: z.optional(z.string()),
+					}),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					domain: z.string(),
+					target: z.string(),
+					redirect: z.nullable(z.string()),
+					redirectStatusCode: z.nullable(z.number()),
+					gitBranch: z.nullable(z.string()),
+					configuredBy: z.optional(z.string()),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					domain: z.string(),
+					target: z.string(),
+					redirect: z.string().nullish(),
+					redirectStatusCode: z.number().nullish(),
+				}),
+				z.object({
+					oldProjectId: z.string(),
+					oldProjectName: z.string(),
+					newProjectId: z.string(),
+					newProjectName: z.string(),
+					domain: z.string(),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					domain: z.string(),
+					redirect: z.string().nullish(),
+					redirectStatusCode: z.number().nullish(),
+				}),
+				z.object({
+					projects: z.array(
+						z.object({
+							projectId: z.string(),
+							role: z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_VIEWER", "PROJECT_GUEST"]),
+							membershipCreatedAt: z.number(),
+						}),
+					),
+					uid: z.string(),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					target: z.string(),
+					domain: z.string(),
+					configuredBy: z.string().nullish(),
+					prevConfiguredBy: z.string().nullish(),
+				}),
+				z.object({
+					project: z.object({
+						name: z.string(),
+						id: z.optional(z.string()),
+					}),
+					projectMembership: z.nullable(
+						z.object({
+							role: z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_VIEWER", "PROJECT_GUEST"]),
+							uid: z.string(),
+							createdAt: z.number(),
+							username: z.optional(z.string()),
+						}),
+					),
+				}),
+				z.object({
+					project: z.object({
+						name: z.string(),
+						role: z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_VIEWER", "PROJECT_GUEST"]),
+						invitedUserName: z.string(),
+						id: z.optional(z.string()),
+						invitedUserId: z.optional(z.string()),
+					}),
+				}),
+				z.object({
+					project: z.object({
+						name: z.string(),
+						id: z.optional(z.string()),
+					}),
+					removedMembership: z.object({
+						role: z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_VIEWER", "PROJECT_GUEST"]),
+						uid: z.string(),
+						createdAt: z.number(),
+						username: z.optional(z.string()),
+					}),
+				}),
+				z.object({
+					project: z.object({
+						id: z.string(),
+						name: z.string(),
+					}),
+					projectMembership: z.object({
+						role: z.optional(
+							z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_VIEWER", "PROJECT_GUEST"]),
+						),
+						uid: z.optional(z.string()),
+						createdAt: z.optional(z.number()),
+						username: z.optional(z.string()),
+						previousRole: z.optional(
+							z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_VIEWER", "PROJECT_GUEST"]),
+						),
+					}),
+				}),
+				z.object({
+					previousProjectName: z.string(),
+					newProjectName: z.string(),
+					originAccountName: z.string(),
+					transferId: z.optional(z.string()),
+				}),
+				z.object({
+					projectName: z.string(),
+					destinationAccountName: z.nullable(z.string()),
+					transferId: z.optional(z.string()),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					originAccountName: z.string(),
+					destinationAccountName: z.string(),
+					destinationAccountId: z.string(),
+					transferId: z.optional(z.string()),
+				}),
+				z.object({
+					previousProjectName: z.string(),
+					newProjectName: z.string(),
+					destinationAccountName: z.string(),
+					transferId: z.optional(z.string()),
+				}),
+				z.object({
+					source: z.string(),
+					projectId: z.string(),
+					projectName: z.string(),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					optionsAllowlist: z
+						.object({
+							paths: z.array(
+								z.object({
+									value: z.string(),
+								}),
+							),
+						})
+						.nullish(),
+					oldOptionsAllowlist: z
+						.object({
+							paths: z.array(
+								z.object({
+									value: z.string(),
+								}),
+							),
+						})
+						.nullish(),
+				}),
+				z.object({
+					projectId: z.optional(z.string()),
+					projectName: z.optional(z.string()),
+					passwordProtection: z.nullable(
+						z.union([
+							z.object({
+								deploymentType: z.enum([
+									"all",
+									"preview",
+									"prod_deployment_urls_and_all_previews",
+									"all_except_custom_domains",
+								]),
+							}),
+							z.enum([
+								"all",
+								"preview",
+								"prod_deployment_urls_and_all_previews",
+								"all_except_custom_domains",
+							]),
+						]),
+					),
+					oldPasswordProtection: z.nullable(
+						z.union([
+							z.object({
+								deploymentType: z.enum([
+									"all",
+									"preview",
+									"prod_deployment_urls_and_all_previews",
+									"all_except_custom_domains",
+								]),
+							}),
+							z.enum([
+								"all",
+								"preview",
+								"prod_deployment_urls_and_all_previews",
+								"all_except_custom_domains",
+							]),
+						]),
+					),
+				}),
+				z.object({
+					projectId: z.string(),
+					reasonCode: z.optional(z.enum(["BUDGET_REACHED", "PUBLIC_API", "BACKOFFICE"])),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					targetDeploymentId: z.optional(z.string()),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					targetDeploymentId: z.optional(z.string()),
+					newTargetPercentage: z.optional(z.number()),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					previous: z.object({
+						issuerMode: z.optional(z.enum(["team", "global"])),
+					}),
+					next: z.object({
+						issuerMode: z.enum(["team", "global"]),
+					}),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					customerSupportCodeVisibility: z.union([z.literal(false), z.literal(true)]),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					gitForkProtection: z.union([z.literal(false), z.literal(true)]),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					protectedSourcemaps: z.union([z.literal(false), z.literal(true)]),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					publicSource: z.union([z.literal(false), z.literal(true)]),
+				}),
+				z.object({
+					projectId: z.optional(z.string()),
+					projectName: z.optional(z.string()),
+					previous: z.object({
+						expiration: z.optional(z.string()),
+						expirationProduction: z.optional(z.string()),
+						expirationCanceled: z.optional(z.string()),
+						expirationErrored: z.optional(z.string()),
+					}),
+					next: z.object({
+						expiration: z.optional(z.string()),
+						expirationProduction: z.optional(z.string()),
+						expirationCanceled: z.optional(z.string()),
+						expirationErrored: z.optional(z.string()),
+					}),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					next: z.object({
+						skewProtectionBoundaryAt: z.number(),
+					}),
+					previous: z.object({
+						skewProtectionBoundaryAt: z.optional(z.number()),
+					}),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					next: z.object({
+						skewProtectionMaxAge: z.number(),
+					}),
+					previous: z.object({
+						skewProtectionMaxAge: z.optional(z.number()),
+					}),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					next: z.object({
+						skewProtectionAllowedDomains: z.array(z.string()),
+					}),
+					previous: z.object({
+						skewProtectionAllowedDomains: z.optional(z.array(z.string())),
+					}),
+				}),
+				z.object({
+					projectId: z.optional(z.string()),
+					projectName: z.optional(z.string()),
+					ssoProtection: z.nullable(
+						z.union([
+							z.object({
+								deploymentType: z.enum([
+									"all",
+									"preview",
+									"prod_deployment_urls_and_all_previews",
+									"all_except_custom_domains",
+								]),
+								cve55182MigrationAppliedFrom: z
+									.enum([
+										"all",
+										"preview",
+										"prod_deployment_urls_and_all_previews",
+										"all_except_custom_domains",
+									])
+									.nullish(),
+							}),
+							z.enum([
+								"all",
+								"preview",
+								"prod_deployment_urls_and_all_previews",
+								"all_except_custom_domains",
+							]),
+						]),
+					),
+					oldSsoProtection: z.nullable(
+						z.union([
+							z.object({
+								deploymentType: z.enum([
+									"all",
+									"preview",
+									"prod_deployment_urls_and_all_previews",
+									"all_except_custom_domains",
+								]),
+								cve55182MigrationAppliedFrom: z
+									.enum([
+										"all",
+										"preview",
+										"prod_deployment_urls_and_all_previews",
+										"all_except_custom_domains",
+									])
+									.nullish(),
+							}),
+							z.enum([
+								"all",
+								"preview",
+								"prod_deployment_urls_and_all_previews",
+								"all_except_custom_domains",
+							]),
+						]),
+					),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					next: z.object({
+						project: z.object({
+							id: z.optional(z.string()),
+							staticIps: z.object({
+								builds: z.optional(z.union([z.literal(false), z.literal(true)])),
+								enabled: z.union([z.literal(false), z.literal(true)]),
+								regions: z.optional(z.array(z.string())),
+							}),
+						}),
+					}),
+					previous: z.object({
+						project: z.object({
+							id: z.optional(z.string()),
+							staticIps: z.object({
+								builds: z.optional(z.union([z.literal(false), z.literal(true)])),
+								enabled: z.union([z.literal(false), z.literal(true)]),
+								regions: z.optional(z.array(z.string())),
+							}),
+						}),
+					}),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					trustedIps: z
+						.enum([
+							"production",
+							"all",
+							"preview",
+							"prod_deployment_urls_and_all_previews",
+							"all_except_custom_domains",
+						])
+						.nullish(),
+					oldTrustedIps: z
+						.enum([
+							"production",
+							"all",
+							"preview",
+							"prod_deployment_urls_and_all_previews",
+							"all_except_custom_domains",
+						])
+						.nullish(),
+					addedAddresses: z.array(z.string()).nullish(),
+					removedAddresses: z.array(z.string()).nullish(),
+				}),
+				z.object({
+					projectId: z.string(),
+					reasonCode: z.optional(z.enum(["PUBLIC_API", "BACKOFFICE"])),
+				}),
+				z.object({
 					projectId: z.string(),
 					projectName: z.string(),
 					projectWebAnalytics: z.optional(
@@ -4871,242 +5283,558 @@ export const userEventSchema = z
 						.nullish(),
 				}),
 				z.object({
-					tier: z.enum(["pro", "plus"]),
+					gitProvider: z.string(),
+					gitProviderGroupDescriptor: z.string(),
+					gitScope: z.string(),
+				}),
+				z.object({
+					instances: z.number(),
+					url: z.string(),
+				}),
+				z.object({
+					email: z.string(),
+					verified: z.union([z.literal(false), z.literal(true)]),
+				}),
+				z.object({
+					email: z.string(),
+				}),
+				z.object({
+					uid: z.string(),
+					name: z.union([
+						z.string(),
+						z.object({
+							name: z.string(),
+						}),
+					]),
 				}),
 				z.object({
 					oldName: z.string(),
 					newName: z.string(),
+					uid: z.optional(z.string()),
 				}),
 				z.object({
-					appName: z.string(),
-					appId: z.optional(z.string()),
-					scopes: z.array(z.enum(["openid", "email", "profile", "offline_access"])),
-					permissions: z.optional(
-						z.array(
-							z.enum([
-								"read:user",
-								"read:domain",
-								"read-write:domain",
-								"read:team",
-								"read:billing",
-								"read-write:billing",
-								"read-write:ai-gateway-api-key",
-								"read:project",
-								"read-write:project",
-								"read:deployment",
-								"read-write:deployment",
-							]),
-						),
-					),
+					enabled: z.union([z.literal(false), z.literal(true)]),
+					updatedAt: z.number(),
+					firstEnabledAt: z.optional(z.number()),
 				}),
 				z.object({
-					appName: z.string(),
-					appId: z.optional(z.string()),
-					nextScopes: z.array(z.enum(["openid", "email", "profile", "offline_access"])),
-					nextPermissions: z.optional(
-						z.array(
-							z.enum([
-								"read:user",
-								"read:domain",
-								"read-write:domain",
-								"read:team",
-								"read:billing",
-								"read-write:billing",
-								"read-write:ai-gateway-api-key",
-								"read:project",
-								"read-write:project",
-								"read:deployment",
-								"read-write:deployment",
-							]),
-						),
-					),
+					bio: z.string(),
 				}),
 				z.object({
-					appName: z.string(),
-					appId: z.optional(z.string()),
-				}),
-				z.object({
-					appName: z.string(),
-					appId: z.optional(z.string()),
-					secretLastFourChars: z.optional(z.string()),
-				}),
-				z.object({
-					appName: z.string(),
-					appId: z.optional(z.string()),
-					resources: z.optional(
+					scalingRules: z.object({}).catchall(
 						z.object({
-							projectIds: z.object({
-								type: z.enum(["list"]),
-								required: z.literal(true),
-								items: z.object({
-									type: z.enum(["string"]),
+							min: z.number(),
+							max: z.number(),
+						}),
+					),
+					min: z.number(),
+					max: z.number(),
+					url: z.string(),
+				}),
+				z.object({
+					userAgent: z.optional(z.string()),
+					geolocation: z
+						.object({
+							city: z.optional(
+								z.object({
+									names: z.object({
+										en: z.string(),
+									}),
+								}),
+							),
+							country: z.object({
+								names: z.object({
+									en: z.string(),
 								}),
 							}),
-						}),
-					),
-					permissions: z.optional(
-						z.array(
-							z.enum([
-								"read:domain",
-								"read-write:domain",
-								"read:team",
-								"read:billing",
-								"read-write:billing",
-								"read-write:ai-gateway-api-key",
-								"read:project",
-								"read-write:project",
-								"read:deployment",
-								"read-write:deployment",
-							]),
-						),
-					),
-				}),
-				z.object({
-					appName: z.string(),
-					appId: z.optional(z.string()),
-					installationId: z.optional(z.string()),
-					before: z.optional(
-						z.object({
-							resources: z.optional(
+							mostSpecificSubdivision: z.optional(
 								z.object({
-									projectIds: z.object({
-										type: z.enum(["list"]),
-										required: z.literal(true),
-										items: z.object({
-											type: z.enum(["string"]),
-										}),
+									names: z.object({
+										en: z.string(),
 									}),
 								}),
 							),
-							permissions: z.optional(
-								z.array(
-									z.enum([
-										"read:domain",
-										"read-write:domain",
-										"read:team",
-										"read:billing",
-										"read-write:billing",
-										"read-write:ai-gateway-api-key",
-										"read:project",
-										"read-write:project",
-										"read:deployment",
-										"read-write:deployment",
-									]),
-								),
-							),
-						}),
-					),
-					after: z.optional(
-						z.object({
-							resources: z.optional(
+							regionName: z.optional(z.string()),
+						})
+						.nullish(),
+					env: z.optional(z.string()),
+					os: z.optional(z.string()),
+					username: z.optional(z.string()),
+					ssoType: z.optional(z.string()),
+					factors: z.optional(
+						z
+							.array(
 								z.object({
-									projectIds: z.object({
-										type: z.enum(["list"]),
-										required: z.literal(true),
-										items: z.object({
-											type: z.enum(["string"]),
-										}),
-									}),
-								}),
-							),
-							permissions: z.optional(
-								z.array(
-									z.enum([
-										"read:domain",
-										"read-write:domain",
-										"read:team",
-										"read:billing",
-										"read-write:billing",
-										"read-write:ai-gateway-api-key",
-										"read:project",
-										"read-write:project",
-										"read:deployment",
-										"read-write:deployment",
+									origin: z.enum([
+										"email",
+										"saml",
+										"github",
+										"gitlab",
+										"bitbucket",
+										"google",
+										"apple",
+										"otp",
 									]),
-								),
-							),
-						}),
+									username: z.optional(z.string()),
+									teamId: z.optional(z.string()),
+									legacy: z.optional(z.union([z.literal(false), z.literal(true)])),
+									ssoType: z.optional(z.string()),
+								}),
+							)
+							.min(1)
+							.max(1),
 					),
+					viaOTP: z.optional(z.union([z.literal(false), z.literal(true)])),
+					viaGithub: z.optional(z.union([z.literal(false), z.literal(true)])),
+					viaGitlab: z.optional(z.union([z.literal(false), z.literal(true)])),
+					viaBitbucket: z.optional(z.union([z.literal(false), z.literal(true)])),
+					viaGoogle: z.optional(z.union([z.literal(false), z.literal(true)])),
+					viaApple: z.optional(z.union([z.literal(false), z.literal(true)])),
+					viaSamlSso: z.optional(z.union([z.literal(false), z.literal(true)])),
+					viaPasskey: z.optional(z.union([z.literal(false), z.literal(true)])),
 				}),
 				z.object({
-					appName: z
-						.string()
-						.describe(
-							"The App's name at the moment this even was published (it may have changed since then).",
-						),
-					appId: z.optional(
-						z
-							.string()
-							.describe("The App's ID. Note that not all historical events have this field."),
-					),
-					app: z.optional(
-						z
+					email: z.string(),
+					bitbucketLogin: z.string(),
+					bitbucketEmail: z.string(),
+					bitbucketName: z.string(),
+					zeitAccount: z.string(),
+					zeitAccountType: z.string(),
+				}),
+				z.object({
+					email: z.string(),
+					githubLogin: z.string(),
+					zeitAccount: z.string(),
+					zeitAccountType: z.string(),
+				}),
+				z.object({
+					email: z.string(),
+					gitlabLogin: z.string(),
+					gitlabEmail: z.string(),
+					gitlabName: z.string(),
+					zeitAccount: z.string(),
+					zeitAccountType: z.string(),
+				}),
+				z.object({
+					projectId: z.optional(z.string()),
+					projectName: z.optional(z.string()),
+					analyticsId: z.optional(z.string()),
+					sampleRatePercent: z.nullable(z.number()),
+					spendLimitInDollars: z.nullable(z.number()),
+					previous: z.object({
+						sampleRatePercent: z.nullable(z.number()),
+						spendLimitInDollars: z.nullable(z.number()),
+					}),
+				}),
+				z.object({
+					budget: z.object({
+						budgetItem: z
 							.object({
-								id: z.string().describe("The App's ID."),
-								name: z
+								type: z.enum(["fixed"]).describe("The budget type"),
+								fixedBudget: z.number().describe("Budget amount (USD / dollars)"),
+								previousSpend: z
+									.array(z.number())
+									.describe("Array of the last 3 months of spend data"),
+								notifiedAt: z
+									.array(z.number())
+									.describe("Array of 50, 75, 100 to keep track of notifications sent out"),
+								webhookId: z.optional(
+									z
+										.string()
+										.describe(
+											"Webhook id that corresponds to a webhook in Cosmos webhook collection",
+										),
+								),
+								webhookNotified: z.optional(
+									z
+										.union([z.literal(false), z.literal(true)])
+										.describe("Keep track if the webhook has been called for the month"),
+								),
+								createdAt: z.number().describe("Date time when budget is created"),
+								updatedAt: z.optional(z.number().describe("Date time when budget is updated last")),
+								isActive: z
+									.union([z.literal(false), z.literal(true)])
+									.describe("Is the budget currently active for a customer"),
+								pauseProjects: z.optional(
+									z
+										.union([z.literal(false), z.literal(true)])
+										.describe("Should all projects be paused if budget is exceeded"),
+								),
+								pricingPlan: z.optional(
+									z
+										.enum(["plus", "legacy", "unbundled"])
+										.describe("The acive pricing plan the team is billed with"),
+								),
+								teamId: z.string().describe("Partition key"),
+								id: z.string().describe("Sort key that needs to be unique per teamId"),
+							})
+							.describe("Represents a budget for tracking and notifying teams on their spending."),
+					}),
+				}),
+				z.object({
+					budget: z
+						.object({
+							type: z.enum(["fixed"]).describe("The budget type"),
+							fixedBudget: z.number().describe("Budget amount (USD / dollars)"),
+							previousSpend: z
+								.array(z.number())
+								.describe("Array of the last 3 months of spend data"),
+							notifiedAt: z
+								.array(z.number())
+								.describe("Array of 50, 75, 100 to keep track of notifications sent out"),
+							webhookId: z.optional(
+								z
 									.string()
 									.describe(
-										"The App's name at the moment this even was published (it may have changed since then).",
+										"Webhook id that corresponds to a webhook in Cosmos webhook collection",
 									),
-							})
-							.describe("Note that not all historical events have this field."),
-					),
-					issuedBefore: z.optional(
-						z
-							.number()
-							.describe(
-								"UNIX timestamp in seconds. Tokens issued before this timestamp will be revoked. Note that not all historical events have this field.",
 							),
-					),
+							webhookNotified: z.optional(
+								z
+									.union([z.literal(false), z.literal(true)])
+									.describe("Keep track if the webhook has been called for the month"),
+							),
+							createdAt: z.number().describe("Date time when budget is created"),
+							updatedAt: z.optional(z.number().describe("Date time when budget is updated last")),
+							isActive: z
+								.union([z.literal(false), z.literal(true)])
+								.describe("Is the budget currently active for a customer"),
+							pauseProjects: z.optional(
+								z
+									.union([z.literal(false), z.literal(true)])
+									.describe("Should all projects be paused if budget is exceeded"),
+							),
+							pricingPlan: z.optional(
+								z
+									.enum(["plus", "legacy", "unbundled"])
+									.describe("The acive pricing plan the team is billed with"),
+							),
+							teamId: z.string().describe("Partition key"),
+							id: z.string().describe("Sort key that needs to be unique per teamId"),
+						})
+						.describe("Represents a budget for tracking and notifying teams on their spending."),
 				}),
 				z.object({
-					team: z.object({
-						id: z.string(),
-						name: z.string(),
-					}),
-					configuration: z.object({
-						id: z.string(),
-						name: z.optional(z.string()),
-					}),
-					peering: z.object({
-						id: z.string(),
-						accountId: z.string(),
-						region: z.string(),
-						vpcId: z.string(),
-					}),
+					budget: z
+						.object({
+							type: z.enum(["fixed"]).describe("The budget type"),
+							fixedBudget: z.number().describe("Budget amount (USD / dollars)"),
+							previousSpend: z
+								.array(z.number())
+								.describe("Array of the last 3 months of spend data"),
+							notifiedAt: z
+								.array(z.number())
+								.describe("Array of 50, 75, 100 to keep track of notifications sent out"),
+							webhookId: z.optional(
+								z
+									.string()
+									.describe(
+										"Webhook id that corresponds to a webhook in Cosmos webhook collection",
+									),
+							),
+							webhookNotified: z.optional(
+								z
+									.union([z.literal(false), z.literal(true)])
+									.describe("Keep track if the webhook has been called for the month"),
+							),
+							createdAt: z.number().describe("Date time when budget is created"),
+							updatedAt: z.optional(z.number().describe("Date time when budget is updated last")),
+							isActive: z
+								.union([z.literal(false), z.literal(true)])
+								.describe("Is the budget currently active for a customer"),
+							pauseProjects: z.optional(
+								z
+									.union([z.literal(false), z.literal(true)])
+									.describe("Should all projects be paused if budget is exceeded"),
+							),
+							pricingPlan: z.optional(
+								z
+									.enum(["plus", "legacy", "unbundled"])
+									.describe("The acive pricing plan the team is billed with"),
+							),
+							teamId: z.string().describe("Partition key"),
+							id: z.string().describe("Sort key that needs to be unique per teamId"),
+						})
+						.describe("Represents a budget for tracking and notifying teams on their spending."),
+					webhookUrl: z.optional(z.string()),
 				}),
 				z.object({
-					team: z.object({
-						id: z.string(),
-						name: z.string(),
-					}),
-					configuration: z.object({
-						id: z.string(),
-						name: z.optional(z.string()),
-					}),
-					peering: z.object({
-						id: z.string(),
-						name: z.optional(z.string()),
-					}),
+					webhookUrl: z.optional(z.string()),
 				}),
 				z.object({
-					team: z.object({
-						id: z.string(),
-						name: z.string(),
-					}),
-					configuration: z.object({
-						id: z.string(),
-						name: z.optional(z.string()),
-					}),
-					peering: z.object({
-						id: z.string(),
-						name: z.optional(z.string()),
-					}),
-					newName: z.optional(z.string()),
+					storeType: z.enum(["redis", "postgres"]),
 				}),
 				z.object({
 					id: z.string(),
-					url: z.string(),
+					name: z.optional(z.string()),
+					computeUnitsMax: z.optional(z.number()),
+					computeUnitsMin: z.optional(z.number()),
+					suspendTimeoutSeconds: z.optional(z.number()),
+					type: z.enum(["integration", "redis", "postgres", "edge-config", "blob"]),
+					access: z.optional(z.enum(["public", "private"])),
+				}),
+				z.object({
+					store: z.object({
+						name: z.string(),
+						id: z.string(),
+					}),
+					ownerId: z.optional(z.string()),
+				}),
+				z.object({
+					slug: z.string(),
+				}),
+				z.object({
+					previous: z.optional(
+						z
+							.object({
+								enabled: z
+									.union([z.literal(false), z.literal(true)])
+									.describe("Whether automatic code reviews are enabled"),
+								scope: z
+									.enum(["public", "private", "all", "selected_repos"])
+									.describe("Which repository visibilities get automatic reviews"),
+								includeDrafts: z
+									.union([z.literal(false), z.literal(true)])
+									.describe("Whether to include draft pull requests in automatic reviews"),
+								selectedRepos: z
+									.array(z.string())
+									.describe(
+										"GitHub repos to scope automatic reviews to. Format: \"owner/repo\" (lowercase). Only used when scope='selected_repos'.",
+									)
+									.nullish(),
+							})
+							.describe("Automatic code review settings"),
+					),
+					next: z
+						.object({
+							enabled: z
+								.union([z.literal(false), z.literal(true)])
+								.describe("Whether automatic code reviews are enabled"),
+							scope: z
+								.enum(["public", "private", "all", "selected_repos"])
+								.describe("Which repository visibilities get automatic reviews"),
+							includeDrafts: z
+								.union([z.literal(false), z.literal(true)])
+								.describe("Whether to include draft pull requests in automatic reviews"),
+							selectedRepos: z
+								.array(z.string())
+								.describe(
+									"GitHub repos to scope automatic reviews to. Format: \"owner/repo\" (lowercase). Only used when scope='selected_repos'.",
+								)
+								.nullish(),
+						})
+						.describe("Automatic code review settings"),
+				}),
+				z.object({
+					enabled: z.union([z.literal(false), z.literal(true)]),
+				}),
+				z.object({
+					trialCreditsIssuedAt: z.number(),
+					expiresAt: z.string(),
+					amount: z.string(),
+					currency: z.string(),
+				}),
+				z.object({
+					slug: z.string(),
+					teamId: z.string(),
+					by: z.string(),
+					byUid: z.optional(z.string()),
+					reasons: z.optional(
+						z.array(
+							z.object({
+								slug: z.string(),
+								description: z.string(),
+							}),
+						),
+					),
+					removedUsers: z.optional(
+						z.object({}).catchall(
+							z.object({
+								role: z.enum([
+									"OWNER",
+									"MEMBER",
+									"DEVELOPER",
+									"SECURITY",
+									"BILLING",
+									"VIEWER",
+									"VIEWER_FOR_PLUS",
+									"CONTRIBUTOR",
+								]),
+								confirmed: z.union([z.literal(false), z.literal(true)]),
+								confirmedAt: z.optional(z.number()),
+							}),
+						),
+					),
+					removedMemberCount: z.optional(z.number()),
+					timestamp: z.optional(z.number()),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					enabled: z.nullable(z.union([z.literal(false), z.literal(true)])),
+					environment: z.enum(["production", "preview"]),
+				}),
+				z.object({
+					environment: z.enum(["production", "preview"]),
+					enabled: z.enum(["default", "on", "off", "on-force", "off-force", "default-force"]),
+				}),
+				z.object({
+					emailDomain: z.string().nullish(),
+				}),
+				z.object({
+					deletedCount: z.number(),
+					inviteIds: z.array(z.string()),
+				}),
+				z.object({
+					directoryType: z.optional(z.string()),
+					ssoType: z.optional(z.string()),
+					invitedUser: z.optional(
+						z.object({
+							username: z.string(),
+							email: z.string(),
+						}),
+					),
+					invitedEmail: z.optional(z.string()),
+					invitationRole: z.optional(z.string()),
+					entitlements: z.optional(z.array(z.string())),
+					invitedUid: z.optional(z.string()),
+				}),
+				z.object({
+					teamName: z.string(),
+					username: z.optional(z.string()),
+					gitUsername: z.optional(z.string()),
+					githubUsername: z.string().nullish(),
+					gitlabUsername: z.string().nullish(),
+					bitbucketUsername: z.string().nullish(),
+					updatedUid: z.optional(z.string()),
+					teamId: z.optional(z.string()),
+				}),
+				z.object({
+					teamName: z.string(),
+					username: z.optional(z.string()),
+					gitUsername: z.string().nullish(),
+					githubUsername: z.string().nullish(),
+					gitlabUsername: z.string().nullish(),
+					bitbucketUsername: z.string().nullish(),
+				}),
+				z.object({
+					deletedUser: z.optional(
+						z.object({
+							username: z.string(),
+							email: z.string(),
+						}),
+					),
+					deletedUid: z.optional(z.string()),
+					githubUsername: z.string().nullish(),
+					gitlabUsername: z.string().nullish(),
+					bitbucketUsername: z.string().nullish(),
+					directoryType: z.optional(z.string()),
+					role: z.optional(
+						z.enum([
+							"OWNER",
+							"MEMBER",
+							"DEVELOPER",
+							"SECURITY",
+							"BILLING",
+							"VIEWER",
+							"VIEWER_FOR_PLUS",
+							"CONTRIBUTOR",
+						]),
+					),
+					reason: z.optional(
+						z
+							.string()
+							.describe(
+								"Why the member was removed. When removed due to a plan downgrade, this is a {@link DowngradeReason} from `@api/pubsub-types` (e.g. `trial_expired`, `user_downgrade`).",
+							),
+					),
+					previousPlan: z.optional(z.enum(["pro", "enterprise", "hobby"])),
+					newPlan: z.optional(z.enum(["pro", "enterprise", "hobby"])),
+					automated: z.optional(
+						z
+							.union([z.literal(false), z.literal(true)])
+							.describe("Whether the removal was system-initiated rather than human-initiated."),
+					),
+				}),
+				z.object({
+					entitlement: z.string(),
+					user: z.object({
+						id: z.string(),
+						username: z.string(),
+					}),
+				}),
+				z.object({
+					entitlement: z.string(),
+					user: z.object({
+						id: z.string(),
+						username: z.string(),
+					}),
+					previousCanceledAt: z.optional(z.string()),
+				}),
+				z.object({
+					role: z.optional(z.string()),
+					uid: z.string(),
+					origin: z.optional(z.string()),
+					teamRoles: z.optional(z.array(z.string())),
+					teamPermissions: z.optional(z.array(z.string())),
+					entitlements: z.optional(z.array(z.string())),
+				}),
+				z.object({
+					requestedTeamName: z.string(),
+					requestedUserName: z.optional(z.string()),
+					gitUsername: z.optional(z.string()),
+					githubUsername: z.optional(z.string()),
+					gitlabUsername: z.optional(z.string()),
+					bitbucketUsername: z.optional(z.string()),
+				}),
+				z.object({
+					directoryType: z.optional(z.string()),
+					updatedUser: z.optional(
+						z.object({
+							username: z.string(),
+							email: z.string(),
+						}),
+					),
+					role: z.optional(z.string()),
+					previousRole: z.string(),
+					updatedUid: z.optional(z.string()),
+					origin: z.optional(z.string()),
+				}),
+				z.object({
+					enforced: z.union([z.literal(false), z.literal(true)]),
+				}),
+				z.object({
+					previousConcurrentBuilds: z.number(),
+					nextConcurrentBuilds: z.number(),
+				}),
+				z.object({
+					plan: z.enum(["pro", "enterprise", "hobby"]),
+					trial: z
+						.object({
+							start: z.number(),
+							end: z.number(),
+						})
+						.nullish(),
+				}),
+				z.object({
+					invoiceId: z.string(),
+					convertedFromTrial: z.union([z.literal(false), z.literal(true)]),
+					plan: z.enum(["pro", "enterprise", "hobby"]),
+				}),
+				z.object({
+					inviteCode: z.optional(z.string()),
+				}),
+				z.object({
+					name: z.optional(z.string()),
+				}),
+				z.object({
+					remoteCaching: z.optional(
+						z
+							.object({
+								enabled: z.optional(z.union([z.literal(false), z.literal(true)])),
+							})
+							.describe("Represents configuration for remote caching"),
+					),
 				}),
 				z.object({
 					enabled: z.enum(["default", "on", "off"]),
@@ -5169,832 +5897,109 @@ export const userEventSchema = z
 					fileId: z.string(),
 				}),
 				z.object({
+					slug: z.optional(z.string()),
+				}),
+				z.object({
+					provider: z.enum([
+						"github",
+						"github-limited",
+						"github-custom-host",
+						"gitlab",
+						"bitbucket",
+						"google",
+						"apple",
+					]),
+					login: z.string(),
+				}),
+				z.object({
+					totp: z.union([z.literal(false), z.literal(true)]),
+					recoveryCodes: z.number(),
+					actorId: z.optional(z.string()),
+					actorType: z.optional(z.enum(["user", "admin"])),
+					reason: z.optional(z.string()),
+				}),
+				z.object({
+					deletedAt: z.number().nullish(),
+					username: z.string(),
+				}),
+				z.object({
+					previous: z.object({
+						enabled: z.union([z.literal(false), z.literal(true)]),
+						totpVerified: z.union([z.literal(false), z.literal(true)]),
+					}),
+					next: z.object({
+						enabled: z.union([z.literal(false), z.literal(true)]),
+						totpVerified: z.union([z.literal(false), z.literal(true)]),
+					}),
+				}),
+				z.object({
+					mfaEnabled: z.union([z.literal(false), z.literal(true)]),
+				}),
+				z.object({
+					enabled: z.union([z.literal(false), z.literal(true)]),
+					totpVerified: z.union([z.literal(false), z.literal(true)]),
+				}),
+				z.object({
+					email: z.string(),
+					prevEmail: z.string(),
+				}),
+				z.object({
+					username: z.string(),
+				}),
+				z.object({
 					ruleName: z.string(),
 				}),
 				z.object({
-					projectId: z.optional(z.string()),
-					projectName: z.optional(z.string()),
-					analyticsId: z.optional(z.string()),
-					sampleRatePercent: z.nullable(z.number()),
-					spendLimitInDollars: z.nullable(z.number()),
-					previous: z.object({
-						sampleRatePercent: z.nullable(z.number()),
-						spendLimitInDollars: z.nullable(z.number()),
-					}),
-				}),
-				z.object({
-					ownerId: z.string(),
-					source: z.string(),
-					cause: z.string(),
-					blockReason: z.optional(z.string()),
-					siftRoute: z.optional(
-						z.object({
-							name: z.string(),
-						}),
-					),
-				}),
-				z.object({
-					ownerId: z.string(),
-					source: z.string(),
-					cause: z.string(),
-					reason: z.string().nullish(),
-				}),
-				z.object({
-					ownerId: z.string(),
-					source: z.string(),
-					cause: z.string(),
-					blockReason: z.optional(z.string()),
-				}),
-				z.object({
-					ownerId: z.string(),
-					source: z.string(),
-					cause: z.string(),
-				}),
-				z.object({
-					edgeConfigId: z.string(),
-					edgeConfigSlug: z.string(),
-					edgeConfigSchema: z.optional(z.object({})),
-				}),
-				z.object({
-					edgeConfigId: z.string(),
-					edgeConfigSlug: z.string(),
-					edgeConfigDigest: z.optional(z.string()),
-				}),
-				z.object({
-					edgeConfig: z.object({
+					team: z.object({
 						id: z.string(),
-						slug: z.string(),
+						name: z.string(),
 					}),
-					fromAccount: z.object({
+					configuration: z.object({
 						id: z.string(),
-						type: z.enum(["user", "team"]),
-						slug: z.optional(z.string()),
-						username: z.optional(z.string()),
+						name: z.optional(z.string()),
 					}),
-					toAccount: z.object({
+					peering: z.object({
 						id: z.string(),
-						type: z.enum(["user", "team"]),
-						slug: z.optional(z.string()),
-						username: z.optional(z.string()),
+						accountId: z.string(),
+						region: z.string(),
+						vpcId: z.string(),
 					}),
 				}),
 				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					domain: z.string(),
-					target: z.string(),
-					redirect: z.nullable(z.string()),
-					redirectStatusCode: z.nullable(z.number()),
-					gitBranch: z.nullable(z.string()),
-					configuredBy: z.optional(z.string()),
+					team: z.object({
+						id: z.string(),
+						name: z.string(),
+					}),
+					configuration: z.object({
+						id: z.string(),
+						name: z.optional(z.string()),
+					}),
+					peering: z.object({
+						id: z.string(),
+						name: z.optional(z.string()),
+					}),
 				}),
 				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					domain: z.string(),
-					target: z.string(),
-					redirect: z.string().nullish(),
-					redirectStatusCode: z.number().nullish(),
+					team: z.object({
+						id: z.string(),
+						name: z.string(),
+					}),
+					configuration: z.object({
+						id: z.string(),
+						name: z.optional(z.string()),
+					}),
+					peering: z.object({
+						id: z.string(),
+						name: z.optional(z.string()),
+					}),
+					newName: z.optional(z.string()),
 				}),
 				z.object({
-					oldProjectId: z.string(),
-					oldProjectName: z.string(),
-					newProjectId: z.string(),
-					newProjectName: z.string(),
-					domain: z.string(),
+					tier: z.enum(["pro", "plus"]),
 				}),
 				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					domain: z.string(),
-					redirect: z.string().nullish(),
-					redirectStatusCode: z.number().nullish(),
-				}),
-				z.object({
-					projects: z.array(
-						z.object({
-							projectId: z.string(),
-							role: z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_VIEWER", "PROJECT_GUEST"]),
-							membershipCreatedAt: z.number(),
-						}),
-					),
-					uid: z.string(),
-				}),
-				z.object({
-					projectId: z.string(),
-					projectName: z.string(),
-					target: z.string(),
-					domain: z.string(),
-					configuredBy: z.string().nullish(),
-					prevConfiguredBy: z.string().nullish(),
-				}),
-				z.object({
-					plan: z.enum(["pro", "enterprise", "hobby"]),
-					trial: z
-						.object({
-							start: z.number(),
-							end: z.number(),
-						})
-						.nullish(),
-				}),
-				z.object({
-					invoiceId: z.string(),
-					convertedFromTrial: z.union([z.literal(false), z.literal(true)]),
-					plan: z.enum(["pro", "enterprise", "hobby"]),
-				}),
-				z.object({
-					emailDomain: z.string().nullish(),
-				}),
-				z.object({
-					inviteCode: z.optional(z.string()),
-				}),
-				z.object({
-					trialCreditsIssuedAt: z.number(),
-					expiresAt: z.string(),
-					amount: z.string(),
-					currency: z.string(),
-				}),
-				z.object({
-					job: z.union([
-						z.object({
-							type: z.enum(["bitbucket-push"]),
-							authorized: z.optional(z.union([z.literal(false), z.literal(true)])),
-							authorizedBy: z.optional(z.string()),
-							jobProjectIds: z.optional(
-								z
-									.array(z.string())
-									.describe(
-										"Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.",
-									),
-							),
-							jobPairs: z.optional(
-								z
-									.array(
-										z
-											.array(z.union([z.string(), z.string()]))
-											.min(2)
-											.max(2)
-											.describe(
-												"Since December 2022 Pairs of projects and owner ids to build for this build request.",
-											),
-									)
-									.describe(
-										"Since December 2022 Pairs of projects and owner ids to build for this build request.",
-									),
-							),
-							skippedJobPairs: z.optional(
-								z
-									.array(
-										z
-											.array(z.union([z.string(), z.string()]))
-											.min(2)
-											.max(2)
-											.describe(
-												"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
-											),
-									)
-									.describe(
-										"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
-									),
-							),
-							gitHashtagVercel: z.optional(
-								z
-									.array(
-										z
-											.string()
-											.describe(
-												"Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING",
-											),
-									)
-									.describe(
-										"Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING",
-									),
-							),
-							connectedProjectCount: z.optional(
-								z
-									.number()
-									.describe(
-										"Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.",
-									),
-							),
-							prIdOrZero: z.optional(
-								z
-									.number()
-									.describe(
-										"Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.",
-									),
-							),
-							gitComments: z.optional(
-								z
-									.object({
-										onPullRequest: z.union([z.literal(false), z.literal(true)]),
-										onCommit: z.union([z.literal(false), z.literal(true)]),
-									})
-									.describe(
-										"Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.",
-									),
-							),
-							isManualGitDeploy: z.optional(
-								z
-									.union([z.literal(false), z.literal(true)])
-									.describe(
-										"Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment",
-									),
-							),
-							commitVerification: z.optional(
-								z
-									.enum(["verified", "unknown", "unverified"])
-									.describe(
-										"Since 6 Nov 2025 The verification status of the commit. - 'verified' if the commit is verified - 'unverified' if the commit is not verified - 'unknown' if the commit verification status is unknown or not supported",
-									),
-							),
-							createdAt: z.optional(z.number()),
-							deploymentId: z.optional(z.string()),
-							deployHook: z.optional(
-								z.object({
-									createdAt: z.number(),
-									id: z.string(),
-									name: z.string(),
-									ref: z.string(),
-								}),
-							),
-							eventful: z.optional(z.union([z.literal(false), z.literal(true)])),
-							forceNew: z.optional(z.union([z.literal(false), z.literal(true)])),
-							headInfo: z.object({
-								owner: z.string(),
-								ref: z.string(),
-								repoUuid: z.string(),
-								sha: z.string(),
-								slug: z.string(),
-							}),
-							linkedProjectId: z.optional(z.string()),
-							name: z.string(),
-							owner: z.string(),
-							prId: z.optional(z.number()),
-							projectId: z.optional(z.string()),
-							customEnvId: z.string().nullish(),
-							ref: z.string(),
-							repoPushedAt: z.number().nullish(),
-							repoUuid: z.string(),
-							sha: z.string(),
-							silent: z.optional(z.union([z.literal(false), z.literal(true)])),
-							slug: z.string(),
-							target: z.string().nullish(),
-							url: z.optional(z.string()),
-							withCache: z.optional(z.union([z.literal(false), z.literal(true)])),
-							workspaceUuid: z.string(),
-							provider: z.enum(["bitbucket"]),
-						}),
-						z.object({
-							createdAt: z.optional(z.number()),
-							eventful: z.optional(z.union([z.literal(false), z.literal(true)])),
-							headInfo: z.object({
-								owner: z.string(),
-								ref: z.string(),
-								repoUuid: z.string(),
-								sha: z.string(),
-								slug: z.string(),
-							}),
-							linkedProjectId: z.optional(z.string()),
-							name: z.string(),
-							owner: z.string(),
-							prId: z.number(),
-							projectId: z.optional(z.string()),
-							customEnvId: z.string().nullish(),
-							ref: z.string(),
-							repoUuid: z.string(),
-							sha: z.string(),
-							slug: z.string(),
-							type: z.enum(["bitbucket-now-comment"]),
-							workspaceUuid: z.string(),
-							gitComments: z.optional(
-								z.object({
-									onPullRequest: z.union([z.literal(false), z.literal(true)]),
-									onCommit: z.union([z.literal(false), z.literal(true)]),
-								}),
-							),
-							provider: z.enum(["bitbucket"]),
-						}),
-						z.object({
-							prId: z.number(),
-							type: z.enum(["pr"]),
-							authorized: z.optional(z.union([z.literal(false), z.literal(true)])),
-							authorizedBy: z.optional(z.string()),
-							jobProjectIds: z.optional(
-								z
-									.array(z.string())
-									.describe(
-										"Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.",
-									),
-							),
-							jobPairs: z.optional(
-								z
-									.array(
-										z
-											.array(z.union([z.string(), z.string()]))
-											.min(2)
-											.max(2)
-											.describe(
-												"Since December 2022 Pairs of projects and owner ids to build for this build request.",
-											),
-									)
-									.describe(
-										"Since December 2022 Pairs of projects and owner ids to build for this build request.",
-									),
-							),
-							skippedJobPairs: z.optional(
-								z
-									.array(
-										z
-											.array(z.union([z.string(), z.string()]))
-											.min(2)
-											.max(2)
-											.describe(
-												"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
-											),
-									)
-									.describe(
-										"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
-									),
-							),
-							gitHashtagVercel: z.optional(
-								z
-									.array(
-										z
-											.string()
-											.describe(
-												"Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING",
-											),
-									)
-									.describe(
-										"Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING",
-									),
-							),
-							connectedProjectCount: z.optional(
-								z
-									.number()
-									.describe(
-										"Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.",
-									),
-							),
-							prIdOrZero: z.optional(
-								z
-									.number()
-									.describe(
-										"Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.",
-									),
-							),
-							gitComments: z.optional(
-								z
-									.object({
-										onPullRequest: z.union([z.literal(false), z.literal(true)]),
-										onCommit: z.union([z.literal(false), z.literal(true)]),
-									})
-									.describe(
-										"Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.",
-									),
-							),
-							isManualGitDeploy: z.optional(
-								z
-									.union([z.literal(false), z.literal(true)])
-									.describe(
-										"Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment",
-									),
-							),
-							commitVerification: z.optional(
-								z
-									.enum(["verified", "unknown", "unverified"])
-									.describe(
-										"Since 6 Nov 2025 The verification status of the commit. - 'verified' if the commit is verified - 'unverified' if the commit is not verified - 'unknown' if the commit verification status is unknown or not supported",
-									),
-							),
-							committerGitUserId: z.optional(
-								z
-									.number()
-									.describe(
-										"Remote account id of the committer details (github id etc, not vercel). Note that the committer name/email are user input verbatim and not verified. Github does appear to resolve the given email to the username so we can trust that. If the username matches that of the sender, which is verified info, then we can use the account id and account type. See api-incoming, where we determine and set this property Note that even with that, the account may still have been spoofed.",
-									),
-							),
-							committerGitUserType: z.optional(
-								z
-									.string()
-									.describe(
-										"Remote account type of the committer details (github type etc, not vercel). Note that the committer name/email are user input verbatim and not verified. Github does appear to resolve the given email to the username so we can trust that. If the username matches that of the sender, which is verified info, then we can use the account id and account type. See api-incoming, where we determine and set this property Note that even with that, the account may still have been spoofed.",
-									),
-							),
-							createdAt: z.optional(z.number()),
-							forceNew: z.optional(z.union([z.literal(false), z.literal(true)])),
-							deploymentId: z.optional(z.string()),
-							deployHook: z.optional(
-								z.object({
-									createdAt: z.number(),
-									id: z.string(),
-									name: z.string(),
-									ref: z.string(),
-								}),
-							),
-							beforeSha: z.optional(z.string()),
-							defaultBranch: z.optional(z.string()),
-							eventful: z.optional(z.union([z.literal(false), z.literal(true)])),
-							githubDeploymentId: z.optional(z.string()),
-							headInfo: z
-								.object({
-									org: z.string(),
-									ref: z.string(),
-									repo: z.string(),
-									repoId: z.number(),
-									sha: z.string(),
-								})
-								.describe("Information about the head commit/branch for a GitHub repository"),
-							installationId: z.number(),
-							isPrivate: z.union([z.literal(false), z.literal(true)]),
-							linkedProjectId: z.optional(z.string()),
-							org: z.string(),
-							projectId: z.optional(z.string()),
-							customEnvId: z.string().nullish(),
-							repo: z.string(),
-							repoId: z.number(),
-							target: z.string().nullish(),
-							url: z.optional(z.string()),
-							withCache: z.optional(z.union([z.literal(false), z.literal(true)])),
-							provider: z.enum(["github", "github-limited", "github-custom-host"]),
-							customHost: z.optional(z.string()),
-						}),
-						z.object({
-							repoPushedAt: z.nullable(z.number()),
-							commitInfo: z.optional(
-								z.object({
-									total: z.number(),
-									earliestSha: z.optional(z.string()),
-								}),
-							),
-							forced: z.optional(z.union([z.literal(false), z.literal(true)])),
-							type: z.enum(["push"]),
-							authorized: z.optional(z.union([z.literal(false), z.literal(true)])),
-							authorizedBy: z.optional(z.string()),
-							jobProjectIds: z.optional(
-								z
-									.array(z.string())
-									.describe(
-										"Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.",
-									),
-							),
-							jobPairs: z.optional(
-								z
-									.array(
-										z
-											.array(z.union([z.string(), z.string()]))
-											.min(2)
-											.max(2)
-											.describe(
-												"Since December 2022 Pairs of projects and owner ids to build for this build request.",
-											),
-									)
-									.describe(
-										"Since December 2022 Pairs of projects and owner ids to build for this build request.",
-									),
-							),
-							skippedJobPairs: z.optional(
-								z
-									.array(
-										z
-											.array(z.union([z.string(), z.string()]))
-											.min(2)
-											.max(2)
-											.describe(
-												"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
-											),
-									)
-									.describe(
-										"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
-									),
-							),
-							gitHashtagVercel: z.optional(
-								z
-									.array(
-										z
-											.string()
-											.describe(
-												"Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING",
-											),
-									)
-									.describe(
-										"Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING",
-									),
-							),
-							connectedProjectCount: z.optional(
-								z
-									.number()
-									.describe(
-										"Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.",
-									),
-							),
-							prIdOrZero: z.optional(
-								z
-									.number()
-									.describe(
-										"Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.",
-									),
-							),
-							gitComments: z.optional(
-								z
-									.object({
-										onPullRequest: z.union([z.literal(false), z.literal(true)]),
-										onCommit: z.union([z.literal(false), z.literal(true)]),
-									})
-									.describe(
-										"Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.",
-									),
-							),
-							isManualGitDeploy: z.optional(
-								z
-									.union([z.literal(false), z.literal(true)])
-									.describe(
-										"Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment",
-									),
-							),
-							commitVerification: z.optional(
-								z
-									.enum(["verified", "unknown", "unverified"])
-									.describe(
-										"Since 6 Nov 2025 The verification status of the commit. - 'verified' if the commit is verified - 'unverified' if the commit is not verified - 'unknown' if the commit verification status is unknown or not supported",
-									),
-							),
-							committerGitUserId: z.optional(
-								z
-									.number()
-									.describe(
-										"Remote account id of the committer details (github id etc, not vercel). Note that the committer name/email are user input verbatim and not verified. Github does appear to resolve the given email to the username so we can trust that. If the username matches that of the sender, which is verified info, then we can use the account id and account type. See api-incoming, where we determine and set this property Note that even with that, the account may still have been spoofed.",
-									),
-							),
-							committerGitUserType: z.optional(
-								z
-									.string()
-									.describe(
-										"Remote account type of the committer details (github type etc, not vercel). Note that the committer name/email are user input verbatim and not verified. Github does appear to resolve the given email to the username so we can trust that. If the username matches that of the sender, which is verified info, then we can use the account id and account type. See api-incoming, where we determine and set this property Note that even with that, the account may still have been spoofed.",
-									),
-							),
-							createdAt: z.optional(z.number()),
-							forceNew: z.optional(z.union([z.literal(false), z.literal(true)])),
-							deploymentId: z.optional(z.string()),
-							deployHook: z.optional(
-								z.object({
-									createdAt: z.number(),
-									id: z.string(),
-									name: z.string(),
-									ref: z.string(),
-								}),
-							),
-							beforeSha: z.optional(z.string()),
-							defaultBranch: z.optional(z.string()),
-							eventful: z.optional(z.union([z.literal(false), z.literal(true)])),
-							githubDeploymentId: z.optional(z.string()),
-							headInfo: z
-								.object({
-									org: z.string(),
-									ref: z.string(),
-									repo: z.string(),
-									repoId: z.number(),
-									sha: z.string(),
-								})
-								.describe("Information about the head commit/branch for a GitHub repository"),
-							installationId: z.number(),
-							isPrivate: z.union([z.literal(false), z.literal(true)]),
-							linkedProjectId: z.optional(z.string()),
-							org: z.string(),
-							prId: z.nullable(z.number()),
-							projectId: z.optional(z.string()),
-							customEnvId: z.string().nullish(),
-							repo: z.string(),
-							repoId: z.number(),
-							target: z.string().nullish(),
-							url: z.optional(z.string()),
-							withCache: z.optional(z.union([z.literal(false), z.literal(true)])),
-							provider: z.enum(["github", "github-limited", "github-custom-host"]),
-							customHost: z.optional(z.string()),
-						}),
-						z.object({
-							createdAt: z.optional(z.number()),
-							eventful: z.optional(z.union([z.literal(false), z.literal(true)])),
-							headInfo: z
-								.object({
-									org: z.string(),
-									ref: z.string(),
-									repo: z.string(),
-									repoId: z.number(),
-									sha: z.string(),
-								})
-								.describe("Information about the head commit/branch for a GitHub repository"),
-							beforeSha: z.optional(z.string()),
-							installationId: z.number(),
-							isPrivate: z.union([z.literal(false), z.literal(true)]),
-							linkedProjectId: z.optional(z.string()),
-							org: z.string(),
-							prId: z.number(),
-							projectId: z.nullable(z.unknown()),
-							customEnvId: z.unknown().nullish(),
-							repo: z.string(),
-							repoId: z.number(),
-							type: z.enum(["now-comment"]),
-							gitComments: z.optional(
-								z.object({
-									onPullRequest: z.union([z.literal(false), z.literal(true)]),
-									onCommit: z.union([z.literal(false), z.literal(true)]),
-								}),
-							),
-							provider: z.enum(["github", "github-limited", "github-custom-host"]),
-							customHost: z.optional(z.string()),
-						}),
-						z.object({
-							type: z.enum(["gitlab-push"]),
-							authorized: z.optional(z.union([z.literal(false), z.literal(true)])),
-							authorizedBy: z.optional(z.string()),
-							jobProjectIds: z.optional(
-								z
-									.array(z.string())
-									.describe(
-										"Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.",
-									),
-							),
-							jobPairs: z.optional(
-								z
-									.array(
-										z
-											.array(z.union([z.string(), z.string()]))
-											.min(2)
-											.max(2)
-											.describe(
-												"Since December 2022 Pairs of projects and owner ids to build for this build request.",
-											),
-									)
-									.describe(
-										"Since December 2022 Pairs of projects and owner ids to build for this build request.",
-									),
-							),
-							skippedJobPairs: z.optional(
-								z
-									.array(
-										z
-											.array(z.union([z.string(), z.string()]))
-											.min(2)
-											.max(2)
-											.describe(
-												"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
-											),
-									)
-									.describe(
-										"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
-									),
-							),
-							gitHashtagVercel: z.optional(
-								z
-									.array(
-										z
-											.string()
-											.describe(
-												"Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING",
-											),
-									)
-									.describe(
-										"Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING",
-									),
-							),
-							connectedProjectCount: z.optional(
-								z
-									.number()
-									.describe(
-										"Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.",
-									),
-							),
-							prIdOrZero: z.optional(
-								z
-									.number()
-									.describe(
-										"Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.",
-									),
-							),
-							gitComments: z.optional(
-								z
-									.object({
-										onPullRequest: z.union([z.literal(false), z.literal(true)]),
-										onCommit: z.union([z.literal(false), z.literal(true)]),
-									})
-									.describe(
-										"Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.",
-									),
-							),
-							isManualGitDeploy: z.optional(
-								z
-									.union([z.literal(false), z.literal(true)])
-									.describe(
-										"Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment",
-									),
-							),
-							commitVerification: z.optional(
-								z
-									.enum(["verified", "unknown", "unverified"])
-									.describe(
-										"Since 6 Nov 2025 The verification status of the commit. - 'verified' if the commit is verified - 'unverified' if the commit is not verified - 'unknown' if the commit verification status is unknown or not supported",
-									),
-							),
-							commit: z.optional(
-								z.object({
-									id: z.string(),
-									authorAvatar: z.string().nullish(),
-									authorEmail: z.string().nullish(),
-									authorId: z.number().nullish(),
-									authorLogin: z.string().nullish(),
-									authorName: z.string().nullish(),
-								}),
-							),
-							createdAt: z.optional(z.number()),
-							deployHook: z.optional(
-								z.object({
-									createdAt: z.number(),
-									id: z.string(),
-									name: z.string(),
-									ref: z.string(),
-								}),
-							),
-							deploymentId: z.optional(z.string()),
-							eventful: z.optional(z.union([z.literal(false), z.literal(true)])),
-							forceNew: z.optional(z.union([z.literal(false), z.literal(true)])),
-							headInfo: z
-								.object({
-									project: z.object({
-										defaultBranch: z.string().nullish(),
-										id: z.string(),
-										name: z.string().nullish(),
-										namespace: z.string().nullish(),
-										path: z.string().nullish(),
-										url: z.string().nullish(),
-									}),
-									ref: z.string(),
-									sha: z.string(),
-								})
-								.describe("GitLab"),
-							linkedProjectId: z.optional(z.string()),
-							prId: z.optional(z.number()),
-							project: z.object({
-								defaultBranch: z.string().nullish(),
-								id: z.string(),
-								name: z.string().nullish(),
-								namespace: z.string().nullish(),
-								path: z.string().nullish(),
-								url: z.string().nullish(),
-							}),
-							projectId: z.optional(z.string()),
-							customEnvId: z.string().nullish(),
-							ref: z.string(),
-							repoPushedAt: z.number().nullish(),
-							sha: z.string(),
-							silent: z.optional(z.union([z.literal(false), z.literal(true)])),
-							target: z.string().nullish(),
-							url: z.optional(z.string()),
-							withCache: z.optional(z.union([z.literal(false), z.literal(true)])),
-							provider: z.enum(["gitlab"]),
-						}),
-						z.object({
-							createdAt: z.optional(z.number()),
-							eventful: z.optional(z.union([z.literal(false), z.literal(true)])),
-							headInfo: z
-								.object({
-									project: z.object({
-										defaultBranch: z.string().nullish(),
-										id: z.string(),
-										name: z.string().nullish(),
-										namespace: z.string().nullish(),
-										path: z.string().nullish(),
-										url: z.string().nullish(),
-									}),
-									ref: z.string(),
-									sha: z.string(),
-								})
-								.describe("GitLab"),
-							linkedProjectId: z.optional(z.string()),
-							prId: z.number(),
-							project: z.object({
-								defaultBranch: z.string().nullish(),
-								id: z.string(),
-								name: z.string().nullish(),
-								namespace: z.string().nullish(),
-								path: z.string().nullish(),
-								url: z.string().nullish(),
-							}),
-							projectId: z.optional(z.string()),
-							customEnvId: z.string().nullish(),
-							ref: z.string(),
-							sha: z.string(),
-							type: z.enum(["gitlab-now-comment"]),
-							gitComments: z.optional(
-								z.object({
-									onPullRequest: z.union([z.literal(false), z.literal(true)]),
-									onCommit: z.union([z.literal(false), z.literal(true)]),
-								}),
-							),
-							provider: z.enum(["gitlab"]),
-						}),
-					]),
+					id: z.string(),
+					url: z.string(),
 				}),
 				z.object({
 					deploymentId: z.string(),
@@ -6841,7 +6846,7 @@ export const teamSchema = z
 						.object({
 							default: z.optional(
 								z
-									.enum(["enhanced", "standard", "turbo"])
+									.enum(["elastic", "enhanced", "standard", "turbo"])
 									.describe("Default build machine type for new builds"),
 							),
 						})
@@ -7608,7 +7613,7 @@ export const authUserSchema = z
 						.object({
 							default: z.optional(
 								z
-									.enum(["enhanced", "standard", "turbo"])
+									.enum(["elastic", "enhanced", "standard", "turbo"])
 									.describe(
 										"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
 									),
@@ -16205,6 +16210,16 @@ export const createSandbox402Schema = z.unknown();
 export const createSandbox403Schema = z.unknown();
 
 export const createSandbox404Schema = z.unknown();
+
+/**
+ * @description The Sandbox has stopped execution and is no longer available.
+ */
+export const createSandbox410Schema = z.unknown();
+
+/**
+ * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
+ */
+export const createSandbox422Schema = z.unknown();
 
 /**
  * @description The concurrency limit has been exceeded.

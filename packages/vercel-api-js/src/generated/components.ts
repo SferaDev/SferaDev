@@ -298,6 +298,8 @@ import type {
 	CreateSandbox402,
 	CreateSandbox403,
 	CreateSandbox404,
+	CreateSandbox410,
+	CreateSandbox422,
 	CreateSandbox429,
 	CreateSandbox500,
 	CreateSandboxMutationResponse,
@@ -10129,6 +10131,8 @@ export async function createSandbox({
 			| CreateSandbox402
 			| CreateSandbox403
 			| CreateSandbox404
+			| CreateSandbox410
+			| CreateSandbox422
 			| CreateSandbox429
 			| CreateSandbox500
 		>,
@@ -10205,7 +10209,7 @@ export async function getSandbox({
 }
 
 /**
- * @description Retrieves a list of all commands that have been executed in a sandbox, including their current status, exit codes, and execution times.
+ * @description Retrieves a list of all commands that have been executed in a sandbox, including their current status, exit codes, and execution times, ordered from the most recent to the oldest.
  * @summary List commands
  * {@link /v1/sandboxes/:sandboxId/cmd}
  */
