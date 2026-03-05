@@ -2704,6 +2704,7 @@ export const joinedFromOriginEnum = {
 	feedback: "feedback",
 	"organization-teams": "organization-teams",
 	"nsnb-auto-approve": "nsnb-auto-approve",
+	"nsnb-hobby-upgrade": "nsnb-hobby-upgrade",
 	"nsnb-request-access": "nsnb-request-access",
 	"nsnb-viewer-upgrade": "nsnb-viewer-upgrade",
 	"nsnb-invite": "nsnb-invite",
@@ -16189,6 +16190,7 @@ export const joinedFromOriginEnum2 = {
 	link: "link",
 	mail: "mail",
 	"nsnb-auto-approve": "nsnb-auto-approve",
+	"nsnb-hobby-upgrade": "nsnb-hobby-upgrade",
 	"nsnb-invite": "nsnb-invite",
 	"nsnb-redeploy": "nsnb-redeploy",
 	"nsnb-request-access": "nsnb-request-access",
@@ -16825,6 +16827,7 @@ export const joinedFromOriginEnum3 = {
 	link: "link",
 	mail: "mail",
 	"nsnb-auto-approve": "nsnb-auto-approve",
+	"nsnb-hobby-upgrade": "nsnb-hobby-upgrade",
 	"nsnb-invite": "nsnb-invite",
 	"nsnb-redeploy": "nsnb-redeploy",
 	"nsnb-request-access": "nsnb-request-access",
@@ -27609,6 +27612,432 @@ export type RemoveProjectMemberMutation = {
 	PathParams: RemoveProjectMemberPathParams;
 	QueryParams: RemoveProjectMemberQueryParams;
 	Errors: RemoveProjectMember400 | RemoveProjectMember401 | RemoveProjectMember403;
+};
+
+export type GetRoutesPathParams = {
+	/**
+	 * @type string
+	 */
+	projectId: string;
+};
+
+export const getRoutesQueryParamsFilterEnum = {
+	rewrite: "rewrite",
+	redirect: "redirect",
+	set_status: "set_status",
+	transform: "transform",
+} as const;
+
+export type GetRoutesQueryParamsFilterEnumKey =
+	(typeof getRoutesQueryParamsFilterEnum)[keyof typeof getRoutesQueryParamsFilterEnum];
+
+export const getRoutesQueryParamsDiffEnum = {
+	only: "only",
+} as const;
+
+export type GetRoutesQueryParamsDiffEnumKey =
+	(typeof getRoutesQueryParamsDiffEnum)[keyof typeof getRoutesQueryParamsDiffEnum];
+
+export type GetRoutesQueryParams = {
+	/**
+	 * @type string | undefined
+	 */
+	versionId?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	q?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	filter?: GetRoutesQueryParamsFilterEnumKey | undefined;
+	diff?: (boolean | GetRoutesQueryParamsDiffEnumKey) | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type GetRoutes200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type GetRoutes400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type GetRoutes401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type GetRoutes403 = unknown;
+
+export type GetRoutes404 = unknown;
+
+export type GetRoutesQueryResponse = GetRoutes200;
+
+export type GetRoutesQuery = {
+	Response: GetRoutes200;
+	PathParams: GetRoutesPathParams;
+	QueryParams: GetRoutesQueryParams;
+	Errors: GetRoutes400 | GetRoutes401 | GetRoutes403 | GetRoutes404;
+};
+
+export type StageRoutesPathParams = {
+	/**
+	 * @type string
+	 */
+	projectId: string;
+};
+
+export type StageRoutesQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type StageRoutes200 = unknown;
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export type StageRoutes400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type StageRoutes401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type StageRoutes403 = unknown;
+
+export type StageRoutesMutationResponse = StageRoutes200;
+
+export type StageRoutesMutation = {
+	Response: StageRoutes200;
+	PathParams: StageRoutesPathParams;
+	QueryParams: StageRoutesQueryParams;
+	Errors: StageRoutes400 | StageRoutes401 | StageRoutes403;
+};
+
+export type AddRoutePathParams = {
+	/**
+	 * @type string
+	 */
+	projectId: string;
+};
+
+export type AddRouteQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type AddRoute200 = unknown;
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export type AddRoute400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type AddRoute401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type AddRoute403 = unknown;
+
+export type AddRouteMutationResponse = AddRoute200;
+
+export type AddRouteMutation = {
+	Response: AddRoute200;
+	PathParams: AddRoutePathParams;
+	QueryParams: AddRouteQueryParams;
+	Errors: AddRoute400 | AddRoute401 | AddRoute403;
+};
+
+export type DeleteRoutesPathParams = {
+	/**
+	 * @type string
+	 */
+	projectId: string;
+};
+
+export type DeleteRoutesQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type DeleteRoutes200 = unknown;
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export type DeleteRoutes400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type DeleteRoutes401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type DeleteRoutes403 = unknown;
+
+export type DeleteRoutes404 = unknown;
+
+export type DeleteRoutesMutationResponse = DeleteRoutes200;
+
+export type DeleteRoutesMutation = {
+	Response: DeleteRoutes200;
+	PathParams: DeleteRoutesPathParams;
+	QueryParams: DeleteRoutesQueryParams;
+	Errors: DeleteRoutes400 | DeleteRoutes401 | DeleteRoutes403 | DeleteRoutes404;
+};
+
+export type EditRoutePathParams = {
+	/**
+	 * @type string
+	 */
+	projectId: string;
+	/**
+	 * @type string
+	 */
+	routeId: string;
+};
+
+export type EditRouteQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type EditRoute200 = unknown;
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export type EditRoute400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type EditRoute401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type EditRoute403 = unknown;
+
+export type EditRoute404 = unknown;
+
+export type EditRouteMutationResponse = EditRoute200;
+
+export type EditRouteMutation = {
+	Response: EditRoute200;
+	PathParams: EditRoutePathParams;
+	QueryParams: EditRouteQueryParams;
+	Errors: EditRoute400 | EditRoute401 | EditRoute403 | EditRoute404;
+};
+
+export type GenerateRoutePathParams = {
+	/**
+	 * @type string
+	 */
+	projectId: string;
+};
+
+export type GenerateRouteQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type GenerateRoute200 = unknown;
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export type GenerateRoute400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type GenerateRoute401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type GenerateRoute403 = unknown;
+
+export type GenerateRoute408 = unknown;
+
+export type GenerateRoute500 = unknown;
+
+export type GenerateRouteMutationResponse = GenerateRoute200;
+
+export type GenerateRouteMutation = {
+	Response: GenerateRoute200;
+	PathParams: GenerateRoutePathParams;
+	QueryParams: GenerateRouteQueryParams;
+	Errors:
+		| GenerateRoute400
+		| GenerateRoute401
+		| GenerateRoute403
+		| GenerateRoute408
+		| GenerateRoute500;
+};
+
+export type GetRouteVersionsPathParams = {
+	/**
+	 * @type string
+	 */
+	projectId: string;
+};
+
+export type GetRouteVersionsQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type GetRouteVersions200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type GetRouteVersions400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type GetRouteVersions401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type GetRouteVersions403 = unknown;
+
+export type GetRouteVersionsQueryResponse = GetRouteVersions200;
+
+export type GetRouteVersionsQuery = {
+	Response: GetRouteVersions200;
+	PathParams: GetRouteVersionsPathParams;
+	QueryParams: GetRouteVersionsQueryParams;
+	Errors: GetRouteVersions400 | GetRouteVersions401 | GetRouteVersions403;
+};
+
+export type UpdateRouteVersionsPathParams = {
+	/**
+	 * @type string
+	 */
+	projectId: string;
+};
+
+export type UpdateRouteVersionsQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type UpdateRouteVersions200 = unknown;
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export type UpdateRouteVersions400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type UpdateRouteVersions401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type UpdateRouteVersions403 = unknown;
+
+export type UpdateRouteVersions404 = unknown;
+
+export type UpdateRouteVersions500 = unknown;
+
+export type UpdateRouteVersionsMutationResponse = UpdateRouteVersions200;
+
+export type UpdateRouteVersionsMutation = {
+	Response: UpdateRouteVersions200;
+	PathParams: UpdateRouteVersionsPathParams;
+	QueryParams: UpdateRouteVersionsQueryParams;
+	Errors:
+		| UpdateRouteVersions400
+		| UpdateRouteVersions401
+		| UpdateRouteVersions403
+		| UpdateRouteVersions404
+		| UpdateRouteVersions500;
 };
 
 export const getProjectsQueryParamsBuildQueueConfigurationEnum = {

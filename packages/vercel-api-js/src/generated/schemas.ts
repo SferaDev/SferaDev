@@ -3320,6 +3320,7 @@ export const userEventSchema = z
 														"feedback",
 														"organization-teams",
 														"nsnb-auto-approve",
+														"nsnb-hobby-upgrade",
 														"nsnb-request-access",
 														"nsnb-viewer-upgrade",
 														"nsnb-invite",
@@ -4497,6 +4498,7 @@ export const userEventSchema = z
 											"feedback",
 											"organization-teams",
 											"nsnb-auto-approve",
+											"nsnb-hobby-upgrade",
 											"nsnb-request-access",
 											"nsnb-viewer-upgrade",
 											"nsnb-invite",
@@ -7056,6 +7058,7 @@ export const teamSchema = z
 							"link",
 							"mail",
 							"nsnb-auto-approve",
+							"nsnb-hobby-upgrade",
 							"nsnb-invite",
 							"nsnb-redeploy",
 							"nsnb-request-access",
@@ -7246,6 +7249,7 @@ export const teamLimitedSchema = z
 							"link",
 							"mail",
 							"nsnb-auto-approve",
+							"nsnb-hobby-upgrade",
 							"nsnb-invite",
 							"nsnb-redeploy",
 							"nsnb-request-access",
@@ -14467,6 +14471,281 @@ export const removeProjectMember401Schema = z.unknown();
 export const removeProjectMember403Schema = z.unknown();
 
 export const removeProjectMemberMutationResponseSchema = z.lazy(() => removeProjectMember200Schema);
+
+export const getRoutesPathParamsSchema = z.object({
+	projectId: z.string(),
+});
+
+export const getRoutesQueryParamsSchema = z
+	.object({
+		versionId: z.optional(z.string()),
+		q: z.optional(z.string()),
+		filter: z.optional(z.enum(["rewrite", "redirect", "set_status", "transform"])),
+		diff: z.optional(z.union([z.boolean(), z.enum(["only"])])),
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const getRoutes200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export const getRoutes400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const getRoutes401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const getRoutes403Schema = z.unknown();
+
+export const getRoutes404Schema = z.unknown();
+
+export const getRoutesQueryResponseSchema = z.lazy(() => getRoutes200Schema);
+
+export const stageRoutesPathParamsSchema = z.object({
+	projectId: z.string(),
+});
+
+export const stageRoutesQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const stageRoutes200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export const stageRoutes400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const stageRoutes401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const stageRoutes403Schema = z.unknown();
+
+export const stageRoutesMutationResponseSchema = z.lazy(() => stageRoutes200Schema);
+
+export const addRoutePathParamsSchema = z.object({
+	projectId: z.string(),
+});
+
+export const addRouteQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const addRoute200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export const addRoute400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const addRoute401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const addRoute403Schema = z.unknown();
+
+export const addRouteMutationResponseSchema = z.lazy(() => addRoute200Schema);
+
+export const deleteRoutesPathParamsSchema = z.object({
+	projectId: z.string(),
+});
+
+export const deleteRoutesQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const deleteRoutes200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export const deleteRoutes400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const deleteRoutes401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const deleteRoutes403Schema = z.unknown();
+
+export const deleteRoutes404Schema = z.unknown();
+
+export const deleteRoutesMutationResponseSchema = z.lazy(() => deleteRoutes200Schema);
+
+export const editRoutePathParamsSchema = z.object({
+	projectId: z.string(),
+	routeId: z.string(),
+});
+
+export const editRouteQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const editRoute200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export const editRoute400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const editRoute401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const editRoute403Schema = z.unknown();
+
+export const editRoute404Schema = z.unknown();
+
+export const editRouteMutationResponseSchema = z.lazy(() => editRoute200Schema);
+
+export const generateRoutePathParamsSchema = z.object({
+	projectId: z.string(),
+});
+
+export const generateRouteQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const generateRoute200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export const generateRoute400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const generateRoute401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const generateRoute403Schema = z.unknown();
+
+export const generateRoute408Schema = z.unknown();
+
+export const generateRoute500Schema = z.unknown();
+
+export const generateRouteMutationResponseSchema = z.lazy(() => generateRoute200Schema);
+
+export const getRouteVersionsPathParamsSchema = z.object({
+	projectId: z.string(),
+});
+
+export const getRouteVersionsQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const getRouteVersions200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export const getRouteVersions400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const getRouteVersions401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const getRouteVersions403Schema = z.unknown();
+
+export const getRouteVersionsQueryResponseSchema = z.lazy(() => getRouteVersions200Schema);
+
+export const updateRouteVersionsPathParamsSchema = z.object({
+	projectId: z.string(),
+});
+
+export const updateRouteVersionsQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const updateRouteVersions200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export const updateRouteVersions400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const updateRouteVersions401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const updateRouteVersions403Schema = z.unknown();
+
+export const updateRouteVersions404Schema = z.unknown();
+
+export const updateRouteVersions500Schema = z.unknown();
+
+export const updateRouteVersionsMutationResponseSchema = z.lazy(() => updateRouteVersions200Schema);
 
 export const getProjectsQueryParamsSchema = z
 	.object({

@@ -36,6 +36,12 @@ import type {
 	AddProjectMemberMutationResponse,
 	AddProjectMemberPathParams,
 	AddProjectMemberQueryParams,
+	AddRoute400,
+	AddRoute401,
+	AddRoute403,
+	AddRouteMutationResponse,
+	AddRoutePathParams,
+	AddRouteQueryParams,
 	ApproveRollingReleaseStage400,
 	ApproveRollingReleaseStage401,
 	ApproveRollingReleaseStage403,
@@ -513,6 +519,13 @@ import type {
 	DeleteRollingReleaseConfigMutationResponse,
 	DeleteRollingReleaseConfigPathParams,
 	DeleteRollingReleaseConfigQueryParams,
+	DeleteRoutes400,
+	DeleteRoutes401,
+	DeleteRoutes403,
+	DeleteRoutes404,
+	DeleteRoutesMutationResponse,
+	DeleteRoutesPathParams,
+	DeleteRoutesQueryParams,
 	DeleteSdkKey400,
 	DeleteSdkKey401,
 	DeleteSdkKey402,
@@ -581,6 +594,13 @@ import type {
 	EditRedirect500,
 	EditRedirectMutationResponse,
 	EditRedirectQueryParams,
+	EditRoute400,
+	EditRoute401,
+	EditRoute403,
+	EditRoute404,
+	EditRouteMutationResponse,
+	EditRoutePathParams,
+	EditRouteQueryParams,
 	ExchangeSsoToken400,
 	ExchangeSsoToken403,
 	ExchangeSsoToken500,
@@ -618,6 +638,14 @@ import type {
 	GETV1SecurityFirewallEvents500,
 	GETV1SecurityFirewallEventsQueryParams,
 	GETV1SecurityFirewallEventsQueryResponse,
+	GenerateRoute400,
+	GenerateRoute401,
+	GenerateRoute403,
+	GenerateRoute408,
+	GenerateRoute500,
+	GenerateRouteMutationResponse,
+	GenerateRoutePathParams,
+	GenerateRouteQueryParams,
 	GetAccountInfo400,
 	GetAccountInfo401,
 	GetAccountInfo403,
@@ -1072,6 +1100,19 @@ import type {
 	GetRollingReleasePathParams,
 	GetRollingReleaseQueryParams,
 	GetRollingReleaseQueryResponse,
+	GetRoutes400,
+	GetRoutes401,
+	GetRoutes403,
+	GetRoutes404,
+	GetRoutesPathParams,
+	GetRoutesQueryParams,
+	GetRoutesQueryResponse,
+	GetRouteVersions400,
+	GetRouteVersions401,
+	GetRouteVersions403,
+	GetRouteVersionsPathParams,
+	GetRouteVersionsQueryParams,
+	GetRouteVersionsQueryResponse,
 	GetRuntimeLogs400,
 	GetRuntimeLogs401,
 	GetRuntimeLogs403,
@@ -1646,6 +1687,12 @@ import type {
 	StageRedirects500,
 	StageRedirectsMutationResponse,
 	StageRedirectsQueryParams,
+	StageRoutes400,
+	StageRoutes401,
+	StageRoutes403,
+	StageRoutesMutationResponse,
+	StageRoutesPathParams,
+	StageRoutesQueryParams,
 	Status400,
 	Status401,
 	Status402,
@@ -1939,6 +1986,14 @@ import type {
 	UpdateRollingReleaseConfigMutationResponse,
 	UpdateRollingReleaseConfigPathParams,
 	UpdateRollingReleaseConfigQueryParams,
+	UpdateRouteVersions400,
+	UpdateRouteVersions401,
+	UpdateRouteVersions403,
+	UpdateRouteVersions404,
+	UpdateRouteVersions500,
+	UpdateRouteVersionsMutationResponse,
+	UpdateRouteVersionsPathParams,
+	UpdateRouteVersionsQueryParams,
 	UpdateSharedEnvVariable400,
 	UpdateSharedEnvVariable401,
 	UpdateSharedEnvVariable402,
@@ -3283,6 +3338,7 @@ export async function updateDeploymentCheckRun({
  * @description Creates a new check. This endpoint must be called with an OAuth2 or it will produce a 400 error.
  * @summary Creates a new Check
  * {@link /v1/deployments/:deploymentId/checks}
+ * @deprecated
  */
 export async function createCheck({
 	pathParams: { deploymentId },
@@ -3320,6 +3376,7 @@ export async function createCheck({
  * @description List all of the checks created for a deployment.
  * @summary Retrieve a list of all checks
  * {@link /v1/deployments/:deploymentId/checks}
+ * @deprecated
  */
 export async function getAllChecks({
 	pathParams: { deploymentId },
@@ -3356,6 +3413,7 @@ export async function getAllChecks({
  * @description Return a detailed response for a single check.
  * @summary Get a single check
  * {@link /v1/deployments/:deploymentId/checks/:checkId}
+ * @deprecated
  */
 export async function getCheck({
 	pathParams: { deploymentId, checkId },
@@ -3396,6 +3454,7 @@ export async function getCheck({
  * @description Update an existing check. This endpoint must be called with an OAuth2 or it will produce a 400 error.
  * @summary Update a check
  * {@link /v1/deployments/:deploymentId/checks/:checkId}
+ * @deprecated
  */
 export async function updateCheck({
 	pathParams: { deploymentId, checkId },
@@ -3439,6 +3498,7 @@ export async function updateCheck({
  * @description Rerequest a selected check that has failed.
  * @summary Rerequest a check
  * {@link /v1/deployments/:deploymentId/checks/:checkId/rerequest}
+ * @deprecated
  */
 export async function rerequestCheck({
 	pathParams: { deploymentId, checkId },
@@ -7744,8 +7804,9 @@ export async function submitPrepaymentBalances({
 
 /**
  * @description This endpoint is deprecated and replaced with the endpoint [Update Resource Secrets](#update-resource-secrets). <br/> This endpoint updates the secrets of a resource. If a resource has projects connected, the connected secrets are updated with the new secrets. The old secrets may still be used by existing connected projects because they are not automatically redeployed. Redeployment is a manual action and must be completed by the user. All new project connections will use the new secrets.<br/> <br/> Use cases for this endpoint:<br/> <br/> - Resetting the credentials of a database in the partner. If the user requests the credentials to be updated in the partner’s application, the partner post the new set of secrets to Vercel, the user should redeploy their application and the expire the old credentials.<br/>
- * @summary Update Resource Secrets (Deprecated)
+ * @summary Deprecated: true. Update Resource Secrets (Deprecated)
  * {@link /v1/installations/:integrationConfigurationId/products/:integrationProductIdOrSlug/resources/:resourceId/secrets}
+ * @deprecated
  */
 export async function updateResourceSecrets({
 	pathParams: { integrationConfigurationId, integrationProductIdOrSlug, resourceId },
@@ -8468,6 +8529,307 @@ export async function removeProjectMember({
 		url: `/v1/projects/${idOrName}/members/${uid}`,
 		queryParams,
 		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Get the routing rules for a project. Supports searching by name/ID/pattern, filtering by route type, and diffing staged changes against production.
+ * @summary Get project routing rules
+ * {@link /v1/projects/:projectId/routes}
+ */
+export async function getRoutes({
+	pathParams: { projectId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: GetRoutesPathParams;
+	queryParams?: GetRoutesQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!projectId) {
+		throw new Error(`Missing required path parameter: projectId`);
+	}
+
+	const data = await request<
+		GetRoutesQueryResponse,
+		ErrorWrapper<GetRoutes400 | GetRoutes401 | GetRoutes403 | GetRoutes404>,
+		null,
+		Record<string, string>,
+		GetRoutesQueryParams,
+		GetRoutesPathParams
+	>({ method: "GET", url: `/v1/projects/${projectId}/routes`, queryParams, ...requestConfig });
+	return data;
+}
+
+/**
+ * @description Stage routing rules for a project. Set `overwrite` to true to replace all existing rules, or omit it to merge with existing rules by ID. Returns the new staged version.
+ * @summary Stage routing rules
+ * {@link /v1/projects/:projectId/routes}
+ */
+export async function stageRoutes({
+	pathParams: { projectId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: StageRoutesPathParams;
+	queryParams?: StageRoutesQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!projectId) {
+		throw new Error(`Missing required path parameter: projectId`);
+	}
+
+	const data = await request<
+		StageRoutesMutationResponse,
+		ErrorWrapper<StageRoutes400 | StageRoutes401 | StageRoutes403>,
+		null,
+		Record<string, string>,
+		StageRoutesQueryParams,
+		StageRoutesPathParams
+	>({
+		method: "PUT",
+		url: `/v1/projects/${projectId}/routes`,
+		queryParams,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
+ * @description Add a single routing rule to a project at a specified position. Defaults to the end of the list if no position is provided. The route is enabled by default. Stages a new version with the added route.
+ * @summary Add a routing rule
+ * {@link /v1/projects/:projectId/routes}
+ */
+export async function addRoute({
+	pathParams: { projectId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: AddRoutePathParams;
+	queryParams?: AddRouteQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!projectId) {
+		throw new Error(`Missing required path parameter: projectId`);
+	}
+
+	const data = await request<
+		AddRouteMutationResponse,
+		ErrorWrapper<AddRoute400 | AddRoute401 | AddRoute403>,
+		null,
+		Record<string, string>,
+		AddRouteQueryParams,
+		AddRoutePathParams
+	>({
+		method: "POST",
+		url: `/v1/projects/${projectId}/routes`,
+		queryParams,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
+ * @description Delete one or more routing rules from a project by ID. Stages a new version with the routes removed.
+ * @summary Delete routing rules
+ * {@link /v1/projects/:projectId/routes}
+ */
+export async function deleteRoutes({
+	pathParams: { projectId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: DeleteRoutesPathParams;
+	queryParams?: DeleteRoutesQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!projectId) {
+		throw new Error(`Missing required path parameter: projectId`);
+	}
+
+	const data = await request<
+		DeleteRoutesMutationResponse,
+		ErrorWrapper<DeleteRoutes400 | DeleteRoutes401 | DeleteRoutes403 | DeleteRoutes404>,
+		null,
+		Record<string, string>,
+		DeleteRoutesQueryParams,
+		DeleteRoutesPathParams
+	>({
+		method: "DELETE",
+		url: `/v1/projects/${projectId}/routes`,
+		queryParams,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
+ * @description Replace a routing rule identified by its ID, or restore it from the current production version. Stages a new version with the modified route.
+ * @summary Edit a routing rule
+ * {@link /v1/projects/:projectId/routes/:routeId}
+ */
+export async function editRoute({
+	pathParams: { projectId, routeId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: EditRoutePathParams;
+	queryParams?: EditRouteQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!projectId) {
+		throw new Error(`Missing required path parameter: projectId`);
+	}
+
+	if (!routeId) {
+		throw new Error(`Missing required path parameter: routeId`);
+	}
+
+	const data = await request<
+		EditRouteMutationResponse,
+		ErrorWrapper<EditRoute400 | EditRoute401 | EditRoute403 | EditRoute404>,
+		null,
+		Record<string, string>,
+		EditRouteQueryParams,
+		EditRoutePathParams
+	>({
+		method: "PATCH",
+		url: `/v1/projects/${projectId}/routes/${routeId}`,
+		queryParams,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
+ * @description Generate a routing rule configuration from a natural language description. Returns a suggested route configuration that can be reviewed and saved.
+ * @summary Generate a routing rule from natural language
+ * {@link /v1/projects/:projectId/routes/generate}
+ */
+export async function generateRoute({
+	pathParams: { projectId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: GenerateRoutePathParams;
+	queryParams?: GenerateRouteQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!projectId) {
+		throw new Error(`Missing required path parameter: projectId`);
+	}
+
+	const data = await request<
+		GenerateRouteMutationResponse,
+		ErrorWrapper<
+			GenerateRoute400 | GenerateRoute401 | GenerateRoute403 | GenerateRoute408 | GenerateRoute500
+		>,
+		null,
+		Record<string, string>,
+		GenerateRouteQueryParams,
+		GenerateRoutePathParams
+	>({
+		method: "POST",
+		url: `/v1/projects/${projectId}/routes/generate`,
+		queryParams,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
+ * @description Get the version history for a project's routing rules. Returns the staging version (if one exists) followed by production versions, most recent first. The staging version has `isStaging: true` and the current production version has `isLive: true`.
+ * @summary Get routing rule version history
+ * {@link /v1/projects/:projectId/routes/versions}
+ */
+export async function getRouteVersions({
+	pathParams: { projectId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: GetRouteVersionsPathParams;
+	queryParams?: GetRouteVersionsQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!projectId) {
+		throw new Error(`Missing required path parameter: projectId`);
+	}
+
+	const data = await request<
+		GetRouteVersionsQueryResponse,
+		ErrorWrapper<GetRouteVersions400 | GetRouteVersions401 | GetRouteVersions403>,
+		null,
+		Record<string, string>,
+		GetRouteVersionsQueryParams,
+		GetRouteVersionsPathParams
+	>({
+		method: "GET",
+		url: `/v1/projects/${projectId}/routes/versions`,
+		queryParams,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Promote staged routing rules to production, restore a previous production version, or discard staged changes. - `promote`: Publishes the staging version to production. - `restore`: Rolls back to a previous production version. - `discard`: Removes the staging version without publishing.
+ * @summary Promote, restore, or discard a routing rule version
+ * {@link /v1/projects/:projectId/routes/versions}
+ */
+export async function updateRouteVersions({
+	pathParams: { projectId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: UpdateRouteVersionsPathParams;
+	queryParams?: UpdateRouteVersionsQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!projectId) {
+		throw new Error(`Missing required path parameter: projectId`);
+	}
+
+	const data = await request<
+		UpdateRouteVersionsMutationResponse,
+		ErrorWrapper<
+			| UpdateRouteVersions400
+			| UpdateRouteVersions401
+			| UpdateRouteVersions403
+			| UpdateRouteVersions404
+			| UpdateRouteVersions500
+		>,
+		null,
+		Record<string, string>,
+		UpdateRouteVersionsQueryParams,
+		UpdateRouteVersionsPathParams
+	>({
+		method: "POST",
+		url: `/v1/projects/${projectId}/routes/versions`,
+		queryParams,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
 	});
 	return data;
 }
@@ -12600,6 +12962,14 @@ export const operationsByPath = {
 	"GET /v1/projects/{idOrName}/members": getProjectMembers,
 	"POST /v1/projects/{idOrName}/members": addProjectMember,
 	"DELETE /v1/projects/{idOrName}/members/{uid}": removeProjectMember,
+	"GET /v1/projects/{projectId}/routes": getRoutes,
+	"PUT /v1/projects/{projectId}/routes": stageRoutes,
+	"POST /v1/projects/{projectId}/routes": addRoute,
+	"DELETE /v1/projects/{projectId}/routes": deleteRoutes,
+	"PATCH /v1/projects/{projectId}/routes/{routeId}": editRoute,
+	"POST /v1/projects/{projectId}/routes/generate": generateRoute,
+	"GET /v1/projects/{projectId}/routes/versions": getRouteVersions,
+	"POST /v1/projects/{projectId}/routes/versions": updateRouteVersions,
 	"GET /v10/projects": getProjects,
 	"POST /v11/projects": createProject,
 	"GET /v9/projects/{idOrName}": getProject,
@@ -12951,6 +13321,16 @@ export const operationsByTag = {
 		addProjectMember,
 		removeProjectMember,
 	},
+	projectRoutes: {
+		getRoutes,
+		stageRoutes,
+		addRoute,
+		deleteRoutes,
+		editRoute,
+		generateRoute,
+		getRouteVersions,
+		updateRouteVersions,
+	},
 	projects: {
 		getProjects,
 		createProject,
@@ -13278,6 +13658,13 @@ export const tagDictionary = {
 		GET: ["getProjectMembers"],
 		POST: ["addProjectMember"],
 		DELETE: ["removeProjectMember"],
+	},
+	projectRoutes: {
+		GET: ["getRoutes", "getRouteVersions"],
+		PUT: ["stageRoutes"],
+		POST: ["addRoute", "generateRoute", "updateRouteVersions"],
+		DELETE: ["deleteRoutes"],
+		PATCH: ["editRoute"],
 	},
 	projects: {
 		GET: [
