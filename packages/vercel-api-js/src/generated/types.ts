@@ -1719,6 +1719,8 @@ export const userEventTypeEnum = {
 	"user-mfa-totp-verified": "user-mfa-totp-verified",
 	"user-primary-email-updated": "user-primary-email-updated",
 	username: "username",
+	"v0-chat-created": "v0-chat-created",
+	"v0-chat-message-sent": "v0-chat-message-sent",
 	"vercel-agent-team-trial-credits-applied": "vercel-agent-team-trial-credits-applied",
 	"vercel-app-installation-request-dismissed": "vercel-app-installation-request-dismissed",
 	"vercel-app-installation-requested": "vercel-app-installation-requested",
@@ -14598,6 +14600,30 @@ export type UserEvent = {
 						 * @type string
 						 */
 						url: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						chatId: string;
+						/**
+						 * @type string | undefined
+						 */
+						chatTitle?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						chatId: string;
+						/**
+						 * @type string | undefined
+						 */
+						chatTitle?: string | undefined;
+						/**
+						 * @type string
+						 */
+						messageId: string;
 				  }
 				| {
 						/**
