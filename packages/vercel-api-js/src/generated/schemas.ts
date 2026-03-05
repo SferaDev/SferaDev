@@ -948,6 +948,8 @@ export const userEventSchema = z
 					"user-mfa-totp-verified",
 					"user-primary-email-updated",
 					"username",
+					"v0-chat-created",
+					"v0-chat-message-sent",
 					"vercel-agent-team-trial-credits-applied",
 					"vercel-app-installation-request-dismissed",
 					"vercel-app-installation-requested",
@@ -6027,6 +6029,15 @@ export const userEventSchema = z
 				z.object({
 					id: z.string(),
 					url: z.string(),
+				}),
+				z.object({
+					chatId: z.string(),
+					chatTitle: z.optional(z.string()),
+				}),
+				z.object({
+					chatId: z.string(),
+					chatTitle: z.optional(z.string()),
+					messageId: z.string(),
 				}),
 				z.object({
 					deploymentId: z.string(),
