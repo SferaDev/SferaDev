@@ -5028,6 +5028,80 @@ export type ChatsResumeMutation = {
 		| ChatsResume500;
 };
 
+export type ChatsStopPathParams = {
+	/**
+	 * @description The unique identifier of the chat containing the message to stop. Provided as a path parameter.
+	 * @type string
+	 */
+	chatId: string;
+	/**
+	 * @description The identifier of the specific message to stop. Provided as a path parameter.
+	 * @type string
+	 */
+	messageId: string;
+};
+
+/**
+ * @description Success
+ */
+export type ChatsStop200 = unknown;
+
+/**
+ * @description Unauthorized
+ */
+export type ChatsStop401 = unknown;
+
+/**
+ * @description Forbidden
+ */
+export type ChatsStop403 = unknown;
+
+/**
+ * @description Not Found
+ */
+export type ChatsStop404 = unknown;
+
+/**
+ * @description Conflict
+ */
+export type ChatsStop409 = unknown;
+
+/**
+ * @description Payload Too Large
+ */
+export type ChatsStop413 = unknown;
+
+/**
+ * @description Unprocessable Entity
+ */
+export type ChatsStop422 = unknown;
+
+/**
+ * @description Too Many Requests
+ */
+export type ChatsStop429 = unknown;
+
+/**
+ * @description Internal Server Error
+ */
+export type ChatsStop500 = unknown;
+
+export type ChatsStopMutationResponse = ChatsStop200;
+
+export type ChatsStopMutation = {
+	Response: ChatsStop200;
+	PathParams: ChatsStopPathParams;
+	Errors:
+		| ChatsStop401
+		| ChatsStop403
+		| ChatsStop404
+		| ChatsStop409
+		| ChatsStop413
+		| ChatsStop422
+		| ChatsStop429
+		| ChatsStop500;
+};
+
 export type DeploymentsFindQueryParams = {
 	/**
 	 * @description The ID of the project to find deployments for

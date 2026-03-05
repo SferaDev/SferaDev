@@ -2714,6 +2714,64 @@ export const chatsResume500Schema = z.unknown();
 
 export const chatsResumeMutationResponseSchema = z.lazy(() => chatsResume200Schema);
 
+export const chatsStopPathParamsSchema = z.object({
+	chatId: z
+		.string()
+		.describe(
+			"The unique identifier of the chat containing the message to stop. Provided as a path parameter.",
+		),
+	messageId: z
+		.string()
+		.describe("The identifier of the specific message to stop. Provided as a path parameter."),
+});
+
+/**
+ * @description Success
+ */
+export const chatsStop200Schema = z.unknown();
+
+/**
+ * @description Unauthorized
+ */
+export const chatsStop401Schema = z.unknown();
+
+/**
+ * @description Forbidden
+ */
+export const chatsStop403Schema = z.unknown();
+
+/**
+ * @description Not Found
+ */
+export const chatsStop404Schema = z.unknown();
+
+/**
+ * @description Conflict
+ */
+export const chatsStop409Schema = z.unknown();
+
+/**
+ * @description Payload Too Large
+ */
+export const chatsStop413Schema = z.unknown();
+
+/**
+ * @description Unprocessable Entity
+ */
+export const chatsStop422Schema = z.unknown();
+
+/**
+ * @description Too Many Requests
+ */
+export const chatsStop429Schema = z.unknown();
+
+/**
+ * @description Internal Server Error
+ */
+export const chatsStop500Schema = z.unknown();
+
+export const chatsStopMutationResponseSchema = z.lazy(() => chatsStop200Schema);
+
 export const deploymentsFindQueryParamsSchema = z.object({
 	projectId: z.string().describe("The ID of the project to find deployments for"),
 	chatId: z.string().describe("The ID of the chat to find deployments for"),
