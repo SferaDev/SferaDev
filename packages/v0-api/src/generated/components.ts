@@ -158,6 +158,16 @@ import type {
 	ChatsSendMessage500,
 	ChatsSendMessageMutationResponse,
 	ChatsSendMessagePathParams,
+	ChatsStop401,
+	ChatsStop403,
+	ChatsStop404,
+	ChatsStop409,
+	ChatsStop413,
+	ChatsStop422,
+	ChatsStop429,
+	ChatsStop500,
+	ChatsStopMutationResponse,
+	ChatsStopPathParams,
 	ChatsUpdate401,
 	ChatsUpdate403,
 	ChatsUpdate404,
@@ -1243,6 +1253,48 @@ export async function chatsResume({
 		Record<string, string>,
 		ChatsResumePathParams
 	>({ method: "POST", url: `/chats/${chatId}/messages/${messageId}/resume`, ...requestConfig });
+	return data;
+}
+
+/**
+ * @description Stops an in-flight message generation in a chat. Useful for cancelling a streaming response that is still being generated.
+ * @summary Stop Message
+ * {@link /chats/:chatId/messages/:messageId/stop}
+ */
+export async function chatsStop({
+	pathParams: { chatId, messageId },
+	config = {},
+}: {
+	pathParams: ChatsStopPathParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!chatId) {
+		throw new Error(`Missing required path parameter: chatId`);
+	}
+
+	if (!messageId) {
+		throw new Error(`Missing required path parameter: messageId`);
+	}
+
+	const data = await request<
+		ChatsStopMutationResponse,
+		ErrorWrapper<
+			| ChatsStop401
+			| ChatsStop403
+			| ChatsStop404
+			| ChatsStop409
+			| ChatsStop413
+			| ChatsStop422
+			| ChatsStop429
+			| ChatsStop500
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		ChatsStopPathParams
+	>({ method: "POST", url: `/chats/${chatId}/messages/${messageId}/stop`, ...requestConfig });
 	return data;
 }
 
@@ -2436,6 +2488,7 @@ export const operationsByPath = {
 	"GET /chats/{chatId}/versions/{versionId}/download": chatsDownloadVersion,
 	"POST /chats/{chatId}/versions/{versionId}/files/delete": chatsDeleteVersionFiles,
 	"POST /chats/{chatId}/messages/{messageId}/resume": chatsResume,
+	"POST /chats/{chatId}/messages/{messageId}/stop": chatsStop,
 	"GET /deployments": deploymentsFind,
 	"POST /deployments": deploymentsCreate,
 	"GET /deployments/{deploymentId}": deploymentsGetById,
@@ -2488,6 +2541,7 @@ export const operationsByTag = {
 		chatsDownloadVersion,
 		chatsDeleteVersionFiles,
 		chatsResume,
+		chatsStop,
 	},
 	projects: {
 		projectsGetByChatId,
@@ -2546,6 +2600,7 @@ export const tagDictionary = {
 			"chatsSendMessage",
 			"chatsDeleteVersionFiles",
 			"chatsResume",
+			"chatsStop",
 		],
 		GET: [
 			"chatsFind",
