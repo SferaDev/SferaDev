@@ -152,6 +152,7 @@ import type {
 	CreateDeployment403,
 	CreateDeployment404,
 	CreateDeployment409,
+	CreateDeployment426,
 	CreateDeployment429,
 	CreateDeployment500,
 	CreateDeployment503,
@@ -3834,6 +3835,7 @@ export async function createDeployment({
 			| CreateDeployment403
 			| CreateDeployment404
 			| CreateDeployment409
+			| CreateDeployment426
 			| CreateDeployment429
 			| CreateDeployment500
 			| CreateDeployment503
