@@ -7696,6 +7696,10 @@ export type UserEvent = {
 						projectName?: string | undefined;
 						target?: (string | string[]) | undefined;
 						/**
+						 * @type array | undefined
+						 */
+						customEnvironmentSlugs?: string[] | undefined;
+						/**
 						 * @type string | undefined
 						 */
 						id?: string | undefined;
@@ -20847,6 +20851,8 @@ export type CreateDeployment404 = unknown;
  */
 export type CreateDeployment409 = unknown;
 
+export type CreateDeployment426 = unknown;
+
 export type CreateDeployment429 = unknown;
 
 export type CreateDeployment500 = unknown;
@@ -20865,6 +20871,7 @@ export type CreateDeploymentMutation = {
 		| CreateDeployment403
 		| CreateDeployment404
 		| CreateDeployment409
+		| CreateDeployment426
 		| CreateDeployment429
 		| CreateDeployment500
 		| CreateDeployment503;

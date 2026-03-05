@@ -2574,6 +2574,7 @@ export const userEventSchema = z
 					projectId: z.optional(z.string()),
 					projectName: z.optional(z.string()),
 					target: z.optional(z.union([z.array(z.string()), z.string()])),
+					customEnvironmentSlugs: z.optional(z.array(z.string())),
 					id: z.optional(z.string()),
 					gitBranch: z.optional(z.string()),
 					edgeConfigId: z.string().nullish(),
@@ -9846,6 +9847,8 @@ export const createDeployment404Schema = z.unknown();
  * @description The deployment project is being transferred
  */
 export const createDeployment409Schema = z.unknown();
+
+export const createDeployment426Schema = z.unknown();
 
 export const createDeployment429Schema = z.unknown();
 
