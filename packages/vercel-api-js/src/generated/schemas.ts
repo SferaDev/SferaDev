@@ -641,6 +641,9 @@ export const userEventSchema = z
 					"deploy-hook-deleted",
 					"deploy-hook-processed",
 					"deployment",
+					"deployment-check-created",
+					"deployment-check-deleted",
+					"deployment-check-updated",
 					"deployment-chown",
 					"deployment-creation-blocked",
 					"deployment-delete",
@@ -669,6 +672,7 @@ export const userEventSchema = z
 					"domain-transfer-in",
 					"domain-transfer-in-canceled",
 					"domain-transfer-in-completed",
+					"domain-zone-change",
 					"drain-created",
 					"drain-deleted",
 					"drain-disabled",
@@ -1648,6 +1652,12 @@ export const userEventSchema = z
 					}),
 				}),
 				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					checkId: z.string(),
+					checkName: z.string(),
+				}),
+				z.object({
 					name: z.optional(z.string()),
 					alias: z.optional(z.array(z.string())),
 					target: z.string().nullish(),
@@ -2452,6 +2462,10 @@ export const userEventSchema = z
 				}),
 				z.object({
 					domain: z.string(),
+				}),
+				z.object({
+					domain: z.string(),
+					zone: z.union([z.literal(false), z.literal(true)]),
 				}),
 				z.object({
 					name: z.string(),

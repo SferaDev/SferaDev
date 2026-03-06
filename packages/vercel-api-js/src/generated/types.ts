@@ -1404,6 +1404,9 @@ export const userEventTypeEnum = {
 	"deploy-hook-deleted": "deploy-hook-deleted",
 	"deploy-hook-processed": "deploy-hook-processed",
 	deployment: "deployment",
+	"deployment-check-created": "deployment-check-created",
+	"deployment-check-deleted": "deployment-check-deleted",
+	"deployment-check-updated": "deployment-check-updated",
 	"deployment-chown": "deployment-chown",
 	"deployment-creation-blocked": "deployment-creation-blocked",
 	"deployment-delete": "deployment-delete",
@@ -1432,6 +1435,7 @@ export const userEventTypeEnum = {
 	"domain-transfer-in": "domain-transfer-in",
 	"domain-transfer-in-canceled": "domain-transfer-in-canceled",
 	"domain-transfer-in-completed": "domain-transfer-in-completed",
+	"domain-zone-change": "domain-zone-change",
 	"drain-created": "drain-created",
 	"drain-deleted": "drain-deleted",
 	"drain-disabled": "drain-disabled",
@@ -2216,6 +2220,13 @@ export const payloadCdnEnabledEnum = {
 
 export type PayloadCdnEnabledEnumKey =
 	(typeof payloadCdnEnabledEnum)[keyof typeof payloadCdnEnabledEnum];
+
+export const payloadZoneEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadZoneEnumKey = (typeof payloadZoneEnum)[keyof typeof payloadZoneEnum];
 
 export const payloadRenewEnum = {
 	false: false,
@@ -5769,6 +5780,24 @@ export type UserEvent = {
 				  }
 				| {
 						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string
+						 */
+						checkId: string;
+						/**
+						 * @type string
+						 */
+						checkName: string;
+				  }
+				| {
+						/**
 						 * @type string | undefined
 						 */
 						name?: string | undefined;
@@ -7364,6 +7393,16 @@ export type UserEvent = {
 						 * @type string
 						 */
 						domain: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						domain: string;
+						/**
+						 * @type boolean
+						 */
+						zone: PayloadZoneEnumKey;
 				  }
 				| {
 						/**
