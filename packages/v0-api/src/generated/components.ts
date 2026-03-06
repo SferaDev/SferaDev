@@ -544,7 +544,7 @@ export async function chatsCreate({
 }
 
 /**
- * @description Retrieves a list of existing chats, with support for pagination and filtering by favorite status. Helps manage and navigate chat history.
+ * @description Retrieves a list of existing chats, with support for pagination and filtering by favorite status, Vercel project, or Git branch. Helps manage and navigate chat history.
  * @summary Find Chats
  * {@link /chats}
  */

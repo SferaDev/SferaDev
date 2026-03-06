@@ -1731,6 +1731,20 @@ export const chatsFindQueryParamsSchema = z.object({
 				'Filters chats by their "favorite" status. Accepts `"true"` or `"false"` (as strings, not booleans).\n\n- `"true"`: returns only chats marked as favorites.\n- `"false"`: returns only non-favorite chats.',
 			),
 	),
+	vercelProjectId: z.optional(
+		z
+			.string()
+			.describe(
+				"Filters chats by the linked Vercel project ID. Only returns chats associated with the specified Vercel project.",
+			),
+	),
+	branch: z.optional(
+		z
+			.string()
+			.describe(
+				"Filters chats by the Git branch name. Only returns chats that have an active Git connection with the specified branch as the head.",
+			),
+	),
 });
 
 /**

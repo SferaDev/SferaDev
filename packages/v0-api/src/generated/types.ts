@@ -3758,6 +3758,16 @@ export type ChatsFindQueryParams = {
 	 * @type string | undefined
 	 */
 	isFavorite?: ChatsFindQueryParamsIsFavoriteEnumKey | undefined;
+	/**
+	 * @description Filters chats by the linked Vercel project ID. Only returns chats associated with the specified Vercel project.
+	 * @type string | undefined
+	 */
+	vercelProjectId?: string | undefined;
+	/**
+	 * @description Filters chats by the Git branch name. Only returns chats that have an active Git connection with the specified branch as the head.
+	 * @type string | undefined
+	 */
+	branch?: string | undefined;
 };
 
 /**
