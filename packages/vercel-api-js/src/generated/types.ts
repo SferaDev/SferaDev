@@ -2438,6 +2438,7 @@ export const credentialsTypeEnum = {
 	bitbucket: "bitbucket",
 	google: "google",
 	apple: "apple",
+	chatgpt: "chatgpt",
 	"github-oauth": "github-oauth",
 	"github-oauth-limited": "github-oauth-limited",
 } as const;
@@ -3082,6 +3083,7 @@ export const factorsOriginEnum = {
 	bitbucket: "bitbucket",
 	google: "google",
 	apple: "apple",
+	chatgpt: "chatgpt",
 	webauthn: "webauthn",
 	otp: "otp",
 	invite: "invite",
@@ -3826,6 +3828,7 @@ export const factorsOriginEnum3 = {
 	bitbucket: "bitbucket",
 	google: "google",
 	apple: "apple",
+	chatgpt: "chatgpt",
 	otp: "otp",
 } as const;
 
@@ -4117,6 +4120,7 @@ export const payloadProviderEnum = {
 	bitbucket: "bitbucket",
 	google: "google",
 	apple: "apple",
+	chatgpt: "chatgpt",
 } as const;
 
 export type PayloadProviderEnumKey = (typeof payloadProviderEnum)[keyof typeof payloadProviderEnum];
@@ -4207,6 +4211,7 @@ export const payloadAuthMethodEnum = {
 	bitbucket: "bitbucket",
 	google: "google",
 	apple: "apple",
+	chatgpt: "chatgpt",
 	manual: "manual",
 	passkey: "passkey",
 	otp: "otp",
@@ -17142,6 +17147,7 @@ export const scopesOriginEnum = {
 	invite: "invite",
 	google: "google",
 	apple: "apple",
+	chatgpt: "chatgpt",
 	app: "app",
 	emu: "emu",
 } as const;
