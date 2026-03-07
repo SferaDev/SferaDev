@@ -7308,3 +7308,330 @@ export type ReportsGetUserActivityQuery = {
 		| ReportsGetUserActivity429
 		| ReportsGetUserActivity500;
 };
+
+/**
+ * @description Success
+ */
+export type McpServersFind200 = unknown;
+
+/**
+ * @description Unauthorized
+ */
+export type McpServersFind401 = unknown;
+
+/**
+ * @description Forbidden
+ */
+export type McpServersFind403 = unknown;
+
+/**
+ * @description Not Found
+ */
+export type McpServersFind404 = unknown;
+
+/**
+ * @description Conflict
+ */
+export type McpServersFind409 = unknown;
+
+/**
+ * @description Payload Too Large
+ */
+export type McpServersFind413 = unknown;
+
+/**
+ * @description Unprocessable Entity
+ */
+export type McpServersFind422 = unknown;
+
+/**
+ * @description Too Many Requests
+ */
+export type McpServersFind429 = unknown;
+
+/**
+ * @description Internal Server Error
+ */
+export type McpServersFind500 = unknown;
+
+export type McpServersFindQueryResponse = McpServersFind200;
+
+export type McpServersFindQuery = {
+	Response: McpServersFind200;
+	Errors:
+		| McpServersFind401
+		| McpServersFind403
+		| McpServersFind404
+		| McpServersFind409
+		| McpServersFind413
+		| McpServersFind422
+		| McpServersFind429
+		| McpServersFind500;
+};
+
+/**
+ * @description Success
+ */
+export type McpServersCreate200 = unknown;
+
+/**
+ * @description Unauthorized
+ */
+export type McpServersCreate401 = unknown;
+
+/**
+ * @description Forbidden
+ */
+export type McpServersCreate403 = unknown;
+
+/**
+ * @description Not Found
+ */
+export type McpServersCreate404 = unknown;
+
+/**
+ * @description Conflict
+ */
+export type McpServersCreate409 = unknown;
+
+/**
+ * @description Payload Too Large
+ */
+export type McpServersCreate413 = unknown;
+
+/**
+ * @description Unprocessable Entity
+ */
+export type McpServersCreate422 = unknown;
+
+/**
+ * @description Too Many Requests
+ */
+export type McpServersCreate429 = unknown;
+
+/**
+ * @description Internal Server Error
+ */
+export type McpServersCreate500 = unknown;
+
+export type McpServersCreateMutationResponse = McpServersCreate200;
+
+export type McpServersCreateMutation = {
+	Response: McpServersCreate200;
+	Errors:
+		| McpServersCreate401
+		| McpServersCreate403
+		| McpServersCreate404
+		| McpServersCreate409
+		| McpServersCreate413
+		| McpServersCreate422
+		| McpServersCreate429
+		| McpServersCreate500;
+};
+
+export type McpServersGetByIdPathParams = {
+	/**
+	 * @description The ID of the MCP server to retrieve.
+	 * @type string
+	 */
+	mcpServerId: string;
+};
+
+/**
+ * @description Success
+ */
+export type McpServersGetById200 = unknown;
+
+/**
+ * @description Unauthorized
+ */
+export type McpServersGetById401 = unknown;
+
+/**
+ * @description Forbidden
+ */
+export type McpServersGetById403 = unknown;
+
+/**
+ * @description Not Found
+ */
+export type McpServersGetById404 = unknown;
+
+/**
+ * @description Conflict
+ */
+export type McpServersGetById409 = unknown;
+
+/**
+ * @description Payload Too Large
+ */
+export type McpServersGetById413 = unknown;
+
+/**
+ * @description Unprocessable Entity
+ */
+export type McpServersGetById422 = unknown;
+
+/**
+ * @description Too Many Requests
+ */
+export type McpServersGetById429 = unknown;
+
+/**
+ * @description Internal Server Error
+ */
+export type McpServersGetById500 = unknown;
+
+export type McpServersGetByIdQueryResponse = McpServersGetById200;
+
+export type McpServersGetByIdQuery = {
+	Response: McpServersGetById200;
+	PathParams: McpServersGetByIdPathParams;
+	Errors:
+		| McpServersGetById401
+		| McpServersGetById403
+		| McpServersGetById404
+		| McpServersGetById409
+		| McpServersGetById413
+		| McpServersGetById422
+		| McpServersGetById429
+		| McpServersGetById500;
+};
+
+export type McpServersUpdatePathParams = {
+	/**
+	 * @description The ID of the MCP server to update.
+	 * @type string
+	 */
+	mcpServerId: string;
+};
+
+/**
+ * @description Success
+ */
+export type McpServersUpdate200 = unknown;
+
+/**
+ * @description Unauthorized
+ */
+export type McpServersUpdate401 = unknown;
+
+/**
+ * @description Forbidden
+ */
+export type McpServersUpdate403 = unknown;
+
+/**
+ * @description Not Found
+ */
+export type McpServersUpdate404 = unknown;
+
+/**
+ * @description Conflict
+ */
+export type McpServersUpdate409 = unknown;
+
+/**
+ * @description Payload Too Large
+ */
+export type McpServersUpdate413 = unknown;
+
+/**
+ * @description Unprocessable Entity
+ */
+export type McpServersUpdate422 = unknown;
+
+/**
+ * @description Too Many Requests
+ */
+export type McpServersUpdate429 = unknown;
+
+/**
+ * @description Internal Server Error
+ */
+export type McpServersUpdate500 = unknown;
+
+export type McpServersUpdateMutationResponse = McpServersUpdate200;
+
+export type McpServersUpdateMutation = {
+	Response: McpServersUpdate200;
+	PathParams: McpServersUpdatePathParams;
+	Errors:
+		| McpServersUpdate401
+		| McpServersUpdate403
+		| McpServersUpdate404
+		| McpServersUpdate409
+		| McpServersUpdate413
+		| McpServersUpdate422
+		| McpServersUpdate429
+		| McpServersUpdate500;
+};
+
+export type McpServersDeletePathParams = {
+	/**
+	 * @description The ID of the MCP server to delete.
+	 * @type string
+	 */
+	mcpServerId: string;
+};
+
+/**
+ * @description Success
+ */
+export type McpServersDelete200 = unknown;
+
+/**
+ * @description Unauthorized
+ */
+export type McpServersDelete401 = unknown;
+
+/**
+ * @description Forbidden
+ */
+export type McpServersDelete403 = unknown;
+
+/**
+ * @description Not Found
+ */
+export type McpServersDelete404 = unknown;
+
+/**
+ * @description Conflict
+ */
+export type McpServersDelete409 = unknown;
+
+/**
+ * @description Payload Too Large
+ */
+export type McpServersDelete413 = unknown;
+
+/**
+ * @description Unprocessable Entity
+ */
+export type McpServersDelete422 = unknown;
+
+/**
+ * @description Too Many Requests
+ */
+export type McpServersDelete429 = unknown;
+
+/**
+ * @description Internal Server Error
+ */
+export type McpServersDelete500 = unknown;
+
+export type McpServersDeleteMutationResponse = McpServersDelete200;
+
+export type McpServersDeleteMutation = {
+	Response: McpServersDelete200;
+	PathParams: McpServersDeletePathParams;
+	Errors:
+		| McpServersDelete401
+		| McpServersDelete403
+		| McpServersDelete404
+		| McpServersDelete409
+		| McpServersDelete413
+		| McpServersDelete422
+		| McpServersDelete429
+		| McpServersDelete500;
+};

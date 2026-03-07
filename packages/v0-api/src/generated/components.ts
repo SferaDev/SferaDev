@@ -314,6 +314,54 @@ import type {
 	IntegrationsVercelProjectsFind429,
 	IntegrationsVercelProjectsFind500,
 	IntegrationsVercelProjectsFindQueryResponse,
+	McpServersCreate401,
+	McpServersCreate403,
+	McpServersCreate404,
+	McpServersCreate409,
+	McpServersCreate413,
+	McpServersCreate422,
+	McpServersCreate429,
+	McpServersCreate500,
+	McpServersCreateMutationResponse,
+	McpServersDelete401,
+	McpServersDelete403,
+	McpServersDelete404,
+	McpServersDelete409,
+	McpServersDelete413,
+	McpServersDelete422,
+	McpServersDelete429,
+	McpServersDelete500,
+	McpServersDeleteMutationResponse,
+	McpServersDeletePathParams,
+	McpServersFind401,
+	McpServersFind403,
+	McpServersFind404,
+	McpServersFind409,
+	McpServersFind413,
+	McpServersFind422,
+	McpServersFind429,
+	McpServersFind500,
+	McpServersFindQueryResponse,
+	McpServersGetById401,
+	McpServersGetById403,
+	McpServersGetById404,
+	McpServersGetById409,
+	McpServersGetById413,
+	McpServersGetById422,
+	McpServersGetById429,
+	McpServersGetById500,
+	McpServersGetByIdPathParams,
+	McpServersGetByIdQueryResponse,
+	McpServersUpdate401,
+	McpServersUpdate403,
+	McpServersUpdate404,
+	McpServersUpdate409,
+	McpServersUpdate413,
+	McpServersUpdate422,
+	McpServersUpdate429,
+	McpServersUpdate500,
+	McpServersUpdateMutationResponse,
+	McpServersUpdatePathParams,
 	ProjectsAssign401,
 	ProjectsAssign403,
 	ProjectsAssign404,
@@ -2469,6 +2517,194 @@ export async function reportsGetUserActivity({
 	return data;
 }
 
+/**
+ * @description Retrieves all MCP servers configured for the authenticated user.
+ * @summary List MCP Servers
+ * {@link /mcp-servers}
+ */
+export async function mcpServersFind({
+	config = {},
+}: {
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	const data = await request<
+		McpServersFindQueryResponse,
+		ErrorWrapper<
+			| McpServersFind401
+			| McpServersFind403
+			| McpServersFind404
+			| McpServersFind409
+			| McpServersFind413
+			| McpServersFind422
+			| McpServersFind429
+			| McpServersFind500
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		Record<string, string>
+	>({ method: "GET", url: `/mcp-servers`, ...requestConfig });
+	return data;
+}
+
+/**
+ * @description Creates a new MCP server configuration for the authenticated user.
+ * @summary Create MCP Server
+ * {@link /mcp-servers}
+ */
+export async function mcpServersCreate({
+	config = {},
+}: {
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	const data = await request<
+		McpServersCreateMutationResponse,
+		ErrorWrapper<
+			| McpServersCreate401
+			| McpServersCreate403
+			| McpServersCreate404
+			| McpServersCreate409
+			| McpServersCreate413
+			| McpServersCreate422
+			| McpServersCreate429
+			| McpServersCreate500
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		Record<string, string>
+	>({
+		method: "POST",
+		url: `/mcp-servers`,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
+ * @description Retrieves the details of a specific MCP server by its ID.
+ * @summary Get MCP Server
+ * {@link /mcp-servers/:mcpServerId}
+ */
+export async function mcpServersGetById({
+	pathParams: { mcpServerId },
+	config = {},
+}: {
+	pathParams: McpServersGetByIdPathParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!mcpServerId) {
+		throw new Error(`Missing required path parameter: mcpServerId`);
+	}
+
+	const data = await request<
+		McpServersGetByIdQueryResponse,
+		ErrorWrapper<
+			| McpServersGetById401
+			| McpServersGetById403
+			| McpServersGetById404
+			| McpServersGetById409
+			| McpServersGetById413
+			| McpServersGetById422
+			| McpServersGetById429
+			| McpServersGetById500
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		McpServersGetByIdPathParams
+	>({ method: "GET", url: `/mcp-servers/${mcpServerId}`, ...requestConfig });
+	return data;
+}
+
+/**
+ * @description Updates the configuration of an existing MCP server, including its name, URL, description, enabled status, and authentication settings.
+ * @summary Update MCP Server
+ * {@link /mcp-servers/:mcpServerId}
+ */
+export async function mcpServersUpdate({
+	pathParams: { mcpServerId },
+	config = {},
+}: {
+	pathParams: McpServersUpdatePathParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!mcpServerId) {
+		throw new Error(`Missing required path parameter: mcpServerId`);
+	}
+
+	const data = await request<
+		McpServersUpdateMutationResponse,
+		ErrorWrapper<
+			| McpServersUpdate401
+			| McpServersUpdate403
+			| McpServersUpdate404
+			| McpServersUpdate409
+			| McpServersUpdate413
+			| McpServersUpdate422
+			| McpServersUpdate429
+			| McpServersUpdate500
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		McpServersUpdatePathParams
+	>({
+		method: "PATCH",
+		url: `/mcp-servers/${mcpServerId}`,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
+ * @description Deletes an MCP server based on its ID. This action is irreversible and will also remove any associated OAuth tokens.
+ * @summary Delete MCP Server
+ * {@link /mcp-servers/:mcpServerId}
+ */
+export async function mcpServersDelete({
+	pathParams: { mcpServerId },
+	config = {},
+}: {
+	pathParams: McpServersDeletePathParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!mcpServerId) {
+		throw new Error(`Missing required path parameter: mcpServerId`);
+	}
+
+	const data = await request<
+		McpServersDeleteMutationResponse,
+		ErrorWrapper<
+			| McpServersDelete401
+			| McpServersDelete403
+			| McpServersDelete404
+			| McpServersDelete409
+			| McpServersDelete413
+			| McpServersDelete422
+			| McpServersDelete429
+			| McpServersDelete500
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		McpServersDeletePathParams
+	>({ method: "DELETE", url: `/mcp-servers/${mcpServerId}`, ...requestConfig });
+	return data;
+}
+
 export const operationsByPath = {
 	"POST /chats": chatsCreate,
 	"GET /chats": chatsFind,
@@ -2520,6 +2756,11 @@ export const operationsByPath = {
 	"GET /user/scopes": userGetScopes,
 	"GET /reports/usage": reportsGetUsage,
 	"GET /reports/user-activity": reportsGetUserActivity,
+	"GET /mcp-servers": mcpServersFind,
+	"POST /mcp-servers": mcpServersCreate,
+	"GET /mcp-servers/{mcpServerId}": mcpServersGetById,
+	"PATCH /mcp-servers/{mcpServerId}": mcpServersUpdate,
+	"DELETE /mcp-servers/{mcpServerId}": mcpServersDelete,
 };
 
 export const operationsByTag = {
@@ -2589,6 +2830,13 @@ export const operationsByTag = {
 		reportsGetUsage,
 		reportsGetUserActivity,
 	},
+	mcpservers: {
+		mcpServersFind,
+		mcpServersCreate,
+		mcpServersGetById,
+		mcpServersUpdate,
+		mcpServersDelete,
+	},
 };
 
 export const tagDictionary = {
@@ -2650,5 +2898,11 @@ export const tagDictionary = {
 	},
 	reports: {
 		GET: ["reportsGetUsage", "reportsGetUserActivity"],
+	},
+	mcpservers: {
+		GET: ["mcpServersFind", "mcpServersGetById"],
+		POST: ["mcpServersCreate"],
+		PATCH: ["mcpServersUpdate"],
+		DELETE: ["mcpServersDelete"],
 	},
 } as const;
