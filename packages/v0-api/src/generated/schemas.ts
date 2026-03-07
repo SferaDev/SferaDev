@@ -4461,3 +4461,250 @@ export const reportsGetUserActivity500Schema = z.unknown();
 export const reportsGetUserActivityQueryResponseSchema = z.lazy(
 	() => reportsGetUserActivity200Schema,
 );
+
+/**
+ * @description Success
+ */
+export const mcpServersFind200Schema = z.unknown();
+
+/**
+ * @description Unauthorized
+ */
+export const mcpServersFind401Schema = z.unknown();
+
+/**
+ * @description Forbidden
+ */
+export const mcpServersFind403Schema = z.unknown();
+
+/**
+ * @description Not Found
+ */
+export const mcpServersFind404Schema = z.unknown();
+
+/**
+ * @description Conflict
+ */
+export const mcpServersFind409Schema = z.unknown();
+
+/**
+ * @description Payload Too Large
+ */
+export const mcpServersFind413Schema = z.unknown();
+
+/**
+ * @description Unprocessable Entity
+ */
+export const mcpServersFind422Schema = z.unknown();
+
+/**
+ * @description Too Many Requests
+ */
+export const mcpServersFind429Schema = z.unknown();
+
+/**
+ * @description Internal Server Error
+ */
+export const mcpServersFind500Schema = z.unknown();
+
+export const mcpServersFindQueryResponseSchema = z.lazy(() => mcpServersFind200Schema);
+
+/**
+ * @description Success
+ */
+export const mcpServersCreate200Schema = z.unknown();
+
+/**
+ * @description Unauthorized
+ */
+export const mcpServersCreate401Schema = z.unknown();
+
+/**
+ * @description Forbidden
+ */
+export const mcpServersCreate403Schema = z.unknown();
+
+/**
+ * @description Not Found
+ */
+export const mcpServersCreate404Schema = z.unknown();
+
+/**
+ * @description Conflict
+ */
+export const mcpServersCreate409Schema = z.unknown();
+
+/**
+ * @description Payload Too Large
+ */
+export const mcpServersCreate413Schema = z.unknown();
+
+/**
+ * @description Unprocessable Entity
+ */
+export const mcpServersCreate422Schema = z.unknown();
+
+/**
+ * @description Too Many Requests
+ */
+export const mcpServersCreate429Schema = z.unknown();
+
+/**
+ * @description Internal Server Error
+ */
+export const mcpServersCreate500Schema = z.unknown();
+
+export const mcpServersCreateMutationResponseSchema = z.lazy(() => mcpServersCreate200Schema);
+
+export const mcpServersGetByIdPathParamsSchema = z.object({
+	mcpServerId: z.string().describe("The ID of the MCP server to retrieve."),
+});
+
+/**
+ * @description Success
+ */
+export const mcpServersGetById200Schema = z.unknown();
+
+/**
+ * @description Unauthorized
+ */
+export const mcpServersGetById401Schema = z.unknown();
+
+/**
+ * @description Forbidden
+ */
+export const mcpServersGetById403Schema = z.unknown();
+
+/**
+ * @description Not Found
+ */
+export const mcpServersGetById404Schema = z.unknown();
+
+/**
+ * @description Conflict
+ */
+export const mcpServersGetById409Schema = z.unknown();
+
+/**
+ * @description Payload Too Large
+ */
+export const mcpServersGetById413Schema = z.unknown();
+
+/**
+ * @description Unprocessable Entity
+ */
+export const mcpServersGetById422Schema = z.unknown();
+
+/**
+ * @description Too Many Requests
+ */
+export const mcpServersGetById429Schema = z.unknown();
+
+/**
+ * @description Internal Server Error
+ */
+export const mcpServersGetById500Schema = z.unknown();
+
+export const mcpServersGetByIdQueryResponseSchema = z.lazy(() => mcpServersGetById200Schema);
+
+export const mcpServersUpdatePathParamsSchema = z.object({
+	mcpServerId: z.string().describe("The ID of the MCP server to update."),
+});
+
+/**
+ * @description Success
+ */
+export const mcpServersUpdate200Schema = z.unknown();
+
+/**
+ * @description Unauthorized
+ */
+export const mcpServersUpdate401Schema = z.unknown();
+
+/**
+ * @description Forbidden
+ */
+export const mcpServersUpdate403Schema = z.unknown();
+
+/**
+ * @description Not Found
+ */
+export const mcpServersUpdate404Schema = z.unknown();
+
+/**
+ * @description Conflict
+ */
+export const mcpServersUpdate409Schema = z.unknown();
+
+/**
+ * @description Payload Too Large
+ */
+export const mcpServersUpdate413Schema = z.unknown();
+
+/**
+ * @description Unprocessable Entity
+ */
+export const mcpServersUpdate422Schema = z.unknown();
+
+/**
+ * @description Too Many Requests
+ */
+export const mcpServersUpdate429Schema = z.unknown();
+
+/**
+ * @description Internal Server Error
+ */
+export const mcpServersUpdate500Schema = z.unknown();
+
+export const mcpServersUpdateMutationResponseSchema = z.lazy(() => mcpServersUpdate200Schema);
+
+export const mcpServersDeletePathParamsSchema = z.object({
+	mcpServerId: z.string().describe("The ID of the MCP server to delete."),
+});
+
+/**
+ * @description Success
+ */
+export const mcpServersDelete200Schema = z.unknown();
+
+/**
+ * @description Unauthorized
+ */
+export const mcpServersDelete401Schema = z.unknown();
+
+/**
+ * @description Forbidden
+ */
+export const mcpServersDelete403Schema = z.unknown();
+
+/**
+ * @description Not Found
+ */
+export const mcpServersDelete404Schema = z.unknown();
+
+/**
+ * @description Conflict
+ */
+export const mcpServersDelete409Schema = z.unknown();
+
+/**
+ * @description Payload Too Large
+ */
+export const mcpServersDelete413Schema = z.unknown();
+
+/**
+ * @description Unprocessable Entity
+ */
+export const mcpServersDelete422Schema = z.unknown();
+
+/**
+ * @description Too Many Requests
+ */
+export const mcpServersDelete429Schema = z.unknown();
+
+/**
+ * @description Internal Server Error
+ */
+export const mcpServersDelete500Schema = z.unknown();
+
+export const mcpServersDeleteMutationResponseSchema = z.lazy(() => mcpServersDelete200Schema);
