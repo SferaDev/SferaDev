@@ -4653,15 +4653,11 @@ export const userEventSchema = z
 				z.object({
 					projectId: z.optional(z.string()),
 					projectName: z.optional(z.string()),
-					buildMachineType: z.optional(z.string()),
-					oldBuildMachineType: z.optional(z.string()),
-					isSystemInitiated: z.optional(
-						z
-							.union([z.literal(false), z.literal(true)])
-							.describe(
-								"Whether the update was system-initiated (e.g., elastic build machines, plan upgrade).",
-							),
-					),
+					previousBuildMachineType: z.optional(z.string()),
+					nextBuildMachineType: z.string(),
+					previousBuildMachineSelection: z.string(),
+					nextBuildMachineSelection: z.string(),
+					isSystemInitiated: z.optional(z.union([z.literal(false), z.literal(true)])),
 				}),
 				z.object({
 					projectId: z.optional(z.string()),

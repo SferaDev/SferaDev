@@ -11515,13 +11515,20 @@ export type UserEvent = {
 						/**
 						 * @type string | undefined
 						 */
-						buildMachineType?: string | undefined;
+						previousBuildMachineType?: string | undefined;
 						/**
-						 * @type string | undefined
+						 * @type string
 						 */
-						oldBuildMachineType?: string | undefined;
+						nextBuildMachineType: string;
 						/**
-						 * @description Whether the update was system-initiated (e.g., elastic build machines, plan upgrade).
+						 * @type string
+						 */
+						previousBuildMachineSelection: string;
+						/**
+						 * @type string
+						 */
+						nextBuildMachineSelection: string;
+						/**
 						 * @type boolean | undefined
 						 */
 						isSystemInitiated?: PayloadIsSystemInitiatedEnumKey | undefined;
