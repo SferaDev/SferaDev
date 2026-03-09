@@ -3348,6 +3348,14 @@ export const payloadSourceFilesOutsideRootDirectoryEnum = {
 export type PayloadSourceFilesOutsideRootDirectoryEnumKey =
 	(typeof payloadSourceFilesOutsideRootDirectoryEnum)[keyof typeof payloadSourceFilesOutsideRootDirectoryEnum];
 
+export const payloadIsSystemInitiatedEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadIsSystemInitiatedEnumKey =
+	(typeof payloadIsSystemInitiatedEnum)[keyof typeof payloadIsSystemInitiatedEnum];
+
 export const payloadUpdatedEnum = {
 	false: false,
 	true: true,
@@ -11512,6 +11520,11 @@ export type UserEvent = {
 						 * @type string | undefined
 						 */
 						oldBuildMachineType?: string | undefined;
+						/**
+						 * @description Whether the update was system-initiated (e.g., elastic build machines, plan upgrade).
+						 * @type boolean | undefined
+						 */
+						isSystemInitiated?: PayloadIsSystemInitiatedEnumKey | undefined;
 				  }
 				| {
 						/**
