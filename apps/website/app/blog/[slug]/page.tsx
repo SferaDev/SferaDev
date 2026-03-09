@@ -1,7 +1,7 @@
 import { ArrowLeft } from "lucide-react";
-import Markdown from "markdown-to-jsx";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import Markdown from "react-markdown";
 import { getAllSlugs, getPostBySlug } from "@/lib/blog";
 
 interface BlogPostPageProps {
@@ -61,78 +61,64 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
 				<article className="prose prose-gray dark:prose-invert prose-base max-w-none">
 					<Markdown
-						options={{
-							overrides: {
-								h1: {
-									props: {
-										className:
-											"text-2xl font-bold text-gray-900 dark:text-white mb-4 mt-8 leading-tight",
-									},
-								},
-								h2: {
-									props: {
-										className:
-											"text-xl font-bold text-gray-900 dark:text-white mb-3 mt-6 leading-tight",
-									},
-								},
-								h3: {
-									props: {
-										className:
-											"text-lg font-bold text-gray-900 dark:text-white mb-2 mt-5 leading-tight",
-									},
-								},
-								p: {
-									props: {
-										className: "text-gray-700 dark:text-gray-300 mb-4 leading-relaxed",
-									},
-								},
-								a: {
-									props: {
-										className:
-											"text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 underline",
-									},
-								},
-								code: {
-									props: {
-										className:
-											"bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-1.5 py-0.5 rounded text-sm font-mono",
-									},
-								},
-								pre: {
-									props: {
-										className:
-											"bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-4 overflow-x-auto mb-6 text-sm",
-									},
-								},
-								ul: {
-									props: {
-										className:
-											"list-disc list-inside text-gray-700 dark:text-gray-300 mb-4 space-y-1 leading-relaxed",
-									},
-								},
-								ol: {
-									props: {
-										className:
-											"list-decimal list-inside text-gray-700 dark:text-gray-300 mb-4 space-y-1 leading-relaxed",
-									},
-								},
-								li: {
-									props: {
-										className: "text-gray-700 dark:text-gray-300 leading-relaxed",
-									},
-								},
-								strong: {
-									props: {
-										className: "font-semibold text-gray-900 dark:text-white",
-									},
-								},
-								blockquote: {
-									props: {
-										className:
-											"border-l-4 border-blue-200 dark:border-blue-800 pl-4 italic text-gray-600 dark:text-gray-400 mb-4",
-									},
-								},
-							},
+						components={{
+							h1: ({ children }) => (
+								<h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 mt-8 leading-tight">
+									{children}
+								</h1>
+							),
+							h2: ({ children }) => (
+								<h2 className="text-xl font-bold text-gray-900 dark:text-white mb-3 mt-6 leading-tight">
+									{children}
+								</h2>
+							),
+							h3: ({ children }) => (
+								<h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2 mt-5 leading-tight">
+									{children}
+								</h3>
+							),
+							p: ({ children }) => (
+								<p className="text-gray-700 dark:text-gray-300 mb-4 leading-relaxed">{children}</p>
+							),
+							a: ({ children, href }) => (
+								<a
+									href={href}
+									className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 underline"
+								>
+									{children}
+								</a>
+							),
+							code: ({ children }) => (
+								<code className="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-1.5 py-0.5 rounded text-sm font-mono">
+									{children}
+								</code>
+							),
+							pre: ({ children }) => (
+								<pre className="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-4 overflow-x-auto mb-6 text-sm">
+									{children}
+								</pre>
+							),
+							ul: ({ children }) => (
+								<ul className="list-disc list-inside text-gray-700 dark:text-gray-300 mb-4 space-y-1 leading-relaxed">
+									{children}
+								</ul>
+							),
+							ol: ({ children }) => (
+								<ol className="list-decimal list-inside text-gray-700 dark:text-gray-300 mb-4 space-y-1 leading-relaxed">
+									{children}
+								</ol>
+							),
+							li: ({ children }) => (
+								<li className="text-gray-700 dark:text-gray-300 leading-relaxed">{children}</li>
+							),
+							strong: ({ children }) => (
+								<strong className="font-semibold text-gray-900 dark:text-white">{children}</strong>
+							),
+							blockquote: ({ children }) => (
+								<blockquote className="border-l-4 border-blue-200 dark:border-blue-800 pl-4 italic text-gray-600 dark:text-gray-400 mb-4">
+									{children}
+								</blockquote>
+							),
 						}}
 					>
 						{post.content}
