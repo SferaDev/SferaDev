@@ -1,0 +1,121 @@
+---
+title: "PgBeam: A Globally Distributed PostgreSQL Proxy"
+date: 2026-03-09
+description: "PgBeam is a managed PostgreSQL proxy deployed across six global regions that combines connection pooling and edge query caching without platform lock-in."
+tags: [PostgreSQL, Infrastructure, PgBeam]
+excerpt: "Every company running PostgreSQL across regions faces the same problem: latency. PgBeam fills the gap with managed connection pooling and edge query caching across six global regions."
+---
+
+Every company running PostgreSQL across regions faces the same problem: latency. A database in Virginia serves a request from Tokyo in 100-200ms per round trip. But a new PostgreSQL connection is not one round trip. It is four: TCP handshake, TLS negotiation, PG startup, and authentication. That is 400-800ms before the first query executes.
+
+In serverless and edge architectures, where connections are short-lived, teams pay this cost on nearly every request. The result is either degraded user experience or expensive over-provisioning of read replicas, along with the operational complexity that comes with them: replication lag, connection routing, and ORM-level read/write splitting.
+
+## The market gap
+
+The solutions available today are either incomplete or locked to a specific platform:
+
+- **PgBouncer** handles connection pooling but offers no query caching. Every read still round-trips to the origin.
+- **Cloudflare Hyperdrive** provides pooling and caching, but only works from Cloudflare Workers, locking teams into one compute platform.
+- **Prisma Accelerate** offers the same capabilities, but requires the Prisma ORM, locking teams into one data layer.
+- **RDS Proxy** is VPC-bound, single-region, AWS-only, and adds no caching.
+
+There is no platform-agnostic, managed solution that combines connection pooling and query caching across multiple regions. PgBeam fills that gap.
+
+## What PgBeam does
+
+PgBeam is a managed PostgreSQL proxy deployed across six global regions (Virginia, Oregon, Dublin, Mumbai, Singapore, Tokyo). It speaks the PG wire protocol natively. Every PostgreSQL driver and ORM works unmodified. Adoption requires a single environment variable change:
+
+```
+# Before
+DATABASE_URL=postgresql://user:pass@rds-instance.us-east-1.rds.amazonaws.com:5432/mydb
+
+# After
+DATABASE_URL=postgresql://user:pass@abc.gw.pgbeam.app:5432/mydb
+```
+
+No SDK integration. No code changes. No migration. This matters for enterprise adoption: PgBeam slots into existing stacks without engineering effort or vendor risk.
+
+Three capabilities compound to reduce database load and improve response times:
+
+1. **Global routing.** GeoDNS directs each connection to the nearest proxy region, minimizing network hops.
+
+2. **Connection pooling.** Warm upstream connections eliminate the 4-RTT handshake overhead. Pooling alone reduces connection establishment cost by 3-7x, which directly translates to fewer database connections required and lower infrastructure spend.
+
+3. **Edge query caching.** Read query results are cached locally in the nearest region with stale-while-revalidate semantics. Cached responses are served as native PG wire protocol messages, fully transparent to the application. Writes and transactions always pass through to the origin.
+
+## Measured performance
+
+PgBeam publishes a [live benchmark](https://pgbeam.app/benchmark) running serverless functions from 20 global regions against a database in `us-east-1`. Real TLS connections, real queries, no synthetic data.
+
+| Region    | Direct   | PgBeam (cache hit) | Improvement |
+| --------- | -------- | ------------------- | ----------- |
+| Mumbai    | 1,367ms  | 9ms                 | 152x        |
+| Singapore | 1,571ms  | 12ms                | 131x        |
+| Tokyo     | 1,087ms  | 16ms                | 68x         |
+
+Even on cache misses, pooling cuts connect time from 1,174ms to 8ms for distant regions. The query still round-trips to the origin, but the connection is already established.
+
+For read-heavy workloads like dashboards, analytics, content delivery, and API responses, the operational impact is significant: fewer database connections consumed, lower query load on the origin, and sub-20ms response times globally without read replicas.
+
+## Architecture
+
+PgBeam is built on a control plane / data plane separation:
+
+- **Control plane** (Go API on ECS Fargate): manages tenants, projects, and configuration. Streams config to data planes via gRPC. Handles billing, plan enforcement, and API key management.
+
+- **Data planes** (Go, per region): run the PG wire proxy using pgproto3. Handle TLS/SNI-based tenant routing, connection pooling, and query caching. Each region operates in a dedicated VPC. All six regions are connected via full-mesh VPC peering for inter-region relay over private network.
+
+- **Multi-tenant isolation**: per-project connection limits, rate limits, cache namespaces, and SNI-based routing. Organization-level plan enforcement on resource creation and query throughput.
+
+The proxy validates client credentials against the upstream database on every new connection. PgBeam never stores database passwords. Credential passthrough means zero trust surface area added.
+
+## Competitive positioning
+
+| Capability      | PgBeam | Hyperdrive   | Prisma Accelerate | PgBouncer   | RDS Proxy   |
+| --------------- | ------ | ------------ | ------------------ | ----------- | ----------- |
+| Pooling         | Yes    | Yes          | Yes                | Yes         | Yes         |
+| Query cache     | Yes    | Yes          | Yes                | No          | No          |
+| Multi-region    | Yes    | Yes          | Yes                | No          | No          |
+| Platform lock   | None   | CF Workers   | Prisma ORM         | None        | AWS VPC     |
+| Managed         | Yes    | Yes          | Yes                | Self-hosted | Yes         |
+
+PgBeam is the only managed option that combines pooling, caching, and multi-region deployment without platform lock-in. It works from any cloud, any framework, any ORM: Vercel, AWS Lambda, Fly.io, Railway, or bare metal.
+
+## Known limitations
+
+- **Read caching only.** PgBeam does not replicate data. Writes pass through to the origin.
+- **Eventual consistency.** Cached reads may be up to 60 seconds stale by default. TTL is configurable per project. Caching can be disabled entirely.
+- **No cross-region cache coordination.** Each region's cache is independent, expiring via TTL.
+- **PostgreSQL only.** No MySQL or other database support today.
+
+These are deliberate scope constraints, not technical debt. Read caching with stale-while-revalidate covers a large class of workloads without the complexity of distributed cache invalidation.
+
+## Pricing and sustainability
+
+PgBeam is self-funded. Running six global regions is not free: compute and bandwidth cost real money every month. The pricing exists to make the project sustainable long-term, not to maximize revenue during a technical preview.
+
+Three tiers with usage-based overage, starting at $9/month with a 14-day free trial:
+
+| Plan    | Price   | Queries/day | Projects | Connections |
+| ------- | ------- | ----------- | -------- | ----------- |
+| Starter | $9/mo   | 200K        | 5        | 20          |
+| Pro     | $29/mo  | 1M          | 20       | 100         |
+| Scale   | $99/mo  | 10M         | 100      | 500         |
+
+Overage billing at $0.10 per 1K queries and $0.20/GB data transfer across all tiers. No hard caps. Usage scales smoothly without service interruption.
+
+The goal is straightforward: cover infrastructure costs from day one so the project does not depend on runway or external funding to keep running. If PgBeam solves a real problem, it should be able to sustain itself on the value it delivers.
+
+## Current status and roadmap
+
+PgBeam is now in public beta. Sign up, add a database, get a connection string, and start querying. No waitlist, no invite codes.
+
+This is still a technical preview with no SLA or uptime guarantee, but it is real infrastructure running across six AWS regions today.
+
+Near-term roadmap:
+
+- **Dashboard**: project management, cache analytics, per-query TTL configuration.
+- **Additional regions**: expansion driven by user demand.
+- **Vercel Marketplace**: one-click provisioning as a Vercel add-on with integrated billing.
+
+The focus is on validating with real workloads before scaling further. If your team is running PostgreSQL across regions and paying the latency tax, [try PgBeam today](https://pgbeam.app).
