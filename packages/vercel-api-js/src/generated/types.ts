@@ -1854,6 +1854,7 @@ export const payloadPermissionsEnum = {
 	"read-write:project": "read-write:project",
 	"read:deployment": "read:deployment",
 	"read-write:deployment": "read-write:deployment",
+	"read-write:edge-cache": "read-write:edge-cache",
 } as const;
 
 export type PayloadPermissionsEnumKey =
@@ -1887,6 +1888,7 @@ export const payloadNextPermissionsEnum = {
 	"read-write:project": "read-write:project",
 	"read:deployment": "read:deployment",
 	"read-write:deployment": "read-write:deployment",
+	"read-write:edge-cache": "read-write:edge-cache",
 } as const;
 
 export type PayloadNextPermissionsEnumKey =
@@ -1928,6 +1930,7 @@ export const beforePermissionsEnum = {
 	"read-write:project": "read-write:project",
 	"read:deployment": "read:deployment",
 	"read-write:deployment": "read-write:deployment",
+	"read-write:edge-cache": "read-write:edge-cache",
 } as const;
 
 export type BeforePermissionsEnumKey =
@@ -1950,6 +1953,7 @@ export const afterPermissionsEnum = {
 	"read-write:project": "read-write:project",
 	"read:deployment": "read:deployment",
 	"read-write:deployment": "read-write:deployment",
+	"read-write:edge-cache": "read-write:edge-cache",
 } as const;
 
 export type AfterPermissionsEnumKey =
@@ -1972,6 +1976,7 @@ export const payloadPermissionsEnum2 = {
 	"read-write:project": "read-write:project",
 	"read:deployment": "read:deployment",
 	"read-write:deployment": "read-write:deployment",
+	"read-write:edge-cache": "read-write:edge-cache",
 } as const;
 
 export type PayloadPermissionsEnum2Key =
@@ -3348,6 +3353,14 @@ export const payloadSourceFilesOutsideRootDirectoryEnum = {
 export type PayloadSourceFilesOutsideRootDirectoryEnumKey =
 	(typeof payloadSourceFilesOutsideRootDirectoryEnum)[keyof typeof payloadSourceFilesOutsideRootDirectoryEnum];
 
+export const payloadIsSystemInitiatedEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadIsSystemInitiatedEnumKey =
+	(typeof payloadIsSystemInitiatedEnum)[keyof typeof payloadIsSystemInitiatedEnum];
+
 export const payloadUpdatedEnum = {
 	false: false,
 	true: true,
@@ -4223,6 +4236,7 @@ export const payloadAuthMethodEnum = {
 	google: "google",
 	apple: "apple",
 	chatgpt: "chatgpt",
+	"github-webhook": "github-webhook",
 	manual: "manual",
 	passkey: "passkey",
 	otp: "otp",
@@ -11507,11 +11521,23 @@ export type UserEvent = {
 						/**
 						 * @type string | undefined
 						 */
-						buildMachineType?: string | undefined;
+						previousBuildMachineType?: string | undefined;
 						/**
-						 * @type string | undefined
+						 * @type string
 						 */
-						oldBuildMachineType?: string | undefined;
+						nextBuildMachineType: string;
+						/**
+						 * @type string
+						 */
+						previousBuildMachineSelection: string;
+						/**
+						 * @type string
+						 */
+						nextBuildMachineSelection: string;
+						/**
+						 * @type boolean | undefined
+						 */
+						isSystemInitiated?: PayloadIsSystemInitiatedEnumKey | undefined;
 				  }
 				| {
 						/**
@@ -17176,6 +17202,7 @@ export type SudoOriginEnumKey = (typeof sudoOriginEnum)[keyof typeof sudoOriginE
 export const scopesOriginEnum = {
 	saml: "saml",
 	github: "github",
+	"github-webhook": "github-webhook",
 	gitlab: "gitlab",
 	bitbucket: "bitbucket",
 	email: "email",
