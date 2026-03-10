@@ -1854,6 +1854,7 @@ export const payloadPermissionsEnum = {
 	"read-write:project": "read-write:project",
 	"read:deployment": "read:deployment",
 	"read-write:deployment": "read-write:deployment",
+	"read-write:edge-cache": "read-write:edge-cache",
 } as const;
 
 export type PayloadPermissionsEnumKey =
@@ -1887,6 +1888,7 @@ export const payloadNextPermissionsEnum = {
 	"read-write:project": "read-write:project",
 	"read:deployment": "read:deployment",
 	"read-write:deployment": "read-write:deployment",
+	"read-write:edge-cache": "read-write:edge-cache",
 } as const;
 
 export type PayloadNextPermissionsEnumKey =
@@ -1928,6 +1930,7 @@ export const beforePermissionsEnum = {
 	"read-write:project": "read-write:project",
 	"read:deployment": "read:deployment",
 	"read-write:deployment": "read-write:deployment",
+	"read-write:edge-cache": "read-write:edge-cache",
 } as const;
 
 export type BeforePermissionsEnumKey =
@@ -1950,6 +1953,7 @@ export const afterPermissionsEnum = {
 	"read-write:project": "read-write:project",
 	"read:deployment": "read:deployment",
 	"read-write:deployment": "read-write:deployment",
+	"read-write:edge-cache": "read-write:edge-cache",
 } as const;
 
 export type AfterPermissionsEnumKey =
@@ -1972,6 +1976,7 @@ export const payloadPermissionsEnum2 = {
 	"read-write:project": "read-write:project",
 	"read:deployment": "read:deployment",
 	"read-write:deployment": "read-write:deployment",
+	"read-write:edge-cache": "read-write:edge-cache",
 } as const;
 
 export type PayloadPermissionsEnum2Key =
