@@ -6087,6 +6087,7 @@ export const userEventSchema = z
 						"google",
 						"apple",
 						"chatgpt",
+						"github-webhook",
 						"manual",
 						"passkey",
 						"otp",
@@ -7354,6 +7355,7 @@ export const authTokenSchema = z
 								z.enum([
 									"saml",
 									"github",
+									"github-webhook",
 									"gitlab",
 									"bitbucket",
 									"email",
@@ -7379,6 +7381,7 @@ export const authTokenSchema = z
 								z.enum([
 									"saml",
 									"github",
+									"github-webhook",
 									"gitlab",
 									"bitbucket",
 									"email",
