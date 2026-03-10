@@ -1,8 +1,7 @@
 import { ArrowLeft } from "lucide-react";
-import Markdown from "markdown-to-jsx";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getAllSlugs, getPostBySlug } from "@/lib/blog";
+import { compileBlogPost, getAllSlugs, getPostBySlug } from "@/lib/blog";
 
 interface BlogPostPageProps {
 	params: Promise<{
@@ -18,6 +17,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 	const { slug } = await params;
 	const post = getPostBySlug(slug);
 	if (!post) notFound();
+
+	const content = await compileBlogPost(post.content);
 
 	return (
 		<div className="pt-16 pb-20">
@@ -60,83 +61,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 				</div>
 
 				<article className="prose prose-gray dark:prose-invert prose-base max-w-none">
-					<Markdown
-						options={{
-							overrides: {
-								h1: {
-									props: {
-										className:
-											"text-2xl font-bold text-gray-900 dark:text-white mb-4 mt-8 leading-tight",
-									},
-								},
-								h2: {
-									props: {
-										className:
-											"text-xl font-bold text-gray-900 dark:text-white mb-3 mt-6 leading-tight",
-									},
-								},
-								h3: {
-									props: {
-										className:
-											"text-lg font-bold text-gray-900 dark:text-white mb-2 mt-5 leading-tight",
-									},
-								},
-								p: {
-									props: {
-										className: "text-gray-700 dark:text-gray-300 mb-4 leading-relaxed",
-									},
-								},
-								a: {
-									props: {
-										className:
-											"text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 underline",
-									},
-								},
-								code: {
-									props: {
-										className:
-											"bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-1.5 py-0.5 rounded text-sm font-mono",
-									},
-								},
-								pre: {
-									props: {
-										className:
-											"bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-4 overflow-x-auto mb-6 text-sm",
-									},
-								},
-								ul: {
-									props: {
-										className:
-											"list-disc list-inside text-gray-700 dark:text-gray-300 mb-4 space-y-1 leading-relaxed",
-									},
-								},
-								ol: {
-									props: {
-										className:
-											"list-decimal list-inside text-gray-700 dark:text-gray-300 mb-4 space-y-1 leading-relaxed",
-									},
-								},
-								li: {
-									props: {
-										className: "text-gray-700 dark:text-gray-300 leading-relaxed",
-									},
-								},
-								strong: {
-									props: {
-										className: "font-semibold text-gray-900 dark:text-white",
-									},
-								},
-								blockquote: {
-									props: {
-										className:
-											"border-l-4 border-blue-200 dark:border-blue-800 pl-4 italic text-gray-600 dark:text-gray-400 mb-4",
-									},
-								},
-							},
-						}}
-					>
-						{post.content}
-					</Markdown>
+					{content}
 				</article>
 			</div>
 		</div>

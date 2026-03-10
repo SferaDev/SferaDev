@@ -1,6 +1,9 @@
 import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
+import { compileMDX } from "next-mdx-remote/rsc";
+import rehypePrettyCode from "rehype-pretty-code";
+import { mdxComponents } from "@/components/mdx/components";
 
 const postsDirectory = path.join(process.cwd(), "content/blog");
 
@@ -72,4 +75,27 @@ export function getAllTags(): string[] {
 	const posts = getAllPosts();
 	const allTags = posts.flatMap((post) => post.tags);
 	return [...new Set(allTags)].sort();
+}
+
+export async function compileBlogPost(source: string) {
+	const { content } = await compileMDX({
+		source,
+		components: mdxComponents,
+		options: {
+			mdxOptions: {
+				rehypePlugins: [
+					[
+						rehypePrettyCode,
+						{
+							theme: {
+								dark: "github-dark-dimmed",
+								light: "github-light",
+							},
+						},
+					],
+				],
+			},
+		},
+	});
+	return content;
 }

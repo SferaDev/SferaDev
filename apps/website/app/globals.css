@@ -71,6 +71,31 @@
 	}
 }
 
+/* Shiki dual-theme: light by default, dark via .dark class (next-themes) */
+[data-rehype-pretty-code-figure] code[data-theme*=" "],
+[data-rehype-pretty-code-figure] code[data-theme*=" "] span {
+	color: var(--shiki-light);
+	background-color: transparent;
+}
+
+.dark [data-rehype-pretty-code-figure] code[data-theme*=" "],
+.dark [data-rehype-pretty-code-figure] code[data-theme*=" "] span {
+	color: var(--shiki-dark);
+	background-color: transparent;
+}
+
+/* Inline code (backticks outside code blocks) */
+:not(pre) > code {
+	background-color: var(--color-gray-100);
+	padding: 0.125rem 0.375rem;
+	border-radius: 0.25rem;
+	font-size: 0.875em;
+}
+
+.dark :not(pre) > code {
+	background-color: var(--color-gray-800);
+}
+
 @layer utilities {
 	.animate-gradient {
 		animation: gradient 6s linear infinite;
