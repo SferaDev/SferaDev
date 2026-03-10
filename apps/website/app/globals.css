@@ -71,7 +71,7 @@
 	}
 }
 
-/* Shiki dual-theme: light by default, dark via .dark class (next-themes) */
+/* ── Shiki dual-theme: light default, dark via .dark class (next-themes) ── */
 [data-rehype-pretty-code-figure] code[data-theme*=" "],
 [data-rehype-pretty-code-figure] code[data-theme*=" "] span {
 	color: var(--shiki-light);
@@ -84,16 +84,97 @@
 	background-color: transparent;
 }
 
-/* Inline code (backticks outside code blocks) */
+/* Remove margin from figure wrapper so pre controls spacing */
+[data-rehype-pretty-code-figure] {
+	margin: 0;
+}
+
+/* ── Inline code (backticks outside pre blocks) ── */
 :not(pre) > code {
 	background-color: var(--color-gray-100);
-	padding: 0.125rem 0.375rem;
-	border-radius: 0.25rem;
-	font-size: 0.875em;
+	border: 1px solid var(--color-gray-200);
+	padding: 0.15rem 0.4rem;
+	border-radius: 0.375rem;
+	font-size: 0.85em;
+	font-weight: 500;
 }
 
 .dark :not(pre) > code {
 	background-color: var(--color-gray-800);
+	border-color: var(--color-gray-700);
+}
+
+/* ── Prose overrides for blog article styling ── */
+.prose {
+	--tw-prose-headings: var(--color-gray-900);
+	--tw-prose-links: var(--color-blue-600);
+}
+
+.dark .prose {
+	--tw-prose-headings: var(--color-gray-100);
+	--tw-prose-links: var(--color-blue-400);
+}
+
+.prose :where(h2):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+	margin-top: 2.5em;
+	margin-bottom: 0.75em;
+	padding-bottom: 0.3em;
+	border-bottom: 1px solid var(--color-gray-200);
+}
+
+.dark .prose :where(h2):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+	border-bottom-color: var(--color-gray-800);
+}
+
+.prose :where(a):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+	text-decoration: underline;
+	text-underline-offset: 3px;
+	text-decoration-color: var(--color-blue-300);
+	transition: text-decoration-color 0.15s;
+}
+
+.prose :where(a):not(:where([class~="not-prose"], [class~="not-prose"] *)):hover {
+	text-decoration-color: var(--color-blue-600);
+}
+
+.dark .prose :where(a):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+	text-decoration-color: var(--color-blue-800);
+}
+
+.dark .prose :where(a):not(:where([class~="not-prose"], [class~="not-prose"] *)):hover {
+	text-decoration-color: var(--color-blue-400);
+}
+
+.prose :where(strong):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+	color: var(--color-gray-900);
+}
+
+.dark .prose :where(strong):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+	color: var(--color-white);
+}
+
+/* Remove default prose styles from code blocks (we style them via components) */
+.prose :where(pre):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+	background-color: transparent;
+	border-radius: 0;
+	padding: 0;
+	margin: 0;
+	color: inherit;
+	overflow: visible;
+}
+
+/* Remove default prose table styles (we style them via components) */
+.prose :where(table):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+	margin: 0;
+}
+
+.prose :where(thead):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+	border-bottom: none;
+}
+
+.prose :where(th):not(:where([class~="not-prose"], [class~="not-prose"] *)),
+.prose :where(td):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+	padding: 0;
 }
 
 @layer utilities {
