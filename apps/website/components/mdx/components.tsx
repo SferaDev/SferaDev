@@ -1,6 +1,5 @@
 import type { MDXRemoteProps } from "next-mdx-remote/rsc";
 import { Blockquote } from "./blockquote";
-import { Callout } from "./callout";
 import { Pre } from "./pre";
 import { Table, Td, Th, Thead, Tr } from "./table";
 
@@ -12,5 +11,4 @@ export const mdxComponents: MDXRemoteProps["components"] = {
 	tr: Tr,
 	td: Td,
 	blockquote: Blockquote,
-	Callout,
 };

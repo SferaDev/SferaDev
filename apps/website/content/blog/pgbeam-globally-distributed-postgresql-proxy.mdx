@@ -47,11 +47,11 @@ Three capabilities compound to reduce database load and improve response times:
 
 PgBeam publishes a [live benchmark](https://pgbeam.app/benchmark) running serverless functions from 20 global regions against a database in `us-east-1`. Real TLS connections, real queries, no synthetic data.
 
-| Region    | Direct   | PgBeam (cache hit) | Improvement |
-| --------- | -------- | ------------------- | ----------- |
-| Mumbai    | 1,367ms  | 9ms                 | 152x        |
-| Singapore | 1,571ms  | 12ms                | 131x        |
-| Tokyo     | 1,087ms  | 16ms                | 68x         |
+| Region | Direct | PgBeam (cache hit) | Improvement |
+| --- | --- | --- | --- |
+| Mumbai | 1,367ms | 9ms | **152x** |
+| Singapore | 1,571ms | 12ms | **131x** |
+| Tokyo | 1,087ms | 16ms | **68x** |
 
 Even on cache misses, pooling cuts connect time from 1,174ms to 8ms for distant regions. The query still round-trips to the origin, but the connection is already established.
 
@@ -71,13 +71,13 @@ The proxy validates client credentials against the upstream database on every ne
 
 ## Competitive positioning
 
-| Capability      | PgBeam | Hyperdrive   | Prisma Accelerate | PgBouncer   | RDS Proxy   |
-| --------------- | ------ | ------------ | ------------------ | ----------- | ----------- |
-| Pooling         | Yes    | Yes          | Yes                | Yes         | Yes         |
-| Query cache     | Yes    | Yes          | Yes                | No          | No          |
-| Multi-region    | Yes    | Yes          | Yes                | No          | No          |
-| Platform lock   | None   | CF Workers   | Prisma ORM         | None        | AWS VPC     |
-| Managed         | Yes    | Yes          | Yes                | Self-hosted | Yes         |
+| Capability | PgBeam | Hyperdrive | Prisma Accelerate | PgBouncer | RDS Proxy |
+| --- | --- | --- | --- | --- | --- |
+| Pooling | Yes | Yes | Yes | Yes | Yes |
+| Query cache | Yes | Yes | Yes | No | No |
+| Multi-region | Yes | Yes | Yes | No | No |
+| Platform lock | **None** | CF Workers | Prisma ORM | None | AWS VPC |
+| Managed | Yes | Yes | Yes | Self-hosted | Yes |
 
 PgBeam is the only managed option that combines pooling, caching, and multi-region deployment without platform lock-in. It works from any cloud, any framework, any ORM: Vercel, AWS Lambda, Fly.io, Railway, or bare metal.
 
@@ -94,15 +94,15 @@ These are deliberate scope constraints, not technical debt. Read caching with st
 
 PgBeam is self-funded. Running six global regions is not free: compute and bandwidth cost real money every month. The pricing exists to make the project sustainable long-term, not to maximize revenue during a technical preview.
 
-Three tiers with usage-based overage, starting at $9/month with a 14-day free trial:
+Three tiers with usage-based overage, starting at \$9/month with a 14-day free trial:
 
-| Plan    | Price   | Queries/day | Projects | Connections |
-| ------- | ------- | ----------- | -------- | ----------- |
-| Starter | $9/mo   | 200K        | 5        | 20          |
-| Pro     | $29/mo  | 1M          | 20       | 100         |
-| Scale   | $99/mo  | 10M         | 100      | 500         |
+| Plan | Price | Queries/day | Projects | Connections |
+| --- | --- | --- | --- | --- |
+| Starter | \$9/mo | 200K | 5 | 20 |
+| Pro | \$29/mo | 1M | 20 | 100 |
+| Scale | \$99/mo | 10M | 100 | 500 |
 
-Overage billing at $0.10 per 1K queries and $0.20/GB data transfer across all tiers. No hard caps. Usage scales smoothly without service interruption.
+Overage billing at \$0.10 per 1K queries and \$0.20/GB data transfer across all tiers. No hard caps. Usage scales smoothly without service interruption.
 
 The goal is straightforward: cover infrastructure costs from day one so the project does not depend on runway or external funding to keep running. If PgBeam solves a real problem, it should be able to sustain itself on the value it delivers.
 

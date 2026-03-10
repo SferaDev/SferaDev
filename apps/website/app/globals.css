@@ -153,6 +153,28 @@
 	color: var(--color-white);
 }
 
+/* Better list spacing for definition-style lists (bold term + description) */
+.prose :where(li):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.prose :where(ol > li):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+	margin-top: 0.75em;
+	margin-bottom: 0.75em;
+}
+
+/* HR styling */
+.prose :where(hr):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+	border-color: var(--color-gray-200);
+	margin-top: 3em;
+	margin-bottom: 3em;
+}
+
+.dark .prose :where(hr):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+	border-color: var(--color-gray-800);
+}
+
 /* Remove default prose styles from code blocks (we style them via components) */
 .prose :where(pre):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
 	background-color: transparent;
