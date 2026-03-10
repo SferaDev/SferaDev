@@ -243,6 +243,9 @@ catalogs:
     rehype-pretty-code:
       specifier: 0.14.3
       version: 0.14.3
+    remark-gfm:
+      specifier: 4.0.1
+      version: 4.0.1
     rimraf:
       specifier: 6.1.3
       version: 6.1.3
@@ -696,6 +699,9 @@ importers:
       rehype-pretty-code:
         specifier: 'catalog:'
         version: 0.14.3(shiki@4.0.2)
+      remark-gfm:
+        specifier: 'catalog:'
+        version: 4.0.1
       shiki:
         specifier: 'catalog:'
         version: 4.0.2
@@ -18517,7 +18523,7 @@ snapshots:
   remark-gfm@4.0.0:
     dependencies:
       '@types/mdast': 4.0.4
-      mdast-util-gfm: 3.0.0
+      mdast-util-gfm: 3.1.0
       micromark-extension-gfm: 3.0.0
       remark-parse: 11.0.0
       remark-stringify: 11.0.0

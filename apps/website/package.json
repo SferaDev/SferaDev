@@ -26,6 +26,7 @@
 		"react": "catalog:",
 		"react-dom": "catalog:",
 		"rehype-pretty-code": "catalog:",
+		"remark-gfm": "catalog:",
 		"shiki": "catalog:",
 		"tailwind-merge": "catalog:"
 	},

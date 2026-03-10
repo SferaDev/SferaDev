@@ -3,6 +3,7 @@ import path from "node:path";
 import matter from "gray-matter";
 import { compileMDX } from "next-mdx-remote/rsc";
 import rehypePrettyCode from "rehype-pretty-code";
+import remarkGfm from "remark-gfm";
 import { mdxComponents } from "@/components/mdx/components";
 
 const postsDirectory = path.join(process.cwd(), "content/blog");
@@ -83,6 +84,7 @@ export async function compileBlogPost(source: string) {
 		components: mdxComponents,
 		options: {
 			mdxOptions: {
+				remarkPlugins: [remarkGfm],
 				rehypePlugins: [
 					[
 						rehypePrettyCode,
