@@ -4231,6 +4231,7 @@ export const payloadAuthMethodEnum = {
 	google: "google",
 	apple: "apple",
 	chatgpt: "chatgpt",
+	"github-webhook": "github-webhook",
 	manual: "manual",
 	passkey: "passkey",
 	otp: "otp",
@@ -17196,6 +17197,7 @@ export type SudoOriginEnumKey = (typeof sudoOriginEnum)[keyof typeof sudoOriginE
 export const scopesOriginEnum = {
 	saml: "saml",
 	github: "github",
+	"github-webhook": "github-webhook",
 	gitlab: "gitlab",
 	bitbucket: "bitbucket",
 	email: "email",
