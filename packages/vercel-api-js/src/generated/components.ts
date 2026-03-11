@@ -200,12 +200,6 @@ import type {
 	CreateEvent404,
 	CreateEventMutationResponse,
 	CreateEventPathParams,
-	CreateExperimentationItem400,
-	CreateExperimentationItem401,
-	CreateExperimentationItem403,
-	CreateExperimentationItem404,
-	CreateExperimentationItemMutationResponse,
-	CreateExperimentationItemPathParams,
 	CreateFlag400,
 	CreateFlag401,
 	CreateFlag402,
@@ -226,6 +220,12 @@ import type {
 	CreateFlagSegmentMutationResponse,
 	CreateFlagSegmentPathParams,
 	CreateFlagSegmentQueryParams,
+	CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems400,
+	CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems401,
+	CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems403,
+	CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems404,
+	CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsMutationResponse,
+	CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsPathParams,
 	CreateIntegrationStoreDirect400,
 	CreateIntegrationStoreDirect401,
 	CreateIntegrationStoreDirect402,
@@ -444,12 +444,6 @@ import type {
 	DeleteEdgeConfigTokensMutationResponse,
 	DeleteEdgeConfigTokensPathParams,
 	DeleteEdgeConfigTokensQueryParams,
-	DeleteExperimentationItem400,
-	DeleteExperimentationItem401,
-	DeleteExperimentationItem403,
-	DeleteExperimentationItem404,
-	DeleteExperimentationItemMutationResponse,
-	DeleteExperimentationItemPathParams,
 	DeleteFlag400,
 	DeleteFlag401,
 	DeleteFlag402,
@@ -470,6 +464,12 @@ import type {
 	DeleteFlagSegmentMutationResponse,
 	DeleteFlagSegmentPathParams,
 	DeleteFlagSegmentQueryParams,
+	DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId400,
+	DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId401,
+	DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId403,
+	DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId404,
+	DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdMutationResponse,
+	DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdPathParams,
 	DeleteIntegrationLogDrain400,
 	DeleteIntegrationLogDrain401,
 	DeleteIntegrationLogDrain403,
@@ -626,19 +626,6 @@ import type {
 	FinalizeInstallation404,
 	FinalizeInstallationMutationResponse,
 	FinalizeInstallationPathParams,
-	GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig400,
-	GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig401,
-	GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig403,
-	GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig404,
-	GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfigPathParams,
-	GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfigQueryResponse,
-	GETV1SecurityFirewallEvents400,
-	GETV1SecurityFirewallEvents401,
-	GETV1SecurityFirewallEvents403,
-	GETV1SecurityFirewallEvents404,
-	GETV1SecurityFirewallEvents500,
-	GETV1SecurityFirewallEventsQueryParams,
-	GETV1SecurityFirewallEventsQueryResponse,
 	GenerateRoute400,
 	GenerateRoute401,
 	GenerateRoute403,
@@ -987,6 +974,12 @@ import type {
 	GetFlagSettingsPathParams,
 	GetFlagSettingsQueryParams,
 	GetFlagSettingsQueryResponse,
+	GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig400,
+	GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig401,
+	GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig403,
+	GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig404,
+	GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigPathParams,
+	GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigQueryResponse,
 	GetIntegrationLogDrains400,
 	GetIntegrationLogDrains401,
 	GetIntegrationLogDrains403,
@@ -1065,6 +1058,12 @@ import type {
 	GetProjects400,
 	GetProjects401,
 	GetProjects403,
+	GetProjectsByIdOrNameCustomEnvironments400,
+	GetProjectsByIdOrNameCustomEnvironments401,
+	GetProjectsByIdOrNameCustomEnvironments403,
+	GetProjectsByIdOrNameCustomEnvironmentsPathParams,
+	GetProjectsByIdOrNameCustomEnvironmentsQueryParams,
+	GetProjectsByIdOrNameCustomEnvironmentsQueryResponse,
 	GetProjectsQueryParams,
 	GetProjectsQueryResponse,
 	GetRecords400,
@@ -1137,6 +1136,13 @@ import type {
 	GetSdkKeysPathParams,
 	GetSdkKeysQueryParams,
 	GetSdkKeysQueryResponse,
+	GetSecurityFirewallEvents400,
+	GetSecurityFirewallEvents401,
+	GetSecurityFirewallEvents403,
+	GetSecurityFirewallEvents404,
+	GetSecurityFirewallEvents500,
+	GetSecurityFirewallEventsQueryParams,
+	GetSecurityFirewallEventsQueryResponse,
 	GetSharedEnvVar400,
 	GetSharedEnvVar401,
 	GetSharedEnvVar403,
@@ -1333,12 +1339,6 @@ import type {
 	ListContractCommitments404,
 	ListContractCommitmentsQueryParams,
 	ListContractCommitmentsQueryResponse,
-	ListCustomEnvironments400,
-	ListCustomEnvironments401,
-	ListCustomEnvironments403,
-	ListCustomEnvironmentsPathParams,
-	ListCustomEnvironmentsQueryParams,
-	ListCustomEnvironmentsQueryResponse,
 	ListDeploymentAliases400,
 	ListDeploymentAliases401,
 	ListDeploymentAliases403,
@@ -1450,13 +1450,6 @@ import type {
 	MoveProjectDomainMutationResponse,
 	MoveProjectDomainPathParams,
 	MoveProjectDomainQueryParams,
-	PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription400,
-	PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription401,
-	PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription403,
-	PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription409,
-	PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription422,
-	PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionMutationResponse,
-	PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionPathParams,
 	PatchDomain400,
 	PatchDomain401,
 	PatchDomain403,
@@ -1623,6 +1616,14 @@ import type {
 	RenewDomainMutationResponse,
 	RenewDomainPathParams,
 	RenewDomainQueryParams,
+	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig400,
+	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig401,
+	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig403,
+	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig404,
+	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig409,
+	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig412,
+	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigMutationResponse,
+	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigPathParams,
 	RequestAccessToTeam400,
 	RequestAccessToTeam401,
 	RequestAccessToTeam403,
@@ -1829,20 +1830,6 @@ import type {
 	UpdateEdgeConfigMutationResponse,
 	UpdateEdgeConfigPathParams,
 	UpdateEdgeConfigQueryParams,
-	UpdateExperimentationEdgeConfig400,
-	UpdateExperimentationEdgeConfig401,
-	UpdateExperimentationEdgeConfig403,
-	UpdateExperimentationEdgeConfig404,
-	UpdateExperimentationEdgeConfig409,
-	UpdateExperimentationEdgeConfig412,
-	UpdateExperimentationEdgeConfigMutationResponse,
-	UpdateExperimentationEdgeConfigPathParams,
-	UpdateExperimentationItem400,
-	UpdateExperimentationItem401,
-	UpdateExperimentationItem403,
-	UpdateExperimentationItem404,
-	UpdateExperimentationItemMutationResponse,
-	UpdateExperimentationItemPathParams,
 	UpdateFirewallConfig400,
 	UpdateFirewallConfig401,
 	UpdateFirewallConfig402,
@@ -1887,6 +1874,12 @@ import type {
 	UpdateInstallation404,
 	UpdateInstallationMutationResponse,
 	UpdateInstallationPathParams,
+	UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId400,
+	UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId401,
+	UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId403,
+	UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId404,
+	UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdMutationResponse,
+	UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdPathParams,
 	UpdateIntegrationDeploymentAction400,
 	UpdateIntegrationDeploymentAction401,
 	UpdateIntegrationDeploymentAction403,
@@ -1947,6 +1940,13 @@ import type {
 	UpdateProjectProtectionBypassPathParams,
 	UpdateProjectProtectionBypassQueryParams,
 	UpdateProjectQueryParams,
+	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription400,
+	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription401,
+	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription403,
+	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription409,
+	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription422,
+	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionMutationResponse,
+	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionPathParams,
 	UpdateRecord400,
 	UpdateRecord401,
 	UpdateRecord402,
@@ -8207,11 +8207,11 @@ export async function getRuntimeLogs({
  * @summary Create one or multiple experimentation items
  * {@link /v1/installations/:integrationConfigurationId/resources/:resourceId/experimentation/items}
  */
-export async function createExperimentationItem({
+export async function createInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems({
 	pathParams: { integrationConfigurationId, resourceId },
 	config = {},
 }: {
-	pathParams: CreateExperimentationItemPathParams;
+	pathParams: CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsPathParams;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -8225,17 +8225,17 @@ export async function createExperimentationItem({
 	}
 
 	const data = await request<
-		CreateExperimentationItemMutationResponse,
+		CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsMutationResponse,
 		ErrorWrapper<
-			| CreateExperimentationItem400
-			| CreateExperimentationItem401
-			| CreateExperimentationItem403
-			| CreateExperimentationItem404
+			| CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems400
+			| CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems401
+			| CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems403
+			| CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems404
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		CreateExperimentationItemPathParams
+		CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsPathParams
 	>({
 		method: "POST",
 		url: `/v1/installations/${integrationConfigurationId}/resources/${resourceId}/experimentation/items`,
@@ -8250,11 +8250,11 @@ export async function createExperimentationItem({
  * @summary Patch an existing experimentation item
  * {@link /v1/installations/:integrationConfigurationId/resources/:resourceId/experimentation/items/:itemId}
  */
-export async function updateExperimentationItem({
+export async function updateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId({
 	pathParams: { integrationConfigurationId, resourceId, itemId },
 	config = {},
 }: {
-	pathParams: UpdateExperimentationItemPathParams;
+	pathParams: UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdPathParams;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -8272,17 +8272,17 @@ export async function updateExperimentationItem({
 	}
 
 	const data = await request<
-		UpdateExperimentationItemMutationResponse,
+		UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdMutationResponse,
 		ErrorWrapper<
-			| UpdateExperimentationItem400
-			| UpdateExperimentationItem401
-			| UpdateExperimentationItem403
-			| UpdateExperimentationItem404
+			| UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId400
+			| UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId401
+			| UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId403
+			| UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId404
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		UpdateExperimentationItemPathParams
+		UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdPathParams
 	>({
 		method: "PATCH",
 		url: `/v1/installations/${integrationConfigurationId}/resources/${resourceId}/experimentation/items/${itemId}`,
@@ -8297,11 +8297,11 @@ export async function updateExperimentationItem({
  * @summary Delete an existing experimentation item
  * {@link /v1/installations/:integrationConfigurationId/resources/:resourceId/experimentation/items/:itemId}
  */
-export async function deleteExperimentationItem({
+export async function deleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId({
 	pathParams: { integrationConfigurationId, resourceId, itemId },
 	config = {},
 }: {
-	pathParams: DeleteExperimentationItemPathParams;
+	pathParams: DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdPathParams;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -8319,17 +8319,17 @@ export async function deleteExperimentationItem({
 	}
 
 	const data = await request<
-		DeleteExperimentationItemMutationResponse,
+		DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdMutationResponse,
 		ErrorWrapper<
-			| DeleteExperimentationItem400
-			| DeleteExperimentationItem401
-			| DeleteExperimentationItem403
-			| DeleteExperimentationItem404
+			| DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId400
+			| DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId401
+			| DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId403
+			| DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId404
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		DeleteExperimentationItemPathParams
+		DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdPathParams
 	>({
 		method: "DELETE",
 		url: `/v1/installations/${integrationConfigurationId}/resources/${resourceId}/experimentation/items/${itemId}`,
@@ -8343,11 +8343,11 @@ export async function deleteExperimentationItem({
  * @summary Get the data of a user-provided Edge Config
  * {@link /v1/installations/:integrationConfigurationId/resources/:resourceId/experimentation/edge-config}
  */
-export async function gETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig({
+export async function getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig({
 	pathParams: { integrationConfigurationId, resourceId },
 	config = {},
 }: {
-	pathParams: GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfigPathParams;
+	pathParams: GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigPathParams;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -8361,17 +8361,17 @@ export async function gETV1InstallationsIntegrationConfigurationIdResourcesResou
 	}
 
 	const data = await request<
-		GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfigQueryResponse,
+		GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigQueryResponse,
 		ErrorWrapper<
-			| GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig400
-			| GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig401
-			| GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig403
-			| GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig404
+			| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig400
+			| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig401
+			| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig403
+			| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig404
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfigPathParams
+		GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigPathParams
 	>({
 		method: "GET",
 		url: `/v1/installations/${integrationConfigurationId}/resources/${resourceId}/experimentation/edge-config`,
@@ -8385,11 +8385,11 @@ export async function gETV1InstallationsIntegrationConfigurationIdResourcesResou
  * @summary Push data into a user-provided Edge Config
  * {@link /v1/installations/:integrationConfigurationId/resources/:resourceId/experimentation/edge-config}
  */
-export async function updateExperimentationEdgeConfig({
+export async function replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig({
 	pathParams: { integrationConfigurationId, resourceId },
 	config = {},
 }: {
-	pathParams: UpdateExperimentationEdgeConfigPathParams;
+	pathParams: ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigPathParams;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -8403,19 +8403,19 @@ export async function updateExperimentationEdgeConfig({
 	}
 
 	const data = await request<
-		UpdateExperimentationEdgeConfigMutationResponse,
+		ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigMutationResponse,
 		ErrorWrapper<
-			| UpdateExperimentationEdgeConfig400
-			| UpdateExperimentationEdgeConfig401
-			| UpdateExperimentationEdgeConfig403
-			| UpdateExperimentationEdgeConfig404
-			| UpdateExperimentationEdgeConfig409
-			| UpdateExperimentationEdgeConfig412
+			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig400
+			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig401
+			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig403
+			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig404
+			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig409
+			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig412
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		UpdateExperimentationEdgeConfigPathParams
+		ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigPathParams
 	>({
 		method: "PUT",
 		url: `/v1/installations/${integrationConfigurationId}/resources/${resourceId}/experimentation/edge-config`,
@@ -9102,13 +9102,13 @@ export async function createCustomEnvironment({
  * @summary Retrieve custom environments
  * {@link /v9/projects/:idOrName/custom-environments}
  */
-export async function listCustomEnvironments({
+export async function getProjectsByIdOrNameCustomEnvironments({
 	pathParams: { idOrName },
 	queryParams,
 	config = {},
 }: {
-	pathParams: ListCustomEnvironmentsPathParams;
-	queryParams?: ListCustomEnvironmentsQueryParams;
+	pathParams: GetProjectsByIdOrNameCustomEnvironmentsPathParams;
+	queryParams?: GetProjectsByIdOrNameCustomEnvironmentsQueryParams;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -9118,12 +9118,16 @@ export async function listCustomEnvironments({
 	}
 
 	const data = await request<
-		ListCustomEnvironmentsQueryResponse,
-		ErrorWrapper<ListCustomEnvironments400 | ListCustomEnvironments401 | ListCustomEnvironments403>,
+		GetProjectsByIdOrNameCustomEnvironmentsQueryResponse,
+		ErrorWrapper<
+			| GetProjectsByIdOrNameCustomEnvironments400
+			| GetProjectsByIdOrNameCustomEnvironments401
+			| GetProjectsByIdOrNameCustomEnvironments403
+		>,
 		null,
 		Record<string, string>,
-		ListCustomEnvironmentsQueryParams,
-		ListCustomEnvironmentsPathParams
+		GetProjectsByIdOrNameCustomEnvironmentsQueryParams,
+		GetProjectsByIdOrNameCustomEnvironmentsPathParams
 	>({
 		method: "GET",
 		url: `/v9/projects/${idOrName}/custom-environments`,
@@ -10269,11 +10273,11 @@ export async function requestRollback({
  * @summary Updates the description for a rollback
  * {@link /v1/projects/:projectId/rollback/:deploymentId/update-description}
  */
-export async function pATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription({
+export async function updateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription({
 	pathParams: { projectId, deploymentId },
 	config = {},
 }: {
-	pathParams: PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionPathParams;
+	pathParams: UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionPathParams;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -10287,18 +10291,18 @@ export async function pATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescript
 	}
 
 	const data = await request<
-		PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionMutationResponse,
+		UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionMutationResponse,
 		ErrorWrapper<
-			| PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription400
-			| PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription401
-			| PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription403
-			| PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription409
-			| PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription422
+			| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription400
+			| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription401
+			| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription403
+			| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription409
+			| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription422
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionPathParams
+		UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionPathParams
 	>({
 		method: "PATCH",
 		url: `/v1/projects/${projectId}/rollback/${deploymentId}/update-description`,
@@ -11408,27 +11412,27 @@ export async function removeBypassIp({
  * @summary Read Firewall Actions by Project
  * {@link /v1/security/firewall/events}
  */
-export async function gETV1SecurityFirewallEvents({
+export async function getSecurityFirewallEvents({
 	queryParams,
 	config = {},
 }: {
-	queryParams: GETV1SecurityFirewallEventsQueryParams;
+	queryParams: GetSecurityFirewallEventsQueryParams;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
-		GETV1SecurityFirewallEventsQueryResponse,
+		GetSecurityFirewallEventsQueryResponse,
 		ErrorWrapper<
-			| GETV1SecurityFirewallEvents400
-			| GETV1SecurityFirewallEvents401
-			| GETV1SecurityFirewallEvents403
-			| GETV1SecurityFirewallEvents404
-			| GETV1SecurityFirewallEvents500
+			| GetSecurityFirewallEvents400
+			| GetSecurityFirewallEvents401
+			| GetSecurityFirewallEvents403
+			| GetSecurityFirewallEvents404
+			| GetSecurityFirewallEvents500
 		>,
 		null,
 		Record<string, string>,
-		GETV1SecurityFirewallEventsQueryParams,
+		GetSecurityFirewallEventsQueryParams,
 		Record<string, string>
 	>({ method: "GET", url: `/v1/security/firewall/events`, queryParams, ...requestConfig });
 	return data;
@@ -12952,15 +12956,15 @@ export const operationsByPath = {
 	"DELETE /v1/integrations/log-drains/{id}": deleteIntegrationLogDrain,
 	"GET /v1/projects/{projectId}/deployments/{deploymentId}/runtime-logs": getRuntimeLogs,
 	"POST /v1/installations/{integrationConfigurationId}/resources/{resourceId}/experimentation/items":
-		createExperimentationItem,
+		createInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems,
 	"PATCH /v1/installations/{integrationConfigurationId}/resources/{resourceId}/experimentation/items/{itemId}":
-		updateExperimentationItem,
+		updateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId,
 	"DELETE /v1/installations/{integrationConfigurationId}/resources/{resourceId}/experimentation/items/{itemId}":
-		deleteExperimentationItem,
+		deleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId,
 	"GET /v1/installations/{integrationConfigurationId}/resources/{resourceId}/experimentation/edge-config":
-		gETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig,
+		getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig,
 	"PUT /v1/installations/{integrationConfigurationId}/resources/{resourceId}/experimentation/edge-config":
-		updateExperimentationEdgeConfig,
+		replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig,
 	"GET /v1/projects/{idOrName}/members": getProjectMembers,
 	"POST /v1/projects/{idOrName}/members": addProjectMember,
 	"DELETE /v1/projects/{idOrName}/members/{uid}": removeProjectMember,
@@ -12979,7 +12983,7 @@ export const operationsByPath = {
 	"DELETE /v9/projects/{idOrName}": deleteProject,
 	"PATCH /v1/projects/{idOrName}/shared-connect-links": updateStaticIps,
 	"POST /v9/projects/{idOrName}/custom-environments": createCustomEnvironment,
-	"GET /v9/projects/{idOrName}/custom-environments": listCustomEnvironments,
+	"GET /v9/projects/{idOrName}/custom-environments": getProjectsByIdOrNameCustomEnvironments,
 	"GET /v9/projects/{idOrName}/custom-environments/{environmentSlugOrId}": getCustomEnvironment,
 	"PATCH /v9/projects/{idOrName}/custom-environments/{environmentSlugOrId}":
 		updateCustomEnvironment,
@@ -13010,7 +13014,7 @@ export const operationsByPath = {
 	"PATCH /v1/projects/{idOrName}/protection-bypass": updateProjectProtectionBypass,
 	"POST /v1/projects/{projectId}/rollback/{deploymentId}": requestRollback,
 	"PATCH /v1/projects/{projectId}/rollback/{deploymentId}/update-description":
-		pATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription,
+		updateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription,
 	"POST /v10/projects/{projectId}/promote/{deploymentId}": requestPromote,
 	"GET /v1/projects/{projectId}/promote/aliases": listPromoteAliases,
 	"POST /v1/projects/{projectId}/pause": pauseProject,
@@ -13041,7 +13045,7 @@ export const operationsByPath = {
 	"GET /v1/security/firewall/bypass": getBypassIp,
 	"POST /v1/security/firewall/bypass": addBypassIp,
 	"DELETE /v1/security/firewall/bypass": removeBypassIp,
-	"GET /v1/security/firewall/events": gETV1SecurityFirewallEvents,
+	"GET /v1/security/firewall/events": getSecurityFirewallEvents,
 	"POST /v1/storage/stores/integration/direct": createIntegrationStoreDirect,
 	"GET /v3/teams/{teamId}/members": getTeamMembers,
 	"POST /v2/teams/{teamId}/members": inviteUserToTeam,
@@ -13251,7 +13255,7 @@ export const operationsByTag = {
 		getSharedEnvVar,
 		unlinkSharedEnvVariable,
 		createCustomEnvironment,
-		listCustomEnvironments,
+		getProjectsByIdOrNameCustomEnvironments,
 		getCustomEnvironment,
 		updateCustomEnvironment,
 		removeCustomEnvironment,
@@ -13302,11 +13306,11 @@ export const operationsByTag = {
 		updateResourceSecrets,
 		updateResourceSecretsById,
 		exchangeSsoToken,
-		createExperimentationItem,
-		updateExperimentationItem,
-		deleteExperimentationItem,
-		gETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig,
-		updateExperimentationEdgeConfig,
+		createInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems,
+		updateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId,
+		deleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId,
+		getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig,
+		replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig,
 	},
 	authentication: {
 		exchangeSsoToken,
@@ -13356,7 +13360,7 @@ export const operationsByTag = {
 		acceptProjectTransferRequest,
 		updateProjectProtectionBypass,
 		requestRollback,
-		pATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription,
+		updateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription,
 		requestPromote,
 		listPromoteAliases,
 		pauseProject,
@@ -13403,7 +13407,7 @@ export const operationsByTag = {
 		getBypassIp,
 		addBypassIp,
 		removeBypassIp,
-		gETV1SecurityFirewallEvents,
+		getSecurityFirewallEvents,
 	},
 	teams: {
 		getTeamMembers,
@@ -13593,7 +13597,7 @@ export const tagDictionary = {
 		GET: [
 			"listSharedEnvVariable",
 			"getSharedEnvVar",
-			"listCustomEnvironments",
+			"getProjectsByIdOrNameCustomEnvironments",
 			"getCustomEnvironment",
 		],
 		PATCH: ["updateSharedEnvVariable", "unlinkSharedEnvVariable", "updateCustomEnvironment"],
@@ -13621,14 +13625,18 @@ export const tagDictionary = {
 		DELETE: ["deleteFlag", "deleteFlagSegment", "deleteSdkKey"],
 	},
 	marketplace: {
-		PATCH: ["updateInstallation", "updateResource", "updateExperimentationItem"],
+		PATCH: [
+			"updateInstallation",
+			"updateResource",
+			"updateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId",
+		],
 		GET: [
 			"getAccountInfo",
 			"getMember",
 			"getIntegrationResources",
 			"getIntegrationResource",
 			"getInvoice",
-			"gETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig",
+			"getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig",
 		],
 		POST: [
 			"createEvent",
@@ -13638,14 +13646,17 @@ export const tagDictionary = {
 			"updateInvoice",
 			"submitPrepaymentBalances",
 			"exchangeSsoToken",
-			"createExperimentationItem",
+			"createInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems",
 		],
-		DELETE: ["deleteIntegrationResource", "deleteExperimentationItem"],
+		DELETE: [
+			"deleteIntegrationResource",
+			"deleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId",
+		],
 		PUT: [
 			"importResource",
 			"updateResourceSecrets",
 			"updateResourceSecretsById",
-			"updateExperimentationEdgeConfig",
+			"replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig",
 		],
 	},
 	authentication: {
@@ -13695,7 +13706,7 @@ export const tagDictionary = {
 			"updateProjectDomain",
 			"editProjectEnv",
 			"updateProjectProtectionBypass",
-			"pATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription",
+			"updateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription",
 		],
 		DELETE: ["deleteProject", "removeProjectDomain", "removeProjectEnv", "batchRemoveProjectEnv"],
 		PUT: ["acceptProjectTransferRequest"],
@@ -13737,12 +13748,7 @@ export const tagDictionary = {
 		POST: ["updateAttackChallengeMode", "addBypassIp"],
 		PUT: ["putFirewallConfig"],
 		PATCH: ["updateFirewallConfig"],
-		GET: [
-			"getFirewallConfig",
-			"getActiveAttackStatus",
-			"getBypassIp",
-			"gETV1SecurityFirewallEvents",
-		],
+		GET: ["getFirewallConfig", "getActiveAttackStatus", "getBypassIp", "getSecurityFirewallEvents"],
 		DELETE: ["removeBypassIp"],
 	},
 	teams: {
