@@ -14833,7 +14833,7 @@ export type CreateTicketQueryParams = {
 };
 
 /**
- * @description ok
+ * @description Created
  */
 export type CreateTicket201 = {
 	/**
@@ -14855,6 +14855,34 @@ export type CreateTicket201 = {
 };
 
 /**
+ * @description OAuth application not found
+ */
+export type CreateTicket401 = {
+	/**
+	 * @type integer | undefined, int64
+	 */
+	code?: number | undefined;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
+/**
+ * @description Validation error
+ */
+export type CreateTicket422 = {
+	/**
+	 * @type integer | undefined, int64
+	 */
+	code?: number | undefined;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
+/**
  * @description error
  */
 export type CreateTicketError = {
@@ -14868,12 +14896,20 @@ export type CreateTicketError = {
 	message: string;
 };
 
+export type CreateTicketMutationRequest = {
+	/**
+	 * @type string | undefined
+	 */
+	message?: string | undefined;
+};
+
 export type CreateTicketMutationResponse = CreateTicket201;
 
 export type CreateTicketMutation = {
 	Response: CreateTicket201;
+	Request: CreateTicketMutationRequest;
 	QueryParams: CreateTicketQueryParams;
-	Errors: any;
+	Errors: CreateTicket401 | CreateTicket422;
 };
 
 export type ShowTicketPathParams = {
