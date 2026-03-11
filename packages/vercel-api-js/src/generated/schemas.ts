@@ -917,6 +917,7 @@ export const userEventSchema = z
 					"team",
 					"team-avatar-update",
 					"team-delete",
+					"team-domain-verification-deleted",
 					"team-email-domain-update",
 					"team-ended-trial",
 					"team-invite-bulk-delete",
@@ -1777,6 +1778,16 @@ export const userEventSchema = z
 										"Since 6 Nov 2025 The verification status of the commit. - 'verified' if the commit is verified - 'unverified' if the commit is not verified - 'unknown' if the commit verification status is unknown or not supported",
 									),
 							),
+							nsnbSideEffect: z.optional(
+								z
+									.object({
+										action: z.enum(["auto-approved-member", "auto-approved-pending-invite"]),
+										gitUserLogin: z.string(),
+									})
+									.describe(
+										"Since March 2026 Records a successful NSNB auto-add result so later GitHub PR comments can deterministically explain why this SHA was allowed to deploy.",
+									),
+							),
 							createdAt: z.optional(z.number()),
 							deploymentId: z.optional(z.string()),
 							deployHook: z.optional(
@@ -1937,6 +1948,16 @@ export const userEventSchema = z
 										"Since 6 Nov 2025 The verification status of the commit. - 'verified' if the commit is verified - 'unverified' if the commit is not verified - 'unknown' if the commit verification status is unknown or not supported",
 									),
 							),
+							nsnbSideEffect: z.optional(
+								z
+									.object({
+										action: z.enum(["auto-approved-member", "auto-approved-pending-invite"]),
+										gitUserLogin: z.string(),
+									})
+									.describe(
+										"Since March 2026 Records a successful NSNB auto-add result so later GitHub PR comments can deterministically explain why this SHA was allowed to deploy.",
+									),
+							),
 							committerGitUserId: z.optional(
 								z
 									.number()
@@ -2087,6 +2108,16 @@ export const userEventSchema = z
 									.enum(["verified", "unverified", "unknown"])
 									.describe(
 										"Since 6 Nov 2025 The verification status of the commit. - 'verified' if the commit is verified - 'unverified' if the commit is not verified - 'unknown' if the commit verification status is unknown or not supported",
+									),
+							),
+							nsnbSideEffect: z.optional(
+								z
+									.object({
+										action: z.enum(["auto-approved-member", "auto-approved-pending-invite"]),
+										gitUserLogin: z.string(),
+									})
+									.describe(
+										"Since March 2026 Records a successful NSNB auto-add result so later GitHub PR comments can deterministically explain why this SHA was allowed to deploy.",
 									),
 							),
 							committerGitUserId: z.optional(
@@ -2264,6 +2295,16 @@ export const userEventSchema = z
 									.enum(["verified", "unverified", "unknown"])
 									.describe(
 										"Since 6 Nov 2025 The verification status of the commit. - 'verified' if the commit is verified - 'unverified' if the commit is not verified - 'unknown' if the commit verification status is unknown or not supported",
+									),
+							),
+							nsnbSideEffect: z.optional(
+								z
+									.object({
+										action: z.enum(["auto-approved-member", "auto-approved-pending-invite"]),
+										gitUserLogin: z.string(),
+									})
+									.describe(
+										"Since March 2026 Records a successful NSNB auto-add result so later GitHub PR comments can deterministically explain why this SHA was allowed to deploy.",
 									),
 							),
 							commit: z.optional(
@@ -3157,6 +3198,7 @@ export const userEventSchema = z
 											defaultPurchaseType: z.optional(z.enum(["enhanced", "turbo", "standard"])),
 											cores: z.optional(z.number()),
 											memory: z.optional(z.number()),
+											machineSelectionType: z.optional(z.enum(["fixed", "elastic"])),
 										}),
 									),
 									security: z.optional(
@@ -7716,6 +7758,13 @@ export const authUserSchema = z
 							memory: z.optional(
 								z
 									.number()
+									.describe(
+										"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
+									),
+							),
+							machineSelectionType: z.optional(
+								z
+									.enum(["elastic", "fixed"])
 									.describe(
 										"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
 									),
@@ -14229,102 +14278,126 @@ export const getRuntimeLogs403Schema = z.unknown();
 
 export const getRuntimeLogsQueryResponseSchema = z.lazy(() => getRuntimeLogs200Schema);
 
-export const createExperimentationItemPathParamsSchema = z.object({
-	integrationConfigurationId: z.string(),
-	resourceId: z.string(),
-});
+export const createInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsPathParamsSchema =
+	z.object({
+		integrationConfigurationId: z.string(),
+		resourceId: z.string(),
+	});
 
 /**
  * @description The items were created
  */
-export const createExperimentationItem204Schema = z.unknown();
+export const createInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems204Schema =
+	z.unknown();
 
 /**
  * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
  */
-export const createExperimentationItem400Schema = z.unknown();
+export const createInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems400Schema =
+	z.unknown();
 
 /**
  * @description The request is not authorized.
  */
-export const createExperimentationItem401Schema = z.unknown();
+export const createInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems401Schema =
+	z.unknown();
 
 /**
  * @description You do not have permission to access this resource.
  */
-export const createExperimentationItem403Schema = z.unknown();
+export const createInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems403Schema =
+	z.unknown();
 
-export const createExperimentationItem404Schema = z.unknown();
+export const createInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems404Schema =
+	z.unknown();
 
-export const createExperimentationItemMutationResponseSchema = z.lazy(
-	() => createExperimentationItem204Schema,
-);
+export const createInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsMutationResponseSchema =
+	z.lazy(
+		() =>
+			createInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems204Schema,
+	);
 
-export const updateExperimentationItemPathParamsSchema = z.object({
-	integrationConfigurationId: z.string(),
-	resourceId: z.string(),
-	itemId: z.string(),
-});
+export const updateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdPathParamsSchema =
+	z.object({
+		integrationConfigurationId: z.string(),
+		resourceId: z.string(),
+		itemId: z.string(),
+	});
 
 /**
  * @description The item was updated
  */
-export const updateExperimentationItem204Schema = z.unknown();
+export const updateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId204Schema =
+	z.unknown();
 
 /**
  * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
  */
-export const updateExperimentationItem400Schema = z.unknown();
+export const updateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId400Schema =
+	z.unknown();
 
 /**
  * @description The request is not authorized.
  */
-export const updateExperimentationItem401Schema = z.unknown();
+export const updateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId401Schema =
+	z.unknown();
 
 /**
  * @description You do not have permission to access this resource.
  */
-export const updateExperimentationItem403Schema = z.unknown();
+export const updateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId403Schema =
+	z.unknown();
 
-export const updateExperimentationItem404Schema = z.unknown();
+export const updateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId404Schema =
+	z.unknown();
 
-export const updateExperimentationItemMutationResponseSchema = z.lazy(
-	() => updateExperimentationItem204Schema,
-);
+export const updateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdMutationResponseSchema =
+	z.lazy(
+		() =>
+			updateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId204Schema,
+	);
 
-export const deleteExperimentationItemPathParamsSchema = z.object({
-	integrationConfigurationId: z.string(),
-	resourceId: z.string(),
-	itemId: z.string(),
-});
+export const deleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdPathParamsSchema =
+	z.object({
+		integrationConfigurationId: z.string(),
+		resourceId: z.string(),
+		itemId: z.string(),
+	});
 
 /**
  * @description The item was deleted
  */
-export const deleteExperimentationItem204Schema = z.unknown();
+export const deleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId204Schema =
+	z.unknown();
 
 /**
  * @description One of the provided values in the request query is invalid.
  */
-export const deleteExperimentationItem400Schema = z.unknown();
+export const deleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId400Schema =
+	z.unknown();
 
 /**
  * @description The request is not authorized.
  */
-export const deleteExperimentationItem401Schema = z.unknown();
+export const deleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId401Schema =
+	z.unknown();
 
 /**
  * @description You do not have permission to access this resource.
  */
-export const deleteExperimentationItem403Schema = z.unknown();
+export const deleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId403Schema =
+	z.unknown();
 
-export const deleteExperimentationItem404Schema = z.unknown();
+export const deleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId404Schema =
+	z.unknown();
 
-export const deleteExperimentationItemMutationResponseSchema = z.lazy(
-	() => deleteExperimentationItem204Schema,
-);
+export const deleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdMutationResponseSchema =
+	z.lazy(
+		() =>
+			deleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId204Schema,
+	);
 
-export const GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfigPathParamsSchema =
+export const getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigPathParamsSchema =
 	z.object({
 		integrationConfigurationId: z.string(),
 		resourceId: z.string(),
@@ -14333,73 +14406,83 @@ export const GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExpe
 /**
  * @description The Edge Config data
  */
-export const GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig200Schema =
+export const getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig200Schema =
 	z.unknown();
 
-export const GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig304Schema =
+export const getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig304Schema =
 	z.unknown();
 
 /**
  * @description One of the provided values in the request query is invalid.
  */
-export const GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig400Schema =
+export const getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig400Schema =
 	z.unknown();
 
 /**
  * @description The request is not authorized.
  */
-export const GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig401Schema =
+export const getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig401Schema =
 	z.unknown();
 
 /**
  * @description You do not have permission to access this resource.
  */
-export const GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig403Schema =
+export const getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig403Schema =
 	z.unknown();
 
-export const GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig404Schema =
+export const getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig404Schema =
 	z.unknown();
 
-export const GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfigQueryResponseSchema =
+export const getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigQueryResponseSchema =
 	z.lazy(
 		() =>
-			GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig200Schema,
+			getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig200Schema,
 	);
 
-export const updateExperimentationEdgeConfigPathParamsSchema = z.object({
-	integrationConfigurationId: z.string(),
-	resourceId: z.string(),
-});
+export const replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigPathParamsSchema =
+	z.object({
+		integrationConfigurationId: z.string(),
+		resourceId: z.string(),
+	});
 
 /**
  * @description The Edge Config was updated
  */
-export const updateExperimentationEdgeConfig200Schema = z.unknown();
+export const replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig200Schema =
+	z.unknown();
 
 /**
  * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
  */
-export const updateExperimentationEdgeConfig400Schema = z.unknown();
+export const replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig400Schema =
+	z.unknown();
 
 /**
  * @description The request is not authorized.
  */
-export const updateExperimentationEdgeConfig401Schema = z.unknown();
+export const replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig401Schema =
+	z.unknown();
 
 /**
  * @description You do not have permission to access this resource.
  */
-export const updateExperimentationEdgeConfig403Schema = z.unknown();
+export const replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig403Schema =
+	z.unknown();
 
-export const updateExperimentationEdgeConfig404Schema = z.unknown();
+export const replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig404Schema =
+	z.unknown();
 
-export const updateExperimentationEdgeConfig409Schema = z.unknown();
+export const replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig409Schema =
+	z.unknown();
 
-export const updateExperimentationEdgeConfig412Schema = z.unknown();
+export const replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig412Schema =
+	z.unknown();
 
-export const updateExperimentationEdgeConfigMutationResponseSchema = z.lazy(
-	() => updateExperimentationEdgeConfig200Schema,
-);
+export const replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigMutationResponseSchema =
+	z.lazy(
+		() =>
+			replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig200Schema,
+	);
 
 export const getProjectMembersPathParamsSchema = z.object({
 	idOrName: z.string().describe("The ID or name of the Project."),
@@ -15136,11 +15219,11 @@ export const createCustomEnvironmentMutationResponseSchema = z.lazy(
 	() => createCustomEnvironment201Schema,
 );
 
-export const listCustomEnvironmentsPathParamsSchema = z.object({
+export const getProjectsByIdOrNameCustomEnvironmentsPathParamsSchema = z.object({
 	idOrName: z.string().describe("The unique project identifier or the project name"),
 });
 
-export const listCustomEnvironmentsQueryParamsSchema = z
+export const getProjectsByIdOrNameCustomEnvironmentsQueryParamsSchema = z
 	.object({
 		gitBranch: z.optional(
 			z.string().describe("Fetch custom environments for a specific git branch"),
@@ -15152,25 +15235,25 @@ export const listCustomEnvironmentsQueryParamsSchema = z
 	})
 	.optional();
 
-export const listCustomEnvironments200Schema = z.unknown();
+export const getProjectsByIdOrNameCustomEnvironments200Schema = z.unknown();
 
 /**
  * @description One of the provided values in the request query is invalid.
  */
-export const listCustomEnvironments400Schema = z.unknown();
+export const getProjectsByIdOrNameCustomEnvironments400Schema = z.unknown();
 
 /**
  * @description The request is not authorized.
  */
-export const listCustomEnvironments401Schema = z.unknown();
+export const getProjectsByIdOrNameCustomEnvironments401Schema = z.unknown();
 
 /**
  * @description You do not have permission to access this resource.
  */
-export const listCustomEnvironments403Schema = z.unknown();
+export const getProjectsByIdOrNameCustomEnvironments403Schema = z.unknown();
 
-export const listCustomEnvironmentsQueryResponseSchema = z.lazy(
-	() => listCustomEnvironments200Schema,
+export const getProjectsByIdOrNameCustomEnvironmentsQueryResponseSchema = z.lazy(
+	() => getProjectsByIdOrNameCustomEnvironments200Schema,
 );
 
 export const getCustomEnvironmentPathParamsSchema = z.object({
@@ -16282,35 +16365,41 @@ export const requestRollback422Schema = z.unknown();
 
 export const requestRollbackMutationResponseSchema = z.lazy(() => requestRollback201Schema);
 
-export const PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionPathParamsSchema =
+export const updateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionPathParamsSchema =
 	z.object({
 		projectId: z.string(),
 		deploymentId: z.string(),
 	});
 
-export const PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription200Schema = z.unknown();
+export const updateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription200Schema =
+	z.unknown();
 
 /**
  * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
  */
-export const PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription400Schema = z.unknown();
+export const updateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription400Schema =
+	z.unknown();
 
 /**
  * @description The request is not authorized.
  */
-export const PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription401Schema = z.unknown();
+export const updateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription401Schema =
+	z.unknown();
 
 /**
  * @description You do not have permission to access this resource.
  */
-export const PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription403Schema = z.unknown();
+export const updateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription403Schema =
+	z.unknown();
 
-export const PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription409Schema = z.unknown();
+export const updateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription409Schema =
+	z.unknown();
 
-export const PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription422Schema = z.unknown();
+export const updateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription422Schema =
+	z.unknown();
 
-export const PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionMutationResponseSchema =
-	z.lazy(() => PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription200Schema);
+export const updateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionMutationResponseSchema =
+	z.lazy(() => updateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription200Schema);
 
 export const requestPromotePathParamsSchema = z.object({
 	projectId: z.string(),
@@ -17585,36 +17674,36 @@ export const removeBypassIp500Schema = z.unknown();
 
 export const removeBypassIpMutationResponseSchema = z.lazy(() => removeBypassIp200Schema);
 
-export const GETV1SecurityFirewallEventsQueryParamsSchema = z.object({
+export const getSecurityFirewallEventsQueryParamsSchema = z.object({
 	projectId: z.string(),
 	startTimestamp: z.optional(z.coerce.number()),
 	endTimestamp: z.optional(z.coerce.number()),
 	hosts: z.optional(z.string()),
 });
 
-export const GETV1SecurityFirewallEvents200Schema = z.unknown();
+export const getSecurityFirewallEvents200Schema = z.unknown();
 
 /**
  * @description One of the provided values in the request query is invalid.
  */
-export const GETV1SecurityFirewallEvents400Schema = z.unknown();
+export const getSecurityFirewallEvents400Schema = z.unknown();
 
 /**
  * @description The request is not authorized.
  */
-export const GETV1SecurityFirewallEvents401Schema = z.unknown();
+export const getSecurityFirewallEvents401Schema = z.unknown();
 
 /**
  * @description You do not have permission to access this resource.
  */
-export const GETV1SecurityFirewallEvents403Schema = z.unknown();
+export const getSecurityFirewallEvents403Schema = z.unknown();
 
-export const GETV1SecurityFirewallEvents404Schema = z.unknown();
+export const getSecurityFirewallEvents404Schema = z.unknown();
 
-export const GETV1SecurityFirewallEvents500Schema = z.unknown();
+export const getSecurityFirewallEvents500Schema = z.unknown();
 
-export const GETV1SecurityFirewallEventsQueryResponseSchema = z.lazy(
-	() => GETV1SecurityFirewallEvents200Schema,
+export const getSecurityFirewallEventsQueryResponseSchema = z.lazy(
+	() => getSecurityFirewallEvents200Schema,
 );
 
 export const createIntegrationStoreDirectQueryParamsSchema = z

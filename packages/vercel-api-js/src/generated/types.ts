@@ -1688,6 +1688,7 @@ export const userEventTypeEnum = {
 	team: "team",
 	"team-avatar-update": "team-avatar-update",
 	"team-delete": "team-delete",
+	"team-domain-verification-deleted": "team-domain-verification-deleted",
 	"team-email-domain-update": "team-email-domain-update",
 	"team-ended-trial": "team-ended-trial",
 	"team-invite-bulk-delete": "team-invite-bulk-delete",
@@ -2119,6 +2120,14 @@ export const jobCommitVerificationEnum = {
 
 export type JobCommitVerificationEnumKey =
 	(typeof jobCommitVerificationEnum)[keyof typeof jobCommitVerificationEnum];
+
+export const nsnbSideEffectActionEnum = {
+	"auto-approved-member": "auto-approved-member",
+	"auto-approved-pending-invite": "auto-approved-pending-invite",
+} as const;
+
+export type NsnbSideEffectActionEnumKey =
+	(typeof nsnbSideEffectActionEnum)[keyof typeof nsnbSideEffectActionEnum];
 
 export const jobEventfulEnum = {
 	false: false,
@@ -2578,6 +2587,14 @@ export const buildMachineDefaultPurchaseTypeEnum = {
 
 export type BuildMachineDefaultPurchaseTypeEnumKey =
 	(typeof buildMachineDefaultPurchaseTypeEnum)[keyof typeof buildMachineDefaultPurchaseTypeEnum];
+
+export const buildMachineMachineSelectionTypeEnum = {
+	fixed: "fixed",
+	elastic: "elastic",
+} as const;
+
+export type BuildMachineMachineSelectionTypeEnumKey =
+	(typeof buildMachineMachineSelectionTypeEnum)[keyof typeof buildMachineMachineSelectionTypeEnum];
 
 export const activeDashboardViewsViewPreferenceEnum = {
 	list: "list",
@@ -5953,6 +5970,22 @@ export type UserEvent = {
 									 */
 									commitVerification?: JobCommitVerificationEnumKey | undefined;
 									/**
+									 * @description Since March 2026 Records a successful NSNB auto-add result so later GitHub PR comments can deterministically explain why this SHA was allowed to deploy.
+									 * @type object | undefined
+									 */
+									nsnbSideEffect?:
+										| {
+												/**
+												 * @type string
+												 */
+												action: NsnbSideEffectActionEnumKey;
+												/**
+												 * @type string
+												 */
+												gitUserLogin: string;
+										  }
+										| undefined;
+									/**
 									 * @type number | undefined
 									 */
 									createdAt?: number | undefined;
@@ -6261,6 +6294,22 @@ export type UserEvent = {
 									 */
 									commitVerification?: JobCommitVerificationEnumKey | undefined;
 									/**
+									 * @description Since March 2026 Records a successful NSNB auto-add result so later GitHub PR comments can deterministically explain why this SHA was allowed to deploy.
+									 * @type object | undefined
+									 */
+									nsnbSideEffect?:
+										| {
+												/**
+												 * @type string
+												 */
+												action: NsnbSideEffectActionEnumKey;
+												/**
+												 * @type string
+												 */
+												gitUserLogin: string;
+										  }
+										| undefined;
+									/**
 									 * @description Remote account id of the committer details (github id etc, not vercel). Note that the committer name/email are user input verbatim and not verified. Github does appear to resolve the given email to the username so we can trust that. If the username matches that of the sender, which is verified info, then we can use the account id and account type. See api-incoming, where we determine and set this property Note that even with that, the account may still have been spoofed.
 									 * @type number | undefined
 									 */
@@ -6492,6 +6541,22 @@ export type UserEvent = {
 									 * @type string | undefined
 									 */
 									commitVerification?: JobCommitVerificationEnumKey | undefined;
+									/**
+									 * @description Since March 2026 Records a successful NSNB auto-add result so later GitHub PR comments can deterministically explain why this SHA was allowed to deploy.
+									 * @type object | undefined
+									 */
+									nsnbSideEffect?:
+										| {
+												/**
+												 * @type string
+												 */
+												action: NsnbSideEffectActionEnumKey;
+												/**
+												 * @type string
+												 */
+												gitUserLogin: string;
+										  }
+										| undefined;
 									/**
 									 * @description Remote account id of the committer details (github id etc, not vercel). Note that the committer name/email are user input verbatim and not verified. Github does appear to resolve the given email to the username so we can trust that. If the username matches that of the sender, which is verified info, then we can use the account id and account type. See api-incoming, where we determine and set this property Note that even with that, the account may still have been spoofed.
 									 * @type number | undefined
@@ -6802,6 +6867,22 @@ export type UserEvent = {
 									 * @type string | undefined
 									 */
 									commitVerification?: JobCommitVerificationEnumKey | undefined;
+									/**
+									 * @description Since March 2026 Records a successful NSNB auto-add result so later GitHub PR comments can deterministically explain why this SHA was allowed to deploy.
+									 * @type object | undefined
+									 */
+									nsnbSideEffect?:
+										| {
+												/**
+												 * @type string
+												 */
+												action: NsnbSideEffectActionEnumKey;
+												/**
+												 * @type string
+												 */
+												gitUserLogin: string;
+										  }
+										| undefined;
 									/**
 									 * @type object | undefined
 									 */
@@ -8800,6 +8881,12 @@ export type UserEvent = {
 													 * @type number | undefined
 													 */
 													memory?: number | undefined;
+													/**
+													 * @type string | undefined
+													 */
+													machineSelectionType?:
+														| BuildMachineMachineSelectionTypeEnumKey
+														| undefined;
 											  }
 											| undefined;
 										/**
@@ -17468,6 +17555,14 @@ export const buildMachineDefaultPurchaseTypeEnum2 = {
 export type BuildMachineDefaultPurchaseTypeEnum2Key =
 	(typeof buildMachineDefaultPurchaseTypeEnum2)[keyof typeof buildMachineDefaultPurchaseTypeEnum2];
 
+export const buildMachineMachineSelectionTypeEnum2 = {
+	elastic: "elastic",
+	fixed: "fixed",
+} as const;
+
+export type BuildMachineMachineSelectionTypeEnum2Key =
+	(typeof buildMachineMachineSelectionTypeEnum2)[keyof typeof buildMachineMachineSelectionTypeEnum2];
+
 export const activeDashboardViewsViewPreferenceEnum2 = {
 	cards: "cards",
 	list: "list",
@@ -17749,6 +17844,11 @@ export type AuthUser = {
 					 * @type number | undefined
 					 */
 					memory?: number | undefined;
+					/**
+					 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
+					 * @type string | undefined
+					 */
+					machineSelectionType?: BuildMachineMachineSelectionTypeEnum2Key | undefined;
 			  }
 			| undefined;
 		/**
@@ -27303,150 +27403,174 @@ export type GetRuntimeLogsQuery = {
 	Errors: GetRuntimeLogs400 | GetRuntimeLogs401 | GetRuntimeLogs403;
 };
 
-export type CreateExperimentationItemPathParams = {
-	/**
-	 * @type string
-	 */
-	integrationConfigurationId: string;
-	/**
-	 * @type string
-	 */
-	resourceId: string;
-};
+export type CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsPathParams =
+	{
+		/**
+		 * @type string
+		 */
+		integrationConfigurationId: string;
+		/**
+		 * @type string
+		 */
+		resourceId: string;
+	};
 
 /**
  * @description The items were created
  */
-export type CreateExperimentationItem204 = unknown;
+export type CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems204 =
+	unknown;
 
 /**
  * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
  */
-export type CreateExperimentationItem400 = unknown;
+export type CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems400 =
+	unknown;
 
 /**
  * @description The request is not authorized.
  */
-export type CreateExperimentationItem401 = unknown;
+export type CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems401 =
+	unknown;
 
 /**
  * @description You do not have permission to access this resource.
  */
-export type CreateExperimentationItem403 = unknown;
+export type CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems403 =
+	unknown;
 
-export type CreateExperimentationItem404 = unknown;
+export type CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems404 =
+	unknown;
 
-export type CreateExperimentationItemMutationResponse = CreateExperimentationItem204;
+export type CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsMutationResponse =
+	CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems204;
 
-export type CreateExperimentationItemMutation = {
-	Response: CreateExperimentationItem204;
-	PathParams: CreateExperimentationItemPathParams;
-	Errors:
-		| CreateExperimentationItem400
-		| CreateExperimentationItem401
-		| CreateExperimentationItem403
-		| CreateExperimentationItem404;
-};
+export type CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsMutation =
+	{
+		Response: CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems204;
+		PathParams: CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsPathParams;
+		Errors:
+			| CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems400
+			| CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems401
+			| CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems403
+			| CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems404;
+	};
 
-export type UpdateExperimentationItemPathParams = {
-	/**
-	 * @type string
-	 */
-	integrationConfigurationId: string;
-	/**
-	 * @type string
-	 */
-	resourceId: string;
-	/**
-	 * @type string
-	 */
-	itemId: string;
-};
+export type UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdPathParams =
+	{
+		/**
+		 * @type string
+		 */
+		integrationConfigurationId: string;
+		/**
+		 * @type string
+		 */
+		resourceId: string;
+		/**
+		 * @type string
+		 */
+		itemId: string;
+	};
 
 /**
  * @description The item was updated
  */
-export type UpdateExperimentationItem204 = unknown;
+export type UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId204 =
+	unknown;
 
 /**
  * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
  */
-export type UpdateExperimentationItem400 = unknown;
+export type UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId400 =
+	unknown;
 
 /**
  * @description The request is not authorized.
  */
-export type UpdateExperimentationItem401 = unknown;
+export type UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId401 =
+	unknown;
 
 /**
  * @description You do not have permission to access this resource.
  */
-export type UpdateExperimentationItem403 = unknown;
+export type UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId403 =
+	unknown;
 
-export type UpdateExperimentationItem404 = unknown;
+export type UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId404 =
+	unknown;
 
-export type UpdateExperimentationItemMutationResponse = UpdateExperimentationItem204;
+export type UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdMutationResponse =
+	UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId204;
 
-export type UpdateExperimentationItemMutation = {
-	Response: UpdateExperimentationItem204;
-	PathParams: UpdateExperimentationItemPathParams;
-	Errors:
-		| UpdateExperimentationItem400
-		| UpdateExperimentationItem401
-		| UpdateExperimentationItem403
-		| UpdateExperimentationItem404;
-};
+export type UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdMutation =
+	{
+		Response: UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId204;
+		PathParams: UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdPathParams;
+		Errors:
+			| UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId400
+			| UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId401
+			| UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId403
+			| UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId404;
+	};
 
-export type DeleteExperimentationItemPathParams = {
-	/**
-	 * @type string
-	 */
-	integrationConfigurationId: string;
-	/**
-	 * @type string
-	 */
-	resourceId: string;
-	/**
-	 * @type string
-	 */
-	itemId: string;
-};
+export type DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdPathParams =
+	{
+		/**
+		 * @type string
+		 */
+		integrationConfigurationId: string;
+		/**
+		 * @type string
+		 */
+		resourceId: string;
+		/**
+		 * @type string
+		 */
+		itemId: string;
+	};
 
 /**
  * @description The item was deleted
  */
-export type DeleteExperimentationItem204 = unknown;
+export type DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId204 =
+	unknown;
 
 /**
  * @description One of the provided values in the request query is invalid.
  */
-export type DeleteExperimentationItem400 = unknown;
+export type DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId400 =
+	unknown;
 
 /**
  * @description The request is not authorized.
  */
-export type DeleteExperimentationItem401 = unknown;
+export type DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId401 =
+	unknown;
 
 /**
  * @description You do not have permission to access this resource.
  */
-export type DeleteExperimentationItem403 = unknown;
+export type DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId403 =
+	unknown;
 
-export type DeleteExperimentationItem404 = unknown;
+export type DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId404 =
+	unknown;
 
-export type DeleteExperimentationItemMutationResponse = DeleteExperimentationItem204;
+export type DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdMutationResponse =
+	DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId204;
 
-export type DeleteExperimentationItemMutation = {
-	Response: DeleteExperimentationItem204;
-	PathParams: DeleteExperimentationItemPathParams;
-	Errors:
-		| DeleteExperimentationItem400
-		| DeleteExperimentationItem401
-		| DeleteExperimentationItem403
-		| DeleteExperimentationItem404;
-};
+export type DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdMutation =
+	{
+		Response: DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId204;
+		PathParams: DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdPathParams;
+		Errors:
+			| DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId400
+			| DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId401
+			| DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId403
+			| DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId404;
+	};
 
-export type GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfigPathParams =
+export type GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigPathParams =
 	{
 		/**
 		 * @type string
@@ -27461,97 +27585,107 @@ export type GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExper
 /**
  * @description The Edge Config data
  */
-export type GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig200 =
+export type GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig200 =
 	unknown;
 
-export type GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig304 =
+export type GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig304 =
 	unknown;
 
 /**
  * @description One of the provided values in the request query is invalid.
  */
-export type GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig400 =
+export type GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig400 =
 	unknown;
 
 /**
  * @description The request is not authorized.
  */
-export type GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig401 =
+export type GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig401 =
 	unknown;
 
 /**
  * @description You do not have permission to access this resource.
  */
-export type GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig403 =
+export type GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig403 =
 	unknown;
 
-export type GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig404 =
+export type GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig404 =
 	unknown;
 
-export type GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfigQueryResponse =
-	GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig200;
+export type GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigQueryResponse =
+	GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig200;
 
-export type GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfigQuery =
+export type GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigQuery =
 	{
-		Response: GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig200;
-		PathParams: GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfigPathParams;
+		Response: GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig200;
+		PathParams: GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigPathParams;
 		Errors:
-			| GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig400
-			| GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig401
-			| GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig403
-			| GETV1InstallationsIntegrationConfigurationIdResourcesResourceIdExperimentationEdgeConfig404;
+			| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig400
+			| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig401
+			| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig403
+			| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig404;
 	};
 
-export type UpdateExperimentationEdgeConfigPathParams = {
-	/**
-	 * @type string
-	 */
-	integrationConfigurationId: string;
-	/**
-	 * @type string
-	 */
-	resourceId: string;
-};
+export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigPathParams =
+	{
+		/**
+		 * @type string
+		 */
+		integrationConfigurationId: string;
+		/**
+		 * @type string
+		 */
+		resourceId: string;
+	};
 
 /**
  * @description The Edge Config was updated
  */
-export type UpdateExperimentationEdgeConfig200 = unknown;
+export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig200 =
+	unknown;
 
 /**
  * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
  */
-export type UpdateExperimentationEdgeConfig400 = unknown;
+export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig400 =
+	unknown;
 
 /**
  * @description The request is not authorized.
  */
-export type UpdateExperimentationEdgeConfig401 = unknown;
+export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig401 =
+	unknown;
 
 /**
  * @description You do not have permission to access this resource.
  */
-export type UpdateExperimentationEdgeConfig403 = unknown;
+export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig403 =
+	unknown;
 
-export type UpdateExperimentationEdgeConfig404 = unknown;
+export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig404 =
+	unknown;
 
-export type UpdateExperimentationEdgeConfig409 = unknown;
+export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig409 =
+	unknown;
 
-export type UpdateExperimentationEdgeConfig412 = unknown;
+export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig412 =
+	unknown;
 
-export type UpdateExperimentationEdgeConfigMutationResponse = UpdateExperimentationEdgeConfig200;
+export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigMutationResponse =
+	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig200;
 
-export type UpdateExperimentationEdgeConfigMutation = {
-	Response: UpdateExperimentationEdgeConfig200;
-	PathParams: UpdateExperimentationEdgeConfigPathParams;
-	Errors:
-		| UpdateExperimentationEdgeConfig400
-		| UpdateExperimentationEdgeConfig401
-		| UpdateExperimentationEdgeConfig403
-		| UpdateExperimentationEdgeConfig404
-		| UpdateExperimentationEdgeConfig409
-		| UpdateExperimentationEdgeConfig412;
-};
+export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigMutation =
+	{
+		Response: ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig200;
+		PathParams: ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigPathParams;
+		Errors:
+			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig400
+			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig401
+			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig403
+			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig404
+			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig409
+			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig412;
+	};
 
 export type GetProjectMembersPathParams = {
 	/**
@@ -28643,7 +28777,7 @@ export type CreateCustomEnvironmentMutation = {
 		| CreateCustomEnvironment500;
 };
 
-export type ListCustomEnvironmentsPathParams = {
+export type GetProjectsByIdOrNameCustomEnvironmentsPathParams = {
 	/**
 	 * @description The unique project identifier or the project name
 	 * @type string
@@ -28651,7 +28785,7 @@ export type ListCustomEnvironmentsPathParams = {
 	idOrName: string;
 };
 
-export type ListCustomEnvironmentsQueryParams = {
+export type GetProjectsByIdOrNameCustomEnvironmentsQueryParams = {
 	/**
 	 * @description Fetch custom environments for a specific git branch
 	 * @type string | undefined
@@ -28669,30 +28803,34 @@ export type ListCustomEnvironmentsQueryParams = {
 	slug?: string | undefined;
 };
 
-export type ListCustomEnvironments200 = unknown;
+export type GetProjectsByIdOrNameCustomEnvironments200 = unknown;
 
 /**
  * @description One of the provided values in the request query is invalid.
  */
-export type ListCustomEnvironments400 = unknown;
+export type GetProjectsByIdOrNameCustomEnvironments400 = unknown;
 
 /**
  * @description The request is not authorized.
  */
-export type ListCustomEnvironments401 = unknown;
+export type GetProjectsByIdOrNameCustomEnvironments401 = unknown;
 
 /**
  * @description You do not have permission to access this resource.
  */
-export type ListCustomEnvironments403 = unknown;
+export type GetProjectsByIdOrNameCustomEnvironments403 = unknown;
 
-export type ListCustomEnvironmentsQueryResponse = ListCustomEnvironments200;
+export type GetProjectsByIdOrNameCustomEnvironmentsQueryResponse =
+	GetProjectsByIdOrNameCustomEnvironments200;
 
-export type ListCustomEnvironmentsQuery = {
-	Response: ListCustomEnvironments200;
-	PathParams: ListCustomEnvironmentsPathParams;
-	QueryParams: ListCustomEnvironmentsQueryParams;
-	Errors: ListCustomEnvironments400 | ListCustomEnvironments401 | ListCustomEnvironments403;
+export type GetProjectsByIdOrNameCustomEnvironmentsQuery = {
+	Response: GetProjectsByIdOrNameCustomEnvironments200;
+	PathParams: GetProjectsByIdOrNameCustomEnvironmentsPathParams;
+	QueryParams: GetProjectsByIdOrNameCustomEnvironmentsQueryParams;
+	Errors:
+		| GetProjectsByIdOrNameCustomEnvironments400
+		| GetProjectsByIdOrNameCustomEnvironments401
+		| GetProjectsByIdOrNameCustomEnvironments403;
 };
 
 export type GetCustomEnvironmentPathParams = {
@@ -30412,7 +30550,7 @@ export type RequestRollbackMutation = {
 		| RequestRollback422;
 };
 
-export type PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionPathParams = {
+export type UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionPathParams = {
 	/**
 	 * @type string
 	 */
@@ -30423,39 +30561,39 @@ export type PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionPathPar
 	deploymentId: string;
 };
 
-export type PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription200 = unknown;
+export type UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription200 = unknown;
 
 /**
  * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
  */
-export type PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription400 = unknown;
+export type UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription400 = unknown;
 
 /**
  * @description The request is not authorized.
  */
-export type PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription401 = unknown;
+export type UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription401 = unknown;
 
 /**
  * @description You do not have permission to access this resource.
  */
-export type PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription403 = unknown;
+export type UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription403 = unknown;
 
-export type PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription409 = unknown;
+export type UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription409 = unknown;
 
-export type PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription422 = unknown;
+export type UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription422 = unknown;
 
-export type PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionMutationResponse =
-	PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription200;
+export type UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionMutationResponse =
+	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription200;
 
-export type PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionMutation = {
-	Response: PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription200;
-	PathParams: PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescriptionPathParams;
+export type UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionMutation = {
+	Response: UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription200;
+	PathParams: UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionPathParams;
 	Errors:
-		| PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription400
-		| PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription401
-		| PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription403
-		| PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription409
-		| PATCHV1ProjectsProjectIdRollbackDeploymentIdUpdateDescription422;
+		| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription400
+		| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription401
+		| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription403
+		| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription409
+		| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription422;
 };
 
 export type RequestPromotePathParams = {
@@ -32266,7 +32404,7 @@ export type RemoveBypassIpMutation = {
 		| RemoveBypassIp500;
 };
 
-export type GETV1SecurityFirewallEventsQueryParams = {
+export type GetSecurityFirewallEventsQueryParams = {
 	/**
 	 * @type string
 	 */
@@ -32285,38 +32423,38 @@ export type GETV1SecurityFirewallEventsQueryParams = {
 	hosts?: string | undefined;
 };
 
-export type GETV1SecurityFirewallEvents200 = unknown;
+export type GetSecurityFirewallEvents200 = unknown;
 
 /**
  * @description One of the provided values in the request query is invalid.
  */
-export type GETV1SecurityFirewallEvents400 = unknown;
+export type GetSecurityFirewallEvents400 = unknown;
 
 /**
  * @description The request is not authorized.
  */
-export type GETV1SecurityFirewallEvents401 = unknown;
+export type GetSecurityFirewallEvents401 = unknown;
 
 /**
  * @description You do not have permission to access this resource.
  */
-export type GETV1SecurityFirewallEvents403 = unknown;
+export type GetSecurityFirewallEvents403 = unknown;
 
-export type GETV1SecurityFirewallEvents404 = unknown;
+export type GetSecurityFirewallEvents404 = unknown;
 
-export type GETV1SecurityFirewallEvents500 = unknown;
+export type GetSecurityFirewallEvents500 = unknown;
 
-export type GETV1SecurityFirewallEventsQueryResponse = GETV1SecurityFirewallEvents200;
+export type GetSecurityFirewallEventsQueryResponse = GetSecurityFirewallEvents200;
 
-export type GETV1SecurityFirewallEventsQuery = {
-	Response: GETV1SecurityFirewallEvents200;
-	QueryParams: GETV1SecurityFirewallEventsQueryParams;
+export type GetSecurityFirewallEventsQuery = {
+	Response: GetSecurityFirewallEvents200;
+	QueryParams: GetSecurityFirewallEventsQueryParams;
 	Errors:
-		| GETV1SecurityFirewallEvents400
-		| GETV1SecurityFirewallEvents401
-		| GETV1SecurityFirewallEvents403
-		| GETV1SecurityFirewallEvents404
-		| GETV1SecurityFirewallEvents500;
+		| GetSecurityFirewallEvents400
+		| GetSecurityFirewallEvents401
+		| GetSecurityFirewallEvents403
+		| GetSecurityFirewallEvents404
+		| GetSecurityFirewallEvents500;
 };
 
 export type CreateIntegrationStoreDirectQueryParams = {
