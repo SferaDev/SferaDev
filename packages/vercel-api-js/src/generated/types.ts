@@ -1856,6 +1856,11 @@ export const payloadPermissionsEnum = {
 	"read:deployment": "read:deployment",
 	"read-write:deployment": "read-write:deployment",
 	"read-write:edge-cache": "read-write:edge-cache",
+	"read-write:project-protection-bypass": "read-write:project-protection-bypass",
+	"read:project-env-vars-non-production": "read:project-env-vars-non-production",
+	"read-write:project-env-vars-non-production": "read-write:project-env-vars-non-production",
+	"read:project-env-vars-production": "read:project-env-vars-production",
+	"read-write:project-env-vars-production": "read-write:project-env-vars-production",
 } as const;
 
 export type PayloadPermissionsEnumKey =
@@ -1890,6 +1895,11 @@ export const payloadNextPermissionsEnum = {
 	"read:deployment": "read:deployment",
 	"read-write:deployment": "read-write:deployment",
 	"read-write:edge-cache": "read-write:edge-cache",
+	"read-write:project-protection-bypass": "read-write:project-protection-bypass",
+	"read:project-env-vars-non-production": "read:project-env-vars-non-production",
+	"read-write:project-env-vars-non-production": "read-write:project-env-vars-non-production",
+	"read:project-env-vars-production": "read:project-env-vars-production",
+	"read-write:project-env-vars-production": "read-write:project-env-vars-production",
 } as const;
 
 export type PayloadNextPermissionsEnumKey =
@@ -1932,6 +1942,11 @@ export const beforePermissionsEnum = {
 	"read:deployment": "read:deployment",
 	"read-write:deployment": "read-write:deployment",
 	"read-write:edge-cache": "read-write:edge-cache",
+	"read-write:project-protection-bypass": "read-write:project-protection-bypass",
+	"read:project-env-vars-non-production": "read:project-env-vars-non-production",
+	"read-write:project-env-vars-non-production": "read-write:project-env-vars-non-production",
+	"read:project-env-vars-production": "read:project-env-vars-production",
+	"read-write:project-env-vars-production": "read-write:project-env-vars-production",
 } as const;
 
 export type BeforePermissionsEnumKey =
@@ -1955,6 +1970,11 @@ export const afterPermissionsEnum = {
 	"read:deployment": "read:deployment",
 	"read-write:deployment": "read-write:deployment",
 	"read-write:edge-cache": "read-write:edge-cache",
+	"read-write:project-protection-bypass": "read-write:project-protection-bypass",
+	"read:project-env-vars-non-production": "read:project-env-vars-non-production",
+	"read-write:project-env-vars-non-production": "read-write:project-env-vars-non-production",
+	"read:project-env-vars-production": "read:project-env-vars-production",
+	"read-write:project-env-vars-production": "read-write:project-env-vars-production",
 } as const;
 
 export type AfterPermissionsEnumKey =
@@ -1978,6 +1998,11 @@ export const payloadPermissionsEnum2 = {
 	"read:deployment": "read:deployment",
 	"read-write:deployment": "read-write:deployment",
 	"read-write:edge-cache": "read-write:edge-cache",
+	"read-write:project-protection-bypass": "read-write:project-protection-bypass",
+	"read:project-env-vars-non-production": "read:project-env-vars-non-production",
+	"read-write:project-env-vars-non-production": "read-write:project-env-vars-non-production",
+	"read:project-env-vars-production": "read:project-env-vars-production",
+	"read-write:project-env-vars-production": "read-write:project-env-vars-production",
 } as const;
 
 export type PayloadPermissionsEnum2Key =
