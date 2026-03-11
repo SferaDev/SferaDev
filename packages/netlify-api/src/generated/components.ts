@@ -108,6 +108,9 @@ import type {
 	CreateSplitTestMutationRequest,
 	CreateSplitTestMutationResponse,
 	CreateSplitTestPathParams,
+	CreateTicket401,
+	CreateTicket422,
+	CreateTicketMutationRequest,
 	CreateTicketMutationResponse,
 	CreateTicketQueryParams,
 	DeleteAgentRunnerMutationResponse,
@@ -2777,21 +2780,23 @@ export async function listHookTypes({
  */
 export async function createTicket({
 	queryParams,
+	body,
 	config = {},
 }: {
 	queryParams: CreateTicketQueryParams;
+	body?: CreateTicketMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
 		CreateTicketMutationResponse,
-		ErrorWrapper<Error>,
-		null,
+		ErrorWrapper<CreateTicket401 | CreateTicket422>,
+		CreateTicketMutationRequest,
 		Record<string, string>,
 		CreateTicketQueryParams,
 		Record<string, string>
-	>({ method: "POST", url: `/oauth/tickets`, queryParams, ...requestConfig });
+	>({ method: "POST", url: `/oauth/tickets`, queryParams, body, ...requestConfig });
 	return data;
 }
 

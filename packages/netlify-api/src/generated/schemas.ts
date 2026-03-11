@@ -6282,7 +6282,7 @@ export const createTicketQueryParamsSchema = z.object({
 });
 
 /**
- * @description ok
+ * @description Created
  */
 export const createTicket201Schema = z.object({
 	id: z.optional(z.string()),
@@ -6292,11 +6292,31 @@ export const createTicket201Schema = z.object({
 });
 
 /**
+ * @description OAuth application not found
+ */
+export const createTicket401Schema = z.object({
+	code: z.optional(z.int()),
+	message: z.string(),
+});
+
+/**
+ * @description Validation error
+ */
+export const createTicket422Schema = z.object({
+	code: z.optional(z.int()),
+	message: z.string(),
+});
+
+/**
  * @description error
  */
 export const createTicketErrorSchema = z.object({
 	code: z.optional(z.int()),
 	message: z.string(),
+});
+
+export const createTicketMutationRequestSchema = z.object({
+	message: z.optional(z.string()),
 });
 
 export const createTicketMutationResponseSchema = z.lazy(() => createTicket201Schema);
