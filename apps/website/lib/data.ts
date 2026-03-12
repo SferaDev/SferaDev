@@ -60,7 +60,7 @@ export const openSourceProjects = [
 	},
 	{
 		name: "PgBeam",
-		description: "Building PgBeam, a globally distributed proxy for low-latency reads to any PostgreSQL database.",
+		description: "PgBeam, a globally distributed proxy for low-latency reads.",
 		link: "https://pgbeam.com",
 	},
 ];
