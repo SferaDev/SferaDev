@@ -1,8 +1,14 @@
 export const workExperience = [
 	{
 		company: "Xata",
+		role: "Principal Software Engineer",
+		period: "Mar 2026 – Present",
+		url: "https://xata.io",
+	},
+	{
+		company: "Xata",
 		role: "Staff Software Engineer - Tech Lead",
-		period: "Jan 2023 – Present",
+		period: "Jan 2023 – Mar 2026",
 		url: "https://xata.io",
 	},
 	{
@@ -52,6 +58,11 @@ export const openSourceProjects = [
 		description: "TypeScript type-safe client for Xata databases.",
 		link: "https://github.com/xataio/client-ts",
 	},
+	{
+		name: "PgBeam",
+		description: "Building PgBeam, a tool for PostgreSQL databases.",
+		link: "https://pgbeam.com",
+	},
 ];
 
 export const personalInfo = {
@@ -59,9 +70,9 @@ export const personalInfo = {
 	email: "alexis@sferadev.com",
 	github: "https://github.com/SferaDev",
 	description:
-		"Staff Software Engineer building serverless databases and developer tools. I specialize in TypeScript and Go, creating type-safe APIs and SDKs.",
+		"Principal Software Engineer building serverless databases and developer tools. I specialize in TypeScript and Go, creating type-safe APIs and SDKs.",
 	bio: [
-		"I'm a Staff Software Engineer at Xata, where I lead development of serverless database infrastructure and developer tooling. My work focuses on building type-safe systems with TypeScript and Go, designing APIs that are intuitive to use, and creating SDKs that provide great developer experiences.",
+		"I'm a Principal Software Engineer at Xata, where I work on serverless database infrastructure and developer tooling. I'm also building PgBeam. My work focuses on building type-safe systems with TypeScript and Go, designing APIs that are intuitive to use, and creating SDKs that provide great developer experiences.",
 		"I'm passionate about open source and contribute to projects like Keycloak. I maintain several npm packages and enjoy building tools that make developers' lives easier. From Android ROM development at Paranoid Android to database infrastructure, I've always been drawn to systems that require both technical depth and attention to user experience.",
 	],
 };
