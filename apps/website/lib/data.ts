@@ -73,6 +73,6 @@ export const personalInfo = {
 		"Principal Software Engineer building serverless databases and developer tools. I specialize in TypeScript and Go, creating type-safe APIs and SDKs.",
 	bio: [
 		"I'm a Principal Software Engineer at Xata, where I work on serverless database infrastructure and developer tooling. My work focuses on building type-safe systems with TypeScript and Go, designing APIs that are intuitive to use, and creating SDKs that provide great developer experiences.",
-"I'm also building PgBeam, a globally distributed proxy for low-latency reads to any PostgreSQL that optimizes queries by just swapping the connection string.",
+		"I'm also building PgBeam, a globally distributed proxy for low-latency reads to any PostgreSQL that optimizes queries by just swapping the connection string.",
 	],
 };
