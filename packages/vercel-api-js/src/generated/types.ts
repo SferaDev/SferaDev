@@ -1851,6 +1851,11 @@ export const payloadPermissionsEnum = {
 	"read-write:edge-config": "read-write:edge-config",
 	"read:monitoring": "read:monitoring",
 	"read:access-group": "read:access-group",
+	"read:integration-configuration": "read:integration-configuration",
+	"read-write:integration-configuration": "read-write:integration-configuration",
+	"read-write:integration-resource": "read-write:integration-resource",
+	"read-write:blob": "read-write:blob",
+	"read:event": "read:event",
 	"read:project": "read:project",
 	"read-write:project": "read-write:project",
 	"read:deployment": "read:deployment",
@@ -1861,6 +1866,8 @@ export const payloadPermissionsEnum = {
 	"read-write:project-env-vars-non-production": "read-write:project-env-vars-non-production",
 	"read:project-env-vars-production": "read:project-env-vars-production",
 	"read-write:project-env-vars-production": "read-write:project-env-vars-production",
+	"read-write:project-flags-non-production": "read-write:project-flags-non-production",
+	"read-write:project-flags-production": "read-write:project-flags-production",
 } as const;
 
 export type PayloadPermissionsEnumKey =
@@ -1890,6 +1897,11 @@ export const payloadNextPermissionsEnum = {
 	"read-write:edge-config": "read-write:edge-config",
 	"read:monitoring": "read:monitoring",
 	"read:access-group": "read:access-group",
+	"read:integration-configuration": "read:integration-configuration",
+	"read-write:integration-configuration": "read-write:integration-configuration",
+	"read-write:integration-resource": "read-write:integration-resource",
+	"read-write:blob": "read-write:blob",
+	"read:event": "read:event",
 	"read:project": "read:project",
 	"read-write:project": "read-write:project",
 	"read:deployment": "read:deployment",
@@ -1900,6 +1912,8 @@ export const payloadNextPermissionsEnum = {
 	"read-write:project-env-vars-non-production": "read-write:project-env-vars-non-production",
 	"read:project-env-vars-production": "read:project-env-vars-production",
 	"read-write:project-env-vars-production": "read-write:project-env-vars-production",
+	"read-write:project-flags-non-production": "read-write:project-flags-non-production",
+	"read-write:project-flags-production": "read-write:project-flags-production",
 } as const;
 
 export type PayloadNextPermissionsEnumKey =
@@ -1937,6 +1951,11 @@ export const beforePermissionsEnum = {
 	"read-write:edge-config": "read-write:edge-config",
 	"read:monitoring": "read:monitoring",
 	"read:access-group": "read:access-group",
+	"read:integration-configuration": "read:integration-configuration",
+	"read-write:integration-configuration": "read-write:integration-configuration",
+	"read-write:integration-resource": "read-write:integration-resource",
+	"read-write:blob": "read-write:blob",
+	"read:event": "read:event",
 	"read:project": "read:project",
 	"read-write:project": "read-write:project",
 	"read:deployment": "read:deployment",
@@ -1947,6 +1966,8 @@ export const beforePermissionsEnum = {
 	"read-write:project-env-vars-non-production": "read-write:project-env-vars-non-production",
 	"read:project-env-vars-production": "read:project-env-vars-production",
 	"read-write:project-env-vars-production": "read-write:project-env-vars-production",
+	"read-write:project-flags-non-production": "read-write:project-flags-non-production",
+	"read-write:project-flags-production": "read-write:project-flags-production",
 } as const;
 
 export type BeforePermissionsEnumKey =
@@ -1965,6 +1986,11 @@ export const afterPermissionsEnum = {
 	"read-write:edge-config": "read-write:edge-config",
 	"read:monitoring": "read:monitoring",
 	"read:access-group": "read:access-group",
+	"read:integration-configuration": "read:integration-configuration",
+	"read-write:integration-configuration": "read-write:integration-configuration",
+	"read-write:integration-resource": "read-write:integration-resource",
+	"read-write:blob": "read-write:blob",
+	"read:event": "read:event",
 	"read:project": "read:project",
 	"read-write:project": "read-write:project",
 	"read:deployment": "read:deployment",
@@ -1975,6 +2001,8 @@ export const afterPermissionsEnum = {
 	"read-write:project-env-vars-non-production": "read-write:project-env-vars-non-production",
 	"read:project-env-vars-production": "read:project-env-vars-production",
 	"read-write:project-env-vars-production": "read-write:project-env-vars-production",
+	"read-write:project-flags-non-production": "read-write:project-flags-non-production",
+	"read-write:project-flags-production": "read-write:project-flags-production",
 } as const;
 
 export type AfterPermissionsEnumKey =
@@ -1993,6 +2021,11 @@ export const payloadPermissionsEnum2 = {
 	"read-write:edge-config": "read-write:edge-config",
 	"read:monitoring": "read:monitoring",
 	"read:access-group": "read:access-group",
+	"read:integration-configuration": "read:integration-configuration",
+	"read-write:integration-configuration": "read-write:integration-configuration",
+	"read-write:integration-resource": "read-write:integration-resource",
+	"read-write:blob": "read-write:blob",
+	"read:event": "read:event",
 	"read:project": "read:project",
 	"read-write:project": "read-write:project",
 	"read:deployment": "read:deployment",
@@ -2003,6 +2036,8 @@ export const payloadPermissionsEnum2 = {
 	"read-write:project-env-vars-non-production": "read-write:project-env-vars-non-production",
 	"read:project-env-vars-production": "read:project-env-vars-production",
 	"read-write:project-env-vars-production": "read-write:project-env-vars-production",
+	"read-write:project-flags-non-production": "read-write:project-flags-non-production",
+	"read-write:project-flags-production": "read-write:project-flags-production",
 } as const;
 
 export type PayloadPermissionsEnum2Key =
@@ -14982,6 +15017,14 @@ export const conditionsRhsEnum = {
 
 export type ConditionsRhsEnumKey = (typeof conditionsRhsEnum)[keyof typeof conditionsRhsEnum];
 
+export const cmpOptionsIgnoreCaseEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type CmpOptionsIgnoreCaseEnumKey =
+	(typeof cmpOptionsIgnoreCaseEnum)[keyof typeof cmpOptionsIgnoreCaseEnum];
+
 export const lhsTypeEnum = {
 	segment: "segment",
 } as const;
@@ -14997,6 +15040,7 @@ export type LhsTypeEnum2Key = (typeof lhsTypeEnum2)[keyof typeof lhsTypeEnum2];
 export const conditionsCmpEnum = {
 	after: "after",
 	before: "before",
+	contains: "contains",
 	containsAllOf: "containsAllOf",
 	containsAnyOf: "containsAnyOf",
 	containsNoneOf: "containsNoneOf",
@@ -15284,6 +15328,17 @@ export type Flag = {
 								| ConditionsRhsEnumKey
 						  )
 						| undefined;
+					/**
+					 * @type object | undefined
+					 */
+					cmpOptions?:
+						| {
+								/**
+								 * @type boolean | undefined
+								 */
+								ignoreCase?: CmpOptionsIgnoreCaseEnumKey | undefined;
+						  }
+						| undefined;
 					lhs:
 						| {
 								/**
@@ -15425,6 +15480,14 @@ export const conditionsRhsEnum2 = {
 
 export type ConditionsRhsEnum2Key = (typeof conditionsRhsEnum2)[keyof typeof conditionsRhsEnum2];
 
+export const cmpOptionsIgnoreCaseEnum2 = {
+	false: false,
+	true: true,
+} as const;
+
+export type CmpOptionsIgnoreCaseEnum2Key =
+	(typeof cmpOptionsIgnoreCaseEnum2)[keyof typeof cmpOptionsIgnoreCaseEnum2];
+
 export const lhsTypeEnum3 = {
 	segment: "segment",
 } as const;
@@ -15440,6 +15503,7 @@ export type LhsTypeEnum4Key = (typeof lhsTypeEnum4)[keyof typeof lhsTypeEnum4];
 export const conditionsCmpEnum2 = {
 	after: "after",
 	before: "before",
+	contains: "contains",
 	containsAllOf: "containsAllOf",
 	containsAnyOf: "containsAnyOf",
 	containsNoneOf: "containsNoneOf",
@@ -15612,6 +15676,17 @@ export type Segment = {
 									  }
 									| ConditionsRhsEnum2Key
 							  )
+							| undefined;
+						/**
+						 * @type object | undefined
+						 */
+						cmpOptions?:
+							| {
+									/**
+									 * @type boolean | undefined
+									 */
+									ignoreCase?: CmpOptionsIgnoreCaseEnum2Key | undefined;
+							  }
 							| undefined;
 						lhs:
 							| {
