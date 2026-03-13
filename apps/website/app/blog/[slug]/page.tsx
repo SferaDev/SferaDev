@@ -1,8 +1,7 @@
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import Markdown from "react-markdown";
-import { getAllSlugs, getPostBySlug } from "@/lib/blog";
+import { compileBlogPost, getAllSlugs, getPostBySlug } from "@/lib/blog";
 
 interface BlogPostPageProps {
 	params: Promise<{
@@ -19,110 +18,48 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 	const post = getPostBySlug(slug);
 	if (!post) notFound();
 
-	return (
-		<div className="pt-16 pb-20">
-			<div className="container mx-auto px-6 max-w-3xl">
-				<div className="mb-8">
-					<Link
-						href="/blog"
-						className="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors mb-8"
-					>
-						<ArrowLeft className="w-4 h-4" />
-						Back to Blog
-					</Link>
+	const content = await compileBlogPost(post.content);
 
-					<h1 className="text-2xl md:text-3xl font-bold mb-4 bg-linear-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent leading-tight">
+	return (
+		<div className="pt-16 pb-24">
+			<div className="container mx-auto px-6 max-w-3xl">
+				<Link
+					href="/blog"
+					className="inline-flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors mb-10"
+				>
+					<ArrowLeft className="w-3.5 h-3.5" />
+					Back to Blog
+				</Link>
+
+				<header className="mb-10">
+					<div className="flex flex-wrap gap-2 mb-4">
+						{post.tags.map((tag) => (
+							<span
+								key={tag}
+								className="px-2.5 py-0.5 text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 rounded-full"
+							>
+								{tag}
+							</span>
+						))}
+					</div>
+
+					<h1 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white leading-tight tracking-tight">
 						{post.title}
 					</h1>
 
-					<div className="flex items-center gap-4 mb-6">
-						<p className="text-gray-500 dark:text-gray-400 text-sm">
-							{new Date(post.date).toLocaleDateString("en-US", {
-								year: "numeric",
-								month: "long",
-								day: "numeric",
-							})}
-						</p>
-					</div>
+					<p className="text-gray-500 dark:text-gray-400 text-sm">
+						{new Date(post.date).toLocaleDateString("en-US", {
+							year: "numeric",
+							month: "long",
+							day: "numeric",
+						})}
+					</p>
+				</header>
 
-					{post.tags.length > 0 && (
-						<div className="flex flex-wrap gap-2 mb-8">
-							{post.tags.map((tag) => (
-								<span
-									key={tag}
-									className="px-2.5 py-1 text-xs bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 rounded-md border border-blue-200 dark:border-blue-800"
-								>
-									{tag}
-								</span>
-							))}
-						</div>
-					)}
-				</div>
+				<div className="h-px bg-gray-200 dark:bg-gray-800 mb-10" />
 
-				<article className="prose prose-gray dark:prose-invert prose-base max-w-none">
-					<Markdown
-						components={{
-							h1: ({ children }) => (
-								<h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 mt-8 leading-tight">
-									{children}
-								</h1>
-							),
-							h2: ({ children }) => (
-								<h2 className="text-xl font-bold text-gray-900 dark:text-white mb-3 mt-6 leading-tight">
-									{children}
-								</h2>
-							),
-							h3: ({ children }) => (
-								<h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2 mt-5 leading-tight">
-									{children}
-								</h3>
-							),
-							p: ({ children }) => (
-								<p className="text-gray-700 dark:text-gray-300 mb-4 leading-relaxed">{children}</p>
-							),
-							a: ({ children, href }) => (
-								<a
-									href={href}
-									className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 underline"
-								>
-									{children}
-								</a>
-							),
-							code: ({ children }) => (
-								<code className="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-1.5 py-0.5 rounded text-sm font-mono">
-									{children}
-								</code>
-							),
-							pre: ({ children }) => (
-								<pre className="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-4 overflow-x-auto mb-6 text-sm">
-									{children}
-								</pre>
-							),
-							ul: ({ children }) => (
-								<ul className="list-disc list-inside text-gray-700 dark:text-gray-300 mb-4 space-y-1 leading-relaxed">
-									{children}
-								</ul>
-							),
-							ol: ({ children }) => (
-								<ol className="list-decimal list-inside text-gray-700 dark:text-gray-300 mb-4 space-y-1 leading-relaxed">
-									{children}
-								</ol>
-							),
-							li: ({ children }) => (
-								<li className="text-gray-700 dark:text-gray-300 leading-relaxed">{children}</li>
-							),
-							strong: ({ children }) => (
-								<strong className="font-semibold text-gray-900 dark:text-white">{children}</strong>
-							),
-							blockquote: ({ children }) => (
-								<blockquote className="border-l-4 border-blue-200 dark:border-blue-800 pl-4 italic text-gray-600 dark:text-gray-400 mb-4">
-									{children}
-								</blockquote>
-							),
-						}}
-					>
-						{post.content}
-					</Markdown>
+				<article className="prose prose-gray dark:prose-invert prose-base max-w-none prose-headings:tracking-tight">
+					{content}
 				</article>
 			</div>
 		</div>

@@ -20,11 +20,14 @@
 		"geist": "catalog:",
 		"gray-matter": "catalog:",
 		"lucide-react": "catalog:",
-		"react-markdown": "catalog:",
 		"next": "catalog:",
+		"next-mdx-remote": "catalog:",
 		"next-themes": "catalog:",
 		"react": "catalog:",
 		"react-dom": "catalog:",
+		"rehype-pretty-code": "catalog:",
+		"remark-gfm": "catalog:",
+		"shiki": "catalog:",
 		"tailwind-merge": "catalog:"
 	},
 	"devDependencies": {

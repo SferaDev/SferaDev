@@ -69,9 +69,9 @@ catalog:
   knip: 5.86.0
   lefthook: 2.1.3
   lucide-react: 0.577.0
-  react-markdown: 10.1.0
   mintlify: 4.2.417
   next: 16.1.6
+  next-mdx-remote: 6.0.0
   next-auth: 5.0.0-beta.29
   next-intl: 4.8.3
   next-themes: 0.4.6
@@ -81,10 +81,13 @@ catalog:
   postcss: 8.5.8
   qrcode: 1.5.4
   radix-ui: 1.4.3
+  rehype-pretty-code: 0.14.3
+  remark-gfm: 4.0.1
   react: 19.2.4
   react-dom: 19.2.4
   rimraf: 6.1.3
   rollup: 4.59.0
+  shiki: 4.0.2
   stripe: 20.4.1
   tailwind-merge: 3.5.0
   tailwindcss: 4.2.1
