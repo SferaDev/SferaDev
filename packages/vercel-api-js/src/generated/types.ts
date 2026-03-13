@@ -1611,6 +1611,7 @@ export const userEventTypeEnum = {
 	"project-preview-environment-branch-tracking-updated":
 		"project-preview-environment-branch-tracking-updated",
 	"project-prioritize-production-builds-updated": "project-prioritize-production-builds-updated",
+	"project-program-enrollment-changed": "project-program-enrollment-changed",
 	"project-protected-sourcemaps-updated": "project-protected-sourcemaps-updated",
 	"project-rolling-release-aborted": "project-rolling-release-aborted",
 	"project-rolling-release-approved": "project-rolling-release-approved",
@@ -1710,6 +1711,7 @@ export const userEventTypeEnum = {
 	"team-mfa-enforcement-updated": "team-mfa-enforcement-updated",
 	"team-name-update": "team-name-update",
 	"team-paid-invoice": "team-paid-invoice",
+	"team-program-enrollment-changed": "team-program-enrollment-changed",
 	"team-remote-caching-update": "team-remote-caching-update",
 	"team-saml-enforced": "team-saml-enforced",
 	"team-saml-roles": "team-saml-roles",
@@ -3747,6 +3749,13 @@ export const payloadReasonCodeEnum = {
 
 export type PayloadReasonCodeEnumKey =
 	(typeof payloadReasonCodeEnum)[keyof typeof payloadReasonCodeEnum];
+
+export const payloadConsentEnum = {
+	granted: "granted",
+	refused: "refused",
+} as const;
+
+export type PayloadConsentEnumKey = (typeof payloadConsentEnum)[keyof typeof payloadConsentEnum];
 
 export const previousIssuerModeEnum = {
 	team: "team",
@@ -12802,6 +12811,16 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
+						projectName: string;
+						/**
+						 * @type string
+						 */
+						consent: PayloadConsentEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
 						projectId: string;
 						/**
 						 * @type string
@@ -14460,6 +14479,12 @@ export type UserEvent = {
 						 * @type string | undefined
 						 */
 						name?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						consent: PayloadConsentEnumKey;
 				  }
 				| {
 						/**

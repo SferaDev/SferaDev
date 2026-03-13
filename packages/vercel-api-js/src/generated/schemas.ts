@@ -842,6 +842,7 @@ export const userEventSchema = z
 					"project-preview-deployment-suffix",
 					"project-preview-environment-branch-tracking-updated",
 					"project-prioritize-production-builds-updated",
+					"project-program-enrollment-changed",
 					"project-protected-sourcemaps-updated",
 					"project-rolling-release-aborted",
 					"project-rolling-release-approved",
@@ -939,6 +940,7 @@ export const userEventSchema = z
 					"team-mfa-enforcement-updated",
 					"team-name-update",
 					"team-paid-invoice",
+					"team-program-enrollment-changed",
 					"team-remote-caching-update",
 					"team-saml-enforced",
 					"team-saml-roles",
@@ -5223,6 +5225,10 @@ export const userEventSchema = z
 					reasonCode: z.optional(z.enum(["BUDGET_REACHED", "PUBLIC_API", "BACKOFFICE"])),
 				}),
 				z.object({
+					projectName: z.string(),
+					consent: z.enum(["granted", "refused"]),
+				}),
+				z.object({
 					projectId: z.string(),
 					projectName: z.string(),
 					targetDeploymentId: z.optional(z.string()),
@@ -5984,6 +5990,9 @@ export const userEventSchema = z
 				}),
 				z.object({
 					name: z.optional(z.string()),
+				}),
+				z.object({
+					consent: z.enum(["granted", "refused"]),
 				}),
 				z.object({
 					remoteCaching: z.optional(
