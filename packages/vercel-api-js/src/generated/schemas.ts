@@ -6705,6 +6705,23 @@ export const sandboxSchema = z
 			.number()
 			.describe("The last time the sandbox was updated, in milliseconds since the epoch."),
 		networkPolicy: z.optional(z.unknown()),
+		activeCpuDurationMs: z.optional(
+			z
+				.number()
+				.describe(
+					"The amount of CPU time the sandbox consumed, if available, in milliseconds. This value is only available once the sandbox is stopped, and only if it stopped successfully.",
+				),
+		),
+		networkTransfer: z.optional(
+			z
+				.object({
+					ingress: z.number(),
+					egress: z.number(),
+				})
+				.describe(
+					"The quantity of data transfered to and from the sandbox, in bytes. This value is only available once the sandbox is stopped, and only if it stopped successfully.",
+				),
+		),
 	})
 	.describe("This object contains information related to a Vercel Sandbox.");
 

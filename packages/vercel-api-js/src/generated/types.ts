@@ -16048,6 +16048,27 @@ export type Sandbox = {
 	 */
 	updatedAt: number;
 	networkPolicy?: unknown | undefined;
+	/**
+	 * @description The amount of CPU time the sandbox consumed, if available, in milliseconds. This value is only available once the sandbox is stopped, and only if it stopped successfully.
+	 * @type number | undefined
+	 */
+	activeCpuDurationMs?: number | undefined;
+	/**
+	 * @description The quantity of data transfered to and from the sandbox, in bytes. This value is only available once the sandbox is stopped, and only if it stopped successfully.
+	 * @type object | undefined
+	 */
+	networkTransfer?:
+		| {
+				/**
+				 * @type number
+				 */
+				ingress: number;
+				/**
+				 * @type number
+				 */
+				egress: number;
+		  }
+		| undefined;
 };
 
 export const snapshotStatusEnum = {
