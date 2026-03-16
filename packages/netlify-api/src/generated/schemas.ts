@@ -849,6 +849,7 @@ export const deployFilesSchema = z
 							),
 						}),
 					),
+					event_subscriptions: z.optional(z.array(z.string())),
 				}),
 			),
 		),
@@ -1471,6 +1472,7 @@ export const functionConfigSchema = z.object({
 			),
 		}),
 	),
+	event_subscriptions: z.optional(z.array(z.string())),
 });
 
 export const functionRouteSchema = z.object({
@@ -1608,6 +1610,119 @@ export const createSiteSnippetSnippetSchema = z.object({
 	goal: z.optional(z.string()),
 	goal_position: z.optional(z.string()),
 });
+
+/**
+ * @description Deploy files can be provided in two ways:\n1. As a JSON object using \'files\' (a hash mapping file paths to SHA1 digests), OR\n2. As a zip file using one of these methods:\n   - Set Content-Type to \'application/zip\' and send the zip file as the raw request body\n   - Include the zip file content in the \'zip\' field of this JSON object with Content-Type \'application/json\'\n
+ */
+export const createSiteDeployDeploySchema = z
+	.object({
+		files: z.optional(
+			z.object({}).describe("A hash mapping file paths to SHA1 digests of the file contents."),
+		),
+		zip: z.optional(
+			z
+				.instanceof(File)
+				.describe(
+					"A zip file containing the site files to deploy. Alternative to 'files'.\nTo use this field, set Content-Type to 'application/json' and include the zip content here.\nAlternatively, you can set Content-Type to 'application/zip' and send the zip as the raw request body (not as JSON).\n",
+				),
+		),
+		draft: z.optional(z.boolean()),
+		async: z.optional(z.boolean()),
+		functions: z.optional(z.object({})),
+		function_schedules: z.optional(
+			z.array(
+				z.object({
+					name: z.optional(z.string()),
+					cron: z.optional(z.string()),
+				}),
+			),
+		),
+		functions_config: z.optional(
+			z.object({}).catchall(
+				z.object({
+					display_name: z.optional(z.string()),
+					generator: z.optional(z.string()),
+					build_data: z.optional(z.object({})),
+					routes: z.optional(
+						z.array(
+							z.object({
+								pattern: z.optional(z.string()),
+								literal: z.optional(z.string()),
+								expression: z.optional(z.string()),
+								methods: z.optional(
+									z.array(z.enum(["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"])),
+								),
+								prefer_static: z.optional(z.boolean()),
+							}),
+						),
+					),
+					excluded_routes: z.optional(
+						z.array(
+							z.object({
+								pattern: z.optional(z.string()),
+								literal: z.optional(z.string()),
+								expression: z.optional(z.string()),
+							}),
+						),
+					),
+					priority: z.optional(z.int()),
+					traffic_rules: z.optional(
+						z.object({
+							action: z.optional(
+								z.object({
+									type: z.optional(z.string()),
+									config: z.optional(
+										z.object({
+											to: z.optional(z.string()),
+											rate_limit_config: z.optional(
+												z.object({
+													algorithm: z.optional(z.enum(["sliding_window"])),
+													window_size: z.optional(z.int()),
+													window_limit: z.optional(z.int()),
+												}),
+											),
+											aggregate: z.optional(
+												z.object({
+													keys: z.optional(
+														z.array(
+															z.object({
+																type: z.optional(z.enum(["ip", "domain"])),
+															}),
+														),
+													),
+												}),
+											),
+										}),
+									),
+								}),
+							),
+						}),
+					),
+					event_subscriptions: z.optional(z.array(z.string())),
+				}),
+			),
+		),
+		branch: z.optional(z.string()),
+		framework: z.optional(z.string()),
+		framework_version: z.optional(z.string()),
+		environment: z.optional(
+			z
+				.array(
+					z.object({
+						key: z.string(),
+						value: z.string(),
+						is_secret: z.boolean(),
+						scopes: z.array(z.enum(["builds", "functions", "runtime", "post-processing"])),
+					}),
+				)
+				.describe(
+					"A list of deploy-specific environment variable data. Data specified this way applies only\nto this specific deploy and is merged into any existing environment variables set on the\naccount and site.\n\nDeploy-specific environment variable data takes precedence over account and site\nenvironment variable data: For example, a deploy-specific variable with the key `NODE_ENV`\nwill take priority over any existing site- and account-level environment variable data\nwith the key `NODE_ENV`.\n\nEnvironment variable data may be provided at one of two times:\n\n- When creating a new Deploy with deploy files (most common)\n- When finalizing an existing Deploy with deploy files\n\nOnce set, environment variables for a specific deploy cannot be modified. Subsequent\nattempts to modify environment variable data for a deploy will be ignored.\n",
+				),
+		),
+	})
+	.describe(
+		"Deploy files can be provided in two ways:\n1. As a JSON object using 'files' (a hash mapping file paths to SHA1 digests), OR\n2. As a zip file using one of these methods:\n   - Set Content-Type to 'application/zip' and send the zip file as the raw request body\n   - Include the zip file content in the 'zip' field of this JSON object with Content-Type 'application/json'\n",
+	);
 
 export const createSiteBuildHookBuildhookSchema = z.object({
 	title: z.optional(z.string()),
@@ -1779,118 +1894,6 @@ export const createSiteSiteSchema = z.object({
 		}),
 	),
 });
-
-/**
- * @description Deploy files can be provided in two ways:\n1. As a JSON object using \'files\' (a hash mapping file paths to SHA1 digests), OR\n2. As a zip file using one of these methods:\n   - Set Content-Type to \'application/zip\' and send the zip file as the raw request body\n   - Include the zip file content in the \'zip\' field of this JSON object with Content-Type \'application/json\'\n
- */
-export const createSiteDeployDeploySchema = z
-	.object({
-		files: z.optional(
-			z.object({}).describe("A hash mapping file paths to SHA1 digests of the file contents."),
-		),
-		zip: z.optional(
-			z
-				.instanceof(File)
-				.describe(
-					"A zip file containing the site files to deploy. Alternative to 'files'.\nTo use this field, set Content-Type to 'application/json' and include the zip content here.\nAlternatively, you can set Content-Type to 'application/zip' and send the zip as the raw request body (not as JSON).\n",
-				),
-		),
-		draft: z.optional(z.boolean()),
-		async: z.optional(z.boolean()),
-		functions: z.optional(z.object({})),
-		function_schedules: z.optional(
-			z.array(
-				z.object({
-					name: z.optional(z.string()),
-					cron: z.optional(z.string()),
-				}),
-			),
-		),
-		functions_config: z.optional(
-			z.object({}).catchall(
-				z.object({
-					display_name: z.optional(z.string()),
-					generator: z.optional(z.string()),
-					build_data: z.optional(z.object({})),
-					routes: z.optional(
-						z.array(
-							z.object({
-								pattern: z.optional(z.string()),
-								literal: z.optional(z.string()),
-								expression: z.optional(z.string()),
-								methods: z.optional(
-									z.array(z.enum(["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"])),
-								),
-								prefer_static: z.optional(z.boolean()),
-							}),
-						),
-					),
-					excluded_routes: z.optional(
-						z.array(
-							z.object({
-								pattern: z.optional(z.string()),
-								literal: z.optional(z.string()),
-								expression: z.optional(z.string()),
-							}),
-						),
-					),
-					priority: z.optional(z.int()),
-					traffic_rules: z.optional(
-						z.object({
-							action: z.optional(
-								z.object({
-									type: z.optional(z.string()),
-									config: z.optional(
-										z.object({
-											to: z.optional(z.string()),
-											rate_limit_config: z.optional(
-												z.object({
-													algorithm: z.optional(z.enum(["sliding_window"])),
-													window_size: z.optional(z.int()),
-													window_limit: z.optional(z.int()),
-												}),
-											),
-											aggregate: z.optional(
-												z.object({
-													keys: z.optional(
-														z.array(
-															z.object({
-																type: z.optional(z.enum(["ip", "domain"])),
-															}),
-														),
-													),
-												}),
-											),
-										}),
-									),
-								}),
-							),
-						}),
-					),
-				}),
-			),
-		),
-		branch: z.optional(z.string()),
-		framework: z.optional(z.string()),
-		framework_version: z.optional(z.string()),
-		environment: z.optional(
-			z
-				.array(
-					z.object({
-						key: z.string(),
-						value: z.string(),
-						is_secret: z.boolean(),
-						scopes: z.array(z.enum(["builds", "functions", "runtime", "post-processing"])),
-					}),
-				)
-				.describe(
-					"A list of deploy-specific environment variable data. Data specified this way applies only\nto this specific deploy and is merged into any existing environment variables set on the\naccount and site.\n\nDeploy-specific environment variable data takes precedence over account and site\nenvironment variable data: For example, a deploy-specific variable with the key `NODE_ENV`\nwill take priority over any existing site- and account-level environment variable data\nwith the key `NODE_ENV`.\n\nEnvironment variable data may be provided at one of two times:\n\n- When creating a new Deploy with deploy files (most common)\n- When finalizing an existing Deploy with deploy files\n\nOnce set, environment variables for a specific deploy cannot be modified. Subsequent\nattempts to modify environment variable data for a deploy will be ignored.\n",
-				),
-		),
-	})
-	.describe(
-		"Deploy files can be provided in two ways:\n1. As a JSON object using 'files' (a hash mapping file paths to SHA1 digests), OR\n2. As a zip file using one of these methods:\n   - Set Content-Type to 'application/zip' and send the zip file as the raw request body\n   - Include the zip file content in the 'zip' field of this JSON object with Content-Type 'application/json'\n",
-	);
 
 export const createSplitTestBranchTestsSchema = z.object({
 	branch_tests: z.optional(z.object({})),
@@ -4720,6 +4723,7 @@ export const createSiteDeployMutationRequestSchema = z
 							),
 						}),
 					),
+					event_subscriptions: z.optional(z.array(z.string())),
 				}),
 			),
 		),
@@ -4953,6 +4957,7 @@ export const updateSiteDeployMutationRequestSchema = z
 							),
 						}),
 					),
+					event_subscriptions: z.optional(z.array(z.string())),
 				}),
 			),
 		),
