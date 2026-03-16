@@ -712,7 +712,9 @@ export const userEventSchema = z
 					"env-variable-read:v0:env:pull",
 					"firewall-bypass-created",
 					"firewall-bypass-deleted",
+					"firewall-config-modified",
 					"firewall-config-promoted",
+					"firewall-config-removed",
 					"firewall-managed-rulegroup-updated",
 					"firewall-managed-ruleset-updated",
 					"flag",
@@ -2977,6 +2979,12 @@ export const userEventSchema = z
 				}),
 				z.object({
 					projectId: z.string(),
+					projectName: z.string(),
+					configVersion: z.union([z.string(), z.number()]),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.optional(z.string()),
 					restore: z.union([z.literal(false), z.literal(true)]),
 					configVersion: z.number(),
 					configChangeCount: z.number(),
