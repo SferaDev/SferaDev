@@ -1475,7 +1475,9 @@ export const userEventTypeEnum = {
 	"env-variable-read:v0:env:pull": "env-variable-read:v0:env:pull",
 	"firewall-bypass-created": "firewall-bypass-created",
 	"firewall-bypass-deleted": "firewall-bypass-deleted",
+	"firewall-config-modified": "firewall-config-modified",
 	"firewall-config-promoted": "firewall-config-promoted",
+	"firewall-config-removed": "firewall-config-removed",
 	"firewall-managed-rulegroup-updated": "firewall-managed-rulegroup-updated",
 	"firewall-managed-ruleset-updated": "firewall-managed-ruleset-updated",
 	flag: "flag",
@@ -8330,6 +8332,21 @@ export type UserEvent = {
 						 * @type string
 						 */
 						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						configVersion: string | number;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string | undefined
+						 */
+						projectName?: string | undefined;
 						/**
 						 * @type boolean
 						 */
