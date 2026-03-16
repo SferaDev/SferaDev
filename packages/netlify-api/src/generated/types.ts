@@ -2034,6 +2034,10 @@ export type DeployFiles = {
 									| undefined;
 						  }
 						| undefined;
+					/**
+					 * @type array | undefined
+					 */
+					event_subscriptions?: string[] | undefined;
 				};
 		  }
 		| undefined;
@@ -3862,6 +3866,10 @@ export type FunctionConfig = {
 					| undefined;
 		  }
 		| undefined;
+	/**
+	 * @type array | undefined
+	 */
+	event_subscriptions?: string[] | undefined;
 };
 
 export const functionRouteMethodsEnum = {
@@ -4272,6 +4280,261 @@ export type CreateSiteSnippetSnippet = {
 	 * @type string | undefined
 	 */
 	goal_position?: string | undefined;
+};
+
+export const routesMethodsEnum3 = {
+	GET: "GET",
+	POST: "POST",
+	PUT: "PUT",
+	PATCH: "PATCH",
+	DELETE: "DELETE",
+	OPTIONS: "OPTIONS",
+} as const;
+
+export type RoutesMethodsEnum3Key = (typeof routesMethodsEnum3)[keyof typeof routesMethodsEnum3];
+
+export const rateLimitConfigAlgorithmEnum4 = {
+	sliding_window: "sliding_window",
+} as const;
+
+export type RateLimitConfigAlgorithmEnum4Key =
+	(typeof rateLimitConfigAlgorithmEnum4)[keyof typeof rateLimitConfigAlgorithmEnum4];
+
+export const keysTypeEnum5 = {
+	ip: "ip",
+	domain: "domain",
+} as const;
+
+export type KeysTypeEnum5Key = (typeof keysTypeEnum5)[keyof typeof keysTypeEnum5];
+
+export const environmentScopesEnum2 = {
+	builds: "builds",
+	functions: "functions",
+	runtime: "runtime",
+	"post-processing": "post-processing",
+} as const;
+
+export type EnvironmentScopesEnum2Key =
+	(typeof environmentScopesEnum2)[keyof typeof environmentScopesEnum2];
+
+/**
+ * @description Deploy files can be provided in two ways:\n1. As a JSON object using \'files\' (a hash mapping file paths to SHA1 digests), OR\n2. As a zip file using one of these methods:\n   - Set Content-Type to \'application/zip\' and send the zip file as the raw request body\n   - Include the zip file content in the \'zip\' field of this JSON object with Content-Type \'application/json\'\n
+ */
+export type CreateSiteDeployDeploy = {
+	/**
+	 * @description A hash mapping file paths to SHA1 digests of the file contents.
+	 * @type object | undefined
+	 */
+	files?: object | undefined;
+	/**
+	 * @description A zip file containing the site files to deploy. Alternative to \'files\'.\nTo use this field, set Content-Type to \'application/json\' and include the zip content here.\nAlternatively, you can set Content-Type to \'application/zip\' and send the zip as the raw request body (not as JSON).\n
+	 * @type string | undefined, binary
+	 */
+	zip?: Blob | undefined;
+	/**
+	 * @type boolean | undefined
+	 */
+	draft?: boolean | undefined;
+	/**
+	 * @type boolean | undefined
+	 */
+	async?: boolean | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	functions?: object | undefined;
+	/**
+	 * @type array | undefined
+	 */
+	function_schedules?:
+		| {
+				/**
+				 * @type string | undefined
+				 */
+				name?: string | undefined;
+				/**
+				 * @type string | undefined
+				 */
+				cron?: string | undefined;
+		  }[]
+		| undefined;
+	/**
+	 * @type object | undefined
+	 */
+	functions_config?:
+		| {
+				[key: string]: {
+					/**
+					 * @type string | undefined
+					 */
+					display_name?: string | undefined;
+					/**
+					 * @type string | undefined
+					 */
+					generator?: string | undefined;
+					/**
+					 * @type object | undefined
+					 */
+					build_data?: object | undefined;
+					/**
+					 * @type array | undefined
+					 */
+					routes?:
+						| {
+								/**
+								 * @type string | undefined
+								 */
+								pattern?: string | undefined;
+								/**
+								 * @type string | undefined
+								 */
+								literal?: string | undefined;
+								/**
+								 * @type string | undefined
+								 */
+								expression?: string | undefined;
+								/**
+								 * @type array | undefined
+								 */
+								methods?: RoutesMethodsEnum3Key[] | undefined;
+								/**
+								 * @type boolean | undefined
+								 */
+								prefer_static?: boolean | undefined;
+						  }[]
+						| undefined;
+					/**
+					 * @type array | undefined
+					 */
+					excluded_routes?:
+						| {
+								/**
+								 * @type string | undefined
+								 */
+								pattern?: string | undefined;
+								/**
+								 * @type string | undefined
+								 */
+								literal?: string | undefined;
+								/**
+								 * @type string | undefined
+								 */
+								expression?: string | undefined;
+						  }[]
+						| undefined;
+					/**
+					 * @type integer | undefined
+					 */
+					priority?: number | undefined;
+					/**
+					 * @type object | undefined
+					 */
+					traffic_rules?:
+						| {
+								/**
+								 * @type object | undefined
+								 */
+								action?:
+									| {
+											/**
+											 * @type string | undefined
+											 */
+											type?: string | undefined;
+											/**
+											 * @type object | undefined
+											 */
+											config?:
+												| {
+														/**
+														 * @type string | undefined
+														 */
+														to?: string | undefined;
+														/**
+														 * @type object | undefined
+														 */
+														rate_limit_config?:
+															| {
+																	/**
+																	 * @type string | undefined
+																	 */
+																	algorithm?: RateLimitConfigAlgorithmEnum4Key | undefined;
+																	/**
+																	 * @type integer | undefined
+																	 */
+																	window_size?: number | undefined;
+																	/**
+																	 * @type integer | undefined
+																	 */
+																	window_limit?: number | undefined;
+															  }
+															| undefined;
+														/**
+														 * @type object | undefined
+														 */
+														aggregate?:
+															| {
+																	/**
+																	 * @type array | undefined
+																	 */
+																	keys?:
+																		| {
+																				/**
+																				 * @type string | undefined
+																				 */
+																				type?: KeysTypeEnum5Key | undefined;
+																		  }[]
+																		| undefined;
+															  }
+															| undefined;
+												  }
+												| undefined;
+									  }
+									| undefined;
+						  }
+						| undefined;
+					/**
+					 * @type array | undefined
+					 */
+					event_subscriptions?: string[] | undefined;
+				};
+		  }
+		| undefined;
+	/**
+	 * @type string | undefined
+	 */
+	branch?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	framework?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	framework_version?: string | undefined;
+	/**
+	 * @description A list of deploy-specific environment variable data. Data specified this way applies only\nto this specific deploy and is merged into any existing environment variables set on the\naccount and site.\n\nDeploy-specific environment variable data takes precedence over account and site\nenvironment variable data: For example, a deploy-specific variable with the key `NODE_ENV`\nwill take priority over any existing site- and account-level environment variable data\nwith the key `NODE_ENV`.\n\nEnvironment variable data may be provided at one of two times:\n\n- When creating a new Deploy with deploy files (most common)\n- When finalizing an existing Deploy with deploy files\n\nOnce set, environment variables for a specific deploy cannot be modified. Subsequent\nattempts to modify environment variable data for a deploy will be ignored.\n
+	 * @type array | undefined
+	 */
+	environment?:
+		| {
+				/**
+				 * @type string
+				 */
+				key: string;
+				/**
+				 * @type string
+				 */
+				value: string;
+				/**
+				 * @type boolean
+				 */
+				is_secret: boolean;
+				/**
+				 * @type array
+				 */
+				scopes: EnvironmentScopesEnum2Key[];
+		  }[]
+		| undefined;
 };
 
 export type CreateSiteBuildHookBuildhook = {
@@ -4741,257 +5004,6 @@ export type CreateSiteSite = {
 				 */
 				stop_builds?: boolean | undefined;
 		  }
-		| undefined;
-};
-
-export const routesMethodsEnum3 = {
-	GET: "GET",
-	POST: "POST",
-	PUT: "PUT",
-	PATCH: "PATCH",
-	DELETE: "DELETE",
-	OPTIONS: "OPTIONS",
-} as const;
-
-export type RoutesMethodsEnum3Key = (typeof routesMethodsEnum3)[keyof typeof routesMethodsEnum3];
-
-export const rateLimitConfigAlgorithmEnum4 = {
-	sliding_window: "sliding_window",
-} as const;
-
-export type RateLimitConfigAlgorithmEnum4Key =
-	(typeof rateLimitConfigAlgorithmEnum4)[keyof typeof rateLimitConfigAlgorithmEnum4];
-
-export const keysTypeEnum5 = {
-	ip: "ip",
-	domain: "domain",
-} as const;
-
-export type KeysTypeEnum5Key = (typeof keysTypeEnum5)[keyof typeof keysTypeEnum5];
-
-export const environmentScopesEnum2 = {
-	builds: "builds",
-	functions: "functions",
-	runtime: "runtime",
-	"post-processing": "post-processing",
-} as const;
-
-export type EnvironmentScopesEnum2Key =
-	(typeof environmentScopesEnum2)[keyof typeof environmentScopesEnum2];
-
-/**
- * @description Deploy files can be provided in two ways:\n1. As a JSON object using \'files\' (a hash mapping file paths to SHA1 digests), OR\n2. As a zip file using one of these methods:\n   - Set Content-Type to \'application/zip\' and send the zip file as the raw request body\n   - Include the zip file content in the \'zip\' field of this JSON object with Content-Type \'application/json\'\n
- */
-export type CreateSiteDeployDeploy = {
-	/**
-	 * @description A hash mapping file paths to SHA1 digests of the file contents.
-	 * @type object | undefined
-	 */
-	files?: object | undefined;
-	/**
-	 * @description A zip file containing the site files to deploy. Alternative to \'files\'.\nTo use this field, set Content-Type to \'application/json\' and include the zip content here.\nAlternatively, you can set Content-Type to \'application/zip\' and send the zip as the raw request body (not as JSON).\n
-	 * @type string | undefined, binary
-	 */
-	zip?: Blob | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	draft?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	async?: boolean | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	functions?: object | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	function_schedules?:
-		| {
-				/**
-				 * @type string | undefined
-				 */
-				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				cron?: string | undefined;
-		  }[]
-		| undefined;
-	/**
-	 * @type object | undefined
-	 */
-	functions_config?:
-		| {
-				[key: string]: {
-					/**
-					 * @type string | undefined
-					 */
-					display_name?: string | undefined;
-					/**
-					 * @type string | undefined
-					 */
-					generator?: string | undefined;
-					/**
-					 * @type object | undefined
-					 */
-					build_data?: object | undefined;
-					/**
-					 * @type array | undefined
-					 */
-					routes?:
-						| {
-								/**
-								 * @type string | undefined
-								 */
-								pattern?: string | undefined;
-								/**
-								 * @type string | undefined
-								 */
-								literal?: string | undefined;
-								/**
-								 * @type string | undefined
-								 */
-								expression?: string | undefined;
-								/**
-								 * @type array | undefined
-								 */
-								methods?: RoutesMethodsEnum3Key[] | undefined;
-								/**
-								 * @type boolean | undefined
-								 */
-								prefer_static?: boolean | undefined;
-						  }[]
-						| undefined;
-					/**
-					 * @type array | undefined
-					 */
-					excluded_routes?:
-						| {
-								/**
-								 * @type string | undefined
-								 */
-								pattern?: string | undefined;
-								/**
-								 * @type string | undefined
-								 */
-								literal?: string | undefined;
-								/**
-								 * @type string | undefined
-								 */
-								expression?: string | undefined;
-						  }[]
-						| undefined;
-					/**
-					 * @type integer | undefined
-					 */
-					priority?: number | undefined;
-					/**
-					 * @type object | undefined
-					 */
-					traffic_rules?:
-						| {
-								/**
-								 * @type object | undefined
-								 */
-								action?:
-									| {
-											/**
-											 * @type string | undefined
-											 */
-											type?: string | undefined;
-											/**
-											 * @type object | undefined
-											 */
-											config?:
-												| {
-														/**
-														 * @type string | undefined
-														 */
-														to?: string | undefined;
-														/**
-														 * @type object | undefined
-														 */
-														rate_limit_config?:
-															| {
-																	/**
-																	 * @type string | undefined
-																	 */
-																	algorithm?: RateLimitConfigAlgorithmEnum4Key | undefined;
-																	/**
-																	 * @type integer | undefined
-																	 */
-																	window_size?: number | undefined;
-																	/**
-																	 * @type integer | undefined
-																	 */
-																	window_limit?: number | undefined;
-															  }
-															| undefined;
-														/**
-														 * @type object | undefined
-														 */
-														aggregate?:
-															| {
-																	/**
-																	 * @type array | undefined
-																	 */
-																	keys?:
-																		| {
-																				/**
-																				 * @type string | undefined
-																				 */
-																				type?: KeysTypeEnum5Key | undefined;
-																		  }[]
-																		| undefined;
-															  }
-															| undefined;
-												  }
-												| undefined;
-									  }
-									| undefined;
-						  }
-						| undefined;
-				};
-		  }
-		| undefined;
-	/**
-	 * @type string | undefined
-	 */
-	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	framework?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	framework_version?: string | undefined;
-	/**
-	 * @description A list of deploy-specific environment variable data. Data specified this way applies only\nto this specific deploy and is merged into any existing environment variables set on the\naccount and site.\n\nDeploy-specific environment variable data takes precedence over account and site\nenvironment variable data: For example, a deploy-specific variable with the key `NODE_ENV`\nwill take priority over any existing site- and account-level environment variable data\nwith the key `NODE_ENV`.\n\nEnvironment variable data may be provided at one of two times:\n\n- When creating a new Deploy with deploy files (most common)\n- When finalizing an existing Deploy with deploy files\n\nOnce set, environment variables for a specific deploy cannot be modified. Subsequent\nattempts to modify environment variable data for a deploy will be ignored.\n
-	 * @type array | undefined
-	 */
-	environment?:
-		| {
-				/**
-				 * @type string
-				 */
-				key: string;
-				/**
-				 * @type string
-				 */
-				value: string;
-				/**
-				 * @type boolean
-				 */
-				is_secret: boolean;
-				/**
-				 * @type array
-				 */
-				scopes: EnvironmentScopesEnum2Key[];
-		  }[]
 		| undefined;
 };
 
@@ -11010,6 +11022,10 @@ export type CreateSiteDeployMutationRequest = {
 									| undefined;
 						  }
 						| undefined;
+					/**
+					 * @type array | undefined
+					 */
+					event_subscriptions?: string[] | undefined;
 				};
 		  }
 		| undefined;
@@ -11615,6 +11631,10 @@ export type UpdateSiteDeployMutationRequest = {
 									| undefined;
 						  }
 						| undefined;
+					/**
+					 * @type array | undefined
+					 */
+					event_subscriptions?: string[] | undefined;
 				};
 		  }
 		| undefined;
