@@ -919,6 +919,7 @@ export const userEventSchema = z
 					"subscription-updated",
 					"team",
 					"team-avatar-update",
+					"team-default-build-machine-updated",
 					"team-delete",
 					"team-domain-verification-deleted",
 					"team-email-domain-update",
@@ -5815,6 +5816,10 @@ export const userEventSchema = z
 					expiresAt: z.string(),
 					amount: z.string(),
 					currency: z.string(),
+				}),
+				z.object({
+					previous: z.optional(z.enum(["enhanced", "turbo", "standard", "elastic"])),
+					next: z.optional(z.enum(["enhanced", "turbo", "standard", "elastic"])),
 				}),
 				z.object({
 					slug: z.string(),

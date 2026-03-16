@@ -1690,6 +1690,7 @@ export const userEventTypeEnum = {
 	"subscription-updated": "subscription-updated",
 	team: "team",
 	"team-avatar-update": "team-avatar-update",
+	"team-default-build-machine-updated": "team-default-build-machine-updated",
 	"team-delete": "team-delete",
 	"team-domain-verification-deleted": "team-domain-verification-deleted",
 	"team-email-domain-update": "team-email-domain-update",
@@ -4105,6 +4106,24 @@ export const nextIncludeDraftsEnum = {
 
 export type NextIncludeDraftsEnumKey =
 	(typeof nextIncludeDraftsEnum)[keyof typeof nextIncludeDraftsEnum];
+
+export const payloadPreviousEnum = {
+	enhanced: "enhanced",
+	turbo: "turbo",
+	standard: "standard",
+	elastic: "elastic",
+} as const;
+
+export type PayloadPreviousEnumKey = (typeof payloadPreviousEnum)[keyof typeof payloadPreviousEnum];
+
+export const payloadNextEnum = {
+	enhanced: "enhanced",
+	turbo: "turbo",
+	standard: "standard",
+	elastic: "elastic",
+} as const;
+
+export type PayloadNextEnumKey = (typeof payloadNextEnum)[keyof typeof payloadNextEnum];
 
 export const payloadEnabledEnum2 = {
 	false: false,
@@ -14046,6 +14065,16 @@ export type UserEvent = {
 						 * @type string
 						 */
 						currency: string;
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						previous?: PayloadPreviousEnumKey | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						next?: PayloadNextEnumKey | undefined;
 				  }
 				| {
 						/**
