@@ -73,6 +73,14 @@ import type {
 	BatchRemoveProjectEnvMutationResponse,
 	BatchRemoveProjectEnvPathParams,
 	BatchRemoveProjectEnvQueryParams,
+	BuyCredits400,
+	BuyCredits401,
+	BuyCredits402,
+	BuyCredits403,
+	BuyCredits404,
+	BuyCredits502,
+	BuyCreditsMutationResponse,
+	BuyCreditsQueryParams,
 	BuyDomains400,
 	BuyDomains401,
 	BuyDomains403,
@@ -2684,6 +2692,39 @@ export async function listContractCommitments({
 		ListContractCommitmentsQueryParams,
 		Record<string, string>
 	>({ method: "GET", url: `/v1/billing/contract-commitments`, queryParams, ...requestConfig });
+	return data;
+}
+
+/**
+ * @description Purchases credits for a Vercel team using the default payment method on file. The purchase is charged immediately via Stripe invoice. Supported credit types are `v0`, `gateway`, and `agent`. The `amount` field specifies the number of credits to purchase and must be a positive integer. An optional `source` query parameter can be provided to identify the caller. Defaults to `api` if not specified. This is only available for Owner, Member, Developer, Security, and Billing roles for the supplied team.
+ * @summary Purchase credits
+ * {@link /v1/billing/buy}
+ */
+export async function buyCredits({
+	queryParams,
+	config = {},
+}: {
+	queryParams?: BuyCreditsQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	const data = await request<
+		BuyCreditsMutationResponse,
+		ErrorWrapper<
+			BuyCredits400 | BuyCredits401 | BuyCredits402 | BuyCredits403 | BuyCredits404 | BuyCredits502
+		>,
+		null,
+		Record<string, string>,
+		BuyCreditsQueryParams,
+		Record<string, string>
+	>({
+		method: "POST",
+		url: `/v1/billing/buy`,
+		queryParams,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
 	return data;
 }
 
@@ -12798,6 +12839,7 @@ export const operationsByPath = {
 	"POST /v8/artifacts": artifactQuery,
 	"GET /v1/billing/charges": listBillingCharges,
 	"GET /v1/billing/contract-commitments": listContractCommitments,
+	"POST /v1/billing/buy": buyCredits,
 	"PUT /v1/bulk-redirects": stageRedirects,
 	"GET /v1/bulk-redirects": getRedirects,
 	"DELETE /v1/bulk-redirects": deleteRedirects,
@@ -13112,6 +13154,7 @@ export const operationsByTag = {
 	billing: {
 		listBillingCharges,
 		listContractCommitments,
+		buyCredits,
 	},
 	bulkRedirects: {
 		stageRedirects,
@@ -13467,6 +13510,7 @@ export const tagDictionary = {
 	},
 	billing: {
 		GET: ["listBillingCharges", "listContractCommitments"],
+		POST: ["buyCredits"],
 	},
 	bulkRedirects: {
 		PUT: ["stageRedirects"],

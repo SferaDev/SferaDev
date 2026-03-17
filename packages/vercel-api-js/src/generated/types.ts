@@ -19460,6 +19460,61 @@ export type ListContractCommitmentsQuery = {
 		| ListContractCommitments404;
 };
 
+export type BuyCreditsQueryParams = {
+	/**
+	 * @description The source of the purchase request. Defaults to `api` if not specified.
+	 * @type string | undefined
+	 */
+	source?: string | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type BuyCredits200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type BuyCredits400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type BuyCredits401 = unknown;
+
+export type BuyCredits402 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type BuyCredits403 = unknown;
+
+export type BuyCredits404 = unknown;
+
+export type BuyCredits502 = unknown;
+
+export type BuyCreditsMutationResponse = BuyCredits200;
+
+export type BuyCreditsMutation = {
+	Response: BuyCredits200;
+	QueryParams: BuyCreditsQueryParams;
+	Errors:
+		| BuyCredits400
+		| BuyCredits401
+		| BuyCredits402
+		| BuyCredits403
+		| BuyCredits404
+		| BuyCredits502;
+};
+
 export type StageRedirectsQueryParams = {
 	/**
 	 * @description The Team identifier to perform the request on behalf of.

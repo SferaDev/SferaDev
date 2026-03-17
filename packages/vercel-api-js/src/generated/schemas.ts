@@ -8914,6 +8914,45 @@ export const listContractCommitmentsQueryResponseSchema = z.lazy(
 	() => listContractCommitments200Schema,
 );
 
+export const buyCreditsQueryParamsSchema = z
+	.object({
+		source: z.optional(
+			z
+				.string()
+				.describe("The source of the purchase request. Defaults to `api` if not specified."),
+		),
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const buyCredits200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export const buyCredits400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const buyCredits401Schema = z.unknown();
+
+export const buyCredits402Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const buyCredits403Schema = z.unknown();
+
+export const buyCredits404Schema = z.unknown();
+
+export const buyCredits502Schema = z.unknown();
+
+export const buyCreditsMutationResponseSchema = z.lazy(() => buyCredits200Schema);
+
 export const stageRedirectsQueryParamsSchema = z
 	.object({
 		teamId: z.optional(
