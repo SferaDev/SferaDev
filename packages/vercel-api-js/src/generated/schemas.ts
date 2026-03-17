@@ -921,8 +921,11 @@ export const userEventSchema = z
 					"team-avatar-update",
 					"team-default-build-machine-updated",
 					"team-delete",
+					"team-domain-verification-created",
 					"team-domain-verification-deleted",
+					"team-domain-verification-verified",
 					"team-email-domain-update",
+					"team-emu-updated",
 					"team-ended-trial",
 					"team-invite-bulk-delete",
 					"team-invite-code-reset",
@@ -5854,6 +5857,10 @@ export const userEventSchema = z
 					),
 					removedMemberCount: z.optional(z.number()),
 					timestamp: z.optional(z.number()),
+				}),
+				z.object({
+					enabled: z.union([z.literal(false), z.literal(true)]),
+					domain: z.optional(z.string()),
 				}),
 				z.object({
 					projectId: z.string(),
