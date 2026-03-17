@@ -3991,6 +3991,7 @@ export type BudgetItemPauseProjectsEnumKey =
 	(typeof budgetItemPauseProjectsEnum)[keyof typeof budgetItemPauseProjectsEnum];
 
 export const budgetItemPricingPlanEnum = {
+	platform: "platform",
 	plus: "plus",
 	legacy: "legacy",
 	unbundled: "unbundled",
@@ -4029,6 +4030,7 @@ export type BudgetPauseProjectsEnumKey =
 	(typeof budgetPauseProjectsEnum)[keyof typeof budgetPauseProjectsEnum];
 
 export const budgetPricingPlanEnum = {
+	platform: "platform",
 	plus: "plus",
 	legacy: "legacy",
 	unbundled: "unbundled",

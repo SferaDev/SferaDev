@@ -5648,7 +5648,7 @@ export const userEventSchema = z
 								),
 								pricingPlan: z.optional(
 									z
-										.enum(["plus", "legacy", "unbundled"])
+										.enum(["platform", "plus", "legacy", "unbundled"])
 										.describe("The acive pricing plan the team is billed with"),
 								),
 								teamId: z.string().describe("Partition key"),
@@ -5692,7 +5692,7 @@ export const userEventSchema = z
 							),
 							pricingPlan: z.optional(
 								z
-									.enum(["plus", "legacy", "unbundled"])
+									.enum(["platform", "plus", "legacy", "unbundled"])
 									.describe("The acive pricing plan the team is billed with"),
 							),
 							teamId: z.string().describe("Partition key"),
@@ -5735,7 +5735,7 @@ export const userEventSchema = z
 							),
 							pricingPlan: z.optional(
 								z
-									.enum(["plus", "legacy", "unbundled"])
+									.enum(["platform", "plus", "legacy", "unbundled"])
 									.describe("The acive pricing plan the team is billed with"),
 							),
 							teamId: z.string().describe("Partition key"),
