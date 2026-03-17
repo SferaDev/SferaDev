@@ -1692,8 +1692,11 @@ export const userEventTypeEnum = {
 	"team-avatar-update": "team-avatar-update",
 	"team-default-build-machine-updated": "team-default-build-machine-updated",
 	"team-delete": "team-delete",
+	"team-domain-verification-created": "team-domain-verification-created",
 	"team-domain-verification-deleted": "team-domain-verification-deleted",
+	"team-domain-verification-verified": "team-domain-verification-verified",
 	"team-email-domain-update": "team-email-domain-update",
+	"team-emu-updated": "team-emu-updated",
 	"team-ended-trial": "team-ended-trial",
 	"team-invite-bulk-delete": "team-invite-bulk-delete",
 	"team-invite-code-reset": "team-invite-code-reset",
@@ -14137,6 +14140,16 @@ export type UserEvent = {
 						 * @type number | undefined
 						 */
 						timestamp?: number | undefined;
+				  }
+				| {
+						/**
+						 * @type boolean
+						 */
+						enabled: PayloadEnabledEnumKey;
+						/**
+						 * @type string | undefined
+						 */
+						domain?: string | undefined;
 				  }
 				| {
 						/**
