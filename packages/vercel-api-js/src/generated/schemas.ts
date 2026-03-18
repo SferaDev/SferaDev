@@ -909,6 +909,9 @@ export const userEventSchema = z
 					"storage-inactive-store-deleted",
 					"storage-reset-credentials",
 					"storage-resource-repl-command",
+					"storage-transfer-in-success",
+					"storage-transfer-out-success",
+					"storage-transfer-request-created",
 					"storage-update",
 					"storage-update-project-connection",
 					"storage-view-secret",
@@ -5749,6 +5752,34 @@ export const userEventSchema = z
 				}),
 				z.object({
 					storeType: z.enum(["redis", "postgres"]),
+				}),
+				z.object({
+					transferRequestCode: z.string(),
+					store: z.object({
+						id: z.string(),
+						name: z.optional(z.string()),
+						type: z.enum(["integration", "redis", "postgres", "edge-config", "blob"]),
+					}),
+				}),
+				z.object({
+					transferRequestCode: z.string(),
+					store: z.object({
+						id: z.string(),
+						name: z.optional(z.string()),
+						type: z.enum(["integration", "redis", "postgres", "edge-config", "blob"]),
+					}),
+					destinationTeamId: z.string(),
+					destinationTeamName: z.string(),
+				}),
+				z.object({
+					transferRequestCode: z.string(),
+					store: z.object({
+						id: z.string(),
+						name: z.optional(z.string()),
+						type: z.enum(["integration", "redis", "postgres", "edge-config", "blob"]),
+					}),
+					originTeamId: z.string(),
+					originTeamName: z.string(),
 				}),
 				z.object({
 					id: z.string(),

@@ -1680,6 +1680,9 @@ export const userEventTypeEnum = {
 	"storage-inactive-store-deleted": "storage-inactive-store-deleted",
 	"storage-reset-credentials": "storage-reset-credentials",
 	"storage-resource-repl-command": "storage-resource-repl-command",
+	"storage-transfer-in-success": "storage-transfer-in-success",
+	"storage-transfer-out-success": "storage-transfer-out-success",
+	"storage-transfer-request-created": "storage-transfer-request-created",
 	"storage-update": "storage-update",
 	"storage-update-project-connection": "storage-update-project-connection",
 	"storage-view-secret": "storage-view-secret",
@@ -4046,6 +4049,16 @@ export const payloadStoreTypeEnum = {
 
 export type PayloadStoreTypeEnumKey =
 	(typeof payloadStoreTypeEnum)[keyof typeof payloadStoreTypeEnum];
+
+export const storeTypeEnum = {
+	integration: "integration",
+	redis: "redis",
+	postgres: "postgres",
+	"edge-config": "edge-config",
+	blob: "blob",
+} as const;
+
+export type StoreTypeEnumKey = (typeof storeTypeEnum)[keyof typeof storeTypeEnum];
 
 export const payloadTypeEnum2 = {
 	integration: "integration",
@@ -13935,6 +13948,91 @@ export type UserEvent = {
 						 * @type string
 						 */
 						storeType: PayloadStoreTypeEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						transferRequestCode: string;
+						/**
+						 * @type object
+						 */
+						store: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string | undefined
+							 */
+							name?: string | undefined;
+							/**
+							 * @type string
+							 */
+							type: StoreTypeEnumKey;
+						};
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						transferRequestCode: string;
+						/**
+						 * @type object
+						 */
+						store: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string | undefined
+							 */
+							name?: string | undefined;
+							/**
+							 * @type string
+							 */
+							type: StoreTypeEnumKey;
+						};
+						/**
+						 * @type string
+						 */
+						destinationTeamId: string;
+						/**
+						 * @type string
+						 */
+						destinationTeamName: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						transferRequestCode: string;
+						/**
+						 * @type object
+						 */
+						store: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string | undefined
+							 */
+							name?: string | undefined;
+							/**
+							 * @type string
+							 */
+							type: StoreTypeEnumKey;
+						};
+						/**
+						 * @type string
+						 */
+						originTeamId: string;
+						/**
+						 * @type string
+						 */
+						originTeamName: string;
 				  }
 				| {
 						/**
