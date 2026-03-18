@@ -3931,7 +3931,7 @@ export async function cancelDeployment({
 /**
  * @description Retrieves a list of DNS records created for a domain name. By default it returns 20 records if no limit is provided. The rest can be retrieved using the pagination options.
  * @summary List existing DNS records
- * {@link /v4/domains/:domain/records}
+ * {@link /v5/domains/:domain/records}
  */
 export async function getRecords({
 	pathParams: { domain },
@@ -3955,7 +3955,7 @@ export async function getRecords({
 		Record<string, string>,
 		GetRecordsQueryParams,
 		GetRecordsPathParams
-	>({ method: "GET", url: `/v4/domains/${domain}/records`, queryParams, ...requestConfig });
+	>({ method: "GET", url: `/v5/domains/${domain}/records`, queryParams, ...requestConfig });
 	return data;
 }
 
@@ -12873,7 +12873,7 @@ export const operationsByPath = {
 	"GET /v13/deployments/{idOrUrl}": getDeployment,
 	"POST /v13/deployments": createDeployment,
 	"PATCH /v12/deployments/{id}/cancel": cancelDeployment,
-	"GET /v4/domains/{domain}/records": getRecords,
+	"GET /v5/domains/{domain}/records": getRecords,
 	"POST /v2/domains/{domain}/records": createRecord,
 	"PATCH /v1/domains/records/{recordId}": updateRecord,
 	"DELETE /v2/domains/{domain}/records/{recordId}": removeRecord,
