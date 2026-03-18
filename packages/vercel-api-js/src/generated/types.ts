@@ -1573,6 +1573,7 @@ export const userEventTypeEnum = {
 	"project-domain-updated": "project-domain-updated",
 	"project-domain-verified": "project-domain-verified",
 	"project-elastic-concurrency-updated": "project-elastic-concurrency-updated",
+	"project-external-rewrite-caching-updated": "project-external-rewrite-caching-updated",
 	"project-framework-updated": "project-framework-updated",
 	"project-function-cpu-memory": "project-function-cpu-memory",
 	"project-function-failover": "project-function-failover",
@@ -3434,6 +3435,14 @@ export const payloadEnableAffectedProjectsDeploymentsEnum = {
 
 export type PayloadEnableAffectedProjectsDeploymentsEnumKey =
 	(typeof payloadEnableAffectedProjectsDeploymentsEnum)[keyof typeof payloadEnableAffectedProjectsDeploymentsEnum];
+
+export const payloadEnableExternalRewriteCachingEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadEnableExternalRewriteCachingEnumKey =
+	(typeof payloadEnableExternalRewriteCachingEnum)[keyof typeof payloadEnableExternalRewriteCachingEnum];
 
 export const payloadProductionDeploymentsFastLaneEnum = {
 	false: false,
@@ -11682,6 +11691,20 @@ export type UserEvent = {
 						 * @type boolean
 						 */
 						enableAffectedProjectsDeployments: PayloadEnableAffectedProjectsDeploymentsEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type boolean
+						 */
+						enableExternalRewriteCaching: PayloadEnableExternalRewriteCachingEnumKey;
 				  }
 				| {
 						/**
