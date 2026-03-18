@@ -806,6 +806,7 @@ export const userEventSchema = z
 					"project-domain-updated",
 					"project-domain-verified",
 					"project-elastic-concurrency-updated",
+					"project-external-rewrite-caching-updated",
 					"project-framework-updated",
 					"project-function-cpu-memory",
 					"project-function-failover",
@@ -4767,6 +4768,11 @@ export const userEventSchema = z
 					projectId: z.string(),
 					projectName: z.string(),
 					enableAffectedProjectsDeployments: z.union([z.literal(false), z.literal(true)]),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					enableExternalRewriteCaching: z.union([z.literal(false), z.literal(true)]),
 				}),
 				z.object({
 					projectId: z.string(),
