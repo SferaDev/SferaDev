@@ -162,6 +162,14 @@ export const accountSettingWebSchema = z.object({
 	nukiClubDismissed: z.optional(
 		z.boolean().describe("If true, Nuki Club info is dismissed and no banner is shown"),
 	),
+	annotations: z.optional(
+		z
+			.object({})
+			.catchall(z.object({}))
+			.describe(
+				'Additional generic settings. Key/Value Pair, key consists of a prefix (DNS subdomain) and a name (can contains alphanumeric characters with dashes, underscores and dots in between) separated by a dash ("/")',
+			),
+	),
 	get removedStaledDevices() {
 		return z.array(staleDeviceSchema).describe("List of removed staled devices").optional();
 	},
@@ -766,63 +774,6 @@ export const converterServiceSchema = z.object({
 	stopped: z.optional(z.boolean()),
 });
 
-export const protocolSchema = z.object({
-	confidential: z.optional(z.boolean()),
-	defaultPort: z.optional(z.int()),
-	description: z.optional(z.string()),
-	name: z.optional(z.string()),
-	schemeName: z.optional(z.string()),
-	technicalName: z.optional(z.string()),
-	version: z.optional(z.string()),
-});
-
-export const referenceSchema = z.object({
-	get baseRef() {
-		return referenceSchema.optional();
-	},
-	absolute: z.optional(z.boolean()),
-	scheme: z.optional(z.string()),
-	opaque: z.optional(z.boolean()),
-	authority: z.optional(z.string()),
-	relative: z.optional(z.boolean()),
-	query: z.optional(z.string()),
-	path: z.optional(z.string()),
-	userInfo: z.optional(z.string()),
-	schemeSpecificPart: z.optional(z.string()),
-	fragment: z.optional(z.string()),
-	extensions: z.optional(z.string()),
-	matrix: z.optional(z.string()),
-	get matrixAsForm() {
-		return z.array(parameterSchema).optional();
-	},
-	get queryAsForm() {
-		return z.array(parameterSchema).optional();
-	},
-	extensionsAsArray: z.optional(z.array(z.string())),
-	hierarchicalPart: z.optional(z.string()),
-	hostDomain: z.optional(z.string()),
-	hostIdentifier: z.optional(z.string()),
-	hostPort: z.optional(z.int()),
-	lastSegment: z.optional(z.string()),
-	get parentRef() {
-		return referenceSchema.optional();
-	},
-	relativePart: z.optional(z.string()),
-	get relativeRef() {
-		return referenceSchema.optional();
-	},
-	remainingPart: z.optional(z.string()),
-	get schemeProtocol() {
-		return protocolSchema.optional();
-	},
-	segments: z.optional(z.array(z.string())),
-	get targetRef() {
-		return referenceSchema.optional();
-	},
-	hierarchical: z.optional(z.boolean()),
-	identifier: z.optional(z.string()),
-});
-
 export const metadataSchema = z.object({
 	description: z.optional(z.string()),
 	name: z.optional(z.string()),
@@ -897,6 +848,72 @@ export const metadataServiceSchema = z.object({
 	stopped: z.optional(z.boolean()),
 });
 
+export const rangeServiceSchema = z.object({
+	get context() {
+		return contextSchema.optional();
+	},
+	enabled: z.optional(z.boolean()),
+	started: z.optional(z.boolean()),
+	stopped: z.optional(z.boolean()),
+});
+
+export const protocolSchema = z.object({
+	confidential: z.optional(z.boolean()),
+	defaultPort: z.optional(z.int()),
+	description: z.optional(z.string()),
+	name: z.optional(z.string()),
+	schemeName: z.optional(z.string()),
+	technicalName: z.optional(z.string()),
+	version: z.optional(z.string()),
+});
+
+export const referenceSchema = z.object({
+	get baseRef() {
+		return referenceSchema.optional();
+	},
+	absolute: z.optional(z.boolean()),
+	scheme: z.optional(z.string()),
+	opaque: z.optional(z.boolean()),
+	authority: z.optional(z.string()),
+	relative: z.optional(z.boolean()),
+	query: z.optional(z.string()),
+	path: z.optional(z.string()),
+	userInfo: z.optional(z.string()),
+	schemeSpecificPart: z.optional(z.string()),
+	fragment: z.optional(z.string()),
+	extensions: z.optional(z.string()),
+	extensionsAsArray: z.optional(z.array(z.string())),
+	hierarchicalPart: z.optional(z.string()),
+	hostDomain: z.optional(z.string()),
+	hostIdentifier: z.optional(z.string()),
+	hostPort: z.optional(z.int()),
+	lastSegment: z.optional(z.string()),
+	get parentRef() {
+		return referenceSchema.optional();
+	},
+	relativePart: z.optional(z.string()),
+	get relativeRef() {
+		return referenceSchema.optional();
+	},
+	remainingPart: z.optional(z.string()),
+	get schemeProtocol() {
+		return protocolSchema.optional();
+	},
+	segments: z.optional(z.array(z.string())),
+	get targetRef() {
+		return referenceSchema.optional();
+	},
+	hierarchical: z.optional(z.boolean()),
+	identifier: z.optional(z.string()),
+	matrix: z.optional(z.string()),
+	get matrixAsForm() {
+		return z.array(parameterSchema).optional();
+	},
+	get queryAsForm() {
+		return z.array(parameterSchema).optional();
+	},
+});
+
 export const statusServiceSchema = z.object({
 	get context() {
 		return contextSchema.optional();
@@ -917,15 +934,6 @@ export const statusServiceSchema = z.object({
 		return metadataServiceSchema.optional();
 	},
 	overwriting: z.optional(z.boolean()),
-	stopped: z.optional(z.boolean()),
-});
-
-export const rangeServiceSchema = z.object({
-	get context() {
-		return contextSchema.optional();
-	},
-	enabled: z.optional(z.boolean()),
-	started: z.optional(z.boolean()),
 	stopped: z.optional(z.boolean()),
 });
 
@@ -1026,20 +1034,20 @@ export const applicationSchema = z.object({
 	get services() {
 		return z.array(serviceSchema).optional();
 	},
-	get statusService() {
-		return statusServiceSchema.optional();
-	},
 	get connegService() {
 		return connegServiceSchema.optional();
-	},
-	get metadataService() {
-		return metadataServiceSchema.optional();
 	},
 	get converterService() {
 		return converterServiceSchema.optional();
 	},
+	get metadataService() {
+		return metadataServiceSchema.optional();
+	},
 	get rangeService() {
 		return rangeServiceSchema.optional();
+	},
+	get statusService() {
+		return statusServiceSchema.optional();
 	},
 	get taskService() {
 		return taskServiceSchema.optional();
@@ -1285,12 +1293,12 @@ export const clientInfoSchema = z.object({
 	get user() {
 		return userSchema.optional();
 	},
-	upstreamAddress: z.optional(z.string()),
 	agentName: z.optional(z.string()),
 	agentVersion: z.optional(z.string()),
 	get mainAgentProduct() {
 		return productSchema.optional();
 	},
+	upstreamAddress: z.optional(z.string()),
 });
 
 export const companySchema = z.object({
@@ -1708,13 +1716,13 @@ export const statusSchema = z.object({
 	uri: z.optional(z.string()),
 	error: z.optional(z.boolean()),
 	success: z.optional(z.boolean()),
-	serverError: z.optional(z.boolean()),
-	connectorError: z.optional(z.boolean()),
-	clientError: z.optional(z.boolean()),
 	globalError: z.optional(z.boolean()),
 	informational: z.optional(z.boolean()),
 	redirection: z.optional(z.boolean()),
 	recoverableError: z.optional(z.boolean()),
+	serverError: z.optional(z.boolean()),
+	connectorError: z.optional(z.boolean()),
+	clientError: z.optional(z.boolean()),
 });
 
 export const warningSchema = z.object({
@@ -1799,11 +1807,11 @@ export const requestSchema = z.object({
 	get rootRef() {
 		return referenceSchema.optional();
 	},
-	confidential: z.optional(z.boolean()),
 	asynchronous: z.optional(z.boolean()),
 	entityAvailable: z.optional(z.boolean()),
 	expectingResponse: z.optional(z.boolean()),
 	synchronous: z.optional(z.boolean()),
+	confidential: z.optional(z.boolean()),
 	entityAsText: z.optional(z.string()),
 	get headers() {
 		return z.array(headerSchema).optional();
@@ -1921,8 +1929,8 @@ export const responseSchema = z.object({
 		return statusSchema.optional();
 	},
 	final: z.optional(z.boolean()),
-	confidential: z.optional(z.boolean()),
 	provisional: z.optional(z.boolean()),
+	confidential: z.optional(z.boolean()),
 	entityAvailable: z.optional(z.boolean()),
 	entityAsText: z.optional(z.string()),
 	get headers() {
@@ -2691,14 +2699,14 @@ export const smartlockLogSchema = z.object({
 		.min(0)
 		.max(255)
 		.describe(
-			"The trigger: 0 .. system, 1 .. manual, 2 .. button, 3 .. automatic, 4 .. web, 5 .. app, 6 .. auto lock, 7 .. accessory, 255 .. keypad",
+			"The trigger: 0 .. system, 1 .. manual, 2 .. button, 3 .. automatic, 4 .. web, 5 .. app, 6 .. auto lock, 7 .. accessory, 253 .. keypad error, 254 .. nuki mode, 255 .. keypad",
 		),
 	state: z
 		.int()
 		.min(1)
 		.max(255)
 		.describe(
-			"The completion state: 0 .. Success, 1 .. Motor blocked, 2 .. Canceled, 3 .. Too recent, 4 .. Busy, 5 .. Low motor voltage, 6 .. Clutch failure, 7 .. Motor power failure, 8 .. Incomplete, 9 .. Rejected, 10 .. Rejected night mode, 224 .. Invalid Code, 225 .. Invalid Fingerprint, 226 .. Invalid NFC Tag, 254 .. Other error, 255 .. Unknown error",
+			"The completion state: 0 .. Success, 1 .. Motor blocked, 2 .. Canceled, 3 .. Too recent, 4 .. Busy, 5 .. Low motor voltage, 6 .. Clutch failure, 7 .. Motor power failure, 8 .. Incomplete, 9 .. Rejected, 10 .. Rejected night mode, 224 .. Invalid Code, 225 .. Invalid Fingerprint, 226 .. Invalid NFC Tag, 254 .. Other error, 255 .. Unknown error\nFor source=3 and trigger=253 the following states are used: 0 .. Access document revoked, 1 .. Send NFC failed, 2 .. Control flow, 3 .. Command time expired, 7 .. Invalid data content, 37 .. Invalid access rights, 255 .. Unknown",
 		),
 	autoUnlock: z.boolean().describe("True if it was an auto unlock"),
 	date: z.iso.datetime().describe("The log date"),

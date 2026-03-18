@@ -357,6 +357,15 @@ export type AccountSettingWeb = {
 	 */
 	nukiClubDismissed?: boolean | undefined;
 	/**
+	 * @description Additional generic settings. Key/Value Pair, key consists of a prefix (DNS subdomain) and a name (can contains alphanumeric characters with dashes, underscores and dots in between) separated by a dash (\"/\")
+	 * @type object | undefined
+	 */
+	annotations?:
+		| {
+				[key: string]: object;
+		  }
+		| undefined;
+	/**
 	 * @description List of removed staled devices
 	 * @type array | undefined
 	 */
@@ -1801,160 +1810,6 @@ export type ConverterService = {
 	stopped?: boolean | undefined;
 };
 
-export type Protocol = {
-	/**
-	 * @type boolean | undefined
-	 */
-	confidential?: boolean | undefined;
-	/**
-	 * @type integer | undefined, int32
-	 */
-	defaultPort?: number | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	description?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	schemeName?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	technicalName?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	version?: string | undefined;
-};
-
-export type Reference = {
-	/**
-	 * @type object | undefined
-	 */
-	baseRef?: Reference | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	absolute?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	scheme?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	opaque?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	authority?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	relative?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	query?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	path?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	userInfo?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	schemeSpecificPart?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	fragment?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	extensions?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	matrix?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	matrixAsForm?: Parameter[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	queryAsForm?: Parameter[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	extensionsAsArray?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	hierarchicalPart?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	hostDomain?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	hostIdentifier?: string | undefined;
-	/**
-	 * @type integer | undefined, int32
-	 */
-	hostPort?: number | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	lastSegment?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	parentRef?: Reference | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	relativePart?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	relativeRef?: Reference | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	remainingPart?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	schemeProtocol?: Protocol | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	segments?: string[] | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	targetRef?: Reference | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	hierarchical?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	identifier?: string | undefined;
-};
-
 export type Metadata = {
 	/**
 	 * @type string | undefined
@@ -2109,6 +1964,179 @@ export type MetadataService = {
 	stopped?: boolean | undefined;
 };
 
+export type RangeService = {
+	/**
+	 * @type object | undefined
+	 */
+	context?: Context | undefined;
+	/**
+	 * @type boolean | undefined
+	 */
+	enabled?: boolean | undefined;
+	/**
+	 * @type boolean | undefined
+	 */
+	started?: boolean | undefined;
+	/**
+	 * @type boolean | undefined
+	 */
+	stopped?: boolean | undefined;
+};
+
+export type Protocol = {
+	/**
+	 * @type boolean | undefined
+	 */
+	confidential?: boolean | undefined;
+	/**
+	 * @type integer | undefined, int32
+	 */
+	defaultPort?: number | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	description?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	name?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	schemeName?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	technicalName?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	version?: string | undefined;
+};
+
+export type Reference = {
+	/**
+	 * @type object | undefined
+	 */
+	baseRef?: Reference | undefined;
+	/**
+	 * @type boolean | undefined
+	 */
+	absolute?: boolean | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	scheme?: string | undefined;
+	/**
+	 * @type boolean | undefined
+	 */
+	opaque?: boolean | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	authority?: string | undefined;
+	/**
+	 * @type boolean | undefined
+	 */
+	relative?: boolean | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	query?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	path?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	userInfo?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	schemeSpecificPart?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	fragment?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	extensions?: string | undefined;
+	/**
+	 * @type array | undefined
+	 */
+	extensionsAsArray?: string[] | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	hierarchicalPart?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	hostDomain?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	hostIdentifier?: string | undefined;
+	/**
+	 * @type integer | undefined, int32
+	 */
+	hostPort?: number | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	lastSegment?: string | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	parentRef?: Reference | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	relativePart?: string | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	relativeRef?: Reference | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	remainingPart?: string | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	schemeProtocol?: Protocol | undefined;
+	/**
+	 * @type array | undefined
+	 */
+	segments?: string[] | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	targetRef?: Reference | undefined;
+	/**
+	 * @type boolean | undefined
+	 */
+	hierarchical?: boolean | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	identifier?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	matrix?: string | undefined;
+	/**
+	 * @type array | undefined
+	 */
+	matrixAsForm?: Parameter[] | undefined;
+	/**
+	 * @type array | undefined
+	 */
+	queryAsForm?: Parameter[] | undefined;
+};
+
 export type StatusService = {
 	/**
 	 * @type object | undefined
@@ -2146,25 +2174,6 @@ export type StatusService = {
 	 * @type boolean | undefined
 	 */
 	overwriting?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	stopped?: boolean | undefined;
-};
-
-export type RangeService = {
-	/**
-	 * @type object | undefined
-	 */
-	context?: Context | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	enabled?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	started?: boolean | undefined;
 	/**
 	 * @type boolean | undefined
 	 */
@@ -2402,15 +2411,7 @@ export type Application = {
 	/**
 	 * @type object | undefined
 	 */
-	statusService?: StatusService | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	connegService?: ConnegService | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	metadataService?: MetadataService | undefined;
 	/**
 	 * @type object | undefined
 	 */
@@ -2418,7 +2419,15 @@ export type Application = {
 	/**
 	 * @type object | undefined
 	 */
+	metadataService?: MetadataService | undefined;
+	/**
+	 * @type object | undefined
+	 */
 	rangeService?: RangeService | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	statusService?: StatusService | undefined;
 	/**
 	 * @type object | undefined
 	 */
@@ -2889,10 +2898,6 @@ export type ClientInfo = {
 	/**
 	 * @type string | undefined
 	 */
-	upstreamAddress?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	agentName?: string | undefined;
 	/**
 	 * @type string | undefined
@@ -2902,6 +2907,10 @@ export type ClientInfo = {
 	 * @type object | undefined
 	 */
 	mainAgentProduct?: Product | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	upstreamAddress?: string | undefined;
 };
 
 export type Company = {
@@ -3794,18 +3803,6 @@ export type Status = {
 	/**
 	 * @type boolean | undefined
 	 */
-	serverError?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	connectorError?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	clientError?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	globalError?: boolean | undefined;
 	/**
 	 * @type boolean | undefined
@@ -3819,6 +3816,18 @@ export type Status = {
 	 * @type boolean | undefined
 	 */
 	recoverableError?: boolean | undefined;
+	/**
+	 * @type boolean | undefined
+	 */
+	serverError?: boolean | undefined;
+	/**
+	 * @type boolean | undefined
+	 */
+	connectorError?: boolean | undefined;
+	/**
+	 * @type boolean | undefined
+	 */
+	clientError?: boolean | undefined;
 };
 
 export type Warning = {
@@ -3952,10 +3961,6 @@ export type Request = {
 	/**
 	 * @type boolean | undefined
 	 */
-	confidential?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	asynchronous?: boolean | undefined;
 	/**
 	 * @type boolean | undefined
@@ -3969,6 +3974,10 @@ export type Request = {
 	 * @type boolean | undefined
 	 */
 	synchronous?: boolean | undefined;
+	/**
+	 * @type boolean | undefined
+	 */
+	confidential?: boolean | undefined;
 	/**
 	 * @type string | undefined
 	 */
@@ -4151,11 +4160,11 @@ export type Response = {
 	/**
 	 * @type boolean | undefined
 	 */
-	confidential?: boolean | undefined;
+	provisional?: boolean | undefined;
 	/**
 	 * @type boolean | undefined
 	 */
-	provisional?: boolean | undefined;
+	confidential?: boolean | undefined;
 	/**
 	 * @type boolean | undefined
 	 */
@@ -5469,14 +5478,14 @@ export type SmartlockLog = {
 	 */
 	action: number;
 	/**
-	 * @description The trigger: 0 .. system, 1 .. manual, 2 .. button, 3 .. automatic, 4 .. web, 5 .. app, 6 .. auto lock, 7 .. accessory, 255 .. keypad
+	 * @description The trigger: 0 .. system, 1 .. manual, 2 .. button, 3 .. automatic, 4 .. web, 5 .. app, 6 .. auto lock, 7 .. accessory, 253 .. keypad error, 254 .. nuki mode, 255 .. keypad
 	 * @minLength 0
 	 * @maxLength 255
 	 * @type integer, int32
 	 */
 	trigger: number;
 	/**
-	 * @description The completion state: 0 .. Success, 1 .. Motor blocked, 2 .. Canceled, 3 .. Too recent, 4 .. Busy, 5 .. Low motor voltage, 6 .. Clutch failure, 7 .. Motor power failure, 8 .. Incomplete, 9 .. Rejected, 10 .. Rejected night mode, 224 .. Invalid Code, 225 .. Invalid Fingerprint, 226 .. Invalid NFC Tag, 254 .. Other error, 255 .. Unknown error
+	 * @description The completion state: 0 .. Success, 1 .. Motor blocked, 2 .. Canceled, 3 .. Too recent, 4 .. Busy, 5 .. Low motor voltage, 6 .. Clutch failure, 7 .. Motor power failure, 8 .. Incomplete, 9 .. Rejected, 10 .. Rejected night mode, 224 .. Invalid Code, 225 .. Invalid Fingerprint, 226 .. Invalid NFC Tag, 254 .. Other error, 255 .. Unknown error\nFor source=3 and trigger=253 the following states are used: 0 .. Access document revoked, 1 .. Send NFC failed, 2 .. Control flow, 3 .. Command time expired, 7 .. Invalid data content, 37 .. Invalid access rights, 255 .. Unknown
 	 * @minLength 1
 	 * @maxLength 255
 	 * @type integer, int32
