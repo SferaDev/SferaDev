@@ -1130,8 +1130,6 @@ import type {
 	GetSandbox400,
 	GetSandbox401,
 	GetSandbox403,
-	GetSandbox410,
-	GetSandbox422,
 	GetSandbox429,
 	GetSandboxPathParams,
 	GetSandboxQueryParams,
@@ -10606,9 +10604,7 @@ export async function getSandbox({
 
 	const data = await request<
 		GetSandboxQueryResponse,
-		ErrorWrapper<
-			GetSandbox400 | GetSandbox401 | GetSandbox403 | GetSandbox410 | GetSandbox422 | GetSandbox429
-		>,
+		ErrorWrapper<GetSandbox400 | GetSandbox401 | GetSandbox403 | GetSandbox429>,
 		null,
 		Record<string, string>,
 		GetSandboxQueryParams,
