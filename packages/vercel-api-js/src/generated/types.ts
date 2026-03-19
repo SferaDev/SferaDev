@@ -24317,6 +24317,7 @@ export type GetEdgeConfigTokensQuery = {
 
 export type DeleteEdgeConfigTokensPathParams = {
 	/**
+	 * @pattern ^ecfg_
 	 * @type string
 	 */
 	edgeConfigId: string;
@@ -24437,6 +24438,7 @@ export type GetEdgeConfigTokenQuery = {
 
 export type CreateEdgeConfigTokenPathParams = {
 	/**
+	 * @pattern ^ecfg_
 	 * @type string
 	 */
 	edgeConfigId: string;
@@ -31317,14 +31319,8 @@ export type CreateSandbox403 = unknown;
 
 export type CreateSandbox404 = unknown;
 
-/**
- * @description The Sandbox has stopped execution and is no longer available.
- */
 export type CreateSandbox410 = unknown;
 
-/**
- * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
- */
 export type CreateSandbox422 = unknown;
 
 /**
@@ -31501,23 +31497,13 @@ export type ListCommands401 = unknown;
  */
 export type ListCommands403 = unknown;
 
-/**
- * @description The Sandbox has stopped execution and is no longer available.
- */
-export type ListCommands410 = unknown;
-
-/**
- * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
- */
-export type ListCommands422 = unknown;
-
 export type ListCommandsQueryResponse = ListCommands200;
 
 export type ListCommandsQuery = {
 	Response: ListCommands200;
 	PathParams: ListCommandsPathParams;
 	QueryParams: ListCommandsQueryParams;
-	Errors: ListCommands400 | ListCommands401 | ListCommands403 | ListCommands410 | ListCommands422;
+	Errors: ListCommands400 | ListCommands401 | ListCommands403;
 };
 
 export type RunCommandPathParams = {
@@ -31558,14 +31544,8 @@ export type RunCommand401 = unknown;
  */
 export type RunCommand403 = unknown;
 
-/**
- * @description The Sandbox has stopped execution and is no longer available.
- */
 export type RunCommand410 = unknown;
 
-/**
- * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
- */
 export type RunCommand422 = unknown;
 
 export type RunCommandMutationResponse = RunCommand200;
@@ -31625,14 +31605,8 @@ export type KillCommand403 = unknown;
 
 export type KillCommand404 = unknown;
 
-/**
- * @description The Sandbox has stopped execution and is no longer available.
- */
 export type KillCommand410 = unknown;
 
-/**
- * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
- */
 export type KillCommand422 = unknown;
 
 export type KillCommandMutationResponse = KillCommand200;
@@ -31691,14 +31665,8 @@ export type StopSandbox401 = unknown;
  */
 export type StopSandbox403 = unknown;
 
-/**
- * @description The Sandbox has stopped execution and is no longer available.
- */
 export type StopSandbox410 = unknown;
 
-/**
- * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
- */
 export type StopSandbox422 = unknown;
 
 export type StopSandboxMutationResponse = StopSandbox200;
@@ -31751,14 +31719,8 @@ export type ExtendSandboxTimeout401 = unknown;
  */
 export type ExtendSandboxTimeout403 = unknown;
 
-/**
- * @description The Sandbox has stopped execution and is no longer available.
- */
 export type ExtendSandboxTimeout410 = unknown;
 
-/**
- * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
- */
 export type ExtendSandboxTimeout422 = unknown;
 
 export type ExtendSandboxTimeoutMutationResponse = ExtendSandboxTimeout200;
@@ -31818,14 +31780,8 @@ export type UpdateNetworkPolicy402 = unknown;
  */
 export type UpdateNetworkPolicy403 = unknown;
 
-/**
- * @description The Sandbox has stopped execution and is no longer available.
- */
 export type UpdateNetworkPolicy410 = unknown;
 
-/**
- * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
- */
 export type UpdateNetworkPolicy422 = unknown;
 
 export type UpdateNetworkPolicyMutationResponse = UpdateNetworkPolicy200;
@@ -31903,14 +31859,8 @@ export type GetCommand401 = unknown;
  */
 export type GetCommand403 = unknown;
 
-/**
- * @description The Sandbox has stopped execution and is no longer available.
- */
 export type GetCommand410 = unknown;
 
-/**
- * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
- */
 export type GetCommand422 = unknown;
 
 export type GetCommandQueryResponse = GetCommand200;
@@ -31965,14 +31915,8 @@ export type GetCommandLogs401 = unknown;
  */
 export type GetCommandLogs403 = unknown;
 
-/**
- * @description The Sandbox has stopped execution and is no longer available.
- */
 export type GetCommandLogs410 = unknown;
 
-/**
- * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
- */
 export type GetCommandLogs422 = unknown;
 
 export type GetCommandLogsQueryResponse = GetCommandLogs200;
@@ -32029,14 +31973,8 @@ export type ReadFile403 = unknown;
 
 export type ReadFile404 = unknown;
 
-/**
- * @description The Sandbox has stopped execution and is no longer available.
- */
 export type ReadFile410 = unknown;
 
-/**
- * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
- */
 export type ReadFile422 = unknown;
 
 export type ReadFileMutationResponse = ReadFile200;
@@ -32089,14 +32027,8 @@ export type CreateDirectory401 = unknown;
  */
 export type CreateDirectory403 = unknown;
 
-/**
- * @description The Sandbox has stopped execution and is no longer available.
- */
 export type CreateDirectory410 = unknown;
 
-/**
- * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
- */
 export type CreateDirectory422 = unknown;
 
 export type CreateDirectoryMutationResponse = CreateDirectory200;
@@ -32162,14 +32094,8 @@ export type WriteFiles401 = unknown;
  */
 export type WriteFiles403 = unknown;
 
-/**
- * @description The Sandbox has stopped execution and is no longer available.
- */
 export type WriteFiles410 = unknown;
 
-/**
- * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
- */
 export type WriteFiles422 = unknown;
 
 export type WriteFilesMutationResponse = WriteFiles200;
@@ -32323,14 +32249,8 @@ export type CreateSnapshot402 = unknown;
  */
 export type CreateSnapshot403 = unknown;
 
-/**
- * @description The Sandbox has stopped execution and is no longer available.
- */
 export type CreateSnapshot410 = unknown;
 
-/**
- * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
- */
 export type CreateSnapshot422 = unknown;
 
 export type CreateSnapshotMutationResponse = CreateSnapshot201;
