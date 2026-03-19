@@ -16956,16 +16956,6 @@ export const getSandbox401Schema = z.unknown();
  */
 export const getSandbox403Schema = z.unknown();
 
-/**
- * @description The Sandbox has stopped execution and is no longer available.
- */
-export const getSandbox410Schema = z.unknown();
-
-/**
- * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
- */
-export const getSandbox422Schema = z.unknown();
-
 export const getSandbox429Schema = z.unknown();
 
 export const getSandboxQueryResponseSchema = z.lazy(() => getSandbox200Schema);

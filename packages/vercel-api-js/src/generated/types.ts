@@ -31449,16 +31449,6 @@ export type GetSandbox401 = unknown;
  */
 export type GetSandbox403 = unknown;
 
-/**
- * @description The Sandbox has stopped execution and is no longer available.
- */
-export type GetSandbox410 = unknown;
-
-/**
- * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
- */
-export type GetSandbox422 = unknown;
-
 export type GetSandbox429 = unknown;
 
 export type GetSandboxQueryResponse = GetSandbox200;
@@ -31467,13 +31457,7 @@ export type GetSandboxQuery = {
 	Response: GetSandbox200;
 	PathParams: GetSandboxPathParams;
 	QueryParams: GetSandboxQueryParams;
-	Errors:
-		| GetSandbox400
-		| GetSandbox401
-		| GetSandbox403
-		| GetSandbox410
-		| GetSandbox422
-		| GetSandbox429;
+	Errors: GetSandbox400 | GetSandbox401 | GetSandbox403 | GetSandbox429;
 };
 
 export type ListCommandsPathParams = {
