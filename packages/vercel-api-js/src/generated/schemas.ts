@@ -12212,7 +12212,7 @@ export const getEdgeConfigTokens404Schema = z.unknown();
 export const getEdgeConfigTokensQueryResponseSchema = z.lazy(() => getEdgeConfigTokens200Schema);
 
 export const deleteEdgeConfigTokensPathParamsSchema = z.object({
-	edgeConfigId: z.string(),
+	edgeConfigId: z.string().regex(/^ecfg_/),
 });
 
 export const deleteEdgeConfigTokensQueryParamsSchema = z
@@ -12293,7 +12293,7 @@ export const getEdgeConfigToken404Schema = z.unknown();
 export const getEdgeConfigTokenQueryResponseSchema = z.lazy(() => getEdgeConfigToken200Schema);
 
 export const createEdgeConfigTokenPathParamsSchema = z.object({
-	edgeConfigId: z.string(),
+	edgeConfigId: z.string().regex(/^ecfg_/),
 });
 
 export const createEdgeConfigTokenQueryParamsSchema = z
@@ -16855,14 +16855,8 @@ export const createSandbox403Schema = z.unknown();
 
 export const createSandbox404Schema = z.unknown();
 
-/**
- * @description The Sandbox has stopped execution and is no longer available.
- */
 export const createSandbox410Schema = z.unknown();
 
-/**
- * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
- */
 export const createSandbox422Schema = z.unknown();
 
 /**
@@ -16993,16 +16987,6 @@ export const listCommands401Schema = z.unknown();
  */
 export const listCommands403Schema = z.unknown();
 
-/**
- * @description The Sandbox has stopped execution and is no longer available.
- */
-export const listCommands410Schema = z.unknown();
-
-/**
- * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
- */
-export const listCommands422Schema = z.unknown();
-
 export const listCommandsQueryResponseSchema = z.lazy(() => listCommands200Schema);
 
 export const runCommandPathParamsSchema = z.object({
@@ -17037,14 +17021,8 @@ export const runCommand401Schema = z.unknown();
  */
 export const runCommand403Schema = z.unknown();
 
-/**
- * @description The Sandbox has stopped execution and is no longer available.
- */
 export const runCommand410Schema = z.unknown();
 
-/**
- * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
- */
 export const runCommand422Schema = z.unknown();
 
 export const runCommandMutationResponseSchema = z.lazy(() => runCommand200Schema);
@@ -17085,14 +17063,8 @@ export const killCommand403Schema = z.unknown();
 
 export const killCommand404Schema = z.unknown();
 
-/**
- * @description The Sandbox has stopped execution and is no longer available.
- */
 export const killCommand410Schema = z.unknown();
 
-/**
- * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
- */
 export const killCommand422Schema = z.unknown();
 
 export const killCommandMutationResponseSchema = z.lazy(() => killCommand200Schema);
@@ -17130,14 +17102,8 @@ export const stopSandbox401Schema = z.unknown();
  */
 export const stopSandbox403Schema = z.unknown();
 
-/**
- * @description The Sandbox has stopped execution and is no longer available.
- */
 export const stopSandbox410Schema = z.unknown();
 
-/**
- * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
- */
 export const stopSandbox422Schema = z.unknown();
 
 export const stopSandboxMutationResponseSchema = z.lazy(() => stopSandbox200Schema);
@@ -17175,14 +17141,8 @@ export const extendSandboxTimeout401Schema = z.unknown();
  */
 export const extendSandboxTimeout403Schema = z.unknown();
 
-/**
- * @description The Sandbox has stopped execution and is no longer available.
- */
 export const extendSandboxTimeout410Schema = z.unknown();
 
-/**
- * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
- */
 export const extendSandboxTimeout422Schema = z.unknown();
 
 export const extendSandboxTimeoutMutationResponseSchema = z.lazy(
@@ -17226,14 +17186,8 @@ export const updateNetworkPolicy402Schema = z.unknown();
  */
 export const updateNetworkPolicy403Schema = z.unknown();
 
-/**
- * @description The Sandbox has stopped execution and is no longer available.
- */
 export const updateNetworkPolicy410Schema = z.unknown();
 
-/**
- * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
- */
 export const updateNetworkPolicy422Schema = z.unknown();
 
 export const updateNetworkPolicyMutationResponseSchema = z.lazy(() => updateNetworkPolicy200Schema);
@@ -17276,14 +17230,8 @@ export const getCommand401Schema = z.unknown();
  */
 export const getCommand403Schema = z.unknown();
 
-/**
- * @description The Sandbox has stopped execution and is no longer available.
- */
 export const getCommand410Schema = z.unknown();
 
-/**
- * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
- */
 export const getCommand422Schema = z.unknown();
 
 export const getCommandQueryResponseSchema = z.lazy(() => getCommand200Schema);
@@ -17319,14 +17267,8 @@ export const getCommandLogs401Schema = z.unknown();
  */
 export const getCommandLogs403Schema = z.unknown();
 
-/**
- * @description The Sandbox has stopped execution and is no longer available.
- */
 export const getCommandLogs410Schema = z.unknown();
 
-/**
- * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
- */
 export const getCommandLogs422Schema = z.unknown();
 
 export const getCommandLogsQueryResponseSchema = z.lazy(() => getCommandLogs200Schema);
@@ -17363,14 +17305,8 @@ export const readFile403Schema = z.unknown();
 
 export const readFile404Schema = z.unknown();
 
-/**
- * @description The Sandbox has stopped execution and is no longer available.
- */
 export const readFile410Schema = z.unknown();
 
-/**
- * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
- */
 export const readFile422Schema = z.unknown();
 
 export const readFileMutationResponseSchema = z.lazy(() => readFile200Schema);
@@ -17410,14 +17346,8 @@ export const createDirectory401Schema = z.unknown();
  */
 export const createDirectory403Schema = z.unknown();
 
-/**
- * @description The Sandbox has stopped execution and is no longer available.
- */
 export const createDirectory410Schema = z.unknown();
 
-/**
- * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
- */
 export const createDirectory422Schema = z.unknown();
 
 export const createDirectoryMutationResponseSchema = z.lazy(() => createDirectory200Schema);
@@ -17467,14 +17397,8 @@ export const writeFiles401Schema = z.unknown();
  */
 export const writeFiles403Schema = z.unknown();
 
-/**
- * @description The Sandbox has stopped execution and is no longer available.
- */
 export const writeFiles410Schema = z.unknown();
 
-/**
- * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
- */
 export const writeFiles422Schema = z.unknown();
 
 export const writeFilesMutationResponseSchema = z.lazy(() => writeFiles200Schema);
@@ -17582,14 +17506,8 @@ export const createSnapshot402Schema = z.unknown();
  */
 export const createSnapshot403Schema = z.unknown();
 
-/**
- * @description The Sandbox has stopped execution and is no longer available.
- */
 export const createSnapshot410Schema = z.unknown();
 
-/**
- * @description The Sandbox is creating a snapshot and will be stopped shortly.\nThe Sandbox is stopping and is no longer available.
- */
 export const createSnapshot422Schema = z.unknown();
 
 export const createSnapshotMutationResponseSchema = z.lazy(() => createSnapshot201Schema);
