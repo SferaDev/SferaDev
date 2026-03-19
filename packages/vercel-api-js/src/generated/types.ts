@@ -8808,6 +8808,10 @@ export type UserEvent = {
 							/**
 							 * @type number | undefined
 							 */
+							testAccountExpiresAt?: number | undefined;
+							/**
+							 * @type number | undefined
+							 */
 							maxActiveSlots?: number | undefined;
 							/**
 							 * @type string | undefined

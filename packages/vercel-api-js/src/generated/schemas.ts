@@ -3208,6 +3208,7 @@ export const userEventSchema = z
 							),
 							isDomainReseller: z.optional(z.union([z.literal(false), z.literal(true)])),
 							isZeitPub: z.optional(z.union([z.literal(false), z.literal(true)])),
+							testAccountExpiresAt: z.optional(z.number()),
 							maxActiveSlots: z.optional(z.number()),
 							name: z.optional(z.string()),
 							phoneNumber: z.optional(z.string()),
