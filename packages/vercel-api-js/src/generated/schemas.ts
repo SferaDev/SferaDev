@@ -4793,7 +4793,7 @@ export const userEventSchema = z
 				}),
 				z.object({
 					projectId: z.optional(z.string()),
-					projectName: z.optional(z.string()),
+					projectName: z.string(),
 					previousBuildMachineType: z.optional(z.string()),
 					nextBuildMachineType: z.string(),
 					previousBuildMachineSelection: z.string(),
@@ -6327,14 +6327,7 @@ export const userEventSchema = z
 
 export const flagSchema = z.object({
 	description: z.optional(z.string()),
-	variants: z.array(
-		z.object({
-			description: z.optional(z.string()),
-			label: z.optional(z.string()),
-			value: z.union([z.string(), z.number(), z.union([z.literal(false), z.literal(true)])]),
-			id: z.string(),
-		}),
-	),
+	variants: z.array(z.object({})),
 	id: z.string(),
 	environments: z.object({}).catchall(
 		z.object({
@@ -6469,7 +6462,7 @@ export const flagSchema = z.object({
 			),
 		}),
 	),
-	kind: z.enum(["boolean", "number", "string"]),
+	kind: z.enum(["boolean", "json", "number", "string"]),
 	revision: z.number(),
 	seed: z.number(),
 	state: z.enum(["active", "archived"]),
@@ -13154,7 +13147,7 @@ export const listTeamFlagsQueryParamsSchema = z.object({
 		z.string().describe("Search flags by their slug or description. Case-insensitive."),
 	),
 	kind: z.optional(
-		z.enum(["boolean", "string", "number"]).describe("The kind of flags to retrieve."),
+		z.enum(["boolean", "string", "number", "json"]).describe("The kind of flags to retrieve."),
 	),
 	slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
 });

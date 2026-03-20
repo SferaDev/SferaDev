@@ -11762,9 +11762,9 @@ export type UserEvent = {
 						 */
 						projectId?: string | undefined;
 						/**
-						 * @type string | undefined
+						 * @type string
 						 */
-						projectName?: string | undefined;
+						projectName: string;
 						/**
 						 * @type string | undefined
 						 */
@@ -15159,13 +15159,6 @@ export type UserEvent = {
 		| undefined;
 };
 
-export const variantsValueEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type VariantsValueEnumKey = (typeof variantsValueEnum)[keyof typeof variantsValueEnum];
-
 export const reuseActiveEnum = {
 	false: false,
 	true: true,
@@ -15281,6 +15274,7 @@ export type ConditionsCmpEnumKey = (typeof conditionsCmpEnum)[keyof typeof condi
 
 export const flagKindEnum = {
 	boolean: "boolean",
+	json: "json",
 	number: "number",
 	string: "string",
 } as const;
@@ -15308,21 +15302,7 @@ export type Flag = {
 	/**
 	 * @type array
 	 */
-	variants: {
-		/**
-		 * @type string | undefined
-		 */
-		description?: string | undefined;
-		/**
-		 * @type string | undefined
-		 */
-		label?: string | undefined;
-		value: string | number | VariantsValueEnumKey;
-		/**
-		 * @type string
-		 */
-		id: string;
-	}[];
+	variants: object[];
 	/**
 	 * @type string
 	 */
@@ -25734,6 +25714,7 @@ export const listTeamFlagsQueryParamsKindEnum = {
 	boolean: "boolean",
 	string: "string",
 	number: "number",
+	json: "json",
 } as const;
 
 export type ListTeamFlagsQueryParamsKindEnumKey =
