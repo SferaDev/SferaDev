@@ -6333,7 +6333,7 @@ export async function listFlags({
 }
 
 /**
- * @description Create a new feature flag for a project. The flag must have a unique slug within the project and specify its kind (boolean, string, or number).
+ * @description Create a new feature flag for a project. The flag must have a unique slug within the project and specify its kind (boolean, string, number, or json).
  * @summary Create a flag
  * {@link /v1/projects/:projectIdOrName/feature-flags/flags}
  */
