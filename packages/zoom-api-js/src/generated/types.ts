@@ -10112,12 +10112,17 @@ export type Meetings200 = {
 export type Meetings400 = unknown;
 
 /**
+ * @description **HTTP Status Code:** `403` <br>\n Forbidden  \n\n **Error Code:** `2306` <br>\n Not allowed to view meetings scheduled for others. To use this feature, enable the **Display meetings scheduled for others** setting in the **Account Settings** page of the Zoom web portal. <br>\n
+ */
+export type Meetings403 = unknown;
+
+/**
  * @description **HTTP Status Code:** `404` <br>\n Not Found  \n\n **Error Code:** `1001` <br>\n User does not exist: {userId}. <br>\n
  */
 export type Meetings404 = unknown;
 
 /**
- * @description **HTTP Status Code:** `429` <br>\n Too Many Requests. For more information, see [rate limits](/docs/api/rest/rate-limits/). \n\n
+ * @description **HTTP Status Code:** `429` <br>\n Too Many Requests. For more information, see [rate limits](/docs/api/rate-limits/). \n\n
  */
 export type Meetings429 = unknown;
 
@@ -10127,7 +10132,7 @@ export type MeetingsQuery = {
 	Response: Meetings200;
 	PathParams: MeetingsPathParams;
 	QueryParams: MeetingsQueryParams;
-	Errors: Meetings400 | Meetings404 | Meetings429;
+	Errors: Meetings400 | Meetings403 | Meetings404 | Meetings429;
 };
 
 export type MeetingCreatePathParams = {

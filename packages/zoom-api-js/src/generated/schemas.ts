@@ -7523,12 +7523,17 @@ export const meetings200Schema = z.object({
 export const meetings400Schema = z.unknown();
 
 /**
+ * @description **HTTP Status Code:** `403` <br>\n Forbidden  \n\n **Error Code:** `2306` <br>\n Not allowed to view meetings scheduled for others. To use this feature, enable the **Display meetings scheduled for others** setting in the **Account Settings** page of the Zoom web portal. <br>\n
+ */
+export const meetings403Schema = z.unknown();
+
+/**
  * @description **HTTP Status Code:** `404` <br>\n Not Found  \n\n **Error Code:** `1001` <br>\n User does not exist: {userId}. <br>\n
  */
 export const meetings404Schema = z.unknown();
 
 /**
- * @description **HTTP Status Code:** `429` <br>\n Too Many Requests. For more information, see [rate limits](/docs/api/rest/rate-limits/). \n\n
+ * @description **HTTP Status Code:** `429` <br>\n Too Many Requests. For more information, see [rate limits](/docs/api/rate-limits/). \n\n
  */
 export const meetings429Schema = z.unknown();
 
