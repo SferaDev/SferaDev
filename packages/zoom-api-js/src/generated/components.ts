@@ -503,6 +503,7 @@ import type {
 	MeetingSurveyUpdateMutationResponse,
 	MeetingSurveyUpdatePathParams,
 	Meetings400,
+	Meetings403,
 	Meetings404,
 	Meetings429,
 	MeetingsPathParams,
@@ -3686,7 +3687,7 @@ export async function meetings({
 
 	const data = await request<
 		MeetingsQueryResponse,
-		ErrorWrapper<Meetings400 | Meetings404 | Meetings429>,
+		ErrorWrapper<Meetings400 | Meetings403 | Meetings404 | Meetings429>,
 		null,
 		Record<string, string>,
 		MeetingsQueryParams,
