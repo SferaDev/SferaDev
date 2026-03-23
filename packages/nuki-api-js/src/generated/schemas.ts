@@ -4899,11 +4899,6 @@ export const postSmartlockActionResource401Schema = z.unknown();
  */
 export const postSmartlockActionResource402Schema = z.unknown();
 
-/**
- * @description Smartlock action representation
- */
-export const postSmartlockActionResourceMutationRequestSchema = z.lazy(() => smartlockActionSchema);
-
 export const postSmartlockActionResourceMutationResponseSchema = z.lazy(
 	() => postSmartlockActionResource204Schema,
 );
@@ -4936,13 +4931,6 @@ export const postSmartlockActionAdvancedResource409Schema = z.unknown();
  * @description Account upgrade required
  */
 export const postSmartlockActionAdvancedResource426Schema = z.unknown();
-
-/**
- * @description Smartlock action representation
- */
-export const postSmartlockActionAdvancedResourceMutationRequestSchema = z.lazy(
-	() => smartlockActionSchema,
-);
 
 export const postSmartlockActionAdvancedResourceMutationResponseSchema = z.lazy(
 	() => postSmartlockActionAdvancedResource200Schema,

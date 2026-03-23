@@ -3087,6 +3087,7 @@ export type GuardrailInfoResponseInput = {
 	created_at?: (string | null) | undefined;
 	updated_at?: (string | null) | undefined;
 	/**
+	 * @default "config"
 	 * @type string | undefined
 	 */
 	guardrail_definition_location?: GUARDRAILDEFINITIONLOCATION | undefined;
@@ -3106,6 +3107,7 @@ export type GuardrailInfoResponseOutput = {
 	created_at?: (string | null) | undefined;
 	updated_at?: (string | null) | undefined;
 	/**
+	 * @default "config"
 	 * @type string | undefined
 	 */
 	guardrail_definition_location?: GUARDRAILDEFINITIONLOCATION | undefined;
@@ -5622,26 +5624,32 @@ export type SCIMServiceProviderConfig = {
 	 */
 	schemas?: string[] | undefined;
 	/**
+	 * @default [object Object]
 	 * @type object | undefined
 	 */
 	patch?: SCIMFeature | undefined;
 	/**
+	 * @default [object Object]
 	 * @type object | undefined
 	 */
 	bulk?: SCIMFeature | undefined;
 	/**
+	 * @default [object Object]
 	 * @type object | undefined
 	 */
 	filter?: SCIMFeature | undefined;
 	/**
+	 * @default [object Object]
 	 * @type object | undefined
 	 */
 	changePassword?: SCIMFeature | undefined;
 	/**
+	 * @default [object Object]
 	 * @type object | undefined
 	 */
 	sort?: SCIMFeature | undefined;
 	/**
+	 * @default [object Object]
 	 * @type object | undefined
 	 */
 	etag?: SCIMFeature | undefined;

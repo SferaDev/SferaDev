@@ -2085,7 +2085,7 @@ export const guardrailInfoResponseInputSchema = z.object({
 	created_at: z.optional(z.union([z.iso.datetime(), z.null()])),
 	updated_at: z.optional(z.union([z.iso.datetime(), z.null()])),
 	get guardrail_definition_location() {
-		return GUARDRAILDEFINITIONLOCATIONSchema.optional();
+		return GUARDRAILDEFINITIONLOCATIONSchema.default("config").optional();
 	},
 });
 
@@ -2099,7 +2099,7 @@ export const guardrailInfoResponseOutputSchema = z.object({
 	created_at: z.optional(z.union([z.iso.datetime(), z.null()])),
 	updated_at: z.optional(z.union([z.iso.datetime(), z.null()])),
 	get guardrail_definition_location() {
-		return GUARDRAILDEFINITIONLOCATIONSchema.optional();
+		return GUARDRAILDEFINITIONLOCATIONSchema.default("config").optional();
 	},
 });
 
@@ -3616,22 +3616,22 @@ export const SCIMPatchOpSchema = z.object({
 export const SCIMServiceProviderConfigSchema = z.object({
 	schemas: z.optional(z.array(z.string())),
 	get patch() {
-		return SCIMFeatureSchema.optional();
+		return SCIMFeatureSchema.default({}).optional();
 	},
 	get bulk() {
-		return SCIMFeatureSchema.optional();
+		return SCIMFeatureSchema.default({}).optional();
 	},
 	get filter() {
-		return SCIMFeatureSchema.optional();
+		return SCIMFeatureSchema.default({}).optional();
 	},
 	get changePassword() {
-		return SCIMFeatureSchema.optional();
+		return SCIMFeatureSchema.default({}).optional();
 	},
 	get sort() {
-		return SCIMFeatureSchema.optional();
+		return SCIMFeatureSchema.default({}).optional();
 	},
 	get etag() {
-		return SCIMFeatureSchema.optional();
+		return SCIMFeatureSchema.default({}).optional();
 	},
 	authenticationSchemes: z.optional(z.union([z.array(z.object({})), z.null()])),
 	meta: z.optional(z.union([z.object({}), z.null()])),

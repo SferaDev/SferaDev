@@ -291,13 +291,11 @@ import type {
 	PostSmartlockActionAdvancedResource402,
 	PostSmartlockActionAdvancedResource409,
 	PostSmartlockActionAdvancedResource426,
-	PostSmartlockActionAdvancedResourceMutationRequest,
 	PostSmartlockActionAdvancedResourceMutationResponse,
 	PostSmartlockActionAdvancedResourcePathParams,
 	PostSmartlockActionResource400,
 	PostSmartlockActionResource401,
 	PostSmartlockActionResource402,
-	PostSmartlockActionResourceMutationRequest,
 	PostSmartlockActionResourceMutationResponse,
 	PostSmartlockActionResourcePathParams,
 	PostSmartlockAdminPinResource400,
@@ -2748,11 +2746,9 @@ export async function deleteSmartlockResource({
  */
 export async function postSmartlockActionResource({
 	pathParams: { smartlockId },
-	body,
 	config = {},
 }: {
 	pathParams: PostSmartlockActionResourcePathParams;
-	body: PostSmartlockActionResourceMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -2768,11 +2764,11 @@ export async function postSmartlockActionResource({
 			| PostSmartlockActionResource401
 			| PostSmartlockActionResource402
 		>,
-		PostSmartlockActionResourceMutationRequest,
+		null,
 		Record<string, string>,
 		Record<string, string>,
 		PostSmartlockActionResourcePathParams
-	>({ method: "POST", url: `/smartlock/${smartlockId}/action`, body, ...requestConfig });
+	>({ method: "POST", url: `/smartlock/${smartlockId}/action`, ...requestConfig });
 	return data;
 }
 
@@ -2782,11 +2778,9 @@ export async function postSmartlockActionResource({
  */
 export async function postSmartlockActionAdvancedResource({
 	pathParams: { smartlockId },
-	body,
 	config = {},
 }: {
 	pathParams: PostSmartlockActionAdvancedResourcePathParams;
-	body: PostSmartlockActionAdvancedResourceMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -2803,11 +2797,11 @@ export async function postSmartlockActionAdvancedResource({
 			| PostSmartlockActionAdvancedResource409
 			| PostSmartlockActionAdvancedResource426
 		>,
-		PostSmartlockActionAdvancedResourceMutationRequest,
+		null,
 		Record<string, string>,
 		Record<string, string>,
 		PostSmartlockActionAdvancedResourcePathParams
-	>({ method: "POST", url: `/smartlock/${smartlockId}/action/advanced`, body, ...requestConfig });
+	>({ method: "POST", url: `/smartlock/${smartlockId}/action/advanced`, ...requestConfig });
 	return data;
 }
 

@@ -1534,7 +1534,7 @@ export async function dELETEAdminRealmsRealmAttackDetectionBruteForceUsers({
  * {@link /admin/realms/:realm/attack-detection/brute-force/users/:userId}
  */
 export async function gETAdminRealmsRealmAttackDetectionBruteForceUsersUserId({
-	pathParams: { userId, realm },
+	pathParams: { realm, userId },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmAttackDetectionBruteForceUsersUserIdPathParams;
@@ -1542,12 +1542,12 @@ export async function gETAdminRealmsRealmAttackDetectionBruteForceUsersUserId({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!userId) {
-		throw new Error(`Missing required path parameter: userId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!userId) {
+		throw new Error(`Missing required path parameter: userId`);
 	}
 
 	const data = await request<
@@ -1570,7 +1570,7 @@ export async function gETAdminRealmsRealmAttackDetectionBruteForceUsersUserId({
  * {@link /admin/realms/:realm/attack-detection/brute-force/users/:userId}
  */
 export async function dELETEAdminRealmsRealmAttackDetectionBruteForceUsersUserId({
-	pathParams: { userId, realm },
+	pathParams: { realm, userId },
 	config = {},
 }: {
 	pathParams: DELETEAdminRealmsRealmAttackDetectionBruteForceUsersUserIdPathParams;
@@ -1578,12 +1578,12 @@ export async function dELETEAdminRealmsRealmAttackDetectionBruteForceUsersUserId
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!userId) {
-		throw new Error(`Missing required path parameter: userId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!userId) {
+		throw new Error(`Missing required path parameter: userId`);
 	}
 
 	const data = await request<
@@ -1706,7 +1706,7 @@ export async function pOSTAdminRealmsRealmAuthenticationConfig({
  * {@link /admin/realms/:realm/authentication/config-description/:providerId}
  */
 export async function gETAdminRealmsRealmAuthenticationConfigDescriptionProviderId({
-	pathParams: { providerId, realm },
+	pathParams: { realm, providerId },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmAuthenticationConfigDescriptionProviderIdPathParams;
@@ -1714,12 +1714,12 @@ export async function gETAdminRealmsRealmAuthenticationConfigDescriptionProvider
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!providerId) {
-		throw new Error(`Missing required path parameter: providerId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!providerId) {
+		throw new Error(`Missing required path parameter: providerId`);
 	}
 
 	const data = await request<
@@ -1742,7 +1742,7 @@ export async function gETAdminRealmsRealmAuthenticationConfigDescriptionProvider
  * {@link /admin/realms/:realm/authentication/config/:id}
  */
 export async function gETAdminRealmsRealmAuthenticationConfigId({
-	pathParams: { id, realm },
+	pathParams: { realm, id },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmAuthenticationConfigIdPathParams;
@@ -1750,12 +1750,12 @@ export async function gETAdminRealmsRealmAuthenticationConfigId({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!id) {
-		throw new Error(`Missing required path parameter: id`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!id) {
+		throw new Error(`Missing required path parameter: id`);
 	}
 
 	const data = await request<
@@ -1774,7 +1774,7 @@ export async function gETAdminRealmsRealmAuthenticationConfigId({
  * {@link /admin/realms/:realm/authentication/config/:id}
  */
 export async function pUTAdminRealmsRealmAuthenticationConfigId({
-	pathParams: { id, realm },
+	pathParams: { realm, id },
 	body,
 	config = {},
 }: {
@@ -1784,12 +1784,12 @@ export async function pUTAdminRealmsRealmAuthenticationConfigId({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!id) {
-		throw new Error(`Missing required path parameter: id`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!id) {
+		throw new Error(`Missing required path parameter: id`);
 	}
 
 	const data = await request<
@@ -1813,7 +1813,7 @@ export async function pUTAdminRealmsRealmAuthenticationConfigId({
  * {@link /admin/realms/:realm/authentication/config/:id}
  */
 export async function dELETEAdminRealmsRealmAuthenticationConfigId({
-	pathParams: { id, realm },
+	pathParams: { realm, id },
 	config = {},
 }: {
 	pathParams: DELETEAdminRealmsRealmAuthenticationConfigIdPathParams;
@@ -1821,12 +1821,12 @@ export async function dELETEAdminRealmsRealmAuthenticationConfigId({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!id) {
-		throw new Error(`Missing required path parameter: id`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!id) {
+		throw new Error(`Missing required path parameter: id`);
 	}
 
 	const data = await request<
@@ -1884,7 +1884,7 @@ export async function pOSTAdminRealmsRealmAuthenticationExecutions({
  * {@link /admin/realms/:realm/authentication/executions/:executionId}
  */
 export async function gETAdminRealmsRealmAuthenticationExecutionsExecutionId({
-	pathParams: { executionId, realm },
+	pathParams: { realm, executionId },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmAuthenticationExecutionsExecutionIdPathParams;
@@ -1892,12 +1892,12 @@ export async function gETAdminRealmsRealmAuthenticationExecutionsExecutionId({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!executionId) {
-		throw new Error(`Missing required path parameter: executionId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!executionId) {
+		throw new Error(`Missing required path parameter: executionId`);
 	}
 
 	const data = await request<
@@ -1920,7 +1920,7 @@ export async function gETAdminRealmsRealmAuthenticationExecutionsExecutionId({
  * {@link /admin/realms/:realm/authentication/executions/:executionId}
  */
 export async function dELETEAdminRealmsRealmAuthenticationExecutionsExecutionId({
-	pathParams: { executionId, realm },
+	pathParams: { realm, executionId },
 	config = {},
 }: {
 	pathParams: DELETEAdminRealmsRealmAuthenticationExecutionsExecutionIdPathParams;
@@ -1928,12 +1928,12 @@ export async function dELETEAdminRealmsRealmAuthenticationExecutionsExecutionId(
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!executionId) {
-		throw new Error(`Missing required path parameter: executionId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!executionId) {
+		throw new Error(`Missing required path parameter: executionId`);
 	}
 
 	const data = await request<
@@ -1956,7 +1956,7 @@ export async function dELETEAdminRealmsRealmAuthenticationExecutionsExecutionId(
  * {@link /admin/realms/:realm/authentication/executions/:executionId/config}
  */
 export async function pOSTAdminRealmsRealmAuthenticationExecutionsExecutionIdConfig({
-	pathParams: { executionId, realm },
+	pathParams: { realm, executionId },
 	body,
 	config = {},
 }: {
@@ -1966,12 +1966,12 @@ export async function pOSTAdminRealmsRealmAuthenticationExecutionsExecutionIdCon
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!executionId) {
-		throw new Error(`Missing required path parameter: executionId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!executionId) {
+		throw new Error(`Missing required path parameter: executionId`);
 	}
 
 	const data = await request<
@@ -1996,7 +1996,7 @@ export async function pOSTAdminRealmsRealmAuthenticationExecutionsExecutionIdCon
  * @deprecated
  */
 export async function gETAdminRealmsRealmAuthenticationExecutionsExecutionIdConfigId({
-	pathParams: { executionId, id, realm },
+	pathParams: { realm, executionId, id },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmAuthenticationExecutionsExecutionIdConfigIdPathParams;
@@ -2004,16 +2004,16 @@ export async function gETAdminRealmsRealmAuthenticationExecutionsExecutionIdConf
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
+	if (!realm) {
+		throw new Error(`Missing required path parameter: realm`);
+	}
+
 	if (!executionId) {
 		throw new Error(`Missing required path parameter: executionId`);
 	}
 
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
-	}
-
-	if (!realm) {
-		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	const data = await request<
@@ -2036,7 +2036,7 @@ export async function gETAdminRealmsRealmAuthenticationExecutionsExecutionIdConf
  * {@link /admin/realms/:realm/authentication/executions/:executionId/lower-priority}
  */
 export async function pOSTAdminRealmsRealmAuthenticationExecutionsExecutionIdLowerPriority({
-	pathParams: { executionId, realm },
+	pathParams: { realm, executionId },
 	config = {},
 }: {
 	pathParams: POSTAdminRealmsRealmAuthenticationExecutionsExecutionIdLowerPriorityPathParams;
@@ -2044,12 +2044,12 @@ export async function pOSTAdminRealmsRealmAuthenticationExecutionsExecutionIdLow
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!executionId) {
-		throw new Error(`Missing required path parameter: executionId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!executionId) {
+		throw new Error(`Missing required path parameter: executionId`);
 	}
 
 	const data = await request<
@@ -2072,7 +2072,7 @@ export async function pOSTAdminRealmsRealmAuthenticationExecutionsExecutionIdLow
  * {@link /admin/realms/:realm/authentication/executions/:executionId/raise-priority}
  */
 export async function pOSTAdminRealmsRealmAuthenticationExecutionsExecutionIdRaisePriority({
-	pathParams: { executionId, realm },
+	pathParams: { realm, executionId },
 	config = {},
 }: {
 	pathParams: POSTAdminRealmsRealmAuthenticationExecutionsExecutionIdRaisePriorityPathParams;
@@ -2080,12 +2080,12 @@ export async function pOSTAdminRealmsRealmAuthenticationExecutionsExecutionIdRai
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!executionId) {
-		throw new Error(`Missing required path parameter: executionId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!executionId) {
+		throw new Error(`Missing required path parameter: executionId`);
 	}
 
 	const data = await request<
@@ -2166,7 +2166,7 @@ export async function pOSTAdminRealmsRealmAuthenticationFlows({
  * {@link /admin/realms/:realm/authentication/flows/:flowAlias/copy}
  */
 export async function pOSTAdminRealmsRealmAuthenticationFlowsFlowAliasCopy({
-	pathParams: { flowAlias, realm },
+	pathParams: { realm, flowAlias },
 	body,
 	config = {},
 }: {
@@ -2176,12 +2176,12 @@ export async function pOSTAdminRealmsRealmAuthenticationFlowsFlowAliasCopy({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!flowAlias) {
-		throw new Error(`Missing required path parameter: flowAlias`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!flowAlias) {
+		throw new Error(`Missing required path parameter: flowAlias`);
 	}
 
 	const data = await request<
@@ -2205,7 +2205,7 @@ export async function pOSTAdminRealmsRealmAuthenticationFlowsFlowAliasCopy({
  * {@link /admin/realms/:realm/authentication/flows/:flowAlias/executions}
  */
 export async function gETAdminRealmsRealmAuthenticationFlowsFlowAliasExecutions({
-	pathParams: { flowAlias, realm },
+	pathParams: { realm, flowAlias },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmAuthenticationFlowsFlowAliasExecutionsPathParams;
@@ -2213,12 +2213,12 @@ export async function gETAdminRealmsRealmAuthenticationFlowsFlowAliasExecutions(
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!flowAlias) {
-		throw new Error(`Missing required path parameter: flowAlias`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!flowAlias) {
+		throw new Error(`Missing required path parameter: flowAlias`);
 	}
 
 	const data = await request<
@@ -2241,7 +2241,7 @@ export async function gETAdminRealmsRealmAuthenticationFlowsFlowAliasExecutions(
  * {@link /admin/realms/:realm/authentication/flows/:flowAlias/executions}
  */
 export async function pUTAdminRealmsRealmAuthenticationFlowsFlowAliasExecutions({
-	pathParams: { flowAlias, realm },
+	pathParams: { realm, flowAlias },
 	body,
 	config = {},
 }: {
@@ -2251,12 +2251,12 @@ export async function pUTAdminRealmsRealmAuthenticationFlowsFlowAliasExecutions(
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!flowAlias) {
-		throw new Error(`Missing required path parameter: flowAlias`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!flowAlias) {
+		throw new Error(`Missing required path parameter: flowAlias`);
 	}
 
 	const data = await request<
@@ -2280,7 +2280,7 @@ export async function pUTAdminRealmsRealmAuthenticationFlowsFlowAliasExecutions(
  * {@link /admin/realms/:realm/authentication/flows/:flowAlias/executions/execution}
  */
 export async function pOSTAdminRealmsRealmAuthenticationFlowsFlowAliasExecutionsExecution({
-	pathParams: { flowAlias, realm },
+	pathParams: { realm, flowAlias },
 	body,
 	config = {},
 }: {
@@ -2290,12 +2290,12 @@ export async function pOSTAdminRealmsRealmAuthenticationFlowsFlowAliasExecutions
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!flowAlias) {
-		throw new Error(`Missing required path parameter: flowAlias`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!flowAlias) {
+		throw new Error(`Missing required path parameter: flowAlias`);
 	}
 
 	const data = await request<
@@ -2319,7 +2319,7 @@ export async function pOSTAdminRealmsRealmAuthenticationFlowsFlowAliasExecutions
  * {@link /admin/realms/:realm/authentication/flows/:flowAlias/executions/flow}
  */
 export async function pOSTAdminRealmsRealmAuthenticationFlowsFlowAliasExecutionsFlow({
-	pathParams: { flowAlias, realm },
+	pathParams: { realm, flowAlias },
 	body,
 	config = {},
 }: {
@@ -2329,12 +2329,12 @@ export async function pOSTAdminRealmsRealmAuthenticationFlowsFlowAliasExecutions
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!flowAlias) {
-		throw new Error(`Missing required path parameter: flowAlias`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!flowAlias) {
+		throw new Error(`Missing required path parameter: flowAlias`);
 	}
 
 	const data = await request<
@@ -2358,7 +2358,7 @@ export async function pOSTAdminRealmsRealmAuthenticationFlowsFlowAliasExecutions
  * {@link /admin/realms/:realm/authentication/flows/:id}
  */
 export async function gETAdminRealmsRealmAuthenticationFlowsId({
-	pathParams: { id, realm },
+	pathParams: { realm, id },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmAuthenticationFlowsIdPathParams;
@@ -2366,12 +2366,12 @@ export async function gETAdminRealmsRealmAuthenticationFlowsId({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!id) {
-		throw new Error(`Missing required path parameter: id`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!id) {
+		throw new Error(`Missing required path parameter: id`);
 	}
 
 	const data = await request<
@@ -2390,7 +2390,7 @@ export async function gETAdminRealmsRealmAuthenticationFlowsId({
  * {@link /admin/realms/:realm/authentication/flows/:id}
  */
 export async function pUTAdminRealmsRealmAuthenticationFlowsId({
-	pathParams: { id, realm },
+	pathParams: { realm, id },
 	body,
 	config = {},
 }: {
@@ -2400,12 +2400,12 @@ export async function pUTAdminRealmsRealmAuthenticationFlowsId({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!id) {
-		throw new Error(`Missing required path parameter: id`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!id) {
+		throw new Error(`Missing required path parameter: id`);
 	}
 
 	const data = await request<
@@ -2429,7 +2429,7 @@ export async function pUTAdminRealmsRealmAuthenticationFlowsId({
  * {@link /admin/realms/:realm/authentication/flows/:id}
  */
 export async function dELETEAdminRealmsRealmAuthenticationFlowsId({
-	pathParams: { id, realm },
+	pathParams: { realm, id },
 	config = {},
 }: {
 	pathParams: DELETEAdminRealmsRealmAuthenticationFlowsIdPathParams;
@@ -2437,12 +2437,12 @@ export async function dELETEAdminRealmsRealmAuthenticationFlowsId({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!id) {
-		throw new Error(`Missing required path parameter: id`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!id) {
+		throw new Error(`Missing required path parameter: id`);
 	}
 
 	const data = await request<
@@ -2628,7 +2628,7 @@ export async function gETAdminRealmsRealmAuthenticationRequiredActions({
  * {@link /admin/realms/:realm/authentication/required-actions/:alias}
  */
 export async function gETAdminRealmsRealmAuthenticationRequiredActionsAlias({
-	pathParams: { alias, realm },
+	pathParams: { realm, alias },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmAuthenticationRequiredActionsAliasPathParams;
@@ -2636,12 +2636,12 @@ export async function gETAdminRealmsRealmAuthenticationRequiredActionsAlias({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!alias) {
-		throw new Error(`Missing required path parameter: alias`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!alias) {
+		throw new Error(`Missing required path parameter: alias`);
 	}
 
 	const data = await request<
@@ -2664,7 +2664,7 @@ export async function gETAdminRealmsRealmAuthenticationRequiredActionsAlias({
  * {@link /admin/realms/:realm/authentication/required-actions/:alias}
  */
 export async function pUTAdminRealmsRealmAuthenticationRequiredActionsAlias({
-	pathParams: { alias, realm },
+	pathParams: { realm, alias },
 	body,
 	config = {},
 }: {
@@ -2674,12 +2674,12 @@ export async function pUTAdminRealmsRealmAuthenticationRequiredActionsAlias({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!alias) {
-		throw new Error(`Missing required path parameter: alias`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!alias) {
+		throw new Error(`Missing required path parameter: alias`);
 	}
 
 	const data = await request<
@@ -2703,7 +2703,7 @@ export async function pUTAdminRealmsRealmAuthenticationRequiredActionsAlias({
  * {@link /admin/realms/:realm/authentication/required-actions/:alias}
  */
 export async function dELETEAdminRealmsRealmAuthenticationRequiredActionsAlias({
-	pathParams: { alias, realm },
+	pathParams: { realm, alias },
 	config = {},
 }: {
 	pathParams: DELETEAdminRealmsRealmAuthenticationRequiredActionsAliasPathParams;
@@ -2711,12 +2711,12 @@ export async function dELETEAdminRealmsRealmAuthenticationRequiredActionsAlias({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!alias) {
-		throw new Error(`Missing required path parameter: alias`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!alias) {
+		throw new Error(`Missing required path parameter: alias`);
 	}
 
 	const data = await request<
@@ -2739,7 +2739,7 @@ export async function dELETEAdminRealmsRealmAuthenticationRequiredActionsAlias({
  * {@link /admin/realms/:realm/authentication/required-actions/:alias/config}
  */
 export async function gETAdminRealmsRealmAuthenticationRequiredActionsAliasConfig({
-	pathParams: { alias, realm },
+	pathParams: { realm, alias },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmAuthenticationRequiredActionsAliasConfigPathParams;
@@ -2747,12 +2747,12 @@ export async function gETAdminRealmsRealmAuthenticationRequiredActionsAliasConfi
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!alias) {
-		throw new Error(`Missing required path parameter: alias`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!alias) {
+		throw new Error(`Missing required path parameter: alias`);
 	}
 
 	const data = await request<
@@ -2775,7 +2775,7 @@ export async function gETAdminRealmsRealmAuthenticationRequiredActionsAliasConfi
  * {@link /admin/realms/:realm/authentication/required-actions/:alias/config}
  */
 export async function pUTAdminRealmsRealmAuthenticationRequiredActionsAliasConfig({
-	pathParams: { alias, realm },
+	pathParams: { realm, alias },
 	body,
 	config = {},
 }: {
@@ -2785,12 +2785,12 @@ export async function pUTAdminRealmsRealmAuthenticationRequiredActionsAliasConfi
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!alias) {
-		throw new Error(`Missing required path parameter: alias`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!alias) {
+		throw new Error(`Missing required path parameter: alias`);
 	}
 
 	const data = await request<
@@ -2814,7 +2814,7 @@ export async function pUTAdminRealmsRealmAuthenticationRequiredActionsAliasConfi
  * {@link /admin/realms/:realm/authentication/required-actions/:alias/config}
  */
 export async function dELETEAdminRealmsRealmAuthenticationRequiredActionsAliasConfig({
-	pathParams: { alias, realm },
+	pathParams: { realm, alias },
 	config = {},
 }: {
 	pathParams: DELETEAdminRealmsRealmAuthenticationRequiredActionsAliasConfigPathParams;
@@ -2822,12 +2822,12 @@ export async function dELETEAdminRealmsRealmAuthenticationRequiredActionsAliasCo
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!alias) {
-		throw new Error(`Missing required path parameter: alias`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!alias) {
+		throw new Error(`Missing required path parameter: alias`);
 	}
 
 	const data = await request<
@@ -2850,7 +2850,7 @@ export async function dELETEAdminRealmsRealmAuthenticationRequiredActionsAliasCo
  * {@link /admin/realms/:realm/authentication/required-actions/:alias/config-description}
  */
 export async function gETAdminRealmsRealmAuthenticationRequiredActionsAliasConfigDescription({
-	pathParams: { alias, realm },
+	pathParams: { realm, alias },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmAuthenticationRequiredActionsAliasConfigDescriptionPathParams;
@@ -2858,12 +2858,12 @@ export async function gETAdminRealmsRealmAuthenticationRequiredActionsAliasConfi
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!alias) {
-		throw new Error(`Missing required path parameter: alias`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!alias) {
+		throw new Error(`Missing required path parameter: alias`);
 	}
 
 	const data = await request<
@@ -2886,7 +2886,7 @@ export async function gETAdminRealmsRealmAuthenticationRequiredActionsAliasConfi
  * {@link /admin/realms/:realm/authentication/required-actions/:alias/lower-priority}
  */
 export async function pOSTAdminRealmsRealmAuthenticationRequiredActionsAliasLowerPriority({
-	pathParams: { alias, realm },
+	pathParams: { realm, alias },
 	config = {},
 }: {
 	pathParams: POSTAdminRealmsRealmAuthenticationRequiredActionsAliasLowerPriorityPathParams;
@@ -2894,12 +2894,12 @@ export async function pOSTAdminRealmsRealmAuthenticationRequiredActionsAliasLowe
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!alias) {
-		throw new Error(`Missing required path parameter: alias`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!alias) {
+		throw new Error(`Missing required path parameter: alias`);
 	}
 
 	const data = await request<
@@ -2922,7 +2922,7 @@ export async function pOSTAdminRealmsRealmAuthenticationRequiredActionsAliasLowe
  * {@link /admin/realms/:realm/authentication/required-actions/:alias/raise-priority}
  */
 export async function pOSTAdminRealmsRealmAuthenticationRequiredActionsAliasRaisePriority({
-	pathParams: { alias, realm },
+	pathParams: { realm, alias },
 	config = {},
 }: {
 	pathParams: POSTAdminRealmsRealmAuthenticationRequiredActionsAliasRaisePriorityPathParams;
@@ -2930,12 +2930,12 @@ export async function pOSTAdminRealmsRealmAuthenticationRequiredActionsAliasRais
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!alias) {
-		throw new Error(`Missing required path parameter: alias`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!alias) {
+		throw new Error(`Missing required path parameter: alias`);
 	}
 
 	const data = await request<
@@ -3523,7 +3523,7 @@ export async function pOSTAdminRealmsRealmClientsInitialAccess({
  * {@link /admin/realms/:realm/clients-initial-access/:id}
  */
 export async function dELETEAdminRealmsRealmClientsInitialAccessId({
-	pathParams: { id, realm },
+	pathParams: { realm, id },
 	config = {},
 }: {
 	pathParams: DELETEAdminRealmsRealmClientsInitialAccessIdPathParams;
@@ -3531,12 +3531,12 @@ export async function dELETEAdminRealmsRealmClientsInitialAccessId({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!id) {
-		throw new Error(`Missing required path parameter: id`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!id) {
+		throw new Error(`Missing required path parameter: id`);
 	}
 
 	const data = await request<
@@ -3616,7 +3616,7 @@ export async function pOSTAdminRealmsRealmComponents({
  * {@link /admin/realms/:realm/components/:id}
  */
 export async function gETAdminRealmsRealmComponentsId({
-	pathParams: { id, realm },
+	pathParams: { realm, id },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmComponentsIdPathParams;
@@ -3624,12 +3624,12 @@ export async function gETAdminRealmsRealmComponentsId({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!id) {
-		throw new Error(`Missing required path parameter: id`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!id) {
+		throw new Error(`Missing required path parameter: id`);
 	}
 
 	const data = await request<
@@ -3647,7 +3647,7 @@ export async function gETAdminRealmsRealmComponentsId({
  * {@link /admin/realms/:realm/components/:id}
  */
 export async function pUTAdminRealmsRealmComponentsId({
-	pathParams: { id, realm },
+	pathParams: { realm, id },
 	body,
 	config = {},
 }: {
@@ -3657,12 +3657,12 @@ export async function pUTAdminRealmsRealmComponentsId({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!id) {
-		throw new Error(`Missing required path parameter: id`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!id) {
+		throw new Error(`Missing required path parameter: id`);
 	}
 
 	const data = await request<
@@ -3680,7 +3680,7 @@ export async function pUTAdminRealmsRealmComponentsId({
  * {@link /admin/realms/:realm/components/:id}
  */
 export async function dELETEAdminRealmsRealmComponentsId({
-	pathParams: { id, realm },
+	pathParams: { realm, id },
 	config = {},
 }: {
 	pathParams: DELETEAdminRealmsRealmComponentsIdPathParams;
@@ -3688,12 +3688,12 @@ export async function dELETEAdminRealmsRealmComponentsId({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!id) {
-		throw new Error(`Missing required path parameter: id`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!id) {
+		throw new Error(`Missing required path parameter: id`);
 	}
 
 	const data = await request<
@@ -3712,7 +3712,7 @@ export async function dELETEAdminRealmsRealmComponentsId({
  * {@link /admin/realms/:realm/components/:id/sub-component-types}
  */
 export async function gETAdminRealmsRealmComponentsIdSubComponentTypes({
-	pathParams: { id, realm },
+	pathParams: { realm, id },
 	queryParams,
 	config = {},
 }: {
@@ -3722,12 +3722,12 @@ export async function gETAdminRealmsRealmComponentsIdSubComponentTypes({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!id) {
-		throw new Error(`Missing required path parameter: id`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!id) {
+		throw new Error(`Missing required path parameter: id`);
 	}
 
 	const data = await request<
@@ -3809,7 +3809,7 @@ export async function gETAdminRealmsRealmDefaultDefaultClientScopes({
  * {@link /admin/realms/:realm/default-default-client-scopes/:clientScopeId}
  */
 export async function pUTAdminRealmsRealmDefaultDefaultClientScopesClientScopeId({
-	pathParams: { clientScopeId, realm },
+	pathParams: { realm, clientScopeId },
 	config = {},
 }: {
 	pathParams: PUTAdminRealmsRealmDefaultDefaultClientScopesClientScopeIdPathParams;
@@ -3817,12 +3817,12 @@ export async function pUTAdminRealmsRealmDefaultDefaultClientScopesClientScopeId
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!clientScopeId) {
-		throw new Error(`Missing required path parameter: clientScopeId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!clientScopeId) {
+		throw new Error(`Missing required path parameter: clientScopeId`);
 	}
 
 	const data = await request<
@@ -3847,7 +3847,7 @@ export async function pUTAdminRealmsRealmDefaultDefaultClientScopesClientScopeId
  * {@link /admin/realms/:realm/default-default-client-scopes/:clientScopeId}
  */
 export async function dELETEAdminRealmsRealmDefaultDefaultClientScopesClientScopeId({
-	pathParams: { clientScopeId, realm },
+	pathParams: { realm, clientScopeId },
 	config = {},
 }: {
 	pathParams: DELETEAdminRealmsRealmDefaultDefaultClientScopesClientScopeIdPathParams;
@@ -3855,12 +3855,12 @@ export async function dELETEAdminRealmsRealmDefaultDefaultClientScopesClientScop
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!clientScopeId) {
-		throw new Error(`Missing required path parameter: clientScopeId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!clientScopeId) {
+		throw new Error(`Missing required path parameter: clientScopeId`);
 	}
 
 	const data = await request<
@@ -3913,7 +3913,7 @@ export async function gETAdminRealmsRealmDefaultGroups({
  * {@link /admin/realms/:realm/default-groups/:groupId}
  */
 export async function pUTAdminRealmsRealmDefaultGroupsGroupId({
-	pathParams: { groupId, realm },
+	pathParams: { realm, groupId },
 	config = {},
 }: {
 	pathParams: PUTAdminRealmsRealmDefaultGroupsGroupIdPathParams;
@@ -3921,12 +3921,12 @@ export async function pUTAdminRealmsRealmDefaultGroupsGroupId({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!groupId) {
-		throw new Error(`Missing required path parameter: groupId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!groupId) {
+		throw new Error(`Missing required path parameter: groupId`);
 	}
 
 	const data = await request<
@@ -3946,7 +3946,7 @@ export async function pUTAdminRealmsRealmDefaultGroupsGroupId({
  * {@link /admin/realms/:realm/default-groups/:groupId}
  */
 export async function dELETEAdminRealmsRealmDefaultGroupsGroupId({
-	pathParams: { groupId, realm },
+	pathParams: { realm, groupId },
 	config = {},
 }: {
 	pathParams: DELETEAdminRealmsRealmDefaultGroupsGroupIdPathParams;
@@ -3954,12 +3954,12 @@ export async function dELETEAdminRealmsRealmDefaultGroupsGroupId({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!groupId) {
-		throw new Error(`Missing required path parameter: groupId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!groupId) {
+		throw new Error(`Missing required path parameter: groupId`);
 	}
 
 	const data = await request<
@@ -4015,7 +4015,7 @@ export async function gETAdminRealmsRealmDefaultOptionalClientScopes({
  * {@link /admin/realms/:realm/default-optional-client-scopes/:clientScopeId}
  */
 export async function pUTAdminRealmsRealmDefaultOptionalClientScopesClientScopeId({
-	pathParams: { clientScopeId, realm },
+	pathParams: { realm, clientScopeId },
 	config = {},
 }: {
 	pathParams: PUTAdminRealmsRealmDefaultOptionalClientScopesClientScopeIdPathParams;
@@ -4023,12 +4023,12 @@ export async function pUTAdminRealmsRealmDefaultOptionalClientScopesClientScopeI
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!clientScopeId) {
-		throw new Error(`Missing required path parameter: clientScopeId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!clientScopeId) {
+		throw new Error(`Missing required path parameter: clientScopeId`);
 	}
 
 	const data = await request<
@@ -4053,7 +4053,7 @@ export async function pUTAdminRealmsRealmDefaultOptionalClientScopesClientScopeI
  * {@link /admin/realms/:realm/default-optional-client-scopes/:clientScopeId}
  */
 export async function dELETEAdminRealmsRealmDefaultOptionalClientScopesClientScopeId({
-	pathParams: { clientScopeId, realm },
+	pathParams: { realm, clientScopeId },
 	config = {},
 }: {
 	pathParams: DELETEAdminRealmsRealmDefaultOptionalClientScopesClientScopeIdPathParams;
@@ -4061,12 +4061,12 @@ export async function dELETEAdminRealmsRealmDefaultOptionalClientScopesClientSco
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!clientScopeId) {
-		throw new Error(`Missing required path parameter: clientScopeId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!clientScopeId) {
+		throw new Error(`Missing required path parameter: clientScopeId`);
 	}
 
 	const data = await request<
@@ -4207,7 +4207,7 @@ export async function pUTAdminRealmsRealmEventsConfig({
  * {@link /admin/realms/:realm/group-by-path/:path}
  */
 export async function gETAdminRealmsRealmGroupByPathPath({
-	pathParams: { path, realm },
+	pathParams: { realm, path },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmGroupByPathPathPathParams;
@@ -4215,12 +4215,12 @@ export async function gETAdminRealmsRealmGroupByPathPath({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!path) {
-		throw new Error(`Missing required path parameter: path`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!path) {
+		throw new Error(`Missing required path parameter: path`);
 	}
 
 	const data = await request<
@@ -4778,7 +4778,7 @@ export async function pOSTAdminRealmsRealmIdentityProviderInstancesAliasMappers(
  * {@link /admin/realms/:realm/identity-provider/instances/:alias/mappers/:id}
  */
 export async function gETAdminRealmsRealmIdentityProviderInstancesAliasMappersId({
-	pathParams: { id, realm, alias },
+	pathParams: { realm, alias, id },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmIdentityProviderInstancesAliasMappersIdPathParams;
@@ -4786,16 +4786,16 @@ export async function gETAdminRealmsRealmIdentityProviderInstancesAliasMappersId
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!id) {
-		throw new Error(`Missing required path parameter: id`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!alias) {
 		throw new Error(`Missing required path parameter: alias`);
+	}
+
+	if (!id) {
+		throw new Error(`Missing required path parameter: id`);
 	}
 
 	const data = await request<
@@ -4818,7 +4818,7 @@ export async function gETAdminRealmsRealmIdentityProviderInstancesAliasMappersId
  * {@link /admin/realms/:realm/identity-provider/instances/:alias/mappers/:id}
  */
 export async function pUTAdminRealmsRealmIdentityProviderInstancesAliasMappersId({
-	pathParams: { id, realm, alias },
+	pathParams: { realm, alias, id },
 	body,
 	config = {},
 }: {
@@ -4828,16 +4828,16 @@ export async function pUTAdminRealmsRealmIdentityProviderInstancesAliasMappersId
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!id) {
-		throw new Error(`Missing required path parameter: id`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!alias) {
 		throw new Error(`Missing required path parameter: alias`);
+	}
+
+	if (!id) {
+		throw new Error(`Missing required path parameter: id`);
 	}
 
 	const data = await request<
@@ -4861,7 +4861,7 @@ export async function pUTAdminRealmsRealmIdentityProviderInstancesAliasMappersId
  * {@link /admin/realms/:realm/identity-provider/instances/:alias/mappers/:id}
  */
 export async function dELETEAdminRealmsRealmIdentityProviderInstancesAliasMappersId({
-	pathParams: { id, realm, alias },
+	pathParams: { realm, alias, id },
 	config = {},
 }: {
 	pathParams: DELETEAdminRealmsRealmIdentityProviderInstancesAliasMappersIdPathParams;
@@ -4869,16 +4869,16 @@ export async function dELETEAdminRealmsRealmIdentityProviderInstancesAliasMapper
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!id) {
-		throw new Error(`Missing required path parameter: id`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!alias) {
 		throw new Error(`Missing required path parameter: alias`);
+	}
+
+	if (!id) {
+		throw new Error(`Missing required path parameter: id`);
 	}
 
 	const data = await request<
@@ -5022,7 +5022,7 @@ export async function gETAdminRealmsRealmLocalization({
  * {@link /admin/realms/:realm/localization/:locale}
  */
 export async function gETAdminRealmsRealmLocalizationLocale({
-	pathParams: { locale, realm },
+	pathParams: { realm, locale },
 	queryParams,
 	config = {},
 }: {
@@ -5032,12 +5032,12 @@ export async function gETAdminRealmsRealmLocalizationLocale({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!locale) {
-		throw new Error(`Missing required path parameter: locale`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!locale) {
+		throw new Error(`Missing required path parameter: locale`);
 	}
 
 	const data = await request<
@@ -5061,7 +5061,7 @@ export async function gETAdminRealmsRealmLocalizationLocale({
  * {@link /admin/realms/:realm/localization/:locale}
  */
 export async function pOSTAdminRealmsRealmLocalizationLocale({
-	pathParams: { locale, realm },
+	pathParams: { realm, locale },
 	body,
 	config = {},
 }: {
@@ -5071,12 +5071,12 @@ export async function pOSTAdminRealmsRealmLocalizationLocale({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!locale) {
-		throw new Error(`Missing required path parameter: locale`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!locale) {
+		throw new Error(`Missing required path parameter: locale`);
 	}
 
 	const data = await request<
@@ -5101,7 +5101,7 @@ export async function pOSTAdminRealmsRealmLocalizationLocale({
  * {@link /admin/realms/:realm/localization/:locale}
  */
 export async function dELETEAdminRealmsRealmLocalizationLocale({
-	pathParams: { locale, realm },
+	pathParams: { realm, locale },
 	config = {},
 }: {
 	pathParams: DELETEAdminRealmsRealmLocalizationLocalePathParams;
@@ -5109,12 +5109,12 @@ export async function dELETEAdminRealmsRealmLocalizationLocale({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!locale) {
-		throw new Error(`Missing required path parameter: locale`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!locale) {
+		throw new Error(`Missing required path parameter: locale`);
 	}
 
 	const data = await request<
@@ -5134,7 +5134,7 @@ export async function dELETEAdminRealmsRealmLocalizationLocale({
  * {@link /admin/realms/:realm/localization/:locale/:key}
  */
 export async function gETAdminRealmsRealmLocalizationLocaleKey({
-	pathParams: { key, locale, realm },
+	pathParams: { realm, key, locale },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmLocalizationLocaleKeyPathParams;
@@ -5142,16 +5142,16 @@ export async function gETAdminRealmsRealmLocalizationLocaleKey({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
+	if (!realm) {
+		throw new Error(`Missing required path parameter: realm`);
+	}
+
 	if (!key) {
 		throw new Error(`Missing required path parameter: key`);
 	}
 
 	if (!locale) {
 		throw new Error(`Missing required path parameter: locale`);
-	}
-
-	if (!realm) {
-		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	const data = await request<
@@ -5175,7 +5175,7 @@ export async function gETAdminRealmsRealmLocalizationLocaleKey({
  * {@link /admin/realms/:realm/localization/:locale/:key}
  */
 export async function pUTAdminRealmsRealmLocalizationLocaleKey({
-	pathParams: { key, locale, realm },
+	pathParams: { realm, key, locale },
 	config = {},
 }: {
 	pathParams: PUTAdminRealmsRealmLocalizationLocaleKeyPathParams;
@@ -5183,16 +5183,16 @@ export async function pUTAdminRealmsRealmLocalizationLocaleKey({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
+	if (!realm) {
+		throw new Error(`Missing required path parameter: realm`);
+	}
+
 	if (!key) {
 		throw new Error(`Missing required path parameter: key`);
 	}
 
 	if (!locale) {
 		throw new Error(`Missing required path parameter: locale`);
-	}
-
-	if (!realm) {
-		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	const data = await request<
@@ -5217,7 +5217,7 @@ export async function pUTAdminRealmsRealmLocalizationLocaleKey({
  * {@link /admin/realms/:realm/localization/:locale/:key}
  */
 export async function dELETEAdminRealmsRealmLocalizationLocaleKey({
-	pathParams: { key, locale, realm },
+	pathParams: { realm, key, locale },
 	config = {},
 }: {
 	pathParams: DELETEAdminRealmsRealmLocalizationLocaleKeyPathParams;
@@ -5225,16 +5225,16 @@ export async function dELETEAdminRealmsRealmLocalizationLocaleKey({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
+	if (!realm) {
+		throw new Error(`Missing required path parameter: realm`);
+	}
+
 	if (!key) {
 		throw new Error(`Missing required path parameter: key`);
 	}
 
 	if (!locale) {
 		throw new Error(`Missing required path parameter: locale`);
-	}
-
-	if (!realm) {
-		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	const data = await request<
@@ -5544,7 +5544,7 @@ export async function pOSTAdminRealmsRealmRoles({
  * {@link /admin/realms/:realm/sessions/:session}
  */
 export async function dELETEAdminRealmsRealmSessionsSession({
-	pathParams: { session, realm },
+	pathParams: { realm, session },
 	queryParams,
 	config = {},
 }: {
@@ -5554,12 +5554,12 @@ export async function dELETEAdminRealmsRealmSessionsSession({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!session) {
-		throw new Error(`Missing required path parameter: session`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!session) {
+		throw new Error(`Missing required path parameter: session`);
 	}
 
 	const data = await request<
@@ -6034,7 +6034,7 @@ export async function dELETEAdminRealmsRealmWorkflowsId({
  * {@link /admin/realms/:realm/workflows/:id/activate/:type/:resourceId}
  */
 export async function pOSTAdminRealmsRealmWorkflowsIdActivateTypeResourceId({
-	pathParams: { resourceId, type, realm, id },
+	pathParams: { realm, id, resourceId, type },
 	queryParams,
 	config = {},
 }: {
@@ -6044,20 +6044,20 @@ export async function pOSTAdminRealmsRealmWorkflowsIdActivateTypeResourceId({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!resourceId) {
-		throw new Error(`Missing required path parameter: resourceId`);
-	}
-
-	if (!type) {
-		throw new Error(`Missing required path parameter: type`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
+	}
+
+	if (!resourceId) {
+		throw new Error(`Missing required path parameter: resourceId`);
+	}
+
+	if (!type) {
+		throw new Error(`Missing required path parameter: type`);
 	}
 
 	const data = await request<
@@ -6082,7 +6082,7 @@ export async function pOSTAdminRealmsRealmWorkflowsIdActivateTypeResourceId({
  * {@link /admin/realms/:realm/workflows/:id/deactivate/:type/:resourceId}
  */
 export async function pOSTAdminRealmsRealmWorkflowsIdDeactivateTypeResourceId({
-	pathParams: { resourceId, type, realm, id },
+	pathParams: { realm, id, resourceId, type },
 	config = {},
 }: {
 	pathParams: POSTAdminRealmsRealmWorkflowsIdDeactivateTypeResourceIdPathParams;
@@ -6090,20 +6090,20 @@ export async function pOSTAdminRealmsRealmWorkflowsIdDeactivateTypeResourceId({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!resourceId) {
-		throw new Error(`Missing required path parameter: resourceId`);
-	}
-
-	if (!type) {
-		throw new Error(`Missing required path parameter: type`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!id) {
 		throw new Error(`Missing required path parameter: id`);
+	}
+
+	if (!resourceId) {
+		throw new Error(`Missing required path parameter: resourceId`);
+	}
+
+	if (!type) {
+		throw new Error(`Missing required path parameter: type`);
 	}
 
 	const data = await request<
@@ -6359,7 +6359,7 @@ export async function pOSTAdminRealmsRealmClientScopesClientScopeIdProtocolMappe
  * {@link /admin/realms/:realm/client-scopes/:clientScopeId/protocol-mappers/models/:id}
  */
 export async function gETAdminRealmsRealmClientScopesClientScopeIdProtocolMappersModelsId({
-	pathParams: { id, realm, clientScopeId },
+	pathParams: { realm, clientScopeId, id },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmClientScopesClientScopeIdProtocolMappersModelsIdPathParams;
@@ -6367,16 +6367,16 @@ export async function gETAdminRealmsRealmClientScopesClientScopeIdProtocolMapper
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!id) {
-		throw new Error(`Missing required path parameter: id`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!clientScopeId) {
 		throw new Error(`Missing required path parameter: clientScopeId`);
+	}
+
+	if (!id) {
+		throw new Error(`Missing required path parameter: id`);
 	}
 
 	const data = await request<
@@ -6399,7 +6399,7 @@ export async function gETAdminRealmsRealmClientScopesClientScopeIdProtocolMapper
  * {@link /admin/realms/:realm/client-scopes/:clientScopeId/protocol-mappers/models/:id}
  */
 export async function pUTAdminRealmsRealmClientScopesClientScopeIdProtocolMappersModelsId({
-	pathParams: { id, realm, clientScopeId },
+	pathParams: { realm, clientScopeId, id },
 	body,
 	config = {},
 }: {
@@ -6409,16 +6409,16 @@ export async function pUTAdminRealmsRealmClientScopesClientScopeIdProtocolMapper
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!id) {
-		throw new Error(`Missing required path parameter: id`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!clientScopeId) {
 		throw new Error(`Missing required path parameter: clientScopeId`);
+	}
+
+	if (!id) {
+		throw new Error(`Missing required path parameter: id`);
 	}
 
 	const data = await request<
@@ -6442,7 +6442,7 @@ export async function pUTAdminRealmsRealmClientScopesClientScopeIdProtocolMapper
  * {@link /admin/realms/:realm/client-scopes/:clientScopeId/protocol-mappers/models/:id}
  */
 export async function dELETEAdminRealmsRealmClientScopesClientScopeIdProtocolMappersModelsId({
-	pathParams: { id, realm, clientScopeId },
+	pathParams: { realm, clientScopeId, id },
 	config = {},
 }: {
 	pathParams: DELETEAdminRealmsRealmClientScopesClientScopeIdProtocolMappersModelsIdPathParams;
@@ -6450,16 +6450,16 @@ export async function dELETEAdminRealmsRealmClientScopesClientScopeIdProtocolMap
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!id) {
-		throw new Error(`Missing required path parameter: id`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!clientScopeId) {
 		throw new Error(`Missing required path parameter: clientScopeId`);
+	}
+
+	if (!id) {
+		throw new Error(`Missing required path parameter: id`);
 	}
 
 	const data = await request<
@@ -6482,7 +6482,7 @@ export async function dELETEAdminRealmsRealmClientScopesClientScopeIdProtocolMap
  * {@link /admin/realms/:realm/client-scopes/:clientScopeId/protocol-mappers/protocol/:protocol}
  */
 export async function gETAdminRealmsRealmClientScopesClientScopeIdProtocolMappersProtocolProtocol({
-	pathParams: { protocol, realm, clientScopeId },
+	pathParams: { realm, clientScopeId, protocol },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmClientScopesClientScopeIdProtocolMappersProtocolProtocolPathParams;
@@ -6490,16 +6490,16 @@ export async function gETAdminRealmsRealmClientScopesClientScopeIdProtocolMapper
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!protocol) {
-		throw new Error(`Missing required path parameter: protocol`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!clientScopeId) {
 		throw new Error(`Missing required path parameter: clientScopeId`);
+	}
+
+	if (!protocol) {
+		throw new Error(`Missing required path parameter: protocol`);
 	}
 
 	const data = await request<
@@ -7191,7 +7191,7 @@ export async function pOSTAdminRealmsRealmClientTemplatesClientScopeIdProtocolMa
  * {@link /admin/realms/:realm/client-templates/:clientScopeId/protocol-mappers/models/:id}
  */
 export async function gETAdminRealmsRealmClientTemplatesClientScopeIdProtocolMappersModelsId({
-	pathParams: { id, realm, clientScopeId },
+	pathParams: { realm, clientScopeId, id },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmClientTemplatesClientScopeIdProtocolMappersModelsIdPathParams;
@@ -7199,16 +7199,16 @@ export async function gETAdminRealmsRealmClientTemplatesClientScopeIdProtocolMap
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!id) {
-		throw new Error(`Missing required path parameter: id`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!clientScopeId) {
 		throw new Error(`Missing required path parameter: clientScopeId`);
+	}
+
+	if (!id) {
+		throw new Error(`Missing required path parameter: id`);
 	}
 
 	const data = await request<
@@ -7231,7 +7231,7 @@ export async function gETAdminRealmsRealmClientTemplatesClientScopeIdProtocolMap
  * {@link /admin/realms/:realm/client-templates/:clientScopeId/protocol-mappers/models/:id}
  */
 export async function pUTAdminRealmsRealmClientTemplatesClientScopeIdProtocolMappersModelsId({
-	pathParams: { id, realm, clientScopeId },
+	pathParams: { realm, clientScopeId, id },
 	body,
 	config = {},
 }: {
@@ -7241,16 +7241,16 @@ export async function pUTAdminRealmsRealmClientTemplatesClientScopeIdProtocolMap
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!id) {
-		throw new Error(`Missing required path parameter: id`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!clientScopeId) {
 		throw new Error(`Missing required path parameter: clientScopeId`);
+	}
+
+	if (!id) {
+		throw new Error(`Missing required path parameter: id`);
 	}
 
 	const data = await request<
@@ -7274,7 +7274,7 @@ export async function pUTAdminRealmsRealmClientTemplatesClientScopeIdProtocolMap
  * {@link /admin/realms/:realm/client-templates/:clientScopeId/protocol-mappers/models/:id}
  */
 export async function dELETEAdminRealmsRealmClientTemplatesClientScopeIdProtocolMappersModelsId({
-	pathParams: { id, realm, clientScopeId },
+	pathParams: { realm, clientScopeId, id },
 	config = {},
 }: {
 	pathParams: DELETEAdminRealmsRealmClientTemplatesClientScopeIdProtocolMappersModelsIdPathParams;
@@ -7282,16 +7282,16 @@ export async function dELETEAdminRealmsRealmClientTemplatesClientScopeIdProtocol
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!id) {
-		throw new Error(`Missing required path parameter: id`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!clientScopeId) {
 		throw new Error(`Missing required path parameter: clientScopeId`);
+	}
+
+	if (!id) {
+		throw new Error(`Missing required path parameter: id`);
 	}
 
 	const data = await request<
@@ -7314,7 +7314,7 @@ export async function dELETEAdminRealmsRealmClientTemplatesClientScopeIdProtocol
  * {@link /admin/realms/:realm/client-templates/:clientScopeId/protocol-mappers/protocol/:protocol}
  */
 export async function gETAdminRealmsRealmClientTemplatesClientScopeIdProtocolMappersProtocolProtocol({
-	pathParams: { protocol, realm, clientScopeId },
+	pathParams: { realm, clientScopeId, protocol },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmClientTemplatesClientScopeIdProtocolMappersProtocolProtocolPathParams;
@@ -7322,16 +7322,16 @@ export async function gETAdminRealmsRealmClientTemplatesClientScopeIdProtocolMap
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!protocol) {
-		throw new Error(`Missing required path parameter: protocol`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!clientScopeId) {
 		throw new Error(`Missing required path parameter: clientScopeId`);
+	}
+
+	if (!protocol) {
+		throw new Error(`Missing required path parameter: protocol`);
 	}
 
 	const data = await request<
@@ -8489,7 +8489,7 @@ export async function gETAdminRealmsRealmClientsClientUuidAuthzResourceServerRes
  * {@link /admin/realms/:realm/clients/:clientUuid/authz/resource-server/resource/:resourceId}
  */
 export async function gETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResourceId({
-	pathParams: { resourceId, realm, clientUuid },
+	pathParams: { realm, clientUuid, resourceId },
 	queryParams,
 	config = {},
 }: {
@@ -8499,16 +8499,16 @@ export async function gETAdminRealmsRealmClientsClientUuidAuthzResourceServerRes
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!resourceId) {
-		throw new Error(`Missing required path parameter: resourceId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!clientUuid) {
 		throw new Error(`Missing required path parameter: clientUuid`);
+	}
+
+	if (!resourceId) {
+		throw new Error(`Missing required path parameter: resourceId`);
 	}
 
 	const data = await request<
@@ -8531,7 +8531,7 @@ export async function gETAdminRealmsRealmClientsClientUuidAuthzResourceServerRes
  * {@link /admin/realms/:realm/clients/:clientUuid/authz/resource-server/resource/:resourceId}
  */
 export async function pUTAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResourceId({
-	pathParams: { resourceId, realm, clientUuid },
+	pathParams: { realm, clientUuid, resourceId },
 	body,
 	queryParams,
 	config = {},
@@ -8543,16 +8543,16 @@ export async function pUTAdminRealmsRealmClientsClientUuidAuthzResourceServerRes
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!resourceId) {
-		throw new Error(`Missing required path parameter: resourceId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!clientUuid) {
 		throw new Error(`Missing required path parameter: clientUuid`);
+	}
+
+	if (!resourceId) {
+		throw new Error(`Missing required path parameter: resourceId`);
 	}
 
 	const data = await request<
@@ -8576,7 +8576,7 @@ export async function pUTAdminRealmsRealmClientsClientUuidAuthzResourceServerRes
  * {@link /admin/realms/:realm/clients/:clientUuid/authz/resource-server/resource/:resourceId}
  */
 export async function dELETEAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResourceId({
-	pathParams: { resourceId, realm, clientUuid },
+	pathParams: { realm, clientUuid, resourceId },
 	queryParams,
 	config = {},
 }: {
@@ -8586,16 +8586,16 @@ export async function dELETEAdminRealmsRealmClientsClientUuidAuthzResourceServer
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!resourceId) {
-		throw new Error(`Missing required path parameter: resourceId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!clientUuid) {
 		throw new Error(`Missing required path parameter: clientUuid`);
+	}
+
+	if (!resourceId) {
+		throw new Error(`Missing required path parameter: resourceId`);
 	}
 
 	const data = await request<
@@ -8618,7 +8618,7 @@ export async function dELETEAdminRealmsRealmClientsClientUuidAuthzResourceServer
  * {@link /admin/realms/:realm/clients/:clientUuid/authz/resource-server/resource/:resourceId/attributes}
  */
 export async function gETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResourceIdAttributes({
-	pathParams: { resourceId, realm, clientUuid },
+	pathParams: { realm, clientUuid, resourceId },
 	queryParams,
 	config = {},
 }: {
@@ -8628,16 +8628,16 @@ export async function gETAdminRealmsRealmClientsClientUuidAuthzResourceServerRes
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!resourceId) {
-		throw new Error(`Missing required path parameter: resourceId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!clientUuid) {
 		throw new Error(`Missing required path parameter: clientUuid`);
+	}
+
+	if (!resourceId) {
+		throw new Error(`Missing required path parameter: resourceId`);
 	}
 
 	const data = await request<
@@ -8660,7 +8660,7 @@ export async function gETAdminRealmsRealmClientsClientUuidAuthzResourceServerRes
  * {@link /admin/realms/:realm/clients/:clientUuid/authz/resource-server/resource/:resourceId/permissions}
  */
 export async function gETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResourceIdPermissions({
-	pathParams: { resourceId, realm, clientUuid },
+	pathParams: { realm, clientUuid, resourceId },
 	queryParams,
 	config = {},
 }: {
@@ -8670,16 +8670,16 @@ export async function gETAdminRealmsRealmClientsClientUuidAuthzResourceServerRes
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!resourceId) {
-		throw new Error(`Missing required path parameter: resourceId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!clientUuid) {
 		throw new Error(`Missing required path parameter: clientUuid`);
+	}
+
+	if (!resourceId) {
+		throw new Error(`Missing required path parameter: resourceId`);
 	}
 
 	const data = await request<
@@ -8702,7 +8702,7 @@ export async function gETAdminRealmsRealmClientsClientUuidAuthzResourceServerRes
  * {@link /admin/realms/:realm/clients/:clientUuid/authz/resource-server/resource/:resourceId/scopes}
  */
 export async function gETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResourceIdScopes({
-	pathParams: { resourceId, realm, clientUuid },
+	pathParams: { realm, clientUuid, resourceId },
 	queryParams,
 	config = {},
 }: {
@@ -8712,16 +8712,16 @@ export async function gETAdminRealmsRealmClientsClientUuidAuthzResourceServerRes
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!resourceId) {
-		throw new Error(`Missing required path parameter: resourceId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!clientUuid) {
 		throw new Error(`Missing required path parameter: clientUuid`);
+	}
+
+	if (!resourceId) {
+		throw new Error(`Missing required path parameter: resourceId`);
 	}
 
 	const data = await request<
@@ -8858,7 +8858,7 @@ export async function gETAdminRealmsRealmClientsClientUuidAuthzResourceServerSco
  * {@link /admin/realms/:realm/clients/:clientUuid/authz/resource-server/scope/:scopeId}
  */
 export async function gETAdminRealmsRealmClientsClientUuidAuthzResourceServerScopeScopeId({
-	pathParams: { scopeId, realm, clientUuid },
+	pathParams: { realm, clientUuid, scopeId },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmClientsClientUuidAuthzResourceServerScopeScopeIdPathParams;
@@ -8866,16 +8866,16 @@ export async function gETAdminRealmsRealmClientsClientUuidAuthzResourceServerSco
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!scopeId) {
-		throw new Error(`Missing required path parameter: scopeId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!clientUuid) {
 		throw new Error(`Missing required path parameter: clientUuid`);
+	}
+
+	if (!scopeId) {
+		throw new Error(`Missing required path parameter: scopeId`);
 	}
 
 	const data = await request<
@@ -8897,7 +8897,7 @@ export async function gETAdminRealmsRealmClientsClientUuidAuthzResourceServerSco
  * {@link /admin/realms/:realm/clients/:clientUuid/authz/resource-server/scope/:scopeId}
  */
 export async function pUTAdminRealmsRealmClientsClientUuidAuthzResourceServerScopeScopeId({
-	pathParams: { scopeId, realm, clientUuid },
+	pathParams: { realm, clientUuid, scopeId },
 	body,
 	config = {},
 }: {
@@ -8907,16 +8907,16 @@ export async function pUTAdminRealmsRealmClientsClientUuidAuthzResourceServerSco
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!scopeId) {
-		throw new Error(`Missing required path parameter: scopeId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!clientUuid) {
 		throw new Error(`Missing required path parameter: clientUuid`);
+	}
+
+	if (!scopeId) {
+		throw new Error(`Missing required path parameter: scopeId`);
 	}
 
 	const data = await request<
@@ -8939,7 +8939,7 @@ export async function pUTAdminRealmsRealmClientsClientUuidAuthzResourceServerSco
  * {@link /admin/realms/:realm/clients/:clientUuid/authz/resource-server/scope/:scopeId}
  */
 export async function dELETEAdminRealmsRealmClientsClientUuidAuthzResourceServerScopeScopeId({
-	pathParams: { scopeId, realm, clientUuid },
+	pathParams: { realm, clientUuid, scopeId },
 	config = {},
 }: {
 	pathParams: DELETEAdminRealmsRealmClientsClientUuidAuthzResourceServerScopeScopeIdPathParams;
@@ -8947,16 +8947,16 @@ export async function dELETEAdminRealmsRealmClientsClientUuidAuthzResourceServer
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!scopeId) {
-		throw new Error(`Missing required path parameter: scopeId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!clientUuid) {
 		throw new Error(`Missing required path parameter: clientUuid`);
+	}
+
+	if (!scopeId) {
+		throw new Error(`Missing required path parameter: scopeId`);
 	}
 
 	const data = await request<
@@ -8978,7 +8978,7 @@ export async function dELETEAdminRealmsRealmClientsClientUuidAuthzResourceServer
  * {@link /admin/realms/:realm/clients/:clientUuid/authz/resource-server/scope/:scopeId/permissions}
  */
 export async function gETAdminRealmsRealmClientsClientUuidAuthzResourceServerScopeScopeIdPermissions({
-	pathParams: { scopeId, realm, clientUuid },
+	pathParams: { realm, clientUuid, scopeId },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmClientsClientUuidAuthzResourceServerScopeScopeIdPermissionsPathParams;
@@ -8986,16 +8986,16 @@ export async function gETAdminRealmsRealmClientsClientUuidAuthzResourceServerSco
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!scopeId) {
-		throw new Error(`Missing required path parameter: scopeId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!clientUuid) {
 		throw new Error(`Missing required path parameter: clientUuid`);
+	}
+
+	if (!scopeId) {
+		throw new Error(`Missing required path parameter: scopeId`);
 	}
 
 	const data = await request<
@@ -9017,7 +9017,7 @@ export async function gETAdminRealmsRealmClientsClientUuidAuthzResourceServerSco
  * {@link /admin/realms/:realm/clients/:clientUuid/authz/resource-server/scope/:scopeId/resources}
  */
 export async function gETAdminRealmsRealmClientsClientUuidAuthzResourceServerScopeScopeIdResources({
-	pathParams: { scopeId, realm, clientUuid },
+	pathParams: { realm, clientUuid, scopeId },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmClientsClientUuidAuthzResourceServerScopeScopeIdResourcesPathParams;
@@ -9025,16 +9025,16 @@ export async function gETAdminRealmsRealmClientsClientUuidAuthzResourceServerSco
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!scopeId) {
-		throw new Error(`Missing required path parameter: scopeId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!clientUuid) {
 		throw new Error(`Missing required path parameter: clientUuid`);
+	}
+
+	if (!scopeId) {
+		throw new Error(`Missing required path parameter: scopeId`);
 	}
 
 	const data = await request<
@@ -9519,7 +9519,7 @@ export async function gETAdminRealmsRealmClientsClientUuidDefaultClientScopes({
  * {@link /admin/realms/:realm/clients/:clientUuid/default-client-scopes/:clientScopeId}
  */
 export async function pUTAdminRealmsRealmClientsClientUuidDefaultClientScopesClientScopeId({
-	pathParams: { clientScopeId, realm, clientUuid },
+	pathParams: { realm, clientUuid, clientScopeId },
 	config = {},
 }: {
 	pathParams: PUTAdminRealmsRealmClientsClientUuidDefaultClientScopesClientScopeIdPathParams;
@@ -9527,16 +9527,16 @@ export async function pUTAdminRealmsRealmClientsClientUuidDefaultClientScopesCli
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!clientScopeId) {
-		throw new Error(`Missing required path parameter: clientScopeId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!clientUuid) {
 		throw new Error(`Missing required path parameter: clientUuid`);
+	}
+
+	if (!clientScopeId) {
+		throw new Error(`Missing required path parameter: clientScopeId`);
 	}
 
 	const data = await request<
@@ -9558,7 +9558,7 @@ export async function pUTAdminRealmsRealmClientsClientUuidDefaultClientScopesCli
  * {@link /admin/realms/:realm/clients/:clientUuid/default-client-scopes/:clientScopeId}
  */
 export async function dELETEAdminRealmsRealmClientsClientUuidDefaultClientScopesClientScopeId({
-	pathParams: { clientScopeId, realm, clientUuid },
+	pathParams: { realm, clientUuid, clientScopeId },
 	config = {},
 }: {
 	pathParams: DELETEAdminRealmsRealmClientsClientUuidDefaultClientScopesClientScopeIdPathParams;
@@ -9566,16 +9566,16 @@ export async function dELETEAdminRealmsRealmClientsClientUuidDefaultClientScopes
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!clientScopeId) {
-		throw new Error(`Missing required path parameter: clientScopeId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!clientUuid) {
 		throw new Error(`Missing required path parameter: clientUuid`);
+	}
+
+	if (!clientScopeId) {
+		throw new Error(`Missing required path parameter: clientScopeId`);
 	}
 
 	const data = await request<
@@ -9848,7 +9848,7 @@ export async function gETAdminRealmsRealmClientsClientUuidEvaluateScopesScopeMap
  * {@link /admin/realms/:realm/clients/:clientUuid/installation/providers/:providerId}
  */
 export async function gETAdminRealmsRealmClientsClientUuidInstallationProvidersProviderId({
-	pathParams: { providerId, realm, clientUuid },
+	pathParams: { realm, clientUuid, providerId },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmClientsClientUuidInstallationProvidersProviderIdPathParams;
@@ -9856,16 +9856,16 @@ export async function gETAdminRealmsRealmClientsClientUuidInstallationProvidersP
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!providerId) {
-		throw new Error(`Missing required path parameter: providerId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!clientUuid) {
 		throw new Error(`Missing required path parameter: clientUuid`);
+	}
+
+	if (!providerId) {
+		throw new Error(`Missing required path parameter: providerId`);
 	}
 
 	const data = await request<
@@ -10002,7 +10002,7 @@ export async function pOSTAdminRealmsRealmClientsClientUuidNodes({
  * {@link /admin/realms/:realm/clients/:clientUuid/nodes/:node}
  */
 export async function dELETEAdminRealmsRealmClientsClientUuidNodesNode({
-	pathParams: { node, realm, clientUuid },
+	pathParams: { realm, clientUuid, node },
 	config = {},
 }: {
 	pathParams: DELETEAdminRealmsRealmClientsClientUuidNodesNodePathParams;
@@ -10010,16 +10010,16 @@ export async function dELETEAdminRealmsRealmClientsClientUuidNodesNode({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!node) {
-		throw new Error(`Missing required path parameter: node`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!clientUuid) {
 		throw new Error(`Missing required path parameter: clientUuid`);
+	}
+
+	if (!node) {
+		throw new Error(`Missing required path parameter: node`);
 	}
 
 	const data = await request<
@@ -10152,7 +10152,7 @@ export async function gETAdminRealmsRealmClientsClientUuidOptionalClientScopes({
  * {@link /admin/realms/:realm/clients/:clientUuid/optional-client-scopes/:clientScopeId}
  */
 export async function pUTAdminRealmsRealmClientsClientUuidOptionalClientScopesClientScopeId({
-	pathParams: { clientScopeId, realm, clientUuid },
+	pathParams: { realm, clientUuid, clientScopeId },
 	config = {},
 }: {
 	pathParams: PUTAdminRealmsRealmClientsClientUuidOptionalClientScopesClientScopeIdPathParams;
@@ -10160,16 +10160,16 @@ export async function pUTAdminRealmsRealmClientsClientUuidOptionalClientScopesCl
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!clientScopeId) {
-		throw new Error(`Missing required path parameter: clientScopeId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!clientUuid) {
 		throw new Error(`Missing required path parameter: clientUuid`);
+	}
+
+	if (!clientScopeId) {
+		throw new Error(`Missing required path parameter: clientScopeId`);
 	}
 
 	const data = await request<
@@ -10191,7 +10191,7 @@ export async function pUTAdminRealmsRealmClientsClientUuidOptionalClientScopesCl
  * {@link /admin/realms/:realm/clients/:clientUuid/optional-client-scopes/:clientScopeId}
  */
 export async function dELETEAdminRealmsRealmClientsClientUuidOptionalClientScopesClientScopeId({
-	pathParams: { clientScopeId, realm, clientUuid },
+	pathParams: { realm, clientUuid, clientScopeId },
 	config = {},
 }: {
 	pathParams: DELETEAdminRealmsRealmClientsClientUuidOptionalClientScopesClientScopeIdPathParams;
@@ -10199,16 +10199,16 @@ export async function dELETEAdminRealmsRealmClientsClientUuidOptionalClientScope
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!clientScopeId) {
-		throw new Error(`Missing required path parameter: clientScopeId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!clientUuid) {
 		throw new Error(`Missing required path parameter: clientUuid`);
+	}
+
+	if (!clientScopeId) {
+		throw new Error(`Missing required path parameter: clientScopeId`);
 	}
 
 	const data = await request<
@@ -10345,7 +10345,7 @@ export async function pOSTAdminRealmsRealmClientsClientUuidProtocolMappersModels
  * {@link /admin/realms/:realm/clients/:clientUuid/protocol-mappers/models/:id}
  */
 export async function gETAdminRealmsRealmClientsClientUuidProtocolMappersModelsId({
-	pathParams: { id, realm, clientUuid },
+	pathParams: { realm, clientUuid, id },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmClientsClientUuidProtocolMappersModelsIdPathParams;
@@ -10353,16 +10353,16 @@ export async function gETAdminRealmsRealmClientsClientUuidProtocolMappersModelsI
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!id) {
-		throw new Error(`Missing required path parameter: id`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!clientUuid) {
 		throw new Error(`Missing required path parameter: clientUuid`);
+	}
+
+	if (!id) {
+		throw new Error(`Missing required path parameter: id`);
 	}
 
 	const data = await request<
@@ -10385,7 +10385,7 @@ export async function gETAdminRealmsRealmClientsClientUuidProtocolMappersModelsI
  * {@link /admin/realms/:realm/clients/:clientUuid/protocol-mappers/models/:id}
  */
 export async function pUTAdminRealmsRealmClientsClientUuidProtocolMappersModelsId({
-	pathParams: { id, realm, clientUuid },
+	pathParams: { realm, clientUuid, id },
 	body,
 	config = {},
 }: {
@@ -10395,16 +10395,16 @@ export async function pUTAdminRealmsRealmClientsClientUuidProtocolMappersModelsI
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!id) {
-		throw new Error(`Missing required path parameter: id`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!clientUuid) {
 		throw new Error(`Missing required path parameter: clientUuid`);
+	}
+
+	if (!id) {
+		throw new Error(`Missing required path parameter: id`);
 	}
 
 	const data = await request<
@@ -10428,7 +10428,7 @@ export async function pUTAdminRealmsRealmClientsClientUuidProtocolMappersModelsI
  * {@link /admin/realms/:realm/clients/:clientUuid/protocol-mappers/models/:id}
  */
 export async function dELETEAdminRealmsRealmClientsClientUuidProtocolMappersModelsId({
-	pathParams: { id, realm, clientUuid },
+	pathParams: { realm, clientUuid, id },
 	config = {},
 }: {
 	pathParams: DELETEAdminRealmsRealmClientsClientUuidProtocolMappersModelsIdPathParams;
@@ -10436,16 +10436,16 @@ export async function dELETEAdminRealmsRealmClientsClientUuidProtocolMappersMode
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!id) {
-		throw new Error(`Missing required path parameter: id`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!clientUuid) {
 		throw new Error(`Missing required path parameter: clientUuid`);
+	}
+
+	if (!id) {
+		throw new Error(`Missing required path parameter: id`);
 	}
 
 	const data = await request<
@@ -10468,7 +10468,7 @@ export async function dELETEAdminRealmsRealmClientsClientUuidProtocolMappersMode
  * {@link /admin/realms/:realm/clients/:clientUuid/protocol-mappers/protocol/:protocol}
  */
 export async function gETAdminRealmsRealmClientsClientUuidProtocolMappersProtocolProtocol({
-	pathParams: { protocol, realm, clientUuid },
+	pathParams: { realm, clientUuid, protocol },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmClientsClientUuidProtocolMappersProtocolProtocolPathParams;
@@ -10476,16 +10476,16 @@ export async function gETAdminRealmsRealmClientsClientUuidProtocolMappersProtoco
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!protocol) {
-		throw new Error(`Missing required path parameter: protocol`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!clientUuid) {
 		throw new Error(`Missing required path parameter: clientUuid`);
+	}
+
+	if (!protocol) {
+		throw new Error(`Missing required path parameter: protocol`);
 	}
 
 	const data = await request<
@@ -10664,7 +10664,7 @@ export async function pOSTAdminRealmsRealmClientsClientUuidRoles({
  * {@link /admin/realms/:realm/clients/:clientUuid/roles/:roleName}
  */
 export async function gETAdminRealmsRealmClientsClientUuidRolesRoleName({
-	pathParams: { roleName, realm, clientUuid },
+	pathParams: { realm, clientUuid, roleName },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmClientsClientUuidRolesRoleNamePathParams;
@@ -10672,16 +10672,16 @@ export async function gETAdminRealmsRealmClientsClientUuidRolesRoleName({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!roleName) {
-		throw new Error(`Missing required path parameter: roleName`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!clientUuid) {
 		throw new Error(`Missing required path parameter: clientUuid`);
+	}
+
+	if (!roleName) {
+		throw new Error(`Missing required path parameter: roleName`);
 	}
 
 	const data = await request<
@@ -10707,7 +10707,7 @@ export async function gETAdminRealmsRealmClientsClientUuidRolesRoleName({
  * {@link /admin/realms/:realm/clients/:clientUuid/roles/:roleName}
  */
 export async function pUTAdminRealmsRealmClientsClientUuidRolesRoleName({
-	pathParams: { roleName, realm, clientUuid },
+	pathParams: { realm, clientUuid, roleName },
 	body,
 	config = {},
 }: {
@@ -10717,16 +10717,16 @@ export async function pUTAdminRealmsRealmClientsClientUuidRolesRoleName({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!roleName) {
-		throw new Error(`Missing required path parameter: roleName`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!clientUuid) {
 		throw new Error(`Missing required path parameter: clientUuid`);
+	}
+
+	if (!roleName) {
+		throw new Error(`Missing required path parameter: roleName`);
 	}
 
 	const data = await request<
@@ -10754,7 +10754,7 @@ export async function pUTAdminRealmsRealmClientsClientUuidRolesRoleName({
  * {@link /admin/realms/:realm/clients/:clientUuid/roles/:roleName}
  */
 export async function dELETEAdminRealmsRealmClientsClientUuidRolesRoleName({
-	pathParams: { roleName, realm, clientUuid },
+	pathParams: { realm, clientUuid, roleName },
 	config = {},
 }: {
 	pathParams: DELETEAdminRealmsRealmClientsClientUuidRolesRoleNamePathParams;
@@ -10762,16 +10762,16 @@ export async function dELETEAdminRealmsRealmClientsClientUuidRolesRoleName({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!roleName) {
-		throw new Error(`Missing required path parameter: roleName`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!clientUuid) {
 		throw new Error(`Missing required path parameter: clientUuid`);
+	}
+
+	if (!roleName) {
+		throw new Error(`Missing required path parameter: roleName`);
 	}
 
 	const data = await request<
@@ -10798,7 +10798,7 @@ export async function dELETEAdminRealmsRealmClientsClientUuidRolesRoleName({
  * {@link /admin/realms/:realm/clients/:clientUuid/roles/:roleName/composites}
  */
 export async function gETAdminRealmsRealmClientsClientUuidRolesRoleNameComposites({
-	pathParams: { roleName, realm, clientUuid },
+	pathParams: { realm, clientUuid, roleName },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesPathParams;
@@ -10806,16 +10806,16 @@ export async function gETAdminRealmsRealmClientsClientUuidRolesRoleNameComposite
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!roleName) {
-		throw new Error(`Missing required path parameter: roleName`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!clientUuid) {
 		throw new Error(`Missing required path parameter: clientUuid`);
+	}
+
+	if (!roleName) {
+		throw new Error(`Missing required path parameter: roleName`);
 	}
 
 	const data = await request<
@@ -10841,7 +10841,7 @@ export async function gETAdminRealmsRealmClientsClientUuidRolesRoleNameComposite
  * {@link /admin/realms/:realm/clients/:clientUuid/roles/:roleName/composites}
  */
 export async function pOSTAdminRealmsRealmClientsClientUuidRolesRoleNameComposites({
-	pathParams: { roleName, realm, clientUuid },
+	pathParams: { realm, clientUuid, roleName },
 	body,
 	config = {},
 }: {
@@ -10851,16 +10851,16 @@ export async function pOSTAdminRealmsRealmClientsClientUuidRolesRoleNameComposit
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!roleName) {
-		throw new Error(`Missing required path parameter: roleName`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!clientUuid) {
 		throw new Error(`Missing required path parameter: clientUuid`);
+	}
+
+	if (!roleName) {
+		throw new Error(`Missing required path parameter: roleName`);
 	}
 
 	const data = await request<
@@ -10887,7 +10887,7 @@ export async function pOSTAdminRealmsRealmClientsClientUuidRolesRoleNameComposit
  * {@link /admin/realms/:realm/clients/:clientUuid/roles/:roleName/composites}
  */
 export async function dELETEAdminRealmsRealmClientsClientUuidRolesRoleNameComposites({
-	pathParams: { roleName, realm, clientUuid },
+	pathParams: { realm, clientUuid, roleName },
 	body,
 	config = {},
 }: {
@@ -10897,16 +10897,16 @@ export async function dELETEAdminRealmsRealmClientsClientUuidRolesRoleNameCompos
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!roleName) {
-		throw new Error(`Missing required path parameter: roleName`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!clientUuid) {
 		throw new Error(`Missing required path parameter: clientUuid`);
+	}
+
+	if (!roleName) {
+		throw new Error(`Missing required path parameter: roleName`);
 	}
 
 	const data = await request<
@@ -10933,7 +10933,7 @@ export async function dELETEAdminRealmsRealmClientsClientUuidRolesRoleNameCompos
  * {@link /admin/realms/:realm/clients/:clientUuid/roles/:roleName/composites/clients/:clientUuid}
  */
 export async function gETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsClientUuid({
-	pathParams: { clientUuid, roleName, realm },
+	pathParams: { realm, clientUuid, roleName },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsClientUuidPathParams;
@@ -10941,16 +10941,16 @@ export async function gETAdminRealmsRealmClientsClientUuidRolesRoleNameComposite
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
+	if (!realm) {
+		throw new Error(`Missing required path parameter: realm`);
+	}
+
 	if (!clientUuid) {
 		throw new Error(`Missing required path parameter: clientUuid`);
 	}
 
 	if (!roleName) {
 		throw new Error(`Missing required path parameter: roleName`);
-	}
-
-	if (!realm) {
-		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	const data = await request<
@@ -10965,7 +10965,7 @@ export async function gETAdminRealmsRealmClientsClientUuidRolesRoleNameComposite
 		GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsClientUuidPathParams
 	>({
 		method: "GET",
-		url: `/admin/realms/${realm}/clients/$${clientUuid}/roles/${roleName}/composites/clients/{clientUuid}`,
+		url: `/admin/realms/${realm}/clients/${clientUuid}/roles/${roleName}/composites/clients/${clientUuid}`,
 		...requestConfig,
 	});
 	return data;
@@ -10976,7 +10976,7 @@ export async function gETAdminRealmsRealmClientsClientUuidRolesRoleNameComposite
  * {@link /admin/realms/:realm/clients/:clientUuid/roles/:roleName/composites/realm}
  */
 export async function gETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesRealm({
-	pathParams: { roleName, realm, clientUuid },
+	pathParams: { realm, clientUuid, roleName },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesRealmPathParams;
@@ -10984,16 +10984,16 @@ export async function gETAdminRealmsRealmClientsClientUuidRolesRoleNameComposite
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!roleName) {
-		throw new Error(`Missing required path parameter: roleName`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!clientUuid) {
 		throw new Error(`Missing required path parameter: clientUuid`);
+	}
+
+	if (!roleName) {
+		throw new Error(`Missing required path parameter: roleName`);
 	}
 
 	const data = await request<
@@ -11019,7 +11019,7 @@ export async function gETAdminRealmsRealmClientsClientUuidRolesRoleNameComposite
  * {@link /admin/realms/:realm/clients/:clientUuid/roles/:roleName/groups}
  */
 export async function gETAdminRealmsRealmClientsClientUuidRolesRoleNameGroups({
-	pathParams: { roleName, realm, clientUuid },
+	pathParams: { realm, clientUuid, roleName },
 	queryParams,
 	config = {},
 }: {
@@ -11029,16 +11029,16 @@ export async function gETAdminRealmsRealmClientsClientUuidRolesRoleNameGroups({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!roleName) {
-		throw new Error(`Missing required path parameter: roleName`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!clientUuid) {
 		throw new Error(`Missing required path parameter: clientUuid`);
+	}
+
+	if (!roleName) {
+		throw new Error(`Missing required path parameter: roleName`);
 	}
 
 	const data = await request<
@@ -11065,7 +11065,7 @@ export async function gETAdminRealmsRealmClientsClientUuidRolesRoleNameGroups({
  * {@link /admin/realms/:realm/clients/:clientUuid/roles/:roleName/management/permissions}
  */
 export async function gETAdminRealmsRealmClientsClientUuidRolesRoleNameManagementPermissions({
-	pathParams: { roleName, realm, clientUuid },
+	pathParams: { realm, clientUuid, roleName },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmClientsClientUuidRolesRoleNameManagementPermissionsPathParams;
@@ -11073,16 +11073,16 @@ export async function gETAdminRealmsRealmClientsClientUuidRolesRoleNameManagemen
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!roleName) {
-		throw new Error(`Missing required path parameter: roleName`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!clientUuid) {
 		throw new Error(`Missing required path parameter: clientUuid`);
+	}
+
+	if (!roleName) {
+		throw new Error(`Missing required path parameter: roleName`);
 	}
 
 	const data = await request<
@@ -11108,7 +11108,7 @@ export async function gETAdminRealmsRealmClientsClientUuidRolesRoleNameManagemen
  * {@link /admin/realms/:realm/clients/:clientUuid/roles/:roleName/management/permissions}
  */
 export async function pUTAdminRealmsRealmClientsClientUuidRolesRoleNameManagementPermissions({
-	pathParams: { roleName, realm, clientUuid },
+	pathParams: { realm, clientUuid, roleName },
 	body,
 	config = {},
 }: {
@@ -11118,16 +11118,16 @@ export async function pUTAdminRealmsRealmClientsClientUuidRolesRoleNameManagemen
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!roleName) {
-		throw new Error(`Missing required path parameter: roleName`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!clientUuid) {
 		throw new Error(`Missing required path parameter: clientUuid`);
+	}
+
+	if (!roleName) {
+		throw new Error(`Missing required path parameter: roleName`);
 	}
 
 	const data = await request<
@@ -11154,7 +11154,7 @@ export async function pUTAdminRealmsRealmClientsClientUuidRolesRoleNameManagemen
  * {@link /admin/realms/:realm/clients/:clientUuid/roles/:roleName/users}
  */
 export async function gETAdminRealmsRealmClientsClientUuidRolesRoleNameUsers({
-	pathParams: { roleName, realm, clientUuid },
+	pathParams: { realm, clientUuid, roleName },
 	queryParams,
 	config = {},
 }: {
@@ -11164,16 +11164,16 @@ export async function gETAdminRealmsRealmClientsClientUuidRolesRoleNameUsers({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!roleName) {
-		throw new Error(`Missing required path parameter: roleName`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!clientUuid) {
 		throw new Error(`Missing required path parameter: clientUuid`);
+	}
+
+	if (!roleName) {
+		throw new Error(`Missing required path parameter: roleName`);
 	}
 
 	const data = await request<
@@ -12518,7 +12518,7 @@ export async function gETAdminRealmsRealmGroupsGroupIdRoleMappingsRealmComposite
  * {@link /admin/realms/:realm/identity-provider/providers/:providerId}
  */
 export async function gETAdminRealmsRealmIdentityProviderProvidersProviderId({
-	pathParams: { providerId, realm },
+	pathParams: { realm, providerId },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmIdentityProviderProvidersProviderIdPathParams;
@@ -12526,12 +12526,12 @@ export async function gETAdminRealmsRealmIdentityProviderProvidersProviderId({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!providerId) {
-		throw new Error(`Missing required path parameter: providerId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!providerId) {
+		throw new Error(`Missing required path parameter: providerId`);
 	}
 
 	const data = await request<
@@ -12554,7 +12554,7 @@ export async function gETAdminRealmsRealmIdentityProviderProvidersProviderId({
  * {@link /admin/realms/:realm/organizations/members/:memberId/organizations}
  */
 export async function gETAdminRealmsRealmOrganizationsMembersMemberIdOrganizations({
-	pathParams: { memberId, realm },
+	pathParams: { realm, memberId },
 	queryParams,
 	config = {},
 }: {
@@ -12564,12 +12564,12 @@ export async function gETAdminRealmsRealmOrganizationsMembersMemberIdOrganizatio
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!memberId) {
-		throw new Error(`Missing required path parameter: memberId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!memberId) {
+		throw new Error(`Missing required path parameter: memberId`);
 	}
 
 	const data = await request<
@@ -12779,7 +12779,7 @@ export async function pOSTAdminRealmsRealmOrganizationsOrgIdIdentityProviders({
  * {@link /admin/realms/:realm/organizations/:orgId/identity-providers/:alias}
  */
 export async function gETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAlias({
-	pathParams: { alias, realm, orgId },
+	pathParams: { realm, orgId, alias },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasPathParams;
@@ -12787,16 +12787,16 @@ export async function gETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAlia
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!alias) {
-		throw new Error(`Missing required path parameter: alias`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!orgId) {
 		throw new Error(`Missing required path parameter: orgId`);
+	}
+
+	if (!alias) {
+		throw new Error(`Missing required path parameter: alias`);
 	}
 
 	const data = await request<
@@ -12820,7 +12820,7 @@ export async function gETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAlia
  * {@link /admin/realms/:realm/organizations/:orgId/identity-providers/:alias}
  */
 export async function dELETEAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAlias({
-	pathParams: { alias, realm, orgId },
+	pathParams: { realm, orgId, alias },
 	config = {},
 }: {
 	pathParams: DELETEAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasPathParams;
@@ -12828,16 +12828,16 @@ export async function dELETEAdminRealmsRealmOrganizationsOrgIdIdentityProvidersA
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!alias) {
-		throw new Error(`Missing required path parameter: alias`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!orgId) {
 		throw new Error(`Missing required path parameter: orgId`);
+	}
+
+	if (!alias) {
+		throw new Error(`Missing required path parameter: alias`);
 	}
 
 	const data = await request<
@@ -12902,7 +12902,7 @@ export async function gETAdminRealmsRealmOrganizationsOrgIdInvitations({
  * {@link /admin/realms/:realm/organizations/:orgId/invitations/:id}
  */
 export async function gETAdminRealmsRealmOrganizationsOrgIdInvitationsId({
-	pathParams: { id, realm, orgId },
+	pathParams: { realm, orgId, id },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmOrganizationsOrgIdInvitationsIdPathParams;
@@ -12910,16 +12910,16 @@ export async function gETAdminRealmsRealmOrganizationsOrgIdInvitationsId({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!id) {
-		throw new Error(`Missing required path parameter: id`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!orgId) {
 		throw new Error(`Missing required path parameter: orgId`);
+	}
+
+	if (!id) {
+		throw new Error(`Missing required path parameter: id`);
 	}
 
 	const data = await request<
@@ -12942,7 +12942,7 @@ export async function gETAdminRealmsRealmOrganizationsOrgIdInvitationsId({
  * {@link /admin/realms/:realm/organizations/:orgId/invitations/:id}
  */
 export async function dELETEAdminRealmsRealmOrganizationsOrgIdInvitationsId({
-	pathParams: { id, realm, orgId },
+	pathParams: { realm, orgId, id },
 	config = {},
 }: {
 	pathParams: DELETEAdminRealmsRealmOrganizationsOrgIdInvitationsIdPathParams;
@@ -12950,16 +12950,16 @@ export async function dELETEAdminRealmsRealmOrganizationsOrgIdInvitationsId({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!id) {
-		throw new Error(`Missing required path parameter: id`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!orgId) {
 		throw new Error(`Missing required path parameter: orgId`);
+	}
+
+	if (!id) {
+		throw new Error(`Missing required path parameter: id`);
 	}
 
 	const data = await request<
@@ -12982,7 +12982,7 @@ export async function dELETEAdminRealmsRealmOrganizationsOrgIdInvitationsId({
  * {@link /admin/realms/:realm/organizations/:orgId/invitations/:id/resend}
  */
 export async function pOSTAdminRealmsRealmOrganizationsOrgIdInvitationsIdResend({
-	pathParams: { id, realm, orgId },
+	pathParams: { realm, orgId, id },
 	config = {},
 }: {
 	pathParams: POSTAdminRealmsRealmOrganizationsOrgIdInvitationsIdResendPathParams;
@@ -12990,16 +12990,16 @@ export async function pOSTAdminRealmsRealmOrganizationsOrgIdInvitationsIdResend(
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!id) {
-		throw new Error(`Missing required path parameter: id`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!orgId) {
 		throw new Error(`Missing required path parameter: orgId`);
+	}
+
+	if (!id) {
+		throw new Error(`Missing required path parameter: id`);
 	}
 
 	const data = await request<
@@ -13223,7 +13223,7 @@ export async function pOSTAdminRealmsRealmOrganizationsOrgIdMembersInviteUser({
  * {@link /admin/realms/:realm/organizations/:orgId/members/:memberId}
  */
 export async function gETAdminRealmsRealmOrganizationsOrgIdMembersMemberId({
-	pathParams: { memberId, realm, orgId },
+	pathParams: { realm, orgId, memberId },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdPathParams;
@@ -13231,16 +13231,16 @@ export async function gETAdminRealmsRealmOrganizationsOrgIdMembersMemberId({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!memberId) {
-		throw new Error(`Missing required path parameter: memberId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!orgId) {
 		throw new Error(`Missing required path parameter: orgId`);
+	}
+
+	if (!memberId) {
+		throw new Error(`Missing required path parameter: memberId`);
 	}
 
 	const data = await request<
@@ -13264,7 +13264,7 @@ export async function gETAdminRealmsRealmOrganizationsOrgIdMembersMemberId({
  * {@link /admin/realms/:realm/organizations/:orgId/members/:memberId}
  */
 export async function dELETEAdminRealmsRealmOrganizationsOrgIdMembersMemberId({
-	pathParams: { memberId, realm, orgId },
+	pathParams: { realm, orgId, memberId },
 	config = {},
 }: {
 	pathParams: DELETEAdminRealmsRealmOrganizationsOrgIdMembersMemberIdPathParams;
@@ -13272,16 +13272,16 @@ export async function dELETEAdminRealmsRealmOrganizationsOrgIdMembersMemberId({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!memberId) {
-		throw new Error(`Missing required path parameter: memberId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!orgId) {
 		throw new Error(`Missing required path parameter: orgId`);
+	}
+
+	if (!memberId) {
+		throw new Error(`Missing required path parameter: memberId`);
 	}
 
 	const data = await request<
@@ -13304,7 +13304,7 @@ export async function dELETEAdminRealmsRealmOrganizationsOrgIdMembersMemberId({
  * {@link /admin/realms/:realm/organizations/:orgId/members/:memberId/organizations}
  */
 export async function gETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdOrganizations({
-	pathParams: { memberId, realm, orgId },
+	pathParams: { realm, orgId, memberId },
 	queryParams,
 	config = {},
 }: {
@@ -13314,16 +13314,16 @@ export async function gETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdOrgani
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!memberId) {
-		throw new Error(`Missing required path parameter: memberId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!orgId) {
 		throw new Error(`Missing required path parameter: orgId`);
+	}
+
+	if (!memberId) {
+		throw new Error(`Missing required path parameter: memberId`);
 	}
 
 	const data = await request<
@@ -13347,7 +13347,7 @@ export async function gETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdOrgani
  * {@link /admin/realms/:realm/roles-by-id/:roleId}
  */
 export async function gETAdminRealmsRealmRolesByIdRoleId({
-	pathParams: { roleId, realm },
+	pathParams: { realm, roleId },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmRolesByIdRoleIdPathParams;
@@ -13355,12 +13355,12 @@ export async function gETAdminRealmsRealmRolesByIdRoleId({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!roleId) {
-		throw new Error(`Missing required path parameter: roleId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!roleId) {
+		throw new Error(`Missing required path parameter: roleId`);
 	}
 
 	const data = await request<
@@ -13379,7 +13379,7 @@ export async function gETAdminRealmsRealmRolesByIdRoleId({
  * {@link /admin/realms/:realm/roles-by-id/:roleId}
  */
 export async function pUTAdminRealmsRealmRolesByIdRoleId({
-	pathParams: { roleId, realm },
+	pathParams: { realm, roleId },
 	body,
 	config = {},
 }: {
@@ -13389,12 +13389,12 @@ export async function pUTAdminRealmsRealmRolesByIdRoleId({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!roleId) {
-		throw new Error(`Missing required path parameter: roleId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!roleId) {
+		throw new Error(`Missing required path parameter: roleId`);
 	}
 
 	const data = await request<
@@ -13413,7 +13413,7 @@ export async function pUTAdminRealmsRealmRolesByIdRoleId({
  * {@link /admin/realms/:realm/roles-by-id/:roleId}
  */
 export async function dELETEAdminRealmsRealmRolesByIdRoleId({
-	pathParams: { roleId, realm },
+	pathParams: { realm, roleId },
 	config = {},
 }: {
 	pathParams: DELETEAdminRealmsRealmRolesByIdRoleIdPathParams;
@@ -13421,12 +13421,12 @@ export async function dELETEAdminRealmsRealmRolesByIdRoleId({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!roleId) {
-		throw new Error(`Missing required path parameter: roleId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!roleId) {
+		throw new Error(`Missing required path parameter: roleId`);
 	}
 
 	const data = await request<
@@ -13447,7 +13447,7 @@ export async function dELETEAdminRealmsRealmRolesByIdRoleId({
  * {@link /admin/realms/:realm/roles-by-id/:roleId/composites}
  */
 export async function gETAdminRealmsRealmRolesByIdRoleIdComposites({
-	pathParams: { roleId, realm },
+	pathParams: { realm, roleId },
 	queryParams,
 	config = {},
 }: {
@@ -13457,12 +13457,12 @@ export async function gETAdminRealmsRealmRolesByIdRoleIdComposites({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!roleId) {
-		throw new Error(`Missing required path parameter: roleId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!roleId) {
+		throw new Error(`Missing required path parameter: roleId`);
 	}
 
 	const data = await request<
@@ -13486,7 +13486,7 @@ export async function gETAdminRealmsRealmRolesByIdRoleIdComposites({
  * {@link /admin/realms/:realm/roles-by-id/:roleId/composites}
  */
 export async function pOSTAdminRealmsRealmRolesByIdRoleIdComposites({
-	pathParams: { roleId, realm },
+	pathParams: { realm, roleId },
 	body,
 	config = {},
 }: {
@@ -13496,12 +13496,12 @@ export async function pOSTAdminRealmsRealmRolesByIdRoleIdComposites({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!roleId) {
-		throw new Error(`Missing required path parameter: roleId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!roleId) {
+		throw new Error(`Missing required path parameter: roleId`);
 	}
 
 	const data = await request<
@@ -13525,7 +13525,7 @@ export async function pOSTAdminRealmsRealmRolesByIdRoleIdComposites({
  * {@link /admin/realms/:realm/roles-by-id/:roleId/composites}
  */
 export async function dELETEAdminRealmsRealmRolesByIdRoleIdComposites({
-	pathParams: { roleId, realm },
+	pathParams: { realm, roleId },
 	body,
 	config = {},
 }: {
@@ -13535,12 +13535,12 @@ export async function dELETEAdminRealmsRealmRolesByIdRoleIdComposites({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!roleId) {
-		throw new Error(`Missing required path parameter: roleId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!roleId) {
+		throw new Error(`Missing required path parameter: roleId`);
 	}
 
 	const data = await request<
@@ -13564,7 +13564,7 @@ export async function dELETEAdminRealmsRealmRolesByIdRoleIdComposites({
  * {@link /admin/realms/:realm/roles-by-id/:roleId/composites/clients/:clientUuid}
  */
 export async function gETAdminRealmsRealmRolesByIdRoleIdCompositesClientsClientUuid({
-	pathParams: { clientUuid, roleId, realm },
+	pathParams: { realm, clientUuid, roleId },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmRolesByIdRoleIdCompositesClientsClientUuidPathParams;
@@ -13572,16 +13572,16 @@ export async function gETAdminRealmsRealmRolesByIdRoleIdCompositesClientsClientU
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
+	if (!realm) {
+		throw new Error(`Missing required path parameter: realm`);
+	}
+
 	if (!clientUuid) {
 		throw new Error(`Missing required path parameter: clientUuid`);
 	}
 
 	if (!roleId) {
 		throw new Error(`Missing required path parameter: roleId`);
-	}
-
-	if (!realm) {
-		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	const data = await request<
@@ -13607,7 +13607,7 @@ export async function gETAdminRealmsRealmRolesByIdRoleIdCompositesClientsClientU
  * {@link /admin/realms/:realm/roles-by-id/:roleId/composites/realm}
  */
 export async function gETAdminRealmsRealmRolesByIdRoleIdCompositesRealm({
-	pathParams: { roleId, realm },
+	pathParams: { realm, roleId },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmRolesByIdRoleIdCompositesRealmPathParams;
@@ -13615,12 +13615,12 @@ export async function gETAdminRealmsRealmRolesByIdRoleIdCompositesRealm({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!roleId) {
-		throw new Error(`Missing required path parameter: roleId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!roleId) {
+		throw new Error(`Missing required path parameter: roleId`);
 	}
 
 	const data = await request<
@@ -13643,7 +13643,7 @@ export async function gETAdminRealmsRealmRolesByIdRoleIdCompositesRealm({
  * {@link /admin/realms/:realm/roles-by-id/:roleId/management/permissions}
  */
 export async function gETAdminRealmsRealmRolesByIdRoleIdManagementPermissions({
-	pathParams: { roleId, realm },
+	pathParams: { realm, roleId },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmRolesByIdRoleIdManagementPermissionsPathParams;
@@ -13651,12 +13651,12 @@ export async function gETAdminRealmsRealmRolesByIdRoleIdManagementPermissions({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!roleId) {
-		throw new Error(`Missing required path parameter: roleId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!roleId) {
+		throw new Error(`Missing required path parameter: roleId`);
 	}
 
 	const data = await request<
@@ -13679,7 +13679,7 @@ export async function gETAdminRealmsRealmRolesByIdRoleIdManagementPermissions({
  * {@link /admin/realms/:realm/roles-by-id/:roleId/management/permissions}
  */
 export async function pUTAdminRealmsRealmRolesByIdRoleIdManagementPermissions({
-	pathParams: { roleId, realm },
+	pathParams: { realm, roleId },
 	body,
 	config = {},
 }: {
@@ -13689,12 +13689,12 @@ export async function pUTAdminRealmsRealmRolesByIdRoleIdManagementPermissions({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!roleId) {
-		throw new Error(`Missing required path parameter: roleId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!roleId) {
+		throw new Error(`Missing required path parameter: roleId`);
 	}
 
 	const data = await request<
@@ -13718,7 +13718,7 @@ export async function pUTAdminRealmsRealmRolesByIdRoleIdManagementPermissions({
  * {@link /admin/realms/:realm/roles/:roleName}
  */
 export async function gETAdminRealmsRealmRolesRoleName({
-	pathParams: { roleName, realm },
+	pathParams: { realm, roleName },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmRolesRoleNamePathParams;
@@ -13726,12 +13726,12 @@ export async function gETAdminRealmsRealmRolesRoleName({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!roleName) {
-		throw new Error(`Missing required path parameter: roleName`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!roleName) {
+		throw new Error(`Missing required path parameter: roleName`);
 	}
 
 	const data = await request<
@@ -13750,7 +13750,7 @@ export async function gETAdminRealmsRealmRolesRoleName({
  * {@link /admin/realms/:realm/roles/:roleName}
  */
 export async function pUTAdminRealmsRealmRolesRoleName({
-	pathParams: { roleName, realm },
+	pathParams: { realm, roleName },
 	body,
 	config = {},
 }: {
@@ -13760,12 +13760,12 @@ export async function pUTAdminRealmsRealmRolesRoleName({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!roleName) {
-		throw new Error(`Missing required path parameter: roleName`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!roleName) {
+		throw new Error(`Missing required path parameter: roleName`);
 	}
 
 	const data = await request<
@@ -13788,7 +13788,7 @@ export async function pUTAdminRealmsRealmRolesRoleName({
  * {@link /admin/realms/:realm/roles/:roleName}
  */
 export async function dELETEAdminRealmsRealmRolesRoleName({
-	pathParams: { roleName, realm },
+	pathParams: { realm, roleName },
 	config = {},
 }: {
 	pathParams: DELETEAdminRealmsRealmRolesRoleNamePathParams;
@@ -13796,12 +13796,12 @@ export async function dELETEAdminRealmsRealmRolesRoleName({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!roleName) {
-		throw new Error(`Missing required path parameter: roleName`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!roleName) {
+		throw new Error(`Missing required path parameter: roleName`);
 	}
 
 	const data = await request<
@@ -13824,7 +13824,7 @@ export async function dELETEAdminRealmsRealmRolesRoleName({
  * {@link /admin/realms/:realm/roles/:roleName/composites}
  */
 export async function gETAdminRealmsRealmRolesRoleNameComposites({
-	pathParams: { roleName, realm },
+	pathParams: { realm, roleName },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmRolesRoleNameCompositesPathParams;
@@ -13832,12 +13832,12 @@ export async function gETAdminRealmsRealmRolesRoleNameComposites({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!roleName) {
-		throw new Error(`Missing required path parameter: roleName`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!roleName) {
+		throw new Error(`Missing required path parameter: roleName`);
 	}
 
 	const data = await request<
@@ -13862,7 +13862,7 @@ export async function gETAdminRealmsRealmRolesRoleNameComposites({
  * {@link /admin/realms/:realm/roles/:roleName/composites}
  */
 export async function pOSTAdminRealmsRealmRolesRoleNameComposites({
-	pathParams: { roleName, realm },
+	pathParams: { realm, roleName },
 	body,
 	config = {},
 }: {
@@ -13872,12 +13872,12 @@ export async function pOSTAdminRealmsRealmRolesRoleNameComposites({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!roleName) {
-		throw new Error(`Missing required path parameter: roleName`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!roleName) {
+		throw new Error(`Missing required path parameter: roleName`);
 	}
 
 	const data = await request<
@@ -13904,7 +13904,7 @@ export async function pOSTAdminRealmsRealmRolesRoleNameComposites({
  * {@link /admin/realms/:realm/roles/:roleName/composites}
  */
 export async function dELETEAdminRealmsRealmRolesRoleNameComposites({
-	pathParams: { roleName, realm },
+	pathParams: { realm, roleName },
 	body,
 	config = {},
 }: {
@@ -13914,12 +13914,12 @@ export async function dELETEAdminRealmsRealmRolesRoleNameComposites({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!roleName) {
-		throw new Error(`Missing required path parameter: roleName`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!roleName) {
+		throw new Error(`Missing required path parameter: roleName`);
 	}
 
 	const data = await request<
@@ -13946,7 +13946,7 @@ export async function dELETEAdminRealmsRealmRolesRoleNameComposites({
  * {@link /admin/realms/:realm/roles/:roleName/composites/clients/:clientUuid}
  */
 export async function gETAdminRealmsRealmRolesRoleNameCompositesClientsClientUuid({
-	pathParams: { clientUuid, roleName, realm },
+	pathParams: { realm, clientUuid, roleName },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmRolesRoleNameCompositesClientsClientUuidPathParams;
@@ -13954,16 +13954,16 @@ export async function gETAdminRealmsRealmRolesRoleNameCompositesClientsClientUui
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
+	if (!realm) {
+		throw new Error(`Missing required path parameter: realm`);
+	}
+
 	if (!clientUuid) {
 		throw new Error(`Missing required path parameter: clientUuid`);
 	}
 
 	if (!roleName) {
 		throw new Error(`Missing required path parameter: roleName`);
-	}
-
-	if (!realm) {
-		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	const data = await request<
@@ -13989,7 +13989,7 @@ export async function gETAdminRealmsRealmRolesRoleNameCompositesClientsClientUui
  * {@link /admin/realms/:realm/roles/:roleName/composites/realm}
  */
 export async function gETAdminRealmsRealmRolesRoleNameCompositesRealm({
-	pathParams: { roleName, realm },
+	pathParams: { realm, roleName },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmRolesRoleNameCompositesRealmPathParams;
@@ -13997,12 +13997,12 @@ export async function gETAdminRealmsRealmRolesRoleNameCompositesRealm({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!roleName) {
-		throw new Error(`Missing required path parameter: roleName`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!roleName) {
+		throw new Error(`Missing required path parameter: roleName`);
 	}
 
 	const data = await request<
@@ -14028,7 +14028,7 @@ export async function gETAdminRealmsRealmRolesRoleNameCompositesRealm({
  * {@link /admin/realms/:realm/roles/:roleName/groups}
  */
 export async function gETAdminRealmsRealmRolesRoleNameGroups({
-	pathParams: { roleName, realm },
+	pathParams: { realm, roleName },
 	queryParams,
 	config = {},
 }: {
@@ -14038,12 +14038,12 @@ export async function gETAdminRealmsRealmRolesRoleNameGroups({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!roleName) {
-		throw new Error(`Missing required path parameter: roleName`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!roleName) {
+		throw new Error(`Missing required path parameter: roleName`);
 	}
 
 	const data = await request<
@@ -14069,7 +14069,7 @@ export async function gETAdminRealmsRealmRolesRoleNameGroups({
  * {@link /admin/realms/:realm/roles/:roleName/management/permissions}
  */
 export async function gETAdminRealmsRealmRolesRoleNameManagementPermissions({
-	pathParams: { roleName, realm },
+	pathParams: { realm, roleName },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmRolesRoleNameManagementPermissionsPathParams;
@@ -14077,12 +14077,12 @@ export async function gETAdminRealmsRealmRolesRoleNameManagementPermissions({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!roleName) {
-		throw new Error(`Missing required path parameter: roleName`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!roleName) {
+		throw new Error(`Missing required path parameter: roleName`);
 	}
 
 	const data = await request<
@@ -14108,7 +14108,7 @@ export async function gETAdminRealmsRealmRolesRoleNameManagementPermissions({
  * {@link /admin/realms/:realm/roles/:roleName/management/permissions}
  */
 export async function pUTAdminRealmsRealmRolesRoleNameManagementPermissions({
-	pathParams: { roleName, realm },
+	pathParams: { realm, roleName },
 	body,
 	config = {},
 }: {
@@ -14118,12 +14118,12 @@ export async function pUTAdminRealmsRealmRolesRoleNameManagementPermissions({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!roleName) {
-		throw new Error(`Missing required path parameter: roleName`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!roleName) {
+		throw new Error(`Missing required path parameter: roleName`);
 	}
 
 	const data = await request<
@@ -14150,7 +14150,7 @@ export async function pUTAdminRealmsRealmRolesRoleNameManagementPermissions({
  * {@link /admin/realms/:realm/roles/:roleName/users}
  */
 export async function gETAdminRealmsRealmRolesRoleNameUsers({
-	pathParams: { roleName, realm },
+	pathParams: { realm, roleName },
 	queryParams,
 	config = {},
 }: {
@@ -14160,12 +14160,12 @@ export async function gETAdminRealmsRealmRolesRoleNameUsers({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!roleName) {
-		throw new Error(`Missing required path parameter: roleName`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!roleName) {
+		throw new Error(`Missing required path parameter: roleName`);
 	}
 
 	const data = await request<
@@ -14370,7 +14370,7 @@ export async function gETAdminRealmsRealmUsersUserIdConsents({
  * {@link /admin/realms/:realm/users/:userId/consents/:client}
  */
 export async function dELETEAdminRealmsRealmUsersUserIdConsentsClient({
-	pathParams: { client, realm, userId },
+	pathParams: { realm, userId, client },
 	config = {},
 }: {
 	pathParams: DELETEAdminRealmsRealmUsersUserIdConsentsClientPathParams;
@@ -14378,16 +14378,16 @@ export async function dELETEAdminRealmsRealmUsersUserIdConsentsClient({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!client) {
-		throw new Error(`Missing required path parameter: client`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!userId) {
 		throw new Error(`Missing required path parameter: userId`);
+	}
+
+	if (!client) {
+		throw new Error(`Missing required path parameter: client`);
 	}
 
 	const data = await request<
@@ -14444,7 +14444,7 @@ export async function gETAdminRealmsRealmUsersUserIdCredentials({
  * {@link /admin/realms/:realm/users/:userId/credentials/:credentialId}
  */
 export async function dELETEAdminRealmsRealmUsersUserIdCredentialsCredentialId({
-	pathParams: { credentialId, realm, userId },
+	pathParams: { realm, userId, credentialId },
 	config = {},
 }: {
 	pathParams: DELETEAdminRealmsRealmUsersUserIdCredentialsCredentialIdPathParams;
@@ -14452,16 +14452,16 @@ export async function dELETEAdminRealmsRealmUsersUserIdCredentialsCredentialId({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!credentialId) {
-		throw new Error(`Missing required path parameter: credentialId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!userId) {
 		throw new Error(`Missing required path parameter: userId`);
+	}
+
+	if (!credentialId) {
+		throw new Error(`Missing required path parameter: credentialId`);
 	}
 
 	const data = await request<
@@ -14487,7 +14487,7 @@ export async function dELETEAdminRealmsRealmUsersUserIdCredentialsCredentialId({
  * {@link /admin/realms/:realm/users/:userId/credentials/:credentialId/moveAfter/:newPreviousCredentialId}
  */
 export async function pOSTAdminRealmsRealmUsersUserIdCredentialsCredentialIdMoveAfterNewPreviousCredentialId({
-	pathParams: { credentialId, newPreviousCredentialId, realm, userId },
+	pathParams: { realm, userId, credentialId, newPreviousCredentialId },
 	config = {},
 }: {
 	pathParams: POSTAdminRealmsRealmUsersUserIdCredentialsCredentialIdMoveAfterNewPreviousCredentialIdPathParams;
@@ -14495,20 +14495,20 @@ export async function pOSTAdminRealmsRealmUsersUserIdCredentialsCredentialIdMove
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!credentialId) {
-		throw new Error(`Missing required path parameter: credentialId`);
-	}
-
-	if (!newPreviousCredentialId) {
-		throw new Error(`Missing required path parameter: newPreviousCredentialId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!userId) {
 		throw new Error(`Missing required path parameter: userId`);
+	}
+
+	if (!credentialId) {
+		throw new Error(`Missing required path parameter: credentialId`);
+	}
+
+	if (!newPreviousCredentialId) {
+		throw new Error(`Missing required path parameter: newPreviousCredentialId`);
 	}
 
 	const data = await request<
@@ -14534,7 +14534,7 @@ export async function pOSTAdminRealmsRealmUsersUserIdCredentialsCredentialIdMove
  * {@link /admin/realms/:realm/users/:userId/credentials/:credentialId/moveToFirst}
  */
 export async function pOSTAdminRealmsRealmUsersUserIdCredentialsCredentialIdMoveToFirst({
-	pathParams: { credentialId, realm, userId },
+	pathParams: { realm, userId, credentialId },
 	config = {},
 }: {
 	pathParams: POSTAdminRealmsRealmUsersUserIdCredentialsCredentialIdMoveToFirstPathParams;
@@ -14542,16 +14542,16 @@ export async function pOSTAdminRealmsRealmUsersUserIdCredentialsCredentialIdMove
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!credentialId) {
-		throw new Error(`Missing required path parameter: credentialId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!userId) {
 		throw new Error(`Missing required path parameter: userId`);
+	}
+
+	if (!credentialId) {
+		throw new Error(`Missing required path parameter: credentialId`);
 	}
 
 	const data = await request<
@@ -14577,7 +14577,7 @@ export async function pOSTAdminRealmsRealmUsersUserIdCredentialsCredentialIdMove
  * {@link /admin/realms/:realm/users/:userId/credentials/:credentialId/userLabel}
  */
 export async function pUTAdminRealmsRealmUsersUserIdCredentialsCredentialIdUserLabel({
-	pathParams: { credentialId, realm, userId },
+	pathParams: { realm, userId, credentialId },
 	config = {},
 }: {
 	pathParams: PUTAdminRealmsRealmUsersUserIdCredentialsCredentialIdUserLabelPathParams;
@@ -14585,16 +14585,16 @@ export async function pUTAdminRealmsRealmUsersUserIdCredentialsCredentialIdUserL
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!credentialId) {
-		throw new Error(`Missing required path parameter: credentialId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!userId) {
 		throw new Error(`Missing required path parameter: userId`);
+	}
+
+	if (!credentialId) {
+		throw new Error(`Missing required path parameter: credentialId`);
 	}
 
 	const data = await request<
@@ -14744,7 +14744,7 @@ export async function gETAdminRealmsRealmUsersUserIdFederatedIdentity({
  * {@link /admin/realms/:realm/users/:userId/federated-identity/:provider}
  */
 export async function pOSTAdminRealmsRealmUsersUserIdFederatedIdentityProvider({
-	pathParams: { provider, realm, userId },
+	pathParams: { realm, userId, provider },
 	body,
 	config = {},
 }: {
@@ -14754,16 +14754,16 @@ export async function pOSTAdminRealmsRealmUsersUserIdFederatedIdentityProvider({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!provider) {
-		throw new Error(`Missing required path parameter: provider`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!userId) {
 		throw new Error(`Missing required path parameter: userId`);
+	}
+
+	if (!provider) {
+		throw new Error(`Missing required path parameter: provider`);
 	}
 
 	const data = await request<
@@ -14790,7 +14790,7 @@ export async function pOSTAdminRealmsRealmUsersUserIdFederatedIdentityProvider({
  * {@link /admin/realms/:realm/users/:userId/federated-identity/:provider}
  */
 export async function dELETEAdminRealmsRealmUsersUserIdFederatedIdentityProvider({
-	pathParams: { provider, realm, userId },
+	pathParams: { realm, userId, provider },
 	config = {},
 }: {
 	pathParams: DELETEAdminRealmsRealmUsersUserIdFederatedIdentityProviderPathParams;
@@ -14798,16 +14798,16 @@ export async function dELETEAdminRealmsRealmUsersUserIdFederatedIdentityProvider
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!provider) {
-		throw new Error(`Missing required path parameter: provider`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!userId) {
 		throw new Error(`Missing required path parameter: userId`);
+	}
+
+	if (!provider) {
+		throw new Error(`Missing required path parameter: provider`);
 	}
 
 	const data = await request<
@@ -14908,7 +14908,7 @@ export async function gETAdminRealmsRealmUsersUserIdGroupsCount({
  * {@link /admin/realms/:realm/users/:userId/groups/:groupId}
  */
 export async function pUTAdminRealmsRealmUsersUserIdGroupsGroupId({
-	pathParams: { groupId, realm, userId },
+	pathParams: { realm, userId, groupId },
 	config = {},
 }: {
 	pathParams: PUTAdminRealmsRealmUsersUserIdGroupsGroupIdPathParams;
@@ -14916,16 +14916,16 @@ export async function pUTAdminRealmsRealmUsersUserIdGroupsGroupId({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!groupId) {
-		throw new Error(`Missing required path parameter: groupId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!userId) {
 		throw new Error(`Missing required path parameter: userId`);
+	}
+
+	if (!groupId) {
+		throw new Error(`Missing required path parameter: groupId`);
 	}
 
 	const data = await request<
@@ -14950,7 +14950,7 @@ export async function pUTAdminRealmsRealmUsersUserIdGroupsGroupId({
  * {@link /admin/realms/:realm/users/:userId/groups/:groupId}
  */
 export async function dELETEAdminRealmsRealmUsersUserIdGroupsGroupId({
-	pathParams: { groupId, realm, userId },
+	pathParams: { realm, userId, groupId },
 	config = {},
 }: {
 	pathParams: DELETEAdminRealmsRealmUsersUserIdGroupsGroupIdPathParams;
@@ -14958,16 +14958,16 @@ export async function dELETEAdminRealmsRealmUsersUserIdGroupsGroupId({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!groupId) {
-		throw new Error(`Missing required path parameter: groupId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!userId) {
 		throw new Error(`Missing required path parameter: userId`);
+	}
+
+	if (!groupId) {
+		throw new Error(`Missing required path parameter: groupId`);
 	}
 
 	const data = await request<
@@ -15066,7 +15066,7 @@ export async function pOSTAdminRealmsRealmUsersUserIdLogout({
  * {@link /admin/realms/:realm/users/:userId/offline-sessions/:clientUuid}
  */
 export async function gETAdminRealmsRealmUsersUserIdOfflineSessionsClientUuid({
-	pathParams: { clientUuid, realm, userId },
+	pathParams: { realm, userId, clientUuid },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmUsersUserIdOfflineSessionsClientUuidPathParams;
@@ -15074,16 +15074,16 @@ export async function gETAdminRealmsRealmUsersUserIdOfflineSessionsClientUuid({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!clientUuid) {
-		throw new Error(`Missing required path parameter: clientUuid`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
 	if (!userId) {
 		throw new Error(`Missing required path parameter: userId`);
+	}
+
+	if (!clientUuid) {
+		throw new Error(`Missing required path parameter: clientUuid`);
 	}
 
 	const data = await request<
@@ -15754,7 +15754,7 @@ export async function gETAdminRealmsRealmUsersUserIdUnmanagedAttributes({
  * {@link /admin/realms/:realm/workflows/scheduled/:resourceId}
  */
 export async function gETAdminRealmsRealmWorkflowsScheduledResourceId({
-	pathParams: { resourceId, realm },
+	pathParams: { realm, resourceId },
 	config = {},
 }: {
 	pathParams: GETAdminRealmsRealmWorkflowsScheduledResourceIdPathParams;
@@ -15762,12 +15762,12 @@ export async function gETAdminRealmsRealmWorkflowsScheduledResourceId({
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
-	if (!resourceId) {
-		throw new Error(`Missing required path parameter: resourceId`);
-	}
-
 	if (!realm) {
 		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!resourceId) {
+		throw new Error(`Missing required path parameter: resourceId`);
 	}
 
 	const data = await request<

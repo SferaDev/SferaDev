@@ -5884,470 +5884,10 @@ export type CreateSiteError = {
 	message: string;
 };
 
-export type CreateSiteMutationRequest = {
-	/**
-	 * @type string | undefined
-	 */
-	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	state?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	plan?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	custom_domain?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	domain_aliases?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	branch_deploy_custom_domain?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	deploy_preview_custom_domain?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	password?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	notification_email?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	ssl_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	admin_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	screenshot_url?: string | undefined;
-	/**
-	 * @type string | undefined, dateTime
-	 */
-	created_at?: string | undefined;
-	/**
-	 * @type string | undefined, dateTime
-	 */
-	updated_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	user_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	session_id?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	ssl?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	force_ssl?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	managed_dns?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	deploy_url?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	published_deploy?:
-		| {
-				/**
-				 * @type string | undefined
-				 */
-				id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				site_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				user_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				build_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				state?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				ssl_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				admin_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				deploy_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				deploy_ssl_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				screenshot_url?: string | undefined;
-				/**
-				 * @type number | undefined
-				 */
-				review_id?: number | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
-				draft?: boolean | undefined;
-				/**
-				 * @type array | undefined
-				 */
-				required?: string[] | undefined;
-				/**
-				 * @type array | undefined
-				 */
-				required_functions?: string[] | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				error_message?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				branch?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				commit_ref?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				commit_url?: string | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
-				skipped?: boolean | undefined;
-				/**
-				 * @type string | undefined, dateTime
-				 */
-				created_at?: string | undefined;
-				/**
-				 * @type string | undefined, dateTime
-				 */
-				updated_at?: string | undefined;
-				/**
-				 * @type string | undefined, dateTime
-				 */
-				published_at?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				title?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				context?: string | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
-				locked?: boolean | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				review_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				framework?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				skew_protection_token?: string | undefined;
-				/**
-				 * @type array | undefined
-				 */
-				function_schedules?:
-					| {
-							/**
-							 * @type string | undefined
-							 */
-							name?: string | undefined;
-							/**
-							 * @type string | undefined
-							 */
-							cron?: string | undefined;
-					  }[]
-					| undefined;
-		  }
-		| undefined;
-	/**
-	 * @type string | undefined
-	 */
-	account_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	account_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	account_slug?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	git_provider?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	deploy_hook?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	capabilities?:
-		| {
-				[key: string]: object;
-		  }
-		| undefined;
-	/**
-	 * @type object | undefined
-	 */
-	processing_settings?:
-		| {
-				/**
-				 * @type object | undefined
-				 */
-				html?:
-					| {
-							/**
-							 * @type boolean | undefined
-							 */
-							pretty_urls?: boolean | undefined;
-					  }
-					| undefined;
-		  }
-		| undefined;
-	/**
-	 * @type object | undefined
-	 */
-	build_settings?:
-		| {
-				/**
-				 * @type integer | undefined
-				 */
-				id?: number | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				provider?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				deploy_key_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				repo_path?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				repo_branch?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				dir?: string | undefined;
-				/**
-				 * @description The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.
-				 * @type string | undefined
-				 */
-				functions_dir?: string | undefined;
-				/**
-				 * @description The build command to run. This is the command that Netlify runs to build your site. If a site has a netlify.toml file with a build command it will override this value.
-				 * @type string | undefined
-				 */
-				cmd?: string | undefined;
-				/**
-				 * @type array | undefined
-				 */
-				allowed_branches?: string[] | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
-				public_repo?: boolean | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
-				private_logs?: boolean | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				repo_url?: string | undefined;
-				/**
-				 * @type object | undefined
-				 */
-				env?:
-					| {
-							[key: string]: string;
-					  }
-					| undefined;
-				/**
-				 * @type integer | undefined
-				 */
-				installation_id?: number | undefined;
-				/**
-				 * @description When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.
-				 * @type boolean | undefined
-				 */
-				stop_builds?: boolean | undefined;
-		  }
-		| undefined;
-	/**
-	 * @type string | undefined
-	 */
-	id_domain?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	default_hooks_data?:
-		| {
-				/**
-				 * @type string | undefined
-				 */
-				access_token?: string | undefined;
-		  }
-		| undefined;
-	/**
-	 * @type string | undefined
-	 */
-	build_image?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	prerender?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	functions_region?: string | undefined;
-	/**
-	 * @default false
-	 * @type boolean | undefined
-	 */
-	prevent_non_git_prod_deploys?: boolean | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	repo?:
-		| {
-				/**
-				 * @type integer | undefined
-				 */
-				id?: number | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				provider?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				deploy_key_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				repo_path?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				repo_branch?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				dir?: string | undefined;
-				/**
-				 * @description The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.
-				 * @type string | undefined
-				 */
-				functions_dir?: string | undefined;
-				/**
-				 * @description The build command to run. This is the command that Netlify runs to build your site. If a site has a netlify.toml file with a build command it will override this value.
-				 * @type string | undefined
-				 */
-				cmd?: string | undefined;
-				/**
-				 * @type array | undefined
-				 */
-				allowed_branches?: string[] | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
-				public_repo?: boolean | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
-				private_logs?: boolean | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				repo_url?: string | undefined;
-				/**
-				 * @type object | undefined
-				 */
-				env?:
-					| {
-							[key: string]: string;
-					  }
-					| undefined;
-				/**
-				 * @type integer | undefined
-				 */
-				installation_id?: number | undefined;
-				/**
-				 * @description When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.
-				 * @type boolean | undefined
-				 */
-				stop_builds?: boolean | undefined;
-		  }
-		| undefined;
-};
-
 export type CreateSiteMutationResponse = CreateSite201;
 
 export type CreateSiteMutation = {
 	Response: CreateSite201;
-	Request: CreateSiteMutationRequest;
 	QueryParams: CreateSiteQueryParams;
 	Errors: any;
 };
@@ -7186,470 +6726,10 @@ export type UpdateSiteError = {
 	message: string;
 };
 
-export type UpdateSiteMutationRequest = {
-	/**
-	 * @type string | undefined
-	 */
-	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	state?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	plan?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	custom_domain?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	domain_aliases?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	branch_deploy_custom_domain?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	deploy_preview_custom_domain?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	password?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	notification_email?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	ssl_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	admin_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	screenshot_url?: string | undefined;
-	/**
-	 * @type string | undefined, dateTime
-	 */
-	created_at?: string | undefined;
-	/**
-	 * @type string | undefined, dateTime
-	 */
-	updated_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	user_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	session_id?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	ssl?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	force_ssl?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	managed_dns?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	deploy_url?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	published_deploy?:
-		| {
-				/**
-				 * @type string | undefined
-				 */
-				id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				site_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				user_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				build_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				state?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				ssl_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				admin_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				deploy_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				deploy_ssl_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				screenshot_url?: string | undefined;
-				/**
-				 * @type number | undefined
-				 */
-				review_id?: number | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
-				draft?: boolean | undefined;
-				/**
-				 * @type array | undefined
-				 */
-				required?: string[] | undefined;
-				/**
-				 * @type array | undefined
-				 */
-				required_functions?: string[] | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				error_message?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				branch?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				commit_ref?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				commit_url?: string | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
-				skipped?: boolean | undefined;
-				/**
-				 * @type string | undefined, dateTime
-				 */
-				created_at?: string | undefined;
-				/**
-				 * @type string | undefined, dateTime
-				 */
-				updated_at?: string | undefined;
-				/**
-				 * @type string | undefined, dateTime
-				 */
-				published_at?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				title?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				context?: string | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
-				locked?: boolean | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				review_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				framework?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				skew_protection_token?: string | undefined;
-				/**
-				 * @type array | undefined
-				 */
-				function_schedules?:
-					| {
-							/**
-							 * @type string | undefined
-							 */
-							name?: string | undefined;
-							/**
-							 * @type string | undefined
-							 */
-							cron?: string | undefined;
-					  }[]
-					| undefined;
-		  }
-		| undefined;
-	/**
-	 * @type string | undefined
-	 */
-	account_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	account_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	account_slug?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	git_provider?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	deploy_hook?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	capabilities?:
-		| {
-				[key: string]: object;
-		  }
-		| undefined;
-	/**
-	 * @type object | undefined
-	 */
-	processing_settings?:
-		| {
-				/**
-				 * @type object | undefined
-				 */
-				html?:
-					| {
-							/**
-							 * @type boolean | undefined
-							 */
-							pretty_urls?: boolean | undefined;
-					  }
-					| undefined;
-		  }
-		| undefined;
-	/**
-	 * @type object | undefined
-	 */
-	build_settings?:
-		| {
-				/**
-				 * @type integer | undefined
-				 */
-				id?: number | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				provider?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				deploy_key_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				repo_path?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				repo_branch?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				dir?: string | undefined;
-				/**
-				 * @description The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.
-				 * @type string | undefined
-				 */
-				functions_dir?: string | undefined;
-				/**
-				 * @description The build command to run. This is the command that Netlify runs to build your site. If a site has a netlify.toml file with a build command it will override this value.
-				 * @type string | undefined
-				 */
-				cmd?: string | undefined;
-				/**
-				 * @type array | undefined
-				 */
-				allowed_branches?: string[] | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
-				public_repo?: boolean | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
-				private_logs?: boolean | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				repo_url?: string | undefined;
-				/**
-				 * @type object | undefined
-				 */
-				env?:
-					| {
-							[key: string]: string;
-					  }
-					| undefined;
-				/**
-				 * @type integer | undefined
-				 */
-				installation_id?: number | undefined;
-				/**
-				 * @description When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.
-				 * @type boolean | undefined
-				 */
-				stop_builds?: boolean | undefined;
-		  }
-		| undefined;
-	/**
-	 * @type string | undefined
-	 */
-	id_domain?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	default_hooks_data?:
-		| {
-				/**
-				 * @type string | undefined
-				 */
-				access_token?: string | undefined;
-		  }
-		| undefined;
-	/**
-	 * @type string | undefined
-	 */
-	build_image?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	prerender?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	functions_region?: string | undefined;
-	/**
-	 * @default false
-	 * @type boolean | undefined
-	 */
-	prevent_non_git_prod_deploys?: boolean | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	repo?:
-		| {
-				/**
-				 * @type integer | undefined
-				 */
-				id?: number | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				provider?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				deploy_key_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				repo_path?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				repo_branch?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				dir?: string | undefined;
-				/**
-				 * @description The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.
-				 * @type string | undefined
-				 */
-				functions_dir?: string | undefined;
-				/**
-				 * @description The build command to run. This is the command that Netlify runs to build your site. If a site has a netlify.toml file with a build command it will override this value.
-				 * @type string | undefined
-				 */
-				cmd?: string | undefined;
-				/**
-				 * @type array | undefined
-				 */
-				allowed_branches?: string[] | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
-				public_repo?: boolean | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
-				private_logs?: boolean | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				repo_url?: string | undefined;
-				/**
-				 * @type object | undefined
-				 */
-				env?:
-					| {
-							[key: string]: string;
-					  }
-					| undefined;
-				/**
-				 * @type integer | undefined
-				 */
-				installation_id?: number | undefined;
-				/**
-				 * @description When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.
-				 * @type boolean | undefined
-				 */
-				stop_builds?: boolean | undefined;
-		  }
-		| undefined;
-};
-
 export type UpdateSiteMutationResponse = UpdateSite200;
 
 export type UpdateSiteMutation = {
 	Response: UpdateSite200;
-	Request: UpdateSiteMutationRequest;
 	PathParams: UpdateSitePathParams;
 	Errors: any;
 };
@@ -9815,42 +8895,10 @@ export type CreateSiteSnippetError = {
 	message: string;
 };
 
-export type CreateSiteSnippetMutationRequest = {
-	/**
-	 * @type integer | undefined, int32
-	 */
-	id?: number | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	general?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	general_position?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	goal?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	goal_position?: string | undefined;
-};
-
 export type CreateSiteSnippetMutationResponse = CreateSiteSnippet201;
 
 export type CreateSiteSnippetMutation = {
 	Response: CreateSiteSnippet201;
-	Request: CreateSiteSnippetMutationRequest;
 	PathParams: CreateSiteSnippetPathParams;
 	Errors: any;
 };
@@ -9952,42 +9000,10 @@ export type UpdateSiteSnippetError = {
 	message: string;
 };
 
-export type UpdateSiteSnippetMutationRequest = {
-	/**
-	 * @type integer | undefined, int32
-	 */
-	id?: number | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	general?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	general_position?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	goal?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	goal_position?: string | undefined;
-};
-
 export type UpdateSiteSnippetMutationResponse = UpdateSiteSnippet204;
 
 export type UpdateSiteSnippetMutation = {
 	Response: UpdateSiteSnippet204;
-	Request: UpdateSiteSnippetMutationRequest;
 	PathParams: UpdateSiteSnippetPathParams;
 	Errors: any;
 };
@@ -10090,13 +9106,10 @@ export type UpdateSiteMetadataError = {
 	message: string;
 };
 
-export type UpdateSiteMetadataMutationRequest = object;
-
 export type UpdateSiteMetadataMutationResponse = UpdateSiteMetadata204;
 
 export type UpdateSiteMetadataMutation = {
 	Response: UpdateSiteMetadata204;
-	Request: UpdateSiteMetadataMutationRequest;
 	PathParams: UpdateSiteMetadataPathParams;
 	Errors: any;
 };
@@ -10211,22 +9224,10 @@ export type CreateSiteBuildHookError = {
 	message: string;
 };
 
-export type CreateSiteBuildHookMutationRequest = {
-	/**
-	 * @type string | undefined
-	 */
-	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	branch?: string | undefined;
-};
-
 export type CreateSiteBuildHookMutationResponse = CreateSiteBuildHook201;
 
 export type CreateSiteBuildHookMutation = {
 	Response: CreateSiteBuildHook201;
-	Request: CreateSiteBuildHookMutationRequest;
 	PathParams: CreateSiteBuildHookPathParams;
 	Errors: any;
 };
@@ -10324,22 +9325,10 @@ export type UpdateSiteBuildHookError = {
 	message: string;
 };
 
-export type UpdateSiteBuildHookMutationRequest = {
-	/**
-	 * @type string | undefined
-	 */
-	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	branch?: string | undefined;
-};
-
 export type UpdateSiteBuildHookMutationResponse = UpdateSiteBuildHook204;
 
 export type UpdateSiteBuildHookMutation = {
 	Response: UpdateSiteBuildHook204;
-	Request: UpdateSiteBuildHookMutationRequest;
 	PathParams: UpdateSiteBuildHookPathParams;
 	Errors: any;
 };
@@ -10412,14 +9401,6 @@ export type ListSiteDeploysQueryParamsStateEnumKey =
 
 export type ListSiteDeploysQueryParams = {
 	/**
-	 * @type integer | undefined, int32
-	 */
-	page?: number | undefined;
-	/**
-	 * @type integer | undefined, int32
-	 */
-	per_page?: number | undefined;
-	/**
 	 * @type boolean | undefined
 	 */
 	"deploy-previews"?: boolean | undefined;
@@ -10439,6 +9420,14 @@ export type ListSiteDeploysQueryParams = {
 	 * @type boolean | undefined
 	 */
 	"latest-published"?: boolean | undefined;
+	/**
+	 * @type integer | undefined, int32
+	 */
+	page?: number | undefined;
+	/**
+	 * @type integer | undefined, int32
+	 */
+	per_page?: number | undefined;
 };
 
 /**
@@ -10635,10 +9624,6 @@ export type CreateSiteDeployQueryParamsStateEnumKey =
 
 export type CreateSiteDeployQueryParams = {
 	/**
-	 * @type string | undefined
-	 */
-	title?: string | undefined;
-	/**
 	 * @type boolean | undefined
 	 */
 	"deploy-previews"?: boolean | undefined;
@@ -10658,6 +9643,10 @@ export type CreateSiteDeployQueryParams = {
 	 * @type boolean | undefined
 	 */
 	"latest-published"?: boolean | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	title?: string | undefined;
 };
 
 /**
@@ -10815,263 +9804,10 @@ export type CreateSiteDeployError = {
 	message: string;
 };
 
-export const routesMethodsEnum4 = {
-	GET: "GET",
-	POST: "POST",
-	PUT: "PUT",
-	PATCH: "PATCH",
-	DELETE: "DELETE",
-	OPTIONS: "OPTIONS",
-} as const;
-
-export type RoutesMethodsEnum4Key = (typeof routesMethodsEnum4)[keyof typeof routesMethodsEnum4];
-
-export const rateLimitConfigAlgorithmEnum5 = {
-	sliding_window: "sliding_window",
-} as const;
-
-export type RateLimitConfigAlgorithmEnum5Key =
-	(typeof rateLimitConfigAlgorithmEnum5)[keyof typeof rateLimitConfigAlgorithmEnum5];
-
-export const keysTypeEnum6 = {
-	ip: "ip",
-	domain: "domain",
-} as const;
-
-export type KeysTypeEnum6Key = (typeof keysTypeEnum6)[keyof typeof keysTypeEnum6];
-
-export const environmentScopesEnum3 = {
-	builds: "builds",
-	functions: "functions",
-	runtime: "runtime",
-	"post-processing": "post-processing",
-} as const;
-
-export type EnvironmentScopesEnum3Key =
-	(typeof environmentScopesEnum3)[keyof typeof environmentScopesEnum3];
-
-export type CreateSiteDeployMutationRequest = {
-	/**
-	 * @description A hash mapping file paths to SHA1 digests of the file contents.
-	 * @type object | undefined
-	 */
-	files?: object | undefined;
-	/**
-	 * @description A zip file containing the site files to deploy. Alternative to \'files\'.\nTo use this field, set Content-Type to \'application/json\' and include the zip content here.\nAlternatively, you can set Content-Type to \'application/zip\' and send the zip as the raw request body (not as JSON).\n
-	 * @type string | undefined, binary
-	 */
-	zip?: Blob | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	draft?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	async?: boolean | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	functions?: object | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	function_schedules?:
-		| {
-				/**
-				 * @type string | undefined
-				 */
-				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				cron?: string | undefined;
-		  }[]
-		| undefined;
-	/**
-	 * @type object | undefined
-	 */
-	functions_config?:
-		| {
-				[key: string]: {
-					/**
-					 * @type string | undefined
-					 */
-					display_name?: string | undefined;
-					/**
-					 * @type string | undefined
-					 */
-					generator?: string | undefined;
-					/**
-					 * @type object | undefined
-					 */
-					build_data?: object | undefined;
-					/**
-					 * @type array | undefined
-					 */
-					routes?:
-						| {
-								/**
-								 * @type string | undefined
-								 */
-								pattern?: string | undefined;
-								/**
-								 * @type string | undefined
-								 */
-								literal?: string | undefined;
-								/**
-								 * @type string | undefined
-								 */
-								expression?: string | undefined;
-								/**
-								 * @type array | undefined
-								 */
-								methods?: RoutesMethodsEnum4Key[] | undefined;
-								/**
-								 * @type boolean | undefined
-								 */
-								prefer_static?: boolean | undefined;
-						  }[]
-						| undefined;
-					/**
-					 * @type array | undefined
-					 */
-					excluded_routes?:
-						| {
-								/**
-								 * @type string | undefined
-								 */
-								pattern?: string | undefined;
-								/**
-								 * @type string | undefined
-								 */
-								literal?: string | undefined;
-								/**
-								 * @type string | undefined
-								 */
-								expression?: string | undefined;
-						  }[]
-						| undefined;
-					/**
-					 * @type integer | undefined
-					 */
-					priority?: number | undefined;
-					/**
-					 * @type object | undefined
-					 */
-					traffic_rules?:
-						| {
-								/**
-								 * @type object | undefined
-								 */
-								action?:
-									| {
-											/**
-											 * @type string | undefined
-											 */
-											type?: string | undefined;
-											/**
-											 * @type object | undefined
-											 */
-											config?:
-												| {
-														/**
-														 * @type string | undefined
-														 */
-														to?: string | undefined;
-														/**
-														 * @type object | undefined
-														 */
-														rate_limit_config?:
-															| {
-																	/**
-																	 * @type string | undefined
-																	 */
-																	algorithm?: RateLimitConfigAlgorithmEnum5Key | undefined;
-																	/**
-																	 * @type integer | undefined
-																	 */
-																	window_size?: number | undefined;
-																	/**
-																	 * @type integer | undefined
-																	 */
-																	window_limit?: number | undefined;
-															  }
-															| undefined;
-														/**
-														 * @type object | undefined
-														 */
-														aggregate?:
-															| {
-																	/**
-																	 * @type array | undefined
-																	 */
-																	keys?:
-																		| {
-																				/**
-																				 * @type string | undefined
-																				 */
-																				type?: KeysTypeEnum6Key | undefined;
-																		  }[]
-																		| undefined;
-															  }
-															| undefined;
-												  }
-												| undefined;
-									  }
-									| undefined;
-						  }
-						| undefined;
-					/**
-					 * @type array | undefined
-					 */
-					event_subscriptions?: string[] | undefined;
-				};
-		  }
-		| undefined;
-	/**
-	 * @type string | undefined
-	 */
-	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	framework?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	framework_version?: string | undefined;
-	/**
-	 * @description A list of deploy-specific environment variable data. Data specified this way applies only\nto this specific deploy and is merged into any existing environment variables set on the\naccount and site.\n\nDeploy-specific environment variable data takes precedence over account and site\nenvironment variable data: For example, a deploy-specific variable with the key `NODE_ENV`\nwill take priority over any existing site- and account-level environment variable data\nwith the key `NODE_ENV`.\n\nEnvironment variable data may be provided at one of two times:\n\n- When creating a new Deploy with deploy files (most common)\n- When finalizing an existing Deploy with deploy files\n\nOnce set, environment variables for a specific deploy cannot be modified. Subsequent\nattempts to modify environment variable data for a deploy will be ignored.\n
-	 * @type array | undefined
-	 */
-	environment?:
-		| {
-				/**
-				 * @type string
-				 */
-				key: string;
-				/**
-				 * @type string
-				 */
-				value: string;
-				/**
-				 * @type boolean
-				 */
-				is_secret: boolean;
-				/**
-				 * @type array
-				 */
-				scopes: EnvironmentScopesEnum3Key[];
-		  }[]
-		| undefined;
-};
-
 export type CreateSiteDeployMutationResponse = CreateSiteDeploy200;
 
 export type CreateSiteDeployMutation = {
 	Response: CreateSiteDeploy200;
-	Request: CreateSiteDeployMutationRequest;
 	PathParams: CreateSiteDeployPathParams;
 	QueryParams: CreateSiteDeployQueryParams;
 	Errors: any;
@@ -11424,263 +10160,10 @@ export type UpdateSiteDeployError = {
 	message: string;
 };
 
-export const routesMethodsEnum5 = {
-	GET: "GET",
-	POST: "POST",
-	PUT: "PUT",
-	PATCH: "PATCH",
-	DELETE: "DELETE",
-	OPTIONS: "OPTIONS",
-} as const;
-
-export type RoutesMethodsEnum5Key = (typeof routesMethodsEnum5)[keyof typeof routesMethodsEnum5];
-
-export const rateLimitConfigAlgorithmEnum6 = {
-	sliding_window: "sliding_window",
-} as const;
-
-export type RateLimitConfigAlgorithmEnum6Key =
-	(typeof rateLimitConfigAlgorithmEnum6)[keyof typeof rateLimitConfigAlgorithmEnum6];
-
-export const keysTypeEnum7 = {
-	ip: "ip",
-	domain: "domain",
-} as const;
-
-export type KeysTypeEnum7Key = (typeof keysTypeEnum7)[keyof typeof keysTypeEnum7];
-
-export const environmentScopesEnum4 = {
-	builds: "builds",
-	functions: "functions",
-	runtime: "runtime",
-	"post-processing": "post-processing",
-} as const;
-
-export type EnvironmentScopesEnum4Key =
-	(typeof environmentScopesEnum4)[keyof typeof environmentScopesEnum4];
-
-export type UpdateSiteDeployMutationRequest = {
-	/**
-	 * @description A hash mapping file paths to SHA1 digests of the file contents.
-	 * @type object | undefined
-	 */
-	files?: object | undefined;
-	/**
-	 * @description A zip file containing the site files to deploy. Alternative to \'files\'.\nTo use this field, set Content-Type to \'application/json\' and include the zip content here.\nAlternatively, you can set Content-Type to \'application/zip\' and send the zip as the raw request body (not as JSON).\n
-	 * @type string | undefined, binary
-	 */
-	zip?: Blob | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	draft?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	async?: boolean | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	functions?: object | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	function_schedules?:
-		| {
-				/**
-				 * @type string | undefined
-				 */
-				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				cron?: string | undefined;
-		  }[]
-		| undefined;
-	/**
-	 * @type object | undefined
-	 */
-	functions_config?:
-		| {
-				[key: string]: {
-					/**
-					 * @type string | undefined
-					 */
-					display_name?: string | undefined;
-					/**
-					 * @type string | undefined
-					 */
-					generator?: string | undefined;
-					/**
-					 * @type object | undefined
-					 */
-					build_data?: object | undefined;
-					/**
-					 * @type array | undefined
-					 */
-					routes?:
-						| {
-								/**
-								 * @type string | undefined
-								 */
-								pattern?: string | undefined;
-								/**
-								 * @type string | undefined
-								 */
-								literal?: string | undefined;
-								/**
-								 * @type string | undefined
-								 */
-								expression?: string | undefined;
-								/**
-								 * @type array | undefined
-								 */
-								methods?: RoutesMethodsEnum5Key[] | undefined;
-								/**
-								 * @type boolean | undefined
-								 */
-								prefer_static?: boolean | undefined;
-						  }[]
-						| undefined;
-					/**
-					 * @type array | undefined
-					 */
-					excluded_routes?:
-						| {
-								/**
-								 * @type string | undefined
-								 */
-								pattern?: string | undefined;
-								/**
-								 * @type string | undefined
-								 */
-								literal?: string | undefined;
-								/**
-								 * @type string | undefined
-								 */
-								expression?: string | undefined;
-						  }[]
-						| undefined;
-					/**
-					 * @type integer | undefined
-					 */
-					priority?: number | undefined;
-					/**
-					 * @type object | undefined
-					 */
-					traffic_rules?:
-						| {
-								/**
-								 * @type object | undefined
-								 */
-								action?:
-									| {
-											/**
-											 * @type string | undefined
-											 */
-											type?: string | undefined;
-											/**
-											 * @type object | undefined
-											 */
-											config?:
-												| {
-														/**
-														 * @type string | undefined
-														 */
-														to?: string | undefined;
-														/**
-														 * @type object | undefined
-														 */
-														rate_limit_config?:
-															| {
-																	/**
-																	 * @type string | undefined
-																	 */
-																	algorithm?: RateLimitConfigAlgorithmEnum6Key | undefined;
-																	/**
-																	 * @type integer | undefined
-																	 */
-																	window_size?: number | undefined;
-																	/**
-																	 * @type integer | undefined
-																	 */
-																	window_limit?: number | undefined;
-															  }
-															| undefined;
-														/**
-														 * @type object | undefined
-														 */
-														aggregate?:
-															| {
-																	/**
-																	 * @type array | undefined
-																	 */
-																	keys?:
-																		| {
-																				/**
-																				 * @type string | undefined
-																				 */
-																				type?: KeysTypeEnum7Key | undefined;
-																		  }[]
-																		| undefined;
-															  }
-															| undefined;
-												  }
-												| undefined;
-									  }
-									| undefined;
-						  }
-						| undefined;
-					/**
-					 * @type array | undefined
-					 */
-					event_subscriptions?: string[] | undefined;
-				};
-		  }
-		| undefined;
-	/**
-	 * @type string | undefined
-	 */
-	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	framework?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	framework_version?: string | undefined;
-	/**
-	 * @description A list of deploy-specific environment variable data. Data specified this way applies only\nto this specific deploy and is merged into any existing environment variables set on the\naccount and site.\n\nDeploy-specific environment variable data takes precedence over account and site\nenvironment variable data: For example, a deploy-specific variable with the key `NODE_ENV`\nwill take priority over any existing site- and account-level environment variable data\nwith the key `NODE_ENV`.\n\nEnvironment variable data may be provided at one of two times:\n\n- When creating a new Deploy with deploy files (most common)\n- When finalizing an existing Deploy with deploy files\n\nOnce set, environment variables for a specific deploy cannot be modified. Subsequent\nattempts to modify environment variable data for a deploy will be ignored.\n
-	 * @type array | undefined
-	 */
-	environment?:
-		| {
-				/**
-				 * @type string
-				 */
-				key: string;
-				/**
-				 * @type string
-				 */
-				value: string;
-				/**
-				 * @type boolean
-				 */
-				is_secret: boolean;
-				/**
-				 * @type array
-				 */
-				scopes: EnvironmentScopesEnum4Key[];
-		  }[]
-		| undefined;
-};
-
 export type UpdateSiteDeployMutationResponse = UpdateSiteDeploy200;
 
 export type UpdateSiteDeployMutation = {
 	Response: UpdateSiteDeploy200;
-	Request: UpdateSiteDeployMutationRequest;
 	PathParams: UpdateSiteDeployPathParams;
 	QueryParams: UpdateSiteDeployQueryParams;
 	Errors: any;
@@ -14505,46 +12988,10 @@ export type CreateHookBySiteIdError = {
 	message: string;
 };
 
-export type CreateHookBySiteIdMutationRequest = {
-	/**
-	 * @type string | undefined
-	 */
-	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	type?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	event?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	data?: object | undefined;
-	/**
-	 * @type string | undefined, dateTime
-	 */
-	created_at?: string | undefined;
-	/**
-	 * @type string | undefined, dateTime
-	 */
-	updated_at?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	disabled?: boolean | undefined;
-};
-
 export type CreateHookBySiteIdMutationResponse = CreateHookBySiteId201;
 
 export type CreateHookBySiteIdMutation = {
 	Response: CreateHookBySiteId201;
-	Request: CreateHookBySiteIdMutationRequest;
 	QueryParams: CreateHookBySiteIdQueryParams;
 	Errors: any;
 };
@@ -14675,46 +13122,10 @@ export type UpdateHookError = {
 	message: string;
 };
 
-export type UpdateHookMutationRequest = {
-	/**
-	 * @type string | undefined
-	 */
-	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	type?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	event?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	data?: object | undefined;
-	/**
-	 * @type string | undefined, dateTime
-	 */
-	created_at?: string | undefined;
-	/**
-	 * @type string | undefined, dateTime
-	 */
-	updated_at?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	disabled?: boolean | undefined;
-};
-
 export type UpdateHookMutationResponse = UpdateHook200;
 
 export type UpdateHookMutation = {
 	Response: UpdateHook200;
-	Request: UpdateHookMutationRequest;
 	PathParams: UpdateHookPathParams;
 	Errors: any;
 };
@@ -19732,13 +18143,10 @@ export type CreateServiceInstanceError = {
 	message: string;
 };
 
-export type CreateServiceInstanceMutationRequest = object;
-
 export type CreateServiceInstanceMutationResponse = CreateServiceInstance201;
 
 export type CreateServiceInstanceMutation = {
 	Response: CreateServiceInstance201;
-	Request: CreateServiceInstanceMutationRequest;
 	PathParams: CreateServiceInstancePathParams;
 	Errors: any;
 };
@@ -19868,13 +18276,10 @@ export type UpdateServiceInstanceError = {
 	message: string;
 };
 
-export type UpdateServiceInstanceMutationRequest = object;
-
 export type UpdateServiceInstanceMutationResponse = UpdateServiceInstance204;
 
 export type UpdateServiceInstanceMutation = {
 	Response: UpdateServiceInstance204;
-	Request: UpdateServiceInstanceMutationRequest;
 	PathParams: UpdateServiceInstancePathParams;
 	Errors: any;
 };
@@ -20270,18 +18675,10 @@ export type CreateSplitTestError = {
 	message: string;
 };
 
-export type CreateSplitTestMutationRequest = {
-	/**
-	 * @type object | undefined
-	 */
-	branch_tests?: object | undefined;
-};
-
 export type CreateSplitTestMutationResponse = CreateSplitTest201;
 
 export type CreateSplitTestMutation = {
 	Response: CreateSplitTest201;
-	Request: CreateSplitTestMutationRequest;
 	PathParams: CreateSplitTestPathParams;
 	Errors: any;
 };
@@ -20424,18 +18821,10 @@ export type UpdateSplitTestError = {
 	message: string;
 };
 
-export type UpdateSplitTestMutationRequest = {
-	/**
-	 * @type object | undefined
-	 */
-	branch_tests?: object | undefined;
-};
-
 export type UpdateSplitTestMutationResponse = UpdateSplitTest201;
 
 export type UpdateSplitTestMutation = {
 	Response: UpdateSplitTest201;
-	Request: UpdateSplitTestMutationRequest;
 	PathParams: UpdateSplitTestPathParams;
 	Errors: any;
 };
@@ -22089,34 +20478,10 @@ export type CreateSiteDevServerHookError = {
 	message: string;
 };
 
-export const createSiteDevServerHookMutationRequestTypeEnum = {
-	new_dev_server: "new_dev_server",
-	content_refresh: "content_refresh",
-} as const;
-
-export type CreateSiteDevServerHookMutationRequestTypeEnumKey =
-	(typeof createSiteDevServerHookMutationRequestTypeEnum)[keyof typeof createSiteDevServerHookMutationRequestTypeEnum];
-
-export type CreateSiteDevServerHookMutationRequest = {
-	/**
-	 * @type string | undefined
-	 */
-	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	type?: CreateSiteDevServerHookMutationRequestTypeEnumKey | undefined;
-};
-
 export type CreateSiteDevServerHookMutationResponse = CreateSiteDevServerHook201;
 
 export type CreateSiteDevServerHookMutation = {
 	Response: CreateSiteDevServerHook201;
-	Request: CreateSiteDevServerHookMutationRequest;
 	PathParams: CreateSiteDevServerHookPathParams;
 	Errors: any;
 };
@@ -22226,34 +20591,10 @@ export type UpdateSiteDevServerHookError = {
 	message: string;
 };
 
-export const updateSiteDevServerHookMutationRequestTypeEnum = {
-	new_dev_server: "new_dev_server",
-	content_refresh: "content_refresh",
-} as const;
-
-export type UpdateSiteDevServerHookMutationRequestTypeEnumKey =
-	(typeof updateSiteDevServerHookMutationRequestTypeEnum)[keyof typeof updateSiteDevServerHookMutationRequestTypeEnum];
-
-export type UpdateSiteDevServerHookMutationRequest = {
-	/**
-	 * @type string | undefined
-	 */
-	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	type?: UpdateSiteDevServerHookMutationRequestTypeEnumKey | undefined;
-};
-
 export type UpdateSiteDevServerHookMutationResponse = UpdateSiteDevServerHook204;
 
 export type UpdateSiteDevServerHookMutation = {
 	Response: UpdateSiteDevServerHook204;
-	Request: UpdateSiteDevServerHookMutationRequest;
 	PathParams: UpdateSiteDevServerHookPathParams;
 	Errors: any;
 };

@@ -8489,16 +8489,10 @@ export type PostSmartlockActionResource401 = unknown;
  */
 export type PostSmartlockActionResource402 = unknown;
 
-/**
- * @description Smartlock action representation
- */
-export type PostSmartlockActionResourceMutationRequest = SmartlockAction;
-
 export type PostSmartlockActionResourceMutationResponse = PostSmartlockActionResource204;
 
 export type PostSmartlockActionResourceMutation = {
 	Response: PostSmartlockActionResource204;
-	Request: PostSmartlockActionResourceMutationRequest;
 	PathParams: PostSmartlockActionResourcePathParams;
 	Errors:
 		| PostSmartlockActionResource400
@@ -8539,17 +8533,11 @@ export type PostSmartlockActionAdvancedResource409 = unknown;
  */
 export type PostSmartlockActionAdvancedResource426 = unknown;
 
-/**
- * @description Smartlock action representation
- */
-export type PostSmartlockActionAdvancedResourceMutationRequest = SmartlockAction;
-
 export type PostSmartlockActionAdvancedResourceMutationResponse =
 	PostSmartlockActionAdvancedResource200;
 
 export type PostSmartlockActionAdvancedResourceMutation = {
 	Response: PostSmartlockActionAdvancedResource200;
-	Request: PostSmartlockActionAdvancedResourceMutationRequest;
 	PathParams: PostSmartlockActionAdvancedResourcePathParams;
 	Errors:
 		| PostSmartlockActionAdvancedResource400
