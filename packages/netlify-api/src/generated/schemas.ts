@@ -2204,172 +2204,6 @@ export const createSiteErrorSchema = z.object({
 	message: z.string(),
 });
 
-export const createSiteMutationRequestSchema = z.object({
-	id: z.optional(z.string()),
-	state: z.optional(z.string()),
-	plan: z.optional(z.string()),
-	name: z.optional(z.string()),
-	custom_domain: z.optional(z.string()),
-	domain_aliases: z.optional(z.array(z.string())),
-	branch_deploy_custom_domain: z.optional(z.string()),
-	deploy_preview_custom_domain: z.optional(z.string()),
-	password: z.optional(z.string()),
-	notification_email: z.optional(z.string()),
-	url: z.optional(z.string()),
-	ssl_url: z.optional(z.string()),
-	admin_url: z.optional(z.string()),
-	screenshot_url: z.optional(z.string()),
-	created_at: z.optional(z.string()),
-	updated_at: z.optional(z.string()),
-	user_id: z.optional(z.string()),
-	session_id: z.optional(z.string()),
-	ssl: z.optional(z.boolean()),
-	force_ssl: z.optional(z.boolean()),
-	managed_dns: z.optional(z.boolean()),
-	deploy_url: z.optional(z.string()),
-	published_deploy: z.optional(
-		z.object({
-			id: z.optional(z.string()),
-			site_id: z.optional(z.string()),
-			user_id: z.optional(z.string()),
-			build_id: z.optional(z.string()),
-			state: z.optional(z.string()),
-			name: z.optional(z.string()),
-			url: z.optional(z.string()),
-			ssl_url: z.optional(z.string()),
-			admin_url: z.optional(z.string()),
-			deploy_url: z.optional(z.string()),
-			deploy_ssl_url: z.optional(z.string()),
-			screenshot_url: z.optional(z.string()),
-			review_id: z.optional(z.number()),
-			draft: z.optional(z.boolean()),
-			required: z.optional(z.array(z.string())),
-			required_functions: z.optional(z.array(z.string())),
-			error_message: z.optional(z.string()),
-			branch: z.optional(z.string()),
-			commit_ref: z.optional(z.string()),
-			commit_url: z.optional(z.string()),
-			skipped: z.optional(z.boolean()),
-			created_at: z.optional(z.string()),
-			updated_at: z.optional(z.string()),
-			published_at: z.optional(z.string()),
-			title: z.optional(z.string()),
-			context: z.optional(z.string()),
-			locked: z.optional(z.boolean()),
-			review_url: z.optional(z.string()),
-			framework: z.optional(z.string()),
-			skew_protection_token: z.optional(z.string()),
-			function_schedules: z.optional(
-				z.array(
-					z.object({
-						name: z.optional(z.string()),
-						cron: z.optional(z.string()),
-					}),
-				),
-			),
-		}),
-	),
-	account_id: z.optional(z.string()),
-	account_name: z.optional(z.string()),
-	account_slug: z.optional(z.string()),
-	git_provider: z.optional(z.string()),
-	deploy_hook: z.optional(z.string()),
-	capabilities: z.optional(z.object({}).catchall(z.object({}))),
-	processing_settings: z.optional(
-		z.object({
-			html: z.optional(
-				z.object({
-					pretty_urls: z.optional(z.boolean()),
-				}),
-			),
-		}),
-	),
-	build_settings: z.optional(
-		z.object({
-			id: z.optional(z.int()),
-			provider: z.optional(z.string()),
-			deploy_key_id: z.optional(z.string()),
-			repo_path: z.optional(z.string()),
-			repo_branch: z.optional(z.string()),
-			dir: z.optional(z.string()),
-			functions_dir: z.optional(
-				z
-					.string()
-					.describe(
-						"The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.",
-					),
-			),
-			cmd: z.optional(
-				z
-					.string()
-					.describe(
-						"The build command to run. This is the command that Netlify runs to build your site. If a site has a netlify.toml file with a build command it will override this value.",
-					),
-			),
-			allowed_branches: z.optional(z.array(z.string())),
-			public_repo: z.optional(z.boolean()),
-			private_logs: z.optional(z.boolean()),
-			repo_url: z.optional(z.string()),
-			env: z.optional(z.object({}).catchall(z.string())),
-			installation_id: z.optional(z.int()),
-			stop_builds: z.optional(
-				z
-					.boolean()
-					.describe(
-						"When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.",
-					),
-			),
-		}),
-	),
-	id_domain: z.optional(z.string()),
-	default_hooks_data: z.optional(
-		z.object({
-			access_token: z.optional(z.string()),
-		}),
-	),
-	build_image: z.optional(z.string()),
-	prerender: z.optional(z.string()),
-	functions_region: z.optional(z.string()),
-	prevent_non_git_prod_deploys: z.optional(z.boolean().default(false)),
-	repo: z.optional(
-		z.object({
-			id: z.optional(z.int()),
-			provider: z.optional(z.string()),
-			deploy_key_id: z.optional(z.string()),
-			repo_path: z.optional(z.string()),
-			repo_branch: z.optional(z.string()),
-			dir: z.optional(z.string()),
-			functions_dir: z.optional(
-				z
-					.string()
-					.describe(
-						"The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.",
-					),
-			),
-			cmd: z.optional(
-				z
-					.string()
-					.describe(
-						"The build command to run. This is the command that Netlify runs to build your site. If a site has a netlify.toml file with a build command it will override this value.",
-					),
-			),
-			allowed_branches: z.optional(z.array(z.string())),
-			public_repo: z.optional(z.boolean()),
-			private_logs: z.optional(z.boolean()),
-			repo_url: z.optional(z.string()),
-			env: z.optional(z.object({}).catchall(z.string())),
-			installation_id: z.optional(z.int()),
-			stop_builds: z.optional(
-				z
-					.boolean()
-					.describe(
-						"When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.",
-					),
-			),
-		}),
-	),
-});
-
 export const createSiteMutationResponseSchema = z.lazy(() => createSite201Schema);
 
 export const getSitePathParamsSchema = z.object({
@@ -2666,172 +2500,6 @@ export const updateSite200Schema = z.object({
 export const updateSiteErrorSchema = z.object({
 	code: z.optional(z.int()),
 	message: z.string(),
-});
-
-export const updateSiteMutationRequestSchema = z.object({
-	id: z.optional(z.string()),
-	state: z.optional(z.string()),
-	plan: z.optional(z.string()),
-	name: z.optional(z.string()),
-	custom_domain: z.optional(z.string()),
-	domain_aliases: z.optional(z.array(z.string())),
-	branch_deploy_custom_domain: z.optional(z.string()),
-	deploy_preview_custom_domain: z.optional(z.string()),
-	password: z.optional(z.string()),
-	notification_email: z.optional(z.string()),
-	url: z.optional(z.string()),
-	ssl_url: z.optional(z.string()),
-	admin_url: z.optional(z.string()),
-	screenshot_url: z.optional(z.string()),
-	created_at: z.optional(z.string()),
-	updated_at: z.optional(z.string()),
-	user_id: z.optional(z.string()),
-	session_id: z.optional(z.string()),
-	ssl: z.optional(z.boolean()),
-	force_ssl: z.optional(z.boolean()),
-	managed_dns: z.optional(z.boolean()),
-	deploy_url: z.optional(z.string()),
-	published_deploy: z.optional(
-		z.object({
-			id: z.optional(z.string()),
-			site_id: z.optional(z.string()),
-			user_id: z.optional(z.string()),
-			build_id: z.optional(z.string()),
-			state: z.optional(z.string()),
-			name: z.optional(z.string()),
-			url: z.optional(z.string()),
-			ssl_url: z.optional(z.string()),
-			admin_url: z.optional(z.string()),
-			deploy_url: z.optional(z.string()),
-			deploy_ssl_url: z.optional(z.string()),
-			screenshot_url: z.optional(z.string()),
-			review_id: z.optional(z.number()),
-			draft: z.optional(z.boolean()),
-			required: z.optional(z.array(z.string())),
-			required_functions: z.optional(z.array(z.string())),
-			error_message: z.optional(z.string()),
-			branch: z.optional(z.string()),
-			commit_ref: z.optional(z.string()),
-			commit_url: z.optional(z.string()),
-			skipped: z.optional(z.boolean()),
-			created_at: z.optional(z.string()),
-			updated_at: z.optional(z.string()),
-			published_at: z.optional(z.string()),
-			title: z.optional(z.string()),
-			context: z.optional(z.string()),
-			locked: z.optional(z.boolean()),
-			review_url: z.optional(z.string()),
-			framework: z.optional(z.string()),
-			skew_protection_token: z.optional(z.string()),
-			function_schedules: z.optional(
-				z.array(
-					z.object({
-						name: z.optional(z.string()),
-						cron: z.optional(z.string()),
-					}),
-				),
-			),
-		}),
-	),
-	account_id: z.optional(z.string()),
-	account_name: z.optional(z.string()),
-	account_slug: z.optional(z.string()),
-	git_provider: z.optional(z.string()),
-	deploy_hook: z.optional(z.string()),
-	capabilities: z.optional(z.object({}).catchall(z.object({}))),
-	processing_settings: z.optional(
-		z.object({
-			html: z.optional(
-				z.object({
-					pretty_urls: z.optional(z.boolean()),
-				}),
-			),
-		}),
-	),
-	build_settings: z.optional(
-		z.object({
-			id: z.optional(z.int()),
-			provider: z.optional(z.string()),
-			deploy_key_id: z.optional(z.string()),
-			repo_path: z.optional(z.string()),
-			repo_branch: z.optional(z.string()),
-			dir: z.optional(z.string()),
-			functions_dir: z.optional(
-				z
-					.string()
-					.describe(
-						"The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.",
-					),
-			),
-			cmd: z.optional(
-				z
-					.string()
-					.describe(
-						"The build command to run. This is the command that Netlify runs to build your site. If a site has a netlify.toml file with a build command it will override this value.",
-					),
-			),
-			allowed_branches: z.optional(z.array(z.string())),
-			public_repo: z.optional(z.boolean()),
-			private_logs: z.optional(z.boolean()),
-			repo_url: z.optional(z.string()),
-			env: z.optional(z.object({}).catchall(z.string())),
-			installation_id: z.optional(z.int()),
-			stop_builds: z.optional(
-				z
-					.boolean()
-					.describe(
-						"When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.",
-					),
-			),
-		}),
-	),
-	id_domain: z.optional(z.string()),
-	default_hooks_data: z.optional(
-		z.object({
-			access_token: z.optional(z.string()),
-		}),
-	),
-	build_image: z.optional(z.string()),
-	prerender: z.optional(z.string()),
-	functions_region: z.optional(z.string()),
-	prevent_non_git_prod_deploys: z.optional(z.boolean().default(false)),
-	repo: z.optional(
-		z.object({
-			id: z.optional(z.int()),
-			provider: z.optional(z.string()),
-			deploy_key_id: z.optional(z.string()),
-			repo_path: z.optional(z.string()),
-			repo_branch: z.optional(z.string()),
-			dir: z.optional(z.string()),
-			functions_dir: z.optional(
-				z
-					.string()
-					.describe(
-						"The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.",
-					),
-			),
-			cmd: z.optional(
-				z
-					.string()
-					.describe(
-						"The build command to run. This is the command that Netlify runs to build your site. If a site has a netlify.toml file with a build command it will override this value.",
-					),
-			),
-			allowed_branches: z.optional(z.array(z.string())),
-			public_repo: z.optional(z.boolean()),
-			private_logs: z.optional(z.boolean()),
-			repo_url: z.optional(z.string()),
-			env: z.optional(z.object({}).catchall(z.string())),
-			installation_id: z.optional(z.int()),
-			stop_builds: z.optional(
-				z
-					.boolean()
-					.describe(
-						"When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.",
-					),
-			),
-		}),
-	),
 });
 
 export const updateSiteMutationResponseSchema = z.lazy(() => updateSite200Schema);
@@ -4203,16 +3871,6 @@ export const createSiteSnippetErrorSchema = z.object({
 	message: z.string(),
 });
 
-export const createSiteSnippetMutationRequestSchema = z.object({
-	id: z.optional(z.int()),
-	site_id: z.optional(z.string()),
-	title: z.optional(z.string()),
-	general: z.optional(z.string()),
-	general_position: z.optional(z.string()),
-	goal: z.optional(z.string()),
-	goal_position: z.optional(z.string()),
-});
-
 export const createSiteSnippetMutationResponseSchema = z.lazy(() => createSiteSnippet201Schema);
 
 export const getSiteSnippetPathParamsSchema = z.object({
@@ -4259,16 +3917,6 @@ export const updateSiteSnippet204Schema = z.unknown();
 export const updateSiteSnippetErrorSchema = z.object({
 	code: z.optional(z.int()),
 	message: z.string(),
-});
-
-export const updateSiteSnippetMutationRequestSchema = z.object({
-	id: z.optional(z.int()),
-	site_id: z.optional(z.string()),
-	title: z.optional(z.string()),
-	general: z.optional(z.string()),
-	general_position: z.optional(z.string()),
-	goal: z.optional(z.string()),
-	goal_position: z.optional(z.string()),
 });
 
 export const updateSiteSnippetMutationResponseSchema = z.lazy(() => updateSiteSnippet204Schema);
@@ -4329,8 +3977,6 @@ export const updateSiteMetadataErrorSchema = z.object({
 	message: z.string(),
 });
 
-export const updateSiteMetadataMutationRequestSchema = z.object({});
-
 export const updateSiteMetadataMutationResponseSchema = z.lazy(() => updateSiteMetadata204Schema);
 
 export const listSiteBuildHooksPathParamsSchema = z.object({
@@ -4385,11 +4031,6 @@ export const createSiteBuildHookErrorSchema = z.object({
 	message: z.string(),
 });
 
-export const createSiteBuildHookMutationRequestSchema = z.object({
-	title: z.optional(z.string()),
-	branch: z.optional(z.string()),
-});
-
 export const createSiteBuildHookMutationResponseSchema = z.lazy(() => createSiteBuildHook201Schema);
 
 export const getSiteBuildHookPathParamsSchema = z.object({
@@ -4437,11 +4078,6 @@ export const updateSiteBuildHookErrorSchema = z.object({
 	message: z.string(),
 });
 
-export const updateSiteBuildHookMutationRequestSchema = z.object({
-	title: z.optional(z.string()),
-	branch: z.optional(z.string()),
-});
-
 export const updateSiteBuildHookMutationResponseSchema = z.lazy(() => updateSiteBuildHook204Schema);
 
 export const deleteSiteBuildHookPathParamsSchema = z.object({
@@ -4470,8 +4106,6 @@ export const listSiteDeploysPathParamsSchema = z.object({
 
 export const listSiteDeploysQueryParamsSchema = z
 	.object({
-		page: z.optional(z.coerce.number().int()),
-		per_page: z.optional(z.coerce.number().int()),
 		"deploy-previews": z.optional(z.boolean()),
 		production: z.optional(z.boolean()),
 		state: z.optional(
@@ -4495,6 +4129,8 @@ export const listSiteDeploysQueryParamsSchema = z
 		),
 		branch: z.optional(z.string()),
 		"latest-published": z.optional(z.boolean()),
+		page: z.optional(z.coerce.number().int()),
+		per_page: z.optional(z.coerce.number().int()),
 	})
 	.optional();
 
@@ -4560,7 +4196,6 @@ export const createSiteDeployPathParamsSchema = z.object({
 
 export const createSiteDeployQueryParamsSchema = z
 	.object({
-		title: z.optional(z.string()),
 		"deploy-previews": z.optional(z.boolean()),
 		production: z.optional(z.boolean()),
 		state: z.optional(
@@ -4584,6 +4219,7 @@ export const createSiteDeployQueryParamsSchema = z
 		),
 		branch: z.optional(z.string()),
 		"latest-published": z.optional(z.boolean()),
+		title: z.optional(z.string()),
 	})
 	.optional();
 
@@ -4638,116 +4274,6 @@ export const createSiteDeployErrorSchema = z.object({
 	code: z.optional(z.int()),
 	message: z.string(),
 });
-
-export const createSiteDeployMutationRequestSchema = z
-	.object({
-		files: z.optional(
-			z.object({}).describe("A hash mapping file paths to SHA1 digests of the file contents."),
-		),
-		zip: z.optional(
-			z
-				.instanceof(File)
-				.describe(
-					"A zip file containing the site files to deploy. Alternative to 'files'.\nTo use this field, set Content-Type to 'application/json' and include the zip content here.\nAlternatively, you can set Content-Type to 'application/zip' and send the zip as the raw request body (not as JSON).\n",
-				),
-		),
-		draft: z.optional(z.boolean()),
-		async: z.optional(z.boolean()),
-		functions: z.optional(z.object({})),
-		function_schedules: z.optional(
-			z.array(
-				z.object({
-					name: z.optional(z.string()),
-					cron: z.optional(z.string()),
-				}),
-			),
-		),
-		functions_config: z.optional(
-			z.object({}).catchall(
-				z.object({
-					display_name: z.optional(z.string()),
-					generator: z.optional(z.string()),
-					build_data: z.optional(z.object({})),
-					routes: z.optional(
-						z.array(
-							z.object({
-								pattern: z.optional(z.string()),
-								literal: z.optional(z.string()),
-								expression: z.optional(z.string()),
-								methods: z.optional(
-									z.array(z.enum(["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"])),
-								),
-								prefer_static: z.optional(z.boolean()),
-							}),
-						),
-					),
-					excluded_routes: z.optional(
-						z.array(
-							z.object({
-								pattern: z.optional(z.string()),
-								literal: z.optional(z.string()),
-								expression: z.optional(z.string()),
-							}),
-						),
-					),
-					priority: z.optional(z.int()),
-					traffic_rules: z.optional(
-						z.object({
-							action: z.optional(
-								z.object({
-									type: z.optional(z.string()),
-									config: z.optional(
-										z.object({
-											to: z.optional(z.string()),
-											rate_limit_config: z.optional(
-												z.object({
-													algorithm: z.optional(z.enum(["sliding_window"])),
-													window_size: z.optional(z.int()),
-													window_limit: z.optional(z.int()),
-												}),
-											),
-											aggregate: z.optional(
-												z.object({
-													keys: z.optional(
-														z.array(
-															z.object({
-																type: z.optional(z.enum(["ip", "domain"])),
-															}),
-														),
-													),
-												}),
-											),
-										}),
-									),
-								}),
-							),
-						}),
-					),
-					event_subscriptions: z.optional(z.array(z.string())),
-				}),
-			),
-		),
-		branch: z.optional(z.string()),
-		framework: z.optional(z.string()),
-		framework_version: z.optional(z.string()),
-		environment: z.optional(
-			z
-				.array(
-					z.object({
-						key: z.string(),
-						value: z.string(),
-						is_secret: z.boolean(),
-						scopes: z.array(z.enum(["builds", "functions", "runtime", "post-processing"])),
-					}),
-				)
-				.describe(
-					"A list of deploy-specific environment variable data. Data specified this way applies only\nto this specific deploy and is merged into any existing environment variables set on the\naccount and site.\n\nDeploy-specific environment variable data takes precedence over account and site\nenvironment variable data: For example, a deploy-specific variable with the key `NODE_ENV`\nwill take priority over any existing site- and account-level environment variable data\nwith the key `NODE_ENV`.\n\nEnvironment variable data may be provided at one of two times:\n\n- When creating a new Deploy with deploy files (most common)\n- When finalizing an existing Deploy with deploy files\n\nOnce set, environment variables for a specific deploy cannot be modified. Subsequent\nattempts to modify environment variable data for a deploy will be ignored.\n",
-				),
-		),
-	})
-	.describe(
-		"Deploy files can be provided in two ways:\n1. As a JSON object using 'files' (a hash mapping file paths to SHA1 digests), OR\n2. As a zip file using one of these methods:\n   - Set Content-Type to 'application/zip' and send the zip file as the raw request body\n   - Include the zip file content in the 'zip' field of this JSON object with Content-Type 'application/json'\n",
-	);
 
 export const createSiteDeployMutationResponseSchema = z.lazy(() => createSiteDeploy200Schema);
 
@@ -4872,116 +4398,6 @@ export const updateSiteDeployErrorSchema = z.object({
 	code: z.optional(z.int()),
 	message: z.string(),
 });
-
-export const updateSiteDeployMutationRequestSchema = z
-	.object({
-		files: z.optional(
-			z.object({}).describe("A hash mapping file paths to SHA1 digests of the file contents."),
-		),
-		zip: z.optional(
-			z
-				.instanceof(File)
-				.describe(
-					"A zip file containing the site files to deploy. Alternative to 'files'.\nTo use this field, set Content-Type to 'application/json' and include the zip content here.\nAlternatively, you can set Content-Type to 'application/zip' and send the zip as the raw request body (not as JSON).\n",
-				),
-		),
-		draft: z.optional(z.boolean()),
-		async: z.optional(z.boolean()),
-		functions: z.optional(z.object({})),
-		function_schedules: z.optional(
-			z.array(
-				z.object({
-					name: z.optional(z.string()),
-					cron: z.optional(z.string()),
-				}),
-			),
-		),
-		functions_config: z.optional(
-			z.object({}).catchall(
-				z.object({
-					display_name: z.optional(z.string()),
-					generator: z.optional(z.string()),
-					build_data: z.optional(z.object({})),
-					routes: z.optional(
-						z.array(
-							z.object({
-								pattern: z.optional(z.string()),
-								literal: z.optional(z.string()),
-								expression: z.optional(z.string()),
-								methods: z.optional(
-									z.array(z.enum(["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"])),
-								),
-								prefer_static: z.optional(z.boolean()),
-							}),
-						),
-					),
-					excluded_routes: z.optional(
-						z.array(
-							z.object({
-								pattern: z.optional(z.string()),
-								literal: z.optional(z.string()),
-								expression: z.optional(z.string()),
-							}),
-						),
-					),
-					priority: z.optional(z.int()),
-					traffic_rules: z.optional(
-						z.object({
-							action: z.optional(
-								z.object({
-									type: z.optional(z.string()),
-									config: z.optional(
-										z.object({
-											to: z.optional(z.string()),
-											rate_limit_config: z.optional(
-												z.object({
-													algorithm: z.optional(z.enum(["sliding_window"])),
-													window_size: z.optional(z.int()),
-													window_limit: z.optional(z.int()),
-												}),
-											),
-											aggregate: z.optional(
-												z.object({
-													keys: z.optional(
-														z.array(
-															z.object({
-																type: z.optional(z.enum(["ip", "domain"])),
-															}),
-														),
-													),
-												}),
-											),
-										}),
-									),
-								}),
-							),
-						}),
-					),
-					event_subscriptions: z.optional(z.array(z.string())),
-				}),
-			),
-		),
-		branch: z.optional(z.string()),
-		framework: z.optional(z.string()),
-		framework_version: z.optional(z.string()),
-		environment: z.optional(
-			z
-				.array(
-					z.object({
-						key: z.string(),
-						value: z.string(),
-						is_secret: z.boolean(),
-						scopes: z.array(z.enum(["builds", "functions", "runtime", "post-processing"])),
-					}),
-				)
-				.describe(
-					"A list of deploy-specific environment variable data. Data specified this way applies only\nto this specific deploy and is merged into any existing environment variables set on the\naccount and site.\n\nDeploy-specific environment variable data takes precedence over account and site\nenvironment variable data: For example, a deploy-specific variable with the key `NODE_ENV`\nwill take priority over any existing site- and account-level environment variable data\nwith the key `NODE_ENV`.\n\nEnvironment variable data may be provided at one of two times:\n\n- When creating a new Deploy with deploy files (most common)\n- When finalizing an existing Deploy with deploy files\n\nOnce set, environment variables for a specific deploy cannot be modified. Subsequent\nattempts to modify environment variable data for a deploy will be ignored.\n",
-				),
-		),
-	})
-	.describe(
-		"Deploy files can be provided in two ways:\n1. As a JSON object using 'files' (a hash mapping file paths to SHA1 digests), OR\n2. As a zip file using one of these methods:\n   - Set Content-Type to 'application/zip' and send the zip file as the raw request body\n   - Include the zip file content in the 'zip' field of this JSON object with Content-Type 'application/json'\n",
-	);
 
 export const updateSiteDeployMutationResponseSchema = z.lazy(() => updateSiteDeploy200Schema);
 
@@ -6142,17 +5558,6 @@ export const createHookBySiteIdErrorSchema = z.object({
 	message: z.string(),
 });
 
-export const createHookBySiteIdMutationRequestSchema = z.object({
-	id: z.optional(z.string()),
-	site_id: z.optional(z.string()),
-	type: z.optional(z.string()),
-	event: z.optional(z.string()),
-	data: z.optional(z.object({})),
-	created_at: z.optional(z.string()),
-	updated_at: z.optional(z.string()),
-	disabled: z.optional(z.boolean()),
-});
-
 export const createHookBySiteIdMutationResponseSchema = z.lazy(() => createHookBySiteId201Schema);
 
 export const getHookPathParamsSchema = z.object({
@@ -6207,17 +5612,6 @@ export const updateHook200Schema = z.object({
 export const updateHookErrorSchema = z.object({
 	code: z.optional(z.int()),
 	message: z.string(),
-});
-
-export const updateHookMutationRequestSchema = z.object({
-	id: z.optional(z.string()),
-	site_id: z.optional(z.string()),
-	type: z.optional(z.string()),
-	event: z.optional(z.string()),
-	data: z.optional(z.object({})),
-	created_at: z.optional(z.string()),
-	updated_at: z.optional(z.string()),
-	disabled: z.optional(z.boolean()),
 });
 
 export const updateHookMutationResponseSchema = z.lazy(() => updateHook200Schema);
@@ -8263,8 +7657,6 @@ export const createServiceInstanceErrorSchema = z.object({
 	message: z.string(),
 });
 
-export const createServiceInstanceMutationRequestSchema = z.object({});
-
 export const createServiceInstanceMutationResponseSchema = z.lazy(
 	() => createServiceInstance201Schema,
 );
@@ -8321,8 +7713,6 @@ export const updateServiceInstanceErrorSchema = z.object({
 	code: z.optional(z.int()),
 	message: z.string(),
 });
-
-export const updateServiceInstanceMutationRequestSchema = z.object({});
 
 export const updateServiceInstanceMutationResponseSchema = z.lazy(
 	() => updateServiceInstance204Schema,
@@ -8498,10 +7888,6 @@ export const createSplitTestErrorSchema = z.object({
 	message: z.string(),
 });
 
-export const createSplitTestMutationRequestSchema = z.object({
-	branch_tests: z.optional(z.object({})),
-});
-
 export const createSplitTestMutationResponseSchema = z.lazy(() => createSplitTest201Schema);
 
 export const getSplitTestsPathParamsSchema = z.object({
@@ -8561,10 +7947,6 @@ export const updateSplitTest201Schema = z.object({
 export const updateSplitTestErrorSchema = z.object({
 	code: z.optional(z.int()),
 	message: z.string(),
-});
-
-export const updateSplitTestMutationRequestSchema = z.object({
-	branch_tests: z.optional(z.object({})),
 });
 
 export const updateSplitTestMutationResponseSchema = z.lazy(() => updateSplitTest201Schema);
@@ -9249,12 +8631,6 @@ export const createSiteDevServerHookErrorSchema = z.object({
 	message: z.string(),
 });
 
-export const createSiteDevServerHookMutationRequestSchema = z.object({
-	title: z.optional(z.string()),
-	branch: z.optional(z.string()),
-	type: z.optional(z.enum(["new_dev_server", "content_refresh"])),
-});
-
 export const createSiteDevServerHookMutationResponseSchema = z.lazy(
 	() => createSiteDevServerHook201Schema,
 );
@@ -9303,12 +8679,6 @@ export const updateSiteDevServerHook204Schema = z.unknown();
 export const updateSiteDevServerHookErrorSchema = z.object({
 	code: z.optional(z.int()),
 	message: z.string(),
-});
-
-export const updateSiteDevServerHookMutationRequestSchema = z.object({
-	title: z.optional(z.string()),
-	branch: z.optional(z.string()),
-	type: z.optional(z.enum(["new_dev_server", "content_refresh"])),
 });
 
 export const updateSiteDevServerHookMutationResponseSchema = z.lazy(

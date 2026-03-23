@@ -55,13 +55,11 @@ import type {
 	CreateEnvVarsMutationResponse,
 	CreateEnvVarsPathParams,
 	CreateEnvVarsQueryParams,
-	CreateHookBySiteIdMutationRequest,
 	CreateHookBySiteIdMutationResponse,
 	CreateHookBySiteIdQueryParams,
 	CreatePluginRunMutationRequest,
 	CreatePluginRunMutationResponse,
 	CreatePluginRunPathParams,
-	CreateServiceInstanceMutationRequest,
 	CreateServiceInstanceMutationResponse,
 	CreateServiceInstancePathParams,
 	CreateSiteAssetMutationResponse,
@@ -70,7 +68,6 @@ import type {
 	CreateSiteBuild400,
 	CreateSiteBuild404,
 	CreateSiteBuild422,
-	CreateSiteBuildHookMutationRequest,
 	CreateSiteBuildHookMutationResponse,
 	CreateSiteBuildHookPathParams,
 	CreateSiteBuildMutationResponse,
@@ -85,11 +82,9 @@ import type {
 	CreateSiteDatabaseSnapshotMutationRequest,
 	CreateSiteDatabaseSnapshotMutationResponse,
 	CreateSiteDatabaseSnapshotPathParams,
-	CreateSiteDeployMutationRequest,
 	CreateSiteDeployMutationResponse,
 	CreateSiteDeployPathParams,
 	CreateSiteDeployQueryParams,
-	CreateSiteDevServerHookMutationRequest,
 	CreateSiteDevServerHookMutationResponse,
 	CreateSiteDevServerHookPathParams,
 	CreateSiteDevServerMutationResponse,
@@ -99,13 +94,10 @@ import type {
 	CreateSiteInTeamMutationResponse,
 	CreateSiteInTeamPathParams,
 	CreateSiteInTeamQueryParams,
-	CreateSiteMutationRequest,
 	CreateSiteMutationResponse,
 	CreateSiteQueryParams,
-	CreateSiteSnippetMutationRequest,
 	CreateSiteSnippetMutationResponse,
 	CreateSiteSnippetPathParams,
-	CreateSplitTestMutationRequest,
 	CreateSplitTestMutationResponse,
 	CreateSplitTestPathParams,
 	CreateTicket401,
@@ -389,40 +381,31 @@ import type {
 	UpdateEnvVarMutationResponse,
 	UpdateEnvVarPathParams,
 	UpdateEnvVarQueryParams,
-	UpdateHookMutationRequest,
 	UpdateHookMutationResponse,
 	UpdateHookPathParams,
 	UpdatePluginMutationRequest,
 	UpdatePluginMutationResponse,
 	UpdatePluginPathParams,
-	UpdateServiceInstanceMutationRequest,
 	UpdateServiceInstanceMutationResponse,
 	UpdateServiceInstancePathParams,
 	UpdateSiteAssetMutationResponse,
 	UpdateSiteAssetPathParams,
 	UpdateSiteAssetQueryParams,
-	UpdateSiteBuildHookMutationRequest,
 	UpdateSiteBuildHookMutationResponse,
 	UpdateSiteBuildHookPathParams,
 	UpdateSiteBuildLogMutationResponse,
 	UpdateSiteBuildLogPathParams,
-	UpdateSiteDeployMutationRequest,
 	UpdateSiteDeployMutationResponse,
 	UpdateSiteDeployPathParams,
 	UpdateSiteDeployQueryParams,
-	UpdateSiteDevServerHookMutationRequest,
 	UpdateSiteDevServerHookMutationResponse,
 	UpdateSiteDevServerHookPathParams,
-	UpdateSiteMetadataMutationRequest,
 	UpdateSiteMetadataMutationResponse,
 	UpdateSiteMetadataPathParams,
-	UpdateSiteMutationRequest,
 	UpdateSiteMutationResponse,
 	UpdateSitePathParams,
-	UpdateSiteSnippetMutationRequest,
 	UpdateSiteSnippetMutationResponse,
 	UpdateSiteSnippetPathParams,
-	UpdateSplitTestMutationRequest,
 	UpdateSplitTestMutationResponse,
 	UpdateSplitTestPathParams,
 	UploadDeployFileMutationResponse,
@@ -463,11 +446,9 @@ export async function listSites({
  * {@link /sites}
  */
 export async function createSite({
-	body,
 	queryParams,
 	config = {},
 }: {
-	body: CreateSiteMutationRequest;
 	queryParams?: CreateSiteQueryParams;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
@@ -476,11 +457,11 @@ export async function createSite({
 	const data = await request<
 		CreateSiteMutationResponse,
 		ErrorWrapper<Error>,
-		CreateSiteMutationRequest,
+		null,
 		Record<string, string>,
 		CreateSiteQueryParams,
 		Record<string, string>
-	>({ method: "POST", url: `/sites`, queryParams, body, ...requestConfig });
+	>({ method: "POST", url: `/sites`, queryParams, ...requestConfig });
 	return data;
 }
 
@@ -520,11 +501,9 @@ export async function getSite({
  */
 export async function updateSite({
 	pathParams: { site_id },
-	body,
 	config = {},
 }: {
 	pathParams: UpdateSitePathParams;
-	body: UpdateSiteMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -536,11 +515,11 @@ export async function updateSite({
 	const data = await request<
 		UpdateSiteMutationResponse,
 		ErrorWrapper<Error>,
-		UpdateSiteMutationRequest,
+		null,
 		Record<string, string>,
 		Record<string, string>,
 		UpdateSitePathParams
-	>({ method: "PATCH", url: `/sites/${site_id}`, body, ...requestConfig });
+	>({ method: "PATCH", url: `/sites/${site_id}`, ...requestConfig });
 	return data;
 }
 
@@ -1366,11 +1345,9 @@ export async function listSiteSnippets({
  */
 export async function createSiteSnippet({
 	pathParams: { site_id },
-	body,
 	config = {},
 }: {
 	pathParams: CreateSiteSnippetPathParams;
-	body: CreateSiteSnippetMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -1382,11 +1359,11 @@ export async function createSiteSnippet({
 	const data = await request<
 		CreateSiteSnippetMutationResponse,
 		ErrorWrapper<Error>,
-		CreateSiteSnippetMutationRequest,
+		null,
 		Record<string, string>,
 		Record<string, string>,
 		CreateSiteSnippetPathParams
-	>({ method: "POST", url: `/sites/${site_id}/snippets`, body, ...requestConfig });
+	>({ method: "POST", url: `/sites/${site_id}/snippets`, ...requestConfig });
 	return data;
 }
 
@@ -1426,11 +1403,9 @@ export async function getSiteSnippet({
  */
 export async function updateSiteSnippet({
 	pathParams: { site_id, snippet_id },
-	body,
 	config = {},
 }: {
 	pathParams: UpdateSiteSnippetPathParams;
-	body: UpdateSiteSnippetMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -1446,11 +1421,11 @@ export async function updateSiteSnippet({
 	const data = await request<
 		UpdateSiteSnippetMutationResponse,
 		ErrorWrapper<Error>,
-		UpdateSiteSnippetMutationRequest,
+		null,
 		Record<string, string>,
 		Record<string, string>,
 		UpdateSiteSnippetPathParams
-	>({ method: "PUT", url: `/sites/${site_id}/snippets/${snippet_id}`, body, ...requestConfig });
+	>({ method: "PUT", url: `/sites/${site_id}/snippets/${snippet_id}`, ...requestConfig });
 	return data;
 }
 
@@ -1517,11 +1492,9 @@ export async function getSiteMetadata({
  */
 export async function updateSiteMetadata({
 	pathParams: { site_id },
-	body,
 	config = {},
 }: {
 	pathParams: UpdateSiteMetadataPathParams;
-	body: UpdateSiteMetadataMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -1533,11 +1506,11 @@ export async function updateSiteMetadata({
 	const data = await request<
 		UpdateSiteMetadataMutationResponse,
 		ErrorWrapper<Error>,
-		UpdateSiteMetadataMutationRequest,
+		null,
 		Record<string, string>,
 		Record<string, string>,
 		UpdateSiteMetadataPathParams
-	>({ method: "PUT", url: `/sites/${site_id}/metadata`, body, ...requestConfig });
+	>({ method: "PUT", url: `/sites/${site_id}/metadata`, ...requestConfig });
 	return data;
 }
 
@@ -1573,11 +1546,9 @@ export async function listSiteBuildHooks({
  */
 export async function createSiteBuildHook({
 	pathParams: { site_id },
-	body,
 	config = {},
 }: {
 	pathParams: CreateSiteBuildHookPathParams;
-	body: CreateSiteBuildHookMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -1589,11 +1560,11 @@ export async function createSiteBuildHook({
 	const data = await request<
 		CreateSiteBuildHookMutationResponse,
 		ErrorWrapper<Error>,
-		CreateSiteBuildHookMutationRequest,
+		null,
 		Record<string, string>,
 		Record<string, string>,
 		CreateSiteBuildHookPathParams
-	>({ method: "POST", url: `/sites/${site_id}/build_hooks`, body, ...requestConfig });
+	>({ method: "POST", url: `/sites/${site_id}/build_hooks`, ...requestConfig });
 	return data;
 }
 
@@ -1633,11 +1604,9 @@ export async function getSiteBuildHook({
  */
 export async function updateSiteBuildHook({
 	pathParams: { site_id, id },
-	body,
 	config = {},
 }: {
 	pathParams: UpdateSiteBuildHookPathParams;
-	body: UpdateSiteBuildHookMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -1653,11 +1622,11 @@ export async function updateSiteBuildHook({
 	const data = await request<
 		UpdateSiteBuildHookMutationResponse,
 		ErrorWrapper<Error>,
-		UpdateSiteBuildHookMutationRequest,
+		null,
 		Record<string, string>,
 		Record<string, string>,
 		UpdateSiteBuildHookPathParams
-	>({ method: "PUT", url: `/sites/${site_id}/build_hooks/${id}`, body, ...requestConfig });
+	>({ method: "PUT", url: `/sites/${site_id}/build_hooks/${id}`, ...requestConfig });
 	return data;
 }
 
@@ -1726,12 +1695,10 @@ export async function listSiteDeploys({
  */
 export async function createSiteDeploy({
 	pathParams: { site_id },
-	body,
 	queryParams,
 	config = {},
 }: {
 	pathParams: CreateSiteDeployPathParams;
-	body: CreateSiteDeployMutationRequest;
 	queryParams?: CreateSiteDeployQueryParams;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
@@ -1744,11 +1711,11 @@ export async function createSiteDeploy({
 	const data = await request<
 		CreateSiteDeployMutationResponse,
 		ErrorWrapper<Error>,
-		CreateSiteDeployMutationRequest,
+		null,
 		Record<string, string>,
 		CreateSiteDeployQueryParams,
 		CreateSiteDeployPathParams
-	>({ method: "POST", url: `/sites/${site_id}/deploys`, queryParams, body, ...requestConfig });
+	>({ method: "POST", url: `/sites/${site_id}/deploys`, queryParams, ...requestConfig });
 	return data;
 }
 
@@ -1788,12 +1755,10 @@ export async function getSiteDeploy({
  */
 export async function updateSiteDeploy({
 	pathParams: { site_id, deploy_id },
-	body,
 	queryParams,
 	config = {},
 }: {
 	pathParams: UpdateSiteDeployPathParams;
-	body: UpdateSiteDeployMutationRequest;
 	queryParams?: UpdateSiteDeployQueryParams;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
@@ -1810,7 +1775,7 @@ export async function updateSiteDeploy({
 	const data = await request<
 		UpdateSiteDeployMutationResponse,
 		ErrorWrapper<Error>,
-		UpdateSiteDeployMutationRequest,
+		null,
 		Record<string, string>,
 		UpdateSiteDeployQueryParams,
 		UpdateSiteDeployPathParams
@@ -1818,7 +1783,6 @@ export async function updateSiteDeploy({
 		method: "PUT",
 		url: `/sites/${site_id}/deploys/${deploy_id}`,
 		queryParams,
-		body,
 		...requestConfig,
 	});
 	return data;
@@ -2623,11 +2587,9 @@ export async function listHooksBySiteId({
  * {@link /hooks}
  */
 export async function createHookBySiteId({
-	body,
 	queryParams,
 	config = {},
 }: {
-	body: CreateHookBySiteIdMutationRequest;
 	queryParams: CreateHookBySiteIdQueryParams;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
@@ -2636,11 +2598,11 @@ export async function createHookBySiteId({
 	const data = await request<
 		CreateHookBySiteIdMutationResponse,
 		ErrorWrapper<Error>,
-		CreateHookBySiteIdMutationRequest,
+		null,
 		Record<string, string>,
 		CreateHookBySiteIdQueryParams,
 		Record<string, string>
-	>({ method: "POST", url: `/hooks`, queryParams, body, ...requestConfig });
+	>({ method: "POST", url: `/hooks`, queryParams, ...requestConfig });
 	return data;
 }
 
@@ -2676,11 +2638,9 @@ export async function getHook({
  */
 export async function updateHook({
 	pathParams: { hook_id },
-	body,
 	config = {},
 }: {
 	pathParams: UpdateHookPathParams;
-	body: UpdateHookMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -2692,11 +2652,11 @@ export async function updateHook({
 	const data = await request<
 		UpdateHookMutationResponse,
 		ErrorWrapper<Error>,
-		UpdateHookMutationRequest,
+		null,
 		Record<string, string>,
 		Record<string, string>,
 		UpdateHookPathParams
-	>({ method: "PUT", url: `/hooks/${hook_id}`, body, ...requestConfig });
+	>({ method: "PUT", url: `/hooks/${hook_id}`, ...requestConfig });
 	return data;
 }
 
@@ -3867,11 +3827,9 @@ export async function listServiceInstancesForSite({
  */
 export async function createServiceInstance({
 	pathParams: { site_id, addon },
-	body,
 	config = {},
 }: {
 	pathParams: CreateServiceInstancePathParams;
-	body: CreateServiceInstanceMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -3887,16 +3845,11 @@ export async function createServiceInstance({
 	const data = await request<
 		CreateServiceInstanceMutationResponse,
 		ErrorWrapper<Error>,
-		CreateServiceInstanceMutationRequest,
+		null,
 		Record<string, string>,
 		Record<string, string>,
 		CreateServiceInstancePathParams
-	>({
-		method: "POST",
-		url: `/sites/${site_id}/services/${addon}/instances`,
-		body,
-		...requestConfig,
-	});
+	>({ method: "POST", url: `/sites/${site_id}/services/${addon}/instances`, ...requestConfig });
 	return data;
 }
 
@@ -3944,11 +3897,9 @@ export async function showServiceInstance({
  */
 export async function updateServiceInstance({
 	pathParams: { site_id, addon, instance_id },
-	body,
 	config = {},
 }: {
 	pathParams: UpdateServiceInstancePathParams;
-	body: UpdateServiceInstanceMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -3968,14 +3919,13 @@ export async function updateServiceInstance({
 	const data = await request<
 		UpdateServiceInstanceMutationResponse,
 		ErrorWrapper<Error>,
-		UpdateServiceInstanceMutationRequest,
+		null,
 		Record<string, string>,
 		Record<string, string>,
 		UpdateServiceInstancePathParams
 	>({
 		method: "PUT",
 		url: `/sites/${site_id}/services/${addon}/instances/${instance_id}`,
-		body,
 		...requestConfig,
 	});
 	return data;
@@ -4123,11 +4073,9 @@ export async function getCurrentUser({
  */
 export async function createSplitTest({
 	pathParams: { site_id },
-	body,
 	config = {},
 }: {
 	pathParams: CreateSplitTestPathParams;
-	body: CreateSplitTestMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -4139,11 +4087,11 @@ export async function createSplitTest({
 	const data = await request<
 		CreateSplitTestMutationResponse,
 		ErrorWrapper<Error>,
-		CreateSplitTestMutationRequest,
+		null,
 		Record<string, string>,
 		Record<string, string>,
 		CreateSplitTestPathParams
-	>({ method: "POST", url: `/sites/${site_id}/traffic_splits`, body, ...requestConfig });
+	>({ method: "POST", url: `/sites/${site_id}/traffic_splits`, ...requestConfig });
 	return data;
 }
 
@@ -4179,11 +4127,9 @@ export async function getSplitTests({
  */
 export async function updateSplitTest({
 	pathParams: { site_id, split_test_id },
-	body,
 	config = {},
 }: {
 	pathParams: UpdateSplitTestPathParams;
-	body: UpdateSplitTestMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -4199,16 +4145,11 @@ export async function updateSplitTest({
 	const data = await request<
 		UpdateSplitTestMutationResponse,
 		ErrorWrapper<Error>,
-		UpdateSplitTestMutationRequest,
+		null,
 		Record<string, string>,
 		Record<string, string>,
 		UpdateSplitTestPathParams
-	>({
-		method: "PUT",
-		url: `/sites/${site_id}/traffic_splits/${split_test_id}`,
-		body,
-		...requestConfig,
-	});
+	>({ method: "PUT", url: `/sites/${site_id}/traffic_splits/${split_test_id}`, ...requestConfig });
 	return data;
 }
 
@@ -4787,11 +4728,9 @@ export async function listSiteDevServerHooks({
  */
 export async function createSiteDevServerHook({
 	pathParams: { site_id },
-	body,
 	config = {},
 }: {
 	pathParams: CreateSiteDevServerHookPathParams;
-	body: CreateSiteDevServerHookMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -4803,11 +4742,11 @@ export async function createSiteDevServerHook({
 	const data = await request<
 		CreateSiteDevServerHookMutationResponse,
 		ErrorWrapper<Error>,
-		CreateSiteDevServerHookMutationRequest,
+		null,
 		Record<string, string>,
 		Record<string, string>,
 		CreateSiteDevServerHookPathParams
-	>({ method: "POST", url: `/sites/${site_id}/dev_server_hooks`, body, ...requestConfig });
+	>({ method: "POST", url: `/sites/${site_id}/dev_server_hooks`, ...requestConfig });
 	return data;
 }
 
@@ -4847,11 +4786,9 @@ export async function getSiteDevServerHook({
  */
 export async function updateSiteDevServerHook({
 	pathParams: { site_id, id },
-	body,
 	config = {},
 }: {
 	pathParams: UpdateSiteDevServerHookPathParams;
-	body: UpdateSiteDevServerHookMutationRequest;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -4867,11 +4804,11 @@ export async function updateSiteDevServerHook({
 	const data = await request<
 		UpdateSiteDevServerHookMutationResponse,
 		ErrorWrapper<Error>,
-		UpdateSiteDevServerHookMutationRequest,
+		null,
 		Record<string, string>,
 		Record<string, string>,
 		UpdateSiteDevServerHookPathParams
-	>({ method: "PUT", url: `/sites/${site_id}/dev_server_hooks/${id}`, body, ...requestConfig });
+	>({ method: "PUT", url: `/sites/${site_id}/dev_server_hooks/${id}`, ...requestConfig });
 	return data;
 }
 

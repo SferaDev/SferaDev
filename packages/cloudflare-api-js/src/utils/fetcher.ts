@@ -22,7 +22,7 @@ export type FetcherOptions<TBody, THeaders, TQueryParams, TPathParams> = {
 	signal?: AbortSignal | undefined;
 } & FetcherConfig;
 
-export async function client<TData, TError, TBody, THeaders, TQueryParams, TPathParams>({
+async function client<TData, TError, TBody, THeaders, TQueryParams, TPathParams>({
 	url,
 	method,
 	body,

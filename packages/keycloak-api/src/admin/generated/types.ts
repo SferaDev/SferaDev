@@ -4814,14 +4814,14 @@ export type DELETEAdminRealmsRealmAttackDetectionBruteForceUsersMutation = {
 
 export type GETAdminRealmsRealmAttackDetectionBruteForceUsersUserIdPathParams = {
 	/**
-	 * @type string
-	 */
-	userId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @type string
+	 */
+	userId: string;
 };
 
 /**
@@ -4842,14 +4842,14 @@ export type GETAdminRealmsRealmAttackDetectionBruteForceUsersUserIdQuery = {
 
 export type DELETEAdminRealmsRealmAttackDetectionBruteForceUsersUserIdPathParams = {
 	/**
-	 * @type string
-	 */
-	userId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @type string
+	 */
+	userId: string;
 };
 
 /**
@@ -4947,14 +4947,14 @@ export type POSTAdminRealmsRealmAuthenticationConfigMutation = {
 
 export type GETAdminRealmsRealmAuthenticationConfigDescriptionProviderIdPathParams = {
 	/**
-	 * @type string
-	 */
-	providerId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @type string
+	 */
+	providerId: string;
 };
 
 /**
@@ -4974,15 +4974,15 @@ export type GETAdminRealmsRealmAuthenticationConfigDescriptionProviderIdQuery = 
 
 export type GETAdminRealmsRealmAuthenticationConfigIdPathParams = {
 	/**
-	 * @description Configuration id
-	 * @type string
-	 */
-	id: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @description Configuration id
+	 * @type string
+	 */
+	id: string;
 };
 
 /**
@@ -5001,15 +5001,15 @@ export type GETAdminRealmsRealmAuthenticationConfigIdQuery = {
 
 export type PUTAdminRealmsRealmAuthenticationConfigIdPathParams = {
 	/**
-	 * @description Configuration id
-	 * @type string
-	 */
-	id: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @description Configuration id
+	 * @type string
+	 */
+	id: string;
 };
 
 /**
@@ -5032,15 +5032,15 @@ export type PUTAdminRealmsRealmAuthenticationConfigIdMutation = {
 
 export type DELETEAdminRealmsRealmAuthenticationConfigIdPathParams = {
 	/**
-	 * @description Configuration id
-	 * @type string
-	 */
-	id: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @description Configuration id
+	 * @type string
+	 */
+	id: string;
 };
 
 /**
@@ -5085,14 +5085,14 @@ export type POSTAdminRealmsRealmAuthenticationExecutionsMutation = {
 
 export type GETAdminRealmsRealmAuthenticationExecutionsExecutionIdPathParams = {
 	/**
-	 * @type string
-	 */
-	executionId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @type string
+	 */
+	executionId: string;
 };
 
 /**
@@ -5112,15 +5112,15 @@ export type GETAdminRealmsRealmAuthenticationExecutionsExecutionIdQuery = {
 
 export type DELETEAdminRealmsRealmAuthenticationExecutionsExecutionIdPathParams = {
 	/**
-	 * @description Execution id
-	 * @type string
-	 */
-	executionId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @description Execution id
+	 * @type string
+	 */
+	executionId: string;
 };
 
 /**
@@ -5139,15 +5139,15 @@ export type DELETEAdminRealmsRealmAuthenticationExecutionsExecutionIdMutation = 
 
 export type POSTAdminRealmsRealmAuthenticationExecutionsExecutionIdConfigPathParams = {
 	/**
-	 * @description Execution id
-	 * @type string
-	 */
-	executionId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @description Execution id
+	 * @type string
+	 */
+	executionId: string;
 };
 
 /**
@@ -5175,6 +5175,11 @@ export type POSTAdminRealmsRealmAuthenticationExecutionsExecutionIdConfigMutatio
 
 export type GETAdminRealmsRealmAuthenticationExecutionsExecutionIdConfigIdPathParams = {
 	/**
+	 * @description realm name (not id!)
+	 * @type string
+	 */
+	realm: string;
+	/**
 	 * @description Execution id
 	 * @type string
 	 */
@@ -5184,11 +5189,6 @@ export type GETAdminRealmsRealmAuthenticationExecutionsExecutionIdConfigIdPathPa
 	 * @type string
 	 */
 	id: string;
-	/**
-	 * @description realm name (not id!)
-	 * @type string
-	 */
-	realm: string;
 };
 
 /**
@@ -5208,15 +5208,15 @@ export type GETAdminRealmsRealmAuthenticationExecutionsExecutionIdConfigIdQuery 
 
 export type POSTAdminRealmsRealmAuthenticationExecutionsExecutionIdLowerPriorityPathParams = {
 	/**
-	 * @description Execution id
-	 * @type string
-	 */
-	executionId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @description Execution id
+	 * @type string
+	 */
+	executionId: string;
 };
 
 /**
@@ -5235,15 +5235,15 @@ export type POSTAdminRealmsRealmAuthenticationExecutionsExecutionIdLowerPriority
 
 export type POSTAdminRealmsRealmAuthenticationExecutionsExecutionIdRaisePriorityPathParams = {
 	/**
-	 * @description Execution id
-	 * @type string
-	 */
-	executionId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @description Execution id
+	 * @type string
+	 */
+	executionId: string;
 };
 
 /**
@@ -5315,15 +5315,15 @@ export type POSTAdminRealmsRealmAuthenticationFlowsMutation = {
 
 export type POSTAdminRealmsRealmAuthenticationFlowsFlowAliasCopyPathParams = {
 	/**
-	 * @description name of the existing authentication flow
-	 * @type string
-	 */
-	flowAlias: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @description name of the existing authentication flow
+	 * @type string
+	 */
+	flowAlias: string;
 };
 
 /**
@@ -5352,15 +5352,15 @@ export type POSTAdminRealmsRealmAuthenticationFlowsFlowAliasCopyMutation = {
 
 export type GETAdminRealmsRealmAuthenticationFlowsFlowAliasExecutionsPathParams = {
 	/**
-	 * @description Flow alias
-	 * @type string
-	 */
-	flowAlias: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @description Flow alias
+	 * @type string
+	 */
+	flowAlias: string;
 };
 
 /**
@@ -5380,15 +5380,15 @@ export type GETAdminRealmsRealmAuthenticationFlowsFlowAliasExecutionsQuery = {
 
 export type PUTAdminRealmsRealmAuthenticationFlowsFlowAliasExecutionsPathParams = {
 	/**
-	 * @description Flow alias
-	 * @type string
-	 */
-	flowAlias: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @description Flow alias
+	 * @type string
+	 */
+	flowAlias: string;
 };
 
 /**
@@ -5416,15 +5416,15 @@ export type PUTAdminRealmsRealmAuthenticationFlowsFlowAliasExecutionsMutation = 
 
 export type POSTAdminRealmsRealmAuthenticationFlowsFlowAliasExecutionsExecutionPathParams = {
 	/**
-	 * @description Alias of parent flow
-	 * @type string
-	 */
-	flowAlias: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @description Alias of parent flow
+	 * @type string
+	 */
+	flowAlias: string;
 };
 
 /**
@@ -5448,15 +5448,15 @@ export type POSTAdminRealmsRealmAuthenticationFlowsFlowAliasExecutionsExecutionM
 
 export type POSTAdminRealmsRealmAuthenticationFlowsFlowAliasExecutionsFlowPathParams = {
 	/**
-	 * @description Alias of parent authentication flow
-	 * @type string
-	 */
-	flowAlias: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @description Alias of parent authentication flow
+	 * @type string
+	 */
+	flowAlias: string;
 };
 
 /**
@@ -5485,15 +5485,15 @@ export type POSTAdminRealmsRealmAuthenticationFlowsFlowAliasExecutionsFlowMutati
 
 export type GETAdminRealmsRealmAuthenticationFlowsIdPathParams = {
 	/**
-	 * @description Flow id
-	 * @type string
-	 */
-	id: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @description Flow id
+	 * @type string
+	 */
+	id: string;
 };
 
 /**
@@ -5512,14 +5512,14 @@ export type GETAdminRealmsRealmAuthenticationFlowsIdQuery = {
 
 export type PUTAdminRealmsRealmAuthenticationFlowsIdPathParams = {
 	/**
-	 * @type string
-	 */
-	id: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @type string
+	 */
+	id: string;
 };
 
 /**
@@ -5547,15 +5547,15 @@ export type PUTAdminRealmsRealmAuthenticationFlowsIdMutation = {
 
 export type DELETEAdminRealmsRealmAuthenticationFlowsIdPathParams = {
 	/**
-	 * @description Flow id
-	 * @type string
-	 */
-	id: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @description Flow id
+	 * @type string
+	 */
+	id: string;
 };
 
 /**
@@ -5696,15 +5696,15 @@ export type GETAdminRealmsRealmAuthenticationRequiredActionsQuery = {
 
 export type GETAdminRealmsRealmAuthenticationRequiredActionsAliasPathParams = {
 	/**
-	 * @description Alias of required action
-	 * @type string
-	 */
-	alias: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @description Alias of required action
+	 * @type string
+	 */
+	alias: string;
 };
 
 /**
@@ -5724,15 +5724,15 @@ export type GETAdminRealmsRealmAuthenticationRequiredActionsAliasQuery = {
 
 export type PUTAdminRealmsRealmAuthenticationRequiredActionsAliasPathParams = {
 	/**
-	 * @description Alias of required action
-	 * @type string
-	 */
-	alias: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @description Alias of required action
+	 * @type string
+	 */
+	alias: string;
 };
 
 /**
@@ -5755,15 +5755,15 @@ export type PUTAdminRealmsRealmAuthenticationRequiredActionsAliasMutation = {
 
 export type DELETEAdminRealmsRealmAuthenticationRequiredActionsAliasPathParams = {
 	/**
-	 * @description Alias of required action
-	 * @type string
-	 */
-	alias: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @description Alias of required action
+	 * @type string
+	 */
+	alias: string;
 };
 
 /**
@@ -5782,15 +5782,15 @@ export type DELETEAdminRealmsRealmAuthenticationRequiredActionsAliasMutation = {
 
 export type GETAdminRealmsRealmAuthenticationRequiredActionsAliasConfigPathParams = {
 	/**
-	 * @description Alias of required action
-	 * @type string
-	 */
-	alias: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @description Alias of required action
+	 * @type string
+	 */
+	alias: string;
 };
 
 /**
@@ -5810,15 +5810,15 @@ export type GETAdminRealmsRealmAuthenticationRequiredActionsAliasConfigQuery = {
 
 export type PUTAdminRealmsRealmAuthenticationRequiredActionsAliasConfigPathParams = {
 	/**
-	 * @description Alias of required action
-	 * @type string
-	 */
-	alias: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @description Alias of required action
+	 * @type string
+	 */
+	alias: string;
 };
 
 /**
@@ -5841,15 +5841,15 @@ export type PUTAdminRealmsRealmAuthenticationRequiredActionsAliasConfigMutation 
 
 export type DELETEAdminRealmsRealmAuthenticationRequiredActionsAliasConfigPathParams = {
 	/**
-	 * @description Alias of required action
-	 * @type string
-	 */
-	alias: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @description Alias of required action
+	 * @type string
+	 */
+	alias: string;
 };
 
 /**
@@ -5868,15 +5868,15 @@ export type DELETEAdminRealmsRealmAuthenticationRequiredActionsAliasConfigMutati
 
 export type GETAdminRealmsRealmAuthenticationRequiredActionsAliasConfigDescriptionPathParams = {
 	/**
-	 * @description Alias of required action
-	 * @type string
-	 */
-	alias: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @description Alias of required action
+	 * @type string
+	 */
+	alias: string;
 };
 
 /**
@@ -5896,15 +5896,15 @@ export type GETAdminRealmsRealmAuthenticationRequiredActionsAliasConfigDescripti
 
 export type POSTAdminRealmsRealmAuthenticationRequiredActionsAliasLowerPriorityPathParams = {
 	/**
-	 * @description Alias of required action
-	 * @type string
-	 */
-	alias: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @description Alias of required action
+	 * @type string
+	 */
+	alias: string;
 };
 
 /**
@@ -5923,15 +5923,15 @@ export type POSTAdminRealmsRealmAuthenticationRequiredActionsAliasLowerPriorityM
 
 export type POSTAdminRealmsRealmAuthenticationRequiredActionsAliasRaisePriorityPathParams = {
 	/**
-	 * @description Alias of required action
-	 * @type string
-	 */
-	alias: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @description Alias of required action
+	 * @type string
+	 */
+	alias: string;
 };
 
 /**
@@ -6465,14 +6465,14 @@ export type POSTAdminRealmsRealmClientsInitialAccessMutation = {
 
 export type DELETEAdminRealmsRealmClientsInitialAccessIdPathParams = {
 	/**
-	 * @type string
-	 */
-	id: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @type string
+	 */
+	id: string;
 };
 
 /**
@@ -6552,14 +6552,14 @@ export type POSTAdminRealmsRealmComponentsMutation = {
 
 export type GETAdminRealmsRealmComponentsIdPathParams = {
 	/**
-	 * @type string
-	 */
-	id: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @type string
+	 */
+	id: string;
 };
 
 /**
@@ -6577,14 +6577,14 @@ export type GETAdminRealmsRealmComponentsIdQuery = {
 
 export type PUTAdminRealmsRealmComponentsIdPathParams = {
 	/**
-	 * @type string
-	 */
-	id: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @type string
+	 */
+	id: string;
 };
 
 /**
@@ -6605,14 +6605,14 @@ export type PUTAdminRealmsRealmComponentsIdMutation = {
 
 export type DELETEAdminRealmsRealmComponentsIdPathParams = {
 	/**
-	 * @type string
-	 */
-	id: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @type string
+	 */
+	id: string;
 };
 
 /**
@@ -6631,14 +6631,14 @@ export type DELETEAdminRealmsRealmComponentsIdMutation = {
 
 export type GETAdminRealmsRealmComponentsIdSubComponentTypesPathParams = {
 	/**
-	 * @type string
-	 */
-	id: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @type string
+	 */
+	id: string;
 };
 
 export type GETAdminRealmsRealmComponentsIdSubComponentTypesQueryParams = {
@@ -6719,14 +6719,14 @@ export type GETAdminRealmsRealmDefaultDefaultClientScopesQuery = {
 
 export type PUTAdminRealmsRealmDefaultDefaultClientScopesClientScopeIdPathParams = {
 	/**
-	 * @type string
-	 */
-	clientScopeId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @type string
+	 */
+	clientScopeId: string;
 };
 
 /**
@@ -6757,14 +6757,14 @@ export type PUTAdminRealmsRealmDefaultDefaultClientScopesClientScopeIdMutation =
 
 export type DELETEAdminRealmsRealmDefaultDefaultClientScopesClientScopeIdPathParams = {
 	/**
-	 * @type string
-	 */
-	clientScopeId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @type string
+	 */
+	clientScopeId: string;
 };
 
 /**
@@ -6821,14 +6821,14 @@ export type GETAdminRealmsRealmDefaultGroupsQuery = {
 
 export type PUTAdminRealmsRealmDefaultGroupsGroupIdPathParams = {
 	/**
-	 * @type string
-	 */
-	groupId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @type string
+	 */
+	groupId: string;
 };
 
 /**
@@ -6857,14 +6857,14 @@ export type PUTAdminRealmsRealmDefaultGroupsGroupIdMutation = {
 
 export type DELETEAdminRealmsRealmDefaultGroupsGroupIdPathParams = {
 	/**
-	 * @type string
-	 */
-	groupId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @type string
+	 */
+	groupId: string;
 };
 
 /**
@@ -6922,14 +6922,14 @@ export type GETAdminRealmsRealmDefaultOptionalClientScopesQuery = {
 
 export type PUTAdminRealmsRealmDefaultOptionalClientScopesClientScopeIdPathParams = {
 	/**
-	 * @type string
-	 */
-	clientScopeId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @type string
+	 */
+	clientScopeId: string;
 };
 
 /**
@@ -6960,14 +6960,14 @@ export type PUTAdminRealmsRealmDefaultOptionalClientScopesClientScopeIdMutation 
 
 export type DELETEAdminRealmsRealmDefaultOptionalClientScopesClientScopeIdPathParams = {
 	/**
-	 * @type string
-	 */
-	clientScopeId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @type string
+	 */
+	clientScopeId: string;
 };
 
 /**
@@ -7159,15 +7159,15 @@ export type PUTAdminRealmsRealmEventsConfigMutation = {
 
 export type GETAdminRealmsRealmGroupByPathPathPathParams = {
 	/**
-	 * @pattern .*
-	 * @type string
-	 */
-	path: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @pattern .*
+	 * @type string
+	 */
+	path: string;
 };
 
 /**
@@ -7732,10 +7732,6 @@ export type POSTAdminRealmsRealmIdentityProviderInstancesAliasMappersMutation = 
 
 export type GETAdminRealmsRealmIdentityProviderInstancesAliasMappersIdPathParams = {
 	/**
-	 * @type string
-	 */
-	id: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -7744,6 +7740,10 @@ export type GETAdminRealmsRealmIdentityProviderInstancesAliasMappersIdPathParams
 	 * @type string
 	 */
 	alias: string;
+	/**
+	 * @type string
+	 */
+	id: string;
 };
 
 /**
@@ -7763,11 +7763,6 @@ export type GETAdminRealmsRealmIdentityProviderInstancesAliasMappersIdQuery = {
 
 export type PUTAdminRealmsRealmIdentityProviderInstancesAliasMappersIdPathParams = {
 	/**
-	 * @description Mapper id
-	 * @type string
-	 */
-	id: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -7776,6 +7771,11 @@ export type PUTAdminRealmsRealmIdentityProviderInstancesAliasMappersIdPathParams
 	 * @type string
 	 */
 	alias: string;
+	/**
+	 * @description Mapper id
+	 * @type string
+	 */
+	id: string;
 };
 
 /**
@@ -7798,11 +7798,6 @@ export type PUTAdminRealmsRealmIdentityProviderInstancesAliasMappersIdMutation =
 
 export type DELETEAdminRealmsRealmIdentityProviderInstancesAliasMappersIdPathParams = {
 	/**
-	 * @description Mapper id
-	 * @type string
-	 */
-	id: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -7811,6 +7806,11 @@ export type DELETEAdminRealmsRealmIdentityProviderInstancesAliasMappersIdPathPar
 	 * @type string
 	 */
 	alias: string;
+	/**
+	 * @description Mapper id
+	 * @type string
+	 */
+	id: string;
 };
 
 /**
@@ -7924,14 +7924,14 @@ export type GETAdminRealmsRealmLocalizationQuery = {
 
 export type GETAdminRealmsRealmLocalizationLocalePathParams = {
 	/**
-	 * @type string
-	 */
-	locale: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @type string
+	 */
+	locale: string;
 };
 
 export type GETAdminRealmsRealmLocalizationLocaleQueryParams = {
@@ -7965,14 +7965,14 @@ export type GETAdminRealmsRealmLocalizationLocaleQuery = {
 
 export type POSTAdminRealmsRealmLocalizationLocalePathParams = {
 	/**
-	 * @type string
-	 */
-	locale: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @type string
+	 */
+	locale: string;
 };
 
 /**
@@ -8006,14 +8006,14 @@ export type POSTAdminRealmsRealmLocalizationLocaleMutation = {
 
 export type DELETEAdminRealmsRealmLocalizationLocalePathParams = {
 	/**
-	 * @type string
-	 */
-	locale: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @type string
+	 */
+	locale: string;
 };
 
 /**
@@ -8042,6 +8042,11 @@ export type DELETEAdminRealmsRealmLocalizationLocaleMutation = {
 
 export type GETAdminRealmsRealmLocalizationLocaleKeyPathParams = {
 	/**
+	 * @description realm name (not id!)
+	 * @type string
+	 */
+	realm: string;
+	/**
 	 * @type string
 	 */
 	key: string;
@@ -8049,11 +8054,6 @@ export type GETAdminRealmsRealmLocalizationLocaleKeyPathParams = {
 	 * @type string
 	 */
 	locale: string;
-	/**
-	 * @description realm name (not id!)
-	 * @type string
-	 */
-	realm: string;
 };
 
 /**
@@ -8082,6 +8082,11 @@ export type GETAdminRealmsRealmLocalizationLocaleKeyQuery = {
 
 export type PUTAdminRealmsRealmLocalizationLocaleKeyPathParams = {
 	/**
+	 * @description realm name (not id!)
+	 * @type string
+	 */
+	realm: string;
+	/**
 	 * @type string
 	 */
 	key: string;
@@ -8089,11 +8094,6 @@ export type PUTAdminRealmsRealmLocalizationLocaleKeyPathParams = {
 	 * @type string
 	 */
 	locale: string;
-	/**
-	 * @description realm name (not id!)
-	 * @type string
-	 */
-	realm: string;
 };
 
 /**
@@ -8122,6 +8122,11 @@ export type PUTAdminRealmsRealmLocalizationLocaleKeyMutation = {
 
 export type DELETEAdminRealmsRealmLocalizationLocaleKeyPathParams = {
 	/**
+	 * @description realm name (not id!)
+	 * @type string
+	 */
+	realm: string;
+	/**
 	 * @type string
 	 */
 	key: string;
@@ -8129,11 +8134,6 @@ export type DELETEAdminRealmsRealmLocalizationLocaleKeyPathParams = {
 	 * @type string
 	 */
 	locale: string;
-	/**
-	 * @description realm name (not id!)
-	 * @type string
-	 */
-	realm: string;
 };
 
 /**
@@ -8531,14 +8531,14 @@ export type POSTAdminRealmsRealmRolesMutation = {
 
 export type DELETEAdminRealmsRealmSessionsSessionPathParams = {
 	/**
-	 * @type string
-	 */
-	session: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @type string
+	 */
+	session: string;
 };
 
 export type DELETEAdminRealmsRealmSessionsSessionQueryParams = {
@@ -9168,16 +9168,6 @@ export type DELETEAdminRealmsRealmWorkflowsIdMutation = {
 
 export type POSTAdminRealmsRealmWorkflowsIdActivateTypeResourceIdPathParams = {
 	/**
-	 * @description Resource identifier
-	 * @type string
-	 */
-	resourceId: string;
-	/**
-	 * @description Resource type
-	 * @type object
-	 */
-	type: object;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -9187,6 +9177,16 @@ export type POSTAdminRealmsRealmWorkflowsIdActivateTypeResourceIdPathParams = {
 	 * @type string
 	 */
 	id: string;
+	/**
+	 * @description Resource identifier
+	 * @type string
+	 */
+	resourceId: string;
+	/**
+	 * @description Resource type
+	 * @type object
+	 */
+	type: object;
 };
 
 export type POSTAdminRealmsRealmWorkflowsIdActivateTypeResourceIdQueryParams = {
@@ -9219,16 +9219,6 @@ export type POSTAdminRealmsRealmWorkflowsIdActivateTypeResourceIdMutation = {
 
 export type POSTAdminRealmsRealmWorkflowsIdDeactivateTypeResourceIdPathParams = {
 	/**
-	 * @description Resource identifier
-	 * @type string
-	 */
-	resourceId: string;
-	/**
-	 * @description Resource type
-	 * @type object
-	 */
-	type: object;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -9238,6 +9228,16 @@ export type POSTAdminRealmsRealmWorkflowsIdDeactivateTypeResourceIdPathParams = 
 	 * @type string
 	 */
 	id: string;
+	/**
+	 * @description Resource identifier
+	 * @type string
+	 */
+	resourceId: string;
+	/**
+	 * @description Resource type
+	 * @type object
+	 */
+	type: object;
 };
 
 /**
@@ -9472,11 +9472,6 @@ export type POSTAdminRealmsRealmClientScopesClientScopeIdProtocolMappersModelsMu
 
 export type GETAdminRealmsRealmClientScopesClientScopeIdProtocolMappersModelsIdPathParams = {
 	/**
-	 * @description Mapper id
-	 * @type string
-	 */
-	id: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -9485,6 +9480,11 @@ export type GETAdminRealmsRealmClientScopesClientScopeIdProtocolMappersModelsIdP
 	 * @type string
 	 */
 	clientScopeId: string;
+	/**
+	 * @description Mapper id
+	 * @type string
+	 */
+	id: string;
 };
 
 /**
@@ -9504,11 +9504,6 @@ export type GETAdminRealmsRealmClientScopesClientScopeIdProtocolMappersModelsIdQ
 
 export type PUTAdminRealmsRealmClientScopesClientScopeIdProtocolMappersModelsIdPathParams = {
 	/**
-	 * @description Mapper id
-	 * @type string
-	 */
-	id: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -9517,6 +9512,11 @@ export type PUTAdminRealmsRealmClientScopesClientScopeIdProtocolMappersModelsIdP
 	 * @type string
 	 */
 	clientScopeId: string;
+	/**
+	 * @description Mapper id
+	 * @type string
+	 */
+	id: string;
 };
 
 /**
@@ -9539,11 +9539,6 @@ export type PUTAdminRealmsRealmClientScopesClientScopeIdProtocolMappersModelsIdM
 
 export type DELETEAdminRealmsRealmClientScopesClientScopeIdProtocolMappersModelsIdPathParams = {
 	/**
-	 * @description Mapper id
-	 * @type string
-	 */
-	id: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -9552,6 +9547,11 @@ export type DELETEAdminRealmsRealmClientScopesClientScopeIdProtocolMappersModels
 	 * @type string
 	 */
 	clientScopeId: string;
+	/**
+	 * @description Mapper id
+	 * @type string
+	 */
+	id: string;
 };
 
 /**
@@ -9571,10 +9571,6 @@ export type DELETEAdminRealmsRealmClientScopesClientScopeIdProtocolMappersModels
 export type GETAdminRealmsRealmClientScopesClientScopeIdProtocolMappersProtocolProtocolPathParams =
 	{
 		/**
-		 * @type string
-		 */
-		protocol: string;
-		/**
 		 * @description realm name (not id!)
 		 * @type string
 		 */
@@ -9583,6 +9579,10 @@ export type GETAdminRealmsRealmClientScopesClientScopeIdProtocolMappersProtocolP
 		 * @type string
 		 */
 		clientScopeId: string;
+		/**
+		 * @type string
+		 */
+		protocol: string;
 	};
 
 /**
@@ -10165,11 +10165,6 @@ export type POSTAdminRealmsRealmClientTemplatesClientScopeIdProtocolMappersModel
 
 export type GETAdminRealmsRealmClientTemplatesClientScopeIdProtocolMappersModelsIdPathParams = {
 	/**
-	 * @description Mapper id
-	 * @type string
-	 */
-	id: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -10178,6 +10173,11 @@ export type GETAdminRealmsRealmClientTemplatesClientScopeIdProtocolMappersModels
 	 * @type string
 	 */
 	clientScopeId: string;
+	/**
+	 * @description Mapper id
+	 * @type string
+	 */
+	id: string;
 };
 
 /**
@@ -10197,11 +10197,6 @@ export type GETAdminRealmsRealmClientTemplatesClientScopeIdProtocolMappersModels
 
 export type PUTAdminRealmsRealmClientTemplatesClientScopeIdProtocolMappersModelsIdPathParams = {
 	/**
-	 * @description Mapper id
-	 * @type string
-	 */
-	id: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -10210,6 +10205,11 @@ export type PUTAdminRealmsRealmClientTemplatesClientScopeIdProtocolMappersModels
 	 * @type string
 	 */
 	clientScopeId: string;
+	/**
+	 * @description Mapper id
+	 * @type string
+	 */
+	id: string;
 };
 
 /**
@@ -10232,11 +10232,6 @@ export type PUTAdminRealmsRealmClientTemplatesClientScopeIdProtocolMappersModels
 
 export type DELETEAdminRealmsRealmClientTemplatesClientScopeIdProtocolMappersModelsIdPathParams = {
 	/**
-	 * @description Mapper id
-	 * @type string
-	 */
-	id: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -10245,6 +10240,11 @@ export type DELETEAdminRealmsRealmClientTemplatesClientScopeIdProtocolMappersMod
 	 * @type string
 	 */
 	clientScopeId: string;
+	/**
+	 * @description Mapper id
+	 * @type string
+	 */
+	id: string;
 };
 
 /**
@@ -10264,10 +10264,6 @@ export type DELETEAdminRealmsRealmClientTemplatesClientScopeIdProtocolMappersMod
 export type GETAdminRealmsRealmClientTemplatesClientScopeIdProtocolMappersProtocolProtocolPathParams =
 	{
 		/**
-		 * @type string
-		 */
-		protocol: string;
-		/**
 		 * @description realm name (not id!)
 		 * @type string
 		 */
@@ -10276,6 +10272,10 @@ export type GETAdminRealmsRealmClientTemplatesClientScopeIdProtocolMappersProtoc
 		 * @type string
 		 */
 		clientScopeId: string;
+		/**
+		 * @type string
+		 */
+		protocol: string;
 	};
 
 /**
@@ -11481,10 +11481,6 @@ export type GETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceSearc
 	/**
 	 * @type string | undefined
 	 */
-	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	_id?: string | undefined;
 	/**
 	 * @type boolean | undefined
@@ -11506,6 +11502,10 @@ export type GETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceSearc
 	 * @type integer | undefined, int32
 	 */
 	max?: number | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	name?: string | undefined;
 	/**
 	 * @type string | undefined
 	 */
@@ -11557,10 +11557,6 @@ export type GETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceSearc
 
 export type GETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResourceIdPathParams = {
 	/**
-	 * @type string
-	 */
-	resourceId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -11570,6 +11566,10 @@ export type GETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResou
 	 * @type string
 	 */
 	clientUuid: string;
+	/**
+	 * @type string
+	 */
+	resourceId: string;
 };
 
 export type GETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResourceIdQueryParams = {
@@ -11644,10 +11644,6 @@ export type GETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResou
 
 export type PUTAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResourceIdPathParams = {
 	/**
-	 * @type string
-	 */
-	resourceId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -11657,6 +11653,10 @@ export type PUTAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResou
 	 * @type string
 	 */
 	clientUuid: string;
+	/**
+	 * @type string
+	 */
+	resourceId: string;
 };
 
 export type PUTAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResourceIdQueryParams = {
@@ -11733,10 +11733,6 @@ export type PUTAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResou
 export type DELETEAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResourceIdPathParams =
 	{
 		/**
-		 * @type string
-		 */
-		resourceId: string;
-		/**
 		 * @description realm name (not id!)
 		 * @type string
 		 */
@@ -11746,6 +11742,10 @@ export type DELETEAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceRe
 		 * @type string
 		 */
 		clientUuid: string;
+		/**
+		 * @type string
+		 */
+		resourceId: string;
 	};
 
 export type DELETEAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResourceIdQueryParams =
@@ -11821,10 +11821,6 @@ export type DELETEAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceRe
 export type GETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResourceIdAttributesPathParams =
 	{
 		/**
-		 * @type string
-		 */
-		resourceId: string;
-		/**
 		 * @description realm name (not id!)
 		 * @type string
 		 */
@@ -11834,6 +11830,10 @@ export type GETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResou
 		 * @type string
 		 */
 		clientUuid: string;
+		/**
+		 * @type string
+		 */
+		resourceId: string;
 	};
 
 export type GETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResourceIdAttributesQueryParams =
@@ -11904,10 +11904,6 @@ export type GETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResou
 export type GETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResourceIdPermissionsPathParams =
 	{
 		/**
-		 * @type string
-		 */
-		resourceId: string;
-		/**
 		 * @description realm name (not id!)
 		 * @type string
 		 */
@@ -11917,6 +11913,10 @@ export type GETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResou
 		 * @type string
 		 */
 		clientUuid: string;
+		/**
+		 * @type string
+		 */
+		resourceId: string;
 	};
 
 export type GETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResourceIdPermissionsQueryParams =
@@ -11993,10 +11993,6 @@ export type GETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResou
 export type GETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResourceIdScopesPathParams =
 	{
 		/**
-		 * @type string
-		 */
-		resourceId: string;
-		/**
 		 * @description realm name (not id!)
 		 * @type string
 		 */
@@ -12006,6 +12002,10 @@ export type GETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResou
 		 * @type string
 		 */
 		clientUuid: string;
+		/**
+		 * @type string
+		 */
+		resourceId: string;
 	};
 
 export type GETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResourceIdScopesQueryParams =
@@ -12207,10 +12207,6 @@ export type GETAdminRealmsRealmClientsClientUuidAuthzResourceServerScopeSearchQu
 
 export type GETAdminRealmsRealmClientsClientUuidAuthzResourceServerScopeScopeIdPathParams = {
 	/**
-	 * @type string
-	 */
-	scopeId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -12220,6 +12216,10 @@ export type GETAdminRealmsRealmClientsClientUuidAuthzResourceServerScopeScopeIdP
 	 * @type string
 	 */
 	clientUuid: string;
+	/**
+	 * @type string
+	 */
+	scopeId: string;
 };
 
 /**
@@ -12244,10 +12244,6 @@ export type GETAdminRealmsRealmClientsClientUuidAuthzResourceServerScopeScopeIdQ
 
 export type PUTAdminRealmsRealmClientsClientUuidAuthzResourceServerScopeScopeIdPathParams = {
 	/**
-	 * @type string
-	 */
-	scopeId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -12257,6 +12253,10 @@ export type PUTAdminRealmsRealmClientsClientUuidAuthzResourceServerScopeScopeIdP
 	 * @type string
 	 */
 	clientUuid: string;
+	/**
+	 * @type string
+	 */
+	scopeId: string;
 };
 
 /**
@@ -12279,10 +12279,6 @@ export type PUTAdminRealmsRealmClientsClientUuidAuthzResourceServerScopeScopeIdM
 
 export type DELETEAdminRealmsRealmClientsClientUuidAuthzResourceServerScopeScopeIdPathParams = {
 	/**
-	 * @type string
-	 */
-	scopeId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -12292,6 +12288,10 @@ export type DELETEAdminRealmsRealmClientsClientUuidAuthzResourceServerScopeScope
 	 * @type string
 	 */
 	clientUuid: string;
+	/**
+	 * @type string
+	 */
+	scopeId: string;
 };
 
 /**
@@ -12311,10 +12311,6 @@ export type DELETEAdminRealmsRealmClientsClientUuidAuthzResourceServerScopeScope
 export type GETAdminRealmsRealmClientsClientUuidAuthzResourceServerScopeScopeIdPermissionsPathParams =
 	{
 		/**
-		 * @type string
-		 */
-		scopeId: string;
-		/**
 		 * @description realm name (not id!)
 		 * @type string
 		 */
@@ -12324,6 +12320,10 @@ export type GETAdminRealmsRealmClientsClientUuidAuthzResourceServerScopeScopeIdP
 		 * @type string
 		 */
 		clientUuid: string;
+		/**
+		 * @type string
+		 */
+		scopeId: string;
 	};
 
 /**
@@ -12350,10 +12350,6 @@ export type GETAdminRealmsRealmClientsClientUuidAuthzResourceServerScopeScopeIdP
 export type GETAdminRealmsRealmClientsClientUuidAuthzResourceServerScopeScopeIdResourcesPathParams =
 	{
 		/**
-		 * @type string
-		 */
-		scopeId: string;
-		/**
 		 * @description realm name (not id!)
 		 * @type string
 		 */
@@ -12363,6 +12359,10 @@ export type GETAdminRealmsRealmClientsClientUuidAuthzResourceServerScopeScopeIdR
 		 * @type string
 		 */
 		clientUuid: string;
+		/**
+		 * @type string
+		 */
+		scopeId: string;
 	};
 
 /**
@@ -12749,10 +12749,6 @@ export type GETAdminRealmsRealmClientsClientUuidDefaultClientScopesQuery = {
 
 export type PUTAdminRealmsRealmClientsClientUuidDefaultClientScopesClientScopeIdPathParams = {
 	/**
-	 * @type string
-	 */
-	clientScopeId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -12762,6 +12758,10 @@ export type PUTAdminRealmsRealmClientsClientUuidDefaultClientScopesClientScopeId
 	 * @type string
 	 */
 	clientUuid: string;
+	/**
+	 * @type string
+	 */
+	clientScopeId: string;
 };
 
 /**
@@ -12780,10 +12780,6 @@ export type PUTAdminRealmsRealmClientsClientUuidDefaultClientScopesClientScopeId
 
 export type DELETEAdminRealmsRealmClientsClientUuidDefaultClientScopesClientScopeIdPathParams = {
 	/**
-	 * @type string
-	 */
-	clientScopeId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -12793,6 +12789,10 @@ export type DELETEAdminRealmsRealmClientsClientUuidDefaultClientScopesClientScop
 	 * @type string
 	 */
 	clientUuid: string;
+	/**
+	 * @type string
+	 */
+	clientScopeId: string;
 };
 
 /**
@@ -13095,10 +13095,6 @@ export type GETAdminRealmsRealmClientsClientUuidEvaluateScopesScopeMappingsRoleC
 
 export type GETAdminRealmsRealmClientsClientUuidInstallationProvidersProviderIdPathParams = {
 	/**
-	 * @type string
-	 */
-	providerId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -13108,6 +13104,10 @@ export type GETAdminRealmsRealmClientsClientUuidInstallationProvidersProviderIdP
 	 * @type string
 	 */
 	clientUuid: string;
+	/**
+	 * @type string
+	 */
+	providerId: string;
 };
 
 /**
@@ -13218,10 +13218,6 @@ export type POSTAdminRealmsRealmClientsClientUuidNodesMutation = {
 
 export type DELETEAdminRealmsRealmClientsClientUuidNodesNodePathParams = {
 	/**
-	 * @type string
-	 */
-	node: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -13231,6 +13227,10 @@ export type DELETEAdminRealmsRealmClientsClientUuidNodesNodePathParams = {
 	 * @type string
 	 */
 	clientUuid: string;
+	/**
+	 * @type string
+	 */
+	node: string;
 };
 
 /**
@@ -13347,10 +13347,6 @@ export type GETAdminRealmsRealmClientsClientUuidOptionalClientScopesQuery = {
 
 export type PUTAdminRealmsRealmClientsClientUuidOptionalClientScopesClientScopeIdPathParams = {
 	/**
-	 * @type string
-	 */
-	clientScopeId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -13360,6 +13356,10 @@ export type PUTAdminRealmsRealmClientsClientUuidOptionalClientScopesClientScopeI
 	 * @type string
 	 */
 	clientUuid: string;
+	/**
+	 * @type string
+	 */
+	clientScopeId: string;
 };
 
 /**
@@ -13378,10 +13378,6 @@ export type PUTAdminRealmsRealmClientsClientUuidOptionalClientScopesClientScopeI
 
 export type DELETEAdminRealmsRealmClientsClientUuidOptionalClientScopesClientScopeIdPathParams = {
 	/**
-	 * @type string
-	 */
-	clientScopeId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -13391,6 +13387,10 @@ export type DELETEAdminRealmsRealmClientsClientUuidOptionalClientScopesClientSco
 	 * @type string
 	 */
 	clientUuid: string;
+	/**
+	 * @type string
+	 */
+	clientScopeId: string;
 };
 
 /**
@@ -13504,11 +13504,6 @@ export type POSTAdminRealmsRealmClientsClientUuidProtocolMappersModelsMutation =
 
 export type GETAdminRealmsRealmClientsClientUuidProtocolMappersModelsIdPathParams = {
 	/**
-	 * @description Mapper id
-	 * @type string
-	 */
-	id: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -13518,6 +13513,11 @@ export type GETAdminRealmsRealmClientsClientUuidProtocolMappersModelsIdPathParam
 	 * @type string
 	 */
 	clientUuid: string;
+	/**
+	 * @description Mapper id
+	 * @type string
+	 */
+	id: string;
 };
 
 /**
@@ -13537,11 +13537,6 @@ export type GETAdminRealmsRealmClientsClientUuidProtocolMappersModelsIdQuery = {
 
 export type PUTAdminRealmsRealmClientsClientUuidProtocolMappersModelsIdPathParams = {
 	/**
-	 * @description Mapper id
-	 * @type string
-	 */
-	id: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -13551,6 +13546,11 @@ export type PUTAdminRealmsRealmClientsClientUuidProtocolMappersModelsIdPathParam
 	 * @type string
 	 */
 	clientUuid: string;
+	/**
+	 * @description Mapper id
+	 * @type string
+	 */
+	id: string;
 };
 
 /**
@@ -13573,11 +13573,6 @@ export type PUTAdminRealmsRealmClientsClientUuidProtocolMappersModelsIdMutation 
 
 export type DELETEAdminRealmsRealmClientsClientUuidProtocolMappersModelsIdPathParams = {
 	/**
-	 * @description Mapper id
-	 * @type string
-	 */
-	id: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -13587,6 +13582,11 @@ export type DELETEAdminRealmsRealmClientsClientUuidProtocolMappersModelsIdPathPa
 	 * @type string
 	 */
 	clientUuid: string;
+	/**
+	 * @description Mapper id
+	 * @type string
+	 */
+	id: string;
 };
 
 /**
@@ -13605,10 +13605,6 @@ export type DELETEAdminRealmsRealmClientsClientUuidProtocolMappersModelsIdMutati
 
 export type GETAdminRealmsRealmClientsClientUuidProtocolMappersProtocolProtocolPathParams = {
 	/**
-	 * @type string
-	 */
-	protocol: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -13618,6 +13614,10 @@ export type GETAdminRealmsRealmClientsClientUuidProtocolMappersProtocolProtocolP
 	 * @type string
 	 */
 	clientUuid: string;
+	/**
+	 * @type string
+	 */
+	protocol: string;
 };
 
 /**
@@ -13802,11 +13802,6 @@ export type POSTAdminRealmsRealmClientsClientUuidRolesMutation = {
 
 export type GETAdminRealmsRealmClientsClientUuidRolesRoleNamePathParams = {
 	/**
-	 * @description role\'s name (not id!)
-	 * @type string
-	 */
-	roleName: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -13816,6 +13811,11 @@ export type GETAdminRealmsRealmClientsClientUuidRolesRoleNamePathParams = {
 	 * @type string
 	 */
 	clientUuid: string;
+	/**
+	 * @description role\'s name (not id!)
+	 * @type string
+	 */
+	roleName: string;
 };
 
 export type GETAdminRealmsRealmClientsClientUuidRolesRoleName200 = RoleRepresentation;
@@ -13843,11 +13843,6 @@ export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameQuery = {
 
 export type PUTAdminRealmsRealmClientsClientUuidRolesRoleNamePathParams = {
 	/**
-	 * @description role\'s name (not id!)
-	 * @type string
-	 */
-	roleName: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -13857,6 +13852,11 @@ export type PUTAdminRealmsRealmClientsClientUuidRolesRoleNamePathParams = {
 	 * @type string
 	 */
 	clientUuid: string;
+	/**
+	 * @description role\'s name (not id!)
+	 * @type string
+	 */
+	roleName: string;
 };
 
 /**
@@ -13896,11 +13896,6 @@ export type PUTAdminRealmsRealmClientsClientUuidRolesRoleNameMutation = {
 
 export type DELETEAdminRealmsRealmClientsClientUuidRolesRoleNamePathParams = {
 	/**
-	 * @description role\'s name (not id!)
-	 * @type string
-	 */
-	roleName: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -13910,6 +13905,11 @@ export type DELETEAdminRealmsRealmClientsClientUuidRolesRoleNamePathParams = {
 	 * @type string
 	 */
 	clientUuid: string;
+	/**
+	 * @description role\'s name (not id!)
+	 * @type string
+	 */
+	roleName: string;
 };
 
 /**
@@ -13946,11 +13946,6 @@ export type DELETEAdminRealmsRealmClientsClientUuidRolesRoleNameMutation = {
 
 export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesPathParams = {
 	/**
-	 * @description role\'s name (not id!)
-	 * @type string
-	 */
-	roleName: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -13960,6 +13955,11 @@ export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesPathParam
 	 * @type string
 	 */
 	clientUuid: string;
+	/**
+	 * @description role\'s name (not id!)
+	 * @type string
+	 */
+	roleName: string;
 };
 
 export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameComposites200 = RoleRepresentation[];
@@ -13987,11 +13987,6 @@ export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesQuery = {
 
 export type POSTAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesPathParams = {
 	/**
-	 * @description role\'s name (not id!)
-	 * @type string
-	 */
-	roleName: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -14001,6 +13996,11 @@ export type POSTAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesPathPara
 	 * @type string
 	 */
 	clientUuid: string;
+	/**
+	 * @description role\'s name (not id!)
+	 * @type string
+	 */
+	roleName: string;
 };
 
 /**
@@ -14035,11 +14035,6 @@ export type POSTAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesMutation
 
 export type DELETEAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesPathParams = {
 	/**
-	 * @description role\'s name (not id!)
-	 * @type string
-	 */
-	roleName: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -14049,6 +14044,11 @@ export type DELETEAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesPathPa
 	 * @type string
 	 */
 	clientUuid: string;
+	/**
+	 * @description role\'s name (not id!)
+	 * @type string
+	 */
+	roleName: string;
 };
 
 /**
@@ -14084,6 +14084,11 @@ export type DELETEAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesMutati
 export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsClientUuidPathParams =
 	{
 		/**
+		 * @description realm name (not id!)
+		 * @type string
+		 */
+		realm: string;
+		/**
 		 * @type string
 		 */
 		clientUuid: string;
@@ -14092,11 +14097,6 @@ export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsCl
 		 * @type string
 		 */
 		roleName: string;
-		/**
-		 * @description realm name (not id!)
-		 * @type string
-		 */
-		realm: string;
 	};
 
 export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsClientUuid200 =
@@ -14127,11 +14127,6 @@ export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsCl
 
 export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesRealmPathParams = {
 	/**
-	 * @description role\'s name (not id!)
-	 * @type string
-	 */
-	roleName: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -14141,6 +14136,11 @@ export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesRealmPath
 	 * @type string
 	 */
 	clientUuid: string;
+	/**
+	 * @description role\'s name (not id!)
+	 * @type string
+	 */
+	roleName: string;
 };
 
 export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesRealm200 =
@@ -14169,11 +14169,6 @@ export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesRealmQuer
 
 export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameGroupsPathParams = {
 	/**
-	 * @description the role name.
-	 * @type string
-	 */
-	roleName: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -14183,6 +14178,11 @@ export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameGroupsPathParams = 
 	 * @type string
 	 */
 	clientUuid: string;
+	/**
+	 * @description the role name.
+	 * @type string
+	 */
+	roleName: string;
 };
 
 export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameGroupsQueryParams = {
@@ -14230,10 +14230,6 @@ export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameGroupsQuery = {
 
 export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameManagementPermissionsPathParams = {
 	/**
-	 * @type string
-	 */
-	roleName: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -14243,6 +14239,10 @@ export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameManagementPermissio
 	 * @type string
 	 */
 	clientUuid: string;
+	/**
+	 * @type string
+	 */
+	roleName: string;
 };
 
 export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameManagementPermissions200 =
@@ -14271,10 +14271,6 @@ export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameManagementPermissio
 
 export type PUTAdminRealmsRealmClientsClientUuidRolesRoleNameManagementPermissionsPathParams = {
 	/**
-	 * @type string
-	 */
-	roleName: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -14284,6 +14280,10 @@ export type PUTAdminRealmsRealmClientsClientUuidRolesRoleNameManagementPermissio
 	 * @type string
 	 */
 	clientUuid: string;
+	/**
+	 * @type string
+	 */
+	roleName: string;
 };
 
 export type PUTAdminRealmsRealmClientsClientUuidRolesRoleNameManagementPermissions200 =
@@ -14316,11 +14316,6 @@ export type PUTAdminRealmsRealmClientsClientUuidRolesRoleNameManagementPermissio
 
 export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameUsersPathParams = {
 	/**
-	 * @description the role name.
-	 * @type string
-	 */
-	roleName: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -14330,6 +14325,11 @@ export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameUsersPathParams = {
 	 * @type string
 	 */
 	clientUuid: string;
+	/**
+	 * @description the role name.
+	 * @type string
+	 */
+	roleName: string;
 };
 
 export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameUsersQueryParams = {
@@ -15568,15 +15568,15 @@ export type GETAdminRealmsRealmGroupsGroupIdRoleMappingsRealmCompositeQuery = {
 
 export type GETAdminRealmsRealmIdentityProviderProvidersProviderIdPathParams = {
 	/**
-	 * @description The provider id to get the factory
-	 * @type string
-	 */
-	providerId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @description The provider id to get the factory
+	 * @type string
+	 */
+	providerId: string;
 };
 
 /**
@@ -15595,14 +15595,14 @@ export type GETAdminRealmsRealmIdentityProviderProvidersProviderIdQuery = {
 
 export type GETAdminRealmsRealmOrganizationsMembersMemberIdOrganizationsPathParams = {
 	/**
-	 * @type string
-	 */
-	memberId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @type string
+	 */
+	memberId: string;
 };
 
 export type GETAdminRealmsRealmOrganizationsMembersMemberIdOrganizationsQueryParams = {
@@ -15801,10 +15801,6 @@ export type POSTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersMutation = {
 
 export type GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasPathParams = {
 	/**
-	 * @type string
-	 */
-	alias: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -15813,6 +15809,10 @@ export type GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasPathParam
 	 * @type string
 	 */
 	orgId: string;
+	/**
+	 * @type string
+	 */
+	alias: string;
 };
 
 export type GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAlias200 =
@@ -15834,10 +15834,6 @@ export type GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasQuery = {
 
 export type DELETEAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasPathParams = {
 	/**
-	 * @type string
-	 */
-	alias: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -15846,6 +15842,10 @@ export type DELETEAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasPathPa
 	 * @type string
 	 */
 	orgId: string;
+	/**
+	 * @type string
+	 */
+	alias: string;
 };
 
 /**
@@ -15935,10 +15935,6 @@ export type GETAdminRealmsRealmOrganizationsOrgIdInvitationsQuery = {
 
 export type GETAdminRealmsRealmOrganizationsOrgIdInvitationsIdPathParams = {
 	/**
-	 * @type string
-	 */
-	id: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -15947,6 +15943,10 @@ export type GETAdminRealmsRealmOrganizationsOrgIdInvitationsIdPathParams = {
 	 * @type string
 	 */
 	orgId: string;
+	/**
+	 * @type string
+	 */
+	id: string;
 };
 
 /**
@@ -15971,10 +15971,6 @@ export type GETAdminRealmsRealmOrganizationsOrgIdInvitationsIdQuery = {
 
 export type DELETEAdminRealmsRealmOrganizationsOrgIdInvitationsIdPathParams = {
 	/**
-	 * @type string
-	 */
-	id: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -15983,6 +15979,10 @@ export type DELETEAdminRealmsRealmOrganizationsOrgIdInvitationsIdPathParams = {
 	 * @type string
 	 */
 	orgId: string;
+	/**
+	 * @type string
+	 */
+	id: string;
 };
 
 /**
@@ -16006,10 +16006,6 @@ export type DELETEAdminRealmsRealmOrganizationsOrgIdInvitationsIdMutation = {
 
 export type POSTAdminRealmsRealmOrganizationsOrgIdInvitationsIdResendPathParams = {
 	/**
-	 * @type string
-	 */
-	id: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -16018,6 +16014,10 @@ export type POSTAdminRealmsRealmOrganizationsOrgIdInvitationsIdResendPathParams 
 	 * @type string
 	 */
 	orgId: string;
+	/**
+	 * @type string
+	 */
+	id: string;
 };
 
 /**
@@ -16244,10 +16244,6 @@ export type POSTAdminRealmsRealmOrganizationsOrgIdMembersInviteUserMutation = {
 
 export type GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdPathParams = {
 	/**
-	 * @type string
-	 */
-	memberId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -16256,6 +16252,10 @@ export type GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdPathParams = {
 	 * @type string
 	 */
 	orgId: string;
+	/**
+	 * @type string
+	 */
+	memberId: string;
 };
 
 export type GETAdminRealmsRealmOrganizationsOrgIdMembersMemberId200 = MemberRepresentation;
@@ -16276,10 +16276,6 @@ export type GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdQuery = {
 
 export type DELETEAdminRealmsRealmOrganizationsOrgIdMembersMemberIdPathParams = {
 	/**
-	 * @type string
-	 */
-	memberId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -16288,6 +16284,10 @@ export type DELETEAdminRealmsRealmOrganizationsOrgIdMembersMemberIdPathParams = 
 	 * @type string
 	 */
 	orgId: string;
+	/**
+	 * @type string
+	 */
+	memberId: string;
 };
 
 /**
@@ -16311,10 +16311,6 @@ export type DELETEAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMutation = {
 
 export type GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdOrganizationsPathParams = {
 	/**
-	 * @type string
-	 */
-	memberId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -16323,6 +16319,10 @@ export type GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdOrganizationsPat
 	 * @type string
 	 */
 	orgId: string;
+	/**
+	 * @type string
+	 */
+	memberId: string;
 };
 
 export type GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdOrganizationsQueryParams = {
@@ -16354,15 +16354,15 @@ export type GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdOrganizationsQue
 
 export type GETAdminRealmsRealmRolesByIdRoleIdPathParams = {
 	/**
-	 * @description id of role
-	 * @type string
-	 */
-	roleId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @description id of role
+	 * @type string
+	 */
+	roleId: string;
 };
 
 export type GETAdminRealmsRealmRolesByIdRoleId200 = RoleRepresentation;
@@ -16382,15 +16382,15 @@ export type GETAdminRealmsRealmRolesByIdRoleIdQuery = {
 
 export type PUTAdminRealmsRealmRolesByIdRoleIdPathParams = {
 	/**
-	 * @description id of role
-	 * @type string
-	 */
-	roleId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @description id of role
+	 * @type string
+	 */
+	roleId: string;
 };
 
 /**
@@ -16417,15 +16417,15 @@ export type PUTAdminRealmsRealmRolesByIdRoleIdMutation = {
 
 export type DELETEAdminRealmsRealmRolesByIdRoleIdPathParams = {
 	/**
-	 * @description id of role
-	 * @type string
-	 */
-	roleId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @description id of role
+	 * @type string
+	 */
+	roleId: string;
 };
 
 /**
@@ -16454,14 +16454,14 @@ export type DELETEAdminRealmsRealmRolesByIdRoleIdMutation = {
 
 export type GETAdminRealmsRealmRolesByIdRoleIdCompositesPathParams = {
 	/**
-	 * @type string
-	 */
-	roleId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @type string
+	 */
+	roleId: string;
 };
 
 export type GETAdminRealmsRealmRolesByIdRoleIdCompositesQueryParams = {
@@ -16498,14 +16498,14 @@ export type GETAdminRealmsRealmRolesByIdRoleIdCompositesQuery = {
 
 export type POSTAdminRealmsRealmRolesByIdRoleIdCompositesPathParams = {
 	/**
-	 * @type string
-	 */
-	roleId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @type string
+	 */
+	roleId: string;
 };
 
 /**
@@ -16532,15 +16532,15 @@ export type POSTAdminRealmsRealmRolesByIdRoleIdCompositesMutation = {
 
 export type DELETEAdminRealmsRealmRolesByIdRoleIdCompositesPathParams = {
 	/**
-	 * @description Role id
-	 * @type string
-	 */
-	roleId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @description Role id
+	 * @type string
+	 */
+	roleId: string;
 };
 
 /**
@@ -16567,6 +16567,11 @@ export type DELETEAdminRealmsRealmRolesByIdRoleIdCompositesMutation = {
 
 export type GETAdminRealmsRealmRolesByIdRoleIdCompositesClientsClientUuidPathParams = {
 	/**
+	 * @description realm name (not id!)
+	 * @type string
+	 */
+	realm: string;
+	/**
 	 * @type string
 	 */
 	clientUuid: string;
@@ -16574,11 +16579,6 @@ export type GETAdminRealmsRealmRolesByIdRoleIdCompositesClientsClientUuidPathPar
 	 * @type string
 	 */
 	roleId: string;
-	/**
-	 * @description realm name (not id!)
-	 * @type string
-	 */
-	realm: string;
 };
 
 export type GETAdminRealmsRealmRolesByIdRoleIdCompositesClientsClientUuid200 = RoleRepresentation[];
@@ -16606,14 +16606,14 @@ export type GETAdminRealmsRealmRolesByIdRoleIdCompositesClientsClientUuidQuery =
 
 export type GETAdminRealmsRealmRolesByIdRoleIdCompositesRealmPathParams = {
 	/**
-	 * @type string
-	 */
-	roleId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @type string
+	 */
+	roleId: string;
 };
 
 export type GETAdminRealmsRealmRolesByIdRoleIdCompositesRealm200 = RoleRepresentation[];
@@ -16634,14 +16634,14 @@ export type GETAdminRealmsRealmRolesByIdRoleIdCompositesRealmQuery = {
 
 export type GETAdminRealmsRealmRolesByIdRoleIdManagementPermissionsPathParams = {
 	/**
-	 * @type string
-	 */
-	roleId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @type string
+	 */
+	roleId: string;
 };
 
 export type GETAdminRealmsRealmRolesByIdRoleIdManagementPermissions200 =
@@ -16663,14 +16663,14 @@ export type GETAdminRealmsRealmRolesByIdRoleIdManagementPermissionsQuery = {
 
 export type PUTAdminRealmsRealmRolesByIdRoleIdManagementPermissionsPathParams = {
 	/**
-	 * @type string
-	 */
-	roleId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @type string
+	 */
+	roleId: string;
 };
 
 export type PUTAdminRealmsRealmRolesByIdRoleIdManagementPermissions200 =
@@ -16696,15 +16696,15 @@ export type PUTAdminRealmsRealmRolesByIdRoleIdManagementPermissionsMutation = {
 
 export type GETAdminRealmsRealmRolesRoleNamePathParams = {
 	/**
-	 * @description role\'s name (not id!)
-	 * @type string
-	 */
-	roleName: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @description role\'s name (not id!)
+	 * @type string
+	 */
+	roleName: string;
 };
 
 export type GETAdminRealmsRealmRolesRoleName200 = RoleRepresentation;
@@ -16729,15 +16729,15 @@ export type GETAdminRealmsRealmRolesRoleNameQuery = {
 
 export type PUTAdminRealmsRealmRolesRoleNamePathParams = {
 	/**
-	 * @description role\'s name (not id!)
-	 * @type string
-	 */
-	roleName: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @description role\'s name (not id!)
+	 * @type string
+	 */
+	roleName: string;
 };
 
 /**
@@ -16776,15 +16776,15 @@ export type PUTAdminRealmsRealmRolesRoleNameMutation = {
 
 export type DELETEAdminRealmsRealmRolesRoleNamePathParams = {
 	/**
-	 * @description role\'s name (not id!)
-	 * @type string
-	 */
-	roleName: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @description role\'s name (not id!)
+	 * @type string
+	 */
+	roleName: string;
 };
 
 /**
@@ -16821,15 +16821,15 @@ export type DELETEAdminRealmsRealmRolesRoleNameMutation = {
 
 export type GETAdminRealmsRealmRolesRoleNameCompositesPathParams = {
 	/**
-	 * @description role\'s name (not id!)
-	 * @type string
-	 */
-	roleName: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @description role\'s name (not id!)
+	 * @type string
+	 */
+	roleName: string;
 };
 
 export type GETAdminRealmsRealmRolesRoleNameComposites200 = RoleRepresentation[];
@@ -16857,15 +16857,15 @@ export type GETAdminRealmsRealmRolesRoleNameCompositesQuery = {
 
 export type POSTAdminRealmsRealmRolesRoleNameCompositesPathParams = {
 	/**
-	 * @description role\'s name (not id!)
-	 * @type string
-	 */
-	roleName: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @description role\'s name (not id!)
+	 * @type string
+	 */
+	roleName: string;
 };
 
 /**
@@ -16899,15 +16899,15 @@ export type POSTAdminRealmsRealmRolesRoleNameCompositesMutation = {
 
 export type DELETEAdminRealmsRealmRolesRoleNameCompositesPathParams = {
 	/**
-	 * @description role\'s name (not id!)
-	 * @type string
-	 */
-	roleName: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @description role\'s name (not id!)
+	 * @type string
+	 */
+	roleName: string;
 };
 
 /**
@@ -16941,6 +16941,11 @@ export type DELETEAdminRealmsRealmRolesRoleNameCompositesMutation = {
 
 export type GETAdminRealmsRealmRolesRoleNameCompositesClientsClientUuidPathParams = {
 	/**
+	 * @description realm name (not id!)
+	 * @type string
+	 */
+	realm: string;
+	/**
 	 * @type string
 	 */
 	clientUuid: string;
@@ -16949,11 +16954,6 @@ export type GETAdminRealmsRealmRolesRoleNameCompositesClientsClientUuidPathParam
 	 * @type string
 	 */
 	roleName: string;
-	/**
-	 * @description realm name (not id!)
-	 * @type string
-	 */
-	realm: string;
 };
 
 export type GETAdminRealmsRealmRolesRoleNameCompositesClientsClientUuid200 = RoleRepresentation[];
@@ -16981,15 +16981,15 @@ export type GETAdminRealmsRealmRolesRoleNameCompositesClientsClientUuidQuery = {
 
 export type GETAdminRealmsRealmRolesRoleNameCompositesRealmPathParams = {
 	/**
-	 * @description role\'s name (not id!)
-	 * @type string
-	 */
-	roleName: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @description role\'s name (not id!)
+	 * @type string
+	 */
+	roleName: string;
 };
 
 export type GETAdminRealmsRealmRolesRoleNameCompositesRealm200 = RoleRepresentation[];
@@ -17017,15 +17017,15 @@ export type GETAdminRealmsRealmRolesRoleNameCompositesRealmQuery = {
 
 export type GETAdminRealmsRealmRolesRoleNameGroupsPathParams = {
 	/**
-	 * @description the role name.
-	 * @type string
-	 */
-	roleName: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @description the role name.
+	 * @type string
+	 */
+	roleName: string;
 };
 
 export type GETAdminRealmsRealmRolesRoleNameGroupsQueryParams = {
@@ -17071,14 +17071,14 @@ export type GETAdminRealmsRealmRolesRoleNameGroupsQuery = {
 
 export type GETAdminRealmsRealmRolesRoleNameManagementPermissionsPathParams = {
 	/**
-	 * @type string
-	 */
-	roleName: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @type string
+	 */
+	roleName: string;
 };
 
 export type GETAdminRealmsRealmRolesRoleNameManagementPermissions200 =
@@ -17107,14 +17107,14 @@ export type GETAdminRealmsRealmRolesRoleNameManagementPermissionsQuery = {
 
 export type PUTAdminRealmsRealmRolesRoleNameManagementPermissionsPathParams = {
 	/**
-	 * @type string
-	 */
-	roleName: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @type string
+	 */
+	roleName: string;
 };
 
 export type PUTAdminRealmsRealmRolesRoleNameManagementPermissions200 =
@@ -17147,15 +17147,15 @@ export type PUTAdminRealmsRealmRolesRoleNameManagementPermissionsMutation = {
 
 export type GETAdminRealmsRealmRolesRoleNameUsersPathParams = {
 	/**
-	 * @description the role name.
-	 * @type string
-	 */
-	roleName: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @description the role name.
+	 * @type string
+	 */
+	roleName: string;
 };
 
 export type GETAdminRealmsRealmRolesRoleNameUsersQueryParams = {
@@ -17391,11 +17391,6 @@ export type GETAdminRealmsRealmUsersUserIdConsentsQuery = {
 
 export type DELETEAdminRealmsRealmUsersUserIdConsentsClientPathParams = {
 	/**
-	 * @description Client id
-	 * @type string
-	 */
-	client: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -17404,6 +17399,11 @@ export type DELETEAdminRealmsRealmUsersUserIdConsentsClientPathParams = {
 	 * @type string
 	 */
 	userId: string;
+	/**
+	 * @description Client id
+	 * @type string
+	 */
+	client: string;
 };
 
 /**
@@ -17465,10 +17465,6 @@ export type GETAdminRealmsRealmUsersUserIdCredentialsQuery = {
 
 export type DELETEAdminRealmsRealmUsersUserIdCredentialsCredentialIdPathParams = {
 	/**
-	 * @type string
-	 */
-	credentialId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -17477,6 +17473,10 @@ export type DELETEAdminRealmsRealmUsersUserIdCredentialsCredentialIdPathParams =
 	 * @type string
 	 */
 	userId: string;
+	/**
+	 * @type string
+	 */
+	credentialId: string;
 };
 
 /**
@@ -17508,6 +17508,15 @@ export type DELETEAdminRealmsRealmUsersUserIdCredentialsCredentialIdMutation = {
 export type POSTAdminRealmsRealmUsersUserIdCredentialsCredentialIdMoveAfterNewPreviousCredentialIdPathParams =
 	{
 		/**
+		 * @description realm name (not id!)
+		 * @type string
+		 */
+		realm: string;
+		/**
+		 * @type string
+		 */
+		userId: string;
+		/**
 		 * @description The credential to move
 		 * @type string
 		 */
@@ -17517,15 +17526,6 @@ export type POSTAdminRealmsRealmUsersUserIdCredentialsCredentialIdMoveAfterNewPr
 		 * @type string
 		 */
 		newPreviousCredentialId: string;
-		/**
-		 * @description realm name (not id!)
-		 * @type string
-		 */
-		realm: string;
-		/**
-		 * @type string
-		 */
-		userId: string;
 	};
 
 /**
@@ -17560,11 +17560,6 @@ export type POSTAdminRealmsRealmUsersUserIdCredentialsCredentialIdMoveAfterNewPr
 
 export type POSTAdminRealmsRealmUsersUserIdCredentialsCredentialIdMoveToFirstPathParams = {
 	/**
-	 * @description The credential to move
-	 * @type string
-	 */
-	credentialId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -17573,6 +17568,11 @@ export type POSTAdminRealmsRealmUsersUserIdCredentialsCredentialIdMoveToFirstPat
 	 * @type string
 	 */
 	userId: string;
+	/**
+	 * @description The credential to move
+	 * @type string
+	 */
+	credentialId: string;
 };
 
 /**
@@ -17603,10 +17603,6 @@ export type POSTAdminRealmsRealmUsersUserIdCredentialsCredentialIdMoveToFirstMut
 
 export type PUTAdminRealmsRealmUsersUserIdCredentialsCredentialIdUserLabelPathParams = {
 	/**
-	 * @type string
-	 */
-	credentialId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -17615,6 +17611,10 @@ export type PUTAdminRealmsRealmUsersUserIdCredentialsCredentialIdUserLabelPathPa
 	 * @type string
 	 */
 	userId: string;
+	/**
+	 * @type string
+	 */
+	credentialId: string;
 };
 
 /**
@@ -17782,11 +17782,6 @@ export type GETAdminRealmsRealmUsersUserIdFederatedIdentityQuery = {
 
 export type POSTAdminRealmsRealmUsersUserIdFederatedIdentityProviderPathParams = {
 	/**
-	 * @description Social login provider id
-	 * @type string
-	 */
-	provider: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -17795,6 +17790,11 @@ export type POSTAdminRealmsRealmUsersUserIdFederatedIdentityProviderPathParams =
 	 * @type string
 	 */
 	userId: string;
+	/**
+	 * @description Social login provider id
+	 * @type string
+	 */
+	provider: string;
 };
 
 /**
@@ -17829,11 +17829,6 @@ export type POSTAdminRealmsRealmUsersUserIdFederatedIdentityProviderMutation = {
 
 export type DELETEAdminRealmsRealmUsersUserIdFederatedIdentityProviderPathParams = {
 	/**
-	 * @description Social login provider id
-	 * @type string
-	 */
-	provider: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -17842,6 +17837,11 @@ export type DELETEAdminRealmsRealmUsersUserIdFederatedIdentityProviderPathParams
 	 * @type string
 	 */
 	userId: string;
+	/**
+	 * @description Social login provider id
+	 * @type string
+	 */
+	provider: string;
 };
 
 /**
@@ -17965,10 +17965,6 @@ export type GETAdminRealmsRealmUsersUserIdGroupsCountQuery = {
 
 export type PUTAdminRealmsRealmUsersUserIdGroupsGroupIdPathParams = {
 	/**
-	 * @type string
-	 */
-	groupId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -17977,6 +17973,10 @@ export type PUTAdminRealmsRealmUsersUserIdGroupsGroupIdPathParams = {
 	 * @type string
 	 */
 	userId: string;
+	/**
+	 * @type string
+	 */
+	groupId: string;
 };
 
 /**
@@ -18007,10 +18007,6 @@ export type PUTAdminRealmsRealmUsersUserIdGroupsGroupIdMutation = {
 
 export type DELETEAdminRealmsRealmUsersUserIdGroupsGroupIdPathParams = {
 	/**
-	 * @type string
-	 */
-	groupId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -18019,6 +18015,10 @@ export type DELETEAdminRealmsRealmUsersUserIdGroupsGroupIdPathParams = {
 	 * @type string
 	 */
 	userId: string;
+	/**
+	 * @type string
+	 */
+	groupId: string;
 };
 
 /**
@@ -18132,10 +18132,6 @@ export type POSTAdminRealmsRealmUsersUserIdLogoutMutation = {
 
 export type GETAdminRealmsRealmUsersUserIdOfflineSessionsClientUuidPathParams = {
 	/**
-	 * @type string
-	 */
-	clientUuid: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
@@ -18144,6 +18140,10 @@ export type GETAdminRealmsRealmUsersUserIdOfflineSessionsClientUuidPathParams = 
 	 * @type string
 	 */
 	userId: string;
+	/**
+	 * @type string
+	 */
+	clientUuid: string;
 };
 
 /**
@@ -18817,15 +18817,15 @@ export type GETAdminRealmsRealmUsersUserIdUnmanagedAttributesQuery = {
 
 export type GETAdminRealmsRealmWorkflowsScheduledResourceIdPathParams = {
 	/**
-	 * @description Identifier of the resource associated with the scheduled workflows
-	 * @type string
-	 */
-	resourceId: string;
-	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
+	/**
+	 * @description Identifier of the resource associated with the scheduled workflows
+	 * @type string
+	 */
+	resourceId: string;
 };
 
 /**
