@@ -7314,6 +7314,7 @@ export const waitingRoomOptionsWhoGoesToWaitingRoomEnum = {
 	users_not_in_account: "users_not_in_account",
 	users_not_in_account_or_whitelisted_domains: "users_not_in_account_or_whitelisted_domains",
 	users_not_on_invite: "users_not_on_invite",
+	users_not_in_org: "users_not_in_org",
 } as const;
 
 export type WaitingRoomOptionsWhoGoesToWaitingRoomEnumKey =
@@ -8064,14 +8065,14 @@ export type Meeting200 = {
 							 */
 							mode: WaitingRoomOptionsModeEnumKey;
 							/**
-							 * @description This field specifies which participants should be placed into the waiting room. Required if `mode` is set to `custom`.\r\n* `everyone` - Everyone.\r\n* `users_not_in_account` - Users not in your account.\r\n* `users_not_in_account_or_whitelisted_domains` - Users who are not in your account and not part of your whitelisted domains.\r\n* `users_not_on_invite` - Users not on the meeting invite.
+							 * @description Which participants should be placed into the waiting room. Required if `mode` is set to `custom`.\r\n* `everyone` - Everyone.\r\n* `users_not_in_account` - Users not in your account.\r\n* `users_not_in_account_or_whitelisted_domains` - Users who are not in your account and not part of your whitelisted domains.\r\n* `users_not_on_invite` - Users not on the meeting invite.\r\n* `users_not_in_org` - Users not in your organization.
 							 * @type string | undefined
 							 */
 							who_goes_to_waiting_room?: WaitingRoomOptionsWhoGoesToWaitingRoomEnumKey | undefined;
 					  }
 					| undefined;
 				/**
-				 * @description This field adds a watermark when viewing a shared screen.
+				 * @description Add a watermark when viewing a shared screen.
 				 * @default false
 				 * @type boolean | undefined
 				 */
@@ -8405,12 +8406,17 @@ export type MeetingUpdate204 = unknown;
 export type MeetingUpdate400 = unknown;
 
 /**
+ * @description **HTTP Status Code:** `401` <br>\n Unauthorized  \n\n **Error Code:** `124` <br>\n Invalid access token. <br>\n**Error Code:** `124` <br>\n Access token has expired. <br>\n
+ */
+export type MeetingUpdate401 = unknown;
+
+/**
  * @description **HTTP Status Code:** `404` <br>\n Not Found  \n\n **Error Code:** `3001` <br>\n Meeting does not exist: {meetingId}. <br>\n
  */
 export type MeetingUpdate404 = unknown;
 
 /**
- * @description **HTTP Status Code:** `429` <br>\n Too Many Requests. For more information, see [rate limits](/docs/api/rate-limits/). \n\n
+ * @description **HTTP Status Code:** `429` <br>\n Too Many Requests. For more information, see [rate limits](https://developers.zoom.us/docs/api/rate-limits/). \n\n **Error Code:** `4001` <br>\n You have reached the maximum per-second rate limit for this API. Try again later. <br>\n
  */
 export type MeetingUpdate429 = unknown;
 
@@ -8558,6 +8564,7 @@ export const waitingRoomOptionsWhoGoesToWaitingRoomEnum2 = {
 	users_not_in_account: "users_not_in_account",
 	users_not_in_account_or_whitelisted_domains: "users_not_in_account_or_whitelisted_domains",
 	users_not_on_invite: "users_not_on_invite",
+	users_not_in_org: "users_not_in_org",
 } as const;
 
 export type WaitingRoomOptionsWhoGoesToWaitingRoomEnum2Key =
@@ -9203,12 +9210,12 @@ export type MeetingUpdateMutationRequest = {
 				waiting_room_options?:
 					| {
 							/**
-							 * @description Specifies the waiting room behavior for this meeting.\r\n* `follow_setting` - Use the Zoom web portal setting.\r\n* `custom` - Specify which participants should go into the waiting room.
+							 * @description The waiting room behavior for this meeting.\r\n* `follow_setting` - Use the Zoom web portal setting.\r\n* `custom` - Specify which participants should go into the waiting room.
 							 * @type string
 							 */
 							mode: WaitingRoomOptionsModeEnum2Key;
 							/**
-							 * @description Specifies which participants should be placed into the waiting room. Required if `mode` is set to `custom`.\r\n* `everyone` - Everyone.\r\n* `users_not_in_account` - Users not in your account.\r\n* `users_not_in_account_or_whitelisted_domains` - Users who are not in your account and not part of your whitelisted domains.\r\n* `users_not_on_invite` - Users not on the meeting invite.
+							 * @description Which participants should be placed into the waiting room. Required if `mode` is set to `custom`.\r\n* `everyone` - Everyone.\r\n* `users_not_in_account` - Users not in your account.\r\n* `users_not_in_account_or_whitelisted_domains` - Users who are not in your account and not part of your whitelisted domains.\r\n* `users_not_on_invite` - Users not on the meeting invite.\r\n* `users_not_in_org` - Users not in your organization.
 							 * @type string | undefined
 							 */
 							who_goes_to_waiting_room?: WaitingRoomOptionsWhoGoesToWaitingRoomEnum2Key | undefined;
@@ -9353,7 +9360,7 @@ export type MeetingUpdateMutationRequest = {
 	 */
 	start_time?: string | undefined;
 	/**
-	 * @description Unique identifier of the meeting template. \n\n[Schedule the meeting from a meeting template](https://support.zoom.us/hc/en-us/articles/360036559151-Meeting-templates#h_86f06cff-0852-4998-81c5-c83663c176fb). Retrieve this field\'s value by calling the [List meeting templates](/docs/api/rest/reference/zoom-api/methods/#operation/listMeetingTemplates) API.
+	 * @description Unique identifier of the meeting template. \n\n[Schedule the meeting from a meeting template](https://support.zoom.us/hc/en-us/articles/360036559151-Meeting-templates#h_86f06cff-0852-4998-81c5-c83663c176fb). Retrieve this field\'s value by calling the [List meeting templates](/docs/api/meetings/#tag/templates/get/users/{userId}/meeting_templates) API.
 	 * @type string | undefined
 	 */
 	template_id?: string | undefined;
@@ -9401,7 +9408,7 @@ export type MeetingUpdateMutation = {
 	Request: MeetingUpdateMutationRequest;
 	PathParams: MeetingUpdatePathParams;
 	QueryParams: MeetingUpdateQueryParams;
-	Errors: MeetingUpdate400 | MeetingUpdate404 | MeetingUpdate429;
+	Errors: MeetingUpdate400 | MeetingUpdate401 | MeetingUpdate404 | MeetingUpdate429;
 };
 
 export type GetSipDialingWithPasscodePathParams = {
@@ -10295,6 +10302,7 @@ export const waitingRoomOptionsWhoGoesToWaitingRoomEnum3 = {
 	users_not_in_account: "users_not_in_account",
 	users_not_in_account_or_whitelisted_domains: "users_not_in_account_or_whitelisted_domains",
 	users_not_on_invite: "users_not_on_invite",
+	users_not_in_org: "users_not_in_org",
 } as const;
 
 export type WaitingRoomOptionsWhoGoesToWaitingRoomEnum3Key =
@@ -11038,12 +11046,12 @@ export type MeetingCreate201 = {
 				waiting_room_options?:
 					| {
 							/**
-							 * @description Specifies the waiting room behavior for this meeting.\r\n* `follow_setting` - Use the Zoom web portal setting.\r\n* `custom` - Specify which participants should go into the waiting room.
+							 * @description The waiting room behavior for this meeting.\r\n* `follow_setting` - Use the Zoom web portal setting.\r\n* `custom` - Specify which participants should go into the waiting room.
 							 * @type string
 							 */
 							mode: WaitingRoomOptionsModeEnum3Key;
 							/**
-							 * @description Specifies which participants should be placed into the waiting room. Required if `mode` is set to `custom`.\r\n* `everyone` - Everyone.\r\n* `users_not_in_account` - Users not in your account.\r\n* `users_not_in_account_or_whitelisted_domains` - Users who are not in your account and not part of your whitelisted domains.\r\n* `users_not_on_invite` - Users not on the meeting invite.
+							 * @description Which participants should be placed into the waiting room. Required if `mode` is set to `custom`.\r\n* `everyone` - Everyone.\r\n* `users_not_in_account` - Users not in your account.\r\n* `users_not_in_account_or_whitelisted_domains` - Users who are not in your account and not part of your whitelisted domains.\r\n* `users_not_on_invite` - Users not on the meeting invite.\r\n* `users_not_in_org` - Users not in your organization.
 							 * @type string | undefined
 							 */
 							who_goes_to_waiting_room?: WaitingRoomOptionsWhoGoesToWaitingRoomEnum3Key | undefined;
@@ -11422,6 +11430,7 @@ export const waitingRoomOptionsWhoGoesToWaitingRoomEnum4 = {
 	users_not_in_account: "users_not_in_account",
 	users_not_in_account_or_whitelisted_domains: "users_not_in_account_or_whitelisted_domains",
 	users_not_on_invite: "users_not_on_invite",
+	users_not_in_org: "users_not_in_org",
 } as const;
 
 export type WaitingRoomOptionsWhoGoesToWaitingRoomEnum4Key =
@@ -11993,12 +12002,12 @@ export type MeetingCreateMutationRequest = {
 				waiting_room_options?:
 					| {
 							/**
-							 * @description Specifies the waiting room behavior for this meeting.\r\n* `follow_setting` - Use the Zoom web portal setting.\r\n* `custom` - Specify which participants should go into the waiting room.
+							 * @description The waiting room behavior for this meeting.\r\n* `follow_setting` - Use the Zoom web portal setting.\r\n* `custom` - Specify which participants should go into the waiting room.
 							 * @type string
 							 */
 							mode: WaitingRoomOptionsModeEnum4Key;
 							/**
-							 * @description Specifies which participants should be placed into the waiting room. Required if `mode` is set to `custom`.\r\n* `everyone` - Everyone.\r\n* `users_not_in_account` - Users not in your account.\r\n* `users_not_in_account_or_whitelisted_domains` - Users who are not in your account and not part of your whitelisted domains.\r\n* `users_not_on_invite` - Users not on the meeting invite.
+							 * @description Which participants should be placed into the waiting room. Required if `mode` is set to `custom`.\r\n* `everyone` - Everyone.\r\n* `users_not_in_account` - Users not in your account.\r\n* `users_not_in_account_or_whitelisted_domains` - Users who are not in your account and not part of your whitelisted domains.\r\n* `users_not_on_invite` - Users not on the meeting invite.\r\n* `users_not_in_org` - Users not in your organization.
 							 * @type string | undefined
 							 */
 							who_goes_to_waiting_room?: WaitingRoomOptionsWhoGoesToWaitingRoomEnum4Key | undefined;
@@ -14271,6 +14280,196 @@ export type ReportDailyQuery = {
 	Response: ReportDaily200;
 	QueryParams: ReportDailyQueryParams;
 	Errors: ReportDaily400 | ReportDaily429;
+};
+
+export const getdisclaimerreportQueryParamsDisclaimerTypeEnum = {
+	login: "login",
+	joinMeeting: "joinMeeting",
+	recording: "recording",
+	remoteControl: "remoteControl",
+	meetingConnector: "meetingConnector",
+	archive: "archive",
+	summary: "summary",
+	query: "query",
+	AICompanion: "AICompanion",
+	caption: "caption",
+	joinSDKMeeting: "joinSDKMeeting",
+	NDI: "NDI",
+	joinWebinar: "joinWebinar",
+	internalMMRGuestJoin: "internalMMRGuestJoin",
+	liveStream: "liveStream",
+	phoneACR: "phoneACR",
+	viewBOActivity: "viewBOActivity",
+	webinarBO: "webinarBO",
+	unmuteAudio: "unmuteAudio",
+	joinOnZoom: "joinOnZoom",
+	GDPR: "GDPR",
+	chinaMeeting: "chinaMeeting",
+	zappJoin: "zappJoin",
+	softUpdateReminder: "softUpdateReminder",
+	all: "all",
+} as const;
+
+export type GetdisclaimerreportQueryParamsDisclaimerTypeEnumKey =
+	(typeof getdisclaimerreportQueryParamsDisclaimerTypeEnum)[keyof typeof getdisclaimerreportQueryParamsDisclaimerTypeEnum];
+
+export type GetdisclaimerreportQueryParams = {
+	/**
+	 * @description The start date in `yyyy-MM-dd` format. The date range defined by the `from` and `to` parameters should only be one month, as the report includes only one month\'s worth of data at once. It is the date range in which the disclaimer was generated.
+	 * @type string
+	 */
+	from: string;
+	/**
+	 * @description The end date in `yyyy-MM-dd` format.
+	 * @type string
+	 */
+	to: string;
+	/**
+	 * @description The user email or meeting number
+	 * @type string | undefined
+	 */
+	search_value?: string | undefined;
+	/**
+	 * @description The disclaimer type.
+	 * @type string | undefined
+	 */
+	disclaimer_type?: GetdisclaimerreportQueryParamsDisclaimerTypeEnumKey | undefined;
+	/**
+	 * @description The user\'s group ID.
+	 * @type string | undefined
+	 */
+	group_id?: string | undefined;
+	/**
+	 * @description The number of records returned in a single API call.
+	 * @type integer | undefined
+	 */
+	page_size?: number | undefined;
+	/**
+	 * @description Use the next page token to paginate through large result sets. A next page token is returned whenever the set of available results exceeds the current page size. This token\'s expiration period is 15 minutes.
+	 * @type string | undefined
+	 */
+	next_page_token?: string | undefined;
+};
+
+export const disclaimerRecordsDisclaimerStatusEnum = {
+	Agree: "Agree",
+	Cancel: "Cancel",
+	"Passive Agree": "Passive Agree",
+	"Decline Attend": "Decline Attend",
+} as const;
+
+export type DisclaimerRecordsDisclaimerStatusEnumKey =
+	(typeof disclaimerRecordsDisclaimerStatusEnum)[keyof typeof disclaimerRecordsDisclaimerStatusEnum];
+
+/**
+ * @description Disclaimer records list.
+ */
+export type Getdisclaimerreport200 = {
+	/**
+	 * @description Array of disclaimer records.
+	 * @type array | undefined
+	 */
+	disclaimer_records?:
+		| {
+				/**
+				 * @description The disclaimer status.
+				 * @type string | undefined
+				 */
+				disclaimer_status?: DisclaimerRecordsDisclaimerStatusEnumKey | undefined;
+				/**
+				 * @description The disclaimer\'s generated time.
+				 * @type string | undefined
+				 */
+				time?: string | undefined;
+				/**
+				 * @description The disclaimer type.
+				 * @type string | undefined
+				 */
+				disclaimer_type?: string | undefined;
+				/**
+				 * @description The disclaimer\'s user email.\n\nThere are several special cases where user email display will be handled specially.\n- The client type is *gw.pstn*. The user email will be empty.\n- The user is guest. That is the `is_guest` is *true*. The user email will be empty.\n-  The meeting is Zoom Event. That is the `is_zoom_event` is *true*. The user email will be masked.
+				 * @type string | undefined
+				 */
+				user_email?: string | undefined;
+				/**
+				 * @description The disclaimer\'s meeting number.
+				 * @type integer | undefined, int64
+				 */
+				meeting_number?: number | undefined;
+				/**
+				 * @description The disclaimer\'s meeting ID.
+				 * @type string | undefined
+				 */
+				meeting_id?: string | undefined;
+				/**
+				 * @description User login client types. When the user is a guest, the client type is empty.
+				 * @type string | undefined
+				 */
+				client_type?: string | undefined;
+				/**
+				 * @description Whether the meeting is a Zoom Event.
+				 * @type boolean | undefined
+				 */
+				is_zoom_event?: boolean | undefined;
+				/**
+				 * @description Whether the user is a guest.
+				 * @type boolean | undefined
+				 */
+				is_guest?: boolean | undefined;
+				/**
+				 * @description The user\'s group IDs.
+				 * @type array | undefined
+				 */
+				group_ids?: string[] | undefined;
+				/**
+				 * @description The disclaimer\'s user name.
+				 * @type string | undefined
+				 */
+				display_name?: string | undefined;
+		  }[]
+		| undefined;
+	/**
+	 * @description Use the next page token to paginate through large result sets. A next page token is returned whenever the set of available results exceeds the current page size. This token\'s expiration period is 15 minutes.
+	 * @type string | undefined
+	 */
+	next_page_token?: string | undefined;
+	/**
+	 * @description The number of records returned in a single API call.
+	 * @type integer | undefined
+	 */
+	page_size?: number | undefined;
+};
+
+/**
+ * @description **HTTP Status Code:** `400` <br>\n Bad Request  \n\n **Error Code:** `300` <br>\n The next page token is invalid or expired. <br>\n**Error Code:** `300` <br>\n Invalid parameter: {0}. <br>\n
+ */
+export type Getdisclaimerreport400 = unknown;
+
+/**
+ * @description **HTTP Status Code:** `401` <br>\n Unauthorized  \n\n
+ */
+export type Getdisclaimerreport401 = unknown;
+
+/**
+ * @description **HTTP Status Code:** `403` <br>\n Forbidden  \n\n **Error Code:** `12703` <br>\n No permission for the group: {0}. <br>\n
+ */
+export type Getdisclaimerreport403 = unknown;
+
+/**
+ * @description **HTTP Status Code:** `429` <br>\n Too Many Requests. For more information, see [rate limits](https://developers.zoom.us/docs/api/rate-limits/). \n\n
+ */
+export type Getdisclaimerreport429 = unknown;
+
+export type GetdisclaimerreportQueryResponse = Getdisclaimerreport200;
+
+export type GetdisclaimerreportQuery = {
+	Response: Getdisclaimerreport200;
+	QueryParams: GetdisclaimerreportQueryParams;
+	Errors:
+		| Getdisclaimerreport400
+		| Getdisclaimerreport401
+		| Getdisclaimerreport403
+		| Getdisclaimerreport429;
 };
 
 export const gethistorymeetingandwebinarlistQueryParamsDateTypeEnum = {

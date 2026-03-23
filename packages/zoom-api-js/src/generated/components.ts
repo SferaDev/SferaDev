@@ -193,6 +193,12 @@ import type {
 	GetDevice429,
 	GetDevicePathParams,
 	GetDeviceQueryResponse,
+	Getdisclaimerreport400,
+	Getdisclaimerreport401,
+	Getdisclaimerreport403,
+	Getdisclaimerreport429,
+	GetdisclaimerreportQueryParams,
+	GetdisclaimerreportQueryResponse,
 	Gethistorymeetingandwebinarlist400,
 	Gethistorymeetingandwebinarlist401,
 	Gethistorymeetingandwebinarlist403,
@@ -522,6 +528,7 @@ import type {
 	MeetingTokenQueryParams,
 	MeetingTokenQueryResponse,
 	MeetingUpdate400,
+	MeetingUpdate401,
 	MeetingUpdate404,
 	MeetingUpdate429,
 	MeetingUpdateMutationRequest,
@@ -3423,7 +3430,7 @@ export async function meetingUpdate({
 
 	const data = await request<
 		MeetingUpdateMutationResponse,
-		ErrorWrapper<MeetingUpdate400 | MeetingUpdate404 | MeetingUpdate429>,
+		ErrorWrapper<MeetingUpdate400 | MeetingUpdate401 | MeetingUpdate404 | MeetingUpdate429>,
 		MeetingUpdateMutationRequest,
 		Record<string, string>,
 		MeetingUpdateQueryParams,
@@ -3697,7 +3704,7 @@ export async function meetings({
 }
 
 /**
- * @description [Creates a meeting](https://support.zoom.us/hc/en-us/articles/201362413-Scheduling-meetings) for a user. For user-level apps, pass [the `me` value](/docs/api/rest/using-zoom-apis/#the-me-keyword) instead of the `userId` parameter.
+ * @description [Creates a meeting](https://support.zoom.us/hc/en-us/articles/201362413-Scheduling-meetings) for a user. For user-level apps, pass [the `me` value](/docs/api/using-zoom-apis/#the-me-keyword) instead of the `userId` parameter.
  * **Prerequisites:**
  * * A meeting's `start_url` value is the URL a host or an alternative host can use to start a meeting. The `start_url` value's expiration time is **two hours** for all regular users.
  * * For `custCreate` meeting hosts - users created with the `custCreate` parameter via the [**Create users**](/docs/api/users/#tag/users/POST/users) API - the expiration time of the `start_url` parameter is **90 days** from the generation of the `start_url`.
@@ -4222,6 +4229,39 @@ export async function reportDaily({
 		ReportDailyQueryParams,
 		Record<string, string>
 	>({ method: "GET", url: `/report/daily`, queryParams, ...requestConfig });
+	return data;
+}
+
+/**
+ * @description Retrieve a list of disclaimer records.
+ * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:admin`
+ * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:disclaimer:admin`
+ * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `HEAVY`
+ * @summary Get disclaimer report
+ * {@link /report/disclaimer}
+ */
+export async function getdisclaimerreport({
+	queryParams,
+	config = {},
+}: {
+	queryParams: GetdisclaimerreportQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	const data = await request<
+		GetdisclaimerreportQueryResponse,
+		ErrorWrapper<
+			| Getdisclaimerreport400
+			| Getdisclaimerreport401
+			| Getdisclaimerreport403
+			| Getdisclaimerreport429
+		>,
+		null,
+		Record<string, string>,
+		GetdisclaimerreportQueryParams,
+		Record<string, string>
+	>({ method: "GET", url: `/report/disclaimer`, queryParams, ...requestConfig });
 	return data;
 }
 
@@ -7904,6 +7944,7 @@ export const operationsByPath = {
 	"GET /report/billing/invoices": getBillingInvoicesReports,
 	"GET /report/cloud_recording": reportCloudRecording,
 	"GET /report/daily": reportDaily,
+	"GET /report/disclaimer": getdisclaimerreport,
 	"GET /report/history_meetings": gethistorymeetingandwebinarlist,
 	"GET /report/meeting_activities": reportMeetingactivitylogs,
 	"GET /report/meetings/{meetingId}": reportMeetingDetails,
@@ -8113,6 +8154,7 @@ export const operationsByTag = {
 		getBillingInvoicesReports,
 		reportCloudRecording,
 		reportDaily,
+		getdisclaimerreport,
 		gethistorymeetingandwebinarlist,
 		reportMeetingactivitylogs,
 		reportMeetingDetails,
@@ -8327,6 +8369,7 @@ export const tagDictionary = {
 			"getBillingInvoicesReports",
 			"reportCloudRecording",
 			"reportDaily",
+			"getdisclaimerreport",
 			"gethistorymeetingandwebinarlist",
 			"reportMeetingactivitylogs",
 			"reportMeetingDetails",

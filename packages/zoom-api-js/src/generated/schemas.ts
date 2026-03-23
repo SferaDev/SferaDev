@@ -5828,19 +5828,17 @@ export const meeting200Schema = z
 											"users_not_in_account",
 											"users_not_in_account_or_whitelisted_domains",
 											"users_not_on_invite",
+											"users_not_in_org",
 										])
 										.describe(
-											"This field specifies which participants should be placed into the waiting room. Required if `mode` is set to `custom`.\r\n* `everyone` - Everyone.\r\n* `users_not_in_account` - Users not in your account.\r\n* `users_not_in_account_or_whitelisted_domains` - Users who are not in your account and not part of your whitelisted domains.\r\n* `users_not_on_invite` - Users not on the meeting invite.",
+											"Which participants should be placed into the waiting room. Required if `mode` is set to `custom`.\r\n* `everyone` - Everyone.\r\n* `users_not_in_account` - Users not in your account.\r\n* `users_not_in_account_or_whitelisted_domains` - Users who are not in your account and not part of your whitelisted domains.\r\n* `users_not_on_invite` - Users not on the meeting invite.\r\n* `users_not_in_org` - Users not in your organization.",
 										),
 								),
 							})
 							.describe("Configuration settings for the meeting's waiting room."),
 					),
 					watermark: z.optional(
-						z
-							.boolean()
-							.default(false)
-							.describe("This field adds a watermark when viewing a shared screen."),
+						z.boolean().default(false).describe("Add a watermark when viewing a shared screen."),
 					),
 					host_save_video_order: z.optional(
 						z
@@ -6169,12 +6167,17 @@ export const meetingUpdate204Schema = z.unknown();
 export const meetingUpdate400Schema = z.unknown();
 
 /**
+ * @description **HTTP Status Code:** `401` <br>\n Unauthorized  \n\n **Error Code:** `124` <br>\n Invalid access token. <br>\n**Error Code:** `124` <br>\n Access token has expired. <br>\n
+ */
+export const meetingUpdate401Schema = z.unknown();
+
+/**
  * @description **HTTP Status Code:** `404` <br>\n Not Found  \n\n **Error Code:** `3001` <br>\n Meeting does not exist: {meetingId}. <br>\n
  */
 export const meetingUpdate404Schema = z.unknown();
 
 /**
- * @description **HTTP Status Code:** `429` <br>\n Too Many Requests. For more information, see [rate limits](/docs/api/rate-limits/). \n\n
+ * @description **HTTP Status Code:** `429` <br>\n Too Many Requests. For more information, see [rate limits](https://developers.zoom.us/docs/api/rate-limits/). \n\n **Error Code:** `4001` <br>\n You have reached the maximum per-second rate limit for this API. Try again later. <br>\n
  */
 export const meetingUpdate429Schema = z.unknown();
 
@@ -6776,7 +6779,7 @@ export const meetingUpdateMutationRequestSchema = z
 								mode: z
 									.enum(["follow_setting", "custom"])
 									.describe(
-										"Specifies the waiting room behavior for this meeting.\r\n* `follow_setting` - Use the Zoom web portal setting.\r\n* `custom` - Specify which participants should go into the waiting room.",
+										"The waiting room behavior for this meeting.\r\n* `follow_setting` - Use the Zoom web portal setting.\r\n* `custom` - Specify which participants should go into the waiting room.",
 									),
 								who_goes_to_waiting_room: z.optional(
 									z
@@ -6785,9 +6788,10 @@ export const meetingUpdateMutationRequestSchema = z
 											"users_not_in_account",
 											"users_not_in_account_or_whitelisted_domains",
 											"users_not_on_invite",
+											"users_not_in_org",
 										])
 										.describe(
-											"Specifies which participants should be placed into the waiting room. Required if `mode` is set to `custom`.\r\n* `everyone` - Everyone.\r\n* `users_not_in_account` - Users not in your account.\r\n* `users_not_in_account_or_whitelisted_domains` - Users who are not in your account and not part of your whitelisted domains.\r\n* `users_not_on_invite` - Users not on the meeting invite.",
+											"Which participants should be placed into the waiting room. Required if `mode` is set to `custom`.\r\n* `everyone` - Everyone.\r\n* `users_not_in_account` - Users not in your account.\r\n* `users_not_in_account_or_whitelisted_domains` - Users who are not in your account and not part of your whitelisted domains.\r\n* `users_not_on_invite` - Users not on the meeting invite.\r\n* `users_not_in_org` - Users not in your organization.",
 										),
 								),
 							})
@@ -6941,7 +6945,7 @@ export const meetingUpdateMutationRequestSchema = z
 			z
 				.string()
 				.describe(
-					"Unique identifier of the meeting template. \n\n[Schedule the meeting from a meeting template](https://support.zoom.us/hc/en-us/articles/360036559151-Meeting-templates#h_86f06cff-0852-4998-81c5-c83663c176fb). Retrieve this field's value by calling the [List meeting templates](/docs/api/rest/reference/zoom-api/methods/#operation/listMeetingTemplates) API.",
+					"Unique identifier of the meeting template. \n\n[Schedule the meeting from a meeting template](https://support.zoom.us/hc/en-us/articles/360036559151-Meeting-templates#h_86f06cff-0852-4998-81c5-c83663c176fb). Retrieve this field's value by calling the [List meeting templates](/docs/api/meetings/#tag/templates/get/users/{userId}/meeting_templates) API.",
 				),
 		),
 		timezone: z.optional(
@@ -8215,7 +8219,7 @@ export const meetingCreate201Schema = z
 								mode: z
 									.enum(["follow_setting", "custom"])
 									.describe(
-										"Specifies the waiting room behavior for this meeting.\r\n* `follow_setting` - Use the Zoom web portal setting.\r\n* `custom` - Specify which participants should go into the waiting room.",
+										"The waiting room behavior for this meeting.\r\n* `follow_setting` - Use the Zoom web portal setting.\r\n* `custom` - Specify which participants should go into the waiting room.",
 									),
 								who_goes_to_waiting_room: z.optional(
 									z
@@ -8224,9 +8228,10 @@ export const meetingCreate201Schema = z
 											"users_not_in_account",
 											"users_not_in_account_or_whitelisted_domains",
 											"users_not_on_invite",
+											"users_not_in_org",
 										])
 										.describe(
-											"Specifies which participants should be placed into the waiting room. Required if `mode` is set to `custom`.\r\n* `everyone` - Everyone.\r\n* `users_not_in_account` - Users not in your account.\r\n* `users_not_in_account_or_whitelisted_domains` - Users who are not in your account and not part of your whitelisted domains.\r\n* `users_not_on_invite` - Users not on the meeting invite.",
+											"Which participants should be placed into the waiting room. Required if `mode` is set to `custom`.\r\n* `everyone` - Everyone.\r\n* `users_not_in_account` - Users not in your account.\r\n* `users_not_in_account_or_whitelisted_domains` - Users who are not in your account and not part of your whitelisted domains.\r\n* `users_not_on_invite` - Users not on the meeting invite.\r\n* `users_not_in_org` - Users not in your organization.",
 										),
 								),
 							})
@@ -9050,7 +9055,7 @@ export const meetingCreateMutationRequestSchema = z
 								mode: z
 									.enum(["follow_setting", "custom"])
 									.describe(
-										"Specifies the waiting room behavior for this meeting.\r\n* `follow_setting` - Use the Zoom web portal setting.\r\n* `custom` - Specify which participants should go into the waiting room.",
+										"The waiting room behavior for this meeting.\r\n* `follow_setting` - Use the Zoom web portal setting.\r\n* `custom` - Specify which participants should go into the waiting room.",
 									),
 								who_goes_to_waiting_room: z.optional(
 									z
@@ -9059,9 +9064,10 @@ export const meetingCreateMutationRequestSchema = z
 											"users_not_in_account",
 											"users_not_in_account_or_whitelisted_domains",
 											"users_not_on_invite",
+											"users_not_in_org",
 										])
 										.describe(
-											"Specifies which participants should be placed into the waiting room. Required if `mode` is set to `custom`.\r\n* `everyone` - Everyone.\r\n* `users_not_in_account` - Users not in your account.\r\n* `users_not_in_account_or_whitelisted_domains` - Users who are not in your account and not part of your whitelisted domains.\r\n* `users_not_on_invite` - Users not on the meeting invite.",
+											"Which participants should be placed into the waiting room. Required if `mode` is set to `custom`.\r\n* `everyone` - Everyone.\r\n* `users_not_in_account` - Users not in your account.\r\n* `users_not_in_account_or_whitelisted_domains` - Users who are not in your account and not part of your whitelisted domains.\r\n* `users_not_on_invite` - Users not on the meeting invite.\r\n* `users_not_in_org` - Users not in your organization.",
 										),
 								),
 							})
@@ -11095,6 +11101,139 @@ export const reportDaily400Schema = z.unknown();
 export const reportDaily429Schema = z.unknown();
 
 export const reportDailyQueryResponseSchema = z.lazy(() => reportDaily200Schema);
+
+export const getdisclaimerreportQueryParamsSchema = z.object({
+	from: z
+		.string()
+		.describe(
+			"The start date in `yyyy-MM-dd` format. The date range defined by the `from` and `to` parameters should only be one month, as the report includes only one month's worth of data at once. It is the date range in which the disclaimer was generated.",
+		),
+	to: z.string().describe("The end date in `yyyy-MM-dd` format."),
+	search_value: z.optional(z.string().describe("The user email or meeting number")),
+	disclaimer_type: z.optional(
+		z
+			.enum([
+				"login",
+				"joinMeeting",
+				"recording",
+				"remoteControl",
+				"meetingConnector",
+				"archive",
+				"summary",
+				"query",
+				"AICompanion",
+				"caption",
+				"joinSDKMeeting",
+				"NDI",
+				"joinWebinar",
+				"internalMMRGuestJoin",
+				"liveStream",
+				"phoneACR",
+				"viewBOActivity",
+				"webinarBO",
+				"unmuteAudio",
+				"joinOnZoom",
+				"GDPR",
+				"chinaMeeting",
+				"zappJoin",
+				"softUpdateReminder",
+				"all",
+			])
+			.describe("The disclaimer type."),
+	),
+	group_id: z.optional(z.string().describe("The user's group ID.")),
+	page_size: z.optional(
+		z.coerce.number().int().describe("The number of records returned in a single API call."),
+	),
+	next_page_token: z.optional(
+		z
+			.string()
+			.describe(
+				"Use the next page token to paginate through large result sets. A next page token is returned whenever the set of available results exceeds the current page size. This token's expiration period is 15 minutes.",
+			),
+	),
+});
+
+/**
+ * @description Disclaimer records list.
+ */
+export const getdisclaimerreport200Schema = z.object({
+	disclaimer_records: z.optional(
+		z
+			.array(
+				z
+					.object({
+						disclaimer_status: z.optional(
+							z
+								.enum(["Agree", "Cancel", "Passive Agree", "Decline Attend"])
+								.describe("The disclaimer status."),
+						),
+						time: z.optional(z.string().describe("The disclaimer's generated time.")),
+						disclaimer_type: z.optional(z.string().describe("The disclaimer type.")),
+						user_email: z.optional(
+							z
+								.string()
+								.describe(
+									"The disclaimer's user email.\n\nThere are several special cases where user email display will be handled specially.\n- The client type is *gw.pstn*. The user email will be empty.\n- The user is guest. That is the `is_guest` is *true*. The user email will be empty.\n-  The meeting is Zoom Event. That is the `is_zoom_event` is *true*. The user email will be masked.",
+								),
+						),
+						meeting_number: z.optional(z.int().describe("The disclaimer's meeting number.")),
+						meeting_id: z.optional(z.string().describe("The disclaimer's meeting ID.")),
+						client_type: z.optional(
+							z
+								.string()
+								.describe(
+									"User login client types. When the user is a guest, the client type is empty.",
+								),
+						),
+						is_zoom_event: z.optional(z.boolean().describe("Whether the meeting is a Zoom Event.")),
+						is_guest: z.optional(z.boolean().describe("Whether the user is a guest.")),
+						group_ids: z.optional(
+							z
+								.array(z.string().describe("The group ID."))
+								.min(0)
+								.max(20)
+								.describe("The user's group IDs."),
+						),
+						display_name: z.optional(z.string().describe("The disclaimer's user name.")),
+					})
+					.describe("The disclaimer detail."),
+			)
+			.min(1)
+			.max(300)
+			.describe("Array of disclaimer records."),
+	),
+	next_page_token: z.optional(
+		z
+			.string()
+			.describe(
+				"Use the next page token to paginate through large result sets. A next page token is returned whenever the set of available results exceeds the current page size. This token's expiration period is 15 minutes.",
+			),
+	),
+	page_size: z.optional(z.int().describe("The number of records returned in a single API call.")),
+});
+
+/**
+ * @description **HTTP Status Code:** `400` <br>\n Bad Request  \n\n **Error Code:** `300` <br>\n The next page token is invalid or expired. <br>\n**Error Code:** `300` <br>\n Invalid parameter: {0}. <br>\n
+ */
+export const getdisclaimerreport400Schema = z.unknown();
+
+/**
+ * @description **HTTP Status Code:** `401` <br>\n Unauthorized  \n\n
+ */
+export const getdisclaimerreport401Schema = z.unknown();
+
+/**
+ * @description **HTTP Status Code:** `403` <br>\n Forbidden  \n\n **Error Code:** `12703` <br>\n No permission for the group: {0}. <br>\n
+ */
+export const getdisclaimerreport403Schema = z.unknown();
+
+/**
+ * @description **HTTP Status Code:** `429` <br>\n Too Many Requests. For more information, see [rate limits](https://developers.zoom.us/docs/api/rate-limits/). \n\n
+ */
+export const getdisclaimerreport429Schema = z.unknown();
+
+export const getdisclaimerreportQueryResponseSchema = z.lazy(() => getdisclaimerreport200Schema);
 
 export const gethistorymeetingandwebinarlistQueryParamsSchema = z.object({
 	from: z
