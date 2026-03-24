@@ -19616,7 +19616,7 @@ export type BuyCredits403 = unknown;
 
 export type BuyCredits404 = unknown;
 
-export type BuyCredits502 = unknown;
+export type BuyCredits500 = unknown;
 
 export type BuyCreditsMutationResponse = BuyCredits200;
 
@@ -19629,7 +19629,7 @@ export type BuyCreditsMutation = {
 		| BuyCredits402
 		| BuyCredits403
 		| BuyCredits404
-		| BuyCredits502;
+		| BuyCredits500;
 };
 
 export type StageRedirectsQueryParams = {

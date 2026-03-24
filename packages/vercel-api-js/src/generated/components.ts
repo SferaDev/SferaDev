@@ -78,7 +78,7 @@ import type {
 	BuyCredits402,
 	BuyCredits403,
 	BuyCredits404,
-	BuyCredits502,
+	BuyCredits500,
 	BuyCreditsMutationResponse,
 	BuyCreditsQueryParams,
 	BuyDomains400,
@@ -2708,7 +2708,7 @@ export async function buyCredits({
 	const data = await request<
 		BuyCreditsMutationResponse,
 		ErrorWrapper<
-			BuyCredits400 | BuyCredits401 | BuyCredits402 | BuyCredits403 | BuyCredits404 | BuyCredits502
+			BuyCredits400 | BuyCredits401 | BuyCredits402 | BuyCredits403 | BuyCredits404 | BuyCredits500
 		>,
 		null,
 		Record<string, string>,
