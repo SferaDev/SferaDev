@@ -8750,6 +8750,20 @@ export const uploadArtifactHeaderParamsSchema = z.object({
 				"The base64 encoded tag for this artifact. The value is sent back to clients when the artifact is downloaded as the header `x-artifact-tag`",
 			),
 	),
+	"x-artifact-sha": z.optional(
+		z
+			.string()
+			.max(200)
+			.describe("The SHA of the source control revision that generated this artifact."),
+	),
+	"x-artifact-dirty-hash": z.optional(
+		z
+			.string()
+			.max(200)
+			.describe(
+				"A hash representing uncommitted changes in the working directory when this artifact was generated.",
+			),
+	),
 });
 
 /**
