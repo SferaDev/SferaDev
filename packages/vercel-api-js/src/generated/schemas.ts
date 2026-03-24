@@ -8994,7 +8994,7 @@ export const buyCredits403Schema = z.unknown();
 
 export const buyCredits404Schema = z.unknown();
 
-export const buyCredits502Schema = z.unknown();
+export const buyCredits500Schema = z.unknown();
 
 export const buyCreditsMutationResponseSchema = z.lazy(() => buyCredits200Schema);
 
