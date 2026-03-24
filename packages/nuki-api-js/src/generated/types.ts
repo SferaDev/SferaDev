@@ -803,11 +803,11 @@ export type AddressReservation = {
 	/**
 	 * @type boolean | undefined
 	 */
-	currentlyIssuingAuth?: boolean | undefined;
+	currentlyRevokingAuth?: boolean | undefined;
 	/**
 	 * @type boolean | undefined
 	 */
-	currentlyRevokingAuth?: boolean | undefined;
+	currentlyIssuingAuth?: boolean | undefined;
 };
 
 export const addressTokenRedeemResultEnum = {
@@ -3355,15 +3355,15 @@ export type ObjectId = {
 	/**
 	 * @type integer | undefined, int32
 	 */
-	machineIdentifier?: number | undefined;
-	/**
-	 * @type integer | undefined, int32
-	 */
 	processIdentifier?: number | undefined;
 	/**
 	 * @type integer | undefined, int32
 	 */
 	timeSecond?: number | undefined;
+	/**
+	 * @type integer | undefined, int32
+	 */
+	machineIdentifier?: number | undefined;
 };
 
 export type OpenerIntercomBrand = {
@@ -8881,6 +8881,11 @@ export type GetSmartlockAuthsResourceQueryParams = {
 	 * @type string | undefined
 	 */
 	types?: string | undefined;
+	/**
+	 * @description Indicates if email should be included in the response
+	 * @type boolean | undefined
+	 */
+	includeEmail?: boolean | undefined;
 };
 
 /**
