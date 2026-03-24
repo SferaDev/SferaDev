@@ -19302,6 +19302,18 @@ export type UploadArtifactHeaderParams = {
 	 * @type string | undefined
 	 */
 	"x-artifact-tag"?: string | undefined;
+	/**
+	 * @description The SHA of the source control revision that generated this artifact.
+	 * @maxLength 200
+	 * @type string | undefined
+	 */
+	"x-artifact-sha"?: string | undefined;
+	/**
+	 * @description A hash representing uncommitted changes in the working directory when this artifact was generated.
+	 * @maxLength 200
+	 * @type string | undefined
+	 */
+	"x-artifact-dirty-hash"?: string | undefined;
 };
 
 /**
