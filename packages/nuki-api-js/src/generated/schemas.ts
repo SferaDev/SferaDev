@@ -328,8 +328,8 @@ export const addressReservationSchema = z.object({
 	isCurrentlyIssuingAuth: z.boolean(),
 	isCurrentlyRevokingAuth: z.boolean(),
 	hasCustomAccessTimes: z.boolean(),
-	currentlyIssuingAuth: z.optional(z.boolean()),
 	currentlyRevokingAuth: z.optional(z.boolean()),
+	currentlyIssuingAuth: z.optional(z.boolean()),
 });
 
 export const addressTokenSchema = z.object({
@@ -1517,9 +1517,9 @@ export const objectIdSchema = z.object({
 	counter: z.optional(z.int()),
 	time: z.optional(z.int()),
 	date: z.optional(z.iso.datetime()),
-	machineIdentifier: z.optional(z.int()),
 	processIdentifier: z.optional(z.int()),
 	timeSecond: z.optional(z.int()),
+	machineIdentifier: z.optional(z.int()),
 });
 
 export const openerIntercomBrandSchema = z.object({
@@ -5179,6 +5179,9 @@ export const getSmartlockAuthsResourceQueryParamsSchema = z
 	.object({
 		types: z.optional(
 			z.string().describe("Filter for smartlock authorization's types (comma-separated eg: 0,2,3)"),
+		),
+		includeEmail: z.optional(
+			z.boolean().describe("Indicates if email should be included in the response"),
 		),
 	})
 	.optional();
