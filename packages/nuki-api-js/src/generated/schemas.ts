@@ -328,8 +328,8 @@ export const addressReservationSchema = z.object({
 	isCurrentlyIssuingAuth: z.boolean(),
 	isCurrentlyRevokingAuth: z.boolean(),
 	hasCustomAccessTimes: z.boolean(),
-	currentlyRevokingAuth: z.optional(z.boolean()),
 	currentlyIssuingAuth: z.optional(z.boolean()),
+	currentlyRevokingAuth: z.optional(z.boolean()),
 });
 
 export const addressTokenSchema = z.object({
@@ -774,6 +774,63 @@ export const converterServiceSchema = z.object({
 	stopped: z.optional(z.boolean()),
 });
 
+export const protocolSchema = z.object({
+	confidential: z.optional(z.boolean()),
+	defaultPort: z.optional(z.int()),
+	description: z.optional(z.string()),
+	name: z.optional(z.string()),
+	schemeName: z.optional(z.string()),
+	technicalName: z.optional(z.string()),
+	version: z.optional(z.string()),
+});
+
+export const referenceSchema = z.object({
+	get baseRef() {
+		return referenceSchema.optional();
+	},
+	absolute: z.optional(z.boolean()),
+	scheme: z.optional(z.string()),
+	opaque: z.optional(z.boolean()),
+	authority: z.optional(z.string()),
+	relative: z.optional(z.boolean()),
+	query: z.optional(z.string()),
+	path: z.optional(z.string()),
+	userInfo: z.optional(z.string()),
+	schemeSpecificPart: z.optional(z.string()),
+	fragment: z.optional(z.string()),
+	extensions: z.optional(z.string()),
+	matrix: z.optional(z.string()),
+	get matrixAsForm() {
+		return z.array(parameterSchema).optional();
+	},
+	get queryAsForm() {
+		return z.array(parameterSchema).optional();
+	},
+	extensionsAsArray: z.optional(z.array(z.string())),
+	hierarchicalPart: z.optional(z.string()),
+	hostDomain: z.optional(z.string()),
+	hostIdentifier: z.optional(z.string()),
+	hostPort: z.optional(z.int()),
+	lastSegment: z.optional(z.string()),
+	get parentRef() {
+		return referenceSchema.optional();
+	},
+	relativePart: z.optional(z.string()),
+	get relativeRef() {
+		return referenceSchema.optional();
+	},
+	remainingPart: z.optional(z.string()),
+	get schemeProtocol() {
+		return protocolSchema.optional();
+	},
+	segments: z.optional(z.array(z.string())),
+	get targetRef() {
+		return referenceSchema.optional();
+	},
+	hierarchical: z.optional(z.boolean()),
+	identifier: z.optional(z.string()),
+});
+
 export const metadataSchema = z.object({
 	description: z.optional(z.string()),
 	name: z.optional(z.string()),
@@ -848,72 +905,6 @@ export const metadataServiceSchema = z.object({
 	stopped: z.optional(z.boolean()),
 });
 
-export const rangeServiceSchema = z.object({
-	get context() {
-		return contextSchema.optional();
-	},
-	enabled: z.optional(z.boolean()),
-	started: z.optional(z.boolean()),
-	stopped: z.optional(z.boolean()),
-});
-
-export const protocolSchema = z.object({
-	confidential: z.optional(z.boolean()),
-	defaultPort: z.optional(z.int()),
-	description: z.optional(z.string()),
-	name: z.optional(z.string()),
-	schemeName: z.optional(z.string()),
-	technicalName: z.optional(z.string()),
-	version: z.optional(z.string()),
-});
-
-export const referenceSchema = z.object({
-	get baseRef() {
-		return referenceSchema.optional();
-	},
-	absolute: z.optional(z.boolean()),
-	scheme: z.optional(z.string()),
-	opaque: z.optional(z.boolean()),
-	authority: z.optional(z.string()),
-	relative: z.optional(z.boolean()),
-	query: z.optional(z.string()),
-	path: z.optional(z.string()),
-	userInfo: z.optional(z.string()),
-	schemeSpecificPart: z.optional(z.string()),
-	fragment: z.optional(z.string()),
-	extensions: z.optional(z.string()),
-	extensionsAsArray: z.optional(z.array(z.string())),
-	hierarchicalPart: z.optional(z.string()),
-	hostDomain: z.optional(z.string()),
-	hostIdentifier: z.optional(z.string()),
-	hostPort: z.optional(z.int()),
-	lastSegment: z.optional(z.string()),
-	get parentRef() {
-		return referenceSchema.optional();
-	},
-	relativePart: z.optional(z.string()),
-	get relativeRef() {
-		return referenceSchema.optional();
-	},
-	remainingPart: z.optional(z.string()),
-	get schemeProtocol() {
-		return protocolSchema.optional();
-	},
-	segments: z.optional(z.array(z.string())),
-	get targetRef() {
-		return referenceSchema.optional();
-	},
-	hierarchical: z.optional(z.boolean()),
-	identifier: z.optional(z.string()),
-	matrix: z.optional(z.string()),
-	get matrixAsForm() {
-		return z.array(parameterSchema).optional();
-	},
-	get queryAsForm() {
-		return z.array(parameterSchema).optional();
-	},
-});
-
 export const statusServiceSchema = z.object({
 	get context() {
 		return contextSchema.optional();
@@ -934,6 +925,15 @@ export const statusServiceSchema = z.object({
 		return metadataServiceSchema.optional();
 	},
 	overwriting: z.optional(z.boolean()),
+	stopped: z.optional(z.boolean()),
+});
+
+export const rangeServiceSchema = z.object({
+	get context() {
+		return contextSchema.optional();
+	},
+	enabled: z.optional(z.boolean()),
+	started: z.optional(z.boolean()),
 	stopped: z.optional(z.boolean()),
 });
 
@@ -1034,20 +1034,20 @@ export const applicationSchema = z.object({
 	get services() {
 		return z.array(serviceSchema).optional();
 	},
+	get statusService() {
+		return statusServiceSchema.optional();
+	},
 	get connegService() {
 		return connegServiceSchema.optional();
-	},
-	get converterService() {
-		return converterServiceSchema.optional();
 	},
 	get metadataService() {
 		return metadataServiceSchema.optional();
 	},
+	get converterService() {
+		return converterServiceSchema.optional();
+	},
 	get rangeService() {
 		return rangeServiceSchema.optional();
-	},
-	get statusService() {
-		return statusServiceSchema.optional();
 	},
 	get taskService() {
 		return taskServiceSchema.optional();
@@ -1293,12 +1293,12 @@ export const clientInfoSchema = z.object({
 	get user() {
 		return userSchema.optional();
 	},
+	upstreamAddress: z.optional(z.string()),
 	agentName: z.optional(z.string()),
 	agentVersion: z.optional(z.string()),
 	get mainAgentProduct() {
 		return productSchema.optional();
 	},
-	upstreamAddress: z.optional(z.string()),
 });
 
 export const companySchema = z.object({
@@ -1517,9 +1517,9 @@ export const objectIdSchema = z.object({
 	counter: z.optional(z.int()),
 	time: z.optional(z.int()),
 	date: z.optional(z.iso.datetime()),
+	machineIdentifier: z.optional(z.int()),
 	processIdentifier: z.optional(z.int()),
 	timeSecond: z.optional(z.int()),
-	machineIdentifier: z.optional(z.int()),
 });
 
 export const openerIntercomBrandSchema = z.object({
@@ -1716,13 +1716,13 @@ export const statusSchema = z.object({
 	uri: z.optional(z.string()),
 	error: z.optional(z.boolean()),
 	success: z.optional(z.boolean()),
+	serverError: z.optional(z.boolean()),
+	connectorError: z.optional(z.boolean()),
+	clientError: z.optional(z.boolean()),
 	globalError: z.optional(z.boolean()),
 	informational: z.optional(z.boolean()),
 	redirection: z.optional(z.boolean()),
 	recoverableError: z.optional(z.boolean()),
-	serverError: z.optional(z.boolean()),
-	connectorError: z.optional(z.boolean()),
-	clientError: z.optional(z.boolean()),
 });
 
 export const warningSchema = z.object({
@@ -1807,11 +1807,11 @@ export const requestSchema = z.object({
 	get rootRef() {
 		return referenceSchema.optional();
 	},
+	confidential: z.optional(z.boolean()),
 	asynchronous: z.optional(z.boolean()),
 	entityAvailable: z.optional(z.boolean()),
 	expectingResponse: z.optional(z.boolean()),
 	synchronous: z.optional(z.boolean()),
-	confidential: z.optional(z.boolean()),
 	entityAsText: z.optional(z.string()),
 	get headers() {
 		return z.array(headerSchema).optional();
@@ -1929,8 +1929,8 @@ export const responseSchema = z.object({
 		return statusSchema.optional();
 	},
 	final: z.optional(z.boolean()),
-	provisional: z.optional(z.boolean()),
 	confidential: z.optional(z.boolean()),
+	provisional: z.optional(z.boolean()),
 	entityAvailable: z.optional(z.boolean()),
 	entityAsText: z.optional(z.string()),
 	get headers() {

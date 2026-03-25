@@ -803,11 +803,11 @@ export type AddressReservation = {
 	/**
 	 * @type boolean | undefined
 	 */
-	currentlyRevokingAuth?: boolean | undefined;
+	currentlyIssuingAuth?: boolean | undefined;
 	/**
 	 * @type boolean | undefined
 	 */
-	currentlyIssuingAuth?: boolean | undefined;
+	currentlyRevokingAuth?: boolean | undefined;
 };
 
 export const addressTokenRedeemResultEnum = {
@@ -1810,6 +1810,160 @@ export type ConverterService = {
 	stopped?: boolean | undefined;
 };
 
+export type Protocol = {
+	/**
+	 * @type boolean | undefined
+	 */
+	confidential?: boolean | undefined;
+	/**
+	 * @type integer | undefined, int32
+	 */
+	defaultPort?: number | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	description?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	name?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	schemeName?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	technicalName?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	version?: string | undefined;
+};
+
+export type Reference = {
+	/**
+	 * @type object | undefined
+	 */
+	baseRef?: Reference | undefined;
+	/**
+	 * @type boolean | undefined
+	 */
+	absolute?: boolean | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	scheme?: string | undefined;
+	/**
+	 * @type boolean | undefined
+	 */
+	opaque?: boolean | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	authority?: string | undefined;
+	/**
+	 * @type boolean | undefined
+	 */
+	relative?: boolean | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	query?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	path?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	userInfo?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	schemeSpecificPart?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	fragment?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	extensions?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	matrix?: string | undefined;
+	/**
+	 * @type array | undefined
+	 */
+	matrixAsForm?: Parameter[] | undefined;
+	/**
+	 * @type array | undefined
+	 */
+	queryAsForm?: Parameter[] | undefined;
+	/**
+	 * @type array | undefined
+	 */
+	extensionsAsArray?: string[] | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	hierarchicalPart?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	hostDomain?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	hostIdentifier?: string | undefined;
+	/**
+	 * @type integer | undefined, int32
+	 */
+	hostPort?: number | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	lastSegment?: string | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	parentRef?: Reference | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	relativePart?: string | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	relativeRef?: Reference | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	remainingPart?: string | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	schemeProtocol?: Protocol | undefined;
+	/**
+	 * @type array | undefined
+	 */
+	segments?: string[] | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	targetRef?: Reference | undefined;
+	/**
+	 * @type boolean | undefined
+	 */
+	hierarchical?: boolean | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	identifier?: string | undefined;
+};
+
 export type Metadata = {
 	/**
 	 * @type string | undefined
@@ -1964,179 +2118,6 @@ export type MetadataService = {
 	stopped?: boolean | undefined;
 };
 
-export type RangeService = {
-	/**
-	 * @type object | undefined
-	 */
-	context?: Context | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	enabled?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	started?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	stopped?: boolean | undefined;
-};
-
-export type Protocol = {
-	/**
-	 * @type boolean | undefined
-	 */
-	confidential?: boolean | undefined;
-	/**
-	 * @type integer | undefined, int32
-	 */
-	defaultPort?: number | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	description?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	schemeName?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	technicalName?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	version?: string | undefined;
-};
-
-export type Reference = {
-	/**
-	 * @type object | undefined
-	 */
-	baseRef?: Reference | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	absolute?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	scheme?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	opaque?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	authority?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	relative?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	query?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	path?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	userInfo?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	schemeSpecificPart?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	fragment?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	extensions?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	extensionsAsArray?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	hierarchicalPart?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	hostDomain?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	hostIdentifier?: string | undefined;
-	/**
-	 * @type integer | undefined, int32
-	 */
-	hostPort?: number | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	lastSegment?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	parentRef?: Reference | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	relativePart?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	relativeRef?: Reference | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	remainingPart?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	schemeProtocol?: Protocol | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	segments?: string[] | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	targetRef?: Reference | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	hierarchical?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	identifier?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	matrix?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	matrixAsForm?: Parameter[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	queryAsForm?: Parameter[] | undefined;
-};
-
 export type StatusService = {
 	/**
 	 * @type object | undefined
@@ -2174,6 +2155,25 @@ export type StatusService = {
 	 * @type boolean | undefined
 	 */
 	overwriting?: boolean | undefined;
+	/**
+	 * @type boolean | undefined
+	 */
+	stopped?: boolean | undefined;
+};
+
+export type RangeService = {
+	/**
+	 * @type object | undefined
+	 */
+	context?: Context | undefined;
+	/**
+	 * @type boolean | undefined
+	 */
+	enabled?: boolean | undefined;
+	/**
+	 * @type boolean | undefined
+	 */
+	started?: boolean | undefined;
 	/**
 	 * @type boolean | undefined
 	 */
@@ -2411,11 +2411,11 @@ export type Application = {
 	/**
 	 * @type object | undefined
 	 */
-	connegService?: ConnegService | undefined;
+	statusService?: StatusService | undefined;
 	/**
 	 * @type object | undefined
 	 */
-	converterService?: ConverterService | undefined;
+	connegService?: ConnegService | undefined;
 	/**
 	 * @type object | undefined
 	 */
@@ -2423,11 +2423,11 @@ export type Application = {
 	/**
 	 * @type object | undefined
 	 */
-	rangeService?: RangeService | undefined;
+	converterService?: ConverterService | undefined;
 	/**
 	 * @type object | undefined
 	 */
-	statusService?: StatusService | undefined;
+	rangeService?: RangeService | undefined;
 	/**
 	 * @type object | undefined
 	 */
@@ -2898,6 +2898,10 @@ export type ClientInfo = {
 	/**
 	 * @type string | undefined
 	 */
+	upstreamAddress?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
 	agentName?: string | undefined;
 	/**
 	 * @type string | undefined
@@ -2907,10 +2911,6 @@ export type ClientInfo = {
 	 * @type object | undefined
 	 */
 	mainAgentProduct?: Product | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	upstreamAddress?: string | undefined;
 };
 
 export type Company = {
@@ -3355,15 +3355,15 @@ export type ObjectId = {
 	/**
 	 * @type integer | undefined, int32
 	 */
+	machineIdentifier?: number | undefined;
+	/**
+	 * @type integer | undefined, int32
+	 */
 	processIdentifier?: number | undefined;
 	/**
 	 * @type integer | undefined, int32
 	 */
 	timeSecond?: number | undefined;
-	/**
-	 * @type integer | undefined, int32
-	 */
-	machineIdentifier?: number | undefined;
 };
 
 export type OpenerIntercomBrand = {
@@ -3803,6 +3803,18 @@ export type Status = {
 	/**
 	 * @type boolean | undefined
 	 */
+	serverError?: boolean | undefined;
+	/**
+	 * @type boolean | undefined
+	 */
+	connectorError?: boolean | undefined;
+	/**
+	 * @type boolean | undefined
+	 */
+	clientError?: boolean | undefined;
+	/**
+	 * @type boolean | undefined
+	 */
 	globalError?: boolean | undefined;
 	/**
 	 * @type boolean | undefined
@@ -3816,18 +3828,6 @@ export type Status = {
 	 * @type boolean | undefined
 	 */
 	recoverableError?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	serverError?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	connectorError?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	clientError?: boolean | undefined;
 };
 
 export type Warning = {
@@ -3961,6 +3961,10 @@ export type Request = {
 	/**
 	 * @type boolean | undefined
 	 */
+	confidential?: boolean | undefined;
+	/**
+	 * @type boolean | undefined
+	 */
 	asynchronous?: boolean | undefined;
 	/**
 	 * @type boolean | undefined
@@ -3974,10 +3978,6 @@ export type Request = {
 	 * @type boolean | undefined
 	 */
 	synchronous?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	confidential?: boolean | undefined;
 	/**
 	 * @type string | undefined
 	 */
@@ -4160,11 +4160,11 @@ export type Response = {
 	/**
 	 * @type boolean | undefined
 	 */
-	provisional?: boolean | undefined;
+	confidential?: boolean | undefined;
 	/**
 	 * @type boolean | undefined
 	 */
-	confidential?: boolean | undefined;
+	provisional?: boolean | undefined;
 	/**
 	 * @type boolean | undefined
 	 */
