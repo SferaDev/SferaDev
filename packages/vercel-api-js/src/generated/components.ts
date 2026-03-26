@@ -317,6 +317,17 @@ import type {
 	CreateSandbox422,
 	CreateSandbox429,
 	CreateSandbox500,
+	CreateSandboxes400,
+	CreateSandboxes401,
+	CreateSandboxes402,
+	CreateSandboxes403,
+	CreateSandboxes404,
+	CreateSandboxes410,
+	CreateSandboxes422,
+	CreateSandboxes429,
+	CreateSandboxes500,
+	CreateSandboxesMutationResponse,
+	CreateSandboxesQueryParams,
 	CreateSandboxMutationResponse,
 	CreateSandboxQueryParams,
 	CreateSdkKey400,
@@ -328,6 +339,24 @@ import type {
 	CreateSdkKeyMutationResponse,
 	CreateSdkKeyPathParams,
 	CreateSdkKeyQueryParams,
+	CreateSessionDirectory400,
+	CreateSessionDirectory401,
+	CreateSessionDirectory403,
+	CreateSessionDirectory410,
+	CreateSessionDirectory422,
+	CreateSessionDirectoryMutationResponse,
+	CreateSessionDirectoryPathParams,
+	CreateSessionDirectoryQueryParams,
+	CreateSessionSnapshot400,
+	CreateSessionSnapshot401,
+	CreateSessionSnapshot402,
+	CreateSessionSnapshot403,
+	CreateSessionSnapshot410,
+	CreateSessionSnapshot422,
+	CreateSessionSnapshot500,
+	CreateSessionSnapshotMutationResponse,
+	CreateSessionSnapshotPathParams,
+	CreateSessionSnapshotQueryParams,
 	CreateSharedEnvVariable400,
 	CreateSharedEnvVariable401,
 	CreateSharedEnvVariable402,
@@ -535,6 +564,15 @@ import type {
 	DeleteRoutesMutationResponse,
 	DeleteRoutesPathParams,
 	DeleteRoutesQueryParams,
+	DeleteSandbox400,
+	DeleteSandbox401,
+	DeleteSandbox403,
+	DeleteSandbox404,
+	DeleteSandbox410,
+	DeleteSandbox422,
+	DeleteSandboxMutationResponse,
+	DeleteSandboxPathParams,
+	DeleteSandboxQueryParams,
 	DeleteSdkKey400,
 	DeleteSdkKey401,
 	DeleteSdkKey402,
@@ -544,6 +582,13 @@ import type {
 	DeleteSdkKeyMutationResponse,
 	DeleteSdkKeyPathParams,
 	DeleteSdkKeyQueryParams,
+	DeleteSessionSnapshot400,
+	DeleteSessionSnapshot401,
+	DeleteSessionSnapshot403,
+	DeleteSessionSnapshot404,
+	DeleteSessionSnapshotMutationResponse,
+	DeleteSessionSnapshotPathParams,
+	DeleteSessionSnapshotQueryParams,
 	DeleteSharedEnvVariable400,
 	DeleteSharedEnvVariable401,
 	DeleteSharedEnvVariable402,
@@ -622,6 +667,15 @@ import type {
 	ExtendSandboxTimeoutMutationResponse,
 	ExtendSandboxTimeoutPathParams,
 	ExtendSandboxTimeoutQueryParams,
+	ExtendSessionTimeout400,
+	ExtendSessionTimeout401,
+	ExtendSessionTimeout403,
+	ExtendSessionTimeout410,
+	ExtendSessionTimeout422,
+	ExtendSessionTimeout500,
+	ExtendSessionTimeoutMutationResponse,
+	ExtendSessionTimeoutPathParams,
+	ExtendSessionTimeoutQueryParams,
 	FilterProjectEnvs400,
 	FilterProjectEnvs401,
 	FilterProjectEnvs403,
@@ -1017,6 +1071,16 @@ import type {
 	GetMember404,
 	GetMemberPathParams,
 	GetMemberQueryResponse,
+	GetNamedSandbox400,
+	GetNamedSandbox401,
+	GetNamedSandbox402,
+	GetNamedSandbox403,
+	GetNamedSandbox404,
+	GetNamedSandbox429,
+	GetNamedSandbox500,
+	GetNamedSandboxPathParams,
+	GetNamedSandboxQueryParams,
+	GetNamedSandboxQueryResponse,
 	GetOrder400,
 	GetOrder401,
 	GetOrder403,
@@ -1131,6 +1195,18 @@ import type {
 	GetSandbox401,
 	GetSandbox403,
 	GetSandbox429,
+	GetSandboxesV1QueryParams,
+	GetSandboxesV1QueryResponse,
+	GetSandboxesV2QueryParams,
+	GetSandboxesV2QueryResponse,
+	GetSandboxesV1400,
+	GetSandboxesV1401,
+	GetSandboxesV1403,
+	GetSandboxesV1404,
+	GetSandboxesV2400,
+	GetSandboxesV2401,
+	GetSandboxesV2403,
+	GetSandboxesV2404,
 	GetSandboxPathParams,
 	GetSandboxQueryParams,
 	GetSandboxQueryResponse,
@@ -1149,6 +1225,36 @@ import type {
 	GetSecurityFirewallEvents500,
 	GetSecurityFirewallEventsQueryParams,
 	GetSecurityFirewallEventsQueryResponse,
+	GetSession400,
+	GetSession401,
+	GetSession403,
+	GetSession500,
+	GetSessionCommand400,
+	GetSessionCommand401,
+	GetSessionCommand403,
+	GetSessionCommand410,
+	GetSessionCommand422,
+	GetSessionCommandLogs400,
+	GetSessionCommandLogs401,
+	GetSessionCommandLogs403,
+	GetSessionCommandLogs410,
+	GetSessionCommandLogs422,
+	GetSessionCommandLogsPathParams,
+	GetSessionCommandLogsQueryParams,
+	GetSessionCommandLogsQueryResponse,
+	GetSessionCommandPathParams,
+	GetSessionCommandQueryParams,
+	GetSessionCommandQueryResponse,
+	GetSessionPathParams,
+	GetSessionQueryParams,
+	GetSessionQueryResponse,
+	GetSessionSnapshot400,
+	GetSessionSnapshot401,
+	GetSessionSnapshot403,
+	GetSessionSnapshot404,
+	GetSessionSnapshotPathParams,
+	GetSessionSnapshotQueryParams,
+	GetSessionSnapshotQueryResponse,
 	GetSharedEnvVar400,
 	GetSharedEnvVar401,
 	GetSharedEnvVar403,
@@ -1289,6 +1395,15 @@ import type {
 	KillCommandMutationResponse,
 	KillCommandPathParams,
 	KillCommandQueryParams,
+	KillSessionCommand400,
+	KillSessionCommand401,
+	KillSessionCommand403,
+	KillSessionCommand404,
+	KillSessionCommand410,
+	KillSessionCommand422,
+	KillSessionCommandMutationResponse,
+	KillSessionCommandPathParams,
+	KillSessionCommandQueryParams,
 	ListAccessGroupMembers400,
 	ListAccessGroupMembers401,
 	ListAccessGroupMembers403,
@@ -1412,12 +1527,25 @@ import type {
 	ListPromoteAliasesPathParams,
 	ListPromoteAliasesQueryParams,
 	ListPromoteAliasesQueryResponse,
-	ListSandboxes400,
-	ListSandboxes401,
-	ListSandboxes403,
-	ListSandboxes404,
-	ListSandboxesQueryParams,
-	ListSandboxesQueryResponse,
+	ListSessionCommands400,
+	ListSessionCommands401,
+	ListSessionCommands403,
+	ListSessionCommandsPathParams,
+	ListSessionCommandsQueryParams,
+	ListSessionCommandsQueryResponse,
+	ListSessionSnapshots400,
+	ListSessionSnapshots401,
+	ListSessionSnapshots403,
+	ListSessionSnapshots404,
+	ListSessionSnapshotsQueryParams,
+	ListSessionSnapshotsQueryResponse,
+	ListSessions400,
+	ListSessions401,
+	ListSessions403,
+	ListSessions404,
+	ListSessions500,
+	ListSessionsQueryParams,
+	ListSessionsQueryResponse,
 	ListSharedEnvVariable400,
 	ListSharedEnvVariable401,
 	ListSharedEnvVariable403,
@@ -1547,6 +1675,15 @@ import type {
 	ReadNetworkPathParams,
 	ReadNetworkQueryParams,
 	ReadNetworkQueryResponse,
+	ReadSessionFile400,
+	ReadSessionFile401,
+	ReadSessionFile403,
+	ReadSessionFile404,
+	ReadSessionFile410,
+	ReadSessionFile422,
+	ReadSessionFileMutationResponse,
+	ReadSessionFilePathParams,
+	ReadSessionFileQueryParams,
 	RecordEvents400,
 	RecordEvents401,
 	RecordEvents402,
@@ -1679,6 +1816,14 @@ import type {
 	RunCommandMutationResponse,
 	RunCommandPathParams,
 	RunCommandQueryParams,
+	RunSessionCommand400,
+	RunSessionCommand401,
+	RunSessionCommand403,
+	RunSessionCommand410,
+	RunSessionCommand422,
+	RunSessionCommandMutationResponse,
+	RunSessionCommandPathParams,
+	RunSessionCommandQueryParams,
 	SearchRepo400,
 	SearchRepo401,
 	SearchRepo403,
@@ -1713,6 +1858,15 @@ import type {
 	StopSandboxMutationResponse,
 	StopSandboxPathParams,
 	StopSandboxQueryParams,
+	StopSession400,
+	StopSession401,
+	StopSession403,
+	StopSession410,
+	StopSession422,
+	StopSession500,
+	StopSessionMutationResponse,
+	StopSessionPathParams,
+	StopSessionQueryParams,
 	SubmitBillingData400,
 	SubmitBillingData401,
 	SubmitBillingData403,
@@ -1999,6 +2153,25 @@ import type {
 	UpdateRouteVersionsMutationResponse,
 	UpdateRouteVersionsPathParams,
 	UpdateRouteVersionsQueryParams,
+	UpdateSandbox400,
+	UpdateSandbox401,
+	UpdateSandbox402,
+	UpdateSandbox403,
+	UpdateSandbox404,
+	UpdateSandbox500,
+	UpdateSandboxMutationResponse,
+	UpdateSandboxPathParams,
+	UpdateSandboxQueryParams,
+	UpdateSessionNetworkPolicy400,
+	UpdateSessionNetworkPolicy401,
+	UpdateSessionNetworkPolicy402,
+	UpdateSessionNetworkPolicy403,
+	UpdateSessionNetworkPolicy410,
+	UpdateSessionNetworkPolicy422,
+	UpdateSessionNetworkPolicy500,
+	UpdateSessionNetworkPolicyMutationResponse,
+	UpdateSessionNetworkPolicyPathParams,
+	UpdateSessionNetworkPolicyQueryParams,
 	UpdateSharedEnvVariable400,
 	UpdateSharedEnvVariable401,
 	UpdateSharedEnvVariable402,
@@ -2066,6 +2239,15 @@ import type {
 	WriteFilesMutationResponse,
 	WriteFilesPathParams,
 	WriteFilesQueryParams,
+	WriteSessionFiles400,
+	WriteSessionFiles401,
+	WriteSessionFiles403,
+	WriteSessionFiles410,
+	WriteSessionFiles422,
+	WriteSessionFilesHeaderParams,
+	WriteSessionFilesMutationResponse,
+	WriteSessionFilesPathParams,
+	WriteSessionFilesQueryParams,
 } from "./types";
 
 /**
@@ -10494,21 +10676,21 @@ export async function unpauseProject({
  * @summary List sandboxes
  * {@link /v1/sandboxes}
  */
-export async function listSandboxes({
+export async function getSandboxesV1({
 	queryParams,
 	config = {},
 }: {
-	queryParams?: ListSandboxesQueryParams;
+	queryParams?: GetSandboxesV1QueryParams;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
 
 	const data = await request<
-		ListSandboxesQueryResponse,
-		ErrorWrapper<ListSandboxes400 | ListSandboxes401 | ListSandboxes403 | ListSandboxes404>,
+		GetSandboxesV1QueryResponse,
+		ErrorWrapper<GetSandboxesV1400 | GetSandboxesV1401 | GetSandboxesV1403 | GetSandboxesV1404>,
 		null,
 		Record<string, string>,
-		ListSandboxesQueryParams,
+		GetSandboxesV1QueryParams,
 		Record<string, string>
 	>({ method: "GET", url: `/v1/sandboxes`, queryParams, ...requestConfig });
 	return data;
@@ -11156,6 +11338,883 @@ export async function createSnapshot({
 	>({
 		method: "POST",
 		url: `/v1/sandboxes/${sandboxId}/snapshot`,
+		queryParams,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
+ * @description Retrieves a paginated list of named sandboxes belonging to a specific project. Results can be sorted by creation time or name, and optionally filtered by name prefix.
+ * @summary List sandboxes
+ * {@link /v2/sandboxes}
+ */
+export async function getSandboxesV2({
+	queryParams,
+	config = {},
+}: {
+	queryParams?: GetSandboxesV2QueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	const data = await request<
+		GetSandboxesV2QueryResponse,
+		ErrorWrapper<GetSandboxesV2400 | GetSandboxesV2401 | GetSandboxesV2403 | GetSandboxesV2404>,
+		null,
+		Record<string, string>,
+		GetSandboxesV2QueryParams,
+		Record<string, string>
+	>({ method: "GET", url: `/v2/sandboxes`, queryParams, ...requestConfig });
+	return data;
+}
+
+/**
+ * @description Creates a named sandbox environment. Named sandboxes have a unique name within a project and support automatic snapshotting on shutdown.
+ * @summary Create a named sandbox
+ * {@link /v2/sandboxes}
+ */
+export async function createSandboxes({
+	queryParams,
+	config = {},
+}: {
+	queryParams?: CreateSandboxesQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	const data = await request<
+		CreateSandboxesMutationResponse,
+		ErrorWrapper<
+			| CreateSandboxes400
+			| CreateSandboxes401
+			| CreateSandboxes402
+			| CreateSandboxes403
+			| CreateSandboxes404
+			| CreateSandboxes410
+			| CreateSandboxes422
+			| CreateSandboxes429
+			| CreateSandboxes500
+		>,
+		null,
+		Record<string, string>,
+		CreateSandboxesQueryParams,
+		Record<string, string>
+	>({
+		method: "POST",
+		url: `/v2/sandboxes`,
+		queryParams,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
+ * @description Retrieves a paginated list of snapshots for a specific project.
+ * @summary List snapshots
+ * {@link /v2/sandboxes/snapshots}
+ */
+export async function listSessionSnapshots({
+	queryParams,
+	config = {},
+}: {
+	queryParams?: ListSessionSnapshotsQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	const data = await request<
+		ListSessionSnapshotsQueryResponse,
+		ErrorWrapper<
+			| ListSessionSnapshots400
+			| ListSessionSnapshots401
+			| ListSessionSnapshots403
+			| ListSessionSnapshots404
+		>,
+		null,
+		Record<string, string>,
+		ListSessionSnapshotsQueryParams,
+		Record<string, string>
+	>({ method: "GET", url: `/v2/sandboxes/snapshots`, queryParams, ...requestConfig });
+	return data;
+}
+
+/**
+ * @description Retrieves detailed information about a specific snapshot, including its creation time, size, expiration date, and the source session it was created from.
+ * @summary Get a snapshot
+ * {@link /v2/sandboxes/snapshots/:snapshotId}
+ */
+export async function getSessionSnapshot({
+	pathParams: { snapshotId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: GetSessionSnapshotPathParams;
+	queryParams?: GetSessionSnapshotQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!snapshotId) {
+		throw new Error(`Missing required path parameter: snapshotId`);
+	}
+
+	const data = await request<
+		GetSessionSnapshotQueryResponse,
+		ErrorWrapper<
+			GetSessionSnapshot400 | GetSessionSnapshot401 | GetSessionSnapshot403 | GetSessionSnapshot404
+		>,
+		null,
+		Record<string, string>,
+		GetSessionSnapshotQueryParams,
+		GetSessionSnapshotPathParams
+	>({ method: "GET", url: `/v2/sandboxes/snapshots/${snapshotId}`, queryParams, ...requestConfig });
+	return data;
+}
+
+/**
+ * @description Permanently deletes a snapshot and frees its associated storage. This action cannot be undone. After deletion, the snapshot can no longer be used to create new sessions.
+ * @summary Delete a snapshot
+ * {@link /v2/sandboxes/snapshots/:snapshotId}
+ */
+export async function deleteSessionSnapshot({
+	pathParams: { snapshotId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: DeleteSessionSnapshotPathParams;
+	queryParams?: DeleteSessionSnapshotQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!snapshotId) {
+		throw new Error(`Missing required path parameter: snapshotId`);
+	}
+
+	const data = await request<
+		DeleteSessionSnapshotMutationResponse,
+		ErrorWrapper<
+			| DeleteSessionSnapshot400
+			| DeleteSessionSnapshot401
+			| DeleteSessionSnapshot403
+			| DeleteSessionSnapshot404
+		>,
+		null,
+		Record<string, string>,
+		DeleteSessionSnapshotQueryParams,
+		DeleteSessionSnapshotPathParams
+	>({
+		method: "DELETE",
+		url: `/v2/sandboxes/snapshots/${snapshotId}`,
+		queryParams,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Retrieves a paginated list of sessions belonging to a specific sandbox. Results are sorted by creation time and paginated using an opaque cursor.
+ * @summary List sessions
+ * {@link /v2/sandboxes/sessions}
+ */
+export async function listSessions({
+	queryParams,
+	config = {},
+}: {
+	queryParams?: ListSessionsQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	const data = await request<
+		ListSessionsQueryResponse,
+		ErrorWrapper<
+			ListSessions400 | ListSessions401 | ListSessions403 | ListSessions404 | ListSessions500
+		>,
+		null,
+		Record<string, string>,
+		ListSessionsQueryParams,
+		Record<string, string>
+	>({ method: "GET", url: `/v2/sandboxes/sessions`, queryParams, ...requestConfig });
+	return data;
+}
+
+/**
+ * @description Retrieves detailed information about a specific session, including its current status, resource configuration, and exposed routes.
+ * @summary Get a session
+ * {@link /v2/sandboxes/sessions/:sessionId}
+ */
+export async function getSession({
+	pathParams: { sessionId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: GetSessionPathParams;
+	queryParams?: GetSessionQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!sessionId) {
+		throw new Error(`Missing required path parameter: sessionId`);
+	}
+
+	const data = await request<
+		GetSessionQueryResponse,
+		ErrorWrapper<GetSession400 | GetSession401 | GetSession403 | GetSession500>,
+		null,
+		Record<string, string>,
+		GetSessionQueryParams,
+		GetSessionPathParams
+	>({ method: "GET", url: `/v2/sandboxes/sessions/${sessionId}`, queryParams, ...requestConfig });
+	return data;
+}
+
+/**
+ * @description Retrieves a named sandbox by name, including its current sandbox and routes. If the sandbox is stopped and resume is true, a new sandbox will be created from the most recent snapshot.
+ * @summary Get a named sandbox
+ * {@link /v2/sandboxes/:name}
+ */
+export async function getNamedSandbox({
+	pathParams: { name },
+	queryParams,
+	config = {},
+}: {
+	pathParams: GetNamedSandboxPathParams;
+	queryParams?: GetNamedSandboxQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!name) {
+		throw new Error(`Missing required path parameter: name`);
+	}
+
+	const data = await request<
+		GetNamedSandboxQueryResponse,
+		ErrorWrapper<
+			| GetNamedSandbox400
+			| GetNamedSandbox401
+			| GetNamedSandbox402
+			| GetNamedSandbox403
+			| GetNamedSandbox404
+			| GetNamedSandbox429
+			| GetNamedSandbox500
+		>,
+		null,
+		Record<string, string>,
+		GetNamedSandboxQueryParams,
+		GetNamedSandboxPathParams
+	>({ method: "GET", url: `/v2/sandboxes/${name}`, queryParams, ...requestConfig });
+	return data;
+}
+
+/**
+ * @description Updates the configuration of a sandbox. Only the provided fields will be modified; omitted fields remain unchanged.
+ * @summary Update a sandbox
+ * {@link /v2/sandboxes/:name}
+ */
+export async function updateSandbox({
+	pathParams: { name },
+	queryParams,
+	config = {},
+}: {
+	pathParams: UpdateSandboxPathParams;
+	queryParams?: UpdateSandboxQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!name) {
+		throw new Error(`Missing required path parameter: name`);
+	}
+
+	const data = await request<
+		UpdateSandboxMutationResponse,
+		ErrorWrapper<
+			| UpdateSandbox400
+			| UpdateSandbox401
+			| UpdateSandbox402
+			| UpdateSandbox403
+			| UpdateSandbox404
+			| UpdateSandbox500
+		>,
+		null,
+		Record<string, string>,
+		UpdateSandboxQueryParams,
+		UpdateSandboxPathParams
+	>({
+		method: "PATCH",
+		url: `/v2/sandboxes/${name}`,
+		queryParams,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
+ * @description Deletes a sandbox by name. If sandboxes are currently running, they will be stopped first. This operation deletes all sandbox entities with the given name, all associated snapshots, and the named sandbox metadata.
+ * @summary Delete a sandbox
+ * {@link /v2/sandboxes/:name}
+ */
+export async function deleteSandbox({
+	pathParams: { name },
+	queryParams,
+	config = {},
+}: {
+	pathParams: DeleteSandboxPathParams;
+	queryParams?: DeleteSandboxQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!name) {
+		throw new Error(`Missing required path parameter: name`);
+	}
+
+	const data = await request<
+		DeleteSandboxMutationResponse,
+		ErrorWrapper<
+			| DeleteSandbox400
+			| DeleteSandbox401
+			| DeleteSandbox403
+			| DeleteSandbox404
+			| DeleteSandbox410
+			| DeleteSandbox422
+		>,
+		null,
+		Record<string, string>,
+		DeleteSandboxQueryParams,
+		DeleteSandboxPathParams
+	>({ method: "DELETE", url: `/v2/sandboxes/${name}`, queryParams, ...requestConfig });
+	return data;
+}
+
+/**
+ * @description Retrieves a list of all commands that have been executed in a session, including their current status, exit codes, and execution times, ordered from the most recent to the oldest.
+ * @summary List commands
+ * {@link /v2/sandboxes/sessions/:sessionId/cmd}
+ */
+export async function listSessionCommands({
+	pathParams: { sessionId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: ListSessionCommandsPathParams;
+	queryParams?: ListSessionCommandsQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!sessionId) {
+		throw new Error(`Missing required path parameter: sessionId`);
+	}
+
+	const data = await request<
+		ListSessionCommandsQueryResponse,
+		ErrorWrapper<ListSessionCommands400 | ListSessionCommands401 | ListSessionCommands403>,
+		null,
+		Record<string, string>,
+		ListSessionCommandsQueryParams,
+		ListSessionCommandsPathParams
+	>({
+		method: "GET",
+		url: `/v2/sandboxes/sessions/${sessionId}/cmd`,
+		queryParams,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Executes a shell command inside a running session. The command runs asynchronously and returns immediately with a command ID that can be used to track its progress and retrieve its output. Optionally, use the `wait` parameter to stream the command status until completion.
+ * @summary Execute a command
+ * {@link /v2/sandboxes/sessions/:sessionId/cmd}
+ */
+export async function runSessionCommand({
+	pathParams: { sessionId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: RunSessionCommandPathParams;
+	queryParams?: RunSessionCommandQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!sessionId) {
+		throw new Error(`Missing required path parameter: sessionId`);
+	}
+
+	const data = await request<
+		RunSessionCommandMutationResponse,
+		ErrorWrapper<
+			| RunSessionCommand400
+			| RunSessionCommand401
+			| RunSessionCommand403
+			| RunSessionCommand410
+			| RunSessionCommand422
+		>,
+		null,
+		Record<string, string>,
+		RunSessionCommandQueryParams,
+		RunSessionCommandPathParams
+	>({
+		method: "POST",
+		url: `/v2/sandboxes/sessions/${sessionId}/cmd`,
+		queryParams,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
+ * @description Retrieves the current status and details of a command executed in a session. Use the `wait` parameter to block until the command finishes execution.
+ * @summary Get a command
+ * {@link /v2/sandboxes/sessions/:sessionId/cmd/:cmdId}
+ */
+export async function getSessionCommand({
+	pathParams: { sessionId, cmdId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: GetSessionCommandPathParams;
+	queryParams?: GetSessionCommandQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!sessionId) {
+		throw new Error(`Missing required path parameter: sessionId`);
+	}
+
+	if (!cmdId) {
+		throw new Error(`Missing required path parameter: cmdId`);
+	}
+
+	const data = await request<
+		GetSessionCommandQueryResponse,
+		ErrorWrapper<
+			| GetSessionCommand400
+			| GetSessionCommand401
+			| GetSessionCommand403
+			| GetSessionCommand410
+			| GetSessionCommand422
+		>,
+		null,
+		Record<string, string>,
+		GetSessionCommandQueryParams,
+		GetSessionCommandPathParams
+	>({
+		method: "GET",
+		url: `/v2/sandboxes/sessions/${sessionId}/cmd/${cmdId}`,
+		queryParams,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Sends a signal to terminate a running command in a session. The signal can be used to gracefully stop (SIGTERM) or forcefully kill (SIGKILL) the process. The command must still be running for this operation to succeed.
+ * @summary Kill a command
+ * {@link /v2/sandboxes/sessions/:sessionId/cmd/:cmdId/kill}
+ */
+export async function killSessionCommand({
+	pathParams: { cmdId, sessionId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: KillSessionCommandPathParams;
+	queryParams?: KillSessionCommandQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!cmdId) {
+		throw new Error(`Missing required path parameter: cmdId`);
+	}
+
+	if (!sessionId) {
+		throw new Error(`Missing required path parameter: sessionId`);
+	}
+
+	const data = await request<
+		KillSessionCommandMutationResponse,
+		ErrorWrapper<
+			| KillSessionCommand400
+			| KillSessionCommand401
+			| KillSessionCommand403
+			| KillSessionCommand404
+			| KillSessionCommand410
+			| KillSessionCommand422
+		>,
+		null,
+		Record<string, string>,
+		KillSessionCommandQueryParams,
+		KillSessionCommandPathParams
+	>({
+		method: "POST",
+		url: `/v2/sandboxes/sessions/${sessionId}/cmd/${cmdId}/kill`,
+		queryParams,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
+ * @description Streams the output of a command in real-time using newline-delimited JSON (ND-JSON). Each entry includes the output data and stream type. Stream types include `stdout`, `stderr`, and `error` (for stream failures).
+ * @summary Stream command logs
+ * {@link /v2/sandboxes/sessions/:sessionId/cmd/:cmdId/logs}
+ */
+export async function getSessionCommandLogs({
+	pathParams: { sessionId, cmdId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: GetSessionCommandLogsPathParams;
+	queryParams?: GetSessionCommandLogsQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!sessionId) {
+		throw new Error(`Missing required path parameter: sessionId`);
+	}
+
+	if (!cmdId) {
+		throw new Error(`Missing required path parameter: cmdId`);
+	}
+
+	const data = await request<
+		GetSessionCommandLogsQueryResponse,
+		ErrorWrapper<
+			| GetSessionCommandLogs400
+			| GetSessionCommandLogs401
+			| GetSessionCommandLogs403
+			| GetSessionCommandLogs410
+			| GetSessionCommandLogs422
+		>,
+		null,
+		Record<string, string>,
+		GetSessionCommandLogsQueryParams,
+		GetSessionCommandLogsPathParams
+	>({
+		method: "GET",
+		url: `/v2/sandboxes/sessions/${sessionId}/cmd/${cmdId}/logs`,
+		queryParams,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Stops a running session and releases its allocated resources. All running processes within the session will be terminated. This action cannot be undone. A stopped session cannot be restarted.
+ * @summary Stop a session
+ * {@link /v2/sandboxes/sessions/:sessionId/stop}
+ */
+export async function stopSession({
+	pathParams: { sessionId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: StopSessionPathParams;
+	queryParams?: StopSessionQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!sessionId) {
+		throw new Error(`Missing required path parameter: sessionId`);
+	}
+
+	const data = await request<
+		StopSessionMutationResponse,
+		ErrorWrapper<
+			| StopSession400
+			| StopSession401
+			| StopSession403
+			| StopSession410
+			| StopSession422
+			| StopSession500
+		>,
+		null,
+		Record<string, string>,
+		StopSessionQueryParams,
+		StopSessionPathParams
+	>({
+		method: "POST",
+		url: `/v2/sandboxes/sessions/${sessionId}/stop`,
+		queryParams,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Extends the maximum execution time of a running session. The session must be active and able to accept commands. The total timeout cannot exceed the maximum allowed limit for your account.
+ * @summary Extend session timeout
+ * {@link /v2/sandboxes/sessions/:sessionId/extend-timeout}
+ */
+export async function extendSessionTimeout({
+	pathParams: { sessionId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: ExtendSessionTimeoutPathParams;
+	queryParams?: ExtendSessionTimeoutQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!sessionId) {
+		throw new Error(`Missing required path parameter: sessionId`);
+	}
+
+	const data = await request<
+		ExtendSessionTimeoutMutationResponse,
+		ErrorWrapper<
+			| ExtendSessionTimeout400
+			| ExtendSessionTimeout401
+			| ExtendSessionTimeout403
+			| ExtendSessionTimeout410
+			| ExtendSessionTimeout422
+			| ExtendSessionTimeout500
+		>,
+		null,
+		Record<string, string>,
+		ExtendSessionTimeoutQueryParams,
+		ExtendSessionTimeoutPathParams
+	>({
+		method: "POST",
+		url: `/v2/sandboxes/sessions/${sessionId}/extend-timeout`,
+		queryParams,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
+ * @description Replaces the network access policy of a running session. Use this to control which external hosts the session can communicate with. This is a full replacement. Any previously configured network rules will be overwritten.
+ * @summary Update network policy
+ * {@link /v2/sandboxes/sessions/:sessionId/network-policy}
+ */
+export async function updateSessionNetworkPolicy({
+	pathParams: { sessionId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: UpdateSessionNetworkPolicyPathParams;
+	queryParams?: UpdateSessionNetworkPolicyQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!sessionId) {
+		throw new Error(`Missing required path parameter: sessionId`);
+	}
+
+	const data = await request<
+		UpdateSessionNetworkPolicyMutationResponse,
+		ErrorWrapper<
+			| UpdateSessionNetworkPolicy400
+			| UpdateSessionNetworkPolicy401
+			| UpdateSessionNetworkPolicy402
+			| UpdateSessionNetworkPolicy403
+			| UpdateSessionNetworkPolicy410
+			| UpdateSessionNetworkPolicy422
+			| UpdateSessionNetworkPolicy500
+		>,
+		null,
+		Record<string, string>,
+		UpdateSessionNetworkPolicyQueryParams,
+		UpdateSessionNetworkPolicyPathParams
+	>({
+		method: "POST",
+		url: `/v2/sandboxes/sessions/${sessionId}/network-policy`,
+		queryParams,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
+ * @description Downloads the contents of a file from a session's filesystem. The file content is returned as a binary stream with appropriate Content-Disposition headers for file download.
+ * @summary Read a file
+ * {@link /v2/sandboxes/sessions/:sessionId/fs/read}
+ */
+export async function readSessionFile({
+	pathParams: { sessionId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: ReadSessionFilePathParams;
+	queryParams?: ReadSessionFileQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!sessionId) {
+		throw new Error(`Missing required path parameter: sessionId`);
+	}
+
+	const data = await request<
+		ReadSessionFileMutationResponse,
+		ErrorWrapper<
+			| ReadSessionFile400
+			| ReadSessionFile401
+			| ReadSessionFile403
+			| ReadSessionFile404
+			| ReadSessionFile410
+			| ReadSessionFile422
+		>,
+		null,
+		Record<string, string>,
+		ReadSessionFileQueryParams,
+		ReadSessionFilePathParams
+	>({
+		method: "POST",
+		url: `/v2/sandboxes/sessions/${sessionId}/fs/read`,
+		queryParams,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
+ * @description Creates a new directory in a session's filesystem. By default, parent directories are created recursively if they don't exist (similar to `mkdir -p`).
+ * @summary Create a directory
+ * {@link /v2/sandboxes/sessions/:sessionId/fs/mkdir}
+ */
+export async function createSessionDirectory({
+	pathParams: { sessionId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: CreateSessionDirectoryPathParams;
+	queryParams?: CreateSessionDirectoryQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!sessionId) {
+		throw new Error(`Missing required path parameter: sessionId`);
+	}
+
+	const data = await request<
+		CreateSessionDirectoryMutationResponse,
+		ErrorWrapper<
+			| CreateSessionDirectory400
+			| CreateSessionDirectory401
+			| CreateSessionDirectory403
+			| CreateSessionDirectory410
+			| CreateSessionDirectory422
+		>,
+		null,
+		Record<string, string>,
+		CreateSessionDirectoryQueryParams,
+		CreateSessionDirectoryPathParams
+	>({
+		method: "POST",
+		url: `/v2/sandboxes/sessions/${sessionId}/fs/mkdir`,
+		queryParams,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
+ * @description Uploads and extracts files to a session's filesystem. Files must be uploaded as a gzipped tarball (`.tar.gz`) with the `Content-Type` header set to `application/gzip`. The tarball contents are extracted to the session's working directory, or to a custom directory specified via the `x-cwd` header.
+ * @summary Write files
+ * {@link /v2/sandboxes/sessions/:sessionId/fs/write}
+ */
+export async function writeSessionFiles({
+	pathParams: { sessionId },
+	queryParams,
+	headers,
+	config = {},
+}: {
+	pathParams: WriteSessionFilesPathParams;
+	queryParams?: WriteSessionFilesQueryParams;
+	headers?: WriteSessionFilesHeaderParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!sessionId) {
+		throw new Error(`Missing required path parameter: sessionId`);
+	}
+
+	const data = await request<
+		WriteSessionFilesMutationResponse,
+		ErrorWrapper<
+			| WriteSessionFiles400
+			| WriteSessionFiles401
+			| WriteSessionFiles403
+			| WriteSessionFiles410
+			| WriteSessionFiles422
+		>,
+		null,
+		WriteSessionFilesHeaderParams,
+		WriteSessionFilesQueryParams,
+		WriteSessionFilesPathParams
+	>({
+		method: "POST",
+		url: `/v2/sandboxes/sessions/${sessionId}/fs/write`,
+		queryParams,
+		...requestConfig,
+		headers: { ...headers, ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
+ * @description Creates a point-in-time snapshot of a running session's filesystem. Snapshots can be used to quickly restore a session to a previous state or to create new sessions with pre-configured environments. The session must be running and able to accept commands for a snapshot to be created. The session will be terminated after the snapshot is created.
+ * @summary Create a snapshot
+ * {@link /v2/sandboxes/sessions/:sessionId/snapshot}
+ */
+export async function createSessionSnapshot({
+	pathParams: { sessionId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: CreateSessionSnapshotPathParams;
+	queryParams?: CreateSessionSnapshotQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!sessionId) {
+		throw new Error(`Missing required path parameter: sessionId`);
+	}
+
+	const data = await request<
+		CreateSessionSnapshotMutationResponse,
+		ErrorWrapper<
+			| CreateSessionSnapshot400
+			| CreateSessionSnapshot401
+			| CreateSessionSnapshot402
+			| CreateSessionSnapshot403
+			| CreateSessionSnapshot410
+			| CreateSessionSnapshot422
+			| CreateSessionSnapshot500
+		>,
+		null,
+		Record<string, string>,
+		CreateSessionSnapshotQueryParams,
+		CreateSessionSnapshotPathParams
+	>({
+		method: "POST",
+		url: `/v2/sandboxes/sessions/${sessionId}/snapshot`,
 		queryParams,
 		...requestConfig,
 		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
@@ -13053,7 +14112,7 @@ export const operationsByPath = {
 	"GET /v1/projects/{projectId}/promote/aliases": listPromoteAliases,
 	"POST /v1/projects/{projectId}/pause": pauseProject,
 	"POST /v1/projects/{projectId}/unpause": unpauseProject,
-	"GET /v1/sandboxes": listSandboxes,
+	"GET /v1/sandboxes": getSandboxesV1,
 	"POST /v1/sandboxes": createSandbox,
 	"GET /v1/sandboxes/snapshots": listSnapshots,
 	"GET /v1/sandboxes/{sandboxId}": getSandbox,
@@ -13071,6 +14130,28 @@ export const operationsByPath = {
 	"GET /v1/sandboxes/snapshots/{snapshotId}": getSnapshot,
 	"DELETE /v1/sandboxes/snapshots/{snapshotId}": deleteSnapshot,
 	"POST /v1/sandboxes/{sandboxId}/snapshot": createSnapshot,
+	"GET /v2/sandboxes": getSandboxesV2,
+	"POST /v2/sandboxes": createSandboxes,
+	"GET /v2/sandboxes/snapshots": listSessionSnapshots,
+	"GET /v2/sandboxes/snapshots/{snapshotId}": getSessionSnapshot,
+	"DELETE /v2/sandboxes/snapshots/{snapshotId}": deleteSessionSnapshot,
+	"GET /v2/sandboxes/sessions": listSessions,
+	"GET /v2/sandboxes/sessions/{sessionId}": getSession,
+	"GET /v2/sandboxes/{name}": getNamedSandbox,
+	"PATCH /v2/sandboxes/{name}": updateSandbox,
+	"DELETE /v2/sandboxes/{name}": deleteSandbox,
+	"GET /v2/sandboxes/sessions/{sessionId}/cmd": listSessionCommands,
+	"POST /v2/sandboxes/sessions/{sessionId}/cmd": runSessionCommand,
+	"GET /v2/sandboxes/sessions/{sessionId}/cmd/{cmdId}": getSessionCommand,
+	"POST /v2/sandboxes/sessions/{sessionId}/cmd/{cmdId}/kill": killSessionCommand,
+	"GET /v2/sandboxes/sessions/{sessionId}/cmd/{cmdId}/logs": getSessionCommandLogs,
+	"POST /v2/sandboxes/sessions/{sessionId}/stop": stopSession,
+	"POST /v2/sandboxes/sessions/{sessionId}/extend-timeout": extendSessionTimeout,
+	"POST /v2/sandboxes/sessions/{sessionId}/network-policy": updateSessionNetworkPolicy,
+	"POST /v2/sandboxes/sessions/{sessionId}/fs/read": readSessionFile,
+	"POST /v2/sandboxes/sessions/{sessionId}/fs/mkdir": createSessionDirectory,
+	"POST /v2/sandboxes/sessions/{sessionId}/fs/write": writeSessionFiles,
+	"POST /v2/sandboxes/sessions/{sessionId}/snapshot": createSessionSnapshot,
 	"POST /v1/security/attack-mode": updateAttackChallengeMode,
 	"PUT /v1/security/firewall/config": putFirewallConfig,
 	"PATCH /v1/security/firewall/config": updateFirewallConfig,
@@ -13414,7 +14495,7 @@ export const operationsByTag = {
 		completeRollingRelease,
 	},
 	sandboxes: {
-		listSandboxes,
+		getSandboxesV1,
 		createSandbox,
 		listSnapshots,
 		getSandbox,
@@ -13432,6 +14513,30 @@ export const operationsByTag = {
 		getSnapshot,
 		deleteSnapshot,
 		createSnapshot,
+	},
+	sandboxesV2Beta: {
+		getSandboxesV2,
+		createSandboxes,
+		listSessionSnapshots,
+		getSessionSnapshot,
+		deleteSessionSnapshot,
+		listSessions,
+		getSession,
+		getNamedSandbox,
+		updateSandbox,
+		deleteSandbox,
+		listSessionCommands,
+		runSessionCommand,
+		getSessionCommand,
+		killSessionCommand,
+		getSessionCommandLogs,
+		stopSession,
+		extendSessionTimeout,
+		updateSessionNetworkPolicy,
+		readSessionFile,
+		createSessionDirectory,
+		writeSessionFiles,
+		createSessionSnapshot,
 	},
 	security: {
 		updateAttackChallengeMode,
@@ -13758,7 +14863,7 @@ export const tagDictionary = {
 	},
 	sandboxes: {
 		GET: [
-			"listSandboxes",
+			"getSandboxesV1",
 			"listSnapshots",
 			"getSandbox",
 			"listCommands",
@@ -13779,6 +14884,33 @@ export const tagDictionary = {
 			"createSnapshot",
 		],
 		DELETE: ["deleteSnapshot"],
+	},
+	sandboxesV2Beta: {
+		GET: [
+			"getSandboxesV2",
+			"listSessionSnapshots",
+			"getSessionSnapshot",
+			"listSessions",
+			"getSession",
+			"getNamedSandbox",
+			"listSessionCommands",
+			"getSessionCommand",
+			"getSessionCommandLogs",
+		],
+		POST: [
+			"createSandboxes",
+			"runSessionCommand",
+			"killSessionCommand",
+			"stopSession",
+			"extendSessionTimeout",
+			"updateSessionNetworkPolicy",
+			"readSessionFile",
+			"createSessionDirectory",
+			"writeSessionFiles",
+			"createSessionSnapshot",
+		],
+		DELETE: ["deleteSessionSnapshot", "deleteSandbox"],
+		PATCH: ["updateSandbox"],
 	},
 	security: {
 		POST: ["updateAttackChallengeMode", "addBypassIp"],

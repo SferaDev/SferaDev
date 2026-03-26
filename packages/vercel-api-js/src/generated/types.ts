@@ -16256,7 +16256,7 @@ export const snapshotStatusEnum = {
 export type SnapshotStatusEnumKey = (typeof snapshotStatusEnum)[keyof typeof snapshotStatusEnum];
 
 /**
- * @description This object contains information related to a Snapshot of a Vercel Sandbox.
+ * @description This object contains information related to a Snapshot of a Vercel Sandbox session (v2 API).
  */
 export type Snapshot = {
 	/**
@@ -16265,10 +16265,10 @@ export type Snapshot = {
 	 */
 	id: string;
 	/**
-	 * @description The unique identifier of the sandbox from which the snapshot was created.
+	 * @description The unique identifier of the session from which the snapshot was created.
 	 * @type string
 	 */
-	sourceSandboxId: string;
+	sourceSessionId: string;
 	/**
 	 * @description The region where the snapshot is stored.
 	 * @type string
@@ -16363,6 +16363,343 @@ export type SandboxCommand = {
 	 * @type string
 	 */
 	sandboxId: string;
+	/**
+	 * @description If the command did finish, the exit code.
+	 * @type number
+	 */
+	exitCode: number | null;
+	/**
+	 * @description When the command was started, in milliseconds since the epoch.
+	 * @type number
+	 */
+	startedAt: number;
+};
+
+export const namedSandboxStatusEnum = {
+	running: "running",
+	stopped: "stopped",
+} as const;
+
+export type NamedSandboxStatusEnumKey =
+	(typeof namedSandboxStatusEnum)[keyof typeof namedSandboxStatusEnum];
+
+export const namedSandboxPersistentEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type NamedSandboxPersistentEnumKey =
+	(typeof namedSandboxPersistentEnum)[keyof typeof namedSandboxPersistentEnum];
+
+export const networkPolicyModeEnum = {
+	"allow-all": "allow-all",
+	custom: "custom",
+	"default-allow": "default-allow",
+	"default-deny": "default-deny",
+	"deny-all": "deny-all",
+} as const;
+
+export type NetworkPolicyModeEnumKey =
+	(typeof networkPolicyModeEnum)[keyof typeof networkPolicyModeEnum];
+
+/**
+ * @description This object contains information related to a Vercel NamedSandbox.
+ */
+export type NamedSandbox = {
+	/**
+	 * @description The unique identifier of the sandbox.
+	 * @type string
+	 */
+	name: string;
+	/**
+	 * @description Current snapshot ID that the named sandbox is pointing to.
+	 * @type string | undefined
+	 */
+	currentSnapshotId?: string | undefined;
+	/**
+	 * @description Current session ID the sandbox is pointing to.
+	 * @type string
+	 */
+	currentSessionId: string;
+	/**
+	 * @description The status of the current sandbox.
+	 * @type string
+	 */
+	status: NamedSandboxStatusEnumKey;
+	/**
+	 * @description The time when the sandbox status was last updated, in milliseconds since the epoch.
+	 * @type number
+	 */
+	statusUpdatedAt: number;
+	/**
+	 * @description Whether the sandbox persists its state across restarts via automatic snapshots.
+	 * @type boolean
+	 */
+	persistent: NamedSandboxPersistentEnumKey;
+	/**
+	 * @description The region the sandbox runs in.
+	 * @type string | undefined
+	 */
+	region?: string | undefined;
+	/**
+	 * @description Number of virtual CPUs allocated.
+	 * @type number | undefined
+	 */
+	vcpus?: number | undefined;
+	/**
+	 * @description Memory allocated in MB.
+	 * @type number | undefined
+	 */
+	memory?: number | undefined;
+	/**
+	 * @description Runtime identifier.
+	 * @type string | undefined
+	 */
+	runtime?: string | undefined;
+	/**
+	 * @description Timeout in milliseconds.
+	 * @type number | undefined
+	 */
+	timeout?: number | undefined;
+	/**
+	 * @description Network policy configuration.
+	 * @type object | undefined
+	 */
+	networkPolicy?:
+		| {
+				/**
+				 * @type string
+				 */
+				mode: NetworkPolicyModeEnumKey;
+				/**
+				 * @type array | undefined
+				 */
+				allowedDomains?: string[] | undefined;
+				/**
+				 * @type array | undefined
+				 */
+				allowedCIDRs?: string[] | undefined;
+				/**
+				 * @type array | undefined
+				 */
+				deniedCIDRs?: string[] | undefined;
+		  }
+		| undefined;
+	/**
+	 * @description Cumulative egress bytes across all sandbox runs.
+	 * @type number | undefined
+	 */
+	totalEgressBytes?: number | undefined;
+	/**
+	 * @description Cumulative ingress bytes across all sandbox runs.
+	 * @type number | undefined
+	 */
+	totalIngressBytes?: number | undefined;
+	/**
+	 * @description Cumulative active CPU duration in milliseconds across all sandbox runs.
+	 * @type number | undefined
+	 */
+	totalActiveCpuDurationMs?: number | undefined;
+	/**
+	 * @description Cumulative wall-clock duration in milliseconds across all sandbox runs.
+	 * @type number | undefined
+	 */
+	totalDurationMs?: number | undefined;
+	/**
+	 * @description The working directory of the sandbox.
+	 * @type string | undefined
+	 */
+	cwd?: string | undefined;
+	/**
+	 * @description Key-value tags attached to the named sandbox.
+	 * @type object | undefined
+	 */
+	tags?:
+		| {
+				[key: string]: string;
+		  }
+		| undefined;
+	/**
+	 * @description The time when the named sandbox was created, in milliseconds since the epoch.
+	 * @type number
+	 */
+	createdAt: number;
+	/**
+	 * @description The time when the named sandbox was last updated, in milliseconds since the epoch.
+	 * @type number
+	 */
+	updatedAt: number;
+};
+
+export const sessionStatusEnum = {
+	aborted: "aborted",
+	failed: "failed",
+	pending: "pending",
+	running: "running",
+	snapshotting: "snapshotting",
+	stopped: "stopped",
+	stopping: "stopping",
+} as const;
+
+export type SessionStatusEnumKey = (typeof sessionStatusEnum)[keyof typeof sessionStatusEnum];
+
+/**
+ * @description This object contains information related to a Vercel Sandbox Session. v2 endpoints return \"session\" instead of \"sandbox\" as the response wrapper key.
+ */
+export type Session = {
+	/**
+	 * @description The name of the source sandbox.
+	 * @type string
+	 */
+	sourceSandboxName: string;
+	/**
+	 * @description The unique identifier of the project associated with this session.
+	 * @type string
+	 */
+	projectId: string;
+	/**
+	 * @description The unique identifier of the sandbox.
+	 * @type string
+	 */
+	id: string;
+	/**
+	 * @description Memory allocated to this sandbox in MB.
+	 * @type number
+	 */
+	memory: number;
+	/**
+	 * @description Number of vCPUs allocated to this sandbox.
+	 * @type number
+	 */
+	vcpus: number;
+	/**
+	 * @description The region where the sandbox is hosted.
+	 * @type string
+	 */
+	region: string;
+	/**
+	 * @description The runtime of the sandbox.
+	 * @type string
+	 */
+	runtime: string;
+	/**
+	 * @description The maximum amount of time the sandbox will run for in milliseconds.
+	 * @type number
+	 */
+	timeout: number;
+	/**
+	 * @description The status of the sandbox.
+	 * @type string
+	 */
+	status: SessionStatusEnumKey;
+	/**
+	 * @description The time when the sandbox was requested, in milliseconds since the epoch.
+	 * @type number
+	 */
+	requestedAt: number;
+	/**
+	 * @description The time when the sandbox was started, in milliseconds since the epoch.
+	 * @type number | undefined
+	 */
+	startedAt?: number | undefined;
+	/**
+	 * @description The working directory of the sandbox.
+	 * @type string
+	 */
+	cwd: string;
+	/**
+	 * @description The time when the sandbox was requested to stop, in milliseconds since the epoch.
+	 * @type number | undefined
+	 */
+	requestedStopAt?: number | undefined;
+	/**
+	 * @description The time when the sandbox was stopped, in milliseconds since the epoch.
+	 * @type number | undefined
+	 */
+	stoppedAt?: number | undefined;
+	/**
+	 * @description The time when the sandbox was aborted, in milliseconds since the epoch.
+	 * @type number | undefined
+	 */
+	abortedAt?: number | undefined;
+	/**
+	 * @description The duration of the sandbox in milliseconds.
+	 * @type number | undefined
+	 */
+	duration?: number | undefined;
+	/**
+	 * @description The unique identifier of the snapshot associated with this sandbox, if any.
+	 * @type string | undefined
+	 */
+	sourceSnapshotId?: string | undefined;
+	/**
+	 * @description The time when a snapshot was requested, in milliseconds since the epoch.
+	 * @type number | undefined
+	 */
+	snapshottedAt?: number | undefined;
+	/**
+	 * @description The time when the sandbox was created, in milliseconds since the epoch.
+	 * @type number
+	 */
+	createdAt: number;
+	/**
+	 * @description The last time the sandbox was updated, in milliseconds since the epoch.
+	 * @type number
+	 */
+	updatedAt: number;
+	networkPolicy?: unknown | undefined;
+	/**
+	 * @description The amount of CPU time the sandbox consumed, if available, in milliseconds. This value is only available once the sandbox is stopped, and only if it stopped successfully.
+	 * @type number | undefined
+	 */
+	activeCpuDurationMs?: number | undefined;
+	/**
+	 * @description The quantity of data transfered to and from the sandbox, in bytes. This value is only available once the sandbox is stopped, and only if it stopped successfully.
+	 * @type object | undefined
+	 */
+	networkTransfer?:
+		| {
+				/**
+				 * @type number
+				 */
+				ingress: number;
+				/**
+				 * @type number
+				 */
+				egress: number;
+		  }
+		| undefined;
+};
+
+/**
+ * @description This object represents a command run in a Vercel Sandbox session (v2 API).
+ */
+export type SessionCommand = {
+	/**
+	 * @description The ID of the command.
+	 * @type string
+	 */
+	id: string;
+	/**
+	 * @description The name of the command.
+	 * @type string
+	 */
+	name: string;
+	/**
+	 * @description The arguments of the command.
+	 * @type array
+	 */
+	args: string[];
+	/**
+	 * @description The current working directory of the command.
+	 * @type string
+	 */
+	cwd: string;
+	/**
+	 * @description The ID of the session associated with the command.
+	 * @type string
+	 */
+	sessionId: string;
 	/**
 	 * @description If the command did finish, the exit code.
 	 * @type number
@@ -31213,7 +31550,7 @@ export type UnpauseProjectMutation = {
 	Errors: UnpauseProject400 | UnpauseProject401 | UnpauseProject403 | UnpauseProject500;
 };
 
-export type ListSandboxesQueryParams = {
+export type GetSandboxesV1QueryParams = {
 	/**
 	 * @description The unique identifier or name of the project to list sandboxes for.
 	 * @type string | undefined
@@ -31249,34 +31586,34 @@ export type ListSandboxesQueryParams = {
 /**
  * @description The list of sandboxes matching the request filters.
  */
-export type ListSandboxes200 = unknown;
+export type GetSandboxesV1200 = unknown;
 
 /**
  * @description One of the provided values in the request query is invalid.
  */
-export type ListSandboxes400 = unknown;
+export type GetSandboxesV1400 = unknown;
 
 /**
  * @description The request is not authorized.
  */
-export type ListSandboxes401 = unknown;
+export type GetSandboxesV1401 = unknown;
 
 /**
  * @description You do not have permission to access this resource.
  */
-export type ListSandboxes403 = unknown;
+export type GetSandboxesV1403 = unknown;
 
 /**
  * @description The project does not exist or the team does not have access to it.
  */
-export type ListSandboxes404 = unknown;
+export type GetSandboxesV1404 = unknown;
 
-export type ListSandboxesQueryResponse = ListSandboxes200;
+export type GetSandboxesV1QueryResponse = GetSandboxesV1200;
 
-export type ListSandboxesQuery = {
-	Response: ListSandboxes200;
-	QueryParams: ListSandboxesQueryParams;
-	Errors: ListSandboxes400 | ListSandboxes401 | ListSandboxes403 | ListSandboxes404;
+export type GetSandboxesV1Query = {
+	Response: GetSandboxesV1200;
+	QueryParams: GetSandboxesV1QueryParams;
+	Errors: GetSandboxesV1400 | GetSandboxesV1401 | GetSandboxesV1403 | GetSandboxesV1404;
 };
 
 export type CreateSandboxQueryParams = {
@@ -32263,6 +32600,1458 @@ export type CreateSnapshotMutation = {
 		| CreateSnapshot403
 		| CreateSnapshot410
 		| CreateSnapshot422;
+};
+
+export const getSandboxesV2QueryParamsSortByEnum = {
+	createdAt: "createdAt",
+	name: "name",
+	statusUpdatedAt: "statusUpdatedAt",
+} as const;
+
+export type GetSandboxesV2QueryParamsSortByEnumKey =
+	(typeof getSandboxesV2QueryParamsSortByEnum)[keyof typeof getSandboxesV2QueryParamsSortByEnum];
+
+export const getSandboxesV2QueryParamsSortOrderEnum = {
+	asc: "asc",
+	desc: "desc",
+} as const;
+
+export type GetSandboxesV2QueryParamsSortOrderEnumKey =
+	(typeof getSandboxesV2QueryParamsSortOrderEnum)[keyof typeof getSandboxesV2QueryParamsSortOrderEnum];
+
+export type GetSandboxesV2QueryParams = {
+	/**
+	 * @description The unique identifier or name of the project to list named sandboxes for.
+	 * @type string | undefined
+	 */
+	project?: string | undefined;
+	/**
+	 * @description Maximum number of named sandboxes to return in the response. Used for pagination.
+	 * @minLength 1
+	 * @maxLength 50
+	 * @default 20
+	 * @type number | undefined
+	 */
+	limit?: number | undefined;
+	/**
+	 * @description Field to sort by.
+	 * @default "createdAt"
+	 * @type string | undefined
+	 */
+	sortBy?: GetSandboxesV2QueryParamsSortByEnumKey | undefined;
+	/**
+	 * @description Filter named sandboxes whose name starts with this prefix. Only valid when sortBy=name.
+	 * @type string | undefined
+	 */
+	namePrefix?: string | undefined;
+	/**
+	 * @description Opaque pagination cursor from a previous response.
+	 * @type string | undefined
+	 */
+	cursor?: string | undefined;
+	/**
+	 * @description Sort direction. Defaults to desc.
+	 * @default "desc"
+	 * @type string | undefined
+	 */
+	sortOrder?: GetSandboxesV2QueryParamsSortOrderEnumKey | undefined;
+	/**
+	 * @description Filter sandboxes by tag. Format: \\\"key:value\\\". Only one tag filter is supported at a time.
+	 */
+	tags?: (string | string[]) | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type GetSandboxesV2200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type GetSandboxesV2400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type GetSandboxesV2401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type GetSandboxesV2403 = unknown;
+
+export type GetSandboxesV2404 = unknown;
+
+export type GetSandboxesV2QueryResponse = GetSandboxesV2200;
+
+export type GetSandboxesV2Query = {
+	Response: GetSandboxesV2200;
+	QueryParams: GetSandboxesV2QueryParams;
+	Errors: GetSandboxesV2400 | GetSandboxesV2401 | GetSandboxesV2403 | GetSandboxesV2404;
+};
+
+export type CreateSandboxesQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type CreateSandboxes200 = unknown;
+
+/**
+ * @description One of the provided values in the request body is invalid.
+ */
+export type CreateSandboxes400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type CreateSandboxes401 = unknown;
+
+/**
+ * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ */
+export type CreateSandboxes402 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type CreateSandboxes403 = unknown;
+
+export type CreateSandboxes404 = unknown;
+
+export type CreateSandboxes410 = unknown;
+
+export type CreateSandboxes422 = unknown;
+
+/**
+ * @description The concurrency limit has been exceeded.
+ */
+export type CreateSandboxes429 = unknown;
+
+export type CreateSandboxes500 = unknown;
+
+export type CreateSandboxesMutationResponse = CreateSandboxes200;
+
+export type CreateSandboxesMutation = {
+	Response: CreateSandboxes200;
+	QueryParams: CreateSandboxesQueryParams;
+	Errors:
+		| CreateSandboxes400
+		| CreateSandboxes401
+		| CreateSandboxes402
+		| CreateSandboxes403
+		| CreateSandboxes404
+		| CreateSandboxes410
+		| CreateSandboxes422
+		| CreateSandboxes429
+		| CreateSandboxes500;
+};
+
+export const listSessionSnapshotsQueryParamsSortOrderEnum = {
+	asc: "asc",
+	desc: "desc",
+} as const;
+
+export type ListSessionSnapshotsQueryParamsSortOrderEnumKey =
+	(typeof listSessionSnapshotsQueryParamsSortOrderEnum)[keyof typeof listSessionSnapshotsQueryParamsSortOrderEnum];
+
+export type ListSessionSnapshotsQueryParams = {
+	/**
+	 * @description The unique identifier or name of the project to list snapshots for.
+	 * @type string | undefined
+	 */
+	project?: string | undefined;
+	/**
+	 * @description Name for the sandbox. Must be unique per project and URL-safe (alphanumeric, hyphens, underscores).
+	 * @maxLength 128
+	 * @pattern ^[a-zA-Z0-9_-]+$
+	 * @type string | undefined
+	 */
+	name?: string | undefined;
+	/**
+	 * @description Maximum number of snapshots to return in the response. Used for pagination.
+	 * @minLength 1
+	 * @maxLength 50
+	 * @default 20
+	 * @type number | undefined
+	 */
+	limit?: number | undefined;
+	/**
+	 * @description Opaque pagination cursor from a previous response.
+	 * @type string | undefined
+	 */
+	cursor?: string | undefined;
+	/**
+	 * @description Sort direction for results by creation time.
+	 * @default "desc"
+	 * @type string | undefined
+	 */
+	sortOrder?: ListSessionSnapshotsQueryParamsSortOrderEnumKey | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type ListSessionSnapshots200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type ListSessionSnapshots400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type ListSessionSnapshots401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type ListSessionSnapshots403 = unknown;
+
+export type ListSessionSnapshots404 = unknown;
+
+export type ListSessionSnapshotsQueryResponse = ListSessionSnapshots200;
+
+export type ListSessionSnapshotsQuery = {
+	Response: ListSessionSnapshots200;
+	QueryParams: ListSessionSnapshotsQueryParams;
+	Errors:
+		| ListSessionSnapshots400
+		| ListSessionSnapshots401
+		| ListSessionSnapshots403
+		| ListSessionSnapshots404;
+};
+
+export type GetSessionSnapshotPathParams = {
+	/**
+	 * @description The unique identifier of the snapshot to retrieve.
+	 * @type string
+	 */
+	snapshotId: string;
+};
+
+export type GetSessionSnapshotQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type GetSessionSnapshot200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type GetSessionSnapshot400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type GetSessionSnapshot401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type GetSessionSnapshot403 = unknown;
+
+export type GetSessionSnapshot404 = unknown;
+
+export type GetSessionSnapshotQueryResponse = GetSessionSnapshot200;
+
+export type GetSessionSnapshotQuery = {
+	Response: GetSessionSnapshot200;
+	PathParams: GetSessionSnapshotPathParams;
+	QueryParams: GetSessionSnapshotQueryParams;
+	Errors:
+		| GetSessionSnapshot400
+		| GetSessionSnapshot401
+		| GetSessionSnapshot403
+		| GetSessionSnapshot404;
+};
+
+export type DeleteSessionSnapshotPathParams = {
+	/**
+	 * @description The unique identifier of the snapshot to delete.
+	 * @type string
+	 */
+	snapshotId: string;
+};
+
+export type DeleteSessionSnapshotQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type DeleteSessionSnapshot200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type DeleteSessionSnapshot400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type DeleteSessionSnapshot401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type DeleteSessionSnapshot403 = unknown;
+
+export type DeleteSessionSnapshot404 = unknown;
+
+export type DeleteSessionSnapshotMutationResponse = DeleteSessionSnapshot200;
+
+export type DeleteSessionSnapshotMutation = {
+	Response: DeleteSessionSnapshot200;
+	PathParams: DeleteSessionSnapshotPathParams;
+	QueryParams: DeleteSessionSnapshotQueryParams;
+	Errors:
+		| DeleteSessionSnapshot400
+		| DeleteSessionSnapshot401
+		| DeleteSessionSnapshot403
+		| DeleteSessionSnapshot404;
+};
+
+export const listSessionsQueryParamsSortOrderEnum = {
+	asc: "asc",
+	desc: "desc",
+} as const;
+
+export type ListSessionsQueryParamsSortOrderEnumKey =
+	(typeof listSessionsQueryParamsSortOrderEnum)[keyof typeof listSessionsQueryParamsSortOrderEnum];
+
+export type ListSessionsQueryParams = {
+	/**
+	 * @description The unique identifier or name of the project to list sessions for.
+	 * @type string | undefined
+	 */
+	project?: string | undefined;
+	/**
+	 * @description Filter sessions by sandbox name. Only sessions belonging to the specified sandbox are returned.
+	 * @maxLength 128
+	 * @pattern ^[a-zA-Z0-9_-]+$
+	 * @type string | undefined
+	 */
+	name?: string | undefined;
+	/**
+	 * @description Maximum number of sessions to return in the response. Used for pagination.
+	 * @minLength 1
+	 * @maxLength 50
+	 * @default 20
+	 * @type number | undefined
+	 */
+	limit?: number | undefined;
+	/**
+	 * @description Opaque pagination cursor from a previous response.
+	 * @type string | undefined
+	 */
+	cursor?: string | undefined;
+	/**
+	 * @description Sort direction for results by creation time.
+	 * @default "desc"
+	 * @type string | undefined
+	 */
+	sortOrder?: ListSessionsQueryParamsSortOrderEnumKey | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+/**
+ * @description The list of sessions matching the request filters.
+ */
+export type ListSessions200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type ListSessions400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type ListSessions401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type ListSessions403 = unknown;
+
+export type ListSessions404 = unknown;
+
+export type ListSessions500 = unknown;
+
+export type ListSessionsQueryResponse = ListSessions200;
+
+export type ListSessionsQuery = {
+	Response: ListSessions200;
+	QueryParams: ListSessionsQueryParams;
+	Errors: ListSessions400 | ListSessions401 | ListSessions403 | ListSessions404 | ListSessions500;
+};
+
+export type GetSessionPathParams = {
+	/**
+	 * @description The unique identifier of the session to retrieve.
+	 * @type string
+	 */
+	sessionId: string;
+};
+
+export type GetSessionQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+/**
+ * @description The session was retrieved successfully.
+ */
+export type GetSession200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type GetSession400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type GetSession401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type GetSession403 = unknown;
+
+export type GetSession500 = unknown;
+
+export type GetSessionQueryResponse = GetSession200;
+
+export type GetSessionQuery = {
+	Response: GetSession200;
+	PathParams: GetSessionPathParams;
+	QueryParams: GetSessionQueryParams;
+	Errors: GetSession400 | GetSession401 | GetSession403 | GetSession500;
+};
+
+export type GetNamedSandboxPathParams = {
+	/**
+	 * @description Name for the sandbox. Must be unique per project and URL-safe (alphanumeric, hyphens, underscores).
+	 * @maxLength 128
+	 * @pattern ^[a-zA-Z0-9_-]+$
+	 * @type string
+	 */
+	name: string;
+};
+
+export type GetNamedSandboxQueryParams = {
+	/**
+	 * @description The project ID or name (required when not using OIDC token).
+	 * @type string | undefined
+	 */
+	projectId?: string | undefined;
+	/**
+	 * @description Whether to automatically resume a stopped named sandbox by creating a new instance from its snapshot. Defaults to false.
+	 * @default false
+	 * @type boolean | undefined
+	 */
+	resume?: boolean | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type GetNamedSandbox200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type GetNamedSandbox400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type GetNamedSandbox401 = unknown;
+
+/**
+ * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ */
+export type GetNamedSandbox402 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type GetNamedSandbox403 = unknown;
+
+export type GetNamedSandbox404 = unknown;
+
+/**
+ * @description The concurrency limit has been exceeded.
+ */
+export type GetNamedSandbox429 = unknown;
+
+export type GetNamedSandbox500 = unknown;
+
+export type GetNamedSandboxQueryResponse = GetNamedSandbox200;
+
+export type GetNamedSandboxQuery = {
+	Response: GetNamedSandbox200;
+	PathParams: GetNamedSandboxPathParams;
+	QueryParams: GetNamedSandboxQueryParams;
+	Errors:
+		| GetNamedSandbox400
+		| GetNamedSandbox401
+		| GetNamedSandbox402
+		| GetNamedSandbox403
+		| GetNamedSandbox404
+		| GetNamedSandbox429
+		| GetNamedSandbox500;
+};
+
+export type UpdateSandboxPathParams = {
+	/**
+	 * @description The sandbox to update.
+	 * @maxLength 128
+	 * @pattern ^[a-zA-Z0-9_-]+$
+	 * @type string
+	 */
+	name: string;
+};
+
+export type UpdateSandboxQueryParams = {
+	/**
+	 * @description The project ID that owns the named sandbox. When provided, takes precedence over OIDC project context.
+	 * @maxLength 128
+	 * @type string | undefined
+	 */
+	projectId?: string | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type UpdateSandbox200 = unknown;
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export type UpdateSandbox400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type UpdateSandbox401 = unknown;
+
+export type UpdateSandbox402 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type UpdateSandbox403 = unknown;
+
+export type UpdateSandbox404 = unknown;
+
+export type UpdateSandbox500 = unknown;
+
+export type UpdateSandboxMutationResponse = UpdateSandbox200;
+
+export type UpdateSandboxMutation = {
+	Response: UpdateSandbox200;
+	PathParams: UpdateSandboxPathParams;
+	QueryParams: UpdateSandboxQueryParams;
+	Errors:
+		| UpdateSandbox400
+		| UpdateSandbox401
+		| UpdateSandbox402
+		| UpdateSandbox403
+		| UpdateSandbox404
+		| UpdateSandbox500;
+};
+
+export type DeleteSandboxPathParams = {
+	/**
+	 * @description The sandbox name to delete.
+	 * @maxLength 128
+	 * @type string
+	 */
+	name: string;
+};
+
+export type DeleteSandboxQueryParams = {
+	/**
+	 * @description The project ID that owns the named sandbox. When provided, takes precedence over OIDC project context.
+	 * @maxLength 128
+	 * @type string | undefined
+	 */
+	projectId?: string | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type DeleteSandbox200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type DeleteSandbox400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type DeleteSandbox401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type DeleteSandbox403 = unknown;
+
+export type DeleteSandbox404 = unknown;
+
+export type DeleteSandbox410 = unknown;
+
+export type DeleteSandbox422 = unknown;
+
+export type DeleteSandboxMutationResponse = DeleteSandbox200;
+
+export type DeleteSandboxMutation = {
+	Response: DeleteSandbox200;
+	PathParams: DeleteSandboxPathParams;
+	QueryParams: DeleteSandboxQueryParams;
+	Errors:
+		| DeleteSandbox400
+		| DeleteSandbox401
+		| DeleteSandbox403
+		| DeleteSandbox404
+		| DeleteSandbox410
+		| DeleteSandbox422;
+};
+
+export type ListSessionCommandsPathParams = {
+	/**
+	 * @description The unique identifier of the session to list commands for.
+	 * @type string
+	 */
+	sessionId: string;
+};
+
+export type ListSessionCommandsQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+/**
+ * @description The list of commands executed in the session.
+ */
+export type ListSessionCommands200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type ListSessionCommands400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type ListSessionCommands401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type ListSessionCommands403 = unknown;
+
+export type ListSessionCommandsQueryResponse = ListSessionCommands200;
+
+export type ListSessionCommandsQuery = {
+	Response: ListSessionCommands200;
+	PathParams: ListSessionCommandsPathParams;
+	QueryParams: ListSessionCommandsQueryParams;
+	Errors: ListSessionCommands400 | ListSessionCommands401 | ListSessionCommands403;
+};
+
+export type RunSessionCommandPathParams = {
+	/**
+	 * @description The unique identifier of the session in which to execute the command.
+	 * @type string
+	 */
+	sessionId: string;
+};
+
+export type RunSessionCommandQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type RunSessionCommand200 = unknown;
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export type RunSessionCommand400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type RunSessionCommand401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type RunSessionCommand403 = unknown;
+
+export type RunSessionCommand410 = unknown;
+
+export type RunSessionCommand422 = unknown;
+
+export type RunSessionCommandMutationResponse = RunSessionCommand200;
+
+export type RunSessionCommandMutation = {
+	Response: RunSessionCommand200;
+	PathParams: RunSessionCommandPathParams;
+	QueryParams: RunSessionCommandQueryParams;
+	Errors:
+		| RunSessionCommand400
+		| RunSessionCommand401
+		| RunSessionCommand403
+		| RunSessionCommand410
+		| RunSessionCommand422;
+};
+
+export type GetSessionCommandPathParams = {
+	/**
+	 * @description The unique identifier of the session containing the command.
+	 * @type string
+	 */
+	sessionId: string;
+	/**
+	 * @description The unique identifier of the command to retrieve.
+	 * @type string
+	 */
+	cmdId: string;
+};
+
+export const getSessionCommandQueryParamsWaitEnum = {
+	true: "true",
+	false: "false",
+} as const;
+
+export type GetSessionCommandQueryParamsWaitEnumKey =
+	(typeof getSessionCommandQueryParamsWaitEnum)[keyof typeof getSessionCommandQueryParamsWaitEnum];
+
+export type GetSessionCommandQueryParams = {
+	/**
+	 * @description If set to \\\"true\\\", the request will block until the command finishes execution. Useful for synchronously waiting for command completion.
+	 * @default "false"
+	 * @type string | undefined
+	 */
+	wait?: GetSessionCommandQueryParamsWaitEnumKey | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+/**
+ * @description The command data along with the exit code if the command did finish.
+ */
+export type GetSessionCommand200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type GetSessionCommand400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type GetSessionCommand401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type GetSessionCommand403 = unknown;
+
+export type GetSessionCommand410 = unknown;
+
+export type GetSessionCommand422 = unknown;
+
+export type GetSessionCommandQueryResponse = GetSessionCommand200;
+
+export type GetSessionCommandQuery = {
+	Response: GetSessionCommand200;
+	PathParams: GetSessionCommandPathParams;
+	QueryParams: GetSessionCommandQueryParams;
+	Errors:
+		| GetSessionCommand400
+		| GetSessionCommand401
+		| GetSessionCommand403
+		| GetSessionCommand410
+		| GetSessionCommand422;
+};
+
+export type KillSessionCommandPathParams = {
+	/**
+	 * @description The unique identifier of the command to terminate.
+	 * @type string
+	 */
+	cmdId: string;
+	/**
+	 * @description The unique identifier of the session containing the command.
+	 * @type string
+	 */
+	sessionId: string;
+};
+
+export type KillSessionCommandQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+/**
+ * @description The command was terminated successfully.
+ */
+export type KillSessionCommand200 = unknown;
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export type KillSessionCommand400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type KillSessionCommand401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type KillSessionCommand403 = unknown;
+
+export type KillSessionCommand404 = unknown;
+
+export type KillSessionCommand410 = unknown;
+
+export type KillSessionCommand422 = unknown;
+
+export type KillSessionCommandMutationResponse = KillSessionCommand200;
+
+export type KillSessionCommandMutation = {
+	Response: KillSessionCommand200;
+	PathParams: KillSessionCommandPathParams;
+	QueryParams: KillSessionCommandQueryParams;
+	Errors:
+		| KillSessionCommand400
+		| KillSessionCommand401
+		| KillSessionCommand403
+		| KillSessionCommand404
+		| KillSessionCommand410
+		| KillSessionCommand422;
+};
+
+export type GetSessionCommandLogsPathParams = {
+	/**
+	 * @description The unique identifier of the session containing the command.
+	 * @type string
+	 */
+	sessionId: string;
+	/**
+	 * @description The unique identifier of the command to stream logs for.
+	 * @type string
+	 */
+	cmdId: string;
+};
+
+export type GetSessionCommandLogsQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type GetSessionCommandLogs200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type GetSessionCommandLogs400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type GetSessionCommandLogs401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type GetSessionCommandLogs403 = unknown;
+
+export type GetSessionCommandLogs410 = unknown;
+
+export type GetSessionCommandLogs422 = unknown;
+
+export type GetSessionCommandLogsQueryResponse = GetSessionCommandLogs200;
+
+export type GetSessionCommandLogsQuery = {
+	Response: GetSessionCommandLogs200;
+	PathParams: GetSessionCommandLogsPathParams;
+	QueryParams: GetSessionCommandLogsQueryParams;
+	Errors:
+		| GetSessionCommandLogs400
+		| GetSessionCommandLogs401
+		| GetSessionCommandLogs403
+		| GetSessionCommandLogs410
+		| GetSessionCommandLogs422;
+};
+
+export type StopSessionPathParams = {
+	/**
+	 * @description The unique identifier of the session to stop.
+	 * @type string
+	 */
+	sessionId: string;
+};
+
+export type StopSessionQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+/**
+ * @description The session was stopped successfully.
+ */
+export type StopSession200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type StopSession400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type StopSession401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type StopSession403 = unknown;
+
+export type StopSession410 = unknown;
+
+export type StopSession422 = unknown;
+
+export type StopSession500 = unknown;
+
+export type StopSessionMutationResponse = StopSession200;
+
+export type StopSessionMutation = {
+	Response: StopSession200;
+	PathParams: StopSessionPathParams;
+	QueryParams: StopSessionQueryParams;
+	Errors:
+		| StopSession400
+		| StopSession401
+		| StopSession403
+		| StopSession410
+		| StopSession422
+		| StopSession500;
+};
+
+export type ExtendSessionTimeoutPathParams = {
+	/**
+	 * @description The unique identifier of the session to extend the timeout for.
+	 * @type string
+	 */
+	sessionId: string;
+};
+
+export type ExtendSessionTimeoutQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+/**
+ * @description The session timeout was extended successfully.
+ */
+export type ExtendSessionTimeout200 = unknown;
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export type ExtendSessionTimeout400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type ExtendSessionTimeout401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type ExtendSessionTimeout403 = unknown;
+
+export type ExtendSessionTimeout410 = unknown;
+
+export type ExtendSessionTimeout422 = unknown;
+
+export type ExtendSessionTimeout500 = unknown;
+
+export type ExtendSessionTimeoutMutationResponse = ExtendSessionTimeout200;
+
+export type ExtendSessionTimeoutMutation = {
+	Response: ExtendSessionTimeout200;
+	PathParams: ExtendSessionTimeoutPathParams;
+	QueryParams: ExtendSessionTimeoutQueryParams;
+	Errors:
+		| ExtendSessionTimeout400
+		| ExtendSessionTimeout401
+		| ExtendSessionTimeout403
+		| ExtendSessionTimeout410
+		| ExtendSessionTimeout422
+		| ExtendSessionTimeout500;
+};
+
+export type UpdateSessionNetworkPolicyPathParams = {
+	/**
+	 * @description The unique identifier of the session to update the network policy for.
+	 * @type string
+	 */
+	sessionId: string;
+};
+
+export type UpdateSessionNetworkPolicyQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+/**
+ * @description The session network policy was updated successfully.
+ */
+export type UpdateSessionNetworkPolicy200 = unknown;
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export type UpdateSessionNetworkPolicy400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type UpdateSessionNetworkPolicy401 = unknown;
+
+export type UpdateSessionNetworkPolicy402 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type UpdateSessionNetworkPolicy403 = unknown;
+
+export type UpdateSessionNetworkPolicy410 = unknown;
+
+export type UpdateSessionNetworkPolicy422 = unknown;
+
+export type UpdateSessionNetworkPolicy500 = unknown;
+
+export type UpdateSessionNetworkPolicyMutationResponse = UpdateSessionNetworkPolicy200;
+
+export type UpdateSessionNetworkPolicyMutation = {
+	Response: UpdateSessionNetworkPolicy200;
+	PathParams: UpdateSessionNetworkPolicyPathParams;
+	QueryParams: UpdateSessionNetworkPolicyQueryParams;
+	Errors:
+		| UpdateSessionNetworkPolicy400
+		| UpdateSessionNetworkPolicy401
+		| UpdateSessionNetworkPolicy402
+		| UpdateSessionNetworkPolicy403
+		| UpdateSessionNetworkPolicy410
+		| UpdateSessionNetworkPolicy422
+		| UpdateSessionNetworkPolicy500;
+};
+
+export type ReadSessionFilePathParams = {
+	/**
+	 * @description The unique identifier of the session to read the file from.
+	 * @type string
+	 */
+	sessionId: string;
+};
+
+export type ReadSessionFileQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type ReadSessionFile200 = unknown;
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export type ReadSessionFile400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type ReadSessionFile401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type ReadSessionFile403 = unknown;
+
+export type ReadSessionFile404 = unknown;
+
+export type ReadSessionFile410 = unknown;
+
+export type ReadSessionFile422 = unknown;
+
+export type ReadSessionFileMutationResponse = ReadSessionFile200;
+
+export type ReadSessionFileMutation = {
+	Response: ReadSessionFile200;
+	PathParams: ReadSessionFilePathParams;
+	QueryParams: ReadSessionFileQueryParams;
+	Errors:
+		| ReadSessionFile400
+		| ReadSessionFile401
+		| ReadSessionFile403
+		| ReadSessionFile404
+		| ReadSessionFile410
+		| ReadSessionFile422;
+};
+
+export type CreateSessionDirectoryPathParams = {
+	/**
+	 * @description The unique identifier of the session to create the directory in.
+	 * @type string
+	 */
+	sessionId: string;
+};
+
+export type CreateSessionDirectoryQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+/**
+ * @description The directory was created successfully.
+ */
+export type CreateSessionDirectory200 = unknown;
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export type CreateSessionDirectory400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type CreateSessionDirectory401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type CreateSessionDirectory403 = unknown;
+
+export type CreateSessionDirectory410 = unknown;
+
+export type CreateSessionDirectory422 = unknown;
+
+export type CreateSessionDirectoryMutationResponse = CreateSessionDirectory200;
+
+export type CreateSessionDirectoryMutation = {
+	Response: CreateSessionDirectory200;
+	PathParams: CreateSessionDirectoryPathParams;
+	QueryParams: CreateSessionDirectoryQueryParams;
+	Errors:
+		| CreateSessionDirectory400
+		| CreateSessionDirectory401
+		| CreateSessionDirectory403
+		| CreateSessionDirectory410
+		| CreateSessionDirectory422;
+};
+
+export type WriteSessionFilesPathParams = {
+	/**
+	 * @description The unique identifier of the session to write files to.
+	 * @type string
+	 */
+	sessionId: string;
+};
+
+export type WriteSessionFilesQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type WriteSessionFilesHeaderParams = {
+	/**
+	 * @description The target directory where the tarball contents will be extracted. If not specified, files are extracted to the sandbox home directory.
+	 * @type string | undefined
+	 */
+	"x-cwd"?: string | undefined;
+};
+
+/**
+ * @description The files were successfully written to the session.
+ */
+export type WriteSessionFiles200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.\nOne of the provided values in the headers is invalid
+ */
+export type WriteSessionFiles400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type WriteSessionFiles401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type WriteSessionFiles403 = unknown;
+
+export type WriteSessionFiles410 = unknown;
+
+export type WriteSessionFiles422 = unknown;
+
+export type WriteSessionFilesMutationResponse = WriteSessionFiles200;
+
+export type WriteSessionFilesMutation = {
+	Response: WriteSessionFiles200;
+	PathParams: WriteSessionFilesPathParams;
+	QueryParams: WriteSessionFilesQueryParams;
+	HeaderParams: WriteSessionFilesHeaderParams;
+	Errors:
+		| WriteSessionFiles400
+		| WriteSessionFiles401
+		| WriteSessionFiles403
+		| WriteSessionFiles410
+		| WriteSessionFiles422;
+};
+
+export type CreateSessionSnapshotPathParams = {
+	/**
+	 * @description The unique identifier of the session to snapshot.
+	 * @type string
+	 */
+	sessionId: string;
+};
+
+export type CreateSessionSnapshotQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type CreateSessionSnapshot201 = unknown;
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export type CreateSessionSnapshot400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type CreateSessionSnapshot401 = unknown;
+
+/**
+ * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ */
+export type CreateSessionSnapshot402 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type CreateSessionSnapshot403 = unknown;
+
+export type CreateSessionSnapshot410 = unknown;
+
+export type CreateSessionSnapshot422 = unknown;
+
+export type CreateSessionSnapshot500 = unknown;
+
+export type CreateSessionSnapshotMutationResponse = CreateSessionSnapshot201;
+
+export type CreateSessionSnapshotMutation = {
+	Response: CreateSessionSnapshot201;
+	PathParams: CreateSessionSnapshotPathParams;
+	QueryParams: CreateSessionSnapshotQueryParams;
+	Errors:
+		| CreateSessionSnapshot400
+		| CreateSessionSnapshot401
+		| CreateSessionSnapshot402
+		| CreateSessionSnapshot403
+		| CreateSessionSnapshot410
+		| CreateSessionSnapshot422
+		| CreateSessionSnapshot500;
 };
 
 export type UpdateAttackChallengeModeQueryParams = {
