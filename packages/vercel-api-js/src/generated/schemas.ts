@@ -6787,14 +6787,14 @@ export const sandboxSchema = z
 	.describe("This object contains information related to a Vercel Sandbox.");
 
 /**
- * @description This object contains information related to a Snapshot of a Vercel Sandbox.
+ * @description This object contains information related to a Snapshot of a Vercel Sandbox session (v2 API).
  */
 export const snapshotSchema = z
 	.object({
 		id: z.string().describe("The unique identifier of the snapshot."),
-		sourceSandboxId: z
+		sourceSessionId: z
 			.string()
-			.describe("The unique identifier of the sandbox from which the snapshot was created."),
+			.describe("The unique identifier of the session from which the snapshot was created."),
 		region: z.string().describe("The region where the snapshot is stored."),
 		status: z.enum(["created", "deleted", "failed"]).describe("The status of the snapshot."),
 		sizeBytes: z.number().describe("The size of the snapshot in bytes."),
@@ -6812,7 +6812,9 @@ export const snapshotSchema = z
 			.number()
 			.describe("The last time the snapshot was updated, in milliseconds since the epoch."),
 	})
-	.describe("This object contains information related to a Snapshot of a Vercel Sandbox.");
+	.describe(
+		"This object contains information related to a Snapshot of a Vercel Sandbox session (v2 API).",
+	);
 
 /**
  * @description This object represents a public route in a Vercel Sandbox.
@@ -6846,6 +6848,174 @@ export const sandboxCommandSchema = z
 			.describe("When the command was started, in milliseconds since the epoch."),
 	})
 	.describe("This object represents command run in a Vercel Sandbox.");
+
+/**
+ * @description This object contains information related to a Vercel NamedSandbox.
+ */
+export const namedSandboxSchema = z
+	.object({
+		name: z.string().describe("The unique identifier of the sandbox."),
+		currentSnapshotId: z.optional(
+			z.string().describe("Current snapshot ID that the named sandbox is pointing to."),
+		),
+		currentSessionId: z.string().describe("Current session ID the sandbox is pointing to."),
+		status: z.enum(["running", "stopped"]).describe("The status of the current sandbox."),
+		statusUpdatedAt: z
+			.number()
+			.describe(
+				"The time when the sandbox status was last updated, in milliseconds since the epoch.",
+			),
+		persistent: z
+			.union([z.literal(false), z.literal(true)])
+			.describe("Whether the sandbox persists its state across restarts via automatic snapshots."),
+		region: z.optional(z.string().describe("The region the sandbox runs in.")),
+		vcpus: z.optional(z.number().describe("Number of virtual CPUs allocated.")),
+		memory: z.optional(z.number().describe("Memory allocated in MB.")),
+		runtime: z.optional(z.string().describe("Runtime identifier.")),
+		timeout: z.optional(z.number().describe("Timeout in milliseconds.")),
+		networkPolicy: z.optional(
+			z
+				.object({
+					mode: z.enum(["allow-all", "custom", "default-allow", "default-deny", "deny-all"]),
+					allowedDomains: z.optional(z.array(z.string())),
+					allowedCIDRs: z.optional(z.array(z.string())),
+					deniedCIDRs: z.optional(z.array(z.string())),
+				})
+				.describe("Network policy configuration."),
+		),
+		totalEgressBytes: z.optional(
+			z.number().describe("Cumulative egress bytes across all sandbox runs."),
+		),
+		totalIngressBytes: z.optional(
+			z.number().describe("Cumulative ingress bytes across all sandbox runs."),
+		),
+		totalActiveCpuDurationMs: z.optional(
+			z
+				.number()
+				.describe("Cumulative active CPU duration in milliseconds across all sandbox runs."),
+		),
+		totalDurationMs: z.optional(
+			z
+				.number()
+				.describe("Cumulative wall-clock duration in milliseconds across all sandbox runs."),
+		),
+		cwd: z.optional(z.string().describe("The working directory of the sandbox.")),
+		tags: z.optional(
+			z.object({}).catchall(z.string()).describe("Key-value tags attached to the named sandbox."),
+		),
+		createdAt: z
+			.number()
+			.describe("The time when the named sandbox was created, in milliseconds since the epoch."),
+		updatedAt: z
+			.number()
+			.describe(
+				"The time when the named sandbox was last updated, in milliseconds since the epoch.",
+			),
+	})
+	.describe("This object contains information related to a Vercel NamedSandbox.");
+
+/**
+ * @description This object contains information related to a Vercel Sandbox Session. v2 endpoints return \"session\" instead of \"sandbox\" as the response wrapper key.
+ */
+export const sessionSchema = z
+	.object({
+		sourceSandboxName: z.string().describe("The name of the source sandbox."),
+		projectId: z
+			.string()
+			.describe("The unique identifier of the project associated with this session."),
+		id: z.string().describe("The unique identifier of the sandbox."),
+		memory: z.number().describe("Memory allocated to this sandbox in MB."),
+		vcpus: z.number().describe("Number of vCPUs allocated to this sandbox."),
+		region: z.string().describe("The region where the sandbox is hosted."),
+		runtime: z.string().describe("The runtime of the sandbox."),
+		timeout: z
+			.number()
+			.describe("The maximum amount of time the sandbox will run for in milliseconds."),
+		status: z
+			.enum(["aborted", "failed", "pending", "running", "snapshotting", "stopped", "stopping"])
+			.describe("The status of the sandbox."),
+		requestedAt: z
+			.number()
+			.describe("The time when the sandbox was requested, in milliseconds since the epoch."),
+		startedAt: z.optional(
+			z
+				.number()
+				.describe("The time when the sandbox was started, in milliseconds since the epoch."),
+		),
+		cwd: z.string().describe("The working directory of the sandbox."),
+		requestedStopAt: z.optional(
+			z
+				.number()
+				.describe(
+					"The time when the sandbox was requested to stop, in milliseconds since the epoch.",
+				),
+		),
+		stoppedAt: z.optional(
+			z
+				.number()
+				.describe("The time when the sandbox was stopped, in milliseconds since the epoch."),
+		),
+		abortedAt: z.optional(
+			z
+				.number()
+				.describe("The time when the sandbox was aborted, in milliseconds since the epoch."),
+		),
+		duration: z.optional(z.number().describe("The duration of the sandbox in milliseconds.")),
+		sourceSnapshotId: z.optional(
+			z
+				.string()
+				.describe("The unique identifier of the snapshot associated with this sandbox, if any."),
+		),
+		snapshottedAt: z.optional(
+			z
+				.number()
+				.describe("The time when a snapshot was requested, in milliseconds since the epoch."),
+		),
+		createdAt: z
+			.number()
+			.describe("The time when the sandbox was created, in milliseconds since the epoch."),
+		updatedAt: z
+			.number()
+			.describe("The last time the sandbox was updated, in milliseconds since the epoch."),
+		networkPolicy: z.optional(z.unknown()),
+		activeCpuDurationMs: z.optional(
+			z
+				.number()
+				.describe(
+					"The amount of CPU time the sandbox consumed, if available, in milliseconds. This value is only available once the sandbox is stopped, and only if it stopped successfully.",
+				),
+		),
+		networkTransfer: z.optional(
+			z
+				.object({
+					ingress: z.number(),
+					egress: z.number(),
+				})
+				.describe(
+					"The quantity of data transfered to and from the sandbox, in bytes. This value is only available once the sandbox is stopped, and only if it stopped successfully.",
+				),
+		),
+	})
+	.describe(
+		'This object contains information related to a Vercel Sandbox Session. v2 endpoints return "session" instead of "sandbox" as the response wrapper key.',
+	);
+
+/**
+ * @description This object represents a command run in a Vercel Sandbox session (v2 API).
+ */
+export const sessionCommandSchema = z
+	.object({
+		id: z.string().describe("The ID of the command."),
+		name: z.string().describe("The name of the command."),
+		args: z.array(z.string()).describe("The arguments of the command."),
+		cwd: z.string().describe("The current working directory of the command."),
+		sessionId: z.string().describe("The ID of the session associated with the command."),
+		exitCode: z.nullable(z.number().describe("If the command did finish, the exit code.")),
+		startedAt: z
+			.number()
+			.describe("When the command was started, in milliseconds since the epoch."),
+	})
+	.describe("This object represents a command run in a Vercel Sandbox session (v2 API).");
 
 /**
  * @description The member was successfully added to the team.
@@ -16772,7 +16942,7 @@ export const unpauseProject500Schema = z.unknown();
 
 export const unpauseProjectMutationResponseSchema = z.lazy(() => unpauseProject200Schema);
 
-export const listSandboxesQueryParamsSchema = z
+export const getSandboxesV1QueryParamsSchema = z
 	.object({
 		project: z.optional(
 			z.string().describe("The unique identifier or name of the project to list sandboxes for."),
@@ -16806,29 +16976,29 @@ export const listSandboxesQueryParamsSchema = z
 /**
  * @description The list of sandboxes matching the request filters.
  */
-export const listSandboxes200Schema = z.unknown();
+export const getSandboxesV1200Schema = z.unknown();
 
 /**
  * @description One of the provided values in the request query is invalid.
  */
-export const listSandboxes400Schema = z.unknown();
+export const getSandboxesV1400Schema = z.unknown();
 
 /**
  * @description The request is not authorized.
  */
-export const listSandboxes401Schema = z.unknown();
+export const getSandboxesV1401Schema = z.unknown();
 
 /**
  * @description You do not have permission to access this resource.
  */
-export const listSandboxes403Schema = z.unknown();
+export const getSandboxesV1403Schema = z.unknown();
 
 /**
  * @description The project does not exist or the team does not have access to it.
  */
-export const listSandboxes404Schema = z.unknown();
+export const getSandboxesV1404Schema = z.unknown();
 
-export const listSandboxesQueryResponseSchema = z.lazy(() => listSandboxes200Schema);
+export const getSandboxesV1QueryResponseSchema = z.lazy(() => getSandboxesV1200Schema);
 
 export const createSandboxQueryParamsSchema = z
 	.object({
@@ -17519,6 +17689,986 @@ export const createSnapshot410Schema = z.unknown();
 export const createSnapshot422Schema = z.unknown();
 
 export const createSnapshotMutationResponseSchema = z.lazy(() => createSnapshot201Schema);
+
+export const getSandboxesV2QueryParamsSchema = z.object({
+	project: z.optional(
+		z
+			.string()
+			.describe("The unique identifier or name of the project to list named sandboxes for."),
+	),
+	limit: z.coerce
+		.number()
+		.min(1)
+		.max(50)
+		.default(20)
+		.describe("Maximum number of named sandboxes to return in the response. Used for pagination."),
+	sortBy: z
+		.enum(["createdAt", "name", "statusUpdatedAt"])
+		.default("createdAt")
+		.describe("Field to sort by."),
+	namePrefix: z.optional(
+		z
+			.string()
+			.describe(
+				"Filter named sandboxes whose name starts with this prefix. Only valid when sortBy=name.",
+			),
+	),
+	cursor: z.optional(z.string().describe("Opaque pagination cursor from a previous response.")),
+	sortOrder: z.enum(["asc", "desc"]).default("desc").describe("Sort direction. Defaults to desc."),
+	tags: z.optional(
+		z
+			.union([z.array(z.string()), z.string()])
+			.describe(
+				'Filter sandboxes by tag. Format: \\"key:value\\". Only one tag filter is supported at a time.',
+			),
+	),
+	teamId: z.optional(
+		z.string().describe("The Team identifier to perform the request on behalf of."),
+	),
+	slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+});
+
+export const getSandboxesV2200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export const getSandboxesV2400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const getSandboxesV2401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const getSandboxesV2403Schema = z.unknown();
+
+export const getSandboxesV2404Schema = z.unknown();
+
+export const getSandboxesV2QueryResponseSchema = z.lazy(() => getSandboxesV2200Schema);
+
+export const createSandboxesQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const createSandboxes200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request body is invalid.
+ */
+export const createSandboxes400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const createSandboxes401Schema = z.unknown();
+
+/**
+ * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ */
+export const createSandboxes402Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const createSandboxes403Schema = z.unknown();
+
+export const createSandboxes404Schema = z.unknown();
+
+export const createSandboxes410Schema = z.unknown();
+
+export const createSandboxes422Schema = z.unknown();
+
+/**
+ * @description The concurrency limit has been exceeded.
+ */
+export const createSandboxes429Schema = z.unknown();
+
+export const createSandboxes500Schema = z.unknown();
+
+export const createSandboxesMutationResponseSchema = z.lazy(() => createSandboxes200Schema);
+
+export const listSessionSnapshotsQueryParamsSchema = z.object({
+	project: z.optional(
+		z.string().describe("The unique identifier or name of the project to list snapshots for."),
+	),
+	name: z.optional(
+		z
+			.string()
+			.max(128)
+			.regex(/^[a-zA-Z0-9_-]+$/)
+			.describe(
+				"Name for the sandbox. Must be unique per project and URL-safe (alphanumeric, hyphens, underscores).",
+			),
+	),
+	limit: z.coerce
+		.number()
+		.min(1)
+		.max(50)
+		.default(20)
+		.describe("Maximum number of snapshots to return in the response. Used for pagination."),
+	cursor: z.optional(z.string().describe("Opaque pagination cursor from a previous response.")),
+	sortOrder: z
+		.enum(["asc", "desc"])
+		.default("desc")
+		.describe("Sort direction for results by creation time."),
+	teamId: z.optional(
+		z.string().describe("The Team identifier to perform the request on behalf of."),
+	),
+	slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+});
+
+export const listSessionSnapshots200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export const listSessionSnapshots400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const listSessionSnapshots401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const listSessionSnapshots403Schema = z.unknown();
+
+export const listSessionSnapshots404Schema = z.unknown();
+
+export const listSessionSnapshotsQueryResponseSchema = z.lazy(() => listSessionSnapshots200Schema);
+
+export const getSessionSnapshotPathParamsSchema = z.object({
+	snapshotId: z.string().describe("The unique identifier of the snapshot to retrieve."),
+});
+
+export const getSessionSnapshotQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const getSessionSnapshot200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export const getSessionSnapshot400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const getSessionSnapshot401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const getSessionSnapshot403Schema = z.unknown();
+
+export const getSessionSnapshot404Schema = z.unknown();
+
+export const getSessionSnapshotQueryResponseSchema = z.lazy(() => getSessionSnapshot200Schema);
+
+export const deleteSessionSnapshotPathParamsSchema = z.object({
+	snapshotId: z.string().describe("The unique identifier of the snapshot to delete."),
+});
+
+export const deleteSessionSnapshotQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const deleteSessionSnapshot200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export const deleteSessionSnapshot400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const deleteSessionSnapshot401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const deleteSessionSnapshot403Schema = z.unknown();
+
+export const deleteSessionSnapshot404Schema = z.unknown();
+
+export const deleteSessionSnapshotMutationResponseSchema = z.lazy(
+	() => deleteSessionSnapshot200Schema,
+);
+
+export const listSessionsQueryParamsSchema = z.object({
+	project: z.optional(
+		z.string().describe("The unique identifier or name of the project to list sessions for."),
+	),
+	name: z.optional(
+		z
+			.string()
+			.max(128)
+			.regex(/^[a-zA-Z0-9_-]+$/)
+			.describe(
+				"Filter sessions by sandbox name. Only sessions belonging to the specified sandbox are returned.",
+			),
+	),
+	limit: z.coerce
+		.number()
+		.min(1)
+		.max(50)
+		.default(20)
+		.describe("Maximum number of sessions to return in the response. Used for pagination."),
+	cursor: z.optional(z.string().describe("Opaque pagination cursor from a previous response.")),
+	sortOrder: z
+		.enum(["asc", "desc"])
+		.default("desc")
+		.describe("Sort direction for results by creation time."),
+	teamId: z.optional(
+		z.string().describe("The Team identifier to perform the request on behalf of."),
+	),
+	slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+});
+
+/**
+ * @description The list of sessions matching the request filters.
+ */
+export const listSessions200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export const listSessions400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const listSessions401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const listSessions403Schema = z.unknown();
+
+export const listSessions404Schema = z.unknown();
+
+export const listSessions500Schema = z.unknown();
+
+export const listSessionsQueryResponseSchema = z.lazy(() => listSessions200Schema);
+
+export const getSessionPathParamsSchema = z.object({
+	sessionId: z.string().describe("The unique identifier of the session to retrieve."),
+});
+
+export const getSessionQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+/**
+ * @description The session was retrieved successfully.
+ */
+export const getSession200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export const getSession400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const getSession401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const getSession403Schema = z.unknown();
+
+export const getSession500Schema = z.unknown();
+
+export const getSessionQueryResponseSchema = z.lazy(() => getSession200Schema);
+
+export const getNamedSandboxPathParamsSchema = z.object({
+	name: z
+		.string()
+		.max(128)
+		.regex(/^[a-zA-Z0-9_-]+$/)
+		.describe(
+			"Name for the sandbox. Must be unique per project and URL-safe (alphanumeric, hyphens, underscores).",
+		),
+});
+
+export const getNamedSandboxQueryParamsSchema = z.object({
+	projectId: z.optional(
+		z.string().describe("The project ID or name (required when not using OIDC token)."),
+	),
+	resume: z
+		.boolean()
+		.default(false)
+		.describe(
+			"Whether to automatically resume a stopped named sandbox by creating a new instance from its snapshot. Defaults to false.",
+		),
+	teamId: z.optional(
+		z.string().describe("The Team identifier to perform the request on behalf of."),
+	),
+	slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+});
+
+export const getNamedSandbox200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export const getNamedSandbox400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const getNamedSandbox401Schema = z.unknown();
+
+/**
+ * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ */
+export const getNamedSandbox402Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const getNamedSandbox403Schema = z.unknown();
+
+export const getNamedSandbox404Schema = z.unknown();
+
+/**
+ * @description The concurrency limit has been exceeded.
+ */
+export const getNamedSandbox429Schema = z.unknown();
+
+export const getNamedSandbox500Schema = z.unknown();
+
+export const getNamedSandboxQueryResponseSchema = z.lazy(() => getNamedSandbox200Schema);
+
+export const updateSandboxPathParamsSchema = z.object({
+	name: z
+		.string()
+		.max(128)
+		.regex(/^[a-zA-Z0-9_-]+$/)
+		.describe("The sandbox to update."),
+});
+
+export const updateSandboxQueryParamsSchema = z
+	.object({
+		projectId: z.optional(
+			z
+				.string()
+				.max(128)
+				.describe(
+					"The project ID that owns the named sandbox. When provided, takes precedence over OIDC project context.",
+				),
+		),
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const updateSandbox200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export const updateSandbox400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const updateSandbox401Schema = z.unknown();
+
+export const updateSandbox402Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const updateSandbox403Schema = z.unknown();
+
+export const updateSandbox404Schema = z.unknown();
+
+export const updateSandbox500Schema = z.unknown();
+
+export const updateSandboxMutationResponseSchema = z.lazy(() => updateSandbox200Schema);
+
+export const deleteSandboxPathParamsSchema = z.object({
+	name: z.string().max(128).describe("The sandbox name to delete."),
+});
+
+export const deleteSandboxQueryParamsSchema = z
+	.object({
+		projectId: z.optional(
+			z
+				.string()
+				.max(128)
+				.describe(
+					"The project ID that owns the named sandbox. When provided, takes precedence over OIDC project context.",
+				),
+		),
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const deleteSandbox200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export const deleteSandbox400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const deleteSandbox401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const deleteSandbox403Schema = z.unknown();
+
+export const deleteSandbox404Schema = z.unknown();
+
+export const deleteSandbox410Schema = z.unknown();
+
+export const deleteSandbox422Schema = z.unknown();
+
+export const deleteSandboxMutationResponseSchema = z.lazy(() => deleteSandbox200Schema);
+
+export const listSessionCommandsPathParamsSchema = z.object({
+	sessionId: z.string().describe("The unique identifier of the session to list commands for."),
+});
+
+export const listSessionCommandsQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+/**
+ * @description The list of commands executed in the session.
+ */
+export const listSessionCommands200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export const listSessionCommands400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const listSessionCommands401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const listSessionCommands403Schema = z.unknown();
+
+export const listSessionCommandsQueryResponseSchema = z.lazy(() => listSessionCommands200Schema);
+
+export const runSessionCommandPathParamsSchema = z.object({
+	sessionId: z
+		.string()
+		.describe("The unique identifier of the session in which to execute the command."),
+});
+
+export const runSessionCommandQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const runSessionCommand200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export const runSessionCommand400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const runSessionCommand401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const runSessionCommand403Schema = z.unknown();
+
+export const runSessionCommand410Schema = z.unknown();
+
+export const runSessionCommand422Schema = z.unknown();
+
+export const runSessionCommandMutationResponseSchema = z.lazy(() => runSessionCommand200Schema);
+
+export const getSessionCommandPathParamsSchema = z.object({
+	sessionId: z.string().describe("The unique identifier of the session containing the command."),
+	cmdId: z.string().describe("The unique identifier of the command to retrieve."),
+});
+
+export const getSessionCommandQueryParamsSchema = z.object({
+	wait: z
+		.enum(["true", "false"])
+		.default("false")
+		.describe(
+			'If set to \\"true\\", the request will block until the command finishes execution. Useful for synchronously waiting for command completion.',
+		),
+	teamId: z.optional(
+		z.string().describe("The Team identifier to perform the request on behalf of."),
+	),
+	slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+});
+
+/**
+ * @description The command data along with the exit code if the command did finish.
+ */
+export const getSessionCommand200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export const getSessionCommand400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const getSessionCommand401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const getSessionCommand403Schema = z.unknown();
+
+export const getSessionCommand410Schema = z.unknown();
+
+export const getSessionCommand422Schema = z.unknown();
+
+export const getSessionCommandQueryResponseSchema = z.lazy(() => getSessionCommand200Schema);
+
+export const killSessionCommandPathParamsSchema = z.object({
+	cmdId: z.string().describe("The unique identifier of the command to terminate."),
+	sessionId: z.string().describe("The unique identifier of the session containing the command."),
+});
+
+export const killSessionCommandQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+/**
+ * @description The command was terminated successfully.
+ */
+export const killSessionCommand200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export const killSessionCommand400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const killSessionCommand401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const killSessionCommand403Schema = z.unknown();
+
+export const killSessionCommand404Schema = z.unknown();
+
+export const killSessionCommand410Schema = z.unknown();
+
+export const killSessionCommand422Schema = z.unknown();
+
+export const killSessionCommandMutationResponseSchema = z.lazy(() => killSessionCommand200Schema);
+
+export const getSessionCommandLogsPathParamsSchema = z.object({
+	sessionId: z.string().describe("The unique identifier of the session containing the command."),
+	cmdId: z.string().describe("The unique identifier of the command to stream logs for."),
+});
+
+export const getSessionCommandLogsQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const getSessionCommandLogs200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export const getSessionCommandLogs400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const getSessionCommandLogs401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const getSessionCommandLogs403Schema = z.unknown();
+
+export const getSessionCommandLogs410Schema = z.unknown();
+
+export const getSessionCommandLogs422Schema = z.unknown();
+
+export const getSessionCommandLogsQueryResponseSchema = z.lazy(
+	() => getSessionCommandLogs200Schema,
+);
+
+export const stopSessionPathParamsSchema = z.object({
+	sessionId: z.string().describe("The unique identifier of the session to stop."),
+});
+
+export const stopSessionQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+/**
+ * @description The session was stopped successfully.
+ */
+export const stopSession200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export const stopSession400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const stopSession401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const stopSession403Schema = z.unknown();
+
+export const stopSession410Schema = z.unknown();
+
+export const stopSession422Schema = z.unknown();
+
+export const stopSession500Schema = z.unknown();
+
+export const stopSessionMutationResponseSchema = z.lazy(() => stopSession200Schema);
+
+export const extendSessionTimeoutPathParamsSchema = z.object({
+	sessionId: z.string().describe("The unique identifier of the session to extend the timeout for."),
+});
+
+export const extendSessionTimeoutQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+/**
+ * @description The session timeout was extended successfully.
+ */
+export const extendSessionTimeout200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export const extendSessionTimeout400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const extendSessionTimeout401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const extendSessionTimeout403Schema = z.unknown();
+
+export const extendSessionTimeout410Schema = z.unknown();
+
+export const extendSessionTimeout422Schema = z.unknown();
+
+export const extendSessionTimeout500Schema = z.unknown();
+
+export const extendSessionTimeoutMutationResponseSchema = z.lazy(
+	() => extendSessionTimeout200Schema,
+);
+
+export const updateSessionNetworkPolicyPathParamsSchema = z.object({
+	sessionId: z
+		.string()
+		.describe("The unique identifier of the session to update the network policy for."),
+});
+
+export const updateSessionNetworkPolicyQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+/**
+ * @description The session network policy was updated successfully.
+ */
+export const updateSessionNetworkPolicy200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export const updateSessionNetworkPolicy400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const updateSessionNetworkPolicy401Schema = z.unknown();
+
+export const updateSessionNetworkPolicy402Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const updateSessionNetworkPolicy403Schema = z.unknown();
+
+export const updateSessionNetworkPolicy410Schema = z.unknown();
+
+export const updateSessionNetworkPolicy422Schema = z.unknown();
+
+export const updateSessionNetworkPolicy500Schema = z.unknown();
+
+export const updateSessionNetworkPolicyMutationResponseSchema = z.lazy(
+	() => updateSessionNetworkPolicy200Schema,
+);
+
+export const readSessionFilePathParamsSchema = z.object({
+	sessionId: z.string().describe("The unique identifier of the session to read the file from."),
+});
+
+export const readSessionFileQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const readSessionFile200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export const readSessionFile400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const readSessionFile401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const readSessionFile403Schema = z.unknown();
+
+export const readSessionFile404Schema = z.unknown();
+
+export const readSessionFile410Schema = z.unknown();
+
+export const readSessionFile422Schema = z.unknown();
+
+export const readSessionFileMutationResponseSchema = z.lazy(() => readSessionFile200Schema);
+
+export const createSessionDirectoryPathParamsSchema = z.object({
+	sessionId: z
+		.string()
+		.describe("The unique identifier of the session to create the directory in."),
+});
+
+export const createSessionDirectoryQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+/**
+ * @description The directory was created successfully.
+ */
+export const createSessionDirectory200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export const createSessionDirectory400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const createSessionDirectory401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const createSessionDirectory403Schema = z.unknown();
+
+export const createSessionDirectory410Schema = z.unknown();
+
+export const createSessionDirectory422Schema = z.unknown();
+
+export const createSessionDirectoryMutationResponseSchema = z.lazy(
+	() => createSessionDirectory200Schema,
+);
+
+export const writeSessionFilesPathParamsSchema = z.object({
+	sessionId: z.string().describe("The unique identifier of the session to write files to."),
+});
+
+export const writeSessionFilesQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const writeSessionFilesHeaderParamsSchema = z
+	.object({
+		"x-cwd": z.optional(
+			z
+				.string()
+				.describe(
+					"The target directory where the tarball contents will be extracted. If not specified, files are extracted to the sandbox home directory.",
+				),
+		),
+	})
+	.optional();
+
+/**
+ * @description The files were successfully written to the session.
+ */
+export const writeSessionFiles200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request query is invalid.\nOne of the provided values in the headers is invalid
+ */
+export const writeSessionFiles400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const writeSessionFiles401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const writeSessionFiles403Schema = z.unknown();
+
+export const writeSessionFiles410Schema = z.unknown();
+
+export const writeSessionFiles422Schema = z.unknown();
+
+export const writeSessionFilesMutationResponseSchema = z.lazy(() => writeSessionFiles200Schema);
+
+export const createSessionSnapshotPathParamsSchema = z.object({
+	sessionId: z.string().describe("The unique identifier of the session to snapshot."),
+});
+
+export const createSessionSnapshotQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const createSessionSnapshot201Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export const createSessionSnapshot400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const createSessionSnapshot401Schema = z.unknown();
+
+/**
+ * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ */
+export const createSessionSnapshot402Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const createSessionSnapshot403Schema = z.unknown();
+
+export const createSessionSnapshot410Schema = z.unknown();
+
+export const createSessionSnapshot422Schema = z.unknown();
+
+export const createSessionSnapshot500Schema = z.unknown();
+
+export const createSessionSnapshotMutationResponseSchema = z.lazy(
+	() => createSessionSnapshot201Schema,
+);
 
 export const updateAttackChallengeModeQueryParamsSchema = z
 	.object({
