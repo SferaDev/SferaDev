@@ -7416,7 +7416,7 @@ export const meetingsQueryParamsSchema = z.object({
 		.enum(["scheduled", "live", "upcoming", "upcoming_meetings", "previous_meetings"])
 		.default("scheduled")
 		.describe(
-			"The type of meeting. \n* `scheduled` - All valid previous (unexpired) meetings, live meetings, and upcoming scheduled meetings. \n* `live` - All the ongoing meetings. \n* `upcoming` - All upcoming meetings, including live meetings. \n* `upcoming_meetings` - All upcoming meetings, including live meetings. \n* `previous_meetings` - All the previous meetings.",
+			"The meeting type. \n* `scheduled` - All valid previous (unexpired) meetings, live meetings, and upcoming scheduled meetings. \n* `live` - All the ongoing meetings. \n* `upcoming` - All upcoming meetings, including live meetings. \n* `upcoming_meetings` - All upcoming meetings, including live meetings. \n* `previous_meetings` - All valid previous meetings whose scheduled end time has already passed.",
 		),
 	page_size: z.coerce
 		.number()
@@ -7443,7 +7443,7 @@ export const meetingsQueryParamsSchema = z.object({
 		z
 			.string()
 			.describe(
-				"The timezone to assign to the `from` and `to` value. For a list of supported timezones and their formats, see our [timezone list](https://developers.zoom.us/docs/api/rest/other-references/abbreviation-lists/#timezones).",
+				"The timezone to assign to the `from` and `to` value. For a list of supported timezones and their formats, see our [timezone list](/docs/api/references/abbreviations/#timezones).",
 			),
 	),
 });
@@ -7495,17 +7495,17 @@ export const meetings200Schema = z.object({
 						z
 							.string()
 							.describe(
-								"[Personal meeting ID](https://developers.zoom.us/docs/api/rest/using-zoom-apis/#understanding-personal-meeting-id-pmi). This field is only returned if PMI was used to schedule the meeting.",
+								"[Personal meeting ID](/docs/api/using-zoom-apis/#understanding-personal-meeting-id-pmi). This field is only returned if PMI was used to schedule the meeting.",
 							),
 					),
 					start_time: z.optional(z.iso.datetime().describe("Meeting start time.")),
-					timezone: z.optional(z.string().describe("Timezone to format the meeting start time. ")),
+					timezone: z.optional(z.string().describe("Timezone to format the meeting start time.")),
 					topic: z.optional(z.string().describe("Meeting topic.")),
 					type: z.optional(
 						z
 							.union([z.literal(1), z.literal(2), z.literal(3), z.literal(8)])
 							.describe(
-								"Meeting types.  \n `1` - Instant meeting.  \n `2` - Scheduled meeting.  \n `3` - Recurring meeting with no fixed time.  \n `8` - Recurring meeting with fixed time.",
+								"Meeting types.\n `1` - Instant meeting.\n `2` - Scheduled meeting.\n `3` - Recurring meeting with no fixed time.\n `8` - Recurring meeting with fixed time.",
 							),
 					),
 					uuid: z.optional(
@@ -7537,7 +7537,7 @@ export const meetings403Schema = z.unknown();
 export const meetings404Schema = z.unknown();
 
 /**
- * @description **HTTP Status Code:** `429` <br>\n Too Many Requests. For more information, see [rate limits](/docs/api/rate-limits/). \n\n
+ * @description **HTTP Status Code:** `429` <br>\n Too Many Requests. For more information, see [rate limits](https://developers.zoom.us/docs/api/rate-limits/). \n\n
  */
 export const meetings429Schema = z.unknown();
 
