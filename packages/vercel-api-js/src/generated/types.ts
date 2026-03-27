@@ -15159,6 +15159,95 @@ export type UserEvent = {
 		| undefined;
 };
 
+export const experimentStickyRequirementEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type ExperimentStickyRequirementEnumKey =
+	(typeof experimentStickyRequirementEnum)[keyof typeof experimentStickyRequirementEnum];
+
+export const guardrailMetricsMetricTypeEnum = {
+	count: "count",
+	currency: "currency",
+	percentage: "percentage",
+} as const;
+
+export type GuardrailMetricsMetricTypeEnumKey =
+	(typeof guardrailMetricsMetricTypeEnum)[keyof typeof guardrailMetricsMetricTypeEnum];
+
+export const guardrailMetricsMetricUnitEnum = {
+	session: "session",
+	user: "user",
+	visitor: "visitor",
+} as const;
+
+export type GuardrailMetricsMetricUnitEnumKey =
+	(typeof guardrailMetricsMetricUnitEnum)[keyof typeof guardrailMetricsMetricUnitEnum];
+
+export const guardrailMetricsDirectionalityEnum = {
+	decreaseIsGood: "decreaseIsGood",
+	increaseIsGood: "increaseIsGood",
+} as const;
+
+export type GuardrailMetricsDirectionalityEnumKey =
+	(typeof guardrailMetricsDirectionalityEnum)[keyof typeof guardrailMetricsDirectionalityEnum];
+
+export const experimentDeviceEnum = {
+	android: "android",
+	desktop: "desktop",
+	ios: "ios",
+	mweb: "mweb",
+} as const;
+
+export type ExperimentDeviceEnumKey =
+	(typeof experimentDeviceEnum)[keyof typeof experimentDeviceEnum];
+
+export const experimentAllocationUnitEnum = {
+	cookieId: "cookieId",
+	userId: "userId",
+	visitorId: "visitorId",
+} as const;
+
+export type ExperimentAllocationUnitEnumKey =
+	(typeof experimentAllocationUnitEnum)[keyof typeof experimentAllocationUnitEnum];
+
+export const primaryMetricsMetricTypeEnum = {
+	count: "count",
+	currency: "currency",
+	percentage: "percentage",
+} as const;
+
+export type PrimaryMetricsMetricTypeEnumKey =
+	(typeof primaryMetricsMetricTypeEnum)[keyof typeof primaryMetricsMetricTypeEnum];
+
+export const primaryMetricsMetricUnitEnum = {
+	session: "session",
+	user: "user",
+	visitor: "visitor",
+} as const;
+
+export type PrimaryMetricsMetricUnitEnumKey =
+	(typeof primaryMetricsMetricUnitEnum)[keyof typeof primaryMetricsMetricUnitEnum];
+
+export const primaryMetricsDirectionalityEnum = {
+	decreaseIsGood: "decreaseIsGood",
+	increaseIsGood: "increaseIsGood",
+} as const;
+
+export type PrimaryMetricsDirectionalityEnumKey =
+	(typeof primaryMetricsDirectionalityEnum)[keyof typeof primaryMetricsDirectionalityEnum];
+
+export const experimentStatusEnum = {
+	closed: "closed",
+	draft: "draft",
+	paused: "paused",
+	running: "running",
+} as const;
+
+export type ExperimentStatusEnumKey =
+	(typeof experimentStatusEnum)[keyof typeof experimentStatusEnum];
+
 export const reuseActiveEnum = {
 	false: false,
 	true: true,
@@ -15299,6 +15388,125 @@ export type Flag = {
 	 * @type string | undefined
 	 */
 	description?: string | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	experiment?:
+		| {
+				/**
+				 * @type string | undefined
+				 */
+				name?: string | undefined;
+				/**
+				 * @type string | undefined
+				 */
+				id?: string | undefined;
+				/**
+				 * @type number | undefined
+				 */
+				numVariants?: number | undefined;
+				/**
+				 * @type string | undefined
+				 */
+				surfaceArea?: string | undefined;
+				/**
+				 * @type boolean | undefined
+				 */
+				stickyRequirement?: ExperimentStickyRequirementEnumKey | undefined;
+				/**
+				 * @type string | undefined
+				 */
+				layer?: string | undefined;
+				/**
+				 * @type array | undefined
+				 */
+				guardrailMetrics?:
+					| {
+							/**
+							 * @type string | undefined
+							 */
+							description?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							metricFormula?: string | undefined;
+							/**
+							 * @type string
+							 */
+							name: string;
+							/**
+							 * @type string
+							 */
+							metricType: GuardrailMetricsMetricTypeEnumKey;
+							/**
+							 * @type string
+							 */
+							metricUnit: GuardrailMetricsMetricUnitEnumKey;
+							/**
+							 * @type string
+							 */
+							directionality: GuardrailMetricsDirectionalityEnumKey;
+					  }[]
+					| undefined;
+				/**
+				 * @type string | undefined
+				 */
+				hypothesis?: string | undefined;
+				/**
+				 * @type string | undefined
+				 */
+				device?: ExperimentDeviceEnumKey | undefined;
+				/**
+				 * @type string | undefined
+				 */
+				controlVariantId?: string | undefined;
+				/**
+				 * @type number | undefined
+				 */
+				startedAt?: number | undefined;
+				/**
+				 * @type number | undefined
+				 */
+				endedAt?: number | undefined;
+				/**
+				 * @type string
+				 */
+				allocationUnit: ExperimentAllocationUnitEnumKey;
+				/**
+				 * @type array
+				 */
+				primaryMetrics: {
+					/**
+					 * @type string | undefined
+					 */
+					description?: string | undefined;
+					/**
+					 * @type string | undefined
+					 */
+					metricFormula?: string | undefined;
+					/**
+					 * @type string
+					 */
+					name: string;
+					/**
+					 * @type string
+					 */
+					metricType: PrimaryMetricsMetricTypeEnumKey;
+					/**
+					 * @type string
+					 */
+					metricUnit: PrimaryMetricsMetricUnitEnumKey;
+					/**
+					 * @type string
+					 */
+					directionality: PrimaryMetricsDirectionalityEnumKey;
+				}[];
+				/**
+				 * @type string
+				 */
+				status: ExperimentStatusEnumKey;
+		  }
+		| undefined;
 	/**
 	 * @type array
 	 */
