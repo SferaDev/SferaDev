@@ -6327,6 +6327,45 @@ export const userEventSchema = z
 
 export const flagSchema = z.object({
 	description: z.optional(z.string()),
+	experiment: z.optional(
+		z.object({
+			name: z.optional(z.string()),
+			id: z.optional(z.string()),
+			numVariants: z.optional(z.number()),
+			surfaceArea: z.optional(z.string()),
+			stickyRequirement: z.optional(z.union([z.literal(false), z.literal(true)])),
+			layer: z.optional(z.string()),
+			guardrailMetrics: z.optional(
+				z.array(
+					z.object({
+						description: z.optional(z.string()),
+						metricFormula: z.optional(z.string()),
+						name: z.string(),
+						metricType: z.enum(["count", "currency", "percentage"]),
+						metricUnit: z.enum(["session", "user", "visitor"]),
+						directionality: z.enum(["decreaseIsGood", "increaseIsGood"]),
+					}),
+				),
+			),
+			hypothesis: z.optional(z.string()),
+			device: z.optional(z.enum(["android", "desktop", "ios", "mweb"])),
+			controlVariantId: z.optional(z.string()),
+			startedAt: z.optional(z.number()),
+			endedAt: z.optional(z.number()),
+			allocationUnit: z.enum(["cookieId", "userId", "visitorId"]),
+			primaryMetrics: z.array(
+				z.object({
+					description: z.optional(z.string()),
+					metricFormula: z.optional(z.string()),
+					name: z.string(),
+					metricType: z.enum(["count", "currency", "percentage"]),
+					metricUnit: z.enum(["session", "user", "visitor"]),
+					directionality: z.enum(["decreaseIsGood", "increaseIsGood"]),
+				}),
+			),
+			status: z.enum(["closed", "draft", "paused", "running"]),
+		}),
+	),
 	variants: z.array(z.object({})),
 	id: z.string(),
 	environments: z.object({}).catchall(
