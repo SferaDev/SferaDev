@@ -9963,7 +9963,7 @@ export type MeetingsQueryParamsTypeEnumKey =
 
 export type MeetingsQueryParams = {
 	/**
-	 * @description The type of meeting. \n* `scheduled` - All valid previous (unexpired) meetings, live meetings, and upcoming scheduled meetings. \n* `live` - All the ongoing meetings. \n* `upcoming` - All upcoming meetings, including live meetings. \n* `upcoming_meetings` - All upcoming meetings, including live meetings. \n* `previous_meetings` - All the previous meetings.
+	 * @description The meeting type. \n* `scheduled` - All valid previous (unexpired) meetings, live meetings, and upcoming scheduled meetings. \n* `live` - All the ongoing meetings. \n* `upcoming` - All upcoming meetings, including live meetings. \n* `upcoming_meetings` - All upcoming meetings, including live meetings. \n* `previous_meetings` - All valid previous meetings whose scheduled end time has already passed.
 	 * @default "scheduled"
 	 * @type string | undefined
 	 */
@@ -9996,7 +9996,7 @@ export type MeetingsQueryParams = {
 	 */
 	to?: string | undefined;
 	/**
-	 * @description The timezone to assign to the `from` and `to` value. For a list of supported timezones and their formats, see our [timezone list](https://developers.zoom.us/docs/api/rest/other-references/abbreviation-lists/#timezones).
+	 * @description The timezone to assign to the `from` and `to` value. For a list of supported timezones and their formats, see our [timezone list](/docs/api/references/abbreviations/#timezones).
 	 * @type string | undefined
 	 */
 	timezone?: string | undefined;
@@ -10080,7 +10080,7 @@ export type Meetings200 = {
 				 */
 				join_url?: string | undefined;
 				/**
-				 * @description [Personal meeting ID](https://developers.zoom.us/docs/api/rest/using-zoom-apis/#understanding-personal-meeting-id-pmi). This field is only returned if PMI was used to schedule the meeting.
+				 * @description [Personal meeting ID](/docs/api/using-zoom-apis/#understanding-personal-meeting-id-pmi). This field is only returned if PMI was used to schedule the meeting.
 				 * @type string | undefined
 				 */
 				pmi?: string | undefined;
@@ -10100,7 +10100,7 @@ export type Meetings200 = {
 				 */
 				topic?: string | undefined;
 				/**
-				 * @description Meeting types.  \n `1` - Instant meeting.  \n `2` - Scheduled meeting.  \n `3` - Recurring meeting with no fixed time.  \n `8` - Recurring meeting with fixed time.
+				 * @description Meeting types.\n `1` - Instant meeting.\n `2` - Scheduled meeting.\n `3` - Recurring meeting with no fixed time.\n `8` - Recurring meeting with fixed time.
 				 * @type integer | undefined
 				 */
 				type?: MeetingsTypeEnum3Key | undefined;
@@ -10129,7 +10129,7 @@ export type Meetings403 = unknown;
 export type Meetings404 = unknown;
 
 /**
- * @description **HTTP Status Code:** `429` <br>\n Too Many Requests. For more information, see [rate limits](/docs/api/rate-limits/). \n\n
+ * @description **HTTP Status Code:** `429` <br>\n Too Many Requests. For more information, see [rate limits](https://developers.zoom.us/docs/api/rate-limits/). \n\n
  */
 export type Meetings429 = unknown;
 
