@@ -2309,6 +2309,18 @@ export const jobTypeEnum7 = {
 
 export type JobTypeEnum7Key = (typeof jobTypeEnum7)[keyof typeof jobTypeEnum7];
 
+export const jobTypeEnum8 = {
+	"vercel-push": "vercel-push",
+} as const;
+
+export type JobTypeEnum8Key = (typeof jobTypeEnum8)[keyof typeof jobTypeEnum8];
+
+export const jobProviderEnum4 = {
+	vercel: "vercel",
+} as const;
+
+export type JobProviderEnum4Key = (typeof jobProviderEnum4)[keyof typeof jobProviderEnum4];
+
 export const payloadCdnEnabledEnum = {
 	false: false,
 	true: true,
@@ -2541,6 +2553,7 @@ export const billingPlanEnum = {
 export type BillingPlanEnumKey = (typeof billingPlanEnum)[keyof typeof billingPlanEnum];
 
 export const credentialsTypeEnum = {
+	vercel: "vercel",
 	gitlab: "gitlab",
 	bitbucket: "bitbucket",
 	google: "google",
@@ -2568,6 +2581,7 @@ export type DataCacheExcessBillingEnabledEnumKey =
 	(typeof dataCacheExcessBillingEnabledEnum)[keyof typeof dataCacheExcessBillingEnabledEnum];
 
 export const newOwnerImportFlowGitProviderEnum = {
+	vercel: "vercel",
 	github: "github",
 	"github-limited": "github-limited",
 	"github-custom-host": "github-custom-host",
@@ -3604,6 +3618,7 @@ export type NextFunctionZeroConfigFailoverEnumKey =
 	(typeof nextFunctionZeroConfigFailoverEnum)[keyof typeof nextFunctionZeroConfigFailoverEnum];
 
 export const previousGitProviderEnum = {
+	vercel: "vercel",
 	github: "github",
 	"github-limited": "github-limited",
 	"github-custom-host": "github-custom-host",
@@ -3615,6 +3630,7 @@ export type PreviousGitProviderEnumKey =
 	(typeof previousGitProviderEnum)[keyof typeof previousGitProviderEnum];
 
 export const nextGitProviderEnum = {
+	vercel: "vercel",
 	github: "github",
 	"github-limited": "github-limited",
 	"github-custom-host": "github-custom-host",
@@ -3625,6 +3641,7 @@ export const nextGitProviderEnum = {
 export type NextGitProviderEnumKey = (typeof nextGitProviderEnum)[keyof typeof nextGitProviderEnum];
 
 export const payloadGitProviderEnum = {
+	vercel: "vercel",
 	github: "github",
 	"github-limited": "github-limited",
 	"github-custom-host": "github-custom-host",
@@ -7329,6 +7346,189 @@ export type UserEvent = {
 									 * @type string
 									 */
 									provider: JobProviderEnum3Key;
+							  }
+							| {
+									/**
+									 * @type string
+									 */
+									type: JobTypeEnum8Key;
+									/**
+									 * @type string
+									 */
+									ref: string;
+									/**
+									 * @type string
+									 */
+									repo: string;
+									/**
+									 * @type string
+									 */
+									sha: string;
+									/**
+									 * @type number
+									 */
+									repoPushedAt?: (number | null) | undefined;
+									/**
+									 * @type object | undefined
+									 */
+									deployHook?:
+										| {
+												/**
+												 * @type number
+												 */
+												createdAt: number;
+												/**
+												 * @type string
+												 */
+												id: string;
+												/**
+												 * @type string
+												 */
+												name: string;
+												/**
+												 * @type string
+												 */
+												ref: string;
+										  }
+										| undefined;
+									/**
+									 * @type string | undefined
+									 */
+									url?: string | undefined;
+									/**
+									 * @type string
+									 */
+									target?: (string | null) | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									deploymentId?: string | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									linkedProjectId?: string | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									projectId?: string | undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									authorized?: JobAuthorizedEnumKey | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									authorizedBy?: string | undefined;
+									/**
+									 * @description Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.
+									 * @type array | undefined
+									 */
+									jobProjectIds?: string[] | undefined;
+									/**
+									 * @description Since December 2022 Pairs of projects and owner ids to build for this build request.
+									 * @type array | undefined
+									 */
+									jobPairs?: (string | string)[][] | undefined;
+									/**
+									 * @description Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.
+									 * @type array | undefined
+									 */
+									skippedJobPairs?: (string | string)[][] | undefined;
+									/**
+									 * @description Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING
+									 * @type array | undefined
+									 */
+									gitHashtagVercel?: string[] | undefined;
+									/**
+									 * @description Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.
+									 * @type number | undefined
+									 */
+									connectedProjectCount?: number | undefined;
+									/**
+									 * @description Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.
+									 * @type number | undefined
+									 */
+									prIdOrZero?: number | undefined;
+									/**
+									 * @description Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.
+									 * @type object | undefined
+									 */
+									gitComments?:
+										| {
+												/**
+												 * @type boolean
+												 */
+												onPullRequest: GitCommentsOnPullRequestEnumKey;
+												/**
+												 * @type boolean
+												 */
+												onCommit: GitCommentsOnCommitEnumKey;
+										  }
+										| undefined;
+									/**
+									 * @description Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment
+									 * @type boolean | undefined
+									 */
+									isManualGitDeploy?: JobIsManualGitDeployEnumKey | undefined;
+									/**
+									 * @description Since 6 Nov 2025 The verification status of the commit. - \'verified\' if the commit is verified - \'unverified\' if the commit is not verified - \'unknown\' if the commit verification status is unknown or not supported
+									 * @type string | undefined
+									 */
+									commitVerification?: JobCommitVerificationEnumKey | undefined;
+									/**
+									 * @description Since March 2026 Records a successful NSNB auto-add result so later GitHub PR comments can deterministically explain why this SHA was allowed to deploy.
+									 * @type object | undefined
+									 */
+									nsnbSideEffect?:
+										| {
+												/**
+												 * @type string
+												 */
+												action: NsnbSideEffectActionEnumKey;
+												/**
+												 * @type string
+												 */
+												gitUserLogin: string;
+										  }
+										| undefined;
+									/**
+									 * @description Vercel
+									 * @type object
+									 */
+									headInfo: {
+										/**
+										 * @type string
+										 */
+										org: string;
+										/**
+										 * @type string
+										 */
+										ref: string;
+										/**
+										 * @type string
+										 */
+										repo: string;
+										/**
+										 * @type string
+										 */
+										sha: string;
+									};
+									/**
+									 * @type string
+									 */
+									org: string;
+									/**
+									 * @type string
+									 */
+									provider: JobProviderEnum4Key;
+									/**
+									 * @type string
+									 */
+									customEnvId?: (string | null) | undefined;
+									/**
+									 * @type number
+									 */
+									prId?: (number | null) | undefined;
 							  };
 				  }
 				| {
@@ -18465,6 +18665,7 @@ export const authUserImportFlowGitProviderEnum = {
 	"github-custom-host": "github-custom-host",
 	"github-limited": "github-limited",
 	gitlab: "gitlab",
+	vercel: "vercel",
 } as const;
 
 export type AuthUserImportFlowGitProviderEnumKey =

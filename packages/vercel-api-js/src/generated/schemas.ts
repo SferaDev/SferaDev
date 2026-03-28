@@ -2486,6 +2486,138 @@ export const userEventSchema = z
 							),
 							provider: z.enum(["gitlab"]),
 						}),
+						z.object({
+							type: z.enum(["vercel-push"]),
+							ref: z.string(),
+							repo: z.string(),
+							sha: z.string(),
+							repoPushedAt: z.number().nullish(),
+							deployHook: z.optional(
+								z.object({
+									createdAt: z.number(),
+									id: z.string(),
+									name: z.string(),
+									ref: z.string(),
+								}),
+							),
+							url: z.optional(z.string()),
+							target: z.string().nullish(),
+							deploymentId: z.optional(z.string()),
+							linkedProjectId: z.optional(z.string()),
+							projectId: z.optional(z.string()),
+							authorized: z.optional(z.union([z.literal(false), z.literal(true)])),
+							authorizedBy: z.optional(z.string()),
+							jobProjectIds: z.optional(
+								z
+									.array(z.string())
+									.describe(
+										"Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.",
+									),
+							),
+							jobPairs: z.optional(
+								z
+									.array(
+										z
+											.array(z.union([z.string(), z.string()]))
+											.min(2)
+											.max(2)
+											.describe(
+												"Since December 2022 Pairs of projects and owner ids to build for this build request.",
+											),
+									)
+									.describe(
+										"Since December 2022 Pairs of projects and owner ids to build for this build request.",
+									),
+							),
+							skippedJobPairs: z.optional(
+								z
+									.array(
+										z
+											.array(z.union([z.string(), z.string()]))
+											.min(2)
+											.max(2)
+											.describe(
+												"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
+											),
+									)
+									.describe(
+										"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
+									),
+							),
+							gitHashtagVercel: z.optional(
+								z
+									.array(
+										z
+											.string()
+											.describe(
+												"Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING",
+											),
+									)
+									.describe(
+										"Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING",
+									),
+							),
+							connectedProjectCount: z.optional(
+								z
+									.number()
+									.describe(
+										"Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.",
+									),
+							),
+							prIdOrZero: z.optional(
+								z
+									.number()
+									.describe(
+										"Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.",
+									),
+							),
+							gitComments: z.optional(
+								z
+									.object({
+										onPullRequest: z.union([z.literal(false), z.literal(true)]),
+										onCommit: z.union([z.literal(false), z.literal(true)]),
+									})
+									.describe(
+										"Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.",
+									),
+							),
+							isManualGitDeploy: z.optional(
+								z
+									.union([z.literal(false), z.literal(true)])
+									.describe(
+										"Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment",
+									),
+							),
+							commitVerification: z.optional(
+								z
+									.enum(["verified", "unverified", "unknown"])
+									.describe(
+										"Since 6 Nov 2025 The verification status of the commit. - 'verified' if the commit is verified - 'unverified' if the commit is not verified - 'unknown' if the commit verification status is unknown or not supported",
+									),
+							),
+							nsnbSideEffect: z.optional(
+								z
+									.object({
+										action: z.enum(["auto-approved-member", "auto-approved-pending-invite"]),
+										gitUserLogin: z.string(),
+									})
+									.describe(
+										"Since March 2026 Records a successful NSNB auto-add result so later GitHub PR comments can deterministically explain why this SHA was allowed to deploy.",
+									),
+							),
+							headInfo: z
+								.object({
+									org: z.string(),
+									ref: z.string(),
+									repo: z.string(),
+									sha: z.string(),
+								})
+								.describe("Vercel"),
+							org: z.string(),
+							provider: z.enum(["vercel"]),
+							customEnvId: z.string().nullish(),
+							prId: z.number().nullish(),
+						}),
 					]),
 				}),
 				z.object({
@@ -3142,6 +3274,7 @@ export const userEventSchema = z
 									z.union([
 										z.object({
 											type: z.enum([
+												"vercel",
 												"gitlab",
 												"bitbucket",
 												"google",
@@ -3196,7 +3329,14 @@ export const userEventSchema = z
 							importFlowGitNamespace: z.union([z.string(), z.number()]).nullish(),
 							importFlowGitNamespaceId: z.union([z.string(), z.number()]).nullish(),
 							importFlowGitProvider: z
-								.enum(["github", "github-limited", "github-custom-host", "gitlab", "bitbucket"])
+								.enum([
+									"vercel",
+									"github",
+									"github-limited",
+									"github-custom-host",
+									"gitlab",
+									"bitbucket",
+								])
 								.nullish(),
 							preferredScopesAndGitNamespaces: z.optional(
 								z.array(
@@ -4983,6 +5123,7 @@ export const userEventSchema = z
 					previous: z.optional(
 						z.object({
 							gitProvider: z.enum([
+								"vercel",
 								"github",
 								"github-limited",
 								"github-custom-host",
@@ -4995,6 +5136,7 @@ export const userEventSchema = z
 					),
 					next: z.object({
 						gitProvider: z.enum([
+							"vercel",
 							"github",
 							"github-limited",
 							"github-custom-host",
@@ -5009,6 +5151,7 @@ export const userEventSchema = z
 					projectId: z.string(),
 					projectName: z.string(),
 					gitProvider: z.enum([
+						"vercel",
 						"github",
 						"github-limited",
 						"github-custom-host",
@@ -8214,7 +8357,7 @@ export const authUserSchema = z
 		importFlowGitNamespace: z.union([z.string(), z.number()]).nullish(),
 		importFlowGitNamespaceId: z.union([z.string(), z.number()]).nullish(),
 		importFlowGitProvider: z
-			.enum(["bitbucket", "github", "github-custom-host", "github-limited", "gitlab"])
+			.enum(["bitbucket", "github", "github-custom-host", "github-limited", "gitlab", "vercel"])
 			.nullish(),
 		preferredScopesAndGitNamespaces: z.optional(
 			z.array(
