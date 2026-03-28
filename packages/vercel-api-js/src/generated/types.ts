@@ -18154,6 +18154,7 @@ export const sudoOriginEnum = {
 export type SudoOriginEnumKey = (typeof sudoOriginEnum)[keyof typeof sudoOriginEnum];
 
 export const scopesOriginEnum = {
+	app: "app",
 	saml: "saml",
 	github: "github",
 	"github-webhook": "github-webhook",
@@ -18168,7 +18169,6 @@ export const scopesOriginEnum = {
 	google: "google",
 	apple: "apple",
 	chatgpt: "chatgpt",
-	app: "app",
 	emu: "emu",
 } as const;
 
@@ -18293,6 +18293,11 @@ export type AuthToken = {
 	 * @type number | undefined
 	 */
 	expiresAt?: number | undefined;
+	/**
+	 * @description Timestamp (in milliseconds) of when the token was revoked.
+	 * @type number | undefined
+	 */
+	revokedAt?: number | undefined;
 	/**
 	 * @description Timestamp (in milliseconds) of when the token was marked as leaked.
 	 * @type number | undefined
