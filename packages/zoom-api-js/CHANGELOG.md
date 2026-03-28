@@ -1,5 +1,53 @@
 # zoom-api-js
 
+## 1.0.0
+
+### Major Changes
+
+- 05e1980: Migrate from openapi-codegen to kubb for code generation.
+
+  Breaking changes:
+
+  - Generated code is now in `./src/generated/` instead of `./src/api/` or other locations
+  - Export structure changed: now exports `Fetchers`, `Helpers`, `Schemas`, `Types` instead of previous structure
+  - `FetcherExtraProps` renamed to `FetcherConfig`
+  - Added new type exports: `ApiClient`, `ApiOperation`, `ApiOperationParams`, `ApiOperationResult`, `ApiOperationByMethod`
+
+### Minor Changes
+
+- 63774f3: Added new API endpoint getdisclaimerreport to retrieve a list of disclaimer records.
+- 74ad091: Migrate OpenAPI clients to SferaDev monorepo with improved build configuration, updated dependencies, and enhanced TypeScript support.
+
+### Patch Changes
+
+- ec0dcc0: Updated descriptions for from and to parameters to clarify time field is specified by time_filter_field.
+- 9f53922: Changed link for timezone documentation in 'meetingsQueryParams.timezone' description to use a relative path.
+- ec0dcc0: Added time_filter_field parameter to ListmeetingsummariesQueryParams to specify which summary time field to use for filtering.
+- 9f53922: Changed rate limits documentation link for meetings429 schema to use an absolute path.
+- 5d138a3: Added show_join_info setting to Webinar settings objects for controlling if join info appears on the registration confirmation page.
+- 5d138a3: Added additional_data_center_regions field to Meeting and Webinar settings for creating, updating, and responding with extra allowed data center regions.
+- 63774f3: Added support for HTTP 401 Unauthorized error to the meetingUpdate API endpoint.
+- 1d4a15e: Refactored import statements in extra.ts for improved readability and organization.
+- 80bc453: [BREAKING] Changed meetingId and webinarId fields and related IDs from number/int to bigint in schema and types to support long IDs exceeding 10 digits.
+- f859715: Updated example for UploadWebinarBrandingVBRequestBody.file property to reflect a new binary string value.
+- 5d138a3: Added visible property to Webinar tracking field responses indicating portal visibility status.
+- 9f53922: Updated description of 'meetingsQueryParams.type' for clarity about previous meetings.
+- 443257e: Added descriptive comments to several type definitions to improve API documentation clarity.
+- 2326fa2: [BREAKING] Change meeting and webinar IDs from bigint to int/number in all schemas and types.
+- 80bc453: [BREAKING] Changed all int fields representing durations, PIN codes, conference IDs, and similar large values from number/int to bigint in schema and types.
+- 5d138a3: Added template_id field to MeetingResponse, MeetingCreateResponse, WebinarResponse, and WebinarCreateResponse types for tracking meeting and webinar templates used.
+- 9f53922: Changed link for Personal Meeting ID in meeting response to use a relative path.
+- 63774f3: Updated meeting template documentation link in meeting update and create types.
+- 5d138a3: Added registrants_confirmation_email to WebinarCreateRequestBody settings for sending confirmation emails to webinar registrants.
+- 63774f3: Added 'users_not_in_org' value to waiting_room_options.who_goes_to_waiting_room for meeting creation and update APIs.
+- 5d138a3: Improved various field descriptions and documentation in WebinarCreateResponse for clarity and consistency.
+- f859715: Added retain_meeting_transcript option to InMeetingControlRequestBody to control retention of meeting transcripts related to AI Companion meeting summaries.
+- 928998e: Fixed incorrect documentation link in Meetings429 error type to use the correct rate limits URL.
+- 5d138a3: Added registration_url field to MeetingResponse and WebinarResponse types for returning the registration link when registration is enabled.
+- f859715: Clarified and reformatted prerequisites and API documentation for in-meeting controls.
+- 928998e: Added Meetings403 error type and response handling for meetings API to support HTTP 403 errors.
+- 63774f3: Improved descriptions for waiting room options and watermark fields in meeting APIs.
+
 ## 0.6.4
 
 ### Patch Changes
