@@ -7768,6 +7768,7 @@ export const authTokenSchema = z
 							),
 							origin: z.optional(
 								z.enum([
+									"app",
 									"saml",
 									"github",
 									"github-webhook",
@@ -7782,7 +7783,6 @@ export const authTokenSchema = z
 									"google",
 									"apple",
 									"chatgpt",
-									"app",
 									"emu",
 								]),
 							),
@@ -7794,6 +7794,7 @@ export const authTokenSchema = z
 							teamId: z.string(),
 							origin: z.optional(
 								z.enum([
+									"app",
 									"saml",
 									"github",
 									"github-webhook",
@@ -7808,7 +7809,6 @@ export const authTokenSchema = z
 									"google",
 									"apple",
 									"chatgpt",
-									"app",
 									"emu",
 								]),
 							),
@@ -7825,6 +7825,9 @@ export const authTokenSchema = z
 			.describe("Timestamp (in milliseconds) of when the token was most recently used."),
 		expiresAt: z.optional(
 			z.number().describe("Timestamp (in milliseconds) of when the token expires."),
+		),
+		revokedAt: z.optional(
+			z.number().describe("Timestamp (in milliseconds) of when the token was revoked."),
 		),
 		leakedAt: z.optional(
 			z.number().describe("Timestamp (in milliseconds) of when the token was marked as leaked."),

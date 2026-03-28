@@ -13109,7 +13109,7 @@ export async function uploadFile({
 /**
  * @description Retrieve a list of the current User's authentication tokens.
  * @summary List Auth Tokens
- * {@link /v5/user/tokens}
+ * {@link /v6/user/tokens}
  */
 export async function listAuthTokens({
 	config = {},
@@ -13125,7 +13125,7 @@ export async function listAuthTokens({
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "GET", url: `/v5/user/tokens`, ...requestConfig });
+	>({ method: "GET", url: `/v6/user/tokens`, ...requestConfig });
 	return data;
 }
 
@@ -14177,7 +14177,7 @@ export const operationsByPath = {
 	"DELETE /v1/teams/{teamId}": deleteTeam,
 	"DELETE /v1/teams/{teamId}/invites/{inviteId}": deleteTeamInviteCode,
 	"POST /v2/files": uploadFile,
-	"GET /v5/user/tokens": listAuthTokens,
+	"GET /v6/user/tokens": listAuthTokens,
 	"POST /v3/user/tokens": createAuthToken,
 	"GET /v5/user/tokens/{tokenId}": getAuthToken,
 	"DELETE /v3/user/tokens/{tokenId}": deleteAuthToken,
