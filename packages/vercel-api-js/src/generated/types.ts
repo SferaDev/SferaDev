@@ -1557,6 +1557,8 @@ export const userEventTypeEnum = {
 	"project-client-cert-delete": "project-client-cert-delete",
 	"project-client-cert-upload": "project-client-cert-upload",
 	"project-connect-configurations": "project-connect-configurations",
+	"project-consolidated-git-commit-status-updated":
+		"project-consolidated-git-commit-status-updated",
 	"project-created": "project-created",
 	"project-cron-jobs-toggled": "project-cron-jobs-toggled",
 	"project-custom-environment-created": "project-custom-environment-created",
@@ -3697,6 +3699,22 @@ export const payloadGitLFSEnum = {
 } as const;
 
 export type PayloadGitLFSEnumKey = (typeof payloadGitLFSEnum)[keyof typeof payloadGitLFSEnum];
+
+export const consolidatedGitCommitStatusEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type ConsolidatedGitCommitStatusEnabledEnumKey =
+	(typeof consolidatedGitCommitStatusEnabledEnum)[keyof typeof consolidatedGitCommitStatusEnabledEnum];
+
+export const consolidatedGitCommitStatusPropagateFailuresEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type ConsolidatedGitCommitStatusPropagateFailuresEnumKey =
+	(typeof consolidatedGitCommitStatusPropagateFailuresEnum)[keyof typeof consolidatedGitCommitStatusPropagateFailuresEnum];
 
 export const projectsRoleEnum = {
 	ADMIN: "ADMIN",
@@ -12603,6 +12621,29 @@ export type UserEvent = {
 						 * @type boolean
 						 */
 						gitLFS: PayloadGitLFSEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type object
+						 */
+						consolidatedGitCommitStatus: {
+							/**
+							 * @type boolean
+							 */
+							enabled: ConsolidatedGitCommitStatusEnabledEnumKey;
+							/**
+							 * @type boolean
+							 */
+							propagateFailures: ConsolidatedGitCommitStatusPropagateFailuresEnumKey;
+						} | null;
 				  }
 				| {
 						/**
@@ -28829,6 +28870,102 @@ export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceI
 			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig409
 			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig412;
 	};
+
+export type GetObservabilityConfigurationProjectsQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type GetObservabilityConfigurationProjects200 = unknown;
+
+export type GetObservabilityConfigurationProjects400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type GetObservabilityConfigurationProjects401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type GetObservabilityConfigurationProjects403 = unknown;
+
+export type GetObservabilityConfigurationProjects404 = unknown;
+
+export type GetObservabilityConfigurationProjectsQueryResponse =
+	GetObservabilityConfigurationProjects200;
+
+export type GetObservabilityConfigurationProjectsQuery = {
+	Response: GetObservabilityConfigurationProjects200;
+	QueryParams: GetObservabilityConfigurationProjectsQueryParams;
+	Errors:
+		| GetObservabilityConfigurationProjects400
+		| GetObservabilityConfigurationProjects401
+		| GetObservabilityConfigurationProjects403
+		| GetObservabilityConfigurationProjects404;
+};
+
+export type UpdateObservabilityConfigurationProjectPathParams = {
+	/**
+	 * @description The ID or name of the project to update
+	 * @type string
+	 */
+	projectIdOrName: string;
+};
+
+export type UpdateObservabilityConfigurationProjectQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type UpdateObservabilityConfigurationProject200 = unknown;
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export type UpdateObservabilityConfigurationProject400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type UpdateObservabilityConfigurationProject401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type UpdateObservabilityConfigurationProject403 = unknown;
+
+export type UpdateObservabilityConfigurationProject404 = unknown;
+
+export type UpdateObservabilityConfigurationProjectMutationResponse =
+	UpdateObservabilityConfigurationProject200;
+
+export type UpdateObservabilityConfigurationProjectMutation = {
+	Response: UpdateObservabilityConfigurationProject200;
+	PathParams: UpdateObservabilityConfigurationProjectPathParams;
+	QueryParams: UpdateObservabilityConfigurationProjectQueryParams;
+	Errors:
+		| UpdateObservabilityConfigurationProject400
+		| UpdateObservabilityConfigurationProject401
+		| UpdateObservabilityConfigurationProject403
+		| UpdateObservabilityConfigurationProject404;
+};
 
 export type GetProjectMembersPathParams = {
 	/**

@@ -1081,6 +1081,12 @@ import type {
 	GetNamedSandboxPathParams,
 	GetNamedSandboxQueryParams,
 	GetNamedSandboxQueryResponse,
+	GetObservabilityConfigurationProjects400,
+	GetObservabilityConfigurationProjects401,
+	GetObservabilityConfigurationProjects403,
+	GetObservabilityConfigurationProjects404,
+	GetObservabilityConfigurationProjectsQueryParams,
+	GetObservabilityConfigurationProjectsQueryResponse,
 	GetOrder400,
 	GetOrder401,
 	GetOrder403,
@@ -2065,6 +2071,13 @@ import type {
 	UpdateNetworkPolicyPathParams,
 	UpdateNetworkPolicyQueryParams,
 	UpdateNetworkQueryParams,
+	UpdateObservabilityConfigurationProject400,
+	UpdateObservabilityConfigurationProject401,
+	UpdateObservabilityConfigurationProject403,
+	UpdateObservabilityConfigurationProject404,
+	UpdateObservabilityConfigurationProjectMutationResponse,
+	UpdateObservabilityConfigurationProjectPathParams,
+	UpdateObservabilityConfigurationProjectQueryParams,
 	UpdateProject400,
 	UpdateProject401,
 	UpdateProject402,
@@ -7908,7 +7921,7 @@ export async function finalizeInstallation({
 }
 
 /**
- * @description Get Invoice details and status for a given invoice ID.<br/> <br/> See Billing Events with Webhooks documentation on how to receive invoice events. This endpoint is used to retrieve the invoice details.
+ * @description Get Invoice details and status for a given invoice ID.<br/> <br/> See [Billing Events with Webhooks documentation](https://vercel.com/docs/integrations/create-integration/marketplace-api#working-with-billing-events-through-webhooks) on how to receive invoice events. This endpoint is used to retrieve the invoice details.
  * @summary Get Invoice
  * {@link /v1/installations/:integrationConfigurationId/billing/invoices/:invoiceId}
  */
@@ -8638,6 +8651,83 @@ export async function replaceInstallationsByIntegrationConfigurationIdResourcesB
 	>({
 		method: "PUT",
 		url: `/v1/installations/${integrationConfigurationId}/resources/${resourceId}/experimentation/edge-config`,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
+ * @description Lists the projects that are currently configured as disabled for Observability Plus on a team.
+ * @summary Lists disabled Observability Plus projects
+ * {@link /v1/observability/manage/configuration/projects}
+ */
+export async function getObservabilityConfigurationProjects({
+	queryParams,
+	config = {},
+}: {
+	queryParams?: GetObservabilityConfigurationProjectsQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	const data = await request<
+		GetObservabilityConfigurationProjectsQueryResponse,
+		ErrorWrapper<
+			| GetObservabilityConfigurationProjects400
+			| GetObservabilityConfigurationProjects401
+			| GetObservabilityConfigurationProjects403
+			| GetObservabilityConfigurationProjects404
+		>,
+		null,
+		Record<string, string>,
+		GetObservabilityConfigurationProjectsQueryParams,
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/v1/observability/manage/configuration/projects`,
+		queryParams,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Updates whether Observability Plus is disabled for a single project.
+ * @summary Updates a disabled Observability Plus project setting
+ * {@link /v1/observability/manage/configuration/projects/:projectIdOrName}
+ */
+export async function updateObservabilityConfigurationProject({
+	pathParams: { projectIdOrName },
+	queryParams,
+	config = {},
+}: {
+	pathParams: UpdateObservabilityConfigurationProjectPathParams;
+	queryParams?: UpdateObservabilityConfigurationProjectQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!projectIdOrName) {
+		throw new Error(`Missing required path parameter: projectIdOrName`);
+	}
+
+	const data = await request<
+		UpdateObservabilityConfigurationProjectMutationResponse,
+		ErrorWrapper<
+			| UpdateObservabilityConfigurationProject400
+			| UpdateObservabilityConfigurationProject401
+			| UpdateObservabilityConfigurationProject403
+			| UpdateObservabilityConfigurationProject404
+		>,
+		null,
+		Record<string, string>,
+		UpdateObservabilityConfigurationProjectQueryParams,
+		UpdateObservabilityConfigurationProjectPathParams
+	>({
+		method: "PUT",
+		url: `/v1/observability/manage/configuration/projects/${projectIdOrName}`,
+		queryParams,
 		...requestConfig,
 		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
 	});
@@ -14058,6 +14148,9 @@ export const operationsByPath = {
 		getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig,
 	"PUT /v1/installations/{integrationConfigurationId}/resources/{resourceId}/experimentation/edge-config":
 		replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig,
+	"GET /v1/observability/manage/configuration/projects": getObservabilityConfigurationProjects,
+	"PUT /v1/observability/manage/configuration/projects/{projectIdOrName}":
+		updateObservabilityConfigurationProject,
 	"GET /v1/projects/{idOrName}/members": getProjectMembers,
 	"POST /v1/projects/{idOrName}/members": addProjectMember,
 	"DELETE /v1/projects/{idOrName}/members/{uid}": removeProjectMember,
@@ -14438,6 +14531,10 @@ export const operationsByTag = {
 	logs: {
 		getRuntimeLogs,
 	},
+	apiObservability: {
+		getObservabilityConfigurationProjects,
+		updateObservabilityConfigurationProject,
+	},
 	projectmembers: {
 		getProjectMembers,
 		addProjectMember,
@@ -14807,6 +14904,10 @@ export const tagDictionary = {
 	},
 	logs: {
 		GET: ["getRuntimeLogs"],
+	},
+	apiObservability: {
+		GET: ["getObservabilityConfigurationProjects"],
+		PUT: ["updateObservabilityConfigurationProject"],
 	},
 	projectmembers: {
 		GET: ["getProjectMembers"],
