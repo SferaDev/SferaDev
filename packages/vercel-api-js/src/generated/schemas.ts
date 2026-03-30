@@ -791,6 +791,7 @@ export const userEventSchema = z
 					"project-client-cert-delete",
 					"project-client-cert-upload",
 					"project-connect-configurations",
+					"project-consolidated-git-commit-status-updated",
 					"project-created",
 					"project-cron-jobs-toggled",
 					"project-custom-environment-created",
@@ -5190,6 +5191,16 @@ export const userEventSchema = z
 					projectId: z.string(),
 					projectName: z.string(),
 					gitLFS: z.union([z.literal(false), z.literal(true)]),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					consolidatedGitCommitStatus: z.nullable(
+						z.object({
+							enabled: z.union([z.literal(false), z.literal(true)]),
+							propagateFailures: z.union([z.literal(false), z.literal(true)]),
+						}),
+					),
 				}),
 				z.object({
 					projectId: z.string(),
@@ -15050,6 +15061,71 @@ export const replaceInstallationsByIntegrationConfigurationIdResourcesByResource
 		() =>
 			replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig200Schema,
 	);
+
+export const getObservabilityConfigurationProjectsQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const getObservabilityConfigurationProjects200Schema = z.unknown();
+
+export const getObservabilityConfigurationProjects400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const getObservabilityConfigurationProjects401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const getObservabilityConfigurationProjects403Schema = z.unknown();
+
+export const getObservabilityConfigurationProjects404Schema = z.unknown();
+
+export const getObservabilityConfigurationProjectsQueryResponseSchema = z.lazy(
+	() => getObservabilityConfigurationProjects200Schema,
+);
+
+export const updateObservabilityConfigurationProjectPathParamsSchema = z.object({
+	projectIdOrName: z.string().describe("The ID or name of the project to update"),
+});
+
+export const updateObservabilityConfigurationProjectQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const updateObservabilityConfigurationProject200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export const updateObservabilityConfigurationProject400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const updateObservabilityConfigurationProject401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const updateObservabilityConfigurationProject403Schema = z.unknown();
+
+export const updateObservabilityConfigurationProject404Schema = z.unknown();
+
+export const updateObservabilityConfigurationProjectMutationResponseSchema = z.lazy(
+	() => updateObservabilityConfigurationProject200Schema,
+);
 
 export const getProjectMembersPathParamsSchema = z.object({
 	idOrName: z.string().describe("The ID or name of the Project."),
