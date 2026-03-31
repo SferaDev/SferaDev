@@ -149,6 +149,11 @@ export type ChatDetail = {
 	 */
 	projectId?: string | undefined;
 	/**
+	 * @description Optional ID of the linked Vercel project, if connected.
+	 * @type string | undefined
+	 */
+	vercelProjectId?: string | undefined;
+	/**
 	 * @description Web URL to view this chat in the browser.
 	 * @type string
 	 */
@@ -732,6 +737,11 @@ export type ChatSummary = {
 	 * @type string | undefined
 	 */
 	projectId?: string | undefined;
+	/**
+	 * @description Optional ID of the linked Vercel project, if connected.
+	 * @type string | undefined
+	 */
+	vercelProjectId?: string | undefined;
 	/**
 	 * @description Web URL to view this chat in the browser.
 	 * @type string
@@ -2947,6 +2957,11 @@ export type ProjectDetail = {
 		 * @type string | undefined
 		 */
 		projectId?: string | undefined;
+		/**
+		 * @description Optional ID of the linked Vercel project, if connected.
+		 * @type string | undefined
+		 */
+		vercelProjectId?: string | undefined;
 		/**
 		 * @description Web URL to view this chat in the browser.
 		 * @type string

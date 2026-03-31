@@ -29,6 +29,9 @@ export const chatDetailSchema = z
 		projectId: z.optional(
 			z.string().describe("Optional ID of the v0 project associated with this chat."),
 		),
+		vercelProjectId: z.optional(
+			z.string().describe("Optional ID of the linked Vercel project, if connected."),
+		),
 		webUrl: z.string().describe("Web URL to view this chat in the browser."),
 		apiUrl: z.string().describe("API URL to access this chat via the API."),
 		latestVersion: z.optional(
@@ -322,6 +325,9 @@ export const chatSummarySchema = z
 		authorId: z.string().describe("The ID of the user who created the chat."),
 		projectId: z.optional(
 			z.string().describe("Optional ID of the v0 project associated with this chat."),
+		),
+		vercelProjectId: z.optional(
+			z.string().describe("Optional ID of the linked Vercel project, if connected."),
 		),
 		webUrl: z.string().describe("Web URL to view this chat in the browser."),
 		apiUrl: z.string().describe("API URL to access this chat via the API."),
@@ -1266,6 +1272,9 @@ export const projectDetailSchema = z
 						authorId: z.string().describe("The ID of the user who created the chat."),
 						projectId: z.optional(
 							z.string().describe("Optional ID of the v0 project associated with this chat."),
+						),
+						vercelProjectId: z.optional(
+							z.string().describe("Optional ID of the linked Vercel project, if connected."),
 						),
 						webUrl: z.string().describe("Web URL to view this chat in the browser."),
 						apiUrl: z.string().describe("API URL to access this chat via the API."),
