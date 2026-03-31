@@ -249,6 +249,12 @@ import type {
 	CreateLogDrain403,
 	CreateLogDrainMutationResponse,
 	CreateLogDrainQueryParams,
+	CreateMicrofrontendsGroupWithApplications400,
+	CreateMicrofrontendsGroupWithApplications401,
+	CreateMicrofrontendsGroupWithApplications403,
+	CreateMicrofrontendsGroupWithApplications500,
+	CreateMicrofrontendsGroupWithApplicationsMutationResponse,
+	CreateMicrofrontendsGroupWithApplicationsQueryParams,
 	CreateNetwork400,
 	CreateNetwork401,
 	CreateNetwork402,
@@ -520,6 +526,14 @@ import type {
 	DeleteIntegrationResource404,
 	DeleteIntegrationResourceMutationResponse,
 	DeleteIntegrationResourcePathParams,
+	DeleteMicrofrontendsGroup400,
+	DeleteMicrofrontendsGroup401,
+	DeleteMicrofrontendsGroup403,
+	DeleteMicrofrontendsGroup404,
+	DeleteMicrofrontendsGroup500,
+	DeleteMicrofrontendsGroupMutationResponse,
+	DeleteMicrofrontendsGroupPathParams,
+	DeleteMicrofrontendsGroupQueryParams,
 	DeleteNetwork400,
 	DeleteNetwork401,
 	DeleteNetwork402,
@@ -1071,6 +1085,34 @@ import type {
 	GetMember404,
 	GetMemberPathParams,
 	GetMemberQueryResponse,
+	GetMicrofrontendsConfig400,
+	GetMicrofrontendsConfig401,
+	GetMicrofrontendsConfig403,
+	GetMicrofrontendsConfig404,
+	GetMicrofrontendsConfig500,
+	GetMicrofrontendsConfigForProject400,
+	GetMicrofrontendsConfigForProject401,
+	GetMicrofrontendsConfigForProject403,
+	GetMicrofrontendsConfigForProject404,
+	GetMicrofrontendsConfigForProject500,
+	GetMicrofrontendsConfigForProjectPathParams,
+	GetMicrofrontendsConfigForProjectQueryParams,
+	GetMicrofrontendsConfigForProjectQueryResponse,
+	GetMicrofrontendsConfigPathParams,
+	GetMicrofrontendsConfigQueryParams,
+	GetMicrofrontendsConfigQueryResponse,
+	GetMicrofrontendsGroups400,
+	GetMicrofrontendsGroups401,
+	GetMicrofrontendsGroups403,
+	GetMicrofrontendsGroups500,
+	GetMicrofrontendsGroupsQueryParams,
+	GetMicrofrontendsGroupsQueryResponse,
+	GetMicrofrontendsInGroup400,
+	GetMicrofrontendsInGroup401,
+	GetMicrofrontendsInGroup403,
+	GetMicrofrontendsInGroupPathParams,
+	GetMicrofrontendsInGroupQueryParams,
+	GetMicrofrontendsInGroupQueryResponse,
 	GetNamedSandbox400,
 	GetNamedSandbox401,
 	GetNamedSandbox402,
@@ -2056,6 +2098,21 @@ import type {
 	UpdateInvoice409,
 	UpdateInvoiceMutationResponse,
 	UpdateInvoicePathParams,
+	UpdateMicrofrontends400,
+	UpdateMicrofrontends401,
+	UpdateMicrofrontends403,
+	UpdateMicrofrontends409,
+	UpdateMicrofrontends500,
+	UpdateMicrofrontendsGroup400,
+	UpdateMicrofrontendsGroup401,
+	UpdateMicrofrontendsGroup403,
+	UpdateMicrofrontendsGroup404,
+	UpdateMicrofrontendsGroupMutationResponse,
+	UpdateMicrofrontendsGroupPathParams,
+	UpdateMicrofrontendsGroupQueryParams,
+	UpdateMicrofrontendsMutationResponse,
+	UpdateMicrofrontendsPathParams,
+	UpdateMicrofrontendsQueryParams,
 	UpdateNetwork400,
 	UpdateNetwork401,
 	UpdateNetwork403,
@@ -8658,6 +8715,194 @@ export async function replaceInstallationsByIntegrationConfigurationIdResourcesB
 }
 
 /**
+ * @description Get the microfrontends group IDs for a team.
+ * @summary List microfrontends groups
+ * {@link /v1/microfrontends/groups}
+ */
+export async function getMicrofrontendsGroups({
+	queryParams,
+	config = {},
+}: {
+	queryParams?: GetMicrofrontendsGroupsQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	const data = await request<
+		GetMicrofrontendsGroupsQueryResponse,
+		ErrorWrapper<
+			| GetMicrofrontendsGroups400
+			| GetMicrofrontendsGroups401
+			| GetMicrofrontendsGroups403
+			| GetMicrofrontendsGroups500
+		>,
+		null,
+		Record<string, string>,
+		GetMicrofrontendsGroupsQueryParams,
+		Record<string, string>
+	>({ method: "GET", url: `/v1/microfrontends/groups`, queryParams, ...requestConfig });
+	return data;
+}
+
+/**
+ * @description Get the microfrontends for a given group ID.
+ * @summary List projects in a microfrontends group
+ * {@link /v1/microfrontends/groups/:groupId/projects}
+ */
+export async function getMicrofrontendsInGroup({
+	pathParams: { groupId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: GetMicrofrontendsInGroupPathParams;
+	queryParams?: GetMicrofrontendsInGroupQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!groupId) {
+		throw new Error(`Missing required path parameter: groupId`);
+	}
+
+	const data = await request<
+		GetMicrofrontendsInGroupQueryResponse,
+		ErrorWrapper<
+			GetMicrofrontendsInGroup400 | GetMicrofrontendsInGroup401 | GetMicrofrontendsInGroup403
+		>,
+		null,
+		Record<string, string>,
+		GetMicrofrontendsInGroupQueryParams,
+		GetMicrofrontendsInGroupPathParams
+	>({
+		method: "GET",
+		url: `/v1/microfrontends/groups/${groupId}/projects`,
+		queryParams,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Get the microfrontends config for a deployment.
+ * @summary Get microfrontends config for a deployment
+ * {@link /v1/microfrontends/:deploymentId/config}
+ */
+export async function getMicrofrontendsConfig({
+	pathParams: { deploymentId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: GetMicrofrontendsConfigPathParams;
+	queryParams?: GetMicrofrontendsConfigQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!deploymentId) {
+		throw new Error(`Missing required path parameter: deploymentId`);
+	}
+
+	const data = await request<
+		GetMicrofrontendsConfigQueryResponse,
+		ErrorWrapper<
+			| GetMicrofrontendsConfig400
+			| GetMicrofrontendsConfig401
+			| GetMicrofrontendsConfig403
+			| GetMicrofrontendsConfig404
+			| GetMicrofrontendsConfig500
+		>,
+		null,
+		Record<string, string>,
+		GetMicrofrontendsConfigQueryParams,
+		GetMicrofrontendsConfigPathParams
+	>({
+		method: "GET",
+		url: `/v1/microfrontends/${deploymentId}/config`,
+		queryParams,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Get the microfrontends config for a project by ID or name.
+ * @summary Get microfrontends config for a project
+ * {@link /v1/microfrontends/projects/:projectIdOrName/production-mfe-config}
+ */
+export async function getMicrofrontendsConfigForProject({
+	pathParams: { projectIdOrName },
+	queryParams,
+	config = {},
+}: {
+	pathParams: GetMicrofrontendsConfigForProjectPathParams;
+	queryParams?: GetMicrofrontendsConfigForProjectQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!projectIdOrName) {
+		throw new Error(`Missing required path parameter: projectIdOrName`);
+	}
+
+	const data = await request<
+		GetMicrofrontendsConfigForProjectQueryResponse,
+		ErrorWrapper<
+			| GetMicrofrontendsConfigForProject400
+			| GetMicrofrontendsConfigForProject401
+			| GetMicrofrontendsConfigForProject403
+			| GetMicrofrontendsConfigForProject404
+			| GetMicrofrontendsConfigForProject500
+		>,
+		null,
+		Record<string, string>,
+		GetMicrofrontendsConfigForProjectQueryParams,
+		GetMicrofrontendsConfigForProjectPathParams
+	>({
+		method: "GET",
+		url: `/v1/microfrontends/projects/${projectIdOrName}/production-mfe-config`,
+		queryParams,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Creates a microfrontends group and attaches multiple projects in a single request.
+ * @summary Create a microfrontends group with applications
+ * {@link /v1/microfrontends/group}
+ */
+export async function createMicrofrontendsGroupWithApplications({
+	queryParams,
+	config = {},
+}: {
+	queryParams?: CreateMicrofrontendsGroupWithApplicationsQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	const data = await request<
+		CreateMicrofrontendsGroupWithApplicationsMutationResponse,
+		ErrorWrapper<
+			| CreateMicrofrontendsGroupWithApplications400
+			| CreateMicrofrontendsGroupWithApplications401
+			| CreateMicrofrontendsGroupWithApplications403
+			| CreateMicrofrontendsGroupWithApplications500
+		>,
+		null,
+		Record<string, string>,
+		CreateMicrofrontendsGroupWithApplicationsQueryParams,
+		Record<string, string>
+	>({
+		method: "POST",
+		url: `/v1/microfrontends/group`,
+		queryParams,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
  * @description Lists the projects that are currently configured as disabled for Observability Plus on a team.
  * @summary Lists disabled Observability Plus projects
  * {@link /v1/observability/manage/configuration/projects}
@@ -10615,6 +10860,49 @@ export async function updateProjectsByProjectIdRollbackByDeploymentIdUpdateDescr
 	>({
 		method: "PATCH",
 		url: `/v1/projects/${projectId}/rollback/${deploymentId}/update-description`,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
+ * @description Update the microfrontends settings for a project.
+ * @summary Update the microfrontends settings
+ * {@link /v1/projects/:projectId/microfrontends}
+ */
+export async function updateMicrofrontends({
+	pathParams: { projectId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: UpdateMicrofrontendsPathParams;
+	queryParams?: UpdateMicrofrontendsQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!projectId) {
+		throw new Error(`Missing required path parameter: projectId`);
+	}
+
+	const data = await request<
+		UpdateMicrofrontendsMutationResponse,
+		ErrorWrapper<
+			| UpdateMicrofrontends400
+			| UpdateMicrofrontends401
+			| UpdateMicrofrontends403
+			| UpdateMicrofrontends409
+			| UpdateMicrofrontends500
+		>,
+		null,
+		Record<string, string>,
+		UpdateMicrofrontendsQueryParams,
+		UpdateMicrofrontendsPathParams
+	>({
+		method: "PATCH",
+		url: `/v1/projects/${projectId}/microfrontends`,
+		queryParams,
 		...requestConfig,
 		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
 	});
@@ -13164,6 +13452,98 @@ export async function deleteTeamInviteCode({
 }
 
 /**
+ * @description Updates the name (and slug) of a microfrontends group.
+ * @summary Update a microfrontends group
+ * {@link /v1/teams/:teamId/microfrontends/:groupId}
+ */
+export async function updateMicrofrontendsGroup({
+	pathParams: { groupId, teamId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: UpdateMicrofrontendsGroupPathParams;
+	queryParams?: UpdateMicrofrontendsGroupQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!groupId) {
+		throw new Error(`Missing required path parameter: groupId`);
+	}
+
+	if (!teamId) {
+		throw new Error(`Missing required path parameter: teamId`);
+	}
+
+	const data = await request<
+		UpdateMicrofrontendsGroupMutationResponse,
+		ErrorWrapper<
+			| UpdateMicrofrontendsGroup400
+			| UpdateMicrofrontendsGroup401
+			| UpdateMicrofrontendsGroup403
+			| UpdateMicrofrontendsGroup404
+		>,
+		null,
+		Record<string, string>,
+		UpdateMicrofrontendsGroupQueryParams,
+		UpdateMicrofrontendsGroupPathParams
+	>({
+		method: "PATCH",
+		url: `/v1/teams/${teamId}/microfrontends/${groupId}`,
+		queryParams,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
+ * @description Deletes a microfrontends group from the team associated with the group ID.
+ * @summary Delete a microfrontends group
+ * {@link /v1/teams/:teamId/microfrontends/:groupId}
+ */
+export async function deleteMicrofrontendsGroup({
+	pathParams: { groupId, teamId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: DeleteMicrofrontendsGroupPathParams;
+	queryParams?: DeleteMicrofrontendsGroupQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!groupId) {
+		throw new Error(`Missing required path parameter: groupId`);
+	}
+
+	if (!teamId) {
+		throw new Error(`Missing required path parameter: teamId`);
+	}
+
+	const data = await request<
+		DeleteMicrofrontendsGroupMutationResponse,
+		ErrorWrapper<
+			| DeleteMicrofrontendsGroup400
+			| DeleteMicrofrontendsGroup401
+			| DeleteMicrofrontendsGroup403
+			| DeleteMicrofrontendsGroup404
+			| DeleteMicrofrontendsGroup500
+		>,
+		null,
+		Record<string, string>,
+		DeleteMicrofrontendsGroupQueryParams,
+		DeleteMicrofrontendsGroupPathParams
+	>({
+		method: "DELETE",
+		url: `/v1/teams/${teamId}/microfrontends/${groupId}`,
+		queryParams,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
  * @description Before you create a deployment you need to upload the required files for that deployment. To do it, you need to first upload each file to this endpoint. Once that's completed, you can create a new deployment with the uploaded files. The file content must be placed inside the body of the request. In the case of a successful response you'll receive a status code 200 with an empty body.
  * @summary Upload Deployment Files
  * {@link /v2/files}
@@ -14148,6 +14528,12 @@ export const operationsByPath = {
 		getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig,
 	"PUT /v1/installations/{integrationConfigurationId}/resources/{resourceId}/experimentation/edge-config":
 		replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig,
+	"GET /v1/microfrontends/groups": getMicrofrontendsGroups,
+	"GET /v1/microfrontends/groups/{groupId}/projects": getMicrofrontendsInGroup,
+	"GET /v1/microfrontends/{deploymentId}/config": getMicrofrontendsConfig,
+	"GET /v1/microfrontends/projects/{projectIdOrName}/production-mfe-config":
+		getMicrofrontendsConfigForProject,
+	"POST /v1/microfrontends/group": createMicrofrontendsGroupWithApplications,
 	"GET /v1/observability/manage/configuration/projects": getObservabilityConfigurationProjects,
 	"PUT /v1/observability/manage/configuration/projects/{projectIdOrName}":
 		updateObservabilityConfigurationProject,
@@ -14201,6 +14587,7 @@ export const operationsByPath = {
 	"POST /v1/projects/{projectId}/rollback/{deploymentId}": requestRollback,
 	"PATCH /v1/projects/{projectId}/rollback/{deploymentId}/update-description":
 		updateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription,
+	"PATCH /v1/projects/{projectId}/microfrontends": updateMicrofrontends,
 	"POST /v10/projects/{projectId}/promote/{deploymentId}": requestPromote,
 	"GET /v1/projects/{projectId}/promote/aliases": listPromoteAliases,
 	"POST /v1/projects/{projectId}/pause": pauseProject,
@@ -14269,6 +14656,8 @@ export const operationsByPath = {
 	"POST /v1/teams/{teamId}/dsync-roles": postTeamDsyncRoles,
 	"DELETE /v1/teams/{teamId}": deleteTeam,
 	"DELETE /v1/teams/{teamId}/invites/{inviteId}": deleteTeamInviteCode,
+	"PATCH /v1/teams/{teamId}/microfrontends/{groupId}": updateMicrofrontendsGroup,
+	"DELETE /v1/teams/{teamId}/microfrontends/{groupId}": deleteMicrofrontendsGroup,
 	"POST /v2/files": uploadFile,
 	"GET /v6/user/tokens": listAuthTokens,
 	"POST /v3/user/tokens": createAuthToken,
@@ -14531,6 +14920,13 @@ export const operationsByTag = {
 	logs: {
 		getRuntimeLogs,
 	},
+	microfrontends: {
+		getMicrofrontendsGroups,
+		getMicrofrontendsInGroup,
+		getMicrofrontendsConfig,
+		getMicrofrontendsConfigForProject,
+		createMicrofrontendsGroupWithApplications,
+	},
 	apiObservability: {
 		getObservabilityConfigurationProjects,
 		updateObservabilityConfigurationProject,
@@ -14574,6 +14970,7 @@ export const operationsByTag = {
 		updateProjectProtectionBypass,
 		requestRollback,
 		updateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription,
+		updateMicrofrontends,
 		requestPromote,
 		listPromoteAliases,
 		pauseProject,
@@ -14661,6 +15058,8 @@ export const operationsByTag = {
 		postTeamDsyncRoles,
 		deleteTeam,
 		deleteTeamInviteCode,
+		updateMicrofrontendsGroup,
+		deleteMicrofrontendsGroup,
 	},
 	webhooks: {
 		createWebhook,
@@ -14905,6 +15304,15 @@ export const tagDictionary = {
 	logs: {
 		GET: ["getRuntimeLogs"],
 	},
+	microfrontends: {
+		GET: [
+			"getMicrofrontendsGroups",
+			"getMicrofrontendsInGroup",
+			"getMicrofrontendsConfig",
+			"getMicrofrontendsConfigForProject",
+		],
+		POST: ["createMicrofrontendsGroupWithApplications"],
+	},
 	apiObservability: {
 		GET: ["getObservabilityConfigurationProjects"],
 		PUT: ["updateObservabilityConfigurationProject"],
@@ -14949,6 +15357,7 @@ export const tagDictionary = {
 			"editProjectEnv",
 			"updateProjectProtectionBypass",
 			"updateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription",
+			"updateMicrofrontends",
 		],
 		DELETE: ["deleteProject", "removeProjectDomain", "removeProjectEnv", "batchRemoveProjectEnv"],
 		PUT: ["acceptProjectTransferRequest"],
@@ -15029,8 +15438,8 @@ export const tagDictionary = {
 			"createTeam",
 			"postTeamDsyncRoles",
 		],
-		PATCH: ["updateTeamMember", "patchTeam"],
-		DELETE: ["removeTeamMember", "deleteTeam", "deleteTeamInviteCode"],
+		PATCH: ["updateTeamMember", "patchTeam", "updateMicrofrontendsGroup"],
+		DELETE: ["removeTeamMember", "deleteTeam", "deleteTeamInviteCode", "deleteMicrofrontendsGroup"],
 	},
 	webhooks: {
 		POST: ["createWebhook"],
