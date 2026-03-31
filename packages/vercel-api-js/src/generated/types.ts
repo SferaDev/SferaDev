@@ -1738,6 +1738,7 @@ export const userEventTypeEnum = {
 	"user-mfa-totp-verified": "user-mfa-totp-verified",
 	"user-primary-email-updated": "user-primary-email-updated",
 	username: "username",
+	"v0-chat-ai-usage": "v0-chat-ai-usage",
 	"v0-chat-created": "v0-chat-created",
 	"v0-chat-message-sent": "v0-chat-message-sent",
 	"vercel-agent-team-trial-credits-applied": "vercel-agent-team-trial-credits-applied",
@@ -15298,6 +15299,16 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
+						model: string;
+						/**
+						 * @type string
+						 */
+						useCase: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
 						chatId: string;
 						/**
 						 * @type string | undefined
@@ -16827,6 +16838,7 @@ export type SandboxCommand = {
 export const namedSandboxStatusEnum = {
 	running: "running",
 	stopped: "stopped",
+	stopping: "stopping",
 } as const;
 
 export type NamedSandboxStatusEnumKey =
@@ -28871,6 +28883,250 @@ export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceI
 			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig412;
 	};
 
+export type GetMicrofrontendsGroupsQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type GetMicrofrontendsGroups200 = unknown;
+
+export type GetMicrofrontendsGroups400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type GetMicrofrontendsGroups401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type GetMicrofrontendsGroups403 = unknown;
+
+export type GetMicrofrontendsGroups500 = unknown;
+
+export type GetMicrofrontendsGroupsQueryResponse = GetMicrofrontendsGroups200;
+
+export type GetMicrofrontendsGroupsQuery = {
+	Response: GetMicrofrontendsGroups200;
+	QueryParams: GetMicrofrontendsGroupsQueryParams;
+	Errors:
+		| GetMicrofrontendsGroups400
+		| GetMicrofrontendsGroups401
+		| GetMicrofrontendsGroups403
+		| GetMicrofrontendsGroups500;
+};
+
+export type GetMicrofrontendsInGroupPathParams = {
+	/**
+	 * @type string
+	 */
+	groupId: string;
+};
+
+export type GetMicrofrontendsInGroupQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type GetMicrofrontendsInGroup200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type GetMicrofrontendsInGroup400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type GetMicrofrontendsInGroup401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type GetMicrofrontendsInGroup403 = unknown;
+
+export type GetMicrofrontendsInGroupQueryResponse = GetMicrofrontendsInGroup200;
+
+export type GetMicrofrontendsInGroupQuery = {
+	Response: GetMicrofrontendsInGroup200;
+	PathParams: GetMicrofrontendsInGroupPathParams;
+	QueryParams: GetMicrofrontendsInGroupQueryParams;
+	Errors: GetMicrofrontendsInGroup400 | GetMicrofrontendsInGroup401 | GetMicrofrontendsInGroup403;
+};
+
+export type GetMicrofrontendsConfigPathParams = {
+	/**
+	 * @description The unique deployment identifier
+	 * @type string
+	 */
+	deploymentId: string;
+};
+
+export type GetMicrofrontendsConfigQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type GetMicrofrontendsConfig200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type GetMicrofrontendsConfig400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type GetMicrofrontendsConfig401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type GetMicrofrontendsConfig403 = unknown;
+
+export type GetMicrofrontendsConfig404 = unknown;
+
+export type GetMicrofrontendsConfig500 = unknown;
+
+export type GetMicrofrontendsConfigQueryResponse = GetMicrofrontendsConfig200;
+
+export type GetMicrofrontendsConfigQuery = {
+	Response: GetMicrofrontendsConfig200;
+	PathParams: GetMicrofrontendsConfigPathParams;
+	QueryParams: GetMicrofrontendsConfigQueryParams;
+	Errors:
+		| GetMicrofrontendsConfig400
+		| GetMicrofrontendsConfig401
+		| GetMicrofrontendsConfig403
+		| GetMicrofrontendsConfig404
+		| GetMicrofrontendsConfig500;
+};
+
+export type GetMicrofrontendsConfigForProjectPathParams = {
+	/**
+	 * @description The name or ID of the project
+	 * @type string
+	 */
+	projectIdOrName: string;
+};
+
+export type GetMicrofrontendsConfigForProjectQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type GetMicrofrontendsConfigForProject200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type GetMicrofrontendsConfigForProject400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type GetMicrofrontendsConfigForProject401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type GetMicrofrontendsConfigForProject403 = unknown;
+
+export type GetMicrofrontendsConfigForProject404 = unknown;
+
+export type GetMicrofrontendsConfigForProject500 = unknown;
+
+export type GetMicrofrontendsConfigForProjectQueryResponse = GetMicrofrontendsConfigForProject200;
+
+export type GetMicrofrontendsConfigForProjectQuery = {
+	Response: GetMicrofrontendsConfigForProject200;
+	PathParams: GetMicrofrontendsConfigForProjectPathParams;
+	QueryParams: GetMicrofrontendsConfigForProjectQueryParams;
+	Errors:
+		| GetMicrofrontendsConfigForProject400
+		| GetMicrofrontendsConfigForProject401
+		| GetMicrofrontendsConfigForProject403
+		| GetMicrofrontendsConfigForProject404
+		| GetMicrofrontendsConfigForProject500;
+};
+
+export type CreateMicrofrontendsGroupWithApplicationsQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type CreateMicrofrontendsGroupWithApplications200 = unknown;
+
+/**
+ * @description One of the provided values in the request body is invalid.
+ */
+export type CreateMicrofrontendsGroupWithApplications400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type CreateMicrofrontendsGroupWithApplications401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type CreateMicrofrontendsGroupWithApplications403 = unknown;
+
+export type CreateMicrofrontendsGroupWithApplications500 = unknown;
+
+export type CreateMicrofrontendsGroupWithApplicationsMutationResponse =
+	CreateMicrofrontendsGroupWithApplications200;
+
+export type CreateMicrofrontendsGroupWithApplicationsMutation = {
+	Response: CreateMicrofrontendsGroupWithApplications200;
+	QueryParams: CreateMicrofrontendsGroupWithApplicationsQueryParams;
+	Errors:
+		| CreateMicrofrontendsGroupWithApplications400
+		| CreateMicrofrontendsGroupWithApplications401
+		| CreateMicrofrontendsGroupWithApplications403
+		| CreateMicrofrontendsGroupWithApplications500;
+};
+
 export type GetObservabilityConfigurationProjectsQueryParams = {
 	/**
 	 * @description The Team identifier to perform the request on behalf of.
@@ -31874,6 +32130,62 @@ export type UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionMuta
 		| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription403
 		| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription409
 		| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription422;
+};
+
+export type UpdateMicrofrontendsPathParams = {
+	/**
+	 * @description The unique project identifier
+	 * @type string
+	 */
+	projectId: string;
+};
+
+export type UpdateMicrofrontendsQueryParams = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type UpdateMicrofrontends200 = unknown;
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export type UpdateMicrofrontends400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type UpdateMicrofrontends401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type UpdateMicrofrontends403 = unknown;
+
+export type UpdateMicrofrontends409 = unknown;
+
+export type UpdateMicrofrontends500 = unknown;
+
+export type UpdateMicrofrontendsMutationResponse = UpdateMicrofrontends200;
+
+export type UpdateMicrofrontendsMutation = {
+	Response: UpdateMicrofrontends200;
+	PathParams: UpdateMicrofrontendsPathParams;
+	QueryParams: UpdateMicrofrontendsQueryParams;
+	Errors:
+		| UpdateMicrofrontends400
+		| UpdateMicrofrontends401
+		| UpdateMicrofrontends403
+		| UpdateMicrofrontends409
+		| UpdateMicrofrontends500;
 };
 
 export type RequestPromotePathParams = {
@@ -35847,6 +36159,114 @@ export type DeleteTeamInviteCodeMutation = {
 		| DeleteTeamInviteCode401
 		| DeleteTeamInviteCode403
 		| DeleteTeamInviteCode404;
+};
+
+export type UpdateMicrofrontendsGroupPathParams = {
+	/**
+	 * @type string
+	 */
+	groupId: string;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string
+	 */
+	teamId: string;
+};
+
+export type UpdateMicrofrontendsGroupQueryParams = {
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type UpdateMicrofrontendsGroup200 = unknown;
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export type UpdateMicrofrontendsGroup400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type UpdateMicrofrontendsGroup401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type UpdateMicrofrontendsGroup403 = unknown;
+
+export type UpdateMicrofrontendsGroup404 = unknown;
+
+export type UpdateMicrofrontendsGroupMutationResponse = UpdateMicrofrontendsGroup200;
+
+export type UpdateMicrofrontendsGroupMutation = {
+	Response: UpdateMicrofrontendsGroup200;
+	PathParams: UpdateMicrofrontendsGroupPathParams;
+	QueryParams: UpdateMicrofrontendsGroupQueryParams;
+	Errors:
+		| UpdateMicrofrontendsGroup400
+		| UpdateMicrofrontendsGroup401
+		| UpdateMicrofrontendsGroup403
+		| UpdateMicrofrontendsGroup404;
+};
+
+export type DeleteMicrofrontendsGroupPathParams = {
+	/**
+	 * @description The microfrontend group ID to delete.
+	 * @type string
+	 */
+	groupId: string;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @type string
+	 */
+	teamId: string;
+};
+
+export type DeleteMicrofrontendsGroupQueryParams = {
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type DeleteMicrofrontendsGroup200 = unknown;
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export type DeleteMicrofrontendsGroup400 = unknown;
+
+/**
+ * @description The request is not authorized.
+ */
+export type DeleteMicrofrontendsGroup401 = unknown;
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export type DeleteMicrofrontendsGroup403 = unknown;
+
+export type DeleteMicrofrontendsGroup404 = unknown;
+
+export type DeleteMicrofrontendsGroup500 = unknown;
+
+export type DeleteMicrofrontendsGroupMutationResponse = DeleteMicrofrontendsGroup200;
+
+export type DeleteMicrofrontendsGroupMutation = {
+	Response: DeleteMicrofrontendsGroup200;
+	PathParams: DeleteMicrofrontendsGroupPathParams;
+	QueryParams: DeleteMicrofrontendsGroupQueryParams;
+	Errors:
+		| DeleteMicrofrontendsGroup400
+		| DeleteMicrofrontendsGroup401
+		| DeleteMicrofrontendsGroup403
+		| DeleteMicrofrontendsGroup404
+		| DeleteMicrofrontendsGroup500;
 };
 
 export type UploadFileQueryParams = {

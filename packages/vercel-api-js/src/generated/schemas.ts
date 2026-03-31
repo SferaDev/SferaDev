@@ -966,6 +966,7 @@ export const userEventSchema = z
 					"user-mfa-totp-verified",
 					"user-primary-email-updated",
 					"username",
+					"v0-chat-ai-usage",
 					"v0-chat-created",
 					"v0-chat-message-sent",
 					"vercel-agent-team-trial-credits-applied",
@@ -6396,6 +6397,10 @@ export const userEventSchema = z
 					chatTitle: z.optional(z.string()),
 				}),
 				z.object({
+					model: z.string(),
+					useCase: z.string(),
+				}),
+				z.object({
 					chatId: z.string(),
 					chatTitle: z.optional(z.string()),
 					messageId: z.string(),
@@ -7052,7 +7057,9 @@ export const namedSandboxSchema = z
 			z.string().describe("Current snapshot ID that the named sandbox is pointing to."),
 		),
 		currentSessionId: z.string().describe("Current session ID the sandbox is pointing to."),
-		status: z.enum(["running", "stopped"]).describe("The status of the current sandbox."),
+		status: z
+			.enum(["running", "stopped", "stopping"])
+			.describe("The status of the current sandbox."),
 		statusUpdatedAt: z
 			.number()
 			.describe(
@@ -15062,6 +15069,177 @@ export const replaceInstallationsByIntegrationConfigurationIdResourcesByResource
 			replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig200Schema,
 	);
 
+export const getMicrofrontendsGroupsQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const getMicrofrontendsGroups200Schema = z.unknown();
+
+export const getMicrofrontendsGroups400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const getMicrofrontendsGroups401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const getMicrofrontendsGroups403Schema = z.unknown();
+
+export const getMicrofrontendsGroups500Schema = z.unknown();
+
+export const getMicrofrontendsGroupsQueryResponseSchema = z.lazy(
+	() => getMicrofrontendsGroups200Schema,
+);
+
+export const getMicrofrontendsInGroupPathParamsSchema = z.object({
+	groupId: z.string(),
+});
+
+export const getMicrofrontendsInGroupQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const getMicrofrontendsInGroup200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export const getMicrofrontendsInGroup400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const getMicrofrontendsInGroup401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const getMicrofrontendsInGroup403Schema = z.unknown();
+
+export const getMicrofrontendsInGroupQueryResponseSchema = z.lazy(
+	() => getMicrofrontendsInGroup200Schema,
+);
+
+export const getMicrofrontendsConfigPathParamsSchema = z.object({
+	deploymentId: z.string().describe("The unique deployment identifier"),
+});
+
+export const getMicrofrontendsConfigQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const getMicrofrontendsConfig200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export const getMicrofrontendsConfig400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const getMicrofrontendsConfig401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const getMicrofrontendsConfig403Schema = z.unknown();
+
+export const getMicrofrontendsConfig404Schema = z.unknown();
+
+export const getMicrofrontendsConfig500Schema = z.unknown();
+
+export const getMicrofrontendsConfigQueryResponseSchema = z.lazy(
+	() => getMicrofrontendsConfig200Schema,
+);
+
+export const getMicrofrontendsConfigForProjectPathParamsSchema = z.object({
+	projectIdOrName: z.string().describe("The name or ID of the project"),
+});
+
+export const getMicrofrontendsConfigForProjectQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const getMicrofrontendsConfigForProject200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export const getMicrofrontendsConfigForProject400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const getMicrofrontendsConfigForProject401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const getMicrofrontendsConfigForProject403Schema = z.unknown();
+
+export const getMicrofrontendsConfigForProject404Schema = z.unknown();
+
+export const getMicrofrontendsConfigForProject500Schema = z.unknown();
+
+export const getMicrofrontendsConfigForProjectQueryResponseSchema = z.lazy(
+	() => getMicrofrontendsConfigForProject200Schema,
+);
+
+export const createMicrofrontendsGroupWithApplicationsQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const createMicrofrontendsGroupWithApplications200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request body is invalid.
+ */
+export const createMicrofrontendsGroupWithApplications400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const createMicrofrontendsGroupWithApplications401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const createMicrofrontendsGroupWithApplications403Schema = z.unknown();
+
+export const createMicrofrontendsGroupWithApplications500Schema = z.unknown();
+
+export const createMicrofrontendsGroupWithApplicationsMutationResponseSchema = z.lazy(
+	() => createMicrofrontendsGroupWithApplications200Schema,
+);
+
 export const getObservabilityConfigurationProjectsQueryParamsSchema = z
 	.object({
 		teamId: z.optional(
@@ -17043,6 +17221,44 @@ export const updateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription422
 
 export const updateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionMutationResponseSchema =
 	z.lazy(() => updateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription200Schema);
+
+export const updateMicrofrontendsPathParamsSchema = z.object({
+	projectId: z.string().describe("The unique project identifier"),
+});
+
+export const updateMicrofrontendsQueryParamsSchema = z
+	.object({
+		teamId: z.optional(
+			z.string().describe("The Team identifier to perform the request on behalf of."),
+		),
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const updateMicrofrontends200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export const updateMicrofrontends400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const updateMicrofrontends401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const updateMicrofrontends403Schema = z.unknown();
+
+export const updateMicrofrontends409Schema = z.unknown();
+
+export const updateMicrofrontends500Schema = z.unknown();
+
+export const updateMicrofrontendsMutationResponseSchema = z.lazy(
+	() => updateMicrofrontends200Schema,
+);
 
 export const requestPromotePathParamsSchema = z.object({
 	projectId: z.string(),
@@ -19772,6 +19988,76 @@ export const deleteTeamInviteCode404Schema = z.unknown();
 
 export const deleteTeamInviteCodeMutationResponseSchema = z.lazy(
 	() => deleteTeamInviteCode200Schema,
+);
+
+export const updateMicrofrontendsGroupPathParamsSchema = z.object({
+	groupId: z.string(),
+	teamId: z.string().describe("The Team identifier to perform the request on behalf of."),
+});
+
+export const updateMicrofrontendsGroupQueryParamsSchema = z
+	.object({
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const updateMicrofrontendsGroup200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request body is invalid.\nOne of the provided values in the request query is invalid.
+ */
+export const updateMicrofrontendsGroup400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const updateMicrofrontendsGroup401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const updateMicrofrontendsGroup403Schema = z.unknown();
+
+export const updateMicrofrontendsGroup404Schema = z.unknown();
+
+export const updateMicrofrontendsGroupMutationResponseSchema = z.lazy(
+	() => updateMicrofrontendsGroup200Schema,
+);
+
+export const deleteMicrofrontendsGroupPathParamsSchema = z.object({
+	groupId: z.string().describe("The microfrontend group ID to delete."),
+	teamId: z.string().describe("The Team identifier to perform the request on behalf of."),
+});
+
+export const deleteMicrofrontendsGroupQueryParamsSchema = z
+	.object({
+		slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
+	})
+	.optional();
+
+export const deleteMicrofrontendsGroup200Schema = z.unknown();
+
+/**
+ * @description One of the provided values in the request query is invalid.
+ */
+export const deleteMicrofrontendsGroup400Schema = z.unknown();
+
+/**
+ * @description The request is not authorized.
+ */
+export const deleteMicrofrontendsGroup401Schema = z.unknown();
+
+/**
+ * @description You do not have permission to access this resource.
+ */
+export const deleteMicrofrontendsGroup403Schema = z.unknown();
+
+export const deleteMicrofrontendsGroup404Schema = z.unknown();
+
+export const deleteMicrofrontendsGroup500Schema = z.unknown();
+
+export const deleteMicrofrontendsGroupMutationResponseSchema = z.lazy(
+	() => deleteMicrofrontendsGroup200Schema,
 );
 
 export const uploadFileQueryParamsSchema = z
