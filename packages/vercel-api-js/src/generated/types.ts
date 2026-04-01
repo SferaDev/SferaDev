@@ -34111,6 +34111,10 @@ export type UpdateSandbox403 = unknown;
 
 export type UpdateSandbox404 = unknown;
 
+export type UpdateSandbox410 = unknown;
+
+export type UpdateSandbox422 = unknown;
+
 export type UpdateSandbox500 = unknown;
 
 export type UpdateSandboxMutationResponse = UpdateSandbox200;
@@ -34125,6 +34129,8 @@ export type UpdateSandboxMutation = {
 		| UpdateSandbox402
 		| UpdateSandbox403
 		| UpdateSandbox404
+		| UpdateSandbox410
+		| UpdateSandbox422
 		| UpdateSandbox500;
 };
 

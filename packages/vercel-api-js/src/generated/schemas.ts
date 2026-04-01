@@ -18614,6 +18614,10 @@ export const updateSandbox403Schema = z.unknown();
 
 export const updateSandbox404Schema = z.unknown();
 
+export const updateSandbox410Schema = z.unknown();
+
+export const updateSandbox422Schema = z.unknown();
+
 export const updateSandbox500Schema = z.unknown();
 
 export const updateSandboxMutationResponseSchema = z.lazy(() => updateSandbox200Schema);
