@@ -1243,6 +1243,7 @@ export const userEventSchema = z
 								"read-write:integration-resource",
 								"read-write:blob",
 								"read:event",
+								"read-write:remote-cache",
 								"read:project",
 								"read-write:project",
 								"read:deployment",
@@ -1290,6 +1291,7 @@ export const userEventSchema = z
 								"read-write:integration-resource",
 								"read-write:blob",
 								"read:event",
+								"read-write:remote-cache",
 								"read:project",
 								"read-write:project",
 								"read:deployment",
@@ -1345,6 +1347,7 @@ export const userEventSchema = z
 										"read-write:integration-resource",
 										"read-write:blob",
 										"read:event",
+										"read-write:remote-cache",
 										"read:project",
 										"read-write:project",
 										"read:deployment",
@@ -1397,6 +1400,7 @@ export const userEventSchema = z
 										"read-write:integration-resource",
 										"read-write:blob",
 										"read:event",
+										"read-write:remote-cache",
 										"read:project",
 										"read-write:project",
 										"read:deployment",
@@ -1451,6 +1455,7 @@ export const userEventSchema = z
 								"read-write:integration-resource",
 								"read-write:blob",
 								"read:event",
+								"read-write:remote-cache",
 								"read:project",
 								"read-write:project",
 								"read:deployment",
@@ -7073,6 +7078,11 @@ export const namedSandboxSchema = z
 		memory: z.optional(z.number().describe("Memory allocated in MB.")),
 		runtime: z.optional(z.string().describe("Runtime identifier.")),
 		timeout: z.optional(z.number().describe("Timeout in milliseconds.")),
+		snapshotExpiration: z.optional(
+			z
+				.number()
+				.describe("Default snapshot expiration time in milliseconds. 0 means no expiration."),
+		),
 		networkPolicy: z.optional(
 			z
 				.object({
