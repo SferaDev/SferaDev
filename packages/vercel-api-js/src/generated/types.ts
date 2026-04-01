@@ -1871,6 +1871,7 @@ export const payloadPermissionsEnum = {
 	"read-write:integration-resource": "read-write:integration-resource",
 	"read-write:blob": "read-write:blob",
 	"read:event": "read:event",
+	"read-write:remote-cache": "read-write:remote-cache",
 	"read:project": "read:project",
 	"read-write:project": "read-write:project",
 	"read:deployment": "read:deployment",
@@ -1919,6 +1920,7 @@ export const payloadNextPermissionsEnum = {
 	"read-write:integration-resource": "read-write:integration-resource",
 	"read-write:blob": "read-write:blob",
 	"read:event": "read:event",
+	"read-write:remote-cache": "read-write:remote-cache",
 	"read:project": "read:project",
 	"read-write:project": "read-write:project",
 	"read:deployment": "read:deployment",
@@ -1975,6 +1977,7 @@ export const beforePermissionsEnum = {
 	"read-write:integration-resource": "read-write:integration-resource",
 	"read-write:blob": "read-write:blob",
 	"read:event": "read:event",
+	"read-write:remote-cache": "read-write:remote-cache",
 	"read:project": "read:project",
 	"read-write:project": "read-write:project",
 	"read:deployment": "read:deployment",
@@ -2012,6 +2015,7 @@ export const afterPermissionsEnum = {
 	"read-write:integration-resource": "read-write:integration-resource",
 	"read-write:blob": "read-write:blob",
 	"read:event": "read:event",
+	"read-write:remote-cache": "read-write:remote-cache",
 	"read:project": "read:project",
 	"read-write:project": "read-write:project",
 	"read:deployment": "read:deployment",
@@ -2049,6 +2053,7 @@ export const payloadPermissionsEnum2 = {
 	"read-write:integration-resource": "read-write:integration-resource",
 	"read-write:blob": "read-write:blob",
 	"read:event": "read:event",
+	"read-write:remote-cache": "read-write:remote-cache",
 	"read:project": "read:project",
 	"read-write:project": "read-write:project",
 	"read:deployment": "read:deployment",
@@ -16922,6 +16927,11 @@ export type NamedSandbox = {
 	 * @type number | undefined
 	 */
 	timeout?: number | undefined;
+	/**
+	 * @description Default snapshot expiration time in milliseconds. 0 means no expiration.
+	 * @type number | undefined
+	 */
+	snapshotExpiration?: number | undefined;
 	/**
 	 * @description Network policy configuration.
 	 * @type object | undefined
