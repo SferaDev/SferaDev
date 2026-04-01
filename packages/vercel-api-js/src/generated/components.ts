@@ -2228,6 +2228,8 @@ import type {
 	UpdateSandbox402,
 	UpdateSandbox403,
 	UpdateSandbox404,
+	UpdateSandbox410,
+	UpdateSandbox422,
 	UpdateSandbox500,
 	UpdateSandboxMutationResponse,
 	UpdateSandboxPathParams,
@@ -12018,6 +12020,8 @@ export async function updateSandbox({
 			| UpdateSandbox402
 			| UpdateSandbox403
 			| UpdateSandbox404
+			| UpdateSandbox410
+			| UpdateSandbox422
 			| UpdateSandbox500
 		>,
 		null,
