@@ -84,6 +84,11 @@ export const paginationSchema = z
 	);
 
 /**
+ * @description A valid TLD name
+ */
+export const tldNameSchema = z.string().describe("A valid TLD name");
+
+/**
  * @description The request did not match the expected schema
  */
 export const httpApiDecodeErrorSchema = z
@@ -776,6 +781,7 @@ export const userEventSchema = z
 					"preview-deployment-suffix-disabled",
 					"preview-deployment-suffix-enabled",
 					"preview-deployment-suffix-update",
+					"privatelink-endpoint-created",
 					"production-branch-updated",
 					"project-add-alias",
 					"project-add-redirect",
@@ -4863,6 +4869,13 @@ export const userEventSchema = z
 				z.object({
 					previewDeploymentSuffix: z.string().nullish(),
 					previousPreviewDeploymentSuffix: z.string().nullish(),
+				}),
+				z.object({
+					privateLinkEndpoint: z.object({
+						id: z.string(),
+						name: z.string(),
+					}),
+					projectId: z.string(),
 				}),
 				z.object({
 					projectName: z.string(),
@@ -10771,7 +10784,7 @@ export const getSupportedTlds500Schema = z.unknown();
 export const getSupportedTldsQueryResponseSchema = z.lazy(() => getSupportedTlds200Schema);
 
 export const getTldPathParamsSchema = z.object({
-	tld: z.string(),
+	tld: z.unknown(),
 });
 
 export const getTldQueryParamsSchema = z
@@ -10813,7 +10826,7 @@ export const getTld500Schema = z.unknown();
 export const getTldQueryResponseSchema = z.lazy(() => getTld200Schema);
 
 export const getTldPricePathParamsSchema = z.object({
-	tld: z.string(),
+	tld: z.unknown(),
 });
 
 export const getTldPriceQueryParamsSchema = z

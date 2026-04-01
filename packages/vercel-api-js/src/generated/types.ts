@@ -157,6 +157,11 @@ export type Pagination = {
 };
 
 /**
+ * @description A valid TLD name
+ */
+export type TldName = string;
+
+/**
  * @description The request did not match the expected schema
  */
 export type HttpApiDecodeError = {
@@ -1540,6 +1545,7 @@ export const userEventTypeEnum = {
 	"preview-deployment-suffix-disabled": "preview-deployment-suffix-disabled",
 	"preview-deployment-suffix-enabled": "preview-deployment-suffix-enabled",
 	"preview-deployment-suffix-update": "preview-deployment-suffix-update",
+	"privatelink-endpoint-created": "privatelink-endpoint-created",
 	"production-branch-updated": "production-branch-updated",
 	"project-add-alias": "project-add-alias",
 	"project-add-redirect": "project-add-redirect",
@@ -11757,6 +11763,25 @@ export type UserEvent = {
 						 * @type string
 						 */
 						previousPreviewDeploymentSuffix?: (string | null) | undefined;
+				  }
+				| {
+						/**
+						 * @type object
+						 */
+						privateLinkEndpoint: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string
+							 */
+							name: string;
+						};
+						/**
+						 * @type string
+						 */
+						projectId: string;
 				  }
 				| {
 						/**
@@ -22600,10 +22625,7 @@ export type GetSupportedTldsQuery = {
 };
 
 export type GetTldPathParams = {
-	/**
-	 * @type string
-	 */
-	tld: string;
+	tld: unknown;
 };
 
 export type GetTldQueryParams = {
@@ -22653,10 +22675,7 @@ export type GetTldQuery = {
 };
 
 export type GetTldPricePathParams = {
-	/**
-	 * @type string
-	 */
-	tld: string;
+	tld: unknown;
 };
 
 export type GetTldPriceQueryParams = {
