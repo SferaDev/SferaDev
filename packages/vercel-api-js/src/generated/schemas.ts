@@ -604,6 +604,7 @@ export const userEventSchema = z
 					"alias-user-scoped-access-granted",
 					"alias-user-scoped-access-requested",
 					"alias-user-scoped-access-revoked",
+					"aliases-assigned",
 					"attack-mode-disabled",
 					"attack-mode-enabled",
 					"audit-log-export-downloaded",
@@ -1166,6 +1167,18 @@ export const userEventSchema = z
 					target: z.string().nullish(),
 					system: z.optional(z.union([z.literal(false), z.literal(true)])),
 					aliasUpdatedAt: z.optional(z.number()),
+				}),
+				z.object({
+					projectId: z.string(),
+					aliasCount: z.number(),
+					deployment: z
+						.object({
+							id: z.string(),
+							name: z.string(),
+							url: z.string(),
+							meta: z.object({}).catchall(z.string()),
+						})
+						.nullish(),
 				}),
 				z.object({
 					name: z.optional(z.string()),
