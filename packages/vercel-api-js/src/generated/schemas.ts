@@ -3579,7 +3579,9 @@ export const userEventSchema = z
 										z.object({
 											createdAt: z.number(),
 											teamId: z.string(),
-											created: z.number(),
+											confirmed: z.literal(true),
+											confirmedAt: z.number(),
+											accessRequestedAt: z.optional(z.number()),
 											role: z.enum([
 												"OWNER",
 												"MEMBER",
@@ -3590,9 +3592,6 @@ export const userEventSchema = z
 												"VIEWER_FOR_PLUS",
 												"CONTRIBUTOR",
 											]),
-											confirmed: z.literal(true),
-											confirmedAt: z.number(),
-											accessRequestedAt: z.optional(z.number()),
 											teamRoles: z.optional(
 												z.array(
 													z.enum([
@@ -3622,6 +3621,7 @@ export const userEventSchema = z
 													]),
 												),
 											),
+											created: z.number(),
 											joinedFrom: z.optional(
 												z.object({
 													origin: z.enum([

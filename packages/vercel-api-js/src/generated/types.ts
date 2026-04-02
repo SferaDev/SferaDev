@@ -2800,6 +2800,12 @@ export const softBlockBlockedDueToOverageTypeEnum = {
 export type SoftBlockBlockedDueToOverageTypeEnumKey =
 	(typeof softBlockBlockedDueToOverageTypeEnum)[keyof typeof softBlockBlockedDueToOverageTypeEnum];
 
+export const teamsConfirmedEnum = {
+	true: true,
+} as const;
+
+export type TeamsConfirmedEnumKey = (typeof teamsConfirmedEnum)[keyof typeof teamsConfirmedEnum];
+
 export const teamsRoleEnum = {
 	OWNER: "OWNER",
 	MEMBER: "MEMBER",
@@ -2812,12 +2818,6 @@ export const teamsRoleEnum = {
 } as const;
 
 export type TeamsRoleEnumKey = (typeof teamsRoleEnum)[keyof typeof teamsRoleEnum];
-
-export const teamsConfirmedEnum = {
-	true: true,
-} as const;
-
-export type TeamsConfirmedEnumKey = (typeof teamsConfirmedEnum)[keyof typeof teamsConfirmedEnum];
 
 export const teamsTeamRolesEnum = {
 	OWNER: "OWNER",
@@ -9465,14 +9465,6 @@ export type UserEvent = {
 										 */
 										teamId: string;
 										/**
-										 * @type number
-										 */
-										created: number;
-										/**
-										 * @type string
-										 */
-										role: TeamsRoleEnumKey;
-										/**
 										 * @type boolean
 										 */
 										confirmed: TeamsConfirmedEnumKey;
@@ -9485,6 +9477,10 @@ export type UserEvent = {
 										 */
 										accessRequestedAt?: number | undefined;
 										/**
+										 * @type string
+										 */
+										role: TeamsRoleEnumKey;
+										/**
 										 * @type array | undefined
 										 */
 										teamRoles?: TeamsTeamRolesEnumKey[] | undefined;
@@ -9492,6 +9488,10 @@ export type UserEvent = {
 										 * @type array | undefined
 										 */
 										teamPermissions?: TeamsTeamPermissionsEnumKey[] | undefined;
+										/**
+										 * @type number
+										 */
+										created: number;
 										/**
 										 * @type object | undefined
 										 */
