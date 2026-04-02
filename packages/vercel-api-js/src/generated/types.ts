@@ -1367,6 +1367,7 @@ export const userEventTypeEnum = {
 	"alias-user-scoped-access-granted": "alias-user-scoped-access-granted",
 	"alias-user-scoped-access-requested": "alias-user-scoped-access-requested",
 	"alias-user-scoped-access-revoked": "alias-user-scoped-access-revoked",
+	"aliases-assigned": "aliases-assigned",
 	"attack-mode-disabled": "attack-mode-disabled",
 	"attack-mode-enabled": "attack-mode-enabled",
 	"audit-log-export-downloaded": "audit-log-export-downloaded",
@@ -4945,6 +4946,41 @@ export type UserEvent = {
 						 * @type number | undefined
 						 */
 						aliasUpdatedAt?: number | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type number
+						 */
+						aliasCount: number;
+						/**
+						 * @type object
+						 */
+						deployment?:
+							| ({
+									/**
+									 * @type string
+									 */
+									id: string;
+									/**
+									 * @type string
+									 */
+									name: string;
+									/**
+									 * @type string
+									 */
+									url: string;
+									/**
+									 * @type object
+									 */
+									meta: {
+										[key: string]: string;
+									};
+							  } | null)
+							| undefined;
 				  }
 				| {
 						/**
