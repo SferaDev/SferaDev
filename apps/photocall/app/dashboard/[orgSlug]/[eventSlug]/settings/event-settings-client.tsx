@@ -1,6 +1,5 @@
 "use client";
 
-import { useConvexAuth, useMutation, useQuery } from "convex/react";
 import {
 	Camera,
 	ChevronLeft,
@@ -15,6 +14,8 @@ import {
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import useSWR, { useSWRConfig } from "swr";
+import { deleteEvent, getEventBySlug, setKioskPin, updateEvent } from "@/actions/events";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -27,24 +28,20 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { api } from "@/convex/_generated/api";
-import type { Id } from "@/convex/_generated/dataModel";
+import { useSession } from "@/lib/auth-client";
 
 export default function EventSettingsPage() {
-	const { isAuthenticated, isLoading: authLoading } = useConvexAuth();
+	const { data: session, isPending: authLoading } = useSession();
+	const isAuthenticated = !!session;
 	const router = useRouter();
 	const params = useParams();
 	const orgSlug = params.orgSlug as string;
 	const eventSlug = params.eventSlug as string;
+	const { mutate } = useSWRConfig();
 
-	const event = useQuery(api.events.getBySlug, {
-		organizationSlug: orgSlug,
-		eventSlug: eventSlug,
-	});
-
-	const updateEvent = useMutation(api.events.update);
-	const setKioskPin = useMutation(api.events.setKioskPin);
-	const removeEvent = useMutation(api.events.remove);
+	const { data: event } = useSWR(["events", orgSlug, eventSlug], () =>
+		getEventBySlug(orgSlug, eventSlug),
+	);
 
 	const [isSaving, setIsSaving] = useState(false);
 	const [newPin, setNewPin] = useState("");
@@ -78,14 +75,14 @@ export default function EventSettingsPage() {
 				slideshowEnabled: event.slideshowEnabled,
 				slideshowSafeMode: event.slideshowSafeMode,
 				idleTimeoutSeconds: event.idleTimeoutSeconds,
-				defaultCamera: event.defaultCamera,
+				defaultCamera: (event.defaultCamera as "user" | "environment") ?? "user",
 				photoQuality: event.photoQuality,
 				maxPhotoDimension: event.maxPhotoDimension,
 				allowDownload: event.allowDownload,
 				allowPrint: event.allowPrint,
 				showQrCode: event.showQrCode,
-				shareExpirationDays: event.shareExpirationDays,
-				retentionDays: event.retentionDays,
+				shareExpirationDays: event.shareExpirationDays ?? undefined,
+				retentionDays: event.retentionDays ?? undefined,
 			});
 		}
 	}, [event]);
@@ -100,10 +97,8 @@ export default function EventSettingsPage() {
 		if (!event) return;
 		setIsSaving(true);
 		try {
-			await updateEvent({
-				id: event._id as Id<"events">,
-				...formData,
-			});
+			await updateEvent(event.id, formData);
+			mutate((key) => Array.isArray(key) && key[0] === "events");
 		} catch (error) {
 			console.error("Failed to save:", error);
 		} finally {
@@ -114,10 +109,8 @@ export default function EventSettingsPage() {
 	const handleSetPin = async () => {
 		if (!event || newPin.length < 4) return;
 		try {
-			await setKioskPin({
-				id: event._id as Id<"events">,
-				pin: newPin,
-			});
+			await setKioskPin(event.id, newPin);
+			mutate((key) => Array.isArray(key) && key[0] === "events");
 			setNewPin("");
 		} catch (error) {
 			console.error("Failed to set PIN:", error);
@@ -130,7 +123,8 @@ export default function EventSettingsPage() {
 			return;
 		}
 		try {
-			await removeEvent({ id: event._id as Id<"events"> });
+			await deleteEvent(event.id);
+			mutate((key) => Array.isArray(key) && key[0] === "events");
 			router.push(`/dashboard/${orgSlug}`);
 		} catch (error) {
 			console.error("Failed to delete:", error);

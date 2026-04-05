@@ -1,6 +1,6 @@
 "use client";
 
-import { useConvexAuth, useMutation, useQuery } from "convex/react";
+import JSZip from "jszip";
 import {
 	Camera,
 	ChevronLeft,
@@ -16,38 +16,38 @@ import {
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import useSWR, { useSWRConfig } from "swr";
+import { getEventBySlug, getEventStats, updateEvent } from "@/actions/events";
+import { deleteAllPhotos, deletePhoto, listPhotos } from "@/actions/photos";
+import { listTemplates } from "@/actions/templates";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { api } from "@/convex/_generated/api";
-import type { Id } from "@/convex/_generated/dataModel";
+import { useSession } from "@/lib/auth-client";
 
 export default function EventDashboard() {
-	const { isAuthenticated, isLoading: authLoading } = useConvexAuth();
+	const { data: session, isPending: authLoading } = useSession();
+	const isAuthenticated = !!session;
 	const router = useRouter();
 	const params = useParams();
 	const orgSlug = params.orgSlug as string;
 	const eventSlug = params.eventSlug as string;
+	const { mutate } = useSWRConfig();
 
-	const event = useQuery(api.events.getBySlug, {
-		organizationSlug: orgSlug,
-		eventSlug: eventSlug,
-	});
-
-	const photos = useQuery(
-		api.photos.list,
-		event ? { eventId: event._id as Id<"events">, limit: 50 } : "skip",
+	const { data: event } = useSWR(["events", orgSlug, eventSlug], () =>
+		getEventBySlug(orgSlug, eventSlug),
 	);
 
-	const templates = useQuery(
-		api.templates.list,
-		event ? { eventId: event._id as Id<"events"> } : "skip",
+	const { data: photos } = useSWR(event ? ["photos", event.id] : null, () =>
+		listPhotos(event!.id, 50),
 	);
 
-	const stats = useQuery(api.events.getStats, event ? { id: event._id as Id<"events"> } : "skip");
+	const { data: templates } = useSWR(event ? ["templates", event.id] : null, () =>
+		listTemplates(event!.id),
+	);
 
-	const updateEvent = useMutation(api.events.update);
-	const removePhoto = useMutation(api.photos.remove);
-	const removeAllPhotos = useMutation(api.photos.removeAll);
+	const { data: stats } = useSWR(event ? ["eventStats", event.id] : null, () =>
+		getEventStats(event!.id),
+	);
 
 	useEffect(() => {
 		if (!authLoading && !isAuthenticated) {
@@ -79,7 +79,21 @@ export default function EventDashboard() {
 
 	const toggleStatus = async () => {
 		const newStatus = event.status === "active" ? "paused" : "active";
-		await updateEvent({ id: event._id as Id<"events">, status: newStatus });
+		await updateEvent(event.id, { status: newStatus });
+		mutate((key) => Array.isArray(key) && key[0] === "events");
+		mutate((key) => Array.isArray(key) && key[0] === "eventStats");
+	};
+
+	const handleRemovePhoto = async (photoId: string) => {
+		await deletePhoto(photoId);
+		mutate((key) => Array.isArray(key) && key[0] === "photos");
+		mutate((key) => Array.isArray(key) && key[0] === "eventStats");
+	};
+
+	const handleRemoveAllPhotos = async () => {
+		await deleteAllPhotos(event.id);
+		mutate((key) => Array.isArray(key) && key[0] === "photos");
+		mutate((key) => Array.isArray(key) && key[0] === "eventStats");
 	};
 
 	return (
@@ -172,8 +186,8 @@ export default function EventDashboard() {
 					<TabsContent value="gallery">
 						<GalleryTab
 							photos={photos?.items ?? []}
-							onRemove={(id) => removePhoto({ photoId: id })}
-							onRemoveAll={() => removeAllPhotos({ eventId: event._id as Id<"events"> })}
+							onRemove={handleRemovePhoto}
+							onRemoveAll={handleRemoveAllPhotos}
 						/>
 					</TabsContent>
 
@@ -192,10 +206,11 @@ function GalleryTab({
 	onRemoveAll,
 }: {
 	photos: any[];
-	onRemove: (id: Id<"photos">) => void;
+	onRemove: (id: string) => void;
 	onRemoveAll: () => void;
 }) {
 	const [selectedPhotos, setSelectedPhotos] = useState<Set<string>>(new Set());
+	const [isExporting, setIsExporting] = useState(false);
 
 	const _toggleSelect = (id: string) => {
 		const newSelected = new Set(selectedPhotos);
@@ -205,6 +220,36 @@ function GalleryTab({
 			newSelected.add(id);
 		}
 		setSelectedPhotos(newSelected);
+	};
+
+	const handleExportAll = async () => {
+		setIsExporting(true);
+		try {
+			const zip = new JSZip();
+
+			const downloads = photos
+				.filter((photo) => photo.url)
+				.map(async (photo) => {
+					const response = await fetch(photo.url);
+					const blob = await response.blob();
+					const extension = blob.type.split("/")[1] ?? "jpg";
+					zip.file(`${photo.humanCode}.${extension}`, blob);
+				});
+
+			await Promise.all(downloads);
+
+			const content = await zip.generateAsync({ type: "blob" });
+			const url = URL.createObjectURL(content);
+			const link = document.createElement("a");
+			link.href = url;
+			link.download = "photos.zip";
+			document.body.appendChild(link);
+			link.click();
+			document.body.removeChild(link);
+			URL.revokeObjectURL(url);
+		} finally {
+			setIsExporting(false);
+		}
 	};
 
 	if (photos.length === 0) {
@@ -222,9 +267,13 @@ function GalleryTab({
 			<div className="flex items-center justify-between">
 				<p className="text-muted-foreground">{photos.length} photos</p>
 				<div className="flex gap-2">
-					<Button variant="outline" size="sm">
-						<Download className="h-4 w-4 mr-2" />
-						Export All
+					<Button variant="outline" size="sm" onClick={handleExportAll} disabled={isExporting}>
+						{isExporting ? (
+							<Loader2 className="h-4 w-4 mr-2 animate-spin" />
+						) : (
+							<Download className="h-4 w-4 mr-2" />
+						)}
+						{isExporting ? "Exporting..." : "Export All"}
 					</Button>
 					<Button
 						variant="outline"
@@ -241,7 +290,7 @@ function GalleryTab({
 			<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
 				{photos.map((photo) => (
 					<div
-						key={photo._id}
+						key={photo.id}
 						className="relative group aspect-square rounded-lg overflow-hidden bg-muted"
 					>
 						{photo.url && (
@@ -259,7 +308,7 @@ function GalleryTab({
 							>
 								<ExternalLink className="h-4 w-4" />
 							</Button>
-							<Button size="icon" variant="destructive" onClick={() => onRemove(photo._id)}>
+							<Button size="icon" variant="destructive" onClick={() => onRemove(photo.id)}>
 								<Trash2 className="h-4 w-4" />
 							</Button>
 						</div>
@@ -289,7 +338,7 @@ function TemplatesTab({
 				<h2 className="text-xl font-semibold mb-2">No templates yet</h2>
 				<p className="text-muted-foreground mb-4">Add overlay templates for your photo booth</p>
 				<Button asChild>
-					<Link href={`/dashboard/${orgSlug}/${eventSlug}/templates/new`}>Add Template</Link>
+					<Link href={`/dashboard/${orgSlug}/${eventSlug}/templates`}>Add Template</Link>
 				</Button>
 			</div>
 		);
@@ -300,14 +349,14 @@ function TemplatesTab({
 			<div className="flex items-center justify-between">
 				<p className="text-muted-foreground">{templates.length} templates</p>
 				<Button asChild>
-					<Link href={`/dashboard/${orgSlug}/${eventSlug}/templates/new`}>Add Template</Link>
+					<Link href={`/dashboard/${orgSlug}/${eventSlug}/templates`}>Manage Templates</Link>
 				</Button>
 			</div>
 
 			<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
 				{templates.map((template) => (
 					<div
-						key={template._id}
+						key={template.id}
 						className="relative group aspect-3/4 rounded-lg overflow-hidden bg-muted border"
 					>
 						{template.thumbnailUrl && (
@@ -319,9 +368,7 @@ function TemplatesTab({
 						)}
 						<div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
 							<Button size="sm" variant="secondary" asChild>
-								<Link href={`/dashboard/${orgSlug}/${eventSlug}/templates/${template._id}`}>
-									Edit
-								</Link>
+								<Link href={`/dashboard/${orgSlug}/${eventSlug}/templates`}>Edit</Link>
 							</Button>
 						</div>
 						<div className="absolute bottom-0 inset-x-0 p-2 bg-linear-to-t from-black/80 to-transparent">

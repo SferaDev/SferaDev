@@ -1,7 +1,5 @@
 "use client";
 
-import { useAction, useConvexAuth, useQuery } from "convex/react";
-import type { FunctionReference } from "convex/server";
 import {
 	Camera,
 	Check,
@@ -15,34 +13,12 @@ import {
 import Link from "next/link";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import useSWR from "swr";
+import { getOrganizationBySlug } from "@/actions/organizations";
+import { createPortalSession, getBillingSummary, purchaseEvent } from "@/actions/stripe";
 import { Button } from "@/components/ui/button";
-import { api } from "@/convex/_generated/api";
-import type { Id } from "@/convex/_generated/dataModel";
-import type { BillingSummary, EventBillingSummary } from "@/convex/lib/types";
-
-// Type-safe API references for functions not yet in generated types
-type StripeApi = {
-	getBillingSummary: FunctionReference<
-		"query",
-		"public",
-		{ organizationId: Id<"organizations"> },
-		BillingSummary | null
-	>;
-	purchaseEvent: FunctionReference<
-		"action",
-		"public",
-		{ organizationId: Id<"organizations"> },
-		{ url: string | null }
-	>;
-	createPortalSession: FunctionReference<
-		"action",
-		"public",
-		{ organizationId: Id<"organizations"> },
-		{ url: string }
-	>;
-};
-
-const stripeApi = api.stripe as unknown as StripeApi;
+import { useSession } from "@/lib/auth-client";
+import type { BillingSummary, EventBillingSummary } from "@/lib/plans";
 
 const FREE_FEATURES = ["1 free event", "10 photos included", "Basic templates", "QR code sharing"];
 
@@ -58,20 +34,19 @@ const PAID_FEATURES = [
 ];
 
 export default function BillingPage() {
-	const { isAuthenticated, isLoading: authLoading } = useConvexAuth();
+	const { data: session, isPending: authLoading } = useSession();
+	const isAuthenticated = !!session;
 	const router = useRouter();
 	const params = useParams();
 	const searchParams = useSearchParams();
 	const orgSlug = params.orgSlug as string;
 
-	const organization = useQuery(api.organizations.getBySlug, { slug: orgSlug });
-	const billingSummary = useQuery(
-		stripeApi.getBillingSummary,
-		organization ? { organizationId: organization._id } : "skip",
+	const { data: organization } = useSWR(["organizations", orgSlug], () =>
+		getOrganizationBySlug(orgSlug),
 	);
-
-	const purchaseEvent = useAction(stripeApi.purchaseEvent);
-	const createPortal = useAction(stripeApi.createPortalSession);
+	const { data: billingSummary } = useSWR(organization ? ["billing", organization.id] : null, () =>
+		getBillingSummary(organization!.id),
+	);
 
 	const [isPurchasing, setIsPurchasing] = useState(false);
 
@@ -89,9 +64,7 @@ export default function BillingPage() {
 
 		setIsPurchasing(true);
 		try {
-			const result = await purchaseEvent({
-				organizationId: organization._id,
-			});
+			const result = await purchaseEvent(organization.id);
 			if (result.url) {
 				window.location.href = result.url;
 			}
@@ -105,9 +78,7 @@ export default function BillingPage() {
 	const handleManageBilling = async () => {
 		if (!organization) return;
 		try {
-			const result = await createPortal({
-				organizationId: organization._id,
-			});
+			const result = await createPortalSession(organization.id);
 			if (result.url) {
 				window.location.href = result.url;
 			}

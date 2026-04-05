@@ -1,14 +1,12 @@
 "use client";
 
-import { useMutation, useQuery } from "convex/react";
-import type { FunctionReturnType } from "convex/server";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
+import useSWR from "swr";
+import { getPublicEvent } from "@/actions/events";
+import { selectTemplate } from "@/actions/sessions";
+import { listPublicTemplates } from "@/actions/templates";
 import { Button } from "@/components/ui/button";
-import { api } from "@/convex/_generated/api";
-import type { Id } from "@/convex/_generated/dataModel";
-
-type Template = NonNullable<FunctionReturnType<typeof api.templates.listPublic>>[number];
 
 export default function KioskSelectPage() {
 	const router = useRouter();
@@ -16,25 +14,23 @@ export default function KioskSelectPage() {
 	const searchParams = useSearchParams();
 	const orgSlug = params.orgSlug as string;
 	const eventSlug = params.eventSlug as string;
-	const sessionId = searchParams.get("session") as Id<"sessions"> | null;
+	const sessionId = searchParams.get("session");
 
-	const event = useQuery(api.events.getPublic, {
-		organizationSlug: orgSlug,
-		eventSlug: eventSlug,
-	});
-
-	const templates = useQuery(
-		api.templates.listPublic,
-		event ? { eventId: event.id as Id<"events"> } : "skip",
+	const { data: event, isLoading: eventLoading } = useSWR(
+		["public-event", orgSlug, eventSlug],
+		() => getPublicEvent(orgSlug, eventSlug),
 	);
 
-	const selectTemplate = useMutation(api.sessions.selectTemplate);
+	const { data: templates, isLoading: templatesLoading } = useSWR(
+		event ? ["public-templates", event.id] : null,
+		() => listPublicTemplates(event!.id),
+	);
 
-	const handleSelect = async (templateId: Id<"templates">) => {
+	const handleSelect = async (templateId: string) => {
 		if (!sessionId) return;
 
 		try {
-			await selectTemplate({ sessionId, templateId });
+			await selectTemplate(sessionId, templateId);
 			router.push(
 				`/kiosk/${orgSlug}/${eventSlug}/capture?session=${sessionId}&template=${templateId}`,
 			);
@@ -48,7 +44,7 @@ export default function KioskSelectPage() {
 		router.push(`/kiosk/${orgSlug}/${eventSlug}/capture?session=${sessionId}`);
 	};
 
-	if (event === undefined || templates === undefined) {
+	if (eventLoading || templatesLoading) {
 		return (
 			<div className="min-h-screen flex items-center justify-center bg-black text-white">
 				<Loader2 className="h-12 w-12 animate-spin" />
@@ -81,7 +77,7 @@ export default function KioskSelectPage() {
 					</Button>
 				</div>
 
-				{templates.length === 0 ? (
+				{templates && templates.length === 0 ? (
 					<div className="text-center py-16">
 						<p className="text-xl mb-4">No templates available</p>
 						<Button onClick={handleSkip} style={{ backgroundColor: primaryColor }}>
@@ -90,11 +86,11 @@ export default function KioskSelectPage() {
 					</div>
 				) : (
 					<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-						{templates.map((template: Template) => (
+						{templates?.map((template) => (
 							<button
-								key={template._id}
+								key={template.id}
 								type="button"
-								onClick={() => handleSelect(template._id as Id<"templates">)}
+								onClick={() => handleSelect(template.id)}
 								className="aspect-3/4 rounded-lg overflow-hidden border-2 border-transparent hover:border-white transition-colors"
 							>
 								{template.thumbnailUrl && (

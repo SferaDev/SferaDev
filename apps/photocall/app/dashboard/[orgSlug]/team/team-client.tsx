@@ -1,11 +1,18 @@
 "use client";
 
-import { useConvexAuth, useMutation, useQuery } from "convex/react";
-import type { FunctionReturnType } from "convex/server";
 import { ChevronLeft, Crown, Loader2, Mail, Plus, Shield, Trash2, User, X } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import useSWR, { useSWRConfig } from "swr";
+import {
+	cancelInvitation,
+	getInvitations,
+	getMembers,
+	getOrganizationBySlug,
+	inviteMember,
+	removeMember,
+} from "@/actions/organizations";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -26,32 +33,25 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import { api } from "@/convex/_generated/api";
-import type { Id } from "@/convex/_generated/dataModel";
-
-type Member = NonNullable<FunctionReturnType<typeof api.organizations.getMembers>>[number];
-type Invitation = NonNullable<FunctionReturnType<typeof api.organizations.getInvitations>>[number];
+import { useSession } from "@/lib/auth-client";
 
 export default function TeamPage() {
-	const { isAuthenticated, isLoading: authLoading } = useConvexAuth();
+	const { data: session, isPending: authLoading } = useSession();
+	const isAuthenticated = !!session;
 	const router = useRouter();
 	const params = useParams();
 	const orgSlug = params.orgSlug as string;
+	const { mutate } = useSWRConfig();
 
-	const organization = useQuery(api.organizations.getBySlug, { slug: orgSlug });
-	const members = useQuery(
-		api.organizations.getMembers,
-		organization ? { organizationId: organization._id as Id<"organizations"> } : "skip",
+	const { data: organization } = useSWR(["organizations", orgSlug], () =>
+		getOrganizationBySlug(orgSlug),
 	);
-	const invitations = useQuery(
-		api.organizations.getInvitations,
-		organization ? { organizationId: organization._id as Id<"organizations"> } : "skip",
+	const { data: members } = useSWR(organization ? ["members", organization.id] : null, () =>
+		getMembers(organization!.id),
 	);
-
-	const invite = useMutation(api.organizations.invite);
-	const _updateRole = useMutation(api.organizations.updateMemberRole);
-	const removeMember = useMutation(api.organizations.removeMember);
-	const cancelInvitation = useMutation(api.organizations.cancelInvitation);
+	const { data: invitations } = useSWR(organization ? ["invitations", organization.id] : null, () =>
+		getInvitations(organization!.id),
+	);
 
 	const [inviteEmail, setInviteEmail] = useState("");
 	const [inviteRole, setInviteRole] = useState<"admin" | "member">("member");
@@ -70,11 +70,8 @@ export default function TeamPage() {
 
 		setIsInviting(true);
 		try {
-			await invite({
-				organizationId: organization._id as Id<"organizations">,
-				email: inviteEmail.trim(),
-				role: inviteRole,
-			});
+			await inviteMember(organization.id, inviteEmail.trim(), inviteRole);
+			mutate((key) => Array.isArray(key) && key[0] === "invitations");
 			setInviteEmail("");
 			setDialogOpen(false);
 		} catch (error) {
@@ -84,23 +81,22 @@ export default function TeamPage() {
 		}
 	};
 
-	const handleRemoveMember = async (userId: Id<"users">) => {
+	const handleRemoveMember = async (userId: string) => {
 		if (!organization) return;
 		if (!confirm("Are you sure you want to remove this member?")) return;
 
 		try {
-			await removeMember({
-				organizationId: organization._id as Id<"organizations">,
-				userId,
-			});
+			await removeMember(organization.id, userId);
+			mutate((key) => Array.isArray(key) && key[0] === "members");
 		} catch (error) {
 			console.error("Failed to remove member:", error);
 		}
 	};
 
-	const handleCancelInvitation = async (invitationId: Id<"invitations">) => {
+	const handleCancelInvitation = async (invitationId: string) => {
 		try {
-			await cancelInvitation({ invitationId });
+			await cancelInvitation(invitationId);
+			mutate((key) => Array.isArray(key) && key[0] === "invitations");
 		} catch (error) {
 			console.error("Failed to cancel invitation:", error);
 		}
@@ -210,11 +206,11 @@ export default function TeamPage() {
 				<div className="mb-8">
 					<h2 className="text-lg font-semibold mb-4">Members ({members?.length ?? 0})</h2>
 					<div className="border rounded-lg divide-y">
-						{members?.map((member: Member) => (
-							<div key={member._id} className="p-4 flex items-center justify-between">
+						{members?.map((member) => (
+							<div key={member.id} className="p-4 flex items-center justify-between">
 								<div className="flex items-center gap-3">
 									<Avatar>
-										<AvatarImage src={member.profile?.avatarUrl} />
+										<AvatarImage src={member.profile?.avatarUrl ?? undefined} />
 										<AvatarFallback>
 											{member.profile?.name?.charAt(0) ??
 												member.user?.email?.charAt(0)?.toUpperCase() ??
@@ -250,8 +246,8 @@ export default function TeamPage() {
 							Pending Invitations ({invitations.length})
 						</h2>
 						<div className="border rounded-lg divide-y">
-							{invitations.map((invitation: Invitation) => (
-								<div key={invitation._id} className="p-4 flex items-center justify-between">
+							{invitations.map((invitation) => (
+								<div key={invitation.id} className="p-4 flex items-center justify-between">
 									<div className="flex items-center gap-3">
 										<div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center">
 											<Mail className="h-5 w-5 text-muted-foreground" />
@@ -269,7 +265,7 @@ export default function TeamPage() {
 									<Button
 										variant="ghost"
 										size="icon"
-										onClick={() => handleCancelInvitation(invitation._id as Id<"invitations">)}
+										onClick={() => handleCancelInvitation(invitation.id)}
 									>
 										<X className="h-4 w-4" />
 									</Button>

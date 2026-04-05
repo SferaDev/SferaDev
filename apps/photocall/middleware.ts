@@ -13,8 +13,7 @@ export const config = {
 		// Match all pathnames except for:
 		// - API routes (/api/...)
 		// - Static files (/_next/..., /favicon.ico, etc.)
-		// - Convex routes
 		// - Dashboard and kiosk routes (they don't need i18n for now)
-		"/((?!api|_next|_vercel|convex|dashboard|kiosk|share|sign-in|.*\\..*).*)",
+		"/((?!api|_next|_vercel|dashboard|kiosk|share|invite|sign-in|.*\\..*).*)",
 	],
 };
