@@ -545,6 +545,55 @@ importers:
         specifier: 'catalog:'
         version: 5.9.3
 
+  apps/platform:
+    dependencies:
+      '@hono/node-server':
+        specifier: '>=1.19.10'
+        version: 1.19.11(hono@4.12.8)
+      better-auth:
+        specifier: 'catalog:'
+        version: 1.5.6(0ed27f7a14d32131f7d66627cfc1adac)
+      drizzle-orm:
+        specifier: 'catalog:'
+        version: 0.45.1(@electric-sql/pglite@0.3.15)(@opentelemetry/api@1.9.0)(@prisma/client@6.19.1(prisma@7.4.2(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.9.3))(typescript@5.9.3))(@types/pg@8.20.0)(kysely@0.28.14)(mysql2@3.15.3)(pg@8.20.0)(postgres@3.4.7)(prisma@7.4.2(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.9.3))
+      hono:
+        specifier: '>=4.12.7'
+        version: 4.12.8
+      lru-cache:
+        specifier: ^11.1.0
+        version: 11.2.7
+      pg:
+        specifier: 'catalog:'
+        version: 8.20.0
+      stripe:
+        specifier: 'catalog:'
+        version: 20.4.1(@types/node@25.5.0)
+      zod:
+        specifier: 'catalog:'
+        version: 4.3.6
+    devDependencies:
+      '@sferadev/tsconfig':
+        specifier: workspace:*
+        version: link:../../configs/tsconfig
+      '@types/node':
+        specifier: 'catalog:'
+        version: 25.5.0
+      '@types/pg':
+        specifier: 'catalog:'
+        version: 8.20.0
+      drizzle-kit:
+        specifier: 'catalog:'
+        version: 0.31.10
+      tsx:
+        specifier: 'catalog:'
+        version: 4.21.0
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+      vitest:
+        specifier: 'catalog:'
+        version: 4.1.0(@opentelemetry/api@1.9.0)(@types/node@25.5.0)(vite@7.3.1(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.32.0)(tsx@4.21.0)(yaml@2.8.3))
+
   apps/seating:
     dependencies:
       '@vercel/analytics':
@@ -1005,6 +1054,28 @@ importers:
       typescript:
         specifier: 'catalog:'
         version: 5.9.3
+
+  packages/platform-sdk:
+    dependencies:
+      lru-cache:
+        specifier: ^11.1.0
+        version: 11.2.7
+    devDependencies:
+      '@sferadev/tsconfig':
+        specifier: workspace:*
+        version: link:../../configs/tsconfig
+      '@types/node':
+        specifier: 'catalog:'
+        version: 25.5.0
+      bunchee:
+        specifier: 'catalog:'
+        version: 6.9.4(typescript@5.9.3)
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+      vitest:
+        specifier: 'catalog:'
+        version: 4.1.0(@opentelemetry/api@1.9.0)(@types/node@25.5.0)(vite@7.3.1(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.32.0)(tsx@4.21.0)(yaml@2.8.3))
 
   packages/rollup-plugin-import-cdn:
     dependencies:
@@ -9898,9 +9969,6 @@ packages:
   zod@3.24.0:
     resolution: {integrity: sha512-Hz+wiY8yD0VLA2k/+nsg2Abez674dDGTai33SwNvMPuf9uIrBC9eFgIMQxBBbHFxVXi8W+5nX9DcAh9YNSQm/w==}
 
-  zod@3.25.76:
-    resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
-
   zod@4.3.6:
     resolution: {integrity: sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg==}
 
@@ -10734,7 +10802,6 @@ snapshots:
   '@hono/node-server@1.19.11(hono@4.12.8)':
     dependencies:
       hono: 4.12.8
-    optional: true
 
   '@humanwhocodes/momoa@2.0.4': {}
 
@@ -13909,7 +13976,7 @@ snapshots:
     dependencies:
       '@vercel/routing-utils': 6.1.0
       pretty-cache-header: 1.0.0
-      zod: 3.25.76
+      zod: 4.3.6
 
   '@vercel/oidc@3.1.0': {}
 
@@ -16075,8 +16142,7 @@ snapshots:
 
   hex-rgb@5.0.0: {}
 
-  hono@4.12.8:
-    optional: true
+  hono@4.12.8: {}
 
   hosted-git-info@2.8.9: {}
 
@@ -20303,8 +20369,6 @@ snapshots:
   zod@3.23.8: {}
 
   zod@3.24.0: {}
-
-  zod@3.25.76: {}
 
   zod@4.3.6: {}
 

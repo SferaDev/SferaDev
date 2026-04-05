@@ -1,0 +1,38 @@
+{
+	"name": "@platform/sdk",
+	"version": "0.0.1",
+	"type": "module",
+	"sideEffects": false,
+	"license": "MIT",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.mjs",
+			"require": "./dist/index.cjs"
+		}
+	},
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.mjs",
+	"types": "./dist/index.d.ts",
+	"files": [
+		"dist/**"
+	],
+	"scripts": {
+		"build": "bunchee",
+		"dev": "bunchee --watch",
+		"tsc": "tsc --noEmit",
+		"test": "vitest run",
+		"is-tree-shakable": "is-tree-shakable",
+		"clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+	},
+	"dependencies": {
+		"lru-cache": "^11.1.0"
+	},
+	"devDependencies": {
+		"@sferadev/tsconfig": "workspace:*",
+		"@types/node": "catalog:",
+		"bunchee": "catalog:",
+		"typescript": "catalog:",
+		"vitest": "catalog:"
+	}
+}
