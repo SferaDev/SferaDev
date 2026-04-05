@@ -26,9 +26,8 @@
 		"next-env.d.ts",
 		"**/*.ts",
 		"**/*.tsx",
-		"convex/_generated/*.d.ts",
 		".next/types/**/*.ts",
 		".next/dev/types/**/*.ts"
 	],
-	"exclude": ["node_modules", "convex/*.ts", "convex/tsconfig.json"]
+	"exclude": ["node_modules"]
 }

@@ -11,9 +11,10 @@ catalog:
   '@ai-sdk/provider-utils': 4.0.21
   '@auth/core': 0.41.1
   '@auth/drizzle-adapter': 1.11.1
+  '@aws-sdk/client-s3': 3.1024.0
+  '@aws-sdk/s3-request-presigner': 3.1024.0
   '@biomejs/biome': 2.4.8
   '@changesets/cli': 2.30.0
-  '@convex-dev/better-auth': 0.11.3
   '@kubb/cli': 4.36.2
   '@kubb/core': 4.36.2
   '@kubb/oas': 4.36.2
@@ -35,6 +36,8 @@ catalog:
   '@radix-ui/react-toast': 1.2.15
   '@tailwindcss/postcss': 4.2.2
   '@tailwindcss/typography': 0.5.19
+  '@testing-library/jest-dom': 6.9.1
+  '@testing-library/react': 16.3.2
   '@types/json-schema': 7.0.15
   '@types/node': 25.5.0
   '@types/pg': 8.20.0
@@ -53,7 +56,6 @@ catalog:
   case: 1.6.3
   class-variance-authority: 0.7.1
   clsx: 2.1.1
-  convex: 1.34.0
   dotenv: 17.3.1
   drizzle-kit: 0.31.10
   drizzle-orm: 0.45.1
@@ -64,6 +66,7 @@ catalog:
   gray-matter: 4.0.3
   html-to-image: 1.11.13
   is-tree-shakable: 0.5.0
+  jsdom: 29.0.1
   jspdf: 4.2.1
   jszip: 3.10.1
   knip: 6.0.2
@@ -74,7 +77,6 @@ catalog:
   next-auth: 5.0.0-beta.29
   next-intl: 4.8.3
   next-themes: 0.4.6
-  npm-run-all: 4.1.5
   openapi3-ts: 4.5.0
   pg: 8.20.0
   postcss: 8.5.8
@@ -86,6 +88,7 @@ catalog:
   rimraf: 6.1.3
   rollup: 4.60.0
   stripe: 20.4.1
+  swr: 2.4.1
   tailwind-merge: 3.5.0
   tailwindcss: 4.2.2
   tailwindcss-animate: 1.0.7

@@ -1,13 +1,13 @@
 "use client";
 
-import { useMutation, useQuery } from "convex/react";
-import { ArrowLeft, Camera, Loader2, RefreshCw } from "lucide-react";
+import { AlertCircle, ArrowLeft, Camera, Loader2, RefreshCw, RotateCcw } from "lucide-react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
+import useSWR from "swr";
+import { getPublicEvent } from "@/actions/events";
+import { saveCapture } from "@/actions/sessions";
 import { Button } from "@/components/ui/button";
-import { api } from "@/convex/_generated/api";
-import type { Id } from "@/convex/_generated/dataModel";
-import { useCamera } from "@/hooks/use-camera";
+import { type CameraFacing, useCamera } from "@/hooks/use-camera";
 
 export default function KioskCapturePage() {
 	const router = useRouter();
@@ -15,23 +15,22 @@ export default function KioskCapturePage() {
 	const searchParams = useSearchParams();
 	const orgSlug = params.orgSlug as string;
 	const eventSlug = params.eventSlug as string;
-	const sessionId = searchParams.get("session") as Id<"sessions"> | null;
-	const templateId = searchParams.get("template") as Id<"templates"> | null;
+	const sessionId = searchParams.get("session");
+	const templateId = searchParams.get("template");
 
-	const event = useQuery(api.events.getPublic, {
-		organizationSlug: orgSlug,
-		eventSlug: eventSlug,
-	});
-
-	const saveCapture = useMutation(api.sessions.saveCapture);
+	const { data: event, isLoading: eventLoading } = useSWR(
+		["public-event", orgSlug, eventSlug],
+		() => getPublicEvent(orgSlug, eventSlug),
+	);
 
 	const { videoRef, isReady, error, start, switchCamera, capture } = useCamera({
-		defaultFacing: event?.defaultCamera || "user",
+		defaultFacing: (event?.defaultCamera as CameraFacing) || "user",
 	});
 
 	const [countdown, setCountdown] = useState<number | null>(null);
 	const [isCapturing, setIsCapturing] = useState(false);
 	const [flash, setFlash] = useState(false);
+	const [captureError, setCaptureError] = useState<string | null>(null);
 
 	useEffect(() => {
 		if (event && !isReady) {
@@ -64,29 +63,20 @@ export default function KioskCapturePage() {
 		try {
 			const imageUrl = capture();
 			if (imageUrl && sessionId) {
-				await saveCapture({ sessionId, capturedImageUrl: imageUrl });
+				await saveCapture(sessionId, imageUrl);
 				router.push(
 					`/kiosk/${orgSlug}/${eventSlug}/personalize?session=${sessionId}${templateId ? `&template=${templateId}` : ""}`,
 				);
 			}
 		} catch (err) {
 			console.error("Capture failed:", err);
+			setCaptureError("Failed to capture photo. Please try again.");
 		} finally {
 			setIsCapturing(false);
 		}
-	}, [
-		countdown,
-		isCapturing,
-		capture,
-		sessionId,
-		saveCapture,
-		router,
-		orgSlug,
-		eventSlug,
-		templateId,
-	]);
+	}, [countdown, isCapturing, capture, sessionId, router, orgSlug, eventSlug, templateId]);
 
-	if (event === undefined) {
+	if (eventLoading) {
 		return (
 			<div className="min-h-screen flex items-center justify-center bg-black text-white">
 				<Loader2 className="h-12 w-12 animate-spin" />
@@ -164,10 +154,33 @@ export default function KioskCapturePage() {
 				</div>
 			</div>
 
-			{/* Error Message */}
+			{/* Camera Error Overlay */}
 			{error && (
-				<div className="absolute top-8 left-1/2 -translate-x-1/2 bg-destructive text-white px-4 py-2 rounded-lg z-40">
-					{error}
+				<div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 z-40 p-8">
+					<AlertCircle className="h-16 w-16 text-destructive mb-4" />
+					<h2 className="text-2xl font-bold mb-2">Camera Error</h2>
+					<p className="text-white/60 mb-8 text-center">{error}</p>
+					<Button size="lg" onClick={() => start()} style={{ backgroundColor: primaryColor }}>
+						<RotateCcw className="h-5 w-5 mr-2" />
+						Try Again
+					</Button>
+				</div>
+			)}
+
+			{/* Capture Error Overlay */}
+			{captureError && (
+				<div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 z-40 p-8">
+					<AlertCircle className="h-16 w-16 text-destructive mb-4" />
+					<h2 className="text-2xl font-bold mb-2">Capture Failed</h2>
+					<p className="text-white/60 mb-8 text-center">{captureError}</p>
+					<Button
+						size="lg"
+						onClick={() => setCaptureError(null)}
+						style={{ backgroundColor: primaryColor }}
+					>
+						<RotateCcw className="h-5 w-5 mr-2" />
+						Try Again
+					</Button>
 				</div>
 			)}
 		</div>
