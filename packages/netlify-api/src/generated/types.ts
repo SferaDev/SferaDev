@@ -529,19 +529,24 @@ export type RestoreDatabaseSnapshotRequest = {
 export type DatabaseComputeSettingsRequest = {
 	/**
 	 * @description Minimum compute units (0.25 to 16.0). Must be less than or equal to max_cu.
-	 * @type number | undefined, double
+	 * @minLength 0.25
+	 * @maxLength 16
+	 * @type number, double
 	 */
-	min_cu?: number | undefined;
+	min_cu?: (number | null) | undefined;
 	/**
 	 * @description Maximum compute units (0.25 to 16.0). Must be greater than or equal to min_cu. max_cu - min_cu must not exceed 8.0.
-	 * @type number | undefined, double
+	 * @minLength 0.25
+	 * @maxLength 16
+	 * @type number, double
 	 */
-	max_cu?: number | undefined;
+	max_cu?: (number | null) | undefined;
 	/**
 	 * @description Seconds of inactivity before the compute endpoint is suspended. Use -1 for always on, or a non-negative value.
-	 * @type integer | undefined, int64
+	 * @minLength -1
+	 * @type integer, int64
 	 */
-	sleep_timeout_seconds?: number | undefined;
+	sleep_timeout_seconds?: (number | null) | undefined;
 };
 
 /**
@@ -4729,6 +4734,32 @@ export type CreateSiteSnippetSnippet = {
 	goal_position?: string | undefined;
 };
 
+/**
+ * @description Request body for setting compute settings. All fields are optional; only provided fields are updated.
+ */
+export type SetSiteDatabaseBranchComputeSettingsComputesettings = {
+	/**
+	 * @description Minimum compute units (0.25 to 16.0). Must be less than or equal to max_cu.
+	 * @minLength 0.25
+	 * @maxLength 16
+	 * @type number, double
+	 */
+	min_cu?: (number | null) | undefined;
+	/**
+	 * @description Maximum compute units (0.25 to 16.0). Must be greater than or equal to min_cu. max_cu - min_cu must not exceed 8.0.
+	 * @minLength 0.25
+	 * @maxLength 16
+	 * @type number, double
+	 */
+	max_cu?: (number | null) | undefined;
+	/**
+	 * @description Seconds of inactivity before the compute endpoint is suspended. Use -1 for always on, or a non-negative value.
+	 * @minLength -1
+	 * @type integer, int64
+	 */
+	sleep_timeout_seconds?: (number | null) | undefined;
+};
+
 export const routesMethodsEnum3 = {
 	GET: "GET",
 	POST: "POST",
@@ -5482,27 +5513,6 @@ export type CreateSiteDevServerHookDevserverhook = {
 	 * @type string | undefined
 	 */
 	type?: CreateSiteDevServerHookDevserverhookTypeEnumKey | undefined;
-};
-
-/**
- * @description Request body for setting compute settings. All fields are optional; only provided fields are updated.
- */
-export type SetSiteDatabaseBranchComputeSettingsComputesettings = {
-	/**
-	 * @description Minimum compute units (0.25 to 16.0). Must be less than or equal to max_cu.
-	 * @type number | undefined, double
-	 */
-	min_cu?: number | undefined;
-	/**
-	 * @description Maximum compute units (0.25 to 16.0). Must be greater than or equal to min_cu. max_cu - min_cu must not exceed 8.0.
-	 * @type number | undefined, double
-	 */
-	max_cu?: number | undefined;
-	/**
-	 * @description Seconds of inactivity before the compute endpoint is suspended. Use -1 for always on, or a non-negative value.
-	 * @type integer | undefined, int64
-	 */
-	sleep_timeout_seconds?: number | undefined;
 };
 
 export const listSitesQueryParamsFilterEnum = {
