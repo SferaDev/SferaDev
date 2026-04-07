@@ -15477,6 +15477,13 @@ export type UserEvent = {
 		| undefined;
 };
 
+export const flagPermanentEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type FlagPermanentEnumKey = (typeof flagPermanentEnum)[keyof typeof flagPermanentEnum];
+
 export const experimentStickyRequirementEnum = {
 	false: false,
 	true: true,
@@ -15706,6 +15713,10 @@ export type Flag = {
 	 * @type string | undefined
 	 */
 	description?: string | undefined;
+	/**
+	 * @type boolean | undefined
+	 */
+	permanent?: FlagPermanentEnumKey | undefined;
 	/**
 	 * @type object | undefined
 	 */
