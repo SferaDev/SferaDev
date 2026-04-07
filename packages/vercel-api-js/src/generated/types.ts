@@ -1891,8 +1891,9 @@ export const payloadPermissionsEnum = {
 	"read-write:project-env-vars-production": "read-write:project-env-vars-production",
 	"read-write:project-flags-non-production": "read-write:project-flags-non-production",
 	"read-write:project-flags-production": "read-write:project-flags-production",
-	"read:project-oidc-token": "read:project-oidc-token",
 	"read-write:domain-registrar": "read-write:domain-registrar",
+	"read:sandbox": "read:sandbox",
+	"read-write:sandbox": "read-write:sandbox",
 } as const;
 
 export type PayloadPermissionsEnumKey =
@@ -1940,8 +1941,9 @@ export const payloadNextPermissionsEnum = {
 	"read-write:project-env-vars-production": "read-write:project-env-vars-production",
 	"read-write:project-flags-non-production": "read-write:project-flags-non-production",
 	"read-write:project-flags-production": "read-write:project-flags-production",
-	"read:project-oidc-token": "read:project-oidc-token",
 	"read-write:domain-registrar": "read-write:domain-registrar",
+	"read:sandbox": "read:sandbox",
+	"read-write:sandbox": "read-write:sandbox",
 } as const;
 
 export type PayloadNextPermissionsEnumKey =
@@ -1997,8 +1999,9 @@ export const beforePermissionsEnum = {
 	"read-write:project-env-vars-production": "read-write:project-env-vars-production",
 	"read-write:project-flags-non-production": "read-write:project-flags-non-production",
 	"read-write:project-flags-production": "read-write:project-flags-production",
-	"read:project-oidc-token": "read:project-oidc-token",
 	"read-write:domain-registrar": "read-write:domain-registrar",
+	"read:sandbox": "read:sandbox",
+	"read-write:sandbox": "read-write:sandbox",
 } as const;
 
 export type BeforePermissionsEnumKey =
@@ -2035,8 +2038,9 @@ export const afterPermissionsEnum = {
 	"read-write:project-env-vars-production": "read-write:project-env-vars-production",
 	"read-write:project-flags-non-production": "read-write:project-flags-non-production",
 	"read-write:project-flags-production": "read-write:project-flags-production",
-	"read:project-oidc-token": "read:project-oidc-token",
 	"read-write:domain-registrar": "read-write:domain-registrar",
+	"read:sandbox": "read:sandbox",
+	"read-write:sandbox": "read-write:sandbox",
 } as const;
 
 export type AfterPermissionsEnumKey =
@@ -2073,8 +2077,9 @@ export const payloadPermissionsEnum2 = {
 	"read-write:project-env-vars-production": "read-write:project-env-vars-production",
 	"read-write:project-flags-non-production": "read-write:project-flags-non-production",
 	"read-write:project-flags-production": "read-write:project-flags-production",
-	"read:project-oidc-token": "read:project-oidc-token",
 	"read-write:domain-registrar": "read-write:domain-registrar",
+	"read:sandbox": "read:sandbox",
+	"read-write:sandbox": "read-write:sandbox",
 } as const;
 
 export type PayloadPermissionsEnum2Key =
