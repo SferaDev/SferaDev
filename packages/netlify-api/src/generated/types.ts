@@ -35,10 +35,19 @@ export type CreateDatabaseBranchRequest = {
 	 */
 	parent_branch_id?: string | undefined;
 	/**
-	 * @description The deploy ID to associate with this branch
+	 * @description The branch identifier
 	 * @type string
 	 */
-	deploy_id: string;
+	branch_id: string;
+	/**
+	 * @description Arbitrary metadata to associate with the branch
+	 * @type object | undefined
+	 */
+	metadata?:
+		| {
+				[key: string]: unknown;
+		  }
+		| undefined;
 };
 
 /**
@@ -50,6 +59,275 @@ export type DatabaseBranchResponse = {
 	 * @type string | undefined
 	 */
 	connection_string?: string | undefined;
+	/**
+	 * @description Metadata associated with the branch
+	 * @type object | undefined
+	 */
+	metadata?:
+		| {
+				[key: string]: unknown;
+		  }
+		| undefined;
+};
+
+export const branchesStateEnum = {
+	init: "init",
+	creating: "creating",
+	resetting: "resetting",
+	ready: "ready",
+	archived: "archived",
+} as const;
+
+export type BranchesStateEnumKey = (typeof branchesStateEnum)[keyof typeof branchesStateEnum];
+
+export const computeCurrentStateEnum = {
+	active: "active",
+	idle: "idle",
+} as const;
+
+export type ComputeCurrentStateEnumKey =
+	(typeof computeCurrentStateEnum)[keyof typeof computeCurrentStateEnum];
+
+/**
+ * @description Response containing a list of database branches
+ */
+export type DatabaseBranchesResponse = {
+	/**
+	 * @description List of database branches
+	 * @type array | undefined
+	 */
+	branches?:
+		| {
+				/**
+				 * @description The branch identifier
+				 * @type string | undefined
+				 */
+				branch_id?: string | undefined;
+				/**
+				 * @description The branch name
+				 * @type string | undefined
+				 */
+				name?: string | undefined;
+				/**
+				 * @description The connection string for the branch
+				 * @type string | undefined
+				 */
+				connection_string?: string | undefined;
+				/**
+				 * @description The current state of the branch
+				 * @type string | undefined
+				 */
+				state?: BranchesStateEnumKey | undefined;
+				/**
+				 * @description The logical size of the branch in bytes
+				 * @type integer | undefined, int64
+				 */
+				logical_size_bytes?: number | undefined;
+				/**
+				 * @description When the branch was created
+				 * @type string | undefined, dateTime
+				 */
+				created_at?: string | undefined;
+				/**
+				 * @description When the branch was last updated
+				 * @type string | undefined, dateTime
+				 */
+				updated_at?: string | undefined;
+				/**
+				 * @description When the branch was last active
+				 * @type string | undefined, dateTime
+				 */
+				last_active_at?: string | undefined;
+				/**
+				 * @description Compute endpoint status for a branch
+				 * @type object | undefined
+				 */
+				compute?:
+					| {
+							/**
+							 * @description The current state of the compute endpoint
+							 * @type string | undefined
+							 */
+							current_state?: ComputeCurrentStateEnumKey | undefined;
+							/**
+							 * @description Minimum compute units for autoscaling
+							 * @type number | undefined, double
+							 */
+							autoscaling_limit_min_cu?: number | undefined;
+							/**
+							 * @description Maximum compute units for autoscaling
+							 * @type number | undefined, double
+							 */
+							autoscaling_limit_max_cu?: number | undefined;
+							/**
+							 * @description Seconds of inactivity before the compute endpoint is suspended
+							 * @type integer | undefined, int64
+							 */
+							suspend_timeout_seconds?: number | undefined;
+							/**
+							 * @description When the compute endpoint was last active
+							 * @type string | undefined, dateTime
+							 */
+							last_active?: string | undefined;
+					  }
+					| undefined;
+				/**
+				 * @description Metadata associated with the branch
+				 * @type object | undefined
+				 */
+				metadata?:
+					| {
+							[key: string]: unknown;
+					  }
+					| undefined;
+		  }[]
+		| undefined;
+};
+
+export const databaseBranchDetailStateEnum = {
+	init: "init",
+	creating: "creating",
+	resetting: "resetting",
+	ready: "ready",
+	archived: "archived",
+} as const;
+
+export type DatabaseBranchDetailStateEnumKey =
+	(typeof databaseBranchDetailStateEnum)[keyof typeof databaseBranchDetailStateEnum];
+
+export const computeCurrentStateEnum2 = {
+	active: "active",
+	idle: "idle",
+} as const;
+
+export type ComputeCurrentStateEnum2Key =
+	(typeof computeCurrentStateEnum2)[keyof typeof computeCurrentStateEnum2];
+
+/**
+ * @description Detailed information about a database branch
+ */
+export type DatabaseBranchDetail = {
+	/**
+	 * @description The branch identifier
+	 * @type string | undefined
+	 */
+	branch_id?: string | undefined;
+	/**
+	 * @description The branch name
+	 * @type string | undefined
+	 */
+	name?: string | undefined;
+	/**
+	 * @description The connection string for the branch
+	 * @type string | undefined
+	 */
+	connection_string?: string | undefined;
+	/**
+	 * @description The current state of the branch
+	 * @type string | undefined
+	 */
+	state?: DatabaseBranchDetailStateEnumKey | undefined;
+	/**
+	 * @description The logical size of the branch in bytes
+	 * @type integer | undefined, int64
+	 */
+	logical_size_bytes?: number | undefined;
+	/**
+	 * @description When the branch was created
+	 * @type string | undefined, dateTime
+	 */
+	created_at?: string | undefined;
+	/**
+	 * @description When the branch was last updated
+	 * @type string | undefined, dateTime
+	 */
+	updated_at?: string | undefined;
+	/**
+	 * @description When the branch was last active
+	 * @type string | undefined, dateTime
+	 */
+	last_active_at?: string | undefined;
+	/**
+	 * @description Compute endpoint status for a branch
+	 * @type object | undefined
+	 */
+	compute?:
+		| {
+				/**
+				 * @description The current state of the compute endpoint
+				 * @type string | undefined
+				 */
+				current_state?: ComputeCurrentStateEnum2Key | undefined;
+				/**
+				 * @description Minimum compute units for autoscaling
+				 * @type number | undefined, double
+				 */
+				autoscaling_limit_min_cu?: number | undefined;
+				/**
+				 * @description Maximum compute units for autoscaling
+				 * @type number | undefined, double
+				 */
+				autoscaling_limit_max_cu?: number | undefined;
+				/**
+				 * @description Seconds of inactivity before the compute endpoint is suspended
+				 * @type integer | undefined, int64
+				 */
+				suspend_timeout_seconds?: number | undefined;
+				/**
+				 * @description When the compute endpoint was last active
+				 * @type string | undefined, dateTime
+				 */
+				last_active?: string | undefined;
+		  }
+		| undefined;
+	/**
+	 * @description Metadata associated with the branch
+	 * @type object | undefined
+	 */
+	metadata?:
+		| {
+				[key: string]: unknown;
+		  }
+		| undefined;
+};
+
+export const databaseBranchComputeCurrentStateEnum = {
+	active: "active",
+	idle: "idle",
+} as const;
+
+export type DatabaseBranchComputeCurrentStateEnumKey =
+	(typeof databaseBranchComputeCurrentStateEnum)[keyof typeof databaseBranchComputeCurrentStateEnum];
+
+/**
+ * @description Compute endpoint status for a branch
+ */
+export type DatabaseBranchCompute = {
+	/**
+	 * @description The current state of the compute endpoint
+	 * @type string | undefined
+	 */
+	current_state?: DatabaseBranchComputeCurrentStateEnumKey | undefined;
+	/**
+	 * @description Minimum compute units for autoscaling
+	 * @type number | undefined, double
+	 */
+	autoscaling_limit_min_cu?: number | undefined;
+	/**
+	 * @description Maximum compute units for autoscaling
+	 * @type number | undefined, double
+	 */
+	autoscaling_limit_max_cu?: number | undefined;
+	/**
+	 * @description Seconds of inactivity before the compute endpoint is suspended
+	 * @type integer | undefined, int64
+	 */
+	suspend_timeout_seconds?: number | undefined;
+	/**
+	 * @description When the compute endpoint was last active
+	 * @type string | undefined, dateTime
+	 */
+	last_active?: string | undefined;
 };
 
 /**
@@ -57,15 +335,37 @@ export type DatabaseBranchResponse = {
  */
 export type CreateDatabaseSnapshotRequest = {
 	/**
-	 * @description The name of the branch to snapshot. Defaults to \"production\" if not specified.
+	 * @description The ID of the branch to snapshot. Defaults to \"production\" if not specified.
 	 * @type string | undefined
 	 */
-	branch_name?: string | undefined;
+	branch_id?: string | undefined;
 	/**
-	 * @description An optional name for the snapshot
+	 * @description A name for the snapshot
 	 * @type string | undefined
 	 */
 	name?: string | undefined;
+	/**
+	 * @description Metadata associated with a snapshot
+	 * @type object | undefined
+	 */
+	metadata?:
+		| {
+				/**
+				 * @description Deploy information associated with the snapshot
+				 * @type object | undefined
+				 */
+				deploy?:
+					| {
+							[key: string]: unknown;
+					  }
+					| undefined;
+				/**
+				 * @description The source that created the snapshot
+				 * @type string | undefined
+				 */
+				source?: string | undefined;
+		  }
+		| undefined;
 };
 
 /**
@@ -78,15 +378,72 @@ export type DatabaseSnapshot = {
 	 */
 	id?: string | undefined;
 	/**
-	 * @description The timestamp when the snapshot was created
-	 * @type string | undefined, dateTime
-	 */
-	timestamp?: string | undefined;
-	/**
 	 * @description The ID of the branch that was snapshotted
 	 * @type string | undefined
 	 */
 	source_branch_id?: string | undefined;
+	/**
+	 * @description Whether this snapshot was manually created
+	 * @type boolean | undefined
+	 */
+	manual?: boolean | undefined;
+	/**
+	 * @description When the snapshot was created
+	 * @type string | undefined, dateTime
+	 */
+	created_at?: string | undefined;
+	/**
+	 * @description When the snapshot expires
+	 * @type string | undefined, dateTime
+	 */
+	expires_at?: string | undefined;
+	/**
+	 * @description The point-in-time timestamp of the snapshot
+	 * @type string | undefined, dateTime
+	 */
+	timestamp?: string | undefined;
+	/**
+	 * @description Metadata associated with a snapshot
+	 * @type object | undefined
+	 */
+	metadata?:
+		| {
+				/**
+				 * @description Deploy information associated with the snapshot
+				 * @type object | undefined
+				 */
+				deploy?:
+					| {
+							[key: string]: unknown;
+					  }
+					| undefined;
+				/**
+				 * @description The source that created the snapshot
+				 * @type string | undefined
+				 */
+				source?: string | undefined;
+		  }
+		| undefined;
+};
+
+/**
+ * @description Metadata associated with a snapshot
+ */
+export type DatabaseSnapshotMetadata = {
+	/**
+	 * @description Deploy information associated with the snapshot
+	 * @type object | undefined
+	 */
+	deploy?:
+		| {
+				[key: string]: unknown;
+		  }
+		| undefined;
+	/**
+	 * @description The source that created the snapshot
+	 * @type string | undefined
+	 */
+	source?: string | undefined;
 };
 
 /**
@@ -105,15 +462,52 @@ export type DatabaseSnapshotsResponse = {
 				 */
 				id?: string | undefined;
 				/**
-				 * @description The timestamp when the snapshot was created
-				 * @type string | undefined, dateTime
-				 */
-				timestamp?: string | undefined;
-				/**
 				 * @description The ID of the branch that was snapshotted
 				 * @type string | undefined
 				 */
 				source_branch_id?: string | undefined;
+				/**
+				 * @description Whether this snapshot was manually created
+				 * @type boolean | undefined
+				 */
+				manual?: boolean | undefined;
+				/**
+				 * @description When the snapshot was created
+				 * @type string | undefined, dateTime
+				 */
+				created_at?: string | undefined;
+				/**
+				 * @description When the snapshot expires
+				 * @type string | undefined, dateTime
+				 */
+				expires_at?: string | undefined;
+				/**
+				 * @description The point-in-time timestamp of the snapshot
+				 * @type string | undefined, dateTime
+				 */
+				timestamp?: string | undefined;
+				/**
+				 * @description Metadata associated with a snapshot
+				 * @type object | undefined
+				 */
+				metadata?:
+					| {
+							/**
+							 * @description Deploy information associated with the snapshot
+							 * @type object | undefined
+							 */
+							deploy?:
+								| {
+										[key: string]: unknown;
+								  }
+								| undefined;
+							/**
+							 * @description The source that created the snapshot
+							 * @type string | undefined
+							 */
+							source?: string | undefined;
+					  }
+					| undefined;
 		  }[]
 		| undefined;
 };
@@ -123,10 +517,63 @@ export type DatabaseSnapshotsResponse = {
  */
 export type RestoreDatabaseSnapshotRequest = {
 	/**
-	 * @description The name of the branch to restore the snapshot to. Defaults to \"production\" if not specified.
+	 * @description The ID of the branch to restore the snapshot to. Defaults to \"production\" if not specified.
 	 * @type string | undefined
 	 */
-	branch_name?: string | undefined;
+	branch_id?: string | undefined;
+};
+
+/**
+ * @description Request body for setting compute settings. All fields are optional; only provided fields are updated.
+ */
+export type DatabaseComputeSettingsRequest = {
+	/**
+	 * @description Minimum compute units (0.25 to 16.0). Must be less than or equal to max_cu.
+	 * @type number | undefined, double
+	 */
+	min_cu?: number | undefined;
+	/**
+	 * @description Maximum compute units (0.25 to 16.0). Must be greater than or equal to min_cu. max_cu - min_cu must not exceed 8.0.
+	 * @type number | undefined, double
+	 */
+	max_cu?: number | undefined;
+	/**
+	 * @description Seconds of inactivity before the compute endpoint is suspended. Use -1 for always on, or a non-negative value.
+	 * @type integer | undefined, int64
+	 */
+	sleep_timeout_seconds?: number | undefined;
+};
+
+/**
+ * @description Compute settings for a database or branch
+ */
+export type DatabaseComputeSettings = {
+	/**
+	 * @description Minimum compute units
+	 * @type number | undefined, double
+	 */
+	min_cu?: number | undefined;
+	/**
+	 * @description Maximum compute units
+	 * @type number | undefined, double
+	 */
+	max_cu?: number | undefined;
+	/**
+	 * @description Seconds of inactivity before suspension
+	 * @type integer | undefined, int64
+	 */
+	sleep_timeout_seconds?: number | undefined;
+};
+
+/**
+ * @description Request body for running database migrations
+ */
+export type RunDatabaseMigrationsRequest = {
+	/**
+	 * @description If true, validates migrations without applying them.
+	 * @type boolean | undefined
+	 */
+	dry_run?: boolean | undefined;
 };
 
 export type DeployValidationsReport = {
@@ -5035,6 +5482,27 @@ export type CreateSiteDevServerHookDevserverhook = {
 	 * @type string | undefined
 	 */
 	type?: CreateSiteDevServerHookDevserverhookTypeEnumKey | undefined;
+};
+
+/**
+ * @description Request body for setting compute settings. All fields are optional; only provided fields are updated.
+ */
+export type SetSiteDatabaseBranchComputeSettingsComputesettings = {
+	/**
+	 * @description Minimum compute units (0.25 to 16.0). Must be less than or equal to max_cu.
+	 * @type number | undefined, double
+	 */
+	min_cu?: number | undefined;
+	/**
+	 * @description Maximum compute units (0.25 to 16.0). Must be greater than or equal to min_cu. max_cu - min_cu must not exceed 8.0.
+	 * @type number | undefined, double
+	 */
+	max_cu?: number | undefined;
+	/**
+	 * @description Seconds of inactivity before the compute endpoint is suspended. Use -1 for always on, or a non-negative value.
+	 * @type integer | undefined, int64
+	 */
+	sleep_timeout_seconds?: number | undefined;
 };
 
 export const listSitesQueryParamsFilterEnum = {
@@ -20861,6 +21329,22 @@ export type GetSiteDatabasePathParams = {
 	site_id: string;
 };
 
+export const getSiteDatabaseQueryParamsRoleEnum = {
+	netlifydb_owner: "netlifydb_owner",
+	netlifydb_readonly: "netlifydb_readonly",
+} as const;
+
+export type GetSiteDatabaseQueryParamsRoleEnumKey =
+	(typeof getSiteDatabaseQueryParamsRoleEnum)[keyof typeof getSiteDatabaseQueryParamsRoleEnum];
+
+export type GetSiteDatabaseQueryParams = {
+	/**
+	 * @description The database role to use for the connection string. Defaults to netlifydb_owner if not specified.
+	 * @type string | undefined
+	 */
+	role?: GetSiteDatabaseQueryParamsRoleEnumKey | undefined;
+};
+
 /**
  * @description OK
  */
@@ -20891,6 +21375,7 @@ export type GetSiteDatabaseQueryResponse = GetSiteDatabase200;
 export type GetSiteDatabaseQuery = {
 	Response: GetSiteDatabase200;
 	PathParams: GetSiteDatabasePathParams;
+	QueryParams: GetSiteDatabaseQueryParams;
 	Errors: any;
 };
 
@@ -20936,7 +21421,7 @@ export type CreateSiteDatabaseBranchPathParams = {
 };
 
 /**
- * @description Branch already exists for this deploy
+ * @description Branch already exists
  */
 export type CreateSiteDatabaseBranch200 = {
 	/**
@@ -20944,6 +21429,15 @@ export type CreateSiteDatabaseBranch200 = {
 	 * @type string | undefined
 	 */
 	connection_string?: string | undefined;
+	/**
+	 * @description Metadata associated with the branch
+	 * @type object | undefined
+	 */
+	metadata?:
+		| {
+				[key: string]: unknown;
+		  }
+		| undefined;
 };
 
 /**
@@ -20955,6 +21449,15 @@ export type CreateSiteDatabaseBranch201 = {
 	 * @type string | undefined
 	 */
 	connection_string?: string | undefined;
+	/**
+	 * @description Metadata associated with the branch
+	 * @type object | undefined
+	 */
+	metadata?:
+		| {
+				[key: string]: unknown;
+		  }
+		| undefined;
 };
 
 /**
@@ -20978,10 +21481,19 @@ export type CreateSiteDatabaseBranchMutationRequest = {
 	 */
 	parent_branch_id?: string | undefined;
 	/**
-	 * @description The deploy ID to associate with this branch
+	 * @description The branch identifier
 	 * @type string
 	 */
-	deploy_id: string;
+	branch_id: string;
+	/**
+	 * @description Arbitrary metadata to associate with the branch
+	 * @type object | undefined
+	 */
+	metadata?:
+		| {
+				[key: string]: unknown;
+		  }
+		| undefined;
 };
 
 export type CreateSiteDatabaseBranchMutationResponse =
@@ -20995,16 +21507,175 @@ export type CreateSiteDatabaseBranchMutation = {
 	Errors: any;
 };
 
+export type ListSiteDatabaseBranchesPathParams = {
+	/**
+	 * @type string
+	 */
+	site_id: string;
+};
+
+export const branchesStateEnum2 = {
+	init: "init",
+	creating: "creating",
+	resetting: "resetting",
+	ready: "ready",
+	archived: "archived",
+} as const;
+
+export type BranchesStateEnum2Key = (typeof branchesStateEnum2)[keyof typeof branchesStateEnum2];
+
+export const computeCurrentStateEnum3 = {
+	active: "active",
+	idle: "idle",
+} as const;
+
+export type ComputeCurrentStateEnum3Key =
+	(typeof computeCurrentStateEnum3)[keyof typeof computeCurrentStateEnum3];
+
+/**
+ * @description OK
+ */
+export type ListSiteDatabaseBranches200 = {
+	/**
+	 * @description List of database branches
+	 * @type array | undefined
+	 */
+	branches?:
+		| {
+				/**
+				 * @description The branch identifier
+				 * @type string | undefined
+				 */
+				branch_id?: string | undefined;
+				/**
+				 * @description The branch name
+				 * @type string | undefined
+				 */
+				name?: string | undefined;
+				/**
+				 * @description The connection string for the branch
+				 * @type string | undefined
+				 */
+				connection_string?: string | undefined;
+				/**
+				 * @description The current state of the branch
+				 * @type string | undefined
+				 */
+				state?: BranchesStateEnum2Key | undefined;
+				/**
+				 * @description The logical size of the branch in bytes
+				 * @type integer | undefined, int64
+				 */
+				logical_size_bytes?: number | undefined;
+				/**
+				 * @description When the branch was created
+				 * @type string | undefined, dateTime
+				 */
+				created_at?: string | undefined;
+				/**
+				 * @description When the branch was last updated
+				 * @type string | undefined, dateTime
+				 */
+				updated_at?: string | undefined;
+				/**
+				 * @description When the branch was last active
+				 * @type string | undefined, dateTime
+				 */
+				last_active_at?: string | undefined;
+				/**
+				 * @description Compute endpoint status for a branch
+				 * @type object | undefined
+				 */
+				compute?:
+					| {
+							/**
+							 * @description The current state of the compute endpoint
+							 * @type string | undefined
+							 */
+							current_state?: ComputeCurrentStateEnum3Key | undefined;
+							/**
+							 * @description Minimum compute units for autoscaling
+							 * @type number | undefined, double
+							 */
+							autoscaling_limit_min_cu?: number | undefined;
+							/**
+							 * @description Maximum compute units for autoscaling
+							 * @type number | undefined, double
+							 */
+							autoscaling_limit_max_cu?: number | undefined;
+							/**
+							 * @description Seconds of inactivity before the compute endpoint is suspended
+							 * @type integer | undefined, int64
+							 */
+							suspend_timeout_seconds?: number | undefined;
+							/**
+							 * @description When the compute endpoint was last active
+							 * @type string | undefined, dateTime
+							 */
+							last_active?: string | undefined;
+					  }
+					| undefined;
+				/**
+				 * @description Metadata associated with the branch
+				 * @type object | undefined
+				 */
+				metadata?:
+					| {
+							[key: string]: unknown;
+					  }
+					| undefined;
+		  }[]
+		| undefined;
+};
+
+/**
+ * @description error
+ */
+export type ListSiteDatabaseBranchesError = {
+	/**
+	 * @type integer | undefined, int64
+	 */
+	code?: number | undefined;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
+export type ListSiteDatabaseBranchesQueryResponse = ListSiteDatabaseBranches200;
+
+export type ListSiteDatabaseBranchesQuery = {
+	Response: ListSiteDatabaseBranches200;
+	PathParams: ListSiteDatabaseBranchesPathParams;
+	Errors: any;
+};
+
 export type GetSiteDatabaseBranchPathParams = {
 	/**
 	 * @type string
 	 */
 	site_id: string;
 	/**
-	 * @description The deploy ID associated with the database branch
+	 * @description The branch ID
 	 * @type string
 	 */
-	deploy_id: string;
+	branch_id: string;
+};
+
+export const getSiteDatabaseBranchQueryParamsRoleEnum = {
+	netlifydb_owner: "netlifydb_owner",
+	netlifydb_readonly: "netlifydb_readonly",
+} as const;
+
+export type GetSiteDatabaseBranchQueryParamsRoleEnumKey =
+	(typeof getSiteDatabaseBranchQueryParamsRoleEnum)[keyof typeof getSiteDatabaseBranchQueryParamsRoleEnum];
+
+export type GetSiteDatabaseBranchQueryParams = {
+	/**
+	 * @description The database role to use for the connection string. Defaults to netlifydb_owner if not specified.
+	 * @type string | undefined
+	 */
+	role?: GetSiteDatabaseBranchQueryParamsRoleEnumKey | undefined;
 };
 
 /**
@@ -21016,10 +21687,19 @@ export type GetSiteDatabaseBranch200 = {
 	 * @type string | undefined
 	 */
 	connection_string?: string | undefined;
+	/**
+	 * @description Metadata associated with the branch
+	 * @type object | undefined
+	 */
+	metadata?:
+		| {
+				[key: string]: unknown;
+		  }
+		| undefined;
 };
 
 /**
- * @description Branch not found for this deploy
+ * @description Branch not found
  */
 export type GetSiteDatabaseBranch404 = unknown;
 
@@ -21042,6 +21722,7 @@ export type GetSiteDatabaseBranchQueryResponse = GetSiteDatabaseBranch200;
 export type GetSiteDatabaseBranchQuery = {
 	Response: GetSiteDatabaseBranch200;
 	PathParams: GetSiteDatabaseBranchPathParams;
+	QueryParams: GetSiteDatabaseBranchQueryParams;
 	Errors: GetSiteDatabaseBranch404;
 };
 
@@ -21051,10 +21732,10 @@ export type DeleteSiteDatabaseBranchPathParams = {
 	 */
 	site_id: string;
 	/**
-	 * @description The deploy ID associated with the database branch
+	 * @description The branch ID
 	 * @type string
 	 */
-	deploy_id: string;
+	branch_id: string;
 };
 
 /**
@@ -21084,6 +21765,274 @@ export type DeleteSiteDatabaseBranchMutation = {
 	Errors: any;
 };
 
+export type SetSiteDatabaseBranchComputeSettingsPathParams = {
+	/**
+	 * @type string
+	 */
+	site_id: string;
+	/**
+	 * @description The branch ID
+	 * @type string
+	 */
+	branch_id: string;
+};
+
+/**
+ * @description OK
+ */
+export type SetSiteDatabaseBranchComputeSettings200 = {
+	/**
+	 * @description Minimum compute units
+	 * @type number | undefined, double
+	 */
+	min_cu?: number | undefined;
+	/**
+	 * @description Maximum compute units
+	 * @type number | undefined, double
+	 */
+	max_cu?: number | undefined;
+	/**
+	 * @description Seconds of inactivity before suspension
+	 * @type integer | undefined, int64
+	 */
+	sleep_timeout_seconds?: number | undefined;
+};
+
+/**
+ * @description Compute customization requires a Pro or higher plan
+ */
+export type SetSiteDatabaseBranchComputeSettings403 = unknown;
+
+/**
+ * @description error
+ */
+export type SetSiteDatabaseBranchComputeSettingsError = {
+	/**
+	 * @type integer | undefined, int64
+	 */
+	code?: number | undefined;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
+export type SetSiteDatabaseBranchComputeSettingsMutationResponse =
+	SetSiteDatabaseBranchComputeSettings200;
+
+export type SetSiteDatabaseBranchComputeSettingsMutation = {
+	Response: SetSiteDatabaseBranchComputeSettings200;
+	PathParams: SetSiteDatabaseBranchComputeSettingsPathParams;
+	Errors: SetSiteDatabaseBranchComputeSettings403;
+};
+
+export type SetSiteDatabaseComputeSettingsPathParams = {
+	/**
+	 * @type string
+	 */
+	site_id: string;
+};
+
+/**
+ * @description OK
+ */
+export type SetSiteDatabaseComputeSettings200 = {
+	/**
+	 * @description Minimum compute units
+	 * @type number | undefined, double
+	 */
+	min_cu?: number | undefined;
+	/**
+	 * @description Maximum compute units
+	 * @type number | undefined, double
+	 */
+	max_cu?: number | undefined;
+	/**
+	 * @description Seconds of inactivity before suspension
+	 * @type integer | undefined, int64
+	 */
+	sleep_timeout_seconds?: number | undefined;
+};
+
+/**
+ * @description Compute customization requires a Pro or higher plan
+ */
+export type SetSiteDatabaseComputeSettings403 = unknown;
+
+/**
+ * @description error
+ */
+export type SetSiteDatabaseComputeSettingsError = {
+	/**
+	 * @type integer | undefined, int64
+	 */
+	code?: number | undefined;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
+export type SetSiteDatabaseComputeSettingsMutationResponse = SetSiteDatabaseComputeSettings200;
+
+export type SetSiteDatabaseComputeSettingsMutation = {
+	Response: SetSiteDatabaseComputeSettings200;
+	PathParams: SetSiteDatabaseComputeSettingsPathParams;
+	Errors: SetSiteDatabaseComputeSettings403;
+};
+
+export type GetSiteDatabaseComputeSettingsPathParams = {
+	/**
+	 * @type string
+	 */
+	site_id: string;
+};
+
+/**
+ * @description OK
+ */
+export type GetSiteDatabaseComputeSettings200 = {
+	/**
+	 * @description Minimum compute units
+	 * @type number | undefined, double
+	 */
+	min_cu?: number | undefined;
+	/**
+	 * @description Maximum compute units
+	 * @type number | undefined, double
+	 */
+	max_cu?: number | undefined;
+	/**
+	 * @description Seconds of inactivity before suspension
+	 * @type integer | undefined, int64
+	 */
+	sleep_timeout_seconds?: number | undefined;
+};
+
+/**
+ * @description Compute customization requires a Pro or higher plan
+ */
+export type GetSiteDatabaseComputeSettings403 = unknown;
+
+/**
+ * @description error
+ */
+export type GetSiteDatabaseComputeSettingsError = {
+	/**
+	 * @type integer | undefined, int64
+	 */
+	code?: number | undefined;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
+export type GetSiteDatabaseComputeSettingsQueryResponse = GetSiteDatabaseComputeSettings200;
+
+export type GetSiteDatabaseComputeSettingsQuery = {
+	Response: GetSiteDatabaseComputeSettings200;
+	PathParams: GetSiteDatabaseComputeSettingsPathParams;
+	Errors: GetSiteDatabaseComputeSettings403;
+};
+
+export type ClearSiteDatabaseComputeSettingsPathParams = {
+	/**
+	 * @type string
+	 */
+	site_id: string;
+};
+
+/**
+ * @description Cleared
+ */
+export type ClearSiteDatabaseComputeSettings204 = unknown;
+
+/**
+ * @description Compute customization requires a Pro or higher plan
+ */
+export type ClearSiteDatabaseComputeSettings403 = unknown;
+
+/**
+ * @description error
+ */
+export type ClearSiteDatabaseComputeSettingsError = {
+	/**
+	 * @type integer | undefined, int64
+	 */
+	code?: number | undefined;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
+export type ClearSiteDatabaseComputeSettingsMutationResponse = ClearSiteDatabaseComputeSettings204;
+
+export type ClearSiteDatabaseComputeSettingsMutation = {
+	Response: ClearSiteDatabaseComputeSettings204;
+	PathParams: ClearSiteDatabaseComputeSettingsPathParams;
+	Errors: ClearSiteDatabaseComputeSettings403;
+};
+
+export type RunSiteDatabaseMigrationsPathParams = {
+	/**
+	 * @type string
+	 */
+	site_id: string;
+	/**
+	 * @description The deploy ID to run migrations for
+	 * @type string
+	 */
+	deploy_id: string;
+};
+
+/**
+ * @description OK
+ */
+export type RunSiteDatabaseMigrations200 = unknown;
+
+/**
+ * @description Migration conflict - migration modified or removed after being applied
+ */
+export type RunSiteDatabaseMigrations409 = unknown;
+
+/**
+ * @description Migration validation failed
+ */
+export type RunSiteDatabaseMigrations422 = unknown;
+
+/**
+ * @description error
+ */
+export type RunSiteDatabaseMigrationsError = {
+	/**
+	 * @type integer | undefined, int64
+	 */
+	code?: number | undefined;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
+export type RunSiteDatabaseMigrationsMutationRequest = {
+	/**
+	 * @description If true, validates migrations without applying them.
+	 * @type boolean | undefined
+	 */
+	dry_run?: boolean | undefined;
+};
+
+export type RunSiteDatabaseMigrationsMutationResponse = RunSiteDatabaseMigrations200;
+
+export type RunSiteDatabaseMigrationsMutation = {
+	Response: RunSiteDatabaseMigrations200;
+	Request: RunSiteDatabaseMigrationsMutationRequest;
+	PathParams: RunSiteDatabaseMigrationsPathParams;
+	Errors: RunSiteDatabaseMigrations409 | RunSiteDatabaseMigrations422;
+};
+
 export type CreateSiteDatabaseSnapshotPathParams = {
 	/**
 	 * @type string
@@ -21101,15 +22050,52 @@ export type CreateSiteDatabaseSnapshot201 = {
 	 */
 	id?: string | undefined;
 	/**
-	 * @description The timestamp when the snapshot was created
-	 * @type string | undefined, dateTime
-	 */
-	timestamp?: string | undefined;
-	/**
 	 * @description The ID of the branch that was snapshotted
 	 * @type string | undefined
 	 */
 	source_branch_id?: string | undefined;
+	/**
+	 * @description Whether this snapshot was manually created
+	 * @type boolean | undefined
+	 */
+	manual?: boolean | undefined;
+	/**
+	 * @description When the snapshot was created
+	 * @type string | undefined, dateTime
+	 */
+	created_at?: string | undefined;
+	/**
+	 * @description When the snapshot expires
+	 * @type string | undefined, dateTime
+	 */
+	expires_at?: string | undefined;
+	/**
+	 * @description The point-in-time timestamp of the snapshot
+	 * @type string | undefined, dateTime
+	 */
+	timestamp?: string | undefined;
+	/**
+	 * @description Metadata associated with a snapshot
+	 * @type object | undefined
+	 */
+	metadata?:
+		| {
+				/**
+				 * @description Deploy information associated with the snapshot
+				 * @type object | undefined
+				 */
+				deploy?:
+					| {
+							[key: string]: unknown;
+					  }
+					| undefined;
+				/**
+				 * @description The source that created the snapshot
+				 * @type string | undefined
+				 */
+				source?: string | undefined;
+		  }
+		| undefined;
 };
 
 /**
@@ -21128,15 +22114,37 @@ export type CreateSiteDatabaseSnapshotError = {
 
 export type CreateSiteDatabaseSnapshotMutationRequest = {
 	/**
-	 * @description The name of the branch to snapshot. Defaults to \"production\" if not specified.
+	 * @description The ID of the branch to snapshot. Defaults to \"production\" if not specified.
 	 * @type string | undefined
 	 */
-	branch_name?: string | undefined;
+	branch_id?: string | undefined;
 	/**
-	 * @description An optional name for the snapshot
+	 * @description A name for the snapshot
 	 * @type string | undefined
 	 */
 	name?: string | undefined;
+	/**
+	 * @description Metadata associated with a snapshot
+	 * @type object | undefined
+	 */
+	metadata?:
+		| {
+				/**
+				 * @description Deploy information associated with the snapshot
+				 * @type object | undefined
+				 */
+				deploy?:
+					| {
+							[key: string]: unknown;
+					  }
+					| undefined;
+				/**
+				 * @description The source that created the snapshot
+				 * @type string | undefined
+				 */
+				source?: string | undefined;
+		  }
+		| undefined;
 };
 
 export type CreateSiteDatabaseSnapshotMutationResponse = CreateSiteDatabaseSnapshot201;
@@ -21171,15 +22179,52 @@ export type ListSiteDatabaseSnapshots200 = {
 				 */
 				id?: string | undefined;
 				/**
-				 * @description The timestamp when the snapshot was created
-				 * @type string | undefined, dateTime
-				 */
-				timestamp?: string | undefined;
-				/**
 				 * @description The ID of the branch that was snapshotted
 				 * @type string | undefined
 				 */
 				source_branch_id?: string | undefined;
+				/**
+				 * @description Whether this snapshot was manually created
+				 * @type boolean | undefined
+				 */
+				manual?: boolean | undefined;
+				/**
+				 * @description When the snapshot was created
+				 * @type string | undefined, dateTime
+				 */
+				created_at?: string | undefined;
+				/**
+				 * @description When the snapshot expires
+				 * @type string | undefined, dateTime
+				 */
+				expires_at?: string | undefined;
+				/**
+				 * @description The point-in-time timestamp of the snapshot
+				 * @type string | undefined, dateTime
+				 */
+				timestamp?: string | undefined;
+				/**
+				 * @description Metadata associated with a snapshot
+				 * @type object | undefined
+				 */
+				metadata?:
+					| {
+							/**
+							 * @description Deploy information associated with the snapshot
+							 * @type object | undefined
+							 */
+							deploy?:
+								| {
+										[key: string]: unknown;
+								  }
+								| undefined;
+							/**
+							 * @description The source that created the snapshot
+							 * @type string | undefined
+							 */
+							source?: string | undefined;
+					  }
+					| undefined;
 		  }[]
 		| undefined;
 };
@@ -21278,10 +22323,10 @@ export type RestoreSiteDatabaseSnapshotError = {
 
 export type RestoreSiteDatabaseSnapshotMutationRequest = {
 	/**
-	 * @description The name of the branch to restore the snapshot to. Defaults to \"production\" if not specified.
+	 * @description The ID of the branch to restore the snapshot to. Defaults to \"production\" if not specified.
 	 * @type string | undefined
 	 */
-	branch_name?: string | undefined;
+	branch_id?: string | undefined;
 };
 
 export type RestoreSiteDatabaseSnapshotMutationResponse = RestoreSiteDatabaseSnapshot200;

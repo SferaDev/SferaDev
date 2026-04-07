@@ -41,7 +41,13 @@ export const createDatabaseBranchRequestSchema = z
 					"The ID of the parent branch to create the new branch from. Defaults to the production branch if not specified.",
 				),
 		),
-		deploy_id: z.string().describe("The deploy ID to associate with this branch"),
+		branch_id: z.string().describe("The branch identifier"),
+		metadata: z.optional(
+			z
+				.object({})
+				.catchall(z.unknown())
+				.describe("Arbitrary metadata to associate with the branch"),
+		),
 	})
 	.describe("Request body for creating a database branch");
 
@@ -53,20 +59,161 @@ export const databaseBranchResponseSchema = z
 		connection_string: z.optional(
 			z.string().describe("The connection string for the database branch"),
 		),
+		metadata: z.optional(
+			z.object({}).catchall(z.unknown()).describe("Metadata associated with the branch"),
+		),
 	})
 	.describe("Response containing the database branch connection string");
+
+/**
+ * @description Response containing a list of database branches
+ */
+export const databaseBranchesResponseSchema = z
+	.object({
+		branches: z.optional(
+			z
+				.array(
+					z
+						.object({
+							branch_id: z.optional(z.string().describe("The branch identifier")),
+							name: z.optional(z.string().describe("The branch name")),
+							connection_string: z.optional(
+								z.string().describe("The connection string for the branch"),
+							),
+							state: z.optional(
+								z
+									.enum(["init", "creating", "resetting", "ready", "archived"])
+									.describe("The current state of the branch"),
+							),
+							logical_size_bytes: z.optional(
+								z.int().describe("The logical size of the branch in bytes"),
+							),
+							created_at: z.optional(z.string().describe("When the branch was created")),
+							updated_at: z.optional(z.string().describe("When the branch was last updated")),
+							last_active_at: z.optional(z.string().describe("When the branch was last active")),
+							compute: z.optional(
+								z
+									.object({
+										current_state: z.optional(
+											z
+												.enum(["active", "idle"])
+												.describe("The current state of the compute endpoint"),
+										),
+										autoscaling_limit_min_cu: z.optional(
+											z.number().describe("Minimum compute units for autoscaling"),
+										),
+										autoscaling_limit_max_cu: z.optional(
+											z.number().describe("Maximum compute units for autoscaling"),
+										),
+										suspend_timeout_seconds: z.optional(
+											z
+												.int()
+												.describe("Seconds of inactivity before the compute endpoint is suspended"),
+										),
+										last_active: z.optional(
+											z.string().describe("When the compute endpoint was last active"),
+										),
+									})
+									.describe("Compute endpoint status for a branch"),
+							),
+							metadata: z.optional(
+								z.object({}).catchall(z.unknown()).describe("Metadata associated with the branch"),
+							),
+						})
+						.describe("Detailed information about a database branch"),
+				)
+				.describe("List of database branches"),
+		),
+	})
+	.describe("Response containing a list of database branches");
+
+/**
+ * @description Detailed information about a database branch
+ */
+export const databaseBranchDetailSchema = z
+	.object({
+		branch_id: z.optional(z.string().describe("The branch identifier")),
+		name: z.optional(z.string().describe("The branch name")),
+		connection_string: z.optional(z.string().describe("The connection string for the branch")),
+		state: z.optional(
+			z
+				.enum(["init", "creating", "resetting", "ready", "archived"])
+				.describe("The current state of the branch"),
+		),
+		logical_size_bytes: z.optional(z.int().describe("The logical size of the branch in bytes")),
+		created_at: z.optional(z.string().describe("When the branch was created")),
+		updated_at: z.optional(z.string().describe("When the branch was last updated")),
+		last_active_at: z.optional(z.string().describe("When the branch was last active")),
+		compute: z.optional(
+			z
+				.object({
+					current_state: z.optional(
+						z.enum(["active", "idle"]).describe("The current state of the compute endpoint"),
+					),
+					autoscaling_limit_min_cu: z.optional(
+						z.number().describe("Minimum compute units for autoscaling"),
+					),
+					autoscaling_limit_max_cu: z.optional(
+						z.number().describe("Maximum compute units for autoscaling"),
+					),
+					suspend_timeout_seconds: z.optional(
+						z.int().describe("Seconds of inactivity before the compute endpoint is suspended"),
+					),
+					last_active: z.optional(z.string().describe("When the compute endpoint was last active")),
+				})
+				.describe("Compute endpoint status for a branch"),
+		),
+		metadata: z.optional(
+			z.object({}).catchall(z.unknown()).describe("Metadata associated with the branch"),
+		),
+	})
+	.describe("Detailed information about a database branch");
+
+/**
+ * @description Compute endpoint status for a branch
+ */
+export const databaseBranchComputeSchema = z
+	.object({
+		current_state: z.optional(
+			z.enum(["active", "idle"]).describe("The current state of the compute endpoint"),
+		),
+		autoscaling_limit_min_cu: z.optional(
+			z.number().describe("Minimum compute units for autoscaling"),
+		),
+		autoscaling_limit_max_cu: z.optional(
+			z.number().describe("Maximum compute units for autoscaling"),
+		),
+		suspend_timeout_seconds: z.optional(
+			z.int().describe("Seconds of inactivity before the compute endpoint is suspended"),
+		),
+		last_active: z.optional(z.string().describe("When the compute endpoint was last active")),
+	})
+	.describe("Compute endpoint status for a branch");
 
 /**
  * @description Request body for creating a database snapshot
  */
 export const createDatabaseSnapshotRequestSchema = z
 	.object({
-		branch_name: z.optional(
+		branch_id: z.optional(
 			z
 				.string()
-				.describe('The name of the branch to snapshot. Defaults to "production" if not specified.'),
+				.describe('The ID of the branch to snapshot. Defaults to "production" if not specified.'),
 		),
-		name: z.optional(z.string().describe("An optional name for the snapshot")),
+		name: z.optional(z.string().describe("A name for the snapshot")),
+		metadata: z.optional(
+			z
+				.object({
+					deploy: z.optional(
+						z
+							.object({})
+							.catchall(z.unknown())
+							.describe("Deploy information associated with the snapshot"),
+					),
+					source: z.optional(z.string().describe("The source that created the snapshot")),
+				})
+				.describe("Metadata associated with a snapshot"),
+		),
 	})
 	.describe("Request body for creating a database snapshot");
 
@@ -76,10 +223,41 @@ export const createDatabaseSnapshotRequestSchema = z
 export const databaseSnapshotSchema = z
 	.object({
 		id: z.optional(z.string().describe("The unique identifier of the snapshot")),
-		timestamp: z.optional(z.string().describe("The timestamp when the snapshot was created")),
 		source_branch_id: z.optional(z.string().describe("The ID of the branch that was snapshotted")),
+		manual: z.optional(z.boolean().describe("Whether this snapshot was manually created")),
+		created_at: z.optional(z.string().describe("When the snapshot was created")),
+		expires_at: z.optional(z.string().describe("When the snapshot expires")),
+		timestamp: z.optional(z.string().describe("The point-in-time timestamp of the snapshot")),
+		metadata: z.optional(
+			z
+				.object({
+					deploy: z.optional(
+						z
+							.object({})
+							.catchall(z.unknown())
+							.describe("Deploy information associated with the snapshot"),
+					),
+					source: z.optional(z.string().describe("The source that created the snapshot")),
+				})
+				.describe("Metadata associated with a snapshot"),
+		),
 	})
 	.describe("A point-in-time snapshot of a database branch");
+
+/**
+ * @description Metadata associated with a snapshot
+ */
+export const databaseSnapshotMetadataSchema = z
+	.object({
+		deploy: z.optional(
+			z
+				.object({})
+				.catchall(z.unknown())
+				.describe("Deploy information associated with the snapshot"),
+		),
+		source: z.optional(z.string().describe("The source that created the snapshot")),
+	})
+	.describe("Metadata associated with a snapshot");
 
 /**
  * @description Response containing a list of database snapshots
@@ -92,11 +270,29 @@ export const databaseSnapshotsResponseSchema = z
 					z
 						.object({
 							id: z.optional(z.string().describe("The unique identifier of the snapshot")),
-							timestamp: z.optional(
-								z.string().describe("The timestamp when the snapshot was created"),
-							),
 							source_branch_id: z.optional(
 								z.string().describe("The ID of the branch that was snapshotted"),
+							),
+							manual: z.optional(
+								z.boolean().describe("Whether this snapshot was manually created"),
+							),
+							created_at: z.optional(z.string().describe("When the snapshot was created")),
+							expires_at: z.optional(z.string().describe("When the snapshot expires")),
+							timestamp: z.optional(
+								z.string().describe("The point-in-time timestamp of the snapshot"),
+							),
+							metadata: z.optional(
+								z
+									.object({
+										deploy: z.optional(
+											z
+												.object({})
+												.catchall(z.unknown())
+												.describe("Deploy information associated with the snapshot"),
+										),
+										source: z.optional(z.string().describe("The source that created the snapshot")),
+									})
+									.describe("Metadata associated with a snapshot"),
 							),
 						})
 						.describe("A point-in-time snapshot of a database branch"),
@@ -111,15 +307,66 @@ export const databaseSnapshotsResponseSchema = z
  */
 export const restoreDatabaseSnapshotRequestSchema = z
 	.object({
-		branch_name: z.optional(
+		branch_id: z.optional(
 			z
 				.string()
 				.describe(
-					'The name of the branch to restore the snapshot to. Defaults to "production" if not specified.',
+					'The ID of the branch to restore the snapshot to. Defaults to "production" if not specified.',
 				),
 		),
 	})
 	.describe("Request body for restoring a database snapshot");
+
+/**
+ * @description Request body for setting compute settings. All fields are optional; only provided fields are updated.
+ */
+export const databaseComputeSettingsRequestSchema = z
+	.object({
+		min_cu: z.optional(
+			z
+				.number()
+				.describe("Minimum compute units (0.25 to 16.0). Must be less than or equal to max_cu."),
+		),
+		max_cu: z.optional(
+			z
+				.number()
+				.describe(
+					"Maximum compute units (0.25 to 16.0). Must be greater than or equal to min_cu. max_cu - min_cu must not exceed 8.0.",
+				),
+		),
+		sleep_timeout_seconds: z.optional(
+			z
+				.int()
+				.describe(
+					"Seconds of inactivity before the compute endpoint is suspended. Use -1 for always on, or a non-negative value.",
+				),
+		),
+	})
+	.describe(
+		"Request body for setting compute settings. All fields are optional; only provided fields are updated.",
+	);
+
+/**
+ * @description Compute settings for a database or branch
+ */
+export const databaseComputeSettingsSchema = z
+	.object({
+		min_cu: z.optional(z.number().describe("Minimum compute units")),
+		max_cu: z.optional(z.number().describe("Maximum compute units")),
+		sleep_timeout_seconds: z.optional(z.int().describe("Seconds of inactivity before suspension")),
+	})
+	.describe("Compute settings for a database or branch");
+
+/**
+ * @description Request body for running database migrations
+ */
+export const runDatabaseMigrationsRequestSchema = z
+	.object({
+		dry_run: z.optional(
+			z.boolean().describe("If true, validates migrations without applying them."),
+		),
+	})
+	.describe("Request body for running database migrations");
 
 export const deployValidationsReportSchema = z.object({
 	id: z.optional(z.string().describe("The id of the deploy validations report")),
@@ -1904,6 +2151,35 @@ export const createSiteDevServerHookDevserverhookSchema = z.object({
 	branch: z.optional(z.string()),
 	type: z.optional(z.enum(["new_dev_server", "content_refresh"])),
 });
+
+/**
+ * @description Request body for setting compute settings. All fields are optional; only provided fields are updated.
+ */
+export const setSiteDatabaseBranchComputeSettingsComputesettingsSchema = z
+	.object({
+		min_cu: z.optional(
+			z
+				.number()
+				.describe("Minimum compute units (0.25 to 16.0). Must be less than or equal to max_cu."),
+		),
+		max_cu: z.optional(
+			z
+				.number()
+				.describe(
+					"Maximum compute units (0.25 to 16.0). Must be greater than or equal to min_cu. max_cu - min_cu must not exceed 8.0.",
+				),
+		),
+		sleep_timeout_seconds: z.optional(
+			z
+				.int()
+				.describe(
+					"Seconds of inactivity before the compute endpoint is suspended. Use -1 for always on, or a non-negative value.",
+				),
+		),
+	})
+	.describe(
+		"Request body for setting compute settings. All fields are optional; only provided fields are updated.",
+	);
 
 export const listSitesQueryParamsSchema = z
 	.object({
@@ -8843,6 +9119,18 @@ export const getSiteDatabasePathParamsSchema = z.object({
 	site_id: z.string(),
 });
 
+export const getSiteDatabaseQueryParamsSchema = z
+	.object({
+		role: z.optional(
+			z
+				.enum(["netlifydb_owner", "netlifydb_readonly"])
+				.describe(
+					"The database role to use for the connection string. Defaults to netlifydb_owner if not specified.",
+				),
+		),
+	})
+	.optional();
+
 /**
  * @description OK
  */
@@ -8886,12 +9174,15 @@ export const createSiteDatabaseBranchPathParamsSchema = z.object({
 });
 
 /**
- * @description Branch already exists for this deploy
+ * @description Branch already exists
  */
 export const createSiteDatabaseBranch200Schema = z
 	.object({
 		connection_string: z.optional(
 			z.string().describe("The connection string for the database branch"),
+		),
+		metadata: z.optional(
+			z.object({}).catchall(z.unknown()).describe("Metadata associated with the branch"),
 		),
 	})
 	.describe("Response containing the database branch connection string");
@@ -8903,6 +9194,9 @@ export const createSiteDatabaseBranch201Schema = z
 	.object({
 		connection_string: z.optional(
 			z.string().describe("The connection string for the database branch"),
+		),
+		metadata: z.optional(
+			z.object({}).catchall(z.unknown()).describe("Metadata associated with the branch"),
 		),
 	})
 	.describe("Response containing the database branch connection string");
@@ -8924,7 +9218,13 @@ export const createSiteDatabaseBranchMutationRequestSchema = z
 					"The ID of the parent branch to create the new branch from. Defaults to the production branch if not specified.",
 				),
 		),
-		deploy_id: z.string().describe("The deploy ID to associate with this branch"),
+		branch_id: z.string().describe("The branch identifier"),
+		metadata: z.optional(
+			z
+				.object({})
+				.catchall(z.unknown())
+				.describe("Arbitrary metadata to associate with the branch"),
+		),
 	})
 	.describe("Request body for creating a database branch");
 
@@ -8933,10 +9233,100 @@ export const createSiteDatabaseBranchMutationResponseSchema = z.union([
 	z.lazy(() => createSiteDatabaseBranch201Schema),
 ]);
 
+export const listSiteDatabaseBranchesPathParamsSchema = z.object({
+	site_id: z.string(),
+});
+
+/**
+ * @description OK
+ */
+export const listSiteDatabaseBranches200Schema = z
+	.object({
+		branches: z.optional(
+			z
+				.array(
+					z
+						.object({
+							branch_id: z.optional(z.string().describe("The branch identifier")),
+							name: z.optional(z.string().describe("The branch name")),
+							connection_string: z.optional(
+								z.string().describe("The connection string for the branch"),
+							),
+							state: z.optional(
+								z
+									.enum(["init", "creating", "resetting", "ready", "archived"])
+									.describe("The current state of the branch"),
+							),
+							logical_size_bytes: z.optional(
+								z.int().describe("The logical size of the branch in bytes"),
+							),
+							created_at: z.optional(z.string().describe("When the branch was created")),
+							updated_at: z.optional(z.string().describe("When the branch was last updated")),
+							last_active_at: z.optional(z.string().describe("When the branch was last active")),
+							compute: z.optional(
+								z
+									.object({
+										current_state: z.optional(
+											z
+												.enum(["active", "idle"])
+												.describe("The current state of the compute endpoint"),
+										),
+										autoscaling_limit_min_cu: z.optional(
+											z.number().describe("Minimum compute units for autoscaling"),
+										),
+										autoscaling_limit_max_cu: z.optional(
+											z.number().describe("Maximum compute units for autoscaling"),
+										),
+										suspend_timeout_seconds: z.optional(
+											z
+												.int()
+												.describe("Seconds of inactivity before the compute endpoint is suspended"),
+										),
+										last_active: z.optional(
+											z.string().describe("When the compute endpoint was last active"),
+										),
+									})
+									.describe("Compute endpoint status for a branch"),
+							),
+							metadata: z.optional(
+								z.object({}).catchall(z.unknown()).describe("Metadata associated with the branch"),
+							),
+						})
+						.describe("Detailed information about a database branch"),
+				)
+				.describe("List of database branches"),
+		),
+	})
+	.describe("Response containing a list of database branches");
+
+/**
+ * @description error
+ */
+export const listSiteDatabaseBranchesErrorSchema = z.object({
+	code: z.optional(z.int()),
+	message: z.string(),
+});
+
+export const listSiteDatabaseBranchesQueryResponseSchema = z.lazy(
+	() => listSiteDatabaseBranches200Schema,
+);
+
 export const getSiteDatabaseBranchPathParamsSchema = z.object({
 	site_id: z.string(),
-	deploy_id: z.string().describe("The deploy ID associated with the database branch"),
+	branch_id: z.string().describe("The branch ID"),
 });
+
+export const getSiteDatabaseBranchQueryParamsSchema = z
+	.object({
+		role: z.optional(
+			z
+				.enum(["netlifydb_owner", "netlifydb_readonly"])
+				.describe(
+					"The database role to use for the connection string. Defaults to netlifydb_owner if not specified.",
+				),
+		),
+	})
+	.optional();
 
 /**
  * @description OK
@@ -8946,11 +9336,14 @@ export const getSiteDatabaseBranch200Schema = z
 		connection_string: z.optional(
 			z.string().describe("The connection string for the database branch"),
 		),
+		metadata: z.optional(
+			z.object({}).catchall(z.unknown()).describe("Metadata associated with the branch"),
+		),
 	})
 	.describe("Response containing the database branch connection string");
 
 /**
- * @description Branch not found for this deploy
+ * @description Branch not found
  */
 export const getSiteDatabaseBranch404Schema = z.unknown();
 
@@ -8968,7 +9361,7 @@ export const getSiteDatabaseBranchQueryResponseSchema = z.lazy(
 
 export const deleteSiteDatabaseBranchPathParamsSchema = z.object({
 	site_id: z.string(),
-	deploy_id: z.string().describe("The deploy ID associated with the database branch"),
+	branch_id: z.string().describe("The branch ID"),
 });
 
 /**
@@ -8988,6 +9381,169 @@ export const deleteSiteDatabaseBranchMutationResponseSchema = z.lazy(
 	() => deleteSiteDatabaseBranch204Schema,
 );
 
+export const setSiteDatabaseBranchComputeSettingsPathParamsSchema = z.object({
+	site_id: z.string(),
+	branch_id: z.string().describe("The branch ID"),
+});
+
+/**
+ * @description OK
+ */
+export const setSiteDatabaseBranchComputeSettings200Schema = z
+	.object({
+		min_cu: z.optional(z.number().describe("Minimum compute units")),
+		max_cu: z.optional(z.number().describe("Maximum compute units")),
+		sleep_timeout_seconds: z.optional(z.int().describe("Seconds of inactivity before suspension")),
+	})
+	.describe("Compute settings for a database or branch");
+
+/**
+ * @description Compute customization requires a Pro or higher plan
+ */
+export const setSiteDatabaseBranchComputeSettings403Schema = z.unknown();
+
+/**
+ * @description error
+ */
+export const setSiteDatabaseBranchComputeSettingsErrorSchema = z.object({
+	code: z.optional(z.int()),
+	message: z.string(),
+});
+
+export const setSiteDatabaseBranchComputeSettingsMutationResponseSchema = z.lazy(
+	() => setSiteDatabaseBranchComputeSettings200Schema,
+);
+
+export const setSiteDatabaseComputeSettingsPathParamsSchema = z.object({
+	site_id: z.string(),
+});
+
+/**
+ * @description OK
+ */
+export const setSiteDatabaseComputeSettings200Schema = z
+	.object({
+		min_cu: z.optional(z.number().describe("Minimum compute units")),
+		max_cu: z.optional(z.number().describe("Maximum compute units")),
+		sleep_timeout_seconds: z.optional(z.int().describe("Seconds of inactivity before suspension")),
+	})
+	.describe("Compute settings for a database or branch");
+
+/**
+ * @description Compute customization requires a Pro or higher plan
+ */
+export const setSiteDatabaseComputeSettings403Schema = z.unknown();
+
+/**
+ * @description error
+ */
+export const setSiteDatabaseComputeSettingsErrorSchema = z.object({
+	code: z.optional(z.int()),
+	message: z.string(),
+});
+
+export const setSiteDatabaseComputeSettingsMutationResponseSchema = z.lazy(
+	() => setSiteDatabaseComputeSettings200Schema,
+);
+
+export const getSiteDatabaseComputeSettingsPathParamsSchema = z.object({
+	site_id: z.string(),
+});
+
+/**
+ * @description OK
+ */
+export const getSiteDatabaseComputeSettings200Schema = z
+	.object({
+		min_cu: z.optional(z.number().describe("Minimum compute units")),
+		max_cu: z.optional(z.number().describe("Maximum compute units")),
+		sleep_timeout_seconds: z.optional(z.int().describe("Seconds of inactivity before suspension")),
+	})
+	.describe("Compute settings for a database or branch");
+
+/**
+ * @description Compute customization requires a Pro or higher plan
+ */
+export const getSiteDatabaseComputeSettings403Schema = z.unknown();
+
+/**
+ * @description error
+ */
+export const getSiteDatabaseComputeSettingsErrorSchema = z.object({
+	code: z.optional(z.int()),
+	message: z.string(),
+});
+
+export const getSiteDatabaseComputeSettingsQueryResponseSchema = z.lazy(
+	() => getSiteDatabaseComputeSettings200Schema,
+);
+
+export const clearSiteDatabaseComputeSettingsPathParamsSchema = z.object({
+	site_id: z.string(),
+});
+
+/**
+ * @description Cleared
+ */
+export const clearSiteDatabaseComputeSettings204Schema = z.unknown();
+
+/**
+ * @description Compute customization requires a Pro or higher plan
+ */
+export const clearSiteDatabaseComputeSettings403Schema = z.unknown();
+
+/**
+ * @description error
+ */
+export const clearSiteDatabaseComputeSettingsErrorSchema = z.object({
+	code: z.optional(z.int()),
+	message: z.string(),
+});
+
+export const clearSiteDatabaseComputeSettingsMutationResponseSchema = z.lazy(
+	() => clearSiteDatabaseComputeSettings204Schema,
+);
+
+export const runSiteDatabaseMigrationsPathParamsSchema = z.object({
+	site_id: z.string(),
+	deploy_id: z.string().describe("The deploy ID to run migrations for"),
+});
+
+/**
+ * @description OK
+ */
+export const runSiteDatabaseMigrations200Schema = z.unknown();
+
+/**
+ * @description Migration conflict - migration modified or removed after being applied
+ */
+export const runSiteDatabaseMigrations409Schema = z.unknown();
+
+/**
+ * @description Migration validation failed
+ */
+export const runSiteDatabaseMigrations422Schema = z.unknown();
+
+/**
+ * @description error
+ */
+export const runSiteDatabaseMigrationsErrorSchema = z.object({
+	code: z.optional(z.int()),
+	message: z.string(),
+});
+
+export const runSiteDatabaseMigrationsMutationRequestSchema = z
+	.object({
+		dry_run: z.optional(
+			z.boolean().describe("If true, validates migrations without applying them."),
+		),
+	})
+	.describe("Request body for running database migrations");
+
+export const runSiteDatabaseMigrationsMutationResponseSchema = z.lazy(
+	() => runSiteDatabaseMigrations200Schema,
+);
+
 export const createSiteDatabaseSnapshotPathParamsSchema = z.object({
 	site_id: z.string(),
 });
@@ -8998,8 +9554,24 @@ export const createSiteDatabaseSnapshotPathParamsSchema = z.object({
 export const createSiteDatabaseSnapshot201Schema = z
 	.object({
 		id: z.optional(z.string().describe("The unique identifier of the snapshot")),
-		timestamp: z.optional(z.string().describe("The timestamp when the snapshot was created")),
 		source_branch_id: z.optional(z.string().describe("The ID of the branch that was snapshotted")),
+		manual: z.optional(z.boolean().describe("Whether this snapshot was manually created")),
+		created_at: z.optional(z.string().describe("When the snapshot was created")),
+		expires_at: z.optional(z.string().describe("When the snapshot expires")),
+		timestamp: z.optional(z.string().describe("The point-in-time timestamp of the snapshot")),
+		metadata: z.optional(
+			z
+				.object({
+					deploy: z.optional(
+						z
+							.object({})
+							.catchall(z.unknown())
+							.describe("Deploy information associated with the snapshot"),
+					),
+					source: z.optional(z.string().describe("The source that created the snapshot")),
+				})
+				.describe("Metadata associated with a snapshot"),
+		),
 	})
 	.describe("A point-in-time snapshot of a database branch");
 
@@ -9013,12 +9585,25 @@ export const createSiteDatabaseSnapshotErrorSchema = z.object({
 
 export const createSiteDatabaseSnapshotMutationRequestSchema = z
 	.object({
-		branch_name: z.optional(
+		branch_id: z.optional(
 			z
 				.string()
-				.describe('The name of the branch to snapshot. Defaults to "production" if not specified.'),
+				.describe('The ID of the branch to snapshot. Defaults to "production" if not specified.'),
 		),
-		name: z.optional(z.string().describe("An optional name for the snapshot")),
+		name: z.optional(z.string().describe("A name for the snapshot")),
+		metadata: z.optional(
+			z
+				.object({
+					deploy: z.optional(
+						z
+							.object({})
+							.catchall(z.unknown())
+							.describe("Deploy information associated with the snapshot"),
+					),
+					source: z.optional(z.string().describe("The source that created the snapshot")),
+				})
+				.describe("Metadata associated with a snapshot"),
+		),
 	})
 	.describe("Request body for creating a database snapshot");
 
@@ -9041,11 +9626,29 @@ export const listSiteDatabaseSnapshots200Schema = z
 					z
 						.object({
 							id: z.optional(z.string().describe("The unique identifier of the snapshot")),
-							timestamp: z.optional(
-								z.string().describe("The timestamp when the snapshot was created"),
-							),
 							source_branch_id: z.optional(
 								z.string().describe("The ID of the branch that was snapshotted"),
+							),
+							manual: z.optional(
+								z.boolean().describe("Whether this snapshot was manually created"),
+							),
+							created_at: z.optional(z.string().describe("When the snapshot was created")),
+							expires_at: z.optional(z.string().describe("When the snapshot expires")),
+							timestamp: z.optional(
+								z.string().describe("The point-in-time timestamp of the snapshot"),
+							),
+							metadata: z.optional(
+								z
+									.object({
+										deploy: z.optional(
+											z
+												.object({})
+												.catchall(z.unknown())
+												.describe("Deploy information associated with the snapshot"),
+										),
+										source: z.optional(z.string().describe("The source that created the snapshot")),
+									})
+									.describe("Metadata associated with a snapshot"),
 							),
 						})
 						.describe("A point-in-time snapshot of a database branch"),
@@ -9109,11 +9712,11 @@ export const restoreSiteDatabaseSnapshotErrorSchema = z.object({
 
 export const restoreSiteDatabaseSnapshotMutationRequestSchema = z
 	.object({
-		branch_name: z.optional(
+		branch_id: z.optional(
 			z
 				.string()
 				.describe(
-					'The name of the branch to restore the snapshot to. Defaults to "production" if not specified.',
+					'The ID of the branch to restore the snapshot to. Defaults to "production" if not specified.',
 				),
 		),
 	})

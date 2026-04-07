@@ -28,6 +28,9 @@ import type {
 	CancelAccountPathParams,
 	CancelSiteDeployMutationResponse,
 	CancelSiteDeployPathParams,
+	ClearSiteDatabaseComputeSettings403,
+	ClearSiteDatabaseComputeSettingsMutationResponse,
+	ClearSiteDatabaseComputeSettingsPathParams,
 	ConfigureDNSForSiteMutationResponse,
 	ConfigureDNSForSitePathParams,
 	CreateAccountMutationRequest,
@@ -226,8 +229,13 @@ import type {
 	GetSiteBuildQueryResponse,
 	GetSiteDatabaseBranch404,
 	GetSiteDatabaseBranchPathParams,
+	GetSiteDatabaseBranchQueryParams,
 	GetSiteDatabaseBranchQueryResponse,
+	GetSiteDatabaseComputeSettings403,
+	GetSiteDatabaseComputeSettingsPathParams,
+	GetSiteDatabaseComputeSettingsQueryResponse,
 	GetSiteDatabasePathParams,
+	GetSiteDatabaseQueryParams,
 	GetSiteDatabaseQueryResponse,
 	GetSiteDeployPathParams,
 	GetSiteDeployQueryResponse,
@@ -284,6 +292,8 @@ import type {
 	ListSiteBuildsPathParams,
 	ListSiteBuildsQueryParams,
 	ListSiteBuildsQueryResponse,
+	ListSiteDatabaseBranchesPathParams,
+	ListSiteDatabaseBranchesQueryResponse,
 	ListSiteDatabaseSnapshotsPathParams,
 	ListSiteDatabaseSnapshotsQueryResponse,
 	ListSiteDeployedBranchesPathParams,
@@ -334,6 +344,11 @@ import type {
 	RestoreSiteDeployPathParams,
 	RollbackSiteDeployMutationResponse,
 	RollbackSiteDeployPathParams,
+	RunSiteDatabaseMigrations409,
+	RunSiteDatabaseMigrations422,
+	RunSiteDatabaseMigrationsMutationRequest,
+	RunSiteDatabaseMigrationsMutationResponse,
+	RunSiteDatabaseMigrationsPathParams,
 	SearchSiteFunctionsPathParams,
 	SearchSiteFunctionsQueryParams,
 	SearchSiteFunctionsQueryResponse,
@@ -341,6 +356,12 @@ import type {
 	SetEnvVarValueMutationResponse,
 	SetEnvVarValuePathParams,
 	SetEnvVarValueQueryParams,
+	SetSiteDatabaseBranchComputeSettings403,
+	SetSiteDatabaseBranchComputeSettingsMutationResponse,
+	SetSiteDatabaseBranchComputeSettingsPathParams,
+	SetSiteDatabaseComputeSettings403,
+	SetSiteDatabaseComputeSettingsMutationResponse,
+	SetSiteDatabaseComputeSettingsPathParams,
 	ShowServiceInstancePathParams,
 	ShowServiceInstanceQueryResponse,
 	ShowServiceManifestPathParams,
@@ -4956,9 +4977,11 @@ export async function createSiteDatabase({
  */
 export async function getSiteDatabase({
 	pathParams: { site_id },
+	queryParams,
 	config = {},
 }: {
 	pathParams: GetSiteDatabasePathParams;
+	queryParams?: GetSiteDatabaseQueryParams;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -4972,9 +4995,9 @@ export async function getSiteDatabase({
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
-		Record<string, string>,
+		GetSiteDatabaseQueryParams,
 		GetSiteDatabasePathParams
-	>({ method: "GET", url: `/sites/${site_id}/database`, ...requestConfig });
+	>({ method: "GET", url: `/sites/${site_id}/database`, queryParams, ...requestConfig });
 	return data;
 }
 
@@ -5007,7 +5030,7 @@ export async function deleteSiteDatabase({
 }
 
 /**
- * @description Creates a new database branch for a deploy. If a branch already exists for the specified deploy ID, returns the existing connection string.
+ * @description Creates a new database branch. If a branch already exists for the specified branch ID, returns the existing connection string.
  * {@link /sites/:site_id/database/branch}
  */
 export async function createSiteDatabaseBranch({
@@ -5037,14 +5060,14 @@ export async function createSiteDatabaseBranch({
 }
 
 /**
- * @description Returns the database branch connection string for a specific deploy.
- * {@link /sites/:site_id/database/branch/:deploy_id}
+ * @description Returns all branches for the site's database with compute status and metadata.
+ * {@link /sites/:site_id/database/branches}
  */
-export async function getSiteDatabaseBranch({
-	pathParams: { site_id, deploy_id },
+export async function listSiteDatabaseBranches({
+	pathParams: { site_id },
 	config = {},
 }: {
-	pathParams: GetSiteDatabaseBranchPathParams;
+	pathParams: ListSiteDatabaseBranchesPathParams;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -5053,8 +5076,38 @@ export async function getSiteDatabaseBranch({
 		throw new Error(`Missing required path parameter: site_id`);
 	}
 
-	if (!deploy_id) {
-		throw new Error(`Missing required path parameter: deploy_id`);
+	const data = await request<
+		ListSiteDatabaseBranchesQueryResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		ListSiteDatabaseBranchesPathParams
+	>({ method: "GET", url: `/sites/${site_id}/database/branches`, ...requestConfig });
+	return data;
+}
+
+/**
+ * @description Returns the database branch connection string for a specific branch.
+ * {@link /sites/:site_id/database/branch/:branch_id}
+ */
+export async function getSiteDatabaseBranch({
+	pathParams: { site_id, branch_id },
+	queryParams,
+	config = {},
+}: {
+	pathParams: GetSiteDatabaseBranchPathParams;
+	queryParams?: GetSiteDatabaseBranchQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+
+	if (!branch_id) {
+		throw new Error(`Missing required path parameter: branch_id`);
 	}
 
 	const data = await request<
@@ -5062,18 +5115,23 @@ export async function getSiteDatabaseBranch({
 		ErrorWrapper<GetSiteDatabaseBranch404>,
 		null,
 		Record<string, string>,
-		Record<string, string>,
+		GetSiteDatabaseBranchQueryParams,
 		GetSiteDatabaseBranchPathParams
-	>({ method: "GET", url: `/sites/${site_id}/database/branch/${deploy_id}`, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/sites/${site_id}/database/branch/${branch_id}`,
+		queryParams,
+		...requestConfig,
+	});
 	return data;
 }
 
 /**
- * @description Deletes a database branch associated with a deploy.
- * {@link /sites/:site_id/database/branch/:deploy_id}
+ * @description Deletes a database branch.
+ * {@link /sites/:site_id/database/branch/:branch_id}
  */
 export async function deleteSiteDatabaseBranch({
-	pathParams: { site_id, deploy_id },
+	pathParams: { site_id, branch_id },
 	config = {},
 }: {
 	pathParams: DeleteSiteDatabaseBranchPathParams;
@@ -5085,8 +5143,8 @@ export async function deleteSiteDatabaseBranch({
 		throw new Error(`Missing required path parameter: site_id`);
 	}
 
-	if (!deploy_id) {
-		throw new Error(`Missing required path parameter: deploy_id`);
+	if (!branch_id) {
+		throw new Error(`Missing required path parameter: branch_id`);
 	}
 
 	const data = await request<
@@ -5096,7 +5154,166 @@ export async function deleteSiteDatabaseBranch({
 		Record<string, string>,
 		Record<string, string>,
 		DeleteSiteDatabaseBranchPathParams
-	>({ method: "DELETE", url: `/sites/${site_id}/database/branch/${deploy_id}`, ...requestConfig });
+	>({ method: "DELETE", url: `/sites/${site_id}/database/branch/${branch_id}`, ...requestConfig });
+	return data;
+}
+
+/**
+ * @description Sets compute settings for a specific database branch, overriding project-level settings. Requires a Pro or higher plan.
+ * {@link /sites/:site_id/database/branch/:branch_id/compute/settings}
+ */
+export async function setSiteDatabaseBranchComputeSettings({
+	pathParams: { site_id, branch_id },
+	config = {},
+}: {
+	pathParams: SetSiteDatabaseBranchComputeSettingsPathParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+
+	if (!branch_id) {
+		throw new Error(`Missing required path parameter: branch_id`);
+	}
+
+	const data = await request<
+		SetSiteDatabaseBranchComputeSettingsMutationResponse,
+		ErrorWrapper<SetSiteDatabaseBranchComputeSettings403>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		SetSiteDatabaseBranchComputeSettingsPathParams
+	>({
+		method: "PUT",
+		url: `/sites/${site_id}/database/branch/${branch_id}/compute/settings`,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Sets project-level compute settings for the database. Applied to new branches. Can be overridden per-branch. Requires a Pro or higher plan.
+ * {@link /sites/:site_id/database/compute/settings}
+ */
+export async function setSiteDatabaseComputeSettings({
+	pathParams: { site_id },
+	config = {},
+}: {
+	pathParams: SetSiteDatabaseComputeSettingsPathParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+
+	const data = await request<
+		SetSiteDatabaseComputeSettingsMutationResponse,
+		ErrorWrapper<SetSiteDatabaseComputeSettings403>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		SetSiteDatabaseComputeSettingsPathParams
+	>({ method: "PUT", url: `/sites/${site_id}/database/compute/settings`, ...requestConfig });
+	return data;
+}
+
+/**
+ * @description Returns the project-level compute settings for the database. Returns effective settings (custom or tier defaults). Requires a Pro or higher plan.
+ * {@link /sites/:site_id/database/compute/settings}
+ */
+export async function getSiteDatabaseComputeSettings({
+	pathParams: { site_id },
+	config = {},
+}: {
+	pathParams: GetSiteDatabaseComputeSettingsPathParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+
+	const data = await request<
+		GetSiteDatabaseComputeSettingsQueryResponse,
+		ErrorWrapper<GetSiteDatabaseComputeSettings403>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		GetSiteDatabaseComputeSettingsPathParams
+	>({ method: "GET", url: `/sites/${site_id}/database/compute/settings`, ...requestConfig });
+	return data;
+}
+
+/**
+ * @description Resets project-level compute settings to tier defaults. Requires a Pro or higher plan.
+ * {@link /sites/:site_id/database/compute/settings}
+ */
+export async function clearSiteDatabaseComputeSettings({
+	pathParams: { site_id },
+	config = {},
+}: {
+	pathParams: ClearSiteDatabaseComputeSettingsPathParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+
+	const data = await request<
+		ClearSiteDatabaseComputeSettingsMutationResponse,
+		ErrorWrapper<ClearSiteDatabaseComputeSettings403>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		ClearSiteDatabaseComputeSettingsPathParams
+	>({ method: "DELETE", url: `/sites/${site_id}/database/compute/settings`, ...requestConfig });
+	return data;
+}
+
+/**
+ * @description Runs database migrations for the specified deploy. Finds the deploy and determines the appropriate branch.
+ * {@link /sites/:site_id/database/migrations/:deploy_id}
+ */
+export async function runSiteDatabaseMigrations({
+	pathParams: { site_id, deploy_id },
+	body,
+	config = {},
+}: {
+	pathParams: RunSiteDatabaseMigrationsPathParams;
+	body?: RunSiteDatabaseMigrationsMutationRequest;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+
+	if (!deploy_id) {
+		throw new Error(`Missing required path parameter: deploy_id`);
+	}
+
+	const data = await request<
+		RunSiteDatabaseMigrationsMutationResponse,
+		ErrorWrapper<RunSiteDatabaseMigrations409 | RunSiteDatabaseMigrations422>,
+		RunSiteDatabaseMigrationsMutationRequest,
+		Record<string, string>,
+		Record<string, string>,
+		RunSiteDatabaseMigrationsPathParams
+	>({
+		method: "POST",
+		url: `/sites/${site_id}/database/migrations/${deploy_id}`,
+		body,
+		...requestConfig,
+	});
 	return data;
 }
 
@@ -5428,8 +5645,15 @@ export const operationsByPath = {
 	"GET /sites/{site_id}/database": getSiteDatabase,
 	"DELETE /sites/{site_id}/database": deleteSiteDatabase,
 	"POST /sites/{site_id}/database/branch": createSiteDatabaseBranch,
-	"GET /sites/{site_id}/database/branch/{deploy_id}": getSiteDatabaseBranch,
-	"DELETE /sites/{site_id}/database/branch/{deploy_id}": deleteSiteDatabaseBranch,
+	"GET /sites/{site_id}/database/branches": listSiteDatabaseBranches,
+	"GET /sites/{site_id}/database/branch/{branch_id}": getSiteDatabaseBranch,
+	"DELETE /sites/{site_id}/database/branch/{branch_id}": deleteSiteDatabaseBranch,
+	"PUT /sites/{site_id}/database/branch/{branch_id}/compute/settings":
+		setSiteDatabaseBranchComputeSettings,
+	"PUT /sites/{site_id}/database/compute/settings": setSiteDatabaseComputeSettings,
+	"GET /sites/{site_id}/database/compute/settings": getSiteDatabaseComputeSettings,
+	"DELETE /sites/{site_id}/database/compute/settings": clearSiteDatabaseComputeSettings,
+	"POST /sites/{site_id}/database/migrations/{deploy_id}": runSiteDatabaseMigrations,
 	"POST /sites/{site_id}/database/snapshot": createSiteDatabaseSnapshot,
 	"GET /sites/{site_id}/database/snapshots": listSiteDatabaseSnapshots,
 	"DELETE /sites/{site_id}/database/snapshot/{snapshot_id}": deleteSiteDatabaseSnapshot,
@@ -5674,8 +5898,14 @@ export const operationsByTag = {
 		getSiteDatabase,
 		deleteSiteDatabase,
 		createSiteDatabaseBranch,
+		listSiteDatabaseBranches,
 		getSiteDatabaseBranch,
 		deleteSiteDatabaseBranch,
+		setSiteDatabaseBranchComputeSettings,
+		setSiteDatabaseComputeSettings,
+		getSiteDatabaseComputeSettings,
+		clearSiteDatabaseComputeSettings,
+		runSiteDatabaseMigrations,
 		createSiteDatabaseSnapshot,
 		listSiteDatabaseSnapshots,
 		deleteSiteDatabaseSnapshot,
@@ -5875,10 +6105,23 @@ export const tagDictionary = {
 		POST: [
 			"createSiteDatabase",
 			"createSiteDatabaseBranch",
+			"runSiteDatabaseMigrations",
 			"createSiteDatabaseSnapshot",
 			"restoreSiteDatabaseSnapshot",
 		],
-		GET: ["getSiteDatabase", "getSiteDatabaseBranch", "listSiteDatabaseSnapshots"],
-		DELETE: ["deleteSiteDatabase", "deleteSiteDatabaseBranch", "deleteSiteDatabaseSnapshot"],
+		GET: [
+			"getSiteDatabase",
+			"listSiteDatabaseBranches",
+			"getSiteDatabaseBranch",
+			"getSiteDatabaseComputeSettings",
+			"listSiteDatabaseSnapshots",
+		],
+		DELETE: [
+			"deleteSiteDatabase",
+			"deleteSiteDatabaseBranch",
+			"clearSiteDatabaseComputeSettings",
+			"deleteSiteDatabaseSnapshot",
+		],
+		PUT: ["setSiteDatabaseBranchComputeSettings", "setSiteDatabaseComputeSettings"],
 	},
 } as const;
