@@ -322,25 +322,27 @@ export const restoreDatabaseSnapshotRequestSchema = z
  */
 export const databaseComputeSettingsRequestSchema = z
 	.object({
-		min_cu: z.optional(
-			z
-				.number()
-				.describe("Minimum compute units (0.25 to 16.0). Must be less than or equal to max_cu."),
-		),
-		max_cu: z.optional(
-			z
-				.number()
-				.describe(
-					"Maximum compute units (0.25 to 16.0). Must be greater than or equal to min_cu. max_cu - min_cu must not exceed 8.0.",
-				),
-		),
-		sleep_timeout_seconds: z.optional(
-			z
-				.int()
-				.describe(
-					"Seconds of inactivity before the compute endpoint is suspended. Use -1 for always on, or a non-negative value.",
-				),
-		),
+		min_cu: z
+			.number()
+			.min(0.25)
+			.max(16)
+			.describe("Minimum compute units (0.25 to 16.0). Must be less than or equal to max_cu.")
+			.nullish(),
+		max_cu: z
+			.number()
+			.min(0.25)
+			.max(16)
+			.describe(
+				"Maximum compute units (0.25 to 16.0). Must be greater than or equal to min_cu. max_cu - min_cu must not exceed 8.0.",
+			)
+			.nullish(),
+		sleep_timeout_seconds: z
+			.int()
+			.min(-1)
+			.describe(
+				"Seconds of inactivity before the compute endpoint is suspended. Use -1 for always on, or a non-negative value.",
+			)
+			.nullish(),
 	})
 	.describe(
 		"Request body for setting compute settings. All fields are optional; only provided fields are updated.",
@@ -1859,6 +1861,37 @@ export const createSiteSnippetSnippetSchema = z.object({
 });
 
 /**
+ * @description Request body for setting compute settings. All fields are optional; only provided fields are updated.
+ */
+export const setSiteDatabaseBranchComputeSettingsComputesettingsSchema = z
+	.object({
+		min_cu: z
+			.number()
+			.min(0.25)
+			.max(16)
+			.describe("Minimum compute units (0.25 to 16.0). Must be less than or equal to max_cu.")
+			.nullish(),
+		max_cu: z
+			.number()
+			.min(0.25)
+			.max(16)
+			.describe(
+				"Maximum compute units (0.25 to 16.0). Must be greater than or equal to min_cu. max_cu - min_cu must not exceed 8.0.",
+			)
+			.nullish(),
+		sleep_timeout_seconds: z
+			.int()
+			.min(-1)
+			.describe(
+				"Seconds of inactivity before the compute endpoint is suspended. Use -1 for always on, or a non-negative value.",
+			)
+			.nullish(),
+	})
+	.describe(
+		"Request body for setting compute settings. All fields are optional; only provided fields are updated.",
+	);
+
+/**
  * @description Deploy files can be provided in two ways:\n1. As a JSON object using \'files\' (a hash mapping file paths to SHA1 digests), OR\n2. As a zip file using one of these methods:\n   - Set Content-Type to \'application/zip\' and send the zip file as the raw request body\n   - Include the zip file content in the \'zip\' field of this JSON object with Content-Type \'application/json\'\n
  */
 export const createSiteDeployDeploySchema = z
@@ -2151,35 +2184,6 @@ export const createSiteDevServerHookDevserverhookSchema = z.object({
 	branch: z.optional(z.string()),
 	type: z.optional(z.enum(["new_dev_server", "content_refresh"])),
 });
-
-/**
- * @description Request body for setting compute settings. All fields are optional; only provided fields are updated.
- */
-export const setSiteDatabaseBranchComputeSettingsComputesettingsSchema = z
-	.object({
-		min_cu: z.optional(
-			z
-				.number()
-				.describe("Minimum compute units (0.25 to 16.0). Must be less than or equal to max_cu."),
-		),
-		max_cu: z.optional(
-			z
-				.number()
-				.describe(
-					"Maximum compute units (0.25 to 16.0). Must be greater than or equal to min_cu. max_cu - min_cu must not exceed 8.0.",
-				),
-		),
-		sleep_timeout_seconds: z.optional(
-			z
-				.int()
-				.describe(
-					"Seconds of inactivity before the compute endpoint is suspended. Use -1 for always on, or a non-negative value.",
-				),
-		),
-	})
-	.describe(
-		"Request body for setting compute settings. All fields are optional; only provided fields are updated.",
-	);
 
 export const listSitesQueryParamsSchema = z
 	.object({
