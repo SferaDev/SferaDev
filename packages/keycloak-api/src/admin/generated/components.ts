@@ -131,6 +131,14 @@ import type {
 	DELETEAdminRealmsRealmLocalizationLocalePathParams,
 	DELETEAdminRealmsRealmMutationResponse,
 	DELETEAdminRealmsRealmOrganizationsOrgId400,
+	DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupId404,
+	DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId400,
+	DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId403,
+	DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId404,
+	DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserIdMutationResponse,
+	DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserIdPathParams,
+	DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMutationResponse,
+	DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdPathParams,
 	DELETEAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAlias400,
 	DELETEAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAlias404,
 	DELETEAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasMutationResponse,
@@ -407,10 +415,10 @@ import type {
 	GETAdminRealmsRealmClientsClientUuidRolesRoleName404,
 	GETAdminRealmsRealmClientsClientUuidRolesRoleNameComposites403,
 	GETAdminRealmsRealmClientsClientUuidRolesRoleNameComposites404,
-	GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsClientUuid403,
-	GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsClientUuid404,
-	GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsClientUuidPathParams,
-	GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsClientUuidQueryResponse,
+	GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsTargetClientUuid403,
+	GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsTargetClientUuid404,
+	GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsTargetClientUuidPathParams,
+	GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsTargetClientUuidQueryResponse,
 	GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesPathParams,
 	GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesQueryResponse,
 	GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesRealm403,
@@ -603,7 +611,28 @@ import type {
 	GETAdminRealmsRealmOrganizationsMembersMemberIdOrganizationsPathParams,
 	GETAdminRealmsRealmOrganizationsMembersMemberIdOrganizationsQueryParams,
 	GETAdminRealmsRealmOrganizationsMembersMemberIdOrganizationsQueryResponse,
+	GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPath403,
+	GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPath404,
+	GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPathPathParams,
+	GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPathQueryParams,
+	GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPathQueryResponse,
+	GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildrenPathParams,
+	GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildrenQueryParams,
+	GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildrenQueryResponse,
+	GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersPathParams,
+	GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersQueryParams,
+	GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersQueryResponse,
+	GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdPathParams,
+	GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdQueryParams,
+	GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdQueryResponse,
+	GETAdminRealmsRealmOrganizationsOrgIdGroupsPathParams,
+	GETAdminRealmsRealmOrganizationsOrgIdGroupsQueryParams,
+	GETAdminRealmsRealmOrganizationsOrgIdGroupsQueryResponse,
 	GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAlias404,
+	GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasGroups404,
+	GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasGroupsPathParams,
+	GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasGroupsQueryParams,
+	GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasGroupsQueryResponse,
 	GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasPathParams,
 	GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasQueryResponse,
 	GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersPathParams,
@@ -617,6 +646,10 @@ import type {
 	GETAdminRealmsRealmOrganizationsOrgIdMembersCountPathParams,
 	GETAdminRealmsRealmOrganizationsOrgIdMembersCountQueryResponse,
 	GETAdminRealmsRealmOrganizationsOrgIdMembersMemberId400,
+	GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroups400,
+	GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroupsPathParams,
+	GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroupsQueryParams,
+	GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroupsQueryResponse,
 	GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdOrganizations400,
 	GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdOrganizationsPathParams,
 	GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdOrganizationsQueryParams,
@@ -658,10 +691,10 @@ import type {
 	GETAdminRealmsRealmRolesRoleName404,
 	GETAdminRealmsRealmRolesRoleNameComposites403,
 	GETAdminRealmsRealmRolesRoleNameComposites404,
-	GETAdminRealmsRealmRolesRoleNameCompositesClientsClientUuid403,
-	GETAdminRealmsRealmRolesRoleNameCompositesClientsClientUuid404,
-	GETAdminRealmsRealmRolesRoleNameCompositesClientsClientUuidPathParams,
-	GETAdminRealmsRealmRolesRoleNameCompositesClientsClientUuidQueryResponse,
+	GETAdminRealmsRealmRolesRoleNameCompositesClientsTargetClientUuid403,
+	GETAdminRealmsRealmRolesRoleNameCompositesClientsTargetClientUuid404,
+	GETAdminRealmsRealmRolesRoleNameCompositesClientsTargetClientUuidPathParams,
+	GETAdminRealmsRealmRolesRoleNameCompositesClientsTargetClientUuidQueryResponse,
 	GETAdminRealmsRealmRolesRoleNameCompositesPathParams,
 	GETAdminRealmsRealmRolesRoleNameCompositesQueryResponse,
 	GETAdminRealmsRealmRolesRoleNameCompositesRealm403,
@@ -977,6 +1010,19 @@ import type {
 	POSTAdminRealmsRealmOrganizations403,
 	POSTAdminRealmsRealmOrganizationsMutationRequest,
 	POSTAdminRealmsRealmOrganizationsMutationResponse,
+	POSTAdminRealmsRealmOrganizationsOrgIdGroups400,
+	POSTAdminRealmsRealmOrganizationsOrgIdGroups404,
+	POSTAdminRealmsRealmOrganizationsOrgIdGroups409,
+	POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren400,
+	POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren403,
+	POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren404,
+	POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren409,
+	POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildrenMutationRequest,
+	POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildrenMutationResponse,
+	POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildrenPathParams,
+	POSTAdminRealmsRealmOrganizationsOrgIdGroupsMutationRequest,
+	POSTAdminRealmsRealmOrganizationsOrgIdGroupsMutationResponse,
+	POSTAdminRealmsRealmOrganizationsOrgIdGroupsPathParams,
 	POSTAdminRealmsRealmOrganizationsOrgIdIdentityProviders400,
 	POSTAdminRealmsRealmOrganizationsOrgIdIdentityProviders403,
 	POSTAdminRealmsRealmOrganizationsOrgIdIdentityProviders409,
@@ -1079,6 +1125,10 @@ import type {
 	POSTAdminRealmsRealmWorkflowsIdDeactivateTypeResourceId400,
 	POSTAdminRealmsRealmWorkflowsIdDeactivateTypeResourceIdMutationResponse,
 	POSTAdminRealmsRealmWorkflowsIdDeactivateTypeResourceIdPathParams,
+	POSTAdminRealmsRealmWorkflowsMigrate400,
+	POSTAdminRealmsRealmWorkflowsMigrateMutationResponse,
+	POSTAdminRealmsRealmWorkflowsMigratePathParams,
+	POSTAdminRealmsRealmWorkflowsMigrateQueryParams,
 	POSTAdminRealmsRealmWorkflowsMutationRequest,
 	POSTAdminRealmsRealmWorkflowsMutationResponse,
 	POSTAdminRealmsRealmWorkflowsPathParams,
@@ -1214,6 +1264,17 @@ import type {
 	PUTAdminRealmsRealmMutationResponse,
 	PUTAdminRealmsRealmOrganizationsOrgId400,
 	PUTAdminRealmsRealmOrganizationsOrgId409,
+	PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupId400,
+	PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupId409,
+	PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId400,
+	PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId403,
+	PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId404,
+	PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId409,
+	PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserIdMutationResponse,
+	PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserIdPathParams,
+	PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMutationRequest,
+	PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMutationResponse,
+	PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdPathParams,
 	PUTAdminRealmsRealmOrganizationsOrgIdMutationRequest,
 	PUTAdminRealmsRealmOrganizationsOrgIdMutationResponse,
 	PUTAdminRealmsRealmOrganizationsOrgIdPathParams,
@@ -5612,6 +5673,7 @@ export async function pOSTAdminRealmsRealmTestSMTPConnection({
 }
 
 /**
+ * @description Returns a stream of users. Note that the 'credentials' field in the returned UserRepresentation objects is typically not populated for performance reasons. If specific credential metadata is required, use the dedicated 'GET /admin/realms/{realm}/users/{user-id}/credentials' endpoint.
  * @summary Get users Returns a stream of users, filtered according to query parameters.
  * {@link /admin/realms/:realm/users}
  */
@@ -5917,6 +5979,42 @@ export async function pOSTAdminRealmsRealmWorkflows({
 		Record<string, string>,
 		POSTAdminRealmsRealmWorkflowsPathParams
 	>({ method: "POST", url: `/admin/realms/${realm}/workflows`, body, ...requestConfig });
+	return data;
+}
+
+/**
+ * @description Migrate scheduled resources from one step to another step in the same or in a different workflow.
+ * @summary Migrate scheduled resources from one step to another
+ * {@link /admin/realms/:realm/workflows/migrate}
+ */
+export async function pOSTAdminRealmsRealmWorkflowsMigrate({
+	pathParams: { realm },
+	queryParams,
+	config = {},
+}: {
+	pathParams: POSTAdminRealmsRealmWorkflowsMigratePathParams;
+	queryParams?: POSTAdminRealmsRealmWorkflowsMigrateQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!realm) {
+		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	const data = await request<
+		POSTAdminRealmsRealmWorkflowsMigrateMutationResponse,
+		ErrorWrapper<POSTAdminRealmsRealmWorkflowsMigrate400>,
+		null,
+		Record<string, string>,
+		POSTAdminRealmsRealmWorkflowsMigrateQueryParams,
+		POSTAdminRealmsRealmWorkflowsMigratePathParams
+	>({
+		method: "POST",
+		url: `/admin/realms/${realm}/workflows/migrate`,
+		queryParams,
+		...requestConfig,
+	});
 	return data;
 }
 
@@ -10930,13 +11028,13 @@ export async function dELETEAdminRealmsRealmClientsClientUuidRolesRoleNameCompos
 
 /**
  * @summary Get client-level roles for the client that are in the role's composite
- * {@link /admin/realms/:realm/clients/:clientUuid/roles/:roleName/composites/clients/:clientUuid}
+ * {@link /admin/realms/:realm/clients/:clientUuid/roles/:roleName/composites/clients/:targetClientUuid}
  */
-export async function gETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsClientUuid({
-	pathParams: { realm, clientUuid, roleName },
+export async function gETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsTargetClientUuid({
+	pathParams: { realm, clientUuid, roleName, targetClientUuid },
 	config = {},
 }: {
-	pathParams: GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsClientUuidPathParams;
+	pathParams: GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsTargetClientUuidPathParams;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -10953,19 +11051,23 @@ export async function gETAdminRealmsRealmClientsClientUuidRolesRoleNameComposite
 		throw new Error(`Missing required path parameter: roleName`);
 	}
 
+	if (!targetClientUuid) {
+		throw new Error(`Missing required path parameter: targetClientUuid`);
+	}
+
 	const data = await request<
-		GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsClientUuidQueryResponse,
+		GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsTargetClientUuidQueryResponse,
 		ErrorWrapper<
-			| GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsClientUuid403
-			| GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsClientUuid404
+			| GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsTargetClientUuid403
+			| GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsTargetClientUuid404
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsClientUuidPathParams
+		GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsTargetClientUuidPathParams
 	>({
 		method: "GET",
-		url: `/admin/realms/${realm}/clients/${clientUuid}/roles/${roleName}/composites/clients/${clientUuid}`,
+		url: `/admin/realms/${realm}/clients/${clientUuid}/roles/${roleName}/composites/clients/${targetClientUuid}`,
 		...requestConfig,
 	});
 	return data;
@@ -12694,6 +12796,504 @@ export async function dELETEAdminRealmsRealmOrganizationsOrgId({
 }
 
 /**
+ * @description Returns organization groups. When `search` parameter is provided, groups are searched by name. When `q` parameter is provided, groups are searched by attributes. If neither parameter is provided, top-level groups are returned.
+ * @summary Get organization groups
+ * {@link /admin/realms/:realm/organizations/:orgId/groups}
+ */
+export async function gETAdminRealmsRealmOrganizationsOrgIdGroups({
+	pathParams: { realm, orgId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: GETAdminRealmsRealmOrganizationsOrgIdGroupsPathParams;
+	queryParams?: GETAdminRealmsRealmOrganizationsOrgIdGroupsQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!realm) {
+		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!orgId) {
+		throw new Error(`Missing required path parameter: orgId`);
+	}
+
+	const data = await request<
+		GETAdminRealmsRealmOrganizationsOrgIdGroupsQueryResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		GETAdminRealmsRealmOrganizationsOrgIdGroupsQueryParams,
+		GETAdminRealmsRealmOrganizationsOrgIdGroupsPathParams
+	>({
+		method: "GET",
+		url: `/admin/realms/${realm}/organizations/${orgId}/groups`,
+		queryParams,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Creates a new top-level group in the organization. If the group representation includes an ID, moves the existing organization group to be a top-level group. If no ID is provided, creates a new top-level group.
+ * @summary Creates a new top-level group or moves an existing group to top-level
+ * {@link /admin/realms/:realm/organizations/:orgId/groups}
+ */
+export async function pOSTAdminRealmsRealmOrganizationsOrgIdGroups({
+	pathParams: { realm, orgId },
+	body,
+	config = {},
+}: {
+	pathParams: POSTAdminRealmsRealmOrganizationsOrgIdGroupsPathParams;
+	body?: POSTAdminRealmsRealmOrganizationsOrgIdGroupsMutationRequest;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!realm) {
+		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!orgId) {
+		throw new Error(`Missing required path parameter: orgId`);
+	}
+
+	const data = await request<
+		POSTAdminRealmsRealmOrganizationsOrgIdGroupsMutationResponse,
+		ErrorWrapper<
+			| POSTAdminRealmsRealmOrganizationsOrgIdGroups400
+			| POSTAdminRealmsRealmOrganizationsOrgIdGroups404
+			| POSTAdminRealmsRealmOrganizationsOrgIdGroups409
+		>,
+		POSTAdminRealmsRealmOrganizationsOrgIdGroupsMutationRequest,
+		Record<string, string>,
+		Record<string, string>,
+		POSTAdminRealmsRealmOrganizationsOrgIdGroupsPathParams
+	>({
+		method: "POST",
+		url: `/admin/realms/${realm}/organizations/${orgId}/groups`,
+		body,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Returns the organization group with the specified path
+ * @summary Get organization group by path
+ * {@link /admin/realms/:realm/organizations/:orgId/groups/group-by-path/:path}
+ */
+export async function gETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPath({
+	pathParams: { realm, orgId, path },
+	queryParams,
+	config = {},
+}: {
+	pathParams: GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPathPathParams;
+	queryParams?: GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPathQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!realm) {
+		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!orgId) {
+		throw new Error(`Missing required path parameter: orgId`);
+	}
+
+	if (!path) {
+		throw new Error(`Missing required path parameter: path`);
+	}
+
+	const data = await request<
+		GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPathQueryResponse,
+		ErrorWrapper<
+			| GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPath403
+			| GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPath404
+		>,
+		null,
+		Record<string, string>,
+		GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPathQueryParams,
+		GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPathPathParams
+	>({
+		method: "GET",
+		url: `/admin/realms/${realm}/organizations/${orgId}/groups/group-by-path/${path}`,
+		queryParams,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @summary Get organization group representation
+ * {@link /admin/realms/:realm/organizations/:orgId/groups/:groupId}
+ */
+export async function gETAdminRealmsRealmOrganizationsOrgIdGroupsGroupId({
+	pathParams: { realm, orgId, groupId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdPathParams;
+	queryParams?: GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!realm) {
+		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!orgId) {
+		throw new Error(`Missing required path parameter: orgId`);
+	}
+
+	if (!groupId) {
+		throw new Error(`Missing required path parameter: groupId`);
+	}
+
+	const data = await request<
+		GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdQueryResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdQueryParams,
+		GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdPathParams
+	>({
+		method: "GET",
+		url: `/admin/realms/${realm}/organizations/${orgId}/groups/${groupId}`,
+		queryParams,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Updates the organization group's name, description, and attributes. Subgroups are not affected.
+ * @summary Update organization group
+ * {@link /admin/realms/:realm/organizations/:orgId/groups/:groupId}
+ */
+export async function pUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupId({
+	pathParams: { realm, orgId, groupId },
+	body,
+	config = {},
+}: {
+	pathParams: PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdPathParams;
+	body?: PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMutationRequest;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!realm) {
+		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!orgId) {
+		throw new Error(`Missing required path parameter: orgId`);
+	}
+
+	if (!groupId) {
+		throw new Error(`Missing required path parameter: groupId`);
+	}
+
+	const data = await request<
+		PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMutationResponse,
+		ErrorWrapper<
+			| PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupId400
+			| PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupId409
+		>,
+		PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMutationRequest,
+		Record<string, string>,
+		Record<string, string>,
+		PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdPathParams
+	>({
+		method: "PUT",
+		url: `/admin/realms/${realm}/organizations/${orgId}/groups/${groupId}`,
+		body,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Deletes the organization group and all its subgroups
+ * @summary Delete the organization group
+ * {@link /admin/realms/:realm/organizations/:orgId/groups/:groupId}
+ */
+export async function dELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupId({
+	pathParams: { realm, orgId, groupId },
+	config = {},
+}: {
+	pathParams: DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdPathParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!realm) {
+		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!orgId) {
+		throw new Error(`Missing required path parameter: orgId`);
+	}
+
+	if (!groupId) {
+		throw new Error(`Missing required path parameter: groupId`);
+	}
+
+	const data = await request<
+		DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMutationResponse,
+		ErrorWrapper<DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupId404>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdPathParams
+	>({
+		method: "DELETE",
+		url: `/admin/realms/${realm}/organizations/${orgId}/groups/${groupId}`,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Returns a paginated stream of subgroups that belong to this organization group
+ * @summary Get subgroups of this organization group
+ * {@link /admin/realms/:realm/organizations/:orgId/groups/:groupId/children}
+ */
+export async function gETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren({
+	pathParams: { realm, orgId, groupId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildrenPathParams;
+	queryParams?: GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildrenQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!realm) {
+		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!orgId) {
+		throw new Error(`Missing required path parameter: orgId`);
+	}
+
+	if (!groupId) {
+		throw new Error(`Missing required path parameter: groupId`);
+	}
+
+	const data = await request<
+		GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildrenQueryResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildrenQueryParams,
+		GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildrenPathParams
+	>({
+		method: "GET",
+		url: `/admin/realms/${realm}/organizations/${orgId}/groups/${groupId}/children`,
+		queryParams,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Creates a new subgroup under this organization group. If the group representation includes an ID, moves the existing group to be a child of this group. If no ID is provided, creates a new subgroup.
+ * @summary Create or move a subgroup
+ * {@link /admin/realms/:realm/organizations/:orgId/groups/:groupId/children}
+ */
+export async function pOSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren({
+	pathParams: { realm, orgId, groupId },
+	body,
+	config = {},
+}: {
+	pathParams: POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildrenPathParams;
+	body?: POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildrenMutationRequest;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!realm) {
+		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!orgId) {
+		throw new Error(`Missing required path parameter: orgId`);
+	}
+
+	if (!groupId) {
+		throw new Error(`Missing required path parameter: groupId`);
+	}
+
+	const data = await request<
+		POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildrenMutationResponse,
+		ErrorWrapper<
+			| POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren400
+			| POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren403
+			| POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren404
+			| POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren409
+		>,
+		POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildrenMutationRequest,
+		Record<string, string>,
+		Record<string, string>,
+		POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildrenPathParams
+	>({
+		method: "POST",
+		url: `/admin/realms/${realm}/organizations/${orgId}/groups/${groupId}/children`,
+		body,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Returns a paginated list of organization members that belong to this group
+ * @summary Get members of this organization group
+ * {@link /admin/realms/:realm/organizations/:orgId/groups/:groupId/members}
+ */
+export async function gETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembers({
+	pathParams: { realm, orgId, groupId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersPathParams;
+	queryParams?: GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!realm) {
+		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!orgId) {
+		throw new Error(`Missing required path parameter: orgId`);
+	}
+
+	if (!groupId) {
+		throw new Error(`Missing required path parameter: groupId`);
+	}
+
+	const data = await request<
+		GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersQueryResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersQueryParams,
+		GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersPathParams
+	>({
+		method: "GET",
+		url: `/admin/realms/${realm}/organizations/${orgId}/groups/${groupId}/members`,
+		queryParams,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Adds an organization member to this group. The user must be a member of the organization.
+ * @summary Add a user to this organization group
+ * {@link /admin/realms/:realm/organizations/:orgId/groups/:groupId/members/:userId}
+ */
+export async function pUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId({
+	pathParams: { realm, orgId, groupId, userId },
+	config = {},
+}: {
+	pathParams: PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserIdPathParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!realm) {
+		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!orgId) {
+		throw new Error(`Missing required path parameter: orgId`);
+	}
+
+	if (!groupId) {
+		throw new Error(`Missing required path parameter: groupId`);
+	}
+
+	if (!userId) {
+		throw new Error(`Missing required path parameter: userId`);
+	}
+
+	const data = await request<
+		PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserIdMutationResponse,
+		ErrorWrapper<
+			| PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId400
+			| PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId403
+			| PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId404
+			| PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId409
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserIdPathParams
+	>({
+		method: "PUT",
+		url: `/admin/realms/${realm}/organizations/${orgId}/groups/${groupId}/members/${userId}`,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Removes a user from this organization group. The user remains a member of the organization.
+ * @summary Remove a user from this organization group
+ * {@link /admin/realms/:realm/organizations/:orgId/groups/:groupId/members/:userId}
+ */
+export async function dELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId({
+	pathParams: { realm, orgId, groupId, userId },
+	config = {},
+}: {
+	pathParams: DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserIdPathParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!realm) {
+		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!orgId) {
+		throw new Error(`Missing required path parameter: orgId`);
+	}
+
+	if (!groupId) {
+		throw new Error(`Missing required path parameter: groupId`);
+	}
+
+	if (!userId) {
+		throw new Error(`Missing required path parameter: userId`);
+	}
+
+	const data = await request<
+		DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserIdMutationResponse,
+		ErrorWrapper<
+			| DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId400
+			| DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId403
+			| DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId404
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserIdPathParams
+	>({
+		method: "DELETE",
+		url: `/admin/realms/${realm}/organizations/${orgId}/groups/${groupId}/members/${userId}`,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
  * @summary Returns all identity providers associated with the organization
  * {@link /admin/realms/:realm/organizations/:orgId/identity-providers}
  */
@@ -12853,6 +13453,50 @@ export async function dELETEAdminRealmsRealmOrganizationsOrgIdIdentityProvidersA
 	>({
 		method: "DELETE",
 		url: `/admin/realms/${realm}/organizations/${orgId}/identity-providers/${alias}`,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Returns organization groups that can be used in identity provider mappers. Only returns groups if the identity provider is associated with the organization.
+ * @summary Returns organization groups for the identity provider
+ * {@link /admin/realms/:realm/organizations/:orgId/identity-providers/:alias/groups}
+ */
+export async function gETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasGroups({
+	pathParams: { realm, orgId, alias },
+	queryParams,
+	config = {},
+}: {
+	pathParams: GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasGroupsPathParams;
+	queryParams?: GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasGroupsQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!realm) {
+		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!orgId) {
+		throw new Error(`Missing required path parameter: orgId`);
+	}
+
+	if (!alias) {
+		throw new Error(`Missing required path parameter: alias`);
+	}
+
+	const data = await request<
+		GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasGroupsQueryResponse,
+		ErrorWrapper<GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasGroups404>,
+		null,
+		Record<string, string>,
+		GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasGroupsQueryParams,
+		GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasGroupsPathParams
+	>({
+		method: "GET",
+		url: `/admin/realms/${realm}/organizations/${orgId}/identity-providers/${alias}/groups`,
+		queryParams,
 		...requestConfig,
 	});
 	return data;
@@ -13294,6 +13938,50 @@ export async function dELETEAdminRealmsRealmOrganizationsOrgIdMembersMemberId({
 	>({
 		method: "DELETE",
 		url: `/admin/realms/${realm}/organizations/${orgId}/members/${memberId}`,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
+ * @description Searches for auser with the given id. If one is found, and is currently a member of the organization, returns the groups from the organizationwhere the user is member of. Otherwise, an error response with status NOT_FOUND is returned
+ * @summary Returns the organization group memberships for a member with the specified id
+ * {@link /admin/realms/:realm/organizations/:orgId/members/:memberId/groups}
+ */
+export async function gETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroups({
+	pathParams: { realm, orgId, memberId },
+	queryParams,
+	config = {},
+}: {
+	pathParams: GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroupsPathParams;
+	queryParams?: GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroupsQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!realm) {
+		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!orgId) {
+		throw new Error(`Missing required path parameter: orgId`);
+	}
+
+	if (!memberId) {
+		throw new Error(`Missing required path parameter: memberId`);
+	}
+
+	const data = await request<
+		GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroupsQueryResponse,
+		ErrorWrapper<GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroups400>,
+		null,
+		Record<string, string>,
+		GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroupsQueryParams,
+		GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroupsPathParams
+	>({
+		method: "GET",
+		url: `/admin/realms/${realm}/organizations/${orgId}/members/${memberId}/groups`,
+		queryParams,
 		...requestConfig,
 	});
 	return data;
@@ -13943,13 +14631,13 @@ export async function dELETEAdminRealmsRealmRolesRoleNameComposites({
 
 /**
  * @summary Get client-level roles for the client that are in the role's composite
- * {@link /admin/realms/:realm/roles/:roleName/composites/clients/:clientUuid}
+ * {@link /admin/realms/:realm/roles/:roleName/composites/clients/:targetClientUuid}
  */
-export async function gETAdminRealmsRealmRolesRoleNameCompositesClientsClientUuid({
-	pathParams: { realm, clientUuid, roleName },
+export async function gETAdminRealmsRealmRolesRoleNameCompositesClientsTargetClientUuid({
+	pathParams: { realm, roleName, targetClientUuid },
 	config = {},
 }: {
-	pathParams: GETAdminRealmsRealmRolesRoleNameCompositesClientsClientUuidPathParams;
+	pathParams: GETAdminRealmsRealmRolesRoleNameCompositesClientsTargetClientUuidPathParams;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -13958,27 +14646,27 @@ export async function gETAdminRealmsRealmRolesRoleNameCompositesClientsClientUui
 		throw new Error(`Missing required path parameter: realm`);
 	}
 
-	if (!clientUuid) {
-		throw new Error(`Missing required path parameter: clientUuid`);
-	}
-
 	if (!roleName) {
 		throw new Error(`Missing required path parameter: roleName`);
 	}
 
+	if (!targetClientUuid) {
+		throw new Error(`Missing required path parameter: targetClientUuid`);
+	}
+
 	const data = await request<
-		GETAdminRealmsRealmRolesRoleNameCompositesClientsClientUuidQueryResponse,
+		GETAdminRealmsRealmRolesRoleNameCompositesClientsTargetClientUuidQueryResponse,
 		ErrorWrapper<
-			| GETAdminRealmsRealmRolesRoleNameCompositesClientsClientUuid403
-			| GETAdminRealmsRealmRolesRoleNameCompositesClientsClientUuid404
+			| GETAdminRealmsRealmRolesRoleNameCompositesClientsTargetClientUuid403
+			| GETAdminRealmsRealmRolesRoleNameCompositesClientsTargetClientUuid404
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GETAdminRealmsRealmRolesRoleNameCompositesClientsClientUuidPathParams
+		GETAdminRealmsRealmRolesRoleNameCompositesClientsTargetClientUuidPathParams
 	>({
 		method: "GET",
-		url: `/admin/realms/${realm}/roles/${roleName}/composites/clients/${clientUuid}`,
+		url: `/admin/realms/${realm}/roles/${roleName}/composites/clients/${targetClientUuid}`,
 		...requestConfig,
 	});
 	return data;
@@ -15989,6 +16677,7 @@ export const operationsByPath = {
 	"GET /admin/realms/{realm}/users/profile/metadata": gETAdminRealmsRealmUsersProfileMetadata,
 	"GET /admin/realms/{realm}/workflows": gETAdminRealmsRealmWorkflows,
 	"POST /admin/realms/{realm}/workflows": pOSTAdminRealmsRealmWorkflows,
+	"POST /admin/realms/{realm}/workflows/migrate": pOSTAdminRealmsRealmWorkflowsMigrate,
 	"GET /admin/realms/{realm}/workflows/{id}": gETAdminRealmsRealmWorkflowsId,
 	"PUT /admin/realms/{realm}/workflows/{id}": pUTAdminRealmsRealmWorkflowsId,
 	"DELETE /admin/realms/{realm}/workflows/{id}": dELETEAdminRealmsRealmWorkflowsId,
@@ -16236,8 +16925,8 @@ export const operationsByPath = {
 		pOSTAdminRealmsRealmClientsClientUuidRolesRoleNameComposites,
 	"DELETE /admin/realms/{realm}/clients/{clientUuid}/roles/{roleName}/composites":
 		dELETEAdminRealmsRealmClientsClientUuidRolesRoleNameComposites,
-	"GET /admin/realms/{realm}/clients/{clientUuid}/roles/{roleName}/composites/clients/{clientUuid}":
-		gETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsClientUuid,
+	"GET /admin/realms/{realm}/clients/{clientUuid}/roles/{roleName}/composites/clients/{targetClientUuid}":
+		gETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsTargetClientUuid,
 	"GET /admin/realms/{realm}/clients/{clientUuid}/roles/{roleName}/composites/realm":
 		gETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesRealm,
 	"GET /admin/realms/{realm}/clients/{clientUuid}/roles/{roleName}/groups":
@@ -16317,6 +17006,28 @@ export const operationsByPath = {
 	"GET /admin/realms/{realm}/organizations/{orgId}": gETAdminRealmsRealmOrganizationsOrgId,
 	"PUT /admin/realms/{realm}/organizations/{orgId}": pUTAdminRealmsRealmOrganizationsOrgId,
 	"DELETE /admin/realms/{realm}/organizations/{orgId}": dELETEAdminRealmsRealmOrganizationsOrgId,
+	"GET /admin/realms/{realm}/organizations/{orgId}/groups":
+		gETAdminRealmsRealmOrganizationsOrgIdGroups,
+	"POST /admin/realms/{realm}/organizations/{orgId}/groups":
+		pOSTAdminRealmsRealmOrganizationsOrgIdGroups,
+	"GET /admin/realms/{realm}/organizations/{orgId}/groups/group-by-path/{path}":
+		gETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPath,
+	"GET /admin/realms/{realm}/organizations/{orgId}/groups/{groupId}":
+		gETAdminRealmsRealmOrganizationsOrgIdGroupsGroupId,
+	"PUT /admin/realms/{realm}/organizations/{orgId}/groups/{groupId}":
+		pUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupId,
+	"DELETE /admin/realms/{realm}/organizations/{orgId}/groups/{groupId}":
+		dELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupId,
+	"GET /admin/realms/{realm}/organizations/{orgId}/groups/{groupId}/children":
+		gETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren,
+	"POST /admin/realms/{realm}/organizations/{orgId}/groups/{groupId}/children":
+		pOSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren,
+	"GET /admin/realms/{realm}/organizations/{orgId}/groups/{groupId}/members":
+		gETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembers,
+	"PUT /admin/realms/{realm}/organizations/{orgId}/groups/{groupId}/members/{userId}":
+		pUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId,
+	"DELETE /admin/realms/{realm}/organizations/{orgId}/groups/{groupId}/members/{userId}":
+		dELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId,
 	"GET /admin/realms/{realm}/organizations/{orgId}/identity-providers":
 		gETAdminRealmsRealmOrganizationsOrgIdIdentityProviders,
 	"POST /admin/realms/{realm}/organizations/{orgId}/identity-providers":
@@ -16325,6 +17036,8 @@ export const operationsByPath = {
 		gETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAlias,
 	"DELETE /admin/realms/{realm}/organizations/{orgId}/identity-providers/{alias}":
 		dELETEAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAlias,
+	"GET /admin/realms/{realm}/organizations/{orgId}/identity-providers/{alias}/groups":
+		gETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasGroups,
 	"GET /admin/realms/{realm}/organizations/{orgId}/invitations":
 		gETAdminRealmsRealmOrganizationsOrgIdInvitations,
 	"GET /admin/realms/{realm}/organizations/{orgId}/invitations/{id}":
@@ -16347,6 +17060,8 @@ export const operationsByPath = {
 		gETAdminRealmsRealmOrganizationsOrgIdMembersMemberId,
 	"DELETE /admin/realms/{realm}/organizations/{orgId}/members/{memberId}":
 		dELETEAdminRealmsRealmOrganizationsOrgIdMembersMemberId,
+	"GET /admin/realms/{realm}/organizations/{orgId}/members/{memberId}/groups":
+		gETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroups,
 	"GET /admin/realms/{realm}/organizations/{orgId}/members/{memberId}/organizations":
 		gETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdOrganizations,
 	"GET /admin/realms/{realm}/roles-by-id/{roleId}": gETAdminRealmsRealmRolesByIdRoleId,
@@ -16375,8 +17090,8 @@ export const operationsByPath = {
 		pOSTAdminRealmsRealmRolesRoleNameComposites,
 	"DELETE /admin/realms/{realm}/roles/{roleName}/composites":
 		dELETEAdminRealmsRealmRolesRoleNameComposites,
-	"GET /admin/realms/{realm}/roles/{roleName}/composites/clients/{clientUuid}":
-		gETAdminRealmsRealmRolesRoleNameCompositesClientsClientUuid,
+	"GET /admin/realms/{realm}/roles/{roleName}/composites/clients/{targetClientUuid}":
+		gETAdminRealmsRealmRolesRoleNameCompositesClientsTargetClientUuid,
 	"GET /admin/realms/{realm}/roles/{roleName}/composites/realm":
 		gETAdminRealmsRealmRolesRoleNameCompositesRealm,
 	"GET /admin/realms/{realm}/roles/{roleName}/groups": gETAdminRealmsRealmRolesRoleNameGroups,
@@ -16669,10 +17384,22 @@ export const operationsByTag = {
 		gETAdminRealmsRealmOrganizationsOrgId,
 		pUTAdminRealmsRealmOrganizationsOrgId,
 		dELETEAdminRealmsRealmOrganizationsOrgId,
+		gETAdminRealmsRealmOrganizationsOrgIdGroups,
+		pOSTAdminRealmsRealmOrganizationsOrgIdGroups,
+		gETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPath,
+		gETAdminRealmsRealmOrganizationsOrgIdGroupsGroupId,
+		pUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupId,
+		dELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupId,
+		gETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren,
+		pOSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren,
+		gETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembers,
+		pUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId,
+		dELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId,
 		gETAdminRealmsRealmOrganizationsOrgIdIdentityProviders,
 		pOSTAdminRealmsRealmOrganizationsOrgIdIdentityProviders,
 		gETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAlias,
 		dELETEAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAlias,
+		gETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasGroups,
 		gETAdminRealmsRealmOrganizationsOrgIdInvitations,
 		gETAdminRealmsRealmOrganizationsOrgIdInvitationsId,
 		dELETEAdminRealmsRealmOrganizationsOrgIdInvitationsId,
@@ -16684,6 +17411,7 @@ export const operationsByTag = {
 		pOSTAdminRealmsRealmOrganizationsOrgIdMembersInviteUser,
 		gETAdminRealmsRealmOrganizationsOrgIdMembersMemberId,
 		dELETEAdminRealmsRealmOrganizationsOrgIdMembersMemberId,
+		gETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroups,
 		gETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdOrganizations,
 	},
 	roles: {
@@ -16697,7 +17425,7 @@ export const operationsByTag = {
 		gETAdminRealmsRealmClientsClientUuidRolesRoleNameComposites,
 		pOSTAdminRealmsRealmClientsClientUuidRolesRoleNameComposites,
 		dELETEAdminRealmsRealmClientsClientUuidRolesRoleNameComposites,
-		gETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsClientUuid,
+		gETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsTargetClientUuid,
 		gETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesRealm,
 		gETAdminRealmsRealmClientsClientUuidRolesRoleNameGroups,
 		gETAdminRealmsRealmClientsClientUuidRolesRoleNameManagementPermissions,
@@ -16709,7 +17437,7 @@ export const operationsByTag = {
 		gETAdminRealmsRealmRolesRoleNameComposites,
 		pOSTAdminRealmsRealmRolesRoleNameComposites,
 		dELETEAdminRealmsRealmRolesRoleNameComposites,
-		gETAdminRealmsRealmRolesRoleNameCompositesClientsClientUuid,
+		gETAdminRealmsRealmRolesRoleNameCompositesClientsTargetClientUuid,
 		gETAdminRealmsRealmRolesRoleNameCompositesRealm,
 		gETAdminRealmsRealmRolesRoleNameGroups,
 		gETAdminRealmsRealmRolesRoleNameManagementPermissions,
@@ -16755,6 +17483,7 @@ export const operationsByTag = {
 	workflows: {
 		gETAdminRealmsRealmWorkflows,
 		pOSTAdminRealmsRealmWorkflows,
+		pOSTAdminRealmsRealmWorkflowsMigrate,
 		gETAdminRealmsRealmWorkflowsId,
 		pUTAdminRealmsRealmWorkflowsId,
 		dELETEAdminRealmsRealmWorkflowsId,
@@ -17114,26 +17843,41 @@ export const tagDictionary = {
 			"gETAdminRealmsRealmOrganizationsCount",
 			"gETAdminRealmsRealmOrganizationsMembersMemberIdOrganizations",
 			"gETAdminRealmsRealmOrganizationsOrgId",
+			"gETAdminRealmsRealmOrganizationsOrgIdGroups",
+			"gETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPath",
+			"gETAdminRealmsRealmOrganizationsOrgIdGroupsGroupId",
+			"gETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren",
+			"gETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembers",
 			"gETAdminRealmsRealmOrganizationsOrgIdIdentityProviders",
 			"gETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAlias",
+			"gETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasGroups",
 			"gETAdminRealmsRealmOrganizationsOrgIdInvitations",
 			"gETAdminRealmsRealmOrganizationsOrgIdInvitationsId",
 			"gETAdminRealmsRealmOrganizationsOrgIdMembers",
 			"gETAdminRealmsRealmOrganizationsOrgIdMembersCount",
 			"gETAdminRealmsRealmOrganizationsOrgIdMembersMemberId",
+			"gETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroups",
 			"gETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdOrganizations",
 		],
 		POST: [
 			"pOSTAdminRealmsRealmOrganizations",
+			"pOSTAdminRealmsRealmOrganizationsOrgIdGroups",
+			"pOSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren",
 			"pOSTAdminRealmsRealmOrganizationsOrgIdIdentityProviders",
 			"pOSTAdminRealmsRealmOrganizationsOrgIdInvitationsIdResend",
 			"pOSTAdminRealmsRealmOrganizationsOrgIdMembers",
 			"pOSTAdminRealmsRealmOrganizationsOrgIdMembersInviteExistingUser",
 			"pOSTAdminRealmsRealmOrganizationsOrgIdMembersInviteUser",
 		],
-		PUT: ["pUTAdminRealmsRealmOrganizationsOrgId"],
+		PUT: [
+			"pUTAdminRealmsRealmOrganizationsOrgId",
+			"pUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupId",
+			"pUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId",
+		],
 		DELETE: [
 			"dELETEAdminRealmsRealmOrganizationsOrgId",
+			"dELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupId",
+			"dELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId",
 			"dELETEAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAlias",
 			"dELETEAdminRealmsRealmOrganizationsOrgIdInvitationsId",
 			"dELETEAdminRealmsRealmOrganizationsOrgIdMembersMemberId",
@@ -17145,14 +17889,14 @@ export const tagDictionary = {
 			"gETAdminRealmsRealmClientsClientUuidRoles",
 			"gETAdminRealmsRealmClientsClientUuidRolesRoleName",
 			"gETAdminRealmsRealmClientsClientUuidRolesRoleNameComposites",
-			"gETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsClientUuid",
+			"gETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsTargetClientUuid",
 			"gETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesRealm",
 			"gETAdminRealmsRealmClientsClientUuidRolesRoleNameGroups",
 			"gETAdminRealmsRealmClientsClientUuidRolesRoleNameManagementPermissions",
 			"gETAdminRealmsRealmClientsClientUuidRolesRoleNameUsers",
 			"gETAdminRealmsRealmRolesRoleName",
 			"gETAdminRealmsRealmRolesRoleNameComposites",
-			"gETAdminRealmsRealmRolesRoleNameCompositesClientsClientUuid",
+			"gETAdminRealmsRealmRolesRoleNameCompositesClientsTargetClientUuid",
 			"gETAdminRealmsRealmRolesRoleNameCompositesRealm",
 			"gETAdminRealmsRealmRolesRoleNameGroups",
 			"gETAdminRealmsRealmRolesRoleNameManagementPermissions",
@@ -17229,6 +17973,7 @@ export const tagDictionary = {
 		],
 		POST: [
 			"pOSTAdminRealmsRealmWorkflows",
+			"pOSTAdminRealmsRealmWorkflowsMigrate",
 			"pOSTAdminRealmsRealmWorkflowsIdActivateTypeResourceId",
 			"pOSTAdminRealmsRealmWorkflowsIdDeactivateTypeResourceId",
 		],

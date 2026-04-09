@@ -192,6 +192,16 @@ export const confirmationSchema = z.object({
 	jkt: z.optional(z.string()),
 });
 
+export const authorizationDetailsJSONRepresentationSchema = z.object({
+	type: z.optional(z.string()),
+	locations: z.optional(z.array(z.string())),
+	actions: z.optional(z.array(z.string())),
+	datatypes: z.optional(z.array(z.string())),
+	identifier: z.optional(z.string()),
+	privileges: z.optional(z.array(z.string())),
+	customData: z.optional(z.object({}).catchall(z.unknown())),
+});
+
 export const accessTokenSchema = z.object({
 	jti: z.optional(z.string()),
 	exp: z.optional(z.int()),
@@ -249,6 +259,9 @@ export const accessTokenSchema = z.object({
 		return confirmationSchema.optional();
 	},
 	scope: z.optional(z.string()),
+	get authorization_details() {
+		return z.array(authorizationDetailsJSONRepresentationSchema).optional();
+	},
 });
 
 export const authDetailsRepresentationSchema = z.object({
@@ -1174,6 +1187,9 @@ export const organizationRepresentationSchema = z.object({
 	get identityProviders() {
 		return z.array(identityProviderRepresentationSchema).optional();
 	},
+	get groups() {
+		return z.array(groupRepresentationSchema).optional();
+	},
 });
 
 export const policyEvaluationRequestSchema = z.object({
@@ -1205,6 +1221,8 @@ export const policyProviderRepresentationSchema = z.object({
 	type: z.optional(z.string()),
 	name: z.optional(z.string()),
 	group: z.optional(z.string()),
+	description: z.optional(z.string()),
+	code: z.optional(z.string()),
 });
 
 export const protocolMapperEvaluationRepresentationSchema = z.object({
@@ -1380,6 +1398,7 @@ export const realmRepresentationSchema = z.object({
 	quickLoginCheckMilliSeconds: z.optional(z.int()),
 	maxDeltaTimeSeconds: z.optional(z.int()),
 	failureFactor: z.optional(z.int()),
+	maxSecondaryAuthFailures: z.optional(z.int()),
 	privateKey: z.optional(z.string()),
 	publicKey: z.optional(z.string()),
 	certificate: z.optional(z.string()),
@@ -1539,6 +1558,7 @@ export const realmRepresentationSchema = z.object({
 	get clientTemplates() {
 		return z.array(clientTemplateRepresentationSchema).optional();
 	},
+	scimApiEnabled: z.optional(z.boolean()),
 });
 
 export const requiredActionConfigInfoRepresentationSchema = z.object({
@@ -1550,6 +1570,8 @@ export const requiredActionConfigInfoRepresentationSchema = z.object({
 export const requiredActionConfigRepresentationSchema = z.object({
 	config: z.optional(z.object({}).catchall(z.string())),
 });
+
+export const stepExecutionStatusSchema = z.enum(["COMPLETED", "PENDING"]);
 
 export const UPAttributeRequiredSchema = z.object({
 	roles: z.optional(
@@ -1651,6 +1673,9 @@ export const workflowStepRepresentationSchema = z.object({
 	uses: z.optional(z.string()),
 	after: z.optional(z.string()),
 	"scheduled-at": z.optional(z.int()),
+	get status() {
+		return stepExecutionStatusSchema.optional();
+	},
 	id: z.optional(z.string()),
 	get config() {
 		return multivaluedHashMapStringStringSchema.optional();
@@ -2948,6 +2973,7 @@ export const GETAdminRealmsRealmComponentsQueryParamsSchema = z
 	.object({
 		name: z.optional(z.string()),
 		parent: z.optional(z.string()),
+		providerId: z.optional(z.string()),
 		type: z.optional(z.string()),
 	})
 	.optional();
@@ -4320,6 +4346,20 @@ export const GETAdminRealmsRealmUsersQueryParamsSchema = z
 					"Boolean which defines whether brief representations are returned (default: false)",
 				),
 		),
+		createdAfter: z.optional(
+			z
+				.string()
+				.describe(
+					"Only return users created after (inclusive) the given date, in ISO-8601 format (yyyy-MM-dd) or epoch milliseconds",
+				),
+		),
+		createdBefore: z.optional(
+			z
+				.string()
+				.describe(
+					"Only return users created before (inclusive) the given date, in ISO-8601 format (yyyy-MM-dd) or epoch milliseconds",
+				),
+		),
 		email: z.optional(
 			z
 				.string()
@@ -4481,6 +4521,20 @@ export const GETAdminRealmsRealmUsersCountPathParamsSchema = z.object({
 
 export const GETAdminRealmsRealmUsersCountQueryParamsSchema = z
 	.object({
+		createdAfter: z.optional(
+			z
+				.string()
+				.describe(
+					"Only return users created after (inclusive) the given date, in ISO-8601 format (yyyy-MM-dd) or epoch milliseconds",
+				),
+		),
+		createdBefore: z.optional(
+			z
+				.string()
+				.describe(
+					"Only return users created before (inclusive) the given date, in ISO-8601 format (yyyy-MM-dd) or epoch milliseconds",
+				),
+		),
 		email: z.optional(
 			z
 				.string()
@@ -4672,6 +4726,33 @@ export const POSTAdminRealmsRealmWorkflowsMutationResponseSchema = z.lazy(
 	() => POSTAdminRealmsRealmWorkflows201Schema,
 );
 
+export const POSTAdminRealmsRealmWorkflowsMigratePathParamsSchema = z.object({
+	realm: z.string().describe("realm name (not id!)"),
+});
+
+export const POSTAdminRealmsRealmWorkflowsMigrateQueryParamsSchema = z
+	.object({
+		from: z.optional(
+			z.string().describe("A String representing the id of the step to migrate from"),
+		),
+		to: z.optional(z.string().describe("A String representing the id of the step to migrate to")),
+	})
+	.optional();
+
+/**
+ * @description No Content
+ */
+export const POSTAdminRealmsRealmWorkflowsMigrate204Schema = z.unknown();
+
+/**
+ * @description Bad Request
+ */
+export const POSTAdminRealmsRealmWorkflowsMigrate400Schema = z.unknown();
+
+export const POSTAdminRealmsRealmWorkflowsMigrateMutationResponseSchema = z.lazy(
+	() => POSTAdminRealmsRealmWorkflowsMigrate204Schema,
+);
+
 export const GETAdminRealmsRealmWorkflowsIdPathParamsSchema = z.object({
 	realm: z.string().describe("realm name (not id!)"),
 	id: z.string().describe("Workflow identifier"),
@@ -4683,7 +4764,7 @@ export const GETAdminRealmsRealmWorkflowsIdQueryParamsSchema = z
 			z
 				.boolean()
 				.describe(
-					"Indicates whether the workflow id should be included in the representation or not - defaults to true",
+					"Indicates whether the workflow and step ids should be included in the representation or not - defaults to true",
 				),
 		),
 	})
@@ -7533,31 +7614,33 @@ export const DELETEAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesMutat
 export const DELETEAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesMutationResponseSchema =
 	z.lazy(() => DELETEAdminRealmsRealmClientsClientUuidRolesRoleNameComposites204Schema);
 
-export const GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsClientUuidPathParamsSchema =
+export const GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsTargetClientUuidPathParamsSchema =
 	z.object({
 		realm: z.string().describe("realm name (not id!)"),
-		clientUuid: z.string(),
+		clientUuid: z.string().describe("id of client (not client-id!)"),
 		roleName: z.string().describe("role's name (not id!)"),
+		targetClientUuid: z.string(),
 	});
 
-export const GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsClientUuid200Schema =
+export const GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsTargetClientUuid200Schema =
 	z.array(z.lazy(() => roleRepresentationSchema));
 
 /**
  * @description Forbidden
  */
-export const GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsClientUuid403Schema =
+export const GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsTargetClientUuid403Schema =
 	z.unknown();
 
 /**
  * @description Not Found
  */
-export const GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsClientUuid404Schema =
+export const GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsTargetClientUuid404Schema =
 	z.unknown();
 
-export const GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsClientUuidQueryResponseSchema =
+export const GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsTargetClientUuidQueryResponseSchema =
 	z.lazy(
-		() => GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsClientUuid200Schema,
+		() =>
+			GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsTargetClientUuid200Schema,
 	);
 
 export const GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesRealmPathParamsSchema =
@@ -8085,13 +8168,17 @@ export const GETAdminRealmsRealmGroupsGroupIdChildrenQueryParamsSchema = z.objec
 		.default("10")
 		.describe("The maximum number of results that are to be returned. Defaults to 10"),
 	search: z.optional(
-		z.string().describe("A String representing either an exact group name or a partial name"),
+		z
+			.string()
+			.describe(
+				"A String representing either an exact group name or a partial name, defaults to prefix search.",
+			),
 	),
 	subGroupsCount: z
 		.boolean()
 		.default("true")
 		.describe(
-			"Boolean which defines whether to return the count of subgroups for each subgroup of this group (default: true",
+			"Boolean which defines whether to return the count of subgroups for each subgroup of this group (default: true)",
 		),
 });
 
@@ -8559,6 +8646,373 @@ export const DELETEAdminRealmsRealmOrganizationsOrgIdMutationResponseSchema = z.
 	() => DELETEAdminRealmsRealmOrganizationsOrgId204Schema,
 );
 
+export const GETAdminRealmsRealmOrganizationsOrgIdGroupsPathParamsSchema = z.object({
+	realm: z.string().describe("realm name (not id!)"),
+	orgId: z.string(),
+});
+
+export const GETAdminRealmsRealmOrganizationsOrgIdGroupsQueryParamsSchema = z.object({
+	briefRepresentation: z.boolean().default(true),
+	exact: z.boolean().default("false"),
+	first: z.optional(z.coerce.number().int()),
+	max: z.optional(z.coerce.number().int()),
+	populateHierarchy: z.boolean().default(false),
+	q: z.optional(z.string()),
+	search: z.optional(z.string()),
+	subGroupsCount: z.boolean().default(false),
+});
+
+/**
+ * @description OK
+ */
+export const GETAdminRealmsRealmOrganizationsOrgIdGroups200Schema = z.array(
+	z.lazy(() => groupRepresentationSchema),
+);
+
+export const GETAdminRealmsRealmOrganizationsOrgIdGroupsQueryResponseSchema = z.lazy(
+	() => GETAdminRealmsRealmOrganizationsOrgIdGroups200Schema,
+);
+
+export const POSTAdminRealmsRealmOrganizationsOrgIdGroupsPathParamsSchema = z.object({
+	realm: z.string().describe("realm name (not id!)"),
+	orgId: z.string(),
+});
+
+/**
+ * @description Created
+ */
+export const POSTAdminRealmsRealmOrganizationsOrgIdGroups201Schema = z.unknown();
+
+/**
+ * @description No Content - Group moved to top-level
+ */
+export const POSTAdminRealmsRealmOrganizationsOrgIdGroups204Schema = z.unknown();
+
+/**
+ * @description Bad Request
+ */
+export const POSTAdminRealmsRealmOrganizationsOrgIdGroups400Schema = z.unknown();
+
+/**
+ * @description Not Found - Group does not exist
+ */
+export const POSTAdminRealmsRealmOrganizationsOrgIdGroups404Schema = z.unknown();
+
+/**
+ * @description Conflict
+ */
+export const POSTAdminRealmsRealmOrganizationsOrgIdGroups409Schema = z.unknown();
+
+export const POSTAdminRealmsRealmOrganizationsOrgIdGroupsMutationRequestSchema = z.lazy(
+	() => groupRepresentationSchema,
+);
+
+export const POSTAdminRealmsRealmOrganizationsOrgIdGroupsMutationResponseSchema = z.union([
+	z.lazy(() => POSTAdminRealmsRealmOrganizationsOrgIdGroups201Schema),
+	z.lazy(() => POSTAdminRealmsRealmOrganizationsOrgIdGroups204Schema),
+]);
+
+export const GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPathPathParamsSchema = z.object({
+	realm: z.string().describe("realm name (not id!)"),
+	orgId: z.string(),
+	path: z.string().regex(/.*/),
+});
+
+export const GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPathQueryParamsSchema = z.object(
+	{
+		subGroupsCount: z
+			.boolean()
+			.default(false)
+			.describe("Whether to return the count of subgroups (default: false)"),
+	},
+);
+
+/**
+ * @description OK
+ */
+export const GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPath200Schema = z.lazy(
+	() => groupRepresentationSchema,
+);
+
+/**
+ * @description Forbidden
+ */
+export const GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPath403Schema = z.unknown();
+
+/**
+ * @description Not Found
+ */
+export const GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPath404Schema = z.unknown();
+
+export const GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPathQueryResponseSchema = z.lazy(
+	() => GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPath200Schema,
+);
+
+export const GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdPathParamsSchema = z.object({
+	realm: z.string().describe("realm name (not id!)"),
+	orgId: z.string(),
+	groupId: z.string(),
+});
+
+export const GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdQueryParamsSchema = z.object({
+	subGroupsCount: z
+		.boolean()
+		.default(false)
+		.describe("Whether to return the count of subgroups (default: false)"),
+});
+
+/**
+ * @description OK
+ */
+export const GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupId200Schema = z.lazy(
+	() => groupRepresentationSchema,
+);
+
+export const GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdQueryResponseSchema = z.lazy(
+	() => GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupId200Schema,
+);
+
+export const PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdPathParamsSchema = z.object({
+	realm: z.string().describe("realm name (not id!)"),
+	orgId: z.string(),
+	groupId: z.string(),
+});
+
+/**
+ * @description No Content
+ */
+export const PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupId204Schema = z.unknown();
+
+/**
+ * @description Bad Request
+ */
+export const PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupId400Schema = z.unknown();
+
+/**
+ * @description Conflict
+ */
+export const PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupId409Schema = z.unknown();
+
+export const PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMutationRequestSchema = z.lazy(
+	() => groupRepresentationSchema,
+);
+
+export const PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMutationResponseSchema = z.lazy(
+	() => PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupId204Schema,
+);
+
+export const DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdPathParamsSchema = z.object({
+	realm: z.string().describe("realm name (not id!)"),
+	orgId: z.string(),
+	groupId: z.string(),
+});
+
+/**
+ * @description No Content
+ */
+export const DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupId204Schema = z.unknown();
+
+/**
+ * @description Not Found
+ */
+export const DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupId404Schema = z.unknown();
+
+export const DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMutationResponseSchema = z.lazy(
+	() => DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupId204Schema,
+);
+
+export const GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildrenPathParamsSchema = z.object({
+	realm: z.string().describe("realm name (not id!)"),
+	orgId: z.string(),
+	groupId: z.string(),
+});
+
+export const GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildrenQueryParamsSchema = z.object(
+	{
+		exact: z.optional(
+			z
+				.boolean()
+				.describe('Boolean which defines whether the params "search" must match exactly or not'),
+		),
+		first: z.coerce
+			.number()
+			.int()
+			.default("0")
+			.describe("The position of the first result to be returned (pagination offset)."),
+		max: z.coerce
+			.number()
+			.int()
+			.default("10")
+			.describe("The maximum number of results that are to be returned. Defaults to 10"),
+		search: z.optional(
+			z.string().describe("A String representing either an exact group name or a partial name"),
+		),
+		subGroupsCount: z.optional(
+			z.boolean().describe("Whether to return the count of subgroups (default: false)"),
+		),
+	},
+);
+
+/**
+ * @description OK
+ */
+export const GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren200Schema = z.array(
+	z.lazy(() => groupRepresentationSchema),
+);
+
+export const GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildrenQueryResponseSchema = z.lazy(
+	() => GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren200Schema,
+);
+
+export const POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildrenPathParamsSchema = z.object(
+	{
+		realm: z.string().describe("realm name (not id!)"),
+		orgId: z.string(),
+		groupId: z.string(),
+	},
+);
+
+/**
+ * @description Created
+ */
+export const POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren201Schema = z.unknown();
+
+/**
+ * @description No Content
+ */
+export const POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren204Schema = z.unknown();
+
+/**
+ * @description Bad Request
+ */
+export const POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren400Schema = z.unknown();
+
+/**
+ * @description Forbidden
+ */
+export const POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren403Schema = z.unknown();
+
+/**
+ * @description Not Found
+ */
+export const POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren404Schema = z.unknown();
+
+/**
+ * @description Conflict
+ */
+export const POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren409Schema = z.unknown();
+
+export const POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildrenMutationRequestSchema =
+	z.lazy(() => groupRepresentationSchema);
+
+export const POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildrenMutationResponseSchema =
+	z.union([
+		z.lazy(() => POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren201Schema),
+		z.lazy(() => POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren204Schema),
+	]);
+
+export const GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersPathParamsSchema = z.object({
+	realm: z.string().describe("realm name (not id!)"),
+	orgId: z.string(),
+	groupId: z.string(),
+});
+
+export const GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersQueryParamsSchema = z
+	.object({
+		briefRepresentation: z.optional(
+			z
+				.boolean()
+				.describe(
+					"Only return basic information (only guaranteed to return id, username, created, first and last name, email, enabled state, email verification state, federation link, and access. Note that it means that namely user attributes, required actions, and not before are not returned.)",
+				),
+		),
+		first: z.optional(z.coerce.number().int().describe("Pagination offset")),
+		max: z.optional(z.coerce.number().int().describe("Maximum results size (defaults to 100)")),
+	})
+	.optional();
+
+/**
+ * @description OK
+ */
+export const GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembers200Schema = z.array(
+	z.lazy(() => memberRepresentationSchema),
+);
+
+export const GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersQueryResponseSchema = z.lazy(
+	() => GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembers200Schema,
+);
+
+export const PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserIdPathParamsSchema =
+	z.object({
+		realm: z.string().describe("realm name (not id!)"),
+		orgId: z.string(),
+		groupId: z.string(),
+		userId: z.string(),
+	});
+
+/**
+ * @description No Content
+ */
+export const PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId204Schema = z.unknown();
+
+/**
+ * @description Bad Request - User is not a member of the organization
+ */
+export const PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId400Schema = z.unknown();
+
+/**
+ * @description Forbidden
+ */
+export const PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId403Schema = z.unknown();
+
+/**
+ * @description Not Found - User does not exist
+ */
+export const PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId404Schema = z.unknown();
+
+/**
+ * @description Conflict - User is already a member of the group
+ */
+export const PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId409Schema = z.unknown();
+
+export const PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserIdMutationResponseSchema =
+	z.lazy(() => PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId204Schema);
+
+export const DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserIdPathParamsSchema =
+	z.object({
+		realm: z.string().describe("realm name (not id!)"),
+		orgId: z.string(),
+		groupId: z.string(),
+		userId: z.string(),
+	});
+
+/**
+ * @description No Content
+ */
+export const DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId204Schema =
+	z.unknown();
+
+/**
+ * @description Bad Request
+ */
+export const DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId400Schema =
+	z.unknown();
+
+/**
+ * @description Forbidden
+ */
+export const DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId403Schema =
+	z.unknown();
+
+/**
+ * @description Not Found - User does not exist
+ */
+export const DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId404Schema =
+	z.unknown();
+
+export const DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserIdMutationResponseSchema =
+	z.lazy(() => DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId204Schema);
+
 export const GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersPathParamsSchema = z.object({
 	realm: z.string().describe("realm name (not id!)"),
 	orgId: z.string(),
@@ -8651,6 +9105,54 @@ export const DELETEAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAlias404Sc
 
 export const DELETEAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasMutationResponseSchema =
 	z.lazy(() => DELETEAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAlias204Schema);
+
+export const GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasGroupsPathParamsSchema =
+	z.object({
+		realm: z.string().describe("realm name (not id!)"),
+		orgId: z.string(),
+		alias: z.string().describe("The alias of the identity provider"),
+	});
+
+export const GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasGroupsQueryParamsSchema =
+	z.object({
+		briefRepresentation: z
+			.boolean()
+			.default(true)
+			.describe("If true, return brief representation; otherwise return full representation"),
+		exact: z
+			.boolean()
+			.default("false")
+			.describe("If true, perform exact match on the search parameter"),
+		first: z.optional(
+			z.coerce.number().int().describe("The position of the first result (pagination offset)"),
+		),
+		max: z.optional(z.coerce.number().int().describe("The maximum number of results to return")),
+		q: z.optional(
+			z
+				.string()
+				.describe(
+					"A query to search for group attributes, in the format 'key1:value1 key2:value2'",
+				),
+		),
+		search: z.optional(z.string().describe("A string to search for in group names")),
+		subGroupsCount: z
+			.boolean()
+			.default(false)
+			.describe("If true, include subgroups count in the response"),
+	});
+
+export const GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasGroups200Schema = z.array(
+	z.lazy(() => groupRepresentationSchema),
+);
+
+/**
+ * @description Not Found
+ */
+export const GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasGroups404Schema =
+	z.unknown();
+
+export const GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasGroupsQueryResponseSchema =
+	z.lazy(() => GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasGroups200Schema);
 
 export const GETAdminRealmsRealmOrganizationsOrgIdInvitationsPathParamsSchema = z.object({
 	realm: z.string().describe("realm name (not id!)"),
@@ -8910,6 +9412,34 @@ export const DELETEAdminRealmsRealmOrganizationsOrgIdMembersMemberId400Schema = 
 
 export const DELETEAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMutationResponseSchema = z.lazy(
 	() => DELETEAdminRealmsRealmOrganizationsOrgIdMembersMemberId204Schema,
+);
+
+export const GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroupsPathParamsSchema = z.object({
+	realm: z.string().describe("realm name (not id!)"),
+	orgId: z.string(),
+	memberId: z.string(),
+});
+
+export const GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroupsQueryParamsSchema = z.object(
+	{
+		briefRepresentation: z.boolean().default(true),
+		first: z.optional(z.coerce.number().int()),
+		max: z.optional(z.coerce.number().int()),
+		search: z.optional(z.string()),
+	},
+);
+
+export const GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroups200Schema = z.array(
+	z.lazy(() => groupRepresentationSchema),
+);
+
+/**
+ * @description Bad Request
+ */
+export const GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroups400Schema = z.unknown();
+
+export const GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroupsQueryResponseSchema = z.lazy(
+	() => GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroups200Schema,
 );
 
 export const GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdOrganizationsPathParamsSchema =
@@ -9321,30 +9851,31 @@ export const DELETEAdminRealmsRealmRolesRoleNameCompositesMutationResponseSchema
 	() => DELETEAdminRealmsRealmRolesRoleNameComposites204Schema,
 );
 
-export const GETAdminRealmsRealmRolesRoleNameCompositesClientsClientUuidPathParamsSchema = z.object(
-	{
+export const GETAdminRealmsRealmRolesRoleNameCompositesClientsTargetClientUuidPathParamsSchema =
+	z.object({
 		realm: z.string().describe("realm name (not id!)"),
-		clientUuid: z.string(),
 		roleName: z.string().describe("role's name (not id!)"),
-	},
-);
+		targetClientUuid: z.string(),
+	});
 
-export const GETAdminRealmsRealmRolesRoleNameCompositesClientsClientUuid200Schema = z.array(
+export const GETAdminRealmsRealmRolesRoleNameCompositesClientsTargetClientUuid200Schema = z.array(
 	z.lazy(() => roleRepresentationSchema),
 );
 
 /**
  * @description Forbidden
  */
-export const GETAdminRealmsRealmRolesRoleNameCompositesClientsClientUuid403Schema = z.unknown();
+export const GETAdminRealmsRealmRolesRoleNameCompositesClientsTargetClientUuid403Schema =
+	z.unknown();
 
 /**
  * @description Not Found
  */
-export const GETAdminRealmsRealmRolesRoleNameCompositesClientsClientUuid404Schema = z.unknown();
+export const GETAdminRealmsRealmRolesRoleNameCompositesClientsTargetClientUuid404Schema =
+	z.unknown();
 
-export const GETAdminRealmsRealmRolesRoleNameCompositesClientsClientUuidQueryResponseSchema =
-	z.lazy(() => GETAdminRealmsRealmRolesRoleNameCompositesClientsClientUuid200Schema);
+export const GETAdminRealmsRealmRolesRoleNameCompositesClientsTargetClientUuidQueryResponseSchema =
+	z.lazy(() => GETAdminRealmsRealmRolesRoleNameCompositesClientsTargetClientUuid200Schema);
 
 export const GETAdminRealmsRealmRolesRoleNameCompositesRealmPathParamsSchema = z.object({
 	realm: z.string().describe("realm name (not id!)"),
