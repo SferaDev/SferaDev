@@ -2132,6 +2132,7 @@ import type {
 	UpdateObservabilityConfigurationProject401,
 	UpdateObservabilityConfigurationProject403,
 	UpdateObservabilityConfigurationProject404,
+	UpdateObservabilityConfigurationProject429,
 	UpdateObservabilityConfigurationProjectMutationResponse,
 	UpdateObservabilityConfigurationProjectPathParams,
 	UpdateObservabilityConfigurationProjectQueryParams,
@@ -2293,6 +2294,7 @@ import type {
 	UploadFile400,
 	UploadFile401,
 	UploadFile403,
+	UploadFile426,
 	UploadFileHeaderParams,
 	UploadFileMutationResponse,
 	UploadFileQueryParams,
@@ -8966,6 +8968,7 @@ export async function updateObservabilityConfigurationProject({
 			| UpdateObservabilityConfigurationProject401
 			| UpdateObservabilityConfigurationProject403
 			| UpdateObservabilityConfigurationProject404
+			| UpdateObservabilityConfigurationProject429
 		>,
 		null,
 		Record<string, string>,
@@ -13565,7 +13568,7 @@ export async function uploadFile({
 
 	const data = await request<
 		UploadFileMutationResponse,
-		ErrorWrapper<UploadFile400 | UploadFile401 | UploadFile403>,
+		ErrorWrapper<UploadFile400 | UploadFile401 | UploadFile403 | UploadFile426>,
 		null,
 		UploadFileHeaderParams,
 		UploadFileQueryParams,

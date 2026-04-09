@@ -805,6 +805,7 @@ export const userEventSchema = z
 					"project-custom-environment-deleted",
 					"project-custom-environment-updated",
 					"project-customer-success-code-visibility-updated",
+					"project-delegated-protection-enabled",
 					"project-delete",
 					"project-deployment-retention-updated",
 					"project-directory-listing",
@@ -823,6 +824,7 @@ export const userEventSchema = z
 					"project-functions-fluid-disabled",
 					"project-functions-fluid-enabled",
 					"project-git-commit-comments-toggled",
+					"project-git-commit-status-toggled",
 					"project-git-create-deployments-toggled",
 					"project-git-fork-protection-updated",
 					"project-git-lfs-toggled",
@@ -859,8 +861,10 @@ export const userEventSchema = z
 					"project-rolling-release-approved",
 					"project-rolling-release-completed",
 					"project-rolling-release-configured",
+					"project-rolling-release-continued",
 					"project-rolling-release-disabled",
 					"project-rolling-release-enabled",
+					"project-rolling-release-paused",
 					"project-rolling-release-started",
 					"project-rolling-release-timer",
 					"project-root-directory-updated",
@@ -5048,6 +5052,11 @@ export const userEventSchema = z
 					action: z.enum(["enabled", "disabled"]),
 				}),
 				z.object({
+					clientId: z.string(),
+					projectId: z.string(),
+					projectName: z.string(),
+				}),
+				z.object({
 					name: z.string(),
 					ownerId: z.string(),
 				}),
@@ -5223,6 +5232,11 @@ export const userEventSchema = z
 					projectId: z.string(),
 					projectName: z.string(),
 					requireVerifiedCommits: z.union([z.literal(false), z.literal(true)]),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					gitCommitStatus: z.union([z.literal(false), z.literal(true)]),
 				}),
 				z.object({
 					projectId: z.string(),
@@ -5702,6 +5716,8 @@ export const userEventSchema = z
 					enabled: z.union([z.literal(false), z.literal(true)]),
 					updatedAt: z.number(),
 					firstEnabledAt: z.optional(z.number()),
+					projectId: z.optional(z.string()),
+					projectName: z.optional(z.string()),
 				}),
 				z.object({
 					bio: z.string(),
@@ -6523,6 +6539,7 @@ export const userEventSchema = z
 export const flagSchema = z.object({
 	description: z.optional(z.string()),
 	permanent: z.optional(z.union([z.literal(false), z.literal(true)])),
+	tags: z.optional(z.array(z.string())),
 	experiment: z.optional(
 		z.object({
 			name: z.optional(z.string()),
@@ -13165,6 +13182,11 @@ export const listFlagsQueryParamsSchema = z
 		search: z.optional(
 			z.string().describe("Search flags by their slug or description. Case-insensitive."),
 		),
+		tags: z.optional(
+			z
+				.array(z.string())
+				.describe("Filter flags by tag. Repeat the parameter for multiple tags (all must match)."),
+		),
 		teamId: z.optional(
 			z.string().describe("The Team identifier to perform the request on behalf of."),
 		),
@@ -13577,6 +13599,11 @@ export const listTeamFlagsQueryParamsSchema = z.object({
 	),
 	kind: z.optional(
 		z.enum(["boolean", "string", "number", "json"]).describe("The kind of flags to retrieve."),
+	),
+	tags: z.optional(
+		z
+			.array(z.string())
+			.describe("Filter flags by tag. Repeat the parameter for multiple tags (all must match)."),
 	),
 	slug: z.optional(z.string().describe("The Team slug to perform the request on behalf of.")),
 });
@@ -15342,6 +15369,8 @@ export const updateObservabilityConfigurationProject401Schema = z.unknown();
 export const updateObservabilityConfigurationProject403Schema = z.unknown();
 
 export const updateObservabilityConfigurationProject404Schema = z.unknown();
+
+export const updateObservabilityConfigurationProject429Schema = z.unknown();
 
 export const updateObservabilityConfigurationProjectMutationResponseSchema = z.lazy(
 	() => updateObservabilityConfigurationProject200Schema,
@@ -20149,6 +20178,8 @@ export const uploadFile401Schema = z.unknown();
  * @description You do not have permission to access this resource.
  */
 export const uploadFile403Schema = z.unknown();
+
+export const uploadFile426Schema = z.unknown();
 
 export const uploadFileMutationResponseSchema = z.lazy(() => uploadFile200Schema);
 
