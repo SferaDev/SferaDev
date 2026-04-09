@@ -4415,6 +4415,68 @@ export const reportsGetUsage500Schema = z.unknown();
 
 export const reportsGetUsageQueryResponseSchema = z.lazy(() => reportsGetUsage200Schema);
 
+export const reportsGetAIUsageQueryParamsSchema = z.object({
+	start: z.optional(z.iso.datetime().describe("Inclusive start datetime filter.")),
+	end: z.optional(z.iso.datetime().describe("Exclusive end datetime filter.")),
+	cursor: z.optional(
+		z.string().describe("Opaque cursor returned by a previous request for forward pagination."),
+	),
+	limit: z.coerce
+		.number()
+		.int()
+		.min(1)
+		.max(5000)
+		.default(1000)
+		.describe("Maximum number of rows to return."),
+});
+
+/**
+ * @description Success
+ */
+export const reportsGetAIUsage200Schema = z.unknown();
+
+/**
+ * @description Unauthorized
+ */
+export const reportsGetAIUsage401Schema = z.unknown();
+
+/**
+ * @description Forbidden
+ */
+export const reportsGetAIUsage403Schema = z.unknown();
+
+/**
+ * @description Not Found
+ */
+export const reportsGetAIUsage404Schema = z.unknown();
+
+/**
+ * @description Conflict
+ */
+export const reportsGetAIUsage409Schema = z.unknown();
+
+/**
+ * @description Payload Too Large
+ */
+export const reportsGetAIUsage413Schema = z.unknown();
+
+/**
+ * @description Unprocessable Entity
+ */
+export const reportsGetAIUsage422Schema = z.unknown();
+
+/**
+ * @description Too Many Requests
+ */
+export const reportsGetAIUsage429Schema = z.unknown();
+
+/**
+ * @description Internal Server Error
+ */
+export const reportsGetAIUsage500Schema = z.unknown();
+
+export const reportsGetAIUsageQueryResponseSchema = z.lazy(() => reportsGetAIUsage200Schema);
+
 export const reportsGetUserActivityQueryParamsSchema = z
 	.object({
 		startDate: z.optional(z.iso.datetime().describe('Query parameter "startDate"')),

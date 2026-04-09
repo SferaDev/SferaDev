@@ -495,6 +495,16 @@ import type {
 	RateLimitsFind500,
 	RateLimitsFindQueryParams,
 	RateLimitsFindQueryResponse,
+	ReportsGetAIUsage401,
+	ReportsGetAIUsage403,
+	ReportsGetAIUsage404,
+	ReportsGetAIUsage409,
+	ReportsGetAIUsage413,
+	ReportsGetAIUsage422,
+	ReportsGetAIUsage429,
+	ReportsGetAIUsage500,
+	ReportsGetAIUsageQueryParams,
+	ReportsGetAIUsageQueryResponse,
 	ReportsGetUsage401,
 	ReportsGetUsage403,
 	ReportsGetUsage404,
@@ -2484,6 +2494,40 @@ export async function reportsGetUsage({
 }
 
 /**
+ * @description Retrieves v0 AI usage events for the authenticated user or active team scope.
+ * @summary Get AI Usage Report
+ * {@link /reports/usage/ai}
+ */
+export async function reportsGetAIUsage({
+	queryParams,
+	config = {},
+}: {
+	queryParams?: ReportsGetAIUsageQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	const data = await request<
+		ReportsGetAIUsageQueryResponse,
+		ErrorWrapper<
+			| ReportsGetAIUsage401
+			| ReportsGetAIUsage403
+			| ReportsGetAIUsage404
+			| ReportsGetAIUsage409
+			| ReportsGetAIUsage413
+			| ReportsGetAIUsage422
+			| ReportsGetAIUsage429
+			| ReportsGetAIUsage500
+		>,
+		null,
+		Record<string, string>,
+		ReportsGetAIUsageQueryParams,
+		Record<string, string>
+	>({ method: "GET", url: `/reports/usage/ai`, queryParams, ...requestConfig });
+	return data;
+}
+
+/**
  * @description Retrieves aggregated user activity data for team members, including chat counts, message counts, and activity timestamps. Only available for Enterprise teams with OWNER or BILLING role. Shows the same data as displayed in the Usage settings for Enterprise teams.
  * @summary Get User Activity Report
  * {@link /reports/user-activity}
@@ -2755,6 +2799,7 @@ export const operationsByPath = {
 	"GET /user/plan": userGetPlan,
 	"GET /user/scopes": userGetScopes,
 	"GET /reports/usage": reportsGetUsage,
+	"GET /reports/usage/ai": reportsGetAIUsage,
 	"GET /reports/user-activity": reportsGetUserActivity,
 	"GET /mcp-servers": mcpServersFind,
 	"POST /mcp-servers": mcpServersCreate,
@@ -2828,6 +2873,7 @@ export const operationsByTag = {
 	},
 	reports: {
 		reportsGetUsage,
+		reportsGetAIUsage,
 		reportsGetUserActivity,
 	},
 	mcpservers: {
@@ -2897,7 +2943,7 @@ export const tagDictionary = {
 		GET: ["userGet", "userGetBilling", "userGetPlan", "userGetScopes"],
 	},
 	reports: {
-		GET: ["reportsGetUsage", "reportsGetUserActivity"],
+		GET: ["reportsGetUsage", "reportsGetAIUsage", "reportsGetUserActivity"],
 	},
 	mcpservers: {
 		GET: ["mcpServersFind", "mcpServersGetById"],

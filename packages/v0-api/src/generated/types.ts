@@ -7250,6 +7250,93 @@ export type ReportsGetUsageQuery = {
 		| ReportsGetUsage500;
 };
 
+export type ReportsGetAIUsageQueryParams = {
+	/**
+	 * @description Inclusive start datetime filter.
+	 * @type string | undefined, date-time
+	 */
+	start?: string | undefined;
+	/**
+	 * @description Exclusive end datetime filter.
+	 * @type string | undefined, date-time
+	 */
+	end?: string | undefined;
+	/**
+	 * @description Opaque cursor returned by a previous request for forward pagination.
+	 * @type string | undefined
+	 */
+	cursor?: string | undefined;
+	/**
+	 * @description Maximum number of rows to return.
+	 * @minLength 1
+	 * @maxLength 5000
+	 * @default 1000
+	 * @type integer | undefined
+	 */
+	limit?: number | undefined;
+};
+
+/**
+ * @description Success
+ */
+export type ReportsGetAIUsage200 = unknown;
+
+/**
+ * @description Unauthorized
+ */
+export type ReportsGetAIUsage401 = unknown;
+
+/**
+ * @description Forbidden
+ */
+export type ReportsGetAIUsage403 = unknown;
+
+/**
+ * @description Not Found
+ */
+export type ReportsGetAIUsage404 = unknown;
+
+/**
+ * @description Conflict
+ */
+export type ReportsGetAIUsage409 = unknown;
+
+/**
+ * @description Payload Too Large
+ */
+export type ReportsGetAIUsage413 = unknown;
+
+/**
+ * @description Unprocessable Entity
+ */
+export type ReportsGetAIUsage422 = unknown;
+
+/**
+ * @description Too Many Requests
+ */
+export type ReportsGetAIUsage429 = unknown;
+
+/**
+ * @description Internal Server Error
+ */
+export type ReportsGetAIUsage500 = unknown;
+
+export type ReportsGetAIUsageQueryResponse = ReportsGetAIUsage200;
+
+export type ReportsGetAIUsageQuery = {
+	Response: ReportsGetAIUsage200;
+	QueryParams: ReportsGetAIUsageQueryParams;
+	Errors:
+		| ReportsGetAIUsage401
+		| ReportsGetAIUsage403
+		| ReportsGetAIUsage404
+		| ReportsGetAIUsage409
+		| ReportsGetAIUsage413
+		| ReportsGetAIUsage422
+		| ReportsGetAIUsage429
+		| ReportsGetAIUsage500;
+};
+
 export type ReportsGetUserActivityQueryParams = {
 	/**
 	 * @description Query parameter \"startDate\"
