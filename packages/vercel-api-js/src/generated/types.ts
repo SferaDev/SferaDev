@@ -1573,6 +1573,7 @@ export const userEventTypeEnum = {
 	"project-custom-environment-updated": "project-custom-environment-updated",
 	"project-customer-success-code-visibility-updated":
 		"project-customer-success-code-visibility-updated",
+	"project-delegated-protection-enabled": "project-delegated-protection-enabled",
 	"project-delete": "project-delete",
 	"project-deployment-retention-updated": "project-deployment-retention-updated",
 	"project-directory-listing": "project-directory-listing",
@@ -1591,6 +1592,7 @@ export const userEventTypeEnum = {
 	"project-functions-fluid-disabled": "project-functions-fluid-disabled",
 	"project-functions-fluid-enabled": "project-functions-fluid-enabled",
 	"project-git-commit-comments-toggled": "project-git-commit-comments-toggled",
+	"project-git-commit-status-toggled": "project-git-commit-status-toggled",
 	"project-git-create-deployments-toggled": "project-git-create-deployments-toggled",
 	"project-git-fork-protection-updated": "project-git-fork-protection-updated",
 	"project-git-lfs-toggled": "project-git-lfs-toggled",
@@ -1629,8 +1631,10 @@ export const userEventTypeEnum = {
 	"project-rolling-release-approved": "project-rolling-release-approved",
 	"project-rolling-release-completed": "project-rolling-release-completed",
 	"project-rolling-release-configured": "project-rolling-release-configured",
+	"project-rolling-release-continued": "project-rolling-release-continued",
 	"project-rolling-release-disabled": "project-rolling-release-disabled",
 	"project-rolling-release-enabled": "project-rolling-release-enabled",
+	"project-rolling-release-paused": "project-rolling-release-paused",
 	"project-rolling-release-started": "project-rolling-release-started",
 	"project-rolling-release-timer": "project-rolling-release-timer",
 	"project-root-directory-updated": "project-root-directory-updated",
@@ -3710,6 +3714,14 @@ export const payloadRequireVerifiedCommitsEnum = {
 
 export type PayloadRequireVerifiedCommitsEnumKey =
 	(typeof payloadRequireVerifiedCommitsEnum)[keyof typeof payloadRequireVerifiedCommitsEnum];
+
+export const payloadGitCommitStatusEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadGitCommitStatusEnumKey =
+	(typeof payloadGitCommitStatusEnum)[keyof typeof payloadGitCommitStatusEnum];
 
 export const payloadGitLFSEnum = {
 	false: false,
@@ -12262,6 +12274,20 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
+						clientId: string;
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
 						name: string;
 						/**
 						 * @type string
@@ -12679,6 +12705,20 @@ export type UserEvent = {
 						 * @type boolean
 						 */
 						requireVerifiedCommits: PayloadRequireVerifiedCommitsEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type boolean
+						 */
+						gitCommitStatus: PayloadGitCommitStatusEnumKey;
 				  }
 				| {
 						/**
@@ -13770,6 +13810,14 @@ export type UserEvent = {
 						 * @type number | undefined
 						 */
 						firstEnabledAt?: number | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						projectId?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						projectName?: string | undefined;
 				  }
 				| {
 						/**
@@ -15722,6 +15770,10 @@ export type Flag = {
 	 * @type boolean | undefined
 	 */
 	permanent?: FlagPermanentEnumKey | undefined;
+	/**
+	 * @type array | undefined
+	 */
+	tags?: string[] | undefined;
 	/**
 	 * @type object | undefined
 	 */
@@ -25979,6 +26031,11 @@ export type ListFlagsQueryParams = {
 	 */
 	search?: string | undefined;
 	/**
+	 * @description Filter flags by tag. Repeat the parameter for multiple tags (all must match).
+	 * @type array | undefined
+	 */
+	tags?: string[] | undefined;
+	/**
 	 * @description The Team identifier to perform the request on behalf of.
 	 * @type string | undefined
 	 */
@@ -26651,6 +26708,11 @@ export type ListTeamFlagsQueryParams = {
 	 * @type string | undefined
 	 */
 	kind?: ListTeamFlagsQueryParamsKindEnumKey | undefined;
+	/**
+	 * @description Filter flags by tag. Repeat the parameter for multiple tags (all must match).
+	 * @type array | undefined
+	 */
+	tags?: string[] | undefined;
 	/**
 	 * @description The Team slug to perform the request on behalf of.
 	 * @type string | undefined
@@ -29290,6 +29352,8 @@ export type UpdateObservabilityConfigurationProject403 = unknown;
 
 export type UpdateObservabilityConfigurationProject404 = unknown;
 
+export type UpdateObservabilityConfigurationProject429 = unknown;
+
 export type UpdateObservabilityConfigurationProjectMutationResponse =
 	UpdateObservabilityConfigurationProject200;
 
@@ -29301,7 +29365,8 @@ export type UpdateObservabilityConfigurationProjectMutation = {
 		| UpdateObservabilityConfigurationProject400
 		| UpdateObservabilityConfigurationProject401
 		| UpdateObservabilityConfigurationProject403
-		| UpdateObservabilityConfigurationProject404;
+		| UpdateObservabilityConfigurationProject404
+		| UpdateObservabilityConfigurationProject429;
 };
 
 export type GetProjectMembersPathParams = {
@@ -36416,13 +36481,15 @@ export type UploadFile401 = unknown;
  */
 export type UploadFile403 = unknown;
 
+export type UploadFile426 = unknown;
+
 export type UploadFileMutationResponse = UploadFile200;
 
 export type UploadFileMutation = {
 	Response: UploadFile200;
 	QueryParams: UploadFileQueryParams;
 	HeaderParams: UploadFileHeaderParams;
-	Errors: UploadFile400 | UploadFile401 | UploadFile403;
+	Errors: UploadFile400 | UploadFile401 | UploadFile403 | UploadFile426;
 };
 
 export type ListAuthTokens200 = unknown;
