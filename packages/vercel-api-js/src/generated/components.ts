@@ -2777,13 +2777,13 @@ export async function status({
  */
 export async function uploadArtifact({
 	pathParams: { hash },
-	headers,
 	queryParams,
+	headers,
 	config = {},
 }: {
 	pathParams: UploadArtifactPathParams;
-	headers: UploadArtifactHeaderParams;
 	queryParams?: UploadArtifactQueryParams;
+	headers?: UploadArtifactHeaderParams;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;

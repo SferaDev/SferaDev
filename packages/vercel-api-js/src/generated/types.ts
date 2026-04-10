@@ -1349,6 +1349,8 @@ export const userEventTypeEnum = {
 	"access-group-user-removed": "access-group-user-removed",
 	"ai-alert-investigation": "ai-alert-investigation",
 	"ai-code-review": "ai-code-review",
+	"ai-gateway-api-key-created": "ai-gateway-api-key-created",
+	"ai-gateway-api-key-deleted": "ai-gateway-api-key-deleted",
 	"alert-rule-created": "alert-rule-created",
 	"alert-rule-deleted": "alert-rule-deleted",
 	"alert-rule-updated": "alert-rule-updated",
@@ -1702,6 +1704,7 @@ export const userEventTypeEnum = {
 	"storage-update-project-connection": "storage-update-project-connection",
 	"storage-view-secret": "storage-view-secret",
 	"strict-deployment-protection-settings": "strict-deployment-protection-settings",
+	"strict-shareable-links": "strict-shareable-links",
 	"subscription-created": "subscription-created",
 	"subscription-product-added": "subscription-product-added",
 	"subscription-product-removed": "subscription-product-removed",
@@ -4732,6 +4735,21 @@ export type UserEvent = {
 						 * @type array
 						 */
 						environment: string[];
+				  }
+				| {
+						/**
+						 * @type object
+						 */
+						apiKey: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string
+							 */
+							name: string;
+						};
 				  }
 				| {
 						/**
@@ -17645,6 +17663,14 @@ export const strictDeploymentProtectionSettingsEnabledEnum = {
 export type StrictDeploymentProtectionSettingsEnabledEnumKey =
 	(typeof strictDeploymentProtectionSettingsEnabledEnum)[keyof typeof strictDeploymentProtectionSettingsEnabledEnum];
 
+export const strictShareableLinksEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type StrictShareableLinksEnabledEnumKey =
+	(typeof strictShareableLinksEnabledEnum)[keyof typeof strictShareableLinksEnabledEnum];
+
 export const nsnbConfigPreferenceEnum = {
 	"auto-approval": "auto-approval",
 	block: "block",
@@ -18140,6 +18166,22 @@ export type Team = {
 				 * @type boolean
 				 */
 				enabled: StrictDeploymentProtectionSettingsEnabledEnumKey;
+				/**
+				 * @type number
+				 */
+				updatedAt: number;
+		  }
+		| undefined;
+	/**
+	 * @description When enabled, creating shareable links requires Owner role.
+	 * @type object | undefined
+	 */
+	strictShareableLinks?:
+		| {
+				/**
+				 * @type boolean
+				 */
+				enabled: StrictShareableLinksEnabledEnumKey;
 				/**
 				 * @type number
 				 */
@@ -20211,14 +20253,14 @@ export type RecordEventsHeaderParams = {
 	 * @maxLength 50
 	 * @type string | undefined
 	 */
-	"x-artifact-client-ci"?: string | undefined;
+	"'x-Artifact-Client-Ci'"?: string | undefined;
 	/**
 	 * @description 1 if the client is an interactive shell. Otherwise 0
 	 * @minLength 0
 	 * @maxLength 1
 	 * @type integer | undefined
 	 */
-	"x-artifact-client-interactive"?: number | undefined;
+	"'x-Artifact-Client-Interactive'"?: number | undefined;
 };
 
 /**
@@ -20319,45 +20361,45 @@ export type UploadArtifactQueryParams = {
 export type UploadArtifactHeaderParams = {
 	/**
 	 * @description The artifact size in bytes
-	 * @type number
+	 * @type number | undefined
 	 */
-	"Content-Length": number;
+	"'content-Length'"?: number | undefined;
 	/**
 	 * @description The time taken to generate the uploaded artifact in milliseconds.
 	 * @type number | undefined
 	 */
-	"x-artifact-duration"?: number | undefined;
+	"'x-Artifact-Duration'"?: number | undefined;
 	/**
 	 * @description The continuous integration or delivery environment where this artifact was generated.
 	 * @maxLength 50
 	 * @type string | undefined
 	 */
-	"x-artifact-client-ci"?: string | undefined;
+	"'x-Artifact-Client-Ci'"?: string | undefined;
 	/**
 	 * @description 1 if the client is an interactive shell. Otherwise 0
 	 * @minLength 0
 	 * @maxLength 1
 	 * @type integer | undefined
 	 */
-	"x-artifact-client-interactive"?: number | undefined;
+	"'x-Artifact-Client-Interactive'"?: number | undefined;
 	/**
 	 * @description The base64 encoded tag for this artifact. The value is sent back to clients when the artifact is downloaded as the header `x-artifact-tag`
 	 * @maxLength 600
 	 * @type string | undefined
 	 */
-	"x-artifact-tag"?: string | undefined;
+	"'x-Artifact-Tag'"?: string | undefined;
 	/**
 	 * @description The SHA of the source control revision that generated this artifact.
 	 * @maxLength 200
 	 * @type string | undefined
 	 */
-	"x-artifact-sha"?: string | undefined;
+	"'x-Artifact-Sha'"?: string | undefined;
 	/**
 	 * @description A hash representing uncommitted changes in the working directory when this artifact was generated.
 	 * @maxLength 200
 	 * @type string | undefined
 	 */
-	"x-artifact-dirty-hash"?: string | undefined;
+	"'x-Artifact-Dirty-Hash'"?: string | undefined;
 };
 
 /**
@@ -20422,14 +20464,14 @@ export type DownloadArtifactHeaderParams = {
 	 * @maxLength 50
 	 * @type string | undefined
 	 */
-	"x-artifact-client-ci"?: string | undefined;
+	"'x-Artifact-Client-Ci'"?: string | undefined;
 	/**
 	 * @description 1 if the client is an interactive shell. Otherwise 0
 	 * @minLength 0
 	 * @maxLength 1
 	 * @type integer | undefined
 	 */
-	"x-artifact-client-interactive"?: number | undefined;
+	"'x-Artifact-Client-Interactive'"?: number | undefined;
 };
 
 /**
@@ -25725,7 +25767,7 @@ export type ListSharedEnvVariableQueryParams = {
 	 * @description Filter SharedEnvVariables based on comma separated ids
 	 * @type string | undefined
 	 */
-	"exclude-ids"?: string | undefined;
+	"'exclude-ids'"?: string | undefined;
 	/**
 	 * @description Filter SharedEnvVariables that belong to a project
 	 * @type string | undefined
@@ -25735,7 +25777,7 @@ export type ListSharedEnvVariableQueryParams = {
 	 * @description Filter SharedEnvVariables that belong to a project
 	 * @type string | undefined
 	 */
-	"exclude-projectId"?: string | undefined;
+	"'exclude-projectId'"?: string | undefined;
 	/**
 	 * @description The Team identifier to perform the request on behalf of.
 	 * @type string | undefined
@@ -25988,7 +26030,7 @@ export type ListUserEventsQueryParams = {
 	 */
 	until?: string | undefined;
 	/**
-	 * @description Comma-delimited list of event \\\"types\\\" to filter the results by.
+	 * @description Comma-delimited list of event \"types\" to filter the results by.
 	 * @type string | undefined
 	 */
 	types?: string | undefined;
@@ -30147,7 +30189,7 @@ export type GetProjectsQueryParams = {
 	 */
 	staticIpsEnabled?: string | undefined;
 	/**
-	 * @description Filter results by build machine types. Accepts comma-separated values. Use \\\"default\\\" for projects without a build machine type set.
+	 * @description Filter results by build machine types. Accepts comma-separated values. Use \"default\" for projects without a build machine type set.
 	 * @type string | undefined
 	 */
 	buildMachineTypes?: string | undefined;
@@ -30844,7 +30886,7 @@ export type GetProjectDomainsQueryParams = {
 	 */
 	production?: GetProjectDomainsQueryParamsProductionEnumKey | undefined;
 	/**
-	 * @description Filters on the target of the domain. Can be either \\\"production\\\", \\\"preview\\\"
+	 * @description Filters on the target of the domain. Can be either \"production\", \"preview\"
 	 * @type string | undefined
 	 */
 	target?: GetProjectDomainsQueryParamsTargetEnumKey | undefined;
@@ -30859,7 +30901,7 @@ export type GetProjectDomainsQueryParams = {
 	 */
 	gitBranch?: string | undefined;
 	/**
-	 * @description Excludes redirect project domains when \\\"false\\\". Includes redirect project domains when \\\"true\\\" (default).
+	 * @description Excludes redirect project domains when \"false\". Includes redirect project domains when \"true\" (default).
 	 * @default "true"
 	 */
 	redirects?: GetProjectDomainsQueryParamsRedirectsEnumKey | undefined;
@@ -33266,7 +33308,7 @@ export type GetCommandQueryParamsWaitEnumKey =
 
 export type GetCommandQueryParams = {
 	/**
-	 * @description If set to \\\"true\\\", the request will block until the command finishes execution. Useful for synchronously waiting for command completion.
+	 * @description If set to \"true\", the request will block until the command finishes execution. Useful for synchronously waiting for command completion.
 	 * @default "false"
 	 * @type string | undefined
 	 */
@@ -33515,7 +33557,7 @@ export type WriteFilesHeaderParams = {
 	 * @description The target directory where the tarball contents will be extracted. If not specified, files are extracted to the sandbox home directory.
 	 * @type string | undefined
 	 */
-	"x-cwd"?: string | undefined;
+	"'x-Cwd'"?: string | undefined;
 };
 
 /**
@@ -34547,7 +34589,7 @@ export type GetSessionCommandQueryParamsWaitEnumKey =
 
 export type GetSessionCommandQueryParams = {
 	/**
-	 * @description If set to \\\"true\\\", the request will block until the command finishes execution. Useful for synchronously waiting for command completion.
+	 * @description If set to \"true\", the request will block until the command finishes execution. Useful for synchronously waiting for command completion.
 	 * @default "false"
 	 * @type string | undefined
 	 */
@@ -35063,7 +35105,7 @@ export type WriteSessionFilesHeaderParams = {
 	 * @description The target directory where the tarball contents will be extracted. If not specified, files are extracted to the sandbox home directory.
 	 * @type string | undefined
 	 */
-	"x-cwd"?: string | undefined;
+	"'x-Cwd'"?: string | undefined;
 };
 
 /**
@@ -36540,26 +36582,26 @@ export type UploadFileHeaderParams = {
 	 * @description The file size in bytes
 	 * @type number | undefined
 	 */
-	"Content-Length"?: number | undefined;
+	"'content-Length'"?: number | undefined;
 	/**
 	 * @description The file SHA1 used to check the integrity
 	 * @maxLength 40
 	 * @type string | undefined
 	 */
-	"x-vercel-digest"?: string | undefined;
+	"'x-Vercel-Digest'"?: string | undefined;
 	/**
 	 * @description The file SHA1 used to check the integrity
 	 * @deprecated
 	 * @maxLength 40
 	 * @type string | undefined
 	 */
-	"x-now-digest"?: string | undefined;
+	"'x-Now-Digest'"?: string | undefined;
 	/**
 	 * @description The file size as an alternative to `Content-Length`
 	 * @deprecated
 	 * @type number | undefined
 	 */
-	"x-now-size"?: number | undefined;
+	"'x-Now-Size'"?: number | undefined;
 };
 
 /**
@@ -36659,7 +36701,7 @@ export type CreateAuthTokenMutation = {
 
 export type GetAuthTokenPathParams = {
 	/**
-	 * @description The identifier of the token to retrieve. The special value \\\"current\\\" may be supplied, which returns the metadata for the token that the current HTTP request is authenticated with.
+	 * @description The identifier of the token to retrieve. The special value \"current\" may be supplied, which returns the metadata for the token that the current HTTP request is authenticated with.
 	 * @type string
 	 */
 	tokenId: string;
@@ -36697,7 +36739,7 @@ export type GetAuthTokenQuery = {
 
 export type DeleteAuthTokenPathParams = {
 	/**
-	 * @description The identifier of the token to invalidate. The special value \\\"current\\\" may be supplied, which invalidates the token that the HTTP request was authenticated with.
+	 * @description The identifier of the token to invalidate. The special value \"current\" may be supplied, which invalidates the token that the HTTP request was authenticated with.
 	 * @type string
 	 */
 	tokenId: string;

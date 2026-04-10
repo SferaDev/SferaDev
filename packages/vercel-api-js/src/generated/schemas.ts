@@ -586,6 +586,8 @@ export const userEventSchema = z
 					"access-group-user-removed",
 					"ai-alert-investigation",
 					"ai-code-review",
+					"ai-gateway-api-key-created",
+					"ai-gateway-api-key-deleted",
 					"alert-rule-created",
 					"alert-rule-deleted",
 					"alert-rule-updated",
@@ -930,6 +932,7 @@ export const userEventSchema = z
 					"storage-update-project-connection",
 					"storage-view-secret",
 					"strict-deployment-protection-settings",
+					"strict-shareable-links",
 					"subscription-created",
 					"subscription-product-added",
 					"subscription-product-removed",
@@ -1090,6 +1093,12 @@ export const userEventSchema = z
 					projectName: z.optional(z.string()),
 					projectId: z.optional(z.string()),
 					environment: z.array(z.string()),
+				}),
+				z.object({
+					apiKey: z.object({
+						id: z.string(),
+						name: z.string(),
+					}),
 				}),
 				z.object({
 					accessGroup: z.object({
@@ -7706,6 +7715,14 @@ export const teamSchema = z
 					"When enabled, deployment protection settings require stricter permissions (owner-only).",
 				),
 		),
+		strictShareableLinks: z.optional(
+			z
+				.object({
+					enabled: z.union([z.literal(false), z.literal(true)]),
+					updatedAt: z.number(),
+				})
+				.describe("When enabled, creating shareable links requires Owner role."),
+		),
 		nsnbConfig: z.optional(
 			z
 				.object({
@@ -9112,7 +9129,7 @@ export const recordEventsQueryParamsSchema = z
 
 export const recordEventsHeaderParamsSchema = z
 	.object({
-		"x-artifact-client-ci": z.optional(
+		"'x-Artifact-Client-Ci'": z.optional(
 			z
 				.string()
 				.max(50)
@@ -9120,7 +9137,7 @@ export const recordEventsHeaderParamsSchema = z
 					"The continuous integration or delivery environment where this artifact is downloaded.",
 				),
 		),
-		"x-artifact-client-interactive": z.optional(
+		"'x-Artifact-Client-Interactive'": z.optional(
 			z.coerce
 				.number()
 				.int()
@@ -9201,50 +9218,54 @@ export const uploadArtifactQueryParamsSchema = z
 	})
 	.optional();
 
-export const uploadArtifactHeaderParamsSchema = z.object({
-	"Content-Length": z.coerce.number().describe("The artifact size in bytes"),
-	"x-artifact-duration": z.optional(
-		z.coerce.number().describe("The time taken to generate the uploaded artifact in milliseconds."),
-	),
-	"x-artifact-client-ci": z.optional(
-		z
-			.string()
-			.max(50)
-			.describe(
-				"The continuous integration or delivery environment where this artifact was generated.",
-			),
-	),
-	"x-artifact-client-interactive": z.optional(
-		z.coerce
-			.number()
-			.int()
-			.min(0)
-			.max(1)
-			.describe("1 if the client is an interactive shell. Otherwise 0"),
-	),
-	"x-artifact-tag": z.optional(
-		z
-			.string()
-			.max(600)
-			.describe(
-				"The base64 encoded tag for this artifact. The value is sent back to clients when the artifact is downloaded as the header `x-artifact-tag`",
-			),
-	),
-	"x-artifact-sha": z.optional(
-		z
-			.string()
-			.max(200)
-			.describe("The SHA of the source control revision that generated this artifact."),
-	),
-	"x-artifact-dirty-hash": z.optional(
-		z
-			.string()
-			.max(200)
-			.describe(
-				"A hash representing uncommitted changes in the working directory when this artifact was generated.",
-			),
-	),
-});
+export const uploadArtifactHeaderParamsSchema = z
+	.object({
+		"'content-Length'": z.optional(z.coerce.number().describe("The artifact size in bytes")),
+		"'x-Artifact-Duration'": z.optional(
+			z.coerce
+				.number()
+				.describe("The time taken to generate the uploaded artifact in milliseconds."),
+		),
+		"'x-Artifact-Client-Ci'": z.optional(
+			z
+				.string()
+				.max(50)
+				.describe(
+					"The continuous integration or delivery environment where this artifact was generated.",
+				),
+		),
+		"'x-Artifact-Client-Interactive'": z.optional(
+			z.coerce
+				.number()
+				.int()
+				.min(0)
+				.max(1)
+				.describe("1 if the client is an interactive shell. Otherwise 0"),
+		),
+		"'x-Artifact-Tag'": z.optional(
+			z
+				.string()
+				.max(600)
+				.describe(
+					"The base64 encoded tag for this artifact. The value is sent back to clients when the artifact is downloaded as the header `x-artifact-tag`",
+				),
+		),
+		"'x-Artifact-Sha'": z.optional(
+			z
+				.string()
+				.max(200)
+				.describe("The SHA of the source control revision that generated this artifact."),
+		),
+		"'x-Artifact-Dirty-Hash'": z.optional(
+			z
+				.string()
+				.max(200)
+				.describe(
+					"A hash representing uncommitted changes in the working directory when this artifact was generated.",
+				),
+		),
+	})
+	.optional();
 
 /**
  * @description File successfully uploaded
@@ -9288,7 +9309,7 @@ export const downloadArtifactQueryParamsSchema = z
 
 export const downloadArtifactHeaderParamsSchema = z
 	.object({
-		"x-artifact-client-ci": z.optional(
+		"'x-Artifact-Client-Ci'": z.optional(
 			z
 				.string()
 				.max(50)
@@ -9296,7 +9317,7 @@ export const downloadArtifactHeaderParamsSchema = z
 					"The continuous integration or delivery environment where this artifact is downloaded.",
 				),
 		),
-		"x-artifact-client-interactive": z.optional(
+		"'x-Artifact-Client-Interactive'": z.optional(
 			z.coerce
 				.number()
 				.int()
@@ -12940,13 +12961,13 @@ export const listSharedEnvVariableQueryParamsSchema = z
 		exclude_ids: z.optional(
 			z.string().describe("Filter SharedEnvVariables based on comma separated ids"),
 		),
-		"exclude-ids": z.optional(
+		"'exclude-ids'": z.optional(
 			z.string().describe("Filter SharedEnvVariables based on comma separated ids"),
 		),
 		exclude_projectId: z.optional(
 			z.string().describe("Filter SharedEnvVariables that belong to a project"),
 		),
-		"exclude-projectId": z.optional(
+		"'exclude-projectId'": z.optional(
 			z.string().describe("Filter SharedEnvVariables that belong to a project"),
 		),
 		teamId: z.optional(
@@ -13126,7 +13147,7 @@ export const listUserEventsQueryParamsSchema = z
 		since: z.optional(z.string().describe("Timestamp to only include items created since then.")),
 		until: z.optional(z.string().describe("Timestamp to only include items created until then.")),
 		types: z.optional(
-			z.string().describe('Comma-delimited list of event \\"types\\" to filter the results by.'),
+			z.string().describe('Comma-delimited list of event "types" to filter the results by.'),
 		),
 		userId: z.optional(
 			z
@@ -15864,7 +15885,7 @@ export const getProjectsQueryParamsSchema = z
 			z
 				.string()
 				.describe(
-					'Filter results by build machine types. Accepts comma-separated values. Use \\"default\\" for projects without a build machine type set.',
+					'Filter results by build machine types. Accepts comma-separated values. Use "default" for projects without a build machine type set.',
 				),
 		),
 		buildQueueConfiguration: z.optional(
@@ -16326,9 +16347,7 @@ export const getProjectDomainsQueryParamsSchema = z.object({
 	target: z.optional(
 		z
 			.enum(["production", "preview"])
-			.describe(
-				'Filters on the target of the domain. Can be either \\"production\\", \\"preview\\"',
-			),
+			.describe('Filters on the target of the domain. Can be either "production", "preview"'),
 	),
 	customEnvironmentId: z.optional(
 		z.string().describe("The unique custom environment identifier within the project"),
@@ -16338,7 +16357,7 @@ export const getProjectDomainsQueryParamsSchema = z.object({
 		.enum(["true", "false"])
 		.default("true")
 		.describe(
-			'Excludes redirect project domains when \\"false\\". Includes redirect project domains when \\"true\\" (default).',
+			'Excludes redirect project domains when "false". Includes redirect project domains when "true" (default).',
 		),
 	redirect: z.optional(z.string().describe("Filters domains based on their redirect target.")),
 	verified: z.optional(
@@ -17976,7 +17995,7 @@ export const getCommandQueryParamsSchema = z.object({
 		.enum(["true", "false"])
 		.default("false")
 		.describe(
-			'If set to \\"true\\", the request will block until the command finishes execution. Useful for synchronously waiting for command completion.',
+			'If set to "true", the request will block until the command finishes execution. Useful for synchronously waiting for command completion.',
 		),
 	teamId: z.optional(
 		z.string().describe("The Team identifier to perform the request on behalf of."),
@@ -18141,7 +18160,7 @@ export const writeFilesQueryParamsSchema = z
 
 export const writeFilesHeaderParamsSchema = z
 	.object({
-		"x-cwd": z.optional(
+		"'x-Cwd'": z.optional(
 			z
 				.string()
 				.describe(
@@ -18847,7 +18866,7 @@ export const getSessionCommandQueryParamsSchema = z.object({
 		.enum(["true", "false"])
 		.default("false")
 		.describe(
-			'If set to \\"true\\", the request will block until the command finishes execution. Useful for synchronously waiting for command completion.',
+			'If set to "true", the request will block until the command finishes execution. Useful for synchronously waiting for command completion.',
 		),
 	teamId: z.optional(
 		z.string().describe("The Team identifier to perform the request on behalf of."),
@@ -19189,7 +19208,7 @@ export const writeSessionFilesQueryParamsSchema = z
 
 export const writeSessionFilesHeaderParamsSchema = z
 	.object({
-		"x-cwd": z.optional(
+		"'x-Cwd'": z.optional(
 			z
 				.string()
 				.describe(
@@ -20194,14 +20213,14 @@ export const uploadFileQueryParamsSchema = z
 
 export const uploadFileHeaderParamsSchema = z
 	.object({
-		"Content-Length": z.optional(z.coerce.number().describe("The file size in bytes")),
-		"x-vercel-digest": z.optional(
+		"'content-Length'": z.optional(z.coerce.number().describe("The file size in bytes")),
+		"'x-Vercel-Digest'": z.optional(
 			z.string().max(40).describe("The file SHA1 used to check the integrity"),
 		),
-		"x-now-digest": z.optional(
+		"'x-Now-Digest'": z.optional(
 			z.string().max(40).describe("The file SHA1 used to check the integrity"),
 		),
-		"x-now-size": z.optional(
+		"'x-Now-Size'": z.optional(
 			z.coerce.number().describe("The file size as an alternative to `Content-Length`"),
 		),
 	})
@@ -20284,7 +20303,7 @@ export const getAuthTokenPathParamsSchema = z.object({
 	tokenId: z
 		.string()
 		.describe(
-			'The identifier of the token to retrieve. The special value \\"current\\" may be supplied, which returns the metadata for the token that the current HTTP request is authenticated with.',
+			'The identifier of the token to retrieve. The special value "current" may be supplied, which returns the metadata for the token that the current HTTP request is authenticated with.',
 		),
 });
 
@@ -20316,7 +20335,7 @@ export const deleteAuthTokenPathParamsSchema = z.object({
 	tokenId: z
 		.string()
 		.describe(
-			'The identifier of the token to invalidate. The special value \\"current\\" may be supplied, which invalidates the token that the HTTP request was authenticated with.',
+			'The identifier of the token to invalidate. The special value "current" may be supplied, which invalidates the token that the HTTP request was authenticated with.',
 		),
 });
 
