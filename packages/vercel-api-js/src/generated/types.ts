@@ -15852,6 +15852,10 @@ export type Flag = {
 	 */
 	description?: string | undefined;
 	/**
+	 * @type array | undefined
+	 */
+	maintainerIds?: string[] | undefined;
+	/**
 	 * @type boolean | undefined
 	 */
 	permanent?: FlagPermanentEnumKey | undefined;

@@ -6567,6 +6567,7 @@ export const userEventSchema = z
 
 export const flagSchema = z.object({
 	description: z.optional(z.string()),
+	maintainerIds: z.optional(z.array(z.string())),
 	permanent: z.optional(z.union([z.literal(false), z.literal(true)])),
 	tags: z.optional(z.array(z.string())),
 	experiment: z.optional(
