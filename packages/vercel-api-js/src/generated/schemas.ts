@@ -806,6 +806,7 @@ export const userEventSchema = z
 					"project-custom-environment-updated",
 					"project-customer-success-code-visibility-updated",
 					"project-delegated-protection-enabled",
+					"project-delegated-protection-updated",
 					"project-delete",
 					"project-deployment-retention-updated",
 					"project-directory-listing",
@@ -5057,6 +5058,25 @@ export const userEventSchema = z
 					projectName: z.string(),
 				}),
 				z.object({
+					next: z.object({
+						clientId: z.string(),
+						cookieName: z.optional(z.string()),
+						deploymentType: z.string(),
+						issuer: z.string(),
+					}),
+					previous: z.object({
+						clientId: z.string(),
+						cookieName: z.optional(z.string()),
+						deploymentType: z.string(),
+						issuer: z.string(),
+					}),
+					projectId: z.string(),
+					projectName: z.string(),
+					updates: z.array(
+						z.enum(["clientId", "clientSecret", "cookieName", "deploymentType", "issuer"]),
+					),
+				}),
+				z.object({
 					name: z.string(),
 					ownerId: z.string(),
 				}),
@@ -7619,6 +7639,34 @@ export const teamSchema = z
 					),
 				})
 				.describe("Default deployment expiration settings for this team"),
+		),
+		defaultProjectJobs: z.optional(
+			z
+				.object({
+					lint: z.optional(
+						z
+							.object({
+								targets: z
+									.array(z.string())
+									.describe(
+										"Default job configuration applied to new projects created in this team.",
+									),
+							})
+							.describe("Default job configuration applied to new projects created in this team."),
+					),
+					typecheck: z.optional(
+						z
+							.object({
+								targets: z
+									.array(z.string())
+									.describe(
+										"Default job configuration applied to new projects created in this team.",
+									),
+							})
+							.describe("Default job configuration applied to new projects created in this team."),
+					),
+				})
+				.describe("Default job configuration applied to new projects created in this team."),
 		),
 		enablePreviewFeedback: z
 			.enum(["default", "default-force", "off", "off-force", "on", "on-force"])

@@ -1574,6 +1574,7 @@ export const userEventTypeEnum = {
 	"project-customer-success-code-visibility-updated":
 		"project-customer-success-code-visibility-updated",
 	"project-delegated-protection-enabled": "project-delegated-protection-enabled",
+	"project-delegated-protection-updated": "project-delegated-protection-updated",
 	"project-delete": "project-delete",
 	"project-deployment-retention-updated": "project-deployment-retention-updated",
 	"project-directory-listing": "project-directory-listing",
@@ -3567,6 +3568,16 @@ export const payloadActionEnum11 = {
 } as const;
 
 export type PayloadActionEnum11Key = (typeof payloadActionEnum11)[keyof typeof payloadActionEnum11];
+
+export const payloadUpdatesEnum = {
+	clientId: "clientId",
+	clientSecret: "clientSecret",
+	cookieName: "cookieName",
+	deploymentType: "deploymentType",
+	issuer: "issuer",
+} as const;
+
+export type PayloadUpdatesEnumKey = (typeof payloadUpdatesEnum)[keyof typeof payloadUpdatesEnum];
 
 export const payloadElasticConcurrencyEnabledEnum = {
 	false: false,
@@ -12286,6 +12297,62 @@ export type UserEvent = {
 				  }
 				| {
 						/**
+						 * @type object
+						 */
+						next: {
+							/**
+							 * @type string
+							 */
+							clientId: string;
+							/**
+							 * @type string | undefined
+							 */
+							cookieName?: string | undefined;
+							/**
+							 * @type string
+							 */
+							deploymentType: string;
+							/**
+							 * @type string
+							 */
+							issuer: string;
+						};
+						/**
+						 * @type object
+						 */
+						previous: {
+							/**
+							 * @type string
+							 */
+							clientId: string;
+							/**
+							 * @type string | undefined
+							 */
+							cookieName?: string | undefined;
+							/**
+							 * @type string
+							 */
+							deploymentType: string;
+							/**
+							 * @type string
+							 */
+							issuer: string;
+						};
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type array
+						 */
+						updates: PayloadUpdatesEnumKey[];
+				  }
+				| {
+						/**
 						 * @type string
 						 */
 						name: string;
@@ -17985,6 +18052,40 @@ export type Team = {
 				 * @type number | undefined
 				 */
 				deploymentsToKeep?: number | undefined;
+		  }
+		| undefined;
+	/**
+	 * @description Default job configuration applied to new projects created in this team.
+	 * @type object | undefined
+	 */
+	defaultProjectJobs?:
+		| {
+				/**
+				 * @description Default job configuration applied to new projects created in this team.
+				 * @type object | undefined
+				 */
+				lint?:
+					| {
+							/**
+							 * @description Default job configuration applied to new projects created in this team.
+							 * @type array
+							 */
+							targets: string[];
+					  }
+					| undefined;
+				/**
+				 * @description Default job configuration applied to new projects created in this team.
+				 * @type object | undefined
+				 */
+				typecheck?:
+					| {
+							/**
+							 * @description Default job configuration applied to new projects created in this team.
+							 * @type array
+							 */
+							targets: string[];
+					  }
+					| undefined;
 		  }
 		| undefined;
 	/**
