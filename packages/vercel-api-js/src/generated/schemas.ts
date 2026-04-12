@@ -6595,6 +6595,11 @@ export const flagSchema = z.object({
 			controlVariantId: z.optional(z.string()),
 			startedAt: z.optional(z.number()),
 			endedAt: z.optional(z.number()),
+			decision: z.optional(z.string()),
+			decisionReason: z.optional(z.string()),
+			duration: z.optional(z.number()),
+			durationUnit: z.optional(z.enum(["days", "exposures"])),
+			allocationPercent: z.optional(z.number()),
 			allocationUnit: z.enum(["cookieId", "userId", "visitorId"]),
 			primaryMetrics: z.array(
 				z.object({

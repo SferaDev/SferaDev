@@ -15666,6 +15666,14 @@ export const experimentDeviceEnum = {
 export type ExperimentDeviceEnumKey =
 	(typeof experimentDeviceEnum)[keyof typeof experimentDeviceEnum];
 
+export const experimentDurationUnitEnum = {
+	days: "days",
+	exposures: "exposures",
+} as const;
+
+export type ExperimentDurationUnitEnumKey =
+	(typeof experimentDurationUnitEnum)[keyof typeof experimentDurationUnitEnum];
+
 export const experimentAllocationUnitEnum = {
 	cookieId: "cookieId",
 	userId: "userId",
@@ -15943,6 +15951,26 @@ export type Flag = {
 				 * @type number | undefined
 				 */
 				endedAt?: number | undefined;
+				/**
+				 * @type string | undefined
+				 */
+				decision?: string | undefined;
+				/**
+				 * @type string | undefined
+				 */
+				decisionReason?: string | undefined;
+				/**
+				 * @type number | undefined
+				 */
+				duration?: number | undefined;
+				/**
+				 * @type string | undefined
+				 */
+				durationUnit?: ExperimentDurationUnitEnumKey | undefined;
+				/**
+				 * @type number | undefined
+				 */
+				allocationPercent?: number | undefined;
 				/**
 				 * @type string
 				 */
