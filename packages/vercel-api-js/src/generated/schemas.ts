@@ -785,6 +785,7 @@ export const userEventSchema = z
 					"preview-deployment-suffix-enabled",
 					"preview-deployment-suffix-update",
 					"privatelink-endpoint-created",
+					"privatelink-endpoint-deleted",
 					"production-branch-updated",
 					"project-add-alias",
 					"project-add-redirect",

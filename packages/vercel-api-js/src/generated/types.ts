@@ -1549,6 +1549,7 @@ export const userEventTypeEnum = {
 	"preview-deployment-suffix-enabled": "preview-deployment-suffix-enabled",
 	"preview-deployment-suffix-update": "preview-deployment-suffix-update",
 	"privatelink-endpoint-created": "privatelink-endpoint-created",
+	"privatelink-endpoint-deleted": "privatelink-endpoint-deleted",
 	"production-branch-updated": "production-branch-updated",
 	"project-add-alias": "project-add-alias",
 	"project-add-redirect": "project-add-redirect",
