@@ -1351,6 +1351,9 @@ export const userEventTypeEnum = {
 	"ai-code-review": "ai-code-review",
 	"ai-gateway-api-key-created": "ai-gateway-api-key-created",
 	"ai-gateway-api-key-deleted": "ai-gateway-api-key-deleted",
+	"ai-gateway-byok-credential-created": "ai-gateway-byok-credential-created",
+	"ai-gateway-byok-credential-deleted": "ai-gateway-byok-credential-deleted",
+	"ai-gateway-byok-credential-updated": "ai-gateway-byok-credential-updated",
 	"alert-rule-created": "alert-rule-created",
 	"alert-rule-deleted": "alert-rule-deleted",
 	"alert-rule-updated": "alert-rule-updated",
@@ -1536,6 +1539,10 @@ export const userEventTypeEnum = {
 	"owner-soft-blocked": "owner-soft-blocked",
 	"owner-soft-unblocked": "owner-soft-unblocked",
 	"owner-unblocked": "owner-unblocked",
+	"page-integrity-config-updated": "page-integrity-config-updated",
+	"page-integrity-header-approved": "page-integrity-header-approved",
+	"page-integrity-resource-approved": "page-integrity-resource-approved",
+	"page-integrity-resource-rejected": "page-integrity-resource-rejected",
 	"passkey-created": "passkey-created",
 	"passkey-deleted": "passkey-deleted",
 	"passkey-updated": "passkey-updated",
@@ -1549,6 +1556,8 @@ export const userEventTypeEnum = {
 	"preview-deployment-suffix-enabled": "preview-deployment-suffix-enabled",
 	"preview-deployment-suffix-update": "preview-deployment-suffix-update",
 	"privatelink-endpoint-created": "privatelink-endpoint-created",
+	"privatelink-endpoint-deleted": "privatelink-endpoint-deleted",
+	"privatelink-endpoint-updated": "privatelink-endpoint-updated",
 	"production-branch-updated": "production-branch-updated",
 	"project-add-alias": "project-add-alias",
 	"project-add-redirect": "project-add-redirect",
@@ -1575,6 +1584,7 @@ export const userEventTypeEnum = {
 	"project-custom-environment-updated": "project-custom-environment-updated",
 	"project-customer-success-code-visibility-updated":
 		"project-customer-success-code-visibility-updated",
+	"project-delegated-protection-disabled": "project-delegated-protection-disabled",
 	"project-delegated-protection-enabled": "project-delegated-protection-enabled",
 	"project-delegated-protection-updated": "project-delegated-protection-updated",
 	"project-delete": "project-delete",
@@ -1592,6 +1602,7 @@ export const userEventTypeEnum = {
 	"project-function-failover": "project-function-failover",
 	"project-function-max-duration": "project-function-max-duration",
 	"project-function-regions": "project-function-regions",
+	"project-functions-beta-updated": "project-functions-beta-updated",
 	"project-functions-fluid-disabled": "project-functions-fluid-disabled",
 	"project-functions-fluid-enabled": "project-functions-fluid-enabled",
 	"project-git-commit-comments-toggled": "project-git-commit-comments-toggled",
@@ -1639,6 +1650,8 @@ export const userEventTypeEnum = {
 	"project-rolling-release-enabled": "project-rolling-release-enabled",
 	"project-rolling-release-paused": "project-rolling-release-paused",
 	"project-rolling-release-started": "project-rolling-release-started",
+	"project-rolling-release-suggested-actions-generated":
+		"project-rolling-release-suggested-actions-generated",
 	"project-rolling-release-timer": "project-rolling-release-timer",
 	"project-root-directory-updated": "project-root-directory-updated",
 	"project-routes-version-promoted": "project-routes-version-promoted",
@@ -1768,6 +1781,7 @@ export const userEventTypeEnum = {
 	"vpc-peering-connection-deleted": "vpc-peering-connection-deleted",
 	"vpc-peering-connection-rejected": "vpc-peering-connection-rejected",
 	"vpc-peering-connection-updated": "vpc-peering-connection-updated",
+	"vulnerability-banner-dismissed": "vulnerability-banner-dismissed",
 	"web-analytics-tier-updated": "web-analytics-tier-updated",
 	"webhook-created": "webhook-created",
 	"webhook-deleted": "webhook-deleted",
@@ -2386,10 +2400,10 @@ export const toAccountTypeEnum = {
 export type ToAccountTypeEnumKey = (typeof toAccountTypeEnum)[keyof typeof toAccountTypeEnum];
 
 export const payloadTypeEnum = {
+	sensitive: "sensitive",
 	system: "system",
 	encrypted: "encrypted",
 	plain: "plain",
-	sensitive: "sensitive",
 } as const;
 
 export type PayloadTypeEnumKey = (typeof payloadTypeEnum)[keyof typeof payloadTypeEnum];
@@ -2419,10 +2433,10 @@ export type PayloadDecryptedEnumKey =
 	(typeof payloadDecryptedEnum)[keyof typeof payloadDecryptedEnum];
 
 export const oldEnvVarTypeEnum = {
+	sensitive: "sensitive",
 	system: "system",
 	encrypted: "encrypted",
 	plain: "plain",
-	sensitive: "sensitive",
 } as const;
 
 export type OldEnvVarTypeEnumKey = (typeof oldEnvVarTypeEnum)[keyof typeof oldEnvVarTypeEnum];
@@ -2452,10 +2466,10 @@ export type OldEnvVarDecryptedEnumKey =
 	(typeof oldEnvVarDecryptedEnum)[keyof typeof oldEnvVarDecryptedEnum];
 
 export const newEnvVarTypeEnum = {
+	sensitive: "sensitive",
 	system: "system",
 	encrypted: "encrypted",
 	plain: "plain",
-	sensitive: "sensitive",
 } as const;
 
 export type NewEnvVarTypeEnumKey = (typeof newEnvVarTypeEnum)[keyof typeof newEnvVarTypeEnum];
@@ -2879,6 +2893,7 @@ export const joinedFromOriginEnum = {
 	"nsnb-viewer-upgrade": "nsnb-viewer-upgrade",
 	"nsnb-invite": "nsnb-invite",
 	"nsnb-redeploy": "nsnb-redeploy",
+	"nsnb-redeploy-attribution-card": "nsnb-redeploy-attribution-card",
 } as const;
 
 export type JoinedFromOriginEnumKey =
@@ -3387,6 +3402,20 @@ export const microfrontendsFreeProjectForLegacyLimitsEnum2 = {
 export type MicrofrontendsFreeProjectForLegacyLimitsEnum2Key =
 	(typeof microfrontendsFreeProjectForLegacyLimitsEnum2)[keyof typeof microfrontendsFreeProjectForLegacyLimitsEnum2];
 
+export const previousEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PreviousEnabledEnumKey = (typeof previousEnabledEnum)[keyof typeof previousEnabledEnum];
+
+export const nextEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type NextEnabledEnumKey = (typeof nextEnabledEnum)[keyof typeof nextEnabledEnum];
+
 export const roleEnum = {
 	OWNER: "OWNER",
 	MEMBER: "MEMBER",
@@ -3638,6 +3667,14 @@ export const branchMatcherTypeEnum = {
 
 export type BranchMatcherTypeEnumKey =
 	(typeof branchMatcherTypeEnum)[keyof typeof branchMatcherTypeEnum];
+
+export const payloadEnableFunctionsBetaEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadEnableFunctionsBetaEnumKey =
+	(typeof payloadEnableFunctionsBetaEnum)[keyof typeof payloadEnableFunctionsBetaEnum];
 
 export const previousFunctionZeroConfigFailoverEnum = {
 	false: false,
@@ -3931,6 +3968,16 @@ export const ssoProtectionCve55182MigrationAppliedFromEnum = {
 export type SsoProtectionCve55182MigrationAppliedFromEnumKey =
 	(typeof ssoProtectionCve55182MigrationAppliedFromEnum)[keyof typeof ssoProtectionCve55182MigrationAppliedFromEnum];
 
+export const ssoProtectionApril2026SecurityIncidentMigrationAppliedFromEnum = {
+	all: "all",
+	preview: "preview",
+	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
+	all_except_custom_domains: "all_except_custom_domains",
+} as const;
+
+export type SsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnumKey =
+	(typeof ssoProtectionApril2026SecurityIncidentMigrationAppliedFromEnum)[keyof typeof ssoProtectionApril2026SecurityIncidentMigrationAppliedFromEnum];
+
 export const payloadSsoProtectionEnum = {
 	all: "all",
 	preview: "preview",
@@ -3960,6 +4007,16 @@ export const oldSsoProtectionCve55182MigrationAppliedFromEnum = {
 
 export type OldSsoProtectionCve55182MigrationAppliedFromEnumKey =
 	(typeof oldSsoProtectionCve55182MigrationAppliedFromEnum)[keyof typeof oldSsoProtectionCve55182MigrationAppliedFromEnum];
+
+export const oldSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnum = {
+	all: "all",
+	preview: "preview",
+	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
+	all_except_custom_domains: "all_except_custom_domains",
+} as const;
+
+export type OldSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnumKey =
+	(typeof oldSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnum)[keyof typeof oldSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnum];
 
 export const payloadOldSsoProtectionEnum = {
 	all: "all",
@@ -4165,12 +4222,13 @@ export const payloadAccessEnum = {
 
 export type PayloadAccessEnumKey = (typeof payloadAccessEnum)[keyof typeof payloadAccessEnum];
 
-export const previousEnabledEnum = {
+export const previousEnabledEnum2 = {
 	false: false,
 	true: true,
 } as const;
 
-export type PreviousEnabledEnumKey = (typeof previousEnabledEnum)[keyof typeof previousEnabledEnum];
+export type PreviousEnabledEnum2Key =
+	(typeof previousEnabledEnum2)[keyof typeof previousEnabledEnum2];
 
 export const previousScopeEnum = {
 	public: "public",
@@ -4189,12 +4247,12 @@ export const previousIncludeDraftsEnum = {
 export type PreviousIncludeDraftsEnumKey =
 	(typeof previousIncludeDraftsEnum)[keyof typeof previousIncludeDraftsEnum];
 
-export const nextEnabledEnum = {
+export const nextEnabledEnum2 = {
 	false: false,
 	true: true,
 } as const;
 
-export type NextEnabledEnumKey = (typeof nextEnabledEnum)[keyof typeof nextEnabledEnum];
+export type NextEnabledEnum2Key = (typeof nextEnabledEnum2)[keyof typeof nextEnabledEnum2];
 
 export const nextScopeEnum = {
 	public: "public",
@@ -4387,14 +4445,6 @@ export const payloadActorTypeEnum = {
 export type PayloadActorTypeEnumKey =
 	(typeof payloadActorTypeEnum)[keyof typeof payloadActorTypeEnum];
 
-export const previousEnabledEnum2 = {
-	false: false,
-	true: true,
-} as const;
-
-export type PreviousEnabledEnum2Key =
-	(typeof previousEnabledEnum2)[keyof typeof previousEnabledEnum2];
-
 export const previousTotpVerifiedEnum = {
 	false: false,
 	true: true,
@@ -4402,13 +4452,6 @@ export const previousTotpVerifiedEnum = {
 
 export type PreviousTotpVerifiedEnumKey =
 	(typeof previousTotpVerifiedEnum)[keyof typeof previousTotpVerifiedEnum];
-
-export const nextEnabledEnum2 = {
-	false: false,
-	true: true,
-} as const;
-
-export type NextEnabledEnum2Key = (typeof nextEnabledEnum2)[keyof typeof nextEnabledEnum2];
 
 export const nextTotpVerifiedEnum = {
 	false: false,
@@ -4433,6 +4476,14 @@ export const payloadTotpVerifiedEnum = {
 
 export type PayloadTotpVerifiedEnumKey =
 	(typeof payloadTotpVerifiedEnum)[keyof typeof payloadTotpVerifiedEnum];
+
+export const payloadProtectionEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadProtectionEnabledEnumKey =
+	(typeof payloadProtectionEnabledEnum)[keyof typeof payloadProtectionEnabledEnum];
 
 export const payloadTierEnum = {
 	pro: "pro",
@@ -4472,12 +4523,12 @@ export type PayloadAuthMethodEnumKey =
 	(typeof payloadAuthMethodEnum)[keyof typeof payloadAuthMethodEnum];
 
 export const clientAuthenticationUsedMethodEnum = {
+	none: "none",
 	client_secret_basic: "client_secret_basic",
 	client_secret_post: "client_secret_post",
 	client_secret_jwt: "client_secret_jwt",
 	private_key_jwt: "private_key_jwt",
 	oidc_token: "oidc_token",
-	none: "none",
 } as const;
 
 export type ClientAuthenticationUsedMethodEnumKey =
@@ -4749,6 +4800,25 @@ export type UserEvent = {
 							 * @type string
 							 */
 							name: string;
+						};
+				  }
+				| {
+						/**
+						 * @type object
+						 */
+						credential: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string
+							 */
+							name: string;
+							/**
+							 * @type string
+							 */
+							providerSlug: string;
 						};
 				  }
 				| {
@@ -8297,6 +8367,10 @@ export type UserEvent = {
 						 * @type string | undefined
 						 */
 						source?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						ipAddress?: string | undefined;
 				  }
 				| {
 						/**
@@ -8393,6 +8467,10 @@ export type UserEvent = {
 						 * @type array | undefined
 						 */
 						projectNames?: string[] | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						ipAddress?: string | undefined;
 				  }
 				| {
 						/**
@@ -10952,6 +11030,16 @@ export type UserEvent = {
 							 * @type boolean | undefined
 							 */
 							isEnterpriseManaged?: NewOwnerIsEnterpriseManagedEnumKey | undefined;
+							/**
+							 * @description On a personal account, points to the managed account created during EMU account separation. Set by the split utility when an existing team member is converted into a separate managed account.
+							 * @type string | undefined
+							 */
+							linkedManagedAccountId?: string | undefined;
+							/**
+							 * @description On a managed account, points back to the personal account it was split from during EMU account separation. When set together with `isEnterpriseManaged`, the managed account\'s email is excluded from global secondary-key indexing so it doesn\'t conflict with the personal account\'s email.
+							 * @type string | undefined
+							 */
+							linkedPersonalAccountId?: string | undefined;
 						} | null;
 				  }
 				| {
@@ -11699,6 +11787,74 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
+						projectId: string;
+						/**
+						 * @type object
+						 */
+						previous: {
+							/**
+							 * @type boolean
+							 */
+							enabled: PreviousEnabledEnumKey;
+							/**
+							 * @type string
+							 */
+							mode: string;
+							/**
+							 * @type number
+							 */
+							enforcePercentage: number;
+						} | null;
+						/**
+						 * @type object
+						 */
+						next: {
+							/**
+							 * @type boolean
+							 */
+							enabled: NextEnabledEnumKey;
+							/**
+							 * @type string
+							 */
+							mode: string;
+							/**
+							 * @type number
+							 */
+							enforcePercentage: number;
+						};
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						headerName: string;
+						/**
+						 * @type string
+						 */
+						previousStatus: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						url: string;
+						/**
+						 * @type string
+						 */
+						previousStatus: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
 						oldName: string;
 						/**
 						 * @type string
@@ -11864,6 +12020,50 @@ export type UserEvent = {
 						 * @type string
 						 */
 						projectId: string;
+				  }
+				| {
+						/**
+						 * @type object
+						 */
+						privateLinkEndpoint: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string
+							 */
+							name: string;
+							/**
+							 * @type array | undefined
+							 */
+							environmentIds?: string[] | undefined;
+							/**
+							 * @type array | undefined
+							 */
+							privateDnsNames?: string[] | undefined;
+						};
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type object
+						 */
+						previousEndpoint: {
+							/**
+							 * @type string
+							 */
+							name: string;
+							/**
+							 * @type array | undefined
+							 */
+							environmentIds?: string[] | undefined;
+							/**
+							 * @type array | undefined
+							 */
+							privateDnsNames?: string[] | undefined;
+						};
 				  }
 				| {
 						/**
@@ -12512,6 +12712,20 @@ export type UserEvent = {
 						 * @type string
 						 */
 						customEnvironmentSlug: string;
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						projectName?: string | undefined;
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type boolean
+						 */
+						enableFunctionsBeta: PayloadEnableFunctionsBetaEnumKey;
 				  }
 				| {
 						/**
@@ -13388,6 +13602,24 @@ export type UserEvent = {
 						 */
 						projectName: string;
 						/**
+						 * @type string | undefined
+						 */
+						targetDeploymentId?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						action?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
 						 * @type object
 						 */
 						previous: {
@@ -13620,6 +13852,12 @@ export type UserEvent = {
 											cve55182MigrationAppliedFrom?:
 												| (SsoProtectionCve55182MigrationAppliedFromEnumKey | null)
 												| undefined;
+											/**
+											 * @type string
+											 */
+											april2026SecurityIncidentMigrationAppliedFrom?:
+												| (SsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnumKey | null)
+												| undefined;
 									  }
 									| PayloadSsoProtectionEnumKey
 							  )
@@ -13636,6 +13874,12 @@ export type UserEvent = {
 											 */
 											cve55182MigrationAppliedFrom?:
 												| (OldSsoProtectionCve55182MigrationAppliedFromEnumKey | null)
+												| undefined;
+											/**
+											 * @type string
+											 */
+											april2026SecurityIncidentMigrationAppliedFrom?:
+												| (OldSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnumKey | null)
 												| undefined;
 									  }
 									| PayloadOldSsoProtectionEnumKey
@@ -14573,7 +14817,7 @@ export type UserEvent = {
 									 * @description Whether automatic code reviews are enabled
 									 * @type boolean
 									 */
-									enabled: PreviousEnabledEnumKey;
+									enabled: PreviousEnabledEnum2Key;
 									/**
 									 * @description Which repository visibilities get automatic reviews
 									 * @type string
@@ -14600,7 +14844,7 @@ export type UserEvent = {
 							 * @description Whether automatic code reviews are enabled
 							 * @type boolean
 							 */
-							enabled: NextEnabledEnumKey;
+							enabled: NextEnabledEnum2Key;
 							/**
 							 * @description Which repository visibilities get automatic reviews
 							 * @type string
@@ -15280,7 +15524,7 @@ export type UserEvent = {
 							/**
 							 * @type boolean
 							 */
-							enabled: PreviousEnabledEnum2Key;
+							enabled: PreviousEnabledEnumKey;
 							/**
 							 * @type boolean
 							 */
@@ -15293,7 +15537,7 @@ export type UserEvent = {
 							/**
 							 * @type boolean
 							 */
-							enabled: NextEnabledEnum2Key;
+							enabled: NextEnabledEnumKey;
 							/**
 							 * @type boolean
 							 */
@@ -15337,6 +15581,20 @@ export type UserEvent = {
 						 * @type string
 						 */
 						ruleName: string;
+				  }
+				| {
+						/**
+						 * @type array
+						 */
+						vulnerabilities: string[];
+						/**
+						 * @type boolean
+						 */
+						protectionEnabled: PayloadProtectionEnabledEnumKey;
+						/**
+						 * @type number
+						 */
+						protectedProjectCount: number;
 				  }
 				| {
 						/**
@@ -15752,6 +16010,13 @@ export const baseTypeEnum = {
 
 export type BaseTypeEnumKey = (typeof baseTypeEnum)[keyof typeof baseTypeEnum];
 
+export const fallthroughTypeEnum3 = {
+	rollout: "rollout",
+} as const;
+
+export type FallthroughTypeEnum3Key =
+	(typeof fallthroughTypeEnum3)[keyof typeof fallthroughTypeEnum3];
+
 export const activeEnum2 = {
 	false: false,
 	true: true,
@@ -15770,6 +16035,12 @@ export const outcomeTypeEnum2 = {
 } as const;
 
 export type OutcomeTypeEnum2Key = (typeof outcomeTypeEnum2)[keyof typeof outcomeTypeEnum2];
+
+export const outcomeTypeEnum3 = {
+	rollout: "rollout",
+} as const;
+
+export type OutcomeTypeEnum3Key = (typeof outcomeTypeEnum3)[keyof typeof outcomeTypeEnum3];
 
 export const rhsTypeEnum = {
 	"list/inline": "list/inline",
@@ -16119,6 +16390,58 @@ export type Flag = {
 						 * @type string
 						 */
 						defaultVariantId: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						type: FallthroughTypeEnum3Key;
+						/**
+						 * @type object
+						 */
+						base: {
+							/**
+							 * @type string
+							 */
+							type: BaseTypeEnumKey;
+							/**
+							 * @type string
+							 */
+							kind: string;
+							/**
+							 * @type string
+							 */
+							attribute: string;
+						};
+						/**
+						 * @type string
+						 */
+						defaultVariantId: string;
+						/**
+						 * @type number
+						 */
+						startTimestamp: number;
+						/**
+						 * @type string
+						 */
+						rollFromVariantId: string;
+						/**
+						 * @type string
+						 */
+						rollToVariantId: string;
+						/**
+						 * @type array
+						 */
+						slots: {
+							/**
+							 * @type number
+							 */
+							promille: number;
+							/**
+							 * @type number
+							 */
+							durationMs: number;
+						}[];
 				  };
 			/**
 			 * @type boolean
@@ -16175,6 +16498,58 @@ export type Flag = {
 							 * @type string
 							 */
 							defaultVariantId: string;
+					  }
+					| {
+							/**
+							 * @type string
+							 */
+							type: OutcomeTypeEnum3Key;
+							/**
+							 * @type object
+							 */
+							base: {
+								/**
+								 * @type string
+								 */
+								type: BaseTypeEnumKey;
+								/**
+								 * @type string
+								 */
+								kind: string;
+								/**
+								 * @type string
+								 */
+								attribute: string;
+							};
+							/**
+							 * @type string
+							 */
+							defaultVariantId: string;
+							/**
+							 * @type number
+							 */
+							startTimestamp: number;
+							/**
+							 * @type string
+							 */
+							rollFromVariantId: string;
+							/**
+							 * @type string
+							 */
+							rollToVariantId: string;
+							/**
+							 * @type array
+							 */
+							slots: {
+								/**
+								 * @type number
+								 */
+								promille: number;
+								/**
+								 * @type number
+								 */
+								durationMs: number;
+							}[];
 					  };
 				/**
 				 * @type array
@@ -16354,17 +16729,17 @@ export const segmentTypeNameEnum = {
 
 export type SegmentTypeNameEnumKey = (typeof segmentTypeNameEnum)[keyof typeof segmentTypeNameEnum];
 
-export const outcomeTypeEnum3 = {
+export const outcomeTypeEnum4 = {
 	all: "all",
 } as const;
 
-export type OutcomeTypeEnum3Key = (typeof outcomeTypeEnum3)[keyof typeof outcomeTypeEnum3];
+export type OutcomeTypeEnum4Key = (typeof outcomeTypeEnum4)[keyof typeof outcomeTypeEnum4];
 
-export const outcomeTypeEnum4 = {
+export const outcomeTypeEnum5 = {
 	split: "split",
 } as const;
 
-export type OutcomeTypeEnum4Key = (typeof outcomeTypeEnum4)[keyof typeof outcomeTypeEnum4];
+export type OutcomeTypeEnum5Key = (typeof outcomeTypeEnum5)[keyof typeof outcomeTypeEnum5];
 
 export const baseTypeEnum2 = {
 	entity: "entity",
@@ -16496,13 +16871,13 @@ export type Segment = {
 								/**
 								 * @type string
 								 */
-								type: OutcomeTypeEnum3Key;
+								type: OutcomeTypeEnum4Key;
 						  }
 						| {
 								/**
 								 * @type string
 								 */
-								type: OutcomeTypeEnum4Key;
+								type: OutcomeTypeEnum5Key;
 								/**
 								 * @type object
 								 */
@@ -16966,6 +17341,14 @@ export const snapshotStatusEnum = {
 
 export type SnapshotStatusEnumKey = (typeof snapshotStatusEnum)[keyof typeof snapshotStatusEnum];
 
+export const snapshotCreationMethodEnum = {
+	automatic: "automatic",
+	manual: "manual",
+} as const;
+
+export type SnapshotCreationMethodEnumKey =
+	(typeof snapshotCreationMethodEnum)[keyof typeof snapshotCreationMethodEnum];
+
 /**
  * @description This object contains information related to a Snapshot of a Vercel Sandbox session (v2 API).
  */
@@ -17010,6 +17393,21 @@ export type Snapshot = {
 	 * @type number
 	 */
 	updatedAt: number;
+	/**
+	 * @description The last time the snapshot was used (e.g. to resume or create a sandbox), in milliseconds since the epoch. Falls back to `createdAt` for older snapshots that predate this field.
+	 * @type number
+	 */
+	lastUsedAt: number;
+	/**
+	 * @description The method used to create the snapshot.
+	 * @type string | undefined
+	 */
+	creationMethod?: SnapshotCreationMethodEnumKey | undefined;
+	/**
+	 * @description The unique identifier of the parent snapshot, if this snapshot was created from another snapshot.
+	 * @type string | undefined
+	 */
+	parentId?: string | undefined;
 };
 
 export const sandboxPublicRouteSystemEnum = {
@@ -17687,6 +18085,14 @@ export const teamHideIpAddressesInLogDrainsEnum = {
 export type TeamHideIpAddressesInLogDrainsEnumKey =
 	(typeof teamHideIpAddressesInLogDrainsEnum)[keyof typeof teamHideIpAddressesInLogDrainsEnum];
 
+export const ipBucketsDefaultEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type IpBucketsDefaultEnumKey =
+	(typeof ipBucketsDefaultEnum)[keyof typeof ipBucketsDefaultEnum];
+
 export const strictDeploymentProtectionSettingsEnabledEnum = {
 	false: false,
 	true: true,
@@ -17774,6 +18180,7 @@ export const joinedFromOriginEnum2 = {
 	"nsnb-hobby-upgrade": "nsnb-hobby-upgrade",
 	"nsnb-invite": "nsnb-invite",
 	"nsnb-redeploy": "nsnb-redeploy",
+	"nsnb-redeploy-attribution-card": "nsnb-redeploy-attribution-card",
 	"nsnb-request-access": "nsnb-request-access",
 	"nsnb-viewer-upgrade": "nsnb-viewer-upgrade",
 	"organization-teams": "organization-teams",
@@ -18186,6 +18593,10 @@ export type Team = {
 				 * @type number | undefined
 				 */
 				supportUntil?: number | undefined;
+				/**
+				 * @type boolean | undefined
+				 */
+				default?: IpBucketsDefaultEnumKey | undefined;
 		  }[]
 		| undefined;
 	/**
@@ -18461,6 +18872,7 @@ export const joinedFromOriginEnum3 = {
 	"nsnb-hobby-upgrade": "nsnb-hobby-upgrade",
 	"nsnb-invite": "nsnb-invite",
 	"nsnb-redeploy": "nsnb-redeploy",
+	"nsnb-redeploy-attribution-card": "nsnb-redeploy-attribution-card",
 	"nsnb-request-access": "nsnb-request-access",
 	"nsnb-viewer-upgrade": "nsnb-viewer-upgrade",
 	"organization-teams": "organization-teams",
@@ -20311,7 +20723,7 @@ export type RecordEvents400 = unknown;
 export type RecordEvents401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type RecordEvents402 = unknown;
 
@@ -20352,7 +20764,7 @@ export type Status400 = unknown;
 export type Status401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type Status402 = unknown;
 
@@ -20450,7 +20862,7 @@ export type UploadArtifact400 = unknown;
 export type UploadArtifact401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type UploadArtifact402 = unknown;
 
@@ -20522,7 +20934,7 @@ export type DownloadArtifact400 = unknown;
 export type DownloadArtifact401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type DownloadArtifact402 = unknown;
 
@@ -20577,7 +20989,7 @@ export type ArtifactQuery400 = unknown;
 export type ArtifactQuery401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type ArtifactQuery402 = unknown;
 
@@ -22070,7 +22482,7 @@ export type CreateNetwork400 = unknown;
 export type CreateNetwork401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type CreateNetwork402 = unknown;
 
@@ -22514,7 +22926,7 @@ export type CreateDeployment400 = unknown;
 export type CreateDeployment401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated\nPro customers are allowed to deploy Serverless Functions to up to `proMaxRegions` regions, or if the project was created before the limit was introduced.\nDeploying to Serverless Functions to multiple regions requires a plan update
+ * @description The account is missing a payment so payment method must be updated\nPro customers are allowed to deploy Serverless Functions to up to `proMaxRegions` regions, or if the project was created before the limit was introduced.\nDeploying to Serverless Functions to multiple regions requires a plan update
  */
 export type CreateDeployment402 = unknown;
 
@@ -22708,7 +23120,7 @@ export type CreateRecord400 = unknown;
 export type CreateRecord401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type CreateRecord402 = unknown;
 
@@ -22770,7 +23182,7 @@ export type UpdateRecord400 = unknown;
 export type UpdateRecord401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type UpdateRecord402 = unknown;
 
@@ -23955,7 +24367,7 @@ export type CreateOrTransferDomain400 = unknown;
 export type CreateOrTransferDomain401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type CreateOrTransferDomain402 = unknown;
 
@@ -24826,7 +25238,7 @@ export type CreateEdgeConfig400 = unknown;
 export type CreateEdgeConfig401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type CreateEdgeConfig402 = unknown;
 
@@ -24927,7 +25339,7 @@ export type UpdateEdgeConfig400 = unknown;
 export type UpdateEdgeConfig401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type UpdateEdgeConfig402 = unknown;
 
@@ -25100,7 +25512,7 @@ export type PatchEdgeConfigItems400 = unknown;
 export type PatchEdgeConfigItems401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type PatchEdgeConfigItems402 = unknown;
 
@@ -25223,7 +25635,7 @@ export type PatchEdgeConfigSchema400 = unknown;
 export type PatchEdgeConfigSchema401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type PatchEdgeConfigSchema402 = unknown;
 
@@ -25284,7 +25696,7 @@ export type DeleteEdgeConfigSchema400 = unknown;
 export type DeleteEdgeConfigSchema401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type DeleteEdgeConfigSchema402 = unknown;
 
@@ -25457,7 +25869,7 @@ export type DeleteEdgeConfigTokens400 = unknown;
 export type DeleteEdgeConfigTokens401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type DeleteEdgeConfigTokens402 = unknown;
 
@@ -25578,7 +25990,7 @@ export type CreateEdgeConfigToken400 = unknown;
 export type CreateEdgeConfigToken401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type CreateEdgeConfigToken402 = unknown;
 
@@ -25754,7 +26166,7 @@ export type CreateSharedEnvVariable400 = unknown;
 export type CreateSharedEnvVariable401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type CreateSharedEnvVariable402 = unknown;
 
@@ -25879,7 +26291,7 @@ export type UpdateSharedEnvVariable400 = unknown;
 export type UpdateSharedEnvVariable401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type UpdateSharedEnvVariable402 = unknown;
 
@@ -25926,7 +26338,7 @@ export type DeleteSharedEnvVariable400 = unknown;
 export type DeleteSharedEnvVariable401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type DeleteSharedEnvVariable402 = unknown;
 
@@ -26235,7 +26647,7 @@ export type ListFlags400 = unknown;
 export type ListFlags401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type ListFlags402 = unknown;
 
@@ -26289,7 +26701,7 @@ export type CreateFlag400 = unknown;
 export type CreateFlag401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type CreateFlag402 = unknown;
 
@@ -26371,7 +26783,7 @@ export type GetFlag400 = unknown;
 export type GetFlag401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type GetFlag402 = unknown;
 
@@ -26442,7 +26854,7 @@ export type UpdateFlag400 = unknown;
 export type UpdateFlag401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type UpdateFlag402 = unknown;
 
@@ -26524,7 +26936,7 @@ export type DeleteFlag400 = unknown;
 export type DeleteFlag401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type DeleteFlag402 = unknown;
 
@@ -26617,7 +27029,7 @@ export type ListFlagVersions400 = unknown;
 export type ListFlagVersions401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type ListFlagVersions402 = unknown;
 
@@ -26676,7 +27088,7 @@ export type GetFlagSettings400 = unknown;
 export type GetFlagSettings401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type GetFlagSettings402 = unknown;
 
@@ -26737,7 +27149,7 @@ export type UpdateFlagSettings400 = unknown;
 export type UpdateFlagSettings401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type UpdateFlagSettings402 = unknown;
 
@@ -26955,7 +27367,7 @@ export type CreateFlagSegment400 = unknown;
 export type CreateFlagSegment401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type CreateFlagSegment402 = unknown;
 
@@ -27026,7 +27438,7 @@ export type ListFlagSegments400 = unknown;
 export type ListFlagSegments401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type ListFlagSegments402 = unknown;
 
@@ -27096,7 +27508,7 @@ export type GetFlagSegment400 = unknown;
 export type GetFlagSegment401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type GetFlagSegment402 = unknown;
 
@@ -27166,7 +27578,7 @@ export type DeleteFlagSegment400 = unknown;
 export type DeleteFlagSegment401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type DeleteFlagSegment402 = unknown;
 
@@ -27242,7 +27654,7 @@ export type UpdateFlagSegment400 = unknown;
 export type UpdateFlagSegment401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type UpdateFlagSegment402 = unknown;
 
@@ -27359,7 +27771,7 @@ export type GetSdkKeys400 = unknown;
 export type GetSdkKeys401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type GetSdkKeys402 = unknown;
 
@@ -27413,7 +27825,7 @@ export type CreateSdkKey400 = unknown;
 export type CreateSdkKey401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type CreateSdkKey402 = unknown;
 
@@ -27480,7 +27892,7 @@ export type DeleteSdkKey400 = unknown;
 export type DeleteSdkKey401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type DeleteSdkKey402 = unknown;
 
@@ -30296,7 +30708,7 @@ export type CreateProject400 = unknown;
 export type CreateProject401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated\nPro customers are allowed to deploy Serverless Functions to up to `proMaxRegions` regions, or if the project was created before the limit was introduced.\nDeploying to Serverless Functions to multiple regions requires a plan update
+ * @description The account is missing a payment so payment method must be updated\nPro customers are allowed to deploy Serverless Functions to up to `proMaxRegions` regions, or if the project was created before the limit was introduced.\nDeploying to Serverless Functions to multiple regions requires a plan update
  */
 export type CreateProject402 = unknown;
 
@@ -30424,7 +30836,7 @@ export type UpdateProject400 = unknown;
 export type UpdateProject401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated\nPro customers are allowed to deploy Serverless Functions to up to `proMaxRegions` regions, or if the project was created before the limit was introduced.\nDeploying to Serverless Functions to multiple regions requires a plan update
+ * @description The account is missing a payment so payment method must be updated\nPro customers are allowed to deploy Serverless Functions to up to `proMaxRegions` regions, or if the project was created before the limit was introduced.\nDeploying to Serverless Functions to multiple regions requires a plan update
  */
 export type UpdateProject402 = unknown;
 
@@ -30609,7 +31021,7 @@ export type CreateCustomEnvironment400 = unknown;
 export type CreateCustomEnvironment401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type CreateCustomEnvironment402 = unknown;
 
@@ -30787,7 +31199,7 @@ export type UpdateCustomEnvironment400 = unknown;
 export type UpdateCustomEnvironment401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type UpdateCustomEnvironment402 = unknown;
 
@@ -31227,7 +31639,7 @@ export type AddProjectDomain400 = unknown;
 export type AddProjectDomain401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type AddProjectDomain402 = unknown;
 
@@ -31497,7 +31909,7 @@ export type CreateProjectEnv400 = unknown;
 export type CreateProjectEnv401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type CreateProjectEnv402 = unknown;
 
@@ -32826,7 +33238,7 @@ export type CreateSandbox400 = unknown;
 export type CreateSandbox401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type CreateSandbox402 = unknown;
 
@@ -33237,6 +33649,8 @@ export type ExtendSandboxTimeout401 = unknown;
  */
 export type ExtendSandboxTimeout403 = unknown;
 
+export type ExtendSandboxTimeout404 = unknown;
+
 export type ExtendSandboxTimeout410 = unknown;
 
 export type ExtendSandboxTimeout422 = unknown;
@@ -33251,6 +33665,7 @@ export type ExtendSandboxTimeoutMutation = {
 		| ExtendSandboxTimeout400
 		| ExtendSandboxTimeout401
 		| ExtendSandboxTimeout403
+		| ExtendSandboxTimeout404
 		| ExtendSandboxTimeout410
 		| ExtendSandboxTimeout422;
 };
@@ -33298,6 +33713,8 @@ export type UpdateNetworkPolicy402 = unknown;
  */
 export type UpdateNetworkPolicy403 = unknown;
 
+export type UpdateNetworkPolicy404 = unknown;
+
 export type UpdateNetworkPolicy410 = unknown;
 
 export type UpdateNetworkPolicy422 = unknown;
@@ -33313,6 +33730,7 @@ export type UpdateNetworkPolicyMutation = {
 		| UpdateNetworkPolicy401
 		| UpdateNetworkPolicy402
 		| UpdateNetworkPolicy403
+		| UpdateNetworkPolicy404
 		| UpdateNetworkPolicy410
 		| UpdateNetworkPolicy422;
 };
@@ -33758,7 +34176,7 @@ export type CreateSnapshot400 = unknown;
 export type CreateSnapshot401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type CreateSnapshot402 = unknown;
 
@@ -33790,6 +34208,7 @@ export const getSandboxesV2QueryParamsSortByEnum = {
 	createdAt: "createdAt",
 	name: "name",
 	statusUpdatedAt: "statusUpdatedAt",
+	currentSnapshotId: "currentSnapshotId",
 } as const;
 
 export type GetSandboxesV2QueryParamsSortByEnumKey =
@@ -33908,7 +34327,7 @@ export type CreateSandboxes400 = unknown;
 export type CreateSandboxes401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type CreateSandboxes402 = unknown;
 
@@ -34319,7 +34738,7 @@ export type GetNamedSandbox400 = unknown;
 export type GetNamedSandbox401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type GetNamedSandbox402 = unknown;
 
@@ -34907,6 +35326,8 @@ export type ExtendSessionTimeout401 = unknown;
  */
 export type ExtendSessionTimeout403 = unknown;
 
+export type ExtendSessionTimeout404 = unknown;
+
 export type ExtendSessionTimeout410 = unknown;
 
 export type ExtendSessionTimeout422 = unknown;
@@ -34923,6 +35344,7 @@ export type ExtendSessionTimeoutMutation = {
 		| ExtendSessionTimeout400
 		| ExtendSessionTimeout401
 		| ExtendSessionTimeout403
+		| ExtendSessionTimeout404
 		| ExtendSessionTimeout410
 		| ExtendSessionTimeout422
 		| ExtendSessionTimeout500;
@@ -34971,6 +35393,8 @@ export type UpdateSessionNetworkPolicy402 = unknown;
  */
 export type UpdateSessionNetworkPolicy403 = unknown;
 
+export type UpdateSessionNetworkPolicy404 = unknown;
+
 export type UpdateSessionNetworkPolicy410 = unknown;
 
 export type UpdateSessionNetworkPolicy422 = unknown;
@@ -34988,6 +35412,7 @@ export type UpdateSessionNetworkPolicyMutation = {
 		| UpdateSessionNetworkPolicy401
 		| UpdateSessionNetworkPolicy402
 		| UpdateSessionNetworkPolicy403
+		| UpdateSessionNetworkPolicy404
 		| UpdateSessionNetworkPolicy410
 		| UpdateSessionNetworkPolicy422
 		| UpdateSessionNetworkPolicy500;
@@ -35213,7 +35638,7 @@ export type CreateSessionSnapshot400 = unknown;
 export type CreateSessionSnapshot401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type CreateSessionSnapshot402 = unknown;
 
@@ -35756,7 +36181,7 @@ export type CreateIntegrationStoreDirect400 = unknown;
 export type CreateIntegrationStoreDirect401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type CreateIntegrationStoreDirect402 = unknown;
 
@@ -37132,7 +37557,7 @@ export type AssignAlias400 = unknown;
 export type AssignAlias401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type AssignAlias402 = unknown;
 
@@ -37557,7 +37982,7 @@ export type IssueCert400 = unknown;
 export type IssueCert401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type IssueCert402 = unknown;
 
