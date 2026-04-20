@@ -82,6 +82,7 @@ export const modelConfigurationModelIdEnum = {
 	"v0-max": "v0-max",
 	"v0-max-fast": "v0-max-fast",
 	"v0-mini": "v0-mini",
+	"v0-opus-4.7": "v0-opus-4.7",
 	"v0-pro": "v0-pro",
 } as const;
 
@@ -5125,6 +5126,75 @@ export type ChatsStopMutation = {
 		| ChatsStop422
 		| ChatsStop429
 		| ChatsStop500;
+};
+
+export type ChatsResolveTaskPathParams = {
+	/**
+	 * @description The unique identifier of the chat containing the pending task. Provided as a path parameter.
+	 * @type string
+	 */
+	chatId: string;
+};
+
+/**
+ * @description Success
+ */
+export type ChatsResolveTask200 = unknown;
+
+/**
+ * @description Unauthorized
+ */
+export type ChatsResolveTask401 = unknown;
+
+/**
+ * @description Forbidden
+ */
+export type ChatsResolveTask403 = unknown;
+
+/**
+ * @description Not Found
+ */
+export type ChatsResolveTask404 = unknown;
+
+/**
+ * @description Conflict
+ */
+export type ChatsResolveTask409 = unknown;
+
+/**
+ * @description Payload Too Large
+ */
+export type ChatsResolveTask413 = unknown;
+
+/**
+ * @description Unprocessable Entity
+ */
+export type ChatsResolveTask422 = unknown;
+
+/**
+ * @description Too Many Requests
+ */
+export type ChatsResolveTask429 = unknown;
+
+/**
+ * @description Internal Server Error
+ */
+export type ChatsResolveTask500 = unknown;
+
+export type ChatsResolveTaskMutationResponse = ChatsResolveTask200;
+
+export type ChatsResolveTaskMutation = {
+	Response: ChatsResolveTask200;
+	PathParams: ChatsResolveTaskPathParams;
+	Errors:
+		| ChatsResolveTask401
+		| ChatsResolveTask403
+		| ChatsResolveTask404
+		| ChatsResolveTask409
+		| ChatsResolveTask413
+		| ChatsResolveTask422
+		| ChatsResolveTask429
+		| ChatsResolveTask500;
 };
 
 export type DeploymentsFindQueryParams = {
