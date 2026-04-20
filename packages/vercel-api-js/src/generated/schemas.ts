@@ -588,6 +588,9 @@ export const userEventSchema = z
 					"ai-code-review",
 					"ai-gateway-api-key-created",
 					"ai-gateway-api-key-deleted",
+					"ai-gateway-byok-credential-created",
+					"ai-gateway-byok-credential-deleted",
+					"ai-gateway-byok-credential-updated",
 					"alert-rule-created",
 					"alert-rule-deleted",
 					"alert-rule-updated",
@@ -772,6 +775,10 @@ export const userEventSchema = z
 					"owner-soft-blocked",
 					"owner-soft-unblocked",
 					"owner-unblocked",
+					"page-integrity-config-updated",
+					"page-integrity-header-approved",
+					"page-integrity-resource-approved",
+					"page-integrity-resource-rejected",
 					"passkey-created",
 					"passkey-deleted",
 					"passkey-updated",
@@ -785,6 +792,8 @@ export const userEventSchema = z
 					"preview-deployment-suffix-enabled",
 					"preview-deployment-suffix-update",
 					"privatelink-endpoint-created",
+					"privatelink-endpoint-deleted",
+					"privatelink-endpoint-updated",
 					"production-branch-updated",
 					"project-add-alias",
 					"project-add-redirect",
@@ -807,6 +816,7 @@ export const userEventSchema = z
 					"project-custom-environment-deleted",
 					"project-custom-environment-updated",
 					"project-customer-success-code-visibility-updated",
+					"project-delegated-protection-disabled",
 					"project-delegated-protection-enabled",
 					"project-delegated-protection-updated",
 					"project-delete",
@@ -824,6 +834,7 @@ export const userEventSchema = z
 					"project-function-failover",
 					"project-function-max-duration",
 					"project-function-regions",
+					"project-functions-beta-updated",
 					"project-functions-fluid-disabled",
 					"project-functions-fluid-enabled",
 					"project-git-commit-comments-toggled",
@@ -869,6 +880,7 @@ export const userEventSchema = z
 					"project-rolling-release-enabled",
 					"project-rolling-release-paused",
 					"project-rolling-release-started",
+					"project-rolling-release-suggested-actions-generated",
 					"project-rolling-release-timer",
 					"project-root-directory-updated",
 					"project-routes-version-promoted",
@@ -996,6 +1008,7 @@ export const userEventSchema = z
 					"vpc-peering-connection-deleted",
 					"vpc-peering-connection-rejected",
 					"vpc-peering-connection-updated",
+					"vulnerability-banner-dismissed",
 					"web-analytics-tier-updated",
 					"webhook-created",
 					"webhook-deleted",
@@ -1098,6 +1111,13 @@ export const userEventSchema = z
 					apiKey: z.object({
 						id: z.string(),
 						name: z.string(),
+					}),
+				}),
+				z.object({
+					credential: z.object({
+						id: z.string(),
+						name: z.string(),
+						providerSlug: z.string(),
 					}),
 				}),
 				z.object({
@@ -2899,6 +2919,7 @@ export const userEventSchema = z
 					edgeConfigId: z.string().nullish(),
 					edgeConfigTokenId: z.string().nullish(),
 					source: z.optional(z.string()),
+					ipAddress: z.optional(z.string()),
 				}),
 				z.object({
 					created: z.optional(
@@ -2943,7 +2964,7 @@ export const userEventSchema = z
 					),
 					type: z.optional(
 						z
-							.enum(["system", "encrypted", "plain", "sensitive"])
+							.enum(["sensitive", "system", "encrypted", "plain"])
 							.describe("The type of this cosmos doc instance, if blank, assume secret."),
 					),
 					target: z.optional(
@@ -2974,6 +2995,7 @@ export const userEventSchema = z
 						z.string().describe("The last editor full name or username."),
 					),
 					projectNames: z.optional(z.array(z.string())),
+					ipAddress: z.optional(z.string()),
 				}),
 				z.object({
 					oldEnvVar: z.optional(
@@ -3020,7 +3042,7 @@ export const userEventSchema = z
 							),
 							type: z.optional(
 								z
-									.enum(["system", "encrypted", "plain", "sensitive"])
+									.enum(["sensitive", "system", "encrypted", "plain"])
 									.describe("The type of this cosmos doc instance, if blank, assume secret."),
 							),
 							target: z.optional(
@@ -3098,7 +3120,7 @@ export const userEventSchema = z
 							),
 							type: z.optional(
 								z
-									.enum(["system", "encrypted", "plain", "sensitive"])
+									.enum(["sensitive", "system", "encrypted", "plain"])
 									.describe("The type of this cosmos doc instance, if blank, assume secret."),
 							),
 							target: z.optional(
@@ -3674,6 +3696,7 @@ export const userEventSchema = z
 														"nsnb-viewer-upgrade",
 														"nsnb-invite",
 														"nsnb-redeploy",
+														"nsnb-redeploy-attribution-card",
 													]),
 													commitId: z.optional(z.string()),
 													repoId: z.optional(z.string()),
@@ -4408,6 +4431,20 @@ export const userEventSchema = z
 										"Indicates that the underlying user entity is a managed user for the enterprise it's associated with The intention is that this field is only set to true for users that are provisioned by the enterprise which means that the domain associated with the user's email is the same domain associated with the team Allowing us to query information about the user's team at login time through the domain verification service",
 									),
 							),
+							linkedManagedAccountId: z.optional(
+								z
+									.string()
+									.describe(
+										"On a personal account, points to the managed account created during EMU account separation. Set by the split utility when an existing team member is converted into a separate managed account.",
+									),
+							),
+							linkedPersonalAccountId: z.optional(
+								z
+									.string()
+									.describe(
+										"On a managed account, points back to the personal account it was split from during EMU account separation. When set together with `isEnterpriseManaged`, the managed account's email is excluded from global secondary-key indexing so it doesn't conflict with the personal account's email.",
+									),
+							),
 						}),
 					),
 				}),
@@ -4814,6 +4851,31 @@ export const userEventSchema = z
 					cause: z.string(),
 				}),
 				z.object({
+					projectId: z.string(),
+					previous: z.nullable(
+						z.object({
+							enabled: z.union([z.literal(false), z.literal(true)]),
+							mode: z.string(),
+							enforcePercentage: z.number(),
+						}),
+					),
+					next: z.object({
+						enabled: z.union([z.literal(false), z.literal(true)]),
+						mode: z.string(),
+						enforcePercentage: z.number(),
+					}),
+				}),
+				z.object({
+					projectId: z.string(),
+					headerName: z.string(),
+					previousStatus: z.string(),
+				}),
+				z.object({
+					projectId: z.string(),
+					url: z.string(),
+					previousStatus: z.string(),
+				}),
+				z.object({
 					oldName: z.string(),
 					newName: z.string(),
 				}),
@@ -4854,6 +4916,7 @@ export const userEventSchema = z
 											"nsnb-viewer-upgrade",
 											"nsnb-invite",
 											"nsnb-redeploy",
+											"nsnb-redeploy-attribution-card",
 										]),
 										commitId: z.optional(z.string()),
 										repoId: z.optional(z.string()),
@@ -4908,6 +4971,20 @@ export const userEventSchema = z
 						name: z.string(),
 					}),
 					projectId: z.string(),
+				}),
+				z.object({
+					privateLinkEndpoint: z.object({
+						id: z.string(),
+						name: z.string(),
+						environmentIds: z.optional(z.array(z.string())),
+						privateDnsNames: z.optional(z.array(z.string())),
+					}),
+					projectId: z.string(),
+					previousEndpoint: z.object({
+						name: z.string(),
+						environmentIds: z.optional(z.array(z.string())),
+						privateDnsNames: z.optional(z.array(z.string())),
+					}),
 				}),
 				z.object({
 					projectName: z.string(),
@@ -5142,6 +5219,11 @@ export const userEventSchema = z
 					projectName: z.string(),
 					customEnvironmentId: z.string(),
 					customEnvironmentSlug: z.string(),
+				}),
+				z.object({
+					projectName: z.optional(z.string()),
+					projectId: z.string(),
+					enableFunctionsBeta: z.union([z.literal(false), z.literal(true)]),
 				}),
 				z.object({
 					projectId: z.string(),
@@ -5508,6 +5590,12 @@ export const userEventSchema = z
 				z.object({
 					projectId: z.string(),
 					projectName: z.string(),
+					targetDeploymentId: z.optional(z.string()),
+					action: z.optional(z.string()),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
 					previous: z.object({
 						issuerMode: z.optional(z.enum(["team", "global"])),
 					}),
@@ -5601,6 +5689,14 @@ export const userEventSchema = z
 										"all_except_custom_domains",
 									])
 									.nullish(),
+								april2026SecurityIncidentMigrationAppliedFrom: z
+									.enum([
+										"all",
+										"preview",
+										"prod_deployment_urls_and_all_previews",
+										"all_except_custom_domains",
+									])
+									.nullish(),
 							}),
 							z.enum([
 								"all",
@@ -5620,6 +5716,14 @@ export const userEventSchema = z
 									"all_except_custom_domains",
 								]),
 								cve55182MigrationAppliedFrom: z
+									.enum([
+										"all",
+										"preview",
+										"prod_deployment_urls_and_all_previews",
+										"all_except_custom_domains",
+									])
+									.nullish(),
+								april2026SecurityIncidentMigrationAppliedFrom: z
 									.enum([
 										"all",
 										"preview",
@@ -6422,6 +6526,11 @@ export const userEventSchema = z
 					ruleName: z.string(),
 				}),
 				z.object({
+					vulnerabilities: z.array(z.string()),
+					protectionEnabled: z.union([z.literal(false), z.literal(true)]),
+					protectedProjectCount: z.number(),
+				}),
+				z.object({
 					team: z.object({
 						id: z.string(),
 						name: z.string(),
@@ -6530,12 +6639,12 @@ export const userEventSchema = z
 									),
 								clientAuthenticationUsed: z.object({
 									method: z.enum([
+										"none",
 										"client_secret_basic",
 										"client_secret_post",
 										"client_secret_jwt",
 										"private_key_jwt",
 										"oidc_token",
-										"none",
 									]),
 									secretId: z.optional(z.string()),
 								}),
@@ -6658,6 +6767,24 @@ export const flagSchema = z.object({
 					weights: z.object({}).catchall(z.number()),
 					defaultVariantId: z.string(),
 				}),
+				z.object({
+					type: z.enum(["rollout"]),
+					base: z.object({
+						type: z.enum(["entity"]),
+						kind: z.string(),
+						attribute: z.string(),
+					}),
+					defaultVariantId: z.string(),
+					startTimestamp: z.number(),
+					rollFromVariantId: z.string(),
+					rollToVariantId: z.string(),
+					slots: z.array(
+						z.object({
+							promille: z.number(),
+							durationMs: z.number(),
+						}),
+					),
+				}),
 			]),
 			active: z.union([z.literal(false), z.literal(true)]),
 			rules: z.array(
@@ -6677,6 +6804,24 @@ export const flagSchema = z.object({
 							}),
 							weights: z.object({}).catchall(z.number()),
 							defaultVariantId: z.string(),
+						}),
+						z.object({
+							type: z.enum(["rollout"]),
+							base: z.object({
+								type: z.enum(["entity"]),
+								kind: z.string(),
+								attribute: z.string(),
+							}),
+							defaultVariantId: z.string(),
+							startTimestamp: z.number(),
+							rollFromVariantId: z.string(),
+							rollToVariantId: z.string(),
+							slots: z.array(
+								z.object({
+									promille: z.number(),
+									durationMs: z.number(),
+								}),
+							),
 						}),
 					]),
 					conditions: z.array(
@@ -7098,6 +7243,21 @@ export const snapshotSchema = z
 		updatedAt: z
 			.number()
 			.describe("The last time the snapshot was updated, in milliseconds since the epoch."),
+		lastUsedAt: z
+			.number()
+			.describe(
+				"The last time the snapshot was used (e.g. to resume or create a sandbox), in milliseconds since the epoch. Falls back to `createdAt` for older snapshots that predate this field.",
+			),
+		creationMethod: z.optional(
+			z.enum(["automatic", "manual"]).describe("The method used to create the snapshot."),
+		),
+		parentId: z.optional(
+			z
+				.string()
+				.describe(
+					"The unique identifier of the parent snapshot, if this snapshot was created from another snapshot.",
+				),
+		),
 	})
 	.describe(
 		"This object contains information related to a Snapshot of a Vercel Sandbox session (v2 API).",
@@ -7708,6 +7868,7 @@ export const teamSchema = z
 				z.object({
 					bucket: z.string(),
 					supportUntil: z.optional(z.number()),
+					default: z.optional(z.union([z.literal(false), z.literal(true)])),
 				}),
 			),
 		),
@@ -7813,6 +7974,7 @@ export const teamSchema = z
 							"nsnb-hobby-upgrade",
 							"nsnb-invite",
 							"nsnb-redeploy",
+							"nsnb-redeploy-attribution-card",
 							"nsnb-request-access",
 							"nsnb-viewer-upgrade",
 							"organization-teams",
@@ -8004,6 +8166,7 @@ export const teamLimitedSchema = z
 							"nsnb-hobby-upgrade",
 							"nsnb-invite",
 							"nsnb-redeploy",
+							"nsnb-redeploy-attribution-card",
 							"nsnb-request-access",
 							"nsnb-viewer-upgrade",
 							"organization-teams",
@@ -9170,7 +9333,7 @@ export const recordEvents400Schema = z.unknown();
 export const recordEvents401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const recordEvents402Schema = z.unknown();
 
@@ -9200,7 +9363,7 @@ export const status400Schema = z.unknown();
 export const status401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const status402Schema = z.unknown();
 
@@ -9289,7 +9452,7 @@ export const uploadArtifact400Schema = z.unknown();
 export const uploadArtifact401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const uploadArtifact402Schema = z.unknown();
 
@@ -9350,7 +9513,7 @@ export const downloadArtifact400Schema = z.unknown();
 export const downloadArtifact401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const downloadArtifact402Schema = z.unknown();
 
@@ -9388,7 +9551,7 @@ export const artifactQuery400Schema = z.unknown();
 export const artifactQuery401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const artifactQuery402Schema = z.unknown();
 
@@ -10357,7 +10520,7 @@ export const createNetwork400Schema = z.unknown();
 export const createNetwork401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const createNetwork402Schema = z.unknown();
 
@@ -10633,7 +10796,7 @@ export const createDeployment400Schema = z.unknown();
 export const createDeployment401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated\nPro customers are allowed to deploy Serverless Functions to up to `proMaxRegions` regions, or if the project was created before the limit was introduced.\nDeploying to Serverless Functions to multiple regions requires a plan update
+ * @description The account is missing a payment so payment method must be updated\nPro customers are allowed to deploy Serverless Functions to up to `proMaxRegions` regions, or if the project was created before the limit was introduced.\nDeploying to Serverless Functions to multiple regions requires a plan update
  */
 export const createDeployment402Schema = z.unknown();
 
@@ -10762,7 +10925,7 @@ export const createRecord400Schema = z.unknown();
 export const createRecord401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const createRecord402Schema = z.unknown();
 
@@ -10803,7 +10966,7 @@ export const updateRecord400Schema = z.unknown();
 export const updateRecord401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const updateRecord402Schema = z.unknown();
 
@@ -11723,7 +11886,7 @@ export const createOrTransferDomain400Schema = z.unknown();
 export const createOrTransferDomain401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const createOrTransferDomain402Schema = z.unknown();
 
@@ -12320,7 +12483,7 @@ export const createEdgeConfig400Schema = z.unknown();
 export const createEdgeConfig401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const createEdgeConfig402Schema = z.unknown();
 
@@ -12394,7 +12557,7 @@ export const updateEdgeConfig400Schema = z.unknown();
 export const updateEdgeConfig401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const updateEdgeConfig402Schema = z.unknown();
 
@@ -12508,7 +12671,7 @@ export const patchEdgeConfigItems400Schema = z.unknown();
 export const patchEdgeConfigItems401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const patchEdgeConfigItems402Schema = z.unknown();
 
@@ -12591,7 +12754,7 @@ export const patchEdgeConfigSchema400Schema = z.unknown();
 export const patchEdgeConfigSchema401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const patchEdgeConfigSchema402Schema = z.unknown();
 
@@ -12634,7 +12797,7 @@ export const deleteEdgeConfigSchema400Schema = z.unknown();
 export const deleteEdgeConfigSchema401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const deleteEdgeConfigSchema402Schema = z.unknown();
 
@@ -12752,7 +12915,7 @@ export const deleteEdgeConfigTokens400Schema = z.unknown();
 export const deleteEdgeConfigTokens401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const deleteEdgeConfigTokens402Schema = z.unknown();
 
@@ -12833,7 +12996,7 @@ export const createEdgeConfigToken400Schema = z.unknown();
 export const createEdgeConfigToken401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const createEdgeConfigToken402Schema = z.unknown();
 
@@ -12944,7 +13107,7 @@ export const createSharedEnvVariable400Schema = z.unknown();
 export const createSharedEnvVariable401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const createSharedEnvVariable402Schema = z.unknown();
 
@@ -13028,7 +13191,7 @@ export const updateSharedEnvVariable400Schema = z.unknown();
 export const updateSharedEnvVariable401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const updateSharedEnvVariable402Schema = z.unknown();
 
@@ -13063,7 +13226,7 @@ export const deleteSharedEnvVariable400Schema = z.unknown();
 export const deleteSharedEnvVariable401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const deleteSharedEnvVariable402Schema = z.unknown();
 
@@ -13282,7 +13445,7 @@ export const listFlags400Schema = z.unknown();
 export const listFlags401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const listFlags402Schema = z.unknown();
 
@@ -13321,7 +13484,7 @@ export const createFlag400Schema = z.unknown();
 export const createFlag401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const createFlag402Schema = z.unknown();
 
@@ -13371,7 +13534,7 @@ export const getFlag400Schema = z.unknown();
 export const getFlag401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const getFlag402Schema = z.unknown();
 
@@ -13417,7 +13580,7 @@ export const updateFlag400Schema = z.unknown();
 export const updateFlag401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const updateFlag402Schema = z.unknown();
 
@@ -13467,7 +13630,7 @@ export const deleteFlag400Schema = z.unknown();
 export const deleteFlag401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const deleteFlag402Schema = z.unknown();
 
@@ -13515,7 +13678,7 @@ export const listFlagVersions400Schema = z.unknown();
 export const listFlagVersions401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const listFlagVersions402Schema = z.unknown();
 
@@ -13554,7 +13717,7 @@ export const getFlagSettings400Schema = z.unknown();
 export const getFlagSettings401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const getFlagSettings402Schema = z.unknown();
 
@@ -13595,7 +13758,7 @@ export const updateFlagSettings400Schema = z.unknown();
 export const updateFlagSettings401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const updateFlagSettings402Schema = z.unknown();
 
@@ -13728,7 +13891,7 @@ export const createFlagSegment400Schema = z.unknown();
 export const createFlagSegment401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const createFlagSegment402Schema = z.unknown();
 
@@ -13770,7 +13933,7 @@ export const listFlagSegments400Schema = z.unknown();
 export const listFlagSegments401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const listFlagSegments402Schema = z.unknown();
 
@@ -13809,7 +13972,7 @@ export const getFlagSegment400Schema = z.unknown();
 export const getFlagSegment401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const getFlagSegment402Schema = z.unknown();
 
@@ -13848,7 +14011,7 @@ export const deleteFlagSegment400Schema = z.unknown();
 export const deleteFlagSegment401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const deleteFlagSegment402Schema = z.unknown();
 
@@ -13891,7 +14054,7 @@ export const updateFlagSegment400Schema = z.unknown();
 export const updateFlagSegment401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const updateFlagSegment402Schema = z.unknown();
 
@@ -13970,7 +14133,7 @@ export const getSdkKeys400Schema = z.unknown();
 export const getSdkKeys401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const getSdkKeys402Schema = z.unknown();
 
@@ -14009,7 +14172,7 @@ export const createSdkKey400Schema = z.unknown();
 export const createSdkKey401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const createSdkKey402Schema = z.unknown();
 
@@ -14051,7 +14214,7 @@ export const deleteSdkKey400Schema = z.unknown();
 export const deleteSdkKey401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const deleteSdkKey402Schema = z.unknown();
 
@@ -15952,7 +16115,7 @@ export const createProject400Schema = z.unknown();
 export const createProject401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated\nPro customers are allowed to deploy Serverless Functions to up to `proMaxRegions` regions, or if the project was created before the limit was introduced.\nDeploying to Serverless Functions to multiple regions requires a plan update
+ * @description The account is missing a payment so payment method must be updated\nPro customers are allowed to deploy Serverless Functions to up to `proMaxRegions` regions, or if the project was created before the limit was introduced.\nDeploying to Serverless Functions to multiple regions requires a plan update
  */
 export const createProject402Schema = z.unknown();
 
@@ -16045,7 +16208,7 @@ export const updateProject400Schema = z.unknown();
 export const updateProject401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated\nPro customers are allowed to deploy Serverless Functions to up to `proMaxRegions` regions, or if the project was created before the limit was introduced.\nDeploying to Serverless Functions to multiple regions requires a plan update
+ * @description The account is missing a payment so payment method must be updated\nPro customers are allowed to deploy Serverless Functions to up to `proMaxRegions` regions, or if the project was created before the limit was introduced.\nDeploying to Serverless Functions to multiple regions requires a plan update
  */
 export const updateProject402Schema = z.unknown();
 
@@ -16171,7 +16334,7 @@ export const createCustomEnvironment400Schema = z.unknown();
 export const createCustomEnvironment401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const createCustomEnvironment402Schema = z.unknown();
 
@@ -16289,7 +16452,7 @@ export const updateCustomEnvironment400Schema = z.unknown();
 export const updateCustomEnvironment401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const updateCustomEnvironment402Schema = z.unknown();
 
@@ -16553,7 +16716,7 @@ export const addProjectDomain400Schema = z.unknown();
 export const addProjectDomain401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const addProjectDomain402Schema = z.unknown();
 
@@ -16733,7 +16896,7 @@ export const createProjectEnv400Schema = z.unknown();
 export const createProjectEnv401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const createProjectEnv402Schema = z.unknown();
 
@@ -17643,7 +17806,7 @@ export const createSandbox400Schema = z.unknown();
 export const createSandbox401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const createSandbox402Schema = z.unknown();
 
@@ -17940,6 +18103,8 @@ export const extendSandboxTimeout401Schema = z.unknown();
  */
 export const extendSandboxTimeout403Schema = z.unknown();
 
+export const extendSandboxTimeout404Schema = z.unknown();
+
 export const extendSandboxTimeout410Schema = z.unknown();
 
 export const extendSandboxTimeout422Schema = z.unknown();
@@ -17984,6 +18149,8 @@ export const updateNetworkPolicy402Schema = z.unknown();
  * @description You do not have permission to access this resource.
  */
 export const updateNetworkPolicy403Schema = z.unknown();
+
+export const updateNetworkPolicy404Schema = z.unknown();
 
 export const updateNetworkPolicy410Schema = z.unknown();
 
@@ -18296,7 +18463,7 @@ export const createSnapshot400Schema = z.unknown();
 export const createSnapshot401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const createSnapshot402Schema = z.unknown();
 
@@ -18324,7 +18491,7 @@ export const getSandboxesV2QueryParamsSchema = z.object({
 		.default(20)
 		.describe("Maximum number of named sandboxes to return in the response. Used for pagination."),
 	sortBy: z
-		.enum(["createdAt", "name", "statusUpdatedAt"])
+		.enum(["createdAt", "name", "statusUpdatedAt", "currentSnapshotId"])
 		.default("createdAt")
 		.describe("Field to sort by."),
 	namePrefix: z.optional(
@@ -18392,7 +18559,7 @@ export const createSandboxes400Schema = z.unknown();
 export const createSandboxes401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const createSandboxes402Schema = z.unknown();
 
@@ -18669,7 +18836,7 @@ export const getNamedSandbox400Schema = z.unknown();
 export const getNamedSandbox401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const getNamedSandbox402Schema = z.unknown();
 
@@ -19061,6 +19228,8 @@ export const extendSessionTimeout401Schema = z.unknown();
  */
 export const extendSessionTimeout403Schema = z.unknown();
 
+export const extendSessionTimeout404Schema = z.unknown();
+
 export const extendSessionTimeout410Schema = z.unknown();
 
 export const extendSessionTimeout422Schema = z.unknown();
@@ -19107,6 +19276,8 @@ export const updateSessionNetworkPolicy402Schema = z.unknown();
  * @description You do not have permission to access this resource.
  */
 export const updateSessionNetworkPolicy403Schema = z.unknown();
+
+export const updateSessionNetworkPolicy404Schema = z.unknown();
 
 export const updateSessionNetworkPolicy410Schema = z.unknown();
 
@@ -19276,7 +19447,7 @@ export const createSessionSnapshot400Schema = z.unknown();
 export const createSessionSnapshot401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const createSessionSnapshot402Schema = z.unknown();
 
@@ -19623,7 +19794,7 @@ export const createIntegrationStoreDirect400Schema = z.unknown();
 export const createIntegrationStoreDirect401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const createIntegrationStoreDirect402Schema = z.unknown();
 
@@ -20608,7 +20779,7 @@ export const assignAlias400Schema = z.unknown();
 export const assignAlias401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const assignAlias402Schema = z.unknown();
 
@@ -20911,7 +21082,7 @@ export const issueCert400Schema = z.unknown();
 export const issueCert401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const issueCert402Schema = z.unknown();
 

@@ -676,6 +676,7 @@ import type {
 	ExtendSandboxTimeout400,
 	ExtendSandboxTimeout401,
 	ExtendSandboxTimeout403,
+	ExtendSandboxTimeout404,
 	ExtendSandboxTimeout410,
 	ExtendSandboxTimeout422,
 	ExtendSandboxTimeoutMutationResponse,
@@ -684,6 +685,7 @@ import type {
 	ExtendSessionTimeout400,
 	ExtendSessionTimeout401,
 	ExtendSessionTimeout403,
+	ExtendSessionTimeout404,
 	ExtendSessionTimeout410,
 	ExtendSessionTimeout422,
 	ExtendSessionTimeout500,
@@ -2122,6 +2124,7 @@ import type {
 	UpdateNetworkPolicy401,
 	UpdateNetworkPolicy402,
 	UpdateNetworkPolicy403,
+	UpdateNetworkPolicy404,
 	UpdateNetworkPolicy410,
 	UpdateNetworkPolicy422,
 	UpdateNetworkPolicyMutationResponse,
@@ -2239,6 +2242,7 @@ import type {
 	UpdateSessionNetworkPolicy401,
 	UpdateSessionNetworkPolicy402,
 	UpdateSessionNetworkPolicy403,
+	UpdateSessionNetworkPolicy404,
 	UpdateSessionNetworkPolicy410,
 	UpdateSessionNetworkPolicy422,
 	UpdateSessionNetworkPolicy500,
@@ -11351,6 +11355,7 @@ export async function extendSandboxTimeout({
 			| ExtendSandboxTimeout400
 			| ExtendSandboxTimeout401
 			| ExtendSandboxTimeout403
+			| ExtendSandboxTimeout404
 			| ExtendSandboxTimeout410
 			| ExtendSandboxTimeout422
 		>,
@@ -11395,6 +11400,7 @@ export async function updateNetworkPolicy({
 			| UpdateNetworkPolicy401
 			| UpdateNetworkPolicy402
 			| UpdateNetworkPolicy403
+			| UpdateNetworkPolicy404
 			| UpdateNetworkPolicy410
 			| UpdateNetworkPolicy422
 		>,
@@ -12042,7 +12048,7 @@ export async function updateSandbox({
 }
 
 /**
- * @description Deletes a sandbox by name. If sandboxes are currently running, they will be stopped first. This operation deletes all sandbox entities with the given name, all associated snapshots, and the named sandbox metadata.
+ * @description Deletes a sandbox by name. If sandboxes are currently running, they will be stopped first. This operation deletes all sandbox entities with the given name and the named sandbox metadata.
  * @summary Delete a sandbox
  * {@link /v2/sandboxes/:name}
  */
@@ -12367,6 +12373,7 @@ export async function extendSessionTimeout({
 			| ExtendSessionTimeout400
 			| ExtendSessionTimeout401
 			| ExtendSessionTimeout403
+			| ExtendSessionTimeout404
 			| ExtendSessionTimeout410
 			| ExtendSessionTimeout422
 			| ExtendSessionTimeout500
@@ -12412,6 +12419,7 @@ export async function updateSessionNetworkPolicy({
 			| UpdateSessionNetworkPolicy401
 			| UpdateSessionNetworkPolicy402
 			| UpdateSessionNetworkPolicy403
+			| UpdateSessionNetworkPolicy404
 			| UpdateSessionNetworkPolicy410
 			| UpdateSessionNetworkPolicy422
 			| UpdateSessionNetworkPolicy500
