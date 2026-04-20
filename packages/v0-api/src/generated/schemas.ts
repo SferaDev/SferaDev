@@ -271,7 +271,7 @@ export const chatDetailSchema = z
 				.object({
 					modelId: z.optional(
 						z
-							.enum(["v0-auto", "v0-max", "v0-max-fast", "v0-mini", "v0-pro"])
+							.enum(["v0-auto", "v0-max", "v0-max-fast", "v0-mini", "v0-opus-4.7", "v0-pro"])
 							.default("v0-pro")
 							.describe("Deprecated Model ID field preserved for backward compatibility."),
 					),
@@ -2794,6 +2794,61 @@ export const chatsStop429Schema = z.unknown();
 export const chatsStop500Schema = z.unknown();
 
 export const chatsStopMutationResponseSchema = z.lazy(() => chatsStop200Schema);
+
+export const chatsResolveTaskPathParamsSchema = z.object({
+	chatId: z
+		.string()
+		.describe(
+			"The unique identifier of the chat containing the pending task. Provided as a path parameter.",
+		),
+});
+
+/**
+ * @description Success
+ */
+export const chatsResolveTask200Schema = z.unknown();
+
+/**
+ * @description Unauthorized
+ */
+export const chatsResolveTask401Schema = z.unknown();
+
+/**
+ * @description Forbidden
+ */
+export const chatsResolveTask403Schema = z.unknown();
+
+/**
+ * @description Not Found
+ */
+export const chatsResolveTask404Schema = z.unknown();
+
+/**
+ * @description Conflict
+ */
+export const chatsResolveTask409Schema = z.unknown();
+
+/**
+ * @description Payload Too Large
+ */
+export const chatsResolveTask413Schema = z.unknown();
+
+/**
+ * @description Unprocessable Entity
+ */
+export const chatsResolveTask422Schema = z.unknown();
+
+/**
+ * @description Too Many Requests
+ */
+export const chatsResolveTask429Schema = z.unknown();
+
+/**
+ * @description Internal Server Error
+ */
+export const chatsResolveTask500Schema = z.unknown();
+
+export const chatsResolveTaskMutationResponseSchema = z.lazy(() => chatsResolveTask200Schema);
 
 export const deploymentsFindQueryParamsSchema = z.object({
 	projectId: z.string().describe("The ID of the project to find deployments for"),

@@ -138,6 +138,16 @@ import type {
 	ChatsInit429,
 	ChatsInit500,
 	ChatsInitMutationResponse,
+	ChatsResolveTask401,
+	ChatsResolveTask403,
+	ChatsResolveTask404,
+	ChatsResolveTask409,
+	ChatsResolveTask413,
+	ChatsResolveTask422,
+	ChatsResolveTask429,
+	ChatsResolveTask500,
+	ChatsResolveTaskMutationResponse,
+	ChatsResolveTaskPathParams,
 	ChatsResume401,
 	ChatsResume403,
 	ChatsResume404,
@@ -1353,6 +1363,49 @@ export async function chatsStop({
 		Record<string, string>,
 		ChatsStopPathParams
 	>({ method: "POST", url: `/chats/${chatId}/messages/${messageId}/stop`, ...requestConfig });
+	return data;
+}
+
+/**
+ * @description Resolves a pending task in a chat, continuing the conversation. The latest message in the active chat fork must be an assistant message currently blocked on a matching task (integration setup, plan approval, question answers, or permission grants).
+ * @summary Resolve Task
+ * {@link /chats/:chatId/tasks/resolve}
+ */
+export async function chatsResolveTask({
+	pathParams: { chatId },
+	config = {},
+}: {
+	pathParams: ChatsResolveTaskPathParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!chatId) {
+		throw new Error(`Missing required path parameter: chatId`);
+	}
+
+	const data = await request<
+		ChatsResolveTaskMutationResponse,
+		ErrorWrapper<
+			| ChatsResolveTask401
+			| ChatsResolveTask403
+			| ChatsResolveTask404
+			| ChatsResolveTask409
+			| ChatsResolveTask413
+			| ChatsResolveTask422
+			| ChatsResolveTask429
+			| ChatsResolveTask500
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		ChatsResolveTaskPathParams
+	>({
+		method: "POST",
+		url: `/chats/${chatId}/tasks/resolve`,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
 	return data;
 }
 
@@ -2769,6 +2822,7 @@ export const operationsByPath = {
 	"POST /chats/{chatId}/versions/{versionId}/files/delete": chatsDeleteVersionFiles,
 	"POST /chats/{chatId}/messages/{messageId}/resume": chatsResume,
 	"POST /chats/{chatId}/messages/{messageId}/stop": chatsStop,
+	"POST /chats/{chatId}/tasks/resolve": chatsResolveTask,
 	"GET /deployments": deploymentsFind,
 	"POST /deployments": deploymentsCreate,
 	"GET /deployments/{deploymentId}": deploymentsGetById,
@@ -2828,6 +2882,7 @@ export const operationsByTag = {
 		chatsDeleteVersionFiles,
 		chatsResume,
 		chatsStop,
+		chatsResolveTask,
 	},
 	projects: {
 		projectsGetByChatId,
@@ -2895,6 +2950,7 @@ export const tagDictionary = {
 			"chatsDeleteVersionFiles",
 			"chatsResume",
 			"chatsStop",
+			"chatsResolveTask",
 		],
 		GET: [
 			"chatsFind",
