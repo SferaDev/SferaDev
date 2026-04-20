@@ -1656,13 +1656,13 @@ export type Restlet = {
 	 */
 	logger?: Logger | undefined;
 	/**
-	 * @type object | undefined
-	 */
-	application?: Application | undefined;
-	/**
 	 * @type boolean | undefined
 	 */
 	stopped?: boolean | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	application?: Application | undefined;
 };
 
 export type Parameter = {
@@ -1893,6 +1893,10 @@ export type Reference = {
 	/**
 	 * @type string | undefined
 	 */
+	identifier?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
 	matrix?: string | undefined;
 	/**
 	 * @type array | undefined
@@ -1958,10 +1962,6 @@ export type Reference = {
 	 * @type boolean | undefined
 	 */
 	hierarchical?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	identifier?: string | undefined;
 };
 
 export type Metadata = {
@@ -2161,6 +2161,37 @@ export type StatusService = {
 	stopped?: boolean | undefined;
 };
 
+export type EncoderService = {
+	/**
+	 * @type object | undefined
+	 */
+	context?: Context | undefined;
+	/**
+	 * @type boolean | undefined
+	 */
+	enabled?: boolean | undefined;
+	/**
+	 * @type boolean | undefined
+	 */
+	started?: boolean | undefined;
+	/**
+	 * @type array | undefined
+	 */
+	acceptedMediaTypes?: MediaType[] | undefined;
+	/**
+	 * @type array | undefined
+	 */
+	ignoredMediaTypes?: MediaType[] | undefined;
+	/**
+	 * @type integer | undefined, int64
+	 */
+	minimumSize?: number | undefined;
+	/**
+	 * @type boolean | undefined
+	 */
+	stopped?: boolean | undefined;
+};
+
 export type RangeService = {
 	/**
 	 * @type object | undefined
@@ -2332,37 +2363,6 @@ export type DecoderService = {
 	stopped?: boolean | undefined;
 };
 
-export type EncoderService = {
-	/**
-	 * @type object | undefined
-	 */
-	context?: Context | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	enabled?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	started?: boolean | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	acceptedMediaTypes?: MediaType[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	ignoredMediaTypes?: MediaType[] | undefined;
-	/**
-	 * @type integer | undefined, int64
-	 */
-	minimumSize?: number | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	stopped?: boolean | undefined;
-};
-
 export type Application = {
 	/**
 	 * @type string | undefined
@@ -2427,6 +2427,10 @@ export type Application = {
 	/**
 	 * @type object | undefined
 	 */
+	encoderService?: EncoderService | undefined;
+	/**
+	 * @type object | undefined
+	 */
 	rangeService?: RangeService | undefined;
 	/**
 	 * @type object | undefined
@@ -2447,19 +2451,15 @@ export type Application = {
 	/**
 	 * @type object | undefined
 	 */
-	encoderService?: EncoderService | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	logger?: Logger | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	application?: Application | undefined;
 	/**
 	 * @type boolean | undefined
 	 */
 	stopped?: boolean | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	application?: Application | undefined;
 };
 
 export type AuthenticationInfo = {
@@ -3979,13 +3979,13 @@ export type Request = {
 	 */
 	synchronous?: boolean | undefined;
 	/**
-	 * @type string | undefined
-	 */
-	entityAsText?: string | undefined;
-	/**
 	 * @type array | undefined
 	 */
 	headers?: Header[] | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	entityAsText?: string | undefined;
 };
 
 export type ReservationAccessTimesUpdate = {
@@ -4166,6 +4166,10 @@ export type Response = {
 	 */
 	provisional?: boolean | undefined;
 	/**
+	 * @type array | undefined
+	 */
+	headers?: Header[] | undefined;
+	/**
 	 * @type boolean | undefined
 	 */
 	entityAvailable?: boolean | undefined;
@@ -4173,10 +4177,6 @@ export type Response = {
 	 * @type string | undefined
 	 */
 	entityAsText?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	headers?: Header[] | undefined;
 };
 
 export const shsSubscriptionTypeEnum = {
