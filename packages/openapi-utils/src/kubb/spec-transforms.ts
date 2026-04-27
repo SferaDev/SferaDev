@@ -109,7 +109,7 @@ export function sortArrays(openAPIDocument: OpenAPIObject): OpenAPIObject {
 		if (Array.isArray(obj)) {
 			return obj.sort() as T;
 		}
-		if (typeof obj === "object" && !!obj) {
+		if (typeof obj === "object" && obj) {
 			return Object.fromEntries(
 				Object.entries(obj as any).map(([key, value]) => [key, sortRecursively(value)]),
 			) as T;
