@@ -581,6 +581,128 @@ export type RunDatabaseMigrationsRequest = {
 	dry_run?: boolean | undefined;
 };
 
+/**
+ * @description Request body for resetting a database branch
+ */
+export type ResetDatabaseBranchRequest = {
+	/**
+	 * @description The ID of the branch to re-fork the target branch from. Defaults to \"production\" if not specified.
+	 * @type string | undefined
+	 */
+	source_branch_id?: string | undefined;
+};
+
+/**
+ * @description Response for a database branch reset
+ */
+export type ResetDatabaseBranchResponse = {
+	/**
+	 * @description Whether the branch was actually re-forked. False when the target was already in sync with the source and `force=true` was not set.
+	 * @type boolean | undefined
+	 */
+	reset?: boolean | undefined;
+	/**
+	 * @description The connection string for the reset (or unchanged) branch
+	 * @type string | undefined
+	 */
+	connection_string?: string | undefined;
+	/**
+	 * @description Metadata associated with the branch
+	 * @type object | undefined
+	 */
+	metadata?:
+		| {
+				[key: string]: unknown;
+		  }
+		| undefined;
+};
+
+/**
+ * @description Response containing the list of migrations for a branch
+ */
+export type ListDatabaseMigrationsResponse = {
+	/**
+	 * @description List of migrations
+	 * @type array | undefined
+	 */
+	migrations?:
+		| {
+				/**
+				 * @description The migration version number
+				 * @type integer | undefined, int64
+				 */
+				version?: number | undefined;
+				/**
+				 * @description The migration name
+				 * @type string | undefined
+				 */
+				name?: string | undefined;
+				/**
+				 * @description The path to the migration file in the deploy bundle
+				 * @type string | undefined
+				 */
+				path?: string | undefined;
+				/**
+				 * @description Whether this migration has been applied to the branch
+				 * @type boolean | undefined
+				 */
+				applied?: boolean | undefined;
+		  }[]
+		| undefined;
+};
+
+/**
+ * @description A migration available to a database branch
+ */
+export type DatabaseMigration = {
+	/**
+	 * @description The migration version number
+	 * @type integer | undefined, int64
+	 */
+	version?: number | undefined;
+	/**
+	 * @description The migration name
+	 * @type string | undefined
+	 */
+	name?: string | undefined;
+	/**
+	 * @description The path to the migration file in the deploy bundle
+	 * @type string | undefined
+	 */
+	path?: string | undefined;
+	/**
+	 * @description Whether this migration has been applied to the branch
+	 * @type boolean | undefined
+	 */
+	applied?: boolean | undefined;
+};
+
+/**
+ * @description A migration with its file contents
+ */
+export type DatabaseMigrationDetail = {
+	/**
+	 * @description The migration version number
+	 * @type integer | undefined, int64
+	 */
+	version?: number | undefined;
+	/**
+	 * @description The migration name
+	 * @type string | undefined
+	 */
+	name?: string | undefined;
+	/**
+	 * @description The path to the migration file in the deploy bundle
+	 * @type string | undefined
+	 */
+	path?: string | undefined;
+	/**
+	 * @description The raw contents of the migration file
+	 * @type string | undefined
+	 */
+	content?: string | undefined;
+};
+
 export type DeployValidationsReport = {
 	/**
 	 * @description The id of the deploy validations report
@@ -21775,6 +21897,106 @@ export type DeleteSiteDatabaseBranchMutation = {
 	Errors: any;
 };
 
+export type ResetSiteDatabaseBranchPathParams = {
+	/**
+	 * @type string
+	 */
+	site_id: string;
+	/**
+	 * @description The branch ID to reset
+	 * @type string
+	 */
+	branch_id: string;
+};
+
+export const resetSiteDatabaseBranchQueryParamsRoleEnum = {
+	netlifydb_owner: "netlifydb_owner",
+	netlifydb_readonly: "netlifydb_readonly",
+} as const;
+
+export type ResetSiteDatabaseBranchQueryParamsRoleEnumKey =
+	(typeof resetSiteDatabaseBranchQueryParamsRoleEnum)[keyof typeof resetSiteDatabaseBranchQueryParamsRoleEnum];
+
+export type ResetSiteDatabaseBranchQueryParams = {
+	/**
+	 * @description If true, resets the branch even when it is already in sync with the source.
+	 * @type boolean | undefined
+	 */
+	force?: boolean | undefined;
+	/**
+	 * @description The database role to use for the returned connection string. Defaults to netlifydb_owner if not specified.
+	 * @type string | undefined
+	 */
+	role?: ResetSiteDatabaseBranchQueryParamsRoleEnumKey | undefined;
+};
+
+/**
+ * @description OK
+ */
+export type ResetSiteDatabaseBranch200 = {
+	/**
+	 * @description Whether the branch was actually re-forked. False when the target was already in sync with the source and `force=true` was not set.
+	 * @type boolean | undefined
+	 */
+	reset?: boolean | undefined;
+	/**
+	 * @description The connection string for the reset (or unchanged) branch
+	 * @type string | undefined
+	 */
+	connection_string?: string | undefined;
+	/**
+	 * @description Metadata associated with the branch
+	 * @type object | undefined
+	 */
+	metadata?:
+		| {
+				[key: string]: unknown;
+		  }
+		| undefined;
+};
+
+/**
+ * @description Invalid request — for example, the target is the production branch or the source branch is the same as the target.
+ */
+export type ResetSiteDatabaseBranch400 = unknown;
+
+/**
+ * @description Database or branch not found
+ */
+export type ResetSiteDatabaseBranch404 = unknown;
+
+/**
+ * @description error
+ */
+export type ResetSiteDatabaseBranchError = {
+	/**
+	 * @type integer | undefined, int64
+	 */
+	code?: number | undefined;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
+export type ResetSiteDatabaseBranchMutationRequest = {
+	/**
+	 * @description The ID of the branch to re-fork the target branch from. Defaults to \"production\" if not specified.
+	 * @type string | undefined
+	 */
+	source_branch_id?: string | undefined;
+};
+
+export type ResetSiteDatabaseBranchMutationResponse = ResetSiteDatabaseBranch200;
+
+export type ResetSiteDatabaseBranchMutation = {
+	Response: ResetSiteDatabaseBranch200;
+	Request: ResetSiteDatabaseBranchMutationRequest;
+	PathParams: ResetSiteDatabaseBranchPathParams;
+	QueryParams: ResetSiteDatabaseBranchQueryParams;
+	Errors: ResetSiteDatabaseBranch400 | ResetSiteDatabaseBranch404;
+};
+
 export type SetSiteDatabaseBranchComputeSettingsPathParams = {
 	/**
 	 * @type string
@@ -21983,6 +22205,167 @@ export type ClearSiteDatabaseComputeSettingsMutation = {
 	Response: ClearSiteDatabaseComputeSettings204;
 	PathParams: ClearSiteDatabaseComputeSettingsPathParams;
 	Errors: ClearSiteDatabaseComputeSettings403;
+};
+
+export type ListSiteDatabaseMigrationsPathParams = {
+	/**
+	 * @type string
+	 */
+	site_id: string;
+};
+
+export type ListSiteDatabaseMigrationsQueryParams = {
+	/**
+	 * @description The branch ID to list migrations for. Defaults to \"production\" if not specified.
+	 * @type string | undefined
+	 */
+	branch?: string | undefined;
+};
+
+/**
+ * @description OK
+ */
+export type ListSiteDatabaseMigrations200 = {
+	/**
+	 * @description List of migrations
+	 * @type array | undefined
+	 */
+	migrations?:
+		| {
+				/**
+				 * @description The migration version number
+				 * @type integer | undefined, int64
+				 */
+				version?: number | undefined;
+				/**
+				 * @description The migration name
+				 * @type string | undefined
+				 */
+				name?: string | undefined;
+				/**
+				 * @description The path to the migration file in the deploy bundle
+				 * @type string | undefined
+				 */
+				path?: string | undefined;
+				/**
+				 * @description Whether this migration has been applied to the branch
+				 * @type boolean | undefined
+				 */
+				applied?: boolean | undefined;
+		  }[]
+		| undefined;
+};
+
+/**
+ * @description Database or branch not found
+ */
+export type ListSiteDatabaseMigrations404 = unknown;
+
+/**
+ * @description Database is disabled
+ */
+export type ListSiteDatabaseMigrations423 = unknown;
+
+/**
+ * @description error
+ */
+export type ListSiteDatabaseMigrationsError = {
+	/**
+	 * @type integer | undefined, int64
+	 */
+	code?: number | undefined;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
+export type ListSiteDatabaseMigrationsQueryResponse = ListSiteDatabaseMigrations200;
+
+export type ListSiteDatabaseMigrationsQuery = {
+	Response: ListSiteDatabaseMigrations200;
+	PathParams: ListSiteDatabaseMigrationsPathParams;
+	QueryParams: ListSiteDatabaseMigrationsQueryParams;
+	Errors: ListSiteDatabaseMigrations404 | ListSiteDatabaseMigrations423;
+};
+
+export type GetSiteDatabaseMigrationPathParams = {
+	/**
+	 * @type string
+	 */
+	site_id: string;
+	/**
+	 * @description The migration name
+	 * @type string
+	 */
+	name: string;
+};
+
+export type GetSiteDatabaseMigrationQueryParams = {
+	/**
+	 * @description The branch ID to look up the migration on. Defaults to the currently published deploy\'s branch.
+	 * @type string | undefined
+	 */
+	branch?: string | undefined;
+};
+
+/**
+ * @description OK
+ */
+export type GetSiteDatabaseMigration200 = {
+	/**
+	 * @description The migration version number
+	 * @type integer | undefined, int64
+	 */
+	version?: number | undefined;
+	/**
+	 * @description The migration name
+	 * @type string | undefined
+	 */
+	name?: string | undefined;
+	/**
+	 * @description The path to the migration file in the deploy bundle
+	 * @type string | undefined
+	 */
+	path?: string | undefined;
+	/**
+	 * @description The raw contents of the migration file
+	 * @type string | undefined
+	 */
+	content?: string | undefined;
+};
+
+/**
+ * @description Migration, database, or branch not found
+ */
+export type GetSiteDatabaseMigration404 = unknown;
+
+/**
+ * @description Database is disabled
+ */
+export type GetSiteDatabaseMigration423 = unknown;
+
+/**
+ * @description error
+ */
+export type GetSiteDatabaseMigrationError = {
+	/**
+	 * @type integer | undefined, int64
+	 */
+	code?: number | undefined;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
+export type GetSiteDatabaseMigrationQueryResponse = GetSiteDatabaseMigration200;
+
+export type GetSiteDatabaseMigrationQuery = {
+	Response: GetSiteDatabaseMigration200;
+	PathParams: GetSiteDatabaseMigrationPathParams;
+	QueryParams: GetSiteDatabaseMigrationQueryParams;
+	Errors: GetSiteDatabaseMigration404 | GetSiteDatabaseMigration423;
 };
 
 export type RunSiteDatabaseMigrationsPathParams = {
