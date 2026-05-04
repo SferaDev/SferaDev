@@ -138,6 +138,26 @@ import type {
 	ChatsInit429,
 	ChatsInit500,
 	ChatsInitMutationResponse,
+	ChatsResolveTask401,
+	ChatsResolveTask403,
+	ChatsResolveTask404,
+	ChatsResolveTask409,
+	ChatsResolveTask413,
+	ChatsResolveTask422,
+	ChatsResolveTask429,
+	ChatsResolveTask500,
+	ChatsResolveTaskMutationResponse,
+	ChatsResolveTaskPathParams,
+	ChatsRestore401,
+	ChatsRestore403,
+	ChatsRestore404,
+	ChatsRestore409,
+	ChatsRestore413,
+	ChatsRestore422,
+	ChatsRestore429,
+	ChatsRestore500,
+	ChatsRestoreMutationResponse,
+	ChatsRestorePathParams,
 	ChatsResume401,
 	ChatsResume403,
 	ChatsResume404,
@@ -1357,6 +1377,49 @@ export async function chatsStop({
 }
 
 /**
+ * @description Resolves a pending task in a chat, continuing the conversation. The latest message in the active chat fork must be an assistant message currently blocked on a matching task (integration setup, plan approval, question answers, or permission grants).
+ * @summary Resolve Task
+ * {@link /chats/:chatId/tasks/resolve}
+ */
+export async function chatsResolveTask({
+	pathParams: { chatId },
+	config = {},
+}: {
+	pathParams: ChatsResolveTaskPathParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!chatId) {
+		throw new Error(`Missing required path parameter: chatId`);
+	}
+
+	const data = await request<
+		ChatsResolveTaskMutationResponse,
+		ErrorWrapper<
+			| ChatsResolveTask401
+			| ChatsResolveTask403
+			| ChatsResolveTask404
+			| ChatsResolveTask409
+			| ChatsResolveTask413
+			| ChatsResolveTask422
+			| ChatsResolveTask429
+			| ChatsResolveTask500
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		ChatsResolveTaskPathParams
+	>({
+		method: "POST",
+		url: `/chats/${chatId}/tasks/resolve`,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
+/**
  * @description Find deployments by project and chat IDs. This will return a list of deployments for the given project and chat IDs.
  * @summary Find Deployments
  * {@link /deployments}
@@ -2460,6 +2523,48 @@ export async function userGetScopes({
 }
 
 /**
+ * @description Restores a block to a specific version.
+ * @summary Restore Block
+ * {@link /chats/:chatId/versions/:versionId/restore}
+ */
+export async function chatsRestore({
+	pathParams: { chatId, versionId },
+	config = {},
+}: {
+	pathParams: ChatsRestorePathParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!chatId) {
+		throw new Error(`Missing required path parameter: chatId`);
+	}
+
+	if (!versionId) {
+		throw new Error(`Missing required path parameter: versionId`);
+	}
+
+	const data = await request<
+		ChatsRestoreMutationResponse,
+		ErrorWrapper<
+			| ChatsRestore401
+			| ChatsRestore403
+			| ChatsRestore404
+			| ChatsRestore409
+			| ChatsRestore413
+			| ChatsRestore422
+			| ChatsRestore429
+			| ChatsRestore500
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		ChatsRestorePathParams
+	>({ method: "POST", url: `/chats/${chatId}/versions/${versionId}/restore`, ...requestConfig });
+	return data;
+}
+
+/**
  * @description Retrieves detailed usage events for the authenticated user or team, including costs, event types, models used, and metadata. Shows the same data as displayed in the usage dashboard. Can be filtered by chatId to show usage for a specific chat, or by userId to show usage for a specific user.
  * @summary Get Usage Report
  * {@link /reports/usage}
@@ -2769,6 +2874,7 @@ export const operationsByPath = {
 	"POST /chats/{chatId}/versions/{versionId}/files/delete": chatsDeleteVersionFiles,
 	"POST /chats/{chatId}/messages/{messageId}/resume": chatsResume,
 	"POST /chats/{chatId}/messages/{messageId}/stop": chatsStop,
+	"POST /chats/{chatId}/tasks/resolve": chatsResolveTask,
 	"GET /deployments": deploymentsFind,
 	"POST /deployments": deploymentsCreate,
 	"GET /deployments/{deploymentId}": deploymentsGetById,
@@ -2798,6 +2904,7 @@ export const operationsByPath = {
 	"GET /user/billing": userGetBilling,
 	"GET /user/plan": userGetPlan,
 	"GET /user/scopes": userGetScopes,
+	"POST /chats/{chatId}/versions/{versionId}/restore": chatsRestore,
 	"GET /reports/usage": reportsGetUsage,
 	"GET /reports/usage/ai": reportsGetAIUsage,
 	"GET /reports/user-activity": reportsGetUserActivity,
@@ -2828,6 +2935,8 @@ export const operationsByTag = {
 		chatsDeleteVersionFiles,
 		chatsResume,
 		chatsStop,
+		chatsResolveTask,
+		chatsRestore,
 	},
 	projects: {
 		projectsGetByChatId,
@@ -2895,6 +3004,8 @@ export const tagDictionary = {
 			"chatsDeleteVersionFiles",
 			"chatsResume",
 			"chatsStop",
+			"chatsResolveTask",
+			"chatsRestore",
 		],
 		GET: [
 			"chatsFind",

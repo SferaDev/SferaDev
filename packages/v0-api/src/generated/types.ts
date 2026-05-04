@@ -82,6 +82,7 @@ export const modelConfigurationModelIdEnum = {
 	"v0-max": "v0-max",
 	"v0-max-fast": "v0-max-fast",
 	"v0-mini": "v0-mini",
+	"v0-opus-4.7": "v0-opus-4.7",
 	"v0-pro": "v0-pro",
 } as const;
 
@@ -618,8 +619,7 @@ export type ChatDetail = {
 	modelConfiguration?:
 		| {
 				/**
-				 * @description Deprecated Model ID field preserved for backward compatibility.
-				 * @deprecated
+				 * @description Model to use for the generation.
 				 * @default "v0-pro"
 				 * @type string | undefined
 				 */
@@ -820,9 +820,9 @@ export type DeploymentDetail = {
 	chatId: string;
 	/**
 	 * @description The ID of the project that this deployment is scoped to.
-	 * @type string
+	 * @type string | undefined
 	 */
-	projectId: string;
+	projectId?: string | undefined;
 	/**
 	 * @description The ID of the version that this deployment is scoped to.
 	 * @type string
@@ -863,9 +863,9 @@ export type DeploymentSummary = {
 	chatId: string;
 	/**
 	 * @description The ID of the project that this deployment is scoped to.
-	 * @type string
+	 * @type string | undefined
 	 */
-	projectId: string;
+	projectId?: string | undefined;
 	/**
 	 * @description The ID of the version that this deployment is scoped to.
 	 * @type string
@@ -5127,12 +5127,81 @@ export type ChatsStopMutation = {
 		| ChatsStop500;
 };
 
+export type ChatsResolveTaskPathParams = {
+	/**
+	 * @description The unique identifier of the chat containing the pending task. Provided as a path parameter.
+	 * @type string
+	 */
+	chatId: string;
+};
+
+/**
+ * @description Success
+ */
+export type ChatsResolveTask200 = unknown;
+
+/**
+ * @description Unauthorized
+ */
+export type ChatsResolveTask401 = unknown;
+
+/**
+ * @description Forbidden
+ */
+export type ChatsResolveTask403 = unknown;
+
+/**
+ * @description Not Found
+ */
+export type ChatsResolveTask404 = unknown;
+
+/**
+ * @description Conflict
+ */
+export type ChatsResolveTask409 = unknown;
+
+/**
+ * @description Payload Too Large
+ */
+export type ChatsResolveTask413 = unknown;
+
+/**
+ * @description Unprocessable Entity
+ */
+export type ChatsResolveTask422 = unknown;
+
+/**
+ * @description Too Many Requests
+ */
+export type ChatsResolveTask429 = unknown;
+
+/**
+ * @description Internal Server Error
+ */
+export type ChatsResolveTask500 = unknown;
+
+export type ChatsResolveTaskMutationResponse = ChatsResolveTask200;
+
+export type ChatsResolveTaskMutation = {
+	Response: ChatsResolveTask200;
+	PathParams: ChatsResolveTaskPathParams;
+	Errors:
+		| ChatsResolveTask401
+		| ChatsResolveTask403
+		| ChatsResolveTask404
+		| ChatsResolveTask409
+		| ChatsResolveTask413
+		| ChatsResolveTask422
+		| ChatsResolveTask429
+		| ChatsResolveTask500;
+};
+
 export type DeploymentsFindQueryParams = {
 	/**
 	 * @description The ID of the project to find deployments for
-	 * @type string
+	 * @type string | undefined
 	 */
-	projectId: string;
+	projectId?: string | undefined;
 	/**
 	 * @description The ID of the chat to find deployments for
 	 * @type string
@@ -7146,6 +7215,80 @@ export type UserGetScopesQuery = {
 		| UserGetScopes422
 		| UserGetScopes429
 		| UserGetScopes500;
+};
+
+export type ChatsRestorePathParams = {
+	/**
+	 * @description The unique identifier of the chat containing the version to restore.
+	 * @type string
+	 */
+	chatId: string;
+	/**
+	 * @description The unique identifier of the version to restore.
+	 * @type string
+	 */
+	versionId: string;
+};
+
+/**
+ * @description Success
+ */
+export type ChatsRestore200 = unknown;
+
+/**
+ * @description Unauthorized
+ */
+export type ChatsRestore401 = unknown;
+
+/**
+ * @description Forbidden
+ */
+export type ChatsRestore403 = unknown;
+
+/**
+ * @description Not Found
+ */
+export type ChatsRestore404 = unknown;
+
+/**
+ * @description Conflict
+ */
+export type ChatsRestore409 = unknown;
+
+/**
+ * @description Payload Too Large
+ */
+export type ChatsRestore413 = unknown;
+
+/**
+ * @description Unprocessable Entity
+ */
+export type ChatsRestore422 = unknown;
+
+/**
+ * @description Too Many Requests
+ */
+export type ChatsRestore429 = unknown;
+
+/**
+ * @description Internal Server Error
+ */
+export type ChatsRestore500 = unknown;
+
+export type ChatsRestoreMutationResponse = ChatsRestore200;
+
+export type ChatsRestoreMutation = {
+	Response: ChatsRestore200;
+	PathParams: ChatsRestorePathParams;
+	Errors:
+		| ChatsRestore401
+		| ChatsRestore403
+		| ChatsRestore404
+		| ChatsRestore409
+		| ChatsRestore413
+		| ChatsRestore422
+		| ChatsRestore429
+		| ChatsRestore500;
 };
 
 export type ReportsGetUsageQueryParams = {
