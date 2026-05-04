@@ -514,13 +514,24 @@ export const edgeConfigItemSchema = z
  */
 export const edgeConfigTokenSchema = z
 	.object({
-		token: z.string(),
+		partialToken: z
+			.string()
+			.describe(
+				"A partially-masked representation of the token, safe to display in UIs. The format is the first 3 characters of the token followed by a fixed 8-character `*` mask (e.g. `550e8400-e29b-41d4-a716-446655440000` → `550********`). The mask length is intentionally fixed (not proportional to the original token length) to avoid leaking the token length. Prefer this field for display/reference in UIs and logs. The full, plaintext token is only disclosed once at creation time via `POST /v1/edge-config/:edgeConfigId/token`; use `id` to reference a token in subsequent calls (e.g. when deleting).",
+			),
 		label: z.string(),
 		id: z
 			.string()
 			.describe("This is not the token itself, but rather an id to identify the token by"),
 		edgeConfigId: z.string(),
 		createdAt: z.number(),
+		token: z.optional(
+			z
+				.string()
+				.describe(
+					"Deprecated: the full, plaintext token. - Returned once by `POST /v1/edge-config/:edgeConfigId/token` (create). - Still returned by `GET /v1/edge-config/:edgeConfigId/token/:token` (detail) for backwards compatibility, but scheduled for removal. - **Not** returned by `GET /v1/edge-config/:edgeConfigId/tokens` (list); use `partialToken` for display and `id` to reference tokens. Do not rely on this field being present on read operations. Prefer `partialToken` for display and `id` for references.",
+				),
+		),
 	})
 	.describe("The EdgeConfig.");
 
@@ -584,10 +595,20 @@ export const userEventSchema = z
 					"access-group-updated",
 					"access-group-user-added",
 					"access-group-user-removed",
+					"agentic-provisioning-account-blocked",
+					"agentic-provisioning-account-linked",
+					"agentic-provisioning-account-relinked",
+					"agentic-provisioning-account-unlinked",
+					"agentic-provisioning-credentials-rotated",
+					"agentic-provisioning-plan-changed",
+					"agentic-provisioning-team-created",
 					"ai-alert-investigation",
 					"ai-code-review",
 					"ai-gateway-api-key-created",
 					"ai-gateway-api-key-deleted",
+					"ai-gateway-byok-credential-created",
+					"ai-gateway-byok-credential-deleted",
+					"ai-gateway-byok-credential-updated",
 					"alert-rule-created",
 					"alert-rule-deleted",
 					"alert-rule-updated",
@@ -718,6 +739,7 @@ export const userEventSchema = z
 					"env-variable-read:cli:pull",
 					"env-variable-read:unknown-source",
 					"env-variable-read:v0:env:pull",
+					"env-variable-rotated",
 					"firewall-bypass-created",
 					"firewall-bypass-deleted",
 					"firewall-config-modified",
@@ -726,13 +748,23 @@ export const userEventSchema = z
 					"firewall-managed-rulegroup-updated",
 					"firewall-managed-ruleset-updated",
 					"flag",
+					"flag-archived",
+					"flag-created",
+					"flag-deleted",
+					"flag-unarchived",
+					"flag-updated",
 					"flags-explorer-subscription",
 					"flags-sdk-key",
+					"flags-sdk-key-added",
+					"flags-sdk-key-deleted",
+					"flags-sdk-key-read",
 					"flags-segment",
 					"flags-settings",
 					"instant-rollback-created",
 					"integration-configuration-owner-changed",
 					"integration-configuration-scope-change-confirmed",
+					"integration-configuration-transfer-in-success",
+					"integration-configuration-transfer-out-success",
 					"integration-configurations-disabled",
 					"integration-installation-billing-plan-updated",
 					"integration-installation-completed",
@@ -747,6 +779,7 @@ export const userEventSchema = z
 					"log-drain-enabled",
 					"login",
 					"manual-deployment-promotion-created",
+					"marketplace-integration-allowlist-updated",
 					"microfrontend-group-added",
 					"microfrontend-group-deleted",
 					"microfrontend-group-updated",
@@ -772,6 +805,11 @@ export const userEventSchema = z
 					"owner-soft-blocked",
 					"owner-soft-unblocked",
 					"owner-unblocked",
+					"page-integrity-config-updated",
+					"page-integrity-header-approved",
+					"page-integrity-resource-approved",
+					"page-integrity-resource-deleted",
+					"page-integrity-resource-rejected",
 					"passkey-created",
 					"passkey-deleted",
 					"passkey-updated",
@@ -785,6 +823,8 @@ export const userEventSchema = z
 					"preview-deployment-suffix-enabled",
 					"preview-deployment-suffix-update",
 					"privatelink-endpoint-created",
+					"privatelink-endpoint-deleted",
+					"privatelink-endpoint-updated",
 					"production-branch-updated",
 					"project-add-alias",
 					"project-add-redirect",
@@ -807,6 +847,7 @@ export const userEventSchema = z
 					"project-custom-environment-deleted",
 					"project-custom-environment-updated",
 					"project-customer-success-code-visibility-updated",
+					"project-delegated-protection-disabled",
 					"project-delegated-protection-enabled",
 					"project-delegated-protection-updated",
 					"project-delete",
@@ -824,6 +865,7 @@ export const userEventSchema = z
 					"project-function-failover",
 					"project-function-max-duration",
 					"project-function-regions",
+					"project-functions-beta-updated",
 					"project-functions-fluid-disabled",
 					"project-functions-fluid-enabled",
 					"project-git-commit-comments-toggled",
@@ -869,6 +911,7 @@ export const userEventSchema = z
 					"project-rolling-release-enabled",
 					"project-rolling-release-paused",
 					"project-rolling-release-started",
+					"project-rolling-release-suggested-actions-generated",
 					"project-rolling-release-timer",
 					"project-root-directory-updated",
 					"project-routes-version-promoted",
@@ -882,6 +925,7 @@ export const userEventSchema = z
 					"project-sso-protection",
 					"project-static-ips-updated",
 					"project-trusted-ips",
+					"project-trusted-sources",
 					"project-unpaused",
 					"project-web-analytics-disabled",
 					"project-web-analytics-enabled",
@@ -925,11 +969,13 @@ export const userEventSchema = z
 					"storage-inactive-store-deleted",
 					"storage-reset-credentials",
 					"storage-resource-repl-command",
+					"storage-set-locked",
 					"storage-transfer-in-success",
 					"storage-transfer-out-success",
 					"storage-transfer-request-created",
 					"storage-update",
 					"storage-update-project-connection",
+					"storage-upgrade-project-connection-to-oidc",
 					"storage-view-secret",
 					"strict-deployment-protection-settings",
 					"strict-shareable-links",
@@ -947,8 +993,11 @@ export const userEventSchema = z
 					"team-email-domain-update",
 					"team-emu-updated",
 					"team-ended-trial",
+					"team-git-require-verified-commits-toggled",
 					"team-invite-bulk-delete",
 					"team-invite-code-reset",
+					"team-invite-link-created",
+					"team-invite-link-deleted",
 					"team-ip-blocking-rules-created",
 					"team-ip-blocking-rules-removed",
 					"team-member-add",
@@ -971,6 +1020,7 @@ export const userEventSchema = z
 					"team-saml-enforced",
 					"team-saml-roles",
 					"team-slug-update",
+					"team-tokens-invalidated",
 					"unlink-login-connection",
 					"user-delete",
 					"user-mfa-challenge-verified",
@@ -980,6 +1030,9 @@ export const userEventSchema = z
 					"user-mfa-totp-verification-started",
 					"user-mfa-totp-verified",
 					"user-primary-email-updated",
+					"user-token-created",
+					"user-token-deleted",
+					"user-tokens-deleted",
 					"username",
 					"v0-chat-ai-usage",
 					"v0-chat-created",
@@ -996,6 +1049,7 @@ export const userEventSchema = z
 					"vpc-peering-connection-deleted",
 					"vpc-peering-connection-rejected",
 					"vpc-peering-connection-updated",
+					"vulnerability-banner-dismissed",
 					"web-analytics-tier-updated",
 					"webhook-created",
 					"webhook-deleted",
@@ -1003,6 +1057,42 @@ export const userEventSchema = z
 					"workflow-deployment-key-accessed",
 				])
 				.describe("The type of the event."),
+		),
+		categories: z.optional(
+			z
+				.array(
+					z
+						.enum([
+							"account",
+							"ai",
+							"ai-gateway",
+							"billing",
+							"deployment",
+							"domain",
+							"edge",
+							"env-variable",
+							"feature-flags",
+							"firewall",
+							"integration",
+							"microfrontends",
+							"network",
+							"observability",
+							"other",
+							"project",
+							"security",
+							"storage",
+							"team",
+							"v0",
+							"vercel-app",
+							"workflow",
+						])
+						.describe(
+							'The categories that group this event with related event types. An event can belong to multiple categories (e.g. a firewall event is both Firewall and Security). The first entry is the "primary" category. Use the `/events/types` endpoint to discover the full list of categories.',
+						),
+				)
+				.describe(
+					'The categories that group this event with related event types. An event can belong to multiple categories (e.g. a firewall event is both Firewall and Security). The first entry is the "primary" category. Use the `/events/types` endpoint to discover the full list of categories.',
+				),
 		),
 		createdAt: z.number().describe("Timestamp (in milliseconds) of when the event was generated."),
 		user: z.optional(
@@ -1031,6 +1121,9 @@ export const userEventSchema = z
 					clientId: z.string(),
 					name: z.string(),
 				}),
+				z.object({
+					type: z.enum(["system"]),
+				}),
 			]),
 		),
 		via: z.optional(
@@ -1049,6 +1142,9 @@ export const userEventSchema = z
 							type: z.enum(["app"]),
 							clientId: z.string(),
 							name: z.string(),
+						}),
+						z.object({
+							type: z.enum(["system"]),
 						}),
 					]),
 				)
@@ -1095,9 +1191,45 @@ export const userEventSchema = z
 					environment: z.array(z.string()),
 				}),
 				z.object({
+					teamId: z.string(),
+					stripeAccount: z.string(),
+					stripeOrganisation: z.string(),
+					accountRequestId: z.string(),
+				}),
+				z.object({
+					teamId: z.string(),
+					stripeAccount: z.string(),
+				}),
+				z.object({
+					teamId: z.string(),
+					teamSlug: z.string(),
+					stripeAccount: z.string(),
+				}),
+				z.object({
+					reason: z.string(),
+					blockCode: z.string(),
+				}),
+				z.object({
+					resourceId: z.string(),
+					projectName: z.string(),
+				}),
+				z.object({
+					teamId: z.string(),
+					resourceId: z.string(),
+					fromPlan: z.enum(["pro", "hobby"]),
+					toPlan: z.enum(["pro", "hobby"]),
+				}),
+				z.object({
 					apiKey: z.object({
 						id: z.string(),
 						name: z.string(),
+					}),
+				}),
+				z.object({
+					credential: z.object({
+						id: z.string(),
+						name: z.string(),
+						providerSlug: z.string(),
 					}),
 				}),
 				z.object({
@@ -1169,6 +1301,20 @@ export const userEventSchema = z
 							name: z.string(),
 							url: z.string(),
 							meta: z.object({}).catchall(z.string()),
+							readyState: z.optional(z.string()),
+							allowListedReadyStateReasonInternal: z.optional(
+								z
+									.enum([
+										"EARLY_IGNORE_STEP",
+										"IGNORE_STEP",
+										"NAMESPACE_PRUNED",
+										"UNAFFECTED_PROJECT",
+										"UNVERIFIED_COMMIT",
+									])
+									.describe(
+										"A narrowed subset of the deployment's `readyStateReasonInternal` — only values in the public allowlist are permitted here. Callers should run their raw reason through `toAllowListedReadyStateReasonInternal` from `@api/events` before assigning. This keeps abuse / moderation / admin reasons out of the public activity log.",
+									),
+							),
 						})
 						.nullish(),
 					ruleCount: z.optional(z.number()),
@@ -1191,6 +1337,20 @@ export const userEventSchema = z
 							name: z.string(),
 							url: z.string(),
 							meta: z.object({}).catchall(z.string()),
+							readyState: z.optional(z.string()),
+							allowListedReadyStateReasonInternal: z.optional(
+								z
+									.enum([
+										"EARLY_IGNORE_STEP",
+										"IGNORE_STEP",
+										"NAMESPACE_PRUNED",
+										"UNAFFECTED_PROJECT",
+										"UNVERIFIED_COMMIT",
+									])
+									.describe(
+										"A narrowed subset of the deployment's `readyStateReasonInternal` — only values in the public allowlist are permitted here. Callers should run their raw reason through `toAllowListedReadyStateReasonInternal` from `@api/events` before assigning. This keeps abuse / moderation / admin reasons out of the public activity log.",
+									),
+							),
 						})
 						.nullish(),
 				}),
@@ -1800,6 +1960,20 @@ export const userEventSchema = z
 							name: z.string(),
 							url: z.string(),
 							meta: z.object({}).catchall(z.string()),
+							readyState: z.optional(z.string()),
+							allowListedReadyStateReasonInternal: z.optional(
+								z
+									.enum([
+										"EARLY_IGNORE_STEP",
+										"IGNORE_STEP",
+										"NAMESPACE_PRUNED",
+										"UNAFFECTED_PROJECT",
+										"UNVERIFIED_COMMIT",
+									])
+									.describe(
+										"A narrowed subset of the deployment's `readyStateReasonInternal` — only values in the public allowlist are permitted here. Callers should run their raw reason through `toAllowListedReadyStateReasonInternal` from `@api/events` before assigning. This keeps abuse / moderation / admin reasons out of the public activity log.",
+									),
+							),
 						})
 						.nullish(),
 					url: z.string(),
@@ -2899,6 +3073,7 @@ export const userEventSchema = z
 					edgeConfigId: z.string().nullish(),
 					edgeConfigTokenId: z.string().nullish(),
 					source: z.optional(z.string()),
+					ipAddress: z.optional(z.string()),
 				}),
 				z.object({
 					created: z.optional(
@@ -2960,6 +3135,11 @@ export const userEventSchema = z
 							.union([z.literal(false), z.literal(true)])
 							.describe("whether or not this env varible applies to custom environments"),
 					),
+					customEnvironmentIds: z.optional(
+						z
+							.array(z.string())
+							.describe("The custom environment IDs that this Shared Env Var is scoped to."),
+					),
 					decrypted: z.optional(
 						z
 							.union([z.literal(false), z.literal(true)])
@@ -2974,6 +3154,7 @@ export const userEventSchema = z
 						z.string().describe("The last editor full name or username."),
 					),
 					projectNames: z.optional(z.array(z.string())),
+					ipAddress: z.optional(z.string()),
 				}),
 				z.object({
 					oldEnvVar: z.optional(
@@ -3036,6 +3217,11 @@ export const userEventSchema = z
 								z
 									.union([z.literal(false), z.literal(true)])
 									.describe("whether or not this env varible applies to custom environments"),
+							),
+							customEnvironmentIds: z.optional(
+								z
+									.array(z.string())
+									.describe("The custom environment IDs that this Shared Env Var is scoped to."),
 							),
 							decrypted: z.optional(
 								z
@@ -3115,6 +3301,11 @@ export const userEventSchema = z
 									.union([z.literal(false), z.literal(true)])
 									.describe("whether or not this env varible applies to custom environments"),
 							),
+							customEnvironmentIds: z.optional(
+								z
+									.array(z.string())
+									.describe("The custom environment IDs that this Shared Env Var is scoped to."),
+							),
 							decrypted: z.optional(
 								z
 									.union([z.literal(false), z.literal(true)])
@@ -3157,6 +3348,8 @@ export const userEventSchema = z
 									}),
 								),
 							),
+							oldCustomEnvironmentIds: z.optional(z.array(z.string())),
+							newCustomEnvironmentIds: z.optional(z.array(z.string())),
 							changedValue: z.union([z.literal(false), z.literal(true)]),
 						}),
 					),
@@ -3551,6 +3744,7 @@ export const userEventSchema = z
 								.object({
 									blockedAt: z.number(),
 									reason: z.enum([
+										"ENTERPRISE_UNPAID_INVOICE",
 										"SUBSCRIPTION_CANCELED",
 										"SUBSCRIPTION_EXPIRED",
 										"UNPAID_INVOICE",
@@ -3611,9 +3805,6 @@ export const userEventSchema = z
 										z.object({
 											createdAt: z.number(),
 											teamId: z.string(),
-											confirmed: z.literal(true),
-											confirmedAt: z.number(),
-											accessRequestedAt: z.optional(z.number()),
 											role: z.enum([
 												"OWNER",
 												"MEMBER",
@@ -3624,6 +3815,9 @@ export const userEventSchema = z
 												"VIEWER_FOR_PLUS",
 												"CONTRIBUTOR",
 											]),
+											confirmed: z.literal(true),
+											confirmedAt: z.number(),
+											accessRequestedAt: z.optional(z.number()),
 											teamRoles: z.optional(
 												z.array(
 													z.enum([
@@ -3674,6 +3868,7 @@ export const userEventSchema = z
 														"nsnb-viewer-upgrade",
 														"nsnb-invite",
 														"nsnb-redeploy",
+														"nsnb-redeploy-attribution-card",
 													]),
 													commitId: z.optional(z.string()),
 													repoId: z.optional(z.string()),
@@ -4308,6 +4503,13 @@ export const userEventSchema = z
 							),
 							defaultTeamId: z.optional(z.string()),
 							version: z.enum(["northstar"]),
+							isMFAEnforced: z.optional(
+								z
+									.union([z.literal(false), z.literal(true)])
+									.describe(
+										"Whether MFA is enforced for this user. Set to true when the user has a",
+									),
+							),
 							northstarMigration: z.optional(
 								z
 									.object({
@@ -4408,6 +4610,20 @@ export const userEventSchema = z
 										"Indicates that the underlying user entity is a managed user for the enterprise it's associated with The intention is that this field is only set to true for users that are provisioned by the enterprise which means that the domain associated with the user's email is the same domain associated with the team Allowing us to query information about the user's team at login time through the domain verification service",
 									),
 							),
+							linkedManagedAccountId: z.optional(
+								z
+									.string()
+									.describe(
+										"On a personal account, points to the managed account created during EMU account separation. Set by the split utility when an existing team member is converted into a separate managed account.",
+									),
+							),
+							linkedPersonalAccountId: z.optional(
+								z
+									.string()
+									.describe(
+										"On a managed account, points back to the personal account it was split from during EMU account separation. When set together with `isEnterpriseManaged`, the managed account's email is excluded from global secondary-key indexing so it doesn't conflict with the personal account's email.",
+									),
+							),
 						}),
 					),
 				}),
@@ -4419,6 +4635,26 @@ export const userEventSchema = z
 					ownerId: z.string(),
 					projectIds: z.optional(z.array(z.string())),
 					confirmedScopes: z.array(z.string()),
+				}),
+				z.object({
+					integration: z.object({
+						id: z.string(),
+						slug: z.string(),
+						name: z.string(),
+						configurationId: z.string(),
+					}),
+					destinationTeamId: z.string(),
+					destinationTeamName: z.string(),
+				}),
+				z.object({
+					integration: z.object({
+						id: z.string(),
+						slug: z.string(),
+						name: z.string(),
+						configurationId: z.string(),
+					}),
+					originTeamId: z.string(),
+					originTeamName: z.string(),
 				}),
 				z.object({
 					configurations: z.array(
@@ -4565,6 +4801,11 @@ export const userEventSchema = z
 					projectId: z.string(),
 					toDeploymentId: z.string(),
 					projectName: z.string(),
+				}),
+				z.object({
+					enabled: z.union([z.literal(false), z.literal(true)]),
+					allowedIntegrationCount: z.optional(z.number()),
+					allowedIntegrationIds: z.optional(z.array(z.string())),
 				}),
 				z.object({
 					id: z.string(),
@@ -4814,6 +5055,47 @@ export const userEventSchema = z
 					cause: z.string(),
 				}),
 				z.object({
+					projectId: z.string(),
+					previous: z.nullable(
+						z.object({
+							enabled: z.union([z.literal(false), z.literal(true)]),
+							mode: z.string(),
+							enforcePercentage: z.number(),
+						}),
+					),
+					next: z.object({
+						enabled: z.union([z.literal(false), z.literal(true)]),
+						mode: z.string(),
+						enforcePercentage: z.number(),
+					}),
+				}),
+				z.object({
+					projectId: z.string(),
+					headerName: z.string(),
+					previousStatus: z.string(),
+				}),
+				z.object({
+					projectId: z.string(),
+					url: z.string(),
+					previousStatus: z.string(),
+				}),
+				z.object({
+					projectId: z.string(),
+					type: z.enum(["script"]),
+					resourceUrl: z.string(),
+				}),
+				z.object({
+					projectId: z.string(),
+					type: z.enum(["header"]),
+					headerName: z.string(),
+				}),
+				z.object({
+					projectId: z.string(),
+					url: z.optional(z.string()),
+					headerName: z.optional(z.string()),
+					previousStatus: z.string(),
+				}),
+				z.object({
 					oldName: z.string(),
 					newName: z.string(),
 				}),
@@ -4854,6 +5136,7 @@ export const userEventSchema = z
 											"nsnb-viewer-upgrade",
 											"nsnb-invite",
 											"nsnb-redeploy",
+											"nsnb-redeploy-attribution-card",
 										]),
 										commitId: z.optional(z.string()),
 										repoId: z.optional(z.string()),
@@ -4910,6 +5193,20 @@ export const userEventSchema = z
 					projectId: z.string(),
 				}),
 				z.object({
+					privateLinkEndpoint: z.object({
+						id: z.string(),
+						name: z.string(),
+						environmentIds: z.optional(z.array(z.string())),
+						privateDnsNames: z.optional(z.array(z.string())),
+					}),
+					projectId: z.string(),
+					previousEndpoint: z.object({
+						name: z.string(),
+						environmentIds: z.optional(z.array(z.string())),
+						privateDnsNames: z.optional(z.array(z.string())),
+					}),
+				}),
+				z.object({
 					projectName: z.string(),
 					branch: z.string(),
 				}),
@@ -4953,7 +5250,7 @@ export const userEventSchema = z
 				z.object({
 					projectId: z.string(),
 					projectName: z.string(),
-					action: z.enum(["enabled", "disabled", "regenerated", "updated"]),
+					action: z.enum(["updated", "enabled", "disabled", "regenerated"]),
 					isEnvVar: z.optional(z.union([z.literal(false), z.literal(true)])),
 					note: z.optional(z.string()),
 				}),
@@ -5144,6 +5441,11 @@ export const userEventSchema = z
 					customEnvironmentSlug: z.string(),
 				}),
 				z.object({
+					projectName: z.optional(z.string()),
+					projectId: z.string(),
+					enableFunctionsBeta: z.union([z.literal(false), z.literal(true)]),
+				}),
+				z.object({
 					projectId: z.string(),
 					projectName: z.string(),
 					previous: z.object({
@@ -5260,6 +5562,9 @@ export const userEventSchema = z
 				z.object({
 					projectId: z.string(),
 					projectName: z.string(),
+					requireVerifiedCommits: z.nullable(z.union([z.literal(false), z.literal(true)])),
+				}),
+				z.object({
 					requireVerifiedCommits: z.union([z.literal(false), z.literal(true)]),
 				}),
 				z.object({
@@ -5332,7 +5637,13 @@ export const userEventSchema = z
 							membershipCreatedAt: z.number(),
 						}),
 					),
-					uid: z.string(),
+					teamMembership: z.optional(
+						z.object({
+							uid: z.string(),
+							username: z.optional(z.string()),
+						}),
+					),
+					directoryType: z.optional(z.string()),
 				}),
 				z.object({
 					projectId: z.string(),
@@ -5508,6 +5819,12 @@ export const userEventSchema = z
 				z.object({
 					projectId: z.string(),
 					projectName: z.string(),
+					targetDeploymentId: z.optional(z.string()),
+					action: z.optional(z.string()),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
 					previous: z.object({
 						issuerMode: z.optional(z.enum(["team", "global"])),
 					}),
@@ -5601,6 +5918,14 @@ export const userEventSchema = z
 										"all_except_custom_domains",
 									])
 									.nullish(),
+								april2026SecurityIncidentMigrationAppliedFrom: z
+									.enum([
+										"all",
+										"preview",
+										"prod_deployment_urls_and_all_previews",
+										"all_except_custom_domains",
+									])
+									.nullish(),
 							}),
 							z.enum([
 								"all",
@@ -5620,6 +5945,14 @@ export const userEventSchema = z
 									"all_except_custom_domains",
 								]),
 								cve55182MigrationAppliedFrom: z
+									.enum([
+										"all",
+										"preview",
+										"prod_deployment_urls_and_all_previews",
+										"all_except_custom_domains",
+									])
+									.nullish(),
+								april2026SecurityIncidentMigrationAppliedFrom: z
 									.enum([
 										"all",
 										"preview",
@@ -5684,6 +6017,24 @@ export const userEventSchema = z
 						.nullish(),
 					addedAddresses: z.array(z.string()).nullish(),
 					removedAddresses: z.array(z.string()).nullish(),
+				}),
+				z.object({
+					projectId: z.string(),
+					projectName: z.string(),
+					addedProjects: z.array(
+						z.object({
+							id: z.string(),
+							name: z.string(),
+						}),
+					),
+					removedProjects: z.array(
+						z.object({
+							id: z.string(),
+							name: z.string(),
+						}),
+					),
+					addedProviders: z.array(z.string()),
+					removedProviders: z.array(z.string()),
 				}),
 				z.object({
 					projectId: z.string(),
@@ -6041,6 +6392,16 @@ export const userEventSchema = z
 					ownerId: z.optional(z.string()),
 				}),
 				z.object({
+					id: z.string(),
+					name: z.optional(z.string()),
+					computeUnitsMax: z.optional(z.number()),
+					computeUnitsMin: z.optional(z.number()),
+					suspendTimeoutSeconds: z.optional(z.number()),
+					type: z.enum(["integration", "redis", "postgres", "edge-config", "blob"]),
+					access: z.optional(z.enum(["public", "private"])),
+					locked: z.union([z.literal(false), z.literal(true)]),
+				}),
+				z.object({
 					slug: z.string(),
 				}),
 				z.object({
@@ -6246,6 +6607,13 @@ export const userEventSchema = z
 					teamRoles: z.optional(z.array(z.string())),
 					teamPermissions: z.optional(z.array(z.string())),
 					entitlements: z.optional(z.array(z.string())),
+					invitedBy: z.optional(
+						z.object({
+							email: z.string(),
+							userId: z.optional(z.string()),
+							name: z.optional(z.string()),
+						}),
+					),
 				}),
 				z.object({
 					requestedTeamName: z.string(),
@@ -6270,6 +6638,17 @@ export const userEventSchema = z
 				}),
 				z.object({
 					enforced: z.union([z.literal(false), z.literal(true)]),
+				}),
+				z.object({
+					publicId: z.string(),
+					role: z.string(),
+					maxUses: z.number(),
+					expiresAt: z.string(),
+					name: z.optional(z.string()),
+				}),
+				z.object({
+					publicId: z.string(),
+					name: z.optional(z.string()),
 				}),
 				z.object({
 					previousConcurrentBuilds: z.number(),
@@ -6359,6 +6738,9 @@ export const userEventSchema = z
 					ips: z.array(z.string()),
 				}),
 				z.object({
+					tokenTypes: z.array(z.string()),
+				}),
+				z.object({
 					exportId: z.string(),
 					from: z.number(),
 					to: z.number(),
@@ -6420,6 +6802,11 @@ export const userEventSchema = z
 				}),
 				z.object({
 					ruleName: z.string(),
+				}),
+				z.object({
+					vulnerabilities: z.array(z.string()),
+					protectionEnabled: z.union([z.literal(false), z.literal(true)]),
+					protectedProjectCount: z.number(),
 				}),
 				z.object({
 					team: z.object({
@@ -6530,12 +6917,12 @@ export const userEventSchema = z
 									),
 								clientAuthenticationUsed: z.object({
 									method: z.enum([
+										"none",
 										"client_secret_basic",
 										"client_secret_post",
 										"client_secret_jwt",
 										"private_key_jwt",
 										"oidc_token",
-										"none",
 									]),
 									secretId: z.optional(z.string()),
 								}),
@@ -6554,16 +6941,1273 @@ export const userEventSchema = z
 							.string()
 							.describe("optional since entries prior to 2025-10-13 do not contain this field"),
 					),
+					tokenPrefix: z.optional(
+						z
+							.enum(["vca_"])
+							.describe("optional since entries prior to 2026-04-23 do not contain this field"),
+					),
+					tokenSuffix: z.optional(
+						z
+							.string()
+							.describe("optional since entries prior to 2026-04-23 do not contain this field"),
+					),
+					refreshTokenPublicId: z.optional(
+						z
+							.string()
+							.describe("optional; only present when a refresh token was issued (offline_access)."),
+					),
+					refreshTokenPrefix: z.optional(
+						z
+							.enum(["vcr_"])
+							.describe("optional; only present when a refresh token was issued (offline_access)."),
+					),
+					refreshTokenSuffix: z.optional(
+						z
+							.string()
+							.describe("optional; only present when a refresh token was issued (offline_access)."),
+					),
 					sessionId: z.optional(
 						z
 							.string()
 							.describe("optional since entries prior to 2025-10-13 do not contain this field"),
 					),
+					ip: z
+						.string()
+						.describe("optional since entries prior to 2026-04-23 do not contain this field")
+						.nullish(),
+					geolocation: z
+						.object({
+							city: z.optional(
+								z.object({
+									names: z.object({
+										en: z.string(),
+									}),
+								}),
+							),
+							country: z.object({
+								names: z.object({
+									en: z.string(),
+								}),
+							}),
+							mostSpecificSubdivision: z.optional(
+								z.object({
+									names: z.object({
+										en: z.string(),
+									}),
+								}),
+							),
+							regionName: z.optional(z.string()),
+						})
+						.describe("optional since entries prior to 2026-04-23 do not contain this field")
+						.nullish(),
+					userAgent: z.optional(
+						z
+							.string()
+							.describe("optional since entries prior to 2026-04-23 do not contain this field"),
+					),
+				}),
+				z.object({
+					tokenId: z.string().describe("The token's public ID."),
+					tokenPrefix: z.optional(
+						z
+							.enum(["vcp_"])
+							.describe("The token prefix used when showing a safe checksum-style fingerprint."),
+					),
+					tokenSuffix: z.optional(z.string().describe("The token checksum suffix.")),
+					tokenName: z.string().describe("User-supplied name of the token."),
+					origin: z
+						.enum([
+							"email",
+							"saml",
+							"app",
+							"github",
+							"gitlab",
+							"bitbucket",
+							"google",
+							"apple",
+							"chatgpt",
+							"github-webhook",
+							"manual",
+							"passkey",
+							"otp",
+							"sms",
+							"invite",
+							"emu",
+						])
+						.describe("How the token was issued. Always `'manual'` for explicit PAT creation."),
+					scope: z
+						.enum(["user", "team", "project"])
+						.describe(
+							"Scope of the token: - `'user'`: full-account token (not tied to any team). - `'team'`: scoped to a single team. - `'project'`: scoped to a single project within a team.",
+						),
+					teamId: z.optional(
+						z.string().describe("Present when `scope` is `'team'` or `'project'`."),
+					),
+					teamSlug: z.optional(
+						z.string().describe("Present when `scope` is `'team'` or `'project'`."),
+					),
+					projectId: z.optional(z.string().describe("Present when `scope` is `'project'`.")),
+					expiresAt: z.optional(
+						z.number().describe("Unix epoch milliseconds. Absent when the token never expires."),
+					),
+					hasAuthorizationDetails: z.optional(
+						z
+							.union([z.literal(false), z.literal(true)])
+							.describe("Whether the token was issued with RFC 9396 authorization details."),
+					),
+					ip: z.string().nullish(),
+					geolocation: z
+						.object({
+							city: z.optional(
+								z.object({
+									names: z.object({
+										en: z.string(),
+									}),
+								}),
+							),
+							country: z.object({
+								names: z.object({
+									en: z.string(),
+								}),
+							}),
+							mostSpecificSubdivision: z.optional(
+								z.object({
+									names: z.object({
+										en: z.string(),
+									}),
+								}),
+							),
+							regionName: z.optional(z.string()),
+						})
+						.nullish(),
+					userAgent: z.optional(z.string()),
+					reqId: z.optional(z.string()),
+					reqUrl: z.optional(z.string()),
+				}),
+				z.object({
+					tokenId: z.string(),
+					tokenType: z.string(),
+					tokenName: z.string(),
+					actorTokenId: z.string(),
+					origin: z.optional(
+						z.enum([
+							"email",
+							"saml",
+							"app",
+							"github",
+							"gitlab",
+							"bitbucket",
+							"google",
+							"apple",
+							"chatgpt",
+							"github-webhook",
+							"manual",
+							"passkey",
+							"otp",
+							"sms",
+							"invite",
+							"emu",
+						]),
+					),
+					teamId: z.optional(z.string()),
+					expired: z.optional(z.union([z.literal(false), z.literal(true)])),
+					leaked: z.optional(z.union([z.literal(false), z.literal(true)])),
+					revoked: z.optional(z.union([z.literal(false), z.literal(true)])),
+					ip: z.string().nullish(),
+					geolocation: z
+						.object({
+							city: z.optional(
+								z.object({
+									names: z.object({
+										en: z.string(),
+									}),
+								}),
+							),
+							country: z.object({
+								names: z.object({
+									en: z.string(),
+								}),
+							}),
+							mostSpecificSubdivision: z.optional(
+								z.object({
+									names: z.object({
+										en: z.string(),
+									}),
+								}),
+							),
+							regionName: z.optional(z.string()),
+						})
+						.nullish(),
+					userAgent: z.optional(z.string()),
+					reqId: z.optional(z.string()),
+					reqUrl: z.optional(z.string()),
+				}),
+				z.object({
+					deletedCount: z.number(),
+					actorTokenId: z.string(),
+					ip: z.string().nullish(),
+					geolocation: z
+						.object({
+							city: z.optional(
+								z.object({
+									names: z.object({
+										en: z.string(),
+									}),
+								}),
+							),
+							country: z.object({
+								names: z.object({
+									en: z.string(),
+								}),
+							}),
+							mostSpecificSubdivision: z.optional(
+								z.object({
+									names: z.object({
+										en: z.string(),
+									}),
+								}),
+							),
+							regionName: z.optional(z.string()),
+						})
+						.nullish(),
+					userAgent: z.optional(z.string()),
+					reqId: z.optional(z.string()),
+					reqUrl: z.optional(z.string()),
 				}),
 			]),
 		),
 	})
 	.describe("Array of events generated by the User.");
+
+/**
+ * @description A user-facing event type.
+ */
+export const listEventTypeSchema = z
+	.object({
+		name: z
+			.enum([
+				"access-group-created",
+				"access-group-deleted",
+				"access-group-project-updated",
+				"access-group-updated",
+				"access-group-user-added",
+				"access-group-user-removed",
+				"agentic-provisioning-account-blocked",
+				"agentic-provisioning-account-linked",
+				"agentic-provisioning-account-relinked",
+				"agentic-provisioning-account-unlinked",
+				"agentic-provisioning-credentials-rotated",
+				"agentic-provisioning-plan-changed",
+				"agentic-provisioning-team-created",
+				"ai-alert-investigation",
+				"ai-code-review",
+				"ai-gateway-api-key-created",
+				"ai-gateway-api-key-deleted",
+				"ai-gateway-byok-credential-created",
+				"ai-gateway-byok-credential-deleted",
+				"ai-gateway-byok-credential-updated",
+				"alert-rule-created",
+				"alert-rule-deleted",
+				"alert-rule-updated",
+				"alias",
+				"alias-chown",
+				"alias-delete",
+				"alias-invite-created",
+				"alias-invite-joined",
+				"alias-invite-revoked",
+				"alias-protection-bypass-created",
+				"alias-protection-bypass-exception",
+				"alias-protection-bypass-regenerated",
+				"alias-protection-bypass-revoked",
+				"alias-system",
+				"alias-user-scoped-access-denied",
+				"alias-user-scoped-access-granted",
+				"alias-user-scoped-access-requested",
+				"alias-user-scoped-access-revoked",
+				"aliases-assigned",
+				"attack-mode-disabled",
+				"attack-mode-enabled",
+				"audit-log-export-downloaded",
+				"audit-log-export-requested",
+				"authorize-git-deployment",
+				"auto-expose-system-envs",
+				"avatar",
+				"bulk-redirects-settings-updated",
+				"bulk-redirects-version-promoted",
+				"bulk-redirects-version-restored",
+				"cert",
+				"cert-autorenew",
+				"cert-chown",
+				"cert-clone",
+				"cert-delete",
+				"cert-renew",
+				"cert-replace",
+				"cert-system-create",
+				"concurrent-builds-update",
+				"connect-bitbucket",
+				"connect-bitbucket-app",
+				"connect-configuration-created",
+				"connect-configuration-deleted",
+				"connect-configuration-link-updated",
+				"connect-configuration-linked",
+				"connect-configuration-unlinked",
+				"connect-configuration-updated",
+				"connect-github",
+				"connect-github-custom-host",
+				"connect-github-limited",
+				"connect-gitlab",
+				"connect-gitlab-app",
+				"custom-suffix-clear",
+				"custom-suffix-disable",
+				"custom-suffix-enable",
+				"custom-suffix-pending",
+				"custom-suffix-ready",
+				"deploy-hook-created",
+				"deploy-hook-deduped",
+				"deploy-hook-deleted",
+				"deploy-hook-processed",
+				"deployment",
+				"deployment-check-created",
+				"deployment-check-deleted",
+				"deployment-check-updated",
+				"deployment-chown",
+				"deployment-creation-blocked",
+				"deployment-delete",
+				"disabled-integration-installation-removed",
+				"disconnect-bitbucket-app",
+				"disconnect-github",
+				"disconnect-github-custom-host",
+				"disconnect-github-limited",
+				"disconnect-gitlab-app",
+				"dns-add",
+				"dns-delete",
+				"dns-update",
+				"dns-zonefile-import",
+				"domain",
+				"domain-buy",
+				"domain-cdn",
+				"domain-chown",
+				"domain-custom-ns-change",
+				"domain-delegated",
+				"domain-delete",
+				"domain-move-in",
+				"domain-move-out",
+				"domain-move-out-request-sent",
+				"domain-renew-change",
+				"domain-service-type-updated",
+				"domain-transfer-in",
+				"domain-transfer-in-canceled",
+				"domain-transfer-in-completed",
+				"domain-zone-change",
+				"drain-created",
+				"drain-deleted",
+				"drain-disabled",
+				"drain-enabled",
+				"drain-updated",
+				"edge-cache-dangerously-delete-by-src-images",
+				"edge-cache-dangerously-delete-by-tags",
+				"edge-cache-invalidate-by-src-images",
+				"edge-cache-invalidate-by-tags",
+				"edge-cache-purge-all",
+				"edge-cache-rollback-purge",
+				"edge-config-created",
+				"edge-config-deleted",
+				"edge-config-items-updated",
+				"edge-config-schema-deleted",
+				"edge-config-schema-updated",
+				"edge-config-token-created",
+				"edge-config-token-deleted",
+				"edge-config-transfer-in",
+				"edge-config-transfer-out",
+				"edge-config-updated",
+				"email",
+				"email-notification-rule-removed",
+				"email-notification-rule-updated",
+				"enforce-sensitive-environment-variables",
+				"env-variable-add",
+				"env-variable-delete",
+				"env-variable-edit",
+				"env-variable-read",
+				"env-variable-read:cli:dev",
+				"env-variable-read:cli:env:add",
+				"env-variable-read:cli:env:ls",
+				"env-variable-read:cli:env:pull",
+				"env-variable-read:cli:env:rm",
+				"env-variable-read:cli:pull",
+				"env-variable-read:unknown-source",
+				"env-variable-read:v0:env:pull",
+				"env-variable-rotated",
+				"firewall-bypass-created",
+				"firewall-bypass-deleted",
+				"firewall-config-modified",
+				"firewall-config-promoted",
+				"firewall-config-removed",
+				"firewall-managed-rulegroup-updated",
+				"firewall-managed-ruleset-updated",
+				"flag",
+				"flag-archived",
+				"flag-created",
+				"flag-deleted",
+				"flag-unarchived",
+				"flag-updated",
+				"flags-explorer-subscription",
+				"flags-sdk-key",
+				"flags-sdk-key-added",
+				"flags-sdk-key-deleted",
+				"flags-sdk-key-read",
+				"flags-segment",
+				"flags-settings",
+				"instant-rollback-created",
+				"integration-configuration-owner-changed",
+				"integration-configuration-scope-change-confirmed",
+				"integration-configuration-transfer-in-success",
+				"integration-configuration-transfer-out-success",
+				"integration-configurations-disabled",
+				"integration-installation-billing-plan-updated",
+				"integration-installation-completed",
+				"integration-installation-permission-updated",
+				"integration-installation-removed",
+				"integration-scope-changed",
+				"invoice-modified",
+				"invoice-refunded",
+				"log-drain-created",
+				"log-drain-deleted",
+				"log-drain-disabled",
+				"log-drain-enabled",
+				"login",
+				"manual-deployment-promotion-created",
+				"marketplace-integration-allowlist-updated",
+				"microfrontend-group-added",
+				"microfrontend-group-deleted",
+				"microfrontend-group-updated",
+				"microfrontend-project-added-to-group",
+				"microfrontend-project-removed-from-group",
+				"microfrontend-project-updated",
+				"monitoring-disabled",
+				"monitoring-enabled",
+				"oauth-app-connection-created",
+				"oauth-app-connection-removed",
+				"oauth-app-connection-updated",
+				"oauth-app-created",
+				"oauth-app-deleted",
+				"oauth-app-secret-deleted",
+				"oauth-app-secret-generated",
+				"oauth-app-token-created",
+				"oauth-app-updated",
+				"observability-disabled",
+				"observability-enabled",
+				"observability-plus-project-disabled",
+				"observability-plus-project-enabled",
+				"owner-blocked",
+				"owner-soft-blocked",
+				"owner-soft-unblocked",
+				"owner-unblocked",
+				"page-integrity-config-updated",
+				"page-integrity-header-approved",
+				"page-integrity-resource-approved",
+				"page-integrity-resource-deleted",
+				"page-integrity-resource-rejected",
+				"passkey-created",
+				"passkey-deleted",
+				"passkey-updated",
+				"password-protection-disabled",
+				"password-protection-enabled",
+				"payment-method-added",
+				"payment-method-default-updated",
+				"payment-method-removed",
+				"plan",
+				"preview-deployment-suffix-disabled",
+				"preview-deployment-suffix-enabled",
+				"preview-deployment-suffix-update",
+				"privatelink-endpoint-created",
+				"privatelink-endpoint-deleted",
+				"privatelink-endpoint-updated",
+				"production-branch-updated",
+				"project-add-alias",
+				"project-add-redirect",
+				"project-affected-projects-deployments-updated",
+				"project-alias-configured-change",
+				"project-analytics-disabled",
+				"project-analytics-enabled",
+				"project-auto-assign-custom-production-domains-updated",
+				"project-automation-bypass",
+				"project-build-command-updated",
+				"project-build-logs-and-source-protection-updated",
+				"project-build-machine-updated",
+				"project-client-cert-delete",
+				"project-client-cert-upload",
+				"project-connect-configurations",
+				"project-consolidated-git-commit-status-updated",
+				"project-created",
+				"project-cron-jobs-toggled",
+				"project-custom-environment-created",
+				"project-custom-environment-deleted",
+				"project-custom-environment-updated",
+				"project-customer-success-code-visibility-updated",
+				"project-delegated-protection-disabled",
+				"project-delegated-protection-enabled",
+				"project-delegated-protection-updated",
+				"project-delete",
+				"project-deployment-retention-updated",
+				"project-directory-listing",
+				"project-domain-deleted",
+				"project-domain-moved",
+				"project-domain-unverified",
+				"project-domain-updated",
+				"project-domain-verified",
+				"project-elastic-concurrency-updated",
+				"project-external-rewrite-caching-updated",
+				"project-framework-updated",
+				"project-function-cpu-memory",
+				"project-function-failover",
+				"project-function-max-duration",
+				"project-function-regions",
+				"project-functions-beta-updated",
+				"project-functions-fluid-disabled",
+				"project-functions-fluid-enabled",
+				"project-git-commit-comments-toggled",
+				"project-git-commit-status-toggled",
+				"project-git-create-deployments-toggled",
+				"project-git-fork-protection-updated",
+				"project-git-lfs-toggled",
+				"project-git-pr-comments-toggled",
+				"project-git-repository-connected",
+				"project-git-repository-disconnected",
+				"project-git-repository-dispatch-events-toggled",
+				"project-git-require-verified-commits-toggled",
+				"project-ignored-build-step-updated",
+				"project-install-command-updated",
+				"project-member-added",
+				"project-member-invited",
+				"project-member-removed",
+				"project-member-removed-batch",
+				"project-member-updated",
+				"project-move-in-success",
+				"project-move-out-failed",
+				"project-move-out-started",
+				"project-move-out-success",
+				"project-name",
+				"project-node-version-updated",
+				"project-oidc-issuer-mode-updated",
+				"project-oidc-token-created",
+				"project-options-allowlist",
+				"project-output-directory-updated",
+				"project-password-protection",
+				"project-paused",
+				"project-preview-deployment-suffix",
+				"project-preview-environment-branch-tracking-updated",
+				"project-prioritize-production-builds-updated",
+				"project-program-enrollment-changed",
+				"project-protected-sourcemaps-updated",
+				"project-rolling-release-aborted",
+				"project-rolling-release-approved",
+				"project-rolling-release-completed",
+				"project-rolling-release-configured",
+				"project-rolling-release-continued",
+				"project-rolling-release-disabled",
+				"project-rolling-release-enabled",
+				"project-rolling-release-paused",
+				"project-rolling-release-started",
+				"project-rolling-release-suggested-actions-generated",
+				"project-rolling-release-timer",
+				"project-root-directory-updated",
+				"project-routes-version-promoted",
+				"project-routes-version-restored",
+				"project-skew-protection-allowed-domains-updated",
+				"project-skew-protection-max-age-updated",
+				"project-skew-protection-threshold-updated",
+				"project-source-files-outside-root-directory-updated",
+				"project-speed-insights-disabled",
+				"project-speed-insights-enabled",
+				"project-sso-protection",
+				"project-static-ips-updated",
+				"project-trusted-ips",
+				"project-trusted-sources",
+				"project-unpaused",
+				"project-web-analytics-disabled",
+				"project-web-analytics-enabled",
+				"protected-git-scope-added",
+				"protected-git-scope-removed",
+				"runtime-cache-purge-all",
+				"scale",
+				"scale-auto",
+				"secondary-email-added",
+				"secondary-email-removed",
+				"secondary-email-verified",
+				"secret-add",
+				"secret-delete",
+				"secret-rename",
+				"security-plus-updated",
+				"set-bio",
+				"set-name",
+				"set-profiles",
+				"set-scale",
+				"shared-env-variable-create",
+				"shared-env-variable-delete",
+				"shared-env-variable-read",
+				"shared-env-variable-update",
+				"show-ip-addresses",
+				"signup",
+				"signup-via-bitbucket",
+				"signup-via-github",
+				"signup-via-gitlab",
+				"speed-insights-settings-updated",
+				"spend-created",
+				"spend-deleted",
+				"spend-updated",
+				"storage-accept-tos",
+				"storage-access-token-set",
+				"storage-accessed-data-browser",
+				"storage-connect-project",
+				"storage-create",
+				"storage-delete",
+				"storage-disconnect-project",
+				"storage-disconnect-projects",
+				"storage-inactive-store-deleted",
+				"storage-reset-credentials",
+				"storage-resource-repl-command",
+				"storage-set-locked",
+				"storage-transfer-in-success",
+				"storage-transfer-out-success",
+				"storage-transfer-request-created",
+				"storage-update",
+				"storage-update-project-connection",
+				"storage-upgrade-project-connection-to-oidc",
+				"storage-view-secret",
+				"strict-deployment-protection-settings",
+				"strict-shareable-links",
+				"subscription-created",
+				"subscription-product-added",
+				"subscription-product-removed",
+				"subscription-updated",
+				"team",
+				"team-avatar-update",
+				"team-default-build-machine-updated",
+				"team-delete",
+				"team-domain-verification-created",
+				"team-domain-verification-deleted",
+				"team-domain-verification-verified",
+				"team-email-domain-update",
+				"team-emu-updated",
+				"team-ended-trial",
+				"team-git-require-verified-commits-toggled",
+				"team-invite-bulk-delete",
+				"team-invite-code-reset",
+				"team-invite-link-created",
+				"team-invite-link-deleted",
+				"team-ip-blocking-rules-created",
+				"team-ip-blocking-rules-removed",
+				"team-member-add",
+				"team-member-confirm-request",
+				"team-member-decline-request",
+				"team-member-delete",
+				"team-member-entitlement-added",
+				"team-member-entitlement-canceled",
+				"team-member-entitlement-reactivated",
+				"team-member-entitlement-removed",
+				"team-member-join",
+				"team-member-leave",
+				"team-member-request-access",
+				"team-member-role-update",
+				"team-mfa-enforcement-updated",
+				"team-name-update",
+				"team-paid-invoice",
+				"team-program-enrollment-changed",
+				"team-remote-caching-update",
+				"team-saml-enforced",
+				"team-saml-roles",
+				"team-slug-update",
+				"team-tokens-invalidated",
+				"unlink-login-connection",
+				"user-delete",
+				"user-mfa-challenge-verified",
+				"user-mfa-configuration-updated",
+				"user-mfa-recovery-codes-regenerated",
+				"user-mfa-removed",
+				"user-mfa-totp-verification-started",
+				"user-mfa-totp-verified",
+				"user-primary-email-updated",
+				"user-token-created",
+				"user-token-deleted",
+				"user-tokens-deleted",
+				"username",
+				"v0-chat-ai-usage",
+				"v0-chat-created",
+				"v0-chat-message-sent",
+				"vercel-agent-team-trial-credits-applied",
+				"vercel-app-installation-request-dismissed",
+				"vercel-app-installation-requested",
+				"vercel-app-installation-updated",
+				"vercel-app-installed",
+				"vercel-app-tokens-revoked",
+				"vercel-app-uninstalled",
+				"vercel-toolbar",
+				"vpc-peering-connection-accepted",
+				"vpc-peering-connection-deleted",
+				"vpc-peering-connection-rejected",
+				"vpc-peering-connection-updated",
+				"vulnerability-banner-dismissed",
+				"web-analytics-tier-updated",
+				"webhook-created",
+				"webhook-deleted",
+				"webhook-updated",
+				"workflow-deployment-key-accessed",
+			])
+			.describe("The name of the event type."),
+		description: z
+			.string()
+			.describe("Description of the event, visible to users in the Activity dashboard and docs."),
+		categories: z
+			.array(
+				z
+					.enum([
+						"account",
+						"ai",
+						"ai-gateway",
+						"billing",
+						"deployment",
+						"domain",
+						"edge",
+						"env-variable",
+						"feature-flags",
+						"firewall",
+						"integration",
+						"microfrontends",
+						"network",
+						"observability",
+						"other",
+						"project",
+						"security",
+						"storage",
+						"team",
+						"v0",
+						"vercel-app",
+						"workflow",
+					])
+					.describe("Categories that group this event type with related event types."),
+			)
+			.describe("Categories that group this event type with related event types."),
+		deprecated: z.optional(
+			z
+				.union([z.literal(false), z.literal(true)])
+				.describe("Present only when this event type is deprecated."),
+		),
+		replacedBy: z.optional(
+			z
+				.array(
+					z
+						.enum([
+							"access-group-created",
+							"access-group-deleted",
+							"access-group-project-updated",
+							"access-group-updated",
+							"access-group-user-added",
+							"access-group-user-removed",
+							"agentic-provisioning-account-blocked",
+							"agentic-provisioning-account-linked",
+							"agentic-provisioning-account-relinked",
+							"agentic-provisioning-account-unlinked",
+							"agentic-provisioning-credentials-rotated",
+							"agentic-provisioning-plan-changed",
+							"agentic-provisioning-team-created",
+							"ai-alert-investigation",
+							"ai-code-review",
+							"ai-gateway-api-key-created",
+							"ai-gateway-api-key-deleted",
+							"ai-gateway-byok-credential-created",
+							"ai-gateway-byok-credential-deleted",
+							"ai-gateway-byok-credential-updated",
+							"alert-rule-created",
+							"alert-rule-deleted",
+							"alert-rule-updated",
+							"alias",
+							"alias-chown",
+							"alias-delete",
+							"alias-invite-created",
+							"alias-invite-joined",
+							"alias-invite-revoked",
+							"alias-protection-bypass-created",
+							"alias-protection-bypass-exception",
+							"alias-protection-bypass-regenerated",
+							"alias-protection-bypass-revoked",
+							"alias-system",
+							"alias-user-scoped-access-denied",
+							"alias-user-scoped-access-granted",
+							"alias-user-scoped-access-requested",
+							"alias-user-scoped-access-revoked",
+							"aliases-assigned",
+							"attack-mode-disabled",
+							"attack-mode-enabled",
+							"audit-log-export-downloaded",
+							"audit-log-export-requested",
+							"authorize-git-deployment",
+							"auto-expose-system-envs",
+							"avatar",
+							"bulk-redirects-settings-updated",
+							"bulk-redirects-version-promoted",
+							"bulk-redirects-version-restored",
+							"cert",
+							"cert-autorenew",
+							"cert-chown",
+							"cert-clone",
+							"cert-delete",
+							"cert-renew",
+							"cert-replace",
+							"cert-system-create",
+							"concurrent-builds-update",
+							"connect-bitbucket",
+							"connect-bitbucket-app",
+							"connect-configuration-created",
+							"connect-configuration-deleted",
+							"connect-configuration-link-updated",
+							"connect-configuration-linked",
+							"connect-configuration-unlinked",
+							"connect-configuration-updated",
+							"connect-github",
+							"connect-github-custom-host",
+							"connect-github-limited",
+							"connect-gitlab",
+							"connect-gitlab-app",
+							"custom-suffix-clear",
+							"custom-suffix-disable",
+							"custom-suffix-enable",
+							"custom-suffix-pending",
+							"custom-suffix-ready",
+							"deploy-hook-created",
+							"deploy-hook-deduped",
+							"deploy-hook-deleted",
+							"deploy-hook-processed",
+							"deployment",
+							"deployment-check-created",
+							"deployment-check-deleted",
+							"deployment-check-updated",
+							"deployment-chown",
+							"deployment-creation-blocked",
+							"deployment-delete",
+							"disabled-integration-installation-removed",
+							"disconnect-bitbucket-app",
+							"disconnect-github",
+							"disconnect-github-custom-host",
+							"disconnect-github-limited",
+							"disconnect-gitlab-app",
+							"dns-add",
+							"dns-delete",
+							"dns-update",
+							"dns-zonefile-import",
+							"domain",
+							"domain-buy",
+							"domain-cdn",
+							"domain-chown",
+							"domain-custom-ns-change",
+							"domain-delegated",
+							"domain-delete",
+							"domain-move-in",
+							"domain-move-out",
+							"domain-move-out-request-sent",
+							"domain-renew-change",
+							"domain-service-type-updated",
+							"domain-transfer-in",
+							"domain-transfer-in-canceled",
+							"domain-transfer-in-completed",
+							"domain-zone-change",
+							"drain-created",
+							"drain-deleted",
+							"drain-disabled",
+							"drain-enabled",
+							"drain-updated",
+							"edge-cache-dangerously-delete-by-src-images",
+							"edge-cache-dangerously-delete-by-tags",
+							"edge-cache-invalidate-by-src-images",
+							"edge-cache-invalidate-by-tags",
+							"edge-cache-purge-all",
+							"edge-cache-rollback-purge",
+							"edge-config-created",
+							"edge-config-deleted",
+							"edge-config-items-updated",
+							"edge-config-schema-deleted",
+							"edge-config-schema-updated",
+							"edge-config-token-created",
+							"edge-config-token-deleted",
+							"edge-config-transfer-in",
+							"edge-config-transfer-out",
+							"edge-config-updated",
+							"email",
+							"email-notification-rule-removed",
+							"email-notification-rule-updated",
+							"enforce-sensitive-environment-variables",
+							"env-variable-add",
+							"env-variable-delete",
+							"env-variable-edit",
+							"env-variable-read",
+							"env-variable-read:cli:dev",
+							"env-variable-read:cli:env:add",
+							"env-variable-read:cli:env:ls",
+							"env-variable-read:cli:env:pull",
+							"env-variable-read:cli:env:rm",
+							"env-variable-read:cli:pull",
+							"env-variable-read:unknown-source",
+							"env-variable-read:v0:env:pull",
+							"env-variable-rotated",
+							"firewall-bypass-created",
+							"firewall-bypass-deleted",
+							"firewall-config-modified",
+							"firewall-config-promoted",
+							"firewall-config-removed",
+							"firewall-managed-rulegroup-updated",
+							"firewall-managed-ruleset-updated",
+							"flag",
+							"flag-archived",
+							"flag-created",
+							"flag-deleted",
+							"flag-unarchived",
+							"flag-updated",
+							"flags-explorer-subscription",
+							"flags-sdk-key",
+							"flags-sdk-key-added",
+							"flags-sdk-key-deleted",
+							"flags-sdk-key-read",
+							"flags-segment",
+							"flags-settings",
+							"instant-rollback-created",
+							"integration-configuration-owner-changed",
+							"integration-configuration-scope-change-confirmed",
+							"integration-configuration-transfer-in-success",
+							"integration-configuration-transfer-out-success",
+							"integration-configurations-disabled",
+							"integration-installation-billing-plan-updated",
+							"integration-installation-completed",
+							"integration-installation-permission-updated",
+							"integration-installation-removed",
+							"integration-scope-changed",
+							"invoice-modified",
+							"invoice-refunded",
+							"log-drain-created",
+							"log-drain-deleted",
+							"log-drain-disabled",
+							"log-drain-enabled",
+							"login",
+							"manual-deployment-promotion-created",
+							"marketplace-integration-allowlist-updated",
+							"microfrontend-group-added",
+							"microfrontend-group-deleted",
+							"microfrontend-group-updated",
+							"microfrontend-project-added-to-group",
+							"microfrontend-project-removed-from-group",
+							"microfrontend-project-updated",
+							"monitoring-disabled",
+							"monitoring-enabled",
+							"oauth-app-connection-created",
+							"oauth-app-connection-removed",
+							"oauth-app-connection-updated",
+							"oauth-app-created",
+							"oauth-app-deleted",
+							"oauth-app-secret-deleted",
+							"oauth-app-secret-generated",
+							"oauth-app-token-created",
+							"oauth-app-updated",
+							"observability-disabled",
+							"observability-enabled",
+							"observability-plus-project-disabled",
+							"observability-plus-project-enabled",
+							"owner-blocked",
+							"owner-soft-blocked",
+							"owner-soft-unblocked",
+							"owner-unblocked",
+							"page-integrity-config-updated",
+							"page-integrity-header-approved",
+							"page-integrity-resource-approved",
+							"page-integrity-resource-deleted",
+							"page-integrity-resource-rejected",
+							"passkey-created",
+							"passkey-deleted",
+							"passkey-updated",
+							"password-protection-disabled",
+							"password-protection-enabled",
+							"payment-method-added",
+							"payment-method-default-updated",
+							"payment-method-removed",
+							"plan",
+							"preview-deployment-suffix-disabled",
+							"preview-deployment-suffix-enabled",
+							"preview-deployment-suffix-update",
+							"privatelink-endpoint-created",
+							"privatelink-endpoint-deleted",
+							"privatelink-endpoint-updated",
+							"production-branch-updated",
+							"project-add-alias",
+							"project-add-redirect",
+							"project-affected-projects-deployments-updated",
+							"project-alias-configured-change",
+							"project-analytics-disabled",
+							"project-analytics-enabled",
+							"project-auto-assign-custom-production-domains-updated",
+							"project-automation-bypass",
+							"project-build-command-updated",
+							"project-build-logs-and-source-protection-updated",
+							"project-build-machine-updated",
+							"project-client-cert-delete",
+							"project-client-cert-upload",
+							"project-connect-configurations",
+							"project-consolidated-git-commit-status-updated",
+							"project-created",
+							"project-cron-jobs-toggled",
+							"project-custom-environment-created",
+							"project-custom-environment-deleted",
+							"project-custom-environment-updated",
+							"project-customer-success-code-visibility-updated",
+							"project-delegated-protection-disabled",
+							"project-delegated-protection-enabled",
+							"project-delegated-protection-updated",
+							"project-delete",
+							"project-deployment-retention-updated",
+							"project-directory-listing",
+							"project-domain-deleted",
+							"project-domain-moved",
+							"project-domain-unverified",
+							"project-domain-updated",
+							"project-domain-verified",
+							"project-elastic-concurrency-updated",
+							"project-external-rewrite-caching-updated",
+							"project-framework-updated",
+							"project-function-cpu-memory",
+							"project-function-failover",
+							"project-function-max-duration",
+							"project-function-regions",
+							"project-functions-beta-updated",
+							"project-functions-fluid-disabled",
+							"project-functions-fluid-enabled",
+							"project-git-commit-comments-toggled",
+							"project-git-commit-status-toggled",
+							"project-git-create-deployments-toggled",
+							"project-git-fork-protection-updated",
+							"project-git-lfs-toggled",
+							"project-git-pr-comments-toggled",
+							"project-git-repository-connected",
+							"project-git-repository-disconnected",
+							"project-git-repository-dispatch-events-toggled",
+							"project-git-require-verified-commits-toggled",
+							"project-ignored-build-step-updated",
+							"project-install-command-updated",
+							"project-member-added",
+							"project-member-invited",
+							"project-member-removed",
+							"project-member-removed-batch",
+							"project-member-updated",
+							"project-move-in-success",
+							"project-move-out-failed",
+							"project-move-out-started",
+							"project-move-out-success",
+							"project-name",
+							"project-node-version-updated",
+							"project-oidc-issuer-mode-updated",
+							"project-oidc-token-created",
+							"project-options-allowlist",
+							"project-output-directory-updated",
+							"project-password-protection",
+							"project-paused",
+							"project-preview-deployment-suffix",
+							"project-preview-environment-branch-tracking-updated",
+							"project-prioritize-production-builds-updated",
+							"project-program-enrollment-changed",
+							"project-protected-sourcemaps-updated",
+							"project-rolling-release-aborted",
+							"project-rolling-release-approved",
+							"project-rolling-release-completed",
+							"project-rolling-release-configured",
+							"project-rolling-release-continued",
+							"project-rolling-release-disabled",
+							"project-rolling-release-enabled",
+							"project-rolling-release-paused",
+							"project-rolling-release-started",
+							"project-rolling-release-suggested-actions-generated",
+							"project-rolling-release-timer",
+							"project-root-directory-updated",
+							"project-routes-version-promoted",
+							"project-routes-version-restored",
+							"project-skew-protection-allowed-domains-updated",
+							"project-skew-protection-max-age-updated",
+							"project-skew-protection-threshold-updated",
+							"project-source-files-outside-root-directory-updated",
+							"project-speed-insights-disabled",
+							"project-speed-insights-enabled",
+							"project-sso-protection",
+							"project-static-ips-updated",
+							"project-trusted-ips",
+							"project-trusted-sources",
+							"project-unpaused",
+							"project-web-analytics-disabled",
+							"project-web-analytics-enabled",
+							"protected-git-scope-added",
+							"protected-git-scope-removed",
+							"runtime-cache-purge-all",
+							"scale",
+							"scale-auto",
+							"secondary-email-added",
+							"secondary-email-removed",
+							"secondary-email-verified",
+							"secret-add",
+							"secret-delete",
+							"secret-rename",
+							"security-plus-updated",
+							"set-bio",
+							"set-name",
+							"set-profiles",
+							"set-scale",
+							"shared-env-variable-create",
+							"shared-env-variable-delete",
+							"shared-env-variable-read",
+							"shared-env-variable-update",
+							"show-ip-addresses",
+							"signup",
+							"signup-via-bitbucket",
+							"signup-via-github",
+							"signup-via-gitlab",
+							"speed-insights-settings-updated",
+							"spend-created",
+							"spend-deleted",
+							"spend-updated",
+							"storage-accept-tos",
+							"storage-access-token-set",
+							"storage-accessed-data-browser",
+							"storage-connect-project",
+							"storage-create",
+							"storage-delete",
+							"storage-disconnect-project",
+							"storage-disconnect-projects",
+							"storage-inactive-store-deleted",
+							"storage-reset-credentials",
+							"storage-resource-repl-command",
+							"storage-set-locked",
+							"storage-transfer-in-success",
+							"storage-transfer-out-success",
+							"storage-transfer-request-created",
+							"storage-update",
+							"storage-update-project-connection",
+							"storage-upgrade-project-connection-to-oidc",
+							"storage-view-secret",
+							"strict-deployment-protection-settings",
+							"strict-shareable-links",
+							"subscription-created",
+							"subscription-product-added",
+							"subscription-product-removed",
+							"subscription-updated",
+							"team",
+							"team-avatar-update",
+							"team-default-build-machine-updated",
+							"team-delete",
+							"team-domain-verification-created",
+							"team-domain-verification-deleted",
+							"team-domain-verification-verified",
+							"team-email-domain-update",
+							"team-emu-updated",
+							"team-ended-trial",
+							"team-git-require-verified-commits-toggled",
+							"team-invite-bulk-delete",
+							"team-invite-code-reset",
+							"team-invite-link-created",
+							"team-invite-link-deleted",
+							"team-ip-blocking-rules-created",
+							"team-ip-blocking-rules-removed",
+							"team-member-add",
+							"team-member-confirm-request",
+							"team-member-decline-request",
+							"team-member-delete",
+							"team-member-entitlement-added",
+							"team-member-entitlement-canceled",
+							"team-member-entitlement-reactivated",
+							"team-member-entitlement-removed",
+							"team-member-join",
+							"team-member-leave",
+							"team-member-request-access",
+							"team-member-role-update",
+							"team-mfa-enforcement-updated",
+							"team-name-update",
+							"team-paid-invoice",
+							"team-program-enrollment-changed",
+							"team-remote-caching-update",
+							"team-saml-enforced",
+							"team-saml-roles",
+							"team-slug-update",
+							"team-tokens-invalidated",
+							"unlink-login-connection",
+							"user-delete",
+							"user-mfa-challenge-verified",
+							"user-mfa-configuration-updated",
+							"user-mfa-recovery-codes-regenerated",
+							"user-mfa-removed",
+							"user-mfa-totp-verification-started",
+							"user-mfa-totp-verified",
+							"user-primary-email-updated",
+							"user-token-created",
+							"user-token-deleted",
+							"user-tokens-deleted",
+							"username",
+							"v0-chat-ai-usage",
+							"v0-chat-created",
+							"v0-chat-message-sent",
+							"vercel-agent-team-trial-credits-applied",
+							"vercel-app-installation-request-dismissed",
+							"vercel-app-installation-requested",
+							"vercel-app-installation-updated",
+							"vercel-app-installed",
+							"vercel-app-tokens-revoked",
+							"vercel-app-uninstalled",
+							"vercel-toolbar",
+							"vpc-peering-connection-accepted",
+							"vpc-peering-connection-deleted",
+							"vpc-peering-connection-rejected",
+							"vpc-peering-connection-updated",
+							"vulnerability-banner-dismissed",
+							"web-analytics-tier-updated",
+							"webhook-created",
+							"webhook-deleted",
+							"webhook-updated",
+							"workflow-deployment-key-accessed",
+						])
+						.describe("Event type names that supersede this deprecated event type."),
+				)
+				.describe("Event type names that supersede this deprecated event type."),
+		),
+	})
+	.describe("A user-facing event type.");
+
+/**
+ * @description Response returned by the List Event Types endpoint.
+ */
+export const listEventTypesResponseSchema = z
+	.object({
+		types: z.array(z.unknown()),
+		categories: z.array(
+			z.object({
+				name: z.enum([
+					"account",
+					"ai",
+					"ai-gateway",
+					"billing",
+					"deployment",
+					"domain",
+					"edge",
+					"env-variable",
+					"feature-flags",
+					"firewall",
+					"integration",
+					"microfrontends",
+					"network",
+					"observability",
+					"other",
+					"project",
+					"security",
+					"storage",
+					"team",
+					"v0",
+					"vercel-app",
+					"workflow",
+				]),
+				label: z.string(),
+			}),
+		),
+	})
+	.describe("Response returned by the List Event Types endpoint.");
 
 export const flagSchema = z.object({
 	description: z.optional(z.string()),
@@ -6658,6 +8302,24 @@ export const flagSchema = z.object({
 					weights: z.object({}).catchall(z.number()),
 					defaultVariantId: z.string(),
 				}),
+				z.object({
+					type: z.enum(["rollout"]),
+					base: z.object({
+						type: z.enum(["entity"]),
+						kind: z.string(),
+						attribute: z.string(),
+					}),
+					defaultVariantId: z.string(),
+					startTimestamp: z.number(),
+					rollFromVariantId: z.string(),
+					rollToVariantId: z.string(),
+					slots: z.array(
+						z.object({
+							promille: z.number(),
+							durationMs: z.number(),
+						}),
+					),
+				}),
 			]),
 			active: z.union([z.literal(false), z.literal(true)]),
 			rules: z.array(
@@ -6677,6 +8339,24 @@ export const flagSchema = z.object({
 							}),
 							weights: z.object({}).catchall(z.number()),
 							defaultVariantId: z.string(),
+						}),
+						z.object({
+							type: z.enum(["rollout"]),
+							base: z.object({
+								type: z.enum(["entity"]),
+								kind: z.string(),
+								attribute: z.string(),
+							}),
+							defaultVariantId: z.string(),
+							startTimestamp: z.number(),
+							rollFromVariantId: z.string(),
+							rollToVariantId: z.string(),
+							slots: z.array(
+								z.object({
+									promille: z.number(),
+									durationMs: z.number(),
+								}),
+							),
 						}),
 					]),
 					conditions: z.array(
@@ -6910,20 +8590,37 @@ export const segmentSchema = z.object({
 	),
 });
 
-export const flagsSdkKeySchema = z.object({
-	hashKey: z.string(),
-	projectId: z.string(),
-	type: z.enum(["client", "mobile", "server"]),
-	environment: z.string(),
-	createdBy: z.string(),
-	createdAt: z.number(),
-	updatedAt: z.number(),
-	label: z.optional(z.string()),
-	deletedAt: z.optional(z.number()),
-	keyValue: z.optional(z.string().describe("Cleartext value of the SDK key")),
-	tokenValue: z.optional(z.string().describe("Cleartext value of the Edge Config token")),
-	connectionString: z.optional(z.string().describe("Connection string for the SDK")),
-});
+/**
+ * @description Representation of a Flags SDK key returned by CREATE. Includes cleartext secrets (`keyValue`, `tokenValue`, `connectionString`) which are only ever disclosed once, on creation.
+ */
+export const flagsSdkKeyWithSecretsSchema = z
+	.object({
+		hashKey: z.string(),
+		projectId: z.string(),
+		type: z.enum(["client", "mobile", "server"]),
+		environment: z.string(),
+		createdBy: z.string(),
+		createdAt: z.number(),
+		updatedAt: z.number(),
+		label: z.optional(z.string()),
+		deletedAt: z.optional(z.number()),
+		partialKeyValue: z
+			.string()
+			.describe(
+				"Partially-masked representation of the SDK key value, safe to display in UIs. The value is the `vf_<type>_` prefix followed by the first 3 characters of the secret portion and a fixed 8-character `*` mask (e.g. `vf_server_abc********`).",
+			),
+		keyValue: z.string().describe("Cleartext value of the SDK key."),
+		tokenValue: z.optional(
+			z
+				.string()
+				.describe(
+					"Cleartext value of the Edge Config token, when the project has an Edge Config connection.",
+				),
+		),
+	})
+	.describe(
+		"Representation of a Flags SDK key returned by CREATE. Includes cleartext secrets (`keyValue`, `tokenValue`, `connectionString`) which are only ever disclosed once, on creation.",
+	);
 
 /**
  * @description Enum containing the actions that can be performed against a resource. Group operations are included.
@@ -7098,6 +8795,21 @@ export const snapshotSchema = z
 		updatedAt: z
 			.number()
 			.describe("The last time the snapshot was updated, in milliseconds since the epoch."),
+		lastUsedAt: z
+			.number()
+			.describe(
+				"The last time the snapshot was used (e.g. to resume or create a sandbox), in milliseconds since the epoch. Falls back to `createdAt` for older snapshots that predate this field.",
+			),
+		creationMethod: z.optional(
+			z.enum(["automatic", "manual"]).describe("The method used to create the snapshot."),
+		),
+		parentId: z.optional(
+			z
+				.string()
+				.describe(
+					"The unique identifier of the parent snapshot, if this snapshot was created from another snapshot.",
+				),
+		),
 	})
 	.describe(
 		"This object contains information related to a Snapshot of a Vercel Sandbox session (v2 API).",
@@ -7166,6 +8878,19 @@ export const namedSandboxSchema = z
 			z
 				.number()
 				.describe("Default snapshot expiration time in milliseconds. 0 means no expiration."),
+		),
+		keepLastSnapshots: z.optional(
+			z
+				.object({
+					count: z.number().describe("Number of most recent snapshots to keep."),
+					expiration: z.optional(
+						z.number().describe("Expiration time in milliseconds for kept snapshots."),
+					),
+					deleteEvicted: z
+						.union([z.literal(false), z.literal(true)])
+						.describe("Whether to immediately delete evicted snapshots."),
+				})
+				.describe("Keep-last snapshot configuration."),
 		),
 		networkPolicy: z.optional(
 			z
@@ -7708,8 +9433,16 @@ export const teamSchema = z
 				z.object({
 					bucket: z.string(),
 					supportUntil: z.optional(z.number()),
+					default: z.optional(z.union([z.literal(false), z.literal(true)])),
 				}),
 			),
+		),
+		requireVerifiedCommits: z.optional(
+			z
+				.union([z.literal(false), z.literal(true)])
+				.describe(
+					"When enabled, all projects in the team require commits to be signed and verified by the git provider before deployments will be created. Projects may override this via `project.gitProviderOptions.requireVerifiedCommits` (gated by `Project:Update`).",
+				),
 		),
 		strictDeploymentProtectionSettings: z.optional(
 			z
@@ -7735,6 +9468,34 @@ export const teamSchema = z
 					preference: z.enum(["auto-approval", "block", "manual-approval"]),
 				})
 				.describe("NSNB configuration for the team."),
+		),
+		personalAccessTokensInvalidatedAt: z.optional(
+			z
+				.number()
+				.describe(
+					"Timestamp (ms) after which personal access tokens created at or before this time are considered invalid for this team.",
+				),
+		),
+		appTokensInvalidatedAt: z.optional(
+			z
+				.number()
+				.describe(
+					"Timestamp (ms) after which Vercel App tokens created at or before this time are considered invalid for this team.",
+				),
+		),
+		apiKeysInvalidatedAt: z.optional(
+			z
+				.number()
+				.describe(
+					"Timestamp (ms) after which API keys created at or before this time are considered invalid for this team.",
+				),
+		),
+		integrationTokensInvalidatedAt: z.optional(
+			z
+				.number()
+				.describe(
+					"Timestamp (ms) after which integration tokens created at or before this time are considered invalid for this team.",
+				),
 		),
 		id: z.string().describe("The Team's unique identifier."),
 		slug: z.string().describe("The Team's slug, which is unique across the Vercel platform."),
@@ -7813,6 +9574,7 @@ export const teamSchema = z
 							"nsnb-hobby-upgrade",
 							"nsnb-invite",
 							"nsnb-redeploy",
+							"nsnb-redeploy-attribution-card",
 							"nsnb-request-access",
 							"nsnb-viewer-upgrade",
 							"organization-teams",
@@ -8004,6 +9766,7 @@ export const teamLimitedSchema = z
 							"nsnb-hobby-upgrade",
 							"nsnb-invite",
 							"nsnb-redeploy",
+							"nsnb-redeploy-attribution-card",
 							"nsnb-request-access",
 							"nsnb-viewer-upgrade",
 							"organization-teams",
@@ -8052,8 +9815,8 @@ export const authTokenSchema = z
 							sudo: z.optional(
 								z.object({
 									origin: z
-										.enum(["totp", "webauthn", "recovery-code"])
-										.describe("Possible multi-factor origins"),
+										.enum(["otp", "totp", "webauthn", "recovery-code"])
+										.describe("Possible step-up auth origins"),
 									expiresAt: z.number(),
 								}),
 							),
@@ -8142,6 +9905,7 @@ export const authUserSchema = z
 					reason: z.enum([
 						"BLOCKED_FOR_PLATFORM_ABUSE",
 						"ENTERPRISE_TRIAL_ENDED",
+						"ENTERPRISE_UNPAID_INVOICE",
 						"FAIR_USE_LIMITS_EXCEEDED",
 						"SUBSCRIPTION_CANCELED",
 						"SUBSCRIPTION_EXPIRED",
@@ -9170,7 +10934,7 @@ export const recordEvents400Schema = z.unknown();
 export const recordEvents401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const recordEvents402Schema = z.unknown();
 
@@ -9200,7 +10964,7 @@ export const status400Schema = z.unknown();
 export const status401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const status402Schema = z.unknown();
 
@@ -9289,7 +11053,7 @@ export const uploadArtifact400Schema = z.unknown();
 export const uploadArtifact401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const uploadArtifact402Schema = z.unknown();
 
@@ -9350,7 +11114,7 @@ export const downloadArtifact400Schema = z.unknown();
 export const downloadArtifact401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const downloadArtifact402Schema = z.unknown();
 
@@ -9388,7 +11152,7 @@ export const artifactQuery400Schema = z.unknown();
 export const artifactQuery401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const artifactQuery402Schema = z.unknown();
 
@@ -10357,7 +12121,7 @@ export const createNetwork400Schema = z.unknown();
 export const createNetwork401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const createNetwork402Schema = z.unknown();
 
@@ -10633,7 +12397,7 @@ export const createDeployment400Schema = z.unknown();
 export const createDeployment401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated\nPro customers are allowed to deploy Serverless Functions to up to `proMaxRegions` regions, or if the project was created before the limit was introduced.\nDeploying to Serverless Functions to multiple regions requires a plan update
+ * @description The account is missing a payment so payment method must be updated\nPro customers are allowed to deploy Serverless Functions to up to `proMaxRegions` regions, or if the project was created before the limit was introduced.\nDeploying to Serverless Functions to multiple regions requires a plan update
  */
 export const createDeployment402Schema = z.unknown();
 
@@ -10762,7 +12526,7 @@ export const createRecord400Schema = z.unknown();
 export const createRecord401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const createRecord402Schema = z.unknown();
 
@@ -10803,7 +12567,7 @@ export const updateRecord400Schema = z.unknown();
 export const updateRecord401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const updateRecord402Schema = z.unknown();
 
@@ -11723,7 +13487,7 @@ export const createOrTransferDomain400Schema = z.unknown();
 export const createOrTransferDomain401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const createOrTransferDomain402Schema = z.unknown();
 
@@ -12320,7 +14084,7 @@ export const createEdgeConfig400Schema = z.unknown();
 export const createEdgeConfig401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const createEdgeConfig402Schema = z.unknown();
 
@@ -12394,7 +14158,7 @@ export const updateEdgeConfig400Schema = z.unknown();
 export const updateEdgeConfig401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const updateEdgeConfig402Schema = z.unknown();
 
@@ -12508,7 +14272,7 @@ export const patchEdgeConfigItems400Schema = z.unknown();
 export const patchEdgeConfigItems401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const patchEdgeConfigItems402Schema = z.unknown();
 
@@ -12591,7 +14355,7 @@ export const patchEdgeConfigSchema400Schema = z.unknown();
 export const patchEdgeConfigSchema401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const patchEdgeConfigSchema402Schema = z.unknown();
 
@@ -12634,7 +14398,7 @@ export const deleteEdgeConfigSchema400Schema = z.unknown();
 export const deleteEdgeConfigSchema401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const deleteEdgeConfigSchema402Schema = z.unknown();
 
@@ -12752,7 +14516,7 @@ export const deleteEdgeConfigTokens400Schema = z.unknown();
 export const deleteEdgeConfigTokens401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const deleteEdgeConfigTokens402Schema = z.unknown();
 
@@ -12833,7 +14597,7 @@ export const createEdgeConfigToken400Schema = z.unknown();
 export const createEdgeConfigToken401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const createEdgeConfigToken402Schema = z.unknown();
 
@@ -12944,7 +14708,7 @@ export const createSharedEnvVariable400Schema = z.unknown();
 export const createSharedEnvVariable401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const createSharedEnvVariable402Schema = z.unknown();
 
@@ -13028,7 +14792,7 @@ export const updateSharedEnvVariable400Schema = z.unknown();
 export const updateSharedEnvVariable401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const updateSharedEnvVariable402Schema = z.unknown();
 
@@ -13063,7 +14827,7 @@ export const deleteSharedEnvVariable400Schema = z.unknown();
 export const deleteSharedEnvVariable401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const deleteSharedEnvVariable402Schema = z.unknown();
 
@@ -13282,7 +15046,7 @@ export const listFlags400Schema = z.unknown();
 export const listFlags401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const listFlags402Schema = z.unknown();
 
@@ -13321,7 +15085,7 @@ export const createFlag400Schema = z.unknown();
 export const createFlag401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const createFlag402Schema = z.unknown();
 
@@ -13371,7 +15135,7 @@ export const getFlag400Schema = z.unknown();
 export const getFlag401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const getFlag402Schema = z.unknown();
 
@@ -13417,7 +15181,7 @@ export const updateFlag400Schema = z.unknown();
 export const updateFlag401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const updateFlag402Schema = z.unknown();
 
@@ -13467,7 +15231,7 @@ export const deleteFlag400Schema = z.unknown();
 export const deleteFlag401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const deleteFlag402Schema = z.unknown();
 
@@ -13515,7 +15279,7 @@ export const listFlagVersions400Schema = z.unknown();
 export const listFlagVersions401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const listFlagVersions402Schema = z.unknown();
 
@@ -13554,7 +15318,7 @@ export const getFlagSettings400Schema = z.unknown();
 export const getFlagSettings401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const getFlagSettings402Schema = z.unknown();
 
@@ -13595,7 +15359,7 @@ export const updateFlagSettings400Schema = z.unknown();
 export const updateFlagSettings401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const updateFlagSettings402Schema = z.unknown();
 
@@ -13728,7 +15492,7 @@ export const createFlagSegment400Schema = z.unknown();
 export const createFlagSegment401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const createFlagSegment402Schema = z.unknown();
 
@@ -13770,7 +15534,7 @@ export const listFlagSegments400Schema = z.unknown();
 export const listFlagSegments401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const listFlagSegments402Schema = z.unknown();
 
@@ -13809,7 +15573,7 @@ export const getFlagSegment400Schema = z.unknown();
 export const getFlagSegment401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const getFlagSegment402Schema = z.unknown();
 
@@ -13848,7 +15612,7 @@ export const deleteFlagSegment400Schema = z.unknown();
 export const deleteFlagSegment401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const deleteFlagSegment402Schema = z.unknown();
 
@@ -13891,7 +15655,7 @@ export const updateFlagSegment400Schema = z.unknown();
 export const updateFlagSegment401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const updateFlagSegment402Schema = z.unknown();
 
@@ -13970,7 +15734,7 @@ export const getSdkKeys400Schema = z.unknown();
 export const getSdkKeys401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const getSdkKeys402Schema = z.unknown();
 
@@ -14009,7 +15773,7 @@ export const createSdkKey400Schema = z.unknown();
 export const createSdkKey401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const createSdkKey402Schema = z.unknown();
 
@@ -14051,7 +15815,7 @@ export const deleteSdkKey400Schema = z.unknown();
 export const deleteSdkKey401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const deleteSdkKey402Schema = z.unknown();
 
@@ -15647,6 +17411,10 @@ export const stageRoutes401Schema = z.unknown();
  */
 export const stageRoutes403Schema = z.unknown();
 
+export const stageRoutes409Schema = z.unknown();
+
+export const stageRoutes500Schema = z.unknown();
+
 export const stageRoutesMutationResponseSchema = z.lazy(() => stageRoutes200Schema);
 
 export const addRoutePathParamsSchema = z.object({
@@ -15678,6 +17446,10 @@ export const addRoute401Schema = z.unknown();
  * @description You do not have permission to access this resource.
  */
 export const addRoute403Schema = z.unknown();
+
+export const addRoute409Schema = z.unknown();
+
+export const addRoute500Schema = z.unknown();
 
 export const addRouteMutationResponseSchema = z.lazy(() => addRoute200Schema);
 
@@ -15713,6 +17485,10 @@ export const deleteRoutes403Schema = z.unknown();
 
 export const deleteRoutes404Schema = z.unknown();
 
+export const deleteRoutes409Schema = z.unknown();
+
+export const deleteRoutes500Schema = z.unknown();
+
 export const deleteRoutesMutationResponseSchema = z.lazy(() => deleteRoutes200Schema);
 
 export const editRoutePathParamsSchema = z.object({
@@ -15747,6 +17523,10 @@ export const editRoute401Schema = z.unknown();
 export const editRoute403Schema = z.unknown();
 
 export const editRoute404Schema = z.unknown();
+
+export const editRoute409Schema = z.unknown();
+
+export const editRoute500Schema = z.unknown();
 
 export const editRouteMutationResponseSchema = z.lazy(() => editRoute200Schema);
 
@@ -15850,6 +17630,8 @@ export const updateRouteVersions403Schema = z.unknown();
 
 export const updateRouteVersions404Schema = z.unknown();
 
+export const updateRouteVersions409Schema = z.unknown();
+
 export const updateRouteVersions500Schema = z.unknown();
 
 export const updateRouteVersionsMutationResponseSchema = z.lazy(() => updateRouteVersions200Schema);
@@ -15952,7 +17734,7 @@ export const createProject400Schema = z.unknown();
 export const createProject401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated\nPro customers are allowed to deploy Serverless Functions to up to `proMaxRegions` regions, or if the project was created before the limit was introduced.\nDeploying to Serverless Functions to multiple regions requires a plan update
+ * @description The account is missing a payment so payment method must be updated\nPro customers are allowed to deploy Serverless Functions to up to `proMaxRegions` regions, or if the project was created before the limit was introduced.\nDeploying to Serverless Functions to multiple regions requires a plan update
  */
 export const createProject402Schema = z.unknown();
 
@@ -16045,7 +17827,7 @@ export const updateProject400Schema = z.unknown();
 export const updateProject401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated\nPro customers are allowed to deploy Serverless Functions to up to `proMaxRegions` regions, or if the project was created before the limit was introduced.\nDeploying to Serverless Functions to multiple regions requires a plan update
+ * @description The account is missing a payment so payment method must be updated\nPro customers are allowed to deploy Serverless Functions to up to `proMaxRegions` regions, or if the project was created before the limit was introduced.\nDeploying to Serverless Functions to multiple regions requires a plan update
  */
 export const updateProject402Schema = z.unknown();
 
@@ -16171,7 +17953,7 @@ export const createCustomEnvironment400Schema = z.unknown();
 export const createCustomEnvironment401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const createCustomEnvironment402Schema = z.unknown();
 
@@ -16289,7 +18071,7 @@ export const updateCustomEnvironment400Schema = z.unknown();
 export const updateCustomEnvironment401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const updateCustomEnvironment402Schema = z.unknown();
 
@@ -16553,7 +18335,7 @@ export const addProjectDomain400Schema = z.unknown();
 export const addProjectDomain401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const addProjectDomain402Schema = z.unknown();
 
@@ -16733,7 +18515,7 @@ export const createProjectEnv400Schema = z.unknown();
 export const createProjectEnv401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const createProjectEnv402Schema = z.unknown();
 
@@ -17643,7 +19425,7 @@ export const createSandbox400Schema = z.unknown();
 export const createSandbox401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const createSandbox402Schema = z.unknown();
 
@@ -17653,6 +19435,8 @@ export const createSandbox402Schema = z.unknown();
 export const createSandbox403Schema = z.unknown();
 
 export const createSandbox404Schema = z.unknown();
+
+export const createSandbox409Schema = z.unknown();
 
 export const createSandbox410Schema = z.unknown();
 
@@ -17940,6 +19724,8 @@ export const extendSandboxTimeout401Schema = z.unknown();
  */
 export const extendSandboxTimeout403Schema = z.unknown();
 
+export const extendSandboxTimeout404Schema = z.unknown();
+
 export const extendSandboxTimeout410Schema = z.unknown();
 
 export const extendSandboxTimeout422Schema = z.unknown();
@@ -17984,6 +19770,8 @@ export const updateNetworkPolicy402Schema = z.unknown();
  * @description You do not have permission to access this resource.
  */
 export const updateNetworkPolicy403Schema = z.unknown();
+
+export const updateNetworkPolicy404Schema = z.unknown();
 
 export const updateNetworkPolicy410Schema = z.unknown();
 
@@ -18296,7 +20084,7 @@ export const createSnapshot400Schema = z.unknown();
 export const createSnapshot401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const createSnapshot402Schema = z.unknown();
 
@@ -18324,7 +20112,7 @@ export const getSandboxesV2QueryParamsSchema = z.object({
 		.default(20)
 		.describe("Maximum number of named sandboxes to return in the response. Used for pagination."),
 	sortBy: z
-		.enum(["createdAt", "name", "statusUpdatedAt"])
+		.enum(["createdAt", "name", "statusUpdatedAt", "currentSnapshotId"])
 		.default("createdAt")
 		.describe("Field to sort by."),
 	namePrefix: z.optional(
@@ -18392,7 +20180,7 @@ export const createSandboxes400Schema = z.unknown();
 export const createSandboxes401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const createSandboxes402Schema = z.unknown();
 
@@ -18402,6 +20190,8 @@ export const createSandboxes402Schema = z.unknown();
 export const createSandboxes403Schema = z.unknown();
 
 export const createSandboxes404Schema = z.unknown();
+
+export const createSandboxes409Schema = z.unknown();
 
 export const createSandboxes410Schema = z.unknown();
 
@@ -18669,7 +20459,7 @@ export const getNamedSandbox400Schema = z.unknown();
 export const getNamedSandbox401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const getNamedSandbox402Schema = z.unknown();
 
@@ -18679,6 +20469,8 @@ export const getNamedSandbox402Schema = z.unknown();
 export const getNamedSandbox403Schema = z.unknown();
 
 export const getNamedSandbox404Schema = z.unknown();
+
+export const getNamedSandbox409Schema = z.unknown();
 
 /**
  * @description The concurrency limit has been exceeded.
@@ -18744,7 +20536,11 @@ export const updateSandbox500Schema = z.unknown();
 export const updateSandboxMutationResponseSchema = z.lazy(() => updateSandbox200Schema);
 
 export const deleteSandboxPathParamsSchema = z.object({
-	name: z.string().max(128).describe("The sandbox name to delete."),
+	name: z
+		.string()
+		.max(128)
+		.regex(/^[a-zA-Z0-9_-]+$/)
+		.describe("The sandbox name to delete."),
 });
 
 export const deleteSandboxQueryParamsSchema = z
@@ -19061,6 +20857,8 @@ export const extendSessionTimeout401Schema = z.unknown();
  */
 export const extendSessionTimeout403Schema = z.unknown();
 
+export const extendSessionTimeout404Schema = z.unknown();
+
 export const extendSessionTimeout410Schema = z.unknown();
 
 export const extendSessionTimeout422Schema = z.unknown();
@@ -19107,6 +20905,8 @@ export const updateSessionNetworkPolicy402Schema = z.unknown();
  * @description You do not have permission to access this resource.
  */
 export const updateSessionNetworkPolicy403Schema = z.unknown();
+
+export const updateSessionNetworkPolicy404Schema = z.unknown();
 
 export const updateSessionNetworkPolicy410Schema = z.unknown();
 
@@ -19276,7 +21076,7 @@ export const createSessionSnapshot400Schema = z.unknown();
 export const createSessionSnapshot401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const createSessionSnapshot402Schema = z.unknown();
 
@@ -19623,7 +21423,7 @@ export const createIntegrationStoreDirect400Schema = z.unknown();
 export const createIntegrationStoreDirect401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const createIntegrationStoreDirect402Schema = z.unknown();
 
@@ -19827,6 +21627,8 @@ export const joinTeam402Schema = z.unknown();
 export const joinTeam403Schema = z.unknown();
 
 export const joinTeam404Schema = z.unknown();
+
+export const joinTeam503Schema = z.unknown();
 
 export const joinTeamMutationResponseSchema = z.lazy(() => joinTeam200Schema);
 
@@ -20608,7 +22410,7 @@ export const assignAlias400Schema = z.unknown();
 export const assignAlias401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const assignAlias402Schema = z.unknown();
 
@@ -20911,7 +22713,7 @@ export const issueCert400Schema = z.unknown();
 export const issueCert401Schema = z.unknown();
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export const issueCert402Schema = z.unknown();
 

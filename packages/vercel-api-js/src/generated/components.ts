@@ -39,6 +39,8 @@ import type {
 	AddRoute400,
 	AddRoute401,
 	AddRoute403,
+	AddRoute409,
+	AddRoute500,
 	AddRouteMutationResponse,
 	AddRoutePathParams,
 	AddRouteQueryParams,
@@ -319,6 +321,7 @@ import type {
 	CreateSandbox402,
 	CreateSandbox403,
 	CreateSandbox404,
+	CreateSandbox409,
 	CreateSandbox410,
 	CreateSandbox422,
 	CreateSandbox429,
@@ -328,6 +331,7 @@ import type {
 	CreateSandboxes402,
 	CreateSandboxes403,
 	CreateSandboxes404,
+	CreateSandboxes409,
 	CreateSandboxes410,
 	CreateSandboxes422,
 	CreateSandboxes429,
@@ -575,6 +579,8 @@ import type {
 	DeleteRoutes401,
 	DeleteRoutes403,
 	DeleteRoutes404,
+	DeleteRoutes409,
+	DeleteRoutes500,
 	DeleteRoutesMutationResponse,
 	DeleteRoutesPathParams,
 	DeleteRoutesQueryParams,
@@ -666,6 +672,8 @@ import type {
 	EditRoute401,
 	EditRoute403,
 	EditRoute404,
+	EditRoute409,
+	EditRoute500,
 	EditRouteMutationResponse,
 	EditRoutePathParams,
 	EditRouteQueryParams,
@@ -676,6 +684,7 @@ import type {
 	ExtendSandboxTimeout400,
 	ExtendSandboxTimeout401,
 	ExtendSandboxTimeout403,
+	ExtendSandboxTimeout404,
 	ExtendSandboxTimeout410,
 	ExtendSandboxTimeout422,
 	ExtendSandboxTimeoutMutationResponse,
@@ -684,6 +693,7 @@ import type {
 	ExtendSessionTimeout400,
 	ExtendSessionTimeout401,
 	ExtendSessionTimeout403,
+	ExtendSessionTimeout404,
 	ExtendSessionTimeout410,
 	ExtendSessionTimeout422,
 	ExtendSessionTimeout500,
@@ -1118,6 +1128,7 @@ import type {
 	GetNamedSandbox402,
 	GetNamedSandbox403,
 	GetNamedSandbox404,
+	GetNamedSandbox409,
 	GetNamedSandbox429,
 	GetNamedSandbox500,
 	GetNamedSandboxPathParams,
@@ -1432,6 +1443,7 @@ import type {
 	JoinTeam402,
 	JoinTeam403,
 	JoinTeam404,
+	JoinTeam503,
 	JoinTeamMutationResponse,
 	JoinTeamPathParams,
 	KillCommand400,
@@ -1889,6 +1901,8 @@ import type {
 	StageRoutes400,
 	StageRoutes401,
 	StageRoutes403,
+	StageRoutes409,
+	StageRoutes500,
 	StageRoutesMutationResponse,
 	StageRoutesPathParams,
 	StageRoutesQueryParams,
@@ -2122,6 +2136,7 @@ import type {
 	UpdateNetworkPolicy401,
 	UpdateNetworkPolicy402,
 	UpdateNetworkPolicy403,
+	UpdateNetworkPolicy404,
 	UpdateNetworkPolicy410,
 	UpdateNetworkPolicy422,
 	UpdateNetworkPolicyMutationResponse,
@@ -2220,6 +2235,7 @@ import type {
 	UpdateRouteVersions401,
 	UpdateRouteVersions403,
 	UpdateRouteVersions404,
+	UpdateRouteVersions409,
 	UpdateRouteVersions500,
 	UpdateRouteVersionsMutationResponse,
 	UpdateRouteVersionsPathParams,
@@ -2239,6 +2255,7 @@ import type {
 	UpdateSessionNetworkPolicy401,
 	UpdateSessionNetworkPolicy402,
 	UpdateSessionNetworkPolicy403,
+	UpdateSessionNetworkPolicy404,
 	UpdateSessionNetworkPolicy410,
 	UpdateSessionNetworkPolicy422,
 	UpdateSessionNetworkPolicy500,
@@ -9147,7 +9164,9 @@ export async function stageRoutes({
 
 	const data = await request<
 		StageRoutesMutationResponse,
-		ErrorWrapper<StageRoutes400 | StageRoutes401 | StageRoutes403>,
+		ErrorWrapper<
+			StageRoutes400 | StageRoutes401 | StageRoutes403 | StageRoutes409 | StageRoutes500
+		>,
 		null,
 		Record<string, string>,
 		StageRoutesQueryParams,
@@ -9184,7 +9203,7 @@ export async function addRoute({
 
 	const data = await request<
 		AddRouteMutationResponse,
-		ErrorWrapper<AddRoute400 | AddRoute401 | AddRoute403>,
+		ErrorWrapper<AddRoute400 | AddRoute401 | AddRoute403 | AddRoute409 | AddRoute500>,
 		null,
 		Record<string, string>,
 		AddRouteQueryParams,
@@ -9221,7 +9240,14 @@ export async function deleteRoutes({
 
 	const data = await request<
 		DeleteRoutesMutationResponse,
-		ErrorWrapper<DeleteRoutes400 | DeleteRoutes401 | DeleteRoutes403 | DeleteRoutes404>,
+		ErrorWrapper<
+			| DeleteRoutes400
+			| DeleteRoutes401
+			| DeleteRoutes403
+			| DeleteRoutes404
+			| DeleteRoutes409
+			| DeleteRoutes500
+		>,
 		null,
 		Record<string, string>,
 		DeleteRoutesQueryParams,
@@ -9262,7 +9288,9 @@ export async function editRoute({
 
 	const data = await request<
 		EditRouteMutationResponse,
-		ErrorWrapper<EditRoute400 | EditRoute401 | EditRoute403 | EditRoute404>,
+		ErrorWrapper<
+			EditRoute400 | EditRoute401 | EditRoute403 | EditRoute404 | EditRoute409 | EditRoute500
+		>,
 		null,
 		Record<string, string>,
 		EditRouteQueryParams,
@@ -9379,6 +9407,7 @@ export async function updateRouteVersions({
 			| UpdateRouteVersions401
 			| UpdateRouteVersions403
 			| UpdateRouteVersions404
+			| UpdateRouteVersions409
 			| UpdateRouteVersions500
 		>,
 		null,
@@ -11101,6 +11130,7 @@ export async function createSandbox({
 			| CreateSandbox402
 			| CreateSandbox403
 			| CreateSandbox404
+			| CreateSandbox409
 			| CreateSandbox410
 			| CreateSandbox422
 			| CreateSandbox429
@@ -11351,6 +11381,7 @@ export async function extendSandboxTimeout({
 			| ExtendSandboxTimeout400
 			| ExtendSandboxTimeout401
 			| ExtendSandboxTimeout403
+			| ExtendSandboxTimeout404
 			| ExtendSandboxTimeout410
 			| ExtendSandboxTimeout422
 		>,
@@ -11395,6 +11426,7 @@ export async function updateNetworkPolicy({
 			| UpdateNetworkPolicy401
 			| UpdateNetworkPolicy402
 			| UpdateNetworkPolicy403
+			| UpdateNetworkPolicy404
 			| UpdateNetworkPolicy410
 			| UpdateNetworkPolicy422
 		>,
@@ -11775,6 +11807,7 @@ export async function createSandboxes({
 			| CreateSandboxes402
 			| CreateSandboxes403
 			| CreateSandboxes404
+			| CreateSandboxes409
 			| CreateSandboxes410
 			| CreateSandboxes422
 			| CreateSandboxes429
@@ -11984,6 +12017,7 @@ export async function getNamedSandbox({
 			| GetNamedSandbox402
 			| GetNamedSandbox403
 			| GetNamedSandbox404
+			| GetNamedSandbox409
 			| GetNamedSandbox429
 			| GetNamedSandbox500
 		>,
@@ -12042,7 +12076,7 @@ export async function updateSandbox({
 }
 
 /**
- * @description Deletes a sandbox by name. If sandboxes are currently running, they will be stopped first. This operation deletes all sandbox entities with the given name, all associated snapshots, and the named sandbox metadata.
+ * @description Deletes a sandbox by name. If sandboxes are currently running, they will be stopped first. This operation deletes all sandbox entities with the given name and the named sandbox metadata.
  * @summary Delete a sandbox
  * {@link /v2/sandboxes/:name}
  */
@@ -12367,6 +12401,7 @@ export async function extendSessionTimeout({
 			| ExtendSessionTimeout400
 			| ExtendSessionTimeout401
 			| ExtendSessionTimeout403
+			| ExtendSessionTimeout404
 			| ExtendSessionTimeout410
 			| ExtendSessionTimeout422
 			| ExtendSessionTimeout500
@@ -12412,6 +12447,7 @@ export async function updateSessionNetworkPolicy({
 			| UpdateSessionNetworkPolicy401
 			| UpdateSessionNetworkPolicy402
 			| UpdateSessionNetworkPolicy403
+			| UpdateSessionNetworkPolicy404
 			| UpdateSessionNetworkPolicy410
 			| UpdateSessionNetworkPolicy422
 			| UpdateSessionNetworkPolicy500
@@ -13124,7 +13160,7 @@ export async function joinTeam({
 
 	const data = await request<
 		JoinTeamMutationResponse,
-		ErrorWrapper<JoinTeam400 | JoinTeam401 | JoinTeam402 | JoinTeam403 | JoinTeam404>,
+		ErrorWrapper<JoinTeam400 | JoinTeam401 | JoinTeam402 | JoinTeam403 | JoinTeam404 | JoinTeam503>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
