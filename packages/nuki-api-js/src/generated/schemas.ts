@@ -690,10 +690,10 @@ export const restletSchema = z.object({
 	get logger() {
 		return loggerSchema.optional();
 	},
+	stopped: z.optional(z.boolean()),
 	get application() {
 		return applicationSchema.optional();
 	},
-	stopped: z.optional(z.boolean()),
 });
 
 export const parameterSchema = z.object({
@@ -799,6 +799,7 @@ export const referenceSchema = z.object({
 	schemeSpecificPart: z.optional(z.string()),
 	fragment: z.optional(z.string()),
 	extensions: z.optional(z.string()),
+	identifier: z.optional(z.string()),
 	matrix: z.optional(z.string()),
 	get matrixAsForm() {
 		return z.array(parameterSchema).optional();
@@ -828,7 +829,6 @@ export const referenceSchema = z.object({
 		return referenceSchema.optional();
 	},
 	hierarchical: z.optional(z.boolean()),
-	identifier: z.optional(z.string()),
 });
 
 export const metadataSchema = z.object({
@@ -1067,10 +1067,10 @@ export const applicationSchema = z.object({
 	get logger() {
 		return loggerSchema.optional();
 	},
+	stopped: z.optional(z.boolean()),
 	get application() {
 		return applicationSchema.optional();
 	},
-	stopped: z.optional(z.boolean()),
 });
 
 export const authenticationInfoSchema = z.object({
@@ -1517,9 +1517,9 @@ export const objectIdSchema = z.object({
 	counter: z.optional(z.int()),
 	time: z.optional(z.int()),
 	date: z.optional(z.iso.datetime()),
-	machineIdentifier: z.optional(z.int()),
 	processIdentifier: z.optional(z.int()),
 	timeSecond: z.optional(z.int()),
+	machineIdentifier: z.optional(z.int()),
 });
 
 export const openerIntercomBrandSchema = z.object({
@@ -1812,10 +1812,10 @@ export const requestSchema = z.object({
 	entityAvailable: z.optional(z.boolean()),
 	expectingResponse: z.optional(z.boolean()),
 	synchronous: z.optional(z.boolean()),
-	entityAsText: z.optional(z.string()),
 	get headers() {
 		return z.array(headerSchema).optional();
 	},
+	entityAsText: z.optional(z.string()),
 });
 
 export const reservationAccessTimesUpdateSchema = z.object({
@@ -1931,11 +1931,11 @@ export const responseSchema = z.object({
 	final: z.optional(z.boolean()),
 	confidential: z.optional(z.boolean()),
 	provisional: z.optional(z.boolean()),
-	entityAvailable: z.optional(z.boolean()),
-	entityAsText: z.optional(z.string()),
 	get headers() {
 		return z.array(headerSchema).optional();
 	},
+	entityAvailable: z.optional(z.boolean()),
+	entityAsText: z.optional(z.string()),
 });
 
 export const shsSubscriptionSchema = z.object({
@@ -2440,7 +2440,7 @@ export const smartlockSchema = z.object({
 	type: z
 		.int()
 		.describe(
-			"The type: 0 .. keyturner, 1 .. box, 2 .. opener, 3 .. smartdoor, 4 .. smartlock 3.0/4. Gen",
+			"The type: 0 .. Smartlock 1/2, 1 .. Box, 2 .. Opener, 3 .. Smartdoor, 4 .. Smartlock 3/4, 5 .. Smartlock 5",
 		),
 	lmType: z.optional(
 		z
@@ -2682,8 +2682,10 @@ export const smartlockLogSchema = z.object({
 	id: z.string().describe("The unique id for the smartlock log"),
 	smartlockId: z.int().describe("The smartlock id"),
 	deviceType: z
-		.union([z.literal(0), z.literal(2), z.literal(3)])
-		.describe("The device type: 0 .. smartlock and box, 2 .. opener, 3 .. smartdoor"),
+		.union([z.literal(0), z.literal(2), z.literal(3), z.literal(4), z.literal(5)])
+		.describe(
+			"The device type: 0 .. Smartlock 1/2 + Box, 2 .. Opener, 3 .. Smartdoor, 4 .. Smartlock 3/4, 5 .. Smartlock 5",
+		),
 	accountUserId: z.optional(z.int().describe("The id of the linked account user")),
 	authId: z.optional(z.string().describe("The id of the linked smartlock auth")),
 	name: z.string().describe("The name"),
@@ -2853,7 +2855,7 @@ export const postAccountsResourceQueryParamsSchema = z.object({
 export const postAccountsResource204Schema = z.unknown();
 
 /**
- * @description Invalid E-Mail address or name supplied
+ * @description Invalid email address or name supplied
  */
 export const postAccountsResource400Schema = z.unknown();
 
@@ -2863,7 +2865,7 @@ export const postAccountsResource400Schema = z.unknown();
 export const postAccountsResource401Schema = z.unknown();
 
 /**
- * @description E-Mail address already exists
+ * @description Email address already exists
  */
 export const postAccountsResource409Schema = z.unknown();
 
@@ -2998,12 +3000,12 @@ export const deleteAccountIntegrationsResourceMutationResponseSchema = z.lazy(
 export const postAccountOtpResource204Schema = z.unknown();
 
 /**
- * @description One time password empty
+ * @description One-time password empty
  */
 export const postAccountOtpResource400Schema = z.unknown();
 
 /**
- * @description Not authorized or one time password wrong
+ * @description Not authorized or one-time password wrong
  */
 export const postAccountOtpResource401Schema = z.unknown();
 
@@ -3027,7 +3029,7 @@ export const postAccountOtpResourceMutationResponseSchema = z.lazy(
 export const putAccountOtpResource200Schema = z.unknown();
 
 /**
- * @description One time password is already enabled
+ * @description One-time password is already enabled
  */
 export const putAccountOtpResource405Schema = z.unknown();
 
@@ -3100,7 +3102,7 @@ export const getAccountSettingResourceQueryResponseSchema = z.lazy(
 export const putAccountSettingResource200Schema = z.unknown();
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export const putAccountSettingResource400Schema = z.unknown();
 
@@ -3177,7 +3179,7 @@ export const putAccountSubsResourceMutationResponseSchema = z.lazy(
 );
 
 export const getAccountSubResourcePathParamsSchema = z.object({
-	accountId: z.coerce.number().int().describe("The account id"),
+	accountId: z.coerce.number().int().describe("The account ID"),
 });
 
 /**
@@ -3195,7 +3197,7 @@ export const getAccountSubResourceQueryResponseSchema = z.lazy(
 );
 
 export const postAccountSubResourcePathParamsSchema = z.object({
-	accountId: z.coerce.number().int().describe("The account id"),
+	accountId: z.coerce.number().int().describe("The account ID"),
 });
 
 /**
@@ -3214,7 +3216,7 @@ export const postAccountSubResource400Schema = z.unknown();
 export const postAccountSubResource401Schema = z.unknown();
 
 /**
- * @description E-Mail address already exists
+ * @description Email address already exists
  */
 export const postAccountSubResource409Schema = z.unknown();
 
@@ -3228,7 +3230,7 @@ export const postAccountSubResourceMutationResponseSchema = z.lazy(
 );
 
 export const deleteAccountSubResourcePathParamsSchema = z.object({
-	accountId: z.coerce.number().int().describe("The account id"),
+	accountId: z.coerce.number().int().describe("The account ID"),
 });
 
 /**
@@ -3282,7 +3284,7 @@ export const getAccountUsersResourceQueryResponseSchema = z.lazy(
 export const putAccountUsersResource200Schema = z.unknown();
 
 /**
- * @description Invalid E-Mail address or name supplied
+ * @description Invalid email address or name supplied
  */
 export const putAccountUsersResource400Schema = z.unknown();
 
@@ -3296,7 +3298,7 @@ export const putAccountUsersResourceMutationResponseSchema = z.lazy(
 );
 
 export const getAccountUserResourcePathParamsSchema = z.object({
-	accountUserId: z.coerce.number().int().describe("The account user id"),
+	accountUserId: z.coerce.number().int().describe("The account user ID"),
 });
 
 /**
@@ -3314,7 +3316,7 @@ export const getAccountUserResourceQueryResponseSchema = z.lazy(
 );
 
 export const postAccountUserResourcePathParamsSchema = z.object({
-	accountUserId: z.coerce.number().int().describe("The account user id"),
+	accountUserId: z.coerce.number().int().describe("The account user ID"),
 });
 
 /**
@@ -3328,7 +3330,7 @@ export const postAccountUserResource200Schema = z.unknown();
 export const postAccountUserResource204Schema = z.unknown();
 
 /**
- * @description Invalid E-Mail address or name supplied
+ * @description Invalid email address or name supplied
  */
 export const postAccountUserResource400Schema = z.unknown();
 
@@ -3338,7 +3340,7 @@ export const postAccountUserResource400Schema = z.unknown();
 export const postAccountUserResource401Schema = z.unknown();
 
 /**
- * @description E-Mail address already exists
+ * @description Email address already exists
  */
 export const postAccountUserResource409Schema = z.unknown();
 
@@ -3353,7 +3355,7 @@ export const postAccountUserResourceMutationResponseSchema = z.union([
 ]);
 
 export const deleteAccountUserResourcePathParamsSchema = z.object({
-	accountUserId: z.coerce.number().int().describe("The account user id"),
+	accountUserId: z.coerce.number().int().describe("The account user ID"),
 });
 
 /**
@@ -3393,7 +3395,7 @@ export const getAddressesResourceQueryResponseSchema = z.lazy(() => getAddresses
 export const putAddressesResource200Schema = z.unknown();
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export const putAddressesResource400Schema = z.unknown();
 
@@ -3412,7 +3414,7 @@ export const putAddressesResourceMutationResponseSchema = z.lazy(
 );
 
 export const getAddressTokenResourcePathParamsSchema = z.object({
-	id: z.string().describe("The token id"),
+	id: z.string().describe("The token ID"),
 });
 
 /**
@@ -3435,7 +3437,7 @@ export const getAddressTokenResourceQueryResponseSchema = z.lazy(
 );
 
 export const getAddressTokenRedeemResourcePathParamsSchema = z.object({
-	id: z.string().describe("The token id"),
+	id: z.string().describe("The token ID"),
 });
 
 /**
@@ -3458,12 +3460,12 @@ export const getAddressTokenRedeemResourceQueryResponseSchema = z.lazy(
 );
 
 export const postAddressTokenRedeemResourcePathParamsSchema = z.object({
-	id: z.string().describe("The token id"),
+	id: z.string().describe("The token ID"),
 });
 
 export const postAddressTokenRedeemResourceQueryParamsSchema = z
 	.object({
-		email: z.optional(z.boolean().describe("If false no email will be send")),
+		email: z.optional(z.boolean().describe("If false, no email will be sent")),
 	})
 	.optional();
 
@@ -3492,7 +3494,7 @@ export const postAddressTokenRedeemResourceMutationResponseSchema = z.lazy(
 );
 
 export const postAddressResourcePathParamsSchema = z.object({
-	addressId: z.coerce.number().int().describe("The address id"),
+	addressId: z.coerce.number().int().describe("The address ID"),
 });
 
 /**
@@ -3501,7 +3503,7 @@ export const postAddressResourcePathParamsSchema = z.object({
 export const postAddressResource204Schema = z.unknown();
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export const postAddressResource400Schema = z.unknown();
 
@@ -3523,7 +3525,7 @@ export const postAddressResourceMutationRequestSchema = z.lazy(() => addressUpda
 export const postAddressResourceMutationResponseSchema = z.lazy(() => postAddressResource204Schema);
 
 export const deleteAddressResourcePathParamsSchema = z.object({
-	addressId: z.coerce.number().int().describe("The address id"),
+	addressId: z.coerce.number().int().describe("The address ID"),
 });
 
 /**
@@ -3546,7 +3548,7 @@ export const deleteAddressResourceMutationResponseSchema = z.lazy(
 );
 
 export const getAddressReservationsResourcePathParamsSchema = z.object({
-	addressId: z.coerce.number().int().describe("The address id"),
+	addressId: z.coerce.number().int().describe("The address ID"),
 });
 
 /**
@@ -3564,8 +3566,8 @@ export const getAddressReservationsResourceQueryResponseSchema = z.lazy(
 );
 
 export const postAddressReservationIssueResourcePathParamsSchema = z.object({
-	addressId: z.coerce.number().int().describe("The address id"),
-	id: z.string().describe("The address reservation id"),
+	addressId: z.coerce.number().int().describe("The address ID"),
+	id: z.string().describe("The address reservation ID"),
 });
 
 /**
@@ -3574,7 +3576,7 @@ export const postAddressReservationIssueResourcePathParamsSchema = z.object({
 export const postAddressReservationIssueResource204Schema = z.unknown();
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export const postAddressReservationIssueResource400Schema = z.unknown();
 
@@ -3588,8 +3590,8 @@ export const postAddressReservationIssueResourceMutationResponseSchema = z.lazy(
 );
 
 export const postAddressReservationRevokeResourcePathParamsSchema = z.object({
-	addressId: z.coerce.number().int().describe("The address id"),
-	id: z.string().describe("The address reservation id"),
+	addressId: z.coerce.number().int().describe("The address ID"),
+	id: z.string().describe("The address reservation ID"),
 });
 
 /**
@@ -3598,7 +3600,7 @@ export const postAddressReservationRevokeResourcePathParamsSchema = z.object({
 export const postAddressReservationRevokeResource204Schema = z.unknown();
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export const postAddressReservationRevokeResource400Schema = z.unknown();
 
@@ -3612,8 +3614,8 @@ export const postAddressReservationRevokeResourceMutationResponseSchema = z.lazy
 );
 
 export const postReservationAccessTimesUpdateResourcePathParamsSchema = z.object({
-	addressId: z.coerce.number().int().describe("The address id"),
-	id: z.string().describe("The reservation id"),
+	addressId: z.coerce.number().int().describe("The address ID"),
+	id: z.string().describe("The reservation ID"),
 });
 
 /**
@@ -3622,7 +3624,7 @@ export const postReservationAccessTimesUpdateResourcePathParamsSchema = z.object
 export const postReservationAccessTimesUpdateResource204Schema = z.unknown();
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export const postReservationAccessTimesUpdateResource400Schema = z.unknown();
 
@@ -3643,7 +3645,7 @@ export const postReservationAccessTimesUpdateResourceMutationResponseSchema = z.
 );
 
 export const getAddressTokensResourcePathParamsSchema = z.object({
-	addressId: z.coerce.number().int().describe("The address id"),
+	addressId: z.coerce.number().int().describe("The address ID"),
 });
 
 /**
@@ -3652,7 +3654,7 @@ export const getAddressTokensResourcePathParamsSchema = z.object({
 export const getAddressTokensResource200Schema = z.unknown();
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export const getAddressTokensResource400Schema = z.unknown();
 
@@ -3666,7 +3668,7 @@ export const getAddressTokensResourceQueryResponseSchema = z.lazy(
 );
 
 export const getAddressUnitsResourcePathParamsSchema = z.object({
-	addressId: z.coerce.number().int().describe("The address id"),
+	addressId: z.coerce.number().int().describe("The address ID"),
 });
 
 /**
@@ -3675,7 +3677,7 @@ export const getAddressUnitsResourcePathParamsSchema = z.object({
 export const getAddressUnitsResource200Schema = z.unknown();
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export const getAddressUnitsResource400Schema = z.unknown();
 
@@ -3689,7 +3691,7 @@ export const getAddressUnitsResourceQueryResponseSchema = z.lazy(
 );
 
 export const putAddressUnitsResourcePathParamsSchema = z.object({
-	addressId: z.coerce.number().int().describe("The address id"),
+	addressId: z.coerce.number().int().describe("The address ID"),
 });
 
 /**
@@ -3698,7 +3700,7 @@ export const putAddressUnitsResourcePathParamsSchema = z.object({
 export const putAddressUnitsResource200Schema = z.unknown();
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export const putAddressUnitsResource400Schema = z.unknown();
 
@@ -3725,7 +3727,7 @@ export const putAddressUnitsResourceMutationResponseSchema = z.lazy(
 );
 
 export const deleteAddressUnitsResourcePathParamsSchema = z.object({
-	addressId: z.coerce.number().int().describe("The address id"),
+	addressId: z.coerce.number().int().describe("The address ID"),
 });
 
 /**
@@ -3763,8 +3765,8 @@ export const deleteAddressUnitsResourceMutationResponseSchema = z.lazy(
 );
 
 export const deleteAddressUnitResourcePathParamsSchema = z.object({
-	addressId: z.coerce.number().int().describe("The address id"),
-	id: z.string().describe("The address unit id"),
+	addressId: z.coerce.number().int().describe("The address ID"),
+	id: z.string().describe("The address unit ID"),
 });
 
 /**
@@ -3816,7 +3818,7 @@ export const getDecentralWebhooksResourceQueryResponseSchema = z.lazy(
 export const putDecentralWebhooksResource200Schema = z.unknown();
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export const putDecentralWebhooksResource400Schema = z.unknown();
 
@@ -3883,7 +3885,7 @@ export const getApiKeysResourceQueryResponseSchema = z.lazy(() => getApiKeysReso
 export const putApiKeysResource200Schema = z.unknown();
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export const putApiKeysResource400Schema = z.unknown();
 
@@ -3900,7 +3902,7 @@ export const putApiKeysResourceMutationRequestSchema = z.lazy(() => apiKeyCreate
 export const putApiKeysResourceMutationResponseSchema = z.lazy(() => putApiKeysResource200Schema);
 
 export const postApiKeyResourcePathParamsSchema = z.object({
-	apiKeyId: z.coerce.number().int().describe("The api key id"),
+	apiKeyId: z.coerce.number().int().describe("The API key ID"),
 });
 
 /**
@@ -3926,7 +3928,7 @@ export const postApiKeyResourceMutationRequestSchema = z.lazy(() => apiKeyUpdate
 export const postApiKeyResourceMutationResponseSchema = z.lazy(() => postApiKeyResource204Schema);
 
 export const deleteApiKeyResourcePathParamsSchema = z.object({
-	apiKeyId: z.coerce.number().int().describe("The api key id"),
+	apiKeyId: z.coerce.number().int().describe("The API key ID"),
 });
 
 /**
@@ -3944,7 +3946,7 @@ export const deleteApiKeyResourceMutationResponseSchema = z.lazy(
 );
 
 export const getApiKeyAdvancedResourcePathParamsSchema = z.object({
-	apiKeyId: z.coerce.number().int().describe("The api key id"),
+	apiKeyId: z.coerce.number().int().describe("The API key ID"),
 });
 
 /**
@@ -3972,7 +3974,7 @@ export const getApiKeyAdvancedResourceQueryResponseSchema = z.lazy(
 );
 
 export const postApiKeyAdvancedResourcePathParamsSchema = z.object({
-	apiKeyId: z.coerce.number().int().describe("The api key id"),
+	apiKeyId: z.coerce.number().int().describe("The API key ID"),
 });
 
 /**
@@ -3981,7 +3983,7 @@ export const postApiKeyAdvancedResourcePathParamsSchema = z.object({
 export const postApiKeyAdvancedResource204Schema = z.unknown();
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export const postApiKeyAdvancedResource400Schema = z.unknown();
 
@@ -4002,7 +4004,7 @@ export const postApiKeyAdvancedResourceMutationResponseSchema = z.lazy(
 );
 
 export const putApiKeyAdvancedResourcePathParamsSchema = z.object({
-	apiKeyId: z.coerce.number().int().describe("The api key id"),
+	apiKeyId: z.coerce.number().int().describe("The API key ID"),
 });
 
 /**
@@ -4011,7 +4013,7 @@ export const putApiKeyAdvancedResourcePathParamsSchema = z.object({
 export const putApiKeyAdvancedResource204Schema = z.unknown();
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export const putApiKeyAdvancedResource400Schema = z.unknown();
 
@@ -4033,7 +4035,7 @@ export const putApiKeyAdvancedResourceMutationResponseSchema = z.lazy(
 );
 
 export const deleteApiKeyAdvancedResourcePathParamsSchema = z.object({
-	apiKeyId: z.coerce.number().int().describe("The api key id"),
+	apiKeyId: z.coerce.number().int().describe("The API key ID"),
 });
 
 /**
@@ -4051,7 +4053,7 @@ export const deleteApiKeyAdvancedResourceMutationResponseSchema = z.lazy(
 );
 
 export const postApiKeyAdvancedReactivateResourcePathParamsSchema = z.object({
-	apiKeyId: z.coerce.number().int().describe("The api key id"),
+	apiKeyId: z.coerce.number().int().describe("The API key ID"),
 });
 
 /**
@@ -4060,7 +4062,7 @@ export const postApiKeyAdvancedReactivateResourcePathParamsSchema = z.object({
 export const postApiKeyAdvancedReactivateResource204Schema = z.unknown();
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export const postApiKeyAdvancedReactivateResource400Schema = z.unknown();
 
@@ -4074,7 +4076,7 @@ export const postApiKeyAdvancedReactivateResourceMutationResponseSchema = z.lazy
 );
 
 export const getApiKeyTokensResourcePathParamsSchema = z.object({
-	apiKeyId: z.coerce.number().int().describe("The api key id"),
+	apiKeyId: z.coerce.number().int().describe("The API key ID"),
 });
 
 /**
@@ -4092,7 +4094,7 @@ export const getApiKeyTokensResourceQueryResponseSchema = z.lazy(
 );
 
 export const putApiKeyTokensResourcePathParamsSchema = z.object({
-	apiKeyId: z.coerce.number().int().describe("The api key id"),
+	apiKeyId: z.coerce.number().int().describe("The API key ID"),
 });
 
 /**
@@ -4101,7 +4103,7 @@ export const putApiKeyTokensResourcePathParamsSchema = z.object({
 export const putApiKeyTokensResource200Schema = z.unknown();
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export const putApiKeyTokensResource400Schema = z.unknown();
 
@@ -4120,8 +4122,8 @@ export const putApiKeyTokensResourceMutationResponseSchema = z.lazy(
 );
 
 export const postApiKeyTokenResourcePathParamsSchema = z.object({
-	apiKeyId: z.coerce.number().int().describe("The api key id"),
-	id: z.string().describe("The api key token id"),
+	apiKeyId: z.coerce.number().int().describe("The API key ID"),
+	id: z.string().describe("The API key token ID"),
 });
 
 /**
@@ -4149,8 +4151,8 @@ export const postApiKeyTokenResourceMutationResponseSchema = z.lazy(
 );
 
 export const deleteApiKeyTokenResourcePathParamsSchema = z.object({
-	apiKeyId: z.coerce.number().int().describe("The api key id"),
-	id: z.string().describe("The api key token id"),
+	apiKeyId: z.coerce.number().int().describe("The API key ID"),
+	id: z.string().describe("The API key token ID"),
 });
 
 /**
@@ -4168,7 +4170,7 @@ export const deleteApiKeyTokenResourceMutationResponseSchema = z.lazy(
 );
 
 export const getWebhookLogsResourcePathParamsSchema = z.object({
-	apiKeyId: z.coerce.number().int().describe("The api key id"),
+	apiKeyId: z.coerce.number().int().describe("The API key ID"),
 });
 
 export const getWebhookLogsResourceQueryParamsSchema = z.object({
@@ -4259,7 +4261,7 @@ export const getNotificationsResourceQueryResponseSchema = z.lazy(
 export const putNotificationsResource200Schema = z.unknown();
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export const putNotificationsResource400Schema = z.unknown();
 
@@ -4453,7 +4455,7 @@ export const getServicesResource401Schema = z.unknown();
 export const getServicesResourceQueryResponseSchema = z.lazy(() => getServicesResource200Schema);
 
 export const getServiceResourcePathParamsSchema = z.object({
-	serviceId: z.string().describe("The service id"),
+	serviceId: z.string().describe("The service ID"),
 });
 
 /**
@@ -4469,7 +4471,7 @@ export const getServiceResource401Schema = z.unknown();
 export const getServiceResourceQueryResponseSchema = z.lazy(() => getServiceResource200Schema);
 
 export const postServiceLinkResourcePathParamsSchema = z.object({
-	serviceId: z.string().describe("The service id"),
+	serviceId: z.string().describe("The service ID"),
 });
 
 /**
@@ -4478,7 +4480,7 @@ export const postServiceLinkResourcePathParamsSchema = z.object({
 export const postServiceLinkResource200Schema = z.unknown();
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export const postServiceLinkResource400Schema = z.unknown();
 
@@ -4492,7 +4494,7 @@ export const postServiceLinkResourceMutationResponseSchema = z.lazy(
 );
 
 export const postServiceSyncResourcePathParamsSchema = z.object({
-	serviceId: z.string().describe("The service id"),
+	serviceId: z.string().describe("The service ID"),
 });
 
 /**
@@ -4501,7 +4503,7 @@ export const postServiceSyncResourcePathParamsSchema = z.object({
 export const postServiceSyncResource204Schema = z.unknown();
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export const postServiceSyncResource400Schema = z.unknown();
 
@@ -4515,7 +4517,7 @@ export const postServiceSyncResourceMutationResponseSchema = z.lazy(
 );
 
 export const postServiceUnlinkResourcePathParamsSchema = z.object({
-	serviceId: z.string().describe("The service id"),
+	serviceId: z.string().describe("The service ID"),
 });
 
 /**
@@ -4524,7 +4526,7 @@ export const postServiceUnlinkResourcePathParamsSchema = z.object({
 export const postServiceUnlinkResource204Schema = z.unknown();
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export const postServiceUnlinkResource400Schema = z.unknown();
 
@@ -4640,7 +4642,7 @@ export const putSmartlocksAuthsResource204Schema = z.unknown();
 export const putSmartlocksAuthsResource400Schema = z.unknown();
 
 /**
- * @description Account not payed
+ * @description Account not paid
  */
 export const putSmartlocksAuthsResource402Schema = z.unknown();
 
@@ -4710,7 +4712,7 @@ export const putSmartlockAuthsAdvancedResource200Schema = z.unknown();
 export const putSmartlockAuthsAdvancedResource400Schema = z.unknown();
 
 /**
- * @description Account not payed
+ * @description Account not paid
  */
 export const putSmartlockAuthsAdvancedResource402Schema = z.unknown();
 
@@ -4789,7 +4791,7 @@ export const getSmartlocksLogsResourceQueryResponseSchema = z.lazy(
 );
 
 export const getSmartlockResourcePathParamsSchema = z.object({
-	smartlockId: z.coerce.number().int().describe("The smartlock id"),
+	smartlockId: z.coerce.number().int().describe("The smartlock ID"),
 });
 
 /**
@@ -4815,7 +4817,7 @@ export const getSmartlockResource404Schema = z.unknown();
 export const getSmartlockResourceQueryResponseSchema = z.lazy(() => getSmartlockResource200Schema);
 
 export const postSmartlockResourcePathParamsSchema = z.object({
-	smartlockId: z.coerce.number().int().describe("The smartlock id"),
+	smartlockId: z.coerce.number().int().describe("The smartlock ID"),
 });
 
 /**
@@ -4848,7 +4850,7 @@ export const postSmartlockResourceMutationResponseSchema = z.lazy(
 );
 
 export const deleteSmartlockResourcePathParamsSchema = z.object({
-	smartlockId: z.coerce.number().int().describe("The smartlock id"),
+	smartlockId: z.coerce.number().int().describe("The smartlock ID"),
 });
 
 /**
@@ -4876,7 +4878,7 @@ export const deleteSmartlockResourceMutationResponseSchema = z.lazy(
 );
 
 export const postSmartlockActionResourcePathParamsSchema = z.object({
-	smartlockId: z.string().describe("The smartlock id"),
+	smartlockId: z.string().describe("The smartlock ID"),
 });
 
 /**
@@ -4885,7 +4887,7 @@ export const postSmartlockActionResourcePathParamsSchema = z.object({
 export const postSmartlockActionResource204Schema = z.unknown();
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export const postSmartlockActionResource400Schema = z.unknown();
 
@@ -4895,7 +4897,7 @@ export const postSmartlockActionResource400Schema = z.unknown();
 export const postSmartlockActionResource401Schema = z.unknown();
 
 /**
- * @description Account not payed
+ * @description Account not paid
  */
 export const postSmartlockActionResource402Schema = z.unknown();
 
@@ -4904,7 +4906,7 @@ export const postSmartlockActionResourceMutationResponseSchema = z.lazy(
 );
 
 export const postSmartlockActionAdvancedResourcePathParamsSchema = z.object({
-	smartlockId: z.string().describe("The smartlock id"),
+	smartlockId: z.string().describe("The smartlock ID"),
 });
 
 /**
@@ -4918,7 +4920,7 @@ export const postSmartlockActionAdvancedResource200Schema = z.unknown();
 export const postSmartlockActionAdvancedResource400Schema = z.unknown();
 
 /**
- * @description Account not payed
+ * @description Account not paid
  */
 export const postSmartlockActionAdvancedResource402Schema = z.unknown();
 
@@ -4937,7 +4939,7 @@ export const postSmartlockActionAdvancedResourceMutationResponseSchema = z.lazy(
 );
 
 export const postSmartlockLockActionResourcePathParamsSchema = z.object({
-	smartlockId: z.string().describe("The smartlock id"),
+	smartlockId: z.string().describe("The smartlock ID"),
 });
 
 /**
@@ -4946,7 +4948,7 @@ export const postSmartlockLockActionResourcePathParamsSchema = z.object({
 export const postSmartlockLockActionResource204Schema = z.unknown();
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export const postSmartlockLockActionResource400Schema = z.unknown();
 
@@ -4965,7 +4967,7 @@ export const postSmartlockLockActionResourceMutationResponseSchema = z.lazy(
 );
 
 export const postSmartlockLockActionAdvancedResourcePathParamsSchema = z.object({
-	smartlockId: z.string().describe("The smartlock id"),
+	smartlockId: z.string().describe("The smartlock ID"),
 });
 
 /**
@@ -4974,7 +4976,7 @@ export const postSmartlockLockActionAdvancedResourcePathParamsSchema = z.object(
 export const postSmartlockLockActionAdvancedResource200Schema = z.unknown();
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export const postSmartlockLockActionAdvancedResource400Schema = z.unknown();
 
@@ -4993,7 +4995,7 @@ export const postSmartlockLockActionAdvancedResourceMutationResponseSchema = z.l
 );
 
 export const postSmartlockUnlockActionResourcePathParamsSchema = z.object({
-	smartlockId: z.string().describe("The smartlock id"),
+	smartlockId: z.string().describe("The smartlock ID"),
 });
 
 /**
@@ -5002,7 +5004,7 @@ export const postSmartlockUnlockActionResourcePathParamsSchema = z.object({
 export const postSmartlockUnlockActionResource204Schema = z.unknown();
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export const postSmartlockUnlockActionResource400Schema = z.unknown();
 
@@ -5021,7 +5023,7 @@ export const postSmartlockUnlockActionResourceMutationResponseSchema = z.lazy(
 );
 
 export const postSmartlockUnlockActionAdvancedResourcePathParamsSchema = z.object({
-	smartlockId: z.string().describe("The smartlock id"),
+	smartlockId: z.string().describe("The smartlock ID"),
 });
 
 /**
@@ -5030,7 +5032,7 @@ export const postSmartlockUnlockActionAdvancedResourcePathParamsSchema = z.objec
 export const postSmartlockUnlockActionAdvancedResource200Schema = z.unknown();
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export const postSmartlockUnlockActionAdvancedResource400Schema = z.unknown();
 
@@ -5049,7 +5051,7 @@ export const postSmartlockUnlockActionAdvancedResourceMutationResponseSchema = z
 );
 
 export const postSmartlockAdminPinResourcePathParamsSchema = z.object({
-	smartlockId: z.coerce.number().int().describe("The smartlock id"),
+	smartlockId: z.coerce.number().int().describe("The smartlock ID"),
 });
 
 /**
@@ -5079,7 +5081,7 @@ export const postSmartlockAdminPinResourceMutationResponseSchema = z.lazy(
 );
 
 export const postSmartlockAdvancedConfigResourcePathParamsSchema = z.object({
-	smartlockId: z.coerce.number().int().describe("The smartlock id"),
+	smartlockId: z.coerce.number().int().describe("The smartlock ID"),
 });
 
 /**
@@ -5110,7 +5112,7 @@ export const postSmartlockAdvancedConfigResourceMutationResponseSchema = z.lazy(
 );
 
 export const postSmartlockOpenerAdvancedConfigResourcePathParamsSchema = z.object({
-	smartlockId: z.coerce.number().int().describe("The smartlock (opener) id"),
+	smartlockId: z.coerce.number().int().describe("The smartlock (opener) ID"),
 });
 
 /**
@@ -5141,7 +5143,7 @@ export const postSmartlockOpenerAdvancedConfigResourceMutationResponseSchema = z
 );
 
 export const postSmartdoorAdvancedConfigResourcePathParamsSchema = z.object({
-	smartlockId: z.coerce.number().int().describe("The smartdoor id"),
+	smartlockId: z.coerce.number().int().describe("The smartdoor ID"),
 });
 
 /**
@@ -5172,7 +5174,7 @@ export const postSmartdoorAdvancedConfigResourceMutationResponseSchema = z.lazy(
 );
 
 export const getSmartlockAuthsResourcePathParamsSchema = z.object({
-	smartlockId: z.coerce.number().int().describe("The smartlock id"),
+	smartlockId: z.coerce.number().int().describe("The smartlock ID"),
 });
 
 export const getSmartlockAuthsResourceQueryParamsSchema = z
@@ -5206,7 +5208,7 @@ export const getSmartlockAuthsResourceQueryResponseSchema = z.lazy(
 );
 
 export const putSmartlockAuthsResourcePathParamsSchema = z.object({
-	smartlockId: z.coerce.number().int().describe("The smartlock id"),
+	smartlockId: z.coerce.number().int().describe("The smartlock ID"),
 });
 
 /**
@@ -5220,7 +5222,7 @@ export const putSmartlockAuthsResource204Schema = z.unknown();
 export const putSmartlockAuthsResource400Schema = z.unknown();
 
 /**
- * @description Account not payed
+ * @description Account not paid
  */
 export const putSmartlockAuthsResource402Schema = z.unknown();
 
@@ -5246,7 +5248,7 @@ export const putSmartlockAuthsResourceMutationResponseSchema = z.lazy(
 );
 
 export const postSmartlockAuthWithSharedKeyResourcePathParamsSchema = z.object({
-	smartlockId: z.coerce.number().int().describe("The smartlock id"),
+	smartlockId: z.coerce.number().int().describe("The smartlock ID"),
 });
 
 /**
@@ -5265,7 +5267,7 @@ export const postSmartlockAuthWithSharedKeyResource401Schema = z.unknown();
 export const postSmartlockAuthWithSharedKeyResource403Schema = z.unknown();
 
 /**
- * @description Id not found
+ * @description Not found
  */
 export const postSmartlockAuthWithSharedKeyResource404Schema = z.unknown();
 
@@ -5281,8 +5283,8 @@ export const postSmartlockAuthWithSharedKeyResourceMutationResponseSchema = z.la
 );
 
 export const getSmartlockAuthResourcePathParamsSchema = z.object({
-	smartlockId: z.coerce.number().int().describe("The smartlock id"),
-	id: z.string().describe("The smartlock auth unique id"),
+	smartlockId: z.coerce.number().int().describe("The smartlock ID"),
+	id: z.string().describe("The smartlock auth unique ID"),
 });
 
 /**
@@ -5305,8 +5307,8 @@ export const getSmartlockAuthResourceQueryResponseSchema = z.lazy(
 );
 
 export const postSmartlockAuthResourcePathParamsSchema = z.object({
-	smartlockId: z.coerce.number().int().describe("The smartlock id"),
-	id: z.string().describe("The smartlock authorization unique id"),
+	smartlockId: z.coerce.number().int().describe("The smartlock ID"),
+	id: z.string().describe("The smartlock authorization unique ID"),
 });
 
 /**
@@ -5351,8 +5353,8 @@ export const postSmartlockAuthResourceMutationResponseSchema = z.lazy(
 );
 
 export const deleteSmartlockAuthResourcePathParamsSchema = z.object({
-	smartlockId: z.coerce.number().int().describe("The smartlock id"),
-	id: z.string().describe("The smartlock authorization unique id"),
+	smartlockId: z.coerce.number().int().describe("The smartlock ID"),
+	id: z.string().describe("The smartlock authorization unique ID"),
 });
 
 /**
@@ -5380,7 +5382,7 @@ export const deleteSmartlockAuthResourceMutationResponseSchema = z.lazy(
 );
 
 export const postSmartlockConfigResourcePathParamsSchema = z.object({
-	smartlockId: z.coerce.number().int().describe("The smartlock id"),
+	smartlockId: z.coerce.number().int().describe("The smartlock ID"),
 });
 
 /**
@@ -5426,7 +5428,7 @@ export const postSmartlockConfigResourceMutationResponseSchema = z.lazy(
 );
 
 export const getSmartlockLogsResourcePathParamsSchema = z.object({
-	smartlockId: z.coerce.number().int().describe("The smartlock id"),
+	smartlockId: z.coerce.number().int().describe("The smartlock ID"),
 });
 
 export const getSmartlockLogsResourceQueryParamsSchema = z.object({
@@ -5454,7 +5456,7 @@ export const getSmartlockLogsResourceQueryResponseSchema = z.lazy(
 );
 
 export const postSmartlockSyncResourcePathParamsSchema = z.object({
-	smartlockId: z.string().describe("The smartlock id"),
+	smartlockId: z.string().describe("The smartlock ID"),
 });
 
 /**
@@ -5463,7 +5465,7 @@ export const postSmartlockSyncResourcePathParamsSchema = z.object({
 export const postSmartlockSyncResource204Schema = z.unknown();
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export const postSmartlockSyncResource400Schema = z.unknown();
 
@@ -5477,7 +5479,7 @@ export const postSmartlockSyncResourceMutationResponseSchema = z.lazy(
 );
 
 export const postSmartlockWebConfigResourcePathParamsSchema = z.object({
-	smartlockId: z.coerce.number().int().describe("The smartlock id"),
+	smartlockId: z.coerce.number().int().describe("The smartlock ID"),
 });
 
 /**

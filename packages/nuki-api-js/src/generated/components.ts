@@ -516,7 +516,7 @@ export async function deleteAccountsResource({
 }
 
 /**
- * @summary Triggers the email change verification email
+ * @summary Trigger the email change verification email
  * {@link /account/email/change}
  */
 export async function postAccountEmailChangeResource({
@@ -544,7 +544,7 @@ export async function postAccountEmailChangeResource({
 }
 
 /**
- * @summary Triggers the email change verification email
+ * @summary Trigger the email change verification email
  * {@link /account/email/verify}
  */
 export async function postAccountEmailVerifyResource({
@@ -616,7 +616,7 @@ export async function deleteAccountIntegrationsResource({
 }
 
 /**
- * @summary Enables one time password for an account
+ * @summary Enable one-time password for an account
  * {@link /account/otp}
  */
 export async function postAccountOtpResource({
@@ -640,7 +640,7 @@ export async function postAccountOtpResource({
 }
 
 /**
- * @summary Create an one time password secret
+ * @summary Create a one-time password secret
  * {@link /account/otp}
  */
 export async function putAccountOtpResource({
@@ -662,7 +662,7 @@ export async function putAccountOtpResource({
 }
 
 /**
- * @summary Disables one time password for an account
+ * @summary Disable one-time password for an account
  * {@link /account/otp}
  */
 export async function deleteAccountOtpResource({
@@ -778,7 +778,7 @@ export async function deleteAccountSettingResource({
 }
 
 /**
- * @summary Get an list of sub accounts
+ * @summary Get a list of sub accounts
  * {@link /account/sub}
  */
 export async function getAccountSubsResource({
@@ -802,7 +802,7 @@ export async function getAccountSubsResource({
 }
 
 /**
- * @summary Create an sub account
+ * @summary Create a sub account
  * {@link /account/sub}
  */
 export async function putAccountSubsResource({
@@ -826,7 +826,7 @@ export async function putAccountSubsResource({
 }
 
 /**
- * @summary Get an sub account
+ * @summary Get a sub account
  * {@link /account/sub/:accountId}
  */
 export async function getAccountSubResource({
@@ -854,7 +854,7 @@ export async function getAccountSubResource({
 }
 
 /**
- * @summary Update an sub account
+ * @summary Update a sub account
  * {@link /account/sub/:accountId}
  */
 export async function postAccountSubResource({
@@ -884,7 +884,7 @@ export async function postAccountSubResource({
 }
 
 /**
- * @summary Delete an sub account
+ * @summary Delete a sub account
  * {@link /account/sub/:accountId}
  */
 export async function deleteAccountSubResource({
@@ -912,7 +912,7 @@ export async function deleteAccountSubResource({
 }
 
 /**
- * @summary Get an list of account users
+ * @summary Get a list of account users
  * {@link /account/user}
  */
 export async function getAccountUsersResource({
@@ -1020,7 +1020,7 @@ export async function postAccountUserResource({
 }
 
 /**
- * @summary Deletes asynchronous an account user
+ * @summary Delete an account user asynchronously
  * {@link /account/user/:accountUserId}
  */
 export async function deleteAccountUserResource({
@@ -1094,7 +1094,7 @@ export async function putAddressesResource({
 }
 
 /**
- * @summary Gives some info about address token
+ * @summary Get info about an address token
  * {@link /address/token/:id}
  */
 export async function getAddressTokenResource({
@@ -1122,7 +1122,7 @@ export async function getAddressTokenResource({
 }
 
 /**
- * @summary Gives an redeemed address token
+ * @summary Get a redeemed address token
  * {@link /address/token/:id/redeem}
  */
 export async function getAddressTokenRedeemResource({
@@ -1150,7 +1150,7 @@ export async function getAddressTokenRedeemResource({
 }
 
 /**
- * @summary Redeems an address token
+ * @summary Redeem an address token
  * {@link /address/token/:id/redeem}
  */
 export async function postAddressTokenRedeemResource({
@@ -1463,7 +1463,7 @@ export async function putAddressUnitsResource({
 }
 
 /**
- * @summary Deletes address units asynchronously
+ * @summary Delete address units asynchronously
  * {@link /address/:addressId/unit}
  */
 export async function deleteAddressUnitsResource({
@@ -1610,7 +1610,7 @@ export async function deleteDecentralWebhookResource({
 }
 
 /**
- * @summary Get a list of api keys
+ * @summary Get a list of API keys
  * {@link /api/key}
  */
 export async function getApiKeysResource({
@@ -1632,7 +1632,7 @@ export async function getApiKeysResource({
 }
 
 /**
- * @summary Create an api key
+ * @summary Create an API key
  * {@link /api/key}
  */
 export async function putApiKeysResource({
@@ -1656,7 +1656,7 @@ export async function putApiKeysResource({
 }
 
 /**
- * @summary Update an api key
+ * @summary Update an API key
  * {@link /api/key/:apiKeyId}
  */
 export async function postApiKeyResource({
@@ -1686,7 +1686,7 @@ export async function postApiKeyResource({
 }
 
 /**
- * @summary Delete an api key
+ * @summary Delete an API key
  * {@link /api/key/:apiKeyId}
  */
 export async function deleteApiKeyResource({
@@ -1714,7 +1714,7 @@ export async function deleteApiKeyResource({
 }
 
 /**
- * @summary Get an advanced api key
+ * @summary Get an advanced API key
  * {@link /api/key/:apiKeyId/advanced}
  */
 export async function getApiKeyAdvancedResource({
@@ -1744,7 +1744,7 @@ export async function getApiKeyAdvancedResource({
 }
 
 /**
- * @summary Update an advanced api key
+ * @summary Update an advanced API key
  * {@link /api/key/:apiKeyId/advanced}
  */
 export async function postApiKeyAdvancedResource({
@@ -1774,7 +1774,7 @@ export async function postApiKeyAdvancedResource({
 }
 
 /**
- * @summary Create an advanced api key
+ * @summary Create an advanced API key
  * {@link /api/key/:apiKeyId/advanced}
  */
 export async function putApiKeyAdvancedResource({
@@ -1804,7 +1804,7 @@ export async function putApiKeyAdvancedResource({
 }
 
 /**
- * @summary Delete an advanced api key
+ * @summary Delete an advanced API key
  * {@link /api/key/:apiKeyId/advanced}
  */
 export async function deleteApiKeyAdvancedResource({
@@ -1832,7 +1832,7 @@ export async function deleteApiKeyAdvancedResource({
 }
 
 /**
- * @summary Reactivates a deactivated advanced webhook integration
+ * @summary Reactivate a deactivated advanced webhook integration
  * {@link /api/key/:apiKeyId/advanced/reactivate}
  */
 export async function postApiKeyAdvancedReactivateResource({
@@ -1860,7 +1860,7 @@ export async function postApiKeyAdvancedReactivateResource({
 }
 
 /**
- * @summary Get a list of api key tokens
+ * @summary Get a list of API key tokens
  * {@link /api/key/:apiKeyId/token}
  */
 export async function getApiKeyTokensResource({
@@ -1888,7 +1888,7 @@ export async function getApiKeyTokensResource({
 }
 
 /**
- * @summary Create an api key token
+ * @summary Create an API key token
  * {@link /api/key/:apiKeyId/token}
  */
 export async function putApiKeyTokensResource({
@@ -1918,7 +1918,7 @@ export async function putApiKeyTokensResource({
 }
 
 /**
- * @summary Update an api key token
+ * @summary Update an API key token
  * {@link /api/key/:apiKeyId/token/:id}
  */
 export async function postApiKeyTokenResource({
@@ -1952,7 +1952,7 @@ export async function postApiKeyTokenResource({
 }
 
 /**
- * @summary Delete an api key token
+ * @summary Delete an API key token
  * {@link /api/key/:apiKeyId/token/:id}
  */
 export async function deleteApiKeyTokenResource({
@@ -2014,7 +2014,7 @@ export async function getWebhookLogsResource({
 }
 
 /**
- * @summary Updates the web config for a group of smartlocks
+ * @summary Update the web config for a group of smartlocks
  * {@link /bulk-web-config}
  */
 export async function postSmartlockBulkWebConfigResource({
@@ -2038,7 +2038,7 @@ export async function postSmartlockBulkWebConfigResource({
 }
 
 /**
- * @summary Get an list of companies
+ * @summary Get a list of companies
  * {@link /company}
  */
 export async function getCompaniesResource({
@@ -2356,7 +2356,7 @@ export async function getServiceResource({
 }
 
 /**
- * @summary Links a service
+ * @summary Link a service
  * {@link /service/:serviceId/link}
  */
 export async function postServiceLinkResource({
@@ -2384,7 +2384,7 @@ export async function postServiceLinkResource({
 }
 
 /**
- * @summary Syncs a service
+ * @summary Sync a service
  * {@link /service/:serviceId/sync}
  */
 export async function postServiceSyncResource({
@@ -2412,7 +2412,7 @@ export async function postServiceSyncResource({
 }
 
 /**
- * @summary Unlinks a service
+ * @summary Unlink a service
  * {@link /service/:serviceId/unlink}
  */
 export async function postServiceUnlinkResource({
@@ -2488,7 +2488,7 @@ export async function getSmartlocksAuthsResource({
 }
 
 /**
- * @summary Updates smartlock authorizations asynchronously
+ * @summary Update smartlock authorizations asynchronously
  * {@link /smartlock/auth}
  */
 export async function postSmartlocksAuthsResource({
@@ -2518,7 +2518,7 @@ export async function postSmartlocksAuthsResource({
 }
 
 /**
- * @summary Creates asynchronous smartlock authorizations
+ * @summary Create smartlock authorizations asynchronously
  * {@link /smartlock/auth}
  */
 export async function putSmartlocksAuthsResource({
@@ -2547,7 +2547,7 @@ export async function putSmartlocksAuthsResource({
 }
 
 /**
- * @summary Deletes smartlock authorizations asynchronously
+ * @summary Delete smartlock authorizations asynchronously
  * {@link /smartlock/auth}
  */
 export async function deleteSmartlocksAuthsResource({
@@ -2576,7 +2576,7 @@ export async function deleteSmartlocksAuthsResource({
 }
 
 /**
- * @summary Creates asynchronous smartlock authorizations
+ * @summary Create smartlock authorizations asynchronously
  * {@link /smartlock/auth/advanced}
  */
 export async function putSmartlockAuthsAdvancedResource({
@@ -2773,7 +2773,7 @@ export async function postSmartlockActionResource({
 }
 
 /**
- * @summary Smartlock Action with Callback
+ * @summary Lock & unlock a smartlock with callback
  * {@link /smartlock/:smartlockId/action/advanced}
  */
 export async function postSmartlockActionAdvancedResource({
@@ -2934,7 +2934,7 @@ export async function postSmartlockUnlockActionAdvancedResource({
 }
 
 /**
- * @summary Updates a smartlock admin pin
+ * @summary Update a smartlock admin PIN
  * {@link /smartlock/:smartlockId/admin/pin}
  */
 export async function postSmartlockAdminPinResource({
@@ -2964,7 +2964,7 @@ export async function postSmartlockAdminPinResource({
 }
 
 /**
- * @summary Updates a smartlock advanced config
+ * @summary Update a smartlock advanced config
  * {@link /smartlock/:smartlockId/advanced/config}
  */
 export async function postSmartlockAdvancedConfigResource({
@@ -2994,7 +2994,7 @@ export async function postSmartlockAdvancedConfigResource({
 }
 
 /**
- * @summary Updates an opener advanced config
+ * @summary Update an opener advanced config
  * {@link /smartlock/:smartlockId/advanced/openerconfig}
  */
 export async function postSmartlockOpenerAdvancedConfigResource({
@@ -3031,7 +3031,7 @@ export async function postSmartlockOpenerAdvancedConfigResource({
 }
 
 /**
- * @summary Updates a smartdoor advanced config
+ * @summary Update a smartdoor advanced config
  * {@link /smartlock/:smartlockId/advanced/smartdoorconfig}
  */
 export async function postSmartdoorAdvancedConfigResource({
@@ -3096,7 +3096,7 @@ export async function getSmartlockAuthsResource({
 }
 
 /**
- * @summary Creates asynchronous a smartlock authorization
+ * @summary Create a smartlock authorization asynchronously
  * {@link /smartlock/:smartlockId/auth}
  */
 export async function putSmartlockAuthsResource({
@@ -3202,7 +3202,7 @@ export async function getSmartlockAuthResource({
 }
 
 /**
- * @summary Updates asynchronous a smartlock authorization
+ * @summary Update a smartlock authorization asynchronously
  * {@link /smartlock/:smartlockId/auth/:id}
  */
 export async function postSmartlockAuthResource({
@@ -3242,7 +3242,7 @@ export async function postSmartlockAuthResource({
 }
 
 /**
- * @summary Deletes asynchronous a smartlock authorization
+ * @summary Delete a smartlock authorization asynchronously
  * {@link /smartlock/:smartlockId/auth/:id}
  */
 export async function deleteSmartlockAuthResource({
@@ -3278,7 +3278,7 @@ export async function deleteSmartlockAuthResource({
 }
 
 /**
- * @summary Updates a smartlock config
+ * @summary Update a smartlock config
  * {@link /smartlock/:smartlockId/config}
  */
 export async function postSmartlockConfigResource({
@@ -3338,7 +3338,7 @@ export async function getSmartlockLogsResource({
 }
 
 /**
- * @summary Syncs a smartlock
+ * @summary Sync a smartlock
  * {@link /smartlock/:smartlockId/sync}
  */
 export async function postSmartlockSyncResource({
@@ -3366,7 +3366,7 @@ export async function postSmartlockSyncResource({
 }
 
 /**
- * @summary Updates a smartlock web config
+ * @summary Update a smartlock web config
  * {@link /smartlock/:smartlockId/web/config}
  */
 export async function postSmartlockWebConfigResource({
