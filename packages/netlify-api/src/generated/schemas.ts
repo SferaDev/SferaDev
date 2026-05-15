@@ -370,6 +370,94 @@ export const runDatabaseMigrationsRequestSchema = z
 	})
 	.describe("Request body for running database migrations");
 
+/**
+ * @description Request body for resetting a database branch
+ */
+export const resetDatabaseBranchRequestSchema = z
+	.object({
+		source_branch_id: z.optional(
+			z
+				.string()
+				.describe(
+					'The ID of the branch to re-fork the target branch from. Defaults to "production" if not specified.',
+				),
+		),
+	})
+	.describe("Request body for resetting a database branch");
+
+/**
+ * @description Response for a database branch reset
+ */
+export const resetDatabaseBranchResponseSchema = z
+	.object({
+		reset: z.optional(
+			z
+				.boolean()
+				.describe(
+					"Whether the branch was actually re-forked. False when the target was already in sync with the source and `force=true` was not set.",
+				),
+		),
+		connection_string: z.optional(
+			z.string().describe("The connection string for the reset (or unchanged) branch"),
+		),
+		metadata: z.optional(
+			z.object({}).catchall(z.unknown()).describe("Metadata associated with the branch"),
+		),
+	})
+	.describe("Response for a database branch reset");
+
+/**
+ * @description Response containing the list of migrations for a branch
+ */
+export const listDatabaseMigrationsResponseSchema = z
+	.object({
+		migrations: z.optional(
+			z
+				.array(
+					z
+						.object({
+							version: z.optional(z.int().describe("The migration version number")),
+							name: z.optional(z.string().describe("The migration name")),
+							path: z.optional(
+								z.string().describe("The path to the migration file in the deploy bundle"),
+							),
+							applied: z.optional(
+								z.boolean().describe("Whether this migration has been applied to the branch"),
+							),
+						})
+						.describe("A migration available to a database branch"),
+				)
+				.describe("List of migrations"),
+		),
+	})
+	.describe("Response containing the list of migrations for a branch");
+
+/**
+ * @description A migration available to a database branch
+ */
+export const databaseMigrationSchema = z
+	.object({
+		version: z.optional(z.int().describe("The migration version number")),
+		name: z.optional(z.string().describe("The migration name")),
+		path: z.optional(z.string().describe("The path to the migration file in the deploy bundle")),
+		applied: z.optional(
+			z.boolean().describe("Whether this migration has been applied to the branch"),
+		),
+	})
+	.describe("A migration available to a database branch");
+
+/**
+ * @description A migration with its file contents
+ */
+export const databaseMigrationDetailSchema = z
+	.object({
+		version: z.optional(z.int().describe("The migration version number")),
+		name: z.optional(z.string().describe("The migration name")),
+		path: z.optional(z.string().describe("The path to the migration file in the deploy bundle")),
+		content: z.optional(z.string().describe("The raw contents of the migration file")),
+	})
+	.describe("A migration with its file contents");
+
 export const deployValidationsReportSchema = z.object({
 	id: z.optional(z.string().describe("The id of the deploy validations report")),
 	deploy_id: z.optional(z.string().describe("The id of the deploy")),
@@ -9385,6 +9473,83 @@ export const deleteSiteDatabaseBranchMutationResponseSchema = z.lazy(
 	() => deleteSiteDatabaseBranch204Schema,
 );
 
+export const resetSiteDatabaseBranchPathParamsSchema = z.object({
+	site_id: z.string(),
+	branch_id: z.string().describe("The branch ID to reset"),
+});
+
+export const resetSiteDatabaseBranchQueryParamsSchema = z
+	.object({
+		force: z.optional(
+			z
+				.boolean()
+				.describe("If true, resets the branch even when it is already in sync with the source."),
+		),
+		role: z.optional(
+			z
+				.enum(["netlifydb_owner", "netlifydb_readonly"])
+				.describe(
+					"The database role to use for the returned connection string. Defaults to netlifydb_owner if not specified.",
+				),
+		),
+	})
+	.optional();
+
+/**
+ * @description OK
+ */
+export const resetSiteDatabaseBranch200Schema = z
+	.object({
+		reset: z.optional(
+			z
+				.boolean()
+				.describe(
+					"Whether the branch was actually re-forked. False when the target was already in sync with the source and `force=true` was not set.",
+				),
+		),
+		connection_string: z.optional(
+			z.string().describe("The connection string for the reset (or unchanged) branch"),
+		),
+		metadata: z.optional(
+			z.object({}).catchall(z.unknown()).describe("Metadata associated with the branch"),
+		),
+	})
+	.describe("Response for a database branch reset");
+
+/**
+ * @description Invalid request — for example, the target is the production branch or the source branch is the same as the target.
+ */
+export const resetSiteDatabaseBranch400Schema = z.unknown();
+
+/**
+ * @description Database or branch not found
+ */
+export const resetSiteDatabaseBranch404Schema = z.unknown();
+
+/**
+ * @description error
+ */
+export const resetSiteDatabaseBranchErrorSchema = z.object({
+	code: z.optional(z.int()),
+	message: z.string(),
+});
+
+export const resetSiteDatabaseBranchMutationRequestSchema = z
+	.object({
+		source_branch_id: z.optional(
+			z
+				.string()
+				.describe(
+					'The ID of the branch to re-fork the target branch from. Defaults to "production" if not specified.',
+				),
+		),
+	})
+	.describe("Request body for resetting a database branch");
+
+export const resetSiteDatabaseBranchMutationResponseSchema = z.lazy(
+	() => resetSiteDatabaseBranch200Schema,
+);
+
 export const setSiteDatabaseBranchComputeSettingsPathParamsSchema = z.object({
 	site_id: z.string(),
 	branch_id: z.string().describe("The branch ID"),
@@ -9506,6 +9671,121 @@ export const clearSiteDatabaseComputeSettingsErrorSchema = z.object({
 
 export const clearSiteDatabaseComputeSettingsMutationResponseSchema = z.lazy(
 	() => clearSiteDatabaseComputeSettings204Schema,
+);
+
+export const listSiteDatabaseMigrationsPathParamsSchema = z.object({
+	site_id: z.string(),
+});
+
+export const listSiteDatabaseMigrationsQueryParamsSchema = z
+	.object({
+		branch: z.optional(
+			z
+				.string()
+				.describe(
+					'The branch ID to list migrations for. Defaults to "production" if not specified.',
+				),
+		),
+	})
+	.optional();
+
+/**
+ * @description OK
+ */
+export const listSiteDatabaseMigrations200Schema = z
+	.object({
+		migrations: z.optional(
+			z
+				.array(
+					z
+						.object({
+							version: z.optional(z.int().describe("The migration version number")),
+							name: z.optional(z.string().describe("The migration name")),
+							path: z.optional(
+								z.string().describe("The path to the migration file in the deploy bundle"),
+							),
+							applied: z.optional(
+								z.boolean().describe("Whether this migration has been applied to the branch"),
+							),
+						})
+						.describe("A migration available to a database branch"),
+				)
+				.describe("List of migrations"),
+		),
+	})
+	.describe("Response containing the list of migrations for a branch");
+
+/**
+ * @description Database or branch not found
+ */
+export const listSiteDatabaseMigrations404Schema = z.unknown();
+
+/**
+ * @description Database is disabled
+ */
+export const listSiteDatabaseMigrations423Schema = z.unknown();
+
+/**
+ * @description error
+ */
+export const listSiteDatabaseMigrationsErrorSchema = z.object({
+	code: z.optional(z.int()),
+	message: z.string(),
+});
+
+export const listSiteDatabaseMigrationsQueryResponseSchema = z.lazy(
+	() => listSiteDatabaseMigrations200Schema,
+);
+
+export const getSiteDatabaseMigrationPathParamsSchema = z.object({
+	site_id: z.string(),
+	name: z.string().describe("The migration name"),
+});
+
+export const getSiteDatabaseMigrationQueryParamsSchema = z
+	.object({
+		branch: z.optional(
+			z
+				.string()
+				.describe(
+					"The branch ID to look up the migration on. Defaults to the currently published deploy's branch.",
+				),
+		),
+	})
+	.optional();
+
+/**
+ * @description OK
+ */
+export const getSiteDatabaseMigration200Schema = z
+	.object({
+		version: z.optional(z.int().describe("The migration version number")),
+		name: z.optional(z.string().describe("The migration name")),
+		path: z.optional(z.string().describe("The path to the migration file in the deploy bundle")),
+		content: z.optional(z.string().describe("The raw contents of the migration file")),
+	})
+	.describe("A migration with its file contents");
+
+/**
+ * @description Migration, database, or branch not found
+ */
+export const getSiteDatabaseMigration404Schema = z.unknown();
+
+/**
+ * @description Database is disabled
+ */
+export const getSiteDatabaseMigration423Schema = z.unknown();
+
+/**
+ * @description error
+ */
+export const getSiteDatabaseMigrationErrorSchema = z.object({
+	code: z.optional(z.int()),
+	message: z.string(),
+});
+
+export const getSiteDatabaseMigrationQueryResponseSchema = z.lazy(
+	() => getSiteDatabaseMigration200Schema,
 );
 
 export const runSiteDatabaseMigrationsPathParamsSchema = z.object({
