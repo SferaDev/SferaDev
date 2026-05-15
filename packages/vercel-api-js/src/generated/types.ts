@@ -1291,9 +1291,10 @@ export type EdgeConfigItem = {
  */
 export type EdgeConfigToken = {
 	/**
+	 * @description A partially-masked representation of the token, safe to display in UIs. The format is the first 3 characters of the token followed by a fixed 8-character `*` mask (e.g. `550e8400-e29b-41d4-a716-446655440000` → `550********`). The mask length is intentionally fixed (not proportional to the original token length) to avoid leaking the token length. Prefer this field for display/reference in UIs and logs. The full, plaintext token is only disclosed once at creation time via `POST /v1/edge-config/:edgeConfigId/token`; use `id` to reference a token in subsequent calls (e.g. when deleting).
 	 * @type string
 	 */
-	token: string;
+	partialToken: string;
 	/**
 	 * @type string
 	 */
@@ -1311,6 +1312,11 @@ export type EdgeConfigToken = {
 	 * @type number
 	 */
 	createdAt: number;
+	/**
+	 * @description Deprecated: the full, plaintext token. - Returned once by `POST /v1/edge-config/:edgeConfigId/token` (create). - Still returned by `GET /v1/edge-config/:edgeConfigId/token/:token` (detail) for backwards compatibility, but scheduled for removal. - **Not** returned by `GET /v1/edge-config/:edgeConfigId/tokens` (list); use `partialToken` for display and `id` to reference tokens. Do not rely on this field being present on read operations. Prefer `partialToken` for display and `id` for references.
+	 * @type string | undefined
+	 */
+	token?: string | undefined;
 };
 
 export const entitiesTypeEnum = {
@@ -1347,10 +1353,20 @@ export const userEventTypeEnum = {
 	"access-group-updated": "access-group-updated",
 	"access-group-user-added": "access-group-user-added",
 	"access-group-user-removed": "access-group-user-removed",
+	"agentic-provisioning-account-blocked": "agentic-provisioning-account-blocked",
+	"agentic-provisioning-account-linked": "agentic-provisioning-account-linked",
+	"agentic-provisioning-account-relinked": "agentic-provisioning-account-relinked",
+	"agentic-provisioning-account-unlinked": "agentic-provisioning-account-unlinked",
+	"agentic-provisioning-credentials-rotated": "agentic-provisioning-credentials-rotated",
+	"agentic-provisioning-plan-changed": "agentic-provisioning-plan-changed",
+	"agentic-provisioning-team-created": "agentic-provisioning-team-created",
 	"ai-alert-investigation": "ai-alert-investigation",
 	"ai-code-review": "ai-code-review",
 	"ai-gateway-api-key-created": "ai-gateway-api-key-created",
 	"ai-gateway-api-key-deleted": "ai-gateway-api-key-deleted",
+	"ai-gateway-byok-credential-created": "ai-gateway-byok-credential-created",
+	"ai-gateway-byok-credential-deleted": "ai-gateway-byok-credential-deleted",
+	"ai-gateway-byok-credential-updated": "ai-gateway-byok-credential-updated",
 	"alert-rule-created": "alert-rule-created",
 	"alert-rule-deleted": "alert-rule-deleted",
 	"alert-rule-updated": "alert-rule-updated",
@@ -1402,6 +1418,8 @@ export const userEventTypeEnum = {
 	"connect-github-limited": "connect-github-limited",
 	"connect-gitlab": "connect-gitlab",
 	"connect-gitlab-app": "connect-gitlab-app",
+	"custom-alert-created": "custom-alert-created",
+	"custom-alert-deleted": "custom-alert-deleted",
 	"custom-suffix-clear": "custom-suffix-clear",
 	"custom-suffix-disable": "custom-suffix-disable",
 	"custom-suffix-enable": "custom-suffix-enable",
@@ -1481,6 +1499,7 @@ export const userEventTypeEnum = {
 	"env-variable-read:cli:pull": "env-variable-read:cli:pull",
 	"env-variable-read:unknown-source": "env-variable-read:unknown-source",
 	"env-variable-read:v0:env:pull": "env-variable-read:v0:env:pull",
+	"env-variable-rotated": "env-variable-rotated",
 	"firewall-bypass-created": "firewall-bypass-created",
 	"firewall-bypass-deleted": "firewall-bypass-deleted",
 	"firewall-config-modified": "firewall-config-modified",
@@ -1489,14 +1508,25 @@ export const userEventTypeEnum = {
 	"firewall-managed-rulegroup-updated": "firewall-managed-rulegroup-updated",
 	"firewall-managed-ruleset-updated": "firewall-managed-ruleset-updated",
 	flag: "flag",
+	"flag-archived": "flag-archived",
+	"flag-created": "flag-created",
+	"flag-deleted": "flag-deleted",
+	"flag-unarchived": "flag-unarchived",
+	"flag-updated": "flag-updated",
 	"flags-explorer-subscription": "flags-explorer-subscription",
 	"flags-sdk-key": "flags-sdk-key",
+	"flags-sdk-key-added": "flags-sdk-key-added",
+	"flags-sdk-key-deleted": "flags-sdk-key-deleted",
+	"flags-sdk-key-read": "flags-sdk-key-read",
 	"flags-segment": "flags-segment",
 	"flags-settings": "flags-settings",
 	"instant-rollback-created": "instant-rollback-created",
 	"integration-configuration-owner-changed": "integration-configuration-owner-changed",
 	"integration-configuration-scope-change-confirmed":
 		"integration-configuration-scope-change-confirmed",
+	"integration-configuration-transfer-in-success": "integration-configuration-transfer-in-success",
+	"integration-configuration-transfer-out-success":
+		"integration-configuration-transfer-out-success",
 	"integration-configurations-disabled": "integration-configurations-disabled",
 	"integration-installation-billing-plan-updated": "integration-installation-billing-plan-updated",
 	"integration-installation-completed": "integration-installation-completed",
@@ -1511,6 +1541,7 @@ export const userEventTypeEnum = {
 	"log-drain-enabled": "log-drain-enabled",
 	login: "login",
 	"manual-deployment-promotion-created": "manual-deployment-promotion-created",
+	"marketplace-integration-allowlist-updated": "marketplace-integration-allowlist-updated",
 	"microfrontend-group-added": "microfrontend-group-added",
 	"microfrontend-group-deleted": "microfrontend-group-deleted",
 	"microfrontend-group-updated": "microfrontend-group-updated",
@@ -1536,6 +1567,11 @@ export const userEventTypeEnum = {
 	"owner-soft-blocked": "owner-soft-blocked",
 	"owner-soft-unblocked": "owner-soft-unblocked",
 	"owner-unblocked": "owner-unblocked",
+	"page-integrity-config-updated": "page-integrity-config-updated",
+	"page-integrity-header-approved": "page-integrity-header-approved",
+	"page-integrity-resource-approved": "page-integrity-resource-approved",
+	"page-integrity-resource-deleted": "page-integrity-resource-deleted",
+	"page-integrity-resource-rejected": "page-integrity-resource-rejected",
 	"passkey-created": "passkey-created",
 	"passkey-deleted": "passkey-deleted",
 	"passkey-updated": "passkey-updated",
@@ -1549,6 +1585,8 @@ export const userEventTypeEnum = {
 	"preview-deployment-suffix-enabled": "preview-deployment-suffix-enabled",
 	"preview-deployment-suffix-update": "preview-deployment-suffix-update",
 	"privatelink-endpoint-created": "privatelink-endpoint-created",
+	"privatelink-endpoint-deleted": "privatelink-endpoint-deleted",
+	"privatelink-endpoint-updated": "privatelink-endpoint-updated",
 	"production-branch-updated": "production-branch-updated",
 	"project-add-alias": "project-add-alias",
 	"project-add-redirect": "project-add-redirect",
@@ -1575,9 +1613,11 @@ export const userEventTypeEnum = {
 	"project-custom-environment-updated": "project-custom-environment-updated",
 	"project-customer-success-code-visibility-updated":
 		"project-customer-success-code-visibility-updated",
+	"project-delegated-protection-disabled": "project-delegated-protection-disabled",
 	"project-delegated-protection-enabled": "project-delegated-protection-enabled",
 	"project-delegated-protection-updated": "project-delegated-protection-updated",
 	"project-delete": "project-delete",
+	"project-deployment-policy-updated": "project-deployment-policy-updated",
 	"project-deployment-retention-updated": "project-deployment-retention-updated",
 	"project-directory-listing": "project-directory-listing",
 	"project-domain-deleted": "project-domain-deleted",
@@ -1586,12 +1626,17 @@ export const userEventTypeEnum = {
 	"project-domain-updated": "project-domain-updated",
 	"project-domain-verified": "project-domain-verified",
 	"project-elastic-concurrency-updated": "project-elastic-concurrency-updated",
+	"project-expiration-locked": "project-expiration-locked",
+	"project-expiration-reached": "project-expiration-reached",
+	"project-expiration-scheduled": "project-expiration-scheduled",
+	"project-expiration-unlocked": "project-expiration-unlocked",
 	"project-external-rewrite-caching-updated": "project-external-rewrite-caching-updated",
 	"project-framework-updated": "project-framework-updated",
 	"project-function-cpu-memory": "project-function-cpu-memory",
 	"project-function-failover": "project-function-failover",
 	"project-function-max-duration": "project-function-max-duration",
 	"project-function-regions": "project-function-regions",
+	"project-functions-beta-updated": "project-functions-beta-updated",
 	"project-functions-fluid-disabled": "project-functions-fluid-disabled",
 	"project-functions-fluid-enabled": "project-functions-fluid-enabled",
 	"project-git-commit-comments-toggled": "project-git-commit-comments-toggled",
@@ -1639,6 +1684,8 @@ export const userEventTypeEnum = {
 	"project-rolling-release-enabled": "project-rolling-release-enabled",
 	"project-rolling-release-paused": "project-rolling-release-paused",
 	"project-rolling-release-started": "project-rolling-release-started",
+	"project-rolling-release-suggested-actions-generated":
+		"project-rolling-release-suggested-actions-generated",
 	"project-rolling-release-timer": "project-rolling-release-timer",
 	"project-root-directory-updated": "project-root-directory-updated",
 	"project-routes-version-promoted": "project-routes-version-promoted",
@@ -1654,6 +1701,7 @@ export const userEventTypeEnum = {
 	"project-sso-protection": "project-sso-protection",
 	"project-static-ips-updated": "project-static-ips-updated",
 	"project-trusted-ips": "project-trusted-ips",
+	"project-trusted-sources": "project-trusted-sources",
 	"project-unpaused": "project-unpaused",
 	"project-web-analytics-disabled": "project-web-analytics-disabled",
 	"project-web-analytics-enabled": "project-web-analytics-enabled",
@@ -1697,11 +1745,13 @@ export const userEventTypeEnum = {
 	"storage-inactive-store-deleted": "storage-inactive-store-deleted",
 	"storage-reset-credentials": "storage-reset-credentials",
 	"storage-resource-repl-command": "storage-resource-repl-command",
+	"storage-set-locked": "storage-set-locked",
 	"storage-transfer-in-success": "storage-transfer-in-success",
 	"storage-transfer-out-success": "storage-transfer-out-success",
 	"storage-transfer-request-created": "storage-transfer-request-created",
 	"storage-update": "storage-update",
 	"storage-update-project-connection": "storage-update-project-connection",
+	"storage-upgrade-project-connection-to-oidc": "storage-upgrade-project-connection-to-oidc",
 	"storage-view-secret": "storage-view-secret",
 	"strict-deployment-protection-settings": "strict-deployment-protection-settings",
 	"strict-shareable-links": "strict-shareable-links",
@@ -1713,14 +1763,19 @@ export const userEventTypeEnum = {
 	"team-avatar-update": "team-avatar-update",
 	"team-default-build-machine-updated": "team-default-build-machine-updated",
 	"team-delete": "team-delete",
+	"team-deployment-policy-updated": "team-deployment-policy-updated",
 	"team-domain-verification-created": "team-domain-verification-created",
 	"team-domain-verification-deleted": "team-domain-verification-deleted",
 	"team-domain-verification-verified": "team-domain-verification-verified",
 	"team-email-domain-update": "team-email-domain-update",
 	"team-emu-updated": "team-emu-updated",
 	"team-ended-trial": "team-ended-trial",
+	"team-git-repository-dispatch-events-toggled": "team-git-repository-dispatch-events-toggled",
+	"team-git-require-verified-commits-toggled": "team-git-require-verified-commits-toggled",
 	"team-invite-bulk-delete": "team-invite-bulk-delete",
 	"team-invite-code-reset": "team-invite-code-reset",
+	"team-invite-link-created": "team-invite-link-created",
+	"team-invite-link-deleted": "team-invite-link-deleted",
 	"team-ip-blocking-rules-created": "team-ip-blocking-rules-created",
 	"team-ip-blocking-rules-removed": "team-ip-blocking-rules-removed",
 	"team-member-add": "team-member-add",
@@ -1743,6 +1798,7 @@ export const userEventTypeEnum = {
 	"team-saml-enforced": "team-saml-enforced",
 	"team-saml-roles": "team-saml-roles",
 	"team-slug-update": "team-slug-update",
+	"team-tokens-invalidated": "team-tokens-invalidated",
 	"unlink-login-connection": "unlink-login-connection",
 	"user-delete": "user-delete",
 	"user-mfa-challenge-verified": "user-mfa-challenge-verified",
@@ -1752,6 +1808,9 @@ export const userEventTypeEnum = {
 	"user-mfa-totp-verification-started": "user-mfa-totp-verification-started",
 	"user-mfa-totp-verified": "user-mfa-totp-verified",
 	"user-primary-email-updated": "user-primary-email-updated",
+	"user-token-created": "user-token-created",
+	"user-token-deleted": "user-token-deleted",
+	"user-tokens-deleted": "user-tokens-deleted",
 	username: "username",
 	"v0-chat-ai-usage": "v0-chat-ai-usage",
 	"v0-chat-created": "v0-chat-created",
@@ -1768,6 +1827,7 @@ export const userEventTypeEnum = {
 	"vpc-peering-connection-deleted": "vpc-peering-connection-deleted",
 	"vpc-peering-connection-rejected": "vpc-peering-connection-rejected",
 	"vpc-peering-connection-updated": "vpc-peering-connection-updated",
+	"vulnerability-banner-dismissed": "vulnerability-banner-dismissed",
 	"web-analytics-tier-updated": "web-analytics-tier-updated",
 	"webhook-created": "webhook-created",
 	"webhook-deleted": "webhook-deleted",
@@ -1776,6 +1836,34 @@ export const userEventTypeEnum = {
 } as const;
 
 export type UserEventTypeEnumKey = (typeof userEventTypeEnum)[keyof typeof userEventTypeEnum];
+
+export const userEventCategoriesEnum = {
+	account: "account",
+	ai: "ai",
+	"ai-gateway": "ai-gateway",
+	billing: "billing",
+	deployment: "deployment",
+	domain: "domain",
+	edge: "edge",
+	"env-variable": "env-variable",
+	"feature-flags": "feature-flags",
+	firewall: "firewall",
+	integration: "integration",
+	microfrontends: "microfrontends",
+	network: "network",
+	observability: "observability",
+	other: "other",
+	project: "project",
+	security: "security",
+	storage: "storage",
+	team: "team",
+	v0: "v0",
+	"vercel-app": "vercel-app",
+	workflow: "workflow",
+} as const;
+
+export type UserEventCategoriesEnumKey =
+	(typeof userEventCategoriesEnum)[keyof typeof userEventCategoriesEnum];
 
 export const principalTypeEnum = {
 	user: "user",
@@ -1789,6 +1877,12 @@ export const principalTypeEnum2 = {
 
 export type PrincipalTypeEnum2Key = (typeof principalTypeEnum2)[keyof typeof principalTypeEnum2];
 
+export const principalTypeEnum3 = {
+	system: "system",
+} as const;
+
+export type PrincipalTypeEnum3Key = (typeof principalTypeEnum3)[keyof typeof principalTypeEnum3];
+
 export const viaTypeEnum = {
 	user: "user",
 } as const;
@@ -1800,6 +1894,12 @@ export const viaTypeEnum2 = {
 } as const;
 
 export type ViaTypeEnum2Key = (typeof viaTypeEnum2)[keyof typeof viaTypeEnum2];
+
+export const viaTypeEnum3 = {
+	system: "system",
+} as const;
+
+export type ViaTypeEnum3Key = (typeof viaTypeEnum3)[keyof typeof viaTypeEnum3];
 
 export const payloadActionEnum = {
 	deleted: "deleted",
@@ -1825,6 +1925,20 @@ export const payloadActionEnum3 = {
 
 export type PayloadActionEnum3Key = (typeof payloadActionEnum3)[keyof typeof payloadActionEnum3];
 
+export const payloadFromPlanEnum = {
+	pro: "pro",
+	hobby: "hobby",
+} as const;
+
+export type PayloadFromPlanEnumKey = (typeof payloadFromPlanEnum)[keyof typeof payloadFromPlanEnum];
+
+export const payloadToPlanEnum = {
+	pro: "pro",
+	hobby: "hobby",
+} as const;
+
+export type PayloadToPlanEnumKey = (typeof payloadToPlanEnum)[keyof typeof payloadToPlanEnum];
+
 export const payloadNextRoleEnum = {
 	ADMIN: "ADMIN",
 	PROJECT_DEVELOPER: "PROJECT_DEVELOPER",
@@ -1843,6 +1957,17 @@ export const payloadPreviousRoleEnum = {
 
 export type PayloadPreviousRoleEnumKey =
 	(typeof payloadPreviousRoleEnum)[keyof typeof payloadPreviousRoleEnum];
+
+export const deploymentAllowListedReadyStateReasonInternalEnum = {
+	EARLY_IGNORE_STEP: "EARLY_IGNORE_STEP",
+	IGNORE_STEP: "IGNORE_STEP",
+	NAMESPACE_PRUNED: "NAMESPACE_PRUNED",
+	UNAFFECTED_PROJECT: "UNAFFECTED_PROJECT",
+	UNVERIFIED_COMMIT: "UNVERIFIED_COMMIT",
+} as const;
+
+export type DeploymentAllowListedReadyStateReasonInternalEnumKey =
+	(typeof deploymentAllowListedReadyStateReasonInternalEnum)[keyof typeof deploymentAllowListedReadyStateReasonInternalEnum];
 
 export const payloadSystemEnum = {
 	false: false,
@@ -2759,6 +2884,8 @@ export const siftRouteNameEnum = {
 export type SiftRouteNameEnumKey = (typeof siftRouteNameEnum)[keyof typeof siftRouteNameEnum];
 
 export const softBlockReasonEnum = {
+	ENTERPRISE_UNPAID_INVOICE: "ENTERPRISE_UNPAID_INVOICE",
+	EXPOSURE_CAP_EXCEEDED: "EXPOSURE_CAP_EXCEEDED",
 	SUBSCRIPTION_CANCELED: "SUBSCRIPTION_CANCELED",
 	SUBSCRIPTION_EXPIRED: "SUBSCRIPTION_EXPIRED",
 	UNPAID_INVOICE: "UNPAID_INVOICE",
@@ -2814,12 +2941,6 @@ export const softBlockBlockedDueToOverageTypeEnum = {
 export type SoftBlockBlockedDueToOverageTypeEnumKey =
 	(typeof softBlockBlockedDueToOverageTypeEnum)[keyof typeof softBlockBlockedDueToOverageTypeEnum];
 
-export const teamsConfirmedEnum = {
-	true: true,
-} as const;
-
-export type TeamsConfirmedEnumKey = (typeof teamsConfirmedEnum)[keyof typeof teamsConfirmedEnum];
-
 export const teamsRoleEnum = {
 	OWNER: "OWNER",
 	MEMBER: "MEMBER",
@@ -2832,6 +2953,12 @@ export const teamsRoleEnum = {
 } as const;
 
 export type TeamsRoleEnumKey = (typeof teamsRoleEnum)[keyof typeof teamsRoleEnum];
+
+export const teamsConfirmedEnum = {
+	true: true,
+} as const;
+
+export type TeamsConfirmedEnumKey = (typeof teamsConfirmedEnum)[keyof typeof teamsConfirmedEnum];
 
 export const teamsTeamRolesEnum = {
 	OWNER: "OWNER",
@@ -2879,6 +3006,7 @@ export const joinedFromOriginEnum = {
 	"nsnb-viewer-upgrade": "nsnb-viewer-upgrade",
 	"nsnb-invite": "nsnb-invite",
 	"nsnb-redeploy": "nsnb-redeploy",
+	"nsnb-redeploy-attribution-card": "nsnb-redeploy-attribution-card",
 } as const;
 
 export type JoinedFromOriginEnumKey =
@@ -3184,6 +3312,14 @@ export const newOwnerVersionEnum = {
 
 export type NewOwnerVersionEnumKey = (typeof newOwnerVersionEnum)[keyof typeof newOwnerVersionEnum];
 
+export const newOwnerIsMFAEnforcedEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type NewOwnerIsMFAEnforcedEnumKey =
+	(typeof newOwnerIsMFAEnforcedEnum)[keyof typeof newOwnerIsMFAEnforcedEnum];
+
 export const mfaConfigurationEnabledEnum = {
 	false: false,
 	true: true,
@@ -3327,6 +3463,13 @@ export const payloadViaPasskeyEnum = {
 export type PayloadViaPasskeyEnumKey =
 	(typeof payloadViaPasskeyEnum)[keyof typeof payloadViaPasskeyEnum];
 
+export const payloadEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadEnabledEnumKey = (typeof payloadEnabledEnum)[keyof typeof payloadEnabledEnum];
+
 export const microfrontendsIsDefaultAppEnum = {
 	true: true,
 } as const;
@@ -3387,6 +3530,64 @@ export const microfrontendsFreeProjectForLegacyLimitsEnum2 = {
 export type MicrofrontendsFreeProjectForLegacyLimitsEnum2Key =
 	(typeof microfrontendsFreeProjectForLegacyLimitsEnum2)[keyof typeof microfrontendsFreeProjectForLegacyLimitsEnum2];
 
+export const previousEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PreviousEnabledEnumKey = (typeof previousEnabledEnum)[keyof typeof previousEnabledEnum];
+
+export const previousNewResourceBlockingPolicyEnum = {
+	block: "block",
+	allow: "allow",
+} as const;
+
+export type PreviousNewResourceBlockingPolicyEnumKey =
+	(typeof previousNewResourceBlockingPolicyEnum)[keyof typeof previousNewResourceBlockingPolicyEnum];
+
+export const previousAllowUnsafeScriptSrcKeywordsEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PreviousAllowUnsafeScriptSrcKeywordsEnumKey =
+	(typeof previousAllowUnsafeScriptSrcKeywordsEnum)[keyof typeof previousAllowUnsafeScriptSrcKeywordsEnum];
+
+export const nextEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type NextEnabledEnumKey = (typeof nextEnabledEnum)[keyof typeof nextEnabledEnum];
+
+export const nextNewResourceBlockingPolicyEnum = {
+	block: "block",
+	allow: "allow",
+} as const;
+
+export type NextNewResourceBlockingPolicyEnumKey =
+	(typeof nextNewResourceBlockingPolicyEnum)[keyof typeof nextNewResourceBlockingPolicyEnum];
+
+export const nextAllowUnsafeScriptSrcKeywordsEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type NextAllowUnsafeScriptSrcKeywordsEnumKey =
+	(typeof nextAllowUnsafeScriptSrcKeywordsEnum)[keyof typeof nextAllowUnsafeScriptSrcKeywordsEnum];
+
+export const payloadTypeEnum2 = {
+	script: "script",
+} as const;
+
+export type PayloadTypeEnum2Key = (typeof payloadTypeEnum2)[keyof typeof payloadTypeEnum2];
+
+export const payloadTypeEnum3 = {
+	header: "header",
+} as const;
+
+export type PayloadTypeEnum3Key = (typeof payloadTypeEnum3)[keyof typeof payloadTypeEnum3];
+
 export const roleEnum = {
 	OWNER: "OWNER",
 	MEMBER: "MEMBER",
@@ -3439,13 +3640,6 @@ export const payloadAutomatedEnum = {
 export type PayloadAutomatedEnumKey =
 	(typeof payloadAutomatedEnum)[keyof typeof payloadAutomatedEnum];
 
-export const payloadEnabledEnum = {
-	false: false,
-	true: true,
-} as const;
-
-export type PayloadEnabledEnumKey = (typeof payloadEnabledEnum)[keyof typeof payloadEnabledEnum];
-
 export const payloadDirectoryListingEnum = {
 	false: false,
 	true: true,
@@ -3455,10 +3649,10 @@ export type PayloadDirectoryListingEnumKey =
 	(typeof payloadDirectoryListingEnum)[keyof typeof payloadDirectoryListingEnum];
 
 export const payloadActionEnum10 = {
+	updated: "updated",
 	enabled: "enabled",
 	disabled: "disabled",
 	regenerated: "regenerated",
-	updated: "updated",
 } as const;
 
 export type PayloadActionEnum10Key = (typeof payloadActionEnum10)[keyof typeof payloadActionEnum10];
@@ -3639,6 +3833,14 @@ export const branchMatcherTypeEnum = {
 export type BranchMatcherTypeEnumKey =
 	(typeof branchMatcherTypeEnum)[keyof typeof branchMatcherTypeEnum];
 
+export const payloadEnableFunctionsBetaEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadEnableFunctionsBetaEnumKey =
+	(typeof payloadEnableFunctionsBetaEnum)[keyof typeof payloadEnableFunctionsBetaEnum];
+
 export const previousFunctionZeroConfigFailoverEnum = {
 	false: false,
 	true: true,
@@ -3728,6 +3930,14 @@ export const payloadRequireVerifiedCommitsEnum = {
 
 export type PayloadRequireVerifiedCommitsEnumKey =
 	(typeof payloadRequireVerifiedCommitsEnum)[keyof typeof payloadRequireVerifiedCommitsEnum];
+
+export const payloadRequireVerifiedCommitsEnum2 = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadRequireVerifiedCommitsEnum2Key =
+	(typeof payloadRequireVerifiedCommitsEnum2)[keyof typeof payloadRequireVerifiedCommitsEnum2];
 
 export const payloadGitCommitStatusEnum = {
 	false: false,
@@ -3864,6 +4074,30 @@ export const payloadConsentEnum = {
 
 export type PayloadConsentEnumKey = (typeof payloadConsentEnum)[keyof typeof payloadConsentEnum];
 
+export const gitSourcesEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type GitSourcesEnabledEnumKey =
+	(typeof gitSourcesEnabledEnum)[keyof typeof gitSourcesEnabledEnum];
+
+export const deploymentSourcesEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type DeploymentSourcesEnabledEnumKey =
+	(typeof deploymentSourcesEnabledEnum)[keyof typeof deploymentSourcesEnabledEnum];
+
+export const publicDeploymentsEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PublicDeploymentsEnabledEnumKey =
+	(typeof publicDeploymentsEnabledEnum)[keyof typeof publicDeploymentsEnabledEnum];
+
 export const previousIssuerModeEnum = {
 	team: "team",
 	global: "global",
@@ -3931,6 +4165,16 @@ export const ssoProtectionCve55182MigrationAppliedFromEnum = {
 export type SsoProtectionCve55182MigrationAppliedFromEnumKey =
 	(typeof ssoProtectionCve55182MigrationAppliedFromEnum)[keyof typeof ssoProtectionCve55182MigrationAppliedFromEnum];
 
+export const ssoProtectionApril2026SecurityIncidentMigrationAppliedFromEnum = {
+	all: "all",
+	preview: "preview",
+	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
+	all_except_custom_domains: "all_except_custom_domains",
+} as const;
+
+export type SsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnumKey =
+	(typeof ssoProtectionApril2026SecurityIncidentMigrationAppliedFromEnum)[keyof typeof ssoProtectionApril2026SecurityIncidentMigrationAppliedFromEnum];
+
 export const payloadSsoProtectionEnum = {
 	all: "all",
 	preview: "preview",
@@ -3960,6 +4204,16 @@ export const oldSsoProtectionCve55182MigrationAppliedFromEnum = {
 
 export type OldSsoProtectionCve55182MigrationAppliedFromEnumKey =
 	(typeof oldSsoProtectionCve55182MigrationAppliedFromEnum)[keyof typeof oldSsoProtectionCve55182MigrationAppliedFromEnum];
+
+export const oldSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnum = {
+	all: "all",
+	preview: "preview",
+	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
+	all_except_custom_domains: "all_except_custom_domains",
+} as const;
+
+export type OldSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnumKey =
+	(typeof oldSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnum)[keyof typeof oldSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnum];
 
 export const payloadOldSsoProtectionEnum = {
 	all: "all",
@@ -4148,7 +4402,7 @@ export const storeTypeEnum = {
 
 export type StoreTypeEnumKey = (typeof storeTypeEnum)[keyof typeof storeTypeEnum];
 
-export const payloadTypeEnum2 = {
+export const payloadTypeEnum4 = {
 	integration: "integration",
 	redis: "redis",
 	postgres: "postgres",
@@ -4156,7 +4410,7 @@ export const payloadTypeEnum2 = {
 	blob: "blob",
 } as const;
 
-export type PayloadTypeEnum2Key = (typeof payloadTypeEnum2)[keyof typeof payloadTypeEnum2];
+export type PayloadTypeEnum4Key = (typeof payloadTypeEnum4)[keyof typeof payloadTypeEnum4];
 
 export const payloadAccessEnum = {
 	public: "public",
@@ -4165,12 +4419,20 @@ export const payloadAccessEnum = {
 
 export type PayloadAccessEnumKey = (typeof payloadAccessEnum)[keyof typeof payloadAccessEnum];
 
-export const previousEnabledEnum = {
+export const payloadLockedEnum = {
 	false: false,
 	true: true,
 } as const;
 
-export type PreviousEnabledEnumKey = (typeof previousEnabledEnum)[keyof typeof previousEnabledEnum];
+export type PayloadLockedEnumKey = (typeof payloadLockedEnum)[keyof typeof payloadLockedEnum];
+
+export const previousEnabledEnum2 = {
+	false: false,
+	true: true,
+} as const;
+
+export type PreviousEnabledEnum2Key =
+	(typeof previousEnabledEnum2)[keyof typeof previousEnabledEnum2];
 
 export const previousScopeEnum = {
 	public: "public",
@@ -4189,12 +4451,12 @@ export const previousIncludeDraftsEnum = {
 export type PreviousIncludeDraftsEnumKey =
 	(typeof previousIncludeDraftsEnum)[keyof typeof previousIncludeDraftsEnum];
 
-export const nextEnabledEnum = {
+export const nextEnabledEnum2 = {
 	false: false,
 	true: true,
 } as const;
 
-export type NextEnabledEnumKey = (typeof nextEnabledEnum)[keyof typeof nextEnabledEnum];
+export type NextEnabledEnum2Key = (typeof nextEnabledEnum2)[keyof typeof nextEnabledEnum2];
 
 export const nextScopeEnum = {
 	public: "public",
@@ -4295,6 +4557,29 @@ export const payloadAutomatedEnum2 = {
 export type PayloadAutomatedEnum2Key =
 	(typeof payloadAutomatedEnum2)[keyof typeof payloadAutomatedEnum2];
 
+export const payloadSourceEnum = {
+	link: "link",
+	import: "import",
+	teams: "teams",
+	saml: "saml",
+	github: "github",
+	gitlab: "gitlab",
+	bitbucket: "bitbucket",
+	mail: "mail",
+	dsync: "dsync",
+	feedback: "feedback",
+	"organization-teams": "organization-teams",
+	"nsnb-auto-approve": "nsnb-auto-approve",
+	"nsnb-hobby-upgrade": "nsnb-hobby-upgrade",
+	"nsnb-request-access": "nsnb-request-access",
+	"nsnb-viewer-upgrade": "nsnb-viewer-upgrade",
+	"nsnb-invite": "nsnb-invite",
+	"nsnb-redeploy": "nsnb-redeploy",
+	"nsnb-redeploy-attribution-card": "nsnb-redeploy-attribution-card",
+} as const;
+
+export type PayloadSourceEnumKey = (typeof payloadSourceEnum)[keyof typeof payloadSourceEnum];
+
 export const payloadEnforcedEnum = {
 	false: false,
 	true: true,
@@ -4387,14 +4672,6 @@ export const payloadActorTypeEnum = {
 export type PayloadActorTypeEnumKey =
 	(typeof payloadActorTypeEnum)[keyof typeof payloadActorTypeEnum];
 
-export const previousEnabledEnum2 = {
-	false: false,
-	true: true,
-} as const;
-
-export type PreviousEnabledEnum2Key =
-	(typeof previousEnabledEnum2)[keyof typeof previousEnabledEnum2];
-
 export const previousTotpVerifiedEnum = {
 	false: false,
 	true: true,
@@ -4402,13 +4679,6 @@ export const previousTotpVerifiedEnum = {
 
 export type PreviousTotpVerifiedEnumKey =
 	(typeof previousTotpVerifiedEnum)[keyof typeof previousTotpVerifiedEnum];
-
-export const nextEnabledEnum2 = {
-	false: false,
-	true: true,
-} as const;
-
-export type NextEnabledEnum2Key = (typeof nextEnabledEnum2)[keyof typeof nextEnabledEnum2];
 
 export const nextTotpVerifiedEnum = {
 	false: false,
@@ -4433,6 +4703,14 @@ export const payloadTotpVerifiedEnum = {
 
 export type PayloadTotpVerifiedEnumKey =
 	(typeof payloadTotpVerifiedEnum)[keyof typeof payloadTotpVerifiedEnum];
+
+export const payloadProtectionEnabledEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadProtectionEnabledEnumKey =
+	(typeof payloadProtectionEnabledEnum)[keyof typeof payloadProtectionEnabledEnum];
 
 export const payloadTierEnum = {
 	pro: "pro",
@@ -4465,6 +4743,7 @@ export const payloadAuthMethodEnum = {
 	otp: "otp",
 	sms: "sms",
 	invite: "invite",
+	"token-exchange-oidc": "token-exchange-oidc",
 	emu: "emu",
 } as const;
 
@@ -4472,12 +4751,12 @@ export type PayloadAuthMethodEnumKey =
 	(typeof payloadAuthMethodEnum)[keyof typeof payloadAuthMethodEnum];
 
 export const clientAuthenticationUsedMethodEnum = {
+	none: "none",
 	client_secret_basic: "client_secret_basic",
 	client_secret_post: "client_secret_post",
 	client_secret_jwt: "client_secret_jwt",
 	private_key_jwt: "private_key_jwt",
 	oidc_token: "oidc_token",
-	none: "none",
 } as const;
 
 export type ClientAuthenticationUsedMethodEnumKey =
@@ -4490,6 +4769,108 @@ export const payloadIncludesRefreshTokenEnum = {
 
 export type PayloadIncludesRefreshTokenEnumKey =
 	(typeof payloadIncludesRefreshTokenEnum)[keyof typeof payloadIncludesRefreshTokenEnum];
+
+export const payloadTokenPrefixEnum = {
+	vca_: "vca_",
+} as const;
+
+export type PayloadTokenPrefixEnumKey =
+	(typeof payloadTokenPrefixEnum)[keyof typeof payloadTokenPrefixEnum];
+
+export const payloadRefreshTokenPrefixEnum = {
+	vcr_: "vcr_",
+} as const;
+
+export type PayloadRefreshTokenPrefixEnumKey =
+	(typeof payloadRefreshTokenPrefixEnum)[keyof typeof payloadRefreshTokenPrefixEnum];
+
+export const payloadTokenPrefixEnum2 = {
+	vcp_: "vcp_",
+} as const;
+
+export type PayloadTokenPrefixEnum2Key =
+	(typeof payloadTokenPrefixEnum2)[keyof typeof payloadTokenPrefixEnum2];
+
+export const payloadOriginEnum = {
+	email: "email",
+	saml: "saml",
+	app: "app",
+	github: "github",
+	gitlab: "gitlab",
+	bitbucket: "bitbucket",
+	google: "google",
+	apple: "apple",
+	chatgpt: "chatgpt",
+	"github-webhook": "github-webhook",
+	manual: "manual",
+	passkey: "passkey",
+	otp: "otp",
+	sms: "sms",
+	invite: "invite",
+	"token-exchange-oidc": "token-exchange-oidc",
+	emu: "emu",
+} as const;
+
+export type PayloadOriginEnumKey = (typeof payloadOriginEnum)[keyof typeof payloadOriginEnum];
+
+export const payloadScopeEnum2 = {
+	user: "user",
+	team: "team",
+	project: "project",
+} as const;
+
+export type PayloadScopeEnum2Key = (typeof payloadScopeEnum2)[keyof typeof payloadScopeEnum2];
+
+export const payloadHasAuthorizationDetailsEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadHasAuthorizationDetailsEnumKey =
+	(typeof payloadHasAuthorizationDetailsEnum)[keyof typeof payloadHasAuthorizationDetailsEnum];
+
+export const payloadOriginEnum2 = {
+	email: "email",
+	saml: "saml",
+	app: "app",
+	github: "github",
+	gitlab: "gitlab",
+	bitbucket: "bitbucket",
+	google: "google",
+	apple: "apple",
+	chatgpt: "chatgpt",
+	"github-webhook": "github-webhook",
+	manual: "manual",
+	passkey: "passkey",
+	otp: "otp",
+	sms: "sms",
+	invite: "invite",
+	"token-exchange-oidc": "token-exchange-oidc",
+	emu: "emu",
+} as const;
+
+export type PayloadOriginEnum2Key = (typeof payloadOriginEnum2)[keyof typeof payloadOriginEnum2];
+
+export const payloadExpiredEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadExpiredEnumKey = (typeof payloadExpiredEnum)[keyof typeof payloadExpiredEnum];
+
+export const payloadLeakedEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadLeakedEnumKey = (typeof payloadLeakedEnum)[keyof typeof payloadLeakedEnum];
+
+export const payloadRevokedEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type PayloadRevokedEnumKey = (typeof payloadRevokedEnum)[keyof typeof payloadRevokedEnum];
 
 /**
  * @description Array of events generated by the User.
@@ -4532,6 +4913,11 @@ export type UserEvent = {
 	 */
 	type?: UserEventTypeEnumKey | undefined;
 	/**
+	 * @description The categories that group this event with related event types. An event can belong to multiple categories (e.g. a firewall event is both Firewall and Security). The first entry is the \"primary\" category. Use the `/events/types` endpoint to discover the full list of categories.
+	 * @type array | undefined
+	 */
+	categories?: UserEventCategoriesEnumKey[] | undefined;
+	/**
 	 * @description Timestamp (in milliseconds) of when the event was generated.
 	 * @type number
 	 */
@@ -4553,15 +4939,15 @@ export type UserEvent = {
 				/**
 				 * @type string
 				 */
+				uid: string;
+				/**
+				 * @type string
+				 */
 				email: string;
 				/**
 				 * @type string
 				 */
 				username: string;
-				/**
-				 * @type string
-				 */
-				uid: string;
 		  }
 		| undefined;
 	principal?:
@@ -4605,6 +4991,12 @@ export type UserEvent = {
 						 * @type string
 						 */
 						name: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						type: PrincipalTypeEnum3Key;
 				  }
 		  )
 		| undefined;
@@ -4653,6 +5045,12 @@ export type UserEvent = {
 						 * @type string
 						 */
 						name: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						type: ViaTypeEnum3Key;
 				  }
 		  )[]
 		| undefined;
@@ -4738,6 +5136,86 @@ export type UserEvent = {
 				  }
 				| {
 						/**
+						 * @type string
+						 */
+						teamId: string;
+						/**
+						 * @type string
+						 */
+						stripeAccount: string;
+						/**
+						 * @type string
+						 */
+						stripeOrganisation: string;
+						/**
+						 * @type string
+						 */
+						accountRequestId: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						teamId: string;
+						/**
+						 * @type string
+						 */
+						stripeAccount: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						teamId: string;
+						/**
+						 * @type string
+						 */
+						teamSlug: string;
+						/**
+						 * @type string
+						 */
+						stripeAccount: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						reason: string;
+						/**
+						 * @type string
+						 */
+						blockCode: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						resourceId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						teamId: string;
+						/**
+						 * @type string
+						 */
+						resourceId: string;
+						/**
+						 * @type string
+						 */
+						fromPlan: PayloadFromPlanEnumKey;
+						/**
+						 * @type string
+						 */
+						toPlan: PayloadToPlanEnumKey;
+				  }
+				| {
+						/**
 						 * @type object
 						 */
 						apiKey: {
@@ -4749,6 +5227,25 @@ export type UserEvent = {
 							 * @type string
 							 */
 							name: string;
+						};
+				  }
+				| {
+						/**
+						 * @type object
+						 */
+						credential: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string
+							 */
+							name: string;
+							/**
+							 * @type string
+							 */
+							providerSlug: string;
 						};
 				  }
 				| {
@@ -4950,6 +5447,17 @@ export type UserEvent = {
 									meta: {
 										[key: string]: string;
 									};
+									/**
+									 * @type string | undefined
+									 */
+									readyState?: string | undefined;
+									/**
+									 * @description A narrowed subset of the deployment\'s `readyStateReasonInternal` — only values in the public allowlist are permitted here. Callers should run their raw reason through `toAllowListedReadyStateReasonInternal` from `@api/events` before assigning. This keeps abuse / moderation / admin reasons out of the public activity log.
+									 * @type string | undefined
+									 */
+									allowListedReadyStateReasonInternal?:
+										| DeploymentAllowListedReadyStateReasonInternalEnumKey
+										| undefined;
 							  } | null)
 							| undefined;
 						/**
@@ -5025,6 +5533,17 @@ export type UserEvent = {
 									meta: {
 										[key: string]: string;
 									};
+									/**
+									 * @type string | undefined
+									 */
+									readyState?: string | undefined;
+									/**
+									 * @description A narrowed subset of the deployment\'s `readyStateReasonInternal` — only values in the public allowlist are permitted here. Callers should run their raw reason through `toAllowListedReadyStateReasonInternal` from `@api/events` before assigning. This keeps abuse / moderation / admin reasons out of the public activity log.
+									 * @type string | undefined
+									 */
+									allowListedReadyStateReasonInternal?:
+										| DeploymentAllowListedReadyStateReasonInternalEnumKey
+										| undefined;
 							  } | null)
 							| undefined;
 				  }
@@ -6119,6 +6638,17 @@ export type UserEvent = {
 									meta: {
 										[key: string]: string;
 									};
+									/**
+									 * @type string | undefined
+									 */
+									readyState?: string | undefined;
+									/**
+									 * @description A narrowed subset of the deployment\'s `readyStateReasonInternal` — only values in the public allowlist are permitted here. Callers should run their raw reason through `toAllowListedReadyStateReasonInternal` from `@api/events` before assigning. This keeps abuse / moderation / admin reasons out of the public activity log.
+									 * @type string | undefined
+									 */
+									allowListedReadyStateReasonInternal?:
+										| DeploymentAllowListedReadyStateReasonInternalEnumKey
+										| undefined;
 							  } | null)
 							| undefined;
 						/**
@@ -8297,6 +8827,10 @@ export type UserEvent = {
 						 * @type string | undefined
 						 */
 						source?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						ipAddress?: string | undefined;
 				  }
 				| {
 						/**
@@ -8375,6 +8909,11 @@ export type UserEvent = {
 						 */
 						applyToAllCustomEnvironments?: PayloadApplyToAllCustomEnvironmentsEnumKey | undefined;
 						/**
+						 * @description The custom environment IDs that this Shared Env Var is scoped to.
+						 * @type array | undefined
+						 */
+						customEnvironmentIds?: string[] | undefined;
+						/**
 						 * @description whether or not this env variable is decrypted
 						 * @type boolean | undefined
 						 */
@@ -8393,6 +8932,10 @@ export type UserEvent = {
 						 * @type array | undefined
 						 */
 						projectNames?: string[] | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						ipAddress?: string | undefined;
 				  }
 				| {
 						/**
@@ -8477,6 +9020,11 @@ export type UserEvent = {
 									applyToAllCustomEnvironments?:
 										| OldEnvVarApplyToAllCustomEnvironmentsEnumKey
 										| undefined;
+									/**
+									 * @description The custom environment IDs that this Shared Env Var is scoped to.
+									 * @type array | undefined
+									 */
+									customEnvironmentIds?: string[] | undefined;
 									/**
 									 * @description whether or not this env variable is decrypted
 									 * @type boolean | undefined
@@ -8577,6 +9125,11 @@ export type UserEvent = {
 										| NewEnvVarApplyToAllCustomEnvironmentsEnumKey
 										| undefined;
 									/**
+									 * @description The custom environment IDs that this Shared Env Var is scoped to.
+									 * @type array | undefined
+									 */
+									customEnvironmentIds?: string[] | undefined;
+									/**
 									 * @description whether or not this env variable is decrypted
 									 * @type boolean | undefined
 									 */
@@ -8656,6 +9209,14 @@ export type UserEvent = {
 												projectId: string;
 										  }[]
 										| undefined;
+									/**
+									 * @type array | undefined
+									 */
+									oldCustomEnvironmentIds?: string[] | undefined;
+									/**
+									 * @type array | undefined
+									 */
+									newCustomEnvironmentIds?: string[] | undefined;
 									/**
 									 * @type boolean
 									 */
@@ -9539,13 +10100,17 @@ export type UserEvent = {
 							teams?:
 								| {
 										/**
+										 * @type string
+										 */
+										teamId: string;
+										/**
 										 * @type number
 										 */
 										createdAt: number;
 										/**
 										 * @type string
 										 */
-										teamId: string;
+										role: TeamsRoleEnumKey;
 										/**
 										 * @type boolean
 										 */
@@ -9558,10 +10123,6 @@ export type UserEvent = {
 										 * @type number | undefined
 										 */
 										accessRequestedAt?: number | undefined;
-										/**
-										 * @type string
-										 */
-										role: TeamsRoleEnumKey;
 										/**
 										 * @type array | undefined
 										 */
@@ -10827,6 +11388,11 @@ export type UserEvent = {
 							 */
 							version: NewOwnerVersionEnumKey;
 							/**
+							 * @description Whether MFA is enforced for this user. Set to true when the user has a
+							 * @type boolean | undefined
+							 */
+							isMFAEnforced?: NewOwnerIsMFAEnforcedEnumKey | undefined;
+							/**
 							 * @description An archive of information about the Northstar migration, derived from the old (deprecated) property, `northstarMigrationEvents`.
 							 * @type object | undefined
 							 */
@@ -10983,6 +11549,68 @@ export type UserEvent = {
 						 * @type array
 						 */
 						confirmedScopes: string[];
+				  }
+				| {
+						/**
+						 * @type object
+						 */
+						integration: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string
+							 */
+							slug: string;
+							/**
+							 * @type string
+							 */
+							name: string;
+							/**
+							 * @type string
+							 */
+							configurationId: string;
+						};
+						/**
+						 * @type string
+						 */
+						destinationTeamId: string;
+						/**
+						 * @type string
+						 */
+						destinationTeamName: string;
+				  }
+				| {
+						/**
+						 * @type object
+						 */
+						integration: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string
+							 */
+							slug: string;
+							/**
+							 * @type string
+							 */
+							name: string;
+							/**
+							 * @type string
+							 */
+							configurationId: string;
+						};
+						/**
+						 * @type string
+						 */
+						originTeamId: string;
+						/**
+						 * @type string
+						 */
+						originTeamName: string;
 				  }
 				| {
 						/**
@@ -11278,6 +11906,20 @@ export type UserEvent = {
 						 * @type string
 						 */
 						projectName: string;
+				  }
+				| {
+						/**
+						 * @type boolean
+						 */
+						enabled: PayloadEnabledEnumKey;
+						/**
+						 * @type number | undefined
+						 */
+						allowedIntegrationCount?: number | undefined;
+						/**
+						 * @type array | undefined
+						 */
+						allowedIntegrationIds?: string[] | undefined;
 				  }
 				| {
 						/**
@@ -11699,6 +12341,136 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
+						projectId: string;
+						/**
+						 * @type object
+						 */
+						previous: {
+							/**
+							 * @type boolean
+							 */
+							enabled: PreviousEnabledEnumKey;
+							/**
+							 * @type string
+							 */
+							mode: string;
+							/**
+							 * @type number
+							 */
+							enforcePercentage: number;
+							/**
+							 * @type string
+							 */
+							newResourceBlockingPolicy: PreviousNewResourceBlockingPolicyEnumKey;
+							/**
+							 * @type boolean
+							 */
+							allowUnsafeScriptSrcKeywords: PreviousAllowUnsafeScriptSrcKeywordsEnumKey;
+						} | null;
+						/**
+						 * @type object
+						 */
+						next: {
+							/**
+							 * @type boolean
+							 */
+							enabled: NextEnabledEnumKey;
+							/**
+							 * @type string
+							 */
+							mode: string;
+							/**
+							 * @type number
+							 */
+							enforcePercentage: number;
+							/**
+							 * @type string
+							 */
+							newResourceBlockingPolicy: NextNewResourceBlockingPolicyEnumKey;
+							/**
+							 * @type boolean
+							 */
+							allowUnsafeScriptSrcKeywords: NextAllowUnsafeScriptSrcKeywordsEnumKey;
+						};
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						headerName: string;
+						/**
+						 * @type string
+						 */
+						previousStatus: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						url: string;
+						/**
+						 * @type string
+						 */
+						previousStatus: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						type: PayloadTypeEnum2Key;
+						/**
+						 * @type string
+						 */
+						resourceUrl: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						type: PayloadTypeEnum3Key;
+						/**
+						 * @type string
+						 */
+						headerName: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string | undefined
+						 */
+						url?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						headerName?: string | undefined;
+						/**
+						 * @type string
+						 */
+						previousStatus: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
 						oldName: string;
 						/**
 						 * @type string
@@ -11864,6 +12636,50 @@ export type UserEvent = {
 						 * @type string
 						 */
 						projectId: string;
+				  }
+				| {
+						/**
+						 * @type object
+						 */
+						privateLinkEndpoint: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string
+							 */
+							name: string;
+							/**
+							 * @type array | undefined
+							 */
+							environmentIds?: string[] | undefined;
+							/**
+							 * @type array | undefined
+							 */
+							privateDnsNames?: string[] | undefined;
+						};
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type object
+						 */
+						previousEndpoint: {
+							/**
+							 * @type string
+							 */
+							name: string;
+							/**
+							 * @type array | undefined
+							 */
+							environmentIds?: string[] | undefined;
+							/**
+							 * @type array | undefined
+							 */
+							privateDnsNames?: string[] | undefined;
+						};
 				  }
 				| {
 						/**
@@ -12515,6 +13331,20 @@ export type UserEvent = {
 				  }
 				| {
 						/**
+						 * @type string | undefined
+						 */
+						projectName?: string | undefined;
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type boolean
+						 */
+						enableFunctionsBeta: PayloadEnableFunctionsBetaEnumKey;
+				  }
+				| {
+						/**
 						 * @type string
 						 */
 						projectId: string;
@@ -12789,7 +13619,19 @@ export type UserEvent = {
 						/**
 						 * @type boolean
 						 */
-						requireVerifiedCommits: PayloadRequireVerifiedCommitsEnumKey;
+						requireVerifiedCommits: PayloadRequireVerifiedCommitsEnumKey | null;
+				  }
+				| {
+						/**
+						 * @type boolean
+						 */
+						requireVerifiedCommits: PayloadRequireVerifiedCommitsEnum2Key;
+				  }
+				| {
+						/**
+						 * @type boolean
+						 */
+						disableRepositoryDispatchEvents: PayloadDisableRepositoryDispatchEventsEnumKey;
 				  }
 				| {
 						/**
@@ -12993,9 +13835,24 @@ export type UserEvent = {
 							membershipCreatedAt: number;
 						}[];
 						/**
-						 * @type string
+						 * @type object | undefined
 						 */
-						uid: string;
+						teamMembership?:
+							| {
+									/**
+									 * @type string
+									 */
+									uid: string;
+									/**
+									 * @type string | undefined
+									 */
+									username?: string | undefined;
+							  }
+							| undefined;
+						/**
+						 * @type string | undefined
+						 */
+						directoryType?: string | undefined;
 				  }
 				| {
 						/**
@@ -13331,6 +14188,22 @@ export type UserEvent = {
 						 * @type string
 						 */
 						projectId: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type number
+						 */
+						expiresAt: number;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
 						/**
 						 * @type string | undefined
 						 */
@@ -13377,6 +14250,110 @@ export type UserEvent = {
 						 * @type number | undefined
 						 */
 						newTargetPercentage?: number | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string | undefined
+						 */
+						targetDeploymentId?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						action?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type object
+						 */
+						previous: {
+							/**
+							 * @type object
+							 */
+							gitSources?:
+								| ({
+										/**
+										 * @type boolean
+										 */
+										enabled: GitSourcesEnabledEnumKey;
+								  } | null)
+								| undefined;
+							/**
+							 * @type object
+							 */
+							deploymentSources?:
+								| ({
+										/**
+										 * @type boolean
+										 */
+										enabled: DeploymentSourcesEnabledEnumKey;
+								  } | null)
+								| undefined;
+							/**
+							 * @type object
+							 */
+							publicDeployments?:
+								| ({
+										/**
+										 * @type boolean
+										 */
+										enabled: PublicDeploymentsEnabledEnumKey;
+								  } | null)
+								| undefined;
+						} | null;
+						/**
+						 * @type object
+						 */
+						next: {
+							/**
+							 * @type object
+							 */
+							gitSources?:
+								| ({
+										/**
+										 * @type boolean
+										 */
+										enabled: GitSourcesEnabledEnumKey;
+								  } | null)
+								| undefined;
+							/**
+							 * @type object
+							 */
+							deploymentSources?:
+								| ({
+										/**
+										 * @type boolean
+										 */
+										enabled: DeploymentSourcesEnabledEnumKey;
+								  } | null)
+								| undefined;
+							/**
+							 * @type object
+							 */
+							publicDeployments?:
+								| ({
+										/**
+										 * @type boolean
+										 */
+										enabled: PublicDeploymentsEnabledEnumKey;
+								  } | null)
+								| undefined;
+						} | null;
 				  }
 				| {
 						/**
@@ -13620,6 +14597,12 @@ export type UserEvent = {
 											cve55182MigrationAppliedFrom?:
 												| (SsoProtectionCve55182MigrationAppliedFromEnumKey | null)
 												| undefined;
+											/**
+											 * @type string
+											 */
+											april2026SecurityIncidentMigrationAppliedFrom?:
+												| (SsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnumKey | null)
+												| undefined;
 									  }
 									| PayloadSsoProtectionEnumKey
 							  )
@@ -13636,6 +14619,12 @@ export type UserEvent = {
 											 */
 											cve55182MigrationAppliedFrom?:
 												| (OldSsoProtectionCve55182MigrationAppliedFromEnumKey | null)
+												| undefined;
+											/**
+											 * @type string
+											 */
+											april2026SecurityIncidentMigrationAppliedFrom?:
+												| (OldSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnumKey | null)
 												| undefined;
 									  }
 									| PayloadOldSsoProtectionEnumKey
@@ -13739,6 +14728,50 @@ export type UserEvent = {
 						 * @type array
 						 */
 						removedAddresses?: (string[] | null) | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type array
+						 */
+						addedProjects: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string
+							 */
+							name: string;
+						}[];
+						/**
+						 * @type array
+						 */
+						removedProjects: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string
+							 */
+							name: string;
+						}[];
+						/**
+						 * @type array
+						 */
+						addedProviders: string[];
+						/**
+						 * @type array
+						 */
+						removedProviders: string[];
 				  }
 				| {
 						/**
@@ -14531,7 +15564,7 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
-						type: PayloadTypeEnum2Key;
+						type: PayloadTypeEnum4Key;
 						/**
 						 * @type string | undefined
 						 */
@@ -14560,6 +15593,40 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
+						id: string;
+						/**
+						 * @type string | undefined
+						 */
+						name?: string | undefined;
+						/**
+						 * @type number | undefined
+						 */
+						computeUnitsMax?: number | undefined;
+						/**
+						 * @type number | undefined
+						 */
+						computeUnitsMin?: number | undefined;
+						/**
+						 * @type number | undefined
+						 */
+						suspendTimeoutSeconds?: number | undefined;
+						/**
+						 * @type string
+						 */
+						type: PayloadTypeEnum4Key;
+						/**
+						 * @type string | undefined
+						 */
+						access?: PayloadAccessEnumKey | undefined;
+						/**
+						 * @type boolean
+						 */
+						locked: PayloadLockedEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
 						slug: string;
 				  }
 				| {
@@ -14573,7 +15640,7 @@ export type UserEvent = {
 									 * @description Whether automatic code reviews are enabled
 									 * @type boolean
 									 */
-									enabled: PreviousEnabledEnumKey;
+									enabled: PreviousEnabledEnum2Key;
 									/**
 									 * @description Which repository visibilities get automatic reviews
 									 * @type string
@@ -14600,7 +15667,7 @@ export type UserEvent = {
 							 * @description Whether automatic code reviews are enabled
 							 * @type boolean
 							 */
-							enabled: NextEnabledEnumKey;
+							enabled: NextEnabledEnum2Key;
 							/**
 							 * @description Which repository visibilities get automatic reviews
 							 * @type string
@@ -14713,6 +15780,84 @@ export type UserEvent = {
 						 * @type number | undefined
 						 */
 						timestamp?: number | undefined;
+				  }
+				| {
+						/**
+						 * @type object
+						 */
+						previous: {
+							/**
+							 * @type object
+							 */
+							gitSources?:
+								| ({
+										/**
+										 * @type boolean
+										 */
+										enabled: GitSourcesEnabledEnumKey;
+								  } | null)
+								| undefined;
+							/**
+							 * @type object
+							 */
+							deploymentSources?:
+								| ({
+										/**
+										 * @type boolean
+										 */
+										enabled: DeploymentSourcesEnabledEnumKey;
+								  } | null)
+								| undefined;
+							/**
+							 * @type object
+							 */
+							publicDeployments?:
+								| ({
+										/**
+										 * @type boolean
+										 */
+										enabled: PublicDeploymentsEnabledEnumKey;
+								  } | null)
+								| undefined;
+						} | null;
+						/**
+						 * @type object
+						 */
+						next: {
+							/**
+							 * @type object
+							 */
+							gitSources?:
+								| ({
+										/**
+										 * @type boolean
+										 */
+										enabled: GitSourcesEnabledEnumKey;
+								  } | null)
+								| undefined;
+							/**
+							 * @type object
+							 */
+							deploymentSources?:
+								| ({
+										/**
+										 * @type boolean
+										 */
+										enabled: DeploymentSourcesEnabledEnumKey;
+								  } | null)
+								| undefined;
+							/**
+							 * @type object
+							 */
+							publicDeployments?:
+								| ({
+										/**
+										 * @type boolean
+										 */
+										enabled: PublicDeploymentsEnabledEnumKey;
+								  } | null)
+								| undefined;
+						} | null;
 				  }
 				| {
 						/**
@@ -14976,13 +16121,36 @@ export type UserEvent = {
 						 */
 						role?: string | undefined;
 						/**
-						 * @type string
+						 * @type string | undefined
 						 */
-						uid: string;
+						uid?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						updatedUid?: string | undefined;
+						/**
+						 * @type object | undefined
+						 */
+						updatedUser?:
+							| {
+									/**
+									 * @type string
+									 */
+									username: string;
+									/**
+									 * @type string
+									 */
+									email: string;
+							  }
+							| undefined;
 						/**
 						 * @type string | undefined
 						 */
 						origin?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						teamSlug?: string | undefined;
 						/**
 						 * @type array | undefined
 						 */
@@ -14995,12 +16163,35 @@ export type UserEvent = {
 						 * @type array | undefined
 						 */
 						entitlements?: string[] | undefined;
+						/**
+						 * @type object | undefined
+						 */
+						invitedBy?:
+							| {
+									/**
+									 * @type string
+									 */
+									email: string;
+									/**
+									 * @type string | undefined
+									 */
+									userId?: string | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									name?: string | undefined;
+							  }
+							| undefined;
 				  }
 				| {
 						/**
 						 * @type string
 						 */
 						requestedTeamName: string;
+						/**
+						 * @type string | undefined
+						 */
+						requestedTeamSlug?: string | undefined;
 						/**
 						 * @type string | undefined
 						 */
@@ -15021,12 +16212,20 @@ export type UserEvent = {
 						 * @type string | undefined
 						 */
 						bitbucketUsername?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						source?: PayloadSourceEnumKey | undefined;
 				  }
 				| {
 						/**
 						 * @type string | undefined
 						 */
 						directoryType?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						ssoType?: string | undefined;
 						/**
 						 * @type object | undefined
 						 */
@@ -15058,12 +16257,48 @@ export type UserEvent = {
 						 * @type string | undefined
 						 */
 						origin?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						teamSlug?: string | undefined;
 				  }
 				| {
 						/**
 						 * @type boolean
 						 */
 						enforced: PayloadEnforcedEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						publicId: string;
+						/**
+						 * @type string
+						 */
+						role: string;
+						/**
+						 * @type number
+						 */
+						maxUses: number;
+						/**
+						 * @type string
+						 */
+						expiresAt: string;
+						/**
+						 * @type string | undefined
+						 */
+						name?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						publicId: string;
+						/**
+						 * @type string | undefined
+						 */
+						name?: string | undefined;
 				  }
 				| {
 						/**
@@ -15202,6 +16437,12 @@ export type UserEvent = {
 				  }
 				| {
 						/**
+						 * @type array
+						 */
+						tokenTypes: string[];
+				  }
+				| {
+						/**
 						 * @type string
 						 */
 						exportId: string;
@@ -15280,7 +16521,7 @@ export type UserEvent = {
 							/**
 							 * @type boolean
 							 */
-							enabled: PreviousEnabledEnum2Key;
+							enabled: PreviousEnabledEnumKey;
 							/**
 							 * @type boolean
 							 */
@@ -15293,7 +16534,7 @@ export type UserEvent = {
 							/**
 							 * @type boolean
 							 */
-							enabled: NextEnabledEnum2Key;
+							enabled: NextEnabledEnumKey;
 							/**
 							 * @type boolean
 							 */
@@ -15337,6 +16578,26 @@ export type UserEvent = {
 						 * @type string
 						 */
 						ruleName: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						customAlertTitle: string;
+				  }
+				| {
+						/**
+						 * @type array
+						 */
+						vulnerabilities: string[];
+						/**
+						 * @type boolean
+						 */
+						protectionEnabled: PayloadProtectionEnabledEnumKey;
+						/**
+						 * @type number
+						 */
+						protectedProjectCount: number;
 				  }
 				| {
 						/**
@@ -15606,13 +16867,1533 @@ export type UserEvent = {
 						 */
 						publicId?: string | undefined;
 						/**
+						 * @description optional since entries prior to 2026-04-23 do not contain this field
+						 * @type string | undefined
+						 */
+						tokenPrefix?: PayloadTokenPrefixEnumKey | undefined;
+						/**
+						 * @description optional since entries prior to 2026-04-23 do not contain this field
+						 * @type string | undefined
+						 */
+						tokenSuffix?: string | undefined;
+						/**
+						 * @description optional; only present when a refresh token was issued (offline_access).
+						 * @type string | undefined
+						 */
+						refreshTokenPublicId?: string | undefined;
+						/**
+						 * @description optional; only present when a refresh token was issued (offline_access).
+						 * @type string | undefined
+						 */
+						refreshTokenPrefix?: PayloadRefreshTokenPrefixEnumKey | undefined;
+						/**
+						 * @description optional; only present when a refresh token was issued (offline_access).
+						 * @type string | undefined
+						 */
+						refreshTokenSuffix?: string | undefined;
+						/**
 						 * @description optional since entries prior to 2025-10-13 do not contain this field
 						 * @type string | undefined
 						 */
 						sessionId?: string | undefined;
+						/**
+						 * @description optional since entries prior to 2026-04-23 do not contain this field
+						 * @type string
+						 */
+						ip?: (string | null) | undefined;
+						/**
+						 * @description optional since entries prior to 2026-04-23 do not contain this field
+						 * @type object
+						 */
+						geolocation?:
+							| ({
+									/**
+									 * @type object | undefined
+									 */
+									city?:
+										| {
+												/**
+												 * @type object
+												 */
+												names: {
+													/**
+													 * @type string
+													 */
+													en: string;
+												};
+										  }
+										| undefined;
+									/**
+									 * @type object
+									 */
+									country: {
+										/**
+										 * @type object
+										 */
+										names: {
+											/**
+											 * @type string
+											 */
+											en: string;
+										};
+									};
+									/**
+									 * @type object | undefined
+									 */
+									mostSpecificSubdivision?:
+										| {
+												/**
+												 * @type object
+												 */
+												names: {
+													/**
+													 * @type string
+													 */
+													en: string;
+												};
+										  }
+										| undefined;
+									/**
+									 * @type string | undefined
+									 */
+									regionName?: string | undefined;
+							  } | null)
+							| undefined;
+						/**
+						 * @description optional since entries prior to 2026-04-23 do not contain this field
+						 * @type string | undefined
+						 */
+						userAgent?: string | undefined;
+				  }
+				| {
+						/**
+						 * @description The token\'s public ID.
+						 * @type string
+						 */
+						tokenId: string;
+						/**
+						 * @description The token prefix used when showing a safe checksum-style fingerprint.
+						 * @type string | undefined
+						 */
+						tokenPrefix?: PayloadTokenPrefixEnum2Key | undefined;
+						/**
+						 * @description The token checksum suffix.
+						 * @type string | undefined
+						 */
+						tokenSuffix?: string | undefined;
+						/**
+						 * @description User-supplied name of the token.
+						 * @type string
+						 */
+						tokenName: string;
+						/**
+						 * @description How the token was issued. Always `\'manual\'` for explicit PAT creation.
+						 * @type string
+						 */
+						origin: PayloadOriginEnumKey;
+						/**
+						 * @description Scope of the token: - `\'user\'`: full-account token (not tied to any team). - `\'team\'`: scoped to a single team. - `\'project\'`: scoped to a single project within a team.
+						 * @type string
+						 */
+						scope: PayloadScopeEnum2Key;
+						/**
+						 * @description Present when `scope` is `\'team\'` or `\'project\'`.
+						 * @type string | undefined
+						 */
+						teamId?: string | undefined;
+						/**
+						 * @description Present when `scope` is `\'team\'` or `\'project\'`.
+						 * @type string | undefined
+						 */
+						teamSlug?: string | undefined;
+						/**
+						 * @description Present when `scope` is `\'project\'`.
+						 * @type string | undefined
+						 */
+						projectId?: string | undefined;
+						/**
+						 * @description Unix epoch milliseconds. Absent when the token never expires.
+						 * @type number | undefined
+						 */
+						expiresAt?: number | undefined;
+						/**
+						 * @description Whether the token was issued with RFC 9396 authorization details.
+						 * @type boolean | undefined
+						 */
+						hasAuthorizationDetails?: PayloadHasAuthorizationDetailsEnumKey | undefined;
+						/**
+						 * @type string
+						 */
+						ip?: (string | null) | undefined;
+						/**
+						 * @type object
+						 */
+						geolocation?:
+							| ({
+									/**
+									 * @type object | undefined
+									 */
+									city?:
+										| {
+												/**
+												 * @type object
+												 */
+												names: {
+													/**
+													 * @type string
+													 */
+													en: string;
+												};
+										  }
+										| undefined;
+									/**
+									 * @type object
+									 */
+									country: {
+										/**
+										 * @type object
+										 */
+										names: {
+											/**
+											 * @type string
+											 */
+											en: string;
+										};
+									};
+									/**
+									 * @type object | undefined
+									 */
+									mostSpecificSubdivision?:
+										| {
+												/**
+												 * @type object
+												 */
+												names: {
+													/**
+													 * @type string
+													 */
+													en: string;
+												};
+										  }
+										| undefined;
+									/**
+									 * @type string | undefined
+									 */
+									regionName?: string | undefined;
+							  } | null)
+							| undefined;
+						/**
+						 * @type string | undefined
+						 */
+						userAgent?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						reqId?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						reqUrl?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						tokenId: string;
+						/**
+						 * @type string
+						 */
+						tokenType: string;
+						/**
+						 * @type string
+						 */
+						tokenName: string;
+						/**
+						 * @description The token\'s public ID.
+						 * @type string
+						 */
+						actorTokenId: string;
+						/**
+						 * @type string | undefined
+						 */
+						origin?: PayloadOriginEnum2Key | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						teamId?: string | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						expired?: PayloadExpiredEnumKey | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						leaked?: PayloadLeakedEnumKey | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						revoked?: PayloadRevokedEnumKey | undefined;
+						/**
+						 * @type string
+						 */
+						ip?: (string | null) | undefined;
+						/**
+						 * @type object
+						 */
+						geolocation?:
+							| ({
+									/**
+									 * @type object | undefined
+									 */
+									city?:
+										| {
+												/**
+												 * @type object
+												 */
+												names: {
+													/**
+													 * @type string
+													 */
+													en: string;
+												};
+										  }
+										| undefined;
+									/**
+									 * @type object
+									 */
+									country: {
+										/**
+										 * @type object
+										 */
+										names: {
+											/**
+											 * @type string
+											 */
+											en: string;
+										};
+									};
+									/**
+									 * @type object | undefined
+									 */
+									mostSpecificSubdivision?:
+										| {
+												/**
+												 * @type object
+												 */
+												names: {
+													/**
+													 * @type string
+													 */
+													en: string;
+												};
+										  }
+										| undefined;
+									/**
+									 * @type string | undefined
+									 */
+									regionName?: string | undefined;
+							  } | null)
+							| undefined;
+						/**
+						 * @type string | undefined
+						 */
+						userAgent?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						reqId?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						reqUrl?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type number
+						 */
+						deletedCount: number;
+						/**
+						 * @description The token\'s public ID.
+						 * @type string
+						 */
+						actorTokenId: string;
+						/**
+						 * @type string
+						 */
+						ip?: (string | null) | undefined;
+						/**
+						 * @type object
+						 */
+						geolocation?:
+							| ({
+									/**
+									 * @type object | undefined
+									 */
+									city?:
+										| {
+												/**
+												 * @type object
+												 */
+												names: {
+													/**
+													 * @type string
+													 */
+													en: string;
+												};
+										  }
+										| undefined;
+									/**
+									 * @type object
+									 */
+									country: {
+										/**
+										 * @type object
+										 */
+										names: {
+											/**
+											 * @type string
+											 */
+											en: string;
+										};
+									};
+									/**
+									 * @type object | undefined
+									 */
+									mostSpecificSubdivision?:
+										| {
+												/**
+												 * @type object
+												 */
+												names: {
+													/**
+													 * @type string
+													 */
+													en: string;
+												};
+										  }
+										| undefined;
+									/**
+									 * @type string | undefined
+									 */
+									regionName?: string | undefined;
+							  } | null)
+							| undefined;
+						/**
+						 * @type string | undefined
+						 */
+						userAgent?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						reqId?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						reqUrl?: string | undefined;
 				  }
 		  )
 		| undefined;
+};
+
+export const listEventTypeNameEnum = {
+	"access-group-created": "access-group-created",
+	"access-group-deleted": "access-group-deleted",
+	"access-group-project-updated": "access-group-project-updated",
+	"access-group-updated": "access-group-updated",
+	"access-group-user-added": "access-group-user-added",
+	"access-group-user-removed": "access-group-user-removed",
+	"agentic-provisioning-account-blocked": "agentic-provisioning-account-blocked",
+	"agentic-provisioning-account-linked": "agentic-provisioning-account-linked",
+	"agentic-provisioning-account-relinked": "agentic-provisioning-account-relinked",
+	"agentic-provisioning-account-unlinked": "agentic-provisioning-account-unlinked",
+	"agentic-provisioning-credentials-rotated": "agentic-provisioning-credentials-rotated",
+	"agentic-provisioning-plan-changed": "agentic-provisioning-plan-changed",
+	"agentic-provisioning-team-created": "agentic-provisioning-team-created",
+	"ai-alert-investigation": "ai-alert-investigation",
+	"ai-code-review": "ai-code-review",
+	"ai-gateway-api-key-created": "ai-gateway-api-key-created",
+	"ai-gateway-api-key-deleted": "ai-gateway-api-key-deleted",
+	"ai-gateway-byok-credential-created": "ai-gateway-byok-credential-created",
+	"ai-gateway-byok-credential-deleted": "ai-gateway-byok-credential-deleted",
+	"ai-gateway-byok-credential-updated": "ai-gateway-byok-credential-updated",
+	"alert-rule-created": "alert-rule-created",
+	"alert-rule-deleted": "alert-rule-deleted",
+	"alert-rule-updated": "alert-rule-updated",
+	alias: "alias",
+	"alias-chown": "alias-chown",
+	"alias-delete": "alias-delete",
+	"alias-invite-created": "alias-invite-created",
+	"alias-invite-joined": "alias-invite-joined",
+	"alias-invite-revoked": "alias-invite-revoked",
+	"alias-protection-bypass-created": "alias-protection-bypass-created",
+	"alias-protection-bypass-exception": "alias-protection-bypass-exception",
+	"alias-protection-bypass-regenerated": "alias-protection-bypass-regenerated",
+	"alias-protection-bypass-revoked": "alias-protection-bypass-revoked",
+	"alias-system": "alias-system",
+	"alias-user-scoped-access-denied": "alias-user-scoped-access-denied",
+	"alias-user-scoped-access-granted": "alias-user-scoped-access-granted",
+	"alias-user-scoped-access-requested": "alias-user-scoped-access-requested",
+	"alias-user-scoped-access-revoked": "alias-user-scoped-access-revoked",
+	"aliases-assigned": "aliases-assigned",
+	"attack-mode-disabled": "attack-mode-disabled",
+	"attack-mode-enabled": "attack-mode-enabled",
+	"audit-log-export-downloaded": "audit-log-export-downloaded",
+	"audit-log-export-requested": "audit-log-export-requested",
+	"authorize-git-deployment": "authorize-git-deployment",
+	"auto-expose-system-envs": "auto-expose-system-envs",
+	avatar: "avatar",
+	"bulk-redirects-settings-updated": "bulk-redirects-settings-updated",
+	"bulk-redirects-version-promoted": "bulk-redirects-version-promoted",
+	"bulk-redirects-version-restored": "bulk-redirects-version-restored",
+	cert: "cert",
+	"cert-autorenew": "cert-autorenew",
+	"cert-chown": "cert-chown",
+	"cert-clone": "cert-clone",
+	"cert-delete": "cert-delete",
+	"cert-renew": "cert-renew",
+	"cert-replace": "cert-replace",
+	"cert-system-create": "cert-system-create",
+	"concurrent-builds-update": "concurrent-builds-update",
+	"connect-bitbucket": "connect-bitbucket",
+	"connect-bitbucket-app": "connect-bitbucket-app",
+	"connect-configuration-created": "connect-configuration-created",
+	"connect-configuration-deleted": "connect-configuration-deleted",
+	"connect-configuration-link-updated": "connect-configuration-link-updated",
+	"connect-configuration-linked": "connect-configuration-linked",
+	"connect-configuration-unlinked": "connect-configuration-unlinked",
+	"connect-configuration-updated": "connect-configuration-updated",
+	"connect-github": "connect-github",
+	"connect-github-custom-host": "connect-github-custom-host",
+	"connect-github-limited": "connect-github-limited",
+	"connect-gitlab": "connect-gitlab",
+	"connect-gitlab-app": "connect-gitlab-app",
+	"custom-alert-created": "custom-alert-created",
+	"custom-alert-deleted": "custom-alert-deleted",
+	"custom-suffix-clear": "custom-suffix-clear",
+	"custom-suffix-disable": "custom-suffix-disable",
+	"custom-suffix-enable": "custom-suffix-enable",
+	"custom-suffix-pending": "custom-suffix-pending",
+	"custom-suffix-ready": "custom-suffix-ready",
+	"deploy-hook-created": "deploy-hook-created",
+	"deploy-hook-deduped": "deploy-hook-deduped",
+	"deploy-hook-deleted": "deploy-hook-deleted",
+	"deploy-hook-processed": "deploy-hook-processed",
+	deployment: "deployment",
+	"deployment-check-created": "deployment-check-created",
+	"deployment-check-deleted": "deployment-check-deleted",
+	"deployment-check-updated": "deployment-check-updated",
+	"deployment-chown": "deployment-chown",
+	"deployment-creation-blocked": "deployment-creation-blocked",
+	"deployment-delete": "deployment-delete",
+	"disabled-integration-installation-removed": "disabled-integration-installation-removed",
+	"disconnect-bitbucket-app": "disconnect-bitbucket-app",
+	"disconnect-github": "disconnect-github",
+	"disconnect-github-custom-host": "disconnect-github-custom-host",
+	"disconnect-github-limited": "disconnect-github-limited",
+	"disconnect-gitlab-app": "disconnect-gitlab-app",
+	"dns-add": "dns-add",
+	"dns-delete": "dns-delete",
+	"dns-update": "dns-update",
+	"dns-zonefile-import": "dns-zonefile-import",
+	domain: "domain",
+	"domain-buy": "domain-buy",
+	"domain-cdn": "domain-cdn",
+	"domain-chown": "domain-chown",
+	"domain-custom-ns-change": "domain-custom-ns-change",
+	"domain-delegated": "domain-delegated",
+	"domain-delete": "domain-delete",
+	"domain-move-in": "domain-move-in",
+	"domain-move-out": "domain-move-out",
+	"domain-move-out-request-sent": "domain-move-out-request-sent",
+	"domain-renew-change": "domain-renew-change",
+	"domain-service-type-updated": "domain-service-type-updated",
+	"domain-transfer-in": "domain-transfer-in",
+	"domain-transfer-in-canceled": "domain-transfer-in-canceled",
+	"domain-transfer-in-completed": "domain-transfer-in-completed",
+	"domain-zone-change": "domain-zone-change",
+	"drain-created": "drain-created",
+	"drain-deleted": "drain-deleted",
+	"drain-disabled": "drain-disabled",
+	"drain-enabled": "drain-enabled",
+	"drain-updated": "drain-updated",
+	"edge-cache-dangerously-delete-by-src-images": "edge-cache-dangerously-delete-by-src-images",
+	"edge-cache-dangerously-delete-by-tags": "edge-cache-dangerously-delete-by-tags",
+	"edge-cache-invalidate-by-src-images": "edge-cache-invalidate-by-src-images",
+	"edge-cache-invalidate-by-tags": "edge-cache-invalidate-by-tags",
+	"edge-cache-purge-all": "edge-cache-purge-all",
+	"edge-cache-rollback-purge": "edge-cache-rollback-purge",
+	"edge-config-created": "edge-config-created",
+	"edge-config-deleted": "edge-config-deleted",
+	"edge-config-items-updated": "edge-config-items-updated",
+	"edge-config-schema-deleted": "edge-config-schema-deleted",
+	"edge-config-schema-updated": "edge-config-schema-updated",
+	"edge-config-token-created": "edge-config-token-created",
+	"edge-config-token-deleted": "edge-config-token-deleted",
+	"edge-config-transfer-in": "edge-config-transfer-in",
+	"edge-config-transfer-out": "edge-config-transfer-out",
+	"edge-config-updated": "edge-config-updated",
+	email: "email",
+	"email-notification-rule-removed": "email-notification-rule-removed",
+	"email-notification-rule-updated": "email-notification-rule-updated",
+	"enforce-sensitive-environment-variables": "enforce-sensitive-environment-variables",
+	"env-variable-add": "env-variable-add",
+	"env-variable-delete": "env-variable-delete",
+	"env-variable-edit": "env-variable-edit",
+	"env-variable-read": "env-variable-read",
+	"env-variable-read:cli:dev": "env-variable-read:cli:dev",
+	"env-variable-read:cli:env:add": "env-variable-read:cli:env:add",
+	"env-variable-read:cli:env:ls": "env-variable-read:cli:env:ls",
+	"env-variable-read:cli:env:pull": "env-variable-read:cli:env:pull",
+	"env-variable-read:cli:env:rm": "env-variable-read:cli:env:rm",
+	"env-variable-read:cli:pull": "env-variable-read:cli:pull",
+	"env-variable-read:unknown-source": "env-variable-read:unknown-source",
+	"env-variable-read:v0:env:pull": "env-variable-read:v0:env:pull",
+	"env-variable-rotated": "env-variable-rotated",
+	"firewall-bypass-created": "firewall-bypass-created",
+	"firewall-bypass-deleted": "firewall-bypass-deleted",
+	"firewall-config-modified": "firewall-config-modified",
+	"firewall-config-promoted": "firewall-config-promoted",
+	"firewall-config-removed": "firewall-config-removed",
+	"firewall-managed-rulegroup-updated": "firewall-managed-rulegroup-updated",
+	"firewall-managed-ruleset-updated": "firewall-managed-ruleset-updated",
+	flag: "flag",
+	"flag-archived": "flag-archived",
+	"flag-created": "flag-created",
+	"flag-deleted": "flag-deleted",
+	"flag-unarchived": "flag-unarchived",
+	"flag-updated": "flag-updated",
+	"flags-explorer-subscription": "flags-explorer-subscription",
+	"flags-sdk-key": "flags-sdk-key",
+	"flags-sdk-key-added": "flags-sdk-key-added",
+	"flags-sdk-key-deleted": "flags-sdk-key-deleted",
+	"flags-sdk-key-read": "flags-sdk-key-read",
+	"flags-segment": "flags-segment",
+	"flags-settings": "flags-settings",
+	"instant-rollback-created": "instant-rollback-created",
+	"integration-configuration-owner-changed": "integration-configuration-owner-changed",
+	"integration-configuration-scope-change-confirmed":
+		"integration-configuration-scope-change-confirmed",
+	"integration-configuration-transfer-in-success": "integration-configuration-transfer-in-success",
+	"integration-configuration-transfer-out-success":
+		"integration-configuration-transfer-out-success",
+	"integration-configurations-disabled": "integration-configurations-disabled",
+	"integration-installation-billing-plan-updated": "integration-installation-billing-plan-updated",
+	"integration-installation-completed": "integration-installation-completed",
+	"integration-installation-permission-updated": "integration-installation-permission-updated",
+	"integration-installation-removed": "integration-installation-removed",
+	"integration-scope-changed": "integration-scope-changed",
+	"invoice-modified": "invoice-modified",
+	"invoice-refunded": "invoice-refunded",
+	"log-drain-created": "log-drain-created",
+	"log-drain-deleted": "log-drain-deleted",
+	"log-drain-disabled": "log-drain-disabled",
+	"log-drain-enabled": "log-drain-enabled",
+	login: "login",
+	"manual-deployment-promotion-created": "manual-deployment-promotion-created",
+	"marketplace-integration-allowlist-updated": "marketplace-integration-allowlist-updated",
+	"microfrontend-group-added": "microfrontend-group-added",
+	"microfrontend-group-deleted": "microfrontend-group-deleted",
+	"microfrontend-group-updated": "microfrontend-group-updated",
+	"microfrontend-project-added-to-group": "microfrontend-project-added-to-group",
+	"microfrontend-project-removed-from-group": "microfrontend-project-removed-from-group",
+	"microfrontend-project-updated": "microfrontend-project-updated",
+	"monitoring-disabled": "monitoring-disabled",
+	"monitoring-enabled": "monitoring-enabled",
+	"oauth-app-connection-created": "oauth-app-connection-created",
+	"oauth-app-connection-removed": "oauth-app-connection-removed",
+	"oauth-app-connection-updated": "oauth-app-connection-updated",
+	"oauth-app-created": "oauth-app-created",
+	"oauth-app-deleted": "oauth-app-deleted",
+	"oauth-app-secret-deleted": "oauth-app-secret-deleted",
+	"oauth-app-secret-generated": "oauth-app-secret-generated",
+	"oauth-app-token-created": "oauth-app-token-created",
+	"oauth-app-updated": "oauth-app-updated",
+	"observability-disabled": "observability-disabled",
+	"observability-enabled": "observability-enabled",
+	"observability-plus-project-disabled": "observability-plus-project-disabled",
+	"observability-plus-project-enabled": "observability-plus-project-enabled",
+	"owner-blocked": "owner-blocked",
+	"owner-soft-blocked": "owner-soft-blocked",
+	"owner-soft-unblocked": "owner-soft-unblocked",
+	"owner-unblocked": "owner-unblocked",
+	"page-integrity-config-updated": "page-integrity-config-updated",
+	"page-integrity-header-approved": "page-integrity-header-approved",
+	"page-integrity-resource-approved": "page-integrity-resource-approved",
+	"page-integrity-resource-deleted": "page-integrity-resource-deleted",
+	"page-integrity-resource-rejected": "page-integrity-resource-rejected",
+	"passkey-created": "passkey-created",
+	"passkey-deleted": "passkey-deleted",
+	"passkey-updated": "passkey-updated",
+	"password-protection-disabled": "password-protection-disabled",
+	"password-protection-enabled": "password-protection-enabled",
+	"payment-method-added": "payment-method-added",
+	"payment-method-default-updated": "payment-method-default-updated",
+	"payment-method-removed": "payment-method-removed",
+	plan: "plan",
+	"preview-deployment-suffix-disabled": "preview-deployment-suffix-disabled",
+	"preview-deployment-suffix-enabled": "preview-deployment-suffix-enabled",
+	"preview-deployment-suffix-update": "preview-deployment-suffix-update",
+	"privatelink-endpoint-created": "privatelink-endpoint-created",
+	"privatelink-endpoint-deleted": "privatelink-endpoint-deleted",
+	"privatelink-endpoint-updated": "privatelink-endpoint-updated",
+	"production-branch-updated": "production-branch-updated",
+	"project-add-alias": "project-add-alias",
+	"project-add-redirect": "project-add-redirect",
+	"project-affected-projects-deployments-updated": "project-affected-projects-deployments-updated",
+	"project-alias-configured-change": "project-alias-configured-change",
+	"project-analytics-disabled": "project-analytics-disabled",
+	"project-analytics-enabled": "project-analytics-enabled",
+	"project-auto-assign-custom-production-domains-updated":
+		"project-auto-assign-custom-production-domains-updated",
+	"project-automation-bypass": "project-automation-bypass",
+	"project-build-command-updated": "project-build-command-updated",
+	"project-build-logs-and-source-protection-updated":
+		"project-build-logs-and-source-protection-updated",
+	"project-build-machine-updated": "project-build-machine-updated",
+	"project-client-cert-delete": "project-client-cert-delete",
+	"project-client-cert-upload": "project-client-cert-upload",
+	"project-connect-configurations": "project-connect-configurations",
+	"project-consolidated-git-commit-status-updated":
+		"project-consolidated-git-commit-status-updated",
+	"project-created": "project-created",
+	"project-cron-jobs-toggled": "project-cron-jobs-toggled",
+	"project-custom-environment-created": "project-custom-environment-created",
+	"project-custom-environment-deleted": "project-custom-environment-deleted",
+	"project-custom-environment-updated": "project-custom-environment-updated",
+	"project-customer-success-code-visibility-updated":
+		"project-customer-success-code-visibility-updated",
+	"project-delegated-protection-disabled": "project-delegated-protection-disabled",
+	"project-delegated-protection-enabled": "project-delegated-protection-enabled",
+	"project-delegated-protection-updated": "project-delegated-protection-updated",
+	"project-delete": "project-delete",
+	"project-deployment-policy-updated": "project-deployment-policy-updated",
+	"project-deployment-retention-updated": "project-deployment-retention-updated",
+	"project-directory-listing": "project-directory-listing",
+	"project-domain-deleted": "project-domain-deleted",
+	"project-domain-moved": "project-domain-moved",
+	"project-domain-unverified": "project-domain-unverified",
+	"project-domain-updated": "project-domain-updated",
+	"project-domain-verified": "project-domain-verified",
+	"project-elastic-concurrency-updated": "project-elastic-concurrency-updated",
+	"project-expiration-locked": "project-expiration-locked",
+	"project-expiration-reached": "project-expiration-reached",
+	"project-expiration-scheduled": "project-expiration-scheduled",
+	"project-expiration-unlocked": "project-expiration-unlocked",
+	"project-external-rewrite-caching-updated": "project-external-rewrite-caching-updated",
+	"project-framework-updated": "project-framework-updated",
+	"project-function-cpu-memory": "project-function-cpu-memory",
+	"project-function-failover": "project-function-failover",
+	"project-function-max-duration": "project-function-max-duration",
+	"project-function-regions": "project-function-regions",
+	"project-functions-beta-updated": "project-functions-beta-updated",
+	"project-functions-fluid-disabled": "project-functions-fluid-disabled",
+	"project-functions-fluid-enabled": "project-functions-fluid-enabled",
+	"project-git-commit-comments-toggled": "project-git-commit-comments-toggled",
+	"project-git-commit-status-toggled": "project-git-commit-status-toggled",
+	"project-git-create-deployments-toggled": "project-git-create-deployments-toggled",
+	"project-git-fork-protection-updated": "project-git-fork-protection-updated",
+	"project-git-lfs-toggled": "project-git-lfs-toggled",
+	"project-git-pr-comments-toggled": "project-git-pr-comments-toggled",
+	"project-git-repository-connected": "project-git-repository-connected",
+	"project-git-repository-disconnected": "project-git-repository-disconnected",
+	"project-git-repository-dispatch-events-toggled":
+		"project-git-repository-dispatch-events-toggled",
+	"project-git-require-verified-commits-toggled": "project-git-require-verified-commits-toggled",
+	"project-ignored-build-step-updated": "project-ignored-build-step-updated",
+	"project-install-command-updated": "project-install-command-updated",
+	"project-member-added": "project-member-added",
+	"project-member-invited": "project-member-invited",
+	"project-member-removed": "project-member-removed",
+	"project-member-removed-batch": "project-member-removed-batch",
+	"project-member-updated": "project-member-updated",
+	"project-move-in-success": "project-move-in-success",
+	"project-move-out-failed": "project-move-out-failed",
+	"project-move-out-started": "project-move-out-started",
+	"project-move-out-success": "project-move-out-success",
+	"project-name": "project-name",
+	"project-node-version-updated": "project-node-version-updated",
+	"project-oidc-issuer-mode-updated": "project-oidc-issuer-mode-updated",
+	"project-oidc-token-created": "project-oidc-token-created",
+	"project-options-allowlist": "project-options-allowlist",
+	"project-output-directory-updated": "project-output-directory-updated",
+	"project-password-protection": "project-password-protection",
+	"project-paused": "project-paused",
+	"project-preview-deployment-suffix": "project-preview-deployment-suffix",
+	"project-preview-environment-branch-tracking-updated":
+		"project-preview-environment-branch-tracking-updated",
+	"project-prioritize-production-builds-updated": "project-prioritize-production-builds-updated",
+	"project-program-enrollment-changed": "project-program-enrollment-changed",
+	"project-protected-sourcemaps-updated": "project-protected-sourcemaps-updated",
+	"project-rolling-release-aborted": "project-rolling-release-aborted",
+	"project-rolling-release-approved": "project-rolling-release-approved",
+	"project-rolling-release-completed": "project-rolling-release-completed",
+	"project-rolling-release-configured": "project-rolling-release-configured",
+	"project-rolling-release-continued": "project-rolling-release-continued",
+	"project-rolling-release-disabled": "project-rolling-release-disabled",
+	"project-rolling-release-enabled": "project-rolling-release-enabled",
+	"project-rolling-release-paused": "project-rolling-release-paused",
+	"project-rolling-release-started": "project-rolling-release-started",
+	"project-rolling-release-suggested-actions-generated":
+		"project-rolling-release-suggested-actions-generated",
+	"project-rolling-release-timer": "project-rolling-release-timer",
+	"project-root-directory-updated": "project-root-directory-updated",
+	"project-routes-version-promoted": "project-routes-version-promoted",
+	"project-routes-version-restored": "project-routes-version-restored",
+	"project-skew-protection-allowed-domains-updated":
+		"project-skew-protection-allowed-domains-updated",
+	"project-skew-protection-max-age-updated": "project-skew-protection-max-age-updated",
+	"project-skew-protection-threshold-updated": "project-skew-protection-threshold-updated",
+	"project-source-files-outside-root-directory-updated":
+		"project-source-files-outside-root-directory-updated",
+	"project-speed-insights-disabled": "project-speed-insights-disabled",
+	"project-speed-insights-enabled": "project-speed-insights-enabled",
+	"project-sso-protection": "project-sso-protection",
+	"project-static-ips-updated": "project-static-ips-updated",
+	"project-trusted-ips": "project-trusted-ips",
+	"project-trusted-sources": "project-trusted-sources",
+	"project-unpaused": "project-unpaused",
+	"project-web-analytics-disabled": "project-web-analytics-disabled",
+	"project-web-analytics-enabled": "project-web-analytics-enabled",
+	"protected-git-scope-added": "protected-git-scope-added",
+	"protected-git-scope-removed": "protected-git-scope-removed",
+	"runtime-cache-purge-all": "runtime-cache-purge-all",
+	scale: "scale",
+	"scale-auto": "scale-auto",
+	"secondary-email-added": "secondary-email-added",
+	"secondary-email-removed": "secondary-email-removed",
+	"secondary-email-verified": "secondary-email-verified",
+	"secret-add": "secret-add",
+	"secret-delete": "secret-delete",
+	"secret-rename": "secret-rename",
+	"security-plus-updated": "security-plus-updated",
+	"set-bio": "set-bio",
+	"set-name": "set-name",
+	"set-profiles": "set-profiles",
+	"set-scale": "set-scale",
+	"shared-env-variable-create": "shared-env-variable-create",
+	"shared-env-variable-delete": "shared-env-variable-delete",
+	"shared-env-variable-read": "shared-env-variable-read",
+	"shared-env-variable-update": "shared-env-variable-update",
+	"show-ip-addresses": "show-ip-addresses",
+	signup: "signup",
+	"signup-via-bitbucket": "signup-via-bitbucket",
+	"signup-via-github": "signup-via-github",
+	"signup-via-gitlab": "signup-via-gitlab",
+	"speed-insights-settings-updated": "speed-insights-settings-updated",
+	"spend-created": "spend-created",
+	"spend-deleted": "spend-deleted",
+	"spend-updated": "spend-updated",
+	"storage-accept-tos": "storage-accept-tos",
+	"storage-access-token-set": "storage-access-token-set",
+	"storage-accessed-data-browser": "storage-accessed-data-browser",
+	"storage-connect-project": "storage-connect-project",
+	"storage-create": "storage-create",
+	"storage-delete": "storage-delete",
+	"storage-disconnect-project": "storage-disconnect-project",
+	"storage-disconnect-projects": "storage-disconnect-projects",
+	"storage-inactive-store-deleted": "storage-inactive-store-deleted",
+	"storage-reset-credentials": "storage-reset-credentials",
+	"storage-resource-repl-command": "storage-resource-repl-command",
+	"storage-set-locked": "storage-set-locked",
+	"storage-transfer-in-success": "storage-transfer-in-success",
+	"storage-transfer-out-success": "storage-transfer-out-success",
+	"storage-transfer-request-created": "storage-transfer-request-created",
+	"storage-update": "storage-update",
+	"storage-update-project-connection": "storage-update-project-connection",
+	"storage-upgrade-project-connection-to-oidc": "storage-upgrade-project-connection-to-oidc",
+	"storage-view-secret": "storage-view-secret",
+	"strict-deployment-protection-settings": "strict-deployment-protection-settings",
+	"strict-shareable-links": "strict-shareable-links",
+	"subscription-created": "subscription-created",
+	"subscription-product-added": "subscription-product-added",
+	"subscription-product-removed": "subscription-product-removed",
+	"subscription-updated": "subscription-updated",
+	team: "team",
+	"team-avatar-update": "team-avatar-update",
+	"team-default-build-machine-updated": "team-default-build-machine-updated",
+	"team-delete": "team-delete",
+	"team-deployment-policy-updated": "team-deployment-policy-updated",
+	"team-domain-verification-created": "team-domain-verification-created",
+	"team-domain-verification-deleted": "team-domain-verification-deleted",
+	"team-domain-verification-verified": "team-domain-verification-verified",
+	"team-email-domain-update": "team-email-domain-update",
+	"team-emu-updated": "team-emu-updated",
+	"team-ended-trial": "team-ended-trial",
+	"team-git-repository-dispatch-events-toggled": "team-git-repository-dispatch-events-toggled",
+	"team-git-require-verified-commits-toggled": "team-git-require-verified-commits-toggled",
+	"team-invite-bulk-delete": "team-invite-bulk-delete",
+	"team-invite-code-reset": "team-invite-code-reset",
+	"team-invite-link-created": "team-invite-link-created",
+	"team-invite-link-deleted": "team-invite-link-deleted",
+	"team-ip-blocking-rules-created": "team-ip-blocking-rules-created",
+	"team-ip-blocking-rules-removed": "team-ip-blocking-rules-removed",
+	"team-member-add": "team-member-add",
+	"team-member-confirm-request": "team-member-confirm-request",
+	"team-member-decline-request": "team-member-decline-request",
+	"team-member-delete": "team-member-delete",
+	"team-member-entitlement-added": "team-member-entitlement-added",
+	"team-member-entitlement-canceled": "team-member-entitlement-canceled",
+	"team-member-entitlement-reactivated": "team-member-entitlement-reactivated",
+	"team-member-entitlement-removed": "team-member-entitlement-removed",
+	"team-member-join": "team-member-join",
+	"team-member-leave": "team-member-leave",
+	"team-member-request-access": "team-member-request-access",
+	"team-member-role-update": "team-member-role-update",
+	"team-mfa-enforcement-updated": "team-mfa-enforcement-updated",
+	"team-name-update": "team-name-update",
+	"team-paid-invoice": "team-paid-invoice",
+	"team-program-enrollment-changed": "team-program-enrollment-changed",
+	"team-remote-caching-update": "team-remote-caching-update",
+	"team-saml-enforced": "team-saml-enforced",
+	"team-saml-roles": "team-saml-roles",
+	"team-slug-update": "team-slug-update",
+	"team-tokens-invalidated": "team-tokens-invalidated",
+	"unlink-login-connection": "unlink-login-connection",
+	"user-delete": "user-delete",
+	"user-mfa-challenge-verified": "user-mfa-challenge-verified",
+	"user-mfa-configuration-updated": "user-mfa-configuration-updated",
+	"user-mfa-recovery-codes-regenerated": "user-mfa-recovery-codes-regenerated",
+	"user-mfa-removed": "user-mfa-removed",
+	"user-mfa-totp-verification-started": "user-mfa-totp-verification-started",
+	"user-mfa-totp-verified": "user-mfa-totp-verified",
+	"user-primary-email-updated": "user-primary-email-updated",
+	"user-token-created": "user-token-created",
+	"user-token-deleted": "user-token-deleted",
+	"user-tokens-deleted": "user-tokens-deleted",
+	username: "username",
+	"v0-chat-ai-usage": "v0-chat-ai-usage",
+	"v0-chat-created": "v0-chat-created",
+	"v0-chat-message-sent": "v0-chat-message-sent",
+	"vercel-agent-team-trial-credits-applied": "vercel-agent-team-trial-credits-applied",
+	"vercel-app-installation-request-dismissed": "vercel-app-installation-request-dismissed",
+	"vercel-app-installation-requested": "vercel-app-installation-requested",
+	"vercel-app-installation-updated": "vercel-app-installation-updated",
+	"vercel-app-installed": "vercel-app-installed",
+	"vercel-app-tokens-revoked": "vercel-app-tokens-revoked",
+	"vercel-app-uninstalled": "vercel-app-uninstalled",
+	"vercel-toolbar": "vercel-toolbar",
+	"vpc-peering-connection-accepted": "vpc-peering-connection-accepted",
+	"vpc-peering-connection-deleted": "vpc-peering-connection-deleted",
+	"vpc-peering-connection-rejected": "vpc-peering-connection-rejected",
+	"vpc-peering-connection-updated": "vpc-peering-connection-updated",
+	"vulnerability-banner-dismissed": "vulnerability-banner-dismissed",
+	"web-analytics-tier-updated": "web-analytics-tier-updated",
+	"webhook-created": "webhook-created",
+	"webhook-deleted": "webhook-deleted",
+	"webhook-updated": "webhook-updated",
+	"workflow-deployment-key-accessed": "workflow-deployment-key-accessed",
+} as const;
+
+export type ListEventTypeNameEnumKey =
+	(typeof listEventTypeNameEnum)[keyof typeof listEventTypeNameEnum];
+
+export const listEventTypeCategoriesEnum = {
+	account: "account",
+	ai: "ai",
+	"ai-gateway": "ai-gateway",
+	billing: "billing",
+	deployment: "deployment",
+	domain: "domain",
+	edge: "edge",
+	"env-variable": "env-variable",
+	"feature-flags": "feature-flags",
+	firewall: "firewall",
+	integration: "integration",
+	microfrontends: "microfrontends",
+	network: "network",
+	observability: "observability",
+	other: "other",
+	project: "project",
+	security: "security",
+	storage: "storage",
+	team: "team",
+	v0: "v0",
+	"vercel-app": "vercel-app",
+	workflow: "workflow",
+} as const;
+
+export type ListEventTypeCategoriesEnumKey =
+	(typeof listEventTypeCategoriesEnum)[keyof typeof listEventTypeCategoriesEnum];
+
+export const listEventTypeDeprecatedEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type ListEventTypeDeprecatedEnumKey =
+	(typeof listEventTypeDeprecatedEnum)[keyof typeof listEventTypeDeprecatedEnum];
+
+export const listEventTypeReplacedByEnum = {
+	"access-group-created": "access-group-created",
+	"access-group-deleted": "access-group-deleted",
+	"access-group-project-updated": "access-group-project-updated",
+	"access-group-updated": "access-group-updated",
+	"access-group-user-added": "access-group-user-added",
+	"access-group-user-removed": "access-group-user-removed",
+	"agentic-provisioning-account-blocked": "agentic-provisioning-account-blocked",
+	"agentic-provisioning-account-linked": "agentic-provisioning-account-linked",
+	"agentic-provisioning-account-relinked": "agentic-provisioning-account-relinked",
+	"agentic-provisioning-account-unlinked": "agentic-provisioning-account-unlinked",
+	"agentic-provisioning-credentials-rotated": "agentic-provisioning-credentials-rotated",
+	"agentic-provisioning-plan-changed": "agentic-provisioning-plan-changed",
+	"agentic-provisioning-team-created": "agentic-provisioning-team-created",
+	"ai-alert-investigation": "ai-alert-investigation",
+	"ai-code-review": "ai-code-review",
+	"ai-gateway-api-key-created": "ai-gateway-api-key-created",
+	"ai-gateway-api-key-deleted": "ai-gateway-api-key-deleted",
+	"ai-gateway-byok-credential-created": "ai-gateway-byok-credential-created",
+	"ai-gateway-byok-credential-deleted": "ai-gateway-byok-credential-deleted",
+	"ai-gateway-byok-credential-updated": "ai-gateway-byok-credential-updated",
+	"alert-rule-created": "alert-rule-created",
+	"alert-rule-deleted": "alert-rule-deleted",
+	"alert-rule-updated": "alert-rule-updated",
+	alias: "alias",
+	"alias-chown": "alias-chown",
+	"alias-delete": "alias-delete",
+	"alias-invite-created": "alias-invite-created",
+	"alias-invite-joined": "alias-invite-joined",
+	"alias-invite-revoked": "alias-invite-revoked",
+	"alias-protection-bypass-created": "alias-protection-bypass-created",
+	"alias-protection-bypass-exception": "alias-protection-bypass-exception",
+	"alias-protection-bypass-regenerated": "alias-protection-bypass-regenerated",
+	"alias-protection-bypass-revoked": "alias-protection-bypass-revoked",
+	"alias-system": "alias-system",
+	"alias-user-scoped-access-denied": "alias-user-scoped-access-denied",
+	"alias-user-scoped-access-granted": "alias-user-scoped-access-granted",
+	"alias-user-scoped-access-requested": "alias-user-scoped-access-requested",
+	"alias-user-scoped-access-revoked": "alias-user-scoped-access-revoked",
+	"aliases-assigned": "aliases-assigned",
+	"attack-mode-disabled": "attack-mode-disabled",
+	"attack-mode-enabled": "attack-mode-enabled",
+	"audit-log-export-downloaded": "audit-log-export-downloaded",
+	"audit-log-export-requested": "audit-log-export-requested",
+	"authorize-git-deployment": "authorize-git-deployment",
+	"auto-expose-system-envs": "auto-expose-system-envs",
+	avatar: "avatar",
+	"bulk-redirects-settings-updated": "bulk-redirects-settings-updated",
+	"bulk-redirects-version-promoted": "bulk-redirects-version-promoted",
+	"bulk-redirects-version-restored": "bulk-redirects-version-restored",
+	cert: "cert",
+	"cert-autorenew": "cert-autorenew",
+	"cert-chown": "cert-chown",
+	"cert-clone": "cert-clone",
+	"cert-delete": "cert-delete",
+	"cert-renew": "cert-renew",
+	"cert-replace": "cert-replace",
+	"cert-system-create": "cert-system-create",
+	"concurrent-builds-update": "concurrent-builds-update",
+	"connect-bitbucket": "connect-bitbucket",
+	"connect-bitbucket-app": "connect-bitbucket-app",
+	"connect-configuration-created": "connect-configuration-created",
+	"connect-configuration-deleted": "connect-configuration-deleted",
+	"connect-configuration-link-updated": "connect-configuration-link-updated",
+	"connect-configuration-linked": "connect-configuration-linked",
+	"connect-configuration-unlinked": "connect-configuration-unlinked",
+	"connect-configuration-updated": "connect-configuration-updated",
+	"connect-github": "connect-github",
+	"connect-github-custom-host": "connect-github-custom-host",
+	"connect-github-limited": "connect-github-limited",
+	"connect-gitlab": "connect-gitlab",
+	"connect-gitlab-app": "connect-gitlab-app",
+	"custom-alert-created": "custom-alert-created",
+	"custom-alert-deleted": "custom-alert-deleted",
+	"custom-suffix-clear": "custom-suffix-clear",
+	"custom-suffix-disable": "custom-suffix-disable",
+	"custom-suffix-enable": "custom-suffix-enable",
+	"custom-suffix-pending": "custom-suffix-pending",
+	"custom-suffix-ready": "custom-suffix-ready",
+	"deploy-hook-created": "deploy-hook-created",
+	"deploy-hook-deduped": "deploy-hook-deduped",
+	"deploy-hook-deleted": "deploy-hook-deleted",
+	"deploy-hook-processed": "deploy-hook-processed",
+	deployment: "deployment",
+	"deployment-check-created": "deployment-check-created",
+	"deployment-check-deleted": "deployment-check-deleted",
+	"deployment-check-updated": "deployment-check-updated",
+	"deployment-chown": "deployment-chown",
+	"deployment-creation-blocked": "deployment-creation-blocked",
+	"deployment-delete": "deployment-delete",
+	"disabled-integration-installation-removed": "disabled-integration-installation-removed",
+	"disconnect-bitbucket-app": "disconnect-bitbucket-app",
+	"disconnect-github": "disconnect-github",
+	"disconnect-github-custom-host": "disconnect-github-custom-host",
+	"disconnect-github-limited": "disconnect-github-limited",
+	"disconnect-gitlab-app": "disconnect-gitlab-app",
+	"dns-add": "dns-add",
+	"dns-delete": "dns-delete",
+	"dns-update": "dns-update",
+	"dns-zonefile-import": "dns-zonefile-import",
+	domain: "domain",
+	"domain-buy": "domain-buy",
+	"domain-cdn": "domain-cdn",
+	"domain-chown": "domain-chown",
+	"domain-custom-ns-change": "domain-custom-ns-change",
+	"domain-delegated": "domain-delegated",
+	"domain-delete": "domain-delete",
+	"domain-move-in": "domain-move-in",
+	"domain-move-out": "domain-move-out",
+	"domain-move-out-request-sent": "domain-move-out-request-sent",
+	"domain-renew-change": "domain-renew-change",
+	"domain-service-type-updated": "domain-service-type-updated",
+	"domain-transfer-in": "domain-transfer-in",
+	"domain-transfer-in-canceled": "domain-transfer-in-canceled",
+	"domain-transfer-in-completed": "domain-transfer-in-completed",
+	"domain-zone-change": "domain-zone-change",
+	"drain-created": "drain-created",
+	"drain-deleted": "drain-deleted",
+	"drain-disabled": "drain-disabled",
+	"drain-enabled": "drain-enabled",
+	"drain-updated": "drain-updated",
+	"edge-cache-dangerously-delete-by-src-images": "edge-cache-dangerously-delete-by-src-images",
+	"edge-cache-dangerously-delete-by-tags": "edge-cache-dangerously-delete-by-tags",
+	"edge-cache-invalidate-by-src-images": "edge-cache-invalidate-by-src-images",
+	"edge-cache-invalidate-by-tags": "edge-cache-invalidate-by-tags",
+	"edge-cache-purge-all": "edge-cache-purge-all",
+	"edge-cache-rollback-purge": "edge-cache-rollback-purge",
+	"edge-config-created": "edge-config-created",
+	"edge-config-deleted": "edge-config-deleted",
+	"edge-config-items-updated": "edge-config-items-updated",
+	"edge-config-schema-deleted": "edge-config-schema-deleted",
+	"edge-config-schema-updated": "edge-config-schema-updated",
+	"edge-config-token-created": "edge-config-token-created",
+	"edge-config-token-deleted": "edge-config-token-deleted",
+	"edge-config-transfer-in": "edge-config-transfer-in",
+	"edge-config-transfer-out": "edge-config-transfer-out",
+	"edge-config-updated": "edge-config-updated",
+	email: "email",
+	"email-notification-rule-removed": "email-notification-rule-removed",
+	"email-notification-rule-updated": "email-notification-rule-updated",
+	"enforce-sensitive-environment-variables": "enforce-sensitive-environment-variables",
+	"env-variable-add": "env-variable-add",
+	"env-variable-delete": "env-variable-delete",
+	"env-variable-edit": "env-variable-edit",
+	"env-variable-read": "env-variable-read",
+	"env-variable-read:cli:dev": "env-variable-read:cli:dev",
+	"env-variable-read:cli:env:add": "env-variable-read:cli:env:add",
+	"env-variable-read:cli:env:ls": "env-variable-read:cli:env:ls",
+	"env-variable-read:cli:env:pull": "env-variable-read:cli:env:pull",
+	"env-variable-read:cli:env:rm": "env-variable-read:cli:env:rm",
+	"env-variable-read:cli:pull": "env-variable-read:cli:pull",
+	"env-variable-read:unknown-source": "env-variable-read:unknown-source",
+	"env-variable-read:v0:env:pull": "env-variable-read:v0:env:pull",
+	"env-variable-rotated": "env-variable-rotated",
+	"firewall-bypass-created": "firewall-bypass-created",
+	"firewall-bypass-deleted": "firewall-bypass-deleted",
+	"firewall-config-modified": "firewall-config-modified",
+	"firewall-config-promoted": "firewall-config-promoted",
+	"firewall-config-removed": "firewall-config-removed",
+	"firewall-managed-rulegroup-updated": "firewall-managed-rulegroup-updated",
+	"firewall-managed-ruleset-updated": "firewall-managed-ruleset-updated",
+	flag: "flag",
+	"flag-archived": "flag-archived",
+	"flag-created": "flag-created",
+	"flag-deleted": "flag-deleted",
+	"flag-unarchived": "flag-unarchived",
+	"flag-updated": "flag-updated",
+	"flags-explorer-subscription": "flags-explorer-subscription",
+	"flags-sdk-key": "flags-sdk-key",
+	"flags-sdk-key-added": "flags-sdk-key-added",
+	"flags-sdk-key-deleted": "flags-sdk-key-deleted",
+	"flags-sdk-key-read": "flags-sdk-key-read",
+	"flags-segment": "flags-segment",
+	"flags-settings": "flags-settings",
+	"instant-rollback-created": "instant-rollback-created",
+	"integration-configuration-owner-changed": "integration-configuration-owner-changed",
+	"integration-configuration-scope-change-confirmed":
+		"integration-configuration-scope-change-confirmed",
+	"integration-configuration-transfer-in-success": "integration-configuration-transfer-in-success",
+	"integration-configuration-transfer-out-success":
+		"integration-configuration-transfer-out-success",
+	"integration-configurations-disabled": "integration-configurations-disabled",
+	"integration-installation-billing-plan-updated": "integration-installation-billing-plan-updated",
+	"integration-installation-completed": "integration-installation-completed",
+	"integration-installation-permission-updated": "integration-installation-permission-updated",
+	"integration-installation-removed": "integration-installation-removed",
+	"integration-scope-changed": "integration-scope-changed",
+	"invoice-modified": "invoice-modified",
+	"invoice-refunded": "invoice-refunded",
+	"log-drain-created": "log-drain-created",
+	"log-drain-deleted": "log-drain-deleted",
+	"log-drain-disabled": "log-drain-disabled",
+	"log-drain-enabled": "log-drain-enabled",
+	login: "login",
+	"manual-deployment-promotion-created": "manual-deployment-promotion-created",
+	"marketplace-integration-allowlist-updated": "marketplace-integration-allowlist-updated",
+	"microfrontend-group-added": "microfrontend-group-added",
+	"microfrontend-group-deleted": "microfrontend-group-deleted",
+	"microfrontend-group-updated": "microfrontend-group-updated",
+	"microfrontend-project-added-to-group": "microfrontend-project-added-to-group",
+	"microfrontend-project-removed-from-group": "microfrontend-project-removed-from-group",
+	"microfrontend-project-updated": "microfrontend-project-updated",
+	"monitoring-disabled": "monitoring-disabled",
+	"monitoring-enabled": "monitoring-enabled",
+	"oauth-app-connection-created": "oauth-app-connection-created",
+	"oauth-app-connection-removed": "oauth-app-connection-removed",
+	"oauth-app-connection-updated": "oauth-app-connection-updated",
+	"oauth-app-created": "oauth-app-created",
+	"oauth-app-deleted": "oauth-app-deleted",
+	"oauth-app-secret-deleted": "oauth-app-secret-deleted",
+	"oauth-app-secret-generated": "oauth-app-secret-generated",
+	"oauth-app-token-created": "oauth-app-token-created",
+	"oauth-app-updated": "oauth-app-updated",
+	"observability-disabled": "observability-disabled",
+	"observability-enabled": "observability-enabled",
+	"observability-plus-project-disabled": "observability-plus-project-disabled",
+	"observability-plus-project-enabled": "observability-plus-project-enabled",
+	"owner-blocked": "owner-blocked",
+	"owner-soft-blocked": "owner-soft-blocked",
+	"owner-soft-unblocked": "owner-soft-unblocked",
+	"owner-unblocked": "owner-unblocked",
+	"page-integrity-config-updated": "page-integrity-config-updated",
+	"page-integrity-header-approved": "page-integrity-header-approved",
+	"page-integrity-resource-approved": "page-integrity-resource-approved",
+	"page-integrity-resource-deleted": "page-integrity-resource-deleted",
+	"page-integrity-resource-rejected": "page-integrity-resource-rejected",
+	"passkey-created": "passkey-created",
+	"passkey-deleted": "passkey-deleted",
+	"passkey-updated": "passkey-updated",
+	"password-protection-disabled": "password-protection-disabled",
+	"password-protection-enabled": "password-protection-enabled",
+	"payment-method-added": "payment-method-added",
+	"payment-method-default-updated": "payment-method-default-updated",
+	"payment-method-removed": "payment-method-removed",
+	plan: "plan",
+	"preview-deployment-suffix-disabled": "preview-deployment-suffix-disabled",
+	"preview-deployment-suffix-enabled": "preview-deployment-suffix-enabled",
+	"preview-deployment-suffix-update": "preview-deployment-suffix-update",
+	"privatelink-endpoint-created": "privatelink-endpoint-created",
+	"privatelink-endpoint-deleted": "privatelink-endpoint-deleted",
+	"privatelink-endpoint-updated": "privatelink-endpoint-updated",
+	"production-branch-updated": "production-branch-updated",
+	"project-add-alias": "project-add-alias",
+	"project-add-redirect": "project-add-redirect",
+	"project-affected-projects-deployments-updated": "project-affected-projects-deployments-updated",
+	"project-alias-configured-change": "project-alias-configured-change",
+	"project-analytics-disabled": "project-analytics-disabled",
+	"project-analytics-enabled": "project-analytics-enabled",
+	"project-auto-assign-custom-production-domains-updated":
+		"project-auto-assign-custom-production-domains-updated",
+	"project-automation-bypass": "project-automation-bypass",
+	"project-build-command-updated": "project-build-command-updated",
+	"project-build-logs-and-source-protection-updated":
+		"project-build-logs-and-source-protection-updated",
+	"project-build-machine-updated": "project-build-machine-updated",
+	"project-client-cert-delete": "project-client-cert-delete",
+	"project-client-cert-upload": "project-client-cert-upload",
+	"project-connect-configurations": "project-connect-configurations",
+	"project-consolidated-git-commit-status-updated":
+		"project-consolidated-git-commit-status-updated",
+	"project-created": "project-created",
+	"project-cron-jobs-toggled": "project-cron-jobs-toggled",
+	"project-custom-environment-created": "project-custom-environment-created",
+	"project-custom-environment-deleted": "project-custom-environment-deleted",
+	"project-custom-environment-updated": "project-custom-environment-updated",
+	"project-customer-success-code-visibility-updated":
+		"project-customer-success-code-visibility-updated",
+	"project-delegated-protection-disabled": "project-delegated-protection-disabled",
+	"project-delegated-protection-enabled": "project-delegated-protection-enabled",
+	"project-delegated-protection-updated": "project-delegated-protection-updated",
+	"project-delete": "project-delete",
+	"project-deployment-policy-updated": "project-deployment-policy-updated",
+	"project-deployment-retention-updated": "project-deployment-retention-updated",
+	"project-directory-listing": "project-directory-listing",
+	"project-domain-deleted": "project-domain-deleted",
+	"project-domain-moved": "project-domain-moved",
+	"project-domain-unverified": "project-domain-unverified",
+	"project-domain-updated": "project-domain-updated",
+	"project-domain-verified": "project-domain-verified",
+	"project-elastic-concurrency-updated": "project-elastic-concurrency-updated",
+	"project-expiration-locked": "project-expiration-locked",
+	"project-expiration-reached": "project-expiration-reached",
+	"project-expiration-scheduled": "project-expiration-scheduled",
+	"project-expiration-unlocked": "project-expiration-unlocked",
+	"project-external-rewrite-caching-updated": "project-external-rewrite-caching-updated",
+	"project-framework-updated": "project-framework-updated",
+	"project-function-cpu-memory": "project-function-cpu-memory",
+	"project-function-failover": "project-function-failover",
+	"project-function-max-duration": "project-function-max-duration",
+	"project-function-regions": "project-function-regions",
+	"project-functions-beta-updated": "project-functions-beta-updated",
+	"project-functions-fluid-disabled": "project-functions-fluid-disabled",
+	"project-functions-fluid-enabled": "project-functions-fluid-enabled",
+	"project-git-commit-comments-toggled": "project-git-commit-comments-toggled",
+	"project-git-commit-status-toggled": "project-git-commit-status-toggled",
+	"project-git-create-deployments-toggled": "project-git-create-deployments-toggled",
+	"project-git-fork-protection-updated": "project-git-fork-protection-updated",
+	"project-git-lfs-toggled": "project-git-lfs-toggled",
+	"project-git-pr-comments-toggled": "project-git-pr-comments-toggled",
+	"project-git-repository-connected": "project-git-repository-connected",
+	"project-git-repository-disconnected": "project-git-repository-disconnected",
+	"project-git-repository-dispatch-events-toggled":
+		"project-git-repository-dispatch-events-toggled",
+	"project-git-require-verified-commits-toggled": "project-git-require-verified-commits-toggled",
+	"project-ignored-build-step-updated": "project-ignored-build-step-updated",
+	"project-install-command-updated": "project-install-command-updated",
+	"project-member-added": "project-member-added",
+	"project-member-invited": "project-member-invited",
+	"project-member-removed": "project-member-removed",
+	"project-member-removed-batch": "project-member-removed-batch",
+	"project-member-updated": "project-member-updated",
+	"project-move-in-success": "project-move-in-success",
+	"project-move-out-failed": "project-move-out-failed",
+	"project-move-out-started": "project-move-out-started",
+	"project-move-out-success": "project-move-out-success",
+	"project-name": "project-name",
+	"project-node-version-updated": "project-node-version-updated",
+	"project-oidc-issuer-mode-updated": "project-oidc-issuer-mode-updated",
+	"project-oidc-token-created": "project-oidc-token-created",
+	"project-options-allowlist": "project-options-allowlist",
+	"project-output-directory-updated": "project-output-directory-updated",
+	"project-password-protection": "project-password-protection",
+	"project-paused": "project-paused",
+	"project-preview-deployment-suffix": "project-preview-deployment-suffix",
+	"project-preview-environment-branch-tracking-updated":
+		"project-preview-environment-branch-tracking-updated",
+	"project-prioritize-production-builds-updated": "project-prioritize-production-builds-updated",
+	"project-program-enrollment-changed": "project-program-enrollment-changed",
+	"project-protected-sourcemaps-updated": "project-protected-sourcemaps-updated",
+	"project-rolling-release-aborted": "project-rolling-release-aborted",
+	"project-rolling-release-approved": "project-rolling-release-approved",
+	"project-rolling-release-completed": "project-rolling-release-completed",
+	"project-rolling-release-configured": "project-rolling-release-configured",
+	"project-rolling-release-continued": "project-rolling-release-continued",
+	"project-rolling-release-disabled": "project-rolling-release-disabled",
+	"project-rolling-release-enabled": "project-rolling-release-enabled",
+	"project-rolling-release-paused": "project-rolling-release-paused",
+	"project-rolling-release-started": "project-rolling-release-started",
+	"project-rolling-release-suggested-actions-generated":
+		"project-rolling-release-suggested-actions-generated",
+	"project-rolling-release-timer": "project-rolling-release-timer",
+	"project-root-directory-updated": "project-root-directory-updated",
+	"project-routes-version-promoted": "project-routes-version-promoted",
+	"project-routes-version-restored": "project-routes-version-restored",
+	"project-skew-protection-allowed-domains-updated":
+		"project-skew-protection-allowed-domains-updated",
+	"project-skew-protection-max-age-updated": "project-skew-protection-max-age-updated",
+	"project-skew-protection-threshold-updated": "project-skew-protection-threshold-updated",
+	"project-source-files-outside-root-directory-updated":
+		"project-source-files-outside-root-directory-updated",
+	"project-speed-insights-disabled": "project-speed-insights-disabled",
+	"project-speed-insights-enabled": "project-speed-insights-enabled",
+	"project-sso-protection": "project-sso-protection",
+	"project-static-ips-updated": "project-static-ips-updated",
+	"project-trusted-ips": "project-trusted-ips",
+	"project-trusted-sources": "project-trusted-sources",
+	"project-unpaused": "project-unpaused",
+	"project-web-analytics-disabled": "project-web-analytics-disabled",
+	"project-web-analytics-enabled": "project-web-analytics-enabled",
+	"protected-git-scope-added": "protected-git-scope-added",
+	"protected-git-scope-removed": "protected-git-scope-removed",
+	"runtime-cache-purge-all": "runtime-cache-purge-all",
+	scale: "scale",
+	"scale-auto": "scale-auto",
+	"secondary-email-added": "secondary-email-added",
+	"secondary-email-removed": "secondary-email-removed",
+	"secondary-email-verified": "secondary-email-verified",
+	"secret-add": "secret-add",
+	"secret-delete": "secret-delete",
+	"secret-rename": "secret-rename",
+	"security-plus-updated": "security-plus-updated",
+	"set-bio": "set-bio",
+	"set-name": "set-name",
+	"set-profiles": "set-profiles",
+	"set-scale": "set-scale",
+	"shared-env-variable-create": "shared-env-variable-create",
+	"shared-env-variable-delete": "shared-env-variable-delete",
+	"shared-env-variable-read": "shared-env-variable-read",
+	"shared-env-variable-update": "shared-env-variable-update",
+	"show-ip-addresses": "show-ip-addresses",
+	signup: "signup",
+	"signup-via-bitbucket": "signup-via-bitbucket",
+	"signup-via-github": "signup-via-github",
+	"signup-via-gitlab": "signup-via-gitlab",
+	"speed-insights-settings-updated": "speed-insights-settings-updated",
+	"spend-created": "spend-created",
+	"spend-deleted": "spend-deleted",
+	"spend-updated": "spend-updated",
+	"storage-accept-tos": "storage-accept-tos",
+	"storage-access-token-set": "storage-access-token-set",
+	"storage-accessed-data-browser": "storage-accessed-data-browser",
+	"storage-connect-project": "storage-connect-project",
+	"storage-create": "storage-create",
+	"storage-delete": "storage-delete",
+	"storage-disconnect-project": "storage-disconnect-project",
+	"storage-disconnect-projects": "storage-disconnect-projects",
+	"storage-inactive-store-deleted": "storage-inactive-store-deleted",
+	"storage-reset-credentials": "storage-reset-credentials",
+	"storage-resource-repl-command": "storage-resource-repl-command",
+	"storage-set-locked": "storage-set-locked",
+	"storage-transfer-in-success": "storage-transfer-in-success",
+	"storage-transfer-out-success": "storage-transfer-out-success",
+	"storage-transfer-request-created": "storage-transfer-request-created",
+	"storage-update": "storage-update",
+	"storage-update-project-connection": "storage-update-project-connection",
+	"storage-upgrade-project-connection-to-oidc": "storage-upgrade-project-connection-to-oidc",
+	"storage-view-secret": "storage-view-secret",
+	"strict-deployment-protection-settings": "strict-deployment-protection-settings",
+	"strict-shareable-links": "strict-shareable-links",
+	"subscription-created": "subscription-created",
+	"subscription-product-added": "subscription-product-added",
+	"subscription-product-removed": "subscription-product-removed",
+	"subscription-updated": "subscription-updated",
+	team: "team",
+	"team-avatar-update": "team-avatar-update",
+	"team-default-build-machine-updated": "team-default-build-machine-updated",
+	"team-delete": "team-delete",
+	"team-deployment-policy-updated": "team-deployment-policy-updated",
+	"team-domain-verification-created": "team-domain-verification-created",
+	"team-domain-verification-deleted": "team-domain-verification-deleted",
+	"team-domain-verification-verified": "team-domain-verification-verified",
+	"team-email-domain-update": "team-email-domain-update",
+	"team-emu-updated": "team-emu-updated",
+	"team-ended-trial": "team-ended-trial",
+	"team-git-repository-dispatch-events-toggled": "team-git-repository-dispatch-events-toggled",
+	"team-git-require-verified-commits-toggled": "team-git-require-verified-commits-toggled",
+	"team-invite-bulk-delete": "team-invite-bulk-delete",
+	"team-invite-code-reset": "team-invite-code-reset",
+	"team-invite-link-created": "team-invite-link-created",
+	"team-invite-link-deleted": "team-invite-link-deleted",
+	"team-ip-blocking-rules-created": "team-ip-blocking-rules-created",
+	"team-ip-blocking-rules-removed": "team-ip-blocking-rules-removed",
+	"team-member-add": "team-member-add",
+	"team-member-confirm-request": "team-member-confirm-request",
+	"team-member-decline-request": "team-member-decline-request",
+	"team-member-delete": "team-member-delete",
+	"team-member-entitlement-added": "team-member-entitlement-added",
+	"team-member-entitlement-canceled": "team-member-entitlement-canceled",
+	"team-member-entitlement-reactivated": "team-member-entitlement-reactivated",
+	"team-member-entitlement-removed": "team-member-entitlement-removed",
+	"team-member-join": "team-member-join",
+	"team-member-leave": "team-member-leave",
+	"team-member-request-access": "team-member-request-access",
+	"team-member-role-update": "team-member-role-update",
+	"team-mfa-enforcement-updated": "team-mfa-enforcement-updated",
+	"team-name-update": "team-name-update",
+	"team-paid-invoice": "team-paid-invoice",
+	"team-program-enrollment-changed": "team-program-enrollment-changed",
+	"team-remote-caching-update": "team-remote-caching-update",
+	"team-saml-enforced": "team-saml-enforced",
+	"team-saml-roles": "team-saml-roles",
+	"team-slug-update": "team-slug-update",
+	"team-tokens-invalidated": "team-tokens-invalidated",
+	"unlink-login-connection": "unlink-login-connection",
+	"user-delete": "user-delete",
+	"user-mfa-challenge-verified": "user-mfa-challenge-verified",
+	"user-mfa-configuration-updated": "user-mfa-configuration-updated",
+	"user-mfa-recovery-codes-regenerated": "user-mfa-recovery-codes-regenerated",
+	"user-mfa-removed": "user-mfa-removed",
+	"user-mfa-totp-verification-started": "user-mfa-totp-verification-started",
+	"user-mfa-totp-verified": "user-mfa-totp-verified",
+	"user-primary-email-updated": "user-primary-email-updated",
+	"user-token-created": "user-token-created",
+	"user-token-deleted": "user-token-deleted",
+	"user-tokens-deleted": "user-tokens-deleted",
+	username: "username",
+	"v0-chat-ai-usage": "v0-chat-ai-usage",
+	"v0-chat-created": "v0-chat-created",
+	"v0-chat-message-sent": "v0-chat-message-sent",
+	"vercel-agent-team-trial-credits-applied": "vercel-agent-team-trial-credits-applied",
+	"vercel-app-installation-request-dismissed": "vercel-app-installation-request-dismissed",
+	"vercel-app-installation-requested": "vercel-app-installation-requested",
+	"vercel-app-installation-updated": "vercel-app-installation-updated",
+	"vercel-app-installed": "vercel-app-installed",
+	"vercel-app-tokens-revoked": "vercel-app-tokens-revoked",
+	"vercel-app-uninstalled": "vercel-app-uninstalled",
+	"vercel-toolbar": "vercel-toolbar",
+	"vpc-peering-connection-accepted": "vpc-peering-connection-accepted",
+	"vpc-peering-connection-deleted": "vpc-peering-connection-deleted",
+	"vpc-peering-connection-rejected": "vpc-peering-connection-rejected",
+	"vpc-peering-connection-updated": "vpc-peering-connection-updated",
+	"vulnerability-banner-dismissed": "vulnerability-banner-dismissed",
+	"web-analytics-tier-updated": "web-analytics-tier-updated",
+	"webhook-created": "webhook-created",
+	"webhook-deleted": "webhook-deleted",
+	"webhook-updated": "webhook-updated",
+	"workflow-deployment-key-accessed": "workflow-deployment-key-accessed",
+} as const;
+
+export type ListEventTypeReplacedByEnumKey =
+	(typeof listEventTypeReplacedByEnum)[keyof typeof listEventTypeReplacedByEnum];
+
+/**
+ * @description A user-facing event type.
+ */
+export type ListEventType = {
+	/**
+	 * @description The name of the event type.
+	 * @type string
+	 */
+	name: ListEventTypeNameEnumKey;
+	/**
+	 * @description Description of the event, visible to users in the Activity dashboard and docs.
+	 * @type string
+	 */
+	description: string;
+	/**
+	 * @description Categories that group this event type with related event types.
+	 * @type array
+	 */
+	categories: ListEventTypeCategoriesEnumKey[];
+	/**
+	 * @description Present only when this event type is deprecated.
+	 * @type boolean | undefined
+	 */
+	deprecated?: ListEventTypeDeprecatedEnumKey | undefined;
+	/**
+	 * @description Event type names that supersede this deprecated event type.
+	 * @type array | undefined
+	 */
+	replacedBy?: ListEventTypeReplacedByEnumKey[] | undefined;
+};
+
+export const categoriesNameEnum = {
+	account: "account",
+	ai: "ai",
+	"ai-gateway": "ai-gateway",
+	billing: "billing",
+	deployment: "deployment",
+	domain: "domain",
+	edge: "edge",
+	"env-variable": "env-variable",
+	"feature-flags": "feature-flags",
+	firewall: "firewall",
+	integration: "integration",
+	microfrontends: "microfrontends",
+	network: "network",
+	observability: "observability",
+	other: "other",
+	project: "project",
+	security: "security",
+	storage: "storage",
+	team: "team",
+	v0: "v0",
+	"vercel-app": "vercel-app",
+	workflow: "workflow",
+} as const;
+
+export type CategoriesNameEnumKey = (typeof categoriesNameEnum)[keyof typeof categoriesNameEnum];
+
+/**
+ * @description Response returned by the List Event Types endpoint.
+ */
+export type ListEventTypesResponse = {
+	/**
+	 * @type array
+	 */
+	types: unknown[];
+	/**
+	 * @type array
+	 */
+	categories: {
+		/**
+		 * @type string
+		 */
+		name: CategoriesNameEnumKey;
+		/**
+		 * @type string
+		 */
+		label: string;
+	}[];
 };
 
 export const flagPermanentEnum = {
@@ -15752,6 +18533,13 @@ export const baseTypeEnum = {
 
 export type BaseTypeEnumKey = (typeof baseTypeEnum)[keyof typeof baseTypeEnum];
 
+export const fallthroughTypeEnum3 = {
+	rollout: "rollout",
+} as const;
+
+export type FallthroughTypeEnum3Key =
+	(typeof fallthroughTypeEnum3)[keyof typeof fallthroughTypeEnum3];
+
 export const activeEnum2 = {
 	false: false,
 	true: true,
@@ -15770,6 +18558,12 @@ export const outcomeTypeEnum2 = {
 } as const;
 
 export type OutcomeTypeEnum2Key = (typeof outcomeTypeEnum2)[keyof typeof outcomeTypeEnum2];
+
+export const outcomeTypeEnum3 = {
+	rollout: "rollout",
+} as const;
+
+export type OutcomeTypeEnum3Key = (typeof outcomeTypeEnum3)[keyof typeof outcomeTypeEnum3];
 
 export const rhsTypeEnum = {
 	"list/inline": "list/inline",
@@ -16119,6 +18913,58 @@ export type Flag = {
 						 * @type string
 						 */
 						defaultVariantId: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						type: FallthroughTypeEnum3Key;
+						/**
+						 * @type object
+						 */
+						base: {
+							/**
+							 * @type string
+							 */
+							type: BaseTypeEnumKey;
+							/**
+							 * @type string
+							 */
+							kind: string;
+							/**
+							 * @type string
+							 */
+							attribute: string;
+						};
+						/**
+						 * @type string
+						 */
+						defaultVariantId: string;
+						/**
+						 * @type number
+						 */
+						startTimestamp: number;
+						/**
+						 * @type string
+						 */
+						rollFromVariantId: string;
+						/**
+						 * @type string
+						 */
+						rollToVariantId: string;
+						/**
+						 * @type array
+						 */
+						slots: {
+							/**
+							 * @type number
+							 */
+							promille: number;
+							/**
+							 * @type number
+							 */
+							durationMs: number;
+						}[];
 				  };
 			/**
 			 * @type boolean
@@ -16175,6 +19021,58 @@ export type Flag = {
 							 * @type string
 							 */
 							defaultVariantId: string;
+					  }
+					| {
+							/**
+							 * @type string
+							 */
+							type: OutcomeTypeEnum3Key;
+							/**
+							 * @type object
+							 */
+							base: {
+								/**
+								 * @type string
+								 */
+								type: BaseTypeEnumKey;
+								/**
+								 * @type string
+								 */
+								kind: string;
+								/**
+								 * @type string
+								 */
+								attribute: string;
+							};
+							/**
+							 * @type string
+							 */
+							defaultVariantId: string;
+							/**
+							 * @type number
+							 */
+							startTimestamp: number;
+							/**
+							 * @type string
+							 */
+							rollFromVariantId: string;
+							/**
+							 * @type string
+							 */
+							rollToVariantId: string;
+							/**
+							 * @type array
+							 */
+							slots: {
+								/**
+								 * @type number
+								 */
+								promille: number;
+								/**
+								 * @type number
+								 */
+								durationMs: number;
+							}[];
 					  };
 				/**
 				 * @type array
@@ -16354,17 +19252,17 @@ export const segmentTypeNameEnum = {
 
 export type SegmentTypeNameEnumKey = (typeof segmentTypeNameEnum)[keyof typeof segmentTypeNameEnum];
 
-export const outcomeTypeEnum3 = {
+export const outcomeTypeEnum4 = {
 	all: "all",
 } as const;
 
-export type OutcomeTypeEnum3Key = (typeof outcomeTypeEnum3)[keyof typeof outcomeTypeEnum3];
+export type OutcomeTypeEnum4Key = (typeof outcomeTypeEnum4)[keyof typeof outcomeTypeEnum4];
 
-export const outcomeTypeEnum4 = {
+export const outcomeTypeEnum5 = {
 	split: "split",
 } as const;
 
-export type OutcomeTypeEnum4Key = (typeof outcomeTypeEnum4)[keyof typeof outcomeTypeEnum4];
+export type OutcomeTypeEnum5Key = (typeof outcomeTypeEnum5)[keyof typeof outcomeTypeEnum5];
 
 export const baseTypeEnum2 = {
 	entity: "entity",
@@ -16496,13 +19394,13 @@ export type Segment = {
 								/**
 								 * @type string
 								 */
-								type: OutcomeTypeEnum3Key;
+								type: OutcomeTypeEnum4Key;
 						  }
 						| {
 								/**
 								 * @type string
 								 */
-								type: OutcomeTypeEnum4Key;
+								type: OutcomeTypeEnum5Key;
 								/**
 								 * @type object
 								 */
@@ -16695,15 +19593,19 @@ export type Segment = {
 		| undefined;
 };
 
-export const flagsSdkKeyTypeEnum = {
+export const flagsSdkKeyWithSecretsTypeEnum = {
 	client: "client",
 	mobile: "mobile",
 	server: "server",
 } as const;
 
-export type FlagsSdkKeyTypeEnumKey = (typeof flagsSdkKeyTypeEnum)[keyof typeof flagsSdkKeyTypeEnum];
+export type FlagsSdkKeyWithSecretsTypeEnumKey =
+	(typeof flagsSdkKeyWithSecretsTypeEnum)[keyof typeof flagsSdkKeyWithSecretsTypeEnum];
 
-export type FlagsSdkKey = {
+/**
+ * @description Representation of a Flags SDK key returned by CREATE. Includes cleartext secrets (`keyValue`, `tokenValue`, `connectionString`) which are only ever disclosed once, on creation.
+ */
+export type FlagsSdkKeyWithSecrets = {
 	/**
 	 * @type string
 	 */
@@ -16715,7 +19617,7 @@ export type FlagsSdkKey = {
 	/**
 	 * @type string
 	 */
-	type: FlagsSdkKeyTypeEnumKey;
+	type: FlagsSdkKeyWithSecretsTypeEnumKey;
 	/**
 	 * @type string
 	 */
@@ -16741,20 +19643,20 @@ export type FlagsSdkKey = {
 	 */
 	deletedAt?: number | undefined;
 	/**
-	 * @description Cleartext value of the SDK key
-	 * @type string | undefined
+	 * @description Partially-masked representation of the SDK key value, safe to display in UIs. The value is the `vf_<type>_` prefix followed by the first 3 characters of the secret portion and a fixed 8-character `*` mask (e.g. `vf_server_abc********`).
+	 * @type string
 	 */
-	keyValue?: string | undefined;
+	partialKeyValue: string;
 	/**
-	 * @description Cleartext value of the Edge Config token
+	 * @description Cleartext value of the SDK key.
+	 * @type string
+	 */
+	keyValue: string;
+	/**
+	 * @description Cleartext value of the Edge Config token, when the project has an Edge Config connection.
 	 * @type string | undefined
 	 */
 	tokenValue?: string | undefined;
-	/**
-	 * @description Connection string for the SDK
-	 * @type string | undefined
-	 */
-	connectionString?: string | undefined;
 };
 
 export const ACLActionEnum = {
@@ -16966,6 +19868,14 @@ export const snapshotStatusEnum = {
 
 export type SnapshotStatusEnumKey = (typeof snapshotStatusEnum)[keyof typeof snapshotStatusEnum];
 
+export const snapshotCreationMethodEnum = {
+	automatic: "automatic",
+	manual: "manual",
+} as const;
+
+export type SnapshotCreationMethodEnumKey =
+	(typeof snapshotCreationMethodEnum)[keyof typeof snapshotCreationMethodEnum];
+
 /**
  * @description This object contains information related to a Snapshot of a Vercel Sandbox session (v2 API).
  */
@@ -17010,6 +19920,21 @@ export type Snapshot = {
 	 * @type number
 	 */
 	updatedAt: number;
+	/**
+	 * @description The last time the snapshot was used (e.g. to resume or create a sandbox), in milliseconds since the epoch. Falls back to `createdAt` for older snapshots that predate this field.
+	 * @type number
+	 */
+	lastUsedAt: number;
+	/**
+	 * @description The method used to create the snapshot.
+	 * @type string | undefined
+	 */
+	creationMethod?: SnapshotCreationMethodEnumKey | undefined;
+	/**
+	 * @description The unique identifier of the parent snapshot, if this snapshot was created from another snapshot.
+	 * @type string | undefined
+	 */
+	parentId?: string | undefined;
 };
 
 export const sandboxPublicRouteSystemEnum = {
@@ -17103,6 +20028,14 @@ export const namedSandboxPersistentEnum = {
 export type NamedSandboxPersistentEnumKey =
 	(typeof namedSandboxPersistentEnum)[keyof typeof namedSandboxPersistentEnum];
 
+export const keepLastSnapshotsDeleteEvictedEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type KeepLastSnapshotsDeleteEvictedEnumKey =
+	(typeof keepLastSnapshotsDeleteEvictedEnum)[keyof typeof keepLastSnapshotsDeleteEvictedEnum];
+
 export const networkPolicyModeEnum = {
 	"allow-all": "allow-all",
 	custom: "custom",
@@ -17113,6 +20046,13 @@ export const networkPolicyModeEnum = {
 
 export type NetworkPolicyModeEnumKey =
 	(typeof networkPolicyModeEnum)[keyof typeof networkPolicyModeEnum];
+
+export const modeEnum = {
+	"read-only": "read-only",
+	"read-write": "read-write",
+} as const;
+
+export type ModeEnumKey = (typeof modeEnum)[keyof typeof modeEnum];
 
 /**
  * @description This object contains information related to a Vercel NamedSandbox.
@@ -17179,6 +20119,29 @@ export type NamedSandbox = {
 	 */
 	snapshotExpiration?: number | undefined;
 	/**
+	 * @description Keep-last snapshot configuration.
+	 * @type object | undefined
+	 */
+	keepLastSnapshots?:
+		| {
+				/**
+				 * @description Number of most recent snapshots to keep.
+				 * @type number
+				 */
+				count: number;
+				/**
+				 * @description Expiration time in milliseconds for kept snapshots.
+				 * @type number | undefined
+				 */
+				expiration?: number | undefined;
+				/**
+				 * @description Whether to immediately delete evicted snapshots.
+				 * @type boolean
+				 */
+				deleteEvicted: KeepLastSnapshotsDeleteEvictedEnumKey;
+		  }
+		| undefined;
+	/**
 	 * @description Network policy configuration.
 	 * @type object | undefined
 	 */
@@ -17234,6 +20197,24 @@ export type NamedSandbox = {
 	tags?:
 		| {
 				[key: string]: string;
+		  }
+		| undefined;
+	/**
+	 * @description Key-value pairs of mount path and volume.
+	 * @type object | undefined
+	 */
+	mounts?:
+		| {
+				[key: string]: {
+					/**
+					 * @type string
+					 */
+					volume: string;
+					/**
+					 * @type string | undefined
+					 */
+					mode?: ModeEnumKey | undefined;
+				};
 		  }
 		| undefined;
 	/**
@@ -17687,6 +20668,30 @@ export const teamHideIpAddressesInLogDrainsEnum = {
 export type TeamHideIpAddressesInLogDrainsEnumKey =
 	(typeof teamHideIpAddressesInLogDrainsEnum)[keyof typeof teamHideIpAddressesInLogDrainsEnum];
 
+export const ipBucketsDefaultEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type IpBucketsDefaultEnumKey =
+	(typeof ipBucketsDefaultEnum)[keyof typeof ipBucketsDefaultEnum];
+
+export const teamRequireVerifiedCommitsEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type TeamRequireVerifiedCommitsEnumKey =
+	(typeof teamRequireVerifiedCommitsEnum)[keyof typeof teamRequireVerifiedCommitsEnum];
+
+export const teamDisableRepositoryDispatchEventsEnum = {
+	false: false,
+	true: true,
+} as const;
+
+export type TeamDisableRepositoryDispatchEventsEnumKey =
+	(typeof teamDisableRepositoryDispatchEventsEnum)[keyof typeof teamDisableRepositoryDispatchEventsEnum];
+
 export const strictDeploymentProtectionSettingsEnabledEnum = {
 	false: false,
 	true: true,
@@ -17774,6 +20779,7 @@ export const joinedFromOriginEnum2 = {
 	"nsnb-hobby-upgrade": "nsnb-hobby-upgrade",
 	"nsnb-invite": "nsnb-invite",
 	"nsnb-redeploy": "nsnb-redeploy",
+	"nsnb-redeploy-attribution-card": "nsnb-redeploy-attribution-card",
 	"nsnb-request-access": "nsnb-request-access",
 	"nsnb-viewer-upgrade": "nsnb-viewer-upgrade",
 	"organization-teams": "organization-teams",
@@ -18186,8 +21192,22 @@ export type Team = {
 				 * @type number | undefined
 				 */
 				supportUntil?: number | undefined;
+				/**
+				 * @type boolean | undefined
+				 */
+				default?: IpBucketsDefaultEnumKey | undefined;
 		  }[]
 		| undefined;
+	/**
+	 * @description When enabled, all projects in the team require commits to be signed and verified by the git provider before deployments will be created. Projects may override this via `project.gitProviderOptions.requireVerifiedCommits` (gated by `Project:Update`).
+	 * @type boolean | undefined
+	 */
+	requireVerifiedCommits?: TeamRequireVerifiedCommitsEnumKey | undefined;
+	/**
+	 * @description Default for projects in the team. When `true`, projects in this team will not emit GitHub repository-dispatch events on deployment events unless the project explicitly overrides this setting via `project.gitProviderOptions.disableRepositoryDispatchEvents`.
+	 * @type boolean | undefined
+	 */
+	disableRepositoryDispatchEvents?: TeamDisableRepositoryDispatchEventsEnumKey | undefined;
 	/**
 	 * @description When enabled, deployment protection settings require stricter permissions (owner-only).
 	 * @type object | undefined
@@ -18233,6 +21253,26 @@ export type Team = {
 		  }
 		| undefined;
 	/**
+	 * @description Timestamp (ms) after which personal access tokens created at or before this time are considered invalid for this team.
+	 * @type number | undefined
+	 */
+	personalAccessTokensInvalidatedAt?: number | undefined;
+	/**
+	 * @description Timestamp (ms) after which Vercel App tokens created at or before this time are considered invalid for this team.
+	 * @type number | undefined
+	 */
+	appTokensInvalidatedAt?: number | undefined;
+	/**
+	 * @description Timestamp (ms) after which API keys created at or before this time are considered invalid for this team.
+	 * @type number | undefined
+	 */
+	apiKeysInvalidatedAt?: number | undefined;
+	/**
+	 * @description Timestamp (ms) after which integration tokens created at or before this time are considered invalid for this team.
+	 * @type number | undefined
+	 */
+	integrationTokensInvalidatedAt?: number | undefined;
+	/**
 	 * @description The Team\'s unique identifier.
 	 * @type string
 	 */
@@ -18254,105 +21294,107 @@ export type Team = {
 	avatar: string | null;
 	/**
 	 * @description The membership of the authenticated User in relation to the Team.
-	 * @type object
+	 * @type object | undefined
 	 */
-	membership: {
-		/**
-		 * @type string | undefined
-		 */
-		uid?: string | undefined;
-		/**
-		 * @type array | undefined
-		 */
-		entitlements?:
-			| {
-					/**
-					 * @type string
-					 */
-					entitlement: string;
-			  }[]
-			| undefined;
-		/**
-		 * @type string | undefined
-		 */
-		teamId?: string | undefined;
-		/**
-		 * @type boolean
-		 */
-		confirmed: MembershipConfirmedEnumKey;
-		/**
-		 * @type number | undefined
-		 */
-		accessRequestedAt?: number | undefined;
-		/**
-		 * @type string
-		 */
-		role: MembershipRoleEnumKey;
-		/**
-		 * @type array | undefined
-		 */
-		teamRoles?: MembershipTeamRolesEnumKey[] | undefined;
-		/**
-		 * @type array | undefined
-		 */
-		teamPermissions?: MembershipTeamPermissionsEnumKey[] | undefined;
-		/**
-		 * @type number
-		 */
-		createdAt: number;
-		/**
-		 * @type number
-		 */
-		created: number;
-		/**
-		 * @type object | undefined
-		 */
-		joinedFrom?:
-			| {
-					/**
-					 * @type string
-					 */
-					origin: JoinedFromOriginEnum2Key;
-					/**
-					 * @type string | undefined
-					 */
-					commitId?: string | undefined;
-					/**
-					 * @type string | undefined
-					 */
-					repoId?: string | undefined;
-					/**
-					 * @type string | undefined
-					 */
-					repoPath?: string | undefined;
-					gitUserId?: (string | number) | undefined;
-					/**
-					 * @type string | undefined
-					 */
-					gitUserLogin?: string | undefined;
-					/**
-					 * @type string | undefined
-					 */
-					ssoUserId?: string | undefined;
-					/**
-					 * @type number | undefined
-					 */
-					ssoConnectedAt?: number | undefined;
-					/**
-					 * @type string | undefined
-					 */
-					idpUserId?: string | undefined;
-					/**
-					 * @type string | undefined
-					 */
-					dsyncUserId?: string | undefined;
-					/**
-					 * @type number | undefined
-					 */
-					dsyncConnectedAt?: number | undefined;
-			  }
-			| undefined;
-	};
+	membership?:
+		| {
+				/**
+				 * @type string | undefined
+				 */
+				uid?: string | undefined;
+				/**
+				 * @type array | undefined
+				 */
+				entitlements?:
+					| {
+							/**
+							 * @type string
+							 */
+							entitlement: string;
+					  }[]
+					| undefined;
+				/**
+				 * @type string | undefined
+				 */
+				teamId?: string | undefined;
+				/**
+				 * @type boolean
+				 */
+				confirmed: MembershipConfirmedEnumKey;
+				/**
+				 * @type number | undefined
+				 */
+				accessRequestedAt?: number | undefined;
+				/**
+				 * @type string
+				 */
+				role: MembershipRoleEnumKey;
+				/**
+				 * @type array | undefined
+				 */
+				teamRoles?: MembershipTeamRolesEnumKey[] | undefined;
+				/**
+				 * @type array | undefined
+				 */
+				teamPermissions?: MembershipTeamPermissionsEnumKey[] | undefined;
+				/**
+				 * @type number
+				 */
+				createdAt: number;
+				/**
+				 * @type number
+				 */
+				created: number;
+				/**
+				 * @type object | undefined
+				 */
+				joinedFrom?:
+					| {
+							/**
+							 * @type string
+							 */
+							origin: JoinedFromOriginEnum2Key;
+							/**
+							 * @type string | undefined
+							 */
+							commitId?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							repoId?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							repoPath?: string | undefined;
+							gitUserId?: (string | number) | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							gitUserLogin?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							ssoUserId?: string | undefined;
+							/**
+							 * @type number | undefined
+							 */
+							ssoConnectedAt?: number | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							idpUserId?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							dsyncUserId?: string | undefined;
+							/**
+							 * @type number | undefined
+							 */
+							dsyncConnectedAt?: number | undefined;
+					  }
+					| undefined;
+		  }
+		| undefined;
 	/**
 	 * @description UNIX timestamp (in milliseconds) when the Team was created.
 	 * @type number
@@ -18369,6 +21411,7 @@ export type TeamLimitedLimitedEnumKey =
 	(typeof teamLimitedLimitedEnum)[keyof typeof teamLimitedLimitedEnum];
 
 export const teamLimitedLimitedByEnum = {
+	invalidated: "invalidated",
 	mfa: "mfa",
 	scope: "scope",
 } as const;
@@ -18461,6 +21504,7 @@ export const joinedFromOriginEnum3 = {
 	"nsnb-hobby-upgrade": "nsnb-hobby-upgrade",
 	"nsnb-invite": "nsnb-invite",
 	"nsnb-redeploy": "nsnb-redeploy",
+	"nsnb-redeploy-attribution-card": "nsnb-redeploy-attribution-card",
 	"nsnb-request-access": "nsnb-request-access",
 	"nsnb-viewer-upgrade": "nsnb-viewer-upgrade",
 	"organization-teams": "organization-teams",
@@ -18600,105 +21644,107 @@ export type TeamLimited = {
 	avatar: string | null;
 	/**
 	 * @description The membership of the authenticated User in relation to the Team.
-	 * @type object
+	 * @type object | undefined
 	 */
-	membership: {
-		/**
-		 * @type string | undefined
-		 */
-		uid?: string | undefined;
-		/**
-		 * @type array | undefined
-		 */
-		entitlements?:
-			| {
-					/**
-					 * @type string
-					 */
-					entitlement: string;
-			  }[]
-			| undefined;
-		/**
-		 * @type string | undefined
-		 */
-		teamId?: string | undefined;
-		/**
-		 * @type boolean
-		 */
-		confirmed: MembershipConfirmedEnum2Key;
-		/**
-		 * @type number | undefined
-		 */
-		accessRequestedAt?: number | undefined;
-		/**
-		 * @type string
-		 */
-		role: MembershipRoleEnum2Key;
-		/**
-		 * @type array | undefined
-		 */
-		teamRoles?: MembershipTeamRolesEnum2Key[] | undefined;
-		/**
-		 * @type array | undefined
-		 */
-		teamPermissions?: MembershipTeamPermissionsEnum2Key[] | undefined;
-		/**
-		 * @type number
-		 */
-		createdAt: number;
-		/**
-		 * @type number
-		 */
-		created: number;
-		/**
-		 * @type object | undefined
-		 */
-		joinedFrom?:
-			| {
-					/**
-					 * @type string
-					 */
-					origin: JoinedFromOriginEnum3Key;
-					/**
-					 * @type string | undefined
-					 */
-					commitId?: string | undefined;
-					/**
-					 * @type string | undefined
-					 */
-					repoId?: string | undefined;
-					/**
-					 * @type string | undefined
-					 */
-					repoPath?: string | undefined;
-					gitUserId?: (string | number) | undefined;
-					/**
-					 * @type string | undefined
-					 */
-					gitUserLogin?: string | undefined;
-					/**
-					 * @type string | undefined
-					 */
-					ssoUserId?: string | undefined;
-					/**
-					 * @type number | undefined
-					 */
-					ssoConnectedAt?: number | undefined;
-					/**
-					 * @type string | undefined
-					 */
-					idpUserId?: string | undefined;
-					/**
-					 * @type string | undefined
-					 */
-					dsyncUserId?: string | undefined;
-					/**
-					 * @type number | undefined
-					 */
-					dsyncConnectedAt?: number | undefined;
-			  }
-			| undefined;
-	};
+	membership?:
+		| {
+				/**
+				 * @type string | undefined
+				 */
+				uid?: string | undefined;
+				/**
+				 * @type array | undefined
+				 */
+				entitlements?:
+					| {
+							/**
+							 * @type string
+							 */
+							entitlement: string;
+					  }[]
+					| undefined;
+				/**
+				 * @type string | undefined
+				 */
+				teamId?: string | undefined;
+				/**
+				 * @type boolean
+				 */
+				confirmed: MembershipConfirmedEnum2Key;
+				/**
+				 * @type number | undefined
+				 */
+				accessRequestedAt?: number | undefined;
+				/**
+				 * @type string
+				 */
+				role: MembershipRoleEnum2Key;
+				/**
+				 * @type array | undefined
+				 */
+				teamRoles?: MembershipTeamRolesEnum2Key[] | undefined;
+				/**
+				 * @type array | undefined
+				 */
+				teamPermissions?: MembershipTeamPermissionsEnum2Key[] | undefined;
+				/**
+				 * @type number
+				 */
+				createdAt: number;
+				/**
+				 * @type number
+				 */
+				created: number;
+				/**
+				 * @type object | undefined
+				 */
+				joinedFrom?:
+					| {
+							/**
+							 * @type string
+							 */
+							origin: JoinedFromOriginEnum3Key;
+							/**
+							 * @type string | undefined
+							 */
+							commitId?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							repoId?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							repoPath?: string | undefined;
+							gitUserId?: (string | number) | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							gitUserLogin?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							ssoUserId?: string | undefined;
+							/**
+							 * @type number | undefined
+							 */
+							ssoConnectedAt?: number | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							idpUserId?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							dsyncUserId?: string | undefined;
+							/**
+							 * @type number | undefined
+							 */
+							dsyncConnectedAt?: number | undefined;
+					  }
+					| undefined;
+		  }
+		| undefined;
 	/**
 	 * @description UNIX timestamp (in milliseconds) when the Team was created.
 	 * @type number
@@ -18713,9 +21759,11 @@ export const scopesTypeEnum = {
 export type ScopesTypeEnumKey = (typeof scopesTypeEnum)[keyof typeof scopesTypeEnum];
 
 export const sudoOriginEnum = {
+	otp: "otp",
 	totp: "totp",
 	webauthn: "webauthn",
 	"recovery-code": "recovery-code",
+	"email-otp": "email-otp",
 } as const;
 
 export type SudoOriginEnumKey = (typeof sudoOriginEnum)[keyof typeof sudoOriginEnum];
@@ -18736,6 +21784,7 @@ export const scopesOriginEnum = {
 	google: "google",
 	apple: "apple",
 	chatgpt: "chatgpt",
+	"token-exchange-oidc": "token-exchange-oidc",
 	emu: "emu",
 } as const;
 
@@ -18798,10 +21847,14 @@ export type AuthToken = {
 						sudo?:
 							| {
 									/**
-									 * @description Possible multi-factor origins
+									 * @description Possible step-up auth origins
 									 * @type string
 									 */
 									origin: SudoOriginEnumKey;
+									/**
+									 * @type number | undefined
+									 */
+									verifiedAt?: number | undefined;
 									/**
 									 * @type number
 									 */
@@ -18880,6 +21933,8 @@ export type AuthToken = {
 export const softBlockReasonEnum2 = {
 	BLOCKED_FOR_PLATFORM_ABUSE: "BLOCKED_FOR_PLATFORM_ABUSE",
 	ENTERPRISE_TRIAL_ENDED: "ENTERPRISE_TRIAL_ENDED",
+	ENTERPRISE_UNPAID_INVOICE: "ENTERPRISE_UNPAID_INVOICE",
+	EXPOSURE_CAP_EXCEEDED: "EXPOSURE_CAP_EXCEEDED",
 	FAIR_USE_LIMITS_EXCEEDED: "FAIR_USE_LIMITS_EXCEEDED",
 	SUBSCRIPTION_CANCELED: "SUBSCRIPTION_CANCELED",
 	SUBSCRIPTION_EXPIRED: "SUBSCRIPTION_EXPIRED",
@@ -20311,7 +23366,7 @@ export type RecordEvents400 = unknown;
 export type RecordEvents401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type RecordEvents402 = unknown;
 
@@ -20352,7 +23407,7 @@ export type Status400 = unknown;
 export type Status401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type Status402 = unknown;
 
@@ -20450,7 +23505,7 @@ export type UploadArtifact400 = unknown;
 export type UploadArtifact401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type UploadArtifact402 = unknown;
 
@@ -20522,7 +23577,7 @@ export type DownloadArtifact400 = unknown;
 export type DownloadArtifact401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type DownloadArtifact402 = unknown;
 
@@ -20577,7 +23632,7 @@ export type ArtifactQuery400 = unknown;
 export type ArtifactQuery401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type ArtifactQuery402 = unknown;
 
@@ -22070,7 +25125,7 @@ export type CreateNetwork400 = unknown;
 export type CreateNetwork401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type CreateNetwork402 = unknown;
 
@@ -22514,7 +25569,7 @@ export type CreateDeployment400 = unknown;
 export type CreateDeployment401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated\nPro customers are allowed to deploy Serverless Functions to up to `proMaxRegions` regions, or if the project was created before the limit was introduced.\nDeploying to Serverless Functions to multiple regions requires a plan update
+ * @description The account is missing a payment so payment method must be updated\nPro customers are allowed to deploy Serverless Functions to up to `proMaxRegions` regions, or if the project was created before the limit was introduced.\nDeploying to Serverless Functions to multiple regions requires a plan update
  */
 export type CreateDeployment402 = unknown;
 
@@ -22708,7 +25763,7 @@ export type CreateRecord400 = unknown;
 export type CreateRecord401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type CreateRecord402 = unknown;
 
@@ -22770,7 +25825,7 @@ export type UpdateRecord400 = unknown;
 export type UpdateRecord401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type UpdateRecord402 = unknown;
 
@@ -23955,7 +27010,7 @@ export type CreateOrTransferDomain400 = unknown;
 export type CreateOrTransferDomain401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type CreateOrTransferDomain402 = unknown;
 
@@ -24826,7 +27881,7 @@ export type CreateEdgeConfig400 = unknown;
 export type CreateEdgeConfig401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type CreateEdgeConfig402 = unknown;
 
@@ -24927,7 +27982,7 @@ export type UpdateEdgeConfig400 = unknown;
 export type UpdateEdgeConfig401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type UpdateEdgeConfig402 = unknown;
 
@@ -25100,7 +28155,7 @@ export type PatchEdgeConfigItems400 = unknown;
 export type PatchEdgeConfigItems401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type PatchEdgeConfigItems402 = unknown;
 
@@ -25223,7 +28278,7 @@ export type PatchEdgeConfigSchema400 = unknown;
 export type PatchEdgeConfigSchema401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type PatchEdgeConfigSchema402 = unknown;
 
@@ -25284,7 +28339,7 @@ export type DeleteEdgeConfigSchema400 = unknown;
 export type DeleteEdgeConfigSchema401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type DeleteEdgeConfigSchema402 = unknown;
 
@@ -25457,7 +28512,7 @@ export type DeleteEdgeConfigTokens400 = unknown;
 export type DeleteEdgeConfigTokens401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type DeleteEdgeConfigTokens402 = unknown;
 
@@ -25578,7 +28633,7 @@ export type CreateEdgeConfigToken400 = unknown;
 export type CreateEdgeConfigToken401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type CreateEdgeConfigToken402 = unknown;
 
@@ -25754,7 +28809,7 @@ export type CreateSharedEnvVariable400 = unknown;
 export type CreateSharedEnvVariable401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type CreateSharedEnvVariable402 = unknown;
 
@@ -25879,7 +28934,7 @@ export type UpdateSharedEnvVariable400 = unknown;
 export type UpdateSharedEnvVariable401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type UpdateSharedEnvVariable402 = unknown;
 
@@ -25926,7 +28981,7 @@ export type DeleteSharedEnvVariable400 = unknown;
 export type DeleteSharedEnvVariable401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type DeleteSharedEnvVariable402 = unknown;
 
@@ -26235,7 +29290,7 @@ export type ListFlags400 = unknown;
 export type ListFlags401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type ListFlags402 = unknown;
 
@@ -26289,7 +29344,7 @@ export type CreateFlag400 = unknown;
 export type CreateFlag401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type CreateFlag402 = unknown;
 
@@ -26371,7 +29426,7 @@ export type GetFlag400 = unknown;
 export type GetFlag401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type GetFlag402 = unknown;
 
@@ -26442,7 +29497,7 @@ export type UpdateFlag400 = unknown;
 export type UpdateFlag401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type UpdateFlag402 = unknown;
 
@@ -26524,7 +29579,7 @@ export type DeleteFlag400 = unknown;
 export type DeleteFlag401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type DeleteFlag402 = unknown;
 
@@ -26617,7 +29672,7 @@ export type ListFlagVersions400 = unknown;
 export type ListFlagVersions401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type ListFlagVersions402 = unknown;
 
@@ -26676,7 +29731,7 @@ export type GetFlagSettings400 = unknown;
 export type GetFlagSettings401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type GetFlagSettings402 = unknown;
 
@@ -26737,7 +29792,7 @@ export type UpdateFlagSettings400 = unknown;
 export type UpdateFlagSettings401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type UpdateFlagSettings402 = unknown;
 
@@ -26955,7 +30010,7 @@ export type CreateFlagSegment400 = unknown;
 export type CreateFlagSegment401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type CreateFlagSegment402 = unknown;
 
@@ -27026,7 +30081,7 @@ export type ListFlagSegments400 = unknown;
 export type ListFlagSegments401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type ListFlagSegments402 = unknown;
 
@@ -27096,7 +30151,7 @@ export type GetFlagSegment400 = unknown;
 export type GetFlagSegment401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type GetFlagSegment402 = unknown;
 
@@ -27166,7 +30221,7 @@ export type DeleteFlagSegment400 = unknown;
 export type DeleteFlagSegment401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type DeleteFlagSegment402 = unknown;
 
@@ -27242,7 +30297,7 @@ export type UpdateFlagSegment400 = unknown;
 export type UpdateFlagSegment401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type UpdateFlagSegment402 = unknown;
 
@@ -27359,7 +30414,7 @@ export type GetSdkKeys400 = unknown;
 export type GetSdkKeys401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type GetSdkKeys402 = unknown;
 
@@ -27413,7 +30468,7 @@ export type CreateSdkKey400 = unknown;
 export type CreateSdkKey401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type CreateSdkKey402 = unknown;
 
@@ -27480,7 +30535,7 @@ export type DeleteSdkKey400 = unknown;
 export type DeleteSdkKey401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type DeleteSdkKey402 = unknown;
 
@@ -29835,13 +32890,17 @@ export type StageRoutes401 = unknown;
  */
 export type StageRoutes403 = unknown;
 
+export type StageRoutes409 = unknown;
+
+export type StageRoutes500 = unknown;
+
 export type StageRoutesMutationResponse = StageRoutes200;
 
 export type StageRoutesMutation = {
 	Response: StageRoutes200;
 	PathParams: StageRoutesPathParams;
 	QueryParams: StageRoutesQueryParams;
-	Errors: StageRoutes400 | StageRoutes401 | StageRoutes403;
+	Errors: StageRoutes400 | StageRoutes401 | StageRoutes403 | StageRoutes409 | StageRoutes500;
 };
 
 export type AddRoutePathParams = {
@@ -29881,13 +32940,17 @@ export type AddRoute401 = unknown;
  */
 export type AddRoute403 = unknown;
 
+export type AddRoute409 = unknown;
+
+export type AddRoute500 = unknown;
+
 export type AddRouteMutationResponse = AddRoute200;
 
 export type AddRouteMutation = {
 	Response: AddRoute200;
 	PathParams: AddRoutePathParams;
 	QueryParams: AddRouteQueryParams;
-	Errors: AddRoute400 | AddRoute401 | AddRoute403;
+	Errors: AddRoute400 | AddRoute401 | AddRoute403 | AddRoute409 | AddRoute500;
 };
 
 export type DeleteRoutesPathParams = {
@@ -29929,13 +32992,23 @@ export type DeleteRoutes403 = unknown;
 
 export type DeleteRoutes404 = unknown;
 
+export type DeleteRoutes409 = unknown;
+
+export type DeleteRoutes500 = unknown;
+
 export type DeleteRoutesMutationResponse = DeleteRoutes200;
 
 export type DeleteRoutesMutation = {
 	Response: DeleteRoutes200;
 	PathParams: DeleteRoutesPathParams;
 	QueryParams: DeleteRoutesQueryParams;
-	Errors: DeleteRoutes400 | DeleteRoutes401 | DeleteRoutes403 | DeleteRoutes404;
+	Errors:
+		| DeleteRoutes400
+		| DeleteRoutes401
+		| DeleteRoutes403
+		| DeleteRoutes404
+		| DeleteRoutes409
+		| DeleteRoutes500;
 };
 
 export type EditRoutePathParams = {
@@ -29981,13 +33054,17 @@ export type EditRoute403 = unknown;
 
 export type EditRoute404 = unknown;
 
+export type EditRoute409 = unknown;
+
+export type EditRoute500 = unknown;
+
 export type EditRouteMutationResponse = EditRoute200;
 
 export type EditRouteMutation = {
 	Response: EditRoute200;
 	PathParams: EditRoutePathParams;
 	QueryParams: EditRouteQueryParams;
-	Errors: EditRoute400 | EditRoute401 | EditRoute403 | EditRoute404;
+	Errors: EditRoute400 | EditRoute401 | EditRoute403 | EditRoute404 | EditRoute409 | EditRoute500;
 };
 
 export type GenerateRoutePathParams = {
@@ -30130,6 +33207,8 @@ export type UpdateRouteVersions403 = unknown;
 
 export type UpdateRouteVersions404 = unknown;
 
+export type UpdateRouteVersions409 = unknown;
+
 export type UpdateRouteVersions500 = unknown;
 
 export type UpdateRouteVersionsMutationResponse = UpdateRouteVersions200;
@@ -30143,6 +33222,7 @@ export type UpdateRouteVersionsMutation = {
 		| UpdateRouteVersions401
 		| UpdateRouteVersions403
 		| UpdateRouteVersions404
+		| UpdateRouteVersions409
 		| UpdateRouteVersions500;
 };
 
@@ -30296,7 +33376,7 @@ export type CreateProject400 = unknown;
 export type CreateProject401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated\nPro customers are allowed to deploy Serverless Functions to up to `proMaxRegions` regions, or if the project was created before the limit was introduced.\nDeploying to Serverless Functions to multiple regions requires a plan update
+ * @description The account is missing a payment so payment method must be updated\nPro customers are allowed to deploy Serverless Functions to up to `proMaxRegions` regions, or if the project was created before the limit was introduced.\nDeploying to Serverless Functions to multiple regions requires a plan update
  */
 export type CreateProject402 = unknown;
 
@@ -30424,7 +33504,7 @@ export type UpdateProject400 = unknown;
 export type UpdateProject401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated\nPro customers are allowed to deploy Serverless Functions to up to `proMaxRegions` regions, or if the project was created before the limit was introduced.\nDeploying to Serverless Functions to multiple regions requires a plan update
+ * @description The account is missing a payment so payment method must be updated\nPro customers are allowed to deploy Serverless Functions to up to `proMaxRegions` regions, or if the project was created before the limit was introduced.\nDeploying to Serverless Functions to multiple regions requires a plan update
  */
 export type UpdateProject402 = unknown;
 
@@ -30609,7 +33689,7 @@ export type CreateCustomEnvironment400 = unknown;
 export type CreateCustomEnvironment401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type CreateCustomEnvironment402 = unknown;
 
@@ -30787,7 +33867,7 @@ export type UpdateCustomEnvironment400 = unknown;
 export type UpdateCustomEnvironment401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type UpdateCustomEnvironment402 = unknown;
 
@@ -31227,7 +34307,7 @@ export type AddProjectDomain400 = unknown;
 export type AddProjectDomain401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type AddProjectDomain402 = unknown;
 
@@ -31497,7 +34577,7 @@ export type CreateProjectEnv400 = unknown;
 export type CreateProjectEnv401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type CreateProjectEnv402 = unknown;
 
@@ -32826,7 +35906,7 @@ export type CreateSandbox400 = unknown;
 export type CreateSandbox401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type CreateSandbox402 = unknown;
 
@@ -32836,6 +35916,8 @@ export type CreateSandbox402 = unknown;
 export type CreateSandbox403 = unknown;
 
 export type CreateSandbox404 = unknown;
+
+export type CreateSandbox409 = unknown;
 
 export type CreateSandbox410 = unknown;
 
@@ -32859,6 +35941,7 @@ export type CreateSandboxMutation = {
 		| CreateSandbox402
 		| CreateSandbox403
 		| CreateSandbox404
+		| CreateSandbox409
 		| CreateSandbox410
 		| CreateSandbox422
 		| CreateSandbox429
@@ -32963,6 +36046,8 @@ export type GetSandbox401 = unknown;
  */
 export type GetSandbox403 = unknown;
 
+export type GetSandbox404 = unknown;
+
 export type GetSandbox429 = unknown;
 
 export type GetSandboxQueryResponse = GetSandbox200;
@@ -32971,7 +36056,7 @@ export type GetSandboxQuery = {
 	Response: GetSandbox200;
 	PathParams: GetSandboxPathParams;
 	QueryParams: GetSandboxQueryParams;
-	Errors: GetSandbox400 | GetSandbox401 | GetSandbox403 | GetSandbox429;
+	Errors: GetSandbox400 | GetSandbox401 | GetSandbox403 | GetSandbox404 | GetSandbox429;
 };
 
 export type ListCommandsPathParams = {
@@ -33015,13 +36100,15 @@ export type ListCommands401 = unknown;
  */
 export type ListCommands403 = unknown;
 
+export type ListCommands404 = unknown;
+
 export type ListCommandsQueryResponse = ListCommands200;
 
 export type ListCommandsQuery = {
 	Response: ListCommands200;
 	PathParams: ListCommandsPathParams;
 	QueryParams: ListCommandsQueryParams;
-	Errors: ListCommands400 | ListCommands401 | ListCommands403;
+	Errors: ListCommands400 | ListCommands401 | ListCommands403 | ListCommands404;
 };
 
 export type RunCommandPathParams = {
@@ -33062,6 +36149,8 @@ export type RunCommand401 = unknown;
  */
 export type RunCommand403 = unknown;
 
+export type RunCommand404 = unknown;
+
 export type RunCommand410 = unknown;
 
 export type RunCommand422 = unknown;
@@ -33072,7 +36161,13 @@ export type RunCommandMutation = {
 	Response: RunCommand200;
 	PathParams: RunCommandPathParams;
 	QueryParams: RunCommandQueryParams;
-	Errors: RunCommand400 | RunCommand401 | RunCommand403 | RunCommand410 | RunCommand422;
+	Errors:
+		| RunCommand400
+		| RunCommand401
+		| RunCommand403
+		| RunCommand404
+		| RunCommand410
+		| RunCommand422;
 };
 
 export type KillCommandPathParams = {
@@ -33183,6 +36278,8 @@ export type StopSandbox401 = unknown;
  */
 export type StopSandbox403 = unknown;
 
+export type StopSandbox404 = unknown;
+
 export type StopSandbox410 = unknown;
 
 export type StopSandbox422 = unknown;
@@ -33193,7 +36290,13 @@ export type StopSandboxMutation = {
 	Response: StopSandbox200;
 	PathParams: StopSandboxPathParams;
 	QueryParams: StopSandboxQueryParams;
-	Errors: StopSandbox400 | StopSandbox401 | StopSandbox403 | StopSandbox410 | StopSandbox422;
+	Errors:
+		| StopSandbox400
+		| StopSandbox401
+		| StopSandbox403
+		| StopSandbox404
+		| StopSandbox410
+		| StopSandbox422;
 };
 
 export type ExtendSandboxTimeoutPathParams = {
@@ -33237,6 +36340,8 @@ export type ExtendSandboxTimeout401 = unknown;
  */
 export type ExtendSandboxTimeout403 = unknown;
 
+export type ExtendSandboxTimeout404 = unknown;
+
 export type ExtendSandboxTimeout410 = unknown;
 
 export type ExtendSandboxTimeout422 = unknown;
@@ -33251,6 +36356,7 @@ export type ExtendSandboxTimeoutMutation = {
 		| ExtendSandboxTimeout400
 		| ExtendSandboxTimeout401
 		| ExtendSandboxTimeout403
+		| ExtendSandboxTimeout404
 		| ExtendSandboxTimeout410
 		| ExtendSandboxTimeout422;
 };
@@ -33298,6 +36404,8 @@ export type UpdateNetworkPolicy402 = unknown;
  */
 export type UpdateNetworkPolicy403 = unknown;
 
+export type UpdateNetworkPolicy404 = unknown;
+
 export type UpdateNetworkPolicy410 = unknown;
 
 export type UpdateNetworkPolicy422 = unknown;
@@ -33313,6 +36421,7 @@ export type UpdateNetworkPolicyMutation = {
 		| UpdateNetworkPolicy401
 		| UpdateNetworkPolicy402
 		| UpdateNetworkPolicy403
+		| UpdateNetworkPolicy404
 		| UpdateNetworkPolicy410
 		| UpdateNetworkPolicy422;
 };
@@ -33377,6 +36486,8 @@ export type GetCommand401 = unknown;
  */
 export type GetCommand403 = unknown;
 
+export type GetCommand404 = unknown;
+
 export type GetCommand410 = unknown;
 
 export type GetCommand422 = unknown;
@@ -33387,7 +36498,13 @@ export type GetCommandQuery = {
 	Response: GetCommand200;
 	PathParams: GetCommandPathParams;
 	QueryParams: GetCommandQueryParams;
-	Errors: GetCommand400 | GetCommand401 | GetCommand403 | GetCommand410 | GetCommand422;
+	Errors:
+		| GetCommand400
+		| GetCommand401
+		| GetCommand403
+		| GetCommand404
+		| GetCommand410
+		| GetCommand422;
 };
 
 export type GetCommandLogsPathParams = {
@@ -33433,6 +36550,8 @@ export type GetCommandLogs401 = unknown;
  */
 export type GetCommandLogs403 = unknown;
 
+export type GetCommandLogs404 = unknown;
+
 export type GetCommandLogs410 = unknown;
 
 export type GetCommandLogs422 = unknown;
@@ -33447,6 +36566,7 @@ export type GetCommandLogsQuery = {
 		| GetCommandLogs400
 		| GetCommandLogs401
 		| GetCommandLogs403
+		| GetCommandLogs404
 		| GetCommandLogs410
 		| GetCommandLogs422;
 };
@@ -33545,6 +36665,8 @@ export type CreateDirectory401 = unknown;
  */
 export type CreateDirectory403 = unknown;
 
+export type CreateDirectory404 = unknown;
+
 export type CreateDirectory410 = unknown;
 
 export type CreateDirectory422 = unknown;
@@ -33559,6 +36681,7 @@ export type CreateDirectoryMutation = {
 		| CreateDirectory400
 		| CreateDirectory401
 		| CreateDirectory403
+		| CreateDirectory404
 		| CreateDirectory410
 		| CreateDirectory422;
 };
@@ -33612,6 +36735,8 @@ export type WriteFiles401 = unknown;
  */
 export type WriteFiles403 = unknown;
 
+export type WriteFiles404 = unknown;
+
 export type WriteFiles410 = unknown;
 
 export type WriteFiles422 = unknown;
@@ -33623,7 +36748,13 @@ export type WriteFilesMutation = {
 	PathParams: WriteFilesPathParams;
 	QueryParams: WriteFilesQueryParams;
 	HeaderParams: WriteFilesHeaderParams;
-	Errors: WriteFiles400 | WriteFiles401 | WriteFiles403 | WriteFiles410 | WriteFiles422;
+	Errors:
+		| WriteFiles400
+		| WriteFiles401
+		| WriteFiles403
+		| WriteFiles404
+		| WriteFiles410
+		| WriteFiles422;
 };
 
 export type GetSnapshotPathParams = {
@@ -33758,7 +36889,7 @@ export type CreateSnapshot400 = unknown;
 export type CreateSnapshot401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type CreateSnapshot402 = unknown;
 
@@ -33766,6 +36897,8 @@ export type CreateSnapshot402 = unknown;
  * @description You do not have permission to access this resource.
  */
 export type CreateSnapshot403 = unknown;
+
+export type CreateSnapshot404 = unknown;
 
 export type CreateSnapshot410 = unknown;
 
@@ -33782,6 +36915,7 @@ export type CreateSnapshotMutation = {
 		| CreateSnapshot401
 		| CreateSnapshot402
 		| CreateSnapshot403
+		| CreateSnapshot404
 		| CreateSnapshot410
 		| CreateSnapshot422;
 };
@@ -33790,6 +36924,7 @@ export const getSandboxesV2QueryParamsSortByEnum = {
 	createdAt: "createdAt",
 	name: "name",
 	statusUpdatedAt: "statusUpdatedAt",
+	currentSnapshotId: "currentSnapshotId",
 } as const;
 
 export type GetSandboxesV2QueryParamsSortByEnumKey =
@@ -33908,7 +37043,7 @@ export type CreateSandboxes400 = unknown;
 export type CreateSandboxes401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type CreateSandboxes402 = unknown;
 
@@ -33918,6 +37053,8 @@ export type CreateSandboxes402 = unknown;
 export type CreateSandboxes403 = unknown;
 
 export type CreateSandboxes404 = unknown;
+
+export type CreateSandboxes409 = unknown;
 
 export type CreateSandboxes410 = unknown;
 
@@ -33941,6 +37078,7 @@ export type CreateSandboxesMutation = {
 		| CreateSandboxes402
 		| CreateSandboxes403
 		| CreateSandboxes404
+		| CreateSandboxes409
 		| CreateSandboxes410
 		| CreateSandboxes422
 		| CreateSandboxes429
@@ -34261,6 +37399,8 @@ export type GetSession401 = unknown;
  */
 export type GetSession403 = unknown;
 
+export type GetSession404 = unknown;
+
 export type GetSession500 = unknown;
 
 export type GetSessionQueryResponse = GetSession200;
@@ -34269,7 +37409,7 @@ export type GetSessionQuery = {
 	Response: GetSession200;
 	PathParams: GetSessionPathParams;
 	QueryParams: GetSessionQueryParams;
-	Errors: GetSession400 | GetSession401 | GetSession403 | GetSession500;
+	Errors: GetSession400 | GetSession401 | GetSession403 | GetSession404 | GetSession500;
 };
 
 export type GetNamedSandboxPathParams = {
@@ -34319,7 +37459,7 @@ export type GetNamedSandbox400 = unknown;
 export type GetNamedSandbox401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type GetNamedSandbox402 = unknown;
 
@@ -34329,6 +37469,10 @@ export type GetNamedSandbox402 = unknown;
 export type GetNamedSandbox403 = unknown;
 
 export type GetNamedSandbox404 = unknown;
+
+export type GetNamedSandbox409 = unknown;
+
+export type GetNamedSandbox410 = unknown;
 
 /**
  * @description The concurrency limit has been exceeded.
@@ -34349,6 +37493,8 @@ export type GetNamedSandboxQuery = {
 		| GetNamedSandbox402
 		| GetNamedSandbox403
 		| GetNamedSandbox404
+		| GetNamedSandbox409
+		| GetNamedSandbox410
 		| GetNamedSandbox429
 		| GetNamedSandbox500;
 };
@@ -34370,6 +37516,12 @@ export type UpdateSandboxQueryParams = {
 	 * @type string | undefined
 	 */
 	projectId?: string | undefined;
+	/**
+	 * @description Whether to automatically resume a stopped named sandbox by creating a new instance from its snapshot. Defaults to false.
+	 * @default false
+	 * @type boolean | undefined
+	 */
+	resume?: boolean | undefined;
 	/**
 	 * @description The Team identifier to perform the request on behalf of.
 	 * @type string | undefined
@@ -34394,6 +37546,9 @@ export type UpdateSandbox400 = unknown;
  */
 export type UpdateSandbox401 = unknown;
 
+/**
+ * @description The account is missing a payment so payment method must be updated
+ */
 export type UpdateSandbox402 = unknown;
 
 /**
@@ -34403,9 +37558,16 @@ export type UpdateSandbox403 = unknown;
 
 export type UpdateSandbox404 = unknown;
 
+export type UpdateSandbox409 = unknown;
+
 export type UpdateSandbox410 = unknown;
 
 export type UpdateSandbox422 = unknown;
+
+/**
+ * @description The concurrency limit has been exceeded.
+ */
+export type UpdateSandbox429 = unknown;
 
 export type UpdateSandbox500 = unknown;
 
@@ -34421,8 +37583,10 @@ export type UpdateSandboxMutation = {
 		| UpdateSandbox402
 		| UpdateSandbox403
 		| UpdateSandbox404
+		| UpdateSandbox409
 		| UpdateSandbox410
 		| UpdateSandbox422
+		| UpdateSandbox429
 		| UpdateSandbox500;
 };
 
@@ -34430,6 +37594,7 @@ export type DeleteSandboxPathParams = {
 	/**
 	 * @description The sandbox name to delete.
 	 * @maxLength 128
+	 * @pattern ^[a-zA-Z0-9_-]+$
 	 * @type string
 	 */
 	name: string;
@@ -34533,13 +37698,19 @@ export type ListSessionCommands401 = unknown;
  */
 export type ListSessionCommands403 = unknown;
 
+export type ListSessionCommands404 = unknown;
+
 export type ListSessionCommandsQueryResponse = ListSessionCommands200;
 
 export type ListSessionCommandsQuery = {
 	Response: ListSessionCommands200;
 	PathParams: ListSessionCommandsPathParams;
 	QueryParams: ListSessionCommandsQueryParams;
-	Errors: ListSessionCommands400 | ListSessionCommands401 | ListSessionCommands403;
+	Errors:
+		| ListSessionCommands400
+		| ListSessionCommands401
+		| ListSessionCommands403
+		| ListSessionCommands404;
 };
 
 export type RunSessionCommandPathParams = {
@@ -34580,6 +37751,8 @@ export type RunSessionCommand401 = unknown;
  */
 export type RunSessionCommand403 = unknown;
 
+export type RunSessionCommand404 = unknown;
+
 export type RunSessionCommand410 = unknown;
 
 export type RunSessionCommand422 = unknown;
@@ -34594,6 +37767,7 @@ export type RunSessionCommandMutation = {
 		| RunSessionCommand400
 		| RunSessionCommand401
 		| RunSessionCommand403
+		| RunSessionCommand404
 		| RunSessionCommand410
 		| RunSessionCommand422;
 };
@@ -34658,6 +37832,8 @@ export type GetSessionCommand401 = unknown;
  */
 export type GetSessionCommand403 = unknown;
 
+export type GetSessionCommand404 = unknown;
+
 export type GetSessionCommand410 = unknown;
 
 export type GetSessionCommand422 = unknown;
@@ -34672,6 +37848,7 @@ export type GetSessionCommandQuery = {
 		| GetSessionCommand400
 		| GetSessionCommand401
 		| GetSessionCommand403
+		| GetSessionCommand404
 		| GetSessionCommand410
 		| GetSessionCommand422;
 };
@@ -34786,6 +37963,8 @@ export type GetSessionCommandLogs401 = unknown;
  */
 export type GetSessionCommandLogs403 = unknown;
 
+export type GetSessionCommandLogs404 = unknown;
+
 export type GetSessionCommandLogs410 = unknown;
 
 export type GetSessionCommandLogs422 = unknown;
@@ -34800,6 +37979,7 @@ export type GetSessionCommandLogsQuery = {
 		| GetSessionCommandLogs400
 		| GetSessionCommandLogs401
 		| GetSessionCommandLogs403
+		| GetSessionCommandLogs404
 		| GetSessionCommandLogs410
 		| GetSessionCommandLogs422;
 };
@@ -34845,6 +38025,8 @@ export type StopSession401 = unknown;
  */
 export type StopSession403 = unknown;
 
+export type StopSession404 = unknown;
+
 export type StopSession410 = unknown;
 
 export type StopSession422 = unknown;
@@ -34861,6 +38043,7 @@ export type StopSessionMutation = {
 		| StopSession400
 		| StopSession401
 		| StopSession403
+		| StopSession404
 		| StopSession410
 		| StopSession422
 		| StopSession500;
@@ -34907,6 +38090,8 @@ export type ExtendSessionTimeout401 = unknown;
  */
 export type ExtendSessionTimeout403 = unknown;
 
+export type ExtendSessionTimeout404 = unknown;
+
 export type ExtendSessionTimeout410 = unknown;
 
 export type ExtendSessionTimeout422 = unknown;
@@ -34923,6 +38108,7 @@ export type ExtendSessionTimeoutMutation = {
 		| ExtendSessionTimeout400
 		| ExtendSessionTimeout401
 		| ExtendSessionTimeout403
+		| ExtendSessionTimeout404
 		| ExtendSessionTimeout410
 		| ExtendSessionTimeout422
 		| ExtendSessionTimeout500;
@@ -34971,6 +38157,8 @@ export type UpdateSessionNetworkPolicy402 = unknown;
  */
 export type UpdateSessionNetworkPolicy403 = unknown;
 
+export type UpdateSessionNetworkPolicy404 = unknown;
+
 export type UpdateSessionNetworkPolicy410 = unknown;
 
 export type UpdateSessionNetworkPolicy422 = unknown;
@@ -34988,6 +38176,7 @@ export type UpdateSessionNetworkPolicyMutation = {
 		| UpdateSessionNetworkPolicy401
 		| UpdateSessionNetworkPolicy402
 		| UpdateSessionNetworkPolicy403
+		| UpdateSessionNetworkPolicy404
 		| UpdateSessionNetworkPolicy410
 		| UpdateSessionNetworkPolicy422
 		| UpdateSessionNetworkPolicy500;
@@ -35093,6 +38282,8 @@ export type CreateSessionDirectory401 = unknown;
  */
 export type CreateSessionDirectory403 = unknown;
 
+export type CreateSessionDirectory404 = unknown;
+
 export type CreateSessionDirectory410 = unknown;
 
 export type CreateSessionDirectory422 = unknown;
@@ -35107,6 +38298,7 @@ export type CreateSessionDirectoryMutation = {
 		| CreateSessionDirectory400
 		| CreateSessionDirectory401
 		| CreateSessionDirectory403
+		| CreateSessionDirectory404
 		| CreateSessionDirectory410
 		| CreateSessionDirectory422;
 };
@@ -35160,6 +38352,8 @@ export type WriteSessionFiles401 = unknown;
  */
 export type WriteSessionFiles403 = unknown;
 
+export type WriteSessionFiles404 = unknown;
+
 export type WriteSessionFiles410 = unknown;
 
 export type WriteSessionFiles422 = unknown;
@@ -35175,6 +38369,7 @@ export type WriteSessionFilesMutation = {
 		| WriteSessionFiles400
 		| WriteSessionFiles401
 		| WriteSessionFiles403
+		| WriteSessionFiles404
 		| WriteSessionFiles410
 		| WriteSessionFiles422;
 };
@@ -35213,7 +38408,7 @@ export type CreateSessionSnapshot400 = unknown;
 export type CreateSessionSnapshot401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type CreateSessionSnapshot402 = unknown;
 
@@ -35221,6 +38416,8 @@ export type CreateSessionSnapshot402 = unknown;
  * @description You do not have permission to access this resource.
  */
 export type CreateSessionSnapshot403 = unknown;
+
+export type CreateSessionSnapshot404 = unknown;
 
 export type CreateSessionSnapshot410 = unknown;
 
@@ -35239,6 +38436,7 @@ export type CreateSessionSnapshotMutation = {
 		| CreateSessionSnapshot401
 		| CreateSessionSnapshot402
 		| CreateSessionSnapshot403
+		| CreateSessionSnapshot404
 		| CreateSessionSnapshot410
 		| CreateSessionSnapshot422
 		| CreateSessionSnapshot500;
@@ -35756,7 +38954,7 @@ export type CreateIntegrationStoreDirect400 = unknown;
 export type CreateIntegrationStoreDirect401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type CreateIntegrationStoreDirect402 = unknown;
 
@@ -36051,12 +39249,14 @@ export type JoinTeam403 = unknown;
 
 export type JoinTeam404 = unknown;
 
+export type JoinTeam503 = unknown;
+
 export type JoinTeamMutationResponse = JoinTeam200;
 
 export type JoinTeamMutation = {
 	Response: JoinTeam200;
 	PathParams: JoinTeamPathParams;
-	Errors: JoinTeam400 | JoinTeam401 | JoinTeam402 | JoinTeam403 | JoinTeam404;
+	Errors: JoinTeam400 | JoinTeam401 | JoinTeam402 | JoinTeam403 | JoinTeam404 | JoinTeam503;
 };
 
 export type UpdateTeamMemberPathParams = {
@@ -36335,11 +39535,15 @@ export type CreateTeam401 = unknown;
  */
 export type CreateTeam403 = unknown;
 
+export type CreateTeam404 = unknown;
+
+export type CreateTeam409 = unknown;
+
 export type CreateTeamMutationResponse = CreateTeam200;
 
 export type CreateTeamMutation = {
 	Response: CreateTeam200;
-	Errors: CreateTeam400 | CreateTeam401 | CreateTeam403;
+	Errors: CreateTeam400 | CreateTeam401 | CreateTeam403 | CreateTeam404 | CreateTeam409;
 };
 
 export type PostTeamDsyncRolesPathParams = {
@@ -37098,7 +40302,7 @@ export type ListDeploymentAliasesQuery = {
 
 export type AssignAliasPathParams = {
 	/**
-	 * @description The ID of the deployment the aliases should be listed for
+	 * @description The deployment or alias ID or URL to assign from
 	 */
 	id: string;
 };
@@ -37132,7 +40336,7 @@ export type AssignAlias400 = unknown;
 export type AssignAlias401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type AssignAlias402 = unknown;
 
@@ -37557,7 +40761,7 @@ export type IssueCert400 = unknown;
 export type IssueCert401 = unknown;
 
 /**
- * @description The account was soft-blocked for an unhandled reason.\nThe account is missing a payment so payment method must be updated
+ * @description The account is missing a payment so payment method must be updated
  */
 export type IssueCert402 = unknown;
 
