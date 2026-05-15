@@ -12,7 +12,7 @@ export {
 	query,
 } from "convex/server";
 
-import type { GenericQueryCtx, GenericMutationCtx, GenericActionCtx } from "convex/server";
+import type { GenericActionCtx, GenericMutationCtx, GenericQueryCtx } from "convex/server";
 import type { DataModel } from "./dataModel";
 
 export type QueryCtx = GenericQueryCtx<DataModel>;
