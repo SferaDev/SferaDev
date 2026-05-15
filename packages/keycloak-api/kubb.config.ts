@@ -1,5 +1,4 @@
 import fs from "node:fs";
-import { defineConfig } from "@kubb/core";
 import {
 	camelCasePathParams,
 	cleanOperationIds,
@@ -7,6 +6,7 @@ import {
 	fetchSpec,
 	sortArrays,
 } from "@sferadev/openapi-utils";
+import { defineConfig } from "kubb";
 import type { OpenAPIObject, PathItemObject } from "openapi3-ts/oas30";
 import yaml from "yaml";
 
@@ -18,22 +18,25 @@ export default defineConfig(async () => {
 	let accountSpec = yaml.parse(accountYaml);
 	accountSpec = transformSpec(accountSpec);
 
-	return [
-		{
-			...createConfig({
-				outputPath: "./src/admin/generated",
-				importPath: "../../utils/fetcher",
-			}),
-			input: { data: adminSpec },
-		},
-		{
+	const target = process.env.KUBB_TARGET;
+
+	if (target === "account") {
+		return {
 			...createConfig({
 				outputPath: "./src/account/generated",
 				importPath: "../../utils/fetcher",
 			}),
 			input: { data: accountSpec },
-		},
-	];
+		};
+	}
+
+	return {
+		...createConfig({
+			outputPath: "./src/admin/generated",
+			importPath: "../../utils/fetcher",
+		}),
+		input: { data: adminSpec },
+	};
 });
 
 function transformSpec(spec: OpenAPIObject): OpenAPIObject {

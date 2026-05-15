@@ -16,7 +16,7 @@
 	"scripts": {
 		"tsc": "tsc --noEmit",
 		"build": "bunchee",
-		"generate": "rimraf ./src/admin/generated ./src/account/generated && kubb generate",
+		"generate": "rimraf ./src/admin/generated ./src/account/generated && kubb generate && KUBB_TARGET=account kubb generate",
 		"is-tree-shakable": "is-tree-shakable"
 	},
 	"dependencies": {
@@ -24,7 +24,7 @@
 	},
 	"devDependencies": {
 		"@kubb/cli": "catalog:",
-		"@kubb/core": "catalog:",
+		"kubb": "catalog:",
 		"@sferadev/openapi-utils": "workspace:*",
 		"@sferadev/tsconfig": "workspace:*",
 		"@types/node": "catalog:",
