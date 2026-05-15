@@ -25,7 +25,7 @@
 	},
 	"devDependencies": {
 		"@kubb/cli": "catalog:",
-		"@kubb/core": "catalog:",
+		"kubb": "catalog:",
 		"@sferadev/tsconfig": "workspace:*",
 		"openapi3-ts": "catalog:",
 		"@types/node": "catalog:",
