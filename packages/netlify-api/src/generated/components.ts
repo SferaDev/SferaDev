@@ -234,6 +234,11 @@ import type {
 	GetSiteDatabaseComputeSettings403,
 	GetSiteDatabaseComputeSettingsPathParams,
 	GetSiteDatabaseComputeSettingsQueryResponse,
+	GetSiteDatabaseMigration404,
+	GetSiteDatabaseMigration423,
+	GetSiteDatabaseMigrationPathParams,
+	GetSiteDatabaseMigrationQueryParams,
+	GetSiteDatabaseMigrationQueryResponse,
 	GetSiteDatabasePathParams,
 	GetSiteDatabaseQueryParams,
 	GetSiteDatabaseQueryResponse,
@@ -294,6 +299,11 @@ import type {
 	ListSiteBuildsQueryResponse,
 	ListSiteDatabaseBranchesPathParams,
 	ListSiteDatabaseBranchesQueryResponse,
+	ListSiteDatabaseMigrations404,
+	ListSiteDatabaseMigrations423,
+	ListSiteDatabaseMigrationsPathParams,
+	ListSiteDatabaseMigrationsQueryParams,
+	ListSiteDatabaseMigrationsQueryResponse,
 	ListSiteDatabaseSnapshotsPathParams,
 	ListSiteDatabaseSnapshotsQueryResponse,
 	ListSiteDeployedBranchesPathParams,
@@ -337,6 +347,12 @@ import type {
 	PurgeCacheMutationResponse,
 	RemoveAccountMemberMutationResponse,
 	RemoveAccountMemberPathParams,
+	ResetSiteDatabaseBranch400,
+	ResetSiteDatabaseBranch404,
+	ResetSiteDatabaseBranchMutationRequest,
+	ResetSiteDatabaseBranchMutationResponse,
+	ResetSiteDatabaseBranchPathParams,
+	ResetSiteDatabaseBranchQueryParams,
 	RestoreSiteDatabaseSnapshotMutationRequest,
 	RestoreSiteDatabaseSnapshotMutationResponse,
 	RestoreSiteDatabaseSnapshotPathParams,
@@ -5159,6 +5175,48 @@ export async function deleteSiteDatabaseBranch({
 }
 
 /**
+ * @description Resets a non-production database branch by re-forking it from a source branch (defaults to the production branch). If the target branch is already in sync with the source, returns the existing connection string without performing a reset, unless `force=true` is passed. The production branch cannot be reset.
+ * {@link /sites/:site_id/database/branch/:branch_id/reset}
+ */
+export async function resetSiteDatabaseBranch({
+	pathParams: { site_id, branch_id },
+	body,
+	queryParams,
+	config = {},
+}: {
+	pathParams: ResetSiteDatabaseBranchPathParams;
+	body?: ResetSiteDatabaseBranchMutationRequest;
+	queryParams?: ResetSiteDatabaseBranchQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+
+	if (!branch_id) {
+		throw new Error(`Missing required path parameter: branch_id`);
+	}
+
+	const data = await request<
+		ResetSiteDatabaseBranchMutationResponse,
+		ErrorWrapper<ResetSiteDatabaseBranch400 | ResetSiteDatabaseBranch404>,
+		ResetSiteDatabaseBranchMutationRequest,
+		Record<string, string>,
+		ResetSiteDatabaseBranchQueryParams,
+		ResetSiteDatabaseBranchPathParams
+	>({
+		method: "POST",
+		url: `/sites/${site_id}/database/branch/${branch_id}/reset`,
+		queryParams,
+		body,
+		...requestConfig,
+	});
+	return data;
+}
+
+/**
  * @description Sets compute settings for a specific database branch, overriding project-level settings. Requires a Pro or higher plan.
  * {@link /sites/:site_id/database/branch/:branch_id/compute/settings}
  */
@@ -5275,6 +5333,75 @@ export async function clearSiteDatabaseComputeSettings({
 		Record<string, string>,
 		ClearSiteDatabaseComputeSettingsPathParams
 	>({ method: "DELETE", url: `/sites/${site_id}/database/compute/settings`, ...requestConfig });
+	return data;
+}
+
+/**
+ * @description Returns the list of migrations available for the specified branch, indicating which ones have been applied to the database.
+ * {@link /sites/:site_id/database/migrations}
+ */
+export async function listSiteDatabaseMigrations({
+	pathParams: { site_id },
+	queryParams,
+	config = {},
+}: {
+	pathParams: ListSiteDatabaseMigrationsPathParams;
+	queryParams?: ListSiteDatabaseMigrationsQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+
+	const data = await request<
+		ListSiteDatabaseMigrationsQueryResponse,
+		ErrorWrapper<ListSiteDatabaseMigrations404 | ListSiteDatabaseMigrations423>,
+		null,
+		Record<string, string>,
+		ListSiteDatabaseMigrationsQueryParams,
+		ListSiteDatabaseMigrationsPathParams
+	>({ method: "GET", url: `/sites/${site_id}/database/migrations`, queryParams, ...requestConfig });
+	return data;
+}
+
+/**
+ * @description Returns the contents of a named migration for the specified branch.
+ * {@link /sites/:site_id/database/migrations/:name}
+ */
+export async function getSiteDatabaseMigration({
+	pathParams: { site_id, name },
+	queryParams,
+	config = {},
+}: {
+	pathParams: GetSiteDatabaseMigrationPathParams;
+	queryParams?: GetSiteDatabaseMigrationQueryParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+
+	if (!name) {
+		throw new Error(`Missing required path parameter: name`);
+	}
+
+	const data = await request<
+		GetSiteDatabaseMigrationQueryResponse,
+		ErrorWrapper<GetSiteDatabaseMigration404 | GetSiteDatabaseMigration423>,
+		null,
+		Record<string, string>,
+		GetSiteDatabaseMigrationQueryParams,
+		GetSiteDatabaseMigrationPathParams
+	>({
+		method: "GET",
+		url: `/sites/${site_id}/database/migrations/${name}`,
+		queryParams,
+		...requestConfig,
+	});
 	return data;
 }
 
@@ -5648,11 +5775,14 @@ export const operationsByPath = {
 	"GET /sites/{site_id}/database/branches": listSiteDatabaseBranches,
 	"GET /sites/{site_id}/database/branch/{branch_id}": getSiteDatabaseBranch,
 	"DELETE /sites/{site_id}/database/branch/{branch_id}": deleteSiteDatabaseBranch,
+	"POST /sites/{site_id}/database/branch/{branch_id}/reset": resetSiteDatabaseBranch,
 	"PUT /sites/{site_id}/database/branch/{branch_id}/compute/settings":
 		setSiteDatabaseBranchComputeSettings,
 	"PUT /sites/{site_id}/database/compute/settings": setSiteDatabaseComputeSettings,
 	"GET /sites/{site_id}/database/compute/settings": getSiteDatabaseComputeSettings,
 	"DELETE /sites/{site_id}/database/compute/settings": clearSiteDatabaseComputeSettings,
+	"GET /sites/{site_id}/database/migrations": listSiteDatabaseMigrations,
+	"GET /sites/{site_id}/database/migrations/{name}": getSiteDatabaseMigration,
 	"POST /sites/{site_id}/database/migrations/{deploy_id}": runSiteDatabaseMigrations,
 	"POST /sites/{site_id}/database/snapshot": createSiteDatabaseSnapshot,
 	"GET /sites/{site_id}/database/snapshots": listSiteDatabaseSnapshots,
@@ -5901,10 +6031,13 @@ export const operationsByTag = {
 		listSiteDatabaseBranches,
 		getSiteDatabaseBranch,
 		deleteSiteDatabaseBranch,
+		resetSiteDatabaseBranch,
 		setSiteDatabaseBranchComputeSettings,
 		setSiteDatabaseComputeSettings,
 		getSiteDatabaseComputeSettings,
 		clearSiteDatabaseComputeSettings,
+		listSiteDatabaseMigrations,
+		getSiteDatabaseMigration,
 		runSiteDatabaseMigrations,
 		createSiteDatabaseSnapshot,
 		listSiteDatabaseSnapshots,
@@ -6105,6 +6238,7 @@ export const tagDictionary = {
 		POST: [
 			"createSiteDatabase",
 			"createSiteDatabaseBranch",
+			"resetSiteDatabaseBranch",
 			"runSiteDatabaseMigrations",
 			"createSiteDatabaseSnapshot",
 			"restoreSiteDatabaseSnapshot",
@@ -6114,6 +6248,8 @@ export const tagDictionary = {
 			"listSiteDatabaseBranches",
 			"getSiteDatabaseBranch",
 			"getSiteDatabaseComputeSettings",
+			"listSiteDatabaseMigrations",
+			"getSiteDatabaseMigration",
 			"listSiteDatabaseSnapshots",
 		],
 		DELETE: [
