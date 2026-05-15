@@ -138,6 +138,26 @@ import type {
 	ChatsInit429,
 	ChatsInit500,
 	ChatsInitMutationResponse,
+	ChatsResolveTask401,
+	ChatsResolveTask403,
+	ChatsResolveTask404,
+	ChatsResolveTask409,
+	ChatsResolveTask413,
+	ChatsResolveTask422,
+	ChatsResolveTask429,
+	ChatsResolveTask500,
+	ChatsResolveTaskMutationResponse,
+	ChatsResolveTaskPathParams,
+	ChatsRestore401,
+	ChatsRestore403,
+	ChatsRestore404,
+	ChatsRestore409,
+	ChatsRestore413,
+	ChatsRestore422,
+	ChatsRestore429,
+	ChatsRestore500,
+	ChatsRestoreMutationResponse,
+	ChatsRestorePathParams,
 	ChatsResume401,
 	ChatsResume403,
 	ChatsResume404,
@@ -323,6 +343,16 @@ import type {
 	McpServersCreate429,
 	McpServersCreate500,
 	McpServersCreateMutationResponse,
+	McpServersCreateOAuthAuthorizationUrl401,
+	McpServersCreateOAuthAuthorizationUrl403,
+	McpServersCreateOAuthAuthorizationUrl404,
+	McpServersCreateOAuthAuthorizationUrl409,
+	McpServersCreateOAuthAuthorizationUrl413,
+	McpServersCreateOAuthAuthorizationUrl422,
+	McpServersCreateOAuthAuthorizationUrl429,
+	McpServersCreateOAuthAuthorizationUrl500,
+	McpServersCreateOAuthAuthorizationUrlMutationResponse,
+	McpServersCreateOAuthAuthorizationUrlPathParams,
 	McpServersDelete401,
 	McpServersDelete403,
 	McpServersDelete404,
@@ -1353,6 +1383,49 @@ export async function chatsStop({
 		Record<string, string>,
 		ChatsStopPathParams
 	>({ method: "POST", url: `/chats/${chatId}/messages/${messageId}/stop`, ...requestConfig });
+	return data;
+}
+
+/**
+ * @description Resolves a pending task in a chat, continuing the conversation. The latest message in the active chat fork must be an assistant message currently blocked on a matching task (integration setup, plan approval, question answers, or permission grants).
+ * @summary Resolve Task
+ * {@link /chats/:chatId/tasks/resolve}
+ */
+export async function chatsResolveTask({
+	pathParams: { chatId },
+	config = {},
+}: {
+	pathParams: ChatsResolveTaskPathParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!chatId) {
+		throw new Error(`Missing required path parameter: chatId`);
+	}
+
+	const data = await request<
+		ChatsResolveTaskMutationResponse,
+		ErrorWrapper<
+			| ChatsResolveTask401
+			| ChatsResolveTask403
+			| ChatsResolveTask404
+			| ChatsResolveTask409
+			| ChatsResolveTask413
+			| ChatsResolveTask422
+			| ChatsResolveTask429
+			| ChatsResolveTask500
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		ChatsResolveTaskPathParams
+	>({
+		method: "POST",
+		url: `/chats/${chatId}/tasks/resolve`,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
 	return data;
 }
 
@@ -2460,6 +2533,48 @@ export async function userGetScopes({
 }
 
 /**
+ * @description Restores a block to a specific version.
+ * @summary Restore Block
+ * {@link /chats/:chatId/versions/:versionId/restore}
+ */
+export async function chatsRestore({
+	pathParams: { chatId, versionId },
+	config = {},
+}: {
+	pathParams: ChatsRestorePathParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!chatId) {
+		throw new Error(`Missing required path parameter: chatId`);
+	}
+
+	if (!versionId) {
+		throw new Error(`Missing required path parameter: versionId`);
+	}
+
+	const data = await request<
+		ChatsRestoreMutationResponse,
+		ErrorWrapper<
+			| ChatsRestore401
+			| ChatsRestore403
+			| ChatsRestore404
+			| ChatsRestore409
+			| ChatsRestore413
+			| ChatsRestore422
+			| ChatsRestore429
+			| ChatsRestore500
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		ChatsRestorePathParams
+	>({ method: "POST", url: `/chats/${chatId}/versions/${versionId}/restore`, ...requestConfig });
+	return data;
+}
+
+/**
  * @description Retrieves detailed usage events for the authenticated user or team, including costs, event types, models used, and metadata. Shows the same data as displayed in the usage dashboard. Can be filtered by chatId to show usage for a specific chat, or by userId to show usage for a specific user.
  * @summary Get Usage Report
  * {@link /reports/usage}
@@ -2594,7 +2709,7 @@ export async function mcpServersFind({
 }
 
 /**
- * @description Creates a new MCP server configuration for the authenticated user.
+ * @description Creates a new MCP server configuration for the authenticated user. Supports OAuth, bearer token, custom headers, and unauthenticated servers.
  * @summary Create MCP Server
  * {@link /mcp-servers}
  */
@@ -2749,6 +2864,49 @@ export async function mcpServersDelete({
 	return data;
 }
 
+/**
+ * @description Creates an OAuth authorization URL for an OAuth MCP server. Redirect the user to the returned URL, and the Platform API OAuth callback will store the resulting tokens before redirecting to your returnUrl.
+ * @summary Create MCP Server OAuth Authorization URL
+ * {@link /mcp-servers/:mcpServerId/oauth/authorize}
+ */
+export async function mcpServersCreateOAuthAuthorizationUrl({
+	pathParams: { mcpServerId },
+	config = {},
+}: {
+	pathParams: McpServersCreateOAuthAuthorizationUrlPathParams;
+	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+}) {
+	const { client: request = defaultClient, ...requestConfig } = config;
+
+	if (!mcpServerId) {
+		throw new Error(`Missing required path parameter: mcpServerId`);
+	}
+
+	const data = await request<
+		McpServersCreateOAuthAuthorizationUrlMutationResponse,
+		ErrorWrapper<
+			| McpServersCreateOAuthAuthorizationUrl401
+			| McpServersCreateOAuthAuthorizationUrl403
+			| McpServersCreateOAuthAuthorizationUrl404
+			| McpServersCreateOAuthAuthorizationUrl409
+			| McpServersCreateOAuthAuthorizationUrl413
+			| McpServersCreateOAuthAuthorizationUrl422
+			| McpServersCreateOAuthAuthorizationUrl429
+			| McpServersCreateOAuthAuthorizationUrl500
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		McpServersCreateOAuthAuthorizationUrlPathParams
+	>({
+		method: "POST",
+		url: `/mcp-servers/${mcpServerId}/oauth/authorize`,
+		...requestConfig,
+		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+	});
+	return data;
+}
+
 export const operationsByPath = {
 	"POST /chats": chatsCreate,
 	"GET /chats": chatsFind,
@@ -2769,6 +2927,7 @@ export const operationsByPath = {
 	"POST /chats/{chatId}/versions/{versionId}/files/delete": chatsDeleteVersionFiles,
 	"POST /chats/{chatId}/messages/{messageId}/resume": chatsResume,
 	"POST /chats/{chatId}/messages/{messageId}/stop": chatsStop,
+	"POST /chats/{chatId}/tasks/resolve": chatsResolveTask,
 	"GET /deployments": deploymentsFind,
 	"POST /deployments": deploymentsCreate,
 	"GET /deployments/{deploymentId}": deploymentsGetById,
@@ -2798,6 +2957,7 @@ export const operationsByPath = {
 	"GET /user/billing": userGetBilling,
 	"GET /user/plan": userGetPlan,
 	"GET /user/scopes": userGetScopes,
+	"POST /chats/{chatId}/versions/{versionId}/restore": chatsRestore,
 	"GET /reports/usage": reportsGetUsage,
 	"GET /reports/usage/ai": reportsGetAIUsage,
 	"GET /reports/user-activity": reportsGetUserActivity,
@@ -2806,6 +2966,7 @@ export const operationsByPath = {
 	"GET /mcp-servers/{mcpServerId}": mcpServersGetById,
 	"PATCH /mcp-servers/{mcpServerId}": mcpServersUpdate,
 	"DELETE /mcp-servers/{mcpServerId}": mcpServersDelete,
+	"POST /mcp-servers/{mcpServerId}/oauth/authorize": mcpServersCreateOAuthAuthorizationUrl,
 };
 
 export const operationsByTag = {
@@ -2828,6 +2989,8 @@ export const operationsByTag = {
 		chatsDeleteVersionFiles,
 		chatsResume,
 		chatsStop,
+		chatsResolveTask,
+		chatsRestore,
 	},
 	projects: {
 		projectsGetByChatId,
@@ -2882,6 +3045,7 @@ export const operationsByTag = {
 		mcpServersGetById,
 		mcpServersUpdate,
 		mcpServersDelete,
+		mcpServersCreateOAuthAuthorizationUrl,
 	},
 };
 
@@ -2895,6 +3059,8 @@ export const tagDictionary = {
 			"chatsDeleteVersionFiles",
 			"chatsResume",
 			"chatsStop",
+			"chatsResolveTask",
+			"chatsRestore",
 		],
 		GET: [
 			"chatsFind",
@@ -2947,7 +3113,7 @@ export const tagDictionary = {
 	},
 	mcpservers: {
 		GET: ["mcpServersFind", "mcpServersGetById"],
-		POST: ["mcpServersCreate"],
+		POST: ["mcpServersCreate", "mcpServersCreateOAuthAuthorizationUrl"],
 		PATCH: ["mcpServersUpdate"],
 		DELETE: ["mcpServersDelete"],
 	},

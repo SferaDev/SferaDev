@@ -271,9 +271,17 @@ export const chatDetailSchema = z
 				.object({
 					modelId: z.optional(
 						z
-							.enum(["v0-auto", "v0-max", "v0-max-fast", "v0-mini", "v0-pro"])
+							.enum([
+								"v0-auto",
+								"v0-max",
+								"v0-max-fast",
+								"v0-mini",
+								"v0-opus-4.7",
+								"v0-opus-4.7-fast",
+								"v0-pro",
+							])
 							.default("v0-pro")
-							.describe("Deprecated Model ID field preserved for backward compatibility."),
+							.describe("Model to use for the generation."),
 					),
 					imageGenerations: z.optional(
 						z
@@ -368,7 +376,9 @@ export const deploymentDetailSchema = z.object({
 	object: z.literal("deployment").describe("Fixed value identifying this object as a deployment."),
 	inspectorUrl: z.string().describe("URL to the deployment inspector."),
 	chatId: z.string().describe("The ID of the chat that this deployment is scoped to."),
-	projectId: z.string().describe("The ID of the project that this deployment is scoped to."),
+	projectId: z.optional(
+		z.string().describe("The ID of the project that this deployment is scoped to."),
+	),
 	versionId: z.string().describe("The ID of the version that this deployment is scoped to."),
 	apiUrl: z.url().describe("The API endpoint URL for accessing this deployment programmatically."),
 	webUrl: z.url().describe("The web URL where the deployment can be viewed or managed."),
@@ -379,7 +389,9 @@ export const deploymentSummarySchema = z.object({
 	object: z.literal("deployment").describe("Fixed value identifying this object as a deployment."),
 	inspectorUrl: z.string().describe("URL to the deployment inspector."),
 	chatId: z.string().describe("The ID of the chat that this deployment is scoped to."),
-	projectId: z.string().describe("The ID of the project that this deployment is scoped to."),
+	projectId: z.optional(
+		z.string().describe("The ID of the project that this deployment is scoped to."),
+	),
 	versionId: z.string().describe("The ID of the version that this deployment is scoped to."),
 	apiUrl: z.url().describe("The API endpoint URL for accessing this deployment programmatically."),
 	webUrl: z.url().describe("The web URL where the deployment can be viewed or managed."),
@@ -2795,8 +2807,63 @@ export const chatsStop500Schema = z.unknown();
 
 export const chatsStopMutationResponseSchema = z.lazy(() => chatsStop200Schema);
 
+export const chatsResolveTaskPathParamsSchema = z.object({
+	chatId: z
+		.string()
+		.describe(
+			"The unique identifier of the chat containing the pending task. Provided as a path parameter.",
+		),
+});
+
+/**
+ * @description Success
+ */
+export const chatsResolveTask200Schema = z.unknown();
+
+/**
+ * @description Unauthorized
+ */
+export const chatsResolveTask401Schema = z.unknown();
+
+/**
+ * @description Forbidden
+ */
+export const chatsResolveTask403Schema = z.unknown();
+
+/**
+ * @description Not Found
+ */
+export const chatsResolveTask404Schema = z.unknown();
+
+/**
+ * @description Conflict
+ */
+export const chatsResolveTask409Schema = z.unknown();
+
+/**
+ * @description Payload Too Large
+ */
+export const chatsResolveTask413Schema = z.unknown();
+
+/**
+ * @description Unprocessable Entity
+ */
+export const chatsResolveTask422Schema = z.unknown();
+
+/**
+ * @description Too Many Requests
+ */
+export const chatsResolveTask429Schema = z.unknown();
+
+/**
+ * @description Internal Server Error
+ */
+export const chatsResolveTask500Schema = z.unknown();
+
+export const chatsResolveTaskMutationResponseSchema = z.lazy(() => chatsResolveTask200Schema);
+
 export const deploymentsFindQueryParamsSchema = z.object({
-	projectId: z.string().describe("The ID of the project to find deployments for"),
+	projectId: z.optional(z.string().describe("The ID of the project to find deployments for")),
 	chatId: z.string().describe("The ID of the chat to find deployments for"),
 	versionId: z.string().describe("The ID of the version to find deployments for"),
 });
@@ -4358,6 +4425,60 @@ export const userGetScopes500Schema = z.unknown();
 
 export const userGetScopesQueryResponseSchema = z.lazy(() => userGetScopes200Schema);
 
+export const chatsRestorePathParamsSchema = z.object({
+	chatId: z
+		.string()
+		.describe("The unique identifier of the chat containing the version to restore."),
+	versionId: z.string().describe("The unique identifier of the version to restore."),
+});
+
+/**
+ * @description Success
+ */
+export const chatsRestore200Schema = z.unknown();
+
+/**
+ * @description Unauthorized
+ */
+export const chatsRestore401Schema = z.unknown();
+
+/**
+ * @description Forbidden
+ */
+export const chatsRestore403Schema = z.unknown();
+
+/**
+ * @description Not Found
+ */
+export const chatsRestore404Schema = z.unknown();
+
+/**
+ * @description Conflict
+ */
+export const chatsRestore409Schema = z.unknown();
+
+/**
+ * @description Payload Too Large
+ */
+export const chatsRestore413Schema = z.unknown();
+
+/**
+ * @description Unprocessable Entity
+ */
+export const chatsRestore422Schema = z.unknown();
+
+/**
+ * @description Too Many Requests
+ */
+export const chatsRestore429Schema = z.unknown();
+
+/**
+ * @description Internal Server Error
+ */
+export const chatsRestore500Schema = z.unknown();
+
+export const chatsRestoreMutationResponseSchema = z.lazy(() => chatsRestore200Schema);
+
 export const reportsGetUsageQueryParamsSchema = z.object({
 	startDate: z.optional(z.iso.datetime().describe('Query parameter "startDate"')),
 	endDate: z.optional(z.iso.datetime().describe('Query parameter "endDate"')),
@@ -4779,3 +4900,56 @@ export const mcpServersDelete429Schema = z.unknown();
 export const mcpServersDelete500Schema = z.unknown();
 
 export const mcpServersDeleteMutationResponseSchema = z.lazy(() => mcpServersDelete200Schema);
+
+export const mcpServersCreateOAuthAuthorizationUrlPathParamsSchema = z.object({
+	mcpServerId: z.string().describe("The ID of the OAuth MCP server to authorize."),
+});
+
+/**
+ * @description Success
+ */
+export const mcpServersCreateOAuthAuthorizationUrl200Schema = z.unknown();
+
+/**
+ * @description Unauthorized
+ */
+export const mcpServersCreateOAuthAuthorizationUrl401Schema = z.unknown();
+
+/**
+ * @description Forbidden
+ */
+export const mcpServersCreateOAuthAuthorizationUrl403Schema = z.unknown();
+
+/**
+ * @description Not Found
+ */
+export const mcpServersCreateOAuthAuthorizationUrl404Schema = z.unknown();
+
+/**
+ * @description Conflict
+ */
+export const mcpServersCreateOAuthAuthorizationUrl409Schema = z.unknown();
+
+/**
+ * @description Payload Too Large
+ */
+export const mcpServersCreateOAuthAuthorizationUrl413Schema = z.unknown();
+
+/**
+ * @description Unprocessable Entity
+ */
+export const mcpServersCreateOAuthAuthorizationUrl422Schema = z.unknown();
+
+/**
+ * @description Too Many Requests
+ */
+export const mcpServersCreateOAuthAuthorizationUrl429Schema = z.unknown();
+
+/**
+ * @description Internal Server Error
+ */
+export const mcpServersCreateOAuthAuthorizationUrl500Schema = z.unknown();
+
+export const mcpServersCreateOAuthAuthorizationUrlMutationResponseSchema = z.lazy(
+	() => mcpServersCreateOAuthAuthorizationUrl200Schema,
+);
