@@ -1656,13 +1656,13 @@ export type Restlet = {
 	 */
 	logger?: Logger | undefined;
 	/**
-	 * @type object | undefined
-	 */
-	application?: Application | undefined;
-	/**
 	 * @type boolean | undefined
 	 */
 	stopped?: boolean | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	application?: Application | undefined;
 };
 
 export type Parameter = {
@@ -1893,6 +1893,10 @@ export type Reference = {
 	/**
 	 * @type string | undefined
 	 */
+	identifier?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
 	matrix?: string | undefined;
 	/**
 	 * @type array | undefined
@@ -1958,10 +1962,6 @@ export type Reference = {
 	 * @type boolean | undefined
 	 */
 	hierarchical?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	identifier?: string | undefined;
 };
 
 export type Metadata = {
@@ -2453,13 +2453,13 @@ export type Application = {
 	 */
 	logger?: Logger | undefined;
 	/**
-	 * @type object | undefined
-	 */
-	application?: Application | undefined;
-	/**
 	 * @type boolean | undefined
 	 */
 	stopped?: boolean | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	application?: Application | undefined;
 };
 
 export type AuthenticationInfo = {
@@ -3355,15 +3355,15 @@ export type ObjectId = {
 	/**
 	 * @type integer | undefined, int32
 	 */
-	machineIdentifier?: number | undefined;
-	/**
-	 * @type integer | undefined, int32
-	 */
 	processIdentifier?: number | undefined;
 	/**
 	 * @type integer | undefined, int32
 	 */
 	timeSecond?: number | undefined;
+	/**
+	 * @type integer | undefined, int32
+	 */
+	machineIdentifier?: number | undefined;
 };
 
 export type OpenerIntercomBrand = {
@@ -3979,13 +3979,13 @@ export type Request = {
 	 */
 	synchronous?: boolean | undefined;
 	/**
-	 * @type string | undefined
-	 */
-	entityAsText?: string | undefined;
-	/**
 	 * @type array | undefined
 	 */
 	headers?: Header[] | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	entityAsText?: string | undefined;
 };
 
 export type ReservationAccessTimesUpdate = {
@@ -4166,6 +4166,10 @@ export type Response = {
 	 */
 	provisional?: boolean | undefined;
 	/**
+	 * @type array | undefined
+	 */
+	headers?: Header[] | undefined;
+	/**
 	 * @type boolean | undefined
 	 */
 	entityAvailable?: boolean | undefined;
@@ -4173,10 +4177,6 @@ export type Response = {
 	 * @type string | undefined
 	 */
 	entityAsText?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	headers?: Header[] | undefined;
 };
 
 export const shsSubscriptionTypeEnum = {
@@ -4896,7 +4896,7 @@ export type Smartlock = {
 	 */
 	accountId: number;
 	/**
-	 * @description The type: 0 .. keyturner, 1 .. box, 2 .. opener, 3 .. smartdoor, 4 .. smartlock 3.0/4. Gen
+	 * @description The type: 0 .. Smartlock 1/2, 1 .. Box, 2 .. Opener, 3 .. Smartdoor, 4 .. Smartlock 3/4, 5 .. Smartlock 5
 	 * @type integer, int32
 	 */
 	type: number;
@@ -5434,6 +5434,8 @@ export const smartlockLogDeviceTypeEnum = {
 	"0": 0,
 	"2": 2,
 	"3": 3,
+	"4": 4,
+	"5": 5,
 } as const;
 
 export type SmartlockLogDeviceTypeEnumKey =
@@ -5451,7 +5453,7 @@ export type SmartlockLog = {
 	 */
 	smartlockId: number;
 	/**
-	 * @description The device type: 0 .. smartlock and box, 2 .. opener, 3 .. smartdoor
+	 * @description The device type: 0 .. Smartlock 1/2 + Box, 2 .. Opener, 3 .. Smartdoor, 4 .. Smartlock 3/4, 5 .. Smartlock 5
 	 * @type integer, int32
 	 */
 	deviceType: SmartlockLogDeviceTypeEnumKey;
@@ -5795,7 +5797,7 @@ export type PostAccountsResourceQueryParams = {
 export type PostAccountsResource204 = unknown;
 
 /**
- * @description Invalid E-Mail address or name supplied
+ * @description Invalid email address or name supplied
  */
 export type PostAccountsResource400 = unknown;
 
@@ -5805,7 +5807,7 @@ export type PostAccountsResource400 = unknown;
 export type PostAccountsResource401 = unknown;
 
 /**
- * @description E-Mail address already exists
+ * @description Email address already exists
  */
 export type PostAccountsResource409 = unknown;
 
@@ -5961,12 +5963,12 @@ export type DeleteAccountIntegrationsResourceMutation = {
 export type PostAccountOtpResource204 = unknown;
 
 /**
- * @description One time password empty
+ * @description One-time password empty
  */
 export type PostAccountOtpResource400 = unknown;
 
 /**
- * @description Not authorized or one time password wrong
+ * @description Not authorized or one-time password wrong
  */
 export type PostAccountOtpResource401 = unknown;
 
@@ -5994,7 +5996,7 @@ export type PostAccountOtpResourceMutation = {
 export type PutAccountOtpResource200 = unknown;
 
 /**
- * @description One time password is already enabled
+ * @description One-time password is already enabled
  */
 export type PutAccountOtpResource405 = unknown;
 
@@ -6081,7 +6083,7 @@ export type GetAccountSettingResourceQuery = {
 export type PutAccountSettingResource200 = unknown;
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export type PutAccountSettingResource400 = unknown;
 
@@ -6176,7 +6178,7 @@ export type PutAccountSubsResourceMutation = {
 
 export type GetAccountSubResourcePathParams = {
 	/**
-	 * @description The account id
+	 * @description The account ID
 	 * @type integer
 	 */
 	accountId: number;
@@ -6202,7 +6204,7 @@ export type GetAccountSubResourceQuery = {
 
 export type PostAccountSubResourcePathParams = {
 	/**
-	 * @description The account id
+	 * @description The account ID
 	 * @type integer
 	 */
 	accountId: number;
@@ -6224,7 +6226,7 @@ export type PostAccountSubResource400 = unknown;
 export type PostAccountSubResource401 = unknown;
 
 /**
- * @description E-Mail address already exists
+ * @description Email address already exists
  */
 export type PostAccountSubResource409 = unknown;
 
@@ -6244,7 +6246,7 @@ export type PostAccountSubResourceMutation = {
 
 export type DeleteAccountSubResourcePathParams = {
 	/**
-	 * @description The account id
+	 * @description The account ID
 	 * @type integer
 	 */
 	accountId: number;
@@ -6310,7 +6312,7 @@ export type GetAccountUsersResourceQuery = {
 export type PutAccountUsersResource200 = unknown;
 
 /**
- * @description Invalid E-Mail address or name supplied
+ * @description Invalid email address or name supplied
  */
 export type PutAccountUsersResource400 = unknown;
 
@@ -6329,7 +6331,7 @@ export type PutAccountUsersResourceMutation = {
 
 export type GetAccountUserResourcePathParams = {
 	/**
-	 * @description The account user id
+	 * @description The account user ID
 	 * @type integer
 	 */
 	accountUserId: number;
@@ -6355,7 +6357,7 @@ export type GetAccountUserResourceQuery = {
 
 export type PostAccountUserResourcePathParams = {
 	/**
-	 * @description The account user id
+	 * @description The account user ID
 	 * @type integer
 	 */
 	accountUserId: number;
@@ -6372,7 +6374,7 @@ export type PostAccountUserResource200 = unknown;
 export type PostAccountUserResource204 = unknown;
 
 /**
- * @description Invalid E-Mail address or name supplied
+ * @description Invalid email address or name supplied
  */
 export type PostAccountUserResource400 = unknown;
 
@@ -6382,7 +6384,7 @@ export type PostAccountUserResource400 = unknown;
 export type PostAccountUserResource401 = unknown;
 
 /**
- * @description E-Mail address already exists
+ * @description Email address already exists
  */
 export type PostAccountUserResource409 = unknown;
 
@@ -6404,7 +6406,7 @@ export type PostAccountUserResourceMutation = {
 
 export type DeleteAccountUserResourcePathParams = {
 	/**
-	 * @description The account user id
+	 * @description The account user ID
 	 * @type integer
 	 */
 	accountUserId: number;
@@ -6456,7 +6458,7 @@ export type GetAddressesResourceQuery = {
 export type PutAddressesResource200 = unknown;
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export type PutAddressesResource400 = unknown;
 
@@ -6480,7 +6482,7 @@ export type PutAddressesResourceMutation = {
 
 export type GetAddressTokenResourcePathParams = {
 	/**
-	 * @description The token id
+	 * @description The token ID
 	 * @type string
 	 */
 	id: string;
@@ -6511,7 +6513,7 @@ export type GetAddressTokenResourceQuery = {
 
 export type GetAddressTokenRedeemResourcePathParams = {
 	/**
-	 * @description The token id
+	 * @description The token ID
 	 * @type string
 	 */
 	id: string;
@@ -6542,7 +6544,7 @@ export type GetAddressTokenRedeemResourceQuery = {
 
 export type PostAddressTokenRedeemResourcePathParams = {
 	/**
-	 * @description The token id
+	 * @description The token ID
 	 * @type string
 	 */
 	id: string;
@@ -6550,7 +6552,7 @@ export type PostAddressTokenRedeemResourcePathParams = {
 
 export type PostAddressTokenRedeemResourceQueryParams = {
 	/**
-	 * @description If false no email will be send
+	 * @description If false, no email will be sent
 	 * @type boolean | undefined
 	 */
 	email?: boolean | undefined;
@@ -6590,7 +6592,7 @@ export type PostAddressTokenRedeemResourceMutation = {
 
 export type PostAddressResourcePathParams = {
 	/**
-	 * @description The address id
+	 * @description The address ID
 	 * @type integer
 	 */
 	addressId: number;
@@ -6602,7 +6604,7 @@ export type PostAddressResourcePathParams = {
 export type PostAddressResource204 = unknown;
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export type PostAddressResource400 = unknown;
 
@@ -6632,7 +6634,7 @@ export type PostAddressResourceMutation = {
 
 export type DeleteAddressResourcePathParams = {
 	/**
-	 * @description The address id
+	 * @description The address ID
 	 * @type integer
 	 */
 	addressId: number;
@@ -6663,7 +6665,7 @@ export type DeleteAddressResourceMutation = {
 
 export type GetAddressReservationsResourcePathParams = {
 	/**
-	 * @description The address id
+	 * @description The address ID
 	 * @type integer
 	 */
 	addressId: number;
@@ -6689,12 +6691,12 @@ export type GetAddressReservationsResourceQuery = {
 
 export type PostAddressReservationIssueResourcePathParams = {
 	/**
-	 * @description The address id
+	 * @description The address ID
 	 * @type integer
 	 */
 	addressId: number;
 	/**
-	 * @description The address reservation id
+	 * @description The address reservation ID
 	 * @type string
 	 */
 	id: string;
@@ -6706,7 +6708,7 @@ export type PostAddressReservationIssueResourcePathParams = {
 export type PostAddressReservationIssueResource204 = unknown;
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export type PostAddressReservationIssueResource400 = unknown;
 
@@ -6726,12 +6728,12 @@ export type PostAddressReservationIssueResourceMutation = {
 
 export type PostAddressReservationRevokeResourcePathParams = {
 	/**
-	 * @description The address id
+	 * @description The address ID
 	 * @type integer
 	 */
 	addressId: number;
 	/**
-	 * @description The address reservation id
+	 * @description The address reservation ID
 	 * @type string
 	 */
 	id: string;
@@ -6743,7 +6745,7 @@ export type PostAddressReservationRevokeResourcePathParams = {
 export type PostAddressReservationRevokeResource204 = unknown;
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export type PostAddressReservationRevokeResource400 = unknown;
 
@@ -6763,12 +6765,12 @@ export type PostAddressReservationRevokeResourceMutation = {
 
 export type PostReservationAccessTimesUpdateResourcePathParams = {
 	/**
-	 * @description The address id
+	 * @description The address ID
 	 * @type integer
 	 */
 	addressId: number;
 	/**
-	 * @description The reservation id
+	 * @description The reservation ID
 	 * @type string
 	 */
 	id: string;
@@ -6780,7 +6782,7 @@ export type PostReservationAccessTimesUpdateResourcePathParams = {
 export type PostReservationAccessTimesUpdateResource204 = unknown;
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export type PostReservationAccessTimesUpdateResource400 = unknown;
 
@@ -6806,7 +6808,7 @@ export type PostReservationAccessTimesUpdateResourceMutation = {
 
 export type GetAddressTokensResourcePathParams = {
 	/**
-	 * @description The address id
+	 * @description The address ID
 	 * @type integer
 	 */
 	addressId: number;
@@ -6818,7 +6820,7 @@ export type GetAddressTokensResourcePathParams = {
 export type GetAddressTokensResource200 = unknown;
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export type GetAddressTokensResource400 = unknown;
 
@@ -6837,7 +6839,7 @@ export type GetAddressTokensResourceQuery = {
 
 export type GetAddressUnitsResourcePathParams = {
 	/**
-	 * @description The address id
+	 * @description The address ID
 	 * @type integer
 	 */
 	addressId: number;
@@ -6849,7 +6851,7 @@ export type GetAddressUnitsResourcePathParams = {
 export type GetAddressUnitsResource200 = unknown;
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export type GetAddressUnitsResource400 = unknown;
 
@@ -6868,7 +6870,7 @@ export type GetAddressUnitsResourceQuery = {
 
 export type PutAddressUnitsResourcePathParams = {
 	/**
-	 * @description The address id
+	 * @description The address ID
 	 * @type integer
 	 */
 	addressId: number;
@@ -6880,7 +6882,7 @@ export type PutAddressUnitsResourcePathParams = {
 export type PutAddressUnitsResource200 = unknown;
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export type PutAddressUnitsResource400 = unknown;
 
@@ -6913,7 +6915,7 @@ export type PutAddressUnitsResourceMutation = {
 
 export type DeleteAddressUnitsResourcePathParams = {
 	/**
-	 * @description The address id
+	 * @description The address ID
 	 * @type integer
 	 */
 	addressId: number;
@@ -6964,12 +6966,12 @@ export type DeleteAddressUnitsResourceMutation = {
 
 export type DeleteAddressUnitResourcePathParams = {
 	/**
-	 * @description The address id
+	 * @description The address ID
 	 * @type integer
 	 */
 	addressId: number;
 	/**
-	 * @description The address unit id
+	 * @description The address unit ID
 	 * @type string
 	 */
 	id: string;
@@ -7034,7 +7036,7 @@ export type GetDecentralWebhooksResourceQuery = {
 export type PutDecentralWebhooksResource200 = unknown;
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export type PutDecentralWebhooksResource400 = unknown;
 
@@ -7121,7 +7123,7 @@ export type GetApiKeysResourceQuery = {
 export type PutApiKeysResource200 = unknown;
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export type PutApiKeysResource400 = unknown;
 
@@ -7145,7 +7147,7 @@ export type PutApiKeysResourceMutation = {
 
 export type PostApiKeyResourcePathParams = {
 	/**
-	 * @description The api key id
+	 * @description The API key ID
 	 * @type integer
 	 */
 	apiKeyId: number;
@@ -7182,7 +7184,7 @@ export type PostApiKeyResourceMutation = {
 
 export type DeleteApiKeyResourcePathParams = {
 	/**
-	 * @description The api key id
+	 * @description The API key ID
 	 * @type integer
 	 */
 	apiKeyId: number;
@@ -7208,7 +7210,7 @@ export type DeleteApiKeyResourceMutation = {
 
 export type GetApiKeyAdvancedResourcePathParams = {
 	/**
-	 * @description The api key id
+	 * @description The API key ID
 	 * @type integer
 	 */
 	apiKeyId: number;
@@ -7247,7 +7249,7 @@ export type GetApiKeyAdvancedResourceQuery = {
 
 export type PostApiKeyAdvancedResourcePathParams = {
 	/**
-	 * @description The api key id
+	 * @description The API key ID
 	 * @type integer
 	 */
 	apiKeyId: number;
@@ -7259,7 +7261,7 @@ export type PostApiKeyAdvancedResourcePathParams = {
 export type PostApiKeyAdvancedResource204 = unknown;
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export type PostApiKeyAdvancedResource400 = unknown;
 
@@ -7284,7 +7286,7 @@ export type PostApiKeyAdvancedResourceMutation = {
 
 export type PutApiKeyAdvancedResourcePathParams = {
 	/**
-	 * @description The api key id
+	 * @description The API key ID
 	 * @type integer
 	 */
 	apiKeyId: number;
@@ -7296,7 +7298,7 @@ export type PutApiKeyAdvancedResourcePathParams = {
 export type PutApiKeyAdvancedResource204 = unknown;
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export type PutApiKeyAdvancedResource400 = unknown;
 
@@ -7324,7 +7326,7 @@ export type PutApiKeyAdvancedResourceMutation = {
 
 export type DeleteApiKeyAdvancedResourcePathParams = {
 	/**
-	 * @description The api key id
+	 * @description The API key ID
 	 * @type integer
 	 */
 	apiKeyId: number;
@@ -7350,7 +7352,7 @@ export type DeleteApiKeyAdvancedResourceMutation = {
 
 export type PostApiKeyAdvancedReactivateResourcePathParams = {
 	/**
-	 * @description The api key id
+	 * @description The API key ID
 	 * @type integer
 	 */
 	apiKeyId: number;
@@ -7362,7 +7364,7 @@ export type PostApiKeyAdvancedReactivateResourcePathParams = {
 export type PostApiKeyAdvancedReactivateResource204 = unknown;
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export type PostApiKeyAdvancedReactivateResource400 = unknown;
 
@@ -7382,7 +7384,7 @@ export type PostApiKeyAdvancedReactivateResourceMutation = {
 
 export type GetApiKeyTokensResourcePathParams = {
 	/**
-	 * @description The api key id
+	 * @description The API key ID
 	 * @type integer
 	 */
 	apiKeyId: number;
@@ -7408,7 +7410,7 @@ export type GetApiKeyTokensResourceQuery = {
 
 export type PutApiKeyTokensResourcePathParams = {
 	/**
-	 * @description The api key id
+	 * @description The API key ID
 	 * @type integer
 	 */
 	apiKeyId: number;
@@ -7420,7 +7422,7 @@ export type PutApiKeyTokensResourcePathParams = {
 export type PutApiKeyTokensResource200 = unknown;
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export type PutApiKeyTokensResource400 = unknown;
 
@@ -7445,12 +7447,12 @@ export type PutApiKeyTokensResourceMutation = {
 
 export type PostApiKeyTokenResourcePathParams = {
 	/**
-	 * @description The api key id
+	 * @description The API key ID
 	 * @type integer
 	 */
 	apiKeyId: number;
 	/**
-	 * @description The api key token id
+	 * @description The API key token ID
 	 * @type string
 	 */
 	id: string;
@@ -7487,12 +7489,12 @@ export type PostApiKeyTokenResourceMutation = {
 
 export type DeleteApiKeyTokenResourcePathParams = {
 	/**
-	 * @description The api key id
+	 * @description The API key ID
 	 * @type integer
 	 */
 	apiKeyId: number;
 	/**
-	 * @description The api key token id
+	 * @description The API key token ID
 	 * @type string
 	 */
 	id: string;
@@ -7518,7 +7520,7 @@ export type DeleteApiKeyTokenResourceMutation = {
 
 export type GetWebhookLogsResourcePathParams = {
 	/**
-	 * @description The api key id
+	 * @description The API key ID
 	 * @type integer
 	 */
 	apiKeyId: number;
@@ -7640,7 +7642,7 @@ export type GetNotificationsResourceQuery = {
 export type PutNotificationsResource200 = unknown;
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export type PutNotificationsResource400 = unknown;
 
@@ -7897,7 +7899,7 @@ export type GetServicesResourceQuery = {
 
 export type GetServiceResourcePathParams = {
 	/**
-	 * @description The service id
+	 * @description The service ID
 	 * @type string
 	 */
 	serviceId: string;
@@ -7923,7 +7925,7 @@ export type GetServiceResourceQuery = {
 
 export type PostServiceLinkResourcePathParams = {
 	/**
-	 * @description The service id
+	 * @description The service ID
 	 * @type string
 	 */
 	serviceId: string;
@@ -7935,7 +7937,7 @@ export type PostServiceLinkResourcePathParams = {
 export type PostServiceLinkResource200 = unknown;
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export type PostServiceLinkResource400 = unknown;
 
@@ -7954,7 +7956,7 @@ export type PostServiceLinkResourceMutation = {
 
 export type PostServiceSyncResourcePathParams = {
 	/**
-	 * @description The service id
+	 * @description The service ID
 	 * @type string
 	 */
 	serviceId: string;
@@ -7966,7 +7968,7 @@ export type PostServiceSyncResourcePathParams = {
 export type PostServiceSyncResource204 = unknown;
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export type PostServiceSyncResource400 = unknown;
 
@@ -7985,7 +7987,7 @@ export type PostServiceSyncResourceMutation = {
 
 export type PostServiceUnlinkResourcePathParams = {
 	/**
-	 * @description The service id
+	 * @description The service ID
 	 * @type string
 	 */
 	serviceId: string;
@@ -7997,7 +7999,7 @@ export type PostServiceUnlinkResourcePathParams = {
 export type PostServiceUnlinkResource204 = unknown;
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export type PostServiceUnlinkResource400 = unknown;
 
@@ -8135,7 +8137,7 @@ export type PutSmartlocksAuthsResource204 = unknown;
 export type PutSmartlocksAuthsResource400 = unknown;
 
 /**
- * @description Account not payed
+ * @description Account not paid
  */
 export type PutSmartlocksAuthsResource402 = unknown;
 
@@ -8219,7 +8221,7 @@ export type PutSmartlockAuthsAdvancedResource200 = unknown;
 export type PutSmartlockAuthsAdvancedResource400 = unknown;
 
 /**
- * @description Account not payed
+ * @description Account not paid
  */
 export type PutSmartlockAuthsAdvancedResource402 = unknown;
 
@@ -8349,7 +8351,7 @@ export type GetSmartlocksLogsResourceQuery = {
 
 export type GetSmartlockResourcePathParams = {
 	/**
-	 * @description The smartlock id
+	 * @description The smartlock ID
 	 * @type integer
 	 */
 	smartlockId: number;
@@ -8385,7 +8387,7 @@ export type GetSmartlockResourceQuery = {
 
 export type PostSmartlockResourcePathParams = {
 	/**
-	 * @description The smartlock id
+	 * @description The smartlock ID
 	 * @type integer
 	 */
 	smartlockId: number;
@@ -8427,7 +8429,7 @@ export type PostSmartlockResourceMutation = {
 
 export type DeleteSmartlockResourcePathParams = {
 	/**
-	 * @description The smartlock id
+	 * @description The smartlock ID
 	 * @type integer
 	 */
 	smartlockId: number;
@@ -8463,7 +8465,7 @@ export type DeleteSmartlockResourceMutation = {
 
 export type PostSmartlockActionResourcePathParams = {
 	/**
-	 * @description The smartlock id
+	 * @description The smartlock ID
 	 * @type string
 	 */
 	smartlockId: string;
@@ -8475,7 +8477,7 @@ export type PostSmartlockActionResourcePathParams = {
 export type PostSmartlockActionResource204 = unknown;
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export type PostSmartlockActionResource400 = unknown;
 
@@ -8485,7 +8487,7 @@ export type PostSmartlockActionResource400 = unknown;
 export type PostSmartlockActionResource401 = unknown;
 
 /**
- * @description Account not payed
+ * @description Account not paid
  */
 export type PostSmartlockActionResource402 = unknown;
 
@@ -8502,7 +8504,7 @@ export type PostSmartlockActionResourceMutation = {
 
 export type PostSmartlockActionAdvancedResourcePathParams = {
 	/**
-	 * @description The smartlock id
+	 * @description The smartlock ID
 	 * @type string
 	 */
 	smartlockId: string;
@@ -8519,7 +8521,7 @@ export type PostSmartlockActionAdvancedResource200 = unknown;
 export type PostSmartlockActionAdvancedResource400 = unknown;
 
 /**
- * @description Account not payed
+ * @description Account not paid
  */
 export type PostSmartlockActionAdvancedResource402 = unknown;
 
@@ -8548,7 +8550,7 @@ export type PostSmartlockActionAdvancedResourceMutation = {
 
 export type PostSmartlockLockActionResourcePathParams = {
 	/**
-	 * @description The smartlock id
+	 * @description The smartlock ID
 	 * @type string
 	 */
 	smartlockId: string;
@@ -8560,7 +8562,7 @@ export type PostSmartlockLockActionResourcePathParams = {
 export type PostSmartlockLockActionResource204 = unknown;
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export type PostSmartlockLockActionResource400 = unknown;
 
@@ -8587,7 +8589,7 @@ export type PostSmartlockLockActionResourceMutation = {
 
 export type PostSmartlockLockActionAdvancedResourcePathParams = {
 	/**
-	 * @description The smartlock id
+	 * @description The smartlock ID
 	 * @type string
 	 */
 	smartlockId: string;
@@ -8599,7 +8601,7 @@ export type PostSmartlockLockActionAdvancedResourcePathParams = {
 export type PostSmartlockLockActionAdvancedResource200 = unknown;
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export type PostSmartlockLockActionAdvancedResource400 = unknown;
 
@@ -8627,7 +8629,7 @@ export type PostSmartlockLockActionAdvancedResourceMutation = {
 
 export type PostSmartlockUnlockActionResourcePathParams = {
 	/**
-	 * @description The smartlock id
+	 * @description The smartlock ID
 	 * @type string
 	 */
 	smartlockId: string;
@@ -8639,7 +8641,7 @@ export type PostSmartlockUnlockActionResourcePathParams = {
 export type PostSmartlockUnlockActionResource204 = unknown;
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export type PostSmartlockUnlockActionResource400 = unknown;
 
@@ -8667,7 +8669,7 @@ export type PostSmartlockUnlockActionResourceMutation = {
 
 export type PostSmartlockUnlockActionAdvancedResourcePathParams = {
 	/**
-	 * @description The smartlock id
+	 * @description The smartlock ID
 	 * @type string
 	 */
 	smartlockId: string;
@@ -8679,7 +8681,7 @@ export type PostSmartlockUnlockActionAdvancedResourcePathParams = {
 export type PostSmartlockUnlockActionAdvancedResource200 = unknown;
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export type PostSmartlockUnlockActionAdvancedResource400 = unknown;
 
@@ -8707,7 +8709,7 @@ export type PostSmartlockUnlockActionAdvancedResourceMutation = {
 
 export type PostSmartlockAdminPinResourcePathParams = {
 	/**
-	 * @description The smartlock id
+	 * @description The smartlock ID
 	 * @type integer
 	 */
 	smartlockId: number;
@@ -8744,7 +8746,7 @@ export type PostSmartlockAdminPinResourceMutation = {
 
 export type PostSmartlockAdvancedConfigResourcePathParams = {
 	/**
-	 * @description The smartlock id
+	 * @description The smartlock ID
 	 * @type integer
 	 */
 	smartlockId: number;
@@ -8785,7 +8787,7 @@ export type PostSmartlockAdvancedConfigResourceMutation = {
 
 export type PostSmartlockOpenerAdvancedConfigResourcePathParams = {
 	/**
-	 * @description The smartlock (opener) id
+	 * @description The smartlock (opener) ID
 	 * @type integer
 	 */
 	smartlockId: number;
@@ -8828,7 +8830,7 @@ export type PostSmartlockOpenerAdvancedConfigResourceMutation = {
 
 export type PostSmartdoorAdvancedConfigResourcePathParams = {
 	/**
-	 * @description The smartdoor id
+	 * @description The smartdoor ID
 	 * @type integer
 	 */
 	smartlockId: number;
@@ -8869,7 +8871,7 @@ export type PostSmartdoorAdvancedConfigResourceMutation = {
 
 export type GetSmartlockAuthsResourcePathParams = {
 	/**
-	 * @description The smartlock id
+	 * @description The smartlock ID
 	 * @type integer
 	 */
 	smartlockId: number;
@@ -8914,7 +8916,7 @@ export type GetSmartlockAuthsResourceQuery = {
 
 export type PutSmartlockAuthsResourcePathParams = {
 	/**
-	 * @description The smartlock id
+	 * @description The smartlock ID
 	 * @type integer
 	 */
 	smartlockId: number;
@@ -8931,7 +8933,7 @@ export type PutSmartlockAuthsResource204 = unknown;
 export type PutSmartlockAuthsResource400 = unknown;
 
 /**
- * @description Account not payed
+ * @description Account not paid
  */
 export type PutSmartlockAuthsResource402 = unknown;
 
@@ -8965,7 +8967,7 @@ export type PutSmartlockAuthsResourceMutation = {
 
 export type PostSmartlockAuthWithSharedKeyResourcePathParams = {
 	/**
-	 * @description The smartlock id
+	 * @description The smartlock ID
 	 * @type integer
 	 */
 	smartlockId: number;
@@ -8987,7 +8989,7 @@ export type PostSmartlockAuthWithSharedKeyResource401 = unknown;
 export type PostSmartlockAuthWithSharedKeyResource403 = unknown;
 
 /**
- * @description Id not found
+ * @description Not found
  */
 export type PostSmartlockAuthWithSharedKeyResource404 = unknown;
 
@@ -9012,12 +9014,12 @@ export type PostSmartlockAuthWithSharedKeyResourceMutation = {
 
 export type GetSmartlockAuthResourcePathParams = {
 	/**
-	 * @description The smartlock id
+	 * @description The smartlock ID
 	 * @type integer
 	 */
 	smartlockId: number;
 	/**
-	 * @description The smartlock auth unique id
+	 * @description The smartlock auth unique ID
 	 * @type string
 	 */
 	id: string;
@@ -9048,12 +9050,12 @@ export type GetSmartlockAuthResourceQuery = {
 
 export type PostSmartlockAuthResourcePathParams = {
 	/**
-	 * @description The smartlock id
+	 * @description The smartlock ID
 	 * @type integer
 	 */
 	smartlockId: number;
 	/**
-	 * @description The smartlock authorization unique id
+	 * @description The smartlock authorization unique ID
 	 * @type string
 	 */
 	id: string;
@@ -9110,12 +9112,12 @@ export type PostSmartlockAuthResourceMutation = {
 
 export type DeleteSmartlockAuthResourcePathParams = {
 	/**
-	 * @description The smartlock id
+	 * @description The smartlock ID
 	 * @type integer
 	 */
 	smartlockId: number;
 	/**
-	 * @description The smartlock authorization unique id
+	 * @description The smartlock authorization unique ID
 	 * @type string
 	 */
 	id: string;
@@ -9154,7 +9156,7 @@ export type DeleteSmartlockAuthResourceMutation = {
 
 export type PostSmartlockConfigResourcePathParams = {
 	/**
-	 * @description The smartlock id
+	 * @description The smartlock ID
 	 * @type integer
 	 */
 	smartlockId: number;
@@ -9207,7 +9209,7 @@ export type PostSmartlockConfigResourceMutation = {
 
 export type GetSmartlockLogsResourcePathParams = {
 	/**
-	 * @description The smartlock id
+	 * @description The smartlock ID
 	 * @type integer
 	 */
 	smartlockId: number;
@@ -9273,7 +9275,7 @@ export type GetSmartlockLogsResourceQuery = {
 
 export type PostSmartlockSyncResourcePathParams = {
 	/**
-	 * @description The smartlock id
+	 * @description The smartlock ID
 	 * @type string
 	 */
 	smartlockId: string;
@@ -9285,7 +9287,7 @@ export type PostSmartlockSyncResourcePathParams = {
 export type PostSmartlockSyncResource204 = unknown;
 
 /**
- * @description Bad Parameter
+ * @description Bad parameter
  */
 export type PostSmartlockSyncResource400 = unknown;
 
@@ -9304,7 +9306,7 @@ export type PostSmartlockSyncResourceMutation = {
 
 export type PostSmartlockWebConfigResourcePathParams = {
 	/**
-	 * @description The smartlock id
+	 * @description The smartlock ID
 	 * @type integer
 	 */
 	smartlockId: number;
