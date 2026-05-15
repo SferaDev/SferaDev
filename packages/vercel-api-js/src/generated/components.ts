@@ -39,6 +39,8 @@ import type {
 	AddRoute400,
 	AddRoute401,
 	AddRoute403,
+	AddRoute409,
+	AddRoute500,
 	AddRouteMutationResponse,
 	AddRoutePathParams,
 	AddRouteQueryParams,
@@ -177,6 +179,7 @@ import type {
 	CreateDirectory400,
 	CreateDirectory401,
 	CreateDirectory403,
+	CreateDirectory404,
 	CreateDirectory410,
 	CreateDirectory422,
 	CreateDirectoryMutationResponse,
@@ -319,6 +322,7 @@ import type {
 	CreateSandbox402,
 	CreateSandbox403,
 	CreateSandbox404,
+	CreateSandbox409,
 	CreateSandbox410,
 	CreateSandbox422,
 	CreateSandbox429,
@@ -328,6 +332,7 @@ import type {
 	CreateSandboxes402,
 	CreateSandboxes403,
 	CreateSandboxes404,
+	CreateSandboxes409,
 	CreateSandboxes410,
 	CreateSandboxes422,
 	CreateSandboxes429,
@@ -348,6 +353,7 @@ import type {
 	CreateSessionDirectory400,
 	CreateSessionDirectory401,
 	CreateSessionDirectory403,
+	CreateSessionDirectory404,
 	CreateSessionDirectory410,
 	CreateSessionDirectory422,
 	CreateSessionDirectoryMutationResponse,
@@ -357,6 +363,7 @@ import type {
 	CreateSessionSnapshot401,
 	CreateSessionSnapshot402,
 	CreateSessionSnapshot403,
+	CreateSessionSnapshot404,
 	CreateSessionSnapshot410,
 	CreateSessionSnapshot422,
 	CreateSessionSnapshot500,
@@ -373,6 +380,7 @@ import type {
 	CreateSnapshot401,
 	CreateSnapshot402,
 	CreateSnapshot403,
+	CreateSnapshot404,
 	CreateSnapshot410,
 	CreateSnapshot422,
 	CreateSnapshotMutationResponse,
@@ -381,6 +389,8 @@ import type {
 	CreateTeam400,
 	CreateTeam401,
 	CreateTeam403,
+	CreateTeam404,
+	CreateTeam409,
 	CreateTeamMutationResponse,
 	CreateWebhook400,
 	CreateWebhook401,
@@ -575,6 +585,8 @@ import type {
 	DeleteRoutes401,
 	DeleteRoutes403,
 	DeleteRoutes404,
+	DeleteRoutes409,
+	DeleteRoutes500,
 	DeleteRoutesMutationResponse,
 	DeleteRoutesPathParams,
 	DeleteRoutesQueryParams,
@@ -666,6 +678,8 @@ import type {
 	EditRoute401,
 	EditRoute403,
 	EditRoute404,
+	EditRoute409,
+	EditRoute500,
 	EditRouteMutationResponse,
 	EditRoutePathParams,
 	EditRouteQueryParams,
@@ -676,6 +690,7 @@ import type {
 	ExtendSandboxTimeout400,
 	ExtendSandboxTimeout401,
 	ExtendSandboxTimeout403,
+	ExtendSandboxTimeout404,
 	ExtendSandboxTimeout410,
 	ExtendSandboxTimeout422,
 	ExtendSandboxTimeoutMutationResponse,
@@ -684,6 +699,7 @@ import type {
 	ExtendSessionTimeout400,
 	ExtendSessionTimeout401,
 	ExtendSessionTimeout403,
+	ExtendSessionTimeout404,
 	ExtendSessionTimeout410,
 	ExtendSessionTimeout422,
 	ExtendSessionTimeout500,
@@ -791,11 +807,13 @@ import type {
 	GetCommand400,
 	GetCommand401,
 	GetCommand403,
+	GetCommand404,
 	GetCommand410,
 	GetCommand422,
 	GetCommandLogs400,
 	GetCommandLogs401,
 	GetCommandLogs403,
+	GetCommandLogs404,
 	GetCommandLogs410,
 	GetCommandLogs422,
 	GetCommandLogsPathParams,
@@ -1118,6 +1136,8 @@ import type {
 	GetNamedSandbox402,
 	GetNamedSandbox403,
 	GetNamedSandbox404,
+	GetNamedSandbox409,
+	GetNamedSandbox410,
 	GetNamedSandbox429,
 	GetNamedSandbox500,
 	GetNamedSandboxPathParams,
@@ -1242,6 +1262,7 @@ import type {
 	GetSandbox400,
 	GetSandbox401,
 	GetSandbox403,
+	GetSandbox404,
 	GetSandbox429,
 	GetSandboxesV1QueryParams,
 	GetSandboxesV1QueryResponse,
@@ -1276,15 +1297,18 @@ import type {
 	GetSession400,
 	GetSession401,
 	GetSession403,
+	GetSession404,
 	GetSession500,
 	GetSessionCommand400,
 	GetSessionCommand401,
 	GetSessionCommand403,
+	GetSessionCommand404,
 	GetSessionCommand410,
 	GetSessionCommand422,
 	GetSessionCommandLogs400,
 	GetSessionCommandLogs401,
 	GetSessionCommandLogs403,
+	GetSessionCommandLogs404,
 	GetSessionCommandLogs410,
 	GetSessionCommandLogs422,
 	GetSessionCommandLogsPathParams,
@@ -1432,6 +1456,7 @@ import type {
 	JoinTeam402,
 	JoinTeam403,
 	JoinTeam404,
+	JoinTeam503,
 	JoinTeamMutationResponse,
 	JoinTeamPathParams,
 	KillCommand400,
@@ -1497,6 +1522,7 @@ import type {
 	ListCommands400,
 	ListCommands401,
 	ListCommands403,
+	ListCommands404,
 	ListCommandsPathParams,
 	ListCommandsQueryParams,
 	ListCommandsQueryResponse,
@@ -1578,6 +1604,7 @@ import type {
 	ListSessionCommands400,
 	ListSessionCommands401,
 	ListSessionCommands403,
+	ListSessionCommands404,
 	ListSessionCommandsPathParams,
 	ListSessionCommandsQueryParams,
 	ListSessionCommandsQueryResponse,
@@ -1859,6 +1886,7 @@ import type {
 	RunCommand400,
 	RunCommand401,
 	RunCommand403,
+	RunCommand404,
 	RunCommand410,
 	RunCommand422,
 	RunCommandMutationResponse,
@@ -1867,6 +1895,7 @@ import type {
 	RunSessionCommand400,
 	RunSessionCommand401,
 	RunSessionCommand403,
+	RunSessionCommand404,
 	RunSessionCommand410,
 	RunSessionCommand422,
 	RunSessionCommandMutationResponse,
@@ -1889,6 +1918,8 @@ import type {
 	StageRoutes400,
 	StageRoutes401,
 	StageRoutes403,
+	StageRoutes409,
+	StageRoutes500,
 	StageRoutesMutationResponse,
 	StageRoutesPathParams,
 	StageRoutesQueryParams,
@@ -1901,6 +1932,7 @@ import type {
 	StopSandbox400,
 	StopSandbox401,
 	StopSandbox403,
+	StopSandbox404,
 	StopSandbox410,
 	StopSandbox422,
 	StopSandboxMutationResponse,
@@ -1909,6 +1941,7 @@ import type {
 	StopSession400,
 	StopSession401,
 	StopSession403,
+	StopSession404,
 	StopSession410,
 	StopSession422,
 	StopSession500,
@@ -2122,6 +2155,7 @@ import type {
 	UpdateNetworkPolicy401,
 	UpdateNetworkPolicy402,
 	UpdateNetworkPolicy403,
+	UpdateNetworkPolicy404,
 	UpdateNetworkPolicy410,
 	UpdateNetworkPolicy422,
 	UpdateNetworkPolicyMutationResponse,
@@ -2220,6 +2254,7 @@ import type {
 	UpdateRouteVersions401,
 	UpdateRouteVersions403,
 	UpdateRouteVersions404,
+	UpdateRouteVersions409,
 	UpdateRouteVersions500,
 	UpdateRouteVersionsMutationResponse,
 	UpdateRouteVersionsPathParams,
@@ -2229,8 +2264,10 @@ import type {
 	UpdateSandbox402,
 	UpdateSandbox403,
 	UpdateSandbox404,
+	UpdateSandbox409,
 	UpdateSandbox410,
 	UpdateSandbox422,
+	UpdateSandbox429,
 	UpdateSandbox500,
 	UpdateSandboxMutationResponse,
 	UpdateSandboxPathParams,
@@ -2239,6 +2276,7 @@ import type {
 	UpdateSessionNetworkPolicy401,
 	UpdateSessionNetworkPolicy402,
 	UpdateSessionNetworkPolicy403,
+	UpdateSessionNetworkPolicy404,
 	UpdateSessionNetworkPolicy410,
 	UpdateSessionNetworkPolicy422,
 	UpdateSessionNetworkPolicy500,
@@ -2307,6 +2345,7 @@ import type {
 	WriteFiles400,
 	WriteFiles401,
 	WriteFiles403,
+	WriteFiles404,
 	WriteFiles410,
 	WriteFiles422,
 	WriteFilesHeaderParams,
@@ -2316,6 +2355,7 @@ import type {
 	WriteSessionFiles400,
 	WriteSessionFiles401,
 	WriteSessionFiles403,
+	WriteSessionFiles404,
 	WriteSessionFiles410,
 	WriteSessionFiles422,
 	WriteSessionFilesHeaderParams,
@@ -9147,7 +9187,9 @@ export async function stageRoutes({
 
 	const data = await request<
 		StageRoutesMutationResponse,
-		ErrorWrapper<StageRoutes400 | StageRoutes401 | StageRoutes403>,
+		ErrorWrapper<
+			StageRoutes400 | StageRoutes401 | StageRoutes403 | StageRoutes409 | StageRoutes500
+		>,
 		null,
 		Record<string, string>,
 		StageRoutesQueryParams,
@@ -9184,7 +9226,7 @@ export async function addRoute({
 
 	const data = await request<
 		AddRouteMutationResponse,
-		ErrorWrapper<AddRoute400 | AddRoute401 | AddRoute403>,
+		ErrorWrapper<AddRoute400 | AddRoute401 | AddRoute403 | AddRoute409 | AddRoute500>,
 		null,
 		Record<string, string>,
 		AddRouteQueryParams,
@@ -9221,7 +9263,14 @@ export async function deleteRoutes({
 
 	const data = await request<
 		DeleteRoutesMutationResponse,
-		ErrorWrapper<DeleteRoutes400 | DeleteRoutes401 | DeleteRoutes403 | DeleteRoutes404>,
+		ErrorWrapper<
+			| DeleteRoutes400
+			| DeleteRoutes401
+			| DeleteRoutes403
+			| DeleteRoutes404
+			| DeleteRoutes409
+			| DeleteRoutes500
+		>,
 		null,
 		Record<string, string>,
 		DeleteRoutesQueryParams,
@@ -9262,7 +9311,9 @@ export async function editRoute({
 
 	const data = await request<
 		EditRouteMutationResponse,
-		ErrorWrapper<EditRoute400 | EditRoute401 | EditRoute403 | EditRoute404>,
+		ErrorWrapper<
+			EditRoute400 | EditRoute401 | EditRoute403 | EditRoute404 | EditRoute409 | EditRoute500
+		>,
 		null,
 		Record<string, string>,
 		EditRouteQueryParams,
@@ -9379,6 +9430,7 @@ export async function updateRouteVersions({
 			| UpdateRouteVersions401
 			| UpdateRouteVersions403
 			| UpdateRouteVersions404
+			| UpdateRouteVersions409
 			| UpdateRouteVersions500
 		>,
 		null,
@@ -11101,6 +11153,7 @@ export async function createSandbox({
 			| CreateSandbox402
 			| CreateSandbox403
 			| CreateSandbox404
+			| CreateSandbox409
 			| CreateSandbox410
 			| CreateSandbox422
 			| CreateSandbox429
@@ -11167,7 +11220,7 @@ export async function getSandbox({
 
 	const data = await request<
 		GetSandboxQueryResponse,
-		ErrorWrapper<GetSandbox400 | GetSandbox401 | GetSandbox403 | GetSandbox429>,
+		ErrorWrapper<GetSandbox400 | GetSandbox401 | GetSandbox403 | GetSandbox404 | GetSandbox429>,
 		null,
 		Record<string, string>,
 		GetSandboxQueryParams,
@@ -11198,7 +11251,7 @@ export async function listCommands({
 
 	const data = await request<
 		ListCommandsQueryResponse,
-		ErrorWrapper<ListCommands400 | ListCommands401 | ListCommands403>,
+		ErrorWrapper<ListCommands400 | ListCommands401 | ListCommands403 | ListCommands404>,
 		null,
 		Record<string, string>,
 		ListCommandsQueryParams,
@@ -11229,7 +11282,9 @@ export async function runCommand({
 
 	const data = await request<
 		RunCommandMutationResponse,
-		ErrorWrapper<RunCommand400 | RunCommand401 | RunCommand403 | RunCommand410 | RunCommand422>,
+		ErrorWrapper<
+			RunCommand400 | RunCommand401 | RunCommand403 | RunCommand404 | RunCommand410 | RunCommand422
+		>,
 		null,
 		Record<string, string>,
 		RunCommandQueryParams,
@@ -11315,7 +11370,12 @@ export async function stopSandbox({
 	const data = await request<
 		StopSandboxMutationResponse,
 		ErrorWrapper<
-			StopSandbox400 | StopSandbox401 | StopSandbox403 | StopSandbox410 | StopSandbox422
+			| StopSandbox400
+			| StopSandbox401
+			| StopSandbox403
+			| StopSandbox404
+			| StopSandbox410
+			| StopSandbox422
 		>,
 		null,
 		Record<string, string>,
@@ -11351,6 +11411,7 @@ export async function extendSandboxTimeout({
 			| ExtendSandboxTimeout400
 			| ExtendSandboxTimeout401
 			| ExtendSandboxTimeout403
+			| ExtendSandboxTimeout404
 			| ExtendSandboxTimeout410
 			| ExtendSandboxTimeout422
 		>,
@@ -11395,6 +11456,7 @@ export async function updateNetworkPolicy({
 			| UpdateNetworkPolicy401
 			| UpdateNetworkPolicy402
 			| UpdateNetworkPolicy403
+			| UpdateNetworkPolicy404
 			| UpdateNetworkPolicy410
 			| UpdateNetworkPolicy422
 		>,
@@ -11438,7 +11500,9 @@ export async function getCommand({
 
 	const data = await request<
 		GetCommandQueryResponse,
-		ErrorWrapper<GetCommand400 | GetCommand401 | GetCommand403 | GetCommand410 | GetCommand422>,
+		ErrorWrapper<
+			GetCommand400 | GetCommand401 | GetCommand403 | GetCommand404 | GetCommand410 | GetCommand422
+		>,
 		null,
 		Record<string, string>,
 		GetCommandQueryParams,
@@ -11482,6 +11546,7 @@ export async function getCommandLogs({
 			| GetCommandLogs400
 			| GetCommandLogs401
 			| GetCommandLogs403
+			| GetCommandLogs404
 			| GetCommandLogs410
 			| GetCommandLogs422
 		>,
@@ -11561,6 +11626,7 @@ export async function createDirectory({
 			| CreateDirectory400
 			| CreateDirectory401
 			| CreateDirectory403
+			| CreateDirectory404
 			| CreateDirectory410
 			| CreateDirectory422
 		>,
@@ -11602,7 +11668,9 @@ export async function writeFiles({
 
 	const data = await request<
 		WriteFilesMutationResponse,
-		ErrorWrapper<WriteFiles400 | WriteFiles401 | WriteFiles403 | WriteFiles410 | WriteFiles422>,
+		ErrorWrapper<
+			WriteFiles400 | WriteFiles401 | WriteFiles403 | WriteFiles404 | WriteFiles410 | WriteFiles422
+		>,
 		null,
 		WriteFilesHeaderParams,
 		WriteFilesQueryParams,
@@ -11711,6 +11779,7 @@ export async function createSnapshot({
 			| CreateSnapshot401
 			| CreateSnapshot402
 			| CreateSnapshot403
+			| CreateSnapshot404
 			| CreateSnapshot410
 			| CreateSnapshot422
 		>,
@@ -11775,6 +11844,7 @@ export async function createSandboxes({
 			| CreateSandboxes402
 			| CreateSandboxes403
 			| CreateSandboxes404
+			| CreateSandboxes409
 			| CreateSandboxes410
 			| CreateSandboxes422
 			| CreateSandboxes429
@@ -11947,7 +12017,7 @@ export async function getSession({
 
 	const data = await request<
 		GetSessionQueryResponse,
-		ErrorWrapper<GetSession400 | GetSession401 | GetSession403 | GetSession500>,
+		ErrorWrapper<GetSession400 | GetSession401 | GetSession403 | GetSession404 | GetSession500>,
 		null,
 		Record<string, string>,
 		GetSessionQueryParams,
@@ -11984,6 +12054,8 @@ export async function getNamedSandbox({
 			| GetNamedSandbox402
 			| GetNamedSandbox403
 			| GetNamedSandbox404
+			| GetNamedSandbox409
+			| GetNamedSandbox410
 			| GetNamedSandbox429
 			| GetNamedSandbox500
 		>,
@@ -12023,8 +12095,10 @@ export async function updateSandbox({
 			| UpdateSandbox402
 			| UpdateSandbox403
 			| UpdateSandbox404
+			| UpdateSandbox409
 			| UpdateSandbox410
 			| UpdateSandbox422
+			| UpdateSandbox429
 			| UpdateSandbox500
 		>,
 		null,
@@ -12042,7 +12116,7 @@ export async function updateSandbox({
 }
 
 /**
- * @description Deletes a sandbox by name. If sandboxes are currently running, they will be stopped first. This operation deletes all sandbox entities with the given name, all associated snapshots, and the named sandbox metadata.
+ * @description Deletes a sandbox by name. If sandboxes are currently running, they will be stopped first. This operation deletes all sandbox entities with the given name and the named sandbox metadata.
  * @summary Delete a sandbox
  * {@link /v2/sandboxes/:name}
  */
@@ -12101,7 +12175,12 @@ export async function listSessionCommands({
 
 	const data = await request<
 		ListSessionCommandsQueryResponse,
-		ErrorWrapper<ListSessionCommands400 | ListSessionCommands401 | ListSessionCommands403>,
+		ErrorWrapper<
+			| ListSessionCommands400
+			| ListSessionCommands401
+			| ListSessionCommands403
+			| ListSessionCommands404
+		>,
 		null,
 		Record<string, string>,
 		ListSessionCommandsQueryParams,
@@ -12141,6 +12220,7 @@ export async function runSessionCommand({
 			| RunSessionCommand400
 			| RunSessionCommand401
 			| RunSessionCommand403
+			| RunSessionCommand404
 			| RunSessionCommand410
 			| RunSessionCommand422
 		>,
@@ -12188,6 +12268,7 @@ export async function getSessionCommand({
 			| GetSessionCommand400
 			| GetSessionCommand401
 			| GetSessionCommand403
+			| GetSessionCommand404
 			| GetSessionCommand410
 			| GetSessionCommand422
 		>,
@@ -12282,6 +12363,7 @@ export async function getSessionCommandLogs({
 			| GetSessionCommandLogs400
 			| GetSessionCommandLogs401
 			| GetSessionCommandLogs403
+			| GetSessionCommandLogs404
 			| GetSessionCommandLogs410
 			| GetSessionCommandLogs422
 		>,
@@ -12324,6 +12406,7 @@ export async function stopSession({
 			| StopSession400
 			| StopSession401
 			| StopSession403
+			| StopSession404
 			| StopSession410
 			| StopSession422
 			| StopSession500
@@ -12367,6 +12450,7 @@ export async function extendSessionTimeout({
 			| ExtendSessionTimeout400
 			| ExtendSessionTimeout401
 			| ExtendSessionTimeout403
+			| ExtendSessionTimeout404
 			| ExtendSessionTimeout410
 			| ExtendSessionTimeout422
 			| ExtendSessionTimeout500
@@ -12412,6 +12496,7 @@ export async function updateSessionNetworkPolicy({
 			| UpdateSessionNetworkPolicy401
 			| UpdateSessionNetworkPolicy402
 			| UpdateSessionNetworkPolicy403
+			| UpdateSessionNetworkPolicy404
 			| UpdateSessionNetworkPolicy410
 			| UpdateSessionNetworkPolicy422
 			| UpdateSessionNetworkPolicy500
@@ -12500,6 +12585,7 @@ export async function createSessionDirectory({
 			| CreateSessionDirectory400
 			| CreateSessionDirectory401
 			| CreateSessionDirectory403
+			| CreateSessionDirectory404
 			| CreateSessionDirectory410
 			| CreateSessionDirectory422
 		>,
@@ -12545,6 +12631,7 @@ export async function writeSessionFiles({
 			| WriteSessionFiles400
 			| WriteSessionFiles401
 			| WriteSessionFiles403
+			| WriteSessionFiles404
 			| WriteSessionFiles410
 			| WriteSessionFiles422
 		>,
@@ -12589,6 +12676,7 @@ export async function createSessionSnapshot({
 			| CreateSessionSnapshot401
 			| CreateSessionSnapshot402
 			| CreateSessionSnapshot403
+			| CreateSessionSnapshot404
 			| CreateSessionSnapshot410
 			| CreateSessionSnapshot422
 			| CreateSessionSnapshot500
@@ -13026,7 +13114,7 @@ export async function inviteUserToTeam({
 }
 
 /**
- * @description Request access to a team as a member. An owner has to approve the request. Only 10 users can request access to a team at the same time.
+ * @description Request access to a team as a member. An owner has to approve the request. Only 100 users can request access to a team at the same time.
  * @summary Request access to a team
  * {@link /v1/teams/:teamId/request}
  */
@@ -13124,7 +13212,7 @@ export async function joinTeam({
 
 	const data = await request<
 		JoinTeamMutationResponse,
-		ErrorWrapper<JoinTeam400 | JoinTeam401 | JoinTeam402 | JoinTeam403 | JoinTeam404>,
+		ErrorWrapper<JoinTeam400 | JoinTeam401 | JoinTeam402 | JoinTeam403 | JoinTeam404 | JoinTeam503>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
@@ -13332,7 +13420,7 @@ export async function createTeam({
 
 	const data = await request<
 		CreateTeamMutationResponse,
-		ErrorWrapper<CreateTeam400 | CreateTeam401 | CreateTeam403>,
+		ErrorWrapper<CreateTeam400 | CreateTeam401 | CreateTeam403 | CreateTeam404 | CreateTeam409>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
@@ -13901,7 +13989,7 @@ export async function listDeploymentAliases({
 }
 
 /**
- * @description Creates a new alias for the deployment with the given deployment ID. The authenticated user or team must own this deployment. If the desired alias is already assigned to another deployment, then it will be removed from the old deployment and assigned to the new one.
+ * @description Creates a new alias for the deployment resolved from the given deployment or alias ID or URL. The authenticated user or team must own this deployment. If the desired alias is already assigned to another deployment, then it will be removed from the old deployment and assigned to the new one.
  * @summary Assign an Alias
  * {@link /v2/deployments/:id/aliases}
  */
@@ -14746,7 +14834,7 @@ export const operationsByTag = {
 		updateCheck,
 		rerequestCheck,
 	},
-	connect: {
+	networking: {
 		listNetworks,
 		createNetwork,
 		deleteNetwork,
@@ -15136,7 +15224,7 @@ export const tagDictionary = {
 		GET: ["getAllChecks", "getCheck"],
 		PATCH: ["updateCheck"],
 	},
-	connect: {
+	networking: {
 		GET: ["listNetworks", "readNetwork"],
 		POST: ["createNetwork"],
 		DELETE: ["deleteNetwork"],
