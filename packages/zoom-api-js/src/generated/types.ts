@@ -9666,6 +9666,19 @@ export type PastMeetingsPathParams = {
 	meetingId: number;
 };
 
+export type PastMeetingsQueryParams = {
+	/**
+	 * @description Start date in UTC, in yyyy-MM-dd format. This parameter only takes effect when used together with to. For best performance, we recommend querying within a one-month range.
+	 * @type string | undefined, date
+	 */
+	from?: string | undefined;
+	/**
+	 * @description End date in UTC, in yyyy-MM-dd format. This parameter only takes effect when used together with from.
+	 * @type string | undefined, date
+	 */
+	to?: string | undefined;
+};
+
 /**
  * Meeting instances
  * @description **HTTP Status Code:** `200`   \n \n List of ended meeting instances returned.
@@ -9692,12 +9705,17 @@ export type PastMeetings200 = {
 };
 
 /**
+ * @description **HTTP Status Code:** `401` <br>\n Unauthorized  \n\n
+ */
+export type PastMeetings401 = unknown;
+
+/**
  * @description **HTTP Status Code:** `404` <br>\n Not Found  \n\n **Error Code:** `3001` <br>\n Meeting does not exist: {meetingId}. <br>\n
  */
 export type PastMeetings404 = unknown;
 
 /**
- * @description **HTTP Status Code:** `429` <br>\n Too Many Requests. For more information, see [rate limits](/docs/api/rest/rate-limits/). \n\n
+ * @description **HTTP Status Code:** `429` <br>\n Too Many Requests. For more information, see [rate limits](https://developers.zoom.us/docs/api/rate-limits/). \n\n **Error Code:** `4001` <br>\n You have reached the maximum per-second rate limit for this API. Try again later. <br>\n
  */
 export type PastMeetings429 = unknown;
 
@@ -9706,7 +9724,8 @@ export type PastMeetingsQueryResponse = PastMeetings200;
 export type PastMeetingsQuery = {
 	Response: PastMeetings200;
 	PathParams: PastMeetingsPathParams;
-	Errors: PastMeetings404 | PastMeetings429;
+	QueryParams: PastMeetingsQueryParams;
+	Errors: PastMeetings401 | PastMeetings404 | PastMeetings429;
 };
 
 export type PastMeetingParticipantsPathParams = {
@@ -21341,6 +21360,11 @@ export type WebinarsQueryParams = {
 	 * @type integer | undefined
 	 */
 	page_number?: number | undefined;
+	/**
+	 * @description Include Zoom events webinar in searches. The default is `true`.
+	 * @type boolean | undefined
+	 */
+	include_events_webinar?: boolean | undefined;
 };
 
 export const webinarsTypeEnum = {
@@ -21451,6 +21475,11 @@ export type Webinars200 = {
 				 * @type boolean | undefined
 				 */
 				is_simulive?: boolean | undefined;
+				/**
+				 * @description The webinar is created from zoom events
+				 * @type boolean | undefined
+				 */
+				is_events_webinar?: boolean | undefined;
 		  }[]
 		| undefined;
 };
@@ -21466,7 +21495,7 @@ export type Webinars400 = unknown;
 export type Webinars404 = unknown;
 
 /**
- * @description **HTTP Status Code:** `429` <br>\n Too Many Requests  For more information, see [rate limits](https://developers.zoom.us/docs/api/rest/rate-limits/). \n\n
+ * @description **HTTP Status Code:** `429` <br>\n Too Many Requests. For more information, see [rate limits](https://developers.zoom.us/docs/api/rest/rate-limits/). \n\n
  */
 export type Webinars429 = unknown;
 
@@ -25846,7 +25875,7 @@ export type WebinarLiveStreamStatusUpdatePathParams = {
 };
 
 /**
- * @description **HTTP Status Code:** `204`   \n \nMeeting live stream updated.\n\n
+ * @description **HTTP Status Code:** `204`\n\nMeeting live stream updated.
  */
 export type WebinarLiveStreamStatusUpdate204 = unknown;
 
@@ -25873,17 +25902,26 @@ export const webinarLiveStreamStatusUpdateMutationRequestActionEnum = {
 export type WebinarLiveStreamStatusUpdateMutationRequestActionEnumKey =
 	(typeof webinarLiveStreamStatusUpdateMutationRequestActionEnum)[keyof typeof webinarLiveStreamStatusUpdateMutationRequestActionEnum];
 
+export const settingsCloseCaptionEnum2 = {
+	"burnt-in": "burnt-in",
+	embedded: "embedded",
+	off: "off",
+} as const;
+
+export type SettingsCloseCaptionEnum2Key =
+	(typeof settingsCloseCaptionEnum2)[keyof typeof settingsCloseCaptionEnum2];
+
 /**
  * @description Webinar
  */
 export type WebinarLiveStreamStatusUpdateMutationRequest = {
 	/**
-	 * @description Update the live stream\'s status. \n\n* `start` - Start a webinar live stream.\n\n* `stop`- Stop an ongoing webinar live stream.
+	 * @description Update the live stream\'s status.\n* `start` - Start a webinar live stream.\n* `stop` - Stop an ongoing webinar live stream.
 	 * @type string | undefined
 	 */
 	action?: WebinarLiveStreamStatusUpdateMutationRequestActionEnumKey | undefined;
 	/**
-	 * @description Update the live stream session\'s settings.  **Only** settings for a stopped live stream can be updated.
+	 * @description Update the live stream session\'s settings. **Only** settings for a stopped live stream can be updated.
 	 * @type object | undefined
 	 */
 	settings?:
@@ -25900,6 +25938,12 @@ export type WebinarLiveStreamStatusUpdateMutationRequest = {
 				 * @type string | undefined
 				 */
 				display_name?: string | undefined;
+				/**
+				 * @description The livestream\'s closed caption type for this session.\r\n* `burnt-in` - Burnt in captions.\r\n* `embedded` - Embedded captions.\r\n* `off` - Turn off captions.
+				 * @default "burnt-in"
+				 * @type string | undefined
+				 */
+				close_caption?: SettingsCloseCaptionEnum2Key | undefined;
 		  }
 		| undefined;
 };

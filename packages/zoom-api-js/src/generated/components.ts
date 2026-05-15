@@ -546,9 +546,11 @@ import type {
 	PastMeetingParticipantsPathParams,
 	PastMeetingParticipantsQueryParams,
 	PastMeetingParticipantsQueryResponse,
+	PastMeetings401,
 	PastMeetings404,
 	PastMeetings429,
 	PastMeetingsPathParams,
+	PastMeetingsQueryParams,
 	PastMeetingsQueryResponse,
 	PastWebinars400,
 	PastWebinars404,
@@ -3561,9 +3563,11 @@ export async function pastMeetingDetails({
  */
 export async function pastMeetings({
 	pathParams: { meetingId },
+	queryParams,
 	config = {},
 }: {
 	pathParams: PastMeetingsPathParams;
+	queryParams?: PastMeetingsQueryParams;
 	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 }) {
 	const { client: request = defaultClient, ...requestConfig } = config;
@@ -3574,12 +3578,12 @@ export async function pastMeetings({
 
 	const data = await request<
 		PastMeetingsQueryResponse,
-		ErrorWrapper<PastMeetings404 | PastMeetings429>,
+		ErrorWrapper<PastMeetings401 | PastMeetings404 | PastMeetings429>,
 		null,
 		Record<string, string>,
-		Record<string, string>,
+		PastMeetingsQueryParams,
 		PastMeetingsPathParams
-	>({ method: "GET", url: `/past_meetings/${meetingId}/instances`, ...requestConfig });
+	>({ method: "GET", url: `/past_meetings/${meetingId}/instances`, queryParams, ...requestConfig });
 	return data;
 }
 
@@ -6924,7 +6928,7 @@ export async function webinarLiveStreamUpdate({
 }
 
 /**
- * @description Let users [live stream a webinar](https://support.zoom.us/hc/en-us/articles/115001777826-Live-Streaming-Meetings-or-Webinars-Using-a-Custom-Service) to a custom platform. Update the status of a webinar's live stream.
+ * @description Lets users [live stream a webinar](https://support.zoom.us/hc/en-us/articles/115001777826-Live-Streaming-Meetings-or-Webinars-Using-a-Custom-Service) to a custom platform. Update the status of a webinar's live stream.
  * **Prerequisites:**
  * * Pro or higher plan with a Webinar Add-on.
  * * Live streaming details must be [configured](https://support.zoom.us/hc/en-us/articles/115001777826-Live-Streaming-Meetings-or-Webinars-Using-a-Custom-Service#h_01589a6f-a40a-4e18-a448-cb746e52ebc5) for the webinar.
