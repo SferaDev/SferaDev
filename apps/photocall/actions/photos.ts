@@ -1,6 +1,6 @@
 "use server";
 
-import { and, desc, eq, sql } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { requireSession } from "@/lib/auth";
 import { generateHumanCode, generateToken, requireEventAccess } from "@/lib/auth-helpers";
 import { db, schema } from "@/lib/db";
@@ -193,27 +193,6 @@ export async function listPhotos(eventId: string, limit?: number) {
 	};
 }
 
-export async function listRecentPhotos(eventId: string, limit?: number) {
-	const session = await requireSession();
-	await requireEventAccess(session.user.id, eventId);
-
-	const take = limit ?? 10;
-
-	const photos = await db
-		.select()
-		.from(schema.photos)
-		.where(eq(schema.photos.eventId, eventId))
-		.orderBy(desc(schema.photos.createdAt))
-		.limit(take);
-
-	return await Promise.all(
-		photos.map(async (photo) => {
-			const url = await getFileUrl(photo.storageKey);
-			return { ...photo, url };
-		}),
-	);
-}
-
 export async function listRecentPublicPhotos(eventId: string, limit?: number) {
 	const event = await db
 		.select()
@@ -250,23 +229,6 @@ export async function listRecentPublicPhotos(eventId: string, limit?: number) {
 			};
 		}),
 	);
-}
-
-export async function getPhoto(photoId: string) {
-	const session = await requireSession();
-
-	const photo = await db
-		.select()
-		.from(schema.photos)
-		.where(eq(schema.photos.id, photoId))
-		.then((rows) => rows[0]);
-
-	if (!photo) return null;
-
-	await requireEventAccess(session.user.id, photo.eventId);
-
-	const url = await getFileUrl(photo.storageKey);
-	return { ...photo, url };
 }
 
 export async function deletePhoto(photoId: string) {
@@ -374,17 +336,4 @@ export async function deleteAllPhotos(eventId: string) {
 	}
 
 	return { deleted: photos.length };
-}
-
-export async function getPhotoCount(eventId: string) {
-	const session = await requireSession();
-	await requireEventAccess(session.user.id, eventId);
-
-	const event = await db
-		.select({ photoCount: schema.events.photoCount })
-		.from(schema.events)
-		.where(eq(schema.events.id, eventId))
-		.then((rows) => rows[0]);
-
-	return event?.photoCount ?? 0;
 }

@@ -10,7 +10,7 @@ import {
 	verifyPin,
 } from "@/lib/auth-helpers";
 import { db, schema } from "@/lib/db";
-import { deleteFile, generateUploadUrl, getFileUrl } from "@/lib/storage";
+import { deleteFile, getFileUrl } from "@/lib/storage";
 
 export async function createEvent(
 	organizationId: string,
@@ -105,16 +105,6 @@ export async function listEvents(organizationId: string) {
 			logoUrl: event.logoStorageKey ? await getFileUrl(event.logoStorageKey) : null,
 		})),
 	);
-}
-
-export async function getEvent(id: string) {
-	const session = await requireSession();
-	const { event } = await requireEventAccess(session.user.id, id);
-
-	return {
-		...event,
-		logoUrl: event.logoStorageKey ? await getFileUrl(event.logoStorageKey) : null,
-	};
 }
 
 export async function getEventBySlug(organizationSlug: string, eventSlug: string) {
@@ -452,11 +442,4 @@ export async function getPublicEvent(organizationSlug: string, eventSlug: string
 		showQrCode: event.showQrCode,
 		retentionDays: event.retentionDays,
 	};
-}
-
-export async function generateEventUploadUrl(eventId: string) {
-	const session = await requireSession();
-	await requireEventAccess(session.user.id, eventId, ["owner", "admin"]);
-
-	return await generateUploadUrl(`events/${eventId}`, "image/png");
 }
