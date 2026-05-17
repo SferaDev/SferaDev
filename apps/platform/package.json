@@ -1,0 +1,36 @@
+{
+	"name": "@sferadev/platform",
+	"version": "0.0.1",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "tsx watch src/index.ts",
+		"build": "tsc",
+		"start": "node dist/index.js",
+		"db:generate": "drizzle-kit generate",
+		"db:migrate": "drizzle-kit migrate",
+		"db:studio": "drizzle-kit studio",
+		"tsc": "tsc --noEmit",
+		"test": "vitest run",
+		"clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+	},
+	"dependencies": {
+		"@hono/node-server": "^1.14.3",
+		"better-auth": "catalog:",
+		"drizzle-orm": "catalog:",
+		"hono": "^4.7.10",
+		"lru-cache": "^11.1.0",
+		"pg": "catalog:",
+		"stripe": "catalog:",
+		"zod": "catalog:"
+	},
+	"devDependencies": {
+		"@sferadev/tsconfig": "workspace:*",
+		"@types/node": "catalog:",
+		"@types/pg": "catalog:",
+		"drizzle-kit": "catalog:",
+		"tsx": "catalog:",
+		"typescript": "catalog:",
+		"vitest": "catalog:"
+	}
+}

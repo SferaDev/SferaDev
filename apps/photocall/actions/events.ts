@@ -10,6 +10,7 @@ import {
 	verifyPin,
 } from "@/lib/auth-helpers";
 import { db, schema } from "@/lib/db";
+import { getPlatformClient } from "@/lib/platform";
 import { deleteFile, getFileUrl } from "@/lib/storage";
 
 export async function createEvent(
@@ -32,15 +33,24 @@ export async function createEvent(
 		throw new Error("Organization not found");
 	}
 
-	// Check event limit
-	const eventCount = await db
-		.select({ count: sql<number>`count(*)` })
-		.from(schema.events)
-		.where(eq(schema.events.organizationId, organizationId))
-		.then((rows) => Number(rows[0].count));
+	// Check entitlement via the unified platform; fall back to local limit
+	// if the platform is not configured.
+	const platform = getPlatformClient();
+	if (platform) {
+		const allowed = await platform.can(organizationId, "create_event");
+		if (!allowed) {
+			throw new Error("Event limit reached. Upgrade your plan to create more events.");
+		}
+	} else {
+		const eventCount = await db
+			.select({ count: sql<number>`count(*)` })
+			.from(schema.events)
+			.where(eq(schema.events.organizationId, organizationId))
+			.then((rows) => Number(rows[0].count));
 
-	if (org.maxEvents !== -1 && eventCount >= org.maxEvents) {
-		throw new Error("Event limit reached. Upgrade your plan to create more events.");
+		if (org.maxEvents !== -1 && eventCount >= org.maxEvents) {
+			throw new Error("Event limit reached. Upgrade your plan to create more events.");
+		}
 	}
 
 	// Generate unique slug within organization
