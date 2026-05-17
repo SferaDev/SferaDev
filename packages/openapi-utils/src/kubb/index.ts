@@ -1,6 +1,6 @@
+import { adapterOas } from "@kubb/adapter-oas";
 import type { UserConfig } from "@kubb/core";
 import { pluginClient } from "@kubb/plugin-client";
-import { pluginOas } from "@kubb/plugin-oas";
 import { pluginTs } from "@kubb/plugin-ts";
 import { pluginZod } from "@kubb/plugin-zod";
 import { extraGenerator } from "./client/extra";
@@ -19,6 +19,14 @@ function buildConfig({
 }: ConfigOptions = {}): Omit<UserConfig, "input"> {
 	return {
 		root: ".",
+		adapter: adapterOas({
+			validate: false,
+			serverIndex: 0,
+			contentType: "application/json",
+			dateType: "string",
+			unknownType: "unknown",
+			enumSuffix: "Enum",
+		}),
 		output: {
 			path: outputPath,
 			extension: {
@@ -29,38 +37,22 @@ function buildConfig({
 			clean: true,
 		},
 		plugins: [
-			pluginOas({
-				validate: false,
-				output: {
-					path: "./json",
-					barrelType: false,
-				},
-				serverIndex: 0,
-				contentType: "application/json",
-			}),
 			pluginTs({
 				output: {
 					path: "./types.ts",
-					barrelType: false,
 				},
 				enumType: "asConst",
-				enumSuffix: "Enum",
-				dateType: "string",
-				unknownType: "unknown",
 				optionalType: "questionTokenAndUndefined",
 			}),
 			pluginClient({
 				output: {
 					path: "./components.ts",
-					barrelType: false,
 				},
-				client: "fetch",
 				dataReturnType: "data",
-				pathParamsType: "object",
 				paramsType: "object",
 				urlType: "export",
 				importPath,
-				generators: [clientGenerator, extraGenerator] as any[], // Workaround for generator mismatches
+				generators: [clientGenerator, extraGenerator],
 			}),
 			...(skipZod
 				? []
@@ -68,12 +60,9 @@ function buildConfig({
 						pluginZod({
 							output: {
 								path: "./schemas.ts",
-								barrelType: false,
+								banner: "// @ts-nocheck",
 							},
-							dateType: "string",
-							unknownType: "unknown",
 							importPath: "zod",
-							version: "4",
 						}),
 					]),
 		],

@@ -1,5 +1,17 @@
 {
 	"$schema": "https://turborepo.com/schema.json",
+	"globalPassThroughEnv": [
+		"AUTH_SECRET",
+		"DATABASE_URL",
+		"AUTH_VERCEL_ID",
+		"AUTH_VERCEL_SECRET",
+		"AUTH_VERCEL_APP_NAME",
+		"AUTH_VERCEL_REDIRECT_URI",
+		"MCPAUTH_ALLOWED_ORIGIN",
+		"MCPAUTH_SECRET",
+		"MCPAUTH_PRIVATE_KEY",
+		"NEXT_PUBLIC_BASE_URL"
+	],
 	"tasks": {
 		"build": {
 			"inputs": ["$TURBO_DEFAULT$", ".env*"],

@@ -6,8346 +6,9070 @@
 import type { ErrorWrapper, FetcherConfig } from "../utils/fetcher";
 import defaultClient from "../utils/fetcher";
 import type {
-	AcceptProjectTransferRequest400,
-	AcceptProjectTransferRequest401,
-	AcceptProjectTransferRequest403,
-	AcceptProjectTransferRequest404,
-	AcceptProjectTransferRequest422,
-	AcceptProjectTransferRequestMutationResponse,
-	AcceptProjectTransferRequestPathParams,
-	AcceptProjectTransferRequestQueryParams,
-	AddBypassIp400,
-	AddBypassIp401,
-	AddBypassIp403,
-	AddBypassIp404,
-	AddBypassIp500,
-	AddBypassIpMutationResponse,
-	AddBypassIpQueryParams,
-	AddProjectDomain400,
-	AddProjectDomain401,
-	AddProjectDomain402,
-	AddProjectDomain403,
-	AddProjectDomain409,
-	AddProjectDomainMutationResponse,
-	AddProjectDomainPathParams,
-	AddProjectDomainQueryParams,
-	AddProjectMember400,
-	AddProjectMember401,
-	AddProjectMember403,
-	AddProjectMember500,
-	AddProjectMemberMutationResponse,
-	AddProjectMemberPathParams,
-	AddProjectMemberQueryParams,
-	AddRoute400,
-	AddRoute401,
-	AddRoute403,
-	AddRouteMutationResponse,
-	AddRoutePathParams,
-	AddRouteQueryParams,
-	ApproveRollingReleaseStage400,
-	ApproveRollingReleaseStage401,
-	ApproveRollingReleaseStage403,
-	ApproveRollingReleaseStage404,
-	ApproveRollingReleaseStage500,
-	ApproveRollingReleaseStageMutationResponse,
-	ApproveRollingReleaseStagePathParams,
-	ApproveRollingReleaseStageQueryParams,
-	ArtifactQuery400,
-	ArtifactQuery401,
-	ArtifactQuery402,
-	ArtifactQuery403,
-	ArtifactQueryMutationResponse,
-	ArtifactQueryQueryParams,
-	AssignAlias400,
-	AssignAlias401,
-	AssignAlias402,
-	AssignAlias403,
-	AssignAlias404,
-	AssignAlias409,
-	AssignAliasMutationResponse,
-	AssignAliasPathParams,
-	AssignAliasQueryParams,
-	BatchRemoveProjectEnv400,
-	BatchRemoveProjectEnv401,
-	BatchRemoveProjectEnv403,
-	BatchRemoveProjectEnv404,
-	BatchRemoveProjectEnv409,
-	BatchRemoveProjectEnvMutationResponse,
-	BatchRemoveProjectEnvPathParams,
-	BatchRemoveProjectEnvQueryParams,
-	BuyCredits400,
-	BuyCredits401,
-	BuyCredits402,
-	BuyCredits403,
-	BuyCredits404,
-	BuyCredits500,
-	BuyCreditsMutationResponse,
-	BuyCreditsQueryParams,
-	BuyDomains400,
-	BuyDomains401,
-	BuyDomains403,
-	BuyDomains429,
-	BuyDomains500,
-	BuyDomainsMutationResponse,
-	BuyDomainsQueryParams,
-	BuySingleDomain400,
-	BuySingleDomain401,
-	BuySingleDomain403,
-	BuySingleDomain429,
-	BuySingleDomain500,
-	BuySingleDomainMutationResponse,
-	BuySingleDomainPathParams,
-	BuySingleDomainQueryParams,
-	CancelDeployment400,
-	CancelDeployment401,
-	CancelDeployment403,
-	CancelDeployment404,
-	CancelDeploymentMutationResponse,
-	CancelDeploymentPathParams,
-	CancelDeploymentQueryParams,
-	CompleteRollingRelease400,
-	CompleteRollingRelease401,
-	CompleteRollingRelease403,
-	CompleteRollingRelease404,
-	CompleteRollingReleaseMutationResponse,
-	CompleteRollingReleasePathParams,
-	CompleteRollingReleaseQueryParams,
-	ConnectIntegrationResourceToProject400,
-	ConnectIntegrationResourceToProject401,
-	ConnectIntegrationResourceToProject403,
-	ConnectIntegrationResourceToProject404,
-	ConnectIntegrationResourceToProjectMutationResponse,
-	ConnectIntegrationResourceToProjectPathParams,
-	ConnectIntegrationResourceToProjectQueryParams,
-	CreateAccessGroup400,
-	CreateAccessGroup401,
-	CreateAccessGroup403,
-	CreateAccessGroupMutationResponse,
-	CreateAccessGroupProject400,
-	CreateAccessGroupProject401,
-	CreateAccessGroupProject403,
-	CreateAccessGroupProjectMutationResponse,
-	CreateAccessGroupProjectPathParams,
-	CreateAccessGroupProjectQueryParams,
-	CreateAccessGroupQueryParams,
-	CreateAuthToken400,
-	CreateAuthToken401,
-	CreateAuthToken403,
-	CreateAuthToken404,
-	CreateAuthTokenMutationResponse,
-	CreateAuthTokenQueryParams,
-	CreateCheck400,
-	CreateCheck401,
-	CreateCheck403,
-	CreateCheck404,
-	CreateCheckMutationResponse,
-	CreateCheckPathParams,
-	CreateCheckQueryParams,
-	CreateConfigurableLogDrain400,
-	CreateConfigurableLogDrain401,
-	CreateConfigurableLogDrain403,
-	CreateConfigurableLogDrainMutationResponse,
-	CreateConfigurableLogDrainQueryParams,
-	CreateCustomEnvironment400,
-	CreateCustomEnvironment401,
-	CreateCustomEnvironment402,
-	CreateCustomEnvironment403,
-	CreateCustomEnvironment500,
-	CreateCustomEnvironmentMutationResponse,
-	CreateCustomEnvironmentPathParams,
-	CreateCustomEnvironmentQueryParams,
-	CreateDeployment400,
-	CreateDeployment401,
-	CreateDeployment402,
-	CreateDeployment403,
-	CreateDeployment404,
-	CreateDeployment409,
-	CreateDeployment426,
-	CreateDeployment429,
-	CreateDeployment500,
-	CreateDeployment503,
-	CreateDeploymentCheckRun400,
-	CreateDeploymentCheckRun401,
-	CreateDeploymentCheckRun403,
-	CreateDeploymentCheckRun404,
-	CreateDeploymentCheckRun500,
-	CreateDeploymentCheckRunMutationResponse,
-	CreateDeploymentCheckRunPathParams,
-	CreateDeploymentCheckRunQueryParams,
-	CreateDeploymentMutationResponse,
-	CreateDeploymentQueryParams,
-	CreateDirectory400,
-	CreateDirectory401,
-	CreateDirectory403,
-	CreateDirectory410,
-	CreateDirectory422,
-	CreateDirectoryMutationResponse,
-	CreateDirectoryPathParams,
-	CreateDirectoryQueryParams,
-	CreateDrain400,
-	CreateDrain401,
-	CreateDrain403,
-	CreateDrainMutationResponse,
-	CreateDrainQueryParams,
-	CreateEdgeConfig400,
-	CreateEdgeConfig401,
-	CreateEdgeConfig402,
-	CreateEdgeConfig403,
-	CreateEdgeConfigMutationResponse,
-	CreateEdgeConfigQueryParams,
-	CreateEdgeConfigToken400,
-	CreateEdgeConfigToken401,
-	CreateEdgeConfigToken402,
-	CreateEdgeConfigToken403,
-	CreateEdgeConfigToken404,
-	CreateEdgeConfigToken409,
-	CreateEdgeConfigTokenMutationResponse,
-	CreateEdgeConfigTokenPathParams,
-	CreateEdgeConfigTokenQueryParams,
-	CreateEvent400,
-	CreateEvent401,
-	CreateEvent403,
-	CreateEvent404,
-	CreateEventMutationResponse,
-	CreateEventPathParams,
-	CreateFlag400,
-	CreateFlag401,
-	CreateFlag402,
-	CreateFlag403,
-	CreateFlag404,
-	CreateFlag409,
-	CreateFlag412,
-	CreateFlagMutationResponse,
-	CreateFlagPathParams,
-	CreateFlagQueryParams,
-	CreateFlagSegment400,
-	CreateFlagSegment401,
-	CreateFlagSegment402,
-	CreateFlagSegment403,
-	CreateFlagSegment404,
-	CreateFlagSegment409,
-	CreateFlagSegment412,
-	CreateFlagSegmentMutationResponse,
-	CreateFlagSegmentPathParams,
-	CreateFlagSegmentQueryParams,
-	CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems400,
-	CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems401,
-	CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems403,
-	CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems404,
-	CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsMutationResponse,
-	CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsPathParams,
-	CreateIntegrationStoreDirect400,
-	CreateIntegrationStoreDirect401,
-	CreateIntegrationStoreDirect402,
-	CreateIntegrationStoreDirect403,
-	CreateIntegrationStoreDirect404,
-	CreateIntegrationStoreDirect409,
-	CreateIntegrationStoreDirect429,
-	CreateIntegrationStoreDirect500,
-	CreateIntegrationStoreDirectMutationResponse,
-	CreateIntegrationStoreDirectQueryParams,
-	CreateLogDrain400,
-	CreateLogDrain401,
-	CreateLogDrain403,
-	CreateLogDrainMutationResponse,
-	CreateLogDrainQueryParams,
-	CreateMicrofrontendsGroupWithApplications400,
-	CreateMicrofrontendsGroupWithApplications401,
-	CreateMicrofrontendsGroupWithApplications403,
-	CreateMicrofrontendsGroupWithApplications500,
-	CreateMicrofrontendsGroupWithApplicationsMutationResponse,
-	CreateMicrofrontendsGroupWithApplicationsQueryParams,
-	CreateNetwork400,
-	CreateNetwork401,
-	CreateNetwork402,
-	CreateNetwork403,
-	CreateNetwork409,
-	CreateNetworkMutationResponse,
-	CreateNetworkQueryParams,
-	CreateOrTransferDomain400,
-	CreateOrTransferDomain401,
-	CreateOrTransferDomain402,
-	CreateOrTransferDomain403,
-	CreateOrTransferDomain404,
-	CreateOrTransferDomain409,
-	CreateOrTransferDomainMutationResponse,
-	CreateOrTransferDomainQueryParams,
-	CreateProject400,
-	CreateProject401,
-	CreateProject402,
-	CreateProject403,
-	CreateProject404,
-	CreateProject409,
-	CreateProject428,
-	CreateProject429,
-	CreateProject500,
-	CreateProjectCheck400,
-	CreateProjectCheck401,
-	CreateProjectCheck403,
-	CreateProjectCheck500,
-	CreateProjectCheckMutationResponse,
-	CreateProjectCheckPathParams,
-	CreateProjectCheckQueryParams,
-	CreateProjectEnv400,
-	CreateProjectEnv401,
-	CreateProjectEnv402,
-	CreateProjectEnv403,
-	CreateProjectEnv404,
-	CreateProjectEnv409,
-	CreateProjectEnv429,
-	CreateProjectEnv500,
-	CreateProjectEnvMutationResponse,
-	CreateProjectEnvPathParams,
-	CreateProjectEnvQueryParams,
-	CreateProjectMutationResponse,
-	CreateProjectQueryParams,
-	CreateProjectTransferRequest400,
-	CreateProjectTransferRequest401,
-	CreateProjectTransferRequest403,
-	CreateProjectTransferRequestMutationResponse,
-	CreateProjectTransferRequestPathParams,
-	CreateProjectTransferRequestQueryParams,
-	CreateRecord400,
-	CreateRecord401,
-	CreateRecord402,
-	CreateRecord403,
-	CreateRecord404,
-	CreateRecord409,
-	CreateRecordMutationResponse,
-	CreateRecordPathParams,
-	CreateRecordQueryParams,
-	CreateSandbox400,
-	CreateSandbox401,
-	CreateSandbox402,
-	CreateSandbox403,
-	CreateSandbox404,
-	CreateSandbox410,
-	CreateSandbox422,
-	CreateSandbox429,
-	CreateSandbox500,
-	CreateSandboxes400,
-	CreateSandboxes401,
-	CreateSandboxes402,
-	CreateSandboxes403,
-	CreateSandboxes404,
-	CreateSandboxes410,
-	CreateSandboxes422,
-	CreateSandboxes429,
-	CreateSandboxes500,
-	CreateSandboxesMutationResponse,
-	CreateSandboxesQueryParams,
-	CreateSandboxMutationResponse,
-	CreateSandboxQueryParams,
-	CreateSdkKey400,
-	CreateSdkKey401,
-	CreateSdkKey402,
-	CreateSdkKey403,
-	CreateSdkKey404,
-	CreateSdkKey409,
-	CreateSdkKeyMutationResponse,
-	CreateSdkKeyPathParams,
-	CreateSdkKeyQueryParams,
-	CreateSessionDirectory400,
-	CreateSessionDirectory401,
-	CreateSessionDirectory403,
-	CreateSessionDirectory410,
-	CreateSessionDirectory422,
-	CreateSessionDirectoryMutationResponse,
-	CreateSessionDirectoryPathParams,
-	CreateSessionDirectoryQueryParams,
-	CreateSessionSnapshot400,
-	CreateSessionSnapshot401,
-	CreateSessionSnapshot402,
-	CreateSessionSnapshot403,
-	CreateSessionSnapshot410,
-	CreateSessionSnapshot422,
-	CreateSessionSnapshot500,
-	CreateSessionSnapshotMutationResponse,
-	CreateSessionSnapshotPathParams,
-	CreateSessionSnapshotQueryParams,
-	CreateSharedEnvVariable400,
-	CreateSharedEnvVariable401,
-	CreateSharedEnvVariable402,
-	CreateSharedEnvVariable403,
-	CreateSharedEnvVariableMutationResponse,
-	CreateSharedEnvVariableQueryParams,
-	CreateSnapshot400,
-	CreateSnapshot401,
-	CreateSnapshot402,
-	CreateSnapshot403,
-	CreateSnapshot410,
-	CreateSnapshot422,
-	CreateSnapshotMutationResponse,
-	CreateSnapshotPathParams,
-	CreateSnapshotQueryParams,
-	CreateTeam400,
-	CreateTeam401,
-	CreateTeam403,
-	CreateTeamMutationResponse,
-	CreateWebhook400,
-	CreateWebhook401,
-	CreateWebhook403,
-	CreateWebhookMutationResponse,
-	CreateWebhookQueryParams,
-	DangerouslyDeleteBySrcImages400,
-	DangerouslyDeleteBySrcImages401,
-	DangerouslyDeleteBySrcImages402,
-	DangerouslyDeleteBySrcImages403,
-	DangerouslyDeleteBySrcImages404,
-	DangerouslyDeleteBySrcImagesMutationResponse,
-	DangerouslyDeleteBySrcImagesQueryParams,
-	DangerouslyDeleteByTags400,
-	DangerouslyDeleteByTags401,
-	DangerouslyDeleteByTags403,
-	DangerouslyDeleteByTags404,
-	DangerouslyDeleteByTagsMutationResponse,
-	DangerouslyDeleteByTagsQueryParams,
-	DeleteAccessGroup400,
-	DeleteAccessGroup401,
-	DeleteAccessGroup403,
-	DeleteAccessGroupMutationResponse,
-	DeleteAccessGroupPathParams,
-	DeleteAccessGroupProject400,
-	DeleteAccessGroupProject401,
-	DeleteAccessGroupProject403,
-	DeleteAccessGroupProjectMutationResponse,
-	DeleteAccessGroupProjectPathParams,
-	DeleteAccessGroupProjectQueryParams,
-	DeleteAccessGroupQueryParams,
-	DeleteAlias400,
-	DeleteAlias401,
-	DeleteAlias403,
-	DeleteAlias404,
-	DeleteAliasMutationResponse,
-	DeleteAliasPathParams,
-	DeleteAliasQueryParams,
-	DeleteAuthToken400,
-	DeleteAuthToken401,
-	DeleteAuthToken403,
-	DeleteAuthToken404,
-	DeleteAuthTokenMutationResponse,
-	DeleteAuthTokenPathParams,
-	DeleteConfigurableLogDrain400,
-	DeleteConfigurableLogDrain401,
-	DeleteConfigurableLogDrain403,
-	DeleteConfigurableLogDrain404,
-	DeleteConfigurableLogDrainMutationResponse,
-	DeleteConfigurableLogDrainPathParams,
-	DeleteConfigurableLogDrainQueryParams,
-	DeleteConfiguration400,
-	DeleteConfiguration401,
-	DeleteConfiguration403,
-	DeleteConfiguration404,
-	DeleteConfigurationMutationResponse,
-	DeleteConfigurationPathParams,
-	DeleteConfigurationQueryParams,
-	DeleteDeployment400,
-	DeleteDeployment401,
-	DeleteDeployment403,
-	DeleteDeployment404,
-	DeleteDeploymentMutationResponse,
-	DeleteDeploymentPathParams,
-	DeleteDeploymentQueryParams,
-	DeleteDomain400,
-	DeleteDomain401,
-	DeleteDomain403,
-	DeleteDomain404,
-	DeleteDomain409,
-	DeleteDomainMutationResponse,
-	DeleteDomainPathParams,
-	DeleteDomainQueryParams,
-	DeleteDrain400,
-	DeleteDrain401,
-	DeleteDrain403,
-	DeleteDrain404,
-	DeleteDrainMutationResponse,
-	DeleteDrainPathParams,
-	DeleteDrainQueryParams,
-	DeleteEdgeConfig400,
-	DeleteEdgeConfig401,
-	DeleteEdgeConfig403,
-	DeleteEdgeConfig404,
-	DeleteEdgeConfig409,
-	DeleteEdgeConfigMutationResponse,
-	DeleteEdgeConfigPathParams,
-	DeleteEdgeConfigQueryParams,
-	DeleteEdgeConfigSchema400,
-	DeleteEdgeConfigSchema401,
-	DeleteEdgeConfigSchema402,
-	DeleteEdgeConfigSchema403,
-	DeleteEdgeConfigSchema404,
-	DeleteEdgeConfigSchema409,
-	DeleteEdgeConfigSchemaMutationResponse,
-	DeleteEdgeConfigSchemaPathParams,
-	DeleteEdgeConfigSchemaQueryParams,
-	DeleteEdgeConfigTokens400,
-	DeleteEdgeConfigTokens401,
-	DeleteEdgeConfigTokens402,
-	DeleteEdgeConfigTokens403,
-	DeleteEdgeConfigTokens404,
-	DeleteEdgeConfigTokens409,
-	DeleteEdgeConfigTokensMutationResponse,
-	DeleteEdgeConfigTokensPathParams,
-	DeleteEdgeConfigTokensQueryParams,
-	DeleteFlag400,
-	DeleteFlag401,
-	DeleteFlag402,
-	DeleteFlag403,
-	DeleteFlag404,
-	DeleteFlag409,
-	DeleteFlag412,
-	DeleteFlagMutationResponse,
-	DeleteFlagPathParams,
-	DeleteFlagQueryParams,
-	DeleteFlagSegment400,
-	DeleteFlagSegment401,
-	DeleteFlagSegment402,
-	DeleteFlagSegment403,
-	DeleteFlagSegment404,
-	DeleteFlagSegment409,
-	DeleteFlagSegment412,
-	DeleteFlagSegmentMutationResponse,
-	DeleteFlagSegmentPathParams,
-	DeleteFlagSegmentQueryParams,
-	DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId400,
-	DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId401,
-	DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId403,
-	DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId404,
-	DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdMutationResponse,
-	DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdPathParams,
-	DeleteIntegrationLogDrain400,
-	DeleteIntegrationLogDrain401,
-	DeleteIntegrationLogDrain403,
-	DeleteIntegrationLogDrain404,
-	DeleteIntegrationLogDrainMutationResponse,
-	DeleteIntegrationLogDrainPathParams,
-	DeleteIntegrationLogDrainQueryParams,
-	DeleteIntegrationResource400,
-	DeleteIntegrationResource401,
-	DeleteIntegrationResource403,
-	DeleteIntegrationResource404,
-	DeleteIntegrationResourceMutationResponse,
-	DeleteIntegrationResourcePathParams,
-	DeleteMicrofrontendsGroup400,
-	DeleteMicrofrontendsGroup401,
-	DeleteMicrofrontendsGroup403,
-	DeleteMicrofrontendsGroup404,
-	DeleteMicrofrontendsGroup500,
-	DeleteMicrofrontendsGroupMutationResponse,
-	DeleteMicrofrontendsGroupPathParams,
-	DeleteMicrofrontendsGroupQueryParams,
-	DeleteNetwork400,
-	DeleteNetwork401,
-	DeleteNetwork402,
-	DeleteNetwork403,
-	DeleteNetwork409,
-	DeleteNetworkMutationResponse,
-	DeleteNetworkPathParams,
-	DeleteNetworkQueryParams,
-	DeleteProject400,
-	DeleteProject401,
-	DeleteProject403,
-	DeleteProject409,
-	DeleteProjectCheck400,
-	DeleteProjectCheck401,
-	DeleteProjectCheck403,
-	DeleteProjectCheck404,
-	DeleteProjectCheck500,
-	DeleteProjectCheckMutationResponse,
-	DeleteProjectCheckPathParams,
-	DeleteProjectCheckQueryParams,
-	DeleteProjectMutationResponse,
-	DeleteProjectPathParams,
-	DeleteProjectQueryParams,
-	DeleteRedirects400,
-	DeleteRedirects401,
-	DeleteRedirects403,
-	DeleteRedirects404,
-	DeleteRedirects500,
-	DeleteRedirectsMutationResponse,
-	DeleteRedirectsQueryParams,
-	DeleteRollingReleaseConfig400,
-	DeleteRollingReleaseConfig401,
-	DeleteRollingReleaseConfig403,
-	DeleteRollingReleaseConfig404,
-	DeleteRollingReleaseConfigMutationResponse,
-	DeleteRollingReleaseConfigPathParams,
-	DeleteRollingReleaseConfigQueryParams,
-	DeleteRoutes400,
-	DeleteRoutes401,
-	DeleteRoutes403,
-	DeleteRoutes404,
-	DeleteRoutesMutationResponse,
-	DeleteRoutesPathParams,
-	DeleteRoutesQueryParams,
-	DeleteSandbox400,
-	DeleteSandbox401,
-	DeleteSandbox403,
-	DeleteSandbox404,
-	DeleteSandbox410,
-	DeleteSandbox422,
-	DeleteSandboxMutationResponse,
-	DeleteSandboxPathParams,
-	DeleteSandboxQueryParams,
-	DeleteSdkKey400,
-	DeleteSdkKey401,
-	DeleteSdkKey402,
-	DeleteSdkKey403,
-	DeleteSdkKey404,
-	DeleteSdkKey409,
-	DeleteSdkKeyMutationResponse,
-	DeleteSdkKeyPathParams,
-	DeleteSdkKeyQueryParams,
-	DeleteSessionSnapshot400,
-	DeleteSessionSnapshot401,
-	DeleteSessionSnapshot403,
-	DeleteSessionSnapshot404,
-	DeleteSessionSnapshotMutationResponse,
-	DeleteSessionSnapshotPathParams,
-	DeleteSessionSnapshotQueryParams,
-	DeleteSharedEnvVariable400,
-	DeleteSharedEnvVariable401,
-	DeleteSharedEnvVariable402,
-	DeleteSharedEnvVariable403,
-	DeleteSharedEnvVariableMutationResponse,
-	DeleteSharedEnvVariableQueryParams,
-	DeleteSnapshot400,
-	DeleteSnapshot401,
-	DeleteSnapshot403,
-	DeleteSnapshot404,
-	DeleteSnapshotMutationResponse,
-	DeleteSnapshotPathParams,
-	DeleteSnapshotQueryParams,
-	DeleteTeam400,
-	DeleteTeam401,
-	DeleteTeam402,
-	DeleteTeam403,
-	DeleteTeam409,
-	DeleteTeamInviteCode400,
-	DeleteTeamInviteCode401,
-	DeleteTeamInviteCode403,
-	DeleteTeamInviteCode404,
-	DeleteTeamInviteCodeMutationResponse,
-	DeleteTeamInviteCodePathParams,
-	DeleteTeamMutationResponse,
-	DeleteTeamPathParams,
-	DeleteTeamQueryParams,
-	DeleteWebhook400,
-	DeleteWebhook401,
-	DeleteWebhook403,
-	DeleteWebhookMutationResponse,
-	DeleteWebhookPathParams,
-	DeleteWebhookQueryParams,
-	DownloadArtifact400,
-	DownloadArtifact401,
-	DownloadArtifact402,
-	DownloadArtifact403,
-	DownloadArtifact404,
-	DownloadArtifactHeaderParams,
-	DownloadArtifactPathParams,
-	DownloadArtifactQueryParams,
-	DownloadArtifactQueryResponse,
-	EditProjectEnv400,
-	EditProjectEnv401,
-	EditProjectEnv403,
-	EditProjectEnv404,
-	EditProjectEnv409,
-	EditProjectEnv429,
-	EditProjectEnv500,
-	EditProjectEnvMutationResponse,
-	EditProjectEnvPathParams,
-	EditProjectEnvQueryParams,
-	EditRedirect400,
-	EditRedirect401,
-	EditRedirect403,
-	EditRedirect404,
-	EditRedirect500,
-	EditRedirectMutationResponse,
-	EditRedirectQueryParams,
-	EditRoute400,
-	EditRoute401,
-	EditRoute403,
-	EditRoute404,
-	EditRouteMutationResponse,
-	EditRoutePathParams,
-	EditRouteQueryParams,
-	ExchangeSsoToken400,
-	ExchangeSsoToken403,
-	ExchangeSsoToken500,
-	ExchangeSsoTokenMutationResponse,
-	ExtendSandboxTimeout400,
-	ExtendSandboxTimeout401,
-	ExtendSandboxTimeout403,
-	ExtendSandboxTimeout410,
-	ExtendSandboxTimeout422,
-	ExtendSandboxTimeoutMutationResponse,
-	ExtendSandboxTimeoutPathParams,
-	ExtendSandboxTimeoutQueryParams,
-	ExtendSessionTimeout400,
-	ExtendSessionTimeout401,
-	ExtendSessionTimeout403,
-	ExtendSessionTimeout410,
-	ExtendSessionTimeout422,
-	ExtendSessionTimeout500,
-	ExtendSessionTimeoutMutationResponse,
-	ExtendSessionTimeoutPathParams,
-	ExtendSessionTimeoutQueryParams,
-	FilterProjectEnvs400,
-	FilterProjectEnvs401,
-	FilterProjectEnvs403,
-	FilterProjectEnvsPathParams,
-	FilterProjectEnvsQueryParams,
-	FilterProjectEnvsQueryResponse,
-	FinalizeInstallation400,
-	FinalizeInstallation401,
-	FinalizeInstallation403,
-	FinalizeInstallation404,
-	FinalizeInstallationMutationResponse,
-	FinalizeInstallationPathParams,
-	GenerateRoute400,
-	GenerateRoute401,
-	GenerateRoute403,
-	GenerateRoute408,
-	GenerateRoute500,
-	GenerateRouteMutationResponse,
-	GenerateRoutePathParams,
-	GenerateRouteQueryParams,
-	GetAccountInfo400,
-	GetAccountInfo401,
-	GetAccountInfo403,
-	GetAccountInfo404,
-	GetAccountInfoPathParams,
-	GetAccountInfoQueryResponse,
-	GetActiveAttackStatus400,
-	GetActiveAttackStatus401,
-	GetActiveAttackStatus403,
-	GetActiveAttackStatus404,
-	GetActiveAttackStatusQueryParams,
-	GetActiveAttackStatusQueryResponse,
-	GetAlias400,
-	GetAlias401,
-	GetAlias403,
-	GetAlias404,
-	GetAliasPathParams,
-	GetAliasQueryParams,
-	GetAliasQueryResponse,
-	GetAllChecks400,
-	GetAllChecks401,
-	GetAllChecks403,
-	GetAllChecks404,
-	GetAllChecksPathParams,
-	GetAllChecksQueryParams,
-	GetAllChecksQueryResponse,
-	GetAllLogDrains400,
-	GetAllLogDrains401,
-	GetAllLogDrains403,
-	GetAllLogDrains404,
-	GetAllLogDrainsQueryParams,
-	GetAllLogDrainsQueryResponse,
-	GetAuthToken400,
-	GetAuthToken401,
-	GetAuthToken403,
-	GetAuthToken404,
-	GetAuthTokenPathParams,
-	GetAuthTokenQueryResponse,
-	GetAuthUser400,
-	GetAuthUser401,
-	GetAuthUser403,
-	GetAuthUser409,
-	GetAuthUserQueryResponse,
-	GetBillingPlans400,
-	GetBillingPlans401,
-	GetBillingPlans403,
-	GetBillingPlans404,
-	GetBillingPlansPathParams,
-	GetBillingPlansQueryParams,
-	GetBillingPlansQueryResponse,
-	GetBulkAvailability400,
-	GetBulkAvailability401,
-	GetBulkAvailability403,
-	GetBulkAvailability429,
-	GetBulkAvailability500,
-	GetBulkAvailabilityMutationResponse,
-	GetBulkAvailabilityQueryParams,
-	GetBypassIp400,
-	GetBypassIp401,
-	GetBypassIp403,
-	GetBypassIp404,
-	GetBypassIp500,
-	GetBypassIpQueryParams,
-	GetBypassIpQueryResponse,
-	GetCertById400,
-	GetCertById401,
-	GetCertById403,
-	GetCertById404,
-	GetCertByIdPathParams,
-	GetCertByIdQueryParams,
-	GetCertByIdQueryResponse,
-	GetCheck400,
-	GetCheck401,
-	GetCheck403,
-	GetCheck404,
-	GetCheckPathParams,
-	GetCheckQueryParams,
-	GetCheckQueryResponse,
-	GetCommand400,
-	GetCommand401,
-	GetCommand403,
-	GetCommand410,
-	GetCommand422,
-	GetCommandLogs400,
-	GetCommandLogs401,
-	GetCommandLogs403,
-	GetCommandLogs410,
-	GetCommandLogs422,
-	GetCommandLogsPathParams,
-	GetCommandLogsQueryParams,
-	GetCommandLogsQueryResponse,
-	GetCommandPathParams,
-	GetCommandQueryParams,
-	GetCommandQueryResponse,
-	GetConfigurableLogDrain400,
-	GetConfigurableLogDrain401,
-	GetConfigurableLogDrain403,
-	GetConfigurableLogDrain404,
-	GetConfigurableLogDrainPathParams,
-	GetConfigurableLogDrainQueryParams,
-	GetConfigurableLogDrainQueryResponse,
-	GetConfiguration400,
-	GetConfiguration401,
-	GetConfiguration403,
-	GetConfiguration404,
-	GetConfigurationPathParams,
-	GetConfigurationProducts400,
-	GetConfigurationProducts401,
-	GetConfigurationProducts403,
-	GetConfigurationProducts404,
-	GetConfigurationProducts500,
-	GetConfigurationProductsPathParams,
-	GetConfigurationProductsQueryParams,
-	GetConfigurationProductsQueryResponse,
-	GetConfigurationQueryParams,
-	GetConfigurationQueryResponse,
-	GetConfigurations400,
-	GetConfigurations401,
-	GetConfigurations403,
-	GetConfigurationsQueryParams,
-	GetConfigurationsQueryResponse,
-	GetContactInfoSchema400,
-	GetContactInfoSchema401,
-	GetContactInfoSchema403,
-	GetContactInfoSchema429,
-	GetContactInfoSchema500,
-	GetContactInfoSchemaPathParams,
-	GetContactInfoSchemaQueryParams,
-	GetContactInfoSchemaQueryResponse,
-	GetCustomEnvironment400,
-	GetCustomEnvironment401,
-	GetCustomEnvironment403,
-	GetCustomEnvironment404,
-	GetCustomEnvironmentPathParams,
-	GetCustomEnvironmentQueryParams,
-	GetCustomEnvironmentQueryResponse,
-	GetDeployment400,
-	GetDeployment403,
-	GetDeployment404,
-	GetDeployment429,
-	GetDeploymentCheckRun400,
-	GetDeploymentCheckRun401,
-	GetDeploymentCheckRun403,
-	GetDeploymentCheckRun404,
-	GetDeploymentCheckRun500,
-	GetDeploymentCheckRunPathParams,
-	GetDeploymentCheckRunQueryParams,
-	GetDeploymentCheckRunQueryResponse,
-	GetDeploymentEvents400,
-	GetDeploymentEvents401,
-	GetDeploymentEvents403,
-	GetDeploymentEvents500,
-	GetDeploymentEventsPathParams,
-	GetDeploymentEventsQueryParams,
-	GetDeploymentEventsQueryResponse,
-	GetDeploymentFeatureFlags400,
-	GetDeploymentFeatureFlags401,
-	GetDeploymentFeatureFlags403,
-	GetDeploymentFeatureFlags404,
-	GetDeploymentFeatureFlagsPathParams,
-	GetDeploymentFeatureFlagsQueryParams,
-	GetDeploymentFeatureFlagsQueryResponse,
-	GetDeploymentFileContents400,
-	GetDeploymentFileContents401,
-	GetDeploymentFileContents403,
-	GetDeploymentFileContents404,
-	GetDeploymentFileContents410,
-	GetDeploymentFileContentsPathParams,
-	GetDeploymentFileContentsQueryParams,
-	GetDeploymentFileContentsQueryResponse,
-	GetDeploymentPathParams,
-	GetDeploymentQueryParams,
-	GetDeploymentQueryResponse,
-	GetDeployments400,
-	GetDeployments401,
-	GetDeployments403,
-	GetDeployments404,
-	GetDeployments422,
-	GetDeploymentsQueryParams,
-	GetDeploymentsQueryResponse,
-	GetDomain400,
-	GetDomain401,
-	GetDomain403,
-	GetDomain404,
-	GetDomainAuthCode400,
-	GetDomainAuthCode401,
-	GetDomainAuthCode403,
-	GetDomainAuthCode404,
-	GetDomainAuthCode409,
-	GetDomainAuthCode429,
-	GetDomainAuthCode500,
-	GetDomainAuthCodePathParams,
-	GetDomainAuthCodeQueryParams,
-	GetDomainAuthCodeQueryResponse,
-	GetDomainAvailability400,
-	GetDomainAvailability401,
-	GetDomainAvailability403,
-	GetDomainAvailability404,
-	GetDomainAvailability429,
-	GetDomainAvailability500,
-	GetDomainAvailabilityPathParams,
-	GetDomainAvailabilityQueryParams,
-	GetDomainAvailabilityQueryResponse,
-	GetDomainConfig400,
-	GetDomainConfig401,
-	GetDomainConfig403,
-	GetDomainConfigPathParams,
-	GetDomainConfigQueryParams,
-	GetDomainConfigQueryResponse,
-	GetDomainPathParams,
-	GetDomainPrice400,
-	GetDomainPrice401,
-	GetDomainPrice403,
-	GetDomainPrice429,
-	GetDomainPrice500,
-	GetDomainPricePathParams,
-	GetDomainPriceQueryParams,
-	GetDomainPriceQueryResponse,
-	GetDomainQueryParams,
-	GetDomainQueryResponse,
-	GetDomains400,
-	GetDomains401,
-	GetDomains403,
-	GetDomains409,
-	GetDomainsQueryParams,
-	GetDomainsQueryResponse,
-	GetDomainTransferIn400,
-	GetDomainTransferIn401,
-	GetDomainTransferIn403,
-	GetDomainTransferIn404,
-	GetDomainTransferIn429,
-	GetDomainTransferIn500,
-	GetDomainTransferInPathParams,
-	GetDomainTransferInQueryParams,
-	GetDomainTransferInQueryResponse,
-	GetDrain400,
-	GetDrain401,
-	GetDrain403,
-	GetDrain404,
-	GetDrainPathParams,
-	GetDrainQueryParams,
-	GetDrainQueryResponse,
-	GetDrains400,
-	GetDrains401,
-	GetDrains403,
-	GetDrains404,
-	GetDrainsQueryParams,
-	GetDrainsQueryResponse,
-	GetEdgeConfig400,
-	GetEdgeConfig401,
-	GetEdgeConfig403,
-	GetEdgeConfig404,
-	GetEdgeConfigBackup400,
-	GetEdgeConfigBackup401,
-	GetEdgeConfigBackup403,
-	GetEdgeConfigBackup404,
-	GetEdgeConfigBackupPathParams,
-	GetEdgeConfigBackupQueryParams,
-	GetEdgeConfigBackupQueryResponse,
-	GetEdgeConfigBackups400,
-	GetEdgeConfigBackups401,
-	GetEdgeConfigBackups403,
-	GetEdgeConfigBackups404,
-	GetEdgeConfigBackupsPathParams,
-	GetEdgeConfigBackupsQueryParams,
-	GetEdgeConfigBackupsQueryResponse,
-	GetEdgeConfigItem400,
-	GetEdgeConfigItem401,
-	GetEdgeConfigItem403,
-	GetEdgeConfigItem404,
-	GetEdgeConfigItemPathParams,
-	GetEdgeConfigItemQueryParams,
-	GetEdgeConfigItemQueryResponse,
-	GetEdgeConfigItems400,
-	GetEdgeConfigItems401,
-	GetEdgeConfigItems403,
-	GetEdgeConfigItems404,
-	GetEdgeConfigItemsPathParams,
-	GetEdgeConfigItemsQueryParams,
-	GetEdgeConfigItemsQueryResponse,
-	GetEdgeConfigPathParams,
-	GetEdgeConfigQueryParams,
-	GetEdgeConfigQueryResponse,
-	GetEdgeConfigSchema400,
-	GetEdgeConfigSchema401,
-	GetEdgeConfigSchema403,
-	GetEdgeConfigSchema404,
-	GetEdgeConfigSchemaPathParams,
-	GetEdgeConfigSchemaQueryParams,
-	GetEdgeConfigSchemaQueryResponse,
-	GetEdgeConfigs400,
-	GetEdgeConfigs401,
-	GetEdgeConfigs403,
-	GetEdgeConfigsQueryParams,
-	GetEdgeConfigsQueryResponse,
-	GetEdgeConfigToken400,
-	GetEdgeConfigToken401,
-	GetEdgeConfigToken403,
-	GetEdgeConfigToken404,
-	GetEdgeConfigTokenPathParams,
-	GetEdgeConfigTokenQueryParams,
-	GetEdgeConfigTokenQueryResponse,
-	GetEdgeConfigTokens400,
-	GetEdgeConfigTokens401,
-	GetEdgeConfigTokens403,
-	GetEdgeConfigTokens404,
-	GetEdgeConfigTokensPathParams,
-	GetEdgeConfigTokensQueryParams,
-	GetEdgeConfigTokensQueryResponse,
-	GetFirewallConfig400,
-	GetFirewallConfig401,
-	GetFirewallConfig403,
-	GetFirewallConfig404,
-	GetFirewallConfigPathParams,
-	GetFirewallConfigQueryParams,
-	GetFirewallConfigQueryResponse,
-	GetFlag400,
-	GetFlag401,
-	GetFlag402,
-	GetFlag403,
-	GetFlag404,
-	GetFlagPathParams,
-	GetFlagQueryParams,
-	GetFlagQueryResponse,
-	GetFlagSegment400,
-	GetFlagSegment401,
-	GetFlagSegment402,
-	GetFlagSegment403,
-	GetFlagSegment404,
-	GetFlagSegmentPathParams,
-	GetFlagSegmentQueryParams,
-	GetFlagSegmentQueryResponse,
-	GetFlagSettings400,
-	GetFlagSettings401,
-	GetFlagSettings402,
-	GetFlagSettings403,
-	GetFlagSettings404,
-	GetFlagSettingsPathParams,
-	GetFlagSettingsQueryParams,
-	GetFlagSettingsQueryResponse,
-	GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig400,
-	GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig401,
-	GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig403,
-	GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig404,
-	GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigPathParams,
-	GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigQueryResponse,
-	GetIntegrationLogDrains400,
-	GetIntegrationLogDrains401,
-	GetIntegrationLogDrains403,
-	GetIntegrationLogDrainsQueryParams,
-	GetIntegrationLogDrainsQueryResponse,
-	GetIntegrationResource400,
-	GetIntegrationResource401,
-	GetIntegrationResource403,
-	GetIntegrationResource404,
-	GetIntegrationResourcePathParams,
-	GetIntegrationResourceQueryResponse,
-	GetIntegrationResources400,
-	GetIntegrationResources401,
-	GetIntegrationResources403,
-	GetIntegrationResources404,
-	GetIntegrationResourcesPathParams,
-	GetIntegrationResourcesQueryResponse,
-	GetInvoice400,
-	GetInvoice401,
-	GetInvoice403,
-	GetInvoice404,
-	GetInvoicePathParams,
-	GetInvoiceQueryResponse,
-	GetMember400,
-	GetMember401,
-	GetMember403,
-	GetMember404,
-	GetMemberPathParams,
-	GetMemberQueryResponse,
-	GetMicrofrontendsConfig400,
-	GetMicrofrontendsConfig401,
-	GetMicrofrontendsConfig403,
-	GetMicrofrontendsConfig404,
-	GetMicrofrontendsConfig500,
-	GetMicrofrontendsConfigForProject400,
-	GetMicrofrontendsConfigForProject401,
-	GetMicrofrontendsConfigForProject403,
-	GetMicrofrontendsConfigForProject404,
-	GetMicrofrontendsConfigForProject500,
-	GetMicrofrontendsConfigForProjectPathParams,
-	GetMicrofrontendsConfigForProjectQueryParams,
-	GetMicrofrontendsConfigForProjectQueryResponse,
-	GetMicrofrontendsConfigPathParams,
-	GetMicrofrontendsConfigQueryParams,
-	GetMicrofrontendsConfigQueryResponse,
-	GetMicrofrontendsGroups400,
-	GetMicrofrontendsGroups401,
-	GetMicrofrontendsGroups403,
-	GetMicrofrontendsGroups500,
-	GetMicrofrontendsGroupsQueryParams,
-	GetMicrofrontendsGroupsQueryResponse,
-	GetMicrofrontendsInGroup400,
-	GetMicrofrontendsInGroup401,
-	GetMicrofrontendsInGroup403,
-	GetMicrofrontendsInGroupPathParams,
-	GetMicrofrontendsInGroupQueryParams,
-	GetMicrofrontendsInGroupQueryResponse,
-	GetNamedSandbox400,
-	GetNamedSandbox401,
-	GetNamedSandbox402,
-	GetNamedSandbox403,
-	GetNamedSandbox404,
-	GetNamedSandbox429,
-	GetNamedSandbox500,
-	GetNamedSandboxPathParams,
-	GetNamedSandboxQueryParams,
-	GetNamedSandboxQueryResponse,
-	GetObservabilityConfigurationProjects400,
-	GetObservabilityConfigurationProjects401,
-	GetObservabilityConfigurationProjects403,
-	GetObservabilityConfigurationProjects404,
-	GetObservabilityConfigurationProjectsQueryParams,
-	GetObservabilityConfigurationProjectsQueryResponse,
-	GetOrder400,
-	GetOrder401,
-	GetOrder403,
-	GetOrder404,
-	GetOrder429,
-	GetOrder500,
-	GetOrderPathParams,
-	GetOrderQueryParams,
-	GetOrderQueryResponse,
-	GetProject400,
-	GetProject401,
-	GetProject403,
-	GetProjectCheck400,
-	GetProjectCheck401,
-	GetProjectCheck403,
-	GetProjectCheck500,
-	GetProjectCheckPathParams,
-	GetProjectCheckQueryParams,
-	GetProjectCheckQueryResponse,
-	GetProjectDomain400,
-	GetProjectDomain401,
-	GetProjectDomain403,
-	GetProjectDomainPathParams,
-	GetProjectDomainQueryParams,
-	GetProjectDomainQueryResponse,
-	GetProjectDomains400,
-	GetProjectDomains401,
-	GetProjectDomains403,
-	GetProjectDomainsPathParams,
-	GetProjectDomainsQueryParams,
-	GetProjectDomainsQueryResponse,
-	GetProjectEnv400,
-	GetProjectEnv401,
-	GetProjectEnv403,
-	GetProjectEnvPathParams,
-	GetProjectEnvQueryParams,
-	GetProjectEnvQueryResponse,
-	GetProjectMembers400,
-	GetProjectMembers401,
-	GetProjectMembers403,
-	GetProjectMembersPathParams,
-	GetProjectMembersQueryParams,
-	GetProjectMembersQueryResponse,
-	GetProjectPathParams,
-	GetProjectQueryParams,
-	GetProjectQueryResponse,
-	GetProjects400,
-	GetProjects401,
-	GetProjects403,
-	GetProjectsByIdOrNameCustomEnvironments400,
-	GetProjectsByIdOrNameCustomEnvironments401,
-	GetProjectsByIdOrNameCustomEnvironments403,
-	GetProjectsByIdOrNameCustomEnvironmentsPathParams,
-	GetProjectsByIdOrNameCustomEnvironmentsQueryParams,
-	GetProjectsByIdOrNameCustomEnvironmentsQueryResponse,
-	GetProjectsQueryParams,
-	GetProjectsQueryResponse,
-	GetRecords400,
-	GetRecords401,
-	GetRecords403,
-	GetRecords404,
-	GetRecordsPathParams,
-	GetRecordsQueryParams,
-	GetRecordsQueryResponse,
-	GetRedirects400,
-	GetRedirects401,
-	GetRedirects403,
-	GetRedirects404,
-	GetRedirectsQueryParams,
-	GetRedirectsQueryResponse,
-	GetRollingRelease400,
-	GetRollingRelease401,
-	GetRollingRelease403,
-	GetRollingRelease404,
-	GetRollingReleaseBillingStatus400,
-	GetRollingReleaseBillingStatus401,
-	GetRollingReleaseBillingStatus403,
-	GetRollingReleaseBillingStatus404,
-	GetRollingReleaseBillingStatusPathParams,
-	GetRollingReleaseBillingStatusQueryParams,
-	GetRollingReleaseBillingStatusQueryResponse,
-	GetRollingReleaseConfig400,
-	GetRollingReleaseConfig401,
-	GetRollingReleaseConfig403,
-	GetRollingReleaseConfig404,
-	GetRollingReleaseConfigPathParams,
-	GetRollingReleaseConfigQueryParams,
-	GetRollingReleaseConfigQueryResponse,
-	GetRollingReleasePathParams,
-	GetRollingReleaseQueryParams,
-	GetRollingReleaseQueryResponse,
-	GetRoutes400,
-	GetRoutes401,
-	GetRoutes403,
-	GetRoutes404,
-	GetRoutesPathParams,
-	GetRoutesQueryParams,
-	GetRoutesQueryResponse,
-	GetRouteVersions400,
-	GetRouteVersions401,
-	GetRouteVersions403,
-	GetRouteVersionsPathParams,
-	GetRouteVersionsQueryParams,
-	GetRouteVersionsQueryResponse,
-	GetRuntimeLogs400,
-	GetRuntimeLogs401,
-	GetRuntimeLogs403,
-	GetRuntimeLogsPathParams,
-	GetRuntimeLogsQueryParams,
-	GetRuntimeLogsQueryResponse,
-	GetSandbox400,
-	GetSandbox401,
-	GetSandbox403,
-	GetSandbox429,
-	GetSandboxesV1QueryParams,
-	GetSandboxesV1QueryResponse,
-	GetSandboxesV2QueryParams,
-	GetSandboxesV2QueryResponse,
-	GetSandboxesV1400,
-	GetSandboxesV1401,
-	GetSandboxesV1403,
-	GetSandboxesV1404,
-	GetSandboxesV2400,
-	GetSandboxesV2401,
-	GetSandboxesV2403,
-	GetSandboxesV2404,
-	GetSandboxPathParams,
-	GetSandboxQueryParams,
-	GetSandboxQueryResponse,
-	GetSdkKeys400,
-	GetSdkKeys401,
-	GetSdkKeys402,
-	GetSdkKeys403,
-	GetSdkKeys404,
-	GetSdkKeysPathParams,
-	GetSdkKeysQueryParams,
-	GetSdkKeysQueryResponse,
-	GetSecurityFirewallEvents400,
-	GetSecurityFirewallEvents401,
-	GetSecurityFirewallEvents403,
-	GetSecurityFirewallEvents404,
-	GetSecurityFirewallEvents500,
-	GetSecurityFirewallEventsQueryParams,
-	GetSecurityFirewallEventsQueryResponse,
-	GetSession400,
-	GetSession401,
-	GetSession403,
-	GetSession500,
-	GetSessionCommand400,
-	GetSessionCommand401,
-	GetSessionCommand403,
-	GetSessionCommand410,
-	GetSessionCommand422,
-	GetSessionCommandLogs400,
-	GetSessionCommandLogs401,
-	GetSessionCommandLogs403,
-	GetSessionCommandLogs410,
-	GetSessionCommandLogs422,
-	GetSessionCommandLogsPathParams,
-	GetSessionCommandLogsQueryParams,
-	GetSessionCommandLogsQueryResponse,
-	GetSessionCommandPathParams,
-	GetSessionCommandQueryParams,
-	GetSessionCommandQueryResponse,
-	GetSessionPathParams,
-	GetSessionQueryParams,
-	GetSessionQueryResponse,
-	GetSessionSnapshot400,
-	GetSessionSnapshot401,
-	GetSessionSnapshot403,
-	GetSessionSnapshot404,
-	GetSessionSnapshotPathParams,
-	GetSessionSnapshotQueryParams,
-	GetSessionSnapshotQueryResponse,
-	GetSharedEnvVar400,
-	GetSharedEnvVar401,
-	GetSharedEnvVar403,
-	GetSharedEnvVarPathParams,
-	GetSharedEnvVarQueryParams,
-	GetSharedEnvVarQueryResponse,
-	GetSnapshot400,
-	GetSnapshot401,
-	GetSnapshot403,
-	GetSnapshot404,
-	GetSnapshotPathParams,
-	GetSnapshotQueryParams,
-	GetSnapshotQueryResponse,
-	GetSupportedTlds400,
-	GetSupportedTlds401,
-	GetSupportedTlds403,
-	GetSupportedTlds429,
-	GetSupportedTlds500,
-	GetSupportedTldsQueryParams,
-	GetSupportedTldsQueryResponse,
-	GetTeam400,
-	GetTeam401,
-	GetTeam403,
-	GetTeam404,
-	GetTeamAccessRequest400,
-	GetTeamAccessRequest401,
-	GetTeamAccessRequest403,
-	GetTeamAccessRequest404,
-	GetTeamAccessRequestPathParams,
-	GetTeamAccessRequestQueryResponse,
-	GetTeamMembers400,
-	GetTeamMembers401,
-	GetTeamMembers403,
-	GetTeamMembers404,
-	GetTeamMembersPathParams,
-	GetTeamMembersQueryParams,
-	GetTeamMembersQueryResponse,
-	GetTeamPathParams,
-	GetTeamQueryParams,
-	GetTeamQueryResponse,
-	GetTeams400,
-	GetTeams401,
-	GetTeams403,
-	GetTeamsQueryParams,
-	GetTeamsQueryResponse,
-	GetTld400,
-	GetTld401,
-	GetTld403,
-	GetTld429,
-	GetTld500,
-	GetTldPathParams,
-	GetTldPrice400,
-	GetTldPrice401,
-	GetTldPrice403,
-	GetTldPrice429,
-	GetTldPrice500,
-	GetTldPricePathParams,
-	GetTldPriceQueryParams,
-	GetTldPriceQueryResponse,
-	GetTldQueryParams,
-	GetTldQueryResponse,
-	GetVersions400,
-	GetVersions401,
-	GetVersions403,
-	GetVersions500,
-	GetVersionsQueryParams,
-	GetVersionsQueryResponse,
-	GetWebhook400,
-	GetWebhook401,
-	GetWebhook403,
-	GetWebhookPathParams,
-	GetWebhookQueryParams,
-	GetWebhookQueryResponse,
-	GetWebhooks400,
-	GetWebhooks401,
-	GetWebhooks403,
-	GetWebhooksQueryParams,
-	GetWebhooksQueryResponse,
-	GitNamespaces400,
-	GitNamespaces401,
-	GitNamespaces403,
-	GitNamespaces404,
-	GitNamespaces429,
-	GitNamespaces500,
-	GitNamespacesQueryParams,
-	GitNamespacesQueryResponse,
-	ImportResource400,
-	ImportResource401,
-	ImportResource403,
-	ImportResource404,
-	ImportResource409,
-	ImportResource422,
-	ImportResource429,
-	ImportResourceMutationResponse,
-	ImportResourcePathParams,
-	InvalidateBySrcImages400,
-	InvalidateBySrcImages401,
-	InvalidateBySrcImages402,
-	InvalidateBySrcImages403,
-	InvalidateBySrcImages404,
-	InvalidateBySrcImagesMutationResponse,
-	InvalidateBySrcImagesQueryParams,
-	InvalidateByTags400,
-	InvalidateByTags401,
-	InvalidateByTags403,
-	InvalidateByTags404,
-	InvalidateByTagsMutationResponse,
-	InvalidateByTagsQueryParams,
-	InviteUserToTeam400,
-	InviteUserToTeam401,
-	InviteUserToTeam403,
-	InviteUserToTeam503,
-	InviteUserToTeamMutationResponse,
-	InviteUserToTeamPathParams,
-	InviteUserToTeamQueryParams,
-	IssueCert400,
-	IssueCert401,
-	IssueCert402,
-	IssueCert403,
-	IssueCert404,
-	IssueCert449,
-	IssueCert500,
-	IssueCertMutationResponse,
-	IssueCertQueryParams,
-	JoinTeam400,
-	JoinTeam401,
-	JoinTeam402,
-	JoinTeam403,
-	JoinTeam404,
-	JoinTeamMutationResponse,
-	JoinTeamPathParams,
-	KillCommand400,
-	KillCommand401,
-	KillCommand403,
-	KillCommand404,
-	KillCommand410,
-	KillCommand422,
-	KillCommandMutationResponse,
-	KillCommandPathParams,
-	KillCommandQueryParams,
-	KillSessionCommand400,
-	KillSessionCommand401,
-	KillSessionCommand403,
-	KillSessionCommand404,
-	KillSessionCommand410,
-	KillSessionCommand422,
-	KillSessionCommandMutationResponse,
-	KillSessionCommandPathParams,
-	KillSessionCommandQueryParams,
-	ListAccessGroupMembers400,
-	ListAccessGroupMembers401,
-	ListAccessGroupMembers403,
-	ListAccessGroupMembersPathParams,
-	ListAccessGroupMembersQueryParams,
-	ListAccessGroupMembersQueryResponse,
-	ListAccessGroupProjects400,
-	ListAccessGroupProjects401,
-	ListAccessGroupProjects403,
-	ListAccessGroupProjectsPathParams,
-	ListAccessGroupProjectsQueryParams,
-	ListAccessGroupProjectsQueryResponse,
-	ListAccessGroups400,
-	ListAccessGroups401,
-	ListAccessGroups403,
-	ListAccessGroupsQueryParams,
-	ListAccessGroupsQueryResponse,
-	ListAliases400,
-	ListAliases401,
-	ListAliases403,
-	ListAliases404,
-	ListAliasesQueryParams,
-	ListAliasesQueryResponse,
-	ListAuthTokens400,
-	ListAuthTokens401,
-	ListAuthTokens403,
-	ListAuthTokensQueryResponse,
-	ListBillingCharges400,
-	ListBillingCharges401,
-	ListBillingCharges403,
-	ListBillingCharges404,
-	ListBillingCharges500,
-	ListBillingCharges503,
-	ListBillingChargesQueryParams,
-	ListBillingChargesQueryResponse,
-	ListCheckRuns400,
-	ListCheckRuns401,
-	ListCheckRuns403,
-	ListCheckRuns500,
-	ListCheckRunsPathParams,
-	ListCheckRunsQueryParams,
-	ListCheckRunsQueryResponse,
-	ListCommands400,
-	ListCommands401,
-	ListCommands403,
-	ListCommandsPathParams,
-	ListCommandsQueryParams,
-	ListCommandsQueryResponse,
-	ListContractCommitments400,
-	ListContractCommitments401,
-	ListContractCommitments403,
-	ListContractCommitments404,
-	ListContractCommitmentsQueryParams,
-	ListContractCommitmentsQueryResponse,
-	ListDeploymentAliases400,
-	ListDeploymentAliases401,
-	ListDeploymentAliases403,
-	ListDeploymentAliases404,
-	ListDeploymentAliasesPathParams,
-	ListDeploymentAliasesQueryParams,
-	ListDeploymentAliasesQueryResponse,
-	ListDeploymentCheckRuns400,
-	ListDeploymentCheckRuns401,
-	ListDeploymentCheckRuns403,
-	ListDeploymentCheckRuns500,
-	ListDeploymentCheckRunsPathParams,
-	ListDeploymentCheckRunsQueryParams,
-	ListDeploymentCheckRunsQueryResponse,
-	ListDeploymentFiles400,
-	ListDeploymentFiles401,
-	ListDeploymentFiles403,
-	ListDeploymentFiles404,
-	ListDeploymentFilesPathParams,
-	ListDeploymentFilesQueryParams,
-	ListDeploymentFilesQueryResponse,
-	ListEventTypes400,
-	ListEventTypes401,
-	ListEventTypes403,
-	ListEventTypesQueryParams,
-	ListEventTypesQueryResponse,
-	ListFlagSegments400,
-	ListFlagSegments401,
-	ListFlagSegments402,
-	ListFlagSegments403,
-	ListFlagSegments404,
-	ListFlagSegmentsPathParams,
-	ListFlagSegmentsQueryParams,
-	ListFlagSegmentsQueryResponse,
-	ListFlags400,
-	ListFlags401,
-	ListFlags402,
-	ListFlags403,
-	ListFlags404,
-	ListFlagsPathParams,
-	ListFlagsQueryParams,
-	ListFlagsQueryResponse,
-	ListFlagVersions400,
-	ListFlagVersions401,
-	ListFlagVersions402,
-	ListFlagVersions403,
-	ListFlagVersions404,
-	ListFlagVersionsPathParams,
-	ListFlagVersionsQueryParams,
-	ListFlagVersionsQueryResponse,
-	ListNetworks400,
-	ListNetworks401,
-	ListNetworks403,
-	ListNetworksQueryParams,
-	ListNetworksQueryResponse,
-	ListProjectChecks400,
-	ListProjectChecks401,
-	ListProjectChecks403,
-	ListProjectChecks500,
-	ListProjectChecksPathParams,
-	ListProjectChecksQueryParams,
-	ListProjectChecksQueryResponse,
-	ListPromoteAliases400,
-	ListPromoteAliases401,
-	ListPromoteAliases403,
-	ListPromoteAliases404,
-	ListPromoteAliasesPathParams,
-	ListPromoteAliasesQueryParams,
-	ListPromoteAliasesQueryResponse,
-	ListSessionCommands400,
-	ListSessionCommands401,
-	ListSessionCommands403,
-	ListSessionCommandsPathParams,
-	ListSessionCommandsQueryParams,
-	ListSessionCommandsQueryResponse,
-	ListSessionSnapshots400,
-	ListSessionSnapshots401,
-	ListSessionSnapshots403,
-	ListSessionSnapshots404,
-	ListSessionSnapshotsQueryParams,
-	ListSessionSnapshotsQueryResponse,
-	ListSessions400,
-	ListSessions401,
-	ListSessions403,
-	ListSessions404,
-	ListSessions500,
-	ListSessionsQueryParams,
-	ListSessionsQueryResponse,
-	ListSharedEnvVariable400,
-	ListSharedEnvVariable401,
-	ListSharedEnvVariable403,
-	ListSharedEnvVariable404,
-	ListSharedEnvVariableQueryParams,
-	ListSharedEnvVariableQueryResponse,
-	ListSnapshots400,
-	ListSnapshots401,
-	ListSnapshots403,
-	ListSnapshots404,
-	ListSnapshotsQueryParams,
-	ListSnapshotsQueryResponse,
-	ListTeamFlagSettings400,
-	ListTeamFlagSettings401,
-	ListTeamFlagSettings403,
-	ListTeamFlagSettingsPathParams,
-	ListTeamFlagSettingsQueryParams,
-	ListTeamFlagSettingsQueryResponse,
-	ListTeamFlags400,
-	ListTeamFlags401,
-	ListTeamFlags403,
-	ListTeamFlagsPathParams,
-	ListTeamFlagsQueryParams,
-	ListTeamFlagsQueryResponse,
-	ListUserEvents400,
-	ListUserEvents401,
-	ListUserEvents403,
-	ListUserEventsQueryParams,
-	ListUserEventsQueryResponse,
-	MoveProjectDomain400,
-	MoveProjectDomain401,
-	MoveProjectDomain403,
-	MoveProjectDomain409,
-	MoveProjectDomainMutationResponse,
-	MoveProjectDomainPathParams,
-	MoveProjectDomainQueryParams,
-	PatchDomain400,
-	PatchDomain401,
-	PatchDomain403,
-	PatchDomain404,
-	PatchDomain409,
-	PatchDomain500,
-	PatchDomainMutationResponse,
-	PatchDomainPathParams,
-	PatchDomainQueryParams,
-	PatchEdgeConfigItems400,
-	PatchEdgeConfigItems401,
-	PatchEdgeConfigItems402,
-	PatchEdgeConfigItems403,
-	PatchEdgeConfigItems404,
-	PatchEdgeConfigItems409,
-	PatchEdgeConfigItems412,
-	PatchEdgeConfigItemsMutationResponse,
-	PatchEdgeConfigItemsPathParams,
-	PatchEdgeConfigItemsQueryParams,
-	PatchEdgeConfigSchema400,
-	PatchEdgeConfigSchema401,
-	PatchEdgeConfigSchema402,
-	PatchEdgeConfigSchema403,
-	PatchEdgeConfigSchema404,
-	PatchEdgeConfigSchema409,
-	PatchEdgeConfigSchemaMutationResponse,
-	PatchEdgeConfigSchemaPathParams,
-	PatchEdgeConfigSchemaQueryParams,
-	PatchTeam400,
-	PatchTeam401,
-	PatchTeam402,
-	PatchTeam403,
-	PatchTeam428,
-	PatchTeamMutationResponse,
-	PatchTeamPathParams,
-	PatchTeamQueryParams,
-	PatchUrlProtectionBypass400,
-	PatchUrlProtectionBypass401,
-	PatchUrlProtectionBypass403,
-	PatchUrlProtectionBypass404,
-	PatchUrlProtectionBypass409,
-	PatchUrlProtectionBypass428,
-	PatchUrlProtectionBypassMutationResponse,
-	PatchUrlProtectionBypassPathParams,
-	PatchUrlProtectionBypassQueryParams,
-	PauseProject400,
-	PauseProject401,
-	PauseProject403,
-	PauseProject500,
-	PauseProjectMutationResponse,
-	PauseProjectPathParams,
-	PauseProjectQueryParams,
-	PostTeamDsyncRoles400,
-	PostTeamDsyncRoles401,
-	PostTeamDsyncRoles403,
-	PostTeamDsyncRolesMutationResponse,
-	PostTeamDsyncRolesPathParams,
-	PostTeamDsyncRolesQueryParams,
-	PutFirewallConfig400,
-	PutFirewallConfig401,
-	PutFirewallConfig402,
-	PutFirewallConfig403,
-	PutFirewallConfig404,
-	PutFirewallConfig500,
-	PutFirewallConfigMutationResponse,
-	PutFirewallConfigQueryParams,
-	ReadAccessGroup400,
-	ReadAccessGroup401,
-	ReadAccessGroup403,
-	ReadAccessGroupPathParams,
-	ReadAccessGroupProject400,
-	ReadAccessGroupProject401,
-	ReadAccessGroupProject403,
-	ReadAccessGroupProjectPathParams,
-	ReadAccessGroupProjectQueryParams,
-	ReadAccessGroupProjectQueryResponse,
-	ReadAccessGroupQueryParams,
-	ReadAccessGroupQueryResponse,
-	ReadFile400,
-	ReadFile401,
-	ReadFile403,
-	ReadFile404,
-	ReadFile410,
-	ReadFile422,
-	ReadFileMutationResponse,
-	ReadFilePathParams,
-	ReadFileQueryParams,
-	ReadNetwork400,
-	ReadNetwork401,
-	ReadNetwork403,
-	ReadNetworkPathParams,
-	ReadNetworkQueryParams,
-	ReadNetworkQueryResponse,
-	ReadSessionFile400,
-	ReadSessionFile401,
-	ReadSessionFile403,
-	ReadSessionFile404,
-	ReadSessionFile410,
-	ReadSessionFile422,
-	ReadSessionFileMutationResponse,
-	ReadSessionFilePathParams,
-	ReadSessionFileQueryParams,
-	RecordEvents400,
-	RecordEvents401,
-	RecordEvents402,
-	RecordEvents403,
-	RecordEventsHeaderParams,
-	RecordEventsMutationResponse,
-	RecordEventsQueryParams,
-	RemoveBypassIp400,
-	RemoveBypassIp401,
-	RemoveBypassIp403,
-	RemoveBypassIp404,
-	RemoveBypassIp500,
-	RemoveBypassIpMutationResponse,
-	RemoveBypassIpQueryParams,
-	RemoveCert400,
-	RemoveCert401,
-	RemoveCert403,
-	RemoveCert404,
-	RemoveCertMutationResponse,
-	RemoveCertPathParams,
-	RemoveCertQueryParams,
-	RemoveCustomEnvironment400,
-	RemoveCustomEnvironment401,
-	RemoveCustomEnvironment403,
-	RemoveCustomEnvironmentMutationResponse,
-	RemoveCustomEnvironmentPathParams,
-	RemoveCustomEnvironmentQueryParams,
-	RemoveProjectDomain400,
-	RemoveProjectDomain401,
-	RemoveProjectDomain403,
-	RemoveProjectDomain404,
-	RemoveProjectDomain409,
-	RemoveProjectDomainMutationResponse,
-	RemoveProjectDomainPathParams,
-	RemoveProjectDomainQueryParams,
-	RemoveProjectEnv400,
-	RemoveProjectEnv401,
-	RemoveProjectEnv403,
-	RemoveProjectEnv404,
-	RemoveProjectEnv409,
-	RemoveProjectEnvMutationResponse,
-	RemoveProjectEnvPathParams,
-	RemoveProjectEnvQueryParams,
-	RemoveProjectMember400,
-	RemoveProjectMember401,
-	RemoveProjectMember403,
-	RemoveProjectMemberMutationResponse,
-	RemoveProjectMemberPathParams,
-	RemoveProjectMemberQueryParams,
-	RemoveRecord400,
-	RemoveRecord401,
-	RemoveRecord403,
-	RemoveRecord404,
-	RemoveRecordMutationResponse,
-	RemoveRecordPathParams,
-	RemoveRecordQueryParams,
-	RemoveTeamMember400,
-	RemoveTeamMember401,
-	RemoveTeamMember403,
-	RemoveTeamMember404,
-	RemoveTeamMember503,
-	RemoveTeamMemberMutationResponse,
-	RemoveTeamMemberPathParams,
-	RemoveTeamMemberQueryParams,
-	RenewDomain400,
-	RenewDomain401,
-	RenewDomain403,
-	RenewDomain404,
-	RenewDomain429,
-	RenewDomain500,
-	RenewDomainMutationResponse,
-	RenewDomainPathParams,
-	RenewDomainQueryParams,
-	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig400,
-	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig401,
-	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig403,
-	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig404,
-	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig409,
-	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig412,
-	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigMutationResponse,
-	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigPathParams,
-	RequestAccessToTeam400,
-	RequestAccessToTeam401,
-	RequestAccessToTeam403,
-	RequestAccessToTeam404,
-	RequestAccessToTeam429,
-	RequestAccessToTeam503,
-	RequestAccessToTeamMutationResponse,
-	RequestAccessToTeamPathParams,
-	RequestDelete400,
-	RequestDelete401,
-	RequestDelete402,
-	RequestDelete403,
-	RequestDeleteMutationResponse,
-	RequestPromote400,
-	RequestPromote401,
-	RequestPromote403,
-	RequestPromote409,
-	RequestPromoteMutationResponse,
-	RequestPromotePathParams,
-	RequestPromoteQueryParams,
-	RequestRollback400,
-	RequestRollback401,
-	RequestRollback402,
-	RequestRollback403,
-	RequestRollback409,
-	RequestRollback422,
-	RequestRollbackMutationResponse,
-	RequestRollbackPathParams,
-	RequestRollbackQueryParams,
-	RerequestCheck400,
-	RerequestCheck401,
-	RerequestCheck403,
-	RerequestCheck404,
-	RerequestCheckMutationResponse,
-	RerequestCheckPathParams,
-	RerequestCheckQueryParams,
-	RestoreRedirects400,
-	RestoreRedirects401,
-	RestoreRedirects403,
-	RestoreRedirects404,
-	RestoreRedirects500,
-	RestoreRedirectsMutationResponse,
-	RestoreRedirectsQueryParams,
-	RunCommand400,
-	RunCommand401,
-	RunCommand403,
-	RunCommand410,
-	RunCommand422,
-	RunCommandMutationResponse,
-	RunCommandPathParams,
-	RunCommandQueryParams,
-	RunSessionCommand400,
-	RunSessionCommand401,
-	RunSessionCommand403,
-	RunSessionCommand410,
-	RunSessionCommand422,
-	RunSessionCommandMutationResponse,
-	RunSessionCommandPathParams,
-	RunSessionCommandQueryParams,
-	SearchRepo400,
-	SearchRepo401,
-	SearchRepo403,
-	SearchRepo404,
-	SearchRepo429,
-	SearchRepo500,
-	SearchRepoQueryParams,
-	SearchRepoQueryResponse,
-	StageRedirects400,
-	StageRedirects401,
-	StageRedirects403,
-	StageRedirects500,
-	StageRedirectsMutationResponse,
-	StageRedirectsQueryParams,
-	StageRoutes400,
-	StageRoutes401,
-	StageRoutes403,
-	StageRoutesMutationResponse,
-	StageRoutesPathParams,
-	StageRoutesQueryParams,
-	Status400,
-	Status401,
-	Status402,
-	Status403,
-	StatusQueryParams,
-	StatusQueryResponse,
-	StopSandbox400,
-	StopSandbox401,
-	StopSandbox403,
-	StopSandbox410,
-	StopSandbox422,
-	StopSandboxMutationResponse,
-	StopSandboxPathParams,
-	StopSandboxQueryParams,
-	StopSession400,
-	StopSession401,
-	StopSession403,
-	StopSession410,
-	StopSession422,
-	StopSession500,
-	StopSessionMutationResponse,
-	StopSessionPathParams,
-	StopSessionQueryParams,
-	SubmitBillingData400,
-	SubmitBillingData401,
-	SubmitBillingData403,
-	SubmitBillingData404,
-	SubmitBillingDataMutationResponse,
-	SubmitBillingDataPathParams,
-	SubmitInvoice400,
-	SubmitInvoice401,
-	SubmitInvoice403,
-	SubmitInvoice404,
-	SubmitInvoice409,
-	SubmitInvoiceMutationResponse,
-	SubmitInvoicePathParams,
-	SubmitPrepaymentBalances400,
-	SubmitPrepaymentBalances401,
-	SubmitPrepaymentBalances403,
-	SubmitPrepaymentBalances404,
-	SubmitPrepaymentBalancesMutationResponse,
-	SubmitPrepaymentBalancesPathParams,
-	TestDrain400,
-	TestDrain401,
-	TestDrain403,
-	TestDrainMutationResponse,
-	TestDrainQueryParams,
-	TransferInDomain400,
-	TransferInDomain401,
-	TransferInDomain403,
-	TransferInDomain429,
-	TransferInDomain500,
-	TransferInDomainMutationResponse,
-	TransferInDomainPathParams,
-	TransferInDomainQueryParams,
-	UnlinkSharedEnvVariable400,
-	UnlinkSharedEnvVariable401,
-	UnlinkSharedEnvVariable403,
-	UnlinkSharedEnvVariableMutationResponse,
-	UnlinkSharedEnvVariablePathParams,
-	UnlinkSharedEnvVariableQueryParams,
-	UnpauseProject400,
-	UnpauseProject401,
-	UnpauseProject403,
-	UnpauseProject500,
-	UnpauseProjectMutationResponse,
-	UnpauseProjectPathParams,
-	UnpauseProjectQueryParams,
-	UpdateAccessGroup400,
-	UpdateAccessGroup401,
-	UpdateAccessGroup403,
-	UpdateAccessGroupMutationResponse,
-	UpdateAccessGroupPathParams,
-	UpdateAccessGroupProject400,
-	UpdateAccessGroupProject401,
-	UpdateAccessGroupProject403,
-	UpdateAccessGroupProjectMutationResponse,
-	UpdateAccessGroupProjectPathParams,
-	UpdateAccessGroupProjectQueryParams,
-	UpdateAccessGroupQueryParams,
-	UpdateAttackChallengeMode400,
-	UpdateAttackChallengeMode401,
-	UpdateAttackChallengeMode403,
-	UpdateAttackChallengeMode404,
-	UpdateAttackChallengeModeMutationResponse,
-	UpdateAttackChallengeModeQueryParams,
-	UpdateCheck400,
-	UpdateCheck401,
-	UpdateCheck403,
-	UpdateCheck404,
-	UpdateCheck413,
-	UpdateCheckMutationResponse,
-	UpdateCheckPathParams,
-	UpdateCheckQueryParams,
-	UpdateCustomEnvironment400,
-	UpdateCustomEnvironment401,
-	UpdateCustomEnvironment402,
-	UpdateCustomEnvironment403,
-	UpdateCustomEnvironment500,
-	UpdateCustomEnvironmentMutationResponse,
-	UpdateCustomEnvironmentPathParams,
-	UpdateCustomEnvironmentQueryParams,
-	UpdateDeploymentCheckRun400,
-	UpdateDeploymentCheckRun401,
-	UpdateDeploymentCheckRun403,
-	UpdateDeploymentCheckRun413,
-	UpdateDeploymentCheckRun500,
-	UpdateDeploymentCheckRunMutationResponse,
-	UpdateDeploymentCheckRunPathParams,
-	UpdateDeploymentCheckRunQueryParams,
-	UpdateDomainAutoRenew400,
-	UpdateDomainAutoRenew401,
-	UpdateDomainAutoRenew403,
-	UpdateDomainAutoRenew404,
-	UpdateDomainAutoRenew429,
-	UpdateDomainAutoRenew500,
-	UpdateDomainAutoRenewMutationResponse,
-	UpdateDomainAutoRenewPathParams,
-	UpdateDomainAutoRenewQueryParams,
-	UpdateDomainNameservers400,
-	UpdateDomainNameservers401,
-	UpdateDomainNameservers403,
-	UpdateDomainNameservers404,
-	UpdateDomainNameservers429,
-	UpdateDomainNameservers500,
-	UpdateDomainNameserversMutationResponse,
-	UpdateDomainNameserversPathParams,
-	UpdateDomainNameserversQueryParams,
-	UpdateDrain400,
-	UpdateDrain401,
-	UpdateDrain403,
-	UpdateDrain404,
-	UpdateDrainMutationResponse,
-	UpdateDrainPathParams,
-	UpdateDrainQueryParams,
-	UpdateEdgeConfig400,
-	UpdateEdgeConfig401,
-	UpdateEdgeConfig402,
-	UpdateEdgeConfig403,
-	UpdateEdgeConfig404,
-	UpdateEdgeConfig409,
-	UpdateEdgeConfigMutationResponse,
-	UpdateEdgeConfigPathParams,
-	UpdateEdgeConfigQueryParams,
-	UpdateFirewallConfig400,
-	UpdateFirewallConfig401,
-	UpdateFirewallConfig402,
-	UpdateFirewallConfig403,
-	UpdateFirewallConfig404,
-	UpdateFirewallConfig500,
-	UpdateFirewallConfigMutationResponse,
-	UpdateFirewallConfigQueryParams,
-	UpdateFlag400,
-	UpdateFlag401,
-	UpdateFlag402,
-	UpdateFlag403,
-	UpdateFlag404,
-	UpdateFlag409,
-	UpdateFlag412,
-	UpdateFlagMutationResponse,
-	UpdateFlagPathParams,
-	UpdateFlagQueryParams,
-	UpdateFlagSegment400,
-	UpdateFlagSegment401,
-	UpdateFlagSegment402,
-	UpdateFlagSegment403,
-	UpdateFlagSegment404,
-	UpdateFlagSegment409,
-	UpdateFlagSegment412,
-	UpdateFlagSegmentMutationResponse,
-	UpdateFlagSegmentPathParams,
-	UpdateFlagSegmentQueryParams,
-	UpdateFlagSettings400,
-	UpdateFlagSettings401,
-	UpdateFlagSettings402,
-	UpdateFlagSettings403,
-	UpdateFlagSettings404,
-	UpdateFlagSettings409,
-	UpdateFlagSettings412,
-	UpdateFlagSettingsMutationResponse,
-	UpdateFlagSettingsPathParams,
-	UpdateFlagSettingsQueryParams,
-	UpdateInstallation400,
-	UpdateInstallation401,
-	UpdateInstallation403,
-	UpdateInstallation404,
-	UpdateInstallationMutationResponse,
-	UpdateInstallationPathParams,
-	UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId400,
-	UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId401,
-	UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId403,
-	UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId404,
-	UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdMutationResponse,
-	UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdPathParams,
-	UpdateIntegrationDeploymentAction400,
-	UpdateIntegrationDeploymentAction401,
-	UpdateIntegrationDeploymentAction403,
-	UpdateIntegrationDeploymentActionMutationResponse,
-	UpdateIntegrationDeploymentActionPathParams,
-	UpdateInvoice400,
-	UpdateInvoice401,
-	UpdateInvoice403,
-	UpdateInvoice404,
-	UpdateInvoice409,
-	UpdateInvoiceMutationResponse,
-	UpdateInvoicePathParams,
-	UpdateMicrofrontends400,
-	UpdateMicrofrontends401,
-	UpdateMicrofrontends403,
-	UpdateMicrofrontends409,
-	UpdateMicrofrontends500,
-	UpdateMicrofrontendsGroup400,
-	UpdateMicrofrontendsGroup401,
-	UpdateMicrofrontendsGroup403,
-	UpdateMicrofrontendsGroup404,
-	UpdateMicrofrontendsGroupMutationResponse,
-	UpdateMicrofrontendsGroupPathParams,
-	UpdateMicrofrontendsGroupQueryParams,
-	UpdateMicrofrontendsMutationResponse,
-	UpdateMicrofrontendsPathParams,
-	UpdateMicrofrontendsQueryParams,
-	UpdateNetwork400,
-	UpdateNetwork401,
-	UpdateNetwork403,
-	UpdateNetworkMutationResponse,
-	UpdateNetworkPathParams,
-	UpdateNetworkPolicy400,
-	UpdateNetworkPolicy401,
-	UpdateNetworkPolicy402,
-	UpdateNetworkPolicy403,
-	UpdateNetworkPolicy410,
-	UpdateNetworkPolicy422,
-	UpdateNetworkPolicyMutationResponse,
-	UpdateNetworkPolicyPathParams,
-	UpdateNetworkPolicyQueryParams,
-	UpdateNetworkQueryParams,
-	UpdateObservabilityConfigurationProject400,
-	UpdateObservabilityConfigurationProject401,
-	UpdateObservabilityConfigurationProject403,
-	UpdateObservabilityConfigurationProject404,
-	UpdateObservabilityConfigurationProjectMutationResponse,
-	UpdateObservabilityConfigurationProjectPathParams,
-	UpdateObservabilityConfigurationProjectQueryParams,
-	UpdateProject400,
-	UpdateProject401,
-	UpdateProject402,
-	UpdateProject403,
-	UpdateProject404,
-	UpdateProject409,
-	UpdateProject428,
-	UpdateProjectCheck400,
-	UpdateProjectCheck401,
-	UpdateProjectCheck403,
-	UpdateProjectCheck404,
-	UpdateProjectCheck500,
-	UpdateProjectCheckMutationResponse,
-	UpdateProjectCheckPathParams,
-	UpdateProjectCheckQueryParams,
-	UpdateProjectDomain400,
-	UpdateProjectDomain401,
-	UpdateProjectDomain403,
-	UpdateProjectDomain409,
-	UpdateProjectDomainMutationResponse,
-	UpdateProjectDomainPathParams,
-	UpdateProjectDomainQueryParams,
-	UpdateProjectMutationResponse,
-	UpdateProjectPathParams,
-	UpdateProjectProtectionBypass400,
-	UpdateProjectProtectionBypass401,
-	UpdateProjectProtectionBypass403,
-	UpdateProjectProtectionBypass404,
-	UpdateProjectProtectionBypass409,
-	UpdateProjectProtectionBypassMutationResponse,
-	UpdateProjectProtectionBypassPathParams,
-	UpdateProjectProtectionBypassQueryParams,
-	UpdateProjectQueryParams,
-	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription400,
-	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription401,
-	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription403,
-	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription409,
-	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription422,
-	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionMutationResponse,
-	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionPathParams,
-	UpdateRecord400,
-	UpdateRecord401,
-	UpdateRecord402,
-	UpdateRecord403,
-	UpdateRecord404,
-	UpdateRecord409,
-	UpdateRecordMutationResponse,
-	UpdateRecordPathParams,
-	UpdateRecordQueryParams,
-	UpdateResource400,
-	UpdateResource401,
-	UpdateResource403,
-	UpdateResource404,
-	UpdateResource409,
-	UpdateResource422,
-	UpdateResourceMutationResponse,
-	UpdateResourcePathParams,
-	UpdateResourceSecrets400,
-	UpdateResourceSecrets401,
-	UpdateResourceSecrets403,
-	UpdateResourceSecrets404,
-	UpdateResourceSecrets409,
-	UpdateResourceSecrets422,
-	UpdateResourceSecretsById400,
-	UpdateResourceSecretsById401,
-	UpdateResourceSecretsById403,
-	UpdateResourceSecretsById404,
-	UpdateResourceSecretsById409,
-	UpdateResourceSecretsById422,
-	UpdateResourceSecretsByIdMutationResponse,
-	UpdateResourceSecretsByIdPathParams,
-	UpdateResourceSecretsMutationResponse,
-	UpdateResourceSecretsPathParams,
-	UpdateRollingReleaseConfig400,
-	UpdateRollingReleaseConfig401,
-	UpdateRollingReleaseConfig403,
-	UpdateRollingReleaseConfig404,
-	UpdateRollingReleaseConfigMutationResponse,
-	UpdateRollingReleaseConfigPathParams,
-	UpdateRollingReleaseConfigQueryParams,
-	UpdateRouteVersions400,
-	UpdateRouteVersions401,
-	UpdateRouteVersions403,
-	UpdateRouteVersions404,
-	UpdateRouteVersions500,
-	UpdateRouteVersionsMutationResponse,
-	UpdateRouteVersionsPathParams,
-	UpdateRouteVersionsQueryParams,
-	UpdateSandbox400,
-	UpdateSandbox401,
-	UpdateSandbox402,
-	UpdateSandbox403,
-	UpdateSandbox404,
-	UpdateSandbox410,
-	UpdateSandbox422,
-	UpdateSandbox500,
-	UpdateSandboxMutationResponse,
-	UpdateSandboxPathParams,
-	UpdateSandboxQueryParams,
-	UpdateSessionNetworkPolicy400,
-	UpdateSessionNetworkPolicy401,
-	UpdateSessionNetworkPolicy402,
-	UpdateSessionNetworkPolicy403,
-	UpdateSessionNetworkPolicy410,
-	UpdateSessionNetworkPolicy422,
-	UpdateSessionNetworkPolicy500,
-	UpdateSessionNetworkPolicyMutationResponse,
-	UpdateSessionNetworkPolicyPathParams,
-	UpdateSessionNetworkPolicyQueryParams,
-	UpdateSharedEnvVariable400,
-	UpdateSharedEnvVariable401,
-	UpdateSharedEnvVariable402,
-	UpdateSharedEnvVariable403,
-	UpdateSharedEnvVariableMutationResponse,
-	UpdateSharedEnvVariableQueryParams,
-	UpdateStaticIps400,
-	UpdateStaticIps401,
-	UpdateStaticIps402,
-	UpdateStaticIps403,
-	UpdateStaticIps404,
-	UpdateStaticIps409,
-	UpdateStaticIps500,
-	UpdateStaticIpsMutationResponse,
-	UpdateStaticIpsPathParams,
-	UpdateStaticIpsQueryParams,
-	UpdateTeamMember400,
-	UpdateTeamMember401,
-	UpdateTeamMember402,
-	UpdateTeamMember403,
-	UpdateTeamMember404,
-	UpdateTeamMember409,
-	UpdateTeamMember500,
-	UpdateTeamMemberMutationResponse,
-	UpdateTeamMemberPathParams,
-	UpdateVersion400,
-	UpdateVersion401,
-	UpdateVersion403,
-	UpdateVersion404,
-	UpdateVersion500,
-	UpdateVersionMutationResponse,
-	UpdateVersionQueryParams,
-	UploadArtifact400,
-	UploadArtifact401,
-	UploadArtifact402,
-	UploadArtifact403,
-	UploadArtifactHeaderParams,
-	UploadArtifactMutationResponse,
-	UploadArtifactPathParams,
-	UploadArtifactQueryParams,
-	UploadCert400,
-	UploadCert401,
-	UploadCert402,
-	UploadCert403,
-	UploadCertMutationResponse,
-	UploadCertQueryParams,
-	UploadFile400,
-	UploadFile401,
-	UploadFile403,
-	UploadFileHeaderParams,
-	UploadFileMutationResponse,
-	UploadFileQueryParams,
-	VerifyProjectDomain400,
-	VerifyProjectDomain401,
-	VerifyProjectDomain403,
-	VerifyProjectDomainMutationResponse,
-	VerifyProjectDomainPathParams,
-	VerifyProjectDomainQueryParams,
-	WriteFiles400,
-	WriteFiles401,
-	WriteFiles403,
-	WriteFiles410,
-	WriteFiles422,
-	WriteFilesHeaderParams,
-	WriteFilesMutationResponse,
-	WriteFilesPathParams,
-	WriteFilesQueryParams,
-	WriteSessionFiles400,
-	WriteSessionFiles401,
-	WriteSessionFiles403,
-	WriteSessionFiles410,
-	WriteSessionFiles422,
-	WriteSessionFilesHeaderParams,
-	WriteSessionFilesMutationResponse,
-	WriteSessionFilesPathParams,
-	WriteSessionFilesQueryParams,
+	AcceptProjectTransferRequestResponse,
+	AcceptProjectTransferRequestStatus400,
+	AcceptProjectTransferRequestStatus401,
+	AcceptProjectTransferRequestStatus403,
+	AcceptProjectTransferRequestStatus404,
+	AcceptProjectTransferRequestStatus422,
+	AddBypassIpResponse,
+	AddBypassIpStatus400,
+	AddBypassIpStatus401,
+	AddBypassIpStatus403,
+	AddBypassIpStatus404,
+	AddBypassIpStatus500,
+	AddProjectDomainResponse,
+	AddProjectDomainStatus400,
+	AddProjectDomainStatus401,
+	AddProjectDomainStatus402,
+	AddProjectDomainStatus403,
+	AddProjectDomainStatus409,
+	AddProjectMemberResponse,
+	AddProjectMemberStatus400,
+	AddProjectMemberStatus401,
+	AddProjectMemberStatus403,
+	AddProjectMemberStatus500,
+	AddRouteResponse,
+	AddRouteStatus400,
+	AddRouteStatus401,
+	AddRouteStatus403,
+	AddRouteStatus409,
+	AddRouteStatus500,
+	ApproveRollingReleaseStageResponse,
+	ApproveRollingReleaseStageStatus400,
+	ApproveRollingReleaseStageStatus401,
+	ApproveRollingReleaseStageStatus403,
+	ApproveRollingReleaseStageStatus404,
+	ApproveRollingReleaseStageStatus500,
+	ArtifactQueryResponse,
+	ArtifactQueryStatus400,
+	ArtifactQueryStatus401,
+	ArtifactQueryStatus402,
+	ArtifactQueryStatus403,
+	AssignAliasResponse,
+	AssignAliasStatus400,
+	AssignAliasStatus401,
+	AssignAliasStatus402,
+	AssignAliasStatus403,
+	AssignAliasStatus404,
+	AssignAliasStatus409,
+	BatchRemoveProjectEnvResponse,
+	BatchRemoveProjectEnvStatus400,
+	BatchRemoveProjectEnvStatus401,
+	BatchRemoveProjectEnvStatus403,
+	BatchRemoveProjectEnvStatus404,
+	BatchRemoveProjectEnvStatus409,
+	BuyCreditsResponse,
+	BuyCreditsStatus400,
+	BuyCreditsStatus401,
+	BuyCreditsStatus402,
+	BuyCreditsStatus403,
+	BuyCreditsStatus404,
+	BuyCreditsStatus500,
+	BuyDomainsResponse,
+	BuyDomainsStatus400,
+	BuyDomainsStatus401,
+	BuyDomainsStatus403,
+	BuyDomainsStatus429,
+	BuyDomainsStatus500,
+	BuySingleDomainResponse,
+	BuySingleDomainStatus400,
+	BuySingleDomainStatus401,
+	BuySingleDomainStatus403,
+	BuySingleDomainStatus429,
+	BuySingleDomainStatus500,
+	CancelDeploymentResponse,
+	CancelDeploymentStatus400,
+	CancelDeploymentStatus401,
+	CancelDeploymentStatus403,
+	CancelDeploymentStatus404,
+	CompleteRollingReleaseResponse,
+	CompleteRollingReleaseStatus400,
+	CompleteRollingReleaseStatus401,
+	CompleteRollingReleaseStatus403,
+	CompleteRollingReleaseStatus404,
+	ConnectIntegrationResourceToProjectResponse,
+	ConnectIntegrationResourceToProjectStatus400,
+	ConnectIntegrationResourceToProjectStatus401,
+	ConnectIntegrationResourceToProjectStatus403,
+	ConnectIntegrationResourceToProjectStatus404,
+	CreateAccessGroupProjectResponse,
+	CreateAccessGroupProjectStatus400,
+	CreateAccessGroupProjectStatus401,
+	CreateAccessGroupProjectStatus403,
+	CreateAccessGroupResponse,
+	CreateAccessGroupStatus400,
+	CreateAccessGroupStatus401,
+	CreateAccessGroupStatus403,
+	CreateAuthTokenResponse,
+	CreateAuthTokenStatus400,
+	CreateAuthTokenStatus401,
+	CreateAuthTokenStatus403,
+	CreateAuthTokenStatus404,
+	CreateCheckResponse,
+	CreateCheckStatus400,
+	CreateCheckStatus401,
+	CreateCheckStatus403,
+	CreateCheckStatus404,
+	CreateConfigurableLogDrainResponse,
+	CreateConfigurableLogDrainStatus400,
+	CreateConfigurableLogDrainStatus401,
+	CreateConfigurableLogDrainStatus403,
+	CreateCustomEnvironmentResponse,
+	CreateCustomEnvironmentStatus400,
+	CreateCustomEnvironmentStatus401,
+	CreateCustomEnvironmentStatus402,
+	CreateCustomEnvironmentStatus403,
+	CreateCustomEnvironmentStatus500,
+	CreateDeploymentCheckRunResponse,
+	CreateDeploymentCheckRunStatus400,
+	CreateDeploymentCheckRunStatus401,
+	CreateDeploymentCheckRunStatus403,
+	CreateDeploymentCheckRunStatus404,
+	CreateDeploymentCheckRunStatus500,
+	CreateDeploymentResponse,
+	CreateDeploymentStatus400,
+	CreateDeploymentStatus401,
+	CreateDeploymentStatus402,
+	CreateDeploymentStatus403,
+	CreateDeploymentStatus404,
+	CreateDeploymentStatus409,
+	CreateDeploymentStatus426,
+	CreateDeploymentStatus429,
+	CreateDeploymentStatus500,
+	CreateDeploymentStatus503,
+	CreateDirectoryResponse,
+	CreateDirectoryStatus400,
+	CreateDirectoryStatus401,
+	CreateDirectoryStatus403,
+	CreateDirectoryStatus404,
+	CreateDirectoryStatus410,
+	CreateDirectoryStatus422,
+	CreateDrainResponse,
+	CreateDrainStatus400,
+	CreateDrainStatus401,
+	CreateDrainStatus403,
+	CreateEdgeConfigResponse,
+	CreateEdgeConfigStatus400,
+	CreateEdgeConfigStatus401,
+	CreateEdgeConfigStatus402,
+	CreateEdgeConfigStatus403,
+	CreateEdgeConfigTokenResponse,
+	CreateEdgeConfigTokenStatus400,
+	CreateEdgeConfigTokenStatus401,
+	CreateEdgeConfigTokenStatus402,
+	CreateEdgeConfigTokenStatus403,
+	CreateEdgeConfigTokenStatus404,
+	CreateEdgeConfigTokenStatus409,
+	CreateEventResponse,
+	CreateEventStatus400,
+	CreateEventStatus401,
+	CreateEventStatus403,
+	CreateEventStatus404,
+	CreateFlagResponse,
+	CreateFlagSegmentResponse,
+	CreateFlagSegmentStatus400,
+	CreateFlagSegmentStatus401,
+	CreateFlagSegmentStatus402,
+	CreateFlagSegmentStatus403,
+	CreateFlagSegmentStatus404,
+	CreateFlagSegmentStatus409,
+	CreateFlagSegmentStatus412,
+	CreateFlagStatus400,
+	CreateFlagStatus401,
+	CreateFlagStatus402,
+	CreateFlagStatus403,
+	CreateFlagStatus404,
+	CreateFlagStatus409,
+	CreateFlagStatus412,
+	CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsResponse,
+	CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsStatus400,
+	CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsStatus401,
+	CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsStatus403,
+	CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsStatus404,
+	CreateIntegrationStoreDirectResponse,
+	CreateIntegrationStoreDirectStatus400,
+	CreateIntegrationStoreDirectStatus401,
+	CreateIntegrationStoreDirectStatus402,
+	CreateIntegrationStoreDirectStatus403,
+	CreateIntegrationStoreDirectStatus404,
+	CreateIntegrationStoreDirectStatus409,
+	CreateIntegrationStoreDirectStatus429,
+	CreateIntegrationStoreDirectStatus500,
+	CreateLogDrainResponse,
+	CreateLogDrainStatus400,
+	CreateLogDrainStatus401,
+	CreateLogDrainStatus403,
+	CreateMicrofrontendsGroupWithApplicationsResponse,
+	CreateMicrofrontendsGroupWithApplicationsStatus400,
+	CreateMicrofrontendsGroupWithApplicationsStatus401,
+	CreateMicrofrontendsGroupWithApplicationsStatus403,
+	CreateMicrofrontendsGroupWithApplicationsStatus500,
+	CreateNetworkResponse,
+	CreateNetworkStatus400,
+	CreateNetworkStatus401,
+	CreateNetworkStatus402,
+	CreateNetworkStatus403,
+	CreateNetworkStatus409,
+	CreateOrTransferDomainResponse,
+	CreateOrTransferDomainStatus400,
+	CreateOrTransferDomainStatus401,
+	CreateOrTransferDomainStatus402,
+	CreateOrTransferDomainStatus403,
+	CreateOrTransferDomainStatus404,
+	CreateOrTransferDomainStatus409,
+	CreateProjectCheckResponse,
+	CreateProjectCheckStatus400,
+	CreateProjectCheckStatus401,
+	CreateProjectCheckStatus403,
+	CreateProjectCheckStatus500,
+	CreateProjectEnvResponse,
+	CreateProjectEnvStatus400,
+	CreateProjectEnvStatus401,
+	CreateProjectEnvStatus402,
+	CreateProjectEnvStatus403,
+	CreateProjectEnvStatus404,
+	CreateProjectEnvStatus409,
+	CreateProjectEnvStatus429,
+	CreateProjectEnvStatus500,
+	CreateProjectResponse,
+	CreateProjectStatus400,
+	CreateProjectStatus401,
+	CreateProjectStatus402,
+	CreateProjectStatus403,
+	CreateProjectStatus404,
+	CreateProjectStatus409,
+	CreateProjectStatus428,
+	CreateProjectStatus429,
+	CreateProjectStatus500,
+	CreateProjectTransferRequestResponse,
+	CreateProjectTransferRequestStatus400,
+	CreateProjectTransferRequestStatus401,
+	CreateProjectTransferRequestStatus403,
+	CreateRecordResponse,
+	CreateRecordStatus400,
+	CreateRecordStatus401,
+	CreateRecordStatus402,
+	CreateRecordStatus403,
+	CreateRecordStatus404,
+	CreateRecordStatus409,
+	CreateSandboxesResponse,
+	CreateSandboxesStatus400,
+	CreateSandboxesStatus401,
+	CreateSandboxesStatus402,
+	CreateSandboxesStatus403,
+	CreateSandboxesStatus404,
+	CreateSandboxesStatus409,
+	CreateSandboxesStatus410,
+	CreateSandboxesStatus422,
+	CreateSandboxesStatus429,
+	CreateSandboxesStatus500,
+	CreateSandboxResponse,
+	CreateSandboxStatus400,
+	CreateSandboxStatus401,
+	CreateSandboxStatus402,
+	CreateSandboxStatus403,
+	CreateSandboxStatus404,
+	CreateSandboxStatus409,
+	CreateSandboxStatus410,
+	CreateSandboxStatus422,
+	CreateSandboxStatus429,
+	CreateSandboxStatus500,
+	CreateSdkKeyResponse,
+	CreateSdkKeyStatus400,
+	CreateSdkKeyStatus401,
+	CreateSdkKeyStatus402,
+	CreateSdkKeyStatus403,
+	CreateSdkKeyStatus404,
+	CreateSdkKeyStatus409,
+	CreateSessionDirectoryResponse,
+	CreateSessionDirectoryStatus400,
+	CreateSessionDirectoryStatus401,
+	CreateSessionDirectoryStatus403,
+	CreateSessionDirectoryStatus404,
+	CreateSessionDirectoryStatus410,
+	CreateSessionDirectoryStatus422,
+	CreateSessionSnapshotResponse,
+	CreateSessionSnapshotStatus400,
+	CreateSessionSnapshotStatus401,
+	CreateSessionSnapshotStatus402,
+	CreateSessionSnapshotStatus403,
+	CreateSessionSnapshotStatus404,
+	CreateSessionSnapshotStatus410,
+	CreateSessionSnapshotStatus422,
+	CreateSessionSnapshotStatus500,
+	CreateSharedEnvVariableResponse,
+	CreateSharedEnvVariableStatus400,
+	CreateSharedEnvVariableStatus401,
+	CreateSharedEnvVariableStatus402,
+	CreateSharedEnvVariableStatus403,
+	CreateSnapshotResponse,
+	CreateSnapshotStatus400,
+	CreateSnapshotStatus401,
+	CreateSnapshotStatus402,
+	CreateSnapshotStatus403,
+	CreateSnapshotStatus404,
+	CreateSnapshotStatus410,
+	CreateSnapshotStatus422,
+	CreateTeamResponse,
+	CreateTeamStatus400,
+	CreateTeamStatus401,
+	CreateTeamStatus403,
+	CreateTeamStatus404,
+	CreateTeamStatus409,
+	CreateWebhookResponse,
+	CreateWebhookStatus400,
+	CreateWebhookStatus401,
+	CreateWebhookStatus403,
+	DangerouslyDeleteBySrcImagesResponse,
+	DangerouslyDeleteBySrcImagesStatus400,
+	DangerouslyDeleteBySrcImagesStatus401,
+	DangerouslyDeleteBySrcImagesStatus402,
+	DangerouslyDeleteBySrcImagesStatus403,
+	DangerouslyDeleteBySrcImagesStatus404,
+	DangerouslyDeleteByTagsResponse,
+	DangerouslyDeleteByTagsStatus400,
+	DangerouslyDeleteByTagsStatus401,
+	DangerouslyDeleteByTagsStatus403,
+	DangerouslyDeleteByTagsStatus404,
+	DeleteAccessGroupProjectResponse,
+	DeleteAccessGroupProjectStatus400,
+	DeleteAccessGroupProjectStatus401,
+	DeleteAccessGroupProjectStatus403,
+	DeleteAccessGroupResponse,
+	DeleteAccessGroupStatus400,
+	DeleteAccessGroupStatus401,
+	DeleteAccessGroupStatus403,
+	DeleteAliasResponse,
+	DeleteAliasStatus400,
+	DeleteAliasStatus401,
+	DeleteAliasStatus403,
+	DeleteAliasStatus404,
+	DeleteAuthTokenResponse,
+	DeleteAuthTokenStatus400,
+	DeleteAuthTokenStatus401,
+	DeleteAuthTokenStatus403,
+	DeleteAuthTokenStatus404,
+	DeleteConfigurableLogDrainResponse,
+	DeleteConfigurableLogDrainStatus400,
+	DeleteConfigurableLogDrainStatus401,
+	DeleteConfigurableLogDrainStatus403,
+	DeleteConfigurableLogDrainStatus404,
+	DeleteConfigurationResponse,
+	DeleteConfigurationStatus400,
+	DeleteConfigurationStatus401,
+	DeleteConfigurationStatus403,
+	DeleteConfigurationStatus404,
+	DeleteDeploymentResponse,
+	DeleteDeploymentStatus400,
+	DeleteDeploymentStatus401,
+	DeleteDeploymentStatus403,
+	DeleteDeploymentStatus404,
+	DeleteDomainResponse,
+	DeleteDomainStatus400,
+	DeleteDomainStatus401,
+	DeleteDomainStatus403,
+	DeleteDomainStatus404,
+	DeleteDomainStatus409,
+	DeleteDrainResponse,
+	DeleteDrainStatus400,
+	DeleteDrainStatus401,
+	DeleteDrainStatus403,
+	DeleteDrainStatus404,
+	DeleteEdgeConfigResponse,
+	DeleteEdgeConfigSchemaResponse,
+	DeleteEdgeConfigSchemaStatus400,
+	DeleteEdgeConfigSchemaStatus401,
+	DeleteEdgeConfigSchemaStatus402,
+	DeleteEdgeConfigSchemaStatus403,
+	DeleteEdgeConfigSchemaStatus404,
+	DeleteEdgeConfigSchemaStatus409,
+	DeleteEdgeConfigStatus400,
+	DeleteEdgeConfigStatus401,
+	DeleteEdgeConfigStatus403,
+	DeleteEdgeConfigStatus404,
+	DeleteEdgeConfigStatus409,
+	DeleteEdgeConfigTokensResponse,
+	DeleteEdgeConfigTokensStatus400,
+	DeleteEdgeConfigTokensStatus401,
+	DeleteEdgeConfigTokensStatus402,
+	DeleteEdgeConfigTokensStatus403,
+	DeleteEdgeConfigTokensStatus404,
+	DeleteEdgeConfigTokensStatus409,
+	DeleteFlagResponse,
+	DeleteFlagSegmentResponse,
+	DeleteFlagSegmentStatus400,
+	DeleteFlagSegmentStatus401,
+	DeleteFlagSegmentStatus402,
+	DeleteFlagSegmentStatus403,
+	DeleteFlagSegmentStatus404,
+	DeleteFlagSegmentStatus409,
+	DeleteFlagSegmentStatus412,
+	DeleteFlagStatus400,
+	DeleteFlagStatus401,
+	DeleteFlagStatus402,
+	DeleteFlagStatus403,
+	DeleteFlagStatus404,
+	DeleteFlagStatus409,
+	DeleteFlagStatus412,
+	DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdResponse,
+	DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus400,
+	DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus401,
+	DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus403,
+	DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus404,
+	DeleteIntegrationLogDrainResponse,
+	DeleteIntegrationLogDrainStatus400,
+	DeleteIntegrationLogDrainStatus401,
+	DeleteIntegrationLogDrainStatus403,
+	DeleteIntegrationLogDrainStatus404,
+	DeleteIntegrationResourceResponse,
+	DeleteIntegrationResourceStatus400,
+	DeleteIntegrationResourceStatus401,
+	DeleteIntegrationResourceStatus403,
+	DeleteIntegrationResourceStatus404,
+	DeleteMicrofrontendsGroupResponse,
+	DeleteMicrofrontendsGroupStatus400,
+	DeleteMicrofrontendsGroupStatus401,
+	DeleteMicrofrontendsGroupStatus403,
+	DeleteMicrofrontendsGroupStatus404,
+	DeleteMicrofrontendsGroupStatus500,
+	DeleteNetworkResponse,
+	DeleteNetworkStatus400,
+	DeleteNetworkStatus401,
+	DeleteNetworkStatus402,
+	DeleteNetworkStatus403,
+	DeleteNetworkStatus409,
+	DeleteProjectCheckResponse,
+	DeleteProjectCheckStatus400,
+	DeleteProjectCheckStatus401,
+	DeleteProjectCheckStatus403,
+	DeleteProjectCheckStatus404,
+	DeleteProjectCheckStatus500,
+	DeleteProjectResponse,
+	DeleteProjectStatus400,
+	DeleteProjectStatus401,
+	DeleteProjectStatus403,
+	DeleteProjectStatus409,
+	DeleteRedirectsResponse,
+	DeleteRedirectsStatus400,
+	DeleteRedirectsStatus401,
+	DeleteRedirectsStatus403,
+	DeleteRedirectsStatus404,
+	DeleteRedirectsStatus500,
+	DeleteRollingReleaseConfigResponse,
+	DeleteRollingReleaseConfigStatus400,
+	DeleteRollingReleaseConfigStatus401,
+	DeleteRollingReleaseConfigStatus403,
+	DeleteRollingReleaseConfigStatus404,
+	DeleteRoutesResponse,
+	DeleteRoutesStatus400,
+	DeleteRoutesStatus401,
+	DeleteRoutesStatus403,
+	DeleteRoutesStatus404,
+	DeleteRoutesStatus409,
+	DeleteRoutesStatus500,
+	DeleteSandboxResponse,
+	DeleteSandboxStatus400,
+	DeleteSandboxStatus401,
+	DeleteSandboxStatus403,
+	DeleteSandboxStatus404,
+	DeleteSandboxStatus410,
+	DeleteSandboxStatus422,
+	DeleteSdkKeyResponse,
+	DeleteSdkKeyStatus400,
+	DeleteSdkKeyStatus401,
+	DeleteSdkKeyStatus402,
+	DeleteSdkKeyStatus403,
+	DeleteSdkKeyStatus404,
+	DeleteSdkKeyStatus409,
+	DeleteSessionSnapshotResponse,
+	DeleteSessionSnapshotStatus400,
+	DeleteSessionSnapshotStatus401,
+	DeleteSessionSnapshotStatus403,
+	DeleteSessionSnapshotStatus404,
+	DeleteSharedEnvVariableResponse,
+	DeleteSharedEnvVariableStatus400,
+	DeleteSharedEnvVariableStatus401,
+	DeleteSharedEnvVariableStatus402,
+	DeleteSharedEnvVariableStatus403,
+	DeleteSnapshotResponse,
+	DeleteSnapshotStatus400,
+	DeleteSnapshotStatus401,
+	DeleteSnapshotStatus403,
+	DeleteSnapshotStatus404,
+	DeleteTeamInviteCodeResponse,
+	DeleteTeamInviteCodeStatus400,
+	DeleteTeamInviteCodeStatus401,
+	DeleteTeamInviteCodeStatus403,
+	DeleteTeamInviteCodeStatus404,
+	DeleteTeamResponse,
+	DeleteTeamStatus400,
+	DeleteTeamStatus401,
+	DeleteTeamStatus402,
+	DeleteTeamStatus403,
+	DeleteTeamStatus409,
+	DeleteWebhookResponse,
+	DeleteWebhookStatus400,
+	DeleteWebhookStatus401,
+	DeleteWebhookStatus403,
+	DownloadArtifactResponse,
+	DownloadArtifactStatus400,
+	DownloadArtifactStatus401,
+	DownloadArtifactStatus402,
+	DownloadArtifactStatus403,
+	DownloadArtifactStatus404,
+	EditProjectEnvResponse,
+	EditProjectEnvStatus400,
+	EditProjectEnvStatus401,
+	EditProjectEnvStatus403,
+	EditProjectEnvStatus404,
+	EditProjectEnvStatus409,
+	EditProjectEnvStatus429,
+	EditProjectEnvStatus500,
+	EditRedirectResponse,
+	EditRedirectStatus400,
+	EditRedirectStatus401,
+	EditRedirectStatus403,
+	EditRedirectStatus404,
+	EditRedirectStatus500,
+	EditRouteResponse,
+	EditRouteStatus400,
+	EditRouteStatus401,
+	EditRouteStatus403,
+	EditRouteStatus404,
+	EditRouteStatus409,
+	EditRouteStatus500,
+	ExchangeSsoTokenResponse,
+	ExchangeSsoTokenStatus400,
+	ExchangeSsoTokenStatus403,
+	ExchangeSsoTokenStatus500,
+	ExtendSandboxTimeoutResponse,
+	ExtendSandboxTimeoutStatus400,
+	ExtendSandboxTimeoutStatus401,
+	ExtendSandboxTimeoutStatus403,
+	ExtendSandboxTimeoutStatus404,
+	ExtendSandboxTimeoutStatus410,
+	ExtendSandboxTimeoutStatus422,
+	ExtendSessionTimeoutResponse,
+	ExtendSessionTimeoutStatus400,
+	ExtendSessionTimeoutStatus401,
+	ExtendSessionTimeoutStatus403,
+	ExtendSessionTimeoutStatus404,
+	ExtendSessionTimeoutStatus410,
+	ExtendSessionTimeoutStatus422,
+	ExtendSessionTimeoutStatus500,
+	FilterProjectEnvsResponse,
+	FilterProjectEnvsStatus400,
+	FilterProjectEnvsStatus401,
+	FilterProjectEnvsStatus403,
+	FinalizeInstallationResponse,
+	FinalizeInstallationStatus400,
+	FinalizeInstallationStatus401,
+	FinalizeInstallationStatus403,
+	FinalizeInstallationStatus404,
+	GenerateRouteResponse,
+	GenerateRouteStatus400,
+	GenerateRouteStatus401,
+	GenerateRouteStatus403,
+	GenerateRouteStatus408,
+	GenerateRouteStatus500,
+	GetAccountInfoResponse,
+	GetAccountInfoStatus400,
+	GetAccountInfoStatus401,
+	GetAccountInfoStatus403,
+	GetAccountInfoStatus404,
+	GetActiveAttackStatusResponse,
+	GetActiveAttackStatusStatus400,
+	GetActiveAttackStatusStatus401,
+	GetActiveAttackStatusStatus403,
+	GetActiveAttackStatusStatus404,
+	GetAliasResponse,
+	GetAliasStatus400,
+	GetAliasStatus401,
+	GetAliasStatus403,
+	GetAliasStatus404,
+	GetAllChecksResponse,
+	GetAllChecksStatus400,
+	GetAllChecksStatus401,
+	GetAllChecksStatus403,
+	GetAllChecksStatus404,
+	GetAllLogDrainsResponse,
+	GetAllLogDrainsStatus400,
+	GetAllLogDrainsStatus401,
+	GetAllLogDrainsStatus403,
+	GetAllLogDrainsStatus404,
+	GetAuthTokenResponse,
+	GetAuthTokenStatus400,
+	GetAuthTokenStatus401,
+	GetAuthTokenStatus403,
+	GetAuthTokenStatus404,
+	GetAuthUserResponse,
+	GetAuthUserStatus400,
+	GetAuthUserStatus401,
+	GetAuthUserStatus403,
+	GetAuthUserStatus409,
+	GetBillingPlansResponse,
+	GetBillingPlansStatus400,
+	GetBillingPlansStatus401,
+	GetBillingPlansStatus403,
+	GetBillingPlansStatus404,
+	GetBulkAvailabilityResponse,
+	GetBulkAvailabilityStatus400,
+	GetBulkAvailabilityStatus401,
+	GetBulkAvailabilityStatus403,
+	GetBulkAvailabilityStatus429,
+	GetBulkAvailabilityStatus500,
+	GetBypassIpResponse,
+	GetBypassIpStatus400,
+	GetBypassIpStatus401,
+	GetBypassIpStatus403,
+	GetBypassIpStatus404,
+	GetBypassIpStatus500,
+	GetCertByIdResponse,
+	GetCertByIdStatus400,
+	GetCertByIdStatus401,
+	GetCertByIdStatus403,
+	GetCertByIdStatus404,
+	GetCheckResponse,
+	GetCheckStatus400,
+	GetCheckStatus401,
+	GetCheckStatus403,
+	GetCheckStatus404,
+	GetCommandLogsResponse,
+	GetCommandLogsStatus400,
+	GetCommandLogsStatus401,
+	GetCommandLogsStatus403,
+	GetCommandLogsStatus404,
+	GetCommandLogsStatus410,
+	GetCommandLogsStatus422,
+	GetCommandResponse,
+	GetCommandStatus400,
+	GetCommandStatus401,
+	GetCommandStatus403,
+	GetCommandStatus404,
+	GetCommandStatus410,
+	GetCommandStatus422,
+	GetConfigurableLogDrainResponse,
+	GetConfigurableLogDrainStatus400,
+	GetConfigurableLogDrainStatus401,
+	GetConfigurableLogDrainStatus403,
+	GetConfigurableLogDrainStatus404,
+	GetConfigurationProductsResponse,
+	GetConfigurationProductsStatus400,
+	GetConfigurationProductsStatus401,
+	GetConfigurationProductsStatus403,
+	GetConfigurationProductsStatus404,
+	GetConfigurationProductsStatus500,
+	GetConfigurationResponse,
+	GetConfigurationStatus400,
+	GetConfigurationStatus401,
+	GetConfigurationStatus403,
+	GetConfigurationStatus404,
+	GetConfigurationsResponse,
+	GetConfigurationsStatus400,
+	GetConfigurationsStatus401,
+	GetConfigurationsStatus403,
+	GetContactInfoSchemaResponse,
+	GetContactInfoSchemaStatus400,
+	GetContactInfoSchemaStatus401,
+	GetContactInfoSchemaStatus403,
+	GetContactInfoSchemaStatus429,
+	GetContactInfoSchemaStatus500,
+	GetCustomEnvironmentResponse,
+	GetCustomEnvironmentStatus400,
+	GetCustomEnvironmentStatus401,
+	GetCustomEnvironmentStatus403,
+	GetCustomEnvironmentStatus404,
+	GetDeploymentCheckRunResponse,
+	GetDeploymentCheckRunStatus400,
+	GetDeploymentCheckRunStatus401,
+	GetDeploymentCheckRunStatus403,
+	GetDeploymentCheckRunStatus404,
+	GetDeploymentCheckRunStatus500,
+	GetDeploymentEventsResponse,
+	GetDeploymentEventsStatus400,
+	GetDeploymentEventsStatus401,
+	GetDeploymentEventsStatus403,
+	GetDeploymentEventsStatus500,
+	GetDeploymentFeatureFlagsResponse,
+	GetDeploymentFeatureFlagsStatus400,
+	GetDeploymentFeatureFlagsStatus401,
+	GetDeploymentFeatureFlagsStatus403,
+	GetDeploymentFeatureFlagsStatus404,
+	GetDeploymentFileContentsResponse,
+	GetDeploymentFileContentsStatus400,
+	GetDeploymentFileContentsStatus401,
+	GetDeploymentFileContentsStatus403,
+	GetDeploymentFileContentsStatus404,
+	GetDeploymentFileContentsStatus410,
+	GetDeploymentResponse,
+	GetDeploymentStatus400,
+	GetDeploymentStatus403,
+	GetDeploymentStatus404,
+	GetDeploymentStatus429,
+	GetDeploymentsResponse,
+	GetDeploymentsStatus400,
+	GetDeploymentsStatus401,
+	GetDeploymentsStatus403,
+	GetDeploymentsStatus404,
+	GetDeploymentsStatus422,
+	GetDomainAuthCodeResponse,
+	GetDomainAuthCodeStatus400,
+	GetDomainAuthCodeStatus401,
+	GetDomainAuthCodeStatus403,
+	GetDomainAuthCodeStatus404,
+	GetDomainAuthCodeStatus409,
+	GetDomainAuthCodeStatus429,
+	GetDomainAuthCodeStatus500,
+	GetDomainAvailabilityResponse,
+	GetDomainAvailabilityStatus400,
+	GetDomainAvailabilityStatus401,
+	GetDomainAvailabilityStatus403,
+	GetDomainAvailabilityStatus404,
+	GetDomainAvailabilityStatus429,
+	GetDomainAvailabilityStatus500,
+	GetDomainConfigResponse,
+	GetDomainConfigStatus400,
+	GetDomainConfigStatus401,
+	GetDomainConfigStatus403,
+	GetDomainPriceResponse,
+	GetDomainPriceStatus400,
+	GetDomainPriceStatus401,
+	GetDomainPriceStatus403,
+	GetDomainPriceStatus429,
+	GetDomainPriceStatus500,
+	GetDomainResponse,
+	GetDomainStatus400,
+	GetDomainStatus401,
+	GetDomainStatus403,
+	GetDomainStatus404,
+	GetDomainsResponse,
+	GetDomainsStatus400,
+	GetDomainsStatus401,
+	GetDomainsStatus403,
+	GetDomainsStatus409,
+	GetDomainTransferInResponse,
+	GetDomainTransferInStatus400,
+	GetDomainTransferInStatus401,
+	GetDomainTransferInStatus403,
+	GetDomainTransferInStatus404,
+	GetDomainTransferInStatus429,
+	GetDomainTransferInStatus500,
+	GetDrainResponse,
+	GetDrainStatus400,
+	GetDrainStatus401,
+	GetDrainStatus403,
+	GetDrainStatus404,
+	GetDrainsResponse,
+	GetDrainsStatus400,
+	GetDrainsStatus401,
+	GetDrainsStatus403,
+	GetDrainsStatus404,
+	GetEdgeConfigBackupResponse,
+	GetEdgeConfigBackupStatus400,
+	GetEdgeConfigBackupStatus401,
+	GetEdgeConfigBackupStatus403,
+	GetEdgeConfigBackupStatus404,
+	GetEdgeConfigBackupsResponse,
+	GetEdgeConfigBackupsStatus400,
+	GetEdgeConfigBackupsStatus401,
+	GetEdgeConfigBackupsStatus403,
+	GetEdgeConfigBackupsStatus404,
+	GetEdgeConfigItemResponse,
+	GetEdgeConfigItemStatus400,
+	GetEdgeConfigItemStatus401,
+	GetEdgeConfigItemStatus403,
+	GetEdgeConfigItemStatus404,
+	GetEdgeConfigItemsResponse,
+	GetEdgeConfigItemsStatus400,
+	GetEdgeConfigItemsStatus401,
+	GetEdgeConfigItemsStatus403,
+	GetEdgeConfigItemsStatus404,
+	GetEdgeConfigResponse,
+	GetEdgeConfigSchemaResponse,
+	GetEdgeConfigSchemaStatus400,
+	GetEdgeConfigSchemaStatus401,
+	GetEdgeConfigSchemaStatus403,
+	GetEdgeConfigSchemaStatus404,
+	GetEdgeConfigStatus400,
+	GetEdgeConfigStatus401,
+	GetEdgeConfigStatus403,
+	GetEdgeConfigStatus404,
+	GetEdgeConfigsResponse,
+	GetEdgeConfigsStatus400,
+	GetEdgeConfigsStatus401,
+	GetEdgeConfigsStatus403,
+	GetEdgeConfigTokenResponse,
+	GetEdgeConfigTokenStatus400,
+	GetEdgeConfigTokenStatus401,
+	GetEdgeConfigTokenStatus403,
+	GetEdgeConfigTokenStatus404,
+	GetEdgeConfigTokensResponse,
+	GetEdgeConfigTokensStatus400,
+	GetEdgeConfigTokensStatus401,
+	GetEdgeConfigTokensStatus403,
+	GetEdgeConfigTokensStatus404,
+	GetFirewallConfigResponse,
+	GetFirewallConfigStatus400,
+	GetFirewallConfigStatus401,
+	GetFirewallConfigStatus403,
+	GetFirewallConfigStatus404,
+	GetFlagResponse,
+	GetFlagSegmentResponse,
+	GetFlagSegmentStatus400,
+	GetFlagSegmentStatus401,
+	GetFlagSegmentStatus402,
+	GetFlagSegmentStatus403,
+	GetFlagSegmentStatus404,
+	GetFlagSettingsResponse,
+	GetFlagSettingsStatus400,
+	GetFlagSettingsStatus401,
+	GetFlagSettingsStatus402,
+	GetFlagSettingsStatus403,
+	GetFlagSettingsStatus404,
+	GetFlagStatus400,
+	GetFlagStatus401,
+	GetFlagStatus402,
+	GetFlagStatus403,
+	GetFlagStatus404,
+	GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigResponse,
+	GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus400,
+	GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus401,
+	GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus403,
+	GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus404,
+	GetIntegrationLogDrainsResponse,
+	GetIntegrationLogDrainsStatus400,
+	GetIntegrationLogDrainsStatus401,
+	GetIntegrationLogDrainsStatus403,
+	GetIntegrationResourceResponse,
+	GetIntegrationResourceStatus400,
+	GetIntegrationResourceStatus401,
+	GetIntegrationResourceStatus403,
+	GetIntegrationResourceStatus404,
+	GetIntegrationResourcesResponse,
+	GetIntegrationResourcesStatus400,
+	GetIntegrationResourcesStatus401,
+	GetIntegrationResourcesStatus403,
+	GetIntegrationResourcesStatus404,
+	GetInvoiceResponse,
+	GetInvoiceStatus400,
+	GetInvoiceStatus401,
+	GetInvoiceStatus403,
+	GetInvoiceStatus404,
+	GetMemberResponse,
+	GetMemberStatus400,
+	GetMemberStatus401,
+	GetMemberStatus403,
+	GetMemberStatus404,
+	GetMicrofrontendsConfigForProjectResponse,
+	GetMicrofrontendsConfigForProjectStatus400,
+	GetMicrofrontendsConfigForProjectStatus401,
+	GetMicrofrontendsConfigForProjectStatus403,
+	GetMicrofrontendsConfigForProjectStatus404,
+	GetMicrofrontendsConfigForProjectStatus500,
+	GetMicrofrontendsConfigResponse,
+	GetMicrofrontendsConfigStatus400,
+	GetMicrofrontendsConfigStatus401,
+	GetMicrofrontendsConfigStatus403,
+	GetMicrofrontendsConfigStatus404,
+	GetMicrofrontendsConfigStatus500,
+	GetMicrofrontendsGroupsResponse,
+	GetMicrofrontendsGroupsStatus400,
+	GetMicrofrontendsGroupsStatus401,
+	GetMicrofrontendsGroupsStatus403,
+	GetMicrofrontendsGroupsStatus500,
+	GetMicrofrontendsInGroupResponse,
+	GetMicrofrontendsInGroupStatus400,
+	GetMicrofrontendsInGroupStatus401,
+	GetMicrofrontendsInGroupStatus403,
+	GetNamedSandboxResponse,
+	GetNamedSandboxStatus400,
+	GetNamedSandboxStatus401,
+	GetNamedSandboxStatus402,
+	GetNamedSandboxStatus403,
+	GetNamedSandboxStatus404,
+	GetNamedSandboxStatus409,
+	GetNamedSandboxStatus410,
+	GetNamedSandboxStatus429,
+	GetNamedSandboxStatus500,
+	GetObservabilityConfigurationProjectsResponse,
+	GetObservabilityConfigurationProjectsStatus400,
+	GetObservabilityConfigurationProjectsStatus401,
+	GetObservabilityConfigurationProjectsStatus403,
+	GetObservabilityConfigurationProjectsStatus404,
+	GetOrderResponse,
+	GetOrderStatus400,
+	GetOrderStatus401,
+	GetOrderStatus403,
+	GetOrderStatus404,
+	GetOrderStatus429,
+	GetOrderStatus500,
+	GetProjectCheckResponse,
+	GetProjectCheckStatus400,
+	GetProjectCheckStatus401,
+	GetProjectCheckStatus403,
+	GetProjectCheckStatus500,
+	GetProjectDomainResponse,
+	GetProjectDomainStatus400,
+	GetProjectDomainStatus401,
+	GetProjectDomainStatus403,
+	GetProjectDomainsResponse,
+	GetProjectDomainsStatus400,
+	GetProjectDomainsStatus401,
+	GetProjectDomainsStatus403,
+	GetProjectEnvResponse,
+	GetProjectEnvStatus400,
+	GetProjectEnvStatus401,
+	GetProjectEnvStatus403,
+	GetProjectMembersResponse,
+	GetProjectMembersStatus400,
+	GetProjectMembersStatus401,
+	GetProjectMembersStatus403,
+	GetProjectResponse,
+	GetProjectStatus400,
+	GetProjectStatus401,
+	GetProjectStatus403,
+	GetProjectsByIdOrNameCustomEnvironmentsResponse,
+	GetProjectsByIdOrNameCustomEnvironmentsStatus400,
+	GetProjectsByIdOrNameCustomEnvironmentsStatus401,
+	GetProjectsByIdOrNameCustomEnvironmentsStatus403,
+	GetProjectsResponse,
+	GetProjectsStatus400,
+	GetProjectsStatus401,
+	GetProjectsStatus403,
+	GetRecordsResponse,
+	GetRecordsStatus400,
+	GetRecordsStatus401,
+	GetRecordsStatus403,
+	GetRecordsStatus404,
+	GetRedirectsResponse,
+	GetRedirectsStatus400,
+	GetRedirectsStatus401,
+	GetRedirectsStatus403,
+	GetRedirectsStatus404,
+	GetRollingReleaseBillingStatusResponse,
+	GetRollingReleaseBillingStatusStatus400,
+	GetRollingReleaseBillingStatusStatus401,
+	GetRollingReleaseBillingStatusStatus403,
+	GetRollingReleaseBillingStatusStatus404,
+	GetRollingReleaseConfigResponse,
+	GetRollingReleaseConfigStatus400,
+	GetRollingReleaseConfigStatus401,
+	GetRollingReleaseConfigStatus403,
+	GetRollingReleaseConfigStatus404,
+	GetRollingReleaseResponse,
+	GetRollingReleaseStatus400,
+	GetRollingReleaseStatus401,
+	GetRollingReleaseStatus403,
+	GetRollingReleaseStatus404,
+	GetRoutesResponse,
+	GetRoutesStatus400,
+	GetRoutesStatus401,
+	GetRoutesStatus403,
+	GetRoutesStatus404,
+	GetRouteVersionsResponse,
+	GetRouteVersionsStatus400,
+	GetRouteVersionsStatus401,
+	GetRouteVersionsStatus403,
+	GetRuntimeLogsResponse,
+	GetRuntimeLogsStatus400,
+	GetRuntimeLogsStatus401,
+	GetRuntimeLogsStatus403,
+	GetSandboxesV1Response,
+	GetSandboxesV1Status400,
+	GetSandboxesV1Status401,
+	GetSandboxesV1Status403,
+	GetSandboxesV1Status404,
+	GetSandboxesV2Response,
+	GetSandboxesV2Status400,
+	GetSandboxesV2Status401,
+	GetSandboxesV2Status403,
+	GetSandboxesV2Status404,
+	GetSandboxResponse,
+	GetSandboxStatus400,
+	GetSandboxStatus401,
+	GetSandboxStatus403,
+	GetSandboxStatus404,
+	GetSandboxStatus429,
+	GetSdkKeysResponse,
+	GetSdkKeysStatus400,
+	GetSdkKeysStatus401,
+	GetSdkKeysStatus402,
+	GetSdkKeysStatus403,
+	GetSdkKeysStatus404,
+	GetSecurityFirewallEventsResponse,
+	GetSecurityFirewallEventsStatus400,
+	GetSecurityFirewallEventsStatus401,
+	GetSecurityFirewallEventsStatus403,
+	GetSecurityFirewallEventsStatus404,
+	GetSecurityFirewallEventsStatus500,
+	GetSessionCommandLogsResponse,
+	GetSessionCommandLogsStatus400,
+	GetSessionCommandLogsStatus401,
+	GetSessionCommandLogsStatus403,
+	GetSessionCommandLogsStatus404,
+	GetSessionCommandLogsStatus410,
+	GetSessionCommandLogsStatus422,
+	GetSessionCommandResponse,
+	GetSessionCommandStatus400,
+	GetSessionCommandStatus401,
+	GetSessionCommandStatus403,
+	GetSessionCommandStatus404,
+	GetSessionCommandStatus410,
+	GetSessionCommandStatus422,
+	GetSessionResponse,
+	GetSessionSnapshotResponse,
+	GetSessionSnapshotStatus400,
+	GetSessionSnapshotStatus401,
+	GetSessionSnapshotStatus403,
+	GetSessionSnapshotStatus404,
+	GetSessionStatus400,
+	GetSessionStatus401,
+	GetSessionStatus403,
+	GetSessionStatus404,
+	GetSessionStatus500,
+	GetSharedEnvVarResponse,
+	GetSharedEnvVarStatus400,
+	GetSharedEnvVarStatus401,
+	GetSharedEnvVarStatus403,
+	GetSnapshotResponse,
+	GetSnapshotStatus400,
+	GetSnapshotStatus401,
+	GetSnapshotStatus403,
+	GetSnapshotStatus404,
+	GetSupportedTldsResponse,
+	GetSupportedTldsStatus400,
+	GetSupportedTldsStatus401,
+	GetSupportedTldsStatus403,
+	GetSupportedTldsStatus429,
+	GetSupportedTldsStatus500,
+	GetTeamAccessRequestResponse,
+	GetTeamAccessRequestStatus400,
+	GetTeamAccessRequestStatus401,
+	GetTeamAccessRequestStatus403,
+	GetTeamAccessRequestStatus404,
+	GetTeamMembersResponse,
+	GetTeamMembersStatus400,
+	GetTeamMembersStatus401,
+	GetTeamMembersStatus403,
+	GetTeamMembersStatus404,
+	GetTeamResponse,
+	GetTeamStatus400,
+	GetTeamStatus401,
+	GetTeamStatus403,
+	GetTeamStatus404,
+	GetTeamsResponse,
+	GetTeamsStatus400,
+	GetTeamsStatus401,
+	GetTeamsStatus403,
+	GetTldPriceResponse,
+	GetTldPriceStatus400,
+	GetTldPriceStatus401,
+	GetTldPriceStatus403,
+	GetTldPriceStatus429,
+	GetTldPriceStatus500,
+	GetTldResponse,
+	GetTldStatus400,
+	GetTldStatus401,
+	GetTldStatus403,
+	GetTldStatus429,
+	GetTldStatus500,
+	GetVersionsResponse,
+	GetVersionsStatus400,
+	GetVersionsStatus401,
+	GetVersionsStatus403,
+	GetVersionsStatus500,
+	GetWebhookResponse,
+	GetWebhookStatus400,
+	GetWebhookStatus401,
+	GetWebhookStatus403,
+	GetWebhooksResponse,
+	GetWebhooksStatus400,
+	GetWebhooksStatus401,
+	GetWebhooksStatus403,
+	GitNamespacesResponse,
+	GitNamespacesStatus400,
+	GitNamespacesStatus401,
+	GitNamespacesStatus403,
+	GitNamespacesStatus404,
+	GitNamespacesStatus429,
+	GitNamespacesStatus500,
+	ImportResourceResponse,
+	ImportResourceStatus400,
+	ImportResourceStatus401,
+	ImportResourceStatus403,
+	ImportResourceStatus404,
+	ImportResourceStatus409,
+	ImportResourceStatus422,
+	ImportResourceStatus429,
+	InvalidateBySrcImagesResponse,
+	InvalidateBySrcImagesStatus400,
+	InvalidateBySrcImagesStatus401,
+	InvalidateBySrcImagesStatus402,
+	InvalidateBySrcImagesStatus403,
+	InvalidateBySrcImagesStatus404,
+	InvalidateByTagsResponse,
+	InvalidateByTagsStatus400,
+	InvalidateByTagsStatus401,
+	InvalidateByTagsStatus403,
+	InvalidateByTagsStatus404,
+	InviteUserToTeamResponse,
+	InviteUserToTeamStatus400,
+	InviteUserToTeamStatus401,
+	InviteUserToTeamStatus403,
+	InviteUserToTeamStatus503,
+	IssueCertResponse,
+	IssueCertStatus400,
+	IssueCertStatus401,
+	IssueCertStatus402,
+	IssueCertStatus403,
+	IssueCertStatus404,
+	IssueCertStatus449,
+	IssueCertStatus500,
+	JoinTeamResponse,
+	JoinTeamStatus400,
+	JoinTeamStatus401,
+	JoinTeamStatus402,
+	JoinTeamStatus403,
+	JoinTeamStatus404,
+	JoinTeamStatus503,
+	KillCommandResponse,
+	KillCommandStatus400,
+	KillCommandStatus401,
+	KillCommandStatus403,
+	KillCommandStatus404,
+	KillCommandStatus410,
+	KillCommandStatus422,
+	KillSessionCommandResponse,
+	KillSessionCommandStatus400,
+	KillSessionCommandStatus401,
+	KillSessionCommandStatus403,
+	KillSessionCommandStatus404,
+	KillSessionCommandStatus410,
+	KillSessionCommandStatus422,
+	ListAccessGroupMembersResponse,
+	ListAccessGroupMembersStatus400,
+	ListAccessGroupMembersStatus401,
+	ListAccessGroupMembersStatus403,
+	ListAccessGroupProjectsResponse,
+	ListAccessGroupProjectsStatus400,
+	ListAccessGroupProjectsStatus401,
+	ListAccessGroupProjectsStatus403,
+	ListAccessGroupsResponse,
+	ListAccessGroupsStatus400,
+	ListAccessGroupsStatus401,
+	ListAccessGroupsStatus403,
+	ListAliasesResponse,
+	ListAliasesStatus400,
+	ListAliasesStatus401,
+	ListAliasesStatus403,
+	ListAliasesStatus404,
+	ListAuthTokensResponse,
+	ListAuthTokensStatus400,
+	ListAuthTokensStatus401,
+	ListAuthTokensStatus403,
+	ListBillingChargesResponse,
+	ListBillingChargesStatus400,
+	ListBillingChargesStatus401,
+	ListBillingChargesStatus403,
+	ListBillingChargesStatus404,
+	ListBillingChargesStatus500,
+	ListBillingChargesStatus503,
+	ListCheckRunsResponse,
+	ListCheckRunsStatus400,
+	ListCheckRunsStatus401,
+	ListCheckRunsStatus403,
+	ListCheckRunsStatus500,
+	ListCommandsResponse,
+	ListCommandsStatus400,
+	ListCommandsStatus401,
+	ListCommandsStatus403,
+	ListCommandsStatus404,
+	ListContractCommitmentsResponse,
+	ListContractCommitmentsStatus400,
+	ListContractCommitmentsStatus401,
+	ListContractCommitmentsStatus403,
+	ListContractCommitmentsStatus404,
+	ListDeploymentAliasesResponse,
+	ListDeploymentAliasesStatus400,
+	ListDeploymentAliasesStatus401,
+	ListDeploymentAliasesStatus403,
+	ListDeploymentAliasesStatus404,
+	ListDeploymentCheckRunsResponse,
+	ListDeploymentCheckRunsStatus400,
+	ListDeploymentCheckRunsStatus401,
+	ListDeploymentCheckRunsStatus403,
+	ListDeploymentCheckRunsStatus500,
+	ListDeploymentFilesResponse,
+	ListDeploymentFilesStatus400,
+	ListDeploymentFilesStatus401,
+	ListDeploymentFilesStatus403,
+	ListDeploymentFilesStatus404,
+	ListEventTypesResponse,
+	ListEventTypesStatus400,
+	ListEventTypesStatus401,
+	ListEventTypesStatus403,
+	ListFlagSegmentsResponse,
+	ListFlagSegmentsStatus400,
+	ListFlagSegmentsStatus401,
+	ListFlagSegmentsStatus402,
+	ListFlagSegmentsStatus403,
+	ListFlagSegmentsStatus404,
+	ListFlagsResponse,
+	ListFlagsStatus400,
+	ListFlagsStatus401,
+	ListFlagsStatus402,
+	ListFlagsStatus403,
+	ListFlagsStatus404,
+	ListFlagVersionsResponse,
+	ListFlagVersionsStatus400,
+	ListFlagVersionsStatus401,
+	ListFlagVersionsStatus402,
+	ListFlagVersionsStatus403,
+	ListFlagVersionsStatus404,
+	ListNetworksResponse,
+	ListNetworksStatus400,
+	ListNetworksStatus401,
+	ListNetworksStatus403,
+	ListProjectChecksResponse,
+	ListProjectChecksStatus400,
+	ListProjectChecksStatus401,
+	ListProjectChecksStatus403,
+	ListProjectChecksStatus500,
+	ListPromoteAliasesResponse,
+	ListPromoteAliasesStatus400,
+	ListPromoteAliasesStatus401,
+	ListPromoteAliasesStatus403,
+	ListPromoteAliasesStatus404,
+	ListSessionCommandsResponse,
+	ListSessionCommandsStatus400,
+	ListSessionCommandsStatus401,
+	ListSessionCommandsStatus403,
+	ListSessionCommandsStatus404,
+	ListSessionSnapshotsResponse,
+	ListSessionSnapshotsStatus400,
+	ListSessionSnapshotsStatus401,
+	ListSessionSnapshotsStatus403,
+	ListSessionSnapshotsStatus404,
+	ListSessionsResponse,
+	ListSessionsStatus400,
+	ListSessionsStatus401,
+	ListSessionsStatus403,
+	ListSessionsStatus404,
+	ListSessionsStatus500,
+	ListSharedEnvVariableResponse,
+	ListSharedEnvVariableStatus400,
+	ListSharedEnvVariableStatus401,
+	ListSharedEnvVariableStatus403,
+	ListSharedEnvVariableStatus404,
+	ListSnapshotsResponse,
+	ListSnapshotsStatus400,
+	ListSnapshotsStatus401,
+	ListSnapshotsStatus403,
+	ListSnapshotsStatus404,
+	ListTeamFlagSettingsResponse,
+	ListTeamFlagSettingsStatus400,
+	ListTeamFlagSettingsStatus401,
+	ListTeamFlagSettingsStatus403,
+	ListTeamFlagsResponse,
+	ListTeamFlagsStatus400,
+	ListTeamFlagsStatus401,
+	ListTeamFlagsStatus403,
+	ListUserEventsResponse,
+	ListUserEventsStatus400,
+	ListUserEventsStatus401,
+	ListUserEventsStatus403,
+	MoveProjectDomainResponse,
+	MoveProjectDomainStatus400,
+	MoveProjectDomainStatus401,
+	MoveProjectDomainStatus403,
+	MoveProjectDomainStatus409,
+	PatchDomainResponse,
+	PatchDomainStatus400,
+	PatchDomainStatus401,
+	PatchDomainStatus403,
+	PatchDomainStatus404,
+	PatchDomainStatus409,
+	PatchDomainStatus500,
+	PatchEdgeConfigItemsResponse,
+	PatchEdgeConfigItemsStatus400,
+	PatchEdgeConfigItemsStatus401,
+	PatchEdgeConfigItemsStatus402,
+	PatchEdgeConfigItemsStatus403,
+	PatchEdgeConfigItemsStatus404,
+	PatchEdgeConfigItemsStatus409,
+	PatchEdgeConfigItemsStatus412,
+	PatchEdgeConfigSchemaResponse,
+	PatchEdgeConfigSchemaStatus400,
+	PatchEdgeConfigSchemaStatus401,
+	PatchEdgeConfigSchemaStatus402,
+	PatchEdgeConfigSchemaStatus403,
+	PatchEdgeConfigSchemaStatus404,
+	PatchEdgeConfigSchemaStatus409,
+	PatchTeamResponse,
+	PatchTeamStatus400,
+	PatchTeamStatus401,
+	PatchTeamStatus402,
+	PatchTeamStatus403,
+	PatchTeamStatus428,
+	PatchUrlProtectionBypassResponse,
+	PatchUrlProtectionBypassStatus400,
+	PatchUrlProtectionBypassStatus401,
+	PatchUrlProtectionBypassStatus403,
+	PatchUrlProtectionBypassStatus404,
+	PatchUrlProtectionBypassStatus409,
+	PatchUrlProtectionBypassStatus428,
+	PauseProjectResponse,
+	PauseProjectStatus400,
+	PauseProjectStatus401,
+	PauseProjectStatus403,
+	PauseProjectStatus500,
+	PostTeamDsyncRolesResponse,
+	PostTeamDsyncRolesStatus400,
+	PostTeamDsyncRolesStatus401,
+	PostTeamDsyncRolesStatus403,
+	PutFirewallConfigResponse,
+	PutFirewallConfigStatus400,
+	PutFirewallConfigStatus401,
+	PutFirewallConfigStatus402,
+	PutFirewallConfigStatus403,
+	PutFirewallConfigStatus404,
+	PutFirewallConfigStatus500,
+	ReadAccessGroupProjectResponse,
+	ReadAccessGroupProjectStatus400,
+	ReadAccessGroupProjectStatus401,
+	ReadAccessGroupProjectStatus403,
+	ReadAccessGroupResponse,
+	ReadAccessGroupStatus400,
+	ReadAccessGroupStatus401,
+	ReadAccessGroupStatus403,
+	ReadFileResponse,
+	ReadFileStatus400,
+	ReadFileStatus401,
+	ReadFileStatus403,
+	ReadFileStatus404,
+	ReadFileStatus410,
+	ReadFileStatus422,
+	ReadNetworkResponse,
+	ReadNetworkStatus400,
+	ReadNetworkStatus401,
+	ReadNetworkStatus403,
+	ReadSessionFileResponse,
+	ReadSessionFileStatus400,
+	ReadSessionFileStatus401,
+	ReadSessionFileStatus403,
+	ReadSessionFileStatus404,
+	ReadSessionFileStatus410,
+	ReadSessionFileStatus422,
+	RecordEventsResponse,
+	RecordEventsStatus400,
+	RecordEventsStatus401,
+	RecordEventsStatus402,
+	RecordEventsStatus403,
+	RemoveBypassIpResponse,
+	RemoveBypassIpStatus400,
+	RemoveBypassIpStatus401,
+	RemoveBypassIpStatus403,
+	RemoveBypassIpStatus404,
+	RemoveBypassIpStatus500,
+	RemoveCertResponse,
+	RemoveCertStatus400,
+	RemoveCertStatus401,
+	RemoveCertStatus403,
+	RemoveCertStatus404,
+	RemoveCustomEnvironmentResponse,
+	RemoveCustomEnvironmentStatus400,
+	RemoveCustomEnvironmentStatus401,
+	RemoveCustomEnvironmentStatus403,
+	RemoveProjectDomainResponse,
+	RemoveProjectDomainStatus400,
+	RemoveProjectDomainStatus401,
+	RemoveProjectDomainStatus403,
+	RemoveProjectDomainStatus404,
+	RemoveProjectDomainStatus409,
+	RemoveProjectEnvResponse,
+	RemoveProjectEnvStatus400,
+	RemoveProjectEnvStatus401,
+	RemoveProjectEnvStatus403,
+	RemoveProjectEnvStatus404,
+	RemoveProjectEnvStatus409,
+	RemoveProjectMemberResponse,
+	RemoveProjectMemberStatus400,
+	RemoveProjectMemberStatus401,
+	RemoveProjectMemberStatus403,
+	RemoveRecordResponse,
+	RemoveRecordStatus400,
+	RemoveRecordStatus401,
+	RemoveRecordStatus403,
+	RemoveRecordStatus404,
+	RemoveTeamMemberResponse,
+	RemoveTeamMemberStatus400,
+	RemoveTeamMemberStatus401,
+	RemoveTeamMemberStatus403,
+	RemoveTeamMemberStatus404,
+	RemoveTeamMemberStatus503,
+	RenewDomainResponse,
+	RenewDomainStatus400,
+	RenewDomainStatus401,
+	RenewDomainStatus403,
+	RenewDomainStatus404,
+	RenewDomainStatus429,
+	RenewDomainStatus500,
+	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigResponse,
+	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus400,
+	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus401,
+	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus403,
+	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus404,
+	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus409,
+	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus412,
+	RequestAccessToTeamResponse,
+	RequestAccessToTeamStatus400,
+	RequestAccessToTeamStatus401,
+	RequestAccessToTeamStatus403,
+	RequestAccessToTeamStatus404,
+	RequestAccessToTeamStatus429,
+	RequestAccessToTeamStatus503,
+	RequestDeleteResponse,
+	RequestDeleteStatus400,
+	RequestDeleteStatus401,
+	RequestDeleteStatus402,
+	RequestDeleteStatus403,
+	RequestPromoteResponse,
+	RequestPromoteStatus400,
+	RequestPromoteStatus401,
+	RequestPromoteStatus403,
+	RequestPromoteStatus409,
+	RequestRollbackResponse,
+	RequestRollbackStatus400,
+	RequestRollbackStatus401,
+	RequestRollbackStatus402,
+	RequestRollbackStatus403,
+	RequestRollbackStatus409,
+	RequestRollbackStatus422,
+	RerequestCheckResponse,
+	RerequestCheckStatus400,
+	RerequestCheckStatus401,
+	RerequestCheckStatus403,
+	RerequestCheckStatus404,
+	RestoreRedirectsResponse,
+	RestoreRedirectsStatus400,
+	RestoreRedirectsStatus401,
+	RestoreRedirectsStatus403,
+	RestoreRedirectsStatus404,
+	RestoreRedirectsStatus500,
+	RunCommandResponse,
+	RunCommandStatus400,
+	RunCommandStatus401,
+	RunCommandStatus403,
+	RunCommandStatus404,
+	RunCommandStatus410,
+	RunCommandStatus422,
+	RunSessionCommandResponse,
+	RunSessionCommandStatus400,
+	RunSessionCommandStatus401,
+	RunSessionCommandStatus403,
+	RunSessionCommandStatus404,
+	RunSessionCommandStatus410,
+	RunSessionCommandStatus422,
+	SearchRepoResponse,
+	SearchRepoStatus400,
+	SearchRepoStatus401,
+	SearchRepoStatus403,
+	SearchRepoStatus404,
+	SearchRepoStatus429,
+	SearchRepoStatus500,
+	StageRedirectsResponse,
+	StageRedirectsStatus400,
+	StageRedirectsStatus401,
+	StageRedirectsStatus403,
+	StageRedirectsStatus500,
+	StageRoutesResponse,
+	StageRoutesStatus400,
+	StageRoutesStatus401,
+	StageRoutesStatus403,
+	StageRoutesStatus409,
+	StageRoutesStatus500,
+	StatusResponse,
+	StatusStatus400,
+	StatusStatus401,
+	StatusStatus402,
+	StatusStatus403,
+	StopSandboxResponse,
+	StopSandboxStatus400,
+	StopSandboxStatus401,
+	StopSandboxStatus403,
+	StopSandboxStatus404,
+	StopSandboxStatus410,
+	StopSandboxStatus422,
+	StopSessionResponse,
+	StopSessionStatus400,
+	StopSessionStatus401,
+	StopSessionStatus403,
+	StopSessionStatus404,
+	StopSessionStatus410,
+	StopSessionStatus422,
+	StopSessionStatus500,
+	SubmitBillingDataResponse,
+	SubmitBillingDataStatus400,
+	SubmitBillingDataStatus401,
+	SubmitBillingDataStatus403,
+	SubmitBillingDataStatus404,
+	SubmitInvoiceResponse,
+	SubmitInvoiceStatus400,
+	SubmitInvoiceStatus401,
+	SubmitInvoiceStatus403,
+	SubmitInvoiceStatus404,
+	SubmitInvoiceStatus409,
+	SubmitPrepaymentBalancesResponse,
+	SubmitPrepaymentBalancesStatus400,
+	SubmitPrepaymentBalancesStatus401,
+	SubmitPrepaymentBalancesStatus403,
+	SubmitPrepaymentBalancesStatus404,
+	TestDrainResponse,
+	TestDrainStatus400,
+	TestDrainStatus401,
+	TestDrainStatus403,
+	TransferInDomainResponse,
+	TransferInDomainStatus400,
+	TransferInDomainStatus401,
+	TransferInDomainStatus403,
+	TransferInDomainStatus429,
+	TransferInDomainStatus500,
+	UnlinkSharedEnvVariableResponse,
+	UnlinkSharedEnvVariableStatus400,
+	UnlinkSharedEnvVariableStatus401,
+	UnlinkSharedEnvVariableStatus403,
+	UnpauseProjectResponse,
+	UnpauseProjectStatus400,
+	UnpauseProjectStatus401,
+	UnpauseProjectStatus403,
+	UnpauseProjectStatus500,
+	UpdateAccessGroupProjectResponse,
+	UpdateAccessGroupProjectStatus400,
+	UpdateAccessGroupProjectStatus401,
+	UpdateAccessGroupProjectStatus403,
+	UpdateAccessGroupResponse,
+	UpdateAccessGroupStatus400,
+	UpdateAccessGroupStatus401,
+	UpdateAccessGroupStatus403,
+	UpdateAttackChallengeModeResponse,
+	UpdateAttackChallengeModeStatus400,
+	UpdateAttackChallengeModeStatus401,
+	UpdateAttackChallengeModeStatus403,
+	UpdateAttackChallengeModeStatus404,
+	UpdateCheckResponse,
+	UpdateCheckStatus400,
+	UpdateCheckStatus401,
+	UpdateCheckStatus403,
+	UpdateCheckStatus404,
+	UpdateCheckStatus413,
+	UpdateCustomEnvironmentResponse,
+	UpdateCustomEnvironmentStatus400,
+	UpdateCustomEnvironmentStatus401,
+	UpdateCustomEnvironmentStatus402,
+	UpdateCustomEnvironmentStatus403,
+	UpdateCustomEnvironmentStatus500,
+	UpdateDeploymentCheckRunResponse,
+	UpdateDeploymentCheckRunStatus400,
+	UpdateDeploymentCheckRunStatus401,
+	UpdateDeploymentCheckRunStatus403,
+	UpdateDeploymentCheckRunStatus413,
+	UpdateDeploymentCheckRunStatus500,
+	UpdateDomainAutoRenewResponse,
+	UpdateDomainAutoRenewStatus400,
+	UpdateDomainAutoRenewStatus401,
+	UpdateDomainAutoRenewStatus403,
+	UpdateDomainAutoRenewStatus404,
+	UpdateDomainAutoRenewStatus429,
+	UpdateDomainAutoRenewStatus500,
+	UpdateDomainNameserversResponse,
+	UpdateDomainNameserversStatus400,
+	UpdateDomainNameserversStatus401,
+	UpdateDomainNameserversStatus403,
+	UpdateDomainNameserversStatus404,
+	UpdateDomainNameserversStatus429,
+	UpdateDomainNameserversStatus500,
+	UpdateDrainResponse,
+	UpdateDrainStatus400,
+	UpdateDrainStatus401,
+	UpdateDrainStatus403,
+	UpdateDrainStatus404,
+	UpdateEdgeConfigResponse,
+	UpdateEdgeConfigStatus400,
+	UpdateEdgeConfigStatus401,
+	UpdateEdgeConfigStatus402,
+	UpdateEdgeConfigStatus403,
+	UpdateEdgeConfigStatus404,
+	UpdateEdgeConfigStatus409,
+	UpdateFirewallConfigResponse,
+	UpdateFirewallConfigStatus400,
+	UpdateFirewallConfigStatus401,
+	UpdateFirewallConfigStatus402,
+	UpdateFirewallConfigStatus403,
+	UpdateFirewallConfigStatus404,
+	UpdateFirewallConfigStatus500,
+	UpdateFlagResponse,
+	UpdateFlagSegmentResponse,
+	UpdateFlagSegmentStatus400,
+	UpdateFlagSegmentStatus401,
+	UpdateFlagSegmentStatus402,
+	UpdateFlagSegmentStatus403,
+	UpdateFlagSegmentStatus404,
+	UpdateFlagSegmentStatus409,
+	UpdateFlagSegmentStatus412,
+	UpdateFlagSettingsResponse,
+	UpdateFlagSettingsStatus400,
+	UpdateFlagSettingsStatus401,
+	UpdateFlagSettingsStatus402,
+	UpdateFlagSettingsStatus403,
+	UpdateFlagSettingsStatus404,
+	UpdateFlagSettingsStatus409,
+	UpdateFlagSettingsStatus412,
+	UpdateFlagStatus400,
+	UpdateFlagStatus401,
+	UpdateFlagStatus402,
+	UpdateFlagStatus403,
+	UpdateFlagStatus404,
+	UpdateFlagStatus409,
+	UpdateFlagStatus412,
+	UpdateInstallationResponse,
+	UpdateInstallationStatus400,
+	UpdateInstallationStatus401,
+	UpdateInstallationStatus403,
+	UpdateInstallationStatus404,
+	UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdResponse,
+	UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus400,
+	UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus401,
+	UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus403,
+	UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus404,
+	UpdateIntegrationDeploymentActionResponse,
+	UpdateIntegrationDeploymentActionStatus400,
+	UpdateIntegrationDeploymentActionStatus401,
+	UpdateIntegrationDeploymentActionStatus403,
+	UpdateInvoiceResponse,
+	UpdateInvoiceStatus400,
+	UpdateInvoiceStatus401,
+	UpdateInvoiceStatus403,
+	UpdateInvoiceStatus404,
+	UpdateInvoiceStatus409,
+	UpdateMicrofrontendsGroupResponse,
+	UpdateMicrofrontendsGroupStatus400,
+	UpdateMicrofrontendsGroupStatus401,
+	UpdateMicrofrontendsGroupStatus403,
+	UpdateMicrofrontendsGroupStatus404,
+	UpdateMicrofrontendsResponse,
+	UpdateMicrofrontendsStatus400,
+	UpdateMicrofrontendsStatus401,
+	UpdateMicrofrontendsStatus403,
+	UpdateMicrofrontendsStatus409,
+	UpdateMicrofrontendsStatus500,
+	UpdateNetworkPolicyResponse,
+	UpdateNetworkPolicyStatus400,
+	UpdateNetworkPolicyStatus401,
+	UpdateNetworkPolicyStatus402,
+	UpdateNetworkPolicyStatus403,
+	UpdateNetworkPolicyStatus404,
+	UpdateNetworkPolicyStatus410,
+	UpdateNetworkPolicyStatus422,
+	UpdateNetworkResponse,
+	UpdateNetworkStatus400,
+	UpdateNetworkStatus401,
+	UpdateNetworkStatus403,
+	UpdateObservabilityConfigurationProjectResponse,
+	UpdateObservabilityConfigurationProjectStatus400,
+	UpdateObservabilityConfigurationProjectStatus401,
+	UpdateObservabilityConfigurationProjectStatus403,
+	UpdateObservabilityConfigurationProjectStatus404,
+	UpdateObservabilityConfigurationProjectStatus429,
+	UpdateProjectCheckResponse,
+	UpdateProjectCheckStatus400,
+	UpdateProjectCheckStatus401,
+	UpdateProjectCheckStatus403,
+	UpdateProjectCheckStatus404,
+	UpdateProjectCheckStatus500,
+	UpdateProjectDomainResponse,
+	UpdateProjectDomainStatus400,
+	UpdateProjectDomainStatus401,
+	UpdateProjectDomainStatus403,
+	UpdateProjectDomainStatus409,
+	UpdateProjectProtectionBypassResponse,
+	UpdateProjectProtectionBypassStatus400,
+	UpdateProjectProtectionBypassStatus401,
+	UpdateProjectProtectionBypassStatus403,
+	UpdateProjectProtectionBypassStatus404,
+	UpdateProjectProtectionBypassStatus409,
+	UpdateProjectResponse,
+	UpdateProjectStatus400,
+	UpdateProjectStatus401,
+	UpdateProjectStatus402,
+	UpdateProjectStatus403,
+	UpdateProjectStatus404,
+	UpdateProjectStatus409,
+	UpdateProjectStatus428,
+	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionResponse,
+	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus400,
+	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus401,
+	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus403,
+	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus409,
+	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus422,
+	UpdateRecordResponse,
+	UpdateRecordStatus400,
+	UpdateRecordStatus401,
+	UpdateRecordStatus402,
+	UpdateRecordStatus403,
+	UpdateRecordStatus404,
+	UpdateRecordStatus409,
+	UpdateResourceResponse,
+	UpdateResourceSecretsByIdResponse,
+	UpdateResourceSecretsByIdStatus400,
+	UpdateResourceSecretsByIdStatus401,
+	UpdateResourceSecretsByIdStatus403,
+	UpdateResourceSecretsByIdStatus404,
+	UpdateResourceSecretsByIdStatus409,
+	UpdateResourceSecretsByIdStatus422,
+	UpdateResourceSecretsResponse,
+	UpdateResourceSecretsStatus400,
+	UpdateResourceSecretsStatus401,
+	UpdateResourceSecretsStatus403,
+	UpdateResourceSecretsStatus404,
+	UpdateResourceSecretsStatus409,
+	UpdateResourceSecretsStatus422,
+	UpdateResourceStatus400,
+	UpdateResourceStatus401,
+	UpdateResourceStatus403,
+	UpdateResourceStatus404,
+	UpdateResourceStatus409,
+	UpdateResourceStatus422,
+	UpdateRollingReleaseConfigResponse,
+	UpdateRollingReleaseConfigStatus400,
+	UpdateRollingReleaseConfigStatus401,
+	UpdateRollingReleaseConfigStatus403,
+	UpdateRollingReleaseConfigStatus404,
+	UpdateRouteVersionsResponse,
+	UpdateRouteVersionsStatus400,
+	UpdateRouteVersionsStatus401,
+	UpdateRouteVersionsStatus403,
+	UpdateRouteVersionsStatus404,
+	UpdateRouteVersionsStatus409,
+	UpdateRouteVersionsStatus500,
+	UpdateSandboxResponse,
+	UpdateSandboxStatus400,
+	UpdateSandboxStatus401,
+	UpdateSandboxStatus402,
+	UpdateSandboxStatus403,
+	UpdateSandboxStatus404,
+	UpdateSandboxStatus409,
+	UpdateSandboxStatus410,
+	UpdateSandboxStatus422,
+	UpdateSandboxStatus429,
+	UpdateSandboxStatus500,
+	UpdateSessionNetworkPolicyResponse,
+	UpdateSessionNetworkPolicyStatus400,
+	UpdateSessionNetworkPolicyStatus401,
+	UpdateSessionNetworkPolicyStatus402,
+	UpdateSessionNetworkPolicyStatus403,
+	UpdateSessionNetworkPolicyStatus404,
+	UpdateSessionNetworkPolicyStatus410,
+	UpdateSessionNetworkPolicyStatus422,
+	UpdateSessionNetworkPolicyStatus500,
+	UpdateSharedEnvVariableResponse,
+	UpdateSharedEnvVariableStatus400,
+	UpdateSharedEnvVariableStatus401,
+	UpdateSharedEnvVariableStatus402,
+	UpdateSharedEnvVariableStatus403,
+	UpdateStaticIpsResponse,
+	UpdateStaticIpsStatus400,
+	UpdateStaticIpsStatus401,
+	UpdateStaticIpsStatus402,
+	UpdateStaticIpsStatus403,
+	UpdateStaticIpsStatus404,
+	UpdateStaticIpsStatus409,
+	UpdateStaticIpsStatus500,
+	UpdateTeamMemberResponse,
+	UpdateTeamMemberStatus400,
+	UpdateTeamMemberStatus401,
+	UpdateTeamMemberStatus402,
+	UpdateTeamMemberStatus403,
+	UpdateTeamMemberStatus404,
+	UpdateTeamMemberStatus409,
+	UpdateTeamMemberStatus500,
+	UpdateVersionResponse,
+	UpdateVersionStatus400,
+	UpdateVersionStatus401,
+	UpdateVersionStatus403,
+	UpdateVersionStatus404,
+	UpdateVersionStatus500,
+	UploadArtifactResponse,
+	UploadArtifactStatus400,
+	UploadArtifactStatus401,
+	UploadArtifactStatus402,
+	UploadArtifactStatus403,
+	UploadCertResponse,
+	UploadCertStatus400,
+	UploadCertStatus401,
+	UploadCertStatus402,
+	UploadCertStatus403,
+	UploadFileResponse,
+	UploadFileStatus400,
+	UploadFileStatus401,
+	UploadFileStatus403,
+	UploadFileStatus426,
+	VerifyProjectDomainResponse,
+	VerifyProjectDomainStatus400,
+	VerifyProjectDomainStatus401,
+	VerifyProjectDomainStatus403,
+	WriteFilesResponse,
+	WriteFilesStatus400,
+	WriteFilesStatus401,
+	WriteFilesStatus403,
+	WriteFilesStatus404,
+	WriteFilesStatus410,
+	WriteFilesStatus422,
+	WriteSessionFilesResponse,
+	WriteSessionFilesStatus400,
+	WriteSessionFilesStatus401,
+	WriteSessionFilesStatus403,
+	WriteSessionFilesStatus404,
+	WriteSessionFilesStatus410,
+	WriteSessionFilesStatus422,
 } from "./types";
 
 /**
- * @description Allows to read an access group
  * @summary Reads an access group
- * {@link /v1/access-groups/:idOrName}
+ * @description Allows to read an access group
+ * @link /v1/access-groups/{idOrName}
  */
-export async function readAccessGroup({
-	pathParams: { idOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ReadAccessGroupPathParams;
-	queryParams?: ReadAccessGroupQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function readAccessGroup(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!idOrName) {
+	if (!pathParams.idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
-
 	const data = await request<
-		ReadAccessGroupQueryResponse,
-		ErrorWrapper<ReadAccessGroup400 | ReadAccessGroup401 | ReadAccessGroup403>,
+		ReadAccessGroupResponse,
+		ErrorWrapper<ReadAccessGroupStatus400 | ReadAccessGroupStatus401 | ReadAccessGroupStatus403>,
 		null,
 		Record<string, string>,
-		ReadAccessGroupQueryParams,
-		ReadAccessGroupPathParams
-	>({ method: "GET", url: `/v1/access-groups/${idOrName}`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Allows to update an access group metadata
- * @summary Update an access group
- * {@link /v1/access-groups/:idOrName}
- */
-export async function updateAccessGroup({
-	pathParams: { idOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: UpdateAccessGroupPathParams;
-	queryParams?: UpdateAccessGroupQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!idOrName) {
-		throw new Error(`Missing required path parameter: idOrName`);
-	}
-
-	const data = await request<
-		UpdateAccessGroupMutationResponse,
-		ErrorWrapper<UpdateAccessGroup400 | UpdateAccessGroup401 | UpdateAccessGroup403>,
-		null,
-		Record<string, string>,
-		UpdateAccessGroupQueryParams,
-		UpdateAccessGroupPathParams
+		{ teamId?: string; slug?: string },
+		{ idOrName: string }
 	>({
-		method: "POST",
-		url: `/v1/access-groups/${idOrName}`,
+		method: "GET",
+		url: `/v1/access-groups/${pathParams.idOrName}`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Allows to delete an access group
+ * @summary Update an access group
+ * @description Allows to update an access group metadata
+ * @link /v1/access-groups/{idOrName}
+ */
+export async function updateAccessGroup(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.idOrName) {
+		throw new Error(`Missing required path parameter: idOrName`);
+	}
+	const data = await request<
+		UpdateAccessGroupResponse,
+		ErrorWrapper<
+			UpdateAccessGroupStatus400 | UpdateAccessGroupStatus401 | UpdateAccessGroupStatus403
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ idOrName: string }
+	>({
+		method: "POST",
+		url: `/v1/access-groups/${pathParams.idOrName}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
  * @summary Deletes an access group
- * {@link /v1/access-groups/:idOrName}
+ * @description Allows to delete an access group
+ * @link /v1/access-groups/{idOrName}
  */
-export async function deleteAccessGroup({
-	pathParams: { idOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: DeleteAccessGroupPathParams;
-	queryParams?: DeleteAccessGroupQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteAccessGroup(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!idOrName) {
+	if (!pathParams.idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
-
 	const data = await request<
-		DeleteAccessGroupMutationResponse,
-		ErrorWrapper<DeleteAccessGroup400 | DeleteAccessGroup401 | DeleteAccessGroup403>,
+		DeleteAccessGroupResponse,
+		ErrorWrapper<
+			DeleteAccessGroupStatus400 | DeleteAccessGroupStatus401 | DeleteAccessGroupStatus403
+		>,
 		null,
 		Record<string, string>,
-		DeleteAccessGroupQueryParams,
-		DeleteAccessGroupPathParams
-	>({ method: "DELETE", url: `/v1/access-groups/${idOrName}`, queryParams, ...requestConfig });
+		{ teamId?: string; slug?: string },
+		{ idOrName: string }
+	>({
+		method: "DELETE",
+		url: `/v1/access-groups/${pathParams.idOrName}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description List members of an access group
  * @summary List members of an access group
- * {@link /v1/access-groups/:idOrName/members}
+ * @description List members of an access group
+ * @link /v1/access-groups/{idOrName}/members
  */
-export async function listAccessGroupMembers({
-	pathParams: { idOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ListAccessGroupMembersPathParams;
-	queryParams?: ListAccessGroupMembersQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listAccessGroupMembers(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string };
+		queryParams?: {
+			limit?: number;
+			next?: string;
+			search?: string;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!idOrName) {
+	if (!pathParams.idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
-
 	const data = await request<
-		ListAccessGroupMembersQueryResponse,
-		ErrorWrapper<ListAccessGroupMembers400 | ListAccessGroupMembers401 | ListAccessGroupMembers403>,
+		ListAccessGroupMembersResponse,
+		ErrorWrapper<
+			| ListAccessGroupMembersStatus400
+			| ListAccessGroupMembersStatus401
+			| ListAccessGroupMembersStatus403
+		>,
 		null,
 		Record<string, string>,
-		ListAccessGroupMembersQueryParams,
-		ListAccessGroupMembersPathParams
-	>({ method: "GET", url: `/v1/access-groups/${idOrName}/members`, queryParams, ...requestConfig });
+		{ limit?: number; next?: string; search?: string; teamId?: string; slug?: string },
+		{ idOrName: string }
+	>({
+		method: "GET",
+		url: `/v1/access-groups/${pathParams.idOrName}/members`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description List access groups
  * @summary List access groups for a team, project or member
- * {@link /v1/access-groups}
+ * @description List access groups
+ * @link /v1/access-groups
  */
-export async function listAccessGroups({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: ListAccessGroupsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listAccessGroups(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			projectId?: string;
+			search?: string;
+			membersLimit?: number;
+			projectsLimit?: number;
+			limit?: number;
+			next?: string;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		ListAccessGroupsQueryResponse,
-		ErrorWrapper<ListAccessGroups400 | ListAccessGroups401 | ListAccessGroups403>,
+		ListAccessGroupsResponse,
+		ErrorWrapper<ListAccessGroupsStatus400 | ListAccessGroupsStatus401 | ListAccessGroupsStatus403>,
 		null,
 		Record<string, string>,
-		ListAccessGroupsQueryParams,
+		{
+			projectId?: string;
+			search?: string;
+			membersLimit?: number;
+			projectsLimit?: number;
+			limit?: number;
+			next?: string;
+			teamId?: string;
+			slug?: string;
+		},
 		Record<string, string>
-	>({ method: "GET", url: `/v1/access-groups`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/v1/access-groups`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Allows to create an access group
  * @summary Creates an access group
- * {@link /v1/access-groups}
+ * @description Allows to create an access group
+ * @link /v1/access-groups
  */
-export async function createAccessGroup({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: CreateAccessGroupQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createAccessGroup(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		CreateAccessGroupMutationResponse,
-		ErrorWrapper<CreateAccessGroup400 | CreateAccessGroup401 | CreateAccessGroup403>,
+		CreateAccessGroupResponse,
+		ErrorWrapper<
+			CreateAccessGroupStatus400 | CreateAccessGroupStatus401 | CreateAccessGroupStatus403
+		>,
 		null,
 		Record<string, string>,
-		CreateAccessGroupQueryParams,
+		{ teamId?: string; slug?: string },
 		Record<string, string>
 	>({
 		method: "POST",
 		url: `/v1/access-groups`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description List projects of an access group
  * @summary List projects of an access group
- * {@link /v1/access-groups/:idOrName/projects}
+ * @description List projects of an access group
+ * @link /v1/access-groups/{idOrName}/projects
  */
-export async function listAccessGroupProjects({
-	pathParams: { idOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ListAccessGroupProjectsPathParams;
-	queryParams?: ListAccessGroupProjectsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listAccessGroupProjects(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string };
+		queryParams?: { limit?: number; next?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!idOrName) {
+	if (!pathParams.idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
-
 	const data = await request<
-		ListAccessGroupProjectsQueryResponse,
+		ListAccessGroupProjectsResponse,
 		ErrorWrapper<
-			ListAccessGroupProjects400 | ListAccessGroupProjects401 | ListAccessGroupProjects403
+			| ListAccessGroupProjectsStatus400
+			| ListAccessGroupProjectsStatus401
+			| ListAccessGroupProjectsStatus403
 		>,
 		null,
 		Record<string, string>,
-		ListAccessGroupProjectsQueryParams,
-		ListAccessGroupProjectsPathParams
+		{ limit?: number; next?: string; teamId?: string; slug?: string },
+		{ idOrName: string }
 	>({
 		method: "GET",
-		url: `/v1/access-groups/${idOrName}/projects`,
+		url: `/v1/access-groups/${pathParams.idOrName}/projects`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Allows creation of an access group project
  * @summary Create an access group project
- * {@link /v1/access-groups/:accessGroupIdOrName/projects}
+ * @description Allows creation of an access group project
+ * @link /v1/access-groups/{accessGroupIdOrName}/projects
  */
-export async function createAccessGroupProject({
-	pathParams: { accessGroupIdOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: CreateAccessGroupProjectPathParams;
-	queryParams?: CreateAccessGroupProjectQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createAccessGroupProject(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { accessGroupIdOrName: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!accessGroupIdOrName) {
+	if (!pathParams.accessGroupIdOrName) {
 		throw new Error(`Missing required path parameter: accessGroupIdOrName`);
 	}
-
 	const data = await request<
-		CreateAccessGroupProjectMutationResponse,
+		CreateAccessGroupProjectResponse,
 		ErrorWrapper<
-			CreateAccessGroupProject400 | CreateAccessGroupProject401 | CreateAccessGroupProject403
+			| CreateAccessGroupProjectStatus400
+			| CreateAccessGroupProjectStatus401
+			| CreateAccessGroupProjectStatus403
 		>,
 		null,
 		Record<string, string>,
-		CreateAccessGroupProjectQueryParams,
-		CreateAccessGroupProjectPathParams
+		{ teamId?: string; slug?: string },
+		{ accessGroupIdOrName: string }
 	>({
 		method: "POST",
-		url: `/v1/access-groups/${accessGroupIdOrName}/projects`,
+		url: `/v1/access-groups/${pathParams.accessGroupIdOrName}/projects`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Allows reading an access group project
  * @summary Reads an access group project
- * {@link /v1/access-groups/:accessGroupIdOrName/projects/:projectId}
+ * @description Allows reading an access group project
+ * @link /v1/access-groups/{accessGroupIdOrName}/projects/{projectId}
  */
-export async function readAccessGroupProject({
-	pathParams: { accessGroupIdOrName, projectId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ReadAccessGroupProjectPathParams;
-	queryParams?: ReadAccessGroupProjectQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function readAccessGroupProject(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { accessGroupIdOrName: string; projectId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!accessGroupIdOrName) {
+	if (!pathParams.accessGroupIdOrName) {
 		throw new Error(`Missing required path parameter: accessGroupIdOrName`);
 	}
 
-	if (!projectId) {
+	if (!pathParams.projectId) {
 		throw new Error(`Missing required path parameter: projectId`);
 	}
-
 	const data = await request<
-		ReadAccessGroupProjectQueryResponse,
-		ErrorWrapper<ReadAccessGroupProject400 | ReadAccessGroupProject401 | ReadAccessGroupProject403>,
+		ReadAccessGroupProjectResponse,
+		ErrorWrapper<
+			| ReadAccessGroupProjectStatus400
+			| ReadAccessGroupProjectStatus401
+			| ReadAccessGroupProjectStatus403
+		>,
 		null,
 		Record<string, string>,
-		ReadAccessGroupProjectQueryParams,
-		ReadAccessGroupProjectPathParams
+		{ teamId?: string; slug?: string },
+		{ accessGroupIdOrName: string; projectId: string }
 	>({
 		method: "GET",
-		url: `/v1/access-groups/${accessGroupIdOrName}/projects/${projectId}`,
+		url: `/v1/access-groups/${pathParams.accessGroupIdOrName}/projects/${pathParams.projectId}`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Allows update of an access group project
  * @summary Update an access group project
- * {@link /v1/access-groups/:accessGroupIdOrName/projects/:projectId}
+ * @description Allows update of an access group project
+ * @link /v1/access-groups/{accessGroupIdOrName}/projects/{projectId}
  */
-export async function updateAccessGroupProject({
-	pathParams: { accessGroupIdOrName, projectId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: UpdateAccessGroupProjectPathParams;
-	queryParams?: UpdateAccessGroupProjectQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateAccessGroupProject(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { accessGroupIdOrName: string; projectId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!accessGroupIdOrName) {
+	if (!pathParams.accessGroupIdOrName) {
 		throw new Error(`Missing required path parameter: accessGroupIdOrName`);
 	}
 
-	if (!projectId) {
+	if (!pathParams.projectId) {
 		throw new Error(`Missing required path parameter: projectId`);
 	}
-
 	const data = await request<
-		UpdateAccessGroupProjectMutationResponse,
+		UpdateAccessGroupProjectResponse,
 		ErrorWrapper<
-			UpdateAccessGroupProject400 | UpdateAccessGroupProject401 | UpdateAccessGroupProject403
+			| UpdateAccessGroupProjectStatus400
+			| UpdateAccessGroupProjectStatus401
+			| UpdateAccessGroupProjectStatus403
 		>,
 		null,
 		Record<string, string>,
-		UpdateAccessGroupProjectQueryParams,
-		UpdateAccessGroupProjectPathParams
+		{ teamId?: string; slug?: string },
+		{ accessGroupIdOrName: string; projectId: string }
 	>({
 		method: "PATCH",
-		url: `/v1/access-groups/${accessGroupIdOrName}/projects/${projectId}`,
+		url: `/v1/access-groups/${pathParams.accessGroupIdOrName}/projects/${pathParams.projectId}`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Allows deletion of an access group project
  * @summary Delete an access group project
- * {@link /v1/access-groups/:accessGroupIdOrName/projects/:projectId}
+ * @description Allows deletion of an access group project
+ * @link /v1/access-groups/{accessGroupIdOrName}/projects/{projectId}
  */
-export async function deleteAccessGroupProject({
-	pathParams: { accessGroupIdOrName, projectId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: DeleteAccessGroupProjectPathParams;
-	queryParams?: DeleteAccessGroupProjectQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteAccessGroupProject(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { accessGroupIdOrName: string; projectId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!accessGroupIdOrName) {
+	if (!pathParams.accessGroupIdOrName) {
 		throw new Error(`Missing required path parameter: accessGroupIdOrName`);
 	}
 
-	if (!projectId) {
+	if (!pathParams.projectId) {
 		throw new Error(`Missing required path parameter: projectId`);
 	}
-
 	const data = await request<
-		DeleteAccessGroupProjectMutationResponse,
+		DeleteAccessGroupProjectResponse,
 		ErrorWrapper<
-			DeleteAccessGroupProject400 | DeleteAccessGroupProject401 | DeleteAccessGroupProject403
+			| DeleteAccessGroupProjectStatus400
+			| DeleteAccessGroupProjectStatus401
+			| DeleteAccessGroupProjectStatus403
 		>,
 		null,
 		Record<string, string>,
-		DeleteAccessGroupProjectQueryParams,
-		DeleteAccessGroupProjectPathParams
+		{ teamId?: string; slug?: string },
+		{ accessGroupIdOrName: string; projectId: string }
 	>({
 		method: "DELETE",
-		url: `/v1/access-groups/${accessGroupIdOrName}/projects/${projectId}`,
+		url: `/v1/access-groups/${pathParams.accessGroupIdOrName}/projects/${pathParams.projectId}`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Records an artifacts cache usage event. The body of this request is an array of cache usage events. The supported event types are `HIT` and `MISS`. The source is either `LOCAL` the cache event was on the users filesystem cache or `REMOTE` if the cache event is for a remote cache. When the event is a `HIT` the request also accepts a number `duration` which is the time taken to generate the artifact in the cache.
  * @summary Record an artifacts cache usage event
- * {@link /v8/artifacts/events}
+ * @description Records an artifacts cache usage event. The body of this request is an array of cache usage events. The supported event types are `HIT` and `MISS`. The source is either `LOCAL` the cache event was on the users filesystem cache or `REMOTE` if the cache event is for a remote cache. When the event is a `HIT` the request also accepts a number `duration` which is the time taken to generate the artifact in the cache.
+ * @link /v8/artifacts/events
  */
-export async function recordEvents({
-	queryParams,
-	headers,
-	config = {},
-}: {
-	queryParams?: RecordEventsQueryParams;
-	headers?: RecordEventsHeaderParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function recordEvents(
+	{
+		queryParams,
+		headers,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		headers?: { "'x-Artifact-Client-Ci'"?: string; "'x-Artifact-Client-Interactive'"?: number };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		RecordEventsMutationResponse,
-		ErrorWrapper<RecordEvents400 | RecordEvents401 | RecordEvents402 | RecordEvents403>,
+		RecordEventsResponse,
+		ErrorWrapper<
+			RecordEventsStatus400 | RecordEventsStatus401 | RecordEventsStatus402 | RecordEventsStatus403
+		>,
 		null,
-		RecordEventsHeaderParams,
-		RecordEventsQueryParams,
+		{ "'x-Artifact-Client-Ci'"?: string; "'x-Artifact-Client-Interactive'"?: number },
+		{ teamId?: string; slug?: string },
 		Record<string, string>
 	>({
 		method: "POST",
 		url: `/v8/artifacts/events`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...headers, ...requestConfig.headers },
+		headers: { ...headers, ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Check the status of Remote Caching for this principal. Returns a JSON-encoded status indicating if Remote Caching is enabled, disabled, or disabled due to usage limits.
  * @summary Get status of Remote Caching for this principal
- * {@link /v8/artifacts/status}
+ * @description Check the status of Remote Caching for this principal. Returns a JSON-encoded status indicating if Remote Caching is enabled, disabled, or disabled due to usage limits.
+ * @link /v8/artifacts/status
  */
-export async function status({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: StatusQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function status(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		StatusQueryResponse,
-		ErrorWrapper<Status400 | Status401 | Status402 | Status403>,
+		StatusResponse,
+		ErrorWrapper<StatusStatus400 | StatusStatus401 | StatusStatus402 | StatusStatus403>,
 		null,
 		Record<string, string>,
-		StatusQueryParams,
+		{ teamId?: string; slug?: string },
 		Record<string, string>
-	>({ method: "GET", url: `/v8/artifacts/status`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Uploads a cache artifact identified by the `hash` specified on the path. The cache artifact can then be downloaded with the provided `hash`.
- * @summary Upload a cache artifact
- * {@link /v8/artifacts/:hash}
- */
-export async function uploadArtifact({
-	pathParams: { hash },
-	headers,
-	queryParams,
-	config = {},
-}: {
-	pathParams: UploadArtifactPathParams;
-	headers: UploadArtifactHeaderParams;
-	queryParams?: UploadArtifactQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!hash) {
-		throw new Error(`Missing required path parameter: hash`);
-	}
-
-	const data = await request<
-		UploadArtifactMutationResponse,
-		ErrorWrapper<UploadArtifact400 | UploadArtifact401 | UploadArtifact402 | UploadArtifact403>,
-		null,
-		UploadArtifactHeaderParams,
-		UploadArtifactQueryParams,
-		UploadArtifactPathParams
-	>({
-		method: "PUT",
-		url: `/v8/artifacts/${hash}`,
-		queryParams,
-		...requestConfig,
-		headers: { "Content-Type": "applicationOctetStream", ...headers, ...requestConfig.headers },
-	});
-	return data;
-}
-
-/**
- * @description Downloads a cache artifact indentified by its `hash` specified on the request path. The artifact is downloaded as an octet-stream. The client should verify the content-length header and response body.
- * @summary Download a cache artifact
- * {@link /v8/artifacts/:hash}
- */
-export async function downloadArtifact({
-	pathParams: { hash },
-	queryParams,
-	headers,
-	config = {},
-}: {
-	pathParams: DownloadArtifactPathParams;
-	queryParams?: DownloadArtifactQueryParams;
-	headers?: DownloadArtifactHeaderParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!hash) {
-		throw new Error(`Missing required path parameter: hash`);
-	}
-
-	const data = await request<
-		DownloadArtifactQueryResponse,
-		ErrorWrapper<
-			| DownloadArtifact400
-			| DownloadArtifact401
-			| DownloadArtifact402
-			| DownloadArtifact403
-			| DownloadArtifact404
-		>,
-		null,
-		DownloadArtifactHeaderParams,
-		DownloadArtifactQueryParams,
-		DownloadArtifactPathParams
 	>({
 		method: "GET",
-		url: `/v8/artifacts/${hash}`,
+		url: `/v8/artifacts/status`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Upload a cache artifact
+ * @description Uploads a cache artifact identified by the `hash` specified on the path. The cache artifact can then be downloaded with the provided `hash`.
+ * @link /v8/artifacts/{hash}
+ */
+export async function uploadArtifact(
+	{
+		pathParams,
+		queryParams,
+		headers,
+		config,
+	}: {
+		pathParams: { hash: string };
+		queryParams?: { teamId?: string; slug?: string };
+		headers?: {
+			"'content-Length'"?: number;
+			"'x-Artifact-Duration'"?: number;
+			"'x-Artifact-Client-Ci'"?: string;
+			"'x-Artifact-Client-Interactive'"?: number;
+			"'x-Artifact-Tag'"?: string;
+			"'x-Artifact-Sha'"?: string;
+			"'x-Artifact-Dirty-Hash'"?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.hash) {
+		throw new Error(`Missing required path parameter: hash`);
+	}
+	const data = await request<
+		UploadArtifactResponse,
+		ErrorWrapper<
+			| UploadArtifactStatus400
+			| UploadArtifactStatus401
+			| UploadArtifactStatus402
+			| UploadArtifactStatus403
+		>,
+		null,
+		{
+			"'content-Length'"?: number;
+			"'x-Artifact-Duration'"?: number;
+			"'x-Artifact-Client-Ci'"?: string;
+			"'x-Artifact-Client-Interactive'"?: number;
+			"'x-Artifact-Tag'"?: string;
+			"'x-Artifact-Sha'"?: string;
+			"'x-Artifact-Dirty-Hash'"?: string;
+		},
+		{ teamId?: string; slug?: string },
+		{ hash: string }
+	>({
+		method: "PUT",
+		url: `/v8/artifacts/${pathParams.hash}`,
 		queryParams,
 		...requestConfig,
 		headers: { ...headers, ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Query information about an array of artifacts.
- * @summary Query information about an artifact
- * {@link /v8/artifacts}
+ * @summary Download a cache artifact
+ * @description Downloads a cache artifact indentified by its `hash` specified on the request path. The artifact is downloaded as an octet-stream. The client should verify the content-length header and response body.
+ * @link /v8/artifacts/{hash}
  */
-export async function artifactQuery({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: ArtifactQueryQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function downloadArtifact(
+	{
+		pathParams,
+		queryParams,
+		headers,
+		config,
+	}: {
+		pathParams: { hash: string };
+		queryParams?: { teamId?: string; slug?: string };
+		headers?: { "'x-Artifact-Client-Ci'"?: string; "'x-Artifact-Client-Interactive'"?: number };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.hash) {
+		throw new Error(`Missing required path parameter: hash`);
+	}
+	const data = await request<
+		DownloadArtifactResponse,
+		ErrorWrapper<
+			| DownloadArtifactStatus400
+			| DownloadArtifactStatus401
+			| DownloadArtifactStatus402
+			| DownloadArtifactStatus403
+			| DownloadArtifactStatus404
+		>,
+		null,
+		{ "'x-Artifact-Client-Ci'"?: string; "'x-Artifact-Client-Interactive'"?: number },
+		{ teamId?: string; slug?: string },
+		{ hash: string }
+	>({
+		method: "GET",
+		url: `/v8/artifacts/${pathParams.hash}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...headers, ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Query information about an artifact
+ * @description Query information about an array of artifacts.
+ * @link /v8/artifacts
+ */
+export async function artifactQuery(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		ArtifactQueryMutationResponse,
-		ErrorWrapper<ArtifactQuery400 | ArtifactQuery401 | ArtifactQuery402 | ArtifactQuery403>,
+		ArtifactQueryResponse,
+		ErrorWrapper<
+			| ArtifactQueryStatus400
+			| ArtifactQueryStatus401
+			| ArtifactQueryStatus402
+			| ArtifactQueryStatus403
+		>,
 		null,
 		Record<string, string>,
-		ArtifactQueryQueryParams,
+		{ teamId?: string; slug?: string },
 		Record<string, string>
 	>({
 		method: "POST",
 		url: `/v8/artifacts`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Returns the billing charge data in FOCUS v1.3 JSONL format for a specified Vercel team, within a date range specified by `from` and `to` query parameters. Supports 1-day granularity with a maximum date range of 1 year. The response is streamed as newline-delimited JSON (JSONL) and can be optionally compressed with gzip if the `Accept-Encoding: gzip` header is provided. This is only available for Owner, Member, Developer, Security, Billing, and Enterprise Viewer roles for the supplied team.
  * @summary List FOCUS billing charges
- * {@link /v1/billing/charges}
+ * @description Returns the billing charge data in FOCUS v1.3 JSONL format for a specified Vercel team, within a date range specified by `from` and `to` query parameters. Supports 1-day granularity with a maximum date range of 1 year. The response is streamed as newline-delimited JSON (JSONL) and can be optionally compressed with gzip if the `Accept-Encoding: gzip` header is provided. This is only available for Owner, Member, Developer, Security, Billing, and Enterprise Viewer roles for the supplied team.
+ * @link /v1/billing/charges
  */
-export async function listBillingCharges({
-	queryParams,
-	config = {},
-}: {
-	queryParams: ListBillingChargesQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listBillingCharges(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { from?: string; to?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		ListBillingChargesQueryResponse,
+		ListBillingChargesResponse,
 		ErrorWrapper<
-			| ListBillingCharges400
-			| ListBillingCharges401
-			| ListBillingCharges403
-			| ListBillingCharges404
-			| ListBillingCharges500
-			| ListBillingCharges503
+			| ListBillingChargesStatus400
+			| ListBillingChargesStatus401
+			| ListBillingChargesStatus403
+			| ListBillingChargesStatus404
+			| ListBillingChargesStatus500
+			| ListBillingChargesStatus503
 		>,
 		null,
 		Record<string, string>,
-		ListBillingChargesQueryParams,
+		{ from?: string; to?: string; teamId?: string; slug?: string },
 		Record<string, string>
-	>({ method: "GET", url: `/v1/billing/charges`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/v1/billing/charges`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Returns commitment allocations per contract period in FOCUS v1.3 JSONL format for a specified Vercel team. The response is streamed as newline-delimited JSON (JSONL). This endpoint is only applicable to Enterprise Vercel customers. An empty response is returned for non-Enterprise (Pro/Flex) customers.
  * @summary List FOCUS contract commitments
- * {@link /v1/billing/contract-commitments}
+ * @description Returns commitment allocations per contract period in FOCUS v1.3 JSONL format for a specified Vercel team. The response is streamed as newline-delimited JSON (JSONL). This endpoint is only applicable to Enterprise Vercel customers. An empty response is returned for non-Enterprise (Pro/Flex) customers.
+ * @link /v1/billing/contract-commitments
  */
-export async function listContractCommitments({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: ListContractCommitmentsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listContractCommitments(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		ListContractCommitmentsQueryResponse,
+		ListContractCommitmentsResponse,
 		ErrorWrapper<
-			| ListContractCommitments400
-			| ListContractCommitments401
-			| ListContractCommitments403
-			| ListContractCommitments404
+			| ListContractCommitmentsStatus400
+			| ListContractCommitmentsStatus401
+			| ListContractCommitmentsStatus403
+			| ListContractCommitmentsStatus404
 		>,
 		null,
 		Record<string, string>,
-		ListContractCommitmentsQueryParams,
+		{ teamId?: string; slug?: string },
 		Record<string, string>
-	>({ method: "GET", url: `/v1/billing/contract-commitments`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/v1/billing/contract-commitments`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Purchases credits for a Vercel team using the default payment method on file. The purchase is charged immediately via Stripe invoice. Supported credit types are `v0`, `gateway`, and `agent`. The `amount` field specifies the number of credits to purchase and must be a positive integer. An optional `source` query parameter can be provided to identify the caller. Defaults to `api` if not specified. This is only available for Owner, Member, Developer, Security, and Billing roles for the supplied team.
  * @summary Purchase credits
- * {@link /v1/billing/buy}
+ * @description Purchases credits for a Vercel team using the default payment method on file. The purchase is charged immediately via Stripe invoice. Supported credit types are `v0`, `gateway`, and `agent`. The `amount` field specifies the number of credits to purchase and must be a positive integer. An optional `source` query parameter can be provided to identify the caller. Defaults to `api` if not specified. This is only available for Owner, Member, Developer, Security, and Billing roles for the supplied team.
+ * @link /v1/billing/buy
  */
-export async function buyCredits({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: BuyCreditsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function buyCredits(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { source?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		BuyCreditsMutationResponse,
+		BuyCreditsResponse,
 		ErrorWrapper<
-			BuyCredits400 | BuyCredits401 | BuyCredits402 | BuyCredits403 | BuyCredits404 | BuyCredits500
+			| BuyCreditsStatus400
+			| BuyCreditsStatus401
+			| BuyCreditsStatus402
+			| BuyCreditsStatus403
+			| BuyCreditsStatus404
+			| BuyCreditsStatus500
 		>,
 		null,
 		Record<string, string>,
-		BuyCreditsQueryParams,
+		{ source?: string; teamId?: string; slug?: string },
 		Record<string, string>
 	>({
 		method: "POST",
 		url: `/v1/billing/buy`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Stages new redirects for a project and returns the new version.
  * @summary Stages new redirects for a project.
- * {@link /v1/bulk-redirects}
+ * @description Stages new redirects for a project and returns the new version.
+ * @link /v1/bulk-redirects
  */
-export async function stageRedirects({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: StageRedirectsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function stageRedirects(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		StageRedirectsMutationResponse,
-		ErrorWrapper<StageRedirects400 | StageRedirects401 | StageRedirects403 | StageRedirects500>,
+		StageRedirectsResponse,
+		ErrorWrapper<
+			| StageRedirectsStatus400
+			| StageRedirectsStatus401
+			| StageRedirectsStatus403
+			| StageRedirectsStatus500
+		>,
 		null,
 		Record<string, string>,
-		StageRedirectsQueryParams,
+		{ teamId?: string; slug?: string },
 		Record<string, string>
 	>({
 		method: "PUT",
 		url: `/v1/bulk-redirects`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Get the version history for a project's bulk redirects
  * @summary Gets project-level redirects.
- * {@link /v1/bulk-redirects}
+ * @description Get the version history for a project's bulk redirects
+ * @link /v1/bulk-redirects
  */
-export async function getRedirects({
-	queryParams,
-	config = {},
-}: {
-	queryParams: GetRedirectsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getRedirects(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			projectId?: string;
+			versionId?: string;
+			q?: string;
+			diff?: unknown;
+			page?: number;
+			per_page?: number;
+			sort_by?: "source" | "destination" | "statusCode";
+			sort_order?: "asc" | "desc";
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetRedirectsQueryResponse,
-		ErrorWrapper<GetRedirects400 | GetRedirects401 | GetRedirects403 | GetRedirects404>,
-		null,
-		Record<string, string>,
-		GetRedirectsQueryParams,
-		Record<string, string>
-	>({ method: "GET", url: `/v1/bulk-redirects`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Deletes the provided redirects from the latest version of the projects' bulk redirects. Stages a new change with the new redirects and returns the alias for the new version in the response.
- * @summary Delete project-level redirects.
- * {@link /v1/bulk-redirects}
- */
-export async function deleteRedirects({
-	queryParams,
-	config = {},
-}: {
-	queryParams: DeleteRedirectsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	const data = await request<
-		DeleteRedirectsMutationResponse,
+		GetRedirectsResponse,
 		ErrorWrapper<
-			| DeleteRedirects400
-			| DeleteRedirects401
-			| DeleteRedirects403
-			| DeleteRedirects404
-			| DeleteRedirects500
+			GetRedirectsStatus400 | GetRedirectsStatus401 | GetRedirectsStatus403 | GetRedirectsStatus404
 		>,
 		null,
 		Record<string, string>,
-		DeleteRedirectsQueryParams,
+		{
+			projectId?: string;
+			versionId?: string;
+			q?: string;
+			diff?: unknown;
+			page?: number;
+			per_page?: number;
+			sort_by?: "source" | "destination" | "statusCode";
+			sort_order?: "asc" | "desc";
+			teamId?: string;
+			slug?: string;
+		},
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/v1/bulk-redirects`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Delete project-level redirects.
+ * @description Deletes the provided redirects from the latest version of the projects' bulk redirects. Stages a new change with the new redirects and returns the alias for the new version in the response.
+ * @link /v1/bulk-redirects
+ */
+export async function deleteRedirects(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { projectId?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		DeleteRedirectsResponse,
+		ErrorWrapper<
+			| DeleteRedirectsStatus400
+			| DeleteRedirectsStatus401
+			| DeleteRedirectsStatus403
+			| DeleteRedirectsStatus404
+			| DeleteRedirectsStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ projectId?: string; teamId?: string; slug?: string },
 		Record<string, string>
 	>({
 		method: "DELETE",
 		url: `/v1/bulk-redirects`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Edits a single redirect identified by its source path. Stages a new change with the modified redirect and returns the alias for the new version in the response.
  * @summary Edit a project-level redirect.
- * {@link /v1/bulk-redirects}
+ * @description Edits a single redirect identified by its source path. Stages a new change with the modified redirect and returns the alias for the new version in the response.
+ * @link /v1/bulk-redirects
  */
-export async function editRedirect({
-	queryParams,
-	config = {},
-}: {
-	queryParams: EditRedirectQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function editRedirect(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { projectId?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		EditRedirectMutationResponse,
+		EditRedirectResponse,
 		ErrorWrapper<
-			EditRedirect400 | EditRedirect401 | EditRedirect403 | EditRedirect404 | EditRedirect500
+			| EditRedirectStatus400
+			| EditRedirectStatus401
+			| EditRedirectStatus403
+			| EditRedirectStatus404
+			| EditRedirectStatus500
 		>,
 		null,
 		Record<string, string>,
-		EditRedirectQueryParams,
+		{ projectId?: string; teamId?: string; slug?: string },
 		Record<string, string>
 	>({
 		method: "PATCH",
 		url: `/v1/bulk-redirects`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Restores the provided redirects in the staging version to the value in the production version. If no production version exists, removes the redirects from staging.
  * @summary Restore staged project-level redirects to their production version.
- * {@link /v1/bulk-redirects/restore}
+ * @description Restores the provided redirects in the staging version to the value in the production version. If no production version exists, removes the redirects from staging.
+ * @link /v1/bulk-redirects/restore
  */
-export async function restoreRedirects({
-	queryParams,
-	config = {},
-}: {
-	queryParams: RestoreRedirectsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function restoreRedirects(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { projectId?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		RestoreRedirectsMutationResponse,
+		RestoreRedirectsResponse,
 		ErrorWrapper<
-			| RestoreRedirects400
-			| RestoreRedirects401
-			| RestoreRedirects403
-			| RestoreRedirects404
-			| RestoreRedirects500
+			| RestoreRedirectsStatus400
+			| RestoreRedirectsStatus401
+			| RestoreRedirectsStatus403
+			| RestoreRedirectsStatus404
+			| RestoreRedirectsStatus500
 		>,
 		null,
 		Record<string, string>,
-		RestoreRedirectsQueryParams,
+		{ projectId?: string; teamId?: string; slug?: string },
 		Record<string, string>
 	>({
 		method: "POST",
 		url: `/v1/bulk-redirects/restore`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Get the version history for a project's bulk redirects
  * @summary Get the version history for a project's redirects.
- * {@link /v1/bulk-redirects/versions}
+ * @description Get the version history for a project's bulk redirects
+ * @link /v1/bulk-redirects/versions
  */
-export async function getVersions({
-	queryParams,
-	config = {},
-}: {
-	queryParams: GetVersionsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getVersions(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { projectId?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetVersionsQueryResponse,
-		ErrorWrapper<GetVersions400 | GetVersions401 | GetVersions403 | GetVersions500>,
-		null,
-		Record<string, string>,
-		GetVersionsQueryParams,
-		Record<string, string>
-	>({ method: "GET", url: `/v1/bulk-redirects/versions`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Update a version by promoting staging to production or restoring a previous production version
- * @summary Promote a staging version to production or restore a previous production version.
- * {@link /v1/bulk-redirects/versions}
- */
-export async function updateVersion({
-	queryParams,
-	config = {},
-}: {
-	queryParams: UpdateVersionQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	const data = await request<
-		UpdateVersionMutationResponse,
+		GetVersionsResponse,
 		ErrorWrapper<
-			UpdateVersion400 | UpdateVersion401 | UpdateVersion403 | UpdateVersion404 | UpdateVersion500
+			GetVersionsStatus400 | GetVersionsStatus401 | GetVersionsStatus403 | GetVersionsStatus500
 		>,
 		null,
 		Record<string, string>,
-		UpdateVersionQueryParams,
+		{ projectId?: string; teamId?: string; slug?: string },
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/v1/bulk-redirects/versions`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Promote a staging version to production or restore a previous production version.
+ * @description Update a version by promoting staging to production or restoring a previous production version
+ * @link /v1/bulk-redirects/versions
+ */
+export async function updateVersion(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { projectId?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		UpdateVersionResponse,
+		ErrorWrapper<
+			| UpdateVersionStatus400
+			| UpdateVersionStatus401
+			| UpdateVersionStatus403
+			| UpdateVersionStatus404
+			| UpdateVersionStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ projectId?: string; teamId?: string; slug?: string },
 		Record<string, string>
 	>({
 		method: "POST",
 		url: `/v1/bulk-redirects/versions`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description List all checks for a project, optionally filtered by target.
  * @summary List all checks for a project
- * {@link /v2/projects/:projectIdOrName/checks}
+ * @description List all checks for a project, optionally filtered by target.
+ * @link /v2/projects/{projectIdOrName}/checks
  */
-export async function listProjectChecks({
-	pathParams: { projectIdOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ListProjectChecksPathParams;
-	queryParams?: ListProjectChecksQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listProjectChecks(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectIdOrName: string };
+		queryParams?: {
+			blocks?:
+				| "build-start"
+				| "deployment-start"
+				| "deployment-alias"
+				| "deployment-promotion"
+				| "none";
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!projectIdOrName) {
+	if (!pathParams.projectIdOrName) {
 		throw new Error(`Missing required path parameter: projectIdOrName`);
 	}
-
 	const data = await request<
-		ListProjectChecksQueryResponse,
+		ListProjectChecksResponse,
 		ErrorWrapper<
-			ListProjectChecks400 | ListProjectChecks401 | ListProjectChecks403 | ListProjectChecks500
+			| ListProjectChecksStatus400
+			| ListProjectChecksStatus401
+			| ListProjectChecksStatus403
+			| ListProjectChecksStatus500
 		>,
 		null,
 		Record<string, string>,
-		ListProjectChecksQueryParams,
-		ListProjectChecksPathParams
+		{
+			blocks?:
+				| "build-start"
+				| "deployment-start"
+				| "deployment-alias"
+				| "deployment-promotion"
+				| "none";
+			teamId?: string;
+			slug?: string;
+		},
+		{ projectIdOrName: string }
 	>({
 		method: "GET",
-		url: `/v2/projects/${projectIdOrName}/checks`,
+		url: `/v2/projects/${pathParams.projectIdOrName}/checks`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Creates a new check for a project.
  * @summary Create a check
- * {@link /v2/projects/:projectIdOrName/checks}
+ * @description Creates a new check for a project.
+ * @link /v2/projects/{projectIdOrName}/checks
  */
-export async function createProjectCheck({
-	pathParams: { projectIdOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: CreateProjectCheckPathParams;
-	queryParams?: CreateProjectCheckQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createProjectCheck(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectIdOrName: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!projectIdOrName) {
+	if (!pathParams.projectIdOrName) {
 		throw new Error(`Missing required path parameter: projectIdOrName`);
 	}
-
 	const data = await request<
-		CreateProjectCheckMutationResponse,
+		CreateProjectCheckResponse,
 		ErrorWrapper<
-			CreateProjectCheck400 | CreateProjectCheck401 | CreateProjectCheck403 | CreateProjectCheck500
+			| CreateProjectCheckStatus400
+			| CreateProjectCheckStatus401
+			| CreateProjectCheckStatus403
+			| CreateProjectCheckStatus500
 		>,
 		null,
 		Record<string, string>,
-		CreateProjectCheckQueryParams,
-		CreateProjectCheckPathParams
+		{ teamId?: string; slug?: string },
+		{ projectIdOrName: string }
 	>({
 		method: "POST",
-		url: `/v2/projects/${projectIdOrName}/checks`,
+		url: `/v2/projects/${pathParams.projectIdOrName}/checks`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Return a detailed response for a single check.
  * @summary Get a check
- * {@link /v2/projects/:projectIdOrName/checks/:checkId}
+ * @description Return a detailed response for a single check.
+ * @link /v2/projects/{projectIdOrName}/checks/{checkId}
  */
-export async function getProjectCheck({
-	pathParams: { projectIdOrName, checkId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetProjectCheckPathParams;
-	queryParams?: GetProjectCheckQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getProjectCheck(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectIdOrName: string; checkId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!projectIdOrName) {
+	if (!pathParams.projectIdOrName) {
 		throw new Error(`Missing required path parameter: projectIdOrName`);
 	}
 
-	if (!checkId) {
+	if (!pathParams.checkId) {
 		throw new Error(`Missing required path parameter: checkId`);
 	}
-
 	const data = await request<
-		GetProjectCheckQueryResponse,
-		ErrorWrapper<GetProjectCheck400 | GetProjectCheck401 | GetProjectCheck403 | GetProjectCheck500>,
+		GetProjectCheckResponse,
+		ErrorWrapper<
+			| GetProjectCheckStatus400
+			| GetProjectCheckStatus401
+			| GetProjectCheckStatus403
+			| GetProjectCheckStatus500
+		>,
 		null,
 		Record<string, string>,
-		GetProjectCheckQueryParams,
-		GetProjectCheckPathParams
+		{ teamId?: string; slug?: string },
+		{ projectIdOrName: string; checkId: string }
 	>({
 		method: "GET",
-		url: `/v2/projects/${projectIdOrName}/checks/${checkId}`,
+		url: `/v2/projects/${pathParams.projectIdOrName}/checks/${pathParams.checkId}`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Update an existing check.
  * @summary Update a check
- * {@link /v2/projects/:projectIdOrName/checks/:checkId}
+ * @description Update an existing check.
+ * @link /v2/projects/{projectIdOrName}/checks/{checkId}
  */
-export async function updateProjectCheck({
-	pathParams: { projectIdOrName, checkId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: UpdateProjectCheckPathParams;
-	queryParams?: UpdateProjectCheckQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateProjectCheck(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectIdOrName: string; checkId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!projectIdOrName) {
+	if (!pathParams.projectIdOrName) {
 		throw new Error(`Missing required path parameter: projectIdOrName`);
 	}
 
-	if (!checkId) {
+	if (!pathParams.checkId) {
 		throw new Error(`Missing required path parameter: checkId`);
 	}
-
 	const data = await request<
-		UpdateProjectCheckMutationResponse,
+		UpdateProjectCheckResponse,
 		ErrorWrapper<
-			| UpdateProjectCheck400
-			| UpdateProjectCheck401
-			| UpdateProjectCheck403
-			| UpdateProjectCheck404
-			| UpdateProjectCheck500
+			| UpdateProjectCheckStatus400
+			| UpdateProjectCheckStatus401
+			| UpdateProjectCheckStatus403
+			| UpdateProjectCheckStatus404
+			| UpdateProjectCheckStatus500
 		>,
 		null,
 		Record<string, string>,
-		UpdateProjectCheckQueryParams,
-		UpdateProjectCheckPathParams
+		{ teamId?: string; slug?: string },
+		{ projectIdOrName: string; checkId: string }
 	>({
 		method: "PATCH",
-		url: `/v2/projects/${projectIdOrName}/checks/${checkId}`,
+		url: `/v2/projects/${pathParams.projectIdOrName}/checks/${pathParams.checkId}`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Delete an existing check and all of its runs.
  * @summary Delete a check
- * {@link /v2/projects/:projectIdOrName/checks/:checkId}
+ * @description Delete an existing check and all of its runs.
+ * @link /v2/projects/{projectIdOrName}/checks/{checkId}
  */
-export async function deleteProjectCheck({
-	pathParams: { projectIdOrName, checkId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: DeleteProjectCheckPathParams;
-	queryParams?: DeleteProjectCheckQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteProjectCheck(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectIdOrName: string; checkId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!projectIdOrName) {
+	if (!pathParams.projectIdOrName) {
 		throw new Error(`Missing required path parameter: projectIdOrName`);
 	}
 
-	if (!checkId) {
+	if (!pathParams.checkId) {
 		throw new Error(`Missing required path parameter: checkId`);
 	}
-
 	const data = await request<
-		DeleteProjectCheckMutationResponse,
+		DeleteProjectCheckResponse,
 		ErrorWrapper<
-			| DeleteProjectCheck400
-			| DeleteProjectCheck401
-			| DeleteProjectCheck403
-			| DeleteProjectCheck404
-			| DeleteProjectCheck500
+			| DeleteProjectCheckStatus400
+			| DeleteProjectCheckStatus401
+			| DeleteProjectCheckStatus403
+			| DeleteProjectCheckStatus404
+			| DeleteProjectCheckStatus500
 		>,
 		null,
 		Record<string, string>,
-		DeleteProjectCheckQueryParams,
-		DeleteProjectCheckPathParams
+		{ teamId?: string; slug?: string },
+		{ projectIdOrName: string; checkId: string }
 	>({
 		method: "DELETE",
-		url: `/v2/projects/${projectIdOrName}/checks/${checkId}`,
+		url: `/v2/projects/${pathParams.projectIdOrName}/checks/${pathParams.checkId}`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description List all runs associated with a given check.
  * @summary List runs for a check
- * {@link /v2/projects/:projectIdOrName/checks/:checkId/runs}
+ * @description List all runs associated with a given check.
+ * @link /v2/projects/{projectIdOrName}/checks/{checkId}/runs
  */
-export async function listCheckRuns({
-	pathParams: { projectIdOrName, checkId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ListCheckRunsPathParams;
-	queryParams?: ListCheckRunsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listCheckRuns(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectIdOrName: string; checkId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!projectIdOrName) {
+	if (!pathParams.projectIdOrName) {
 		throw new Error(`Missing required path parameter: projectIdOrName`);
 	}
 
-	if (!checkId) {
+	if (!pathParams.checkId) {
 		throw new Error(`Missing required path parameter: checkId`);
 	}
-
 	const data = await request<
-		ListCheckRunsQueryResponse,
-		ErrorWrapper<ListCheckRuns400 | ListCheckRuns401 | ListCheckRuns403 | ListCheckRuns500>,
+		ListCheckRunsResponse,
+		ErrorWrapper<
+			| ListCheckRunsStatus400
+			| ListCheckRunsStatus401
+			| ListCheckRunsStatus403
+			| ListCheckRunsStatus500
+		>,
 		null,
 		Record<string, string>,
-		ListCheckRunsQueryParams,
-		ListCheckRunsPathParams
+		{ teamId?: string; slug?: string },
+		{ projectIdOrName: string; checkId: string }
 	>({
 		method: "GET",
-		url: `/v2/projects/${projectIdOrName}/checks/${checkId}/runs`,
+		url: `/v2/projects/${pathParams.projectIdOrName}/checks/${pathParams.checkId}/runs`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description List all check runs for a deployment.
  * @summary List check runs for a deployment
- * {@link /v2/deployments/:deploymentId/check-runs}
+ * @description List all check runs for a deployment.
+ * @link /v2/deployments/{deploymentId}/check-runs
  */
-export async function listDeploymentCheckRuns({
-	pathParams: { deploymentId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ListDeploymentCheckRunsPathParams;
-	queryParams?: ListDeploymentCheckRunsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listDeploymentCheckRuns(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { deploymentId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!deploymentId) {
+	if (!pathParams.deploymentId) {
 		throw new Error(`Missing required path parameter: deploymentId`);
 	}
-
 	const data = await request<
-		ListDeploymentCheckRunsQueryResponse,
+		ListDeploymentCheckRunsResponse,
 		ErrorWrapper<
-			| ListDeploymentCheckRuns400
-			| ListDeploymentCheckRuns401
-			| ListDeploymentCheckRuns403
-			| ListDeploymentCheckRuns500
+			| ListDeploymentCheckRunsStatus400
+			| ListDeploymentCheckRunsStatus401
+			| ListDeploymentCheckRunsStatus403
+			| ListDeploymentCheckRunsStatus500
 		>,
 		null,
 		Record<string, string>,
-		ListDeploymentCheckRunsQueryParams,
-		ListDeploymentCheckRunsPathParams
+		{ teamId?: string; slug?: string },
+		{ deploymentId: string }
 	>({
 		method: "GET",
-		url: `/v2/deployments/${deploymentId}/check-runs`,
+		url: `/v2/deployments/${pathParams.deploymentId}/check-runs`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Creates a new check run for a deployment.
  * @summary Create a check run
- * {@link /v2/deployments/:deploymentId/check-runs}
+ * @description Creates a new check run for a deployment.
+ * @link /v2/deployments/{deploymentId}/check-runs
  */
-export async function createDeploymentCheckRun({
-	pathParams: { deploymentId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: CreateDeploymentCheckRunPathParams;
-	queryParams?: CreateDeploymentCheckRunQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createDeploymentCheckRun(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { deploymentId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!deploymentId) {
+	if (!pathParams.deploymentId) {
 		throw new Error(`Missing required path parameter: deploymentId`);
 	}
-
 	const data = await request<
-		CreateDeploymentCheckRunMutationResponse,
+		CreateDeploymentCheckRunResponse,
 		ErrorWrapper<
-			| CreateDeploymentCheckRun400
-			| CreateDeploymentCheckRun401
-			| CreateDeploymentCheckRun403
-			| CreateDeploymentCheckRun404
-			| CreateDeploymentCheckRun500
+			| CreateDeploymentCheckRunStatus400
+			| CreateDeploymentCheckRunStatus401
+			| CreateDeploymentCheckRunStatus403
+			| CreateDeploymentCheckRunStatus404
+			| CreateDeploymentCheckRunStatus500
 		>,
 		null,
 		Record<string, string>,
-		CreateDeploymentCheckRunQueryParams,
-		CreateDeploymentCheckRunPathParams
+		{ teamId?: string; slug?: string },
+		{ deploymentId: string }
 	>({
 		method: "POST",
-		url: `/v2/deployments/${deploymentId}/check-runs`,
+		url: `/v2/deployments/${pathParams.deploymentId}/check-runs`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Return a detailed response for a single check run.
  * @summary Get a check run
- * {@link /v2/deployments/:deploymentId/check-runs/:checkRunId}
+ * @description Return a detailed response for a single check run.
+ * @link /v2/deployments/{deploymentId}/check-runs/{checkRunId}
  */
-export async function getDeploymentCheckRun({
-	pathParams: { deploymentId, checkRunId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetDeploymentCheckRunPathParams;
-	queryParams?: GetDeploymentCheckRunQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getDeploymentCheckRun(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { deploymentId: string; checkRunId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!deploymentId) {
+	if (!pathParams.deploymentId) {
 		throw new Error(`Missing required path parameter: deploymentId`);
 	}
 
-	if (!checkRunId) {
+	if (!pathParams.checkRunId) {
 		throw new Error(`Missing required path parameter: checkRunId`);
 	}
-
 	const data = await request<
-		GetDeploymentCheckRunQueryResponse,
+		GetDeploymentCheckRunResponse,
 		ErrorWrapper<
-			| GetDeploymentCheckRun400
-			| GetDeploymentCheckRun401
-			| GetDeploymentCheckRun403
-			| GetDeploymentCheckRun404
-			| GetDeploymentCheckRun500
+			| GetDeploymentCheckRunStatus400
+			| GetDeploymentCheckRunStatus401
+			| GetDeploymentCheckRunStatus403
+			| GetDeploymentCheckRunStatus404
+			| GetDeploymentCheckRunStatus500
 		>,
 		null,
 		Record<string, string>,
-		GetDeploymentCheckRunQueryParams,
-		GetDeploymentCheckRunPathParams
+		{ teamId?: string; slug?: string },
+		{ deploymentId: string; checkRunId: string }
 	>({
 		method: "GET",
-		url: `/v2/deployments/${deploymentId}/check-runs/${checkRunId}`,
+		url: `/v2/deployments/${pathParams.deploymentId}/check-runs/${pathParams.checkRunId}`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Update an existing check run for a deployment.
  * @summary Update a check run
- * {@link /v2/deployments/:deploymentId/check-runs/:checkRunId}
+ * @description Update an existing check run for a deployment.
+ * @link /v2/deployments/{deploymentId}/check-runs/{checkRunId}
  */
-export async function updateDeploymentCheckRun({
-	pathParams: { deploymentId, checkRunId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: UpdateDeploymentCheckRunPathParams;
-	queryParams?: UpdateDeploymentCheckRunQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateDeploymentCheckRun(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { deploymentId: string; checkRunId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!deploymentId) {
+	if (!pathParams.deploymentId) {
 		throw new Error(`Missing required path parameter: deploymentId`);
 	}
 
-	if (!checkRunId) {
+	if (!pathParams.checkRunId) {
 		throw new Error(`Missing required path parameter: checkRunId`);
 	}
-
 	const data = await request<
-		UpdateDeploymentCheckRunMutationResponse,
+		UpdateDeploymentCheckRunResponse,
 		ErrorWrapper<
-			| UpdateDeploymentCheckRun400
-			| UpdateDeploymentCheckRun401
-			| UpdateDeploymentCheckRun403
-			| UpdateDeploymentCheckRun413
-			| UpdateDeploymentCheckRun500
+			| UpdateDeploymentCheckRunStatus400
+			| UpdateDeploymentCheckRunStatus401
+			| UpdateDeploymentCheckRunStatus403
+			| UpdateDeploymentCheckRunStatus413
+			| UpdateDeploymentCheckRunStatus500
 		>,
 		null,
 		Record<string, string>,
-		UpdateDeploymentCheckRunQueryParams,
-		UpdateDeploymentCheckRunPathParams
+		{ teamId?: string; slug?: string },
+		{ deploymentId: string; checkRunId: string }
 	>({
 		method: "PATCH",
-		url: `/v2/deployments/${deploymentId}/check-runs/${checkRunId}`,
+		url: `/v2/deployments/${pathParams.deploymentId}/check-runs/${pathParams.checkRunId}`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Creates a new check. This endpoint must be called with an OAuth2 or it will produce a 400 error.
  * @summary Creates a new Check
- * {@link /v1/deployments/:deploymentId/checks}
+ * @description Creates a new check. This endpoint must be called with an OAuth2 or it will produce a 400 error.
  * @deprecated
+ * @link /v1/deployments/{deploymentId}/checks
  */
-export async function createCheck({
-	pathParams: { deploymentId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: CreateCheckPathParams;
-	queryParams?: CreateCheckQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!deploymentId) {
-		throw new Error(`Missing required path parameter: deploymentId`);
-	}
-
-	const data = await request<
-		CreateCheckMutationResponse,
-		ErrorWrapper<CreateCheck400 | CreateCheck401 | CreateCheck403 | CreateCheck404>,
-		null,
-		Record<string, string>,
-		CreateCheckQueryParams,
-		CreateCheckPathParams
-	>({
-		method: "POST",
-		url: `/v1/deployments/${deploymentId}/checks`,
+export async function createCheck(
+	{
+		pathParams,
 		queryParams,
-		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
-	});
-	return data;
-}
+		config,
+	}: {
+		pathParams: { deploymentId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-/**
- * @description List all of the checks created for a deployment.
- * @summary Retrieve a list of all checks
- * {@link /v1/deployments/:deploymentId/checks}
- * @deprecated
- */
-export async function getAllChecks({
-	pathParams: { deploymentId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetAllChecksPathParams;
-	queryParams?: GetAllChecksQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!deploymentId) {
+	if (!pathParams.deploymentId) {
 		throw new Error(`Missing required path parameter: deploymentId`);
 	}
-
 	const data = await request<
-		GetAllChecksQueryResponse,
-		ErrorWrapper<GetAllChecks400 | GetAllChecks401 | GetAllChecks403 | GetAllChecks404>,
-		null,
-		Record<string, string>,
-		GetAllChecksQueryParams,
-		GetAllChecksPathParams
-	>({
-		method: "GET",
-		url: `/v1/deployments/${deploymentId}/checks`,
-		queryParams,
-		...requestConfig,
-	});
-	return data;
-}
-
-/**
- * @description Return a detailed response for a single check.
- * @summary Get a single check
- * {@link /v1/deployments/:deploymentId/checks/:checkId}
- * @deprecated
- */
-export async function getCheck({
-	pathParams: { deploymentId, checkId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetCheckPathParams;
-	queryParams?: GetCheckQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!deploymentId) {
-		throw new Error(`Missing required path parameter: deploymentId`);
-	}
-
-	if (!checkId) {
-		throw new Error(`Missing required path parameter: checkId`);
-	}
-
-	const data = await request<
-		GetCheckQueryResponse,
-		ErrorWrapper<GetCheck400 | GetCheck401 | GetCheck403 | GetCheck404>,
-		null,
-		Record<string, string>,
-		GetCheckQueryParams,
-		GetCheckPathParams
-	>({
-		method: "GET",
-		url: `/v1/deployments/${deploymentId}/checks/${checkId}`,
-		queryParams,
-		...requestConfig,
-	});
-	return data;
-}
-
-/**
- * @description Update an existing check. This endpoint must be called with an OAuth2 or it will produce a 400 error.
- * @summary Update a check
- * {@link /v1/deployments/:deploymentId/checks/:checkId}
- * @deprecated
- */
-export async function updateCheck({
-	pathParams: { deploymentId, checkId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: UpdateCheckPathParams;
-	queryParams?: UpdateCheckQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!deploymentId) {
-		throw new Error(`Missing required path parameter: deploymentId`);
-	}
-
-	if (!checkId) {
-		throw new Error(`Missing required path parameter: checkId`);
-	}
-
-	const data = await request<
-		UpdateCheckMutationResponse,
+		CreateCheckResponse,
 		ErrorWrapper<
-			UpdateCheck400 | UpdateCheck401 | UpdateCheck403 | UpdateCheck404 | UpdateCheck413
+			CreateCheckStatus400 | CreateCheckStatus401 | CreateCheckStatus403 | CreateCheckStatus404
 		>,
 		null,
 		Record<string, string>,
-		UpdateCheckQueryParams,
-		UpdateCheckPathParams
+		{ teamId?: string; slug?: string },
+		{ deploymentId: string }
+	>({
+		method: "POST",
+		url: `/v1/deployments/${pathParams.deploymentId}/checks`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Retrieve a list of all checks
+ * @description List all of the checks created for a deployment.
+ * @deprecated
+ * @link /v1/deployments/{deploymentId}/checks
+ */
+export async function getAllChecks(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { deploymentId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.deploymentId) {
+		throw new Error(`Missing required path parameter: deploymentId`);
+	}
+	const data = await request<
+		GetAllChecksResponse,
+		ErrorWrapper<
+			GetAllChecksStatus400 | GetAllChecksStatus401 | GetAllChecksStatus403 | GetAllChecksStatus404
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ deploymentId: string }
+	>({
+		method: "GET",
+		url: `/v1/deployments/${pathParams.deploymentId}/checks`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Get a single check
+ * @description Return a detailed response for a single check.
+ * @deprecated
+ * @link /v1/deployments/{deploymentId}/checks/{checkId}
+ */
+export async function getCheck(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { deploymentId: string; checkId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.deploymentId) {
+		throw new Error(`Missing required path parameter: deploymentId`);
+	}
+
+	if (!pathParams.checkId) {
+		throw new Error(`Missing required path parameter: checkId`);
+	}
+	const data = await request<
+		GetCheckResponse,
+		ErrorWrapper<GetCheckStatus400 | GetCheckStatus401 | GetCheckStatus403 | GetCheckStatus404>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ deploymentId: string; checkId: string }
+	>({
+		method: "GET",
+		url: `/v1/deployments/${pathParams.deploymentId}/checks/${pathParams.checkId}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Update a check
+ * @description Update an existing check. This endpoint must be called with an OAuth2 or it will produce a 400 error.
+ * @deprecated
+ * @link /v1/deployments/{deploymentId}/checks/{checkId}
+ */
+export async function updateCheck(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { deploymentId: string; checkId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.deploymentId) {
+		throw new Error(`Missing required path parameter: deploymentId`);
+	}
+
+	if (!pathParams.checkId) {
+		throw new Error(`Missing required path parameter: checkId`);
+	}
+	const data = await request<
+		UpdateCheckResponse,
+		ErrorWrapper<
+			| UpdateCheckStatus400
+			| UpdateCheckStatus401
+			| UpdateCheckStatus403
+			| UpdateCheckStatus404
+			| UpdateCheckStatus413
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ deploymentId: string; checkId: string }
 	>({
 		method: "PATCH",
-		url: `/v1/deployments/${deploymentId}/checks/${checkId}`,
+		url: `/v1/deployments/${pathParams.deploymentId}/checks/${pathParams.checkId}`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Rerequest a selected check that has failed.
  * @summary Rerequest a check
- * {@link /v1/deployments/:deploymentId/checks/:checkId/rerequest}
+ * @description Rerequest a selected check that has failed.
  * @deprecated
+ * @link /v1/deployments/{deploymentId}/checks/{checkId}/rerequest
  */
-export async function rerequestCheck({
-	pathParams: { deploymentId, checkId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: RerequestCheckPathParams;
-	queryParams?: RerequestCheckQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function rerequestCheck(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { deploymentId: string; checkId: string };
+		queryParams?: { autoUpdate?: boolean; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!deploymentId) {
+	if (!pathParams.deploymentId) {
 		throw new Error(`Missing required path parameter: deploymentId`);
 	}
 
-	if (!checkId) {
+	if (!pathParams.checkId) {
 		throw new Error(`Missing required path parameter: checkId`);
 	}
-
 	const data = await request<
-		RerequestCheckMutationResponse,
-		ErrorWrapper<RerequestCheck400 | RerequestCheck401 | RerequestCheck403 | RerequestCheck404>,
-		null,
-		Record<string, string>,
-		RerequestCheckQueryParams,
-		RerequestCheckPathParams
-	>({
-		method: "POST",
-		url: `/v1/deployments/${deploymentId}/checks/${checkId}/rerequest`,
-		queryParams,
-		...requestConfig,
-	});
-	return data;
-}
-
-/**
- * @description Allows to list Secure Compute networks.
- * @summary List Secure Compute networks
- * {@link /v1/connect/networks}
- */
-export async function listNetworks({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: ListNetworksQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	const data = await request<
-		ListNetworksQueryResponse,
-		ErrorWrapper<ListNetworks400 | ListNetworks401 | ListNetworks403>,
-		null,
-		Record<string, string>,
-		ListNetworksQueryParams,
-		Record<string, string>
-	>({ method: "GET", url: `/v1/connect/networks`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Allows to create a Secure Compute network.
- * @summary Create a Secure Compute network
- * {@link /v1/connect/networks}
- */
-export async function createNetwork({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: CreateNetworkQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	const data = await request<
-		CreateNetworkMutationResponse,
+		RerequestCheckResponse,
 		ErrorWrapper<
-			CreateNetwork400 | CreateNetwork401 | CreateNetwork402 | CreateNetwork403 | CreateNetwork409
+			| RerequestCheckStatus400
+			| RerequestCheckStatus401
+			| RerequestCheckStatus403
+			| RerequestCheckStatus404
 		>,
 		null,
 		Record<string, string>,
-		CreateNetworkQueryParams,
+		{ autoUpdate?: boolean; teamId?: string; slug?: string },
+		{ deploymentId: string; checkId: string }
+	>({
+		method: "POST",
+		url: `/v1/deployments/${pathParams.deploymentId}/checks/${pathParams.checkId}/rerequest`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary List Secure Compute networks
+ * @description Allows to list Secure Compute networks.
+ * @link /v1/connect/networks
+ */
+export async function listNetworks(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			includeHostedZones?: boolean;
+			includePeeringConnections?: boolean;
+			includeProjects?: boolean;
+			search?: string;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		ListNetworksResponse,
+		ErrorWrapper<ListNetworksStatus400 | ListNetworksStatus401 | ListNetworksStatus403>,
+		null,
+		Record<string, string>,
+		{
+			includeHostedZones?: boolean;
+			includePeeringConnections?: boolean;
+			includeProjects?: boolean;
+			search?: string;
+			teamId?: string;
+			slug?: string;
+		},
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/v1/connect/networks`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Create a Secure Compute network
+ * @description Allows to create a Secure Compute network.
+ * @link /v1/connect/networks
+ */
+export async function createNetwork(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		CreateNetworkResponse,
+		ErrorWrapper<
+			| CreateNetworkStatus400
+			| CreateNetworkStatus401
+			| CreateNetworkStatus402
+			| CreateNetworkStatus403
+			| CreateNetworkStatus409
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
 		Record<string, string>
 	>({
 		method: "POST",
 		url: `/v1/connect/networks`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Allows to delete a Secure Compute network.
  * @summary Delete a Secure Compute network
- * {@link /v1/connect/networks/:networkId}
+ * @description Allows to delete a Secure Compute network.
+ * @link /v1/connect/networks/{networkId}
  */
-export async function deleteNetwork({
-	pathParams: { networkId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: DeleteNetworkPathParams;
-	queryParams?: DeleteNetworkQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteNetwork(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { networkId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!networkId) {
+	if (!pathParams.networkId) {
 		throw new Error(`Missing required path parameter: networkId`);
 	}
-
 	const data = await request<
-		DeleteNetworkMutationResponse,
+		DeleteNetworkResponse,
 		ErrorWrapper<
-			DeleteNetwork400 | DeleteNetwork401 | DeleteNetwork402 | DeleteNetwork403 | DeleteNetwork409
+			| DeleteNetworkStatus400
+			| DeleteNetworkStatus401
+			| DeleteNetworkStatus402
+			| DeleteNetworkStatus403
+			| DeleteNetworkStatus409
 		>,
 		null,
 		Record<string, string>,
-		DeleteNetworkQueryParams,
-		DeleteNetworkPathParams
-	>({ method: "DELETE", url: `/v1/connect/networks/${networkId}`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Allows to update a Secure Compute network.
- * @summary Update a Secure Compute network
- * {@link /v1/connect/networks/:networkId}
- */
-export async function updateNetwork({
-	pathParams: { networkId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: UpdateNetworkPathParams;
-	queryParams?: UpdateNetworkQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!networkId) {
-		throw new Error(`Missing required path parameter: networkId`);
-	}
-
-	const data = await request<
-		UpdateNetworkMutationResponse,
-		ErrorWrapper<UpdateNetwork400 | UpdateNetwork401 | UpdateNetwork403>,
-		null,
-		Record<string, string>,
-		UpdateNetworkQueryParams,
-		UpdateNetworkPathParams
+		{ teamId?: string; slug?: string },
+		{ networkId: string }
 	>({
-		method: "PATCH",
-		url: `/v1/connect/networks/${networkId}`,
+		method: "DELETE",
+		url: `/v1/connect/networks/${pathParams.networkId}`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Allows to read a Secure Compute network.
- * @summary Read a Secure Compute network
- * {@link /v1/connect/networks/:networkId}
+ * @summary Update a Secure Compute network
+ * @description Allows to update a Secure Compute network.
+ * @link /v1/connect/networks/{networkId}
  */
-export async function readNetwork({
-	pathParams: { networkId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ReadNetworkPathParams;
-	queryParams?: ReadNetworkQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateNetwork(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { networkId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!networkId) {
+	if (!pathParams.networkId) {
 		throw new Error(`Missing required path parameter: networkId`);
 	}
-
 	const data = await request<
-		ReadNetworkQueryResponse,
-		ErrorWrapper<ReadNetwork400 | ReadNetwork401 | ReadNetwork403>,
+		UpdateNetworkResponse,
+		ErrorWrapper<UpdateNetworkStatus400 | UpdateNetworkStatus401 | UpdateNetworkStatus403>,
 		null,
 		Record<string, string>,
-		ReadNetworkQueryParams,
-		ReadNetworkPathParams
-	>({ method: "GET", url: `/v1/connect/networks/${networkId}`, queryParams, ...requestConfig });
+		{ teamId?: string; slug?: string },
+		{ networkId: string }
+	>({
+		method: "PATCH",
+		url: `/v1/connect/networks/${pathParams.networkId}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Get the build logs of a deployment by deployment ID and build ID. It can work as an infinite stream of logs or as a JSON endpoint depending on the input parameters.
- * @summary Get deployment events
- * {@link /v3/deployments/:idOrUrl/events}
+ * @summary Read a Secure Compute network
+ * @description Allows to read a Secure Compute network.
+ * @link /v1/connect/networks/{networkId}
  */
-export async function getDeploymentEvents({
-	pathParams: { idOrUrl },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetDeploymentEventsPathParams;
-	queryParams?: GetDeploymentEventsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function readNetwork(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { networkId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!idOrUrl) {
+	if (!pathParams.networkId) {
+		throw new Error(`Missing required path parameter: networkId`);
+	}
+	const data = await request<
+		ReadNetworkResponse,
+		ErrorWrapper<ReadNetworkStatus400 | ReadNetworkStatus401 | ReadNetworkStatus403>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ networkId: string }
+	>({
+		method: "GET",
+		url: `/v1/connect/networks/${pathParams.networkId}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Get deployment events
+ * @description Get the build logs of a deployment by deployment ID and build ID. It can work as an infinite stream of logs or as a JSON endpoint depending on the input parameters.
+ * @link /v3/deployments/{idOrUrl}/events
+ */
+export async function getDeploymentEvents(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrUrl: string };
+		queryParams?: {
+			direction?: "backward" | "forward";
+			follow?: 0 | 1;
+			limit?: number;
+			name?: string;
+			since?: number;
+			until?: number;
+			statusCode?: unknown;
+			delimiter?: 0 | 1;
+			builds?: 0 | 1;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.idOrUrl) {
 		throw new Error(`Missing required path parameter: idOrUrl`);
 	}
-
 	const data = await request<
-		GetDeploymentEventsQueryResponse,
+		GetDeploymentEventsResponse,
 		ErrorWrapper<
-			| GetDeploymentEvents400
-			| GetDeploymentEvents401
-			| GetDeploymentEvents403
-			| GetDeploymentEvents500
+			| GetDeploymentEventsStatus400
+			| GetDeploymentEventsStatus401
+			| GetDeploymentEventsStatus403
+			| GetDeploymentEventsStatus500
 		>,
 		null,
 		Record<string, string>,
-		GetDeploymentEventsQueryParams,
-		GetDeploymentEventsPathParams
-	>({ method: "GET", url: `/v3/deployments/${idOrUrl}/events`, queryParams, ...requestConfig });
+		{
+			direction?: "backward" | "forward";
+			follow?: 0 | 1;
+			limit?: number;
+			name?: string;
+			since?: number;
+			until?: number;
+			statusCode?: unknown;
+			delimiter?: 0 | 1;
+			builds?: 0 | 1;
+			teamId?: string;
+			slug?: string;
+		},
+		{ idOrUrl: string }
+	>({
+		method: "GET",
+		url: `/v3/deployments/${pathParams.idOrUrl}/events`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Updates the deployment integration action for the specified integration installation
  * @summary Update deployment integration action
- * {@link /v1/deployments/:deploymentId/integrations/:integrationConfigurationId/resources/:resourceId/actions/:action}
+ * @description Updates the deployment integration action for the specified integration installation
+ * @link /v1/deployments/{deploymentId}/integrations/{integrationConfigurationId}/resources/{resourceId}/actions/{action}
  */
-export async function updateIntegrationDeploymentAction({
-	pathParams: { deploymentId, integrationConfigurationId, resourceId, action },
-	config = {},
-}: {
-	pathParams: UpdateIntegrationDeploymentActionPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateIntegrationDeploymentAction(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: {
+			deploymentId: string;
+			integrationConfigurationId: string;
+			resourceId: string;
+			action: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!deploymentId) {
+	if (!pathParams.deploymentId) {
 		throw new Error(`Missing required path parameter: deploymentId`);
 	}
 
-	if (!integrationConfigurationId) {
+	if (!pathParams.integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
 	}
 
-	if (!resourceId) {
+	if (!pathParams.resourceId) {
 		throw new Error(`Missing required path parameter: resourceId`);
 	}
 
-	if (!action) {
+	if (!pathParams.action) {
 		throw new Error(`Missing required path parameter: action`);
 	}
-
 	const data = await request<
-		UpdateIntegrationDeploymentActionMutationResponse,
+		UpdateIntegrationDeploymentActionResponse,
 		ErrorWrapper<
-			| UpdateIntegrationDeploymentAction400
-			| UpdateIntegrationDeploymentAction401
-			| UpdateIntegrationDeploymentAction403
+			| UpdateIntegrationDeploymentActionStatus400
+			| UpdateIntegrationDeploymentActionStatus401
+			| UpdateIntegrationDeploymentActionStatus403
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		UpdateIntegrationDeploymentActionPathParams
+		{ deploymentId: string; integrationConfigurationId: string; resourceId: string; action: string }
 	>({
 		method: "PATCH",
-		url: `/v1/deployments/${deploymentId}/integrations/${integrationConfigurationId}/resources/${resourceId}/actions/${action}`,
+		url: `/v1/deployments/${pathParams.deploymentId}/integrations/${pathParams.integrationConfigurationId}/resources/${pathParams.resourceId}/actions/${pathParams.action}`,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Retrieves information for a deployment either by supplying its ID (`id` property) or Hostname (`url` property). Additional details will be included when the authenticated user or team is an owner of the deployment.
  * @summary Get a deployment by ID or URL
- * {@link /v13/deployments/:idOrUrl}
+ * @description Retrieves information for a deployment either by supplying its ID (`id` property) or Hostname (`url` property). Additional details will be included when the authenticated user or team is an owner of the deployment.
+ * @link /v13/deployments/{idOrUrl}
  */
-export async function getDeployment({
-	pathParams: { idOrUrl },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetDeploymentPathParams;
-	queryParams?: GetDeploymentQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getDeployment(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrUrl: string };
+		queryParams?: { withGitRepoInfo?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!idOrUrl) {
+	if (!pathParams.idOrUrl) {
 		throw new Error(`Missing required path parameter: idOrUrl`);
 	}
-
 	const data = await request<
-		GetDeploymentQueryResponse,
-		ErrorWrapper<GetDeployment400 | GetDeployment403 | GetDeployment404 | GetDeployment429>,
-		null,
-		Record<string, string>,
-		GetDeploymentQueryParams,
-		GetDeploymentPathParams
-	>({ method: "GET", url: `/v13/deployments/${idOrUrl}`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Create a new deployment with all the required and intended data. If the deployment is not a git deployment, all files must be provided with the request, either referenced or inlined. Additionally, a deployment id can be specified to redeploy a previous deployment.
- * @summary Create a new deployment
- * {@link /v13/deployments}
- */
-export async function createDeployment({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: CreateDeploymentQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	const data = await request<
-		CreateDeploymentMutationResponse,
+		GetDeploymentResponse,
 		ErrorWrapper<
-			| CreateDeployment400
-			| CreateDeployment401
-			| CreateDeployment402
-			| CreateDeployment403
-			| CreateDeployment404
-			| CreateDeployment409
-			| CreateDeployment426
-			| CreateDeployment429
-			| CreateDeployment500
-			| CreateDeployment503
+			| GetDeploymentStatus400
+			| GetDeploymentStatus403
+			| GetDeploymentStatus404
+			| GetDeploymentStatus429
 		>,
 		null,
 		Record<string, string>,
-		CreateDeploymentQueryParams,
+		{ withGitRepoInfo?: string; teamId?: string; slug?: string },
+		{ idOrUrl: string }
+	>({
+		method: "GET",
+		url: `/v13/deployments/${pathParams.idOrUrl}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Create a new deployment
+ * @description Create a new deployment with all the required and intended data. If the deployment is not a git deployment, all files must be provided with the request, either referenced or inlined. Additionally, a deployment id can be specified to redeploy a previous deployment.
+ * @link /v13/deployments
+ */
+export async function createDeployment(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			forceNew?: unknown;
+			skipAutoDetectionConfirmation?: unknown;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		CreateDeploymentResponse,
+		ErrorWrapper<
+			| CreateDeploymentStatus400
+			| CreateDeploymentStatus401
+			| CreateDeploymentStatus402
+			| CreateDeploymentStatus403
+			| CreateDeploymentStatus404
+			| CreateDeploymentStatus409
+			| CreateDeploymentStatus426
+			| CreateDeploymentStatus429
+			| CreateDeploymentStatus500
+			| CreateDeploymentStatus503
+		>,
+		null,
+		Record<string, string>,
+		{ forceNew?: unknown; skipAutoDetectionConfirmation?: unknown; teamId?: string; slug?: string },
 		Record<string, string>
 	>({
 		method: "POST",
 		url: `/v13/deployments`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description This endpoint allows you to cancel a deployment which is currently building, by supplying its `id` in the URL.
  * @summary Cancel a deployment
- * {@link /v12/deployments/:id/cancel}
+ * @description This endpoint allows you to cancel a deployment which is currently building, by supplying its `id` in the URL.
+ * @link /v12/deployments/{id}/cancel
  */
-export async function cancelDeployment({
-	pathParams: { id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: CancelDeploymentPathParams;
-	queryParams?: CancelDeploymentQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function cancelDeployment(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { id: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!id) {
+	if (!pathParams.id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
-
 	const data = await request<
-		CancelDeploymentMutationResponse,
+		CancelDeploymentResponse,
 		ErrorWrapper<
-			CancelDeployment400 | CancelDeployment401 | CancelDeployment403 | CancelDeployment404
+			| CancelDeploymentStatus400
+			| CancelDeploymentStatus401
+			| CancelDeploymentStatus403
+			| CancelDeploymentStatus404
 		>,
 		null,
 		Record<string, string>,
-		CancelDeploymentQueryParams,
-		CancelDeploymentPathParams
-	>({ method: "PATCH", url: `/v12/deployments/${id}/cancel`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Retrieves a list of DNS records created for a domain name. By default it returns 20 records if no limit is provided. The rest can be retrieved using the pagination options.
- * @summary List existing DNS records
- * {@link /v5/domains/:domain/records}
- */
-export async function getRecords({
-	pathParams: { domain },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetRecordsPathParams;
-	queryParams?: GetRecordsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!domain) {
-		throw new Error(`Missing required path parameter: domain`);
-	}
-
-	const data = await request<
-		GetRecordsQueryResponse,
-		ErrorWrapper<GetRecords400 | GetRecords401 | GetRecords403 | GetRecords404>,
-		null,
-		Record<string, string>,
-		GetRecordsQueryParams,
-		GetRecordsPathParams
-	>({ method: "GET", url: `/v5/domains/${domain}/records`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Creates a DNS record for a domain.
- * @summary Create a DNS record
- * {@link /v2/domains/:domain/records}
- */
-export async function createRecord({
-	pathParams: { domain },
-	queryParams,
-	config = {},
-}: {
-	pathParams: CreateRecordPathParams;
-	queryParams?: CreateRecordQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!domain) {
-		throw new Error(`Missing required path parameter: domain`);
-	}
-
-	const data = await request<
-		CreateRecordMutationResponse,
-		ErrorWrapper<
-			| CreateRecord400
-			| CreateRecord401
-			| CreateRecord402
-			| CreateRecord403
-			| CreateRecord404
-			| CreateRecord409
-		>,
-		null,
-		Record<string, string>,
-		CreateRecordQueryParams,
-		CreateRecordPathParams
-	>({
-		method: "POST",
-		url: `/v2/domains/${domain}/records`,
-		queryParams,
-		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
-	});
-	return data;
-}
-
-/**
- * @description Updates an existing DNS record for a domain name.
- * @summary Update an existing DNS record
- * {@link /v1/domains/records/:recordId}
- */
-export async function updateRecord({
-	pathParams: { recordId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: UpdateRecordPathParams;
-	queryParams?: UpdateRecordQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!recordId) {
-		throw new Error(`Missing required path parameter: recordId`);
-	}
-
-	const data = await request<
-		UpdateRecordMutationResponse,
-		ErrorWrapper<
-			| UpdateRecord400
-			| UpdateRecord401
-			| UpdateRecord402
-			| UpdateRecord403
-			| UpdateRecord404
-			| UpdateRecord409
-		>,
-		null,
-		Record<string, string>,
-		UpdateRecordQueryParams,
-		UpdateRecordPathParams
+		{ teamId?: string; slug?: string },
+		{ id: string }
 	>({
 		method: "PATCH",
-		url: `/v1/domains/records/${recordId}`,
+		url: `/v12/deployments/${pathParams.id}/cancel`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Removes an existing DNS record from a domain name.
- * @summary Delete a DNS record
- * {@link /v2/domains/:domain/records/:recordId}
+ * @summary List existing DNS records
+ * @description Retrieves a list of DNS records created for a domain name. By default it returns 20 records if no limit is provided. The rest can be retrieved using the pagination options.
+ * @link /v5/domains/{domain}/records
  */
-export async function removeRecord({
-	pathParams: { domain, recordId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: RemoveRecordPathParams;
-	queryParams?: RemoveRecordQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!domain) {
-		throw new Error(`Missing required path parameter: domain`);
-	}
-
-	if (!recordId) {
-		throw new Error(`Missing required path parameter: recordId`);
-	}
-
-	const data = await request<
-		RemoveRecordMutationResponse,
-		ErrorWrapper<RemoveRecord400 | RemoveRecord401 | RemoveRecord403 | RemoveRecord404>,
-		null,
-		Record<string, string>,
-		RemoveRecordQueryParams,
-		RemoveRecordPathParams
-	>({
-		method: "DELETE",
-		url: `/v2/domains/${domain}/records/${recordId}`,
+export async function getRecords(
+	{
+		pathParams,
 		queryParams,
-		...requestConfig,
-	});
-	return data;
-}
+		config,
+	}: {
+		pathParams: { domain: string };
+		queryParams?: {
+			limit?: string;
+			since?: string;
+			until?: string;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-/**
- * @description Get a list of TLDs supported by Vercel
- * @summary Get supported TLDs
- * {@link /v1/registrar/tlds/supported}
- */
-export async function getSupportedTlds({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: GetSupportedTldsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	const data = await request<
-		GetSupportedTldsQueryResponse,
-		ErrorWrapper<
-			| GetSupportedTlds400
-			| GetSupportedTlds401
-			| GetSupportedTlds403
-			| GetSupportedTlds429
-			| GetSupportedTlds500
-		>,
-		null,
-		Record<string, string>,
-		GetSupportedTldsQueryParams,
-		Record<string, string>
-	>({ method: "GET", url: `/v1/registrar/tlds/supported`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Get the metadata for a specific TLD.
- * @summary Get TLD
- * {@link /v1/registrar/tlds/:tld}
- */
-export async function getTld({
-	pathParams: { tld },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetTldPathParams;
-	queryParams?: GetTldQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!tld) {
-		throw new Error(`Missing required path parameter: tld`);
-	}
-
-	const data = await request<
-		GetTldQueryResponse,
-		ErrorWrapper<GetTld400 | GetTld401 | GetTld403 | GetTld429 | GetTld500>,
-		null,
-		Record<string, string>,
-		GetTldQueryParams,
-		GetTldPathParams
-	>({ method: "GET", url: `/v1/registrar/tlds/${tld}`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Get price data for a specific TLD. This only reflects base prices for the given TLD. Premium domains may have different prices. Use the [Get price data for a domain](https://vercel.com/docs/rest-api/reference/endpoints/domains-registrar/get-price-data-for-a-domain) endpoint to get the price data for a specific domain.
- * @summary Get TLD price data
- * {@link /v1/registrar/tlds/:tld/price}
- */
-export async function getTldPrice({
-	pathParams: { tld },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetTldPricePathParams;
-	queryParams?: GetTldPriceQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!tld) {
-		throw new Error(`Missing required path parameter: tld`);
-	}
-
-	const data = await request<
-		GetTldPriceQueryResponse,
-		ErrorWrapper<
-			GetTldPrice400 | GetTldPrice401 | GetTldPrice403 | GetTldPrice429 | GetTldPrice500
-		>,
-		null,
-		Record<string, string>,
-		GetTldPriceQueryParams,
-		GetTldPricePathParams
-	>({ method: "GET", url: `/v1/registrar/tlds/${tld}/price`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Get availability for a specific domain. If the domain is available, it can be purchased using the [Buy a domain](https://vercel.com/docs/rest-api/reference/endpoints/domains-registrar/buy-a-domain) endpoint or the [Buy multiple domains](https://vercel.com/docs/rest-api/reference/endpoints/domains-registrar/buy-multiple-domains) endpoint.
- * @summary Get availability for a domain
- * {@link /v1/registrar/domains/:domain/availability}
- */
-export async function getDomainAvailability({
-	pathParams: { domain },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetDomainAvailabilityPathParams;
-	queryParams?: GetDomainAvailabilityQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!domain) {
+	if (!pathParams.domain) {
 		throw new Error(`Missing required path parameter: domain`);
 	}
-
 	const data = await request<
-		GetDomainAvailabilityQueryResponse,
+		GetRecordsResponse,
 		ErrorWrapper<
-			| GetDomainAvailability400
-			| GetDomainAvailability401
-			| GetDomainAvailability403
-			| GetDomainAvailability404
-			| GetDomainAvailability429
-			| GetDomainAvailability500
+			GetRecordsStatus400 | GetRecordsStatus401 | GetRecordsStatus403 | GetRecordsStatus404
 		>,
 		null,
 		Record<string, string>,
-		GetDomainAvailabilityQueryParams,
-		GetDomainAvailabilityPathParams
+		{ limit?: string; since?: string; until?: string; teamId?: string; slug?: string },
+		{ domain: string }
 	>({
 		method: "GET",
-		url: `/v1/registrar/domains/${domain}/availability`,
+		url: `/v5/domains/${pathParams.domain}/records`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Get price data for a specific domain
- * @summary Get price data for a domain
- * {@link /v1/registrar/domains/:domain/price}
+ * @summary Create a DNS record
+ * @description Creates a DNS record for a domain.
+ * @link /v2/domains/{domain}/records
  */
-export async function getDomainPrice({
-	pathParams: { domain },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetDomainPricePathParams;
-	queryParams?: GetDomainPriceQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createRecord(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { domain: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!domain) {
+	if (!pathParams.domain) {
+		throw new Error(`Missing required path parameter: domain`);
+	}
+	const data = await request<
+		CreateRecordResponse,
+		ErrorWrapper<
+			| CreateRecordStatus400
+			| CreateRecordStatus401
+			| CreateRecordStatus402
+			| CreateRecordStatus403
+			| CreateRecordStatus404
+			| CreateRecordStatus409
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ domain: string }
+	>({
+		method: "POST",
+		url: `/v2/domains/${pathParams.domain}/records`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Update an existing DNS record
+ * @description Updates an existing DNS record for a domain name.
+ * @link /v1/domains/records/{recordId}
+ */
+export async function updateRecord(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { recordId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.recordId) {
+		throw new Error(`Missing required path parameter: recordId`);
+	}
+	const data = await request<
+		UpdateRecordResponse,
+		ErrorWrapper<
+			| UpdateRecordStatus400
+			| UpdateRecordStatus401
+			| UpdateRecordStatus402
+			| UpdateRecordStatus403
+			| UpdateRecordStatus404
+			| UpdateRecordStatus409
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ recordId: string }
+	>({
+		method: "PATCH",
+		url: `/v1/domains/records/${pathParams.recordId}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Delete a DNS record
+ * @description Removes an existing DNS record from a domain name.
+ * @link /v2/domains/{domain}/records/{recordId}
+ */
+export async function removeRecord(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { domain: string; recordId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.domain) {
 		throw new Error(`Missing required path parameter: domain`);
 	}
 
+	if (!pathParams.recordId) {
+		throw new Error(`Missing required path parameter: recordId`);
+	}
 	const data = await request<
-		GetDomainPriceQueryResponse,
+		RemoveRecordResponse,
 		ErrorWrapper<
-			| GetDomainPrice400
-			| GetDomainPrice401
-			| GetDomainPrice403
-			| GetDomainPrice429
-			| GetDomainPrice500
+			RemoveRecordStatus400 | RemoveRecordStatus401 | RemoveRecordStatus403 | RemoveRecordStatus404
 		>,
 		null,
 		Record<string, string>,
-		GetDomainPriceQueryParams,
-		GetDomainPricePathParams
-	>({ method: "GET", url: `/v1/registrar/domains/${domain}/price`, queryParams, ...requestConfig });
+		{ teamId?: string; slug?: string },
+		{ domain: string; recordId: string }
+	>({
+		method: "DELETE",
+		url: `/v2/domains/${pathParams.domain}/records/${pathParams.recordId}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Get availability for multiple domains. If the domains are available, they can be purchased using the [Buy a domain](https://vercel.com/docs/rest-api/reference/endpoints/domains-registrar/buy-a-domain) endpoint or the [Buy multiple domains](https://vercel.com/docs/rest-api/reference/endpoints/domains-registrar/buy-multiple-domains) endpoint.
- * @summary Get availability for multiple domains
- * {@link /v1/registrar/domains/availability}
+ * @summary Get supported TLDs
+ * @description Get a list of TLDs supported by Vercel
+ * @link /v1/registrar/tlds/supported
  */
-export async function getBulkAvailability({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: GetBulkAvailabilityQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getSupportedTlds(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetBulkAvailabilityMutationResponse,
+		GetSupportedTldsResponse,
 		ErrorWrapper<
-			| GetBulkAvailability400
-			| GetBulkAvailability401
-			| GetBulkAvailability403
-			| GetBulkAvailability429
-			| GetBulkAvailability500
+			| GetSupportedTldsStatus400
+			| GetSupportedTldsStatus401
+			| GetSupportedTldsStatus403
+			| GetSupportedTldsStatus429
+			| GetSupportedTldsStatus500
 		>,
 		null,
 		Record<string, string>,
-		GetBulkAvailabilityQueryParams,
+		{ teamId?: string },
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/v1/registrar/tlds/supported`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Get TLD
+ * @description Get the metadata for a specific TLD.
+ * @link /v1/registrar/tlds/{tld}
+ */
+export async function getTld(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { tld: unknown };
+		queryParams?: { teamId?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.tld) {
+		throw new Error(`Missing required path parameter: tld`);
+	}
+	const data = await request<
+		GetTldResponse,
+		ErrorWrapper<
+			GetTldStatus400 | GetTldStatus401 | GetTldStatus403 | GetTldStatus429 | GetTldStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string },
+		{ tld: unknown }
+	>({
+		method: "GET",
+		url: `/v1/registrar/tlds/${pathParams.tld}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Get TLD price data
+ * @description Get price data for a specific TLD. This only reflects base prices for the given TLD. Premium domains may have different prices. Use the [Get price data for a domain](https://vercel.com/docs/rest-api/reference/endpoints/domains-registrar/get-price-data-for-a-domain) endpoint to get the price data for a specific domain.
+ * @link /v1/registrar/tlds/{tld}/price
+ */
+export async function getTldPrice(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { tld: unknown };
+		queryParams?: { years?: string; teamId?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.tld) {
+		throw new Error(`Missing required path parameter: tld`);
+	}
+	const data = await request<
+		GetTldPriceResponse,
+		ErrorWrapper<
+			| GetTldPriceStatus400
+			| GetTldPriceStatus401
+			| GetTldPriceStatus403
+			| GetTldPriceStatus429
+			| GetTldPriceStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ years?: string; teamId?: string },
+		{ tld: unknown }
+	>({
+		method: "GET",
+		url: `/v1/registrar/tlds/${pathParams.tld}/price`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Get availability for a domain
+ * @description Get availability for a specific domain. If the domain is available, it can be purchased using the [Buy a domain](https://vercel.com/docs/rest-api/reference/endpoints/domains-registrar/buy-a-domain) endpoint or the [Buy multiple domains](https://vercel.com/docs/rest-api/reference/endpoints/domains-registrar/buy-multiple-domains) endpoint.
+ * @link /v1/registrar/domains/{domain}/availability
+ */
+export async function getDomainAvailability(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { domain: unknown };
+		queryParams?: { teamId?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.domain) {
+		throw new Error(`Missing required path parameter: domain`);
+	}
+	const data = await request<
+		GetDomainAvailabilityResponse,
+		ErrorWrapper<
+			| GetDomainAvailabilityStatus400
+			| GetDomainAvailabilityStatus401
+			| GetDomainAvailabilityStatus403
+			| GetDomainAvailabilityStatus404
+			| GetDomainAvailabilityStatus429
+			| GetDomainAvailabilityStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string },
+		{ domain: unknown }
+	>({
+		method: "GET",
+		url: `/v1/registrar/domains/${pathParams.domain}/availability`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Get price data for a domain
+ * @description Get price data for a specific domain
+ * @link /v1/registrar/domains/{domain}/price
+ */
+export async function getDomainPrice(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { domain: unknown };
+		queryParams?: { years?: string; teamId?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.domain) {
+		throw new Error(`Missing required path parameter: domain`);
+	}
+	const data = await request<
+		GetDomainPriceResponse,
+		ErrorWrapper<
+			| GetDomainPriceStatus400
+			| GetDomainPriceStatus401
+			| GetDomainPriceStatus403
+			| GetDomainPriceStatus429
+			| GetDomainPriceStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ years?: string; teamId?: string },
+		{ domain: unknown }
+	>({
+		method: "GET",
+		url: `/v1/registrar/domains/${pathParams.domain}/price`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Get availability for multiple domains
+ * @description Get availability for multiple domains. If the domains are available, they can be purchased using the [Buy a domain](https://vercel.com/docs/rest-api/reference/endpoints/domains-registrar/buy-a-domain) endpoint or the [Buy multiple domains](https://vercel.com/docs/rest-api/reference/endpoints/domains-registrar/buy-multiple-domains) endpoint.
+ * @link /v1/registrar/domains/availability
+ */
+export async function getBulkAvailability(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		GetBulkAvailabilityResponse,
+		ErrorWrapper<
+			| GetBulkAvailabilityStatus400
+			| GetBulkAvailabilityStatus401
+			| GetBulkAvailabilityStatus403
+			| GetBulkAvailabilityStatus429
+			| GetBulkAvailabilityStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string },
 		Record<string, string>
 	>({
 		method: "POST",
 		url: `/v1/registrar/domains/availability`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Get the auth code for a domain. This is required to transfer a domain from Vercel to another registrar.
  * @summary Get the auth code for a domain
- * {@link /v1/registrar/domains/:domain/auth-code}
+ * @description Get the auth code for a domain. This is required to transfer a domain from Vercel to another registrar.
+ * @link /v1/registrar/domains/{domain}/auth-code
  */
-export async function getDomainAuthCode({
-	pathParams: { domain },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetDomainAuthCodePathParams;
-	queryParams?: GetDomainAuthCodeQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getDomainAuthCode(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { domain: unknown };
+		queryParams?: { teamId?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!domain) {
+	if (!pathParams.domain) {
 		throw new Error(`Missing required path parameter: domain`);
 	}
-
 	const data = await request<
-		GetDomainAuthCodeQueryResponse,
+		GetDomainAuthCodeResponse,
 		ErrorWrapper<
-			| GetDomainAuthCode400
-			| GetDomainAuthCode401
-			| GetDomainAuthCode403
-			| GetDomainAuthCode404
-			| GetDomainAuthCode409
-			| GetDomainAuthCode429
-			| GetDomainAuthCode500
+			| GetDomainAuthCodeStatus400
+			| GetDomainAuthCodeStatus401
+			| GetDomainAuthCodeStatus403
+			| GetDomainAuthCodeStatus404
+			| GetDomainAuthCodeStatus409
+			| GetDomainAuthCodeStatus429
+			| GetDomainAuthCodeStatus500
 		>,
 		null,
 		Record<string, string>,
-		GetDomainAuthCodeQueryParams,
-		GetDomainAuthCodePathParams
+		{ teamId?: string },
+		{ domain: unknown }
 	>({
 		method: "GET",
-		url: `/v1/registrar/domains/${domain}/auth-code`,
+		url: `/v1/registrar/domains/${pathParams.domain}/auth-code`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Buy a domain
  * @summary Buy a domain
- * {@link /v1/registrar/domains/:domain/buy}
+ * @description Buy a domain
+ * @link /v1/registrar/domains/{domain}/buy
  */
-export async function buySingleDomain({
-	pathParams: { domain },
-	queryParams,
-	config = {},
-}: {
-	pathParams: BuySingleDomainPathParams;
-	queryParams?: BuySingleDomainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function buySingleDomain(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { domain: unknown };
+		queryParams?: { teamId?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!domain) {
+	if (!pathParams.domain) {
 		throw new Error(`Missing required path parameter: domain`);
 	}
-
 	const data = await request<
-		BuySingleDomainMutationResponse,
+		BuySingleDomainResponse,
 		ErrorWrapper<
-			| BuySingleDomain400
-			| BuySingleDomain401
-			| BuySingleDomain403
-			| BuySingleDomain429
-			| BuySingleDomain500
+			| BuySingleDomainStatus400
+			| BuySingleDomainStatus401
+			| BuySingleDomainStatus403
+			| BuySingleDomainStatus429
+			| BuySingleDomainStatus500
 		>,
 		null,
 		Record<string, string>,
-		BuySingleDomainQueryParams,
-		BuySingleDomainPathParams
+		{ teamId?: string },
+		{ domain: unknown }
 	>({
 		method: "POST",
-		url: `/v1/registrar/domains/${domain}/buy`,
+		url: `/v1/registrar/domains/${pathParams.domain}/buy`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Buy multiple domains at once
  * @summary Buy multiple domains
- * {@link /v1/registrar/domains/buy}
+ * @description Buy multiple domains at once
+ * @link /v1/registrar/domains/buy
  */
-export async function buyDomains({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: BuyDomainsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function buyDomains(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		BuyDomainsMutationResponse,
-		ErrorWrapper<BuyDomains400 | BuyDomains401 | BuyDomains403 | BuyDomains429 | BuyDomains500>,
+		BuyDomainsResponse,
+		ErrorWrapper<
+			| BuyDomainsStatus400
+			| BuyDomainsStatus401
+			| BuyDomainsStatus403
+			| BuyDomainsStatus429
+			| BuyDomainsStatus500
+		>,
 		null,
 		Record<string, string>,
-		BuyDomainsQueryParams,
+		{ teamId?: string },
 		Record<string, string>
 	>({
 		method: "POST",
 		url: `/v1/registrar/domains/buy`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Transfer a domain in from another registrar
  * @summary Transfer-in a domain
- * {@link /v1/registrar/domains/:domain/transfer}
+ * @description Transfer a domain in from another registrar
+ * @link /v1/registrar/domains/{domain}/transfer
  */
-export async function transferInDomain({
-	pathParams: { domain },
-	queryParams,
-	config = {},
-}: {
-	pathParams: TransferInDomainPathParams;
-	queryParams?: TransferInDomainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function transferInDomain(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { domain: unknown };
+		queryParams?: { teamId?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!domain) {
+	if (!pathParams.domain) {
 		throw new Error(`Missing required path parameter: domain`);
 	}
-
 	const data = await request<
-		TransferInDomainMutationResponse,
+		TransferInDomainResponse,
 		ErrorWrapper<
-			| TransferInDomain400
-			| TransferInDomain401
-			| TransferInDomain403
-			| TransferInDomain429
-			| TransferInDomain500
+			| TransferInDomainStatus400
+			| TransferInDomainStatus401
+			| TransferInDomainStatus403
+			| TransferInDomainStatus429
+			| TransferInDomainStatus500
 		>,
 		null,
 		Record<string, string>,
-		TransferInDomainQueryParams,
-		TransferInDomainPathParams
+		{ teamId?: string },
+		{ domain: unknown }
 	>({
 		method: "POST",
-		url: `/v1/registrar/domains/${domain}/transfer`,
+		url: `/v1/registrar/domains/${pathParams.domain}/transfer`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Get the transfer status for a domain
  * @summary Get a domain's transfer status
- * {@link /v1/registrar/domains/:domain/transfer}
+ * @description Get the transfer status for a domain
+ * @link /v1/registrar/domains/{domain}/transfer
  */
-export async function getDomainTransferIn({
-	pathParams: { domain },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetDomainTransferInPathParams;
-	queryParams?: GetDomainTransferInQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getDomainTransferIn(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { domain: unknown };
+		queryParams?: { teamId?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!domain) {
+	if (!pathParams.domain) {
 		throw new Error(`Missing required path parameter: domain`);
 	}
-
 	const data = await request<
-		GetDomainTransferInQueryResponse,
+		GetDomainTransferInResponse,
 		ErrorWrapper<
-			| GetDomainTransferIn400
-			| GetDomainTransferIn401
-			| GetDomainTransferIn403
-			| GetDomainTransferIn404
-			| GetDomainTransferIn429
-			| GetDomainTransferIn500
+			| GetDomainTransferInStatus400
+			| GetDomainTransferInStatus401
+			| GetDomainTransferInStatus403
+			| GetDomainTransferInStatus404
+			| GetDomainTransferInStatus429
+			| GetDomainTransferInStatus500
 		>,
 		null,
 		Record<string, string>,
-		GetDomainTransferInQueryParams,
-		GetDomainTransferInPathParams
+		{ teamId?: string },
+		{ domain: unknown }
 	>({
 		method: "GET",
-		url: `/v1/registrar/domains/${domain}/transfer`,
+		url: `/v1/registrar/domains/${pathParams.domain}/transfer`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Renew a domain
  * @summary Renew a domain
- * {@link /v1/registrar/domains/:domain/renew}
+ * @description Renew a domain
+ * @link /v1/registrar/domains/{domain}/renew
  */
-export async function renewDomain({
-	pathParams: { domain },
-	queryParams,
-	config = {},
-}: {
-	pathParams: RenewDomainPathParams;
-	queryParams?: RenewDomainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function renewDomain(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { domain: unknown };
+		queryParams?: { teamId?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!domain) {
+	if (!pathParams.domain) {
 		throw new Error(`Missing required path parameter: domain`);
 	}
-
 	const data = await request<
-		RenewDomainMutationResponse,
+		RenewDomainResponse,
 		ErrorWrapper<
-			| RenewDomain400
-			| RenewDomain401
-			| RenewDomain403
-			| RenewDomain404
-			| RenewDomain429
-			| RenewDomain500
+			| RenewDomainStatus400
+			| RenewDomainStatus401
+			| RenewDomainStatus403
+			| RenewDomainStatus404
+			| RenewDomainStatus429
+			| RenewDomainStatus500
 		>,
 		null,
 		Record<string, string>,
-		RenewDomainQueryParams,
-		RenewDomainPathParams
+		{ teamId?: string },
+		{ domain: unknown }
 	>({
 		method: "POST",
-		url: `/v1/registrar/domains/${domain}/renew`,
+		url: `/v1/registrar/domains/${pathParams.domain}/renew`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Update the auto-renew setting for a domain
  * @summary Update auto-renew for a domain
- * {@link /v1/registrar/domains/:domain/auto-renew}
+ * @description Update the auto-renew setting for a domain
+ * @link /v1/registrar/domains/{domain}/auto-renew
  */
-export async function updateDomainAutoRenew({
-	pathParams: { domain },
-	queryParams,
-	config = {},
-}: {
-	pathParams: UpdateDomainAutoRenewPathParams;
-	queryParams?: UpdateDomainAutoRenewQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateDomainAutoRenew(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { domain: unknown };
+		queryParams?: { teamId?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!domain) {
+	if (!pathParams.domain) {
 		throw new Error(`Missing required path parameter: domain`);
 	}
-
 	const data = await request<
-		UpdateDomainAutoRenewMutationResponse,
+		UpdateDomainAutoRenewResponse,
 		ErrorWrapper<
-			| UpdateDomainAutoRenew400
-			| UpdateDomainAutoRenew401
-			| UpdateDomainAutoRenew403
-			| UpdateDomainAutoRenew404
-			| UpdateDomainAutoRenew429
-			| UpdateDomainAutoRenew500
+			| UpdateDomainAutoRenewStatus400
+			| UpdateDomainAutoRenewStatus401
+			| UpdateDomainAutoRenewStatus403
+			| UpdateDomainAutoRenewStatus404
+			| UpdateDomainAutoRenewStatus429
+			| UpdateDomainAutoRenewStatus500
 		>,
 		null,
 		Record<string, string>,
-		UpdateDomainAutoRenewQueryParams,
-		UpdateDomainAutoRenewPathParams
+		{ teamId?: string },
+		{ domain: unknown }
 	>({
 		method: "PATCH",
-		url: `/v1/registrar/domains/${domain}/auto-renew`,
+		url: `/v1/registrar/domains/${pathParams.domain}/auto-renew`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Update the nameservers for a domain. Pass an empty array to use Vercel's default nameservers.
  * @summary Update nameservers for a domain
- * {@link /v1/registrar/domains/:domain/nameservers}
+ * @description Update the nameservers for a domain. Pass an empty array to use Vercel's default nameservers.
+ * @link /v1/registrar/domains/{domain}/nameservers
  */
-export async function updateDomainNameservers({
-	pathParams: { domain },
-	queryParams,
-	config = {},
-}: {
-	pathParams: UpdateDomainNameserversPathParams;
-	queryParams?: UpdateDomainNameserversQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateDomainNameservers(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { domain: unknown };
+		queryParams?: { teamId?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!domain) {
+	if (!pathParams.domain) {
 		throw new Error(`Missing required path parameter: domain`);
 	}
-
 	const data = await request<
-		UpdateDomainNameserversMutationResponse,
+		UpdateDomainNameserversResponse,
 		ErrorWrapper<
-			| UpdateDomainNameservers400
-			| UpdateDomainNameservers401
-			| UpdateDomainNameservers403
-			| UpdateDomainNameservers404
-			| UpdateDomainNameservers429
-			| UpdateDomainNameservers500
+			| UpdateDomainNameserversStatus400
+			| UpdateDomainNameserversStatus401
+			| UpdateDomainNameserversStatus403
+			| UpdateDomainNameserversStatus404
+			| UpdateDomainNameserversStatus429
+			| UpdateDomainNameserversStatus500
 		>,
 		null,
 		Record<string, string>,
-		UpdateDomainNameserversQueryParams,
-		UpdateDomainNameserversPathParams
+		{ teamId?: string },
+		{ domain: unknown }
 	>({
 		method: "PATCH",
-		url: `/v1/registrar/domains/${domain}/nameservers`,
+		url: `/v1/registrar/domains/${pathParams.domain}/nameservers`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Some TLDs require additional contact information. Use this endpoint to get the schema for the tld-specific contact information for a domain.
  * @summary Get contact info schema
- * {@link /v1/registrar/domains/:domain/contact-info/schema}
+ * @description Some TLDs require additional contact information. Use this endpoint to get the schema for the tld-specific contact information for a domain.
+ * @link /v1/registrar/domains/{domain}/contact-info/schema
  */
-export async function getContactInfoSchema({
-	pathParams: { domain },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetContactInfoSchemaPathParams;
-	queryParams?: GetContactInfoSchemaQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getContactInfoSchema(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { domain: unknown };
+		queryParams?: { teamId?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!domain) {
+	if (!pathParams.domain) {
 		throw new Error(`Missing required path parameter: domain`);
 	}
-
 	const data = await request<
-		GetContactInfoSchemaQueryResponse,
+		GetContactInfoSchemaResponse,
 		ErrorWrapper<
-			| GetContactInfoSchema400
-			| GetContactInfoSchema401
-			| GetContactInfoSchema403
-			| GetContactInfoSchema429
-			| GetContactInfoSchema500
+			| GetContactInfoSchemaStatus400
+			| GetContactInfoSchemaStatus401
+			| GetContactInfoSchemaStatus403
+			| GetContactInfoSchemaStatus429
+			| GetContactInfoSchemaStatus500
 		>,
 		null,
 		Record<string, string>,
-		GetContactInfoSchemaQueryParams,
-		GetContactInfoSchemaPathParams
+		{ teamId?: string },
+		{ domain: unknown }
 	>({
 		method: "GET",
-		url: `/v1/registrar/domains/${domain}/contact-info/schema`,
+		url: `/v1/registrar/domains/${pathParams.domain}/contact-info/schema`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Get information about a domain order by its ID
  * @summary Get a domain order
- * {@link /v1/registrar/orders/:orderId}
+ * @description Get information about a domain order by its ID
+ * @link /v1/registrar/orders/{orderId}
  */
-export async function getOrder({
-	pathParams: { orderId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetOrderPathParams;
-	queryParams?: GetOrderQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getOrder(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { orderId: unknown };
+		queryParams?: { teamId?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!orderId) {
+	if (!pathParams.orderId) {
 		throw new Error(`Missing required path parameter: orderId`);
 	}
-
 	const data = await request<
-		GetOrderQueryResponse,
-		ErrorWrapper<GetOrder400 | GetOrder401 | GetOrder403 | GetOrder404 | GetOrder429 | GetOrder500>,
-		null,
-		Record<string, string>,
-		GetOrderQueryParams,
-		GetOrderPathParams
-	>({ method: "GET", url: `/v1/registrar/orders/${orderId}`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Get a Domain's configuration.
- * @summary Get a Domain's configuration
- * {@link /v6/domains/:domain/config}
- */
-export async function getDomainConfig({
-	pathParams: { domain },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetDomainConfigPathParams;
-	queryParams?: GetDomainConfigQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!domain) {
-		throw new Error(`Missing required path parameter: domain`);
-	}
-
-	const data = await request<
-		GetDomainConfigQueryResponse,
-		ErrorWrapper<GetDomainConfig400 | GetDomainConfig401 | GetDomainConfig403>,
-		null,
-		Record<string, string>,
-		GetDomainConfigQueryParams,
-		GetDomainConfigPathParams
-	>({ method: "GET", url: `/v6/domains/${domain}/config`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Get information for a single domain in an account or team.
- * @summary Get Information for a Single Domain
- * {@link /v5/domains/:domain}
- */
-export async function getDomain({
-	pathParams: { domain },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetDomainPathParams;
-	queryParams?: GetDomainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!domain) {
-		throw new Error(`Missing required path parameter: domain`);
-	}
-
-	const data = await request<
-		GetDomainQueryResponse,
-		ErrorWrapper<GetDomain400 | GetDomain401 | GetDomain403 | GetDomain404>,
-		null,
-		Record<string, string>,
-		GetDomainQueryParams,
-		GetDomainPathParams
-	>({ method: "GET", url: `/v5/domains/${domain}`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Retrieves a list of domains registered for the authenticated user or team. By default it returns the last 20 domains if no limit is provided.
- * @summary List all the domains
- * {@link /v5/domains}
- */
-export async function getDomains({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: GetDomainsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	const data = await request<
-		GetDomainsQueryResponse,
-		ErrorWrapper<GetDomains400 | GetDomains401 | GetDomains403 | GetDomains409>,
-		null,
-		Record<string, string>,
-		GetDomainsQueryParams,
-		Record<string, string>
-	>({ method: "GET", url: `/v5/domains`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description This endpoint is used for adding a new apex domain name with Vercel for the authenticating user. Note: This endpoint is no longer used for initiating domain transfers from external registrars to Vercel. For this, please use the endpoint [Transfer-in a domain](https://vercel.com/docs/rest-api/reference/endpoints/domains-registrar/transfer-in-a-domain).
- * @summary Add an existing domain to the Vercel platform
- * {@link /v7/domains}
- */
-export async function createOrTransferDomain({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: CreateOrTransferDomainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	const data = await request<
-		CreateOrTransferDomainMutationResponse,
+		GetOrderResponse,
 		ErrorWrapper<
-			| CreateOrTransferDomain400
-			| CreateOrTransferDomain401
-			| CreateOrTransferDomain402
-			| CreateOrTransferDomain403
-			| CreateOrTransferDomain404
-			| CreateOrTransferDomain409
+			| GetOrderStatus400
+			| GetOrderStatus401
+			| GetOrderStatus403
+			| GetOrderStatus404
+			| GetOrderStatus429
+			| GetOrderStatus500
 		>,
 		null,
 		Record<string, string>,
-		CreateOrTransferDomainQueryParams,
+		{ teamId?: string },
+		{ orderId: unknown }
+	>({
+		method: "GET",
+		url: `/v1/registrar/orders/${pathParams.orderId}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Get a Domain's configuration
+ * @description Get a Domain's configuration.
+ * @link /v6/domains/{domain}/config
+ */
+export async function getDomainConfig(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { domain: string };
+		queryParams?: {
+			projectIdOrName?: string;
+			strict?: "true" | "false";
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.domain) {
+		throw new Error(`Missing required path parameter: domain`);
+	}
+	const data = await request<
+		GetDomainConfigResponse,
+		ErrorWrapper<GetDomainConfigStatus400 | GetDomainConfigStatus401 | GetDomainConfigStatus403>,
+		null,
+		Record<string, string>,
+		{ projectIdOrName?: string; strict?: "true" | "false"; teamId?: string; slug?: string },
+		{ domain: string }
+	>({
+		method: "GET",
+		url: `/v6/domains/${pathParams.domain}/config`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Get Information for a Single Domain
+ * @description Get information for a single domain in an account or team.
+ * @link /v5/domains/{domain}
+ */
+export async function getDomain(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { domain: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.domain) {
+		throw new Error(`Missing required path parameter: domain`);
+	}
+	const data = await request<
+		GetDomainResponse,
+		ErrorWrapper<GetDomainStatus400 | GetDomainStatus401 | GetDomainStatus403 | GetDomainStatus404>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ domain: string }
+	>({
+		method: "GET",
+		url: `/v5/domains/${pathParams.domain}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary List all the domains
+ * @description Retrieves a list of domains registered for the authenticated user or team. By default it returns the last 20 domains if no limit is provided.
+ * @link /v5/domains
+ */
+export async function getDomains(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			limit?: number;
+			since?: number;
+			until?: number;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		GetDomainsResponse,
+		ErrorWrapper<
+			GetDomainsStatus400 | GetDomainsStatus401 | GetDomainsStatus403 | GetDomainsStatus409
+		>,
+		null,
+		Record<string, string>,
+		{ limit?: number; since?: number; until?: number; teamId?: string; slug?: string },
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/v5/domains`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Add an existing domain to the Vercel platform
+ * @description This endpoint is used for adding a new apex domain name with Vercel for the authenticating user. Note: This endpoint is no longer used for initiating domain transfers from external registrars to Vercel. For this, please use the endpoint [Transfer-in a domain](https://vercel.com/docs/rest-api/reference/endpoints/domains-registrar/transfer-in-a-domain).
+ * @link /v7/domains
+ */
+export async function createOrTransferDomain(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		CreateOrTransferDomainResponse,
+		ErrorWrapper<
+			| CreateOrTransferDomainStatus400
+			| CreateOrTransferDomainStatus401
+			| CreateOrTransferDomainStatus402
+			| CreateOrTransferDomainStatus403
+			| CreateOrTransferDomainStatus404
+			| CreateOrTransferDomainStatus409
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
 		Record<string, string>
 	>({
 		method: "POST",
 		url: `/v7/domains`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Update or move apex domain. Note: This endpoint is no longer used for updating auto-renew or nameservers. For this, please use the endpoints [Update auto-renew for a domain](https://vercel.com/docs/rest-api/reference/endpoints/domains-registrar/update-auto-renew-for-a-domain) and [Update nameservers for a domain](https://vercel.com/docs/rest-api/reference/endpoints/domains-registrar/update-nameservers-for-a-domain).
  * @summary Update or move apex domain
- * {@link /v3/domains/:domain}
+ * @description Update or move apex domain. Note: This endpoint is no longer used for updating auto-renew or nameservers. For this, please use the endpoints [Update auto-renew for a domain](https://vercel.com/docs/rest-api/reference/endpoints/domains-registrar/update-auto-renew-for-a-domain) and [Update nameservers for a domain](https://vercel.com/docs/rest-api/reference/endpoints/domains-registrar/update-nameservers-for-a-domain).
+ * @link /v3/domains/{domain}
  */
-export async function patchDomain({
-	pathParams: { domain },
-	queryParams,
-	config = {},
-}: {
-	pathParams: PatchDomainPathParams;
-	queryParams?: PatchDomainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function patchDomain(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { domain: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!domain) {
+	if (!pathParams.domain) {
 		throw new Error(`Missing required path parameter: domain`);
 	}
-
 	const data = await request<
-		PatchDomainMutationResponse,
+		PatchDomainResponse,
 		ErrorWrapper<
-			| PatchDomain400
-			| PatchDomain401
-			| PatchDomain403
-			| PatchDomain404
-			| PatchDomain409
-			| PatchDomain500
+			| PatchDomainStatus400
+			| PatchDomainStatus401
+			| PatchDomainStatus403
+			| PatchDomainStatus404
+			| PatchDomainStatus409
+			| PatchDomainStatus500
 		>,
 		null,
 		Record<string, string>,
-		PatchDomainQueryParams,
-		PatchDomainPathParams
+		{ teamId?: string; slug?: string },
+		{ domain: string }
 	>({
 		method: "PATCH",
-		url: `/v3/domains/${domain}`,
+		url: `/v3/domains/${pathParams.domain}`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Delete a previously registered domain name from Vercel. Deleting a domain will automatically remove any associated aliases.
  * @summary Remove a domain by name
- * {@link /v6/domains/:domain}
+ * @description Delete a previously registered domain name from Vercel. Deleting a domain will automatically remove any associated aliases.
+ * @link /v6/domains/{domain}
  */
-export async function deleteDomain({
-	pathParams: { domain },
-	queryParams,
-	config = {},
-}: {
-	pathParams: DeleteDomainPathParams;
-	queryParams?: DeleteDomainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteDomain(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { domain: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!domain) {
+	if (!pathParams.domain) {
 		throw new Error(`Missing required path parameter: domain`);
 	}
-
 	const data = await request<
-		DeleteDomainMutationResponse,
+		DeleteDomainResponse,
 		ErrorWrapper<
-			DeleteDomain400 | DeleteDomain401 | DeleteDomain403 | DeleteDomain404 | DeleteDomain409
+			| DeleteDomainStatus400
+			| DeleteDomainStatus401
+			| DeleteDomainStatus403
+			| DeleteDomainStatus404
+			| DeleteDomainStatus409
 		>,
 		null,
 		Record<string, string>,
-		DeleteDomainQueryParams,
-		DeleteDomainPathParams
-	>({ method: "DELETE", url: `/v6/domains/${domain}`, queryParams, ...requestConfig });
+		{ teamId?: string; slug?: string },
+		{ domain: string }
+	>({
+		method: "DELETE",
+		url: `/v6/domains/${pathParams.domain}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Retrieves a Configurable Log Drain. This endpoint must be called with a team AccessToken (integration OAuth2 clients are not allowed). Only log drains owned by the authenticated team can be accessed.
  * @summary Retrieves a Configurable Log Drain (deprecated)
- * {@link /v1/log-drains/:id}
+ * @description Retrieves a Configurable Log Drain. This endpoint must be called with a team AccessToken (integration OAuth2 clients are not allowed). Only log drains owned by the authenticated team can be accessed.
+ * @link /v1/log-drains/{id}
  */
-export async function getConfigurableLogDrain({
-	pathParams: { id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetConfigurableLogDrainPathParams;
-	queryParams?: GetConfigurableLogDrainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getConfigurableLogDrain(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { id: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!id) {
+	if (!pathParams.id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
-
 	const data = await request<
-		GetConfigurableLogDrainQueryResponse,
+		GetConfigurableLogDrainResponse,
 		ErrorWrapper<
-			| GetConfigurableLogDrain400
-			| GetConfigurableLogDrain401
-			| GetConfigurableLogDrain403
-			| GetConfigurableLogDrain404
+			| GetConfigurableLogDrainStatus400
+			| GetConfigurableLogDrainStatus401
+			| GetConfigurableLogDrainStatus403
+			| GetConfigurableLogDrainStatus404
 		>,
 		null,
 		Record<string, string>,
-		GetConfigurableLogDrainQueryParams,
-		GetConfigurableLogDrainPathParams
-	>({ method: "GET", url: `/v1/log-drains/${id}`, queryParams, ...requestConfig });
+		{ teamId?: string; slug?: string },
+		{ id: string }
+	>({
+		method: "GET",
+		url: `/v1/log-drains/${pathParams.id}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Deletes a Configurable Log Drain. This endpoint must be called with a team AccessToken (integration OAuth2 clients are not allowed). Only log drains owned by the authenticated team can be deleted.
  * @summary Deletes a Configurable Log Drain (deprecated)
- * {@link /v1/log-drains/:id}
+ * @description Deletes a Configurable Log Drain. This endpoint must be called with a team AccessToken (integration OAuth2 clients are not allowed). Only log drains owned by the authenticated team can be deleted.
+ * @link /v1/log-drains/{id}
  */
-export async function deleteConfigurableLogDrain({
-	pathParams: { id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: DeleteConfigurableLogDrainPathParams;
-	queryParams?: DeleteConfigurableLogDrainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteConfigurableLogDrain(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { id: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!id) {
+	if (!pathParams.id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
-
 	const data = await request<
-		DeleteConfigurableLogDrainMutationResponse,
+		DeleteConfigurableLogDrainResponse,
 		ErrorWrapper<
-			| DeleteConfigurableLogDrain400
-			| DeleteConfigurableLogDrain401
-			| DeleteConfigurableLogDrain403
-			| DeleteConfigurableLogDrain404
+			| DeleteConfigurableLogDrainStatus400
+			| DeleteConfigurableLogDrainStatus401
+			| DeleteConfigurableLogDrainStatus403
+			| DeleteConfigurableLogDrainStatus404
 		>,
 		null,
 		Record<string, string>,
-		DeleteConfigurableLogDrainQueryParams,
-		DeleteConfigurableLogDrainPathParams
-	>({ method: "DELETE", url: `/v1/log-drains/${id}`, queryParams, ...requestConfig });
+		{ teamId?: string; slug?: string },
+		{ id: string }
+	>({
+		method: "DELETE",
+		url: `/v1/log-drains/${pathParams.id}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Retrieves a list of all the Log Drains owned by the account. This endpoint must be called with an account AccessToken (integration OAuth2 clients are not allowed). Only log drains owned by the authenticated account can be accessed.
  * @summary Retrieves a list of all the Log Drains (deprecated)
- * {@link /v1/log-drains}
+ * @description Retrieves a list of all the Log Drains owned by the account. This endpoint must be called with an account AccessToken (integration OAuth2 clients are not allowed). Only log drains owned by the authenticated account can be accessed.
+ * @link /v1/log-drains
  */
-export async function getAllLogDrains({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: GetAllLogDrainsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getAllLogDrains(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			projectId?: string;
+			projectIdOrName?: string;
+			includeMetadata?: boolean;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetAllLogDrainsQueryResponse,
-		ErrorWrapper<GetAllLogDrains400 | GetAllLogDrains401 | GetAllLogDrains403 | GetAllLogDrains404>,
+		GetAllLogDrainsResponse,
+		ErrorWrapper<
+			| GetAllLogDrainsStatus400
+			| GetAllLogDrainsStatus401
+			| GetAllLogDrainsStatus403
+			| GetAllLogDrainsStatus404
+		>,
 		null,
 		Record<string, string>,
-		GetAllLogDrainsQueryParams,
+		{
+			projectId?: string;
+			projectIdOrName?: string;
+			includeMetadata?: boolean;
+			teamId?: string;
+			slug?: string;
+		},
 		Record<string, string>
-	>({ method: "GET", url: `/v1/log-drains`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/v1/log-drains`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Creates a configurable log drain. This endpoint must be called with a team AccessToken (integration OAuth2 clients are not allowed)
  * @summary Creates a Configurable Log Drain (deprecated)
- * {@link /v1/log-drains}
+ * @description Creates a configurable log drain. This endpoint must be called with a team AccessToken (integration OAuth2 clients are not allowed)
+ * @link /v1/log-drains
  */
-export async function createConfigurableLogDrain({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: CreateConfigurableLogDrainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createConfigurableLogDrain(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		CreateConfigurableLogDrainMutationResponse,
+		CreateConfigurableLogDrainResponse,
 		ErrorWrapper<
-			CreateConfigurableLogDrain400 | CreateConfigurableLogDrain401 | CreateConfigurableLogDrain403
+			| CreateConfigurableLogDrainStatus400
+			| CreateConfigurableLogDrainStatus401
+			| CreateConfigurableLogDrainStatus403
 		>,
 		null,
 		Record<string, string>,
-		CreateConfigurableLogDrainQueryParams,
+		{ teamId?: string; slug?: string },
 		Record<string, string>
 	>({
 		method: "POST",
 		url: `/v1/log-drains`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Create a new Drain with the provided configuration.
  * @summary Create a new Drain
- * {@link /v1/drains}
+ * @description Create a new Drain with the provided configuration.
+ * @link /v1/drains
  */
-export async function createDrain({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: CreateDrainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createDrain(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		CreateDrainMutationResponse,
-		ErrorWrapper<CreateDrain400 | CreateDrain401 | CreateDrain403>,
+		CreateDrainResponse,
+		ErrorWrapper<CreateDrainStatus400 | CreateDrainStatus401 | CreateDrainStatus403>,
 		null,
 		Record<string, string>,
-		CreateDrainQueryParams,
+		{ teamId?: string; slug?: string },
 		Record<string, string>
 	>({
 		method: "POST",
 		url: `/v1/drains`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Allows to retrieve the list of Drains of the authenticated team.
  * @summary Retrieve a list of all Drains
- * {@link /v1/drains}
+ * @description Allows to retrieve the list of Drains of the authenticated team.
+ * @link /v1/drains
  */
-export async function getDrains({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: GetDrainsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getDrains(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { projectId?: string; includeMetadata?: boolean; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetDrainsQueryResponse,
-		ErrorWrapper<GetDrains400 | GetDrains401 | GetDrains403 | GetDrains404>,
+		GetDrainsResponse,
+		ErrorWrapper<GetDrainsStatus400 | GetDrainsStatus401 | GetDrainsStatus403 | GetDrainsStatus404>,
 		null,
 		Record<string, string>,
-		GetDrainsQueryParams,
+		{ projectId?: string; includeMetadata?: boolean; teamId?: string; slug?: string },
 		Record<string, string>
-	>({ method: "GET", url: `/v1/drains`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Delete a specific Drain by passing the drain id in the URL.
- * @summary Delete a drain
- * {@link /v1/drains/:id}
- */
-export async function deleteDrain({
-	pathParams: { id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: DeleteDrainPathParams;
-	queryParams?: DeleteDrainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!id) {
-		throw new Error(`Missing required path parameter: id`);
-	}
-
-	const data = await request<
-		DeleteDrainMutationResponse,
-		ErrorWrapper<DeleteDrain400 | DeleteDrain401 | DeleteDrain403 | DeleteDrain404>,
-		null,
-		Record<string, string>,
-		DeleteDrainQueryParams,
-		DeleteDrainPathParams
-	>({ method: "DELETE", url: `/v1/drains/${id}`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Get the information for a specific Drain by passing the drain id in the URL.
- * @summary Find a Drain by id
- * {@link /v1/drains/:id}
- */
-export async function getDrain({
-	pathParams: { id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetDrainPathParams;
-	queryParams?: GetDrainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!id) {
-		throw new Error(`Missing required path parameter: id`);
-	}
-
-	const data = await request<
-		GetDrainQueryResponse,
-		ErrorWrapper<GetDrain400 | GetDrain401 | GetDrain403 | GetDrain404>,
-		null,
-		Record<string, string>,
-		GetDrainQueryParams,
-		GetDrainPathParams
-	>({ method: "GET", url: `/v1/drains/${id}`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Update the configuration of an existing drain.
- * @summary Update an existing Drain
- * {@link /v1/drains/:id}
- */
-export async function updateDrain({
-	pathParams: { id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: UpdateDrainPathParams;
-	queryParams?: UpdateDrainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!id) {
-		throw new Error(`Missing required path parameter: id`);
-	}
-
-	const data = await request<
-		UpdateDrainMutationResponse,
-		ErrorWrapper<UpdateDrain400 | UpdateDrain401 | UpdateDrain403 | UpdateDrain404>,
-		null,
-		Record<string, string>,
-		UpdateDrainQueryParams,
-		UpdateDrainPathParams
 	>({
-		method: "PATCH",
-		url: `/v1/drains/${id}`,
+		method: "GET",
+		url: `/v1/drains`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Validate the delivery configuration of a Drain using sample events.
- * @summary Validate Drain delivery configuration
- * {@link /v1/drains/test}
+ * @summary Delete a drain
+ * @description Delete a specific Drain by passing the drain id in the URL.
+ * @link /v1/drains/{id}
  */
-export async function testDrain({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: TestDrainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteDrain(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { id: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
+	if (!pathParams.id) {
+		throw new Error(`Missing required path parameter: id`);
+	}
 	const data = await request<
-		TestDrainMutationResponse,
-		ErrorWrapper<TestDrain400 | TestDrain401 | TestDrain403>,
+		DeleteDrainResponse,
+		ErrorWrapper<
+			DeleteDrainStatus400 | DeleteDrainStatus401 | DeleteDrainStatus403 | DeleteDrainStatus404
+		>,
 		null,
 		Record<string, string>,
-		TestDrainQueryParams,
+		{ teamId?: string; slug?: string },
+		{ id: string }
+	>({
+		method: "DELETE",
+		url: `/v1/drains/${pathParams.id}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Find a Drain by id
+ * @description Get the information for a specific Drain by passing the drain id in the URL.
+ * @link /v1/drains/{id}
+ */
+export async function getDrain(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { id: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.id) {
+		throw new Error(`Missing required path parameter: id`);
+	}
+	const data = await request<
+		GetDrainResponse,
+		ErrorWrapper<GetDrainStatus400 | GetDrainStatus401 | GetDrainStatus403 | GetDrainStatus404>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ id: string }
+	>({
+		method: "GET",
+		url: `/v1/drains/${pathParams.id}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Update an existing Drain
+ * @description Update the configuration of an existing drain.
+ * @link /v1/drains/{id}
+ */
+export async function updateDrain(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { id: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.id) {
+		throw new Error(`Missing required path parameter: id`);
+	}
+	const data = await request<
+		UpdateDrainResponse,
+		ErrorWrapper<
+			UpdateDrainStatus400 | UpdateDrainStatus401 | UpdateDrainStatus403 | UpdateDrainStatus404
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ id: string }
+	>({
+		method: "PATCH",
+		url: `/v1/drains/${pathParams.id}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Validate Drain delivery configuration
+ * @description Validate the delivery configuration of a Drain using sample events.
+ * @link /v1/drains/test
+ */
+export async function testDrain(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		TestDrainResponse,
+		ErrorWrapper<TestDrainStatus400 | TestDrainStatus401 | TestDrainStatus403>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
 		Record<string, string>
 	>({
 		method: "POST",
 		url: `/v1/drains/test`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Marks a cache tag as stale, causing cache entries associated with that tag to be revalidated in the background on the next request.
  * @summary Invalidate by tag
- * {@link /v1/edge-cache/invalidate-by-tags}
+ * @description Marks a cache tag as stale, causing cache entries associated with that tag to be revalidated in the background on the next request.
+ * @link /v1/edge-cache/invalidate-by-tags
  */
-export async function invalidateByTags({
-	queryParams,
-	config = {},
-}: {
-	queryParams: InvalidateByTagsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function invalidateByTags(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { projectIdOrName?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		InvalidateByTagsMutationResponse,
+		InvalidateByTagsResponse,
 		ErrorWrapper<
-			InvalidateByTags400 | InvalidateByTags401 | InvalidateByTags403 | InvalidateByTags404
+			| InvalidateByTagsStatus400
+			| InvalidateByTagsStatus401
+			| InvalidateByTagsStatus403
+			| InvalidateByTagsStatus404
 		>,
 		null,
 		Record<string, string>,
-		InvalidateByTagsQueryParams,
+		{ projectIdOrName?: string; teamId?: string; slug?: string },
 		Record<string, string>
 	>({
 		method: "POST",
 		url: `/v1/edge-cache/invalidate-by-tags`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Marks a cache tag as deleted, causing cache entries associated with that tag to be revalidated in the foreground on the next request. Use this method with caution because one tag can be associated with many paths and deleting the cache can cause many concurrent requests to the origin leading to cache stampede problem. This method is for advanced use cases and is not recommended; prefer using `invalidateByTag` instead.
  * @summary Dangerously delete by tag
- * {@link /v1/edge-cache/dangerously-delete-by-tags}
+ * @description Marks a cache tag as deleted, causing cache entries associated with that tag to be revalidated in the foreground on the next request. Use this method with caution because one tag can be associated with many paths and deleting the cache can cause many concurrent requests to the origin leading to cache stampede problem. This method is for advanced use cases and is not recommended; prefer using `invalidateByTag` instead.
+ * @link /v1/edge-cache/dangerously-delete-by-tags
  */
-export async function dangerouslyDeleteByTags({
-	queryParams,
-	config = {},
-}: {
-	queryParams: DangerouslyDeleteByTagsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function dangerouslyDeleteByTags(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { projectIdOrName?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		DangerouslyDeleteByTagsMutationResponse,
+		DangerouslyDeleteByTagsResponse,
 		ErrorWrapper<
-			| DangerouslyDeleteByTags400
-			| DangerouslyDeleteByTags401
-			| DangerouslyDeleteByTags403
-			| DangerouslyDeleteByTags404
+			| DangerouslyDeleteByTagsStatus400
+			| DangerouslyDeleteByTagsStatus401
+			| DangerouslyDeleteByTagsStatus403
+			| DangerouslyDeleteByTagsStatus404
 		>,
 		null,
 		Record<string, string>,
-		DangerouslyDeleteByTagsQueryParams,
+		{ projectIdOrName?: string; teamId?: string; slug?: string },
 		Record<string, string>
 	>({
 		method: "POST",
 		url: `/v1/edge-cache/dangerously-delete-by-tags`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Marks a source image as stale, causing its corresponding transformed images to be revalidated in the background on the next request.
  * @summary Invalidate by source image
- * {@link /v1/edge-cache/invalidate-by-src-images}
+ * @description Marks a source image as stale, causing its corresponding transformed images to be revalidated in the background on the next request.
+ * @link /v1/edge-cache/invalidate-by-src-images
  */
-export async function invalidateBySrcImages({
-	queryParams,
-	config = {},
-}: {
-	queryParams: InvalidateBySrcImagesQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function invalidateBySrcImages(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { projectIdOrName?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		InvalidateBySrcImagesMutationResponse,
+		InvalidateBySrcImagesResponse,
 		ErrorWrapper<
-			| InvalidateBySrcImages400
-			| InvalidateBySrcImages401
-			| InvalidateBySrcImages402
-			| InvalidateBySrcImages403
-			| InvalidateBySrcImages404
+			| InvalidateBySrcImagesStatus400
+			| InvalidateBySrcImagesStatus401
+			| InvalidateBySrcImagesStatus402
+			| InvalidateBySrcImagesStatus403
+			| InvalidateBySrcImagesStatus404
 		>,
 		null,
 		Record<string, string>,
-		InvalidateBySrcImagesQueryParams,
+		{ projectIdOrName?: string; teamId?: string; slug?: string },
 		Record<string, string>
 	>({
 		method: "POST",
 		url: `/v1/edge-cache/invalidate-by-src-images`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Marks a source image as deleted, causing cache entries associated with that source image to be revalidated in the foreground on the next request. Use this method with caution because one source image can be associated with many paths and deleting the cache can cause many concurrent requests to the origin leading to cache stampede problem. This method is for advanced use cases and is not recommended; prefer using `invalidateBySrcImage` instead.
  * @summary Dangerously delete by source image
- * {@link /v1/edge-cache/dangerously-delete-by-src-images}
+ * @description Marks a source image as deleted, causing cache entries associated with that source image to be revalidated in the foreground on the next request. Use this method with caution because one source image can be associated with many paths and deleting the cache can cause many concurrent requests to the origin leading to cache stampede problem. This method is for advanced use cases and is not recommended; prefer using `invalidateBySrcImage` instead.
+ * @link /v1/edge-cache/dangerously-delete-by-src-images
  */
-export async function dangerouslyDeleteBySrcImages({
-	queryParams,
-	config = {},
-}: {
-	queryParams: DangerouslyDeleteBySrcImagesQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function dangerouslyDeleteBySrcImages(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { projectIdOrName?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		DangerouslyDeleteBySrcImagesMutationResponse,
+		DangerouslyDeleteBySrcImagesResponse,
 		ErrorWrapper<
-			| DangerouslyDeleteBySrcImages400
-			| DangerouslyDeleteBySrcImages401
-			| DangerouslyDeleteBySrcImages402
-			| DangerouslyDeleteBySrcImages403
-			| DangerouslyDeleteBySrcImages404
+			| DangerouslyDeleteBySrcImagesStatus400
+			| DangerouslyDeleteBySrcImagesStatus401
+			| DangerouslyDeleteBySrcImagesStatus402
+			| DangerouslyDeleteBySrcImagesStatus403
+			| DangerouslyDeleteBySrcImagesStatus404
 		>,
 		null,
 		Record<string, string>,
-		DangerouslyDeleteBySrcImagesQueryParams,
+		{ projectIdOrName?: string; teamId?: string; slug?: string },
 		Record<string, string>
 	>({
 		method: "POST",
 		url: `/v1/edge-cache/dangerously-delete-by-src-images`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Returns all Edge Configs.
  * @summary Get Edge Configs
- * {@link /v1/edge-config}
+ * @description Returns all Edge Configs.
+ * @link /v1/edge-config
  */
-export async function getEdgeConfigs({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: GetEdgeConfigsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getEdgeConfigs(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetEdgeConfigsQueryResponse,
-		ErrorWrapper<GetEdgeConfigs400 | GetEdgeConfigs401 | GetEdgeConfigs403>,
+		GetEdgeConfigsResponse,
+		ErrorWrapper<GetEdgeConfigsStatus400 | GetEdgeConfigsStatus401 | GetEdgeConfigsStatus403>,
 		null,
 		Record<string, string>,
-		GetEdgeConfigsQueryParams,
+		{ teamId?: string; slug?: string },
 		Record<string, string>
-	>({ method: "GET", url: `/v1/edge-config`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/v1/edge-config`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Creates an Edge Config.
  * @summary Create an Edge Config
- * {@link /v1/edge-config}
+ * @description Creates an Edge Config.
+ * @link /v1/edge-config
  */
-export async function createEdgeConfig({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: CreateEdgeConfigQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createEdgeConfig(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		CreateEdgeConfigMutationResponse,
+		CreateEdgeConfigResponse,
 		ErrorWrapper<
-			CreateEdgeConfig400 | CreateEdgeConfig401 | CreateEdgeConfig402 | CreateEdgeConfig403
+			| CreateEdgeConfigStatus400
+			| CreateEdgeConfigStatus401
+			| CreateEdgeConfigStatus402
+			| CreateEdgeConfigStatus403
 		>,
 		null,
 		Record<string, string>,
-		CreateEdgeConfigQueryParams,
+		{ teamId?: string; slug?: string },
 		Record<string, string>
 	>({
 		method: "POST",
 		url: `/v1/edge-config`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Returns an Edge Config.
  * @summary Get an Edge Config
- * {@link /v1/edge-config/:edgeConfigId}
+ * @description Returns an Edge Config.
+ * @link /v1/edge-config/{edgeConfigId}
  */
-export async function getEdgeConfig({
-	pathParams: { edgeConfigId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetEdgeConfigPathParams;
-	queryParams?: GetEdgeConfigQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!edgeConfigId) {
-		throw new Error(`Missing required path parameter: edgeConfigId`);
-	}
-
-	const data = await request<
-		GetEdgeConfigQueryResponse,
-		ErrorWrapper<GetEdgeConfig400 | GetEdgeConfig401 | GetEdgeConfig403 | GetEdgeConfig404>,
-		null,
-		Record<string, string>,
-		GetEdgeConfigQueryParams,
-		GetEdgeConfigPathParams
-	>({ method: "GET", url: `/v1/edge-config/${edgeConfigId}`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Updates an Edge Config.
- * @summary Update an Edge Config
- * {@link /v1/edge-config/:edgeConfigId}
- */
-export async function updateEdgeConfig({
-	pathParams: { edgeConfigId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: UpdateEdgeConfigPathParams;
-	queryParams?: UpdateEdgeConfigQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!edgeConfigId) {
-		throw new Error(`Missing required path parameter: edgeConfigId`);
-	}
-
-	const data = await request<
-		UpdateEdgeConfigMutationResponse,
-		ErrorWrapper<
-			| UpdateEdgeConfig400
-			| UpdateEdgeConfig401
-			| UpdateEdgeConfig402
-			| UpdateEdgeConfig403
-			| UpdateEdgeConfig404
-			| UpdateEdgeConfig409
-		>,
-		null,
-		Record<string, string>,
-		UpdateEdgeConfigQueryParams,
-		UpdateEdgeConfigPathParams
-	>({
-		method: "PUT",
-		url: `/v1/edge-config/${edgeConfigId}`,
+export async function getEdgeConfig(
+	{
+		pathParams,
 		queryParams,
-		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
-	});
-	return data;
-}
+		config,
+	}: {
+		pathParams: { edgeConfigId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-/**
- * @description Delete an Edge Config by id.
- * @summary Delete an Edge Config
- * {@link /v1/edge-config/:edgeConfigId}
- */
-export async function deleteEdgeConfig({
-	pathParams: { edgeConfigId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: DeleteEdgeConfigPathParams;
-	queryParams?: DeleteEdgeConfigQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!edgeConfigId) {
+	if (!pathParams.edgeConfigId) {
 		throw new Error(`Missing required path parameter: edgeConfigId`);
 	}
-
 	const data = await request<
-		DeleteEdgeConfigMutationResponse,
+		GetEdgeConfigResponse,
 		ErrorWrapper<
-			| DeleteEdgeConfig400
-			| DeleteEdgeConfig401
-			| DeleteEdgeConfig403
-			| DeleteEdgeConfig404
-			| DeleteEdgeConfig409
+			| GetEdgeConfigStatus400
+			| GetEdgeConfigStatus401
+			| GetEdgeConfigStatus403
+			| GetEdgeConfigStatus404
 		>,
 		null,
 		Record<string, string>,
-		DeleteEdgeConfigQueryParams,
-		DeleteEdgeConfigPathParams
-	>({ method: "DELETE", url: `/v1/edge-config/${edgeConfigId}`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Returns all items of an Edge Config.
- * @summary Get Edge Config items
- * {@link /v1/edge-config/:edgeConfigId/items}
- */
-export async function getEdgeConfigItems({
-	pathParams: { edgeConfigId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetEdgeConfigItemsPathParams;
-	queryParams?: GetEdgeConfigItemsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!edgeConfigId) {
-		throw new Error(`Missing required path parameter: edgeConfigId`);
-	}
-
-	const data = await request<
-		GetEdgeConfigItemsQueryResponse,
-		ErrorWrapper<
-			GetEdgeConfigItems400 | GetEdgeConfigItems401 | GetEdgeConfigItems403 | GetEdgeConfigItems404
-		>,
-		null,
-		Record<string, string>,
-		GetEdgeConfigItemsQueryParams,
-		GetEdgeConfigItemsPathParams
-	>({ method: "GET", url: `/v1/edge-config/${edgeConfigId}/items`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Update multiple Edge Config Items in batch.
- * @summary Update Edge Config items in batch
- * {@link /v1/edge-config/:edgeConfigId/items}
- */
-export async function patchEdgeConfigItems({
-	pathParams: { edgeConfigId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: PatchEdgeConfigItemsPathParams;
-	queryParams?: PatchEdgeConfigItemsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!edgeConfigId) {
-		throw new Error(`Missing required path parameter: edgeConfigId`);
-	}
-
-	const data = await request<
-		PatchEdgeConfigItemsMutationResponse,
-		ErrorWrapper<
-			| PatchEdgeConfigItems400
-			| PatchEdgeConfigItems401
-			| PatchEdgeConfigItems402
-			| PatchEdgeConfigItems403
-			| PatchEdgeConfigItems404
-			| PatchEdgeConfigItems409
-			| PatchEdgeConfigItems412
-		>,
-		null,
-		Record<string, string>,
-		PatchEdgeConfigItemsQueryParams,
-		PatchEdgeConfigItemsPathParams
-	>({
-		method: "PATCH",
-		url: `/v1/edge-config/${edgeConfigId}/items`,
-		queryParams,
-		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
-	});
-	return data;
-}
-
-/**
- * @description Returns the schema of an Edge Config.
- * @summary Get Edge Config schema
- * {@link /v1/edge-config/:edgeConfigId/schema}
- */
-export async function getEdgeConfigSchema({
-	pathParams: { edgeConfigId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetEdgeConfigSchemaPathParams;
-	queryParams?: GetEdgeConfigSchemaQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!edgeConfigId) {
-		throw new Error(`Missing required path parameter: edgeConfigId`);
-	}
-
-	const data = await request<
-		GetEdgeConfigSchemaQueryResponse,
-		ErrorWrapper<
-			| GetEdgeConfigSchema400
-			| GetEdgeConfigSchema401
-			| GetEdgeConfigSchema403
-			| GetEdgeConfigSchema404
-		>,
-		null,
-		Record<string, string>,
-		GetEdgeConfigSchemaQueryParams,
-		GetEdgeConfigSchemaPathParams
+		{ teamId?: string; slug?: string },
+		{ edgeConfigId: string }
 	>({
 		method: "GET",
-		url: `/v1/edge-config/${edgeConfigId}/schema`,
+		url: `/v1/edge-config/${pathParams.edgeConfigId}`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Update an Edge Config's schema.
- * @summary Update Edge Config schema
- * {@link /v1/edge-config/:edgeConfigId/schema}
+ * @summary Update an Edge Config
+ * @description Updates an Edge Config.
+ * @link /v1/edge-config/{edgeConfigId}
  */
-export async function patchEdgeConfigSchema({
-	pathParams: { edgeConfigId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: PatchEdgeConfigSchemaPathParams;
-	queryParams?: PatchEdgeConfigSchemaQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateEdgeConfig(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { edgeConfigId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!edgeConfigId) {
+	if (!pathParams.edgeConfigId) {
 		throw new Error(`Missing required path parameter: edgeConfigId`);
 	}
-
 	const data = await request<
-		PatchEdgeConfigSchemaMutationResponse,
+		UpdateEdgeConfigResponse,
 		ErrorWrapper<
-			| PatchEdgeConfigSchema400
-			| PatchEdgeConfigSchema401
-			| PatchEdgeConfigSchema402
-			| PatchEdgeConfigSchema403
-			| PatchEdgeConfigSchema404
-			| PatchEdgeConfigSchema409
+			| UpdateEdgeConfigStatus400
+			| UpdateEdgeConfigStatus401
+			| UpdateEdgeConfigStatus402
+			| UpdateEdgeConfigStatus403
+			| UpdateEdgeConfigStatus404
+			| UpdateEdgeConfigStatus409
 		>,
 		null,
 		Record<string, string>,
-		PatchEdgeConfigSchemaQueryParams,
-		PatchEdgeConfigSchemaPathParams
+		{ teamId?: string; slug?: string },
+		{ edgeConfigId: string }
 	>({
-		method: "POST",
-		url: `/v1/edge-config/${edgeConfigId}/schema`,
+		method: "PUT",
+		url: `/v1/edge-config/${pathParams.edgeConfigId}`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Deletes the schema of existing Edge Config.
- * @summary Delete an Edge Config's schema
- * {@link /v1/edge-config/:edgeConfigId/schema}
+ * @summary Delete an Edge Config
+ * @description Delete an Edge Config by id.
+ * @link /v1/edge-config/{edgeConfigId}
  */
-export async function deleteEdgeConfigSchema({
-	pathParams: { edgeConfigId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: DeleteEdgeConfigSchemaPathParams;
-	queryParams?: DeleteEdgeConfigSchemaQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteEdgeConfig(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { edgeConfigId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!edgeConfigId) {
+	if (!pathParams.edgeConfigId) {
 		throw new Error(`Missing required path parameter: edgeConfigId`);
 	}
-
 	const data = await request<
-		DeleteEdgeConfigSchemaMutationResponse,
+		DeleteEdgeConfigResponse,
 		ErrorWrapper<
-			| DeleteEdgeConfigSchema400
-			| DeleteEdgeConfigSchema401
-			| DeleteEdgeConfigSchema402
-			| DeleteEdgeConfigSchema403
-			| DeleteEdgeConfigSchema404
-			| DeleteEdgeConfigSchema409
+			| DeleteEdgeConfigStatus400
+			| DeleteEdgeConfigStatus401
+			| DeleteEdgeConfigStatus403
+			| DeleteEdgeConfigStatus404
+			| DeleteEdgeConfigStatus409
 		>,
 		null,
 		Record<string, string>,
-		DeleteEdgeConfigSchemaQueryParams,
-		DeleteEdgeConfigSchemaPathParams
+		{ teamId?: string; slug?: string },
+		{ edgeConfigId: string }
 	>({
 		method: "DELETE",
-		url: `/v1/edge-config/${edgeConfigId}/schema`,
+		url: `/v1/edge-config/${pathParams.edgeConfigId}`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Returns a specific Edge Config Item.
- * @summary Get an Edge Config item
- * {@link /v1/edge-config/:edgeConfigId/item/:edgeConfigItemKey}
+ * @summary Get Edge Config items
+ * @description Returns all items of an Edge Config.
+ * @link /v1/edge-config/{edgeConfigId}/items
  */
-export async function getEdgeConfigItem({
-	pathParams: { edgeConfigId, edgeConfigItemKey },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetEdgeConfigItemPathParams;
-	queryParams?: GetEdgeConfigItemQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getEdgeConfigItems(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { edgeConfigId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!edgeConfigId) {
+	if (!pathParams.edgeConfigId) {
+		throw new Error(`Missing required path parameter: edgeConfigId`);
+	}
+	const data = await request<
+		GetEdgeConfigItemsResponse,
+		ErrorWrapper<
+			| GetEdgeConfigItemsStatus400
+			| GetEdgeConfigItemsStatus401
+			| GetEdgeConfigItemsStatus403
+			| GetEdgeConfigItemsStatus404
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ edgeConfigId: string }
+	>({
+		method: "GET",
+		url: `/v1/edge-config/${pathParams.edgeConfigId}/items`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Update Edge Config items in batch
+ * @description Update multiple Edge Config Items in batch.
+ * @link /v1/edge-config/{edgeConfigId}/items
+ */
+export async function patchEdgeConfigItems(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { edgeConfigId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.edgeConfigId) {
+		throw new Error(`Missing required path parameter: edgeConfigId`);
+	}
+	const data = await request<
+		PatchEdgeConfigItemsResponse,
+		ErrorWrapper<
+			| PatchEdgeConfigItemsStatus400
+			| PatchEdgeConfigItemsStatus401
+			| PatchEdgeConfigItemsStatus402
+			| PatchEdgeConfigItemsStatus403
+			| PatchEdgeConfigItemsStatus404
+			| PatchEdgeConfigItemsStatus409
+			| PatchEdgeConfigItemsStatus412
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ edgeConfigId: string }
+	>({
+		method: "PATCH",
+		url: `/v1/edge-config/${pathParams.edgeConfigId}/items`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Get Edge Config schema
+ * @description Returns the schema of an Edge Config.
+ * @link /v1/edge-config/{edgeConfigId}/schema
+ */
+export async function getEdgeConfigSchema(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { edgeConfigId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.edgeConfigId) {
+		throw new Error(`Missing required path parameter: edgeConfigId`);
+	}
+	const data = await request<
+		GetEdgeConfigSchemaResponse,
+		ErrorWrapper<
+			| GetEdgeConfigSchemaStatus400
+			| GetEdgeConfigSchemaStatus401
+			| GetEdgeConfigSchemaStatus403
+			| GetEdgeConfigSchemaStatus404
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ edgeConfigId: string }
+	>({
+		method: "GET",
+		url: `/v1/edge-config/${pathParams.edgeConfigId}/schema`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Update Edge Config schema
+ * @description Update an Edge Config's schema.
+ * @link /v1/edge-config/{edgeConfigId}/schema
+ */
+export async function patchEdgeConfigSchema(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { edgeConfigId: string };
+		queryParams?: { dryRun?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.edgeConfigId) {
+		throw new Error(`Missing required path parameter: edgeConfigId`);
+	}
+	const data = await request<
+		PatchEdgeConfigSchemaResponse,
+		ErrorWrapper<
+			| PatchEdgeConfigSchemaStatus400
+			| PatchEdgeConfigSchemaStatus401
+			| PatchEdgeConfigSchemaStatus402
+			| PatchEdgeConfigSchemaStatus403
+			| PatchEdgeConfigSchemaStatus404
+			| PatchEdgeConfigSchemaStatus409
+		>,
+		null,
+		Record<string, string>,
+		{ dryRun?: string; teamId?: string; slug?: string },
+		{ edgeConfigId: string }
+	>({
+		method: "POST",
+		url: `/v1/edge-config/${pathParams.edgeConfigId}/schema`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Delete an Edge Config's schema
+ * @description Deletes the schema of existing Edge Config.
+ * @link /v1/edge-config/{edgeConfigId}/schema
+ */
+export async function deleteEdgeConfigSchema(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { edgeConfigId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.edgeConfigId) {
+		throw new Error(`Missing required path parameter: edgeConfigId`);
+	}
+	const data = await request<
+		DeleteEdgeConfigSchemaResponse,
+		ErrorWrapper<
+			| DeleteEdgeConfigSchemaStatus400
+			| DeleteEdgeConfigSchemaStatus401
+			| DeleteEdgeConfigSchemaStatus402
+			| DeleteEdgeConfigSchemaStatus403
+			| DeleteEdgeConfigSchemaStatus404
+			| DeleteEdgeConfigSchemaStatus409
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ edgeConfigId: string }
+	>({
+		method: "DELETE",
+		url: `/v1/edge-config/${pathParams.edgeConfigId}/schema`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Get an Edge Config item
+ * @description Returns a specific Edge Config Item.
+ * @link /v1/edge-config/{edgeConfigId}/item/{edgeConfigItemKey}
+ */
+export async function getEdgeConfigItem(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { edgeConfigId: string; edgeConfigItemKey: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.edgeConfigId) {
 		throw new Error(`Missing required path parameter: edgeConfigId`);
 	}
 
-	if (!edgeConfigItemKey) {
+	if (!pathParams.edgeConfigItemKey) {
 		throw new Error(`Missing required path parameter: edgeConfigItemKey`);
 	}
-
 	const data = await request<
-		GetEdgeConfigItemQueryResponse,
+		GetEdgeConfigItemResponse,
 		ErrorWrapper<
-			GetEdgeConfigItem400 | GetEdgeConfigItem401 | GetEdgeConfigItem403 | GetEdgeConfigItem404
+			| GetEdgeConfigItemStatus400
+			| GetEdgeConfigItemStatus401
+			| GetEdgeConfigItemStatus403
+			| GetEdgeConfigItemStatus404
 		>,
 		null,
 		Record<string, string>,
-		GetEdgeConfigItemQueryParams,
-		GetEdgeConfigItemPathParams
+		{ teamId?: string; slug?: string },
+		{ edgeConfigId: string; edgeConfigItemKey: string }
 	>({
 		method: "GET",
-		url: `/v1/edge-config/${edgeConfigId}/item/${edgeConfigItemKey}`,
+		url: `/v1/edge-config/${pathParams.edgeConfigId}/item/${pathParams.edgeConfigItemKey}`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Returns all tokens of an Edge Config.
  * @summary Get all tokens of an Edge Config
- * {@link /v1/edge-config/:edgeConfigId/tokens}
+ * @description Returns all tokens of an Edge Config.
+ * @link /v1/edge-config/{edgeConfigId}/tokens
  */
-export async function getEdgeConfigTokens({
-	pathParams: { edgeConfigId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetEdgeConfigTokensPathParams;
-	queryParams?: GetEdgeConfigTokensQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getEdgeConfigTokens(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { edgeConfigId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!edgeConfigId) {
+	if (!pathParams.edgeConfigId) {
 		throw new Error(`Missing required path parameter: edgeConfigId`);
 	}
-
 	const data = await request<
-		GetEdgeConfigTokensQueryResponse,
+		GetEdgeConfigTokensResponse,
 		ErrorWrapper<
-			| GetEdgeConfigTokens400
-			| GetEdgeConfigTokens401
-			| GetEdgeConfigTokens403
-			| GetEdgeConfigTokens404
+			| GetEdgeConfigTokensStatus400
+			| GetEdgeConfigTokensStatus401
+			| GetEdgeConfigTokensStatus403
+			| GetEdgeConfigTokensStatus404
 		>,
 		null,
 		Record<string, string>,
-		GetEdgeConfigTokensQueryParams,
-		GetEdgeConfigTokensPathParams
+		{ teamId?: string; slug?: string },
+		{ edgeConfigId: string }
 	>({
 		method: "GET",
-		url: `/v1/edge-config/${edgeConfigId}/tokens`,
+		url: `/v1/edge-config/${pathParams.edgeConfigId}/tokens`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Deletes one or more tokens of an existing Edge Config.
  * @summary Delete one or more Edge Config tokens
- * {@link /v1/edge-config/:edgeConfigId/tokens}
+ * @description Deletes one or more tokens of an existing Edge Config.
+ * @link /v1/edge-config/{edgeConfigId}/tokens
  */
-export async function deleteEdgeConfigTokens({
-	pathParams: { edgeConfigId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: DeleteEdgeConfigTokensPathParams;
-	queryParams?: DeleteEdgeConfigTokensQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteEdgeConfigTokens(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { edgeConfigId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!edgeConfigId) {
+	if (!pathParams.edgeConfigId) {
 		throw new Error(`Missing required path parameter: edgeConfigId`);
 	}
-
 	const data = await request<
-		DeleteEdgeConfigTokensMutationResponse,
+		DeleteEdgeConfigTokensResponse,
 		ErrorWrapper<
-			| DeleteEdgeConfigTokens400
-			| DeleteEdgeConfigTokens401
-			| DeleteEdgeConfigTokens402
-			| DeleteEdgeConfigTokens403
-			| DeleteEdgeConfigTokens404
-			| DeleteEdgeConfigTokens409
+			| DeleteEdgeConfigTokensStatus400
+			| DeleteEdgeConfigTokensStatus401
+			| DeleteEdgeConfigTokensStatus402
+			| DeleteEdgeConfigTokensStatus403
+			| DeleteEdgeConfigTokensStatus404
+			| DeleteEdgeConfigTokensStatus409
 		>,
 		null,
 		Record<string, string>,
-		DeleteEdgeConfigTokensQueryParams,
-		DeleteEdgeConfigTokensPathParams
+		{ teamId?: string; slug?: string },
+		{ edgeConfigId: string }
 	>({
 		method: "DELETE",
-		url: `/v1/edge-config/${edgeConfigId}/tokens`,
+		url: `/v1/edge-config/${pathParams.edgeConfigId}/tokens`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Return meta data about an Edge Config token.
  * @summary Get Edge Config token meta data
- * {@link /v1/edge-config/:edgeConfigId/token/:token}
+ * @description Return meta data about an Edge Config token.
+ * @link /v1/edge-config/{edgeConfigId}/token/{token}
  */
-export async function getEdgeConfigToken({
-	pathParams: { edgeConfigId, token },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetEdgeConfigTokenPathParams;
-	queryParams?: GetEdgeConfigTokenQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getEdgeConfigToken(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { edgeConfigId: string; token: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!edgeConfigId) {
+	if (!pathParams.edgeConfigId) {
 		throw new Error(`Missing required path parameter: edgeConfigId`);
 	}
 
-	if (!token) {
+	if (!pathParams.token) {
 		throw new Error(`Missing required path parameter: token`);
 	}
-
 	const data = await request<
-		GetEdgeConfigTokenQueryResponse,
+		GetEdgeConfigTokenResponse,
 		ErrorWrapper<
-			GetEdgeConfigToken400 | GetEdgeConfigToken401 | GetEdgeConfigToken403 | GetEdgeConfigToken404
+			| GetEdgeConfigTokenStatus400
+			| GetEdgeConfigTokenStatus401
+			| GetEdgeConfigTokenStatus403
+			| GetEdgeConfigTokenStatus404
 		>,
 		null,
 		Record<string, string>,
-		GetEdgeConfigTokenQueryParams,
-		GetEdgeConfigTokenPathParams
+		{ teamId?: string; slug?: string },
+		{ edgeConfigId: string; token: string }
 	>({
 		method: "GET",
-		url: `/v1/edge-config/${edgeConfigId}/token/${token}`,
+		url: `/v1/edge-config/${pathParams.edgeConfigId}/token/${pathParams.token}`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Adds a token to an existing Edge Config.
  * @summary Create an Edge Config token
- * {@link /v1/edge-config/:edgeConfigId/token}
+ * @description Adds a token to an existing Edge Config.
+ * @link /v1/edge-config/{edgeConfigId}/token
  */
-export async function createEdgeConfigToken({
-	pathParams: { edgeConfigId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: CreateEdgeConfigTokenPathParams;
-	queryParams?: CreateEdgeConfigTokenQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createEdgeConfigToken(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { edgeConfigId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!edgeConfigId) {
+	if (!pathParams.edgeConfigId) {
 		throw new Error(`Missing required path parameter: edgeConfigId`);
 	}
-
 	const data = await request<
-		CreateEdgeConfigTokenMutationResponse,
+		CreateEdgeConfigTokenResponse,
 		ErrorWrapper<
-			| CreateEdgeConfigToken400
-			| CreateEdgeConfigToken401
-			| CreateEdgeConfigToken402
-			| CreateEdgeConfigToken403
-			| CreateEdgeConfigToken404
-			| CreateEdgeConfigToken409
+			| CreateEdgeConfigTokenStatus400
+			| CreateEdgeConfigTokenStatus401
+			| CreateEdgeConfigTokenStatus402
+			| CreateEdgeConfigTokenStatus403
+			| CreateEdgeConfigTokenStatus404
+			| CreateEdgeConfigTokenStatus409
 		>,
 		null,
 		Record<string, string>,
-		CreateEdgeConfigTokenQueryParams,
-		CreateEdgeConfigTokenPathParams
+		{ teamId?: string; slug?: string },
+		{ edgeConfigId: string }
 	>({
 		method: "POST",
-		url: `/v1/edge-config/${edgeConfigId}/token`,
+		url: `/v1/edge-config/${pathParams.edgeConfigId}/token`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Retrieves a specific version of an Edge Config from backup storage.
  * @summary Get Edge Config backup
- * {@link /v1/edge-config/:edgeConfigId/backups/:edgeConfigBackupVersionId}
+ * @description Retrieves a specific version of an Edge Config from backup storage.
+ * @link /v1/edge-config/{edgeConfigId}/backups/{edgeConfigBackupVersionId}
  */
-export async function getEdgeConfigBackup({
-	pathParams: { edgeConfigId, edgeConfigBackupVersionId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetEdgeConfigBackupPathParams;
-	queryParams?: GetEdgeConfigBackupQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getEdgeConfigBackup(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { edgeConfigId: string; edgeConfigBackupVersionId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!edgeConfigId) {
+	if (!pathParams.edgeConfigId) {
 		throw new Error(`Missing required path parameter: edgeConfigId`);
 	}
 
-	if (!edgeConfigBackupVersionId) {
+	if (!pathParams.edgeConfigBackupVersionId) {
 		throw new Error(`Missing required path parameter: edgeConfigBackupVersionId`);
 	}
-
 	const data = await request<
-		GetEdgeConfigBackupQueryResponse,
+		GetEdgeConfigBackupResponse,
 		ErrorWrapper<
-			| GetEdgeConfigBackup400
-			| GetEdgeConfigBackup401
-			| GetEdgeConfigBackup403
-			| GetEdgeConfigBackup404
+			| GetEdgeConfigBackupStatus400
+			| GetEdgeConfigBackupStatus401
+			| GetEdgeConfigBackupStatus403
+			| GetEdgeConfigBackupStatus404
 		>,
 		null,
 		Record<string, string>,
-		GetEdgeConfigBackupQueryParams,
-		GetEdgeConfigBackupPathParams
+		{ teamId?: string; slug?: string },
+		{ edgeConfigId: string; edgeConfigBackupVersionId: string }
 	>({
 		method: "GET",
-		url: `/v1/edge-config/${edgeConfigId}/backups/${edgeConfigBackupVersionId}`,
+		url: `/v1/edge-config/${pathParams.edgeConfigId}/backups/${pathParams.edgeConfigBackupVersionId}`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Returns backups of an Edge Config.
  * @summary Get Edge Config backups
- * {@link /v1/edge-config/:edgeConfigId/backups}
+ * @description Returns backups of an Edge Config.
+ * @link /v1/edge-config/{edgeConfigId}/backups
  */
-export async function getEdgeConfigBackups({
-	pathParams: { edgeConfigId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetEdgeConfigBackupsPathParams;
-	queryParams?: GetEdgeConfigBackupsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getEdgeConfigBackups(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { edgeConfigId: string };
+		queryParams?: {
+			next?: string;
+			limit?: number;
+			metadata?: string;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!edgeConfigId) {
+	if (!pathParams.edgeConfigId) {
 		throw new Error(`Missing required path parameter: edgeConfigId`);
 	}
-
 	const data = await request<
-		GetEdgeConfigBackupsQueryResponse,
+		GetEdgeConfigBackupsResponse,
 		ErrorWrapper<
-			| GetEdgeConfigBackups400
-			| GetEdgeConfigBackups401
-			| GetEdgeConfigBackups403
-			| GetEdgeConfigBackups404
+			| GetEdgeConfigBackupsStatus400
+			| GetEdgeConfigBackupsStatus401
+			| GetEdgeConfigBackupsStatus403
+			| GetEdgeConfigBackupsStatus404
 		>,
 		null,
 		Record<string, string>,
-		GetEdgeConfigBackupsQueryParams,
-		GetEdgeConfigBackupsPathParams
+		{ next?: string; limit?: number; metadata?: string; teamId?: string; slug?: string },
+		{ edgeConfigId: string }
 	>({
 		method: "GET",
-		url: `/v1/edge-config/${edgeConfigId}/backups`,
+		url: `/v1/edge-config/${pathParams.edgeConfigId}/backups`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Creates shared environment variable(s) for a team.
  * @summary Create one or more shared environment variables
- * {@link /v1/env}
+ * @description Creates shared environment variable(s) for a team.
+ * @link /v1/env
  */
-export async function createSharedEnvVariable({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: CreateSharedEnvVariableQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createSharedEnvVariable(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		CreateSharedEnvVariableMutationResponse,
+		CreateSharedEnvVariableResponse,
 		ErrorWrapper<
-			| CreateSharedEnvVariable400
-			| CreateSharedEnvVariable401
-			| CreateSharedEnvVariable402
-			| CreateSharedEnvVariable403
+			| CreateSharedEnvVariableStatus400
+			| CreateSharedEnvVariableStatus401
+			| CreateSharedEnvVariableStatus402
+			| CreateSharedEnvVariableStatus403
 		>,
 		null,
 		Record<string, string>,
-		CreateSharedEnvVariableQueryParams,
+		{ teamId?: string; slug?: string },
 		Record<string, string>
 	>({
 		method: "POST",
 		url: `/v1/env`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Lists all Shared Environment Variables for a team, taking into account optional filters.
  * @summary Lists all Shared Environment Variables for a team
- * {@link /v1/env}
+ * @description Lists all Shared Environment Variables for a team, taking into account optional filters.
+ * @link /v1/env
  */
-export async function listSharedEnvVariable({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: ListSharedEnvVariableQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listSharedEnvVariable(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			search?: string;
+			projectId?: string;
+			ids?: string;
+			exclude_ids?: string;
+			"'exclude-ids'"?: string;
+			exclude_projectId?: string;
+			"'exclude-projectId'"?: string;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		ListSharedEnvVariableQueryResponse,
+		ListSharedEnvVariableResponse,
 		ErrorWrapper<
-			| ListSharedEnvVariable400
-			| ListSharedEnvVariable401
-			| ListSharedEnvVariable403
-			| ListSharedEnvVariable404
+			| ListSharedEnvVariableStatus400
+			| ListSharedEnvVariableStatus401
+			| ListSharedEnvVariableStatus403
+			| ListSharedEnvVariableStatus404
 		>,
 		null,
 		Record<string, string>,
-		ListSharedEnvVariableQueryParams,
+		{
+			search?: string;
+			projectId?: string;
+			ids?: string;
+			exclude_ids?: string;
+			"'exclude-ids'"?: string;
+			exclude_projectId?: string;
+			"'exclude-projectId'"?: string;
+			teamId?: string;
+			slug?: string;
+		},
 		Record<string, string>
-	>({ method: "GET", url: `/v1/env`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/v1/env`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Updates a given Shared Environment Variable for a Team.
  * @summary Updates one or more shared environment variables
- * {@link /v1/env}
+ * @description Updates a given Shared Environment Variable for a Team.
+ * @link /v1/env
  */
-export async function updateSharedEnvVariable({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: UpdateSharedEnvVariableQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateSharedEnvVariable(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		UpdateSharedEnvVariableMutationResponse,
+		UpdateSharedEnvVariableResponse,
 		ErrorWrapper<
-			| UpdateSharedEnvVariable400
-			| UpdateSharedEnvVariable401
-			| UpdateSharedEnvVariable402
-			| UpdateSharedEnvVariable403
+			| UpdateSharedEnvVariableStatus400
+			| UpdateSharedEnvVariableStatus401
+			| UpdateSharedEnvVariableStatus402
+			| UpdateSharedEnvVariableStatus403
 		>,
 		null,
 		Record<string, string>,
-		UpdateSharedEnvVariableQueryParams,
+		{ teamId?: string; slug?: string },
 		Record<string, string>
 	>({
 		method: "PATCH",
 		url: `/v1/env`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Deletes one or many Shared Environment Variables for a given team.
  * @summary Delete one or more Env Var
- * {@link /v1/env}
+ * @description Deletes one or many Shared Environment Variables for a given team.
+ * @link /v1/env
  */
-export async function deleteSharedEnvVariable({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: DeleteSharedEnvVariableQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteSharedEnvVariable(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		DeleteSharedEnvVariableMutationResponse,
+		DeleteSharedEnvVariableResponse,
 		ErrorWrapper<
-			| DeleteSharedEnvVariable400
-			| DeleteSharedEnvVariable401
-			| DeleteSharedEnvVariable402
-			| DeleteSharedEnvVariable403
+			| DeleteSharedEnvVariableStatus400
+			| DeleteSharedEnvVariableStatus401
+			| DeleteSharedEnvVariableStatus402
+			| DeleteSharedEnvVariableStatus403
 		>,
 		null,
 		Record<string, string>,
-		DeleteSharedEnvVariableQueryParams,
+		{ teamId?: string; slug?: string },
 		Record<string, string>
 	>({
 		method: "DELETE",
 		url: `/v1/env`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Retrieve the decrypted value of a Shared Environment Variable by id.
  * @summary Retrieve the decrypted value of a Shared Environment Variable by id.
- * {@link /v1/env/:id}
+ * @description Retrieve the decrypted value of a Shared Environment Variable by id.
+ * @link /v1/env/{id}
  */
-export async function getSharedEnvVar({
-	pathParams: { id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetSharedEnvVarPathParams;
-	queryParams?: GetSharedEnvVarQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getSharedEnvVar(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { id: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!id) {
+	if (!pathParams.id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
-
 	const data = await request<
-		GetSharedEnvVarQueryResponse,
-		ErrorWrapper<GetSharedEnvVar400 | GetSharedEnvVar401 | GetSharedEnvVar403>,
+		GetSharedEnvVarResponse,
+		ErrorWrapper<GetSharedEnvVarStatus400 | GetSharedEnvVarStatus401 | GetSharedEnvVarStatus403>,
 		null,
 		Record<string, string>,
-		GetSharedEnvVarQueryParams,
-		GetSharedEnvVarPathParams
-	>({ method: "GET", url: `/v1/env/${id}`, queryParams, ...requestConfig });
+		{ teamId?: string; slug?: string },
+		{ id: string }
+	>({
+		method: "GET",
+		url: `/v1/env/${pathParams.id}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Disconnects a shared environment variable for a given project
  * @summary Disconnects a shared environment variable for a given project
- * {@link /v1/env/:id/unlink/:projectId}
+ * @description Disconnects a shared environment variable for a given project
+ * @link /v1/env/{id}/unlink/{projectId}
  */
-export async function unlinkSharedEnvVariable({
-	pathParams: { id, projectId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: UnlinkSharedEnvVariablePathParams;
-	queryParams?: UnlinkSharedEnvVariableQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function unlinkSharedEnvVariable(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { id: string; projectId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!id) {
+	if (!pathParams.id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
 
-	if (!projectId) {
+	if (!pathParams.projectId) {
 		throw new Error(`Missing required path parameter: projectId`);
 	}
-
 	const data = await request<
-		UnlinkSharedEnvVariableMutationResponse,
+		UnlinkSharedEnvVariableResponse,
 		ErrorWrapper<
-			UnlinkSharedEnvVariable400 | UnlinkSharedEnvVariable401 | UnlinkSharedEnvVariable403
+			| UnlinkSharedEnvVariableStatus400
+			| UnlinkSharedEnvVariableStatus401
+			| UnlinkSharedEnvVariableStatus403
 		>,
 		null,
 		Record<string, string>,
-		UnlinkSharedEnvVariableQueryParams,
-		UnlinkSharedEnvVariablePathParams
-	>({ method: "PATCH", url: `/v1/env/${id}/unlink/${projectId}`, queryParams, ...requestConfig });
+		{ teamId?: string; slug?: string },
+		{ id: string; projectId: string }
+	>({
+		method: "PATCH",
+		url: `/v1/env/${pathParams.id}/unlink/${pathParams.projectId}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Retrieves a list of "events" generated by the User on Vercel. Events are generated when the User performs a particular action, such as logging in, creating a deployment, and joining a Team (just to name a few). When the `teamId` parameter is supplied, then the events that are returned will be in relation to the Team that was specified.
  * @summary List User Events
- * {@link /v3/events}
+ * @description Retrieves a list of "events" generated by the User on Vercel. Events are generated when the User performs a particular action, such as logging in, creating a deployment, and joining a Team (just to name a few). When the `teamId` parameter is supplied, then the events that are returned will be in relation to the Team that was specified.
+ * @link /v3/events
  */
-export async function listUserEvents({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: ListUserEventsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listUserEvents(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			limit?: number;
+			since?: string;
+			until?: string;
+			types?: string;
+			userId?: string;
+			principalId?: string;
+			projectIds?: string;
+			withPayload?: string;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		ListUserEventsQueryResponse,
-		ErrorWrapper<ListUserEvents400 | ListUserEvents401 | ListUserEvents403>,
+		ListUserEventsResponse,
+		ErrorWrapper<ListUserEventsStatus400 | ListUserEventsStatus401 | ListUserEventsStatus403>,
 		null,
 		Record<string, string>,
-		ListUserEventsQueryParams,
+		{
+			limit?: number;
+			since?: string;
+			until?: string;
+			types?: string;
+			userId?: string;
+			principalId?: string;
+			projectIds?: string;
+			withPayload?: string;
+			teamId?: string;
+			slug?: string;
+		},
 		Record<string, string>
-	>({ method: "GET", url: `/v3/events`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/v3/events`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Returns the list of user-facing event types with descriptions.
  * @summary List Event Types
- * {@link /v1/events/types}
+ * @description Returns the list of user-facing event types with descriptions.
+ * @link /v1/events/types
  */
-export async function listEventTypes({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: ListEventTypesQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listEventTypes(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		ListEventTypesQueryResponse,
-		ErrorWrapper<ListEventTypes400 | ListEventTypes401 | ListEventTypes403>,
+		ListEventTypesResponse,
+		ErrorWrapper<ListEventTypesStatus400 | ListEventTypesStatus401 | ListEventTypesStatus403>,
 		null,
 		Record<string, string>,
-		ListEventTypesQueryParams,
+		{ teamId?: string; slug?: string },
 		Record<string, string>
-	>({ method: "GET", url: `/v1/events/types`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/v1/events/types`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Retrieve feature flags for a project. The list can be filtered by state and supports pagination.
  * @summary List flags
- * {@link /v1/projects/:projectIdOrName/feature-flags/flags}
+ * @description Retrieve feature flags for a project. The list can be filtered by state and supports pagination.
+ * @link /v1/projects/{projectIdOrName}/feature-flags/flags
  */
-export async function listFlags({
-	pathParams: { projectIdOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ListFlagsPathParams;
-	queryParams?: ListFlagsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listFlags(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectIdOrName: string };
+		queryParams?: {
+			state?: "active" | "archived";
+			withMetadata?: boolean;
+			limit?: number;
+			cursor?: string;
+			search?: string;
+			tags?: Array<string>;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!projectIdOrName) {
+	if (!pathParams.projectIdOrName) {
 		throw new Error(`Missing required path parameter: projectIdOrName`);
 	}
-
 	const data = await request<
-		ListFlagsQueryResponse,
-		ErrorWrapper<ListFlags400 | ListFlags401 | ListFlags402 | ListFlags403 | ListFlags404>,
+		ListFlagsResponse,
+		ErrorWrapper<
+			| ListFlagsStatus400
+			| ListFlagsStatus401
+			| ListFlagsStatus402
+			| ListFlagsStatus403
+			| ListFlagsStatus404
+		>,
 		null,
 		Record<string, string>,
-		ListFlagsQueryParams,
-		ListFlagsPathParams
+		{
+			state?: "active" | "archived";
+			withMetadata?: boolean;
+			limit?: number;
+			cursor?: string;
+			search?: string;
+			tags?: Array<string>;
+			teamId?: string;
+			slug?: string;
+		},
+		{ projectIdOrName: string }
 	>({
 		method: "GET",
-		url: `/v1/projects/${projectIdOrName}/feature-flags/flags`,
+		url: `/v1/projects/${pathParams.projectIdOrName}/feature-flags/flags`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Create a new feature flag for a project. The flag must have a unique slug within the project and specify its kind (boolean, string, number, or json).
  * @summary Create a flag
- * {@link /v1/projects/:projectIdOrName/feature-flags/flags}
+ * @description Create a new feature flag for a project. The flag must have a unique slug within the project and specify its kind (boolean, string, number, or json).
+ * @link /v1/projects/{projectIdOrName}/feature-flags/flags
  */
-export async function createFlag({
-	pathParams: { projectIdOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: CreateFlagPathParams;
-	queryParams?: CreateFlagQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createFlag(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectIdOrName: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!projectIdOrName) {
+	if (!pathParams.projectIdOrName) {
 		throw new Error(`Missing required path parameter: projectIdOrName`);
 	}
-
 	const data = await request<
-		CreateFlagMutationResponse,
+		CreateFlagResponse,
 		ErrorWrapper<
-			| CreateFlag400
-			| CreateFlag401
-			| CreateFlag402
-			| CreateFlag403
-			| CreateFlag404
-			| CreateFlag409
-			| CreateFlag412
+			| CreateFlagStatus400
+			| CreateFlagStatus401
+			| CreateFlagStatus402
+			| CreateFlagStatus403
+			| CreateFlagStatus404
+			| CreateFlagStatus409
+			| CreateFlagStatus412
 		>,
 		null,
 		Record<string, string>,
-		CreateFlagQueryParams,
-		CreateFlagPathParams
+		{ teamId?: string; slug?: string },
+		{ projectIdOrName: string }
 	>({
 		method: "PUT",
-		url: `/v1/projects/${projectIdOrName}/feature-flags/flags`,
+		url: `/v1/projects/${pathParams.projectIdOrName}/feature-flags/flags`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Retrieve a specific feature flag by its ID or slug.
  * @summary Get a flag
- * {@link /v1/projects/:projectIdOrName/feature-flags/flags/:flagIdOrSlug}
+ * @description Retrieve a specific feature flag by its ID or slug.
+ * @link /v1/projects/{projectIdOrName}/feature-flags/flags/{flagIdOrSlug}
  */
-export async function getFlag({
-	pathParams: { projectIdOrName, flagIdOrSlug },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetFlagPathParams;
-	queryParams?: GetFlagQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getFlag(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectIdOrName: string; flagIdOrSlug: string };
+		queryParams?: { ifMatch?: string; withMetadata?: boolean; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!projectIdOrName) {
+	if (!pathParams.projectIdOrName) {
 		throw new Error(`Missing required path parameter: projectIdOrName`);
 	}
 
-	if (!flagIdOrSlug) {
+	if (!pathParams.flagIdOrSlug) {
 		throw new Error(`Missing required path parameter: flagIdOrSlug`);
 	}
-
 	const data = await request<
-		GetFlagQueryResponse,
-		ErrorWrapper<GetFlag400 | GetFlag401 | GetFlag402 | GetFlag403 | GetFlag404>,
+		GetFlagResponse,
+		ErrorWrapper<
+			GetFlagStatus400 | GetFlagStatus401 | GetFlagStatus402 | GetFlagStatus403 | GetFlagStatus404
+		>,
 		null,
 		Record<string, string>,
-		GetFlagQueryParams,
-		GetFlagPathParams
+		{ ifMatch?: string; withMetadata?: boolean; teamId?: string; slug?: string },
+		{ projectIdOrName: string; flagIdOrSlug: string }
 	>({
 		method: "GET",
-		url: `/v1/projects/${projectIdOrName}/feature-flags/flags/${flagIdOrSlug}`,
+		url: `/v1/projects/${pathParams.projectIdOrName}/feature-flags/flags/${pathParams.flagIdOrSlug}`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Update an existing feature flag. This endpoint supports partial updates, allowing you to modify specific properties like variants, environments, or state without providing the full flag configuration.
  * @summary Update a flag
- * {@link /v1/projects/:projectIdOrName/feature-flags/flags/:flagIdOrSlug}
+ * @description Update an existing feature flag. This endpoint supports partial updates, allowing you to modify specific properties like variants, environments, or state without providing the full flag configuration.
+ * @link /v1/projects/{projectIdOrName}/feature-flags/flags/{flagIdOrSlug}
  */
-export async function updateFlag({
-	pathParams: { projectIdOrName, flagIdOrSlug },
-	queryParams,
-	config = {},
-}: {
-	pathParams: UpdateFlagPathParams;
-	queryParams?: UpdateFlagQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateFlag(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectIdOrName: string; flagIdOrSlug: string };
+		queryParams?: { ifMatch?: string; withMetadata?: boolean; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!projectIdOrName) {
+	if (!pathParams.projectIdOrName) {
 		throw new Error(`Missing required path parameter: projectIdOrName`);
 	}
 
-	if (!flagIdOrSlug) {
+	if (!pathParams.flagIdOrSlug) {
 		throw new Error(`Missing required path parameter: flagIdOrSlug`);
 	}
-
 	const data = await request<
-		UpdateFlagMutationResponse,
+		UpdateFlagResponse,
 		ErrorWrapper<
-			| UpdateFlag400
-			| UpdateFlag401
-			| UpdateFlag402
-			| UpdateFlag403
-			| UpdateFlag404
-			| UpdateFlag409
-			| UpdateFlag412
+			| UpdateFlagStatus400
+			| UpdateFlagStatus401
+			| UpdateFlagStatus402
+			| UpdateFlagStatus403
+			| UpdateFlagStatus404
+			| UpdateFlagStatus409
+			| UpdateFlagStatus412
 		>,
 		null,
 		Record<string, string>,
-		UpdateFlagQueryParams,
-		UpdateFlagPathParams
+		{ ifMatch?: string; withMetadata?: boolean; teamId?: string; slug?: string },
+		{ projectIdOrName: string; flagIdOrSlug: string }
 	>({
 		method: "PATCH",
-		url: `/v1/projects/${projectIdOrName}/feature-flags/flags/${flagIdOrSlug}`,
+		url: `/v1/projects/${pathParams.projectIdOrName}/feature-flags/flags/${pathParams.flagIdOrSlug}`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Permanently delete a feature flag from the project. This action cannot be undone. Consider archiving the flag instead if you may need it in the future.
  * @summary Delete a flag
- * {@link /v1/projects/:projectIdOrName/feature-flags/flags/:flagIdOrSlug}
+ * @description Permanently delete a feature flag from the project. This action cannot be undone. Consider archiving the flag instead if you may need it in the future.
+ * @link /v1/projects/{projectIdOrName}/feature-flags/flags/{flagIdOrSlug}
  */
-export async function deleteFlag({
-	pathParams: { projectIdOrName, flagIdOrSlug },
-	queryParams,
-	config = {},
-}: {
-	pathParams: DeleteFlagPathParams;
-	queryParams?: DeleteFlagQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteFlag(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectIdOrName: string; flagIdOrSlug: string };
+		queryParams?: { ifMatch?: string; withMetadata?: boolean; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!projectIdOrName) {
+	if (!pathParams.projectIdOrName) {
 		throw new Error(`Missing required path parameter: projectIdOrName`);
 	}
 
-	if (!flagIdOrSlug) {
+	if (!pathParams.flagIdOrSlug) {
 		throw new Error(`Missing required path parameter: flagIdOrSlug`);
 	}
-
 	const data = await request<
-		DeleteFlagMutationResponse,
+		DeleteFlagResponse,
 		ErrorWrapper<
-			| DeleteFlag400
-			| DeleteFlag401
-			| DeleteFlag402
-			| DeleteFlag403
-			| DeleteFlag404
-			| DeleteFlag409
-			| DeleteFlag412
+			| DeleteFlagStatus400
+			| DeleteFlagStatus401
+			| DeleteFlagStatus402
+			| DeleteFlagStatus403
+			| DeleteFlagStatus404
+			| DeleteFlagStatus409
+			| DeleteFlagStatus412
 		>,
 		null,
 		Record<string, string>,
-		DeleteFlagQueryParams,
-		DeleteFlagPathParams
+		{ ifMatch?: string; withMetadata?: boolean; teamId?: string; slug?: string },
+		{ projectIdOrName: string; flagIdOrSlug: string }
 	>({
 		method: "DELETE",
-		url: `/v1/projects/${projectIdOrName}/feature-flags/flags/${flagIdOrSlug}`,
+		url: `/v1/projects/${pathParams.projectIdOrName}/feature-flags/flags/${pathParams.flagIdOrSlug}`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Lists flag versions for a given flag.
  * @summary List flag versions
- * {@link /v1/projects/:projectIdOrName/feature-flags/flags/:flagIdOrSlug/versions}
+ * @description Lists flag versions for a given flag.
+ * @link /v1/projects/{projectIdOrName}/feature-flags/flags/{flagIdOrSlug}/versions
  */
-export async function listFlagVersions({
-	pathParams: { projectIdOrName, flagIdOrSlug },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ListFlagVersionsPathParams;
-	queryParams?: ListFlagVersionsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listFlagVersions(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectIdOrName: string; flagIdOrSlug: string };
+		queryParams?: {
+			limit?: number;
+			cursor?: string;
+			environment?: string;
+			withMetadata?: boolean;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!projectIdOrName) {
+	if (!pathParams.projectIdOrName) {
 		throw new Error(`Missing required path parameter: projectIdOrName`);
 	}
 
-	if (!flagIdOrSlug) {
+	if (!pathParams.flagIdOrSlug) {
 		throw new Error(`Missing required path parameter: flagIdOrSlug`);
 	}
-
 	const data = await request<
-		ListFlagVersionsQueryResponse,
+		ListFlagVersionsResponse,
 		ErrorWrapper<
-			| ListFlagVersions400
-			| ListFlagVersions401
-			| ListFlagVersions402
-			| ListFlagVersions403
-			| ListFlagVersions404
+			| ListFlagVersionsStatus400
+			| ListFlagVersionsStatus401
+			| ListFlagVersionsStatus402
+			| ListFlagVersionsStatus403
+			| ListFlagVersionsStatus404
 		>,
 		null,
 		Record<string, string>,
-		ListFlagVersionsQueryParams,
-		ListFlagVersionsPathParams
+		{
+			limit?: number;
+			cursor?: string;
+			environment?: string;
+			withMetadata?: boolean;
+			teamId?: string;
+			slug?: string;
+		},
+		{ projectIdOrName: string; flagIdOrSlug: string }
 	>({
 		method: "GET",
-		url: `/v1/projects/${projectIdOrName}/feature-flags/flags/${flagIdOrSlug}/versions`,
+		url: `/v1/projects/${pathParams.projectIdOrName}/feature-flags/flags/${pathParams.flagIdOrSlug}/versions`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Retrieve feature flag settings for a project.
  * @summary Get project flag settings
- * {@link /v1/projects/:projectIdOrName/feature-flags/settings}
+ * @description Retrieve feature flag settings for a project.
+ * @link /v1/projects/{projectIdOrName}/feature-flags/settings
  */
-export async function getFlagSettings({
-	pathParams: { projectIdOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetFlagSettingsPathParams;
-	queryParams?: GetFlagSettingsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getFlagSettings(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectIdOrName: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!projectIdOrName) {
+	if (!pathParams.projectIdOrName) {
 		throw new Error(`Missing required path parameter: projectIdOrName`);
 	}
-
 	const data = await request<
-		GetFlagSettingsQueryResponse,
+		GetFlagSettingsResponse,
 		ErrorWrapper<
-			| GetFlagSettings400
-			| GetFlagSettings401
-			| GetFlagSettings402
-			| GetFlagSettings403
-			| GetFlagSettings404
+			| GetFlagSettingsStatus400
+			| GetFlagSettingsStatus401
+			| GetFlagSettingsStatus402
+			| GetFlagSettingsStatus403
+			| GetFlagSettingsStatus404
 		>,
 		null,
 		Record<string, string>,
-		GetFlagSettingsQueryParams,
-		GetFlagSettingsPathParams
+		{ teamId?: string; slug?: string },
+		{ projectIdOrName: string }
 	>({
 		method: "GET",
-		url: `/v1/projects/${projectIdOrName}/feature-flags/settings`,
+		url: `/v1/projects/${pathParams.projectIdOrName}/feature-flags/settings`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Update feature flag settings for a project.
  * @summary Update project flag settings
- * {@link /v1/projects/:projectIdOrName/feature-flags/settings}
+ * @description Update feature flag settings for a project.
+ * @link /v1/projects/{projectIdOrName}/feature-flags/settings
  */
-export async function updateFlagSettings({
-	pathParams: { projectIdOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: UpdateFlagSettingsPathParams;
-	queryParams?: UpdateFlagSettingsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateFlagSettings(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectIdOrName: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!projectIdOrName) {
+	if (!pathParams.projectIdOrName) {
 		throw new Error(`Missing required path parameter: projectIdOrName`);
 	}
-
 	const data = await request<
-		UpdateFlagSettingsMutationResponse,
+		UpdateFlagSettingsResponse,
 		ErrorWrapper<
-			| UpdateFlagSettings400
-			| UpdateFlagSettings401
-			| UpdateFlagSettings402
-			| UpdateFlagSettings403
-			| UpdateFlagSettings404
-			| UpdateFlagSettings409
-			| UpdateFlagSettings412
+			| UpdateFlagSettingsStatus400
+			| UpdateFlagSettingsStatus401
+			| UpdateFlagSettingsStatus402
+			| UpdateFlagSettingsStatus403
+			| UpdateFlagSettingsStatus404
+			| UpdateFlagSettingsStatus409
+			| UpdateFlagSettingsStatus412
 		>,
 		null,
 		Record<string, string>,
-		UpdateFlagSettingsQueryParams,
-		UpdateFlagSettingsPathParams
+		{ teamId?: string; slug?: string },
+		{ projectIdOrName: string }
 	>({
 		method: "PATCH",
-		url: `/v1/projects/${projectIdOrName}/feature-flags/settings`,
+		url: `/v1/projects/${pathParams.projectIdOrName}/feature-flags/settings`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Retrieve feature flag settings for projects in a team.
  * @summary List team project flag settings
- * {@link /v1/teams/:teamId/feature-flags/settings}
+ * @description Retrieve feature flag settings for projects in a team.
+ * @link /v1/teams/{teamId}/feature-flags/settings
  */
-export async function listTeamFlagSettings({
-	pathParams: { teamId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ListTeamFlagSettingsPathParams;
-	queryParams?: ListTeamFlagSettingsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listTeamFlagSettings(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { teamId: string };
+		queryParams?: { limit?: number; cursor?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!teamId) {
+	if (!pathParams.teamId) {
 		throw new Error(`Missing required path parameter: teamId`);
 	}
-
 	const data = await request<
-		ListTeamFlagSettingsQueryResponse,
-		ErrorWrapper<ListTeamFlagSettings400 | ListTeamFlagSettings401 | ListTeamFlagSettings403>,
-		null,
-		Record<string, string>,
-		ListTeamFlagSettingsQueryParams,
-		ListTeamFlagSettingsPathParams
-	>({
-		method: "GET",
-		url: `/v1/teams/${teamId}/feature-flags/settings`,
-		queryParams,
-		...requestConfig,
-	});
-	return data;
-}
-
-/**
- * @description Retrieve all feature flags for a team across all projects. The list can be filtered by state and supports pagination.
- * @summary List all flags for a team
- * {@link /v1/teams/:teamId/feature-flags/flags}
- */
-export async function listTeamFlags({
-	pathParams: { teamId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ListTeamFlagsPathParams;
-	queryParams?: ListTeamFlagsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!teamId) {
-		throw new Error(`Missing required path parameter: teamId`);
-	}
-
-	const data = await request<
-		ListTeamFlagsQueryResponse,
-		ErrorWrapper<ListTeamFlags400 | ListTeamFlags401 | ListTeamFlags403>,
-		null,
-		Record<string, string>,
-		ListTeamFlagsQueryParams,
-		ListTeamFlagsPathParams
-	>({
-		method: "GET",
-		url: `/v1/teams/${teamId}/feature-flags/flags`,
-		queryParams,
-		...requestConfig,
-	});
-	return data;
-}
-
-/**
- * @description Create a new feature flag segment.
- * @summary Create a segment
- * {@link /v1/projects/:projectIdOrName/feature-flags/segments}
- */
-export async function createFlagSegment({
-	pathParams: { projectIdOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: CreateFlagSegmentPathParams;
-	queryParams?: CreateFlagSegmentQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!projectIdOrName) {
-		throw new Error(`Missing required path parameter: projectIdOrName`);
-	}
-
-	const data = await request<
-		CreateFlagSegmentMutationResponse,
+		ListTeamFlagSettingsResponse,
 		ErrorWrapper<
-			| CreateFlagSegment400
-			| CreateFlagSegment401
-			| CreateFlagSegment402
-			| CreateFlagSegment403
-			| CreateFlagSegment404
-			| CreateFlagSegment409
-			| CreateFlagSegment412
+			ListTeamFlagSettingsStatus400 | ListTeamFlagSettingsStatus401 | ListTeamFlagSettingsStatus403
 		>,
 		null,
 		Record<string, string>,
-		CreateFlagSegmentQueryParams,
-		CreateFlagSegmentPathParams
+		{ limit?: number; cursor?: string; slug?: string },
+		{ teamId: string }
+	>({
+		method: "GET",
+		url: `/v1/teams/${pathParams.teamId}/feature-flags/settings`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary List all flags for a team
+ * @description Retrieve all feature flags for a team across all projects. The list can be filtered by state and supports pagination.
+ * @link /v1/teams/{teamId}/feature-flags/flags
+ */
+export async function listTeamFlags(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { teamId: string };
+		queryParams?: {
+			state?: "active" | "archived";
+			withMetadata?: boolean;
+			limit?: number;
+			cursor?: string;
+			search?: string;
+			kind?: "boolean" | "string" | "number" | "json";
+			tags?: Array<string>;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.teamId) {
+		throw new Error(`Missing required path parameter: teamId`);
+	}
+	const data = await request<
+		ListTeamFlagsResponse,
+		ErrorWrapper<ListTeamFlagsStatus400 | ListTeamFlagsStatus401 | ListTeamFlagsStatus403>,
+		null,
+		Record<string, string>,
+		{
+			state?: "active" | "archived";
+			withMetadata?: boolean;
+			limit?: number;
+			cursor?: string;
+			search?: string;
+			kind?: "boolean" | "string" | "number" | "json";
+			tags?: Array<string>;
+			slug?: string;
+		},
+		{ teamId: string }
+	>({
+		method: "GET",
+		url: `/v1/teams/${pathParams.teamId}/feature-flags/flags`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Create a segment
+ * @description Create a new feature flag segment.
+ * @link /v1/projects/{projectIdOrName}/feature-flags/segments
+ */
+export async function createFlagSegment(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectIdOrName: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.projectIdOrName) {
+		throw new Error(`Missing required path parameter: projectIdOrName`);
+	}
+	const data = await request<
+		CreateFlagSegmentResponse,
+		ErrorWrapper<
+			| CreateFlagSegmentStatus400
+			| CreateFlagSegmentStatus401
+			| CreateFlagSegmentStatus402
+			| CreateFlagSegmentStatus403
+			| CreateFlagSegmentStatus404
+			| CreateFlagSegmentStatus409
+			| CreateFlagSegmentStatus412
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ projectIdOrName: string }
 	>({
 		method: "PUT",
-		url: `/v1/projects/${projectIdOrName}/feature-flags/segments`,
+		url: `/v1/projects/${pathParams.projectIdOrName}/feature-flags/segments`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description List all feature flag segments for a project.
  * @summary List segments
- * {@link /v1/projects/:projectIdOrName/feature-flags/segments}
+ * @description List all feature flag segments for a project.
+ * @link /v1/projects/{projectIdOrName}/feature-flags/segments
  */
-export async function listFlagSegments({
-	pathParams: { projectIdOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ListFlagSegmentsPathParams;
-	queryParams?: ListFlagSegmentsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listFlagSegments(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectIdOrName: string };
+		queryParams?: { withMetadata?: boolean; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!projectIdOrName) {
+	if (!pathParams.projectIdOrName) {
 		throw new Error(`Missing required path parameter: projectIdOrName`);
 	}
-
 	const data = await request<
-		ListFlagSegmentsQueryResponse,
+		ListFlagSegmentsResponse,
 		ErrorWrapper<
-			| ListFlagSegments400
-			| ListFlagSegments401
-			| ListFlagSegments402
-			| ListFlagSegments403
-			| ListFlagSegments404
+			| ListFlagSegmentsStatus400
+			| ListFlagSegmentsStatus401
+			| ListFlagSegmentsStatus402
+			| ListFlagSegmentsStatus403
+			| ListFlagSegmentsStatus404
 		>,
 		null,
 		Record<string, string>,
-		ListFlagSegmentsQueryParams,
-		ListFlagSegmentsPathParams
+		{ withMetadata?: boolean; teamId?: string; slug?: string },
+		{ projectIdOrName: string }
 	>({
 		method: "GET",
-		url: `/v1/projects/${projectIdOrName}/feature-flags/segments`,
+		url: `/v1/projects/${pathParams.projectIdOrName}/feature-flags/segments`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Retrieve a feature flag segment by ID or slug.
  * @summary Get a segment
- * {@link /v1/projects/:projectIdOrName/feature-flags/segments/:segmentIdOrSlug}
+ * @description Retrieve a feature flag segment by ID or slug.
+ * @link /v1/projects/{projectIdOrName}/feature-flags/segments/{segmentIdOrSlug}
  */
-export async function getFlagSegment({
-	pathParams: { projectIdOrName, segmentIdOrSlug },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetFlagSegmentPathParams;
-	queryParams?: GetFlagSegmentQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getFlagSegment(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectIdOrName: string; segmentIdOrSlug: string };
+		queryParams?: { withMetadata?: boolean; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!projectIdOrName) {
+	if (!pathParams.projectIdOrName) {
 		throw new Error(`Missing required path parameter: projectIdOrName`);
 	}
 
-	if (!segmentIdOrSlug) {
+	if (!pathParams.segmentIdOrSlug) {
 		throw new Error(`Missing required path parameter: segmentIdOrSlug`);
 	}
-
 	const data = await request<
-		GetFlagSegmentQueryResponse,
+		GetFlagSegmentResponse,
 		ErrorWrapper<
-			| GetFlagSegment400
-			| GetFlagSegment401
-			| GetFlagSegment402
-			| GetFlagSegment403
-			| GetFlagSegment404
+			| GetFlagSegmentStatus400
+			| GetFlagSegmentStatus401
+			| GetFlagSegmentStatus402
+			| GetFlagSegmentStatus403
+			| GetFlagSegmentStatus404
 		>,
 		null,
 		Record<string, string>,
-		GetFlagSegmentQueryParams,
-		GetFlagSegmentPathParams
+		{ withMetadata?: boolean; teamId?: string; slug?: string },
+		{ projectIdOrName: string; segmentIdOrSlug: string }
 	>({
 		method: "GET",
-		url: `/v1/projects/${projectIdOrName}/feature-flags/segments/${segmentIdOrSlug}`,
+		url: `/v1/projects/${pathParams.projectIdOrName}/feature-flags/segments/${pathParams.segmentIdOrSlug}`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Delete a feature flag segment.
  * @summary Delete a segment
- * {@link /v1/projects/:projectIdOrName/feature-flags/segments/:segmentIdOrSlug}
+ * @description Delete a feature flag segment.
+ * @link /v1/projects/{projectIdOrName}/feature-flags/segments/{segmentIdOrSlug}
  */
-export async function deleteFlagSegment({
-	pathParams: { projectIdOrName, segmentIdOrSlug },
-	queryParams,
-	config = {},
-}: {
-	pathParams: DeleteFlagSegmentPathParams;
-	queryParams?: DeleteFlagSegmentQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteFlagSegment(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectIdOrName: string; segmentIdOrSlug: string };
+		queryParams?: { withMetadata?: boolean; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!projectIdOrName) {
+	if (!pathParams.projectIdOrName) {
 		throw new Error(`Missing required path parameter: projectIdOrName`);
 	}
 
-	if (!segmentIdOrSlug) {
+	if (!pathParams.segmentIdOrSlug) {
 		throw new Error(`Missing required path parameter: segmentIdOrSlug`);
 	}
-
 	const data = await request<
-		DeleteFlagSegmentMutationResponse,
+		DeleteFlagSegmentResponse,
 		ErrorWrapper<
-			| DeleteFlagSegment400
-			| DeleteFlagSegment401
-			| DeleteFlagSegment402
-			| DeleteFlagSegment403
-			| DeleteFlagSegment404
-			| DeleteFlagSegment409
-			| DeleteFlagSegment412
+			| DeleteFlagSegmentStatus400
+			| DeleteFlagSegmentStatus401
+			| DeleteFlagSegmentStatus402
+			| DeleteFlagSegmentStatus403
+			| DeleteFlagSegmentStatus404
+			| DeleteFlagSegmentStatus409
+			| DeleteFlagSegmentStatus412
 		>,
 		null,
 		Record<string, string>,
-		DeleteFlagSegmentQueryParams,
-		DeleteFlagSegmentPathParams
+		{ withMetadata?: boolean; teamId?: string; slug?: string },
+		{ projectIdOrName: string; segmentIdOrSlug: string }
 	>({
 		method: "DELETE",
-		url: `/v1/projects/${projectIdOrName}/feature-flags/segments/${segmentIdOrSlug}`,
+		url: `/v1/projects/${pathParams.projectIdOrName}/feature-flags/segments/${pathParams.segmentIdOrSlug}`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Update an existing feature flag segment.
  * @summary Update a segment
- * {@link /v1/projects/:projectIdOrName/feature-flags/segments/:segmentIdOrSlug}
+ * @description Update an existing feature flag segment.
+ * @link /v1/projects/{projectIdOrName}/feature-flags/segments/{segmentIdOrSlug}
  */
-export async function updateFlagSegment({
-	pathParams: { projectIdOrName, segmentIdOrSlug },
-	queryParams,
-	config = {},
-}: {
-	pathParams: UpdateFlagSegmentPathParams;
-	queryParams?: UpdateFlagSegmentQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateFlagSegment(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectIdOrName: string; segmentIdOrSlug: string };
+		queryParams?: { withMetadata?: boolean; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!projectIdOrName) {
+	if (!pathParams.projectIdOrName) {
 		throw new Error(`Missing required path parameter: projectIdOrName`);
 	}
 
-	if (!segmentIdOrSlug) {
+	if (!pathParams.segmentIdOrSlug) {
 		throw new Error(`Missing required path parameter: segmentIdOrSlug`);
 	}
-
 	const data = await request<
-		UpdateFlagSegmentMutationResponse,
+		UpdateFlagSegmentResponse,
 		ErrorWrapper<
-			| UpdateFlagSegment400
-			| UpdateFlagSegment401
-			| UpdateFlagSegment402
-			| UpdateFlagSegment403
-			| UpdateFlagSegment404
-			| UpdateFlagSegment409
-			| UpdateFlagSegment412
+			| UpdateFlagSegmentStatus400
+			| UpdateFlagSegmentStatus401
+			| UpdateFlagSegmentStatus402
+			| UpdateFlagSegmentStatus403
+			| UpdateFlagSegmentStatus404
+			| UpdateFlagSegmentStatus409
+			| UpdateFlagSegmentStatus412
 		>,
 		null,
 		Record<string, string>,
-		UpdateFlagSegmentQueryParams,
-		UpdateFlagSegmentPathParams
+		{ withMetadata?: boolean; teamId?: string; slug?: string },
+		{ projectIdOrName: string; segmentIdOrSlug: string }
 	>({
 		method: "PATCH",
-		url: `/v1/projects/${projectIdOrName}/feature-flags/segments/${segmentIdOrSlug}`,
+		url: `/v1/projects/${pathParams.projectIdOrName}/feature-flags/segments/${pathParams.segmentIdOrSlug}`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Retrieve the feature flags of a deployment.
  * @summary Retrieve the feature flags of a deployment
- * {@link /v1/deployments/:deploymentId/feature-flags}
+ * @description Retrieve the feature flags of a deployment.
+ * @link /v1/deployments/{deploymentId}/feature-flags
  */
-export async function getDeploymentFeatureFlags({
-	pathParams: { deploymentId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetDeploymentFeatureFlagsPathParams;
-	queryParams?: GetDeploymentFeatureFlagsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getDeploymentFeatureFlags(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { deploymentId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!deploymentId) {
+	if (!pathParams.deploymentId) {
 		throw new Error(`Missing required path parameter: deploymentId`);
 	}
-
 	const data = await request<
-		GetDeploymentFeatureFlagsQueryResponse,
+		GetDeploymentFeatureFlagsResponse,
 		ErrorWrapper<
-			| GetDeploymentFeatureFlags400
-			| GetDeploymentFeatureFlags401
-			| GetDeploymentFeatureFlags403
-			| GetDeploymentFeatureFlags404
+			| GetDeploymentFeatureFlagsStatus400
+			| GetDeploymentFeatureFlagsStatus401
+			| GetDeploymentFeatureFlagsStatus403
+			| GetDeploymentFeatureFlagsStatus404
 		>,
 		null,
 		Record<string, string>,
-		GetDeploymentFeatureFlagsQueryParams,
-		GetDeploymentFeatureFlagsPathParams
+		{ teamId?: string; slug?: string },
+		{ deploymentId: string }
 	>({
 		method: "GET",
-		url: `/v1/deployments/${deploymentId}/feature-flags`,
+		url: `/v1/deployments/${pathParams.deploymentId}/feature-flags`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Gets all SDK keys for a project.
  * @summary Get all SDK keys
- * {@link /v1/projects/:projectIdOrName/feature-flags/sdk-keys}
+ * @description Gets all SDK keys for a project.
+ * @link /v1/projects/{projectIdOrName}/feature-flags/sdk-keys
  */
-export async function getSdkKeys({
-	pathParams: { projectIdOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetSdkKeysPathParams;
-	queryParams?: GetSdkKeysQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getSdkKeys(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectIdOrName: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!projectIdOrName) {
+	if (!pathParams.projectIdOrName) {
 		throw new Error(`Missing required path parameter: projectIdOrName`);
 	}
-
 	const data = await request<
-		GetSdkKeysQueryResponse,
-		ErrorWrapper<GetSdkKeys400 | GetSdkKeys401 | GetSdkKeys402 | GetSdkKeys403 | GetSdkKeys404>,
+		GetSdkKeysResponse,
+		ErrorWrapper<
+			| GetSdkKeysStatus400
+			| GetSdkKeysStatus401
+			| GetSdkKeysStatus402
+			| GetSdkKeysStatus403
+			| GetSdkKeysStatus404
+		>,
 		null,
 		Record<string, string>,
-		GetSdkKeysQueryParams,
-		GetSdkKeysPathParams
+		{ teamId?: string; slug?: string },
+		{ projectIdOrName: string }
 	>({
 		method: "GET",
-		url: `/v1/projects/${projectIdOrName}/feature-flags/sdk-keys`,
+		url: `/v1/projects/${pathParams.projectIdOrName}/feature-flags/sdk-keys`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Creates an SDK key.
  * @summary Create an SDK key
- * {@link /v1/projects/:projectIdOrName/feature-flags/sdk-keys}
+ * @description Creates an SDK key.
+ * @link /v1/projects/{projectIdOrName}/feature-flags/sdk-keys
  */
-export async function createSdkKey({
-	pathParams: { projectIdOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: CreateSdkKeyPathParams;
-	queryParams?: CreateSdkKeyQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createSdkKey(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectIdOrName: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!projectIdOrName) {
+	if (!pathParams.projectIdOrName) {
 		throw new Error(`Missing required path parameter: projectIdOrName`);
 	}
-
 	const data = await request<
-		CreateSdkKeyMutationResponse,
+		CreateSdkKeyResponse,
 		ErrorWrapper<
-			| CreateSdkKey400
-			| CreateSdkKey401
-			| CreateSdkKey402
-			| CreateSdkKey403
-			| CreateSdkKey404
-			| CreateSdkKey409
+			| CreateSdkKeyStatus400
+			| CreateSdkKeyStatus401
+			| CreateSdkKeyStatus402
+			| CreateSdkKeyStatus403
+			| CreateSdkKeyStatus404
+			| CreateSdkKeyStatus409
 		>,
 		null,
 		Record<string, string>,
-		CreateSdkKeyQueryParams,
-		CreateSdkKeyPathParams
+		{ teamId?: string; slug?: string },
+		{ projectIdOrName: string }
 	>({
 		method: "PUT",
-		url: `/v1/projects/${projectIdOrName}/feature-flags/sdk-keys`,
+		url: `/v1/projects/${pathParams.projectIdOrName}/feature-flags/sdk-keys`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Deletes an SDK key.
  * @summary Delete an SDK key
- * {@link /v1/projects/:projectIdOrName/feature-flags/sdk-keys/:hashKey}
+ * @description Deletes an SDK key.
+ * @link /v1/projects/{projectIdOrName}/feature-flags/sdk-keys/{hashKey}
  */
-export async function deleteSdkKey({
-	pathParams: { projectIdOrName, hashKey },
-	queryParams,
-	config = {},
-}: {
-	pathParams: DeleteSdkKeyPathParams;
-	queryParams?: DeleteSdkKeyQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteSdkKey(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectIdOrName: string; hashKey: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!projectIdOrName) {
+	if (!pathParams.projectIdOrName) {
 		throw new Error(`Missing required path parameter: projectIdOrName`);
 	}
 
-	if (!hashKey) {
+	if (!pathParams.hashKey) {
 		throw new Error(`Missing required path parameter: hashKey`);
 	}
-
 	const data = await request<
-		DeleteSdkKeyMutationResponse,
+		DeleteSdkKeyResponse,
 		ErrorWrapper<
-			| DeleteSdkKey400
-			| DeleteSdkKey401
-			| DeleteSdkKey402
-			| DeleteSdkKey403
-			| DeleteSdkKey404
-			| DeleteSdkKey409
+			| DeleteSdkKeyStatus400
+			| DeleteSdkKeyStatus401
+			| DeleteSdkKeyStatus402
+			| DeleteSdkKeyStatus403
+			| DeleteSdkKeyStatus404
+			| DeleteSdkKeyStatus409
 		>,
 		null,
 		Record<string, string>,
-		DeleteSdkKeyQueryParams,
-		DeleteSdkKeyPathParams
+		{ teamId?: string; slug?: string },
+		{ projectIdOrName: string; hashKey: string }
 	>({
 		method: "DELETE",
-		url: `/v1/projects/${projectIdOrName}/feature-flags/sdk-keys/${hashKey}`,
+		url: `/v1/projects/${pathParams.projectIdOrName}/feature-flags/sdk-keys/${pathParams.hashKey}`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Lists git namespaces for a supported provider. Supported providers are `github`, `gitlab` and `bitbucket`. If the provider is not provided, it will try to obtain it from the user that authenticated the request.
  * @summary List git namespaces by provider
- * {@link /v1/integrations/git-namespaces}
+ * @description Lists git namespaces for a supported provider. Supported providers are `github`, `gitlab` and `bitbucket`. If the provider is not provided, it will try to obtain it from the user that authenticated the request.
+ * @link /v1/integrations/git-namespaces
  */
-export async function gitNamespaces({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: GitNamespacesQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function gitNamespaces(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			host?: string;
+			provider?: "github" | "github-limited" | "github-custom-host" | "gitlab" | "bitbucket";
+			viewerMetadata?: boolean;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GitNamespacesQueryResponse,
+		GitNamespacesResponse,
 		ErrorWrapper<
-			| GitNamespaces400
-			| GitNamespaces401
-			| GitNamespaces403
-			| GitNamespaces404
-			| GitNamespaces429
-			| GitNamespaces500
+			| GitNamespacesStatus400
+			| GitNamespacesStatus401
+			| GitNamespacesStatus403
+			| GitNamespacesStatus404
+			| GitNamespacesStatus429
+			| GitNamespacesStatus500
 		>,
 		null,
 		Record<string, string>,
-		GitNamespacesQueryParams,
+		{
+			host?: string;
+			provider?: "github" | "github-limited" | "github-custom-host" | "gitlab" | "bitbucket";
+			viewerMetadata?: boolean;
+		},
 		Record<string, string>
-	>({ method: "GET", url: `/v1/integrations/git-namespaces`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/v1/integrations/git-namespaces`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Lists git repositories linked to a namespace `id` for a supported provider. A specific namespace `id` can be obtained via the `git-namespaces`  endpoint. Supported providers are `github`, `gitlab` and `bitbucket`. If the provider or namespace is not provided, it will try to obtain it from the user that authenticated the request.
  * @summary List git repositories linked to namespace by provider
- * {@link /v1/integrations/search-repo}
+ * @description Lists git repositories linked to a namespace `id` for a supported provider. A specific namespace `id` can be obtained via the `git-namespaces`  endpoint. Supported providers are `github`, `gitlab` and `bitbucket`. If the provider or namespace is not provided, it will try to obtain it from the user that authenticated the request.
+ * @link /v1/integrations/search-repo
  */
-export async function searchRepo({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: SearchRepoQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function searchRepo(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			query?: string;
+			namespaceId?: unknown;
+			provider?: "github" | "github-limited" | "github-custom-host" | "gitlab" | "bitbucket";
+			installationId?: string;
+			host?: string;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		SearchRepoQueryResponse,
+		SearchRepoResponse,
 		ErrorWrapper<
-			SearchRepo400 | SearchRepo401 | SearchRepo403 | SearchRepo404 | SearchRepo429 | SearchRepo500
+			| SearchRepoStatus400
+			| SearchRepoStatus401
+			| SearchRepoStatus403
+			| SearchRepoStatus404
+			| SearchRepoStatus429
+			| SearchRepoStatus500
 		>,
 		null,
 		Record<string, string>,
-		SearchRepoQueryParams,
+		{
+			query?: string;
+			namespaceId?: unknown;
+			provider?: "github" | "github-limited" | "github-custom-host" | "gitlab" | "bitbucket";
+			installationId?: string;
+			host?: string;
+			teamId?: string;
+			slug?: string;
+		},
 		Record<string, string>
-	>({ method: "GET", url: `/v1/integrations/search-repo`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/v1/integrations/search-repo`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Get a list of billing plans for an integration and product.
  * @summary List integration billing plans
- * {@link /v1/integrations/integration/:integrationIdOrSlug/products/:productIdOrSlug/plans}
+ * @description Get a list of billing plans for an integration and product.
+ * @link /v1/integrations/integration/{integrationIdOrSlug}/products/{productIdOrSlug}/plans
  */
-export async function getBillingPlans({
-	pathParams: { integrationIdOrSlug, productIdOrSlug },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetBillingPlansPathParams;
-	queryParams?: GetBillingPlansQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getBillingPlans(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { integrationIdOrSlug: string; productIdOrSlug: string };
+		queryParams?: {
+			integrationConfigurationId?: string;
+			metadata?: string;
+			source?:
+				| "marketplace"
+				| "deploy-button"
+				| "external"
+				| "v0"
+				| "resource-claims"
+				| "cli"
+				| "oauth"
+				| "backoffice";
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!integrationIdOrSlug) {
+	if (!pathParams.integrationIdOrSlug) {
 		throw new Error(`Missing required path parameter: integrationIdOrSlug`);
 	}
 
-	if (!productIdOrSlug) {
+	if (!pathParams.productIdOrSlug) {
 		throw new Error(`Missing required path parameter: productIdOrSlug`);
 	}
-
 	const data = await request<
-		GetBillingPlansQueryResponse,
-		ErrorWrapper<GetBillingPlans400 | GetBillingPlans401 | GetBillingPlans403 | GetBillingPlans404>,
+		GetBillingPlansResponse,
+		ErrorWrapper<
+			| GetBillingPlansStatus400
+			| GetBillingPlansStatus401
+			| GetBillingPlansStatus403
+			| GetBillingPlansStatus404
+		>,
 		null,
 		Record<string, string>,
-		GetBillingPlansQueryParams,
-		GetBillingPlansPathParams
+		{
+			integrationConfigurationId?: string;
+			metadata?: string;
+			source?:
+				| "marketplace"
+				| "deploy-button"
+				| "external"
+				| "v0"
+				| "resource-claims"
+				| "cli"
+				| "oauth"
+				| "backoffice";
+			teamId?: string;
+			slug?: string;
+		},
+		{ integrationIdOrSlug: string; productIdOrSlug: string }
 	>({
 		method: "GET",
-		url: `/v1/integrations/integration/${integrationIdOrSlug}/products/${productIdOrSlug}/plans`,
+		url: `/v1/integrations/integration/${pathParams.integrationIdOrSlug}/products/${pathParams.productIdOrSlug}/plans`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Connects an integration resource to a Vercel project. This endpoint establishes a connection between a provisioned integration resource (from storage APIs like `POST /v1/storage/stores/integration/direct`) and a specific Vercel project.
  * @summary Connect integration resource to project
- * {@link /v1/integrations/installations/:integrationConfigurationId/resources/:resourceId/connections}
+ * @description Connects an integration resource to a Vercel project. This endpoint establishes a connection between a provisioned integration resource (from storage APIs like `POST /v1/storage/stores/integration/direct`) and a specific Vercel project.
+ * @link /v1/integrations/installations/{integrationConfigurationId}/resources/{resourceId}/connections
  */
-export async function connectIntegrationResourceToProject({
-	pathParams: { integrationConfigurationId, resourceId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ConnectIntegrationResourceToProjectPathParams;
-	queryParams?: ConnectIntegrationResourceToProjectQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function connectIntegrationResourceToProject(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { integrationConfigurationId: string; resourceId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!integrationConfigurationId) {
+	if (!pathParams.integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
 	}
 
-	if (!resourceId) {
+	if (!pathParams.resourceId) {
 		throw new Error(`Missing required path parameter: resourceId`);
 	}
-
 	const data = await request<
-		ConnectIntegrationResourceToProjectMutationResponse,
+		ConnectIntegrationResourceToProjectResponse,
 		ErrorWrapper<
-			| ConnectIntegrationResourceToProject400
-			| ConnectIntegrationResourceToProject401
-			| ConnectIntegrationResourceToProject403
-			| ConnectIntegrationResourceToProject404
+			| ConnectIntegrationResourceToProjectStatus400
+			| ConnectIntegrationResourceToProjectStatus401
+			| ConnectIntegrationResourceToProjectStatus403
+			| ConnectIntegrationResourceToProjectStatus404
 		>,
 		null,
 		Record<string, string>,
-		ConnectIntegrationResourceToProjectQueryParams,
-		ConnectIntegrationResourceToProjectPathParams
+		{ teamId?: string; slug?: string },
+		{ integrationConfigurationId: string; resourceId: string }
 	>({
 		method: "POST",
-		url: `/v1/integrations/installations/${integrationConfigurationId}/resources/${resourceId}/connections`,
+		url: `/v1/integrations/installations/${pathParams.integrationConfigurationId}/resources/${pathParams.resourceId}/connections`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description This endpoint updates an integration installation.
  * @summary Update Installation
- * {@link /v1/installations/:integrationConfigurationId}
+ * @description This endpoint updates an integration installation.
+ * @link /v1/installations/{integrationConfigurationId}
  */
-export async function updateInstallation({
-	pathParams: { integrationConfigurationId },
-	config = {},
-}: {
-	pathParams: UpdateInstallationPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateInstallation(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { integrationConfigurationId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!integrationConfigurationId) {
+	if (!pathParams.integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
 	}
-
 	const data = await request<
-		UpdateInstallationMutationResponse,
+		UpdateInstallationResponse,
 		ErrorWrapper<
-			UpdateInstallation400 | UpdateInstallation401 | UpdateInstallation403 | UpdateInstallation404
+			| UpdateInstallationStatus400
+			| UpdateInstallationStatus401
+			| UpdateInstallationStatus403
+			| UpdateInstallationStatus404
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		UpdateInstallationPathParams
+		{ integrationConfigurationId: string }
 	>({
 		method: "PATCH",
-		url: `/v1/installations/${integrationConfigurationId}`,
+		url: `/v1/installations/${pathParams.integrationConfigurationId}`,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Fetches the best account or user’s contact info
  * @summary Get Account Information
- * {@link /v1/installations/:integrationConfigurationId/account}
+ * @description Fetches the best account or user’s contact info
+ * @link /v1/installations/{integrationConfigurationId}/account
  */
-export async function getAccountInfo({
-	pathParams: { integrationConfigurationId },
-	config = {},
-}: {
-	pathParams: GetAccountInfoPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getAccountInfo(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { integrationConfigurationId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!integrationConfigurationId) {
+	if (!pathParams.integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
 	}
-
 	const data = await request<
-		GetAccountInfoQueryResponse,
-		ErrorWrapper<GetAccountInfo400 | GetAccountInfo401 | GetAccountInfo403 | GetAccountInfo404>,
+		GetAccountInfoResponse,
+		ErrorWrapper<
+			| GetAccountInfoStatus400
+			| GetAccountInfoStatus401
+			| GetAccountInfoStatus403
+			| GetAccountInfoStatus404
+		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetAccountInfoPathParams
+		{ integrationConfigurationId: string }
 	>({
 		method: "GET",
-		url: `/v1/installations/${integrationConfigurationId}/account`,
+		url: `/v1/installations/${pathParams.integrationConfigurationId}/account`,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Returns the member role and other information for a given member ID ("user_id" claim in the SSO OIDC token).
  * @summary Get Member Information
- * {@link /v1/installations/:integrationConfigurationId/member/:memberId}
+ * @description Returns the member role and other information for a given member ID ("user_id" claim in the SSO OIDC token).
+ * @link /v1/installations/{integrationConfigurationId}/member/{memberId}
  */
-export async function getMember({
-	pathParams: { integrationConfigurationId, memberId },
-	config = {},
-}: {
-	pathParams: GetMemberPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getMember(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { integrationConfigurationId: string; memberId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!integrationConfigurationId) {
+	if (!pathParams.integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
 	}
 
-	if (!memberId) {
+	if (!pathParams.memberId) {
 		throw new Error(`Missing required path parameter: memberId`);
 	}
-
 	const data = await request<
-		GetMemberQueryResponse,
-		ErrorWrapper<GetMember400 | GetMember401 | GetMember403 | GetMember404>,
+		GetMemberResponse,
+		ErrorWrapper<GetMemberStatus400 | GetMemberStatus401 | GetMemberStatus403 | GetMemberStatus404>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetMemberPathParams
+		{ integrationConfigurationId: string; memberId: string }
 	>({
 		method: "GET",
-		url: `/v1/installations/${integrationConfigurationId}/member/${memberId}`,
+		url: `/v1/installations/${pathParams.integrationConfigurationId}/member/${pathParams.memberId}`,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Partner notifies Vercel of any changes made to an Installation or a Resource. Vercel is expected to use `list-resources` and other read APIs to get the new state.<br/> <br/> `resource.updated` event should be dispatched when any state of a resource linked to Vercel is modified by the partner.<br/> `installation.updated` event should be dispatched when an installation's billing plan is changed via the provider instead of Vercel.<br/> <br/> Resource update use cases: <br/> <br/> - The user renames a database in the partner’s application. The partner should dispatch a `resource.updated` event to notify Vercel to update the resource in Vercel’s datastores.<br/> - A resource has been suspended due to a lack of use. The partner should dispatch a `resource.updated` event to notify Vercel to update the resource's status in Vercel's datastores.<br/>
  * @summary Create Event
- * {@link /v1/installations/:integrationConfigurationId/events}
+ * @description Partner notifies Vercel of any changes made to an Installation or a Resource. Vercel is expected to use `list-resources` and other read APIs to get the new state.<br/> <br/> `resource.updated` event should be dispatched when any state of a resource linked to Vercel is modified by the partner.<br/> `installation.updated` event should be dispatched when an installation's billing plan is changed via the provider instead of Vercel.<br/> <br/> Resource update use cases: <br/> <br/> - The user renames a database in the partner’s application. The partner should dispatch a `resource.updated` event to notify Vercel to update the resource in Vercel’s datastores.<br/> - A resource has been suspended due to a lack of use. The partner should dispatch a `resource.updated` event to notify Vercel to update the resource's status in Vercel's datastores.<br/>
+ * @link /v1/installations/{integrationConfigurationId}/events
  */
-export async function createEvent({
-	pathParams: { integrationConfigurationId },
-	config = {},
-}: {
-	pathParams: CreateEventPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createEvent(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { integrationConfigurationId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!integrationConfigurationId) {
+	if (!pathParams.integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
 	}
-
 	const data = await request<
-		CreateEventMutationResponse,
-		ErrorWrapper<CreateEvent400 | CreateEvent401 | CreateEvent403 | CreateEvent404>,
+		CreateEventResponse,
+		ErrorWrapper<
+			CreateEventStatus400 | CreateEventStatus401 | CreateEventStatus403 | CreateEventStatus404
+		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		CreateEventPathParams
+		{ integrationConfigurationId: string }
 	>({
 		method: "POST",
-		url: `/v1/installations/${integrationConfigurationId}/events`,
+		url: `/v1/installations/${pathParams.integrationConfigurationId}/events`,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Get all resources for a given installation ID.
  * @summary Get Integration Resources
- * {@link /v1/installations/:integrationConfigurationId/resources}
+ * @description Get all resources for a given installation ID.
+ * @link /v1/installations/{integrationConfigurationId}/resources
  */
-export async function getIntegrationResources({
-	pathParams: { integrationConfigurationId },
-	config = {},
-}: {
-	pathParams: GetIntegrationResourcesPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getIntegrationResources(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { integrationConfigurationId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!integrationConfigurationId) {
+	if (!pathParams.integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
 	}
-
 	const data = await request<
-		GetIntegrationResourcesQueryResponse,
+		GetIntegrationResourcesResponse,
 		ErrorWrapper<
-			| GetIntegrationResources400
-			| GetIntegrationResources401
-			| GetIntegrationResources403
-			| GetIntegrationResources404
+			| GetIntegrationResourcesStatus400
+			| GetIntegrationResourcesStatus401
+			| GetIntegrationResourcesStatus403
+			| GetIntegrationResourcesStatus404
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetIntegrationResourcesPathParams
+		{ integrationConfigurationId: string }
 	>({
 		method: "GET",
-		url: `/v1/installations/${integrationConfigurationId}/resources`,
+		url: `/v1/installations/${pathParams.integrationConfigurationId}/resources`,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Get a resource by its partner ID.
  * @summary Get Integration Resource
- * {@link /v1/installations/:integrationConfigurationId/resources/:resourceId}
+ * @description Get a resource by its partner ID.
+ * @link /v1/installations/{integrationConfigurationId}/resources/{resourceId}
  */
-export async function getIntegrationResource({
-	pathParams: { integrationConfigurationId, resourceId },
-	config = {},
-}: {
-	pathParams: GetIntegrationResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getIntegrationResource(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { integrationConfigurationId: string; resourceId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!integrationConfigurationId) {
+	if (!pathParams.integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
 	}
 
-	if (!resourceId) {
+	if (!pathParams.resourceId) {
 		throw new Error(`Missing required path parameter: resourceId`);
 	}
-
 	const data = await request<
-		GetIntegrationResourceQueryResponse,
+		GetIntegrationResourceResponse,
 		ErrorWrapper<
-			| GetIntegrationResource400
-			| GetIntegrationResource401
-			| GetIntegrationResource403
-			| GetIntegrationResource404
+			| GetIntegrationResourceStatus400
+			| GetIntegrationResourceStatus401
+			| GetIntegrationResourceStatus403
+			| GetIntegrationResourceStatus404
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetIntegrationResourcePathParams
+		{ integrationConfigurationId: string; resourceId: string }
 	>({
 		method: "GET",
-		url: `/v1/installations/${integrationConfigurationId}/resources/${resourceId}`,
+		url: `/v1/installations/${pathParams.integrationConfigurationId}/resources/${pathParams.resourceId}`,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Delete a resource owned by the selected installation ID.
  * @summary Delete Integration Resource
- * {@link /v1/installations/:integrationConfigurationId/resources/:resourceId}
+ * @description Delete a resource owned by the selected installation ID.
+ * @link /v1/installations/{integrationConfigurationId}/resources/{resourceId}
  */
-export async function deleteIntegrationResource({
-	pathParams: { integrationConfigurationId, resourceId },
-	config = {},
-}: {
-	pathParams: DeleteIntegrationResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteIntegrationResource(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { integrationConfigurationId: string; resourceId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!integrationConfigurationId) {
+	if (!pathParams.integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
 	}
 
-	if (!resourceId) {
+	if (!pathParams.resourceId) {
 		throw new Error(`Missing required path parameter: resourceId`);
 	}
-
 	const data = await request<
-		DeleteIntegrationResourceMutationResponse,
+		DeleteIntegrationResourceResponse,
 		ErrorWrapper<
-			| DeleteIntegrationResource400
-			| DeleteIntegrationResource401
-			| DeleteIntegrationResource403
-			| DeleteIntegrationResource404
+			| DeleteIntegrationResourceStatus400
+			| DeleteIntegrationResourceStatus401
+			| DeleteIntegrationResourceStatus403
+			| DeleteIntegrationResourceStatus404
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		DeleteIntegrationResourcePathParams
+		{ integrationConfigurationId: string; resourceId: string }
 	>({
 		method: "DELETE",
-		url: `/v1/installations/${integrationConfigurationId}/resources/${resourceId}`,
+		url: `/v1/installations/${pathParams.integrationConfigurationId}/resources/${pathParams.resourceId}`,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description This endpoint imports (upserts) a resource to Vercel's installation. This may be needed if resources can be independently created on the partner's side and need to be synchronized to Vercel.
  * @summary Import Resource
- * {@link /v1/installations/:integrationConfigurationId/resources/:resourceId}
+ * @description This endpoint imports (upserts) a resource to Vercel's installation. This may be needed if resources can be independently created on the partner's side and need to be synchronized to Vercel.
+ * @link /v1/installations/{integrationConfigurationId}/resources/{resourceId}
  */
-export async function importResource({
-	pathParams: { integrationConfigurationId, resourceId },
-	config = {},
-}: {
-	pathParams: ImportResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function importResource(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { integrationConfigurationId: string; resourceId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!integrationConfigurationId) {
+	if (!pathParams.integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
 	}
 
-	if (!resourceId) {
+	if (!pathParams.resourceId) {
 		throw new Error(`Missing required path parameter: resourceId`);
 	}
-
 	const data = await request<
-		ImportResourceMutationResponse,
+		ImportResourceResponse,
 		ErrorWrapper<
-			| ImportResource400
-			| ImportResource401
-			| ImportResource403
-			| ImportResource404
-			| ImportResource409
-			| ImportResource422
-			| ImportResource429
+			| ImportResourceStatus400
+			| ImportResourceStatus401
+			| ImportResourceStatus403
+			| ImportResourceStatus404
+			| ImportResourceStatus409
+			| ImportResourceStatus422
+			| ImportResourceStatus429
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		ImportResourcePathParams
+		{ integrationConfigurationId: string; resourceId: string }
 	>({
 		method: "PUT",
-		url: `/v1/installations/${integrationConfigurationId}/resources/${resourceId}`,
+		url: `/v1/installations/${pathParams.integrationConfigurationId}/resources/${pathParams.resourceId}`,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description This endpoint updates an existing resource in the installation. All parameters are optional, allowing partial updates.
  * @summary Update Resource
- * {@link /v1/installations/:integrationConfigurationId/resources/:resourceId}
+ * @description This endpoint updates an existing resource in the installation. All parameters are optional, allowing partial updates.
+ * @link /v1/installations/{integrationConfigurationId}/resources/{resourceId}
  */
-export async function updateResource({
-	pathParams: { integrationConfigurationId, resourceId },
-	config = {},
-}: {
-	pathParams: UpdateResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateResource(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { integrationConfigurationId: string; resourceId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!integrationConfigurationId) {
+	if (!pathParams.integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
 	}
 
-	if (!resourceId) {
+	if (!pathParams.resourceId) {
 		throw new Error(`Missing required path parameter: resourceId`);
 	}
-
 	const data = await request<
-		UpdateResourceMutationResponse,
+		UpdateResourceResponse,
 		ErrorWrapper<
-			| UpdateResource400
-			| UpdateResource401
-			| UpdateResource403
-			| UpdateResource404
-			| UpdateResource409
-			| UpdateResource422
+			| UpdateResourceStatus400
+			| UpdateResourceStatus401
+			| UpdateResourceStatus403
+			| UpdateResourceStatus404
+			| UpdateResourceStatus409
+			| UpdateResourceStatus422
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		UpdateResourcePathParams
+		{ integrationConfigurationId: string; resourceId: string }
 	>({
 		method: "PATCH",
-		url: `/v1/installations/${integrationConfigurationId}/resources/${resourceId}`,
+		url: `/v1/installations/${pathParams.integrationConfigurationId}/resources/${pathParams.resourceId}`,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Sends the billing and usage data. The partner should do this at least once a day and ideally once per hour. <br/> Use the `credentials.access_token` we provided in the [Upsert Installation](#upsert-installation) body to authorize this request.
  * @summary Submit Billing Data
- * {@link /v1/installations/:integrationConfigurationId/billing}
+ * @description Sends the billing and usage data. The partner should do this at least once a day and ideally once per hour. <br/> Use the `credentials.access_token` we provided in the [Upsert Installation](#upsert-installation) body to authorize this request.
+ * @link /v1/installations/{integrationConfigurationId}/billing
  */
-export async function submitBillingData({
-	pathParams: { integrationConfigurationId },
-	config = {},
-}: {
-	pathParams: SubmitBillingDataPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function submitBillingData(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { integrationConfigurationId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!integrationConfigurationId) {
+	if (!pathParams.integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
 	}
-
 	const data = await request<
-		SubmitBillingDataMutationResponse,
+		SubmitBillingDataResponse,
 		ErrorWrapper<
-			SubmitBillingData400 | SubmitBillingData401 | SubmitBillingData403 | SubmitBillingData404
+			| SubmitBillingDataStatus400
+			| SubmitBillingDataStatus401
+			| SubmitBillingDataStatus403
+			| SubmitBillingDataStatus404
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		SubmitBillingDataPathParams
+		{ integrationConfigurationId: string }
 	>({
 		method: "POST",
-		url: `/v1/installations/${integrationConfigurationId}/billing`,
+		url: `/v1/installations/${pathParams.integrationConfigurationId}/billing`,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description This endpoint allows the partner to submit an invoice to Vercel. The invoice is created in Vercel's billing system and sent to the customer. Depending on the type of billing plan, the invoice can be sent at a time of signup, at the start of the billing period, or at the end of the billing period.<br/> <br/> Use the `credentials.access_token` we provided in the [Upsert Installation](#upsert-installation) body to authorize this request. <br/> There are several limitations to the invoice submission:<br/> <br/> 1. A resource can only be billed once per the billing period and the billing plan.<br/> 2. The billing plan used to bill the resource must have been active for this resource during the billing period.<br/> 3. The billing plan used must be a subscription plan.<br/> 4. The interim usage data must be sent hourly for all types of subscriptions. See [Send subscription billing and usage data](#send-subscription-billing-and-usage-data) API on how to send interim billing and usage data.<br/>
  * @summary Submit Invoice
- * {@link /v1/installations/:integrationConfigurationId/billing/invoices}
+ * @description This endpoint allows the partner to submit an invoice to Vercel. The invoice is created in Vercel's billing system and sent to the customer. Depending on the type of billing plan, the invoice can be sent at a time of signup, at the start of the billing period, or at the end of the billing period.<br/> <br/> Use the `credentials.access_token` we provided in the [Upsert Installation](#upsert-installation) body to authorize this request. <br/> There are several limitations to the invoice submission:<br/> <br/> 1. A resource can only be billed once per the billing period and the billing plan.<br/> 2. The billing plan used to bill the resource must have been active for this resource during the billing period.<br/> 3. The billing plan used must be a subscription plan.<br/> 4. The interim usage data must be sent hourly for all types of subscriptions. See [Send subscription billing and usage data](#send-subscription-billing-and-usage-data) API on how to send interim billing and usage data.<br/>
+ * @link /v1/installations/{integrationConfigurationId}/billing/invoices
  */
-export async function submitInvoice({
-	pathParams: { integrationConfigurationId },
-	config = {},
-}: {
-	pathParams: SubmitInvoicePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function submitInvoice(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { integrationConfigurationId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!integrationConfigurationId) {
+	if (!pathParams.integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
 	}
-
 	const data = await request<
-		SubmitInvoiceMutationResponse,
+		SubmitInvoiceResponse,
 		ErrorWrapper<
-			SubmitInvoice400 | SubmitInvoice401 | SubmitInvoice403 | SubmitInvoice404 | SubmitInvoice409
+			| SubmitInvoiceStatus400
+			| SubmitInvoiceStatus401
+			| SubmitInvoiceStatus403
+			| SubmitInvoiceStatus404
+			| SubmitInvoiceStatus409
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		SubmitInvoicePathParams
+		{ integrationConfigurationId: string }
 	>({
 		method: "POST",
-		url: `/v1/installations/${integrationConfigurationId}/billing/invoices`,
+		url: `/v1/installations/${pathParams.integrationConfigurationId}/billing/invoices`,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description This endpoint allows the partner to mark an installation as finalized. This means you will not send any more invoices for the installation. Use this after a customer has requested uninstall and you have sent any remaining invoices. This will allow the uninstall process to proceed immediately after all invoices have been paid. <br/> Use the `credentials.access_token` we provided in the [Upsert Installation](#upsert-installation) body to authorize this request.
  * @summary Finalize Installation
- * {@link /v1/installations/:integrationConfigurationId/billing/finalize}
+ * @description This endpoint allows the partner to mark an installation as finalized. This means you will not send any more invoices for the installation. Use this after a customer has requested uninstall and you have sent any remaining invoices. This will allow the uninstall process to proceed immediately after all invoices have been paid. <br/> Use the `credentials.access_token` we provided in the [Upsert Installation](#upsert-installation) body to authorize this request.
+ * @link /v1/installations/{integrationConfigurationId}/billing/finalize
  */
-export async function finalizeInstallation({
-	pathParams: { integrationConfigurationId },
-	config = {},
-}: {
-	pathParams: FinalizeInstallationPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function finalizeInstallation(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { integrationConfigurationId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!integrationConfigurationId) {
+	if (!pathParams.integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
 	}
-
 	const data = await request<
-		FinalizeInstallationMutationResponse,
+		FinalizeInstallationResponse,
 		ErrorWrapper<
-			| FinalizeInstallation400
-			| FinalizeInstallation401
-			| FinalizeInstallation403
-			| FinalizeInstallation404
+			| FinalizeInstallationStatus400
+			| FinalizeInstallationStatus401
+			| FinalizeInstallationStatus403
+			| FinalizeInstallationStatus404
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		FinalizeInstallationPathParams
+		{ integrationConfigurationId: string }
 	>({
 		method: "POST",
-		url: `/v1/installations/${integrationConfigurationId}/billing/finalize`,
+		url: `/v1/installations/${pathParams.integrationConfigurationId}/billing/finalize`,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Get Invoice details and status for a given invoice ID.<br/> <br/> See [Billing Events with Webhooks documentation](https://vercel.com/docs/integrations/create-integration/marketplace-api#working-with-billing-events-through-webhooks) on how to receive invoice events. This endpoint is used to retrieve the invoice details.
  * @summary Get Invoice
- * {@link /v1/installations/:integrationConfigurationId/billing/invoices/:invoiceId}
+ * @description Get Invoice details and status for a given invoice ID.<br/> <br/> See [Billing Events with Webhooks documentation](https://vercel.com/docs/integrations/create-integration/marketplace-api#working-with-billing-events-through-webhooks) on how to receive invoice events. This endpoint is used to retrieve the invoice details.
+ * @link /v1/installations/{integrationConfigurationId}/billing/invoices/{invoiceId}
  */
-export async function getInvoice({
-	pathParams: { integrationConfigurationId, invoiceId },
-	config = {},
-}: {
-	pathParams: GetInvoicePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getInvoice(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { integrationConfigurationId: string; invoiceId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!integrationConfigurationId) {
+	if (!pathParams.integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
 	}
 
-	if (!invoiceId) {
+	if (!pathParams.invoiceId) {
 		throw new Error(`Missing required path parameter: invoiceId`);
 	}
-
 	const data = await request<
-		GetInvoiceQueryResponse,
-		ErrorWrapper<GetInvoice400 | GetInvoice401 | GetInvoice403 | GetInvoice404>,
+		GetInvoiceResponse,
+		ErrorWrapper<
+			GetInvoiceStatus400 | GetInvoiceStatus401 | GetInvoiceStatus403 | GetInvoiceStatus404
+		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetInvoicePathParams
+		{ integrationConfigurationId: string; invoiceId: string }
 	>({
 		method: "GET",
-		url: `/v1/installations/${integrationConfigurationId}/billing/invoices/${invoiceId}`,
+		url: `/v1/installations/${pathParams.integrationConfigurationId}/billing/invoices/${pathParams.invoiceId}`,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description This endpoint allows the partner to request a refund for an invoice to Vercel. The invoice is created using the [Submit Invoice API](#submit-invoice-api).
  * @summary Invoice Actions
- * {@link /v1/installations/:integrationConfigurationId/billing/invoices/:invoiceId/actions}
+ * @description This endpoint allows the partner to request a refund for an invoice to Vercel. The invoice is created using the [Submit Invoice API](#submit-invoice-api).
+ * @link /v1/installations/{integrationConfigurationId}/billing/invoices/{invoiceId}/actions
  */
-export async function updateInvoice({
-	pathParams: { integrationConfigurationId, invoiceId },
-	config = {},
-}: {
-	pathParams: UpdateInvoicePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateInvoice(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { integrationConfigurationId: string; invoiceId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!integrationConfigurationId) {
+	if (!pathParams.integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
 	}
 
-	if (!invoiceId) {
+	if (!pathParams.invoiceId) {
 		throw new Error(`Missing required path parameter: invoiceId`);
 	}
-
 	const data = await request<
-		UpdateInvoiceMutationResponse,
+		UpdateInvoiceResponse,
 		ErrorWrapper<
-			UpdateInvoice400 | UpdateInvoice401 | UpdateInvoice403 | UpdateInvoice404 | UpdateInvoice409
+			| UpdateInvoiceStatus400
+			| UpdateInvoiceStatus401
+			| UpdateInvoiceStatus403
+			| UpdateInvoiceStatus404
+			| UpdateInvoiceStatus409
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		UpdateInvoicePathParams
+		{ integrationConfigurationId: string; invoiceId: string }
 	>({
 		method: "POST",
-		url: `/v1/installations/${integrationConfigurationId}/billing/invoices/${invoiceId}/actions`,
+		url: `/v1/installations/${pathParams.integrationConfigurationId}/billing/invoices/${pathParams.invoiceId}/actions`,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Sends the prepayment balances. The partner should do this at least once a day and ideally once per hour. <br/> Use the `credentials.access_token` we provided in the [Upsert Installation](#upsert-installation) body to authorize this request.
  * @summary Submit Prepayment Balances
- * {@link /v1/installations/:integrationConfigurationId/billing/balance}
+ * @description Sends the prepayment balances. The partner should do this at least once a day and ideally once per hour. <br/> Use the `credentials.access_token` we provided in the [Upsert Installation](#upsert-installation) body to authorize this request.
+ * @link /v1/installations/{integrationConfigurationId}/billing/balance
  */
-export async function submitPrepaymentBalances({
-	pathParams: { integrationConfigurationId },
-	config = {},
-}: {
-	pathParams: SubmitPrepaymentBalancesPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function submitPrepaymentBalances(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { integrationConfigurationId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!integrationConfigurationId) {
+	if (!pathParams.integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
 	}
-
 	const data = await request<
-		SubmitPrepaymentBalancesMutationResponse,
+		SubmitPrepaymentBalancesResponse,
 		ErrorWrapper<
-			| SubmitPrepaymentBalances400
-			| SubmitPrepaymentBalances401
-			| SubmitPrepaymentBalances403
-			| SubmitPrepaymentBalances404
+			| SubmitPrepaymentBalancesStatus400
+			| SubmitPrepaymentBalancesStatus401
+			| SubmitPrepaymentBalancesStatus403
+			| SubmitPrepaymentBalancesStatus404
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		SubmitPrepaymentBalancesPathParams
+		{ integrationConfigurationId: string }
 	>({
 		method: "POST",
-		url: `/v1/installations/${integrationConfigurationId}/billing/balance`,
+		url: `/v1/installations/${pathParams.integrationConfigurationId}/billing/balance`,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description This endpoint is deprecated and replaced with the endpoint [Update Resource Secrets](#update-resource-secrets). <br/> This endpoint updates the secrets of a resource. If a resource has projects connected, the connected secrets are updated with the new secrets. The old secrets may still be used by existing connected projects because they are not automatically redeployed. Redeployment is a manual action and must be completed by the user. All new project connections will use the new secrets.<br/> <br/> Use cases for this endpoint:<br/> <br/> - Resetting the credentials of a database in the partner. If the user requests the credentials to be updated in the partner’s application, the partner post the new set of secrets to Vercel, the user should redeploy their application and the expire the old credentials.<br/>
  * @summary Deprecated: true. Update Resource Secrets (Deprecated)
- * {@link /v1/installations/:integrationConfigurationId/products/:integrationProductIdOrSlug/resources/:resourceId/secrets}
+ * @description This endpoint is deprecated and replaced with the endpoint [Update Resource Secrets](#update-resource-secrets). <br/> This endpoint updates the secrets of a resource. If a resource has projects connected, the connected secrets are updated with the new secrets. The old secrets may still be used by existing connected projects because they are not automatically redeployed. Redeployment is a manual action and must be completed by the user. All new project connections will use the new secrets.<br/> <br/> Use cases for this endpoint:<br/> <br/> - Resetting the credentials of a database in the partner. If the user requests the credentials to be updated in the partner’s application, the partner post the new set of secrets to Vercel, the user should redeploy their application and the expire the old credentials.<br/>
  * @deprecated
+ * @link /v1/installations/{integrationConfigurationId}/products/{integrationProductIdOrSlug}/resources/{resourceId}/secrets
  */
-export async function updateResourceSecrets({
-	pathParams: { integrationConfigurationId, integrationProductIdOrSlug, resourceId },
-	config = {},
-}: {
-	pathParams: UpdateResourceSecretsPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateResourceSecrets(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: {
+			integrationConfigurationId: string;
+			integrationProductIdOrSlug: string;
+			resourceId: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!integrationConfigurationId) {
+	if (!pathParams.integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
 	}
 
-	if (!integrationProductIdOrSlug) {
+	if (!pathParams.integrationProductIdOrSlug) {
 		throw new Error(`Missing required path parameter: integrationProductIdOrSlug`);
 	}
 
-	if (!resourceId) {
+	if (!pathParams.resourceId) {
 		throw new Error(`Missing required path parameter: resourceId`);
 	}
-
 	const data = await request<
-		UpdateResourceSecretsMutationResponse,
+		UpdateResourceSecretsResponse,
 		ErrorWrapper<
-			| UpdateResourceSecrets400
-			| UpdateResourceSecrets401
-			| UpdateResourceSecrets403
-			| UpdateResourceSecrets404
-			| UpdateResourceSecrets409
-			| UpdateResourceSecrets422
+			| UpdateResourceSecretsStatus400
+			| UpdateResourceSecretsStatus401
+			| UpdateResourceSecretsStatus403
+			| UpdateResourceSecretsStatus404
+			| UpdateResourceSecretsStatus409
+			| UpdateResourceSecretsStatus422
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		UpdateResourceSecretsPathParams
+		{ integrationConfigurationId: string; integrationProductIdOrSlug: string; resourceId: string }
 	>({
 		method: "PUT",
-		url: `/v1/installations/${integrationConfigurationId}/products/${integrationProductIdOrSlug}/resources/${resourceId}/secrets`,
+		url: `/v1/installations/${pathParams.integrationConfigurationId}/products/${pathParams.integrationProductIdOrSlug}/resources/${pathParams.resourceId}/secrets`,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description This endpoint updates the secrets of a resource. If a resource has projects connected, the connected secrets are updated with the new secrets. The old secrets may still be used by existing connected projects because they are not automatically redeployed. Redeployment is a manual action and must be completed by the user. All new project connections will use the new secrets.<br/> <br/> Use cases for this endpoint:<br/> <br/> - Resetting the credentials of a database in the partner. If the user requests the credentials to be updated in the partner’s application, the partner post the new set of secrets to Vercel, the user should redeploy their application and the expire the old credentials.<br/>
  * @summary Update Resource Secrets
- * {@link /v1/installations/:integrationConfigurationId/resources/:resourceId/secrets}
+ * @description This endpoint updates the secrets of a resource. If a resource has projects connected, the connected secrets are updated with the new secrets. The old secrets may still be used by existing connected projects because they are not automatically redeployed. Redeployment is a manual action and must be completed by the user. All new project connections will use the new secrets.<br/> <br/> Use cases for this endpoint:<br/> <br/> - Resetting the credentials of a database in the partner. If the user requests the credentials to be updated in the partner’s application, the partner post the new set of secrets to Vercel, the user should redeploy their application and the expire the old credentials.<br/>
+ * @link /v1/installations/{integrationConfigurationId}/resources/{resourceId}/secrets
  */
-export async function updateResourceSecretsById({
-	pathParams: { integrationConfigurationId, resourceId },
-	config = {},
-}: {
-	pathParams: UpdateResourceSecretsByIdPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateResourceSecretsById(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { integrationConfigurationId: string; resourceId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!integrationConfigurationId) {
+	if (!pathParams.integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
 	}
 
-	if (!resourceId) {
+	if (!pathParams.resourceId) {
 		throw new Error(`Missing required path parameter: resourceId`);
 	}
-
 	const data = await request<
-		UpdateResourceSecretsByIdMutationResponse,
+		UpdateResourceSecretsByIdResponse,
 		ErrorWrapper<
-			| UpdateResourceSecretsById400
-			| UpdateResourceSecretsById401
-			| UpdateResourceSecretsById403
-			| UpdateResourceSecretsById404
-			| UpdateResourceSecretsById409
-			| UpdateResourceSecretsById422
+			| UpdateResourceSecretsByIdStatus400
+			| UpdateResourceSecretsByIdStatus401
+			| UpdateResourceSecretsByIdStatus403
+			| UpdateResourceSecretsByIdStatus404
+			| UpdateResourceSecretsByIdStatus409
+			| UpdateResourceSecretsByIdStatus422
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		UpdateResourceSecretsByIdPathParams
+		{ integrationConfigurationId: string; resourceId: string }
 	>({
 		method: "PUT",
-		url: `/v1/installations/${integrationConfigurationId}/resources/${resourceId}/secrets`,
+		url: `/v1/installations/${pathParams.integrationConfigurationId}/resources/${pathParams.resourceId}/secrets`,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Allows to retrieve all configurations for an authenticated integration. When the `project` view is used, configurations generated for the authorization flow will be filtered out of the results.
  * @summary Get configurations for the authenticated user or team
- * {@link /v1/integrations/configurations}
+ * @description Allows to retrieve all configurations for an authenticated integration. When the `project` view is used, configurations generated for the authorization flow will be filtered out of the results.
+ * @link /v1/integrations/configurations
  */
-export async function getConfigurations({
-	queryParams,
-	config = {},
-}: {
-	queryParams: GetConfigurationsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	const data = await request<
-		GetConfigurationsQueryResponse,
-		ErrorWrapper<GetConfigurations400 | GetConfigurations401 | GetConfigurations403>,
-		null,
-		Record<string, string>,
-		GetConfigurationsQueryParams,
-		Record<string, string>
-	>({ method: "GET", url: `/v1/integrations/configurations`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Allows to retrieve a the configuration with the provided id in case it exists. The authenticated user or team must be the owner of the config in order to access it.
- * @summary Retrieve an integration configuration
- * {@link /v1/integrations/configuration/:id}
- */
-export async function getConfiguration({
-	pathParams: { id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetConfigurationPathParams;
-	queryParams?: GetConfigurationQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!id) {
-		throw new Error(`Missing required path parameter: id`);
-	}
-
-	const data = await request<
-		GetConfigurationQueryResponse,
-		ErrorWrapper<
-			GetConfiguration400 | GetConfiguration401 | GetConfiguration403 | GetConfiguration404
-		>,
-		null,
-		Record<string, string>,
-		GetConfigurationQueryParams,
-		GetConfigurationPathParams
-	>({ method: "GET", url: `/v1/integrations/configuration/${id}`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Allows to remove the configuration with the `id` provided in the parameters. The configuration and all of its resources will be removed. This includes Webhooks, LogDrains and Project Env variables.
- * @summary Delete an integration configuration
- * {@link /v1/integrations/configuration/:id}
- */
-export async function deleteConfiguration({
-	pathParams: { id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: DeleteConfigurationPathParams;
-	queryParams?: DeleteConfigurationQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!id) {
-		throw new Error(`Missing required path parameter: id`);
-	}
-
-	const data = await request<
-		DeleteConfigurationMutationResponse,
-		ErrorWrapper<
-			| DeleteConfiguration400
-			| DeleteConfiguration401
-			| DeleteConfiguration403
-			| DeleteConfiguration404
-		>,
-		null,
-		Record<string, string>,
-		DeleteConfigurationQueryParams,
-		DeleteConfigurationPathParams
-	>({
-		method: "DELETE",
-		url: `/v1/integrations/configuration/${id}`,
+export async function getConfigurations(
+	{
 		queryParams,
-		...requestConfig,
-	});
-	return data;
-}
-
-/**
- * @description Returns products available for an integration configuration. Each product includes a `metadataSchema` field with the JSON Schema for required and optional metadata fields.
- * @summary List products for integration configuration
- * {@link /v1/integrations/configuration/:id/products}
- */
-export async function getConfigurationProducts({
-	pathParams: { id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetConfigurationProductsPathParams;
-	queryParams?: GetConfigurationProductsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!id) {
-		throw new Error(`Missing required path parameter: id`);
-	}
+		config,
+	}: {
+		queryParams?: {
+			view?: "account" | "project";
+			installationType?: "marketplace" | "external" | "provisioning";
+			integrationIdOrSlug?: string;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetConfigurationProductsQueryResponse,
+		GetConfigurationsResponse,
 		ErrorWrapper<
-			| GetConfigurationProducts400
-			| GetConfigurationProducts401
-			| GetConfigurationProducts403
-			| GetConfigurationProducts404
-			| GetConfigurationProducts500
+			GetConfigurationsStatus400 | GetConfigurationsStatus401 | GetConfigurationsStatus403
 		>,
 		null,
 		Record<string, string>,
-		GetConfigurationProductsQueryParams,
-		GetConfigurationProductsPathParams
+		{
+			view?: "account" | "project";
+			installationType?: "marketplace" | "external" | "provisioning";
+			integrationIdOrSlug?: string;
+			teamId?: string;
+			slug?: string;
+		},
+		Record<string, string>
 	>({
 		method: "GET",
-		url: `/v1/integrations/configuration/${id}/products`,
+		url: `/v1/integrations/configurations`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description During the autorization process, Vercel sends the user to the provider [redirectLoginUrl](https://vercel.com/docs/integrations/create-integration/submit-integration#redirect-login-url), that includes the OAuth authorization `code` parameter. The provider then calls the SSO Token Exchange endpoint with the sent code and receives the OIDC token. They log the user in based on this token and redirects the user back to the Vercel account using deep-link parameters included the redirectLoginUrl. Providers should not persist the returned `id_token` in a database since the token will expire. See [**Authentication with SSO**](https://vercel.com/docs/integrations/create-integration/marketplace-api#authentication-with-sso) for more details.
- * @summary SSO Token Exchange
- * {@link /v1/integrations/sso/token}
+ * @summary Retrieve an integration configuration
+ * @description Allows to retrieve a the configuration with the provided id in case it exists. The authenticated user or team must be the owner of the config in order to access it.
+ * @link /v1/integrations/configuration/{id}
  */
-export async function exchangeSsoToken({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getConfiguration(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { id: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.id) {
+		throw new Error(`Missing required path parameter: id`);
+	}
+	const data = await request<
+		GetConfigurationResponse,
+		ErrorWrapper<
+			| GetConfigurationStatus400
+			| GetConfigurationStatus401
+			| GetConfigurationStatus403
+			| GetConfigurationStatus404
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ id: string }
+	>({
+		method: "GET",
+		url: `/v1/integrations/configuration/${pathParams.id}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Delete an integration configuration
+ * @description Allows to remove the configuration with the `id` provided in the parameters. The configuration and all of its resources will be removed. This includes Webhooks, LogDrains and Project Env variables.
+ * @link /v1/integrations/configuration/{id}
+ */
+export async function deleteConfiguration(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { id: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.id) {
+		throw new Error(`Missing required path parameter: id`);
+	}
+	const data = await request<
+		DeleteConfigurationResponse,
+		ErrorWrapper<
+			| DeleteConfigurationStatus400
+			| DeleteConfigurationStatus401
+			| DeleteConfigurationStatus403
+			| DeleteConfigurationStatus404
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ id: string }
+	>({
+		method: "DELETE",
+		url: `/v1/integrations/configuration/${pathParams.id}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary List products for integration configuration
+ * @description Returns products available for an integration configuration. Each product includes a `metadataSchema` field with the JSON Schema for required and optional metadata fields.
+ * @link /v1/integrations/configuration/{id}/products
+ */
+export async function getConfigurationProducts(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { id: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.id) {
+		throw new Error(`Missing required path parameter: id`);
+	}
+	const data = await request<
+		GetConfigurationProductsResponse,
+		ErrorWrapper<
+			| GetConfigurationProductsStatus400
+			| GetConfigurationProductsStatus401
+			| GetConfigurationProductsStatus403
+			| GetConfigurationProductsStatus404
+			| GetConfigurationProductsStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ id: string }
+	>({
+		method: "GET",
+		url: `/v1/integrations/configuration/${pathParams.id}/products`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary SSO Token Exchange
+ * @description During the autorization process, Vercel sends the user to the provider [redirectLoginUrl](https://vercel.com/docs/integrations/create-integration/submit-integration#redirect-login-url), that includes the OAuth authorization `code` parameter. The provider then calls the SSO Token Exchange endpoint with the sent code and receives the OIDC token. They log the user in based on this token and redirects the user back to the Vercel account using deep-link parameters included the redirectLoginUrl. Providers should not persist the returned `id_token` in a database since the token will expire. See [**Authentication with SSO**](https://vercel.com/docs/integrations/create-integration/marketplace-api#authentication-with-sso) for more details.
+ * @link /v1/integrations/sso/token
+ */
+export async function exchangeSsoToken(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		ExchangeSsoTokenMutationResponse,
-		ErrorWrapper<ExchangeSsoToken400 | ExchangeSsoToken403 | ExchangeSsoToken500>,
+		ExchangeSsoTokenResponse,
+		ErrorWrapper<ExchangeSsoTokenStatus400 | ExchangeSsoTokenStatus403 | ExchangeSsoTokenStatus500>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
@@ -8354,4982 +9078,5975 @@ export async function exchangeSsoToken({
 		method: "POST",
 		url: `/v1/integrations/sso/token`,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Retrieves a list of all Integration log drains that are defined for the authenticated user or team. When using an OAuth2 token, the list is limited to log drains created by the authenticated integration.
  * @summary Retrieves a list of Integration log drains (deprecated)
- * {@link /v2/integrations/log-drains}
+ * @description Retrieves a list of all Integration log drains that are defined for the authenticated user or team. When using an OAuth2 token, the list is limited to log drains created by the authenticated integration.
+ * @link /v2/integrations/log-drains
  */
-export async function getIntegrationLogDrains({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: GetIntegrationLogDrainsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getIntegrationLogDrains(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetIntegrationLogDrainsQueryResponse,
+		GetIntegrationLogDrainsResponse,
 		ErrorWrapper<
-			GetIntegrationLogDrains400 | GetIntegrationLogDrains401 | GetIntegrationLogDrains403
+			| GetIntegrationLogDrainsStatus400
+			| GetIntegrationLogDrainsStatus401
+			| GetIntegrationLogDrainsStatus403
 		>,
 		null,
 		Record<string, string>,
-		GetIntegrationLogDrainsQueryParams,
+		{ teamId?: string; slug?: string },
 		Record<string, string>
-	>({ method: "GET", url: `/v2/integrations/log-drains`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/v2/integrations/log-drains`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Creates an Integration log drain. This endpoint must be called with an OAuth2 client (integration), since log drains are tied to integrations. If it is called with a different token type it will produce a 400 error.
  * @summary Creates a new Integration Log Drain (deprecated)
- * {@link /v2/integrations/log-drains}
+ * @description Creates an Integration log drain. This endpoint must be called with an OAuth2 client (integration), since log drains are tied to integrations. If it is called with a different token type it will produce a 400 error.
+ * @link /v2/integrations/log-drains
  */
-export async function createLogDrain({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: CreateLogDrainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createLogDrain(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		CreateLogDrainMutationResponse,
-		ErrorWrapper<CreateLogDrain400 | CreateLogDrain401 | CreateLogDrain403>,
+		CreateLogDrainResponse,
+		ErrorWrapper<CreateLogDrainStatus400 | CreateLogDrainStatus401 | CreateLogDrainStatus403>,
 		null,
 		Record<string, string>,
-		CreateLogDrainQueryParams,
+		{ teamId?: string; slug?: string },
 		Record<string, string>
 	>({
 		method: "POST",
 		url: `/v2/integrations/log-drains`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Deletes the Integration log drain with the provided `id`. When using an OAuth2 Token, the log drain can be deleted only if the integration owns it.
  * @summary Deletes the Integration log drain with the provided `id` (deprecated)
- * {@link /v1/integrations/log-drains/:id}
+ * @description Deletes the Integration log drain with the provided `id`. When using an OAuth2 Token, the log drain can be deleted only if the integration owns it.
+ * @link /v1/integrations/log-drains/{id}
  */
-export async function deleteIntegrationLogDrain({
-	pathParams: { id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: DeleteIntegrationLogDrainPathParams;
-	queryParams?: DeleteIntegrationLogDrainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteIntegrationLogDrain(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { id: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!id) {
+	if (!pathParams.id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
-
 	const data = await request<
-		DeleteIntegrationLogDrainMutationResponse,
+		DeleteIntegrationLogDrainResponse,
 		ErrorWrapper<
-			| DeleteIntegrationLogDrain400
-			| DeleteIntegrationLogDrain401
-			| DeleteIntegrationLogDrain403
-			| DeleteIntegrationLogDrain404
+			| DeleteIntegrationLogDrainStatus400
+			| DeleteIntegrationLogDrainStatus401
+			| DeleteIntegrationLogDrainStatus403
+			| DeleteIntegrationLogDrainStatus404
 		>,
 		null,
 		Record<string, string>,
-		DeleteIntegrationLogDrainQueryParams,
-		DeleteIntegrationLogDrainPathParams
-	>({ method: "DELETE", url: `/v1/integrations/log-drains/${id}`, queryParams, ...requestConfig });
+		{ teamId?: string; slug?: string },
+		{ id: string }
+	>({
+		method: "DELETE",
+		url: `/v1/integrations/log-drains/${pathParams.id}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Returns a stream of logs for a given deployment.
  * @summary Get logs for a deployment
- * {@link /v1/projects/:projectId/deployments/:deploymentId/runtime-logs}
+ * @description Returns a stream of logs for a given deployment.
+ * @link /v1/projects/{projectId}/deployments/{deploymentId}/runtime-logs
  */
-export async function getRuntimeLogs({
-	pathParams: { projectId, deploymentId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetRuntimeLogsPathParams;
-	queryParams?: GetRuntimeLogsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getRuntimeLogs(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectId: string; deploymentId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!projectId) {
+	if (!pathParams.projectId) {
 		throw new Error(`Missing required path parameter: projectId`);
 	}
 
-	if (!deploymentId) {
+	if (!pathParams.deploymentId) {
 		throw new Error(`Missing required path parameter: deploymentId`);
 	}
-
 	const data = await request<
-		GetRuntimeLogsQueryResponse,
-		ErrorWrapper<GetRuntimeLogs400 | GetRuntimeLogs401 | GetRuntimeLogs403>,
+		GetRuntimeLogsResponse,
+		ErrorWrapper<GetRuntimeLogsStatus400 | GetRuntimeLogsStatus401 | GetRuntimeLogsStatus403>,
 		null,
 		Record<string, string>,
-		GetRuntimeLogsQueryParams,
-		GetRuntimeLogsPathParams
+		{ teamId?: string; slug?: string },
+		{ projectId: string; deploymentId: string }
 	>({
 		method: "GET",
-		url: `/v1/projects/${projectId}/deployments/${deploymentId}/runtime-logs`,
+		url: `/v1/projects/${pathParams.projectId}/deployments/${pathParams.deploymentId}/runtime-logs`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Create one or multiple experimentation items
  * @summary Create one or multiple experimentation items
- * {@link /v1/installations/:integrationConfigurationId/resources/:resourceId/experimentation/items}
+ * @description Create one or multiple experimentation items
+ * @link /v1/installations/{integrationConfigurationId}/resources/{resourceId}/experimentation/items
  */
-export async function createInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems({
-	pathParams: { integrationConfigurationId, resourceId },
-	config = {},
-}: {
-	pathParams: CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { integrationConfigurationId: string; resourceId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!integrationConfigurationId) {
+	if (!pathParams.integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
 	}
 
-	if (!resourceId) {
+	if (!pathParams.resourceId) {
 		throw new Error(`Missing required path parameter: resourceId`);
 	}
-
 	const data = await request<
-		CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsMutationResponse,
+		CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsResponse,
 		ErrorWrapper<
-			| CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems400
-			| CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems401
-			| CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems403
-			| CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems404
+			| CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsStatus400
+			| CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsStatus401
+			| CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsStatus403
+			| CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsStatus404
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsPathParams
+		{ integrationConfigurationId: string; resourceId: string }
 	>({
 		method: "POST",
-		url: `/v1/installations/${integrationConfigurationId}/resources/${resourceId}/experimentation/items`,
+		url: `/v1/installations/${pathParams.integrationConfigurationId}/resources/${pathParams.resourceId}/experimentation/items`,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Patch an existing experimentation item
  * @summary Patch an existing experimentation item
- * {@link /v1/installations/:integrationConfigurationId/resources/:resourceId/experimentation/items/:itemId}
+ * @description Patch an existing experimentation item
+ * @link /v1/installations/{integrationConfigurationId}/resources/{resourceId}/experimentation/items/{itemId}
  */
-export async function updateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId({
-	pathParams: { integrationConfigurationId, resourceId, itemId },
-	config = {},
-}: {
-	pathParams: UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { integrationConfigurationId: string; resourceId: string; itemId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!integrationConfigurationId) {
+	if (!pathParams.integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
 	}
 
-	if (!resourceId) {
+	if (!pathParams.resourceId) {
 		throw new Error(`Missing required path parameter: resourceId`);
 	}
 
-	if (!itemId) {
+	if (!pathParams.itemId) {
 		throw new Error(`Missing required path parameter: itemId`);
 	}
-
 	const data = await request<
-		UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdMutationResponse,
+		UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdResponse,
 		ErrorWrapper<
-			| UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId400
-			| UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId401
-			| UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId403
-			| UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId404
+			| UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus400
+			| UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus401
+			| UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus403
+			| UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus404
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdPathParams
+		{ integrationConfigurationId: string; resourceId: string; itemId: string }
 	>({
 		method: "PATCH",
-		url: `/v1/installations/${integrationConfigurationId}/resources/${resourceId}/experimentation/items/${itemId}`,
+		url: `/v1/installations/${pathParams.integrationConfigurationId}/resources/${pathParams.resourceId}/experimentation/items/${pathParams.itemId}`,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Delete an existing experimentation item
  * @summary Delete an existing experimentation item
- * {@link /v1/installations/:integrationConfigurationId/resources/:resourceId/experimentation/items/:itemId}
+ * @description Delete an existing experimentation item
+ * @link /v1/installations/{integrationConfigurationId}/resources/{resourceId}/experimentation/items/{itemId}
  */
-export async function deleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId({
-	pathParams: { integrationConfigurationId, resourceId, itemId },
-	config = {},
-}: {
-	pathParams: DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { integrationConfigurationId: string; resourceId: string; itemId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!integrationConfigurationId) {
+	if (!pathParams.integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
 	}
 
-	if (!resourceId) {
+	if (!pathParams.resourceId) {
 		throw new Error(`Missing required path parameter: resourceId`);
 	}
 
-	if (!itemId) {
+	if (!pathParams.itemId) {
 		throw new Error(`Missing required path parameter: itemId`);
 	}
-
 	const data = await request<
-		DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdMutationResponse,
+		DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdResponse,
 		ErrorWrapper<
-			| DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId400
-			| DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId401
-			| DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId403
-			| DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId404
+			| DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus400
+			| DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus401
+			| DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus403
+			| DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus404
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdPathParams
+		{ integrationConfigurationId: string; resourceId: string; itemId: string }
 	>({
 		method: "DELETE",
-		url: `/v1/installations/${integrationConfigurationId}/resources/${resourceId}/experimentation/items/${itemId}`,
+		url: `/v1/installations/${pathParams.integrationConfigurationId}/resources/${pathParams.resourceId}/experimentation/items/${pathParams.itemId}`,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description When the user enabled Edge Config syncing, then this endpoint can be used by the partner to fetch the contents of the Edge Config.
  * @summary Get the data of a user-provided Edge Config
- * {@link /v1/installations/:integrationConfigurationId/resources/:resourceId/experimentation/edge-config}
+ * @description When the user enabled Edge Config syncing, then this endpoint can be used by the partner to fetch the contents of the Edge Config.
+ * @link /v1/installations/{integrationConfigurationId}/resources/{resourceId}/experimentation/edge-config
  */
-export async function getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig({
-	pathParams: { integrationConfigurationId, resourceId },
-	config = {},
-}: {
-	pathParams: GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { integrationConfigurationId: string; resourceId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!integrationConfigurationId) {
+	if (!pathParams.integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
 	}
 
-	if (!resourceId) {
+	if (!pathParams.resourceId) {
 		throw new Error(`Missing required path parameter: resourceId`);
 	}
-
 	const data = await request<
-		GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigQueryResponse,
+		GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigResponse,
 		ErrorWrapper<
-			| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig400
-			| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig401
-			| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig403
-			| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig404
+			| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus400
+			| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus401
+			| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus403
+			| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus404
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigPathParams
+		{ integrationConfigurationId: string; resourceId: string }
 	>({
 		method: "GET",
-		url: `/v1/installations/${integrationConfigurationId}/resources/${resourceId}/experimentation/edge-config`,
+		url: `/v1/installations/${pathParams.integrationConfigurationId}/resources/${pathParams.resourceId}/experimentation/edge-config`,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description When the user enabled Edge Config syncing, then this endpoint can be used by the partner to push their configuration data into the relevant Edge Config.
  * @summary Push data into a user-provided Edge Config
- * {@link /v1/installations/:integrationConfigurationId/resources/:resourceId/experimentation/edge-config}
+ * @description When the user enabled Edge Config syncing, then this endpoint can be used by the partner to push their configuration data into the relevant Edge Config.
+ * @link /v1/installations/{integrationConfigurationId}/resources/{resourceId}/experimentation/edge-config
  */
-export async function replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig({
-	pathParams: { integrationConfigurationId, resourceId },
-	config = {},
-}: {
-	pathParams: ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { integrationConfigurationId: string; resourceId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!integrationConfigurationId) {
+	if (!pathParams.integrationConfigurationId) {
 		throw new Error(`Missing required path parameter: integrationConfigurationId`);
 	}
 
-	if (!resourceId) {
+	if (!pathParams.resourceId) {
 		throw new Error(`Missing required path parameter: resourceId`);
 	}
-
 	const data = await request<
-		ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigMutationResponse,
+		ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigResponse,
 		ErrorWrapper<
-			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig400
-			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig401
-			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig403
-			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig404
-			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig409
-			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig412
+			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus400
+			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus401
+			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus403
+			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus404
+			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus409
+			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus412
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigPathParams
+		{ integrationConfigurationId: string; resourceId: string }
 	>({
 		method: "PUT",
-		url: `/v1/installations/${integrationConfigurationId}/resources/${resourceId}/experimentation/edge-config`,
+		url: `/v1/installations/${pathParams.integrationConfigurationId}/resources/${pathParams.resourceId}/experimentation/edge-config`,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Get the microfrontends group IDs for a team.
  * @summary List microfrontends groups
- * {@link /v1/microfrontends/groups}
+ * @description Get the microfrontends group IDs for a team.
+ * @link /v1/microfrontends/groups
  */
-export async function getMicrofrontendsGroups({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: GetMicrofrontendsGroupsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getMicrofrontendsGroups(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetMicrofrontendsGroupsQueryResponse,
+		GetMicrofrontendsGroupsResponse,
 		ErrorWrapper<
-			| GetMicrofrontendsGroups400
-			| GetMicrofrontendsGroups401
-			| GetMicrofrontendsGroups403
-			| GetMicrofrontendsGroups500
+			| GetMicrofrontendsGroupsStatus400
+			| GetMicrofrontendsGroupsStatus401
+			| GetMicrofrontendsGroupsStatus403
+			| GetMicrofrontendsGroupsStatus500
 		>,
 		null,
 		Record<string, string>,
-		GetMicrofrontendsGroupsQueryParams,
+		{ teamId?: string; slug?: string },
 		Record<string, string>
-	>({ method: "GET", url: `/v1/microfrontends/groups`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/v1/microfrontends/groups`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Get the microfrontends for a given group ID.
  * @summary List projects in a microfrontends group
- * {@link /v1/microfrontends/groups/:groupId/projects}
+ * @description Get the microfrontends for a given group ID.
+ * @link /v1/microfrontends/groups/{groupId}/projects
  */
-export async function getMicrofrontendsInGroup({
-	pathParams: { groupId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetMicrofrontendsInGroupPathParams;
-	queryParams?: GetMicrofrontendsInGroupQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getMicrofrontendsInGroup(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { groupId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!groupId) {
+	if (!pathParams.groupId) {
 		throw new Error(`Missing required path parameter: groupId`);
 	}
-
 	const data = await request<
-		GetMicrofrontendsInGroupQueryResponse,
+		GetMicrofrontendsInGroupResponse,
 		ErrorWrapper<
-			GetMicrofrontendsInGroup400 | GetMicrofrontendsInGroup401 | GetMicrofrontendsInGroup403
+			| GetMicrofrontendsInGroupStatus400
+			| GetMicrofrontendsInGroupStatus401
+			| GetMicrofrontendsInGroupStatus403
 		>,
 		null,
 		Record<string, string>,
-		GetMicrofrontendsInGroupQueryParams,
-		GetMicrofrontendsInGroupPathParams
+		{ teamId?: string; slug?: string },
+		{ groupId: string }
 	>({
 		method: "GET",
-		url: `/v1/microfrontends/groups/${groupId}/projects`,
+		url: `/v1/microfrontends/groups/${pathParams.groupId}/projects`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Get the microfrontends config for a deployment.
  * @summary Get microfrontends config for a deployment
- * {@link /v1/microfrontends/:deploymentId/config}
+ * @description Get the microfrontends config for a deployment.
+ * @link /v1/microfrontends/{deploymentId}/config
  */
-export async function getMicrofrontendsConfig({
-	pathParams: { deploymentId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetMicrofrontendsConfigPathParams;
-	queryParams?: GetMicrofrontendsConfigQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getMicrofrontendsConfig(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { deploymentId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!deploymentId) {
+	if (!pathParams.deploymentId) {
 		throw new Error(`Missing required path parameter: deploymentId`);
 	}
-
 	const data = await request<
-		GetMicrofrontendsConfigQueryResponse,
+		GetMicrofrontendsConfigResponse,
 		ErrorWrapper<
-			| GetMicrofrontendsConfig400
-			| GetMicrofrontendsConfig401
-			| GetMicrofrontendsConfig403
-			| GetMicrofrontendsConfig404
-			| GetMicrofrontendsConfig500
+			| GetMicrofrontendsConfigStatus400
+			| GetMicrofrontendsConfigStatus401
+			| GetMicrofrontendsConfigStatus403
+			| GetMicrofrontendsConfigStatus404
+			| GetMicrofrontendsConfigStatus500
 		>,
 		null,
 		Record<string, string>,
-		GetMicrofrontendsConfigQueryParams,
-		GetMicrofrontendsConfigPathParams
+		{ teamId?: string; slug?: string },
+		{ deploymentId: string }
 	>({
 		method: "GET",
-		url: `/v1/microfrontends/${deploymentId}/config`,
+		url: `/v1/microfrontends/${pathParams.deploymentId}/config`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Get the microfrontends config for a project by ID or name.
  * @summary Get microfrontends config for a project
- * {@link /v1/microfrontends/projects/:projectIdOrName/production-mfe-config}
+ * @description Get the microfrontends config for a project by ID or name.
+ * @link /v1/microfrontends/projects/{projectIdOrName}/production-mfe-config
  */
-export async function getMicrofrontendsConfigForProject({
-	pathParams: { projectIdOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetMicrofrontendsConfigForProjectPathParams;
-	queryParams?: GetMicrofrontendsConfigForProjectQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getMicrofrontendsConfigForProject(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectIdOrName: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!projectIdOrName) {
+	if (!pathParams.projectIdOrName) {
 		throw new Error(`Missing required path parameter: projectIdOrName`);
 	}
-
 	const data = await request<
-		GetMicrofrontendsConfigForProjectQueryResponse,
+		GetMicrofrontendsConfigForProjectResponse,
 		ErrorWrapper<
-			| GetMicrofrontendsConfigForProject400
-			| GetMicrofrontendsConfigForProject401
-			| GetMicrofrontendsConfigForProject403
-			| GetMicrofrontendsConfigForProject404
-			| GetMicrofrontendsConfigForProject500
+			| GetMicrofrontendsConfigForProjectStatus400
+			| GetMicrofrontendsConfigForProjectStatus401
+			| GetMicrofrontendsConfigForProjectStatus403
+			| GetMicrofrontendsConfigForProjectStatus404
+			| GetMicrofrontendsConfigForProjectStatus500
 		>,
 		null,
 		Record<string, string>,
-		GetMicrofrontendsConfigForProjectQueryParams,
-		GetMicrofrontendsConfigForProjectPathParams
+		{ teamId?: string; slug?: string },
+		{ projectIdOrName: string }
 	>({
 		method: "GET",
-		url: `/v1/microfrontends/projects/${projectIdOrName}/production-mfe-config`,
+		url: `/v1/microfrontends/projects/${pathParams.projectIdOrName}/production-mfe-config`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Creates a microfrontends group and attaches multiple projects in a single request.
  * @summary Create a microfrontends group with applications
- * {@link /v1/microfrontends/group}
+ * @description Creates a microfrontends group and attaches multiple projects in a single request.
+ * @link /v1/microfrontends/group
  */
-export async function createMicrofrontendsGroupWithApplications({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: CreateMicrofrontendsGroupWithApplicationsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createMicrofrontendsGroupWithApplications(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		CreateMicrofrontendsGroupWithApplicationsMutationResponse,
+		CreateMicrofrontendsGroupWithApplicationsResponse,
 		ErrorWrapper<
-			| CreateMicrofrontendsGroupWithApplications400
-			| CreateMicrofrontendsGroupWithApplications401
-			| CreateMicrofrontendsGroupWithApplications403
-			| CreateMicrofrontendsGroupWithApplications500
+			| CreateMicrofrontendsGroupWithApplicationsStatus400
+			| CreateMicrofrontendsGroupWithApplicationsStatus401
+			| CreateMicrofrontendsGroupWithApplicationsStatus403
+			| CreateMicrofrontendsGroupWithApplicationsStatus500
 		>,
 		null,
 		Record<string, string>,
-		CreateMicrofrontendsGroupWithApplicationsQueryParams,
+		{ teamId?: string; slug?: string },
 		Record<string, string>
 	>({
 		method: "POST",
 		url: `/v1/microfrontends/group`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Lists the projects that are currently configured as disabled for Observability Plus on a team.
  * @summary Lists disabled Observability Plus projects
- * {@link /v1/observability/manage/configuration/projects}
+ * @description Lists the projects that are currently configured as disabled for Observability Plus on a team.
+ * @link /v1/observability/manage/configuration/projects
  */
-export async function getObservabilityConfigurationProjects({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: GetObservabilityConfigurationProjectsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getObservabilityConfigurationProjects(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetObservabilityConfigurationProjectsQueryResponse,
+		GetObservabilityConfigurationProjectsResponse,
 		ErrorWrapper<
-			| GetObservabilityConfigurationProjects400
-			| GetObservabilityConfigurationProjects401
-			| GetObservabilityConfigurationProjects403
-			| GetObservabilityConfigurationProjects404
+			| GetObservabilityConfigurationProjectsStatus400
+			| GetObservabilityConfigurationProjectsStatus401
+			| GetObservabilityConfigurationProjectsStatus403
+			| GetObservabilityConfigurationProjectsStatus404
 		>,
 		null,
 		Record<string, string>,
-		GetObservabilityConfigurationProjectsQueryParams,
+		{ teamId?: string; slug?: string },
 		Record<string, string>
 	>({
 		method: "GET",
 		url: `/v1/observability/manage/configuration/projects`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Updates whether Observability Plus is disabled for a single project.
  * @summary Updates a disabled Observability Plus project setting
- * {@link /v1/observability/manage/configuration/projects/:projectIdOrName}
+ * @description Updates whether Observability Plus is disabled for a single project.
+ * @link /v1/observability/manage/configuration/projects/{projectIdOrName}
  */
-export async function updateObservabilityConfigurationProject({
-	pathParams: { projectIdOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: UpdateObservabilityConfigurationProjectPathParams;
-	queryParams?: UpdateObservabilityConfigurationProjectQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateObservabilityConfigurationProject(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectIdOrName: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!projectIdOrName) {
+	if (!pathParams.projectIdOrName) {
 		throw new Error(`Missing required path parameter: projectIdOrName`);
 	}
-
 	const data = await request<
-		UpdateObservabilityConfigurationProjectMutationResponse,
+		UpdateObservabilityConfigurationProjectResponse,
 		ErrorWrapper<
-			| UpdateObservabilityConfigurationProject400
-			| UpdateObservabilityConfigurationProject401
-			| UpdateObservabilityConfigurationProject403
-			| UpdateObservabilityConfigurationProject404
+			| UpdateObservabilityConfigurationProjectStatus400
+			| UpdateObservabilityConfigurationProjectStatus401
+			| UpdateObservabilityConfigurationProjectStatus403
+			| UpdateObservabilityConfigurationProjectStatus404
+			| UpdateObservabilityConfigurationProjectStatus429
 		>,
 		null,
 		Record<string, string>,
-		UpdateObservabilityConfigurationProjectQueryParams,
-		UpdateObservabilityConfigurationProjectPathParams
+		{ teamId?: string; slug?: string },
+		{ projectIdOrName: string }
 	>({
 		method: "PUT",
-		url: `/v1/observability/manage/configuration/projects/${projectIdOrName}`,
+		url: `/v1/observability/manage/configuration/projects/${pathParams.projectIdOrName}`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Lists all members of a project.
  * @summary List project members
- * {@link /v1/projects/:idOrName/members}
+ * @description Lists all members of a project.
+ * @link /v1/projects/{idOrName}/members
  */
-export async function getProjectMembers({
-	pathParams: { idOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetProjectMembersPathParams;
-	queryParams?: GetProjectMembersQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getProjectMembers(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string };
+		queryParams?: {
+			limit?: number;
+			since?: number;
+			until?: number;
+			search?: string;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!idOrName) {
+	if (!pathParams.idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
-
 	const data = await request<
-		GetProjectMembersQueryResponse,
-		ErrorWrapper<GetProjectMembers400 | GetProjectMembers401 | GetProjectMembers403>,
-		null,
-		Record<string, string>,
-		GetProjectMembersQueryParams,
-		GetProjectMembersPathParams
-	>({ method: "GET", url: `/v1/projects/${idOrName}/members`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Adds a new member to the project.
- * @summary Adds a new member to a project.
- * {@link /v1/projects/:idOrName/members}
- */
-export async function addProjectMember({
-	pathParams: { idOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: AddProjectMemberPathParams;
-	queryParams?: AddProjectMemberQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!idOrName) {
-		throw new Error(`Missing required path parameter: idOrName`);
-	}
-
-	const data = await request<
-		AddProjectMemberMutationResponse,
+		GetProjectMembersResponse,
 		ErrorWrapper<
-			AddProjectMember400 | AddProjectMember401 | AddProjectMember403 | AddProjectMember500
+			GetProjectMembersStatus400 | GetProjectMembersStatus401 | GetProjectMembersStatus403
 		>,
 		null,
 		Record<string, string>,
-		AddProjectMemberQueryParams,
-		AddProjectMemberPathParams
-	>({
-		method: "POST",
-		url: `/v1/projects/${idOrName}/members`,
-		queryParams,
-		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
-	});
-	return data;
-}
-
-/**
- * @description Remove a member from a specific project
- * @summary Remove a Project Member
- * {@link /v1/projects/:idOrName/members/:uid}
- */
-export async function removeProjectMember({
-	pathParams: { idOrName, uid },
-	queryParams,
-	config = {},
-}: {
-	pathParams: RemoveProjectMemberPathParams;
-	queryParams?: RemoveProjectMemberQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!idOrName) {
-		throw new Error(`Missing required path parameter: idOrName`);
-	}
-
-	if (!uid) {
-		throw new Error(`Missing required path parameter: uid`);
-	}
-
-	const data = await request<
-		RemoveProjectMemberMutationResponse,
-		ErrorWrapper<RemoveProjectMember400 | RemoveProjectMember401 | RemoveProjectMember403>,
-		null,
-		Record<string, string>,
-		RemoveProjectMemberQueryParams,
-		RemoveProjectMemberPathParams
-	>({
-		method: "DELETE",
-		url: `/v1/projects/${idOrName}/members/${uid}`,
-		queryParams,
-		...requestConfig,
-	});
-	return data;
-}
-
-/**
- * @description Get the routing rules for a project. Supports searching by name/ID/pattern, filtering by route type, and diffing staged changes against production.
- * @summary Get project routing rules
- * {@link /v1/projects/:projectId/routes}
- */
-export async function getRoutes({
-	pathParams: { projectId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetRoutesPathParams;
-	queryParams?: GetRoutesQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!projectId) {
-		throw new Error(`Missing required path parameter: projectId`);
-	}
-
-	const data = await request<
-		GetRoutesQueryResponse,
-		ErrorWrapper<GetRoutes400 | GetRoutes401 | GetRoutes403 | GetRoutes404>,
-		null,
-		Record<string, string>,
-		GetRoutesQueryParams,
-		GetRoutesPathParams
-	>({ method: "GET", url: `/v1/projects/${projectId}/routes`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Stage routing rules for a project. Set `overwrite` to true to replace all existing rules, or omit it to merge with existing rules by ID. Returns the new staged version.
- * @summary Stage routing rules
- * {@link /v1/projects/:projectId/routes}
- */
-export async function stageRoutes({
-	pathParams: { projectId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: StageRoutesPathParams;
-	queryParams?: StageRoutesQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!projectId) {
-		throw new Error(`Missing required path parameter: projectId`);
-	}
-
-	const data = await request<
-		StageRoutesMutationResponse,
-		ErrorWrapper<StageRoutes400 | StageRoutes401 | StageRoutes403>,
-		null,
-		Record<string, string>,
-		StageRoutesQueryParams,
-		StageRoutesPathParams
-	>({
-		method: "PUT",
-		url: `/v1/projects/${projectId}/routes`,
-		queryParams,
-		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
-	});
-	return data;
-}
-
-/**
- * @description Add a single routing rule to a project at a specified position. Defaults to the end of the list if no position is provided. The route is enabled by default. Stages a new version with the added route.
- * @summary Add a routing rule
- * {@link /v1/projects/:projectId/routes}
- */
-export async function addRoute({
-	pathParams: { projectId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: AddRoutePathParams;
-	queryParams?: AddRouteQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!projectId) {
-		throw new Error(`Missing required path parameter: projectId`);
-	}
-
-	const data = await request<
-		AddRouteMutationResponse,
-		ErrorWrapper<AddRoute400 | AddRoute401 | AddRoute403>,
-		null,
-		Record<string, string>,
-		AddRouteQueryParams,
-		AddRoutePathParams
-	>({
-		method: "POST",
-		url: `/v1/projects/${projectId}/routes`,
-		queryParams,
-		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
-	});
-	return data;
-}
-
-/**
- * @description Delete one or more routing rules from a project by ID. Stages a new version with the routes removed.
- * @summary Delete routing rules
- * {@link /v1/projects/:projectId/routes}
- */
-export async function deleteRoutes({
-	pathParams: { projectId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: DeleteRoutesPathParams;
-	queryParams?: DeleteRoutesQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!projectId) {
-		throw new Error(`Missing required path parameter: projectId`);
-	}
-
-	const data = await request<
-		DeleteRoutesMutationResponse,
-		ErrorWrapper<DeleteRoutes400 | DeleteRoutes401 | DeleteRoutes403 | DeleteRoutes404>,
-		null,
-		Record<string, string>,
-		DeleteRoutesQueryParams,
-		DeleteRoutesPathParams
-	>({
-		method: "DELETE",
-		url: `/v1/projects/${projectId}/routes`,
-		queryParams,
-		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
-	});
-	return data;
-}
-
-/**
- * @description Replace a routing rule identified by its ID, or restore it from the current production version. Stages a new version with the modified route.
- * @summary Edit a routing rule
- * {@link /v1/projects/:projectId/routes/:routeId}
- */
-export async function editRoute({
-	pathParams: { projectId, routeId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: EditRoutePathParams;
-	queryParams?: EditRouteQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!projectId) {
-		throw new Error(`Missing required path parameter: projectId`);
-	}
-
-	if (!routeId) {
-		throw new Error(`Missing required path parameter: routeId`);
-	}
-
-	const data = await request<
-		EditRouteMutationResponse,
-		ErrorWrapper<EditRoute400 | EditRoute401 | EditRoute403 | EditRoute404>,
-		null,
-		Record<string, string>,
-		EditRouteQueryParams,
-		EditRoutePathParams
-	>({
-		method: "PATCH",
-		url: `/v1/projects/${projectId}/routes/${routeId}`,
-		queryParams,
-		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
-	});
-	return data;
-}
-
-/**
- * @description Generate a routing rule configuration from a natural language description. Returns a suggested route configuration that can be reviewed and saved.
- * @summary Generate a routing rule from natural language
- * {@link /v1/projects/:projectId/routes/generate}
- */
-export async function generateRoute({
-	pathParams: { projectId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GenerateRoutePathParams;
-	queryParams?: GenerateRouteQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!projectId) {
-		throw new Error(`Missing required path parameter: projectId`);
-	}
-
-	const data = await request<
-		GenerateRouteMutationResponse,
-		ErrorWrapper<
-			GenerateRoute400 | GenerateRoute401 | GenerateRoute403 | GenerateRoute408 | GenerateRoute500
-		>,
-		null,
-		Record<string, string>,
-		GenerateRouteQueryParams,
-		GenerateRoutePathParams
-	>({
-		method: "POST",
-		url: `/v1/projects/${projectId}/routes/generate`,
-		queryParams,
-		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
-	});
-	return data;
-}
-
-/**
- * @description Get the version history for a project's routing rules. Returns the staging version (if one exists) followed by production versions, most recent first. The staging version has `isStaging: true` and the current production version has `isLive: true`.
- * @summary Get routing rule version history
- * {@link /v1/projects/:projectId/routes/versions}
- */
-export async function getRouteVersions({
-	pathParams: { projectId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetRouteVersionsPathParams;
-	queryParams?: GetRouteVersionsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!projectId) {
-		throw new Error(`Missing required path parameter: projectId`);
-	}
-
-	const data = await request<
-		GetRouteVersionsQueryResponse,
-		ErrorWrapper<GetRouteVersions400 | GetRouteVersions401 | GetRouteVersions403>,
-		null,
-		Record<string, string>,
-		GetRouteVersionsQueryParams,
-		GetRouteVersionsPathParams
+		{
+			limit?: number;
+			since?: number;
+			until?: number;
+			search?: string;
+			teamId?: string;
+			slug?: string;
+		},
+		{ idOrName: string }
 	>({
 		method: "GET",
-		url: `/v1/projects/${projectId}/routes/versions`,
+		url: `/v1/projects/${pathParams.idOrName}/members`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Promote staged routing rules to production, restore a previous production version, or discard staged changes. - `promote`: Publishes the staging version to production. - `restore`: Rolls back to a previous production version. - `discard`: Removes the staging version without publishing.
- * @summary Promote, restore, or discard a routing rule version
- * {@link /v1/projects/:projectId/routes/versions}
+ * @summary Adds a new member to a project.
+ * @description Adds a new member to the project.
+ * @link /v1/projects/{idOrName}/members
  */
-export async function updateRouteVersions({
-	pathParams: { projectId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: UpdateRouteVersionsPathParams;
-	queryParams?: UpdateRouteVersionsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function addProjectMember(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!projectId) {
+	if (!pathParams.idOrName) {
+		throw new Error(`Missing required path parameter: idOrName`);
+	}
+	const data = await request<
+		AddProjectMemberResponse,
+		ErrorWrapper<
+			| AddProjectMemberStatus400
+			| AddProjectMemberStatus401
+			| AddProjectMemberStatus403
+			| AddProjectMemberStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ idOrName: string }
+	>({
+		method: "POST",
+		url: `/v1/projects/${pathParams.idOrName}/members`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Remove a Project Member
+ * @description Remove a member from a specific project
+ * @link /v1/projects/{idOrName}/members/{uid}
+ */
+export async function removeProjectMember(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string; uid: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.idOrName) {
+		throw new Error(`Missing required path parameter: idOrName`);
+	}
+
+	if (!pathParams.uid) {
+		throw new Error(`Missing required path parameter: uid`);
+	}
+	const data = await request<
+		RemoveProjectMemberResponse,
+		ErrorWrapper<
+			RemoveProjectMemberStatus400 | RemoveProjectMemberStatus401 | RemoveProjectMemberStatus403
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ idOrName: string; uid: string }
+	>({
+		method: "DELETE",
+		url: `/v1/projects/${pathParams.idOrName}/members/${pathParams.uid}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Get project routing rules
+ * @description Get the routing rules for a project. Supports searching by name/ID/pattern, filtering by route type, and diffing staged changes against production.
+ * @link /v1/projects/{projectId}/routes
+ */
+export async function getRoutes(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectId: string };
+		queryParams?: {
+			versionId?: string;
+			q?: string;
+			filter?: "rewrite" | "redirect" | "set_status" | "transform";
+			diff?: unknown;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.projectId) {
+		throw new Error(`Missing required path parameter: projectId`);
+	}
+	const data = await request<
+		GetRoutesResponse,
+		ErrorWrapper<GetRoutesStatus400 | GetRoutesStatus401 | GetRoutesStatus403 | GetRoutesStatus404>,
+		null,
+		Record<string, string>,
+		{
+			versionId?: string;
+			q?: string;
+			filter?: "rewrite" | "redirect" | "set_status" | "transform";
+			diff?: unknown;
+			teamId?: string;
+			slug?: string;
+		},
+		{ projectId: string }
+	>({
+		method: "GET",
+		url: `/v1/projects/${pathParams.projectId}/routes`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Stage routing rules
+ * @description Stage routing rules for a project. Set `overwrite` to true to replace all existing rules, or omit it to merge with existing rules by ID. Returns the new staged version.
+ * @link /v1/projects/{projectId}/routes
+ */
+export async function stageRoutes(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.projectId) {
+		throw new Error(`Missing required path parameter: projectId`);
+	}
+	const data = await request<
+		StageRoutesResponse,
+		ErrorWrapper<
+			| StageRoutesStatus400
+			| StageRoutesStatus401
+			| StageRoutesStatus403
+			| StageRoutesStatus409
+			| StageRoutesStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ projectId: string }
+	>({
+		method: "PUT",
+		url: `/v1/projects/${pathParams.projectId}/routes`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Add a routing rule
+ * @description Add a single routing rule to a project at a specified position. Defaults to the end of the list if no position is provided. The route is enabled by default. Stages a new version with the added route.
+ * @link /v1/projects/{projectId}/routes
+ */
+export async function addRoute(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.projectId) {
+		throw new Error(`Missing required path parameter: projectId`);
+	}
+	const data = await request<
+		AddRouteResponse,
+		ErrorWrapper<
+			| AddRouteStatus400
+			| AddRouteStatus401
+			| AddRouteStatus403
+			| AddRouteStatus409
+			| AddRouteStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ projectId: string }
+	>({
+		method: "POST",
+		url: `/v1/projects/${pathParams.projectId}/routes`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Delete routing rules
+ * @description Delete one or more routing rules from a project by ID. Stages a new version with the routes removed.
+ * @link /v1/projects/{projectId}/routes
+ */
+export async function deleteRoutes(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.projectId) {
+		throw new Error(`Missing required path parameter: projectId`);
+	}
+	const data = await request<
+		DeleteRoutesResponse,
+		ErrorWrapper<
+			| DeleteRoutesStatus400
+			| DeleteRoutesStatus401
+			| DeleteRoutesStatus403
+			| DeleteRoutesStatus404
+			| DeleteRoutesStatus409
+			| DeleteRoutesStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ projectId: string }
+	>({
+		method: "DELETE",
+		url: `/v1/projects/${pathParams.projectId}/routes`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Edit a routing rule
+ * @description Replace a routing rule identified by its ID, or restore it from the current production version. Stages a new version with the modified route.
+ * @link /v1/projects/{projectId}/routes/{routeId}
+ */
+export async function editRoute(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectId: string; routeId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.projectId) {
 		throw new Error(`Missing required path parameter: projectId`);
 	}
 
+	if (!pathParams.routeId) {
+		throw new Error(`Missing required path parameter: routeId`);
+	}
 	const data = await request<
-		UpdateRouteVersionsMutationResponse,
+		EditRouteResponse,
 		ErrorWrapper<
-			| UpdateRouteVersions400
-			| UpdateRouteVersions401
-			| UpdateRouteVersions403
-			| UpdateRouteVersions404
-			| UpdateRouteVersions500
+			| EditRouteStatus400
+			| EditRouteStatus401
+			| EditRouteStatus403
+			| EditRouteStatus404
+			| EditRouteStatus409
+			| EditRouteStatus500
 		>,
 		null,
 		Record<string, string>,
-		UpdateRouteVersionsQueryParams,
-		UpdateRouteVersionsPathParams
+		{ teamId?: string; slug?: string },
+		{ projectId: string; routeId: string }
 	>({
-		method: "POST",
-		url: `/v1/projects/${projectId}/routes/versions`,
+		method: "PATCH",
+		url: `/v1/projects/${pathParams.projectId}/routes/${pathParams.routeId}`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Allows to retrieve the list of projects of the authenticated user or team. The list will be paginated and the provided query parameters allow filtering the returned projects.
- * @summary Retrieve a list of projects
- * {@link /v10/projects}
+ * @summary Generate a routing rule from natural language
+ * @description Generate a routing rule configuration from a natural language description. Returns a suggested route configuration that can be reviewed and saved.
+ * @link /v1/projects/{projectId}/routes/generate
  */
-export async function getProjects({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: GetProjectsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function generateRoute(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
+	if (!pathParams.projectId) {
+		throw new Error(`Missing required path parameter: projectId`);
+	}
 	const data = await request<
-		GetProjectsQueryResponse,
-		ErrorWrapper<GetProjects400 | GetProjects401 | GetProjects403>,
-		null,
-		Record<string, string>,
-		GetProjectsQueryParams,
-		Record<string, string>
-	>({ method: "GET", url: `/v10/projects`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Allows to create a new project with the provided configuration. It only requires the project `name` but more configuration can be provided to override the defaults.
- * @summary Create a new project
- * {@link /v11/projects}
- */
-export async function createProject({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: CreateProjectQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	const data = await request<
-		CreateProjectMutationResponse,
+		GenerateRouteResponse,
 		ErrorWrapper<
-			| CreateProject400
-			| CreateProject401
-			| CreateProject402
-			| CreateProject403
-			| CreateProject404
-			| CreateProject409
-			| CreateProject428
-			| CreateProject429
-			| CreateProject500
+			| GenerateRouteStatus400
+			| GenerateRouteStatus401
+			| GenerateRouteStatus403
+			| GenerateRouteStatus408
+			| GenerateRouteStatus500
 		>,
 		null,
 		Record<string, string>,
-		CreateProjectQueryParams,
+		{ teamId?: string; slug?: string },
+		{ projectId: string }
+	>({
+		method: "POST",
+		url: `/v1/projects/${pathParams.projectId}/routes/generate`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Get routing rule version history
+ * @description Get the version history for a project's routing rules. Returns the staging version (if one exists) followed by production versions, most recent first. The staging version has `isStaging: true` and the current production version has `isLive: true`.
+ * @link /v1/projects/{projectId}/routes/versions
+ */
+export async function getRouteVersions(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.projectId) {
+		throw new Error(`Missing required path parameter: projectId`);
+	}
+	const data = await request<
+		GetRouteVersionsResponse,
+		ErrorWrapper<GetRouteVersionsStatus400 | GetRouteVersionsStatus401 | GetRouteVersionsStatus403>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ projectId: string }
+	>({
+		method: "GET",
+		url: `/v1/projects/${pathParams.projectId}/routes/versions`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Promote, restore, or discard a routing rule version
+ * @description Promote staged routing rules to production, restore a previous production version, or discard staged changes. - `promote`: Publishes the staging version to production. - `restore`: Rolls back to a previous production version. - `discard`: Removes the staging version without publishing.
+ * @link /v1/projects/{projectId}/routes/versions
+ */
+export async function updateRouteVersions(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.projectId) {
+		throw new Error(`Missing required path parameter: projectId`);
+	}
+	const data = await request<
+		UpdateRouteVersionsResponse,
+		ErrorWrapper<
+			| UpdateRouteVersionsStatus400
+			| UpdateRouteVersionsStatus401
+			| UpdateRouteVersionsStatus403
+			| UpdateRouteVersionsStatus404
+			| UpdateRouteVersionsStatus409
+			| UpdateRouteVersionsStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ projectId: string }
+	>({
+		method: "POST",
+		url: `/v1/projects/${pathParams.projectId}/routes/versions`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Retrieve a list of projects
+ * @description Allows to retrieve the list of projects of the authenticated user or team. The list will be paginated and the provided query parameters allow filtering the returned projects.
+ * @link /v10/projects
+ */
+export async function getProjects(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			from?: string;
+			gitForkProtection?: string;
+			limit?: string;
+			search?: string;
+			repo?: string;
+			repoId?: string;
+			repoUrl?: string;
+			excludeRepos?: string;
+			edgeConfigId?: string;
+			edgeConfigTokenId?: string;
+			deprecated?: boolean;
+			elasticConcurrencyEnabled?: string;
+			staticIpsEnabled?: string;
+			buildMachineTypes?: string;
+			buildQueueConfiguration?: "SKIP_NAMESPACE_QUEUE" | "WAIT_FOR_NAMESPACE_QUEUE";
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		GetProjectsResponse,
+		ErrorWrapper<GetProjectsStatus400 | GetProjectsStatus401 | GetProjectsStatus403>,
+		null,
+		Record<string, string>,
+		{
+			from?: string;
+			gitForkProtection?: string;
+			limit?: string;
+			search?: string;
+			repo?: string;
+			repoId?: string;
+			repoUrl?: string;
+			excludeRepos?: string;
+			edgeConfigId?: string;
+			edgeConfigTokenId?: string;
+			deprecated?: boolean;
+			elasticConcurrencyEnabled?: string;
+			staticIpsEnabled?: string;
+			buildMachineTypes?: string;
+			buildQueueConfiguration?: "SKIP_NAMESPACE_QUEUE" | "WAIT_FOR_NAMESPACE_QUEUE";
+			teamId?: string;
+			slug?: string;
+		},
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/v10/projects`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Create a new project
+ * @description Allows to create a new project with the provided configuration. It only requires the project `name` but more configuration can be provided to override the defaults.
+ * @link /v11/projects
+ */
+export async function createProject(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		CreateProjectResponse,
+		ErrorWrapper<
+			| CreateProjectStatus400
+			| CreateProjectStatus401
+			| CreateProjectStatus402
+			| CreateProjectStatus403
+			| CreateProjectStatus404
+			| CreateProjectStatus409
+			| CreateProjectStatus428
+			| CreateProjectStatus429
+			| CreateProjectStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
 		Record<string, string>
 	>({
 		method: "POST",
 		url: `/v11/projects`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Get the information for a specific project by passing either the project `id` or `name` in the URL.
  * @summary Find a project by id or name
- * {@link /v9/projects/:idOrName}
+ * @description Get the information for a specific project by passing either the project `id` or `name` in the URL.
+ * @link /v9/projects/{idOrName}
  */
-export async function getProject({
-	pathParams: { idOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetProjectPathParams;
-	queryParams?: GetProjectQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getProject(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: unknown };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!idOrName) {
+	if (!pathParams.idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
-
 	const data = await request<
-		GetProjectQueryResponse,
-		ErrorWrapper<GetProject400 | GetProject401 | GetProject403>,
+		GetProjectResponse,
+		ErrorWrapper<GetProjectStatus400 | GetProjectStatus401 | GetProjectStatus403>,
 		null,
 		Record<string, string>,
-		GetProjectQueryParams,
-		GetProjectPathParams
-	>({ method: "GET", url: `/v9/projects/${idOrName}`, queryParams, ...requestConfig });
+		{ teamId?: string; slug?: string },
+		{ idOrName: unknown }
+	>({
+		method: "GET",
+		url: `/v9/projects/${pathParams.idOrName}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Update the fields of a project using either its `name` or `id`.
  * @summary Update an existing project
- * {@link /v9/projects/:idOrName}
+ * @description Update the fields of a project using either its `name` or `id`.
+ * @link /v9/projects/{idOrName}
  */
-export async function updateProject({
-	pathParams: { idOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: UpdateProjectPathParams;
-	queryParams?: UpdateProjectQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateProject(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!idOrName) {
+	if (!pathParams.idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
-
 	const data = await request<
-		UpdateProjectMutationResponse,
+		UpdateProjectResponse,
 		ErrorWrapper<
-			| UpdateProject400
-			| UpdateProject401
-			| UpdateProject402
-			| UpdateProject403
-			| UpdateProject404
-			| UpdateProject409
-			| UpdateProject428
+			| UpdateProjectStatus400
+			| UpdateProjectStatus401
+			| UpdateProjectStatus402
+			| UpdateProjectStatus403
+			| UpdateProjectStatus404
+			| UpdateProjectStatus409
+			| UpdateProjectStatus428
 		>,
 		null,
 		Record<string, string>,
-		UpdateProjectQueryParams,
-		UpdateProjectPathParams
+		{ teamId?: string; slug?: string },
+		{ idOrName: string }
 	>({
 		method: "PATCH",
-		url: `/v9/projects/${idOrName}`,
+		url: `/v9/projects/${pathParams.idOrName}`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Delete a specific project by passing either the project `id` or `name` in the URL.
  * @summary Delete a Project
- * {@link /v9/projects/:idOrName}
+ * @description Delete a specific project by passing either the project `id` or `name` in the URL.
+ * @link /v9/projects/{idOrName}
  */
-export async function deleteProject({
-	pathParams: { idOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: DeleteProjectPathParams;
-	queryParams?: DeleteProjectQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteProject(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!idOrName) {
+	if (!pathParams.idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
-
 	const data = await request<
-		DeleteProjectMutationResponse,
-		ErrorWrapper<DeleteProject400 | DeleteProject401 | DeleteProject403 | DeleteProject409>,
+		DeleteProjectResponse,
+		ErrorWrapper<
+			| DeleteProjectStatus400
+			| DeleteProjectStatus401
+			| DeleteProjectStatus403
+			| DeleteProjectStatus409
+		>,
 		null,
 		Record<string, string>,
-		DeleteProjectQueryParams,
-		DeleteProjectPathParams
-	>({ method: "DELETE", url: `/v9/projects/${idOrName}`, queryParams, ...requestConfig });
+		{ teamId?: string; slug?: string },
+		{ idOrName: string }
+	>({
+		method: "DELETE",
+		url: `/v9/projects/${pathParams.idOrName}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Allows configuring Static IPs for a project
  * @summary Configures Static IPs for a project
- * {@link /v1/projects/:idOrName/shared-connect-links}
+ * @description Allows configuring Static IPs for a project
+ * @link /v1/projects/{idOrName}/shared-connect-links
  */
-export async function updateStaticIps({
-	pathParams: { idOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: UpdateStaticIpsPathParams;
-	queryParams?: UpdateStaticIpsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateStaticIps(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!idOrName) {
+	if (!pathParams.idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
-
 	const data = await request<
-		UpdateStaticIpsMutationResponse,
+		UpdateStaticIpsResponse,
 		ErrorWrapper<
-			| UpdateStaticIps400
-			| UpdateStaticIps401
-			| UpdateStaticIps402
-			| UpdateStaticIps403
-			| UpdateStaticIps404
-			| UpdateStaticIps409
-			| UpdateStaticIps500
+			| UpdateStaticIpsStatus400
+			| UpdateStaticIpsStatus401
+			| UpdateStaticIpsStatus402
+			| UpdateStaticIpsStatus403
+			| UpdateStaticIpsStatus404
+			| UpdateStaticIpsStatus409
+			| UpdateStaticIpsStatus500
 		>,
 		null,
 		Record<string, string>,
-		UpdateStaticIpsQueryParams,
-		UpdateStaticIpsPathParams
+		{ teamId?: string; slug?: string },
+		{ idOrName: string }
 	>({
 		method: "PATCH",
-		url: `/v1/projects/${idOrName}/shared-connect-links`,
+		url: `/v1/projects/${pathParams.idOrName}/shared-connect-links`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Creates a custom environment for the current project. Cannot be named 'Production' or 'Preview'.
  * @summary Create a custom environment for the current project.
- * {@link /v9/projects/:idOrName/custom-environments}
+ * @description Creates a custom environment for the current project. Cannot be named 'Production' or 'Preview'.
+ * @link /v9/projects/{idOrName}/custom-environments
  */
-export async function createCustomEnvironment({
-	pathParams: { idOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: CreateCustomEnvironmentPathParams;
-	queryParams?: CreateCustomEnvironmentQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createCustomEnvironment(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!idOrName) {
+	if (!pathParams.idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
-
 	const data = await request<
-		CreateCustomEnvironmentMutationResponse,
+		CreateCustomEnvironmentResponse,
 		ErrorWrapper<
-			| CreateCustomEnvironment400
-			| CreateCustomEnvironment401
-			| CreateCustomEnvironment402
-			| CreateCustomEnvironment403
-			| CreateCustomEnvironment500
+			| CreateCustomEnvironmentStatus400
+			| CreateCustomEnvironmentStatus401
+			| CreateCustomEnvironmentStatus402
+			| CreateCustomEnvironmentStatus403
+			| CreateCustomEnvironmentStatus500
 		>,
 		null,
 		Record<string, string>,
-		CreateCustomEnvironmentQueryParams,
-		CreateCustomEnvironmentPathParams
+		{ teamId?: string; slug?: string },
+		{ idOrName: string }
 	>({
 		method: "POST",
-		url: `/v9/projects/${idOrName}/custom-environments`,
+		url: `/v9/projects/${pathParams.idOrName}/custom-environments`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Retrieve custom environments for the project. Must not be named 'Production' or 'Preview'.
  * @summary Retrieve custom environments
- * {@link /v9/projects/:idOrName/custom-environments}
+ * @description Retrieve custom environments for the project. Must not be named 'Production' or 'Preview'.
+ * @link /v9/projects/{idOrName}/custom-environments
  */
-export async function getProjectsByIdOrNameCustomEnvironments({
-	pathParams: { idOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetProjectsByIdOrNameCustomEnvironmentsPathParams;
-	queryParams?: GetProjectsByIdOrNameCustomEnvironmentsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getProjectsByIdOrNameCustomEnvironments(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string };
+		queryParams?: { gitBranch?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!idOrName) {
+	if (!pathParams.idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
-
 	const data = await request<
-		GetProjectsByIdOrNameCustomEnvironmentsQueryResponse,
+		GetProjectsByIdOrNameCustomEnvironmentsResponse,
 		ErrorWrapper<
-			| GetProjectsByIdOrNameCustomEnvironments400
-			| GetProjectsByIdOrNameCustomEnvironments401
-			| GetProjectsByIdOrNameCustomEnvironments403
+			| GetProjectsByIdOrNameCustomEnvironmentsStatus400
+			| GetProjectsByIdOrNameCustomEnvironmentsStatus401
+			| GetProjectsByIdOrNameCustomEnvironmentsStatus403
 		>,
 		null,
 		Record<string, string>,
-		GetProjectsByIdOrNameCustomEnvironmentsQueryParams,
-		GetProjectsByIdOrNameCustomEnvironmentsPathParams
+		{ gitBranch?: string; teamId?: string; slug?: string },
+		{ idOrName: string }
 	>({
 		method: "GET",
-		url: `/v9/projects/${idOrName}/custom-environments`,
+		url: `/v9/projects/${pathParams.idOrName}/custom-environments`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Retrieve a custom environment for the project. Must not be named 'Production' or 'Preview'.
  * @summary Retrieve a custom environment
- * {@link /v9/projects/:idOrName/custom-environments/:environmentSlugOrId}
+ * @description Retrieve a custom environment for the project. Must not be named 'Production' or 'Preview'.
+ * @link /v9/projects/{idOrName}/custom-environments/{environmentSlugOrId}
  */
-export async function getCustomEnvironment({
-	pathParams: { idOrName, environmentSlugOrId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetCustomEnvironmentPathParams;
-	queryParams?: GetCustomEnvironmentQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getCustomEnvironment(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string; environmentSlugOrId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!idOrName) {
+	if (!pathParams.idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
 
-	if (!environmentSlugOrId) {
+	if (!pathParams.environmentSlugOrId) {
 		throw new Error(`Missing required path parameter: environmentSlugOrId`);
 	}
-
 	const data = await request<
-		GetCustomEnvironmentQueryResponse,
+		GetCustomEnvironmentResponse,
 		ErrorWrapper<
-			| GetCustomEnvironment400
-			| GetCustomEnvironment401
-			| GetCustomEnvironment403
-			| GetCustomEnvironment404
+			| GetCustomEnvironmentStatus400
+			| GetCustomEnvironmentStatus401
+			| GetCustomEnvironmentStatus403
+			| GetCustomEnvironmentStatus404
 		>,
 		null,
 		Record<string, string>,
-		GetCustomEnvironmentQueryParams,
-		GetCustomEnvironmentPathParams
+		{ teamId?: string; slug?: string },
+		{ idOrName: string; environmentSlugOrId: string }
 	>({
 		method: "GET",
-		url: `/v9/projects/${idOrName}/custom-environments/${environmentSlugOrId}`,
+		url: `/v9/projects/${pathParams.idOrName}/custom-environments/${pathParams.environmentSlugOrId}`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Update a custom environment for the project. Must not be named 'Production' or 'Preview'.
  * @summary Update a custom environment
- * {@link /v9/projects/:idOrName/custom-environments/:environmentSlugOrId}
+ * @description Update a custom environment for the project. Must not be named 'Production' or 'Preview'.
+ * @link /v9/projects/{idOrName}/custom-environments/{environmentSlugOrId}
  */
-export async function updateCustomEnvironment({
-	pathParams: { idOrName, environmentSlugOrId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: UpdateCustomEnvironmentPathParams;
-	queryParams?: UpdateCustomEnvironmentQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateCustomEnvironment(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string; environmentSlugOrId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!idOrName) {
+	if (!pathParams.idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
 
-	if (!environmentSlugOrId) {
+	if (!pathParams.environmentSlugOrId) {
 		throw new Error(`Missing required path parameter: environmentSlugOrId`);
 	}
-
 	const data = await request<
-		UpdateCustomEnvironmentMutationResponse,
+		UpdateCustomEnvironmentResponse,
 		ErrorWrapper<
-			| UpdateCustomEnvironment400
-			| UpdateCustomEnvironment401
-			| UpdateCustomEnvironment402
-			| UpdateCustomEnvironment403
-			| UpdateCustomEnvironment500
+			| UpdateCustomEnvironmentStatus400
+			| UpdateCustomEnvironmentStatus401
+			| UpdateCustomEnvironmentStatus402
+			| UpdateCustomEnvironmentStatus403
+			| UpdateCustomEnvironmentStatus500
 		>,
 		null,
 		Record<string, string>,
-		UpdateCustomEnvironmentQueryParams,
-		UpdateCustomEnvironmentPathParams
+		{ teamId?: string; slug?: string },
+		{ idOrName: string; environmentSlugOrId: string }
 	>({
 		method: "PATCH",
-		url: `/v9/projects/${idOrName}/custom-environments/${environmentSlugOrId}`,
+		url: `/v9/projects/${pathParams.idOrName}/custom-environments/${pathParams.environmentSlugOrId}`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Remove a custom environment for the project. Must not be named 'Production' or 'Preview'.
  * @summary Remove a custom environment
- * {@link /v9/projects/:idOrName/custom-environments/:environmentSlugOrId}
+ * @description Remove a custom environment for the project. Must not be named 'Production' or 'Preview'.
+ * @link /v9/projects/{idOrName}/custom-environments/{environmentSlugOrId}
  */
-export async function removeCustomEnvironment({
-	pathParams: { idOrName, environmentSlugOrId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: RemoveCustomEnvironmentPathParams;
-	queryParams?: RemoveCustomEnvironmentQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function removeCustomEnvironment(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string; environmentSlugOrId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!idOrName) {
+	if (!pathParams.idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
 
-	if (!environmentSlugOrId) {
+	if (!pathParams.environmentSlugOrId) {
 		throw new Error(`Missing required path parameter: environmentSlugOrId`);
 	}
-
 	const data = await request<
-		RemoveCustomEnvironmentMutationResponse,
+		RemoveCustomEnvironmentResponse,
 		ErrorWrapper<
-			RemoveCustomEnvironment400 | RemoveCustomEnvironment401 | RemoveCustomEnvironment403
+			| RemoveCustomEnvironmentStatus400
+			| RemoveCustomEnvironmentStatus401
+			| RemoveCustomEnvironmentStatus403
 		>,
 		null,
 		Record<string, string>,
-		RemoveCustomEnvironmentQueryParams,
-		RemoveCustomEnvironmentPathParams
+		{ teamId?: string; slug?: string },
+		{ idOrName: string; environmentSlugOrId: string }
 	>({
 		method: "DELETE",
-		url: `/v9/projects/${idOrName}/custom-environments/${environmentSlugOrId}`,
+		url: `/v9/projects/${pathParams.idOrName}/custom-environments/${pathParams.environmentSlugOrId}`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Retrieve the domains associated with a given project by passing either the project `id` or `name` in the URL.
  * @summary Retrieve project domains by project by id or name
- * {@link /v9/projects/:idOrName/domains}
+ * @description Retrieve the domains associated with a given project by passing either the project `id` or `name` in the URL.
+ * @link /v9/projects/{idOrName}/domains
  */
-export async function getProjectDomains({
-	pathParams: { idOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetProjectDomainsPathParams;
-	queryParams?: GetProjectDomainsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getProjectDomains(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: unknown };
+		queryParams?: {
+			production?: "true" | "false";
+			target?: "production" | "preview";
+			customEnvironmentId?: string;
+			gitBranch?: string;
+			redirects?: "true" | "false";
+			redirect?: string;
+			verified?: "true" | "false";
+			limit?: number;
+			since?: number;
+			until?: number;
+			order?: "ASC" | "DESC";
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!idOrName) {
+	if (!pathParams.idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
-
 	const data = await request<
-		GetProjectDomainsQueryResponse,
-		ErrorWrapper<GetProjectDomains400 | GetProjectDomains401 | GetProjectDomains403>,
+		GetProjectDomainsResponse,
+		ErrorWrapper<
+			GetProjectDomainsStatus400 | GetProjectDomainsStatus401 | GetProjectDomainsStatus403
+		>,
 		null,
 		Record<string, string>,
-		GetProjectDomainsQueryParams,
-		GetProjectDomainsPathParams
-	>({ method: "GET", url: `/v9/projects/${idOrName}/domains`, queryParams, ...requestConfig });
+		{
+			production?: "true" | "false";
+			target?: "production" | "preview";
+			customEnvironmentId?: string;
+			gitBranch?: string;
+			redirects?: "true" | "false";
+			redirect?: string;
+			verified?: "true" | "false";
+			limit?: number;
+			since?: number;
+			until?: number;
+			order?: "ASC" | "DESC";
+			teamId?: string;
+			slug?: string;
+		},
+		{ idOrName: unknown }
+	>({
+		method: "GET",
+		url: `/v9/projects/${pathParams.idOrName}/domains`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Get project domain by project id/name and domain name.
  * @summary Get a project domain
- * {@link /v9/projects/:idOrName/domains/:domain}
+ * @description Get project domain by project id/name and domain name.
+ * @link /v9/projects/{idOrName}/domains/{domain}
  */
-export async function getProjectDomain({
-	pathParams: { idOrName, domain },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetProjectDomainPathParams;
-	queryParams?: GetProjectDomainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getProjectDomain(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string; domain: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!idOrName) {
+	if (!pathParams.idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
 
-	if (!domain) {
+	if (!pathParams.domain) {
 		throw new Error(`Missing required path parameter: domain`);
 	}
-
 	const data = await request<
-		GetProjectDomainQueryResponse,
-		ErrorWrapper<GetProjectDomain400 | GetProjectDomain401 | GetProjectDomain403>,
+		GetProjectDomainResponse,
+		ErrorWrapper<GetProjectDomainStatus400 | GetProjectDomainStatus401 | GetProjectDomainStatus403>,
 		null,
 		Record<string, string>,
-		GetProjectDomainQueryParams,
-		GetProjectDomainPathParams
+		{ teamId?: string; slug?: string },
+		{ idOrName: string; domain: string }
 	>({
 		method: "GET",
-		url: `/v9/projects/${idOrName}/domains/${domain}`,
+		url: `/v9/projects/${pathParams.idOrName}/domains/${pathParams.domain}`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Update a project domain's configuration, including the name, git branch and redirect of the domain.
  * @summary Update a project domain
- * {@link /v9/projects/:idOrName/domains/:domain}
+ * @description Update a project domain's configuration, including the name, git branch and redirect of the domain.
+ * @link /v9/projects/{idOrName}/domains/{domain}
  */
-export async function updateProjectDomain({
-	pathParams: { idOrName, domain },
-	queryParams,
-	config = {},
-}: {
-	pathParams: UpdateProjectDomainPathParams;
-	queryParams?: UpdateProjectDomainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateProjectDomain(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string; domain: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!idOrName) {
+	if (!pathParams.idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
 
-	if (!domain) {
+	if (!pathParams.domain) {
 		throw new Error(`Missing required path parameter: domain`);
 	}
-
 	const data = await request<
-		UpdateProjectDomainMutationResponse,
+		UpdateProjectDomainResponse,
 		ErrorWrapper<
-			| UpdateProjectDomain400
-			| UpdateProjectDomain401
-			| UpdateProjectDomain403
-			| UpdateProjectDomain409
+			| UpdateProjectDomainStatus400
+			| UpdateProjectDomainStatus401
+			| UpdateProjectDomainStatus403
+			| UpdateProjectDomainStatus409
 		>,
 		null,
 		Record<string, string>,
-		UpdateProjectDomainQueryParams,
-		UpdateProjectDomainPathParams
+		{ teamId?: string; slug?: string },
+		{ idOrName: string; domain: string }
 	>({
 		method: "PATCH",
-		url: `/v9/projects/${idOrName}/domains/${domain}`,
+		url: `/v9/projects/${pathParams.idOrName}/domains/${pathParams.domain}`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Remove a domain from a project by passing the domain name and by specifying the project by either passing the project `id` or `name` in the URL.
  * @summary Remove a domain from a project
- * {@link /v9/projects/:idOrName/domains/:domain}
+ * @description Remove a domain from a project by passing the domain name and by specifying the project by either passing the project `id` or `name` in the URL.
+ * @link /v9/projects/{idOrName}/domains/{domain}
  */
-export async function removeProjectDomain({
-	pathParams: { idOrName, domain },
-	queryParams,
-	config = {},
-}: {
-	pathParams: RemoveProjectDomainPathParams;
-	queryParams?: RemoveProjectDomainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function removeProjectDomain(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string; domain: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!idOrName) {
+	if (!pathParams.idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
 
-	if (!domain) {
+	if (!pathParams.domain) {
 		throw new Error(`Missing required path parameter: domain`);
 	}
-
 	const data = await request<
-		RemoveProjectDomainMutationResponse,
+		RemoveProjectDomainResponse,
 		ErrorWrapper<
-			| RemoveProjectDomain400
-			| RemoveProjectDomain401
-			| RemoveProjectDomain403
-			| RemoveProjectDomain404
-			| RemoveProjectDomain409
+			| RemoveProjectDomainStatus400
+			| RemoveProjectDomainStatus401
+			| RemoveProjectDomainStatus403
+			| RemoveProjectDomainStatus404
+			| RemoveProjectDomainStatus409
 		>,
 		null,
 		Record<string, string>,
-		RemoveProjectDomainQueryParams,
-		RemoveProjectDomainPathParams
+		{ teamId?: string; slug?: string },
+		{ idOrName: string; domain: string }
 	>({
 		method: "DELETE",
-		url: `/v9/projects/${idOrName}/domains/${domain}`,
+		url: `/v9/projects/${pathParams.idOrName}/domains/${pathParams.domain}`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Add a domain to the project by passing its domain name and by specifying the project by either passing the project `id` or `name` in the URL. If the domain is not yet verified to be used on this project, the request will return `verified = false`, and the domain will need to be verified according to the `verification` challenge via `POST /projects/:idOrName/domains/:domain/verify`. If the domain already exists on the project, the request will fail with a `400` status code.
  * @summary Add a domain to a project
- * {@link /v10/projects/:idOrName/domains}
+ * @description Add a domain to the project by passing its domain name and by specifying the project by either passing the project `id` or `name` in the URL. If the domain is not yet verified to be used on this project, the request will return `verified = false`, and the domain will need to be verified according to the `verification` challenge via `POST /projects/:idOrName/domains/:domain/verify`. If the domain already exists on the project, the request will fail with a `400` status code.
+ * @link /v10/projects/{idOrName}/domains
  */
-export async function addProjectDomain({
-	pathParams: { idOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: AddProjectDomainPathParams;
-	queryParams?: AddProjectDomainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function addProjectDomain(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!idOrName) {
+	if (!pathParams.idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
-
 	const data = await request<
-		AddProjectDomainMutationResponse,
+		AddProjectDomainResponse,
 		ErrorWrapper<
-			| AddProjectDomain400
-			| AddProjectDomain401
-			| AddProjectDomain402
-			| AddProjectDomain403
-			| AddProjectDomain409
+			| AddProjectDomainStatus400
+			| AddProjectDomainStatus401
+			| AddProjectDomainStatus402
+			| AddProjectDomainStatus403
+			| AddProjectDomainStatus409
 		>,
 		null,
 		Record<string, string>,
-		AddProjectDomainQueryParams,
-		AddProjectDomainPathParams
+		{ teamId?: string; slug?: string },
+		{ idOrName: string }
 	>({
 		method: "POST",
-		url: `/v10/projects/${idOrName}/domains`,
+		url: `/v10/projects/${pathParams.idOrName}/domains`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Move one project's domain to another project. Also allows the move of all redirects pointed to that domain in the same project.
  * @summary Move a project domain
- * {@link /v1/projects/:idOrName/domains/:domain/move}
+ * @description Move one project's domain to another project. Also allows the move of all redirects pointed to that domain in the same project.
+ * @link /v1/projects/{idOrName}/domains/{domain}/move
  */
-export async function moveProjectDomain({
-	pathParams: { idOrName, domain },
-	queryParams,
-	config = {},
-}: {
-	pathParams: MoveProjectDomainPathParams;
-	queryParams?: MoveProjectDomainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function moveProjectDomain(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string; domain: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!idOrName) {
+	if (!pathParams.idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
 
-	if (!domain) {
+	if (!pathParams.domain) {
 		throw new Error(`Missing required path parameter: domain`);
 	}
-
 	const data = await request<
-		MoveProjectDomainMutationResponse,
+		MoveProjectDomainResponse,
 		ErrorWrapper<
-			MoveProjectDomain400 | MoveProjectDomain401 | MoveProjectDomain403 | MoveProjectDomain409
+			| MoveProjectDomainStatus400
+			| MoveProjectDomainStatus401
+			| MoveProjectDomainStatus403
+			| MoveProjectDomainStatus409
 		>,
 		null,
 		Record<string, string>,
-		MoveProjectDomainQueryParams,
-		MoveProjectDomainPathParams
+		{ teamId?: string; slug?: string },
+		{ idOrName: string; domain: string }
 	>({
 		method: "POST",
-		url: `/v1/projects/${idOrName}/domains/${domain}/move`,
+		url: `/v1/projects/${pathParams.idOrName}/domains/${pathParams.domain}/move`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Attempts to verify a project domain with `verified = false` by checking the correctness of the project domain's `verification` challenge.
  * @summary Verify project domain
- * {@link /v9/projects/:idOrName/domains/:domain/verify}
+ * @description Attempts to verify a project domain with `verified = false` by checking the correctness of the project domain's `verification` challenge.
+ * @link /v9/projects/{idOrName}/domains/{domain}/verify
  */
-export async function verifyProjectDomain({
-	pathParams: { idOrName, domain },
-	queryParams,
-	config = {},
-}: {
-	pathParams: VerifyProjectDomainPathParams;
-	queryParams?: VerifyProjectDomainQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function verifyProjectDomain(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string; domain: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!idOrName) {
+	if (!pathParams.idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
 
-	if (!domain) {
+	if (!pathParams.domain) {
 		throw new Error(`Missing required path parameter: domain`);
 	}
-
 	const data = await request<
-		VerifyProjectDomainMutationResponse,
-		ErrorWrapper<VerifyProjectDomain400 | VerifyProjectDomain401 | VerifyProjectDomain403>,
+		VerifyProjectDomainResponse,
+		ErrorWrapper<
+			VerifyProjectDomainStatus400 | VerifyProjectDomainStatus401 | VerifyProjectDomainStatus403
+		>,
 		null,
 		Record<string, string>,
-		VerifyProjectDomainQueryParams,
-		VerifyProjectDomainPathParams
+		{ teamId?: string; slug?: string },
+		{ idOrName: string; domain: string }
 	>({
 		method: "POST",
-		url: `/v9/projects/${idOrName}/domains/${domain}/verify`,
+		url: `/v9/projects/${pathParams.idOrName}/domains/${pathParams.domain}/verify`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Retrieve the environment variables for a given project by passing either the project `id` or `name` in the URL.
  * @summary Retrieve the environment variables of a project by id or name
- * {@link /v10/projects/:idOrName/env}
+ * @description Retrieve the environment variables for a given project by passing either the project `id` or `name` in the URL.
+ * @link /v10/projects/{idOrName}/env
  */
-export async function filterProjectEnvs({
-	pathParams: { idOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: FilterProjectEnvsPathParams;
-	queryParams?: FilterProjectEnvsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function filterProjectEnvs(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string };
+		queryParams?: {
+			gitBranch?: string;
+			decrypt?: "true" | "false";
+			source?: string;
+			customEnvironmentId?: string;
+			customEnvironmentSlug?: string;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!idOrName) {
+	if (!pathParams.idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
-
 	const data = await request<
-		FilterProjectEnvsQueryResponse,
-		ErrorWrapper<FilterProjectEnvs400 | FilterProjectEnvs401 | FilterProjectEnvs403>,
+		FilterProjectEnvsResponse,
+		ErrorWrapper<
+			FilterProjectEnvsStatus400 | FilterProjectEnvsStatus401 | FilterProjectEnvsStatus403
+		>,
 		null,
 		Record<string, string>,
-		FilterProjectEnvsQueryParams,
-		FilterProjectEnvsPathParams
-	>({ method: "GET", url: `/v10/projects/${idOrName}/env`, queryParams, ...requestConfig });
+		{
+			gitBranch?: string;
+			decrypt?: "true" | "false";
+			source?: string;
+			customEnvironmentId?: string;
+			customEnvironmentSlug?: string;
+			teamId?: string;
+			slug?: string;
+		},
+		{ idOrName: string }
+	>({
+		method: "GET",
+		url: `/v10/projects/${pathParams.idOrName}/env`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Create one or more environment variables for a project by passing its `key`, `value`, `type` and `target` and by specifying the project by either passing the project `id` or `name` in the URL. If you include `upsert=true` as a query parameter, a new environment variable will not be created if it already exists but, the existing variable's value will be updated.
  * @summary Create one or more environment variables
- * {@link /v10/projects/:idOrName/env}
+ * @description Create one or more environment variables for a project by passing its `key`, `value`, `type` and `target` and by specifying the project by either passing the project `id` or `name` in the URL. If you include `upsert=true` as a query parameter, a new environment variable will not be created if it already exists but, the existing variable's value will be updated.
+ * @link /v10/projects/{idOrName}/env
  */
-export async function createProjectEnv({
-	pathParams: { idOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: CreateProjectEnvPathParams;
-	queryParams?: CreateProjectEnvQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createProjectEnv(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string };
+		queryParams?: { upsert?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!idOrName) {
+	if (!pathParams.idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
-
 	const data = await request<
-		CreateProjectEnvMutationResponse,
+		CreateProjectEnvResponse,
 		ErrorWrapper<
-			| CreateProjectEnv400
-			| CreateProjectEnv401
-			| CreateProjectEnv402
-			| CreateProjectEnv403
-			| CreateProjectEnv404
-			| CreateProjectEnv409
-			| CreateProjectEnv429
-			| CreateProjectEnv500
+			| CreateProjectEnvStatus400
+			| CreateProjectEnvStatus401
+			| CreateProjectEnvStatus402
+			| CreateProjectEnvStatus403
+			| CreateProjectEnvStatus404
+			| CreateProjectEnvStatus409
+			| CreateProjectEnvStatus429
+			| CreateProjectEnvStatus500
 		>,
 		null,
 		Record<string, string>,
-		CreateProjectEnvQueryParams,
-		CreateProjectEnvPathParams
+		{ upsert?: string; teamId?: string; slug?: string },
+		{ idOrName: string }
 	>({
 		method: "POST",
-		url: `/v10/projects/${idOrName}/env`,
+		url: `/v10/projects/${pathParams.idOrName}/env`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Retrieve the environment variable for a given project.
  * @summary Retrieve the decrypted value of an environment variable of a project by id
- * {@link /v1/projects/:idOrName/env/:id}
+ * @description Retrieve the environment variable for a given project.
+ * @link /v1/projects/{idOrName}/env/{id}
  */
-export async function getProjectEnv({
-	pathParams: { idOrName, id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetProjectEnvPathParams;
-	queryParams?: GetProjectEnvQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getProjectEnv(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string; id: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!idOrName) {
+	if (!pathParams.idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
 
-	if (!id) {
+	if (!pathParams.id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
-
 	const data = await request<
-		GetProjectEnvQueryResponse,
-		ErrorWrapper<GetProjectEnv400 | GetProjectEnv401 | GetProjectEnv403>,
+		GetProjectEnvResponse,
+		ErrorWrapper<GetProjectEnvStatus400 | GetProjectEnvStatus401 | GetProjectEnvStatus403>,
 		null,
 		Record<string, string>,
-		GetProjectEnvQueryParams,
-		GetProjectEnvPathParams
-	>({ method: "GET", url: `/v1/projects/${idOrName}/env/${id}`, queryParams, ...requestConfig });
+		{ teamId?: string; slug?: string },
+		{ idOrName: string; id: string }
+	>({
+		method: "GET",
+		url: `/v1/projects/${pathParams.idOrName}/env/${pathParams.id}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Delete a specific environment variable for a given project by passing the environment variable identifier and either passing the project `id` or `name` in the URL.
  * @summary Remove an environment variable
- * {@link /v9/projects/:idOrName/env/:id}
+ * @description Delete a specific environment variable for a given project by passing the environment variable identifier and either passing the project `id` or `name` in the URL.
+ * @link /v9/projects/{idOrName}/env/{id}
  */
-export async function removeProjectEnv({
-	pathParams: { idOrName, id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: RemoveProjectEnvPathParams;
-	queryParams?: RemoveProjectEnvQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function removeProjectEnv(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string; id: string };
+		queryParams?: { customEnvironmentId?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!idOrName) {
+	if (!pathParams.idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
 
-	if (!id) {
+	if (!pathParams.id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
-
 	const data = await request<
-		RemoveProjectEnvMutationResponse,
+		RemoveProjectEnvResponse,
 		ErrorWrapper<
-			| RemoveProjectEnv400
-			| RemoveProjectEnv401
-			| RemoveProjectEnv403
-			| RemoveProjectEnv404
-			| RemoveProjectEnv409
+			| RemoveProjectEnvStatus400
+			| RemoveProjectEnvStatus401
+			| RemoveProjectEnvStatus403
+			| RemoveProjectEnvStatus404
+			| RemoveProjectEnvStatus409
 		>,
 		null,
 		Record<string, string>,
-		RemoveProjectEnvQueryParams,
-		RemoveProjectEnvPathParams
-	>({ method: "DELETE", url: `/v9/projects/${idOrName}/env/${id}`, queryParams, ...requestConfig });
+		{ customEnvironmentId?: string; teamId?: string; slug?: string },
+		{ idOrName: string; id: string }
+	>({
+		method: "DELETE",
+		url: `/v9/projects/${pathParams.idOrName}/env/${pathParams.id}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Edit a specific environment variable for a given project by passing the environment variable identifier and either passing the project `id` or `name` in the URL.
  * @summary Edit an environment variable
- * {@link /v9/projects/:idOrName/env/:id}
+ * @description Edit a specific environment variable for a given project by passing the environment variable identifier and either passing the project `id` or `name` in the URL.
+ * @link /v9/projects/{idOrName}/env/{id}
  */
-export async function editProjectEnv({
-	pathParams: { idOrName, id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: EditProjectEnvPathParams;
-	queryParams?: EditProjectEnvQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function editProjectEnv(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string; id: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!idOrName) {
+	if (!pathParams.idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
 
-	if (!id) {
+	if (!pathParams.id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
-
 	const data = await request<
-		EditProjectEnvMutationResponse,
+		EditProjectEnvResponse,
 		ErrorWrapper<
-			| EditProjectEnv400
-			| EditProjectEnv401
-			| EditProjectEnv403
-			| EditProjectEnv404
-			| EditProjectEnv409
-			| EditProjectEnv429
-			| EditProjectEnv500
+			| EditProjectEnvStatus400
+			| EditProjectEnvStatus401
+			| EditProjectEnvStatus403
+			| EditProjectEnvStatus404
+			| EditProjectEnvStatus409
+			| EditProjectEnvStatus429
+			| EditProjectEnvStatus500
 		>,
 		null,
 		Record<string, string>,
-		EditProjectEnvQueryParams,
-		EditProjectEnvPathParams
+		{ teamId?: string; slug?: string },
+		{ idOrName: string; id: string }
 	>({
 		method: "PATCH",
-		url: `/v9/projects/${idOrName}/env/${id}`,
+		url: `/v9/projects/${pathParams.idOrName}/env/${pathParams.id}`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Delete multiple environment variables for a given project in a single batch operation.
  * @summary Batch remove environment variables
- * {@link /v1/projects/:idOrName/env}
+ * @description Delete multiple environment variables for a given project in a single batch operation.
+ * @link /v1/projects/{idOrName}/env
  */
-export async function batchRemoveProjectEnv({
-	pathParams: { idOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: BatchRemoveProjectEnvPathParams;
-	queryParams?: BatchRemoveProjectEnvQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function batchRemoveProjectEnv(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!idOrName) {
+	if (!pathParams.idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
-
 	const data = await request<
-		BatchRemoveProjectEnvMutationResponse,
+		BatchRemoveProjectEnvResponse,
 		ErrorWrapper<
-			| BatchRemoveProjectEnv400
-			| BatchRemoveProjectEnv401
-			| BatchRemoveProjectEnv403
-			| BatchRemoveProjectEnv404
-			| BatchRemoveProjectEnv409
+			| BatchRemoveProjectEnvStatus400
+			| BatchRemoveProjectEnvStatus401
+			| BatchRemoveProjectEnvStatus403
+			| BatchRemoveProjectEnvStatus404
+			| BatchRemoveProjectEnvStatus409
 		>,
 		null,
 		Record<string, string>,
-		BatchRemoveProjectEnvQueryParams,
-		BatchRemoveProjectEnvPathParams
+		{ teamId?: string; slug?: string },
+		{ idOrName: string }
 	>({
 		method: "DELETE",
-		url: `/v1/projects/${idOrName}/env`,
+		url: `/v1/projects/${pathParams.idOrName}/env`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Get the Rolling Releases billing status for a project. The team level billing status is used to determine if the project can be configured for rolling releases.
  * @summary Get rolling release billing status
- * {@link /v1/projects/:idOrName/rolling-release/billing}
+ * @description Get the Rolling Releases billing status for a project. The team level billing status is used to determine if the project can be configured for rolling releases.
+ * @link /v1/projects/{idOrName}/rolling-release/billing
  */
-export async function getRollingReleaseBillingStatus({
-	pathParams: { idOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetRollingReleaseBillingStatusPathParams;
-	queryParams?: GetRollingReleaseBillingStatusQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getRollingReleaseBillingStatus(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!idOrName) {
+	if (!pathParams.idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
-
 	const data = await request<
-		GetRollingReleaseBillingStatusQueryResponse,
+		GetRollingReleaseBillingStatusResponse,
 		ErrorWrapper<
-			| GetRollingReleaseBillingStatus400
-			| GetRollingReleaseBillingStatus401
-			| GetRollingReleaseBillingStatus403
-			| GetRollingReleaseBillingStatus404
+			| GetRollingReleaseBillingStatusStatus400
+			| GetRollingReleaseBillingStatusStatus401
+			| GetRollingReleaseBillingStatusStatus403
+			| GetRollingReleaseBillingStatusStatus404
 		>,
 		null,
 		Record<string, string>,
-		GetRollingReleaseBillingStatusQueryParams,
-		GetRollingReleaseBillingStatusPathParams
+		{ teamId?: string; slug?: string },
+		{ idOrName: string }
 	>({
 		method: "GET",
-		url: `/v1/projects/${idOrName}/rolling-release/billing`,
+		url: `/v1/projects/${pathParams.idOrName}/rolling-release/billing`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Get the Rolling Releases configuration for a project. The project-level config is simply a template that will be used for any future rolling release, and not the configuration for any active rolling release.
  * @summary Get rolling release configuration
- * {@link /v1/projects/:idOrName/rolling-release/config}
+ * @description Get the Rolling Releases configuration for a project. The project-level config is simply a template that will be used for any future rolling release, and not the configuration for any active rolling release.
+ * @link /v1/projects/{idOrName}/rolling-release/config
  */
-export async function getRollingReleaseConfig({
-	pathParams: { idOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetRollingReleaseConfigPathParams;
-	queryParams?: GetRollingReleaseConfigQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getRollingReleaseConfig(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!idOrName) {
+	if (!pathParams.idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
-
 	const data = await request<
-		GetRollingReleaseConfigQueryResponse,
+		GetRollingReleaseConfigResponse,
 		ErrorWrapper<
-			| GetRollingReleaseConfig400
-			| GetRollingReleaseConfig401
-			| GetRollingReleaseConfig403
-			| GetRollingReleaseConfig404
+			| GetRollingReleaseConfigStatus400
+			| GetRollingReleaseConfigStatus401
+			| GetRollingReleaseConfigStatus403
+			| GetRollingReleaseConfigStatus404
 		>,
 		null,
 		Record<string, string>,
-		GetRollingReleaseConfigQueryParams,
-		GetRollingReleaseConfigPathParams
+		{ teamId?: string; slug?: string },
+		{ idOrName: string }
 	>({
 		method: "GET",
-		url: `/v1/projects/${idOrName}/rolling-release/config`,
+		url: `/v1/projects/${pathParams.idOrName}/rolling-release/config`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Disable Rolling Releases for a project means that future deployments will not undergo a rolling release. Changing the config never alters a rollout that's already in-flight—it only affects the next production deployment. If you want to also stop the current rollout, call this endpoint to disable the feature, and then call either the /complete or /abort endpoint.
  * @summary Delete rolling release configuration
- * {@link /v1/projects/:idOrName/rolling-release/config}
+ * @description Disable Rolling Releases for a project means that future deployments will not undergo a rolling release. Changing the config never alters a rollout that's already in-flight—it only affects the next production deployment. If you want to also stop the current rollout, call this endpoint to disable the feature, and then call either the /complete or /abort endpoint.
+ * @link /v1/projects/{idOrName}/rolling-release/config
  */
-export async function deleteRollingReleaseConfig({
-	pathParams: { idOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: DeleteRollingReleaseConfigPathParams;
-	queryParams?: DeleteRollingReleaseConfigQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteRollingReleaseConfig(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!idOrName) {
+	if (!pathParams.idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
-
 	const data = await request<
-		DeleteRollingReleaseConfigMutationResponse,
+		DeleteRollingReleaseConfigResponse,
 		ErrorWrapper<
-			| DeleteRollingReleaseConfig400
-			| DeleteRollingReleaseConfig401
-			| DeleteRollingReleaseConfig403
-			| DeleteRollingReleaseConfig404
+			| DeleteRollingReleaseConfigStatus400
+			| DeleteRollingReleaseConfigStatus401
+			| DeleteRollingReleaseConfigStatus403
+			| DeleteRollingReleaseConfigStatus404
 		>,
 		null,
 		Record<string, string>,
-		DeleteRollingReleaseConfigQueryParams,
-		DeleteRollingReleaseConfigPathParams
+		{ teamId?: string; slug?: string },
+		{ idOrName: string }
 	>({
 		method: "DELETE",
-		url: `/v1/projects/${idOrName}/rolling-release/config`,
+		url: `/v1/projects/${pathParams.idOrName}/rolling-release/config`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Update (or disable) Rolling Releases for a project. When disabling with the resolve-on-disable feature flag enabled, any active rolling release document is resolved using the disableRolloutAction parameter: "abort" to roll back (default), or "complete" to promote the canary to production. When enabling or updating config, changes only affect the next production deployment and do not alter a rollout that's already in-flight. Note: Enabling Rolling Releases automatically enables skew protection on the project with the default value if it wasn't configured already.
  * @summary Update the rolling release settings for the project
- * {@link /v1/projects/:idOrName/rolling-release/config}
+ * @description Update (or disable) Rolling Releases for a project. When disabling with the resolve-on-disable feature flag enabled, any active rolling release document is resolved using the disableRolloutAction parameter: "abort" to roll back (default), or "complete" to promote the canary to production. When enabling or updating config, changes only affect the next production deployment and do not alter a rollout that's already in-flight. Note: Enabling Rolling Releases automatically enables skew protection on the project with the default value if it wasn't configured already.
+ * @link /v1/projects/{idOrName}/rolling-release/config
  */
-export async function updateRollingReleaseConfig({
-	pathParams: { idOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: UpdateRollingReleaseConfigPathParams;
-	queryParams?: UpdateRollingReleaseConfigQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateRollingReleaseConfig(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!idOrName) {
+	if (!pathParams.idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
-
 	const data = await request<
-		UpdateRollingReleaseConfigMutationResponse,
+		UpdateRollingReleaseConfigResponse,
 		ErrorWrapper<
-			| UpdateRollingReleaseConfig400
-			| UpdateRollingReleaseConfig401
-			| UpdateRollingReleaseConfig403
-			| UpdateRollingReleaseConfig404
+			| UpdateRollingReleaseConfigStatus400
+			| UpdateRollingReleaseConfigStatus401
+			| UpdateRollingReleaseConfigStatus403
+			| UpdateRollingReleaseConfigStatus404
 		>,
 		null,
 		Record<string, string>,
-		UpdateRollingReleaseConfigQueryParams,
-		UpdateRollingReleaseConfigPathParams
+		{ teamId?: string; slug?: string },
+		{ idOrName: string }
 	>({
 		method: "PATCH",
-		url: `/v1/projects/${idOrName}/rolling-release/config`,
+		url: `/v1/projects/${pathParams.idOrName}/rolling-release/config`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Return the Rolling Release for a project, regardless of whether the rollout is active, aborted, or completed. If the feature is enabled but no deployment has occurred yet, null will be returned.
  * @summary Get the active rolling release information for a project
- * {@link /v1/projects/:idOrName/rolling-release}
+ * @description Return the Rolling Release for a project, regardless of whether the rollout is active, aborted, or completed. If the feature is enabled but no deployment has occurred yet, null will be returned.
+ * @link /v1/projects/{idOrName}/rolling-release
  */
-export async function getRollingRelease({
-	pathParams: { idOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetRollingReleasePathParams;
-	queryParams?: GetRollingReleaseQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getRollingRelease(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string };
+		queryParams?: { state?: "ACTIVE" | "COMPLETE" | "ABORTED"; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!idOrName) {
+	if (!pathParams.idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
-
 	const data = await request<
-		GetRollingReleaseQueryResponse,
+		GetRollingReleaseResponse,
 		ErrorWrapper<
-			GetRollingRelease400 | GetRollingRelease401 | GetRollingRelease403 | GetRollingRelease404
+			| GetRollingReleaseStatus400
+			| GetRollingReleaseStatus401
+			| GetRollingReleaseStatus403
+			| GetRollingReleaseStatus404
 		>,
 		null,
 		Record<string, string>,
-		GetRollingReleaseQueryParams,
-		GetRollingReleasePathParams
+		{ state?: "ACTIVE" | "COMPLETE" | "ABORTED"; teamId?: string; slug?: string },
+		{ idOrName: string }
 	>({
 		method: "GET",
-		url: `/v1/projects/${idOrName}/rolling-release`,
+		url: `/v1/projects/${pathParams.idOrName}/rolling-release`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Advance a rollout to the next stage. This is only needed when rolling releases is configured to require manual approval.
  * @summary Update the active rolling release to the next stage for a project
- * {@link /v1/projects/:idOrName/rolling-release/approve-stage}
+ * @description Advance a rollout to the next stage. This is only needed when rolling releases is configured to require manual approval.
+ * @link /v1/projects/{idOrName}/rolling-release/approve-stage
  */
-export async function approveRollingReleaseStage({
-	pathParams: { idOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ApproveRollingReleaseStagePathParams;
-	queryParams?: ApproveRollingReleaseStageQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function approveRollingReleaseStage(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!idOrName) {
+	if (!pathParams.idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
-
 	const data = await request<
-		ApproveRollingReleaseStageMutationResponse,
+		ApproveRollingReleaseStageResponse,
 		ErrorWrapper<
-			| ApproveRollingReleaseStage400
-			| ApproveRollingReleaseStage401
-			| ApproveRollingReleaseStage403
-			| ApproveRollingReleaseStage404
-			| ApproveRollingReleaseStage500
+			| ApproveRollingReleaseStageStatus400
+			| ApproveRollingReleaseStageStatus401
+			| ApproveRollingReleaseStageStatus403
+			| ApproveRollingReleaseStageStatus404
+			| ApproveRollingReleaseStageStatus500
 		>,
 		null,
 		Record<string, string>,
-		ApproveRollingReleaseStageQueryParams,
-		ApproveRollingReleaseStagePathParams
+		{ teamId?: string; slug?: string },
+		{ idOrName: string }
 	>({
 		method: "POST",
-		url: `/v1/projects/${idOrName}/rolling-release/approve-stage`,
+		url: `/v1/projects/${pathParams.idOrName}/rolling-release/approve-stage`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Force-complete a Rolling Release. The canary deployment will begin serving 100% of the traffic.
  * @summary Complete the rolling release for the project
- * {@link /v1/projects/:idOrName/rolling-release/complete}
+ * @description Force-complete a Rolling Release. The canary deployment will begin serving 100% of the traffic.
+ * @link /v1/projects/{idOrName}/rolling-release/complete
  */
-export async function completeRollingRelease({
-	pathParams: { idOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: CompleteRollingReleasePathParams;
-	queryParams?: CompleteRollingReleaseQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function completeRollingRelease(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!idOrName) {
+	if (!pathParams.idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
-
 	const data = await request<
-		CompleteRollingReleaseMutationResponse,
+		CompleteRollingReleaseResponse,
 		ErrorWrapper<
-			| CompleteRollingRelease400
-			| CompleteRollingRelease401
-			| CompleteRollingRelease403
-			| CompleteRollingRelease404
+			| CompleteRollingReleaseStatus400
+			| CompleteRollingReleaseStatus401
+			| CompleteRollingReleaseStatus403
+			| CompleteRollingReleaseStatus404
 		>,
 		null,
 		Record<string, string>,
-		CompleteRollingReleaseQueryParams,
-		CompleteRollingReleasePathParams
+		{ teamId?: string; slug?: string },
+		{ idOrName: string }
 	>({
 		method: "POST",
-		url: `/v1/projects/${idOrName}/rolling-release/complete`,
+		url: `/v1/projects/${pathParams.idOrName}/rolling-release/complete`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Initiates a project transfer request from one team to another. <br/> Returns a `code` that remains valid for 24 hours and can be used to accept the transfer request by another team using the `PUT /projects/transfer-request/:code` endpoint. <br/> Users can also accept the project transfer request using the claim URL: `https://vercel.com/claim-deployment?code=<code>&returnUrl=<returnUrl>`. <br/> The `code` parameter specifies the project transfer request code generated using this endpoint. <br/> The `returnUrl` parameter redirects users to a specific page of the application if the claim URL is invalid or expired.
  * @summary Create project transfer request
- * {@link /projects/:idOrName/transfer-request}
+ * @description Initiates a project transfer request from one team to another. <br/> Returns a `code` that remains valid for 24 hours and can be used to accept the transfer request by another team using the `PUT /projects/transfer-request/:code` endpoint. <br/> Users can also accept the project transfer request using the claim URL: `https://vercel.com/claim-deployment?code=<code>&returnUrl=<returnUrl>`. <br/> The `code` parameter specifies the project transfer request code generated using this endpoint. <br/> The `returnUrl` parameter redirects users to a specific page of the application if the claim URL is invalid or expired.
+ * @link /projects/{idOrName}/transfer-request
  */
-export async function createProjectTransferRequest({
-	pathParams: { idOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: CreateProjectTransferRequestPathParams;
-	queryParams?: CreateProjectTransferRequestQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createProjectTransferRequest(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!idOrName) {
+	if (!pathParams.idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
-
 	const data = await request<
-		CreateProjectTransferRequestMutationResponse,
+		CreateProjectTransferRequestResponse,
 		ErrorWrapper<
-			| CreateProjectTransferRequest400
-			| CreateProjectTransferRequest401
-			| CreateProjectTransferRequest403
+			| CreateProjectTransferRequestStatus400
+			| CreateProjectTransferRequestStatus401
+			| CreateProjectTransferRequestStatus403
 		>,
 		null,
 		Record<string, string>,
-		CreateProjectTransferRequestQueryParams,
-		CreateProjectTransferRequestPathParams
+		{ teamId?: string; slug?: string },
+		{ idOrName: string }
 	>({
 		method: "POST",
-		url: `/projects/${idOrName}/transfer-request`,
+		url: `/projects/${pathParams.idOrName}/transfer-request`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Accept a project transfer request initated by another team. <br/> The `code` is generated using the `POST /projects/:idOrName/transfer-request` endpoint.
  * @summary Accept project transfer request
- * {@link /projects/transfer-request/:code}
+ * @description Accept a project transfer request initated by another team. <br/> The `code` is generated using the `POST /projects/:idOrName/transfer-request` endpoint.
+ * @link /projects/transfer-request/{code}
  */
-export async function acceptProjectTransferRequest({
-	pathParams: { code },
-	queryParams,
-	config = {},
-}: {
-	pathParams: AcceptProjectTransferRequestPathParams;
-	queryParams?: AcceptProjectTransferRequestQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function acceptProjectTransferRequest(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { code: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!code) {
+	if (!pathParams.code) {
 		throw new Error(`Missing required path parameter: code`);
 	}
-
 	const data = await request<
-		AcceptProjectTransferRequestMutationResponse,
+		AcceptProjectTransferRequestResponse,
 		ErrorWrapper<
-			| AcceptProjectTransferRequest400
-			| AcceptProjectTransferRequest401
-			| AcceptProjectTransferRequest403
-			| AcceptProjectTransferRequest404
-			| AcceptProjectTransferRequest422
+			| AcceptProjectTransferRequestStatus400
+			| AcceptProjectTransferRequestStatus401
+			| AcceptProjectTransferRequestStatus403
+			| AcceptProjectTransferRequestStatus404
+			| AcceptProjectTransferRequestStatus422
 		>,
 		null,
 		Record<string, string>,
-		AcceptProjectTransferRequestQueryParams,
-		AcceptProjectTransferRequestPathParams
+		{ teamId?: string; slug?: string },
+		{ code: string }
 	>({
 		method: "PUT",
-		url: `/projects/transfer-request/${code}`,
+		url: `/projects/transfer-request/${pathParams.code}`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Update the deployment protection automation bypass for a project
  * @summary Update Protection Bypass for Automation
- * {@link /v1/projects/:idOrName/protection-bypass}
+ * @description Update the deployment protection automation bypass for a project
+ * @link /v1/projects/{idOrName}/protection-bypass
  */
-export async function updateProjectProtectionBypass({
-	pathParams: { idOrName },
-	queryParams,
-	config = {},
-}: {
-	pathParams: UpdateProjectProtectionBypassPathParams;
-	queryParams?: UpdateProjectProtectionBypassQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateProjectProtectionBypass(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!idOrName) {
+	if (!pathParams.idOrName) {
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
-
 	const data = await request<
-		UpdateProjectProtectionBypassMutationResponse,
+		UpdateProjectProtectionBypassResponse,
 		ErrorWrapper<
-			| UpdateProjectProtectionBypass400
-			| UpdateProjectProtectionBypass401
-			| UpdateProjectProtectionBypass403
-			| UpdateProjectProtectionBypass404
-			| UpdateProjectProtectionBypass409
+			| UpdateProjectProtectionBypassStatus400
+			| UpdateProjectProtectionBypassStatus401
+			| UpdateProjectProtectionBypassStatus403
+			| UpdateProjectProtectionBypassStatus404
+			| UpdateProjectProtectionBypassStatus409
 		>,
 		null,
 		Record<string, string>,
-		UpdateProjectProtectionBypassQueryParams,
-		UpdateProjectProtectionBypassPathParams
+		{ teamId?: string; slug?: string },
+		{ idOrName: string }
 	>({
 		method: "PATCH",
-		url: `/v1/projects/${idOrName}/protection-bypass`,
+		url: `/v1/projects/${pathParams.idOrName}/protection-bypass`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
+ * @summary Points all production domains for a project to the given deploy
  * @description Allows users to rollback to a deployment.
- * @summary Points all production domains for a project to the given deploy
- * {@link /v1/projects/:projectId/rollback/:deploymentId}
+ * @link /v1/projects/{projectId}/rollback/{deploymentId}
  */
-export async function requestRollback({
-	pathParams: { projectId, deploymentId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: RequestRollbackPathParams;
-	queryParams?: RequestRollbackQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function requestRollback(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectId: string; deploymentId: string };
+		queryParams?: { description?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!projectId) {
+	if (!pathParams.projectId) {
 		throw new Error(`Missing required path parameter: projectId`);
 	}
 
-	if (!deploymentId) {
+	if (!pathParams.deploymentId) {
 		throw new Error(`Missing required path parameter: deploymentId`);
 	}
-
 	const data = await request<
-		RequestRollbackMutationResponse,
+		RequestRollbackResponse,
 		ErrorWrapper<
-			| RequestRollback400
-			| RequestRollback401
-			| RequestRollback402
-			| RequestRollback403
-			| RequestRollback409
-			| RequestRollback422
+			| RequestRollbackStatus400
+			| RequestRollbackStatus401
+			| RequestRollbackStatus402
+			| RequestRollbackStatus403
+			| RequestRollbackStatus409
+			| RequestRollbackStatus422
 		>,
 		null,
 		Record<string, string>,
-		RequestRollbackQueryParams,
-		RequestRollbackPathParams
+		{ description?: string; teamId?: string; slug?: string },
+		{ projectId: string; deploymentId: string }
 	>({
 		method: "POST",
-		url: `/v1/projects/${projectId}/rollback/${deploymentId}`,
+		url: `/v1/projects/${pathParams.projectId}/rollback/${pathParams.deploymentId}`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Updates the reason for a rollback, without changing the rollback status itself.
  * @summary Updates the description for a rollback
- * {@link /v1/projects/:projectId/rollback/:deploymentId/update-description}
+ * @description Updates the reason for a rollback, without changing the rollback status itself.
+ * @link /v1/projects/{projectId}/rollback/{deploymentId}/update-description
  */
-export async function updateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription({
-	pathParams: { projectId, deploymentId },
-	config = {},
-}: {
-	pathParams: UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { projectId: string; deploymentId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!projectId) {
+	if (!pathParams.projectId) {
 		throw new Error(`Missing required path parameter: projectId`);
 	}
 
-	if (!deploymentId) {
+	if (!pathParams.deploymentId) {
 		throw new Error(`Missing required path parameter: deploymentId`);
 	}
-
 	const data = await request<
-		UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionMutationResponse,
+		UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionResponse,
 		ErrorWrapper<
-			| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription400
-			| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription401
-			| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription403
-			| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription409
-			| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription422
+			| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus400
+			| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus401
+			| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus403
+			| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus409
+			| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus422
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionPathParams
+		{ projectId: string; deploymentId: string }
 	>({
 		method: "PATCH",
-		url: `/v1/projects/${projectId}/rollback/${deploymentId}/update-description`,
+		url: `/v1/projects/${pathParams.projectId}/rollback/${pathParams.deploymentId}/update-description`,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Update the microfrontends settings for a project.
  * @summary Update the microfrontends settings
- * {@link /v1/projects/:projectId/microfrontends}
+ * @description Update the microfrontends settings for a project.
+ * @link /v1/projects/{projectId}/microfrontends
  */
-export async function updateMicrofrontends({
-	pathParams: { projectId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: UpdateMicrofrontendsPathParams;
-	queryParams?: UpdateMicrofrontendsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateMicrofrontends(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!projectId) {
+	if (!pathParams.projectId) {
 		throw new Error(`Missing required path parameter: projectId`);
 	}
-
 	const data = await request<
-		UpdateMicrofrontendsMutationResponse,
+		UpdateMicrofrontendsResponse,
 		ErrorWrapper<
-			| UpdateMicrofrontends400
-			| UpdateMicrofrontends401
-			| UpdateMicrofrontends403
-			| UpdateMicrofrontends409
-			| UpdateMicrofrontends500
+			| UpdateMicrofrontendsStatus400
+			| UpdateMicrofrontendsStatus401
+			| UpdateMicrofrontendsStatus403
+			| UpdateMicrofrontendsStatus409
+			| UpdateMicrofrontendsStatus500
 		>,
 		null,
 		Record<string, string>,
-		UpdateMicrofrontendsQueryParams,
-		UpdateMicrofrontendsPathParams
+		{ teamId?: string; slug?: string },
+		{ projectId: string }
 	>({
 		method: "PATCH",
-		url: `/v1/projects/${projectId}/microfrontends`,
+		url: `/v1/projects/${pathParams.projectId}/microfrontends`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Allows users to promote a deployment to production. Note: This does NOT rebuild the deployment. If you need that, then call create-deployments endpoint.
  * @summary Points all production domains for a project to the given deploy
- * {@link /v10/projects/:projectId/promote/:deploymentId}
+ * @description Allows users to promote a deployment to production. Note: This does NOT rebuild the deployment. If you need that, then call create-deployments endpoint.
+ * @link /v10/projects/{projectId}/promote/{deploymentId}
  */
-export async function requestPromote({
-	pathParams: { projectId, deploymentId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: RequestPromotePathParams;
-	queryParams?: RequestPromoteQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function requestPromote(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectId: string; deploymentId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!projectId) {
+	if (!pathParams.projectId) {
 		throw new Error(`Missing required path parameter: projectId`);
 	}
 
-	if (!deploymentId) {
+	if (!pathParams.deploymentId) {
 		throw new Error(`Missing required path parameter: deploymentId`);
 	}
-
 	const data = await request<
-		RequestPromoteMutationResponse,
-		ErrorWrapper<RequestPromote400 | RequestPromote401 | RequestPromote403 | RequestPromote409>,
+		RequestPromoteResponse,
+		ErrorWrapper<
+			| RequestPromoteStatus400
+			| RequestPromoteStatus401
+			| RequestPromoteStatus403
+			| RequestPromoteStatus409
+		>,
 		null,
 		Record<string, string>,
-		RequestPromoteQueryParams,
-		RequestPromotePathParams
+		{ teamId?: string; slug?: string },
+		{ projectId: string; deploymentId: string }
 	>({
 		method: "POST",
-		url: `/v10/projects/${projectId}/promote/${deploymentId}`,
+		url: `/v10/projects/${pathParams.projectId}/promote/${pathParams.deploymentId}`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Get a list of aliases related to the last promote request with their mapping status
  * @summary Gets a list of aliases with status for the current promote
- * {@link /v1/projects/:projectId/promote/aliases}
+ * @description Get a list of aliases related to the last promote request with their mapping status
+ * @link /v1/projects/{projectId}/promote/aliases
  */
-export async function listPromoteAliases({
-	pathParams: { projectId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ListPromoteAliasesPathParams;
-	queryParams?: ListPromoteAliasesQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listPromoteAliases(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectId: string };
+		queryParams?: {
+			limit?: number;
+			since?: number;
+			until?: number;
+			failedOnly?: boolean;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!projectId) {
+	if (!pathParams.projectId) {
 		throw new Error(`Missing required path parameter: projectId`);
 	}
-
 	const data = await request<
-		ListPromoteAliasesQueryResponse,
+		ListPromoteAliasesResponse,
 		ErrorWrapper<
-			ListPromoteAliases400 | ListPromoteAliases401 | ListPromoteAliases403 | ListPromoteAliases404
+			| ListPromoteAliasesStatus400
+			| ListPromoteAliasesStatus401
+			| ListPromoteAliasesStatus403
+			| ListPromoteAliasesStatus404
 		>,
 		null,
 		Record<string, string>,
-		ListPromoteAliasesQueryParams,
-		ListPromoteAliasesPathParams
+		{
+			limit?: number;
+			since?: number;
+			until?: number;
+			failedOnly?: boolean;
+			teamId?: string;
+			slug?: string;
+		},
+		{ projectId: string }
 	>({
 		method: "GET",
-		url: `/v1/projects/${projectId}/promote/aliases`,
+		url: `/v1/projects/${pathParams.projectId}/promote/aliases`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Pause a project by passing its project `id` in the URL. If the project does not exist given the id then the request will fail with 400 status code. If the project disables auto assigning custom production domains and blocks the active Production Deployment then the request will return with 200 status code.
  * @summary Pause a project
- * {@link /v1/projects/:projectId/pause}
+ * @description Pause a project by passing its project `id` in the URL. If the project does not exist given the id then the request will fail with 400 status code. If the project disables auto assigning custom production domains and blocks the active Production Deployment then the request will return with 200 status code.
+ * @link /v1/projects/{projectId}/pause
  */
-export async function pauseProject({
-	pathParams: { projectId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: PauseProjectPathParams;
-	queryParams?: PauseProjectQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function pauseProject(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!projectId) {
+	if (!pathParams.projectId) {
 		throw new Error(`Missing required path parameter: projectId`);
 	}
-
 	const data = await request<
-		PauseProjectMutationResponse,
-		ErrorWrapper<PauseProject400 | PauseProject401 | PauseProject403 | PauseProject500>,
-		null,
-		Record<string, string>,
-		PauseProjectQueryParams,
-		PauseProjectPathParams
-	>({ method: "POST", url: `/v1/projects/${projectId}/pause`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Unpause a project by passing its project `id` in the URL. If the project does not exist given the id then the request will fail with 400 status code. If the project enables auto assigning custom production domains and unblocks the active Production Deployment then the request will return with 200 status code.
- * @summary Unpause a project
- * {@link /v1/projects/:projectId/unpause}
- */
-export async function unpauseProject({
-	pathParams: { projectId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: UnpauseProjectPathParams;
-	queryParams?: UnpauseProjectQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!projectId) {
-		throw new Error(`Missing required path parameter: projectId`);
-	}
-
-	const data = await request<
-		UnpauseProjectMutationResponse,
-		ErrorWrapper<UnpauseProject400 | UnpauseProject401 | UnpauseProject403 | UnpauseProject500>,
-		null,
-		Record<string, string>,
-		UnpauseProjectQueryParams,
-		UnpauseProjectPathParams
-	>({ method: "POST", url: `/v1/projects/${projectId}/unpause`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Retrieves a paginated list of sandboxes belonging to a specific project. Results can be filtered by creation time using the `since` and `until` parameters.
- * @summary List sandboxes
- * {@link /v1/sandboxes}
- */
-export async function getSandboxesV1({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: GetSandboxesV1QueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	const data = await request<
-		GetSandboxesV1QueryResponse,
-		ErrorWrapper<GetSandboxesV1400 | GetSandboxesV1401 | GetSandboxesV1403 | GetSandboxesV1404>,
-		null,
-		Record<string, string>,
-		GetSandboxesV1QueryParams,
-		Record<string, string>
-	>({ method: "GET", url: `/v1/sandboxes`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Creates a new sandbox environment for executing code in an isolated virtual machine. A sandbox can be initialized from various sources including Git repositories, tarballs, or existing snapshots. Once created, you can execute commands, read/write files, and manage the sandbox lifecycle.
- * @summary Create a sandbox
- * {@link /v1/sandboxes}
- */
-export async function createSandbox({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: CreateSandboxQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	const data = await request<
-		CreateSandboxMutationResponse,
+		PauseProjectResponse,
 		ErrorWrapper<
-			| CreateSandbox400
-			| CreateSandbox401
-			| CreateSandbox402
-			| CreateSandbox403
-			| CreateSandbox404
-			| CreateSandbox410
-			| CreateSandbox422
-			| CreateSandbox429
-			| CreateSandbox500
+			PauseProjectStatus400 | PauseProjectStatus401 | PauseProjectStatus403 | PauseProjectStatus500
 		>,
 		null,
 		Record<string, string>,
-		CreateSandboxQueryParams,
+		{ teamId?: string; slug?: string },
+		{ projectId: string }
+	>({
+		method: "POST",
+		url: `/v1/projects/${pathParams.projectId}/pause`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Unpause a project
+ * @description Unpause a project by passing its project `id` in the URL. If the project does not exist given the id then the request will fail with 400 status code. If the project enables auto assigning custom production domains and unblocks the active Production Deployment then the request will return with 200 status code.
+ * @link /v1/projects/{projectId}/unpause
+ */
+export async function unpauseProject(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.projectId) {
+		throw new Error(`Missing required path parameter: projectId`);
+	}
+	const data = await request<
+		UnpauseProjectResponse,
+		ErrorWrapper<
+			| UnpauseProjectStatus400
+			| UnpauseProjectStatus401
+			| UnpauseProjectStatus403
+			| UnpauseProjectStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ projectId: string }
+	>({
+		method: "POST",
+		url: `/v1/projects/${pathParams.projectId}/unpause`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary List sandboxes
+ * @description Retrieves a paginated list of sandboxes belonging to a specific project. Results can be filtered by creation time using the `since` and `until` parameters.
+ * @link /v1/sandboxes
+ */
+export async function getSandboxesV1(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			project?: string;
+			limit?: number;
+			since?: number;
+			until?: number;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		GetSandboxesV1Response,
+		ErrorWrapper<
+			| GetSandboxesV1Status400
+			| GetSandboxesV1Status401
+			| GetSandboxesV1Status403
+			| GetSandboxesV1Status404
+		>,
+		null,
+		Record<string, string>,
+		{
+			project?: string;
+			limit?: number;
+			since?: number;
+			until?: number;
+			teamId?: string;
+			slug?: string;
+		},
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/v1/sandboxes`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Create a sandbox
+ * @description Creates a new sandbox environment for executing code in an isolated virtual machine. A sandbox can be initialized from various sources including Git repositories, tarballs, or existing snapshots. Once created, you can execute commands, read/write files, and manage the sandbox lifecycle.
+ * @link /v1/sandboxes
+ */
+export async function createSandbox(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		CreateSandboxResponse,
+		ErrorWrapper<
+			| CreateSandboxStatus400
+			| CreateSandboxStatus401
+			| CreateSandboxStatus402
+			| CreateSandboxStatus403
+			| CreateSandboxStatus404
+			| CreateSandboxStatus409
+			| CreateSandboxStatus410
+			| CreateSandboxStatus422
+			| CreateSandboxStatus429
+			| CreateSandboxStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
 		Record<string, string>
 	>({
 		method: "POST",
 		url: `/v1/sandboxes`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Retrieves a paginated list of snapshots for a specific project.
  * @summary List snapshots
- * {@link /v1/sandboxes/snapshots}
+ * @description Retrieves a paginated list of snapshots for a specific project.
+ * @link /v1/sandboxes/snapshots
  */
-export async function listSnapshots({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: ListSnapshotsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listSnapshots(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			project?: string;
+			limit?: number;
+			since?: number;
+			until?: number;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		ListSnapshotsQueryResponse,
-		ErrorWrapper<ListSnapshots400 | ListSnapshots401 | ListSnapshots403 | ListSnapshots404>,
+		ListSnapshotsResponse,
+		ErrorWrapper<
+			| ListSnapshotsStatus400
+			| ListSnapshotsStatus401
+			| ListSnapshotsStatus403
+			| ListSnapshotsStatus404
+		>,
 		null,
 		Record<string, string>,
-		ListSnapshotsQueryParams,
+		{
+			project?: string;
+			limit?: number;
+			since?: number;
+			until?: number;
+			teamId?: string;
+			slug?: string;
+		},
 		Record<string, string>
-	>({ method: "GET", url: `/v1/sandboxes/snapshots`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/v1/sandboxes/snapshots`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Retrieves detailed information about a specific sandbox, including its current status, resource configuration, and exposed routes.
  * @summary Get a sandbox
- * {@link /v1/sandboxes/:sandboxId}
+ * @description Retrieves detailed information about a specific sandbox, including its current status, resource configuration, and exposed routes.
+ * @link /v1/sandboxes/{sandboxId}
  */
-export async function getSandbox({
-	pathParams: { sandboxId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetSandboxPathParams;
-	queryParams?: GetSandboxQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getSandbox(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { sandboxId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!sandboxId) {
+	if (!pathParams.sandboxId) {
 		throw new Error(`Missing required path parameter: sandboxId`);
 	}
-
 	const data = await request<
-		GetSandboxQueryResponse,
-		ErrorWrapper<GetSandbox400 | GetSandbox401 | GetSandbox403 | GetSandbox429>,
+		GetSandboxResponse,
+		ErrorWrapper<
+			| GetSandboxStatus400
+			| GetSandboxStatus401
+			| GetSandboxStatus403
+			| GetSandboxStatus404
+			| GetSandboxStatus429
+		>,
 		null,
 		Record<string, string>,
-		GetSandboxQueryParams,
-		GetSandboxPathParams
-	>({ method: "GET", url: `/v1/sandboxes/${sandboxId}`, queryParams, ...requestConfig });
+		{ teamId?: string; slug?: string },
+		{ sandboxId: string }
+	>({
+		method: "GET",
+		url: `/v1/sandboxes/${pathParams.sandboxId}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Retrieves a list of all commands that have been executed in a sandbox, including their current status, exit codes, and execution times, ordered from the most recent to the oldest.
  * @summary List commands
- * {@link /v1/sandboxes/:sandboxId/cmd}
+ * @description Retrieves a list of all commands that have been executed in a sandbox, including their current status, exit codes, and execution times, ordered from the most recent to the oldest.
+ * @link /v1/sandboxes/{sandboxId}/cmd
  */
-export async function listCommands({
-	pathParams: { sandboxId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ListCommandsPathParams;
-	queryParams?: ListCommandsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listCommands(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { sandboxId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!sandboxId) {
+	if (!pathParams.sandboxId) {
 		throw new Error(`Missing required path parameter: sandboxId`);
 	}
-
 	const data = await request<
-		ListCommandsQueryResponse,
-		ErrorWrapper<ListCommands400 | ListCommands401 | ListCommands403>,
+		ListCommandsResponse,
+		ErrorWrapper<
+			ListCommandsStatus400 | ListCommandsStatus401 | ListCommandsStatus403 | ListCommandsStatus404
+		>,
 		null,
 		Record<string, string>,
-		ListCommandsQueryParams,
-		ListCommandsPathParams
-	>({ method: "GET", url: `/v1/sandboxes/${sandboxId}/cmd`, queryParams, ...requestConfig });
+		{ teamId?: string; slug?: string },
+		{ sandboxId: string }
+	>({
+		method: "GET",
+		url: `/v1/sandboxes/${pathParams.sandboxId}/cmd`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Executes a shell command inside a running sandbox. The command runs asynchronously and returns immediately with a command ID that can be used to track its progress and retrieve its output. Optionally, use the `wait` parameter to stream the command status until completion.
  * @summary Execute a command
- * {@link /v1/sandboxes/:sandboxId/cmd}
+ * @description Executes a shell command inside a running sandbox. The command runs asynchronously and returns immediately with a command ID that can be used to track its progress and retrieve its output. Optionally, use the `wait` parameter to stream the command status until completion.
+ * @link /v1/sandboxes/{sandboxId}/cmd
  */
-export async function runCommand({
-	pathParams: { sandboxId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: RunCommandPathParams;
-	queryParams?: RunCommandQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function runCommand(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { sandboxId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!sandboxId) {
+	if (!pathParams.sandboxId) {
 		throw new Error(`Missing required path parameter: sandboxId`);
 	}
-
 	const data = await request<
-		RunCommandMutationResponse,
-		ErrorWrapper<RunCommand400 | RunCommand401 | RunCommand403 | RunCommand410 | RunCommand422>,
+		RunCommandResponse,
+		ErrorWrapper<
+			| RunCommandStatus400
+			| RunCommandStatus401
+			| RunCommandStatus403
+			| RunCommandStatus404
+			| RunCommandStatus410
+			| RunCommandStatus422
+		>,
 		null,
 		Record<string, string>,
-		RunCommandQueryParams,
-		RunCommandPathParams
+		{ teamId?: string; slug?: string },
+		{ sandboxId: string }
 	>({
 		method: "POST",
-		url: `/v1/sandboxes/${sandboxId}/cmd`,
+		url: `/v1/sandboxes/${pathParams.sandboxId}/cmd`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Sends a signal to terminate a running command in a sandbox. The signal can be used to gracefully stop (SIGTERM) or forcefully kill (SIGKILL) the process. The command must still be running for this operation to succeed.
  * @summary Kill a command
- * {@link /v1/sandboxes/:sandboxId/:cmdId/kill}
+ * @description Sends a signal to terminate a running command in a sandbox. The signal can be used to gracefully stop (SIGTERM) or forcefully kill (SIGKILL) the process. The command must still be running for this operation to succeed.
+ * @link /v1/sandboxes/{sandboxId}/{cmdId}/kill
  */
-export async function killCommand({
-	pathParams: { cmdId, sandboxId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: KillCommandPathParams;
-	queryParams?: KillCommandQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function killCommand(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { cmdId: string; sandboxId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!cmdId) {
+	if (!pathParams.cmdId) {
 		throw new Error(`Missing required path parameter: cmdId`);
 	}
 
-	if (!sandboxId) {
+	if (!pathParams.sandboxId) {
 		throw new Error(`Missing required path parameter: sandboxId`);
 	}
-
 	const data = await request<
-		KillCommandMutationResponse,
+		KillCommandResponse,
 		ErrorWrapper<
-			| KillCommand400
-			| KillCommand401
-			| KillCommand403
-			| KillCommand404
-			| KillCommand410
-			| KillCommand422
+			| KillCommandStatus400
+			| KillCommandStatus401
+			| KillCommandStatus403
+			| KillCommandStatus404
+			| KillCommandStatus410
+			| KillCommandStatus422
 		>,
 		null,
 		Record<string, string>,
-		KillCommandQueryParams,
-		KillCommandPathParams
+		{ teamId?: string; slug?: string },
+		{ cmdId: string; sandboxId: string }
 	>({
 		method: "POST",
-		url: `/v1/sandboxes/${sandboxId}/${cmdId}/kill`,
+		url: `/v1/sandboxes/${pathParams.sandboxId}/${pathParams.cmdId}/kill`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Stops a running sandbox and releases its allocated resources. All running processes within the sandbox will be terminated. This action cannot be undone. A stopped sandbox cannot be restarted.
  * @summary Stop a sandbox
- * {@link /v1/sandboxes/:sandboxId/stop}
+ * @description Stops a running sandbox and releases its allocated resources. All running processes within the sandbox will be terminated. This action cannot be undone. A stopped sandbox cannot be restarted.
+ * @link /v1/sandboxes/{sandboxId}/stop
  */
-export async function stopSandbox({
-	pathParams: { sandboxId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: StopSandboxPathParams;
-	queryParams?: StopSandboxQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function stopSandbox(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { sandboxId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!sandboxId) {
+	if (!pathParams.sandboxId) {
 		throw new Error(`Missing required path parameter: sandboxId`);
 	}
-
 	const data = await request<
-		StopSandboxMutationResponse,
+		StopSandboxResponse,
 		ErrorWrapper<
-			StopSandbox400 | StopSandbox401 | StopSandbox403 | StopSandbox410 | StopSandbox422
+			| StopSandboxStatus400
+			| StopSandboxStatus401
+			| StopSandboxStatus403
+			| StopSandboxStatus404
+			| StopSandboxStatus410
+			| StopSandboxStatus422
 		>,
 		null,
 		Record<string, string>,
-		StopSandboxQueryParams,
-		StopSandboxPathParams
-	>({ method: "POST", url: `/v1/sandboxes/${sandboxId}/stop`, queryParams, ...requestConfig });
+		{ teamId?: string; slug?: string },
+		{ sandboxId: string }
+	>({
+		method: "POST",
+		url: `/v1/sandboxes/${pathParams.sandboxId}/stop`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Extends the maximum execution time of a running sandbox. The sandbox must be active and able to accept commands. The total timeout cannot exceed the maximum allowed limit for your account.
  * @summary Extend sandbox timeout
- * {@link /v1/sandboxes/:sandboxId/extend-timeout}
+ * @description Extends the maximum execution time of a running sandbox. The sandbox must be active and able to accept commands. The total timeout cannot exceed the maximum allowed limit for your account.
+ * @link /v1/sandboxes/{sandboxId}/extend-timeout
  */
-export async function extendSandboxTimeout({
-	pathParams: { sandboxId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ExtendSandboxTimeoutPathParams;
-	queryParams?: ExtendSandboxTimeoutQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function extendSandboxTimeout(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { sandboxId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!sandboxId) {
+	if (!pathParams.sandboxId) {
 		throw new Error(`Missing required path parameter: sandboxId`);
 	}
-
 	const data = await request<
-		ExtendSandboxTimeoutMutationResponse,
+		ExtendSandboxTimeoutResponse,
 		ErrorWrapper<
-			| ExtendSandboxTimeout400
-			| ExtendSandboxTimeout401
-			| ExtendSandboxTimeout403
-			| ExtendSandboxTimeout410
-			| ExtendSandboxTimeout422
+			| ExtendSandboxTimeoutStatus400
+			| ExtendSandboxTimeoutStatus401
+			| ExtendSandboxTimeoutStatus403
+			| ExtendSandboxTimeoutStatus404
+			| ExtendSandboxTimeoutStatus410
+			| ExtendSandboxTimeoutStatus422
 		>,
 		null,
 		Record<string, string>,
-		ExtendSandboxTimeoutQueryParams,
-		ExtendSandboxTimeoutPathParams
+		{ teamId?: string; slug?: string },
+		{ sandboxId: string }
 	>({
 		method: "POST",
-		url: `/v1/sandboxes/${sandboxId}/extend-timeout`,
+		url: `/v1/sandboxes/${pathParams.sandboxId}/extend-timeout`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Replaces the network access policy of a running sandbox. Use this to control which external hosts the sandbox can communicate with. This is a full replacement. Any previously configured network rules will be overwritten.
  * @summary Update network policy
- * {@link /v1/sandboxes/:sandboxId/network-policy}
+ * @description Replaces the network access policy of a running sandbox. Use this to control which external hosts the sandbox can communicate with. This is a full replacement. Any previously configured network rules will be overwritten.
+ * @link /v1/sandboxes/{sandboxId}/network-policy
  */
-export async function updateNetworkPolicy({
-	pathParams: { sandboxId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: UpdateNetworkPolicyPathParams;
-	queryParams?: UpdateNetworkPolicyQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateNetworkPolicy(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { sandboxId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!sandboxId) {
+	if (!pathParams.sandboxId) {
 		throw new Error(`Missing required path parameter: sandboxId`);
 	}
-
 	const data = await request<
-		UpdateNetworkPolicyMutationResponse,
+		UpdateNetworkPolicyResponse,
 		ErrorWrapper<
-			| UpdateNetworkPolicy400
-			| UpdateNetworkPolicy401
-			| UpdateNetworkPolicy402
-			| UpdateNetworkPolicy403
-			| UpdateNetworkPolicy410
-			| UpdateNetworkPolicy422
+			| UpdateNetworkPolicyStatus400
+			| UpdateNetworkPolicyStatus401
+			| UpdateNetworkPolicyStatus402
+			| UpdateNetworkPolicyStatus403
+			| UpdateNetworkPolicyStatus404
+			| UpdateNetworkPolicyStatus410
+			| UpdateNetworkPolicyStatus422
 		>,
 		null,
 		Record<string, string>,
-		UpdateNetworkPolicyQueryParams,
-		UpdateNetworkPolicyPathParams
+		{ teamId?: string; slug?: string },
+		{ sandboxId: string }
 	>({
 		method: "POST",
-		url: `/v1/sandboxes/${sandboxId}/network-policy`,
+		url: `/v1/sandboxes/${pathParams.sandboxId}/network-policy`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Retrieves the current status and details of a command executed in a sandbox. Use the `wait` parameter to block until the command finishes execution.
  * @summary Get a command
- * {@link /v1/sandboxes/:sandboxId/cmd/:cmdId}
+ * @description Retrieves the current status and details of a command executed in a sandbox. Use the `wait` parameter to block until the command finishes execution.
+ * @link /v1/sandboxes/{sandboxId}/cmd/{cmdId}
  */
-export async function getCommand({
-	pathParams: { sandboxId, cmdId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetCommandPathParams;
-	queryParams?: GetCommandQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getCommand(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { sandboxId: string; cmdId: string };
+		queryParams?: { wait?: "true" | "false"; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!sandboxId) {
+	if (!pathParams.sandboxId) {
 		throw new Error(`Missing required path parameter: sandboxId`);
 	}
 
-	if (!cmdId) {
+	if (!pathParams.cmdId) {
 		throw new Error(`Missing required path parameter: cmdId`);
 	}
-
 	const data = await request<
-		GetCommandQueryResponse,
-		ErrorWrapper<GetCommand400 | GetCommand401 | GetCommand403 | GetCommand410 | GetCommand422>,
+		GetCommandResponse,
+		ErrorWrapper<
+			| GetCommandStatus400
+			| GetCommandStatus401
+			| GetCommandStatus403
+			| GetCommandStatus404
+			| GetCommandStatus410
+			| GetCommandStatus422
+		>,
 		null,
 		Record<string, string>,
-		GetCommandQueryParams,
-		GetCommandPathParams
+		{ wait?: "true" | "false"; teamId?: string; slug?: string },
+		{ sandboxId: string; cmdId: string }
 	>({
 		method: "GET",
-		url: `/v1/sandboxes/${sandboxId}/cmd/${cmdId}`,
+		url: `/v1/sandboxes/${pathParams.sandboxId}/cmd/${pathParams.cmdId}`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Streams the output of a command in real-time using newline-delimited JSON (ND-JSON). Each entry includes the output data and stream type. Stream types include `stdout`, `stderr`, and `error` (for stream failures).
  * @summary Stream command logs
- * {@link /v1/sandboxes/:sandboxId/cmd/:cmdId/logs}
+ * @description Streams the output of a command in real-time using newline-delimited JSON (ND-JSON). Each entry includes the output data and stream type. Stream types include `stdout`, `stderr`, and `error` (for stream failures).
+ * @link /v1/sandboxes/{sandboxId}/cmd/{cmdId}/logs
  */
-export async function getCommandLogs({
-	pathParams: { sandboxId, cmdId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetCommandLogsPathParams;
-	queryParams?: GetCommandLogsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getCommandLogs(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { sandboxId: string; cmdId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!sandboxId) {
+	if (!pathParams.sandboxId) {
 		throw new Error(`Missing required path parameter: sandboxId`);
 	}
 
-	if (!cmdId) {
+	if (!pathParams.cmdId) {
 		throw new Error(`Missing required path parameter: cmdId`);
 	}
-
 	const data = await request<
-		GetCommandLogsQueryResponse,
+		GetCommandLogsResponse,
 		ErrorWrapper<
-			| GetCommandLogs400
-			| GetCommandLogs401
-			| GetCommandLogs403
-			| GetCommandLogs410
-			| GetCommandLogs422
+			| GetCommandLogsStatus400
+			| GetCommandLogsStatus401
+			| GetCommandLogsStatus403
+			| GetCommandLogsStatus404
+			| GetCommandLogsStatus410
+			| GetCommandLogsStatus422
 		>,
 		null,
 		Record<string, string>,
-		GetCommandLogsQueryParams,
-		GetCommandLogsPathParams
+		{ teamId?: string; slug?: string },
+		{ sandboxId: string; cmdId: string }
 	>({
 		method: "GET",
-		url: `/v1/sandboxes/${sandboxId}/cmd/${cmdId}/logs`,
+		url: `/v1/sandboxes/${pathParams.sandboxId}/cmd/${pathParams.cmdId}/logs`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Downloads the contents of a file from a sandbox's filesystem. The file content is returned as a binary stream with appropriate Content-Disposition headers for file download.
  * @summary Read a file
- * {@link /v1/sandboxes/:sandboxId/fs/read}
+ * @description Downloads the contents of a file from a sandbox's filesystem. The file content is returned as a binary stream with appropriate Content-Disposition headers for file download.
+ * @link /v1/sandboxes/{sandboxId}/fs/read
  */
-export async function readFile({
-	pathParams: { sandboxId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ReadFilePathParams;
-	queryParams?: ReadFileQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!sandboxId) {
-		throw new Error(`Missing required path parameter: sandboxId`);
-	}
-
-	const data = await request<
-		ReadFileMutationResponse,
-		ErrorWrapper<ReadFile400 | ReadFile401 | ReadFile403 | ReadFile404 | ReadFile410 | ReadFile422>,
-		null,
-		Record<string, string>,
-		ReadFileQueryParams,
-		ReadFilePathParams
-	>({
-		method: "POST",
-		url: `/v1/sandboxes/${sandboxId}/fs/read`,
+export async function readFile(
+	{
+		pathParams,
 		queryParams,
-		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
-	});
-	return data;
-}
+		config,
+	}: {
+		pathParams: { sandboxId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-/**
- * @description Creates a new directory in a sandbox's filesystem. By default, parent directories are created recursively if they don't exist (similar to `mkdir -p`).
- * @summary Create a directory
- * {@link /v1/sandboxes/:sandboxId/fs/mkdir}
- */
-export async function createDirectory({
-	pathParams: { sandboxId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: CreateDirectoryPathParams;
-	queryParams?: CreateDirectoryQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!sandboxId) {
+	if (!pathParams.sandboxId) {
 		throw new Error(`Missing required path parameter: sandboxId`);
 	}
-
 	const data = await request<
-		CreateDirectoryMutationResponse,
+		ReadFileResponse,
 		ErrorWrapper<
-			| CreateDirectory400
-			| CreateDirectory401
-			| CreateDirectory403
-			| CreateDirectory410
-			| CreateDirectory422
+			| ReadFileStatus400
+			| ReadFileStatus401
+			| ReadFileStatus403
+			| ReadFileStatus404
+			| ReadFileStatus410
+			| ReadFileStatus422
 		>,
 		null,
 		Record<string, string>,
-		CreateDirectoryQueryParams,
-		CreateDirectoryPathParams
+		{ teamId?: string; slug?: string },
+		{ sandboxId: string }
 	>({
 		method: "POST",
-		url: `/v1/sandboxes/${sandboxId}/fs/mkdir`,
+		url: `/v1/sandboxes/${pathParams.sandboxId}/fs/read`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Uploads and extracts files to a sandbox's filesystem. Files must be uploaded as a gzipped tarball (`.tar.gz`) with the `Content-Type` header set to `application/gzip`. The tarball contents are extracted to the sandbox's working directory, or to a custom directory specified via the `x-cwd` header.
- * @summary Write files
- * {@link /v1/sandboxes/:sandboxId/fs/write}
+ * @summary Create a directory
+ * @description Creates a new directory in a sandbox's filesystem. By default, parent directories are created recursively if they don't exist (similar to `mkdir -p`).
+ * @link /v1/sandboxes/{sandboxId}/fs/mkdir
  */
-export async function writeFiles({
-	pathParams: { sandboxId },
-	queryParams,
-	headers,
-	config = {},
-}: {
-	pathParams: WriteFilesPathParams;
-	queryParams?: WriteFilesQueryParams;
-	headers?: WriteFilesHeaderParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createDirectory(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { sandboxId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!sandboxId) {
+	if (!pathParams.sandboxId) {
 		throw new Error(`Missing required path parameter: sandboxId`);
 	}
-
 	const data = await request<
-		WriteFilesMutationResponse,
-		ErrorWrapper<WriteFiles400 | WriteFiles401 | WriteFiles403 | WriteFiles410 | WriteFiles422>,
+		CreateDirectoryResponse,
+		ErrorWrapper<
+			| CreateDirectoryStatus400
+			| CreateDirectoryStatus401
+			| CreateDirectoryStatus403
+			| CreateDirectoryStatus404
+			| CreateDirectoryStatus410
+			| CreateDirectoryStatus422
+		>,
 		null,
-		WriteFilesHeaderParams,
-		WriteFilesQueryParams,
-		WriteFilesPathParams
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ sandboxId: string }
 	>({
 		method: "POST",
-		url: `/v1/sandboxes/${sandboxId}/fs/write`,
+		url: `/v1/sandboxes/${pathParams.sandboxId}/fs/mkdir`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Write files
+ * @description Uploads and extracts files to a sandbox's filesystem. Files must be uploaded as a gzipped tarball (`.tar.gz`) with the `Content-Type` header set to `application/gzip`. The tarball contents are extracted to the sandbox's working directory, or to a custom directory specified via the `x-cwd` header.
+ * @link /v1/sandboxes/{sandboxId}/fs/write
+ */
+export async function writeFiles(
+	{
+		pathParams,
+		queryParams,
+		headers,
+		config,
+	}: {
+		pathParams: { sandboxId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		headers?: { "'x-Cwd'"?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.sandboxId) {
+		throw new Error(`Missing required path parameter: sandboxId`);
+	}
+	const data = await request<
+		WriteFilesResponse,
+		ErrorWrapper<
+			| WriteFilesStatus400
+			| WriteFilesStatus401
+			| WriteFilesStatus403
+			| WriteFilesStatus404
+			| WriteFilesStatus410
+			| WriteFilesStatus422
+		>,
+		null,
+		{ "'x-Cwd'"?: string },
+		{ teamId?: string; slug?: string },
+		{ sandboxId: string }
+	>({
+		method: "POST",
+		url: `/v1/sandboxes/${pathParams.sandboxId}/fs/write`,
 		queryParams,
 		...requestConfig,
 		headers: { ...headers, ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Retrieves detailed information about a specific snapshot, including its creation time, size, expiration date, and the source sandbox it was created from.
  * @summary Get a snapshot
- * {@link /v1/sandboxes/snapshots/:snapshotId}
+ * @description Retrieves detailed information about a specific snapshot, including its creation time, size, expiration date, and the source sandbox it was created from.
+ * @link /v1/sandboxes/snapshots/{snapshotId}
  */
-export async function getSnapshot({
-	pathParams: { snapshotId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetSnapshotPathParams;
-	queryParams?: GetSnapshotQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getSnapshot(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { snapshotId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!snapshotId) {
+	if (!pathParams.snapshotId) {
 		throw new Error(`Missing required path parameter: snapshotId`);
 	}
-
 	const data = await request<
-		GetSnapshotQueryResponse,
-		ErrorWrapper<GetSnapshot400 | GetSnapshot401 | GetSnapshot403 | GetSnapshot404>,
+		GetSnapshotResponse,
+		ErrorWrapper<
+			GetSnapshotStatus400 | GetSnapshotStatus401 | GetSnapshotStatus403 | GetSnapshotStatus404
+		>,
 		null,
 		Record<string, string>,
-		GetSnapshotQueryParams,
-		GetSnapshotPathParams
-	>({ method: "GET", url: `/v1/sandboxes/snapshots/${snapshotId}`, queryParams, ...requestConfig });
+		{ teamId?: string; slug?: string },
+		{ snapshotId: string }
+	>({
+		method: "GET",
+		url: `/v1/sandboxes/snapshots/${pathParams.snapshotId}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Permanently deletes a snapshot and frees its associated storage. This action cannot be undone. After deletion, the snapshot can no longer be used to create new sandboxes.
  * @summary Delete a snapshot
- * {@link /v1/sandboxes/snapshots/:snapshotId}
+ * @description Permanently deletes a snapshot and frees its associated storage. This action cannot be undone. After deletion, the snapshot can no longer be used to create new sandboxes.
+ * @link /v1/sandboxes/snapshots/{snapshotId}
  */
-export async function deleteSnapshot({
-	pathParams: { snapshotId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: DeleteSnapshotPathParams;
-	queryParams?: DeleteSnapshotQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteSnapshot(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { snapshotId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!snapshotId) {
+	if (!pathParams.snapshotId) {
 		throw new Error(`Missing required path parameter: snapshotId`);
 	}
-
 	const data = await request<
-		DeleteSnapshotMutationResponse,
-		ErrorWrapper<DeleteSnapshot400 | DeleteSnapshot401 | DeleteSnapshot403 | DeleteSnapshot404>,
+		DeleteSnapshotResponse,
+		ErrorWrapper<
+			| DeleteSnapshotStatus400
+			| DeleteSnapshotStatus401
+			| DeleteSnapshotStatus403
+			| DeleteSnapshotStatus404
+		>,
 		null,
 		Record<string, string>,
-		DeleteSnapshotQueryParams,
-		DeleteSnapshotPathParams
+		{ teamId?: string; slug?: string },
+		{ snapshotId: string }
 	>({
 		method: "DELETE",
-		url: `/v1/sandboxes/snapshots/${snapshotId}`,
+		url: `/v1/sandboxes/snapshots/${pathParams.snapshotId}`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Creates a point-in-time snapshot of a running sandbox's filesystem. Snapshots can be used to quickly restore a sandbox to a previous state or to create new sandboxes with pre-configured environments. The sandbox must be running and able to accept commands for a snapshot to be created. The sandbox will be terminated after the snapshot is created.
  * @summary Create a snapshot
- * {@link /v1/sandboxes/:sandboxId/snapshot}
+ * @description Creates a point-in-time snapshot of a running sandbox's filesystem. Snapshots can be used to quickly restore a sandbox to a previous state or to create new sandboxes with pre-configured environments. The sandbox must be running and able to accept commands for a snapshot to be created. The sandbox will be terminated after the snapshot is created.
+ * @link /v1/sandboxes/{sandboxId}/snapshot
  */
-export async function createSnapshot({
-	pathParams: { sandboxId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: CreateSnapshotPathParams;
-	queryParams?: CreateSnapshotQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createSnapshot(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { sandboxId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!sandboxId) {
+	if (!pathParams.sandboxId) {
 		throw new Error(`Missing required path parameter: sandboxId`);
 	}
-
 	const data = await request<
-		CreateSnapshotMutationResponse,
+		CreateSnapshotResponse,
 		ErrorWrapper<
-			| CreateSnapshot400
-			| CreateSnapshot401
-			| CreateSnapshot402
-			| CreateSnapshot403
-			| CreateSnapshot410
-			| CreateSnapshot422
+			| CreateSnapshotStatus400
+			| CreateSnapshotStatus401
+			| CreateSnapshotStatus402
+			| CreateSnapshotStatus403
+			| CreateSnapshotStatus404
+			| CreateSnapshotStatus410
+			| CreateSnapshotStatus422
 		>,
 		null,
 		Record<string, string>,
-		CreateSnapshotQueryParams,
-		CreateSnapshotPathParams
+		{ teamId?: string; slug?: string },
+		{ sandboxId: string }
 	>({
 		method: "POST",
-		url: `/v1/sandboxes/${sandboxId}/snapshot`,
+		url: `/v1/sandboxes/${pathParams.sandboxId}/snapshot`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Retrieves a paginated list of named sandboxes belonging to a specific project. Results can be sorted by creation time or name, and optionally filtered by name prefix.
  * @summary List sandboxes
- * {@link /v2/sandboxes}
+ * @description Retrieves a paginated list of named sandboxes belonging to a specific project. Results can be sorted by creation time or name, and optionally filtered by name prefix.
+ * @link /v2/sandboxes
  */
-export async function getSandboxesV2({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: GetSandboxesV2QueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getSandboxesV2(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			project?: string;
+			limit?: number;
+			sortBy?: "createdAt" | "name" | "statusUpdatedAt" | "currentSnapshotId";
+			namePrefix?: string;
+			cursor?: string;
+			sortOrder?: "asc" | "desc";
+			tags?: unknown;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetSandboxesV2QueryResponse,
-		ErrorWrapper<GetSandboxesV2400 | GetSandboxesV2401 | GetSandboxesV2403 | GetSandboxesV2404>,
-		null,
-		Record<string, string>,
-		GetSandboxesV2QueryParams,
-		Record<string, string>
-	>({ method: "GET", url: `/v2/sandboxes`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Creates a named sandbox environment. Named sandboxes have a unique name within a project and support automatic snapshotting on shutdown.
- * @summary Create a named sandbox
- * {@link /v2/sandboxes}
- */
-export async function createSandboxes({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: CreateSandboxesQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	const data = await request<
-		CreateSandboxesMutationResponse,
+		GetSandboxesV2Response,
 		ErrorWrapper<
-			| CreateSandboxes400
-			| CreateSandboxes401
-			| CreateSandboxes402
-			| CreateSandboxes403
-			| CreateSandboxes404
-			| CreateSandboxes410
-			| CreateSandboxes422
-			| CreateSandboxes429
-			| CreateSandboxes500
+			| GetSandboxesV2Status400
+			| GetSandboxesV2Status401
+			| GetSandboxesV2Status403
+			| GetSandboxesV2Status404
 		>,
 		null,
 		Record<string, string>,
-		CreateSandboxesQueryParams,
+		{
+			project?: string;
+			limit?: number;
+			sortBy?: "createdAt" | "name" | "statusUpdatedAt" | "currentSnapshotId";
+			namePrefix?: string;
+			cursor?: string;
+			sortOrder?: "asc" | "desc";
+			tags?: unknown;
+			teamId?: string;
+			slug?: string;
+		},
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/v2/sandboxes`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Create a named sandbox
+ * @description Creates a named sandbox environment. Named sandboxes have a unique name within a project and support automatic snapshotting on shutdown.
+ * @link /v2/sandboxes
+ */
+export async function createSandboxes(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		CreateSandboxesResponse,
+		ErrorWrapper<
+			| CreateSandboxesStatus400
+			| CreateSandboxesStatus401
+			| CreateSandboxesStatus402
+			| CreateSandboxesStatus403
+			| CreateSandboxesStatus404
+			| CreateSandboxesStatus409
+			| CreateSandboxesStatus410
+			| CreateSandboxesStatus422
+			| CreateSandboxesStatus429
+			| CreateSandboxesStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
 		Record<string, string>
 	>({
 		method: "POST",
 		url: `/v2/sandboxes`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Retrieves a paginated list of snapshots for a specific project.
  * @summary List snapshots
- * {@link /v2/sandboxes/snapshots}
+ * @description Retrieves a paginated list of snapshots for a specific project.
+ * @link /v2/sandboxes/snapshots
  */
-export async function listSessionSnapshots({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: ListSessionSnapshotsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listSessionSnapshots(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			project?: string;
+			name?: string;
+			limit?: number;
+			cursor?: string;
+			sortOrder?: "asc" | "desc";
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		ListSessionSnapshotsQueryResponse,
+		ListSessionSnapshotsResponse,
 		ErrorWrapper<
-			| ListSessionSnapshots400
-			| ListSessionSnapshots401
-			| ListSessionSnapshots403
-			| ListSessionSnapshots404
+			| ListSessionSnapshotsStatus400
+			| ListSessionSnapshotsStatus401
+			| ListSessionSnapshotsStatus403
+			| ListSessionSnapshotsStatus404
 		>,
 		null,
 		Record<string, string>,
-		ListSessionSnapshotsQueryParams,
+		{
+			project?: string;
+			name?: string;
+			limit?: number;
+			cursor?: string;
+			sortOrder?: "asc" | "desc";
+			teamId?: string;
+			slug?: string;
+		},
 		Record<string, string>
-	>({ method: "GET", url: `/v2/sandboxes/snapshots`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/v2/sandboxes/snapshots`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Retrieves detailed information about a specific snapshot, including its creation time, size, expiration date, and the source session it was created from.
  * @summary Get a snapshot
- * {@link /v2/sandboxes/snapshots/:snapshotId}
+ * @description Retrieves detailed information about a specific snapshot, including its creation time, size, expiration date, and the source session it was created from.
+ * @link /v2/sandboxes/snapshots/{snapshotId}
  */
-export async function getSessionSnapshot({
-	pathParams: { snapshotId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetSessionSnapshotPathParams;
-	queryParams?: GetSessionSnapshotQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getSessionSnapshot(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { snapshotId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!snapshotId) {
+	if (!pathParams.snapshotId) {
 		throw new Error(`Missing required path parameter: snapshotId`);
 	}
-
 	const data = await request<
-		GetSessionSnapshotQueryResponse,
+		GetSessionSnapshotResponse,
 		ErrorWrapper<
-			GetSessionSnapshot400 | GetSessionSnapshot401 | GetSessionSnapshot403 | GetSessionSnapshot404
+			| GetSessionSnapshotStatus400
+			| GetSessionSnapshotStatus401
+			| GetSessionSnapshotStatus403
+			| GetSessionSnapshotStatus404
 		>,
 		null,
 		Record<string, string>,
-		GetSessionSnapshotQueryParams,
-		GetSessionSnapshotPathParams
-	>({ method: "GET", url: `/v2/sandboxes/snapshots/${snapshotId}`, queryParams, ...requestConfig });
+		{ teamId?: string; slug?: string },
+		{ snapshotId: string }
+	>({
+		method: "GET",
+		url: `/v2/sandboxes/snapshots/${pathParams.snapshotId}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Permanently deletes a snapshot and frees its associated storage. This action cannot be undone. After deletion, the snapshot can no longer be used to create new sessions.
  * @summary Delete a snapshot
- * {@link /v2/sandboxes/snapshots/:snapshotId}
+ * @description Permanently deletes a snapshot and frees its associated storage. This action cannot be undone. After deletion, the snapshot can no longer be used to create new sessions.
+ * @link /v2/sandboxes/snapshots/{snapshotId}
  */
-export async function deleteSessionSnapshot({
-	pathParams: { snapshotId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: DeleteSessionSnapshotPathParams;
-	queryParams?: DeleteSessionSnapshotQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteSessionSnapshot(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { snapshotId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!snapshotId) {
+	if (!pathParams.snapshotId) {
 		throw new Error(`Missing required path parameter: snapshotId`);
 	}
-
 	const data = await request<
-		DeleteSessionSnapshotMutationResponse,
+		DeleteSessionSnapshotResponse,
 		ErrorWrapper<
-			| DeleteSessionSnapshot400
-			| DeleteSessionSnapshot401
-			| DeleteSessionSnapshot403
-			| DeleteSessionSnapshot404
+			| DeleteSessionSnapshotStatus400
+			| DeleteSessionSnapshotStatus401
+			| DeleteSessionSnapshotStatus403
+			| DeleteSessionSnapshotStatus404
 		>,
 		null,
 		Record<string, string>,
-		DeleteSessionSnapshotQueryParams,
-		DeleteSessionSnapshotPathParams
+		{ teamId?: string; slug?: string },
+		{ snapshotId: string }
 	>({
 		method: "DELETE",
-		url: `/v2/sandboxes/snapshots/${snapshotId}`,
+		url: `/v2/sandboxes/snapshots/${pathParams.snapshotId}`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Retrieves a paginated list of sessions belonging to a specific sandbox. Results are sorted by creation time and paginated using an opaque cursor.
  * @summary List sessions
- * {@link /v2/sandboxes/sessions}
+ * @description Retrieves a paginated list of sessions belonging to a specific sandbox. Results are sorted by creation time and paginated using an opaque cursor.
+ * @link /v2/sandboxes/sessions
  */
-export async function listSessions({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: ListSessionsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listSessions(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			project?: string;
+			name?: string;
+			limit?: number;
+			cursor?: string;
+			sortOrder?: "asc" | "desc";
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		ListSessionsQueryResponse,
+		ListSessionsResponse,
 		ErrorWrapper<
-			ListSessions400 | ListSessions401 | ListSessions403 | ListSessions404 | ListSessions500
+			| ListSessionsStatus400
+			| ListSessionsStatus401
+			| ListSessionsStatus403
+			| ListSessionsStatus404
+			| ListSessionsStatus500
 		>,
 		null,
 		Record<string, string>,
-		ListSessionsQueryParams,
+		{
+			project?: string;
+			name?: string;
+			limit?: number;
+			cursor?: string;
+			sortOrder?: "asc" | "desc";
+			teamId?: string;
+			slug?: string;
+		},
 		Record<string, string>
-	>({ method: "GET", url: `/v2/sandboxes/sessions`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/v2/sandboxes/sessions`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Retrieves detailed information about a specific session, including its current status, resource configuration, and exposed routes.
  * @summary Get a session
- * {@link /v2/sandboxes/sessions/:sessionId}
+ * @description Retrieves detailed information about a specific session, including its current status, resource configuration, and exposed routes.
+ * @link /v2/sandboxes/sessions/{sessionId}
  */
-export async function getSession({
-	pathParams: { sessionId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetSessionPathParams;
-	queryParams?: GetSessionQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getSession(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { sessionId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!sessionId) {
+	if (!pathParams.sessionId) {
 		throw new Error(`Missing required path parameter: sessionId`);
 	}
-
 	const data = await request<
-		GetSessionQueryResponse,
-		ErrorWrapper<GetSession400 | GetSession401 | GetSession403 | GetSession500>,
+		GetSessionResponse,
+		ErrorWrapper<
+			| GetSessionStatus400
+			| GetSessionStatus401
+			| GetSessionStatus403
+			| GetSessionStatus404
+			| GetSessionStatus500
+		>,
 		null,
 		Record<string, string>,
-		GetSessionQueryParams,
-		GetSessionPathParams
-	>({ method: "GET", url: `/v2/sandboxes/sessions/${sessionId}`, queryParams, ...requestConfig });
+		{ teamId?: string; slug?: string },
+		{ sessionId: string }
+	>({
+		method: "GET",
+		url: `/v2/sandboxes/sessions/${pathParams.sessionId}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Retrieves a named sandbox by name, including its current sandbox and routes. If the sandbox is stopped and resume is true, a new sandbox will be created from the most recent snapshot.
  * @summary Get a named sandbox
- * {@link /v2/sandboxes/:name}
+ * @description Retrieves a named sandbox by name, including its current sandbox and routes. If the sandbox is stopped and resume is true, a new sandbox will be created from the most recent snapshot.
+ * @link /v2/sandboxes/{name}
  */
-export async function getNamedSandbox({
-	pathParams: { name },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetNamedSandboxPathParams;
-	queryParams?: GetNamedSandboxQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getNamedSandbox(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { name: string };
+		queryParams?: { projectId?: string; resume?: boolean; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!name) {
+	if (!pathParams.name) {
 		throw new Error(`Missing required path parameter: name`);
 	}
-
 	const data = await request<
-		GetNamedSandboxQueryResponse,
+		GetNamedSandboxResponse,
 		ErrorWrapper<
-			| GetNamedSandbox400
-			| GetNamedSandbox401
-			| GetNamedSandbox402
-			| GetNamedSandbox403
-			| GetNamedSandbox404
-			| GetNamedSandbox429
-			| GetNamedSandbox500
+			| GetNamedSandboxStatus400
+			| GetNamedSandboxStatus401
+			| GetNamedSandboxStatus402
+			| GetNamedSandboxStatus403
+			| GetNamedSandboxStatus404
+			| GetNamedSandboxStatus409
+			| GetNamedSandboxStatus410
+			| GetNamedSandboxStatus429
+			| GetNamedSandboxStatus500
 		>,
 		null,
 		Record<string, string>,
-		GetNamedSandboxQueryParams,
-		GetNamedSandboxPathParams
-	>({ method: "GET", url: `/v2/sandboxes/${name}`, queryParams, ...requestConfig });
+		{ projectId?: string; resume?: boolean; teamId?: string; slug?: string },
+		{ name: string }
+	>({
+		method: "GET",
+		url: `/v2/sandboxes/${pathParams.name}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Updates the configuration of a sandbox. Only the provided fields will be modified; omitted fields remain unchanged.
  * @summary Update a sandbox
- * {@link /v2/sandboxes/:name}
+ * @description Updates the configuration of a sandbox. Only the provided fields will be modified; omitted fields remain unchanged.
+ * @link /v2/sandboxes/{name}
  */
-export async function updateSandbox({
-	pathParams: { name },
-	queryParams,
-	config = {},
-}: {
-	pathParams: UpdateSandboxPathParams;
-	queryParams?: UpdateSandboxQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateSandbox(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { name: string };
+		queryParams?: { projectId?: string; resume?: boolean; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!name) {
+	if (!pathParams.name) {
 		throw new Error(`Missing required path parameter: name`);
 	}
-
 	const data = await request<
-		UpdateSandboxMutationResponse,
+		UpdateSandboxResponse,
 		ErrorWrapper<
-			| UpdateSandbox400
-			| UpdateSandbox401
-			| UpdateSandbox402
-			| UpdateSandbox403
-			| UpdateSandbox404
-			| UpdateSandbox410
-			| UpdateSandbox422
-			| UpdateSandbox500
+			| UpdateSandboxStatus400
+			| UpdateSandboxStatus401
+			| UpdateSandboxStatus402
+			| UpdateSandboxStatus403
+			| UpdateSandboxStatus404
+			| UpdateSandboxStatus409
+			| UpdateSandboxStatus410
+			| UpdateSandboxStatus422
+			| UpdateSandboxStatus429
+			| UpdateSandboxStatus500
 		>,
 		null,
 		Record<string, string>,
-		UpdateSandboxQueryParams,
-		UpdateSandboxPathParams
+		{ projectId?: string; resume?: boolean; teamId?: string; slug?: string },
+		{ name: string }
 	>({
 		method: "PATCH",
-		url: `/v2/sandboxes/${name}`,
+		url: `/v2/sandboxes/${pathParams.name}`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Deletes a sandbox by name. If sandboxes are currently running, they will be stopped first. This operation deletes all sandbox entities with the given name, all associated snapshots, and the named sandbox metadata.
  * @summary Delete a sandbox
- * {@link /v2/sandboxes/:name}
+ * @description Deletes a sandbox by name. If sandboxes are currently running, they will be stopped first. This operation deletes all sandbox entities with the given name and the named sandbox metadata.
+ * @link /v2/sandboxes/{name}
  */
-export async function deleteSandbox({
-	pathParams: { name },
-	queryParams,
-	config = {},
-}: {
-	pathParams: DeleteSandboxPathParams;
-	queryParams?: DeleteSandboxQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteSandbox(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { name: string };
+		queryParams?: { projectId?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!name) {
+	if (!pathParams.name) {
 		throw new Error(`Missing required path parameter: name`);
 	}
-
 	const data = await request<
-		DeleteSandboxMutationResponse,
+		DeleteSandboxResponse,
 		ErrorWrapper<
-			| DeleteSandbox400
-			| DeleteSandbox401
-			| DeleteSandbox403
-			| DeleteSandbox404
-			| DeleteSandbox410
-			| DeleteSandbox422
+			| DeleteSandboxStatus400
+			| DeleteSandboxStatus401
+			| DeleteSandboxStatus403
+			| DeleteSandboxStatus404
+			| DeleteSandboxStatus410
+			| DeleteSandboxStatus422
 		>,
 		null,
 		Record<string, string>,
-		DeleteSandboxQueryParams,
-		DeleteSandboxPathParams
-	>({ method: "DELETE", url: `/v2/sandboxes/${name}`, queryParams, ...requestConfig });
+		{ projectId?: string; teamId?: string; slug?: string },
+		{ name: string }
+	>({
+		method: "DELETE",
+		url: `/v2/sandboxes/${pathParams.name}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Retrieves a list of all commands that have been executed in a session, including their current status, exit codes, and execution times, ordered from the most recent to the oldest.
  * @summary List commands
- * {@link /v2/sandboxes/sessions/:sessionId/cmd}
+ * @description Retrieves a list of all commands that have been executed in a session, including their current status, exit codes, and execution times, ordered from the most recent to the oldest.
+ * @link /v2/sandboxes/sessions/{sessionId}/cmd
  */
-export async function listSessionCommands({
-	pathParams: { sessionId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ListSessionCommandsPathParams;
-	queryParams?: ListSessionCommandsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listSessionCommands(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { sessionId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!sessionId) {
+	if (!pathParams.sessionId) {
 		throw new Error(`Missing required path parameter: sessionId`);
 	}
-
 	const data = await request<
-		ListSessionCommandsQueryResponse,
-		ErrorWrapper<ListSessionCommands400 | ListSessionCommands401 | ListSessionCommands403>,
+		ListSessionCommandsResponse,
+		ErrorWrapper<
+			| ListSessionCommandsStatus400
+			| ListSessionCommandsStatus401
+			| ListSessionCommandsStatus403
+			| ListSessionCommandsStatus404
+		>,
 		null,
 		Record<string, string>,
-		ListSessionCommandsQueryParams,
-		ListSessionCommandsPathParams
+		{ teamId?: string; slug?: string },
+		{ sessionId: string }
 	>({
 		method: "GET",
-		url: `/v2/sandboxes/sessions/${sessionId}/cmd`,
+		url: `/v2/sandboxes/sessions/${pathParams.sessionId}/cmd`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Executes a shell command inside a running session. The command runs asynchronously and returns immediately with a command ID that can be used to track its progress and retrieve its output. Optionally, use the `wait` parameter to stream the command status until completion.
  * @summary Execute a command
- * {@link /v2/sandboxes/sessions/:sessionId/cmd}
+ * @description Executes a shell command inside a running session. The command runs asynchronously and returns immediately with a command ID that can be used to track its progress and retrieve its output. Optionally, use the `wait` parameter to stream the command status until completion.
+ * @link /v2/sandboxes/sessions/{sessionId}/cmd
  */
-export async function runSessionCommand({
-	pathParams: { sessionId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: RunSessionCommandPathParams;
-	queryParams?: RunSessionCommandQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function runSessionCommand(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { sessionId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!sessionId) {
+	if (!pathParams.sessionId) {
 		throw new Error(`Missing required path parameter: sessionId`);
 	}
-
 	const data = await request<
-		RunSessionCommandMutationResponse,
+		RunSessionCommandResponse,
 		ErrorWrapper<
-			| RunSessionCommand400
-			| RunSessionCommand401
-			| RunSessionCommand403
-			| RunSessionCommand410
-			| RunSessionCommand422
+			| RunSessionCommandStatus400
+			| RunSessionCommandStatus401
+			| RunSessionCommandStatus403
+			| RunSessionCommandStatus404
+			| RunSessionCommandStatus410
+			| RunSessionCommandStatus422
 		>,
 		null,
 		Record<string, string>,
-		RunSessionCommandQueryParams,
-		RunSessionCommandPathParams
+		{ teamId?: string; slug?: string },
+		{ sessionId: string }
 	>({
 		method: "POST",
-		url: `/v2/sandboxes/sessions/${sessionId}/cmd`,
+		url: `/v2/sandboxes/sessions/${pathParams.sessionId}/cmd`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Retrieves the current status and details of a command executed in a session. Use the `wait` parameter to block until the command finishes execution.
  * @summary Get a command
- * {@link /v2/sandboxes/sessions/:sessionId/cmd/:cmdId}
+ * @description Retrieves the current status and details of a command executed in a session. Use the `wait` parameter to block until the command finishes execution.
+ * @link /v2/sandboxes/sessions/{sessionId}/cmd/{cmdId}
  */
-export async function getSessionCommand({
-	pathParams: { sessionId, cmdId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetSessionCommandPathParams;
-	queryParams?: GetSessionCommandQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getSessionCommand(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { sessionId: string; cmdId: string };
+		queryParams?: { wait?: "true" | "false"; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!sessionId) {
+	if (!pathParams.sessionId) {
 		throw new Error(`Missing required path parameter: sessionId`);
 	}
 
-	if (!cmdId) {
+	if (!pathParams.cmdId) {
 		throw new Error(`Missing required path parameter: cmdId`);
 	}
-
 	const data = await request<
-		GetSessionCommandQueryResponse,
+		GetSessionCommandResponse,
 		ErrorWrapper<
-			| GetSessionCommand400
-			| GetSessionCommand401
-			| GetSessionCommand403
-			| GetSessionCommand410
-			| GetSessionCommand422
+			| GetSessionCommandStatus400
+			| GetSessionCommandStatus401
+			| GetSessionCommandStatus403
+			| GetSessionCommandStatus404
+			| GetSessionCommandStatus410
+			| GetSessionCommandStatus422
 		>,
 		null,
 		Record<string, string>,
-		GetSessionCommandQueryParams,
-		GetSessionCommandPathParams
+		{ wait?: "true" | "false"; teamId?: string; slug?: string },
+		{ sessionId: string; cmdId: string }
 	>({
 		method: "GET",
-		url: `/v2/sandboxes/sessions/${sessionId}/cmd/${cmdId}`,
+		url: `/v2/sandboxes/sessions/${pathParams.sessionId}/cmd/${pathParams.cmdId}`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Sends a signal to terminate a running command in a session. The signal can be used to gracefully stop (SIGTERM) or forcefully kill (SIGKILL) the process. The command must still be running for this operation to succeed.
  * @summary Kill a command
- * {@link /v2/sandboxes/sessions/:sessionId/cmd/:cmdId/kill}
+ * @description Sends a signal to terminate a running command in a session. The signal can be used to gracefully stop (SIGTERM) or forcefully kill (SIGKILL) the process. The command must still be running for this operation to succeed.
+ * @link /v2/sandboxes/sessions/{sessionId}/cmd/{cmdId}/kill
  */
-export async function killSessionCommand({
-	pathParams: { cmdId, sessionId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: KillSessionCommandPathParams;
-	queryParams?: KillSessionCommandQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function killSessionCommand(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { cmdId: string; sessionId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!cmdId) {
+	if (!pathParams.cmdId) {
 		throw new Error(`Missing required path parameter: cmdId`);
 	}
 
-	if (!sessionId) {
+	if (!pathParams.sessionId) {
 		throw new Error(`Missing required path parameter: sessionId`);
 	}
-
 	const data = await request<
-		KillSessionCommandMutationResponse,
+		KillSessionCommandResponse,
 		ErrorWrapper<
-			| KillSessionCommand400
-			| KillSessionCommand401
-			| KillSessionCommand403
-			| KillSessionCommand404
-			| KillSessionCommand410
-			| KillSessionCommand422
+			| KillSessionCommandStatus400
+			| KillSessionCommandStatus401
+			| KillSessionCommandStatus403
+			| KillSessionCommandStatus404
+			| KillSessionCommandStatus410
+			| KillSessionCommandStatus422
 		>,
 		null,
 		Record<string, string>,
-		KillSessionCommandQueryParams,
-		KillSessionCommandPathParams
+		{ teamId?: string; slug?: string },
+		{ cmdId: string; sessionId: string }
 	>({
 		method: "POST",
-		url: `/v2/sandboxes/sessions/${sessionId}/cmd/${cmdId}/kill`,
+		url: `/v2/sandboxes/sessions/${pathParams.sessionId}/cmd/${pathParams.cmdId}/kill`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Streams the output of a command in real-time using newline-delimited JSON (ND-JSON). Each entry includes the output data and stream type. Stream types include `stdout`, `stderr`, and `error` (for stream failures).
  * @summary Stream command logs
- * {@link /v2/sandboxes/sessions/:sessionId/cmd/:cmdId/logs}
+ * @description Streams the output of a command in real-time using newline-delimited JSON (ND-JSON). Each entry includes the output data and stream type. Stream types include `stdout`, `stderr`, and `error` (for stream failures).
+ * @link /v2/sandboxes/sessions/{sessionId}/cmd/{cmdId}/logs
  */
-export async function getSessionCommandLogs({
-	pathParams: { sessionId, cmdId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetSessionCommandLogsPathParams;
-	queryParams?: GetSessionCommandLogsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getSessionCommandLogs(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { sessionId: string; cmdId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!sessionId) {
+	if (!pathParams.sessionId) {
 		throw new Error(`Missing required path parameter: sessionId`);
 	}
 
-	if (!cmdId) {
+	if (!pathParams.cmdId) {
 		throw new Error(`Missing required path parameter: cmdId`);
 	}
-
 	const data = await request<
-		GetSessionCommandLogsQueryResponse,
+		GetSessionCommandLogsResponse,
 		ErrorWrapper<
-			| GetSessionCommandLogs400
-			| GetSessionCommandLogs401
-			| GetSessionCommandLogs403
-			| GetSessionCommandLogs410
-			| GetSessionCommandLogs422
+			| GetSessionCommandLogsStatus400
+			| GetSessionCommandLogsStatus401
+			| GetSessionCommandLogsStatus403
+			| GetSessionCommandLogsStatus404
+			| GetSessionCommandLogsStatus410
+			| GetSessionCommandLogsStatus422
 		>,
 		null,
 		Record<string, string>,
-		GetSessionCommandLogsQueryParams,
-		GetSessionCommandLogsPathParams
+		{ teamId?: string; slug?: string },
+		{ sessionId: string; cmdId: string }
 	>({
 		method: "GET",
-		url: `/v2/sandboxes/sessions/${sessionId}/cmd/${cmdId}/logs`,
+		url: `/v2/sandboxes/sessions/${pathParams.sessionId}/cmd/${pathParams.cmdId}/logs`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Stops a running session and releases its allocated resources. All running processes within the session will be terminated. This action cannot be undone. A stopped session cannot be restarted.
  * @summary Stop a session
- * {@link /v2/sandboxes/sessions/:sessionId/stop}
+ * @description Stops a running session and releases its allocated resources. All running processes within the session will be terminated. This action cannot be undone. A stopped session cannot be restarted.
+ * @link /v2/sandboxes/sessions/{sessionId}/stop
  */
-export async function stopSession({
-	pathParams: { sessionId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: StopSessionPathParams;
-	queryParams?: StopSessionQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function stopSession(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { sessionId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!sessionId) {
+	if (!pathParams.sessionId) {
 		throw new Error(`Missing required path parameter: sessionId`);
 	}
-
 	const data = await request<
-		StopSessionMutationResponse,
+		StopSessionResponse,
 		ErrorWrapper<
-			| StopSession400
-			| StopSession401
-			| StopSession403
-			| StopSession410
-			| StopSession422
-			| StopSession500
+			| StopSessionStatus400
+			| StopSessionStatus401
+			| StopSessionStatus403
+			| StopSessionStatus404
+			| StopSessionStatus410
+			| StopSessionStatus422
+			| StopSessionStatus500
 		>,
 		null,
 		Record<string, string>,
-		StopSessionQueryParams,
-		StopSessionPathParams
+		{ teamId?: string; slug?: string },
+		{ sessionId: string }
 	>({
 		method: "POST",
-		url: `/v2/sandboxes/sessions/${sessionId}/stop`,
+		url: `/v2/sandboxes/sessions/${pathParams.sessionId}/stop`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Extends the maximum execution time of a running session. The session must be active and able to accept commands. The total timeout cannot exceed the maximum allowed limit for your account.
  * @summary Extend session timeout
- * {@link /v2/sandboxes/sessions/:sessionId/extend-timeout}
+ * @description Extends the maximum execution time of a running session. The session must be active and able to accept commands. The total timeout cannot exceed the maximum allowed limit for your account.
+ * @link /v2/sandboxes/sessions/{sessionId}/extend-timeout
  */
-export async function extendSessionTimeout({
-	pathParams: { sessionId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ExtendSessionTimeoutPathParams;
-	queryParams?: ExtendSessionTimeoutQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function extendSessionTimeout(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { sessionId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!sessionId) {
+	if (!pathParams.sessionId) {
 		throw new Error(`Missing required path parameter: sessionId`);
 	}
-
 	const data = await request<
-		ExtendSessionTimeoutMutationResponse,
+		ExtendSessionTimeoutResponse,
 		ErrorWrapper<
-			| ExtendSessionTimeout400
-			| ExtendSessionTimeout401
-			| ExtendSessionTimeout403
-			| ExtendSessionTimeout410
-			| ExtendSessionTimeout422
-			| ExtendSessionTimeout500
+			| ExtendSessionTimeoutStatus400
+			| ExtendSessionTimeoutStatus401
+			| ExtendSessionTimeoutStatus403
+			| ExtendSessionTimeoutStatus404
+			| ExtendSessionTimeoutStatus410
+			| ExtendSessionTimeoutStatus422
+			| ExtendSessionTimeoutStatus500
 		>,
 		null,
 		Record<string, string>,
-		ExtendSessionTimeoutQueryParams,
-		ExtendSessionTimeoutPathParams
+		{ teamId?: string; slug?: string },
+		{ sessionId: string }
 	>({
 		method: "POST",
-		url: `/v2/sandboxes/sessions/${sessionId}/extend-timeout`,
+		url: `/v2/sandboxes/sessions/${pathParams.sessionId}/extend-timeout`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Replaces the network access policy of a running session. Use this to control which external hosts the session can communicate with. This is a full replacement. Any previously configured network rules will be overwritten.
  * @summary Update network policy
- * {@link /v2/sandboxes/sessions/:sessionId/network-policy}
+ * @description Replaces the network access policy of a running session. Use this to control which external hosts the session can communicate with. This is a full replacement. Any previously configured network rules will be overwritten.
+ * @link /v2/sandboxes/sessions/{sessionId}/network-policy
  */
-export async function updateSessionNetworkPolicy({
-	pathParams: { sessionId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: UpdateSessionNetworkPolicyPathParams;
-	queryParams?: UpdateSessionNetworkPolicyQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateSessionNetworkPolicy(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { sessionId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!sessionId) {
+	if (!pathParams.sessionId) {
 		throw new Error(`Missing required path parameter: sessionId`);
 	}
-
 	const data = await request<
-		UpdateSessionNetworkPolicyMutationResponse,
+		UpdateSessionNetworkPolicyResponse,
 		ErrorWrapper<
-			| UpdateSessionNetworkPolicy400
-			| UpdateSessionNetworkPolicy401
-			| UpdateSessionNetworkPolicy402
-			| UpdateSessionNetworkPolicy403
-			| UpdateSessionNetworkPolicy410
-			| UpdateSessionNetworkPolicy422
-			| UpdateSessionNetworkPolicy500
+			| UpdateSessionNetworkPolicyStatus400
+			| UpdateSessionNetworkPolicyStatus401
+			| UpdateSessionNetworkPolicyStatus402
+			| UpdateSessionNetworkPolicyStatus403
+			| UpdateSessionNetworkPolicyStatus404
+			| UpdateSessionNetworkPolicyStatus410
+			| UpdateSessionNetworkPolicyStatus422
+			| UpdateSessionNetworkPolicyStatus500
 		>,
 		null,
 		Record<string, string>,
-		UpdateSessionNetworkPolicyQueryParams,
-		UpdateSessionNetworkPolicyPathParams
+		{ teamId?: string; slug?: string },
+		{ sessionId: string }
 	>({
 		method: "POST",
-		url: `/v2/sandboxes/sessions/${sessionId}/network-policy`,
+		url: `/v2/sandboxes/sessions/${pathParams.sessionId}/network-policy`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Downloads the contents of a file from a session's filesystem. The file content is returned as a binary stream with appropriate Content-Disposition headers for file download.
  * @summary Read a file
- * {@link /v2/sandboxes/sessions/:sessionId/fs/read}
+ * @description Downloads the contents of a file from a session's filesystem. The file content is returned as a binary stream with appropriate Content-Disposition headers for file download.
+ * @link /v2/sandboxes/sessions/{sessionId}/fs/read
  */
-export async function readSessionFile({
-	pathParams: { sessionId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ReadSessionFilePathParams;
-	queryParams?: ReadSessionFileQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function readSessionFile(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { sessionId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!sessionId) {
+	if (!pathParams.sessionId) {
 		throw new Error(`Missing required path parameter: sessionId`);
 	}
-
 	const data = await request<
-		ReadSessionFileMutationResponse,
+		ReadSessionFileResponse,
 		ErrorWrapper<
-			| ReadSessionFile400
-			| ReadSessionFile401
-			| ReadSessionFile403
-			| ReadSessionFile404
-			| ReadSessionFile410
-			| ReadSessionFile422
+			| ReadSessionFileStatus400
+			| ReadSessionFileStatus401
+			| ReadSessionFileStatus403
+			| ReadSessionFileStatus404
+			| ReadSessionFileStatus410
+			| ReadSessionFileStatus422
 		>,
 		null,
 		Record<string, string>,
-		ReadSessionFileQueryParams,
-		ReadSessionFilePathParams
+		{ teamId?: string; slug?: string },
+		{ sessionId: string }
 	>({
 		method: "POST",
-		url: `/v2/sandboxes/sessions/${sessionId}/fs/read`,
+		url: `/v2/sandboxes/sessions/${pathParams.sessionId}/fs/read`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Creates a new directory in a session's filesystem. By default, parent directories are created recursively if they don't exist (similar to `mkdir -p`).
  * @summary Create a directory
- * {@link /v2/sandboxes/sessions/:sessionId/fs/mkdir}
+ * @description Creates a new directory in a session's filesystem. By default, parent directories are created recursively if they don't exist (similar to `mkdir -p`).
+ * @link /v2/sandboxes/sessions/{sessionId}/fs/mkdir
  */
-export async function createSessionDirectory({
-	pathParams: { sessionId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: CreateSessionDirectoryPathParams;
-	queryParams?: CreateSessionDirectoryQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createSessionDirectory(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { sessionId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!sessionId) {
+	if (!pathParams.sessionId) {
 		throw new Error(`Missing required path parameter: sessionId`);
 	}
-
 	const data = await request<
-		CreateSessionDirectoryMutationResponse,
+		CreateSessionDirectoryResponse,
 		ErrorWrapper<
-			| CreateSessionDirectory400
-			| CreateSessionDirectory401
-			| CreateSessionDirectory403
-			| CreateSessionDirectory410
-			| CreateSessionDirectory422
+			| CreateSessionDirectoryStatus400
+			| CreateSessionDirectoryStatus401
+			| CreateSessionDirectoryStatus403
+			| CreateSessionDirectoryStatus404
+			| CreateSessionDirectoryStatus410
+			| CreateSessionDirectoryStatus422
 		>,
 		null,
 		Record<string, string>,
-		CreateSessionDirectoryQueryParams,
-		CreateSessionDirectoryPathParams
+		{ teamId?: string; slug?: string },
+		{ sessionId: string }
 	>({
 		method: "POST",
-		url: `/v2/sandboxes/sessions/${sessionId}/fs/mkdir`,
+		url: `/v2/sandboxes/sessions/${pathParams.sessionId}/fs/mkdir`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Uploads and extracts files to a session's filesystem. Files must be uploaded as a gzipped tarball (`.tar.gz`) with the `Content-Type` header set to `application/gzip`. The tarball contents are extracted to the session's working directory, or to a custom directory specified via the `x-cwd` header.
  * @summary Write files
- * {@link /v2/sandboxes/sessions/:sessionId/fs/write}
+ * @description Uploads and extracts files to a session's filesystem. Files must be uploaded as a gzipped tarball (`.tar.gz`) with the `Content-Type` header set to `application/gzip`. The tarball contents are extracted to the session's working directory, or to a custom directory specified via the `x-cwd` header.
+ * @link /v2/sandboxes/sessions/{sessionId}/fs/write
  */
-export async function writeSessionFiles({
-	pathParams: { sessionId },
-	queryParams,
-	headers,
-	config = {},
-}: {
-	pathParams: WriteSessionFilesPathParams;
-	queryParams?: WriteSessionFilesQueryParams;
-	headers?: WriteSessionFilesHeaderParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function writeSessionFiles(
+	{
+		pathParams,
+		queryParams,
+		headers,
+		config,
+	}: {
+		pathParams: { sessionId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		headers?: { "'x-Cwd'"?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!sessionId) {
+	if (!pathParams.sessionId) {
 		throw new Error(`Missing required path parameter: sessionId`);
 	}
-
 	const data = await request<
-		WriteSessionFilesMutationResponse,
+		WriteSessionFilesResponse,
 		ErrorWrapper<
-			| WriteSessionFiles400
-			| WriteSessionFiles401
-			| WriteSessionFiles403
-			| WriteSessionFiles410
-			| WriteSessionFiles422
+			| WriteSessionFilesStatus400
+			| WriteSessionFilesStatus401
+			| WriteSessionFilesStatus403
+			| WriteSessionFilesStatus404
+			| WriteSessionFilesStatus410
+			| WriteSessionFilesStatus422
 		>,
 		null,
-		WriteSessionFilesHeaderParams,
-		WriteSessionFilesQueryParams,
-		WriteSessionFilesPathParams
+		{ "'x-Cwd'"?: string },
+		{ teamId?: string; slug?: string },
+		{ sessionId: string }
 	>({
 		method: "POST",
-		url: `/v2/sandboxes/sessions/${sessionId}/fs/write`,
+		url: `/v2/sandboxes/sessions/${pathParams.sessionId}/fs/write`,
 		queryParams,
 		...requestConfig,
 		headers: { ...headers, ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Creates a point-in-time snapshot of a running session's filesystem. Snapshots can be used to quickly restore a session to a previous state or to create new sessions with pre-configured environments. The session must be running and able to accept commands for a snapshot to be created. The session will be terminated after the snapshot is created.
  * @summary Create a snapshot
- * {@link /v2/sandboxes/sessions/:sessionId/snapshot}
+ * @description Creates a point-in-time snapshot of a running session's filesystem. Snapshots can be used to quickly restore a session to a previous state or to create new sessions with pre-configured environments. The session must be running and able to accept commands for a snapshot to be created. The session will be terminated after the snapshot is created.
+ * @link /v2/sandboxes/sessions/{sessionId}/snapshot
  */
-export async function createSessionSnapshot({
-	pathParams: { sessionId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: CreateSessionSnapshotPathParams;
-	queryParams?: CreateSessionSnapshotQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createSessionSnapshot(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { sessionId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!sessionId) {
+	if (!pathParams.sessionId) {
 		throw new Error(`Missing required path parameter: sessionId`);
 	}
-
 	const data = await request<
-		CreateSessionSnapshotMutationResponse,
+		CreateSessionSnapshotResponse,
 		ErrorWrapper<
-			| CreateSessionSnapshot400
-			| CreateSessionSnapshot401
-			| CreateSessionSnapshot402
-			| CreateSessionSnapshot403
-			| CreateSessionSnapshot410
-			| CreateSessionSnapshot422
-			| CreateSessionSnapshot500
+			| CreateSessionSnapshotStatus400
+			| CreateSessionSnapshotStatus401
+			| CreateSessionSnapshotStatus402
+			| CreateSessionSnapshotStatus403
+			| CreateSessionSnapshotStatus404
+			| CreateSessionSnapshotStatus410
+			| CreateSessionSnapshotStatus422
+			| CreateSessionSnapshotStatus500
 		>,
 		null,
 		Record<string, string>,
-		CreateSessionSnapshotQueryParams,
-		CreateSessionSnapshotPathParams
+		{ teamId?: string; slug?: string },
+		{ sessionId: string }
 	>({
 		method: "POST",
-		url: `/v2/sandboxes/sessions/${sessionId}/snapshot`,
+		url: `/v2/sandboxes/sessions/${pathParams.sessionId}/snapshot`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Update the setting for determining if the project has Attack Challenge mode enabled.
  * @summary Update Attack Challenge mode
- * {@link /v1/security/attack-mode}
+ * @description Update the setting for determining if the project has Attack Challenge mode enabled.
+ * @link /v1/security/attack-mode
  */
-export async function updateAttackChallengeMode({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: UpdateAttackChallengeModeQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateAttackChallengeMode(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		UpdateAttackChallengeModeMutationResponse,
+		UpdateAttackChallengeModeResponse,
 		ErrorWrapper<
-			| UpdateAttackChallengeMode400
-			| UpdateAttackChallengeMode401
-			| UpdateAttackChallengeMode403
-			| UpdateAttackChallengeMode404
+			| UpdateAttackChallengeModeStatus400
+			| UpdateAttackChallengeModeStatus401
+			| UpdateAttackChallengeModeStatus403
+			| UpdateAttackChallengeModeStatus404
 		>,
 		null,
 		Record<string, string>,
-		UpdateAttackChallengeModeQueryParams,
+		{ teamId?: string; slug?: string },
 		Record<string, string>
 	>({
 		method: "POST",
 		url: `/v1/security/attack-mode`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Set the firewall configuration to provided rules and settings. Creates or overwrite the existing firewall configuration.
  * @summary Put Firewall Configuration
- * {@link /v1/security/firewall/config}
+ * @description Set the firewall configuration to provided rules and settings. Creates or overwrite the existing firewall configuration.
+ * @link /v1/security/firewall/config
  */
-export async function putFirewallConfig({
-	queryParams,
-	config = {},
-}: {
-	queryParams: PutFirewallConfigQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function putFirewallConfig(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { projectId?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		PutFirewallConfigMutationResponse,
+		PutFirewallConfigResponse,
 		ErrorWrapper<
-			| PutFirewallConfig400
-			| PutFirewallConfig401
-			| PutFirewallConfig402
-			| PutFirewallConfig403
-			| PutFirewallConfig404
-			| PutFirewallConfig500
+			| PutFirewallConfigStatus400
+			| PutFirewallConfigStatus401
+			| PutFirewallConfigStatus402
+			| PutFirewallConfigStatus403
+			| PutFirewallConfigStatus404
+			| PutFirewallConfigStatus500
 		>,
 		null,
 		Record<string, string>,
-		PutFirewallConfigQueryParams,
+		{ projectId?: string; teamId?: string; slug?: string },
 		Record<string, string>
 	>({
 		method: "PUT",
 		url: `/v1/security/firewall/config`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Process updates to modify the existing firewall config for a project
  * @summary Update Firewall Configuration
- * {@link /v1/security/firewall/config}
+ * @description Process updates to modify the existing firewall config for a project
+ * @link /v1/security/firewall/config
  */
-export async function updateFirewallConfig({
-	queryParams,
-	config = {},
-}: {
-	queryParams: UpdateFirewallConfigQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateFirewallConfig(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { projectId?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		UpdateFirewallConfigMutationResponse,
+		UpdateFirewallConfigResponse,
 		ErrorWrapper<
-			| UpdateFirewallConfig400
-			| UpdateFirewallConfig401
-			| UpdateFirewallConfig402
-			| UpdateFirewallConfig403
-			| UpdateFirewallConfig404
-			| UpdateFirewallConfig500
+			| UpdateFirewallConfigStatus400
+			| UpdateFirewallConfigStatus401
+			| UpdateFirewallConfigStatus402
+			| UpdateFirewallConfigStatus403
+			| UpdateFirewallConfigStatus404
+			| UpdateFirewallConfigStatus500
 		>,
 		null,
 		Record<string, string>,
-		UpdateFirewallConfigQueryParams,
+		{ projectId?: string; teamId?: string; slug?: string },
 		Record<string, string>
 	>({
 		method: "PATCH",
 		url: `/v1/security/firewall/config`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Retrieve the specified firewall configuration for a project. The deployed configVersion will be `active`
  * @summary Read Firewall Configuration
- * {@link /v1/security/firewall/config/:configVersion}
+ * @description Retrieve the specified firewall configuration for a project. The deployed configVersion will be `active`
+ * @link /v1/security/firewall/config/{configVersion}
  */
-export async function getFirewallConfig({
-	pathParams: { configVersion },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetFirewallConfigPathParams;
-	queryParams: GetFirewallConfigQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getFirewallConfig(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { configVersion: string };
+		queryParams?: { projectId?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!configVersion) {
+	if (!pathParams.configVersion) {
 		throw new Error(`Missing required path parameter: configVersion`);
 	}
-
 	const data = await request<
-		GetFirewallConfigQueryResponse,
+		GetFirewallConfigResponse,
 		ErrorWrapper<
-			GetFirewallConfig400 | GetFirewallConfig401 | GetFirewallConfig403 | GetFirewallConfig404
+			| GetFirewallConfigStatus400
+			| GetFirewallConfigStatus401
+			| GetFirewallConfigStatus403
+			| GetFirewallConfigStatus404
 		>,
 		null,
 		Record<string, string>,
-		GetFirewallConfigQueryParams,
-		GetFirewallConfigPathParams
+		{ projectId?: string; teamId?: string; slug?: string },
+		{ configVersion: string }
 	>({
 		method: "GET",
-		url: `/v1/security/firewall/config/${configVersion}`,
+		url: `/v1/security/firewall/config/${pathParams.configVersion}`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Retrieve active attack data within the last N days (default: 1 day)
  * @summary Read active attack data
- * {@link /v1/security/firewall/attack-status}
+ * @description Retrieve active attack data within the last N days (default: 1 day)
+ * @link /v1/security/firewall/attack-status
  */
-export async function getActiveAttackStatus({
-	queryParams,
-	config = {},
-}: {
-	queryParams: GetActiveAttackStatusQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getActiveAttackStatus(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { projectId?: string; since?: number; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetActiveAttackStatusQueryResponse,
+		GetActiveAttackStatusResponse,
 		ErrorWrapper<
-			| GetActiveAttackStatus400
-			| GetActiveAttackStatus401
-			| GetActiveAttackStatus403
-			| GetActiveAttackStatus404
+			| GetActiveAttackStatusStatus400
+			| GetActiveAttackStatusStatus401
+			| GetActiveAttackStatusStatus403
+			| GetActiveAttackStatusStatus404
 		>,
 		null,
 		Record<string, string>,
-		GetActiveAttackStatusQueryParams,
+		{ projectId?: string; since?: number; teamId?: string; slug?: string },
 		Record<string, string>
-	>({ method: "GET", url: `/v1/security/firewall/attack-status`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/v1/security/firewall/attack-status`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Retrieve the system bypass rules configured for the specified project
  * @summary Read System Bypass
- * {@link /v1/security/firewall/bypass}
+ * @description Retrieve the system bypass rules configured for the specified project
+ * @link /v1/security/firewall/bypass
  */
-export async function getBypassIp({
-	queryParams,
-	config = {},
-}: {
-	queryParams: GetBypassIpQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getBypassIp(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			projectId?: string;
+			limit?: number;
+			sourceIp?: string;
+			domain?: string;
+			projectScope?: boolean;
+			offset?: string;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetBypassIpQueryResponse,
+		GetBypassIpResponse,
 		ErrorWrapper<
-			GetBypassIp400 | GetBypassIp401 | GetBypassIp403 | GetBypassIp404 | GetBypassIp500
+			| GetBypassIpStatus400
+			| GetBypassIpStatus401
+			| GetBypassIpStatus403
+			| GetBypassIpStatus404
+			| GetBypassIpStatus500
 		>,
 		null,
 		Record<string, string>,
-		GetBypassIpQueryParams,
+		{
+			projectId?: string;
+			limit?: number;
+			sourceIp?: string;
+			domain?: string;
+			projectScope?: boolean;
+			offset?: string;
+			teamId?: string;
+			slug?: string;
+		},
 		Record<string, string>
-	>({ method: "GET", url: `/v1/security/firewall/bypass`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/v1/security/firewall/bypass`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Create new system bypass rules
  * @summary Create System Bypass Rule
- * {@link /v1/security/firewall/bypass}
+ * @description Create new system bypass rules
+ * @link /v1/security/firewall/bypass
  */
-export async function addBypassIp({
-	queryParams,
-	config = {},
-}: {
-	queryParams: AddBypassIpQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function addBypassIp(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { projectId?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		AddBypassIpMutationResponse,
+		AddBypassIpResponse,
 		ErrorWrapper<
-			AddBypassIp400 | AddBypassIp401 | AddBypassIp403 | AddBypassIp404 | AddBypassIp500
+			| AddBypassIpStatus400
+			| AddBypassIpStatus401
+			| AddBypassIpStatus403
+			| AddBypassIpStatus404
+			| AddBypassIpStatus500
 		>,
 		null,
 		Record<string, string>,
-		AddBypassIpQueryParams,
+		{ projectId?: string; teamId?: string; slug?: string },
 		Record<string, string>
 	>({
 		method: "POST",
 		url: `/v1/security/firewall/bypass`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Remove system bypass rules
  * @summary Remove System Bypass Rule
- * {@link /v1/security/firewall/bypass}
+ * @description Remove system bypass rules
+ * @link /v1/security/firewall/bypass
  */
-export async function removeBypassIp({
-	queryParams,
-	config = {},
-}: {
-	queryParams: RemoveBypassIpQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function removeBypassIp(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { projectId?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		RemoveBypassIpMutationResponse,
+		RemoveBypassIpResponse,
 		ErrorWrapper<
-			| RemoveBypassIp400
-			| RemoveBypassIp401
-			| RemoveBypassIp403
-			| RemoveBypassIp404
-			| RemoveBypassIp500
+			| RemoveBypassIpStatus400
+			| RemoveBypassIpStatus401
+			| RemoveBypassIpStatus403
+			| RemoveBypassIpStatus404
+			| RemoveBypassIpStatus500
 		>,
 		null,
 		Record<string, string>,
-		RemoveBypassIpQueryParams,
+		{ projectId?: string; teamId?: string; slug?: string },
 		Record<string, string>
 	>({
 		method: "DELETE",
 		url: `/v1/security/firewall/bypass`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Retrieve firewall actions for a project
  * @summary Read Firewall Actions by Project
- * {@link /v1/security/firewall/events}
+ * @description Retrieve firewall actions for a project
+ * @link /v1/security/firewall/events
  */
-export async function getSecurityFirewallEvents({
-	queryParams,
-	config = {},
-}: {
-	queryParams: GetSecurityFirewallEventsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getSecurityFirewallEvents(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			projectId?: string;
+			startTimestamp?: number;
+			endTimestamp?: number;
+			hosts?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetSecurityFirewallEventsQueryResponse,
+		GetSecurityFirewallEventsResponse,
 		ErrorWrapper<
-			| GetSecurityFirewallEvents400
-			| GetSecurityFirewallEvents401
-			| GetSecurityFirewallEvents403
-			| GetSecurityFirewallEvents404
-			| GetSecurityFirewallEvents500
+			| GetSecurityFirewallEventsStatus400
+			| GetSecurityFirewallEventsStatus401
+			| GetSecurityFirewallEventsStatus403
+			| GetSecurityFirewallEventsStatus404
+			| GetSecurityFirewallEventsStatus500
 		>,
 		null,
 		Record<string, string>,
-		GetSecurityFirewallEventsQueryParams,
+		{ projectId?: string; startTimestamp?: number; endTimestamp?: number; hosts?: string },
 		Record<string, string>
-	>({ method: "GET", url: `/v1/security/firewall/events`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/v1/security/firewall/events`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Creates an integration store with automatic billing plan handling. For free resources, omit `billingPlanId` to auto-discover free plans. For paid resources, provide a `billingPlanId` from the billing plans endpoint.
  * @summary Create integration store (free and paid plans)
- * {@link /v1/storage/stores/integration/direct}
+ * @description Creates an integration store with automatic billing plan handling. For free resources, omit `billingPlanId` to auto-discover free plans. For paid resources, provide a `billingPlanId` from the billing plans endpoint.
+ * @link /v1/storage/stores/integration/direct
  */
-export async function createIntegrationStoreDirect({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: CreateIntegrationStoreDirectQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createIntegrationStoreDirect(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		CreateIntegrationStoreDirectMutationResponse,
+		CreateIntegrationStoreDirectResponse,
 		ErrorWrapper<
-			| CreateIntegrationStoreDirect400
-			| CreateIntegrationStoreDirect401
-			| CreateIntegrationStoreDirect402
-			| CreateIntegrationStoreDirect403
-			| CreateIntegrationStoreDirect404
-			| CreateIntegrationStoreDirect409
-			| CreateIntegrationStoreDirect429
-			| CreateIntegrationStoreDirect500
+			| CreateIntegrationStoreDirectStatus400
+			| CreateIntegrationStoreDirectStatus401
+			| CreateIntegrationStoreDirectStatus402
+			| CreateIntegrationStoreDirectStatus403
+			| CreateIntegrationStoreDirectStatus404
+			| CreateIntegrationStoreDirectStatus409
+			| CreateIntegrationStoreDirectStatus429
+			| CreateIntegrationStoreDirectStatus500
 		>,
 		null,
 		Record<string, string>,
-		CreateIntegrationStoreDirectQueryParams,
+		{ teamId?: string; slug?: string },
 		Record<string, string>
 	>({
 		method: "POST",
 		url: `/v1/storage/stores/integration/direct`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Get a paginated list of team members for the provided team.
  * @summary List team members
- * {@link /v3/teams/:teamId/members}
+ * @description Get a paginated list of team members for the provided team.
+ * @link /v3/teams/{teamId}/members
  */
-export async function getTeamMembers({
-	pathParams: { teamId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetTeamMembersPathParams;
-	queryParams?: GetTeamMembersQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getTeamMembers(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { teamId: string };
+		queryParams?: {
+			limit?: number;
+			since?: number;
+			until?: number;
+			search?: string;
+			role?:
+				| "OWNER"
+				| "MEMBER"
+				| "DEVELOPER"
+				| "SECURITY"
+				| "BILLING"
+				| "VIEWER"
+				| "VIEWER_FOR_PLUS"
+				| "CONTRIBUTOR";
+			excludeProject?: string;
+			eligibleMembersForProjectId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!teamId) {
+	if (!pathParams.teamId) {
 		throw new Error(`Missing required path parameter: teamId`);
 	}
-
 	const data = await request<
-		GetTeamMembersQueryResponse,
-		ErrorWrapper<GetTeamMembers400 | GetTeamMembers401 | GetTeamMembers403 | GetTeamMembers404>,
-		null,
-		Record<string, string>,
-		GetTeamMembersQueryParams,
-		GetTeamMembersPathParams
-	>({ method: "GET", url: `/v3/teams/${teamId}/members`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Invite a user to join the team specified in the URL. The authenticated user needs to be an `OWNER` in order to successfully invoke this endpoint. The user to be invited must be specified by email.
- * @summary Invite a user
- * {@link /v2/teams/:teamId/members}
- */
-export async function inviteUserToTeam({
-	pathParams: { teamId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: InviteUserToTeamPathParams;
-	queryParams?: InviteUserToTeamQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!teamId) {
-		throw new Error(`Missing required path parameter: teamId`);
-	}
-
-	const data = await request<
-		InviteUserToTeamMutationResponse,
+		GetTeamMembersResponse,
 		ErrorWrapper<
-			InviteUserToTeam400 | InviteUserToTeam401 | InviteUserToTeam403 | InviteUserToTeam503
+			| GetTeamMembersStatus400
+			| GetTeamMembersStatus401
+			| GetTeamMembersStatus403
+			| GetTeamMembersStatus404
 		>,
 		null,
 		Record<string, string>,
-		InviteUserToTeamQueryParams,
-		InviteUserToTeamPathParams
+		{
+			limit?: number;
+			since?: number;
+			until?: number;
+			search?: string;
+			role?:
+				| "OWNER"
+				| "MEMBER"
+				| "DEVELOPER"
+				| "SECURITY"
+				| "BILLING"
+				| "VIEWER"
+				| "VIEWER_FOR_PLUS"
+				| "CONTRIBUTOR";
+			excludeProject?: string;
+			eligibleMembersForProjectId?: string;
+			slug?: string;
+		},
+		{ teamId: string }
 	>({
-		method: "POST",
-		url: `/v2/teams/${teamId}/members`,
+		method: "GET",
+		url: `/v3/teams/${pathParams.teamId}/members`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Request access to a team as a member. An owner has to approve the request. Only 10 users can request access to a team at the same time.
- * @summary Request access to a team
- * {@link /v1/teams/:teamId/request}
+ * @summary Invite a user
+ * @description Invite a user to join the team specified in the URL. The authenticated user needs to be an `OWNER` in order to successfully invoke this endpoint. The user to be invited must be specified by email.
+ * @link /v2/teams/{teamId}/members
  */
-export async function requestAccessToTeam({
-	pathParams: { teamId },
-	config = {},
-}: {
-	pathParams: RequestAccessToTeamPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function inviteUserToTeam(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { teamId: string };
+		queryParams?: { slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!teamId) {
+	if (!pathParams.teamId) {
 		throw new Error(`Missing required path parameter: teamId`);
 	}
-
 	const data = await request<
-		RequestAccessToTeamMutationResponse,
+		InviteUserToTeamResponse,
 		ErrorWrapper<
-			| RequestAccessToTeam400
-			| RequestAccessToTeam401
-			| RequestAccessToTeam403
-			| RequestAccessToTeam404
-			| RequestAccessToTeam429
-			| RequestAccessToTeam503
+			| InviteUserToTeamStatus400
+			| InviteUserToTeamStatus401
+			| InviteUserToTeamStatus403
+			| InviteUserToTeamStatus503
+		>,
+		null,
+		Record<string, string>,
+		{ slug?: string },
+		{ teamId: string }
+	>({
+		method: "POST",
+		url: `/v2/teams/${pathParams.teamId}/members`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Request access to a team
+ * @description Request access to a team as a member. An owner has to approve the request. Only 100 users can request access to a team at the same time.
+ * @link /v1/teams/{teamId}/request
+ */
+export async function requestAccessToTeam(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { teamId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.teamId) {
+		throw new Error(`Missing required path parameter: teamId`);
+	}
+	const data = await request<
+		RequestAccessToTeamResponse,
+		ErrorWrapper<
+			| RequestAccessToTeamStatus400
+			| RequestAccessToTeamStatus401
+			| RequestAccessToTeamStatus403
+			| RequestAccessToTeamStatus404
+			| RequestAccessToTeamStatus429
+			| RequestAccessToTeamStatus503
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		RequestAccessToTeamPathParams
+		{ teamId: string }
 	>({
 		method: "POST",
-		url: `/v1/teams/${teamId}/request`,
+		url: `/v1/teams/${pathParams.teamId}/request`,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Check the status of a join request. It'll respond with a 404 if the request has been declined. If no `userId` path segment was provided, this endpoint will instead return the status of the authenticated user.
  * @summary Get access request status
- * {@link /v1/teams/:teamId/request/:userId}
+ * @description Check the status of a join request. It'll respond with a 404 if the request has been declined. If no `userId` path segment was provided, this endpoint will instead return the status of the authenticated user.
+ * @link /v1/teams/{teamId}/request/{userId}
  */
-export async function getTeamAccessRequest({
-	pathParams: { userId, teamId },
-	config = {},
-}: {
-	pathParams: GetTeamAccessRequestPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getTeamAccessRequest(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { userId: string; teamId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!userId) {
+	if (!pathParams.userId) {
 		throw new Error(`Missing required path parameter: userId`);
 	}
 
-	if (!teamId) {
+	if (!pathParams.teamId) {
 		throw new Error(`Missing required path parameter: teamId`);
 	}
-
 	const data = await request<
-		GetTeamAccessRequestQueryResponse,
+		GetTeamAccessRequestResponse,
 		ErrorWrapper<
-			| GetTeamAccessRequest400
-			| GetTeamAccessRequest401
-			| GetTeamAccessRequest403
-			| GetTeamAccessRequest404
+			| GetTeamAccessRequestStatus400
+			| GetTeamAccessRequestStatus401
+			| GetTeamAccessRequestStatus403
+			| GetTeamAccessRequestStatus404
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetTeamAccessRequestPathParams
-	>({ method: "GET", url: `/v1/teams/${teamId}/request/${userId}`, ...requestConfig });
+		{ userId: string; teamId: string }
+	>({
+		method: "GET",
+		url: `/v1/teams/${pathParams.teamId}/request/${pathParams.userId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Join a team with a provided invite code or team ID.
  * @summary Join a team
- * {@link /v1/teams/:teamId/members/teams/join}
+ * @description Join a team with a provided invite code or team ID.
+ * @link /v1/teams/{teamId}/members/teams/join
  */
-export async function joinTeam({
-	pathParams: { teamId },
-	config = {},
-}: {
-	pathParams: JoinTeamPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function joinTeam(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { teamId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!teamId) {
+	if (!pathParams.teamId) {
 		throw new Error(`Missing required path parameter: teamId`);
 	}
-
 	const data = await request<
-		JoinTeamMutationResponse,
-		ErrorWrapper<JoinTeam400 | JoinTeam401 | JoinTeam402 | JoinTeam403 | JoinTeam404>,
+		JoinTeamResponse,
+		ErrorWrapper<
+			| JoinTeamStatus400
+			| JoinTeamStatus401
+			| JoinTeamStatus402
+			| JoinTeamStatus403
+			| JoinTeamStatus404
+			| JoinTeamStatus503
+		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		JoinTeamPathParams
+		{ teamId: string }
 	>({
 		method: "POST",
-		url: `/v1/teams/${teamId}/members/teams/join`,
+		url: `/v1/teams/${pathParams.teamId}/members/teams/join`,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Update the membership of a Team Member on the Team specified by `teamId`, such as changing the _role_ of the member, or confirming a request to join the Team for an unconfirmed member. The authenticated user must be an `OWNER` of the Team.
  * @summary Update a Team Member
- * {@link /v1/teams/:teamId/members/:uid}
+ * @description Update the membership of a Team Member on the Team specified by `teamId`, such as changing the _role_ of the member, or confirming a request to join the Team for an unconfirmed member. The authenticated user must be an `OWNER` of the Team.
+ * @link /v1/teams/{teamId}/members/{uid}
  */
-export async function updateTeamMember({
-	pathParams: { uid, teamId },
-	config = {},
-}: {
-	pathParams: UpdateTeamMemberPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateTeamMember(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { uid: string; teamId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!uid) {
+	if (!pathParams.uid) {
 		throw new Error(`Missing required path parameter: uid`);
 	}
 
-	if (!teamId) {
+	if (!pathParams.teamId) {
 		throw new Error(`Missing required path parameter: teamId`);
 	}
-
 	const data = await request<
-		UpdateTeamMemberMutationResponse,
+		UpdateTeamMemberResponse,
 		ErrorWrapper<
-			| UpdateTeamMember400
-			| UpdateTeamMember401
-			| UpdateTeamMember402
-			| UpdateTeamMember403
-			| UpdateTeamMember404
-			| UpdateTeamMember409
-			| UpdateTeamMember500
+			| UpdateTeamMemberStatus400
+			| UpdateTeamMemberStatus401
+			| UpdateTeamMemberStatus402
+			| UpdateTeamMemberStatus403
+			| UpdateTeamMemberStatus404
+			| UpdateTeamMemberStatus409
+			| UpdateTeamMemberStatus500
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		UpdateTeamMemberPathParams
+		{ uid: string; teamId: string }
 	>({
 		method: "PATCH",
-		url: `/v1/teams/${teamId}/members/${uid}`,
+		url: `/v1/teams/${pathParams.teamId}/members/${pathParams.uid}`,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Remove a Team Member from the Team, or dismiss a user that requested access, or leave a team.
  * @summary Remove a Team Member
- * {@link /v1/teams/:teamId/members/:uid}
+ * @description Remove a Team Member from the Team, or dismiss a user that requested access, or leave a team.
+ * @link /v1/teams/{teamId}/members/{uid}
  */
-export async function removeTeamMember({
-	pathParams: { uid, teamId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: RemoveTeamMemberPathParams;
-	queryParams?: RemoveTeamMemberQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function removeTeamMember(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { uid: string; teamId: string };
+		queryParams?: { newDefaultTeamId?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!uid) {
+	if (!pathParams.uid) {
 		throw new Error(`Missing required path parameter: uid`);
 	}
 
-	if (!teamId) {
+	if (!pathParams.teamId) {
 		throw new Error(`Missing required path parameter: teamId`);
 	}
-
 	const data = await request<
-		RemoveTeamMemberMutationResponse,
+		RemoveTeamMemberResponse,
 		ErrorWrapper<
-			| RemoveTeamMember400
-			| RemoveTeamMember401
-			| RemoveTeamMember403
-			| RemoveTeamMember404
-			| RemoveTeamMember503
+			| RemoveTeamMemberStatus400
+			| RemoveTeamMemberStatus401
+			| RemoveTeamMemberStatus403
+			| RemoveTeamMemberStatus404
+			| RemoveTeamMemberStatus503
 		>,
 		null,
 		Record<string, string>,
-		RemoveTeamMemberQueryParams,
-		RemoveTeamMemberPathParams
-	>({ method: "DELETE", url: `/v1/teams/${teamId}/members/${uid}`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Get information for the Team specified by the `teamId` parameter.
- * @summary Get a Team
- * {@link /v2/teams/:teamId}
- */
-export async function getTeam({
-	pathParams: { teamId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetTeamPathParams;
-	queryParams?: GetTeamQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!teamId) {
-		throw new Error(`Missing required path parameter: teamId`);
-	}
-
-	const data = await request<
-		GetTeamQueryResponse,
-		ErrorWrapper<GetTeam400 | GetTeam401 | GetTeam403 | GetTeam404>,
-		null,
-		Record<string, string>,
-		GetTeamQueryParams,
-		GetTeamPathParams
-	>({ method: "GET", url: `/v2/teams/${teamId}`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Update the information of a Team specified by the `teamId` parameter. The request body should contain the information that will be updated on the Team.
- * @summary Update a Team
- * {@link /v2/teams/:teamId}
- */
-export async function patchTeam({
-	pathParams: { teamId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: PatchTeamPathParams;
-	queryParams?: PatchTeamQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!teamId) {
-		throw new Error(`Missing required path parameter: teamId`);
-	}
-
-	const data = await request<
-		PatchTeamMutationResponse,
-		ErrorWrapper<PatchTeam400 | PatchTeam401 | PatchTeam402 | PatchTeam403 | PatchTeam428>,
-		null,
-		Record<string, string>,
-		PatchTeamQueryParams,
-		PatchTeamPathParams
+		{ newDefaultTeamId?: string },
+		{ uid: string; teamId: string }
 	>({
-		method: "PATCH",
-		url: `/v2/teams/${teamId}`,
+		method: "DELETE",
+		url: `/v1/teams/${pathParams.teamId}/members/${pathParams.uid}`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Get a paginated list of all the Teams the authenticated User is a member of.
- * @summary List all teams
- * {@link /v2/teams}
+ * @summary Get a Team
+ * @description Get information for the Team specified by the `teamId` parameter.
+ * @link /v2/teams/{teamId}
  */
-export async function getTeams({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: GetTeamsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getTeam(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { teamId: string };
+		queryParams?: { slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
+	if (!pathParams.teamId) {
+		throw new Error(`Missing required path parameter: teamId`);
+	}
 	const data = await request<
-		GetTeamsQueryResponse,
-		ErrorWrapper<GetTeams400 | GetTeams401 | GetTeams403>,
+		GetTeamResponse,
+		ErrorWrapper<GetTeamStatus400 | GetTeamStatus401 | GetTeamStatus403 | GetTeamStatus404>,
 		null,
 		Record<string, string>,
-		GetTeamsQueryParams,
-		Record<string, string>
-	>({ method: "GET", url: `/v2/teams`, queryParams, ...requestConfig });
+		{ slug?: string },
+		{ teamId: string }
+	>({
+		method: "GET",
+		url: `/v2/teams/${pathParams.teamId}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Create a new Team under your account. You need to send a POST request with the desired Team slug, and optionally the Team name.
- * @summary Create a Team
- * {@link /v1/teams}
+ * @summary Update a Team
+ * @description Update the information of a Team specified by the `teamId` parameter. The request body should contain the information that will be updated on the Team.
+ * @link /v2/teams/{teamId}
  */
-export async function createTeam({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function patchTeam(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { teamId: string };
+		queryParams?: { slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.teamId) {
+		throw new Error(`Missing required path parameter: teamId`);
+	}
+	const data = await request<
+		PatchTeamResponse,
+		ErrorWrapper<
+			| PatchTeamStatus400
+			| PatchTeamStatus401
+			| PatchTeamStatus402
+			| PatchTeamStatus403
+			| PatchTeamStatus428
+		>,
+		null,
+		Record<string, string>,
+		{ slug?: string },
+		{ teamId: string }
+	>({
+		method: "PATCH",
+		url: `/v2/teams/${pathParams.teamId}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary List all teams
+ * @description Get a paginated list of all the Teams the authenticated User is a member of.
+ * @link /v2/teams
+ */
+export async function getTeams(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { limit?: number; since?: number; until?: number };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		CreateTeamMutationResponse,
-		ErrorWrapper<CreateTeam400 | CreateTeam401 | CreateTeam403>,
+		GetTeamsResponse,
+		ErrorWrapper<GetTeamsStatus400 | GetTeamsStatus401 | GetTeamsStatus403>,
+		null,
+		Record<string, string>,
+		{ limit?: number; since?: number; until?: number },
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/v2/teams`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Create a Team
+ * @description Create a new Team under your account. You need to send a POST request with the desired Team slug, and optionally the Team name.
+ * @link /v1/teams
+ */
+export async function createTeam(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		CreateTeamResponse,
+		ErrorWrapper<
+			| CreateTeamStatus400
+			| CreateTeamStatus401
+			| CreateTeamStatus403
+			| CreateTeamStatus404
+			| CreateTeamStatus409
+		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
@@ -13338,398 +15055,480 @@ export async function createTeam({
 		method: "POST",
 		url: `/v1/teams`,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Update the Directory Sync role mappings for a Team. This endpoint allows updating the mapping between directory groups and team roles or access groups.
  * @summary Update Team Directory Sync Role Mappings
- * {@link /v1/teams/:teamId/dsync-roles}
+ * @description Update the Directory Sync role mappings for a Team. This endpoint allows updating the mapping between directory groups and team roles or access groups.
+ * @link /v1/teams/{teamId}/dsync-roles
  */
-export async function postTeamDsyncRoles({
-	pathParams: { teamId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: PostTeamDsyncRolesPathParams;
-	queryParams?: PostTeamDsyncRolesQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function postTeamDsyncRoles(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { teamId: string };
+		queryParams?: { slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!teamId) {
+	if (!pathParams.teamId) {
 		throw new Error(`Missing required path parameter: teamId`);
 	}
-
 	const data = await request<
-		PostTeamDsyncRolesMutationResponse,
-		ErrorWrapper<PostTeamDsyncRoles400 | PostTeamDsyncRoles401 | PostTeamDsyncRoles403>,
+		PostTeamDsyncRolesResponse,
+		ErrorWrapper<
+			PostTeamDsyncRolesStatus400 | PostTeamDsyncRolesStatus401 | PostTeamDsyncRolesStatus403
+		>,
 		null,
 		Record<string, string>,
-		PostTeamDsyncRolesQueryParams,
-		PostTeamDsyncRolesPathParams
+		{ slug?: string },
+		{ teamId: string }
 	>({
 		method: "POST",
-		url: `/v1/teams/${teamId}/dsync-roles`,
+		url: `/v1/teams/${pathParams.teamId}/dsync-roles`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Delete a team under your account. You need to send a `DELETE` request with the desired team `id`. An optional array of reasons for deletion may also be sent.
  * @summary Delete a Team
- * {@link /v1/teams/:teamId}
+ * @description Delete a team under your account. You need to send a `DELETE` request with the desired team `id`. An optional array of reasons for deletion may also be sent.
+ * @link /v1/teams/{teamId}
  */
-export async function deleteTeam({
-	pathParams: { teamId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: DeleteTeamPathParams;
-	queryParams?: DeleteTeamQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteTeam(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { teamId: string };
+		queryParams?: { newDefaultTeamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!teamId) {
+	if (!pathParams.teamId) {
 		throw new Error(`Missing required path parameter: teamId`);
 	}
-
 	const data = await request<
-		DeleteTeamMutationResponse,
-		ErrorWrapper<DeleteTeam400 | DeleteTeam401 | DeleteTeam402 | DeleteTeam403 | DeleteTeam409>,
+		DeleteTeamResponse,
+		ErrorWrapper<
+			| DeleteTeamStatus400
+			| DeleteTeamStatus401
+			| DeleteTeamStatus402
+			| DeleteTeamStatus403
+			| DeleteTeamStatus409
+		>,
 		null,
 		Record<string, string>,
-		DeleteTeamQueryParams,
-		DeleteTeamPathParams
+		{ newDefaultTeamId?: string; slug?: string },
+		{ teamId: string }
 	>({
 		method: "DELETE",
-		url: `/v1/teams/${teamId}`,
+		url: `/v1/teams/${pathParams.teamId}`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Delete an active Team invite code.
  * @summary Delete a Team invite code
- * {@link /v1/teams/:teamId/invites/:inviteId}
+ * @description Delete an active Team invite code.
+ * @link /v1/teams/{teamId}/invites/{inviteId}
  */
-export async function deleteTeamInviteCode({
-	pathParams: { inviteId, teamId },
-	config = {},
-}: {
-	pathParams: DeleteTeamInviteCodePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteTeamInviteCode(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { inviteId: string; teamId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!inviteId) {
+	if (!pathParams.inviteId) {
 		throw new Error(`Missing required path parameter: inviteId`);
 	}
 
-	if (!teamId) {
+	if (!pathParams.teamId) {
 		throw new Error(`Missing required path parameter: teamId`);
 	}
-
 	const data = await request<
-		DeleteTeamInviteCodeMutationResponse,
+		DeleteTeamInviteCodeResponse,
 		ErrorWrapper<
-			| DeleteTeamInviteCode400
-			| DeleteTeamInviteCode401
-			| DeleteTeamInviteCode403
-			| DeleteTeamInviteCode404
+			| DeleteTeamInviteCodeStatus400
+			| DeleteTeamInviteCodeStatus401
+			| DeleteTeamInviteCodeStatus403
+			| DeleteTeamInviteCodeStatus404
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		DeleteTeamInviteCodePathParams
-	>({ method: "DELETE", url: `/v1/teams/${teamId}/invites/${inviteId}`, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Updates the name (and slug) of a microfrontends group.
- * @summary Update a microfrontends group
- * {@link /v1/teams/:teamId/microfrontends/:groupId}
- */
-export async function updateMicrofrontendsGroup({
-	pathParams: { groupId, teamId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: UpdateMicrofrontendsGroupPathParams;
-	queryParams?: UpdateMicrofrontendsGroupQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!groupId) {
-		throw new Error(`Missing required path parameter: groupId`);
-	}
-
-	if (!teamId) {
-		throw new Error(`Missing required path parameter: teamId`);
-	}
-
-	const data = await request<
-		UpdateMicrofrontendsGroupMutationResponse,
-		ErrorWrapper<
-			| UpdateMicrofrontendsGroup400
-			| UpdateMicrofrontendsGroup401
-			| UpdateMicrofrontendsGroup403
-			| UpdateMicrofrontendsGroup404
-		>,
-		null,
-		Record<string, string>,
-		UpdateMicrofrontendsGroupQueryParams,
-		UpdateMicrofrontendsGroupPathParams
-	>({
-		method: "PATCH",
-		url: `/v1/teams/${teamId}/microfrontends/${groupId}`,
-		queryParams,
-		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
-	});
-	return data;
-}
-
-/**
- * @description Deletes a microfrontends group from the team associated with the group ID.
- * @summary Delete a microfrontends group
- * {@link /v1/teams/:teamId/microfrontends/:groupId}
- */
-export async function deleteMicrofrontendsGroup({
-	pathParams: { groupId, teamId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: DeleteMicrofrontendsGroupPathParams;
-	queryParams?: DeleteMicrofrontendsGroupQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!groupId) {
-		throw new Error(`Missing required path parameter: groupId`);
-	}
-
-	if (!teamId) {
-		throw new Error(`Missing required path parameter: teamId`);
-	}
-
-	const data = await request<
-		DeleteMicrofrontendsGroupMutationResponse,
-		ErrorWrapper<
-			| DeleteMicrofrontendsGroup400
-			| DeleteMicrofrontendsGroup401
-			| DeleteMicrofrontendsGroup403
-			| DeleteMicrofrontendsGroup404
-			| DeleteMicrofrontendsGroup500
-		>,
-		null,
-		Record<string, string>,
-		DeleteMicrofrontendsGroupQueryParams,
-		DeleteMicrofrontendsGroupPathParams
+		{ inviteId: string; teamId: string }
 	>({
 		method: "DELETE",
-		url: `/v1/teams/${teamId}/microfrontends/${groupId}`,
-		queryParams,
+		url: `/v1/teams/${pathParams.teamId}/invites/${pathParams.inviteId}`,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Before you create a deployment you need to upload the required files for that deployment. To do it, you need to first upload each file to this endpoint. Once that's completed, you can create a new deployment with the uploaded files. The file content must be placed inside the body of the request. In the case of a successful response you'll receive a status code 200 with an empty body.
- * @summary Upload Deployment Files
- * {@link /v2/files}
+ * @summary Update a microfrontends group
+ * @description Updates the name (and slug) of a microfrontends group.
+ * @link /v1/teams/{teamId}/microfrontends/{groupId}
  */
-export async function uploadFile({
-	queryParams,
-	headers,
-	config = {},
-}: {
-	queryParams?: UploadFileQueryParams;
-	headers?: UploadFileHeaderParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateMicrofrontendsGroup(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { groupId: string; teamId: string };
+		queryParams?: { slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.groupId) {
+		throw new Error(`Missing required path parameter: groupId`);
+	}
+
+	if (!pathParams.teamId) {
+		throw new Error(`Missing required path parameter: teamId`);
+	}
+	const data = await request<
+		UpdateMicrofrontendsGroupResponse,
+		ErrorWrapper<
+			| UpdateMicrofrontendsGroupStatus400
+			| UpdateMicrofrontendsGroupStatus401
+			| UpdateMicrofrontendsGroupStatus403
+			| UpdateMicrofrontendsGroupStatus404
+		>,
+		null,
+		Record<string, string>,
+		{ slug?: string },
+		{ groupId: string; teamId: string }
+	>({
+		method: "PATCH",
+		url: `/v1/teams/${pathParams.teamId}/microfrontends/${pathParams.groupId}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Delete a microfrontends group
+ * @description Deletes a microfrontends group from the team associated with the group ID.
+ * @link /v1/teams/{teamId}/microfrontends/{groupId}
+ */
+export async function deleteMicrofrontendsGroup(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { groupId: string; teamId: string };
+		queryParams?: { slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.groupId) {
+		throw new Error(`Missing required path parameter: groupId`);
+	}
+
+	if (!pathParams.teamId) {
+		throw new Error(`Missing required path parameter: teamId`);
+	}
+	const data = await request<
+		DeleteMicrofrontendsGroupResponse,
+		ErrorWrapper<
+			| DeleteMicrofrontendsGroupStatus400
+			| DeleteMicrofrontendsGroupStatus401
+			| DeleteMicrofrontendsGroupStatus403
+			| DeleteMicrofrontendsGroupStatus404
+			| DeleteMicrofrontendsGroupStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ slug?: string },
+		{ groupId: string; teamId: string }
+	>({
+		method: "DELETE",
+		url: `/v1/teams/${pathParams.teamId}/microfrontends/${pathParams.groupId}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Upload Deployment Files
+ * @description Before you create a deployment you need to upload the required files for that deployment. To do it, you need to first upload each file to this endpoint. Once that's completed, you can create a new deployment with the uploaded files. The file content must be placed inside the body of the request. In the case of a successful response you'll receive a status code 200 with an empty body.
+ * @link /v2/files
+ */
+export async function uploadFile(
+	{
+		queryParams,
+		headers,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		headers?: {
+			"'content-Length'"?: number;
+			"'x-Vercel-Digest'"?: string;
+			"'x-Now-Digest'"?: string;
+			"'x-Now-Size'"?: number;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		UploadFileMutationResponse,
-		ErrorWrapper<UploadFile400 | UploadFile401 | UploadFile403>,
+		UploadFileResponse,
+		ErrorWrapper<
+			UploadFileStatus400 | UploadFileStatus401 | UploadFileStatus403 | UploadFileStatus426
+		>,
 		null,
-		UploadFileHeaderParams,
-		UploadFileQueryParams,
+		{
+			"'content-Length'"?: number;
+			"'x-Vercel-Digest'"?: string;
+			"'x-Now-Digest'"?: string;
+			"'x-Now-Size'"?: number;
+		},
+		{ teamId?: string; slug?: string },
 		Record<string, string>
 	>({
 		method: "POST",
 		url: `/v2/files`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationOctetStream", ...headers, ...requestConfig.headers },
+		headers: { ...headers, ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Retrieve a list of the current User's authentication tokens.
  * @summary List Auth Tokens
- * {@link /v6/user/tokens}
+ * @description Retrieve a list of the current User's authentication tokens.
+ * @link /v6/user/tokens
  */
-export async function listAuthTokens({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listAuthTokens(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		ListAuthTokensQueryResponse,
-		ErrorWrapper<ListAuthTokens400 | ListAuthTokens401 | ListAuthTokens403>,
+		ListAuthTokensResponse,
+		ErrorWrapper<ListAuthTokensStatus400 | ListAuthTokensStatus401 | ListAuthTokensStatus403>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "GET", url: `/v6/user/tokens`, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/v6/user/tokens`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Creates and returns a new authentication token for the currently authenticated User. The `bearerToken` property is only provided once, in the response body, so be sure to save it on the client for use with API requests.
  * @summary Create an Auth Token
- * {@link /v3/user/tokens}
+ * @description Creates and returns a new authentication token for the currently authenticated User. The `bearerToken` property is only provided once, in the response body, so be sure to save it on the client for use with API requests.
+ * @link /v3/user/tokens
  */
-export async function createAuthToken({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: CreateAuthTokenQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createAuthToken(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		CreateAuthTokenMutationResponse,
-		ErrorWrapper<CreateAuthToken400 | CreateAuthToken401 | CreateAuthToken403 | CreateAuthToken404>,
+		CreateAuthTokenResponse,
+		ErrorWrapper<
+			| CreateAuthTokenStatus400
+			| CreateAuthTokenStatus401
+			| CreateAuthTokenStatus403
+			| CreateAuthTokenStatus404
+		>,
 		null,
 		Record<string, string>,
-		CreateAuthTokenQueryParams,
+		{ teamId?: string; slug?: string },
 		Record<string, string>
 	>({
 		method: "POST",
 		url: `/v3/user/tokens`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Retrieve metadata about an authentication token belonging to the currently authenticated User.
  * @summary Get Auth Token Metadata
- * {@link /v5/user/tokens/:tokenId}
+ * @description Retrieve metadata about an authentication token belonging to the currently authenticated User.
+ * @link /v5/user/tokens/{tokenId}
  */
-export async function getAuthToken({
-	pathParams: { tokenId },
-	config = {},
-}: {
-	pathParams: GetAuthTokenPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getAuthToken(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { tokenId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!tokenId) {
+	if (!pathParams.tokenId) {
 		throw new Error(`Missing required path parameter: tokenId`);
 	}
-
 	const data = await request<
-		GetAuthTokenQueryResponse,
-		ErrorWrapper<GetAuthToken400 | GetAuthToken401 | GetAuthToken403 | GetAuthToken404>,
+		GetAuthTokenResponse,
+		ErrorWrapper<
+			GetAuthTokenStatus400 | GetAuthTokenStatus401 | GetAuthTokenStatus403 | GetAuthTokenStatus404
+		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetAuthTokenPathParams
-	>({ method: "GET", url: `/v5/user/tokens/${tokenId}`, ...requestConfig });
+		{ tokenId: string }
+	>({
+		method: "GET",
+		url: `/v5/user/tokens/${pathParams.tokenId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Invalidate an authentication token, such that it will no longer be valid for future HTTP requests.
  * @summary Delete an authentication token
- * {@link /v3/user/tokens/:tokenId}
+ * @description Invalidate an authentication token, such that it will no longer be valid for future HTTP requests.
+ * @link /v3/user/tokens/{tokenId}
  */
-export async function deleteAuthToken({
-	pathParams: { tokenId },
-	config = {},
-}: {
-	pathParams: DeleteAuthTokenPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteAuthToken(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { tokenId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!tokenId) {
+	if (!pathParams.tokenId) {
 		throw new Error(`Missing required path parameter: tokenId`);
 	}
-
 	const data = await request<
-		DeleteAuthTokenMutationResponse,
-		ErrorWrapper<DeleteAuthToken400 | DeleteAuthToken401 | DeleteAuthToken403 | DeleteAuthToken404>,
+		DeleteAuthTokenResponse,
+		ErrorWrapper<
+			| DeleteAuthTokenStatus400
+			| DeleteAuthTokenStatus401
+			| DeleteAuthTokenStatus403
+			| DeleteAuthTokenStatus404
+		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		DeleteAuthTokenPathParams
-	>({ method: "DELETE", url: `/v3/user/tokens/${tokenId}`, ...requestConfig });
+		{ tokenId: string }
+	>({
+		method: "DELETE",
+		url: `/v3/user/tokens/${pathParams.tokenId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Retrieves information related to the currently authenticated User.
  * @summary Get the User
- * {@link /v2/user}
+ * @description Retrieves information related to the currently authenticated User.
+ * @link /v2/user
  */
-export async function getAuthUser({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getAuthUser(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetAuthUserQueryResponse,
-		ErrorWrapper<GetAuthUser400 | GetAuthUser401 | GetAuthUser403 | GetAuthUser409>,
+		GetAuthUserResponse,
+		ErrorWrapper<
+			GetAuthUserStatus400 | GetAuthUserStatus401 | GetAuthUserStatus403 | GetAuthUserStatus409
+		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "GET", url: `/v2/user`, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/v2/user`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Initiates the deletion process for the currently authenticated User, by sending a deletion confirmation email. The email contains a link that the user needs to visit in order to proceed with the deletion process.
  * @summary Delete User Account
- * {@link /v1/user}
+ * @description Initiates the deletion process for the currently authenticated User, by sending a deletion confirmation email. The email contains a link that the user needs to visit in order to proceed with the deletion process.
+ * @link /v1/user
  */
-export async function requestDelete({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function requestDelete(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		RequestDeleteMutationResponse,
-		ErrorWrapper<RequestDelete400 | RequestDelete401 | RequestDelete402 | RequestDelete403>,
+		RequestDeleteResponse,
+		ErrorWrapper<
+			| RequestDeleteStatus400
+			| RequestDeleteStatus401
+			| RequestDeleteStatus402
+			| RequestDeleteStatus403
+		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
@@ -13738,610 +15537,812 @@ export async function requestDelete({
 		method: "DELETE",
 		url: `/v1/user`,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Creates a webhook
  * @summary Creates a webhook
- * {@link /v1/webhooks}
+ * @description Creates a webhook
+ * @link /v1/webhooks
  */
-export async function createWebhook({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: CreateWebhookQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createWebhook(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		CreateWebhookMutationResponse,
-		ErrorWrapper<CreateWebhook400 | CreateWebhook401 | CreateWebhook403>,
+		CreateWebhookResponse,
+		ErrorWrapper<CreateWebhookStatus400 | CreateWebhookStatus401 | CreateWebhookStatus403>,
 		null,
 		Record<string, string>,
-		CreateWebhookQueryParams,
+		{ teamId?: string; slug?: string },
 		Record<string, string>
 	>({
 		method: "POST",
 		url: `/v1/webhooks`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Get a list of webhooks
  * @summary Get a list of webhooks
- * {@link /v1/webhooks}
+ * @description Get a list of webhooks
+ * @link /v1/webhooks
  */
-export async function getWebhooks({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: GetWebhooksQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getWebhooks(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { projectId?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetWebhooksQueryResponse,
-		ErrorWrapper<GetWebhooks400 | GetWebhooks401 | GetWebhooks403>,
+		GetWebhooksResponse,
+		ErrorWrapper<GetWebhooksStatus400 | GetWebhooksStatus401 | GetWebhooksStatus403>,
 		null,
 		Record<string, string>,
-		GetWebhooksQueryParams,
+		{ projectId?: string; teamId?: string; slug?: string },
 		Record<string, string>
-	>({ method: "GET", url: `/v1/webhooks`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/v1/webhooks`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Get a webhook
  * @summary Get a webhook
- * {@link /v1/webhooks/:id}
+ * @description Get a webhook
+ * @link /v1/webhooks/{id}
  */
-export async function getWebhook({
-	pathParams: { id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetWebhookPathParams;
-	queryParams?: GetWebhookQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getWebhook(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { id: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!id) {
+	if (!pathParams.id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
-
 	const data = await request<
-		GetWebhookQueryResponse,
-		ErrorWrapper<GetWebhook400 | GetWebhook401 | GetWebhook403>,
+		GetWebhookResponse,
+		ErrorWrapper<GetWebhookStatus400 | GetWebhookStatus401 | GetWebhookStatus403>,
 		null,
 		Record<string, string>,
-		GetWebhookQueryParams,
-		GetWebhookPathParams
-	>({ method: "GET", url: `/v1/webhooks/${id}`, queryParams, ...requestConfig });
+		{ teamId?: string; slug?: string },
+		{ id: string }
+	>({
+		method: "GET",
+		url: `/v1/webhooks/${pathParams.id}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Deletes a webhook
  * @summary Deletes a webhook
- * {@link /v1/webhooks/:id}
+ * @description Deletes a webhook
+ * @link /v1/webhooks/{id}
  */
-export async function deleteWebhook({
-	pathParams: { id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: DeleteWebhookPathParams;
-	queryParams?: DeleteWebhookQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteWebhook(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { id: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!id) {
+	if (!pathParams.id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
-
 	const data = await request<
-		DeleteWebhookMutationResponse,
-		ErrorWrapper<DeleteWebhook400 | DeleteWebhook401 | DeleteWebhook403>,
+		DeleteWebhookResponse,
+		ErrorWrapper<DeleteWebhookStatus400 | DeleteWebhookStatus401 | DeleteWebhookStatus403>,
 		null,
 		Record<string, string>,
-		DeleteWebhookQueryParams,
-		DeleteWebhookPathParams
-	>({ method: "DELETE", url: `/v1/webhooks/${id}`, queryParams, ...requestConfig });
+		{ teamId?: string; slug?: string },
+		{ id: string }
+	>({
+		method: "DELETE",
+		url: `/v1/webhooks/${pathParams.id}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Retrieves all Aliases for the Deployment with the given ID. The authenticated user or team must own the deployment.
  * @summary List Deployment Aliases
- * {@link /v2/deployments/:id/aliases}
+ * @description Retrieves all Aliases for the Deployment with the given ID. The authenticated user or team must own the deployment.
+ * @link /v2/deployments/{id}/aliases
  */
-export async function listDeploymentAliases({
-	pathParams: { id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ListDeploymentAliasesPathParams;
-	queryParams?: ListDeploymentAliasesQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listDeploymentAliases(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { id: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!id) {
+	if (!pathParams.id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
-
 	const data = await request<
-		ListDeploymentAliasesQueryResponse,
+		ListDeploymentAliasesResponse,
 		ErrorWrapper<
-			| ListDeploymentAliases400
-			| ListDeploymentAliases401
-			| ListDeploymentAliases403
-			| ListDeploymentAliases404
+			| ListDeploymentAliasesStatus400
+			| ListDeploymentAliasesStatus401
+			| ListDeploymentAliasesStatus403
+			| ListDeploymentAliasesStatus404
 		>,
 		null,
 		Record<string, string>,
-		ListDeploymentAliasesQueryParams,
-		ListDeploymentAliasesPathParams
-	>({ method: "GET", url: `/v2/deployments/${id}/aliases`, queryParams, ...requestConfig });
+		{ teamId?: string; slug?: string },
+		{ id: string }
+	>({
+		method: "GET",
+		url: `/v2/deployments/${pathParams.id}/aliases`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Creates a new alias for the deployment with the given deployment ID. The authenticated user or team must own this deployment. If the desired alias is already assigned to another deployment, then it will be removed from the old deployment and assigned to the new one.
  * @summary Assign an Alias
- * {@link /v2/deployments/:id/aliases}
+ * @description Creates a new alias for the deployment resolved from the given deployment or alias ID or URL. The authenticated user or team must own this deployment. If the desired alias is already assigned to another deployment, then it will be removed from the old deployment and assigned to the new one.
+ * @link /v2/deployments/{id}/aliases
  */
-export async function assignAlias({
-	pathParams: { id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: AssignAliasPathParams;
-	queryParams?: AssignAliasQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function assignAlias(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { id: unknown };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!id) {
+	if (!pathParams.id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
-
 	const data = await request<
-		AssignAliasMutationResponse,
+		AssignAliasResponse,
 		ErrorWrapper<
-			| AssignAlias400
-			| AssignAlias401
-			| AssignAlias402
-			| AssignAlias403
-			| AssignAlias404
-			| AssignAlias409
+			| AssignAliasStatus400
+			| AssignAliasStatus401
+			| AssignAliasStatus402
+			| AssignAliasStatus403
+			| AssignAliasStatus404
+			| AssignAliasStatus409
 		>,
 		null,
 		Record<string, string>,
-		AssignAliasQueryParams,
-		AssignAliasPathParams
+		{ teamId?: string; slug?: string },
+		{ id: unknown }
 	>({
 		method: "POST",
-		url: `/v2/deployments/${id}/aliases`,
+		url: `/v2/deployments/${pathParams.id}/aliases`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Retrieves a list of aliases for the authenticated User or Team. When `domain` is provided, only aliases for that domain will be returned. When `projectId` is provided, it will only return the given project aliases.
  * @summary List aliases
- * {@link /v4/aliases}
+ * @description Retrieves a list of aliases for the authenticated User or Team. When `domain` is provided, only aliases for that domain will be returned. When `projectId` is provided, it will only return the given project aliases.
+ * @link /v4/aliases
  */
-export async function listAliases({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: ListAliasesQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listAliases(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			domain?: unknown;
+			from?: number;
+			limit?: number;
+			projectId?: string;
+			since?: number;
+			until?: number;
+			rollbackDeploymentId?: string;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		ListAliasesQueryResponse,
-		ErrorWrapper<ListAliases400 | ListAliases401 | ListAliases403 | ListAliases404>,
+		ListAliasesResponse,
+		ErrorWrapper<
+			ListAliasesStatus400 | ListAliasesStatus401 | ListAliasesStatus403 | ListAliasesStatus404
+		>,
 		null,
 		Record<string, string>,
-		ListAliasesQueryParams,
+		{
+			domain?: unknown;
+			from?: number;
+			limit?: number;
+			projectId?: string;
+			since?: number;
+			until?: number;
+			rollbackDeploymentId?: string;
+			teamId?: string;
+			slug?: string;
+		},
 		Record<string, string>
-	>({ method: "GET", url: `/v4/aliases`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/v4/aliases`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Retrieves an Alias for the given host name or alias ID.
  * @summary Get an Alias
- * {@link /v4/aliases/:idOrAlias}
+ * @description Retrieves an Alias for the given host name or alias ID.
+ * @link /v4/aliases/{idOrAlias}
  */
-export async function getAlias({
-	pathParams: { idOrAlias },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetAliasPathParams;
-	queryParams?: GetAliasQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getAlias(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrAlias: string };
+		queryParams?: {
+			from?: number;
+			projectId?: string;
+			since?: number;
+			until?: number;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!idOrAlias) {
+	if (!pathParams.idOrAlias) {
 		throw new Error(`Missing required path parameter: idOrAlias`);
 	}
-
 	const data = await request<
-		GetAliasQueryResponse,
-		ErrorWrapper<GetAlias400 | GetAlias401 | GetAlias403 | GetAlias404>,
+		GetAliasResponse,
+		ErrorWrapper<GetAliasStatus400 | GetAliasStatus401 | GetAliasStatus403 | GetAliasStatus404>,
 		null,
 		Record<string, string>,
-		GetAliasQueryParams,
-		GetAliasPathParams
-	>({ method: "GET", url: `/v4/aliases/${idOrAlias}`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Delete an Alias with the specified ID.
- * @summary Delete an Alias
- * {@link /v2/aliases/:aliasId}
- */
-export async function deleteAlias({
-	pathParams: { aliasId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: DeleteAliasPathParams;
-	queryParams?: DeleteAliasQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!aliasId) {
-		throw new Error(`Missing required path parameter: aliasId`);
-	}
-
-	const data = await request<
-		DeleteAliasMutationResponse,
-		ErrorWrapper<DeleteAlias400 | DeleteAlias401 | DeleteAlias403 | DeleteAlias404>,
-		null,
-		Record<string, string>,
-		DeleteAliasQueryParams,
-		DeleteAliasPathParams
-	>({ method: "DELETE", url: `/v2/aliases/${aliasId}`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Update the protection bypass for the alias or deployment URL (used for user access & comment access for deployments). Used as shareable links and user scoped access for Vercel Authentication and also to allow external (logged in) people to comment on previews for Preview Comments (next-live-mode).
- * @summary Update the protection bypass for a URL
- * {@link /aliases/:id/protection-bypass}
- */
-export async function patchUrlProtectionBypass({
-	pathParams: { id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: PatchUrlProtectionBypassPathParams;
-	queryParams?: PatchUrlProtectionBypassQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!id) {
-		throw new Error(`Missing required path parameter: id`);
-	}
-
-	const data = await request<
-		PatchUrlProtectionBypassMutationResponse,
-		ErrorWrapper<
-			| PatchUrlProtectionBypass400
-			| PatchUrlProtectionBypass401
-			| PatchUrlProtectionBypass403
-			| PatchUrlProtectionBypass404
-			| PatchUrlProtectionBypass409
-			| PatchUrlProtectionBypass428
-		>,
-		null,
-		Record<string, string>,
-		PatchUrlProtectionBypassQueryParams,
-		PatchUrlProtectionBypassPathParams
+		{
+			from?: number;
+			projectId?: string;
+			since?: number;
+			until?: number;
+			teamId?: string;
+			slug?: string;
+		},
+		{ idOrAlias: string }
 	>({
-		method: "PATCH",
-		url: `/aliases/${id}/protection-bypass`,
+		method: "GET",
+		url: `/v4/aliases/${pathParams.idOrAlias}`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Get cert by id
- * @summary Get cert by id
- * {@link /v8/certs/:id}
+ * @summary Delete an Alias
+ * @description Delete an Alias with the specified ID.
+ * @link /v2/aliases/{aliasId}
  */
-export async function getCertById({
-	pathParams: { id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetCertByIdPathParams;
-	queryParams?: GetCertByIdQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteAlias(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { aliasId: unknown };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!id) {
-		throw new Error(`Missing required path parameter: id`);
+	if (!pathParams.aliasId) {
+		throw new Error(`Missing required path parameter: aliasId`);
 	}
-
 	const data = await request<
-		GetCertByIdQueryResponse,
-		ErrorWrapper<GetCertById400 | GetCertById401 | GetCertById403 | GetCertById404>,
-		null,
-		Record<string, string>,
-		GetCertByIdQueryParams,
-		GetCertByIdPathParams
-	>({ method: "GET", url: `/v8/certs/${id}`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Remove cert
- * @summary Remove cert
- * {@link /v8/certs/:id}
- */
-export async function removeCert({
-	pathParams: { id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: RemoveCertPathParams;
-	queryParams?: RemoveCertQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!id) {
-		throw new Error(`Missing required path parameter: id`);
-	}
-
-	const data = await request<
-		RemoveCertMutationResponse,
-		ErrorWrapper<RemoveCert400 | RemoveCert401 | RemoveCert403 | RemoveCert404>,
-		null,
-		Record<string, string>,
-		RemoveCertQueryParams,
-		RemoveCertPathParams
-	>({ method: "DELETE", url: `/v8/certs/${id}`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Issue a new cert
- * @summary Issue a new cert
- * {@link /v8/certs}
- */
-export async function issueCert({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: IssueCertQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	const data = await request<
-		IssueCertMutationResponse,
+		DeleteAliasResponse,
 		ErrorWrapper<
-			| IssueCert400
-			| IssueCert401
-			| IssueCert402
-			| IssueCert403
-			| IssueCert404
-			| IssueCert449
-			| IssueCert500
+			DeleteAliasStatus400 | DeleteAliasStatus401 | DeleteAliasStatus403 | DeleteAliasStatus404
 		>,
 		null,
 		Record<string, string>,
-		IssueCertQueryParams,
+		{ teamId?: string; slug?: string },
+		{ aliasId: unknown }
+	>({
+		method: "DELETE",
+		url: `/v2/aliases/${pathParams.aliasId}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Update the protection bypass for a URL
+ * @description Update the protection bypass for the alias or deployment URL (used for user access & comment access for deployments). Used as shareable links and user scoped access for Vercel Authentication and also to allow external (logged in) people to comment on previews for Preview Comments (next-live-mode).
+ * @link /aliases/{id}/protection-bypass
+ */
+export async function patchUrlProtectionBypass(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { id: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.id) {
+		throw new Error(`Missing required path parameter: id`);
+	}
+	const data = await request<
+		PatchUrlProtectionBypassResponse,
+		ErrorWrapper<
+			| PatchUrlProtectionBypassStatus400
+			| PatchUrlProtectionBypassStatus401
+			| PatchUrlProtectionBypassStatus403
+			| PatchUrlProtectionBypassStatus404
+			| PatchUrlProtectionBypassStatus409
+			| PatchUrlProtectionBypassStatus428
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ id: string }
+	>({
+		method: "PATCH",
+		url: `/aliases/${pathParams.id}/protection-bypass`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Get cert by id
+ * @description Get cert by id
+ * @link /v8/certs/{id}
+ */
+export async function getCertById(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { id: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.id) {
+		throw new Error(`Missing required path parameter: id`);
+	}
+	const data = await request<
+		GetCertByIdResponse,
+		ErrorWrapper<
+			GetCertByIdStatus400 | GetCertByIdStatus401 | GetCertByIdStatus403 | GetCertByIdStatus404
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ id: string }
+	>({
+		method: "GET",
+		url: `/v8/certs/${pathParams.id}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Remove cert
+ * @description Remove cert
+ * @link /v8/certs/{id}
+ */
+export async function removeCert(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { id: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.id) {
+		throw new Error(`Missing required path parameter: id`);
+	}
+	const data = await request<
+		RemoveCertResponse,
+		ErrorWrapper<
+			RemoveCertStatus400 | RemoveCertStatus401 | RemoveCertStatus403 | RemoveCertStatus404
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ id: string }
+	>({
+		method: "DELETE",
+		url: `/v8/certs/${pathParams.id}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Issue a new cert
+ * @description Issue a new cert
+ * @link /v8/certs
+ */
+export async function issueCert(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		IssueCertResponse,
+		ErrorWrapper<
+			| IssueCertStatus400
+			| IssueCertStatus401
+			| IssueCertStatus402
+			| IssueCertStatus403
+			| IssueCertStatus404
+			| IssueCertStatus449
+			| IssueCertStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
 		Record<string, string>
 	>({
 		method: "POST",
 		url: `/v8/certs`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Upload a cert
  * @summary Upload a cert
- * {@link /v8/certs}
+ * @description Upload a cert
+ * @link /v8/certs
  */
-export async function uploadCert({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: UploadCertQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function uploadCert(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		UploadCertMutationResponse,
-		ErrorWrapper<UploadCert400 | UploadCert401 | UploadCert402 | UploadCert403>,
+		UploadCertResponse,
+		ErrorWrapper<
+			UploadCertStatus400 | UploadCertStatus401 | UploadCertStatus402 | UploadCertStatus403
+		>,
 		null,
 		Record<string, string>,
-		UploadCertQueryParams,
+		{ teamId?: string; slug?: string },
 		Record<string, string>
 	>({
 		method: "PUT",
 		url: `/v8/certs`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Allows to retrieve the file structure of the source code of a deployment by supplying the deployment unique identifier. If the deployment was created with the Vercel CLI or the API directly with the `files` key, it will have a file tree that can be retrievable.
  * @summary List Deployment Files
- * {@link /v6/deployments/:id/files}
+ * @description Allows to retrieve the file structure of the source code of a deployment by supplying the deployment unique identifier. If the deployment was created with the Vercel CLI or the API directly with the `files` key, it will have a file tree that can be retrievable.
+ * @link /v6/deployments/{id}/files
  */
-export async function listDeploymentFiles({
-	pathParams: { id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ListDeploymentFilesPathParams;
-	queryParams?: ListDeploymentFilesQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listDeploymentFiles(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { id: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!id) {
+	if (!pathParams.id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
-
 	const data = await request<
-		ListDeploymentFilesQueryResponse,
+		ListDeploymentFilesResponse,
 		ErrorWrapper<
-			| ListDeploymentFiles400
-			| ListDeploymentFiles401
-			| ListDeploymentFiles403
-			| ListDeploymentFiles404
+			| ListDeploymentFilesStatus400
+			| ListDeploymentFilesStatus401
+			| ListDeploymentFilesStatus403
+			| ListDeploymentFilesStatus404
 		>,
 		null,
 		Record<string, string>,
-		ListDeploymentFilesQueryParams,
-		ListDeploymentFilesPathParams
-	>({ method: "GET", url: `/v6/deployments/${id}/files`, queryParams, ...requestConfig });
+		{ teamId?: string; slug?: string },
+		{ id: string }
+	>({
+		method: "GET",
+		url: `/v6/deployments/${pathParams.id}/files`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Allows to retrieve the content of a file by supplying the file identifier and the deployment unique identifier. The response body will contain a JSON response containing the contents of the file encoded as base64.
  * @summary Get Deployment File Contents
- * {@link /v8/deployments/:id/files/:fileId}
+ * @description Allows to retrieve the content of a file by supplying the file identifier and the deployment unique identifier. The response body will contain a JSON response containing the contents of the file encoded as base64.
+ * @link /v8/deployments/{id}/files/{fileId}
  */
-export async function getDeploymentFileContents({
-	pathParams: { id, fileId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetDeploymentFileContentsPathParams;
-	queryParams?: GetDeploymentFileContentsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getDeploymentFileContents(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { id: string; fileId: string };
+		queryParams?: { path?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!id) {
+	if (!pathParams.id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
 
-	if (!fileId) {
+	if (!pathParams.fileId) {
 		throw new Error(`Missing required path parameter: fileId`);
 	}
-
 	const data = await request<
-		GetDeploymentFileContentsQueryResponse,
+		GetDeploymentFileContentsResponse,
 		ErrorWrapper<
-			| GetDeploymentFileContents400
-			| GetDeploymentFileContents401
-			| GetDeploymentFileContents403
-			| GetDeploymentFileContents404
-			| GetDeploymentFileContents410
+			| GetDeploymentFileContentsStatus400
+			| GetDeploymentFileContentsStatus401
+			| GetDeploymentFileContentsStatus403
+			| GetDeploymentFileContentsStatus404
+			| GetDeploymentFileContentsStatus410
 		>,
 		null,
 		Record<string, string>,
-		GetDeploymentFileContentsQueryParams,
-		GetDeploymentFileContentsPathParams
-	>({ method: "GET", url: `/v8/deployments/${id}/files/${fileId}`, queryParams, ...requestConfig });
+		{ path?: string; teamId?: string; slug?: string },
+		{ id: string; fileId: string }
+	>({
+		method: "GET",
+		url: `/v8/deployments/${pathParams.id}/files/${pathParams.fileId}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description List deployments under the authenticated user or team. If a deployment hasn't finished uploading (is incomplete), the `url` property will have a value of `null`.
  * @summary List deployments
- * {@link /v6/deployments}
+ * @description List deployments under the authenticated user or team. If a deployment hasn't finished uploading (is incomplete), the `url` property will have a value of `null`.
+ * @link /v6/deployments
  */
-export async function getDeployments({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: GetDeploymentsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getDeployments(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			app?: string;
+			from?: number;
+			limit?: number;
+			projectId?: string;
+			projectIds?: Array<string>;
+			target?: string;
+			to?: number;
+			users?: string;
+			since?: number;
+			until?: number;
+			state?: string;
+			rollbackCandidate?: boolean;
+			branch?: string;
+			sha?: string;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetDeploymentsQueryResponse,
+		GetDeploymentsResponse,
 		ErrorWrapper<
-			| GetDeployments400
-			| GetDeployments401
-			| GetDeployments403
-			| GetDeployments404
-			| GetDeployments422
+			| GetDeploymentsStatus400
+			| GetDeploymentsStatus401
+			| GetDeploymentsStatus403
+			| GetDeploymentsStatus404
+			| GetDeploymentsStatus422
 		>,
 		null,
 		Record<string, string>,
-		GetDeploymentsQueryParams,
+		{
+			app?: string;
+			from?: number;
+			limit?: number;
+			projectId?: string;
+			projectIds?: Array<string>;
+			target?: string;
+			to?: number;
+			users?: string;
+			since?: number;
+			until?: number;
+			state?: string;
+			rollbackCandidate?: boolean;
+			branch?: string;
+			sha?: string;
+			teamId?: string;
+			slug?: string;
+		},
 		Record<string, string>
-	>({ method: "GET", url: `/v6/deployments`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/v6/deployments`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description This API allows you to delete a deployment, either by supplying its `id` in the URL or the `url` of the deployment as a query parameter. You can obtain the ID, for example, by listing all deployments.
  * @summary Delete a Deployment
- * {@link /v13/deployments/:id}
+ * @description This API allows you to delete a deployment, either by supplying its `id` in the URL or the `url` of the deployment as a query parameter. You can obtain the ID, for example, by listing all deployments.
+ * @link /v13/deployments/{id}
  */
-export async function deleteDeployment({
-	pathParams: { id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: DeleteDeploymentPathParams;
-	queryParams?: DeleteDeploymentQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteDeployment(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { id: string };
+		queryParams?: { url?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!id) {
+	if (!pathParams.id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
-
 	const data = await request<
-		DeleteDeploymentMutationResponse,
+		DeleteDeploymentResponse,
 		ErrorWrapper<
-			DeleteDeployment400 | DeleteDeployment401 | DeleteDeployment403 | DeleteDeployment404
+			| DeleteDeploymentStatus400
+			| DeleteDeploymentStatus401
+			| DeleteDeploymentStatus403
+			| DeleteDeploymentStatus404
 		>,
 		null,
 		Record<string, string>,
-		DeleteDeploymentQueryParams,
-		DeleteDeploymentPathParams
-	>({ method: "DELETE", url: `/v13/deployments/${id}`, queryParams, ...requestConfig });
+		{ url?: string; teamId?: string; slug?: string },
+		{ id: string }
+	>({
+		method: "DELETE",
+		url: `/v13/deployments/${pathParams.id}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
@@ -14743,7 +16744,7 @@ export const operationsByTag = {
 		updateCheck,
 		rerequestCheck,
 	},
-	connect: {
+	networking: {
 		listNetworks,
 		createNetwork,
 		deleteNetwork,
@@ -15133,7 +17134,7 @@ export const tagDictionary = {
 		GET: ["getAllChecks", "getCheck"],
 		PATCH: ["updateCheck"],
 	},
-	connect: {
+	networking: {
 		GET: ["listNetworks", "readNetwork"],
 		POST: ["createNetwork"],
 		DELETE: ["deleteNetwork"],

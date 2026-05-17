@@ -1,96 +1,117 @@
-import { usePluginManager } from "@kubb/core/hooks";
+import { defineGenerator } from "@kubb/core";
 import type { PluginClient } from "@kubb/plugin-client";
-import { createReactGenerator } from "@kubb/plugin-oas/generators";
-import { useOas, useOperationManager } from "@kubb/plugin-oas/hooks";
-import { getBanner, getFooter } from "@kubb/plugin-oas/utils";
 import { pluginTsName } from "@kubb/plugin-ts";
 import { pluginZodName } from "@kubb/plugin-zod";
-import { File } from "@kubb/react-fabric";
-import { ClientOperation } from "../components/client-operation";
+import { File, jsxRenderer } from "@kubb/renderer-jsx";
+import {
+	ClientOperation,
+	resolveTypeSchemas,
+	resolveZodSchemas,
+} from "../components/client-operation";
 
-export const clientGenerator: ReturnType<typeof createReactGenerator<PluginClient>> =
-	createReactGenerator<PluginClient>({
-		name: "client",
-		Operation({ plugin, operation, generator }) {
-			const pluginManager = usePluginManager();
-			const {
-				options,
-				options: { output },
-			} = plugin;
+export const clientGenerator = defineGenerator<PluginClient>({
+	name: "client",
+	renderer: jsxRenderer,
+	operation(node, ctx) {
+		const { adapter, config, resolver, root } = ctx;
+		const { output, group, importPath, parser, baseURL, paramsCasing } = ctx.options;
 
-			const oas = useOas();
-			const { getSchemas, getName, getFile } = useOperationManager(generator);
+		const tsPlugin = ctx.getPlugin(pluginTsName);
+		if (!tsPlugin) return null;
+		const tsResolver = ctx.getResolver(pluginTsName);
 
-			const client = {
-				name: getName(operation, { type: "function" }),
-				file: getFile(operation),
-			};
+		const file = resolver.resolveFile(
+			{
+				name: node.operationId,
+				extname: ".ts",
+				tag: node.tags[0] ?? "default",
+				path: node.path,
+			},
+			{ root, output, group },
+		);
 
-			const url = {
-				name: getName(operation, { type: "function", suffix: "url", prefix: "get" }),
-				file: getFile(operation),
-			};
+		const urlName = resolver.resolveUrlName(node);
+		const name = resolver.resolveName(node.operationId);
 
-			const type = {
-				file: getFile(operation, { pluginKey: [pluginTsName] }),
-				schemas: getSchemas(operation, { pluginKey: [pluginTsName], type: "type" }),
-			};
+		const tsFile = tsResolver.resolveFile(
+			{
+				name: node.operationId,
+				extname: ".ts",
+				tag: node.tags[0] ?? "default",
+				path: node.path,
+			},
+			{ root, output: tsPlugin.options?.output ?? output, group: tsPlugin.options?.group },
+		);
 
-			const zod = {
-				file: getFile(operation, { pluginKey: [pluginZodName] }),
-				schemas: getSchemas(operation, { pluginKey: [pluginZodName], type: "function" }),
-			};
+		const typeSchemas = resolveTypeSchemas(node, tsResolver);
 
-			return (
-				<File
-					baseName={client.file.baseName}
-					path={client.file.path}
-					meta={client.file.meta}
-					banner={getBanner({ oas, output, config: pluginManager.config })}
-					footer={getFooter({ oas, output })}
-				>
-					<File.Import name={"defaultClient"} path={options.importPath ?? ""} />
+		const zodPlugin = parser === "zod" ? ctx.getPlugin(pluginZodName) : undefined;
+		const zodResolver = zodPlugin ? ctx.getResolver(pluginZodName) : undefined;
+		const zodFile =
+			zodPlugin && zodResolver
+				? zodResolver.resolveFile(
+						{
+							name: node.operationId,
+							extname: ".ts",
+							tag: node.tags[0] ?? "default",
+							path: node.path,
+						},
+						{ root, output: zodPlugin.options?.output ?? output, group: zodPlugin.options?.group },
+					)
+				: undefined;
+		const zodSchemas =
+			parser === "zod" && zodResolver ? resolveZodSchemas(node, zodResolver) : undefined;
+
+		const typeImportNames = [
+			typeSchemas.request?.name,
+			typeSchemas.response.name,
+			...typeSchemas.errors.map((e) => e.name),
+		].filter((n): n is string => Boolean(n));
+
+		const zodImportNames =
+			zodSchemas && zodFile
+				? [zodSchemas.response.name, zodSchemas.request?.name].filter((n): n is string =>
+						Boolean(n),
+					)
+				: [];
+
+		return (
+			<File
+				baseName={file.baseName}
+				path={file.path}
+				meta={file.meta}
+				banner={resolver.resolveBanner(adapter.inputNode, { output, config })}
+				footer={resolver.resolveFooter(adapter.inputNode, { output, config })}
+			>
+				{importPath ? <File.Import name="defaultClient" path={importPath} /> : null}
+				{importPath ? (
+					<File.Import name={["FetcherConfig", "ErrorWrapper"]} path={importPath} isTypeOnly />
+				) : null}
+
+				{zodSchemas && zodFile && zodImportNames.length > 0 ? (
+					<File.Import name={zodImportNames} root={file.path} path={zodFile.path} />
+				) : null}
+
+				{typeImportNames.length > 0 ? (
 					<File.Import
-						name={["FetcherConfig", "ErrorWrapper"]}
-						path={options.importPath ?? ""}
+						name={Array.from(new Set(typeImportNames))}
+						root={file.path}
+						path={tsFile.path}
 						isTypeOnly
 					/>
-					{options.parser === "zod" && (
-						<File.Import
-							name={
-								[zod.schemas.response.name, zod.schemas.request?.name].filter(Boolean) as string[]
-							}
-							root={client.file.path}
-							path={zod.file.path}
-						/>
-					)}
-					<File.Import
-						name={
-							[
-								type.schemas.request?.name,
-								type.schemas.response.name,
-								type.schemas.pathParams?.name,
-								type.schemas.queryParams?.name,
-								type.schemas.headerParams?.name,
-								...(type.schemas.statusCodes?.map((item) => item.name) || []),
-							].filter(Boolean) as string[]
-						}
-						root={client.file.path}
-						path={type.file.path}
-						isTypeOnly
-					/>
+				) : null}
 
-					<ClientOperation
-						name={client.name}
-						urlName={url.name}
-						baseURL={options.baseURL}
-						paramsCasing={options.paramsCasing}
-						typeSchemas={type.schemas}
-						operation={operation}
-						parser={options.parser}
-						zodSchemas={zod.schemas}
-					/>
-				</File>
-			);
-		},
-	});
+				<ClientOperation
+					name={name}
+					urlName={urlName}
+					baseURL={baseURL}
+					paramsCasing={paramsCasing}
+					typeSchemas={typeSchemas}
+					node={node}
+					parser={parser}
+					zodSchemas={zodSchemas}
+				/>
+			</File>
+		);
+	},
+});

@@ -1,131 +1,113 @@
-import { usePluginManager } from "@kubb/core/hooks";
+import { type ast, defineGenerator } from "@kubb/core";
 import type { PluginClient } from "@kubb/plugin-client";
-import { createReactGenerator } from "@kubb/plugin-oas/generators";
-import { useOas, useOperationManager } from "@kubb/plugin-oas/hooks";
-import { getBanner, getFooter } from "@kubb/plugin-oas/utils";
-import { File } from "@kubb/react-fabric";
+import { pluginClientName } from "@kubb/plugin-client";
+import { File, jsxRenderer } from "@kubb/renderer-jsx";
 import c from "case";
 
-export const extraGenerator: ReturnType<typeof createReactGenerator<PluginClient>> =
-	createReactGenerator<PluginClient>({
-		name: "extra",
-		Operations({ operations, generator, plugin }) {
-			const pluginManager = usePluginManager();
-			const oas = useOas();
-			const { getFile, getName } = useOperationManager(generator);
+const HTTP_METHODS = ["GET", "POST", "PUT", "PATCH", "DELETE"] as const;
+type HttpMethod = (typeof HTTP_METHODS)[number];
 
-			const fileName = "extra";
-			const file = pluginManager.getFile({ name: fileName, extname: ".ts", pluginKey: plugin.key });
+function isWriteOrReadMethod(method: string): method is HttpMethod {
+	return (HTTP_METHODS as readonly string[]).includes(method);
+}
 
-			const imports = operations.map((operation) => {
-				const name = getName(operation, {
-					type: "function",
-				});
+export const extraGenerator = defineGenerator<PluginClient>({
+	name: "extra",
+	renderer: jsxRenderer,
+	operations(nodes, ctx) {
+		const { adapter, config, resolver, root } = ctx;
+		const { output, group } = ctx.options;
+		const clientResolver = ctx.driver.getResolver(pluginClientName);
 
-				return (
-					<File.Import key={name} name={[name]} root={file.path} path={getFile(operation).path} />
-				);
-			});
+		const file = resolver.resolveFile({ name: "extra", extname: ".ts" }, { root, output, group });
 
-			const tags = Array.from(
-				new Set(
-					operations.flatMap((operation) =>
-						operation.getTags().map((tag: { name: string }) => tag.name),
-					),
-				),
+		const imports = nodes.map((node) => {
+			const name = clientResolver.resolveName(node.operationId);
+			const opFile = clientResolver.resolveFile(
+				{
+					name: node.operationId,
+					extname: ".ts",
+					tag: node.tags[0] ?? "default",
+					path: node.path,
+				},
+				{ root, output, group },
 			);
 
-			const getOpName = (operation: (typeof operations)[number]) =>
-				getName(operation, { type: "function" });
+			return <File.Import key={name} name={[name]} root={file.path} path={opFile.path} />;
+		});
 
-			const operationsByPath = Object.fromEntries(
-				operations
-					.filter(
-						(operation) =>
-							["GET", "POST", "PUT", "PATCH", "DELETE"].includes(operation.method.toUpperCase()) &&
-							operation.getOperationId() !== undefined,
-					)
-					.map((operation) => [
-						`${operation.method.toUpperCase()} ${operation.path}`,
-						getOpName(operation),
-					]),
-			);
+		const getOpName = (node: ast.OperationNode) => clientResolver.resolveName(node.operationId);
 
-			const operationsByTag = Object.fromEntries(
-				tags.map((name) => [
-					c.camel(name.toLowerCase()),
-					operations
-						.filter((operation) => {
-							return operation
-								.getTags()
-								.map((tag: { name: string }) => tag.name)
-								.includes(name);
-						})
-						.map((operation) => getOpName(operation)),
-				]),
-			);
+		const tags = Array.from(new Set(nodes.flatMap((node) => node.tags)));
 
-			const tagDictionary = Object.fromEntries(
-				tags.map((name) => [
-					c.camel(name.toLowerCase()),
-					operations.reduce(
-						(acc, operation) => {
-							const upperMethod = operation.method.toUpperCase();
-							if (
-								operation
-									.getTags()
-									.map((tag: { name: string }) => tag.name)
-									.includes(name) &&
-								["GET", "POST", "PUT", "PATCH", "DELETE"].includes(upperMethod) &&
-								operation?.getOperationId() !== undefined
-							) {
-								acc[upperMethod] = acc[upperMethod] ?? [];
-								acc[upperMethod].push(getOpName(operation));
-							}
+		const eligible = nodes.filter(
+			(node) => isWriteOrReadMethod(node.method) && node.operationId !== undefined,
+		);
 
+		const operationsByPath = Object.fromEntries(
+			eligible.map((node) => [`${node.method.toUpperCase()} ${node.path}`, getOpName(node)]),
+		);
+
+		const operationsByTag = Object.fromEntries(
+			tags.map((name) => [
+				c.camel(name.toLowerCase()),
+				nodes.filter((node) => node.tags.includes(name)).map(getOpName),
+			]),
+		);
+
+		const tagDictionary = Object.fromEntries(
+			tags.map((name) => [
+				c.camel(name.toLowerCase()),
+				eligible
+					.filter((node) => node.tags.includes(name))
+					.reduce(
+						(acc, node) => {
+							const method = node.method.toUpperCase();
+							acc[method] = acc[method] ?? [];
+							acc[method].push(getOpName(node));
 							return acc;
 						},
 						{} as Record<string, string[]>,
 					),
-				]),
-			);
+			]),
+		);
 
-			return (
-				<File
-					baseName={file.baseName}
-					path={file.path}
-					meta={file.meta}
-					banner={getBanner({ oas, output: plugin.options.output, config: pluginManager.config })}
-					footer={getFooter({ oas, output: plugin.options.output })}
-				>
-					{imports}
+		return (
+			<File
+				baseName={file.baseName}
+				path={file.path}
+				meta={file.meta}
+				banner={resolver.resolveBanner(adapter.inputNode, { output, config })}
+				footer={resolver.resolveFooter(adapter.inputNode, { output, config })}
+			>
+				{imports}
 
-					<File.Source>
-						{`
-        export const operationsByPath = {
-            ${Object.entries(operationsByPath)
-							.map(([path, operation]) => `"${path}": ${operation}`)
-							.join(",\n")}
-        };
+				<File.Source>
+					{`
+export const operationsByPath = {
+${Object.entries(operationsByPath)
+	.map(([path, op]) => `\t"${path}": ${op}`)
+	.join(",\n")}
+};
 
-        export const operationsByTag = {
-            ${Object.entries(operationsByTag)
-							.map(
-								([tag, operations]) => `"${tag}": {
-                ${operations.join(",\n")}
-              }`,
-							)
-							.join(",\n")}
-        };
+export const operationsByTag = {
+${Object.entries(operationsByTag)
+	.map(
+		([tag, ops]) => `\t"${tag}": {
+${ops.map((op) => `\t\t${op}`).join(",\n")}
+\t}`,
+	)
+	.join(",\n")}
+};
 
-        export const tagDictionary = {
-            ${Object.entries(tagDictionary)
-							.map(([tag, operations]) => `"${tag}": ${JSON.stringify(operations, null, 2)}`)
-							.join(",\n")}
-        } as const;
-        `}
-					</File.Source>
-				</File>
-			);
-		},
-	});
+export const tagDictionary = {
+${Object.entries(tagDictionary)
+	.map(([tag, ops]) => `\t"${tag}": ${JSON.stringify(ops, null, 2)}`)
+	.join(",\n")}
+} as const;
+`}
+				</File.Source>
+			</File>
+		);
+	},
+});
