@@ -20,14 +20,12 @@
 	"homepage": "https://github.com/SferaDev/SferaDev#readme",
 	"dependencies": {
 		"@kubb/adapter-oas": "catalog:",
-		"@kubb/ast": "catalog:",
 		"@kubb/core": "catalog:",
 		"@kubb/plugin-client": "catalog:",
 		"@kubb/plugin-ts": "catalog:",
 		"@kubb/plugin-zod": "catalog:",
 		"@kubb/renderer-jsx": "catalog:",
 		"case": "catalog:",
-		"kubb": "catalog:",
 		"openapi3-ts": "catalog:"
 	},
 	"devDependencies": {
