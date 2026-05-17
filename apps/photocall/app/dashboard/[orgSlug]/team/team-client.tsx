@@ -12,6 +12,7 @@ import {
 	getOrganizationBySlug,
 	inviteMember,
 	removeMember,
+	updateMemberRole,
 } from "@/actions/organizations";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -33,6 +34,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+import { useToast } from "@/hooks/use-toast";
 import { useSession } from "@/lib/auth-client";
 
 export default function TeamPage() {
@@ -53,11 +55,16 @@ export default function TeamPage() {
 		getInvitations(organization!.id),
 	);
 
+	const { toast } = useToast();
 	const [inviteEmail, setInviteEmail] = useState("");
+	const [inviteEmailError, setInviteEmailError] = useState<string | null>(null);
 	const [inviteRole, setInviteRole] = useState<"admin" | "member">("member");
 	const [isInviting, setIsInviting] = useState(false);
 	const [dialogOpen, setDialogOpen] = useState(false);
-	const [inviteError, setInviteError] = useState<string | null>(null);
+	const [updatingRoleFor, setUpdatingRoleFor] = useState<string | null>(null);
+
+	const currentMembership = members?.find((m) => m.userId === session?.user?.id);
+	const canManageRoles = currentMembership?.role === "owner";
 
 	useEffect(() => {
 		if (!authLoading && !isAuthenticated) {
@@ -67,18 +74,29 @@ export default function TeamPage() {
 
 	const handleInvite = async (e: React.FormEvent) => {
 		e.preventDefault();
-		if (!inviteEmail.trim() || !organization) return;
+		const trimmed = inviteEmail.trim();
+		if (!trimmed || !organization) return;
+
+		const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		if (!emailPattern.test(trimmed)) {
+			setInviteEmailError("Please enter a valid email address");
+			return;
+		}
+		setInviteEmailError(null);
 
 		setIsInviting(true);
-		setInviteError(null);
 		try {
-			await inviteMember(organization.id, inviteEmail.trim(), inviteRole);
+			await inviteMember(organization.id, trimmed, inviteRole);
 			mutate((key) => Array.isArray(key) && key[0] === "invitations");
 			setInviteEmail("");
 			setDialogOpen(false);
+			toast({ title: "Invitation sent", description: trimmed });
 		} catch (error) {
-			const message = error instanceof Error ? error.message : "Failed to send invitation";
-			setInviteError(message);
+			toast({
+				title: "Could not send invitation",
+				description: error instanceof Error ? error.message : "Unknown error",
+				variant: "destructive",
+			});
 		} finally {
 			setIsInviting(false);
 		}
@@ -91,8 +109,13 @@ export default function TeamPage() {
 		try {
 			await removeMember(organization.id, memberId);
 			mutate((key) => Array.isArray(key) && key[0] === "members");
+			toast({ title: "Member removed" });
 		} catch (error) {
-			console.error("Failed to remove member:", error);
+			toast({
+				title: "Could not remove member",
+				description: error instanceof Error ? error.message : "Unknown error",
+				variant: "destructive",
+			});
 		}
 	};
 
@@ -100,8 +123,31 @@ export default function TeamPage() {
 		try {
 			await cancelInvitation(invitationId);
 			mutate((key) => Array.isArray(key) && key[0] === "invitations");
+			toast({ title: "Invitation cancelled" });
 		} catch (error) {
-			console.error("Failed to cancel invitation:", error);
+			toast({
+				title: "Could not cancel invitation",
+				description: error instanceof Error ? error.message : "Unknown error",
+				variant: "destructive",
+			});
+		}
+	};
+
+	const handleChangeRole = async (memberId: string, role: "admin" | "member") => {
+		if (!organization) return;
+		setUpdatingRoleFor(memberId);
+		try {
+			await updateMemberRole(organization.id, memberId, role);
+			mutate((key) => Array.isArray(key) && key[0] === "members");
+			toast({ title: "Role updated", description: `Member is now ${role}.` });
+		} catch (error) {
+			toast({
+				title: "Could not update role",
+				description: error instanceof Error ? error.message : "Unknown error",
+				variant: "destructive",
+			});
+		} finally {
+			setUpdatingRoleFor(null);
 		}
 	};
 
@@ -166,11 +212,21 @@ export default function TeamPage() {
 												id="email"
 												type="email"
 												value={inviteEmail}
-												onChange={(e) => setInviteEmail(e.target.value)}
+												onChange={(e) => {
+													setInviteEmail(e.target.value);
+													if (inviteEmailError) setInviteEmailError(null);
+												}}
 												placeholder="colleague@example.com"
 												className="mt-2"
+												aria-invalid={inviteEmailError ? "true" : undefined}
+												aria-describedby={inviteEmailError ? "invite-email-error" : undefined}
 												required
 											/>
+											{inviteEmailError ? (
+												<p id="invite-email-error" className="mt-2 text-sm text-destructive">
+													{inviteEmailError}
+												</p>
+											) : null}
 										</div>
 										<div>
 											<Label htmlFor="role">Role</Label>
@@ -187,7 +243,6 @@ export default function TeamPage() {
 												</SelectContent>
 											</Select>
 										</div>
-										{inviteError && <p className="text-sm text-destructive">{inviteError}</p>}
 									</div>
 									<DialogFooter>
 										<Button type="button" variant="outline" onClick={() => setDialogOpen(false)}>
@@ -230,15 +285,38 @@ export default function TeamPage() {
 											<div className="text-sm text-muted-foreground">{member.user?.email}</div>
 										</div>
 									</div>
-									{member.role !== "owner" && (
-										<Button
-											variant="ghost"
-											size="icon"
-											onClick={() => handleRemoveMember(member.id)}
-										>
-											<Trash2 className="h-4 w-4 text-destructive" />
-										</Button>
-									)}
+									<div className="flex items-center gap-2">
+										{canManageRoles && member.role !== "owner" ? (
+											<Select
+												value={member.role === "admin" ? "admin" : "member"}
+												disabled={updatingRoleFor === member.id}
+												onValueChange={(value: "admin" | "member") =>
+													handleChangeRole(member.id, value)
+												}
+											>
+												<SelectTrigger
+													className="w-32"
+													aria-label={`Role for ${member.user?.email ?? "member"}`}
+												>
+													<SelectValue />
+												</SelectTrigger>
+												<SelectContent>
+													<SelectItem value="admin">Admin</SelectItem>
+													<SelectItem value="member">Member</SelectItem>
+												</SelectContent>
+											</Select>
+										) : null}
+										{member.role !== "owner" && (
+											<Button
+												variant="ghost"
+												size="icon"
+												aria-label={`Remove ${member.user?.email ?? "member"}`}
+												onClick={() => handleRemoveMember(member.id)}
+											>
+												<Trash2 className="h-4 w-4 text-destructive" />
+											</Button>
+										)}
+									</div>
 								</div>
 							);
 						})}

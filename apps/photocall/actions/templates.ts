@@ -176,31 +176,6 @@ export async function listPublicTemplates(eventId: string) {
 	);
 }
 
-export async function getTemplate(templateId: string) {
-	const template = await db
-		.select()
-		.from(schema.templates)
-		.where(eq(schema.templates.id, templateId))
-		.then((rows) => rows[0]);
-
-	if (!template) return null;
-
-	await requireEventAccess(template.eventId);
-
-	const url = await getFileUrl(template.storageKey);
-	const thumbnailUrl = template.thumbnailStorageKey
-		? await getFileUrl(template.thumbnailStorageKey)
-		: null;
-
-	return {
-		...template,
-		url,
-		thumbnailUrl,
-		captionPosition: parseCaptionPosition(template.captionPositionJson),
-		safeArea: parseSafeArea(template.safeAreaJson),
-	};
-}
-
 export async function reorderTemplates(eventId: string, templateIds: string[]) {
 	await requireEventAccess(eventId, ["owner", "admin"]);
 

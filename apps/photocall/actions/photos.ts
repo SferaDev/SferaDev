@@ -93,7 +93,7 @@ export async function createPhoto(data: {
 
 	// Report usage to the platform for metered billing. Fire and forget —
 	// don't surface a metering error after the photo is already persisted.
-	platform.reportUsage(event.organizationId, "photos_captured", 1).catch((err) => {
+	platform.reportUsage(event.organizationId, "photos_captured", 1).catch((err: unknown) => {
 		console.error("platform.reportUsage failed:", err);
 	});
 
@@ -178,26 +178,6 @@ export async function listPhotos(eventId: string, limit?: number) {
 	};
 }
 
-export async function listRecentPhotos(eventId: string, limit?: number) {
-	await requireEventAccess(eventId);
-
-	const take = limit ?? 10;
-
-	const photos = await db
-		.select()
-		.from(schema.photos)
-		.where(eq(schema.photos.eventId, eventId))
-		.orderBy(desc(schema.photos.createdAt))
-		.limit(take);
-
-	return await Promise.all(
-		photos.map(async (photo) => {
-			const url = await getFileUrl(photo.storageKey);
-			return { ...photo, url };
-		}),
-	);
-}
-
 export async function listRecentPublicPhotos(eventId: string, limit?: number) {
 	const event = await db
 		.select()
@@ -234,21 +214,6 @@ export async function listRecentPublicPhotos(eventId: string, limit?: number) {
 			};
 		}),
 	);
-}
-
-export async function getPhoto(photoId: string) {
-	const photo = await db
-		.select()
-		.from(schema.photos)
-		.where(eq(schema.photos.id, photoId))
-		.then((rows) => rows[0]);
-
-	if (!photo) return null;
-
-	await requireEventAccess(photo.eventId);
-
-	const url = await getFileUrl(photo.storageKey);
-	return { ...photo, url };
 }
 
 export async function deletePhoto(photoId: string) {
@@ -314,16 +279,4 @@ export async function deleteAllPhotos(eventId: string) {
 	});
 
 	return { deleted: photos.length };
-}
-
-export async function getPhotoCount(eventId: string) {
-	await requireEventAccess(eventId);
-
-	const event = await db
-		.select({ photoCount: schema.events.photoCount })
-		.from(schema.events)
-		.where(eq(schema.events.id, eventId))
-		.then((rows) => rows[0]);
-
-	return event?.photoCount ?? 0;
 }

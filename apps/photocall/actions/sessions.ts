@@ -1,7 +1,6 @@
 "use server";
 
-import { desc, eq } from "drizzle-orm";
-import { requireEventAccess } from "@/lib/auth-helpers";
+import { eq } from "drizzle-orm";
 import { db, schema } from "@/lib/db";
 
 export async function createKioskSession(eventId: string) {
@@ -140,38 +139,4 @@ export async function getKioskSession(sessionId: string) {
 		.from(schema.kioskSessions)
 		.where(eq(schema.kioskSessions.id, sessionId))
 		.then((rows) => rows[0] ?? null);
-}
-
-export async function getSessionStats(eventId: string) {
-	await requireEventAccess(eventId);
-
-	const sessions = await db
-		.select()
-		.from(schema.kioskSessions)
-		.where(eq(schema.kioskSessions.eventId, eventId));
-
-	const completed = sessions.filter((s) => s.status === "completed").length;
-	const abandoned = sessions.filter((s) => s.status === "abandoned").length;
-	const inProgress = sessions.filter((s) => !["completed", "abandoned"].includes(s.status)).length;
-
-	return {
-		total: sessions.length,
-		completed,
-		abandoned,
-		inProgress,
-		completionRate: sessions.length > 0 ? completed / sessions.length : 0,
-	};
-}
-
-export async function listSessions(eventId: string, limit?: number) {
-	await requireEventAccess(eventId);
-
-	const take = limit ?? 50;
-
-	return await db
-		.select()
-		.from(schema.kioskSessions)
-		.where(eq(schema.kioskSessions.eventId, eventId))
-		.orderBy(desc(schema.kioskSessions.startedAt))
-		.limit(take);
 }

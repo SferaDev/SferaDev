@@ -1,16 +1,10 @@
-import { GeistMono } from "geist/font/mono";
-import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import type React from "react";
-import "../globals.css";
 import { StructuredData } from "@/components/structured-data";
-import { ThemeProvider } from "@/components/theme-provider";
-import { Toaster } from "@/components/ui/toaster";
 import { isRtlLocale, type Locale, locales } from "@/i18n/config";
-import { cn } from "@/lib/utils";
 
 type Props = {
 	children: React.ReactNode;
@@ -40,6 +34,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 			type: "website",
 			locale: locale,
 			siteName: "Photocall",
+			images: [
+				{
+					url: "/og.png",
+					width: 1200,
+					height: 630,
+					alt: "Photocall - Photo Booth Kiosk for Events",
+				},
+			],
 		},
 		twitter: {
 			card: "summary_large_image",
@@ -47,6 +49,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 			description:
 				metadata?.description ||
 				"A modern photo booth kiosk for weddings, parties, corporate events, and celebrations.",
+			images: ["/og.png"],
 		},
 		alternates: {
 			canonical: `/${locale}`,
@@ -70,26 +73,11 @@ export default async function LocaleLayout({ children, params }: Props) {
 	const isRtl = isRtlLocale(locale as Locale);
 
 	return (
-		<html
-			lang={locale}
-			dir={isRtl ? "rtl" : "ltr"}
-			className={cn(GeistSans.variable, GeistMono.variable)}
-			suppressHydrationWarning
-		>
-			<body className="min-h-screen font-sans antialiased">
-				<ThemeProvider
-					attribute="class"
-					defaultTheme="system"
-					enableSystem
-					disableTransitionOnChange
-				>
-					<NextIntlClientProvider messages={messages}>
-						<StructuredData locale={locale} />
-						<div className="min-h-screen bg-background text-foreground">{children}</div>
-						<Toaster />
-					</NextIntlClientProvider>
-				</ThemeProvider>
-			</body>
-		</html>
+		<NextIntlClientProvider messages={messages}>
+			<StructuredData locale={locale} />
+			<div lang={locale} dir={isRtl ? "rtl" : "ltr"} className="contents">
+				{children}
+			</div>
+		</NextIntlClientProvider>
 	);
 }

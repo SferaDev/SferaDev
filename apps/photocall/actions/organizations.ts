@@ -6,7 +6,7 @@ import { headers as nextHeaders } from "next/headers";
 import { generateSlug, requireOrgMembership, requireSession } from "@/lib/auth-helpers";
 import { db, schema } from "@/lib/db";
 import { getPlatformClient } from "@/lib/platform";
-import { deleteFile, generateUploadUrl, getFileUrl } from "@/lib/storage";
+import { deleteFile, getFileUrl } from "@/lib/storage";
 
 export interface OrganizationWithLogo extends Organization {
 	logoUrl: string | null;
@@ -57,16 +57,6 @@ export async function createOrganization(name: string): Promise<string> {
 	await db.insert(schema.orgSettings).values({ organizationId: org.id }).onConflictDoNothing();
 
 	return org.id;
-}
-
-export async function getOrganization(id: string): Promise<OrganizationWithLogo | null> {
-	const platform = getPlatformClient();
-	const headers = await nextHeaders();
-	await requireSession();
-
-	const org = await platform.getOrganization(id, headers);
-	if (!org) return null;
-	return withLogoUrl(org);
 }
 
 export async function getOrganizationBySlug(slug: string): Promise<OrganizationWithLogo | null> {
@@ -262,9 +252,4 @@ export async function getUsage(organizationId: string) {
 		sessions: totalSessions,
 		photoLimit: photoQuota.limit ?? -1,
 	};
-}
-
-export async function generateOrgUploadUrl(organizationId: string) {
-	await requireOrgMembership(organizationId, ["owner", "admin"]);
-	return generateUploadUrl(`orgs/${organizationId}`, "image/png");
 }

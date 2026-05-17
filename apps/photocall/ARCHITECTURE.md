@@ -119,74 +119,97 @@
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
-## Folder Structure
+## Folder Structure (current)
 
 ```
 apps/photocall/
 ├── app/
-│   ├── (marketing)/
-│   │   ├── page.tsx                 # Landing page
-│   │   └── layout.tsx
-│   ├── kiosk/
-│   │   ├── page.tsx                 # Kiosk entry/attract screen
-│   │   ├── select/page.tsx          # Template selection
-│   │   ├── capture/page.tsx         # Camera capture
-│   │   ├── personalize/page.tsx     # Caption/mirror options
-│   │   ├── result/page.tsx          # QR code result
-│   │   └── layout.tsx               # Kiosk layout (fullscreen)
-│   ├── admin/
-│   │   ├── page.tsx                 # Admin login
-│   │   ├── dashboard/page.tsx       # Main dashboard
-│   │   ├── gallery/page.tsx         # Photo gallery
-│   │   ├── templates/page.tsx       # Template manager
-│   │   ├── settings/page.tsx        # Settings
-│   │   └── layout.tsx               # Admin layout with nav
-│   ├── share/
-│   │   └── [token]/page.tsx         # Public share page
-│   ├── layout.tsx
+│   ├── layout.tsx                   # Root layout (html/body, theme, toaster, metadata)
+│   ├── page.tsx                     # Redirects "/" to /<defaultLocale>
+│   ├── error.tsx                    # Root error boundary
+│   ├── global-error.tsx             # Root-of-root global error
+│   ├── not-found.tsx                # 404
+│   ├── loading.tsx                  # Root suspense fallback
+│   ├── icon.tsx                     # Favicon (next/og)
+│   ├── apple-icon.tsx               # Apple touch icon (next/og)
+│   ├── opengraph-image.tsx          # OG image (next/og)
+│   ├── twitter-image.tsx            # Twitter card
+│   ├── manifest.ts                  # Web manifest
+│   ├── robots.ts                    # robots.txt
+│   ├── sitemap.ts                   # sitemap.xml
+│   ├── providers.tsx                # SWR provider
 │   ├── globals.css
-│   └── providers.tsx                # Client providers (SWR, theme)
-├── components/
-│   ├── ui/                          # shadcn/ui components
+│   ├── [locale]/
+│   │   ├── layout.tsx               # Locale-aware metadata + next-intl provider
+│   │   └── page.tsx                 # Localized marketing landing page
+│   ├── (auth)/
+│   │   ├── layout.tsx               # Auth split-screen layout
+│   │   └── sign-in/page.tsx         # Sign-in (delegated to better-auth)
+│   ├── dashboard/
+│   │   ├── page.tsx                 # Org list
+│   │   ├── loading.tsx
+│   │   ├── error.tsx
+│   │   └── [orgSlug]/
+│   │       ├── page.tsx             # Events list
+│   │       ├── team/                # Team management
+│   │       ├── billing/             # Billing (UI owned by platform agent)
+│   │       └── [eventSlug]/
+│   │           ├── page.tsx         # Event dashboard (gallery, templates)
+│   │           ├── settings/        # Event settings (incl. kiosk PIN)
+│   │           └── templates/       # Template manager
 │   ├── kiosk/
-│   │   ├── attract-screen.tsx
-│   │   ├── template-grid.tsx
-│   │   ├── camera-capture.tsx
-│   │   ├── countdown-overlay.tsx
-│   │   ├── photo-preview.tsx
-│   │   ├── caption-input.tsx
-│   │   └── result-display.tsx
-│   ├── admin/
-│   │   ├── photo-gallery.tsx
-│   │   ├── template-manager.tsx
-│   │   ├── settings-form.tsx
-│   │   └── export-button.tsx
-│   └── shared/
-│       ├── qr-code.tsx
-│       └── loading-spinner.tsx
-├── actions/                         # Next.js server actions
-│   ├── organizations.ts
-│   ├── events.ts
-│   ├── templates.ts
-│   ├── sessions.ts
-│   ├── photos.ts
-│   ├── stripe.ts
-│   └── email.ts
-├── lib/db/
-│   ├── index.ts                     # Postgres + Drizzle client
-│   └── schema.ts                    # Drizzle schema
-├── hooks/
-│   ├── use-camera.ts
-│   ├── use-compositing.ts
-│   ├── use-admin-auth.ts
-│   └── use-idle-timeout.ts
+│   │   └── [orgSlug]/[eventSlug]/
+│   │       ├── page.tsx             # Attract screen w/ slideshow + admin PIN
+│   │       ├── loading.tsx
+│   │       ├── error.tsx
+│   │       ├── consent/             # Photo consent
+│   │       ├── select/              # Template select
+│   │       ├── capture/             # Camera capture + countdown
+│   │       ├── personalize/         # Caption / mirror
+│   │       └── result/              # QR + share + download + print
+│   ├── share/[token]/               # Public share page
+│   ├── p/[code]/page.tsx            # Short human-code redirect to /share/[token]
+│   ├── invite/[token]/              # Accept org invitation
+│   └── api/
+│       ├── auth/[...all]/           # better-auth handler
+│       ├── stripe/webhook/          # Stripe webhook (idempotent)
+│       └── cron/cleanup/            # Retention purge (CRON_SECRET protected)
+├── components/
+│   ├── ui/                          # shadcn/ui primitives (button, dialog, dropdown, skeleton, …)
+│   ├── auth/                        # Sign-in form (better-auth bindings)
+│   ├── locale-switcher.tsx
+│   ├── structured-data.tsx          # JSON-LD for SEO
+│   └── theme-provider.tsx
+├── actions/                         # Server actions ("use server")
+│   ├── organizations.ts             # Orgs, members, invitations, usage
+│   ├── events.ts                    # Events CRUD, PIN, duplicate
+│   ├── templates.ts                 # Template CRUD + reorder
+│   ├── sessions.ts                  # Kiosk session lifecycle
+│   ├── photos.ts                    # Photo CRUD + share lookups
+│   ├── stripe.ts                    # Checkout, portal, billing summary
+│   └── email.ts                     # Invitation emails
 ├── lib/
-│   ├── utils.ts
-│   ├── i18n.ts                      # Internationalization
-│   ├── constants.ts
-│   └── canvas-utils.ts
-├── public/
-│   └── default-templates/           # Default overlay images
+│   ├── auth.ts, auth-client.ts, auth-helpers.ts   # better-auth wiring
+│   ├── db/{index.ts,schema.ts}      # Postgres pool + Drizzle schema
+│   ├── storage.ts                   # S3 presigned URL helpers
+│   ├── canvas-utils.ts              # Compositing helpers (used by kiosk)
+│   ├── plans.ts                     # Plan + pricing constants (catalogued in stripe action)
+│   ├── qr.ts                        # QR code helpers
+│   └── utils.ts
+├── hooks/
+│   ├── use-admin-auth.ts            # 30-min kiosk admin session via localStorage
+│   ├── use-camera.ts                # getUserMedia wrapper
+│   ├── use-idle-timeout.ts          # Kiosk idle redirect
+│   └── use-toast.ts                 # shadcn toast
+├── i18n/
+│   ├── config.ts                    # 46 locales, RTL list, defaultLocale
+│   ├── request.ts                   # next-intl request config
+│   └── messages/<locale>.json       # Translations
+├── tests/                           # vitest unit tests (auth helpers, canvas, utils)
+├── public/sw.js                     # Offline image cache service worker
+├── middleware.ts                    # next-intl + auth proxy
+├── next.config.ts
+├── vercel.json                      # Cron schedule
 └── package.json
 ```
 
