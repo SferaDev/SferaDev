@@ -4,6 +4,7 @@ import { and, desc, eq, sql } from "drizzle-orm";
 import { requireSession } from "@/lib/auth";
 import { generateHumanCode, generateToken, requireEventAccess } from "@/lib/auth-helpers";
 import { db, schema } from "@/lib/db";
+import { getPlatformClient } from "@/lib/platform";
 import { deleteFile, generateUploadUrl, getFileUrl } from "@/lib/storage";
 
 export async function generatePhotoUploadUrl(eventId: string) {
@@ -110,6 +111,16 @@ export async function createPhoto(data: {
 		bytes: data.sizeBytes,
 		createdAt: now,
 	});
+
+	// Report usage to the unified platform for metered billing. Fire and forget
+	// — the SDK fails open, but we still wrap so a thrown error doesn't surface
+	// to the kiosk after the photo is already persisted.
+	const platform = getPlatformClient();
+	if (platform) {
+		platform.reportUsage(org.id, "photos_captured", 1).catch((err) => {
+			console.error("platform.reportUsage failed:", err);
+		});
+	}
 
 	return { photoId: photo.id, shareToken, humanCode };
 }
