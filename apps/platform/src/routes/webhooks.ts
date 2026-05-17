@@ -1,8 +1,8 @@
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { Hono } from "hono";
 import type Stripe from "stripe";
 import { db } from "../db/index.js";
-import { accountSubscriptions } from "../db/schema.js";
+import { accountSubscriptions, organizations, users } from "../db/schema.js";
 import { env } from "../env.js";
 import { entitlements } from "../services/entitlements.js";
 import { stripe } from "../stripe.js";
@@ -26,41 +26,25 @@ export function webhookRoutes() {
 		}
 
 		switch (event.type) {
+			case "checkout.session.completed": {
+				const session = event.data.object;
+				await handleCheckoutCompleted(session);
+				break;
+			}
+
 			case "customer.subscription.created":
 			case "customer.subscription.updated": {
-				const sub = event.data.object as Stripe.Subscription;
-				await syncSubscription(sub);
+				await syncSubscription(event.data.object);
 				break;
 			}
 
 			case "customer.subscription.deleted": {
-				const sub = event.data.object as Stripe.Subscription;
-				await handleSubscriptionDeleted(sub);
+				await handleSubscriptionDeleted(event.data.object);
 				break;
 			}
 
 			case "invoice.payment_failed": {
-				const invoice = event.data.object as Stripe.Invoice;
-				// In Stripe v20+, use billing_reason to identify subscription invoices
-				// and look up the subscription via our platform metadata on the customer
-				const customerId =
-					typeof invoice.customer === "string" ? invoice.customer : invoice.customer?.id;
-
-				if (customerId && invoice.billing_reason?.startsWith("subscription")) {
-					// Find platform subscriptions for this customer
-					const subs = await db
-						.select()
-						.from(accountSubscriptions)
-						.where(eq(accountSubscriptions.stripeSubscriptionId, customerId));
-
-					for (const sub of subs) {
-						await db
-							.update(accountSubscriptions)
-							.set({ status: "past_due", updatedAt: new Date() })
-							.where(eq(accountSubscriptions.id, sub.id));
-						entitlements.invalidate(sub.accountId, sub.productId);
-					}
-				}
+				await handleInvoicePaymentFailed(event.data.object);
 				break;
 			}
 		}
@@ -71,31 +55,72 @@ export function webhookRoutes() {
 	return app;
 }
 
+async function resolveAccountIdFromCustomer(customerId: string): Promise<string | null> {
+	const [org] = await db
+		.select({ id: organizations.id })
+		.from(organizations)
+		.where(eq(organizations.stripeCustomerId, customerId))
+		.limit(1);
+	if (org) return org.id;
+
+	const [user] = await db
+		.select({ id: users.id })
+		.from(users)
+		.where(eq(users.stripeCustomerId, customerId))
+		.limit(1);
+	return user?.id ?? null;
+}
+
+async function handleCheckoutCompleted(session: Stripe.Checkout.Session): Promise<void> {
+	if (session.payment_status !== "paid" && session.status !== "complete") {
+		return;
+	}
+
+	const subscriptionId =
+		typeof session.subscription === "string" ? session.subscription : session.subscription?.id;
+	if (!subscriptionId) return;
+
+	const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+	await syncSubscription(subscription);
+}
+
 async function syncSubscription(sub: Stripe.Subscription): Promise<void> {
-	const accountId = sub.metadata.platformAccountId;
+	const customerId = typeof sub.customer === "string" ? sub.customer : sub.customer.id;
+
+	const accountId =
+		sub.metadata.platformAccountId ?? (await resolveAccountIdFromCustomer(customerId));
 	const productId = sub.metadata.platformProductId;
 	const planId = sub.metadata.platformPlanId;
 
 	if (!accountId || !productId || !planId) return;
 
-	// In Stripe v20+, current_period_start/end are on SubscriptionItem, not Subscription
 	const firstItem = sub.items.data[0];
 	const periodStart = firstItem?.current_period_start;
 	const periodEnd = firstItem?.current_period_end;
 
 	await db
-		.update(accountSubscriptions)
-		.set({
+		.insert(accountSubscriptions)
+		.values({
+			id: crypto.randomUUID(),
+			accountId,
+			productId,
+			planId,
+			stripeSubscriptionId: sub.id,
 			status: sub.status,
-			...(periodStart && {
-				currentPeriodStart: new Date(periodStart * 1000),
-			}),
-			...(periodEnd && {
-				currentPeriodEnd: new Date(periodEnd * 1000),
-			}),
-			updatedAt: new Date(),
+			currentPeriodStart: periodStart ? new Date(periodStart * 1000) : null,
+			currentPeriodEnd: periodEnd ? new Date(periodEnd * 1000) : null,
 		})
-		.where(eq(accountSubscriptions.stripeSubscriptionId, sub.id));
+		.onConflictDoUpdate({
+			target: [accountSubscriptions.accountId, accountSubscriptions.productId],
+			set: {
+				planId,
+				stripeSubscriptionId: sub.id,
+				status: sub.status,
+				...(periodStart ? { currentPeriodStart: new Date(periodStart * 1000) } : {}),
+				...(periodEnd ? { currentPeriodEnd: new Date(periodEnd * 1000) } : {}),
+				updatedAt: new Date(),
+			},
+		});
 
 	entitlements.invalidate(accountId, productId);
 }
@@ -106,9 +131,39 @@ async function handleSubscriptionDeleted(sub: Stripe.Subscription): Promise<void
 		.set({ status: "canceled", updatedAt: new Date() })
 		.where(eq(accountSubscriptions.stripeSubscriptionId, sub.id));
 
-	const accountId = sub.metadata.platformAccountId;
+	const customerId = typeof sub.customer === "string" ? sub.customer : sub.customer.id;
+	const accountId =
+		sub.metadata.platformAccountId ?? (await resolveAccountIdFromCustomer(customerId));
 	const productId = sub.metadata.platformProductId;
-	if (accountId) {
+	if (accountId && productId) {
 		entitlements.invalidate(accountId, productId);
+	}
+}
+
+async function handleInvoicePaymentFailed(invoice: Stripe.Invoice): Promise<void> {
+	if (!invoice.billing_reason?.startsWith("subscription")) return;
+
+	const customerId = typeof invoice.customer === "string" ? invoice.customer : invoice.customer?.id;
+	if (!customerId) return;
+
+	const accountId = await resolveAccountIdFromCustomer(customerId);
+	if (!accountId) return;
+
+	const subs = await db
+		.select()
+		.from(accountSubscriptions)
+		.where(eq(accountSubscriptions.accountId, accountId));
+
+	for (const sub of subs) {
+		await db
+			.update(accountSubscriptions)
+			.set({ status: "past_due", updatedAt: new Date() })
+			.where(
+				and(
+					eq(accountSubscriptions.accountId, sub.accountId),
+					eq(accountSubscriptions.productId, sub.productId),
+				),
+			);
+		entitlements.invalidate(sub.accountId, sub.productId);
 	}
 }

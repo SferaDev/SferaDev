@@ -4,7 +4,7 @@ import { bearer, jwt, organization } from "better-auth/plugins";
 import { db } from "./db/index.js";
 import * as schema from "./db/schema.js";
 import { env } from "./env.js";
-import { createStripeCustomer } from "./services/billing.js";
+import { createOrganizationStripeCustomer, createStripeCustomer } from "./services/billing.js";
 
 const socialProviders: Record<string, { clientId: string; clientSecret: string }> = {};
 
@@ -61,7 +61,19 @@ export const auth = betterAuth({
 			},
 		},
 	},
-	plugins: [bearer(), jwt(), organization()],
+	plugins: [
+		bearer(),
+		jwt(),
+		organization({
+			organizationHooks: {
+				afterCreateOrganization: async ({ organization }) => {
+					// Create a Stripe customer for the organization so it can act
+					// as a billing account for product subscriptions.
+					await createOrganizationStripeCustomer(organization.id, organization.name);
+				},
+			},
+		}),
+	],
 });
 
 export type Auth = typeof auth;

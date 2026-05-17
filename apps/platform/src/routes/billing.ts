@@ -4,9 +4,11 @@ import type { Auth } from "../auth.js";
 import { requireAuth, resolveAccountId, type ServiceAuthVariables } from "../middleware/auth.js";
 import {
 	cancelSubscription,
+	createCheckoutSession,
 	createSubscription,
 	getInvoices,
 	getPortalUrl,
+	getSubscription,
 	getUsage,
 	reportUsage,
 	updateSubscription,
@@ -80,6 +82,57 @@ export function billingRoutes(auth: Auth) {
 		return c.json({ ok: true });
 	});
 
+	// Get current subscription
+	app.get("/subscription", async (c) => {
+		const accountId = c.req.query("accountId") ?? resolveAccountId(c);
+		const productId = c.req.query("productId");
+
+		if (!accountId || !productId) {
+			return c.json({ error: "accountId and productId are required" }, 400);
+		}
+
+		const sub = await getSubscription(accountId, productId);
+		return c.json(sub);
+	});
+
+	// Create Stripe Checkout session
+	app.post("/checkout", async (c) => {
+		const body = await c.req.json();
+		const parsed = z
+			.object({
+				accountId: z.string().optional(),
+				productId: z.string(),
+				priceId: z.string().optional(),
+				planId: z.string().optional(),
+				quantity: z.number().int().positive().optional(),
+				mode: z.enum(["payment", "subscription"]).optional(),
+				successUrl: z.string().url(),
+				cancelUrl: z.string().url(),
+				metadata: z.record(z.string(), z.string()).optional(),
+			})
+			.refine((data) => data.priceId || data.planId, {
+				message: "Either priceId or planId is required",
+			})
+			.parse(body);
+
+		const accountId = parsed.accountId ?? resolveAccountId(c);
+		if (!accountId) return c.json({ error: "accountId required" }, 400);
+
+		const result = await createCheckoutSession({
+			accountId,
+			productId: parsed.productId,
+			priceId: parsed.priceId,
+			planId: parsed.planId,
+			quantity: parsed.quantity,
+			mode: parsed.mode,
+			successUrl: parsed.successUrl,
+			cancelUrl: parsed.cancelUrl,
+			metadata: parsed.metadata,
+		});
+
+		return c.json(result, 201);
+	});
+
 	// Report metered usage
 	app.post("/usage", async (c) => {
 		const body = await c.req.json();
@@ -131,9 +184,10 @@ export function billingRoutes(auth: Auth) {
 	// Get Stripe Customer Portal URL
 	app.get("/portal-url", async (c) => {
 		const accountId = c.req.query("accountId") ?? resolveAccountId(c);
+		const returnUrl = c.req.query("returnUrl") ?? undefined;
 		if (!accountId) return c.json({ error: "accountId required" }, 400);
 
-		const url = await getPortalUrl(accountId);
+		const url = await getPortalUrl(accountId, returnUrl);
 		return c.json({ url });
 	});
 
