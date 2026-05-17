@@ -5,7 +5,7 @@ import { requireSession } from "@/lib/auth";
 import { generateSlug, generateToken, requireOrgMembership } from "@/lib/auth-helpers";
 import { db, schema } from "@/lib/db";
 import { PLAN_LIMITS } from "@/lib/plans";
-import { deleteFile, generateUploadUrl, getFileUrl } from "@/lib/storage";
+import { deleteFile, getFileUrl } from "@/lib/storage";
 import { sendInvitationEmail } from "./email";
 
 export async function getOrganizations() {
@@ -99,26 +99,6 @@ export async function createOrganization(name: string) {
 	});
 
 	return org.id;
-}
-
-export async function getOrganization(id: string) {
-	const session = await requireSession();
-	await requireOrgMembership(session.user.id, id);
-
-	const org = await db
-		.select()
-		.from(schema.organizations)
-		.where(eq(schema.organizations.id, id))
-		.then((rows) => rows[0]);
-
-	if (!org) return null;
-
-	const logoUrl = org.logoStorageKey ? await getFileUrl(org.logoStorageKey) : null;
-
-	return {
-		...org,
-		logoUrl,
-	};
 }
 
 export async function getOrganizationBySlug(slug: string) {
@@ -534,11 +514,4 @@ export async function getUsage(organizationId: string) {
 		photos: totalPhotos,
 		sessions: totalSessions,
 	};
-}
-
-export async function generateOrgUploadUrl(organizationId: string) {
-	const session = await requireSession();
-	await requireOrgMembership(session.user.id, organizationId, ["owner", "admin"]);
-
-	return await generateUploadUrl(`orgs/${organizationId}`, "image/png");
 }

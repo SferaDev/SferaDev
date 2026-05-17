@@ -5,6 +5,7 @@ import {
 	Calendar,
 	Camera,
 	ChevronLeft,
+	Copy,
 	CreditCard,
 	Loader2,
 	MoreHorizontal,
@@ -17,7 +18,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import useSWR, { useSWRConfig } from "swr";
-import { createEvent, listEvents } from "@/actions/events";
+import { createEvent, duplicateEvent, listEvents } from "@/actions/events";
 import { getOrganizationBySlug, getUsage } from "@/actions/organizations";
 import { Button } from "@/components/ui/button";
 import {
@@ -29,8 +30,15 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useToast } from "@/hooks/use-toast";
 import { useSession } from "@/lib/auth-client";
 
 export default function OrganizationDashboard() {
@@ -51,9 +59,11 @@ export default function OrganizationDashboard() {
 		getUsage(organization!.id),
 	);
 
+	const { toast } = useToast();
 	const [newEventName, setNewEventName] = useState("");
 	const [isCreating, setIsCreating] = useState(false);
 	const [dialogOpen, setDialogOpen] = useState(false);
+	const [duplicatingId, setDuplicatingId] = useState<string | null>(null);
 
 	useEffect(() => {
 		if (!authLoading && !isAuthenticated) {
@@ -71,10 +81,32 @@ export default function OrganizationDashboard() {
 			mutate((key) => Array.isArray(key) && key[0] === "events");
 			setNewEventName("");
 			setDialogOpen(false);
+			toast({ title: "Event created", description: newEventName.trim() });
 		} catch (error) {
-			console.error("Failed to create event:", error);
+			toast({
+				title: "Could not create event",
+				description: error instanceof Error ? error.message : "Unknown error",
+				variant: "destructive",
+			});
 		} finally {
 			setIsCreating(false);
+		}
+	};
+
+	const handleDuplicate = async (eventId: string, eventName: string) => {
+		setDuplicatingId(eventId);
+		try {
+			await duplicateEvent(eventId);
+			mutate((key) => Array.isArray(key) && key[0] === "events");
+			toast({ title: "Event duplicated", description: `${eventName} (Copy) was created.` });
+		} catch (error) {
+			toast({
+				title: "Could not duplicate event",
+				description: error instanceof Error ? error.message : "Unknown error",
+				variant: "destructive",
+			});
+		} finally {
+			setDuplicatingId(null);
 		}
 	};
 
@@ -249,11 +281,48 @@ export default function OrganizationDashboard() {
 										<h3 className="font-semibold">{event.name}</h3>
 										<StatusBadge status={event.status} />
 									</div>
-									<Button variant="ghost" size="icon" asChild>
-										<Link href={`/dashboard/${orgSlug}/${event.slug}/settings`}>
-											<MoreHorizontal className="h-4 w-4" />
-										</Link>
-									</Button>
+									<DropdownMenu>
+										<DropdownMenuTrigger asChild>
+											<Button
+												variant="ghost"
+												size="icon"
+												aria-label={`Actions for ${event.name}`}
+												disabled={duplicatingId === event.id}
+											>
+												{duplicatingId === event.id ? (
+													<Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+												) : (
+													<MoreHorizontal className="h-4 w-4" aria-hidden="true" />
+												)}
+											</Button>
+										</DropdownMenuTrigger>
+										<DropdownMenuContent align="end">
+											<DropdownMenuItem asChild>
+												<Link href={`/dashboard/${orgSlug}/${event.slug}`}>
+													<BarChart3 className="mr-2 h-4 w-4" aria-hidden="true" />
+													Open dashboard
+												</Link>
+											</DropdownMenuItem>
+											<DropdownMenuItem asChild>
+												<Link href={`/dashboard/${orgSlug}/${event.slug}/settings`}>
+													<Settings className="mr-2 h-4 w-4" aria-hidden="true" />
+													Settings
+												</Link>
+											</DropdownMenuItem>
+											<DropdownMenuItem onClick={() => handleDuplicate(event.id, event.name)}>
+												<Copy className="mr-2 h-4 w-4" aria-hidden="true" />
+												Duplicate
+											</DropdownMenuItem>
+											{event.status === "active" ? (
+												<DropdownMenuItem asChild>
+													<Link href={`/kiosk/${orgSlug}/${event.slug}`} target="_blank">
+														<Play className="mr-2 h-4 w-4" aria-hidden="true" />
+														Open kiosk
+													</Link>
+												</DropdownMenuItem>
+											) : null}
+										</DropdownMenuContent>
+									</DropdownMenu>
 								</div>
 								<div className="grid grid-cols-2 gap-4 text-sm text-muted-foreground mb-4">
 									<div>

@@ -9,11 +9,31 @@ import { cn } from "@/lib/utils";
 import { Providers } from "./providers";
 
 export const metadata: Metadata = {
-	title: "Photocall - Photo Booth Kiosk for Events",
+	metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+	title: {
+		default: "Photocall - Photo Booth Kiosk for Events",
+		template: "%s · Photocall",
+	},
 	description:
 		"A modern photo booth kiosk for weddings, parties, corporate events, and celebrations. Easy setup, beautiful templates, instant sharing.",
 	keywords:
 		"photo booth, event photo booth, wedding photo booth, party photos, corporate events, kiosk, photo kiosk, instant photos, QR sharing, event photography",
+	applicationName: "Photocall",
+	authors: [{ name: "Photocall" }],
+	manifest: "/manifest.webmanifest",
+	openGraph: {
+		title: "Photocall - Photo Booth Kiosk for Events",
+		description:
+			"A modern photo booth kiosk for weddings, parties, corporate events, and celebrations.",
+		type: "website",
+		siteName: "Photocall",
+	},
+	twitter: {
+		card: "summary_large_image",
+		title: "Photocall - Photo Booth Kiosk for Events",
+		description:
+			"A modern photo booth kiosk for weddings, parties, corporate events, and celebrations.",
+	},
 };
 
 export default function RootLayout({
