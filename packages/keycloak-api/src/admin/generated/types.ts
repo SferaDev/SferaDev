@@ -287,6 +287,41 @@ export type Confirmation = {
 	jkt?: string | undefined;
 };
 
+export type AuthorizationDetailsJSONRepresentation = {
+	/**
+	 * @type string | undefined
+	 */
+	type?: string | undefined;
+	/**
+	 * @type array | undefined
+	 */
+	locations?: string[] | undefined;
+	/**
+	 * @type array | undefined
+	 */
+	actions?: string[] | undefined;
+	/**
+	 * @type array | undefined
+	 */
+	datatypes?: string[] | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	identifier?: string | undefined;
+	/**
+	 * @type array | undefined
+	 */
+	privileges?: string[] | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	customData?:
+		| {
+				[key: string]: unknown;
+		  }
+		| undefined;
+};
+
 export type AccessToken = {
 	/**
 	 * @type string | undefined
@@ -464,6 +499,10 @@ export type AccessToken = {
 	 * @type string | undefined
 	 */
 	scope?: string | undefined;
+	/**
+	 * @type array | undefined
+	 */
+	authorization_details?: AuthorizationDetailsJSONRepresentation[] | undefined;
 };
 
 export type AuthDetailsRepresentation = {
@@ -3126,6 +3165,10 @@ export type OrganizationRepresentation = {
 	 * @type array | undefined
 	 */
 	identityProviders?: IdentityProviderRepresentation[] | undefined;
+	/**
+	 * @type array | undefined
+	 */
+	groups?: GroupRepresentation[] | undefined;
 };
 
 export type PolicyEvaluationRequest = {
@@ -3197,6 +3240,14 @@ export type PolicyProviderRepresentation = {
 	 * @type string | undefined
 	 */
 	group?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	description?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	code?: string | undefined;
 };
 
 export type ProtocolMapperEvaluationRepresentation = {
@@ -3763,6 +3814,10 @@ export type RealmRepresentation = {
 	 */
 	failureFactor?: number | undefined;
 	/**
+	 * @type integer | undefined, int32
+	 */
+	maxSecondaryAuthFailures?: number | undefined;
+	/**
 	 * @deprecated
 	 * @type string | undefined
 	 */
@@ -4201,6 +4256,10 @@ export type RealmRepresentation = {
 	 * @type array | undefined
 	 */
 	clientTemplates?: ClientTemplateRepresentation[] | undefined;
+	/**
+	 * @type boolean | undefined
+	 */
+	scimApiEnabled?: boolean | undefined;
 };
 
 export type RequiredActionConfigInfoRepresentation = {
@@ -4220,6 +4279,16 @@ export type RequiredActionConfigRepresentation = {
 		  }
 		| undefined;
 };
+
+export const stepExecutionStatusEnum = {
+	COMPLETED: "COMPLETED",
+	PENDING: "PENDING",
+} as const;
+
+export type StepExecutionStatusEnumKey =
+	(typeof stepExecutionStatusEnum)[keyof typeof stepExecutionStatusEnum];
+
+export type StepExecutionStatus = StepExecutionStatusEnumKey;
 
 export type UPAttributeRequired = {
 	/**
@@ -4430,6 +4499,10 @@ export type WorkflowStepRepresentation = {
 	 * @type integer | undefined, int64
 	 */
 	"scheduled-at"?: number | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	status?: StepExecutionStatus | undefined;
 	/**
 	 * @type string | undefined
 	 */
@@ -6506,6 +6579,10 @@ export type GETAdminRealmsRealmComponentsQueryParams = {
 	 * @type string | undefined
 	 */
 	parent?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	providerId?: string | undefined;
 	/**
 	 * @type string | undefined
 	 */
@@ -8621,6 +8698,16 @@ export type GETAdminRealmsRealmUsersQueryParams = {
 	 */
 	briefRepresentation?: boolean | undefined;
 	/**
+	 * @description Only return users created after (inclusive) the given date, in ISO-8601 format (yyyy-MM-dd) or epoch milliseconds
+	 * @type string | undefined
+	 */
+	createdAfter?: string | undefined;
+	/**
+	 * @description Only return users created before (inclusive) the given date, in ISO-8601 format (yyyy-MM-dd) or epoch milliseconds
+	 * @type string | undefined
+	 */
+	createdBefore?: string | undefined;
+	/**
 	 * @description A String contained in email, or the complete email, if param \"exact\" is true
 	 * @type string | undefined
 	 */
@@ -8821,6 +8908,16 @@ export type GETAdminRealmsRealmUsersCountPathParams = {
 };
 
 export type GETAdminRealmsRealmUsersCountQueryParams = {
+	/**
+	 * @description Only return users created after (inclusive) the given date, in ISO-8601 format (yyyy-MM-dd) or epoch milliseconds
+	 * @type string | undefined
+	 */
+	createdAfter?: string | undefined;
+	/**
+	 * @description Only return users created before (inclusive) the given date, in ISO-8601 format (yyyy-MM-dd) or epoch milliseconds
+	 * @type string | undefined
+	 */
+	createdBefore?: string | undefined;
 	/**
 	 * @description A String contained in email, or the complete email, if param \"exact\" is true
 	 * @type string | undefined
@@ -9060,6 +9157,47 @@ export type POSTAdminRealmsRealmWorkflowsMutation = {
 	Errors: POSTAdminRealmsRealmWorkflows400;
 };
 
+export type POSTAdminRealmsRealmWorkflowsMigratePathParams = {
+	/**
+	 * @description realm name (not id!)
+	 * @type string
+	 */
+	realm: string;
+};
+
+export type POSTAdminRealmsRealmWorkflowsMigrateQueryParams = {
+	/**
+	 * @description A String representing the id of the step to migrate from
+	 * @type string | undefined
+	 */
+	from?: string | undefined;
+	/**
+	 * @description A String representing the id of the step to migrate to
+	 * @type string | undefined
+	 */
+	to?: string | undefined;
+};
+
+/**
+ * @description No Content
+ */
+export type POSTAdminRealmsRealmWorkflowsMigrate204 = unknown;
+
+/**
+ * @description Bad Request
+ */
+export type POSTAdminRealmsRealmWorkflowsMigrate400 = unknown;
+
+export type POSTAdminRealmsRealmWorkflowsMigrateMutationResponse =
+	POSTAdminRealmsRealmWorkflowsMigrate204;
+
+export type POSTAdminRealmsRealmWorkflowsMigrateMutation = {
+	Response: POSTAdminRealmsRealmWorkflowsMigrate204;
+	PathParams: POSTAdminRealmsRealmWorkflowsMigratePathParams;
+	QueryParams: POSTAdminRealmsRealmWorkflowsMigrateQueryParams;
+	Errors: POSTAdminRealmsRealmWorkflowsMigrate400;
+};
+
 export type GETAdminRealmsRealmWorkflowsIdPathParams = {
 	/**
 	 * @description realm name (not id!)
@@ -9075,7 +9213,7 @@ export type GETAdminRealmsRealmWorkflowsIdPathParams = {
 
 export type GETAdminRealmsRealmWorkflowsIdQueryParams = {
 	/**
-	 * @description Indicates whether the workflow id should be included in the representation or not - defaults to true
+	 * @description Indicates whether the workflow and step ids should be included in the representation or not - defaults to true
 	 * @type boolean | undefined
 	 */
 	includeId?: boolean | undefined;
@@ -14081,7 +14219,7 @@ export type DELETEAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesMutati
 		| DELETEAdminRealmsRealmClientsClientUuidRolesRoleNameComposites404;
 };
 
-export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsClientUuidPathParams =
+export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsTargetClientUuidPathParams =
 	{
 		/**
 		 * @description realm name (not id!)
@@ -14089,6 +14227,7 @@ export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsCl
 		 */
 		realm: string;
 		/**
+		 * @description id of client (not client-id!)
 		 * @type string
 		 */
 		clientUuid: string;
@@ -14097,33 +14236,38 @@ export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsCl
 		 * @type string
 		 */
 		roleName: string;
+		/**
+		 * @type string
+		 */
+		targetClientUuid: string;
 	};
 
-export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsClientUuid200 =
+export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsTargetClientUuid200 =
 	RoleRepresentation[];
 
 /**
  * @description Forbidden
  */
-export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsClientUuid403 =
+export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsTargetClientUuid403 =
 	unknown;
 
 /**
  * @description Not Found
  */
-export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsClientUuid404 =
+export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsTargetClientUuid404 =
 	unknown;
 
-export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsClientUuidQueryResponse =
-	GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsClientUuid200;
+export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsTargetClientUuidQueryResponse =
+	GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsTargetClientUuid200;
 
-export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsClientUuidQuery = {
-	Response: GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsClientUuid200;
-	PathParams: GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsClientUuidPathParams;
-	Errors:
-		| GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsClientUuid403
-		| GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsClientUuid404;
-};
+export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsTargetClientUuidQuery =
+	{
+		Response: GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsTargetClientUuid200;
+		PathParams: GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsTargetClientUuidPathParams;
+		Errors:
+			| GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsTargetClientUuid403
+			| GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesClientsTargetClientUuid404;
+	};
 
 export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameCompositesRealmPathParams = {
 	/**
@@ -14982,12 +15126,12 @@ export type GETAdminRealmsRealmGroupsGroupIdChildrenQueryParams = {
 	 */
 	max?: number | undefined;
 	/**
-	 * @description A String representing either an exact group name or a partial name
+	 * @description A String representing either an exact group name or a partial name, defaults to prefix search.
 	 * @type string | undefined
 	 */
 	search?: string | undefined;
 	/**
-	 * @description Boolean which defines whether to return the count of subgroups for each subgroup of this group (default: true
+	 * @description Boolean which defines whether to return the count of subgroups for each subgroup of this group (default: true)
 	 * @default "true"
 	 * @type boolean | undefined
 	 */
@@ -15725,6 +15869,586 @@ export type DELETEAdminRealmsRealmOrganizationsOrgIdMutation = {
 	Errors: DELETEAdminRealmsRealmOrganizationsOrgId400;
 };
 
+export type GETAdminRealmsRealmOrganizationsOrgIdGroupsPathParams = {
+	/**
+	 * @description realm name (not id!)
+	 * @type string
+	 */
+	realm: string;
+	/**
+	 * @type string
+	 */
+	orgId: string;
+};
+
+export type GETAdminRealmsRealmOrganizationsOrgIdGroupsQueryParams = {
+	/**
+	 * @default true
+	 * @type boolean | undefined
+	 */
+	briefRepresentation?: boolean | undefined;
+	/**
+	 * @default "false"
+	 * @type boolean | undefined
+	 */
+	exact?: boolean | undefined;
+	/**
+	 * @type integer | undefined, int32
+	 */
+	first?: number | undefined;
+	/**
+	 * @type integer | undefined, int32
+	 */
+	max?: number | undefined;
+	/**
+	 * @default false
+	 * @type boolean | undefined
+	 */
+	populateHierarchy?: boolean | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	q?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	search?: string | undefined;
+	/**
+	 * @default false
+	 * @type boolean | undefined
+	 */
+	subGroupsCount?: boolean | undefined;
+};
+
+/**
+ * @description OK
+ */
+export type GETAdminRealmsRealmOrganizationsOrgIdGroups200 = GroupRepresentation[];
+
+export type GETAdminRealmsRealmOrganizationsOrgIdGroupsQueryResponse =
+	GETAdminRealmsRealmOrganizationsOrgIdGroups200;
+
+export type GETAdminRealmsRealmOrganizationsOrgIdGroupsQuery = {
+	Response: GETAdminRealmsRealmOrganizationsOrgIdGroups200;
+	PathParams: GETAdminRealmsRealmOrganizationsOrgIdGroupsPathParams;
+	QueryParams: GETAdminRealmsRealmOrganizationsOrgIdGroupsQueryParams;
+	Errors: any;
+};
+
+export type POSTAdminRealmsRealmOrganizationsOrgIdGroupsPathParams = {
+	/**
+	 * @description realm name (not id!)
+	 * @type string
+	 */
+	realm: string;
+	/**
+	 * @type string
+	 */
+	orgId: string;
+};
+
+/**
+ * @description Created
+ */
+export type POSTAdminRealmsRealmOrganizationsOrgIdGroups201 = unknown;
+
+/**
+ * @description No Content - Group moved to top-level
+ */
+export type POSTAdminRealmsRealmOrganizationsOrgIdGroups204 = unknown;
+
+/**
+ * @description Bad Request
+ */
+export type POSTAdminRealmsRealmOrganizationsOrgIdGroups400 = unknown;
+
+/**
+ * @description Not Found - Group does not exist
+ */
+export type POSTAdminRealmsRealmOrganizationsOrgIdGroups404 = unknown;
+
+/**
+ * @description Conflict
+ */
+export type POSTAdminRealmsRealmOrganizationsOrgIdGroups409 = unknown;
+
+export type POSTAdminRealmsRealmOrganizationsOrgIdGroupsMutationRequest = GroupRepresentation;
+
+export type POSTAdminRealmsRealmOrganizationsOrgIdGroupsMutationResponse =
+	| POSTAdminRealmsRealmOrganizationsOrgIdGroups201
+	| POSTAdminRealmsRealmOrganizationsOrgIdGroups204;
+
+export type POSTAdminRealmsRealmOrganizationsOrgIdGroupsMutation = {
+	Response:
+		| POSTAdminRealmsRealmOrganizationsOrgIdGroups201
+		| POSTAdminRealmsRealmOrganizationsOrgIdGroups204;
+	Request: POSTAdminRealmsRealmOrganizationsOrgIdGroupsMutationRequest;
+	PathParams: POSTAdminRealmsRealmOrganizationsOrgIdGroupsPathParams;
+	Errors:
+		| POSTAdminRealmsRealmOrganizationsOrgIdGroups400
+		| POSTAdminRealmsRealmOrganizationsOrgIdGroups404
+		| POSTAdminRealmsRealmOrganizationsOrgIdGroups409;
+};
+
+export type GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPathPathParams = {
+	/**
+	 * @description realm name (not id!)
+	 * @type string
+	 */
+	realm: string;
+	/**
+	 * @type string
+	 */
+	orgId: string;
+	/**
+	 * @pattern .*
+	 * @type string
+	 */
+	path: string;
+};
+
+export type GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPathQueryParams = {
+	/**
+	 * @description Whether to return the count of subgroups (default: false)
+	 * @default false
+	 * @type boolean | undefined
+	 */
+	subGroupsCount?: boolean | undefined;
+};
+
+/**
+ * @description OK
+ */
+export type GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPath200 = GroupRepresentation;
+
+/**
+ * @description Forbidden
+ */
+export type GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPath403 = unknown;
+
+/**
+ * @description Not Found
+ */
+export type GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPath404 = unknown;
+
+export type GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPathQueryResponse =
+	GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPath200;
+
+export type GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPathQuery = {
+	Response: GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPath200;
+	PathParams: GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPathPathParams;
+	QueryParams: GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPathQueryParams;
+	Errors:
+		| GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPath403
+		| GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPath404;
+};
+
+export type GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdPathParams = {
+	/**
+	 * @description realm name (not id!)
+	 * @type string
+	 */
+	realm: string;
+	/**
+	 * @type string
+	 */
+	orgId: string;
+	/**
+	 * @type string
+	 */
+	groupId: string;
+};
+
+export type GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdQueryParams = {
+	/**
+	 * @description Whether to return the count of subgroups (default: false)
+	 * @default false
+	 * @type boolean | undefined
+	 */
+	subGroupsCount?: boolean | undefined;
+};
+
+/**
+ * @description OK
+ */
+export type GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupId200 = GroupRepresentation;
+
+export type GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdQueryResponse =
+	GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupId200;
+
+export type GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdQuery = {
+	Response: GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupId200;
+	PathParams: GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdPathParams;
+	QueryParams: GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdQueryParams;
+	Errors: any;
+};
+
+export type PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdPathParams = {
+	/**
+	 * @description realm name (not id!)
+	 * @type string
+	 */
+	realm: string;
+	/**
+	 * @type string
+	 */
+	orgId: string;
+	/**
+	 * @type string
+	 */
+	groupId: string;
+};
+
+/**
+ * @description No Content
+ */
+export type PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupId204 = unknown;
+
+/**
+ * @description Bad Request
+ */
+export type PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupId400 = unknown;
+
+/**
+ * @description Conflict
+ */
+export type PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupId409 = unknown;
+
+export type PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMutationRequest = GroupRepresentation;
+
+export type PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMutationResponse =
+	PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupId204;
+
+export type PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMutation = {
+	Response: PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupId204;
+	Request: PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMutationRequest;
+	PathParams: PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdPathParams;
+	Errors:
+		| PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupId400
+		| PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupId409;
+};
+
+export type DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdPathParams = {
+	/**
+	 * @description realm name (not id!)
+	 * @type string
+	 */
+	realm: string;
+	/**
+	 * @type string
+	 */
+	orgId: string;
+	/**
+	 * @type string
+	 */
+	groupId: string;
+};
+
+/**
+ * @description No Content
+ */
+export type DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupId204 = unknown;
+
+/**
+ * @description Not Found
+ */
+export type DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupId404 = unknown;
+
+export type DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMutationResponse =
+	DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupId204;
+
+export type DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMutation = {
+	Response: DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupId204;
+	PathParams: DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdPathParams;
+	Errors: DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupId404;
+};
+
+export type GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildrenPathParams = {
+	/**
+	 * @description realm name (not id!)
+	 * @type string
+	 */
+	realm: string;
+	/**
+	 * @type string
+	 */
+	orgId: string;
+	/**
+	 * @type string
+	 */
+	groupId: string;
+};
+
+export type GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildrenQueryParams = {
+	/**
+	 * @description Boolean which defines whether the params \"search\" must match exactly or not
+	 * @type boolean | undefined
+	 */
+	exact?: boolean | undefined;
+	/**
+	 * @description The position of the first result to be returned (pagination offset).
+	 * @default "0"
+	 * @type integer | undefined, int32
+	 */
+	first?: number | undefined;
+	/**
+	 * @description The maximum number of results that are to be returned. Defaults to 10
+	 * @default "10"
+	 * @type integer | undefined, int32
+	 */
+	max?: number | undefined;
+	/**
+	 * @description A String representing either an exact group name or a partial name
+	 * @type string | undefined
+	 */
+	search?: string | undefined;
+	/**
+	 * @description Whether to return the count of subgroups (default: false)
+	 * @type boolean | undefined
+	 */
+	subGroupsCount?: boolean | undefined;
+};
+
+/**
+ * @description OK
+ */
+export type GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren200 = GroupRepresentation[];
+
+export type GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildrenQueryResponse =
+	GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren200;
+
+export type GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildrenQuery = {
+	Response: GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren200;
+	PathParams: GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildrenPathParams;
+	QueryParams: GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildrenQueryParams;
+	Errors: any;
+};
+
+export type POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildrenPathParams = {
+	/**
+	 * @description realm name (not id!)
+	 * @type string
+	 */
+	realm: string;
+	/**
+	 * @type string
+	 */
+	orgId: string;
+	/**
+	 * @type string
+	 */
+	groupId: string;
+};
+
+/**
+ * @description Created
+ */
+export type POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren201 = unknown;
+
+/**
+ * @description No Content
+ */
+export type POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren204 = unknown;
+
+/**
+ * @description Bad Request
+ */
+export type POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren400 = unknown;
+
+/**
+ * @description Forbidden
+ */
+export type POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren403 = unknown;
+
+/**
+ * @description Not Found
+ */
+export type POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren404 = unknown;
+
+/**
+ * @description Conflict
+ */
+export type POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren409 = unknown;
+
+export type POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildrenMutationRequest =
+	GroupRepresentation;
+
+export type POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildrenMutationResponse =
+	| POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren201
+	| POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren204;
+
+export type POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildrenMutation = {
+	Response:
+		| POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren201
+		| POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren204;
+	Request: POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildrenMutationRequest;
+	PathParams: POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildrenPathParams;
+	Errors:
+		| POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren400
+		| POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren403
+		| POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren404
+		| POSTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildren409;
+};
+
+export type GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersPathParams = {
+	/**
+	 * @description realm name (not id!)
+	 * @type string
+	 */
+	realm: string;
+	/**
+	 * @type string
+	 */
+	orgId: string;
+	/**
+	 * @type string
+	 */
+	groupId: string;
+};
+
+export type GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersQueryParams = {
+	/**
+	 * @description Only return basic information (only guaranteed to return id, username, created, first and last name, email, enabled state, email verification state, federation link, and access. Note that it means that namely user attributes, required actions, and not before are not returned.)
+	 * @type boolean | undefined
+	 */
+	briefRepresentation?: boolean | undefined;
+	/**
+	 * @description Pagination offset
+	 * @type integer | undefined, int32
+	 */
+	first?: number | undefined;
+	/**
+	 * @description Maximum results size (defaults to 100)
+	 * @type integer | undefined, int32
+	 */
+	max?: number | undefined;
+};
+
+/**
+ * @description OK
+ */
+export type GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembers200 = MemberRepresentation[];
+
+export type GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersQueryResponse =
+	GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembers200;
+
+export type GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersQuery = {
+	Response: GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembers200;
+	PathParams: GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersPathParams;
+	QueryParams: GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersQueryParams;
+	Errors: any;
+};
+
+export type PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserIdPathParams = {
+	/**
+	 * @description realm name (not id!)
+	 * @type string
+	 */
+	realm: string;
+	/**
+	 * @type string
+	 */
+	orgId: string;
+	/**
+	 * @type string
+	 */
+	groupId: string;
+	/**
+	 * @type string
+	 */
+	userId: string;
+};
+
+/**
+ * @description No Content
+ */
+export type PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId204 = unknown;
+
+/**
+ * @description Bad Request - User is not a member of the organization
+ */
+export type PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId400 = unknown;
+
+/**
+ * @description Forbidden
+ */
+export type PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId403 = unknown;
+
+/**
+ * @description Not Found - User does not exist
+ */
+export type PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId404 = unknown;
+
+/**
+ * @description Conflict - User is already a member of the group
+ */
+export type PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId409 = unknown;
+
+export type PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserIdMutationResponse =
+	PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId204;
+
+export type PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserIdMutation = {
+	Response: PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId204;
+	PathParams: PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserIdPathParams;
+	Errors:
+		| PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId400
+		| PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId403
+		| PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId404
+		| PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId409;
+};
+
+export type DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserIdPathParams = {
+	/**
+	 * @description realm name (not id!)
+	 * @type string
+	 */
+	realm: string;
+	/**
+	 * @type string
+	 */
+	orgId: string;
+	/**
+	 * @type string
+	 */
+	groupId: string;
+	/**
+	 * @type string
+	 */
+	userId: string;
+};
+
+/**
+ * @description No Content
+ */
+export type DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId204 = unknown;
+
+/**
+ * @description Bad Request
+ */
+export type DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId400 = unknown;
+
+/**
+ * @description Forbidden
+ */
+export type DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId403 = unknown;
+
+/**
+ * @description Not Found - User does not exist
+ */
+export type DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId404 = unknown;
+
+export type DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserIdMutationResponse =
+	DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId204;
+
+export type DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserIdMutation = {
+	Response: DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId204;
+	PathParams: DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserIdPathParams;
+	Errors:
+		| DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId400
+		| DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId403
+		| DELETEAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId404;
+};
+
 export type GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersPathParams = {
 	/**
 	 * @description realm name (not id!)
@@ -15872,6 +16596,82 @@ export type DELETEAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasMutati
 	Errors:
 		| DELETEAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAlias400
 		| DELETEAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAlias404;
+};
+
+export type GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasGroupsPathParams = {
+	/**
+	 * @description realm name (not id!)
+	 * @type string
+	 */
+	realm: string;
+	/**
+	 * @type string
+	 */
+	orgId: string;
+	/**
+	 * @description The alias of the identity provider
+	 * @type string
+	 */
+	alias: string;
+};
+
+export type GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasGroupsQueryParams = {
+	/**
+	 * @description If true, return brief representation; otherwise return full representation
+	 * @default true
+	 * @type boolean | undefined
+	 */
+	briefRepresentation?: boolean | undefined;
+	/**
+	 * @description If true, perform exact match on the search parameter
+	 * @default "false"
+	 * @type boolean | undefined
+	 */
+	exact?: boolean | undefined;
+	/**
+	 * @description The position of the first result (pagination offset)
+	 * @type integer | undefined, int32
+	 */
+	first?: number | undefined;
+	/**
+	 * @description The maximum number of results to return
+	 * @type integer | undefined, int32
+	 */
+	max?: number | undefined;
+	/**
+	 * @description A query to search for group attributes, in the format \'key1:value1 key2:value2\'
+	 * @type string | undefined
+	 */
+	q?: string | undefined;
+	/**
+	 * @description A string to search for in group names
+	 * @type string | undefined
+	 */
+	search?: string | undefined;
+	/**
+	 * @description If true, include subgroups count in the response
+	 * @default false
+	 * @type boolean | undefined
+	 */
+	subGroupsCount?: boolean | undefined;
+};
+
+export type GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasGroups200 =
+	GroupRepresentation[];
+
+/**
+ * @description Not Found
+ */
+export type GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasGroups404 = unknown;
+
+export type GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasGroupsQueryResponse =
+	GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasGroups200;
+
+export type GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasGroupsQuery = {
+	Response: GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasGroups200;
+	PathParams: GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasGroupsPathParams;
+	QueryParams: GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasGroupsQueryParams;
+	Errors: GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasGroups404;
 };
 
 export type GETAdminRealmsRealmOrganizationsOrgIdInvitationsPathParams = {
@@ -16307,6 +17107,59 @@ export type DELETEAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMutation = {
 	Response: DELETEAdminRealmsRealmOrganizationsOrgIdMembersMemberId204;
 	PathParams: DELETEAdminRealmsRealmOrganizationsOrgIdMembersMemberIdPathParams;
 	Errors: DELETEAdminRealmsRealmOrganizationsOrgIdMembersMemberId400;
+};
+
+export type GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroupsPathParams = {
+	/**
+	 * @description realm name (not id!)
+	 * @type string
+	 */
+	realm: string;
+	/**
+	 * @type string
+	 */
+	orgId: string;
+	/**
+	 * @type string
+	 */
+	memberId: string;
+};
+
+export type GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroupsQueryParams = {
+	/**
+	 * @default true
+	 * @type boolean | undefined
+	 */
+	briefRepresentation?: boolean | undefined;
+	/**
+	 * @type integer | undefined, int32
+	 */
+	first?: number | undefined;
+	/**
+	 * @type integer | undefined, int32
+	 */
+	max?: number | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	search?: string | undefined;
+};
+
+export type GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroups200 = GroupRepresentation[];
+
+/**
+ * @description Bad Request
+ */
+export type GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroups400 = unknown;
+
+export type GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroupsQueryResponse =
+	GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroups200;
+
+export type GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroupsQuery = {
+	Response: GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroups200;
+	PathParams: GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroupsPathParams;
+	QueryParams: GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroupsQueryParams;
+	Errors: GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroups400;
 };
 
 export type GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdOrganizationsPathParams = {
@@ -16939,44 +17792,45 @@ export type DELETEAdminRealmsRealmRolesRoleNameCompositesMutation = {
 		| DELETEAdminRealmsRealmRolesRoleNameComposites404;
 };
 
-export type GETAdminRealmsRealmRolesRoleNameCompositesClientsClientUuidPathParams = {
+export type GETAdminRealmsRealmRolesRoleNameCompositesClientsTargetClientUuidPathParams = {
 	/**
 	 * @description realm name (not id!)
 	 * @type string
 	 */
 	realm: string;
 	/**
-	 * @type string
-	 */
-	clientUuid: string;
-	/**
 	 * @description role\'s name (not id!)
 	 * @type string
 	 */
 	roleName: string;
+	/**
+	 * @type string
+	 */
+	targetClientUuid: string;
 };
 
-export type GETAdminRealmsRealmRolesRoleNameCompositesClientsClientUuid200 = RoleRepresentation[];
+export type GETAdminRealmsRealmRolesRoleNameCompositesClientsTargetClientUuid200 =
+	RoleRepresentation[];
 
 /**
  * @description Forbidden
  */
-export type GETAdminRealmsRealmRolesRoleNameCompositesClientsClientUuid403 = unknown;
+export type GETAdminRealmsRealmRolesRoleNameCompositesClientsTargetClientUuid403 = unknown;
 
 /**
  * @description Not Found
  */
-export type GETAdminRealmsRealmRolesRoleNameCompositesClientsClientUuid404 = unknown;
+export type GETAdminRealmsRealmRolesRoleNameCompositesClientsTargetClientUuid404 = unknown;
 
-export type GETAdminRealmsRealmRolesRoleNameCompositesClientsClientUuidQueryResponse =
-	GETAdminRealmsRealmRolesRoleNameCompositesClientsClientUuid200;
+export type GETAdminRealmsRealmRolesRoleNameCompositesClientsTargetClientUuidQueryResponse =
+	GETAdminRealmsRealmRolesRoleNameCompositesClientsTargetClientUuid200;
 
-export type GETAdminRealmsRealmRolesRoleNameCompositesClientsClientUuidQuery = {
-	Response: GETAdminRealmsRealmRolesRoleNameCompositesClientsClientUuid200;
-	PathParams: GETAdminRealmsRealmRolesRoleNameCompositesClientsClientUuidPathParams;
+export type GETAdminRealmsRealmRolesRoleNameCompositesClientsTargetClientUuidQuery = {
+	Response: GETAdminRealmsRealmRolesRoleNameCompositesClientsTargetClientUuid200;
+	PathParams: GETAdminRealmsRealmRolesRoleNameCompositesClientsTargetClientUuidPathParams;
 	Errors:
-		| GETAdminRealmsRealmRolesRoleNameCompositesClientsClientUuid403
-		| GETAdminRealmsRealmRolesRoleNameCompositesClientsClientUuid404;
+		| GETAdminRealmsRealmRolesRoleNameCompositesClientsTargetClientUuid403
+		| GETAdminRealmsRealmRolesRoleNameCompositesClientsTargetClientUuid404;
 };
 
 export type GETAdminRealmsRealmRolesRoleNameCompositesRealmPathParams = {

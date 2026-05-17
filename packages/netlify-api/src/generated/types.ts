@@ -5,6 +5,7 @@
 
 /**
  * @description Request body for creating a database
+ * @type object
  */
 export type CreateDatabaseRequest = {
 	/**
@@ -16,6 +17,7 @@ export type CreateDatabaseRequest = {
 
 /**
  * @description Response containing the database connection string
+ * @type object
  */
 export type DatabaseResponse = {
 	/**
@@ -27,6 +29,7 @@ export type DatabaseResponse = {
 
 /**
  * @description Request body for creating a database branch
+ * @type object
  */
 export type CreateDatabaseBranchRequest = {
 	/**
@@ -35,14 +38,24 @@ export type CreateDatabaseBranchRequest = {
 	 */
 	parent_branch_id?: string | undefined;
 	/**
-	 * @description The deploy ID to associate with this branch
+	 * @description The branch identifier
 	 * @type string
 	 */
-	deploy_id: string;
+	branch_id: string;
+	/**
+	 * @description Arbitrary metadata to associate with the branch
+	 * @type object | undefined
+	 */
+	metadata?:
+		| {
+				[key: string]: unknown;
+		  }
+		| undefined;
 };
 
 /**
  * @description Response containing the database branch connection string
+ * @type object
  */
 export type DatabaseBranchResponse = {
 	/**
@@ -50,26 +63,321 @@ export type DatabaseBranchResponse = {
 	 * @type string | undefined
 	 */
 	connection_string?: string | undefined;
+	/**
+	 * @description Metadata associated with the branch
+	 * @type object | undefined
+	 */
+	metadata?:
+		| {
+				[key: string]: unknown;
+		  }
+		| undefined;
+};
+
+export const stateEnum = {
+	init: "init",
+	creating: "creating",
+	resetting: "resetting",
+	ready: "ready",
+	archived: "archived",
+} as const;
+
+export type StateEnumKey = (typeof stateEnum)[keyof typeof stateEnum];
+
+export const currentStateEnum = {
+	active: "active",
+	idle: "idle",
+} as const;
+
+export type CurrentStateEnumKey = (typeof currentStateEnum)[keyof typeof currentStateEnum];
+
+/**
+ * @description Response containing a list of database branches
+ * @type object
+ */
+export type DatabaseBranchesResponse = {
+	/**
+	 * @description List of database branches
+	 * @type array | undefined
+	 */
+	branches?:
+		| {
+				/**
+				 * @description The branch identifier
+				 * @type string | undefined
+				 */
+				branch_id?: string | undefined;
+				/**
+				 * @description The branch name
+				 * @type string | undefined
+				 */
+				name?: string | undefined;
+				/**
+				 * @description The connection string for the branch
+				 * @type string | undefined
+				 */
+				connection_string?: string | undefined;
+				/**
+				 * @description The current state of the branch
+				 * @type string | undefined
+				 */
+				state?: StateEnumKey | undefined;
+				/**
+				 * @description The logical size of the branch in bytes
+				 * @type integer | undefined
+				 */
+				logical_size_bytes?: bigint | undefined;
+				/**
+				 * @description When the branch was created
+				 * @type string | undefined
+				 */
+				created_at?: string | undefined;
+				/**
+				 * @description When the branch was last updated
+				 * @type string | undefined
+				 */
+				updated_at?: string | undefined;
+				/**
+				 * @description When the branch was last active
+				 * @type string | undefined
+				 */
+				last_active_at?: string | undefined;
+				/**
+				 * @description Compute endpoint status for a branch
+				 * @type object | undefined
+				 */
+				compute?:
+					| {
+							/**
+							 * @description The current state of the compute endpoint
+							 * @type string | undefined
+							 */
+							current_state?: CurrentStateEnumKey | undefined;
+							/**
+							 * @description Minimum compute units for autoscaling
+							 * @type number | undefined
+							 */
+							autoscaling_limit_min_cu?: number | undefined;
+							/**
+							 * @description Maximum compute units for autoscaling
+							 * @type number | undefined
+							 */
+							autoscaling_limit_max_cu?: number | undefined;
+							/**
+							 * @description Seconds of inactivity before the compute endpoint is suspended
+							 * @type integer | undefined
+							 */
+							suspend_timeout_seconds?: bigint | undefined;
+							/**
+							 * @description When the compute endpoint was last active
+							 * @type string | undefined
+							 */
+							last_active?: string | undefined;
+					  }
+					| undefined;
+				/**
+				 * @description Metadata associated with the branch
+				 * @type object | undefined
+				 */
+				metadata?:
+					| {
+							[key: string]: unknown;
+					  }
+					| undefined;
+		  }[]
+		| undefined;
+};
+
+export const databaseBranchDetailStateEnum = {
+	init: "init",
+	creating: "creating",
+	resetting: "resetting",
+	ready: "ready",
+	archived: "archived",
+} as const;
+
+export type DatabaseBranchDetailStateEnumKey =
+	(typeof databaseBranchDetailStateEnum)[keyof typeof databaseBranchDetailStateEnum];
+
+export const databaseBranchDetailComputeCurrentStateEnum = {
+	active: "active",
+	idle: "idle",
+} as const;
+
+export type DatabaseBranchDetailComputeCurrentStateEnumKey =
+	(typeof databaseBranchDetailComputeCurrentStateEnum)[keyof typeof databaseBranchDetailComputeCurrentStateEnum];
+
+/**
+ * @description Detailed information about a database branch
+ * @type object
+ */
+export type DatabaseBranchDetail = {
+	/**
+	 * @description The branch identifier
+	 * @type string | undefined
+	 */
+	branch_id?: string | undefined;
+	/**
+	 * @description The branch name
+	 * @type string | undefined
+	 */
+	name?: string | undefined;
+	/**
+	 * @description The connection string for the branch
+	 * @type string | undefined
+	 */
+	connection_string?: string | undefined;
+	/**
+	 * @description The current state of the branch
+	 * @type string | undefined
+	 */
+	state?: DatabaseBranchDetailStateEnumKey | undefined;
+	/**
+	 * @description The logical size of the branch in bytes
+	 * @type integer | undefined
+	 */
+	logical_size_bytes?: bigint | undefined;
+	/**
+	 * @description When the branch was created
+	 * @type string | undefined
+	 */
+	created_at?: string | undefined;
+	/**
+	 * @description When the branch was last updated
+	 * @type string | undefined
+	 */
+	updated_at?: string | undefined;
+	/**
+	 * @description When the branch was last active
+	 * @type string | undefined
+	 */
+	last_active_at?: string | undefined;
+	/**
+	 * @description Compute endpoint status for a branch
+	 * @type object | undefined
+	 */
+	compute?:
+		| {
+				/**
+				 * @description The current state of the compute endpoint
+				 * @type string | undefined
+				 */
+				current_state?: DatabaseBranchDetailComputeCurrentStateEnumKey | undefined;
+				/**
+				 * @description Minimum compute units for autoscaling
+				 * @type number | undefined
+				 */
+				autoscaling_limit_min_cu?: number | undefined;
+				/**
+				 * @description Maximum compute units for autoscaling
+				 * @type number | undefined
+				 */
+				autoscaling_limit_max_cu?: number | undefined;
+				/**
+				 * @description Seconds of inactivity before the compute endpoint is suspended
+				 * @type integer | undefined
+				 */
+				suspend_timeout_seconds?: bigint | undefined;
+				/**
+				 * @description When the compute endpoint was last active
+				 * @type string | undefined
+				 */
+				last_active?: string | undefined;
+		  }
+		| undefined;
+	/**
+	 * @description Metadata associated with the branch
+	 * @type object | undefined
+	 */
+	metadata?:
+		| {
+				[key: string]: unknown;
+		  }
+		| undefined;
+};
+
+export const databaseBranchComputeCurrentStateEnum = {
+	active: "active",
+	idle: "idle",
+} as const;
+
+export type DatabaseBranchComputeCurrentStateEnumKey =
+	(typeof databaseBranchComputeCurrentStateEnum)[keyof typeof databaseBranchComputeCurrentStateEnum];
+
+/**
+ * @description Compute endpoint status for a branch
+ * @type object
+ */
+export type DatabaseBranchCompute = {
+	/**
+	 * @description The current state of the compute endpoint
+	 * @type string | undefined
+	 */
+	current_state?: DatabaseBranchComputeCurrentStateEnumKey | undefined;
+	/**
+	 * @description Minimum compute units for autoscaling
+	 * @type number | undefined
+	 */
+	autoscaling_limit_min_cu?: number | undefined;
+	/**
+	 * @description Maximum compute units for autoscaling
+	 * @type number | undefined
+	 */
+	autoscaling_limit_max_cu?: number | undefined;
+	/**
+	 * @description Seconds of inactivity before the compute endpoint is suspended
+	 * @type integer | undefined
+	 */
+	suspend_timeout_seconds?: bigint | undefined;
+	/**
+	 * @description When the compute endpoint was last active
+	 * @type string | undefined
+	 */
+	last_active?: string | undefined;
 };
 
 /**
  * @description Request body for creating a database snapshot
+ * @type object
  */
 export type CreateDatabaseSnapshotRequest = {
 	/**
-	 * @description The name of the branch to snapshot. Defaults to \"production\" if not specified.
+	 * @description The ID of the branch to snapshot. Defaults to \"production\" if not specified.
 	 * @type string | undefined
 	 */
-	branch_name?: string | undefined;
+	branch_id?: string | undefined;
 	/**
-	 * @description An optional name for the snapshot
+	 * @description A name for the snapshot
 	 * @type string | undefined
 	 */
 	name?: string | undefined;
+	/**
+	 * @description Metadata associated with a snapshot
+	 * @type object | undefined
+	 */
+	metadata?:
+		| {
+				/**
+				 * @description Deploy information associated with the snapshot
+				 * @type object | undefined
+				 */
+				deploy?:
+					| {
+							[key: string]: unknown;
+					  }
+					| undefined;
+				/**
+				 * @description The source that created the snapshot
+				 * @type string | undefined
+				 */
+				source?: string | undefined;
+		  }
+		| undefined;
 };
 
 /**
  * @description A point-in-time snapshot of a database branch
+ * @type object
  */
 export type DatabaseSnapshot = {
 	/**
@@ -78,19 +386,78 @@ export type DatabaseSnapshot = {
 	 */
 	id?: string | undefined;
 	/**
-	 * @description The timestamp when the snapshot was created
-	 * @type string | undefined, dateTime
-	 */
-	timestamp?: string | undefined;
-	/**
 	 * @description The ID of the branch that was snapshotted
 	 * @type string | undefined
 	 */
 	source_branch_id?: string | undefined;
+	/**
+	 * @description Whether this snapshot was manually created
+	 * @type boolean | undefined
+	 */
+	manual?: boolean | undefined;
+	/**
+	 * @description When the snapshot was created
+	 * @type string | undefined
+	 */
+	created_at?: string | undefined;
+	/**
+	 * @description When the snapshot expires
+	 * @type string | undefined
+	 */
+	expires_at?: string | undefined;
+	/**
+	 * @description The point-in-time timestamp of the snapshot
+	 * @type string | undefined
+	 */
+	timestamp?: string | undefined;
+	/**
+	 * @description Metadata associated with a snapshot
+	 * @type object | undefined
+	 */
+	metadata?:
+		| {
+				/**
+				 * @description Deploy information associated with the snapshot
+				 * @type object | undefined
+				 */
+				deploy?:
+					| {
+							[key: string]: unknown;
+					  }
+					| undefined;
+				/**
+				 * @description The source that created the snapshot
+				 * @type string | undefined
+				 */
+				source?: string | undefined;
+		  }
+		| undefined;
+};
+
+/**
+ * @description Metadata associated with a snapshot
+ * @type object
+ */
+export type DatabaseSnapshotMetadata = {
+	/**
+	 * @description Deploy information associated with the snapshot
+	 * @type object | undefined
+	 */
+	deploy?:
+		| {
+				[key: string]: unknown;
+		  }
+		| undefined;
+	/**
+	 * @description The source that created the snapshot
+	 * @type string | undefined
+	 */
+	source?: string | undefined;
 };
 
 /**
  * @description Response containing a list of database snapshots
+ * @type object
  */
 export type DatabaseSnapshotsResponse = {
 	/**
@@ -105,30 +472,255 @@ export type DatabaseSnapshotsResponse = {
 				 */
 				id?: string | undefined;
 				/**
-				 * @description The timestamp when the snapshot was created
-				 * @type string | undefined, dateTime
-				 */
-				timestamp?: string | undefined;
-				/**
 				 * @description The ID of the branch that was snapshotted
 				 * @type string | undefined
 				 */
 				source_branch_id?: string | undefined;
+				/**
+				 * @description Whether this snapshot was manually created
+				 * @type boolean | undefined
+				 */
+				manual?: boolean | undefined;
+				/**
+				 * @description When the snapshot was created
+				 * @type string | undefined
+				 */
+				created_at?: string | undefined;
+				/**
+				 * @description When the snapshot expires
+				 * @type string | undefined
+				 */
+				expires_at?: string | undefined;
+				/**
+				 * @description The point-in-time timestamp of the snapshot
+				 * @type string | undefined
+				 */
+				timestamp?: string | undefined;
+				/**
+				 * @description Metadata associated with a snapshot
+				 * @type object | undefined
+				 */
+				metadata?:
+					| {
+							/**
+							 * @description Deploy information associated with the snapshot
+							 * @type object | undefined
+							 */
+							deploy?:
+								| {
+										[key: string]: unknown;
+								  }
+								| undefined;
+							/**
+							 * @description The source that created the snapshot
+							 * @type string | undefined
+							 */
+							source?: string | undefined;
+					  }
+					| undefined;
 		  }[]
 		| undefined;
 };
 
 /**
  * @description Request body for restoring a database snapshot
+ * @type object
  */
 export type RestoreDatabaseSnapshotRequest = {
 	/**
-	 * @description The name of the branch to restore the snapshot to. Defaults to \"production\" if not specified.
+	 * @description The ID of the branch to restore the snapshot to. Defaults to \"production\" if not specified.
 	 * @type string | undefined
 	 */
-	branch_name?: string | undefined;
+	branch_id?: string | undefined;
 };
 
+/**
+ * @description Request body for setting compute settings. All fields are optional; only provided fields are updated.
+ * @type object
+ */
+export type DatabaseComputeSettingsRequest = {
+	/**
+	 * @description Minimum compute units (0.25 to 16.0). Must be less than or equal to max_cu.
+	 * @type number
+	 */
+	min_cu?: (number | null) | undefined;
+	/**
+	 * @description Maximum compute units (0.25 to 16.0). Must be greater than or equal to min_cu. max_cu - min_cu must not exceed 8.0.
+	 * @type number
+	 */
+	max_cu?: (number | null) | undefined;
+	/**
+	 * @description Seconds of inactivity before the compute endpoint is suspended. Use -1 for always on, or a non-negative value.
+	 * @minLength -1
+	 * @type integer
+	 */
+	sleep_timeout_seconds?: (bigint | null) | undefined;
+};
+
+/**
+ * @description Compute settings for a database or branch
+ * @type object
+ */
+export type DatabaseComputeSettings = {
+	/**
+	 * @description Minimum compute units
+	 * @type number | undefined
+	 */
+	min_cu?: number | undefined;
+	/**
+	 * @description Maximum compute units
+	 * @type number | undefined
+	 */
+	max_cu?: number | undefined;
+	/**
+	 * @description Seconds of inactivity before suspension
+	 * @type integer | undefined
+	 */
+	sleep_timeout_seconds?: bigint | undefined;
+};
+
+/**
+ * @description Request body for running database migrations
+ * @type object
+ */
+export type RunDatabaseMigrationsRequest = {
+	/**
+	 * @description If true, validates migrations without applying them.
+	 * @type boolean | undefined
+	 */
+	dry_run?: boolean | undefined;
+};
+
+/**
+ * @description Request body for resetting a database branch
+ * @type object
+ */
+export type ResetDatabaseBranchRequest = {
+	/**
+	 * @description The ID of the branch to re-fork the target branch from. Defaults to \"production\" if not specified.
+	 * @type string | undefined
+	 */
+	source_branch_id?: string | undefined;
+};
+
+/**
+ * @description Response for a database branch reset
+ * @type object
+ */
+export type ResetDatabaseBranchResponse = {
+	/**
+	 * @description Whether the branch was actually re-forked. False when the target was already in sync with the source and `force=true` was not set.
+	 * @type boolean | undefined
+	 */
+	reset?: boolean | undefined;
+	/**
+	 * @description The connection string for the reset (or unchanged) branch
+	 * @type string | undefined
+	 */
+	connection_string?: string | undefined;
+	/**
+	 * @description Metadata associated with the branch
+	 * @type object | undefined
+	 */
+	metadata?:
+		| {
+				[key: string]: unknown;
+		  }
+		| undefined;
+};
+
+/**
+ * @description Response containing the list of migrations for a branch
+ * @type object
+ */
+export type ListDatabaseMigrationsResponse = {
+	/**
+	 * @description List of migrations
+	 * @type array | undefined
+	 */
+	migrations?:
+		| {
+				/**
+				 * @description The migration version number
+				 * @type integer | undefined
+				 */
+				version?: bigint | undefined;
+				/**
+				 * @description The migration name
+				 * @type string | undefined
+				 */
+				name?: string | undefined;
+				/**
+				 * @description The path to the migration file in the deploy bundle
+				 * @type string | undefined
+				 */
+				path?: string | undefined;
+				/**
+				 * @description Whether this migration has been applied to the branch
+				 * @type boolean | undefined
+				 */
+				applied?: boolean | undefined;
+		  }[]
+		| undefined;
+};
+
+/**
+ * @description A migration available to a database branch
+ * @type object
+ */
+export type DatabaseMigration = {
+	/**
+	 * @description The migration version number
+	 * @type integer | undefined
+	 */
+	version?: bigint | undefined;
+	/**
+	 * @description The migration name
+	 * @type string | undefined
+	 */
+	name?: string | undefined;
+	/**
+	 * @description The path to the migration file in the deploy bundle
+	 * @type string | undefined
+	 */
+	path?: string | undefined;
+	/**
+	 * @description Whether this migration has been applied to the branch
+	 * @type boolean | undefined
+	 */
+	applied?: boolean | undefined;
+};
+
+/**
+ * @description A migration with its file contents
+ * @type object
+ */
+export type DatabaseMigrationDetail = {
+	/**
+	 * @description The migration version number
+	 * @type integer | undefined
+	 */
+	version?: bigint | undefined;
+	/**
+	 * @description The migration name
+	 * @type string | undefined
+	 */
+	name?: string | undefined;
+	/**
+	 * @description The path to the migration file in the deploy bundle
+	 * @type string | undefined
+	 */
+	path?: string | undefined;
+	/**
+	 * @description The raw contents of the migration file
+	 * @type string | undefined
+	 */
+	content?: string | undefined;
+};
+
+/**
+ * @type object
+ */
 export type DeployValidationsReport = {
 	/**
 	 * @description The id of the deploy validations report
@@ -159,6 +751,9 @@ export type DeployValidationsReport = {
 		| undefined;
 };
 
+/**
+ * @type object
+ */
 export type DeployValidationsReportSecretScanResult = {
 	/**
 	 * @description The number of files scanned
@@ -172,6 +767,9 @@ export type DeployValidationsReportSecretScanResult = {
 	secretsScanMatches?: string[] | undefined;
 };
 
+/**
+ * @type object
+ */
 export type SplitTestSetup = {
 	/**
 	 * @type object | undefined
@@ -179,6 +777,9 @@ export type SplitTestSetup = {
 	branch_tests?: object | undefined;
 };
 
+/**
+ * @type array
+ */
 export type SplitTests = {
 	/**
 	 * @type string | undefined
@@ -205,19 +806,22 @@ export type SplitTests = {
 	 */
 	active?: boolean | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	unpublished_at?: string | undefined;
 }[];
 
+/**
+ * @type object
+ */
 export type SplitTest = {
 	/**
 	 * @type string | undefined
@@ -244,19 +848,22 @@ export type SplitTest = {
 	 */
 	active?: boolean | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	unpublished_at?: string | undefined;
 };
 
+/**
+ * @type object
+ */
 export type ServiceInstance = {
 	/**
 	 * @type string | undefined
@@ -299,15 +906,18 @@ export type ServiceInstance = {
 	 */
 	auth_url?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 };
 
+/**
+ * @type object
+ */
 export type Service = {
 	/**
 	 * @type string | undefined
@@ -354,15 +964,18 @@ export type Service = {
 	 */
 	environments?: string[] | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 };
 
+/**
+ * @type object
+ */
 export type Site = {
 	/**
 	 * @type string | undefined
@@ -421,11 +1034,11 @@ export type Site = {
 	 */
 	screenshot_url?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
@@ -542,15 +1155,15 @@ export type Site = {
 				 */
 				skipped?: boolean | undefined;
 				/**
-				 * @type string | undefined, dateTime
+				 * @type string | undefined
 				 */
 				created_at?: string | undefined;
 				/**
-				 * @type string | undefined, dateTime
+				 * @type string | undefined
 				 */
 				updated_at?: string | undefined;
 				/**
-				 * @type string | undefined, dateTime
+				 * @type string | undefined
 				 */
 				published_at?: string | undefined;
 				/**
@@ -806,11 +1419,11 @@ export type SiteSetup = {
 	 */
 	screenshot_url?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
@@ -927,15 +1540,15 @@ export type SiteSetup = {
 				 */
 				skipped?: boolean | undefined;
 				/**
-				 * @type string | undefined, dateTime
+				 * @type string | undefined
 				 */
 				created_at?: string | undefined;
 				/**
-				 * @type string | undefined, dateTime
+				 * @type string | undefined
 				 */
 				updated_at?: string | undefined;
 				/**
-				 * @type string | undefined, dateTime
+				 * @type string | undefined
 				 */
 				published_at?: string | undefined;
 				/**
@@ -1207,6 +1820,9 @@ export type SiteSetup = {
 		| undefined;
 };
 
+/**
+ * @type object
+ */
 export type RepoInfo = {
 	/**
 	 * @type integer | undefined
@@ -1277,13 +1893,16 @@ export type RepoInfo = {
 	stop_builds?: boolean | undefined;
 };
 
+/**
+ * @type object
+ */
 export type Submission = {
 	/**
 	 * @type string | undefined
 	 */
 	id?: string | undefined;
 	/**
-	 * @type integer | undefined, int32
+	 * @type integer | undefined
 	 */
 	number?: number | undefined;
 	/**
@@ -1319,7 +1938,7 @@ export type Submission = {
 	 */
 	data?: object | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
@@ -1337,7 +1956,7 @@ export const envVarScopesEnum = {
 
 export type EnvVarScopesEnumKey = (typeof envVarScopesEnum)[keyof typeof envVarScopesEnum];
 
-export const valuesContextEnum = {
+export const contextEnum = {
 	all: "all",
 	dev: "dev",
 	"dev-server": "dev-server",
@@ -1347,10 +1966,11 @@ export const valuesContextEnum = {
 	branch: "branch",
 } as const;
 
-export type ValuesContextEnumKey = (typeof valuesContextEnum)[keyof typeof valuesContextEnum];
+export type ContextEnumKey = (typeof contextEnum)[keyof typeof contextEnum];
 
 /**
  * @description Environment variable model definition
+ * @type object
  */
 export type EnvVar = {
 	/**
@@ -1383,7 +2003,7 @@ export type EnvVar = {
 				 * @description The deploy context in which this value will be used. `dev` refers to local development when running `netlify dev`.
 				 * @type string | undefined
 				 */
-				context?: ValuesContextEnumKey | undefined;
+				context?: ContextEnumKey | undefined;
 				/**
 				 * @description An additional parameter for custom branches. Currently, this is used for specifying a branch name when `context=branch`.
 				 * @type string | undefined
@@ -1398,7 +2018,7 @@ export type EnvVar = {
 	is_secret?: boolean | undefined;
 	/**
 	 * @description The timestamp of when the value was last updated
-	 * @type string | undefined, date-time
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
@@ -1445,6 +2065,7 @@ export type EnvVarValueContextEnumKey =
 
 /**
  * @description Environment variable value model definition
+ * @type object
  */
 export type EnvVarValue = {
 	/**
@@ -1469,6 +2090,9 @@ export type EnvVarValue = {
 	context_parameter?: string | undefined;
 };
 
+/**
+ * @type object
+ */
 export type EnvVarUser = {
 	/**
 	 * @description The user\'s unique identifier
@@ -1492,6 +2116,9 @@ export type EnvVarUser = {
 	avatar_url?: string | undefined;
 };
 
+/**
+ * @type object
+ */
 export type Form = {
 	/**
 	 * @type string | undefined
@@ -1510,7 +2137,7 @@ export type Form = {
 	 */
 	paths?: string[] | undefined;
 	/**
-	 * @type integer | undefined, int32
+	 * @type integer | undefined
 	 */
 	submission_count?: number | undefined;
 	/**
@@ -1518,11 +2145,14 @@ export type Form = {
 	 */
 	fields?: object[] | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 };
 
+/**
+ * @type object
+ */
 export type HookType = {
 	/**
 	 * @type string | undefined
@@ -1538,6 +2168,9 @@ export type HookType = {
 	fields?: object[] | undefined;
 };
 
+/**
+ * @type object
+ */
 export type Hook = {
 	/**
 	 * @type string | undefined
@@ -1560,11 +2193,11 @@ export type Hook = {
 	 */
 	data?: object | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
@@ -1573,6 +2206,9 @@ export type Hook = {
 	disabled?: boolean | undefined;
 };
 
+/**
+ * @type object
+ */
 export type File = {
 	/**
 	 * @type string | undefined
@@ -1591,11 +2227,14 @@ export type File = {
 	 */
 	mime_type?: string | undefined;
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	size?: number | undefined;
+	size?: bigint | undefined;
 };
 
+/**
+ * @type object
+ */
 export type Function = {
 	/**
 	 * @type string | undefined
@@ -1611,9 +2250,12 @@ export type Function = {
 	sha?: string | undefined;
 };
 
+/**
+ * @type object
+ */
 export type Snippet = {
 	/**
-	 * @type integer | undefined, int32
+	 * @type integer | undefined
 	 */
 	id?: number | undefined;
 	/**
@@ -1642,6 +2284,9 @@ export type Snippet = {
 	goal_position?: string | undefined;
 };
 
+/**
+ * @type object
+ */
 export type Purge = {
 	/**
 	 * @type string | undefined
@@ -1657,6 +2302,9 @@ export type Purge = {
 	cache_tags?: string[] | undefined;
 };
 
+/**
+ * @type object
+ */
 export type Deploy = {
 	/**
 	 * @type string | undefined
@@ -1743,15 +2391,15 @@ export type Deploy = {
 	 */
 	skipped?: boolean | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	published_at?: string | undefined;
 	/**
@@ -1805,6 +2453,9 @@ export const deployEnvironmentVariableScopesEnum = {
 export type DeployEnvironmentVariableScopesEnumKey =
 	(typeof deployEnvironmentVariableScopesEnum)[keyof typeof deployEnvironmentVariableScopesEnum];
 
+/**
+ * @type object
+ */
 export type DeployEnvironmentVariable = {
 	/**
 	 * @type string
@@ -1824,43 +2475,22 @@ export type DeployEnvironmentVariable = {
 	scopes: DeployEnvironmentVariableScopesEnumKey[];
 };
 
-export const routesMethodsEnum = {
-	GET: "GET",
-	POST: "POST",
-	PUT: "PUT",
-	PATCH: "PATCH",
-	DELETE: "DELETE",
-	OPTIONS: "OPTIONS",
-} as const;
-
-export type RoutesMethodsEnumKey = (typeof routesMethodsEnum)[keyof typeof routesMethodsEnum];
-
-export const rateLimitConfigAlgorithmEnum = {
+export const algorithmEnum = {
 	sliding_window: "sliding_window",
 } as const;
 
-export type RateLimitConfigAlgorithmEnumKey =
-	(typeof rateLimitConfigAlgorithmEnum)[keyof typeof rateLimitConfigAlgorithmEnum];
+export type AlgorithmEnumKey = (typeof algorithmEnum)[keyof typeof algorithmEnum];
 
-export const keysTypeEnum = {
+export const typeEnum = {
 	ip: "ip",
 	domain: "domain",
 } as const;
 
-export type KeysTypeEnumKey = (typeof keysTypeEnum)[keyof typeof keysTypeEnum];
-
-export const environmentScopesEnum = {
-	builds: "builds",
-	functions: "functions",
-	runtime: "runtime",
-	"post-processing": "post-processing",
-} as const;
-
-export type EnvironmentScopesEnumKey =
-	(typeof environmentScopesEnum)[keyof typeof environmentScopesEnum];
+export type TypeEnumKey = (typeof typeEnum)[keyof typeof typeEnum];
 
 /**
  * @description Deploy files can be provided in two ways:\n1. As a JSON object using \'files\' (a hash mapping file paths to SHA1 digests), OR\n2. As a zip file using one of these methods:\n   - Set Content-Type to \'application/zip\' and send the zip file as the raw request body\n   - Include the zip file content in the \'zip\' field of this JSON object with Content-Type \'application/json\'\n
+ * @type object
  */
 export type DeployFiles = {
 	/**
@@ -1870,7 +2500,7 @@ export type DeployFiles = {
 	files?: object | undefined;
 	/**
 	 * @description A zip file containing the site files to deploy. Alternative to \'files\'.\nTo use this field, set Content-Type to \'application/json\' and include the zip content here.\nAlternatively, you can set Content-Type to \'application/zip\' and send the zip as the raw request body (not as JSON).\n
-	 * @type string | undefined, binary
+	 * @type string | undefined
 	 */
 	zip?: Blob | undefined;
 	/**
@@ -1938,7 +2568,7 @@ export type DeployFiles = {
 								/**
 								 * @type array | undefined
 								 */
-								methods?: RoutesMethodsEnumKey[] | undefined;
+								methods?: ("GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "OPTIONS")[] | undefined;
 								/**
 								 * @type boolean | undefined
 								 */
@@ -1999,7 +2629,7 @@ export type DeployFiles = {
 																	/**
 																	 * @type string | undefined
 																	 */
-																	algorithm?: RateLimitConfigAlgorithmEnumKey | undefined;
+																	algorithm?: AlgorithmEnumKey | undefined;
 																	/**
 																	 * @type integer | undefined
 																	 */
@@ -2023,7 +2653,7 @@ export type DeployFiles = {
 																				/**
 																				 * @type string | undefined
 																				 */
-																				type?: KeysTypeEnumKey | undefined;
+																				type?: TypeEnumKey | undefined;
 																		  }[]
 																		| undefined;
 															  }
@@ -2074,11 +2704,14 @@ export type DeployFiles = {
 				/**
 				 * @type array
 				 */
-				scopes: EnvironmentScopesEnumKey[];
+				scopes: ("builds" | "functions" | "runtime" | "post-processing")[];
 		  }[]
 		| undefined;
 };
 
+/**
+ * @type object
+ */
 export type PluginParams = {
 	/**
 	 * @type string | undefined
@@ -2086,6 +2719,9 @@ export type PluginParams = {
 	pinned_version?: string | undefined;
 };
 
+/**
+ * @type object
+ */
 export type Plugin = {
 	/**
 	 * @type string | undefined
@@ -2097,6 +2733,9 @@ export type Plugin = {
 	pinned_version?: string | undefined;
 };
 
+/**
+ * @type object
+ */
 export type BuildStatus = {
 	/**
 	 * @type integer | undefined
@@ -2132,15 +2771,15 @@ export type BuildStatus = {
 				 */
 				previous?: number | undefined;
 				/**
-				 * @type string | undefined, dateTime
+				 * @type string | undefined
 				 */
 				period_start_date?: string | undefined;
 				/**
-				 * @type string | undefined, dateTime
+				 * @type string | undefined
 				 */
 				period_end_date?: string | undefined;
 				/**
-				 * @type string | undefined, dateTime
+				 * @type string | undefined
 				 */
 				last_updated_at?: string | undefined;
 				/**
@@ -2155,6 +2794,9 @@ export type BuildStatus = {
 		| undefined;
 };
 
+/**
+ * @type object
+ */
 export type Build = {
 	/**
 	 * @type string | undefined
@@ -2177,7 +2819,7 @@ export type Build = {
 	 */
 	error?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 };
@@ -2193,6 +2835,9 @@ export const buildLogMsgSectionEnum = {
 export type BuildLogMsgSectionEnumKey =
 	(typeof buildLogMsgSectionEnum)[keyof typeof buildLogMsgSectionEnum];
 
+/**
+ * @type object
+ */
 export type BuildLogMsg = {
 	/**
 	 * @type string | undefined
@@ -2208,6 +2853,9 @@ export type BuildLogMsg = {
 	section?: BuildLogMsgSectionEnumKey | undefined;
 };
 
+/**
+ * @type object
+ */
 export type PluginRunData = {
 	/**
 	 * @type string | undefined
@@ -2274,8 +2922,14 @@ export type PluginRun = {
 	deploy_id?: string | undefined;
 };
 
+/**
+ * @type object
+ */
 export type Metadata = object;
 
+/**
+ * @type object
+ */
 export type DnsZoneSetup = {
 	/**
 	 * @type string | undefined
@@ -2291,6 +2945,9 @@ export type DnsZoneSetup = {
 	name?: string | undefined;
 };
 
+/**
+ * @type array
+ */
 export type DnsZones = {
 	/**
 	 * @type string | undefined
@@ -2313,11 +2970,11 @@ export type DnsZones = {
 	 */
 	user_id?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
@@ -2342,13 +2999,13 @@ export type DnsZones = {
 				 */
 				value?: string | undefined;
 				/**
-				 * @type integer | undefined, int64
+				 * @type integer | undefined
 				 */
-				ttl?: number | undefined;
+				ttl?: bigint | undefined;
 				/**
-				 * @type integer | undefined, int64
+				 * @type integer | undefined
 				 */
-				priority?: number | undefined;
+				priority?: bigint | undefined;
 				/**
 				 * @type string | undefined
 				 */
@@ -2405,6 +3062,9 @@ export type DnsZones = {
 	dedicated?: boolean | undefined;
 }[];
 
+/**
+ * @type object
+ */
 export type DnsZone = {
 	/**
 	 * @type string | undefined
@@ -2427,11 +3087,11 @@ export type DnsZone = {
 	 */
 	user_id?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
@@ -2456,13 +3116,13 @@ export type DnsZone = {
 				 */
 				value?: string | undefined;
 				/**
-				 * @type integer | undefined, int64
+				 * @type integer | undefined
 				 */
-				ttl?: number | undefined;
+				ttl?: bigint | undefined;
 				/**
-				 * @type integer | undefined, int64
+				 * @type integer | undefined
 				 */
-				priority?: number | undefined;
+				priority?: bigint | undefined;
 				/**
 				 * @type string | undefined
 				 */
@@ -2519,6 +3179,9 @@ export type DnsZone = {
 	dedicated?: boolean | undefined;
 };
 
+/**
+ * @type object
+ */
 export type DnsRecordCreate = {
 	/**
 	 * @type string | undefined
@@ -2533,31 +3196,34 @@ export type DnsRecordCreate = {
 	 */
 	value?: string | undefined;
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	ttl?: number | undefined;
+	ttl?: bigint | undefined;
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	priority?: number | undefined;
+	priority?: bigint | undefined;
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	weight?: number | undefined;
+	weight?: bigint | undefined;
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	port?: number | undefined;
+	port?: bigint | undefined;
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	flag?: number | undefined;
+	flag?: bigint | undefined;
 	/**
 	 * @type string | undefined
 	 */
 	tag?: string | undefined;
 };
 
+/**
+ * @type array
+ */
 export type DnsRecords = {
 	/**
 	 * @type string | undefined
@@ -2576,13 +3242,13 @@ export type DnsRecords = {
 	 */
 	value?: string | undefined;
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	ttl?: number | undefined;
+	ttl?: bigint | undefined;
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	priority?: number | undefined;
+	priority?: bigint | undefined;
 	/**
 	 * @type string | undefined
 	 */
@@ -2605,6 +3271,9 @@ export type DnsRecords = {
 	managed?: boolean | undefined;
 }[];
 
+/**
+ * @type object
+ */
 export type DnsRecord = {
 	/**
 	 * @type string | undefined
@@ -2623,13 +3292,13 @@ export type DnsRecord = {
 	 */
 	value?: string | undefined;
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	ttl?: number | undefined;
+	ttl?: bigint | undefined;
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	priority?: number | undefined;
+	priority?: bigint | undefined;
 	/**
 	 * @type string | undefined
 	 */
@@ -2652,6 +3321,9 @@ export type DnsRecord = {
 	managed?: boolean | undefined;
 };
 
+/**
+ * @type object
+ */
 export type SniCertificate = {
 	/**
 	 * @type string | undefined
@@ -2662,19 +3334,22 @@ export type SniCertificate = {
 	 */
 	domains?: string[] | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	expires_at?: string | undefined;
 };
 
+/**
+ * @type object
+ */
 export type Ticket = {
 	/**
 	 * @type string | undefined
@@ -2689,11 +3364,14 @@ export type Ticket = {
 	 */
 	authorized?: boolean | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 };
 
+/**
+ * @type object
+ */
 export type AccessToken = {
 	/**
 	 * @type string | undefined
@@ -2712,11 +3390,14 @@ export type AccessToken = {
 	 */
 	user_email?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 };
 
+/**
+ * @type object
+ */
 export type Asset = {
 	/**
 	 * @type string | undefined
@@ -2755,19 +3436,22 @@ export type Asset = {
 	 */
 	visibility?: string | undefined;
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	size?: number | undefined;
+	size?: bigint | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 };
 
+/**
+ * @type object
+ */
 export type AssetForm = {
 	/**
 	 * @type string | undefined
@@ -2783,6 +3467,9 @@ export type AssetForm = {
 		| undefined;
 };
 
+/**
+ * @type object
+ */
 export type AssetSignature = {
 	/**
 	 * @type object | undefined
@@ -2845,21 +3532,24 @@ export type AssetSignature = {
 				 */
 				visibility?: string | undefined;
 				/**
-				 * @type integer | undefined, int64
+				 * @type integer | undefined
 				 */
-				size?: number | undefined;
+				size?: bigint | undefined;
 				/**
-				 * @type string | undefined, dateTime
+				 * @type string | undefined
 				 */
 				created_at?: string | undefined;
 				/**
-				 * @type string | undefined, dateTime
+				 * @type string | undefined
 				 */
 				updated_at?: string | undefined;
 		  }
 		| undefined;
 };
 
+/**
+ * @type object
+ */
 export type AssetPublicSignature = {
 	/**
 	 * @type string | undefined
@@ -2867,6 +3557,9 @@ export type AssetPublicSignature = {
 	url?: string | undefined;
 };
 
+/**
+ * @type object
+ */
 export type DeployKey = {
 	/**
 	 * @type string | undefined
@@ -2877,11 +3570,14 @@ export type DeployKey = {
 	 */
 	public_key?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 };
 
+/**
+ * @type object
+ */
 export type Member = {
 	/**
 	 * @type string | undefined
@@ -2905,6 +3601,9 @@ export type Member = {
 	role?: string | undefined;
 };
 
+/**
+ * @type object
+ */
 export type PaymentMethod = {
 	/**
 	 * @type string | undefined
@@ -2942,15 +3641,18 @@ export type PaymentMethod = {
 		  }
 		| undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 };
 
+/**
+ * @type object
+ */
 export type AccountType = {
 	/**
 	 * @type string | undefined
@@ -2994,6 +3696,9 @@ export const accountSetupPeriodEnum = {
 export type AccountSetupPeriodEnumKey =
 	(typeof accountSetupPeriodEnum)[keyof typeof accountSetupPeriodEnum];
 
+/**
+ * @type object
+ */
 export type AccountSetup = {
 	/**
 	 * @type string
@@ -3017,6 +3722,9 @@ export type AccountSetup = {
 	extra_seats_block?: number | undefined;
 };
 
+/**
+ * @type object
+ */
 export type AccountUpdateSetup = {
 	/**
 	 * @type string | undefined
@@ -3058,6 +3766,9 @@ export const accountAddMemberSetupRoleEnum = {
 export type AccountAddMemberSetupRoleEnumKey =
 	(typeof accountAddMemberSetupRoleEnum)[keyof typeof accountAddMemberSetupRoleEnum];
 
+/**
+ * @type object
+ */
 export type AccountAddMemberSetup = {
 	/**
 	 * @type string | undefined
@@ -3088,6 +3799,9 @@ export const accountUpdateMemberSetupSiteAccessEnum = {
 export type AccountUpdateMemberSetupSiteAccessEnumKey =
 	(typeof accountUpdateMemberSetupSiteAccessEnum)[keyof typeof accountUpdateMemberSetupSiteAccessEnum];
 
+/**
+ * @type object
+ */
 export type AccountUpdateMemberSetup = {
 	/**
 	 * @type string | undefined
@@ -3103,6 +3817,9 @@ export type AccountUpdateMemberSetup = {
 	site_ids?: string[] | undefined;
 };
 
+/**
+ * @type object
+ */
 export type AccountMembership = {
 	/**
 	 * @type string | undefined
@@ -3194,15 +3911,18 @@ export type AccountMembership = {
 	 */
 	roles_allowed?: string[] | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 };
 
+/**
+ * @type object
+ */
 export type AuditLog = {
 	/**
 	 * @type string | undefined
@@ -3234,7 +3954,7 @@ export type AuditLog = {
 				 */
 				action?: string | undefined;
 				/**
-				 * @type string | undefined, dateTime
+				 * @type string | undefined
 				 */
 				timestamp?: string | undefined;
 				/**
@@ -3246,6 +3966,9 @@ export type AuditLog = {
 		| undefined;
 };
 
+/**
+ * @type object
+ */
 export type AgentRunner = {
 	/**
 	 * @type string | undefined
@@ -3264,15 +3987,15 @@ export type AgentRunner = {
 	 */
 	state?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	done_at?: string | undefined;
 	/**
@@ -3344,7 +4067,7 @@ export type AgentRunner = {
 	 */
 	attached_file_keys?: string[] | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	active_session_created_at?: string | undefined;
 	/**
@@ -3380,6 +4103,9 @@ export type AgentRunner = {
 		| undefined;
 };
 
+/**
+ * @type object
+ */
 export type AgentRunnerSession = {
 	/**
 	 * @type string | undefined
@@ -3398,15 +4124,15 @@ export type AgentRunnerSession = {
 	 */
 	state?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	done_at?: string | undefined;
 	/**
@@ -3508,6 +4234,9 @@ export type AgentRunnerSession = {
 	is_published?: boolean | undefined;
 };
 
+/**
+ * @type object
+ */
 export type AgentRunnerSessionStep = {
 	/**
 	 * @type string | undefined
@@ -3519,6 +4248,9 @@ export type AgentRunnerSessionStep = {
 	message?: string | undefined;
 };
 
+/**
+ * @type object
+ */
 export type AgentRunnerSessionConfig = {
 	/**
 	 * @type string | undefined
@@ -3530,6 +4262,9 @@ export type AgentRunnerSessionConfig = {
 	model?: string | undefined;
 };
 
+/**
+ * @type object
+ */
 export type AgentRunnerUser = {
 	/**
 	 * @type string | undefined
@@ -3549,6 +4284,9 @@ export type AgentRunnerUser = {
 	avatar_url?: string | undefined;
 };
 
+/**
+ * @type object
+ */
 export type AccountUsageCapability = {
 	/**
 	 * @type integer | undefined
@@ -3560,6 +4298,9 @@ export type AccountUsageCapability = {
 	used?: number | undefined;
 };
 
+/**
+ * @type object
+ */
 export type BuildSetup = {
 	/**
 	 * @type string | undefined
@@ -3571,6 +4312,9 @@ export type BuildSetup = {
 	clear_cache?: boolean | undefined;
 };
 
+/**
+ * @type object
+ */
 export type BuildHookSetup = {
 	/**
 	 * @type string | undefined
@@ -3582,6 +4326,9 @@ export type BuildHookSetup = {
 	branch?: string | undefined;
 };
 
+/**
+ * @type object
+ */
 export type BuildHook = {
 	/**
 	 * @type string | undefined
@@ -3604,11 +4351,14 @@ export type BuildHook = {
 	 */
 	site_id?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 };
 
+/**
+ * @type object
+ */
 export type DeployedBranch = {
 	/**
 	 * @type string | undefined
@@ -3636,6 +4386,9 @@ export type DeployedBranch = {
 	ssl_url?: string | undefined;
 };
 
+/**
+ * @type object
+ */
 export type User = {
 	/**
 	 * @type string | undefined
@@ -3662,15 +4415,15 @@ export type User = {
 	 */
 	affiliate_id?: string | undefined;
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	site_count?: number | undefined;
+	site_count?: bigint | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	last_login?: string | undefined;
 	/**
@@ -3690,17 +4443,37 @@ export type User = {
 		| undefined;
 };
 
-export type Error = {
+/**
+ * @type object
+ */
+export type ErrorSchema = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
+/**
+ * @type object
+ */
+export type ErrorResponse = {
+	/**
+	 * @type integer | undefined
+	 */
+	code?: bigint | undefined;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
+/**
+ * @type object
+ */
 export type FunctionSchedule = {
 	/**
 	 * @type string | undefined
@@ -3712,31 +4485,16 @@ export type FunctionSchedule = {
 	cron?: string | undefined;
 };
 
-export const routesMethodsEnum2 = {
-	GET: "GET",
-	POST: "POST",
-	PUT: "PUT",
-	PATCH: "PATCH",
-	DELETE: "DELETE",
-	OPTIONS: "OPTIONS",
-} as const;
-
-export type RoutesMethodsEnum2Key = (typeof routesMethodsEnum2)[keyof typeof routesMethodsEnum2];
-
-export const rateLimitConfigAlgorithmEnum2 = {
+export const functionConfigTrafficRulesActionConfigRateLimitConfigAlgorithmEnum = {
 	sliding_window: "sliding_window",
 } as const;
 
-export type RateLimitConfigAlgorithmEnum2Key =
-	(typeof rateLimitConfigAlgorithmEnum2)[keyof typeof rateLimitConfigAlgorithmEnum2];
+export type FunctionConfigTrafficRulesActionConfigRateLimitConfigAlgorithmEnumKey =
+	(typeof functionConfigTrafficRulesActionConfigRateLimitConfigAlgorithmEnum)[keyof typeof functionConfigTrafficRulesActionConfigRateLimitConfigAlgorithmEnum];
 
-export const keysTypeEnum2 = {
-	ip: "ip",
-	domain: "domain",
-} as const;
-
-export type KeysTypeEnum2Key = (typeof keysTypeEnum2)[keyof typeof keysTypeEnum2];
-
+/**
+ * @type object
+ */
 export type FunctionConfig = {
 	/**
 	 * @type string | undefined
@@ -3770,7 +4528,7 @@ export type FunctionConfig = {
 				/**
 				 * @type array | undefined
 				 */
-				methods?: RoutesMethodsEnum2Key[] | undefined;
+				methods?: ("GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "OPTIONS")[] | undefined;
 				/**
 				 * @type boolean | undefined
 				 */
@@ -3831,7 +4589,9 @@ export type FunctionConfig = {
 													/**
 													 * @type string | undefined
 													 */
-													algorithm?: RateLimitConfigAlgorithmEnum2Key | undefined;
+													algorithm?:
+														| FunctionConfigTrafficRulesActionConfigRateLimitConfigAlgorithmEnumKey
+														| undefined;
 													/**
 													 * @type integer | undefined
 													 */
@@ -3855,7 +4615,7 @@ export type FunctionConfig = {
 																/**
 																 * @type string | undefined
 																 */
-																type?: KeysTypeEnum2Key | undefined;
+																type?: TypeEnumKey | undefined;
 														  }[]
 														| undefined;
 											  }
@@ -3884,6 +4644,9 @@ export const functionRouteMethodsEnum = {
 export type FunctionRouteMethodsEnumKey =
 	(typeof functionRouteMethodsEnum)[keyof typeof functionRouteMethodsEnum];
 
+/**
+ * @type object
+ */
 export type FunctionRoute = {
 	/**
 	 * @type string | undefined
@@ -3907,6 +4670,9 @@ export type FunctionRoute = {
 	prefer_static?: boolean | undefined;
 };
 
+/**
+ * @type object
+ */
 export type ExcludedFunctionRoute = {
 	/**
 	 * @type string | undefined
@@ -3922,20 +4688,16 @@ export type ExcludedFunctionRoute = {
 	expression?: string | undefined;
 };
 
-export const rateLimitConfigAlgorithmEnum3 = {
+export const trafficRulesConfigActionConfigRateLimitConfigAlgorithmEnum = {
 	sliding_window: "sliding_window",
 } as const;
 
-export type RateLimitConfigAlgorithmEnum3Key =
-	(typeof rateLimitConfigAlgorithmEnum3)[keyof typeof rateLimitConfigAlgorithmEnum3];
+export type TrafficRulesConfigActionConfigRateLimitConfigAlgorithmEnumKey =
+	(typeof trafficRulesConfigActionConfigRateLimitConfigAlgorithmEnum)[keyof typeof trafficRulesConfigActionConfigRateLimitConfigAlgorithmEnum];
 
-export const keysTypeEnum3 = {
-	ip: "ip",
-	domain: "domain",
-} as const;
-
-export type KeysTypeEnum3Key = (typeof keysTypeEnum3)[keyof typeof keysTypeEnum3];
-
+/**
+ * @type object
+ */
 export type TrafficRulesConfig = {
 	/**
 	 * @type object | undefined
@@ -3963,7 +4725,9 @@ export type TrafficRulesConfig = {
 										/**
 										 * @type string | undefined
 										 */
-										algorithm?: RateLimitConfigAlgorithmEnum3Key | undefined;
+										algorithm?:
+											| TrafficRulesConfigActionConfigRateLimitConfigAlgorithmEnumKey
+											| undefined;
 										/**
 										 * @type integer | undefined
 										 */
@@ -3987,7 +4751,7 @@ export type TrafficRulesConfig = {
 													/**
 													 * @type string | undefined
 													 */
-													type?: KeysTypeEnum3Key | undefined;
+													type?: TypeEnumKey | undefined;
 											  }[]
 											| undefined;
 								  }
@@ -4005,6 +4769,9 @@ export const trafficRulesRateLimitConfigAlgorithmEnum = {
 export type TrafficRulesRateLimitConfigAlgorithmEnumKey =
 	(typeof trafficRulesRateLimitConfigAlgorithmEnum)[keyof typeof trafficRulesRateLimitConfigAlgorithmEnum];
 
+/**
+ * @type object
+ */
 export type TrafficRulesRateLimitConfig = {
 	/**
 	 * @type string | undefined
@@ -4020,13 +4787,9 @@ export type TrafficRulesRateLimitConfig = {
 	window_limit?: number | undefined;
 };
 
-export const keysTypeEnum4 = {
-	ip: "ip",
-	domain: "domain",
-} as const;
-
-export type KeysTypeEnum4Key = (typeof keysTypeEnum4)[keyof typeof keysTypeEnum4];
-
+/**
+ * @type object
+ */
 export type TrafficRulesAggregateConfig = {
 	/**
 	 * @type array | undefined
@@ -4036,18 +4799,21 @@ export type TrafficRulesAggregateConfig = {
 				/**
 				 * @type string | undefined
 				 */
-				type?: KeysTypeEnum4Key | undefined;
+				type?: TypeEnumKey | undefined;
 		  }[]
 		| undefined;
 };
 
+/**
+ * @type object
+ */
 export type SiteFunction = {
 	/**
 	 * @type string | undefined
 	 */
 	branch?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
@@ -4068,6 +4834,9 @@ export type SiteFunction = {
 	provider?: string | undefined;
 };
 
+/**
+ * @type object
+ */
 export type DevServer = {
 	/**
 	 * @type string | undefined
@@ -4090,27 +4859,27 @@ export type DevServer = {
 	 */
 	state?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	starting_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	error_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	live_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	done_at?: string | undefined;
 	/**
@@ -4127,6 +4896,9 @@ export const devServerHookTypeEnum = {
 export type DevServerHookTypeEnumKey =
 	(typeof devServerHookTypeEnum)[keyof typeof devServerHookTypeEnum];
 
+/**
+ * @type object
+ */
 export type DevServerHook = {
 	/**
 	 * @type string | undefined
@@ -4149,7 +4921,7 @@ export type DevServerHook = {
 	 */
 	site_id?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
@@ -4166,6 +4938,9 @@ export const devServerHookSetupTypeEnum = {
 export type DevServerHookSetupTypeEnumKey =
 	(typeof devServerHookSetupTypeEnum)[keyof typeof devServerHookSetupTypeEnum];
 
+/**
+ * @type object
+ */
 export type DevServerHookSetup = {
 	/**
 	 * @type string | undefined
@@ -4181,6 +4956,9 @@ export type DevServerHookSetup = {
 	type?: DevServerHookSetupTypeEnumKey | undefined;
 };
 
+/**
+ * @type object
+ */
 export type ProviderDefinition = {
 	/**
 	 * @type string | undefined
@@ -4196,6 +4974,9 @@ export type ProviderDefinition = {
 	models?: string[] | undefined;
 };
 
+/**
+ * @type object
+ */
 export type AiGatewayToken = {
 	/**
 	 * @description The AI Gateway authentication token
@@ -4209,13 +4990,19 @@ export type AiGatewayToken = {
 	url?: string | undefined;
 	/**
 	 * @description Unix timestamp when the token expires
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	expires_at?: number | undefined;
+	expires_at?: bigint | undefined;
 };
 
+/**
+ * @type object
+ */
 export type UpdateSiteMetadataMetadata = object;
 
+/**
+ * @type object
+ */
 export type CreateHookBySiteIdHook = {
 	/**
 	 * @type string | undefined
@@ -4238,11 +5025,11 @@ export type CreateHookBySiteIdHook = {
 	 */
 	data?: object | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
@@ -4251,9 +5038,12 @@ export type CreateHookBySiteIdHook = {
 	disabled?: boolean | undefined;
 };
 
+/**
+ * @type object
+ */
 export type CreateSiteSnippetSnippet = {
 	/**
-	 * @type integer | undefined, int32
+	 * @type integer | undefined
 	 */
 	id?: number | undefined;
 	/**
@@ -4282,43 +5072,32 @@ export type CreateSiteSnippetSnippet = {
 	goal_position?: string | undefined;
 };
 
-export const routesMethodsEnum3 = {
-	GET: "GET",
-	POST: "POST",
-	PUT: "PUT",
-	PATCH: "PATCH",
-	DELETE: "DELETE",
-	OPTIONS: "OPTIONS",
-} as const;
-
-export type RoutesMethodsEnum3Key = (typeof routesMethodsEnum3)[keyof typeof routesMethodsEnum3];
-
-export const rateLimitConfigAlgorithmEnum4 = {
-	sliding_window: "sliding_window",
-} as const;
-
-export type RateLimitConfigAlgorithmEnum4Key =
-	(typeof rateLimitConfigAlgorithmEnum4)[keyof typeof rateLimitConfigAlgorithmEnum4];
-
-export const keysTypeEnum5 = {
-	ip: "ip",
-	domain: "domain",
-} as const;
-
-export type KeysTypeEnum5Key = (typeof keysTypeEnum5)[keyof typeof keysTypeEnum5];
-
-export const environmentScopesEnum2 = {
-	builds: "builds",
-	functions: "functions",
-	runtime: "runtime",
-	"post-processing": "post-processing",
-} as const;
-
-export type EnvironmentScopesEnum2Key =
-	(typeof environmentScopesEnum2)[keyof typeof environmentScopesEnum2];
+/**
+ * @description Request body for setting compute settings. All fields are optional; only provided fields are updated.
+ * @type object
+ */
+export type SetSiteDatabaseBranchComputeSettingsComputesettings = {
+	/**
+	 * @description Minimum compute units (0.25 to 16.0). Must be less than or equal to max_cu.
+	 * @type number
+	 */
+	min_cu?: (number | null) | undefined;
+	/**
+	 * @description Maximum compute units (0.25 to 16.0). Must be greater than or equal to min_cu. max_cu - min_cu must not exceed 8.0.
+	 * @type number
+	 */
+	max_cu?: (number | null) | undefined;
+	/**
+	 * @description Seconds of inactivity before the compute endpoint is suspended. Use -1 for always on, or a non-negative value.
+	 * @minLength -1
+	 * @type integer
+	 */
+	sleep_timeout_seconds?: (bigint | null) | undefined;
+};
 
 /**
  * @description Deploy files can be provided in two ways:\n1. As a JSON object using \'files\' (a hash mapping file paths to SHA1 digests), OR\n2. As a zip file using one of these methods:\n   - Set Content-Type to \'application/zip\' and send the zip file as the raw request body\n   - Include the zip file content in the \'zip\' field of this JSON object with Content-Type \'application/json\'\n
+ * @type object
  */
 export type CreateSiteDeployDeploy = {
 	/**
@@ -4328,7 +5107,7 @@ export type CreateSiteDeployDeploy = {
 	files?: object | undefined;
 	/**
 	 * @description A zip file containing the site files to deploy. Alternative to \'files\'.\nTo use this field, set Content-Type to \'application/json\' and include the zip content here.\nAlternatively, you can set Content-Type to \'application/zip\' and send the zip as the raw request body (not as JSON).\n
-	 * @type string | undefined, binary
+	 * @type string | undefined
 	 */
 	zip?: Blob | undefined;
 	/**
@@ -4396,7 +5175,7 @@ export type CreateSiteDeployDeploy = {
 								/**
 								 * @type array | undefined
 								 */
-								methods?: RoutesMethodsEnum3Key[] | undefined;
+								methods?: ("GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "OPTIONS")[] | undefined;
 								/**
 								 * @type boolean | undefined
 								 */
@@ -4457,7 +5236,7 @@ export type CreateSiteDeployDeploy = {
 																	/**
 																	 * @type string | undefined
 																	 */
-																	algorithm?: RateLimitConfigAlgorithmEnum4Key | undefined;
+																	algorithm?: AlgorithmEnumKey | undefined;
 																	/**
 																	 * @type integer | undefined
 																	 */
@@ -4481,7 +5260,7 @@ export type CreateSiteDeployDeploy = {
 																				/**
 																				 * @type string | undefined
 																				 */
-																				type?: KeysTypeEnum5Key | undefined;
+																				type?: TypeEnumKey | undefined;
 																		  }[]
 																		| undefined;
 															  }
@@ -4532,11 +5311,14 @@ export type CreateSiteDeployDeploy = {
 				/**
 				 * @type array
 				 */
-				scopes: EnvironmentScopesEnum2Key[];
+				scopes: ("builds" | "functions" | "runtime" | "post-processing")[];
 		  }[]
 		| undefined;
 };
 
+/**
+ * @type object
+ */
 export type CreateSiteBuildHookBuildhook = {
 	/**
 	 * @type string | undefined
@@ -4606,11 +5388,11 @@ export type CreateSiteSite = {
 	 */
 	screenshot_url?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
@@ -4727,15 +5509,15 @@ export type CreateSiteSite = {
 				 */
 				skipped?: boolean | undefined;
 				/**
-				 * @type string | undefined, dateTime
+				 * @type string | undefined
 				 */
 				created_at?: string | undefined;
 				/**
-				 * @type string | undefined, dateTime
+				 * @type string | undefined
 				 */
 				updated_at?: string | undefined;
 				/**
-				 * @type string | undefined, dateTime
+				 * @type string | undefined
 				 */
 				published_at?: string | undefined;
 				/**
@@ -5007,6 +5789,9 @@ export type CreateSiteSite = {
 		| undefined;
 };
 
+/**
+ * @type object
+ */
 export type CreateSplitTestBranchTests = {
 	/**
 	 * @type object | undefined
@@ -5022,6 +5807,9 @@ export const createSiteDevServerHookDevserverhookTypeEnum = {
 export type CreateSiteDevServerHookDevserverhookTypeEnumKey =
 	(typeof createSiteDevServerHookDevserverhookTypeEnum)[keyof typeof createSiteDevServerHookDevserverhookTypeEnum];
 
+/**
+ * @type object
+ */
 export type CreateSiteDevServerHookDevserverhook = {
 	/**
 	 * @type string | undefined
@@ -5037,38 +5825,30 @@ export type CreateSiteDevServerHookDevserverhook = {
 	type?: CreateSiteDevServerHookDevserverhookTypeEnumKey | undefined;
 };
 
-export const listSitesQueryParamsFilterEnum = {
-	all: "all",
-	owner: "owner",
-	guest: "guest",
-} as const;
-
-export type ListSitesQueryParamsFilterEnumKey =
-	(typeof listSitesQueryParamsFilterEnum)[keyof typeof listSitesQueryParamsFilterEnum];
-
-export type ListSitesQueryParams = {
-	/**
-	 * @type string | undefined
-	 */
-	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	filter?: ListSitesQueryParamsFilterEnumKey | undefined;
-	/**
-	 * @type integer | undefined, int32
-	 */
-	page?: number | undefined;
-	/**
-	 * @type integer | undefined, int32
-	 */
-	per_page?: number | undefined;
-};
+/**
+ * @type string | undefined
+ */
+export type ListSitesQueryName = string | undefined;
 
 /**
- * @description OK
+ * @type string | undefined
  */
-export type ListSites200 = {
+export type ListSitesQueryFilter = ("all" | "owner" | "guest") | undefined;
+
+/**
+ * @type integer | undefined
+ */
+export type ListSitesQueryPage = number | undefined;
+
+/**
+ * @type integer | undefined
+ */
+export type ListSitesQueryPerPage = number | undefined;
+
+/**
+ * @type array
+ */
+export type ListSitesStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -5126,11 +5906,11 @@ export type ListSites200 = {
 	 */
 	screenshot_url?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
@@ -5247,15 +6027,15 @@ export type ListSites200 = {
 				 */
 				skipped?: boolean | undefined;
 				/**
-				 * @type string | undefined, dateTime
+				 * @type string | undefined
 				 */
 				created_at?: string | undefined;
 				/**
-				 * @type string | undefined, dateTime
+				 * @type string | undefined
 				 */
 				updated_at?: string | undefined;
 				/**
-				 * @type string | undefined, dateTime
+				 * @type string | undefined
 				 */
 				published_at?: string | undefined;
 				/**
@@ -5454,38 +6234,65 @@ export type ListSites200 = {
 }[];
 
 /**
- * @description error
+ * @type object
  */
-export type ListSitesError = {
+export type ListSitesStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type ListSitesQueryResponse = ListSites200;
-
-export type ListSitesQuery = {
-	Response: ListSites200;
-	QueryParams: ListSitesQueryParams;
-	Errors: any;
-};
-
-export type CreateSiteQueryParams = {
+/**
+ * @type object
+ */
+export type ListSitesRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
 	/**
-	 * @type boolean | undefined
+	 * @type object | undefined
 	 */
-	configure_dns?: boolean | undefined;
+	queryParams?:
+		| {
+				name?: ListSitesQueryName | undefined;
+				filter?: ListSitesQueryFilter | undefined;
+				page?: ListSitesQueryPage | undefined;
+				per_page?: ListSitesQueryPerPage | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/sites";
 };
 
 /**
- * @description Created
+ * @type object
  */
-export type CreateSite201 = {
+export type ListSitesResponses = {
+	"200": ListSitesStatus200;
+	default: ListSitesStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListSitesResponse = ListSitesStatus200 | ListSitesStatusDefault;
+
+/**
+ * @type boolean | undefined
+ */
+export type CreateSiteQueryConfigureDns = boolean | undefined;
+
+/**
+ * @type object
+ */
+export type CreateSiteStatus201 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -5543,11 +6350,11 @@ export type CreateSite201 = {
 	 */
 	screenshot_url?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
@@ -5664,15 +6471,15 @@ export type CreateSite201 = {
 				 */
 				skipped?: boolean | undefined;
 				/**
-				 * @type string | undefined, dateTime
+				 * @type string | undefined
 				 */
 				created_at?: string | undefined;
 				/**
-				 * @type string | undefined, dateTime
+				 * @type string | undefined
 				 */
 				updated_at?: string | undefined;
 				/**
-				 * @type string | undefined, dateTime
+				 * @type string | undefined
 				 */
 				published_at?: string | undefined;
 				/**
@@ -5871,45 +6678,528 @@ export type CreateSite201 = {
 };
 
 /**
- * @description error
+ * @type object
  */
-export type CreateSiteError = {
+export type CreateSiteStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type CreateSiteMutationResponse = CreateSite201;
+export type CreateSiteData =
+	| {
+			/**
+			 * @type string | undefined
+			 */
+			id?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			state?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			plan?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			name?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			custom_domain?: string | undefined;
+			/**
+			 * @type array | undefined
+			 */
+			domain_aliases?: string[] | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			branch_deploy_custom_domain?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			deploy_preview_custom_domain?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			password?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			notification_email?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			url?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			ssl_url?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			admin_url?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			screenshot_url?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			created_at?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			updated_at?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			user_id?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			session_id?: string | undefined;
+			/**
+			 * @type boolean | undefined
+			 */
+			ssl?: boolean | undefined;
+			/**
+			 * @type boolean | undefined
+			 */
+			force_ssl?: boolean | undefined;
+			/**
+			 * @type boolean | undefined
+			 */
+			managed_dns?: boolean | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			deploy_url?: string | undefined;
+			/**
+			 * @type object | undefined
+			 */
+			published_deploy?:
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						id?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						site_id?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						user_id?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						build_id?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						state?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						name?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						url?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						ssl_url?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						admin_url?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						deploy_url?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						deploy_ssl_url?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						screenshot_url?: string | undefined;
+						/**
+						 * @type number | undefined
+						 */
+						review_id?: number | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						draft?: boolean | undefined;
+						/**
+						 * @type array | undefined
+						 */
+						required?: string[] | undefined;
+						/**
+						 * @type array | undefined
+						 */
+						required_functions?: string[] | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						error_message?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						branch?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						commit_ref?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						commit_url?: string | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						skipped?: boolean | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						created_at?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						updated_at?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						published_at?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						title?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						context?: string | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						locked?: boolean | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						review_url?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						framework?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						skew_protection_token?: string | undefined;
+						/**
+						 * @type array | undefined
+						 */
+						function_schedules?:
+							| {
+									/**
+									 * @type string | undefined
+									 */
+									name?: string | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									cron?: string | undefined;
+							  }[]
+							| undefined;
+				  }
+				| undefined;
+			/**
+			 * @type string | undefined
+			 */
+			account_id?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			account_name?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			account_slug?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			git_provider?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			deploy_hook?: string | undefined;
+			/**
+			 * @type object | undefined
+			 */
+			capabilities?:
+				| {
+						[key: string]: object;
+				  }
+				| undefined;
+			/**
+			 * @type object | undefined
+			 */
+			processing_settings?:
+				| {
+						/**
+						 * @type object | undefined
+						 */
+						html?:
+							| {
+									/**
+									 * @type boolean | undefined
+									 */
+									pretty_urls?: boolean | undefined;
+							  }
+							| undefined;
+				  }
+				| undefined;
+			/**
+			 * @type object | undefined
+			 */
+			build_settings?:
+				| {
+						/**
+						 * @type integer | undefined
+						 */
+						id?: number | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						provider?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						deploy_key_id?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						repo_path?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						repo_branch?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						dir?: string | undefined;
+						/**
+						 * @description The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.
+						 * @type string | undefined
+						 */
+						functions_dir?: string | undefined;
+						/**
+						 * @description The build command to run. This is the command that Netlify runs to build your site. If a site has a netlify.toml file with a build command it will override this value.
+						 * @type string | undefined
+						 */
+						cmd?: string | undefined;
+						/**
+						 * @type array | undefined
+						 */
+						allowed_branches?: string[] | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						public_repo?: boolean | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						private_logs?: boolean | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						repo_url?: string | undefined;
+						/**
+						 * @type object | undefined
+						 */
+						env?:
+							| {
+									[key: string]: string;
+							  }
+							| undefined;
+						/**
+						 * @type integer | undefined
+						 */
+						installation_id?: number | undefined;
+						/**
+						 * @description When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.
+						 * @type boolean | undefined
+						 */
+						stop_builds?: boolean | undefined;
+				  }
+				| undefined;
+			/**
+			 * @type string | undefined
+			 */
+			id_domain?: string | undefined;
+			/**
+			 * @type object | undefined
+			 */
+			default_hooks_data?:
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						access_token?: string | undefined;
+				  }
+				| undefined;
+			/**
+			 * @type string | undefined
+			 */
+			build_image?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			prerender?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			functions_region?: string | undefined;
+			/**
+			 * @default false
+			 * @type boolean | undefined
+			 */
+			prevent_non_git_prod_deploys?: boolean | undefined;
+			/**
+			 * @type object | undefined
+			 */
+			repo?:
+				| {
+						/**
+						 * @type integer | undefined
+						 */
+						id?: number | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						provider?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						deploy_key_id?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						repo_path?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						repo_branch?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						dir?: string | undefined;
+						/**
+						 * @description The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.
+						 * @type string | undefined
+						 */
+						functions_dir?: string | undefined;
+						/**
+						 * @description The build command to run. This is the command that Netlify runs to build your site. If a site has a netlify.toml file with a build command it will override this value.
+						 * @type string | undefined
+						 */
+						cmd?: string | undefined;
+						/**
+						 * @type array | undefined
+						 */
+						allowed_branches?: string[] | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						public_repo?: boolean | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						private_logs?: boolean | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						repo_url?: string | undefined;
+						/**
+						 * @type object | undefined
+						 */
+						env?:
+							| {
+									[key: string]: string;
+							  }
+							| undefined;
+						/**
+						 * @type integer | undefined
+						 */
+						installation_id?: number | undefined;
+						/**
+						 * @description When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.
+						 * @type boolean | undefined
+						 */
+						stop_builds?: boolean | undefined;
+				  }
+				| undefined;
+	  }
+	| undefined;
 
-export type CreateSiteMutation = {
-	Response: CreateSite201;
-	QueryParams: CreateSiteQueryParams;
-	Errors: any;
-};
-
-export type GetSitePathParams = {
+/**
+ * @type object
+ */
+export type CreateSiteRequestConfig = {
+	data?: CreateSiteData | undefined;
+	pathParams?: never | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				configure_dns?: CreateSiteQueryConfigureDns | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-};
-
-export type GetSiteQueryParams = {
-	/**
-	 * @type string | undefined
-	 */
-	feature_flags?: string | undefined;
+	url: "/sites";
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type GetSite200 = {
+export type CreateSiteResponses = {
+	"201": CreateSiteStatus201;
+	default: CreateSiteStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateSiteResponse = CreateSiteStatus201 | CreateSiteStatusDefault;
+
+/**
+ * @type string
+ */
+export type GetSitePathSiteId = string;
+
+/**
+ * @type string | undefined
+ */
+export type GetSiteQueryFeatureFlags = string | undefined;
+
+/**
+ * @type object
+ */
+export type GetSiteStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -5967,11 +7257,11 @@ export type GetSite200 = {
 	 */
 	screenshot_url?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
@@ -6088,15 +7378,15 @@ export type GetSite200 = {
 				 */
 				skipped?: boolean | undefined;
 				/**
-				 * @type string | undefined, dateTime
+				 * @type string | undefined
 				 */
 				created_at?: string | undefined;
 				/**
-				 * @type string | undefined, dateTime
+				 * @type string | undefined
 				 */
 				updated_at?: string | undefined;
 				/**
-				 * @type string | undefined, dateTime
+				 * @type string | undefined
 				 */
 				published_at?: string | undefined;
 				/**
@@ -6295,39 +7585,67 @@ export type GetSite200 = {
 };
 
 /**
- * @description error
+ * @type object
  */
-export type GetSiteError = {
+export type GetSiteStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type GetSiteQueryResponse = GetSite200;
-
-export type GetSiteQuery = {
-	Response: GetSite200;
-	PathParams: GetSitePathParams;
-	QueryParams: GetSiteQueryParams;
-	Errors: any;
-};
-
-export type UpdateSitePathParams = {
+/**
+ * @type object
+ */
+export type GetSiteRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: GetSitePathSiteId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				feature_flags?: GetSiteQueryFeatureFlags | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
+	url: `/sites/${string}`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type UpdateSite200 = {
+export type GetSiteResponses = {
+	"200": GetSiteStatus200;
+	default: GetSiteStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetSiteResponse = GetSiteStatus200 | GetSiteStatusDefault;
+
+/**
+ * @type string
+ */
+export type UpdateSitePathSiteId = string;
+
+/**
+ * @type object
+ */
+export type UpdateSiteStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -6385,11 +7703,11 @@ export type UpdateSite200 = {
 	 */
 	screenshot_url?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
@@ -6506,15 +7824,15 @@ export type UpdateSite200 = {
 				 */
 				skipped?: boolean | undefined;
 				/**
-				 * @type string | undefined, dateTime
+				 * @type string | undefined
 				 */
 				created_at?: string | undefined;
 				/**
-				 * @type string | undefined, dateTime
+				 * @type string | undefined
 				 */
 				updated_at?: string | undefined;
 				/**
-				 * @type string | undefined, dateTime
+				 * @type string | undefined
 				 */
 				published_at?: string | undefined;
 				/**
@@ -6713,90 +8031,595 @@ export type UpdateSite200 = {
 };
 
 /**
- * @description error
+ * @type object
  */
-export type UpdateSiteError = {
+export type UpdateSiteStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type UpdateSiteMutationResponse = UpdateSite200;
+export type UpdateSiteData =
+	| {
+			/**
+			 * @type string | undefined
+			 */
+			id?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			state?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			plan?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			name?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			custom_domain?: string | undefined;
+			/**
+			 * @type array | undefined
+			 */
+			domain_aliases?: string[] | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			branch_deploy_custom_domain?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			deploy_preview_custom_domain?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			password?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			notification_email?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			url?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			ssl_url?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			admin_url?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			screenshot_url?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			created_at?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			updated_at?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			user_id?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			session_id?: string | undefined;
+			/**
+			 * @type boolean | undefined
+			 */
+			ssl?: boolean | undefined;
+			/**
+			 * @type boolean | undefined
+			 */
+			force_ssl?: boolean | undefined;
+			/**
+			 * @type boolean | undefined
+			 */
+			managed_dns?: boolean | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			deploy_url?: string | undefined;
+			/**
+			 * @type object | undefined
+			 */
+			published_deploy?:
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						id?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						site_id?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						user_id?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						build_id?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						state?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						name?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						url?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						ssl_url?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						admin_url?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						deploy_url?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						deploy_ssl_url?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						screenshot_url?: string | undefined;
+						/**
+						 * @type number | undefined
+						 */
+						review_id?: number | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						draft?: boolean | undefined;
+						/**
+						 * @type array | undefined
+						 */
+						required?: string[] | undefined;
+						/**
+						 * @type array | undefined
+						 */
+						required_functions?: string[] | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						error_message?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						branch?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						commit_ref?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						commit_url?: string | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						skipped?: boolean | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						created_at?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						updated_at?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						published_at?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						title?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						context?: string | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						locked?: boolean | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						review_url?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						framework?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						skew_protection_token?: string | undefined;
+						/**
+						 * @type array | undefined
+						 */
+						function_schedules?:
+							| {
+									/**
+									 * @type string | undefined
+									 */
+									name?: string | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									cron?: string | undefined;
+							  }[]
+							| undefined;
+				  }
+				| undefined;
+			/**
+			 * @type string | undefined
+			 */
+			account_id?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			account_name?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			account_slug?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			git_provider?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			deploy_hook?: string | undefined;
+			/**
+			 * @type object | undefined
+			 */
+			capabilities?:
+				| {
+						[key: string]: object;
+				  }
+				| undefined;
+			/**
+			 * @type object | undefined
+			 */
+			processing_settings?:
+				| {
+						/**
+						 * @type object | undefined
+						 */
+						html?:
+							| {
+									/**
+									 * @type boolean | undefined
+									 */
+									pretty_urls?: boolean | undefined;
+							  }
+							| undefined;
+				  }
+				| undefined;
+			/**
+			 * @type object | undefined
+			 */
+			build_settings?:
+				| {
+						/**
+						 * @type integer | undefined
+						 */
+						id?: number | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						provider?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						deploy_key_id?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						repo_path?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						repo_branch?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						dir?: string | undefined;
+						/**
+						 * @description The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.
+						 * @type string | undefined
+						 */
+						functions_dir?: string | undefined;
+						/**
+						 * @description The build command to run. This is the command that Netlify runs to build your site. If a site has a netlify.toml file with a build command it will override this value.
+						 * @type string | undefined
+						 */
+						cmd?: string | undefined;
+						/**
+						 * @type array | undefined
+						 */
+						allowed_branches?: string[] | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						public_repo?: boolean | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						private_logs?: boolean | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						repo_url?: string | undefined;
+						/**
+						 * @type object | undefined
+						 */
+						env?:
+							| {
+									[key: string]: string;
+							  }
+							| undefined;
+						/**
+						 * @type integer | undefined
+						 */
+						installation_id?: number | undefined;
+						/**
+						 * @description When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.
+						 * @type boolean | undefined
+						 */
+						stop_builds?: boolean | undefined;
+				  }
+				| undefined;
+			/**
+			 * @type string | undefined
+			 */
+			id_domain?: string | undefined;
+			/**
+			 * @type object | undefined
+			 */
+			default_hooks_data?:
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						access_token?: string | undefined;
+				  }
+				| undefined;
+			/**
+			 * @type string | undefined
+			 */
+			build_image?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			prerender?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			functions_region?: string | undefined;
+			/**
+			 * @default false
+			 * @type boolean | undefined
+			 */
+			prevent_non_git_prod_deploys?: boolean | undefined;
+			/**
+			 * @type object | undefined
+			 */
+			repo?:
+				| {
+						/**
+						 * @type integer | undefined
+						 */
+						id?: number | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						provider?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						deploy_key_id?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						repo_path?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						repo_branch?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						dir?: string | undefined;
+						/**
+						 * @description The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.
+						 * @type string | undefined
+						 */
+						functions_dir?: string | undefined;
+						/**
+						 * @description The build command to run. This is the command that Netlify runs to build your site. If a site has a netlify.toml file with a build command it will override this value.
+						 * @type string | undefined
+						 */
+						cmd?: string | undefined;
+						/**
+						 * @type array | undefined
+						 */
+						allowed_branches?: string[] | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						public_repo?: boolean | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						private_logs?: boolean | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						repo_url?: string | undefined;
+						/**
+						 * @type object | undefined
+						 */
+						env?:
+							| {
+									[key: string]: string;
+							  }
+							| undefined;
+						/**
+						 * @type integer | undefined
+						 */
+						installation_id?: number | undefined;
+						/**
+						 * @description When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.
+						 * @type boolean | undefined
+						 */
+						stop_builds?: boolean | undefined;
+				  }
+				| undefined;
+	  }
+	| undefined;
 
-export type UpdateSiteMutation = {
-	Response: UpdateSite200;
-	PathParams: UpdateSitePathParams;
-	Errors: any;
-};
-
-export type DeleteSitePathParams = {
+/**
+ * @type object
+ */
+export type UpdateSiteRequestConfig = {
+	data?: UpdateSiteData | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: UpdateSitePathSiteId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
+	url: `/sites/${string}`;
 };
 
 /**
- * @description Deleted
+ * @type object
  */
-export type DeleteSite204 = unknown;
+export type UpdateSiteResponses = {
+	"200": UpdateSiteStatus200;
+	default: UpdateSiteStatusDefault;
+};
 
 /**
- * @description error
+ * @description Union of all possible responses
  */
-export type DeleteSiteError = {
+export type UpdateSiteResponse = UpdateSiteStatus200 | UpdateSiteStatusDefault;
+
+/**
+ * @type string
+ */
+export type DeleteSitePathSiteId = string;
+
+/**
+ * @type unknown
+ */
+export type DeleteSiteStatus204 = unknown;
+
+/**
+ * @type object
+ */
+export type DeleteSiteStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type DeleteSiteMutationResponse = DeleteSite204;
-
-export type DeleteSiteMutation = {
-	Response: DeleteSite204;
-	PathParams: DeleteSitePathParams;
-	Errors: any;
-};
-
-export type ProvisionSiteTLSCertificatePathParams = {
+/**
+ * @type object
+ */
+export type DeleteSiteRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: DeleteSitePathSiteId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-};
-
-export type ProvisionSiteTLSCertificateQueryParams = {
-	/**
-	 * @description PEM-encoded certificate. Required when updating an existing certificate.
-	 * @type string | undefined
-	 */
-	certificate?: string | undefined;
-	/**
-	 * @description PEM-encoded private key. Required when updating an existing certificate.
-	 * @type string | undefined
-	 */
-	key?: string | undefined;
-	/**
-	 * @description PEM-encoded CA certificate chain. Required when updating an existing certificate.
-	 * @type string | undefined
-	 */
-	ca_certificates?: string | undefined;
+	url: `/sites/${string}`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type ProvisionSiteTLSCertificate200 = {
+export type DeleteSiteResponses = {
+	"204": DeleteSiteStatus204;
+	default: DeleteSiteStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteSiteResponse = DeleteSiteStatus204 | DeleteSiteStatusDefault;
+
+/**
+ * @type string
+ */
+export type ProvisionSiteTLSCertificatePathSiteId = string;
+
+/**
+ * @description PEM-encoded certificate. Required when updating an existing certificate.
+ * @type string | undefined
+ */
+export type ProvisionSiteTLSCertificateQueryCertificate = string | undefined;
+
+/**
+ * @description PEM-encoded private key. Required when updating an existing certificate.
+ * @type string | undefined
+ */
+export type ProvisionSiteTLSCertificateQueryKey = string | undefined;
+
+/**
+ * @description PEM-encoded CA certificate chain. Required when updating an existing certificate.
+ * @type string | undefined
+ */
+export type ProvisionSiteTLSCertificateQueryCaCertificates = string | undefined;
+
+/**
+ * @type object
+ */
+export type ProvisionSiteTLSCertificateStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -6806,58 +8629,92 @@ export type ProvisionSiteTLSCertificate200 = {
 	 */
 	domains?: string[] | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	expires_at?: string | undefined;
 };
 
 /**
- * @description Unprocessable Entity. Returns errors such as: \"certificate parameter is required when updating an existing certificate\" (when updating without params), \"No custom domain configured\", or \"bad dns for custom domain\"
+ * @type unknown
  */
-export type ProvisionSiteTLSCertificate422 = unknown;
+export type ProvisionSiteTLSCertificateStatus422 = unknown;
 
 /**
- * @description error
+ * @type object
  */
-export type ProvisionSiteTLSCertificateError = {
+export type ProvisionSiteTLSCertificateStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type ProvisionSiteTLSCertificateMutationResponse = ProvisionSiteTLSCertificate200;
-
-export type ProvisionSiteTLSCertificateMutation = {
-	Response: ProvisionSiteTLSCertificate200;
-	PathParams: ProvisionSiteTLSCertificatePathParams;
-	QueryParams: ProvisionSiteTLSCertificateQueryParams;
-	Errors: ProvisionSiteTLSCertificate422;
-};
-
-export type ShowSiteTLSCertificatePathParams = {
+/**
+ * @type object
+ */
+export type ProvisionSiteTLSCertificateRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: ProvisionSiteTLSCertificatePathSiteId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				certificate?: ProvisionSiteTLSCertificateQueryCertificate | undefined;
+				key?: ProvisionSiteTLSCertificateQueryKey | undefined;
+				ca_certificates?: ProvisionSiteTLSCertificateQueryCaCertificates | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
+	url: `/sites/${string}/ssl`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type ShowSiteTLSCertificate200 = {
+export type ProvisionSiteTLSCertificateResponses = {
+	"200": ProvisionSiteTLSCertificateStatus200;
+	"422": ProvisionSiteTLSCertificateStatus422;
+	default: ProvisionSiteTLSCertificateStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ProvisionSiteTLSCertificateResponse =
+	| ProvisionSiteTLSCertificateStatus200
+	| ProvisionSiteTLSCertificateStatus422
+	| ProvisionSiteTLSCertificateStatusDefault;
+
+/**
+ * @type string
+ */
+export type ShowSiteTLSCertificatePathSiteId = string;
+
+/**
+ * @type object
+ */
+export type ShowSiteTLSCertificateStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -6867,59 +8724,81 @@ export type ShowSiteTLSCertificate200 = {
 	 */
 	domains?: string[] | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	expires_at?: string | undefined;
 };
 
 /**
- * @description error
+ * @type object
  */
-export type ShowSiteTLSCertificateError = {
+export type ShowSiteTLSCertificateStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type ShowSiteTLSCertificateQueryResponse = ShowSiteTLSCertificate200;
-
-export type ShowSiteTLSCertificateQuery = {
-	Response: ShowSiteTLSCertificate200;
-	PathParams: ShowSiteTLSCertificatePathParams;
-	Errors: any;
-};
-
-export type GetAllCertificatesPathParams = {
+/**
+ * @type object
+ */
+export type ShowSiteTLSCertificateRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: ShowSiteTLSCertificatePathSiteId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-};
-
-export type GetAllCertificatesQueryParams = {
-	/**
-	 * @type string
-	 */
-	domain: string;
+	url: `/sites/${string}/ssl`;
 };
 
 /**
- * @description Array of SNI Certificates
+ * @type object
  */
-export type GetAllCertificates200 = {
+export type ShowSiteTLSCertificateResponses = {
+	"200": ShowSiteTLSCertificateStatus200;
+	default: ShowSiteTLSCertificateStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ShowSiteTLSCertificateResponse =
+	| ShowSiteTLSCertificateStatus200
+	| ShowSiteTLSCertificateStatusDefault;
+
+/**
+ * @type string
+ */
+export type GetAllCertificatesPathSiteId = string;
+
+/**
+ * @type string
+ */
+export type GetAllCertificatesQueryDomain = string;
+
+/**
+ * @type array
+ */
+export type GetAllCertificatesStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -6929,367 +8808,104 @@ export type GetAllCertificates200 = {
 	 */
 	domains?: string[] | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	expires_at?: string | undefined;
 }[];
 
 /**
- * @description Not Found
+ * @type unknown
  */
-export type GetAllCertificates404 = unknown;
+export type GetAllCertificatesStatus404 = unknown;
 
 /**
- * @description Unprocessable Entity
+ * @type unknown
  */
-export type GetAllCertificates422 = unknown;
-
-export type GetAllCertificatesQueryResponse = GetAllCertificates200;
-
-export type GetAllCertificatesQuery = {
-	Response: GetAllCertificates200;
-	PathParams: GetAllCertificatesPathParams;
-	QueryParams: GetAllCertificatesQueryParams;
-	Errors: GetAllCertificates404 | GetAllCertificates422;
-};
-
-export type GetEnvVarsPathParams = {
-	/**
-	 * @description Scope response to account_id
-	 * @type string
-	 */
-	account_id: string;
-};
-
-export const getEnvVarsQueryParamsContextNameEnum = {
-	all: "all",
-	dev: "dev",
-	"dev-server": "dev-server",
-	"branch-deploy": "branch-deploy",
-	"deploy-preview": "deploy-preview",
-	production: "production",
-} as const;
-
-export type GetEnvVarsQueryParamsContextNameEnumKey =
-	(typeof getEnvVarsQueryParamsContextNameEnum)[keyof typeof getEnvVarsQueryParamsContextNameEnum];
-
-export const getEnvVarsQueryParamsScopeEnum = {
-	builds: "builds",
-	functions: "functions",
-	runtime: "runtime",
-	"post-processing": "post-processing",
-} as const;
-
-export type GetEnvVarsQueryParamsScopeEnumKey =
-	(typeof getEnvVarsQueryParamsScopeEnum)[keyof typeof getEnvVarsQueryParamsScopeEnum];
-
-export type GetEnvVarsQueryParams = {
-	/**
-	 * @description Filter by deploy context
-	 * @type string | undefined
-	 */
-	context_name?: GetEnvVarsQueryParamsContextNameEnumKey | undefined;
-	/**
-	 * @description Filter by scope
-	 * @type string | undefined
-	 */
-	scope?: GetEnvVarsQueryParamsScopeEnumKey | undefined;
-	/**
-	 * @description If specified, only return environment variables set on this site
-	 * @type string | undefined
-	 */
-	site_id?: string | undefined;
-};
-
-export const getEnvVars200ScopesEnum = {
-	builds: "builds",
-	functions: "functions",
-	runtime: "runtime",
-	"post-processing": "post-processing",
-} as const;
-
-export type GetEnvVars200ScopesEnumKey =
-	(typeof getEnvVars200ScopesEnum)[keyof typeof getEnvVars200ScopesEnum];
-
-export const valuesContextEnum2 = {
-	all: "all",
-	dev: "dev",
-	"dev-server": "dev-server",
-	"branch-deploy": "branch-deploy",
-	"deploy-preview": "deploy-preview",
-	production: "production",
-	branch: "branch",
-} as const;
-
-export type ValuesContextEnum2Key = (typeof valuesContextEnum2)[keyof typeof valuesContextEnum2];
+export type GetAllCertificatesStatus422 = unknown;
 
 /**
- * @description OK
+ * @type object
  */
-export type GetEnvVars200 = GetEnvVars200ScopesEnumKey[];
-
-/**
- * @description error
- */
-export type GetEnvVarsError = {
+export type GetAllCertificatesRequestConfig = {
+	data?: never | undefined;
 	/**
-	 * @type integer | undefined, int64
+	 * @type object
 	 */
-	code?: number | undefined;
+	pathParams: {
+		site_id: GetAllCertificatesPathSiteId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				domain: GetAllCertificatesQueryDomain;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	message: string;
+	url: `/sites/${string}/ssl/certificates`;
 };
-
-export type GetEnvVarsQueryResponse = GetEnvVars200;
-
-export type GetEnvVarsQuery = {
-	Response: GetEnvVars200;
-	PathParams: GetEnvVarsPathParams;
-	QueryParams: GetEnvVarsQueryParams;
-	Errors: any;
-};
-
-export type CreateEnvVarsPathParams = {
-	/**
-	 * @description Scope response to account_id
-	 * @type string
-	 */
-	account_id: string;
-};
-
-export type CreateEnvVarsQueryParams = {
-	/**
-	 * @description If provided, create an environment variable on the site level, not the account level
-	 * @type string | undefined
-	 */
-	site_id?: string | undefined;
-};
-
-export const createEnvVars201ScopesEnum = {
-	builds: "builds",
-	functions: "functions",
-	runtime: "runtime",
-	"post-processing": "post-processing",
-} as const;
-
-export type CreateEnvVars201ScopesEnumKey =
-	(typeof createEnvVars201ScopesEnum)[keyof typeof createEnvVars201ScopesEnum];
-
-export const valuesContextEnum3 = {
-	all: "all",
-	dev: "dev",
-	"dev-server": "dev-server",
-	"branch-deploy": "branch-deploy",
-	"deploy-preview": "deploy-preview",
-	production: "production",
-	branch: "branch",
-} as const;
-
-export type ValuesContextEnum3Key = (typeof valuesContextEnum3)[keyof typeof valuesContextEnum3];
 
 /**
- * @description OK
+ * @type object
  */
-export type CreateEnvVars201 = CreateEnvVars201ScopesEnumKey[];
+export type GetAllCertificatesResponses = {
+	"200": GetAllCertificatesStatus200;
+	"404": GetAllCertificatesStatus404;
+	"422": GetAllCertificatesStatus422;
+};
 
 /**
- * @description error
+ * @description Union of all possible responses
  */
-export type CreateEnvVarsError = {
-	/**
-	 * @type integer | undefined, int64
-	 */
-	code?: number | undefined;
-	/**
-	 * @type string
-	 */
-	message: string;
-};
-
-export const createEnvVarsMutationRequestScopesEnum = {
-	builds: "builds",
-	functions: "functions",
-	runtime: "runtime",
-	"post-processing": "post-processing",
-} as const;
-
-export type CreateEnvVarsMutationRequestScopesEnumKey =
-	(typeof createEnvVarsMutationRequestScopesEnum)[keyof typeof createEnvVarsMutationRequestScopesEnum];
-
-export const valuesContextEnum4 = {
-	all: "all",
-	dev: "dev",
-	"dev-server": "dev-server",
-	"branch-deploy": "branch-deploy",
-	"deploy-preview": "deploy-preview",
-	production: "production",
-	branch: "branch",
-} as const;
-
-export type ValuesContextEnum4Key = (typeof valuesContextEnum4)[keyof typeof valuesContextEnum4];
-
-export type CreateEnvVarsMutationRequest = CreateEnvVarsMutationRequestScopesEnumKey[];
-
-export type CreateEnvVarsMutationResponse = CreateEnvVars201;
-
-export type CreateEnvVarsMutation = {
-	Response: CreateEnvVars201;
-	Request: CreateEnvVarsMutationRequest;
-	PathParams: CreateEnvVarsPathParams;
-	QueryParams: CreateEnvVarsQueryParams;
-	Errors: any;
-};
-
-export type GetSiteEnvVarsPathParams = {
-	/**
-	 * @description Scope response to site_id
-	 * @type string
-	 */
-	site_id: string;
-};
-
-export const getSiteEnvVarsQueryParamsContextNameEnum = {
-	all: "all",
-	dev: "dev",
-	"dev-server": "dev-server",
-	"branch-deploy": "branch-deploy",
-	"deploy-preview": "deploy-preview",
-	production: "production",
-} as const;
-
-export type GetSiteEnvVarsQueryParamsContextNameEnumKey =
-	(typeof getSiteEnvVarsQueryParamsContextNameEnum)[keyof typeof getSiteEnvVarsQueryParamsContextNameEnum];
-
-export const getSiteEnvVarsQueryParamsScopeEnum = {
-	builds: "builds",
-	functions: "functions",
-	runtime: "runtime",
-	post_processing: "post_processing",
-} as const;
-
-export type GetSiteEnvVarsQueryParamsScopeEnumKey =
-	(typeof getSiteEnvVarsQueryParamsScopeEnum)[keyof typeof getSiteEnvVarsQueryParamsScopeEnum];
-
-export type GetSiteEnvVarsQueryParams = {
-	/**
-	 * @description Filter by deploy context
-	 * @type string | undefined
-	 */
-	context_name?: GetSiteEnvVarsQueryParamsContextNameEnumKey | undefined;
-	/**
-	 * @description Filter by scope
-	 * @type string | undefined
-	 */
-	scope?: GetSiteEnvVarsQueryParamsScopeEnumKey | undefined;
-};
-
-export const getSiteEnvVars200ScopesEnum = {
-	builds: "builds",
-	functions: "functions",
-	runtime: "runtime",
-	"post-processing": "post-processing",
-} as const;
-
-export type GetSiteEnvVars200ScopesEnumKey =
-	(typeof getSiteEnvVars200ScopesEnum)[keyof typeof getSiteEnvVars200ScopesEnum];
-
-export const valuesContextEnum5 = {
-	all: "all",
-	dev: "dev",
-	"dev-server": "dev-server",
-	"branch-deploy": "branch-deploy",
-	"deploy-preview": "deploy-preview",
-	production: "production",
-	branch: "branch",
-} as const;
-
-export type ValuesContextEnum5Key = (typeof valuesContextEnum5)[keyof typeof valuesContextEnum5];
+export type GetAllCertificatesResponse =
+	| GetAllCertificatesStatus200
+	| GetAllCertificatesStatus404
+	| GetAllCertificatesStatus422;
 
 /**
- * @description OK
+ * @description Scope response to account_id
+ * @type string
  */
-export type GetSiteEnvVars200 = GetSiteEnvVars200ScopesEnumKey[];
+export type GetEnvVarsPathAccountId = string;
 
 /**
- * @description error
+ * @description Filter by deploy context
+ * @type string | undefined
  */
-export type GetSiteEnvVarsError = {
-	/**
-	 * @type integer | undefined, int64
-	 */
-	code?: number | undefined;
-	/**
-	 * @type string
-	 */
-	message: string;
-};
-
-export type GetSiteEnvVarsQueryResponse = GetSiteEnvVars200;
-
-export type GetSiteEnvVarsQuery = {
-	Response: GetSiteEnvVars200;
-	PathParams: GetSiteEnvVarsPathParams;
-	QueryParams: GetSiteEnvVarsQueryParams;
-	Errors: any;
-};
-
-export type GetEnvVarPathParams = {
-	/**
-	 * @description Scope response to account_id
-	 * @type string
-	 */
-	account_id: string;
-	/**
-	 * @description The environment variable key (case-sensitive)
-	 * @type string
-	 */
-	key: string;
-};
-
-export type GetEnvVarQueryParams = {
-	/**
-	 * @description If provided, return the environment variable for a specific site (no merging is performed)
-	 * @type string | undefined
-	 */
-	site_id?: string | undefined;
-};
-
-export const getEnvVar200ScopesEnum = {
-	builds: "builds",
-	functions: "functions",
-	runtime: "runtime",
-	"post-processing": "post-processing",
-} as const;
-
-export type GetEnvVar200ScopesEnumKey =
-	(typeof getEnvVar200ScopesEnum)[keyof typeof getEnvVar200ScopesEnum];
-
-export const valuesContextEnum6 = {
-	all: "all",
-	dev: "dev",
-	"dev-server": "dev-server",
-	"branch-deploy": "branch-deploy",
-	"deploy-preview": "deploy-preview",
-	production: "production",
-	branch: "branch",
-} as const;
-
-export type ValuesContextEnum6Key = (typeof valuesContextEnum6)[keyof typeof valuesContextEnum6];
+export type GetEnvVarsQueryContextName =
+	| ("all" | "dev" | "dev-server" | "branch-deploy" | "deploy-preview" | "production")
+	| undefined;
 
 /**
- * @description OK
+ * @description Filter by scope
+ * @type string | undefined
  */
-export type GetEnvVar200 = {
+export type GetEnvVarsQueryScope =
+	| ("builds" | "functions" | "runtime" | "post-processing")
+	| undefined;
+
+/**
+ * @description If specified, only return environment variables set on this site
+ * @type string | undefined
+ */
+export type GetEnvVarsQuerySiteId = string | undefined;
+
+/**
+ * @type array
+ */
+export type GetEnvVarsStatus200 = {
 	/**
 	 * @description The environment variable key, like ALGOLIA_ID (case-sensitive)
 	 * @type string | undefined
@@ -7299,7 +8915,7 @@ export type GetEnvVar200 = {
 	 * @description The scopes that this environment variable is set to
 	 * @type array | undefined
 	 */
-	scopes?: GetEnvVar200ScopesEnumKey[] | undefined;
+	scopes?: ("builds" | "functions" | "runtime" | "post-processing")[] | undefined;
 	/**
 	 * @description An array of Value objects containing values and metadata
 	 * @type array | undefined
@@ -7320,7 +8936,7 @@ export type GetEnvVar200 = {
 				 * @description The deploy context in which this value will be used. `dev` refers to local development when running `netlify dev`.
 				 * @type string | undefined
 				 */
-				context?: ValuesContextEnum6Key | undefined;
+				context?: ContextEnumKey | undefined;
 				/**
 				 * @description An additional parameter for custom branches. Currently, this is used for specifying a branch name when `context=branch`.
 				 * @type string | undefined
@@ -7335,7 +8951,515 @@ export type GetEnvVar200 = {
 	is_secret?: boolean | undefined;
 	/**
 	 * @description The timestamp of when the value was last updated
-	 * @type string | undefined, date-time
+	 * @type string | undefined
+	 */
+	updated_at?: string | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	updated_by?:
+		| {
+				/**
+				 * @description The user\'s unique identifier
+				 * @type string | undefined
+				 */
+				id?: string | undefined;
+				/**
+				 * @description The user\'s full name (first and last)
+				 * @type string | undefined
+				 */
+				full_name?: string | undefined;
+				/**
+				 * @description The user\'s email address
+				 * @type string | undefined
+				 */
+				email?: string | undefined;
+				/**
+				 * @description A URL pointing to the user\'s avatar
+				 * @type string | undefined
+				 */
+				avatar_url?: string | undefined;
+		  }
+		| undefined;
+}[];
+
+/**
+ * @type object
+ */
+export type GetEnvVarsStatusDefault = {
+	/**
+	 * @type integer | undefined
+	 */
+	code?: bigint | undefined;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
+/**
+ * @type object
+ */
+export type GetEnvVarsRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		account_id: GetEnvVarsPathAccountId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				context_name?: GetEnvVarsQueryContextName | undefined;
+				scope?: GetEnvVarsQueryScope | undefined;
+				site_id?: GetEnvVarsQuerySiteId | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/accounts/${string}/env`;
+};
+
+/**
+ * @type object
+ */
+export type GetEnvVarsResponses = {
+	"200": GetEnvVarsStatus200;
+	default: GetEnvVarsStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetEnvVarsResponse = GetEnvVarsStatus200 | GetEnvVarsStatusDefault;
+
+/**
+ * @description Scope response to account_id
+ * @type string
+ */
+export type CreateEnvVarsPathAccountId = string;
+
+/**
+ * @description If provided, create an environment variable on the site level, not the account level
+ * @type string | undefined
+ */
+export type CreateEnvVarsQuerySiteId = string | undefined;
+
+/**
+ * @type array
+ */
+export type CreateEnvVarsStatus201 = {
+	/**
+	 * @description The environment variable key, like ALGOLIA_ID (case-sensitive)
+	 * @type string | undefined
+	 */
+	key?: string | undefined;
+	/**
+	 * @description The scopes that this environment variable is set to
+	 * @type array | undefined
+	 */
+	scopes?: ("builds" | "functions" | "runtime" | "post-processing")[] | undefined;
+	/**
+	 * @description An array of Value objects containing values and metadata
+	 * @type array | undefined
+	 */
+	values?:
+		| {
+				/**
+				 * @description The environment variable value\'s universally unique ID
+				 * @type string | undefined
+				 */
+				id?: string | undefined;
+				/**
+				 * @description The environment variable\'s unencrypted value
+				 * @type string | undefined
+				 */
+				value?: string | undefined;
+				/**
+				 * @description The deploy context in which this value will be used. `dev` refers to local development when running `netlify dev`.
+				 * @type string | undefined
+				 */
+				context?: ContextEnumKey | undefined;
+				/**
+				 * @description An additional parameter for custom branches. Currently, this is used for specifying a branch name when `context=branch`.
+				 * @type string | undefined
+				 */
+				context_parameter?: string | undefined;
+		  }[]
+		| undefined;
+	/**
+	 * @description Secret values are only readable by code running on Netlify\'s systems. With secrets, only the local development context values are readable from the UI, API, and CLI. By default, environment variable values are not secret.
+	 * @type boolean | undefined
+	 */
+	is_secret?: boolean | undefined;
+	/**
+	 * @description The timestamp of when the value was last updated
+	 * @type string | undefined
+	 */
+	updated_at?: string | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	updated_by?:
+		| {
+				/**
+				 * @description The user\'s unique identifier
+				 * @type string | undefined
+				 */
+				id?: string | undefined;
+				/**
+				 * @description The user\'s full name (first and last)
+				 * @type string | undefined
+				 */
+				full_name?: string | undefined;
+				/**
+				 * @description The user\'s email address
+				 * @type string | undefined
+				 */
+				email?: string | undefined;
+				/**
+				 * @description A URL pointing to the user\'s avatar
+				 * @type string | undefined
+				 */
+				avatar_url?: string | undefined;
+		  }
+		| undefined;
+}[];
+
+/**
+ * @type object
+ */
+export type CreateEnvVarsStatusDefault = {
+	/**
+	 * @type integer | undefined
+	 */
+	code?: bigint | undefined;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
+/**
+ * @type array | undefined
+ */
+export type CreateEnvVarsData =
+	| {
+			/**
+			 * @description The existing or new name of the key, if you wish to rename it (case-sensitive)
+			 * @type string | undefined
+			 */
+			key?: string | undefined;
+			/**
+			 * @description The scopes that this environment variable is set to (Pro plans and above)
+			 * @type array | undefined
+			 */
+			scopes?: ("builds" | "functions" | "runtime" | "post-processing")[] | undefined;
+			/**
+			 * @type array | undefined
+			 */
+			values?:
+				| {
+						/**
+						 * @description The environment variable value\'s universally unique ID
+						 * @type string | undefined
+						 */
+						id?: string | undefined;
+						/**
+						 * @description The environment variable\'s unencrypted value
+						 * @type string | undefined
+						 */
+						value?: string | undefined;
+						/**
+						 * @description The deploy context in which this value will be used. `dev` refers to local development when running `netlify dev`.
+						 * @type string | undefined
+						 */
+						context?: ContextEnumKey | undefined;
+						/**
+						 * @description An additional parameter for custom branches. Currently, this is used for specifying a branch name when `context=branch`.
+						 * @type string | undefined
+						 */
+						context_parameter?: string | undefined;
+				  }[]
+				| undefined;
+			/**
+			 * @description Secret values are only readable by code running on Netlify\'s systems. With secrets, only the local development context values are readable from the UI, API, and CLI. By default, environment variable values are not secret.
+			 * @type boolean | undefined
+			 */
+			is_secret?: boolean | undefined;
+	  }[]
+	| undefined;
+
+/**
+ * @type object
+ */
+export type CreateEnvVarsRequestConfig = {
+	data?: CreateEnvVarsData | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		account_id: CreateEnvVarsPathAccountId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				site_id?: CreateEnvVarsQuerySiteId | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/accounts/${string}/env`;
+};
+
+/**
+ * @type object
+ */
+export type CreateEnvVarsResponses = {
+	"201": CreateEnvVarsStatus201;
+	default: CreateEnvVarsStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateEnvVarsResponse = CreateEnvVarsStatus201 | CreateEnvVarsStatusDefault;
+
+/**
+ * @description Filter by deploy context
+ * @type string | undefined
+ */
+export type GetSiteEnvVarsQueryContextName =
+	| ("all" | "dev" | "dev-server" | "branch-deploy" | "deploy-preview" | "production")
+	| undefined;
+
+/**
+ * @description Filter by scope
+ * @type string | undefined
+ */
+export type GetSiteEnvVarsQueryScope =
+	| ("builds" | "functions" | "runtime" | "post_processing")
+	| undefined;
+
+/**
+ * @description Scope response to site_id
+ * @type string
+ */
+export type GetSiteEnvVarsPathSiteId = string;
+
+/**
+ * @type array
+ */
+export type GetSiteEnvVarsStatus200 = {
+	/**
+	 * @description The environment variable key, like ALGOLIA_ID (case-sensitive)
+	 * @type string | undefined
+	 */
+	key?: string | undefined;
+	/**
+	 * @description The scopes that this environment variable is set to
+	 * @type array | undefined
+	 */
+	scopes?: ("builds" | "functions" | "runtime" | "post-processing")[] | undefined;
+	/**
+	 * @description An array of Value objects containing values and metadata
+	 * @type array | undefined
+	 */
+	values?:
+		| {
+				/**
+				 * @description The environment variable value\'s universally unique ID
+				 * @type string | undefined
+				 */
+				id?: string | undefined;
+				/**
+				 * @description The environment variable\'s unencrypted value
+				 * @type string | undefined
+				 */
+				value?: string | undefined;
+				/**
+				 * @description The deploy context in which this value will be used. `dev` refers to local development when running `netlify dev`.
+				 * @type string | undefined
+				 */
+				context?: ContextEnumKey | undefined;
+				/**
+				 * @description An additional parameter for custom branches. Currently, this is used for specifying a branch name when `context=branch`.
+				 * @type string | undefined
+				 */
+				context_parameter?: string | undefined;
+		  }[]
+		| undefined;
+	/**
+	 * @description Secret values are only readable by code running on Netlify\'s systems. With secrets, only the local development context values are readable from the UI, API, and CLI. By default, environment variable values are not secret.
+	 * @type boolean | undefined
+	 */
+	is_secret?: boolean | undefined;
+	/**
+	 * @description The timestamp of when the value was last updated
+	 * @type string | undefined
+	 */
+	updated_at?: string | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	updated_by?:
+		| {
+				/**
+				 * @description The user\'s unique identifier
+				 * @type string | undefined
+				 */
+				id?: string | undefined;
+				/**
+				 * @description The user\'s full name (first and last)
+				 * @type string | undefined
+				 */
+				full_name?: string | undefined;
+				/**
+				 * @description The user\'s email address
+				 * @type string | undefined
+				 */
+				email?: string | undefined;
+				/**
+				 * @description A URL pointing to the user\'s avatar
+				 * @type string | undefined
+				 */
+				avatar_url?: string | undefined;
+		  }
+		| undefined;
+}[];
+
+/**
+ * @type object
+ */
+export type GetSiteEnvVarsStatusDefault = {
+	/**
+	 * @type integer | undefined
+	 */
+	code?: bigint | undefined;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
+/**
+ * @type object
+ */
+export type GetSiteEnvVarsRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: GetSiteEnvVarsPathSiteId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				context_name?: GetSiteEnvVarsQueryContextName | undefined;
+				scope?: GetSiteEnvVarsQueryScope | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/api/v1/sites/${string}/env`;
+};
+
+/**
+ * @type object
+ */
+export type GetSiteEnvVarsResponses = {
+	"200": GetSiteEnvVarsStatus200;
+	default: GetSiteEnvVarsStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetSiteEnvVarsResponse = GetSiteEnvVarsStatus200 | GetSiteEnvVarsStatusDefault;
+
+/**
+ * @description Scope response to account_id
+ * @type string
+ */
+export type GetEnvVarPathAccountId = string;
+
+/**
+ * @description The environment variable key (case-sensitive)
+ * @type string
+ */
+export type GetEnvVarPathKey = string;
+
+/**
+ * @description If provided, return the environment variable for a specific site (no merging is performed)
+ * @type string | undefined
+ */
+export type GetEnvVarQuerySiteId = string | undefined;
+
+/**
+ * @description Environment variable model definition
+ * @type object
+ */
+export type GetEnvVarStatus200 = {
+	/**
+	 * @description The environment variable key, like ALGOLIA_ID (case-sensitive)
+	 * @type string | undefined
+	 */
+	key?: string | undefined;
+	/**
+	 * @description The scopes that this environment variable is set to
+	 * @type array | undefined
+	 */
+	scopes?: ("builds" | "functions" | "runtime" | "post-processing")[] | undefined;
+	/**
+	 * @description An array of Value objects containing values and metadata
+	 * @type array | undefined
+	 */
+	values?:
+		| {
+				/**
+				 * @description The environment variable value\'s universally unique ID
+				 * @type string | undefined
+				 */
+				id?: string | undefined;
+				/**
+				 * @description The environment variable\'s unencrypted value
+				 * @type string | undefined
+				 */
+				value?: string | undefined;
+				/**
+				 * @description The deploy context in which this value will be used. `dev` refers to local development when running `netlify dev`.
+				 * @type string | undefined
+				 */
+				context?: ContextEnumKey | undefined;
+				/**
+				 * @description An additional parameter for custom branches. Currently, this is used for specifying a branch name when `context=branch`.
+				 * @type string | undefined
+				 */
+				context_parameter?: string | undefined;
+		  }[]
+		| undefined;
+	/**
+	 * @description Secret values are only readable by code running on Netlify\'s systems. With secrets, only the local development context values are readable from the UI, API, and CLI. By default, environment variable values are not secret.
+	 * @type boolean | undefined
+	 */
+	is_secret?: boolean | undefined;
+	/**
+	 * @description The timestamp of when the value was last updated
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
@@ -7368,75 +9492,82 @@ export type GetEnvVar200 = {
 };
 
 /**
- * @description error
+ * @type object
  */
-export type GetEnvVarError = {
+export type GetEnvVarStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type GetEnvVarQueryResponse = GetEnvVar200;
-
-export type GetEnvVarQuery = {
-	Response: GetEnvVar200;
-	PathParams: GetEnvVarPathParams;
-	QueryParams: GetEnvVarQueryParams;
-	Errors: any;
-};
-
-export type UpdateEnvVarPathParams = {
+/**
+ * @type object
+ */
+export type GetEnvVarRequestConfig = {
+	data?: never | undefined;
 	/**
-	 * @description Scope response to account_id
+	 * @type object
+	 */
+	pathParams: {
+		account_id: GetEnvVarPathAccountId;
+		key: GetEnvVarPathKey;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				site_id?: GetEnvVarQuerySiteId | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
 	 * @type string
 	 */
-	account_id: string;
-	/**
-	 * @description The existing environment variable key name (case-sensitive)
-	 * @type string
-	 */
-	key: string;
+	url: `/accounts/${string}/env/${string}`;
 };
-
-export type UpdateEnvVarQueryParams = {
-	/**
-	 * @description If provided, update an environment variable set on this site
-	 * @type string | undefined
-	 */
-	site_id?: string | undefined;
-};
-
-export const updateEnvVar200ScopesEnum = {
-	builds: "builds",
-	functions: "functions",
-	runtime: "runtime",
-	"post-processing": "post-processing",
-} as const;
-
-export type UpdateEnvVar200ScopesEnumKey =
-	(typeof updateEnvVar200ScopesEnum)[keyof typeof updateEnvVar200ScopesEnum];
-
-export const valuesContextEnum7 = {
-	all: "all",
-	dev: "dev",
-	"dev-server": "dev-server",
-	"branch-deploy": "branch-deploy",
-	"deploy-preview": "deploy-preview",
-	production: "production",
-	branch: "branch",
-} as const;
-
-export type ValuesContextEnum7Key = (typeof valuesContextEnum7)[keyof typeof valuesContextEnum7];
 
 /**
- * @description OK
+ * @type object
  */
-export type UpdateEnvVar200 = {
+export type GetEnvVarResponses = {
+	"200": GetEnvVarStatus200;
+	default: GetEnvVarStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetEnvVarResponse = GetEnvVarStatus200 | GetEnvVarStatusDefault;
+
+/**
+ * @description Scope response to account_id
+ * @type string
+ */
+export type UpdateEnvVarPathAccountId = string;
+
+/**
+ * @description The existing environment variable key name (case-sensitive)
+ * @type string
+ */
+export type UpdateEnvVarPathKey = string;
+
+/**
+ * @description If provided, update an environment variable set on this site
+ * @type string | undefined
+ */
+export type UpdateEnvVarQuerySiteId = string | undefined;
+
+/**
+ * @description Environment variable model definition
+ * @type object
+ */
+export type UpdateEnvVarStatus200 = {
 	/**
 	 * @description The environment variable key, like ALGOLIA_ID (case-sensitive)
 	 * @type string | undefined
@@ -7446,7 +9577,7 @@ export type UpdateEnvVar200 = {
 	 * @description The scopes that this environment variable is set to
 	 * @type array | undefined
 	 */
-	scopes?: UpdateEnvVar200ScopesEnumKey[] | undefined;
+	scopes?: ("builds" | "functions" | "runtime" | "post-processing")[] | undefined;
 	/**
 	 * @description An array of Value objects containing values and metadata
 	 * @type array | undefined
@@ -7467,7 +9598,7 @@ export type UpdateEnvVar200 = {
 				 * @description The deploy context in which this value will be used. `dev` refers to local development when running `netlify dev`.
 				 * @type string | undefined
 				 */
-				context?: ValuesContextEnum7Key | undefined;
+				context?: ContextEnumKey | undefined;
 				/**
 				 * @description An additional parameter for custom branches. Currently, this is used for specifying a branch name when `context=branch`.
 				 * @type string | undefined
@@ -7482,7 +9613,7 @@ export type UpdateEnvVar200 = {
 	is_secret?: boolean | undefined;
 	/**
 	 * @description The timestamp of when the value was last updated
-	 * @type string | undefined, date-time
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
@@ -7515,143 +9646,132 @@ export type UpdateEnvVar200 = {
 };
 
 /**
- * @description error
+ * @type object
  */
-export type UpdateEnvVarError = {
+export type UpdateEnvVarStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export const updateEnvVarMutationRequestScopesEnum = {
-	builds: "builds",
-	functions: "functions",
-	runtime: "runtime",
-	"post-processing": "post-processing",
-} as const;
-
-export type UpdateEnvVarMutationRequestScopesEnumKey =
-	(typeof updateEnvVarMutationRequestScopesEnum)[keyof typeof updateEnvVarMutationRequestScopesEnum];
-
-export const valuesContextEnum8 = {
-	all: "all",
-	dev: "dev",
-	"dev-server": "dev-server",
-	"branch-deploy": "branch-deploy",
-	"deploy-preview": "deploy-preview",
-	production: "production",
-	branch: "branch",
-} as const;
-
-export type ValuesContextEnum8Key = (typeof valuesContextEnum8)[keyof typeof valuesContextEnum8];
-
-export type UpdateEnvVarMutationRequest = {
-	/**
-	 * @description The existing or new name of the key, if you wish to rename it (case-sensitive)
-	 * @type string | undefined
-	 */
-	key?: string | undefined;
-	/**
-	 * @description The scopes that this environment variable is set to (Pro plans and above)
-	 * @type array | undefined
-	 */
-	scopes?: UpdateEnvVarMutationRequestScopesEnumKey[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	values?:
-		| {
-				/**
-				 * @description The environment variable value\'s universally unique ID
-				 * @type string | undefined
-				 */
-				id?: string | undefined;
-				/**
-				 * @description The environment variable\'s unencrypted value
-				 * @type string | undefined
-				 */
-				value?: string | undefined;
-				/**
-				 * @description The deploy context in which this value will be used. `dev` refers to local development when running `netlify dev`.
-				 * @type string | undefined
-				 */
-				context?: ValuesContextEnum8Key | undefined;
-				/**
-				 * @description An additional parameter for custom branches. Currently, this is used for specifying a branch name when `context=branch`.
-				 * @type string | undefined
-				 */
-				context_parameter?: string | undefined;
-		  }[]
-		| undefined;
-	/**
-	 * @description Secret values are only readable by code running on Netlify\'s systems. With secrets, only the local development context values are readable from the UI, API, and CLI. By default, environment variable values are not secret.
-	 * @type boolean | undefined
-	 */
-	is_secret?: boolean | undefined;
-};
-
-export type UpdateEnvVarMutationResponse = UpdateEnvVar200;
-
-export type UpdateEnvVarMutation = {
-	Response: UpdateEnvVar200;
-	Request: UpdateEnvVarMutationRequest;
-	PathParams: UpdateEnvVarPathParams;
-	QueryParams: UpdateEnvVarQueryParams;
-	Errors: any;
-};
-
-export type SetEnvVarValuePathParams = {
-	/**
-	 * @description Scope response to account_id
-	 * @type string
-	 */
-	account_id: string;
-	/**
-	 * @description The existing environment variable key name (case-sensitive)
-	 * @type string
-	 */
-	key: string;
-};
-
-export type SetEnvVarValueQueryParams = {
-	/**
-	 * @description If provided, update an environment variable set on this site
-	 * @type string | undefined
-	 */
-	site_id?: string | undefined;
-};
-
-export const setEnvVarValue201ScopesEnum = {
-	builds: "builds",
-	functions: "functions",
-	runtime: "runtime",
-	"post-processing": "post-processing",
-} as const;
-
-export type SetEnvVarValue201ScopesEnumKey =
-	(typeof setEnvVarValue201ScopesEnum)[keyof typeof setEnvVarValue201ScopesEnum];
-
-export const valuesContextEnum9 = {
-	all: "all",
-	dev: "dev",
-	"dev-server": "dev-server",
-	"branch-deploy": "branch-deploy",
-	"deploy-preview": "deploy-preview",
-	production: "production",
-	branch: "branch",
-} as const;
-
-export type ValuesContextEnum9Key = (typeof valuesContextEnum9)[keyof typeof valuesContextEnum9];
+/**
+ * @type object | undefined
+ */
+export type UpdateEnvVarData =
+	| {
+			/**
+			 * @description The existing or new name of the key, if you wish to rename it (case-sensitive)
+			 * @type string | undefined
+			 */
+			key?: string | undefined;
+			/**
+			 * @description The scopes that this environment variable is set to (Pro plans and above)
+			 * @type array | undefined
+			 */
+			scopes?: ("builds" | "functions" | "runtime" | "post-processing")[] | undefined;
+			/**
+			 * @type array | undefined
+			 */
+			values?:
+				| {
+						/**
+						 * @description The environment variable value\'s universally unique ID
+						 * @type string | undefined
+						 */
+						id?: string | undefined;
+						/**
+						 * @description The environment variable\'s unencrypted value
+						 * @type string | undefined
+						 */
+						value?: string | undefined;
+						/**
+						 * @description The deploy context in which this value will be used. `dev` refers to local development when running `netlify dev`.
+						 * @type string | undefined
+						 */
+						context?: ContextEnumKey | undefined;
+						/**
+						 * @description An additional parameter for custom branches. Currently, this is used for specifying a branch name when `context=branch`.
+						 * @type string | undefined
+						 */
+						context_parameter?: string | undefined;
+				  }[]
+				| undefined;
+			/**
+			 * @description Secret values are only readable by code running on Netlify\'s systems. With secrets, only the local development context values are readable from the UI, API, and CLI. By default, environment variable values are not secret.
+			 * @type boolean | undefined
+			 */
+			is_secret?: boolean | undefined;
+	  }
+	| undefined;
 
 /**
- * @description Created (success)
+ * @type object
  */
-export type SetEnvVarValue201 = {
+export type UpdateEnvVarRequestConfig = {
+	data?: UpdateEnvVarData | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		account_id: UpdateEnvVarPathAccountId;
+		key: UpdateEnvVarPathKey;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				site_id?: UpdateEnvVarQuerySiteId | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/accounts/${string}/env/${string}`;
+};
+
+/**
+ * @type object
+ */
+export type UpdateEnvVarResponses = {
+	"200": UpdateEnvVarStatus200;
+	default: UpdateEnvVarStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type UpdateEnvVarResponse = UpdateEnvVarStatus200 | UpdateEnvVarStatusDefault;
+
+/**
+ * @description Scope response to account_id
+ * @type string
+ */
+export type SetEnvVarValuePathAccountId = string;
+
+/**
+ * @description The existing environment variable key name (case-sensitive)
+ * @type string
+ */
+export type SetEnvVarValuePathKey = string;
+
+/**
+ * @description If provided, update an environment variable set on this site
+ * @type string | undefined
+ */
+export type SetEnvVarValueQuerySiteId = string | undefined;
+
+/**
+ * @description Environment variable model definition
+ * @type object
+ */
+export type SetEnvVarValueStatus201 = {
 	/**
 	 * @description The environment variable key, like ALGOLIA_ID (case-sensitive)
 	 * @type string | undefined
@@ -7661,7 +9781,7 @@ export type SetEnvVarValue201 = {
 	 * @description The scopes that this environment variable is set to
 	 * @type array | undefined
 	 */
-	scopes?: SetEnvVarValue201ScopesEnumKey[] | undefined;
+	scopes?: ("builds" | "functions" | "runtime" | "post-processing")[] | undefined;
 	/**
 	 * @description An array of Value objects containing values and metadata
 	 * @type array | undefined
@@ -7682,7 +9802,7 @@ export type SetEnvVarValue201 = {
 				 * @description The deploy context in which this value will be used. `dev` refers to local development when running `netlify dev`.
 				 * @type string | undefined
 				 */
-				context?: ValuesContextEnum9Key | undefined;
+				context?: ContextEnumKey | undefined;
 				/**
 				 * @description An additional parameter for custom branches. Currently, this is used for specifying a branch name when `context=branch`.
 				 * @type string | undefined
@@ -7697,7 +9817,7 @@ export type SetEnvVarValue201 = {
 	is_secret?: boolean | undefined;
 	/**
 	 * @description The timestamp of when the value was last updated
-	 * @type string | undefined, date-time
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
@@ -7730,187 +9850,263 @@ export type SetEnvVarValue201 = {
 };
 
 /**
- * @description error
+ * @type object
  */
-export type SetEnvVarValueError = {
+export type SetEnvVarValueStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export const setEnvVarValueMutationRequestContextEnum = {
-	all: "all",
-	dev: "dev",
-	"dev-server": "dev-server",
-	"branch-deploy": "branch-deploy",
-	"deploy-preview": "deploy-preview",
-	production: "production",
-	branch: "branch",
-} as const;
+/**
+ * @type object | undefined
+ */
+export type SetEnvVarValueData =
+	| {
+			/**
+			 * @description The deploy context in which this value will be used. `dev` refers to local development when running `netlify dev`. `branch` must be provided with a value in `context_parameter`.
+			 * @type string | undefined
+			 */
+			context?: ContextEnumKey | undefined;
+			/**
+			 * @description An additional parameter for custom branches. Currently, this is used for providing a branch name when `context=branch`.
+			 * @type string | undefined
+			 */
+			context_parameter?: string | undefined;
+			/**
+			 * @description The environment variable\'s unencrypted value
+			 * @type string | undefined
+			 */
+			value?: string | undefined;
+	  }
+	| undefined;
 
-export type SetEnvVarValueMutationRequestContextEnumKey =
-	(typeof setEnvVarValueMutationRequestContextEnum)[keyof typeof setEnvVarValueMutationRequestContextEnum];
-
-export type SetEnvVarValueMutationRequest = {
+/**
+ * @type object
+ */
+export type SetEnvVarValueRequestConfig = {
+	data?: SetEnvVarValueData | undefined;
 	/**
-	 * @description The deploy context in which this value will be used. `dev` refers to local development when running `netlify dev`. `branch` must be provided with a value in `context_parameter`.
-	 * @type string | undefined
+	 * @type object
 	 */
-	context?: SetEnvVarValueMutationRequestContextEnumKey | undefined;
+	pathParams: {
+		account_id: SetEnvVarValuePathAccountId;
+		key: SetEnvVarValuePathKey;
+	};
 	/**
-	 * @description An additional parameter for custom branches. Currently, this is used for providing a branch name when `context=branch`.
-	 * @type string | undefined
+	 * @type object | undefined
 	 */
-	context_parameter?: string | undefined;
+	queryParams?:
+		| {
+				site_id?: SetEnvVarValueQuerySiteId | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
 	/**
-	 * @description The environment variable\'s unencrypted value
-	 * @type string | undefined
-	 */
-	value?: string | undefined;
-};
-
-export type SetEnvVarValueMutationResponse = SetEnvVarValue201;
-
-export type SetEnvVarValueMutation = {
-	Response: SetEnvVarValue201;
-	Request: SetEnvVarValueMutationRequest;
-	PathParams: SetEnvVarValuePathParams;
-	QueryParams: SetEnvVarValueQueryParams;
-	Errors: any;
-};
-
-export type DeleteEnvVarPathParams = {
-	/**
-	 * @description Scope response to account_id
 	 * @type string
 	 */
-	account_id: string;
-	/**
-	 * @description The environment variable key (case-sensitive)
-	 * @type string
-	 */
-	key: string;
-};
-
-export type DeleteEnvVarQueryParams = {
-	/**
-	 * @description If provided, delete the environment variable from this site
-	 * @type string | undefined
-	 */
-	site_id?: string | undefined;
+	url: `/accounts/${string}/env/${string}`;
 };
 
 /**
- * @description No Content (success)
+ * @type object
  */
-export type DeleteEnvVar204 = unknown;
+export type SetEnvVarValueResponses = {
+	"201": SetEnvVarValueStatus201;
+	default: SetEnvVarValueStatusDefault;
+};
 
 /**
- * @description error
+ * @description Union of all possible responses
  */
-export type DeleteEnvVarError = {
+export type SetEnvVarValueResponse = SetEnvVarValueStatus201 | SetEnvVarValueStatusDefault;
+
+/**
+ * @description Scope response to account_id
+ * @type string
+ */
+export type DeleteEnvVarPathAccountId = string;
+
+/**
+ * @description The environment variable key (case-sensitive)
+ * @type string
+ */
+export type DeleteEnvVarPathKey = string;
+
+/**
+ * @description If provided, delete the environment variable from this site
+ * @type string | undefined
+ */
+export type DeleteEnvVarQuerySiteId = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type DeleteEnvVarStatus204 = unknown;
+
+/**
+ * @type object
+ */
+export type DeleteEnvVarStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type DeleteEnvVarMutationResponse = DeleteEnvVar204;
-
-export type DeleteEnvVarMutation = {
-	Response: DeleteEnvVar204;
-	PathParams: DeleteEnvVarPathParams;
-	QueryParams: DeleteEnvVarQueryParams;
-	Errors: any;
-};
-
-export type DeleteEnvVarValuePathParams = {
+/**
+ * @type object
+ */
+export type DeleteEnvVarRequestConfig = {
+	data?: never | undefined;
 	/**
-	 * @description Scope response to account_id
+	 * @type object
+	 */
+	pathParams: {
+		account_id: DeleteEnvVarPathAccountId;
+		key: DeleteEnvVarPathKey;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				site_id?: DeleteEnvVarQuerySiteId | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
 	 * @type string
 	 */
-	account_id: string;
-	/**
-	 * @description The environment variable value\'s ID
-	 * @type string
-	 */
-	id: string;
-	/**
-	 * @description The environment variable key name (case-sensitive)
-	 * @type string
-	 */
-	key: string;
-};
-
-export type DeleteEnvVarValueQueryParams = {
-	/**
-	 * @description If provided, delete the value from an environment variable on this site
-	 * @type string | undefined
-	 */
-	site_id?: string | undefined;
+	url: `/accounts/${string}/env/${string}`;
 };
 
 /**
- * @description No Content (success)
+ * @type object
  */
-export type DeleteEnvVarValue204 = unknown;
+export type DeleteEnvVarResponses = {
+	"204": DeleteEnvVarStatus204;
+	default: DeleteEnvVarStatusDefault;
+};
 
 /**
- * @description error
+ * @description Union of all possible responses
  */
-export type DeleteEnvVarValueError = {
+export type DeleteEnvVarResponse = DeleteEnvVarStatus204 | DeleteEnvVarStatusDefault;
+
+/**
+ * @description Scope response to account_id
+ * @type string
+ */
+export type DeleteEnvVarValuePathAccountId = string;
+
+/**
+ * @description The environment variable value\'s ID
+ * @type string
+ */
+export type DeleteEnvVarValuePathId = string;
+
+/**
+ * @description The environment variable key name (case-sensitive)
+ * @type string
+ */
+export type DeleteEnvVarValuePathKey = string;
+
+/**
+ * @description If provided, delete the value from an environment variable on this site
+ * @type string | undefined
+ */
+export type DeleteEnvVarValueQuerySiteId = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type DeleteEnvVarValueStatus204 = unknown;
+
+/**
+ * @type object
+ */
+export type DeleteEnvVarValueStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type DeleteEnvVarValueMutationResponse = DeleteEnvVarValue204;
-
-export type DeleteEnvVarValueMutation = {
-	Response: DeleteEnvVarValue204;
-	PathParams: DeleteEnvVarValuePathParams;
-	QueryParams: DeleteEnvVarValueQueryParams;
-	Errors: any;
-};
-
-export type SearchSiteFunctionsPathParams = {
+/**
+ * @type object
+ */
+export type DeleteEnvVarValueRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		account_id: DeleteEnvVarValuePathAccountId;
+		id: DeleteEnvVarValuePathId;
+		key: DeleteEnvVarValuePathKey;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				site_id?: DeleteEnvVarValueQuerySiteId | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-};
-
-export type SearchSiteFunctionsQueryParams = {
-	/**
-	 * @type string | undefined
-	 */
-	filter?: string | undefined;
+	url: `/accounts/${string}/env/${string}/value/${string}`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type SearchSiteFunctions200 = {
+export type DeleteEnvVarValueResponses = {
+	"204": DeleteEnvVarValueStatus204;
+	default: DeleteEnvVarValueStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteEnvVarValueResponse = DeleteEnvVarValueStatus204 | DeleteEnvVarValueStatusDefault;
+
+/**
+ * @type string
+ */
+export type SearchSiteFunctionsPathSiteId = string;
+
+/**
+ * @type string | undefined
+ */
+export type SearchSiteFunctionsQueryFilter = string | undefined;
+
+/**
+ * @type array
+ */
+export type SearchSiteFunctionsStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
 	branch?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
@@ -7932,39 +10128,69 @@ export type SearchSiteFunctions200 = {
 }[];
 
 /**
- * @description error
+ * @type object
  */
-export type SearchSiteFunctionsError = {
+export type SearchSiteFunctionsStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type SearchSiteFunctionsQueryResponse = SearchSiteFunctions200;
-
-export type SearchSiteFunctionsQuery = {
-	Response: SearchSiteFunctions200;
-	PathParams: SearchSiteFunctionsPathParams;
-	QueryParams: SearchSiteFunctionsQueryParams;
-	Errors: any;
-};
-
-export type ListSiteFormsPathParams = {
+/**
+ * @type object
+ */
+export type SearchSiteFunctionsRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: SearchSiteFunctionsPathSiteId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				filter?: SearchSiteFunctionsQueryFilter | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
+	url: `/sites/${string}/functions`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type ListSiteForms200 = {
+export type SearchSiteFunctionsResponses = {
+	"200": SearchSiteFunctionsStatus200;
+	default: SearchSiteFunctionsStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type SearchSiteFunctionsResponse =
+	| SearchSiteFunctionsStatus200
+	| SearchSiteFunctionsStatusDefault;
+
+/**
+ * @type string
+ */
+export type ListSiteFormsPathSiteId = string;
+
+/**
+ * @type array
+ */
+export type ListSiteFormsStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -7982,7 +10208,7 @@ export type ListSiteForms200 = {
 	 */
 	paths?: string[] | undefined;
 	/**
-	 * @type integer | undefined, int32
+	 * @type integer | undefined
 	 */
 	submission_count?: number | undefined;
 	/**
@@ -7990,99 +10216,144 @@ export type ListSiteForms200 = {
 	 */
 	fields?: object[] | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 }[];
 
 /**
- * @description error
+ * @type object
  */
-export type ListSiteFormsError = {
+export type ListSiteFormsStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type ListSiteFormsQueryResponse = ListSiteForms200;
-
-export type ListSiteFormsQuery = {
-	Response: ListSiteForms200;
-	PathParams: ListSiteFormsPathParams;
-	Errors: any;
-};
-
-export type DeleteSiteFormPathParams = {
+/**
+ * @type object
+ */
+export type ListSiteFormsRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: ListSiteFormsPathSiteId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-	/**
-	 * @type string
-	 */
-	form_id: string;
+	url: `/sites/${string}/forms`;
 };
 
 /**
- * @description Deleted
+ * @type object
  */
-export type DeleteSiteForm204 = unknown;
+export type ListSiteFormsResponses = {
+	"200": ListSiteFormsStatus200;
+	default: ListSiteFormsStatusDefault;
+};
 
 /**
- * @description error
+ * @description Union of all possible responses
  */
-export type DeleteSiteFormError = {
+export type ListSiteFormsResponse = ListSiteFormsStatus200 | ListSiteFormsStatusDefault;
+
+/**
+ * @type string
+ */
+export type DeleteSiteFormPathSiteId = string;
+
+/**
+ * @type string
+ */
+export type DeleteSiteFormPathFormId = string;
+
+/**
+ * @type unknown
+ */
+export type DeleteSiteFormStatus204 = unknown;
+
+/**
+ * @type object
+ */
+export type DeleteSiteFormStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type DeleteSiteFormMutationResponse = DeleteSiteForm204;
-
-export type DeleteSiteFormMutation = {
-	Response: DeleteSiteForm204;
-	PathParams: DeleteSiteFormPathParams;
-	Errors: any;
-};
-
-export type ListSiteSubmissionsPathParams = {
+/**
+ * @type object
+ */
+export type DeleteSiteFormRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: DeleteSiteFormPathSiteId;
+		form_id: DeleteSiteFormPathFormId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-};
-
-export type ListSiteSubmissionsQueryParams = {
-	/**
-	 * @type integer | undefined, int32
-	 */
-	page?: number | undefined;
-	/**
-	 * @type integer | undefined, int32
-	 */
-	per_page?: number | undefined;
+	url: `/sites/${string}/forms/${string}`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type ListSiteSubmissions200 = {
+export type DeleteSiteFormResponses = {
+	"204": DeleteSiteFormStatus204;
+	default: DeleteSiteFormStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteSiteFormResponse = DeleteSiteFormStatus204 | DeleteSiteFormStatusDefault;
+
+/**
+ * @type string
+ */
+export type ListSiteSubmissionsPathSiteId = string;
+
+/**
+ * @type integer | undefined
+ */
+export type ListSiteSubmissionsQueryPage = number | undefined;
+
+/**
+ * @type integer | undefined
+ */
+export type ListSiteSubmissionsQueryPerPage = number | undefined;
+
+/**
+ * @type array
+ */
+export type ListSiteSubmissionsStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
 	id?: string | undefined;
 	/**
-	 * @type integer | undefined, int32
+	 * @type integer | undefined
 	 */
 	number?: number | undefined;
 	/**
@@ -8118,7 +10389,7 @@ export type ListSiteSubmissions200 = {
 	 */
 	data?: object | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
@@ -8128,39 +10399,70 @@ export type ListSiteSubmissions200 = {
 }[];
 
 /**
- * @description error
+ * @type object
  */
-export type ListSiteSubmissionsError = {
+export type ListSiteSubmissionsStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type ListSiteSubmissionsQueryResponse = ListSiteSubmissions200;
-
-export type ListSiteSubmissionsQuery = {
-	Response: ListSiteSubmissions200;
-	PathParams: ListSiteSubmissionsPathParams;
-	QueryParams: ListSiteSubmissionsQueryParams;
-	Errors: any;
-};
-
-export type ListSiteFilesPathParams = {
+/**
+ * @type object
+ */
+export type ListSiteSubmissionsRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: ListSiteSubmissionsPathSiteId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				page?: ListSiteSubmissionsQueryPage | undefined;
+				per_page?: ListSiteSubmissionsQueryPerPage | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
+	url: `/sites/${string}/submissions`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type ListSiteFiles200 = {
+export type ListSiteSubmissionsResponses = {
+	"200": ListSiteSubmissionsStatus200;
+	default: ListSiteSubmissionsStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListSiteSubmissionsResponse =
+	| ListSiteSubmissionsStatus200
+	| ListSiteSubmissionsStatusDefault;
+
+/**
+ * @type string
+ */
+export type ListSiteFilesPathSiteId = string;
+
+/**
+ * @type array
+ */
+export type ListSiteFilesStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -8178,44 +10480,66 @@ export type ListSiteFiles200 = {
 	 */
 	mime_type?: string | undefined;
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	size?: number | undefined;
+	size?: bigint | undefined;
 }[];
 
 /**
- * @description error
+ * @type object
  */
-export type ListSiteFilesError = {
+export type ListSiteFilesStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type ListSiteFilesQueryResponse = ListSiteFiles200;
-
-export type ListSiteFilesQuery = {
-	Response: ListSiteFiles200;
-	PathParams: ListSiteFilesPathParams;
-	Errors: any;
-};
-
-export type ListSiteAssetsPathParams = {
+/**
+ * @type object
+ */
+export type ListSiteFilesRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: ListSiteFilesPathSiteId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
+	url: `/sites/${string}/files`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type ListSiteAssets200 = {
+export type ListSiteFilesResponses = {
+	"200": ListSiteFilesStatus200;
+	default: ListSiteFilesStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListSiteFilesResponse = ListSiteFilesStatus200 | ListSiteFilesStatusDefault;
+
+/**
+ * @type string
+ */
+export type ListSiteAssetsPathSiteId = string;
+
+/**
+ * @type array
+ */
+export type ListSiteAssetsStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -8253,71 +10577,94 @@ export type ListSiteAssets200 = {
 	 */
 	visibility?: string | undefined;
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	size?: number | undefined;
+	size?: bigint | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 }[];
 
 /**
- * @description error
+ * @type object
  */
-export type ListSiteAssetsError = {
+export type ListSiteAssetsStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type ListSiteAssetsQueryResponse = ListSiteAssets200;
-
-export type ListSiteAssetsQuery = {
-	Response: ListSiteAssets200;
-	PathParams: ListSiteAssetsPathParams;
-	Errors: any;
-};
-
-export type CreateSiteAssetPathParams = {
+/**
+ * @type object
+ */
+export type ListSiteAssetsRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: ListSiteAssetsPathSiteId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-};
-
-export type CreateSiteAssetQueryParams = {
-	/**
-	 * @type string
-	 */
-	name: string;
-	/**
-	 * @type integer, int64
-	 */
-	size: number;
-	/**
-	 * @type string
-	 */
-	content_type: string;
-	/**
-	 * @type string | undefined
-	 */
-	visibility?: string | undefined;
+	url: `/sites/${string}/assets`;
 };
 
 /**
- * @description Created
+ * @type object
  */
-export type CreateSiteAsset201 = {
+export type ListSiteAssetsResponses = {
+	"200": ListSiteAssetsStatus200;
+	default: ListSiteAssetsStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListSiteAssetsResponse = ListSiteAssetsStatus200 | ListSiteAssetsStatusDefault;
+
+/**
+ * @type string
+ */
+export type CreateSiteAssetPathSiteId = string;
+
+/**
+ * @type string
+ */
+export type CreateSiteAssetQueryName = string;
+
+/**
+ * @type integer
+ */
+export type CreateSiteAssetQuerySize = bigint;
+
+/**
+ * @type string
+ */
+export type CreateSiteAssetQueryContentType = string;
+
+/**
+ * @type string | undefined
+ */
+export type CreateSiteAssetQueryVisibility = string | undefined;
+
+/**
+ * @type object
+ */
+export type CreateSiteAssetStatus201 = {
 	/**
 	 * @type object | undefined
 	 */
@@ -8379,15 +10726,15 @@ export type CreateSiteAsset201 = {
 				 */
 				visibility?: string | undefined;
 				/**
-				 * @type integer | undefined, int64
+				 * @type integer | undefined
 				 */
-				size?: number | undefined;
+				size?: bigint | undefined;
 				/**
-				 * @type string | undefined, dateTime
+				 * @type string | undefined
 				 */
 				created_at?: string | undefined;
 				/**
-				 * @type string | undefined, dateTime
+				 * @type string | undefined
 				 */
 				updated_at?: string | undefined;
 		  }
@@ -8395,43 +10742,75 @@ export type CreateSiteAsset201 = {
 };
 
 /**
- * @description error
+ * @type object
  */
-export type CreateSiteAssetError = {
+export type CreateSiteAssetStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type CreateSiteAssetMutationResponse = CreateSiteAsset201;
-
-export type CreateSiteAssetMutation = {
-	Response: CreateSiteAsset201;
-	PathParams: CreateSiteAssetPathParams;
-	QueryParams: CreateSiteAssetQueryParams;
-	Errors: any;
-};
-
-export type GetSiteAssetInfoPathParams = {
+/**
+ * @type object
+ */
+export type CreateSiteAssetRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: CreateSiteAssetPathSiteId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				name: CreateSiteAssetQueryName;
+				size: CreateSiteAssetQuerySize;
+				content_type: CreateSiteAssetQueryContentType;
+				visibility?: CreateSiteAssetQueryVisibility | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-	/**
-	 * @type string
-	 */
-	asset_id: string;
+	url: `/sites/${string}/assets`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type GetSiteAssetInfo200 = {
+export type CreateSiteAssetResponses = {
+	"201": CreateSiteAssetStatus201;
+	default: CreateSiteAssetStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateSiteAssetResponse = CreateSiteAssetStatus201 | CreateSiteAssetStatusDefault;
+
+/**
+ * @type string
+ */
+export type GetSiteAssetInfoPathSiteId = string;
+
+/**
+ * @type string
+ */
+export type GetSiteAssetInfoPathAssetId = string;
+
+/**
+ * @type object
+ */
+export type GetSiteAssetInfoStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -8469,63 +10848,85 @@ export type GetSiteAssetInfo200 = {
 	 */
 	visibility?: string | undefined;
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	size?: number | undefined;
+	size?: bigint | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 };
 
 /**
- * @description error
+ * @type object
  */
-export type GetSiteAssetInfoError = {
+export type GetSiteAssetInfoStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type GetSiteAssetInfoQueryResponse = GetSiteAssetInfo200;
-
-export type GetSiteAssetInfoQuery = {
-	Response: GetSiteAssetInfo200;
-	PathParams: GetSiteAssetInfoPathParams;
-	Errors: any;
-};
-
-export type UpdateSiteAssetPathParams = {
+/**
+ * @type object
+ */
+export type GetSiteAssetInfoRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: GetSiteAssetInfoPathSiteId;
+		asset_id: GetSiteAssetInfoPathAssetId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-	/**
-	 * @type string
-	 */
-	asset_id: string;
-};
-
-export type UpdateSiteAssetQueryParams = {
-	/**
-	 * @type string
-	 */
-	state: string;
+	url: `/sites/${string}/assets/${string}`;
 };
 
 /**
- * @description Updated
+ * @type object
  */
-export type UpdateSiteAsset200 = {
+export type GetSiteAssetInfoResponses = {
+	"200": GetSiteAssetInfoStatus200;
+	default: GetSiteAssetInfoStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetSiteAssetInfoResponse = GetSiteAssetInfoStatus200 | GetSiteAssetInfoStatusDefault;
+
+/**
+ * @type string
+ */
+export type UpdateSiteAssetPathSiteId = string;
+
+/**
+ * @type string
+ */
+export type UpdateSiteAssetPathAssetId = string;
+
+/**
+ * @type string
+ */
+export type UpdateSiteAssetQueryState = string;
+
+/**
+ * @type object
+ */
+export type UpdateSiteAssetStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -8563,95 +10964,149 @@ export type UpdateSiteAsset200 = {
 	 */
 	visibility?: string | undefined;
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	size?: number | undefined;
+	size?: bigint | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 };
 
 /**
- * @description error
+ * @type object
  */
-export type UpdateSiteAssetError = {
+export type UpdateSiteAssetStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type UpdateSiteAssetMutationResponse = UpdateSiteAsset200;
-
-export type UpdateSiteAssetMutation = {
-	Response: UpdateSiteAsset200;
-	PathParams: UpdateSiteAssetPathParams;
-	QueryParams: UpdateSiteAssetQueryParams;
-	Errors: any;
-};
-
-export type DeleteSiteAssetPathParams = {
+/**
+ * @type object
+ */
+export type UpdateSiteAssetRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: UpdateSiteAssetPathSiteId;
+		asset_id: UpdateSiteAssetPathAssetId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				state: UpdateSiteAssetQueryState;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-	/**
-	 * @type string
-	 */
-	asset_id: string;
+	url: `/sites/${string}/assets/${string}`;
 };
 
 /**
- * @description Deleted
+ * @type object
  */
-export type DeleteSiteAsset204 = unknown;
+export type UpdateSiteAssetResponses = {
+	"200": UpdateSiteAssetStatus200;
+	default: UpdateSiteAssetStatusDefault;
+};
 
 /**
- * @description error
+ * @description Union of all possible responses
  */
-export type DeleteSiteAssetError = {
+export type UpdateSiteAssetResponse = UpdateSiteAssetStatus200 | UpdateSiteAssetStatusDefault;
+
+/**
+ * @type string
+ */
+export type DeleteSiteAssetPathSiteId = string;
+
+/**
+ * @type string
+ */
+export type DeleteSiteAssetPathAssetId = string;
+
+/**
+ * @type unknown
+ */
+export type DeleteSiteAssetStatus204 = unknown;
+
+/**
+ * @type object
+ */
+export type DeleteSiteAssetStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type DeleteSiteAssetMutationResponse = DeleteSiteAsset204;
-
-export type DeleteSiteAssetMutation = {
-	Response: DeleteSiteAsset204;
-	PathParams: DeleteSiteAssetPathParams;
-	Errors: any;
-};
-
-export type GetSiteAssetPublicSignaturePathParams = {
+/**
+ * @type object
+ */
+export type DeleteSiteAssetRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: DeleteSiteAssetPathSiteId;
+		asset_id: DeleteSiteAssetPathAssetId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-	/**
-	 * @type string
-	 */
-	asset_id: string;
+	url: `/sites/${string}/assets/${string}`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type GetSiteAssetPublicSignature200 = {
+export type DeleteSiteAssetResponses = {
+	"204": DeleteSiteAssetStatus204;
+	default: DeleteSiteAssetStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteSiteAssetResponse = DeleteSiteAssetStatus204 | DeleteSiteAssetStatusDefault;
+
+/**
+ * @type string
+ */
+export type GetSiteAssetPublicSignaturePathSiteId = string;
+
+/**
+ * @type string
+ */
+export type GetSiteAssetPublicSignaturePathAssetId = string;
+
+/**
+ * @type object
+ */
+export type GetSiteAssetPublicSignatureStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -8659,42 +11114,68 @@ export type GetSiteAssetPublicSignature200 = {
 };
 
 /**
- * @description error
+ * @type object
  */
-export type GetSiteAssetPublicSignatureError = {
+export type GetSiteAssetPublicSignatureStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type GetSiteAssetPublicSignatureQueryResponse = GetSiteAssetPublicSignature200;
-
-export type GetSiteAssetPublicSignatureQuery = {
-	Response: GetSiteAssetPublicSignature200;
-	PathParams: GetSiteAssetPublicSignaturePathParams;
-	Errors: any;
-};
-
-export type GetSiteFileByPathNamePathParams = {
+/**
+ * @type object
+ */
+export type GetSiteAssetPublicSignatureRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: GetSiteAssetPublicSignaturePathSiteId;
+		asset_id: GetSiteAssetPublicSignaturePathAssetId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-	/**
-	 * @type string
-	 */
-	file_path: string;
+	url: `/sites/${string}/assets/${string}/public_signature`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type GetSiteFileByPathName200 = {
+export type GetSiteAssetPublicSignatureResponses = {
+	"200": GetSiteAssetPublicSignatureStatus200;
+	default: GetSiteAssetPublicSignatureStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetSiteAssetPublicSignatureResponse =
+	| GetSiteAssetPublicSignatureStatus200
+	| GetSiteAssetPublicSignatureStatusDefault;
+
+/**
+ * @type string
+ */
+export type GetSiteFileByPathNamePathSiteId = string;
+
+/**
+ * @type string
+ */
+export type GetSiteFileByPathNamePathFilePath = string;
+
+/**
+ * @type object
+ */
+export type GetSiteFileByPathNameStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -8712,49 +11193,79 @@ export type GetSiteFileByPathName200 = {
 	 */
 	mime_type?: string | undefined;
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	size?: number | undefined;
+	size?: bigint | undefined;
 };
 
 /**
- * @description error
+ * @type object
  */
-export type GetSiteFileByPathNameError = {
+export type GetSiteFileByPathNameStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type GetSiteFileByPathNameQueryResponse = GetSiteFileByPathName200;
-
-export type GetSiteFileByPathNameQuery = {
-	Response: GetSiteFileByPathName200;
-	PathParams: GetSiteFileByPathNamePathParams;
-	Errors: any;
+/**
+ * @type object
+ */
+export type GetSiteFileByPathNameRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: GetSiteFileByPathNamePathSiteId;
+		file_path: GetSiteFileByPathNamePathFilePath;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/sites/${string}/files/${string}`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type PurgeCache202 = unknown;
+export type GetSiteFileByPathNameResponses = {
+	"200": GetSiteFileByPathNameStatus200;
+	default: GetSiteFileByPathNameStatusDefault;
+};
 
 /**
- * @description Invalid request parameters
+ * @description Union of all possible responses
  */
-export type PurgeCache400 = unknown;
+export type GetSiteFileByPathNameResponse =
+	| GetSiteFileByPathNameStatus200
+	| GetSiteFileByPathNameStatusDefault;
 
 /**
- * @description Site not found
+ * @type unknown
  */
-export type PurgeCache404 = unknown;
+export type PurgeCacheStatus202 = unknown;
 
-export type PurgeCacheMutationRequest = {
+/**
+ * @type unknown
+ */
+export type PurgeCacheStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type PurgeCacheStatus404 = unknown;
+
+/**
+ * @type object
+ */
+export type PurgeCacheData = {
 	/**
 	 * @type string | undefined
 	 */
@@ -8769,27 +11280,45 @@ export type PurgeCacheMutationRequest = {
 	cache_tags?: string[] | undefined;
 };
 
-export type PurgeCacheMutationResponse = PurgeCache202;
-
-export type PurgeCacheMutation = {
-	Response: PurgeCache202;
-	Request: PurgeCacheMutationRequest;
-	Errors: PurgeCache400 | PurgeCache404;
-};
-
-export type ListSiteSnippetsPathParams = {
+/**
+ * @type object
+ */
+export type PurgeCacheRequestConfig = {
+	data?: PurgeCacheData | undefined;
+	pathParams?: never | undefined;
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
+	url: "/purge";
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type ListSiteSnippets200 = {
+export type PurgeCacheResponses = {
+	"202": PurgeCacheStatus202;
+	"400": PurgeCacheStatus400;
+	"404": PurgeCacheStatus404;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PurgeCacheResponse = PurgeCacheStatus202 | PurgeCacheStatus400 | PurgeCacheStatus404;
+
+/**
+ * @type string
+ */
+export type ListSiteSnippetsPathSiteId = string;
+
+/**
+ * @type array
+ */
+export type ListSiteSnippetsStatus200 = {
 	/**
-	 * @type integer | undefined, int32
+	 * @type integer | undefined
 	 */
 	id?: number | undefined;
 	/**
@@ -8819,40 +11348,62 @@ export type ListSiteSnippets200 = {
 }[];
 
 /**
- * @description error
+ * @type object
  */
-export type ListSiteSnippetsError = {
+export type ListSiteSnippetsStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type ListSiteSnippetsQueryResponse = ListSiteSnippets200;
-
-export type ListSiteSnippetsQuery = {
-	Response: ListSiteSnippets200;
-	PathParams: ListSiteSnippetsPathParams;
-	Errors: any;
-};
-
-export type CreateSiteSnippetPathParams = {
+/**
+ * @type object
+ */
+export type ListSiteSnippetsRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: ListSiteSnippetsPathSiteId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
+	url: `/sites/${string}/snippets`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type CreateSiteSnippet201 = {
+export type ListSiteSnippetsResponses = {
+	"200": ListSiteSnippetsStatus200;
+	default: ListSiteSnippetsStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListSiteSnippetsResponse = ListSiteSnippetsStatus200 | ListSiteSnippetsStatusDefault;
+
+/**
+ * @type string
+ */
+export type CreateSiteSnippetPathSiteId = string;
+
+/**
+ * @type object
+ */
+export type CreateSiteSnippetStatus201 = {
 	/**
-	 * @type integer | undefined, int32
+	 * @type integer | undefined
 	 */
 	id?: number | undefined;
 	/**
@@ -8882,44 +11433,103 @@ export type CreateSiteSnippet201 = {
 };
 
 /**
- * @description error
+ * @type object
  */
-export type CreateSiteSnippetError = {
+export type CreateSiteSnippetStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type CreateSiteSnippetMutationResponse = CreateSiteSnippet201;
+/**
+ * @type object | undefined
+ */
+export type CreateSiteSnippetData =
+	| {
+			/**
+			 * @type integer | undefined
+			 */
+			id?: number | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			site_id?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			title?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			general?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			general_position?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			goal?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			goal_position?: string | undefined;
+	  }
+	| undefined;
 
-export type CreateSiteSnippetMutation = {
-	Response: CreateSiteSnippet201;
-	PathParams: CreateSiteSnippetPathParams;
-	Errors: any;
-};
-
-export type GetSiteSnippetPathParams = {
+/**
+ * @type object
+ */
+export type CreateSiteSnippetRequestConfig = {
+	data?: CreateSiteSnippetData | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: CreateSiteSnippetPathSiteId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-	/**
-	 * @type string
-	 */
-	snippet_id: string;
+	url: `/sites/${string}/snippets`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type GetSiteSnippet200 = {
+export type CreateSiteSnippetResponses = {
+	"201": CreateSiteSnippetStatus201;
+	default: CreateSiteSnippetStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateSiteSnippetResponse = CreateSiteSnippetStatus201 | CreateSiteSnippetStatusDefault;
+
+/**
+ * @type string
+ */
+export type GetSiteSnippetPathSiteId = string;
+
+/**
+ * @type string
+ */
+export type GetSiteSnippetPathSnippetId = string;
+
+/**
+ * @type object
+ */
+export type GetSiteSnippetStatus200 = {
 	/**
-	 * @type integer | undefined, int32
+	 * @type integer | undefined
 	 */
 	id?: number | undefined;
 	/**
@@ -8949,182 +11559,340 @@ export type GetSiteSnippet200 = {
 };
 
 /**
- * @description error
+ * @type object
  */
-export type GetSiteSnippetError = {
+export type GetSiteSnippetStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type GetSiteSnippetQueryResponse = GetSiteSnippet200;
-
-export type GetSiteSnippetQuery = {
-	Response: GetSiteSnippet200;
-	PathParams: GetSiteSnippetPathParams;
-	Errors: any;
-};
-
-export type UpdateSiteSnippetPathParams = {
+/**
+ * @type object
+ */
+export type GetSiteSnippetRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: GetSiteSnippetPathSiteId;
+		snippet_id: GetSiteSnippetPathSnippetId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-	/**
-	 * @type string
-	 */
-	snippet_id: string;
+	url: `/sites/${string}/snippets/${string}`;
 };
 
 /**
- * @description No content
+ * @type object
  */
-export type UpdateSiteSnippet204 = unknown;
+export type GetSiteSnippetResponses = {
+	"200": GetSiteSnippetStatus200;
+	default: GetSiteSnippetStatusDefault;
+};
 
 /**
- * @description error
+ * @description Union of all possible responses
  */
-export type UpdateSiteSnippetError = {
+export type GetSiteSnippetResponse = GetSiteSnippetStatus200 | GetSiteSnippetStatusDefault;
+
+/**
+ * @type string
+ */
+export type UpdateSiteSnippetPathSiteId = string;
+
+/**
+ * @type string
+ */
+export type UpdateSiteSnippetPathSnippetId = string;
+
+/**
+ * @type unknown
+ */
+export type UpdateSiteSnippetStatus204 = unknown;
+
+/**
+ * @type object
+ */
+export type UpdateSiteSnippetStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type UpdateSiteSnippetMutationResponse = UpdateSiteSnippet204;
+/**
+ * @type object | undefined
+ */
+export type UpdateSiteSnippetData =
+	| {
+			/**
+			 * @type integer | undefined
+			 */
+			id?: number | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			site_id?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			title?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			general?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			general_position?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			goal?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			goal_position?: string | undefined;
+	  }
+	| undefined;
 
-export type UpdateSiteSnippetMutation = {
-	Response: UpdateSiteSnippet204;
-	PathParams: UpdateSiteSnippetPathParams;
-	Errors: any;
-};
-
-export type DeleteSiteSnippetPathParams = {
+/**
+ * @type object
+ */
+export type UpdateSiteSnippetRequestConfig = {
+	data?: UpdateSiteSnippetData | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: UpdateSiteSnippetPathSiteId;
+		snippet_id: UpdateSiteSnippetPathSnippetId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-	/**
-	 * @type string
-	 */
-	snippet_id: string;
+	url: `/sites/${string}/snippets/${string}`;
 };
 
 /**
- * @description No content
+ * @type object
  */
-export type DeleteSiteSnippet204 = unknown;
+export type UpdateSiteSnippetResponses = {
+	"204": UpdateSiteSnippetStatus204;
+	default: UpdateSiteSnippetStatusDefault;
+};
 
 /**
- * @description error
+ * @description Union of all possible responses
  */
-export type DeleteSiteSnippetError = {
+export type UpdateSiteSnippetResponse = UpdateSiteSnippetStatus204 | UpdateSiteSnippetStatusDefault;
+
+/**
+ * @type string
+ */
+export type DeleteSiteSnippetPathSiteId = string;
+
+/**
+ * @type string
+ */
+export type DeleteSiteSnippetPathSnippetId = string;
+
+/**
+ * @type unknown
+ */
+export type DeleteSiteSnippetStatus204 = unknown;
+
+/**
+ * @type object
+ */
+export type DeleteSiteSnippetStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type DeleteSiteSnippetMutationResponse = DeleteSiteSnippet204;
-
-export type DeleteSiteSnippetMutation = {
-	Response: DeleteSiteSnippet204;
-	PathParams: DeleteSiteSnippetPathParams;
-	Errors: any;
-};
-
-export type GetSiteMetadataPathParams = {
+/**
+ * @type object
+ */
+export type DeleteSiteSnippetRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: DeleteSiteSnippetPathSiteId;
+		snippet_id: DeleteSiteSnippetPathSnippetId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
+	url: `/sites/${string}/snippets/${string}`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type GetSiteMetadata200 = object;
-
-/**
- * @description error
- */
-export type GetSiteMetadataError = {
-	/**
-	 * @type integer | undefined, int64
-	 */
-	code?: number | undefined;
-	/**
-	 * @type string
-	 */
-	message: string;
-};
-
-export type GetSiteMetadataQueryResponse = GetSiteMetadata200;
-
-export type GetSiteMetadataQuery = {
-	Response: GetSiteMetadata200;
-	PathParams: GetSiteMetadataPathParams;
-	Errors: any;
-};
-
-export type UpdateSiteMetadataPathParams = {
-	/**
-	 * @type string
-	 */
-	site_id: string;
+export type DeleteSiteSnippetResponses = {
+	"204": DeleteSiteSnippetStatus204;
+	default: DeleteSiteSnippetStatusDefault;
 };
 
 /**
- * @description No content
+ * @description Union of all possible responses
  */
-export type UpdateSiteMetadata204 = unknown;
+export type DeleteSiteSnippetResponse = DeleteSiteSnippetStatus204 | DeleteSiteSnippetStatusDefault;
 
 /**
- * @description error
+ * @type string
  */
-export type UpdateSiteMetadataError = {
+export type GetSiteMetadataPathSiteId = string;
+
+/**
+ * @type object
+ */
+export type GetSiteMetadataStatus200 = object;
+
+/**
+ * @type object
+ */
+export type GetSiteMetadataStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type UpdateSiteMetadataMutationResponse = UpdateSiteMetadata204;
-
-export type UpdateSiteMetadataMutation = {
-	Response: UpdateSiteMetadata204;
-	PathParams: UpdateSiteMetadataPathParams;
-	Errors: any;
-};
-
-export type ListSiteBuildHooksPathParams = {
+/**
+ * @type object
+ */
+export type GetSiteMetadataRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: GetSiteMetadataPathSiteId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
+	url: `/sites/${string}/metadata`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type ListSiteBuildHooks200 = {
+export type GetSiteMetadataResponses = {
+	"200": GetSiteMetadataStatus200;
+	default: GetSiteMetadataStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetSiteMetadataResponse = GetSiteMetadataStatus200 | GetSiteMetadataStatusDefault;
+
+/**
+ * @type string
+ */
+export type UpdateSiteMetadataPathSiteId = string;
+
+/**
+ * @type unknown
+ */
+export type UpdateSiteMetadataStatus204 = unknown;
+
+/**
+ * @type object
+ */
+export type UpdateSiteMetadataStatusDefault = {
+	/**
+	 * @type integer | undefined
+	 */
+	code?: bigint | undefined;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
+/**
+ * @type object | undefined
+ */
+export type UpdateSiteMetadataData = object | undefined;
+
+/**
+ * @type object
+ */
+export type UpdateSiteMetadataRequestConfig = {
+	data?: UpdateSiteMetadataData | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: UpdateSiteMetadataPathSiteId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/sites/${string}/metadata`;
+};
+
+/**
+ * @type object
+ */
+export type UpdateSiteMetadataResponses = {
+	"204": UpdateSiteMetadataStatus204;
+	default: UpdateSiteMetadataStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type UpdateSiteMetadataResponse =
+	| UpdateSiteMetadataStatus204
+	| UpdateSiteMetadataStatusDefault;
+
+/**
+ * @type string
+ */
+export type ListSiteBuildHooksPathSiteId = string;
+
+/**
+ * @type array
+ */
+export type ListSiteBuildHooksStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -9146,44 +11914,68 @@ export type ListSiteBuildHooks200 = {
 	 */
 	site_id?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 }[];
 
 /**
- * @description error
+ * @type object
  */
-export type ListSiteBuildHooksError = {
+export type ListSiteBuildHooksStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type ListSiteBuildHooksQueryResponse = ListSiteBuildHooks200;
-
-export type ListSiteBuildHooksQuery = {
-	Response: ListSiteBuildHooks200;
-	PathParams: ListSiteBuildHooksPathParams;
-	Errors: any;
-};
-
-export type CreateSiteBuildHookPathParams = {
+/**
+ * @type object
+ */
+export type ListSiteBuildHooksRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: ListSiteBuildHooksPathSiteId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
+	url: `/sites/${string}/build_hooks`;
 };
 
 /**
- * @description Created
+ * @type object
  */
-export type CreateSiteBuildHook201 = {
+export type ListSiteBuildHooksResponses = {
+	"200": ListSiteBuildHooksStatus200;
+	default: ListSiteBuildHooksStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListSiteBuildHooksResponse =
+	| ListSiteBuildHooksStatus200
+	| ListSiteBuildHooksStatusDefault;
+
+/**
+ * @type string
+ */
+export type CreateSiteBuildHookPathSiteId = string;
+
+/**
+ * @type object
+ */
+export type CreateSiteBuildHookStatus201 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -9205,48 +11997,89 @@ export type CreateSiteBuildHook201 = {
 	 */
 	site_id?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 };
 
 /**
- * @description error
+ * @type object
  */
-export type CreateSiteBuildHookError = {
+export type CreateSiteBuildHookStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type CreateSiteBuildHookMutationResponse = CreateSiteBuildHook201;
+/**
+ * @type object | undefined
+ */
+export type CreateSiteBuildHookData =
+	| {
+			/**
+			 * @type string | undefined
+			 */
+			title?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			branch?: string | undefined;
+	  }
+	| undefined;
 
-export type CreateSiteBuildHookMutation = {
-	Response: CreateSiteBuildHook201;
-	PathParams: CreateSiteBuildHookPathParams;
-	Errors: any;
-};
-
-export type GetSiteBuildHookPathParams = {
+/**
+ * @type object
+ */
+export type CreateSiteBuildHookRequestConfig = {
+	data?: CreateSiteBuildHookData | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: CreateSiteBuildHookPathSiteId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-	/**
-	 * @type string
-	 */
-	id: string;
+	url: `/sites/${string}/build_hooks`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type GetSiteBuildHook200 = {
+export type CreateSiteBuildHookResponses = {
+	"201": CreateSiteBuildHookStatus201;
+	default: CreateSiteBuildHookStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateSiteBuildHookResponse =
+	| CreateSiteBuildHookStatus201
+	| CreateSiteBuildHookStatusDefault;
+
+/**
+ * @type string
+ */
+export type GetSiteBuildHookPathSiteId = string;
+
+/**
+ * @type string
+ */
+export type GetSiteBuildHookPathId = string;
+
+/**
+ * @type object
+ */
+export type GetSiteBuildHookStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -9268,172 +12101,264 @@ export type GetSiteBuildHook200 = {
 	 */
 	site_id?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 };
 
 /**
- * @description error
+ * @type object
  */
-export type GetSiteBuildHookError = {
+export type GetSiteBuildHookStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type GetSiteBuildHookQueryResponse = GetSiteBuildHook200;
-
-export type GetSiteBuildHookQuery = {
-	Response: GetSiteBuildHook200;
-	PathParams: GetSiteBuildHookPathParams;
-	Errors: any;
-};
-
-export type UpdateSiteBuildHookPathParams = {
+/**
+ * @type object
+ */
+export type GetSiteBuildHookRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: GetSiteBuildHookPathSiteId;
+		id: GetSiteBuildHookPathId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-	/**
-	 * @type string
-	 */
-	id: string;
+	url: `/sites/${string}/build_hooks/${string}`;
 };
 
 /**
- * @description No content
+ * @type object
  */
-export type UpdateSiteBuildHook204 = unknown;
+export type GetSiteBuildHookResponses = {
+	"200": GetSiteBuildHookStatus200;
+	default: GetSiteBuildHookStatusDefault;
+};
 
 /**
- * @description error
+ * @description Union of all possible responses
  */
-export type UpdateSiteBuildHookError = {
+export type GetSiteBuildHookResponse = GetSiteBuildHookStatus200 | GetSiteBuildHookStatusDefault;
+
+/**
+ * @type string
+ */
+export type UpdateSiteBuildHookPathSiteId = string;
+
+/**
+ * @type string
+ */
+export type UpdateSiteBuildHookPathId = string;
+
+/**
+ * @type unknown
+ */
+export type UpdateSiteBuildHookStatus204 = unknown;
+
+/**
+ * @type object
+ */
+export type UpdateSiteBuildHookStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type UpdateSiteBuildHookMutationResponse = UpdateSiteBuildHook204;
+/**
+ * @type object | undefined
+ */
+export type UpdateSiteBuildHookData =
+	| {
+			/**
+			 * @type string | undefined
+			 */
+			title?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			branch?: string | undefined;
+	  }
+	| undefined;
 
-export type UpdateSiteBuildHookMutation = {
-	Response: UpdateSiteBuildHook204;
-	PathParams: UpdateSiteBuildHookPathParams;
-	Errors: any;
-};
-
-export type DeleteSiteBuildHookPathParams = {
+/**
+ * @type object
+ */
+export type UpdateSiteBuildHookRequestConfig = {
+	data?: UpdateSiteBuildHookData | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: UpdateSiteBuildHookPathSiteId;
+		id: UpdateSiteBuildHookPathId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-	/**
-	 * @type string
-	 */
-	id: string;
+	url: `/sites/${string}/build_hooks/${string}`;
 };
 
 /**
- * @description No content
+ * @type object
  */
-export type DeleteSiteBuildHook204 = unknown;
+export type UpdateSiteBuildHookResponses = {
+	"204": UpdateSiteBuildHookStatus204;
+	default: UpdateSiteBuildHookStatusDefault;
+};
 
 /**
- * @description error
+ * @description Union of all possible responses
  */
-export type DeleteSiteBuildHookError = {
+export type UpdateSiteBuildHookResponse =
+	| UpdateSiteBuildHookStatus204
+	| UpdateSiteBuildHookStatusDefault;
+
+/**
+ * @type string
+ */
+export type DeleteSiteBuildHookPathSiteId = string;
+
+/**
+ * @type string
+ */
+export type DeleteSiteBuildHookPathId = string;
+
+/**
+ * @type unknown
+ */
+export type DeleteSiteBuildHookStatus204 = unknown;
+
+/**
+ * @type object
+ */
+export type DeleteSiteBuildHookStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type DeleteSiteBuildHookMutationResponse = DeleteSiteBuildHook204;
-
-export type DeleteSiteBuildHookMutation = {
-	Response: DeleteSiteBuildHook204;
-	PathParams: DeleteSiteBuildHookPathParams;
-	Errors: any;
-};
-
-export type ListSiteDeploysPathParams = {
+/**
+ * @type object
+ */
+export type DeleteSiteBuildHookRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: DeleteSiteBuildHookPathSiteId;
+		id: DeleteSiteBuildHookPathId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-};
-
-export const listSiteDeploysQueryParamsStateEnum = {
-	new: "new",
-	pending_review: "pending_review",
-	accepted: "accepted",
-	rejected: "rejected",
-	enqueued: "enqueued",
-	building: "building",
-	uploading: "uploading",
-	uploaded: "uploaded",
-	preparing: "preparing",
-	prepared: "prepared",
-	processing: "processing",
-	processed: "processed",
-	ready: "ready",
-	error: "error",
-	retrying: "retrying",
-} as const;
-
-export type ListSiteDeploysQueryParamsStateEnumKey =
-	(typeof listSiteDeploysQueryParamsStateEnum)[keyof typeof listSiteDeploysQueryParamsStateEnum];
-
-export type ListSiteDeploysQueryParams = {
-	/**
-	 * @type boolean | undefined
-	 */
-	"deploy-previews"?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	production?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	state?: ListSiteDeploysQueryParamsStateEnumKey | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	branch?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	"latest-published"?: boolean | undefined;
-	/**
-	 * @type integer | undefined, int32
-	 */
-	page?: number | undefined;
-	/**
-	 * @type integer | undefined, int32
-	 */
-	per_page?: number | undefined;
+	url: `/sites/${string}/build_hooks/${string}`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type ListSiteDeploys200 = {
+export type DeleteSiteBuildHookResponses = {
+	"204": DeleteSiteBuildHookStatus204;
+	default: DeleteSiteBuildHookStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteSiteBuildHookResponse =
+	| DeleteSiteBuildHookStatus204
+	| DeleteSiteBuildHookStatusDefault;
+
+/**
+ * @type string
+ */
+export type ListSiteDeploysPathSiteId = string;
+
+/**
+ * @type boolean | undefined
+ */
+export type ListSiteDeploysQueryDeployPreviews = boolean | undefined;
+
+/**
+ * @type boolean | undefined
+ */
+export type ListSiteDeploysQueryProduction = boolean | undefined;
+
+/**
+ * @type string | undefined
+ */
+export type ListSiteDeploysQueryState =
+	| (
+			| "new"
+			| "pending_review"
+			| "accepted"
+			| "rejected"
+			| "enqueued"
+			| "building"
+			| "uploading"
+			| "uploaded"
+			| "preparing"
+			| "prepared"
+			| "processing"
+			| "processed"
+			| "ready"
+			| "error"
+			| "retrying"
+	  )
+	| undefined;
+
+/**
+ * @type string | undefined
+ */
+export type ListSiteDeploysQueryBranch = string | undefined;
+
+/**
+ * @type boolean | undefined
+ */
+export type ListSiteDeploysQueryLatestPublished = boolean | undefined;
+
+/**
+ * @type integer | undefined
+ */
+export type ListSiteDeploysQueryPage = number | undefined;
+
+/**
+ * @type integer | undefined
+ */
+export type ListSiteDeploysQueryPerPage = number | undefined;
+
+/**
+ * @type array
+ */
+export type ListSiteDeploysStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -9519,15 +12444,15 @@ export type ListSiteDeploys200 = {
 	 */
 	skipped?: boolean | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	published_at?: string | undefined;
 	/**
@@ -9572,87 +12497,121 @@ export type ListSiteDeploys200 = {
 }[];
 
 /**
- * @description error
+ * @type object
  */
-export type ListSiteDeploysError = {
+export type ListSiteDeploysStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type ListSiteDeploysQueryResponse = ListSiteDeploys200;
-
-export type ListSiteDeploysQuery = {
-	Response: ListSiteDeploys200;
-	PathParams: ListSiteDeploysPathParams;
-	QueryParams: ListSiteDeploysQueryParams;
-	Errors: any;
-};
-
-export type CreateSiteDeployPathParams = {
+/**
+ * @type object
+ */
+export type ListSiteDeploysRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: ListSiteDeploysPathSiteId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				"deploy-previews"?: ListSiteDeploysQueryDeployPreviews | undefined;
+				production?: ListSiteDeploysQueryProduction | undefined;
+				state?: ListSiteDeploysQueryState | undefined;
+				branch?: ListSiteDeploysQueryBranch | undefined;
+				"latest-published"?: ListSiteDeploysQueryLatestPublished | undefined;
+				page?: ListSiteDeploysQueryPage | undefined;
+				per_page?: ListSiteDeploysQueryPerPage | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-};
-
-export const createSiteDeployQueryParamsStateEnum = {
-	new: "new",
-	pending_review: "pending_review",
-	accepted: "accepted",
-	rejected: "rejected",
-	enqueued: "enqueued",
-	building: "building",
-	uploading: "uploading",
-	uploaded: "uploaded",
-	preparing: "preparing",
-	prepared: "prepared",
-	processing: "processing",
-	processed: "processed",
-	ready: "ready",
-	error: "error",
-	retrying: "retrying",
-} as const;
-
-export type CreateSiteDeployQueryParamsStateEnumKey =
-	(typeof createSiteDeployQueryParamsStateEnum)[keyof typeof createSiteDeployQueryParamsStateEnum];
-
-export type CreateSiteDeployQueryParams = {
-	/**
-	 * @type boolean | undefined
-	 */
-	"deploy-previews"?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	production?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	state?: CreateSiteDeployQueryParamsStateEnumKey | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	branch?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	"latest-published"?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	title?: string | undefined;
+	url: `/sites/${string}/deploys`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type CreateSiteDeploy200 = {
+export type ListSiteDeploysResponses = {
+	"200": ListSiteDeploysStatus200;
+	default: ListSiteDeploysStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListSiteDeploysResponse = ListSiteDeploysStatus200 | ListSiteDeploysStatusDefault;
+
+/**
+ * @type string
+ */
+export type CreateSiteDeployPathSiteId = string;
+
+/**
+ * @type boolean | undefined
+ */
+export type CreateSiteDeployQueryDeployPreviews = boolean | undefined;
+
+/**
+ * @type boolean | undefined
+ */
+export type CreateSiteDeployQueryProduction = boolean | undefined;
+
+/**
+ * @type string | undefined
+ */
+export type CreateSiteDeployQueryState =
+	| (
+			| "new"
+			| "pending_review"
+			| "accepted"
+			| "rejected"
+			| "enqueued"
+			| "building"
+			| "uploading"
+			| "uploaded"
+			| "preparing"
+			| "prepared"
+			| "processing"
+			| "processed"
+			| "ready"
+			| "error"
+			| "retrying"
+	  )
+	| undefined;
+
+/**
+ * @type string | undefined
+ */
+export type CreateSiteDeployQueryBranch = string | undefined;
+
+/**
+ * @type boolean | undefined
+ */
+export type CreateSiteDeployQueryLatestPublished = boolean | undefined;
+
+/**
+ * @type string | undefined
+ */
+export type CreateSiteDeployQueryTitle = string | undefined;
+
+/**
+ * @type object
+ */
+export type CreateSiteDeployStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -9738,15 +12697,15 @@ export type CreateSiteDeploy200 = {
 	 */
 	skipped?: boolean | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	published_at?: string | undefined;
 	/**
@@ -9791,43 +12750,302 @@ export type CreateSiteDeploy200 = {
 };
 
 /**
- * @description error
+ * @type object
  */
-export type CreateSiteDeployError = {
+export type CreateSiteDeployStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type CreateSiteDeployMutationResponse = CreateSiteDeploy200;
+/**
+ * @description Deploy files can be provided in two ways:\n1. As a JSON object using \'files\' (a hash mapping file paths to SHA1 digests), OR\n2. As a zip file using one of these methods:\n   - Set Content-Type to \'application/zip\' and send the zip file as the raw request body\n   - Include the zip file content in the \'zip\' field of this JSON object with Content-Type \'application/json\'\n
+ * @type object | undefined
+ */
+export type CreateSiteDeployData =
+	| {
+			/**
+			 * @description A hash mapping file paths to SHA1 digests of the file contents.
+			 * @type object | undefined
+			 */
+			files?: object | undefined;
+			/**
+			 * @description A zip file containing the site files to deploy. Alternative to \'files\'.\nTo use this field, set Content-Type to \'application/json\' and include the zip content here.\nAlternatively, you can set Content-Type to \'application/zip\' and send the zip as the raw request body (not as JSON).\n
+			 * @type string | undefined
+			 */
+			zip?: Blob | undefined;
+			/**
+			 * @type boolean | undefined
+			 */
+			draft?: boolean | undefined;
+			/**
+			 * @type boolean | undefined
+			 */
+			async?: boolean | undefined;
+			/**
+			 * @type object | undefined
+			 */
+			functions?: object | undefined;
+			/**
+			 * @type array | undefined
+			 */
+			function_schedules?:
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						name?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						cron?: string | undefined;
+				  }[]
+				| undefined;
+			/**
+			 * @type object | undefined
+			 */
+			functions_config?:
+				| {
+						[key: string]: {
+							/**
+							 * @type string | undefined
+							 */
+							display_name?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							generator?: string | undefined;
+							/**
+							 * @type object | undefined
+							 */
+							build_data?: object | undefined;
+							/**
+							 * @type array | undefined
+							 */
+							routes?:
+								| {
+										/**
+										 * @type string | undefined
+										 */
+										pattern?: string | undefined;
+										/**
+										 * @type string | undefined
+										 */
+										literal?: string | undefined;
+										/**
+										 * @type string | undefined
+										 */
+										expression?: string | undefined;
+										/**
+										 * @type array | undefined
+										 */
+										methods?:
+											| ("GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "OPTIONS")[]
+											| undefined;
+										/**
+										 * @type boolean | undefined
+										 */
+										prefer_static?: boolean | undefined;
+								  }[]
+								| undefined;
+							/**
+							 * @type array | undefined
+							 */
+							excluded_routes?:
+								| {
+										/**
+										 * @type string | undefined
+										 */
+										pattern?: string | undefined;
+										/**
+										 * @type string | undefined
+										 */
+										literal?: string | undefined;
+										/**
+										 * @type string | undefined
+										 */
+										expression?: string | undefined;
+								  }[]
+								| undefined;
+							/**
+							 * @type integer | undefined
+							 */
+							priority?: number | undefined;
+							/**
+							 * @type object | undefined
+							 */
+							traffic_rules?:
+								| {
+										/**
+										 * @type object | undefined
+										 */
+										action?:
+											| {
+													/**
+													 * @type string | undefined
+													 */
+													type?: string | undefined;
+													/**
+													 * @type object | undefined
+													 */
+													config?:
+														| {
+																/**
+																 * @type string | undefined
+																 */
+																to?: string | undefined;
+																/**
+																 * @type object | undefined
+																 */
+																rate_limit_config?:
+																	| {
+																			/**
+																			 * @type string | undefined
+																			 */
+																			algorithm?: AlgorithmEnumKey | undefined;
+																			/**
+																			 * @type integer | undefined
+																			 */
+																			window_size?: number | undefined;
+																			/**
+																			 * @type integer | undefined
+																			 */
+																			window_limit?: number | undefined;
+																	  }
+																	| undefined;
+																/**
+																 * @type object | undefined
+																 */
+																aggregate?:
+																	| {
+																			/**
+																			 * @type array | undefined
+																			 */
+																			keys?:
+																				| {
+																						/**
+																						 * @type string | undefined
+																						 */
+																						type?: TypeEnumKey | undefined;
+																				  }[]
+																				| undefined;
+																	  }
+																	| undefined;
+														  }
+														| undefined;
+											  }
+											| undefined;
+								  }
+								| undefined;
+							/**
+							 * @type array | undefined
+							 */
+							event_subscriptions?: string[] | undefined;
+						};
+				  }
+				| undefined;
+			/**
+			 * @type string | undefined
+			 */
+			branch?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			framework?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			framework_version?: string | undefined;
+			/**
+			 * @description A list of deploy-specific environment variable data. Data specified this way applies only\nto this specific deploy and is merged into any existing environment variables set on the\naccount and site.\n\nDeploy-specific environment variable data takes precedence over account and site\nenvironment variable data: For example, a deploy-specific variable with the key `NODE_ENV`\nwill take priority over any existing site- and account-level environment variable data\nwith the key `NODE_ENV`.\n\nEnvironment variable data may be provided at one of two times:\n\n- When creating a new Deploy with deploy files (most common)\n- When finalizing an existing Deploy with deploy files\n\nOnce set, environment variables for a specific deploy cannot be modified. Subsequent\nattempts to modify environment variable data for a deploy will be ignored.\n
+			 * @type array | undefined
+			 */
+			environment?:
+				| {
+						/**
+						 * @type string
+						 */
+						key: string;
+						/**
+						 * @type string
+						 */
+						value: string;
+						/**
+						 * @type boolean
+						 */
+						is_secret: boolean;
+						/**
+						 * @type array
+						 */
+						scopes: ("builds" | "functions" | "runtime" | "post-processing")[];
+				  }[]
+				| undefined;
+	  }
+	| undefined;
 
-export type CreateSiteDeployMutation = {
-	Response: CreateSiteDeploy200;
-	PathParams: CreateSiteDeployPathParams;
-	QueryParams: CreateSiteDeployQueryParams;
-	Errors: any;
-};
-
-export type GetSiteDeployPathParams = {
+/**
+ * @type object
+ */
+export type CreateSiteDeployRequestConfig = {
+	data?: CreateSiteDeployData | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: CreateSiteDeployPathSiteId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				"deploy-previews"?: CreateSiteDeployQueryDeployPreviews | undefined;
+				production?: CreateSiteDeployQueryProduction | undefined;
+				state?: CreateSiteDeployQueryState | undefined;
+				branch?: CreateSiteDeployQueryBranch | undefined;
+				"latest-published"?: CreateSiteDeployQueryLatestPublished | undefined;
+				title?: CreateSiteDeployQueryTitle | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-	/**
-	 * @type string
-	 */
-	deploy_id: string;
+	url: `/sites/${string}/deploys`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type GetSiteDeploy200 = {
+export type CreateSiteDeployResponses = {
+	"200": CreateSiteDeployStatus200;
+	default: CreateSiteDeployStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateSiteDeployResponse = CreateSiteDeployStatus200 | CreateSiteDeployStatusDefault;
+
+/**
+ * @type string
+ */
+export type GetSiteDeployPathSiteId = string;
+
+/**
+ * @type string
+ */
+export type GetSiteDeployPathDeployId = string;
+
+/**
+ * @type object
+ */
+export type GetSiteDeployStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -9913,15 +13131,15 @@ export type GetSiteDeploy200 = {
 	 */
 	skipped?: boolean | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	published_at?: string | undefined;
 	/**
@@ -9966,49 +13184,71 @@ export type GetSiteDeploy200 = {
 };
 
 /**
- * @description error
+ * @type object
  */
-export type GetSiteDeployError = {
+export type GetSiteDeployStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type GetSiteDeployQueryResponse = GetSiteDeploy200;
-
-export type GetSiteDeployQuery = {
-	Response: GetSiteDeploy200;
-	PathParams: GetSiteDeployPathParams;
-	Errors: any;
-};
-
-export type UpdateSiteDeployPathParams = {
+/**
+ * @type object
+ */
+export type GetSiteDeployRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: GetSiteDeployPathSiteId;
+		deploy_id: GetSiteDeployPathDeployId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-	/**
-	 * @type string
-	 */
-	deploy_id: string;
-};
-
-export type UpdateSiteDeployQueryParams = {
-	/**
-	 * @type string | undefined
-	 */
-	commit_ref?: string | undefined;
+	url: `/sites/${string}/deploys/${string}`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type UpdateSiteDeploy200 = {
+export type GetSiteDeployResponses = {
+	"200": GetSiteDeployStatus200;
+	default: GetSiteDeployStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetSiteDeployResponse = GetSiteDeployStatus200 | GetSiteDeployStatusDefault;
+
+/**
+ * @type string
+ */
+export type UpdateSiteDeployPathSiteId = string;
+
+/**
+ * @type string
+ */
+export type UpdateSiteDeployPathDeployId = string;
+
+/**
+ * @type string | undefined
+ */
+export type UpdateSiteDeployQueryCommitRef = string | undefined;
+
+/**
+ * @type object
+ */
+export type UpdateSiteDeployStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -10094,15 +13334,15 @@ export type UpdateSiteDeploy200 = {
 	 */
 	skipped?: boolean | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	published_at?: string | undefined;
 	/**
@@ -10147,77 +13387,355 @@ export type UpdateSiteDeploy200 = {
 };
 
 /**
- * @description error
+ * @type object
  */
-export type UpdateSiteDeployError = {
+export type UpdateSiteDeployStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type UpdateSiteDeployMutationResponse = UpdateSiteDeploy200;
+/**
+ * @description Deploy files can be provided in two ways:\n1. As a JSON object using \'files\' (a hash mapping file paths to SHA1 digests), OR\n2. As a zip file using one of these methods:\n   - Set Content-Type to \'application/zip\' and send the zip file as the raw request body\n   - Include the zip file content in the \'zip\' field of this JSON object with Content-Type \'application/json\'\n
+ * @type object | undefined
+ */
+export type UpdateSiteDeployData =
+	| {
+			/**
+			 * @description A hash mapping file paths to SHA1 digests of the file contents.
+			 * @type object | undefined
+			 */
+			files?: object | undefined;
+			/**
+			 * @description A zip file containing the site files to deploy. Alternative to \'files\'.\nTo use this field, set Content-Type to \'application/json\' and include the zip content here.\nAlternatively, you can set Content-Type to \'application/zip\' and send the zip as the raw request body (not as JSON).\n
+			 * @type string | undefined
+			 */
+			zip?: Blob | undefined;
+			/**
+			 * @type boolean | undefined
+			 */
+			draft?: boolean | undefined;
+			/**
+			 * @type boolean | undefined
+			 */
+			async?: boolean | undefined;
+			/**
+			 * @type object | undefined
+			 */
+			functions?: object | undefined;
+			/**
+			 * @type array | undefined
+			 */
+			function_schedules?:
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						name?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						cron?: string | undefined;
+				  }[]
+				| undefined;
+			/**
+			 * @type object | undefined
+			 */
+			functions_config?:
+				| {
+						[key: string]: {
+							/**
+							 * @type string | undefined
+							 */
+							display_name?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							generator?: string | undefined;
+							/**
+							 * @type object | undefined
+							 */
+							build_data?: object | undefined;
+							/**
+							 * @type array | undefined
+							 */
+							routes?:
+								| {
+										/**
+										 * @type string | undefined
+										 */
+										pattern?: string | undefined;
+										/**
+										 * @type string | undefined
+										 */
+										literal?: string | undefined;
+										/**
+										 * @type string | undefined
+										 */
+										expression?: string | undefined;
+										/**
+										 * @type array | undefined
+										 */
+										methods?:
+											| ("GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "OPTIONS")[]
+											| undefined;
+										/**
+										 * @type boolean | undefined
+										 */
+										prefer_static?: boolean | undefined;
+								  }[]
+								| undefined;
+							/**
+							 * @type array | undefined
+							 */
+							excluded_routes?:
+								| {
+										/**
+										 * @type string | undefined
+										 */
+										pattern?: string | undefined;
+										/**
+										 * @type string | undefined
+										 */
+										literal?: string | undefined;
+										/**
+										 * @type string | undefined
+										 */
+										expression?: string | undefined;
+								  }[]
+								| undefined;
+							/**
+							 * @type integer | undefined
+							 */
+							priority?: number | undefined;
+							/**
+							 * @type object | undefined
+							 */
+							traffic_rules?:
+								| {
+										/**
+										 * @type object | undefined
+										 */
+										action?:
+											| {
+													/**
+													 * @type string | undefined
+													 */
+													type?: string | undefined;
+													/**
+													 * @type object | undefined
+													 */
+													config?:
+														| {
+																/**
+																 * @type string | undefined
+																 */
+																to?: string | undefined;
+																/**
+																 * @type object | undefined
+																 */
+																rate_limit_config?:
+																	| {
+																			/**
+																			 * @type string | undefined
+																			 */
+																			algorithm?: AlgorithmEnumKey | undefined;
+																			/**
+																			 * @type integer | undefined
+																			 */
+																			window_size?: number | undefined;
+																			/**
+																			 * @type integer | undefined
+																			 */
+																			window_limit?: number | undefined;
+																	  }
+																	| undefined;
+																/**
+																 * @type object | undefined
+																 */
+																aggregate?:
+																	| {
+																			/**
+																			 * @type array | undefined
+																			 */
+																			keys?:
+																				| {
+																						/**
+																						 * @type string | undefined
+																						 */
+																						type?: TypeEnumKey | undefined;
+																				  }[]
+																				| undefined;
+																	  }
+																	| undefined;
+														  }
+														| undefined;
+											  }
+											| undefined;
+								  }
+								| undefined;
+							/**
+							 * @type array | undefined
+							 */
+							event_subscriptions?: string[] | undefined;
+						};
+				  }
+				| undefined;
+			/**
+			 * @type string | undefined
+			 */
+			branch?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			framework?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			framework_version?: string | undefined;
+			/**
+			 * @description A list of deploy-specific environment variable data. Data specified this way applies only\nto this specific deploy and is merged into any existing environment variables set on the\naccount and site.\n\nDeploy-specific environment variable data takes precedence over account and site\nenvironment variable data: For example, a deploy-specific variable with the key `NODE_ENV`\nwill take priority over any existing site- and account-level environment variable data\nwith the key `NODE_ENV`.\n\nEnvironment variable data may be provided at one of two times:\n\n- When creating a new Deploy with deploy files (most common)\n- When finalizing an existing Deploy with deploy files\n\nOnce set, environment variables for a specific deploy cannot be modified. Subsequent\nattempts to modify environment variable data for a deploy will be ignored.\n
+			 * @type array | undefined
+			 */
+			environment?:
+				| {
+						/**
+						 * @type string
+						 */
+						key: string;
+						/**
+						 * @type string
+						 */
+						value: string;
+						/**
+						 * @type boolean
+						 */
+						is_secret: boolean;
+						/**
+						 * @type array
+						 */
+						scopes: ("builds" | "functions" | "runtime" | "post-processing")[];
+				  }[]
+				| undefined;
+	  }
+	| undefined;
 
-export type UpdateSiteDeployMutation = {
-	Response: UpdateSiteDeploy200;
-	PathParams: UpdateSiteDeployPathParams;
-	QueryParams: UpdateSiteDeployQueryParams;
-	Errors: any;
-};
-
-export type DeleteSiteDeployPathParams = {
+/**
+ * @type object
+ */
+export type UpdateSiteDeployRequestConfig = {
+	data?: UpdateSiteDeployData | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: UpdateSiteDeployPathSiteId;
+		deploy_id: UpdateSiteDeployPathDeployId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				commit_ref?: UpdateSiteDeployQueryCommitRef | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	deploy_id: string;
-	/**
-	 * @type string
-	 */
-	site_id: string;
+	url: `/sites/${string}/deploys/${string}`;
 };
 
 /**
- * @description No content
+ * @type object
  */
-export type DeleteSiteDeploy204 = unknown;
+export type UpdateSiteDeployResponses = {
+	"200": UpdateSiteDeployStatus200;
+	default: UpdateSiteDeployStatusDefault;
+};
 
 /**
- * @description error
+ * @description Union of all possible responses
  */
-export type DeleteSiteDeployError = {
+export type UpdateSiteDeployResponse = UpdateSiteDeployStatus200 | UpdateSiteDeployStatusDefault;
+
+/**
+ * @type string
+ */
+export type DeleteSiteDeployPathDeployId = string;
+
+/**
+ * @type string
+ */
+export type DeleteSiteDeployPathSiteId = string;
+
+/**
+ * @type unknown
+ */
+export type DeleteSiteDeployStatus204 = unknown;
+
+/**
+ * @type object
+ */
+export type DeleteSiteDeployStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type DeleteSiteDeployMutationResponse = DeleteSiteDeploy204;
-
-export type DeleteSiteDeployMutation = {
-	Response: DeleteSiteDeploy204;
-	PathParams: DeleteSiteDeployPathParams;
-	Errors: any;
-};
-
-export type CancelSiteDeployPathParams = {
+/**
+ * @type object
+ */
+export type DeleteSiteDeployRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		deploy_id: DeleteSiteDeployPathDeployId;
+		site_id: DeleteSiteDeployPathSiteId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	deploy_id: string;
+	url: `/sites/${string}/deploys/${string}`;
 };
 
 /**
- * @description Cancelled
+ * @type object
  */
-export type CancelSiteDeploy201 = {
+export type DeleteSiteDeployResponses = {
+	"204": DeleteSiteDeployStatus204;
+	default: DeleteSiteDeployStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteSiteDeployResponse = DeleteSiteDeployStatus204 | DeleteSiteDeployStatusDefault;
+
+/**
+ * @type string
+ */
+export type CancelSiteDeployPathDeployId = string;
+
+/**
+ * @type object
+ */
+export type CancelSiteDeployStatus201 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -10303,15 +13821,15 @@ export type CancelSiteDeploy201 = {
 	 */
 	skipped?: boolean | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	published_at?: string | undefined;
 	/**
@@ -10356,42 +13874,65 @@ export type CancelSiteDeploy201 = {
 };
 
 /**
- * @description error
+ * @type object
  */
-export type CancelSiteDeployError = {
+export type CancelSiteDeployStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type CancelSiteDeployMutationResponse = CancelSiteDeploy201;
-
-export type CancelSiteDeployMutation = {
-	Response: CancelSiteDeploy201;
-	PathParams: CancelSiteDeployPathParams;
-	Errors: any;
-};
-
-export type RestoreSiteDeployPathParams = {
+/**
+ * @type object
+ */
+export type CancelSiteDeployRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		deploy_id: CancelSiteDeployPathDeployId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-	/**
-	 * @type string
-	 */
-	deploy_id: string;
+	url: `/deploys/${string}/cancel`;
 };
 
 /**
- * @description Created
+ * @type object
  */
-export type RestoreSiteDeploy201 = {
+export type CancelSiteDeployResponses = {
+	"201": CancelSiteDeployStatus201;
+	default: CancelSiteDeployStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CancelSiteDeployResponse = CancelSiteDeployStatus201 | CancelSiteDeployStatusDefault;
+
+/**
+ * @type string
+ */
+export type RestoreSiteDeployPathSiteId = string;
+
+/**
+ * @type string
+ */
+export type RestoreSiteDeployPathDeployId = string;
+
+/**
+ * @type object
+ */
+export type RestoreSiteDeployStatus201 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -10477,15 +14018,15 @@ export type RestoreSiteDeploy201 = {
 	 */
 	skipped?: boolean | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	published_at?: string | undefined;
 	/**
@@ -10530,49 +14071,71 @@ export type RestoreSiteDeploy201 = {
 };
 
 /**
- * @description error
+ * @type object
  */
-export type RestoreSiteDeployError = {
+export type RestoreSiteDeployStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type RestoreSiteDeployMutationResponse = RestoreSiteDeploy201;
-
-export type RestoreSiteDeployMutation = {
-	Response: RestoreSiteDeploy201;
-	PathParams: RestoreSiteDeployPathParams;
-	Errors: any;
-};
-
-export type ListSiteBuildsPathParams = {
+/**
+ * @type object
+ */
+export type RestoreSiteDeployRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: RestoreSiteDeployPathSiteId;
+		deploy_id: RestoreSiteDeployPathDeployId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-};
-
-export type ListSiteBuildsQueryParams = {
-	/**
-	 * @type integer | undefined, int32
-	 */
-	page?: number | undefined;
-	/**
-	 * @type integer | undefined, int32
-	 */
-	per_page?: number | undefined;
+	url: `/sites/${string}/deploys/${string}/restore`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type ListSiteBuilds200 = {
+export type RestoreSiteDeployResponses = {
+	"201": RestoreSiteDeployStatus201;
+	default: RestoreSiteDeployStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type RestoreSiteDeployResponse = RestoreSiteDeployStatus201 | RestoreSiteDeployStatusDefault;
+
+/**
+ * @type string
+ */
+export type ListSiteBuildsPathSiteId = string;
+
+/**
+ * @type integer | undefined
+ */
+export type ListSiteBuildsQueryPage = number | undefined;
+
+/**
+ * @type integer | undefined
+ */
+export type ListSiteBuildsQueryPerPage = number | undefined;
+
+/**
+ * @type array
+ */
+export type ListSiteBuildsStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -10594,73 +14157,104 @@ export type ListSiteBuilds200 = {
 	 */
 	error?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 }[];
 
 /**
- * @description error
+ * @type object
  */
-export type ListSiteBuildsError = {
+export type ListSiteBuildsStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type ListSiteBuildsQueryResponse = ListSiteBuilds200;
-
-export type ListSiteBuildsQuery = {
-	Response: ListSiteBuilds200;
-	PathParams: ListSiteBuildsPathParams;
-	QueryParams: ListSiteBuildsQueryParams;
-	Errors: any;
-};
-
-export type CreateSiteBuildPathParams = {
+/**
+ * @type object
+ */
+export type ListSiteBuildsRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: ListSiteBuildsPathSiteId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				page?: ListSiteBuildsQueryPage | undefined;
+				per_page?: ListSiteBuildsQueryPerPage | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-};
-
-export type CreateSiteBuildQueryParams = {
-	/**
-	 * @description If no branch is specified, it is treated as a production deploy If a branch IS specified and matches the main branch, it is also production If a branch is specified and doesn\'t match the main branch, it is a branch deploy
-	 * @type string | undefined
-	 */
-	branch?: string | undefined;
-	/**
-	 * @description Whether to clear the build cache before building
-	 * @type boolean | undefined
-	 */
-	clear_cache?: boolean | undefined;
-	/**
-	 * @description The build image tag to use for the build
-	 * @type string | undefined
-	 */
-	image?: string | undefined;
-	/**
-	 * @description The build template to use for the build
-	 * @type string | undefined
-	 */
-	template_id?: string | undefined;
-	/**
-	 * @description The title of the build
-	 * @type string | undefined
-	 */
-	title?: string | undefined;
+	url: `/sites/${string}/builds`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type CreateSiteBuild200 = {
+export type ListSiteBuildsResponses = {
+	"200": ListSiteBuildsStatus200;
+	default: ListSiteBuildsStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListSiteBuildsResponse = ListSiteBuildsStatus200 | ListSiteBuildsStatusDefault;
+
+/**
+ * @type string
+ */
+export type CreateSiteBuildPathSiteId = string;
+
+/**
+ * @description If no branch is specified, it is treated as a production deploy If a branch IS specified and matches the main branch, it is also production If a branch is specified and doesn\'t match the main branch, it is a branch deploy
+ * @type string | undefined
+ */
+export type CreateSiteBuildQueryBranch = string | undefined;
+
+/**
+ * @description Whether to clear the build cache before building
+ * @type boolean | undefined
+ */
+export type CreateSiteBuildQueryClearCache = boolean | undefined;
+
+/**
+ * @description The build image tag to use for the build
+ * @type string | undefined
+ */
+export type CreateSiteBuildQueryImage = string | undefined;
+
+/**
+ * @description The build template to use for the build
+ * @type string | undefined
+ */
+export type CreateSiteBuildQueryTemplateId = string | undefined;
+
+/**
+ * @description The title of the build
+ * @type string | undefined
+ */
+export type CreateSiteBuildQueryTitle = string | undefined;
+
+/**
+ * @type object
+ */
+export type CreateSiteBuildStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -10682,60 +14276,100 @@ export type CreateSiteBuild200 = {
 	 */
 	error?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 };
 
 /**
- * @description Bad Request
+ * @type unknown
  */
-export type CreateSiteBuild400 = unknown;
+export type CreateSiteBuildStatus400 = unknown;
 
 /**
- * @description Not Found
+ * @type unknown
  */
-export type CreateSiteBuild404 = unknown;
+export type CreateSiteBuildStatus404 = unknown;
 
 /**
- * @description Unprocessable Entity
+ * @type unknown
  */
-export type CreateSiteBuild422 = unknown;
+export type CreateSiteBuildStatus422 = unknown;
 
 /**
- * @description error
+ * @type object
  */
-export type CreateSiteBuildError = {
+export type CreateSiteBuildStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type CreateSiteBuildMutationResponse = CreateSiteBuild200;
-
-export type CreateSiteBuildMutation = {
-	Response: CreateSiteBuild200;
-	PathParams: CreateSiteBuildPathParams;
-	QueryParams: CreateSiteBuildQueryParams;
-	Errors: CreateSiteBuild400 | CreateSiteBuild404 | CreateSiteBuild422;
-};
-
-export type ListSiteDeployedBranchesPathParams = {
+/**
+ * @type object
+ */
+export type CreateSiteBuildRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: CreateSiteBuildPathSiteId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				branch?: CreateSiteBuildQueryBranch | undefined;
+				clear_cache?: CreateSiteBuildQueryClearCache | undefined;
+				image?: CreateSiteBuildQueryImage | undefined;
+				template_id?: CreateSiteBuildQueryTemplateId | undefined;
+				title?: CreateSiteBuildQueryTitle | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
+	url: `/sites/${string}/builds`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type ListSiteDeployedBranches200 = {
+export type CreateSiteBuildResponses = {
+	"200": CreateSiteBuildStatus200;
+	"400": CreateSiteBuildStatus400;
+	"404": CreateSiteBuildStatus404;
+	"422": CreateSiteBuildStatus422;
+	default: CreateSiteBuildStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateSiteBuildResponse =
+	| CreateSiteBuildStatus200
+	| CreateSiteBuildStatus400
+	| CreateSiteBuildStatus404
+	| CreateSiteBuildStatus422
+	| CreateSiteBuildStatusDefault;
+
+/**
+ * @type string
+ */
+export type ListSiteDeployedBranchesPathSiteId = string;
+
+/**
+ * @type array
+ */
+export type ListSiteDeployedBranchesStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -10763,38 +14397,62 @@ export type ListSiteDeployedBranches200 = {
 }[];
 
 /**
- * @description error
+ * @type object
  */
-export type ListSiteDeployedBranchesError = {
+export type ListSiteDeployedBranchesStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type ListSiteDeployedBranchesQueryResponse = ListSiteDeployedBranches200;
-
-export type ListSiteDeployedBranchesQuery = {
-	Response: ListSiteDeployedBranches200;
-	PathParams: ListSiteDeployedBranchesPathParams;
-	Errors: any;
-};
-
-export type UnlinkSiteRepoPathParams = {
+/**
+ * @type object
+ */
+export type ListSiteDeployedBranchesRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: ListSiteDeployedBranchesPathSiteId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
+	url: `/sites/${string}/deployed-branches`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type UnlinkSiteRepo200 = {
+export type ListSiteDeployedBranchesResponses = {
+	"200": ListSiteDeployedBranchesStatus200;
+	default: ListSiteDeployedBranchesStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListSiteDeployedBranchesResponse =
+	| ListSiteDeployedBranchesStatus200
+	| ListSiteDeployedBranchesStatusDefault;
+
+/**
+ * @type string
+ */
+export type UnlinkSiteRepoPathSiteId = string;
+
+/**
+ * @type object
+ */
+export type UnlinkSiteRepoStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -10852,11 +14510,11 @@ export type UnlinkSiteRepo200 = {
 	 */
 	screenshot_url?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
@@ -10973,15 +14631,15 @@ export type UnlinkSiteRepo200 = {
 				 */
 				skipped?: boolean | undefined;
 				/**
-				 * @type string | undefined, dateTime
+				 * @type string | undefined
 				 */
 				created_at?: string | undefined;
 				/**
-				 * @type string | undefined, dateTime
+				 * @type string | undefined
 				 */
 				updated_at?: string | undefined;
 				/**
-				 * @type string | undefined, dateTime
+				 * @type string | undefined
 				 */
 				published_at?: string | undefined;
 				/**
@@ -11180,38 +14838,60 @@ export type UnlinkSiteRepo200 = {
 };
 
 /**
- * @description Site not found
+ * @type unknown
  */
-export type UnlinkSiteRepo404 = unknown;
+export type UnlinkSiteRepoStatus404 = unknown;
 
-export type UnlinkSiteRepoMutationResponse = UnlinkSiteRepo200;
-
-export type UnlinkSiteRepoMutation = {
-	Response: UnlinkSiteRepo200;
-	PathParams: UnlinkSiteRepoPathParams;
-	Errors: UnlinkSiteRepo404;
-};
-
-export type EnableSitePathParams = {
+/**
+ * @type object
+ */
+export type UnlinkSiteRepoRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: UnlinkSiteRepoPathSiteId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
+	url: `/sites/${string}/unlink_repo`;
 };
 
 /**
- * @description No content
+ * @type object
  */
-export type EnableSite204 = unknown;
+export type UnlinkSiteRepoResponses = {
+	"200": UnlinkSiteRepoStatus200;
+	"404": UnlinkSiteRepoStatus404;
+};
 
 /**
- * @description Cannot enable this site
+ * @description Union of all possible responses
  */
-export type EnableSite422 = {
+export type UnlinkSiteRepoResponse = UnlinkSiteRepoStatus200 | UnlinkSiteRepoStatus404;
+
+/**
+ * @type string
+ */
+export type EnableSitePathSiteId = string;
+
+/**
+ * @type unknown
+ */
+export type EnableSiteStatus204 = unknown;
+
+/**
+ * @type object
+ */
+export type EnableSiteStatus422 = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -11219,81 +14899,133 @@ export type EnableSite422 = {
 };
 
 /**
- * @description error
+ * @type object
  */
-export type EnableSiteError = {
+export type EnableSiteStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type EnableSiteMutationResponse = EnableSite204;
-
-export type EnableSiteMutation = {
-	Response: EnableSite204;
-	PathParams: EnableSitePathParams;
-	Errors: EnableSite422;
-};
-
-export type DisableSitePathParams = {
+/**
+ * @type object
+ */
+export type EnableSiteRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: EnableSitePathSiteId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-};
-
-export type DisableSiteQueryParams = {
-	/**
-	 * @description Reason for disabling the site
-	 * @type string
-	 */
-	reason: string;
+	url: `/sites/${string}/enable`;
 };
 
 /**
- * @description No content
+ * @type object
  */
-export type DisableSite204 = unknown;
+export type EnableSiteResponses = {
+	"204": EnableSiteStatus204;
+	"422": EnableSiteStatus422;
+	default: EnableSiteStatusDefault;
+};
 
 /**
- * @description error
+ * @description Union of all possible responses
  */
-export type DisableSiteError = {
+export type EnableSiteResponse =
+	| EnableSiteStatus204
+	| EnableSiteStatus422
+	| EnableSiteStatusDefault;
+
+/**
+ * @type string
+ */
+export type DisableSitePathSiteId = string;
+
+/**
+ * @description Reason for disabling the site
+ * @type string
+ */
+export type DisableSiteQueryReason = string;
+
+/**
+ * @type unknown
+ */
+export type DisableSiteStatus204 = unknown;
+
+/**
+ * @type object
+ */
+export type DisableSiteStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type DisableSiteMutationResponse = DisableSite204;
-
-export type DisableSiteMutation = {
-	Response: DisableSite204;
-	PathParams: DisableSitePathParams;
-	QueryParams: DisableSiteQueryParams;
-	Errors: any;
-};
-
-export type GetSiteBuildPathParams = {
+/**
+ * @type object
+ */
+export type DisableSiteRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: DisableSitePathSiteId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				reason: DisableSiteQueryReason;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	build_id: string;
+	url: `/sites/${string}/disable`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type GetSiteBuild200 = {
+export type DisableSiteResponses = {
+	"204": DisableSiteStatus204;
+	default: DisableSiteStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DisableSiteResponse = DisableSiteStatus204 | DisableSiteStatusDefault;
+
+/**
+ * @type string
+ */
+export type GetSiteBuildPathBuildId = string;
+
+/**
+ * @type object
+ */
+export type GetSiteBuildStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -11315,128 +15047,204 @@ export type GetSiteBuild200 = {
 	 */
 	error?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 };
 
 /**
- * @description error
+ * @type object
  */
-export type GetSiteBuildError = {
+export type GetSiteBuildStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type GetSiteBuildQueryResponse = GetSiteBuild200;
-
-export type GetSiteBuildQuery = {
-	Response: GetSiteBuild200;
-	PathParams: GetSiteBuildPathParams;
-	Errors: any;
-};
-
-export type UpdateSiteBuildLogPathParams = {
+/**
+ * @type object
+ */
+export type GetSiteBuildRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		build_id: GetSiteBuildPathBuildId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	build_id: string;
+	url: `/builds/${string}`;
 };
 
 /**
- * @description No content
+ * @type object
  */
-export type UpdateSiteBuildLog204 = unknown;
-
-/**
- * @description error
- */
-export type UpdateSiteBuildLogError = {
-	/**
-	 * @type integer | undefined, int64
-	 */
-	code?: number | undefined;
-	/**
-	 * @type string
-	 */
-	message: string;
-};
-
-export type UpdateSiteBuildLogMutationResponse = UpdateSiteBuildLog204;
-
-export type UpdateSiteBuildLogMutation = {
-	Response: UpdateSiteBuildLog204;
-	PathParams: UpdateSiteBuildLogPathParams;
-	Errors: any;
-};
-
-export type NotifyBuildStartPathParams = {
-	/**
-	 * @type string
-	 */
-	build_id: string;
-};
-
-export type NotifyBuildStartQueryParams = {
-	/**
-	 * @type string | undefined
-	 */
-	buildbot_version?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	build_version?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	task_id?: string | undefined;
+export type GetSiteBuildResponses = {
+	"200": GetSiteBuildStatus200;
+	default: GetSiteBuildStatusDefault;
 };
 
 /**
- * @description No content
+ * @description Union of all possible responses
  */
-export type NotifyBuildStart204 = unknown;
+export type GetSiteBuildResponse = GetSiteBuildStatus200 | GetSiteBuildStatusDefault;
 
 /**
- * @description error
+ * @type string
  */
-export type NotifyBuildStartError = {
+export type UpdateSiteBuildLogPathBuildId = string;
+
+/**
+ * @type unknown
+ */
+export type UpdateSiteBuildLogStatus204 = unknown;
+
+/**
+ * @type object
+ */
+export type UpdateSiteBuildLogStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type NotifyBuildStartMutationResponse = NotifyBuildStart204;
-
-export type NotifyBuildStartMutation = {
-	Response: NotifyBuildStart204;
-	PathParams: NotifyBuildStartPathParams;
-	QueryParams: NotifyBuildStartQueryParams;
-	Errors: any;
-};
-
-export type GetAccountBuildStatusPathParams = {
+/**
+ * @type object
+ */
+export type UpdateSiteBuildLogRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		build_id: UpdateSiteBuildLogPathBuildId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	account_id: string;
+	url: `/builds/${string}/log`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type GetAccountBuildStatus200 = {
+export type UpdateSiteBuildLogResponses = {
+	"204": UpdateSiteBuildLogStatus204;
+	default: UpdateSiteBuildLogStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type UpdateSiteBuildLogResponse =
+	| UpdateSiteBuildLogStatus204
+	| UpdateSiteBuildLogStatusDefault;
+
+/**
+ * @type string
+ */
+export type NotifyBuildStartPathBuildId = string;
+
+/**
+ * @type string | undefined
+ */
+export type NotifyBuildStartQueryBuildbotVersion = string | undefined;
+
+/**
+ * @type string | undefined
+ */
+export type NotifyBuildStartQueryBuildVersion = string | undefined;
+
+/**
+ * @type string | undefined
+ */
+export type NotifyBuildStartQueryTaskId = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type NotifyBuildStartStatus204 = unknown;
+
+/**
+ * @type object
+ */
+export type NotifyBuildStartStatusDefault = {
+	/**
+	 * @type integer | undefined
+	 */
+	code?: bigint | undefined;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
+/**
+ * @type object
+ */
+export type NotifyBuildStartRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		build_id: NotifyBuildStartPathBuildId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				buildbot_version?: NotifyBuildStartQueryBuildbotVersion | undefined;
+				build_version?: NotifyBuildStartQueryBuildVersion | undefined;
+				task_id?: NotifyBuildStartQueryTaskId | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/builds/${string}/start`;
+};
+
+/**
+ * @type object
+ */
+export type NotifyBuildStartResponses = {
+	"204": NotifyBuildStartStatus204;
+	default: NotifyBuildStartStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type NotifyBuildStartResponse = NotifyBuildStartStatus204 | NotifyBuildStartStatusDefault;
+
+/**
+ * @type string
+ */
+export type GetAccountBuildStatusPathAccountId = string;
+
+/**
+ * @type array
+ */
+export type GetAccountBuildStatusStatus200 = {
 	/**
 	 * @type integer | undefined
 	 */
@@ -11471,15 +15279,15 @@ export type GetAccountBuildStatus200 = {
 				 */
 				previous?: number | undefined;
 				/**
-				 * @type string | undefined, dateTime
+				 * @type string | undefined
 				 */
 				period_start_date?: string | undefined;
 				/**
-				 * @type string | undefined, dateTime
+				 * @type string | undefined
 				 */
 				period_end_date?: string | undefined;
 				/**
-				 * @type string | undefined, dateTime
+				 * @type string | undefined
 				 */
 				last_updated_at?: string | undefined;
 				/**
@@ -11495,38 +15303,62 @@ export type GetAccountBuildStatus200 = {
 }[];
 
 /**
- * @description error
+ * @type object
  */
-export type GetAccountBuildStatusError = {
+export type GetAccountBuildStatusStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type GetAccountBuildStatusQueryResponse = GetAccountBuildStatus200;
-
-export type GetAccountBuildStatusQuery = {
-	Response: GetAccountBuildStatus200;
-	PathParams: GetAccountBuildStatusPathParams;
-	Errors: any;
-};
-
-export type GetDNSForSitePathParams = {
+/**
+ * @type object
+ */
+export type GetAccountBuildStatusRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		account_id: GetAccountBuildStatusPathAccountId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
+	url: `/${string}/builds/status`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type GetDNSForSite200 = {
+export type GetAccountBuildStatusResponses = {
+	"200": GetAccountBuildStatusStatus200;
+	default: GetAccountBuildStatusStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetAccountBuildStatusResponse =
+	| GetAccountBuildStatusStatus200
+	| GetAccountBuildStatusStatusDefault;
+
+/**
+ * @type string
+ */
+export type GetDNSForSitePathSiteId = string;
+
+/**
+ * @type array
+ */
+export type GetDNSForSiteStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -11548,11 +15380,11 @@ export type GetDNSForSite200 = {
 	 */
 	user_id?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
@@ -11577,13 +15409,13 @@ export type GetDNSForSite200 = {
 				 */
 				value?: string | undefined;
 				/**
-				 * @type integer | undefined, int64
+				 * @type integer | undefined
 				 */
-				ttl?: number | undefined;
+				ttl?: bigint | undefined;
 				/**
-				 * @type integer | undefined, int64
+				 * @type integer | undefined
 				 */
-				priority?: number | undefined;
+				priority?: bigint | undefined;
 				/**
 				 * @type string | undefined
 				 */
@@ -11641,38 +15473,60 @@ export type GetDNSForSite200 = {
 }[];
 
 /**
- * @description error
+ * @type object
  */
-export type GetDNSForSiteError = {
+export type GetDNSForSiteStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type GetDNSForSiteQueryResponse = GetDNSForSite200;
-
-export type GetDNSForSiteQuery = {
-	Response: GetDNSForSite200;
-	PathParams: GetDNSForSitePathParams;
-	Errors: any;
-};
-
-export type ConfigureDNSForSitePathParams = {
+/**
+ * @type object
+ */
+export type GetDNSForSiteRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: GetDNSForSitePathSiteId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
+	url: `/sites/${string}/dns`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type ConfigureDNSForSite200 = {
+export type GetDNSForSiteResponses = {
+	"200": GetDNSForSiteStatus200;
+	default: GetDNSForSiteStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetDNSForSiteResponse = GetDNSForSiteStatus200 | GetDNSForSiteStatusDefault;
+
+/**
+ * @type string
+ */
+export type ConfigureDNSForSitePathSiteId = string;
+
+/**
+ * @type array
+ */
+export type ConfigureDNSForSiteStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -11694,11 +15548,11 @@ export type ConfigureDNSForSite200 = {
 	 */
 	user_id?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
@@ -11723,13 +15577,13 @@ export type ConfigureDNSForSite200 = {
 				 */
 				value?: string | undefined;
 				/**
-				 * @type integer | undefined, int64
+				 * @type integer | undefined
 				 */
-				ttl?: number | undefined;
+				ttl?: bigint | undefined;
 				/**
-				 * @type integer | undefined, int64
+				 * @type integer | undefined
 				 */
-				priority?: number | undefined;
+				priority?: bigint | undefined;
 				/**
 				 * @type string | undefined
 				 */
@@ -11787,72 +15641,120 @@ export type ConfigureDNSForSite200 = {
 }[];
 
 /**
- * @description error
+ * @type object
  */
-export type ConfigureDNSForSiteError = {
+export type ConfigureDNSForSiteStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type ConfigureDNSForSiteMutationResponse = ConfigureDNSForSite200;
-
-export type ConfigureDNSForSiteMutation = {
-	Response: ConfigureDNSForSite200;
-	PathParams: ConfigureDNSForSitePathParams;
-	Errors: any;
-};
-
-export type RollbackSiteDeployPathParams = {
+/**
+ * @type object
+ */
+export type ConfigureDNSForSiteRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: ConfigureDNSForSitePathSiteId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
+	url: `/sites/${string}/dns`;
 };
 
 /**
- * @description No content
+ * @type object
  */
-export type RollbackSiteDeploy204 = unknown;
+export type ConfigureDNSForSiteResponses = {
+	"200": ConfigureDNSForSiteStatus200;
+	default: ConfigureDNSForSiteStatusDefault;
+};
 
 /**
- * @description error
+ * @description Union of all possible responses
  */
-export type RollbackSiteDeployError = {
+export type ConfigureDNSForSiteResponse =
+	| ConfigureDNSForSiteStatus200
+	| ConfigureDNSForSiteStatusDefault;
+
+/**
+ * @type string
+ */
+export type RollbackSiteDeployPathSiteId = string;
+
+/**
+ * @type unknown
+ */
+export type RollbackSiteDeployStatus204 = unknown;
+
+/**
+ * @type object
+ */
+export type RollbackSiteDeployStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type RollbackSiteDeployMutationResponse = RollbackSiteDeploy204;
-
-export type RollbackSiteDeployMutation = {
-	Response: RollbackSiteDeploy204;
-	PathParams: RollbackSiteDeployPathParams;
-	Errors: any;
-};
-
-export type GetDeployPathParams = {
+/**
+ * @type object
+ */
+export type RollbackSiteDeployRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: RollbackSiteDeployPathSiteId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	deploy_id: string;
+	url: `/sites/${string}/rollback`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type GetDeploy200 = {
+export type RollbackSiteDeployResponses = {
+	"204": RollbackSiteDeployStatus204;
+	default: RollbackSiteDeployStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type RollbackSiteDeployResponse =
+	| RollbackSiteDeployStatus204
+	| RollbackSiteDeployStatusDefault;
+
+/**
+ * @type string
+ */
+export type GetDeployPathDeployId = string;
+
+/**
+ * @type object
+ */
+export type GetDeployStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -11938,15 +15840,15 @@ export type GetDeploy200 = {
 	 */
 	skipped?: boolean | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	published_at?: string | undefined;
 	/**
@@ -11991,73 +15893,117 @@ export type GetDeploy200 = {
 };
 
 /**
- * @description error
+ * @type object
  */
-export type GetDeployError = {
+export type GetDeployStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type GetDeployQueryResponse = GetDeploy200;
-
-export type GetDeployQuery = {
-	Response: GetDeploy200;
-	PathParams: GetDeployPathParams;
-	Errors: any;
-};
-
-export type DeleteDeployPathParams = {
+/**
+ * @type object
+ */
+export type GetDeployRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		deploy_id: GetDeployPathDeployId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	deploy_id: string;
+	url: `/deploys/${string}`;
 };
 
 /**
- * @description No content
+ * @type object
  */
-export type DeleteDeploy204 = unknown;
+export type GetDeployResponses = {
+	"200": GetDeployStatus200;
+	default: GetDeployStatusDefault;
+};
 
 /**
- * @description error
+ * @description Union of all possible responses
  */
-export type DeleteDeployError = {
+export type GetDeployResponse = GetDeployStatus200 | GetDeployStatusDefault;
+
+/**
+ * @type string
+ */
+export type DeleteDeployPathDeployId = string;
+
+/**
+ * @type unknown
+ */
+export type DeleteDeployStatus204 = unknown;
+
+/**
+ * @type object
+ */
+export type DeleteDeployStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type DeleteDeployMutationResponse = DeleteDeploy204;
-
-export type DeleteDeployMutation = {
-	Response: DeleteDeploy204;
-	PathParams: DeleteDeployPathParams;
-	Errors: any;
-};
-
-export type UpdateDeployValidationsPathParams = {
+/**
+ * @type object
+ */
+export type DeleteDeployRequestConfig = {
+	data?: never | undefined;
 	/**
-	 * @description The ID of the deploy
+	 * @type object
+	 */
+	pathParams: {
+		deploy_id: DeleteDeployPathDeployId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
 	 * @type string
 	 */
-	deploy_id: string;
+	url: `/deploys/${string}`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type UpdateDeployValidations200 = {
+export type DeleteDeployResponses = {
+	"204": DeleteDeployStatus204;
+	default: DeleteDeployStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteDeployResponse = DeleteDeployStatus204 | DeleteDeployStatusDefault;
+
+/**
+ * @description The ID of the deploy
+ * @type string
+ */
+export type UpdateDeployValidationsPathDeployId = string;
+
+/**
+ * @type object
+ */
+export type UpdateDeployValidationsStatus200 = {
 	/**
 	 * @description The id of the deploy validations report
 	 * @type string | undefined
@@ -12087,33 +16033,56 @@ export type UpdateDeployValidations200 = {
 		| undefined;
 };
 
-export type UpdateDeployValidationsMutationRequest = {
+/**
+ * @type object
+ */
+export type UpdateDeployValidationsData = {
 	/**
 	 * @type object | undefined
 	 */
 	secrets_scan?: object | undefined;
 };
 
-export type UpdateDeployValidationsMutationResponse = UpdateDeployValidations200;
-
-export type UpdateDeployValidationsMutation = {
-	Response: UpdateDeployValidations200;
-	Request: UpdateDeployValidationsMutationRequest;
-	PathParams: UpdateDeployValidationsPathParams;
-	Errors: any;
-};
-
-export type LockDeployPathParams = {
+/**
+ * @type object
+ */
+export type UpdateDeployValidationsRequestConfig = {
+	data?: UpdateDeployValidationsData | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		deploy_id: UpdateDeployValidationsPathDeployId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	deploy_id: string;
+	url: `/deploys/${string}/validations_report`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type LockDeploy200 = {
+export type UpdateDeployValidationsResponses = {
+	"200": UpdateDeployValidationsStatus200;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type UpdateDeployValidationsResponse = UpdateDeployValidationsStatus200;
+
+/**
+ * @type string
+ */
+export type LockDeployPathDeployId = string;
+
+/**
+ * @type object
+ */
+export type LockDeployStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -12199,15 +16168,15 @@ export type LockDeploy200 = {
 	 */
 	skipped?: boolean | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	published_at?: string | undefined;
 	/**
@@ -12252,219 +16221,262 @@ export type LockDeploy200 = {
 };
 
 /**
- * @description error
+ * @type object
  */
-export type LockDeployError = {
-	/**
-	 * @type integer | undefined, int64
-	 */
-	code?: number | undefined;
-	/**
-	 * @type string
-	 */
-	message: string;
-};
-
-export type LockDeployMutationResponse = LockDeploy200;
-
-export type LockDeployMutation = {
-	Response: LockDeploy200;
-	PathParams: LockDeployPathParams;
-	Errors: any;
-};
-
-export type UnlockDeployPathParams = {
-	/**
-	 * @type string
-	 */
-	deploy_id: string;
-};
-
-/**
- * @description OK
- */
-export type UnlockDeploy200 = {
-	/**
-	 * @type string | undefined
-	 */
-	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	user_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	build_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	state?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	ssl_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	admin_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	deploy_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	deploy_ssl_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	screenshot_url?: string | undefined;
-	/**
-	 * @type number | undefined
-	 */
-	review_id?: number | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	draft?: boolean | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	required?: string[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	required_functions?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	error_message?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	commit_ref?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	commit_url?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	skipped?: boolean | undefined;
-	/**
-	 * @type string | undefined, dateTime
-	 */
-	created_at?: string | undefined;
-	/**
-	 * @type string | undefined, dateTime
-	 */
-	updated_at?: string | undefined;
-	/**
-	 * @type string | undefined, dateTime
-	 */
-	published_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	context?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	locked?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	review_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	framework?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	skew_protection_token?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	function_schedules?:
-		| {
-				/**
-				 * @type string | undefined
-				 */
-				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				cron?: string | undefined;
-		  }[]
-		| undefined;
-};
-
-/**
- * @description error
- */
-export type UnlockDeployError = {
-	/**
-	 * @type integer | undefined, int64
-	 */
-	code?: number | undefined;
-	/**
-	 * @type string
-	 */
-	message: string;
-};
-
-export type UnlockDeployMutationResponse = UnlockDeploy200;
-
-export type UnlockDeployMutation = {
-	Response: UnlockDeploy200;
-	PathParams: UnlockDeployPathParams;
-	Errors: any;
-};
-
-export type UploadDeployFilePathParams = {
-	/**
-	 * @type string
-	 */
-	deploy_id: string;
-	/**
-	 * @type string
-	 */
-	path: string;
-};
-
-export type UploadDeployFileQueryParams = {
+export type LockDeployStatusDefault = {
 	/**
 	 * @type integer | undefined
 	 */
-	size?: number | undefined;
+	code?: bigint | undefined;
+	/**
+	 * @type string
+	 */
+	message: string;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type UploadDeployFile200 = {
+export type LockDeployRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		deploy_id: LockDeployPathDeployId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/deploys/${string}/lock`;
+};
+
+/**
+ * @type object
+ */
+export type LockDeployResponses = {
+	"200": LockDeployStatus200;
+	default: LockDeployStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type LockDeployResponse = LockDeployStatus200 | LockDeployStatusDefault;
+
+/**
+ * @type string
+ */
+export type UnlockDeployPathDeployId = string;
+
+/**
+ * @type object
+ */
+export type UnlockDeployStatus200 = {
+	/**
+	 * @type string | undefined
+	 */
+	id?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	site_id?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	user_id?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	build_id?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	state?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	name?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	url?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	ssl_url?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	admin_url?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	deploy_url?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	deploy_ssl_url?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	screenshot_url?: string | undefined;
+	/**
+	 * @type number | undefined
+	 */
+	review_id?: number | undefined;
+	/**
+	 * @type boolean | undefined
+	 */
+	draft?: boolean | undefined;
+	/**
+	 * @type array | undefined
+	 */
+	required?: string[] | undefined;
+	/**
+	 * @type array | undefined
+	 */
+	required_functions?: string[] | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	error_message?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	branch?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	commit_ref?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	commit_url?: string | undefined;
+	/**
+	 * @type boolean | undefined
+	 */
+	skipped?: boolean | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	created_at?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	updated_at?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	published_at?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	title?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	context?: string | undefined;
+	/**
+	 * @type boolean | undefined
+	 */
+	locked?: boolean | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	review_url?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	framework?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	skew_protection_token?: string | undefined;
+	/**
+	 * @type array | undefined
+	 */
+	function_schedules?:
+		| {
+				/**
+				 * @type string | undefined
+				 */
+				name?: string | undefined;
+				/**
+				 * @type string | undefined
+				 */
+				cron?: string | undefined;
+		  }[]
+		| undefined;
+};
+
+/**
+ * @type object
+ */
+export type UnlockDeployStatusDefault = {
+	/**
+	 * @type integer | undefined
+	 */
+	code?: bigint | undefined;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
+/**
+ * @type object
+ */
+export type UnlockDeployRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		deploy_id: UnlockDeployPathDeployId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/deploys/${string}/unlock`;
+};
+
+/**
+ * @type object
+ */
+export type UnlockDeployResponses = {
+	"200": UnlockDeployStatus200;
+	default: UnlockDeployStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type UnlockDeployResponse = UnlockDeployStatus200 | UnlockDeployStatusDefault;
+
+/**
+ * @type string
+ */
+export type UploadDeployFilePathDeployId = string;
+
+/**
+ * @type string
+ */
+export type UploadDeployFilePathPath = string;
+
+/**
+ * @type integer | undefined
+ */
+export type UploadDeployFileQuerySize = number | undefined;
+
+/**
+ * @type object
+ */
+export type UploadDeployFileStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -12482,75 +16494,104 @@ export type UploadDeployFile200 = {
 	 */
 	mime_type?: string | undefined;
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	size?: number | undefined;
+	size?: bigint | undefined;
 };
 
 /**
- * @description error
+ * @type object
  */
-export type UploadDeployFileError = {
+export type UploadDeployFileStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type UploadDeployFileMutationResponse = UploadDeployFile200;
-
-export type UploadDeployFileMutation = {
-	Response: UploadDeployFile200;
-	PathParams: UploadDeployFilePathParams;
-	QueryParams: UploadDeployFileQueryParams;
-	Errors: any;
-};
-
-export type UploadDeployFunctionPathParams = {
+/**
+ * @type object
+ */
+export type UploadDeployFileRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		deploy_id: UploadDeployFilePathDeployId;
+		path: UploadDeployFilePathPath;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				size?: UploadDeployFileQuerySize | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	deploy_id: string;
-	/**
-	 * @type string
-	 */
-	name: string;
-};
-
-export type UploadDeployFunctionQueryParams = {
-	/**
-	 * @type string | undefined
-	 */
-	runtime?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	invocation_mode?: string | undefined;
-	/**
-	 * @type integer | undefined
-	 */
-	timeout?: number | undefined;
-	/**
-	 * @type integer | undefined
-	 */
-	size?: number | undefined;
-};
-
-export type UploadDeployFunctionHeaderParams = {
-	/**
-	 * @type integer | undefined
-	 */
-	"X-Nf-Retry-Count"?: number | undefined;
+	url: `/deploys/${string}/files/${string}`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type UploadDeployFunction200 = {
+export type UploadDeployFileResponses = {
+	"200": UploadDeployFileStatus200;
+	default: UploadDeployFileStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type UploadDeployFileResponse = UploadDeployFileStatus200 | UploadDeployFileStatusDefault;
+
+/**
+ * @type string
+ */
+export type UploadDeployFunctionPathDeployId = string;
+
+/**
+ * @type string
+ */
+export type UploadDeployFunctionPathName = string;
+
+/**
+ * @type string | undefined
+ */
+export type UploadDeployFunctionQueryRuntime = string | undefined;
+
+/**
+ * @type string | undefined
+ */
+export type UploadDeployFunctionQueryInvocationMode = string | undefined;
+
+/**
+ * @type integer | undefined
+ */
+export type UploadDeployFunctionQueryTimeout = number | undefined;
+
+/**
+ * @type integer | undefined
+ */
+export type UploadDeployFunctionQuerySize = number | undefined;
+
+/**
+ * @type integer | undefined
+ */
+export type UploadDeployFunctionHeaderXNfRetryCount = number | undefined;
+
+/**
+ * @type object
+ */
+export type UploadDeployFunctionStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -12566,51 +16607,90 @@ export type UploadDeployFunction200 = {
 };
 
 /**
- * @description error
+ * @type object
  */
-export type UploadDeployFunctionError = {
+export type UploadDeployFunctionStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type UploadDeployFunctionMutationResponse = UploadDeployFunction200;
-
-export type UploadDeployFunctionMutation = {
-	Response: UploadDeployFunction200;
-	PathParams: UploadDeployFunctionPathParams;
-	QueryParams: UploadDeployFunctionQueryParams;
-	HeaderParams: UploadDeployFunctionHeaderParams;
-	Errors: any;
-};
-
-export type GetLatestPluginRunsPathParams = {
+/**
+ * @type object
+ */
+export type UploadDeployFunctionRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		deploy_id: UploadDeployFunctionPathDeployId;
+		name: UploadDeployFunctionPathName;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				runtime?: UploadDeployFunctionQueryRuntime | undefined;
+				invocation_mode?: UploadDeployFunctionQueryInvocationMode | undefined;
+				timeout?: UploadDeployFunctionQueryTimeout | undefined;
+				size?: UploadDeployFunctionQuerySize | undefined;
+		  }
+		| undefined;
+	/**
+	 * @type object | undefined
+	 */
+	headerParams?:
+		| {
+				"X-Nf-Retry-Count"?: UploadDeployFunctionHeaderXNfRetryCount | undefined;
+		  }
+		| undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-};
-
-export type GetLatestPluginRunsQueryParams = {
-	/**
-	 * @type array
-	 */
-	packages: string[];
-	/**
-	 * @type string | undefined
-	 */
-	state?: string | undefined;
+	url: `/deploys/${string}/functions/${string}`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type GetLatestPluginRuns200 = {
+export type UploadDeployFunctionResponses = {
+	"200": UploadDeployFunctionStatus200;
+	default: UploadDeployFunctionStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type UploadDeployFunctionResponse =
+	| UploadDeployFunctionStatus200
+	| UploadDeployFunctionStatusDefault;
+
+/**
+ * @type string
+ */
+export type GetLatestPluginRunsPathSiteId = string;
+
+/**
+ * @type array
+ */
+export type GetLatestPluginRunsQueryPackages = string[];
+
+/**
+ * @type string | undefined
+ */
+export type GetLatestPluginRunsQueryState = string | undefined;
+
+/**
+ * @type array
+ */
+export type GetLatestPluginRunsStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -12646,39 +16726,67 @@ export type GetLatestPluginRuns200 = {
 }[];
 
 /**
- * @description error
+ * @type object
  */
-export type GetLatestPluginRunsError = {
+export type GetLatestPluginRunsStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type GetLatestPluginRunsQueryResponse = GetLatestPluginRuns200;
-
-export type GetLatestPluginRunsQuery = {
-	Response: GetLatestPluginRuns200;
-	PathParams: GetLatestPluginRunsPathParams;
-	QueryParams: GetLatestPluginRunsQueryParams;
-	Errors: any;
-};
-
-export type CreatePluginRunPathParams = {
+/**
+ * @type object
+ */
+export type GetLatestPluginRunsRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: GetLatestPluginRunsPathSiteId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				packages: GetLatestPluginRunsQueryPackages;
+				state?: GetLatestPluginRunsQueryState | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	deploy_id: string;
+	url: `/sites/${string}/plugin_runs/latest`;
 };
 
 /**
- * @description CREATED
+ * @type object
  */
-export type CreatePluginRun201 = {
+export type GetLatestPluginRunsResponses = {
+	"200": GetLatestPluginRunsStatus200;
+	default: GetLatestPluginRunsStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetLatestPluginRunsResponse =
+	| GetLatestPluginRunsStatus200
+	| GetLatestPluginRunsStatusDefault;
+
+/**
+ * @type string
+ */
+export type CreatePluginRunPathDeployId = string;
+
+export type CreatePluginRunStatus201 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -12714,87 +16822,112 @@ export type CreatePluginRun201 = {
 };
 
 /**
- * @description error
+ * @type object
  */
-export type CreatePluginRunError = {
+export type CreatePluginRunStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type CreatePluginRunMutationRequest = {
-	/**
-	 * @type string | undefined
-	 */
-	package?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	version?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	state?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	reporting_event?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	summary?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	text?: string | undefined;
-};
+/**
+ * @type object | undefined
+ */
+export type CreatePluginRunData =
+	| {
+			/**
+			 * @type string | undefined
+			 */
+			package?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			version?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			state?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			reporting_event?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			title?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			summary?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			text?: string | undefined;
+	  }
+	| undefined;
 
-export type CreatePluginRunMutationResponse = CreatePluginRun201;
-
-export type CreatePluginRunMutation = {
-	Response: CreatePluginRun201;
-	Request: CreatePluginRunMutationRequest;
-	PathParams: CreatePluginRunPathParams;
-	Errors: any;
-};
-
-export type ListFormSubmissionsPathParams = {
+/**
+ * @type object
+ */
+export type CreatePluginRunRequestConfig = {
+	data?: CreatePluginRunData | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		deploy_id: CreatePluginRunPathDeployId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	form_id: string;
-};
-
-export type ListFormSubmissionsQueryParams = {
-	/**
-	 * @type integer | undefined, int32
-	 */
-	page?: number | undefined;
-	/**
-	 * @type integer | undefined, int32
-	 */
-	per_page?: number | undefined;
+	url: `/deploys/${string}/plugin_runs`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type ListFormSubmissions200 = {
+export type CreatePluginRunResponses = {
+	"201": CreatePluginRunStatus201;
+	default: CreatePluginRunStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreatePluginRunResponse = CreatePluginRunStatus201 | CreatePluginRunStatusDefault;
+
+/**
+ * @type string
+ */
+export type ListFormSubmissionsPathFormId = string;
+
+/**
+ * @type integer | undefined
+ */
+export type ListFormSubmissionsQueryPage = number | undefined;
+
+/**
+ * @type integer | undefined
+ */
+export type ListFormSubmissionsQueryPerPage = number | undefined;
+
+/**
+ * @type array
+ */
+export type ListFormSubmissionsStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
 	id?: string | undefined;
 	/**
-	 * @type integer | undefined, int32
+	 * @type integer | undefined
 	 */
 	number?: number | undefined;
 	/**
@@ -12830,7 +16963,7 @@ export type ListFormSubmissions200 = {
 	 */
 	data?: object | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
@@ -12840,39 +16973,70 @@ export type ListFormSubmissions200 = {
 }[];
 
 /**
- * @description error
+ * @type object
  */
-export type ListFormSubmissionsError = {
+export type ListFormSubmissionsStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type ListFormSubmissionsQueryResponse = ListFormSubmissions200;
-
-export type ListFormSubmissionsQuery = {
-	Response: ListFormSubmissions200;
-	PathParams: ListFormSubmissionsPathParams;
-	QueryParams: ListFormSubmissionsQueryParams;
-	Errors: any;
-};
-
-export type ListHooksBySiteIdQueryParams = {
+/**
+ * @type object
+ */
+export type ListFormSubmissionsRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		form_id: ListFormSubmissionsPathFormId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				page?: ListFormSubmissionsQueryPage | undefined;
+				per_page?: ListFormSubmissionsQueryPerPage | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
+	url: `/forms/${string}/submissions`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type ListHooksBySiteId200 = {
+export type ListFormSubmissionsResponses = {
+	"200": ListFormSubmissionsStatus200;
+	default: ListFormSubmissionsStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListFormSubmissionsResponse =
+	| ListFormSubmissionsStatus200
+	| ListFormSubmissionsStatusDefault;
+
+/**
+ * @type string
+ */
+export type ListHooksBySiteIdQuerySiteId = string;
+
+/**
+ * @type array
+ */
+export type ListHooksBySiteIdStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -12894,11 +17058,11 @@ export type ListHooksBySiteId200 = {
 	 */
 	data?: object | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
@@ -12908,38 +17072,62 @@ export type ListHooksBySiteId200 = {
 }[];
 
 /**
- * @description error
+ * @type object
  */
-export type ListHooksBySiteIdError = {
+export type ListHooksBySiteIdStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type ListHooksBySiteIdQueryResponse = ListHooksBySiteId200;
-
-export type ListHooksBySiteIdQuery = {
-	Response: ListHooksBySiteId200;
-	QueryParams: ListHooksBySiteIdQueryParams;
-	Errors: any;
-};
-
-export type CreateHookBySiteIdQueryParams = {
+/**
+ * @type object
+ */
+export type ListHooksBySiteIdRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				site_id: ListHooksBySiteIdQuerySiteId;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
+	url: "/hooks";
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type CreateHookBySiteId201 = {
+export type ListHooksBySiteIdResponses = {
+	"200": ListHooksBySiteIdStatus200;
+	default: ListHooksBySiteIdStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListHooksBySiteIdResponse = ListHooksBySiteIdStatus200 | ListHooksBySiteIdStatusDefault;
+
+/**
+ * @type string
+ */
+export type CreateHookBySiteIdQuerySiteId = string;
+
+/**
+ * @type object
+ */
+export type CreateHookBySiteIdStatus201 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -12961,11 +17149,11 @@ export type CreateHookBySiteId201 = {
 	 */
 	data?: object | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
@@ -12975,38 +17163,104 @@ export type CreateHookBySiteId201 = {
 };
 
 /**
- * @description error
+ * @type object
  */
-export type CreateHookBySiteIdError = {
+export type CreateHookBySiteIdStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type CreateHookBySiteIdMutationResponse = CreateHookBySiteId201;
+/**
+ * @type object | undefined
+ */
+export type CreateHookBySiteIdData =
+	| {
+			/**
+			 * @type string | undefined
+			 */
+			id?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			site_id?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			type?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			event?: string | undefined;
+			/**
+			 * @type object | undefined
+			 */
+			data?: object | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			created_at?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			updated_at?: string | undefined;
+			/**
+			 * @type boolean | undefined
+			 */
+			disabled?: boolean | undefined;
+	  }
+	| undefined;
 
-export type CreateHookBySiteIdMutation = {
-	Response: CreateHookBySiteId201;
-	QueryParams: CreateHookBySiteIdQueryParams;
-	Errors: any;
-};
-
-export type GetHookPathParams = {
+/**
+ * @type object
+ */
+export type CreateHookBySiteIdRequestConfig = {
+	data?: CreateHookBySiteIdData | undefined;
+	pathParams?: never | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				site_id: CreateHookBySiteIdQuerySiteId;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	hook_id: string;
+	url: "/hooks";
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type GetHook200 = {
+export type CreateHookBySiteIdResponses = {
+	"201": CreateHookBySiteIdStatus201;
+	default: CreateHookBySiteIdStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateHookBySiteIdResponse =
+	| CreateHookBySiteIdStatus201
+	| CreateHookBySiteIdStatusDefault;
+
+/**
+ * @type string
+ */
+export type GetHookPathHookId = string;
+
+/**
+ * @type object
+ */
+export type GetHookStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -13028,11 +17282,11 @@ export type GetHook200 = {
 	 */
 	data?: object | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
@@ -13042,38 +17296,60 @@ export type GetHook200 = {
 };
 
 /**
- * @description error
+ * @type object
  */
-export type GetHookError = {
+export type GetHookStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type GetHookQueryResponse = GetHook200;
-
-export type GetHookQuery = {
-	Response: GetHook200;
-	PathParams: GetHookPathParams;
-	Errors: any;
-};
-
-export type UpdateHookPathParams = {
+/**
+ * @type object
+ */
+export type GetHookRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		hook_id: GetHookPathHookId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	hook_id: string;
+	url: `/hooks/${string}`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type UpdateHook200 = {
+export type GetHookResponses = {
+	"200": GetHookStatus200;
+	default: GetHookStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetHookResponse = GetHookStatus200 | GetHookStatusDefault;
+
+/**
+ * @type string
+ */
+export type UpdateHookPathHookId = string;
+
+/**
+ * @type object
+ */
+export type UpdateHookStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -13095,11 +17371,11 @@ export type UpdateHook200 = {
 	 */
 	data?: object | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
@@ -13109,58 +17385,141 @@ export type UpdateHook200 = {
 };
 
 /**
- * @description error
+ * @type object
  */
-export type UpdateHookError = {
+export type UpdateHookStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type UpdateHookMutationResponse = UpdateHook200;
+/**
+ * @type object | undefined
+ */
+export type UpdateHookData =
+	| {
+			/**
+			 * @type string | undefined
+			 */
+			id?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			site_id?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			type?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			event?: string | undefined;
+			/**
+			 * @type object | undefined
+			 */
+			data?: object | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			created_at?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			updated_at?: string | undefined;
+			/**
+			 * @type boolean | undefined
+			 */
+			disabled?: boolean | undefined;
+	  }
+	| undefined;
 
-export type UpdateHookMutation = {
-	Response: UpdateHook200;
-	PathParams: UpdateHookPathParams;
-	Errors: any;
-};
-
-export type DeleteHookPathParams = {
+/**
+ * @type object
+ */
+export type UpdateHookRequestConfig = {
+	data?: UpdateHookData | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		hook_id: UpdateHookPathHookId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	hook_id: string;
+	url: `/hooks/${string}`;
 };
 
 /**
- * @description No content
+ * @type object
  */
-export type DeleteHook204 = unknown;
-
-export type DeleteHookMutationResponse = DeleteHook204;
-
-export type DeleteHookMutation = {
-	Response: DeleteHook204;
-	PathParams: DeleteHookPathParams;
-	Errors: any;
+export type UpdateHookResponses = {
+	"200": UpdateHookStatus200;
+	default: UpdateHookStatusDefault;
 };
 
-export type EnableHookPathParams = {
+/**
+ * @description Union of all possible responses
+ */
+export type UpdateHookResponse = UpdateHookStatus200 | UpdateHookStatusDefault;
+
+/**
+ * @type string
+ */
+export type DeleteHookPathHookId = string;
+
+/**
+ * @type unknown
+ */
+export type DeleteHookStatus204 = unknown;
+
+/**
+ * @type object
+ */
+export type DeleteHookRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		hook_id: DeleteHookPathHookId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	hook_id: string;
+	url: `/hooks/${string}`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type EnableHook200 = {
+export type DeleteHookResponses = {
+	"204": DeleteHookStatus204;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteHookResponse = DeleteHookStatus204;
+
+/**
+ * @type string
+ */
+export type EnableHookPathHookId = string;
+
+/**
+ * @type object
+ */
+export type EnableHookStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -13182,11 +17541,11 @@ export type EnableHook200 = {
 	 */
 	data?: object | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
@@ -13196,31 +17555,55 @@ export type EnableHook200 = {
 };
 
 /**
- * @description error
+ * @type object
  */
-export type EnableHookError = {
+export type EnableHookStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type EnableHookMutationResponse = EnableHook200;
-
-export type EnableHookMutation = {
-	Response: EnableHook200;
-	PathParams: EnableHookPathParams;
-	Errors: any;
+/**
+ * @type object
+ */
+export type EnableHookRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		hook_id: EnableHookPathHookId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/hooks/${string}/enable`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type ListHookTypes200 = {
+export type EnableHookResponses = {
+	"200": EnableHookStatus200;
+	default: EnableHookStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type EnableHookResponse = EnableHookStatus200 | EnableHookStatusDefault;
+
+/**
+ * @type array
+ */
+export type ListHookTypesStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -13236,37 +17619,55 @@ export type ListHookTypes200 = {
 }[];
 
 /**
- * @description error
+ * @type object
  */
-export type ListHookTypesError = {
+export type ListHookTypesStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type ListHookTypesQueryResponse = ListHookTypes200;
-
-export type ListHookTypesQuery = {
-	Response: ListHookTypes200;
-	Errors: any;
-};
-
-export type CreateTicketQueryParams = {
+/**
+ * @type object
+ */
+export type ListHookTypesRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	client_id: string;
+	url: "/hooks/types";
 };
 
 /**
- * @description Created
+ * @type object
  */
-export type CreateTicket201 = {
+export type ListHookTypesResponses = {
+	"200": ListHookTypesStatus200;
+	default: ListHookTypesStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListHookTypesResponse = ListHookTypesStatus200 | ListHookTypesStatusDefault;
+
+/**
+ * @type string
+ */
+export type CreateTicketQueryClientId = string;
+
+/**
+ * @type object
+ */
+export type CreateTicketStatus201 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -13280,19 +17681,19 @@ export type CreateTicket201 = {
 	 */
 	authorized?: boolean | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 };
 
 /**
- * @description OAuth application not found
+ * @type object
  */
-export type CreateTicket401 = {
+export type CreateTicketStatus401 = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -13300,13 +17701,13 @@ export type CreateTicket401 = {
 };
 
 /**
- * @description Validation error
+ * @type object
  */
-export type CreateTicket422 = {
+export type CreateTicketStatus422 = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
@@ -13314,46 +17715,80 @@ export type CreateTicket422 = {
 };
 
 /**
- * @description error
+ * @type object
  */
-export type CreateTicketError = {
+export type CreateTicketStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type CreateTicketMutationRequest = {
+/**
+ * @type object | undefined
+ */
+export type CreateTicketData =
+	| {
+			/**
+			 * @type string | undefined
+			 */
+			message?: string | undefined;
+	  }
+	| undefined;
+
+/**
+ * @type object
+ */
+export type CreateTicketRequestConfig = {
+	data?: CreateTicketData | undefined;
+	pathParams?: never | undefined;
 	/**
-	 * @type string | undefined
+	 * @type object | undefined
 	 */
-	message?: string | undefined;
-};
-
-export type CreateTicketMutationResponse = CreateTicket201;
-
-export type CreateTicketMutation = {
-	Response: CreateTicket201;
-	Request: CreateTicketMutationRequest;
-	QueryParams: CreateTicketQueryParams;
-	Errors: CreateTicket401 | CreateTicket422;
-};
-
-export type ShowTicketPathParams = {
+	queryParams?:
+		| {
+				client_id: CreateTicketQueryClientId;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	ticket_id: string;
+	url: "/oauth/tickets";
 };
 
 /**
- * @description ok
+ * @type object
  */
-export type ShowTicket200 = {
+export type CreateTicketResponses = {
+	"201": CreateTicketStatus201;
+	"401": CreateTicketStatus401;
+	"422": CreateTicketStatus422;
+	default: CreateTicketStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateTicketResponse =
+	| CreateTicketStatus201
+	| CreateTicketStatus401
+	| CreateTicketStatus422
+	| CreateTicketStatusDefault;
+
+/**
+ * @type string
+ */
+export type ShowTicketPathTicketId = string;
+
+/**
+ * @type object
+ */
+export type ShowTicketStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -13367,44 +17802,66 @@ export type ShowTicket200 = {
 	 */
 	authorized?: boolean | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 };
 
 /**
- * @description error
+ * @type object
  */
-export type ShowTicketError = {
+export type ShowTicketStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type ShowTicketQueryResponse = ShowTicket200;
-
-export type ShowTicketQuery = {
-	Response: ShowTicket200;
-	PathParams: ShowTicketPathParams;
-	Errors: any;
-};
-
-export type ExchangeTicketPathParams = {
+/**
+ * @type object
+ */
+export type ShowTicketRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		ticket_id: ShowTicketPathTicketId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	ticket_id: string;
+	url: `/oauth/tickets/${string}`;
 };
 
 /**
- * @description ok
+ * @type object
  */
-export type ExchangeTicket201 = {
+export type ShowTicketResponses = {
+	"200": ShowTicketStatus200;
+	default: ShowTicketStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ShowTicketResponse = ShowTicketStatus200 | ShowTicketStatusDefault;
+
+/**
+ * @type string
+ */
+export type ExchangeTicketPathTicketId = string;
+
+/**
+ * @type object
+ */
+export type ExchangeTicketStatus201 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -13422,37 +17879,61 @@ export type ExchangeTicket201 = {
 	 */
 	user_email?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 };
 
 /**
- * @description error
+ * @type object
  */
-export type ExchangeTicketError = {
+export type ExchangeTicketStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type ExchangeTicketMutationResponse = ExchangeTicket201;
-
-export type ExchangeTicketMutation = {
-	Response: ExchangeTicket201;
-	PathParams: ExchangeTicketPathParams;
-	Errors: any;
+/**
+ * @type object
+ */
+export type ExchangeTicketRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		ticket_id: ExchangeTicketPathTicketId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/oauth/tickets/${string}/exchange`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type ListDeployKeys200 = {
+export type ExchangeTicketResponses = {
+	"201": ExchangeTicketStatus201;
+	default: ExchangeTicketStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ExchangeTicketResponse = ExchangeTicketStatus201 | ExchangeTicketStatusDefault;
+
+/**
+ * @type array
+ */
+export type ListDeployKeysStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -13462,36 +17943,56 @@ export type ListDeployKeys200 = {
 	 */
 	public_key?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 }[];
 
 /**
- * @description error
+ * @type object
  */
-export type ListDeployKeysError = {
+export type ListDeployKeysStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type ListDeployKeysQueryResponse = ListDeployKeys200;
-
-export type ListDeployKeysQuery = {
-	Response: ListDeployKeys200;
-	Errors: any;
+/**
+ * @type object
+ */
+export type ListDeployKeysRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/deploy_keys";
 };
 
 /**
- * @description Created
+ * @type object
  */
-export type CreateDeployKey201 = {
+export type ListDeployKeysResponses = {
+	"200": ListDeployKeysStatus200;
+	default: ListDeployKeysStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListDeployKeysResponse = ListDeployKeysStatus200 | ListDeployKeysStatusDefault;
+
+/**
+ * @type object
+ */
+export type CreateDeployKeyStatus201 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -13501,43 +18002,61 @@ export type CreateDeployKey201 = {
 	 */
 	public_key?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 };
 
 /**
- * @description error
+ * @type object
  */
-export type CreateDeployKeyError = {
+export type CreateDeployKeyStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type CreateDeployKeyMutationResponse = CreateDeployKey201;
-
-export type CreateDeployKeyMutation = {
-	Response: CreateDeployKey201;
-	Errors: any;
-};
-
-export type GetDeployKeyPathParams = {
+/**
+ * @type object
+ */
+export type CreateDeployKeyRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	key_id: string;
+	url: "/deploy_keys";
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type GetDeployKey200 = {
+export type CreateDeployKeyResponses = {
+	"201": CreateDeployKeyStatus201;
+	default: CreateDeployKeyStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateDeployKeyResponse = CreateDeployKeyStatus201 | CreateDeployKeyStatusDefault;
+
+/**
+ * @type string
+ */
+export type GetDeployKeyPathKeyId = string;
+
+/**
+ * @type object
+ */
+export type GetDeployKeyStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -13547,85 +18066,127 @@ export type GetDeployKey200 = {
 	 */
 	public_key?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 };
 
 /**
- * @description error
+ * @type object
  */
-export type GetDeployKeyError = {
+export type GetDeployKeyStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type GetDeployKeyQueryResponse = GetDeployKey200;
-
-export type GetDeployKeyQuery = {
-	Response: GetDeployKey200;
-	PathParams: GetDeployKeyPathParams;
-	Errors: any;
-};
-
-export type DeleteDeployKeyPathParams = {
+/**
+ * @type object
+ */
+export type GetDeployKeyRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		key_id: GetDeployKeyPathKeyId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	key_id: string;
+	url: `/deploy_keys/${string}`;
 };
 
 /**
- * @description Not Content
+ * @type object
  */
-export type DeleteDeployKey204 = unknown;
+export type GetDeployKeyResponses = {
+	"200": GetDeployKeyStatus200;
+	default: GetDeployKeyStatusDefault;
+};
 
 /**
- * @description error
+ * @description Union of all possible responses
  */
-export type DeleteDeployKeyError = {
+export type GetDeployKeyResponse = GetDeployKeyStatus200 | GetDeployKeyStatusDefault;
+
+/**
+ * @type string
+ */
+export type DeleteDeployKeyPathKeyId = string;
+
+/**
+ * @type unknown
+ */
+export type DeleteDeployKeyStatus204 = unknown;
+
+/**
+ * @type object
+ */
+export type DeleteDeployKeyStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type DeleteDeployKeyMutationResponse = DeleteDeployKey204;
-
-export type DeleteDeployKeyMutation = {
-	Response: DeleteDeployKey204;
-	PathParams: DeleteDeployKeyPathParams;
-	Errors: any;
-};
-
-export type CreateSiteInTeamPathParams = {
+/**
+ * @type object
+ */
+export type DeleteDeployKeyRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		key_id: DeleteDeployKeyPathKeyId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	account_slug: string;
-};
-
-export type CreateSiteInTeamQueryParams = {
-	/**
-	 * @type boolean | undefined
-	 */
-	configure_dns?: boolean | undefined;
+	url: `/deploy_keys/${string}`;
 };
 
 /**
- * @description Created
+ * @type object
  */
-export type CreateSiteInTeam201 = {
+export type DeleteDeployKeyResponses = {
+	"204": DeleteDeployKeyStatus204;
+	default: DeleteDeployKeyStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteDeployKeyResponse = DeleteDeployKeyStatus204 | DeleteDeployKeyStatusDefault;
+
+/**
+ * @type boolean | undefined
+ */
+export type CreateSiteInTeamQueryConfigureDns = boolean | undefined;
+
+/**
+ * @type string
+ */
+export type CreateSiteInTeamPathAccountSlug = string;
+
+/**
+ * @type object
+ */
+export type CreateSiteInTeamStatus201 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -13683,11 +18244,11 @@ export type CreateSiteInTeam201 = {
 	 */
 	screenshot_url?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
@@ -13804,15 +18365,15 @@ export type CreateSiteInTeam201 = {
 				 */
 				skipped?: boolean | undefined;
 				/**
-				 * @type string | undefined, dateTime
+				 * @type string | undefined
 				 */
 				created_at?: string | undefined;
 				/**
-				 * @type string | undefined, dateTime
+				 * @type string | undefined
 				 */
 				updated_at?: string | undefined;
 				/**
-				 * @type string | undefined, dateTime
+				 * @type string | undefined
 				 */
 				published_at?: string | undefined;
 				/**
@@ -14011,514 +18572,543 @@ export type CreateSiteInTeam201 = {
 };
 
 /**
- * @description error
+ * @type object
  */
-export type CreateSiteInTeamError = {
+export type CreateSiteInTeamStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type CreateSiteInTeamMutationRequest = {
-	/**
-	 * @type string | undefined
-	 */
-	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	state?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	plan?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	custom_domain?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	domain_aliases?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	branch_deploy_custom_domain?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	deploy_preview_custom_domain?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	password?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	notification_email?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	ssl_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	admin_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	screenshot_url?: string | undefined;
-	/**
-	 * @type string | undefined, dateTime
-	 */
-	created_at?: string | undefined;
-	/**
-	 * @type string | undefined, dateTime
-	 */
-	updated_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	user_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	session_id?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	ssl?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	force_ssl?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	managed_dns?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	deploy_url?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	published_deploy?:
-		| {
-				/**
-				 * @type string | undefined
-				 */
-				id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				site_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				user_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				build_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				state?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				ssl_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				admin_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				deploy_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				deploy_ssl_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				screenshot_url?: string | undefined;
-				/**
-				 * @type number | undefined
-				 */
-				review_id?: number | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
-				draft?: boolean | undefined;
-				/**
-				 * @type array | undefined
-				 */
-				required?: string[] | undefined;
-				/**
-				 * @type array | undefined
-				 */
-				required_functions?: string[] | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				error_message?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				branch?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				commit_ref?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				commit_url?: string | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
-				skipped?: boolean | undefined;
-				/**
-				 * @type string | undefined, dateTime
-				 */
-				created_at?: string | undefined;
-				/**
-				 * @type string | undefined, dateTime
-				 */
-				updated_at?: string | undefined;
-				/**
-				 * @type string | undefined, dateTime
-				 */
-				published_at?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				title?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				context?: string | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
-				locked?: boolean | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				review_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				framework?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				skew_protection_token?: string | undefined;
-				/**
-				 * @type array | undefined
-				 */
-				function_schedules?:
-					| {
-							/**
-							 * @type string | undefined
-							 */
-							name?: string | undefined;
-							/**
-							 * @type string | undefined
-							 */
-							cron?: string | undefined;
-					  }[]
-					| undefined;
-		  }
-		| undefined;
-	/**
-	 * @type string | undefined
-	 */
-	account_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	account_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	account_slug?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	git_provider?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	deploy_hook?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	capabilities?:
-		| {
-				[key: string]: object;
-		  }
-		| undefined;
-	/**
-	 * @type object | undefined
-	 */
-	processing_settings?:
-		| {
-				/**
-				 * @type object | undefined
-				 */
-				html?:
-					| {
-							/**
-							 * @type boolean | undefined
-							 */
-							pretty_urls?: boolean | undefined;
-					  }
-					| undefined;
-		  }
-		| undefined;
-	/**
-	 * @type object | undefined
-	 */
-	build_settings?:
-		| {
-				/**
-				 * @type integer | undefined
-				 */
-				id?: number | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				provider?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				deploy_key_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				repo_path?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				repo_branch?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				dir?: string | undefined;
-				/**
-				 * @description The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.
-				 * @type string | undefined
-				 */
-				functions_dir?: string | undefined;
-				/**
-				 * @description The build command to run. This is the command that Netlify runs to build your site. If a site has a netlify.toml file with a build command it will override this value.
-				 * @type string | undefined
-				 */
-				cmd?: string | undefined;
-				/**
-				 * @type array | undefined
-				 */
-				allowed_branches?: string[] | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
-				public_repo?: boolean | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
-				private_logs?: boolean | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				repo_url?: string | undefined;
-				/**
-				 * @type object | undefined
-				 */
-				env?:
-					| {
-							[key: string]: string;
-					  }
-					| undefined;
-				/**
-				 * @type integer | undefined
-				 */
-				installation_id?: number | undefined;
-				/**
-				 * @description When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.
-				 * @type boolean | undefined
-				 */
-				stop_builds?: boolean | undefined;
-		  }
-		| undefined;
-	/**
-	 * @type string | undefined
-	 */
-	id_domain?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	default_hooks_data?:
-		| {
-				/**
-				 * @type string | undefined
-				 */
-				access_token?: string | undefined;
-		  }
-		| undefined;
-	/**
-	 * @type string | undefined
-	 */
-	build_image?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	prerender?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	functions_region?: string | undefined;
-	/**
-	 * @default false
-	 * @type boolean | undefined
-	 */
-	prevent_non_git_prod_deploys?: boolean | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	repo?:
-		| {
-				/**
-				 * @type integer | undefined
-				 */
-				id?: number | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				provider?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				deploy_key_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				repo_path?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				repo_branch?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				dir?: string | undefined;
-				/**
-				 * @description The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.
-				 * @type string | undefined
-				 */
-				functions_dir?: string | undefined;
-				/**
-				 * @description The build command to run. This is the command that Netlify runs to build your site. If a site has a netlify.toml file with a build command it will override this value.
-				 * @type string | undefined
-				 */
-				cmd?: string | undefined;
-				/**
-				 * @type array | undefined
-				 */
-				allowed_branches?: string[] | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
-				public_repo?: boolean | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
-				private_logs?: boolean | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				repo_url?: string | undefined;
-				/**
-				 * @type object | undefined
-				 */
-				env?:
-					| {
-							[key: string]: string;
-					  }
-					| undefined;
-				/**
-				 * @type integer | undefined
-				 */
-				installation_id?: number | undefined;
-				/**
-				 * @description When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.
-				 * @type boolean | undefined
-				 */
-				stop_builds?: boolean | undefined;
-		  }
-		| undefined;
-};
+export type CreateSiteInTeamData =
+	| {
+			/**
+			 * @type string | undefined
+			 */
+			id?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			state?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			plan?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			name?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			custom_domain?: string | undefined;
+			/**
+			 * @type array | undefined
+			 */
+			domain_aliases?: string[] | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			branch_deploy_custom_domain?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			deploy_preview_custom_domain?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			password?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			notification_email?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			url?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			ssl_url?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			admin_url?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			screenshot_url?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			created_at?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			updated_at?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			user_id?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			session_id?: string | undefined;
+			/**
+			 * @type boolean | undefined
+			 */
+			ssl?: boolean | undefined;
+			/**
+			 * @type boolean | undefined
+			 */
+			force_ssl?: boolean | undefined;
+			/**
+			 * @type boolean | undefined
+			 */
+			managed_dns?: boolean | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			deploy_url?: string | undefined;
+			/**
+			 * @type object | undefined
+			 */
+			published_deploy?:
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						id?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						site_id?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						user_id?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						build_id?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						state?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						name?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						url?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						ssl_url?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						admin_url?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						deploy_url?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						deploy_ssl_url?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						screenshot_url?: string | undefined;
+						/**
+						 * @type number | undefined
+						 */
+						review_id?: number | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						draft?: boolean | undefined;
+						/**
+						 * @type array | undefined
+						 */
+						required?: string[] | undefined;
+						/**
+						 * @type array | undefined
+						 */
+						required_functions?: string[] | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						error_message?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						branch?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						commit_ref?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						commit_url?: string | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						skipped?: boolean | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						created_at?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						updated_at?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						published_at?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						title?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						context?: string | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						locked?: boolean | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						review_url?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						framework?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						skew_protection_token?: string | undefined;
+						/**
+						 * @type array | undefined
+						 */
+						function_schedules?:
+							| {
+									/**
+									 * @type string | undefined
+									 */
+									name?: string | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									cron?: string | undefined;
+							  }[]
+							| undefined;
+				  }
+				| undefined;
+			/**
+			 * @type string | undefined
+			 */
+			account_id?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			account_name?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			account_slug?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			git_provider?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			deploy_hook?: string | undefined;
+			/**
+			 * @type object | undefined
+			 */
+			capabilities?:
+				| {
+						[key: string]: object;
+				  }
+				| undefined;
+			/**
+			 * @type object | undefined
+			 */
+			processing_settings?:
+				| {
+						/**
+						 * @type object | undefined
+						 */
+						html?:
+							| {
+									/**
+									 * @type boolean | undefined
+									 */
+									pretty_urls?: boolean | undefined;
+							  }
+							| undefined;
+				  }
+				| undefined;
+			/**
+			 * @type object | undefined
+			 */
+			build_settings?:
+				| {
+						/**
+						 * @type integer | undefined
+						 */
+						id?: number | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						provider?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						deploy_key_id?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						repo_path?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						repo_branch?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						dir?: string | undefined;
+						/**
+						 * @description The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.
+						 * @type string | undefined
+						 */
+						functions_dir?: string | undefined;
+						/**
+						 * @description The build command to run. This is the command that Netlify runs to build your site. If a site has a netlify.toml file with a build command it will override this value.
+						 * @type string | undefined
+						 */
+						cmd?: string | undefined;
+						/**
+						 * @type array | undefined
+						 */
+						allowed_branches?: string[] | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						public_repo?: boolean | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						private_logs?: boolean | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						repo_url?: string | undefined;
+						/**
+						 * @type object | undefined
+						 */
+						env?:
+							| {
+									[key: string]: string;
+							  }
+							| undefined;
+						/**
+						 * @type integer | undefined
+						 */
+						installation_id?: number | undefined;
+						/**
+						 * @description When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.
+						 * @type boolean | undefined
+						 */
+						stop_builds?: boolean | undefined;
+				  }
+				| undefined;
+			/**
+			 * @type string | undefined
+			 */
+			id_domain?: string | undefined;
+			/**
+			 * @type object | undefined
+			 */
+			default_hooks_data?:
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						access_token?: string | undefined;
+				  }
+				| undefined;
+			/**
+			 * @type string | undefined
+			 */
+			build_image?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			prerender?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			functions_region?: string | undefined;
+			/**
+			 * @default false
+			 * @type boolean | undefined
+			 */
+			prevent_non_git_prod_deploys?: boolean | undefined;
+			/**
+			 * @type object | undefined
+			 */
+			repo?:
+				| {
+						/**
+						 * @type integer | undefined
+						 */
+						id?: number | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						provider?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						deploy_key_id?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						repo_path?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						repo_branch?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						dir?: string | undefined;
+						/**
+						 * @description The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.
+						 * @type string | undefined
+						 */
+						functions_dir?: string | undefined;
+						/**
+						 * @description The build command to run. This is the command that Netlify runs to build your site. If a site has a netlify.toml file with a build command it will override this value.
+						 * @type string | undefined
+						 */
+						cmd?: string | undefined;
+						/**
+						 * @type array | undefined
+						 */
+						allowed_branches?: string[] | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						public_repo?: boolean | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						private_logs?: boolean | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						repo_url?: string | undefined;
+						/**
+						 * @type object | undefined
+						 */
+						env?:
+							| {
+									[key: string]: string;
+							  }
+							| undefined;
+						/**
+						 * @type integer | undefined
+						 */
+						installation_id?: number | undefined;
+						/**
+						 * @description When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.
+						 * @type boolean | undefined
+						 */
+						stop_builds?: boolean | undefined;
+				  }
+				| undefined;
+	  }
+	| undefined;
 
-export type CreateSiteInTeamMutationResponse = CreateSiteInTeam201;
-
-export type CreateSiteInTeamMutation = {
-	Response: CreateSiteInTeam201;
-	Request: CreateSiteInTeamMutationRequest;
-	PathParams: CreateSiteInTeamPathParams;
-	QueryParams: CreateSiteInTeamQueryParams;
-	Errors: any;
-};
-
-export type ListSitesForAccountPathParams = {
+/**
+ * @type object
+ */
+export type CreateSiteInTeamRequestConfig = {
+	data?: CreateSiteInTeamData | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		account_slug: CreateSiteInTeamPathAccountSlug;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				configure_dns?: CreateSiteInTeamQueryConfigureDns | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	account_slug: string;
-};
-
-export type ListSitesForAccountQueryParams = {
-	/**
-	 * @type string | undefined
-	 */
-	name?: string | undefined;
-	/**
-	 * @type integer | undefined, int32
-	 */
-	page?: number | undefined;
-	/**
-	 * @type integer | undefined, int32
-	 */
-	per_page?: number | undefined;
+	url: `/${string}/sites`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type ListSitesForAccount200 = {
+export type CreateSiteInTeamResponses = {
+	"201": CreateSiteInTeamStatus201;
+	default: CreateSiteInTeamStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateSiteInTeamResponse = CreateSiteInTeamStatus201 | CreateSiteInTeamStatusDefault;
+
+/**
+ * @type string | undefined
+ */
+export type ListSitesForAccountQueryName = string | undefined;
+
+/**
+ * @type string
+ */
+export type ListSitesForAccountPathAccountSlug = string;
+
+/**
+ * @type integer | undefined
+ */
+export type ListSitesForAccountQueryPage = number | undefined;
+
+/**
+ * @type integer | undefined
+ */
+export type ListSitesForAccountQueryPerPage = number | undefined;
+
+/**
+ * @type array
+ */
+export type ListSitesForAccountStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -14576,11 +19166,11 @@ export type ListSitesForAccount200 = {
 	 */
 	screenshot_url?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
@@ -14697,15 +19287,15 @@ export type ListSitesForAccount200 = {
 				 */
 				skipped?: boolean | undefined;
 				/**
-				 * @type string | undefined, dateTime
+				 * @type string | undefined
 				 */
 				created_at?: string | undefined;
 				/**
-				 * @type string | undefined, dateTime
+				 * @type string | undefined
 				 */
 				updated_at?: string | undefined;
 				/**
-				 * @type string | undefined, dateTime
+				 * @type string | undefined
 				 */
 				published_at?: string | undefined;
 				/**
@@ -14904,39 +19494,71 @@ export type ListSitesForAccount200 = {
 }[];
 
 /**
- * @description error
+ * @type object
  */
-export type ListSitesForAccountError = {
+export type ListSitesForAccountStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type ListSitesForAccountQueryResponse = ListSitesForAccount200;
-
-export type ListSitesForAccountQuery = {
-	Response: ListSitesForAccount200;
-	PathParams: ListSitesForAccountPathParams;
-	QueryParams: ListSitesForAccountQueryParams;
-	Errors: any;
-};
-
-export type ListMembersForAccountPathParams = {
+/**
+ * @type object
+ */
+export type ListSitesForAccountRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		account_slug: ListSitesForAccountPathAccountSlug;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				name?: ListSitesForAccountQueryName | undefined;
+				page?: ListSitesForAccountQueryPage | undefined;
+				per_page?: ListSitesForAccountQueryPerPage | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	account_slug: string;
+	url: `/${string}/sites`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type ListMembersForAccount200 = {
+export type ListSitesForAccountResponses = {
+	"200": ListSitesForAccountStatus200;
+	default: ListSitesForAccountStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListSitesForAccountResponse =
+	| ListSitesForAccountStatus200
+	| ListSitesForAccountStatusDefault;
+
+/**
+ * @type string
+ */
+export type ListMembersForAccountPathAccountSlug = string;
+
+/**
+ * @type array
+ */
+export type ListMembersForAccountStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -14960,38 +19582,62 @@ export type ListMembersForAccount200 = {
 }[];
 
 /**
- * @description error
+ * @type object
  */
-export type ListMembersForAccountError = {
+export type ListMembersForAccountStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type ListMembersForAccountQueryResponse = ListMembersForAccount200;
-
-export type ListMembersForAccountQuery = {
-	Response: ListMembersForAccount200;
-	PathParams: ListMembersForAccountPathParams;
-	Errors: any;
-};
-
-export type AddMemberToAccountPathParams = {
+/**
+ * @type object
+ */
+export type ListMembersForAccountRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		account_slug: ListMembersForAccountPathAccountSlug;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	account_slug: string;
+	url: `/${string}/members`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type AddMemberToAccount200 = {
+export type ListMembersForAccountResponses = {
+	"200": ListMembersForAccountStatus200;
+	default: ListMembersForAccountStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListMembersForAccountResponse =
+	| ListMembersForAccountStatus200
+	| ListMembersForAccountStatusDefault;
+
+/**
+ * @type string
+ */
+export type AddMemberToAccountPathAccountSlug = string;
+
+/**
+ * @type array
+ */
+export type AddMemberToAccountStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -15015,64 +19661,90 @@ export type AddMemberToAccount200 = {
 }[];
 
 /**
- * @description error
+ * @type object
  */
-export type AddMemberToAccountError = {
+export type AddMemberToAccountStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export const addMemberToAccountMutationRequestRoleEnum = {
+export const roleEnum = {
 	Owner: "Owner",
 	Developer: "Developer",
 	"Billing Admin": "Billing Admin",
 	Reviewer: "Reviewer",
 } as const;
 
-export type AddMemberToAccountMutationRequestRoleEnumKey =
-	(typeof addMemberToAccountMutationRequestRoleEnum)[keyof typeof addMemberToAccountMutationRequestRoleEnum];
+export type RoleEnumKey = (typeof roleEnum)[keyof typeof roleEnum];
 
-export type AddMemberToAccountMutationRequest = {
+/**
+ * @type object
+ */
+export type AddMemberToAccountData = {
 	/**
 	 * @type string | undefined
 	 */
-	role?: AddMemberToAccountMutationRequestRoleEnumKey | undefined;
+	role?: RoleEnumKey | undefined;
 	/**
 	 * @type string | undefined
 	 */
 	email?: string | undefined;
 };
 
-export type AddMemberToAccountMutationResponse = AddMemberToAccount200;
-
-export type AddMemberToAccountMutation = {
-	Response: AddMemberToAccount200;
-	Request: AddMemberToAccountMutationRequest;
-	PathParams: AddMemberToAccountPathParams;
-	Errors: any;
-};
-
-export type GetAccountMemberPathParams = {
+/**
+ * @type object
+ */
+export type AddMemberToAccountRequestConfig = {
+	data?: AddMemberToAccountData | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		account_slug: AddMemberToAccountPathAccountSlug;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	account_slug: string;
-	/**
-	 * @type string
-	 */
-	member_id: string;
+	url: `/${string}/members`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type GetAccountMember200 = {
+export type AddMemberToAccountResponses = {
+	"200": AddMemberToAccountStatus200;
+	default: AddMemberToAccountStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type AddMemberToAccountResponse =
+	| AddMemberToAccountStatus200
+	| AddMemberToAccountStatusDefault;
+
+/**
+ * @type string
+ */
+export type GetAccountMemberPathAccountSlug = string;
+
+/**
+ * @type string
+ */
+export type GetAccountMemberPathMemberId = string;
+
+/**
+ * @type object
+ */
+export type GetAccountMemberStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -15096,42 +19768,66 @@ export type GetAccountMember200 = {
 };
 
 /**
- * @description error
+ * @type object
  */
-export type GetAccountMemberError = {
+export type GetAccountMemberStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type GetAccountMemberQueryResponse = GetAccountMember200;
-
-export type GetAccountMemberQuery = {
-	Response: GetAccountMember200;
-	PathParams: GetAccountMemberPathParams;
-	Errors: any;
-};
-
-export type UpdateAccountMemberPathParams = {
+/**
+ * @type object
+ */
+export type GetAccountMemberRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		account_slug: GetAccountMemberPathAccountSlug;
+		member_id: GetAccountMemberPathMemberId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	account_slug: string;
-	/**
-	 * @type string
-	 */
-	member_id: string;
+	url: `/${string}/members/${string}`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type UpdateAccountMember200 = {
+export type GetAccountMemberResponses = {
+	"200": GetAccountMemberStatus200;
+	default: GetAccountMemberStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetAccountMemberResponse = GetAccountMemberStatus200 | GetAccountMemberStatusDefault;
+
+/**
+ * @type string
+ */
+export type UpdateAccountMemberPathAccountSlug = string;
+
+/**
+ * @type string
+ */
+export type UpdateAccountMemberPathMemberId = string;
+
+/**
+ * @type object
+ */
+export type UpdateAccountMemberStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -15155,104 +19851,148 @@ export type UpdateAccountMember200 = {
 };
 
 /**
- * @description error
+ * @type object
  */
-export type UpdateAccountMemberError = {
+export type UpdateAccountMemberStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export const updateAccountMemberMutationRequestRoleEnum = {
-	Owner: "Owner",
-	Developer: "Developer",
-	"Billing Admin": "Billing Admin",
-	Reviewer: "Reviewer",
-} as const;
-
-export type UpdateAccountMemberMutationRequestRoleEnumKey =
-	(typeof updateAccountMemberMutationRequestRoleEnum)[keyof typeof updateAccountMemberMutationRequestRoleEnum];
-
-export const updateAccountMemberMutationRequestSiteAccessEnum = {
+export const siteAccessEnum = {
 	all: "all",
 	none: "none",
 	selected: "selected",
 } as const;
 
-export type UpdateAccountMemberMutationRequestSiteAccessEnumKey =
-	(typeof updateAccountMemberMutationRequestSiteAccessEnum)[keyof typeof updateAccountMemberMutationRequestSiteAccessEnum];
+export type SiteAccessEnumKey = (typeof siteAccessEnum)[keyof typeof siteAccessEnum];
 
-export type UpdateAccountMemberMutationRequest = {
+/**
+ * @type object
+ */
+export type UpdateAccountMemberData = {
 	/**
 	 * @type string | undefined
 	 */
-	role?: UpdateAccountMemberMutationRequestRoleEnumKey | undefined;
+	role?: RoleEnumKey | undefined;
 	/**
 	 * @type string | undefined
 	 */
-	site_access?: UpdateAccountMemberMutationRequestSiteAccessEnumKey | undefined;
+	site_access?: SiteAccessEnumKey | undefined;
 	/**
 	 * @type array | undefined
 	 */
 	site_ids?: string[] | undefined;
 };
 
-export type UpdateAccountMemberMutationResponse = UpdateAccountMember200;
-
-export type UpdateAccountMemberMutation = {
-	Response: UpdateAccountMember200;
-	Request: UpdateAccountMemberMutationRequest;
-	PathParams: UpdateAccountMemberPathParams;
-	Errors: any;
-};
-
-export type RemoveAccountMemberPathParams = {
+/**
+ * @type object
+ */
+export type UpdateAccountMemberRequestConfig = {
+	data?: UpdateAccountMemberData | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		account_slug: UpdateAccountMemberPathAccountSlug;
+		member_id: UpdateAccountMemberPathMemberId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	account_slug: string;
-	/**
-	 * @type string
-	 */
-	member_id: string;
+	url: `/${string}/members/${string}`;
 };
 
 /**
- * @description Not Content
+ * @type object
  */
-export type RemoveAccountMember204 = unknown;
+export type UpdateAccountMemberResponses = {
+	"200": UpdateAccountMemberStatus200;
+	default: UpdateAccountMemberStatusDefault;
+};
 
 /**
- * @description error
+ * @description Union of all possible responses
  */
-export type RemoveAccountMemberError = {
+export type UpdateAccountMemberResponse =
+	| UpdateAccountMemberStatus200
+	| UpdateAccountMemberStatusDefault;
+
+/**
+ * @type string
+ */
+export type RemoveAccountMemberPathAccountSlug = string;
+
+/**
+ * @type string
+ */
+export type RemoveAccountMemberPathMemberId = string;
+
+/**
+ * @type unknown
+ */
+export type RemoveAccountMemberStatus204 = unknown;
+
+/**
+ * @type object
+ */
+export type RemoveAccountMemberStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type RemoveAccountMemberMutationResponse = RemoveAccountMember204;
-
-export type RemoveAccountMemberMutation = {
-	Response: RemoveAccountMember204;
-	PathParams: RemoveAccountMemberPathParams;
-	Errors: any;
+/**
+ * @type object
+ */
+export type RemoveAccountMemberRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		account_slug: RemoveAccountMemberPathAccountSlug;
+		member_id: RemoveAccountMemberPathMemberId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/${string}/members/${string}`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type ListPaymentMethodsForUser200 = {
+export type RemoveAccountMemberResponses = {
+	"204": RemoveAccountMemberStatus204;
+	default: RemoveAccountMemberStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type RemoveAccountMemberResponse =
+	| RemoveAccountMemberStatus204
+	| RemoveAccountMemberStatusDefault;
+
+/**
+ * @type array
+ */
+export type ListPaymentMethodsForUserStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -15289,40 +20029,62 @@ export type ListPaymentMethodsForUser200 = {
 		  }
 		| undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 }[];
 
 /**
- * @description error
+ * @type object
  */
-export type ListPaymentMethodsForUserError = {
+export type ListPaymentMethodsForUserStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type ListPaymentMethodsForUserQueryResponse = ListPaymentMethodsForUser200;
-
-export type ListPaymentMethodsForUserQuery = {
-	Response: ListPaymentMethodsForUser200;
-	Errors: any;
+/**
+ * @type object
+ */
+export type ListPaymentMethodsForUserRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/billing/payment_methods";
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type ListAccountTypesForUser200 = {
+export type ListPaymentMethodsForUserResponses = {
+	"200": ListPaymentMethodsForUserStatus200;
+	default: ListPaymentMethodsForUserStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListPaymentMethodsForUserResponse =
+	| ListPaymentMethodsForUserStatus200
+	| ListPaymentMethodsForUserStatusDefault;
+
+/**
+ * @type array
+ */
+export type ListAccountTypesForUserStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -15358,37 +20120,57 @@ export type ListAccountTypesForUser200 = {
 }[];
 
 /**
- * @description error
+ * @type object
  */
-export type ListAccountTypesForUserError = {
+export type ListAccountTypesForUserStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type ListAccountTypesForUserQueryResponse = ListAccountTypesForUser200;
-
-export type ListAccountTypesForUserQuery = {
-	Response: ListAccountTypesForUser200;
-	Errors: any;
-};
-
-export type ListAccountsForUserQueryParams = {
+/**
+ * @type object
+ */
+export type ListAccountTypesForUserRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
-	 * @type boolean | undefined
+	 * @type string
 	 */
-	minimal?: boolean | undefined;
+	url: "/accounts/types";
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type ListAccountsForUser200 = {
+export type ListAccountTypesForUserResponses = {
+	"200": ListAccountTypesForUserStatus200;
+	default: ListAccountTypesForUserStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListAccountTypesForUserResponse =
+	| ListAccountTypesForUserStatus200
+	| ListAccountTypesForUserStatusDefault;
+
+/**
+ * @type boolean | undefined
+ */
+export type ListAccountsForUserQueryMinimal = boolean | undefined;
+
+/**
+ * @type array
+ */
+export type ListAccountsForUserStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -15479,41 +20261,69 @@ export type ListAccountsForUser200 = {
 	 */
 	roles_allowed?: string[] | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 }[];
 
 /**
- * @description error
+ * @type object
  */
-export type ListAccountsForUserError = {
+export type ListAccountsForUserStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type ListAccountsForUserQueryResponse = ListAccountsForUser200;
-
-export type ListAccountsForUserQuery = {
-	Response: ListAccountsForUser200;
-	QueryParams: ListAccountsForUserQueryParams;
-	Errors: any;
+/**
+ * @type object
+ */
+export type ListAccountsForUserRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				minimal?: ListAccountsForUserQueryMinimal | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/accounts";
 };
 
 /**
- * @description Created
+ * @type object
  */
-export type CreateAccount201 = {
+export type ListAccountsForUserResponses = {
+	"200": ListAccountsForUserStatus200;
+	default: ListAccountsForUserStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListAccountsForUserResponse =
+	| ListAccountsForUserStatus200
+	| ListAccountsForUserStatusDefault;
+
+/**
+ * @type object
+ */
+export type CreateAccountStatus201 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -15604,38 +20414,40 @@ export type CreateAccount201 = {
 	 */
 	roles_allowed?: string[] | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 };
 
 /**
- * @description error
+ * @type object
  */
-export type CreateAccountError = {
+export type CreateAccountStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export const createAccountMutationRequestPeriodEnum = {
+export const periodEnum = {
 	monthly: "monthly",
 	yearly: "yearly",
 } as const;
 
-export type CreateAccountMutationRequestPeriodEnumKey =
-	(typeof createAccountMutationRequestPeriodEnum)[keyof typeof createAccountMutationRequestPeriodEnum];
+export type PeriodEnumKey = (typeof periodEnum)[keyof typeof periodEnum];
 
-export type CreateAccountMutationRequest = {
+/**
+ * @type object
+ */
+export type CreateAccountData = {
 	/**
 	 * @type string
 	 */
@@ -15651,32 +20463,49 @@ export type CreateAccountMutationRequest = {
 	/**
 	 * @type string | undefined
 	 */
-	period?: CreateAccountMutationRequestPeriodEnumKey | undefined;
+	period?: PeriodEnumKey | undefined;
 	/**
 	 * @type integer | undefined
 	 */
 	extra_seats_block?: number | undefined;
 };
 
-export type CreateAccountMutationResponse = CreateAccount201;
-
-export type CreateAccountMutation = {
-	Response: CreateAccount201;
-	Request: CreateAccountMutationRequest;
-	Errors: any;
-};
-
-export type GetAccountPathParams = {
+/**
+ * @type object
+ */
+export type CreateAccountRequestConfig = {
+	data?: CreateAccountData | undefined;
+	pathParams?: never | undefined;
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	account_id: string;
+	url: "/accounts";
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type GetAccount200 = {
+export type CreateAccountResponses = {
+	"201": CreateAccountStatus201;
+	default: CreateAccountStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateAccountResponse = CreateAccountStatus201 | CreateAccountStatusDefault;
+
+/**
+ * @type string
+ */
+export type GetAccountPathAccountId = string;
+
+/**
+ * @type object
+ */
+export type GetAccountStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -15767,48 +20596,70 @@ export type GetAccount200 = {
 	 */
 	roles_allowed?: string[] | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 };
 
 /**
- * @description error
+ * @type object
  */
-export type GetAccountError = {
+export type GetAccountStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type GetAccountQueryResponse = GetAccount200;
-
-export type GetAccountQuery = {
-	Response: GetAccount200;
-	PathParams: GetAccountPathParams;
-	Errors: any;
-};
-
-export type UpdateAccountPathParams = {
+/**
+ * @type object
+ */
+export type GetAccountRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		account_id: GetAccountPathAccountId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	account_id: string;
+	url: `/accounts/${string}`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type UpdateAccount200 = {
+export type GetAccountResponses = {
+	"200": GetAccountStatus200;
+	default: GetAccountStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetAccountResponse = GetAccountStatus200 | GetAccountStatusDefault;
+
+/**
+ * @type string
+ */
+export type UpdateAccountPathAccountId = string;
+
+/**
+ * @type object
+ */
+export type UpdateAccountStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -15899,133 +20750,182 @@ export type UpdateAccount200 = {
 	 */
 	roles_allowed?: string[] | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 };
 
 /**
- * @description error
+ * @type object
  */
-export type UpdateAccountError = {
-	/**
-	 * @type integer | undefined, int64
-	 */
-	code?: number | undefined;
-	/**
-	 * @type string
-	 */
-	message: string;
-};
-
-export type UpdateAccountMutationRequest = {
-	/**
-	 * @type string | undefined
-	 */
-	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	slug?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	type_id?: string | undefined;
+export type UpdateAccountStatusDefault = {
 	/**
 	 * @type integer | undefined
 	 */
-	extra_seats_block?: number | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	billing_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	billing_email?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	billing_details?: string | undefined;
-};
-
-export type UpdateAccountMutationResponse = UpdateAccount200;
-
-export type UpdateAccountMutation = {
-	Response: UpdateAccount200;
-	Request: UpdateAccountMutationRequest;
-	PathParams: UpdateAccountPathParams;
-	Errors: any;
-};
-
-export type CancelAccountPathParams = {
-	/**
-	 * @type string
-	 */
-	account_id: string;
-};
-
-/**
- * @description Not Content
- */
-export type CancelAccount204 = unknown;
-
-/**
- * @description error
- */
-export type CancelAccountError = {
-	/**
-	 * @type integer | undefined, int64
-	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type CancelAccountMutationResponse = CancelAccount204;
+/**
+ * @type object | undefined
+ */
+export type UpdateAccountData =
+	| {
+			/**
+			 * @type string | undefined
+			 */
+			name?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			slug?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			type_id?: string | undefined;
+			/**
+			 * @type integer | undefined
+			 */
+			extra_seats_block?: number | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			billing_name?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			billing_email?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			billing_details?: string | undefined;
+	  }
+	| undefined;
 
-export type CancelAccountMutation = {
-	Response: CancelAccount204;
-	PathParams: CancelAccountPathParams;
-	Errors: any;
-};
-
-export type ListAccountAuditEventsPathParams = {
+/**
+ * @type object
+ */
+export type UpdateAccountRequestConfig = {
+	data?: UpdateAccountData | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		account_id: UpdateAccountPathAccountId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	account_id: string;
-};
-
-export type ListAccountAuditEventsQueryParams = {
-	/**
-	 * @type string | undefined
-	 */
-	query?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	log_type?: string | undefined;
-	/**
-	 * @type integer | undefined, int32
-	 */
-	page?: number | undefined;
-	/**
-	 * @type integer | undefined, int32
-	 */
-	per_page?: number | undefined;
+	url: `/accounts/${string}`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type ListAccountAuditEvents200 = {
+export type UpdateAccountResponses = {
+	"200": UpdateAccountStatus200;
+	default: UpdateAccountStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type UpdateAccountResponse = UpdateAccountStatus200 | UpdateAccountStatusDefault;
+
+/**
+ * @type string
+ */
+export type CancelAccountPathAccountId = string;
+
+/**
+ * @type unknown
+ */
+export type CancelAccountStatus204 = unknown;
+
+/**
+ * @type object
+ */
+export type CancelAccountStatusDefault = {
+	/**
+	 * @type integer | undefined
+	 */
+	code?: bigint | undefined;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
+/**
+ * @type object
+ */
+export type CancelAccountRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		account_id: CancelAccountPathAccountId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/accounts/${string}`;
+};
+
+/**
+ * @type object
+ */
+export type CancelAccountResponses = {
+	"204": CancelAccountStatus204;
+	default: CancelAccountStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CancelAccountResponse = CancelAccountStatus204 | CancelAccountStatusDefault;
+
+/**
+ * @type string
+ */
+export type ListAccountAuditEventsPathAccountId = string;
+
+/**
+ * @type string | undefined
+ */
+export type ListAccountAuditEventsQueryQuery = string | undefined;
+
+/**
+ * @type string | undefined
+ */
+export type ListAccountAuditEventsQueryLogType = string | undefined;
+
+/**
+ * @type integer | undefined
+ */
+export type ListAccountAuditEventsQueryPage = number | undefined;
+
+/**
+ * @type integer | undefined
+ */
+export type ListAccountAuditEventsQueryPerPage = number | undefined;
+
+/**
+ * @type array
+ */
+export type ListAccountAuditEventsStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -16056,7 +20956,7 @@ export type ListAccountAuditEvents200 = {
 				 */
 				action?: string | undefined;
 				/**
-				 * @type string | undefined, dateTime
+				 * @type string | undefined
 				 */
 				timestamp?: string | undefined;
 				/**
@@ -16069,83 +20969,117 @@ export type ListAccountAuditEvents200 = {
 }[];
 
 /**
- * @description error
+ * @type object
  */
-export type ListAccountAuditEventsError = {
+export type ListAccountAuditEventsStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type ListAccountAuditEventsQueryResponse = ListAccountAuditEvents200;
-
-export type ListAccountAuditEventsQuery = {
-	Response: ListAccountAuditEvents200;
-	PathParams: ListAccountAuditEventsPathParams;
-	QueryParams: ListAccountAuditEventsQueryParams;
-	Errors: any;
-};
-
-export const listAgentRunnersQueryParamsStateEnum = {
-	live: "live",
-	error: "error",
-} as const;
-
-export type ListAgentRunnersQueryParamsStateEnumKey =
-	(typeof listAgentRunnersQueryParamsStateEnum)[keyof typeof listAgentRunnersQueryParamsStateEnum];
-
-export type ListAgentRunnersQueryParams = {
+/**
+ * @type object
+ */
+export type ListAccountAuditEventsRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		account_id: ListAccountAuditEventsPathAccountId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				query?: ListAccountAuditEventsQueryQuery | undefined;
+				log_type?: ListAccountAuditEventsQueryLogType | undefined;
+				page?: ListAccountAuditEventsQueryPage | undefined;
+				per_page?: ListAccountAuditEventsQueryPerPage | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	account_id: string;
-	/**
-	 * @type string
-	 */
-	site_id: string;
-	/**
-	 * @type integer | undefined, int32
-	 */
-	page?: number | undefined;
-	/**
-	 * @type integer | undefined, int32
-	 */
-	per_page?: number | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	state?: ListAgentRunnersQueryParamsStateEnumKey | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	result_branch?: string | undefined;
-	/**
-	 * @type integer | undefined
-	 */
-	from?: number | undefined;
-	/**
-	 * @type integer | undefined
-	 */
-	to?: number | undefined;
+	url: `/accounts/${string}/audit`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type ListAgentRunners200 = {
+export type ListAccountAuditEventsResponses = {
+	"200": ListAccountAuditEventsStatus200;
+	default: ListAccountAuditEventsStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListAccountAuditEventsResponse =
+	| ListAccountAuditEventsStatus200
+	| ListAccountAuditEventsStatusDefault;
+
+/**
+ * @type string
+ */
+export type ListAgentRunnersQueryAccountId = string;
+
+/**
+ * @type string
+ */
+export type ListAgentRunnersQuerySiteId = string;
+
+/**
+ * @type integer | undefined
+ */
+export type ListAgentRunnersQueryPage = number | undefined;
+
+/**
+ * @type integer | undefined
+ */
+export type ListAgentRunnersQueryPerPage = number | undefined;
+
+/**
+ * @type string | undefined
+ */
+export type ListAgentRunnersQueryState = ("live" | "error") | undefined;
+
+/**
+ * @type string | undefined
+ */
+export type ListAgentRunnersQueryTitle = string | undefined;
+
+/**
+ * @type string | undefined
+ */
+export type ListAgentRunnersQueryBranch = string | undefined;
+
+/**
+ * @type string | undefined
+ */
+export type ListAgentRunnersQueryResultBranch = string | undefined;
+
+/**
+ * @type integer | undefined
+ */
+export type ListAgentRunnersQueryFrom = number | undefined;
+
+/**
+ * @type integer | undefined
+ */
+export type ListAgentRunnersQueryTo = number | undefined;
+
+/**
+ * @type array
+ */
+export type ListAgentRunnersStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -16163,15 +21097,15 @@ export type ListAgentRunners200 = {
 	 */
 	state?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	done_at?: string | undefined;
 	/**
@@ -16243,7 +21177,7 @@ export type ListAgentRunners200 = {
 	 */
 	attached_file_keys?: string[] | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	active_session_created_at?: string | undefined;
 	/**
@@ -16280,70 +21214,111 @@ export type ListAgentRunners200 = {
 }[];
 
 /**
- * @description error
+ * @type object
  */
-export type ListAgentRunnersError = {
+export type ListAgentRunnersStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type ListAgentRunnersQueryResponse = ListAgentRunners200;
-
-export type ListAgentRunnersQuery = {
-	Response: ListAgentRunners200;
-	QueryParams: ListAgentRunnersQueryParams;
-	Errors: any;
-};
-
-export type CreateAgentRunnerQueryParams = {
+/**
+ * @type object
+ */
+export type ListAgentRunnersRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				account_id: ListAgentRunnersQueryAccountId;
+				site_id: ListAgentRunnersQuerySiteId;
+				page?: ListAgentRunnersQueryPage | undefined;
+				per_page?: ListAgentRunnersQueryPerPage | undefined;
+				state?: ListAgentRunnersQueryState | undefined;
+				title?: ListAgentRunnersQueryTitle | undefined;
+				branch?: ListAgentRunnersQueryBranch | undefined;
+				result_branch?: ListAgentRunnersQueryResultBranch | undefined;
+				from?: ListAgentRunnersQueryFrom | undefined;
+				to?: ListAgentRunnersQueryTo | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-	/**
-	 * @type string | undefined
-	 */
-	deploy_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	prompt?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	agent?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	model?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	parent_agent_runner_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	dev_server_image?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	file_keys?: string[] | undefined;
+	url: "/agent_runners";
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type CreateAgentRunner200 = {
+export type ListAgentRunnersResponses = {
+	"200": ListAgentRunnersStatus200;
+	default: ListAgentRunnersStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListAgentRunnersResponse = ListAgentRunnersStatus200 | ListAgentRunnersStatusDefault;
+
+/**
+ * @type string
+ */
+export type CreateAgentRunnerQuerySiteId = string;
+
+/**
+ * @type string | undefined
+ */
+export type CreateAgentRunnerQueryDeployId = string | undefined;
+
+/**
+ * @type string | undefined
+ */
+export type CreateAgentRunnerQueryBranch = string | undefined;
+
+/**
+ * @type string | undefined
+ */
+export type CreateAgentRunnerQueryPrompt = string | undefined;
+
+/**
+ * @type string | undefined
+ */
+export type CreateAgentRunnerQueryAgent = string | undefined;
+
+/**
+ * @type string | undefined
+ */
+export type CreateAgentRunnerQueryModel = string | undefined;
+
+/**
+ * @type string | undefined
+ */
+export type CreateAgentRunnerQueryParentAgentRunnerId = string | undefined;
+
+/**
+ * @type string | undefined
+ */
+export type CreateAgentRunnerQueryDevServerImage = string | undefined;
+
+/**
+ * @type array | undefined
+ */
+export type CreateAgentRunnerQueryFileKeys = string[] | undefined;
+
+/**
+ * @type object
+ */
+export type CreateAgentRunnerStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -16361,15 +21336,15 @@ export type CreateAgentRunner200 = {
 	 */
 	state?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	done_at?: string | undefined;
 	/**
@@ -16441,7 +21416,7 @@ export type CreateAgentRunner200 = {
 	 */
 	attached_file_keys?: string[] | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	active_session_created_at?: string | undefined;
 	/**
@@ -16478,100 +21453,172 @@ export type CreateAgentRunner200 = {
 };
 
 /**
- * @description Not Found
+ * @type unknown
  */
-export type CreateAgentRunner404 = unknown;
+export type CreateAgentRunnerStatus404 = unknown;
 
 /**
- * @description Unprocessable Entity
+ * @type unknown
  */
-export type CreateAgentRunner422 = unknown;
+export type CreateAgentRunnerStatus422 = unknown;
 
 /**
- * @description error
+ * @type object
  */
-export type CreateAgentRunnerError = {
+export type CreateAgentRunnerStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type CreateAgentRunnerMutationResponse = CreateAgentRunner200;
-
-export type CreateAgentRunnerMutation = {
-	Response: CreateAgentRunner200;
-	QueryParams: CreateAgentRunnerQueryParams;
-	Errors: CreateAgentRunner404 | CreateAgentRunner422;
+/**
+ * @type object
+ */
+export type CreateAgentRunnerRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				site_id: CreateAgentRunnerQuerySiteId;
+				deploy_id?: CreateAgentRunnerQueryDeployId | undefined;
+				branch?: CreateAgentRunnerQueryBranch | undefined;
+				prompt?: CreateAgentRunnerQueryPrompt | undefined;
+				agent?: CreateAgentRunnerQueryAgent | undefined;
+				model?: CreateAgentRunnerQueryModel | undefined;
+				parent_agent_runner_id?: CreateAgentRunnerQueryParentAgentRunnerId | undefined;
+				dev_server_image?: CreateAgentRunnerQueryDevServerImage | undefined;
+				file_keys?: CreateAgentRunnerQueryFileKeys | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/agent_runners";
 };
 
-export type CreateAgentRunnerUploadUrlQueryParams = {
-	/**
-	 * @type string
-	 */
-	account_id: string;
-	/**
-	 * @type string
-	 */
-	filename: string;
-	/**
-	 * @type string
-	 */
-	content_type: string;
+/**
+ * @type object
+ */
+export type CreateAgentRunnerResponses = {
+	"200": CreateAgentRunnerStatus200;
+	"404": CreateAgentRunnerStatus404;
+	"422": CreateAgentRunnerStatus422;
+	default: CreateAgentRunnerStatusDefault;
 };
 
 /**
- * @description OK
+ * @description Union of all possible responses
  */
-export type CreateAgentRunnerUploadUrl200 = unknown;
+export type CreateAgentRunnerResponse =
+	| CreateAgentRunnerStatus200
+	| CreateAgentRunnerStatus404
+	| CreateAgentRunnerStatus422
+	| CreateAgentRunnerStatusDefault;
 
 /**
- * @description Bad Request
+ * @type string
  */
-export type CreateAgentRunnerUploadUrl400 = unknown;
+export type CreateAgentRunnerUploadUrlQueryAccountId = string;
 
 /**
- * @description Unprocessable Entity
+ * @type string
  */
-export type CreateAgentRunnerUploadUrl422 = unknown;
+export type CreateAgentRunnerUploadUrlQueryFilename = string;
 
 /**
- * @description error
+ * @type string
  */
-export type CreateAgentRunnerUploadUrlError = {
+export type CreateAgentRunnerUploadUrlQueryContentType = string;
+
+/**
+ * @type unknown
+ */
+export type CreateAgentRunnerUploadUrlStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateAgentRunnerUploadUrlStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateAgentRunnerUploadUrlStatus422 = unknown;
+
+/**
+ * @type object
+ */
+export type CreateAgentRunnerUploadUrlStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type CreateAgentRunnerUploadUrlMutationResponse = CreateAgentRunnerUploadUrl200;
-
-export type CreateAgentRunnerUploadUrlMutation = {
-	Response: CreateAgentRunnerUploadUrl200;
-	QueryParams: CreateAgentRunnerUploadUrlQueryParams;
-	Errors: CreateAgentRunnerUploadUrl400 | CreateAgentRunnerUploadUrl422;
-};
-
-export type GetAgentRunnerPathParams = {
+/**
+ * @type object
+ */
+export type CreateAgentRunnerUploadUrlRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				account_id: CreateAgentRunnerUploadUrlQueryAccountId;
+				filename: CreateAgentRunnerUploadUrlQueryFilename;
+				content_type: CreateAgentRunnerUploadUrlQueryContentType;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	agent_runner_id: string;
+	url: "/agent_runners/upload_url";
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type GetAgentRunner200 = {
+export type CreateAgentRunnerUploadUrlResponses = {
+	"200": CreateAgentRunnerUploadUrlStatus200;
+	"400": CreateAgentRunnerUploadUrlStatus400;
+	"422": CreateAgentRunnerUploadUrlStatus422;
+	default: CreateAgentRunnerUploadUrlStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateAgentRunnerUploadUrlResponse =
+	| CreateAgentRunnerUploadUrlStatus200
+	| CreateAgentRunnerUploadUrlStatus400
+	| CreateAgentRunnerUploadUrlStatus422
+	| CreateAgentRunnerUploadUrlStatusDefault;
+
+/**
+ * @type string
+ */
+export type GetAgentRunnerPathAgentRunnerId = string;
+
+/**
+ * @type object
+ */
+export type GetAgentRunnerStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -16589,15 +21636,15 @@ export type GetAgentRunner200 = {
 	 */
 	state?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	done_at?: string | undefined;
 	/**
@@ -16669,7 +21716,7 @@ export type GetAgentRunner200 = {
 	 */
 	attached_file_keys?: string[] | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	active_session_created_at?: string | undefined;
 	/**
@@ -16706,38 +21753,60 @@ export type GetAgentRunner200 = {
 };
 
 /**
- * @description error
+ * @type object
  */
-export type GetAgentRunnerError = {
+export type GetAgentRunnerStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type GetAgentRunnerQueryResponse = GetAgentRunner200;
-
-export type GetAgentRunnerQuery = {
-	Response: GetAgentRunner200;
-	PathParams: GetAgentRunnerPathParams;
-	Errors: any;
-};
-
-export type UpdateAgentRunnerPathParams = {
+/**
+ * @type object
+ */
+export type GetAgentRunnerRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		agent_runner_id: GetAgentRunnerPathAgentRunnerId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	agent_runner_id: string;
+	url: `/agent_runners/${string}`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type UpdateAgentRunner200 = {
+export type GetAgentRunnerResponses = {
+	"200": GetAgentRunnerStatus200;
+	default: GetAgentRunnerStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetAgentRunnerResponse = GetAgentRunnerStatus200 | GetAgentRunnerStatusDefault;
+
+/**
+ * @type string
+ */
+export type UpdateAgentRunnerPathAgentRunnerId = string;
+
+/**
+ * @type object
+ */
+export type UpdateAgentRunnerStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -16755,15 +21824,15 @@ export type UpdateAgentRunner200 = {
 	 */
 	state?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	done_at?: string | undefined;
 	/**
@@ -16835,7 +21904,7 @@ export type UpdateAgentRunner200 = {
 	 */
 	attached_file_keys?: string[] | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	active_session_created_at?: string | undefined;
 	/**
@@ -16872,268 +21941,388 @@ export type UpdateAgentRunner200 = {
 };
 
 /**
- * @description error
+ * @type object
  */
-export type UpdateAgentRunnerError = {
-	/**
-	 * @type integer | undefined, int64
-	 */
-	code?: number | undefined;
-	/**
-	 * @type string
-	 */
-	message: string;
-};
-
-export type UpdateAgentRunnerMutationResponse = UpdateAgentRunner200;
-
-export type UpdateAgentRunnerMutation = {
-	Response: UpdateAgentRunner200;
-	PathParams: UpdateAgentRunnerPathParams;
-	Errors: any;
-};
-
-export type DeleteAgentRunnerPathParams = {
-	/**
-	 * @type string
-	 */
-	agent_runner_id: string;
-};
-
-/**
- * @description Accepted
- */
-export type DeleteAgentRunner202 = unknown;
-
-/**
- * @description error
- */
-export type DeleteAgentRunnerError = {
-	/**
-	 * @type integer | undefined, int64
-	 */
-	code?: number | undefined;
-	/**
-	 * @type string
-	 */
-	message: string;
-};
-
-export type DeleteAgentRunnerMutationResponse = DeleteAgentRunner202;
-
-export type DeleteAgentRunnerMutation = {
-	Response: DeleteAgentRunner202;
-	PathParams: DeleteAgentRunnerPathParams;
-	Errors: any;
-};
-
-export type ArchiveAgentRunnerPathParams = {
-	/**
-	 * @type string
-	 */
-	agent_runner_id: string;
-};
-
-/**
- * @description Accepted
- */
-export type ArchiveAgentRunner202 = unknown;
-
-/**
- * @description Not Found
- */
-export type ArchiveAgentRunner404 = unknown;
-
-/**
- * @description Unprocessable Entity
- */
-export type ArchiveAgentRunner422 = unknown;
-
-/**
- * @description error
- */
-export type ArchiveAgentRunnerError = {
-	/**
-	 * @type integer | undefined, int64
-	 */
-	code?: number | undefined;
-	/**
-	 * @type string
-	 */
-	message: string;
-};
-
-export type ArchiveAgentRunnerMutationResponse = ArchiveAgentRunner202;
-
-export type ArchiveAgentRunnerMutation = {
-	Response: ArchiveAgentRunner202;
-	PathParams: ArchiveAgentRunnerPathParams;
-	Errors: ArchiveAgentRunner404 | ArchiveAgentRunner422;
-};
-
-export type AgentRunnerPullRequestPathParams = {
-	/**
-	 * @type string
-	 */
-	agent_runner_id: string;
-};
-
-/**
- * @description OK
- */
-export type AgentRunnerPullRequest200 = unknown;
-
-/**
- * @description Bad Request
- */
-export type AgentRunnerPullRequest400 = unknown;
-
-/**
- * @description Conflict
- */
-export type AgentRunnerPullRequest409 = unknown;
-
-/**
- * @description Unprocessable Entity
- */
-export type AgentRunnerPullRequest422 = unknown;
-
-/**
- * @description error
- */
-export type AgentRunnerPullRequestError = {
-	/**
-	 * @type integer | undefined, int64
-	 */
-	code?: number | undefined;
-	/**
-	 * @type string
-	 */
-	message: string;
-};
-
-export type AgentRunnerPullRequestMutationResponse = AgentRunnerPullRequest200;
-
-export type AgentRunnerPullRequestMutation = {
-	Response: AgentRunnerPullRequest200;
-	PathParams: AgentRunnerPullRequestPathParams;
-	Errors: AgentRunnerPullRequest400 | AgentRunnerPullRequest409 | AgentRunnerPullRequest422;
-};
-
-export type AgentRunnerCommitToBranchPathParams = {
-	/**
-	 * @type string
-	 */
-	agent_runner_id: string;
-};
-
-export type AgentRunnerCommitToBranchQueryParams = {
-	/**
-	 * @type string
-	 */
-	target_branch: string;
-};
-
-/**
- * @description OK
- */
-export type AgentRunnerCommitToBranch200 = unknown;
-
-/**
- * @description Bad Request
- */
-export type AgentRunnerCommitToBranch400 = unknown;
-
-/**
- * @description Conflict
- */
-export type AgentRunnerCommitToBranch409 = unknown;
-
-/**
- * @description Unprocessable Entity
- */
-export type AgentRunnerCommitToBranch422 = unknown;
-
-/**
- * @description error
- */
-export type AgentRunnerCommitToBranchError = {
-	/**
-	 * @type integer | undefined, int64
-	 */
-	code?: number | undefined;
-	/**
-	 * @type string
-	 */
-	message: string;
-};
-
-export type AgentRunnerCommitToBranchMutationResponse = AgentRunnerCommitToBranch200;
-
-export type AgentRunnerCommitToBranchMutation = {
-	Response: AgentRunnerCommitToBranch200;
-	PathParams: AgentRunnerCommitToBranchPathParams;
-	QueryParams: AgentRunnerCommitToBranchQueryParams;
-	Errors:
-		| AgentRunnerCommitToBranch400
-		| AgentRunnerCommitToBranch409
-		| AgentRunnerCommitToBranch422;
-};
-
-export type ListAgentRunnerSessionsPathParams = {
-	/**
-	 * @type string
-	 */
-	agent_runner_id: string;
-};
-
-export const listAgentRunnerSessionsQueryParamsStateEnum = {
-	live: "live",
-	error: "error",
-} as const;
-
-export type ListAgentRunnerSessionsQueryParamsStateEnumKey =
-	(typeof listAgentRunnerSessionsQueryParamsStateEnum)[keyof typeof listAgentRunnerSessionsQueryParamsStateEnum];
-
-export const listAgentRunnerSessionsQueryParamsOrderByEnum = {
-	asc: "asc",
-	desc: "desc",
-} as const;
-
-export type ListAgentRunnerSessionsQueryParamsOrderByEnumKey =
-	(typeof listAgentRunnerSessionsQueryParamsOrderByEnum)[keyof typeof listAgentRunnerSessionsQueryParamsOrderByEnum];
-
-export type ListAgentRunnerSessionsQueryParams = {
-	/**
-	 * @type integer | undefined, int32
-	 */
-	page?: number | undefined;
-	/**
-	 * @type integer | undefined, int32
-	 */
-	per_page?: number | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	state?: ListAgentRunnerSessionsQueryParamsStateEnumKey | undefined;
+export type UpdateAgentRunnerStatusDefault = {
 	/**
 	 * @type integer | undefined
 	 */
-	from?: number | undefined;
+	code?: bigint | undefined;
 	/**
-	 * @type integer | undefined
+	 * @type string
 	 */
-	to?: number | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	order_by?: ListAgentRunnerSessionsQueryParamsOrderByEnumKey | undefined;
+	message: string;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type ListAgentRunnerSessions200 = {
+export type UpdateAgentRunnerRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		agent_runner_id: UpdateAgentRunnerPathAgentRunnerId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/agent_runners/${string}`;
+};
+
+/**
+ * @type object
+ */
+export type UpdateAgentRunnerResponses = {
+	"200": UpdateAgentRunnerStatus200;
+	default: UpdateAgentRunnerStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type UpdateAgentRunnerResponse = UpdateAgentRunnerStatus200 | UpdateAgentRunnerStatusDefault;
+
+/**
+ * @type string
+ */
+export type DeleteAgentRunnerPathAgentRunnerId = string;
+
+/**
+ * @type unknown
+ */
+export type DeleteAgentRunnerStatus202 = unknown;
+
+/**
+ * @type object
+ */
+export type DeleteAgentRunnerStatusDefault = {
+	/**
+	 * @type integer | undefined
+	 */
+	code?: bigint | undefined;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
+/**
+ * @type object
+ */
+export type DeleteAgentRunnerRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		agent_runner_id: DeleteAgentRunnerPathAgentRunnerId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/agent_runners/${string}`;
+};
+
+/**
+ * @type object
+ */
+export type DeleteAgentRunnerResponses = {
+	"202": DeleteAgentRunnerStatus202;
+	default: DeleteAgentRunnerStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteAgentRunnerResponse = DeleteAgentRunnerStatus202 | DeleteAgentRunnerStatusDefault;
+
+/**
+ * @type string
+ */
+export type ArchiveAgentRunnerPathAgentRunnerId = string;
+
+/**
+ * @type unknown
+ */
+export type ArchiveAgentRunnerStatus202 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ArchiveAgentRunnerStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ArchiveAgentRunnerStatus422 = unknown;
+
+/**
+ * @type object
+ */
+export type ArchiveAgentRunnerStatusDefault = {
+	/**
+	 * @type integer | undefined
+	 */
+	code?: bigint | undefined;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
+/**
+ * @type object
+ */
+export type ArchiveAgentRunnerRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		agent_runner_id: ArchiveAgentRunnerPathAgentRunnerId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/agent_runners/${string}/archive`;
+};
+
+/**
+ * @type object
+ */
+export type ArchiveAgentRunnerResponses = {
+	"202": ArchiveAgentRunnerStatus202;
+	"404": ArchiveAgentRunnerStatus404;
+	"422": ArchiveAgentRunnerStatus422;
+	default: ArchiveAgentRunnerStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ArchiveAgentRunnerResponse =
+	| ArchiveAgentRunnerStatus202
+	| ArchiveAgentRunnerStatus404
+	| ArchiveAgentRunnerStatus422
+	| ArchiveAgentRunnerStatusDefault;
+
+/**
+ * @type string
+ */
+export type AgentRunnerPullRequestPathAgentRunnerId = string;
+
+/**
+ * @type unknown
+ */
+export type AgentRunnerPullRequestStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type AgentRunnerPullRequestStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type AgentRunnerPullRequestStatus409 = unknown;
+
+/**
+ * @type unknown
+ */
+export type AgentRunnerPullRequestStatus422 = unknown;
+
+/**
+ * @type object
+ */
+export type AgentRunnerPullRequestStatusDefault = {
+	/**
+	 * @type integer | undefined
+	 */
+	code?: bigint | undefined;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
+/**
+ * @type object
+ */
+export type AgentRunnerPullRequestRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		agent_runner_id: AgentRunnerPullRequestPathAgentRunnerId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/agent_runners/${string}/pull_request`;
+};
+
+/**
+ * @type object
+ */
+export type AgentRunnerPullRequestResponses = {
+	"200": AgentRunnerPullRequestStatus200;
+	"400": AgentRunnerPullRequestStatus400;
+	"409": AgentRunnerPullRequestStatus409;
+	"422": AgentRunnerPullRequestStatus422;
+	default: AgentRunnerPullRequestStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type AgentRunnerPullRequestResponse =
+	| AgentRunnerPullRequestStatus200
+	| AgentRunnerPullRequestStatus400
+	| AgentRunnerPullRequestStatus409
+	| AgentRunnerPullRequestStatus422
+	| AgentRunnerPullRequestStatusDefault;
+
+/**
+ * @type string
+ */
+export type AgentRunnerCommitToBranchPathAgentRunnerId = string;
+
+/**
+ * @type string
+ */
+export type AgentRunnerCommitToBranchQueryTargetBranch = string;
+
+/**
+ * @type unknown
+ */
+export type AgentRunnerCommitToBranchStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type AgentRunnerCommitToBranchStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type AgentRunnerCommitToBranchStatus409 = unknown;
+
+/**
+ * @type unknown
+ */
+export type AgentRunnerCommitToBranchStatus422 = unknown;
+
+/**
+ * @type object
+ */
+export type AgentRunnerCommitToBranchStatusDefault = {
+	/**
+	 * @type integer | undefined
+	 */
+	code?: bigint | undefined;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
+/**
+ * @type object
+ */
+export type AgentRunnerCommitToBranchRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		agent_runner_id: AgentRunnerCommitToBranchPathAgentRunnerId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				target_branch: AgentRunnerCommitToBranchQueryTargetBranch;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/agent_runners/${string}/commit`;
+};
+
+/**
+ * @type object
+ */
+export type AgentRunnerCommitToBranchResponses = {
+	"200": AgentRunnerCommitToBranchStatus200;
+	"400": AgentRunnerCommitToBranchStatus400;
+	"409": AgentRunnerCommitToBranchStatus409;
+	"422": AgentRunnerCommitToBranchStatus422;
+	default: AgentRunnerCommitToBranchStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type AgentRunnerCommitToBranchResponse =
+	| AgentRunnerCommitToBranchStatus200
+	| AgentRunnerCommitToBranchStatus400
+	| AgentRunnerCommitToBranchStatus409
+	| AgentRunnerCommitToBranchStatus422
+	| AgentRunnerCommitToBranchStatusDefault;
+
+/**
+ * @type string
+ */
+export type ListAgentRunnerSessionsPathAgentRunnerId = string;
+
+/**
+ * @type integer | undefined
+ */
+export type ListAgentRunnerSessionsQueryPage = number | undefined;
+
+/**
+ * @type integer | undefined
+ */
+export type ListAgentRunnerSessionsQueryPerPage = number | undefined;
+
+/**
+ * @type string | undefined
+ */
+export type ListAgentRunnerSessionsQueryState = ("live" | "error") | undefined;
+
+/**
+ * @type integer | undefined
+ */
+export type ListAgentRunnerSessionsQueryFrom = number | undefined;
+
+/**
+ * @type integer | undefined
+ */
+export type ListAgentRunnerSessionsQueryTo = number | undefined;
+
+/**
+ * @type string | undefined
+ */
+export type ListAgentRunnerSessionsQueryOrderBy = ("asc" | "desc") | undefined;
+
+/**
+ * @type array
+ */
+export type ListAgentRunnerSessionsStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -17151,15 +22340,15 @@ export type ListAgentRunnerSessions200 = {
 	 */
 	state?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	done_at?: string | undefined;
 	/**
@@ -17262,58 +22451,94 @@ export type ListAgentRunnerSessions200 = {
 }[];
 
 /**
- * @description error
+ * @type object
  */
-export type ListAgentRunnerSessionsError = {
+export type ListAgentRunnerSessionsStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type ListAgentRunnerSessionsQueryResponse = ListAgentRunnerSessions200;
-
-export type ListAgentRunnerSessionsQuery = {
-	Response: ListAgentRunnerSessions200;
-	PathParams: ListAgentRunnerSessionsPathParams;
-	QueryParams: ListAgentRunnerSessionsQueryParams;
-	Errors: any;
-};
-
-export type CreateAgentRunnerSessionPathParams = {
+/**
+ * @type object
+ */
+export type ListAgentRunnerSessionsRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		agent_runner_id: ListAgentRunnerSessionsPathAgentRunnerId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				page?: ListAgentRunnerSessionsQueryPage | undefined;
+				per_page?: ListAgentRunnerSessionsQueryPerPage | undefined;
+				state?: ListAgentRunnerSessionsQueryState | undefined;
+				from?: ListAgentRunnerSessionsQueryFrom | undefined;
+				to?: ListAgentRunnerSessionsQueryTo | undefined;
+				order_by?: ListAgentRunnerSessionsQueryOrderBy | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	agent_runner_id: string;
-};
-
-export type CreateAgentRunnerSessionQueryParams = {
-	/**
-	 * @type string | undefined
-	 */
-	prompt?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	agent?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	model?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	file_keys?: string[] | undefined;
+	url: `/agent_runners/${string}/sessions`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type CreateAgentRunnerSession200 = {
+export type ListAgentRunnerSessionsResponses = {
+	"200": ListAgentRunnerSessionsStatus200;
+	default: ListAgentRunnerSessionsStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListAgentRunnerSessionsResponse =
+	| ListAgentRunnerSessionsStatus200
+	| ListAgentRunnerSessionsStatusDefault;
+
+/**
+ * @type string
+ */
+export type CreateAgentRunnerSessionPathAgentRunnerId = string;
+
+/**
+ * @type string | undefined
+ */
+export type CreateAgentRunnerSessionQueryPrompt = string | undefined;
+
+/**
+ * @type string | undefined
+ */
+export type CreateAgentRunnerSessionQueryAgent = string | undefined;
+
+/**
+ * @type string | undefined
+ */
+export type CreateAgentRunnerSessionQueryModel = string | undefined;
+
+/**
+ * @type array | undefined
+ */
+export type CreateAgentRunnerSessionQueryFileKeys = string[] | undefined;
+
+/**
+ * @type object
+ */
+export type CreateAgentRunnerSessionStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -17331,15 +22556,15 @@ export type CreateAgentRunnerSession200 = {
 	 */
 	state?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	done_at?: string | undefined;
 	/**
@@ -17442,53 +22667,91 @@ export type CreateAgentRunnerSession200 = {
 };
 
 /**
- * @description Not Found
+ * @type unknown
  */
-export type CreateAgentRunnerSession404 = unknown;
+export type CreateAgentRunnerSessionStatus404 = unknown;
 
 /**
- * @description Unprocessable Entity
+ * @type unknown
  */
-export type CreateAgentRunnerSession422 = unknown;
+export type CreateAgentRunnerSessionStatus422 = unknown;
 
 /**
- * @description error
+ * @type object
  */
-export type CreateAgentRunnerSessionError = {
+export type CreateAgentRunnerSessionStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type CreateAgentRunnerSessionMutationResponse = CreateAgentRunnerSession200;
-
-export type CreateAgentRunnerSessionMutation = {
-	Response: CreateAgentRunnerSession200;
-	PathParams: CreateAgentRunnerSessionPathParams;
-	QueryParams: CreateAgentRunnerSessionQueryParams;
-	Errors: CreateAgentRunnerSession404 | CreateAgentRunnerSession422;
-};
-
-export type GetAgentRunnerSessionPathParams = {
+/**
+ * @type object
+ */
+export type CreateAgentRunnerSessionRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		agent_runner_id: CreateAgentRunnerSessionPathAgentRunnerId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				prompt?: CreateAgentRunnerSessionQueryPrompt | undefined;
+				agent?: CreateAgentRunnerSessionQueryAgent | undefined;
+				model?: CreateAgentRunnerSessionQueryModel | undefined;
+				file_keys?: CreateAgentRunnerSessionQueryFileKeys | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	agent_runner_id: string;
-	/**
-	 * @type string
-	 */
-	agent_runner_session_id: string;
+	url: `/agent_runners/${string}/sessions`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type GetAgentRunnerSession200 = {
+export type CreateAgentRunnerSessionResponses = {
+	"200": CreateAgentRunnerSessionStatus200;
+	"404": CreateAgentRunnerSessionStatus404;
+	"422": CreateAgentRunnerSessionStatus422;
+	default: CreateAgentRunnerSessionStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateAgentRunnerSessionResponse =
+	| CreateAgentRunnerSessionStatus200
+	| CreateAgentRunnerSessionStatus404
+	| CreateAgentRunnerSessionStatus422
+	| CreateAgentRunnerSessionStatusDefault;
+
+/**
+ * @type string
+ */
+export type GetAgentRunnerSessionPathAgentRunnerId = string;
+
+/**
+ * @type string
+ */
+export type GetAgentRunnerSessionPathAgentRunnerSessionId = string;
+
+/**
+ * @type object
+ */
+export type GetAgentRunnerSessionStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -17506,15 +22769,15 @@ export type GetAgentRunnerSession200 = {
 	 */
 	state?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	done_at?: string | undefined;
 	/**
@@ -17617,49 +22880,73 @@ export type GetAgentRunnerSession200 = {
 };
 
 /**
- * @description error
+ * @type object
  */
-export type GetAgentRunnerSessionError = {
+export type GetAgentRunnerSessionStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type GetAgentRunnerSessionQueryResponse = GetAgentRunnerSession200;
-
-export type GetAgentRunnerSessionQuery = {
-	Response: GetAgentRunnerSession200;
-	PathParams: GetAgentRunnerSessionPathParams;
-	Errors: any;
-};
-
-export type UpdateAgentRunnerSessionPathParams = {
+/**
+ * @type object
+ */
+export type GetAgentRunnerSessionRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		agent_runner_id: GetAgentRunnerSessionPathAgentRunnerId;
+		agent_runner_session_id: GetAgentRunnerSessionPathAgentRunnerSessionId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	agent_runner_id: string;
-	/**
-	 * @type string
-	 */
-	agent_runner_session_id: string;
-};
-
-export type UpdateAgentRunnerSessionQueryParams = {
-	/**
-	 * @type boolean | undefined
-	 */
-	is_published?: boolean | undefined;
+	url: `/agent_runners/${string}/sessions/${string}`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type UpdateAgentRunnerSession200 = {
+export type GetAgentRunnerSessionResponses = {
+	"200": GetAgentRunnerSessionStatus200;
+	default: GetAgentRunnerSessionStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetAgentRunnerSessionResponse =
+	| GetAgentRunnerSessionStatus200
+	| GetAgentRunnerSessionStatusDefault;
+
+/**
+ * @type string
+ */
+export type UpdateAgentRunnerSessionPathAgentRunnerId = string;
+
+/**
+ * @type string
+ */
+export type UpdateAgentRunnerSessionPathAgentRunnerSessionId = string;
+
+/**
+ * @type boolean | undefined
+ */
+export type UpdateAgentRunnerSessionQueryIsPublished = boolean | undefined;
+
+/**
+ * @type object
+ */
+export type UpdateAgentRunnerSessionStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -17677,15 +22964,15 @@ export type UpdateAgentRunnerSession200 = {
 	 */
 	state?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	done_at?: string | undefined;
 	/**
@@ -17788,98 +23075,155 @@ export type UpdateAgentRunnerSession200 = {
 };
 
 /**
- * @description error
+ * @type object
  */
-export type UpdateAgentRunnerSessionError = {
+export type UpdateAgentRunnerSessionStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type UpdateAgentRunnerSessionMutationResponse = UpdateAgentRunnerSession200;
-
-export type UpdateAgentRunnerSessionMutation = {
-	Response: UpdateAgentRunnerSession200;
-	PathParams: UpdateAgentRunnerSessionPathParams;
-	QueryParams: UpdateAgentRunnerSessionQueryParams;
-	Errors: any;
-};
-
-export type DeleteAgentRunnerSessionPathParams = {
+/**
+ * @type object
+ */
+export type UpdateAgentRunnerSessionRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		agent_runner_id: UpdateAgentRunnerSessionPathAgentRunnerId;
+		agent_runner_session_id: UpdateAgentRunnerSessionPathAgentRunnerSessionId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				is_published?: UpdateAgentRunnerSessionQueryIsPublished | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	agent_runner_id: string;
-	/**
-	 * @type string
-	 */
-	agent_runner_session_id: string;
+	url: `/agent_runners/${string}/sessions/${string}`;
 };
 
 /**
- * @description Accepted
+ * @type object
  */
-export type DeleteAgentRunnerSession202 = unknown;
+export type UpdateAgentRunnerSessionResponses = {
+	"200": UpdateAgentRunnerSessionStatus200;
+	default: UpdateAgentRunnerSessionStatusDefault;
+};
 
 /**
- * @description error
+ * @description Union of all possible responses
  */
-export type DeleteAgentRunnerSessionError = {
+export type UpdateAgentRunnerSessionResponse =
+	| UpdateAgentRunnerSessionStatus200
+	| UpdateAgentRunnerSessionStatusDefault;
+
+/**
+ * @type string
+ */
+export type DeleteAgentRunnerSessionPathAgentRunnerId = string;
+
+/**
+ * @type string
+ */
+export type DeleteAgentRunnerSessionPathAgentRunnerSessionId = string;
+
+/**
+ * @type unknown
+ */
+export type DeleteAgentRunnerSessionStatus202 = unknown;
+
+/**
+ * @type object
+ */
+export type DeleteAgentRunnerSessionStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type DeleteAgentRunnerSessionMutationResponse = DeleteAgentRunnerSession202;
-
-export type DeleteAgentRunnerSessionMutation = {
-	Response: DeleteAgentRunnerSession202;
-	PathParams: DeleteAgentRunnerSessionPathParams;
-	Errors: any;
-};
-
-export type ListFormSubmissionPathParams = {
+/**
+ * @type object
+ */
+export type DeleteAgentRunnerSessionRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		agent_runner_id: DeleteAgentRunnerSessionPathAgentRunnerId;
+		agent_runner_session_id: DeleteAgentRunnerSessionPathAgentRunnerSessionId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	submission_id: string;
-};
-
-export type ListFormSubmissionQueryParams = {
-	/**
-	 * @type string | undefined
-	 */
-	query?: string | undefined;
-	/**
-	 * @type integer | undefined, int32
-	 */
-	page?: number | undefined;
-	/**
-	 * @type integer | undefined, int32
-	 */
-	per_page?: number | undefined;
+	url: `/agent_runners/${string}/sessions/${string}`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type ListFormSubmission200 = {
+export type DeleteAgentRunnerSessionResponses = {
+	"202": DeleteAgentRunnerSessionStatus202;
+	default: DeleteAgentRunnerSessionStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteAgentRunnerSessionResponse =
+	| DeleteAgentRunnerSessionStatus202
+	| DeleteAgentRunnerSessionStatusDefault;
+
+/**
+ * @type string
+ */
+export type ListFormSubmissionPathSubmissionId = string;
+
+/**
+ * @type string | undefined
+ */
+export type ListFormSubmissionQueryQuery = string | undefined;
+
+/**
+ * @type integer | undefined
+ */
+export type ListFormSubmissionQueryPage = number | undefined;
+
+/**
+ * @type integer | undefined
+ */
+export type ListFormSubmissionQueryPerPage = number | undefined;
+
+/**
+ * @type array
+ */
+export type ListFormSubmissionStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
 	id?: string | undefined;
 	/**
-	 * @type integer | undefined, int32
+	 * @type integer | undefined
 	 */
 	number?: number | undefined;
 	/**
@@ -17915,7 +23259,7 @@ export type ListFormSubmission200 = {
 	 */
 	data?: object | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
@@ -17925,73 +23269,127 @@ export type ListFormSubmission200 = {
 }[];
 
 /**
- * @description error
+ * @type object
  */
-export type ListFormSubmissionError = {
+export type ListFormSubmissionStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type ListFormSubmissionQueryResponse = ListFormSubmission200;
-
-export type ListFormSubmissionQuery = {
-	Response: ListFormSubmission200;
-	PathParams: ListFormSubmissionPathParams;
-	QueryParams: ListFormSubmissionQueryParams;
-	Errors: any;
-};
-
-export type DeleteSubmissionPathParams = {
+/**
+ * @type object
+ */
+export type ListFormSubmissionRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		submission_id: ListFormSubmissionPathSubmissionId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				query?: ListFormSubmissionQueryQuery | undefined;
+				page?: ListFormSubmissionQueryPage | undefined;
+				per_page?: ListFormSubmissionQueryPerPage | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	submission_id: string;
+	url: `/submissions/${string}`;
 };
 
 /**
- * @description Deleted
+ * @type object
  */
-export type DeleteSubmission204 = unknown;
+export type ListFormSubmissionResponses = {
+	"200": ListFormSubmissionStatus200;
+	default: ListFormSubmissionStatusDefault;
+};
 
 /**
- * @description error
+ * @description Union of all possible responses
  */
-export type DeleteSubmissionError = {
+export type ListFormSubmissionResponse =
+	| ListFormSubmissionStatus200
+	| ListFormSubmissionStatusDefault;
+
+/**
+ * @type string
+ */
+export type DeleteSubmissionPathSubmissionId = string;
+
+/**
+ * @type unknown
+ */
+export type DeleteSubmissionStatus204 = unknown;
+
+/**
+ * @type object
+ */
+export type DeleteSubmissionStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type DeleteSubmissionMutationResponse = DeleteSubmission204;
-
-export type DeleteSubmissionMutation = {
-	Response: DeleteSubmission204;
-	PathParams: DeleteSubmissionPathParams;
-	Errors: any;
-};
-
-export type ListServiceInstancesForSitePathParams = {
+/**
+ * @type object
+ */
+export type DeleteSubmissionRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		submission_id: DeleteSubmissionPathSubmissionId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
+	url: `/submissions/${string}`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type ListServiceInstancesForSite200 = {
+export type DeleteSubmissionResponses = {
+	"204": DeleteSubmissionStatus204;
+	default: DeleteSubmissionStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteSubmissionResponse = DeleteSubmissionStatus204 | DeleteSubmissionStatusDefault;
+
+/**
+ * @type string
+ */
+export type ListServiceInstancesForSitePathSiteId = string;
+
+/**
+ * @type array
+ */
+export type ListServiceInstancesForSiteStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -18033,52 +23431,77 @@ export type ListServiceInstancesForSite200 = {
 	 */
 	auth_url?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 }[];
 
 /**
- * @description error
+ * @type object
  */
-export type ListServiceInstancesForSiteError = {
+export type ListServiceInstancesForSiteStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type ListServiceInstancesForSiteQueryResponse = ListServiceInstancesForSite200;
-
-export type ListServiceInstancesForSiteQuery = {
-	Response: ListServiceInstancesForSite200;
-	PathParams: ListServiceInstancesForSitePathParams;
-	Errors: any;
-};
-
-export type CreateServiceInstancePathParams = {
+/**
+ * @type object
+ */
+export type ListServiceInstancesForSiteRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: ListServiceInstancesForSitePathSiteId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-	/**
-	 * @type string
-	 */
-	addon: string;
+	url: `/sites/${string}/service-instances`;
 };
 
 /**
- * @description Created
+ * @type object
  */
-export type CreateServiceInstance201 = {
+export type ListServiceInstancesForSiteResponses = {
+	"200": ListServiceInstancesForSiteStatus200;
+	default: ListServiceInstancesForSiteStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListServiceInstancesForSiteResponse =
+	| ListServiceInstancesForSiteStatus200
+	| ListServiceInstancesForSiteStatusDefault;
+
+/**
+ * @type string
+ */
+export type CreateServiceInstancePathSiteId = string;
+
+/**
+ * @type string
+ */
+export type CreateServiceInstancePathAddon = string;
+
+/**
+ * @type object
+ */
+export type CreateServiceInstanceStatus201 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -18120,56 +23543,88 @@ export type CreateServiceInstance201 = {
 	 */
 	auth_url?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 };
 
 /**
- * @description error
+ * @type object
  */
-export type CreateServiceInstanceError = {
+export type CreateServiceInstanceStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type CreateServiceInstanceMutationResponse = CreateServiceInstance201;
+/**
+ * @type object | undefined
+ */
+export type CreateServiceInstanceData = object | undefined;
 
-export type CreateServiceInstanceMutation = {
-	Response: CreateServiceInstance201;
-	PathParams: CreateServiceInstancePathParams;
-	Errors: any;
-};
-
-export type ShowServiceInstancePathParams = {
+/**
+ * @type object
+ */
+export type CreateServiceInstanceRequestConfig = {
+	data?: CreateServiceInstanceData | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: CreateServiceInstancePathSiteId;
+		addon: CreateServiceInstancePathAddon;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-	/**
-	 * @type string
-	 */
-	addon: string;
-	/**
-	 * @type string
-	 */
-	instance_id: string;
+	url: `/sites/${string}/services/${string}/instances`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type ShowServiceInstance200 = {
+export type CreateServiceInstanceResponses = {
+	"201": CreateServiceInstanceStatus201;
+	default: CreateServiceInstanceStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateServiceInstanceResponse =
+	| CreateServiceInstanceStatus201
+	| CreateServiceInstanceStatusDefault;
+
+/**
+ * @type string
+ */
+export type ShowServiceInstancePathSiteId = string;
+
+/**
+ * @type string
+ */
+export type ShowServiceInstancePathAddon = string;
+
+/**
+ * @type string
+ */
+export type ShowServiceInstancePathInstanceId = string;
+
+/**
+ * @type object
+ */
+export type ShowServiceInstanceStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -18211,132 +23666,219 @@ export type ShowServiceInstance200 = {
 	 */
 	auth_url?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 };
 
 /**
- * @description error
+ * @type object
  */
-export type ShowServiceInstanceError = {
+export type ShowServiceInstanceStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type ShowServiceInstanceQueryResponse = ShowServiceInstance200;
-
-export type ShowServiceInstanceQuery = {
-	Response: ShowServiceInstance200;
-	PathParams: ShowServiceInstancePathParams;
-	Errors: any;
-};
-
-export type UpdateServiceInstancePathParams = {
+/**
+ * @type object
+ */
+export type ShowServiceInstanceRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: ShowServiceInstancePathSiteId;
+		addon: ShowServiceInstancePathAddon;
+		instance_id: ShowServiceInstancePathInstanceId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-	/**
-	 * @type string
-	 */
-	addon: string;
-	/**
-	 * @type string
-	 */
-	instance_id: string;
+	url: `/sites/${string}/services/${string}/instances/${string}`;
 };
 
 /**
- * @description No Content
+ * @type object
  */
-export type UpdateServiceInstance204 = unknown;
+export type ShowServiceInstanceResponses = {
+	"200": ShowServiceInstanceStatus200;
+	default: ShowServiceInstanceStatusDefault;
+};
 
 /**
- * @description error
+ * @description Union of all possible responses
  */
-export type UpdateServiceInstanceError = {
+export type ShowServiceInstanceResponse =
+	| ShowServiceInstanceStatus200
+	| ShowServiceInstanceStatusDefault;
+
+/**
+ * @type string
+ */
+export type UpdateServiceInstancePathSiteId = string;
+
+/**
+ * @type string
+ */
+export type UpdateServiceInstancePathAddon = string;
+
+/**
+ * @type string
+ */
+export type UpdateServiceInstancePathInstanceId = string;
+
+/**
+ * @type unknown
+ */
+export type UpdateServiceInstanceStatus204 = unknown;
+
+/**
+ * @type object
+ */
+export type UpdateServiceInstanceStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type UpdateServiceInstanceMutationResponse = UpdateServiceInstance204;
+/**
+ * @type object | undefined
+ */
+export type UpdateServiceInstanceData = object | undefined;
 
-export type UpdateServiceInstanceMutation = {
-	Response: UpdateServiceInstance204;
-	PathParams: UpdateServiceInstancePathParams;
-	Errors: any;
-};
-
-export type DeleteServiceInstancePathParams = {
+/**
+ * @type object
+ */
+export type UpdateServiceInstanceRequestConfig = {
+	data?: UpdateServiceInstanceData | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: UpdateServiceInstancePathSiteId;
+		addon: UpdateServiceInstancePathAddon;
+		instance_id: UpdateServiceInstancePathInstanceId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-	/**
-	 * @type string
-	 */
-	addon: string;
-	/**
-	 * @type string
-	 */
-	instance_id: string;
+	url: `/sites/${string}/services/${string}/instances/${string}`;
 };
 
 /**
- * @description Deleted
+ * @type object
  */
-export type DeleteServiceInstance204 = unknown;
+export type UpdateServiceInstanceResponses = {
+	"204": UpdateServiceInstanceStatus204;
+	default: UpdateServiceInstanceStatusDefault;
+};
 
 /**
- * @description error
+ * @description Union of all possible responses
  */
-export type DeleteServiceInstanceError = {
+export type UpdateServiceInstanceResponse =
+	| UpdateServiceInstanceStatus204
+	| UpdateServiceInstanceStatusDefault;
+
+/**
+ * @type string
+ */
+export type DeleteServiceInstancePathSiteId = string;
+
+/**
+ * @type string
+ */
+export type DeleteServiceInstancePathAddon = string;
+
+/**
+ * @type string
+ */
+export type DeleteServiceInstancePathInstanceId = string;
+
+/**
+ * @type unknown
+ */
+export type DeleteServiceInstanceStatus204 = unknown;
+
+/**
+ * @type object
+ */
+export type DeleteServiceInstanceStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type DeleteServiceInstanceMutationResponse = DeleteServiceInstance204;
-
-export type DeleteServiceInstanceMutation = {
-	Response: DeleteServiceInstance204;
-	PathParams: DeleteServiceInstancePathParams;
-	Errors: any;
-};
-
-export type GetServicesQueryParams = {
+/**
+ * @type object
+ */
+export type DeleteServiceInstanceRequestConfig = {
+	data?: never | undefined;
 	/**
-	 * @type string | undefined
+	 * @type object
 	 */
-	search?: string | undefined;
+	pathParams: {
+		site_id: DeleteServiceInstancePathSiteId;
+		addon: DeleteServiceInstancePathAddon;
+		instance_id: DeleteServiceInstancePathInstanceId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/sites/${string}/services/${string}/instances/${string}`;
 };
 
 /**
- * @description services
+ * @type object
  */
-export type GetServices200 = {
+export type DeleteServiceInstanceResponses = {
+	"204": DeleteServiceInstanceStatus204;
+	default: DeleteServiceInstanceStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteServiceInstanceResponse =
+	| DeleteServiceInstanceStatus204
+	| DeleteServiceInstanceStatusDefault;
+
+/**
+ * @type string | undefined
+ */
+export type GetServicesQuerySearch = string | undefined;
+
+/**
+ * @type array
+ */
+export type GetServicesStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -18382,48 +23924,72 @@ export type GetServices200 = {
 	 */
 	environments?: string[] | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 }[];
 
 /**
- * @description error
+ * @type object
  */
-export type GetServicesError = {
+export type GetServicesStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type GetServicesQueryResponse = GetServices200;
-
-export type GetServicesQuery = {
-	Response: GetServices200;
-	QueryParams: GetServicesQueryParams;
-	Errors: any;
-};
-
-export type ShowServicePathParams = {
+/**
+ * @type object
+ */
+export type GetServicesRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				search?: GetServicesQuerySearch | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	addonName: string;
+	url: "/services/";
 };
 
 /**
- * @description services
+ * @type object
  */
-export type ShowService200 = {
+export type GetServicesResponses = {
+	"200": GetServicesStatus200;
+	default: GetServicesStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetServicesResponse = GetServicesStatus200 | GetServicesStatusDefault;
+
+/**
+ * @type string
+ */
+export type ShowServicePathAddonName = string;
+
+/**
+ * @type object
+ */
+export type ShowServiceStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -18469,75 +24035,123 @@ export type ShowService200 = {
 	 */
 	environments?: string[] | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 };
 
 /**
- * @description error
+ * @type object
  */
-export type ShowServiceError = {
+export type ShowServiceStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type ShowServiceQueryResponse = ShowService200;
-
-export type ShowServiceQuery = {
-	Response: ShowService200;
-	PathParams: ShowServicePathParams;
-	Errors: any;
-};
-
-export type ShowServiceManifestPathParams = {
+/**
+ * @type object
+ */
+export type ShowServiceRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		addonName: ShowServicePathAddonName;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	addonName: string;
+	url: `/services/${string}`;
 };
 
 /**
- * @description retrieving from provider
+ * @type object
  */
-export type ShowServiceManifest201 = object;
+export type ShowServiceResponses = {
+	"200": ShowServiceStatus200;
+	default: ShowServiceStatusDefault;
+};
 
 /**
- * @description error
+ * @description Union of all possible responses
  */
-export type ShowServiceManifestError = {
+export type ShowServiceResponse = ShowServiceStatus200 | ShowServiceStatusDefault;
+
+/**
+ * @type string
+ */
+export type ShowServiceManifestPathAddonName = string;
+
+/**
+ * @type object
+ */
+export type ShowServiceManifestStatus201 = object;
+
+/**
+ * @type object
+ */
+export type ShowServiceManifestStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type ShowServiceManifestQueryResponse = ShowServiceManifest201;
-
-export type ShowServiceManifestQuery = {
-	Response: ShowServiceManifest201;
-	PathParams: ShowServiceManifestPathParams;
-	Errors: any;
+/**
+ * @type object
+ */
+export type ShowServiceManifestRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		addonName: ShowServiceManifestPathAddonName;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/services/${string}/manifest`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type GetCurrentUser200 = {
+export type ShowServiceManifestResponses = {
+	"201": ShowServiceManifestStatus201;
+	default: ShowServiceManifestStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ShowServiceManifestResponse =
+	| ShowServiceManifestStatus201
+	| ShowServiceManifestStatusDefault;
+
+/**
+ * @type object
+ */
+export type GetCurrentUserStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -18563,15 +24177,15 @@ export type GetCurrentUser200 = {
 	 */
 	affiliate_id?: string | undefined;
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	site_count?: number | undefined;
+	site_count?: bigint | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	last_login?: string | undefined;
 	/**
@@ -18592,37 +24206,55 @@ export type GetCurrentUser200 = {
 };
 
 /**
- * @description error
+ * @type object
  */
-export type GetCurrentUserError = {
+export type GetCurrentUserStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type GetCurrentUserQueryResponse = GetCurrentUser200;
-
-export type GetCurrentUserQuery = {
-	Response: GetCurrentUser200;
-	Errors: any;
-};
-
-export type CreateSplitTestPathParams = {
+/**
+ * @type object
+ */
+export type GetCurrentUserRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
+	url: "/user";
 };
 
 /**
- * @description Created
+ * @type object
  */
-export type CreateSplitTest201 = {
+export type GetCurrentUserResponses = {
+	"200": GetCurrentUserStatus200;
+	default: GetCurrentUserStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetCurrentUserResponse = GetCurrentUserStatus200 | GetCurrentUserStatusDefault;
+
+/**
+ * @type string
+ */
+export type CreateSplitTestPathSiteId = string;
+
+/**
+ * @type object
+ */
+export type CreateSplitTestStatus201 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -18648,52 +24280,86 @@ export type CreateSplitTest201 = {
 	 */
 	active?: boolean | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	unpublished_at?: string | undefined;
 };
 
 /**
- * @description error
+ * @type object
  */
-export type CreateSplitTestError = {
+export type CreateSplitTestStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type CreateSplitTestMutationResponse = CreateSplitTest201;
+/**
+ * @type object | undefined
+ */
+export type CreateSplitTestData =
+	| {
+			/**
+			 * @type object | undefined
+			 */
+			branch_tests?: object | undefined;
+	  }
+	| undefined;
 
-export type CreateSplitTestMutation = {
-	Response: CreateSplitTest201;
-	PathParams: CreateSplitTestPathParams;
-	Errors: any;
-};
-
-export type GetSplitTestsPathParams = {
+/**
+ * @type object
+ */
+export type CreateSplitTestRequestConfig = {
+	data?: CreateSplitTestData | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: CreateSplitTestPathSiteId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
+	url: `/sites/${string}/traffic_splits`;
 };
 
 /**
- * @description split_tests
+ * @type object
  */
-export type GetSplitTests200 = {
+export type CreateSplitTestResponses = {
+	"201": CreateSplitTestStatus201;
+	default: CreateSplitTestStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateSplitTestResponse = CreateSplitTestStatus201 | CreateSplitTestStatusDefault;
+
+/**
+ * @type string
+ */
+export type GetSplitTestsPathSiteId = string;
+
+/**
+ * @type array
+ */
+export type GetSplitTestsStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -18719,56 +24385,79 @@ export type GetSplitTests200 = {
 	 */
 	active?: boolean | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	unpublished_at?: string | undefined;
 }[];
 
 /**
- * @description error
+ * @type object
  */
-export type GetSplitTestsError = {
+export type GetSplitTestsStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type GetSplitTestsQueryResponse = GetSplitTests200;
-
-export type GetSplitTestsQuery = {
-	Response: GetSplitTests200;
-	PathParams: GetSplitTestsPathParams;
-	Errors: any;
-};
-
-export type UpdateSplitTestPathParams = {
+/**
+ * @type object
+ */
+export type GetSplitTestsRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: GetSplitTestsPathSiteId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-	/**
-	 * @type string
-	 */
-	split_test_id: string;
+	url: `/sites/${string}/traffic_splits`;
 };
 
 /**
- * @description Created
+ * @type object
  */
-export type UpdateSplitTest201 = {
+export type GetSplitTestsResponses = {
+	"200": GetSplitTestsStatus200;
+	default: GetSplitTestsStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetSplitTestsResponse = GetSplitTestsStatus200 | GetSplitTestsStatusDefault;
+
+/**
+ * @type string
+ */
+export type UpdateSplitTestPathSiteId = string;
+
+/**
+ * @type string
+ */
+export type UpdateSplitTestPathSplitTestId = string;
+
+/**
+ * @type object
+ */
+export type UpdateSplitTestStatus201 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -18794,56 +24483,92 @@ export type UpdateSplitTest201 = {
 	 */
 	active?: boolean | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	unpublished_at?: string | undefined;
 };
 
 /**
- * @description error
+ * @type object
  */
-export type UpdateSplitTestError = {
+export type UpdateSplitTestStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type UpdateSplitTestMutationResponse = UpdateSplitTest201;
+/**
+ * @type object | undefined
+ */
+export type UpdateSplitTestData =
+	| {
+			/**
+			 * @type object | undefined
+			 */
+			branch_tests?: object | undefined;
+	  }
+	| undefined;
 
-export type UpdateSplitTestMutation = {
-	Response: UpdateSplitTest201;
-	PathParams: UpdateSplitTestPathParams;
-	Errors: any;
-};
-
-export type GetSplitTestPathParams = {
+/**
+ * @type object
+ */
+export type UpdateSplitTestRequestConfig = {
+	data?: UpdateSplitTestData | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: UpdateSplitTestPathSiteId;
+		split_test_id: UpdateSplitTestPathSplitTestId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-	/**
-	 * @type string
-	 */
-	split_test_id: string;
+	url: `/sites/${string}/traffic_splits/${string}`;
 };
 
 /**
- * @description split_test
+ * @type object
  */
-export type GetSplitTest200 = {
+export type UpdateSplitTestResponses = {
+	"201": UpdateSplitTestStatus201;
+	default: UpdateSplitTestStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type UpdateSplitTestResponse = UpdateSplitTestStatus201 | UpdateSplitTestStatusDefault;
+
+/**
+ * @type string
+ */
+export type GetSplitTestPathSiteId = string;
+
+/**
+ * @type string
+ */
+export type GetSplitTestPathSplitTestId = string;
+
+/**
+ * @type object
+ */
+export type GetSplitTestStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -18869,121 +24594,194 @@ export type GetSplitTest200 = {
 	 */
 	active?: boolean | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	unpublished_at?: string | undefined;
 };
 
 /**
- * @description error
+ * @type object
  */
-export type GetSplitTestError = {
+export type GetSplitTestStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type GetSplitTestQueryResponse = GetSplitTest200;
-
-export type GetSplitTestQuery = {
-	Response: GetSplitTest200;
-	PathParams: GetSplitTestPathParams;
-	Errors: any;
-};
-
-export type EnableSplitTestPathParams = {
+/**
+ * @type object
+ */
+export type GetSplitTestRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: GetSplitTestPathSiteId;
+		split_test_id: GetSplitTestPathSplitTestId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-	/**
-	 * @type string
-	 */
-	split_test_id: string;
+	url: `/sites/${string}/traffic_splits/${string}`;
 };
 
 /**
- * @description enable
+ * @type object
  */
-export type EnableSplitTest204 = unknown;
+export type GetSplitTestResponses = {
+	"200": GetSplitTestStatus200;
+	default: GetSplitTestStatusDefault;
+};
 
 /**
- * @description error
+ * @description Union of all possible responses
  */
-export type EnableSplitTestError = {
+export type GetSplitTestResponse = GetSplitTestStatus200 | GetSplitTestStatusDefault;
+
+/**
+ * @type string
+ */
+export type EnableSplitTestPathSiteId = string;
+
+/**
+ * @type string
+ */
+export type EnableSplitTestPathSplitTestId = string;
+
+/**
+ * @type unknown
+ */
+export type EnableSplitTestStatus204 = unknown;
+
+/**
+ * @type object
+ */
+export type EnableSplitTestStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type EnableSplitTestMutationResponse = EnableSplitTest204;
-
-export type EnableSplitTestMutation = {
-	Response: EnableSplitTest204;
-	PathParams: EnableSplitTestPathParams;
-	Errors: any;
-};
-
-export type DisableSplitTestPathParams = {
+/**
+ * @type object
+ */
+export type EnableSplitTestRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: EnableSplitTestPathSiteId;
+		split_test_id: EnableSplitTestPathSplitTestId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-	/**
-	 * @type string
-	 */
-	split_test_id: string;
+	url: `/sites/${string}/traffic_splits/${string}/publish`;
 };
 
 /**
- * @description disabled
+ * @type object
  */
-export type DisableSplitTest204 = unknown;
+export type EnableSplitTestResponses = {
+	"204": EnableSplitTestStatus204;
+	default: EnableSplitTestStatusDefault;
+};
 
 /**
- * @description error
+ * @description Union of all possible responses
  */
-export type DisableSplitTestError = {
+export type EnableSplitTestResponse = EnableSplitTestStatus204 | EnableSplitTestStatusDefault;
+
+/**
+ * @type string
+ */
+export type DisableSplitTestPathSiteId = string;
+
+/**
+ * @type string
+ */
+export type DisableSplitTestPathSplitTestId = string;
+
+/**
+ * @type unknown
+ */
+export type DisableSplitTestStatus204 = unknown;
+
+/**
+ * @type object
+ */
+export type DisableSplitTestStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type DisableSplitTestMutationResponse = DisableSplitTest204;
-
-export type DisableSplitTestMutation = {
-	Response: DisableSplitTest204;
-	PathParams: DisableSplitTestPathParams;
-	Errors: any;
+/**
+ * @type object
+ */
+export type DisableSplitTestRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: DisableSplitTestPathSiteId;
+		split_test_id: DisableSplitTestPathSplitTestId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/sites/${string}/traffic_splits/${string}/unpublish`;
 };
 
 /**
- * @description Created
+ * @type object
  */
-export type CreateDnsZone201 = {
+export type DisableSplitTestResponses = {
+	"204": DisableSplitTestStatus204;
+	default: DisableSplitTestStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DisableSplitTestResponse = DisableSplitTestStatus204 | DisableSplitTestStatusDefault;
+
+/**
+ * @type object
+ */
+export type CreateDnsZoneStatus201 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -19005,11 +24803,11 @@ export type CreateDnsZone201 = {
 	 */
 	user_id?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
@@ -19034,13 +24832,13 @@ export type CreateDnsZone201 = {
 				 */
 				value?: string | undefined;
 				/**
-				 * @type integer | undefined, int64
+				 * @type integer | undefined
 				 */
-				ttl?: number | undefined;
+				ttl?: bigint | undefined;
 				/**
-				 * @type integer | undefined, int64
+				 * @type integer | undefined
 				 */
-				priority?: number | undefined;
+				priority?: bigint | undefined;
 				/**
 				 * @type string | undefined
 				 */
@@ -19098,20 +24896,23 @@ export type CreateDnsZone201 = {
 };
 
 /**
- * @description error
+ * @type object
  */
-export type CreateDnsZoneError = {
+export type CreateDnsZoneStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type CreateDnsZoneMutationRequest = {
+/**
+ * @type object
+ */
+export type CreateDnsZoneData = {
 	/**
 	 * @type string | undefined
 	 */
@@ -19126,25 +24927,42 @@ export type CreateDnsZoneMutationRequest = {
 	name?: string | undefined;
 };
 
-export type CreateDnsZoneMutationResponse = CreateDnsZone201;
-
-export type CreateDnsZoneMutation = {
-	Response: CreateDnsZone201;
-	Request: CreateDnsZoneMutationRequest;
-	Errors: any;
-};
-
-export type GetDnsZonesQueryParams = {
+/**
+ * @type object
+ */
+export type CreateDnsZoneRequestConfig = {
+	data?: CreateDnsZoneData | undefined;
+	pathParams?: never | undefined;
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
-	 * @type string | undefined
+	 * @type string
 	 */
-	account_slug?: string | undefined;
+	url: "/dns_zones";
 };
 
 /**
- * @description get all DNS zones the user has access to
+ * @type object
  */
-export type GetDnsZones200 = {
+export type CreateDnsZoneResponses = {
+	"201": CreateDnsZoneStatus201;
+	default: CreateDnsZoneStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateDnsZoneResponse = CreateDnsZoneStatus201 | CreateDnsZoneStatusDefault;
+
+/**
+ * @type string | undefined
+ */
+export type GetDnsZonesQueryAccountSlug = string | undefined;
+
+/**
+ * @type array
+ */
+export type GetDnsZonesStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -19166,11 +24984,11 @@ export type GetDnsZones200 = {
 	 */
 	user_id?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
@@ -19195,13 +25013,13 @@ export type GetDnsZones200 = {
 				 */
 				value?: string | undefined;
 				/**
-				 * @type integer | undefined, int64
+				 * @type integer | undefined
 				 */
-				ttl?: number | undefined;
+				ttl?: bigint | undefined;
 				/**
-				 * @type integer | undefined, int64
+				 * @type integer | undefined
 				 */
-				priority?: number | undefined;
+				priority?: bigint | undefined;
 				/**
 				 * @type string | undefined
 				 */
@@ -19259,38 +25077,62 @@ export type GetDnsZones200 = {
 }[];
 
 /**
- * @description error
+ * @type object
  */
-export type GetDnsZonesError = {
+export type GetDnsZonesStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type GetDnsZonesQueryResponse = GetDnsZones200;
-
-export type GetDnsZonesQuery = {
-	Response: GetDnsZones200;
-	QueryParams: GetDnsZonesQueryParams;
-	Errors: any;
-};
-
-export type GetDnsZonePathParams = {
+/**
+ * @type object
+ */
+export type GetDnsZonesRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				account_slug?: GetDnsZonesQueryAccountSlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	zone_id: string;
+	url: "/dns_zones";
 };
 
 /**
- * @description get a single DNS zone
+ * @type object
  */
-export type GetDnsZone200 = {
+export type GetDnsZonesResponses = {
+	"200": GetDnsZonesStatus200;
+	default: GetDnsZonesStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetDnsZonesResponse = GetDnsZonesStatus200 | GetDnsZonesStatusDefault;
+
+/**
+ * @type string
+ */
+export type GetDnsZonePathZoneId = string;
+
+/**
+ * @type object
+ */
+export type GetDnsZoneStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -19312,11 +25154,11 @@ export type GetDnsZone200 = {
 	 */
 	user_id?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
@@ -19341,13 +25183,13 @@ export type GetDnsZone200 = {
 				 */
 				value?: string | undefined;
 				/**
-				 * @type integer | undefined, int64
+				 * @type integer | undefined
 				 */
-				ttl?: number | undefined;
+				ttl?: bigint | undefined;
 				/**
-				 * @type integer | undefined, int64
+				 * @type integer | undefined
 				 */
-				priority?: number | undefined;
+				priority?: bigint | undefined;
 				/**
 				 * @type string | undefined
 				 */
@@ -19405,90 +25247,134 @@ export type GetDnsZone200 = {
 };
 
 /**
- * @description error
+ * @type object
  */
-export type GetDnsZoneError = {
+export type GetDnsZoneStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type GetDnsZoneQueryResponse = GetDnsZone200;
-
-export type GetDnsZoneQuery = {
-	Response: GetDnsZone200;
-	PathParams: GetDnsZonePathParams;
-	Errors: any;
-};
-
-export type DeleteDnsZonePathParams = {
+/**
+ * @type object
+ */
+export type GetDnsZoneRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		zone_id: GetDnsZonePathZoneId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	zone_id: string;
+	url: `/dns_zones/${string}`;
 };
 
 /**
- * @description delete a single DNS zone
+ * @type object
  */
-export type DeleteDnsZone204 = unknown;
+export type GetDnsZoneResponses = {
+	"200": GetDnsZoneStatus200;
+	default: GetDnsZoneStatusDefault;
+};
 
 /**
- * @description error
+ * @description Union of all possible responses
  */
-export type DeleteDnsZoneError = {
+export type GetDnsZoneResponse = GetDnsZoneStatus200 | GetDnsZoneStatusDefault;
+
+/**
+ * @type string
+ */
+export type DeleteDnsZonePathZoneId = string;
+
+/**
+ * @type unknown
+ */
+export type DeleteDnsZoneStatus204 = unknown;
+
+/**
+ * @type object
+ */
+export type DeleteDnsZoneStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type DeleteDnsZoneMutationResponse = DeleteDnsZone204;
-
-export type DeleteDnsZoneMutation = {
-	Response: DeleteDnsZone204;
-	PathParams: DeleteDnsZonePathParams;
-	Errors: any;
-};
-
-export type TransferDnsZonePathParams = {
+/**
+ * @type object
+ */
+export type DeleteDnsZoneRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		zone_id: DeleteDnsZonePathZoneId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	zone_id: string;
-};
-
-export type TransferDnsZoneQueryParams = {
-	/**
-	 * @description the account of the dns zone
-	 * @type string
-	 */
-	account_id: string;
-	/**
-	 * @description the account you want to transfer the dns zone to
-	 * @type string
-	 */
-	transfer_account_id: string;
-	/**
-	 * @description the user you want to transfer the dns zone to
-	 * @type string
-	 */
-	transfer_user_id: string;
+	url: `/dns_zones/${string}`;
 };
 
 /**
- * @description transfer a DNS zone to another account
+ * @type object
  */
-export type TransferDnsZone200 = {
+export type DeleteDnsZoneResponses = {
+	"204": DeleteDnsZoneStatus204;
+	default: DeleteDnsZoneStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteDnsZoneResponse = DeleteDnsZoneStatus204 | DeleteDnsZoneStatusDefault;
+
+/**
+ * @type string
+ */
+export type TransferDnsZonePathZoneId = string;
+
+/**
+ * @description the account of the dns zone
+ * @type string
+ */
+export type TransferDnsZoneQueryAccountId = string;
+
+/**
+ * @description the account you want to transfer the dns zone to
+ * @type string
+ */
+export type TransferDnsZoneQueryTransferAccountId = string;
+
+/**
+ * @description the user you want to transfer the dns zone to
+ * @type string
+ */
+export type TransferDnsZoneQueryTransferUserId = string;
+
+/**
+ * @type object
+ */
+export type TransferDnsZoneStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -19510,11 +25396,11 @@ export type TransferDnsZone200 = {
 	 */
 	user_id?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
@@ -19539,13 +25425,13 @@ export type TransferDnsZone200 = {
 				 */
 				value?: string | undefined;
 				/**
-				 * @type integer | undefined, int64
+				 * @type integer | undefined
 				 */
-				ttl?: number | undefined;
+				ttl?: bigint | undefined;
 				/**
-				 * @type integer | undefined, int64
+				 * @type integer | undefined
 				 */
-				priority?: number | undefined;
+				priority?: bigint | undefined;
 				/**
 				 * @type string | undefined
 				 */
@@ -19603,39 +25489,69 @@ export type TransferDnsZone200 = {
 };
 
 /**
- * @description error
+ * @type object
  */
-export type TransferDnsZoneError = {
+export type TransferDnsZoneStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type TransferDnsZoneMutationResponse = TransferDnsZone200;
-
-export type TransferDnsZoneMutation = {
-	Response: TransferDnsZone200;
-	PathParams: TransferDnsZonePathParams;
-	QueryParams: TransferDnsZoneQueryParams;
-	Errors: any;
-};
-
-export type GetDnsRecordsPathParams = {
+/**
+ * @type object
+ */
+export type TransferDnsZoneRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		zone_id: TransferDnsZonePathZoneId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				account_id: TransferDnsZoneQueryAccountId;
+				transfer_account_id: TransferDnsZoneQueryTransferAccountId;
+				transfer_user_id: TransferDnsZoneQueryTransferUserId;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	zone_id: string;
+	url: `/dns_zones/${string}/transfer`;
 };
 
 /**
- * @description get all DNS records for a single DNS zone
+ * @type object
  */
-export type GetDnsRecords200 = {
+export type TransferDnsZoneResponses = {
+	"200": TransferDnsZoneStatus200;
+	default: TransferDnsZoneStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type TransferDnsZoneResponse = TransferDnsZoneStatus200 | TransferDnsZoneStatusDefault;
+
+/**
+ * @type string
+ */
+export type GetDnsRecordsPathZoneId = string;
+
+/**
+ * @type array
+ */
+export type GetDnsRecordsStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -19653,13 +25569,13 @@ export type GetDnsRecords200 = {
 	 */
 	value?: string | undefined;
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	ttl?: number | undefined;
+	ttl?: bigint | undefined;
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	priority?: number | undefined;
+	priority?: bigint | undefined;
 	/**
 	 * @type string | undefined
 	 */
@@ -19683,38 +25599,60 @@ export type GetDnsRecords200 = {
 }[];
 
 /**
- * @description error
+ * @type object
  */
-export type GetDnsRecordsError = {
+export type GetDnsRecordsStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type GetDnsRecordsQueryResponse = GetDnsRecords200;
-
-export type GetDnsRecordsQuery = {
-	Response: GetDnsRecords200;
-	PathParams: GetDnsRecordsPathParams;
-	Errors: any;
-};
-
-export type CreateDnsRecordPathParams = {
+/**
+ * @type object
+ */
+export type GetDnsRecordsRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		zone_id: GetDnsRecordsPathZoneId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	zone_id: string;
+	url: `/dns_zones/${string}/dns_records`;
 };
 
 /**
- * @description Created
+ * @type object
  */
-export type CreateDnsRecord201 = {
+export type GetDnsRecordsResponses = {
+	"200": GetDnsRecordsStatus200;
+	default: GetDnsRecordsStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetDnsRecordsResponse = GetDnsRecordsStatus200 | GetDnsRecordsStatusDefault;
+
+/**
+ * @type string
+ */
+export type CreateDnsRecordPathZoneId = string;
+
+/**
+ * @type object
+ */
+export type CreateDnsRecordStatus201 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -19732,13 +25670,13 @@ export type CreateDnsRecord201 = {
 	 */
 	value?: string | undefined;
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	ttl?: number | undefined;
+	ttl?: bigint | undefined;
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	priority?: number | undefined;
+	priority?: bigint | undefined;
 	/**
 	 * @type string | undefined
 	 */
@@ -19762,20 +25700,23 @@ export type CreateDnsRecord201 = {
 };
 
 /**
- * @description error
+ * @type object
  */
-export type CreateDnsRecordError = {
+export type CreateDnsRecordStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type CreateDnsRecordMutationRequest = {
+/**
+ * @type object
+ */
+export type CreateDnsRecordData = {
 	/**
 	 * @type string | undefined
 	 */
@@ -19789,55 +25730,77 @@ export type CreateDnsRecordMutationRequest = {
 	 */
 	value?: string | undefined;
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	ttl?: number | undefined;
+	ttl?: bigint | undefined;
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	priority?: number | undefined;
+	priority?: bigint | undefined;
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	weight?: number | undefined;
+	weight?: bigint | undefined;
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	port?: number | undefined;
+	port?: bigint | undefined;
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	flag?: number | undefined;
+	flag?: bigint | undefined;
 	/**
 	 * @type string | undefined
 	 */
 	tag?: string | undefined;
 };
 
-export type CreateDnsRecordMutationResponse = CreateDnsRecord201;
-
-export type CreateDnsRecordMutation = {
-	Response: CreateDnsRecord201;
-	Request: CreateDnsRecordMutationRequest;
-	PathParams: CreateDnsRecordPathParams;
-	Errors: any;
-};
-
-export type GetIndividualDnsRecordPathParams = {
+/**
+ * @type object
+ */
+export type CreateDnsRecordRequestConfig = {
+	data?: CreateDnsRecordData | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		zone_id: CreateDnsRecordPathZoneId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	zone_id: string;
-	/**
-	 * @type string
-	 */
-	dns_record_id: string;
+	url: `/dns_zones/${string}/dns_records`;
 };
 
 /**
- * @description get a single DNS record
+ * @type object
  */
-export type GetIndividualDnsRecord200 = {
+export type CreateDnsRecordResponses = {
+	"201": CreateDnsRecordStatus201;
+	default: CreateDnsRecordStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateDnsRecordResponse = CreateDnsRecordStatus201 | CreateDnsRecordStatusDefault;
+
+/**
+ * @type string
+ */
+export type GetIndividualDnsRecordPathZoneId = string;
+
+/**
+ * @type string
+ */
+export type GetIndividualDnsRecordPathDnsRecordId = string;
+
+/**
+ * @type object
+ */
+export type GetIndividualDnsRecordStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -19855,13 +25818,13 @@ export type GetIndividualDnsRecord200 = {
 	 */
 	value?: string | undefined;
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	ttl?: number | undefined;
+	ttl?: bigint | undefined;
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	priority?: number | undefined;
+	priority?: bigint | undefined;
 	/**
 	 * @type string | undefined
 	 */
@@ -19885,87 +25848,135 @@ export type GetIndividualDnsRecord200 = {
 };
 
 /**
- * @description error
+ * @type object
  */
-export type GetIndividualDnsRecordError = {
+export type GetIndividualDnsRecordStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type GetIndividualDnsRecordQueryResponse = GetIndividualDnsRecord200;
-
-export type GetIndividualDnsRecordQuery = {
-	Response: GetIndividualDnsRecord200;
-	PathParams: GetIndividualDnsRecordPathParams;
-	Errors: any;
-};
-
-export type DeleteDnsRecordPathParams = {
+/**
+ * @type object
+ */
+export type GetIndividualDnsRecordRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		zone_id: GetIndividualDnsRecordPathZoneId;
+		dns_record_id: GetIndividualDnsRecordPathDnsRecordId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	zone_id: string;
-	/**
-	 * @type string
-	 */
-	dns_record_id: string;
+	url: `/dns_zones/${string}/dns_records/${string}`;
 };
 
 /**
- * @description record deleted
+ * @type object
  */
-export type DeleteDnsRecord204 = unknown;
+export type GetIndividualDnsRecordResponses = {
+	"200": GetIndividualDnsRecordStatus200;
+	default: GetIndividualDnsRecordStatusDefault;
+};
 
 /**
- * @description error
+ * @description Union of all possible responses
  */
-export type DeleteDnsRecordError = {
+export type GetIndividualDnsRecordResponse =
+	| GetIndividualDnsRecordStatus200
+	| GetIndividualDnsRecordStatusDefault;
+
+/**
+ * @type string
+ */
+export type DeleteDnsRecordPathZoneId = string;
+
+/**
+ * @type string
+ */
+export type DeleteDnsRecordPathDnsRecordId = string;
+
+/**
+ * @type unknown
+ */
+export type DeleteDnsRecordStatus204 = unknown;
+
+/**
+ * @type object
+ */
+export type DeleteDnsRecordStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type DeleteDnsRecordMutationResponse = DeleteDnsRecord204;
-
-export type DeleteDnsRecordMutation = {
-	Response: DeleteDnsRecord204;
-	PathParams: DeleteDnsRecordPathParams;
-	Errors: any;
-};
-
-export type ListSiteDevServersPathParams = {
+/**
+ * @type object
+ */
+export type DeleteDnsRecordRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		zone_id: DeleteDnsRecordPathZoneId;
+		dns_record_id: DeleteDnsRecordPathDnsRecordId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-};
-
-export type ListSiteDevServersQueryParams = {
-	/**
-	 * @type integer | undefined, int32
-	 */
-	page?: number | undefined;
-	/**
-	 * @type integer | undefined, int32
-	 */
-	per_page?: number | undefined;
+	url: `/dns_zones/${string}/dns_records/${string}`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type ListSiteDevServers200 = {
+export type DeleteDnsRecordResponses = {
+	"204": DeleteDnsRecordStatus204;
+	default: DeleteDnsRecordStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteDnsRecordResponse = DeleteDnsRecordStatus204 | DeleteDnsRecordStatusDefault;
+
+/**
+ * @type string
+ */
+export type ListSiteDevServersPathSiteId = string;
+
+/**
+ * @type integer | undefined
+ */
+export type ListSiteDevServersQueryPage = number | undefined;
+
+/**
+ * @type integer | undefined
+ */
+export type ListSiteDevServersQueryPerPage = number | undefined;
+
+/**
+ * @type array
+ */
+export type ListSiteDevServersStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -19987,27 +25998,27 @@ export type ListSiteDevServers200 = {
 	 */
 	state?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	starting_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	error_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	live_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	done_at?: string | undefined;
 	/**
@@ -20017,46 +26028,75 @@ export type ListSiteDevServers200 = {
 }[];
 
 /**
- * @description error
+ * @type object
  */
-export type ListSiteDevServersError = {
+export type ListSiteDevServersStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type ListSiteDevServersQueryResponse = ListSiteDevServers200;
-
-export type ListSiteDevServersQuery = {
-	Response: ListSiteDevServers200;
-	PathParams: ListSiteDevServersPathParams;
-	QueryParams: ListSiteDevServersQueryParams;
-	Errors: any;
-};
-
-export type CreateSiteDevServerPathParams = {
+/**
+ * @type object
+ */
+export type ListSiteDevServersRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: ListSiteDevServersPathSiteId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				page?: ListSiteDevServersQueryPage | undefined;
+				per_page?: ListSiteDevServersQueryPerPage | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-};
-
-export type CreateSiteDevServerQueryParams = {
-	/**
-	 * @type string | undefined
-	 */
-	branch?: string | undefined;
+	url: `/sites/${string}/dev_servers`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type CreateSiteDevServer200 = {
+export type ListSiteDevServersResponses = {
+	"200": ListSiteDevServersStatus200;
+	default: ListSiteDevServersStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListSiteDevServersResponse =
+	| ListSiteDevServersStatus200
+	| ListSiteDevServersStatusDefault;
+
+/**
+ * @type string
+ */
+export type CreateSiteDevServerPathSiteId = string;
+
+/**
+ * @type string | undefined
+ */
+export type CreateSiteDevServerQueryBranch = string | undefined;
+
+/**
+ * @type array
+ */
+export type CreateSiteDevServerStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -20078,27 +26118,27 @@ export type CreateSiteDevServer200 = {
 	 */
 	state?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	starting_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	error_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	live_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	done_at?: string | undefined;
 	/**
@@ -20108,85 +26148,144 @@ export type CreateSiteDevServer200 = {
 }[];
 
 /**
- * @description error
+ * @type object
  */
-export type CreateSiteDevServerError = {
+export type CreateSiteDevServerStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type CreateSiteDevServerMutationResponse = CreateSiteDevServer200;
-
-export type CreateSiteDevServerMutation = {
-	Response: CreateSiteDevServer200;
-	PathParams: CreateSiteDevServerPathParams;
-	QueryParams: CreateSiteDevServerQueryParams;
-	Errors: any;
-};
-
-export type DeleteSiteDevServersPathParams = {
+/**
+ * @type object
+ */
+export type CreateSiteDevServerRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: CreateSiteDevServerPathSiteId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				branch?: CreateSiteDevServerQueryBranch | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-};
-
-export type DeleteSiteDevServersQueryParams = {
-	/**
-	 * @type string | undefined
-	 */
-	branch?: string | undefined;
+	url: `/sites/${string}/dev_servers`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type DeleteSiteDevServers202 = unknown;
+export type CreateSiteDevServerResponses = {
+	"200": CreateSiteDevServerStatus200;
+	default: CreateSiteDevServerStatusDefault;
+};
 
 /**
- * @description error
+ * @description Union of all possible responses
  */
-export type DeleteSiteDevServersError = {
+export type CreateSiteDevServerResponse =
+	| CreateSiteDevServerStatus200
+	| CreateSiteDevServerStatusDefault;
+
+/**
+ * @type string
+ */
+export type DeleteSiteDevServersPathSiteId = string;
+
+/**
+ * @type string | undefined
+ */
+export type DeleteSiteDevServersQueryBranch = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type DeleteSiteDevServersStatus202 = unknown;
+
+/**
+ * @type object
+ */
+export type DeleteSiteDevServersStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type DeleteSiteDevServersMutationResponse = DeleteSiteDevServers202;
-
-export type DeleteSiteDevServersMutation = {
-	Response: DeleteSiteDevServers202;
-	PathParams: DeleteSiteDevServersPathParams;
-	QueryParams: DeleteSiteDevServersQueryParams;
-	Errors: any;
-};
-
-export type GetSiteDevServerPathParams = {
+/**
+ * @type object
+ */
+export type DeleteSiteDevServersRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: DeleteSiteDevServersPathSiteId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				branch?: DeleteSiteDevServersQueryBranch | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-	/**
-	 * @type string
-	 */
-	dev_server_id: string;
+	url: `/sites/${string}/dev_servers`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type GetSiteDevServer200 = {
+export type DeleteSiteDevServersResponses = {
+	"202": DeleteSiteDevServersStatus202;
+	default: DeleteSiteDevServersStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteSiteDevServersResponse =
+	| DeleteSiteDevServersStatus202
+	| DeleteSiteDevServersStatusDefault;
+
+/**
+ * @type string
+ */
+export type GetSiteDevServerPathSiteId = string;
+
+/**
+ * @type string
+ */
+export type GetSiteDevServerPathDevServerId = string;
+
+/**
+ * @type object
+ */
+export type GetSiteDevServerStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -20208,27 +26307,27 @@ export type GetSiteDevServer200 = {
 	 */
 	state?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	starting_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	error_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	live_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	done_at?: string | undefined;
 	/**
@@ -20237,53 +26336,99 @@ export type GetSiteDevServer200 = {
 	title?: string | undefined;
 };
 
-export type GetSiteDevServerQueryResponse = GetSiteDevServer200;
-
-export type GetSiteDevServerQuery = {
-	Response: GetSiteDevServer200;
-	PathParams: GetSiteDevServerPathParams;
-	Errors: any;
-};
-
-export type MarkDevServerActivityPathParams = {
+/**
+ * @type object
+ */
+export type GetSiteDevServerRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: GetSiteDevServerPathSiteId;
+		dev_server_id: GetSiteDevServerPathDevServerId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-	/**
-	 * @type string
-	 */
-	dev_server_id: string;
+	url: `/sites/${string}/dev_servers/${string}`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type MarkDevServerActivity200 = unknown;
-
-export type MarkDevServerActivityMutationResponse = MarkDevServerActivity200;
-
-export type MarkDevServerActivityMutation = {
-	Response: MarkDevServerActivity200;
-	PathParams: MarkDevServerActivityPathParams;
-	Errors: any;
-};
-
-export type UpdateDevServerStatePathParams = {
-	/**
-	 * @type string
-	 */
-	site_id: string;
-	/**
-	 * @type string
-	 */
-	dev_server_id: string;
+export type GetSiteDevServerResponses = {
+	"200": GetSiteDevServerStatus200;
 };
 
 /**
- * @description OK
+ * @description Union of all possible responses
  */
-export type UpdateDevServerState200 = {
+export type GetSiteDevServerResponse = GetSiteDevServerStatus200;
+
+/**
+ * @type string
+ */
+export type MarkDevServerActivityPathSiteId = string;
+
+/**
+ * @type string
+ */
+export type MarkDevServerActivityPathDevServerId = string;
+
+/**
+ * @type unknown
+ */
+export type MarkDevServerActivityStatus200 = unknown;
+
+/**
+ * @type object
+ */
+export type MarkDevServerActivityRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: MarkDevServerActivityPathSiteId;
+		dev_server_id: MarkDevServerActivityPathDevServerId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/sites/${string}/dev_servers/${string}/activity`;
+};
+
+/**
+ * @type object
+ */
+export type MarkDevServerActivityResponses = {
+	"200": MarkDevServerActivityStatus200;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type MarkDevServerActivityResponse = MarkDevServerActivityStatus200;
+
+/**
+ * @type string
+ */
+export type UpdateDevServerStatePathSiteId = string;
+
+/**
+ * @type string
+ */
+export type UpdateDevServerStatePathDevServerId = string;
+
+/**
+ * @type object
+ */
+export type UpdateDevServerStateStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -20305,27 +26450,27 @@ export type UpdateDevServerState200 = {
 	 */
 	state?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	starting_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	error_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	live_at?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	done_at?: string | undefined;
 	/**
@@ -20335,25 +26480,18 @@ export type UpdateDevServerState200 = {
 };
 
 /**
- * @description Conflict
+ * @type unknown
  */
-export type UpdateDevServerState409 = unknown;
+export type UpdateDevServerStateStatus409 = unknown;
 
-export const updateDevServerStateMutationRequestStateEnum = {
-	starting: "starting",
-	live: "live",
-	error: "error",
-	done: "done",
-} as const;
-
-export type UpdateDevServerStateMutationRequestStateEnumKey =
-	(typeof updateDevServerStateMutationRequestStateEnum)[keyof typeof updateDevServerStateMutationRequestStateEnum];
-
-export type UpdateDevServerStateMutationRequest = {
+/**
+ * @type object
+ */
+export type UpdateDevServerStateData = {
 	/**
 	 * @type string
 	 */
-	state: UpdateDevServerStateMutationRequestStateEnumKey;
+	state: StateEnumKey;
 	/**
 	 * @type string | undefined
 	 */
@@ -20364,76 +26502,50 @@ export type UpdateDevServerStateMutationRequest = {
 	error?: string | undefined;
 };
 
-export type UpdateDevServerStateMutationResponse = UpdateDevServerState200;
-
-export type UpdateDevServerStateMutation = {
-	Response: UpdateDevServerState200;
-	Request: UpdateDevServerStateMutationRequest;
-	PathParams: UpdateDevServerStatePathParams;
-	Errors: UpdateDevServerState409;
-};
-
-export type ListSiteDevServerHooksPathParams = {
+/**
+ * @type object
+ */
+export type UpdateDevServerStateRequestConfig = {
+	data?: UpdateDevServerStateData | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: UpdateDevServerStatePathSiteId;
+		dev_server_id: UpdateDevServerStatePathDevServerId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
+	url: `/sites/${string}/dev_servers/${string}/state`;
 };
-
-export const listSiteDevServerHooks200TypeEnum = {
-	new_dev_server: "new_dev_server",
-	content_refresh: "content_refresh",
-} as const;
-
-export type ListSiteDevServerHooks200TypeEnumKey =
-	(typeof listSiteDevServerHooks200TypeEnum)[keyof typeof listSiteDevServerHooks200TypeEnum];
 
 /**
- * @description OK
+ * @type object
  */
-export type ListSiteDevServerHooks200 = ListSiteDevServerHooks200TypeEnumKey[];
+export type UpdateDevServerStateResponses = {
+	"200": UpdateDevServerStateStatus200;
+	"409": UpdateDevServerStateStatus409;
+};
 
 /**
- * @description error
+ * @description Union of all possible responses
  */
-export type ListSiteDevServerHooksError = {
-	/**
-	 * @type integer | undefined, int64
-	 */
-	code?: number | undefined;
-	/**
-	 * @type string
-	 */
-	message: string;
-};
-
-export type ListSiteDevServerHooksQueryResponse = ListSiteDevServerHooks200;
-
-export type ListSiteDevServerHooksQuery = {
-	Response: ListSiteDevServerHooks200;
-	PathParams: ListSiteDevServerHooksPathParams;
-	Errors: any;
-};
-
-export type CreateSiteDevServerHookPathParams = {
-	/**
-	 * @type string
-	 */
-	site_id: string;
-};
-
-export const createSiteDevServerHook201TypeEnum = {
-	new_dev_server: "new_dev_server",
-	content_refresh: "content_refresh",
-} as const;
-
-export type CreateSiteDevServerHook201TypeEnumKey =
-	(typeof createSiteDevServerHook201TypeEnum)[keyof typeof createSiteDevServerHook201TypeEnum];
+export type UpdateDevServerStateResponse =
+	| UpdateDevServerStateStatus200
+	| UpdateDevServerStateStatus409;
 
 /**
- * @description Created
+ * @type string
  */
-export type CreateSiteDevServerHook201 = {
+export type ListSiteDevServerHooksPathSiteId = string;
+
+/**
+ * @type array
+ */
+export type ListSiteDevServerHooksStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -20455,60 +26567,72 @@ export type CreateSiteDevServerHook201 = {
 	 */
 	site_id?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
 	 * @type string | undefined
 	 */
-	type?: CreateSiteDevServerHook201TypeEnumKey | undefined;
-};
+	type?: TypeEnumKey | undefined;
+}[];
 
 /**
- * @description error
+ * @type object
  */
-export type CreateSiteDevServerHookError = {
+export type ListSiteDevServerHooksStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type CreateSiteDevServerHookMutationResponse = CreateSiteDevServerHook201;
-
-export type CreateSiteDevServerHookMutation = {
-	Response: CreateSiteDevServerHook201;
-	PathParams: CreateSiteDevServerHookPathParams;
-	Errors: any;
-};
-
-export type GetSiteDevServerHookPathParams = {
+/**
+ * @type object
+ */
+export type ListSiteDevServerHooksRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: ListSiteDevServerHooksPathSiteId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-	/**
-	 * @type string
-	 */
-	id: string;
+	url: `/sites/${string}/dev_server_hooks`;
 };
-
-export const getSiteDevServerHook200TypeEnum = {
-	new_dev_server: "new_dev_server",
-	content_refresh: "content_refresh",
-} as const;
-
-export type GetSiteDevServerHook200TypeEnumKey =
-	(typeof getSiteDevServerHook200TypeEnum)[keyof typeof getSiteDevServerHook200TypeEnum];
 
 /**
- * @description OK
+ * @type object
  */
-export type GetSiteDevServerHook200 = {
+export type ListSiteDevServerHooksResponses = {
+	"200": ListSiteDevServerHooksStatus200;
+	default: ListSiteDevServerHooksStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListSiteDevServerHooksResponse =
+	| ListSiteDevServerHooksStatus200
+	| ListSiteDevServerHooksStatusDefault;
+
+/**
+ * @type string
+ */
+export type CreateSiteDevServerHookPathSiteId = string;
+
+/**
+ * @type object
+ */
+export type CreateSiteDevServerHookStatus201 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -20530,117 +26654,331 @@ export type GetSiteDevServerHook200 = {
 	 */
 	site_id?: string | undefined;
 	/**
-	 * @type string | undefined, dateTime
+	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
 	 * @type string | undefined
 	 */
-	type?: GetSiteDevServerHook200TypeEnumKey | undefined;
+	type?: TypeEnumKey | undefined;
 };
 
 /**
- * @description error
+ * @type object
  */
-export type GetSiteDevServerHookError = {
+export type CreateSiteDevServerHookStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type GetSiteDevServerHookQueryResponse = GetSiteDevServerHook200;
+/**
+ * @type object | undefined
+ */
+export type CreateSiteDevServerHookData =
+	| {
+			/**
+			 * @type string | undefined
+			 */
+			title?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			branch?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			type?: TypeEnumKey | undefined;
+	  }
+	| undefined;
 
-export type GetSiteDevServerHookQuery = {
-	Response: GetSiteDevServerHook200;
-	PathParams: GetSiteDevServerHookPathParams;
-	Errors: any;
-};
-
-export type UpdateSiteDevServerHookPathParams = {
+/**
+ * @type object
+ */
+export type CreateSiteDevServerHookRequestConfig = {
+	data?: CreateSiteDevServerHookData | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: CreateSiteDevServerHookPathSiteId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-	/**
-	 * @type string
-	 */
-	id: string;
+	url: `/sites/${string}/dev_server_hooks`;
 };
 
 /**
- * @description No content
+ * @type object
  */
-export type UpdateSiteDevServerHook204 = unknown;
+export type CreateSiteDevServerHookResponses = {
+	"201": CreateSiteDevServerHookStatus201;
+	default: CreateSiteDevServerHookStatusDefault;
+};
 
 /**
- * @description error
+ * @description Union of all possible responses
  */
-export type UpdateSiteDevServerHookError = {
+export type CreateSiteDevServerHookResponse =
+	| CreateSiteDevServerHookStatus201
+	| CreateSiteDevServerHookStatusDefault;
+
+/**
+ * @type string
+ */
+export type GetSiteDevServerHookPathSiteId = string;
+
+/**
+ * @type string
+ */
+export type GetSiteDevServerHookPathId = string;
+
+/**
+ * @type object
+ */
+export type GetSiteDevServerHookStatus200 = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type string | undefined
 	 */
-	code?: number | undefined;
+	id?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	title?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	branch?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	url?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	site_id?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	created_at?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	type?: TypeEnumKey | undefined;
+};
+
+/**
+ * @type object
+ */
+export type GetSiteDevServerHookStatusDefault = {
+	/**
+	 * @type integer | undefined
+	 */
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type UpdateSiteDevServerHookMutationResponse = UpdateSiteDevServerHook204;
-
-export type UpdateSiteDevServerHookMutation = {
-	Response: UpdateSiteDevServerHook204;
-	PathParams: UpdateSiteDevServerHookPathParams;
-	Errors: any;
-};
-
-export type DeleteSiteDevServerHookPathParams = {
+/**
+ * @type object
+ */
+export type GetSiteDevServerHookRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: GetSiteDevServerHookPathSiteId;
+		id: GetSiteDevServerHookPathId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-	/**
-	 * @type string
-	 */
-	id: string;
+	url: `/sites/${string}/dev_server_hooks/${string}`;
 };
 
 /**
- * @description No content
+ * @type object
  */
-export type DeleteSiteDevServerHook204 = unknown;
+export type GetSiteDevServerHookResponses = {
+	"200": GetSiteDevServerHookStatus200;
+	default: GetSiteDevServerHookStatusDefault;
+};
 
 /**
- * @description error
+ * @description Union of all possible responses
  */
-export type DeleteSiteDevServerHookError = {
+export type GetSiteDevServerHookResponse =
+	| GetSiteDevServerHookStatus200
+	| GetSiteDevServerHookStatusDefault;
+
+/**
+ * @type string
+ */
+export type UpdateSiteDevServerHookPathSiteId = string;
+
+/**
+ * @type string
+ */
+export type UpdateSiteDevServerHookPathId = string;
+
+/**
+ * @type unknown
+ */
+export type UpdateSiteDevServerHookStatus204 = unknown;
+
+/**
+ * @type object
+ */
+export type UpdateSiteDevServerHookStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type DeleteSiteDevServerHookMutationResponse = DeleteSiteDevServerHook204;
+/**
+ * @type object | undefined
+ */
+export type UpdateSiteDevServerHookData =
+	| {
+			/**
+			 * @type string | undefined
+			 */
+			title?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			branch?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			type?: TypeEnumKey | undefined;
+	  }
+	| undefined;
 
-export type DeleteSiteDevServerHookMutation = {
-	Response: DeleteSiteDevServerHook204;
-	PathParams: DeleteSiteDevServerHookPathParams;
-	Errors: any;
+/**
+ * @type object
+ */
+export type UpdateSiteDevServerHookRequestConfig = {
+	data?: UpdateSiteDevServerHookData | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: UpdateSiteDevServerHookPathSiteId;
+		id: UpdateSiteDevServerHookPathId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/sites/${string}/dev_server_hooks/${string}`;
 };
 
 /**
- * @description The mapping of providers and supported models
+ * @type object
  */
-export type GetAIGatewayProviders200 = {
+export type UpdateSiteDevServerHookResponses = {
+	"204": UpdateSiteDevServerHookStatus204;
+	default: UpdateSiteDevServerHookStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type UpdateSiteDevServerHookResponse =
+	| UpdateSiteDevServerHookStatus204
+	| UpdateSiteDevServerHookStatusDefault;
+
+/**
+ * @type string
+ */
+export type DeleteSiteDevServerHookPathSiteId = string;
+
+/**
+ * @type string
+ */
+export type DeleteSiteDevServerHookPathId = string;
+
+/**
+ * @type unknown
+ */
+export type DeleteSiteDevServerHookStatus204 = unknown;
+
+/**
+ * @type object
+ */
+export type DeleteSiteDevServerHookStatusDefault = {
+	/**
+	 * @type integer | undefined
+	 */
+	code?: bigint | undefined;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
+/**
+ * @type object
+ */
+export type DeleteSiteDevServerHookRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: DeleteSiteDevServerHookPathSiteId;
+		id: DeleteSiteDevServerHookPathId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/sites/${string}/dev_server_hooks/${string}`;
+};
+
+/**
+ * @type object
+ */
+export type DeleteSiteDevServerHookResponses = {
+	"204": DeleteSiteDevServerHookStatus204;
+	default: DeleteSiteDevServerHookStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteSiteDevServerHookResponse =
+	| DeleteSiteDevServerHookStatus204
+	| DeleteSiteDevServerHookStatusDefault;
+
+/**
+ * @type object
+ */
+export type GetAIGatewayProvidersStatus200 = {
+	/**
+	 * @type object | undefined
+	 */
 	providers?:
 		| {
 				[key: string]: {
@@ -20662,38 +27000,58 @@ export type GetAIGatewayProviders200 = {
 };
 
 /**
- * @description error
+ * @type object
  */
-export type GetAIGatewayProvidersError = {
+export type GetAIGatewayProvidersStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type GetAIGatewayProvidersQueryResponse = GetAIGatewayProviders200;
-
-export type GetAIGatewayProvidersQuery = {
-	Response: GetAIGatewayProviders200;
-	Errors: any;
-};
-
-export type GetAIGatewayTokenPathParams = {
+/**
+ * @type object
+ */
+export type GetAIGatewayProvidersRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
-	 * @description The site ID
 	 * @type string
 	 */
-	site_id: string;
+	url: "/ai-gateway/providers";
 };
 
 /**
- * @description AI Gateway token for the site
+ * @type object
  */
-export type GetAIGatewayToken200 = {
+export type GetAIGatewayProvidersResponses = {
+	"200": GetAIGatewayProvidersStatus200;
+	default: GetAIGatewayProvidersStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetAIGatewayProvidersResponse =
+	| GetAIGatewayProvidersStatus200
+	| GetAIGatewayProvidersStatusDefault;
+
+/**
+ * @description The site ID
+ * @type string
+ */
+export type GetAIGatewayTokenPathSiteId = string;
+
+/**
+ * @type object
+ */
+export type GetAIGatewayTokenStatus200 = {
 	/**
 	 * @description The AI Gateway authentication token
 	 * @type string | undefined
@@ -20706,50 +27064,76 @@ export type GetAIGatewayToken200 = {
 	url?: string | undefined;
 	/**
 	 * @description Unix timestamp when the token expires
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	expires_at?: number | undefined;
+	expires_at?: bigint | undefined;
 };
 
 /**
- * @description AI Gateway not available for this site
+ * @type unknown
  */
-export type GetAIGatewayToken404 = unknown;
+export type GetAIGatewayTokenStatus404 = unknown;
 
 /**
- * @description error
+ * @type object
  */
-export type GetAIGatewayTokenError = {
+export type GetAIGatewayTokenStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type GetAIGatewayTokenQueryResponse = GetAIGatewayToken200;
-
-export type GetAIGatewayTokenQuery = {
-	Response: GetAIGatewayToken200;
-	PathParams: GetAIGatewayTokenPathParams;
-	Errors: GetAIGatewayToken404;
-};
-
-export type GetAccountAIGatewayTokenPathParams = {
+/**
+ * @type object
+ */
+export type GetAIGatewayTokenRequestConfig = {
+	data?: never | undefined;
 	/**
-	 * @description The account ID
+	 * @type object
+	 */
+	pathParams: {
+		site_id: GetAIGatewayTokenPathSiteId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
 	 * @type string
 	 */
-	account_id: string;
+	url: `/sites/${string}/ai-gateway/token`;
 };
 
 /**
- * @description AI Gateway token for the account
+ * @type object
  */
-export type GetAccountAIGatewayToken200 = {
+export type GetAIGatewayTokenResponses = {
+	"200": GetAIGatewayTokenStatus200;
+	"404": GetAIGatewayTokenStatus404;
+	default: GetAIGatewayTokenStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetAIGatewayTokenResponse =
+	| GetAIGatewayTokenStatus200
+	| GetAIGatewayTokenStatus404
+	| GetAIGatewayTokenStatusDefault;
+
+/**
+ * @description The account ID
+ * @type string
+ */
+export type GetAccountAIGatewayTokenPathAccountId = string;
+
+/**
+ * @type object
+ */
+export type GetAccountAIGatewayTokenStatus200 = {
 	/**
 	 * @description The AI Gateway authentication token
 	 * @type string | undefined
@@ -20762,49 +27146,76 @@ export type GetAccountAIGatewayToken200 = {
 	url?: string | undefined;
 	/**
 	 * @description Unix timestamp when the token expires
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	expires_at?: number | undefined;
+	expires_at?: bigint | undefined;
 };
 
 /**
- * @description AI Gateway not available for this account
+ * @type unknown
  */
-export type GetAccountAIGatewayToken404 = unknown;
+export type GetAccountAIGatewayTokenStatus404 = unknown;
 
 /**
- * @description error
+ * @type object
  */
-export type GetAccountAIGatewayTokenError = {
+export type GetAccountAIGatewayTokenStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type GetAccountAIGatewayTokenQueryResponse = GetAccountAIGatewayToken200;
-
-export type GetAccountAIGatewayTokenQuery = {
-	Response: GetAccountAIGatewayToken200;
-	PathParams: GetAccountAIGatewayTokenPathParams;
-	Errors: GetAccountAIGatewayToken404;
-};
-
-export type CreateSiteDatabasePathParams = {
+/**
+ * @type object
+ */
+export type GetAccountAIGatewayTokenRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		account_id: GetAccountAIGatewayTokenPathAccountId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
+	url: `/accounts/${string}/ai-gateway/token`;
 };
 
 /**
- * @description Database already exists
+ * @type object
  */
-export type CreateSiteDatabase200 = {
+export type GetAccountAIGatewayTokenResponses = {
+	"200": GetAccountAIGatewayTokenStatus200;
+	"404": GetAccountAIGatewayTokenStatus404;
+	default: GetAccountAIGatewayTokenStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetAccountAIGatewayTokenResponse =
+	| GetAccountAIGatewayTokenStatus200
+	| GetAccountAIGatewayTokenStatus404
+	| GetAccountAIGatewayTokenStatusDefault;
+
+/**
+ * @type string
+ */
+export type CreateSiteDatabasePathSiteId = string;
+
+/**
+ * @description Response containing the database connection string
+ * @type object
+ */
+export type CreateSiteDatabaseStatus200 = {
 	/**
 	 * @description The connection string for the database
 	 * @type string | undefined
@@ -20813,9 +27224,10 @@ export type CreateSiteDatabase200 = {
 };
 
 /**
- * @description Created
+ * @description Response containing the database connection string
+ * @type object
  */
-export type CreateSiteDatabase201 = {
+export type CreateSiteDatabaseStatus201 = {
 	/**
 	 * @description The connection string for the database
 	 * @type string | undefined
@@ -20824,47 +27236,85 @@ export type CreateSiteDatabase201 = {
 };
 
 /**
- * @description error
+ * @type object
  */
-export type CreateSiteDatabaseError = {
+export type CreateSiteDatabaseStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type CreateSiteDatabaseMutationRequest = {
+/**
+ * @description Request body for creating a database
+ * @type object | undefined
+ */
+export type CreateSiteDatabaseData =
+	| {
+			/**
+			 * @description The region where the database should be created. Defaults to the site\'s functions region if not specified.
+			 * @type string | undefined
+			 */
+			region?: string | undefined;
+	  }
+	| undefined;
+
+/**
+ * @type object
+ */
+export type CreateSiteDatabaseRequestConfig = {
+	data?: CreateSiteDatabaseData | undefined;
 	/**
-	 * @description The region where the database should be created. Defaults to the site\'s functions region if not specified.
-	 * @type string | undefined
+	 * @type object
 	 */
-	region?: string | undefined;
-};
-
-export type CreateSiteDatabaseMutationResponse = CreateSiteDatabase200 | CreateSiteDatabase201;
-
-export type CreateSiteDatabaseMutation = {
-	Response: CreateSiteDatabase200 | CreateSiteDatabase201;
-	Request: CreateSiteDatabaseMutationRequest;
-	PathParams: CreateSiteDatabasePathParams;
-	Errors: any;
-};
-
-export type GetSiteDatabasePathParams = {
+	pathParams: {
+		site_id: CreateSiteDatabasePathSiteId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
+	url: `/sites/${string}/database`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type GetSiteDatabase200 = {
+export type CreateSiteDatabaseResponses = {
+	"200": CreateSiteDatabaseStatus200;
+	"201": CreateSiteDatabaseStatus201;
+	default: CreateSiteDatabaseStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateSiteDatabaseResponse =
+	| CreateSiteDatabaseStatus200
+	| CreateSiteDatabaseStatus201
+	| CreateSiteDatabaseStatusDefault;
+
+/**
+ * @type string
+ */
+export type GetSiteDatabasePathSiteId = string;
+
+/**
+ * @description The database role to use for the connection string. Defaults to netlifydb_owner if not specified.
+ * @type string | undefined
+ */
+export type GetSiteDatabaseQueryRole = ("netlifydb_owner" | "netlifydb_readonly") | undefined;
+
+/**
+ * @description Response containing the database connection string
+ * @type object
+ */
+export type GetSiteDatabaseStatus200 = {
 	/**
 	 * @description The connection string for the database
 	 * @type string | undefined
@@ -20873,292 +27323,1544 @@ export type GetSiteDatabase200 = {
 };
 
 /**
- * @description error
+ * @type object
  */
-export type GetSiteDatabaseError = {
+export type GetSiteDatabaseStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type GetSiteDatabaseQueryResponse = GetSiteDatabase200;
-
-export type GetSiteDatabaseQuery = {
-	Response: GetSiteDatabase200;
-	PathParams: GetSiteDatabasePathParams;
-	Errors: any;
-};
-
-export type DeleteSiteDatabasePathParams = {
+/**
+ * @type object
+ */
+export type GetSiteDatabaseRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: GetSiteDatabasePathSiteId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				role?: GetSiteDatabaseQueryRole | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
+	url: `/sites/${string}/database`;
 };
 
 /**
- * @description Deleted
+ * @type object
  */
-export type DeleteSiteDatabase204 = unknown;
+export type GetSiteDatabaseResponses = {
+	"200": GetSiteDatabaseStatus200;
+	default: GetSiteDatabaseStatusDefault;
+};
 
 /**
- * @description error
+ * @description Union of all possible responses
  */
-export type DeleteSiteDatabaseError = {
+export type GetSiteDatabaseResponse = GetSiteDatabaseStatus200 | GetSiteDatabaseStatusDefault;
+
+/**
+ * @type string
+ */
+export type DeleteSiteDatabasePathSiteId = string;
+
+/**
+ * @type unknown
+ */
+export type DeleteSiteDatabaseStatus204 = unknown;
+
+/**
+ * @type object
+ */
+export type DeleteSiteDatabaseStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type DeleteSiteDatabaseMutationResponse = DeleteSiteDatabase204;
-
-export type DeleteSiteDatabaseMutation = {
-	Response: DeleteSiteDatabase204;
-	PathParams: DeleteSiteDatabasePathParams;
-	Errors: any;
-};
-
-export type CreateSiteDatabaseBranchPathParams = {
+/**
+ * @type object
+ */
+export type DeleteSiteDatabaseRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: DeleteSiteDatabasePathSiteId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
+	url: `/sites/${string}/database`;
 };
 
 /**
- * @description Branch already exists for this deploy
+ * @type object
  */
-export type CreateSiteDatabaseBranch200 = {
+export type DeleteSiteDatabaseResponses = {
+	"204": DeleteSiteDatabaseStatus204;
+	default: DeleteSiteDatabaseStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteSiteDatabaseResponse =
+	| DeleteSiteDatabaseStatus204
+	| DeleteSiteDatabaseStatusDefault;
+
+/**
+ * @type string
+ */
+export type CreateSiteDatabaseBranchPathSiteId = string;
+
+/**
+ * @description Response containing the database branch connection string
+ * @type object
+ */
+export type CreateSiteDatabaseBranchStatus200 = {
 	/**
 	 * @description The connection string for the database branch
 	 * @type string | undefined
 	 */
 	connection_string?: string | undefined;
+	/**
+	 * @description Metadata associated with the branch
+	 * @type object | undefined
+	 */
+	metadata?:
+		| {
+				[key: string]: unknown;
+		  }
+		| undefined;
 };
 
 /**
- * @description Created
+ * @description Response containing the database branch connection string
+ * @type object
  */
-export type CreateSiteDatabaseBranch201 = {
+export type CreateSiteDatabaseBranchStatus201 = {
 	/**
 	 * @description The connection string for the database branch
 	 * @type string | undefined
 	 */
 	connection_string?: string | undefined;
+	/**
+	 * @description Metadata associated with the branch
+	 * @type object | undefined
+	 */
+	metadata?:
+		| {
+				[key: string]: unknown;
+		  }
+		| undefined;
 };
 
 /**
- * @description error
+ * @type object
  */
-export type CreateSiteDatabaseBranchError = {
+export type CreateSiteDatabaseBranchStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type CreateSiteDatabaseBranchMutationRequest = {
+/**
+ * @description Request body for creating a database branch
+ * @type object
+ */
+export type CreateSiteDatabaseBranchData = {
 	/**
 	 * @description The ID of the parent branch to create the new branch from. Defaults to the production branch if not specified.
 	 * @type string | undefined
 	 */
 	parent_branch_id?: string | undefined;
 	/**
-	 * @description The deploy ID to associate with this branch
+	 * @description The branch identifier
 	 * @type string
 	 */
-	deploy_id: string;
-};
-
-export type CreateSiteDatabaseBranchMutationResponse =
-	| CreateSiteDatabaseBranch200
-	| CreateSiteDatabaseBranch201;
-
-export type CreateSiteDatabaseBranchMutation = {
-	Response: CreateSiteDatabaseBranch200 | CreateSiteDatabaseBranch201;
-	Request: CreateSiteDatabaseBranchMutationRequest;
-	PathParams: CreateSiteDatabaseBranchPathParams;
-	Errors: any;
-};
-
-export type GetSiteDatabaseBranchPathParams = {
+	branch_id: string;
 	/**
-	 * @type string
+	 * @description Arbitrary metadata to associate with the branch
+	 * @type object | undefined
 	 */
-	site_id: string;
-	/**
-	 * @description The deploy ID associated with the database branch
-	 * @type string
-	 */
-	deploy_id: string;
+	metadata?:
+		| {
+				[key: string]: unknown;
+		  }
+		| undefined;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type GetSiteDatabaseBranch200 = {
+export type CreateSiteDatabaseBranchRequestConfig = {
+	data?: CreateSiteDatabaseBranchData | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: CreateSiteDatabaseBranchPathSiteId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/sites/${string}/database/branch`;
+};
+
+/**
+ * @type object
+ */
+export type CreateSiteDatabaseBranchResponses = {
+	"200": CreateSiteDatabaseBranchStatus200;
+	"201": CreateSiteDatabaseBranchStatus201;
+	default: CreateSiteDatabaseBranchStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateSiteDatabaseBranchResponse =
+	| CreateSiteDatabaseBranchStatus200
+	| CreateSiteDatabaseBranchStatus201
+	| CreateSiteDatabaseBranchStatusDefault;
+
+/**
+ * @type string
+ */
+export type ListSiteDatabaseBranchesPathSiteId = string;
+
+/**
+ * @description Response containing a list of database branches
+ * @type object
+ */
+export type ListSiteDatabaseBranchesStatus200 = {
+	/**
+	 * @description List of database branches
+	 * @type array | undefined
+	 */
+	branches?:
+		| {
+				/**
+				 * @description The branch identifier
+				 * @type string | undefined
+				 */
+				branch_id?: string | undefined;
+				/**
+				 * @description The branch name
+				 * @type string | undefined
+				 */
+				name?: string | undefined;
+				/**
+				 * @description The connection string for the branch
+				 * @type string | undefined
+				 */
+				connection_string?: string | undefined;
+				/**
+				 * @description The current state of the branch
+				 * @type string | undefined
+				 */
+				state?: StateEnumKey | undefined;
+				/**
+				 * @description The logical size of the branch in bytes
+				 * @type integer | undefined
+				 */
+				logical_size_bytes?: bigint | undefined;
+				/**
+				 * @description When the branch was created
+				 * @type string | undefined
+				 */
+				created_at?: string | undefined;
+				/**
+				 * @description When the branch was last updated
+				 * @type string | undefined
+				 */
+				updated_at?: string | undefined;
+				/**
+				 * @description When the branch was last active
+				 * @type string | undefined
+				 */
+				last_active_at?: string | undefined;
+				/**
+				 * @description Compute endpoint status for a branch
+				 * @type object | undefined
+				 */
+				compute?:
+					| {
+							/**
+							 * @description The current state of the compute endpoint
+							 * @type string | undefined
+							 */
+							current_state?: CurrentStateEnumKey | undefined;
+							/**
+							 * @description Minimum compute units for autoscaling
+							 * @type number | undefined
+							 */
+							autoscaling_limit_min_cu?: number | undefined;
+							/**
+							 * @description Maximum compute units for autoscaling
+							 * @type number | undefined
+							 */
+							autoscaling_limit_max_cu?: number | undefined;
+							/**
+							 * @description Seconds of inactivity before the compute endpoint is suspended
+							 * @type integer | undefined
+							 */
+							suspend_timeout_seconds?: bigint | undefined;
+							/**
+							 * @description When the compute endpoint was last active
+							 * @type string | undefined
+							 */
+							last_active?: string | undefined;
+					  }
+					| undefined;
+				/**
+				 * @description Metadata associated with the branch
+				 * @type object | undefined
+				 */
+				metadata?:
+					| {
+							[key: string]: unknown;
+					  }
+					| undefined;
+		  }[]
+		| undefined;
+};
+
+/**
+ * @type object
+ */
+export type ListSiteDatabaseBranchesStatusDefault = {
+	/**
+	 * @type integer | undefined
+	 */
+	code?: bigint | undefined;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
+/**
+ * @type object
+ */
+export type ListSiteDatabaseBranchesRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: ListSiteDatabaseBranchesPathSiteId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/sites/${string}/database/branches`;
+};
+
+/**
+ * @type object
+ */
+export type ListSiteDatabaseBranchesResponses = {
+	"200": ListSiteDatabaseBranchesStatus200;
+	default: ListSiteDatabaseBranchesStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListSiteDatabaseBranchesResponse =
+	| ListSiteDatabaseBranchesStatus200
+	| ListSiteDatabaseBranchesStatusDefault;
+
+/**
+ * @type string
+ */
+export type GetSiteDatabaseBranchPathSiteId = string;
+
+/**
+ * @description The branch ID
+ * @type string
+ */
+export type GetSiteDatabaseBranchPathBranchId = string;
+
+/**
+ * @description The database role to use for the connection string. Defaults to netlifydb_owner if not specified.
+ * @type string | undefined
+ */
+export type GetSiteDatabaseBranchQueryRole = ("netlifydb_owner" | "netlifydb_readonly") | undefined;
+
+/**
+ * @description Response containing the database branch connection string
+ * @type object
+ */
+export type GetSiteDatabaseBranchStatus200 = {
 	/**
 	 * @description The connection string for the database branch
 	 * @type string | undefined
 	 */
 	connection_string?: string | undefined;
+	/**
+	 * @description Metadata associated with the branch
+	 * @type object | undefined
+	 */
+	metadata?:
+		| {
+				[key: string]: unknown;
+		  }
+		| undefined;
 };
 
 /**
- * @description Branch not found for this deploy
+ * @type unknown
  */
-export type GetSiteDatabaseBranch404 = unknown;
+export type GetSiteDatabaseBranchStatus404 = unknown;
 
 /**
- * @description error
+ * @type object
  */
-export type GetSiteDatabaseBranchError = {
+export type GetSiteDatabaseBranchStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type GetSiteDatabaseBranchQueryResponse = GetSiteDatabaseBranch200;
-
-export type GetSiteDatabaseBranchQuery = {
-	Response: GetSiteDatabaseBranch200;
-	PathParams: GetSiteDatabaseBranchPathParams;
-	Errors: GetSiteDatabaseBranch404;
-};
-
-export type DeleteSiteDatabaseBranchPathParams = {
+/**
+ * @type object
+ */
+export type GetSiteDatabaseBranchRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: GetSiteDatabaseBranchPathSiteId;
+		branch_id: GetSiteDatabaseBranchPathBranchId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				role?: GetSiteDatabaseBranchQueryRole | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-	/**
-	 * @description The deploy ID associated with the database branch
-	 * @type string
-	 */
-	deploy_id: string;
+	url: `/sites/${string}/database/branch/${string}`;
 };
 
 /**
- * @description Deleted
+ * @type object
  */
-export type DeleteSiteDatabaseBranch204 = unknown;
+export type GetSiteDatabaseBranchResponses = {
+	"200": GetSiteDatabaseBranchStatus200;
+	"404": GetSiteDatabaseBranchStatus404;
+	default: GetSiteDatabaseBranchStatusDefault;
+};
 
 /**
- * @description error
+ * @description Union of all possible responses
  */
-export type DeleteSiteDatabaseBranchError = {
+export type GetSiteDatabaseBranchResponse =
+	| GetSiteDatabaseBranchStatus200
+	| GetSiteDatabaseBranchStatus404
+	| GetSiteDatabaseBranchStatusDefault;
+
+/**
+ * @type string
+ */
+export type DeleteSiteDatabaseBranchPathSiteId = string;
+
+/**
+ * @description The branch ID
+ * @type string
+ */
+export type DeleteSiteDatabaseBranchPathBranchId = string;
+
+/**
+ * @type unknown
+ */
+export type DeleteSiteDatabaseBranchStatus204 = unknown;
+
+/**
+ * @type object
+ */
+export type DeleteSiteDatabaseBranchStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type DeleteSiteDatabaseBranchMutationResponse = DeleteSiteDatabaseBranch204;
-
-export type DeleteSiteDatabaseBranchMutation = {
-	Response: DeleteSiteDatabaseBranch204;
-	PathParams: DeleteSiteDatabaseBranchPathParams;
-	Errors: any;
-};
-
-export type CreateSiteDatabaseSnapshotPathParams = {
+/**
+ * @type object
+ */
+export type DeleteSiteDatabaseBranchRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: DeleteSiteDatabaseBranchPathSiteId;
+		branch_id: DeleteSiteDatabaseBranchPathBranchId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
+	url: `/sites/${string}/database/branch/${string}`;
 };
 
 /**
- * @description Created
+ * @type object
  */
-export type CreateSiteDatabaseSnapshot201 = {
+export type DeleteSiteDatabaseBranchResponses = {
+	"204": DeleteSiteDatabaseBranchStatus204;
+	default: DeleteSiteDatabaseBranchStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteSiteDatabaseBranchResponse =
+	| DeleteSiteDatabaseBranchStatus204
+	| DeleteSiteDatabaseBranchStatusDefault;
+
+/**
+ * @type string
+ */
+export type ResetSiteDatabaseBranchPathSiteId = string;
+
+/**
+ * @description The branch ID to reset
+ * @type string
+ */
+export type ResetSiteDatabaseBranchPathBranchId = string;
+
+/**
+ * @description If true, resets the branch even when it is already in sync with the source.
+ * @type boolean | undefined
+ */
+export type ResetSiteDatabaseBranchQueryForce = boolean | undefined;
+
+/**
+ * @description The database role to use for the returned connection string. Defaults to netlifydb_owner if not specified.
+ * @type string | undefined
+ */
+export type ResetSiteDatabaseBranchQueryRole =
+	| ("netlifydb_owner" | "netlifydb_readonly")
+	| undefined;
+
+/**
+ * @description Response for a database branch reset
+ * @type object
+ */
+export type ResetSiteDatabaseBranchStatus200 = {
+	/**
+	 * @description Whether the branch was actually re-forked. False when the target was already in sync with the source and `force=true` was not set.
+	 * @type boolean | undefined
+	 */
+	reset?: boolean | undefined;
+	/**
+	 * @description The connection string for the reset (or unchanged) branch
+	 * @type string | undefined
+	 */
+	connection_string?: string | undefined;
+	/**
+	 * @description Metadata associated with the branch
+	 * @type object | undefined
+	 */
+	metadata?:
+		| {
+				[key: string]: unknown;
+		  }
+		| undefined;
+};
+
+/**
+ * @type unknown
+ */
+export type ResetSiteDatabaseBranchStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ResetSiteDatabaseBranchStatus404 = unknown;
+
+/**
+ * @type object
+ */
+export type ResetSiteDatabaseBranchStatusDefault = {
+	/**
+	 * @type integer | undefined
+	 */
+	code?: bigint | undefined;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
+/**
+ * @description Request body for resetting a database branch
+ * @type object | undefined
+ */
+export type ResetSiteDatabaseBranchData =
+	| {
+			/**
+			 * @description The ID of the branch to re-fork the target branch from. Defaults to \"production\" if not specified.
+			 * @type string | undefined
+			 */
+			source_branch_id?: string | undefined;
+	  }
+	| undefined;
+
+/**
+ * @type object
+ */
+export type ResetSiteDatabaseBranchRequestConfig = {
+	data?: ResetSiteDatabaseBranchData | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: ResetSiteDatabaseBranchPathSiteId;
+		branch_id: ResetSiteDatabaseBranchPathBranchId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				force?: ResetSiteDatabaseBranchQueryForce | undefined;
+				role?: ResetSiteDatabaseBranchQueryRole | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/sites/${string}/database/branch/${string}/reset`;
+};
+
+/**
+ * @type object
+ */
+export type ResetSiteDatabaseBranchResponses = {
+	"200": ResetSiteDatabaseBranchStatus200;
+	"400": ResetSiteDatabaseBranchStatus400;
+	"404": ResetSiteDatabaseBranchStatus404;
+	default: ResetSiteDatabaseBranchStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ResetSiteDatabaseBranchResponse =
+	| ResetSiteDatabaseBranchStatus200
+	| ResetSiteDatabaseBranchStatus400
+	| ResetSiteDatabaseBranchStatus404
+	| ResetSiteDatabaseBranchStatusDefault;
+
+/**
+ * @type string
+ */
+export type SetSiteDatabaseBranchComputeSettingsPathSiteId = string;
+
+/**
+ * @description The branch ID
+ * @type string
+ */
+export type SetSiteDatabaseBranchComputeSettingsPathBranchId = string;
+
+/**
+ * @description Compute settings for a database or branch
+ * @type object
+ */
+export type SetSiteDatabaseBranchComputeSettingsStatus200 = {
+	/**
+	 * @description Minimum compute units
+	 * @type number | undefined
+	 */
+	min_cu?: number | undefined;
+	/**
+	 * @description Maximum compute units
+	 * @type number | undefined
+	 */
+	max_cu?: number | undefined;
+	/**
+	 * @description Seconds of inactivity before suspension
+	 * @type integer | undefined
+	 */
+	sleep_timeout_seconds?: bigint | undefined;
+};
+
+/**
+ * @type unknown
+ */
+export type SetSiteDatabaseBranchComputeSettingsStatus403 = unknown;
+
+/**
+ * @type object
+ */
+export type SetSiteDatabaseBranchComputeSettingsStatusDefault = {
+	/**
+	 * @type integer | undefined
+	 */
+	code?: bigint | undefined;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
+/**
+ * @description Request body for setting compute settings. All fields are optional; only provided fields are updated.
+ * @type object | undefined
+ */
+export type SetSiteDatabaseBranchComputeSettingsData =
+	| {
+			/**
+			 * @description Minimum compute units (0.25 to 16.0). Must be less than or equal to max_cu.
+			 * @type number
+			 */
+			min_cu?: (number | null) | undefined;
+			/**
+			 * @description Maximum compute units (0.25 to 16.0). Must be greater than or equal to min_cu. max_cu - min_cu must not exceed 8.0.
+			 * @type number
+			 */
+			max_cu?: (number | null) | undefined;
+			/**
+			 * @description Seconds of inactivity before the compute endpoint is suspended. Use -1 for always on, or a non-negative value.
+			 * @minLength -1
+			 * @type integer
+			 */
+			sleep_timeout_seconds?: (bigint | null) | undefined;
+	  }
+	| undefined;
+
+/**
+ * @type object
+ */
+export type SetSiteDatabaseBranchComputeSettingsRequestConfig = {
+	data?: SetSiteDatabaseBranchComputeSettingsData | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: SetSiteDatabaseBranchComputeSettingsPathSiteId;
+		branch_id: SetSiteDatabaseBranchComputeSettingsPathBranchId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/sites/${string}/database/branch/${string}/compute/settings`;
+};
+
+/**
+ * @type object
+ */
+export type SetSiteDatabaseBranchComputeSettingsResponses = {
+	"200": SetSiteDatabaseBranchComputeSettingsStatus200;
+	"403": SetSiteDatabaseBranchComputeSettingsStatus403;
+	default: SetSiteDatabaseBranchComputeSettingsStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type SetSiteDatabaseBranchComputeSettingsResponse =
+	| SetSiteDatabaseBranchComputeSettingsStatus200
+	| SetSiteDatabaseBranchComputeSettingsStatus403
+	| SetSiteDatabaseBranchComputeSettingsStatusDefault;
+
+/**
+ * @type string
+ */
+export type SetSiteDatabaseComputeSettingsPathSiteId = string;
+
+/**
+ * @description Compute settings for a database or branch
+ * @type object
+ */
+export type SetSiteDatabaseComputeSettingsStatus200 = {
+	/**
+	 * @description Minimum compute units
+	 * @type number | undefined
+	 */
+	min_cu?: number | undefined;
+	/**
+	 * @description Maximum compute units
+	 * @type number | undefined
+	 */
+	max_cu?: number | undefined;
+	/**
+	 * @description Seconds of inactivity before suspension
+	 * @type integer | undefined
+	 */
+	sleep_timeout_seconds?: bigint | undefined;
+};
+
+/**
+ * @type unknown
+ */
+export type SetSiteDatabaseComputeSettingsStatus403 = unknown;
+
+/**
+ * @type object
+ */
+export type SetSiteDatabaseComputeSettingsStatusDefault = {
+	/**
+	 * @type integer | undefined
+	 */
+	code?: bigint | undefined;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
+/**
+ * @description Request body for setting compute settings. All fields are optional; only provided fields are updated.
+ * @type object | undefined
+ */
+export type SetSiteDatabaseComputeSettingsData =
+	| {
+			/**
+			 * @description Minimum compute units (0.25 to 16.0). Must be less than or equal to max_cu.
+			 * @type number
+			 */
+			min_cu?: (number | null) | undefined;
+			/**
+			 * @description Maximum compute units (0.25 to 16.0). Must be greater than or equal to min_cu. max_cu - min_cu must not exceed 8.0.
+			 * @type number
+			 */
+			max_cu?: (number | null) | undefined;
+			/**
+			 * @description Seconds of inactivity before the compute endpoint is suspended. Use -1 for always on, or a non-negative value.
+			 * @minLength -1
+			 * @type integer
+			 */
+			sleep_timeout_seconds?: (bigint | null) | undefined;
+	  }
+	| undefined;
+
+/**
+ * @type object
+ */
+export type SetSiteDatabaseComputeSettingsRequestConfig = {
+	data?: SetSiteDatabaseComputeSettingsData | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: SetSiteDatabaseComputeSettingsPathSiteId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/sites/${string}/database/compute/settings`;
+};
+
+/**
+ * @type object
+ */
+export type SetSiteDatabaseComputeSettingsResponses = {
+	"200": SetSiteDatabaseComputeSettingsStatus200;
+	"403": SetSiteDatabaseComputeSettingsStatus403;
+	default: SetSiteDatabaseComputeSettingsStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type SetSiteDatabaseComputeSettingsResponse =
+	| SetSiteDatabaseComputeSettingsStatus200
+	| SetSiteDatabaseComputeSettingsStatus403
+	| SetSiteDatabaseComputeSettingsStatusDefault;
+
+/**
+ * @type string
+ */
+export type GetSiteDatabaseComputeSettingsPathSiteId = string;
+
+/**
+ * @description Compute settings for a database or branch
+ * @type object
+ */
+export type GetSiteDatabaseComputeSettingsStatus200 = {
+	/**
+	 * @description Minimum compute units
+	 * @type number | undefined
+	 */
+	min_cu?: number | undefined;
+	/**
+	 * @description Maximum compute units
+	 * @type number | undefined
+	 */
+	max_cu?: number | undefined;
+	/**
+	 * @description Seconds of inactivity before suspension
+	 * @type integer | undefined
+	 */
+	sleep_timeout_seconds?: bigint | undefined;
+};
+
+/**
+ * @type unknown
+ */
+export type GetSiteDatabaseComputeSettingsStatus403 = unknown;
+
+/**
+ * @type object
+ */
+export type GetSiteDatabaseComputeSettingsStatusDefault = {
+	/**
+	 * @type integer | undefined
+	 */
+	code?: bigint | undefined;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
+/**
+ * @type object
+ */
+export type GetSiteDatabaseComputeSettingsRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: GetSiteDatabaseComputeSettingsPathSiteId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/sites/${string}/database/compute/settings`;
+};
+
+/**
+ * @type object
+ */
+export type GetSiteDatabaseComputeSettingsResponses = {
+	"200": GetSiteDatabaseComputeSettingsStatus200;
+	"403": GetSiteDatabaseComputeSettingsStatus403;
+	default: GetSiteDatabaseComputeSettingsStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetSiteDatabaseComputeSettingsResponse =
+	| GetSiteDatabaseComputeSettingsStatus200
+	| GetSiteDatabaseComputeSettingsStatus403
+	| GetSiteDatabaseComputeSettingsStatusDefault;
+
+/**
+ * @type string
+ */
+export type ClearSiteDatabaseComputeSettingsPathSiteId = string;
+
+/**
+ * @type unknown
+ */
+export type ClearSiteDatabaseComputeSettingsStatus204 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ClearSiteDatabaseComputeSettingsStatus403 = unknown;
+
+/**
+ * @type object
+ */
+export type ClearSiteDatabaseComputeSettingsStatusDefault = {
+	/**
+	 * @type integer | undefined
+	 */
+	code?: bigint | undefined;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
+/**
+ * @type object
+ */
+export type ClearSiteDatabaseComputeSettingsRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: ClearSiteDatabaseComputeSettingsPathSiteId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/sites/${string}/database/compute/settings`;
+};
+
+/**
+ * @type object
+ */
+export type ClearSiteDatabaseComputeSettingsResponses = {
+	"204": ClearSiteDatabaseComputeSettingsStatus204;
+	"403": ClearSiteDatabaseComputeSettingsStatus403;
+	default: ClearSiteDatabaseComputeSettingsStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ClearSiteDatabaseComputeSettingsResponse =
+	| ClearSiteDatabaseComputeSettingsStatus204
+	| ClearSiteDatabaseComputeSettingsStatus403
+	| ClearSiteDatabaseComputeSettingsStatusDefault;
+
+/**
+ * @type string
+ */
+export type ListSiteDatabaseMigrationsPathSiteId = string;
+
+/**
+ * @description The branch ID to list migrations for. Defaults to \"production\" if not specified.
+ * @type string | undefined
+ */
+export type ListSiteDatabaseMigrationsQueryBranch = string | undefined;
+
+/**
+ * @description Response containing the list of migrations for a branch
+ * @type object
+ */
+export type ListSiteDatabaseMigrationsStatus200 = {
+	/**
+	 * @description List of migrations
+	 * @type array | undefined
+	 */
+	migrations?:
+		| {
+				/**
+				 * @description The migration version number
+				 * @type integer | undefined
+				 */
+				version?: bigint | undefined;
+				/**
+				 * @description The migration name
+				 * @type string | undefined
+				 */
+				name?: string | undefined;
+				/**
+				 * @description The path to the migration file in the deploy bundle
+				 * @type string | undefined
+				 */
+				path?: string | undefined;
+				/**
+				 * @description Whether this migration has been applied to the branch
+				 * @type boolean | undefined
+				 */
+				applied?: boolean | undefined;
+		  }[]
+		| undefined;
+};
+
+/**
+ * @type unknown
+ */
+export type ListSiteDatabaseMigrationsStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListSiteDatabaseMigrationsStatus423 = unknown;
+
+/**
+ * @type object
+ */
+export type ListSiteDatabaseMigrationsStatusDefault = {
+	/**
+	 * @type integer | undefined
+	 */
+	code?: bigint | undefined;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
+/**
+ * @type object
+ */
+export type ListSiteDatabaseMigrationsRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: ListSiteDatabaseMigrationsPathSiteId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				branch?: ListSiteDatabaseMigrationsQueryBranch | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/sites/${string}/database/migrations`;
+};
+
+/**
+ * @type object
+ */
+export type ListSiteDatabaseMigrationsResponses = {
+	"200": ListSiteDatabaseMigrationsStatus200;
+	"404": ListSiteDatabaseMigrationsStatus404;
+	"423": ListSiteDatabaseMigrationsStatus423;
+	default: ListSiteDatabaseMigrationsStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListSiteDatabaseMigrationsResponse =
+	| ListSiteDatabaseMigrationsStatus200
+	| ListSiteDatabaseMigrationsStatus404
+	| ListSiteDatabaseMigrationsStatus423
+	| ListSiteDatabaseMigrationsStatusDefault;
+
+/**
+ * @type string
+ */
+export type GetSiteDatabaseMigrationPathSiteId = string;
+
+/**
+ * @description The migration name
+ * @type string
+ */
+export type GetSiteDatabaseMigrationPathName = string;
+
+/**
+ * @description The branch ID to look up the migration on. Defaults to the currently published deploy\'s branch.
+ * @type string | undefined
+ */
+export type GetSiteDatabaseMigrationQueryBranch = string | undefined;
+
+/**
+ * @description A migration with its file contents
+ * @type object
+ */
+export type GetSiteDatabaseMigrationStatus200 = {
+	/**
+	 * @description The migration version number
+	 * @type integer | undefined
+	 */
+	version?: bigint | undefined;
+	/**
+	 * @description The migration name
+	 * @type string | undefined
+	 */
+	name?: string | undefined;
+	/**
+	 * @description The path to the migration file in the deploy bundle
+	 * @type string | undefined
+	 */
+	path?: string | undefined;
+	/**
+	 * @description The raw contents of the migration file
+	 * @type string | undefined
+	 */
+	content?: string | undefined;
+};
+
+/**
+ * @type unknown
+ */
+export type GetSiteDatabaseMigrationStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetSiteDatabaseMigrationStatus423 = unknown;
+
+/**
+ * @type object
+ */
+export type GetSiteDatabaseMigrationStatusDefault = {
+	/**
+	 * @type integer | undefined
+	 */
+	code?: bigint | undefined;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
+/**
+ * @type object
+ */
+export type GetSiteDatabaseMigrationRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: GetSiteDatabaseMigrationPathSiteId;
+		name: GetSiteDatabaseMigrationPathName;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				branch?: GetSiteDatabaseMigrationQueryBranch | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/sites/${string}/database/migrations/${string}`;
+};
+
+/**
+ * @type object
+ */
+export type GetSiteDatabaseMigrationResponses = {
+	"200": GetSiteDatabaseMigrationStatus200;
+	"404": GetSiteDatabaseMigrationStatus404;
+	"423": GetSiteDatabaseMigrationStatus423;
+	default: GetSiteDatabaseMigrationStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetSiteDatabaseMigrationResponse =
+	| GetSiteDatabaseMigrationStatus200
+	| GetSiteDatabaseMigrationStatus404
+	| GetSiteDatabaseMigrationStatus423
+	| GetSiteDatabaseMigrationStatusDefault;
+
+/**
+ * @type string
+ */
+export type RunSiteDatabaseMigrationsPathSiteId = string;
+
+/**
+ * @description The deploy ID to run migrations for
+ * @type string
+ */
+export type RunSiteDatabaseMigrationsPathDeployId = string;
+
+/**
+ * @type unknown
+ */
+export type RunSiteDatabaseMigrationsStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type RunSiteDatabaseMigrationsStatus409 = unknown;
+
+/**
+ * @type unknown
+ */
+export type RunSiteDatabaseMigrationsStatus422 = unknown;
+
+/**
+ * @type object
+ */
+export type RunSiteDatabaseMigrationsStatusDefault = {
+	/**
+	 * @type integer | undefined
+	 */
+	code?: bigint | undefined;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
+/**
+ * @description Request body for running database migrations
+ * @type object | undefined
+ */
+export type RunSiteDatabaseMigrationsData =
+	| {
+			/**
+			 * @description If true, validates migrations without applying them.
+			 * @type boolean | undefined
+			 */
+			dry_run?: boolean | undefined;
+	  }
+	| undefined;
+
+/**
+ * @type object
+ */
+export type RunSiteDatabaseMigrationsRequestConfig = {
+	data?: RunSiteDatabaseMigrationsData | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: RunSiteDatabaseMigrationsPathSiteId;
+		deploy_id: RunSiteDatabaseMigrationsPathDeployId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/sites/${string}/database/migrations/${string}`;
+};
+
+/**
+ * @type object
+ */
+export type RunSiteDatabaseMigrationsResponses = {
+	"200": RunSiteDatabaseMigrationsStatus200;
+	"409": RunSiteDatabaseMigrationsStatus409;
+	"422": RunSiteDatabaseMigrationsStatus422;
+	default: RunSiteDatabaseMigrationsStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type RunSiteDatabaseMigrationsResponse =
+	| RunSiteDatabaseMigrationsStatus200
+	| RunSiteDatabaseMigrationsStatus409
+	| RunSiteDatabaseMigrationsStatus422
+	| RunSiteDatabaseMigrationsStatusDefault;
+
+/**
+ * @type string
+ */
+export type CreateSiteDatabaseSnapshotPathSiteId = string;
+
+/**
+ * @description A point-in-time snapshot of a database branch
+ * @type object
+ */
+export type CreateSiteDatabaseSnapshotStatus201 = {
 	/**
 	 * @description The unique identifier of the snapshot
 	 * @type string | undefined
 	 */
 	id?: string | undefined;
 	/**
-	 * @description The timestamp when the snapshot was created
-	 * @type string | undefined, dateTime
-	 */
-	timestamp?: string | undefined;
-	/**
 	 * @description The ID of the branch that was snapshotted
 	 * @type string | undefined
 	 */
 	source_branch_id?: string | undefined;
+	/**
+	 * @description Whether this snapshot was manually created
+	 * @type boolean | undefined
+	 */
+	manual?: boolean | undefined;
+	/**
+	 * @description When the snapshot was created
+	 * @type string | undefined
+	 */
+	created_at?: string | undefined;
+	/**
+	 * @description When the snapshot expires
+	 * @type string | undefined
+	 */
+	expires_at?: string | undefined;
+	/**
+	 * @description The point-in-time timestamp of the snapshot
+	 * @type string | undefined
+	 */
+	timestamp?: string | undefined;
+	/**
+	 * @description Metadata associated with a snapshot
+	 * @type object | undefined
+	 */
+	metadata?:
+		| {
+				/**
+				 * @description Deploy information associated with the snapshot
+				 * @type object | undefined
+				 */
+				deploy?:
+					| {
+							[key: string]: unknown;
+					  }
+					| undefined;
+				/**
+				 * @description The source that created the snapshot
+				 * @type string | undefined
+				 */
+				source?: string | undefined;
+		  }
+		| undefined;
 };
 
 /**
- * @description error
+ * @type object
  */
-export type CreateSiteDatabaseSnapshotError = {
+export type CreateSiteDatabaseSnapshotStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type CreateSiteDatabaseSnapshotMutationRequest = {
+/**
+ * @description Request body for creating a database snapshot
+ * @type object | undefined
+ */
+export type CreateSiteDatabaseSnapshotData =
+	| {
+			/**
+			 * @description The ID of the branch to snapshot. Defaults to \"production\" if not specified.
+			 * @type string | undefined
+			 */
+			branch_id?: string | undefined;
+			/**
+			 * @description A name for the snapshot
+			 * @type string | undefined
+			 */
+			name?: string | undefined;
+			/**
+			 * @description Metadata associated with a snapshot
+			 * @type object | undefined
+			 */
+			metadata?:
+				| {
+						/**
+						 * @description Deploy information associated with the snapshot
+						 * @type object | undefined
+						 */
+						deploy?:
+							| {
+									[key: string]: unknown;
+							  }
+							| undefined;
+						/**
+						 * @description The source that created the snapshot
+						 * @type string | undefined
+						 */
+						source?: string | undefined;
+				  }
+				| undefined;
+	  }
+	| undefined;
+
+/**
+ * @type object
+ */
+export type CreateSiteDatabaseSnapshotRequestConfig = {
+	data?: CreateSiteDatabaseSnapshotData | undefined;
 	/**
-	 * @description The name of the branch to snapshot. Defaults to \"production\" if not specified.
-	 * @type string | undefined
+	 * @type object
 	 */
-	branch_name?: string | undefined;
-	/**
-	 * @description An optional name for the snapshot
-	 * @type string | undefined
-	 */
-	name?: string | undefined;
-};
-
-export type CreateSiteDatabaseSnapshotMutationResponse = CreateSiteDatabaseSnapshot201;
-
-export type CreateSiteDatabaseSnapshotMutation = {
-	Response: CreateSiteDatabaseSnapshot201;
-	Request: CreateSiteDatabaseSnapshotMutationRequest;
-	PathParams: CreateSiteDatabaseSnapshotPathParams;
-	Errors: any;
-};
-
-export type ListSiteDatabaseSnapshotsPathParams = {
+	pathParams: {
+		site_id: CreateSiteDatabaseSnapshotPathSiteId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
+	url: `/sites/${string}/database/snapshot`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type ListSiteDatabaseSnapshots200 = {
+export type CreateSiteDatabaseSnapshotResponses = {
+	"201": CreateSiteDatabaseSnapshotStatus201;
+	default: CreateSiteDatabaseSnapshotStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateSiteDatabaseSnapshotResponse =
+	| CreateSiteDatabaseSnapshotStatus201
+	| CreateSiteDatabaseSnapshotStatusDefault;
+
+/**
+ * @type string
+ */
+export type ListSiteDatabaseSnapshotsPathSiteId = string;
+
+/**
+ * @description Response containing a list of database snapshots
+ * @type object
+ */
+export type ListSiteDatabaseSnapshotsStatus200 = {
 	/**
 	 * @description List of database snapshots
 	 * @type array | undefined
@@ -21171,143 +28873,262 @@ export type ListSiteDatabaseSnapshots200 = {
 				 */
 				id?: string | undefined;
 				/**
-				 * @description The timestamp when the snapshot was created
-				 * @type string | undefined, dateTime
-				 */
-				timestamp?: string | undefined;
-				/**
 				 * @description The ID of the branch that was snapshotted
 				 * @type string | undefined
 				 */
 				source_branch_id?: string | undefined;
+				/**
+				 * @description Whether this snapshot was manually created
+				 * @type boolean | undefined
+				 */
+				manual?: boolean | undefined;
+				/**
+				 * @description When the snapshot was created
+				 * @type string | undefined
+				 */
+				created_at?: string | undefined;
+				/**
+				 * @description When the snapshot expires
+				 * @type string | undefined
+				 */
+				expires_at?: string | undefined;
+				/**
+				 * @description The point-in-time timestamp of the snapshot
+				 * @type string | undefined
+				 */
+				timestamp?: string | undefined;
+				/**
+				 * @description Metadata associated with a snapshot
+				 * @type object | undefined
+				 */
+				metadata?:
+					| {
+							/**
+							 * @description Deploy information associated with the snapshot
+							 * @type object | undefined
+							 */
+							deploy?:
+								| {
+										[key: string]: unknown;
+								  }
+								| undefined;
+							/**
+							 * @description The source that created the snapshot
+							 * @type string | undefined
+							 */
+							source?: string | undefined;
+					  }
+					| undefined;
 		  }[]
 		| undefined;
 };
 
 /**
- * @description error
+ * @type object
  */
-export type ListSiteDatabaseSnapshotsError = {
+export type ListSiteDatabaseSnapshotsStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type ListSiteDatabaseSnapshotsQueryResponse = ListSiteDatabaseSnapshots200;
-
-export type ListSiteDatabaseSnapshotsQuery = {
-	Response: ListSiteDatabaseSnapshots200;
-	PathParams: ListSiteDatabaseSnapshotsPathParams;
-	Errors: any;
-};
-
-export type DeleteSiteDatabaseSnapshotPathParams = {
+/**
+ * @type object
+ */
+export type ListSiteDatabaseSnapshotsRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: ListSiteDatabaseSnapshotsPathSiteId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-	/**
-	 * @description The snapshot ID
-	 * @type string
-	 */
-	snapshot_id: string;
+	url: `/sites/${string}/database/snapshots`;
 };
 
 /**
- * @description Deleted
+ * @type object
  */
-export type DeleteSiteDatabaseSnapshot204 = unknown;
+export type ListSiteDatabaseSnapshotsResponses = {
+	"200": ListSiteDatabaseSnapshotsStatus200;
+	default: ListSiteDatabaseSnapshotsStatusDefault;
+};
 
 /**
- * @description error
+ * @description Union of all possible responses
  */
-export type DeleteSiteDatabaseSnapshotError = {
+export type ListSiteDatabaseSnapshotsResponse =
+	| ListSiteDatabaseSnapshotsStatus200
+	| ListSiteDatabaseSnapshotsStatusDefault;
+
+/**
+ * @type string
+ */
+export type DeleteSiteDatabaseSnapshotPathSiteId = string;
+
+/**
+ * @description The snapshot ID
+ * @type string
+ */
+export type DeleteSiteDatabaseSnapshotPathSnapshotId = string;
+
+/**
+ * @type unknown
+ */
+export type DeleteSiteDatabaseSnapshotStatus204 = unknown;
+
+/**
+ * @type object
+ */
+export type DeleteSiteDatabaseSnapshotStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type DeleteSiteDatabaseSnapshotMutationResponse = DeleteSiteDatabaseSnapshot204;
-
-export type DeleteSiteDatabaseSnapshotMutation = {
-	Response: DeleteSiteDatabaseSnapshot204;
-	PathParams: DeleteSiteDatabaseSnapshotPathParams;
-	Errors: any;
-};
-
-export type RestoreSiteDatabaseSnapshotPathParams = {
+/**
+ * @type object
+ */
+export type DeleteSiteDatabaseSnapshotRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: DeleteSiteDatabaseSnapshotPathSiteId;
+		snapshot_id: DeleteSiteDatabaseSnapshotPathSnapshotId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-	/**
-	 * @description The snapshot ID to restore
-	 * @type string
-	 */
-	snapshot_id: string;
+	url: `/sites/${string}/database/snapshot/${string}`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type RestoreSiteDatabaseSnapshot200 = unknown;
+export type DeleteSiteDatabaseSnapshotResponses = {
+	"204": DeleteSiteDatabaseSnapshotStatus204;
+	default: DeleteSiteDatabaseSnapshotStatusDefault;
+};
 
 /**
- * @description error
+ * @description Union of all possible responses
  */
-export type RestoreSiteDatabaseSnapshotError = {
+export type DeleteSiteDatabaseSnapshotResponse =
+	| DeleteSiteDatabaseSnapshotStatus204
+	| DeleteSiteDatabaseSnapshotStatusDefault;
+
+/**
+ * @type string
+ */
+export type RestoreSiteDatabaseSnapshotPathSiteId = string;
+
+/**
+ * @description The snapshot ID to restore
+ * @type string
+ */
+export type RestoreSiteDatabaseSnapshotPathSnapshotId = string;
+
+/**
+ * @type unknown
+ */
+export type RestoreSiteDatabaseSnapshotStatus200 = unknown;
+
+/**
+ * @type object
+ */
+export type RestoreSiteDatabaseSnapshotStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type RestoreSiteDatabaseSnapshotMutationRequest = {
+/**
+ * @description Request body for restoring a database snapshot
+ * @type object | undefined
+ */
+export type RestoreSiteDatabaseSnapshotData =
+	| {
+			/**
+			 * @description The ID of the branch to restore the snapshot to. Defaults to \"production\" if not specified.
+			 * @type string | undefined
+			 */
+			branch_id?: string | undefined;
+	  }
+	| undefined;
+
+/**
+ * @type object
+ */
+export type RestoreSiteDatabaseSnapshotRequestConfig = {
+	data?: RestoreSiteDatabaseSnapshotData | undefined;
 	/**
-	 * @description The name of the branch to restore the snapshot to. Defaults to \"production\" if not specified.
-	 * @type string | undefined
+	 * @type object
 	 */
-	branch_name?: string | undefined;
-};
-
-export type RestoreSiteDatabaseSnapshotMutationResponse = RestoreSiteDatabaseSnapshot200;
-
-export type RestoreSiteDatabaseSnapshotMutation = {
-	Response: RestoreSiteDatabaseSnapshot200;
-	Request: RestoreSiteDatabaseSnapshotMutationRequest;
-	PathParams: RestoreSiteDatabaseSnapshotPathParams;
-	Errors: any;
-};
-
-export type UpdatePluginPathParams = {
+	pathParams: {
+		site_id: RestoreSiteDatabaseSnapshotPathSiteId;
+		snapshot_id: RestoreSiteDatabaseSnapshotPathSnapshotId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	site_id: string;
-	/**
-	 * @type string
-	 */
-	_package: string;
+	url: `/sites/${string}/database/snapshot/${string}/restore`;
 };
 
 /**
- * @description OK
+ * @type object
  */
-export type UpdatePlugin200 = {
+export type RestoreSiteDatabaseSnapshotResponses = {
+	"200": RestoreSiteDatabaseSnapshotStatus200;
+	default: RestoreSiteDatabaseSnapshotStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type RestoreSiteDatabaseSnapshotResponse =
+	| RestoreSiteDatabaseSnapshotStatus200
+	| RestoreSiteDatabaseSnapshotStatusDefault;
+
+/**
+ * @type string
+ */
+export type UpdatePluginPathSiteId = string;
+
+/**
+ * @type string
+ */
+export type UpdatePluginPathPackage = string;
+
+/**
+ * @type object
+ */
+export type UpdatePluginStatus200 = {
 	/**
 	 * @type string | undefined
 	 */
@@ -21319,31 +29140,60 @@ export type UpdatePlugin200 = {
 };
 
 /**
- * @description error
+ * @type object
  */
-export type UpdatePluginError = {
+export type UpdatePluginStatusDefault = {
 	/**
-	 * @type integer | undefined, int64
+	 * @type integer | undefined
 	 */
-	code?: number | undefined;
+	code?: bigint | undefined;
 	/**
 	 * @type string
 	 */
 	message: string;
 };
 
-export type UpdatePluginMutationRequest = {
+/**
+ * @type object | undefined
+ */
+export type UpdatePluginData =
+	| {
+			/**
+			 * @type string | undefined
+			 */
+			pinned_version?: string | undefined;
+	  }
+	| undefined;
+
+/**
+ * @type object
+ */
+export type UpdatePluginRequestConfig = {
+	data?: UpdatePluginData | undefined;
 	/**
-	 * @type string | undefined
+	 * @type object
 	 */
-	pinned_version?: string | undefined;
+	pathParams: {
+		site_id: UpdatePluginPathSiteId;
+		_package: UpdatePluginPathPackage;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/sites/${string}/plugins/${string}`;
 };
 
-export type UpdatePluginMutationResponse = UpdatePlugin200;
-
-export type UpdatePluginMutation = {
-	Response: UpdatePlugin200;
-	Request: UpdatePluginMutationRequest;
-	PathParams: UpdatePluginPathParams;
-	Errors: any;
+/**
+ * @type object
+ */
+export type UpdatePluginResponses = {
+	"200": UpdatePluginStatus200;
+	default: UpdatePluginStatusDefault;
 };
+
+/**
+ * @description Union of all possible responses
+ */
+export type UpdatePluginResponse = UpdatePluginStatus200 | UpdatePluginStatusDefault;

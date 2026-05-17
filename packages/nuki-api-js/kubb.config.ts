@@ -1,6 +1,6 @@
-import { defineConfig } from "@kubb/core";
 import { baseConfig, fetchSpec } from "@sferadev/openapi-utils";
 import c from "case";
+import { defineConfig } from "kubb";
 import type { OpenAPIObject, PathItemObject, SchemaObject } from "openapi3-ts/oas30";
 
 export default defineConfig(async () => {

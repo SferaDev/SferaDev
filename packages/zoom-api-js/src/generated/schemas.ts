@@ -7168,6 +7168,25 @@ export const pastMeetingsPathParamsSchema = z.object({
 	meetingId: z.coerce.number().int().describe("The past meeting's ID."),
 });
 
+export const pastMeetingsQueryParamsSchema = z
+	.object({
+		from: z.optional(
+			z.iso
+				.date()
+				.describe(
+					"Start date in UTC, in yyyy-MM-dd format. This parameter only takes effect when used together with to. For best performance, we recommend querying within a one-month range.",
+				),
+		),
+		to: z.optional(
+			z.iso
+				.date()
+				.describe(
+					"End date in UTC, in yyyy-MM-dd format. This parameter only takes effect when used together with from.",
+				),
+		),
+	})
+	.optional();
+
 /**
  * @description **HTTP Status Code:** `200`   \n \n List of ended meeting instances returned.
  */
@@ -7193,12 +7212,17 @@ export const pastMeetings200Schema = z
 	.describe("List of Meetings");
 
 /**
+ * @description **HTTP Status Code:** `401` <br>\n Unauthorized  \n\n
+ */
+export const pastMeetings401Schema = z.unknown();
+
+/**
  * @description **HTTP Status Code:** `404` <br>\n Not Found  \n\n **Error Code:** `3001` <br>\n Meeting does not exist: {meetingId}. <br>\n
  */
 export const pastMeetings404Schema = z.unknown();
 
 /**
- * @description **HTTP Status Code:** `429` <br>\n Too Many Requests. For more information, see [rate limits](/docs/api/rest/rate-limits/). \n\n
+ * @description **HTTP Status Code:** `429` <br>\n Too Many Requests. For more information, see [rate limits](https://developers.zoom.us/docs/api/rate-limits/). \n\n **Error Code:** `4001` <br>\n You have reached the maximum per-second rate limit for this API. Try again later. <br>\n
  */
 export const pastMeetings429Schema = z.unknown();
 
@@ -16420,6 +16444,9 @@ export const webinarsQueryParamsSchema = z.object({
 		.describe(
 			"**Deprecated** We will no longer support this field in a future release. Instead, use the `next_page_token` for pagination.",
 		),
+	include_events_webinar: z.optional(
+		z.boolean().describe("Include Zoom events webinar in searches. The default is `true`."),
+	),
 });
 
 /**
@@ -16494,6 +16521,9 @@ export const webinars200Schema = z
 								),
 						),
 						is_simulive: z.optional(z.boolean().describe("Whether the webinar is `simulive`.")),
+						is_events_webinar: z.optional(
+							z.boolean().describe("The webinar is created from zoom events"),
+						),
 					}),
 				)
 				.describe("List of webinar objects."),
@@ -16512,7 +16542,7 @@ export const webinars400Schema = z.unknown();
 export const webinars404Schema = z.unknown();
 
 /**
- * @description **HTTP Status Code:** `429` <br>\n Too Many Requests  For more information, see [rate limits](https://developers.zoom.us/docs/api/rest/rate-limits/). \n\n
+ * @description **HTTP Status Code:** `429` <br>\n Too Many Requests. For more information, see [rate limits](https://developers.zoom.us/docs/api/rest/rate-limits/). \n\n
  */
 export const webinars429Schema = z.unknown();
 
@@ -20011,7 +20041,7 @@ export const webinarLiveStreamStatusUpdatePathParamsSchema = z.object({
 });
 
 /**
- * @description **HTTP Status Code:** `204`   \n \nMeeting live stream updated.\n\n
+ * @description **HTTP Status Code:** `204`\n\nMeeting live stream updated.
  */
 export const webinarLiveStreamStatusUpdate204Schema = z.unknown();
 
@@ -20039,7 +20069,7 @@ export const webinarLiveStreamStatusUpdateMutationRequestSchema = z
 			z
 				.enum(["start", "stop"])
 				.describe(
-					"Update the live stream's status. \n\n* `start` - Start a webinar live stream.\n\n* `stop`- Stop an ongoing webinar live stream.",
+					"Update the live stream's status.\n* `start` - Start a webinar live stream.\n* `stop` - Stop an ongoing webinar live stream.",
 				),
 		),
 		settings: z.optional(
@@ -20051,9 +20081,17 @@ export const webinarLiveStreamStatusUpdateMutationRequestSchema = z
 					display_name: z.optional(
 						z.string().min(1).max(50).describe("Display the live stream's name."),
 					),
+					close_caption: z.optional(
+						z
+							.enum(["burnt-in", "embedded", "off"])
+							.default("burnt-in")
+							.describe(
+								"The livestream's closed caption type for this session.\r\n* `burnt-in` - Burnt in captions.\r\n* `embedded` - Embedded captions.\r\n* `off` - Turn off captions.",
+							),
+					),
 				})
 				.describe(
-					"Update the live stream session's settings.  **Only** settings for a stopped live stream can be updated.",
+					"Update the live stream session's settings. **Only** settings for a stopped live stream can be updated.",
 				),
 		),
 	})

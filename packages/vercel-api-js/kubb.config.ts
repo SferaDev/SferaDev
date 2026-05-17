@@ -1,4 +1,3 @@
-import { defineConfig } from "@kubb/core";
 import {
 	addMissingPathParams,
 	baseConfig,
@@ -10,6 +9,7 @@ import {
 	sanitizeEnumValues,
 	sortArrays,
 } from "@sferadev/openapi-utils";
+import { defineConfig } from "kubb";
 import type { OpenAPIObject, OperationObject, PathItemObject } from "openapi3-ts/oas30";
 
 export default defineConfig(async () => {

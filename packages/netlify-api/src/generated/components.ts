@@ -6,547 +6,446 @@
 import type { ErrorWrapper, FetcherConfig } from "../utils/fetcher";
 import defaultClient from "../utils/fetcher";
 import type {
-	AddMemberToAccountMutationRequest,
-	AddMemberToAccountMutationResponse,
-	AddMemberToAccountPathParams,
-	AgentRunnerCommitToBranch400,
-	AgentRunnerCommitToBranch409,
-	AgentRunnerCommitToBranch422,
-	AgentRunnerCommitToBranchMutationResponse,
-	AgentRunnerCommitToBranchPathParams,
-	AgentRunnerCommitToBranchQueryParams,
-	AgentRunnerPullRequest400,
-	AgentRunnerPullRequest409,
-	AgentRunnerPullRequest422,
-	AgentRunnerPullRequestMutationResponse,
-	AgentRunnerPullRequestPathParams,
-	ArchiveAgentRunner404,
-	ArchiveAgentRunner422,
-	ArchiveAgentRunnerMutationResponse,
-	ArchiveAgentRunnerPathParams,
-	CancelAccountMutationResponse,
-	CancelAccountPathParams,
-	CancelSiteDeployMutationResponse,
-	CancelSiteDeployPathParams,
-	ConfigureDNSForSiteMutationResponse,
-	ConfigureDNSForSitePathParams,
-	CreateAccountMutationRequest,
-	CreateAccountMutationResponse,
-	CreateAgentRunner404,
-	CreateAgentRunner422,
-	CreateAgentRunnerMutationResponse,
-	CreateAgentRunnerQueryParams,
-	CreateAgentRunnerSession404,
-	CreateAgentRunnerSession422,
-	CreateAgentRunnerSessionMutationResponse,
-	CreateAgentRunnerSessionPathParams,
-	CreateAgentRunnerSessionQueryParams,
-	CreateAgentRunnerUploadUrl400,
-	CreateAgentRunnerUploadUrl422,
-	CreateAgentRunnerUploadUrlMutationResponse,
-	CreateAgentRunnerUploadUrlQueryParams,
-	CreateDeployKeyMutationResponse,
-	CreateDnsRecordMutationRequest,
-	CreateDnsRecordMutationResponse,
-	CreateDnsRecordPathParams,
-	CreateDnsZoneMutationRequest,
-	CreateDnsZoneMutationResponse,
-	CreateEnvVarsMutationRequest,
-	CreateEnvVarsMutationResponse,
-	CreateEnvVarsPathParams,
-	CreateEnvVarsQueryParams,
-	CreateHookBySiteIdMutationResponse,
-	CreateHookBySiteIdQueryParams,
-	CreatePluginRunMutationRequest,
-	CreatePluginRunMutationResponse,
-	CreatePluginRunPathParams,
-	CreateServiceInstanceMutationResponse,
-	CreateServiceInstancePathParams,
-	CreateSiteAssetMutationResponse,
-	CreateSiteAssetPathParams,
-	CreateSiteAssetQueryParams,
-	CreateSiteBuild400,
-	CreateSiteBuild404,
-	CreateSiteBuild422,
-	CreateSiteBuildHookMutationResponse,
-	CreateSiteBuildHookPathParams,
-	CreateSiteBuildMutationResponse,
-	CreateSiteBuildPathParams,
-	CreateSiteBuildQueryParams,
-	CreateSiteDatabaseBranchMutationRequest,
-	CreateSiteDatabaseBranchMutationResponse,
-	CreateSiteDatabaseBranchPathParams,
-	CreateSiteDatabaseMutationRequest,
-	CreateSiteDatabaseMutationResponse,
-	CreateSiteDatabasePathParams,
-	CreateSiteDatabaseSnapshotMutationRequest,
-	CreateSiteDatabaseSnapshotMutationResponse,
-	CreateSiteDatabaseSnapshotPathParams,
-	CreateSiteDeployMutationResponse,
-	CreateSiteDeployPathParams,
-	CreateSiteDeployQueryParams,
-	CreateSiteDevServerHookMutationResponse,
-	CreateSiteDevServerHookPathParams,
-	CreateSiteDevServerMutationResponse,
-	CreateSiteDevServerPathParams,
-	CreateSiteDevServerQueryParams,
-	CreateSiteInTeamMutationRequest,
-	CreateSiteInTeamMutationResponse,
-	CreateSiteInTeamPathParams,
-	CreateSiteInTeamQueryParams,
-	CreateSiteMutationResponse,
-	CreateSiteQueryParams,
-	CreateSiteSnippetMutationResponse,
-	CreateSiteSnippetPathParams,
-	CreateSplitTestMutationResponse,
-	CreateSplitTestPathParams,
-	CreateTicket401,
-	CreateTicket422,
-	CreateTicketMutationRequest,
-	CreateTicketMutationResponse,
-	CreateTicketQueryParams,
-	DeleteAgentRunnerMutationResponse,
-	DeleteAgentRunnerPathParams,
-	DeleteAgentRunnerSessionMutationResponse,
-	DeleteAgentRunnerSessionPathParams,
-	DeleteDeployKeyMutationResponse,
-	DeleteDeployKeyPathParams,
-	DeleteDeployMutationResponse,
-	DeleteDeployPathParams,
-	DeleteDnsRecordMutationResponse,
-	DeleteDnsRecordPathParams,
-	DeleteDnsZoneMutationResponse,
-	DeleteDnsZonePathParams,
-	DeleteEnvVarMutationResponse,
-	DeleteEnvVarPathParams,
-	DeleteEnvVarQueryParams,
-	DeleteEnvVarValueMutationResponse,
-	DeleteEnvVarValuePathParams,
-	DeleteEnvVarValueQueryParams,
-	DeleteHookMutationResponse,
-	DeleteHookPathParams,
-	DeleteServiceInstanceMutationResponse,
-	DeleteServiceInstancePathParams,
-	DeleteSiteAssetMutationResponse,
-	DeleteSiteAssetPathParams,
-	DeleteSiteBuildHookMutationResponse,
-	DeleteSiteBuildHookPathParams,
-	DeleteSiteDatabaseBranchMutationResponse,
-	DeleteSiteDatabaseBranchPathParams,
-	DeleteSiteDatabaseMutationResponse,
-	DeleteSiteDatabasePathParams,
-	DeleteSiteDatabaseSnapshotMutationResponse,
-	DeleteSiteDatabaseSnapshotPathParams,
-	DeleteSiteDeployMutationResponse,
-	DeleteSiteDeployPathParams,
-	DeleteSiteDevServerHookMutationResponse,
-	DeleteSiteDevServerHookPathParams,
-	DeleteSiteDevServersMutationResponse,
-	DeleteSiteDevServersPathParams,
-	DeleteSiteDevServersQueryParams,
-	DeleteSiteFormMutationResponse,
-	DeleteSiteFormPathParams,
-	DeleteSiteMutationResponse,
-	DeleteSitePathParams,
-	DeleteSiteSnippetMutationResponse,
-	DeleteSiteSnippetPathParams,
-	DeleteSubmissionMutationResponse,
-	DeleteSubmissionPathParams,
-	DisableSiteMutationResponse,
-	DisableSitePathParams,
-	DisableSiteQueryParams,
-	DisableSplitTestMutationResponse,
-	DisableSplitTestPathParams,
-	EnableHookMutationResponse,
-	EnableHookPathParams,
-	EnableSite422,
-	EnableSiteMutationResponse,
-	EnableSitePathParams,
-	EnableSplitTestMutationResponse,
-	EnableSplitTestPathParams,
-	ExchangeTicketMutationResponse,
-	ExchangeTicketPathParams,
-	GetAccountAIGatewayToken404,
-	GetAccountAIGatewayTokenPathParams,
-	GetAccountAIGatewayTokenQueryResponse,
-	GetAccountBuildStatusPathParams,
-	GetAccountBuildStatusQueryResponse,
-	GetAccountMemberPathParams,
-	GetAccountMemberQueryResponse,
-	GetAccountPathParams,
-	GetAccountQueryResponse,
-	GetAgentRunnerPathParams,
-	GetAgentRunnerQueryResponse,
-	GetAgentRunnerSessionPathParams,
-	GetAgentRunnerSessionQueryResponse,
-	GetAIGatewayProvidersQueryResponse,
-	GetAIGatewayToken404,
-	GetAIGatewayTokenPathParams,
-	GetAIGatewayTokenQueryResponse,
-	GetAllCertificates404,
-	GetAllCertificates422,
-	GetAllCertificatesPathParams,
-	GetAllCertificatesQueryParams,
-	GetAllCertificatesQueryResponse,
-	GetCurrentUserQueryResponse,
-	GetDeployKeyPathParams,
-	GetDeployKeyQueryResponse,
-	GetDeployPathParams,
-	GetDeployQueryResponse,
-	GetDNSForSitePathParams,
-	GetDNSForSiteQueryResponse,
-	GetDnsRecordsPathParams,
-	GetDnsRecordsQueryResponse,
-	GetDnsZonePathParams,
-	GetDnsZoneQueryResponse,
-	GetDnsZonesQueryParams,
-	GetDnsZonesQueryResponse,
-	GetEnvVarPathParams,
-	GetEnvVarQueryParams,
-	GetEnvVarQueryResponse,
-	GetEnvVarsPathParams,
-	GetEnvVarsQueryParams,
-	GetEnvVarsQueryResponse,
-	GetHookPathParams,
-	GetHookQueryResponse,
-	GetIndividualDnsRecordPathParams,
-	GetIndividualDnsRecordQueryResponse,
-	GetLatestPluginRunsPathParams,
-	GetLatestPluginRunsQueryParams,
-	GetLatestPluginRunsQueryResponse,
-	GetServicesQueryParams,
-	GetServicesQueryResponse,
-	GetSiteAssetInfoPathParams,
-	GetSiteAssetInfoQueryResponse,
-	GetSiteAssetPublicSignaturePathParams,
-	GetSiteAssetPublicSignatureQueryResponse,
-	GetSiteBuildHookPathParams,
-	GetSiteBuildHookQueryResponse,
-	GetSiteBuildPathParams,
-	GetSiteBuildQueryResponse,
-	GetSiteDatabaseBranch404,
-	GetSiteDatabaseBranchPathParams,
-	GetSiteDatabaseBranchQueryResponse,
-	GetSiteDatabasePathParams,
-	GetSiteDatabaseQueryResponse,
-	GetSiteDeployPathParams,
-	GetSiteDeployQueryResponse,
-	GetSiteDevServerHookPathParams,
-	GetSiteDevServerHookQueryResponse,
-	GetSiteDevServerPathParams,
-	GetSiteDevServerQueryResponse,
-	GetSiteEnvVarsPathParams,
-	GetSiteEnvVarsQueryParams,
-	GetSiteEnvVarsQueryResponse,
-	GetSiteFileByPathNamePathParams,
-	GetSiteFileByPathNameQueryResponse,
-	GetSiteMetadataPathParams,
-	GetSiteMetadataQueryResponse,
-	GetSitePathParams,
-	GetSiteQueryParams,
-	GetSiteQueryResponse,
-	GetSiteSnippetPathParams,
-	GetSiteSnippetQueryResponse,
-	GetSplitTestPathParams,
-	GetSplitTestQueryResponse,
-	GetSplitTestsPathParams,
-	GetSplitTestsQueryResponse,
-	ListAccountAuditEventsPathParams,
-	ListAccountAuditEventsQueryParams,
-	ListAccountAuditEventsQueryResponse,
-	ListAccountsForUserQueryParams,
-	ListAccountsForUserQueryResponse,
-	ListAccountTypesForUserQueryResponse,
-	ListAgentRunnerSessionsPathParams,
-	ListAgentRunnerSessionsQueryParams,
-	ListAgentRunnerSessionsQueryResponse,
-	ListAgentRunnersQueryParams,
-	ListAgentRunnersQueryResponse,
-	ListDeployKeysQueryResponse,
-	ListFormSubmissionPathParams,
-	ListFormSubmissionQueryParams,
-	ListFormSubmissionQueryResponse,
-	ListFormSubmissionsPathParams,
-	ListFormSubmissionsQueryParams,
-	ListFormSubmissionsQueryResponse,
-	ListHooksBySiteIdQueryParams,
-	ListHooksBySiteIdQueryResponse,
-	ListHookTypesQueryResponse,
-	ListMembersForAccountPathParams,
-	ListMembersForAccountQueryResponse,
-	ListPaymentMethodsForUserQueryResponse,
-	ListServiceInstancesForSitePathParams,
-	ListServiceInstancesForSiteQueryResponse,
-	ListSiteAssetsPathParams,
-	ListSiteAssetsQueryResponse,
-	ListSiteBuildHooksPathParams,
-	ListSiteBuildHooksQueryResponse,
-	ListSiteBuildsPathParams,
-	ListSiteBuildsQueryParams,
-	ListSiteBuildsQueryResponse,
-	ListSiteDatabaseSnapshotsPathParams,
-	ListSiteDatabaseSnapshotsQueryResponse,
-	ListSiteDeployedBranchesPathParams,
-	ListSiteDeployedBranchesQueryResponse,
-	ListSiteDeploysPathParams,
-	ListSiteDeploysQueryParams,
-	ListSiteDeploysQueryResponse,
-	ListSiteDevServerHooksPathParams,
-	ListSiteDevServerHooksQueryResponse,
-	ListSiteDevServersPathParams,
-	ListSiteDevServersQueryParams,
-	ListSiteDevServersQueryResponse,
-	ListSiteFilesPathParams,
-	ListSiteFilesQueryResponse,
-	ListSiteFormsPathParams,
-	ListSiteFormsQueryResponse,
-	ListSiteSnippetsPathParams,
-	ListSiteSnippetsQueryResponse,
-	ListSiteSubmissionsPathParams,
-	ListSiteSubmissionsQueryParams,
-	ListSiteSubmissionsQueryResponse,
-	ListSitesForAccountPathParams,
-	ListSitesForAccountQueryParams,
-	ListSitesForAccountQueryResponse,
-	ListSitesQueryParams,
-	ListSitesQueryResponse,
-	LockDeployMutationResponse,
-	LockDeployPathParams,
-	MarkDevServerActivityMutationResponse,
-	MarkDevServerActivityPathParams,
-	NotifyBuildStartMutationResponse,
-	NotifyBuildStartPathParams,
-	NotifyBuildStartQueryParams,
-	ProvisionSiteTLSCertificate422,
-	ProvisionSiteTLSCertificateMutationResponse,
-	ProvisionSiteTLSCertificatePathParams,
-	ProvisionSiteTLSCertificateQueryParams,
-	PurgeCache400,
-	PurgeCache404,
-	PurgeCacheMutationRequest,
-	PurgeCacheMutationResponse,
-	RemoveAccountMemberMutationResponse,
-	RemoveAccountMemberPathParams,
-	RestoreSiteDatabaseSnapshotMutationRequest,
-	RestoreSiteDatabaseSnapshotMutationResponse,
-	RestoreSiteDatabaseSnapshotPathParams,
-	RestoreSiteDeployMutationResponse,
-	RestoreSiteDeployPathParams,
-	RollbackSiteDeployMutationResponse,
-	RollbackSiteDeployPathParams,
-	SearchSiteFunctionsPathParams,
-	SearchSiteFunctionsQueryParams,
-	SearchSiteFunctionsQueryResponse,
-	SetEnvVarValueMutationRequest,
-	SetEnvVarValueMutationResponse,
-	SetEnvVarValuePathParams,
-	SetEnvVarValueQueryParams,
-	ShowServiceInstancePathParams,
-	ShowServiceInstanceQueryResponse,
-	ShowServiceManifestPathParams,
-	ShowServiceManifestQueryResponse,
-	ShowServicePathParams,
-	ShowServiceQueryResponse,
-	ShowSiteTLSCertificatePathParams,
-	ShowSiteTLSCertificateQueryResponse,
-	ShowTicketPathParams,
-	ShowTicketQueryResponse,
-	TransferDnsZoneMutationResponse,
-	TransferDnsZonePathParams,
-	TransferDnsZoneQueryParams,
-	UnlinkSiteRepo404,
-	UnlinkSiteRepoMutationResponse,
-	UnlinkSiteRepoPathParams,
-	UnlockDeployMutationResponse,
-	UnlockDeployPathParams,
-	UpdateAccountMemberMutationRequest,
-	UpdateAccountMemberMutationResponse,
-	UpdateAccountMemberPathParams,
-	UpdateAccountMutationRequest,
-	UpdateAccountMutationResponse,
-	UpdateAccountPathParams,
-	UpdateAgentRunnerMutationResponse,
-	UpdateAgentRunnerPathParams,
-	UpdateAgentRunnerSessionMutationResponse,
-	UpdateAgentRunnerSessionPathParams,
-	UpdateAgentRunnerSessionQueryParams,
-	UpdateDeployValidationsMutationRequest,
-	UpdateDeployValidationsMutationResponse,
-	UpdateDeployValidationsPathParams,
-	UpdateDevServerState409,
-	UpdateDevServerStateMutationRequest,
-	UpdateDevServerStateMutationResponse,
-	UpdateDevServerStatePathParams,
-	UpdateEnvVarMutationRequest,
-	UpdateEnvVarMutationResponse,
-	UpdateEnvVarPathParams,
-	UpdateEnvVarQueryParams,
-	UpdateHookMutationResponse,
-	UpdateHookPathParams,
-	UpdatePluginMutationRequest,
-	UpdatePluginMutationResponse,
-	UpdatePluginPathParams,
-	UpdateServiceInstanceMutationResponse,
-	UpdateServiceInstancePathParams,
-	UpdateSiteAssetMutationResponse,
-	UpdateSiteAssetPathParams,
-	UpdateSiteAssetQueryParams,
-	UpdateSiteBuildHookMutationResponse,
-	UpdateSiteBuildHookPathParams,
-	UpdateSiteBuildLogMutationResponse,
-	UpdateSiteBuildLogPathParams,
-	UpdateSiteDeployMutationResponse,
-	UpdateSiteDeployPathParams,
-	UpdateSiteDeployQueryParams,
-	UpdateSiteDevServerHookMutationResponse,
-	UpdateSiteDevServerHookPathParams,
-	UpdateSiteMetadataMutationResponse,
-	UpdateSiteMetadataPathParams,
-	UpdateSiteMutationResponse,
-	UpdateSitePathParams,
-	UpdateSiteSnippetMutationResponse,
-	UpdateSiteSnippetPathParams,
-	UpdateSplitTestMutationResponse,
-	UpdateSplitTestPathParams,
-	UploadDeployFileMutationResponse,
-	UploadDeployFilePathParams,
-	UploadDeployFileQueryParams,
-	UploadDeployFunctionHeaderParams,
-	UploadDeployFunctionMutationResponse,
-	UploadDeployFunctionPathParams,
-	UploadDeployFunctionQueryParams,
+	AddMemberToAccountData,
+	AddMemberToAccountResponse,
+	AgentRunnerCommitToBranchResponse,
+	AgentRunnerCommitToBranchStatus400,
+	AgentRunnerCommitToBranchStatus409,
+	AgentRunnerCommitToBranchStatus422,
+	AgentRunnerPullRequestResponse,
+	AgentRunnerPullRequestStatus400,
+	AgentRunnerPullRequestStatus409,
+	AgentRunnerPullRequestStatus422,
+	ArchiveAgentRunnerResponse,
+	ArchiveAgentRunnerStatus404,
+	ArchiveAgentRunnerStatus422,
+	CancelAccountResponse,
+	CancelSiteDeployResponse,
+	ClearSiteDatabaseComputeSettingsResponse,
+	ClearSiteDatabaseComputeSettingsStatus403,
+	ConfigureDNSForSiteResponse,
+	CreateAccountData,
+	CreateAccountResponse,
+	CreateAgentRunnerResponse,
+	CreateAgentRunnerSessionResponse,
+	CreateAgentRunnerSessionStatus404,
+	CreateAgentRunnerSessionStatus422,
+	CreateAgentRunnerStatus404,
+	CreateAgentRunnerStatus422,
+	CreateAgentRunnerUploadUrlResponse,
+	CreateAgentRunnerUploadUrlStatus400,
+	CreateAgentRunnerUploadUrlStatus422,
+	CreateDeployKeyResponse,
+	CreateDnsRecordData,
+	CreateDnsRecordResponse,
+	CreateDnsZoneData,
+	CreateDnsZoneResponse,
+	CreateEnvVarsData,
+	CreateEnvVarsResponse,
+	CreateHookBySiteIdData,
+	CreateHookBySiteIdResponse,
+	CreatePluginRunData,
+	CreatePluginRunResponse,
+	CreateServiceInstanceData,
+	CreateServiceInstanceResponse,
+	CreateSiteAssetResponse,
+	CreateSiteBuildHookData,
+	CreateSiteBuildHookResponse,
+	CreateSiteBuildResponse,
+	CreateSiteBuildStatus400,
+	CreateSiteBuildStatus404,
+	CreateSiteBuildStatus422,
+	CreateSiteData,
+	CreateSiteDatabaseBranchData,
+	CreateSiteDatabaseBranchResponse,
+	CreateSiteDatabaseData,
+	CreateSiteDatabaseResponse,
+	CreateSiteDatabaseSnapshotData,
+	CreateSiteDatabaseSnapshotResponse,
+	CreateSiteDeployData,
+	CreateSiteDeployResponse,
+	CreateSiteDevServerHookData,
+	CreateSiteDevServerHookResponse,
+	CreateSiteDevServerResponse,
+	CreateSiteInTeamData,
+	CreateSiteInTeamResponse,
+	CreateSiteResponse,
+	CreateSiteSnippetData,
+	CreateSiteSnippetResponse,
+	CreateSplitTestData,
+	CreateSplitTestResponse,
+	CreateTicketData,
+	CreateTicketResponse,
+	CreateTicketStatus401,
+	CreateTicketStatus422,
+	DeleteAgentRunnerResponse,
+	DeleteAgentRunnerSessionResponse,
+	DeleteDeployKeyResponse,
+	DeleteDeployResponse,
+	DeleteDnsRecordResponse,
+	DeleteDnsZoneResponse,
+	DeleteEnvVarResponse,
+	DeleteEnvVarValueResponse,
+	DeleteHookResponse,
+	DeleteServiceInstanceResponse,
+	DeleteSiteAssetResponse,
+	DeleteSiteBuildHookResponse,
+	DeleteSiteDatabaseBranchResponse,
+	DeleteSiteDatabaseResponse,
+	DeleteSiteDatabaseSnapshotResponse,
+	DeleteSiteDeployResponse,
+	DeleteSiteDevServerHookResponse,
+	DeleteSiteDevServersResponse,
+	DeleteSiteFormResponse,
+	DeleteSiteResponse,
+	DeleteSiteSnippetResponse,
+	DeleteSubmissionResponse,
+	DisableSiteResponse,
+	DisableSplitTestResponse,
+	EnableHookResponse,
+	EnableSiteResponse,
+	EnableSiteStatus422,
+	EnableSplitTestResponse,
+	ExchangeTicketResponse,
+	GetAccountAIGatewayTokenResponse,
+	GetAccountAIGatewayTokenStatus404,
+	GetAccountBuildStatusResponse,
+	GetAccountMemberResponse,
+	GetAccountResponse,
+	GetAgentRunnerResponse,
+	GetAgentRunnerSessionResponse,
+	GetAIGatewayProvidersResponse,
+	GetAIGatewayTokenResponse,
+	GetAIGatewayTokenStatus404,
+	GetAllCertificatesResponse,
+	GetAllCertificatesStatus404,
+	GetAllCertificatesStatus422,
+	GetCurrentUserResponse,
+	GetDeployKeyResponse,
+	GetDeployResponse,
+	GetDNSForSiteResponse,
+	GetDnsRecordsResponse,
+	GetDnsZoneResponse,
+	GetDnsZonesResponse,
+	GetEnvVarResponse,
+	GetEnvVarsResponse,
+	GetHookResponse,
+	GetIndividualDnsRecordResponse,
+	GetLatestPluginRunsResponse,
+	GetServicesResponse,
+	GetSiteAssetInfoResponse,
+	GetSiteAssetPublicSignatureResponse,
+	GetSiteBuildHookResponse,
+	GetSiteBuildResponse,
+	GetSiteDatabaseBranchResponse,
+	GetSiteDatabaseBranchStatus404,
+	GetSiteDatabaseComputeSettingsResponse,
+	GetSiteDatabaseComputeSettingsStatus403,
+	GetSiteDatabaseMigrationResponse,
+	GetSiteDatabaseMigrationStatus404,
+	GetSiteDatabaseMigrationStatus423,
+	GetSiteDatabaseResponse,
+	GetSiteDeployResponse,
+	GetSiteDevServerHookResponse,
+	GetSiteDevServerResponse,
+	GetSiteEnvVarsResponse,
+	GetSiteFileByPathNameResponse,
+	GetSiteMetadataResponse,
+	GetSiteResponse,
+	GetSiteSnippetResponse,
+	GetSplitTestResponse,
+	GetSplitTestsResponse,
+	ListAccountAuditEventsResponse,
+	ListAccountsForUserResponse,
+	ListAccountTypesForUserResponse,
+	ListAgentRunnerSessionsResponse,
+	ListAgentRunnersResponse,
+	ListDeployKeysResponse,
+	ListFormSubmissionResponse,
+	ListFormSubmissionsResponse,
+	ListHooksBySiteIdResponse,
+	ListHookTypesResponse,
+	ListMembersForAccountResponse,
+	ListPaymentMethodsForUserResponse,
+	ListServiceInstancesForSiteResponse,
+	ListSiteAssetsResponse,
+	ListSiteBuildHooksResponse,
+	ListSiteBuildsResponse,
+	ListSiteDatabaseBranchesResponse,
+	ListSiteDatabaseMigrationsResponse,
+	ListSiteDatabaseMigrationsStatus404,
+	ListSiteDatabaseMigrationsStatus423,
+	ListSiteDatabaseSnapshotsResponse,
+	ListSiteDeployedBranchesResponse,
+	ListSiteDeploysResponse,
+	ListSiteDevServerHooksResponse,
+	ListSiteDevServersResponse,
+	ListSiteFilesResponse,
+	ListSiteFormsResponse,
+	ListSiteSnippetsResponse,
+	ListSiteSubmissionsResponse,
+	ListSitesForAccountResponse,
+	ListSitesResponse,
+	LockDeployResponse,
+	MarkDevServerActivityResponse,
+	NotifyBuildStartResponse,
+	ProvisionSiteTLSCertificateResponse,
+	ProvisionSiteTLSCertificateStatus422,
+	PurgeCacheData,
+	PurgeCacheResponse,
+	PurgeCacheStatus400,
+	PurgeCacheStatus404,
+	RemoveAccountMemberResponse,
+	ResetSiteDatabaseBranchData,
+	ResetSiteDatabaseBranchResponse,
+	ResetSiteDatabaseBranchStatus400,
+	ResetSiteDatabaseBranchStatus404,
+	RestoreSiteDatabaseSnapshotData,
+	RestoreSiteDatabaseSnapshotResponse,
+	RestoreSiteDeployResponse,
+	RollbackSiteDeployResponse,
+	RunSiteDatabaseMigrationsData,
+	RunSiteDatabaseMigrationsResponse,
+	RunSiteDatabaseMigrationsStatus409,
+	RunSiteDatabaseMigrationsStatus422,
+	SearchSiteFunctionsResponse,
+	SetEnvVarValueData,
+	SetEnvVarValueResponse,
+	SetSiteDatabaseBranchComputeSettingsData,
+	SetSiteDatabaseBranchComputeSettingsResponse,
+	SetSiteDatabaseBranchComputeSettingsStatus403,
+	SetSiteDatabaseComputeSettingsData,
+	SetSiteDatabaseComputeSettingsResponse,
+	SetSiteDatabaseComputeSettingsStatus403,
+	ShowServiceInstanceResponse,
+	ShowServiceManifestResponse,
+	ShowServiceResponse,
+	ShowSiteTLSCertificateResponse,
+	ShowTicketResponse,
+	TransferDnsZoneResponse,
+	UnlinkSiteRepoResponse,
+	UnlinkSiteRepoStatus404,
+	UnlockDeployResponse,
+	UpdateAccountData,
+	UpdateAccountMemberData,
+	UpdateAccountMemberResponse,
+	UpdateAccountResponse,
+	UpdateAgentRunnerResponse,
+	UpdateAgentRunnerSessionResponse,
+	UpdateDeployValidationsData,
+	UpdateDeployValidationsResponse,
+	UpdateDevServerStateData,
+	UpdateDevServerStateResponse,
+	UpdateDevServerStateStatus409,
+	UpdateEnvVarData,
+	UpdateEnvVarResponse,
+	UpdateHookData,
+	UpdateHookResponse,
+	UpdatePluginData,
+	UpdatePluginResponse,
+	UpdateServiceInstanceData,
+	UpdateServiceInstanceResponse,
+	UpdateSiteAssetResponse,
+	UpdateSiteBuildHookData,
+	UpdateSiteBuildHookResponse,
+	UpdateSiteBuildLogResponse,
+	UpdateSiteData,
+	UpdateSiteDeployData,
+	UpdateSiteDeployResponse,
+	UpdateSiteDevServerHookData,
+	UpdateSiteDevServerHookResponse,
+	UpdateSiteMetadataData,
+	UpdateSiteMetadataResponse,
+	UpdateSiteResponse,
+	UpdateSiteSnippetData,
+	UpdateSiteSnippetResponse,
+	UpdateSplitTestData,
+	UpdateSplitTestResponse,
+	UploadDeployFileResponse,
+	UploadDeployFunctionResponse,
 } from "./types";
 
 /**
  * @description **Note:** Environment variable keys and values have moved from `build_settings.env` and `repo.env` to a new endpoint. Please use [getEnvVars](#tag/environmentVariables/operation/getEnvVars) to retrieve site environment variables.
- * {@link /sites}
+ * @link /sites
  */
-export async function listSites({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: ListSitesQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listSites(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			name?: string;
+			filter?: "all" | "owner" | "guest";
+			page?: number;
+			per_page?: number;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		ListSitesQueryResponse,
+		ListSitesResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
-		ListSitesQueryParams,
+		{ name?: string; filter?: "all" | "owner" | "guest"; page?: number; per_page?: number },
 		Record<string, string>
-	>({ method: "GET", url: `/sites`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/sites`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @description **Note:** Environment variable keys and values have moved from `build_settings.env` and `repo.env` to a new endpoint. Please use [createEnvVars](#tag/environmentVariables/operation/createEnvVars) to create environment variables for a site.
- * {@link /sites}
+ * @link /sites
  */
-export async function createSite({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: CreateSiteQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createSite(
+	{
+		body,
+		queryParams,
+		config,
+	}: {
+		body?: CreateSiteData;
+		queryParams?: { configure_dns?: boolean };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		CreateSiteMutationResponse,
+		CreateSiteResponse,
 		ErrorWrapper<Error>,
-		null,
+		CreateSiteData,
 		Record<string, string>,
-		CreateSiteQueryParams,
+		{ configure_dns?: boolean },
 		Record<string, string>
-	>({ method: "POST", url: `/sites`, queryParams, ...requestConfig });
+	>({
+		method: "POST",
+		url: `/sites`,
+		queryParams,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @description **Note:** Environment variable keys and values have moved from `build_settings.env` and `repo.env` to a new endpoint. Please use [getEnvVars](#tag/environmentVariables/operation/getEnvVars) to retrieve site environment variables.
- * {@link /sites/:site_id}
+ * @link /sites/{site_id}
  */
-export async function getSite({
-	pathParams: { site_id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetSitePathParams;
-	queryParams?: GetSiteQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getSite(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		queryParams?: { feature_flags?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!site_id) {
+	if (!pathParams.site_id) {
 		throw new Error(`Missing required path parameter: site_id`);
 	}
-
 	const data = await request<
-		GetSiteQueryResponse,
+		GetSiteResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
-		GetSiteQueryParams,
-		GetSitePathParams
-	>({ method: "GET", url: `/sites/${site_id}`, queryParams, ...requestConfig });
+		{ feature_flags?: string },
+		{ site_id: string }
+	>({
+		method: "GET",
+		url: `/sites/${pathParams.site_id}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @description **Note:** Environment variable keys and values have moved from `build_settings.env` and `repo.env` to a new endpoint. Please use [updateEnvVar](#tag/environmentVariables/operation/updateEnvVar) to update a site's environment variables.
- * {@link /sites/:site_id}
+ * @link /sites/{site_id}
  */
-export async function updateSite({
-	pathParams: { site_id },
-	config = {},
-}: {
-	pathParams: UpdateSitePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateSite(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		body?: UpdateSiteData;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!site_id) {
+	if (!pathParams.site_id) {
 		throw new Error(`Missing required path parameter: site_id`);
 	}
-
 	const data = await request<
-		UpdateSiteMutationResponse,
+		UpdateSiteResponse,
 		ErrorWrapper<Error>,
-		null,
+		UpdateSiteData,
 		Record<string, string>,
 		Record<string, string>,
-		UpdateSitePathParams
-	>({ method: "PATCH", url: `/sites/${site_id}`, ...requestConfig });
+		{ site_id: string }
+	>({
+		method: "PATCH",
+		url: `/sites/${pathParams.site_id}`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /sites/:site_id}
+ * @link /sites/{site_id}
  */
-export async function deleteSite({
-	pathParams: { site_id },
-	config = {},
-}: {
-	pathParams: DeleteSitePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteSite(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!site_id) {
+	if (!pathParams.site_id) {
 		throw new Error(`Missing required path parameter: site_id`);
 	}
-
 	const data = await request<
-		DeleteSiteMutationResponse,
+		DeleteSiteResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		DeleteSitePathParams
-	>({ method: "DELETE", url: `/sites/${site_id}`, ...requestConfig });
+		{ site_id: string }
+	>({
+		method: "DELETE",
+		url: `/sites/${pathParams.site_id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
@@ -558,1351 +457,1805 @@ export async function deleteSite({
  * **Updating a certificate (site already has a certificate):**
  * - REQUIRES certificate, key, and ca_certificates to replace with a new custom certificate
  * - Use POST /api/v1/sites/{site_id}/ssl/renew to renew an existing Let's Encrypt certificate
- * {@link /sites/:site_id/ssl}
+ * @link /sites/{site_id}/ssl
  */
-export async function provisionSiteTLSCertificate({
-	pathParams: { site_id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ProvisionSiteTLSCertificatePathParams;
-	queryParams?: ProvisionSiteTLSCertificateQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function provisionSiteTLSCertificate(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		queryParams?: { certificate?: string; key?: string; ca_certificates?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!site_id) {
+	if (!pathParams.site_id) {
 		throw new Error(`Missing required path parameter: site_id`);
 	}
-
 	const data = await request<
-		ProvisionSiteTLSCertificateMutationResponse,
-		ErrorWrapper<ProvisionSiteTLSCertificate422>,
+		ProvisionSiteTLSCertificateResponse,
+		ErrorWrapper<ProvisionSiteTLSCertificateStatus422>,
 		null,
 		Record<string, string>,
-		ProvisionSiteTLSCertificateQueryParams,
-		ProvisionSiteTLSCertificatePathParams
-	>({ method: "POST", url: `/sites/${site_id}/ssl`, queryParams, ...requestConfig });
+		{ certificate?: string; key?: string; ca_certificates?: string },
+		{ site_id: string }
+	>({
+		method: "POST",
+		url: `/sites/${pathParams.site_id}/ssl`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /sites/:site_id/ssl}
+ * @link /sites/{site_id}/ssl
  */
-export async function showSiteTLSCertificate({
-	pathParams: { site_id },
-	config = {},
-}: {
-	pathParams: ShowSiteTLSCertificatePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function showSiteTLSCertificate(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!site_id) {
+	if (!pathParams.site_id) {
 		throw new Error(`Missing required path parameter: site_id`);
 	}
-
 	const data = await request<
-		ShowSiteTLSCertificateQueryResponse,
+		ShowSiteTLSCertificateResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		ShowSiteTLSCertificatePathParams
-	>({ method: "GET", url: `/sites/${site_id}/ssl`, ...requestConfig });
+		{ site_id: string }
+	>({
+		method: "GET",
+		url: `/sites/${pathParams.site_id}/ssl`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /sites/:site_id/ssl/certificates}
+ * @link /sites/{site_id}/ssl/certificates
  */
-export async function getAllCertificates({
-	pathParams: { site_id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetAllCertificatesPathParams;
-	queryParams: GetAllCertificatesQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getAllCertificates(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		queryParams?: { domain?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!site_id) {
+	if (!pathParams.site_id) {
 		throw new Error(`Missing required path parameter: site_id`);
 	}
-
 	const data = await request<
-		GetAllCertificatesQueryResponse,
-		ErrorWrapper<GetAllCertificates404 | GetAllCertificates422>,
+		GetAllCertificatesResponse,
+		ErrorWrapper<GetAllCertificatesStatus404 | GetAllCertificatesStatus422>,
 		null,
 		Record<string, string>,
-		GetAllCertificatesQueryParams,
-		GetAllCertificatesPathParams
-	>({ method: "GET", url: `/sites/${site_id}/ssl/certificates`, queryParams, ...requestConfig });
+		{ domain?: string },
+		{ site_id: string }
+	>({
+		method: "GET",
+		url: `/sites/${pathParams.site_id}/ssl/certificates`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @description Returns all environment variables for an account or site. An account corresponds to a team in the Netlify UI.
- * {@link /accounts/:account_id/env}
+ * @link /accounts/{account_id}/env
  */
-export async function getEnvVars({
-	pathParams: { account_id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetEnvVarsPathParams;
-	queryParams?: GetEnvVarsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getEnvVars(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { account_id: string };
+		queryParams?: {
+			context_name?:
+				| "all"
+				| "dev"
+				| "dev-server"
+				| "branch-deploy"
+				| "deploy-preview"
+				| "production";
+			scope?: "builds" | "functions" | "runtime" | "post-processing";
+			site_id?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!account_id) {
+	if (!pathParams.account_id) {
 		throw new Error(`Missing required path parameter: account_id`);
 	}
-
 	const data = await request<
-		GetEnvVarsQueryResponse,
+		GetEnvVarsResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
-		GetEnvVarsQueryParams,
-		GetEnvVarsPathParams
-	>({ method: "GET", url: `/accounts/${account_id}/env`, queryParams, ...requestConfig });
+		{
+			context_name?:
+				| "all"
+				| "dev"
+				| "dev-server"
+				| "branch-deploy"
+				| "deploy-preview"
+				| "production";
+			scope?: "builds" | "functions" | "runtime" | "post-processing";
+			site_id?: string;
+		},
+		{ account_id: string }
+	>({
+		method: "GET",
+		url: `/accounts/${pathParams.account_id}/env`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @description Creates new environment variables. Granular scopes are available on Pro plans and above.
- * {@link /accounts/:account_id/env}
+ * @link /accounts/{account_id}/env
  */
-export async function createEnvVars({
-	pathParams: { account_id },
-	body,
-	queryParams,
-	config = {},
-}: {
-	pathParams: CreateEnvVarsPathParams;
-	body?: CreateEnvVarsMutationRequest;
-	queryParams?: CreateEnvVarsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createEnvVars(
+	{
+		pathParams,
+		body,
+		queryParams,
+		config,
+	}: {
+		pathParams: { account_id: string };
+		body?: CreateEnvVarsData;
+		queryParams?: { site_id?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!account_id) {
+	if (!pathParams.account_id) {
 		throw new Error(`Missing required path parameter: account_id`);
 	}
-
 	const data = await request<
-		CreateEnvVarsMutationResponse,
+		CreateEnvVarsResponse,
 		ErrorWrapper<Error>,
-		CreateEnvVarsMutationRequest,
+		CreateEnvVarsData,
 		Record<string, string>,
-		CreateEnvVarsQueryParams,
-		CreateEnvVarsPathParams
-	>({ method: "POST", url: `/accounts/${account_id}/env`, queryParams, body, ...requestConfig });
+		{ site_id?: string },
+		{ account_id: string }
+	>({
+		method: "POST",
+		url: `/accounts/${pathParams.account_id}/env`,
+		queryParams,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @description Returns all environment variables for a site. This convenience method behaves the same as `getEnvVars` but doesn't require an `account_id` as input.
- * {@link /api/v1/sites/:site_id/env}
+ * @link /api/v1/sites/{site_id}/env
  */
-export async function getSiteEnvVars({
-	pathParams: { site_id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetSiteEnvVarsPathParams;
-	queryParams?: GetSiteEnvVarsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getSiteEnvVars(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		queryParams?: {
+			context_name?:
+				| "all"
+				| "dev"
+				| "dev-server"
+				| "branch-deploy"
+				| "deploy-preview"
+				| "production";
+			scope?: "builds" | "functions" | "runtime" | "post_processing";
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!site_id) {
+	if (!pathParams.site_id) {
 		throw new Error(`Missing required path parameter: site_id`);
 	}
-
 	const data = await request<
-		GetSiteEnvVarsQueryResponse,
+		GetSiteEnvVarsResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
-		GetSiteEnvVarsQueryParams,
-		GetSiteEnvVarsPathParams
-	>({ method: "GET", url: `/api/v1/sites/${site_id}/env`, queryParams, ...requestConfig });
+		{
+			context_name?:
+				| "all"
+				| "dev"
+				| "dev-server"
+				| "branch-deploy"
+				| "deploy-preview"
+				| "production";
+			scope?: "builds" | "functions" | "runtime" | "post_processing";
+		},
+		{ site_id: string }
+	>({
+		method: "GET",
+		url: `/api/v1/sites/${pathParams.site_id}/env`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @description Returns an individual environment variable.
- * {@link /accounts/:account_id/env/:key}
+ * @link /accounts/{account_id}/env/{key}
  */
-export async function getEnvVar({
-	pathParams: { account_id, key },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetEnvVarPathParams;
-	queryParams?: GetEnvVarQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getEnvVar(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { account_id: string; key: string };
+		queryParams?: { site_id?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!account_id) {
+	if (!pathParams.account_id) {
 		throw new Error(`Missing required path parameter: account_id`);
 	}
 
-	if (!key) {
+	if (!pathParams.key) {
 		throw new Error(`Missing required path parameter: key`);
 	}
-
 	const data = await request<
-		GetEnvVarQueryResponse,
+		GetEnvVarResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
-		GetEnvVarQueryParams,
-		GetEnvVarPathParams
-	>({ method: "GET", url: `/accounts/${account_id}/env/${key}`, queryParams, ...requestConfig });
+		{ site_id?: string },
+		{ account_id: string; key: string }
+	>({
+		method: "GET",
+		url: `/accounts/${pathParams.account_id}/env/${pathParams.key}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @description Updates an existing environment variable and all of its values. Existing values will be replaced by values provided.
- * {@link /accounts/:account_id/env/:key}
+ * @link /accounts/{account_id}/env/{key}
  */
-export async function updateEnvVar({
-	pathParams: { account_id, key },
-	body,
-	queryParams,
-	config = {},
-}: {
-	pathParams: UpdateEnvVarPathParams;
-	body?: UpdateEnvVarMutationRequest;
-	queryParams?: UpdateEnvVarQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateEnvVar(
+	{
+		pathParams,
+		body,
+		queryParams,
+		config,
+	}: {
+		pathParams: { account_id: string; key: string };
+		body?: UpdateEnvVarData;
+		queryParams?: { site_id?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!account_id) {
+	if (!pathParams.account_id) {
 		throw new Error(`Missing required path parameter: account_id`);
 	}
 
-	if (!key) {
+	if (!pathParams.key) {
 		throw new Error(`Missing required path parameter: key`);
 	}
-
 	const data = await request<
-		UpdateEnvVarMutationResponse,
+		UpdateEnvVarResponse,
 		ErrorWrapper<Error>,
-		UpdateEnvVarMutationRequest,
+		UpdateEnvVarData,
 		Record<string, string>,
-		UpdateEnvVarQueryParams,
-		UpdateEnvVarPathParams
+		{ site_id?: string },
+		{ account_id: string; key: string }
 	>({
 		method: "PUT",
-		url: `/accounts/${account_id}/env/${key}`,
+		url: `/accounts/${pathParams.account_id}/env/${pathParams.key}`,
 		queryParams,
-		body,
+		body: body,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
  * @description Updates or creates a new value for an existing environment variable.
- * {@link /accounts/:account_id/env/:key}
+ * @link /accounts/{account_id}/env/{key}
  */
-export async function setEnvVarValue({
-	pathParams: { account_id, key },
-	body,
-	queryParams,
-	config = {},
-}: {
-	pathParams: SetEnvVarValuePathParams;
-	body?: SetEnvVarValueMutationRequest;
-	queryParams?: SetEnvVarValueQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function setEnvVarValue(
+	{
+		pathParams,
+		body,
+		queryParams,
+		config,
+	}: {
+		pathParams: { account_id: string; key: string };
+		body?: SetEnvVarValueData;
+		queryParams?: { site_id?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!account_id) {
+	if (!pathParams.account_id) {
 		throw new Error(`Missing required path parameter: account_id`);
 	}
 
-	if (!key) {
+	if (!pathParams.key) {
 		throw new Error(`Missing required path parameter: key`);
 	}
-
 	const data = await request<
-		SetEnvVarValueMutationResponse,
+		SetEnvVarValueResponse,
 		ErrorWrapper<Error>,
-		SetEnvVarValueMutationRequest,
+		SetEnvVarValueData,
 		Record<string, string>,
-		SetEnvVarValueQueryParams,
-		SetEnvVarValuePathParams
+		{ site_id?: string },
+		{ account_id: string; key: string }
 	>({
 		method: "PATCH",
-		url: `/accounts/${account_id}/env/${key}`,
+		url: `/accounts/${pathParams.account_id}/env/${pathParams.key}`,
 		queryParams,
-		body,
+		body: body,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
  * @description Deletes an environment variable
- * {@link /accounts/:account_id/env/:key}
+ * @link /accounts/{account_id}/env/{key}
  */
-export async function deleteEnvVar({
-	pathParams: { account_id, key },
-	queryParams,
-	config = {},
-}: {
-	pathParams: DeleteEnvVarPathParams;
-	queryParams?: DeleteEnvVarQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteEnvVar(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { account_id: string; key: string };
+		queryParams?: { site_id?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!account_id) {
+	if (!pathParams.account_id) {
 		throw new Error(`Missing required path parameter: account_id`);
 	}
 
-	if (!key) {
+	if (!pathParams.key) {
 		throw new Error(`Missing required path parameter: key`);
 	}
-
 	const data = await request<
-		DeleteEnvVarMutationResponse,
+		DeleteEnvVarResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
-		DeleteEnvVarQueryParams,
-		DeleteEnvVarPathParams
-	>({ method: "DELETE", url: `/accounts/${account_id}/env/${key}`, queryParams, ...requestConfig });
+		{ site_id?: string },
+		{ account_id: string; key: string }
+	>({
+		method: "DELETE",
+		url: `/accounts/${pathParams.account_id}/env/${pathParams.key}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @description Deletes a specific environment variable value.
- * {@link /accounts/:account_id/env/:key/value/:id}
+ * @link /accounts/{account_id}/env/{key}/value/{id}
  */
-export async function deleteEnvVarValue({
-	pathParams: { account_id, id, key },
-	queryParams,
-	config = {},
-}: {
-	pathParams: DeleteEnvVarValuePathParams;
-	queryParams?: DeleteEnvVarValueQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteEnvVarValue(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { account_id: string; id: string; key: string };
+		queryParams?: { site_id?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!account_id) {
+	if (!pathParams.account_id) {
 		throw new Error(`Missing required path parameter: account_id`);
 	}
 
-	if (!id) {
+	if (!pathParams.id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
 
-	if (!key) {
+	if (!pathParams.key) {
 		throw new Error(`Missing required path parameter: key`);
 	}
-
 	const data = await request<
-		DeleteEnvVarValueMutationResponse,
+		DeleteEnvVarValueResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
-		DeleteEnvVarValueQueryParams,
-		DeleteEnvVarValuePathParams
+		{ site_id?: string },
+		{ account_id: string; id: string; key: string }
 	>({
 		method: "DELETE",
-		url: `/accounts/${account_id}/env/${key}/value/${id}`,
+		url: `/accounts/${pathParams.account_id}/env/${pathParams.key}/value/${pathParams.id}`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * {@link /sites/:site_id/functions}
+ * @link /sites/{site_id}/functions
  */
-export async function searchSiteFunctions({
-	pathParams: { site_id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: SearchSiteFunctionsPathParams;
-	queryParams?: SearchSiteFunctionsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function searchSiteFunctions(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		queryParams?: { filter?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!site_id) {
+	if (!pathParams.site_id) {
 		throw new Error(`Missing required path parameter: site_id`);
 	}
-
 	const data = await request<
-		SearchSiteFunctionsQueryResponse,
+		SearchSiteFunctionsResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
-		SearchSiteFunctionsQueryParams,
-		SearchSiteFunctionsPathParams
-	>({ method: "GET", url: `/sites/${site_id}/functions`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /sites/:site_id/forms}
- */
-export async function listSiteForms({
-	pathParams: { site_id },
-	config = {},
-}: {
-	pathParams: ListSiteFormsPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!site_id) {
-		throw new Error(`Missing required path parameter: site_id`);
-	}
-
-	const data = await request<
-		ListSiteFormsQueryResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		ListSiteFormsPathParams
-	>({ method: "GET", url: `/sites/${site_id}/forms`, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /sites/:site_id/forms/:form_id}
- */
-export async function deleteSiteForm({
-	pathParams: { site_id, form_id },
-	config = {},
-}: {
-	pathParams: DeleteSiteFormPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!site_id) {
-		throw new Error(`Missing required path parameter: site_id`);
-	}
-
-	if (!form_id) {
-		throw new Error(`Missing required path parameter: form_id`);
-	}
-
-	const data = await request<
-		DeleteSiteFormMutationResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		DeleteSiteFormPathParams
-	>({ method: "DELETE", url: `/sites/${site_id}/forms/${form_id}`, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /sites/:site_id/submissions}
- */
-export async function listSiteSubmissions({
-	pathParams: { site_id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ListSiteSubmissionsPathParams;
-	queryParams?: ListSiteSubmissionsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!site_id) {
-		throw new Error(`Missing required path parameter: site_id`);
-	}
-
-	const data = await request<
-		ListSiteSubmissionsQueryResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		ListSiteSubmissionsQueryParams,
-		ListSiteSubmissionsPathParams
-	>({ method: "GET", url: `/sites/${site_id}/submissions`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /sites/:site_id/files}
- */
-export async function listSiteFiles({
-	pathParams: { site_id },
-	config = {},
-}: {
-	pathParams: ListSiteFilesPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!site_id) {
-		throw new Error(`Missing required path parameter: site_id`);
-	}
-
-	const data = await request<
-		ListSiteFilesQueryResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		ListSiteFilesPathParams
-	>({ method: "GET", url: `/sites/${site_id}/files`, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /sites/:site_id/assets}
- */
-export async function listSiteAssets({
-	pathParams: { site_id },
-	config = {},
-}: {
-	pathParams: ListSiteAssetsPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!site_id) {
-		throw new Error(`Missing required path parameter: site_id`);
-	}
-
-	const data = await request<
-		ListSiteAssetsQueryResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		ListSiteAssetsPathParams
-	>({ method: "GET", url: `/sites/${site_id}/assets`, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /sites/:site_id/assets}
- */
-export async function createSiteAsset({
-	pathParams: { site_id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: CreateSiteAssetPathParams;
-	queryParams: CreateSiteAssetQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!site_id) {
-		throw new Error(`Missing required path parameter: site_id`);
-	}
-
-	const data = await request<
-		CreateSiteAssetMutationResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		CreateSiteAssetQueryParams,
-		CreateSiteAssetPathParams
-	>({ method: "POST", url: `/sites/${site_id}/assets`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /sites/:site_id/assets/:asset_id}
- */
-export async function getSiteAssetInfo({
-	pathParams: { site_id, asset_id },
-	config = {},
-}: {
-	pathParams: GetSiteAssetInfoPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!site_id) {
-		throw new Error(`Missing required path parameter: site_id`);
-	}
-
-	if (!asset_id) {
-		throw new Error(`Missing required path parameter: asset_id`);
-	}
-
-	const data = await request<
-		GetSiteAssetInfoQueryResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		GetSiteAssetInfoPathParams
-	>({ method: "GET", url: `/sites/${site_id}/assets/${asset_id}`, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /sites/:site_id/assets/:asset_id}
- */
-export async function updateSiteAsset({
-	pathParams: { site_id, asset_id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: UpdateSiteAssetPathParams;
-	queryParams: UpdateSiteAssetQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!site_id) {
-		throw new Error(`Missing required path parameter: site_id`);
-	}
-
-	if (!asset_id) {
-		throw new Error(`Missing required path parameter: asset_id`);
-	}
-
-	const data = await request<
-		UpdateSiteAssetMutationResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		UpdateSiteAssetQueryParams,
-		UpdateSiteAssetPathParams
-	>({ method: "PUT", url: `/sites/${site_id}/assets/${asset_id}`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /sites/:site_id/assets/:asset_id}
- */
-export async function deleteSiteAsset({
-	pathParams: { site_id, asset_id },
-	config = {},
-}: {
-	pathParams: DeleteSiteAssetPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!site_id) {
-		throw new Error(`Missing required path parameter: site_id`);
-	}
-
-	if (!asset_id) {
-		throw new Error(`Missing required path parameter: asset_id`);
-	}
-
-	const data = await request<
-		DeleteSiteAssetMutationResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		DeleteSiteAssetPathParams
-	>({ method: "DELETE", url: `/sites/${site_id}/assets/${asset_id}`, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /sites/:site_id/assets/:asset_id/public_signature}
- */
-export async function getSiteAssetPublicSignature({
-	pathParams: { site_id, asset_id },
-	config = {},
-}: {
-	pathParams: GetSiteAssetPublicSignaturePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!site_id) {
-		throw new Error(`Missing required path parameter: site_id`);
-	}
-
-	if (!asset_id) {
-		throw new Error(`Missing required path parameter: asset_id`);
-	}
-
-	const data = await request<
-		GetSiteAssetPublicSignatureQueryResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		GetSiteAssetPublicSignaturePathParams
+		{ filter?: string },
+		{ site_id: string }
 	>({
 		method: "GET",
-		url: `/sites/${site_id}/assets/${asset_id}/public_signature`,
+		url: `/sites/${pathParams.site_id}/functions`,
+		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * {@link /sites/:site_id/files/:file_path}
+ * @link /sites/{site_id}/forms
  */
-export async function getSiteFileByPathName({
-	pathParams: { site_id, file_path },
-	config = {},
-}: {
-	pathParams: GetSiteFileByPathNamePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listSiteForms(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!site_id) {
+	if (!pathParams.site_id) {
 		throw new Error(`Missing required path parameter: site_id`);
 	}
-
-	if (!file_path) {
-		throw new Error(`Missing required path parameter: file_path`);
-	}
-
 	const data = await request<
-		GetSiteFileByPathNameQueryResponse,
+		ListSiteFormsResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetSiteFileByPathNamePathParams
-	>({ method: "GET", url: `/sites/${site_id}/files/${file_path}`, ...requestConfig });
+		{ site_id: string }
+	>({
+		method: "GET",
+		url: `/sites/${pathParams.site_id}/forms`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /sites/{site_id}/forms/{form_id}
+ */
+export async function deleteSiteForm(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string; form_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+
+	if (!pathParams.form_id) {
+		throw new Error(`Missing required path parameter: form_id`);
+	}
+	const data = await request<
+		DeleteSiteFormResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ site_id: string; form_id: string }
+	>({
+		method: "DELETE",
+		url: `/sites/${pathParams.site_id}/forms/${pathParams.form_id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /sites/{site_id}/submissions
+ */
+export async function listSiteSubmissions(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		queryParams?: { page?: number; per_page?: number };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+	const data = await request<
+		ListSiteSubmissionsResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		{ page?: number; per_page?: number },
+		{ site_id: string }
+	>({
+		method: "GET",
+		url: `/sites/${pathParams.site_id}/submissions`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /sites/{site_id}/files
+ */
+export async function listSiteFiles(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+	const data = await request<
+		ListSiteFilesResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ site_id: string }
+	>({
+		method: "GET",
+		url: `/sites/${pathParams.site_id}/files`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /sites/{site_id}/assets
+ */
+export async function listSiteAssets(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+	const data = await request<
+		ListSiteAssetsResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ site_id: string }
+	>({
+		method: "GET",
+		url: `/sites/${pathParams.site_id}/assets`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /sites/{site_id}/assets
+ */
+export async function createSiteAsset(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		queryParams?: { name?: string; size?: bigint; content_type?: string; visibility?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+	const data = await request<
+		CreateSiteAssetResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		{ name?: string; size?: bigint; content_type?: string; visibility?: string },
+		{ site_id: string }
+	>({
+		method: "POST",
+		url: `/sites/${pathParams.site_id}/assets`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /sites/{site_id}/assets/{asset_id}
+ */
+export async function getSiteAssetInfo(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string; asset_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+
+	if (!pathParams.asset_id) {
+		throw new Error(`Missing required path parameter: asset_id`);
+	}
+	const data = await request<
+		GetSiteAssetInfoResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ site_id: string; asset_id: string }
+	>({
+		method: "GET",
+		url: `/sites/${pathParams.site_id}/assets/${pathParams.asset_id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /sites/{site_id}/assets/{asset_id}
+ */
+export async function updateSiteAsset(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { site_id: string; asset_id: string };
+		queryParams?: { state?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+
+	if (!pathParams.asset_id) {
+		throw new Error(`Missing required path parameter: asset_id`);
+	}
+	const data = await request<
+		UpdateSiteAssetResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		{ state?: string },
+		{ site_id: string; asset_id: string }
+	>({
+		method: "PUT",
+		url: `/sites/${pathParams.site_id}/assets/${pathParams.asset_id}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /sites/{site_id}/assets/{asset_id}
+ */
+export async function deleteSiteAsset(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string; asset_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+
+	if (!pathParams.asset_id) {
+		throw new Error(`Missing required path parameter: asset_id`);
+	}
+	const data = await request<
+		DeleteSiteAssetResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ site_id: string; asset_id: string }
+	>({
+		method: "DELETE",
+		url: `/sites/${pathParams.site_id}/assets/${pathParams.asset_id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /sites/{site_id}/assets/{asset_id}/public_signature
+ */
+export async function getSiteAssetPublicSignature(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string; asset_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+
+	if (!pathParams.asset_id) {
+		throw new Error(`Missing required path parameter: asset_id`);
+	}
+	const data = await request<
+		GetSiteAssetPublicSignatureResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ site_id: string; asset_id: string }
+	>({
+		method: "GET",
+		url: `/sites/${pathParams.site_id}/assets/${pathParams.asset_id}/public_signature`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /sites/{site_id}/files/{file_path}
+ */
+export async function getSiteFileByPathName(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string; file_path: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+
+	if (!pathParams.file_path) {
+		throw new Error(`Missing required path parameter: file_path`);
+	}
+	const data = await request<
+		GetSiteFileByPathNameResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ site_id: string; file_path: string }
+	>({
+		method: "GET",
+		url: `/sites/${pathParams.site_id}/files/${pathParams.file_path}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @description Purges cached content from Netlify's CDN. Supports purging by Cache-Tag.
- * {@link /purge}
+ * @link /purge
  */
-export async function purgeCache({
-	body,
-	config = {},
-}: {
-	body: PurgeCacheMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function purgeCache(
+	{
+		body,
+		config,
+	}: {
+		body: PurgeCacheData;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		PurgeCacheMutationResponse,
-		ErrorWrapper<PurgeCache400 | PurgeCache404>,
-		PurgeCacheMutationRequest,
+		PurgeCacheResponse,
+		ErrorWrapper<PurgeCacheStatus400 | PurgeCacheStatus404>,
+		PurgeCacheData,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "POST", url: `/purge`, body, ...requestConfig });
+	>({
+		method: "POST",
+		url: `/purge`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /sites/:site_id/snippets}
+ * @link /sites/{site_id}/snippets
  */
-export async function listSiteSnippets({
-	pathParams: { site_id },
-	config = {},
-}: {
-	pathParams: ListSiteSnippetsPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listSiteSnippets(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!site_id) {
+	if (!pathParams.site_id) {
 		throw new Error(`Missing required path parameter: site_id`);
 	}
-
 	const data = await request<
-		ListSiteSnippetsQueryResponse,
+		ListSiteSnippetsResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		ListSiteSnippetsPathParams
-	>({ method: "GET", url: `/sites/${site_id}/snippets`, ...requestConfig });
+		{ site_id: string }
+	>({
+		method: "GET",
+		url: `/sites/${pathParams.site_id}/snippets`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /sites/:site_id/snippets}
+ * @link /sites/{site_id}/snippets
  */
-export async function createSiteSnippet({
-	pathParams: { site_id },
-	config = {},
-}: {
-	pathParams: CreateSiteSnippetPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createSiteSnippet(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		body?: CreateSiteSnippetData;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!site_id) {
+	if (!pathParams.site_id) {
 		throw new Error(`Missing required path parameter: site_id`);
 	}
-
 	const data = await request<
-		CreateSiteSnippetMutationResponse,
+		CreateSiteSnippetResponse,
 		ErrorWrapper<Error>,
-		null,
+		CreateSiteSnippetData,
 		Record<string, string>,
 		Record<string, string>,
-		CreateSiteSnippetPathParams
-	>({ method: "POST", url: `/sites/${site_id}/snippets`, ...requestConfig });
+		{ site_id: string }
+	>({
+		method: "POST",
+		url: `/sites/${pathParams.site_id}/snippets`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /sites/:site_id/snippets/:snippet_id}
+ * @link /sites/{site_id}/snippets/{snippet_id}
  */
-export async function getSiteSnippet({
-	pathParams: { site_id, snippet_id },
-	config = {},
-}: {
-	pathParams: GetSiteSnippetPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getSiteSnippet(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string; snippet_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!site_id) {
+	if (!pathParams.site_id) {
 		throw new Error(`Missing required path parameter: site_id`);
 	}
 
-	if (!snippet_id) {
+	if (!pathParams.snippet_id) {
 		throw new Error(`Missing required path parameter: snippet_id`);
 	}
-
 	const data = await request<
-		GetSiteSnippetQueryResponse,
+		GetSiteSnippetResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetSiteSnippetPathParams
-	>({ method: "GET", url: `/sites/${site_id}/snippets/${snippet_id}`, ...requestConfig });
+		{ site_id: string; snippet_id: string }
+	>({
+		method: "GET",
+		url: `/sites/${pathParams.site_id}/snippets/${pathParams.snippet_id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /sites/:site_id/snippets/:snippet_id}
+ * @link /sites/{site_id}/snippets/{snippet_id}
  */
-export async function updateSiteSnippet({
-	pathParams: { site_id, snippet_id },
-	config = {},
-}: {
-	pathParams: UpdateSiteSnippetPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateSiteSnippet(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { site_id: string; snippet_id: string };
+		body?: UpdateSiteSnippetData;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!site_id) {
+	if (!pathParams.site_id) {
 		throw new Error(`Missing required path parameter: site_id`);
 	}
 
-	if (!snippet_id) {
+	if (!pathParams.snippet_id) {
 		throw new Error(`Missing required path parameter: snippet_id`);
 	}
-
 	const data = await request<
-		UpdateSiteSnippetMutationResponse,
+		UpdateSiteSnippetResponse,
 		ErrorWrapper<Error>,
-		null,
+		UpdateSiteSnippetData,
 		Record<string, string>,
 		Record<string, string>,
-		UpdateSiteSnippetPathParams
-	>({ method: "PUT", url: `/sites/${site_id}/snippets/${snippet_id}`, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /sites/:site_id/snippets/:snippet_id}
- */
-export async function deleteSiteSnippet({
-	pathParams: { site_id, snippet_id },
-	config = {},
-}: {
-	pathParams: DeleteSiteSnippetPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!site_id) {
-		throw new Error(`Missing required path parameter: site_id`);
-	}
-
-	if (!snippet_id) {
-		throw new Error(`Missing required path parameter: snippet_id`);
-	}
-
-	const data = await request<
-		DeleteSiteSnippetMutationResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		DeleteSiteSnippetPathParams
-	>({ method: "DELETE", url: `/sites/${site_id}/snippets/${snippet_id}`, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /sites/:site_id/metadata}
- */
-export async function getSiteMetadata({
-	pathParams: { site_id },
-	config = {},
-}: {
-	pathParams: GetSiteMetadataPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!site_id) {
-		throw new Error(`Missing required path parameter: site_id`);
-	}
-
-	const data = await request<
-		GetSiteMetadataQueryResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		GetSiteMetadataPathParams
-	>({ method: "GET", url: `/sites/${site_id}/metadata`, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /sites/:site_id/metadata}
- */
-export async function updateSiteMetadata({
-	pathParams: { site_id },
-	config = {},
-}: {
-	pathParams: UpdateSiteMetadataPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!site_id) {
-		throw new Error(`Missing required path parameter: site_id`);
-	}
-
-	const data = await request<
-		UpdateSiteMetadataMutationResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		UpdateSiteMetadataPathParams
-	>({ method: "PUT", url: `/sites/${site_id}/metadata`, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /sites/:site_id/build_hooks}
- */
-export async function listSiteBuildHooks({
-	pathParams: { site_id },
-	config = {},
-}: {
-	pathParams: ListSiteBuildHooksPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!site_id) {
-		throw new Error(`Missing required path parameter: site_id`);
-	}
-
-	const data = await request<
-		ListSiteBuildHooksQueryResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		ListSiteBuildHooksPathParams
-	>({ method: "GET", url: `/sites/${site_id}/build_hooks`, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /sites/:site_id/build_hooks}
- */
-export async function createSiteBuildHook({
-	pathParams: { site_id },
-	config = {},
-}: {
-	pathParams: CreateSiteBuildHookPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!site_id) {
-		throw new Error(`Missing required path parameter: site_id`);
-	}
-
-	const data = await request<
-		CreateSiteBuildHookMutationResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		CreateSiteBuildHookPathParams
-	>({ method: "POST", url: `/sites/${site_id}/build_hooks`, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /sites/:site_id/build_hooks/:id}
- */
-export async function getSiteBuildHook({
-	pathParams: { site_id, id },
-	config = {},
-}: {
-	pathParams: GetSiteBuildHookPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!site_id) {
-		throw new Error(`Missing required path parameter: site_id`);
-	}
-
-	if (!id) {
-		throw new Error(`Missing required path parameter: id`);
-	}
-
-	const data = await request<
-		GetSiteBuildHookQueryResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		GetSiteBuildHookPathParams
-	>({ method: "GET", url: `/sites/${site_id}/build_hooks/${id}`, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /sites/:site_id/build_hooks/:id}
- */
-export async function updateSiteBuildHook({
-	pathParams: { site_id, id },
-	config = {},
-}: {
-	pathParams: UpdateSiteBuildHookPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!site_id) {
-		throw new Error(`Missing required path parameter: site_id`);
-	}
-
-	if (!id) {
-		throw new Error(`Missing required path parameter: id`);
-	}
-
-	const data = await request<
-		UpdateSiteBuildHookMutationResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		UpdateSiteBuildHookPathParams
-	>({ method: "PUT", url: `/sites/${site_id}/build_hooks/${id}`, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /sites/:site_id/build_hooks/:id}
- */
-export async function deleteSiteBuildHook({
-	pathParams: { site_id, id },
-	config = {},
-}: {
-	pathParams: DeleteSiteBuildHookPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!site_id) {
-		throw new Error(`Missing required path parameter: site_id`);
-	}
-
-	if (!id) {
-		throw new Error(`Missing required path parameter: id`);
-	}
-
-	const data = await request<
-		DeleteSiteBuildHookMutationResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		DeleteSiteBuildHookPathParams
-	>({ method: "DELETE", url: `/sites/${site_id}/build_hooks/${id}`, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /sites/:site_id/deploys}
- */
-export async function listSiteDeploys({
-	pathParams: { site_id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ListSiteDeploysPathParams;
-	queryParams?: ListSiteDeploysQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!site_id) {
-		throw new Error(`Missing required path parameter: site_id`);
-	}
-
-	const data = await request<
-		ListSiteDeploysQueryResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		ListSiteDeploysQueryParams,
-		ListSiteDeploysPathParams
-	>({ method: "GET", url: `/sites/${site_id}/deploys`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /sites/:site_id/deploys}
- */
-export async function createSiteDeploy({
-	pathParams: { site_id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: CreateSiteDeployPathParams;
-	queryParams?: CreateSiteDeployQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!site_id) {
-		throw new Error(`Missing required path parameter: site_id`);
-	}
-
-	const data = await request<
-		CreateSiteDeployMutationResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		CreateSiteDeployQueryParams,
-		CreateSiteDeployPathParams
-	>({ method: "POST", url: `/sites/${site_id}/deploys`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /sites/:site_id/deploys/:deploy_id}
- */
-export async function getSiteDeploy({
-	pathParams: { site_id, deploy_id },
-	config = {},
-}: {
-	pathParams: GetSiteDeployPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!site_id) {
-		throw new Error(`Missing required path parameter: site_id`);
-	}
-
-	if (!deploy_id) {
-		throw new Error(`Missing required path parameter: deploy_id`);
-	}
-
-	const data = await request<
-		GetSiteDeployQueryResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		GetSiteDeployPathParams
-	>({ method: "GET", url: `/sites/${site_id}/deploys/${deploy_id}`, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /sites/:site_id/deploys/:deploy_id}
- */
-export async function updateSiteDeploy({
-	pathParams: { site_id, deploy_id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: UpdateSiteDeployPathParams;
-	queryParams?: UpdateSiteDeployQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!site_id) {
-		throw new Error(`Missing required path parameter: site_id`);
-	}
-
-	if (!deploy_id) {
-		throw new Error(`Missing required path parameter: deploy_id`);
-	}
-
-	const data = await request<
-		UpdateSiteDeployMutationResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		UpdateSiteDeployQueryParams,
-		UpdateSiteDeployPathParams
+		{ site_id: string; snippet_id: string }
 	>({
 		method: "PUT",
-		url: `/sites/${site_id}/deploys/${deploy_id}`,
+		url: `/sites/${pathParams.site_id}/snippets/${pathParams.snippet_id}`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /sites/{site_id}/snippets/{snippet_id}
+ */
+export async function deleteSiteSnippet(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string; snippet_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+
+	if (!pathParams.snippet_id) {
+		throw new Error(`Missing required path parameter: snippet_id`);
+	}
+	const data = await request<
+		DeleteSiteSnippetResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ site_id: string; snippet_id: string }
+	>({
+		method: "DELETE",
+		url: `/sites/${pathParams.site_id}/snippets/${pathParams.snippet_id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /sites/{site_id}/metadata
+ */
+export async function getSiteMetadata(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+	const data = await request<
+		GetSiteMetadataResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ site_id: string }
+	>({
+		method: "GET",
+		url: `/sites/${pathParams.site_id}/metadata`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /sites/{site_id}/metadata
+ */
+export async function updateSiteMetadata(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		body?: UpdateSiteMetadataData;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+	const data = await request<
+		UpdateSiteMetadataResponse,
+		ErrorWrapper<Error>,
+		UpdateSiteMetadataData,
+		Record<string, string>,
+		Record<string, string>,
+		{ site_id: string }
+	>({
+		method: "PUT",
+		url: `/sites/${pathParams.site_id}/metadata`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /sites/{site_id}/build_hooks
+ */
+export async function listSiteBuildHooks(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+	const data = await request<
+		ListSiteBuildHooksResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ site_id: string }
+	>({
+		method: "GET",
+		url: `/sites/${pathParams.site_id}/build_hooks`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /sites/{site_id}/build_hooks
+ */
+export async function createSiteBuildHook(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		body?: CreateSiteBuildHookData;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+	const data = await request<
+		CreateSiteBuildHookResponse,
+		ErrorWrapper<Error>,
+		CreateSiteBuildHookData,
+		Record<string, string>,
+		Record<string, string>,
+		{ site_id: string }
+	>({
+		method: "POST",
+		url: `/sites/${pathParams.site_id}/build_hooks`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /sites/{site_id}/build_hooks/{id}
+ */
+export async function getSiteBuildHook(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string; id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+
+	if (!pathParams.id) {
+		throw new Error(`Missing required path parameter: id`);
+	}
+	const data = await request<
+		GetSiteBuildHookResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ site_id: string; id: string }
+	>({
+		method: "GET",
+		url: `/sites/${pathParams.site_id}/build_hooks/${pathParams.id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /sites/{site_id}/build_hooks/{id}
+ */
+export async function updateSiteBuildHook(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { site_id: string; id: string };
+		body?: UpdateSiteBuildHookData;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+
+	if (!pathParams.id) {
+		throw new Error(`Missing required path parameter: id`);
+	}
+	const data = await request<
+		UpdateSiteBuildHookResponse,
+		ErrorWrapper<Error>,
+		UpdateSiteBuildHookData,
+		Record<string, string>,
+		Record<string, string>,
+		{ site_id: string; id: string }
+	>({
+		method: "PUT",
+		url: `/sites/${pathParams.site_id}/build_hooks/${pathParams.id}`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /sites/{site_id}/build_hooks/{id}
+ */
+export async function deleteSiteBuildHook(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string; id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+
+	if (!pathParams.id) {
+		throw new Error(`Missing required path parameter: id`);
+	}
+	const data = await request<
+		DeleteSiteBuildHookResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ site_id: string; id: string }
+	>({
+		method: "DELETE",
+		url: `/sites/${pathParams.site_id}/build_hooks/${pathParams.id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /sites/{site_id}/deploys
+ */
+export async function listSiteDeploys(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		queryParams?: {
+			"deploy-previews"?: boolean;
+			production?: boolean;
+			state?:
+				| "new"
+				| "pending_review"
+				| "accepted"
+				| "rejected"
+				| "enqueued"
+				| "building"
+				| "uploading"
+				| "uploaded"
+				| "preparing"
+				| "prepared"
+				| "processing"
+				| "processed"
+				| "ready"
+				| "error"
+				| "retrying";
+			branch?: string;
+			"latest-published"?: boolean;
+			page?: number;
+			per_page?: number;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+	const data = await request<
+		ListSiteDeploysResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		{
+			"deploy-previews"?: boolean;
+			production?: boolean;
+			state?:
+				| "new"
+				| "pending_review"
+				| "accepted"
+				| "rejected"
+				| "enqueued"
+				| "building"
+				| "uploading"
+				| "uploaded"
+				| "preparing"
+				| "prepared"
+				| "processing"
+				| "processed"
+				| "ready"
+				| "error"
+				| "retrying";
+			branch?: string;
+			"latest-published"?: boolean;
+			page?: number;
+			per_page?: number;
+		},
+		{ site_id: string }
+	>({
+		method: "GET",
+		url: `/sites/${pathParams.site_id}/deploys`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * {@link /sites/:site_id/deploys/:deploy_id}
+ * @link /sites/{site_id}/deploys
  */
-export async function deleteSiteDeploy({
-	pathParams: { deploy_id, site_id },
-	config = {},
-}: {
-	pathParams: DeleteSiteDeployPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createSiteDeploy(
+	{
+		pathParams,
+		body,
+		queryParams,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		body?: CreateSiteDeployData;
+		queryParams?: {
+			"deploy-previews"?: boolean;
+			production?: boolean;
+			state?:
+				| "new"
+				| "pending_review"
+				| "accepted"
+				| "rejected"
+				| "enqueued"
+				| "building"
+				| "uploading"
+				| "uploaded"
+				| "preparing"
+				| "prepared"
+				| "processing"
+				| "processed"
+				| "ready"
+				| "error"
+				| "retrying";
+			branch?: string;
+			"latest-published"?: boolean;
+			title?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!deploy_id) {
-		throw new Error(`Missing required path parameter: deploy_id`);
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
 	}
+	const data = await request<
+		CreateSiteDeployResponse,
+		ErrorWrapper<Error>,
+		CreateSiteDeployData,
+		Record<string, string>,
+		{
+			"deploy-previews"?: boolean;
+			production?: boolean;
+			state?:
+				| "new"
+				| "pending_review"
+				| "accepted"
+				| "rejected"
+				| "enqueued"
+				| "building"
+				| "uploading"
+				| "uploaded"
+				| "preparing"
+				| "prepared"
+				| "processing"
+				| "processed"
+				| "ready"
+				| "error"
+				| "retrying";
+			branch?: string;
+			"latest-published"?: boolean;
+			title?: string;
+		},
+		{ site_id: string }
+	>({
+		method: "POST",
+		url: `/sites/${pathParams.site_id}/deploys`,
+		queryParams,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
 
-	if (!site_id) {
+	return data;
+}
+
+/**
+ * @link /sites/{site_id}/deploys/{deploy_id}
+ */
+export async function getSiteDeploy(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string; deploy_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
 		throw new Error(`Missing required path parameter: site_id`);
 	}
 
-	const data = await request<
-		DeleteSiteDeployMutationResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		DeleteSiteDeployPathParams
-	>({ method: "DELETE", url: `/sites/${site_id}/deploys/${deploy_id}`, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /deploys/:deploy_id/cancel}
- */
-export async function cancelSiteDeploy({
-	pathParams: { deploy_id },
-	config = {},
-}: {
-	pathParams: CancelSiteDeployPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!deploy_id) {
+	if (!pathParams.deploy_id) {
 		throw new Error(`Missing required path parameter: deploy_id`);
 	}
-
 	const data = await request<
-		CancelSiteDeployMutationResponse,
+		GetSiteDeployResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		CancelSiteDeployPathParams
-	>({ method: "POST", url: `/deploys/${deploy_id}/cancel`, ...requestConfig });
+		{ site_id: string; deploy_id: string }
+	>({
+		method: "GET",
+		url: `/sites/${pathParams.site_id}/deploys/${pathParams.deploy_id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /sites/:site_id/deploys/:deploy_id/restore}
+ * @link /sites/{site_id}/deploys/{deploy_id}
  */
-export async function restoreSiteDeploy({
-	pathParams: { site_id, deploy_id },
-	config = {},
-}: {
-	pathParams: RestoreSiteDeployPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateSiteDeploy(
+	{
+		pathParams,
+		body,
+		queryParams,
+		config,
+	}: {
+		pathParams: { site_id: string; deploy_id: string };
+		body?: UpdateSiteDeployData;
+		queryParams?: { commit_ref?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!site_id) {
+	if (!pathParams.site_id) {
 		throw new Error(`Missing required path parameter: site_id`);
 	}
 
-	if (!deploy_id) {
+	if (!pathParams.deploy_id) {
 		throw new Error(`Missing required path parameter: deploy_id`);
 	}
-
 	const data = await request<
-		RestoreSiteDeployMutationResponse,
+		UpdateSiteDeployResponse,
 		ErrorWrapper<Error>,
-		null,
+		UpdateSiteDeployData,
 		Record<string, string>,
-		Record<string, string>,
-		RestoreSiteDeployPathParams
-	>({ method: "POST", url: `/sites/${site_id}/deploys/${deploy_id}/restore`, ...requestConfig });
+		{ commit_ref?: string },
+		{ site_id: string; deploy_id: string }
+	>({
+		method: "PUT",
+		url: `/sites/${pathParams.site_id}/deploys/${pathParams.deploy_id}`,
+		queryParams,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /sites/:site_id/builds}
+ * @link /sites/{site_id}/deploys/{deploy_id}
  */
-export async function listSiteBuilds({
-	pathParams: { site_id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ListSiteBuildsPathParams;
-	queryParams?: ListSiteBuildsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteSiteDeploy(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { deploy_id: string; site_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!site_id) {
-		throw new Error(`Missing required path parameter: site_id`);
+	if (!pathParams.deploy_id) {
+		throw new Error(`Missing required path parameter: deploy_id`);
 	}
 
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
 	const data = await request<
-		ListSiteBuildsQueryResponse,
+		DeleteSiteDeployResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
-		ListSiteBuildsQueryParams,
-		ListSiteBuildsPathParams
-	>({ method: "GET", url: `/sites/${site_id}/builds`, queryParams, ...requestConfig });
+		Record<string, string>,
+		{ deploy_id: string; site_id: string }
+	>({
+		method: "DELETE",
+		url: `/sites/${pathParams.site_id}/deploys/${pathParams.deploy_id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /deploys/{deploy_id}/cancel
+ */
+export async function cancelSiteDeploy(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { deploy_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.deploy_id) {
+		throw new Error(`Missing required path parameter: deploy_id`);
+	}
+	const data = await request<
+		CancelSiteDeployResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ deploy_id: string }
+	>({
+		method: "POST",
+		url: `/deploys/${pathParams.deploy_id}/cancel`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /sites/{site_id}/deploys/{deploy_id}/restore
+ */
+export async function restoreSiteDeploy(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string; deploy_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+
+	if (!pathParams.deploy_id) {
+		throw new Error(`Missing required path parameter: deploy_id`);
+	}
+	const data = await request<
+		RestoreSiteDeployResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ site_id: string; deploy_id: string }
+	>({
+		method: "POST",
+		url: `/sites/${pathParams.site_id}/deploys/${pathParams.deploy_id}/restore`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /sites/{site_id}/builds
+ */
+export async function listSiteBuilds(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		queryParams?: { page?: number; per_page?: number };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+	const data = await request<
+		ListSiteBuildsResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		{ page?: number; per_page?: number },
+		{ site_id: string }
+	>({
+		method: "GET",
+		url: `/sites/${pathParams.site_id}/builds`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
@@ -1911,64 +2264,85 @@ export async function listSiteBuilds({
  * Files for build can be uploaded as a zipped site using one of these methods:
  * 1. Set Content-Type to 'application/zip' and send the zip file as the raw request body
  * 2. Set Content-Type to 'multipart/form-data' and include the zip file in the 'zip' field
- * {@link /sites/:site_id/builds}
+ * @link /sites/{site_id}/builds
  */
-export async function createSiteBuild({
-	pathParams: { site_id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: CreateSiteBuildPathParams;
-	queryParams?: CreateSiteBuildQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createSiteBuild(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		queryParams?: {
+			branch?: string;
+			clear_cache?: boolean;
+			image?: string;
+			template_id?: string;
+			title?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!site_id) {
+	if (!pathParams.site_id) {
 		throw new Error(`Missing required path parameter: site_id`);
 	}
-
 	const data = await request<
-		CreateSiteBuildMutationResponse,
-		ErrorWrapper<CreateSiteBuild400 | CreateSiteBuild404 | CreateSiteBuild422>,
+		CreateSiteBuildResponse,
+		ErrorWrapper<CreateSiteBuildStatus400 | CreateSiteBuildStatus404 | CreateSiteBuildStatus422>,
 		null,
 		Record<string, string>,
-		CreateSiteBuildQueryParams,
-		CreateSiteBuildPathParams
+		{
+			branch?: string;
+			clear_cache?: boolean;
+			image?: string;
+			template_id?: string;
+			title?: string;
+		},
+		{ site_id: string }
 	>({
 		method: "POST",
-		url: `/sites/${site_id}/builds`,
+		url: `/sites/${pathParams.site_id}/builds`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "multipart/form-data", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * {@link /sites/:site_id/deployed-branches}
+ * @link /sites/{site_id}/deployed-branches
  */
-export async function listSiteDeployedBranches({
-	pathParams: { site_id },
-	config = {},
-}: {
-	pathParams: ListSiteDeployedBranchesPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listSiteDeployedBranches(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!site_id) {
+	if (!pathParams.site_id) {
 		throw new Error(`Missing required path parameter: site_id`);
 	}
-
 	const data = await request<
-		ListSiteDeployedBranchesQueryResponse,
+		ListSiteDeployedBranchesResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		ListSiteDeployedBranchesPathParams
-	>({ method: "GET", url: `/sites/${site_id}/deployed-branches`, ...requestConfig });
+		{ site_id: string }
+	>({
+		method: "GET",
+		url: `/sites/${pathParams.site_id}/deployed-branches`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
@@ -1978,3292 +2352,4485 @@ export async function listSiteDeployedBranches({
  * - Delete associated deploy keys
  * - Delete outgoing webhooks for the repo
  * - Delete the site's build hooks
- * {@link /sites/:site_id/unlink_repo}
+ * @link /sites/{site_id}/unlink_repo
  */
-export async function unlinkSiteRepo({
-	pathParams: { site_id },
-	config = {},
-}: {
-	pathParams: UnlinkSiteRepoPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function unlinkSiteRepo(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!site_id) {
+	if (!pathParams.site_id) {
 		throw new Error(`Missing required path parameter: site_id`);
 	}
-
 	const data = await request<
-		UnlinkSiteRepoMutationResponse,
-		ErrorWrapper<UnlinkSiteRepo404>,
+		UnlinkSiteRepoResponse,
+		ErrorWrapper<UnlinkSiteRepoStatus404>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		UnlinkSiteRepoPathParams
-	>({ method: "PUT", url: `/sites/${site_id}/unlink_repo`, ...requestConfig });
+		{ site_id: string }
+	>({
+		method: "PUT",
+		url: `/sites/${pathParams.site_id}/unlink_repo`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @description Re-enables a site that was previously disabled by the user. Sites that were disabled for usage exceeded or marked as spam cannot be re-enabled via this endpoint.
- * {@link /sites/:site_id/enable}
+ * @link /sites/{site_id}/enable
  */
-export async function enableSite({
-	pathParams: { site_id },
-	config = {},
-}: {
-	pathParams: EnableSitePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function enableSite(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!site_id) {
+	if (!pathParams.site_id) {
 		throw new Error(`Missing required path parameter: site_id`);
 	}
-
 	const data = await request<
-		EnableSiteMutationResponse,
-		ErrorWrapper<EnableSite422>,
+		EnableSiteResponse,
+		ErrorWrapper<EnableSiteStatus422>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		EnableSitePathParams
-	>({ method: "PUT", url: `/sites/${site_id}/enable`, ...requestConfig });
+		{ site_id: string }
+	>({
+		method: "PUT",
+		url: `/sites/${pathParams.site_id}/enable`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @description Disables a site, preventing it from serving content. The site can be re-enabled later using the enable endpoint.
- * {@link /sites/:site_id/disable}
+ * @link /sites/{site_id}/disable
  */
-export async function disableSite({
-	pathParams: { site_id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: DisableSitePathParams;
-	queryParams: DisableSiteQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function disableSite(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		queryParams?: { reason?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!site_id) {
+	if (!pathParams.site_id) {
 		throw new Error(`Missing required path parameter: site_id`);
 	}
-
 	const data = await request<
-		DisableSiteMutationResponse,
+		DisableSiteResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
-		DisableSiteQueryParams,
-		DisableSitePathParams
-	>({ method: "PUT", url: `/sites/${site_id}/disable`, queryParams, ...requestConfig });
+		{ reason?: string },
+		{ site_id: string }
+	>({
+		method: "PUT",
+		url: `/sites/${pathParams.site_id}/disable`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /builds/:build_id}
+ * @link /builds/{build_id}
  */
-export async function getSiteBuild({
-	pathParams: { build_id },
-	config = {},
-}: {
-	pathParams: GetSiteBuildPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getSiteBuild(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { build_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!build_id) {
+	if (!pathParams.build_id) {
 		throw new Error(`Missing required path parameter: build_id`);
 	}
-
 	const data = await request<
-		GetSiteBuildQueryResponse,
+		GetSiteBuildResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetSiteBuildPathParams
-	>({ method: "GET", url: `/builds/${build_id}`, ...requestConfig });
+		{ build_id: string }
+	>({
+		method: "GET",
+		url: `/builds/${pathParams.build_id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /builds/:build_id/log}
+ * @link /builds/{build_id}/log
  */
-export async function updateSiteBuildLog({
-	pathParams: { build_id },
-	config = {},
-}: {
-	pathParams: UpdateSiteBuildLogPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateSiteBuildLog(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { build_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!build_id) {
+	if (!pathParams.build_id) {
 		throw new Error(`Missing required path parameter: build_id`);
 	}
-
 	const data = await request<
-		UpdateSiteBuildLogMutationResponse,
+		UpdateSiteBuildLogResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		UpdateSiteBuildLogPathParams
-	>({ method: "POST", url: `/builds/${build_id}/log`, ...requestConfig });
+		{ build_id: string }
+	>({
+		method: "POST",
+		url: `/builds/${pathParams.build_id}/log`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /builds/:build_id/start}
+ * @link /builds/{build_id}/start
  */
-export async function notifyBuildStart({
-	pathParams: { build_id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: NotifyBuildStartPathParams;
-	queryParams?: NotifyBuildStartQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function notifyBuildStart(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { build_id: string };
+		queryParams?: { buildbot_version?: string; build_version?: string; task_id?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!build_id) {
+	if (!pathParams.build_id) {
 		throw new Error(`Missing required path parameter: build_id`);
 	}
-
 	const data = await request<
-		NotifyBuildStartMutationResponse,
+		NotifyBuildStartResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
-		NotifyBuildStartQueryParams,
-		NotifyBuildStartPathParams
-	>({ method: "POST", url: `/builds/${build_id}/start`, queryParams, ...requestConfig });
+		{ buildbot_version?: string; build_version?: string; task_id?: string },
+		{ build_id: string }
+	>({
+		method: "POST",
+		url: `/builds/${pathParams.build_id}/start`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /:account_id/builds/status}
+ * @link /{account_id}/builds/status
  */
-export async function getAccountBuildStatus({
-	pathParams: { account_id },
-	config = {},
-}: {
-	pathParams: GetAccountBuildStatusPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getAccountBuildStatus(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { account_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!account_id) {
+	if (!pathParams.account_id) {
 		throw new Error(`Missing required path parameter: account_id`);
 	}
-
 	const data = await request<
-		GetAccountBuildStatusQueryResponse,
+		GetAccountBuildStatusResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetAccountBuildStatusPathParams
-	>({ method: "GET", url: `/${account_id}/builds/status`, ...requestConfig });
+		{ account_id: string }
+	>({
+		method: "GET",
+		url: `/${pathParams.account_id}/builds/status`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /sites/:site_id/dns}
+ * @link /sites/{site_id}/dns
  */
-export async function getDNSForSite({
-	pathParams: { site_id },
-	config = {},
-}: {
-	pathParams: GetDNSForSitePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getDNSForSite(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!site_id) {
+	if (!pathParams.site_id) {
 		throw new Error(`Missing required path parameter: site_id`);
 	}
-
 	const data = await request<
-		GetDNSForSiteQueryResponse,
+		GetDNSForSiteResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetDNSForSitePathParams
-	>({ method: "GET", url: `/sites/${site_id}/dns`, ...requestConfig });
+		{ site_id: string }
+	>({
+		method: "GET",
+		url: `/sites/${pathParams.site_id}/dns`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /sites/:site_id/dns}
+ * @link /sites/{site_id}/dns
  */
-export async function configureDNSForSite({
-	pathParams: { site_id },
-	config = {},
-}: {
-	pathParams: ConfigureDNSForSitePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function configureDNSForSite(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!site_id) {
+	if (!pathParams.site_id) {
 		throw new Error(`Missing required path parameter: site_id`);
 	}
-
 	const data = await request<
-		ConfigureDNSForSiteMutationResponse,
+		ConfigureDNSForSiteResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		ConfigureDNSForSitePathParams
-	>({ method: "PUT", url: `/sites/${site_id}/dns`, ...requestConfig });
+		{ site_id: string }
+	>({
+		method: "PUT",
+		url: `/sites/${pathParams.site_id}/dns`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /sites/:site_id/rollback}
+ * @link /sites/{site_id}/rollback
  */
-export async function rollbackSiteDeploy({
-	pathParams: { site_id },
-	config = {},
-}: {
-	pathParams: RollbackSiteDeployPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function rollbackSiteDeploy(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!site_id) {
+	if (!pathParams.site_id) {
 		throw new Error(`Missing required path parameter: site_id`);
 	}
-
 	const data = await request<
-		RollbackSiteDeployMutationResponse,
+		RollbackSiteDeployResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		RollbackSiteDeployPathParams
-	>({ method: "PUT", url: `/sites/${site_id}/rollback`, ...requestConfig });
+		{ site_id: string }
+	>({
+		method: "PUT",
+		url: `/sites/${pathParams.site_id}/rollback`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /deploys/:deploy_id}
+ * @link /deploys/{deploy_id}
  */
-export async function getDeploy({
-	pathParams: { deploy_id },
-	config = {},
-}: {
-	pathParams: GetDeployPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getDeploy(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { deploy_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!deploy_id) {
+	if (!pathParams.deploy_id) {
 		throw new Error(`Missing required path parameter: deploy_id`);
 	}
-
 	const data = await request<
-		GetDeployQueryResponse,
+		GetDeployResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetDeployPathParams
-	>({ method: "GET", url: `/deploys/${deploy_id}`, ...requestConfig });
+		{ deploy_id: string }
+	>({
+		method: "GET",
+		url: `/deploys/${pathParams.deploy_id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /deploys/:deploy_id}
+ * @link /deploys/{deploy_id}
  */
-export async function deleteDeploy({
-	pathParams: { deploy_id },
-	config = {},
-}: {
-	pathParams: DeleteDeployPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteDeploy(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { deploy_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!deploy_id) {
+	if (!pathParams.deploy_id) {
 		throw new Error(`Missing required path parameter: deploy_id`);
 	}
-
 	const data = await request<
-		DeleteDeployMutationResponse,
+		DeleteDeployResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		DeleteDeployPathParams
-	>({ method: "DELETE", url: `/deploys/${deploy_id}`, ...requestConfig });
+		{ deploy_id: string }
+	>({
+		method: "DELETE",
+		url: `/deploys/${pathParams.deploy_id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @description Updates the deploy validations report for a deploy.
- * {@link /deploys/:deploy_id/validations_report}
+ * @link /deploys/{deploy_id}/validations_report
  */
-export async function updateDeployValidations({
-	pathParams: { deploy_id },
-	body,
-	config = {},
-}: {
-	pathParams: UpdateDeployValidationsPathParams;
-	body: UpdateDeployValidationsMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateDeployValidations(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { deploy_id: string };
+		body: UpdateDeployValidationsData;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!deploy_id) {
+	if (!pathParams.deploy_id) {
 		throw new Error(`Missing required path parameter: deploy_id`);
 	}
-
 	const data = await request<
-		UpdateDeployValidationsMutationResponse,
+		UpdateDeployValidationsResponse,
 		ErrorWrapper<Error>,
-		UpdateDeployValidationsMutationRequest,
+		UpdateDeployValidationsData,
 		Record<string, string>,
 		Record<string, string>,
-		UpdateDeployValidationsPathParams
-	>({ method: "PATCH", url: `/deploys/${deploy_id}/validations_report`, body, ...requestConfig });
+		{ deploy_id: string }
+	>({
+		method: "PATCH",
+		url: `/deploys/${pathParams.deploy_id}/validations_report`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /deploys/:deploy_id/lock}
+ * @link /deploys/{deploy_id}/lock
  */
-export async function lockDeploy({
-	pathParams: { deploy_id },
-	config = {},
-}: {
-	pathParams: LockDeployPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function lockDeploy(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { deploy_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!deploy_id) {
+	if (!pathParams.deploy_id) {
 		throw new Error(`Missing required path parameter: deploy_id`);
 	}
-
 	const data = await request<
-		LockDeployMutationResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		LockDeployPathParams
-	>({ method: "POST", url: `/deploys/${deploy_id}/lock`, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /deploys/:deploy_id/unlock}
- */
-export async function unlockDeploy({
-	pathParams: { deploy_id },
-	config = {},
-}: {
-	pathParams: UnlockDeployPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!deploy_id) {
-		throw new Error(`Missing required path parameter: deploy_id`);
-	}
-
-	const data = await request<
-		UnlockDeployMutationResponse,
+		LockDeployResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		UnlockDeployPathParams
-	>({ method: "POST", url: `/deploys/${deploy_id}/unlock`, ...requestConfig });
+		{ deploy_id: string }
+	>({
+		method: "POST",
+		url: `/deploys/${pathParams.deploy_id}/lock`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /deploys/:deploy_id/files/:path}
+ * @link /deploys/{deploy_id}/unlock
  */
-export async function uploadDeployFile({
-	pathParams: { deploy_id, path },
-	queryParams,
-	config = {},
-}: {
-	pathParams: UploadDeployFilePathParams;
-	queryParams?: UploadDeployFileQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function unlockDeploy(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { deploy_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!deploy_id) {
+	if (!pathParams.deploy_id) {
+		throw new Error(`Missing required path parameter: deploy_id`);
+	}
+	const data = await request<
+		UnlockDeployResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ deploy_id: string }
+	>({
+		method: "POST",
+		url: `/deploys/${pathParams.deploy_id}/unlock`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /deploys/{deploy_id}/files/{path}
+ */
+export async function uploadDeployFile(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { deploy_id: string; path: string };
+		queryParams?: { size?: number };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.deploy_id) {
 		throw new Error(`Missing required path parameter: deploy_id`);
 	}
 
-	if (!path) {
+	if (!pathParams.path) {
 		throw new Error(`Missing required path parameter: path`);
 	}
-
 	const data = await request<
-		UploadDeployFileMutationResponse,
+		UploadDeployFileResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
-		UploadDeployFileQueryParams,
-		UploadDeployFilePathParams
+		{ size?: number },
+		{ deploy_id: string; path: string }
 	>({
 		method: "PUT",
-		url: `/deploys/${deploy_id}/files/${path}`,
+		url: `/deploys/${pathParams.deploy_id}/files/${pathParams.path}`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "application/octet-stream", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * {@link /deploys/:deploy_id/functions/:name}
+ * @link /deploys/{deploy_id}/functions/{name}
  */
-export async function uploadDeployFunction({
-	pathParams: { deploy_id, name },
-	queryParams,
-	headers,
-	config = {},
-}: {
-	pathParams: UploadDeployFunctionPathParams;
-	queryParams?: UploadDeployFunctionQueryParams;
-	headers?: UploadDeployFunctionHeaderParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function uploadDeployFunction(
+	{
+		pathParams,
+		queryParams,
+		headers,
+		config,
+	}: {
+		pathParams: { deploy_id: string; name: string };
+		queryParams?: { runtime?: string; invocation_mode?: string; timeout?: number; size?: number };
+		headers?: { "X-Nf-Retry-Count"?: number };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!deploy_id) {
+	if (!pathParams.deploy_id) {
 		throw new Error(`Missing required path parameter: deploy_id`);
 	}
 
-	if (!name) {
+	if (!pathParams.name) {
 		throw new Error(`Missing required path parameter: name`);
 	}
-
 	const data = await request<
-		UploadDeployFunctionMutationResponse,
+		UploadDeployFunctionResponse,
 		ErrorWrapper<Error>,
 		null,
-		UploadDeployFunctionHeaderParams,
-		UploadDeployFunctionQueryParams,
-		UploadDeployFunctionPathParams
+		{ "X-Nf-Retry-Count"?: number },
+		{ runtime?: string; invocation_mode?: string; timeout?: number; size?: number },
+		{ deploy_id: string; name: string }
 	>({
 		method: "PUT",
-		url: `/deploys/${deploy_id}/functions/${name}`,
+		url: `/deploys/${pathParams.deploy_id}/functions/${pathParams.name}`,
 		queryParams,
 		...requestConfig,
-		headers: { "Content-Type": "application/octet-stream", ...headers, ...requestConfig.headers },
+		headers: { ...headers, ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
  * @description This is an internal-only endpoint.
- * {@link /sites/:site_id/plugin_runs/latest}
+ * @link /sites/{site_id}/plugin_runs/latest
  */
-export async function getLatestPluginRuns({
-	pathParams: { site_id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetLatestPluginRunsPathParams;
-	queryParams: GetLatestPluginRunsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getLatestPluginRuns(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		queryParams?: { packages?: Array<string>; state?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!site_id) {
+	if (!pathParams.site_id) {
 		throw new Error(`Missing required path parameter: site_id`);
 	}
-
 	const data = await request<
-		GetLatestPluginRunsQueryResponse,
+		GetLatestPluginRunsResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
-		GetLatestPluginRunsQueryParams,
-		GetLatestPluginRunsPathParams
-	>({ method: "GET", url: `/sites/${site_id}/plugin_runs/latest`, queryParams, ...requestConfig });
+		{ packages?: Array<string>; state?: string },
+		{ site_id: string }
+	>({
+		method: "GET",
+		url: `/sites/${pathParams.site_id}/plugin_runs/latest`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @description This is an internal-only endpoint.
- * {@link /deploys/:deploy_id/plugin_runs}
+ * @link /deploys/{deploy_id}/plugin_runs
  */
-export async function createPluginRun({
-	pathParams: { deploy_id },
-	body,
-	config = {},
-}: {
-	pathParams: CreatePluginRunPathParams;
-	body?: CreatePluginRunMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createPluginRun(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { deploy_id: string };
+		body?: CreatePluginRunData;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!deploy_id) {
+	if (!pathParams.deploy_id) {
 		throw new Error(`Missing required path parameter: deploy_id`);
 	}
-
 	const data = await request<
-		CreatePluginRunMutationResponse,
+		CreatePluginRunResponse,
 		ErrorWrapper<Error>,
-		CreatePluginRunMutationRequest,
+		CreatePluginRunData,
 		Record<string, string>,
 		Record<string, string>,
-		CreatePluginRunPathParams
-	>({ method: "POST", url: `/deploys/${deploy_id}/plugin_runs`, body, ...requestConfig });
+		{ deploy_id: string }
+	>({
+		method: "POST",
+		url: `/deploys/${pathParams.deploy_id}/plugin_runs`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /forms/:form_id/submissions}
+ * @link /forms/{form_id}/submissions
  */
-export async function listFormSubmissions({
-	pathParams: { form_id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ListFormSubmissionsPathParams;
-	queryParams?: ListFormSubmissionsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listFormSubmissions(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { form_id: string };
+		queryParams?: { page?: number; per_page?: number };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!form_id) {
+	if (!pathParams.form_id) {
 		throw new Error(`Missing required path parameter: form_id`);
 	}
-
 	const data = await request<
-		ListFormSubmissionsQueryResponse,
+		ListFormSubmissionsResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
-		ListFormSubmissionsQueryParams,
-		ListFormSubmissionsPathParams
-	>({ method: "GET", url: `/forms/${form_id}/submissions`, queryParams, ...requestConfig });
+		{ page?: number; per_page?: number },
+		{ form_id: string }
+	>({
+		method: "GET",
+		url: `/forms/${pathParams.form_id}/submissions`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /hooks}
+ * @link /hooks
  */
-export async function listHooksBySiteId({
-	queryParams,
-	config = {},
-}: {
-	queryParams: ListHooksBySiteIdQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listHooksBySiteId(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { site_id?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		ListHooksBySiteIdQueryResponse,
+		ListHooksBySiteIdResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
-		ListHooksBySiteIdQueryParams,
+		{ site_id?: string },
 		Record<string, string>
-	>({ method: "GET", url: `/hooks`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/hooks`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /hooks}
+ * @link /hooks
  */
-export async function createHookBySiteId({
-	queryParams,
-	config = {},
-}: {
-	queryParams: CreateHookBySiteIdQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createHookBySiteId(
+	{
+		body,
+		queryParams,
+		config,
+	}: {
+		body?: CreateHookBySiteIdData;
+		queryParams?: { site_id?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		CreateHookBySiteIdMutationResponse,
+		CreateHookBySiteIdResponse,
 		ErrorWrapper<Error>,
-		null,
+		CreateHookBySiteIdData,
 		Record<string, string>,
-		CreateHookBySiteIdQueryParams,
+		{ site_id?: string },
 		Record<string, string>
-	>({ method: "POST", url: `/hooks`, queryParams, ...requestConfig });
+	>({
+		method: "POST",
+		url: `/hooks`,
+		queryParams,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /hooks/:hook_id}
+ * @link /hooks/{hook_id}
  */
-export async function getHook({
-	pathParams: { hook_id },
-	config = {},
-}: {
-	pathParams: GetHookPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getHook(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { hook_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!hook_id) {
+	if (!pathParams.hook_id) {
 		throw new Error(`Missing required path parameter: hook_id`);
 	}
-
 	const data = await request<
-		GetHookQueryResponse,
+		GetHookResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetHookPathParams
-	>({ method: "GET", url: `/hooks/${hook_id}`, ...requestConfig });
+		{ hook_id: string }
+	>({
+		method: "GET",
+		url: `/hooks/${pathParams.hook_id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /hooks/:hook_id}
+ * @link /hooks/{hook_id}
  */
-export async function updateHook({
-	pathParams: { hook_id },
-	config = {},
-}: {
-	pathParams: UpdateHookPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateHook(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { hook_id: string };
+		body?: UpdateHookData;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!hook_id) {
+	if (!pathParams.hook_id) {
 		throw new Error(`Missing required path parameter: hook_id`);
 	}
-
 	const data = await request<
-		UpdateHookMutationResponse,
+		UpdateHookResponse,
 		ErrorWrapper<Error>,
-		null,
+		UpdateHookData,
 		Record<string, string>,
 		Record<string, string>,
-		UpdateHookPathParams
-	>({ method: "PUT", url: `/hooks/${hook_id}`, ...requestConfig });
+		{ hook_id: string }
+	>({
+		method: "PUT",
+		url: `/hooks/${pathParams.hook_id}`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /hooks/:hook_id}
+ * @link /hooks/{hook_id}
  */
-export async function deleteHook({
-	pathParams: { hook_id },
-	config = {},
-}: {
-	pathParams: DeleteHookPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteHook(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { hook_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!hook_id) {
+	if (!pathParams.hook_id) {
 		throw new Error(`Missing required path parameter: hook_id`);
 	}
-
 	const data = await request<
-		DeleteHookMutationResponse,
+		DeleteHookResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		DeleteHookPathParams
-	>({ method: "DELETE", url: `/hooks/${hook_id}`, ...requestConfig });
+		{ hook_id: string }
+	>({
+		method: "DELETE",
+		url: `/hooks/${pathParams.hook_id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /hooks/:hook_id/enable}
+ * @link /hooks/{hook_id}/enable
  */
-export async function enableHook({
-	pathParams: { hook_id },
-	config = {},
-}: {
-	pathParams: EnableHookPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function enableHook(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { hook_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!hook_id) {
+	if (!pathParams.hook_id) {
 		throw new Error(`Missing required path parameter: hook_id`);
 	}
-
 	const data = await request<
-		EnableHookMutationResponse,
+		EnableHookResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		EnableHookPathParams
-	>({ method: "POST", url: `/hooks/${hook_id}/enable`, ...requestConfig });
+		{ hook_id: string }
+	>({
+		method: "POST",
+		url: `/hooks/${pathParams.hook_id}/enable`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /hooks/types}
+ * @link /hooks/types
  */
-export async function listHookTypes({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listHookTypes(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		ListHookTypesQueryResponse,
+		ListHookTypesResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "GET", url: `/hooks/types`, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/hooks/types`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /oauth/tickets}
+ * @link /oauth/tickets
  */
-export async function createTicket({
-	queryParams,
-	body,
-	config = {},
-}: {
-	queryParams: CreateTicketQueryParams;
-	body?: CreateTicketMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createTicket(
+	{
+		body,
+		queryParams,
+		config,
+	}: {
+		body?: CreateTicketData;
+		queryParams?: { client_id?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		CreateTicketMutationResponse,
-		ErrorWrapper<CreateTicket401 | CreateTicket422>,
-		CreateTicketMutationRequest,
+		CreateTicketResponse,
+		ErrorWrapper<CreateTicketStatus401 | CreateTicketStatus422>,
+		CreateTicketData,
 		Record<string, string>,
-		CreateTicketQueryParams,
+		{ client_id?: string },
 		Record<string, string>
-	>({ method: "POST", url: `/oauth/tickets`, queryParams, body, ...requestConfig });
+	>({
+		method: "POST",
+		url: `/oauth/tickets`,
+		queryParams,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /oauth/tickets/:ticket_id}
+ * @link /oauth/tickets/{ticket_id}
  */
-export async function showTicket({
-	pathParams: { ticket_id },
-	config = {},
-}: {
-	pathParams: ShowTicketPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function showTicket(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { ticket_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!ticket_id) {
+	if (!pathParams.ticket_id) {
 		throw new Error(`Missing required path parameter: ticket_id`);
 	}
-
 	const data = await request<
-		ShowTicketQueryResponse,
+		ShowTicketResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		ShowTicketPathParams
-	>({ method: "GET", url: `/oauth/tickets/${ticket_id}`, ...requestConfig });
+		{ ticket_id: string }
+	>({
+		method: "GET",
+		url: `/oauth/tickets/${pathParams.ticket_id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /oauth/tickets/:ticket_id/exchange}
+ * @link /oauth/tickets/{ticket_id}/exchange
  */
-export async function exchangeTicket({
-	pathParams: { ticket_id },
-	config = {},
-}: {
-	pathParams: ExchangeTicketPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function exchangeTicket(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { ticket_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!ticket_id) {
+	if (!pathParams.ticket_id) {
 		throw new Error(`Missing required path parameter: ticket_id`);
 	}
-
 	const data = await request<
-		ExchangeTicketMutationResponse,
+		ExchangeTicketResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		ExchangeTicketPathParams
-	>({ method: "POST", url: `/oauth/tickets/${ticket_id}/exchange`, ...requestConfig });
+		{ ticket_id: string }
+	>({
+		method: "POST",
+		url: `/oauth/tickets/${pathParams.ticket_id}/exchange`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /deploy_keys}
+ * @link /deploy_keys
  */
-export async function listDeployKeys({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listDeployKeys(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		ListDeployKeysQueryResponse,
+		ListDeployKeysResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "GET", url: `/deploy_keys`, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/deploy_keys`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /deploy_keys}
+ * @link /deploy_keys
  */
-export async function createDeployKey({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createDeployKey(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		CreateDeployKeyMutationResponse,
+		CreateDeployKeyResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "POST", url: `/deploy_keys`, ...requestConfig });
+	>({
+		method: "POST",
+		url: `/deploy_keys`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /deploy_keys/:key_id}
+ * @link /deploy_keys/{key_id}
  */
-export async function getDeployKey({
-	pathParams: { key_id },
-	config = {},
-}: {
-	pathParams: GetDeployKeyPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getDeployKey(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { key_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!key_id) {
+	if (!pathParams.key_id) {
 		throw new Error(`Missing required path parameter: key_id`);
 	}
-
 	const data = await request<
-		GetDeployKeyQueryResponse,
+		GetDeployKeyResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetDeployKeyPathParams
-	>({ method: "GET", url: `/deploy_keys/${key_id}`, ...requestConfig });
+		{ key_id: string }
+	>({
+		method: "GET",
+		url: `/deploy_keys/${pathParams.key_id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /deploy_keys/:key_id}
+ * @link /deploy_keys/{key_id}
  */
-export async function deleteDeployKey({
-	pathParams: { key_id },
-	config = {},
-}: {
-	pathParams: DeleteDeployKeyPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteDeployKey(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { key_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!key_id) {
+	if (!pathParams.key_id) {
 		throw new Error(`Missing required path parameter: key_id`);
 	}
-
 	const data = await request<
-		DeleteDeployKeyMutationResponse,
+		DeleteDeployKeyResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		DeleteDeployKeyPathParams
-	>({ method: "DELETE", url: `/deploy_keys/${key_id}`, ...requestConfig });
+		{ key_id: string }
+	>({
+		method: "DELETE",
+		url: `/deploy_keys/${pathParams.key_id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @description **Note:** Environment variable keys and values have moved from `build_settings.env` and `repo.env` to a new endpoint. Please use [createEnvVars](#tag/environmentVariables/operation/createEnvVars) to create environment variables for a site.
- * {@link /:account_slug/sites}
+ * @link /{account_slug}/sites
  */
-export async function createSiteInTeam({
-	pathParams: { account_slug },
-	body,
-	queryParams,
-	config = {},
-}: {
-	pathParams: CreateSiteInTeamPathParams;
-	body?: CreateSiteInTeamMutationRequest;
-	queryParams?: CreateSiteInTeamQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createSiteInTeam(
+	{
+		pathParams,
+		body,
+		queryParams,
+		config,
+	}: {
+		pathParams: { account_slug: string };
+		body?: CreateSiteInTeamData;
+		queryParams?: { configure_dns?: boolean };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!account_slug) {
+	if (!pathParams.account_slug) {
 		throw new Error(`Missing required path parameter: account_slug`);
 	}
-
 	const data = await request<
-		CreateSiteInTeamMutationResponse,
+		CreateSiteInTeamResponse,
 		ErrorWrapper<Error>,
-		CreateSiteInTeamMutationRequest,
+		CreateSiteInTeamData,
 		Record<string, string>,
-		CreateSiteInTeamQueryParams,
-		CreateSiteInTeamPathParams
-	>({ method: "POST", url: `/${account_slug}/sites`, queryParams, body, ...requestConfig });
+		{ configure_dns?: boolean },
+		{ account_slug: string }
+	>({
+		method: "POST",
+		url: `/${pathParams.account_slug}/sites`,
+		queryParams,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @description **Note:** Environment variable keys and values have moved from `build_settings.env` and `repo.env` to a new endpoint. Please use [getEnvVars](#tag/environmentVariables/operation/getEnvVars) to retrieve site environment variables.
- * {@link /:account_slug/sites}
+ * @link /{account_slug}/sites
  */
-export async function listSitesForAccount({
-	pathParams: { account_slug },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ListSitesForAccountPathParams;
-	queryParams?: ListSitesForAccountQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listSitesForAccount(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { account_slug: string };
+		queryParams?: { name?: string; page?: number; per_page?: number };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!account_slug) {
+	if (!pathParams.account_slug) {
 		throw new Error(`Missing required path parameter: account_slug`);
 	}
-
 	const data = await request<
-		ListSitesForAccountQueryResponse,
+		ListSitesForAccountResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
-		ListSitesForAccountQueryParams,
-		ListSitesForAccountPathParams
-	>({ method: "GET", url: `/${account_slug}/sites`, queryParams, ...requestConfig });
+		{ name?: string; page?: number; per_page?: number },
+		{ account_slug: string }
+	>({
+		method: "GET",
+		url: `/${pathParams.account_slug}/sites`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /:account_slug/members}
+ * @link /{account_slug}/members
  */
-export async function listMembersForAccount({
-	pathParams: { account_slug },
-	config = {},
-}: {
-	pathParams: ListMembersForAccountPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listMembersForAccount(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { account_slug: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!account_slug) {
+	if (!pathParams.account_slug) {
 		throw new Error(`Missing required path parameter: account_slug`);
 	}
-
 	const data = await request<
-		ListMembersForAccountQueryResponse,
+		ListMembersForAccountResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		ListMembersForAccountPathParams
-	>({ method: "GET", url: `/${account_slug}/members`, ...requestConfig });
+		{ account_slug: string }
+	>({
+		method: "GET",
+		url: `/${pathParams.account_slug}/members`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /:account_slug/members}
+ * @link /{account_slug}/members
  */
-export async function addMemberToAccount({
-	pathParams: { account_slug },
-	body,
-	config = {},
-}: {
-	pathParams: AddMemberToAccountPathParams;
-	body: AddMemberToAccountMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function addMemberToAccount(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { account_slug: string };
+		body: AddMemberToAccountData;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!account_slug) {
+	if (!pathParams.account_slug) {
 		throw new Error(`Missing required path parameter: account_slug`);
 	}
-
 	const data = await request<
-		AddMemberToAccountMutationResponse,
+		AddMemberToAccountResponse,
 		ErrorWrapper<Error>,
-		AddMemberToAccountMutationRequest,
+		AddMemberToAccountData,
 		Record<string, string>,
 		Record<string, string>,
-		AddMemberToAccountPathParams
-	>({ method: "POST", url: `/${account_slug}/members`, body, ...requestConfig });
+		{ account_slug: string }
+	>({
+		method: "POST",
+		url: `/${pathParams.account_slug}/members`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /:account_slug/members/:member_id}
+ * @link /{account_slug}/members/{member_id}
  */
-export async function getAccountMember({
-	pathParams: { account_slug, member_id },
-	config = {},
-}: {
-	pathParams: GetAccountMemberPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getAccountMember(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { account_slug: string; member_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!account_slug) {
+	if (!pathParams.account_slug) {
 		throw new Error(`Missing required path parameter: account_slug`);
 	}
 
-	if (!member_id) {
+	if (!pathParams.member_id) {
 		throw new Error(`Missing required path parameter: member_id`);
 	}
-
 	const data = await request<
-		GetAccountMemberQueryResponse,
+		GetAccountMemberResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetAccountMemberPathParams
-	>({ method: "GET", url: `/${account_slug}/members/${member_id}`, ...requestConfig });
+		{ account_slug: string; member_id: string }
+	>({
+		method: "GET",
+		url: `/${pathParams.account_slug}/members/${pathParams.member_id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /:account_slug/members/:member_id}
+ * @link /{account_slug}/members/{member_id}
  */
-export async function updateAccountMember({
-	pathParams: { account_slug, member_id },
-	body,
-	config = {},
-}: {
-	pathParams: UpdateAccountMemberPathParams;
-	body: UpdateAccountMemberMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateAccountMember(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { account_slug: string; member_id: string };
+		body: UpdateAccountMemberData;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!account_slug) {
+	if (!pathParams.account_slug) {
 		throw new Error(`Missing required path parameter: account_slug`);
 	}
 
-	if (!member_id) {
+	if (!pathParams.member_id) {
 		throw new Error(`Missing required path parameter: member_id`);
 	}
-
 	const data = await request<
-		UpdateAccountMemberMutationResponse,
+		UpdateAccountMemberResponse,
 		ErrorWrapper<Error>,
-		UpdateAccountMemberMutationRequest,
+		UpdateAccountMemberData,
 		Record<string, string>,
 		Record<string, string>,
-		UpdateAccountMemberPathParams
-	>({ method: "PUT", url: `/${account_slug}/members/${member_id}`, body, ...requestConfig });
+		{ account_slug: string; member_id: string }
+	>({
+		method: "PUT",
+		url: `/${pathParams.account_slug}/members/${pathParams.member_id}`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /:account_slug/members/:member_id}
+ * @link /{account_slug}/members/{member_id}
  */
-export async function removeAccountMember({
-	pathParams: { account_slug, member_id },
-	config = {},
-}: {
-	pathParams: RemoveAccountMemberPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function removeAccountMember(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { account_slug: string; member_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!account_slug) {
+	if (!pathParams.account_slug) {
 		throw new Error(`Missing required path parameter: account_slug`);
 	}
 
-	if (!member_id) {
+	if (!pathParams.member_id) {
 		throw new Error(`Missing required path parameter: member_id`);
 	}
-
 	const data = await request<
-		RemoveAccountMemberMutationResponse,
+		RemoveAccountMemberResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		RemoveAccountMemberPathParams
-	>({ method: "DELETE", url: `/${account_slug}/members/${member_id}`, ...requestConfig });
+		{ account_slug: string; member_id: string }
+	>({
+		method: "DELETE",
+		url: `/${pathParams.account_slug}/members/${pathParams.member_id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /billing/payment_methods}
+ * @link /billing/payment_methods
  */
-export async function listPaymentMethodsForUser({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listPaymentMethodsForUser(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		ListPaymentMethodsForUserQueryResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		Record<string, string>
-	>({ method: "GET", url: `/billing/payment_methods`, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /accounts/types}
- */
-export async function listAccountTypesForUser({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	const data = await request<
-		ListAccountTypesForUserQueryResponse,
+		ListPaymentMethodsForUserResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "GET", url: `/accounts/types`, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/billing/payment_methods`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /accounts}
+ * @link /accounts/types
  */
-export async function listAccountsForUser({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: ListAccountsForUserQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listAccountTypesForUser(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		ListAccountsForUserQueryResponse,
+		ListAccountTypesForUserResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
-		ListAccountsForUserQueryParams,
+		Record<string, string>,
 		Record<string, string>
-	>({ method: "GET", url: `/accounts`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/accounts/types`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /accounts}
+ * @link /accounts
  */
-export async function createAccount({
-	body,
-	config = {},
-}: {
-	body: CreateAccountMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listAccountsForUser(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { minimal?: boolean };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		CreateAccountMutationResponse,
+		ListAccountsForUserResponse,
 		ErrorWrapper<Error>,
-		CreateAccountMutationRequest,
+		null,
 		Record<string, string>,
-		Record<string, string>,
+		{ minimal?: boolean },
 		Record<string, string>
-	>({ method: "POST", url: `/accounts`, body, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/accounts`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /accounts/:account_id}
+ * @link /accounts
  */
-export async function getAccount({
-	pathParams: { account_id },
-	config = {},
-}: {
-	pathParams: GetAccountPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createAccount(
+	{
+		body,
+		config,
+	}: {
+		body: CreateAccountData;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!account_id) {
+	const data = await request<
+		CreateAccountResponse,
+		ErrorWrapper<Error>,
+		CreateAccountData,
+		Record<string, string>,
+		Record<string, string>,
+		Record<string, string>
+	>({
+		method: "POST",
+		url: `/accounts`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /accounts/{account_id}
+ */
+export async function getAccount(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { account_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.account_id) {
 		throw new Error(`Missing required path parameter: account_id`);
 	}
-
 	const data = await request<
-		GetAccountQueryResponse,
+		GetAccountResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetAccountPathParams
-	>({ method: "GET", url: `/accounts/${account_id}`, ...requestConfig });
+		{ account_id: string }
+	>({
+		method: "GET",
+		url: `/accounts/${pathParams.account_id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /accounts/:account_id}
+ * @link /accounts/{account_id}
  */
-export async function updateAccount({
-	pathParams: { account_id },
-	body,
-	config = {},
-}: {
-	pathParams: UpdateAccountPathParams;
-	body?: UpdateAccountMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateAccount(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { account_id: string };
+		body?: UpdateAccountData;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!account_id) {
+	if (!pathParams.account_id) {
 		throw new Error(`Missing required path parameter: account_id`);
 	}
-
 	const data = await request<
-		UpdateAccountMutationResponse,
+		UpdateAccountResponse,
 		ErrorWrapper<Error>,
-		UpdateAccountMutationRequest,
+		UpdateAccountData,
 		Record<string, string>,
 		Record<string, string>,
-		UpdateAccountPathParams
-	>({ method: "PUT", url: `/accounts/${account_id}`, body, ...requestConfig });
+		{ account_id: string }
+	>({
+		method: "PUT",
+		url: `/accounts/${pathParams.account_id}`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /accounts/:account_id}
+ * @link /accounts/{account_id}
  */
-export async function cancelAccount({
-	pathParams: { account_id },
-	config = {},
-}: {
-	pathParams: CancelAccountPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function cancelAccount(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { account_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!account_id) {
+	if (!pathParams.account_id) {
 		throw new Error(`Missing required path parameter: account_id`);
 	}
-
 	const data = await request<
-		CancelAccountMutationResponse,
+		CancelAccountResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		CancelAccountPathParams
-	>({ method: "DELETE", url: `/accounts/${account_id}`, ...requestConfig });
+		{ account_id: string }
+	>({
+		method: "DELETE",
+		url: `/accounts/${pathParams.account_id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /accounts/:account_id/audit}
+ * @link /accounts/{account_id}/audit
  */
-export async function listAccountAuditEvents({
-	pathParams: { account_id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ListAccountAuditEventsPathParams;
-	queryParams?: ListAccountAuditEventsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listAccountAuditEvents(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { account_id: string };
+		queryParams?: { query?: string; log_type?: string; page?: number; per_page?: number };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!account_id) {
+	if (!pathParams.account_id) {
 		throw new Error(`Missing required path parameter: account_id`);
 	}
-
 	const data = await request<
-		ListAccountAuditEventsQueryResponse,
+		ListAccountAuditEventsResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
-		ListAccountAuditEventsQueryParams,
-		ListAccountAuditEventsPathParams
-	>({ method: "GET", url: `/accounts/${account_id}/audit`, queryParams, ...requestConfig });
+		{ query?: string; log_type?: string; page?: number; per_page?: number },
+		{ account_id: string }
+	>({
+		method: "GET",
+		url: `/accounts/${pathParams.account_id}/audit`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /agent_runners}
+ * @link /agent_runners
  */
-export async function listAgentRunners({
-	queryParams,
-	config = {},
-}: {
-	queryParams: ListAgentRunnersQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listAgentRunners(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			account_id?: string;
+			site_id?: string;
+			page?: number;
+			per_page?: number;
+			state?: "live" | "error";
+			title?: string;
+			branch?: string;
+			result_branch?: string;
+			from?: number;
+			to?: number;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		ListAgentRunnersQueryResponse,
+		ListAgentRunnersResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
-		ListAgentRunnersQueryParams,
+		{
+			account_id?: string;
+			site_id?: string;
+			page?: number;
+			per_page?: number;
+			state?: "live" | "error";
+			title?: string;
+			branch?: string;
+			result_branch?: string;
+			from?: number;
+			to?: number;
+		},
 		Record<string, string>
-	>({ method: "GET", url: `/agent_runners`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/agent_runners`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /agent_runners}
+ * @link /agent_runners
  */
-export async function createAgentRunner({
-	queryParams,
-	config = {},
-}: {
-	queryParams: CreateAgentRunnerQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createAgentRunner(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			site_id?: string;
+			deploy_id?: string;
+			branch?: string;
+			prompt?: string;
+			agent?: string;
+			model?: string;
+			parent_agent_runner_id?: string;
+			dev_server_image?: string;
+			file_keys?: Array<string>;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		CreateAgentRunnerMutationResponse,
-		ErrorWrapper<CreateAgentRunner404 | CreateAgentRunner422>,
+		CreateAgentRunnerResponse,
+		ErrorWrapper<CreateAgentRunnerStatus404 | CreateAgentRunnerStatus422>,
 		null,
 		Record<string, string>,
-		CreateAgentRunnerQueryParams,
+		{
+			site_id?: string;
+			deploy_id?: string;
+			branch?: string;
+			prompt?: string;
+			agent?: string;
+			model?: string;
+			parent_agent_runner_id?: string;
+			dev_server_image?: string;
+			file_keys?: Array<string>;
+		},
 		Record<string, string>
-	>({ method: "POST", url: `/agent_runners`, queryParams, ...requestConfig });
+	>({
+		method: "POST",
+		url: `/agent_runners`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /agent_runners/upload_url}
+ * @link /agent_runners/upload_url
  */
-export async function createAgentRunnerUploadUrl({
-	queryParams,
-	config = {},
-}: {
-	queryParams: CreateAgentRunnerUploadUrlQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createAgentRunnerUploadUrl(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { account_id?: string; filename?: string; content_type?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		CreateAgentRunnerUploadUrlMutationResponse,
-		ErrorWrapper<CreateAgentRunnerUploadUrl400 | CreateAgentRunnerUploadUrl422>,
+		CreateAgentRunnerUploadUrlResponse,
+		ErrorWrapper<CreateAgentRunnerUploadUrlStatus400 | CreateAgentRunnerUploadUrlStatus422>,
 		null,
 		Record<string, string>,
-		CreateAgentRunnerUploadUrlQueryParams,
+		{ account_id?: string; filename?: string; content_type?: string },
 		Record<string, string>
-	>({ method: "POST", url: `/agent_runners/upload_url`, queryParams, ...requestConfig });
+	>({
+		method: "POST",
+		url: `/agent_runners/upload_url`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /agent_runners/:agent_runner_id}
+ * @link /agent_runners/{agent_runner_id}
  */
-export async function getAgentRunner({
-	pathParams: { agent_runner_id },
-	config = {},
-}: {
-	pathParams: GetAgentRunnerPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getAgentRunner(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { agent_runner_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!agent_runner_id) {
+	if (!pathParams.agent_runner_id) {
 		throw new Error(`Missing required path parameter: agent_runner_id`);
 	}
-
 	const data = await request<
-		GetAgentRunnerQueryResponse,
+		GetAgentRunnerResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetAgentRunnerPathParams
-	>({ method: "GET", url: `/agent_runners/${agent_runner_id}`, ...requestConfig });
+		{ agent_runner_id: string }
+	>({
+		method: "GET",
+		url: `/agent_runners/${pathParams.agent_runner_id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /agent_runners/:agent_runner_id}
+ * @link /agent_runners/{agent_runner_id}
  */
-export async function updateAgentRunner({
-	pathParams: { agent_runner_id },
-	config = {},
-}: {
-	pathParams: UpdateAgentRunnerPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateAgentRunner(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { agent_runner_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!agent_runner_id) {
+	if (!pathParams.agent_runner_id) {
 		throw new Error(`Missing required path parameter: agent_runner_id`);
 	}
-
 	const data = await request<
-		UpdateAgentRunnerMutationResponse,
+		UpdateAgentRunnerResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		UpdateAgentRunnerPathParams
-	>({ method: "PATCH", url: `/agent_runners/${agent_runner_id}`, ...requestConfig });
+		{ agent_runner_id: string }
+	>({
+		method: "PATCH",
+		url: `/agent_runners/${pathParams.agent_runner_id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /agent_runners/:agent_runner_id}
+ * @link /agent_runners/{agent_runner_id}
  */
-export async function deleteAgentRunner({
-	pathParams: { agent_runner_id },
-	config = {},
-}: {
-	pathParams: DeleteAgentRunnerPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteAgentRunner(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { agent_runner_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!agent_runner_id) {
+	if (!pathParams.agent_runner_id) {
 		throw new Error(`Missing required path parameter: agent_runner_id`);
 	}
-
 	const data = await request<
-		DeleteAgentRunnerMutationResponse,
+		DeleteAgentRunnerResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		DeleteAgentRunnerPathParams
-	>({ method: "DELETE", url: `/agent_runners/${agent_runner_id}`, ...requestConfig });
+		{ agent_runner_id: string }
+	>({
+		method: "DELETE",
+		url: `/agent_runners/${pathParams.agent_runner_id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /agent_runners/:agent_runner_id/archive}
+ * @link /agent_runners/{agent_runner_id}/archive
  */
-export async function archiveAgentRunner({
-	pathParams: { agent_runner_id },
-	config = {},
-}: {
-	pathParams: ArchiveAgentRunnerPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function archiveAgentRunner(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { agent_runner_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!agent_runner_id) {
+	if (!pathParams.agent_runner_id) {
 		throw new Error(`Missing required path parameter: agent_runner_id`);
 	}
-
 	const data = await request<
-		ArchiveAgentRunnerMutationResponse,
-		ErrorWrapper<ArchiveAgentRunner404 | ArchiveAgentRunner422>,
+		ArchiveAgentRunnerResponse,
+		ErrorWrapper<ArchiveAgentRunnerStatus404 | ArchiveAgentRunnerStatus422>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		ArchiveAgentRunnerPathParams
-	>({ method: "POST", url: `/agent_runners/${agent_runner_id}/archive`, ...requestConfig });
+		{ agent_runner_id: string }
+	>({
+		method: "POST",
+		url: `/agent_runners/${pathParams.agent_runner_id}/archive`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /agent_runners/:agent_runner_id/pull_request}
+ * @link /agent_runners/{agent_runner_id}/pull_request
  */
-export async function agentRunnerPullRequest({
-	pathParams: { agent_runner_id },
-	config = {},
-}: {
-	pathParams: AgentRunnerPullRequestPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function agentRunnerPullRequest(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { agent_runner_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!agent_runner_id) {
+	if (!pathParams.agent_runner_id) {
 		throw new Error(`Missing required path parameter: agent_runner_id`);
 	}
-
 	const data = await request<
-		AgentRunnerPullRequestMutationResponse,
-		ErrorWrapper<AgentRunnerPullRequest400 | AgentRunnerPullRequest409 | AgentRunnerPullRequest422>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		AgentRunnerPullRequestPathParams
-	>({ method: "POST", url: `/agent_runners/${agent_runner_id}/pull_request`, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /agent_runners/:agent_runner_id/commit}
- */
-export async function agentRunnerCommitToBranch({
-	pathParams: { agent_runner_id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: AgentRunnerCommitToBranchPathParams;
-	queryParams: AgentRunnerCommitToBranchQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!agent_runner_id) {
-		throw new Error(`Missing required path parameter: agent_runner_id`);
-	}
-
-	const data = await request<
-		AgentRunnerCommitToBranchMutationResponse,
+		AgentRunnerPullRequestResponse,
 		ErrorWrapper<
-			AgentRunnerCommitToBranch400 | AgentRunnerCommitToBranch409 | AgentRunnerCommitToBranch422
+			| AgentRunnerPullRequestStatus400
+			| AgentRunnerPullRequestStatus409
+			| AgentRunnerPullRequestStatus422
 		>,
 		null,
 		Record<string, string>,
-		AgentRunnerCommitToBranchQueryParams,
-		AgentRunnerCommitToBranchPathParams
+		Record<string, string>,
+		{ agent_runner_id: string }
 	>({
 		method: "POST",
-		url: `/agent_runners/${agent_runner_id}/commit`,
-		queryParams,
+		url: `/agent_runners/${pathParams.agent_runner_id}/pull_request`,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * {@link /agent_runners/:agent_runner_id/sessions}
+ * @link /agent_runners/{agent_runner_id}/commit
  */
-export async function listAgentRunnerSessions({
-	pathParams: { agent_runner_id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ListAgentRunnerSessionsPathParams;
-	queryParams?: ListAgentRunnerSessionsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!agent_runner_id) {
-		throw new Error(`Missing required path parameter: agent_runner_id`);
-	}
-
-	const data = await request<
-		ListAgentRunnerSessionsQueryResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		ListAgentRunnerSessionsQueryParams,
-		ListAgentRunnerSessionsPathParams
-	>({
-		method: "GET",
-		url: `/agent_runners/${agent_runner_id}/sessions`,
+export async function agentRunnerCommitToBranch(
+	{
+		pathParams,
 		queryParams,
-		...requestConfig,
-	});
-	return data;
-}
+		config,
+	}: {
+		pathParams: { agent_runner_id: string };
+		queryParams?: { target_branch?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-/**
- * {@link /agent_runners/:agent_runner_id/sessions}
- */
-export async function createAgentRunnerSession({
-	pathParams: { agent_runner_id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: CreateAgentRunnerSessionPathParams;
-	queryParams?: CreateAgentRunnerSessionQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!agent_runner_id) {
+	if (!pathParams.agent_runner_id) {
 		throw new Error(`Missing required path parameter: agent_runner_id`);
 	}
-
 	const data = await request<
-		CreateAgentRunnerSessionMutationResponse,
-		ErrorWrapper<CreateAgentRunnerSession404 | CreateAgentRunnerSession422>,
+		AgentRunnerCommitToBranchResponse,
+		ErrorWrapper<
+			| AgentRunnerCommitToBranchStatus400
+			| AgentRunnerCommitToBranchStatus409
+			| AgentRunnerCommitToBranchStatus422
+		>,
 		null,
 		Record<string, string>,
-		CreateAgentRunnerSessionQueryParams,
-		CreateAgentRunnerSessionPathParams
+		{ target_branch?: string },
+		{ agent_runner_id: string }
 	>({
 		method: "POST",
-		url: `/agent_runners/${agent_runner_id}/sessions`,
+		url: `/agent_runners/${pathParams.agent_runner_id}/commit`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * {@link /agent_runners/:agent_runner_id/sessions/:agent_runner_session_id}
+ * @link /agent_runners/{agent_runner_id}/sessions
  */
-export async function getAgentRunnerSession({
-	pathParams: { agent_runner_id, agent_runner_session_id },
-	config = {},
-}: {
-	pathParams: GetAgentRunnerSessionPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listAgentRunnerSessions(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { agent_runner_id: string };
+		queryParams?: {
+			page?: number;
+			per_page?: number;
+			state?: "live" | "error";
+			from?: number;
+			to?: number;
+			order_by?: "asc" | "desc";
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!agent_runner_id) {
+	if (!pathParams.agent_runner_id) {
 		throw new Error(`Missing required path parameter: agent_runner_id`);
 	}
-
-	if (!agent_runner_session_id) {
-		throw new Error(`Missing required path parameter: agent_runner_session_id`);
-	}
-
 	const data = await request<
-		GetAgentRunnerSessionQueryResponse,
+		ListAgentRunnerSessionsResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
-		Record<string, string>,
-		GetAgentRunnerSessionPathParams
+		{
+			page?: number;
+			per_page?: number;
+			state?: "live" | "error";
+			from?: number;
+			to?: number;
+			order_by?: "asc" | "desc";
+		},
+		{ agent_runner_id: string }
 	>({
 		method: "GET",
-		url: `/agent_runners/${agent_runner_id}/sessions/${agent_runner_session_id}`,
+		url: `/agent_runners/${pathParams.agent_runner_id}/sessions`,
+		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * {@link /agent_runners/:agent_runner_id/sessions/:agent_runner_session_id}
+ * @link /agent_runners/{agent_runner_id}/sessions
  */
-export async function updateAgentRunnerSession({
-	pathParams: { agent_runner_id, agent_runner_session_id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: UpdateAgentRunnerSessionPathParams;
-	queryParams?: UpdateAgentRunnerSessionQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createAgentRunnerSession(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { agent_runner_id: string };
+		queryParams?: { prompt?: string; agent?: string; model?: string; file_keys?: Array<string> };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!agent_runner_id) {
+	if (!pathParams.agent_runner_id) {
+		throw new Error(`Missing required path parameter: agent_runner_id`);
+	}
+	const data = await request<
+		CreateAgentRunnerSessionResponse,
+		ErrorWrapper<CreateAgentRunnerSessionStatus404 | CreateAgentRunnerSessionStatus422>,
+		null,
+		Record<string, string>,
+		{ prompt?: string; agent?: string; model?: string; file_keys?: Array<string> },
+		{ agent_runner_id: string }
+	>({
+		method: "POST",
+		url: `/agent_runners/${pathParams.agent_runner_id}/sessions`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /agent_runners/{agent_runner_id}/sessions/{agent_runner_session_id}
+ */
+export async function getAgentRunnerSession(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { agent_runner_id: string; agent_runner_session_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.agent_runner_id) {
 		throw new Error(`Missing required path parameter: agent_runner_id`);
 	}
 
-	if (!agent_runner_session_id) {
+	if (!pathParams.agent_runner_session_id) {
 		throw new Error(`Missing required path parameter: agent_runner_session_id`);
 	}
-
 	const data = await request<
-		UpdateAgentRunnerSessionMutationResponse,
+		GetAgentRunnerSessionResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
-		UpdateAgentRunnerSessionQueryParams,
-		UpdateAgentRunnerSessionPathParams
+		Record<string, string>,
+		{ agent_runner_id: string; agent_runner_session_id: string }
+	>({
+		method: "GET",
+		url: `/agent_runners/${pathParams.agent_runner_id}/sessions/${pathParams.agent_runner_session_id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /agent_runners/{agent_runner_id}/sessions/{agent_runner_session_id}
+ */
+export async function updateAgentRunnerSession(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { agent_runner_id: string; agent_runner_session_id: string };
+		queryParams?: { is_published?: boolean };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.agent_runner_id) {
+		throw new Error(`Missing required path parameter: agent_runner_id`);
+	}
+
+	if (!pathParams.agent_runner_session_id) {
+		throw new Error(`Missing required path parameter: agent_runner_session_id`);
+	}
+	const data = await request<
+		UpdateAgentRunnerSessionResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		{ is_published?: boolean },
+		{ agent_runner_id: string; agent_runner_session_id: string }
 	>({
 		method: "PATCH",
-		url: `/agent_runners/${agent_runner_id}/sessions/${agent_runner_session_id}`,
+		url: `/agent_runners/${pathParams.agent_runner_id}/sessions/${pathParams.agent_runner_session_id}`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * {@link /agent_runners/:agent_runner_id/sessions/:agent_runner_session_id}
+ * @link /agent_runners/{agent_runner_id}/sessions/{agent_runner_session_id}
  */
-export async function deleteAgentRunnerSession({
-	pathParams: { agent_runner_id, agent_runner_session_id },
-	config = {},
-}: {
-	pathParams: DeleteAgentRunnerSessionPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteAgentRunnerSession(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { agent_runner_id: string; agent_runner_session_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!agent_runner_id) {
+	if (!pathParams.agent_runner_id) {
 		throw new Error(`Missing required path parameter: agent_runner_id`);
 	}
 
-	if (!agent_runner_session_id) {
+	if (!pathParams.agent_runner_session_id) {
 		throw new Error(`Missing required path parameter: agent_runner_session_id`);
 	}
-
 	const data = await request<
-		DeleteAgentRunnerSessionMutationResponse,
+		DeleteAgentRunnerSessionResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		DeleteAgentRunnerSessionPathParams
+		{ agent_runner_id: string; agent_runner_session_id: string }
 	>({
 		method: "DELETE",
-		url: `/agent_runners/${agent_runner_id}/sessions/${agent_runner_session_id}`,
+		url: `/agent_runners/${pathParams.agent_runner_id}/sessions/${pathParams.agent_runner_session_id}`,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * {@link /submissions/:submission_id}
+ * @link /submissions/{submission_id}
  */
-export async function listFormSubmission({
-	pathParams: { submission_id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ListFormSubmissionPathParams;
-	queryParams?: ListFormSubmissionQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listFormSubmission(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { submission_id: string };
+		queryParams?: { query?: string; page?: number; per_page?: number };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!submission_id) {
+	if (!pathParams.submission_id) {
 		throw new Error(`Missing required path parameter: submission_id`);
 	}
-
 	const data = await request<
-		ListFormSubmissionQueryResponse,
+		ListFormSubmissionResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
-		ListFormSubmissionQueryParams,
-		ListFormSubmissionPathParams
-	>({ method: "GET", url: `/submissions/${submission_id}`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /submissions/:submission_id}
- */
-export async function deleteSubmission({
-	pathParams: { submission_id },
-	config = {},
-}: {
-	pathParams: DeleteSubmissionPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!submission_id) {
-		throw new Error(`Missing required path parameter: submission_id`);
-	}
-
-	const data = await request<
-		DeleteSubmissionMutationResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		DeleteSubmissionPathParams
-	>({ method: "DELETE", url: `/submissions/${submission_id}`, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /sites/:site_id/service-instances}
- */
-export async function listServiceInstancesForSite({
-	pathParams: { site_id },
-	config = {},
-}: {
-	pathParams: ListServiceInstancesForSitePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!site_id) {
-		throw new Error(`Missing required path parameter: site_id`);
-	}
-
-	const data = await request<
-		ListServiceInstancesForSiteQueryResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		ListServiceInstancesForSitePathParams
-	>({ method: "GET", url: `/sites/${site_id}/service-instances`, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /sites/:site_id/services/:addon/instances}
- */
-export async function createServiceInstance({
-	pathParams: { site_id, addon },
-	config = {},
-}: {
-	pathParams: CreateServiceInstancePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!site_id) {
-		throw new Error(`Missing required path parameter: site_id`);
-	}
-
-	if (!addon) {
-		throw new Error(`Missing required path parameter: addon`);
-	}
-
-	const data = await request<
-		CreateServiceInstanceMutationResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		CreateServiceInstancePathParams
-	>({ method: "POST", url: `/sites/${site_id}/services/${addon}/instances`, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /sites/:site_id/services/:addon/instances/:instance_id}
- */
-export async function showServiceInstance({
-	pathParams: { site_id, addon, instance_id },
-	config = {},
-}: {
-	pathParams: ShowServiceInstancePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!site_id) {
-		throw new Error(`Missing required path parameter: site_id`);
-	}
-
-	if (!addon) {
-		throw new Error(`Missing required path parameter: addon`);
-	}
-
-	if (!instance_id) {
-		throw new Error(`Missing required path parameter: instance_id`);
-	}
-
-	const data = await request<
-		ShowServiceInstanceQueryResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		ShowServiceInstancePathParams
+		{ query?: string; page?: number; per_page?: number },
+		{ submission_id: string }
 	>({
 		method: "GET",
-		url: `/sites/${site_id}/services/${addon}/instances/${instance_id}`,
+		url: `/submissions/${pathParams.submission_id}`,
+		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * {@link /sites/:site_id/services/:addon/instances/:instance_id}
+ * @link /submissions/{submission_id}
  */
-export async function updateServiceInstance({
-	pathParams: { site_id, addon, instance_id },
-	config = {},
-}: {
-	pathParams: UpdateServiceInstancePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteSubmission(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { submission_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!site_id) {
-		throw new Error(`Missing required path parameter: site_id`);
+	if (!pathParams.submission_id) {
+		throw new Error(`Missing required path parameter: submission_id`);
 	}
-
-	if (!addon) {
-		throw new Error(`Missing required path parameter: addon`);
-	}
-
-	if (!instance_id) {
-		throw new Error(`Missing required path parameter: instance_id`);
-	}
-
 	const data = await request<
-		UpdateServiceInstanceMutationResponse,
+		DeleteSubmissionResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		UpdateServiceInstancePathParams
+		{ submission_id: string }
+	>({
+		method: "DELETE",
+		url: `/submissions/${pathParams.submission_id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /sites/{site_id}/service-instances
+ */
+export async function listServiceInstancesForSite(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+	const data = await request<
+		ListServiceInstancesForSiteResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ site_id: string }
+	>({
+		method: "GET",
+		url: `/sites/${pathParams.site_id}/service-instances`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /sites/{site_id}/services/{addon}/instances
+ */
+export async function createServiceInstance(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { site_id: string; addon: string };
+		body?: CreateServiceInstanceData;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+
+	if (!pathParams.addon) {
+		throw new Error(`Missing required path parameter: addon`);
+	}
+	const data = await request<
+		CreateServiceInstanceResponse,
+		ErrorWrapper<Error>,
+		CreateServiceInstanceData,
+		Record<string, string>,
+		Record<string, string>,
+		{ site_id: string; addon: string }
+	>({
+		method: "POST",
+		url: `/sites/${pathParams.site_id}/services/${pathParams.addon}/instances`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /sites/{site_id}/services/{addon}/instances/{instance_id}
+ */
+export async function showServiceInstance(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string; addon: string; instance_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+
+	if (!pathParams.addon) {
+		throw new Error(`Missing required path parameter: addon`);
+	}
+
+	if (!pathParams.instance_id) {
+		throw new Error(`Missing required path parameter: instance_id`);
+	}
+	const data = await request<
+		ShowServiceInstanceResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ site_id: string; addon: string; instance_id: string }
+	>({
+		method: "GET",
+		url: `/sites/${pathParams.site_id}/services/${pathParams.addon}/instances/${pathParams.instance_id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /sites/{site_id}/services/{addon}/instances/{instance_id}
+ */
+export async function updateServiceInstance(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { site_id: string; addon: string; instance_id: string };
+		body?: UpdateServiceInstanceData;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+
+	if (!pathParams.addon) {
+		throw new Error(`Missing required path parameter: addon`);
+	}
+
+	if (!pathParams.instance_id) {
+		throw new Error(`Missing required path parameter: instance_id`);
+	}
+	const data = await request<
+		UpdateServiceInstanceResponse,
+		ErrorWrapper<Error>,
+		UpdateServiceInstanceData,
+		Record<string, string>,
+		Record<string, string>,
+		{ site_id: string; addon: string; instance_id: string }
 	>({
 		method: "PUT",
-		url: `/sites/${site_id}/services/${addon}/instances/${instance_id}`,
+		url: `/sites/${pathParams.site_id}/services/${pathParams.addon}/instances/${pathParams.instance_id}`,
+		body: body,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * {@link /sites/:site_id/services/:addon/instances/:instance_id}
+ * @link /sites/{site_id}/services/{addon}/instances/{instance_id}
  */
-export async function deleteServiceInstance({
-	pathParams: { site_id, addon, instance_id },
-	config = {},
-}: {
-	pathParams: DeleteServiceInstancePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteServiceInstance(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string; addon: string; instance_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!site_id) {
+	if (!pathParams.site_id) {
 		throw new Error(`Missing required path parameter: site_id`);
 	}
 
-	if (!addon) {
+	if (!pathParams.addon) {
 		throw new Error(`Missing required path parameter: addon`);
 	}
 
-	if (!instance_id) {
+	if (!pathParams.instance_id) {
 		throw new Error(`Missing required path parameter: instance_id`);
 	}
-
 	const data = await request<
-		DeleteServiceInstanceMutationResponse,
+		DeleteServiceInstanceResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		DeleteServiceInstancePathParams
+		{ site_id: string; addon: string; instance_id: string }
 	>({
 		method: "DELETE",
-		url: `/sites/${site_id}/services/${addon}/instances/${instance_id}`,
+		url: `/sites/${pathParams.site_id}/services/${pathParams.addon}/instances/${pathParams.instance_id}`,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * {@link /services/}
+ * @link /services/
  */
-export async function getServices({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: GetServicesQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getServices(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { search?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetServicesQueryResponse,
+		GetServicesResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
-		GetServicesQueryParams,
+		{ search?: string },
 		Record<string, string>
-	>({ method: "GET", url: `/services/`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/services/`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /services/:addonName}
+ * @link /services/{addonName}
  */
-export async function showService({
-	pathParams: { addonName },
-	config = {},
-}: {
-	pathParams: ShowServicePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function showService(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { addonName: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!addonName) {
+	if (!pathParams.addonName) {
 		throw new Error(`Missing required path parameter: addonName`);
 	}
-
 	const data = await request<
-		ShowServiceQueryResponse,
+		ShowServiceResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		ShowServicePathParams
-	>({ method: "GET", url: `/services/${addonName}`, ...requestConfig });
+		{ addonName: string }
+	>({
+		method: "GET",
+		url: `/services/${pathParams.addonName}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /services/:addonName/manifest}
+ * @link /services/{addonName}/manifest
  */
-export async function showServiceManifest({
-	pathParams: { addonName },
-	config = {},
-}: {
-	pathParams: ShowServiceManifestPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function showServiceManifest(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { addonName: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!addonName) {
+	if (!pathParams.addonName) {
 		throw new Error(`Missing required path parameter: addonName`);
 	}
-
 	const data = await request<
-		ShowServiceManifestQueryResponse,
+		ShowServiceManifestResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		ShowServiceManifestPathParams
-	>({ method: "GET", url: `/services/${addonName}/manifest`, ...requestConfig });
+		{ addonName: string }
+	>({
+		method: "GET",
+		url: `/services/${pathParams.addonName}/manifest`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /user}
+ * @link /user
  */
-export async function getCurrentUser({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getCurrentUser(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetCurrentUserQueryResponse,
+		GetCurrentUserResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "GET", url: `/user`, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /sites/:site_id/traffic_splits}
- */
-export async function createSplitTest({
-	pathParams: { site_id },
-	config = {},
-}: {
-	pathParams: CreateSplitTestPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!site_id) {
-		throw new Error(`Missing required path parameter: site_id`);
-	}
-
-	const data = await request<
-		CreateSplitTestMutationResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		CreateSplitTestPathParams
-	>({ method: "POST", url: `/sites/${site_id}/traffic_splits`, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /sites/:site_id/traffic_splits}
- */
-export async function getSplitTests({
-	pathParams: { site_id },
-	config = {},
-}: {
-	pathParams: GetSplitTestsPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!site_id) {
-		throw new Error(`Missing required path parameter: site_id`);
-	}
-
-	const data = await request<
-		GetSplitTestsQueryResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		GetSplitTestsPathParams
-	>({ method: "GET", url: `/sites/${site_id}/traffic_splits`, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /sites/:site_id/traffic_splits/:split_test_id}
- */
-export async function updateSplitTest({
-	pathParams: { site_id, split_test_id },
-	config = {},
-}: {
-	pathParams: UpdateSplitTestPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!site_id) {
-		throw new Error(`Missing required path parameter: site_id`);
-	}
-
-	if (!split_test_id) {
-		throw new Error(`Missing required path parameter: split_test_id`);
-	}
-
-	const data = await request<
-		UpdateSplitTestMutationResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		UpdateSplitTestPathParams
-	>({ method: "PUT", url: `/sites/${site_id}/traffic_splits/${split_test_id}`, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /sites/:site_id/traffic_splits/:split_test_id}
- */
-export async function getSplitTest({
-	pathParams: { site_id, split_test_id },
-	config = {},
-}: {
-	pathParams: GetSplitTestPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!site_id) {
-		throw new Error(`Missing required path parameter: site_id`);
-	}
-
-	if (!split_test_id) {
-		throw new Error(`Missing required path parameter: split_test_id`);
-	}
-
-	const data = await request<
-		GetSplitTestQueryResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		GetSplitTestPathParams
-	>({ method: "GET", url: `/sites/${site_id}/traffic_splits/${split_test_id}`, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /sites/:site_id/traffic_splits/:split_test_id/publish}
- */
-export async function enableSplitTest({
-	pathParams: { site_id, split_test_id },
-	config = {},
-}: {
-	pathParams: EnableSplitTestPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!site_id) {
-		throw new Error(`Missing required path parameter: site_id`);
-	}
-
-	if (!split_test_id) {
-		throw new Error(`Missing required path parameter: split_test_id`);
-	}
-
-	const data = await request<
-		EnableSplitTestMutationResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		EnableSplitTestPathParams
 	>({
-		method: "POST",
-		url: `/sites/${site_id}/traffic_splits/${split_test_id}/publish`,
+		method: "GET",
+		url: `/user`,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * {@link /sites/:site_id/traffic_splits/:split_test_id/unpublish}
+ * @link /sites/{site_id}/traffic_splits
  */
-export async function disableSplitTest({
-	pathParams: { site_id, split_test_id },
-	config = {},
-}: {
-	pathParams: DisableSplitTestPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!site_id) {
-		throw new Error(`Missing required path parameter: site_id`);
-	}
-
-	if (!split_test_id) {
-		throw new Error(`Missing required path parameter: split_test_id`);
-	}
-
-	const data = await request<
-		DisableSplitTestMutationResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		DisableSplitTestPathParams
-	>({
-		method: "POST",
-		url: `/sites/${site_id}/traffic_splits/${split_test_id}/unpublish`,
-		...requestConfig,
-	});
-	return data;
-}
-
-/**
- * {@link /dns_zones}
- */
-export async function createDnsZone({
-	body,
-	config = {},
-}: {
-	body: CreateDnsZoneMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	const data = await request<
-		CreateDnsZoneMutationResponse,
-		ErrorWrapper<Error>,
-		CreateDnsZoneMutationRequest,
-		Record<string, string>,
-		Record<string, string>,
-		Record<string, string>
-	>({ method: "POST", url: `/dns_zones`, body, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /dns_zones}
- */
-export async function getDnsZones({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: GetDnsZonesQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	const data = await request<
-		GetDnsZonesQueryResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		GetDnsZonesQueryParams,
-		Record<string, string>
-	>({ method: "GET", url: `/dns_zones`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /dns_zones/:zone_id}
- */
-export async function getDnsZone({
-	pathParams: { zone_id },
-	config = {},
-}: {
-	pathParams: GetDnsZonePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!zone_id) {
-		throw new Error(`Missing required path parameter: zone_id`);
-	}
-
-	const data = await request<
-		GetDnsZoneQueryResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		GetDnsZonePathParams
-	>({ method: "GET", url: `/dns_zones/${zone_id}`, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /dns_zones/:zone_id}
- */
-export async function deleteDnsZone({
-	pathParams: { zone_id },
-	config = {},
-}: {
-	pathParams: DeleteDnsZonePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!zone_id) {
-		throw new Error(`Missing required path parameter: zone_id`);
-	}
-
-	const data = await request<
-		DeleteDnsZoneMutationResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		DeleteDnsZonePathParams
-	>({ method: "DELETE", url: `/dns_zones/${zone_id}`, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /dns_zones/:zone_id/transfer}
- */
-export async function transferDnsZone({
-	pathParams: { zone_id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: TransferDnsZonePathParams;
-	queryParams: TransferDnsZoneQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!zone_id) {
-		throw new Error(`Missing required path parameter: zone_id`);
-	}
-
-	const data = await request<
-		TransferDnsZoneMutationResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		TransferDnsZoneQueryParams,
-		TransferDnsZonePathParams
-	>({ method: "PUT", url: `/dns_zones/${zone_id}/transfer`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /dns_zones/:zone_id/dns_records}
- */
-export async function getDnsRecords({
-	pathParams: { zone_id },
-	config = {},
-}: {
-	pathParams: GetDnsRecordsPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!zone_id) {
-		throw new Error(`Missing required path parameter: zone_id`);
-	}
-
-	const data = await request<
-		GetDnsRecordsQueryResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		GetDnsRecordsPathParams
-	>({ method: "GET", url: `/dns_zones/${zone_id}/dns_records`, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /dns_zones/:zone_id/dns_records}
- */
-export async function createDnsRecord({
-	pathParams: { zone_id },
-	body,
-	config = {},
-}: {
-	pathParams: CreateDnsRecordPathParams;
-	body: CreateDnsRecordMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!zone_id) {
-		throw new Error(`Missing required path parameter: zone_id`);
-	}
-
-	const data = await request<
-		CreateDnsRecordMutationResponse,
-		ErrorWrapper<Error>,
-		CreateDnsRecordMutationRequest,
-		Record<string, string>,
-		Record<string, string>,
-		CreateDnsRecordPathParams
-	>({ method: "POST", url: `/dns_zones/${zone_id}/dns_records`, body, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /dns_zones/:zone_id/dns_records/:dns_record_id}
- */
-export async function getIndividualDnsRecord({
-	pathParams: { zone_id, dns_record_id },
-	config = {},
-}: {
-	pathParams: GetIndividualDnsRecordPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!zone_id) {
-		throw new Error(`Missing required path parameter: zone_id`);
-	}
-
-	if (!dns_record_id) {
-		throw new Error(`Missing required path parameter: dns_record_id`);
-	}
-
-	const data = await request<
-		GetIndividualDnsRecordQueryResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		GetIndividualDnsRecordPathParams
-	>({ method: "GET", url: `/dns_zones/${zone_id}/dns_records/${dns_record_id}`, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /dns_zones/:zone_id/dns_records/:dns_record_id}
- */
-export async function deleteDnsRecord({
-	pathParams: { zone_id, dns_record_id },
-	config = {},
-}: {
-	pathParams: DeleteDnsRecordPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!zone_id) {
-		throw new Error(`Missing required path parameter: zone_id`);
-	}
-
-	if (!dns_record_id) {
-		throw new Error(`Missing required path parameter: dns_record_id`);
-	}
-
-	const data = await request<
-		DeleteDnsRecordMutationResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		DeleteDnsRecordPathParams
-	>({
-		method: "DELETE",
-		url: `/dns_zones/${zone_id}/dns_records/${dns_record_id}`,
-		...requestConfig,
-	});
-	return data;
-}
-
-/**
- * {@link /sites/:site_id/dev_servers}
- */
-export async function listSiteDevServers({
-	pathParams: { site_id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ListSiteDevServersPathParams;
-	queryParams?: ListSiteDevServersQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!site_id) {
-		throw new Error(`Missing required path parameter: site_id`);
-	}
-
-	const data = await request<
-		ListSiteDevServersQueryResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		ListSiteDevServersQueryParams,
-		ListSiteDevServersPathParams
-	>({ method: "GET", url: `/sites/${site_id}/dev_servers`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /sites/:site_id/dev_servers}
- */
-export async function createSiteDevServer({
-	pathParams: { site_id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: CreateSiteDevServerPathParams;
-	queryParams?: CreateSiteDevServerQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!site_id) {
-		throw new Error(`Missing required path parameter: site_id`);
-	}
-
-	const data = await request<
-		CreateSiteDevServerMutationResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		CreateSiteDevServerQueryParams,
-		CreateSiteDevServerPathParams
-	>({ method: "POST", url: `/sites/${site_id}/dev_servers`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /sites/:site_id/dev_servers}
- */
-export async function deleteSiteDevServers({
-	pathParams: { site_id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: DeleteSiteDevServersPathParams;
-	queryParams?: DeleteSiteDevServersQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!site_id) {
-		throw new Error(`Missing required path parameter: site_id`);
-	}
-
-	const data = await request<
-		DeleteSiteDevServersMutationResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		DeleteSiteDevServersQueryParams,
-		DeleteSiteDevServersPathParams
-	>({ method: "DELETE", url: `/sites/${site_id}/dev_servers`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /sites/:site_id/dev_servers/:dev_server_id}
- */
-export async function getSiteDevServer({
-	pathParams: { site_id, dev_server_id },
-	config = {},
-}: {
-	pathParams: GetSiteDevServerPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!site_id) {
-		throw new Error(`Missing required path parameter: site_id`);
-	}
-
-	if (!dev_server_id) {
-		throw new Error(`Missing required path parameter: dev_server_id`);
-	}
-
-	const data = await request<
-		GetSiteDevServerQueryResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		GetSiteDevServerPathParams
-	>({ method: "GET", url: `/sites/${site_id}/dev_servers/${dev_server_id}`, ...requestConfig });
-	return data;
-}
-
-/**
- * {@link /sites/:site_id/dev_servers/:dev_server_id/activity}
- */
-export async function markDevServerActivity({
-	pathParams: { site_id, dev_server_id },
-	config = {},
-}: {
-	pathParams: MarkDevServerActivityPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!site_id) {
-		throw new Error(`Missing required path parameter: site_id`);
-	}
-
-	if (!dev_server_id) {
-		throw new Error(`Missing required path parameter: dev_server_id`);
-	}
-
-	const data = await request<
-		MarkDevServerActivityMutationResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		MarkDevServerActivityPathParams
-	>({
-		method: "POST",
-		url: `/sites/${site_id}/dev_servers/${dev_server_id}/activity`,
-		...requestConfig,
-	});
-	return data;
-}
-
-/**
- * {@link /sites/:site_id/dev_servers/:dev_server_id/state}
- */
-export async function updateDevServerState({
-	pathParams: { site_id, dev_server_id },
-	body,
-	config = {},
-}: {
-	pathParams: UpdateDevServerStatePathParams;
-	body: UpdateDevServerStateMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!site_id) {
-		throw new Error(`Missing required path parameter: site_id`);
-	}
-
-	if (!dev_server_id) {
-		throw new Error(`Missing required path parameter: dev_server_id`);
-	}
-
-	const data = await request<
-		UpdateDevServerStateMutationResponse,
-		ErrorWrapper<UpdateDevServerState409>,
-		UpdateDevServerStateMutationRequest,
-		Record<string, string>,
-		Record<string, string>,
-		UpdateDevServerStatePathParams
-	>({
-		method: "POST",
-		url: `/sites/${site_id}/dev_servers/${dev_server_id}/state`,
+export async function createSplitTest(
+	{
+		pathParams,
 		body,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		body?: CreateSplitTestData;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+	const data = await request<
+		CreateSplitTestResponse,
+		ErrorWrapper<Error>,
+		CreateSplitTestData,
+		Record<string, string>,
+		Record<string, string>,
+		{ site_id: string }
+	>({
+		method: "POST",
+		url: `/sites/${pathParams.site_id}/traffic_splits`,
+		body: body,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * {@link /sites/:site_id/dev_server_hooks}
+ * @link /sites/{site_id}/traffic_splits
  */
-export async function listSiteDevServerHooks({
-	pathParams: { site_id },
-	config = {},
-}: {
-	pathParams: ListSiteDevServerHooksPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getSplitTests(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!site_id) {
+	if (!pathParams.site_id) {
 		throw new Error(`Missing required path parameter: site_id`);
 	}
-
 	const data = await request<
-		ListSiteDevServerHooksQueryResponse,
+		GetSplitTestsResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		ListSiteDevServerHooksPathParams
-	>({ method: "GET", url: `/sites/${site_id}/dev_server_hooks`, ...requestConfig });
+		{ site_id: string }
+	>({
+		method: "GET",
+		url: `/sites/${pathParams.site_id}/traffic_splits`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /sites/:site_id/dev_server_hooks}
+ * @link /sites/{site_id}/traffic_splits/{split_test_id}
  */
-export async function createSiteDevServerHook({
-	pathParams: { site_id },
-	config = {},
-}: {
-	pathParams: CreateSiteDevServerHookPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateSplitTest(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { site_id: string; split_test_id: string };
+		body?: UpdateSplitTestData;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!site_id) {
+	if (!pathParams.site_id) {
 		throw new Error(`Missing required path parameter: site_id`);
 	}
 
+	if (!pathParams.split_test_id) {
+		throw new Error(`Missing required path parameter: split_test_id`);
+	}
 	const data = await request<
-		CreateSiteDevServerHookMutationResponse,
+		UpdateSplitTestResponse,
+		ErrorWrapper<Error>,
+		UpdateSplitTestData,
+		Record<string, string>,
+		Record<string, string>,
+		{ site_id: string; split_test_id: string }
+	>({
+		method: "PUT",
+		url: `/sites/${pathParams.site_id}/traffic_splits/${pathParams.split_test_id}`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /sites/{site_id}/traffic_splits/{split_test_id}
+ */
+export async function getSplitTest(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string; split_test_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+
+	if (!pathParams.split_test_id) {
+		throw new Error(`Missing required path parameter: split_test_id`);
+	}
+	const data = await request<
+		GetSplitTestResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		CreateSiteDevServerHookPathParams
-	>({ method: "POST", url: `/sites/${site_id}/dev_server_hooks`, ...requestConfig });
+		{ site_id: string; split_test_id: string }
+	>({
+		method: "GET",
+		url: `/sites/${pathParams.site_id}/traffic_splits/${pathParams.split_test_id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /sites/:site_id/dev_server_hooks/:id}
+ * @link /sites/{site_id}/traffic_splits/{split_test_id}/publish
  */
-export async function getSiteDevServerHook({
-	pathParams: { site_id, id },
-	config = {},
-}: {
-	pathParams: GetSiteDevServerHookPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function enableSplitTest(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string; split_test_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!site_id) {
+	if (!pathParams.site_id) {
 		throw new Error(`Missing required path parameter: site_id`);
 	}
 
-	if (!id) {
+	if (!pathParams.split_test_id) {
+		throw new Error(`Missing required path parameter: split_test_id`);
+	}
+	const data = await request<
+		EnableSplitTestResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ site_id: string; split_test_id: string }
+	>({
+		method: "POST",
+		url: `/sites/${pathParams.site_id}/traffic_splits/${pathParams.split_test_id}/publish`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /sites/{site_id}/traffic_splits/{split_test_id}/unpublish
+ */
+export async function disableSplitTest(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string; split_test_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+
+	if (!pathParams.split_test_id) {
+		throw new Error(`Missing required path parameter: split_test_id`);
+	}
+	const data = await request<
+		DisableSplitTestResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ site_id: string; split_test_id: string }
+	>({
+		method: "POST",
+		url: `/sites/${pathParams.site_id}/traffic_splits/${pathParams.split_test_id}/unpublish`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /dns_zones
+ */
+export async function createDnsZone(
+	{
+		body,
+		config,
+	}: {
+		body: CreateDnsZoneData;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		CreateDnsZoneResponse,
+		ErrorWrapper<Error>,
+		CreateDnsZoneData,
+		Record<string, string>,
+		Record<string, string>,
+		Record<string, string>
+	>({
+		method: "POST",
+		url: `/dns_zones`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /dns_zones
+ */
+export async function getDnsZones(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { account_slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		GetDnsZonesResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		{ account_slug?: string },
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/dns_zones`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /dns_zones/{zone_id}
+ */
+export async function getDnsZone(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { zone_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.zone_id) {
+		throw new Error(`Missing required path parameter: zone_id`);
+	}
+	const data = await request<
+		GetDnsZoneResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ zone_id: string }
+	>({
+		method: "GET",
+		url: `/dns_zones/${pathParams.zone_id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /dns_zones/{zone_id}
+ */
+export async function deleteDnsZone(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { zone_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.zone_id) {
+		throw new Error(`Missing required path parameter: zone_id`);
+	}
+	const data = await request<
+		DeleteDnsZoneResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ zone_id: string }
+	>({
+		method: "DELETE",
+		url: `/dns_zones/${pathParams.zone_id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /dns_zones/{zone_id}/transfer
+ */
+export async function transferDnsZone(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { zone_id: string };
+		queryParams?: { account_id?: string; transfer_account_id?: string; transfer_user_id?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.zone_id) {
+		throw new Error(`Missing required path parameter: zone_id`);
+	}
+	const data = await request<
+		TransferDnsZoneResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		{ account_id?: string; transfer_account_id?: string; transfer_user_id?: string },
+		{ zone_id: string }
+	>({
+		method: "PUT",
+		url: `/dns_zones/${pathParams.zone_id}/transfer`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /dns_zones/{zone_id}/dns_records
+ */
+export async function getDnsRecords(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { zone_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.zone_id) {
+		throw new Error(`Missing required path parameter: zone_id`);
+	}
+	const data = await request<
+		GetDnsRecordsResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ zone_id: string }
+	>({
+		method: "GET",
+		url: `/dns_zones/${pathParams.zone_id}/dns_records`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /dns_zones/{zone_id}/dns_records
+ */
+export async function createDnsRecord(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { zone_id: string };
+		body: CreateDnsRecordData;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.zone_id) {
+		throw new Error(`Missing required path parameter: zone_id`);
+	}
+	const data = await request<
+		CreateDnsRecordResponse,
+		ErrorWrapper<Error>,
+		CreateDnsRecordData,
+		Record<string, string>,
+		Record<string, string>,
+		{ zone_id: string }
+	>({
+		method: "POST",
+		url: `/dns_zones/${pathParams.zone_id}/dns_records`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /dns_zones/{zone_id}/dns_records/{dns_record_id}
+ */
+export async function getIndividualDnsRecord(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { zone_id: string; dns_record_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.zone_id) {
+		throw new Error(`Missing required path parameter: zone_id`);
+	}
+
+	if (!pathParams.dns_record_id) {
+		throw new Error(`Missing required path parameter: dns_record_id`);
+	}
+	const data = await request<
+		GetIndividualDnsRecordResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ zone_id: string; dns_record_id: string }
+	>({
+		method: "GET",
+		url: `/dns_zones/${pathParams.zone_id}/dns_records/${pathParams.dns_record_id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /dns_zones/{zone_id}/dns_records/{dns_record_id}
+ */
+export async function deleteDnsRecord(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { zone_id: string; dns_record_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.zone_id) {
+		throw new Error(`Missing required path parameter: zone_id`);
+	}
+
+	if (!pathParams.dns_record_id) {
+		throw new Error(`Missing required path parameter: dns_record_id`);
+	}
+	const data = await request<
+		DeleteDnsRecordResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ zone_id: string; dns_record_id: string }
+	>({
+		method: "DELETE",
+		url: `/dns_zones/${pathParams.zone_id}/dns_records/${pathParams.dns_record_id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /sites/{site_id}/dev_servers
+ */
+export async function listSiteDevServers(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		queryParams?: { page?: number; per_page?: number };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+	const data = await request<
+		ListSiteDevServersResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		{ page?: number; per_page?: number },
+		{ site_id: string }
+	>({
+		method: "GET",
+		url: `/sites/${pathParams.site_id}/dev_servers`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /sites/{site_id}/dev_servers
+ */
+export async function createSiteDevServer(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		queryParams?: { branch?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+	const data = await request<
+		CreateSiteDevServerResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		{ branch?: string },
+		{ site_id: string }
+	>({
+		method: "POST",
+		url: `/sites/${pathParams.site_id}/dev_servers`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /sites/{site_id}/dev_servers
+ */
+export async function deleteSiteDevServers(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		queryParams?: { branch?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+	const data = await request<
+		DeleteSiteDevServersResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		{ branch?: string },
+		{ site_id: string }
+	>({
+		method: "DELETE",
+		url: `/sites/${pathParams.site_id}/dev_servers`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /sites/{site_id}/dev_servers/{dev_server_id}
+ */
+export async function getSiteDevServer(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string; dev_server_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+
+	if (!pathParams.dev_server_id) {
+		throw new Error(`Missing required path parameter: dev_server_id`);
+	}
+	const data = await request<
+		GetSiteDevServerResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ site_id: string; dev_server_id: string }
+	>({
+		method: "GET",
+		url: `/sites/${pathParams.site_id}/dev_servers/${pathParams.dev_server_id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /sites/{site_id}/dev_servers/{dev_server_id}/activity
+ */
+export async function markDevServerActivity(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string; dev_server_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+
+	if (!pathParams.dev_server_id) {
+		throw new Error(`Missing required path parameter: dev_server_id`);
+	}
+	const data = await request<
+		MarkDevServerActivityResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ site_id: string; dev_server_id: string }
+	>({
+		method: "POST",
+		url: `/sites/${pathParams.site_id}/dev_servers/${pathParams.dev_server_id}/activity`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /sites/{site_id}/dev_servers/{dev_server_id}/state
+ */
+export async function updateDevServerState(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { site_id: string; dev_server_id: string };
+		body: UpdateDevServerStateData;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+
+	if (!pathParams.dev_server_id) {
+		throw new Error(`Missing required path parameter: dev_server_id`);
+	}
+	const data = await request<
+		UpdateDevServerStateResponse,
+		ErrorWrapper<UpdateDevServerStateStatus409>,
+		UpdateDevServerStateData,
+		Record<string, string>,
+		Record<string, string>,
+		{ site_id: string; dev_server_id: string }
+	>({
+		method: "POST",
+		url: `/sites/${pathParams.site_id}/dev_servers/${pathParams.dev_server_id}/state`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /sites/{site_id}/dev_server_hooks
+ */
+export async function listSiteDevServerHooks(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+	const data = await request<
+		ListSiteDevServerHooksResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ site_id: string }
+	>({
+		method: "GET",
+		url: `/sites/${pathParams.site_id}/dev_server_hooks`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /sites/{site_id}/dev_server_hooks
+ */
+export async function createSiteDevServerHook(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		body?: CreateSiteDevServerHookData;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+	const data = await request<
+		CreateSiteDevServerHookResponse,
+		ErrorWrapper<Error>,
+		CreateSiteDevServerHookData,
+		Record<string, string>,
+		Record<string, string>,
+		{ site_id: string }
+	>({
+		method: "POST",
+		url: `/sites/${pathParams.site_id}/dev_server_hooks`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /sites/{site_id}/dev_server_hooks/{id}
+ */
+export async function getSiteDevServerHook(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string; id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+
+	if (!pathParams.id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
-
 	const data = await request<
-		GetSiteDevServerHookQueryResponse,
+		GetSiteDevServerHookResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetSiteDevServerHookPathParams
-	>({ method: "GET", url: `/sites/${site_id}/dev_server_hooks/${id}`, ...requestConfig });
+		{ site_id: string; id: string }
+	>({
+		method: "GET",
+		url: `/sites/${pathParams.site_id}/dev_server_hooks/${pathParams.id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /sites/:site_id/dev_server_hooks/:id}
+ * @link /sites/{site_id}/dev_server_hooks/{id}
  */
-export async function updateSiteDevServerHook({
-	pathParams: { site_id, id },
-	config = {},
-}: {
-	pathParams: UpdateSiteDevServerHookPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateSiteDevServerHook(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { site_id: string; id: string };
+		body?: UpdateSiteDevServerHookData;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!site_id) {
+	if (!pathParams.site_id) {
 		throw new Error(`Missing required path parameter: site_id`);
 	}
 
-	if (!id) {
+	if (!pathParams.id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
-
 	const data = await request<
-		UpdateSiteDevServerHookMutationResponse,
+		UpdateSiteDevServerHookResponse,
 		ErrorWrapper<Error>,
-		null,
+		UpdateSiteDevServerHookData,
 		Record<string, string>,
 		Record<string, string>,
-		UpdateSiteDevServerHookPathParams
-	>({ method: "PUT", url: `/sites/${site_id}/dev_server_hooks/${id}`, ...requestConfig });
+		{ site_id: string; id: string }
+	>({
+		method: "PUT",
+		url: `/sites/${pathParams.site_id}/dev_server_hooks/${pathParams.id}`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /sites/:site_id/dev_server_hooks/:id}
+ * @link /sites/{site_id}/dev_server_hooks/{id}
  */
-export async function deleteSiteDevServerHook({
-	pathParams: { site_id, id },
-	config = {},
-}: {
-	pathParams: DeleteSiteDevServerHookPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteSiteDevServerHook(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string; id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!site_id) {
+	if (!pathParams.site_id) {
 		throw new Error(`Missing required path parameter: site_id`);
 	}
 
-	if (!id) {
+	if (!pathParams.id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
-
 	const data = await request<
-		DeleteSiteDevServerHookMutationResponse,
+		DeleteSiteDevServerHookResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		DeleteSiteDevServerHookPathParams
-	>({ method: "DELETE", url: `/sites/${site_id}/dev_server_hooks/${id}`, ...requestConfig });
+		{ site_id: string; id: string }
+	>({
+		method: "DELETE",
+		url: `/sites/${pathParams.site_id}/dev_server_hooks/${pathParams.id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * {@link /ai-gateway/providers}
+ * @link /ai-gateway/providers
  */
-export async function getAIGatewayProviders({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getAIGatewayProviders(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetAIGatewayProvidersQueryResponse,
+		GetAIGatewayProvidersResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "GET", url: `/ai-gateway/providers`, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/ai-gateway/providers`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @description Returns an AI Gateway token for a specific site
- * {@link /sites/:site_id/ai-gateway/token}
+ * @link /sites/{site_id}/ai-gateway/token
  */
-export async function getAIGatewayToken({
-	pathParams: { site_id },
-	config = {},
-}: {
-	pathParams: GetAIGatewayTokenPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getAIGatewayToken(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!site_id) {
+	if (!pathParams.site_id) {
 		throw new Error(`Missing required path parameter: site_id`);
 	}
-
 	const data = await request<
-		GetAIGatewayTokenQueryResponse,
-		ErrorWrapper<GetAIGatewayToken404>,
+		GetAIGatewayTokenResponse,
+		ErrorWrapper<GetAIGatewayTokenStatus404>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetAIGatewayTokenPathParams
-	>({ method: "GET", url: `/sites/${site_id}/ai-gateway/token`, ...requestConfig });
+		{ site_id: string }
+	>({
+		method: "GET",
+		url: `/sites/${pathParams.site_id}/ai-gateway/token`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @description Returns an AI Gateway token scoped to an account
- * {@link /accounts/:account_id/ai-gateway/token}
+ * @link /accounts/{account_id}/ai-gateway/token
  */
-export async function getAccountAIGatewayToken({
-	pathParams: { account_id },
-	config = {},
-}: {
-	pathParams: GetAccountAIGatewayTokenPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getAccountAIGatewayToken(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { account_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!account_id) {
+	if (!pathParams.account_id) {
 		throw new Error(`Missing required path parameter: account_id`);
 	}
-
 	const data = await request<
-		GetAccountAIGatewayTokenQueryResponse,
-		ErrorWrapper<GetAccountAIGatewayToken404>,
+		GetAccountAIGatewayTokenResponse,
+		ErrorWrapper<GetAccountAIGatewayTokenStatus404>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetAccountAIGatewayTokenPathParams
-	>({ method: "GET", url: `/accounts/${account_id}/ai-gateway/token`, ...requestConfig });
+		{ account_id: string }
+	>({
+		method: "GET",
+		url: `/accounts/${pathParams.account_id}/ai-gateway/token`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @description Creates a new database for the specified site. If a database already exists, returns the existing connection string. The database region defaults to the site's functions region if not specified.
- * {@link /sites/:site_id/database}
+ * @link /sites/{site_id}/database
  */
-export async function createSiteDatabase({
-	pathParams: { site_id },
-	body,
-	config = {},
-}: {
-	pathParams: CreateSiteDatabasePathParams;
-	body?: CreateSiteDatabaseMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createSiteDatabase(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		body?: CreateSiteDatabaseData;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!site_id) {
+	if (!pathParams.site_id) {
 		throw new Error(`Missing required path parameter: site_id`);
 	}
-
 	const data = await request<
-		CreateSiteDatabaseMutationResponse,
+		CreateSiteDatabaseResponse,
 		ErrorWrapper<Error>,
-		CreateSiteDatabaseMutationRequest,
+		CreateSiteDatabaseData,
 		Record<string, string>,
 		Record<string, string>,
-		CreateSiteDatabasePathParams
-	>({ method: "POST", url: `/sites/${site_id}/database`, body, ...requestConfig });
+		{ site_id: string }
+	>({
+		method: "POST",
+		url: `/sites/${pathParams.site_id}/database`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @description Returns the database connection string for the specified site.
- * {@link /sites/:site_id/database}
+ * @link /sites/{site_id}/database
  */
-export async function getSiteDatabase({
-	pathParams: { site_id },
-	config = {},
-}: {
-	pathParams: GetSiteDatabasePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getSiteDatabase(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		queryParams?: { role?: "netlifydb_owner" | "netlifydb_readonly" };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!site_id) {
+	if (!pathParams.site_id) {
 		throw new Error(`Missing required path parameter: site_id`);
 	}
-
 	const data = await request<
-		GetSiteDatabaseQueryResponse,
+		GetSiteDatabaseResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
-		Record<string, string>,
-		GetSiteDatabasePathParams
-	>({ method: "GET", url: `/sites/${site_id}/database`, ...requestConfig });
+		{ role?: "netlifydb_owner" | "netlifydb_readonly" },
+		{ site_id: string }
+	>({
+		method: "GET",
+		url: `/sites/${pathParams.site_id}/database`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @description Deletes the database and all associated branches and snapshots for the specified site.
- * {@link /sites/:site_id/database}
+ * @link /sites/{site_id}/database
  */
-export async function deleteSiteDatabase({
-	pathParams: { site_id },
-	config = {},
-}: {
-	pathParams: DeleteSiteDatabasePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteSiteDatabase(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!site_id) {
+	if (!pathParams.site_id) {
 		throw new Error(`Missing required path parameter: site_id`);
 	}
-
 	const data = await request<
-		DeleteSiteDatabaseMutationResponse,
+		DeleteSiteDatabaseResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		DeleteSiteDatabasePathParams
-	>({ method: "DELETE", url: `/sites/${site_id}/database`, ...requestConfig });
+		{ site_id: string }
+	>({
+		method: "DELETE",
+		url: `/sites/${pathParams.site_id}/database`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Creates a new database branch for a deploy. If a branch already exists for the specified deploy ID, returns the existing connection string.
- * {@link /sites/:site_id/database/branch}
+ * @description Creates a new database branch. If a branch already exists for the specified branch ID, returns the existing connection string.
+ * @link /sites/{site_id}/database/branch
  */
-export async function createSiteDatabaseBranch({
-	pathParams: { site_id },
-	body,
-	config = {},
-}: {
-	pathParams: CreateSiteDatabaseBranchPathParams;
-	body: CreateSiteDatabaseBranchMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createSiteDatabaseBranch(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		body: CreateSiteDatabaseBranchData;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!site_id) {
+	if (!pathParams.site_id) {
 		throw new Error(`Missing required path parameter: site_id`);
 	}
-
 	const data = await request<
-		CreateSiteDatabaseBranchMutationResponse,
+		CreateSiteDatabaseBranchResponse,
 		ErrorWrapper<Error>,
-		CreateSiteDatabaseBranchMutationRequest,
+		CreateSiteDatabaseBranchData,
 		Record<string, string>,
 		Record<string, string>,
-		CreateSiteDatabaseBranchPathParams
-	>({ method: "POST", url: `/sites/${site_id}/database/branch`, body, ...requestConfig });
+		{ site_id: string }
+	>({
+		method: "POST",
+		url: `/sites/${pathParams.site_id}/database/branch`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Returns the database branch connection string for a specific deploy.
- * {@link /sites/:site_id/database/branch/:deploy_id}
+ * @description Returns all branches for the site's database with compute status and metadata.
+ * @link /sites/{site_id}/database/branches
  */
-export async function getSiteDatabaseBranch({
-	pathParams: { site_id, deploy_id },
-	config = {},
-}: {
-	pathParams: GetSiteDatabaseBranchPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listSiteDatabaseBranches(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!site_id) {
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+	const data = await request<
+		ListSiteDatabaseBranchesResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ site_id: string }
+	>({
+		method: "GET",
+		url: `/sites/${pathParams.site_id}/database/branches`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @description Returns the database branch connection string for a specific branch.
+ * @link /sites/{site_id}/database/branch/{branch_id}
+ */
+export async function getSiteDatabaseBranch(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { site_id: string; branch_id: string };
+		queryParams?: { role?: "netlifydb_owner" | "netlifydb_readonly" };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
 		throw new Error(`Missing required path parameter: site_id`);
 	}
 
-	if (!deploy_id) {
+	if (!pathParams.branch_id) {
+		throw new Error(`Missing required path parameter: branch_id`);
+	}
+	const data = await request<
+		GetSiteDatabaseBranchResponse,
+		ErrorWrapper<GetSiteDatabaseBranchStatus404>,
+		null,
+		Record<string, string>,
+		{ role?: "netlifydb_owner" | "netlifydb_readonly" },
+		{ site_id: string; branch_id: string }
+	>({
+		method: "GET",
+		url: `/sites/${pathParams.site_id}/database/branch/${pathParams.branch_id}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @description Deletes a database branch.
+ * @link /sites/{site_id}/database/branch/{branch_id}
+ */
+export async function deleteSiteDatabaseBranch(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string; branch_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+
+	if (!pathParams.branch_id) {
+		throw new Error(`Missing required path parameter: branch_id`);
+	}
+	const data = await request<
+		DeleteSiteDatabaseBranchResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ site_id: string; branch_id: string }
+	>({
+		method: "DELETE",
+		url: `/sites/${pathParams.site_id}/database/branch/${pathParams.branch_id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @description Resets a non-production database branch by re-forking it from a source branch (defaults to the production branch). If the target branch is already in sync with the source, returns the existing connection string without performing a reset, unless `force=true` is passed. The production branch cannot be reset.
+ * @link /sites/{site_id}/database/branch/{branch_id}/reset
+ */
+export async function resetSiteDatabaseBranch(
+	{
+		pathParams,
+		body,
+		queryParams,
+		config,
+	}: {
+		pathParams: { site_id: string; branch_id: string };
+		body?: ResetSiteDatabaseBranchData;
+		queryParams?: { force?: boolean; role?: "netlifydb_owner" | "netlifydb_readonly" };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+
+	if (!pathParams.branch_id) {
+		throw new Error(`Missing required path parameter: branch_id`);
+	}
+	const data = await request<
+		ResetSiteDatabaseBranchResponse,
+		ErrorWrapper<ResetSiteDatabaseBranchStatus400 | ResetSiteDatabaseBranchStatus404>,
+		ResetSiteDatabaseBranchData,
+		Record<string, string>,
+		{ force?: boolean; role?: "netlifydb_owner" | "netlifydb_readonly" },
+		{ site_id: string; branch_id: string }
+	>({
+		method: "POST",
+		url: `/sites/${pathParams.site_id}/database/branch/${pathParams.branch_id}/reset`,
+		queryParams,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @description Sets compute settings for a specific database branch, overriding project-level settings. Requires a Pro or higher plan.
+ * @link /sites/{site_id}/database/branch/{branch_id}/compute/settings
+ */
+export async function setSiteDatabaseBranchComputeSettings(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { site_id: string; branch_id: string };
+		body?: SetSiteDatabaseBranchComputeSettingsData;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+
+	if (!pathParams.branch_id) {
+		throw new Error(`Missing required path parameter: branch_id`);
+	}
+	const data = await request<
+		SetSiteDatabaseBranchComputeSettingsResponse,
+		ErrorWrapper<SetSiteDatabaseBranchComputeSettingsStatus403>,
+		SetSiteDatabaseBranchComputeSettingsData,
+		Record<string, string>,
+		Record<string, string>,
+		{ site_id: string; branch_id: string }
+	>({
+		method: "PUT",
+		url: `/sites/${pathParams.site_id}/database/branch/${pathParams.branch_id}/compute/settings`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @description Sets project-level compute settings for the database. Applied to new branches. Can be overridden per-branch. Requires a Pro or higher plan.
+ * @link /sites/{site_id}/database/compute/settings
+ */
+export async function setSiteDatabaseComputeSettings(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		body?: SetSiteDatabaseComputeSettingsData;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+	const data = await request<
+		SetSiteDatabaseComputeSettingsResponse,
+		ErrorWrapper<SetSiteDatabaseComputeSettingsStatus403>,
+		SetSiteDatabaseComputeSettingsData,
+		Record<string, string>,
+		Record<string, string>,
+		{ site_id: string }
+	>({
+		method: "PUT",
+		url: `/sites/${pathParams.site_id}/database/compute/settings`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @description Returns the project-level compute settings for the database. Returns effective settings (custom or tier defaults). Requires a Pro or higher plan.
+ * @link /sites/{site_id}/database/compute/settings
+ */
+export async function getSiteDatabaseComputeSettings(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+	const data = await request<
+		GetSiteDatabaseComputeSettingsResponse,
+		ErrorWrapper<GetSiteDatabaseComputeSettingsStatus403>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ site_id: string }
+	>({
+		method: "GET",
+		url: `/sites/${pathParams.site_id}/database/compute/settings`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @description Resets project-level compute settings to tier defaults. Requires a Pro or higher plan.
+ * @link /sites/{site_id}/database/compute/settings
+ */
+export async function clearSiteDatabaseComputeSettings(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+	const data = await request<
+		ClearSiteDatabaseComputeSettingsResponse,
+		ErrorWrapper<ClearSiteDatabaseComputeSettingsStatus403>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ site_id: string }
+	>({
+		method: "DELETE",
+		url: `/sites/${pathParams.site_id}/database/compute/settings`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @description Returns the list of migrations available for the specified branch, indicating which ones have been applied to the database.
+ * @link /sites/{site_id}/database/migrations
+ */
+export async function listSiteDatabaseMigrations(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		queryParams?: { branch?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+	const data = await request<
+		ListSiteDatabaseMigrationsResponse,
+		ErrorWrapper<ListSiteDatabaseMigrationsStatus404 | ListSiteDatabaseMigrationsStatus423>,
+		null,
+		Record<string, string>,
+		{ branch?: string },
+		{ site_id: string }
+	>({
+		method: "GET",
+		url: `/sites/${pathParams.site_id}/database/migrations`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @description Returns the contents of a named migration for the specified branch.
+ * @link /sites/{site_id}/database/migrations/{name}
+ */
+export async function getSiteDatabaseMigration(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { site_id: string; name: string };
+		queryParams?: { branch?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+
+	if (!pathParams.name) {
+		throw new Error(`Missing required path parameter: name`);
+	}
+	const data = await request<
+		GetSiteDatabaseMigrationResponse,
+		ErrorWrapper<GetSiteDatabaseMigrationStatus404 | GetSiteDatabaseMigrationStatus423>,
+		null,
+		Record<string, string>,
+		{ branch?: string },
+		{ site_id: string; name: string }
+	>({
+		method: "GET",
+		url: `/sites/${pathParams.site_id}/database/migrations/${pathParams.name}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @description Runs database migrations for the specified deploy. Finds the deploy and determines the appropriate branch.
+ * @link /sites/{site_id}/database/migrations/{deploy_id}
+ */
+export async function runSiteDatabaseMigrations(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { site_id: string; deploy_id: string };
+		body?: RunSiteDatabaseMigrationsData;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+
+	if (!pathParams.deploy_id) {
 		throw new Error(`Missing required path parameter: deploy_id`);
 	}
-
 	const data = await request<
-		GetSiteDatabaseBranchQueryResponse,
-		ErrorWrapper<GetSiteDatabaseBranch404>,
-		null,
+		RunSiteDatabaseMigrationsResponse,
+		ErrorWrapper<RunSiteDatabaseMigrationsStatus409 | RunSiteDatabaseMigrationsStatus422>,
+		RunSiteDatabaseMigrationsData,
 		Record<string, string>,
 		Record<string, string>,
-		GetSiteDatabaseBranchPathParams
-	>({ method: "GET", url: `/sites/${site_id}/database/branch/${deploy_id}`, ...requestConfig });
-	return data;
-}
+		{ site_id: string; deploy_id: string }
+	>({
+		method: "POST",
+		url: `/sites/${pathParams.site_id}/database/migrations/${pathParams.deploy_id}`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
 
-/**
- * @description Deletes a database branch associated with a deploy.
- * {@link /sites/:site_id/database/branch/:deploy_id}
- */
-export async function deleteSiteDatabaseBranch({
-	pathParams: { site_id, deploy_id },
-	config = {},
-}: {
-	pathParams: DeleteSiteDatabaseBranchPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!site_id) {
-		throw new Error(`Missing required path parameter: site_id`);
-	}
-
-	if (!deploy_id) {
-		throw new Error(`Missing required path parameter: deploy_id`);
-	}
-
-	const data = await request<
-		DeleteSiteDatabaseBranchMutationResponse,
-		ErrorWrapper<Error>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		DeleteSiteDatabaseBranchPathParams
-	>({ method: "DELETE", url: `/sites/${site_id}/database/branch/${deploy_id}`, ...requestConfig });
 	return data;
 }
 
 /**
  * @description Creates a point-in-time snapshot of a database branch. Defaults to the production branch if no branch name is specified.
- * {@link /sites/:site_id/database/snapshot}
+ * @link /sites/{site_id}/database/snapshot
  */
-export async function createSiteDatabaseSnapshot({
-	pathParams: { site_id },
-	body,
-	config = {},
-}: {
-	pathParams: CreateSiteDatabaseSnapshotPathParams;
-	body?: CreateSiteDatabaseSnapshotMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createSiteDatabaseSnapshot(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		body?: CreateSiteDatabaseSnapshotData;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!site_id) {
+	if (!pathParams.site_id) {
 		throw new Error(`Missing required path parameter: site_id`);
 	}
-
 	const data = await request<
-		CreateSiteDatabaseSnapshotMutationResponse,
+		CreateSiteDatabaseSnapshotResponse,
 		ErrorWrapper<Error>,
-		CreateSiteDatabaseSnapshotMutationRequest,
+		CreateSiteDatabaseSnapshotData,
 		Record<string, string>,
 		Record<string, string>,
-		CreateSiteDatabaseSnapshotPathParams
-	>({ method: "POST", url: `/sites/${site_id}/database/snapshot`, body, ...requestConfig });
+		{ site_id: string }
+	>({
+		method: "POST",
+		url: `/sites/${pathParams.site_id}/database/snapshot`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @description Returns all snapshots for the site's database.
- * {@link /sites/:site_id/database/snapshots}
+ * @link /sites/{site_id}/database/snapshots
  */
-export async function listSiteDatabaseSnapshots({
-	pathParams: { site_id },
-	config = {},
-}: {
-	pathParams: ListSiteDatabaseSnapshotsPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listSiteDatabaseSnapshots(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!site_id) {
+	if (!pathParams.site_id) {
 		throw new Error(`Missing required path parameter: site_id`);
 	}
-
 	const data = await request<
-		ListSiteDatabaseSnapshotsQueryResponse,
+		ListSiteDatabaseSnapshotsResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		ListSiteDatabaseSnapshotsPathParams
-	>({ method: "GET", url: `/sites/${site_id}/database/snapshots`, ...requestConfig });
+		{ site_id: string }
+	>({
+		method: "GET",
+		url: `/sites/${pathParams.site_id}/database/snapshots`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @description Deletes a database snapshot.
- * {@link /sites/:site_id/database/snapshot/:snapshot_id}
+ * @link /sites/{site_id}/database/snapshot/{snapshot_id}
  */
-export async function deleteSiteDatabaseSnapshot({
-	pathParams: { site_id, snapshot_id },
-	config = {},
-}: {
-	pathParams: DeleteSiteDatabaseSnapshotPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteSiteDatabaseSnapshot(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string; snapshot_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!site_id) {
+	if (!pathParams.site_id) {
 		throw new Error(`Missing required path parameter: site_id`);
 	}
 
-	if (!snapshot_id) {
+	if (!pathParams.snapshot_id) {
 		throw new Error(`Missing required path parameter: snapshot_id`);
 	}
-
 	const data = await request<
-		DeleteSiteDatabaseSnapshotMutationResponse,
+		DeleteSiteDatabaseSnapshotResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		DeleteSiteDatabaseSnapshotPathParams
+		{ site_id: string; snapshot_id: string }
 	>({
 		method: "DELETE",
-		url: `/sites/${site_id}/database/snapshot/${snapshot_id}`,
+		url: `/sites/${pathParams.site_id}/database/snapshot/${pathParams.snapshot_id}`,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
  * @description Restores a snapshot to a database branch. Defaults to the production branch if no branch_name is specified.
- * {@link /sites/:site_id/database/snapshot/:snapshot_id/restore}
+ * @link /sites/{site_id}/database/snapshot/{snapshot_id}/restore
  */
-export async function restoreSiteDatabaseSnapshot({
-	pathParams: { site_id, snapshot_id },
-	body,
-	config = {},
-}: {
-	pathParams: RestoreSiteDatabaseSnapshotPathParams;
-	body?: RestoreSiteDatabaseSnapshotMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function restoreSiteDatabaseSnapshot(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { site_id: string; snapshot_id: string };
+		body?: RestoreSiteDatabaseSnapshotData;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!site_id) {
+	if (!pathParams.site_id) {
 		throw new Error(`Missing required path parameter: site_id`);
 	}
 
-	if (!snapshot_id) {
+	if (!pathParams.snapshot_id) {
 		throw new Error(`Missing required path parameter: snapshot_id`);
 	}
-
 	const data = await request<
-		RestoreSiteDatabaseSnapshotMutationResponse,
+		RestoreSiteDatabaseSnapshotResponse,
 		ErrorWrapper<Error>,
-		RestoreSiteDatabaseSnapshotMutationRequest,
+		RestoreSiteDatabaseSnapshotData,
 		Record<string, string>,
 		Record<string, string>,
-		RestoreSiteDatabaseSnapshotPathParams
+		{ site_id: string; snapshot_id: string }
 	>({
 		method: "POST",
-		url: `/sites/${site_id}/database/snapshot/${snapshot_id}/restore`,
-		body,
+		url: `/sites/${pathParams.site_id}/database/snapshot/${pathParams.snapshot_id}/restore`,
+		body: body,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
  * @description This is an internal-only endpoint.
- * {@link /sites/:site_id/plugins/:_package}
+ * @link /sites/{site_id}/plugins/{_package}
  */
-export async function updatePlugin({
-	pathParams: { site_id, _package },
-	body,
-	config = {},
-}: {
-	pathParams: UpdatePluginPathParams;
-	body?: UpdatePluginMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updatePlugin(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { site_id: string; _package: string };
+		body?: UpdatePluginData;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!site_id) {
+	if (!pathParams.site_id) {
 		throw new Error(`Missing required path parameter: site_id`);
 	}
 
-	if (!_package) {
+	if (!pathParams._package) {
 		throw new Error(`Missing required path parameter: _package`);
 	}
-
 	const data = await request<
-		UpdatePluginMutationResponse,
+		UpdatePluginResponse,
 		ErrorWrapper<Error>,
-		UpdatePluginMutationRequest,
+		UpdatePluginData,
 		Record<string, string>,
 		Record<string, string>,
-		UpdatePluginPathParams
-	>({ method: "PUT", url: `/sites/${site_id}/plugins/${_package}`, body, ...requestConfig });
+		{ site_id: string; _package: string }
+	>({
+		method: "PUT",
+		url: `/sites/${pathParams.site_id}/plugins/${pathParams._package}`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
@@ -5428,8 +6995,18 @@ export const operationsByPath = {
 	"GET /sites/{site_id}/database": getSiteDatabase,
 	"DELETE /sites/{site_id}/database": deleteSiteDatabase,
 	"POST /sites/{site_id}/database/branch": createSiteDatabaseBranch,
-	"GET /sites/{site_id}/database/branch/{deploy_id}": getSiteDatabaseBranch,
-	"DELETE /sites/{site_id}/database/branch/{deploy_id}": deleteSiteDatabaseBranch,
+	"GET /sites/{site_id}/database/branches": listSiteDatabaseBranches,
+	"GET /sites/{site_id}/database/branch/{branch_id}": getSiteDatabaseBranch,
+	"DELETE /sites/{site_id}/database/branch/{branch_id}": deleteSiteDatabaseBranch,
+	"POST /sites/{site_id}/database/branch/{branch_id}/reset": resetSiteDatabaseBranch,
+	"PUT /sites/{site_id}/database/branch/{branch_id}/compute/settings":
+		setSiteDatabaseBranchComputeSettings,
+	"PUT /sites/{site_id}/database/compute/settings": setSiteDatabaseComputeSettings,
+	"GET /sites/{site_id}/database/compute/settings": getSiteDatabaseComputeSettings,
+	"DELETE /sites/{site_id}/database/compute/settings": clearSiteDatabaseComputeSettings,
+	"GET /sites/{site_id}/database/migrations": listSiteDatabaseMigrations,
+	"GET /sites/{site_id}/database/migrations/{name}": getSiteDatabaseMigration,
+	"POST /sites/{site_id}/database/migrations/{deploy_id}": runSiteDatabaseMigrations,
 	"POST /sites/{site_id}/database/snapshot": createSiteDatabaseSnapshot,
 	"GET /sites/{site_id}/database/snapshots": listSiteDatabaseSnapshots,
 	"DELETE /sites/{site_id}/database/snapshot/{snapshot_id}": deleteSiteDatabaseSnapshot,
@@ -5674,8 +7251,17 @@ export const operationsByTag = {
 		getSiteDatabase,
 		deleteSiteDatabase,
 		createSiteDatabaseBranch,
+		listSiteDatabaseBranches,
 		getSiteDatabaseBranch,
 		deleteSiteDatabaseBranch,
+		resetSiteDatabaseBranch,
+		setSiteDatabaseBranchComputeSettings,
+		setSiteDatabaseComputeSettings,
+		getSiteDatabaseComputeSettings,
+		clearSiteDatabaseComputeSettings,
+		listSiteDatabaseMigrations,
+		getSiteDatabaseMigration,
+		runSiteDatabaseMigrations,
 		createSiteDatabaseSnapshot,
 		listSiteDatabaseSnapshots,
 		deleteSiteDatabaseSnapshot,
@@ -5875,10 +7461,26 @@ export const tagDictionary = {
 		POST: [
 			"createSiteDatabase",
 			"createSiteDatabaseBranch",
+			"resetSiteDatabaseBranch",
+			"runSiteDatabaseMigrations",
 			"createSiteDatabaseSnapshot",
 			"restoreSiteDatabaseSnapshot",
 		],
-		GET: ["getSiteDatabase", "getSiteDatabaseBranch", "listSiteDatabaseSnapshots"],
-		DELETE: ["deleteSiteDatabase", "deleteSiteDatabaseBranch", "deleteSiteDatabaseSnapshot"],
+		GET: [
+			"getSiteDatabase",
+			"listSiteDatabaseBranches",
+			"getSiteDatabaseBranch",
+			"getSiteDatabaseComputeSettings",
+			"listSiteDatabaseMigrations",
+			"getSiteDatabaseMigration",
+			"listSiteDatabaseSnapshots",
+		],
+		DELETE: [
+			"deleteSiteDatabase",
+			"deleteSiteDatabaseBranch",
+			"clearSiteDatabaseComputeSettings",
+			"deleteSiteDatabaseSnapshot",
+		],
+		PUT: ["setSiteDatabaseBranchComputeSettings", "setSiteDatabaseComputeSettings"],
 	},
 } as const;

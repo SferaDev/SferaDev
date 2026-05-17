@@ -733,7 +733,7 @@ function TableNodeComponent({ data }: TableNodeProps) {
 							}}
 						>
 							<span className="text-xs font-medium text-foreground bg-card/95 px-2 py-1 rounded-full shadow-sm border border-border/50">
-								{seat.guest.name.split(" ")[0]}
+								{seat.guest.name}
 							</span>
 						</div>
 					)}
