@@ -1,5 +1,5 @@
 {
-	"name": "@platform/sdk",
+	"name": "@sferadev/platform-sdk",
 	"version": "0.0.1",
 	"type": "module",
 	"sideEffects": false,

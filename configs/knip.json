@@ -30,6 +30,14 @@
 			"project": ["src/**/*.ts"],
 			"ignoreDependencies": ["@types/json-schema"]
 		},
+		"apps/platform": {
+			"project": ["src/**/*.ts"],
+			"includeEntryExports": false
+		},
+		"packages/platform-sdk": {
+			"entry": ["src/index.ts", "src/**/*.test.ts"],
+			"project": ["src/**/*.ts"]
+		},
 		"packages/ai-gateway-proxy": {
 			"entry": ["src/index.ts"],
 			"project": ["src/**/*.{ts,tsx}"]
