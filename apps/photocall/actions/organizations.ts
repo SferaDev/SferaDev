@@ -6,6 +6,7 @@ import { generateSlug, generateToken, requireOrgMembership } from "@/lib/auth-he
 import { db, schema } from "@/lib/db";
 import { PLAN_LIMITS } from "@/lib/plans";
 import { deleteFile, generateUploadUrl, getFileUrl } from "@/lib/storage";
+import { sendInvitationEmail } from "./email";
 
 export async function getOrganizations() {
 	const session = await requireSession();
@@ -372,49 +373,19 @@ export async function inviteMember(
 		createdAt: now,
 	});
 
-	// Get inviter profile for the email
 	const inviterProfile = await db
 		.select()
 		.from(schema.userProfiles)
 		.where(eq(schema.userProfiles.userId, session.user.id))
 		.then((rows) => rows[0]);
 
-	// Send invitation email via Resend
-	const resendApiKey = process.env.RESEND_API_KEY;
-	if (resendApiKey) {
-		const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
-		const acceptUrl = `${siteUrl}/invite/${token}`;
-
-		const response = await fetch("https://api.resend.com/emails", {
-			method: "POST",
-			headers: {
-				Authorization: `Bearer ${resendApiKey}`,
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				from: "Photocall <noreply@photocall.app>",
-				to: [normalizedEmail],
-				subject: `You've been invited to ${org.name} on Photocall`,
-				html: `
-					<div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-						<h2>You've been invited!</h2>
-						<p>${inviterProfile?.name ? `${inviterProfile.name} has` : "Someone has"} invited you to join <strong>${org.name}</strong> on Photocall as a ${role}.</p>
-						<p>Click the button below to accept the invitation:</p>
-						<a href="${acceptUrl}" style="display: inline-block; background: #6366f1; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">Accept Invitation</a>
-						<p style="color: #666; font-size: 14px; margin-top: 24px;">This invitation expires in 7 days.</p>
-						<p style="color: #999; font-size: 12px;">If you didn't expect this invitation, you can safely ignore this email.</p>
-					</div>
-				`,
-			}),
-		});
-
-		if (!response.ok) {
-			const error = await response.text();
-			console.error("Failed to send invitation email:", error);
-		}
-	} else {
-		console.warn("RESEND_API_KEY not set, skipping email");
-	}
+	await sendInvitationEmail({
+		email: normalizedEmail,
+		organizationName: org.name,
+		inviterName: inviterProfile?.name ?? undefined,
+		token,
+		role,
+	});
 
 	return { token };
 }

@@ -1,7 +1,7 @@
 const CACHE_NAME = "photocall-kiosk-v1";
 const MAX_CACHED_IMAGES = 50;
 
-self.addEventListener("install", (event) => {
+self.addEventListener("install", () => {
 	self.skipWaiting();
 });
 
@@ -19,7 +19,7 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
 	const url = new URL(event.request.url);
 
-	// Only cache image requests from Convex storage
+	// Only cache image requests (S3 presigned URLs and image responses)
 	const isImage =
 		event.request.destination === "image" ||
 		url.pathname.includes("/api/storage/") ||

@@ -15,7 +15,15 @@ import {
 	type Subscription,
 } from "@/lib/plans";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+let _stripe: Stripe | null = null;
+function getStripe(): Stripe {
+	if (!_stripe) {
+		const key = process.env.STRIPE_SECRET_KEY;
+		if (!key) throw new Error("STRIPE_SECRET_KEY is not set");
+		_stripe = new Stripe(key);
+	}
+	return _stripe;
+}
 
 function getSiteUrl() {
 	return process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
@@ -35,7 +43,7 @@ async function getOrCreateStripeCustomer(
 ): Promise<string> {
 	if (existingCustomerId) return existingCustomerId;
 
-	const customer = await stripe.customers.create({
+	const customer = await getStripe().customers.create({
 		metadata: { organizationId },
 	});
 
@@ -61,7 +69,7 @@ export async function purchaseEvent(organizationId: string): Promise<{ url: stri
 
 	const customerId = await getOrCreateStripeCustomer(organizationId, org.stripeCustomerId);
 
-	const checkoutSession = await stripe.checkout.sessions.create({
+	const checkoutSession = await getStripe().checkout.sessions.create({
 		customer: customerId,
 		mode: "payment",
 		line_items: [
@@ -113,7 +121,7 @@ export async function payOverages(
 
 	const customerId = await getOrCreateStripeCustomer(organizationId, org.stripeCustomerId);
 
-	const checkoutSession = await stripe.checkout.sessions.create({
+	const checkoutSession = await getStripe().checkout.sessions.create({
 		customer: customerId,
 		mode: "payment",
 		line_items: [
@@ -151,7 +159,7 @@ export async function createPortalSession(organizationId: string): Promise<{ url
 		throw new Error("No billing account found");
 	}
 
-	const portalSession = await stripe.billingPortal.sessions.create({
+	const portalSession = await getStripe().billingPortal.sessions.create({
 		customer: org.stripeCustomerId,
 		return_url: `${getSiteUrl()}/dashboard/${org.slug}/billing`,
 	});

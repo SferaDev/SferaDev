@@ -18,7 +18,7 @@ import { getOrganizationBySlug } from "@/actions/organizations";
 import { createPortalSession, getBillingSummary, purchaseEvent } from "@/actions/stripe";
 import { Button } from "@/components/ui/button";
 import { useSession } from "@/lib/auth-client";
-import type { BillingSummary, EventBillingSummary } from "@/lib/plans";
+import type { EventBillingSummary } from "@/lib/plans";
 
 const FREE_FEATURES = ["1 free event", "10 photos included", "Basic templates", "QR code sharing"];
 

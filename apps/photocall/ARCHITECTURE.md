@@ -10,7 +10,7 @@
 - FR3: Camera capture with front/back toggle, 3-2-1 countdown, preview, retake/accept
 - FR4: Personalization with optional caption (max 40 chars) and mirror toggle
 - FR5: Canvas compositing of photo + overlay frame + caption
-- FR6: Upload rendered image to Convex file storage
+- FR6: Upload rendered image to S3 (via presigned URL)
 - FR7: Generate unique share token and public URL
 - FR8: Result screen with QR code, human-readable code (e.g., ABCD-1234), "Take another"
 
@@ -78,36 +78,42 @@
 │         └────────────────┴─────────────────┴──────────────────┘         │
 │                                    │                                    │
 │                         ┌─────────────────────┐                         │
-│                         │   Convex Provider   │                         │
+│                         │   SWR + Server      │                         │
+│                         │   Actions client    │                         │
 │                         └─────────────────────┘                         │
 │                                    │                                    │
 └────────────────────────────────────┼────────────────────────────────────┘
                                      │
                                      ▼
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                         CONVEX BACKEND                                  │
+│                         BACKEND (Next.js)                               │
 ├─────────────────────────────────────────────────────────────────────────┤
 │                                                                         │
 │  ┌─────────────────────────────────────────────────────────────────┐   │
-│  │                           SCHEMA                                 │   │
-│  │  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────────────┐│   │
-│  │  │ sessions │  │  photos  │  │templates │  │     settings     ││   │
-│  │  └──────────┘  └──────────┘  └──────────┘  └──────────────────┘│   │
+│  │                    SCHEMA (Postgres + Drizzle)                   │   │
+│  │  organizations, organization_members, invitations, events,       │   │
+│  │  templates, sessions, photos, user_profiles, billing,            │   │
+│  │  + better-auth: users, sessions, accounts, verifications         │   │
 │  └─────────────────────────────────────────────────────────────────┘   │
 │                                                                         │
 │  ┌─────────────────────────────────────────────────────────────────┐   │
-│  │                    MUTATIONS / QUERIES                           │   │
-│  │  - createSession, completeSession                                │   │
-│  │  - uploadPhoto, getPhoto, listPhotos, deletePhoto                │   │
-│  │  - createTemplate, updateTemplate, listTemplates, deleteTemplate │   │
-│  │  - getSettings, updateSettings                                   │   │
-│  │  - validateAdminPin                                              │   │
+│  │                    SERVER ACTIONS                                │   │
+│  │  - organizations, events, templates                              │   │
+│  │  - sessions, photos                                              │   │
+│  │  - stripe (checkout, portal, billing summary, webhooks)          │   │
+│  │  - email (Resend invitations)                                    │   │
 │  └─────────────────────────────────────────────────────────────────┘   │
 │                                                                         │
 │  ┌─────────────────────────────────────────────────────────────────┐   │
-│  │                       FILE STORAGE                               │   │
-│  │  - Photo uploads (rendered composites)                           │   │
+│  │                    FILE STORAGE (S3)                             │   │
+│  │  - Photo uploads (rendered composites) — presigned PUT/GET       │   │
 │  │  - Template overlay PNGs                                         │   │
+│  │  - Org / event logos                                             │   │
+│  └─────────────────────────────────────────────────────────────────┘   │
+│                                                                         │
+│  ┌─────────────────────────────────────────────────────────────────┐   │
+│  │                    SCHEDULED JOBS (Vercel Cron)                  │   │
+│  │  - /api/cron/cleanup — photo retention purge                     │   │
 │  └─────────────────────────────────────────────────────────────────┘   │
 │                                                                         │
 └─────────────────────────────────────────────────────────────────────────┘
@@ -139,7 +145,7 @@ apps/photocall/
 │   │   └── [token]/page.tsx         # Public share page
 │   ├── layout.tsx
 │   ├── globals.css
-│   └── providers.tsx                # Convex provider wrapper
+│   └── providers.tsx                # Client providers (SWR, theme)
 ├── components/
 │   ├── ui/                          # shadcn/ui components
 │   ├── kiosk/
@@ -158,14 +164,17 @@ apps/photocall/
 │   └── shared/
 │       ├── qr-code.tsx
 │       └── loading-spinner.tsx
-├── convex/
-│   ├── _generated/                  # Auto-generated Convex files
-│   ├── schema.ts                    # Database schema
-│   ├── sessions.ts                  # Session mutations/queries
-│   ├── photos.ts                    # Photo mutations/queries
-│   ├── templates.ts                 # Template mutations/queries
-│   ├── settings.ts                  # Settings mutations/queries
-│   └── auth.ts                      # Admin auth logic
+├── actions/                         # Next.js server actions
+│   ├── organizations.ts
+│   ├── events.ts
+│   ├── templates.ts
+│   ├── sessions.ts
+│   ├── photos.ts
+│   ├── stripe.ts
+│   └── email.ts
+├── lib/db/
+│   ├── index.ts                     # Postgres + Drizzle client
+│   └── schema.ts                    # Drizzle schema
 ├── hooks/
 │   ├── use-camera.ts
 │   ├── use-compositing.ts
@@ -184,10 +193,10 @@ apps/photocall/
 ## Implementation Plan
 
 1. **Phase 1: Backend Setup**
-   - Install Convex dependencies
-   - Define Convex schema (sessions, photos, templates, settings)
-   - Implement core mutations/queries
-   - Set up file storage
+   - Provision Postgres (via Vercel Marketplace, e.g. Neon)
+   - Define Drizzle schema (sessions, photos, templates, settings, organizations, billing)
+   - Implement server actions for CRUD
+   - Wire S3 bucket and presigned URL helpers in `lib/storage.ts`
 
 2. **Phase 2: Marketing Landing**
    - Hero section with product overview

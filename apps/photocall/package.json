@@ -49,7 +49,6 @@
 	"devDependencies": {
 		"@tailwindcss/postcss": "catalog:",
 		"@testing-library/jest-dom": "catalog:",
-		"@testing-library/react": "catalog:",
 		"@types/node": "catalog:",
 		"@types/pg": "catalog:",
 		"@types/qrcode": "catalog:",

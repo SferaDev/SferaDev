@@ -4,7 +4,15 @@ import Stripe from "stripe";
 import { db, schema } from "@/lib/db";
 import { INCLUDED_PHOTOS_PER_EVENT, PLAN_LIMITS } from "@/lib/plans";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+let _stripe: Stripe | null = null;
+function getStripe(): Stripe {
+	if (!_stripe) {
+		const key = process.env.STRIPE_SECRET_KEY;
+		if (!key) throw new Error("STRIPE_SECRET_KEY is not set");
+		_stripe = new Stripe(key);
+	}
+	return _stripe;
+}
 
 async function isEventProcessed(stripeEventId: string): Promise<boolean> {
 	const [existing] = await db
@@ -142,7 +150,7 @@ export async function POST(request: Request) {
 
 	let event: Stripe.Event;
 	try {
-		event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
+		event = getStripe().webhooks.constructEvent(body, signature, webhookSecret);
 	} catch (err) {
 		console.error("Webhook signature verification failed:", err);
 		return NextResponse.json({ error: "Webhook signature verification failed" }, { status: 400 });
