@@ -252,6 +252,18 @@ export function createPlatformClient(options: PlatformClientOptions): PlatformCl
 			return authGet<Organization[]>("/auth/organization/list", headers);
 		},
 
+		async lookupOrganization(idOrSlug: string): Promise<Organization | null> {
+			try {
+				return await request<Organization | null>({
+					method: "GET",
+					path: `/api/organizations/${encodeURIComponent(idOrSlug)}`,
+				});
+			} catch (error) {
+				if (error instanceof Error && error.message.includes("404")) return null;
+				throw error;
+			}
+		},
+
 		async getOrganization(idOrSlug, headers) {
 			// Try id first, then slug. better-auth accepts both via query params.
 			const params = new URLSearchParams();

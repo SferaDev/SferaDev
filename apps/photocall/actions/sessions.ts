@@ -1,7 +1,6 @@
 "use server";
 
 import { desc, eq } from "drizzle-orm";
-import { requireSession } from "@/lib/auth";
 import { requireEventAccess } from "@/lib/auth-helpers";
 import { db, schema } from "@/lib/db";
 
@@ -144,8 +143,7 @@ export async function getKioskSession(sessionId: string) {
 }
 
 export async function getSessionStats(eventId: string) {
-	const authSession = await requireSession();
-	await requireEventAccess(authSession.user.id, eventId);
+	await requireEventAccess(eventId);
 
 	const sessions = await db
 		.select()
@@ -166,8 +164,7 @@ export async function getSessionStats(eventId: string) {
 }
 
 export async function listSessions(eventId: string, limit?: number) {
-	const authSession = await requireSession();
-	await requireEventAccess(authSession.user.id, eventId);
+	await requireEventAccess(eventId);
 
 	const take = limit ?? 50;
 

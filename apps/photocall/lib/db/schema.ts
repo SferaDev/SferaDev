@@ -10,157 +10,19 @@ import {
 	uuid,
 } from "drizzle-orm/pg-core";
 
-// ── Better Auth tables (managed by better-auth, defined here for relations) ──
-
-export const user = pgTable("user", {
-	id: text("id").primaryKey(),
-	name: text("name").notNull(),
-	email: text("email").notNull().unique(),
-	emailVerified: boolean("email_verified").notNull().default(false),
-	image: text("image"),
-	createdAt: timestamp("created_at").notNull().defaultNow(),
-	updatedAt: timestamp("updated_at").notNull().defaultNow(),
-});
-
-export const session = pgTable("session", {
-	id: text("id").primaryKey(),
-	expiresAt: timestamp("expires_at").notNull(),
-	token: text("token").notNull().unique(),
-	createdAt: timestamp("created_at").notNull().defaultNow(),
-	updatedAt: timestamp("updated_at").notNull().defaultNow(),
-	ipAddress: text("ip_address"),
-	userAgent: text("user_agent"),
-	userId: text("user_id")
-		.notNull()
-		.references(() => user.id),
-});
-
-export const account = pgTable("account", {
-	id: text("id").primaryKey(),
-	accountId: text("account_id").notNull(),
-	providerId: text("provider_id").notNull(),
-	userId: text("user_id")
-		.notNull()
-		.references(() => user.id),
-	accessToken: text("access_token"),
-	refreshToken: text("refresh_token"),
-	idToken: text("id_token"),
-	accessTokenExpiresAt: timestamp("access_token_expires_at"),
-	refreshTokenExpiresAt: timestamp("refresh_token_expires_at"),
-	scope: text("scope"),
-	password: text("password"),
-	createdAt: timestamp("created_at").notNull().defaultNow(),
-	updatedAt: timestamp("updated_at").notNull().defaultNow(),
-});
-
-export const verification = pgTable("verification", {
-	id: text("id").primaryKey(),
-	identifier: text("identifier").notNull(),
-	value: text("value").notNull(),
-	expiresAt: timestamp("expires_at").notNull(),
-	createdAt: timestamp("created_at"),
-	updatedAt: timestamp("updated_at"),
-});
-
 // ── Application tables ──
-
-export const userProfiles = pgTable(
-	"user_profiles",
-	{
-		id: uuid("id").defaultRandom().primaryKey(),
-		userId: text("user_id")
-			.notNull()
-			.references(() => user.id),
-		name: text("name"),
-		avatarUrl: text("avatar_url"),
-		onboardingCompleted: boolean("onboarding_completed").notNull().default(false),
-		createdAt: timestamp("created_at").notNull().defaultNow(),
-		updatedAt: timestamp("updated_at").notNull().defaultNow(),
-	},
-	(t) => [uniqueIndex("user_profiles_user_idx").on(t.userId)],
-);
-
-export const organizations = pgTable(
-	"organizations",
-	{
-		id: uuid("id").defaultRandom().primaryKey(),
-		name: text("name").notNull(),
-		slug: text("slug").notNull().unique(),
-		logoStorageKey: text("logo_storage_key"),
-		ownerId: text("owner_id")
-			.notNull()
-			.references(() => user.id),
-		// Subscription
-		subscriptionTier: text("subscription_tier").notNull().default("free"), // free | paid
-		stripeCustomerId: text("stripe_customer_id"),
-		stripeSubscriptionId: text("stripe_subscription_id"),
-		subscriptionStatus: text("subscription_status").notNull().default("none"), // active | past_due | canceled | trialing | none
-		trialEndsAt: timestamp("trial_ends_at"),
-		// Limits
-		maxEvents: integer("max_events").notNull().default(1),
-		maxPhotosPerEvent: integer("max_photos_per_event").notNull().default(10),
-		maxStorageBytes: integer("max_storage_bytes").notNull().default(104857600), // 100MB
-		maxTeamMembers: integer("max_team_members").notNull().default(1),
-		// Usage
-		currentStorageBytes: integer("current_storage_bytes").notNull().default(0),
-		createdAt: timestamp("created_at").notNull().defaultNow(),
-		updatedAt: timestamp("updated_at").notNull().defaultNow(),
-	},
-	(t) => [
-		index("organizations_owner_idx").on(t.ownerId),
-		uniqueIndex("organizations_stripe_customer_idx").on(t.stripeCustomerId),
-	],
-);
-
-export const organizationMembers = pgTable(
-	"organization_members",
-	{
-		id: uuid("id").defaultRandom().primaryKey(),
-		organizationId: uuid("organization_id")
-			.notNull()
-			.references(() => organizations.id, { onDelete: "cascade" }),
-		userId: text("user_id")
-			.notNull()
-			.references(() => user.id),
-		role: text("role").notNull().default("member"), // owner | admin | member
-		invitedBy: text("invited_by"),
-		invitedAt: timestamp("invited_at"),
-		joinedAt: timestamp("joined_at").notNull().defaultNow(),
-	},
-	(t) => [
-		index("org_members_org_idx").on(t.organizationId),
-		index("org_members_user_idx").on(t.userId),
-		uniqueIndex("org_members_org_user_idx").on(t.organizationId, t.userId),
-	],
-);
-
-export const invitations = pgTable(
-	"invitations",
-	{
-		id: uuid("id").defaultRandom().primaryKey(),
-		organizationId: uuid("organization_id")
-			.notNull()
-			.references(() => organizations.id, { onDelete: "cascade" }),
-		email: text("email").notNull(),
-		role: text("role").notNull().default("member"), // admin | member
-		invitedBy: text("invited_by").notNull(),
-		token: text("token").notNull().unique(),
-		expiresAt: timestamp("expires_at").notNull(),
-		createdAt: timestamp("created_at").notNull().defaultNow(),
-	},
-	(t) => [
-		index("invitations_org_idx").on(t.organizationId),
-		index("invitations_email_idx").on(t.email),
-	],
-);
+//
+// Identity, organizations, members, invitations and billing live on the
+// `@sferadev/platform` service — photocall does not manage any of those tables
+// itself. The columns below that look like foreign keys (organizationId,
+// userId) are intentionally plain text/UUID references with no FK constraint;
+// they hold IDs minted by the platform.
 
 export const events = pgTable(
 	"events",
 	{
 		id: uuid("id").defaultRandom().primaryKey(),
-		organizationId: uuid("organization_id")
-			.notNull()
-			.references(() => organizations.id, { onDelete: "cascade" }),
+		organizationId: text("organization_id").notNull(),
 		name: text("name").notNull(),
 		slug: text("slug").notNull(),
 		description: text("description"),
@@ -274,9 +136,7 @@ export const usageLogs = pgTable(
 	"usage_logs",
 	{
 		id: uuid("id").defaultRandom().primaryKey(),
-		organizationId: uuid("organization_id")
-			.notNull()
-			.references(() => organizations.id, { onDelete: "cascade" }),
+		organizationId: text("organization_id").notNull(),
 		eventId: uuid("event_id"),
 		type: text("type").notNull(), // photo_captured | photo_downloaded | photo_printed | storage_added | storage_removed
 		metadata: text("metadata"), // JSON string
@@ -289,16 +149,16 @@ export const usageLogs = pgTable(
 	],
 );
 
-export const stripeEvents = pgTable(
-	"stripe_events",
-	{
-		id: uuid("id").defaultRandom().primaryKey(),
-		stripeEventId: text("stripe_event_id").notNull().unique(),
-		type: text("type").notNull(),
-		processedAt: timestamp("processed_at").notNull().defaultNow(),
-	},
-	(t) => [uniqueIndex("stripe_events_stripe_id_idx").on(t.stripeEventId)],
-);
+/**
+ * Per-org photocall-specific settings (logo, branding, etc.). Keyed by the
+ * platform organization id. Photocall stores no other org-level data.
+ */
+export const orgSettings = pgTable("org_settings", {
+	organizationId: text("organization_id").primaryKey(),
+	logoStorageKey: text("logo_storage_key"),
+	createdAt: timestamp("created_at").notNull().defaultNow(),
+	updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
 
 // ── Helper types ──
 

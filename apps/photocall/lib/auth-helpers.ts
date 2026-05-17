@@ -1,51 +1,67 @@
-import { and, eq } from "drizzle-orm";
+import type { Account, Member, OrganizationRole } from "@sferadev/platform-sdk";
+import { eq } from "drizzle-orm";
+import { headers as nextHeaders } from "next/headers";
 import { db, schema } from "./db";
+import { getPlatformClient } from "./platform";
 
-/** Check if a user is a member of an organization and has the required role */
+/**
+ * Verifies the platform session against the SDK and returns the authenticated
+ * account. Throws when there is no valid session — used by server actions that
+ * need to require an authenticated user.
+ */
+export async function requireSession(): Promise<{ user: Account }> {
+	const account = await getPlatformClient().verifySession(await nextHeaders());
+	if (!account) throw new Error("Unauthorized");
+	return { user: account };
+}
+
+/**
+ * Loads the calling user's membership in the given platform organization and
+ * (optionally) asserts they hold one of `requiredRoles`. Returns the member
+ * record from the platform.
+ */
 export async function requireOrgMembership(
-	userId: string,
 	organizationId: string,
-	requiredRoles?: ("owner" | "admin" | "member")[],
-) {
-	const membership = await db
-		.select()
-		.from(schema.organizationMembers)
-		.where(
-			and(
-				eq(schema.organizationMembers.organizationId, organizationId),
-				eq(schema.organizationMembers.userId, userId),
-			),
-		)
-		.then((rows) => rows[0]);
+	requiredRoles?: OrganizationRole[],
+): Promise<Member> {
+	const platform = getPlatformClient();
+	const headers = await nextHeaders();
+
+	const account = await platform.verifySession(headers);
+	if (!account) throw new Error("Unauthorized");
+
+	const members = await platform.listMembers(organizationId, headers);
+	const membership = members.find((m) => m.userId === account.id);
 
 	if (!membership) {
 		throw new Error("Not a member of this organization");
 	}
 
-	if (requiredRoles && !requiredRoles.includes(membership.role as "owner" | "admin" | "member")) {
+	if (requiredRoles && !requiredRoles.includes(membership.role as OrganizationRole)) {
 		throw new Error("Insufficient permissions");
 	}
 
 	return membership;
 }
 
-/** Check if a user has access to an event (via org membership) */
+/**
+ * Asserts the calling user has access to the given event (via membership in
+ * the event's owning organization) and returns both the event and the
+ * membership record.
+ */
 export async function requireEventAccess(
-	userId: string,
 	eventId: string,
-	requiredRoles?: ("owner" | "admin" | "member")[],
-) {
+	requiredRoles?: OrganizationRole[],
+): Promise<{ event: typeof schema.events.$inferSelect; membership: Member }> {
 	const event = await db
 		.select()
 		.from(schema.events)
 		.where(eq(schema.events.id, eventId))
 		.then((rows) => rows[0]);
 
-	if (!event) {
-		throw new Error("Event not found");
-	}
+	if (!event) throw new Error("Event not found");
 
-	const membership = await requireOrgMembership(userId, event.organizationId, requiredRoles);
+	const membership = await requireOrgMembership(event.organizationId, requiredRoles);
 	return { event, membership };
 }
 

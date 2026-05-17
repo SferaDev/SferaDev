@@ -4,7 +4,7 @@ import { Loader2, Mail } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import useSWR from "swr";
-import { acceptInvitation, getInvitationByToken } from "@/actions/organizations";
+import { acceptInvitation, getInvitation, rejectInvitation } from "@/actions/organizations";
 import { Button } from "@/components/ui/button";
 import { useSession } from "@/lib/auth-client";
 
@@ -13,11 +13,12 @@ export default function InviteAcceptClient() {
 	const isAuthenticated = !!session;
 	const router = useRouter();
 	const params = useParams();
-	const token = params.token as string;
+	// The `[token]` route param holds the platform's invitation id.
+	const invitationId = params.token as string;
 
 	const { data: invitation, isLoading: invitationLoading } = useSWR(
-		isAuthenticated ? ["invitation", token] : null,
-		() => getInvitationByToken(token),
+		isAuthenticated ? ["invitation", invitationId] : null,
+		() => getInvitation(invitationId),
 	);
 
 	const [accepting, setAccepting] = useState(false);
@@ -32,8 +33,7 @@ export default function InviteAcceptClient() {
 	}
 
 	if (!isAuthenticated) {
-		// Redirect to sign in with return URL
-		router.push(`/sign-in?redirect=/invite/${token}`);
+		router.push(`/sign-in?redirect=/invite/${invitationId}`);
 		return null;
 	}
 
@@ -63,14 +63,23 @@ export default function InviteAcceptClient() {
 		setAccepting(true);
 		setError(null);
 		try {
-			await acceptInvitation(token);
-			router.push("/dashboard");
+			const result = await acceptInvitation(invitationId);
+			router.push(`/dashboard/${result.organizationId}`);
 		} catch (err: unknown) {
 			const message = err instanceof Error ? err.message : "Failed to accept invitation";
 			setError(message);
 		} finally {
 			setAccepting(false);
 		}
+	};
+
+	const handleDecline = async () => {
+		try {
+			await rejectInvitation(invitationId);
+		} catch {
+			// Ignore: the user simply leaves the page.
+		}
+		router.push("/dashboard");
 	};
 
 	return (
@@ -84,7 +93,7 @@ export default function InviteAcceptClient() {
 				</p>
 				{error && <p className="text-destructive mb-4">{error}</p>}
 				<div className="flex gap-3 justify-center">
-					<Button variant="outline" onClick={() => router.push("/dashboard")}>
+					<Button variant="outline" onClick={handleDecline}>
 						Decline
 					</Button>
 					<Button onClick={handleAccept} disabled={accepting}>

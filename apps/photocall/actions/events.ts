@@ -1,12 +1,12 @@
 "use server";
 
-import { and, desc, eq, sql } from "drizzle-orm";
-import { requireSession } from "@/lib/auth";
+import { and, desc, eq } from "drizzle-orm";
 import {
 	generateSlug,
 	hashPin,
 	requireEventAccess,
 	requireOrgMembership,
+	requireSession,
 	verifyPin,
 } from "@/lib/auth-helpers";
 import { db, schema } from "@/lib/db";
@@ -20,37 +20,11 @@ export async function createEvent(
 	startDate?: Date,
 	endDate?: Date,
 ) {
-	const session = await requireSession();
-	await requireOrgMembership(session.user.id, organizationId, ["owner", "admin"]);
+	await requireOrgMembership(organizationId, ["owner", "admin"]);
 
-	const org = await db
-		.select()
-		.from(schema.organizations)
-		.where(eq(schema.organizations.id, organizationId))
-		.then((rows) => rows[0]);
-
-	if (!org) {
-		throw new Error("Organization not found");
-	}
-
-	// Check entitlement via the unified platform; fall back to local limit
-	// if the platform is not configured.
-	const platform = getPlatformClient();
-	if (platform) {
-		const allowed = await platform.can(organizationId, "create_event");
-		if (!allowed) {
-			throw new Error("Event limit reached. Upgrade your plan to create more events.");
-		}
-	} else {
-		const eventCount = await db
-			.select({ count: sql<number>`count(*)` })
-			.from(schema.events)
-			.where(eq(schema.events.organizationId, organizationId))
-			.then((rows) => Number(rows[0].count));
-
-		if (org.maxEvents !== -1 && eventCount >= org.maxEvents) {
-			throw new Error("Event limit reached. Upgrade your plan to create more events.");
-		}
+	const allowed = await getPlatformClient().can(organizationId, "create_event");
+	if (!allowed) {
+		throw new Error("Event limit reached. Upgrade your plan to create more events.");
 	}
 
 	// Generate unique slug within organization
@@ -101,8 +75,7 @@ export async function createEvent(
 }
 
 export async function listEvents(organizationId: string) {
-	const session = await requireSession();
-	await requireOrgMembership(session.user.id, organizationId);
+	await requireOrgMembership(organizationId);
 
 	const events = await db
 		.select()
@@ -118,8 +91,7 @@ export async function listEvents(organizationId: string) {
 }
 
 export async function getEvent(id: string) {
-	const session = await requireSession();
-	const { event } = await requireEventAccess(session.user.id, id);
+	const { event } = await requireEventAccess(id);
 
 	return {
 		...event,
@@ -128,17 +100,16 @@ export async function getEvent(id: string) {
 }
 
 export async function getEventBySlug(organizationSlug: string, eventSlug: string) {
-	const session = await requireSession();
+	const platform = getPlatformClient();
+	const { user } = await requireSession();
+	const { headers: nextHeaders } = await import("next/headers");
+	const hdrs = await nextHeaders();
 
-	const org = await db
-		.select()
-		.from(schema.organizations)
-		.where(eq(schema.organizations.slug, organizationSlug))
-		.then((rows) => rows[0]);
-
+	const org = await platform.getOrganization(organizationSlug, hdrs);
 	if (!org) return null;
 
-	await requireOrgMembership(session.user.id, org.id);
+	const members = await platform.listMembers(org.id, hdrs);
+	if (!members.some((m) => m.userId === user.id)) return null;
 
 	const event = await db
 		.select()
@@ -181,8 +152,7 @@ export async function updateEvent(
 		deleteAfterDate?: Date;
 	},
 ) {
-	const session = await requireSession();
-	await requireEventAccess(session.user.id, id, ["owner", "admin"]);
+	await requireEventAccess(id, ["owner", "admin"]);
 
 	await db
 		.update(schema.events)
@@ -194,8 +164,7 @@ export async function updateEvent(
 }
 
 export async function setKioskPin(id: string, pin: string) {
-	const session = await requireSession();
-	await requireEventAccess(session.user.id, id, ["owner", "admin"]);
+	await requireEventAccess(id, ["owner", "admin"]);
 
 	if (pin.length < 4) {
 		throw new Error("PIN must be at least 4 characters");
@@ -237,79 +206,39 @@ export async function validateKioskPin(id: string, pin: string) {
 }
 
 export async function deleteEvent(id: string) {
-	const session = await requireSession();
-	const { event } = await requireEventAccess(session.user.id, id, ["owner", "admin"]);
+	const { event } = await requireEventAccess(id, ["owner", "admin"]);
 
-	// Delete all photos and update storage
 	const photos = await db.select().from(schema.photos).where(eq(schema.photos.eventId, id));
-
-	let totalStorageFreed = 0;
-	for (const photo of photos) {
-		await deleteFile(photo.storageKey);
-		totalStorageFreed += photo.sizeBytes;
-	}
+	for (const photo of photos) await deleteFile(photo.storageKey);
 	await db.delete(schema.photos).where(eq(schema.photos.eventId, id));
 
-	// Update organization storage
-	const org = await db
-		.select()
-		.from(schema.organizations)
-		.where(eq(schema.organizations.id, event.organizationId))
-		.then((rows) => rows[0]);
-
-	if (org) {
-		await db
-			.update(schema.organizations)
-			.set({
-				currentStorageBytes: Math.max(0, org.currentStorageBytes - totalStorageFreed),
-				updatedAt: new Date(),
-			})
-			.where(eq(schema.organizations.id, org.id));
-	}
-
-	// Delete templates and their storage files
 	const templates = await db
 		.select()
 		.from(schema.templates)
 		.where(eq(schema.templates.eventId, id));
-
 	for (const template of templates) {
 		await deleteFile(template.storageKey);
-		if (template.thumbnailStorageKey) {
-			await deleteFile(template.thumbnailStorageKey);
-		}
+		if (template.thumbnailStorageKey) await deleteFile(template.thumbnailStorageKey);
 	}
 	await db.delete(schema.templates).where(eq(schema.templates.eventId, id));
-
-	// Delete sessions
 	await db.delete(schema.kioskSessions).where(eq(schema.kioskSessions.eventId, id));
-
-	// Delete the event
 	await db.delete(schema.events).where(eq(schema.events.id, id));
+
+	// Reference event in a log so we keep usage history even after delete.
+	const now = new Date();
+	await db.insert(schema.usageLogs).values({
+		organizationId: event.organizationId,
+		eventId: id,
+		type: "event_deleted",
+		createdAt: now,
+	});
 }
 
 export async function duplicateEvent(id: string) {
-	const session = await requireSession();
-	const { event } = await requireEventAccess(session.user.id, id, ["owner", "admin"]);
+	const { event } = await requireEventAccess(id, ["owner", "admin"]);
 
-	const org = await db
-		.select()
-		.from(schema.organizations)
-		.where(eq(schema.organizations.id, event.organizationId))
-		.then((rows) => rows[0]);
-
-	if (!org) {
-		throw new Error("Organization not found");
-	}
-
-	// Check event limit
-	const eventCount = await db
-		.select({ count: sql<number>`count(*)` })
-		.from(schema.events)
-		.where(eq(schema.events.organizationId, event.organizationId))
-		.then((rows) => Number(rows[0].count));
-
-	if (org.maxEvents !== -1 && eventCount >= org.maxEvents) {
+	const allowed = await getPlatformClient().can(event.organizationId, "create_event");
+	if (!allowed) {
 		throw new Error("Event limit reached. Upgrade your plan to create more events.");
 	}
 
@@ -387,8 +316,7 @@ export async function duplicateEvent(id: string) {
 }
 
 export async function getEventStats(id: string) {
-	const session = await requireSession();
-	await requireEventAccess(session.user.id, id);
+	await requireEventAccess(id);
 
 	const event = await db
 		.select()
@@ -398,7 +326,6 @@ export async function getEventStats(id: string) {
 
 	if (!event) return null;
 
-	// Get recent sessions
 	const recentSessions = await db
 		.select()
 		.from(schema.kioskSessions)
@@ -406,7 +333,6 @@ export async function getEventStats(id: string) {
 		.orderBy(desc(schema.kioskSessions.startedAt))
 		.limit(10);
 
-	// Calculate session stats
 	const allSessions = await db
 		.select()
 		.from(schema.kioskSessions)
@@ -427,12 +353,11 @@ export async function getEventStats(id: string) {
 
 // Public query for kiosk mode (no auth required)
 export async function getPublicEvent(organizationSlug: string, eventSlug: string) {
-	const org = await db
-		.select()
-		.from(schema.organizations)
-		.where(eq(schema.organizations.slug, organizationSlug))
-		.then((rows) => rows[0]);
+	const platform = getPlatformClient();
 
+	// Service-token call: anonymous kiosk pages must resolve the org without
+	// a user session.
+	const org = await platform.lookupOrganization(organizationSlug);
 	if (!org) return null;
 
 	const event = await db
@@ -465,8 +390,6 @@ export async function getPublicEvent(organizationSlug: string, eventSlug: string
 }
 
 export async function generateEventUploadUrl(eventId: string) {
-	const session = await requireSession();
-	await requireEventAccess(session.user.id, eventId, ["owner", "admin"]);
-
+	await requireEventAccess(eventId, ["owner", "admin"]);
 	return await generateUploadUrl(`events/${eventId}`, "image/png");
 }

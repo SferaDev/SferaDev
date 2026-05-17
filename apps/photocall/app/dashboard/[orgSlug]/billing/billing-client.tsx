@@ -1,37 +1,16 @@
 "use client";
 
-import {
-	Camera,
-	Check,
-	ChevronLeft,
-	CreditCard,
-	ImageIcon,
-	Loader2,
-	Plus,
-	Sparkles,
-} from "lucide-react";
+import { ChevronLeft, CreditCard, ImageIcon, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
+import { getBillingOverview, getInvoices, getPortalUrl, startCheckout } from "@/actions/billing";
 import { getOrganizationBySlug } from "@/actions/organizations";
-import { createPortalSession, getBillingSummary, purchaseEvent } from "@/actions/stripe";
 import { Button } from "@/components/ui/button";
 import { useSession } from "@/lib/auth-client";
-import type { EventBillingSummary } from "@/lib/plans";
 
-const FREE_FEATURES = ["1 free event", "10 photos included", "Basic templates", "QR code sharing"];
-
-const PAID_FEATURES = [
-	"$49 per event",
-	"200 photos included per event",
-	"$0.25 per additional photo",
-	"Custom branding",
-	"Remove watermark",
-	"Priority support",
-	"Analytics dashboard",
-	"10 team members",
-];
+const PRO_PLAN_ID = process.env.NEXT_PUBLIC_PHOTOCALL_PRO_PLAN_ID ?? "photocall_pro";
 
 export default function BillingPage() {
 	const { data: session, isPending: authLoading } = useSession();
@@ -44,8 +23,15 @@ export default function BillingPage() {
 	const { data: organization } = useSWR(["organizations", orgSlug], () =>
 		getOrganizationBySlug(orgSlug),
 	);
-	const { data: billingSummary } = useSWR(organization ? ["billing", organization.id] : null, () =>
-		getBillingSummary(organization!.id),
+
+	const { data: overview } = useSWR(
+		organization ? ["billing-overview", organization.id] : null,
+		() => getBillingOverview(organization!.id),
+	);
+
+	const { data: invoices } = useSWR(
+		organization && overview?.subscription ? ["invoices", organization.id] : null,
+		() => getInvoices(organization!.id),
 	);
 
 	const [isPurchasing, setIsPurchasing] = useState(false);
@@ -59,18 +45,14 @@ export default function BillingPage() {
 		}
 	}, [isAuthenticated, authLoading, router]);
 
-	const handlePurchaseEvent = async () => {
+	const handleUpgrade = async () => {
 		if (!organization) return;
-
 		setIsPurchasing(true);
 		try {
-			const result = await purchaseEvent(organization.id);
-			if (result.url) {
-				window.location.href = result.url;
-			}
+			const result = await startCheckout(organization.id, PRO_PLAN_ID);
+			window.location.href = result.url;
 		} catch (error) {
-			console.error("Failed to create checkout:", error);
-		} finally {
+			console.error("Failed to start checkout:", error);
 			setIsPurchasing(false);
 		}
 	};
@@ -78,10 +60,8 @@ export default function BillingPage() {
 	const handleManageBilling = async () => {
 		if (!organization) return;
 		try {
-			const result = await createPortalSession(organization.id);
-			if (result.url) {
-				window.location.href = result.url;
-			}
+			const { url } = await getPortalUrl(organization.id);
+			window.location.href = url;
 		} catch (error) {
 			console.error("Failed to open billing portal:", error);
 		}
@@ -109,13 +89,8 @@ export default function BillingPage() {
 		);
 	}
 
-	const isPaid = billingSummary?.tier === "paid";
-
-	// Calculate total photos with proper typing
-	const totalPhotos = billingSummary?.events.reduce(
-		(sum: number, event: EventBillingSummary) => sum + event.photoCount,
-		0,
-	);
+	const subscription = overview?.subscription ?? null;
+	const isPaid = subscription?.status === "active" || subscription?.status === "trialing";
 
 	return (
 		<div className="min-h-screen bg-background">
@@ -136,10 +111,10 @@ export default function BillingPage() {
 				</div>
 			</header>
 
-			<main className="container mx-auto px-4 py-8">
+			<main className="container mx-auto px-4 py-8 max-w-4xl">
 				{success && (
 					<div className="mb-8 p-4 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded-lg">
-						Payment successful! Your event credit has been added.
+						Checkout complete. Your subscription is active.
 					</div>
 				)}
 				{canceled && (
@@ -148,155 +123,112 @@ export default function BillingPage() {
 					</div>
 				)}
 
-				{/* Pricing Cards */}
-				<div className="grid gap-6 md:grid-cols-2 max-w-4xl mx-auto mb-12">
-					{/* Free Plan */}
-					<div className={`p-6 border rounded-lg ${!isPaid ? "ring-2 ring-primary" : ""}`}>
-						<div className="flex items-center gap-2 mb-4">
-							<Camera className="h-5 w-5" />
-							<h3 className="font-semibold">Free</h3>
-							{!isPaid && (
-								<span className="ml-auto text-xs bg-primary text-primary-foreground px-2 py-1 rounded-full">
-									Current
-								</span>
-							)}
+				<section className="mb-12 p-6 border rounded-lg">
+					<div className="flex items-center justify-between mb-4">
+						<div>
+							<h2 className="text-lg font-semibold">Current plan</h2>
+							<p className="text-sm text-muted-foreground">
+								{subscription
+									? `${subscription.planId} · ${subscription.status}`
+									: "Free tier (default plan)"}
+							</p>
 						</div>
-						<div className="mb-4">
-							<span className="text-3xl font-bold">$0</span>
-							<span className="text-muted-foreground"> forever</span>
-						</div>
-						<ul className="space-y-2 mb-6">
-							{FREE_FEATURES.map((feature) => (
-								<li key={feature} className="flex items-center gap-2 text-sm">
-									<Check className="h-4 w-4 text-green-500 shrink-0" />
-									{feature}
-								</li>
-							))}
-						</ul>
-						<Button className="w-full" variant="outline" disabled>
-							{!isPaid ? "Current Plan" : "Free tier included"}
-						</Button>
+						{isPaid ? (
+							<Button variant="outline" onClick={handleManageBilling}>
+								<CreditCard className="h-4 w-4 mr-2" />
+								Manage billing
+							</Button>
+						) : (
+							<Button onClick={handleUpgrade} disabled={isPurchasing}>
+								{isPurchasing && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+								Upgrade
+							</Button>
+						)}
 					</div>
+				</section>
 
-					{/* Paid Plan */}
-					<div className={`p-6 border rounded-lg ${isPaid ? "ring-2 ring-primary" : ""}`}>
-						<div className="flex items-center gap-2 mb-4">
-							<Sparkles className="h-5 w-5" />
-							<h3 className="font-semibold">Pay Per Event</h3>
-							{isPaid && (
-								<span className="ml-auto text-xs bg-primary text-primary-foreground px-2 py-1 rounded-full">
-									Active
-								</span>
-							)}
-						</div>
-						<div className="mb-4">
-							<span className="text-3xl font-bold">$49</span>
-							<span className="text-muted-foreground"> / event</span>
-						</div>
-						<ul className="space-y-2 mb-6">
-							{PAID_FEATURES.map((feature) => (
-								<li key={feature} className="flex items-center gap-2 text-sm">
-									<Check className="h-4 w-4 text-green-500 shrink-0" />
-									{feature}
-								</li>
-							))}
-						</ul>
-						<Button className="w-full" onClick={handlePurchaseEvent} disabled={isPurchasing}>
-							{isPurchasing && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-							<Plus className="h-4 w-4 mr-2" />
-							Purchase Event
-						</Button>
-					</div>
-				</div>
-
-				{/* Usage Summary */}
-				{billingSummary && (
-					<div className="max-w-4xl mx-auto">
-						<h2 className="text-lg font-semibold mb-4">Usage Summary</h2>
-
-						<div className="grid gap-4 md:grid-cols-3 mb-8">
+				{overview && (
+					<section className="mb-12">
+						<h2 className="text-lg font-semibold mb-4">Usage this period</h2>
+						<div className="grid gap-4 md:grid-cols-3">
 							<div className="p-4 border rounded-lg">
-								<div className="text-sm text-muted-foreground mb-1">Event Credits</div>
-								<div className="text-2xl font-bold">
-									{billingSummary.eventsUsed}
-									<span className="text-sm font-normal text-muted-foreground">
-										/{billingSummary.eventCredits}
-									</span>
-								</div>
+								<div className="text-sm text-muted-foreground mb-1">Photos captured</div>
+								<div className="text-2xl font-bold">{overview.usage.photosCaptured}</div>
 							</div>
 							<div className="p-4 border rounded-lg">
-								<div className="text-sm text-muted-foreground mb-1">Total Photos</div>
-								<div className="text-2xl font-bold">{totalPhotos ?? 0}</div>
+								<div className="text-sm text-muted-foreground mb-1">Active events</div>
+								<div className="text-2xl font-bold">{overview.events.length}</div>
 							</div>
 							<div className="p-4 border rounded-lg">
-								<div className="text-sm text-muted-foreground mb-1">Total Overages</div>
+								<div className="text-sm text-muted-foreground mb-1">Total photos across events</div>
 								<div className="text-2xl font-bold">
-									{billingSummary.totalOverageCost > 0
-										? `$${(billingSummary.totalOverageCost / 100).toFixed(2)}`
-										: "$0.00"}
+									{overview.events.reduce((sum, e) => sum + e.photoCount, 0)}
 								</div>
 							</div>
 						</div>
+					</section>
+				)}
 
-						{/* Event Details */}
-						{billingSummary.events.length > 0 && (
-							<div className="border rounded-lg overflow-hidden">
-								<table className="w-full">
-									<thead className="bg-muted/50">
-										<tr>
-											<th className="px-4 py-3 text-left text-sm font-medium">Event</th>
-											<th className="px-4 py-3 text-right text-sm font-medium">Photos</th>
-											<th className="px-4 py-3 text-right text-sm font-medium">Included</th>
-											<th className="px-4 py-3 text-right text-sm font-medium">Overages</th>
-											<th className="px-4 py-3 text-right text-sm font-medium">Cost</th>
+				{overview && overview.events.length > 0 && (
+					<section className="mb-12">
+						<h2 className="text-lg font-semibold mb-4">Photos by event</h2>
+						<div className="border rounded-lg overflow-hidden">
+							<table className="w-full">
+								<thead className="bg-muted/50">
+									<tr>
+										<th className="px-4 py-3 text-left text-sm font-medium">Event</th>
+										<th className="px-4 py-3 text-right text-sm font-medium">Photos</th>
+									</tr>
+								</thead>
+								<tbody className="divide-y">
+									{overview.events.map((event) => (
+										<tr key={event.eventId}>
+											<td className="px-4 py-3 text-sm">
+												<div className="flex items-center gap-2">
+													<ImageIcon className="h-4 w-4 text-muted-foreground" />
+													{event.name}
+												</div>
+											</td>
+											<td className="px-4 py-3 text-sm text-right">{event.photoCount}</td>
 										</tr>
-									</thead>
-									<tbody className="divide-y">
-										{billingSummary.events.map((event: EventBillingSummary) => (
-											<tr key={event.eventId}>
-												<td className="px-4 py-3 text-sm">
-													<div className="flex items-center gap-2">
-														<ImageIcon className="h-4 w-4 text-muted-foreground" />
-														{event.name}
-													</div>
-												</td>
-												<td className="px-4 py-3 text-sm text-right">{event.photoCount}</td>
-												<td className="px-4 py-3 text-sm text-right text-muted-foreground">
-													{event.includedPhotos}
-												</td>
-												<td className="px-4 py-3 text-sm text-right">
-													{event.overagePhotos > 0 ? (
-														<span className="text-orange-600">{event.overagePhotos}</span>
-													) : (
-														<span className="text-muted-foreground">0</span>
-													)}
-												</td>
-												<td className="px-4 py-3 text-sm text-right">
-													{event.overageCost > 0 ? `$${(event.overageCost / 100).toFixed(2)}` : "-"}
-												</td>
-											</tr>
-										))}
-									</tbody>
-								</table>
-							</div>
-						)}
+									))}
+								</tbody>
+							</table>
+						</div>
+					</section>
+				)}
 
-						{/* Manage Billing */}
-						{isPaid && organization.stripeCustomerId && (
-							<div className="mt-8 p-4 border rounded-lg flex items-center justify-between">
-								<div>
-									<h3 className="font-semibold">Payment History</h3>
-									<p className="text-sm text-muted-foreground">
-										View past payments and download invoices
-									</p>
-								</div>
-								<Button variant="outline" onClick={handleManageBilling}>
-									<CreditCard className="h-4 w-4 mr-2" />
-									View Invoices
-								</Button>
-							</div>
-						)}
-					</div>
+				{invoices && invoices.length > 0 && (
+					<section>
+						<h2 className="text-lg font-semibold mb-4">Invoices</h2>
+						<div className="border rounded-lg overflow-hidden">
+							<table className="w-full">
+								<thead className="bg-muted/50">
+									<tr>
+										<th className="px-4 py-3 text-left text-sm font-medium">Date</th>
+										<th className="px-4 py-3 text-left text-sm font-medium">Status</th>
+										<th className="px-4 py-3 text-right text-sm font-medium">Amount</th>
+									</tr>
+								</thead>
+								<tbody className="divide-y">
+									{invoices.map((inv) => (
+										<tr key={inv.id}>
+											<td className="px-4 py-3 text-sm">
+												{new Date(inv.created).toLocaleDateString()}
+											</td>
+											<td className="px-4 py-3 text-sm capitalize">{inv.status ?? "—"}</td>
+											<td className="px-4 py-3 text-sm text-right">
+												{(inv.amount / 100).toLocaleString(undefined, {
+													style: "currency",
+													currency: inv.currency.toUpperCase(),
+												})}
+											</td>
+										</tr>
+									))}
+								</tbody>
+							</table>
+						</div>
+					</section>
 				)}
 			</main>
 		</div>

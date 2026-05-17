@@ -1,7 +1,6 @@
 "use server";
 
 import { asc, eq } from "drizzle-orm";
-import { requireSession } from "@/lib/auth";
 import { requireEventAccess } from "@/lib/auth-helpers";
 import { db, schema } from "@/lib/db";
 import {
@@ -13,9 +12,7 @@ import {
 import { deleteFile, generateUploadUrl, getFileUrl } from "@/lib/storage";
 
 export async function generateTemplateUploadUrl(eventId: string) {
-	const session = await requireSession();
-	await requireEventAccess(session.user.id, eventId, ["owner", "admin"]);
-
+	await requireEventAccess(eventId, ["owner", "admin"]);
 	return await generateUploadUrl("templates", "image/png");
 }
 
@@ -27,10 +24,8 @@ export async function createTemplate(data: {
 	captionPosition?: CaptionPosition;
 	safeArea?: SafeArea;
 }) {
-	const session = await requireSession();
-	await requireEventAccess(session.user.id, data.eventId, ["owner", "admin"]);
+	await requireEventAccess(data.eventId, ["owner", "admin"]);
 
-	// Get the max order for this event
 	const templates = await db
 		.select({ order: schema.templates.order })
 		.from(schema.templates)
@@ -69,8 +64,6 @@ export async function updateTemplate(
 		safeArea?: SafeArea;
 	},
 ) {
-	const session = await requireSession();
-
 	const template = await db
 		.select()
 		.from(schema.templates)
@@ -81,7 +74,7 @@ export async function updateTemplate(
 		throw new Error("Template not found");
 	}
 
-	await requireEventAccess(session.user.id, template.eventId, ["owner", "admin"]);
+	await requireEventAccess(template.eventId, ["owner", "admin"]);
 
 	const updates: Record<string, unknown> = { updatedAt: new Date() };
 	if (data.name !== undefined) updates.name = data.name;
@@ -98,8 +91,6 @@ export async function updateTemplate(
 }
 
 export async function deleteTemplate(templateId: string) {
-	const session = await requireSession();
-
 	const template = await db
 		.select()
 		.from(schema.templates)
@@ -108,7 +99,7 @@ export async function deleteTemplate(templateId: string) {
 
 	if (!template) return;
 
-	await requireEventAccess(session.user.id, template.eventId, ["owner", "admin"]);
+	await requireEventAccess(template.eventId, ["owner", "admin"]);
 
 	await deleteFile(template.storageKey);
 	if (template.thumbnailStorageKey) {
@@ -119,8 +110,7 @@ export async function deleteTemplate(templateId: string) {
 }
 
 export async function listTemplates(eventId: string, enabledOnly?: boolean) {
-	const session = await requireSession();
-	await requireEventAccess(session.user.id, eventId);
+	await requireEventAccess(eventId);
 
 	const baseQuery = db
 		.select()
@@ -187,8 +177,6 @@ export async function listPublicTemplates(eventId: string) {
 }
 
 export async function getTemplate(templateId: string) {
-	const session = await requireSession();
-
 	const template = await db
 		.select()
 		.from(schema.templates)
@@ -197,7 +185,7 @@ export async function getTemplate(templateId: string) {
 
 	if (!template) return null;
 
-	await requireEventAccess(session.user.id, template.eventId);
+	await requireEventAccess(template.eventId);
 
 	const url = await getFileUrl(template.storageKey);
 	const thumbnailUrl = template.thumbnailStorageKey
@@ -214,8 +202,7 @@ export async function getTemplate(templateId: string) {
 }
 
 export async function reorderTemplates(eventId: string, templateIds: string[]) {
-	const session = await requireSession();
-	await requireEventAccess(session.user.id, eventId, ["owner", "admin"]);
+	await requireEventAccess(eventId, ["owner", "admin"]);
 
 	const now = new Date();
 	for (let i = 0; i < templateIds.length; i++) {

@@ -182,6 +182,12 @@ export interface PlatformClient {
 
 	listOrganizations(headers: Headers): Promise<Organization[]>;
 	getOrganization(idOrSlug: string, headers: Headers): Promise<Organization | null>;
+	/**
+	 * Service-token lookup of an organization by id or slug. Use this when
+	 * there is no signed-in user (e.g. public/anonymous routes that need to
+	 * resolve an org from a URL slug).
+	 */
+	lookupOrganization(idOrSlug: string): Promise<Organization | null>;
 	createOrganization(input: CreateOrganizationInput, headers: Headers): Promise<Organization>;
 	updateOrganization(
 		orgId: string,

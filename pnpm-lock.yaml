@@ -466,9 +466,6 @@ importers:
       '@sferadev/platform-sdk':
         specifier: workspace:*
         version: link:../../packages/platform-sdk
-      better-auth:
-        specifier: 'catalog:'
-        version: 1.6.11(b96e435f59263888cc2517277d1ea265)
       class-variance-authority:
         specifier: 'catalog:'
         version: 0.7.1
@@ -508,9 +505,6 @@ importers:
       react-dom:
         specifier: 'catalog:'
         version: 19.2.6(react@19.2.6)
-      stripe:
-        specifier: 'catalog:'
-        version: 22.1.1(@types/node@25.8.0)
       swr:
         specifier: 'catalog:'
         version: 2.4.1(react@19.2.6)

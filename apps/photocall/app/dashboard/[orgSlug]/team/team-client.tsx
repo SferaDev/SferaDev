@@ -57,6 +57,7 @@ export default function TeamPage() {
 	const [inviteRole, setInviteRole] = useState<"admin" | "member">("member");
 	const [isInviting, setIsInviting] = useState(false);
 	const [dialogOpen, setDialogOpen] = useState(false);
+	const [inviteError, setInviteError] = useState<string | null>(null);
 
 	useEffect(() => {
 		if (!authLoading && !isAuthenticated) {
@@ -69,24 +70,26 @@ export default function TeamPage() {
 		if (!inviteEmail.trim() || !organization) return;
 
 		setIsInviting(true);
+		setInviteError(null);
 		try {
 			await inviteMember(organization.id, inviteEmail.trim(), inviteRole);
 			mutate((key) => Array.isArray(key) && key[0] === "invitations");
 			setInviteEmail("");
 			setDialogOpen(false);
 		} catch (error) {
-			console.error("Failed to invite:", error);
+			const message = error instanceof Error ? error.message : "Failed to send invitation";
+			setInviteError(message);
 		} finally {
 			setIsInviting(false);
 		}
 	};
 
-	const handleRemoveMember = async (userId: string) => {
+	const handleRemoveMember = async (memberId: string) => {
 		if (!organization) return;
 		if (!confirm("Are you sure you want to remove this member?")) return;
 
 		try {
-			await removeMember(organization.id, userId);
+			await removeMember(organization.id, memberId);
 			mutate((key) => Array.isArray(key) && key[0] === "members");
 		} catch (error) {
 			console.error("Failed to remove member:", error);
@@ -184,6 +187,7 @@ export default function TeamPage() {
 												</SelectContent>
 											</Select>
 										</div>
+										{inviteError && <p className="text-sm text-destructive">{inviteError}</p>}
 									</div>
 									<DialogFooter>
 										<Button type="button" variant="outline" onClick={() => setDialogOpen(false)}>
@@ -206,36 +210,38 @@ export default function TeamPage() {
 				<div className="mb-8">
 					<h2 className="text-lg font-semibold mb-4">Members ({members?.length ?? 0})</h2>
 					<div className="border rounded-lg divide-y">
-						{members?.map((member) => (
-							<div key={member.id} className="p-4 flex items-center justify-between">
-								<div className="flex items-center gap-3">
-									<Avatar>
-										<AvatarImage src={member.profile?.avatarUrl ?? undefined} />
-										<AvatarFallback>
-											{member.profile?.name?.charAt(0) ??
-												member.user?.email?.charAt(0)?.toUpperCase() ??
-												"?"}
-										</AvatarFallback>
-									</Avatar>
-									<div>
-										<div className="font-medium flex items-center gap-2">
-											{member.profile?.name ?? member.user?.email}
-											<RoleBadge role={member.role} />
+						{members?.map((member) => {
+							const fallback =
+								member.user?.name?.charAt(0)?.toUpperCase() ??
+								member.user?.email?.charAt(0)?.toUpperCase() ??
+								"?";
+							return (
+								<div key={member.id} className="p-4 flex items-center justify-between">
+									<div className="flex items-center gap-3">
+										<Avatar>
+											<AvatarImage src={member.user?.image ?? undefined} />
+											<AvatarFallback>{fallback}</AvatarFallback>
+										</Avatar>
+										<div>
+											<div className="font-medium flex items-center gap-2">
+												{member.user?.name ?? member.user?.email ?? member.userId}
+												<RoleBadge role={member.role} />
+											</div>
+											<div className="text-sm text-muted-foreground">{member.user?.email}</div>
 										</div>
-										<div className="text-sm text-muted-foreground">{member.user?.email}</div>
 									</div>
+									{member.role !== "owner" && (
+										<Button
+											variant="ghost"
+											size="icon"
+											onClick={() => handleRemoveMember(member.id)}
+										>
+											<Trash2 className="h-4 w-4 text-destructive" />
+										</Button>
+									)}
 								</div>
-								{member.role !== "owner" && (
-									<Button
-										variant="ghost"
-										size="icon"
-										onClick={() => handleRemoveMember(member.userId)}
-									>
-										<Trash2 className="h-4 w-4 text-destructive" />
-									</Button>
-								)}
-							</div>
-						))}
+							);
+						})}
 					</div>
 				</div>
 
