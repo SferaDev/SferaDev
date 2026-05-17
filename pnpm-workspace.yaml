@@ -15,7 +15,6 @@ catalog:
   '@changesets/cli': 2.31.0
   '@convex-dev/better-auth': 0.12.2
   '@kubb/adapter-oas': 5.0.0-beta.10
-  '@kubb/ast': 5.0.0-beta.10
   '@kubb/cli': 5.0.0-beta.10
   '@kubb/core': 5.0.0-beta.10
   '@kubb/plugin-client': 5.0.0-beta.10

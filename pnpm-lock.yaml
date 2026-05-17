@@ -36,9 +36,6 @@ catalogs:
     '@kubb/adapter-oas':
       specifier: 5.0.0-beta.10
       version: 5.0.0-beta.10
-    '@kubb/ast':
-      specifier: 5.0.0-beta.10
-      version: 5.0.0-beta.10
     '@kubb/cli':
       specifier: 5.0.0-beta.10
       version: 5.0.0-beta.10
@@ -942,9 +939,6 @@ importers:
       '@kubb/adapter-oas':
         specifier: 'catalog:'
         version: 5.0.0-beta.10(@kubb/renderer-jsx@5.0.0-beta.11)
-      '@kubb/ast':
-        specifier: 'catalog:'
-        version: 5.0.0-beta.10
       '@kubb/core':
         specifier: 'catalog:'
         version: 5.0.0-beta.10(@kubb/renderer-jsx@5.0.0-beta.10)
@@ -963,9 +957,6 @@ importers:
       case:
         specifier: 'catalog:'
         version: 1.6.3
-      kubb:
-        specifier: 'catalog:'
-        version: 5.0.0-beta.10(typescript@6.0.3)
       openapi3-ts:
         specifier: 'catalog:'
         version: 4.5.0

@@ -87,8 +87,8 @@ const smartLocks = await api.api.smartLocks.getSmartLocks();`,
 			version: versions["litellm-api"],
 			usage: `import { LiteLLMApi } from 'litellm-api';
 
-const api = new LiteLLMApi({ baseUrl: '...', apiKey: '...' });
-const models = await api.api.models.getModels();`,
+const api = new LiteLLMApi({ baseUrl: 'https://api.litellm.ai', token: null });
+const models = await api.request('GET /model_catalog', {});`,
 		},
 	] satisfies Provider[];
 
