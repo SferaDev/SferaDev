@@ -6,617 +6,560 @@
 import type { ErrorWrapper, FetcherConfig } from "../utils/fetcher";
 import defaultClient from "../utils/fetcher";
 import type {
-	ChatsCreate401,
-	ChatsCreate403,
-	ChatsCreate404,
-	ChatsCreate409,
-	ChatsCreate413,
-	ChatsCreate422,
-	ChatsCreate429,
-	ChatsCreate500,
-	ChatsCreateMutationResponse,
-	ChatsDelete401,
-	ChatsDelete403,
-	ChatsDelete404,
-	ChatsDelete409,
-	ChatsDelete413,
-	ChatsDelete422,
-	ChatsDelete429,
-	ChatsDelete500,
-	ChatsDeleteMutationResponse,
-	ChatsDeletePathParams,
-	ChatsDeleteVersionFiles401,
-	ChatsDeleteVersionFiles403,
-	ChatsDeleteVersionFiles404,
-	ChatsDeleteVersionFiles409,
-	ChatsDeleteVersionFiles413,
-	ChatsDeleteVersionFiles422,
-	ChatsDeleteVersionFiles429,
-	ChatsDeleteVersionFiles500,
-	ChatsDeleteVersionFilesMutationResponse,
-	ChatsDeleteVersionFilesPathParams,
-	ChatsDownloadVersion401,
-	ChatsDownloadVersion403,
-	ChatsDownloadVersion404,
-	ChatsDownloadVersion409,
-	ChatsDownloadVersion413,
-	ChatsDownloadVersion422,
-	ChatsDownloadVersion429,
-	ChatsDownloadVersion500,
-	ChatsDownloadVersionPathParams,
-	ChatsDownloadVersionQueryParams,
-	ChatsDownloadVersionQueryResponse,
-	ChatsFavorite401,
-	ChatsFavorite403,
-	ChatsFavorite404,
-	ChatsFavorite409,
-	ChatsFavorite413,
-	ChatsFavorite422,
-	ChatsFavorite429,
-	ChatsFavorite500,
-	ChatsFavoriteMutationResponse,
-	ChatsFavoritePathParams,
-	ChatsFind401,
-	ChatsFind403,
-	ChatsFind404,
-	ChatsFind409,
-	ChatsFind413,
-	ChatsFind422,
-	ChatsFind429,
-	ChatsFind500,
-	ChatsFindMessages401,
-	ChatsFindMessages403,
-	ChatsFindMessages404,
-	ChatsFindMessages409,
-	ChatsFindMessages413,
-	ChatsFindMessages422,
-	ChatsFindMessages429,
-	ChatsFindMessages500,
-	ChatsFindMessagesPathParams,
-	ChatsFindMessagesQueryParams,
-	ChatsFindMessagesQueryResponse,
-	ChatsFindQueryParams,
-	ChatsFindQueryResponse,
-	ChatsFindVersions401,
-	ChatsFindVersions403,
-	ChatsFindVersions404,
-	ChatsFindVersions409,
-	ChatsFindVersions413,
-	ChatsFindVersions422,
-	ChatsFindVersions429,
-	ChatsFindVersions500,
-	ChatsFindVersionsPathParams,
-	ChatsFindVersionsQueryParams,
-	ChatsFindVersionsQueryResponse,
-	ChatsFork401,
-	ChatsFork403,
-	ChatsFork404,
-	ChatsFork409,
-	ChatsFork413,
-	ChatsFork422,
-	ChatsFork429,
-	ChatsFork500,
-	ChatsForkMutationResponse,
-	ChatsForkPathParams,
-	ChatsGetById401,
-	ChatsGetById403,
-	ChatsGetById404,
-	ChatsGetById409,
-	ChatsGetById413,
-	ChatsGetById422,
-	ChatsGetById429,
-	ChatsGetById500,
-	ChatsGetByIdPathParams,
-	ChatsGetByIdQueryResponse,
-	ChatsGetMessage401,
-	ChatsGetMessage403,
-	ChatsGetMessage404,
-	ChatsGetMessage409,
-	ChatsGetMessage413,
-	ChatsGetMessage422,
-	ChatsGetMessage429,
-	ChatsGetMessage500,
-	ChatsGetMessagePathParams,
-	ChatsGetMessageQueryResponse,
-	ChatsGetVersion401,
-	ChatsGetVersion403,
-	ChatsGetVersion404,
-	ChatsGetVersion409,
-	ChatsGetVersion413,
-	ChatsGetVersion422,
-	ChatsGetVersion429,
-	ChatsGetVersion500,
-	ChatsGetVersionPathParams,
-	ChatsGetVersionQueryParams,
-	ChatsGetVersionQueryResponse,
-	ChatsInit401,
-	ChatsInit403,
-	ChatsInit404,
-	ChatsInit409,
-	ChatsInit413,
-	ChatsInit422,
-	ChatsInit429,
-	ChatsInit500,
-	ChatsInitMutationResponse,
-	ChatsResolveTask401,
-	ChatsResolveTask403,
-	ChatsResolveTask404,
-	ChatsResolveTask409,
-	ChatsResolveTask413,
-	ChatsResolveTask422,
-	ChatsResolveTask429,
-	ChatsResolveTask500,
-	ChatsResolveTaskMutationResponse,
-	ChatsResolveTaskPathParams,
-	ChatsRestore401,
-	ChatsRestore403,
-	ChatsRestore404,
-	ChatsRestore409,
-	ChatsRestore413,
-	ChatsRestore422,
-	ChatsRestore429,
-	ChatsRestore500,
-	ChatsRestoreMutationResponse,
-	ChatsRestorePathParams,
-	ChatsResume401,
-	ChatsResume403,
-	ChatsResume404,
-	ChatsResume409,
-	ChatsResume413,
-	ChatsResume422,
-	ChatsResume429,
-	ChatsResume500,
-	ChatsResumeMutationResponse,
-	ChatsResumePathParams,
-	ChatsSendMessage401,
-	ChatsSendMessage403,
-	ChatsSendMessage404,
-	ChatsSendMessage409,
-	ChatsSendMessage413,
-	ChatsSendMessage422,
-	ChatsSendMessage429,
-	ChatsSendMessage500,
-	ChatsSendMessageMutationResponse,
-	ChatsSendMessagePathParams,
-	ChatsStop401,
-	ChatsStop403,
-	ChatsStop404,
-	ChatsStop409,
-	ChatsStop413,
-	ChatsStop422,
-	ChatsStop429,
-	ChatsStop500,
-	ChatsStopMutationResponse,
-	ChatsStopPathParams,
-	ChatsUpdate401,
-	ChatsUpdate403,
-	ChatsUpdate404,
-	ChatsUpdate409,
-	ChatsUpdate413,
-	ChatsUpdate422,
-	ChatsUpdate429,
-	ChatsUpdate500,
-	ChatsUpdateMutationResponse,
-	ChatsUpdatePathParams,
-	ChatsUpdateVersion401,
-	ChatsUpdateVersion403,
-	ChatsUpdateVersion404,
-	ChatsUpdateVersion409,
-	ChatsUpdateVersion413,
-	ChatsUpdateVersion422,
-	ChatsUpdateVersion429,
-	ChatsUpdateVersion500,
-	ChatsUpdateVersionMutationResponse,
-	ChatsUpdateVersionPathParams,
-	DeploymentsCreate401,
-	DeploymentsCreate403,
-	DeploymentsCreate404,
-	DeploymentsCreate409,
-	DeploymentsCreate413,
-	DeploymentsCreate422,
-	DeploymentsCreate429,
-	DeploymentsCreate500,
-	DeploymentsCreateMutationResponse,
-	DeploymentsDelete401,
-	DeploymentsDelete403,
-	DeploymentsDelete404,
-	DeploymentsDelete409,
-	DeploymentsDelete413,
-	DeploymentsDelete422,
-	DeploymentsDelete429,
-	DeploymentsDelete500,
-	DeploymentsDeleteMutationResponse,
-	DeploymentsDeletePathParams,
-	DeploymentsFind401,
-	DeploymentsFind403,
-	DeploymentsFind404,
-	DeploymentsFind409,
-	DeploymentsFind413,
-	DeploymentsFind422,
-	DeploymentsFind429,
-	DeploymentsFind500,
-	DeploymentsFindErrors401,
-	DeploymentsFindErrors403,
-	DeploymentsFindErrors404,
-	DeploymentsFindErrors409,
-	DeploymentsFindErrors413,
-	DeploymentsFindErrors422,
-	DeploymentsFindErrors429,
-	DeploymentsFindErrors500,
-	DeploymentsFindErrorsPathParams,
-	DeploymentsFindErrorsQueryResponse,
-	DeploymentsFindLogs401,
-	DeploymentsFindLogs403,
-	DeploymentsFindLogs404,
-	DeploymentsFindLogs409,
-	DeploymentsFindLogs413,
-	DeploymentsFindLogs422,
-	DeploymentsFindLogs429,
-	DeploymentsFindLogs500,
-	DeploymentsFindLogsPathParams,
-	DeploymentsFindLogsQueryParams,
-	DeploymentsFindLogsQueryResponse,
-	DeploymentsFindQueryParams,
-	DeploymentsFindQueryResponse,
-	DeploymentsGetById401,
-	DeploymentsGetById403,
-	DeploymentsGetById404,
-	DeploymentsGetById409,
-	DeploymentsGetById413,
-	DeploymentsGetById422,
-	DeploymentsGetById429,
-	DeploymentsGetById500,
-	DeploymentsGetByIdPathParams,
-	DeploymentsGetByIdQueryResponse,
-	HooksCreate401,
-	HooksCreate403,
-	HooksCreate404,
-	HooksCreate409,
-	HooksCreate413,
-	HooksCreate422,
-	HooksCreate429,
-	HooksCreate500,
-	HooksCreateMutationResponse,
-	HooksDelete401,
-	HooksDelete403,
-	HooksDelete404,
-	HooksDelete409,
-	HooksDelete413,
-	HooksDelete422,
-	HooksDelete429,
-	HooksDelete500,
-	HooksDeleteMutationResponse,
-	HooksDeletePathParams,
-	HooksFind401,
-	HooksFind403,
-	HooksFind404,
-	HooksFind409,
-	HooksFind413,
-	HooksFind422,
-	HooksFind429,
-	HooksFind500,
-	HooksFindQueryResponse,
-	HooksGetById401,
-	HooksGetById403,
-	HooksGetById404,
-	HooksGetById409,
-	HooksGetById413,
-	HooksGetById422,
-	HooksGetById429,
-	HooksGetById500,
-	HooksGetByIdPathParams,
-	HooksGetByIdQueryResponse,
-	HooksUpdate401,
-	HooksUpdate403,
-	HooksUpdate404,
-	HooksUpdate409,
-	HooksUpdate413,
-	HooksUpdate422,
-	HooksUpdate429,
-	HooksUpdate500,
-	HooksUpdateMutationResponse,
-	HooksUpdatePathParams,
-	IntegrationsVercelProjectsCreate401,
-	IntegrationsVercelProjectsCreate403,
-	IntegrationsVercelProjectsCreate404,
-	IntegrationsVercelProjectsCreate409,
-	IntegrationsVercelProjectsCreate413,
-	IntegrationsVercelProjectsCreate422,
-	IntegrationsVercelProjectsCreate429,
-	IntegrationsVercelProjectsCreate500,
-	IntegrationsVercelProjectsCreateMutationResponse,
-	IntegrationsVercelProjectsFind401,
-	IntegrationsVercelProjectsFind403,
-	IntegrationsVercelProjectsFind404,
-	IntegrationsVercelProjectsFind409,
-	IntegrationsVercelProjectsFind413,
-	IntegrationsVercelProjectsFind422,
-	IntegrationsVercelProjectsFind429,
-	IntegrationsVercelProjectsFind500,
-	IntegrationsVercelProjectsFindQueryResponse,
-	McpServersCreate401,
-	McpServersCreate403,
-	McpServersCreate404,
-	McpServersCreate409,
-	McpServersCreate413,
-	McpServersCreate422,
-	McpServersCreate429,
-	McpServersCreate500,
-	McpServersCreateMutationResponse,
-	McpServersCreateOAuthAuthorizationUrl401,
-	McpServersCreateOAuthAuthorizationUrl403,
-	McpServersCreateOAuthAuthorizationUrl404,
-	McpServersCreateOAuthAuthorizationUrl409,
-	McpServersCreateOAuthAuthorizationUrl413,
-	McpServersCreateOAuthAuthorizationUrl422,
-	McpServersCreateOAuthAuthorizationUrl429,
-	McpServersCreateOAuthAuthorizationUrl500,
-	McpServersCreateOAuthAuthorizationUrlMutationResponse,
-	McpServersCreateOAuthAuthorizationUrlPathParams,
-	McpServersDelete401,
-	McpServersDelete403,
-	McpServersDelete404,
-	McpServersDelete409,
-	McpServersDelete413,
-	McpServersDelete422,
-	McpServersDelete429,
-	McpServersDelete500,
-	McpServersDeleteMutationResponse,
-	McpServersDeletePathParams,
-	McpServersFind401,
-	McpServersFind403,
-	McpServersFind404,
-	McpServersFind409,
-	McpServersFind413,
-	McpServersFind422,
-	McpServersFind429,
-	McpServersFind500,
-	McpServersFindQueryResponse,
-	McpServersGetById401,
-	McpServersGetById403,
-	McpServersGetById404,
-	McpServersGetById409,
-	McpServersGetById413,
-	McpServersGetById422,
-	McpServersGetById429,
-	McpServersGetById500,
-	McpServersGetByIdPathParams,
-	McpServersGetByIdQueryResponse,
-	McpServersUpdate401,
-	McpServersUpdate403,
-	McpServersUpdate404,
-	McpServersUpdate409,
-	McpServersUpdate413,
-	McpServersUpdate422,
-	McpServersUpdate429,
-	McpServersUpdate500,
-	McpServersUpdateMutationResponse,
-	McpServersUpdatePathParams,
-	ProjectsAssign401,
-	ProjectsAssign403,
-	ProjectsAssign404,
-	ProjectsAssign409,
-	ProjectsAssign413,
-	ProjectsAssign422,
-	ProjectsAssign429,
-	ProjectsAssign500,
-	ProjectsAssignMutationResponse,
-	ProjectsAssignPathParams,
-	ProjectsCreate401,
-	ProjectsCreate403,
-	ProjectsCreate404,
-	ProjectsCreate409,
-	ProjectsCreate413,
-	ProjectsCreate422,
-	ProjectsCreate429,
-	ProjectsCreate500,
-	ProjectsCreateEnvVars401,
-	ProjectsCreateEnvVars403,
-	ProjectsCreateEnvVars404,
-	ProjectsCreateEnvVars409,
-	ProjectsCreateEnvVars413,
-	ProjectsCreateEnvVars422,
-	ProjectsCreateEnvVars429,
-	ProjectsCreateEnvVars500,
-	ProjectsCreateEnvVarsMutationResponse,
-	ProjectsCreateEnvVarsPathParams,
-	ProjectsCreateEnvVarsQueryParams,
-	ProjectsCreateMutationResponse,
-	ProjectsDelete401,
-	ProjectsDelete403,
-	ProjectsDelete404,
-	ProjectsDelete409,
-	ProjectsDelete413,
-	ProjectsDelete422,
-	ProjectsDelete429,
-	ProjectsDelete500,
-	ProjectsDeleteEnvVars401,
-	ProjectsDeleteEnvVars403,
-	ProjectsDeleteEnvVars404,
-	ProjectsDeleteEnvVars409,
-	ProjectsDeleteEnvVars413,
-	ProjectsDeleteEnvVars422,
-	ProjectsDeleteEnvVars429,
-	ProjectsDeleteEnvVars500,
-	ProjectsDeleteEnvVarsMutationResponse,
-	ProjectsDeleteEnvVarsPathParams,
-	ProjectsDeleteMutationResponse,
-	ProjectsDeletePathParams,
-	ProjectsDeleteQueryParams,
-	ProjectsFind401,
-	ProjectsFind403,
-	ProjectsFind404,
-	ProjectsFind409,
-	ProjectsFind413,
-	ProjectsFind422,
-	ProjectsFind429,
-	ProjectsFind500,
-	ProjectsFindEnvVars401,
-	ProjectsFindEnvVars403,
-	ProjectsFindEnvVars404,
-	ProjectsFindEnvVars409,
-	ProjectsFindEnvVars413,
-	ProjectsFindEnvVars422,
-	ProjectsFindEnvVars429,
-	ProjectsFindEnvVars500,
-	ProjectsFindEnvVarsPathParams,
-	ProjectsFindEnvVarsQueryParams,
-	ProjectsFindEnvVarsQueryResponse,
-	ProjectsFindQueryResponse,
-	ProjectsGetByChatId401,
-	ProjectsGetByChatId403,
-	ProjectsGetByChatId404,
-	ProjectsGetByChatId409,
-	ProjectsGetByChatId413,
-	ProjectsGetByChatId422,
-	ProjectsGetByChatId429,
-	ProjectsGetByChatId500,
-	ProjectsGetByChatIdPathParams,
-	ProjectsGetByChatIdQueryResponse,
-	ProjectsGetById401,
-	ProjectsGetById403,
-	ProjectsGetById404,
-	ProjectsGetById409,
-	ProjectsGetById413,
-	ProjectsGetById422,
-	ProjectsGetById429,
-	ProjectsGetById500,
-	ProjectsGetByIdPathParams,
-	ProjectsGetByIdQueryResponse,
-	ProjectsGetEnvVar401,
-	ProjectsGetEnvVar403,
-	ProjectsGetEnvVar404,
-	ProjectsGetEnvVar409,
-	ProjectsGetEnvVar413,
-	ProjectsGetEnvVar422,
-	ProjectsGetEnvVar429,
-	ProjectsGetEnvVar500,
-	ProjectsGetEnvVarPathParams,
-	ProjectsGetEnvVarQueryParams,
-	ProjectsGetEnvVarQueryResponse,
-	ProjectsUpdate401,
-	ProjectsUpdate403,
-	ProjectsUpdate404,
-	ProjectsUpdate409,
-	ProjectsUpdate413,
-	ProjectsUpdate422,
-	ProjectsUpdate429,
-	ProjectsUpdate500,
-	ProjectsUpdateEnvVars401,
-	ProjectsUpdateEnvVars403,
-	ProjectsUpdateEnvVars404,
-	ProjectsUpdateEnvVars409,
-	ProjectsUpdateEnvVars413,
-	ProjectsUpdateEnvVars422,
-	ProjectsUpdateEnvVars429,
-	ProjectsUpdateEnvVars500,
-	ProjectsUpdateEnvVarsMutationResponse,
-	ProjectsUpdateEnvVarsPathParams,
-	ProjectsUpdateEnvVarsQueryParams,
-	ProjectsUpdateMutationResponse,
-	ProjectsUpdatePathParams,
-	RateLimitsFind401,
-	RateLimitsFind403,
-	RateLimitsFind404,
-	RateLimitsFind409,
-	RateLimitsFind413,
-	RateLimitsFind422,
-	RateLimitsFind429,
-	RateLimitsFind500,
-	RateLimitsFindQueryParams,
-	RateLimitsFindQueryResponse,
-	ReportsGetAIUsage401,
-	ReportsGetAIUsage403,
-	ReportsGetAIUsage404,
-	ReportsGetAIUsage409,
-	ReportsGetAIUsage413,
-	ReportsGetAIUsage422,
-	ReportsGetAIUsage429,
-	ReportsGetAIUsage500,
-	ReportsGetAIUsageQueryParams,
-	ReportsGetAIUsageQueryResponse,
-	ReportsGetUsage401,
-	ReportsGetUsage403,
-	ReportsGetUsage404,
-	ReportsGetUsage409,
-	ReportsGetUsage413,
-	ReportsGetUsage422,
-	ReportsGetUsage429,
-	ReportsGetUsage500,
-	ReportsGetUsageQueryParams,
-	ReportsGetUsageQueryResponse,
-	ReportsGetUserActivity401,
-	ReportsGetUserActivity403,
-	ReportsGetUserActivity404,
-	ReportsGetUserActivity409,
-	ReportsGetUserActivity413,
-	ReportsGetUserActivity422,
-	ReportsGetUserActivity429,
-	ReportsGetUserActivity500,
-	ReportsGetUserActivityQueryParams,
-	ReportsGetUserActivityQueryResponse,
-	UserGet401,
-	UserGet403,
-	UserGet404,
-	UserGet409,
-	UserGet413,
-	UserGet422,
-	UserGet429,
-	UserGet500,
-	UserGetBilling401,
-	UserGetBilling403,
-	UserGetBilling404,
-	UserGetBilling409,
-	UserGetBilling413,
-	UserGetBilling422,
-	UserGetBilling429,
-	UserGetBilling500,
-	UserGetBillingQueryParams,
-	UserGetBillingQueryResponse,
-	UserGetPlan401,
-	UserGetPlan403,
-	UserGetPlan404,
-	UserGetPlan409,
-	UserGetPlan413,
-	UserGetPlan422,
-	UserGetPlan429,
-	UserGetPlan500,
-	UserGetPlanQueryResponse,
-	UserGetQueryResponse,
-	UserGetScopes401,
-	UserGetScopes403,
-	UserGetScopes404,
-	UserGetScopes409,
-	UserGetScopes413,
-	UserGetScopes422,
-	UserGetScopes429,
-	UserGetScopes500,
-	UserGetScopesQueryResponse,
+	ChatsCreateResponse,
+	ChatsCreateStatus401,
+	ChatsCreateStatus403,
+	ChatsCreateStatus404,
+	ChatsCreateStatus409,
+	ChatsCreateStatus413,
+	ChatsCreateStatus422,
+	ChatsCreateStatus429,
+	ChatsCreateStatus500,
+	ChatsDeleteResponse,
+	ChatsDeleteStatus401,
+	ChatsDeleteStatus403,
+	ChatsDeleteStatus404,
+	ChatsDeleteStatus409,
+	ChatsDeleteStatus413,
+	ChatsDeleteStatus422,
+	ChatsDeleteStatus429,
+	ChatsDeleteStatus500,
+	ChatsDeleteVersionFilesResponse,
+	ChatsDeleteVersionFilesStatus401,
+	ChatsDeleteVersionFilesStatus403,
+	ChatsDeleteVersionFilesStatus404,
+	ChatsDeleteVersionFilesStatus409,
+	ChatsDeleteVersionFilesStatus413,
+	ChatsDeleteVersionFilesStatus422,
+	ChatsDeleteVersionFilesStatus429,
+	ChatsDeleteVersionFilesStatus500,
+	ChatsDownloadVersionResponse,
+	ChatsDownloadVersionStatus401,
+	ChatsDownloadVersionStatus403,
+	ChatsDownloadVersionStatus404,
+	ChatsDownloadVersionStatus409,
+	ChatsDownloadVersionStatus413,
+	ChatsDownloadVersionStatus422,
+	ChatsDownloadVersionStatus429,
+	ChatsDownloadVersionStatus500,
+	ChatsFavoriteResponse,
+	ChatsFavoriteStatus401,
+	ChatsFavoriteStatus403,
+	ChatsFavoriteStatus404,
+	ChatsFavoriteStatus409,
+	ChatsFavoriteStatus413,
+	ChatsFavoriteStatus422,
+	ChatsFavoriteStatus429,
+	ChatsFavoriteStatus500,
+	ChatsFindMessagesResponse,
+	ChatsFindMessagesStatus401,
+	ChatsFindMessagesStatus403,
+	ChatsFindMessagesStatus404,
+	ChatsFindMessagesStatus409,
+	ChatsFindMessagesStatus413,
+	ChatsFindMessagesStatus422,
+	ChatsFindMessagesStatus429,
+	ChatsFindMessagesStatus500,
+	ChatsFindResponse,
+	ChatsFindStatus401,
+	ChatsFindStatus403,
+	ChatsFindStatus404,
+	ChatsFindStatus409,
+	ChatsFindStatus413,
+	ChatsFindStatus422,
+	ChatsFindStatus429,
+	ChatsFindStatus500,
+	ChatsFindVersionsResponse,
+	ChatsFindVersionsStatus401,
+	ChatsFindVersionsStatus403,
+	ChatsFindVersionsStatus404,
+	ChatsFindVersionsStatus409,
+	ChatsFindVersionsStatus413,
+	ChatsFindVersionsStatus422,
+	ChatsFindVersionsStatus429,
+	ChatsFindVersionsStatus500,
+	ChatsForkResponse,
+	ChatsForkStatus401,
+	ChatsForkStatus403,
+	ChatsForkStatus404,
+	ChatsForkStatus409,
+	ChatsForkStatus413,
+	ChatsForkStatus422,
+	ChatsForkStatus429,
+	ChatsForkStatus500,
+	ChatsGetByIdResponse,
+	ChatsGetByIdStatus401,
+	ChatsGetByIdStatus403,
+	ChatsGetByIdStatus404,
+	ChatsGetByIdStatus409,
+	ChatsGetByIdStatus413,
+	ChatsGetByIdStatus422,
+	ChatsGetByIdStatus429,
+	ChatsGetByIdStatus500,
+	ChatsGetMessageResponse,
+	ChatsGetMessageStatus401,
+	ChatsGetMessageStatus403,
+	ChatsGetMessageStatus404,
+	ChatsGetMessageStatus409,
+	ChatsGetMessageStatus413,
+	ChatsGetMessageStatus422,
+	ChatsGetMessageStatus429,
+	ChatsGetMessageStatus500,
+	ChatsGetVersionResponse,
+	ChatsGetVersionStatus401,
+	ChatsGetVersionStatus403,
+	ChatsGetVersionStatus404,
+	ChatsGetVersionStatus409,
+	ChatsGetVersionStatus413,
+	ChatsGetVersionStatus422,
+	ChatsGetVersionStatus429,
+	ChatsGetVersionStatus500,
+	ChatsInitResponse,
+	ChatsInitStatus401,
+	ChatsInitStatus403,
+	ChatsInitStatus404,
+	ChatsInitStatus409,
+	ChatsInitStatus413,
+	ChatsInitStatus422,
+	ChatsInitStatus429,
+	ChatsInitStatus500,
+	ChatsResolveTaskResponse,
+	ChatsResolveTaskStatus401,
+	ChatsResolveTaskStatus403,
+	ChatsResolveTaskStatus404,
+	ChatsResolveTaskStatus409,
+	ChatsResolveTaskStatus413,
+	ChatsResolveTaskStatus422,
+	ChatsResolveTaskStatus429,
+	ChatsResolveTaskStatus500,
+	ChatsRestoreResponse,
+	ChatsRestoreStatus401,
+	ChatsRestoreStatus403,
+	ChatsRestoreStatus404,
+	ChatsRestoreStatus409,
+	ChatsRestoreStatus413,
+	ChatsRestoreStatus422,
+	ChatsRestoreStatus429,
+	ChatsRestoreStatus500,
+	ChatsResumeResponse,
+	ChatsResumeStatus401,
+	ChatsResumeStatus403,
+	ChatsResumeStatus404,
+	ChatsResumeStatus409,
+	ChatsResumeStatus413,
+	ChatsResumeStatus422,
+	ChatsResumeStatus429,
+	ChatsResumeStatus500,
+	ChatsSendMessageResponse,
+	ChatsSendMessageStatus401,
+	ChatsSendMessageStatus403,
+	ChatsSendMessageStatus404,
+	ChatsSendMessageStatus409,
+	ChatsSendMessageStatus413,
+	ChatsSendMessageStatus422,
+	ChatsSendMessageStatus429,
+	ChatsSendMessageStatus500,
+	ChatsStopResponse,
+	ChatsStopStatus401,
+	ChatsStopStatus403,
+	ChatsStopStatus404,
+	ChatsStopStatus409,
+	ChatsStopStatus413,
+	ChatsStopStatus422,
+	ChatsStopStatus429,
+	ChatsStopStatus500,
+	ChatsUpdateResponse,
+	ChatsUpdateStatus401,
+	ChatsUpdateStatus403,
+	ChatsUpdateStatus404,
+	ChatsUpdateStatus409,
+	ChatsUpdateStatus413,
+	ChatsUpdateStatus422,
+	ChatsUpdateStatus429,
+	ChatsUpdateStatus500,
+	ChatsUpdateVersionResponse,
+	ChatsUpdateVersionStatus401,
+	ChatsUpdateVersionStatus403,
+	ChatsUpdateVersionStatus404,
+	ChatsUpdateVersionStatus409,
+	ChatsUpdateVersionStatus413,
+	ChatsUpdateVersionStatus422,
+	ChatsUpdateVersionStatus429,
+	ChatsUpdateVersionStatus500,
+	DeploymentsCreateResponse,
+	DeploymentsCreateStatus401,
+	DeploymentsCreateStatus403,
+	DeploymentsCreateStatus404,
+	DeploymentsCreateStatus409,
+	DeploymentsCreateStatus413,
+	DeploymentsCreateStatus422,
+	DeploymentsCreateStatus429,
+	DeploymentsCreateStatus500,
+	DeploymentsDeleteResponse,
+	DeploymentsDeleteStatus401,
+	DeploymentsDeleteStatus403,
+	DeploymentsDeleteStatus404,
+	DeploymentsDeleteStatus409,
+	DeploymentsDeleteStatus413,
+	DeploymentsDeleteStatus422,
+	DeploymentsDeleteStatus429,
+	DeploymentsDeleteStatus500,
+	DeploymentsFindErrorsResponse,
+	DeploymentsFindErrorsStatus401,
+	DeploymentsFindErrorsStatus403,
+	DeploymentsFindErrorsStatus404,
+	DeploymentsFindErrorsStatus409,
+	DeploymentsFindErrorsStatus413,
+	DeploymentsFindErrorsStatus422,
+	DeploymentsFindErrorsStatus429,
+	DeploymentsFindErrorsStatus500,
+	DeploymentsFindLogsResponse,
+	DeploymentsFindLogsStatus401,
+	DeploymentsFindLogsStatus403,
+	DeploymentsFindLogsStatus404,
+	DeploymentsFindLogsStatus409,
+	DeploymentsFindLogsStatus413,
+	DeploymentsFindLogsStatus422,
+	DeploymentsFindLogsStatus429,
+	DeploymentsFindLogsStatus500,
+	DeploymentsFindResponse,
+	DeploymentsFindStatus401,
+	DeploymentsFindStatus403,
+	DeploymentsFindStatus404,
+	DeploymentsFindStatus409,
+	DeploymentsFindStatus413,
+	DeploymentsFindStatus422,
+	DeploymentsFindStatus429,
+	DeploymentsFindStatus500,
+	DeploymentsGetByIdResponse,
+	DeploymentsGetByIdStatus401,
+	DeploymentsGetByIdStatus403,
+	DeploymentsGetByIdStatus404,
+	DeploymentsGetByIdStatus409,
+	DeploymentsGetByIdStatus413,
+	DeploymentsGetByIdStatus422,
+	DeploymentsGetByIdStatus429,
+	DeploymentsGetByIdStatus500,
+	HooksCreateResponse,
+	HooksCreateStatus401,
+	HooksCreateStatus403,
+	HooksCreateStatus404,
+	HooksCreateStatus409,
+	HooksCreateStatus413,
+	HooksCreateStatus422,
+	HooksCreateStatus429,
+	HooksCreateStatus500,
+	HooksDeleteResponse,
+	HooksDeleteStatus401,
+	HooksDeleteStatus403,
+	HooksDeleteStatus404,
+	HooksDeleteStatus409,
+	HooksDeleteStatus413,
+	HooksDeleteStatus422,
+	HooksDeleteStatus429,
+	HooksDeleteStatus500,
+	HooksFindResponse,
+	HooksFindStatus401,
+	HooksFindStatus403,
+	HooksFindStatus404,
+	HooksFindStatus409,
+	HooksFindStatus413,
+	HooksFindStatus422,
+	HooksFindStatus429,
+	HooksFindStatus500,
+	HooksGetByIdResponse,
+	HooksGetByIdStatus401,
+	HooksGetByIdStatus403,
+	HooksGetByIdStatus404,
+	HooksGetByIdStatus409,
+	HooksGetByIdStatus413,
+	HooksGetByIdStatus422,
+	HooksGetByIdStatus429,
+	HooksGetByIdStatus500,
+	HooksUpdateResponse,
+	HooksUpdateStatus401,
+	HooksUpdateStatus403,
+	HooksUpdateStatus404,
+	HooksUpdateStatus409,
+	HooksUpdateStatus413,
+	HooksUpdateStatus422,
+	HooksUpdateStatus429,
+	HooksUpdateStatus500,
+	IntegrationsVercelProjectsCreateResponse,
+	IntegrationsVercelProjectsCreateStatus401,
+	IntegrationsVercelProjectsCreateStatus403,
+	IntegrationsVercelProjectsCreateStatus404,
+	IntegrationsVercelProjectsCreateStatus409,
+	IntegrationsVercelProjectsCreateStatus413,
+	IntegrationsVercelProjectsCreateStatus422,
+	IntegrationsVercelProjectsCreateStatus429,
+	IntegrationsVercelProjectsCreateStatus500,
+	IntegrationsVercelProjectsFindResponse,
+	IntegrationsVercelProjectsFindStatus401,
+	IntegrationsVercelProjectsFindStatus403,
+	IntegrationsVercelProjectsFindStatus404,
+	IntegrationsVercelProjectsFindStatus409,
+	IntegrationsVercelProjectsFindStatus413,
+	IntegrationsVercelProjectsFindStatus422,
+	IntegrationsVercelProjectsFindStatus429,
+	IntegrationsVercelProjectsFindStatus500,
+	McpServersCreateOAuthAuthorizationUrlResponse,
+	McpServersCreateOAuthAuthorizationUrlStatus401,
+	McpServersCreateOAuthAuthorizationUrlStatus403,
+	McpServersCreateOAuthAuthorizationUrlStatus404,
+	McpServersCreateOAuthAuthorizationUrlStatus409,
+	McpServersCreateOAuthAuthorizationUrlStatus413,
+	McpServersCreateOAuthAuthorizationUrlStatus422,
+	McpServersCreateOAuthAuthorizationUrlStatus429,
+	McpServersCreateOAuthAuthorizationUrlStatus500,
+	McpServersCreateResponse,
+	McpServersCreateStatus401,
+	McpServersCreateStatus403,
+	McpServersCreateStatus404,
+	McpServersCreateStatus409,
+	McpServersCreateStatus413,
+	McpServersCreateStatus422,
+	McpServersCreateStatus429,
+	McpServersCreateStatus500,
+	McpServersDeleteResponse,
+	McpServersDeleteStatus401,
+	McpServersDeleteStatus403,
+	McpServersDeleteStatus404,
+	McpServersDeleteStatus409,
+	McpServersDeleteStatus413,
+	McpServersDeleteStatus422,
+	McpServersDeleteStatus429,
+	McpServersDeleteStatus500,
+	McpServersFindResponse,
+	McpServersFindStatus401,
+	McpServersFindStatus403,
+	McpServersFindStatus404,
+	McpServersFindStatus409,
+	McpServersFindStatus413,
+	McpServersFindStatus422,
+	McpServersFindStatus429,
+	McpServersFindStatus500,
+	McpServersGetByIdResponse,
+	McpServersGetByIdStatus401,
+	McpServersGetByIdStatus403,
+	McpServersGetByIdStatus404,
+	McpServersGetByIdStatus409,
+	McpServersGetByIdStatus413,
+	McpServersGetByIdStatus422,
+	McpServersGetByIdStatus429,
+	McpServersGetByIdStatus500,
+	McpServersUpdateResponse,
+	McpServersUpdateStatus401,
+	McpServersUpdateStatus403,
+	McpServersUpdateStatus404,
+	McpServersUpdateStatus409,
+	McpServersUpdateStatus413,
+	McpServersUpdateStatus422,
+	McpServersUpdateStatus429,
+	McpServersUpdateStatus500,
+	ProjectsAssignResponse,
+	ProjectsAssignStatus401,
+	ProjectsAssignStatus403,
+	ProjectsAssignStatus404,
+	ProjectsAssignStatus409,
+	ProjectsAssignStatus413,
+	ProjectsAssignStatus422,
+	ProjectsAssignStatus429,
+	ProjectsAssignStatus500,
+	ProjectsCreateEnvVarsResponse,
+	ProjectsCreateEnvVarsStatus401,
+	ProjectsCreateEnvVarsStatus403,
+	ProjectsCreateEnvVarsStatus404,
+	ProjectsCreateEnvVarsStatus409,
+	ProjectsCreateEnvVarsStatus413,
+	ProjectsCreateEnvVarsStatus422,
+	ProjectsCreateEnvVarsStatus429,
+	ProjectsCreateEnvVarsStatus500,
+	ProjectsCreateResponse,
+	ProjectsCreateStatus401,
+	ProjectsCreateStatus403,
+	ProjectsCreateStatus404,
+	ProjectsCreateStatus409,
+	ProjectsCreateStatus413,
+	ProjectsCreateStatus422,
+	ProjectsCreateStatus429,
+	ProjectsCreateStatus500,
+	ProjectsDeleteEnvVarsResponse,
+	ProjectsDeleteEnvVarsStatus401,
+	ProjectsDeleteEnvVarsStatus403,
+	ProjectsDeleteEnvVarsStatus404,
+	ProjectsDeleteEnvVarsStatus409,
+	ProjectsDeleteEnvVarsStatus413,
+	ProjectsDeleteEnvVarsStatus422,
+	ProjectsDeleteEnvVarsStatus429,
+	ProjectsDeleteEnvVarsStatus500,
+	ProjectsDeleteResponse,
+	ProjectsDeleteStatus401,
+	ProjectsDeleteStatus403,
+	ProjectsDeleteStatus404,
+	ProjectsDeleteStatus409,
+	ProjectsDeleteStatus413,
+	ProjectsDeleteStatus422,
+	ProjectsDeleteStatus429,
+	ProjectsDeleteStatus500,
+	ProjectsFindEnvVarsResponse,
+	ProjectsFindEnvVarsStatus401,
+	ProjectsFindEnvVarsStatus403,
+	ProjectsFindEnvVarsStatus404,
+	ProjectsFindEnvVarsStatus409,
+	ProjectsFindEnvVarsStatus413,
+	ProjectsFindEnvVarsStatus422,
+	ProjectsFindEnvVarsStatus429,
+	ProjectsFindEnvVarsStatus500,
+	ProjectsFindResponse,
+	ProjectsFindStatus401,
+	ProjectsFindStatus403,
+	ProjectsFindStatus404,
+	ProjectsFindStatus409,
+	ProjectsFindStatus413,
+	ProjectsFindStatus422,
+	ProjectsFindStatus429,
+	ProjectsFindStatus500,
+	ProjectsGetByChatIdResponse,
+	ProjectsGetByChatIdStatus401,
+	ProjectsGetByChatIdStatus403,
+	ProjectsGetByChatIdStatus404,
+	ProjectsGetByChatIdStatus409,
+	ProjectsGetByChatIdStatus413,
+	ProjectsGetByChatIdStatus422,
+	ProjectsGetByChatIdStatus429,
+	ProjectsGetByChatIdStatus500,
+	ProjectsGetByIdResponse,
+	ProjectsGetByIdStatus401,
+	ProjectsGetByIdStatus403,
+	ProjectsGetByIdStatus404,
+	ProjectsGetByIdStatus409,
+	ProjectsGetByIdStatus413,
+	ProjectsGetByIdStatus422,
+	ProjectsGetByIdStatus429,
+	ProjectsGetByIdStatus500,
+	ProjectsGetEnvVarResponse,
+	ProjectsGetEnvVarStatus401,
+	ProjectsGetEnvVarStatus403,
+	ProjectsGetEnvVarStatus404,
+	ProjectsGetEnvVarStatus409,
+	ProjectsGetEnvVarStatus413,
+	ProjectsGetEnvVarStatus422,
+	ProjectsGetEnvVarStatus429,
+	ProjectsGetEnvVarStatus500,
+	ProjectsUpdateEnvVarsResponse,
+	ProjectsUpdateEnvVarsStatus401,
+	ProjectsUpdateEnvVarsStatus403,
+	ProjectsUpdateEnvVarsStatus404,
+	ProjectsUpdateEnvVarsStatus409,
+	ProjectsUpdateEnvVarsStatus413,
+	ProjectsUpdateEnvVarsStatus422,
+	ProjectsUpdateEnvVarsStatus429,
+	ProjectsUpdateEnvVarsStatus500,
+	ProjectsUpdateResponse,
+	ProjectsUpdateStatus401,
+	ProjectsUpdateStatus403,
+	ProjectsUpdateStatus404,
+	ProjectsUpdateStatus409,
+	ProjectsUpdateStatus413,
+	ProjectsUpdateStatus422,
+	ProjectsUpdateStatus429,
+	ProjectsUpdateStatus500,
+	RateLimitsFindResponse,
+	RateLimitsFindStatus401,
+	RateLimitsFindStatus403,
+	RateLimitsFindStatus404,
+	RateLimitsFindStatus409,
+	RateLimitsFindStatus413,
+	RateLimitsFindStatus422,
+	RateLimitsFindStatus429,
+	RateLimitsFindStatus500,
+	ReportsGetAIUsageResponse,
+	ReportsGetAIUsageStatus401,
+	ReportsGetAIUsageStatus403,
+	ReportsGetAIUsageStatus404,
+	ReportsGetAIUsageStatus409,
+	ReportsGetAIUsageStatus413,
+	ReportsGetAIUsageStatus422,
+	ReportsGetAIUsageStatus429,
+	ReportsGetAIUsageStatus500,
+	ReportsGetUsageResponse,
+	ReportsGetUsageStatus401,
+	ReportsGetUsageStatus403,
+	ReportsGetUsageStatus404,
+	ReportsGetUsageStatus409,
+	ReportsGetUsageStatus413,
+	ReportsGetUsageStatus422,
+	ReportsGetUsageStatus429,
+	ReportsGetUsageStatus500,
+	ReportsGetUserActivityResponse,
+	ReportsGetUserActivityStatus401,
+	ReportsGetUserActivityStatus403,
+	ReportsGetUserActivityStatus404,
+	ReportsGetUserActivityStatus409,
+	ReportsGetUserActivityStatus413,
+	ReportsGetUserActivityStatus422,
+	ReportsGetUserActivityStatus429,
+	ReportsGetUserActivityStatus500,
+	UserGetBillingResponse,
+	UserGetBillingStatus401,
+	UserGetBillingStatus403,
+	UserGetBillingStatus404,
+	UserGetBillingStatus409,
+	UserGetBillingStatus413,
+	UserGetBillingStatus422,
+	UserGetBillingStatus429,
+	UserGetBillingStatus500,
+	UserGetPlanResponse,
+	UserGetPlanStatus401,
+	UserGetPlanStatus403,
+	UserGetPlanStatus404,
+	UserGetPlanStatus409,
+	UserGetPlanStatus413,
+	UserGetPlanStatus422,
+	UserGetPlanStatus429,
+	UserGetPlanStatus500,
+	UserGetResponse,
+	UserGetScopesResponse,
+	UserGetScopesStatus401,
+	UserGetScopesStatus403,
+	UserGetScopesStatus404,
+	UserGetScopesStatus409,
+	UserGetScopesStatus413,
+	UserGetScopesStatus422,
+	UserGetScopesStatus429,
+	UserGetScopesStatus500,
+	UserGetStatus401,
+	UserGetStatus403,
+	UserGetStatus404,
+	UserGetStatus409,
+	UserGetStatus413,
+	UserGetStatus422,
+	UserGetStatus429,
+	UserGetStatus500,
 } from "./types";
 
 /**
- * @description Creates a new chat using a user message, optional system context, and model configuration. Useful for prompting the model within the scope of a specific project.
  * @summary Create Chat
- * {@link /chats}
+ * @description Creates a new chat using a user message, optional system context, and model configuration. Useful for prompting the model within the scope of a specific project.
+ * @link /chats
  */
-export async function chatsCreate({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function chatsCreate(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		ChatsCreateMutationResponse,
+		ChatsCreateResponse,
 		ErrorWrapper<
-			| ChatsCreate401
-			| ChatsCreate403
-			| ChatsCreate404
-			| ChatsCreate409
-			| ChatsCreate413
-			| ChatsCreate422
-			| ChatsCreate429
-			| ChatsCreate500
+			| ChatsCreateStatus401
+			| ChatsCreateStatus403
+			| ChatsCreateStatus404
+			| ChatsCreateStatus409
+			| ChatsCreateStatus413
+			| ChatsCreateStatus422
+			| ChatsCreateStatus429
+			| ChatsCreateStatus500
 		>,
 		null,
 		Record<string, string>,
@@ -626,68 +569,88 @@ export async function chatsCreate({
 		method: "POST",
 		url: `/chats`,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Retrieves a list of existing chats, with support for pagination and filtering by favorite status, Vercel project, or Git branch. Helps manage and navigate chat history.
  * @summary Find Chats
- * {@link /chats}
+ * @description Retrieves a list of existing chats, with support for pagination and filtering by favorite status, Vercel project, or Git branch. Helps manage and navigate chat history.
+ * @link /chats
  */
-export async function chatsFind({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: ChatsFindQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function chatsFind(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			limit?: number;
+			offset?: number;
+			isFavorite?: "true" | "false";
+			vercelProjectId?: string;
+			branch?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		ChatsFindQueryResponse,
+		ChatsFindResponse,
 		ErrorWrapper<
-			| ChatsFind401
-			| ChatsFind403
-			| ChatsFind404
-			| ChatsFind409
-			| ChatsFind413
-			| ChatsFind422
-			| ChatsFind429
-			| ChatsFind500
+			| ChatsFindStatus401
+			| ChatsFindStatus403
+			| ChatsFindStatus404
+			| ChatsFindStatus409
+			| ChatsFindStatus413
+			| ChatsFindStatus422
+			| ChatsFindStatus429
+			| ChatsFindStatus500
 		>,
 		null,
 		Record<string, string>,
-		ChatsFindQueryParams,
+		{
+			limit?: number;
+			offset?: number;
+			isFavorite?: "true" | "false";
+			vercelProjectId?: string;
+			branch?: string;
+		},
 		Record<string, string>
-	>({ method: "GET", url: `/chats`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/chats`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Initializes a new chat from source content such as files, repositories, registries, or zip archives. Enables context-rich conversations based on code or assets.
  * @summary Initialize Chat
- * {@link /chats/init}
+ * @description Initializes a new chat from source content such as files, repositories, registries, or zip archives. Enables context-rich conversations based on code or assets.
+ * @link /chats/init
  */
-export async function chatsInit({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function chatsInit(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		ChatsInitMutationResponse,
+		ChatsInitResponse,
 		ErrorWrapper<
-			| ChatsInit401
-			| ChatsInit403
-			| ChatsInit404
-			| ChatsInit409
-			| ChatsInit413
-			| ChatsInit422
-			| ChatsInit429
-			| ChatsInit500
+			| ChatsInitStatus401
+			| ChatsInitStatus403
+			| ChatsInitStatus404
+			| ChatsInitStatus409
+			| ChatsInitStatus413
+			| ChatsInitStatus422
+			| ChatsInitStatus429
+			| ChatsInitStatus500
 		>,
 		null,
 		Record<string, string>,
@@ -697,795 +660,881 @@ export async function chatsInit({
 		method: "POST",
 		url: `/chats/init`,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Deletes a specific chat based on the provided chatId. This operation is irreversible and permanently removes the chat and its contents.
  * @summary Delete Chat
- * {@link /chats/:chatId}
+ * @description Deletes a specific chat based on the provided chatId. This operation is irreversible and permanently removes the chat and its contents.
+ * @link /chats/{chatId}
  */
-export async function chatsDelete({
-	pathParams: { chatId },
-	config = {},
-}: {
-	pathParams: ChatsDeletePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function chatsDelete(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { chatId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!chatId) {
+	if (!pathParams.chatId) {
 		throw new Error(`Missing required path parameter: chatId`);
 	}
-
 	const data = await request<
-		ChatsDeleteMutationResponse,
+		ChatsDeleteResponse,
 		ErrorWrapper<
-			| ChatsDelete401
-			| ChatsDelete403
-			| ChatsDelete404
-			| ChatsDelete409
-			| ChatsDelete413
-			| ChatsDelete422
-			| ChatsDelete429
-			| ChatsDelete500
+			| ChatsDeleteStatus401
+			| ChatsDeleteStatus403
+			| ChatsDeleteStatus404
+			| ChatsDeleteStatus409
+			| ChatsDeleteStatus413
+			| ChatsDeleteStatus422
+			| ChatsDeleteStatus429
+			| ChatsDeleteStatus500
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		ChatsDeletePathParams
-	>({ method: "DELETE", url: `/chats/${chatId}`, ...requestConfig });
+		{ chatId: string }
+	>({
+		method: "DELETE",
+		url: `/chats/${pathParams.chatId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Retrieves the full details of a specific chat using its `chatId`. Includes messages, metadata, and associated configuration.
  * @summary Get Chat
- * {@link /chats/:chatId}
+ * @description Retrieves the full details of a specific chat using its `chatId`. Includes messages, metadata, and associated configuration.
+ * @link /chats/{chatId}
  */
-export async function chatsGetById({
-	pathParams: { chatId },
-	config = {},
-}: {
-	pathParams: ChatsGetByIdPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function chatsGetById(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { chatId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!chatId) {
+	if (!pathParams.chatId) {
 		throw new Error(`Missing required path parameter: chatId`);
 	}
-
 	const data = await request<
-		ChatsGetByIdQueryResponse,
+		ChatsGetByIdResponse,
 		ErrorWrapper<
-			| ChatsGetById401
-			| ChatsGetById403
-			| ChatsGetById404
-			| ChatsGetById409
-			| ChatsGetById413
-			| ChatsGetById422
-			| ChatsGetById429
-			| ChatsGetById500
+			| ChatsGetByIdStatus401
+			| ChatsGetByIdStatus403
+			| ChatsGetByIdStatus404
+			| ChatsGetByIdStatus409
+			| ChatsGetByIdStatus413
+			| ChatsGetByIdStatus422
+			| ChatsGetByIdStatus429
+			| ChatsGetByIdStatus500
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		ChatsGetByIdPathParams
-	>({ method: "GET", url: `/chats/${chatId}`, ...requestConfig });
+		{ chatId: string }
+	>({
+		method: "GET",
+		url: `/chats/${pathParams.chatId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Updates the metadata of an existing chat using its `chatId`. Supports changes to the chat name and privacy setting.
  * @summary Update Chat
- * {@link /chats/:chatId}
+ * @description Updates the metadata of an existing chat using its `chatId`. Supports changes to the chat name and privacy setting.
+ * @link /chats/{chatId}
  */
-export async function chatsUpdate({
-	pathParams: { chatId },
-	config = {},
-}: {
-	pathParams: ChatsUpdatePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function chatsUpdate(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { chatId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!chatId) {
+	if (!pathParams.chatId) {
 		throw new Error(`Missing required path parameter: chatId`);
 	}
-
 	const data = await request<
-		ChatsUpdateMutationResponse,
+		ChatsUpdateResponse,
 		ErrorWrapper<
-			| ChatsUpdate401
-			| ChatsUpdate403
-			| ChatsUpdate404
-			| ChatsUpdate409
-			| ChatsUpdate413
-			| ChatsUpdate422
-			| ChatsUpdate429
-			| ChatsUpdate500
+			| ChatsUpdateStatus401
+			| ChatsUpdateStatus403
+			| ChatsUpdateStatus404
+			| ChatsUpdateStatus409
+			| ChatsUpdateStatus413
+			| ChatsUpdateStatus422
+			| ChatsUpdateStatus429
+			| ChatsUpdateStatus500
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		ChatsUpdatePathParams
+		{ chatId: string }
 	>({
 		method: "PATCH",
-		url: `/chats/${chatId}`,
+		url: `/chats/${pathParams.chatId}`,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Marks or unmarks a chat as a favorite using its `chatId`. This helps with organizing and quickly accessing important chats.
  * @summary Favorite Chat
- * {@link /chats/:chatId/favorite}
+ * @description Marks or unmarks a chat as a favorite using its `chatId`. This helps with organizing and quickly accessing important chats.
+ * @link /chats/{chatId}/favorite
  */
-export async function chatsFavorite({
-	pathParams: { chatId },
-	config = {},
-}: {
-	pathParams: ChatsFavoritePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function chatsFavorite(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { chatId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!chatId) {
+	if (!pathParams.chatId) {
 		throw new Error(`Missing required path parameter: chatId`);
 	}
-
 	const data = await request<
-		ChatsFavoriteMutationResponse,
+		ChatsFavoriteResponse,
 		ErrorWrapper<
-			| ChatsFavorite401
-			| ChatsFavorite403
-			| ChatsFavorite404
-			| ChatsFavorite409
-			| ChatsFavorite413
-			| ChatsFavorite422
-			| ChatsFavorite429
-			| ChatsFavorite500
+			| ChatsFavoriteStatus401
+			| ChatsFavoriteStatus403
+			| ChatsFavoriteStatus404
+			| ChatsFavoriteStatus409
+			| ChatsFavoriteStatus413
+			| ChatsFavoriteStatus422
+			| ChatsFavoriteStatus429
+			| ChatsFavoriteStatus500
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		ChatsFavoritePathParams
+		{ chatId: string }
 	>({
 		method: "PUT",
-		url: `/chats/${chatId}/favorite`,
+		url: `/chats/${pathParams.chatId}/favorite`,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Creates a new chat fork (duplicate) from a specific version within an existing chat. Useful for branching off alternate directions without modifying the original conversation.
  * @summary Fork Chat
- * {@link /chats/:chatId/fork}
+ * @description Creates a new chat fork (duplicate) from a specific version within an existing chat. Useful for branching off alternate directions without modifying the original conversation.
+ * @link /chats/{chatId}/fork
  */
-export async function chatsFork({
-	pathParams: { chatId },
-	config = {},
-}: {
-	pathParams: ChatsForkPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function chatsFork(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { chatId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!chatId) {
+	if (!pathParams.chatId) {
 		throw new Error(`Missing required path parameter: chatId`);
 	}
-
 	const data = await request<
-		ChatsForkMutationResponse,
+		ChatsForkResponse,
 		ErrorWrapper<
-			| ChatsFork401
-			| ChatsFork403
-			| ChatsFork404
-			| ChatsFork409
-			| ChatsFork413
-			| ChatsFork422
-			| ChatsFork429
-			| ChatsFork500
+			| ChatsForkStatus401
+			| ChatsForkStatus403
+			| ChatsForkStatus404
+			| ChatsForkStatus409
+			| ChatsForkStatus413
+			| ChatsForkStatus422
+			| ChatsForkStatus429
+			| ChatsForkStatus500
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		ChatsForkPathParams
+		{ chatId: string }
 	>({
 		method: "POST",
-		url: `/chats/${chatId}/fork`,
+		url: `/chats/${pathParams.chatId}/fork`,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Retrieves the v0 project associated with a given chat. Useful for determining the context or scope of a chat session.
  * @summary Get Project by Chat ID
- * {@link /chats/:chatId/project}
+ * @description Retrieves the v0 project associated with a given chat. Useful for determining the context or scope of a chat session.
+ * @link /chats/{chatId}/project
  */
-export async function projectsGetByChatId({
-	pathParams: { chatId },
-	config = {},
-}: {
-	pathParams: ProjectsGetByChatIdPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function projectsGetByChatId(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { chatId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!chatId) {
+	if (!pathParams.chatId) {
 		throw new Error(`Missing required path parameter: chatId`);
 	}
-
 	const data = await request<
-		ProjectsGetByChatIdQueryResponse,
+		ProjectsGetByChatIdResponse,
 		ErrorWrapper<
-			| ProjectsGetByChatId401
-			| ProjectsGetByChatId403
-			| ProjectsGetByChatId404
-			| ProjectsGetByChatId409
-			| ProjectsGetByChatId413
-			| ProjectsGetByChatId422
-			| ProjectsGetByChatId429
-			| ProjectsGetByChatId500
+			| ProjectsGetByChatIdStatus401
+			| ProjectsGetByChatIdStatus403
+			| ProjectsGetByChatIdStatus404
+			| ProjectsGetByChatIdStatus409
+			| ProjectsGetByChatIdStatus413
+			| ProjectsGetByChatIdStatus422
+			| ProjectsGetByChatIdStatus429
+			| ProjectsGetByChatIdStatus500
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		ProjectsGetByChatIdPathParams
-	>({ method: "GET", url: `/chats/${chatId}/project`, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Retrieves a list of all messages for a specific chat, ordered by creation date (newest first). Supports cursor-based pagination and includes message content, role, and type information.
- * @summary Find Chat Messages
- * {@link /chats/:chatId/messages}
- */
-export async function chatsFindMessages({
-	pathParams: { chatId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ChatsFindMessagesPathParams;
-	queryParams?: ChatsFindMessagesQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!chatId) {
-		throw new Error(`Missing required path parameter: chatId`);
-	}
-
-	const data = await request<
-		ChatsFindMessagesQueryResponse,
-		ErrorWrapper<
-			| ChatsFindMessages401
-			| ChatsFindMessages403
-			| ChatsFindMessages404
-			| ChatsFindMessages409
-			| ChatsFindMessages413
-			| ChatsFindMessages422
-			| ChatsFindMessages429
-			| ChatsFindMessages500
-		>,
-		null,
-		Record<string, string>,
-		ChatsFindMessagesQueryParams,
-		ChatsFindMessagesPathParams
-	>({ method: "GET", url: `/chats/${chatId}/messages`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Creates a new message in an existing chat. Triggers a model response using the provided prompt, with optional attachments and configuration settings.
- * @summary Send Message
- * {@link /chats/:chatId/messages}
- */
-export async function chatsSendMessage({
-	pathParams: { chatId },
-	config = {},
-}: {
-	pathParams: ChatsSendMessagePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!chatId) {
-		throw new Error(`Missing required path parameter: chatId`);
-	}
-
-	const data = await request<
-		ChatsSendMessageMutationResponse,
-		ErrorWrapper<
-			| ChatsSendMessage401
-			| ChatsSendMessage403
-			| ChatsSendMessage404
-			| ChatsSendMessage409
-			| ChatsSendMessage413
-			| ChatsSendMessage422
-			| ChatsSendMessage429
-			| ChatsSendMessage500
-		>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		ChatsSendMessagePathParams
-	>({
-		method: "POST",
-		url: `/chats/${chatId}/messages`,
-		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
-	});
-	return data;
-}
-
-/**
- * @description Retrieves detailed information about a specific message within a chat, including content, files, model configuration, and demo URLs.
- * @summary Get Chat Message
- * {@link /chats/:chatId/messages/:messageId}
- */
-export async function chatsGetMessage({
-	pathParams: { chatId, messageId },
-	config = {},
-}: {
-	pathParams: ChatsGetMessagePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!chatId) {
-		throw new Error(`Missing required path parameter: chatId`);
-	}
-
-	if (!messageId) {
-		throw new Error(`Missing required path parameter: messageId`);
-	}
-
-	const data = await request<
-		ChatsGetMessageQueryResponse,
-		ErrorWrapper<
-			| ChatsGetMessage401
-			| ChatsGetMessage403
-			| ChatsGetMessage404
-			| ChatsGetMessage409
-			| ChatsGetMessage413
-			| ChatsGetMessage422
-			| ChatsGetMessage429
-			| ChatsGetMessage500
-		>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		ChatsGetMessagePathParams
-	>({ method: "GET", url: `/chats/${chatId}/messages/${messageId}`, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Retrieves a list of all versions (iterations) for a specific chat, ordered by creation date (newest first). Supports cursor-based pagination and includes version status and demo URLs.
- * @summary Find Chat Versions
- * {@link /chats/:chatId/versions}
- */
-export async function chatsFindVersions({
-	pathParams: { chatId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ChatsFindVersionsPathParams;
-	queryParams?: ChatsFindVersionsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!chatId) {
-		throw new Error(`Missing required path parameter: chatId`);
-	}
-
-	const data = await request<
-		ChatsFindVersionsQueryResponse,
-		ErrorWrapper<
-			| ChatsFindVersions401
-			| ChatsFindVersions403
-			| ChatsFindVersions404
-			| ChatsFindVersions409
-			| ChatsFindVersions413
-			| ChatsFindVersions422
-			| ChatsFindVersions429
-			| ChatsFindVersions500
-		>,
-		null,
-		Record<string, string>,
-		ChatsFindVersionsQueryParams,
-		ChatsFindVersionsPathParams
-	>({ method: "GET", url: `/chats/${chatId}/versions`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Retrieves detailed information about a specific version of a chat, including all files with their content and lock status.
- * @summary Get Chat Version
- * {@link /chats/:chatId/versions/:versionId}
- */
-export async function chatsGetVersion({
-	pathParams: { chatId, versionId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ChatsGetVersionPathParams;
-	queryParams?: ChatsGetVersionQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!chatId) {
-		throw new Error(`Missing required path parameter: chatId`);
-	}
-
-	if (!versionId) {
-		throw new Error(`Missing required path parameter: versionId`);
-	}
-
-	const data = await request<
-		ChatsGetVersionQueryResponse,
-		ErrorWrapper<
-			| ChatsGetVersion401
-			| ChatsGetVersion403
-			| ChatsGetVersion404
-			| ChatsGetVersion409
-			| ChatsGetVersion413
-			| ChatsGetVersion422
-			| ChatsGetVersion429
-			| ChatsGetVersion500
-		>,
-		null,
-		Record<string, string>,
-		ChatsGetVersionQueryParams,
-		ChatsGetVersionPathParams
+		{ chatId: string }
 	>({
 		method: "GET",
-		url: `/chats/${chatId}/versions/${versionId}`,
-		queryParams,
+		url: `/chats/${pathParams.chatId}/project`,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Updates the source files of a specific chat version (block) manually. This allows editing generated files directly through the API.
- * @summary Update Chat Version Files
- * {@link /chats/:chatId/versions/:versionId}
+ * @summary Find Chat Messages
+ * @description Retrieves a list of all messages for a specific chat, ordered by creation date (newest first). Supports cursor-based pagination and includes message content, role, and type information.
+ * @link /chats/{chatId}/messages
  */
-export async function chatsUpdateVersion({
-	pathParams: { chatId, versionId },
-	config = {},
-}: {
-	pathParams: ChatsUpdateVersionPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function chatsFindMessages(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { chatId: string };
+		queryParams?: { limit?: number; cursor?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!chatId) {
+	if (!pathParams.chatId) {
 		throw new Error(`Missing required path parameter: chatId`);
 	}
-
-	if (!versionId) {
-		throw new Error(`Missing required path parameter: versionId`);
-	}
-
 	const data = await request<
-		ChatsUpdateVersionMutationResponse,
+		ChatsFindMessagesResponse,
 		ErrorWrapper<
-			| ChatsUpdateVersion401
-			| ChatsUpdateVersion403
-			| ChatsUpdateVersion404
-			| ChatsUpdateVersion409
-			| ChatsUpdateVersion413
-			| ChatsUpdateVersion422
-			| ChatsUpdateVersion429
-			| ChatsUpdateVersion500
+			| ChatsFindMessagesStatus401
+			| ChatsFindMessagesStatus403
+			| ChatsFindMessagesStatus404
+			| ChatsFindMessagesStatus409
+			| ChatsFindMessagesStatus413
+			| ChatsFindMessagesStatus422
+			| ChatsFindMessagesStatus429
+			| ChatsFindMessagesStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ limit?: number; cursor?: string },
+		{ chatId: string }
+	>({
+		method: "GET",
+		url: `/chats/${pathParams.chatId}/messages`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Send Message
+ * @description Creates a new message in an existing chat. Triggers a model response using the provided prompt, with optional attachments and configuration settings.
+ * @link /chats/{chatId}/messages
+ */
+export async function chatsSendMessage(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { chatId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.chatId) {
+		throw new Error(`Missing required path parameter: chatId`);
+	}
+	const data = await request<
+		ChatsSendMessageResponse,
+		ErrorWrapper<
+			| ChatsSendMessageStatus401
+			| ChatsSendMessageStatus403
+			| ChatsSendMessageStatus404
+			| ChatsSendMessageStatus409
+			| ChatsSendMessageStatus413
+			| ChatsSendMessageStatus422
+			| ChatsSendMessageStatus429
+			| ChatsSendMessageStatus500
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		ChatsUpdateVersionPathParams
+		{ chatId: string }
+	>({
+		method: "POST",
+		url: `/chats/${pathParams.chatId}/messages`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Get Chat Message
+ * @description Retrieves detailed information about a specific message within a chat, including content, files, model configuration, and demo URLs.
+ * @link /chats/{chatId}/messages/{messageId}
+ */
+export async function chatsGetMessage(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { chatId: string; messageId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.chatId) {
+		throw new Error(`Missing required path parameter: chatId`);
+	}
+
+	if (!pathParams.messageId) {
+		throw new Error(`Missing required path parameter: messageId`);
+	}
+	const data = await request<
+		ChatsGetMessageResponse,
+		ErrorWrapper<
+			| ChatsGetMessageStatus401
+			| ChatsGetMessageStatus403
+			| ChatsGetMessageStatus404
+			| ChatsGetMessageStatus409
+			| ChatsGetMessageStatus413
+			| ChatsGetMessageStatus422
+			| ChatsGetMessageStatus429
+			| ChatsGetMessageStatus500
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ chatId: string; messageId: string }
+	>({
+		method: "GET",
+		url: `/chats/${pathParams.chatId}/messages/${pathParams.messageId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Find Chat Versions
+ * @description Retrieves a list of all versions (iterations) for a specific chat, ordered by creation date (newest first). Supports cursor-based pagination and includes version status and demo URLs.
+ * @link /chats/{chatId}/versions
+ */
+export async function chatsFindVersions(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { chatId: string };
+		queryParams?: { limit?: number; cursor?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.chatId) {
+		throw new Error(`Missing required path parameter: chatId`);
+	}
+	const data = await request<
+		ChatsFindVersionsResponse,
+		ErrorWrapper<
+			| ChatsFindVersionsStatus401
+			| ChatsFindVersionsStatus403
+			| ChatsFindVersionsStatus404
+			| ChatsFindVersionsStatus409
+			| ChatsFindVersionsStatus413
+			| ChatsFindVersionsStatus422
+			| ChatsFindVersionsStatus429
+			| ChatsFindVersionsStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ limit?: number; cursor?: string },
+		{ chatId: string }
+	>({
+		method: "GET",
+		url: `/chats/${pathParams.chatId}/versions`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Get Chat Version
+ * @description Retrieves detailed information about a specific version of a chat, including all files with their content and lock status.
+ * @link /chats/{chatId}/versions/{versionId}
+ */
+export async function chatsGetVersion(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { chatId: string; versionId: string };
+		queryParams?: { includeDefaultFiles?: "true" | "false" };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.chatId) {
+		throw new Error(`Missing required path parameter: chatId`);
+	}
+
+	if (!pathParams.versionId) {
+		throw new Error(`Missing required path parameter: versionId`);
+	}
+	const data = await request<
+		ChatsGetVersionResponse,
+		ErrorWrapper<
+			| ChatsGetVersionStatus401
+			| ChatsGetVersionStatus403
+			| ChatsGetVersionStatus404
+			| ChatsGetVersionStatus409
+			| ChatsGetVersionStatus413
+			| ChatsGetVersionStatus422
+			| ChatsGetVersionStatus429
+			| ChatsGetVersionStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ includeDefaultFiles?: "true" | "false" },
+		{ chatId: string; versionId: string }
+	>({
+		method: "GET",
+		url: `/chats/${pathParams.chatId}/versions/${pathParams.versionId}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Update Chat Version Files
+ * @description Updates the source files of a specific chat version (block) manually. This allows editing generated files directly through the API.
+ * @link /chats/{chatId}/versions/{versionId}
+ */
+export async function chatsUpdateVersion(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { chatId: string; versionId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.chatId) {
+		throw new Error(`Missing required path parameter: chatId`);
+	}
+
+	if (!pathParams.versionId) {
+		throw new Error(`Missing required path parameter: versionId`);
+	}
+	const data = await request<
+		ChatsUpdateVersionResponse,
+		ErrorWrapper<
+			| ChatsUpdateVersionStatus401
+			| ChatsUpdateVersionStatus403
+			| ChatsUpdateVersionStatus404
+			| ChatsUpdateVersionStatus409
+			| ChatsUpdateVersionStatus413
+			| ChatsUpdateVersionStatus422
+			| ChatsUpdateVersionStatus429
+			| ChatsUpdateVersionStatus500
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ chatId: string; versionId: string }
 	>({
 		method: "PATCH",
-		url: `/chats/${chatId}/versions/${versionId}`,
+		url: `/chats/${pathParams.chatId}/versions/${pathParams.versionId}`,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Download all files for a specific chat version as a zip or tarball archive. Use includeDefaultFiles=true to include all deployment files (package.json, configuration files, etc.) or false/omitted to return only the generated source files.
  * @summary Download version files
- * {@link /chats/:chatId/versions/:versionId/download}
+ * @description Download all files for a specific chat version as a zip or tarball archive. Use includeDefaultFiles=true to include all deployment files (package.json, configuration files, etc.) or false/omitted to return only the generated source files.
+ * @link /chats/{chatId}/versions/{versionId}/download
  */
-export async function chatsDownloadVersion({
-	pathParams: { chatId, versionId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ChatsDownloadVersionPathParams;
-	queryParams?: ChatsDownloadVersionQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function chatsDownloadVersion(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { chatId: string; versionId: string };
+		queryParams?: { format?: "zip" | "tarball"; includeDefaultFiles?: "true" | "false" };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!chatId) {
+	if (!pathParams.chatId) {
 		throw new Error(`Missing required path parameter: chatId`);
 	}
 
-	if (!versionId) {
+	if (!pathParams.versionId) {
 		throw new Error(`Missing required path parameter: versionId`);
 	}
-
 	const data = await request<
-		ChatsDownloadVersionQueryResponse,
+		ChatsDownloadVersionResponse,
 		ErrorWrapper<
-			| ChatsDownloadVersion401
-			| ChatsDownloadVersion403
-			| ChatsDownloadVersion404
-			| ChatsDownloadVersion409
-			| ChatsDownloadVersion413
-			| ChatsDownloadVersion422
-			| ChatsDownloadVersion429
-			| ChatsDownloadVersion500
+			| ChatsDownloadVersionStatus401
+			| ChatsDownloadVersionStatus403
+			| ChatsDownloadVersionStatus404
+			| ChatsDownloadVersionStatus409
+			| ChatsDownloadVersionStatus413
+			| ChatsDownloadVersionStatus422
+			| ChatsDownloadVersionStatus429
+			| ChatsDownloadVersionStatus500
 		>,
 		null,
 		Record<string, string>,
-		ChatsDownloadVersionQueryParams,
-		ChatsDownloadVersionPathParams
+		{ format?: "zip" | "tarball"; includeDefaultFiles?: "true" | "false" },
+		{ chatId: string; versionId: string }
 	>({
 		method: "GET",
-		url: `/chats/${chatId}/versions/${versionId}/download`,
+		url: `/chats/${pathParams.chatId}/versions/${pathParams.versionId}/download`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Deletes source files from a specific chat version (block). Files are removed from the version and a new source version is created.
  * @summary Delete Chat Version Files
- * {@link /chats/:chatId/versions/:versionId/files/delete}
+ * @description Deletes source files from a specific chat version (block). Files are removed from the version and a new source version is created.
+ * @link /chats/{chatId}/versions/{versionId}/files/delete
  */
-export async function chatsDeleteVersionFiles({
-	pathParams: { chatId, versionId },
-	config = {},
-}: {
-	pathParams: ChatsDeleteVersionFilesPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function chatsDeleteVersionFiles(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { chatId: string; versionId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!chatId) {
+	if (!pathParams.chatId) {
 		throw new Error(`Missing required path parameter: chatId`);
 	}
 
-	if (!versionId) {
+	if (!pathParams.versionId) {
 		throw new Error(`Missing required path parameter: versionId`);
 	}
-
 	const data = await request<
-		ChatsDeleteVersionFilesMutationResponse,
+		ChatsDeleteVersionFilesResponse,
 		ErrorWrapper<
-			| ChatsDeleteVersionFiles401
-			| ChatsDeleteVersionFiles403
-			| ChatsDeleteVersionFiles404
-			| ChatsDeleteVersionFiles409
-			| ChatsDeleteVersionFiles413
-			| ChatsDeleteVersionFiles422
-			| ChatsDeleteVersionFiles429
-			| ChatsDeleteVersionFiles500
+			| ChatsDeleteVersionFilesStatus401
+			| ChatsDeleteVersionFilesStatus403
+			| ChatsDeleteVersionFilesStatus404
+			| ChatsDeleteVersionFilesStatus409
+			| ChatsDeleteVersionFilesStatus413
+			| ChatsDeleteVersionFilesStatus422
+			| ChatsDeleteVersionFilesStatus429
+			| ChatsDeleteVersionFilesStatus500
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		ChatsDeleteVersionFilesPathParams
+		{ chatId: string; versionId: string }
 	>({
 		method: "POST",
-		url: `/chats/${chatId}/versions/${versionId}/files/delete`,
+		url: `/chats/${pathParams.chatId}/versions/${pathParams.versionId}/files/delete`,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Resumes processing of a previously interrupted or incomplete message in a chat. Useful for continuing generation when a message was paused or stopped.
  * @summary Resume Message
- * {@link /chats/:chatId/messages/:messageId/resume}
+ * @description Resumes processing of a previously interrupted or incomplete message in a chat. Useful for continuing generation when a message was paused or stopped.
+ * @link /chats/{chatId}/messages/{messageId}/resume
  */
-export async function chatsResume({
-	pathParams: { chatId, messageId },
-	config = {},
-}: {
-	pathParams: ChatsResumePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function chatsResume(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { chatId: string; messageId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!chatId) {
+	if (!pathParams.chatId) {
 		throw new Error(`Missing required path parameter: chatId`);
 	}
 
-	if (!messageId) {
+	if (!pathParams.messageId) {
 		throw new Error(`Missing required path parameter: messageId`);
 	}
-
 	const data = await request<
-		ChatsResumeMutationResponse,
+		ChatsResumeResponse,
 		ErrorWrapper<
-			| ChatsResume401
-			| ChatsResume403
-			| ChatsResume404
-			| ChatsResume409
-			| ChatsResume413
-			| ChatsResume422
-			| ChatsResume429
-			| ChatsResume500
+			| ChatsResumeStatus401
+			| ChatsResumeStatus403
+			| ChatsResumeStatus404
+			| ChatsResumeStatus409
+			| ChatsResumeStatus413
+			| ChatsResumeStatus422
+			| ChatsResumeStatus429
+			| ChatsResumeStatus500
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		ChatsResumePathParams
-	>({ method: "POST", url: `/chats/${chatId}/messages/${messageId}/resume`, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Stops an in-flight message generation in a chat. Useful for cancelling a streaming response that is still being generated.
- * @summary Stop Message
- * {@link /chats/:chatId/messages/:messageId/stop}
- */
-export async function chatsStop({
-	pathParams: { chatId, messageId },
-	config = {},
-}: {
-	pathParams: ChatsStopPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!chatId) {
-		throw new Error(`Missing required path parameter: chatId`);
-	}
-
-	if (!messageId) {
-		throw new Error(`Missing required path parameter: messageId`);
-	}
-
-	const data = await request<
-		ChatsStopMutationResponse,
-		ErrorWrapper<
-			| ChatsStop401
-			| ChatsStop403
-			| ChatsStop404
-			| ChatsStop409
-			| ChatsStop413
-			| ChatsStop422
-			| ChatsStop429
-			| ChatsStop500
-		>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		ChatsStopPathParams
-	>({ method: "POST", url: `/chats/${chatId}/messages/${messageId}/stop`, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Resolves a pending task in a chat, continuing the conversation. The latest message in the active chat fork must be an assistant message currently blocked on a matching task (integration setup, plan approval, question answers, or permission grants).
- * @summary Resolve Task
- * {@link /chats/:chatId/tasks/resolve}
- */
-export async function chatsResolveTask({
-	pathParams: { chatId },
-	config = {},
-}: {
-	pathParams: ChatsResolveTaskPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!chatId) {
-		throw new Error(`Missing required path parameter: chatId`);
-	}
-
-	const data = await request<
-		ChatsResolveTaskMutationResponse,
-		ErrorWrapper<
-			| ChatsResolveTask401
-			| ChatsResolveTask403
-			| ChatsResolveTask404
-			| ChatsResolveTask409
-			| ChatsResolveTask413
-			| ChatsResolveTask422
-			| ChatsResolveTask429
-			| ChatsResolveTask500
-		>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		ChatsResolveTaskPathParams
+		{ chatId: string; messageId: string }
 	>({
 		method: "POST",
-		url: `/chats/${chatId}/tasks/resolve`,
+		url: `/chats/${pathParams.chatId}/messages/${pathParams.messageId}/resume`,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Find deployments by project and chat IDs. This will return a list of deployments for the given project and chat IDs.
- * @summary Find Deployments
- * {@link /deployments}
+ * @summary Stop Message
+ * @description Stops an in-flight message generation in a chat. Useful for cancelling a streaming response that is still being generated.
+ * @link /chats/{chatId}/messages/{messageId}/stop
  */
-export async function deploymentsFind({
-	queryParams,
-	config = {},
-}: {
-	queryParams: DeploymentsFindQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function chatsStop(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { chatId: string; messageId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
+	if (!pathParams.chatId) {
+		throw new Error(`Missing required path parameter: chatId`);
+	}
+
+	if (!pathParams.messageId) {
+		throw new Error(`Missing required path parameter: messageId`);
+	}
 	const data = await request<
-		DeploymentsFindQueryResponse,
+		ChatsStopResponse,
 		ErrorWrapper<
-			| DeploymentsFind401
-			| DeploymentsFind403
-			| DeploymentsFind404
-			| DeploymentsFind409
-			| DeploymentsFind413
-			| DeploymentsFind422
-			| DeploymentsFind429
-			| DeploymentsFind500
+			| ChatsStopStatus401
+			| ChatsStopStatus403
+			| ChatsStopStatus404
+			| ChatsStopStatus409
+			| ChatsStopStatus413
+			| ChatsStopStatus422
+			| ChatsStopStatus429
+			| ChatsStopStatus500
 		>,
 		null,
 		Record<string, string>,
-		DeploymentsFindQueryParams,
-		Record<string, string>
-	>({ method: "GET", url: `/deployments`, queryParams, ...requestConfig });
+		Record<string, string>,
+		{ chatId: string; messageId: string }
+	>({
+		method: "POST",
+		url: `/chats/${pathParams.chatId}/messages/${pathParams.messageId}/stop`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Create a new deployment for a specific chat and version. This will trigger a deployment to Vercel.
- * @summary Create Deployment
- * {@link /deployments}
+ * @summary Resolve Task
+ * @description Resolves a pending task in a chat, continuing the conversation. The latest message in the active chat fork must be an assistant message currently blocked on a matching task (integration setup, plan approval, question answers, or permission grants).
+ * @link /chats/{chatId}/tasks/resolve
  */
-export async function deploymentsCreate({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function chatsResolveTask(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { chatId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.chatId) {
+		throw new Error(`Missing required path parameter: chatId`);
+	}
+	const data = await request<
+		ChatsResolveTaskResponse,
+		ErrorWrapper<
+			| ChatsResolveTaskStatus401
+			| ChatsResolveTaskStatus403
+			| ChatsResolveTaskStatus404
+			| ChatsResolveTaskStatus409
+			| ChatsResolveTaskStatus413
+			| ChatsResolveTaskStatus422
+			| ChatsResolveTaskStatus429
+			| ChatsResolveTaskStatus500
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ chatId: string }
+	>({
+		method: "POST",
+		url: `/chats/${pathParams.chatId}/tasks/resolve`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Find Deployments
+ * @description Find deployments by project and chat IDs. This will return a list of deployments for the given project and chat IDs.
+ * @link /deployments
+ */
+export async function deploymentsFind(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { projectId?: string; chatId?: string; versionId?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		DeploymentsCreateMutationResponse,
+		DeploymentsFindResponse,
 		ErrorWrapper<
-			| DeploymentsCreate401
-			| DeploymentsCreate403
-			| DeploymentsCreate404
-			| DeploymentsCreate409
-			| DeploymentsCreate413
-			| DeploymentsCreate422
-			| DeploymentsCreate429
-			| DeploymentsCreate500
+			| DeploymentsFindStatus401
+			| DeploymentsFindStatus403
+			| DeploymentsFindStatus404
+			| DeploymentsFindStatus409
+			| DeploymentsFindStatus413
+			| DeploymentsFindStatus422
+			| DeploymentsFindStatus429
+			| DeploymentsFindStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ projectId?: string; chatId?: string; versionId?: string },
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/deployments`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Create Deployment
+ * @description Create a new deployment for a specific chat and version. This will trigger a deployment to Vercel.
+ * @link /deployments
+ */
+export async function deploymentsCreate(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		DeploymentsCreateResponse,
+		ErrorWrapper<
+			| DeploymentsCreateStatus401
+			| DeploymentsCreateStatus403
+			| DeploymentsCreateStatus404
+			| DeploymentsCreateStatus409
+			| DeploymentsCreateStatus413
+			| DeploymentsCreateStatus422
+			| DeploymentsCreateStatus429
+			| DeploymentsCreateStatus500
 		>,
 		null,
 		Record<string, string>,
@@ -1495,220 +1544,252 @@ export async function deploymentsCreate({
 		method: "POST",
 		url: `/deployments`,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Get a deployment by ID. This will return the details of the deployment, including the inspector URL, chat ID, project ID, version ID, API URL, and web URL.
  * @summary Get Deployment
- * {@link /deployments/:deploymentId}
+ * @description Get a deployment by ID. This will return the details of the deployment, including the inspector URL, chat ID, project ID, version ID, API URL, and web URL.
+ * @link /deployments/{deploymentId}
  */
-export async function deploymentsGetById({
-	pathParams: { deploymentId },
-	config = {},
-}: {
-	pathParams: DeploymentsGetByIdPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deploymentsGetById(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { deploymentId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!deploymentId) {
+	if (!pathParams.deploymentId) {
 		throw new Error(`Missing required path parameter: deploymentId`);
 	}
-
 	const data = await request<
-		DeploymentsGetByIdQueryResponse,
+		DeploymentsGetByIdResponse,
 		ErrorWrapper<
-			| DeploymentsGetById401
-			| DeploymentsGetById403
-			| DeploymentsGetById404
-			| DeploymentsGetById409
-			| DeploymentsGetById413
-			| DeploymentsGetById422
-			| DeploymentsGetById429
-			| DeploymentsGetById500
+			| DeploymentsGetByIdStatus401
+			| DeploymentsGetByIdStatus403
+			| DeploymentsGetByIdStatus404
+			| DeploymentsGetByIdStatus409
+			| DeploymentsGetByIdStatus413
+			| DeploymentsGetByIdStatus422
+			| DeploymentsGetByIdStatus429
+			| DeploymentsGetByIdStatus500
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		DeploymentsGetByIdPathParams
-	>({ method: "GET", url: `/deployments/${deploymentId}`, ...requestConfig });
+		{ deploymentId: string }
+	>({
+		method: "GET",
+		url: `/deployments/${pathParams.deploymentId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Delete a deployment by ID. This will delete the deployment from Vercel.
  * @summary Delete Deployment
- * {@link /deployments/:deploymentId}
+ * @description Delete a deployment by ID. This will delete the deployment from Vercel.
+ * @link /deployments/{deploymentId}
  */
-export async function deploymentsDelete({
-	pathParams: { deploymentId },
-	config = {},
-}: {
-	pathParams: DeploymentsDeletePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deploymentsDelete(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { deploymentId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!deploymentId) {
+	if (!pathParams.deploymentId) {
 		throw new Error(`Missing required path parameter: deploymentId`);
 	}
-
 	const data = await request<
-		DeploymentsDeleteMutationResponse,
+		DeploymentsDeleteResponse,
 		ErrorWrapper<
-			| DeploymentsDelete401
-			| DeploymentsDelete403
-			| DeploymentsDelete404
-			| DeploymentsDelete409
-			| DeploymentsDelete413
-			| DeploymentsDelete422
-			| DeploymentsDelete429
-			| DeploymentsDelete500
+			| DeploymentsDeleteStatus401
+			| DeploymentsDeleteStatus403
+			| DeploymentsDeleteStatus404
+			| DeploymentsDeleteStatus409
+			| DeploymentsDeleteStatus413
+			| DeploymentsDeleteStatus422
+			| DeploymentsDeleteStatus429
+			| DeploymentsDeleteStatus500
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		DeploymentsDeletePathParams
-	>({ method: "DELETE", url: `/deployments/${deploymentId}`, ...requestConfig });
+		{ deploymentId: string }
+	>({
+		method: "DELETE",
+		url: `/deployments/${pathParams.deploymentId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Retrieves logs for a specific deployment. Supports filtering by timestamp to fetch only recent logs.
  * @summary Find Deployment Logs
- * {@link /deployments/:deploymentId/logs}
+ * @description Retrieves logs for a specific deployment. Supports filtering by timestamp to fetch only recent logs.
+ * @link /deployments/{deploymentId}/logs
  */
-export async function deploymentsFindLogs({
-	pathParams: { deploymentId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: DeploymentsFindLogsPathParams;
-	queryParams?: DeploymentsFindLogsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deploymentsFindLogs(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { deploymentId: string };
+		queryParams?: { since?: number };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!deploymentId) {
+	if (!pathParams.deploymentId) {
 		throw new Error(`Missing required path parameter: deploymentId`);
 	}
-
 	const data = await request<
-		DeploymentsFindLogsQueryResponse,
+		DeploymentsFindLogsResponse,
 		ErrorWrapper<
-			| DeploymentsFindLogs401
-			| DeploymentsFindLogs403
-			| DeploymentsFindLogs404
-			| DeploymentsFindLogs409
-			| DeploymentsFindLogs413
-			| DeploymentsFindLogs422
-			| DeploymentsFindLogs429
-			| DeploymentsFindLogs500
+			| DeploymentsFindLogsStatus401
+			| DeploymentsFindLogsStatus403
+			| DeploymentsFindLogsStatus404
+			| DeploymentsFindLogsStatus409
+			| DeploymentsFindLogsStatus413
+			| DeploymentsFindLogsStatus422
+			| DeploymentsFindLogsStatus429
+			| DeploymentsFindLogsStatus500
 		>,
 		null,
 		Record<string, string>,
-		DeploymentsFindLogsQueryParams,
-		DeploymentsFindLogsPathParams
-	>({ method: "GET", url: `/deployments/${deploymentId}/logs`, queryParams, ...requestConfig });
+		{ since?: number },
+		{ deploymentId: string }
+	>({
+		method: "GET",
+		url: `/deployments/${pathParams.deploymentId}/logs`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Retrieves a list of errors that occurred during a specific deployment. Useful for diagnosing and debugging deployment issues.
  * @summary Find Deployment Errors
- * {@link /deployments/:deploymentId/errors}
+ * @description Retrieves a list of errors that occurred during a specific deployment. Useful for diagnosing and debugging deployment issues.
+ * @link /deployments/{deploymentId}/errors
  */
-export async function deploymentsFindErrors({
-	pathParams: { deploymentId },
-	config = {},
-}: {
-	pathParams: DeploymentsFindErrorsPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deploymentsFindErrors(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { deploymentId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!deploymentId) {
+	if (!pathParams.deploymentId) {
 		throw new Error(`Missing required path parameter: deploymentId`);
 	}
-
 	const data = await request<
-		DeploymentsFindErrorsQueryResponse,
+		DeploymentsFindErrorsResponse,
 		ErrorWrapper<
-			| DeploymentsFindErrors401
-			| DeploymentsFindErrors403
-			| DeploymentsFindErrors404
-			| DeploymentsFindErrors409
-			| DeploymentsFindErrors413
-			| DeploymentsFindErrors422
-			| DeploymentsFindErrors429
-			| DeploymentsFindErrors500
+			| DeploymentsFindErrorsStatus401
+			| DeploymentsFindErrorsStatus403
+			| DeploymentsFindErrorsStatus404
+			| DeploymentsFindErrorsStatus409
+			| DeploymentsFindErrorsStatus413
+			| DeploymentsFindErrorsStatus422
+			| DeploymentsFindErrorsStatus429
+			| DeploymentsFindErrorsStatus500
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		DeploymentsFindErrorsPathParams
-	>({ method: "GET", url: `/deployments/${deploymentId}/errors`, ...requestConfig });
+		{ deploymentId: string }
+	>({
+		method: "GET",
+		url: `/deployments/${pathParams.deploymentId}/errors`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Retrieves a list of existing hooks in your workspace. Useful for managing active webhooks tied to chat events or deployments.
  * @summary Find Hooks
- * {@link /hooks}
+ * @description Retrieves a list of existing hooks in your workspace. Useful for managing active webhooks tied to chat events or deployments.
+ * @link /hooks
  */
-export async function hooksFind({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function hooksFind(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		HooksFindQueryResponse,
+		HooksFindResponse,
 		ErrorWrapper<
-			| HooksFind401
-			| HooksFind403
-			| HooksFind404
-			| HooksFind409
-			| HooksFind413
-			| HooksFind422
-			| HooksFind429
-			| HooksFind500
+			| HooksFindStatus401
+			| HooksFindStatus403
+			| HooksFindStatus404
+			| HooksFindStatus409
+			| HooksFindStatus413
+			| HooksFindStatus422
+			| HooksFindStatus429
+			| HooksFindStatus500
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "GET", url: `/hooks`, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/hooks`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Creates a new webhook that listens for specific events. Supports optional association with a chat.
  * @summary Create Hook
- * {@link /hooks}
+ * @description Creates a new webhook that listens for specific events. Supports optional association with a chat.
+ * @link /hooks
  */
-export async function hooksCreate({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function hooksCreate(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		HooksCreateMutationResponse,
+		HooksCreateResponse,
 		ErrorWrapper<
-			| HooksCreate401
-			| HooksCreate403
-			| HooksCreate404
-			| HooksCreate409
-			| HooksCreate413
-			| HooksCreate422
-			| HooksCreate429
-			| HooksCreate500
+			| HooksCreateStatus401
+			| HooksCreateStatus403
+			| HooksCreateStatus404
+			| HooksCreateStatus409
+			| HooksCreateStatus413
+			| HooksCreateStatus422
+			| HooksCreateStatus429
+			| HooksCreateStatus500
 		>,
 		null,
 		Record<string, string>,
@@ -1718,185 +1799,204 @@ export async function hooksCreate({
 		method: "POST",
 		url: `/hooks`,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Retrieves the details of a specific webhook using its ID.
  * @summary Get Hook
- * {@link /hooks/:hookId}
+ * @description Retrieves the details of a specific webhook using its ID.
+ * @link /hooks/{hookId}
  */
-export async function hooksGetById({
-	pathParams: { hookId },
-	config = {},
-}: {
-	pathParams: HooksGetByIdPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function hooksGetById(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { hookId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!hookId) {
+	if (!pathParams.hookId) {
 		throw new Error(`Missing required path parameter: hookId`);
 	}
-
 	const data = await request<
-		HooksGetByIdQueryResponse,
+		HooksGetByIdResponse,
 		ErrorWrapper<
-			| HooksGetById401
-			| HooksGetById403
-			| HooksGetById404
-			| HooksGetById409
-			| HooksGetById413
-			| HooksGetById422
-			| HooksGetById429
-			| HooksGetById500
+			| HooksGetByIdStatus401
+			| HooksGetByIdStatus403
+			| HooksGetByIdStatus404
+			| HooksGetByIdStatus409
+			| HooksGetByIdStatus413
+			| HooksGetByIdStatus422
+			| HooksGetByIdStatus429
+			| HooksGetByIdStatus500
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		HooksGetByIdPathParams
-	>({ method: "GET", url: `/hooks/${hookId}`, ...requestConfig });
+		{ hookId: string }
+	>({
+		method: "GET",
+		url: `/hooks/${pathParams.hookId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Updates the configuration of an existing webhook, including its name, event subscriptions, or target URL.
  * @summary Update Hook
- * {@link /hooks/:hookId}
+ * @description Updates the configuration of an existing webhook, including its name, event subscriptions, or target URL.
+ * @link /hooks/{hookId}
  */
-export async function hooksUpdate({
-	pathParams: { hookId },
-	config = {},
-}: {
-	pathParams: HooksUpdatePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function hooksUpdate(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { hookId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!hookId) {
+	if (!pathParams.hookId) {
 		throw new Error(`Missing required path parameter: hookId`);
 	}
-
 	const data = await request<
-		HooksUpdateMutationResponse,
+		HooksUpdateResponse,
 		ErrorWrapper<
-			| HooksUpdate401
-			| HooksUpdate403
-			| HooksUpdate404
-			| HooksUpdate409
-			| HooksUpdate413
-			| HooksUpdate422
-			| HooksUpdate429
-			| HooksUpdate500
+			| HooksUpdateStatus401
+			| HooksUpdateStatus403
+			| HooksUpdateStatus404
+			| HooksUpdateStatus409
+			| HooksUpdateStatus413
+			| HooksUpdateStatus422
+			| HooksUpdateStatus429
+			| HooksUpdateStatus500
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		HooksUpdatePathParams
+		{ hookId: string }
 	>({
 		method: "PATCH",
-		url: `/hooks/${hookId}`,
+		url: `/hooks/${pathParams.hookId}`,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Deletes a webhook based on its ID. This action is irreversible.
  * @summary Delete Hook
- * {@link /hooks/:hookId}
+ * @description Deletes a webhook based on its ID. This action is irreversible.
+ * @link /hooks/{hookId}
  */
-export async function hooksDelete({
-	pathParams: { hookId },
-	config = {},
-}: {
-	pathParams: HooksDeletePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function hooksDelete(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { hookId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!hookId) {
+	if (!pathParams.hookId) {
 		throw new Error(`Missing required path parameter: hookId`);
 	}
-
 	const data = await request<
-		HooksDeleteMutationResponse,
+		HooksDeleteResponse,
 		ErrorWrapper<
-			| HooksDelete401
-			| HooksDelete403
-			| HooksDelete404
-			| HooksDelete409
-			| HooksDelete413
-			| HooksDelete422
-			| HooksDelete429
-			| HooksDelete500
+			| HooksDeleteStatus401
+			| HooksDeleteStatus403
+			| HooksDeleteStatus404
+			| HooksDeleteStatus409
+			| HooksDeleteStatus413
+			| HooksDeleteStatus422
+			| HooksDeleteStatus429
+			| HooksDeleteStatus500
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		HooksDeletePathParams
-	>({ method: "DELETE", url: `/hooks/${hookId}`, ...requestConfig });
+		{ hookId: string }
+	>({
+		method: "DELETE",
+		url: `/hooks/${pathParams.hookId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Retrieves a list of Vercel projects linked to your integration. Useful for associating chats, deployments, or hooks with specific Vercel projects.
  * @summary Find Vercel Projects
- * {@link /integrations/vercel/projects}
+ * @description Retrieves a list of Vercel projects linked to your integration. Useful for associating chats, deployments, or hooks with specific Vercel projects.
+ * @link /integrations/vercel/projects
  */
-export async function integrationsVercelProjectsFind({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function integrationsVercelProjectsFind(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		IntegrationsVercelProjectsFindQueryResponse,
+		IntegrationsVercelProjectsFindResponse,
 		ErrorWrapper<
-			| IntegrationsVercelProjectsFind401
-			| IntegrationsVercelProjectsFind403
-			| IntegrationsVercelProjectsFind404
-			| IntegrationsVercelProjectsFind409
-			| IntegrationsVercelProjectsFind413
-			| IntegrationsVercelProjectsFind422
-			| IntegrationsVercelProjectsFind429
-			| IntegrationsVercelProjectsFind500
+			| IntegrationsVercelProjectsFindStatus401
+			| IntegrationsVercelProjectsFindStatus403
+			| IntegrationsVercelProjectsFindStatus404
+			| IntegrationsVercelProjectsFindStatus409
+			| IntegrationsVercelProjectsFindStatus413
+			| IntegrationsVercelProjectsFindStatus422
+			| IntegrationsVercelProjectsFindStatus429
+			| IntegrationsVercelProjectsFindStatus500
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "GET", url: `/integrations/vercel/projects`, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/integrations/vercel/projects`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Links a Vercel project to an existing v0 project. Enables Vercel-related features and deployment integration within the v0 workspace.
  * @summary Create Vercel Project
- * {@link /integrations/vercel/projects}
+ * @description Links a Vercel project to an existing v0 project. Enables Vercel-related features and deployment integration within the v0 workspace.
+ * @link /integrations/vercel/projects
  */
-export async function integrationsVercelProjectsCreate({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function integrationsVercelProjectsCreate(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		IntegrationsVercelProjectsCreateMutationResponse,
+		IntegrationsVercelProjectsCreateResponse,
 		ErrorWrapper<
-			| IntegrationsVercelProjectsCreate401
-			| IntegrationsVercelProjectsCreate403
-			| IntegrationsVercelProjectsCreate404
-			| IntegrationsVercelProjectsCreate409
-			| IntegrationsVercelProjectsCreate413
-			| IntegrationsVercelProjectsCreate422
-			| IntegrationsVercelProjectsCreate429
-			| IntegrationsVercelProjectsCreate500
+			| IntegrationsVercelProjectsCreateStatus401
+			| IntegrationsVercelProjectsCreateStatus403
+			| IntegrationsVercelProjectsCreateStatus404
+			| IntegrationsVercelProjectsCreateStatus409
+			| IntegrationsVercelProjectsCreateStatus413
+			| IntegrationsVercelProjectsCreateStatus422
+			| IntegrationsVercelProjectsCreateStatus429
+			| IntegrationsVercelProjectsCreateStatus500
 		>,
 		null,
 		Record<string, string>,
@@ -1906,66 +2006,69 @@ export async function integrationsVercelProjectsCreate({
 		method: "POST",
 		url: `/integrations/vercel/projects`,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Returns a list of all v0 projects in your workspace. Useful for browsing or managing projects across different chats or use cases.
  * @summary Find Projects
- * {@link /projects}
+ * @description Returns a list of all v0 projects in your workspace. Useful for browsing or managing projects across different chats or use cases.
+ * @link /projects
  */
-export async function projectsFind({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function projectsFind(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		ProjectsFindQueryResponse,
+		ProjectsFindResponse,
 		ErrorWrapper<
-			| ProjectsFind401
-			| ProjectsFind403
-			| ProjectsFind404
-			| ProjectsFind409
-			| ProjectsFind413
-			| ProjectsFind422
-			| ProjectsFind429
-			| ProjectsFind500
+			| ProjectsFindStatus401
+			| ProjectsFindStatus403
+			| ProjectsFindStatus404
+			| ProjectsFindStatus409
+			| ProjectsFindStatus413
+			| ProjectsFindStatus422
+			| ProjectsFindStatus429
+			| ProjectsFindStatus500
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "GET", url: `/projects`, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/projects`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Creates a new v0 project with an optional description, icon, environment variables, and instructions. Projects help organize chats and manage context.
  * @summary Create Project
- * {@link /projects}
+ * @description Creates a new v0 project with an optional description, icon, environment variables, and instructions. Projects help organize chats and manage context.
+ * @link /projects
  */
-export async function projectsCreate({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function projectsCreate(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		ProjectsCreateMutationResponse,
+		ProjectsCreateResponse,
 		ErrorWrapper<
-			| ProjectsCreate401
-			| ProjectsCreate403
-			| ProjectsCreate404
-			| ProjectsCreate409
-			| ProjectsCreate413
-			| ProjectsCreate422
-			| ProjectsCreate429
-			| ProjectsCreate500
+			| ProjectsCreateStatus401
+			| ProjectsCreateStatus403
+			| ProjectsCreateStatus404
+			| ProjectsCreateStatus409
+			| ProjectsCreateStatus413
+			| ProjectsCreateStatus422
+			| ProjectsCreateStatus429
+			| ProjectsCreateStatus500
 		>,
 		null,
 		Record<string, string>,
@@ -1975,762 +2078,881 @@ export async function projectsCreate({
 		method: "POST",
 		url: `/projects`,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Retrieves the details of a specific v0 project by its ID.
  * @summary Get Project by ID
- * {@link /projects/:projectId}
+ * @description Retrieves the details of a specific v0 project by its ID.
+ * @link /projects/{projectId}
  */
-export async function projectsGetById({
-	pathParams: { projectId },
-	config = {},
-}: {
-	pathParams: ProjectsGetByIdPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function projectsGetById(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { projectId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!projectId) {
+	if (!pathParams.projectId) {
 		throw new Error(`Missing required path parameter: projectId`);
 	}
-
 	const data = await request<
-		ProjectsGetByIdQueryResponse,
+		ProjectsGetByIdResponse,
 		ErrorWrapper<
-			| ProjectsGetById401
-			| ProjectsGetById403
-			| ProjectsGetById404
-			| ProjectsGetById409
-			| ProjectsGetById413
-			| ProjectsGetById422
-			| ProjectsGetById429
-			| ProjectsGetById500
+			| ProjectsGetByIdStatus401
+			| ProjectsGetByIdStatus403
+			| ProjectsGetByIdStatus404
+			| ProjectsGetByIdStatus409
+			| ProjectsGetByIdStatus413
+			| ProjectsGetByIdStatus422
+			| ProjectsGetByIdStatus429
+			| ProjectsGetByIdStatus500
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		ProjectsGetByIdPathParams
-	>({ method: "GET", url: `/projects/${projectId}`, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Updates the metadata of an existing project using its `projectId`. Supports changes to the project name and privacy setting.
- * @summary Update Project
- * {@link /projects/:projectId}
- */
-export async function projectsUpdate({
-	pathParams: { projectId },
-	config = {},
-}: {
-	pathParams: ProjectsUpdatePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!projectId) {
-		throw new Error(`Missing required path parameter: projectId`);
-	}
-
-	const data = await request<
-		ProjectsUpdateMutationResponse,
-		ErrorWrapper<
-			| ProjectsUpdate401
-			| ProjectsUpdate403
-			| ProjectsUpdate404
-			| ProjectsUpdate409
-			| ProjectsUpdate413
-			| ProjectsUpdate422
-			| ProjectsUpdate429
-			| ProjectsUpdate500
-		>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		ProjectsUpdatePathParams
-	>({
-		method: "PATCH",
-		url: `/projects/${projectId}`,
-		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
-	});
-	return data;
-}
-
-/**
- * @description Deletes a specific project based on the provided projectId. This operation marks the project as deleted and is irreversible.
- * @summary Delete Project
- * {@link /projects/:projectId}
- */
-export async function projectsDelete({
-	pathParams: { projectId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ProjectsDeletePathParams;
-	queryParams?: ProjectsDeleteQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!projectId) {
-		throw new Error(`Missing required path parameter: projectId`);
-	}
-
-	const data = await request<
-		ProjectsDeleteMutationResponse,
-		ErrorWrapper<
-			| ProjectsDelete401
-			| ProjectsDelete403
-			| ProjectsDelete404
-			| ProjectsDelete409
-			| ProjectsDelete413
-			| ProjectsDelete422
-			| ProjectsDelete429
-			| ProjectsDelete500
-		>,
-		null,
-		Record<string, string>,
-		ProjectsDeleteQueryParams,
-		ProjectsDeletePathParams
-	>({ method: "DELETE", url: `/projects/${projectId}`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Links an existing v0 project to a specific chat. Helps group conversations under a shared project context.
- * @summary Assign Project to Chat
- * {@link /projects/:projectId/assign}
- */
-export async function projectsAssign({
-	pathParams: { projectId },
-	config = {},
-}: {
-	pathParams: ProjectsAssignPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!projectId) {
-		throw new Error(`Missing required path parameter: projectId`);
-	}
-
-	const data = await request<
-		ProjectsAssignMutationResponse,
-		ErrorWrapper<
-			| ProjectsAssign401
-			| ProjectsAssign403
-			| ProjectsAssign404
-			| ProjectsAssign409
-			| ProjectsAssign413
-			| ProjectsAssign422
-			| ProjectsAssign429
-			| ProjectsAssign500
-		>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		ProjectsAssignPathParams
-	>({
-		method: "POST",
-		url: `/projects/${projectId}/assign`,
-		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
-	});
-	return data;
-}
-
-/**
- * @description Retrieves all environment variables for a given project.
- * @summary Find Environment Variables
- * {@link /projects/:projectId/env-vars}
- */
-export async function projectsFindEnvVars({
-	pathParams: { projectId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ProjectsFindEnvVarsPathParams;
-	queryParams?: ProjectsFindEnvVarsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!projectId) {
-		throw new Error(`Missing required path parameter: projectId`);
-	}
-
-	const data = await request<
-		ProjectsFindEnvVarsQueryResponse,
-		ErrorWrapper<
-			| ProjectsFindEnvVars401
-			| ProjectsFindEnvVars403
-			| ProjectsFindEnvVars404
-			| ProjectsFindEnvVars409
-			| ProjectsFindEnvVars413
-			| ProjectsFindEnvVars422
-			| ProjectsFindEnvVars429
-			| ProjectsFindEnvVars500
-		>,
-		null,
-		Record<string, string>,
-		ProjectsFindEnvVarsQueryParams,
-		ProjectsFindEnvVarsPathParams
-	>({ method: "GET", url: `/projects/${projectId}/env-vars`, queryParams, ...requestConfig });
-	return data;
-}
-
-/**
- * @description Creates new environment variables for a given project. This endpoint will fail if any of the specified environment variable keys already exist, unless upsert is set to true.
- * @summary Create Environment Variables
- * {@link /projects/:projectId/env-vars}
- */
-export async function projectsCreateEnvVars({
-	pathParams: { projectId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ProjectsCreateEnvVarsPathParams;
-	queryParams?: ProjectsCreateEnvVarsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!projectId) {
-		throw new Error(`Missing required path parameter: projectId`);
-	}
-
-	const data = await request<
-		ProjectsCreateEnvVarsMutationResponse,
-		ErrorWrapper<
-			| ProjectsCreateEnvVars401
-			| ProjectsCreateEnvVars403
-			| ProjectsCreateEnvVars404
-			| ProjectsCreateEnvVars409
-			| ProjectsCreateEnvVars413
-			| ProjectsCreateEnvVars422
-			| ProjectsCreateEnvVars429
-			| ProjectsCreateEnvVars500
-		>,
-		null,
-		Record<string, string>,
-		ProjectsCreateEnvVarsQueryParams,
-		ProjectsCreateEnvVarsPathParams
-	>({
-		method: "POST",
-		url: `/projects/${projectId}/env-vars`,
-		queryParams,
-		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
-	});
-	return data;
-}
-
-/**
- * @description Updates multiple environment variables for a given project. Only the value of each environment variable can be updated.
- * @summary Update Environment Variables
- * {@link /projects/:projectId/env-vars}
- */
-export async function projectsUpdateEnvVars({
-	pathParams: { projectId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ProjectsUpdateEnvVarsPathParams;
-	queryParams?: ProjectsUpdateEnvVarsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!projectId) {
-		throw new Error(`Missing required path parameter: projectId`);
-	}
-
-	const data = await request<
-		ProjectsUpdateEnvVarsMutationResponse,
-		ErrorWrapper<
-			| ProjectsUpdateEnvVars401
-			| ProjectsUpdateEnvVars403
-			| ProjectsUpdateEnvVars404
-			| ProjectsUpdateEnvVars409
-			| ProjectsUpdateEnvVars413
-			| ProjectsUpdateEnvVars422
-			| ProjectsUpdateEnvVars429
-			| ProjectsUpdateEnvVars500
-		>,
-		null,
-		Record<string, string>,
-		ProjectsUpdateEnvVarsQueryParams,
-		ProjectsUpdateEnvVarsPathParams
-	>({
-		method: "PATCH",
-		url: `/projects/${projectId}/env-vars`,
-		queryParams,
-		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
-	});
-	return data;
-}
-
-/**
- * @description Deletes multiple environment variables for a given project by their IDs.
- * @summary Delete Environment Variables
- * {@link /projects/:projectId/env-vars/delete}
- */
-export async function projectsDeleteEnvVars({
-	pathParams: { projectId },
-	config = {},
-}: {
-	pathParams: ProjectsDeleteEnvVarsPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!projectId) {
-		throw new Error(`Missing required path parameter: projectId`);
-	}
-
-	const data = await request<
-		ProjectsDeleteEnvVarsMutationResponse,
-		ErrorWrapper<
-			| ProjectsDeleteEnvVars401
-			| ProjectsDeleteEnvVars403
-			| ProjectsDeleteEnvVars404
-			| ProjectsDeleteEnvVars409
-			| ProjectsDeleteEnvVars413
-			| ProjectsDeleteEnvVars422
-			| ProjectsDeleteEnvVars429
-			| ProjectsDeleteEnvVars500
-		>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		ProjectsDeleteEnvVarsPathParams
-	>({
-		method: "POST",
-		url: `/projects/${projectId}/env-vars/delete`,
-		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
-	});
-	return data;
-}
-
-/**
- * @description Retrieves a specific environment variable for a given project by its ID, including its value.
- * @summary Get Environment Variable
- * {@link /projects/:projectId/env-vars/:environmentVariableId}
- */
-export async function projectsGetEnvVar({
-	pathParams: { projectId, environmentVariableId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ProjectsGetEnvVarPathParams;
-	queryParams?: ProjectsGetEnvVarQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
-
-	if (!projectId) {
-		throw new Error(`Missing required path parameter: projectId`);
-	}
-
-	if (!environmentVariableId) {
-		throw new Error(`Missing required path parameter: environmentVariableId`);
-	}
-
-	const data = await request<
-		ProjectsGetEnvVarQueryResponse,
-		ErrorWrapper<
-			| ProjectsGetEnvVar401
-			| ProjectsGetEnvVar403
-			| ProjectsGetEnvVar404
-			| ProjectsGetEnvVar409
-			| ProjectsGetEnvVar413
-			| ProjectsGetEnvVar422
-			| ProjectsGetEnvVar429
-			| ProjectsGetEnvVar500
-		>,
-		null,
-		Record<string, string>,
-		ProjectsGetEnvVarQueryParams,
-		ProjectsGetEnvVarPathParams
+		{ projectId: string }
 	>({
 		method: "GET",
-		url: `/projects/${projectId}/env-vars/${environmentVariableId}`,
+		url: `/projects/${pathParams.projectId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Update Project
+ * @description Updates the metadata of an existing project using its `projectId`. Supports changes to the project name and privacy setting.
+ * @link /projects/{projectId}
+ */
+export async function projectsUpdate(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { projectId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.projectId) {
+		throw new Error(`Missing required path parameter: projectId`);
+	}
+	const data = await request<
+		ProjectsUpdateResponse,
+		ErrorWrapper<
+			| ProjectsUpdateStatus401
+			| ProjectsUpdateStatus403
+			| ProjectsUpdateStatus404
+			| ProjectsUpdateStatus409
+			| ProjectsUpdateStatus413
+			| ProjectsUpdateStatus422
+			| ProjectsUpdateStatus429
+			| ProjectsUpdateStatus500
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ projectId: string }
+	>({
+		method: "PATCH",
+		url: `/projects/${pathParams.projectId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Delete Project
+ * @description Deletes a specific project based on the provided projectId. This operation marks the project as deleted and is irreversible.
+ * @link /projects/{projectId}
+ */
+export async function projectsDelete(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectId: string };
+		queryParams?: { deleteAllChats?: "true" | "false" };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.projectId) {
+		throw new Error(`Missing required path parameter: projectId`);
+	}
+	const data = await request<
+		ProjectsDeleteResponse,
+		ErrorWrapper<
+			| ProjectsDeleteStatus401
+			| ProjectsDeleteStatus403
+			| ProjectsDeleteStatus404
+			| ProjectsDeleteStatus409
+			| ProjectsDeleteStatus413
+			| ProjectsDeleteStatus422
+			| ProjectsDeleteStatus429
+			| ProjectsDeleteStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ deleteAllChats?: "true" | "false" },
+		{ projectId: string }
+	>({
+		method: "DELETE",
+		url: `/projects/${pathParams.projectId}`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Retrieves rate limit information for a given scope. Useful for monitoring usage limits and avoiding throttling.
+ * @summary Assign Project to Chat
+ * @description Links an existing v0 project to a specific chat. Helps group conversations under a shared project context.
+ * @link /projects/{projectId}/assign
+ */
+export async function projectsAssign(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { projectId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.projectId) {
+		throw new Error(`Missing required path parameter: projectId`);
+	}
+	const data = await request<
+		ProjectsAssignResponse,
+		ErrorWrapper<
+			| ProjectsAssignStatus401
+			| ProjectsAssignStatus403
+			| ProjectsAssignStatus404
+			| ProjectsAssignStatus409
+			| ProjectsAssignStatus413
+			| ProjectsAssignStatus422
+			| ProjectsAssignStatus429
+			| ProjectsAssignStatus500
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ projectId: string }
+	>({
+		method: "POST",
+		url: `/projects/${pathParams.projectId}/assign`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Find Environment Variables
+ * @description Retrieves all environment variables for a given project.
+ * @link /projects/{projectId}/env-vars
+ */
+export async function projectsFindEnvVars(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectId: string };
+		queryParams?: { decrypted?: "true" | "false" };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.projectId) {
+		throw new Error(`Missing required path parameter: projectId`);
+	}
+	const data = await request<
+		ProjectsFindEnvVarsResponse,
+		ErrorWrapper<
+			| ProjectsFindEnvVarsStatus401
+			| ProjectsFindEnvVarsStatus403
+			| ProjectsFindEnvVarsStatus404
+			| ProjectsFindEnvVarsStatus409
+			| ProjectsFindEnvVarsStatus413
+			| ProjectsFindEnvVarsStatus422
+			| ProjectsFindEnvVarsStatus429
+			| ProjectsFindEnvVarsStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ decrypted?: "true" | "false" },
+		{ projectId: string }
+	>({
+		method: "GET",
+		url: `/projects/${pathParams.projectId}/env-vars`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Create Environment Variables
+ * @description Creates new environment variables for a given project. This endpoint will fail if any of the specified environment variable keys already exist, unless upsert is set to true.
+ * @link /projects/{projectId}/env-vars
+ */
+export async function projectsCreateEnvVars(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectId: string };
+		queryParams?: { decrypted?: "true" | "false" };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.projectId) {
+		throw new Error(`Missing required path parameter: projectId`);
+	}
+	const data = await request<
+		ProjectsCreateEnvVarsResponse,
+		ErrorWrapper<
+			| ProjectsCreateEnvVarsStatus401
+			| ProjectsCreateEnvVarsStatus403
+			| ProjectsCreateEnvVarsStatus404
+			| ProjectsCreateEnvVarsStatus409
+			| ProjectsCreateEnvVarsStatus413
+			| ProjectsCreateEnvVarsStatus422
+			| ProjectsCreateEnvVarsStatus429
+			| ProjectsCreateEnvVarsStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ decrypted?: "true" | "false" },
+		{ projectId: string }
+	>({
+		method: "POST",
+		url: `/projects/${pathParams.projectId}/env-vars`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Update Environment Variables
+ * @description Updates multiple environment variables for a given project. Only the value of each environment variable can be updated.
+ * @link /projects/{projectId}/env-vars
+ */
+export async function projectsUpdateEnvVars(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectId: string };
+		queryParams?: { decrypted?: "true" | "false" };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.projectId) {
+		throw new Error(`Missing required path parameter: projectId`);
+	}
+	const data = await request<
+		ProjectsUpdateEnvVarsResponse,
+		ErrorWrapper<
+			| ProjectsUpdateEnvVarsStatus401
+			| ProjectsUpdateEnvVarsStatus403
+			| ProjectsUpdateEnvVarsStatus404
+			| ProjectsUpdateEnvVarsStatus409
+			| ProjectsUpdateEnvVarsStatus413
+			| ProjectsUpdateEnvVarsStatus422
+			| ProjectsUpdateEnvVarsStatus429
+			| ProjectsUpdateEnvVarsStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ decrypted?: "true" | "false" },
+		{ projectId: string }
+	>({
+		method: "PATCH",
+		url: `/projects/${pathParams.projectId}/env-vars`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Delete Environment Variables
+ * @description Deletes multiple environment variables for a given project by their IDs.
+ * @link /projects/{projectId}/env-vars/delete
+ */
+export async function projectsDeleteEnvVars(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { projectId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.projectId) {
+		throw new Error(`Missing required path parameter: projectId`);
+	}
+	const data = await request<
+		ProjectsDeleteEnvVarsResponse,
+		ErrorWrapper<
+			| ProjectsDeleteEnvVarsStatus401
+			| ProjectsDeleteEnvVarsStatus403
+			| ProjectsDeleteEnvVarsStatus404
+			| ProjectsDeleteEnvVarsStatus409
+			| ProjectsDeleteEnvVarsStatus413
+			| ProjectsDeleteEnvVarsStatus422
+			| ProjectsDeleteEnvVarsStatus429
+			| ProjectsDeleteEnvVarsStatus500
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ projectId: string }
+	>({
+		method: "POST",
+		url: `/projects/${pathParams.projectId}/env-vars/delete`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Get Environment Variable
+ * @description Retrieves a specific environment variable for a given project by its ID, including its value.
+ * @link /projects/{projectId}/env-vars/{environmentVariableId}
+ */
+export async function projectsGetEnvVar(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectId: string; environmentVariableId: string };
+		queryParams?: { decrypted?: "true" | "false" };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.projectId) {
+		throw new Error(`Missing required path parameter: projectId`);
+	}
+
+	if (!pathParams.environmentVariableId) {
+		throw new Error(`Missing required path parameter: environmentVariableId`);
+	}
+	const data = await request<
+		ProjectsGetEnvVarResponse,
+		ErrorWrapper<
+			| ProjectsGetEnvVarStatus401
+			| ProjectsGetEnvVarStatus403
+			| ProjectsGetEnvVarStatus404
+			| ProjectsGetEnvVarStatus409
+			| ProjectsGetEnvVarStatus413
+			| ProjectsGetEnvVarStatus422
+			| ProjectsGetEnvVarStatus429
+			| ProjectsGetEnvVarStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ decrypted?: "true" | "false" },
+		{ projectId: string; environmentVariableId: string }
+	>({
+		method: "GET",
+		url: `/projects/${pathParams.projectId}/env-vars/${pathParams.environmentVariableId}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
  * @summary Find Rate Limit
- * {@link /rate-limits}
+ * @description Retrieves rate limit information for a given scope. Useful for monitoring usage limits and avoiding throttling.
+ * @link /rate-limits
  */
-export async function rateLimitsFind({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: RateLimitsFindQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function rateLimitsFind(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { scope?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		RateLimitsFindQueryResponse,
+		RateLimitsFindResponse,
 		ErrorWrapper<
-			| RateLimitsFind401
-			| RateLimitsFind403
-			| RateLimitsFind404
-			| RateLimitsFind409
-			| RateLimitsFind413
-			| RateLimitsFind422
-			| RateLimitsFind429
-			| RateLimitsFind500
+			| RateLimitsFindStatus401
+			| RateLimitsFindStatus403
+			| RateLimitsFindStatus404
+			| RateLimitsFindStatus409
+			| RateLimitsFindStatus413
+			| RateLimitsFindStatus422
+			| RateLimitsFindStatus429
+			| RateLimitsFindStatus500
 		>,
 		null,
 		Record<string, string>,
-		RateLimitsFindQueryParams,
+		{ scope?: string },
 		Record<string, string>
-	>({ method: "GET", url: `/rate-limits`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/rate-limits`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Retrieves information about the authenticated user, including their ID, name, email, and account metadata.
  * @summary Get User
- * {@link /user}
+ * @description Retrieves information about the authenticated user, including their ID, name, email, and account metadata.
+ * @link /user
  */
-export async function userGet({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function userGet(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		UserGetQueryResponse,
+		UserGetResponse,
 		ErrorWrapper<
-			| UserGet401
-			| UserGet403
-			| UserGet404
-			| UserGet409
-			| UserGet413
-			| UserGet422
-			| UserGet429
-			| UserGet500
+			| UserGetStatus401
+			| UserGetStatus403
+			| UserGetStatus404
+			| UserGetStatus409
+			| UserGetStatus413
+			| UserGetStatus422
+			| UserGetStatus429
+			| UserGetStatus500
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "GET", url: `/user`, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/user`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Fetches billing usage and quota information for the authenticated user. Can be scoped to a specific context (e.g. project or namespace).
  * @summary Get Billing
- * {@link /user/billing}
+ * @description Fetches billing usage and quota information for the authenticated user. Can be scoped to a specific context (e.g. project or namespace).
+ * @link /user/billing
  */
-export async function userGetBilling({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: UserGetBillingQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function userGetBilling(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { scope?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		UserGetBillingQueryResponse,
+		UserGetBillingResponse,
 		ErrorWrapper<
-			| UserGetBilling401
-			| UserGetBilling403
-			| UserGetBilling404
-			| UserGetBilling409
-			| UserGetBilling413
-			| UserGetBilling422
-			| UserGetBilling429
-			| UserGetBilling500
+			| UserGetBillingStatus401
+			| UserGetBillingStatus403
+			| UserGetBillingStatus404
+			| UserGetBillingStatus409
+			| UserGetBillingStatus413
+			| UserGetBillingStatus422
+			| UserGetBillingStatus429
+			| UserGetBillingStatus500
 		>,
 		null,
 		Record<string, string>,
-		UserGetBillingQueryParams,
+		{ scope?: string },
 		Record<string, string>
-	>({ method: "GET", url: `/user/billing`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/user/billing`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Returns the current subscription plan for the authenticated user, including tier details and feature limits.
  * @summary Get Plan
- * {@link /user/plan}
+ * @description Returns the current subscription plan for the authenticated user, including tier details and feature limits.
+ * @link /user/plan
  */
-export async function userGetPlan({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function userGetPlan(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		UserGetPlanQueryResponse,
+		UserGetPlanResponse,
 		ErrorWrapper<
-			| UserGetPlan401
-			| UserGetPlan403
-			| UserGetPlan404
-			| UserGetPlan409
-			| UserGetPlan413
-			| UserGetPlan422
-			| UserGetPlan429
-			| UserGetPlan500
+			| UserGetPlanStatus401
+			| UserGetPlanStatus403
+			| UserGetPlanStatus404
+			| UserGetPlanStatus409
+			| UserGetPlanStatus413
+			| UserGetPlanStatus422
+			| UserGetPlanStatus429
+			| UserGetPlanStatus500
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "GET", url: `/user/plan`, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/user/plan`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Retrieves all accessible scopes for the authenticated user, such as personal workspaces or shared teams.
  * @summary Get User Scopes
- * {@link /user/scopes}
+ * @description Retrieves all accessible scopes for the authenticated user, such as personal workspaces or shared teams.
+ * @link /user/scopes
  */
-export async function userGetScopes({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function userGetScopes(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		UserGetScopesQueryResponse,
+		UserGetScopesResponse,
 		ErrorWrapper<
-			| UserGetScopes401
-			| UserGetScopes403
-			| UserGetScopes404
-			| UserGetScopes409
-			| UserGetScopes413
-			| UserGetScopes422
-			| UserGetScopes429
-			| UserGetScopes500
+			| UserGetScopesStatus401
+			| UserGetScopesStatus403
+			| UserGetScopesStatus404
+			| UserGetScopesStatus409
+			| UserGetScopesStatus413
+			| UserGetScopesStatus422
+			| UserGetScopesStatus429
+			| UserGetScopesStatus500
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "GET", url: `/user/scopes`, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/user/scopes`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Restores a block to a specific version.
  * @summary Restore Block
- * {@link /chats/:chatId/versions/:versionId/restore}
+ * @description Restores a block to a specific version.
+ * @link /chats/{chatId}/versions/{versionId}/restore
  */
-export async function chatsRestore({
-	pathParams: { chatId, versionId },
-	config = {},
-}: {
-	pathParams: ChatsRestorePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function chatsRestore(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { chatId: string; versionId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!chatId) {
+	if (!pathParams.chatId) {
 		throw new Error(`Missing required path parameter: chatId`);
 	}
 
-	if (!versionId) {
+	if (!pathParams.versionId) {
 		throw new Error(`Missing required path parameter: versionId`);
 	}
-
 	const data = await request<
-		ChatsRestoreMutationResponse,
+		ChatsRestoreResponse,
 		ErrorWrapper<
-			| ChatsRestore401
-			| ChatsRestore403
-			| ChatsRestore404
-			| ChatsRestore409
-			| ChatsRestore413
-			| ChatsRestore422
-			| ChatsRestore429
-			| ChatsRestore500
+			| ChatsRestoreStatus401
+			| ChatsRestoreStatus403
+			| ChatsRestoreStatus404
+			| ChatsRestoreStatus409
+			| ChatsRestoreStatus413
+			| ChatsRestoreStatus422
+			| ChatsRestoreStatus429
+			| ChatsRestoreStatus500
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		ChatsRestorePathParams
-	>({ method: "POST", url: `/chats/${chatId}/versions/${versionId}/restore`, ...requestConfig });
+		{ chatId: string; versionId: string }
+	>({
+		method: "POST",
+		url: `/chats/${pathParams.chatId}/versions/${pathParams.versionId}/restore`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Retrieves detailed usage events for the authenticated user or team, including costs, event types, models used, and metadata. Shows the same data as displayed in the usage dashboard. Can be filtered by chatId to show usage for a specific chat, or by userId to show usage for a specific user.
  * @summary Get Usage Report
- * {@link /reports/usage}
+ * @description Retrieves detailed usage events for the authenticated user or team, including costs, event types, models used, and metadata. Shows the same data as displayed in the usage dashboard. Can be filtered by chatId to show usage for a specific chat, or by userId to show usage for a specific user.
+ * @link /reports/usage
  */
-export async function reportsGetUsage({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: ReportsGetUsageQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function reportsGetUsage(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			startDate?: string;
+			endDate?: string;
+			chatId?: string;
+			messageId?: string;
+			userId?: string;
+			limit?: number;
+			cursor?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		ReportsGetUsageQueryResponse,
+		ReportsGetUsageResponse,
 		ErrorWrapper<
-			| ReportsGetUsage401
-			| ReportsGetUsage403
-			| ReportsGetUsage404
-			| ReportsGetUsage409
-			| ReportsGetUsage413
-			| ReportsGetUsage422
-			| ReportsGetUsage429
-			| ReportsGetUsage500
+			| ReportsGetUsageStatus401
+			| ReportsGetUsageStatus403
+			| ReportsGetUsageStatus404
+			| ReportsGetUsageStatus409
+			| ReportsGetUsageStatus413
+			| ReportsGetUsageStatus422
+			| ReportsGetUsageStatus429
+			| ReportsGetUsageStatus500
 		>,
 		null,
 		Record<string, string>,
-		ReportsGetUsageQueryParams,
+		{
+			startDate?: string;
+			endDate?: string;
+			chatId?: string;
+			messageId?: string;
+			userId?: string;
+			limit?: number;
+			cursor?: string;
+		},
 		Record<string, string>
-	>({ method: "GET", url: `/reports/usage`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/reports/usage`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Retrieves v0 AI usage events for the authenticated user or active team scope.
  * @summary Get AI Usage Report
- * {@link /reports/usage/ai}
+ * @description Retrieves v0 AI usage events for the authenticated user or active team scope.
+ * @link /reports/usage/ai
  */
-export async function reportsGetAIUsage({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: ReportsGetAIUsageQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function reportsGetAIUsage(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { start?: string; end?: string; cursor?: string; limit?: number };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		ReportsGetAIUsageQueryResponse,
+		ReportsGetAIUsageResponse,
 		ErrorWrapper<
-			| ReportsGetAIUsage401
-			| ReportsGetAIUsage403
-			| ReportsGetAIUsage404
-			| ReportsGetAIUsage409
-			| ReportsGetAIUsage413
-			| ReportsGetAIUsage422
-			| ReportsGetAIUsage429
-			| ReportsGetAIUsage500
+			| ReportsGetAIUsageStatus401
+			| ReportsGetAIUsageStatus403
+			| ReportsGetAIUsageStatus404
+			| ReportsGetAIUsageStatus409
+			| ReportsGetAIUsageStatus413
+			| ReportsGetAIUsageStatus422
+			| ReportsGetAIUsageStatus429
+			| ReportsGetAIUsageStatus500
 		>,
 		null,
 		Record<string, string>,
-		ReportsGetAIUsageQueryParams,
+		{ start?: string; end?: string; cursor?: string; limit?: number },
 		Record<string, string>
-	>({ method: "GET", url: `/reports/usage/ai`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/reports/usage/ai`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Retrieves aggregated user activity data for team members, including chat counts, message counts, and activity timestamps. Only available for Enterprise teams with OWNER or BILLING role. Shows the same data as displayed in the Usage settings for Enterprise teams.
  * @summary Get User Activity Report
- * {@link /reports/user-activity}
+ * @description Retrieves aggregated user activity data for team members, including chat counts, message counts, and activity timestamps. Only available for Enterprise teams with OWNER or BILLING role. Shows the same data as displayed in the Usage settings for Enterprise teams.
+ * @link /reports/user-activity
  */
-export async function reportsGetUserActivity({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: ReportsGetUserActivityQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function reportsGetUserActivity(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { startDate?: string; endDate?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		ReportsGetUserActivityQueryResponse,
+		ReportsGetUserActivityResponse,
 		ErrorWrapper<
-			| ReportsGetUserActivity401
-			| ReportsGetUserActivity403
-			| ReportsGetUserActivity404
-			| ReportsGetUserActivity409
-			| ReportsGetUserActivity413
-			| ReportsGetUserActivity422
-			| ReportsGetUserActivity429
-			| ReportsGetUserActivity500
+			| ReportsGetUserActivityStatus401
+			| ReportsGetUserActivityStatus403
+			| ReportsGetUserActivityStatus404
+			| ReportsGetUserActivityStatus409
+			| ReportsGetUserActivityStatus413
+			| ReportsGetUserActivityStatus422
+			| ReportsGetUserActivityStatus429
+			| ReportsGetUserActivityStatus500
 		>,
 		null,
 		Record<string, string>,
-		ReportsGetUserActivityQueryParams,
+		{ startDate?: string; endDate?: string },
 		Record<string, string>
-	>({ method: "GET", url: `/reports/user-activity`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/reports/user-activity`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Retrieves all MCP servers configured for the authenticated user.
  * @summary List MCP Servers
- * {@link /mcp-servers}
+ * @description Retrieves all MCP servers configured for the authenticated user.
+ * @link /mcp-servers
  */
-export async function mcpServersFind({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function mcpServersFind(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		McpServersFindQueryResponse,
+		McpServersFindResponse,
 		ErrorWrapper<
-			| McpServersFind401
-			| McpServersFind403
-			| McpServersFind404
-			| McpServersFind409
-			| McpServersFind413
-			| McpServersFind422
-			| McpServersFind429
-			| McpServersFind500
+			| McpServersFindStatus401
+			| McpServersFindStatus403
+			| McpServersFindStatus404
+			| McpServersFindStatus409
+			| McpServersFindStatus413
+			| McpServersFindStatus422
+			| McpServersFindStatus429
+			| McpServersFindStatus500
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "GET", url: `/mcp-servers`, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/mcp-servers`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Creates a new MCP server configuration for the authenticated user. Supports OAuth, bearer token, custom headers, and unauthenticated servers.
  * @summary Create MCP Server
- * {@link /mcp-servers}
+ * @description Creates a new MCP server configuration for the authenticated user. Supports OAuth, bearer token, custom headers, and unauthenticated servers.
+ * @link /mcp-servers
  */
-export async function mcpServersCreate({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function mcpServersCreate(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		McpServersCreateMutationResponse,
+		McpServersCreateResponse,
 		ErrorWrapper<
-			| McpServersCreate401
-			| McpServersCreate403
-			| McpServersCreate404
-			| McpServersCreate409
-			| McpServersCreate413
-			| McpServersCreate422
-			| McpServersCreate429
-			| McpServersCreate500
+			| McpServersCreateStatus401
+			| McpServersCreateStatus403
+			| McpServersCreateStatus404
+			| McpServersCreateStatus409
+			| McpServersCreateStatus413
+			| McpServersCreateStatus422
+			| McpServersCreateStatus429
+			| McpServersCreateStatus500
 		>,
 		null,
 		Record<string, string>,
@@ -2740,170 +2962,189 @@ export async function mcpServersCreate({
 		method: "POST",
 		url: `/mcp-servers`,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Retrieves the details of a specific MCP server by its ID.
  * @summary Get MCP Server
- * {@link /mcp-servers/:mcpServerId}
+ * @description Retrieves the details of a specific MCP server by its ID.
+ * @link /mcp-servers/{mcpServerId}
  */
-export async function mcpServersGetById({
-	pathParams: { mcpServerId },
-	config = {},
-}: {
-	pathParams: McpServersGetByIdPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function mcpServersGetById(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { mcpServerId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!mcpServerId) {
+	if (!pathParams.mcpServerId) {
 		throw new Error(`Missing required path parameter: mcpServerId`);
 	}
-
 	const data = await request<
-		McpServersGetByIdQueryResponse,
+		McpServersGetByIdResponse,
 		ErrorWrapper<
-			| McpServersGetById401
-			| McpServersGetById403
-			| McpServersGetById404
-			| McpServersGetById409
-			| McpServersGetById413
-			| McpServersGetById422
-			| McpServersGetById429
-			| McpServersGetById500
+			| McpServersGetByIdStatus401
+			| McpServersGetByIdStatus403
+			| McpServersGetByIdStatus404
+			| McpServersGetByIdStatus409
+			| McpServersGetByIdStatus413
+			| McpServersGetByIdStatus422
+			| McpServersGetByIdStatus429
+			| McpServersGetByIdStatus500
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		McpServersGetByIdPathParams
-	>({ method: "GET", url: `/mcp-servers/${mcpServerId}`, ...requestConfig });
+		{ mcpServerId: string }
+	>({
+		method: "GET",
+		url: `/mcp-servers/${pathParams.mcpServerId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Updates the configuration of an existing MCP server, including its name, URL, description, enabled status, and authentication settings.
  * @summary Update MCP Server
- * {@link /mcp-servers/:mcpServerId}
+ * @description Updates the configuration of an existing MCP server, including its name, URL, description, enabled status, and authentication settings.
+ * @link /mcp-servers/{mcpServerId}
  */
-export async function mcpServersUpdate({
-	pathParams: { mcpServerId },
-	config = {},
-}: {
-	pathParams: McpServersUpdatePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function mcpServersUpdate(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { mcpServerId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!mcpServerId) {
+	if (!pathParams.mcpServerId) {
 		throw new Error(`Missing required path parameter: mcpServerId`);
 	}
-
 	const data = await request<
-		McpServersUpdateMutationResponse,
+		McpServersUpdateResponse,
 		ErrorWrapper<
-			| McpServersUpdate401
-			| McpServersUpdate403
-			| McpServersUpdate404
-			| McpServersUpdate409
-			| McpServersUpdate413
-			| McpServersUpdate422
-			| McpServersUpdate429
-			| McpServersUpdate500
+			| McpServersUpdateStatus401
+			| McpServersUpdateStatus403
+			| McpServersUpdateStatus404
+			| McpServersUpdateStatus409
+			| McpServersUpdateStatus413
+			| McpServersUpdateStatus422
+			| McpServersUpdateStatus429
+			| McpServersUpdateStatus500
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		McpServersUpdatePathParams
+		{ mcpServerId: string }
 	>({
 		method: "PATCH",
-		url: `/mcp-servers/${mcpServerId}`,
+		url: `/mcp-servers/${pathParams.mcpServerId}`,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
- * @description Deletes an MCP server based on its ID. This action is irreversible and will also remove any associated OAuth tokens.
  * @summary Delete MCP Server
- * {@link /mcp-servers/:mcpServerId}
+ * @description Deletes an MCP server based on its ID. This action is irreversible and will also remove any associated OAuth tokens.
+ * @link /mcp-servers/{mcpServerId}
  */
-export async function mcpServersDelete({
-	pathParams: { mcpServerId },
-	config = {},
-}: {
-	pathParams: McpServersDeletePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function mcpServersDelete(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { mcpServerId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!mcpServerId) {
+	if (!pathParams.mcpServerId) {
 		throw new Error(`Missing required path parameter: mcpServerId`);
 	}
-
 	const data = await request<
-		McpServersDeleteMutationResponse,
+		McpServersDeleteResponse,
 		ErrorWrapper<
-			| McpServersDelete401
-			| McpServersDelete403
-			| McpServersDelete404
-			| McpServersDelete409
-			| McpServersDelete413
-			| McpServersDelete422
-			| McpServersDelete429
-			| McpServersDelete500
+			| McpServersDeleteStatus401
+			| McpServersDeleteStatus403
+			| McpServersDeleteStatus404
+			| McpServersDeleteStatus409
+			| McpServersDeleteStatus413
+			| McpServersDeleteStatus422
+			| McpServersDeleteStatus429
+			| McpServersDeleteStatus500
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		McpServersDeletePathParams
-	>({ method: "DELETE", url: `/mcp-servers/${mcpServerId}`, ...requestConfig });
+		{ mcpServerId: string }
+	>({
+		method: "DELETE",
+		url: `/mcp-servers/${pathParams.mcpServerId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Creates an OAuth authorization URL for an OAuth MCP server. Redirect the user to the returned URL, and the Platform API OAuth callback will store the resulting tokens before redirecting to your returnUrl.
  * @summary Create MCP Server OAuth Authorization URL
- * {@link /mcp-servers/:mcpServerId/oauth/authorize}
+ * @description Creates an OAuth authorization URL for an OAuth MCP server. Redirect the user to the returned URL, and the Platform API OAuth callback will store the resulting tokens before redirecting to your returnUrl.
+ * @link /mcp-servers/{mcpServerId}/oauth/authorize
  */
-export async function mcpServersCreateOAuthAuthorizationUrl({
-	pathParams: { mcpServerId },
-	config = {},
-}: {
-	pathParams: McpServersCreateOAuthAuthorizationUrlPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function mcpServersCreateOAuthAuthorizationUrl(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { mcpServerId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!mcpServerId) {
+	if (!pathParams.mcpServerId) {
 		throw new Error(`Missing required path parameter: mcpServerId`);
 	}
-
 	const data = await request<
-		McpServersCreateOAuthAuthorizationUrlMutationResponse,
+		McpServersCreateOAuthAuthorizationUrlResponse,
 		ErrorWrapper<
-			| McpServersCreateOAuthAuthorizationUrl401
-			| McpServersCreateOAuthAuthorizationUrl403
-			| McpServersCreateOAuthAuthorizationUrl404
-			| McpServersCreateOAuthAuthorizationUrl409
-			| McpServersCreateOAuthAuthorizationUrl413
-			| McpServersCreateOAuthAuthorizationUrl422
-			| McpServersCreateOAuthAuthorizationUrl429
-			| McpServersCreateOAuthAuthorizationUrl500
+			| McpServersCreateOAuthAuthorizationUrlStatus401
+			| McpServersCreateOAuthAuthorizationUrlStatus403
+			| McpServersCreateOAuthAuthorizationUrlStatus404
+			| McpServersCreateOAuthAuthorizationUrlStatus409
+			| McpServersCreateOAuthAuthorizationUrlStatus413
+			| McpServersCreateOAuthAuthorizationUrlStatus422
+			| McpServersCreateOAuthAuthorizationUrlStatus429
+			| McpServersCreateOAuthAuthorizationUrlStatus500
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		McpServersCreateOAuthAuthorizationUrlPathParams
+		{ mcpServerId: string }
 	>({
 		method: "POST",
-		url: `/mcp-servers/${mcpServerId}/oauth/authorize`,
+		url: `/mcp-servers/${pathParams.mcpServerId}/oauth/authorize`,
 		...requestConfig,
-		headers: { "Content-Type": "applicationJson", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
