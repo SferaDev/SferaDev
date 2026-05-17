@@ -14,11 +14,11 @@
 				"components/**/*.tsx",
 				"lib/**/*.ts",
 				"hooks/**/*.ts",
-				"convex/**/*.ts",
+				"actions/**/*.ts",
+				"tests/**/*.{ts,tsx}",
 				"scripts/**/*.ts"
 			],
 			"project": ["**/*.{ts,tsx}"],
-			"ignoreDependencies": ["jszip"],
 			"includeEntryExports": false
 		},
 		"apps/openapi": {

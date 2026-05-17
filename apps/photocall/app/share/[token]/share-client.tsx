@@ -1,17 +1,19 @@
 "use client";
 
-import { useQuery } from "convex/react";
 import { Camera, Download, ExternalLink, Printer } from "lucide-react";
 import Link from "next/link";
 import { use } from "react";
+import useSWR from "swr";
+import { getPhotoByShareToken } from "@/actions/photos";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { api } from "@/convex/_generated/api";
 import { downloadBlob, printImage } from "@/lib/canvas-utils";
 
 export default function SharePage({ params }: { params: Promise<{ token: string }> }) {
 	const { token } = use(params);
-	const photo = useQuery(api.photos.getByShareToken, { shareToken: token });
+	const { data: photo, isLoading } = useSWR(["share-photo", token], () =>
+		getPhotoByShareToken(token),
+	);
 
 	const handleDownload = async () => {
 		if (!photo?.url) return;
@@ -26,7 +28,7 @@ export default function SharePage({ params }: { params: Promise<{ token: string 
 	};
 
 	// Loading state
-	if (photo === undefined) {
+	if (isLoading) {
 		return (
 			<div className="flex min-h-screen items-center justify-center bg-linear-to-b from-rose-50 to-white dark:from-rose-950 dark:to-background">
 				<div className="h-12 w-12 animate-spin rounded-full border-4 border-rose-500 border-t-transparent" />
@@ -35,7 +37,7 @@ export default function SharePage({ params }: { params: Promise<{ token: string 
 	}
 
 	// Not found state
-	if (photo === null) {
+	if (!photo) {
 		return (
 			<div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-linear-to-b from-rose-50 to-white p-8 dark:from-rose-950 dark:to-background">
 				<Camera className="h-20 w-20 text-muted-foreground" />

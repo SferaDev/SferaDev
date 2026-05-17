@@ -1,10 +1,10 @@
 "use client";
 
-import { useMutation, useQuery } from "convex/react";
-import type { FunctionReturnType } from "convex/server";
 import { ArrowRight, Building2, Camera, Loader2, Plus, Users } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import useSWR, { useSWRConfig } from "swr";
+import { createOrganization, getOrganizations } from "@/actions/organizations";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -17,17 +17,16 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { api } from "@/convex/_generated/api";
 import { authClient, useSession } from "@/lib/auth-client";
-
-type Organization = NonNullable<FunctionReturnType<typeof api.users.getOrganizations>>[number];
 
 export default function DashboardClient() {
 	const { data: session, isPending: authLoading } = useSession();
 	const isAuthenticated = !!session;
 	const router = useRouter();
-	const organizations = useQuery(api.users.getOrganizations);
-	const createOrg = useMutation(api.organizations.create);
+	const { mutate } = useSWRConfig();
+	const { data: organizations } = useSWR(isAuthenticated ? ["organizations"] : null, () =>
+		getOrganizations(),
+	);
 	const [newOrgName, setNewOrgName] = useState("");
 	const [isCreating, setIsCreating] = useState(false);
 	const [dialogOpen, setDialogOpen] = useState(false);
@@ -44,7 +43,8 @@ export default function DashboardClient() {
 
 		setIsCreating(true);
 		try {
-			await createOrg({ name: newOrgName.trim() });
+			await createOrganization(newOrgName.trim());
+			mutate((key) => Array.isArray(key) && key[0] === "organizations");
 			setNewOrgName("");
 			setDialogOpen(false);
 		} catch (error) {
@@ -139,9 +139,9 @@ export default function DashboardClient() {
 					</div>
 				) : (
 					<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-						{organizations.map((org: Organization) => (
+						{organizations.map((org) => (
 							<button
-								key={org._id}
+								key={org.id}
 								type="button"
 								onClick={() => router.push(`/dashboard/${org.slug}`)}
 								className="text-left p-6 border rounded-lg hover:border-primary transition-colors group"
