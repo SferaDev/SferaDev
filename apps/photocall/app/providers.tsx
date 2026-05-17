@@ -1,20 +1,17 @@
 "use client";
 
-import { ConvexBetterAuthProvider } from "@convex-dev/better-auth/react";
-import { ConvexReactClient } from "convex/react";
 import type { ReactNode } from "react";
-import { authClient } from "@/lib/auth-client";
-
-const convexUrl = process.env.NEXT_PUBLIC_CONVEX_URL;
-const convex = convexUrl ? new ConvexReactClient(convexUrl) : null;
+import { SWRConfig } from "swr";
 
 export function Providers({ children }: { children: ReactNode }) {
-	if (!convex) {
-		return <>{children}</>;
-	}
 	return (
-		<ConvexBetterAuthProvider client={convex} authClient={authClient}>
+		<SWRConfig
+			value={{
+				revalidateOnFocus: false,
+				dedupingInterval: 2000,
+			}}
+		>
 			{children}
-		</ConvexBetterAuthProvider>
+		</SWRConfig>
 	);
 }

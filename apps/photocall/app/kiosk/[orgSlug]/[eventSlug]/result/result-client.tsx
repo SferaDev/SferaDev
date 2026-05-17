@@ -1,13 +1,15 @@
 "use client";
 
-import { useMutation, useQuery } from "convex/react";
-import { Camera, Check, Download, Loader2, Printer, RotateCcw } from "lucide-react";
+import { ArrowLeft, Camera, Check, Download, Loader2, Printer, RotateCcw } from "lucide-react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import QRCode from "qrcode";
 import { useCallback, useEffect, useState } from "react";
+import useSWR from "swr";
+import { getPublicEvent } from "@/actions/events";
+import { createPhoto, generatePhotoUploadUrl } from "@/actions/photos";
+import { completeSession, getKioskSession } from "@/actions/sessions";
+import { listPublicTemplates } from "@/actions/templates";
 import { Button } from "@/components/ui/button";
-import { api } from "@/convex/_generated/api";
-import type { Id } from "@/convex/_generated/dataModel";
 import { useIdleTimeout } from "@/hooks/use-idle-timeout";
 import { compositePhoto, downloadBlob, printImage } from "@/lib/canvas-utils";
 
@@ -17,21 +19,26 @@ export default function KioskResultPage() {
 	const searchParams = useSearchParams();
 	const orgSlug = params.orgSlug as string;
 	const eventSlug = params.eventSlug as string;
-	const sessionId = searchParams.get("session") as Id<"sessions"> | null;
-	const templateId = searchParams.get("template") as Id<"templates"> | null;
+	const sessionId = searchParams.get("session");
+	const templateId = searchParams.get("template");
 
-	const event = useQuery(api.events.getPublic, {
-		organizationSlug: orgSlug,
-		eventSlug: eventSlug,
-	});
+	const { data: event, isLoading: eventLoading } = useSWR(
+		["public-event", orgSlug, eventSlug],
+		() => getPublicEvent(orgSlug, eventSlug),
+	);
 
-	const session = useQuery(api.sessions.get, sessionId ? { sessionId } : "skip");
+	const { data: session, isLoading: sessionLoading } = useSWR(
+		sessionId ? ["kiosk-session", sessionId] : null,
+		() => getKioskSession(sessionId!),
+	);
 
-	const template = useQuery(api.templates.get, templateId ? { templateId } : "skip");
+	// Use listPublicTemplates to find the template by ID (avoids auth requirement)
+	const { data: templates } = useSWR(
+		event && templateId ? ["public-templates", event.id] : null,
+		() => listPublicTemplates(event!.id),
+	);
 
-	const generateUploadUrl = useMutation(api.photos.generateUploadUrl);
-	const createPhoto = useMutation(api.photos.create);
-	const completeSession = useMutation(api.sessions.complete);
+	const template = templates?.find((t) => t.id === templateId) ?? null;
 
 	const [isProcessing, setIsProcessing] = useState(true);
 	const [finalImageUrl, setFinalImageUrl] = useState<string | null>(null);
@@ -58,7 +65,7 @@ export default function KioskResultPage() {
 				template: template?.url
 					? {
 							url: template.url,
-							safeArea: template.safeArea,
+							safeArea: template.safeArea ?? undefined,
 						}
 					: undefined,
 				caption:
@@ -78,37 +85,29 @@ export default function KioskResultPage() {
 			const previewUrl = URL.createObjectURL(blob);
 			setFinalImageUrl(previewUrl);
 
-			// Upload to storage
-			const uploadUrl = await generateUploadUrl({
-				eventId: event.id as Id<"events">,
-			});
+			// Upload to S3 storage
+			const { uploadUrl, key } = await generatePhotoUploadUrl(event.id);
 
-			const uploadResponse = await fetch(uploadUrl, {
-				method: "POST",
+			await fetch(uploadUrl, {
+				method: "PUT",
 				headers: { "Content-Type": blob.type },
 				body: blob,
 			});
 
-			if (!uploadResponse.ok) {
-				throw new Error("Failed to upload photo");
-			}
-
-			const { storageId } = await uploadResponse.json();
-
 			// Create photo record
 			const result = await createPhoto({
-				eventId: event.id as Id<"events">,
-				sessionId: sessionId as Id<"sessions">,
-				storageId,
-				caption: session.caption,
-				templateId: templateId as Id<"templates"> | undefined,
+				eventId: event.id,
+				sessionId: sessionId!,
+				storageKey: key,
+				caption: session.caption ?? undefined,
+				templateId: templateId ?? undefined,
 				width: event.maxPhotoDimension,
 				height: Math.round(event.maxPhotoDimension * (4 / 3)),
 				sizeBytes: blob.size,
 			});
 
 			// Complete session
-			await completeSession({ sessionId: sessionId as Id<"sessions"> });
+			await completeSession(sessionId!);
 
 			// Generate share URL and QR code
 			const shareBaseUrl = typeof window !== "undefined" ? window.location.origin : "";
@@ -131,17 +130,7 @@ export default function KioskResultPage() {
 			setError("Failed to process your photo. Please try again.");
 			setIsProcessing(false);
 		}
-	}, [
-		event,
-		session,
-		template,
-		templateId,
-		sessionId,
-		generateUploadUrl,
-		createPhoto,
-		completeSession,
-		isProcessing,
-	]);
+	}, [event, session, template, templateId, sessionId, isProcessing]);
 
 	useEffect(() => {
 		if (event && session && isProcessing) {
@@ -169,7 +158,16 @@ export default function KioskResultPage() {
 		router.push(`/kiosk/${orgSlug}/${eventSlug}`);
 	};
 
-	if (event === undefined || session === undefined) {
+	const handleRetry = () => {
+		setError(null);
+		setFinalImageUrl(null);
+		setQrCodeUrl(null);
+		setShareUrl(null);
+		setHumanCode(null);
+		setIsProcessing(true);
+	};
+
+	if (eventLoading || sessionLoading) {
 		return (
 			<div className="min-h-screen flex items-center justify-center bg-black text-white">
 				<Loader2 className="h-12 w-12 animate-spin" />
@@ -190,10 +188,21 @@ export default function KioskResultPage() {
 				<div className="text-center">
 					<h1 className="text-2xl font-bold mb-4">Something went wrong</h1>
 					<p className="text-white/60 mb-8">{error}</p>
-					<Button onClick={handleNewPhoto} style={{ backgroundColor: primaryColor }}>
-						<RotateCcw className="h-5 w-5 mr-2" />
-						Try Again
-					</Button>
+					<div className="flex flex-col gap-3">
+						<Button size="lg" onClick={handleRetry} style={{ backgroundColor: primaryColor }}>
+							<RotateCcw className="h-5 w-5 mr-2" />
+							Retry
+						</Button>
+						<Button
+							size="lg"
+							variant="outline"
+							onClick={handleNewPhoto}
+							className="border-white/20 text-white hover:bg-white/10"
+						>
+							<ArrowLeft className="h-5 w-5 mr-2" />
+							Start Over
+						</Button>
+					</div>
 				</div>
 			</div>
 		);

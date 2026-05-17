@@ -1,12 +1,13 @@
 "use client";
 
-import { useMutation, useQuery } from "convex/react";
 import { Camera, Loader2 } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import useSWR from "swr";
+import { getPublicEvent } from "@/actions/events";
+import { listRecentPublicPhotos } from "@/actions/photos";
+import { createKioskSession } from "@/actions/sessions";
 import { Button } from "@/components/ui/button";
-import { api } from "@/convex/_generated/api";
-import type { Id } from "@/convex/_generated/dataModel";
 
 export default function KioskAttractPage() {
 	const router = useRouter();
@@ -14,17 +15,23 @@ export default function KioskAttractPage() {
 	const orgSlug = params.orgSlug as string;
 	const eventSlug = params.eventSlug as string;
 
-	const event = useQuery(api.events.getPublic, {
-		organizationSlug: orgSlug,
-		eventSlug: eventSlug,
-	});
+	// Register service worker for offline image caching
+	useEffect(() => {
+		if ("serviceWorker" in navigator) {
+			navigator.serviceWorker.register("/sw.js").catch((err) => {
+				console.error("SW registration failed:", err);
+			});
+		}
+	}, []);
 
-	const recentPhotos = useQuery(
-		api.photos.listRecentPublic,
-		event ? { eventId: event.id as Id<"events">, limit: 10 } : "skip",
+	const { data: event, isLoading: eventLoading } = useSWR(
+		["public-event", orgSlug, eventSlug],
+		() => getPublicEvent(orgSlug, eventSlug),
 	);
 
-	const createSession = useMutation(api.sessions.create);
+	const { data: recentPhotos } = useSWR(event ? ["recent-public-photos", event.id, 10] : null, () =>
+		listRecentPublicPhotos(event!.id, 10),
+	);
 
 	const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -43,16 +50,14 @@ export default function KioskAttractPage() {
 		if (!event) return;
 
 		try {
-			const sessionId = await createSession({
-				eventId: event.id as Id<"events">,
-			});
-			router.push(`/kiosk/${orgSlug}/${eventSlug}/select?session=${sessionId}`);
+			const sessionId = await createKioskSession(event.id);
+			router.push(`/kiosk/${orgSlug}/${eventSlug}/consent?session=${sessionId}`);
 		} catch (error) {
 			console.error("Failed to start session:", error);
 		}
 	};
 
-	if (event === undefined) {
+	if (eventLoading) {
 		return (
 			<div className="min-h-screen flex items-center justify-center bg-black text-white">
 				<Loader2 className="h-12 w-12 animate-spin" />
@@ -60,7 +65,7 @@ export default function KioskAttractPage() {
 		);
 	}
 
-	if (event === null) {
+	if (!event) {
 		return (
 			<div className="min-h-screen flex items-center justify-center bg-black text-white">
 				<div className="text-center">
@@ -81,9 +86,9 @@ export default function KioskAttractPage() {
 			{/* Slideshow Background */}
 			{event.slideshowEnabled && recentPhotos && recentPhotos.length > 0 && (
 				<div className="absolute inset-0">
-					{recentPhotos.map((photo: any, index: number) => (
+					{recentPhotos.map((photo, index) => (
 						<div
-							key={photo._id}
+							key={photo.id}
 							className={`absolute inset-0 transition-opacity duration-1000 ${
 								index === currentSlide ? "opacity-50" : "opacity-0"
 							}`}

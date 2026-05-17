@@ -1,13 +1,13 @@
 "use client";
 
-import { useMutation, useQuery } from "convex/react";
 import { ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import useSWR from "swr";
+import { getPublicEvent } from "@/actions/events";
+import { getKioskSession, personalizeSession } from "@/actions/sessions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { api } from "@/convex/_generated/api";
-import type { Id } from "@/convex/_generated/dataModel";
 
 export default function KioskPersonalizePage() {
 	const router = useRouter();
@@ -15,17 +15,18 @@ export default function KioskPersonalizePage() {
 	const searchParams = useSearchParams();
 	const orgSlug = params.orgSlug as string;
 	const eventSlug = params.eventSlug as string;
-	const sessionId = searchParams.get("session") as Id<"sessions"> | null;
-	const templateId = searchParams.get("template") as Id<"templates"> | null;
+	const sessionId = searchParams.get("session");
+	const templateId = searchParams.get("template");
 
-	const event = useQuery(api.events.getPublic, {
-		organizationSlug: orgSlug,
-		eventSlug: eventSlug,
-	});
+	const { data: event, isLoading: eventLoading } = useSWR(
+		["public-event", orgSlug, eventSlug],
+		() => getPublicEvent(orgSlug, eventSlug),
+	);
 
-	const session = useQuery(api.sessions.get, sessionId ? { sessionId } : "skip");
-
-	const personalize = useMutation(api.sessions.personalize);
+	const { data: session, isLoading: sessionLoading } = useSWR(
+		sessionId ? ["kiosk-session", sessionId] : null,
+		() => getKioskSession(sessionId!),
+	);
 
 	const [caption, setCaption] = useState("");
 	const [mirrored, setMirrored] = useState(event?.defaultCamera === "user");
@@ -36,11 +37,7 @@ export default function KioskPersonalizePage() {
 
 		setIsProcessing(true);
 		try {
-			await personalize({
-				sessionId,
-				caption: caption.trim() || undefined,
-				mirrored,
-			});
+			await personalizeSession(sessionId, caption.trim() || undefined, mirrored);
 			router.push(
 				`/kiosk/${orgSlug}/${eventSlug}/result?session=${sessionId}${templateId ? `&template=${templateId}` : ""}`,
 			);
@@ -51,7 +48,7 @@ export default function KioskPersonalizePage() {
 		}
 	};
 
-	if (event === undefined || session === undefined) {
+	if (eventLoading || sessionLoading) {
 		return (
 			<div className="min-h-screen flex items-center justify-center bg-black text-white">
 				<Loader2 className="h-12 w-12 animate-spin" />

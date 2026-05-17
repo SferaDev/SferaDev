@@ -1,7 +1,5 @@
 "use client";
 
-import { useConvexAuth, useMutation, useQuery } from "convex/react";
-import type { FunctionReturnType } from "convex/server";
 import {
 	BarChart3,
 	Calendar,
@@ -18,6 +16,9 @@ import {
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import useSWR, { useSWRConfig } from "swr";
+import { createEvent, listEvents } from "@/actions/events";
+import { getOrganizationBySlug, getUsage } from "@/actions/organizations";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -30,28 +31,25 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { api } from "@/convex/_generated/api";
-import type { Id } from "@/convex/_generated/dataModel";
-
-type Event = NonNullable<FunctionReturnType<typeof api.events.list>>[number];
+import { useSession } from "@/lib/auth-client";
 
 export default function OrganizationDashboard() {
-	const { isAuthenticated, isLoading: authLoading } = useConvexAuth();
+	const { data: session, isPending: authLoading } = useSession();
+	const isAuthenticated = !!session;
 	const router = useRouter();
 	const params = useParams();
 	const orgSlug = params.orgSlug as string;
+	const { mutate } = useSWRConfig();
 
-	const organization = useQuery(api.organizations.getBySlug, { slug: orgSlug });
-	const events = useQuery(
-		api.events.list,
-		organization ? { organizationId: organization._id as Id<"organizations"> } : "skip",
+	const { data: organization } = useSWR(["organizations", orgSlug], () =>
+		getOrganizationBySlug(orgSlug),
 	);
-	const usage = useQuery(
-		api.organizations.getUsage,
-		organization ? { organizationId: organization._id as Id<"organizations"> } : "skip",
+	const { data: events } = useSWR(organization ? ["events", organization.id] : null, () =>
+		listEvents(organization!.id),
 	);
-
-	const createEvent = useMutation(api.events.create);
+	const { data: usage } = useSWR(organization ? ["usage", organization.id] : null, () =>
+		getUsage(organization!.id),
+	);
 
 	const [newEventName, setNewEventName] = useState("");
 	const [isCreating, setIsCreating] = useState(false);
@@ -69,17 +67,10 @@ export default function OrganizationDashboard() {
 
 		setIsCreating(true);
 		try {
-			const eventId = await createEvent({
-				organizationId: organization._id as Id<"organizations">,
-				name: newEventName.trim(),
-			});
+			await createEvent(organization.id, newEventName.trim());
+			mutate((key) => Array.isArray(key) && key[0] === "events");
 			setNewEventName("");
 			setDialogOpen(false);
-			// Navigate to the new event
-			const newEvent = events?.find((e: Event) => e._id === eventId);
-			if (newEvent) {
-				router.push(`/dashboard/${orgSlug}/${newEvent.slug}`);
-			}
 		} catch (error) {
 			console.error("Failed to create event:", error);
 		} finally {
@@ -248,9 +239,9 @@ export default function OrganizationDashboard() {
 					</div>
 				) : (
 					<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-						{events.map((event: Event) => (
+						{events.map((event) => (
 							<div
-								key={event._id}
+								key={event.id}
 								className="p-6 border rounded-lg hover:border-primary transition-colors"
 							>
 								<div className="flex items-start justify-between mb-4">
