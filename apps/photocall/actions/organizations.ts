@@ -1,488 +1,223 @@
 "use server";
 
-import { and, eq, sql } from "drizzle-orm";
-import { requireSession } from "@/lib/auth";
-import { generateSlug, generateToken, requireOrgMembership } from "@/lib/auth-helpers";
+import type { Invitation, Member, Organization, OrganizationRole } from "@sferadev/platform-sdk";
+import { eq, sql } from "drizzle-orm";
+import { headers as nextHeaders } from "next/headers";
+import { generateSlug, requireOrgMembership, requireSession } from "@/lib/auth-helpers";
 import { db, schema } from "@/lib/db";
-import { PLAN_LIMITS } from "@/lib/plans";
+import { getPlatformClient } from "@/lib/platform";
 import { deleteFile, getFileUrl } from "@/lib/storage";
-import { sendInvitationEmail } from "./email";
 
-export async function getOrganizations() {
-	const session = await requireSession();
-	const userId = session.user.id;
-
-	const memberships = await db
-		.select()
-		.from(schema.organizationMembers)
-		.where(eq(schema.organizationMembers.userId, userId));
-
-	const orgs = await Promise.all(
-		memberships.map(async (m) => {
-			const org = await db
-				.select()
-				.from(schema.organizations)
-				.where(eq(schema.organizations.id, m.organizationId))
-				.then((rows) => rows[0]);
-
-			if (!org) return null;
-
-			const logoUrl = org.logoStorageKey ? await getFileUrl(org.logoStorageKey) : null;
-			return {
-				...org,
-				logoUrl,
-				role: m.role,
-			};
-		}),
-	);
-
-	return orgs.filter((org): org is NonNullable<typeof org> => org !== null);
+export interface OrganizationWithLogo extends Organization {
+	logoUrl: string | null;
+	role?: OrganizationRole | string;
 }
 
-export async function createOrganization(name: string) {
-	const session = await requireSession();
-	const userId = session.user.id;
+async function withLogoUrl(org: Organization, role?: string): Promise<OrganizationWithLogo> {
+	const [settings] = await db
+		.select()
+		.from(schema.orgSettings)
+		.where(eq(schema.orgSettings.organizationId, org.id))
+		.limit(1);
+	const key = settings?.logoStorageKey ?? null;
+	const logoUrl = key ? await getFileUrl(key) : null;
+	return { ...org, logoUrl, role };
+}
 
-	// Check if user already owns an organization (free tier limit)
-	const ownedOrgs = await db
-		.select({ id: schema.organizations.id })
-		.from(schema.organizations)
-		.where(eq(schema.organizations.ownerId, userId));
+export async function getOrganizations(): Promise<OrganizationWithLogo[]> {
+	const platform = getPlatformClient();
+	const headers = await nextHeaders();
+	await requireSession();
 
-	if (ownedOrgs.length >= 1) {
-		throw new Error("You can only own one organization on the free tier");
-	}
+	const organizations = await platform.listOrganizations(headers);
+	// Compute role per org by checking membership. listOrganizations doesn't
+	// include role, so we look it up via listMembers (one query per org).
+	const account = (await platform.verifySession(headers))!;
+	const enriched = await Promise.all(
+		organizations.map(async (org) => {
+			const members = await platform.listMembers(org.id, headers);
+			const me = members.find((m) => m.userId === account.id);
+			return withLogoUrl(org, me?.role);
+		}),
+	);
+	return enriched;
+}
 
-	// Generate unique slug
+export async function createOrganization(name: string): Promise<string> {
+	const platform = getPlatformClient();
+	const headers = await nextHeaders();
+	await requireSession();
+
 	const baseSlug = generateSlug(name);
-	let slug = baseSlug;
-	let counter = 1;
+	const slug = `${baseSlug}-${Math.random().toString(36).slice(2, 8)}`;
 
-	while (true) {
-		const existing = await db
-			.select({ id: schema.organizations.id })
-			.from(schema.organizations)
-			.where(eq(schema.organizations.slug, slug))
-			.then((rows) => rows[0]);
-		if (!existing) break;
-		slug = `${baseSlug}-${counter}`;
-		counter++;
-	}
+	const org = await platform.createOrganization({ name, slug }, headers);
 
-	const now = new Date();
-	const freeLimits = PLAN_LIMITS.free;
-
-	const [org] = await db
-		.insert(schema.organizations)
-		.values({
-			name,
-			slug,
-			ownerId: userId,
-			subscriptionTier: "free",
-			subscriptionStatus: "none",
-			maxEvents: freeLimits.maxEvents,
-			maxPhotosPerEvent: freeLimits.maxPhotosPerEvent,
-			maxStorageBytes: freeLimits.maxStorageBytes,
-			maxTeamMembers: freeLimits.maxTeamMembers,
-			currentStorageBytes: 0,
-			createdAt: now,
-			updatedAt: now,
-		})
-		.returning({ id: schema.organizations.id });
-
-	// Add owner as member
-	await db.insert(schema.organizationMembers).values({
-		organizationId: org.id,
-		userId,
-		role: "owner",
-		joinedAt: now,
-	});
+	// Create the photocall-specific settings row.
+	await db.insert(schema.orgSettings).values({ organizationId: org.id }).onConflictDoNothing();
 
 	return org.id;
 }
 
-export async function getOrganizationBySlug(slug: string) {
-	const session = await requireSession();
+export async function getOrganizationBySlug(slug: string): Promise<OrganizationWithLogo | null> {
+	const platform = getPlatformClient();
+	const headers = await nextHeaders();
+	await requireSession();
 
-	const org = await db
-		.select()
-		.from(schema.organizations)
-		.where(eq(schema.organizations.slug, slug))
-		.then((rows) => rows[0]);
-
+	const org = await platform.getOrganization(slug, headers);
 	if (!org) return null;
-
-	await requireOrgMembership(session.user.id, org.id);
-
-	const logoUrl = org.logoStorageKey ? await getFileUrl(org.logoStorageKey) : null;
-
-	return {
-		...org,
-		logoUrl,
-	};
+	return withLogoUrl(org);
 }
 
 export async function updateOrganization(
 	id: string,
 	data: { name?: string; logoStorageKey?: string },
-) {
-	const session = await requireSession();
-	await requireOrgMembership(session.user.id, id, ["owner", "admin"]);
+): Promise<void> {
+	const platform = getPlatformClient();
+	const headers = await nextHeaders();
+	await requireOrgMembership(id, ["owner", "admin"]);
 
-	await db
-		.update(schema.organizations)
-		.set({
-			...data,
-			updatedAt: new Date(),
-		})
-		.where(eq(schema.organizations.id, id));
+	if (data.name !== undefined) {
+		await platform.updateOrganization(id, { name: data.name }, headers);
+	}
+
+	if (data.logoStorageKey !== undefined) {
+		await db
+			.insert(schema.orgSettings)
+			.values({
+				organizationId: id,
+				logoStorageKey: data.logoStorageKey,
+				updatedAt: new Date(),
+			})
+			.onConflictDoUpdate({
+				target: schema.orgSettings.organizationId,
+				set: { logoStorageKey: data.logoStorageKey, updatedAt: new Date() },
+			});
+	}
 }
 
-export async function deleteOrganization(id: string) {
-	const session = await requireSession();
-	await requireOrgMembership(session.user.id, id, ["owner"]);
+export async function deleteOrganization(id: string): Promise<void> {
+	const platform = getPlatformClient();
+	const headers = await nextHeaders();
+	await requireOrgMembership(id, ["owner"]);
 
-	// Delete all related data
+	// Tear down photocall-owned data first.
 	const events = await db.select().from(schema.events).where(eq(schema.events.organizationId, id));
 
 	for (const event of events) {
-		// Delete photos and their storage files
 		const photos = await db.select().from(schema.photos).where(eq(schema.photos.eventId, event.id));
-
-		for (const photo of photos) {
-			await deleteFile(photo.storageKey);
-		}
+		for (const photo of photos) await deleteFile(photo.storageKey);
 		await db.delete(schema.photos).where(eq(schema.photos.eventId, event.id));
 
-		// Delete templates and their storage files
 		const templates = await db
 			.select()
 			.from(schema.templates)
 			.where(eq(schema.templates.eventId, event.id));
-
 		for (const template of templates) {
 			await deleteFile(template.storageKey);
-			if (template.thumbnailStorageKey) {
-				await deleteFile(template.thumbnailStorageKey);
-			}
+			if (template.thumbnailStorageKey) await deleteFile(template.thumbnailStorageKey);
 		}
 		await db.delete(schema.templates).where(eq(schema.templates.eventId, event.id));
-
-		// Delete sessions
 		await db.delete(schema.kioskSessions).where(eq(schema.kioskSessions.eventId, event.id));
 	}
 
-	// Delete events
 	await db.delete(schema.events).where(eq(schema.events.organizationId, id));
-
-	// Delete memberships
-	await db
-		.delete(schema.organizationMembers)
-		.where(eq(schema.organizationMembers.organizationId, id));
-
-	// Delete invitations
-	await db.delete(schema.invitations).where(eq(schema.invitations.organizationId, id));
-
-	// Delete usage logs
 	await db.delete(schema.usageLogs).where(eq(schema.usageLogs.organizationId, id));
+	await db.delete(schema.orgSettings).where(eq(schema.orgSettings.organizationId, id));
 
-	// Delete the organization
-	await db.delete(schema.organizations).where(eq(schema.organizations.id, id));
+	// Then ask the platform to delete the org itself.
+	await platform.deleteOrganization(id, headers);
 }
 
-export async function getMembers(organizationId: string) {
-	const session = await requireSession();
-	await requireOrgMembership(session.user.id, organizationId);
-
-	const memberships = await db
-		.select()
-		.from(schema.organizationMembers)
-		.where(eq(schema.organizationMembers.organizationId, organizationId));
-
-	const members = await Promise.all(
-		memberships.map(async (m) => {
-			const userRow = await db
-				.select()
-				.from(schema.user)
-				.where(eq(schema.user.id, m.userId))
-				.then((rows) => rows[0]);
-
-			const profile = await db
-				.select()
-				.from(schema.userProfiles)
-				.where(eq(schema.userProfiles.userId, m.userId))
-				.then((rows) => rows[0]);
-
-			return {
-				...m,
-				user: userRow ?? null,
-				profile: profile ?? null,
-			};
-		}),
-	);
-
-	return members;
+export async function getMembers(organizationId: string): Promise<Member[]> {
+	const platform = getPlatformClient();
+	const headers = await nextHeaders();
+	await requireOrgMembership(organizationId);
+	return platform.listMembers(organizationId, headers);
 }
 
 export async function updateMemberRole(
 	organizationId: string,
-	userId: string,
+	memberId: string,
 	role: "admin" | "member",
-) {
-	const session = await requireSession();
-	await requireOrgMembership(session.user.id, organizationId, ["owner"]);
-
-	const membership = await db
-		.select()
-		.from(schema.organizationMembers)
-		.where(
-			and(
-				eq(schema.organizationMembers.organizationId, organizationId),
-				eq(schema.organizationMembers.userId, userId),
-			),
-		)
-		.then((rows) => rows[0]);
-
-	if (!membership) {
-		throw new Error("Member not found");
-	}
-
-	if (membership.role === "owner") {
-		throw new Error("Cannot change owner role");
-	}
-
-	await db
-		.update(schema.organizationMembers)
-		.set({ role })
-		.where(eq(schema.organizationMembers.id, membership.id));
+): Promise<void> {
+	const platform = getPlatformClient();
+	const headers = await nextHeaders();
+	await requireOrgMembership(organizationId, ["owner"]);
+	await platform.updateMemberRole(organizationId, memberId, role, headers);
 }
 
-export async function removeMember(organizationId: string, userId: string) {
-	const session = await requireSession();
-	const currentMembership = await requireOrgMembership(session.user.id, organizationId, [
-		"owner",
-		"admin",
-	]);
-
-	const membership = await db
-		.select()
-		.from(schema.organizationMembers)
-		.where(
-			and(
-				eq(schema.organizationMembers.organizationId, organizationId),
-				eq(schema.organizationMembers.userId, userId),
-			),
-		)
-		.then((rows) => rows[0]);
-
-	if (!membership) {
-		throw new Error("Member not found");
-	}
-
-	if (membership.role === "owner") {
-		throw new Error("Cannot remove owner");
-	}
-
-	// Admins can only remove members, not other admins
-	if (currentMembership.role === "admin" && membership.role === "admin") {
-		throw new Error("Admins cannot remove other admins");
-	}
-
-	await db
-		.delete(schema.organizationMembers)
-		.where(eq(schema.organizationMembers.id, membership.id));
+export async function removeMember(organizationId: string, memberId: string): Promise<void> {
+	const platform = getPlatformClient();
+	const headers = await nextHeaders();
+	await requireOrgMembership(organizationId, ["owner", "admin"]);
+	await platform.removeMember(organizationId, memberId, headers);
 }
 
 export async function inviteMember(
 	organizationId: string,
 	email: string,
 	role: "admin" | "member",
-) {
-	const session = await requireSession();
-	await requireOrgMembership(session.user.id, organizationId, ["owner", "admin"]);
+): Promise<Invitation> {
+	const platform = getPlatformClient();
+	const headers = await nextHeaders();
+	await requireOrgMembership(organizationId, ["owner", "admin"]);
 
-	const org = await db
-		.select()
-		.from(schema.organizations)
-		.where(eq(schema.organizations.id, organizationId))
-		.then((rows) => rows[0]);
-
-	if (!org) {
-		throw new Error("Organization not found");
-	}
-
-	// Check team member limit
-	const memberCount = await db
-		.select({ count: sql<number>`count(*)` })
-		.from(schema.organizationMembers)
-		.where(eq(schema.organizationMembers.organizationId, organizationId))
-		.then((rows) => Number(rows[0].count));
-
-	if (org.maxTeamMembers !== -1 && memberCount >= org.maxTeamMembers) {
+	const allowed = await platform.can(organizationId, "invite_member");
+	if (!allowed) {
 		throw new Error("Team member limit reached. Upgrade your plan to add more members.");
 	}
 
-	// Check for existing invitation
-	const normalizedEmail = email.toLowerCase();
-	const existingInvite = await db
-		.select()
-		.from(schema.invitations)
-		.where(
-			and(
-				eq(schema.invitations.email, normalizedEmail),
-				eq(schema.invitations.organizationId, organizationId),
-			),
-		)
-		.then((rows) => rows[0]);
-
-	if (existingInvite) {
-		throw new Error("Invitation already sent to this email");
-	}
-
-	const now = new Date();
-	const token = generateToken(32);
-	const expiresAt = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000); // 7 days
-
-	await db.insert(schema.invitations).values({
-		organizationId,
-		email: normalizedEmail,
-		role,
-		invitedBy: session.user.id,
-		token,
-		expiresAt,
-		createdAt: now,
-	});
-
-	const inviterProfile = await db
-		.select()
-		.from(schema.userProfiles)
-		.where(eq(schema.userProfiles.userId, session.user.id))
-		.then((rows) => rows[0]);
-
-	await sendInvitationEmail({
-		email: normalizedEmail,
-		organizationName: org.name,
-		inviterName: inviterProfile?.name ?? undefined,
-		token,
-		role,
-	});
-
-	return { token };
+	return platform.inviteMember(organizationId, { email: email.toLowerCase(), role }, headers);
 }
 
-export async function getInvitations(organizationId: string) {
-	const session = await requireSession();
-	await requireOrgMembership(session.user.id, organizationId, ["owner", "admin"]);
-
-	return await db
-		.select()
-		.from(schema.invitations)
-		.where(eq(schema.invitations.organizationId, organizationId));
+export async function getInvitations(organizationId: string): Promise<Invitation[]> {
+	const platform = getPlatformClient();
+	const headers = await nextHeaders();
+	await requireOrgMembership(organizationId, ["owner", "admin"]);
+	return platform.listInvitations(organizationId, headers);
 }
 
-export async function cancelInvitation(invitationId: string) {
-	const session = await requireSession();
-
-	const invitation = await db
-		.select()
-		.from(schema.invitations)
-		.where(eq(schema.invitations.id, invitationId))
-		.then((rows) => rows[0]);
-
-	if (!invitation) {
-		throw new Error("Invitation not found");
-	}
-
-	await requireOrgMembership(session.user.id, invitation.organizationId, ["owner", "admin"]);
-
-	await db.delete(schema.invitations).where(eq(schema.invitations.id, invitationId));
+export async function cancelInvitation(invitationId: string): Promise<void> {
+	const platform = getPlatformClient();
+	const headers = await nextHeaders();
+	await platform.cancelInvitation(invitationId, headers);
 }
 
-export async function acceptInvitation(token: string) {
-	const session = await requireSession();
-	const userId = session.user.id;
-
-	const invitation = await db
-		.select()
-		.from(schema.invitations)
-		.where(eq(schema.invitations.token, token))
-		.then((rows) => rows[0]);
-
-	if (!invitation) {
-		throw new Error("Invalid or expired invitation");
-	}
-
-	if (invitation.expiresAt < new Date()) {
-		await db.delete(schema.invitations).where(eq(schema.invitations.id, invitation.id));
-		throw new Error("Invitation has expired");
-	}
-
-	// Check if already a member
-	const existingMembership = await db
-		.select()
-		.from(schema.organizationMembers)
-		.where(
-			and(
-				eq(schema.organizationMembers.organizationId, invitation.organizationId),
-				eq(schema.organizationMembers.userId, userId),
-			),
-		)
-		.then((rows) => rows[0]);
-
-	if (existingMembership) {
-		await db.delete(schema.invitations).where(eq(schema.invitations.id, invitation.id));
-		throw new Error("Already a member of this organization");
-	}
-
-	// Create membership
-	await db.insert(schema.organizationMembers).values({
-		organizationId: invitation.organizationId,
-		userId,
-		role: invitation.role,
-		invitedBy: invitation.invitedBy,
-		invitedAt: invitation.createdAt,
-		joinedAt: new Date(),
-	});
-
-	await db.delete(schema.invitations).where(eq(schema.invitations.id, invitation.id));
-
-	return { organizationId: invitation.organizationId };
+export async function acceptInvitation(invitationId: string): Promise<{ organizationId: string }> {
+	const platform = getPlatformClient();
+	const headers = await nextHeaders();
+	return platform.acceptInvitation(invitationId, headers);
 }
 
-export async function getInvitationByToken(token: string) {
-	const invitation = await db
-		.select()
-		.from(schema.invitations)
-		.where(eq(schema.invitations.token, token))
-		.then((rows) => rows[0]);
+export async function rejectInvitation(invitationId: string): Promise<void> {
+	const platform = getPlatformClient();
+	const headers = await nextHeaders();
+	await platform.rejectInvitation(invitationId, headers);
+}
 
-	if (!invitation || invitation.expiresAt < new Date()) {
-		return null;
-	}
+export async function getInvitation(
+	invitationId: string,
+): Promise<(Invitation & { organizationName: string | null }) | null> {
+	const platform = getPlatformClient();
+	const headers = await nextHeaders();
 
-	const org = await db
-		.select()
-		.from(schema.organizations)
-		.where(eq(schema.organizations.id, invitation.organizationId))
-		.then((rows) => rows[0]);
+	const invitation = await platform.getInvitation(invitationId, headers);
+	if (!invitation) return null;
 
-	return {
-		...invitation,
-		organizationName: org?.name ?? null,
-	};
+	const org = await platform.getOrganization(invitation.organizationId, headers);
+	return { ...invitation, organizationName: org?.name ?? null };
 }
 
 export async function getUsage(organizationId: string) {
-	const session = await requireSession();
-	await requireOrgMembership(session.user.id, organizationId);
+	const platform = getPlatformClient();
+	const headers = await nextHeaders();
+	await requireOrgMembership(organizationId);
 
-	const org = await db
-		.select()
-		.from(schema.organizations)
-		.where(eq(schema.organizations.id, organizationId))
-		.then((rows) => rows[0]);
-
-	if (!org) return null;
+	const eventQuota = await platform.getQuota(organizationId, "create_event");
+	const photoQuota = await platform.getQuota(organizationId, "capture_photo");
+	const storageQuota = await platform.getQuota(organizationId, "storage_bytes");
+	const teamQuota = await platform.getQuota(organizationId, "invite_member");
 
 	const events = await db
 		.select()
@@ -491,27 +226,30 @@ export async function getUsage(organizationId: string) {
 
 	const totalPhotos = events.reduce((sum, e) => sum + e.photoCount, 0);
 	const totalSessions = events.reduce((sum, e) => sum + e.sessionCount, 0);
+	const totalStorageBytes = await db
+		.select({ sum: sql<number>`coalesce(sum(${schema.photos.sizeBytes}), 0)` })
+		.from(schema.photos)
+		.innerJoin(schema.events, eq(schema.photos.eventId, schema.events.id))
+		.where(eq(schema.events.organizationId, organizationId))
+		.then((rows) => Number(rows[0]?.sum ?? 0));
 
-	const memberCount = await db
-		.select({ count: sql<number>`count(*)` })
-		.from(schema.organizationMembers)
-		.where(eq(schema.organizationMembers.organizationId, organizationId))
-		.then((rows) => Number(rows[0].count));
+	const members = await platform.listMembers(organizationId, headers);
 
 	return {
 		events: {
 			used: events.length,
-			limit: org.maxEvents,
+			limit: eventQuota.limit ?? -1,
 		},
 		storage: {
-			used: org.currentStorageBytes,
-			limit: org.maxStorageBytes,
+			used: totalStorageBytes,
+			limit: storageQuota.limit ?? -1,
 		},
 		teamMembers: {
-			used: memberCount,
-			limit: org.maxTeamMembers,
+			used: members.length,
+			limit: teamQuota.limit ?? -1,
 		},
 		photos: totalPhotos,
 		sessions: totalSessions,
+		photoLimit: photoQuota.limit ?? -1,
 	};
 }

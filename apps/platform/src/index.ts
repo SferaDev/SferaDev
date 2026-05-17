@@ -9,6 +9,7 @@ import { env } from "./env.js";
 import { accountRoutes } from "./routes/accounts.js";
 import { billingRoutes } from "./routes/billing.js";
 import { entitlementRoutes } from "./routes/entitlements.js";
+import { organizationRoutes } from "./routes/organizations.js";
 import { productRoutes } from "./routes/products.js";
 import { webhookRoutes } from "./routes/webhooks.js";
 
@@ -54,6 +55,7 @@ app.on(["POST", "GET"], "/auth/*", (c) => {
 app.route("/api/accounts", accountRoutes(auth));
 app.route("/api/billing", billingRoutes(auth));
 app.route("/api/entitlements", entitlementRoutes(auth));
+app.route("/api/organizations", organizationRoutes(auth));
 app.route("/api/products", productRoutes(auth));
 app.route("/api/webhooks", webhookRoutes());
 

@@ -102,12 +102,12 @@ export default function TeamPage() {
 		}
 	};
 
-	const handleRemoveMember = async (userId: string) => {
+	const handleRemoveMember = async (memberId: string) => {
 		if (!organization) return;
 		if (!confirm("Are you sure you want to remove this member?")) return;
 
 		try {
-			await removeMember(organization.id, userId);
+			await removeMember(organization.id, memberId);
 			mutate((key) => Array.isArray(key) && key[0] === "members");
 			toast({ title: "Member removed" });
 		} catch (error) {
@@ -133,11 +133,11 @@ export default function TeamPage() {
 		}
 	};
 
-	const handleChangeRole = async (userId: string, role: "admin" | "member") => {
+	const handleChangeRole = async (memberId: string, role: "admin" | "member") => {
 		if (!organization) return;
-		setUpdatingRoleFor(userId);
+		setUpdatingRoleFor(memberId);
 		try {
-			await updateMemberRole(organization.id, userId, role);
+			await updateMemberRole(organization.id, memberId, role);
 			mutate((key) => Array.isArray(key) && key[0] === "members");
 			toast({ title: "Role updated", description: `Member is now ${role}.` });
 		} catch (error) {
@@ -265,59 +265,61 @@ export default function TeamPage() {
 				<div className="mb-8">
 					<h2 className="text-lg font-semibold mb-4">Members ({members?.length ?? 0})</h2>
 					<div className="border rounded-lg divide-y">
-						{members?.map((member) => (
-							<div key={member.id} className="p-4 flex items-center justify-between">
-								<div className="flex items-center gap-3">
-									<Avatar>
-										<AvatarImage src={member.profile?.avatarUrl ?? undefined} />
-										<AvatarFallback>
-											{member.profile?.name?.charAt(0) ??
-												member.user?.email?.charAt(0)?.toUpperCase() ??
-												"?"}
-										</AvatarFallback>
-									</Avatar>
-									<div>
-										<div className="font-medium flex items-center gap-2">
-											{member.profile?.name ?? member.user?.email}
-											<RoleBadge role={member.role} />
+						{members?.map((member) => {
+							const fallback =
+								member.user?.name?.charAt(0)?.toUpperCase() ??
+								member.user?.email?.charAt(0)?.toUpperCase() ??
+								"?";
+							return (
+								<div key={member.id} className="p-4 flex items-center justify-between">
+									<div className="flex items-center gap-3">
+										<Avatar>
+											<AvatarImage src={member.user?.image ?? undefined} />
+											<AvatarFallback>{fallback}</AvatarFallback>
+										</Avatar>
+										<div>
+											<div className="font-medium flex items-center gap-2">
+												{member.user?.name ?? member.user?.email ?? member.userId}
+												<RoleBadge role={member.role} />
+											</div>
+											<div className="text-sm text-muted-foreground">{member.user?.email}</div>
 										</div>
-										<div className="text-sm text-muted-foreground">{member.user?.email}</div>
+									</div>
+									<div className="flex items-center gap-2">
+										{canManageRoles && member.role !== "owner" ? (
+											<Select
+												value={member.role === "admin" ? "admin" : "member"}
+												disabled={updatingRoleFor === member.id}
+												onValueChange={(value: "admin" | "member") =>
+													handleChangeRole(member.id, value)
+												}
+											>
+												<SelectTrigger
+													className="w-32"
+													aria-label={`Role for ${member.user?.email ?? "member"}`}
+												>
+													<SelectValue />
+												</SelectTrigger>
+												<SelectContent>
+													<SelectItem value="admin">Admin</SelectItem>
+													<SelectItem value="member">Member</SelectItem>
+												</SelectContent>
+											</Select>
+										) : null}
+										{member.role !== "owner" && (
+											<Button
+												variant="ghost"
+												size="icon"
+												aria-label={`Remove ${member.user?.email ?? "member"}`}
+												onClick={() => handleRemoveMember(member.id)}
+											>
+												<Trash2 className="h-4 w-4 text-destructive" />
+											</Button>
+										)}
 									</div>
 								</div>
-								<div className="flex items-center gap-2">
-									{canManageRoles && member.role !== "owner" ? (
-										<Select
-											value={member.role === "admin" ? "admin" : "member"}
-											disabled={updatingRoleFor === member.userId}
-											onValueChange={(value: "admin" | "member") =>
-												handleChangeRole(member.userId, value)
-											}
-										>
-											<SelectTrigger
-												className="w-32"
-												aria-label={`Role for ${member.user?.email ?? "member"}`}
-											>
-												<SelectValue />
-											</SelectTrigger>
-											<SelectContent>
-												<SelectItem value="admin">Admin</SelectItem>
-												<SelectItem value="member">Member</SelectItem>
-											</SelectContent>
-										</Select>
-									) : null}
-									{member.role !== "owner" && (
-										<Button
-											variant="ghost"
-											size="icon"
-											aria-label={`Remove ${member.user?.email ?? "member"}`}
-											onClick={() => handleRemoveMember(member.userId)}
-										>
-											<Trash2 className="h-4 w-4 text-destructive" />
-										</Button>
-									)}
-								</div>
-							</div>
-						))}
+							);
+						})}
 					</div>
 				</div>
 

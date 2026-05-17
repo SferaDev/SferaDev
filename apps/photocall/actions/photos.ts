@@ -1,7 +1,6 @@
 "use server";
 
 import { desc, eq } from "drizzle-orm";
-import { requireSession } from "@/lib/auth";
 import { generateHumanCode, generateToken, requireEventAccess } from "@/lib/auth-helpers";
 import { db, schema } from "@/lib/db";
 import { getPlatformClient } from "@/lib/platform";
@@ -41,24 +40,13 @@ export async function createPhoto(data: {
 		throw new Error("Event not found or not active");
 	}
 
-	const org = await db
-		.select()
-		.from(schema.organizations)
-		.where(eq(schema.organizations.id, event.organizationId))
-		.then((rows) => rows[0]);
-
-	if (!org) {
-		throw new Error("Organization not found");
-	}
-
-	// Check photo limit
-	if (org.maxPhotosPerEvent !== -1 && event.photoCount >= org.maxPhotosPerEvent) {
-		throw new Error("Photo limit reached for this event");
-	}
-
-	// Check storage limit
-	if (org.currentStorageBytes + data.sizeBytes > org.maxStorageBytes) {
-		throw new Error("Storage limit reached. Upgrade your plan for more storage.");
+	// Capture-photo entitlement check is delegated to the platform. The
+	// product never enforces local quotas; if `capture_photo` is enabled the
+	// kiosk may always capture, and metered overages are reported below.
+	const platform = getPlatformClient();
+	const allowed = await platform.can(event.organizationId, "capture_photo");
+	if (!allowed) {
+		throw new Error("Photo capture is not enabled for this plan.");
 	}
 
 	const shareToken = generateToken(16);
@@ -94,33 +82,20 @@ export async function createPhoto(data: {
 		})
 		.where(eq(schema.events.id, data.eventId));
 
-	// Update organization storage
-	await db
-		.update(schema.organizations)
-		.set({
-			currentStorageBytes: org.currentStorageBytes + data.sizeBytes,
-			updatedAt: now,
-		})
-		.where(eq(schema.organizations.id, org.id));
-
-	// Log usage
+	// Log usage locally for analytics.
 	await db.insert(schema.usageLogs).values({
-		organizationId: org.id,
+		organizationId: event.organizationId,
 		eventId: data.eventId,
 		type: "photo_captured",
 		bytes: data.sizeBytes,
 		createdAt: now,
 	});
 
-	// Report usage to the unified platform for metered billing. Fire and forget
-	// — the SDK fails open, but we still wrap so a thrown error doesn't surface
-	// to the kiosk after the photo is already persisted.
-	const platform = getPlatformClient();
-	if (platform) {
-		platform.reportUsage(org.id, "photos_captured", 1).catch((err: unknown) => {
-			console.error("platform.reportUsage failed:", err);
-		});
-	}
+	// Report usage to the platform for metered billing. Fire and forget —
+	// don't surface a metering error after the photo is already persisted.
+	platform.reportUsage(event.organizationId, "photos_captured", 1).catch((err: unknown) => {
+		console.error("platform.reportUsage failed:", err);
+	});
 
 	return { photoId: photo.id, shareToken, humanCode };
 }
@@ -175,8 +150,7 @@ export async function getPhotoByHumanCode(humanCode: string) {
 }
 
 export async function listPhotos(eventId: string, limit?: number) {
-	const session = await requireSession();
-	await requireEventAccess(session.user.id, eventId);
+	await requireEventAccess(eventId);
 
 	const take = limit ?? 20;
 
@@ -243,8 +217,6 @@ export async function listRecentPublicPhotos(eventId: string, limit?: number) {
 }
 
 export async function deletePhoto(photoId: string) {
-	const session = await requireSession();
-
 	const photo = await db
 		.select()
 		.from(schema.photos)
@@ -253,19 +225,11 @@ export async function deletePhoto(photoId: string) {
 
 	if (!photo) return;
 
-	const { event } = await requireEventAccess(session.user.id, photo.eventId, ["owner", "admin"]);
-
-	const org = await db
-		.select()
-		.from(schema.organizations)
-		.where(eq(schema.organizations.id, event.organizationId))
-		.then((rows) => rows[0]);
+	const { event } = await requireEventAccess(photo.eventId, ["owner", "admin"]);
 
 	await deleteFile(photo.storageKey);
-
 	await db.delete(schema.photos).where(eq(schema.photos.id, photoId));
 
-	// Update event stats
 	const now = new Date();
 	await db
 		.update(schema.events)
@@ -275,36 +239,17 @@ export async function deletePhoto(photoId: string) {
 		})
 		.where(eq(schema.events.id, photo.eventId));
 
-	// Update organization storage
-	if (org) {
-		await db
-			.update(schema.organizations)
-			.set({
-				currentStorageBytes: Math.max(0, org.currentStorageBytes - photo.sizeBytes),
-				updatedAt: now,
-			})
-			.where(eq(schema.organizations.id, org.id));
-
-		// Log usage
-		await db.insert(schema.usageLogs).values({
-			organizationId: org.id,
-			eventId: photo.eventId,
-			type: "storage_removed",
-			bytes: photo.sizeBytes,
-			createdAt: now,
-		});
-	}
+	await db.insert(schema.usageLogs).values({
+		organizationId: event.organizationId,
+		eventId: photo.eventId,
+		type: "storage_removed",
+		bytes: photo.sizeBytes,
+		createdAt: now,
+	});
 }
 
 export async function deleteAllPhotos(eventId: string) {
-	const session = await requireSession();
-	const { event } = await requireEventAccess(session.user.id, eventId, ["owner", "admin"]);
-
-	const org = await db
-		.select()
-		.from(schema.organizations)
-		.where(eq(schema.organizations.id, event.organizationId))
-		.then((rows) => rows[0]);
+	const { event } = await requireEventAccess(eventId, ["owner", "admin"]);
 
 	const photos = await db.select().from(schema.photos).where(eq(schema.photos.eventId, eventId));
 
@@ -316,7 +261,6 @@ export async function deleteAllPhotos(eventId: string) {
 
 	await db.delete(schema.photos).where(eq(schema.photos.eventId, eventId));
 
-	// Update event stats
 	const now = new Date();
 	await db
 		.update(schema.events)
@@ -326,25 +270,13 @@ export async function deleteAllPhotos(eventId: string) {
 		})
 		.where(eq(schema.events.id, eventId));
 
-	// Update organization storage
-	if (org) {
-		await db
-			.update(schema.organizations)
-			.set({
-				currentStorageBytes: Math.max(0, org.currentStorageBytes - totalStorageFreed),
-				updatedAt: now,
-			})
-			.where(eq(schema.organizations.id, org.id));
-
-		// Log usage
-		await db.insert(schema.usageLogs).values({
-			organizationId: org.id,
-			eventId,
-			type: "storage_removed",
-			bytes: totalStorageFreed,
-			createdAt: now,
-		});
-	}
+	await db.insert(schema.usageLogs).values({
+		organizationId: event.organizationId,
+		eventId,
+		type: "storage_removed",
+		bytes: totalStorageFreed,
+		createdAt: now,
+	});
 
 	return { deleted: photos.length };
 }

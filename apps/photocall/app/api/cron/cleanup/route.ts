@@ -17,7 +17,6 @@ export async function GET(request: Request) {
 	let deleted = 0;
 	const deletedPhotoIds = new Set<string>();
 
-	// 1. Find photos expired by event retention policy (retentionDays or deleteAfterDate)
 	const allEvents = await db
 		.select()
 		.from(schema.events)
@@ -42,7 +41,6 @@ export async function GET(request: Request) {
 				await db.delete(schema.photos).where(eq(schema.photos.id, photo.id));
 				deletedPhotoIds.add(photo.id);
 
-				// Re-read event to get current photoCount
 				const [currentEvent] = await db
 					.select()
 					.from(schema.events)
@@ -58,35 +56,19 @@ export async function GET(request: Request) {
 						.where(eq(schema.events.id, event.id));
 				}
 
-				const [org] = await db
-					.select()
-					.from(schema.organizations)
-					.where(eq(schema.organizations.id, event.organizationId));
-
-				if (org) {
-					await db
-						.update(schema.organizations)
-						.set({
-							currentStorageBytes: Math.max(0, org.currentStorageBytes - photo.sizeBytes),
-							updatedAt: nowDate,
-						})
-						.where(eq(schema.organizations.id, org.id));
-
-					await db.insert(schema.usageLogs).values({
-						organizationId: org.id,
-						eventId: event.id,
-						type: "storage_removed",
-						bytes: photo.sizeBytes,
-						createdAt: nowDate,
-					});
-				}
+				await db.insert(schema.usageLogs).values({
+					organizationId: event.organizationId,
+					eventId: event.id,
+					type: "storage_removed",
+					bytes: photo.sizeBytes,
+					createdAt: nowDate,
+				});
 
 				deleted++;
 			}
 		}
 	}
 
-	// 2. Find photos with explicit expiresAt that have passed
 	if (deleted < BATCH_LIMIT) {
 		const expiredPhotos = await db
 			.select()
@@ -121,28 +103,13 @@ export async function GET(request: Request) {
 						.where(eq(schema.events.id, event.id));
 				}
 
-				const [org] = await db
-					.select()
-					.from(schema.organizations)
-					.where(eq(schema.organizations.id, event.organizationId));
-
-				if (org) {
-					await db
-						.update(schema.organizations)
-						.set({
-							currentStorageBytes: Math.max(0, org.currentStorageBytes - photo.sizeBytes),
-							updatedAt: nowDate,
-						})
-						.where(eq(schema.organizations.id, org.id));
-
-					await db.insert(schema.usageLogs).values({
-						organizationId: org.id,
-						eventId: event.id,
-						type: "storage_removed",
-						bytes: photo.sizeBytes,
-						createdAt: nowDate,
-					});
-				}
+				await db.insert(schema.usageLogs).values({
+					organizationId: event.organizationId,
+					eventId: event.id,
+					type: "storage_removed",
+					bytes: photo.sizeBytes,
+					createdAt: nowDate,
+				});
 			}
 
 			deleted++;

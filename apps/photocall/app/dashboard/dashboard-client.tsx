@@ -162,7 +162,7 @@ export default function DashboardClient() {
 										<div>
 											<h3 className="font-semibold">{org.name}</h3>
 											<p className="text-sm text-muted-foreground capitalize">
-												{org.subscriptionTier} plan
+												{org.role ?? "member"}
 											</p>
 										</div>
 									</div>

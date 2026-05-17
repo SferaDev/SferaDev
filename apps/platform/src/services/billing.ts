@@ -1,6 +1,8 @@
 import { and, eq } from "drizzle-orm";
+import type Stripe from "stripe";
 import { db } from "../db/index.js";
-import { accountSubscriptions, meters, plans, users } from "../db/schema.js";
+import { accountSubscriptions, meters, organizations, plans, users } from "../db/schema.js";
+import { env } from "../env.js";
 import { stripe } from "../stripe.js";
 import { entitlements } from "./entitlements.js";
 
@@ -20,18 +22,56 @@ export async function createStripeCustomer(
 	return customer.id;
 }
 
+export async function createOrganizationStripeCustomer(
+	organizationId: string,
+	name: string,
+): Promise<string> {
+	const customer = await stripe.customers.create({
+		name,
+		metadata: { platformOrganizationId: organizationId },
+	});
+
+	await db
+		.update(organizations)
+		.set({ stripeCustomerId: customer.id })
+		.where(eq(organizations.id, organizationId));
+
+	return customer.id;
+}
+
+/**
+ * Resolves a Stripe customer ID for the given accountId.
+ *
+ * accountId may refer to either a user.id or organizations.id; we look up the
+ * organization first (since products like photocall use the org as the billing
+ * account), then fall back to user.
+ */
 async function getStripeCustomerId(accountId: string): Promise<string> {
+	const [org] = await db
+		.select({ stripeCustomerId: organizations.stripeCustomerId, name: organizations.name })
+		.from(organizations)
+		.where(eq(organizations.id, accountId))
+		.limit(1);
+
+	if (org) {
+		if (org.stripeCustomerId) return org.stripeCustomerId;
+		// Lazily provision a Stripe customer if missing (older orgs created
+		// before the hook was wired up).
+		return await createOrganizationStripeCustomer(accountId, org.name);
+	}
+
 	const [user] = await db
-		.select({ stripeCustomerId: users.stripeCustomerId })
+		.select({ stripeCustomerId: users.stripeCustomerId, email: users.email, name: users.name })
 		.from(users)
 		.where(eq(users.id, accountId))
 		.limit(1);
 
-	if (!user?.stripeCustomerId) {
-		throw new Error(`No Stripe customer found for account ${accountId}`);
+	if (!user) {
+		throw new Error(`No account found for id ${accountId}`);
 	}
 
-	return user.stripeCustomerId;
+	if (user.stripeCustomerId) return user.stripeCustomerId;
+	return await createStripeCustomer(accountId, user.email, user.name);
 }
 
 export async function createSubscription(params: {
@@ -72,42 +112,15 @@ export async function createSubscription(params: {
 		return sub;
 	}
 
-	// Collect metered prices for this product
-	const productMeters = await db
-		.select()
-		.from(meters)
-		.where(eq(meters.productId, params.productId));
-
-	const lineItems: Array<{ price: string; quantity?: number }> = [
-		{ price: plan.stripePriceId, quantity: 1 },
-	];
-
-	// Add metered prices (no quantity — usage-based)
-	for (const meter of productMeters) {
-		if (meter.stripeMeterId) {
-			// Metered prices are attached to the Stripe Product; we just need the price ID
-			// The caller should have set these up in Stripe already
-		}
-	}
-
 	const subscription = await stripe.subscriptions.create({
 		customer: stripeCustomerId,
-		items: lineItems,
+		items: [{ price: plan.stripePriceId, quantity: 1 }],
 		metadata: {
 			platformAccountId: params.accountId,
 			platformProductId: params.productId,
 			platformPlanId: params.planId,
 		},
 	});
-
-	// In Stripe v20+, current_period_start/end are on SubscriptionItem
-	const firstItem = subscription.items.data[0];
-	const periodStart = firstItem?.current_period_start
-		? new Date(firstItem.current_period_start * 1000)
-		: undefined;
-	const periodEnd = firstItem?.current_period_end
-		? new Date(firstItem.current_period_end * 1000)
-		: undefined;
 
 	const id = crypto.randomUUID();
 	const [sub] = await db
@@ -119,8 +132,8 @@ export async function createSubscription(params: {
 			planId: params.planId,
 			stripeSubscriptionId: subscription.id,
 			status: subscription.status,
-			currentPeriodStart: periodStart,
-			currentPeriodEnd: periodEnd,
+			currentPeriodStart: getPeriodStart(subscription),
+			currentPeriodEnd: getPeriodEnd(subscription),
 		})
 		.onConflictDoUpdate({
 			target: [accountSubscriptions.accountId, accountSubscriptions.productId],
@@ -128,8 +141,8 @@ export async function createSubscription(params: {
 				planId: params.planId,
 				stripeSubscriptionId: subscription.id,
 				status: subscription.status,
-				currentPeriodStart: periodStart,
-				currentPeriodEnd: periodEnd,
+				currentPeriodStart: getPeriodStart(subscription),
+				currentPeriodEnd: getPeriodEnd(subscription),
 				updatedAt: new Date(),
 			},
 		})
@@ -161,16 +174,12 @@ export async function updateSubscription(params: {
 
 	if (!newPlan) throw new Error(`Plan ${params.newPlanId} not found`);
 
-	// Update Stripe subscription if it exists
 	if (existing.stripeSubscriptionId && newPlan.stripePriceId) {
 		const stripeSub = await stripe.subscriptions.retrieve(existing.stripeSubscriptionId);
+		const firstItem = stripeSub.items.data[0];
+		if (!firstItem) throw new Error("Subscription has no items");
 		await stripe.subscriptions.update(existing.stripeSubscriptionId, {
-			items: [
-				{
-					id: stripeSub.items.data[0].id,
-					price: newPlan.stripePriceId,
-				},
-			],
+			items: [{ id: firstItem.id, price: newPlan.stripePriceId }],
 			metadata: { platformPlanId: params.newPlanId },
 			proration_behavior: "create_prorations",
 		});
@@ -212,6 +221,89 @@ export async function cancelSubscription(accountId: string, productId: string): 
 		.where(eq(accountSubscriptions.id, existing.id));
 
 	entitlements.invalidate(accountId, productId);
+}
+
+export async function getSubscription(
+	accountId: string,
+	productId: string,
+): Promise<typeof accountSubscriptions.$inferSelect | null> {
+	const [sub] = await db
+		.select()
+		.from(accountSubscriptions)
+		.where(
+			and(
+				eq(accountSubscriptions.accountId, accountId),
+				eq(accountSubscriptions.productId, productId),
+			),
+		)
+		.limit(1);
+	return sub ?? null;
+}
+
+export async function createCheckoutSession(params: {
+	accountId: string;
+	productId: string;
+	priceId?: string;
+	planId?: string;
+	quantity?: number;
+	mode?: "payment" | "subscription";
+	successUrl: string;
+	cancelUrl: string;
+	metadata?: Record<string, string>;
+}): Promise<{ url: string }> {
+	const stripeCustomerId = await getStripeCustomerId(params.accountId);
+
+	let priceId: string | null = params.priceId ?? null;
+
+	if (!priceId && params.planId) {
+		const [plan] = await db.select().from(plans).where(eq(plans.id, params.planId)).limit(1);
+		if (!plan?.stripePriceId) {
+			throw new Error(`Plan ${params.planId} has no Stripe price configured`);
+		}
+		priceId = plan.stripePriceId;
+	}
+
+	if (!priceId) {
+		throw new Error("Either priceId or planId is required");
+	}
+
+	const mode: "payment" | "subscription" = params.mode ?? "subscription";
+
+	const session = await stripe.checkout.sessions.create({
+		customer: stripeCustomerId,
+		mode,
+		line_items: [
+			{
+				price: priceId,
+				quantity: params.quantity ?? 1,
+			},
+		],
+		success_url: params.successUrl,
+		cancel_url: params.cancelUrl,
+		metadata: {
+			...(params.metadata ?? {}),
+			platformAccountId: params.accountId,
+			platformProductId: params.productId,
+			...(params.planId ? { platformPlanId: params.planId } : {}),
+		},
+		...(mode === "subscription"
+			? {
+					subscription_data: {
+						metadata: {
+							platformAccountId: params.accountId,
+							platformProductId: params.productId,
+							...(params.planId ? { platformPlanId: params.planId } : {}),
+						},
+					},
+				}
+			: {}),
+	});
+
+	if (!session.url) {
+		throw new Error("Stripe did not return a checkout URL");
+	}
+
+	return { url: session.url };
 }
 
 export async function reportUsage(params: {
@@ -281,22 +373,36 @@ export async function getInvoices(
 		limit: 20,
 	});
 
-	return invoices.data.map((inv) => ({
-		id: inv.id,
-		amount: inv.amount_due,
-		currency: inv.currency,
-		status: inv.status,
-		created: new Date(inv.created * 1000),
-	}));
+	return invoices.data
+		.filter((inv): inv is Stripe.Invoice & { id: string } => typeof inv.id === "string")
+		.map((inv) => ({
+			id: inv.id,
+			amount: inv.amount_due,
+			currency: inv.currency,
+			status: inv.status,
+			created: new Date(inv.created * 1000),
+		}));
 }
 
-export async function getPortalUrl(accountId: string): Promise<string> {
+export async function getPortalUrl(accountId: string, returnUrl?: string): Promise<string> {
 	const stripeCustomerId = await getStripeCustomerId(accountId);
 
 	const session = await stripe.billingPortal.sessions.create({
 		customer: stripeCustomerId,
-		return_url: process.env.BETTER_AUTH_URL,
+		return_url: returnUrl ?? env.BETTER_AUTH_URL,
 	});
 
 	return session.url;
+}
+
+function getPeriodStart(subscription: Stripe.Subscription): Date | undefined {
+	const firstItem = subscription.items.data[0];
+	return firstItem?.current_period_start
+		? new Date(firstItem.current_period_start * 1000)
+		: undefined;
+}
+
+function getPeriodEnd(subscription: Stripe.Subscription): Date | undefined {
+	const firstItem = subscription.items.data[0];
+	return firstItem?.current_period_end ? new Date(firstItem.current_period_end * 1000) : undefined;
 }

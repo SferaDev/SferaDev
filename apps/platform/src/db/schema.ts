@@ -129,6 +129,7 @@ export const organizations = pgTable("organizations", {
 	slug: text("slug").notNull().unique(),
 	logo: text("logo"),
 	metadata: text("metadata"),
+	stripeCustomerId: text("stripe_customer_id"),
 	createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
