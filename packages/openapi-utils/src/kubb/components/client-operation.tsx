@@ -2,7 +2,7 @@ import { type ast, URLPath } from "@kubb/core";
 import type { PluginClient } from "@kubb/plugin-client";
 import type { ResolverTs } from "@kubb/plugin-ts";
 import type { ResolverZod } from "@kubb/plugin-zod";
-import { File, Function as JSXFunction, jsxRenderer } from "@kubb/renderer-jsx";
+import { File, Function as JSXFunction } from "@kubb/renderer-jsx";
 import type { KubbReactNode } from "@kubb/renderer-jsx/types";
 
 type SchemaName = { name: string };
@@ -299,5 +299,3 @@ ${requiresPathParamChecks ? `\t${requiresPathParamChecks}\n` : ""}${formDataBloc
 		</File.Source>
 	);
 }
-
-export { jsxRenderer };
