@@ -26,7 +26,7 @@
 		"clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
 	},
 	"dependencies": {
-		"lru-cache": "^11.1.0"
+		"lru-cache": "catalog:"
 	},
 	"devDependencies": {
 		"@sferadev/tsconfig": "workspace:*",
