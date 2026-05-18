@@ -5302,11 +5302,43 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						endpoint: z.object({
+							id: z.string(),
+							name: z.string(),
+							projectId: z.string(),
+							vercelRegion: z.string(),
+							awsServiceName: z.string(),
+							privateDnsNames: z.array(z.string()).optional(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
 						privateLinkEndpoint: z.object({
 							id: z.string(),
 							name: z.string(),
 						}),
 						projectId: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						prev: z.object({
+							id: z.string(),
+							name: z.string(),
+							projectId: z.string(),
+							vercelRegion: z.string(),
+							awsServiceName: z.string(),
+							privateDnsNames: z.array(z.string()).optional(),
+						}),
+						current: z.object({
+							id: z.string(),
+							name: z.string(),
+							projectId: z.string(),
+							vercelRegion: z.string(),
+							awsServiceName: z.string(),
+							privateDnsNames: z.array(z.string()).optional(),
+						}),
 					})
 					.strict(),
 				z
