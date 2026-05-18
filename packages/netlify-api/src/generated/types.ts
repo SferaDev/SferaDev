@@ -1205,6 +1205,27 @@ export type Site = {
 							cron?: string | undefined;
 					  }[]
 					| undefined;
+				/**
+				 * @description The functions region for this deploy as an airport code.\n
+				 * @type string | undefined
+				 */
+				functions_region?: string | undefined;
+				/**
+				 * @description Functions in the deploy that explicitly specify their own region\n(airport code).\n
+				 * @type array | undefined
+				 */
+				functions_region_overrides?:
+					| {
+							/**
+							 * @type string | undefined
+							 */
+							name?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							region?: string | undefined;
+					  }[]
+					| undefined;
 		  }
 		| undefined;
 	/**
@@ -1588,6 +1609,27 @@ export type SiteSetup = {
 							 * @type string | undefined
 							 */
 							cron?: string | undefined;
+					  }[]
+					| undefined;
+				/**
+				 * @description The functions region for this deploy as an airport code.\n
+				 * @type string | undefined
+				 */
+				functions_region?: string | undefined;
+				/**
+				 * @description Functions in the deploy that explicitly specify their own region\n(airport code).\n
+				 * @type array | undefined
+				 */
+				functions_region_overrides?:
+					| {
+							/**
+							 * @type string | undefined
+							 */
+							name?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							region?: string | undefined;
 					  }[]
 					| undefined;
 		  }
@@ -2248,6 +2290,10 @@ export type Function = {
 	 * @type string | undefined
 	 */
 	sha?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	region?: string | undefined;
 };
 
 /**
@@ -2441,6 +2487,27 @@ export type Deploy = {
 				cron?: string | undefined;
 		  }[]
 		| undefined;
+	/**
+	 * @description The functions region for this deploy as an airport code.\n
+	 * @type string | undefined
+	 */
+	functions_region?: string | undefined;
+	/**
+	 * @description Functions in the deploy that explicitly specify their own region\n(airport code).\n
+	 * @type array | undefined
+	 */
+	functions_region_overrides?:
+		| {
+				/**
+				 * @type string | undefined
+				 */
+				name?: string | undefined;
+				/**
+				 * @type string | undefined
+				 */
+				region?: string | undefined;
+		  }[]
+		| undefined;
 };
 
 export const deployEnvironmentVariableScopesEnum = {
@@ -2598,6 +2665,10 @@ export type DeployFiles = {
 					 * @type integer | undefined
 					 */
 					priority?: number | undefined;
+					/**
+					 * @type string | undefined
+					 */
+					region?: string | undefined;
 					/**
 					 * @type object | undefined
 					 */
@@ -4559,6 +4630,10 @@ export type FunctionConfig = {
 	 */
 	priority?: number | undefined;
 	/**
+	 * @type string | undefined
+	 */
+	region?: string | undefined;
+	/**
 	 * @type object | undefined
 	 */
 	traffic_rules?:
@@ -4995,341 +5070,6 @@ export type AiGatewayToken = {
 	expires_at?: bigint | undefined;
 };
 
-/**
- * @type object
- */
-export type UpdateSiteMetadataMetadata = object;
-
-/**
- * @type object
- */
-export type CreateHookBySiteIdHook = {
-	/**
-	 * @type string | undefined
-	 */
-	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	type?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	event?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	data?: object | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	created_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	updated_at?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	disabled?: boolean | undefined;
-};
-
-/**
- * @type object
- */
-export type CreateSiteSnippetSnippet = {
-	/**
-	 * @type integer | undefined
-	 */
-	id?: number | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	general?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	general_position?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	goal?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	goal_position?: string | undefined;
-};
-
-/**
- * @description Request body for setting compute settings. All fields are optional; only provided fields are updated.
- * @type object
- */
-export type SetSiteDatabaseBranchComputeSettingsComputesettings = {
-	/**
-	 * @description Minimum compute units (0.25 to 16.0). Must be less than or equal to max_cu.
-	 * @type number
-	 */
-	min_cu?: (number | null) | undefined;
-	/**
-	 * @description Maximum compute units (0.25 to 16.0). Must be greater than or equal to min_cu. max_cu - min_cu must not exceed 8.0.
-	 * @type number
-	 */
-	max_cu?: (number | null) | undefined;
-	/**
-	 * @description Seconds of inactivity before the compute endpoint is suspended. Use -1 for always on, or a non-negative value.
-	 * @minLength -1
-	 * @type integer
-	 */
-	sleep_timeout_seconds?: (bigint | null) | undefined;
-};
-
-/**
- * @description Deploy files can be provided in two ways:\n1. As a JSON object using \'files\' (a hash mapping file paths to SHA1 digests), OR\n2. As a zip file using one of these methods:\n   - Set Content-Type to \'application/zip\' and send the zip file as the raw request body\n   - Include the zip file content in the \'zip\' field of this JSON object with Content-Type \'application/json\'\n
- * @type object
- */
-export type CreateSiteDeployDeploy = {
-	/**
-	 * @description A hash mapping file paths to SHA1 digests of the file contents.
-	 * @type object | undefined
-	 */
-	files?: object | undefined;
-	/**
-	 * @description A zip file containing the site files to deploy. Alternative to \'files\'.\nTo use this field, set Content-Type to \'application/json\' and include the zip content here.\nAlternatively, you can set Content-Type to \'application/zip\' and send the zip as the raw request body (not as JSON).\n
-	 * @type string | undefined
-	 */
-	zip?: Blob | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	draft?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	async?: boolean | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	functions?: object | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	function_schedules?:
-		| {
-				/**
-				 * @type string | undefined
-				 */
-				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				cron?: string | undefined;
-		  }[]
-		| undefined;
-	/**
-	 * @type object | undefined
-	 */
-	functions_config?:
-		| {
-				[key: string]: {
-					/**
-					 * @type string | undefined
-					 */
-					display_name?: string | undefined;
-					/**
-					 * @type string | undefined
-					 */
-					generator?: string | undefined;
-					/**
-					 * @type object | undefined
-					 */
-					build_data?: object | undefined;
-					/**
-					 * @type array | undefined
-					 */
-					routes?:
-						| {
-								/**
-								 * @type string | undefined
-								 */
-								pattern?: string | undefined;
-								/**
-								 * @type string | undefined
-								 */
-								literal?: string | undefined;
-								/**
-								 * @type string | undefined
-								 */
-								expression?: string | undefined;
-								/**
-								 * @type array | undefined
-								 */
-								methods?: ("GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "OPTIONS")[] | undefined;
-								/**
-								 * @type boolean | undefined
-								 */
-								prefer_static?: boolean | undefined;
-						  }[]
-						| undefined;
-					/**
-					 * @type array | undefined
-					 */
-					excluded_routes?:
-						| {
-								/**
-								 * @type string | undefined
-								 */
-								pattern?: string | undefined;
-								/**
-								 * @type string | undefined
-								 */
-								literal?: string | undefined;
-								/**
-								 * @type string | undefined
-								 */
-								expression?: string | undefined;
-						  }[]
-						| undefined;
-					/**
-					 * @type integer | undefined
-					 */
-					priority?: number | undefined;
-					/**
-					 * @type object | undefined
-					 */
-					traffic_rules?:
-						| {
-								/**
-								 * @type object | undefined
-								 */
-								action?:
-									| {
-											/**
-											 * @type string | undefined
-											 */
-											type?: string | undefined;
-											/**
-											 * @type object | undefined
-											 */
-											config?:
-												| {
-														/**
-														 * @type string | undefined
-														 */
-														to?: string | undefined;
-														/**
-														 * @type object | undefined
-														 */
-														rate_limit_config?:
-															| {
-																	/**
-																	 * @type string | undefined
-																	 */
-																	algorithm?: AlgorithmEnumKey | undefined;
-																	/**
-																	 * @type integer | undefined
-																	 */
-																	window_size?: number | undefined;
-																	/**
-																	 * @type integer | undefined
-																	 */
-																	window_limit?: number | undefined;
-															  }
-															| undefined;
-														/**
-														 * @type object | undefined
-														 */
-														aggregate?:
-															| {
-																	/**
-																	 * @type array | undefined
-																	 */
-																	keys?:
-																		| {
-																				/**
-																				 * @type string | undefined
-																				 */
-																				type?: TypeEnumKey | undefined;
-																		  }[]
-																		| undefined;
-															  }
-															| undefined;
-												  }
-												| undefined;
-									  }
-									| undefined;
-						  }
-						| undefined;
-					/**
-					 * @type array | undefined
-					 */
-					event_subscriptions?: string[] | undefined;
-				};
-		  }
-		| undefined;
-	/**
-	 * @type string | undefined
-	 */
-	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	framework?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	framework_version?: string | undefined;
-	/**
-	 * @description A list of deploy-specific environment variable data. Data specified this way applies only\nto this specific deploy and is merged into any existing environment variables set on the\naccount and site.\n\nDeploy-specific environment variable data takes precedence over account and site\nenvironment variable data: For example, a deploy-specific variable with the key `NODE_ENV`\nwill take priority over any existing site- and account-level environment variable data\nwith the key `NODE_ENV`.\n\nEnvironment variable data may be provided at one of two times:\n\n- When creating a new Deploy with deploy files (most common)\n- When finalizing an existing Deploy with deploy files\n\nOnce set, environment variables for a specific deploy cannot be modified. Subsequent\nattempts to modify environment variable data for a deploy will be ignored.\n
-	 * @type array | undefined
-	 */
-	environment?:
-		| {
-				/**
-				 * @type string
-				 */
-				key: string;
-				/**
-				 * @type string
-				 */
-				value: string;
-				/**
-				 * @type boolean
-				 */
-				is_secret: boolean;
-				/**
-				 * @type array
-				 */
-				scopes: ("builds" | "functions" | "runtime" | "post-processing")[];
-		  }[]
-		| undefined;
-};
-
-/**
- * @type object
- */
-export type CreateSiteBuildHookBuildhook = {
-	/**
-	 * @type string | undefined
-	 */
-	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	branch?: string | undefined;
-};
-
 export type CreateSiteSite = {
 	/**
 	 * @type string | undefined
@@ -5559,6 +5299,27 @@ export type CreateSiteSite = {
 							cron?: string | undefined;
 					  }[]
 					| undefined;
+				/**
+				 * @description The functions region for this deploy as an airport code.\n
+				 * @type string | undefined
+				 */
+				functions_region?: string | undefined;
+				/**
+				 * @description Functions in the deploy that explicitly specify their own region\n(airport code).\n
+				 * @type array | undefined
+				 */
+				functions_region_overrides?:
+					| {
+							/**
+							 * @type string | undefined
+							 */
+							name?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							region?: string | undefined;
+					  }[]
+					| undefined;
 		  }
 		| undefined;
 	/**
@@ -5786,6 +5547,345 @@ export type CreateSiteSite = {
 				 */
 				stop_builds?: boolean | undefined;
 		  }
+		| undefined;
+};
+
+/**
+ * @type object
+ */
+export type UpdateSiteMetadataMetadata = object;
+
+/**
+ * @type object
+ */
+export type CreateHookBySiteIdHook = {
+	/**
+	 * @type string | undefined
+	 */
+	id?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	site_id?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	type?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	event?: string | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	data?: object | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	created_at?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	updated_at?: string | undefined;
+	/**
+	 * @type boolean | undefined
+	 */
+	disabled?: boolean | undefined;
+};
+
+/**
+ * @type object
+ */
+export type CreateSiteSnippetSnippet = {
+	/**
+	 * @type integer | undefined
+	 */
+	id?: number | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	site_id?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	title?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	general?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	general_position?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	goal?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	goal_position?: string | undefined;
+};
+
+/**
+ * @description Request body for setting compute settings. All fields are optional; only provided fields are updated.
+ * @type object
+ */
+export type SetSiteDatabaseBranchComputeSettingsComputesettings = {
+	/**
+	 * @description Minimum compute units (0.25 to 16.0). Must be less than or equal to max_cu.
+	 * @type number
+	 */
+	min_cu?: (number | null) | undefined;
+	/**
+	 * @description Maximum compute units (0.25 to 16.0). Must be greater than or equal to min_cu. max_cu - min_cu must not exceed 8.0.
+	 * @type number
+	 */
+	max_cu?: (number | null) | undefined;
+	/**
+	 * @description Seconds of inactivity before the compute endpoint is suspended. Use -1 for always on, or a non-negative value.
+	 * @minLength -1
+	 * @type integer
+	 */
+	sleep_timeout_seconds?: (bigint | null) | undefined;
+};
+
+/**
+ * @type object
+ */
+export type CreateSiteBuildHookBuildhook = {
+	/**
+	 * @type string | undefined
+	 */
+	title?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	branch?: string | undefined;
+};
+
+/**
+ * @description Deploy files can be provided in two ways:\n1. As a JSON object using \'files\' (a hash mapping file paths to SHA1 digests), OR\n2. As a zip file using one of these methods:\n   - Set Content-Type to \'application/zip\' and send the zip file as the raw request body\n   - Include the zip file content in the \'zip\' field of this JSON object with Content-Type \'application/json\'\n
+ * @type object
+ */
+export type CreateSiteDeployDeploy = {
+	/**
+	 * @description A hash mapping file paths to SHA1 digests of the file contents.
+	 * @type object | undefined
+	 */
+	files?: object | undefined;
+	/**
+	 * @description A zip file containing the site files to deploy. Alternative to \'files\'.\nTo use this field, set Content-Type to \'application/json\' and include the zip content here.\nAlternatively, you can set Content-Type to \'application/zip\' and send the zip as the raw request body (not as JSON).\n
+	 * @type string | undefined
+	 */
+	zip?: Blob | undefined;
+	/**
+	 * @type boolean | undefined
+	 */
+	draft?: boolean | undefined;
+	/**
+	 * @type boolean | undefined
+	 */
+	async?: boolean | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	functions?: object | undefined;
+	/**
+	 * @type array | undefined
+	 */
+	function_schedules?:
+		| {
+				/**
+				 * @type string | undefined
+				 */
+				name?: string | undefined;
+				/**
+				 * @type string | undefined
+				 */
+				cron?: string | undefined;
+		  }[]
+		| undefined;
+	/**
+	 * @type object | undefined
+	 */
+	functions_config?:
+		| {
+				[key: string]: {
+					/**
+					 * @type string | undefined
+					 */
+					display_name?: string | undefined;
+					/**
+					 * @type string | undefined
+					 */
+					generator?: string | undefined;
+					/**
+					 * @type object | undefined
+					 */
+					build_data?: object | undefined;
+					/**
+					 * @type array | undefined
+					 */
+					routes?:
+						| {
+								/**
+								 * @type string | undefined
+								 */
+								pattern?: string | undefined;
+								/**
+								 * @type string | undefined
+								 */
+								literal?: string | undefined;
+								/**
+								 * @type string | undefined
+								 */
+								expression?: string | undefined;
+								/**
+								 * @type array | undefined
+								 */
+								methods?: ("GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "OPTIONS")[] | undefined;
+								/**
+								 * @type boolean | undefined
+								 */
+								prefer_static?: boolean | undefined;
+						  }[]
+						| undefined;
+					/**
+					 * @type array | undefined
+					 */
+					excluded_routes?:
+						| {
+								/**
+								 * @type string | undefined
+								 */
+								pattern?: string | undefined;
+								/**
+								 * @type string | undefined
+								 */
+								literal?: string | undefined;
+								/**
+								 * @type string | undefined
+								 */
+								expression?: string | undefined;
+						  }[]
+						| undefined;
+					/**
+					 * @type integer | undefined
+					 */
+					priority?: number | undefined;
+					/**
+					 * @type string | undefined
+					 */
+					region?: string | undefined;
+					/**
+					 * @type object | undefined
+					 */
+					traffic_rules?:
+						| {
+								/**
+								 * @type object | undefined
+								 */
+								action?:
+									| {
+											/**
+											 * @type string | undefined
+											 */
+											type?: string | undefined;
+											/**
+											 * @type object | undefined
+											 */
+											config?:
+												| {
+														/**
+														 * @type string | undefined
+														 */
+														to?: string | undefined;
+														/**
+														 * @type object | undefined
+														 */
+														rate_limit_config?:
+															| {
+																	/**
+																	 * @type string | undefined
+																	 */
+																	algorithm?: AlgorithmEnumKey | undefined;
+																	/**
+																	 * @type integer | undefined
+																	 */
+																	window_size?: number | undefined;
+																	/**
+																	 * @type integer | undefined
+																	 */
+																	window_limit?: number | undefined;
+															  }
+															| undefined;
+														/**
+														 * @type object | undefined
+														 */
+														aggregate?:
+															| {
+																	/**
+																	 * @type array | undefined
+																	 */
+																	keys?:
+																		| {
+																				/**
+																				 * @type string | undefined
+																				 */
+																				type?: TypeEnumKey | undefined;
+																		  }[]
+																		| undefined;
+															  }
+															| undefined;
+												  }
+												| undefined;
+									  }
+									| undefined;
+						  }
+						| undefined;
+					/**
+					 * @type array | undefined
+					 */
+					event_subscriptions?: string[] | undefined;
+				};
+		  }
+		| undefined;
+	/**
+	 * @type string | undefined
+	 */
+	branch?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	framework?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	framework_version?: string | undefined;
+	/**
+	 * @description A list of deploy-specific environment variable data. Data specified this way applies only\nto this specific deploy and is merged into any existing environment variables set on the\naccount and site.\n\nDeploy-specific environment variable data takes precedence over account and site\nenvironment variable data: For example, a deploy-specific variable with the key `NODE_ENV`\nwill take priority over any existing site- and account-level environment variable data\nwith the key `NODE_ENV`.\n\nEnvironment variable data may be provided at one of two times:\n\n- When creating a new Deploy with deploy files (most common)\n- When finalizing an existing Deploy with deploy files\n\nOnce set, environment variables for a specific deploy cannot be modified. Subsequent\nattempts to modify environment variable data for a deploy will be ignored.\n
+	 * @type array | undefined
+	 */
+	environment?:
+		| {
+				/**
+				 * @type string
+				 */
+				key: string;
+				/**
+				 * @type string
+				 */
+				value: string;
+				/**
+				 * @type boolean
+				 */
+				is_secret: boolean;
+				/**
+				 * @type array
+				 */
+				scopes: ("builds" | "functions" | "runtime" | "post-processing")[];
+		  }[]
 		| undefined;
 };
 
@@ -6075,6 +6175,27 @@ export type ListSitesStatus200 = {
 							 * @type string | undefined
 							 */
 							cron?: string | undefined;
+					  }[]
+					| undefined;
+				/**
+				 * @description The functions region for this deploy as an airport code.\n
+				 * @type string | undefined
+				 */
+				functions_region?: string | undefined;
+				/**
+				 * @description Functions in the deploy that explicitly specify their own region\n(airport code).\n
+				 * @type array | undefined
+				 */
+				functions_region_overrides?:
+					| {
+							/**
+							 * @type string | undefined
+							 */
+							name?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							region?: string | undefined;
 					  }[]
 					| undefined;
 		  }
@@ -6521,6 +6642,27 @@ export type CreateSiteStatus201 = {
 							cron?: string | undefined;
 					  }[]
 					| undefined;
+				/**
+				 * @description The functions region for this deploy as an airport code.\n
+				 * @type string | undefined
+				 */
+				functions_region?: string | undefined;
+				/**
+				 * @description Functions in the deploy that explicitly specify their own region\n(airport code).\n
+				 * @type array | undefined
+				 */
+				functions_region_overrides?:
+					| {
+							/**
+							 * @type string | undefined
+							 */
+							name?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							region?: string | undefined;
+					  }[]
+					| undefined;
 		  }
 		| undefined;
 	/**
@@ -6919,6 +7061,27 @@ export type CreateSiteData =
 									 * @type string | undefined
 									 */
 									cron?: string | undefined;
+							  }[]
+							| undefined;
+						/**
+						 * @description The functions region for this deploy as an airport code.\n
+						 * @type string | undefined
+						 */
+						functions_region?: string | undefined;
+						/**
+						 * @description Functions in the deploy that explicitly specify their own region\n(airport code).\n
+						 * @type array | undefined
+						 */
+						functions_region_overrides?:
+							| {
+									/**
+									 * @type string | undefined
+									 */
+									name?: string | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									region?: string | undefined;
 							  }[]
 							| undefined;
 				  }
@@ -7428,6 +7591,27 @@ export type GetSiteStatus200 = {
 							cron?: string | undefined;
 					  }[]
 					| undefined;
+				/**
+				 * @description The functions region for this deploy as an airport code.\n
+				 * @type string | undefined
+				 */
+				functions_region?: string | undefined;
+				/**
+				 * @description Functions in the deploy that explicitly specify their own region\n(airport code).\n
+				 * @type array | undefined
+				 */
+				functions_region_overrides?:
+					| {
+							/**
+							 * @type string | undefined
+							 */
+							name?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							region?: string | undefined;
+					  }[]
+					| undefined;
 		  }
 		| undefined;
 	/**
@@ -7874,6 +8058,27 @@ export type UpdateSiteStatus200 = {
 							cron?: string | undefined;
 					  }[]
 					| undefined;
+				/**
+				 * @description The functions region for this deploy as an airport code.\n
+				 * @type string | undefined
+				 */
+				functions_region?: string | undefined;
+				/**
+				 * @description Functions in the deploy that explicitly specify their own region\n(airport code).\n
+				 * @type array | undefined
+				 */
+				functions_region_overrides?:
+					| {
+							/**
+							 * @type string | undefined
+							 */
+							name?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							region?: string | undefined;
+					  }[]
+					| undefined;
 		  }
 		| undefined;
 	/**
@@ -8272,6 +8477,27 @@ export type UpdateSiteData =
 									 * @type string | undefined
 									 */
 									cron?: string | undefined;
+							  }[]
+							| undefined;
+						/**
+						 * @description The functions region for this deploy as an airport code.\n
+						 * @type string | undefined
+						 */
+						functions_region?: string | undefined;
+						/**
+						 * @description Functions in the deploy that explicitly specify their own region\n(airport code).\n
+						 * @type array | undefined
+						 */
+						functions_region_overrides?:
+							| {
+									/**
+									 * @type string | undefined
+									 */
+									name?: string | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									region?: string | undefined;
 							  }[]
 							| undefined;
 				  }
@@ -12494,6 +12720,27 @@ export type ListSiteDeploysStatus200 = {
 				cron?: string | undefined;
 		  }[]
 		| undefined;
+	/**
+	 * @description The functions region for this deploy as an airport code.\n
+	 * @type string | undefined
+	 */
+	functions_region?: string | undefined;
+	/**
+	 * @description Functions in the deploy that explicitly specify their own region\n(airport code).\n
+	 * @type array | undefined
+	 */
+	functions_region_overrides?:
+		| {
+				/**
+				 * @type string | undefined
+				 */
+				name?: string | undefined;
+				/**
+				 * @type string | undefined
+				 */
+				region?: string | undefined;
+		  }[]
+		| undefined;
 }[];
 
 /**
@@ -12747,6 +12994,27 @@ export type CreateSiteDeployStatus200 = {
 				cron?: string | undefined;
 		  }[]
 		| undefined;
+	/**
+	 * @description The functions region for this deploy as an airport code.\n
+	 * @type string | undefined
+	 */
+	functions_region?: string | undefined;
+	/**
+	 * @description Functions in the deploy that explicitly specify their own region\n(airport code).\n
+	 * @type array | undefined
+	 */
+	functions_region_overrides?:
+		| {
+				/**
+				 * @type string | undefined
+				 */
+				name?: string | undefined;
+				/**
+				 * @type string | undefined
+				 */
+				region?: string | undefined;
+		  }[]
+		| undefined;
 };
 
 /**
@@ -12876,6 +13144,10 @@ export type CreateSiteDeployData =
 							 * @type integer | undefined
 							 */
 							priority?: number | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							region?: string | undefined;
 							/**
 							 * @type object | undefined
 							 */
@@ -13181,6 +13453,27 @@ export type GetSiteDeployStatus200 = {
 				cron?: string | undefined;
 		  }[]
 		| undefined;
+	/**
+	 * @description The functions region for this deploy as an airport code.\n
+	 * @type string | undefined
+	 */
+	functions_region?: string | undefined;
+	/**
+	 * @description Functions in the deploy that explicitly specify their own region\n(airport code).\n
+	 * @type array | undefined
+	 */
+	functions_region_overrides?:
+		| {
+				/**
+				 * @type string | undefined
+				 */
+				name?: string | undefined;
+				/**
+				 * @type string | undefined
+				 */
+				region?: string | undefined;
+		  }[]
+		| undefined;
 };
 
 /**
@@ -13384,6 +13677,27 @@ export type UpdateSiteDeployStatus200 = {
 				cron?: string | undefined;
 		  }[]
 		| undefined;
+	/**
+	 * @description The functions region for this deploy as an airport code.\n
+	 * @type string | undefined
+	 */
+	functions_region?: string | undefined;
+	/**
+	 * @description Functions in the deploy that explicitly specify their own region\n(airport code).\n
+	 * @type array | undefined
+	 */
+	functions_region_overrides?:
+		| {
+				/**
+				 * @type string | undefined
+				 */
+				name?: string | undefined;
+				/**
+				 * @type string | undefined
+				 */
+				region?: string | undefined;
+		  }[]
+		| undefined;
 };
 
 /**
@@ -13513,6 +13827,10 @@ export type UpdateSiteDeployData =
 							 * @type integer | undefined
 							 */
 							priority?: number | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							region?: string | undefined;
 							/**
 							 * @type object | undefined
 							 */
@@ -13871,6 +14189,27 @@ export type CancelSiteDeployStatus201 = {
 				cron?: string | undefined;
 		  }[]
 		| undefined;
+	/**
+	 * @description The functions region for this deploy as an airport code.\n
+	 * @type string | undefined
+	 */
+	functions_region?: string | undefined;
+	/**
+	 * @description Functions in the deploy that explicitly specify their own region\n(airport code).\n
+	 * @type array | undefined
+	 */
+	functions_region_overrides?:
+		| {
+				/**
+				 * @type string | undefined
+				 */
+				name?: string | undefined;
+				/**
+				 * @type string | undefined
+				 */
+				region?: string | undefined;
+		  }[]
+		| undefined;
 };
 
 /**
@@ -14066,6 +14405,27 @@ export type RestoreSiteDeployStatus201 = {
 				 * @type string | undefined
 				 */
 				cron?: string | undefined;
+		  }[]
+		| undefined;
+	/**
+	 * @description The functions region for this deploy as an airport code.\n
+	 * @type string | undefined
+	 */
+	functions_region?: string | undefined;
+	/**
+	 * @description Functions in the deploy that explicitly specify their own region\n(airport code).\n
+	 * @type array | undefined
+	 */
+	functions_region_overrides?:
+		| {
+				/**
+				 * @type string | undefined
+				 */
+				name?: string | undefined;
+				/**
+				 * @type string | undefined
+				 */
+				region?: string | undefined;
 		  }[]
 		| undefined;
 };
@@ -14679,6 +15039,27 @@ export type UnlinkSiteRepoStatus200 = {
 							 * @type string | undefined
 							 */
 							cron?: string | undefined;
+					  }[]
+					| undefined;
+				/**
+				 * @description The functions region for this deploy as an airport code.\n
+				 * @type string | undefined
+				 */
+				functions_region?: string | undefined;
+				/**
+				 * @description Functions in the deploy that explicitly specify their own region\n(airport code).\n
+				 * @type array | undefined
+				 */
+				functions_region_overrides?:
+					| {
+							/**
+							 * @type string | undefined
+							 */
+							name?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							region?: string | undefined;
 					  }[]
 					| undefined;
 		  }
@@ -15890,6 +16271,27 @@ export type GetDeployStatus200 = {
 				cron?: string | undefined;
 		  }[]
 		| undefined;
+	/**
+	 * @description The functions region for this deploy as an airport code.\n
+	 * @type string | undefined
+	 */
+	functions_region?: string | undefined;
+	/**
+	 * @description Functions in the deploy that explicitly specify their own region\n(airport code).\n
+	 * @type array | undefined
+	 */
+	functions_region_overrides?:
+		| {
+				/**
+				 * @type string | undefined
+				 */
+				name?: string | undefined;
+				/**
+				 * @type string | undefined
+				 */
+				region?: string | undefined;
+		  }[]
+		| undefined;
 };
 
 /**
@@ -16218,6 +16620,27 @@ export type LockDeployStatus200 = {
 				cron?: string | undefined;
 		  }[]
 		| undefined;
+	/**
+	 * @description The functions region for this deploy as an airport code.\n
+	 * @type string | undefined
+	 */
+	functions_region?: string | undefined;
+	/**
+	 * @description Functions in the deploy that explicitly specify their own region\n(airport code).\n
+	 * @type array | undefined
+	 */
+	functions_region_overrides?:
+		| {
+				/**
+				 * @type string | undefined
+				 */
+				name?: string | undefined;
+				/**
+				 * @type string | undefined
+				 */
+				region?: string | undefined;
+		  }[]
+		| undefined;
 };
 
 /**
@@ -16408,6 +16831,27 @@ export type UnlockDeployStatus200 = {
 				 * @type string | undefined
 				 */
 				cron?: string | undefined;
+		  }[]
+		| undefined;
+	/**
+	 * @description The functions region for this deploy as an airport code.\n
+	 * @type string | undefined
+	 */
+	functions_region?: string | undefined;
+	/**
+	 * @description Functions in the deploy that explicitly specify their own region\n(airport code).\n
+	 * @type array | undefined
+	 */
+	functions_region_overrides?:
+		| {
+				/**
+				 * @type string | undefined
+				 */
+				name?: string | undefined;
+				/**
+				 * @type string | undefined
+				 */
+				region?: string | undefined;
 		  }[]
 		| undefined;
 };
@@ -16604,6 +17048,10 @@ export type UploadDeployFunctionStatus200 = {
 	 * @type string | undefined
 	 */
 	sha?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	region?: string | undefined;
 };
 
 /**
@@ -18415,6 +18863,27 @@ export type CreateSiteInTeamStatus201 = {
 							cron?: string | undefined;
 					  }[]
 					| undefined;
+				/**
+				 * @description The functions region for this deploy as an airport code.\n
+				 * @type string | undefined
+				 */
+				functions_region?: string | undefined;
+				/**
+				 * @description Functions in the deploy that explicitly specify their own region\n(airport code).\n
+				 * @type array | undefined
+				 */
+				functions_region_overrides?:
+					| {
+							/**
+							 * @type string | undefined
+							 */
+							name?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							region?: string | undefined;
+					  }[]
+					| undefined;
 		  }
 		| undefined;
 	/**
@@ -18813,6 +19282,27 @@ export type CreateSiteInTeamData =
 									 * @type string | undefined
 									 */
 									cron?: string | undefined;
+							  }[]
+							| undefined;
+						/**
+						 * @description The functions region for this deploy as an airport code.\n
+						 * @type string | undefined
+						 */
+						functions_region?: string | undefined;
+						/**
+						 * @description Functions in the deploy that explicitly specify their own region\n(airport code).\n
+						 * @type array | undefined
+						 */
+						functions_region_overrides?:
+							| {
+									/**
+									 * @type string | undefined
+									 */
+									name?: string | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									region?: string | undefined;
 							  }[]
 							| undefined;
 				  }
@@ -19335,6 +19825,27 @@ export type ListSitesForAccountStatus200 = {
 							 * @type string | undefined
 							 */
 							cron?: string | undefined;
+					  }[]
+					| undefined;
+				/**
+				 * @description The functions region for this deploy as an airport code.\n
+				 * @type string | undefined
+				 */
+				functions_region?: string | undefined;
+				/**
+				 * @description Functions in the deploy that explicitly specify their own region\n(airport code).\n
+				 * @type array | undefined
+				 */
+				functions_region_overrides?:
+					| {
+							/**
+							 * @type string | undefined
+							 */
+							name?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							region?: string | undefined;
 					  }[]
 					| undefined;
 		  }
