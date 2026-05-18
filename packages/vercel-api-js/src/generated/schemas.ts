@@ -13519,6 +13519,70 @@ export const getDomainConfigResponseSchema = z.union([
 	getDomainConfigStatus403Schema,
 ]);
 
+export const getDomainVerificationRecordPathDomainSchema = z
+	.string()
+	.describe("The domain name to get the verification record for");
+
+export const getDomainVerificationRecordQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const getDomainVerificationRecordQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const getDomainVerificationRecordStatus200Schema = z.unknown();
+
+export const getDomainVerificationRecordStatus400Schema = z.unknown();
+
+export const getDomainVerificationRecordStatus401Schema = z.unknown();
+
+export const getDomainVerificationRecordStatus403Schema = z.unknown();
+
+export const getDomainVerificationRecordStatus404Schema = z.unknown();
+
+export const getDomainVerificationRecordResponseSchema = z.union([
+	getDomainVerificationRecordStatus200Schema,
+	getDomainVerificationRecordStatus400Schema,
+	getDomainVerificationRecordStatus401Schema,
+	getDomainVerificationRecordStatus403Schema,
+	getDomainVerificationRecordStatus404Schema,
+]);
+
+export const claimDomainOwnershipPathDomainSchema = z
+	.string()
+	.describe("The domain name to claim ownership of");
+
+export const claimDomainOwnershipQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const claimDomainOwnershipQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const claimDomainOwnershipStatus200Schema = z.unknown();
+
+export const claimDomainOwnershipStatus400Schema = z.unknown();
+
+export const claimDomainOwnershipStatus401Schema = z.unknown();
+
+export const claimDomainOwnershipStatus403Schema = z.unknown();
+
+export const claimDomainOwnershipStatus404Schema = z.unknown();
+
+export const claimDomainOwnershipResponseSchema = z.union([
+	claimDomainOwnershipStatus200Schema,
+	claimDomainOwnershipStatus400Schema,
+	claimDomainOwnershipStatus401Schema,
+	claimDomainOwnershipStatus403Schema,
+	claimDomainOwnershipStatus404Schema,
+]);
+
 export const getDomainPathDomainSchema = z.string().describe("The name of the domain.");
 
 export const getDomainQueryTeamIdSchema = z

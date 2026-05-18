@@ -27613,6 +27613,194 @@ export type GetDomainConfigResponse =
 	| GetDomainConfigStatus403;
 
 /**
+ * @description The domain name to get the verification record for
+ * @example example.com
+ * @type string
+ */
+export type GetDomainVerificationRecordPathDomain = string;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type GetDomainVerificationRecordQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type GetDomainVerificationRecordQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type GetDomainVerificationRecordStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetDomainVerificationRecordStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetDomainVerificationRecordStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetDomainVerificationRecordStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetDomainVerificationRecordStatus404 = unknown;
+
+/**
+ * @type object
+ */
+export type GetDomainVerificationRecordRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		domain: GetDomainVerificationRecordPathDomain;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				teamId?: GetDomainVerificationRecordQueryTeamId | undefined;
+				slug?: GetDomainVerificationRecordQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v9/domains/${string}/verification`;
+};
+
+/**
+ * @type object
+ */
+export type GetDomainVerificationRecordResponses = {
+	"200": GetDomainVerificationRecordStatus200;
+	"400": GetDomainVerificationRecordStatus400;
+	"401": GetDomainVerificationRecordStatus401;
+	"403": GetDomainVerificationRecordStatus403;
+	"404": GetDomainVerificationRecordStatus404;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetDomainVerificationRecordResponse =
+	| GetDomainVerificationRecordStatus200
+	| GetDomainVerificationRecordStatus400
+	| GetDomainVerificationRecordStatus401
+	| GetDomainVerificationRecordStatus403
+	| GetDomainVerificationRecordStatus404;
+
+/**
+ * @description The domain name to claim ownership of
+ * @example example.com
+ * @type string
+ */
+export type ClaimDomainOwnershipPathDomain = string;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type ClaimDomainOwnershipQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type ClaimDomainOwnershipQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type ClaimDomainOwnershipStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ClaimDomainOwnershipStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ClaimDomainOwnershipStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ClaimDomainOwnershipStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ClaimDomainOwnershipStatus404 = unknown;
+
+/**
+ * @type object
+ */
+export type ClaimDomainOwnershipRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		domain: ClaimDomainOwnershipPathDomain;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				teamId?: ClaimDomainOwnershipQueryTeamId | undefined;
+				slug?: ClaimDomainOwnershipQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v9/domains/${string}/claim`;
+};
+
+/**
+ * @type object
+ */
+export type ClaimDomainOwnershipResponses = {
+	"200": ClaimDomainOwnershipStatus200;
+	"400": ClaimDomainOwnershipStatus400;
+	"401": ClaimDomainOwnershipStatus401;
+	"403": ClaimDomainOwnershipStatus403;
+	"404": ClaimDomainOwnershipStatus404;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ClaimDomainOwnershipResponse =
+	| ClaimDomainOwnershipStatus200
+	| ClaimDomainOwnershipStatus400
+	| ClaimDomainOwnershipStatus401
+	| ClaimDomainOwnershipStatus403
+	| ClaimDomainOwnershipStatus404;
+
+/**
  * @description The name of the domain.
  * @example example.com
  * @type string

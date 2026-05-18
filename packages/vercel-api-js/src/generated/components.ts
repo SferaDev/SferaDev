@@ -83,6 +83,11 @@ import type {
 	CancelDeploymentStatus401,
 	CancelDeploymentStatus403,
 	CancelDeploymentStatus404,
+	ClaimDomainOwnershipResponse,
+	ClaimDomainOwnershipStatus400,
+	ClaimDomainOwnershipStatus401,
+	ClaimDomainOwnershipStatus403,
+	ClaimDomainOwnershipStatus404,
 	CompleteRollingReleaseResponse,
 	CompleteRollingReleaseStatus400,
 	CompleteRollingReleaseStatus401,
@@ -755,6 +760,11 @@ import type {
 	GetDomainTransferInStatus404,
 	GetDomainTransferInStatus429,
 	GetDomainTransferInStatus500,
+	GetDomainVerificationRecordResponse,
+	GetDomainVerificationRecordStatus400,
+	GetDomainVerificationRecordStatus401,
+	GetDomainVerificationRecordStatus403,
+	GetDomainVerificationRecordStatus404,
 	GetDrainResponse,
 	GetDrainStatus400,
 	GetDrainStatus401,
@@ -5070,6 +5080,94 @@ export async function getDomainConfig(
 	>({
 		method: "GET",
 		url: `/v6/domains/${pathParams.domain}/config`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Get Domain Verification Record
+ * @description Get the TXT verification record needed to claim ownership of a domain for the authenticated team. The caller must add this TXT record to `_vercel.{domain}` in their DNS configuration, then call POST /domains/:domain/claim to complete the ownership transfer.
+ * @link /v9/domains/{domain}/verification
+ */
+export async function getDomainVerificationRecord(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { domain: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.domain) {
+		throw new Error(`Missing required path parameter: domain`);
+	}
+	const data = await request<
+		GetDomainVerificationRecordResponse,
+		ErrorWrapper<
+			| GetDomainVerificationRecordStatus400
+			| GetDomainVerificationRecordStatus401
+			| GetDomainVerificationRecordStatus403
+			| GetDomainVerificationRecordStatus404
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ domain: string }
+	>({
+		method: "GET",
+		url: `/v9/domains/${pathParams.domain}/verification`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Claim Domain Ownership
+ * @description Claim ownership of a domain for the authenticated team by verifying a TXT record. The caller must first add a TXT record to `_vercel.{domain}` (obtained from GET /domains/:domain/verification), then call this endpoint to complete the ownership transfer. If the TXT record is verified, the domain ownership will be transferred to the caller's team, even if the domain is currently owned by another user or team.
+ * @link /v9/domains/{domain}/claim
+ */
+export async function claimDomainOwnership(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { domain: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.domain) {
+		throw new Error(`Missing required path parameter: domain`);
+	}
+	const data = await request<
+		ClaimDomainOwnershipResponse,
+		ErrorWrapper<
+			| ClaimDomainOwnershipStatus400
+			| ClaimDomainOwnershipStatus401
+			| ClaimDomainOwnershipStatus403
+			| ClaimDomainOwnershipStatus404
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ domain: string }
+	>({
+		method: "POST",
+		url: `/v9/domains/${pathParams.domain}/claim`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -16420,6 +16518,8 @@ export const operationsByPath = {
 	"GET /v1/registrar/domains/{domain}/contact-info/schema": getContactInfoSchema,
 	"GET /v1/registrar/orders/{orderId}": getOrder,
 	"GET /v6/domains/{domain}/config": getDomainConfig,
+	"GET /v9/domains/{domain}/verification": getDomainVerificationRecord,
+	"POST /v9/domains/{domain}/claim": claimDomainOwnership,
 	"GET /v5/domains/{domain}": getDomain,
 	"GET /v5/domains": getDomains,
 	"POST /v7/domains": createOrTransferDomain,
@@ -16802,6 +16902,8 @@ export const operationsByTag = {
 	},
 	domains: {
 		getDomainConfig,
+		getDomainVerificationRecord,
+		claimDomainOwnership,
 		getDomain,
 		getDomains,
 		createOrTransferDomain,
@@ -17193,8 +17295,8 @@ export const tagDictionary = {
 		PATCH: ["updateDomainAutoRenew", "updateDomainNameservers"],
 	},
 	domains: {
-		GET: ["getDomainConfig", "getDomain", "getDomains"],
-		POST: ["createOrTransferDomain"],
+		GET: ["getDomainConfig", "getDomainVerificationRecord", "getDomain", "getDomains"],
+		POST: ["claimDomainOwnership", "createOrTransferDomain"],
 		PATCH: ["patchDomain"],
 		DELETE: ["deleteDomain"],
 	},
