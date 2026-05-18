@@ -528,6 +528,21 @@ export const siteSchema = z.object({
 					}),
 				)
 				.optional(),
+			functions_region: z
+				.string()
+				.optional()
+				.describe("The functions region for this deploy as an airport code.\n"),
+			functions_region_overrides: z
+				.array(
+					z.object({
+						name: z.string().optional(),
+						region: z.string().optional(),
+					}),
+				)
+				.optional()
+				.describe(
+					"Functions in the deploy that explicitly specify their own region\n(airport code).\n",
+				),
 		})
 		.optional(),
 	account_id: z.string().optional(),
@@ -654,6 +669,21 @@ export const siteSetupSchema = z.object({
 					}),
 				)
 				.optional(),
+			functions_region: z
+				.string()
+				.optional()
+				.describe("The functions region for this deploy as an airport code.\n"),
+			functions_region_overrides: z
+				.array(
+					z.object({
+						name: z.string().optional(),
+						region: z.string().optional(),
+					}),
+				)
+				.optional()
+				.describe(
+					"Functions in the deploy that explicitly specify their own region\n(airport code).\n",
+				),
 		})
 		.optional(),
 	account_id: z.string().optional(),
@@ -927,6 +957,7 @@ export const functionSchema = z.object({
 	id: z.string().optional(),
 	name: z.string().optional(),
 	sha: z.string().optional(),
+	region: z.string().optional(),
 });
 
 export const snippetSchema = z.object({
@@ -984,6 +1015,21 @@ export const deploySchema = z.object({
 			}),
 		)
 		.optional(),
+	functions_region: z
+		.string()
+		.optional()
+		.describe("The functions region for this deploy as an airport code.\n"),
+	functions_region_overrides: z
+		.array(
+			z.object({
+				name: z.string().optional(),
+				region: z.string().optional(),
+			}),
+		)
+		.optional()
+		.describe(
+			"Functions in the deploy that explicitly specify their own region\n(airport code).\n",
+		),
 });
 
 export const deployEnvironmentVariableSchema = z.object({
@@ -1046,6 +1092,7 @@ export const deployFilesSchema = z
 						)
 						.optional(),
 					priority: z.int().optional(),
+					region: z.string().optional(),
 					traffic_rules: z
 						.object({
 							action: z
@@ -1672,6 +1719,7 @@ export const functionConfigSchema = z.object({
 		)
 		.optional(),
 	priority: z.int().optional(),
+	region: z.string().optional(),
 	traffic_rules: z
 		.object({
 			action: z
@@ -1820,167 +1868,6 @@ export const aiGatewayTokenSchema = z.object({
 	expires_at: z.bigint().optional().describe("Unix timestamp when the token expires"),
 });
 
-export const updateSiteMetadataMetadataSchema = z.object({});
-
-export const createHookBySiteIdHookSchema = z.object({
-	id: z.string().optional(),
-	site_id: z.string().optional(),
-	type: z.string().optional(),
-	event: z.string().optional(),
-	data: z.object({}).optional(),
-	created_at: z.string().optional(),
-	updated_at: z.string().optional(),
-	disabled: z.boolean().optional(),
-});
-
-export const createSiteSnippetSnippetSchema = z.object({
-	id: z.int().optional(),
-	site_id: z.string().optional(),
-	title: z.string().optional(),
-	general: z.string().optional(),
-	general_position: z.string().optional(),
-	goal: z.string().optional(),
-	goal_position: z.string().optional(),
-});
-
-export const setSiteDatabaseBranchComputeSettingsComputesettingsSchema = z
-	.object({
-		min_cu: z
-			.number()
-			.nullish()
-			.describe("Minimum compute units (0.25 to 16.0). Must be less than or equal to max_cu."),
-		max_cu: z
-			.number()
-			.nullish()
-			.describe(
-				"Maximum compute units (0.25 to 16.0). Must be greater than or equal to min_cu. max_cu - min_cu must not exceed 8.0.",
-			),
-		sleep_timeout_seconds: z
-			.bigint()
-			.nullish()
-			.describe(
-				"Seconds of inactivity before the compute endpoint is suspended. Use -1 for always on, or a non-negative value.",
-			),
-	})
-	.describe(
-		"Request body for setting compute settings. All fields are optional; only provided fields are updated.",
-	);
-
-export const createSiteDeployDeploySchema = z
-	.object({
-		files: z
-			.object({})
-			.optional()
-			.describe("A hash mapping file paths to SHA1 digests of the file contents."),
-		zip: z
-			.instanceof(File)
-			.optional()
-			.describe(
-				"A zip file containing the site files to deploy. Alternative to 'files'.\nTo use this field, set Content-Type to 'application/json' and include the zip content here.\nAlternatively, you can set Content-Type to 'application/zip' and send the zip as the raw request body (not as JSON).\n",
-			),
-		draft: z.boolean().optional(),
-		async: z.boolean().optional(),
-		functions: z.object({}).optional(),
-		function_schedules: z
-			.array(
-				z.object({
-					name: z.string().optional(),
-					cron: z.string().optional(),
-				}),
-			)
-			.optional(),
-		functions_config: z
-			.object({})
-			.catchall(
-				z.object({
-					display_name: z.string().optional(),
-					generator: z.string().optional(),
-					build_data: z.object({}).optional(),
-					routes: z
-						.array(
-							z.object({
-								pattern: z.string().optional(),
-								literal: z.string().optional(),
-								expression: z.string().optional(),
-								methods: z
-									.array(z.enum(["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]))
-									.optional(),
-								prefer_static: z.boolean().optional(),
-							}),
-						)
-						.optional(),
-					excluded_routes: z
-						.array(
-							z.object({
-								pattern: z.string().optional(),
-								literal: z.string().optional(),
-								expression: z.string().optional(),
-							}),
-						)
-						.optional(),
-					priority: z.int().optional(),
-					traffic_rules: z
-						.object({
-							action: z
-								.object({
-									type: z.string().optional(),
-									config: z
-										.object({
-											to: z.string().optional(),
-											rate_limit_config: z
-												.object({
-													algorithm: z.enum(["sliding_window"]).optional(),
-													window_size: z.int().optional(),
-													window_limit: z.int().optional(),
-												})
-												.optional(),
-											aggregate: z
-												.object({
-													keys: z
-														.array(
-															z.object({
-																type: z.enum(["ip", "domain"]).optional(),
-															}),
-														)
-														.optional(),
-												})
-												.optional(),
-										})
-										.optional(),
-								})
-								.optional(),
-						})
-						.optional(),
-					event_subscriptions: z.array(z.string()).optional(),
-				}),
-			)
-			.optional(),
-		branch: z.string().optional(),
-		framework: z.string().optional(),
-		framework_version: z.string().optional(),
-		environment: z
-			.array(
-				z.object({
-					key: z.string(),
-					value: z.string(),
-					is_secret: z.boolean(),
-					scopes: z.array(z.enum(["builds", "functions", "runtime", "post-processing"])),
-				}),
-			)
-			.optional()
-			.describe(
-				"A list of deploy-specific environment variable data. Data specified this way applies only\nto this specific deploy and is merged into any existing environment variables set on the\naccount and site.\n\nDeploy-specific environment variable data takes precedence over account and site\nenvironment variable data: For example, a deploy-specific variable with the key `NODE_ENV`\nwill take priority over any existing site- and account-level environment variable data\nwith the key `NODE_ENV`.\n\nEnvironment variable data may be provided at one of two times:\n\n- When creating a new Deploy with deploy files (most common)\n- When finalizing an existing Deploy with deploy files\n\nOnce set, environment variables for a specific deploy cannot be modified. Subsequent\nattempts to modify environment variable data for a deploy will be ignored.\n",
-			),
-	})
-	.describe(
-		"Deploy files can be provided in two ways:\n1. As a JSON object using 'files' (a hash mapping file paths to SHA1 digests), OR\n2. As a zip file using one of these methods:\n   - Set Content-Type to 'application/zip' and send the zip file as the raw request body\n   - Include the zip file content in the 'zip' field of this JSON object with Content-Type 'application/json'\n",
-	);
-
-export const createSiteBuildHookBuildhookSchema = z.object({
-	title: z.string().optional(),
-	branch: z.string().optional(),
-});
-
 export const createSiteSiteSchema = z.object({
 	id: z.string().optional(),
 	state: z.string().optional(),
@@ -2044,6 +1931,21 @@ export const createSiteSiteSchema = z.object({
 					}),
 				)
 				.optional(),
+			functions_region: z
+				.string()
+				.optional()
+				.describe("The functions region for this deploy as an airport code.\n"),
+			functions_region_overrides: z
+				.array(
+					z.object({
+						name: z.string().optional(),
+						region: z.string().optional(),
+					}),
+				)
+				.optional()
+				.describe(
+					"Functions in the deploy that explicitly specify their own region\n(airport code).\n",
+				),
 		})
 		.optional(),
 	account_id: z.string().optional(),
@@ -2141,6 +2043,168 @@ export const createSiteSiteSchema = z.object({
 		.optional(),
 });
 
+export const updateSiteMetadataMetadataSchema = z.object({});
+
+export const createHookBySiteIdHookSchema = z.object({
+	id: z.string().optional(),
+	site_id: z.string().optional(),
+	type: z.string().optional(),
+	event: z.string().optional(),
+	data: z.object({}).optional(),
+	created_at: z.string().optional(),
+	updated_at: z.string().optional(),
+	disabled: z.boolean().optional(),
+});
+
+export const createSiteSnippetSnippetSchema = z.object({
+	id: z.int().optional(),
+	site_id: z.string().optional(),
+	title: z.string().optional(),
+	general: z.string().optional(),
+	general_position: z.string().optional(),
+	goal: z.string().optional(),
+	goal_position: z.string().optional(),
+});
+
+export const setSiteDatabaseBranchComputeSettingsComputesettingsSchema = z
+	.object({
+		min_cu: z
+			.number()
+			.nullish()
+			.describe("Minimum compute units (0.25 to 16.0). Must be less than or equal to max_cu."),
+		max_cu: z
+			.number()
+			.nullish()
+			.describe(
+				"Maximum compute units (0.25 to 16.0). Must be greater than or equal to min_cu. max_cu - min_cu must not exceed 8.0.",
+			),
+		sleep_timeout_seconds: z
+			.bigint()
+			.nullish()
+			.describe(
+				"Seconds of inactivity before the compute endpoint is suspended. Use -1 for always on, or a non-negative value.",
+			),
+	})
+	.describe(
+		"Request body for setting compute settings. All fields are optional; only provided fields are updated.",
+	);
+
+export const createSiteBuildHookBuildhookSchema = z.object({
+	title: z.string().optional(),
+	branch: z.string().optional(),
+});
+
+export const createSiteDeployDeploySchema = z
+	.object({
+		files: z
+			.object({})
+			.optional()
+			.describe("A hash mapping file paths to SHA1 digests of the file contents."),
+		zip: z
+			.instanceof(File)
+			.optional()
+			.describe(
+				"A zip file containing the site files to deploy. Alternative to 'files'.\nTo use this field, set Content-Type to 'application/json' and include the zip content here.\nAlternatively, you can set Content-Type to 'application/zip' and send the zip as the raw request body (not as JSON).\n",
+			),
+		draft: z.boolean().optional(),
+		async: z.boolean().optional(),
+		functions: z.object({}).optional(),
+		function_schedules: z
+			.array(
+				z.object({
+					name: z.string().optional(),
+					cron: z.string().optional(),
+				}),
+			)
+			.optional(),
+		functions_config: z
+			.object({})
+			.catchall(
+				z.object({
+					display_name: z.string().optional(),
+					generator: z.string().optional(),
+					build_data: z.object({}).optional(),
+					routes: z
+						.array(
+							z.object({
+								pattern: z.string().optional(),
+								literal: z.string().optional(),
+								expression: z.string().optional(),
+								methods: z
+									.array(z.enum(["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]))
+									.optional(),
+								prefer_static: z.boolean().optional(),
+							}),
+						)
+						.optional(),
+					excluded_routes: z
+						.array(
+							z.object({
+								pattern: z.string().optional(),
+								literal: z.string().optional(),
+								expression: z.string().optional(),
+							}),
+						)
+						.optional(),
+					priority: z.int().optional(),
+					region: z.string().optional(),
+					traffic_rules: z
+						.object({
+							action: z
+								.object({
+									type: z.string().optional(),
+									config: z
+										.object({
+											to: z.string().optional(),
+											rate_limit_config: z
+												.object({
+													algorithm: z.enum(["sliding_window"]).optional(),
+													window_size: z.int().optional(),
+													window_limit: z.int().optional(),
+												})
+												.optional(),
+											aggregate: z
+												.object({
+													keys: z
+														.array(
+															z.object({
+																type: z.enum(["ip", "domain"]).optional(),
+															}),
+														)
+														.optional(),
+												})
+												.optional(),
+										})
+										.optional(),
+								})
+								.optional(),
+						})
+						.optional(),
+					event_subscriptions: z.array(z.string()).optional(),
+				}),
+			)
+			.optional(),
+		branch: z.string().optional(),
+		framework: z.string().optional(),
+		framework_version: z.string().optional(),
+		environment: z
+			.array(
+				z.object({
+					key: z.string(),
+					value: z.string(),
+					is_secret: z.boolean(),
+					scopes: z.array(z.enum(["builds", "functions", "runtime", "post-processing"])),
+				}),
+			)
+			.optional()
+			.describe(
+				"A list of deploy-specific environment variable data. Data specified this way applies only\nto this specific deploy and is merged into any existing environment variables set on the\naccount and site.\n\nDeploy-specific environment variable data takes precedence over account and site\nenvironment variable data: For example, a deploy-specific variable with the key `NODE_ENV`\nwill take priority over any existing site- and account-level environment variable data\nwith the key `NODE_ENV`.\n\nEnvironment variable data may be provided at one of two times:\n\n- When creating a new Deploy with deploy files (most common)\n- When finalizing an existing Deploy with deploy files\n\nOnce set, environment variables for a specific deploy cannot be modified. Subsequent\nattempts to modify environment variable data for a deploy will be ignored.\n",
+			),
+	})
+	.describe(
+		"Deploy files can be provided in two ways:\n1. As a JSON object using 'files' (a hash mapping file paths to SHA1 digests), OR\n2. As a zip file using one of these methods:\n   - Set Content-Type to 'application/zip' and send the zip file as the raw request body\n   - Include the zip file content in the 'zip' field of this JSON object with Content-Type 'application/json'\n",
+	);
+
 export const createSplitTestBranchTestsSchema = z.object({
 	branch_tests: z.object({}).optional(),
 });
@@ -2223,6 +2287,21 @@ export const listSitesStatus200Schema = z.array(
 						}),
 					)
 					.optional(),
+				functions_region: z
+					.string()
+					.optional()
+					.describe("The functions region for this deploy as an airport code.\n"),
+				functions_region_overrides: z
+					.array(
+						z.object({
+							name: z.string().optional(),
+							region: z.string().optional(),
+						}),
+					)
+					.optional()
+					.describe(
+						"Functions in the deploy that explicitly specify their own region\n(airport code).\n",
+					),
 			})
 			.optional(),
 		account_id: z.string().optional(),
@@ -2362,6 +2441,21 @@ export const createSiteStatus201Schema = z.object({
 					}),
 				)
 				.optional(),
+			functions_region: z
+				.string()
+				.optional()
+				.describe("The functions region for this deploy as an airport code.\n"),
+			functions_region_overrides: z
+				.array(
+					z.object({
+						name: z.string().optional(),
+						region: z.string().optional(),
+					}),
+				)
+				.optional()
+				.describe(
+					"Functions in the deploy that explicitly specify their own region\n(airport code).\n",
+				),
 		})
 		.optional(),
 	account_id: z.string().optional(),
@@ -2499,6 +2593,21 @@ export const createSiteDataSchema = z
 						}),
 					)
 					.optional(),
+				functions_region: z
+					.string()
+					.optional()
+					.describe("The functions region for this deploy as an airport code.\n"),
+				functions_region_overrides: z
+					.array(
+						z.object({
+							name: z.string().optional(),
+							region: z.string().optional(),
+						}),
+					)
+					.optional()
+					.describe(
+						"Functions in the deploy that explicitly specify their own region\n(airport code).\n",
+					),
 			})
 			.optional(),
 		account_id: z.string().optional(),
@@ -2664,6 +2773,21 @@ export const getSiteStatus200Schema = z.object({
 					}),
 				)
 				.optional(),
+			functions_region: z
+				.string()
+				.optional()
+				.describe("The functions region for this deploy as an airport code.\n"),
+			functions_region_overrides: z
+				.array(
+					z.object({
+						name: z.string().optional(),
+						region: z.string().optional(),
+					}),
+				)
+				.optional()
+				.describe(
+					"Functions in the deploy that explicitly specify their own region\n(airport code).\n",
+				),
 		})
 		.optional(),
 	account_id: z.string().optional(),
@@ -2799,6 +2923,21 @@ export const updateSiteStatus200Schema = z.object({
 					}),
 				)
 				.optional(),
+			functions_region: z
+				.string()
+				.optional()
+				.describe("The functions region for this deploy as an airport code.\n"),
+			functions_region_overrides: z
+				.array(
+					z.object({
+						name: z.string().optional(),
+						region: z.string().optional(),
+					}),
+				)
+				.optional()
+				.describe(
+					"Functions in the deploy that explicitly specify their own region\n(airport code).\n",
+				),
 		})
 		.optional(),
 	account_id: z.string().optional(),
@@ -2936,6 +3075,21 @@ export const updateSiteDataSchema = z
 						}),
 					)
 					.optional(),
+				functions_region: z
+					.string()
+					.optional()
+					.describe("The functions region for this deploy as an airport code.\n"),
+				functions_region_overrides: z
+					.array(
+						z.object({
+							name: z.string().optional(),
+							region: z.string().optional(),
+						}),
+					)
+					.optional()
+					.describe(
+						"Functions in the deploy that explicitly specify their own region\n(airport code).\n",
+					),
 			})
 			.optional(),
 		account_id: z.string().optional(),
@@ -4484,6 +4638,21 @@ export const listSiteDeploysStatus200Schema = z.array(
 				}),
 			)
 			.optional(),
+		functions_region: z
+			.string()
+			.optional()
+			.describe("The functions region for this deploy as an airport code.\n"),
+		functions_region_overrides: z
+			.array(
+				z.object({
+					name: z.string().optional(),
+					region: z.string().optional(),
+				}),
+			)
+			.optional()
+			.describe(
+				"Functions in the deploy that explicitly specify their own region\n(airport code).\n",
+			),
 	}),
 );
 
@@ -4568,6 +4737,21 @@ export const createSiteDeployStatus200Schema = z.object({
 			}),
 		)
 		.optional(),
+	functions_region: z
+		.string()
+		.optional()
+		.describe("The functions region for this deploy as an airport code.\n"),
+	functions_region_overrides: z
+		.array(
+			z.object({
+				name: z.string().optional(),
+				region: z.string().optional(),
+			}),
+		)
+		.optional()
+		.describe(
+			"Functions in the deploy that explicitly specify their own region\n(airport code).\n",
+		),
 });
 
 export const createSiteDeployStatusDefaultSchema = z.object({
@@ -4633,6 +4817,7 @@ export const createSiteDeployDataSchema = z
 						)
 						.optional(),
 					priority: z.int().optional(),
+					region: z.string().optional(),
 					traffic_rules: z
 						.object({
 							action: z
@@ -4734,6 +4919,21 @@ export const getSiteDeployStatus200Schema = z.object({
 			}),
 		)
 		.optional(),
+	functions_region: z
+		.string()
+		.optional()
+		.describe("The functions region for this deploy as an airport code.\n"),
+	functions_region_overrides: z
+		.array(
+			z.object({
+				name: z.string().optional(),
+				region: z.string().optional(),
+			}),
+		)
+		.optional()
+		.describe(
+			"Functions in the deploy that explicitly specify their own region\n(airport code).\n",
+		),
 });
 
 export const getSiteDeployStatusDefaultSchema = z.object({
@@ -4791,6 +4991,21 @@ export const updateSiteDeployStatus200Schema = z.object({
 			}),
 		)
 		.optional(),
+	functions_region: z
+		.string()
+		.optional()
+		.describe("The functions region for this deploy as an airport code.\n"),
+	functions_region_overrides: z
+		.array(
+			z.object({
+				name: z.string().optional(),
+				region: z.string().optional(),
+			}),
+		)
+		.optional()
+		.describe(
+			"Functions in the deploy that explicitly specify their own region\n(airport code).\n",
+		),
 });
 
 export const updateSiteDeployStatusDefaultSchema = z.object({
@@ -4856,6 +5071,7 @@ export const updateSiteDeployDataSchema = z
 						)
 						.optional(),
 					priority: z.int().optional(),
+					region: z.string().optional(),
 					traffic_rules: z
 						.object({
 							action: z
@@ -4971,6 +5187,21 @@ export const cancelSiteDeployStatus201Schema = z.object({
 			}),
 		)
 		.optional(),
+	functions_region: z
+		.string()
+		.optional()
+		.describe("The functions region for this deploy as an airport code.\n"),
+	functions_region_overrides: z
+		.array(
+			z.object({
+				name: z.string().optional(),
+				region: z.string().optional(),
+			}),
+		)
+		.optional()
+		.describe(
+			"Functions in the deploy that explicitly specify their own region\n(airport code).\n",
+		),
 });
 
 export const cancelSiteDeployStatusDefaultSchema = z.object({
@@ -5026,6 +5257,21 @@ export const restoreSiteDeployStatus201Schema = z.object({
 			}),
 		)
 		.optional(),
+	functions_region: z
+		.string()
+		.optional()
+		.describe("The functions region for this deploy as an airport code.\n"),
+	functions_region_overrides: z
+		.array(
+			z.object({
+				name: z.string().optional(),
+				region: z.string().optional(),
+			}),
+		)
+		.optional()
+		.describe(
+			"Functions in the deploy that explicitly specify their own region\n(airport code).\n",
+		),
 });
 
 export const restoreSiteDeployStatusDefaultSchema = z.object({
@@ -5210,6 +5456,21 @@ export const unlinkSiteRepoStatus200Schema = z.object({
 					}),
 				)
 				.optional(),
+			functions_region: z
+				.string()
+				.optional()
+				.describe("The functions region for this deploy as an airport code.\n"),
+			functions_region_overrides: z
+				.array(
+					z.object({
+						name: z.string().optional(),
+						region: z.string().optional(),
+					}),
+				)
+				.optional()
+				.describe(
+					"Functions in the deploy that explicitly specify their own region\n(airport code).\n",
+				),
 		})
 		.optional(),
 	account_id: z.string().optional(),
@@ -5557,6 +5818,21 @@ export const getDeployStatus200Schema = z.object({
 			}),
 		)
 		.optional(),
+	functions_region: z
+		.string()
+		.optional()
+		.describe("The functions region for this deploy as an airport code.\n"),
+	functions_region_overrides: z
+		.array(
+			z.object({
+				name: z.string().optional(),
+				region: z.string().optional(),
+			}),
+		)
+		.optional()
+		.describe(
+			"Functions in the deploy that explicitly specify their own region\n(airport code).\n",
+		),
 });
 
 export const getDeployStatusDefaultSchema = z.object({
@@ -5648,6 +5924,21 @@ export const lockDeployStatus200Schema = z.object({
 			}),
 		)
 		.optional(),
+	functions_region: z
+		.string()
+		.optional()
+		.describe("The functions region for this deploy as an airport code.\n"),
+	functions_region_overrides: z
+		.array(
+			z.object({
+				name: z.string().optional(),
+				region: z.string().optional(),
+			}),
+		)
+		.optional()
+		.describe(
+			"Functions in the deploy that explicitly specify their own region\n(airport code).\n",
+		),
 });
 
 export const lockDeployStatusDefaultSchema = z.object({
@@ -5701,6 +5992,21 @@ export const unlockDeployStatus200Schema = z.object({
 			}),
 		)
 		.optional(),
+	functions_region: z
+		.string()
+		.optional()
+		.describe("The functions region for this deploy as an airport code.\n"),
+	functions_region_overrides: z
+		.array(
+			z.object({
+				name: z.string().optional(),
+				region: z.string().optional(),
+			}),
+		)
+		.optional()
+		.describe(
+			"Functions in the deploy that explicitly specify their own region\n(airport code).\n",
+		),
 });
 
 export const unlockDeployStatusDefaultSchema = z.object({
@@ -5755,6 +6061,7 @@ export const uploadDeployFunctionStatus200Schema = z.object({
 	id: z.string().optional(),
 	name: z.string().optional(),
 	sha: z.string().optional(),
+	region: z.string().optional(),
 });
 
 export const uploadDeployFunctionStatusDefaultSchema = z.object({
@@ -6237,6 +6544,21 @@ export const createSiteInTeamStatus201Schema = z.object({
 					}),
 				)
 				.optional(),
+			functions_region: z
+				.string()
+				.optional()
+				.describe("The functions region for this deploy as an airport code.\n"),
+			functions_region_overrides: z
+				.array(
+					z.object({
+						name: z.string().optional(),
+						region: z.string().optional(),
+					}),
+				)
+				.optional()
+				.describe(
+					"Functions in the deploy that explicitly specify their own region\n(airport code).\n",
+				),
 		})
 		.optional(),
 	account_id: z.string().optional(),
@@ -6374,6 +6696,21 @@ export const createSiteInTeamDataSchema = z
 						}),
 					)
 					.optional(),
+				functions_region: z
+					.string()
+					.optional()
+					.describe("The functions region for this deploy as an airport code.\n"),
+				functions_region_overrides: z
+					.array(
+						z.object({
+							name: z.string().optional(),
+							region: z.string().optional(),
+						}),
+					)
+					.optional()
+					.describe(
+						"Functions in the deploy that explicitly specify their own region\n(airport code).\n",
+					),
 			})
 			.optional(),
 		account_id: z.string().optional(),
@@ -6544,6 +6881,21 @@ export const listSitesForAccountStatus200Schema = z.array(
 						}),
 					)
 					.optional(),
+				functions_region: z
+					.string()
+					.optional()
+					.describe("The functions region for this deploy as an airport code.\n"),
+				functions_region_overrides: z
+					.array(
+						z.object({
+							name: z.string().optional(),
+							region: z.string().optional(),
+						}),
+					)
+					.optional()
+					.describe(
+						"Functions in the deploy that explicitly specify their own region\n(airport code).\n",
+					),
 			})
 			.optional(),
 		account_id: z.string().optional(),
