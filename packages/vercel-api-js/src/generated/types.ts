@@ -10466,6 +10466,37 @@ export type UserEvent = {
 						/**
 						 * @type object
 						 */
+						endpoint: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string
+							 */
+							name: string;
+							/**
+							 * @type string
+							 */
+							projectId: string;
+							/**
+							 * @type string
+							 */
+							vercelRegion: string;
+							/**
+							 * @type string
+							 */
+							awsServiceName: string;
+							/**
+							 * @type array | undefined
+							 */
+							privateDnsNames?: string[] | undefined;
+						};
+				  }
+				| {
+						/**
+						 * @type object
+						 */
 						privateLinkEndpoint: {
 							/**
 							 * @type string
@@ -10480,6 +10511,66 @@ export type UserEvent = {
 						 * @type string
 						 */
 						projectId: string;
+				  }
+				| {
+						/**
+						 * @type object
+						 */
+						prev: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string
+							 */
+							name: string;
+							/**
+							 * @type string
+							 */
+							projectId: string;
+							/**
+							 * @type string
+							 */
+							vercelRegion: string;
+							/**
+							 * @type string
+							 */
+							awsServiceName: string;
+							/**
+							 * @type array | undefined
+							 */
+							privateDnsNames?: string[] | undefined;
+						};
+						/**
+						 * @type object
+						 */
+						current: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string
+							 */
+							name: string;
+							/**
+							 * @type string
+							 */
+							projectId: string;
+							/**
+							 * @type string
+							 */
+							vercelRegion: string;
+							/**
+							 * @type string
+							 */
+							awsServiceName: string;
+							/**
+							 * @type array | undefined
+							 */
+							privateDnsNames?: string[] | undefined;
+						};
 				  }
 				| {
 						/**
