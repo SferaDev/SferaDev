@@ -1,5 +1,5 @@
 {
-	"name": "@sferadev/openapi-mcp-server",
+	"name": "@sferadev/openapi-mcp",
 	"version": "0.0.1",
 	"description": "Turn any OpenAPI spec into a fully-featured MCP server with OAuth and API key auth",
 	"type": "module",
@@ -8,14 +8,14 @@
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/SferaDev/SferaDev.git",
-		"directory": "packages/openapi-mcp-server"
+		"directory": "packages/openapi-mcp"
 	},
 	"bugs": {
 		"url": "https://github.com/SferaDev/SferaDev/issues"
 	},
 	"homepage": "https://github.com/SferaDev/SferaDev#readme",
 	"bin": {
-		"openapi-mcp-server": "./dist/cli.mjs"
+		"openapi-mcp": "./dist/cli.mjs"
 	},
 	"scripts": {
 		"build": "bunchee",

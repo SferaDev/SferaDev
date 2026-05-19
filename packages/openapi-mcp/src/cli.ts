@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 /**
- * openapi-mcp-server CLI
+ * openapi-mcp CLI
  *
  * Usage:
- *   openapi-mcp-server --spec <path-or-url> [options]
+ *   openapi-mcp --spec <path-or-url> [options]
  *
  * Options:
  *   --spec <path|url>           Path or URL to OpenAPI spec (required)
@@ -240,10 +240,10 @@ async function discoverJwksUri(issuerUrl: string): Promise<string> {
 
 function printHelp() {
 	console.error(`
-openapi-mcp-server — Turn any OpenAPI spec into an MCP server
+openapi-mcp — Turn any OpenAPI spec into an MCP server
 
 Usage:
-  openapi-mcp-server --spec <path-or-url> [options]
+  openapi-mcp --spec <path-or-url> [options]
 
 Required:
   --spec <path|url>             Path or URL to an OpenAPI 3.x spec (JSON or YAML)
@@ -274,16 +274,16 @@ Tool filtering:
 
 Examples:
   # Stdio transport (for Claude Desktop)
-  openapi-mcp-server --spec ./openapi.yaml --auth-type apiKey --auth-apikey sk-123
+  openapi-mcp --spec ./openapi.yaml --auth-type apiKey --auth-apikey sk-123
 
   # HTTP transport with OAuth protection
-  openapi-mcp-server --spec https://api.example.com/openapi.json \\
+  openapi-mcp --spec https://api.example.com/openapi.json \\
     --transport http --port 8080 \\
     --oauth-issuer https://auth.example.com \\
     --auth-type bearer --auth-bearer sk-upstream-token
 
   # Filter to specific tags only
-  openapi-mcp-server --spec ./openapi.yaml --tags users,billing
+  openapi-mcp --spec ./openapi.yaml --tags users,billing
 `);
 }
 

@@ -4,7 +4,7 @@
 			"type": "stdio",
 			"command": "node",
 			"args": [
-				"${workspaceFolder}/packages/openapi-mcp-server/dist/cli.mjs",
+				"${workspaceFolder}/packages/openapi-mcp/dist/cli.mjs",
 				"--spec",
 				"https://api.xata.tech/openapi.json",
 				"--auth-type",
