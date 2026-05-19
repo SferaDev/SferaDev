@@ -10250,6 +10250,10 @@ export type UserEvent = {
 						 * @type string
 						 */
 						previousStatus: string;
+						/**
+						 * @type string
+						 */
+						justification: string;
 				  }
 				| {
 						/**
@@ -10264,6 +10268,10 @@ export type UserEvent = {
 						 * @type string
 						 */
 						previousStatus: string;
+						/**
+						 * @type string
+						 */
+						justification: string;
 				  }
 				| {
 						/**
@@ -10310,6 +10318,10 @@ export type UserEvent = {
 						 * @type string
 						 */
 						previousStatus: string;
+						/**
+						 * @type string
+						 */
+						justification: string | null;
 				  }
 				| {
 						/**
@@ -18409,9 +18421,11 @@ export type TeamNsnbConfigPreferenceEnumKey =
 	(typeof teamNsnbConfigPreferenceEnum)[keyof typeof teamNsnbConfigPreferenceEnum];
 
 export const teamDeploymentPolicyDeploymentSourcesSourcesEnum = {
-	api: "api",
 	cli: "cli",
+	"deploy-hook": "deploy-hook",
 	git: "git",
+	integration: "integration",
+	"rest-api": "rest-api",
 } as const;
 
 export type TeamDeploymentPolicyDeploymentSourcesSourcesEnumKey =

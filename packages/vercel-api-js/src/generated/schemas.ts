@@ -5172,6 +5172,7 @@ export const userEventSchema = z
 						projectId: z.string(),
 						headerName: z.string(),
 						previousStatus: z.string(),
+						justification: z.string(),
 					})
 					.strict(),
 				z
@@ -5179,6 +5180,7 @@ export const userEventSchema = z
 						projectId: z.string(),
 						url: z.string(),
 						previousStatus: z.string(),
+						justification: z.string(),
 					})
 					.strict(),
 				z
@@ -5201,6 +5203,7 @@ export const userEventSchema = z
 						url: z.string().optional(),
 						headerName: z.string().optional(),
 						previousStatus: z.string(),
+						justification: z.string().nullable(),
 					})
 					.strict(),
 				z
@@ -10102,7 +10105,7 @@ export const teamSchema = z
 					),
 				deploymentSources: z
 					.object({
-						sources: z.array(z.enum(["api", "cli", "git"])),
+						sources: z.array(z.enum(["cli", "deploy-hook", "git", "integration", "rest-api"])),
 						enabled: z.union([z.literal(false), z.literal(true)]),
 					})
 					.optional()
