@@ -1399,6 +1399,7 @@ export const userEventTypeEnum = {
 	"cert-replace": "cert-replace",
 	"cert-system-create": "cert-system-create",
 	"concurrent-builds-update": "concurrent-builds-update",
+	"connect-attach-project": "connect-attach-project",
 	"connect-bitbucket": "connect-bitbucket",
 	"connect-bitbucket-app": "connect-bitbucket-app",
 	"connect-configuration-created": "connect-configuration-created",
@@ -1407,11 +1408,19 @@ export const userEventTypeEnum = {
 	"connect-configuration-linked": "connect-configuration-linked",
 	"connect-configuration-unlinked": "connect-configuration-unlinked",
 	"connect-configuration-updated": "connect-configuration-updated",
+	"connect-create-connector": "connect-create-connector",
+	"connect-delete-connector": "connect-delete-connector",
+	"connect-delete-installation": "connect-delete-installation",
+	"connect-detach-project": "connect-detach-project",
 	"connect-github": "connect-github",
 	"connect-github-custom-host": "connect-github-custom-host",
 	"connect-github-limited": "connect-github-limited",
 	"connect-gitlab": "connect-gitlab",
 	"connect-gitlab-app": "connect-gitlab-app",
+	"connect-revoke-all-tokens": "connect-revoke-all-tokens",
+	"connect-update-connector": "connect-update-connector",
+	"connect-update-trigger-destinations": "connect-update-trigger-destinations",
+	"connect-upsert-installation": "connect-upsert-installation",
 	"custom-alert-created": "custom-alert-created",
 	"custom-alert-deleted": "custom-alert-deleted",
 	"custom-alert-updated": "custom-alert-updated",
@@ -1937,6 +1946,13 @@ export const reasonEnum = {
 } as const;
 
 export type ReasonEnumKey = (typeof reasonEnum)[keyof typeof reasonEnum];
+
+export const subjectTypeEnum = {
+	user: "user",
+	app: "app",
+} as const;
+
+export type SubjectTypeEnumKey = (typeof subjectTypeEnum)[keyof typeof subjectTypeEnum];
 
 export const commitVerificationEnum = {
 	verified: "verified",
@@ -4308,6 +4324,44 @@ export type UserEvent = {
 						 * @type string
 						 */
 						bitbucketAccountId: string;
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						clientId?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						clientUid?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						clientName?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						projectId?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						installationId?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						subjectType?: SubjectTypeEnumKey | undefined;
+						/**
+						 * @type array | undefined
+						 */
+						fields?: string[] | undefined;
+						/**
+						 * @type number | undefined
+						 */
+						triggerDestinationCount?: number | undefined;
+						/**
+						 * @type number | undefined
+						 */
+						tokensDeleted?: number | undefined;
 				  }
 				| {
 						/**
@@ -15340,6 +15394,7 @@ export const listEventTypeNameEnum = {
 	"cert-replace": "cert-replace",
 	"cert-system-create": "cert-system-create",
 	"concurrent-builds-update": "concurrent-builds-update",
+	"connect-attach-project": "connect-attach-project",
 	"connect-bitbucket": "connect-bitbucket",
 	"connect-bitbucket-app": "connect-bitbucket-app",
 	"connect-configuration-created": "connect-configuration-created",
@@ -15348,11 +15403,19 @@ export const listEventTypeNameEnum = {
 	"connect-configuration-linked": "connect-configuration-linked",
 	"connect-configuration-unlinked": "connect-configuration-unlinked",
 	"connect-configuration-updated": "connect-configuration-updated",
+	"connect-create-connector": "connect-create-connector",
+	"connect-delete-connector": "connect-delete-connector",
+	"connect-delete-installation": "connect-delete-installation",
+	"connect-detach-project": "connect-detach-project",
 	"connect-github": "connect-github",
 	"connect-github-custom-host": "connect-github-custom-host",
 	"connect-github-limited": "connect-github-limited",
 	"connect-gitlab": "connect-gitlab",
 	"connect-gitlab-app": "connect-gitlab-app",
+	"connect-revoke-all-tokens": "connect-revoke-all-tokens",
+	"connect-update-connector": "connect-update-connector",
+	"connect-update-trigger-destinations": "connect-update-trigger-destinations",
+	"connect-upsert-installation": "connect-upsert-installation",
 	"custom-alert-created": "custom-alert-created",
 	"custom-alert-deleted": "custom-alert-deleted",
 	"custom-alert-updated": "custom-alert-updated",
@@ -15862,6 +15925,7 @@ export const listEventTypeReplacedByEnum = {
 	"cert-replace": "cert-replace",
 	"cert-system-create": "cert-system-create",
 	"concurrent-builds-update": "concurrent-builds-update",
+	"connect-attach-project": "connect-attach-project",
 	"connect-bitbucket": "connect-bitbucket",
 	"connect-bitbucket-app": "connect-bitbucket-app",
 	"connect-configuration-created": "connect-configuration-created",
@@ -15870,11 +15934,19 @@ export const listEventTypeReplacedByEnum = {
 	"connect-configuration-linked": "connect-configuration-linked",
 	"connect-configuration-unlinked": "connect-configuration-unlinked",
 	"connect-configuration-updated": "connect-configuration-updated",
+	"connect-create-connector": "connect-create-connector",
+	"connect-delete-connector": "connect-delete-connector",
+	"connect-delete-installation": "connect-delete-installation",
+	"connect-detach-project": "connect-detach-project",
 	"connect-github": "connect-github",
 	"connect-github-custom-host": "connect-github-custom-host",
 	"connect-github-limited": "connect-github-limited",
 	"connect-gitlab": "connect-gitlab",
 	"connect-gitlab-app": "connect-gitlab-app",
+	"connect-revoke-all-tokens": "connect-revoke-all-tokens",
+	"connect-update-connector": "connect-update-connector",
+	"connect-update-trigger-destinations": "connect-update-trigger-destinations",
+	"connect-upsert-installation": "connect-upsert-installation",
 	"custom-alert-created": "custom-alert-created",
 	"custom-alert-deleted": "custom-alert-deleted",
 	"custom-alert-updated": "custom-alert-updated",
