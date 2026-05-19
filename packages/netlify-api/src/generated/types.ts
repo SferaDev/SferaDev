@@ -2616,7 +2616,7 @@ export type DeployFiles = {
 					 */
 					build_data?: object | undefined;
 					/**
-					 * @description The function\'s memory allocation in MB.\n
+					 * @description The function\'s memory allocation in MB. Mutually exclusive with `vcpu`.\n
 					 * @type integer | undefined
 					 */
 					memory?: number | undefined;
@@ -2740,6 +2740,11 @@ export type DeployFiles = {
 									| undefined;
 						  }
 						| undefined;
+					/**
+					 * @description Number of vCPUs to provision for the function. Allowed range is\n0.5–2.\n
+					 * @type number | undefined
+					 */
+					vcpu?: number | undefined;
 					/**
 					 * @type array | undefined
 					 */
@@ -4585,7 +4590,7 @@ export type FunctionConfig = {
 	 */
 	build_data?: object | undefined;
 	/**
-	 * @description The function\'s memory allocation in MB.\n
+	 * @description The function\'s memory allocation in MB. Mutually exclusive with `vcpu`.\n
 	 * @type integer | undefined
 	 */
 	memory?: number | undefined;
@@ -4711,6 +4716,11 @@ export type FunctionConfig = {
 					| undefined;
 		  }
 		| undefined;
+	/**
+	 * @description Number of vCPUs to provision for the function. Allowed range is\n0.5–2.\n
+	 * @type number | undefined
+	 */
+	vcpu?: number | undefined;
 	/**
 	 * @type array | undefined
 	 */
@@ -5078,236 +5088,6 @@ export type AiGatewayToken = {
 	 * @type integer | undefined
 	 */
 	expires_at?: bigint | undefined;
-};
-
-/**
- * @description Deploy files can be provided in two ways:\n1. As a JSON object using \'files\' (a hash mapping file paths to SHA1 digests), OR\n2. As a zip file using one of these methods:\n   - Set Content-Type to \'application/zip\' and send the zip file as the raw request body\n   - Include the zip file content in the \'zip\' field of this JSON object with Content-Type \'application/json\'\n
- * @type object
- */
-export type CreateSiteDeployDeploy = {
-	/**
-	 * @description A hash mapping file paths to SHA1 digests of the file contents.
-	 * @type object | undefined
-	 */
-	files?: object | undefined;
-	/**
-	 * @description A zip file containing the site files to deploy. Alternative to \'files\'.\nTo use this field, set Content-Type to \'application/json\' and include the zip content here.\nAlternatively, you can set Content-Type to \'application/zip\' and send the zip as the raw request body (not as JSON).\n
-	 * @type string | undefined
-	 */
-	zip?: Blob | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	draft?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	async?: boolean | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	functions?: object | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	function_schedules?:
-		| {
-				/**
-				 * @type string | undefined
-				 */
-				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				cron?: string | undefined;
-		  }[]
-		| undefined;
-	/**
-	 * @type object | undefined
-	 */
-	functions_config?:
-		| {
-				[key: string]: {
-					/**
-					 * @type string | undefined
-					 */
-					display_name?: string | undefined;
-					/**
-					 * @type string | undefined
-					 */
-					generator?: string | undefined;
-					/**
-					 * @type object | undefined
-					 */
-					build_data?: object | undefined;
-					/**
-					 * @description The function\'s memory allocation in MB.\n
-					 * @type integer | undefined
-					 */
-					memory?: number | undefined;
-					/**
-					 * @type array | undefined
-					 */
-					routes?:
-						| {
-								/**
-								 * @type string | undefined
-								 */
-								pattern?: string | undefined;
-								/**
-								 * @type string | undefined
-								 */
-								literal?: string | undefined;
-								/**
-								 * @type string | undefined
-								 */
-								expression?: string | undefined;
-								/**
-								 * @type array | undefined
-								 */
-								methods?: ("GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "OPTIONS")[] | undefined;
-								/**
-								 * @type boolean | undefined
-								 */
-								prefer_static?: boolean | undefined;
-						  }[]
-						| undefined;
-					/**
-					 * @type array | undefined
-					 */
-					excluded_routes?:
-						| {
-								/**
-								 * @type string | undefined
-								 */
-								pattern?: string | undefined;
-								/**
-								 * @type string | undefined
-								 */
-								literal?: string | undefined;
-								/**
-								 * @type string | undefined
-								 */
-								expression?: string | undefined;
-						  }[]
-						| undefined;
-					/**
-					 * @type integer | undefined
-					 */
-					priority?: number | undefined;
-					/**
-					 * @type string | undefined
-					 */
-					region?: string | undefined;
-					/**
-					 * @type object | undefined
-					 */
-					traffic_rules?:
-						| {
-								/**
-								 * @type object | undefined
-								 */
-								action?:
-									| {
-											/**
-											 * @type string | undefined
-											 */
-											type?: string | undefined;
-											/**
-											 * @type object | undefined
-											 */
-											config?:
-												| {
-														/**
-														 * @type string | undefined
-														 */
-														to?: string | undefined;
-														/**
-														 * @type object | undefined
-														 */
-														rate_limit_config?:
-															| {
-																	/**
-																	 * @type string | undefined
-																	 */
-																	algorithm?: AlgorithmEnumKey | undefined;
-																	/**
-																	 * @type integer | undefined
-																	 */
-																	window_size?: number | undefined;
-																	/**
-																	 * @type integer | undefined
-																	 */
-																	window_limit?: number | undefined;
-															  }
-															| undefined;
-														/**
-														 * @type object | undefined
-														 */
-														aggregate?:
-															| {
-																	/**
-																	 * @type array | undefined
-																	 */
-																	keys?:
-																		| {
-																				/**
-																				 * @type string | undefined
-																				 */
-																				type?: TypeEnumKey | undefined;
-																		  }[]
-																		| undefined;
-															  }
-															| undefined;
-												  }
-												| undefined;
-									  }
-									| undefined;
-						  }
-						| undefined;
-					/**
-					 * @type array | undefined
-					 */
-					event_subscriptions?: string[] | undefined;
-				};
-		  }
-		| undefined;
-	/**
-	 * @type string | undefined
-	 */
-	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	framework?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	framework_version?: string | undefined;
-	/**
-	 * @description A list of deploy-specific environment variable data. Data specified this way applies only\nto this specific deploy and is merged into any existing environment variables set on the\naccount and site.\n\nDeploy-specific environment variable data takes precedence over account and site\nenvironment variable data: For example, a deploy-specific variable with the key `NODE_ENV`\nwill take priority over any existing site- and account-level environment variable data\nwith the key `NODE_ENV`.\n\nEnvironment variable data may be provided at one of two times:\n\n- When creating a new Deploy with deploy files (most common)\n- When finalizing an existing Deploy with deploy files\n\nOnce set, environment variables for a specific deploy cannot be modified. Subsequent\nattempts to modify environment variable data for a deploy will be ignored.\n
-	 * @type array | undefined
-	 */
-	environment?:
-		| {
-				/**
-				 * @type string
-				 */
-				key: string;
-				/**
-				 * @type string
-				 */
-				value: string;
-				/**
-				 * @type boolean
-				 */
-				is_secret: boolean;
-				/**
-				 * @type array
-				 */
-				scopes: ("builds" | "functions" | "runtime" | "post-processing")[];
-		  }[]
-		| undefined;
 };
 
 export type CreateSiteSite = {
@@ -5865,6 +5645,241 @@ export type CreateSiteSnippetSnippet = {
 	 * @type string | undefined
 	 */
 	goal_position?: string | undefined;
+};
+
+/**
+ * @description Deploy files can be provided in two ways:\n1. As a JSON object using \'files\' (a hash mapping file paths to SHA1 digests), OR\n2. As a zip file using one of these methods:\n   - Set Content-Type to \'application/zip\' and send the zip file as the raw request body\n   - Include the zip file content in the \'zip\' field of this JSON object with Content-Type \'application/json\'\n
+ * @type object
+ */
+export type CreateSiteDeployDeploy = {
+	/**
+	 * @description A hash mapping file paths to SHA1 digests of the file contents.
+	 * @type object | undefined
+	 */
+	files?: object | undefined;
+	/**
+	 * @description A zip file containing the site files to deploy. Alternative to \'files\'.\nTo use this field, set Content-Type to \'application/json\' and include the zip content here.\nAlternatively, you can set Content-Type to \'application/zip\' and send the zip as the raw request body (not as JSON).\n
+	 * @type string | undefined
+	 */
+	zip?: Blob | undefined;
+	/**
+	 * @type boolean | undefined
+	 */
+	draft?: boolean | undefined;
+	/**
+	 * @type boolean | undefined
+	 */
+	async?: boolean | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	functions?: object | undefined;
+	/**
+	 * @type array | undefined
+	 */
+	function_schedules?:
+		| {
+				/**
+				 * @type string | undefined
+				 */
+				name?: string | undefined;
+				/**
+				 * @type string | undefined
+				 */
+				cron?: string | undefined;
+		  }[]
+		| undefined;
+	/**
+	 * @type object | undefined
+	 */
+	functions_config?:
+		| {
+				[key: string]: {
+					/**
+					 * @type string | undefined
+					 */
+					display_name?: string | undefined;
+					/**
+					 * @type string | undefined
+					 */
+					generator?: string | undefined;
+					/**
+					 * @type object | undefined
+					 */
+					build_data?: object | undefined;
+					/**
+					 * @description The function\'s memory allocation in MB. Mutually exclusive with `vcpu`.\n
+					 * @type integer | undefined
+					 */
+					memory?: number | undefined;
+					/**
+					 * @type array | undefined
+					 */
+					routes?:
+						| {
+								/**
+								 * @type string | undefined
+								 */
+								pattern?: string | undefined;
+								/**
+								 * @type string | undefined
+								 */
+								literal?: string | undefined;
+								/**
+								 * @type string | undefined
+								 */
+								expression?: string | undefined;
+								/**
+								 * @type array | undefined
+								 */
+								methods?: ("GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "OPTIONS")[] | undefined;
+								/**
+								 * @type boolean | undefined
+								 */
+								prefer_static?: boolean | undefined;
+						  }[]
+						| undefined;
+					/**
+					 * @type array | undefined
+					 */
+					excluded_routes?:
+						| {
+								/**
+								 * @type string | undefined
+								 */
+								pattern?: string | undefined;
+								/**
+								 * @type string | undefined
+								 */
+								literal?: string | undefined;
+								/**
+								 * @type string | undefined
+								 */
+								expression?: string | undefined;
+						  }[]
+						| undefined;
+					/**
+					 * @type integer | undefined
+					 */
+					priority?: number | undefined;
+					/**
+					 * @type string | undefined
+					 */
+					region?: string | undefined;
+					/**
+					 * @type object | undefined
+					 */
+					traffic_rules?:
+						| {
+								/**
+								 * @type object | undefined
+								 */
+								action?:
+									| {
+											/**
+											 * @type string | undefined
+											 */
+											type?: string | undefined;
+											/**
+											 * @type object | undefined
+											 */
+											config?:
+												| {
+														/**
+														 * @type string | undefined
+														 */
+														to?: string | undefined;
+														/**
+														 * @type object | undefined
+														 */
+														rate_limit_config?:
+															| {
+																	/**
+																	 * @type string | undefined
+																	 */
+																	algorithm?: AlgorithmEnumKey | undefined;
+																	/**
+																	 * @type integer | undefined
+																	 */
+																	window_size?: number | undefined;
+																	/**
+																	 * @type integer | undefined
+																	 */
+																	window_limit?: number | undefined;
+															  }
+															| undefined;
+														/**
+														 * @type object | undefined
+														 */
+														aggregate?:
+															| {
+																	/**
+																	 * @type array | undefined
+																	 */
+																	keys?:
+																		| {
+																				/**
+																				 * @type string | undefined
+																				 */
+																				type?: TypeEnumKey | undefined;
+																		  }[]
+																		| undefined;
+															  }
+															| undefined;
+												  }
+												| undefined;
+									  }
+									| undefined;
+						  }
+						| undefined;
+					/**
+					 * @description Number of vCPUs to provision for the function. Allowed range is\n0.5–2.\n
+					 * @type number | undefined
+					 */
+					vcpu?: number | undefined;
+					/**
+					 * @type array | undefined
+					 */
+					event_subscriptions?: string[] | undefined;
+				};
+		  }
+		| undefined;
+	/**
+	 * @type string | undefined
+	 */
+	branch?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	framework?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	framework_version?: string | undefined;
+	/**
+	 * @description A list of deploy-specific environment variable data. Data specified this way applies only\nto this specific deploy and is merged into any existing environment variables set on the\naccount and site.\n\nDeploy-specific environment variable data takes precedence over account and site\nenvironment variable data: For example, a deploy-specific variable with the key `NODE_ENV`\nwill take priority over any existing site- and account-level environment variable data\nwith the key `NODE_ENV`.\n\nEnvironment variable data may be provided at one of two times:\n\n- When creating a new Deploy with deploy files (most common)\n- When finalizing an existing Deploy with deploy files\n\nOnce set, environment variables for a specific deploy cannot be modified. Subsequent\nattempts to modify environment variable data for a deploy will be ignored.\n
+	 * @type array | undefined
+	 */
+	environment?:
+		| {
+				/**
+				 * @type string
+				 */
+				key: string;
+				/**
+				 * @type string
+				 */
+				value: string;
+				/**
+				 * @type boolean
+				 */
+				is_secret: boolean;
+				/**
+				 * @type array
+				 */
+				scopes: ("builds" | "functions" | "runtime" | "post-processing")[];
+		  }[]
+		| undefined;
 };
 
 /**
@@ -13108,7 +13123,7 @@ export type CreateSiteDeployData =
 							 */
 							build_data?: object | undefined;
 							/**
-							 * @description The function\'s memory allocation in MB.\n
+							 * @description The function\'s memory allocation in MB. Mutually exclusive with `vcpu`.\n
 							 * @type integer | undefined
 							 */
 							memory?: number | undefined;
@@ -13234,6 +13249,11 @@ export type CreateSiteDeployData =
 											| undefined;
 								  }
 								| undefined;
+							/**
+							 * @description Number of vCPUs to provision for the function. Allowed range is\n0.5–2.\n
+							 * @type number | undefined
+							 */
+							vcpu?: number | undefined;
 							/**
 							 * @type array | undefined
 							 */
@@ -13796,7 +13816,7 @@ export type UpdateSiteDeployData =
 							 */
 							build_data?: object | undefined;
 							/**
-							 * @description The function\'s memory allocation in MB.\n
+							 * @description The function\'s memory allocation in MB. Mutually exclusive with `vcpu`.\n
 							 * @type integer | undefined
 							 */
 							memory?: number | undefined;
@@ -13922,6 +13942,11 @@ export type UpdateSiteDeployData =
 											| undefined;
 								  }
 								| undefined;
+							/**
+							 * @description Number of vCPUs to provision for the function. Allowed range is\n0.5–2.\n
+							 * @type number | undefined
+							 */
+							vcpu?: number | undefined;
 							/**
 							 * @type array | undefined
 							 */
