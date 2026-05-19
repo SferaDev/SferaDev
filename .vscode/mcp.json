@@ -10,16 +10,8 @@
 				"--auth-type",
 				"bearer",
 				"--auth-bearer",
-				"${input:xataApiKey}"
+				"${env:XATA_API_KEY}"
 			]
 		}
-	},
-	"inputs": [
-		{
-			"id": "xataApiKey",
-			"type": "promptString",
-			"description": "Xata API key",
-			"password": true
-		}
-	]
+	}
 }
