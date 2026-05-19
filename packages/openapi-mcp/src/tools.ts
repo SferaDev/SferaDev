@@ -60,12 +60,13 @@ export function registerTools(options: RegisterToolsOptions): RegisteredOperatio
 					openWorldHint: true,
 				},
 			},
-			async (args) => {
+			async (args, extra) => {
 				return executeOperation({
 					operation,
 					args: args as Record<string, unknown>,
 					baseUrl,
 					auth,
+					incomingAuthorization: extractIncomingAuthorization(extra),
 				});
 			},
 		);
@@ -86,10 +87,11 @@ interface ExecuteOperationOptions {
 	args: Record<string, unknown>;
 	baseUrl: string;
 	auth: UpstreamAuth;
+	incomingAuthorization?: string;
 }
 
 async function executeOperation(options: ExecuteOperationOptions) {
-	const { operation, args, baseUrl, auth } = options;
+	const { operation, args, baseUrl, auth, incomingAuthorization } = options;
 
 	// Build path with path parameters substituted
 	let path = operation.path;
@@ -124,7 +126,7 @@ async function executeOperation(options: ExecuteOperationOptions) {
 	// Build headers
 	const headers: Record<string, string> = {
 		Accept: "application/json",
-		...buildAuthHeaders(auth),
+		...buildAuthHeaders(auth, incomingAuthorization),
 	};
 
 	// Build request body
@@ -201,4 +203,11 @@ async function executeOperation(options: ExecuteOperationOptions) {
 	return {
 		content: [{ type: "text" as const, text }],
 	};
+}
+
+function extractIncomingAuthorization(extra: unknown): string | undefined {
+	if (typeof extra !== "object" || extra === null) return undefined;
+	const authInfo = (extra as { authInfo?: { token?: string } }).authInfo;
+	if (!authInfo?.token) return undefined;
+	return `Bearer ${authInfo.token}`;
 }
