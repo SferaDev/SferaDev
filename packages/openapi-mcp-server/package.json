@@ -1,0 +1,72 @@
+{
+	"name": "@sferadev/openapi-mcp-server",
+	"version": "0.0.1",
+	"description": "Turn any OpenAPI spec into a fully-featured MCP server with OAuth and API key auth",
+	"type": "module",
+	"author": "SferaDev",
+	"license": "ISC",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/SferaDev/SferaDev.git",
+		"directory": "packages/openapi-mcp-server"
+	},
+	"bugs": {
+		"url": "https://github.com/SferaDev/SferaDev/issues"
+	},
+	"homepage": "https://github.com/SferaDev/SferaDev#readme",
+	"bin": {
+		"openapi-mcp-server": "./dist/cli.mjs"
+	},
+	"scripts": {
+		"build": "bunchee",
+		"dev": "bunchee --watch",
+		"tsc": "tsc --noEmit",
+		"clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+	},
+	"dependencies": {
+		"@modelcontextprotocol/sdk": "catalog:",
+		"case": "catalog:",
+		"openapi3-ts": "catalog:",
+		"yaml": "catalog:",
+		"zod": "catalog:"
+	},
+	"peerDependencies": {
+		"jose": "^6.0.0"
+	},
+	"peerDependenciesMeta": {
+		"jose": {
+			"optional": true
+		}
+	},
+	"devDependencies": {
+		"@sferadev/tsconfig": "workspace:*",
+		"@types/node": "catalog:",
+		"bunchee": "catalog:",
+		"jose": "catalog:",
+		"typescript": "catalog:"
+	},
+	"files": [
+		"dist"
+	],
+	"exports": {
+		"./package.json": "./package.json",
+		".": {
+			"import": {
+				"types": "./dist/index.d.mts",
+				"default": "./dist/index.mjs"
+			},
+			"require": {
+				"types": "./dist/index.d.cts",
+				"default": "./dist/index.cjs"
+			}
+		},
+		"./cli": {
+			"import": {
+				"default": "./dist/cli.mjs"
+			}
+		}
+	},
+	"main": "dist/index.cjs",
+	"module": "dist/index.mjs",
+	"types": "dist/index.d.ts"
+}
