@@ -6,6 +6,8 @@ packages:
 
 catalog:
   '@ai-sdk/gateway': 3.0.115
+  '@modelcontextprotocol/sdk': 1.29.0
+  'jose': 6.2.3
   '@ai-sdk/openai': 3.0.64
   '@ai-sdk/provider': 3.0.10
   '@ai-sdk/provider-utils': 4.0.27
