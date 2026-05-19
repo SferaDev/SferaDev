@@ -1,0 +1,25 @@
+{
+	"servers": {
+		"xata": {
+			"type": "stdio",
+			"command": "node",
+			"args": [
+				"${workspaceFolder}/packages/openapi-mcp-server/dist/cli.mjs",
+				"--spec",
+				"https://api.xata.tech/openapi.json",
+				"--auth-type",
+				"bearer",
+				"--auth-bearer",
+				"${input:xataApiKey}"
+			]
+		}
+	},
+	"inputs": [
+		{
+			"id": "xataApiKey",
+			"type": "promptString",
+			"description": "Xata API key",
+			"password": true
+		}
+	]
+}
