@@ -44078,6 +44078,11 @@ export type RunCommandStatus410 = unknown;
 export type RunCommandStatus422 = unknown;
 
 /**
+ * @type unknown
+ */
+export type RunCommandStatus500 = unknown;
+
+/**
  * @type object
  */
 export type RunCommandRequestConfig = {
@@ -44115,6 +44120,7 @@ export type RunCommandResponses = {
 	"404": RunCommandStatus404;
 	"410": RunCommandStatus410;
 	"422": RunCommandStatus422;
+	"500": RunCommandStatus500;
 };
 
 /**
@@ -44127,7 +44133,8 @@ export type RunCommandResponse =
 	| RunCommandStatus403
 	| RunCommandStatus404
 	| RunCommandStatus410
-	| RunCommandStatus422;
+	| RunCommandStatus422
+	| RunCommandStatus500;
 
 /**
  * @description The unique identifier of the command to terminate.
@@ -44193,6 +44200,11 @@ export type KillCommandStatus410 = unknown;
 export type KillCommandStatus422 = unknown;
 
 /**
+ * @type unknown
+ */
+export type KillCommandStatus500 = unknown;
+
+/**
  * @type object
  */
 export type KillCommandRequestConfig = {
@@ -44231,6 +44243,7 @@ export type KillCommandResponses = {
 	"404": KillCommandStatus404;
 	"410": KillCommandStatus410;
 	"422": KillCommandStatus422;
+	"500": KillCommandStatus500;
 };
 
 /**
@@ -44243,7 +44256,8 @@ export type KillCommandResponse =
 	| KillCommandStatus403
 	| KillCommandStatus404
 	| KillCommandStatus410
-	| KillCommandStatus422;
+	| KillCommandStatus422
+	| KillCommandStatus500;
 
 /**
  * @description The unique identifier of the sandbox to stop.
@@ -44302,6 +44316,11 @@ export type StopSandboxStatus410 = unknown;
 export type StopSandboxStatus422 = unknown;
 
 /**
+ * @type unknown
+ */
+export type StopSandboxStatus500 = unknown;
+
+/**
  * @type object
  */
 export type StopSandboxRequestConfig = {
@@ -44339,6 +44358,7 @@ export type StopSandboxResponses = {
 	"404": StopSandboxStatus404;
 	"410": StopSandboxStatus410;
 	"422": StopSandboxStatus422;
+	"500": StopSandboxStatus500;
 };
 
 /**
@@ -44351,7 +44371,8 @@ export type StopSandboxResponse =
 	| StopSandboxStatus403
 	| StopSandboxStatus404
 	| StopSandboxStatus410
-	| StopSandboxStatus422;
+	| StopSandboxStatus422
+	| StopSandboxStatus500;
 
 /**
  * @description The unique identifier of the sandbox to extend the timeout for.
@@ -44410,6 +44431,11 @@ export type ExtendSandboxTimeoutStatus410 = unknown;
 export type ExtendSandboxTimeoutStatus422 = unknown;
 
 /**
+ * @type unknown
+ */
+export type ExtendSandboxTimeoutStatus500 = unknown;
+
+/**
  * @type object
  */
 export type ExtendSandboxTimeoutRequestConfig = {
@@ -44447,6 +44473,7 @@ export type ExtendSandboxTimeoutResponses = {
 	"404": ExtendSandboxTimeoutStatus404;
 	"410": ExtendSandboxTimeoutStatus410;
 	"422": ExtendSandboxTimeoutStatus422;
+	"500": ExtendSandboxTimeoutStatus500;
 };
 
 /**
@@ -44459,7 +44486,8 @@ export type ExtendSandboxTimeoutResponse =
 	| ExtendSandboxTimeoutStatus403
 	| ExtendSandboxTimeoutStatus404
 	| ExtendSandboxTimeoutStatus410
-	| ExtendSandboxTimeoutStatus422;
+	| ExtendSandboxTimeoutStatus422
+	| ExtendSandboxTimeoutStatus500;
 
 /**
  * @description The unique identifier of the sandbox to update the network policy for.
@@ -44523,6 +44551,11 @@ export type UpdateNetworkPolicyStatus410 = unknown;
 export type UpdateNetworkPolicyStatus422 = unknown;
 
 /**
+ * @type unknown
+ */
+export type UpdateNetworkPolicyStatus500 = unknown;
+
+/**
  * @type object
  */
 export type UpdateNetworkPolicyRequestConfig = {
@@ -44561,6 +44594,7 @@ export type UpdateNetworkPolicyResponses = {
 	"404": UpdateNetworkPolicyStatus404;
 	"410": UpdateNetworkPolicyStatus410;
 	"422": UpdateNetworkPolicyStatus422;
+	"500": UpdateNetworkPolicyStatus500;
 };
 
 /**
@@ -44574,7 +44608,8 @@ export type UpdateNetworkPolicyResponse =
 	| UpdateNetworkPolicyStatus403
 	| UpdateNetworkPolicyStatus404
 	| UpdateNetworkPolicyStatus410
-	| UpdateNetworkPolicyStatus422;
+	| UpdateNetworkPolicyStatus422
+	| UpdateNetworkPolicyStatus500;
 
 /**
  * @description The unique identifier of the sandbox containing the command.
@@ -44647,6 +44682,11 @@ export type GetCommandStatus410 = unknown;
 export type GetCommandStatus422 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetCommandStatus500 = unknown;
+
+/**
  * @type object
  */
 export type GetCommandRequestConfig = {
@@ -44686,6 +44726,7 @@ export type GetCommandResponses = {
 	"404": GetCommandStatus404;
 	"410": GetCommandStatus410;
 	"422": GetCommandStatus422;
+	"500": GetCommandStatus500;
 };
 
 /**
@@ -44698,7 +44739,8 @@ export type GetCommandResponse =
 	| GetCommandStatus403
 	| GetCommandStatus404
 	| GetCommandStatus410
-	| GetCommandStatus422;
+	| GetCommandStatus422
+	| GetCommandStatus500;
 
 /**
  * @description The unique identifier of the sandbox containing the command.
@@ -44764,6 +44806,11 @@ export type GetCommandLogsStatus410 = unknown;
 export type GetCommandLogsStatus422 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetCommandLogsStatus500 = unknown;
+
+/**
  * @type object
  */
 export type GetCommandLogsRequestConfig = {
@@ -44802,6 +44849,7 @@ export type GetCommandLogsResponses = {
 	"404": GetCommandLogsStatus404;
 	"410": GetCommandLogsStatus410;
 	"422": GetCommandLogsStatus422;
+	"500": GetCommandLogsStatus500;
 };
 
 /**
@@ -44814,7 +44862,8 @@ export type GetCommandLogsResponse =
 	| GetCommandLogsStatus403
 	| GetCommandLogsStatus404
 	| GetCommandLogsStatus410
-	| GetCommandLogsStatus422;
+	| GetCommandLogsStatus422
+	| GetCommandLogsStatus500;
 
 /**
  * @description The unique identifier of the sandbox to read the file from.
@@ -44873,6 +44922,11 @@ export type ReadFileStatus410 = unknown;
 export type ReadFileStatus422 = unknown;
 
 /**
+ * @type unknown
+ */
+export type ReadFileStatus500 = unknown;
+
+/**
  * @type object
  */
 export type ReadFileRequestConfig = {
@@ -44910,6 +44964,7 @@ export type ReadFileResponses = {
 	"404": ReadFileStatus404;
 	"410": ReadFileStatus410;
 	"422": ReadFileStatus422;
+	"500": ReadFileStatus500;
 };
 
 /**
@@ -44922,7 +44977,8 @@ export type ReadFileResponse =
 	| ReadFileStatus403
 	| ReadFileStatus404
 	| ReadFileStatus410
-	| ReadFileStatus422;
+	| ReadFileStatus422
+	| ReadFileStatus500;
 
 /**
  * @description The unique identifier of the sandbox to create the directory in.
@@ -44981,6 +45037,11 @@ export type CreateDirectoryStatus410 = unknown;
 export type CreateDirectoryStatus422 = unknown;
 
 /**
+ * @type unknown
+ */
+export type CreateDirectoryStatus500 = unknown;
+
+/**
  * @type object
  */
 export type CreateDirectoryRequestConfig = {
@@ -45018,6 +45079,7 @@ export type CreateDirectoryResponses = {
 	"404": CreateDirectoryStatus404;
 	"410": CreateDirectoryStatus410;
 	"422": CreateDirectoryStatus422;
+	"500": CreateDirectoryStatus500;
 };
 
 /**
@@ -45030,7 +45092,8 @@ export type CreateDirectoryResponse =
 	| CreateDirectoryStatus403
 	| CreateDirectoryStatus404
 	| CreateDirectoryStatus410
-	| CreateDirectoryStatus422;
+	| CreateDirectoryStatus422
+	| CreateDirectoryStatus500;
 
 /**
  * @description The target directory where the tarball contents will be extracted. If not specified, files are extracted to the sandbox home directory.
@@ -45096,6 +45159,11 @@ export type WriteFilesStatus410 = unknown;
 export type WriteFilesStatus422 = unknown;
 
 /**
+ * @type unknown
+ */
+export type WriteFilesStatus500 = unknown;
+
+/**
  * @type object
  */
 export type WriteFilesRequestConfig = {
@@ -45140,6 +45208,7 @@ export type WriteFilesResponses = {
 	"404": WriteFilesStatus404;
 	"410": WriteFilesStatus410;
 	"422": WriteFilesStatus422;
+	"500": WriteFilesStatus500;
 };
 
 /**
@@ -45152,7 +45221,8 @@ export type WriteFilesResponse =
 	| WriteFilesStatus403
 	| WriteFilesStatus404
 	| WriteFilesStatus410
-	| WriteFilesStatus422;
+	| WriteFilesStatus422
+	| WriteFilesStatus500;
 
 /**
  * @description The unique identifier of the snapshot to retrieve.
@@ -45404,6 +45474,11 @@ export type CreateSnapshotStatus410 = unknown;
 export type CreateSnapshotStatus422 = unknown;
 
 /**
+ * @type unknown
+ */
+export type CreateSnapshotStatus500 = unknown;
+
+/**
  * @type object
  */
 export type CreateSnapshotRequestConfig = {
@@ -45442,6 +45517,7 @@ export type CreateSnapshotResponses = {
 	"404": CreateSnapshotStatus404;
 	"410": CreateSnapshotStatus410;
 	"422": CreateSnapshotStatus422;
+	"500": CreateSnapshotStatus500;
 };
 
 /**
@@ -45455,7 +45531,8 @@ export type CreateSnapshotResponse =
 	| CreateSnapshotStatus403
 	| CreateSnapshotStatus404
 	| CreateSnapshotStatus410
-	| CreateSnapshotStatus422;
+	| CreateSnapshotStatus422
+	| CreateSnapshotStatus500;
 
 /**
  * @description The unique identifier or name of the project to list named sandboxes for.
@@ -46635,6 +46712,11 @@ export type DeleteSandboxStatus410 = unknown;
 export type DeleteSandboxStatus422 = unknown;
 
 /**
+ * @type unknown
+ */
+export type DeleteSandboxStatus500 = unknown;
+
+/**
  * @type object
  */
 export type DeleteSandboxRequestConfig = {
@@ -46673,6 +46755,7 @@ export type DeleteSandboxResponses = {
 	"404": DeleteSandboxStatus404;
 	"410": DeleteSandboxStatus410;
 	"422": DeleteSandboxStatus422;
+	"500": DeleteSandboxStatus500;
 };
 
 /**
@@ -46685,7 +46768,8 @@ export type DeleteSandboxResponse =
 	| DeleteSandboxStatus403
 	| DeleteSandboxStatus404
 	| DeleteSandboxStatus410
-	| DeleteSandboxStatus422;
+	| DeleteSandboxStatus422
+	| DeleteSandboxStatus500;
 
 /**
  * @description The unique identifier of the session to list commands for.
@@ -46838,6 +46922,11 @@ export type RunSessionCommandStatus410 = unknown;
 export type RunSessionCommandStatus422 = unknown;
 
 /**
+ * @type unknown
+ */
+export type RunSessionCommandStatus500 = unknown;
+
+/**
  * @type object
  */
 export type RunSessionCommandRequestConfig = {
@@ -46875,6 +46964,7 @@ export type RunSessionCommandResponses = {
 	"404": RunSessionCommandStatus404;
 	"410": RunSessionCommandStatus410;
 	"422": RunSessionCommandStatus422;
+	"500": RunSessionCommandStatus500;
 };
 
 /**
@@ -46887,7 +46977,8 @@ export type RunSessionCommandResponse =
 	| RunSessionCommandStatus403
 	| RunSessionCommandStatus404
 	| RunSessionCommandStatus410
-	| RunSessionCommandStatus422;
+	| RunSessionCommandStatus422
+	| RunSessionCommandStatus500;
 
 /**
  * @description The unique identifier of the session containing the command.
@@ -46960,6 +47051,11 @@ export type GetSessionCommandStatus410 = unknown;
 export type GetSessionCommandStatus422 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetSessionCommandStatus500 = unknown;
+
+/**
  * @type object
  */
 export type GetSessionCommandRequestConfig = {
@@ -46999,6 +47095,7 @@ export type GetSessionCommandResponses = {
 	"404": GetSessionCommandStatus404;
 	"410": GetSessionCommandStatus410;
 	"422": GetSessionCommandStatus422;
+	"500": GetSessionCommandStatus500;
 };
 
 /**
@@ -47011,7 +47108,8 @@ export type GetSessionCommandResponse =
 	| GetSessionCommandStatus403
 	| GetSessionCommandStatus404
 	| GetSessionCommandStatus410
-	| GetSessionCommandStatus422;
+	| GetSessionCommandStatus422
+	| GetSessionCommandStatus500;
 
 /**
  * @description The unique identifier of the command to terminate.
@@ -47077,6 +47175,11 @@ export type KillSessionCommandStatus410 = unknown;
 export type KillSessionCommandStatus422 = unknown;
 
 /**
+ * @type unknown
+ */
+export type KillSessionCommandStatus500 = unknown;
+
+/**
  * @type object
  */
 export type KillSessionCommandRequestConfig = {
@@ -47115,6 +47218,7 @@ export type KillSessionCommandResponses = {
 	"404": KillSessionCommandStatus404;
 	"410": KillSessionCommandStatus410;
 	"422": KillSessionCommandStatus422;
+	"500": KillSessionCommandStatus500;
 };
 
 /**
@@ -47127,7 +47231,8 @@ export type KillSessionCommandResponse =
 	| KillSessionCommandStatus403
 	| KillSessionCommandStatus404
 	| KillSessionCommandStatus410
-	| KillSessionCommandStatus422;
+	| KillSessionCommandStatus422
+	| KillSessionCommandStatus500;
 
 /**
  * @description The unique identifier of the session containing the command.
@@ -47193,6 +47298,11 @@ export type GetSessionCommandLogsStatus410 = unknown;
 export type GetSessionCommandLogsStatus422 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetSessionCommandLogsStatus500 = unknown;
+
+/**
  * @type object
  */
 export type GetSessionCommandLogsRequestConfig = {
@@ -47231,6 +47341,7 @@ export type GetSessionCommandLogsResponses = {
 	"404": GetSessionCommandLogsStatus404;
 	"410": GetSessionCommandLogsStatus410;
 	"422": GetSessionCommandLogsStatus422;
+	"500": GetSessionCommandLogsStatus500;
 };
 
 /**
@@ -47243,7 +47354,8 @@ export type GetSessionCommandLogsResponse =
 	| GetSessionCommandLogsStatus403
 	| GetSessionCommandLogsStatus404
 	| GetSessionCommandLogsStatus410
-	| GetSessionCommandLogsStatus422;
+	| GetSessionCommandLogsStatus422
+	| GetSessionCommandLogsStatus500;
 
 /**
  * @description The unique identifier of the session to stop.
@@ -47654,6 +47766,11 @@ export type ReadSessionFileStatus410 = unknown;
 export type ReadSessionFileStatus422 = unknown;
 
 /**
+ * @type unknown
+ */
+export type ReadSessionFileStatus500 = unknown;
+
+/**
  * @type object
  */
 export type ReadSessionFileRequestConfig = {
@@ -47691,6 +47808,7 @@ export type ReadSessionFileResponses = {
 	"404": ReadSessionFileStatus404;
 	"410": ReadSessionFileStatus410;
 	"422": ReadSessionFileStatus422;
+	"500": ReadSessionFileStatus500;
 };
 
 /**
@@ -47703,7 +47821,8 @@ export type ReadSessionFileResponse =
 	| ReadSessionFileStatus403
 	| ReadSessionFileStatus404
 	| ReadSessionFileStatus410
-	| ReadSessionFileStatus422;
+	| ReadSessionFileStatus422
+	| ReadSessionFileStatus500;
 
 /**
  * @description The unique identifier of the session to create the directory in.
@@ -47762,6 +47881,11 @@ export type CreateSessionDirectoryStatus410 = unknown;
 export type CreateSessionDirectoryStatus422 = unknown;
 
 /**
+ * @type unknown
+ */
+export type CreateSessionDirectoryStatus500 = unknown;
+
+/**
  * @type object
  */
 export type CreateSessionDirectoryRequestConfig = {
@@ -47799,6 +47923,7 @@ export type CreateSessionDirectoryResponses = {
 	"404": CreateSessionDirectoryStatus404;
 	"410": CreateSessionDirectoryStatus410;
 	"422": CreateSessionDirectoryStatus422;
+	"500": CreateSessionDirectoryStatus500;
 };
 
 /**
@@ -47811,7 +47936,8 @@ export type CreateSessionDirectoryResponse =
 	| CreateSessionDirectoryStatus403
 	| CreateSessionDirectoryStatus404
 	| CreateSessionDirectoryStatus410
-	| CreateSessionDirectoryStatus422;
+	| CreateSessionDirectoryStatus422
+	| CreateSessionDirectoryStatus500;
 
 /**
  * @description The target directory where the tarball contents will be extracted. If not specified, files are extracted to the sandbox home directory.
@@ -47877,6 +48003,11 @@ export type WriteSessionFilesStatus410 = unknown;
 export type WriteSessionFilesStatus422 = unknown;
 
 /**
+ * @type unknown
+ */
+export type WriteSessionFilesStatus500 = unknown;
+
+/**
  * @type object
  */
 export type WriteSessionFilesRequestConfig = {
@@ -47921,6 +48052,7 @@ export type WriteSessionFilesResponses = {
 	"404": WriteSessionFilesStatus404;
 	"410": WriteSessionFilesStatus410;
 	"422": WriteSessionFilesStatus422;
+	"500": WriteSessionFilesStatus500;
 };
 
 /**
@@ -47933,7 +48065,8 @@ export type WriteSessionFilesResponse =
 	| WriteSessionFilesStatus403
 	| WriteSessionFilesStatus404
 	| WriteSessionFilesStatus410
-	| WriteSessionFilesStatus422;
+	| WriteSessionFilesStatus422
+	| WriteSessionFilesStatus500;
 
 /**
  * @description The unique identifier of the session to snapshot.
