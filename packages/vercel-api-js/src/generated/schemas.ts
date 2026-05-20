@@ -19383,6 +19383,8 @@ export const runCommandStatus410Schema = z.unknown();
 
 export const runCommandStatus422Schema = z.unknown();
 
+export const runCommandStatus500Schema = z.unknown();
+
 export const runCommandResponseSchema = z.union([
 	runCommandStatus200Schema,
 	runCommandStatus400Schema,
@@ -19391,6 +19393,7 @@ export const runCommandResponseSchema = z.union([
 	runCommandStatus404Schema,
 	runCommandStatus410Schema,
 	runCommandStatus422Schema,
+	runCommandStatus500Schema,
 ]);
 
 export const killCommandPathCmdIdSchema = z
@@ -19425,6 +19428,8 @@ export const killCommandStatus410Schema = z.unknown();
 
 export const killCommandStatus422Schema = z.unknown();
 
+export const killCommandStatus500Schema = z.unknown();
+
 export const killCommandResponseSchema = z.union([
 	killCommandStatus200Schema,
 	killCommandStatus400Schema,
@@ -19433,6 +19438,7 @@ export const killCommandResponseSchema = z.union([
 	killCommandStatus404Schema,
 	killCommandStatus410Schema,
 	killCommandStatus422Schema,
+	killCommandStatus500Schema,
 ]);
 
 export const stopSandboxPathSandboxIdSchema = z
@@ -19463,6 +19469,8 @@ export const stopSandboxStatus410Schema = z.unknown();
 
 export const stopSandboxStatus422Schema = z.unknown();
 
+export const stopSandboxStatus500Schema = z.unknown();
+
 export const stopSandboxResponseSchema = z.union([
 	stopSandboxStatus200Schema,
 	stopSandboxStatus400Schema,
@@ -19471,6 +19479,7 @@ export const stopSandboxResponseSchema = z.union([
 	stopSandboxStatus404Schema,
 	stopSandboxStatus410Schema,
 	stopSandboxStatus422Schema,
+	stopSandboxStatus500Schema,
 ]);
 
 export const extendSandboxTimeoutPathSandboxIdSchema = z
@@ -19501,6 +19510,8 @@ export const extendSandboxTimeoutStatus410Schema = z.unknown();
 
 export const extendSandboxTimeoutStatus422Schema = z.unknown();
 
+export const extendSandboxTimeoutStatus500Schema = z.unknown();
+
 export const extendSandboxTimeoutResponseSchema = z.union([
 	extendSandboxTimeoutStatus200Schema,
 	extendSandboxTimeoutStatus400Schema,
@@ -19509,6 +19520,7 @@ export const extendSandboxTimeoutResponseSchema = z.union([
 	extendSandboxTimeoutStatus404Schema,
 	extendSandboxTimeoutStatus410Schema,
 	extendSandboxTimeoutStatus422Schema,
+	extendSandboxTimeoutStatus500Schema,
 ]);
 
 export const updateNetworkPolicyPathSandboxIdSchema = z
@@ -19541,6 +19553,8 @@ export const updateNetworkPolicyStatus410Schema = z.unknown();
 
 export const updateNetworkPolicyStatus422Schema = z.unknown();
 
+export const updateNetworkPolicyStatus500Schema = z.unknown();
+
 export const updateNetworkPolicyResponseSchema = z.union([
 	updateNetworkPolicyStatus200Schema,
 	updateNetworkPolicyStatus400Schema,
@@ -19550,6 +19564,7 @@ export const updateNetworkPolicyResponseSchema = z.union([
 	updateNetworkPolicyStatus404Schema,
 	updateNetworkPolicyStatus410Schema,
 	updateNetworkPolicyStatus422Schema,
+	updateNetworkPolicyStatus500Schema,
 ]);
 
 export const getCommandPathSandboxIdSchema = z
@@ -19592,6 +19607,8 @@ export const getCommandStatus410Schema = z.unknown();
 
 export const getCommandStatus422Schema = z.unknown();
 
+export const getCommandStatus500Schema = z.unknown();
+
 export const getCommandResponseSchema = z.union([
 	getCommandStatus200Schema,
 	getCommandStatus400Schema,
@@ -19600,6 +19617,7 @@ export const getCommandResponseSchema = z.union([
 	getCommandStatus404Schema,
 	getCommandStatus410Schema,
 	getCommandStatus422Schema,
+	getCommandStatus500Schema,
 ]);
 
 export const getCommandLogsPathSandboxIdSchema = z
@@ -19634,6 +19652,8 @@ export const getCommandLogsStatus410Schema = z.unknown();
 
 export const getCommandLogsStatus422Schema = z.unknown();
 
+export const getCommandLogsStatus500Schema = z.unknown();
+
 export const getCommandLogsResponseSchema = z.union([
 	getCommandLogsStatus200Schema,
 	getCommandLogsStatus400Schema,
@@ -19642,6 +19662,7 @@ export const getCommandLogsResponseSchema = z.union([
 	getCommandLogsStatus404Schema,
 	getCommandLogsStatus410Schema,
 	getCommandLogsStatus422Schema,
+	getCommandLogsStatus500Schema,
 ]);
 
 export const readFilePathSandboxIdSchema = z
@@ -19672,6 +19693,8 @@ export const readFileStatus410Schema = z.unknown();
 
 export const readFileStatus422Schema = z.unknown();
 
+export const readFileStatus500Schema = z.unknown();
+
 export const readFileResponseSchema = z.union([
 	readFileStatus200Schema,
 	readFileStatus400Schema,
@@ -19680,6 +19703,7 @@ export const readFileResponseSchema = z.union([
 	readFileStatus404Schema,
 	readFileStatus410Schema,
 	readFileStatus422Schema,
+	readFileStatus500Schema,
 ]);
 
 export const createDirectoryPathSandboxIdSchema = z
@@ -19710,6 +19734,8 @@ export const createDirectoryStatus410Schema = z.unknown();
 
 export const createDirectoryStatus422Schema = z.unknown();
 
+export const createDirectoryStatus500Schema = z.unknown();
+
 export const createDirectoryResponseSchema = z.union([
 	createDirectoryStatus200Schema,
 	createDirectoryStatus400Schema,
@@ -19718,6 +19744,7 @@ export const createDirectoryResponseSchema = z.union([
 	createDirectoryStatus404Schema,
 	createDirectoryStatus410Schema,
 	createDirectoryStatus422Schema,
+	createDirectoryStatus500Schema,
 ]);
 
 export const writeFilesHeaderxCwdSchema = z
@@ -19755,6 +19782,8 @@ export const writeFilesStatus410Schema = z.unknown();
 
 export const writeFilesStatus422Schema = z.unknown();
 
+export const writeFilesStatus500Schema = z.unknown();
+
 export const writeFilesResponseSchema = z.union([
 	writeFilesStatus200Schema,
 	writeFilesStatus400Schema,
@@ -19763,6 +19792,7 @@ export const writeFilesResponseSchema = z.union([
 	writeFilesStatus404Schema,
 	writeFilesStatus410Schema,
 	writeFilesStatus422Schema,
+	writeFilesStatus500Schema,
 ]);
 
 export const getSnapshotPathSnapshotIdSchema = z
@@ -19859,6 +19889,8 @@ export const createSnapshotStatus410Schema = z.unknown();
 
 export const createSnapshotStatus422Schema = z.unknown();
 
+export const createSnapshotStatus500Schema = z.unknown();
+
 export const createSnapshotResponseSchema = z.union([
 	createSnapshotStatus201Schema,
 	createSnapshotStatus400Schema,
@@ -19868,6 +19900,7 @@ export const createSnapshotResponseSchema = z.union([
 	createSnapshotStatus404Schema,
 	createSnapshotStatus410Schema,
 	createSnapshotStatus422Schema,
+	createSnapshotStatus500Schema,
 ]);
 
 export const getSandboxesV2QueryProjectSchema = z
@@ -20382,6 +20415,8 @@ export const deleteSandboxStatus410Schema = z.unknown();
 
 export const deleteSandboxStatus422Schema = z.unknown();
 
+export const deleteSandboxStatus500Schema = z.unknown();
+
 export const deleteSandboxResponseSchema = z.union([
 	deleteSandboxStatus200Schema,
 	deleteSandboxStatus400Schema,
@@ -20390,6 +20425,7 @@ export const deleteSandboxResponseSchema = z.union([
 	deleteSandboxStatus404Schema,
 	deleteSandboxStatus410Schema,
 	deleteSandboxStatus422Schema,
+	deleteSandboxStatus500Schema,
 ]);
 
 export const listSessionCommandsPathSessionIdSchema = z
@@ -20452,6 +20488,8 @@ export const runSessionCommandStatus410Schema = z.unknown();
 
 export const runSessionCommandStatus422Schema = z.unknown();
 
+export const runSessionCommandStatus500Schema = z.unknown();
+
 export const runSessionCommandResponseSchema = z.union([
 	runSessionCommandStatus200Schema,
 	runSessionCommandStatus400Schema,
@@ -20460,6 +20498,7 @@ export const runSessionCommandResponseSchema = z.union([
 	runSessionCommandStatus404Schema,
 	runSessionCommandStatus410Schema,
 	runSessionCommandStatus422Schema,
+	runSessionCommandStatus500Schema,
 ]);
 
 export const getSessionCommandPathSessionIdSchema = z
@@ -20502,6 +20541,8 @@ export const getSessionCommandStatus410Schema = z.unknown();
 
 export const getSessionCommandStatus422Schema = z.unknown();
 
+export const getSessionCommandStatus500Schema = z.unknown();
+
 export const getSessionCommandResponseSchema = z.union([
 	getSessionCommandStatus200Schema,
 	getSessionCommandStatus400Schema,
@@ -20510,6 +20551,7 @@ export const getSessionCommandResponseSchema = z.union([
 	getSessionCommandStatus404Schema,
 	getSessionCommandStatus410Schema,
 	getSessionCommandStatus422Schema,
+	getSessionCommandStatus500Schema,
 ]);
 
 export const killSessionCommandPathCmdIdSchema = z
@@ -20544,6 +20586,8 @@ export const killSessionCommandStatus410Schema = z.unknown();
 
 export const killSessionCommandStatus422Schema = z.unknown();
 
+export const killSessionCommandStatus500Schema = z.unknown();
+
 export const killSessionCommandResponseSchema = z.union([
 	killSessionCommandStatus200Schema,
 	killSessionCommandStatus400Schema,
@@ -20552,6 +20596,7 @@ export const killSessionCommandResponseSchema = z.union([
 	killSessionCommandStatus404Schema,
 	killSessionCommandStatus410Schema,
 	killSessionCommandStatus422Schema,
+	killSessionCommandStatus500Schema,
 ]);
 
 export const getSessionCommandLogsPathSessionIdSchema = z
@@ -20586,6 +20631,8 @@ export const getSessionCommandLogsStatus410Schema = z.unknown();
 
 export const getSessionCommandLogsStatus422Schema = z.unknown();
 
+export const getSessionCommandLogsStatus500Schema = z.unknown();
+
 export const getSessionCommandLogsResponseSchema = z.union([
 	getSessionCommandLogsStatus200Schema,
 	getSessionCommandLogsStatus400Schema,
@@ -20594,6 +20641,7 @@ export const getSessionCommandLogsResponseSchema = z.union([
 	getSessionCommandLogsStatus404Schema,
 	getSessionCommandLogsStatus410Schema,
 	getSessionCommandLogsStatus422Schema,
+	getSessionCommandLogsStatus500Schema,
 ]);
 
 export const stopSessionPathSessionIdSchema = z
@@ -20750,6 +20798,8 @@ export const readSessionFileStatus410Schema = z.unknown();
 
 export const readSessionFileStatus422Schema = z.unknown();
 
+export const readSessionFileStatus500Schema = z.unknown();
+
 export const readSessionFileResponseSchema = z.union([
 	readSessionFileStatus200Schema,
 	readSessionFileStatus400Schema,
@@ -20758,6 +20808,7 @@ export const readSessionFileResponseSchema = z.union([
 	readSessionFileStatus404Schema,
 	readSessionFileStatus410Schema,
 	readSessionFileStatus422Schema,
+	readSessionFileStatus500Schema,
 ]);
 
 export const createSessionDirectoryPathSessionIdSchema = z
@@ -20788,6 +20839,8 @@ export const createSessionDirectoryStatus410Schema = z.unknown();
 
 export const createSessionDirectoryStatus422Schema = z.unknown();
 
+export const createSessionDirectoryStatus500Schema = z.unknown();
+
 export const createSessionDirectoryResponseSchema = z.union([
 	createSessionDirectoryStatus200Schema,
 	createSessionDirectoryStatus400Schema,
@@ -20796,6 +20849,7 @@ export const createSessionDirectoryResponseSchema = z.union([
 	createSessionDirectoryStatus404Schema,
 	createSessionDirectoryStatus410Schema,
 	createSessionDirectoryStatus422Schema,
+	createSessionDirectoryStatus500Schema,
 ]);
 
 export const writeSessionFilesHeaderxCwdSchema = z
@@ -20833,6 +20887,8 @@ export const writeSessionFilesStatus410Schema = z.unknown();
 
 export const writeSessionFilesStatus422Schema = z.unknown();
 
+export const writeSessionFilesStatus500Schema = z.unknown();
+
 export const writeSessionFilesResponseSchema = z.union([
 	writeSessionFilesStatus200Schema,
 	writeSessionFilesStatus400Schema,
@@ -20841,6 +20897,7 @@ export const writeSessionFilesResponseSchema = z.union([
 	writeSessionFilesStatus404Schema,
 	writeSessionFilesStatus410Schema,
 	writeSessionFilesStatus422Schema,
+	writeSessionFilesStatus500Schema,
 ]);
 
 export const createSessionSnapshotPathSessionIdSchema = z

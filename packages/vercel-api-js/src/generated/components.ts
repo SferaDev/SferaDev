@@ -150,6 +150,7 @@ import type {
 	CreateDirectoryStatus404,
 	CreateDirectoryStatus410,
 	CreateDirectoryStatus422,
+	CreateDirectoryStatus500,
 	CreateDrainResponse,
 	CreateDrainStatus400,
 	CreateDrainStatus401,
@@ -294,6 +295,7 @@ import type {
 	CreateSessionDirectoryStatus404,
 	CreateSessionDirectoryStatus410,
 	CreateSessionDirectoryStatus422,
+	CreateSessionDirectoryStatus500,
 	CreateSessionSnapshotResponse,
 	CreateSessionSnapshotStatus400,
 	CreateSessionSnapshotStatus401,
@@ -316,6 +318,7 @@ import type {
 	CreateSnapshotStatus404,
 	CreateSnapshotStatus410,
 	CreateSnapshotStatus422,
+	CreateSnapshotStatus500,
 	CreateTeamResponse,
 	CreateTeamStatus400,
 	CreateTeamStatus401,
@@ -480,6 +483,7 @@ import type {
 	DeleteSandboxStatus404,
 	DeleteSandboxStatus410,
 	DeleteSandboxStatus422,
+	DeleteSandboxStatus500,
 	DeleteSdkKeyResponse,
 	DeleteSdkKeyStatus400,
 	DeleteSdkKeyStatus401,
@@ -555,6 +559,7 @@ import type {
 	ExtendSandboxTimeoutStatus404,
 	ExtendSandboxTimeoutStatus410,
 	ExtendSandboxTimeoutStatus422,
+	ExtendSandboxTimeoutStatus500,
 	ExtendSessionTimeoutResponse,
 	ExtendSessionTimeoutStatus400,
 	ExtendSessionTimeoutStatus401,
@@ -647,6 +652,7 @@ import type {
 	GetCommandLogsStatus404,
 	GetCommandLogsStatus410,
 	GetCommandLogsStatus422,
+	GetCommandLogsStatus500,
 	GetCommandResponse,
 	GetCommandStatus400,
 	GetCommandStatus401,
@@ -654,6 +660,7 @@ import type {
 	GetCommandStatus404,
 	GetCommandStatus410,
 	GetCommandStatus422,
+	GetCommandStatus500,
 	GetConfigurableLogDrainResponse,
 	GetConfigurableLogDrainStatus400,
 	GetConfigurableLogDrainStatus401,
@@ -1020,6 +1027,7 @@ import type {
 	GetSessionCommandLogsStatus404,
 	GetSessionCommandLogsStatus410,
 	GetSessionCommandLogsStatus422,
+	GetSessionCommandLogsStatus500,
 	GetSessionCommandResponse,
 	GetSessionCommandStatus400,
 	GetSessionCommandStatus401,
@@ -1027,6 +1035,7 @@ import type {
 	GetSessionCommandStatus404,
 	GetSessionCommandStatus410,
 	GetSessionCommandStatus422,
+	GetSessionCommandStatus500,
 	GetSessionResponse,
 	GetSessionSnapshotResponse,
 	GetSessionSnapshotStatus400,
@@ -1150,6 +1159,7 @@ import type {
 	KillCommandStatus404,
 	KillCommandStatus410,
 	KillCommandStatus422,
+	KillCommandStatus500,
 	KillSessionCommandResponse,
 	KillSessionCommandStatus400,
 	KillSessionCommandStatus401,
@@ -1157,6 +1167,7 @@ import type {
 	KillSessionCommandStatus404,
 	KillSessionCommandStatus410,
 	KillSessionCommandStatus422,
+	KillSessionCommandStatus500,
 	ListAccessGroupMembersResponse,
 	ListAccessGroupMembersStatus400,
 	ListAccessGroupMembersStatus401,
@@ -1360,6 +1371,7 @@ import type {
 	ReadFileStatus404,
 	ReadFileStatus410,
 	ReadFileStatus422,
+	ReadFileStatus500,
 	ReadNetworkResponse,
 	ReadNetworkStatus400,
 	ReadNetworkStatus401,
@@ -1371,6 +1383,7 @@ import type {
 	ReadSessionFileStatus404,
 	ReadSessionFileStatus410,
 	ReadSessionFileStatus422,
+	ReadSessionFileStatus500,
 	RecordEventsResponse,
 	RecordEventsStatus400,
 	RecordEventsStatus401,
@@ -1474,6 +1487,7 @@ import type {
 	RunCommandStatus404,
 	RunCommandStatus410,
 	RunCommandStatus422,
+	RunCommandStatus500,
 	RunSessionCommandResponse,
 	RunSessionCommandStatus400,
 	RunSessionCommandStatus401,
@@ -1481,6 +1495,7 @@ import type {
 	RunSessionCommandStatus404,
 	RunSessionCommandStatus410,
 	RunSessionCommandStatus422,
+	RunSessionCommandStatus500,
 	SearchRepoResponse,
 	SearchRepoStatus400,
 	SearchRepoStatus401,
@@ -1511,6 +1526,7 @@ import type {
 	StopSandboxStatus404,
 	StopSandboxStatus410,
 	StopSandboxStatus422,
+	StopSandboxStatus500,
 	StopSessionResponse,
 	StopSessionStatus400,
 	StopSessionStatus401,
@@ -1681,6 +1697,7 @@ import type {
 	UpdateNetworkPolicyStatus404,
 	UpdateNetworkPolicyStatus410,
 	UpdateNetworkPolicyStatus422,
+	UpdateNetworkPolicyStatus500,
 	UpdateNetworkResponse,
 	UpdateNetworkStatus400,
 	UpdateNetworkStatus401,
@@ -1835,6 +1852,7 @@ import type {
 	WriteFilesStatus404,
 	WriteFilesStatus410,
 	WriteFilesStatus422,
+	WriteFilesStatus500,
 	WriteSessionFilesResponse,
 	WriteSessionFilesStatus400,
 	WriteSessionFilesStatus401,
@@ -1842,6 +1860,7 @@ import type {
 	WriteSessionFilesStatus404,
 	WriteSessionFilesStatus410,
 	WriteSessionFilesStatus422,
+	WriteSessionFilesStatus500,
 } from "./types";
 
 /**
@@ -12588,6 +12607,7 @@ export async function runCommand(
 			| RunCommandStatus404
 			| RunCommandStatus410
 			| RunCommandStatus422
+			| RunCommandStatus500
 		>,
 		null,
 		Record<string, string>,
@@ -12638,6 +12658,7 @@ export async function killCommand(
 			| KillCommandStatus404
 			| KillCommandStatus410
 			| KillCommandStatus422
+			| KillCommandStatus500
 		>,
 		null,
 		Record<string, string>,
@@ -12684,6 +12705,7 @@ export async function stopSandbox(
 			| StopSandboxStatus404
 			| StopSandboxStatus410
 			| StopSandboxStatus422
+			| StopSandboxStatus500
 		>,
 		null,
 		Record<string, string>,
@@ -12730,6 +12752,7 @@ export async function extendSandboxTimeout(
 			| ExtendSandboxTimeoutStatus404
 			| ExtendSandboxTimeoutStatus410
 			| ExtendSandboxTimeoutStatus422
+			| ExtendSandboxTimeoutStatus500
 		>,
 		null,
 		Record<string, string>,
@@ -12777,6 +12800,7 @@ export async function updateNetworkPolicy(
 			| UpdateNetworkPolicyStatus404
 			| UpdateNetworkPolicyStatus410
 			| UpdateNetworkPolicyStatus422
+			| UpdateNetworkPolicyStatus500
 		>,
 		null,
 		Record<string, string>,
@@ -12827,6 +12851,7 @@ export async function getCommand(
 			| GetCommandStatus404
 			| GetCommandStatus410
 			| GetCommandStatus422
+			| GetCommandStatus500
 		>,
 		null,
 		Record<string, string>,
@@ -12877,6 +12902,7 @@ export async function getCommandLogs(
 			| GetCommandLogsStatus404
 			| GetCommandLogsStatus410
 			| GetCommandLogsStatus422
+			| GetCommandLogsStatus500
 		>,
 		null,
 		Record<string, string>,
@@ -12923,6 +12949,7 @@ export async function readFile(
 			| ReadFileStatus404
 			| ReadFileStatus410
 			| ReadFileStatus422
+			| ReadFileStatus500
 		>,
 		null,
 		Record<string, string>,
@@ -12969,6 +12996,7 @@ export async function createDirectory(
 			| CreateDirectoryStatus404
 			| CreateDirectoryStatus410
 			| CreateDirectoryStatus422
+			| CreateDirectoryStatus500
 		>,
 		null,
 		Record<string, string>,
@@ -13017,6 +13045,7 @@ export async function writeFiles(
 			| WriteFilesStatus404
 			| WriteFilesStatus410
 			| WriteFilesStatus422
+			| WriteFilesStatus500
 		>,
 		null,
 		{ "'x-Cwd'"?: string },
@@ -13149,6 +13178,7 @@ export async function createSnapshot(
 			| CreateSnapshotStatus404
 			| CreateSnapshotStatus410
 			| CreateSnapshotStatus422
+			| CreateSnapshotStatus500
 		>,
 		null,
 		Record<string, string>,
@@ -13642,6 +13672,7 @@ export async function deleteSandbox(
 			| DeleteSandboxStatus404
 			| DeleteSandboxStatus410
 			| DeleteSandboxStatus422
+			| DeleteSandboxStatus500
 		>,
 		null,
 		Record<string, string>,
@@ -13732,6 +13763,7 @@ export async function runSessionCommand(
 			| RunSessionCommandStatus404
 			| RunSessionCommandStatus410
 			| RunSessionCommandStatus422
+			| RunSessionCommandStatus500
 		>,
 		null,
 		Record<string, string>,
@@ -13782,6 +13814,7 @@ export async function getSessionCommand(
 			| GetSessionCommandStatus404
 			| GetSessionCommandStatus410
 			| GetSessionCommandStatus422
+			| GetSessionCommandStatus500
 		>,
 		null,
 		Record<string, string>,
@@ -13832,6 +13865,7 @@ export async function killSessionCommand(
 			| KillSessionCommandStatus404
 			| KillSessionCommandStatus410
 			| KillSessionCommandStatus422
+			| KillSessionCommandStatus500
 		>,
 		null,
 		Record<string, string>,
@@ -13882,6 +13916,7 @@ export async function getSessionCommandLogs(
 			| GetSessionCommandLogsStatus404
 			| GetSessionCommandLogsStatus410
 			| GetSessionCommandLogsStatus422
+			| GetSessionCommandLogsStatus500
 		>,
 		null,
 		Record<string, string>,
@@ -14070,6 +14105,7 @@ export async function readSessionFile(
 			| ReadSessionFileStatus404
 			| ReadSessionFileStatus410
 			| ReadSessionFileStatus422
+			| ReadSessionFileStatus500
 		>,
 		null,
 		Record<string, string>,
@@ -14116,6 +14152,7 @@ export async function createSessionDirectory(
 			| CreateSessionDirectoryStatus404
 			| CreateSessionDirectoryStatus410
 			| CreateSessionDirectoryStatus422
+			| CreateSessionDirectoryStatus500
 		>,
 		null,
 		Record<string, string>,
@@ -14164,6 +14201,7 @@ export async function writeSessionFiles(
 			| WriteSessionFilesStatus404
 			| WriteSessionFilesStatus410
 			| WriteSessionFilesStatus422
+			| WriteSessionFilesStatus500
 		>,
 		null,
 		{ "'x-Cwd'"?: string },
