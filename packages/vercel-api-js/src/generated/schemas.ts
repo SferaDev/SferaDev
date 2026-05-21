@@ -1128,6 +1128,7 @@ export const userEventSchema = z
 			.describe("Metadata for {@link viaIds}."),
 		userId: z
 			.string()
+			.optional()
 			.describe(
 				"When the principal who generated the event is a user, this is their ID; otherwise, it is empty.",
 			),
@@ -1551,13 +1552,15 @@ export const userEventSchema = z
 							.object({
 								resources: z
 									.object({
-										projectIds: z.object({
-											type: z.enum(["list"]),
-											required: z.literal(true),
-											items: z.object({
-												type: z.enum(["string"]),
-											}),
-										}),
+										projectIds: z
+											.object({
+												type: z.enum(["list"]),
+												required: z.literal(true),
+												items: z.object({
+													type: z.enum(["string"]),
+												}),
+											})
+											.describe("Specific project IDs or all projects on the team (`['*']`)."),
 									})
 									.optional(),
 								permissions: z
@@ -1605,13 +1608,15 @@ export const userEventSchema = z
 							.object({
 								resources: z
 									.object({
-										projectIds: z.object({
-											type: z.enum(["list"]),
-											required: z.literal(true),
-											items: z.object({
-												type: z.enum(["string"]),
-											}),
-										}),
+										projectIds: z
+											.object({
+												type: z.enum(["list"]),
+												required: z.literal(true),
+												items: z.object({
+													type: z.enum(["string"]),
+												}),
+											})
+											.describe("Specific project IDs or all projects on the team (`['*']`)."),
 									})
 									.optional(),
 								permissions: z
@@ -1663,13 +1668,15 @@ export const userEventSchema = z
 						appId: z.string().optional(),
 						resources: z
 							.object({
-								projectIds: z.object({
-									type: z.enum(["list"]),
-									required: z.literal(true),
-									items: z.object({
-										type: z.enum(["string"]),
-									}),
-								}),
+								projectIds: z
+									.object({
+										type: z.enum(["list"]),
+										required: z.literal(true),
+										items: z.object({
+											type: z.enum(["string"]),
+										}),
+									})
+									.describe("Specific project IDs or all projects on the team (`['*']`)."),
 							})
 							.optional(),
 						permissions: z

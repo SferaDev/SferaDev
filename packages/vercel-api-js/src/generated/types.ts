@@ -2700,9 +2700,9 @@ export type UserEvent = {
 	/**
 	 * @description When the principal who generated the event is a user, this is their ID; otherwise, it is empty.
 	 * @example zTuNVUXEAvvnNN3IaqinkyMw
-	 * @type string
+	 * @type string | undefined
 	 */
-	userId: string;
+	userId?: string | undefined;
 	/**
 	 * @description The ID of the principal who generated the event. The principal is typically a user, but it could also be an app, an integration, etc. The principal may have delegated its authority to an acting party, and so {@link viaIds} should be checked as well.
 	 * @type string
@@ -3485,6 +3485,7 @@ export type UserEvent = {
 									resources?:
 										| {
 												/**
+												 * @description Specific project IDs or all projects on the team (`[\'*\']`).
 												 * @type object
 												 */
 												projectIds: {
@@ -3561,6 +3562,7 @@ export type UserEvent = {
 									resources?:
 										| {
 												/**
+												 * @description Specific project IDs or all projects on the team (`[\'*\']`).
 												 * @type object
 												 */
 												projectIds: {
@@ -3642,6 +3644,7 @@ export type UserEvent = {
 						resources?:
 							| {
 									/**
+									 * @description Specific project IDs or all projects on the team (`[\'*\']`).
 									 * @type object
 									 */
 									projectIds: {
