@@ -17481,389 +17481,6 @@ export const aCLAction = {
 
 export type ACLActionKey = (typeof aCLAction)[keyof typeof aCLAction];
 
-/**
- * @description HTTP header injection rules for outgoing requests matching specific domains.
- * @type object
- */
-export type SandboxInjectionRule = {
-	/**
-	 * @description The domain (or pattern) that this injection rule applies to. Supports wildcards like *.vercel.com.
-	 * @example api.vercel.com
-	 * @type string
-	 */
-	domain: string;
-	/**
-	 * @description The names of HTTP headers that have value that will be injected for requests to this domain.
-	 * @example Authorization,X-API-Key
-	 * @type array | undefined
-	 */
-	headerNames?: string[] | undefined;
-};
-
-export const sandboxNetworkPolicyModeEnum = {
-	"allow-all": "allow-all",
-	custom: "custom",
-	"deny-all": "deny-all",
-} as const;
-
-export type SandboxNetworkPolicyModeEnumKey =
-	(typeof sandboxNetworkPolicyModeEnum)[keyof typeof sandboxNetworkPolicyModeEnum];
-
-/**
- * @description The network policy applied to this sandbox, if any.
- * @type object
- */
-export type SandboxNetworkPolicy = {
-	/**
-	 * @description The network policy mode. - \'allow-all\': All traffic is allowed. - \'deny-all\': All traffic is blocked. - \'custom\': Traffic is controlled by explicit allow/deny rules.
-	 * @example custom
-	 * @type string
-	 */
-	mode: SandboxNetworkPolicyModeEnumKey;
-	/**
-	 * @description List of domain names the sandbox is allowed to connect to. Supports wildcard patterns (e.g., \"*.vercel.com\" matches all subdomains).
-	 * @example *.example.com,api.vercel.com
-	 * @type array | undefined
-	 */
-	allowedDomains?: string[] | undefined;
-	/**
-	 * @description List of IP address ranges (in CIDR notation) the sandbox is allowed to connect to.
-	 * @example 10.0.0.0/8
-	 * @type array | undefined
-	 */
-	allowedCIDRs?: string[] | undefined;
-	/**
-	 * @description List of IP address ranges (in CIDR notation) the sandbox is blocked from connecting to. These rules take precedence over all allowed rules.
-	 * @example 10.0.0.0/8
-	 * @type array | undefined
-	 */
-	deniedCIDRs?: string[] | undefined;
-	/**
-	 * @description HTTP header injection rules for outgoing requests matching specific domains.
-	 * @type array | undefined
-	 */
-	injectionRules?: unknown[] | undefined;
-};
-
-export const sandboxStatusEnum = {
-	aborted: "aborted",
-	failed: "failed",
-	pending: "pending",
-	running: "running",
-	snapshotting: "snapshotting",
-	stopped: "stopped",
-	stopping: "stopping",
-} as const;
-
-export type SandboxStatusEnumKey = (typeof sandboxStatusEnum)[keyof typeof sandboxStatusEnum];
-
-/**
- * @description This object contains information related to a Vercel Sandbox.
- * @type object
- */
-export type Sandbox = {
-	/**
-	 * @description The unique identifier of the sandbox.
-	 * @example sbx_123a6c5209bc3778245d011443644c8d27dc2c50
-	 * @type string
-	 */
-	id: string;
-	/**
-	 * @description Memory allocated to this sandbox in MB.
-	 * @example 2048
-	 * @type number
-	 */
-	memory: number;
-	/**
-	 * @description Number of vCPUs allocated to this sandbox.
-	 * @example 2
-	 * @type number
-	 */
-	vcpus: number;
-	/**
-	 * @description The region where the sandbox is hosted.
-	 * @example iad1
-	 * @type string
-	 */
-	region: string;
-	/**
-	 * @description The runtime of the sandbox.
-	 * @example node22
-	 * @type string
-	 */
-	runtime: string;
-	/**
-	 * @description The maximum amount of time the sandbox will run for in milliseconds.
-	 * @example 3600000
-	 * @type number
-	 */
-	timeout: number;
-	/**
-	 * @description The status of the sandbox.
-	 * @example running
-	 * @type string
-	 */
-	status: SandboxStatusEnumKey;
-	/**
-	 * @description The time when the sandbox was requested, in milliseconds since the epoch.
-	 * @example 1750344501629
-	 * @type number
-	 */
-	requestedAt: number;
-	/**
-	 * @description The time when the sandbox was started, in milliseconds since the epoch.
-	 * @example 1750344501629
-	 * @type number | undefined
-	 */
-	startedAt?: number | undefined;
-	/**
-	 * @description The working directory of the sandbox.
-	 * @example /vercel/sandbox
-	 * @type string
-	 */
-	cwd: string;
-	/**
-	 * @description The time when the sandbox was requested to stop, in milliseconds since the epoch.
-	 * @example 1750344501629
-	 * @type number | undefined
-	 */
-	requestedStopAt?: number | undefined;
-	/**
-	 * @description The time when the sandbox was stopped, in milliseconds since the epoch.
-	 * @example 1750344501629
-	 * @type number | undefined
-	 */
-	stoppedAt?: number | undefined;
-	/**
-	 * @description The time when the sandbox was aborted, in milliseconds since the epoch.
-	 * @example 1750344501629
-	 * @type number | undefined
-	 */
-	abortedAt?: number | undefined;
-	/**
-	 * @description The duration of the sandbox in milliseconds.
-	 * @example 3600000
-	 * @type number | undefined
-	 */
-	duration?: number | undefined;
-	/**
-	 * @description The unique identifier of the snapshot associated with this sandbox, if any.
-	 * @example snap_123a6c5209bc3778245d011443644c8d27dc2c50
-	 * @type string | undefined
-	 */
-	sourceSnapshotId?: string | undefined;
-	/**
-	 * @description The time when a snapshot was requested, in milliseconds since the epoch.
-	 * @example 1750344501629
-	 * @type number | undefined
-	 */
-	snapshottedAt?: number | undefined;
-	/**
-	 * @description The time when the sandbox was created, in milliseconds since the epoch.
-	 * @example 1750344501629
-	 * @type number
-	 */
-	createdAt: number;
-	/**
-	 * @description The last time the sandbox was updated, in milliseconds since the epoch.
-	 * @example 1750344501629
-	 * @type number
-	 */
-	updatedAt: number;
-	/**
-	 * @type unknown | undefined
-	 */
-	networkPolicy?: unknown | undefined;
-	/**
-	 * @description The amount of CPU time the sandbox consumed, if available, in milliseconds. This value is only available once the sandbox is stopped, and only if it stopped successfully.
-	 * @example 42
-	 * @type number | undefined
-	 */
-	activeCpuDurationMs?: number | undefined;
-	/**
-	 * @description The quantity of data transfered to and from the sandbox, in bytes. This value is only available once the sandbox is stopped, and only if it stopped successfully.
-	 * @example [object Object]
-	 * @type object | undefined
-	 */
-	networkTransfer?:
-		| {
-				/**
-				 * @type number
-				 */
-				ingress: number;
-				/**
-				 * @type number
-				 */
-				egress: number;
-		  }
-		| undefined;
-};
-
-export const snapshotStatusEnum = {
-	created: "created",
-	deleted: "deleted",
-	failed: "failed",
-} as const;
-
-export type SnapshotStatusEnumKey = (typeof snapshotStatusEnum)[keyof typeof snapshotStatusEnum];
-
-export const snapshotCreationMethodEnum = {
-	automatic: "automatic",
-	manual: "manual",
-} as const;
-
-export type SnapshotCreationMethodEnumKey =
-	(typeof snapshotCreationMethodEnum)[keyof typeof snapshotCreationMethodEnum];
-
-/**
- * @description This object contains information related to a Snapshot of a Vercel Sandbox session (v2 API).
- * @type object
- */
-export type Snapshot = {
-	/**
-	 * @description The unique identifier of the snapshot.
-	 * @example snap_123a6c5209bc3778245d011443644c8d27dc2c50
-	 * @type string
-	 */
-	id: string;
-	/**
-	 * @description The unique identifier of the session from which the snapshot was created.
-	 * @example sbx_123a6c5209bc3778245d011443644c8d27dc2c50
-	 * @type string
-	 */
-	sourceSessionId: string;
-	/**
-	 * @description The region where the snapshot is stored.
-	 * @example iad1
-	 * @type string
-	 */
-	region: string;
-	/**
-	 * @description The status of the snapshot.
-	 * @example created
-	 * @type string
-	 */
-	status: SnapshotStatusEnumKey;
-	/**
-	 * @description The size of the snapshot in bytes.
-	 * @example 104857600
-	 * @type number
-	 */
-	sizeBytes: number;
-	/**
-	 * @description The time when the snapshot will expire, in milliseconds since the epoch. If not set, the snapshot does not have any expiration.
-	 * @example 1750344501629
-	 * @type number | undefined
-	 */
-	expiresAt?: number | undefined;
-	/**
-	 * @description The time when the snapshot was created, in milliseconds since the epoch.
-	 * @example 1750344501629
-	 * @type number
-	 */
-	createdAt: number;
-	/**
-	 * @description The last time the snapshot was updated, in milliseconds since the epoch.
-	 * @example 1750344501629
-	 * @type number
-	 */
-	updatedAt: number;
-	/**
-	 * @description The last time the snapshot was used (e.g. to resume or create a sandbox), in milliseconds since the epoch. Falls back to `createdAt` for older snapshots that predate this field.
-	 * @example 1750344501629
-	 * @type number
-	 */
-	lastUsedAt: number;
-	/**
-	 * @description The method used to create the snapshot.
-	 * @example manual
-	 * @type string | undefined
-	 */
-	creationMethod?: SnapshotCreationMethodEnumKey | undefined;
-	/**
-	 * @description The unique identifier of the parent snapshot, if this snapshot was created from another snapshot.
-	 * @example snap_parent123
-	 * @type string | undefined
-	 */
-	parentId?: string | undefined;
-};
-
-/**
- * @description This object represents a public route in a Vercel Sandbox.
- * @type object
- */
-export type SandboxPublicRoute = {
-	/**
-	 * @description A public URL to access the corresponding port in the Sandbox.
-	 * @type string
-	 */
-	url: string;
-	/**
-	 * @description The user port number that the route is mapped to.
-	 * @type number
-	 */
-	port: number;
-	/**
-	 * @description The subdomain assigned to this route.
-	 * @type string
-	 */
-	subdomain: string;
-	/**
-	 * @description Whether the route is reserved by the system (e.g. for internal use).
-	 * @type boolean | undefined
-	 */
-	system?: true | undefined;
-};
-
-/**
- * @description This object represents command run in a Vercel Sandbox.
- * @type object
- */
-export type SandboxCommand = {
-	/**
-	 * @description The ID of the command.
-	 * @example cmd_123a6c5209bc3778245d011443644c8d27dc2c50
-	 * @type string
-	 */
-	id: string;
-	/**
-	 * @description The name of the command.
-	 * @example npm
-	 * @type string
-	 */
-	name: string;
-	/**
-	 * @description The arguments of the command.
-	 * @example build,run
-	 * @type array
-	 */
-	args: string[];
-	/**
-	 * @description The current working directory of the command.
-	 * @example /vercel/sandbox
-	 * @type string
-	 */
-	cwd: string;
-	/**
-	 * @description The ID of the sandbox associated with the command.
-	 * @example sbx_123a6c5209bc3778245d011443644c8d27dc2c50
-	 * @type string
-	 */
-	sandboxId: string;
-	/**
-	 * @description If the command did finish, the exit code.
-	 * @example 0
-	 * @type number
-	 */
-	exitCode: number | null;
-	/**
-	 * @description When the command was started, in milliseconds since the epoch.
-	 * @example 1673123456789
-	 * @type number
-	 */
-	startedAt: number;
-};
-
 export const namedSandboxStatusEnum = {
 	running: "running",
 	stopped: "stopped",
@@ -18088,6 +17705,70 @@ export type NamedSandbox = {
 	updatedAt: number;
 };
 
+/**
+ * @description HTTP header injection rules for outgoing requests matching specific domains.
+ * @type object
+ */
+export type SandboxInjectionRule = {
+	/**
+	 * @description The domain (or pattern) that this injection rule applies to. Supports wildcards like *.vercel.com.
+	 * @example api.vercel.com
+	 * @type string
+	 */
+	domain: string;
+	/**
+	 * @description The names of HTTP headers that have value that will be injected for requests to this domain.
+	 * @example Authorization,X-API-Key
+	 * @type array | undefined
+	 */
+	headerNames?: string[] | undefined;
+};
+
+export const sandboxNetworkPolicyModeEnum = {
+	"allow-all": "allow-all",
+	custom: "custom",
+	"deny-all": "deny-all",
+} as const;
+
+export type SandboxNetworkPolicyModeEnumKey =
+	(typeof sandboxNetworkPolicyModeEnum)[keyof typeof sandboxNetworkPolicyModeEnum];
+
+/**
+ * @description The network policy applied to this sandbox, if any.
+ * @type object
+ */
+export type SandboxNetworkPolicy = {
+	/**
+	 * @description The network policy mode. - \'allow-all\': All traffic is allowed. - \'deny-all\': All traffic is blocked. - \'custom\': Traffic is controlled by explicit allow/deny rules.
+	 * @example custom
+	 * @type string
+	 */
+	mode: SandboxNetworkPolicyModeEnumKey;
+	/**
+	 * @description List of domain names the sandbox is allowed to connect to. Supports wildcard patterns (e.g., \"*.vercel.com\" matches all subdomains).
+	 * @example *.example.com,api.vercel.com
+	 * @type array | undefined
+	 */
+	allowedDomains?: string[] | undefined;
+	/**
+	 * @description List of IP address ranges (in CIDR notation) the sandbox is allowed to connect to.
+	 * @example 10.0.0.0/8
+	 * @type array | undefined
+	 */
+	allowedCIDRs?: string[] | undefined;
+	/**
+	 * @description List of IP address ranges (in CIDR notation) the sandbox is blocked from connecting to. These rules take precedence over all allowed rules.
+	 * @example 10.0.0.0/8
+	 * @type array | undefined
+	 */
+	deniedCIDRs?: string[] | undefined;
+	/**
+	 * @description HTTP header injection rules for outgoing requests matching specific domains.
+	 * @type array | undefined
+	 */
+	injectionRules?: unknown[] | undefined;
+};
+
 export const sessionStatusEnum = {
 	aborted: "aborted",
 	failed: "failed",
@@ -18252,6 +17933,122 @@ export type Session = {
 				egress: number;
 		  }
 		| undefined;
+};
+
+/**
+ * @description This object represents a public route in a Vercel Sandbox.
+ * @type object
+ */
+export type SandboxPublicRoute = {
+	/**
+	 * @description A public URL to access the corresponding port in the Sandbox.
+	 * @type string
+	 */
+	url: string;
+	/**
+	 * @description The user port number that the route is mapped to.
+	 * @type number
+	 */
+	port: number;
+	/**
+	 * @description The subdomain assigned to this route.
+	 * @type string
+	 */
+	subdomain: string;
+	/**
+	 * @description Whether the route is reserved by the system (e.g. for internal use).
+	 * @type boolean | undefined
+	 */
+	system?: true | undefined;
+};
+
+export const snapshotStatusEnum = {
+	created: "created",
+	deleted: "deleted",
+	failed: "failed",
+} as const;
+
+export type SnapshotStatusEnumKey = (typeof snapshotStatusEnum)[keyof typeof snapshotStatusEnum];
+
+export const snapshotCreationMethodEnum = {
+	automatic: "automatic",
+	manual: "manual",
+} as const;
+
+export type SnapshotCreationMethodEnumKey =
+	(typeof snapshotCreationMethodEnum)[keyof typeof snapshotCreationMethodEnum];
+
+/**
+ * @description This object contains information related to a Snapshot of a Vercel Sandbox session (v2 API).
+ * @type object
+ */
+export type Snapshot = {
+	/**
+	 * @description The unique identifier of the snapshot.
+	 * @example snap_123a6c5209bc3778245d011443644c8d27dc2c50
+	 * @type string
+	 */
+	id: string;
+	/**
+	 * @description The unique identifier of the session from which the snapshot was created.
+	 * @example sbx_123a6c5209bc3778245d011443644c8d27dc2c50
+	 * @type string
+	 */
+	sourceSessionId: string;
+	/**
+	 * @description The region where the snapshot is stored.
+	 * @example iad1
+	 * @type string
+	 */
+	region: string;
+	/**
+	 * @description The status of the snapshot.
+	 * @example created
+	 * @type string
+	 */
+	status: SnapshotStatusEnumKey;
+	/**
+	 * @description The size of the snapshot in bytes.
+	 * @example 104857600
+	 * @type number
+	 */
+	sizeBytes: number;
+	/**
+	 * @description The time when the snapshot will expire, in milliseconds since the epoch. If not set, the snapshot does not have any expiration.
+	 * @example 1750344501629
+	 * @type number | undefined
+	 */
+	expiresAt?: number | undefined;
+	/**
+	 * @description The time when the snapshot was created, in milliseconds since the epoch.
+	 * @example 1750344501629
+	 * @type number
+	 */
+	createdAt: number;
+	/**
+	 * @description The last time the snapshot was updated, in milliseconds since the epoch.
+	 * @example 1750344501629
+	 * @type number
+	 */
+	updatedAt: number;
+	/**
+	 * @description The last time the snapshot was used (e.g. to resume or create a sandbox), in milliseconds since the epoch. Falls back to `createdAt` for older snapshots that predate this field.
+	 * @example 1750344501629
+	 * @type number
+	 */
+	lastUsedAt: number;
+	/**
+	 * @description The method used to create the snapshot.
+	 * @example manual
+	 * @type string | undefined
+	 */
+	creationMethod?: SnapshotCreationMethodEnumKey | undefined;
+	/**
+	 * @description The unique identifier of the parent snapshot, if this snapshot was created from another snapshot.
+	 * @example snap_parent123
+	 * @type string | undefined
+	 */
+	parentId?: string | undefined;
 };
 
 /**
@@ -43478,2071 +43275,11 @@ export type UnpauseProjectResponse =
 	| UnpauseProjectStatus500;
 
 /**
- * @description The unique identifier or name of the project to list sandboxes for.
- * @example prj_abc123
- * @type string | undefined
- */
-export type GetSandboxesV1QueryProject = string | undefined;
-
-/**
- * @description Maximum number of sandboxes to return in the response. Used for pagination.
- * @example 20
- * @type number | undefined
- */
-export type GetSandboxesV1QueryLimit = number | undefined;
-
-/**
- * @description Filter sandboxes created after this timestamp. Specified as Unix time in milliseconds.
- * @example 1540095775941
- * @type number | undefined
- */
-export type GetSandboxesV1QuerySince = number | undefined;
-
-/**
- * @description Filter sandboxes created before this timestamp. Specified as Unix time in milliseconds.
- * @example 1540095775951
- * @type number | undefined
- */
-export type GetSandboxesV1QueryUntil = number | undefined;
-
-/**
- * @description The Team identifier to perform the request on behalf of.
- * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
- * @type string | undefined
- */
-export type GetSandboxesV1QueryTeamId = string | undefined;
-
-/**
- * @description The Team slug to perform the request on behalf of.
- * @example my-team-url-slug
- * @type string | undefined
- */
-export type GetSandboxesV1QuerySlug = string | undefined;
-
-/**
- * @type unknown
- */
-export type GetSandboxesV1Status200 = unknown;
-
-/**
- * @type unknown
- */
-export type GetSandboxesV1Status400 = unknown;
-
-/**
- * @type unknown
- */
-export type GetSandboxesV1Status401 = unknown;
-
-/**
- * @type unknown
- */
-export type GetSandboxesV1Status403 = unknown;
-
-/**
- * @type unknown
- */
-export type GetSandboxesV1Status404 = unknown;
-
-/**
- * @type object
- */
-export type GetSandboxesV1RequestConfig = {
-	data?: never | undefined;
-	pathParams?: never | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				project?: GetSandboxesV1QueryProject | undefined;
-				limit?: GetSandboxesV1QueryLimit | undefined;
-				since?: GetSandboxesV1QuerySince | undefined;
-				until?: GetSandboxesV1QueryUntil | undefined;
-				teamId?: GetSandboxesV1QueryTeamId | undefined;
-				slug?: GetSandboxesV1QuerySlug | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: "/v1/sandboxes";
-};
-
-/**
- * @type object
- */
-export type GetSandboxesV1Responses = {
-	"200": GetSandboxesV1Status200;
-	"400": GetSandboxesV1Status400;
-	"401": GetSandboxesV1Status401;
-	"403": GetSandboxesV1Status403;
-	"404": GetSandboxesV1Status404;
-};
-
-/**
- * @description Union of all possible responses
- */
-export type GetSandboxesV1Response =
-	| GetSandboxesV1Status200
-	| GetSandboxesV1Status400
-	| GetSandboxesV1Status401
-	| GetSandboxesV1Status403
-	| GetSandboxesV1Status404;
-
-/**
- * @description The Team identifier to perform the request on behalf of.
- * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
- * @type string | undefined
- */
-export type CreateSandboxQueryTeamId = string | undefined;
-
-/**
- * @description The Team slug to perform the request on behalf of.
- * @example my-team-url-slug
- * @type string | undefined
- */
-export type CreateSandboxQuerySlug = string | undefined;
-
-/**
- * @type unknown
- */
-export type CreateSandboxStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type CreateSandboxStatus400 = unknown;
-
-/**
- * @type unknown
- */
-export type CreateSandboxStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type CreateSandboxStatus402 = unknown;
-
-/**
- * @type unknown
- */
-export type CreateSandboxStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type CreateSandboxStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type CreateSandboxStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type CreateSandboxStatus410 = unknown;
-
-/**
- * @type unknown
- */
-export type CreateSandboxStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type CreateSandboxStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type CreateSandboxStatus500 = unknown;
-
-/**
- * @type object
- */
-export type CreateSandboxRequestConfig = {
-	data?: never | undefined;
-	pathParams?: never | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				teamId?: CreateSandboxQueryTeamId | undefined;
-				slug?: CreateSandboxQuerySlug | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: "/v1/sandboxes";
-};
-
-/**
- * @type object
- */
-export type CreateSandboxResponses = {
-	"200": CreateSandboxStatus200;
-	"400": CreateSandboxStatus400;
-	"401": CreateSandboxStatus401;
-	"402": CreateSandboxStatus402;
-	"403": CreateSandboxStatus403;
-	"404": CreateSandboxStatus404;
-	"409": CreateSandboxStatus409;
-	"410": CreateSandboxStatus410;
-	"422": CreateSandboxStatus422;
-	"429": CreateSandboxStatus429;
-	"500": CreateSandboxStatus500;
-};
-
-/**
- * @description Union of all possible responses
- */
-export type CreateSandboxResponse =
-	| CreateSandboxStatus200
-	| CreateSandboxStatus400
-	| CreateSandboxStatus401
-	| CreateSandboxStatus402
-	| CreateSandboxStatus403
-	| CreateSandboxStatus404
-	| CreateSandboxStatus409
-	| CreateSandboxStatus410
-	| CreateSandboxStatus422
-	| CreateSandboxStatus429
-	| CreateSandboxStatus500;
-
-/**
- * @description The unique identifier or name of the project to list snapshots for.
- * @example prj_abc123
- * @type string | undefined
- */
-export type ListSnapshotsQueryProject = string | undefined;
-
-/**
- * @description Maximum number of snapshots to return in the response. Used for pagination.
- * @example 20
- * @type number | undefined
- */
-export type ListSnapshotsQueryLimit = number | undefined;
-
-/**
- * @description Filter snapshots created after this timestamp. Specified as Unix time in milliseconds.
- * @example 1540095775941
- * @type number | undefined
- */
-export type ListSnapshotsQuerySince = number | undefined;
-
-/**
- * @description Filter snapshots created before this timestamp. Specified as Unix time in milliseconds.
- * @example 1540095775951
- * @type number | undefined
- */
-export type ListSnapshotsQueryUntil = number | undefined;
-
-/**
- * @description The Team identifier to perform the request on behalf of.
- * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
- * @type string | undefined
- */
-export type ListSnapshotsQueryTeamId = string | undefined;
-
-/**
- * @description The Team slug to perform the request on behalf of.
- * @example my-team-url-slug
- * @type string | undefined
- */
-export type ListSnapshotsQuerySlug = string | undefined;
-
-/**
- * @type unknown
- */
-export type ListSnapshotsStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type ListSnapshotsStatus400 = unknown;
-
-/**
- * @type unknown
- */
-export type ListSnapshotsStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type ListSnapshotsStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type ListSnapshotsStatus404 = unknown;
-
-/**
- * @type object
- */
-export type ListSnapshotsRequestConfig = {
-	data?: never | undefined;
-	pathParams?: never | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				project?: ListSnapshotsQueryProject | undefined;
-				limit?: ListSnapshotsQueryLimit | undefined;
-				since?: ListSnapshotsQuerySince | undefined;
-				until?: ListSnapshotsQueryUntil | undefined;
-				teamId?: ListSnapshotsQueryTeamId | undefined;
-				slug?: ListSnapshotsQuerySlug | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: "/v1/sandboxes/snapshots";
-};
-
-/**
- * @type object
- */
-export type ListSnapshotsResponses = {
-	"200": ListSnapshotsStatus200;
-	"400": ListSnapshotsStatus400;
-	"401": ListSnapshotsStatus401;
-	"403": ListSnapshotsStatus403;
-	"404": ListSnapshotsStatus404;
-};
-
-/**
- * @description Union of all possible responses
- */
-export type ListSnapshotsResponse =
-	| ListSnapshotsStatus200
-	| ListSnapshotsStatus400
-	| ListSnapshotsStatus401
-	| ListSnapshotsStatus403
-	| ListSnapshotsStatus404;
-
-/**
- * @description The unique identifier of the sandbox to retrieve.
- * @example sbx_abc123
- * @type string
- */
-export type GetSandboxPathSandboxId = string;
-
-/**
- * @description The Team identifier to perform the request on behalf of.
- * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
- * @type string | undefined
- */
-export type GetSandboxQueryTeamId = string | undefined;
-
-/**
- * @description The Team slug to perform the request on behalf of.
- * @example my-team-url-slug
- * @type string | undefined
- */
-export type GetSandboxQuerySlug = string | undefined;
-
-/**
- * @type unknown
- */
-export type GetSandboxStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type GetSandboxStatus400 = unknown;
-
-/**
- * @type unknown
- */
-export type GetSandboxStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type GetSandboxStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type GetSandboxStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type GetSandboxStatus429 = unknown;
-
-/**
- * @type object
- */
-export type GetSandboxRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		sandboxId: GetSandboxPathSandboxId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				teamId?: GetSandboxQueryTeamId | undefined;
-				slug?: GetSandboxQuerySlug | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/v1/sandboxes/${string}`;
-};
-
-/**
- * @type object
- */
-export type GetSandboxResponses = {
-	"200": GetSandboxStatus200;
-	"400": GetSandboxStatus400;
-	"401": GetSandboxStatus401;
-	"403": GetSandboxStatus403;
-	"404": GetSandboxStatus404;
-	"429": GetSandboxStatus429;
-};
-
-/**
- * @description Union of all possible responses
- */
-export type GetSandboxResponse =
-	| GetSandboxStatus200
-	| GetSandboxStatus400
-	| GetSandboxStatus401
-	| GetSandboxStatus403
-	| GetSandboxStatus404
-	| GetSandboxStatus429;
-
-/**
- * @description The unique identifier of the sandbox to list commands for.
- * @example sbx_abc123
- * @type string
- */
-export type ListCommandsPathSandboxId = string;
-
-/**
- * @description The Team identifier to perform the request on behalf of.
- * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
- * @type string | undefined
- */
-export type ListCommandsQueryTeamId = string | undefined;
-
-/**
- * @description The Team slug to perform the request on behalf of.
- * @example my-team-url-slug
- * @type string | undefined
- */
-export type ListCommandsQuerySlug = string | undefined;
-
-/**
- * @type unknown
- */
-export type ListCommandsStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type ListCommandsStatus400 = unknown;
-
-/**
- * @type unknown
- */
-export type ListCommandsStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type ListCommandsStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type ListCommandsStatus404 = unknown;
-
-/**
- * @type object
- */
-export type ListCommandsRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		sandboxId: ListCommandsPathSandboxId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				teamId?: ListCommandsQueryTeamId | undefined;
-				slug?: ListCommandsQuerySlug | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/v1/sandboxes/${string}/cmd`;
-};
-
-/**
- * @type object
- */
-export type ListCommandsResponses = {
-	"200": ListCommandsStatus200;
-	"400": ListCommandsStatus400;
-	"401": ListCommandsStatus401;
-	"403": ListCommandsStatus403;
-	"404": ListCommandsStatus404;
-};
-
-/**
- * @description Union of all possible responses
- */
-export type ListCommandsResponse =
-	| ListCommandsStatus200
-	| ListCommandsStatus400
-	| ListCommandsStatus401
-	| ListCommandsStatus403
-	| ListCommandsStatus404;
-
-/**
- * @description The unique identifier of the sandbox in which to execute the command.
- * @example sbx_abc123
- * @type string
- */
-export type RunCommandPathSandboxId = string;
-
-/**
- * @description The Team identifier to perform the request on behalf of.
- * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
- * @type string | undefined
- */
-export type RunCommandQueryTeamId = string | undefined;
-
-/**
- * @description The Team slug to perform the request on behalf of.
- * @example my-team-url-slug
- * @type string | undefined
- */
-export type RunCommandQuerySlug = string | undefined;
-
-/**
- * @type unknown
- */
-export type RunCommandStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type RunCommandStatus400 = unknown;
-
-/**
- * @type unknown
- */
-export type RunCommandStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type RunCommandStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type RunCommandStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type RunCommandStatus410 = unknown;
-
-/**
- * @type unknown
- */
-export type RunCommandStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type RunCommandStatus500 = unknown;
-
-/**
- * @type object
- */
-export type RunCommandRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		sandboxId: RunCommandPathSandboxId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				teamId?: RunCommandQueryTeamId | undefined;
-				slug?: RunCommandQuerySlug | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/v1/sandboxes/${string}/cmd`;
-};
-
-/**
- * @type object
- */
-export type RunCommandResponses = {
-	"200": RunCommandStatus200;
-	"400": RunCommandStatus400;
-	"401": RunCommandStatus401;
-	"403": RunCommandStatus403;
-	"404": RunCommandStatus404;
-	"410": RunCommandStatus410;
-	"422": RunCommandStatus422;
-	"500": RunCommandStatus500;
-};
-
-/**
- * @description Union of all possible responses
- */
-export type RunCommandResponse =
-	| RunCommandStatus200
-	| RunCommandStatus400
-	| RunCommandStatus401
-	| RunCommandStatus403
-	| RunCommandStatus404
-	| RunCommandStatus410
-	| RunCommandStatus422
-	| RunCommandStatus500;
-
-/**
- * @description The unique identifier of the command to terminate.
- * @example cmd_abc123
- * @type string
- */
-export type KillCommandPathCmdId = string;
-
-/**
- * @description The unique identifier of the sandbox containing the command.
- * @example sbx_abc123
- * @type string
- */
-export type KillCommandPathSandboxId = string;
-
-/**
- * @description The Team identifier to perform the request on behalf of.
- * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
- * @type string | undefined
- */
-export type KillCommandQueryTeamId = string | undefined;
-
-/**
- * @description The Team slug to perform the request on behalf of.
- * @example my-team-url-slug
- * @type string | undefined
- */
-export type KillCommandQuerySlug = string | undefined;
-
-/**
- * @type unknown
- */
-export type KillCommandStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type KillCommandStatus400 = unknown;
-
-/**
- * @type unknown
- */
-export type KillCommandStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type KillCommandStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type KillCommandStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type KillCommandStatus410 = unknown;
-
-/**
- * @type unknown
- */
-export type KillCommandStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type KillCommandStatus500 = unknown;
-
-/**
- * @type object
- */
-export type KillCommandRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		cmdId: KillCommandPathCmdId;
-		sandboxId: KillCommandPathSandboxId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				teamId?: KillCommandQueryTeamId | undefined;
-				slug?: KillCommandQuerySlug | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/v1/sandboxes/${string}/${string}/kill`;
-};
-
-/**
- * @type object
- */
-export type KillCommandResponses = {
-	"200": KillCommandStatus200;
-	"400": KillCommandStatus400;
-	"401": KillCommandStatus401;
-	"403": KillCommandStatus403;
-	"404": KillCommandStatus404;
-	"410": KillCommandStatus410;
-	"422": KillCommandStatus422;
-	"500": KillCommandStatus500;
-};
-
-/**
- * @description Union of all possible responses
- */
-export type KillCommandResponse =
-	| KillCommandStatus200
-	| KillCommandStatus400
-	| KillCommandStatus401
-	| KillCommandStatus403
-	| KillCommandStatus404
-	| KillCommandStatus410
-	| KillCommandStatus422
-	| KillCommandStatus500;
-
-/**
- * @description The unique identifier of the sandbox to stop.
- * @example sbx_abc123
- * @type string
- */
-export type StopSandboxPathSandboxId = string;
-
-/**
- * @description The Team identifier to perform the request on behalf of.
- * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
- * @type string | undefined
- */
-export type StopSandboxQueryTeamId = string | undefined;
-
-/**
- * @description The Team slug to perform the request on behalf of.
- * @example my-team-url-slug
- * @type string | undefined
- */
-export type StopSandboxQuerySlug = string | undefined;
-
-/**
- * @type unknown
- */
-export type StopSandboxStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type StopSandboxStatus400 = unknown;
-
-/**
- * @type unknown
- */
-export type StopSandboxStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type StopSandboxStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type StopSandboxStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type StopSandboxStatus410 = unknown;
-
-/**
- * @type unknown
- */
-export type StopSandboxStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type StopSandboxStatus500 = unknown;
-
-/**
- * @type object
- */
-export type StopSandboxRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		sandboxId: StopSandboxPathSandboxId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				teamId?: StopSandboxQueryTeamId | undefined;
-				slug?: StopSandboxQuerySlug | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/v1/sandboxes/${string}/stop`;
-};
-
-/**
- * @type object
- */
-export type StopSandboxResponses = {
-	"200": StopSandboxStatus200;
-	"400": StopSandboxStatus400;
-	"401": StopSandboxStatus401;
-	"403": StopSandboxStatus403;
-	"404": StopSandboxStatus404;
-	"410": StopSandboxStatus410;
-	"422": StopSandboxStatus422;
-	"500": StopSandboxStatus500;
-};
-
-/**
- * @description Union of all possible responses
- */
-export type StopSandboxResponse =
-	| StopSandboxStatus200
-	| StopSandboxStatus400
-	| StopSandboxStatus401
-	| StopSandboxStatus403
-	| StopSandboxStatus404
-	| StopSandboxStatus410
-	| StopSandboxStatus422
-	| StopSandboxStatus500;
-
-/**
- * @description The unique identifier of the sandbox to extend the timeout for.
- * @example sbx_abc123
- * @type string
- */
-export type ExtendSandboxTimeoutPathSandboxId = string;
-
-/**
- * @description The Team identifier to perform the request on behalf of.
- * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
- * @type string | undefined
- */
-export type ExtendSandboxTimeoutQueryTeamId = string | undefined;
-
-/**
- * @description The Team slug to perform the request on behalf of.
- * @example my-team-url-slug
- * @type string | undefined
- */
-export type ExtendSandboxTimeoutQuerySlug = string | undefined;
-
-/**
- * @type unknown
- */
-export type ExtendSandboxTimeoutStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type ExtendSandboxTimeoutStatus400 = unknown;
-
-/**
- * @type unknown
- */
-export type ExtendSandboxTimeoutStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type ExtendSandboxTimeoutStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type ExtendSandboxTimeoutStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type ExtendSandboxTimeoutStatus410 = unknown;
-
-/**
- * @type unknown
- */
-export type ExtendSandboxTimeoutStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type ExtendSandboxTimeoutStatus500 = unknown;
-
-/**
- * @type object
- */
-export type ExtendSandboxTimeoutRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		sandboxId: ExtendSandboxTimeoutPathSandboxId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				teamId?: ExtendSandboxTimeoutQueryTeamId | undefined;
-				slug?: ExtendSandboxTimeoutQuerySlug | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/v1/sandboxes/${string}/extend-timeout`;
-};
-
-/**
- * @type object
- */
-export type ExtendSandboxTimeoutResponses = {
-	"200": ExtendSandboxTimeoutStatus200;
-	"400": ExtendSandboxTimeoutStatus400;
-	"401": ExtendSandboxTimeoutStatus401;
-	"403": ExtendSandboxTimeoutStatus403;
-	"404": ExtendSandboxTimeoutStatus404;
-	"410": ExtendSandboxTimeoutStatus410;
-	"422": ExtendSandboxTimeoutStatus422;
-	"500": ExtendSandboxTimeoutStatus500;
-};
-
-/**
- * @description Union of all possible responses
- */
-export type ExtendSandboxTimeoutResponse =
-	| ExtendSandboxTimeoutStatus200
-	| ExtendSandboxTimeoutStatus400
-	| ExtendSandboxTimeoutStatus401
-	| ExtendSandboxTimeoutStatus403
-	| ExtendSandboxTimeoutStatus404
-	| ExtendSandboxTimeoutStatus410
-	| ExtendSandboxTimeoutStatus422
-	| ExtendSandboxTimeoutStatus500;
-
-/**
- * @description The unique identifier of the sandbox to update the network policy for.
- * @example sbx_abc123
- * @type string
- */
-export type UpdateNetworkPolicyPathSandboxId = string;
-
-/**
- * @description The Team identifier to perform the request on behalf of.
- * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
- * @type string | undefined
- */
-export type UpdateNetworkPolicyQueryTeamId = string | undefined;
-
-/**
- * @description The Team slug to perform the request on behalf of.
- * @example my-team-url-slug
- * @type string | undefined
- */
-export type UpdateNetworkPolicyQuerySlug = string | undefined;
-
-/**
- * @type unknown
- */
-export type UpdateNetworkPolicyStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type UpdateNetworkPolicyStatus400 = unknown;
-
-/**
- * @type unknown
- */
-export type UpdateNetworkPolicyStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type UpdateNetworkPolicyStatus402 = unknown;
-
-/**
- * @type unknown
- */
-export type UpdateNetworkPolicyStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type UpdateNetworkPolicyStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type UpdateNetworkPolicyStatus410 = unknown;
-
-/**
- * @type unknown
- */
-export type UpdateNetworkPolicyStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type UpdateNetworkPolicyStatus500 = unknown;
-
-/**
- * @type object
- */
-export type UpdateNetworkPolicyRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		sandboxId: UpdateNetworkPolicyPathSandboxId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				teamId?: UpdateNetworkPolicyQueryTeamId | undefined;
-				slug?: UpdateNetworkPolicyQuerySlug | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/v1/sandboxes/${string}/network-policy`;
-};
-
-/**
- * @type object
- */
-export type UpdateNetworkPolicyResponses = {
-	"200": UpdateNetworkPolicyStatus200;
-	"400": UpdateNetworkPolicyStatus400;
-	"401": UpdateNetworkPolicyStatus401;
-	"402": UpdateNetworkPolicyStatus402;
-	"403": UpdateNetworkPolicyStatus403;
-	"404": UpdateNetworkPolicyStatus404;
-	"410": UpdateNetworkPolicyStatus410;
-	"422": UpdateNetworkPolicyStatus422;
-	"500": UpdateNetworkPolicyStatus500;
-};
-
-/**
- * @description Union of all possible responses
- */
-export type UpdateNetworkPolicyResponse =
-	| UpdateNetworkPolicyStatus200
-	| UpdateNetworkPolicyStatus400
-	| UpdateNetworkPolicyStatus401
-	| UpdateNetworkPolicyStatus402
-	| UpdateNetworkPolicyStatus403
-	| UpdateNetworkPolicyStatus404
-	| UpdateNetworkPolicyStatus410
-	| UpdateNetworkPolicyStatus422
-	| UpdateNetworkPolicyStatus500;
-
-/**
- * @description The unique identifier of the sandbox containing the command.
- * @example sbx_abc123
- * @type string
- */
-export type GetCommandPathSandboxId = string;
-
-/**
- * @description The unique identifier of the command to retrieve.
- * @example cmd_abc123
- * @type string
- */
-export type GetCommandPathCmdId = string;
-
-/**
- * @description If set to \"true\", the request will block until the command finishes execution. Useful for synchronously waiting for command completion.
- * @default "false"
- * @type string | undefined
- */
-export type GetCommandQueryWait = ("true" | "false") | undefined;
-
-/**
- * @description The Team identifier to perform the request on behalf of.
- * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
- * @type string | undefined
- */
-export type GetCommandQueryTeamId = string | undefined;
-
-/**
- * @description The Team slug to perform the request on behalf of.
- * @example my-team-url-slug
- * @type string | undefined
- */
-export type GetCommandQuerySlug = string | undefined;
-
-/**
- * @type unknown
- */
-export type GetCommandStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type GetCommandStatus400 = unknown;
-
-/**
- * @type unknown
- */
-export type GetCommandStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type GetCommandStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type GetCommandStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type GetCommandStatus410 = unknown;
-
-/**
- * @type unknown
- */
-export type GetCommandStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type GetCommandStatus500 = unknown;
-
-/**
- * @type object
- */
-export type GetCommandRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		sandboxId: GetCommandPathSandboxId;
-		cmdId: GetCommandPathCmdId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				wait?: GetCommandQueryWait | undefined;
-				teamId?: GetCommandQueryTeamId | undefined;
-				slug?: GetCommandQuerySlug | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/v1/sandboxes/${string}/cmd/${string}`;
-};
-
-/**
- * @type object
- */
-export type GetCommandResponses = {
-	"200": GetCommandStatus200;
-	"400": GetCommandStatus400;
-	"401": GetCommandStatus401;
-	"403": GetCommandStatus403;
-	"404": GetCommandStatus404;
-	"410": GetCommandStatus410;
-	"422": GetCommandStatus422;
-	"500": GetCommandStatus500;
-};
-
-/**
- * @description Union of all possible responses
- */
-export type GetCommandResponse =
-	| GetCommandStatus200
-	| GetCommandStatus400
-	| GetCommandStatus401
-	| GetCommandStatus403
-	| GetCommandStatus404
-	| GetCommandStatus410
-	| GetCommandStatus422
-	| GetCommandStatus500;
-
-/**
- * @description The unique identifier of the sandbox containing the command.
- * @example sbx_abc123
- * @type string
- */
-export type GetCommandLogsPathSandboxId = string;
-
-/**
- * @description The unique identifier of the command to stream logs for.
- * @example cmd_abc123
- * @type string
- */
-export type GetCommandLogsPathCmdId = string;
-
-/**
- * @description The Team identifier to perform the request on behalf of.
- * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
- * @type string | undefined
- */
-export type GetCommandLogsQueryTeamId = string | undefined;
-
-/**
- * @description The Team slug to perform the request on behalf of.
- * @example my-team-url-slug
- * @type string | undefined
- */
-export type GetCommandLogsQuerySlug = string | undefined;
-
-/**
- * @type unknown
- */
-export type GetCommandLogsStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type GetCommandLogsStatus400 = unknown;
-
-/**
- * @type unknown
- */
-export type GetCommandLogsStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type GetCommandLogsStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type GetCommandLogsStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type GetCommandLogsStatus410 = unknown;
-
-/**
- * @type unknown
- */
-export type GetCommandLogsStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type GetCommandLogsStatus500 = unknown;
-
-/**
- * @type object
- */
-export type GetCommandLogsRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		sandboxId: GetCommandLogsPathSandboxId;
-		cmdId: GetCommandLogsPathCmdId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				teamId?: GetCommandLogsQueryTeamId | undefined;
-				slug?: GetCommandLogsQuerySlug | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/v1/sandboxes/${string}/cmd/${string}/logs`;
-};
-
-/**
- * @type object
- */
-export type GetCommandLogsResponses = {
-	"200": GetCommandLogsStatus200;
-	"400": GetCommandLogsStatus400;
-	"401": GetCommandLogsStatus401;
-	"403": GetCommandLogsStatus403;
-	"404": GetCommandLogsStatus404;
-	"410": GetCommandLogsStatus410;
-	"422": GetCommandLogsStatus422;
-	"500": GetCommandLogsStatus500;
-};
-
-/**
- * @description Union of all possible responses
- */
-export type GetCommandLogsResponse =
-	| GetCommandLogsStatus200
-	| GetCommandLogsStatus400
-	| GetCommandLogsStatus401
-	| GetCommandLogsStatus403
-	| GetCommandLogsStatus404
-	| GetCommandLogsStatus410
-	| GetCommandLogsStatus422
-	| GetCommandLogsStatus500;
-
-/**
- * @description The unique identifier of the sandbox to read the file from.
- * @example sbx_abc123
- * @type string
- */
-export type ReadFilePathSandboxId = string;
-
-/**
- * @description The Team identifier to perform the request on behalf of.
- * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
- * @type string | undefined
- */
-export type ReadFileQueryTeamId = string | undefined;
-
-/**
- * @description The Team slug to perform the request on behalf of.
- * @example my-team-url-slug
- * @type string | undefined
- */
-export type ReadFileQuerySlug = string | undefined;
-
-/**
- * @type unknown
- */
-export type ReadFileStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type ReadFileStatus400 = unknown;
-
-/**
- * @type unknown
- */
-export type ReadFileStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type ReadFileStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type ReadFileStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type ReadFileStatus410 = unknown;
-
-/**
- * @type unknown
- */
-export type ReadFileStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type ReadFileStatus500 = unknown;
-
-/**
- * @type object
- */
-export type ReadFileRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		sandboxId: ReadFilePathSandboxId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				teamId?: ReadFileQueryTeamId | undefined;
-				slug?: ReadFileQuerySlug | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/v1/sandboxes/${string}/fs/read`;
-};
-
-/**
- * @type object
- */
-export type ReadFileResponses = {
-	"200": ReadFileStatus200;
-	"400": ReadFileStatus400;
-	"401": ReadFileStatus401;
-	"403": ReadFileStatus403;
-	"404": ReadFileStatus404;
-	"410": ReadFileStatus410;
-	"422": ReadFileStatus422;
-	"500": ReadFileStatus500;
-};
-
-/**
- * @description Union of all possible responses
- */
-export type ReadFileResponse =
-	| ReadFileStatus200
-	| ReadFileStatus400
-	| ReadFileStatus401
-	| ReadFileStatus403
-	| ReadFileStatus404
-	| ReadFileStatus410
-	| ReadFileStatus422
-	| ReadFileStatus500;
-
-/**
- * @description The unique identifier of the sandbox to create the directory in.
- * @example sbx_abc123
- * @type string
- */
-export type CreateDirectoryPathSandboxId = string;
-
-/**
- * @description The Team identifier to perform the request on behalf of.
- * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
- * @type string | undefined
- */
-export type CreateDirectoryQueryTeamId = string | undefined;
-
-/**
- * @description The Team slug to perform the request on behalf of.
- * @example my-team-url-slug
- * @type string | undefined
- */
-export type CreateDirectoryQuerySlug = string | undefined;
-
-/**
- * @type unknown
- */
-export type CreateDirectoryStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type CreateDirectoryStatus400 = unknown;
-
-/**
- * @type unknown
- */
-export type CreateDirectoryStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type CreateDirectoryStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type CreateDirectoryStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type CreateDirectoryStatus410 = unknown;
-
-/**
- * @type unknown
- */
-export type CreateDirectoryStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type CreateDirectoryStatus500 = unknown;
-
-/**
- * @type object
- */
-export type CreateDirectoryRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		sandboxId: CreateDirectoryPathSandboxId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				teamId?: CreateDirectoryQueryTeamId | undefined;
-				slug?: CreateDirectoryQuerySlug | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/v1/sandboxes/${string}/fs/mkdir`;
-};
-
-/**
- * @type object
- */
-export type CreateDirectoryResponses = {
-	"200": CreateDirectoryStatus200;
-	"400": CreateDirectoryStatus400;
-	"401": CreateDirectoryStatus401;
-	"403": CreateDirectoryStatus403;
-	"404": CreateDirectoryStatus404;
-	"410": CreateDirectoryStatus410;
-	"422": CreateDirectoryStatus422;
-	"500": CreateDirectoryStatus500;
-};
-
-/**
- * @description Union of all possible responses
- */
-export type CreateDirectoryResponse =
-	| CreateDirectoryStatus200
-	| CreateDirectoryStatus400
-	| CreateDirectoryStatus401
-	| CreateDirectoryStatus403
-	| CreateDirectoryStatus404
-	| CreateDirectoryStatus410
-	| CreateDirectoryStatus422
-	| CreateDirectoryStatus500;
-
-/**
- * @description The target directory where the tarball contents will be extracted. If not specified, files are extracted to the sandbox home directory.
- * @example /home/vercel-sandbox
- * @type string | undefined
- */
-export type WriteFilesHeaderxCwd = string | undefined;
-
-/**
- * @description The unique identifier of the sandbox to write files to.
- * @example sbx_abc123
- * @type string
- */
-export type WriteFilesPathSandboxId = string;
-
-/**
- * @description The Team identifier to perform the request on behalf of.
- * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
- * @type string | undefined
- */
-export type WriteFilesQueryTeamId = string | undefined;
-
-/**
- * @description The Team slug to perform the request on behalf of.
- * @example my-team-url-slug
- * @type string | undefined
- */
-export type WriteFilesQuerySlug = string | undefined;
-
-/**
- * @type unknown
- */
-export type WriteFilesStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type WriteFilesStatus400 = unknown;
-
-/**
- * @type unknown
- */
-export type WriteFilesStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type WriteFilesStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type WriteFilesStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type WriteFilesStatus410 = unknown;
-
-/**
- * @type unknown
- */
-export type WriteFilesStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type WriteFilesStatus500 = unknown;
-
-/**
- * @type object
- */
-export type WriteFilesRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		sandboxId: WriteFilesPathSandboxId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				teamId?: WriteFilesQueryTeamId | undefined;
-				slug?: WriteFilesQuerySlug | undefined;
-		  }
-		| undefined;
-	/**
-	 * @type object | undefined
-	 */
-	headerParams?:
-		| {
-				"'x-Cwd'"?: WriteFilesHeaderxCwd | undefined;
-		  }
-		| undefined;
-	/**
-	 * @type string
-	 */
-	url: `/v1/sandboxes/${string}/fs/write`;
-};
-
-/**
- * @type object
- */
-export type WriteFilesResponses = {
-	"200": WriteFilesStatus200;
-	"400": WriteFilesStatus400;
-	"401": WriteFilesStatus401;
-	"403": WriteFilesStatus403;
-	"404": WriteFilesStatus404;
-	"410": WriteFilesStatus410;
-	"422": WriteFilesStatus422;
-	"500": WriteFilesStatus500;
-};
-
-/**
- * @description Union of all possible responses
- */
-export type WriteFilesResponse =
-	| WriteFilesStatus200
-	| WriteFilesStatus400
-	| WriteFilesStatus401
-	| WriteFilesStatus403
-	| WriteFilesStatus404
-	| WriteFilesStatus410
-	| WriteFilesStatus422
-	| WriteFilesStatus500;
-
-/**
- * @description The unique identifier of the snapshot to retrieve.
- * @example snap_abc123
- * @type string
- */
-export type GetSnapshotPathSnapshotId = string;
-
-/**
- * @description The Team identifier to perform the request on behalf of.
- * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
- * @type string | undefined
- */
-export type GetSnapshotQueryTeamId = string | undefined;
-
-/**
- * @description The Team slug to perform the request on behalf of.
- * @example my-team-url-slug
- * @type string | undefined
- */
-export type GetSnapshotQuerySlug = string | undefined;
-
-/**
- * @type unknown
- */
-export type GetSnapshotStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type GetSnapshotStatus400 = unknown;
-
-/**
- * @type unknown
- */
-export type GetSnapshotStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type GetSnapshotStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type GetSnapshotStatus404 = unknown;
-
-/**
- * @type object
- */
-export type GetSnapshotRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		snapshotId: GetSnapshotPathSnapshotId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				teamId?: GetSnapshotQueryTeamId | undefined;
-				slug?: GetSnapshotQuerySlug | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/v1/sandboxes/snapshots/${string}`;
-};
-
-/**
- * @type object
- */
-export type GetSnapshotResponses = {
-	"200": GetSnapshotStatus200;
-	"400": GetSnapshotStatus400;
-	"401": GetSnapshotStatus401;
-	"403": GetSnapshotStatus403;
-	"404": GetSnapshotStatus404;
-};
-
-/**
- * @description Union of all possible responses
- */
-export type GetSnapshotResponse =
-	| GetSnapshotStatus200
-	| GetSnapshotStatus400
-	| GetSnapshotStatus401
-	| GetSnapshotStatus403
-	| GetSnapshotStatus404;
-
-/**
- * @description The unique identifier of the snapshot to delete.
- * @example snap_abc123
- * @type string
- */
-export type DeleteSnapshotPathSnapshotId = string;
-
-/**
- * @description The Team identifier to perform the request on behalf of.
- * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
- * @type string | undefined
- */
-export type DeleteSnapshotQueryTeamId = string | undefined;
-
-/**
- * @description The Team slug to perform the request on behalf of.
- * @example my-team-url-slug
- * @type string | undefined
- */
-export type DeleteSnapshotQuerySlug = string | undefined;
-
-/**
- * @type unknown
- */
-export type DeleteSnapshotStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type DeleteSnapshotStatus400 = unknown;
-
-/**
- * @type unknown
- */
-export type DeleteSnapshotStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type DeleteSnapshotStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type DeleteSnapshotStatus404 = unknown;
-
-/**
- * @type object
- */
-export type DeleteSnapshotRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		snapshotId: DeleteSnapshotPathSnapshotId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				teamId?: DeleteSnapshotQueryTeamId | undefined;
-				slug?: DeleteSnapshotQuerySlug | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/v1/sandboxes/snapshots/${string}`;
-};
-
-/**
- * @type object
- */
-export type DeleteSnapshotResponses = {
-	"200": DeleteSnapshotStatus200;
-	"400": DeleteSnapshotStatus400;
-	"401": DeleteSnapshotStatus401;
-	"403": DeleteSnapshotStatus403;
-	"404": DeleteSnapshotStatus404;
-};
-
-/**
- * @description Union of all possible responses
- */
-export type DeleteSnapshotResponse =
-	| DeleteSnapshotStatus200
-	| DeleteSnapshotStatus400
-	| DeleteSnapshotStatus401
-	| DeleteSnapshotStatus403
-	| DeleteSnapshotStatus404;
-
-/**
- * @description The unique identifier of the sandbox to snapshot.
- * @example sbx_abc123
- * @type string
- */
-export type CreateSnapshotPathSandboxId = string;
-
-/**
- * @description The Team identifier to perform the request on behalf of.
- * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
- * @type string | undefined
- */
-export type CreateSnapshotQueryTeamId = string | undefined;
-
-/**
- * @description The Team slug to perform the request on behalf of.
- * @example my-team-url-slug
- * @type string | undefined
- */
-export type CreateSnapshotQuerySlug = string | undefined;
-
-/**
- * @type unknown
- */
-export type CreateSnapshotStatus201 = unknown;
-
-/**
- * @type unknown
- */
-export type CreateSnapshotStatus400 = unknown;
-
-/**
- * @type unknown
- */
-export type CreateSnapshotStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type CreateSnapshotStatus402 = unknown;
-
-/**
- * @type unknown
- */
-export type CreateSnapshotStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type CreateSnapshotStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type CreateSnapshotStatus410 = unknown;
-
-/**
- * @type unknown
- */
-export type CreateSnapshotStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type CreateSnapshotStatus500 = unknown;
-
-/**
- * @type object
- */
-export type CreateSnapshotRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		sandboxId: CreateSnapshotPathSandboxId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				teamId?: CreateSnapshotQueryTeamId | undefined;
-				slug?: CreateSnapshotQuerySlug | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/v1/sandboxes/${string}/snapshot`;
-};
-
-/**
- * @type object
- */
-export type CreateSnapshotResponses = {
-	"201": CreateSnapshotStatus201;
-	"400": CreateSnapshotStatus400;
-	"401": CreateSnapshotStatus401;
-	"402": CreateSnapshotStatus402;
-	"403": CreateSnapshotStatus403;
-	"404": CreateSnapshotStatus404;
-	"410": CreateSnapshotStatus410;
-	"422": CreateSnapshotStatus422;
-	"500": CreateSnapshotStatus500;
-};
-
-/**
- * @description Union of all possible responses
- */
-export type CreateSnapshotResponse =
-	| CreateSnapshotStatus201
-	| CreateSnapshotStatus400
-	| CreateSnapshotStatus401
-	| CreateSnapshotStatus402
-	| CreateSnapshotStatus403
-	| CreateSnapshotStatus404
-	| CreateSnapshotStatus410
-	| CreateSnapshotStatus422
-	| CreateSnapshotStatus500;
-
-/**
  * @description The unique identifier or name of the project to list named sandboxes for.
  * @example prj_abc123
  * @type string | undefined
  */
-export type GetSandboxesV2QueryProject = string | undefined;
+export type ListSandboxesQueryProject = string | undefined;
 
 /**
  * @description Maximum number of named sandboxes to return in the response. Used for pagination.
@@ -45552,14 +43289,14 @@ export type GetSandboxesV2QueryProject = string | undefined;
  * @example 20
  * @type number | undefined
  */
-export type GetSandboxesV2QueryLimit = number | undefined;
+export type ListSandboxesQueryLimit = number | undefined;
 
 /**
  * @description Field to sort by.
  * @default "createdAt"
  * @type string | undefined
  */
-export type GetSandboxesV2QuerySortBy =
+export type ListSandboxesQuerySortBy =
 	| ("createdAt" | "name" | "statusUpdatedAt" | "currentSnapshotId")
 	| undefined;
 
@@ -45567,69 +43304,69 @@ export type GetSandboxesV2QuerySortBy =
  * @description Filter named sandboxes whose name starts with this prefix. Only valid when sortBy=name.
  * @type string | undefined
  */
-export type GetSandboxesV2QueryNamePrefix = string | undefined;
+export type ListSandboxesQueryNamePrefix = string | undefined;
 
 /**
  * @description Opaque pagination cursor from a previous response.
  * @type string | undefined
  */
-export type GetSandboxesV2QueryCursor = string | undefined;
+export type ListSandboxesQueryCursor = string | undefined;
 
 /**
  * @description Sort direction. Defaults to desc.
  * @default "desc"
  * @type string | undefined
  */
-export type GetSandboxesV2QuerySortOrder = ("asc" | "desc") | undefined;
+export type ListSandboxesQuerySortOrder = ("asc" | "desc") | undefined;
 
 /**
  * @description Filter sandboxes by tag. Format: \\\"key:value\\\". Only one tag filter is supported at a time.
  */
-export type GetSandboxesV2QueryTags = (string | string[]) | undefined;
+export type ListSandboxesQueryTags = (string | string[]) | undefined;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
  * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
  * @type string | undefined
  */
-export type GetSandboxesV2QueryTeamId = string | undefined;
+export type ListSandboxesQueryTeamId = string | undefined;
 
 /**
  * @description The Team slug to perform the request on behalf of.
  * @example my-team-url-slug
  * @type string | undefined
  */
-export type GetSandboxesV2QuerySlug = string | undefined;
+export type ListSandboxesQuerySlug = string | undefined;
 
 /**
  * @type unknown
  */
-export type GetSandboxesV2Status200 = unknown;
+export type ListSandboxesStatus200 = unknown;
 
 /**
  * @type unknown
  */
-export type GetSandboxesV2Status400 = unknown;
+export type ListSandboxesStatus400 = unknown;
 
 /**
  * @type unknown
  */
-export type GetSandboxesV2Status401 = unknown;
+export type ListSandboxesStatus401 = unknown;
 
 /**
  * @type unknown
  */
-export type GetSandboxesV2Status403 = unknown;
+export type ListSandboxesStatus403 = unknown;
 
 /**
  * @type unknown
  */
-export type GetSandboxesV2Status404 = unknown;
+export type ListSandboxesStatus404 = unknown;
 
 /**
  * @type object
  */
-export type GetSandboxesV2RequestConfig = {
+export type ListSandboxesRequestConfig = {
 	data?: never | undefined;
 	pathParams?: never | undefined;
 	/**
@@ -45637,15 +43374,15 @@ export type GetSandboxesV2RequestConfig = {
 	 */
 	queryParams?:
 		| {
-				project?: GetSandboxesV2QueryProject | undefined;
-				limit?: GetSandboxesV2QueryLimit | undefined;
-				sortBy?: GetSandboxesV2QuerySortBy | undefined;
-				namePrefix?: GetSandboxesV2QueryNamePrefix | undefined;
-				cursor?: GetSandboxesV2QueryCursor | undefined;
-				sortOrder?: GetSandboxesV2QuerySortOrder | undefined;
-				tags?: GetSandboxesV2QueryTags | undefined;
-				teamId?: GetSandboxesV2QueryTeamId | undefined;
-				slug?: GetSandboxesV2QuerySlug | undefined;
+				project?: ListSandboxesQueryProject | undefined;
+				limit?: ListSandboxesQueryLimit | undefined;
+				sortBy?: ListSandboxesQuerySortBy | undefined;
+				namePrefix?: ListSandboxesQueryNamePrefix | undefined;
+				cursor?: ListSandboxesQueryCursor | undefined;
+				sortOrder?: ListSandboxesQuerySortOrder | undefined;
+				tags?: ListSandboxesQueryTags | undefined;
+				teamId?: ListSandboxesQueryTeamId | undefined;
+				slug?: ListSandboxesQuerySlug | undefined;
 		  }
 		| undefined;
 	headerParams?: never | undefined;
@@ -45658,23 +43395,23 @@ export type GetSandboxesV2RequestConfig = {
 /**
  * @type object
  */
-export type GetSandboxesV2Responses = {
-	"200": GetSandboxesV2Status200;
-	"400": GetSandboxesV2Status400;
-	"401": GetSandboxesV2Status401;
-	"403": GetSandboxesV2Status403;
-	"404": GetSandboxesV2Status404;
+export type ListSandboxesResponses = {
+	"200": ListSandboxesStatus200;
+	"400": ListSandboxesStatus400;
+	"401": ListSandboxesStatus401;
+	"403": ListSandboxesStatus403;
+	"404": ListSandboxesStatus404;
 };
 
 /**
  * @description Union of all possible responses
  */
-export type GetSandboxesV2Response =
-	| GetSandboxesV2Status200
-	| GetSandboxesV2Status400
-	| GetSandboxesV2Status401
-	| GetSandboxesV2Status403
-	| GetSandboxesV2Status404;
+export type ListSandboxesResponse =
+	| ListSandboxesStatus200
+	| ListSandboxesStatus400
+	| ListSandboxesStatus401
+	| ListSandboxesStatus403
+	| ListSandboxesStatus404;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
