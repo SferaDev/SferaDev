@@ -9354,190 +9354,6 @@ export const aCLActionSchema = z
 		"Enum containing the actions that can be performed against a resource. Group operations are included.",
 	);
 
-export const sandboxInjectionRuleSchema = z
-	.object({
-		domain: z
-			.string()
-			.describe(
-				"The domain (or pattern) that this injection rule applies to. Supports wildcards like *.vercel.com.",
-			),
-		headerNames: z
-			.array(z.string())
-			.optional()
-			.describe(
-				"The names of HTTP headers that have value that will be injected for requests to this domain.",
-			),
-	})
-	.describe("HTTP header injection rules for outgoing requests matching specific domains.");
-
-export const sandboxNetworkPolicySchema = z
-	.object({
-		mode: z
-			.enum(["allow-all", "custom", "deny-all"])
-			.describe(
-				"The network policy mode. - 'allow-all': All traffic is allowed. - 'deny-all': All traffic is blocked. - 'custom': Traffic is controlled by explicit allow/deny rules.",
-			),
-		allowedDomains: z
-			.array(z.string())
-			.optional()
-			.describe(
-				'List of domain names the sandbox is allowed to connect to. Supports wildcard patterns (e.g., "*.vercel.com" matches all subdomains).',
-			),
-		allowedCIDRs: z
-			.array(z.string())
-			.optional()
-			.describe(
-				"List of IP address ranges (in CIDR notation) the sandbox is allowed to connect to.",
-			),
-		deniedCIDRs: z
-			.array(z.string())
-			.optional()
-			.describe(
-				"List of IP address ranges (in CIDR notation) the sandbox is blocked from connecting to. These rules take precedence over all allowed rules.",
-			),
-		injectionRules: z
-			.array(z.unknown())
-			.optional()
-			.describe("HTTP header injection rules for outgoing requests matching specific domains."),
-	})
-	.describe("The network policy applied to this sandbox, if any.");
-
-export const sandboxSchema = z
-	.object({
-		id: z.string().describe("The unique identifier of the sandbox."),
-		memory: z.number().describe("Memory allocated to this sandbox in MB."),
-		vcpus: z.number().describe("Number of vCPUs allocated to this sandbox."),
-		region: z.string().describe("The region where the sandbox is hosted."),
-		runtime: z.string().describe("The runtime of the sandbox."),
-		timeout: z
-			.number()
-			.describe("The maximum amount of time the sandbox will run for in milliseconds."),
-		status: z
-			.enum(["aborted", "failed", "pending", "running", "snapshotting", "stopped", "stopping"])
-			.describe("The status of the sandbox."),
-		requestedAt: z
-			.number()
-			.describe("The time when the sandbox was requested, in milliseconds since the epoch."),
-		startedAt: z
-			.number()
-			.optional()
-			.describe("The time when the sandbox was started, in milliseconds since the epoch."),
-		cwd: z.string().describe("The working directory of the sandbox."),
-		requestedStopAt: z
-			.number()
-			.optional()
-			.describe(
-				"The time when the sandbox was requested to stop, in milliseconds since the epoch.",
-			),
-		stoppedAt: z
-			.number()
-			.optional()
-			.describe("The time when the sandbox was stopped, in milliseconds since the epoch."),
-		abortedAt: z
-			.number()
-			.optional()
-			.describe("The time when the sandbox was aborted, in milliseconds since the epoch."),
-		duration: z.number().optional().describe("The duration of the sandbox in milliseconds."),
-		sourceSnapshotId: z
-			.string()
-			.optional()
-			.describe("The unique identifier of the snapshot associated with this sandbox, if any."),
-		snapshottedAt: z
-			.number()
-			.optional()
-			.describe("The time when a snapshot was requested, in milliseconds since the epoch."),
-		createdAt: z
-			.number()
-			.describe("The time when the sandbox was created, in milliseconds since the epoch."),
-		updatedAt: z
-			.number()
-			.describe("The last time the sandbox was updated, in milliseconds since the epoch."),
-		networkPolicy: z.unknown().optional(),
-		activeCpuDurationMs: z
-			.number()
-			.optional()
-			.describe(
-				"The amount of CPU time the sandbox consumed, if available, in milliseconds. This value is only available once the sandbox is stopped, and only if it stopped successfully.",
-			),
-		networkTransfer: z
-			.object({
-				ingress: z.number(),
-				egress: z.number(),
-			})
-			.optional()
-			.describe(
-				"The quantity of data transfered to and from the sandbox, in bytes. This value is only available once the sandbox is stopped, and only if it stopped successfully.",
-			),
-	})
-	.describe("This object contains information related to a Vercel Sandbox.");
-
-export const snapshotSchema = z
-	.object({
-		id: z.string().describe("The unique identifier of the snapshot."),
-		sourceSessionId: z
-			.string()
-			.describe("The unique identifier of the session from which the snapshot was created."),
-		region: z.string().describe("The region where the snapshot is stored."),
-		status: z.enum(["created", "deleted", "failed"]).describe("The status of the snapshot."),
-		sizeBytes: z.number().describe("The size of the snapshot in bytes."),
-		expiresAt: z
-			.number()
-			.optional()
-			.describe(
-				"The time when the snapshot will expire, in milliseconds since the epoch. If not set, the snapshot does not have any expiration.",
-			),
-		createdAt: z
-			.number()
-			.describe("The time when the snapshot was created, in milliseconds since the epoch."),
-		updatedAt: z
-			.number()
-			.describe("The last time the snapshot was updated, in milliseconds since the epoch."),
-		lastUsedAt: z
-			.number()
-			.describe(
-				"The last time the snapshot was used (e.g. to resume or create a sandbox), in milliseconds since the epoch. Falls back to `createdAt` for older snapshots that predate this field.",
-			),
-		creationMethod: z
-			.enum(["automatic", "manual"])
-			.optional()
-			.describe("The method used to create the snapshot."),
-		parentId: z
-			.string()
-			.optional()
-			.describe(
-				"The unique identifier of the parent snapshot, if this snapshot was created from another snapshot.",
-			),
-	})
-	.describe(
-		"This object contains information related to a Snapshot of a Vercel Sandbox session (v2 API).",
-	);
-
-export const sandboxPublicRouteSchema = z
-	.object({
-		url: z.string().describe("A public URL to access the corresponding port in the Sandbox."),
-		port: z.number().describe("The user port number that the route is mapped to."),
-		subdomain: z.string().describe("The subdomain assigned to this route."),
-		system: z
-			.literal(true)
-			.optional()
-			.describe("Whether the route is reserved by the system (e.g. for internal use)."),
-	})
-	.describe("This object represents a public route in a Vercel Sandbox.");
-
-export const sandboxCommandSchema = z
-	.object({
-		id: z.string().describe("The ID of the command."),
-		name: z.string().describe("The name of the command."),
-		args: z.array(z.string()).describe("The arguments of the command."),
-		cwd: z.string().describe("The current working directory of the command."),
-		sandboxId: z.string().describe("The ID of the sandbox associated with the command."),
-		exitCode: z.number().nullable().describe("If the command did finish, the exit code."),
-		startedAt: z
-			.number()
-			.describe("When the command was started, in milliseconds since the epoch."),
-	})
-	.describe("This object represents command run in a Vercel Sandbox.");
-
 export const namedSandboxSchema = z
 	.object({
 		name: z.string().describe("The unique identifier of the sandbox."),
@@ -9631,6 +9447,54 @@ export const namedSandboxSchema = z
 	})
 	.describe("This object contains information related to a Vercel NamedSandbox.");
 
+export const sandboxInjectionRuleSchema = z
+	.object({
+		domain: z
+			.string()
+			.describe(
+				"The domain (or pattern) that this injection rule applies to. Supports wildcards like *.vercel.com.",
+			),
+		headerNames: z
+			.array(z.string())
+			.optional()
+			.describe(
+				"The names of HTTP headers that have value that will be injected for requests to this domain.",
+			),
+	})
+	.describe("HTTP header injection rules for outgoing requests matching specific domains.");
+
+export const sandboxNetworkPolicySchema = z
+	.object({
+		mode: z
+			.enum(["allow-all", "custom", "deny-all"])
+			.describe(
+				"The network policy mode. - 'allow-all': All traffic is allowed. - 'deny-all': All traffic is blocked. - 'custom': Traffic is controlled by explicit allow/deny rules.",
+			),
+		allowedDomains: z
+			.array(z.string())
+			.optional()
+			.describe(
+				'List of domain names the sandbox is allowed to connect to. Supports wildcard patterns (e.g., "*.vercel.com" matches all subdomains).',
+			),
+		allowedCIDRs: z
+			.array(z.string())
+			.optional()
+			.describe(
+				"List of IP address ranges (in CIDR notation) the sandbox is allowed to connect to.",
+			),
+		deniedCIDRs: z
+			.array(z.string())
+			.optional()
+			.describe(
+				"List of IP address ranges (in CIDR notation) the sandbox is blocked from connecting to. These rules take precedence over all allowed rules.",
+			),
+		injectionRules: z
+			.array(z.unknown())
+			.optional()
+			.describe("HTTP header injection rules for outgoing requests matching specific domains."),
+	})
+	.describe("The network policy applied to this sandbox, if any.");
+
 export const sessionSchema = z
 	.object({
 		sourceSandboxName: z.string().describe("The name of the source sandbox."),
@@ -9704,6 +9568,59 @@ export const sessionSchema = z
 	})
 	.describe(
 		'This object contains information related to a Vercel Sandbox Session. v2 endpoints return "session" instead of "sandbox" as the response wrapper key.',
+	);
+
+export const sandboxPublicRouteSchema = z
+	.object({
+		url: z.string().describe("A public URL to access the corresponding port in the Sandbox."),
+		port: z.number().describe("The user port number that the route is mapped to."),
+		subdomain: z.string().describe("The subdomain assigned to this route."),
+		system: z
+			.literal(true)
+			.optional()
+			.describe("Whether the route is reserved by the system (e.g. for internal use)."),
+	})
+	.describe("This object represents a public route in a Vercel Sandbox.");
+
+export const snapshotSchema = z
+	.object({
+		id: z.string().describe("The unique identifier of the snapshot."),
+		sourceSessionId: z
+			.string()
+			.describe("The unique identifier of the session from which the snapshot was created."),
+		region: z.string().describe("The region where the snapshot is stored."),
+		status: z.enum(["created", "deleted", "failed"]).describe("The status of the snapshot."),
+		sizeBytes: z.number().describe("The size of the snapshot in bytes."),
+		expiresAt: z
+			.number()
+			.optional()
+			.describe(
+				"The time when the snapshot will expire, in milliseconds since the epoch. If not set, the snapshot does not have any expiration.",
+			),
+		createdAt: z
+			.number()
+			.describe("The time when the snapshot was created, in milliseconds since the epoch."),
+		updatedAt: z
+			.number()
+			.describe("The last time the snapshot was updated, in milliseconds since the epoch."),
+		lastUsedAt: z
+			.number()
+			.describe(
+				"The last time the snapshot was used (e.g. to resume or create a sandbox), in milliseconds since the epoch. Falls back to `createdAt` for older snapshots that predate this field.",
+			),
+		creationMethod: z
+			.enum(["automatic", "manual"])
+			.optional()
+			.describe("The method used to create the snapshot."),
+		parentId: z
+			.string()
+			.optional()
+			.describe(
+				"The unique identifier of the parent snapshot, if this snapshot was created from another snapshot.",
+			),
+	})
+	.describe(
+		"This object contains information related to a Snapshot of a Vercel Sandbox session (v2 API).",
 	);
 
 export const sessionCommandSchema = z
@@ -19145,777 +19062,12 @@ export const unpauseProjectResponseSchema = z.union([
 	unpauseProjectStatus500Schema,
 ]);
 
-export const getSandboxesV1QueryProjectSchema = z
-	.string()
-	.optional()
-	.describe("The unique identifier or name of the project to list sandboxes for.");
-
-export const getSandboxesV1QueryLimitSchema = z
-	.number()
-	.optional()
-	.describe("Maximum number of sandboxes to return in the response. Used for pagination.");
-
-export const getSandboxesV1QuerySinceSchema = z
-	.number()
-	.optional()
-	.describe(
-		"Filter sandboxes created after this timestamp. Specified as Unix time in milliseconds.",
-	);
-
-export const getSandboxesV1QueryUntilSchema = z
-	.number()
-	.optional()
-	.describe(
-		"Filter sandboxes created before this timestamp. Specified as Unix time in milliseconds.",
-	);
-
-export const getSandboxesV1QueryTeamIdSchema = z
-	.string()
-	.optional()
-	.describe("The Team identifier to perform the request on behalf of.");
-
-export const getSandboxesV1QuerySlugSchema = z
-	.string()
-	.optional()
-	.describe("The Team slug to perform the request on behalf of.");
-
-export const getSandboxesV1Status200Schema = z.unknown();
-
-export const getSandboxesV1Status400Schema = z.unknown();
-
-export const getSandboxesV1Status401Schema = z.unknown();
-
-export const getSandboxesV1Status403Schema = z.unknown();
-
-export const getSandboxesV1Status404Schema = z.unknown();
-
-export const getSandboxesV1ResponseSchema = z.union([
-	getSandboxesV1Status200Schema,
-	getSandboxesV1Status400Schema,
-	getSandboxesV1Status401Schema,
-	getSandboxesV1Status403Schema,
-	getSandboxesV1Status404Schema,
-]);
-
-export const createSandboxQueryTeamIdSchema = z
-	.string()
-	.optional()
-	.describe("The Team identifier to perform the request on behalf of.");
-
-export const createSandboxQuerySlugSchema = z
-	.string()
-	.optional()
-	.describe("The Team slug to perform the request on behalf of.");
-
-export const createSandboxStatus200Schema = z.unknown();
-
-export const createSandboxStatus400Schema = z.unknown();
-
-export const createSandboxStatus401Schema = z.unknown();
-
-export const createSandboxStatus402Schema = z.unknown();
-
-export const createSandboxStatus403Schema = z.unknown();
-
-export const createSandboxStatus404Schema = z.unknown();
-
-export const createSandboxStatus409Schema = z.unknown();
-
-export const createSandboxStatus410Schema = z.unknown();
-
-export const createSandboxStatus422Schema = z.unknown();
-
-export const createSandboxStatus429Schema = z.unknown();
-
-export const createSandboxStatus500Schema = z.unknown();
-
-export const createSandboxResponseSchema = z.union([
-	createSandboxStatus200Schema,
-	createSandboxStatus400Schema,
-	createSandboxStatus401Schema,
-	createSandboxStatus402Schema,
-	createSandboxStatus403Schema,
-	createSandboxStatus404Schema,
-	createSandboxStatus409Schema,
-	createSandboxStatus410Schema,
-	createSandboxStatus422Schema,
-	createSandboxStatus429Schema,
-	createSandboxStatus500Schema,
-]);
-
-export const listSnapshotsQueryProjectSchema = z
-	.string()
-	.optional()
-	.describe("The unique identifier or name of the project to list snapshots for.");
-
-export const listSnapshotsQueryLimitSchema = z
-	.number()
-	.optional()
-	.describe("Maximum number of snapshots to return in the response. Used for pagination.");
-
-export const listSnapshotsQuerySinceSchema = z
-	.number()
-	.optional()
-	.describe(
-		"Filter snapshots created after this timestamp. Specified as Unix time in milliseconds.",
-	);
-
-export const listSnapshotsQueryUntilSchema = z
-	.number()
-	.optional()
-	.describe(
-		"Filter snapshots created before this timestamp. Specified as Unix time in milliseconds.",
-	);
-
-export const listSnapshotsQueryTeamIdSchema = z
-	.string()
-	.optional()
-	.describe("The Team identifier to perform the request on behalf of.");
-
-export const listSnapshotsQuerySlugSchema = z
-	.string()
-	.optional()
-	.describe("The Team slug to perform the request on behalf of.");
-
-export const listSnapshotsStatus200Schema = z.unknown();
-
-export const listSnapshotsStatus400Schema = z.unknown();
-
-export const listSnapshotsStatus401Schema = z.unknown();
-
-export const listSnapshotsStatus403Schema = z.unknown();
-
-export const listSnapshotsStatus404Schema = z.unknown();
-
-export const listSnapshotsResponseSchema = z.union([
-	listSnapshotsStatus200Schema,
-	listSnapshotsStatus400Schema,
-	listSnapshotsStatus401Schema,
-	listSnapshotsStatus403Schema,
-	listSnapshotsStatus404Schema,
-]);
-
-export const getSandboxPathSandboxIdSchema = z
-	.string()
-	.describe("The unique identifier of the sandbox to retrieve.");
-
-export const getSandboxQueryTeamIdSchema = z
-	.string()
-	.optional()
-	.describe("The Team identifier to perform the request on behalf of.");
-
-export const getSandboxQuerySlugSchema = z
-	.string()
-	.optional()
-	.describe("The Team slug to perform the request on behalf of.");
-
-export const getSandboxStatus200Schema = z.unknown();
-
-export const getSandboxStatus400Schema = z.unknown();
-
-export const getSandboxStatus401Schema = z.unknown();
-
-export const getSandboxStatus403Schema = z.unknown();
-
-export const getSandboxStatus404Schema = z.unknown();
-
-export const getSandboxStatus429Schema = z.unknown();
-
-export const getSandboxResponseSchema = z.union([
-	getSandboxStatus200Schema,
-	getSandboxStatus400Schema,
-	getSandboxStatus401Schema,
-	getSandboxStatus403Schema,
-	getSandboxStatus404Schema,
-	getSandboxStatus429Schema,
-]);
-
-export const listCommandsPathSandboxIdSchema = z
-	.string()
-	.describe("The unique identifier of the sandbox to list commands for.");
-
-export const listCommandsQueryTeamIdSchema = z
-	.string()
-	.optional()
-	.describe("The Team identifier to perform the request on behalf of.");
-
-export const listCommandsQuerySlugSchema = z
-	.string()
-	.optional()
-	.describe("The Team slug to perform the request on behalf of.");
-
-export const listCommandsStatus200Schema = z.unknown();
-
-export const listCommandsStatus400Schema = z.unknown();
-
-export const listCommandsStatus401Schema = z.unknown();
-
-export const listCommandsStatus403Schema = z.unknown();
-
-export const listCommandsStatus404Schema = z.unknown();
-
-export const listCommandsResponseSchema = z.union([
-	listCommandsStatus200Schema,
-	listCommandsStatus400Schema,
-	listCommandsStatus401Schema,
-	listCommandsStatus403Schema,
-	listCommandsStatus404Schema,
-]);
-
-export const runCommandPathSandboxIdSchema = z
-	.string()
-	.describe("The unique identifier of the sandbox in which to execute the command.");
-
-export const runCommandQueryTeamIdSchema = z
-	.string()
-	.optional()
-	.describe("The Team identifier to perform the request on behalf of.");
-
-export const runCommandQuerySlugSchema = z
-	.string()
-	.optional()
-	.describe("The Team slug to perform the request on behalf of.");
-
-export const runCommandStatus200Schema = z.unknown();
-
-export const runCommandStatus400Schema = z.unknown();
-
-export const runCommandStatus401Schema = z.unknown();
-
-export const runCommandStatus403Schema = z.unknown();
-
-export const runCommandStatus404Schema = z.unknown();
-
-export const runCommandStatus410Schema = z.unknown();
-
-export const runCommandStatus422Schema = z.unknown();
-
-export const runCommandStatus500Schema = z.unknown();
-
-export const runCommandResponseSchema = z.union([
-	runCommandStatus200Schema,
-	runCommandStatus400Schema,
-	runCommandStatus401Schema,
-	runCommandStatus403Schema,
-	runCommandStatus404Schema,
-	runCommandStatus410Schema,
-	runCommandStatus422Schema,
-	runCommandStatus500Schema,
-]);
-
-export const killCommandPathCmdIdSchema = z
-	.string()
-	.describe("The unique identifier of the command to terminate.");
-
-export const killCommandPathSandboxIdSchema = z
-	.string()
-	.describe("The unique identifier of the sandbox containing the command.");
-
-export const killCommandQueryTeamIdSchema = z
-	.string()
-	.optional()
-	.describe("The Team identifier to perform the request on behalf of.");
-
-export const killCommandQuerySlugSchema = z
-	.string()
-	.optional()
-	.describe("The Team slug to perform the request on behalf of.");
-
-export const killCommandStatus200Schema = z.unknown();
-
-export const killCommandStatus400Schema = z.unknown();
-
-export const killCommandStatus401Schema = z.unknown();
-
-export const killCommandStatus403Schema = z.unknown();
-
-export const killCommandStatus404Schema = z.unknown();
-
-export const killCommandStatus410Schema = z.unknown();
-
-export const killCommandStatus422Schema = z.unknown();
-
-export const killCommandStatus500Schema = z.unknown();
-
-export const killCommandResponseSchema = z.union([
-	killCommandStatus200Schema,
-	killCommandStatus400Schema,
-	killCommandStatus401Schema,
-	killCommandStatus403Schema,
-	killCommandStatus404Schema,
-	killCommandStatus410Schema,
-	killCommandStatus422Schema,
-	killCommandStatus500Schema,
-]);
-
-export const stopSandboxPathSandboxIdSchema = z
-	.string()
-	.describe("The unique identifier of the sandbox to stop.");
-
-export const stopSandboxQueryTeamIdSchema = z
-	.string()
-	.optional()
-	.describe("The Team identifier to perform the request on behalf of.");
-
-export const stopSandboxQuerySlugSchema = z
-	.string()
-	.optional()
-	.describe("The Team slug to perform the request on behalf of.");
-
-export const stopSandboxStatus200Schema = z.unknown();
-
-export const stopSandboxStatus400Schema = z.unknown();
-
-export const stopSandboxStatus401Schema = z.unknown();
-
-export const stopSandboxStatus403Schema = z.unknown();
-
-export const stopSandboxStatus404Schema = z.unknown();
-
-export const stopSandboxStatus410Schema = z.unknown();
-
-export const stopSandboxStatus422Schema = z.unknown();
-
-export const stopSandboxStatus500Schema = z.unknown();
-
-export const stopSandboxResponseSchema = z.union([
-	stopSandboxStatus200Schema,
-	stopSandboxStatus400Schema,
-	stopSandboxStatus401Schema,
-	stopSandboxStatus403Schema,
-	stopSandboxStatus404Schema,
-	stopSandboxStatus410Schema,
-	stopSandboxStatus422Schema,
-	stopSandboxStatus500Schema,
-]);
-
-export const extendSandboxTimeoutPathSandboxIdSchema = z
-	.string()
-	.describe("The unique identifier of the sandbox to extend the timeout for.");
-
-export const extendSandboxTimeoutQueryTeamIdSchema = z
-	.string()
-	.optional()
-	.describe("The Team identifier to perform the request on behalf of.");
-
-export const extendSandboxTimeoutQuerySlugSchema = z
-	.string()
-	.optional()
-	.describe("The Team slug to perform the request on behalf of.");
-
-export const extendSandboxTimeoutStatus200Schema = z.unknown();
-
-export const extendSandboxTimeoutStatus400Schema = z.unknown();
-
-export const extendSandboxTimeoutStatus401Schema = z.unknown();
-
-export const extendSandboxTimeoutStatus403Schema = z.unknown();
-
-export const extendSandboxTimeoutStatus404Schema = z.unknown();
-
-export const extendSandboxTimeoutStatus410Schema = z.unknown();
-
-export const extendSandboxTimeoutStatus422Schema = z.unknown();
-
-export const extendSandboxTimeoutStatus500Schema = z.unknown();
-
-export const extendSandboxTimeoutResponseSchema = z.union([
-	extendSandboxTimeoutStatus200Schema,
-	extendSandboxTimeoutStatus400Schema,
-	extendSandboxTimeoutStatus401Schema,
-	extendSandboxTimeoutStatus403Schema,
-	extendSandboxTimeoutStatus404Schema,
-	extendSandboxTimeoutStatus410Schema,
-	extendSandboxTimeoutStatus422Schema,
-	extendSandboxTimeoutStatus500Schema,
-]);
-
-export const updateNetworkPolicyPathSandboxIdSchema = z
-	.string()
-	.describe("The unique identifier of the sandbox to update the network policy for.");
-
-export const updateNetworkPolicyQueryTeamIdSchema = z
-	.string()
-	.optional()
-	.describe("The Team identifier to perform the request on behalf of.");
-
-export const updateNetworkPolicyQuerySlugSchema = z
-	.string()
-	.optional()
-	.describe("The Team slug to perform the request on behalf of.");
-
-export const updateNetworkPolicyStatus200Schema = z.unknown();
-
-export const updateNetworkPolicyStatus400Schema = z.unknown();
-
-export const updateNetworkPolicyStatus401Schema = z.unknown();
-
-export const updateNetworkPolicyStatus402Schema = z.unknown();
-
-export const updateNetworkPolicyStatus403Schema = z.unknown();
-
-export const updateNetworkPolicyStatus404Schema = z.unknown();
-
-export const updateNetworkPolicyStatus410Schema = z.unknown();
-
-export const updateNetworkPolicyStatus422Schema = z.unknown();
-
-export const updateNetworkPolicyStatus500Schema = z.unknown();
-
-export const updateNetworkPolicyResponseSchema = z.union([
-	updateNetworkPolicyStatus200Schema,
-	updateNetworkPolicyStatus400Schema,
-	updateNetworkPolicyStatus401Schema,
-	updateNetworkPolicyStatus402Schema,
-	updateNetworkPolicyStatus403Schema,
-	updateNetworkPolicyStatus404Schema,
-	updateNetworkPolicyStatus410Schema,
-	updateNetworkPolicyStatus422Schema,
-	updateNetworkPolicyStatus500Schema,
-]);
-
-export const getCommandPathSandboxIdSchema = z
-	.string()
-	.describe("The unique identifier of the sandbox containing the command.");
-
-export const getCommandPathCmdIdSchema = z
-	.string()
-	.describe("The unique identifier of the command to retrieve.");
-
-export const getCommandQueryWaitSchema = z
-	.enum(["true", "false"])
-	.optional()
-	.default("false")
-	.describe(
-		'If set to "true", the request will block until the command finishes execution. Useful for synchronously waiting for command completion.',
-	);
-
-export const getCommandQueryTeamIdSchema = z
-	.string()
-	.optional()
-	.describe("The Team identifier to perform the request on behalf of.");
-
-export const getCommandQuerySlugSchema = z
-	.string()
-	.optional()
-	.describe("The Team slug to perform the request on behalf of.");
-
-export const getCommandStatus200Schema = z.unknown();
-
-export const getCommandStatus400Schema = z.unknown();
-
-export const getCommandStatus401Schema = z.unknown();
-
-export const getCommandStatus403Schema = z.unknown();
-
-export const getCommandStatus404Schema = z.unknown();
-
-export const getCommandStatus410Schema = z.unknown();
-
-export const getCommandStatus422Schema = z.unknown();
-
-export const getCommandStatus500Schema = z.unknown();
-
-export const getCommandResponseSchema = z.union([
-	getCommandStatus200Schema,
-	getCommandStatus400Schema,
-	getCommandStatus401Schema,
-	getCommandStatus403Schema,
-	getCommandStatus404Schema,
-	getCommandStatus410Schema,
-	getCommandStatus422Schema,
-	getCommandStatus500Schema,
-]);
-
-export const getCommandLogsPathSandboxIdSchema = z
-	.string()
-	.describe("The unique identifier of the sandbox containing the command.");
-
-export const getCommandLogsPathCmdIdSchema = z
-	.string()
-	.describe("The unique identifier of the command to stream logs for.");
-
-export const getCommandLogsQueryTeamIdSchema = z
-	.string()
-	.optional()
-	.describe("The Team identifier to perform the request on behalf of.");
-
-export const getCommandLogsQuerySlugSchema = z
-	.string()
-	.optional()
-	.describe("The Team slug to perform the request on behalf of.");
-
-export const getCommandLogsStatus200Schema = z.unknown();
-
-export const getCommandLogsStatus400Schema = z.unknown();
-
-export const getCommandLogsStatus401Schema = z.unknown();
-
-export const getCommandLogsStatus403Schema = z.unknown();
-
-export const getCommandLogsStatus404Schema = z.unknown();
-
-export const getCommandLogsStatus410Schema = z.unknown();
-
-export const getCommandLogsStatus422Schema = z.unknown();
-
-export const getCommandLogsStatus500Schema = z.unknown();
-
-export const getCommandLogsResponseSchema = z.union([
-	getCommandLogsStatus200Schema,
-	getCommandLogsStatus400Schema,
-	getCommandLogsStatus401Schema,
-	getCommandLogsStatus403Schema,
-	getCommandLogsStatus404Schema,
-	getCommandLogsStatus410Schema,
-	getCommandLogsStatus422Schema,
-	getCommandLogsStatus500Schema,
-]);
-
-export const readFilePathSandboxIdSchema = z
-	.string()
-	.describe("The unique identifier of the sandbox to read the file from.");
-
-export const readFileQueryTeamIdSchema = z
-	.string()
-	.optional()
-	.describe("The Team identifier to perform the request on behalf of.");
-
-export const readFileQuerySlugSchema = z
-	.string()
-	.optional()
-	.describe("The Team slug to perform the request on behalf of.");
-
-export const readFileStatus200Schema = z.unknown();
-
-export const readFileStatus400Schema = z.unknown();
-
-export const readFileStatus401Schema = z.unknown();
-
-export const readFileStatus403Schema = z.unknown();
-
-export const readFileStatus404Schema = z.unknown();
-
-export const readFileStatus410Schema = z.unknown();
-
-export const readFileStatus422Schema = z.unknown();
-
-export const readFileStatus500Schema = z.unknown();
-
-export const readFileResponseSchema = z.union([
-	readFileStatus200Schema,
-	readFileStatus400Schema,
-	readFileStatus401Schema,
-	readFileStatus403Schema,
-	readFileStatus404Schema,
-	readFileStatus410Schema,
-	readFileStatus422Schema,
-	readFileStatus500Schema,
-]);
-
-export const createDirectoryPathSandboxIdSchema = z
-	.string()
-	.describe("The unique identifier of the sandbox to create the directory in.");
-
-export const createDirectoryQueryTeamIdSchema = z
-	.string()
-	.optional()
-	.describe("The Team identifier to perform the request on behalf of.");
-
-export const createDirectoryQuerySlugSchema = z
-	.string()
-	.optional()
-	.describe("The Team slug to perform the request on behalf of.");
-
-export const createDirectoryStatus200Schema = z.unknown();
-
-export const createDirectoryStatus400Schema = z.unknown();
-
-export const createDirectoryStatus401Schema = z.unknown();
-
-export const createDirectoryStatus403Schema = z.unknown();
-
-export const createDirectoryStatus404Schema = z.unknown();
-
-export const createDirectoryStatus410Schema = z.unknown();
-
-export const createDirectoryStatus422Schema = z.unknown();
-
-export const createDirectoryStatus500Schema = z.unknown();
-
-export const createDirectoryResponseSchema = z.union([
-	createDirectoryStatus200Schema,
-	createDirectoryStatus400Schema,
-	createDirectoryStatus401Schema,
-	createDirectoryStatus403Schema,
-	createDirectoryStatus404Schema,
-	createDirectoryStatus410Schema,
-	createDirectoryStatus422Schema,
-	createDirectoryStatus500Schema,
-]);
-
-export const writeFilesHeaderxCwdSchema = z
-	.string()
-	.optional()
-	.describe(
-		"The target directory where the tarball contents will be extracted. If not specified, files are extracted to the sandbox home directory.",
-	);
-
-export const writeFilesPathSandboxIdSchema = z
-	.string()
-	.describe("The unique identifier of the sandbox to write files to.");
-
-export const writeFilesQueryTeamIdSchema = z
-	.string()
-	.optional()
-	.describe("The Team identifier to perform the request on behalf of.");
-
-export const writeFilesQuerySlugSchema = z
-	.string()
-	.optional()
-	.describe("The Team slug to perform the request on behalf of.");
-
-export const writeFilesStatus200Schema = z.unknown();
-
-export const writeFilesStatus400Schema = z.unknown();
-
-export const writeFilesStatus401Schema = z.unknown();
-
-export const writeFilesStatus403Schema = z.unknown();
-
-export const writeFilesStatus404Schema = z.unknown();
-
-export const writeFilesStatus410Schema = z.unknown();
-
-export const writeFilesStatus422Schema = z.unknown();
-
-export const writeFilesStatus500Schema = z.unknown();
-
-export const writeFilesResponseSchema = z.union([
-	writeFilesStatus200Schema,
-	writeFilesStatus400Schema,
-	writeFilesStatus401Schema,
-	writeFilesStatus403Schema,
-	writeFilesStatus404Schema,
-	writeFilesStatus410Schema,
-	writeFilesStatus422Schema,
-	writeFilesStatus500Schema,
-]);
-
-export const getSnapshotPathSnapshotIdSchema = z
-	.string()
-	.describe("The unique identifier of the snapshot to retrieve.");
-
-export const getSnapshotQueryTeamIdSchema = z
-	.string()
-	.optional()
-	.describe("The Team identifier to perform the request on behalf of.");
-
-export const getSnapshotQuerySlugSchema = z
-	.string()
-	.optional()
-	.describe("The Team slug to perform the request on behalf of.");
-
-export const getSnapshotStatus200Schema = z.unknown();
-
-export const getSnapshotStatus400Schema = z.unknown();
-
-export const getSnapshotStatus401Schema = z.unknown();
-
-export const getSnapshotStatus403Schema = z.unknown();
-
-export const getSnapshotStatus404Schema = z.unknown();
-
-export const getSnapshotResponseSchema = z.union([
-	getSnapshotStatus200Schema,
-	getSnapshotStatus400Schema,
-	getSnapshotStatus401Schema,
-	getSnapshotStatus403Schema,
-	getSnapshotStatus404Schema,
-]);
-
-export const deleteSnapshotPathSnapshotIdSchema = z
-	.string()
-	.describe("The unique identifier of the snapshot to delete.");
-
-export const deleteSnapshotQueryTeamIdSchema = z
-	.string()
-	.optional()
-	.describe("The Team identifier to perform the request on behalf of.");
-
-export const deleteSnapshotQuerySlugSchema = z
-	.string()
-	.optional()
-	.describe("The Team slug to perform the request on behalf of.");
-
-export const deleteSnapshotStatus200Schema = z.unknown();
-
-export const deleteSnapshotStatus400Schema = z.unknown();
-
-export const deleteSnapshotStatus401Schema = z.unknown();
-
-export const deleteSnapshotStatus403Schema = z.unknown();
-
-export const deleteSnapshotStatus404Schema = z.unknown();
-
-export const deleteSnapshotResponseSchema = z.union([
-	deleteSnapshotStatus200Schema,
-	deleteSnapshotStatus400Schema,
-	deleteSnapshotStatus401Schema,
-	deleteSnapshotStatus403Schema,
-	deleteSnapshotStatus404Schema,
-]);
-
-export const createSnapshotPathSandboxIdSchema = z
-	.string()
-	.describe("The unique identifier of the sandbox to snapshot.");
-
-export const createSnapshotQueryTeamIdSchema = z
-	.string()
-	.optional()
-	.describe("The Team identifier to perform the request on behalf of.");
-
-export const createSnapshotQuerySlugSchema = z
-	.string()
-	.optional()
-	.describe("The Team slug to perform the request on behalf of.");
-
-export const createSnapshotStatus201Schema = z.unknown();
-
-export const createSnapshotStatus400Schema = z.unknown();
-
-export const createSnapshotStatus401Schema = z.unknown();
-
-export const createSnapshotStatus402Schema = z.unknown();
-
-export const createSnapshotStatus403Schema = z.unknown();
-
-export const createSnapshotStatus404Schema = z.unknown();
-
-export const createSnapshotStatus410Schema = z.unknown();
-
-export const createSnapshotStatus422Schema = z.unknown();
-
-export const createSnapshotStatus500Schema = z.unknown();
-
-export const createSnapshotResponseSchema = z.union([
-	createSnapshotStatus201Schema,
-	createSnapshotStatus400Schema,
-	createSnapshotStatus401Schema,
-	createSnapshotStatus402Schema,
-	createSnapshotStatus403Schema,
-	createSnapshotStatus404Schema,
-	createSnapshotStatus410Schema,
-	createSnapshotStatus422Schema,
-	createSnapshotStatus500Schema,
-]);
-
-export const getSandboxesV2QueryProjectSchema = z
+export const listSandboxesQueryProjectSchema = z
 	.string()
 	.optional()
 	.describe("The unique identifier or name of the project to list named sandboxes for.");
 
-export const getSandboxesV2QueryLimitSchema = z
+export const listSandboxesQueryLimitSchema = z
 	.number()
 	.min(1)
 	.max(50)
@@ -19923,63 +19075,63 @@ export const getSandboxesV2QueryLimitSchema = z
 	.default(20)
 	.describe("Maximum number of named sandboxes to return in the response. Used for pagination.");
 
-export const getSandboxesV2QuerySortBySchema = z
+export const listSandboxesQuerySortBySchema = z
 	.enum(["createdAt", "name", "statusUpdatedAt", "currentSnapshotId"])
 	.optional()
 	.default("createdAt")
 	.describe("Field to sort by.");
 
-export const getSandboxesV2QueryNamePrefixSchema = z
+export const listSandboxesQueryNamePrefixSchema = z
 	.string()
 	.optional()
 	.describe(
 		"Filter named sandboxes whose name starts with this prefix. Only valid when sortBy=name.",
 	);
 
-export const getSandboxesV2QueryCursorSchema = z
+export const listSandboxesQueryCursorSchema = z
 	.string()
 	.optional()
 	.describe("Opaque pagination cursor from a previous response.");
 
-export const getSandboxesV2QuerySortOrderSchema = z
+export const listSandboxesQuerySortOrderSchema = z
 	.enum(["asc", "desc"])
 	.optional()
 	.default("desc")
 	.describe("Sort direction. Defaults to desc.");
 
-export const getSandboxesV2QueryTagsSchema = z
+export const listSandboxesQueryTagsSchema = z
 	.union([z.string(), z.array(z.string())])
 	.optional()
 	.describe(
 		'Filter sandboxes by tag. Format: \\"key:value\\". Only one tag filter is supported at a time.',
 	);
 
-export const getSandboxesV2QueryTeamIdSchema = z
+export const listSandboxesQueryTeamIdSchema = z
 	.string()
 	.optional()
 	.describe("The Team identifier to perform the request on behalf of.");
 
-export const getSandboxesV2QuerySlugSchema = z
+export const listSandboxesQuerySlugSchema = z
 	.string()
 	.optional()
 	.describe("The Team slug to perform the request on behalf of.");
 
-export const getSandboxesV2Status200Schema = z.unknown();
+export const listSandboxesStatus200Schema = z.unknown();
 
-export const getSandboxesV2Status400Schema = z.unknown();
+export const listSandboxesStatus400Schema = z.unknown();
 
-export const getSandboxesV2Status401Schema = z.unknown();
+export const listSandboxesStatus401Schema = z.unknown();
 
-export const getSandboxesV2Status403Schema = z.unknown();
+export const listSandboxesStatus403Schema = z.unknown();
 
-export const getSandboxesV2Status404Schema = z.unknown();
+export const listSandboxesStatus404Schema = z.unknown();
 
-export const getSandboxesV2ResponseSchema = z.union([
-	getSandboxesV2Status200Schema,
-	getSandboxesV2Status400Schema,
-	getSandboxesV2Status401Schema,
-	getSandboxesV2Status403Schema,
-	getSandboxesV2Status404Schema,
+export const listSandboxesResponseSchema = z.union([
+	listSandboxesStatus200Schema,
+	listSandboxesStatus400Schema,
+	listSandboxesStatus401Schema,
+	listSandboxesStatus403Schema,
+	listSandboxesStatus404Schema,
 ]);
 
 export const createSandboxesQueryTeamIdSchema = z

@@ -143,14 +143,6 @@ import type {
 	CreateDeploymentStatus429,
 	CreateDeploymentStatus500,
 	CreateDeploymentStatus503,
-	CreateDirectoryResponse,
-	CreateDirectoryStatus400,
-	CreateDirectoryStatus401,
-	CreateDirectoryStatus403,
-	CreateDirectoryStatus404,
-	CreateDirectoryStatus410,
-	CreateDirectoryStatus422,
-	CreateDirectoryStatus500,
 	CreateDrainResponse,
 	CreateDrainStatus400,
 	CreateDrainStatus401,
@@ -270,17 +262,6 @@ import type {
 	CreateSandboxesStatus422,
 	CreateSandboxesStatus429,
 	CreateSandboxesStatus500,
-	CreateSandboxResponse,
-	CreateSandboxStatus400,
-	CreateSandboxStatus401,
-	CreateSandboxStatus402,
-	CreateSandboxStatus403,
-	CreateSandboxStatus404,
-	CreateSandboxStatus409,
-	CreateSandboxStatus410,
-	CreateSandboxStatus422,
-	CreateSandboxStatus429,
-	CreateSandboxStatus500,
 	CreateSdkKeyResponse,
 	CreateSdkKeyStatus400,
 	CreateSdkKeyStatus401,
@@ -310,15 +291,6 @@ import type {
 	CreateSharedEnvVariableStatus401,
 	CreateSharedEnvVariableStatus402,
 	CreateSharedEnvVariableStatus403,
-	CreateSnapshotResponse,
-	CreateSnapshotStatus400,
-	CreateSnapshotStatus401,
-	CreateSnapshotStatus402,
-	CreateSnapshotStatus403,
-	CreateSnapshotStatus404,
-	CreateSnapshotStatus410,
-	CreateSnapshotStatus422,
-	CreateSnapshotStatus500,
 	CreateTeamResponse,
 	CreateTeamStatus400,
 	CreateTeamStatus401,
@@ -501,11 +473,6 @@ import type {
 	DeleteSharedEnvVariableStatus401,
 	DeleteSharedEnvVariableStatus402,
 	DeleteSharedEnvVariableStatus403,
-	DeleteSnapshotResponse,
-	DeleteSnapshotStatus400,
-	DeleteSnapshotStatus401,
-	DeleteSnapshotStatus403,
-	DeleteSnapshotStatus404,
 	DeleteTeamInviteCodeResponse,
 	DeleteTeamInviteCodeStatus400,
 	DeleteTeamInviteCodeStatus401,
@@ -552,14 +519,6 @@ import type {
 	ExchangeSsoTokenStatus400,
 	ExchangeSsoTokenStatus403,
 	ExchangeSsoTokenStatus500,
-	ExtendSandboxTimeoutResponse,
-	ExtendSandboxTimeoutStatus400,
-	ExtendSandboxTimeoutStatus401,
-	ExtendSandboxTimeoutStatus403,
-	ExtendSandboxTimeoutStatus404,
-	ExtendSandboxTimeoutStatus410,
-	ExtendSandboxTimeoutStatus422,
-	ExtendSandboxTimeoutStatus500,
 	ExtendSessionTimeoutResponse,
 	ExtendSessionTimeoutStatus400,
 	ExtendSessionTimeoutStatus401,
@@ -645,22 +604,6 @@ import type {
 	GetCheckStatus401,
 	GetCheckStatus403,
 	GetCheckStatus404,
-	GetCommandLogsResponse,
-	GetCommandLogsStatus400,
-	GetCommandLogsStatus401,
-	GetCommandLogsStatus403,
-	GetCommandLogsStatus404,
-	GetCommandLogsStatus410,
-	GetCommandLogsStatus422,
-	GetCommandLogsStatus500,
-	GetCommandResponse,
-	GetCommandStatus400,
-	GetCommandStatus401,
-	GetCommandStatus403,
-	GetCommandStatus404,
-	GetCommandStatus410,
-	GetCommandStatus422,
-	GetCommandStatus500,
 	GetConfigurableLogDrainResponse,
 	GetConfigurableLogDrainStatus400,
 	GetConfigurableLogDrainStatus401,
@@ -992,22 +935,6 @@ import type {
 	GetRuntimeLogsStatus400,
 	GetRuntimeLogsStatus401,
 	GetRuntimeLogsStatus403,
-	GetSandboxesV1Response,
-	GetSandboxesV1Status400,
-	GetSandboxesV1Status401,
-	GetSandboxesV1Status403,
-	GetSandboxesV1Status404,
-	GetSandboxesV2Response,
-	GetSandboxesV2Status400,
-	GetSandboxesV2Status401,
-	GetSandboxesV2Status403,
-	GetSandboxesV2Status404,
-	GetSandboxResponse,
-	GetSandboxStatus400,
-	GetSandboxStatus401,
-	GetSandboxStatus403,
-	GetSandboxStatus404,
-	GetSandboxStatus429,
 	GetSdkKeysResponse,
 	GetSdkKeysStatus400,
 	GetSdkKeysStatus401,
@@ -1051,11 +978,6 @@ import type {
 	GetSharedEnvVarStatus400,
 	GetSharedEnvVarStatus401,
 	GetSharedEnvVarStatus403,
-	GetSnapshotResponse,
-	GetSnapshotStatus400,
-	GetSnapshotStatus401,
-	GetSnapshotStatus403,
-	GetSnapshotStatus404,
 	GetSupportedTldsResponse,
 	GetSupportedTldsStatus400,
 	GetSupportedTldsStatus401,
@@ -1152,14 +1074,6 @@ import type {
 	JoinTeamStatus403,
 	JoinTeamStatus404,
 	JoinTeamStatus503,
-	KillCommandResponse,
-	KillCommandStatus400,
-	KillCommandStatus401,
-	KillCommandStatus403,
-	KillCommandStatus404,
-	KillCommandStatus410,
-	KillCommandStatus422,
-	KillCommandStatus500,
 	KillSessionCommandResponse,
 	KillSessionCommandStatus400,
 	KillSessionCommandStatus401,
@@ -1201,11 +1115,6 @@ import type {
 	ListCheckRunsStatus401,
 	ListCheckRunsStatus403,
 	ListCheckRunsStatus500,
-	ListCommandsResponse,
-	ListCommandsStatus400,
-	ListCommandsStatus401,
-	ListCommandsStatus403,
-	ListCommandsStatus404,
 	ListContractCommitmentsResponse,
 	ListContractCommitmentsStatus400,
 	ListContractCommitmentsStatus401,
@@ -1262,6 +1171,11 @@ import type {
 	ListPromoteAliasesStatus401,
 	ListPromoteAliasesStatus403,
 	ListPromoteAliasesStatus404,
+	ListSandboxesResponse,
+	ListSandboxesStatus400,
+	ListSandboxesStatus401,
+	ListSandboxesStatus403,
+	ListSandboxesStatus404,
 	ListSessionCommandsResponse,
 	ListSessionCommandsStatus400,
 	ListSessionCommandsStatus401,
@@ -1283,11 +1197,6 @@ import type {
 	ListSharedEnvVariableStatus401,
 	ListSharedEnvVariableStatus403,
 	ListSharedEnvVariableStatus404,
-	ListSnapshotsResponse,
-	ListSnapshotsStatus400,
-	ListSnapshotsStatus401,
-	ListSnapshotsStatus403,
-	ListSnapshotsStatus404,
 	ListTeamFlagSettingsResponse,
 	ListTeamFlagSettingsStatus400,
 	ListTeamFlagSettingsStatus401,
@@ -1364,14 +1273,6 @@ import type {
 	ReadAccessGroupStatus400,
 	ReadAccessGroupStatus401,
 	ReadAccessGroupStatus403,
-	ReadFileResponse,
-	ReadFileStatus400,
-	ReadFileStatus401,
-	ReadFileStatus403,
-	ReadFileStatus404,
-	ReadFileStatus410,
-	ReadFileStatus422,
-	ReadFileStatus500,
 	ReadNetworkResponse,
 	ReadNetworkStatus400,
 	ReadNetworkStatus401,
@@ -1480,14 +1381,6 @@ import type {
 	RestoreRedirectsStatus403,
 	RestoreRedirectsStatus404,
 	RestoreRedirectsStatus500,
-	RunCommandResponse,
-	RunCommandStatus400,
-	RunCommandStatus401,
-	RunCommandStatus403,
-	RunCommandStatus404,
-	RunCommandStatus410,
-	RunCommandStatus422,
-	RunCommandStatus500,
 	RunSessionCommandResponse,
 	RunSessionCommandStatus400,
 	RunSessionCommandStatus401,
@@ -1519,14 +1412,6 @@ import type {
 	StatusStatus401,
 	StatusStatus402,
 	StatusStatus403,
-	StopSandboxResponse,
-	StopSandboxStatus400,
-	StopSandboxStatus401,
-	StopSandboxStatus403,
-	StopSandboxStatus404,
-	StopSandboxStatus410,
-	StopSandboxStatus422,
-	StopSandboxStatus500,
 	StopSessionResponse,
 	StopSessionStatus400,
 	StopSessionStatus401,
@@ -1689,15 +1574,6 @@ import type {
 	UpdateMicrofrontendsStatus403,
 	UpdateMicrofrontendsStatus409,
 	UpdateMicrofrontendsStatus500,
-	UpdateNetworkPolicyResponse,
-	UpdateNetworkPolicyStatus400,
-	UpdateNetworkPolicyStatus401,
-	UpdateNetworkPolicyStatus402,
-	UpdateNetworkPolicyStatus403,
-	UpdateNetworkPolicyStatus404,
-	UpdateNetworkPolicyStatus410,
-	UpdateNetworkPolicyStatus422,
-	UpdateNetworkPolicyStatus500,
 	UpdateNetworkResponse,
 	UpdateNetworkStatus400,
 	UpdateNetworkStatus401,
@@ -1845,14 +1721,6 @@ import type {
 	VerifyProjectDomainStatus400,
 	VerifyProjectDomainStatus401,
 	VerifyProjectDomainStatus403,
-	WriteFilesResponse,
-	WriteFilesStatus400,
-	WriteFilesStatus401,
-	WriteFilesStatus403,
-	WriteFilesStatus404,
-	WriteFilesStatus410,
-	WriteFilesStatus422,
-	WriteFilesStatus500,
 	WriteSessionFilesResponse,
 	WriteSessionFilesStatus400,
 	WriteSessionFilesStatus401,
@@ -12342,865 +12210,10 @@ export async function unpauseProject(
 
 /**
  * @summary List sandboxes
- * @description Retrieves a paginated list of sandboxes belonging to a specific project. Results can be filtered by creation time using the `since` and `until` parameters.
- * @link /v1/sandboxes
- */
-export async function getSandboxesV1(
-	{
-		queryParams,
-		config,
-	}: {
-		queryParams?: {
-			project?: string;
-			limit?: number;
-			since?: number;
-			until?: number;
-			teamId?: string;
-			slug?: string;
-		};
-		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-	} = {} as any,
-) {
-	const { client: request = defaultClient, ...requestConfig } = config ?? {};
-
-	const data = await request<
-		GetSandboxesV1Response,
-		ErrorWrapper<
-			| GetSandboxesV1Status400
-			| GetSandboxesV1Status401
-			| GetSandboxesV1Status403
-			| GetSandboxesV1Status404
-		>,
-		null,
-		Record<string, string>,
-		{
-			project?: string;
-			limit?: number;
-			since?: number;
-			until?: number;
-			teamId?: string;
-			slug?: string;
-		},
-		Record<string, string>
-	>({
-		method: "GET",
-		url: `/v1/sandboxes`,
-		queryParams,
-		...requestConfig,
-		headers: { ...requestConfig.headers },
-	});
-
-	return data;
-}
-
-/**
- * @summary Create a sandbox
- * @description Creates a new sandbox environment for executing code in an isolated virtual machine. A sandbox can be initialized from various sources including Git repositories, tarballs, or existing snapshots. Once created, you can execute commands, read/write files, and manage the sandbox lifecycle.
- * @link /v1/sandboxes
- */
-export async function createSandbox(
-	{
-		queryParams,
-		config,
-	}: {
-		queryParams?: { teamId?: string; slug?: string };
-		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-	} = {} as any,
-) {
-	const { client: request = defaultClient, ...requestConfig } = config ?? {};
-
-	const data = await request<
-		CreateSandboxResponse,
-		ErrorWrapper<
-			| CreateSandboxStatus400
-			| CreateSandboxStatus401
-			| CreateSandboxStatus402
-			| CreateSandboxStatus403
-			| CreateSandboxStatus404
-			| CreateSandboxStatus409
-			| CreateSandboxStatus410
-			| CreateSandboxStatus422
-			| CreateSandboxStatus429
-			| CreateSandboxStatus500
-		>,
-		null,
-		Record<string, string>,
-		{ teamId?: string; slug?: string },
-		Record<string, string>
-	>({
-		method: "POST",
-		url: `/v1/sandboxes`,
-		queryParams,
-		...requestConfig,
-		headers: { ...requestConfig.headers },
-	});
-
-	return data;
-}
-
-/**
- * @summary List snapshots
- * @description Retrieves a paginated list of snapshots for a specific project.
- * @link /v1/sandboxes/snapshots
- */
-export async function listSnapshots(
-	{
-		queryParams,
-		config,
-	}: {
-		queryParams?: {
-			project?: string;
-			limit?: number;
-			since?: number;
-			until?: number;
-			teamId?: string;
-			slug?: string;
-		};
-		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-	} = {} as any,
-) {
-	const { client: request = defaultClient, ...requestConfig } = config ?? {};
-
-	const data = await request<
-		ListSnapshotsResponse,
-		ErrorWrapper<
-			| ListSnapshotsStatus400
-			| ListSnapshotsStatus401
-			| ListSnapshotsStatus403
-			| ListSnapshotsStatus404
-		>,
-		null,
-		Record<string, string>,
-		{
-			project?: string;
-			limit?: number;
-			since?: number;
-			until?: number;
-			teamId?: string;
-			slug?: string;
-		},
-		Record<string, string>
-	>({
-		method: "GET",
-		url: `/v1/sandboxes/snapshots`,
-		queryParams,
-		...requestConfig,
-		headers: { ...requestConfig.headers },
-	});
-
-	return data;
-}
-
-/**
- * @summary Get a sandbox
- * @description Retrieves detailed information about a specific sandbox, including its current status, resource configuration, and exposed routes.
- * @link /v1/sandboxes/{sandboxId}
- */
-export async function getSandbox(
-	{
-		pathParams,
-		queryParams,
-		config,
-	}: {
-		pathParams: { sandboxId: string };
-		queryParams?: { teamId?: string; slug?: string };
-		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-	} = {} as any,
-) {
-	const { client: request = defaultClient, ...requestConfig } = config ?? {};
-
-	if (!pathParams.sandboxId) {
-		throw new Error(`Missing required path parameter: sandboxId`);
-	}
-	const data = await request<
-		GetSandboxResponse,
-		ErrorWrapper<
-			| GetSandboxStatus400
-			| GetSandboxStatus401
-			| GetSandboxStatus403
-			| GetSandboxStatus404
-			| GetSandboxStatus429
-		>,
-		null,
-		Record<string, string>,
-		{ teamId?: string; slug?: string },
-		{ sandboxId: string }
-	>({
-		method: "GET",
-		url: `/v1/sandboxes/${pathParams.sandboxId}`,
-		queryParams,
-		...requestConfig,
-		headers: { ...requestConfig.headers },
-	});
-
-	return data;
-}
-
-/**
- * @summary List commands
- * @description Retrieves a list of all commands that have been executed in a sandbox, including their current status, exit codes, and execution times, ordered from the most recent to the oldest.
- * @link /v1/sandboxes/{sandboxId}/cmd
- */
-export async function listCommands(
-	{
-		pathParams,
-		queryParams,
-		config,
-	}: {
-		pathParams: { sandboxId: string };
-		queryParams?: { teamId?: string; slug?: string };
-		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-	} = {} as any,
-) {
-	const { client: request = defaultClient, ...requestConfig } = config ?? {};
-
-	if (!pathParams.sandboxId) {
-		throw new Error(`Missing required path parameter: sandboxId`);
-	}
-	const data = await request<
-		ListCommandsResponse,
-		ErrorWrapper<
-			ListCommandsStatus400 | ListCommandsStatus401 | ListCommandsStatus403 | ListCommandsStatus404
-		>,
-		null,
-		Record<string, string>,
-		{ teamId?: string; slug?: string },
-		{ sandboxId: string }
-	>({
-		method: "GET",
-		url: `/v1/sandboxes/${pathParams.sandboxId}/cmd`,
-		queryParams,
-		...requestConfig,
-		headers: { ...requestConfig.headers },
-	});
-
-	return data;
-}
-
-/**
- * @summary Execute a command
- * @description Executes a shell command inside a running sandbox. The command runs asynchronously and returns immediately with a command ID that can be used to track its progress and retrieve its output. Optionally, use the `wait` parameter to stream the command status until completion.
- * @link /v1/sandboxes/{sandboxId}/cmd
- */
-export async function runCommand(
-	{
-		pathParams,
-		queryParams,
-		config,
-	}: {
-		pathParams: { sandboxId: string };
-		queryParams?: { teamId?: string; slug?: string };
-		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-	} = {} as any,
-) {
-	const { client: request = defaultClient, ...requestConfig } = config ?? {};
-
-	if (!pathParams.sandboxId) {
-		throw new Error(`Missing required path parameter: sandboxId`);
-	}
-	const data = await request<
-		RunCommandResponse,
-		ErrorWrapper<
-			| RunCommandStatus400
-			| RunCommandStatus401
-			| RunCommandStatus403
-			| RunCommandStatus404
-			| RunCommandStatus410
-			| RunCommandStatus422
-			| RunCommandStatus500
-		>,
-		null,
-		Record<string, string>,
-		{ teamId?: string; slug?: string },
-		{ sandboxId: string }
-	>({
-		method: "POST",
-		url: `/v1/sandboxes/${pathParams.sandboxId}/cmd`,
-		queryParams,
-		...requestConfig,
-		headers: { ...requestConfig.headers },
-	});
-
-	return data;
-}
-
-/**
- * @summary Kill a command
- * @description Sends a signal to terminate a running command in a sandbox. The signal can be used to gracefully stop (SIGTERM) or forcefully kill (SIGKILL) the process. The command must still be running for this operation to succeed.
- * @link /v1/sandboxes/{sandboxId}/{cmdId}/kill
- */
-export async function killCommand(
-	{
-		pathParams,
-		queryParams,
-		config,
-	}: {
-		pathParams: { cmdId: string; sandboxId: string };
-		queryParams?: { teamId?: string; slug?: string };
-		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-	} = {} as any,
-) {
-	const { client: request = defaultClient, ...requestConfig } = config ?? {};
-
-	if (!pathParams.cmdId) {
-		throw new Error(`Missing required path parameter: cmdId`);
-	}
-
-	if (!pathParams.sandboxId) {
-		throw new Error(`Missing required path parameter: sandboxId`);
-	}
-	const data = await request<
-		KillCommandResponse,
-		ErrorWrapper<
-			| KillCommandStatus400
-			| KillCommandStatus401
-			| KillCommandStatus403
-			| KillCommandStatus404
-			| KillCommandStatus410
-			| KillCommandStatus422
-			| KillCommandStatus500
-		>,
-		null,
-		Record<string, string>,
-		{ teamId?: string; slug?: string },
-		{ cmdId: string; sandboxId: string }
-	>({
-		method: "POST",
-		url: `/v1/sandboxes/${pathParams.sandboxId}/${pathParams.cmdId}/kill`,
-		queryParams,
-		...requestConfig,
-		headers: { ...requestConfig.headers },
-	});
-
-	return data;
-}
-
-/**
- * @summary Stop a sandbox
- * @description Stops a running sandbox and releases its allocated resources. All running processes within the sandbox will be terminated. This action cannot be undone. A stopped sandbox cannot be restarted.
- * @link /v1/sandboxes/{sandboxId}/stop
- */
-export async function stopSandbox(
-	{
-		pathParams,
-		queryParams,
-		config,
-	}: {
-		pathParams: { sandboxId: string };
-		queryParams?: { teamId?: string; slug?: string };
-		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-	} = {} as any,
-) {
-	const { client: request = defaultClient, ...requestConfig } = config ?? {};
-
-	if (!pathParams.sandboxId) {
-		throw new Error(`Missing required path parameter: sandboxId`);
-	}
-	const data = await request<
-		StopSandboxResponse,
-		ErrorWrapper<
-			| StopSandboxStatus400
-			| StopSandboxStatus401
-			| StopSandboxStatus403
-			| StopSandboxStatus404
-			| StopSandboxStatus410
-			| StopSandboxStatus422
-			| StopSandboxStatus500
-		>,
-		null,
-		Record<string, string>,
-		{ teamId?: string; slug?: string },
-		{ sandboxId: string }
-	>({
-		method: "POST",
-		url: `/v1/sandboxes/${pathParams.sandboxId}/stop`,
-		queryParams,
-		...requestConfig,
-		headers: { ...requestConfig.headers },
-	});
-
-	return data;
-}
-
-/**
- * @summary Extend sandbox timeout
- * @description Extends the maximum execution time of a running sandbox. The sandbox must be active and able to accept commands. The total timeout cannot exceed the maximum allowed limit for your account.
- * @link /v1/sandboxes/{sandboxId}/extend-timeout
- */
-export async function extendSandboxTimeout(
-	{
-		pathParams,
-		queryParams,
-		config,
-	}: {
-		pathParams: { sandboxId: string };
-		queryParams?: { teamId?: string; slug?: string };
-		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-	} = {} as any,
-) {
-	const { client: request = defaultClient, ...requestConfig } = config ?? {};
-
-	if (!pathParams.sandboxId) {
-		throw new Error(`Missing required path parameter: sandboxId`);
-	}
-	const data = await request<
-		ExtendSandboxTimeoutResponse,
-		ErrorWrapper<
-			| ExtendSandboxTimeoutStatus400
-			| ExtendSandboxTimeoutStatus401
-			| ExtendSandboxTimeoutStatus403
-			| ExtendSandboxTimeoutStatus404
-			| ExtendSandboxTimeoutStatus410
-			| ExtendSandboxTimeoutStatus422
-			| ExtendSandboxTimeoutStatus500
-		>,
-		null,
-		Record<string, string>,
-		{ teamId?: string; slug?: string },
-		{ sandboxId: string }
-	>({
-		method: "POST",
-		url: `/v1/sandboxes/${pathParams.sandboxId}/extend-timeout`,
-		queryParams,
-		...requestConfig,
-		headers: { ...requestConfig.headers },
-	});
-
-	return data;
-}
-
-/**
- * @summary Update network policy
- * @description Replaces the network access policy of a running sandbox. Use this to control which external hosts the sandbox can communicate with. This is a full replacement. Any previously configured network rules will be overwritten.
- * @link /v1/sandboxes/{sandboxId}/network-policy
- */
-export async function updateNetworkPolicy(
-	{
-		pathParams,
-		queryParams,
-		config,
-	}: {
-		pathParams: { sandboxId: string };
-		queryParams?: { teamId?: string; slug?: string };
-		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-	} = {} as any,
-) {
-	const { client: request = defaultClient, ...requestConfig } = config ?? {};
-
-	if (!pathParams.sandboxId) {
-		throw new Error(`Missing required path parameter: sandboxId`);
-	}
-	const data = await request<
-		UpdateNetworkPolicyResponse,
-		ErrorWrapper<
-			| UpdateNetworkPolicyStatus400
-			| UpdateNetworkPolicyStatus401
-			| UpdateNetworkPolicyStatus402
-			| UpdateNetworkPolicyStatus403
-			| UpdateNetworkPolicyStatus404
-			| UpdateNetworkPolicyStatus410
-			| UpdateNetworkPolicyStatus422
-			| UpdateNetworkPolicyStatus500
-		>,
-		null,
-		Record<string, string>,
-		{ teamId?: string; slug?: string },
-		{ sandboxId: string }
-	>({
-		method: "POST",
-		url: `/v1/sandboxes/${pathParams.sandboxId}/network-policy`,
-		queryParams,
-		...requestConfig,
-		headers: { ...requestConfig.headers },
-	});
-
-	return data;
-}
-
-/**
- * @summary Get a command
- * @description Retrieves the current status and details of a command executed in a sandbox. Use the `wait` parameter to block until the command finishes execution.
- * @link /v1/sandboxes/{sandboxId}/cmd/{cmdId}
- */
-export async function getCommand(
-	{
-		pathParams,
-		queryParams,
-		config,
-	}: {
-		pathParams: { sandboxId: string; cmdId: string };
-		queryParams?: { wait?: "true" | "false"; teamId?: string; slug?: string };
-		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-	} = {} as any,
-) {
-	const { client: request = defaultClient, ...requestConfig } = config ?? {};
-
-	if (!pathParams.sandboxId) {
-		throw new Error(`Missing required path parameter: sandboxId`);
-	}
-
-	if (!pathParams.cmdId) {
-		throw new Error(`Missing required path parameter: cmdId`);
-	}
-	const data = await request<
-		GetCommandResponse,
-		ErrorWrapper<
-			| GetCommandStatus400
-			| GetCommandStatus401
-			| GetCommandStatus403
-			| GetCommandStatus404
-			| GetCommandStatus410
-			| GetCommandStatus422
-			| GetCommandStatus500
-		>,
-		null,
-		Record<string, string>,
-		{ wait?: "true" | "false"; teamId?: string; slug?: string },
-		{ sandboxId: string; cmdId: string }
-	>({
-		method: "GET",
-		url: `/v1/sandboxes/${pathParams.sandboxId}/cmd/${pathParams.cmdId}`,
-		queryParams,
-		...requestConfig,
-		headers: { ...requestConfig.headers },
-	});
-
-	return data;
-}
-
-/**
- * @summary Stream command logs
- * @description Streams the output of a command in real-time using newline-delimited JSON (ND-JSON). Each entry includes the output data and stream type. Stream types include `stdout`, `stderr`, and `error` (for stream failures).
- * @link /v1/sandboxes/{sandboxId}/cmd/{cmdId}/logs
- */
-export async function getCommandLogs(
-	{
-		pathParams,
-		queryParams,
-		config,
-	}: {
-		pathParams: { sandboxId: string; cmdId: string };
-		queryParams?: { teamId?: string; slug?: string };
-		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-	} = {} as any,
-) {
-	const { client: request = defaultClient, ...requestConfig } = config ?? {};
-
-	if (!pathParams.sandboxId) {
-		throw new Error(`Missing required path parameter: sandboxId`);
-	}
-
-	if (!pathParams.cmdId) {
-		throw new Error(`Missing required path parameter: cmdId`);
-	}
-	const data = await request<
-		GetCommandLogsResponse,
-		ErrorWrapper<
-			| GetCommandLogsStatus400
-			| GetCommandLogsStatus401
-			| GetCommandLogsStatus403
-			| GetCommandLogsStatus404
-			| GetCommandLogsStatus410
-			| GetCommandLogsStatus422
-			| GetCommandLogsStatus500
-		>,
-		null,
-		Record<string, string>,
-		{ teamId?: string; slug?: string },
-		{ sandboxId: string; cmdId: string }
-	>({
-		method: "GET",
-		url: `/v1/sandboxes/${pathParams.sandboxId}/cmd/${pathParams.cmdId}/logs`,
-		queryParams,
-		...requestConfig,
-		headers: { ...requestConfig.headers },
-	});
-
-	return data;
-}
-
-/**
- * @summary Read a file
- * @description Downloads the contents of a file from a sandbox's filesystem. The file content is returned as a binary stream with appropriate Content-Disposition headers for file download.
- * @link /v1/sandboxes/{sandboxId}/fs/read
- */
-export async function readFile(
-	{
-		pathParams,
-		queryParams,
-		config,
-	}: {
-		pathParams: { sandboxId: string };
-		queryParams?: { teamId?: string; slug?: string };
-		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-	} = {} as any,
-) {
-	const { client: request = defaultClient, ...requestConfig } = config ?? {};
-
-	if (!pathParams.sandboxId) {
-		throw new Error(`Missing required path parameter: sandboxId`);
-	}
-	const data = await request<
-		ReadFileResponse,
-		ErrorWrapper<
-			| ReadFileStatus400
-			| ReadFileStatus401
-			| ReadFileStatus403
-			| ReadFileStatus404
-			| ReadFileStatus410
-			| ReadFileStatus422
-			| ReadFileStatus500
-		>,
-		null,
-		Record<string, string>,
-		{ teamId?: string; slug?: string },
-		{ sandboxId: string }
-	>({
-		method: "POST",
-		url: `/v1/sandboxes/${pathParams.sandboxId}/fs/read`,
-		queryParams,
-		...requestConfig,
-		headers: { ...requestConfig.headers },
-	});
-
-	return data;
-}
-
-/**
- * @summary Create a directory
- * @description Creates a new directory in a sandbox's filesystem. By default, parent directories are created recursively if they don't exist (similar to `mkdir -p`).
- * @link /v1/sandboxes/{sandboxId}/fs/mkdir
- */
-export async function createDirectory(
-	{
-		pathParams,
-		queryParams,
-		config,
-	}: {
-		pathParams: { sandboxId: string };
-		queryParams?: { teamId?: string; slug?: string };
-		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-	} = {} as any,
-) {
-	const { client: request = defaultClient, ...requestConfig } = config ?? {};
-
-	if (!pathParams.sandboxId) {
-		throw new Error(`Missing required path parameter: sandboxId`);
-	}
-	const data = await request<
-		CreateDirectoryResponse,
-		ErrorWrapper<
-			| CreateDirectoryStatus400
-			| CreateDirectoryStatus401
-			| CreateDirectoryStatus403
-			| CreateDirectoryStatus404
-			| CreateDirectoryStatus410
-			| CreateDirectoryStatus422
-			| CreateDirectoryStatus500
-		>,
-		null,
-		Record<string, string>,
-		{ teamId?: string; slug?: string },
-		{ sandboxId: string }
-	>({
-		method: "POST",
-		url: `/v1/sandboxes/${pathParams.sandboxId}/fs/mkdir`,
-		queryParams,
-		...requestConfig,
-		headers: { ...requestConfig.headers },
-	});
-
-	return data;
-}
-
-/**
- * @summary Write files
- * @description Uploads and extracts files to a sandbox's filesystem. Files must be uploaded as a gzipped tarball (`.tar.gz`) with the `Content-Type` header set to `application/gzip`. The tarball contents are extracted to the sandbox's working directory, or to a custom directory specified via the `x-cwd` header.
- * @link /v1/sandboxes/{sandboxId}/fs/write
- */
-export async function writeFiles(
-	{
-		pathParams,
-		queryParams,
-		headers,
-		config,
-	}: {
-		pathParams: { sandboxId: string };
-		queryParams?: { teamId?: string; slug?: string };
-		headers?: { "'x-Cwd'"?: string };
-		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-	} = {} as any,
-) {
-	const { client: request = defaultClient, ...requestConfig } = config ?? {};
-
-	if (!pathParams.sandboxId) {
-		throw new Error(`Missing required path parameter: sandboxId`);
-	}
-	const data = await request<
-		WriteFilesResponse,
-		ErrorWrapper<
-			| WriteFilesStatus400
-			| WriteFilesStatus401
-			| WriteFilesStatus403
-			| WriteFilesStatus404
-			| WriteFilesStatus410
-			| WriteFilesStatus422
-			| WriteFilesStatus500
-		>,
-		null,
-		{ "'x-Cwd'"?: string },
-		{ teamId?: string; slug?: string },
-		{ sandboxId: string }
-	>({
-		method: "POST",
-		url: `/v1/sandboxes/${pathParams.sandboxId}/fs/write`,
-		queryParams,
-		...requestConfig,
-		headers: { ...headers, ...requestConfig.headers },
-	});
-
-	return data;
-}
-
-/**
- * @summary Get a snapshot
- * @description Retrieves detailed information about a specific snapshot, including its creation time, size, expiration date, and the source sandbox it was created from.
- * @link /v1/sandboxes/snapshots/{snapshotId}
- */
-export async function getSnapshot(
-	{
-		pathParams,
-		queryParams,
-		config,
-	}: {
-		pathParams: { snapshotId: string };
-		queryParams?: { teamId?: string; slug?: string };
-		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-	} = {} as any,
-) {
-	const { client: request = defaultClient, ...requestConfig } = config ?? {};
-
-	if (!pathParams.snapshotId) {
-		throw new Error(`Missing required path parameter: snapshotId`);
-	}
-	const data = await request<
-		GetSnapshotResponse,
-		ErrorWrapper<
-			GetSnapshotStatus400 | GetSnapshotStatus401 | GetSnapshotStatus403 | GetSnapshotStatus404
-		>,
-		null,
-		Record<string, string>,
-		{ teamId?: string; slug?: string },
-		{ snapshotId: string }
-	>({
-		method: "GET",
-		url: `/v1/sandboxes/snapshots/${pathParams.snapshotId}`,
-		queryParams,
-		...requestConfig,
-		headers: { ...requestConfig.headers },
-	});
-
-	return data;
-}
-
-/**
- * @summary Delete a snapshot
- * @description Permanently deletes a snapshot and frees its associated storage. This action cannot be undone. After deletion, the snapshot can no longer be used to create new sandboxes.
- * @link /v1/sandboxes/snapshots/{snapshotId}
- */
-export async function deleteSnapshot(
-	{
-		pathParams,
-		queryParams,
-		config,
-	}: {
-		pathParams: { snapshotId: string };
-		queryParams?: { teamId?: string; slug?: string };
-		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-	} = {} as any,
-) {
-	const { client: request = defaultClient, ...requestConfig } = config ?? {};
-
-	if (!pathParams.snapshotId) {
-		throw new Error(`Missing required path parameter: snapshotId`);
-	}
-	const data = await request<
-		DeleteSnapshotResponse,
-		ErrorWrapper<
-			| DeleteSnapshotStatus400
-			| DeleteSnapshotStatus401
-			| DeleteSnapshotStatus403
-			| DeleteSnapshotStatus404
-		>,
-		null,
-		Record<string, string>,
-		{ teamId?: string; slug?: string },
-		{ snapshotId: string }
-	>({
-		method: "DELETE",
-		url: `/v1/sandboxes/snapshots/${pathParams.snapshotId}`,
-		queryParams,
-		...requestConfig,
-		headers: { ...requestConfig.headers },
-	});
-
-	return data;
-}
-
-/**
- * @summary Create a snapshot
- * @description Creates a point-in-time snapshot of a running sandbox's filesystem. Snapshots can be used to quickly restore a sandbox to a previous state or to create new sandboxes with pre-configured environments. The sandbox must be running and able to accept commands for a snapshot to be created. The sandbox will be terminated after the snapshot is created.
- * @link /v1/sandboxes/{sandboxId}/snapshot
- */
-export async function createSnapshot(
-	{
-		pathParams,
-		queryParams,
-		config,
-	}: {
-		pathParams: { sandboxId: string };
-		queryParams?: { teamId?: string; slug?: string };
-		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-	} = {} as any,
-) {
-	const { client: request = defaultClient, ...requestConfig } = config ?? {};
-
-	if (!pathParams.sandboxId) {
-		throw new Error(`Missing required path parameter: sandboxId`);
-	}
-	const data = await request<
-		CreateSnapshotResponse,
-		ErrorWrapper<
-			| CreateSnapshotStatus400
-			| CreateSnapshotStatus401
-			| CreateSnapshotStatus402
-			| CreateSnapshotStatus403
-			| CreateSnapshotStatus404
-			| CreateSnapshotStatus410
-			| CreateSnapshotStatus422
-			| CreateSnapshotStatus500
-		>,
-		null,
-		Record<string, string>,
-		{ teamId?: string; slug?: string },
-		{ sandboxId: string }
-	>({
-		method: "POST",
-		url: `/v1/sandboxes/${pathParams.sandboxId}/snapshot`,
-		queryParams,
-		...requestConfig,
-		headers: { ...requestConfig.headers },
-	});
-
-	return data;
-}
-
-/**
- * @summary List sandboxes
  * @description Retrieves a paginated list of named sandboxes belonging to a specific project. Results can be sorted by creation time or name, and optionally filtered by name prefix.
  * @link /v2/sandboxes
  */
-export async function getSandboxesV2(
+export async function listSandboxes(
 	{
 		queryParams,
 		config,
@@ -13222,12 +12235,12 @@ export async function getSandboxesV2(
 	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetSandboxesV2Response,
+		ListSandboxesResponse,
 		ErrorWrapper<
-			| GetSandboxesV2Status400
-			| GetSandboxesV2Status401
-			| GetSandboxesV2Status403
-			| GetSandboxesV2Status404
+			| ListSandboxesStatus400
+			| ListSandboxesStatus401
+			| ListSandboxesStatus403
+			| ListSandboxesStatus404
 		>,
 		null,
 		Record<string, string>,
@@ -16735,25 +15748,7 @@ export const operationsByPath = {
 	"GET /v1/projects/{projectId}/promote/aliases": listPromoteAliases,
 	"POST /v1/projects/{projectId}/pause": pauseProject,
 	"POST /v1/projects/{projectId}/unpause": unpauseProject,
-	"GET /v1/sandboxes": getSandboxesV1,
-	"POST /v1/sandboxes": createSandbox,
-	"GET /v1/sandboxes/snapshots": listSnapshots,
-	"GET /v1/sandboxes/{sandboxId}": getSandbox,
-	"GET /v1/sandboxes/{sandboxId}/cmd": listCommands,
-	"POST /v1/sandboxes/{sandboxId}/cmd": runCommand,
-	"POST /v1/sandboxes/{sandboxId}/{cmdId}/kill": killCommand,
-	"POST /v1/sandboxes/{sandboxId}/stop": stopSandbox,
-	"POST /v1/sandboxes/{sandboxId}/extend-timeout": extendSandboxTimeout,
-	"POST /v1/sandboxes/{sandboxId}/network-policy": updateNetworkPolicy,
-	"GET /v1/sandboxes/{sandboxId}/cmd/{cmdId}": getCommand,
-	"GET /v1/sandboxes/{sandboxId}/cmd/{cmdId}/logs": getCommandLogs,
-	"POST /v1/sandboxes/{sandboxId}/fs/read": readFile,
-	"POST /v1/sandboxes/{sandboxId}/fs/mkdir": createDirectory,
-	"POST /v1/sandboxes/{sandboxId}/fs/write": writeFiles,
-	"GET /v1/sandboxes/snapshots/{snapshotId}": getSnapshot,
-	"DELETE /v1/sandboxes/snapshots/{snapshotId}": deleteSnapshot,
-	"POST /v1/sandboxes/{sandboxId}/snapshot": createSnapshot,
-	"GET /v2/sandboxes": getSandboxesV2,
+	"GET /v2/sandboxes": listSandboxes,
 	"POST /v2/sandboxes": createSandboxes,
 	"GET /v2/sandboxes/snapshots": listSessionSnapshots,
 	"GET /v2/sandboxes/snapshots/{snapshotId}": getSessionSnapshot,
@@ -17134,27 +16129,7 @@ export const operationsByTag = {
 		completeRollingRelease,
 	},
 	sandboxes: {
-		getSandboxesV1,
-		createSandbox,
-		listSnapshots,
-		getSandbox,
-		listCommands,
-		runCommand,
-		killCommand,
-		stopSandbox,
-		extendSandboxTimeout,
-		updateNetworkPolicy,
-		getCommand,
-		getCommandLogs,
-		readFile,
-		createDirectory,
-		writeFiles,
-		getSnapshot,
-		deleteSnapshot,
-		createSnapshot,
-	},
-	sandboxesV2Beta: {
-		getSandboxesV2,
+		listSandboxes,
 		createSandboxes,
 		listSessionSnapshots,
 		getSessionSnapshot,
@@ -17518,31 +16493,7 @@ export const tagDictionary = {
 	},
 	sandboxes: {
 		GET: [
-			"getSandboxesV1",
-			"listSnapshots",
-			"getSandbox",
-			"listCommands",
-			"getCommand",
-			"getCommandLogs",
-			"getSnapshot",
-		],
-		POST: [
-			"createSandbox",
-			"runCommand",
-			"killCommand",
-			"stopSandbox",
-			"extendSandboxTimeout",
-			"updateNetworkPolicy",
-			"readFile",
-			"createDirectory",
-			"writeFiles",
-			"createSnapshot",
-		],
-		DELETE: ["deleteSnapshot"],
-	},
-	sandboxesV2Beta: {
-		GET: [
-			"getSandboxesV2",
+			"listSandboxes",
 			"listSessionSnapshots",
 			"getSessionSnapshot",
 			"listSessions",
