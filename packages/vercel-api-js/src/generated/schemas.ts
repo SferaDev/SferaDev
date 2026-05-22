@@ -694,6 +694,7 @@ export const userEventSchema = z
 				"env-variable-add",
 				"env-variable-delete",
 				"env-variable-edit",
+				"env-variable-masked",
 				"env-variable-read",
 				"env-variable-read:cli:dev",
 				"env-variable-read:cli:env:add",
@@ -3184,6 +3185,23 @@ export const userEventSchema = z
 						edgeConfigTokenId: z.string().nullish(),
 						source: z.string().optional(),
 						ipAddress: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						key: z.string().optional(),
+						projectId: z.string().optional(),
+						projectName: z.string().optional(),
+						target: z.union([z.string(), z.array(z.string())]).optional(),
+						customEnvironmentSlugs: z.array(z.string()).optional(),
+						id: z.string().optional(),
+						gitBranch: z.string().optional(),
+						edgeConfigId: z.string().nullish(),
+						edgeConfigTokenId: z.string().nullish(),
+						source: z.string().optional(),
+						ipAddress: z.string().optional(),
+						deploymentId: z.string(),
+						deploymentUrl: z.string(),
 					})
 					.strict(),
 				z
@@ -8005,6 +8023,7 @@ export const listEventTypeSchema = z
 				"env-variable-add",
 				"env-variable-delete",
 				"env-variable-edit",
+				"env-variable-masked",
 				"env-variable-read",
 				"env-variable-read:cli:dev",
 				"env-variable-read:cli:env:add",
@@ -8531,6 +8550,7 @@ export const listEventTypeSchema = z
 					"env-variable-add",
 					"env-variable-delete",
 					"env-variable-edit",
+					"env-variable-masked",
 					"env-variable-read",
 					"env-variable-read:cli:dev",
 					"env-variable-read:cli:env:add",
