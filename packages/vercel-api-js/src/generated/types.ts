@@ -1494,6 +1494,7 @@ export const userEventTypeEnum = {
 	"env-variable-add": "env-variable-add",
 	"env-variable-delete": "env-variable-delete",
 	"env-variable-edit": "env-variable-edit",
+	"env-variable-masked": "env-variable-masked",
 	"env-variable-read": "env-variable-read",
 	"env-variable-read:cli:dev": "env-variable-read:cli:dev",
 	"env-variable-read:cli:env:add": "env-variable-read:cli:env:add",
@@ -6711,6 +6712,57 @@ export type UserEvent = {
 						 * @type string | undefined
 						 */
 						ipAddress?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						key?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						projectId?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						projectName?: string | undefined;
+						target?: (string | string[]) | undefined;
+						/**
+						 * @type array | undefined
+						 */
+						customEnvironmentSlugs?: string[] | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						id?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						gitBranch?: string | undefined;
+						/**
+						 * @type string
+						 */
+						edgeConfigId?: (string | null) | undefined;
+						/**
+						 * @type string
+						 */
+						edgeConfigTokenId?: (string | null) | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						source?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						ipAddress?: string | undefined;
+						/**
+						 * @type string
+						 */
+						deploymentId: string;
+						/**
+						 * @type string
+						 */
+						deploymentUrl: string;
 				  }
 				| {
 						/**
@@ -15521,6 +15573,7 @@ export const listEventTypeNameEnum = {
 	"env-variable-add": "env-variable-add",
 	"env-variable-delete": "env-variable-delete",
 	"env-variable-edit": "env-variable-edit",
+	"env-variable-masked": "env-variable-masked",
 	"env-variable-read": "env-variable-read",
 	"env-variable-read:cli:dev": "env-variable-read:cli:dev",
 	"env-variable-read:cli:env:add": "env-variable-read:cli:env:add",
@@ -16052,6 +16105,7 @@ export const listEventTypeReplacedByEnum = {
 	"env-variable-add": "env-variable-add",
 	"env-variable-delete": "env-variable-delete",
 	"env-variable-edit": "env-variable-edit",
+	"env-variable-masked": "env-variable-masked",
 	"env-variable-read": "env-variable-read",
 	"env-variable-read:cli:dev": "env-variable-read:cli:dev",
 	"env-variable-read:cli:env:add": "env-variable-read:cli:env:add",
