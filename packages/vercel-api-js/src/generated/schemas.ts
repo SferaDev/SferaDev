@@ -5210,6 +5210,7 @@ export const userEventSchema = z
 						url: z.string(),
 						previousStatus: z.string(),
 						justification: z.string(),
+						kind: z.enum(["script", "connectSrc"]).optional(),
 					})
 					.strict(),
 				z
@@ -5229,10 +5230,18 @@ export const userEventSchema = z
 				z
 					.object({
 						projectId: z.string(),
+						type: z.enum(["connectSrc"]),
+						resourceUrl: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
 						url: z.string().optional(),
 						headerName: z.string().optional(),
 						previousStatus: z.string(),
 						justification: z.string().nullable(),
+						kind: z.enum(["script", "connectSrc"]).optional(),
 					})
 					.strict(),
 				z

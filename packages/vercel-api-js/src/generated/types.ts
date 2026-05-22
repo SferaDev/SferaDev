@@ -2249,6 +2249,13 @@ export const newResourceBlockingPolicyEnum = {
 export type NewResourceBlockingPolicyEnumKey =
 	(typeof newResourceBlockingPolicyEnum)[keyof typeof newResourceBlockingPolicyEnum];
 
+export const kindEnum = {
+	script: "script",
+	connectSrc: "connectSrc",
+} as const;
+
+export type KindEnumKey = (typeof kindEnum)[keyof typeof kindEnum];
+
 export const buildQueueConfigurationEnum = {
 	SKIP_NAMESPACE_QUEUE: "SKIP_NAMESPACE_QUEUE",
 	WAIT_FOR_NAMESPACE_QUEUE: "WAIT_FOR_NAMESPACE_QUEUE",
@@ -10329,6 +10336,10 @@ export type UserEvent = {
 						 * @type string
 						 */
 						justification: string;
+						/**
+						 * @type string | undefined
+						 */
+						kind?: KindEnumKey | undefined;
 				  }
 				| {
 						/**
@@ -10364,6 +10375,20 @@ export type UserEvent = {
 						 */
 						projectId: string;
 						/**
+						 * @type string
+						 */
+						type: TypeEnumKey;
+						/**
+						 * @type string
+						 */
+						resourceUrl: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
 						 * @type string | undefined
 						 */
 						url?: string | undefined;
@@ -10379,6 +10404,10 @@ export type UserEvent = {
 						 * @type string
 						 */
 						justification: string | null;
+						/**
+						 * @type string | undefined
+						 */
+						kind?: KindEnumKey | undefined;
 				  }
 				| {
 						/**
