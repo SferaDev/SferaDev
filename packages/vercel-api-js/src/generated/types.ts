@@ -12399,17 +12399,6 @@ export type UserEvent = {
 										enabled: false | true;
 								  } | null)
 								| undefined;
-							/**
-							 * @type object
-							 */
-							publicDeployments?:
-								| ({
-										/**
-										 * @type boolean
-										 */
-										enabled: false | true;
-								  } | null)
-								| undefined;
 						} | null;
 						/**
 						 * @type object
@@ -12430,17 +12419,6 @@ export type UserEvent = {
 							 * @type object
 							 */
 							deploymentSources?:
-								| ({
-										/**
-										 * @type boolean
-										 */
-										enabled: false | true;
-								  } | null)
-								| undefined;
-							/**
-							 * @type object
-							 */
-							publicDeployments?:
 								| ({
 										/**
 										 * @type boolean
@@ -13913,17 +13891,6 @@ export type UserEvent = {
 										enabled: false | true;
 								  } | null)
 								| undefined;
-							/**
-							 * @type object
-							 */
-							publicDeployments?:
-								| ({
-										/**
-										 * @type boolean
-										 */
-										enabled: false | true;
-								  } | null)
-								| undefined;
 						} | null;
 						/**
 						 * @type object
@@ -13944,17 +13911,6 @@ export type UserEvent = {
 							 * @type object
 							 */
 							deploymentSources?:
-								| ({
-										/**
-										 * @type boolean
-										 */
-										enabled: false | true;
-								  } | null)
-								| undefined;
-							/**
-							 * @type object
-							 */
-							publicDeployments?:
 								| ({
 										/**
 										 * @type boolean
@@ -19006,22 +18962,6 @@ export type Team = {
 							enabled: false | true;
 					  }
 					| undefined;
-				/**
-				 * @description Controls whether deployments may have their source and logs available publicly (i.e. the deployment\'s `public` boolean set to `true`). This rule does NOT control whether the deployment URL itself requires authentication — see deployment protection settings for that. - `allowPublicDeployments: false`: deployments must be created with `public: false`. Public deployments are blocked. - `allowPublicDeployments: true`: equivalent to `enabled: false`; here only so the field is always present on an enabled rule.
-				 * @type object | undefined
-				 */
-				publicDeployments?:
-					| {
-							/**
-							 * @type boolean
-							 */
-							allowPublicDeployments: false | true;
-							/**
-							 * @type boolean
-							 */
-							enabled: false | true;
-					  }
-					| undefined;
 		  }
 		| undefined;
 	/**
@@ -19177,6 +19117,12 @@ export type Team = {
 	 * @type number
 	 */
 	createdAt: number;
+	/**
+	 * @description The organizationId for child teams created under an organization.
+	 * @example org_nllPyCtREAqxxdyFKbbMDlxd
+	 * @type string | undefined
+	 */
+	parentId?: string | undefined;
 	[key: string]: unknown;
 };
 
@@ -19524,6 +19470,12 @@ export type TeamLimited = {
 	 * @type number
 	 */
 	createdAt: number;
+	/**
+	 * @description The organizationId for child teams created under an organization.
+	 * @example org_nllPyCtREAqxxdyFKbbMDlxd
+	 * @type string | undefined
+	 */
+	parentId?: string | undefined;
 };
 
 /**
@@ -32003,6 +31955,7 @@ export type ListFlagsQueryCursor = string | undefined;
 
 /**
  * @description Search flags by their slug or description. Case-insensitive.
+ * @maxLength 256
  * @type string | undefined
  */
 export type ListFlagsQuerySearch = string | undefined;
@@ -33128,6 +33081,7 @@ export type ListTeamFlagsQueryCursor = string | undefined;
 
 /**
  * @description Search flags by their slug or description. Case-insensitive.
+ * @maxLength 256
  * @type string | undefined
  */
 export type ListTeamFlagsQuerySearch = string | undefined;
