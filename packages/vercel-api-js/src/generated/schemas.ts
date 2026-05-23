@@ -6198,11 +6198,6 @@ export const userEventSchema = z
 										enabled: z.union([z.literal(false), z.literal(true)]),
 									})
 									.nullish(),
-								publicDeployments: z
-									.object({
-										enabled: z.union([z.literal(false), z.literal(true)]),
-									})
-									.nullish(),
 							})
 							.nullable(),
 						next: z
@@ -6213,11 +6208,6 @@ export const userEventSchema = z
 									})
 									.nullish(),
 								deploymentSources: z
-									.object({
-										enabled: z.union([z.literal(false), z.literal(true)]),
-									})
-									.nullish(),
-								publicDeployments: z
 									.object({
 										enabled: z.union([z.literal(false), z.literal(true)]),
 									})
@@ -7003,11 +6993,6 @@ export const userEventSchema = z
 										enabled: z.union([z.literal(false), z.literal(true)]),
 									})
 									.nullish(),
-								publicDeployments: z
-									.object({
-										enabled: z.union([z.literal(false), z.literal(true)]),
-									})
-									.nullish(),
 							})
 							.nullable(),
 						next: z
@@ -7018,11 +7003,6 @@ export const userEventSchema = z
 									})
 									.nullish(),
 								deploymentSources: z
-									.object({
-										enabled: z.union([z.literal(false), z.literal(true)]),
-									})
-									.nullish(),
-								publicDeployments: z
 									.object({
 										enabled: z.union([z.literal(false), z.literal(true)]),
 									})
@@ -10105,15 +10085,6 @@ export const teamSchema = z
 					.describe(
 						"Restricts which deployment sources are allowed. A deployment passes if its source is in `sources`. Multiple entries are evaluated as OR. `enabled: true` with an empty `sources` list is treated as deny-all.",
 					),
-				publicDeployments: z
-					.object({
-						allowPublicDeployments: z.union([z.literal(false), z.literal(true)]),
-						enabled: z.union([z.literal(false), z.literal(true)]),
-					})
-					.optional()
-					.describe(
-						"Controls whether deployments may have their source and logs available publicly (i.e. the deployment's `public` boolean set to `true`). This rule does NOT control whether the deployment URL itself requires authentication — see deployment protection settings for that. - `allowPublicDeployments: false`: deployments must be created with `public: false`. Public deployments are blocked. - `allowPublicDeployments: true`: equivalent to `enabled: false`; here only so the field is always present on an enabled rule.",
-					),
 			})
 			.optional()
 			.describe(
@@ -10242,6 +10213,10 @@ export const teamSchema = z
 			.optional()
 			.describe("The membership of the authenticated User in relation to the Team."),
 		createdAt: z.number().describe("UNIX timestamp (in milliseconds) when the Team was created."),
+		parentId: z
+			.string()
+			.optional()
+			.describe("The organizationId for child teams created under an organization."),
 	})
 	.catchall(z.unknown())
 	.describe("Data representing a Team.");
@@ -10422,6 +10397,10 @@ export const teamLimitedSchema = z
 			.optional()
 			.describe("The membership of the authenticated User in relation to the Team."),
 		createdAt: z.number().describe("UNIX timestamp (in milliseconds) when the Team was created."),
+		parentId: z
+			.string()
+			.optional()
+			.describe("The organizationId for child teams created under an organization."),
 	})
 	.describe(
 		"A limited form of data representing a Team, due to the authentication token missing privileges to read the full Team data.",
@@ -15051,6 +15030,7 @@ export const listFlagsQueryCursorSchema = z
 
 export const listFlagsQuerySearchSchema = z
 	.string()
+	.max(256)
 	.optional()
 	.describe("Search flags by their slug or description. Case-insensitive.");
 
@@ -15482,6 +15462,7 @@ export const listTeamFlagsQueryCursorSchema = z
 
 export const listTeamFlagsQuerySearchSchema = z
 	.string()
+	.max(256)
 	.optional()
 	.describe("Search flags by their slug or description. Case-insensitive.");
 
