@@ -1,11 +1,9 @@
-import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { HTTPException } from "hono/http-exception";
 import { logger } from "hono/logger";
 import { ZodError } from "zod";
 import { auth } from "./auth.js";
-import { env } from "./env.js";
 import { accountRoutes } from "./routes/accounts.js";
 import { billingRoutes } from "./routes/billing.js";
 import { entitlementRoutes } from "./routes/entitlements.js";
@@ -63,11 +61,12 @@ app.route("/api/webhooks", webhookRoutes());
 
 app.get("/health", (c) => c.json({ status: "ok" }));
 
-// ─── Start server ───────────────────────────────────────────────────
+// ─── Export ─────────────────────────────────────────────────────────
+//
+// Vercel's zero-config Hono support detects this default-exported app and
+// turns every route into a Vercel Function (Fluid compute). It manages the
+// HTTP listener, so we do NOT call serve() here. For standalone Node usage
+// (local dev / non-Vercel hosts) `dev-server.ts` imports this app and serves
+// it via @hono/node-server.
 
-const server = serve({ fetch: app.fetch, port: env.PORT }, (info) => {
-	console.log(`Platform service running on http://localhost:${info.port}`);
-});
-
-process.on("SIGTERM", () => server.close());
-process.on("SIGINT", () => server.close());
+export default app;
