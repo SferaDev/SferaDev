@@ -1537,6 +1537,7 @@ export const userEventTypeEnum = {
 	"integration-installation-completed": "integration-installation-completed",
 	"integration-installation-permission-updated": "integration-installation-permission-updated",
 	"integration-installation-removed": "integration-installation-removed",
+	"integration-resource-sql-query-executed": "integration-resource-sql-query-executed",
 	"integration-scope-changed": "integration-scope-changed",
 	"invoice-modified": "invoice-modified",
 	"invoice-refunded": "invoice-refunded",
@@ -2241,6 +2242,15 @@ export const actorTypeEnum = {
 } as const;
 
 export type ActorTypeEnumKey = (typeof actorTypeEnum)[keyof typeof actorTypeEnum];
+
+export const queryTypeEnum = {
+	user: "user",
+	schema: "schema",
+	"data-view": "data-view",
+	"data-edit": "data-edit",
+} as const;
+
+export type QueryTypeEnumKey = (typeof queryTypeEnum)[keyof typeof queryTypeEnum];
 
 export const newResourceBlockingPolicyEnum = {
 	block: "block",
@@ -9686,6 +9696,88 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
+						resourceId: string;
+						/**
+						 * @type string
+						 */
+						integrationId: string;
+						/**
+						 * @type string
+						 */
+						integrationSlug: string;
+						/**
+						 * @type string
+						 */
+						integrationProductSlug: string;
+						/**
+						 * @type string
+						 */
+						configurationId: string;
+						/**
+						 * @type string
+						 */
+						databaseName: string;
+						/**
+						 * @type string
+						 */
+						queryType: QueryTypeEnumKey;
+						/**
+						 * @type boolean
+						 */
+						readonly: false | true;
+						/**
+						 * @type boolean
+						 */
+						rolledBack: false | true;
+						/**
+						 * @type number
+						 */
+						failedQueryIndex: number | null;
+						/**
+						 * @type string
+						 */
+						errorCode: string | null;
+						/**
+						 * @type number
+						 */
+						queryCount: number;
+						/**
+						 * @type array
+						 */
+						queries: {
+							/**
+							 * @type string
+							 */
+							command: string | null;
+							/**
+							 * @type number | undefined
+							 */
+							rowCount?: number | undefined;
+							/**
+							 * @type array | undefined
+							 */
+							tables?: string[] | undefined;
+							/**
+							 * @type array | undefined
+							 */
+							primaryKey?:
+								| {
+										/**
+										 * @type string
+										 */
+										column: string;
+										/**
+										 * @type string
+										 */
+										value: string | null;
+								  }[]
+								| undefined;
+						}[];
+				  }
+				| {
+						/**
+						 * @type string
+						 */
 						integrationId: string;
 						/**
 						 * @type string
@@ -14024,6 +14116,14 @@ export type UserEvent = {
 						 * @type string | undefined
 						 */
 						invitedUid?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						origin?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						teamSlug?: string | undefined;
 				  }
 				| {
 						/**
@@ -15582,6 +15682,7 @@ export const listEventTypeNameEnum = {
 	"integration-installation-completed": "integration-installation-completed",
 	"integration-installation-permission-updated": "integration-installation-permission-updated",
 	"integration-installation-removed": "integration-installation-removed",
+	"integration-resource-sql-query-executed": "integration-resource-sql-query-executed",
 	"integration-scope-changed": "integration-scope-changed",
 	"invoice-modified": "invoice-modified",
 	"invoice-refunded": "invoice-refunded",
@@ -16114,6 +16215,7 @@ export const listEventTypeReplacedByEnum = {
 	"integration-installation-completed": "integration-installation-completed",
 	"integration-installation-permission-updated": "integration-installation-permission-updated",
 	"integration-installation-removed": "integration-installation-removed",
+	"integration-resource-sql-query-executed": "integration-resource-sql-query-executed",
 	"integration-scope-changed": "integration-scope-changed",
 	"invoice-modified": "invoice-modified",
 	"invoice-refunded": "invoice-refunded",

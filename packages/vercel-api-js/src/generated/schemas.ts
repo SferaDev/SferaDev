@@ -735,6 +735,7 @@ export const userEventSchema = z
 				"integration-installation-completed",
 				"integration-installation-permission-updated",
 				"integration-installation-removed",
+				"integration-resource-sql-query-executed",
 				"integration-scope-changed",
 				"invoice-modified",
 				"invoice-refunded",
@@ -4795,6 +4796,37 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						resourceId: z.string(),
+						integrationId: z.string(),
+						integrationSlug: z.string(),
+						integrationProductSlug: z.string(),
+						configurationId: z.string(),
+						databaseName: z.string(),
+						queryType: z.enum(["user", "schema", "data-view", "data-edit"]),
+						readonly: z.union([z.literal(false), z.literal(true)]),
+						rolledBack: z.union([z.literal(false), z.literal(true)]),
+						failedQueryIndex: z.number().nullable(),
+						errorCode: z.string().nullable(),
+						queryCount: z.number(),
+						queries: z.array(
+							z.object({
+								command: z.string().nullable(),
+								rowCount: z.number().optional(),
+								tables: z.array(z.string()).optional(),
+								primaryKey: z
+									.array(
+										z.object({
+											column: z.string(),
+											value: z.string().nullable(),
+										}),
+									)
+									.optional(),
+							}),
+						),
+					})
+					.strict(),
+				z
+					.object({
 						integrationId: z.string(),
 						integrationSlug: z.string(),
 						integrationName: z.string(),
@@ -7066,6 +7098,8 @@ export const userEventSchema = z
 						invitationRole: z.string().optional(),
 						entitlements: z.array(z.string()).optional(),
 						invitedUid: z.string().optional(),
+						origin: z.string().optional(),
+						teamSlug: z.string().optional(),
 					})
 					.strict(),
 				z
@@ -8054,6 +8088,7 @@ export const listEventTypeSchema = z
 				"integration-installation-completed",
 				"integration-installation-permission-updated",
 				"integration-installation-removed",
+				"integration-resource-sql-query-executed",
 				"integration-scope-changed",
 				"invoice-modified",
 				"invoice-refunded",
@@ -8581,6 +8616,7 @@ export const listEventTypeSchema = z
 					"integration-installation-completed",
 					"integration-installation-permission-updated",
 					"integration-installation-removed",
+					"integration-resource-sql-query-executed",
 					"integration-scope-changed",
 					"invoice-modified",
 					"invoice-refunded",
