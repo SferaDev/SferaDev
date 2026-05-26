@@ -1471,6 +1471,8 @@ export const userEventSchema = z
 									"read-write:blob",
 									"read:event",
 									"read-write:remote-cache",
+									"read:kms",
+									"read-write:kms",
 									"read:project",
 									"read-write:project",
 									"read:deployment",
@@ -1524,6 +1526,8 @@ export const userEventSchema = z
 									"read-write:blob",
 									"read:event",
 									"read-write:remote-cache",
+									"read:kms",
+									"read-write:kms",
 									"read:project",
 									"read-write:project",
 									"read:deployment",
@@ -1585,6 +1589,8 @@ export const userEventSchema = z
 											"read-write:blob",
 											"read:event",
 											"read-write:remote-cache",
+											"read:kms",
+											"read-write:kms",
 											"read:project",
 											"read-write:project",
 											"read:deployment",
@@ -1641,6 +1647,8 @@ export const userEventSchema = z
 											"read-write:blob",
 											"read:event",
 											"read-write:remote-cache",
+											"read:kms",
+											"read-write:kms",
 											"read:project",
 											"read-write:project",
 											"read:deployment",
@@ -1701,6 +1709,8 @@ export const userEventSchema = z
 									"read-write:blob",
 									"read:event",
 									"read-write:remote-cache",
+									"read:kms",
+									"read-write:kms",
 									"read:project",
 									"read-write:project",
 									"read:deployment",
@@ -3631,9 +3641,9 @@ export const userEventSchema = z
 											z
 												.object({
 													type: z.enum([
-														"vercel",
 														"gitlab",
 														"bitbucket",
+														"vercel",
 														"google",
 														"apple",
 														"chatgpt",
@@ -3690,12 +3700,12 @@ export const userEventSchema = z
 								importFlowGitNamespaceId: z.union([z.string(), z.number()]).nullish(),
 								importFlowGitProvider: z
 									.enum([
-										"vercel",
 										"github",
 										"github-limited",
 										"github-custom-host",
 										"gitlab",
 										"bitbucket",
+										"vercel",
 									])
 									.nullish(),
 								preferredScopesAndGitNamespaces: z
@@ -3973,13 +3983,13 @@ export const userEventSchema = z
 												.object({
 													origin: z.enum([
 														"link",
-														"import",
 														"teams",
 														"saml",
 														"github",
 														"gitlab",
 														"bitbucket",
 														"mail",
+														"import",
 														"dsync",
 														"feedback",
 														"organization-teams",
@@ -5291,13 +5301,13 @@ export const userEventSchema = z
 										.object({
 											origin: z.enum([
 												"link",
-												"import",
 												"teams",
 												"saml",
 												"github",
 												"gitlab",
 												"bitbucket",
 												"mail",
+												"import",
 												"dsync",
 												"feedback",
 												"organization-teams",
@@ -5774,12 +5784,12 @@ export const userEventSchema = z
 						previous: z
 							.object({
 								gitProvider: z.enum([
-									"vercel",
 									"github",
 									"github-limited",
 									"github-custom-host",
 									"gitlab",
 									"bitbucket",
+									"vercel",
 								]),
 								gitRepoId: z.string(),
 								gitRepositoryName: z.string(),
@@ -5787,12 +5797,12 @@ export const userEventSchema = z
 							.optional(),
 						next: z.object({
 							gitProvider: z.enum([
-								"vercel",
 								"github",
 								"github-limited",
 								"github-custom-host",
 								"gitlab",
 								"bitbucket",
+								"vercel",
 							]),
 							gitRepoId: z.string(),
 							gitRepositoryName: z.string(),
@@ -5804,12 +5814,12 @@ export const userEventSchema = z
 						projectId: z.string(),
 						projectName: z.string(),
 						gitProvider: z.enum([
-							"vercel",
 							"github",
 							"github-limited",
 							"github-custom-host",
 							"gitlab",
 							"bitbucket",
+							"vercel",
 						]),
 						gitRepoId: z.string(),
 						gitRepositoryName: z.string(),
@@ -6420,20 +6430,20 @@ export const userEventSchema = z
 						projectName: z.string(),
 						trustedIps: z
 							.enum([
-								"production",
 								"all",
 								"preview",
 								"prod_deployment_urls_and_all_previews",
 								"all_except_custom_domains",
+								"production",
 							])
 							.nullish(),
 						oldTrustedIps: z
 							.enum([
-								"production",
 								"all",
 								"preview",
 								"prod_deployment_urls_and_all_previews",
 								"all_except_custom_domains",
+								"production",
 							])
 							.nullish(),
 						addedAddresses: z.array(z.string()).nullish(),
@@ -7022,12 +7032,12 @@ export const userEventSchema = z
 						projectId: z.string(),
 						projectName: z.string(),
 						enabled: z.union([z.literal(false), z.literal(true)]).nullable(),
-						environment: z.enum(["production", "preview"]),
+						environment: z.enum(["preview", "production"]),
 					})
 					.strict(),
 				z
 					.object({
-						environment: z.enum(["production", "preview"]),
+						environment: z.enum(["preview", "production"]),
 						enabled: z.enum(["default", "on", "off", "on-force", "off-force", "default-force"]),
 					})
 					.strict(),
@@ -7175,13 +7185,13 @@ export const userEventSchema = z
 						source: z
 							.enum([
 								"link",
-								"import",
 								"teams",
 								"saml",
 								"github",
 								"gitlab",
 								"bitbucket",
 								"mail",
+								"import",
 								"dsync",
 								"feedback",
 								"organization-teams",
