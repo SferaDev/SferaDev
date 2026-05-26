@@ -43326,7 +43326,7 @@ export type UnpauseProjectResponse =
  * @example prj_abc123
  * @type string | undefined
  */
-export type ListSandboxesQueryProject = string | undefined;
+export type GetSandboxesQueryProject = string | undefined;
 
 /**
  * @description Maximum number of named sandboxes to return in the response. Used for pagination.
@@ -43336,14 +43336,14 @@ export type ListSandboxesQueryProject = string | undefined;
  * @example 20
  * @type number | undefined
  */
-export type ListSandboxesQueryLimit = number | undefined;
+export type GetSandboxesQueryLimit = number | undefined;
 
 /**
  * @description Field to sort by.
  * @default "createdAt"
  * @type string | undefined
  */
-export type ListSandboxesQuerySortBy =
+export type GetSandboxesQuerySortBy =
 	| ("createdAt" | "name" | "statusUpdatedAt" | "currentSnapshotId")
 	| undefined;
 
@@ -43351,69 +43351,60 @@ export type ListSandboxesQuerySortBy =
  * @description Filter named sandboxes whose name starts with this prefix. Only valid when sortBy=name.
  * @type string | undefined
  */
-export type ListSandboxesQueryNamePrefix = string | undefined;
+export type GetSandboxesQueryNamePrefix = string | undefined;
 
 /**
  * @description Opaque pagination cursor from a previous response.
  * @type string | undefined
  */
-export type ListSandboxesQueryCursor = string | undefined;
+export type GetSandboxesQueryCursor = string | undefined;
 
 /**
  * @description Sort direction. Defaults to desc.
  * @default "desc"
  * @type string | undefined
  */
-export type ListSandboxesQuerySortOrder = ("asc" | "desc") | undefined;
+export type GetSandboxesQuerySortOrder = ("asc" | "desc") | undefined;
 
 /**
  * @description Filter sandboxes by tag. Format: \\\"key:value\\\". Only one tag filter is supported at a time.
  */
-export type ListSandboxesQueryTags = (string | string[]) | undefined;
-
-/**
- * @description The Team identifier to perform the request on behalf of.
- * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
- * @type string | undefined
- */
-export type ListSandboxesQueryTeamId = string | undefined;
-
-/**
- * @description The Team slug to perform the request on behalf of.
- * @example my-team-url-slug
- * @type string | undefined
- */
-export type ListSandboxesQuerySlug = string | undefined;
+export type GetSandboxesQueryTags = (string | string[]) | undefined;
 
 /**
  * @type unknown
  */
-export type ListSandboxesStatus200 = unknown;
+export type GetSandboxesStatus200 = unknown;
 
 /**
  * @type unknown
  */
-export type ListSandboxesStatus400 = unknown;
+export type GetSandboxesStatus400 = unknown;
 
 /**
  * @type unknown
  */
-export type ListSandboxesStatus401 = unknown;
+export type GetSandboxesStatus401 = unknown;
 
 /**
  * @type unknown
  */
-export type ListSandboxesStatus403 = unknown;
+export type GetSandboxesStatus403 = unknown;
 
 /**
  * @type unknown
  */
-export type ListSandboxesStatus404 = unknown;
+export type GetSandboxesStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetSandboxesStatus429 = unknown;
 
 /**
  * @type object
  */
-export type ListSandboxesRequestConfig = {
+export type GetSandboxesRequestConfig = {
 	data?: never | undefined;
 	pathParams?: never | undefined;
 	/**
@@ -43421,58 +43412,44 @@ export type ListSandboxesRequestConfig = {
 	 */
 	queryParams?:
 		| {
-				project?: ListSandboxesQueryProject | undefined;
-				limit?: ListSandboxesQueryLimit | undefined;
-				sortBy?: ListSandboxesQuerySortBy | undefined;
-				namePrefix?: ListSandboxesQueryNamePrefix | undefined;
-				cursor?: ListSandboxesQueryCursor | undefined;
-				sortOrder?: ListSandboxesQuerySortOrder | undefined;
-				tags?: ListSandboxesQueryTags | undefined;
-				teamId?: ListSandboxesQueryTeamId | undefined;
-				slug?: ListSandboxesQuerySlug | undefined;
+				project?: GetSandboxesQueryProject | undefined;
+				limit?: GetSandboxesQueryLimit | undefined;
+				sortBy?: GetSandboxesQuerySortBy | undefined;
+				namePrefix?: GetSandboxesQueryNamePrefix | undefined;
+				cursor?: GetSandboxesQueryCursor | undefined;
+				sortOrder?: GetSandboxesQuerySortOrder | undefined;
+				tags?: GetSandboxesQueryTags | undefined;
 		  }
 		| undefined;
 	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	url: "/v2/sandboxes";
+	url: "/sandboxes";
 };
 
 /**
  * @type object
  */
-export type ListSandboxesResponses = {
-	"200": ListSandboxesStatus200;
-	"400": ListSandboxesStatus400;
-	"401": ListSandboxesStatus401;
-	"403": ListSandboxesStatus403;
-	"404": ListSandboxesStatus404;
+export type GetSandboxesResponses = {
+	"200": GetSandboxesStatus200;
+	"400": GetSandboxesStatus400;
+	"401": GetSandboxesStatus401;
+	"403": GetSandboxesStatus403;
+	"404": GetSandboxesStatus404;
+	"429": GetSandboxesStatus429;
 };
 
 /**
  * @description Union of all possible responses
  */
-export type ListSandboxesResponse =
-	| ListSandboxesStatus200
-	| ListSandboxesStatus400
-	| ListSandboxesStatus401
-	| ListSandboxesStatus403
-	| ListSandboxesStatus404;
-
-/**
- * @description The Team identifier to perform the request on behalf of.
- * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
- * @type string | undefined
- */
-export type CreateSandboxesQueryTeamId = string | undefined;
-
-/**
- * @description The Team slug to perform the request on behalf of.
- * @example my-team-url-slug
- * @type string | undefined
- */
-export type CreateSandboxesQuerySlug = string | undefined;
+export type GetSandboxesResponse =
+	| GetSandboxesStatus200
+	| GetSandboxesStatus400
+	| GetSandboxesStatus401
+	| GetSandboxesStatus403
+	| GetSandboxesStatus404
+	| GetSandboxesStatus429;
 
 /**
  * @type unknown
@@ -43535,20 +43512,12 @@ export type CreateSandboxesStatus500 = unknown;
 export type CreateSandboxesRequestConfig = {
 	data?: never | undefined;
 	pathParams?: never | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				teamId?: CreateSandboxesQueryTeamId | undefined;
-				slug?: CreateSandboxesQuerySlug | undefined;
-		  }
-		| undefined;
+	queryParams?: never | undefined;
 	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	url: "/v2/sandboxes";
+	url: "/sandboxes";
 };
 
 /**
@@ -43589,7 +43558,7 @@ export type CreateSandboxesResponse =
  * @example prj_abc123
  * @type string | undefined
  */
-export type ListSessionSnapshotsQueryProject = string | undefined;
+export type GetSandboxesSnapshotsQueryProject = string | undefined;
 
 /**
  * @description Name for the sandbox. Must be unique per project and URL-safe (alphanumeric, hyphens, underscores).
@@ -43598,7 +43567,7 @@ export type ListSessionSnapshotsQueryProject = string | undefined;
  * @example my-sandbox
  * @type string | undefined
  */
-export type ListSessionSnapshotsQueryName = string | undefined;
+export type GetSandboxesSnapshotsQueryName = string | undefined;
 
 /**
  * @description Maximum number of snapshots to return in the response. Used for pagination.
@@ -43608,64 +43577,55 @@ export type ListSessionSnapshotsQueryName = string | undefined;
  * @example 20
  * @type number | undefined
  */
-export type ListSessionSnapshotsQueryLimit = number | undefined;
+export type GetSandboxesSnapshotsQueryLimit = number | undefined;
 
 /**
  * @description Opaque pagination cursor from a previous response.
  * @type string | undefined
  */
-export type ListSessionSnapshotsQueryCursor = string | undefined;
+export type GetSandboxesSnapshotsQueryCursor = string | undefined;
 
 /**
  * @description Sort direction for results by creation time.
  * @default "desc"
  * @type string | undefined
  */
-export type ListSessionSnapshotsQuerySortOrder = ("asc" | "desc") | undefined;
-
-/**
- * @description The Team identifier to perform the request on behalf of.
- * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
- * @type string | undefined
- */
-export type ListSessionSnapshotsQueryTeamId = string | undefined;
-
-/**
- * @description The Team slug to perform the request on behalf of.
- * @example my-team-url-slug
- * @type string | undefined
- */
-export type ListSessionSnapshotsQuerySlug = string | undefined;
+export type GetSandboxesSnapshotsQuerySortOrder = ("asc" | "desc") | undefined;
 
 /**
  * @type unknown
  */
-export type ListSessionSnapshotsStatus200 = unknown;
+export type GetSandboxesSnapshotsStatus200 = unknown;
 
 /**
  * @type unknown
  */
-export type ListSessionSnapshotsStatus400 = unknown;
+export type GetSandboxesSnapshotsStatus400 = unknown;
 
 /**
  * @type unknown
  */
-export type ListSessionSnapshotsStatus401 = unknown;
+export type GetSandboxesSnapshotsStatus401 = unknown;
 
 /**
  * @type unknown
  */
-export type ListSessionSnapshotsStatus403 = unknown;
+export type GetSandboxesSnapshotsStatus403 = unknown;
 
 /**
  * @type unknown
  */
-export type ListSessionSnapshotsStatus404 = unknown;
+export type GetSandboxesSnapshotsStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetSandboxesSnapshotsStatus429 = unknown;
 
 /**
  * @type object
  */
-export type ListSessionSnapshotsRequestConfig = {
+export type GetSandboxesSnapshotsRequestConfig = {
 	data?: never | undefined;
 	pathParams?: never | undefined;
 	/**
@@ -43673,237 +43633,207 @@ export type ListSessionSnapshotsRequestConfig = {
 	 */
 	queryParams?:
 		| {
-				project?: ListSessionSnapshotsQueryProject | undefined;
-				name?: ListSessionSnapshotsQueryName | undefined;
-				limit?: ListSessionSnapshotsQueryLimit | undefined;
-				cursor?: ListSessionSnapshotsQueryCursor | undefined;
-				sortOrder?: ListSessionSnapshotsQuerySortOrder | undefined;
-				teamId?: ListSessionSnapshotsQueryTeamId | undefined;
-				slug?: ListSessionSnapshotsQuerySlug | undefined;
+				project?: GetSandboxesSnapshotsQueryProject | undefined;
+				name?: GetSandboxesSnapshotsQueryName | undefined;
+				limit?: GetSandboxesSnapshotsQueryLimit | undefined;
+				cursor?: GetSandboxesSnapshotsQueryCursor | undefined;
+				sortOrder?: GetSandboxesSnapshotsQuerySortOrder | undefined;
 		  }
 		| undefined;
 	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	url: "/v2/sandboxes/snapshots";
+	url: "/sandboxes/snapshots";
 };
 
 /**
  * @type object
  */
-export type ListSessionSnapshotsResponses = {
-	"200": ListSessionSnapshotsStatus200;
-	"400": ListSessionSnapshotsStatus400;
-	"401": ListSessionSnapshotsStatus401;
-	"403": ListSessionSnapshotsStatus403;
-	"404": ListSessionSnapshotsStatus404;
+export type GetSandboxesSnapshotsResponses = {
+	"200": GetSandboxesSnapshotsStatus200;
+	"400": GetSandboxesSnapshotsStatus400;
+	"401": GetSandboxesSnapshotsStatus401;
+	"403": GetSandboxesSnapshotsStatus403;
+	"404": GetSandboxesSnapshotsStatus404;
+	"429": GetSandboxesSnapshotsStatus429;
 };
 
 /**
  * @description Union of all possible responses
  */
-export type ListSessionSnapshotsResponse =
-	| ListSessionSnapshotsStatus200
-	| ListSessionSnapshotsStatus400
-	| ListSessionSnapshotsStatus401
-	| ListSessionSnapshotsStatus403
-	| ListSessionSnapshotsStatus404;
+export type GetSandboxesSnapshotsResponse =
+	| GetSandboxesSnapshotsStatus200
+	| GetSandboxesSnapshotsStatus400
+	| GetSandboxesSnapshotsStatus401
+	| GetSandboxesSnapshotsStatus403
+	| GetSandboxesSnapshotsStatus404
+	| GetSandboxesSnapshotsStatus429;
 
 /**
  * @description The unique identifier of the snapshot to retrieve.
  * @example snap_abc123
  * @type string
  */
-export type GetSessionSnapshotPathSnapshotId = string;
-
-/**
- * @description The Team identifier to perform the request on behalf of.
- * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
- * @type string | undefined
- */
-export type GetSessionSnapshotQueryTeamId = string | undefined;
-
-/**
- * @description The Team slug to perform the request on behalf of.
- * @example my-team-url-slug
- * @type string | undefined
- */
-export type GetSessionSnapshotQuerySlug = string | undefined;
+export type GetSandboxesSnapshotsBySnapshotIdPathSnapshotId = string;
 
 /**
  * @type unknown
  */
-export type GetSessionSnapshotStatus200 = unknown;
+export type GetSandboxesSnapshotsBySnapshotIdStatus200 = unknown;
 
 /**
  * @type unknown
  */
-export type GetSessionSnapshotStatus400 = unknown;
+export type GetSandboxesSnapshotsBySnapshotIdStatus400 = unknown;
 
 /**
  * @type unknown
  */
-export type GetSessionSnapshotStatus401 = unknown;
+export type GetSandboxesSnapshotsBySnapshotIdStatus401 = unknown;
 
 /**
  * @type unknown
  */
-export type GetSessionSnapshotStatus403 = unknown;
+export type GetSandboxesSnapshotsBySnapshotIdStatus403 = unknown;
 
 /**
  * @type unknown
  */
-export type GetSessionSnapshotStatus404 = unknown;
+export type GetSandboxesSnapshotsBySnapshotIdStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetSandboxesSnapshotsBySnapshotIdStatus429 = unknown;
 
 /**
  * @type object
  */
-export type GetSessionSnapshotRequestConfig = {
+export type GetSandboxesSnapshotsBySnapshotIdRequestConfig = {
 	data?: never | undefined;
 	/**
 	 * @type object
 	 */
 	pathParams: {
-		snapshotId: GetSessionSnapshotPathSnapshotId;
+		snapshotId: GetSandboxesSnapshotsBySnapshotIdPathSnapshotId;
 	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				teamId?: GetSessionSnapshotQueryTeamId | undefined;
-				slug?: GetSessionSnapshotQuerySlug | undefined;
-		  }
-		| undefined;
+	queryParams?: never | undefined;
 	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	url: `/v2/sandboxes/snapshots/${string}`;
+	url: `/sandboxes/snapshots/${string}`;
 };
 
 /**
  * @type object
  */
-export type GetSessionSnapshotResponses = {
-	"200": GetSessionSnapshotStatus200;
-	"400": GetSessionSnapshotStatus400;
-	"401": GetSessionSnapshotStatus401;
-	"403": GetSessionSnapshotStatus403;
-	"404": GetSessionSnapshotStatus404;
+export type GetSandboxesSnapshotsBySnapshotIdResponses = {
+	"200": GetSandboxesSnapshotsBySnapshotIdStatus200;
+	"400": GetSandboxesSnapshotsBySnapshotIdStatus400;
+	"401": GetSandboxesSnapshotsBySnapshotIdStatus401;
+	"403": GetSandboxesSnapshotsBySnapshotIdStatus403;
+	"404": GetSandboxesSnapshotsBySnapshotIdStatus404;
+	"429": GetSandboxesSnapshotsBySnapshotIdStatus429;
 };
 
 /**
  * @description Union of all possible responses
  */
-export type GetSessionSnapshotResponse =
-	| GetSessionSnapshotStatus200
-	| GetSessionSnapshotStatus400
-	| GetSessionSnapshotStatus401
-	| GetSessionSnapshotStatus403
-	| GetSessionSnapshotStatus404;
+export type GetSandboxesSnapshotsBySnapshotIdResponse =
+	| GetSandboxesSnapshotsBySnapshotIdStatus200
+	| GetSandboxesSnapshotsBySnapshotIdStatus400
+	| GetSandboxesSnapshotsBySnapshotIdStatus401
+	| GetSandboxesSnapshotsBySnapshotIdStatus403
+	| GetSandboxesSnapshotsBySnapshotIdStatus404
+	| GetSandboxesSnapshotsBySnapshotIdStatus429;
 
 /**
  * @description The unique identifier of the snapshot to delete.
  * @example snap_abc123
  * @type string
  */
-export type DeleteSessionSnapshotPathSnapshotId = string;
-
-/**
- * @description The Team identifier to perform the request on behalf of.
- * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
- * @type string | undefined
- */
-export type DeleteSessionSnapshotQueryTeamId = string | undefined;
-
-/**
- * @description The Team slug to perform the request on behalf of.
- * @example my-team-url-slug
- * @type string | undefined
- */
-export type DeleteSessionSnapshotQuerySlug = string | undefined;
+export type DeleteSandboxesSnapshotsBySnapshotIdPathSnapshotId = string;
 
 /**
  * @type unknown
  */
-export type DeleteSessionSnapshotStatus200 = unknown;
+export type DeleteSandboxesSnapshotsBySnapshotIdStatus200 = unknown;
 
 /**
  * @type unknown
  */
-export type DeleteSessionSnapshotStatus400 = unknown;
+export type DeleteSandboxesSnapshotsBySnapshotIdStatus400 = unknown;
 
 /**
  * @type unknown
  */
-export type DeleteSessionSnapshotStatus401 = unknown;
+export type DeleteSandboxesSnapshotsBySnapshotIdStatus401 = unknown;
 
 /**
  * @type unknown
  */
-export type DeleteSessionSnapshotStatus403 = unknown;
+export type DeleteSandboxesSnapshotsBySnapshotIdStatus403 = unknown;
 
 /**
  * @type unknown
  */
-export type DeleteSessionSnapshotStatus404 = unknown;
+export type DeleteSandboxesSnapshotsBySnapshotIdStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteSandboxesSnapshotsBySnapshotIdStatus429 = unknown;
 
 /**
  * @type object
  */
-export type DeleteSessionSnapshotRequestConfig = {
+export type DeleteSandboxesSnapshotsBySnapshotIdRequestConfig = {
 	data?: never | undefined;
 	/**
 	 * @type object
 	 */
 	pathParams: {
-		snapshotId: DeleteSessionSnapshotPathSnapshotId;
+		snapshotId: DeleteSandboxesSnapshotsBySnapshotIdPathSnapshotId;
 	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				teamId?: DeleteSessionSnapshotQueryTeamId | undefined;
-				slug?: DeleteSessionSnapshotQuerySlug | undefined;
-		  }
-		| undefined;
+	queryParams?: never | undefined;
 	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	url: `/v2/sandboxes/snapshots/${string}`;
+	url: `/sandboxes/snapshots/${string}`;
 };
 
 /**
  * @type object
  */
-export type DeleteSessionSnapshotResponses = {
-	"200": DeleteSessionSnapshotStatus200;
-	"400": DeleteSessionSnapshotStatus400;
-	"401": DeleteSessionSnapshotStatus401;
-	"403": DeleteSessionSnapshotStatus403;
-	"404": DeleteSessionSnapshotStatus404;
+export type DeleteSandboxesSnapshotsBySnapshotIdResponses = {
+	"200": DeleteSandboxesSnapshotsBySnapshotIdStatus200;
+	"400": DeleteSandboxesSnapshotsBySnapshotIdStatus400;
+	"401": DeleteSandboxesSnapshotsBySnapshotIdStatus401;
+	"403": DeleteSandboxesSnapshotsBySnapshotIdStatus403;
+	"404": DeleteSandboxesSnapshotsBySnapshotIdStatus404;
+	"429": DeleteSandboxesSnapshotsBySnapshotIdStatus429;
 };
 
 /**
  * @description Union of all possible responses
  */
-export type DeleteSessionSnapshotResponse =
-	| DeleteSessionSnapshotStatus200
-	| DeleteSessionSnapshotStatus400
-	| DeleteSessionSnapshotStatus401
-	| DeleteSessionSnapshotStatus403
-	| DeleteSessionSnapshotStatus404;
+export type DeleteSandboxesSnapshotsBySnapshotIdResponse =
+	| DeleteSandboxesSnapshotsBySnapshotIdStatus200
+	| DeleteSandboxesSnapshotsBySnapshotIdStatus400
+	| DeleteSandboxesSnapshotsBySnapshotIdStatus401
+	| DeleteSandboxesSnapshotsBySnapshotIdStatus403
+	| DeleteSandboxesSnapshotsBySnapshotIdStatus404
+	| DeleteSandboxesSnapshotsBySnapshotIdStatus429;
 
 /**
  * @description The unique identifier or name of the project to list sessions for.
  * @example prj_abc123
  * @type string | undefined
  */
-export type ListSessionsQueryProject = string | undefined;
+export type GetSandboxesSessionsQueryProject = string | undefined;
 
 /**
  * @description Filter sessions by sandbox name. Only sessions belonging to the specified sandbox are returned.
@@ -43912,7 +43842,7 @@ export type ListSessionsQueryProject = string | undefined;
  * @example my-sandbox
  * @type string | undefined
  */
-export type ListSessionsQueryName = string | undefined;
+export type GetSandboxesSessionsQueryName = string | undefined;
 
 /**
  * @description Maximum number of sessions to return in the response. Used for pagination.
@@ -43922,69 +43852,60 @@ export type ListSessionsQueryName = string | undefined;
  * @example 20
  * @type number | undefined
  */
-export type ListSessionsQueryLimit = number | undefined;
+export type GetSandboxesSessionsQueryLimit = number | undefined;
 
 /**
  * @description Opaque pagination cursor from a previous response.
  * @type string | undefined
  */
-export type ListSessionsQueryCursor = string | undefined;
+export type GetSandboxesSessionsQueryCursor = string | undefined;
 
 /**
  * @description Sort direction for results by creation time.
  * @default "desc"
  * @type string | undefined
  */
-export type ListSessionsQuerySortOrder = ("asc" | "desc") | undefined;
-
-/**
- * @description The Team identifier to perform the request on behalf of.
- * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
- * @type string | undefined
- */
-export type ListSessionsQueryTeamId = string | undefined;
-
-/**
- * @description The Team slug to perform the request on behalf of.
- * @example my-team-url-slug
- * @type string | undefined
- */
-export type ListSessionsQuerySlug = string | undefined;
+export type GetSandboxesSessionsQuerySortOrder = ("asc" | "desc") | undefined;
 
 /**
  * @type unknown
  */
-export type ListSessionsStatus200 = unknown;
+export type GetSandboxesSessionsStatus200 = unknown;
 
 /**
  * @type unknown
  */
-export type ListSessionsStatus400 = unknown;
+export type GetSandboxesSessionsStatus400 = unknown;
 
 /**
  * @type unknown
  */
-export type ListSessionsStatus401 = unknown;
+export type GetSandboxesSessionsStatus401 = unknown;
 
 /**
  * @type unknown
  */
-export type ListSessionsStatus403 = unknown;
+export type GetSandboxesSessionsStatus403 = unknown;
 
 /**
  * @type unknown
  */
-export type ListSessionsStatus404 = unknown;
+export type GetSandboxesSessionsStatus404 = unknown;
 
 /**
  * @type unknown
  */
-export type ListSessionsStatus500 = unknown;
+export type GetSandboxesSessionsStatus429 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetSandboxesSessionsStatus500 = unknown;
 
 /**
  * @type object
  */
-export type ListSessionsRequestConfig = {
+export type GetSandboxesSessionsRequestConfig = {
 	data?: never | undefined;
 	pathParams?: never | undefined;
 	/**
@@ -43992,145 +43913,130 @@ export type ListSessionsRequestConfig = {
 	 */
 	queryParams?:
 		| {
-				project?: ListSessionsQueryProject | undefined;
-				name?: ListSessionsQueryName | undefined;
-				limit?: ListSessionsQueryLimit | undefined;
-				cursor?: ListSessionsQueryCursor | undefined;
-				sortOrder?: ListSessionsQuerySortOrder | undefined;
-				teamId?: ListSessionsQueryTeamId | undefined;
-				slug?: ListSessionsQuerySlug | undefined;
+				project?: GetSandboxesSessionsQueryProject | undefined;
+				name?: GetSandboxesSessionsQueryName | undefined;
+				limit?: GetSandboxesSessionsQueryLimit | undefined;
+				cursor?: GetSandboxesSessionsQueryCursor | undefined;
+				sortOrder?: GetSandboxesSessionsQuerySortOrder | undefined;
 		  }
 		| undefined;
 	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	url: "/v2/sandboxes/sessions";
+	url: "/sandboxes/sessions";
 };
 
 /**
  * @type object
  */
-export type ListSessionsResponses = {
-	"200": ListSessionsStatus200;
-	"400": ListSessionsStatus400;
-	"401": ListSessionsStatus401;
-	"403": ListSessionsStatus403;
-	"404": ListSessionsStatus404;
-	"500": ListSessionsStatus500;
+export type GetSandboxesSessionsResponses = {
+	"200": GetSandboxesSessionsStatus200;
+	"400": GetSandboxesSessionsStatus400;
+	"401": GetSandboxesSessionsStatus401;
+	"403": GetSandboxesSessionsStatus403;
+	"404": GetSandboxesSessionsStatus404;
+	"429": GetSandboxesSessionsStatus429;
+	"500": GetSandboxesSessionsStatus500;
 };
 
 /**
  * @description Union of all possible responses
  */
-export type ListSessionsResponse =
-	| ListSessionsStatus200
-	| ListSessionsStatus400
-	| ListSessionsStatus401
-	| ListSessionsStatus403
-	| ListSessionsStatus404
-	| ListSessionsStatus500;
+export type GetSandboxesSessionsResponse =
+	| GetSandboxesSessionsStatus200
+	| GetSandboxesSessionsStatus400
+	| GetSandboxesSessionsStatus401
+	| GetSandboxesSessionsStatus403
+	| GetSandboxesSessionsStatus404
+	| GetSandboxesSessionsStatus429
+	| GetSandboxesSessionsStatus500;
 
 /**
  * @description The unique identifier of the session to retrieve.
  * @example sbx_abc123
  * @type string
  */
-export type GetSessionPathSessionId = string;
-
-/**
- * @description The Team identifier to perform the request on behalf of.
- * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
- * @type string | undefined
- */
-export type GetSessionQueryTeamId = string | undefined;
-
-/**
- * @description The Team slug to perform the request on behalf of.
- * @example my-team-url-slug
- * @type string | undefined
- */
-export type GetSessionQuerySlug = string | undefined;
+export type GetSandboxesSessionsBySessionIdPathSessionId = string;
 
 /**
  * @type unknown
  */
-export type GetSessionStatus200 = unknown;
+export type GetSandboxesSessionsBySessionIdStatus200 = unknown;
 
 /**
  * @type unknown
  */
-export type GetSessionStatus400 = unknown;
+export type GetSandboxesSessionsBySessionIdStatus400 = unknown;
 
 /**
  * @type unknown
  */
-export type GetSessionStatus401 = unknown;
+export type GetSandboxesSessionsBySessionIdStatus401 = unknown;
 
 /**
  * @type unknown
  */
-export type GetSessionStatus403 = unknown;
+export type GetSandboxesSessionsBySessionIdStatus403 = unknown;
 
 /**
  * @type unknown
  */
-export type GetSessionStatus404 = unknown;
+export type GetSandboxesSessionsBySessionIdStatus404 = unknown;
 
 /**
  * @type unknown
  */
-export type GetSessionStatus500 = unknown;
+export type GetSandboxesSessionsBySessionIdStatus429 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetSandboxesSessionsBySessionIdStatus500 = unknown;
 
 /**
  * @type object
  */
-export type GetSessionRequestConfig = {
+export type GetSandboxesSessionsBySessionIdRequestConfig = {
 	data?: never | undefined;
 	/**
 	 * @type object
 	 */
 	pathParams: {
-		sessionId: GetSessionPathSessionId;
+		sessionId: GetSandboxesSessionsBySessionIdPathSessionId;
 	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				teamId?: GetSessionQueryTeamId | undefined;
-				slug?: GetSessionQuerySlug | undefined;
-		  }
-		| undefined;
+	queryParams?: never | undefined;
 	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	url: `/v2/sandboxes/sessions/${string}`;
+	url: `/sandboxes/sessions/${string}`;
 };
 
 /**
  * @type object
  */
-export type GetSessionResponses = {
-	"200": GetSessionStatus200;
-	"400": GetSessionStatus400;
-	"401": GetSessionStatus401;
-	"403": GetSessionStatus403;
-	"404": GetSessionStatus404;
-	"500": GetSessionStatus500;
+export type GetSandboxesSessionsBySessionIdResponses = {
+	"200": GetSandboxesSessionsBySessionIdStatus200;
+	"400": GetSandboxesSessionsBySessionIdStatus400;
+	"401": GetSandboxesSessionsBySessionIdStatus401;
+	"403": GetSandboxesSessionsBySessionIdStatus403;
+	"404": GetSandboxesSessionsBySessionIdStatus404;
+	"429": GetSandboxesSessionsBySessionIdStatus429;
+	"500": GetSandboxesSessionsBySessionIdStatus500;
 };
 
 /**
  * @description Union of all possible responses
  */
-export type GetSessionResponse =
-	| GetSessionStatus200
-	| GetSessionStatus400
-	| GetSessionStatus401
-	| GetSessionStatus403
-	| GetSessionStatus404
-	| GetSessionStatus500;
+export type GetSandboxesSessionsBySessionIdResponse =
+	| GetSandboxesSessionsBySessionIdStatus200
+	| GetSandboxesSessionsBySessionIdStatus400
+	| GetSandboxesSessionsBySessionIdStatus401
+	| GetSandboxesSessionsBySessionIdStatus403
+	| GetSandboxesSessionsBySessionIdStatus404
+	| GetSandboxesSessionsBySessionIdStatus429
+	| GetSandboxesSessionsBySessionIdStatus500;
 
 /**
  * @description Name for the sandbox. Must be unique per project and URL-safe (alphanumeric, hyphens, underscores).
@@ -44139,145 +44045,129 @@ export type GetSessionResponse =
  * @example my-sandbox
  * @type string
  */
-export type GetNamedSandboxPathName = string;
+export type GetSandboxesByNamePathName = string;
 
 /**
  * @description The project ID or name (required when not using OIDC token).
  * @example prj_abc123
  * @type string | undefined
  */
-export type GetNamedSandboxQueryProjectId = string | undefined;
+export type GetSandboxesByNameQueryProjectId = string | undefined;
 
 /**
  * @description Whether to automatically resume a stopped named sandbox by creating a new instance from its snapshot. Defaults to false.
  * @default false
  * @type boolean | undefined
  */
-export type GetNamedSandboxQueryResume = boolean | undefined;
-
-/**
- * @description The Team identifier to perform the request on behalf of.
- * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
- * @type string | undefined
- */
-export type GetNamedSandboxQueryTeamId = string | undefined;
-
-/**
- * @description The Team slug to perform the request on behalf of.
- * @example my-team-url-slug
- * @type string | undefined
- */
-export type GetNamedSandboxQuerySlug = string | undefined;
+export type GetSandboxesByNameQueryResume = boolean | undefined;
 
 /**
  * @type unknown
  */
-export type GetNamedSandboxStatus200 = unknown;
+export type GetSandboxesByNameStatus200 = unknown;
 
 /**
  * @type unknown
  */
-export type GetNamedSandboxStatus400 = unknown;
+export type GetSandboxesByNameStatus400 = unknown;
 
 /**
  * @type unknown
  */
-export type GetNamedSandboxStatus401 = unknown;
+export type GetSandboxesByNameStatus401 = unknown;
 
 /**
  * @type unknown
  */
-export type GetNamedSandboxStatus402 = unknown;
+export type GetSandboxesByNameStatus402 = unknown;
 
 /**
  * @type unknown
  */
-export type GetNamedSandboxStatus403 = unknown;
+export type GetSandboxesByNameStatus403 = unknown;
 
 /**
  * @type unknown
  */
-export type GetNamedSandboxStatus404 = unknown;
+export type GetSandboxesByNameStatus404 = unknown;
 
 /**
  * @type unknown
  */
-export type GetNamedSandboxStatus409 = unknown;
+export type GetSandboxesByNameStatus409 = unknown;
 
 /**
  * @type unknown
  */
-export type GetNamedSandboxStatus410 = unknown;
+export type GetSandboxesByNameStatus410 = unknown;
 
 /**
  * @type unknown
  */
-export type GetNamedSandboxStatus429 = unknown;
+export type GetSandboxesByNameStatus429 = unknown;
 
 /**
  * @type unknown
  */
-export type GetNamedSandboxStatus500 = unknown;
+export type GetSandboxesByNameStatus500 = unknown;
 
 /**
  * @type object
  */
-export type GetNamedSandboxRequestConfig = {
+export type GetSandboxesByNameRequestConfig = {
 	data?: never | undefined;
 	/**
 	 * @type object
 	 */
 	pathParams: {
-		name: GetNamedSandboxPathName;
+		name: GetSandboxesByNamePathName;
 	};
 	/**
 	 * @type object | undefined
 	 */
 	queryParams?:
 		| {
-				projectId?: GetNamedSandboxQueryProjectId | undefined;
-				resume?: GetNamedSandboxQueryResume | undefined;
-				teamId?: GetNamedSandboxQueryTeamId | undefined;
-				slug?: GetNamedSandboxQuerySlug | undefined;
+				projectId?: GetSandboxesByNameQueryProjectId | undefined;
+				resume?: GetSandboxesByNameQueryResume | undefined;
 		  }
 		| undefined;
 	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	url: `/v2/sandboxes/${string}`;
+	url: `/sandboxes/${string}`;
 };
 
 /**
  * @type object
  */
-export type GetNamedSandboxResponses = {
-	"200": GetNamedSandboxStatus200;
-	"400": GetNamedSandboxStatus400;
-	"401": GetNamedSandboxStatus401;
-	"402": GetNamedSandboxStatus402;
-	"403": GetNamedSandboxStatus403;
-	"404": GetNamedSandboxStatus404;
-	"409": GetNamedSandboxStatus409;
-	"410": GetNamedSandboxStatus410;
-	"429": GetNamedSandboxStatus429;
-	"500": GetNamedSandboxStatus500;
+export type GetSandboxesByNameResponses = {
+	"200": GetSandboxesByNameStatus200;
+	"400": GetSandboxesByNameStatus400;
+	"401": GetSandboxesByNameStatus401;
+	"402": GetSandboxesByNameStatus402;
+	"403": GetSandboxesByNameStatus403;
+	"404": GetSandboxesByNameStatus404;
+	"409": GetSandboxesByNameStatus409;
+	"410": GetSandboxesByNameStatus410;
+	"429": GetSandboxesByNameStatus429;
+	"500": GetSandboxesByNameStatus500;
 };
 
 /**
  * @description Union of all possible responses
  */
-export type GetNamedSandboxResponse =
-	| GetNamedSandboxStatus200
-	| GetNamedSandboxStatus400
-	| GetNamedSandboxStatus401
-	| GetNamedSandboxStatus402
-	| GetNamedSandboxStatus403
-	| GetNamedSandboxStatus404
-	| GetNamedSandboxStatus409
-	| GetNamedSandboxStatus410
-	| GetNamedSandboxStatus429
-	| GetNamedSandboxStatus500;
+export type GetSandboxesByNameResponse =
+	| GetSandboxesByNameStatus200
+	| GetSandboxesByNameStatus400
+	| GetSandboxesByNameStatus401
+	| GetSandboxesByNameStatus402
+	| GetSandboxesByNameStatus403
+	| GetSandboxesByNameStatus404
+	| GetSandboxesByNameStatus409
+	| GetSandboxesByNameStatus410
+	| GetSandboxesByNameStatus429
+	| GetSandboxesByNameStatus500;
 
 /**
  * @description The sandbox to update.
@@ -44286,152 +44176,136 @@ export type GetNamedSandboxResponse =
  * @example my-sandbox
  * @type string
  */
-export type UpdateSandboxPathName = string;
+export type UpdateSandboxesByNamePathName = string;
 
 /**
  * @description The project ID that owns the named sandbox. When provided, takes precedence over OIDC project context.
  * @maxLength 128
  * @type string | undefined
  */
-export type UpdateSandboxQueryProjectId = string | undefined;
+export type UpdateSandboxesByNameQueryProjectId = string | undefined;
 
 /**
  * @description Whether to automatically resume a stopped named sandbox by creating a new instance from its snapshot. Defaults to false.
  * @default false
  * @type boolean | undefined
  */
-export type UpdateSandboxQueryResume = boolean | undefined;
-
-/**
- * @description The Team identifier to perform the request on behalf of.
- * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
- * @type string | undefined
- */
-export type UpdateSandboxQueryTeamId = string | undefined;
-
-/**
- * @description The Team slug to perform the request on behalf of.
- * @example my-team-url-slug
- * @type string | undefined
- */
-export type UpdateSandboxQuerySlug = string | undefined;
+export type UpdateSandboxesByNameQueryResume = boolean | undefined;
 
 /**
  * @type unknown
  */
-export type UpdateSandboxStatus200 = unknown;
+export type UpdateSandboxesByNameStatus200 = unknown;
 
 /**
  * @type unknown
  */
-export type UpdateSandboxStatus400 = unknown;
+export type UpdateSandboxesByNameStatus400 = unknown;
 
 /**
  * @type unknown
  */
-export type UpdateSandboxStatus401 = unknown;
+export type UpdateSandboxesByNameStatus401 = unknown;
 
 /**
  * @type unknown
  */
-export type UpdateSandboxStatus402 = unknown;
+export type UpdateSandboxesByNameStatus402 = unknown;
 
 /**
  * @type unknown
  */
-export type UpdateSandboxStatus403 = unknown;
+export type UpdateSandboxesByNameStatus403 = unknown;
 
 /**
  * @type unknown
  */
-export type UpdateSandboxStatus404 = unknown;
+export type UpdateSandboxesByNameStatus404 = unknown;
 
 /**
  * @type unknown
  */
-export type UpdateSandboxStatus409 = unknown;
+export type UpdateSandboxesByNameStatus409 = unknown;
 
 /**
  * @type unknown
  */
-export type UpdateSandboxStatus410 = unknown;
+export type UpdateSandboxesByNameStatus410 = unknown;
 
 /**
  * @type unknown
  */
-export type UpdateSandboxStatus422 = unknown;
+export type UpdateSandboxesByNameStatus422 = unknown;
 
 /**
  * @type unknown
  */
-export type UpdateSandboxStatus429 = unknown;
+export type UpdateSandboxesByNameStatus429 = unknown;
 
 /**
  * @type unknown
  */
-export type UpdateSandboxStatus500 = unknown;
+export type UpdateSandboxesByNameStatus500 = unknown;
 
 /**
  * @type object
  */
-export type UpdateSandboxRequestConfig = {
+export type UpdateSandboxesByNameRequestConfig = {
 	data?: never | undefined;
 	/**
 	 * @type object
 	 */
 	pathParams: {
-		name: UpdateSandboxPathName;
+		name: UpdateSandboxesByNamePathName;
 	};
 	/**
 	 * @type object | undefined
 	 */
 	queryParams?:
 		| {
-				projectId?: UpdateSandboxQueryProjectId | undefined;
-				resume?: UpdateSandboxQueryResume | undefined;
-				teamId?: UpdateSandboxQueryTeamId | undefined;
-				slug?: UpdateSandboxQuerySlug | undefined;
+				projectId?: UpdateSandboxesByNameQueryProjectId | undefined;
+				resume?: UpdateSandboxesByNameQueryResume | undefined;
 		  }
 		| undefined;
 	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	url: `/v2/sandboxes/${string}`;
+	url: `/sandboxes/${string}`;
 };
 
 /**
  * @type object
  */
-export type UpdateSandboxResponses = {
-	"200": UpdateSandboxStatus200;
-	"400": UpdateSandboxStatus400;
-	"401": UpdateSandboxStatus401;
-	"402": UpdateSandboxStatus402;
-	"403": UpdateSandboxStatus403;
-	"404": UpdateSandboxStatus404;
-	"409": UpdateSandboxStatus409;
-	"410": UpdateSandboxStatus410;
-	"422": UpdateSandboxStatus422;
-	"429": UpdateSandboxStatus429;
-	"500": UpdateSandboxStatus500;
+export type UpdateSandboxesByNameResponses = {
+	"200": UpdateSandboxesByNameStatus200;
+	"400": UpdateSandboxesByNameStatus400;
+	"401": UpdateSandboxesByNameStatus401;
+	"402": UpdateSandboxesByNameStatus402;
+	"403": UpdateSandboxesByNameStatus403;
+	"404": UpdateSandboxesByNameStatus404;
+	"409": UpdateSandboxesByNameStatus409;
+	"410": UpdateSandboxesByNameStatus410;
+	"422": UpdateSandboxesByNameStatus422;
+	"429": UpdateSandboxesByNameStatus429;
+	"500": UpdateSandboxesByNameStatus500;
 };
 
 /**
  * @description Union of all possible responses
  */
-export type UpdateSandboxResponse =
-	| UpdateSandboxStatus200
-	| UpdateSandboxStatus400
-	| UpdateSandboxStatus401
-	| UpdateSandboxStatus402
-	| UpdateSandboxStatus403
-	| UpdateSandboxStatus404
-	| UpdateSandboxStatus409
-	| UpdateSandboxStatus410
-	| UpdateSandboxStatus422
-	| UpdateSandboxStatus429
-	| UpdateSandboxStatus500;
+export type UpdateSandboxesByNameResponse =
+	| UpdateSandboxesByNameStatus200
+	| UpdateSandboxesByNameStatus400
+	| UpdateSandboxesByNameStatus401
+	| UpdateSandboxesByNameStatus402
+	| UpdateSandboxesByNameStatus403
+	| UpdateSandboxesByNameStatus404
+	| UpdateSandboxesByNameStatus409
+	| UpdateSandboxesByNameStatus410
+	| UpdateSandboxesByNameStatus422
+	| UpdateSandboxesByNameStatus429
+	| UpdateSandboxesByNameStatus500;
 
 /**
  * @description The sandbox name to delete.
@@ -44440,1542 +44314,1359 @@ export type UpdateSandboxResponse =
  * @example my-sandbox
  * @type string
  */
-export type DeleteSandboxPathName = string;
+export type DeleteSandboxesByNamePathName = string;
 
 /**
  * @description The project ID that owns the named sandbox. When provided, takes precedence over OIDC project context.
  * @maxLength 128
  * @type string | undefined
  */
-export type DeleteSandboxQueryProjectId = string | undefined;
-
-/**
- * @description The Team identifier to perform the request on behalf of.
- * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
- * @type string | undefined
- */
-export type DeleteSandboxQueryTeamId = string | undefined;
-
-/**
- * @description The Team slug to perform the request on behalf of.
- * @example my-team-url-slug
- * @type string | undefined
- */
-export type DeleteSandboxQuerySlug = string | undefined;
+export type DeleteSandboxesByNameQueryProjectId = string | undefined;
 
 /**
  * @type unknown
  */
-export type DeleteSandboxStatus200 = unknown;
+export type DeleteSandboxesByNameStatus200 = unknown;
 
 /**
  * @type unknown
  */
-export type DeleteSandboxStatus400 = unknown;
+export type DeleteSandboxesByNameStatus400 = unknown;
 
 /**
  * @type unknown
  */
-export type DeleteSandboxStatus401 = unknown;
+export type DeleteSandboxesByNameStatus401 = unknown;
 
 /**
  * @type unknown
  */
-export type DeleteSandboxStatus403 = unknown;
+export type DeleteSandboxesByNameStatus403 = unknown;
 
 /**
  * @type unknown
  */
-export type DeleteSandboxStatus404 = unknown;
+export type DeleteSandboxesByNameStatus404 = unknown;
 
 /**
  * @type unknown
  */
-export type DeleteSandboxStatus410 = unknown;
+export type DeleteSandboxesByNameStatus410 = unknown;
 
 /**
  * @type unknown
  */
-export type DeleteSandboxStatus422 = unknown;
+export type DeleteSandboxesByNameStatus422 = unknown;
 
 /**
  * @type unknown
  */
-export type DeleteSandboxStatus500 = unknown;
+export type DeleteSandboxesByNameStatus429 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteSandboxesByNameStatus500 = unknown;
 
 /**
  * @type object
  */
-export type DeleteSandboxRequestConfig = {
+export type DeleteSandboxesByNameRequestConfig = {
 	data?: never | undefined;
 	/**
 	 * @type object
 	 */
 	pathParams: {
-		name: DeleteSandboxPathName;
+		name: DeleteSandboxesByNamePathName;
 	};
 	/**
 	 * @type object | undefined
 	 */
 	queryParams?:
 		| {
-				projectId?: DeleteSandboxQueryProjectId | undefined;
-				teamId?: DeleteSandboxQueryTeamId | undefined;
-				slug?: DeleteSandboxQuerySlug | undefined;
+				projectId?: DeleteSandboxesByNameQueryProjectId | undefined;
 		  }
 		| undefined;
 	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	url: `/v2/sandboxes/${string}`;
+	url: `/sandboxes/${string}`;
 };
 
 /**
  * @type object
  */
-export type DeleteSandboxResponses = {
-	"200": DeleteSandboxStatus200;
-	"400": DeleteSandboxStatus400;
-	"401": DeleteSandboxStatus401;
-	"403": DeleteSandboxStatus403;
-	"404": DeleteSandboxStatus404;
-	"410": DeleteSandboxStatus410;
-	"422": DeleteSandboxStatus422;
-	"500": DeleteSandboxStatus500;
+export type DeleteSandboxesByNameResponses = {
+	"200": DeleteSandboxesByNameStatus200;
+	"400": DeleteSandboxesByNameStatus400;
+	"401": DeleteSandboxesByNameStatus401;
+	"403": DeleteSandboxesByNameStatus403;
+	"404": DeleteSandboxesByNameStatus404;
+	"410": DeleteSandboxesByNameStatus410;
+	"422": DeleteSandboxesByNameStatus422;
+	"429": DeleteSandboxesByNameStatus429;
+	"500": DeleteSandboxesByNameStatus500;
 };
 
 /**
  * @description Union of all possible responses
  */
-export type DeleteSandboxResponse =
-	| DeleteSandboxStatus200
-	| DeleteSandboxStatus400
-	| DeleteSandboxStatus401
-	| DeleteSandboxStatus403
-	| DeleteSandboxStatus404
-	| DeleteSandboxStatus410
-	| DeleteSandboxStatus422
-	| DeleteSandboxStatus500;
+export type DeleteSandboxesByNameResponse =
+	| DeleteSandboxesByNameStatus200
+	| DeleteSandboxesByNameStatus400
+	| DeleteSandboxesByNameStatus401
+	| DeleteSandboxesByNameStatus403
+	| DeleteSandboxesByNameStatus404
+	| DeleteSandboxesByNameStatus410
+	| DeleteSandboxesByNameStatus422
+	| DeleteSandboxesByNameStatus429
+	| DeleteSandboxesByNameStatus500;
 
 /**
  * @description The unique identifier of the session to list commands for.
  * @example sbx_abc123
  * @type string
  */
-export type ListSessionCommandsPathSessionId = string;
-
-/**
- * @description The Team identifier to perform the request on behalf of.
- * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
- * @type string | undefined
- */
-export type ListSessionCommandsQueryTeamId = string | undefined;
-
-/**
- * @description The Team slug to perform the request on behalf of.
- * @example my-team-url-slug
- * @type string | undefined
- */
-export type ListSessionCommandsQuerySlug = string | undefined;
+export type GetSandboxesSessionsBySessionIdCmdPathSessionId = string;
 
 /**
  * @type unknown
  */
-export type ListSessionCommandsStatus200 = unknown;
+export type GetSandboxesSessionsBySessionIdCmdStatus200 = unknown;
 
 /**
  * @type unknown
  */
-export type ListSessionCommandsStatus400 = unknown;
+export type GetSandboxesSessionsBySessionIdCmdStatus400 = unknown;
 
 /**
  * @type unknown
  */
-export type ListSessionCommandsStatus401 = unknown;
+export type GetSandboxesSessionsBySessionIdCmdStatus401 = unknown;
 
 /**
  * @type unknown
  */
-export type ListSessionCommandsStatus403 = unknown;
+export type GetSandboxesSessionsBySessionIdCmdStatus403 = unknown;
 
 /**
  * @type unknown
  */
-export type ListSessionCommandsStatus404 = unknown;
+export type GetSandboxesSessionsBySessionIdCmdStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetSandboxesSessionsBySessionIdCmdStatus429 = unknown;
 
 /**
  * @type object
  */
-export type ListSessionCommandsRequestConfig = {
+export type GetSandboxesSessionsBySessionIdCmdRequestConfig = {
 	data?: never | undefined;
 	/**
 	 * @type object
 	 */
 	pathParams: {
-		sessionId: ListSessionCommandsPathSessionId;
+		sessionId: GetSandboxesSessionsBySessionIdCmdPathSessionId;
 	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				teamId?: ListSessionCommandsQueryTeamId | undefined;
-				slug?: ListSessionCommandsQuerySlug | undefined;
-		  }
-		| undefined;
+	queryParams?: never | undefined;
 	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	url: `/v2/sandboxes/sessions/${string}/cmd`;
+	url: `/sandboxes/sessions/${string}/cmd`;
 };
 
 /**
  * @type object
  */
-export type ListSessionCommandsResponses = {
-	"200": ListSessionCommandsStatus200;
-	"400": ListSessionCommandsStatus400;
-	"401": ListSessionCommandsStatus401;
-	"403": ListSessionCommandsStatus403;
-	"404": ListSessionCommandsStatus404;
+export type GetSandboxesSessionsBySessionIdCmdResponses = {
+	"200": GetSandboxesSessionsBySessionIdCmdStatus200;
+	"400": GetSandboxesSessionsBySessionIdCmdStatus400;
+	"401": GetSandboxesSessionsBySessionIdCmdStatus401;
+	"403": GetSandboxesSessionsBySessionIdCmdStatus403;
+	"404": GetSandboxesSessionsBySessionIdCmdStatus404;
+	"429": GetSandboxesSessionsBySessionIdCmdStatus429;
 };
 
 /**
  * @description Union of all possible responses
  */
-export type ListSessionCommandsResponse =
-	| ListSessionCommandsStatus200
-	| ListSessionCommandsStatus400
-	| ListSessionCommandsStatus401
-	| ListSessionCommandsStatus403
-	| ListSessionCommandsStatus404;
+export type GetSandboxesSessionsBySessionIdCmdResponse =
+	| GetSandboxesSessionsBySessionIdCmdStatus200
+	| GetSandboxesSessionsBySessionIdCmdStatus400
+	| GetSandboxesSessionsBySessionIdCmdStatus401
+	| GetSandboxesSessionsBySessionIdCmdStatus403
+	| GetSandboxesSessionsBySessionIdCmdStatus404
+	| GetSandboxesSessionsBySessionIdCmdStatus429;
 
 /**
  * @description The unique identifier of the session in which to execute the command.
  * @example sbx_abc123
  * @type string
  */
-export type RunSessionCommandPathSessionId = string;
-
-/**
- * @description The Team identifier to perform the request on behalf of.
- * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
- * @type string | undefined
- */
-export type RunSessionCommandQueryTeamId = string | undefined;
-
-/**
- * @description The Team slug to perform the request on behalf of.
- * @example my-team-url-slug
- * @type string | undefined
- */
-export type RunSessionCommandQuerySlug = string | undefined;
+export type CreateSandboxesSessionsBySessionIdCmdPathSessionId = string;
 
 /**
  * @type unknown
  */
-export type RunSessionCommandStatus200 = unknown;
+export type CreateSandboxesSessionsBySessionIdCmdStatus200 = unknown;
 
 /**
  * @type unknown
  */
-export type RunSessionCommandStatus400 = unknown;
+export type CreateSandboxesSessionsBySessionIdCmdStatus400 = unknown;
 
 /**
  * @type unknown
  */
-export type RunSessionCommandStatus401 = unknown;
+export type CreateSandboxesSessionsBySessionIdCmdStatus401 = unknown;
 
 /**
  * @type unknown
  */
-export type RunSessionCommandStatus403 = unknown;
+export type CreateSandboxesSessionsBySessionIdCmdStatus403 = unknown;
 
 /**
  * @type unknown
  */
-export type RunSessionCommandStatus404 = unknown;
+export type CreateSandboxesSessionsBySessionIdCmdStatus404 = unknown;
 
 /**
  * @type unknown
  */
-export type RunSessionCommandStatus410 = unknown;
+export type CreateSandboxesSessionsBySessionIdCmdStatus410 = unknown;
 
 /**
  * @type unknown
  */
-export type RunSessionCommandStatus422 = unknown;
+export type CreateSandboxesSessionsBySessionIdCmdStatus422 = unknown;
 
 /**
  * @type unknown
  */
-export type RunSessionCommandStatus500 = unknown;
+export type CreateSandboxesSessionsBySessionIdCmdStatus429 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesSessionsBySessionIdCmdStatus500 = unknown;
 
 /**
  * @type object
  */
-export type RunSessionCommandRequestConfig = {
+export type CreateSandboxesSessionsBySessionIdCmdRequestConfig = {
 	data?: never | undefined;
 	/**
 	 * @type object
 	 */
 	pathParams: {
-		sessionId: RunSessionCommandPathSessionId;
+		sessionId: CreateSandboxesSessionsBySessionIdCmdPathSessionId;
 	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				teamId?: RunSessionCommandQueryTeamId | undefined;
-				slug?: RunSessionCommandQuerySlug | undefined;
-		  }
-		| undefined;
+	queryParams?: never | undefined;
 	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	url: `/v2/sandboxes/sessions/${string}/cmd`;
+	url: `/sandboxes/sessions/${string}/cmd`;
 };
 
 /**
  * @type object
  */
-export type RunSessionCommandResponses = {
-	"200": RunSessionCommandStatus200;
-	"400": RunSessionCommandStatus400;
-	"401": RunSessionCommandStatus401;
-	"403": RunSessionCommandStatus403;
-	"404": RunSessionCommandStatus404;
-	"410": RunSessionCommandStatus410;
-	"422": RunSessionCommandStatus422;
-	"500": RunSessionCommandStatus500;
+export type CreateSandboxesSessionsBySessionIdCmdResponses = {
+	"200": CreateSandboxesSessionsBySessionIdCmdStatus200;
+	"400": CreateSandboxesSessionsBySessionIdCmdStatus400;
+	"401": CreateSandboxesSessionsBySessionIdCmdStatus401;
+	"403": CreateSandboxesSessionsBySessionIdCmdStatus403;
+	"404": CreateSandboxesSessionsBySessionIdCmdStatus404;
+	"410": CreateSandboxesSessionsBySessionIdCmdStatus410;
+	"422": CreateSandboxesSessionsBySessionIdCmdStatus422;
+	"429": CreateSandboxesSessionsBySessionIdCmdStatus429;
+	"500": CreateSandboxesSessionsBySessionIdCmdStatus500;
 };
 
 /**
  * @description Union of all possible responses
  */
-export type RunSessionCommandResponse =
-	| RunSessionCommandStatus200
-	| RunSessionCommandStatus400
-	| RunSessionCommandStatus401
-	| RunSessionCommandStatus403
-	| RunSessionCommandStatus404
-	| RunSessionCommandStatus410
-	| RunSessionCommandStatus422
-	| RunSessionCommandStatus500;
+export type CreateSandboxesSessionsBySessionIdCmdResponse =
+	| CreateSandboxesSessionsBySessionIdCmdStatus200
+	| CreateSandboxesSessionsBySessionIdCmdStatus400
+	| CreateSandboxesSessionsBySessionIdCmdStatus401
+	| CreateSandboxesSessionsBySessionIdCmdStatus403
+	| CreateSandboxesSessionsBySessionIdCmdStatus404
+	| CreateSandboxesSessionsBySessionIdCmdStatus410
+	| CreateSandboxesSessionsBySessionIdCmdStatus422
+	| CreateSandboxesSessionsBySessionIdCmdStatus429
+	| CreateSandboxesSessionsBySessionIdCmdStatus500;
 
 /**
  * @description The unique identifier of the session containing the command.
  * @example sbx_abc123
  * @type string
  */
-export type GetSessionCommandPathSessionId = string;
+export type GetSandboxesSessionsBySessionIdCmdByCmdIdPathSessionId = string;
 
 /**
  * @description The unique identifier of the command to retrieve.
  * @example cmd_abc123
  * @type string
  */
-export type GetSessionCommandPathCmdId = string;
+export type GetSandboxesSessionsBySessionIdCmdByCmdIdPathCmdId = string;
 
 /**
  * @description If set to \"true\", the request will block until the command finishes execution. Useful for synchronously waiting for command completion.
  * @default "false"
  * @type string | undefined
  */
-export type GetSessionCommandQueryWait = ("true" | "false") | undefined;
-
-/**
- * @description The Team identifier to perform the request on behalf of.
- * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
- * @type string | undefined
- */
-export type GetSessionCommandQueryTeamId = string | undefined;
-
-/**
- * @description The Team slug to perform the request on behalf of.
- * @example my-team-url-slug
- * @type string | undefined
- */
-export type GetSessionCommandQuerySlug = string | undefined;
+export type GetSandboxesSessionsBySessionIdCmdByCmdIdQueryWait = ("true" | "false") | undefined;
 
 /**
  * @type unknown
  */
-export type GetSessionCommandStatus200 = unknown;
+export type GetSandboxesSessionsBySessionIdCmdByCmdIdStatus200 = unknown;
 
 /**
  * @type unknown
  */
-export type GetSessionCommandStatus400 = unknown;
+export type GetSandboxesSessionsBySessionIdCmdByCmdIdStatus400 = unknown;
 
 /**
  * @type unknown
  */
-export type GetSessionCommandStatus401 = unknown;
+export type GetSandboxesSessionsBySessionIdCmdByCmdIdStatus401 = unknown;
 
 /**
  * @type unknown
  */
-export type GetSessionCommandStatus403 = unknown;
+export type GetSandboxesSessionsBySessionIdCmdByCmdIdStatus403 = unknown;
 
 /**
  * @type unknown
  */
-export type GetSessionCommandStatus404 = unknown;
+export type GetSandboxesSessionsBySessionIdCmdByCmdIdStatus404 = unknown;
 
 /**
  * @type unknown
  */
-export type GetSessionCommandStatus410 = unknown;
+export type GetSandboxesSessionsBySessionIdCmdByCmdIdStatus410 = unknown;
 
 /**
  * @type unknown
  */
-export type GetSessionCommandStatus422 = unknown;
+export type GetSandboxesSessionsBySessionIdCmdByCmdIdStatus422 = unknown;
 
 /**
  * @type unknown
  */
-export type GetSessionCommandStatus500 = unknown;
+export type GetSandboxesSessionsBySessionIdCmdByCmdIdStatus429 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetSandboxesSessionsBySessionIdCmdByCmdIdStatus500 = unknown;
 
 /**
  * @type object
  */
-export type GetSessionCommandRequestConfig = {
+export type GetSandboxesSessionsBySessionIdCmdByCmdIdRequestConfig = {
 	data?: never | undefined;
 	/**
 	 * @type object
 	 */
 	pathParams: {
-		sessionId: GetSessionCommandPathSessionId;
-		cmdId: GetSessionCommandPathCmdId;
+		sessionId: GetSandboxesSessionsBySessionIdCmdByCmdIdPathSessionId;
+		cmdId: GetSandboxesSessionsBySessionIdCmdByCmdIdPathCmdId;
 	};
 	/**
 	 * @type object | undefined
 	 */
 	queryParams?:
 		| {
-				wait?: GetSessionCommandQueryWait | undefined;
-				teamId?: GetSessionCommandQueryTeamId | undefined;
-				slug?: GetSessionCommandQuerySlug | undefined;
+				wait?: GetSandboxesSessionsBySessionIdCmdByCmdIdQueryWait | undefined;
 		  }
 		| undefined;
 	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	url: `/v2/sandboxes/sessions/${string}/cmd/${string}`;
+	url: `/sandboxes/sessions/${string}/cmd/${string}`;
 };
 
 /**
  * @type object
  */
-export type GetSessionCommandResponses = {
-	"200": GetSessionCommandStatus200;
-	"400": GetSessionCommandStatus400;
-	"401": GetSessionCommandStatus401;
-	"403": GetSessionCommandStatus403;
-	"404": GetSessionCommandStatus404;
-	"410": GetSessionCommandStatus410;
-	"422": GetSessionCommandStatus422;
-	"500": GetSessionCommandStatus500;
+export type GetSandboxesSessionsBySessionIdCmdByCmdIdResponses = {
+	"200": GetSandboxesSessionsBySessionIdCmdByCmdIdStatus200;
+	"400": GetSandboxesSessionsBySessionIdCmdByCmdIdStatus400;
+	"401": GetSandboxesSessionsBySessionIdCmdByCmdIdStatus401;
+	"403": GetSandboxesSessionsBySessionIdCmdByCmdIdStatus403;
+	"404": GetSandboxesSessionsBySessionIdCmdByCmdIdStatus404;
+	"410": GetSandboxesSessionsBySessionIdCmdByCmdIdStatus410;
+	"422": GetSandboxesSessionsBySessionIdCmdByCmdIdStatus422;
+	"429": GetSandboxesSessionsBySessionIdCmdByCmdIdStatus429;
+	"500": GetSandboxesSessionsBySessionIdCmdByCmdIdStatus500;
 };
 
 /**
  * @description Union of all possible responses
  */
-export type GetSessionCommandResponse =
-	| GetSessionCommandStatus200
-	| GetSessionCommandStatus400
-	| GetSessionCommandStatus401
-	| GetSessionCommandStatus403
-	| GetSessionCommandStatus404
-	| GetSessionCommandStatus410
-	| GetSessionCommandStatus422
-	| GetSessionCommandStatus500;
+export type GetSandboxesSessionsBySessionIdCmdByCmdIdResponse =
+	| GetSandboxesSessionsBySessionIdCmdByCmdIdStatus200
+	| GetSandboxesSessionsBySessionIdCmdByCmdIdStatus400
+	| GetSandboxesSessionsBySessionIdCmdByCmdIdStatus401
+	| GetSandboxesSessionsBySessionIdCmdByCmdIdStatus403
+	| GetSandboxesSessionsBySessionIdCmdByCmdIdStatus404
+	| GetSandboxesSessionsBySessionIdCmdByCmdIdStatus410
+	| GetSandboxesSessionsBySessionIdCmdByCmdIdStatus422
+	| GetSandboxesSessionsBySessionIdCmdByCmdIdStatus429
+	| GetSandboxesSessionsBySessionIdCmdByCmdIdStatus500;
 
 /**
  * @description The unique identifier of the command to terminate.
  * @example cmd_abc123
  * @type string
  */
-export type KillSessionCommandPathCmdId = string;
+export type CreateSandboxesSessionsBySessionIdCmdByCmdIdKillPathCmdId = string;
 
 /**
  * @description The unique identifier of the session containing the command.
  * @example sbx_abc123
  * @type string
  */
-export type KillSessionCommandPathSessionId = string;
-
-/**
- * @description The Team identifier to perform the request on behalf of.
- * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
- * @type string | undefined
- */
-export type KillSessionCommandQueryTeamId = string | undefined;
-
-/**
- * @description The Team slug to perform the request on behalf of.
- * @example my-team-url-slug
- * @type string | undefined
- */
-export type KillSessionCommandQuerySlug = string | undefined;
+export type CreateSandboxesSessionsBySessionIdCmdByCmdIdKillPathSessionId = string;
 
 /**
  * @type unknown
  */
-export type KillSessionCommandStatus200 = unknown;
+export type CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus200 = unknown;
 
 /**
  * @type unknown
  */
-export type KillSessionCommandStatus400 = unknown;
+export type CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus400 = unknown;
 
 /**
  * @type unknown
  */
-export type KillSessionCommandStatus401 = unknown;
+export type CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus401 = unknown;
 
 /**
  * @type unknown
  */
-export type KillSessionCommandStatus403 = unknown;
+export type CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus403 = unknown;
 
 /**
  * @type unknown
  */
-export type KillSessionCommandStatus404 = unknown;
+export type CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus404 = unknown;
 
 /**
  * @type unknown
  */
-export type KillSessionCommandStatus410 = unknown;
+export type CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus410 = unknown;
 
 /**
  * @type unknown
  */
-export type KillSessionCommandStatus422 = unknown;
+export type CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus422 = unknown;
 
 /**
  * @type unknown
  */
-export type KillSessionCommandStatus500 = unknown;
+export type CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus429 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus500 = unknown;
 
 /**
  * @type object
  */
-export type KillSessionCommandRequestConfig = {
+export type CreateSandboxesSessionsBySessionIdCmdByCmdIdKillRequestConfig = {
 	data?: never | undefined;
 	/**
 	 * @type object
 	 */
 	pathParams: {
-		cmdId: KillSessionCommandPathCmdId;
-		sessionId: KillSessionCommandPathSessionId;
+		cmdId: CreateSandboxesSessionsBySessionIdCmdByCmdIdKillPathCmdId;
+		sessionId: CreateSandboxesSessionsBySessionIdCmdByCmdIdKillPathSessionId;
 	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				teamId?: KillSessionCommandQueryTeamId | undefined;
-				slug?: KillSessionCommandQuerySlug | undefined;
-		  }
-		| undefined;
+	queryParams?: never | undefined;
 	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	url: `/v2/sandboxes/sessions/${string}/cmd/${string}/kill`;
+	url: `/sandboxes/sessions/${string}/cmd/${string}/kill`;
 };
 
 /**
  * @type object
  */
-export type KillSessionCommandResponses = {
-	"200": KillSessionCommandStatus200;
-	"400": KillSessionCommandStatus400;
-	"401": KillSessionCommandStatus401;
-	"403": KillSessionCommandStatus403;
-	"404": KillSessionCommandStatus404;
-	"410": KillSessionCommandStatus410;
-	"422": KillSessionCommandStatus422;
-	"500": KillSessionCommandStatus500;
+export type CreateSandboxesSessionsBySessionIdCmdByCmdIdKillResponses = {
+	"200": CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus200;
+	"400": CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus400;
+	"401": CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus401;
+	"403": CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus403;
+	"404": CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus404;
+	"410": CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus410;
+	"422": CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus422;
+	"429": CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus429;
+	"500": CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus500;
 };
 
 /**
  * @description Union of all possible responses
  */
-export type KillSessionCommandResponse =
-	| KillSessionCommandStatus200
-	| KillSessionCommandStatus400
-	| KillSessionCommandStatus401
-	| KillSessionCommandStatus403
-	| KillSessionCommandStatus404
-	| KillSessionCommandStatus410
-	| KillSessionCommandStatus422
-	| KillSessionCommandStatus500;
+export type CreateSandboxesSessionsBySessionIdCmdByCmdIdKillResponse =
+	| CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus200
+	| CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus400
+	| CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus401
+	| CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus403
+	| CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus404
+	| CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus410
+	| CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus422
+	| CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus429
+	| CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus500;
 
 /**
  * @description The unique identifier of the session containing the command.
  * @example sbx_abc123
  * @type string
  */
-export type GetSessionCommandLogsPathSessionId = string;
+export type GetSandboxesSessionsBySessionIdCmdByCmdIdLogsPathSessionId = string;
 
 /**
  * @description The unique identifier of the command to stream logs for.
  * @example cmd_abc123
  * @type string
  */
-export type GetSessionCommandLogsPathCmdId = string;
-
-/**
- * @description The Team identifier to perform the request on behalf of.
- * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
- * @type string | undefined
- */
-export type GetSessionCommandLogsQueryTeamId = string | undefined;
-
-/**
- * @description The Team slug to perform the request on behalf of.
- * @example my-team-url-slug
- * @type string | undefined
- */
-export type GetSessionCommandLogsQuerySlug = string | undefined;
+export type GetSandboxesSessionsBySessionIdCmdByCmdIdLogsPathCmdId = string;
 
 /**
  * @type unknown
  */
-export type GetSessionCommandLogsStatus200 = unknown;
+export type GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus200 = unknown;
 
 /**
  * @type unknown
  */
-export type GetSessionCommandLogsStatus400 = unknown;
+export type GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus400 = unknown;
 
 /**
  * @type unknown
  */
-export type GetSessionCommandLogsStatus401 = unknown;
+export type GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus401 = unknown;
 
 /**
  * @type unknown
  */
-export type GetSessionCommandLogsStatus403 = unknown;
+export type GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus403 = unknown;
 
 /**
  * @type unknown
  */
-export type GetSessionCommandLogsStatus404 = unknown;
+export type GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus404 = unknown;
 
 /**
  * @type unknown
  */
-export type GetSessionCommandLogsStatus410 = unknown;
+export type GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus410 = unknown;
 
 /**
  * @type unknown
  */
-export type GetSessionCommandLogsStatus422 = unknown;
+export type GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus422 = unknown;
 
 /**
  * @type unknown
  */
-export type GetSessionCommandLogsStatus500 = unknown;
+export type GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus429 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus500 = unknown;
 
 /**
  * @type object
  */
-export type GetSessionCommandLogsRequestConfig = {
+export type GetSandboxesSessionsBySessionIdCmdByCmdIdLogsRequestConfig = {
 	data?: never | undefined;
 	/**
 	 * @type object
 	 */
 	pathParams: {
-		sessionId: GetSessionCommandLogsPathSessionId;
-		cmdId: GetSessionCommandLogsPathCmdId;
+		sessionId: GetSandboxesSessionsBySessionIdCmdByCmdIdLogsPathSessionId;
+		cmdId: GetSandboxesSessionsBySessionIdCmdByCmdIdLogsPathCmdId;
 	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				teamId?: GetSessionCommandLogsQueryTeamId | undefined;
-				slug?: GetSessionCommandLogsQuerySlug | undefined;
-		  }
-		| undefined;
+	queryParams?: never | undefined;
 	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	url: `/v2/sandboxes/sessions/${string}/cmd/${string}/logs`;
+	url: `/sandboxes/sessions/${string}/cmd/${string}/logs`;
 };
 
 /**
  * @type object
  */
-export type GetSessionCommandLogsResponses = {
-	"200": GetSessionCommandLogsStatus200;
-	"400": GetSessionCommandLogsStatus400;
-	"401": GetSessionCommandLogsStatus401;
-	"403": GetSessionCommandLogsStatus403;
-	"404": GetSessionCommandLogsStatus404;
-	"410": GetSessionCommandLogsStatus410;
-	"422": GetSessionCommandLogsStatus422;
-	"500": GetSessionCommandLogsStatus500;
+export type GetSandboxesSessionsBySessionIdCmdByCmdIdLogsResponses = {
+	"200": GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus200;
+	"400": GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus400;
+	"401": GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus401;
+	"403": GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus403;
+	"404": GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus404;
+	"410": GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus410;
+	"422": GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus422;
+	"429": GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus429;
+	"500": GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus500;
 };
 
 /**
  * @description Union of all possible responses
  */
-export type GetSessionCommandLogsResponse =
-	| GetSessionCommandLogsStatus200
-	| GetSessionCommandLogsStatus400
-	| GetSessionCommandLogsStatus401
-	| GetSessionCommandLogsStatus403
-	| GetSessionCommandLogsStatus404
-	| GetSessionCommandLogsStatus410
-	| GetSessionCommandLogsStatus422
-	| GetSessionCommandLogsStatus500;
+export type GetSandboxesSessionsBySessionIdCmdByCmdIdLogsResponse =
+	| GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus200
+	| GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus400
+	| GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus401
+	| GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus403
+	| GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus404
+	| GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus410
+	| GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus422
+	| GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus429
+	| GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus500;
 
 /**
  * @description The unique identifier of the session to stop.
  * @example sbx_abc123
  * @type string
  */
-export type StopSessionPathSessionId = string;
-
-/**
- * @description The Team identifier to perform the request on behalf of.
- * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
- * @type string | undefined
- */
-export type StopSessionQueryTeamId = string | undefined;
-
-/**
- * @description The Team slug to perform the request on behalf of.
- * @example my-team-url-slug
- * @type string | undefined
- */
-export type StopSessionQuerySlug = string | undefined;
+export type CreateSandboxesSessionsBySessionIdStopPathSessionId = string;
 
 /**
  * @type unknown
  */
-export type StopSessionStatus200 = unknown;
+export type CreateSandboxesSessionsBySessionIdStopStatus200 = unknown;
 
 /**
  * @type unknown
  */
-export type StopSessionStatus400 = unknown;
+export type CreateSandboxesSessionsBySessionIdStopStatus400 = unknown;
 
 /**
  * @type unknown
  */
-export type StopSessionStatus401 = unknown;
+export type CreateSandboxesSessionsBySessionIdStopStatus401 = unknown;
 
 /**
  * @type unknown
  */
-export type StopSessionStatus403 = unknown;
+export type CreateSandboxesSessionsBySessionIdStopStatus403 = unknown;
 
 /**
  * @type unknown
  */
-export type StopSessionStatus404 = unknown;
+export type CreateSandboxesSessionsBySessionIdStopStatus404 = unknown;
 
 /**
  * @type unknown
  */
-export type StopSessionStatus410 = unknown;
+export type CreateSandboxesSessionsBySessionIdStopStatus410 = unknown;
 
 /**
  * @type unknown
  */
-export type StopSessionStatus422 = unknown;
+export type CreateSandboxesSessionsBySessionIdStopStatus422 = unknown;
 
 /**
  * @type unknown
  */
-export type StopSessionStatus500 = unknown;
+export type CreateSandboxesSessionsBySessionIdStopStatus429 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesSessionsBySessionIdStopStatus500 = unknown;
 
 /**
  * @type object
  */
-export type StopSessionRequestConfig = {
+export type CreateSandboxesSessionsBySessionIdStopRequestConfig = {
 	data?: never | undefined;
 	/**
 	 * @type object
 	 */
 	pathParams: {
-		sessionId: StopSessionPathSessionId;
+		sessionId: CreateSandboxesSessionsBySessionIdStopPathSessionId;
 	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				teamId?: StopSessionQueryTeamId | undefined;
-				slug?: StopSessionQuerySlug | undefined;
-		  }
-		| undefined;
+	queryParams?: never | undefined;
 	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	url: `/v2/sandboxes/sessions/${string}/stop`;
+	url: `/sandboxes/sessions/${string}/stop`;
 };
 
 /**
  * @type object
  */
-export type StopSessionResponses = {
-	"200": StopSessionStatus200;
-	"400": StopSessionStatus400;
-	"401": StopSessionStatus401;
-	"403": StopSessionStatus403;
-	"404": StopSessionStatus404;
-	"410": StopSessionStatus410;
-	"422": StopSessionStatus422;
-	"500": StopSessionStatus500;
+export type CreateSandboxesSessionsBySessionIdStopResponses = {
+	"200": CreateSandboxesSessionsBySessionIdStopStatus200;
+	"400": CreateSandboxesSessionsBySessionIdStopStatus400;
+	"401": CreateSandboxesSessionsBySessionIdStopStatus401;
+	"403": CreateSandboxesSessionsBySessionIdStopStatus403;
+	"404": CreateSandboxesSessionsBySessionIdStopStatus404;
+	"410": CreateSandboxesSessionsBySessionIdStopStatus410;
+	"422": CreateSandboxesSessionsBySessionIdStopStatus422;
+	"429": CreateSandboxesSessionsBySessionIdStopStatus429;
+	"500": CreateSandboxesSessionsBySessionIdStopStatus500;
 };
 
 /**
  * @description Union of all possible responses
  */
-export type StopSessionResponse =
-	| StopSessionStatus200
-	| StopSessionStatus400
-	| StopSessionStatus401
-	| StopSessionStatus403
-	| StopSessionStatus404
-	| StopSessionStatus410
-	| StopSessionStatus422
-	| StopSessionStatus500;
+export type CreateSandboxesSessionsBySessionIdStopResponse =
+	| CreateSandboxesSessionsBySessionIdStopStatus200
+	| CreateSandboxesSessionsBySessionIdStopStatus400
+	| CreateSandboxesSessionsBySessionIdStopStatus401
+	| CreateSandboxesSessionsBySessionIdStopStatus403
+	| CreateSandboxesSessionsBySessionIdStopStatus404
+	| CreateSandboxesSessionsBySessionIdStopStatus410
+	| CreateSandboxesSessionsBySessionIdStopStatus422
+	| CreateSandboxesSessionsBySessionIdStopStatus429
+	| CreateSandboxesSessionsBySessionIdStopStatus500;
 
 /**
  * @description The unique identifier of the session to extend the timeout for.
  * @example sbx_abc123
  * @type string
  */
-export type ExtendSessionTimeoutPathSessionId = string;
-
-/**
- * @description The Team identifier to perform the request on behalf of.
- * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
- * @type string | undefined
- */
-export type ExtendSessionTimeoutQueryTeamId = string | undefined;
-
-/**
- * @description The Team slug to perform the request on behalf of.
- * @example my-team-url-slug
- * @type string | undefined
- */
-export type ExtendSessionTimeoutQuerySlug = string | undefined;
+export type CreateSandboxesSessionsBySessionIdExtendTimeoutPathSessionId = string;
 
 /**
  * @type unknown
  */
-export type ExtendSessionTimeoutStatus200 = unknown;
+export type CreateSandboxesSessionsBySessionIdExtendTimeoutStatus200 = unknown;
 
 /**
  * @type unknown
  */
-export type ExtendSessionTimeoutStatus400 = unknown;
+export type CreateSandboxesSessionsBySessionIdExtendTimeoutStatus400 = unknown;
 
 /**
  * @type unknown
  */
-export type ExtendSessionTimeoutStatus401 = unknown;
+export type CreateSandboxesSessionsBySessionIdExtendTimeoutStatus401 = unknown;
 
 /**
  * @type unknown
  */
-export type ExtendSessionTimeoutStatus403 = unknown;
+export type CreateSandboxesSessionsBySessionIdExtendTimeoutStatus403 = unknown;
 
 /**
  * @type unknown
  */
-export type ExtendSessionTimeoutStatus404 = unknown;
+export type CreateSandboxesSessionsBySessionIdExtendTimeoutStatus404 = unknown;
 
 /**
  * @type unknown
  */
-export type ExtendSessionTimeoutStatus410 = unknown;
+export type CreateSandboxesSessionsBySessionIdExtendTimeoutStatus410 = unknown;
 
 /**
  * @type unknown
  */
-export type ExtendSessionTimeoutStatus422 = unknown;
+export type CreateSandboxesSessionsBySessionIdExtendTimeoutStatus422 = unknown;
 
 /**
  * @type unknown
  */
-export type ExtendSessionTimeoutStatus500 = unknown;
+export type CreateSandboxesSessionsBySessionIdExtendTimeoutStatus429 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesSessionsBySessionIdExtendTimeoutStatus500 = unknown;
 
 /**
  * @type object
  */
-export type ExtendSessionTimeoutRequestConfig = {
+export type CreateSandboxesSessionsBySessionIdExtendTimeoutRequestConfig = {
 	data?: never | undefined;
 	/**
 	 * @type object
 	 */
 	pathParams: {
-		sessionId: ExtendSessionTimeoutPathSessionId;
+		sessionId: CreateSandboxesSessionsBySessionIdExtendTimeoutPathSessionId;
 	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				teamId?: ExtendSessionTimeoutQueryTeamId | undefined;
-				slug?: ExtendSessionTimeoutQuerySlug | undefined;
-		  }
-		| undefined;
+	queryParams?: never | undefined;
 	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	url: `/v2/sandboxes/sessions/${string}/extend-timeout`;
+	url: `/sandboxes/sessions/${string}/extend-timeout`;
 };
 
 /**
  * @type object
  */
-export type ExtendSessionTimeoutResponses = {
-	"200": ExtendSessionTimeoutStatus200;
-	"400": ExtendSessionTimeoutStatus400;
-	"401": ExtendSessionTimeoutStatus401;
-	"403": ExtendSessionTimeoutStatus403;
-	"404": ExtendSessionTimeoutStatus404;
-	"410": ExtendSessionTimeoutStatus410;
-	"422": ExtendSessionTimeoutStatus422;
-	"500": ExtendSessionTimeoutStatus500;
+export type CreateSandboxesSessionsBySessionIdExtendTimeoutResponses = {
+	"200": CreateSandboxesSessionsBySessionIdExtendTimeoutStatus200;
+	"400": CreateSandboxesSessionsBySessionIdExtendTimeoutStatus400;
+	"401": CreateSandboxesSessionsBySessionIdExtendTimeoutStatus401;
+	"403": CreateSandboxesSessionsBySessionIdExtendTimeoutStatus403;
+	"404": CreateSandboxesSessionsBySessionIdExtendTimeoutStatus404;
+	"410": CreateSandboxesSessionsBySessionIdExtendTimeoutStatus410;
+	"422": CreateSandboxesSessionsBySessionIdExtendTimeoutStatus422;
+	"429": CreateSandboxesSessionsBySessionIdExtendTimeoutStatus429;
+	"500": CreateSandboxesSessionsBySessionIdExtendTimeoutStatus500;
 };
 
 /**
  * @description Union of all possible responses
  */
-export type ExtendSessionTimeoutResponse =
-	| ExtendSessionTimeoutStatus200
-	| ExtendSessionTimeoutStatus400
-	| ExtendSessionTimeoutStatus401
-	| ExtendSessionTimeoutStatus403
-	| ExtendSessionTimeoutStatus404
-	| ExtendSessionTimeoutStatus410
-	| ExtendSessionTimeoutStatus422
-	| ExtendSessionTimeoutStatus500;
+export type CreateSandboxesSessionsBySessionIdExtendTimeoutResponse =
+	| CreateSandboxesSessionsBySessionIdExtendTimeoutStatus200
+	| CreateSandboxesSessionsBySessionIdExtendTimeoutStatus400
+	| CreateSandboxesSessionsBySessionIdExtendTimeoutStatus401
+	| CreateSandboxesSessionsBySessionIdExtendTimeoutStatus403
+	| CreateSandboxesSessionsBySessionIdExtendTimeoutStatus404
+	| CreateSandboxesSessionsBySessionIdExtendTimeoutStatus410
+	| CreateSandboxesSessionsBySessionIdExtendTimeoutStatus422
+	| CreateSandboxesSessionsBySessionIdExtendTimeoutStatus429
+	| CreateSandboxesSessionsBySessionIdExtendTimeoutStatus500;
 
 /**
  * @description The unique identifier of the session to update the network policy for.
  * @example sbx_abc123
  * @type string
  */
-export type UpdateSessionNetworkPolicyPathSessionId = string;
-
-/**
- * @description The Team identifier to perform the request on behalf of.
- * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
- * @type string | undefined
- */
-export type UpdateSessionNetworkPolicyQueryTeamId = string | undefined;
-
-/**
- * @description The Team slug to perform the request on behalf of.
- * @example my-team-url-slug
- * @type string | undefined
- */
-export type UpdateSessionNetworkPolicyQuerySlug = string | undefined;
+export type CreateSandboxesSessionsBySessionIdNetworkPolicyPathSessionId = string;
 
 /**
  * @type unknown
  */
-export type UpdateSessionNetworkPolicyStatus200 = unknown;
+export type CreateSandboxesSessionsBySessionIdNetworkPolicyStatus200 = unknown;
 
 /**
  * @type unknown
  */
-export type UpdateSessionNetworkPolicyStatus400 = unknown;
+export type CreateSandboxesSessionsBySessionIdNetworkPolicyStatus400 = unknown;
 
 /**
  * @type unknown
  */
-export type UpdateSessionNetworkPolicyStatus401 = unknown;
+export type CreateSandboxesSessionsBySessionIdNetworkPolicyStatus401 = unknown;
 
 /**
  * @type unknown
  */
-export type UpdateSessionNetworkPolicyStatus402 = unknown;
+export type CreateSandboxesSessionsBySessionIdNetworkPolicyStatus402 = unknown;
 
 /**
  * @type unknown
  */
-export type UpdateSessionNetworkPolicyStatus403 = unknown;
+export type CreateSandboxesSessionsBySessionIdNetworkPolicyStatus403 = unknown;
 
 /**
  * @type unknown
  */
-export type UpdateSessionNetworkPolicyStatus404 = unknown;
+export type CreateSandboxesSessionsBySessionIdNetworkPolicyStatus404 = unknown;
 
 /**
  * @type unknown
  */
-export type UpdateSessionNetworkPolicyStatus410 = unknown;
+export type CreateSandboxesSessionsBySessionIdNetworkPolicyStatus410 = unknown;
 
 /**
  * @type unknown
  */
-export type UpdateSessionNetworkPolicyStatus422 = unknown;
+export type CreateSandboxesSessionsBySessionIdNetworkPolicyStatus422 = unknown;
 
 /**
  * @type unknown
  */
-export type UpdateSessionNetworkPolicyStatus500 = unknown;
+export type CreateSandboxesSessionsBySessionIdNetworkPolicyStatus429 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesSessionsBySessionIdNetworkPolicyStatus500 = unknown;
 
 /**
  * @type object
  */
-export type UpdateSessionNetworkPolicyRequestConfig = {
+export type CreateSandboxesSessionsBySessionIdNetworkPolicyRequestConfig = {
 	data?: never | undefined;
 	/**
 	 * @type object
 	 */
 	pathParams: {
-		sessionId: UpdateSessionNetworkPolicyPathSessionId;
+		sessionId: CreateSandboxesSessionsBySessionIdNetworkPolicyPathSessionId;
 	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				teamId?: UpdateSessionNetworkPolicyQueryTeamId | undefined;
-				slug?: UpdateSessionNetworkPolicyQuerySlug | undefined;
-		  }
-		| undefined;
+	queryParams?: never | undefined;
 	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	url: `/v2/sandboxes/sessions/${string}/network-policy`;
+	url: `/sandboxes/sessions/${string}/network-policy`;
 };
 
 /**
  * @type object
  */
-export type UpdateSessionNetworkPolicyResponses = {
-	"200": UpdateSessionNetworkPolicyStatus200;
-	"400": UpdateSessionNetworkPolicyStatus400;
-	"401": UpdateSessionNetworkPolicyStatus401;
-	"402": UpdateSessionNetworkPolicyStatus402;
-	"403": UpdateSessionNetworkPolicyStatus403;
-	"404": UpdateSessionNetworkPolicyStatus404;
-	"410": UpdateSessionNetworkPolicyStatus410;
-	"422": UpdateSessionNetworkPolicyStatus422;
-	"500": UpdateSessionNetworkPolicyStatus500;
+export type CreateSandboxesSessionsBySessionIdNetworkPolicyResponses = {
+	"200": CreateSandboxesSessionsBySessionIdNetworkPolicyStatus200;
+	"400": CreateSandboxesSessionsBySessionIdNetworkPolicyStatus400;
+	"401": CreateSandboxesSessionsBySessionIdNetworkPolicyStatus401;
+	"402": CreateSandboxesSessionsBySessionIdNetworkPolicyStatus402;
+	"403": CreateSandboxesSessionsBySessionIdNetworkPolicyStatus403;
+	"404": CreateSandboxesSessionsBySessionIdNetworkPolicyStatus404;
+	"410": CreateSandboxesSessionsBySessionIdNetworkPolicyStatus410;
+	"422": CreateSandboxesSessionsBySessionIdNetworkPolicyStatus422;
+	"429": CreateSandboxesSessionsBySessionIdNetworkPolicyStatus429;
+	"500": CreateSandboxesSessionsBySessionIdNetworkPolicyStatus500;
 };
 
 /**
  * @description Union of all possible responses
  */
-export type UpdateSessionNetworkPolicyResponse =
-	| UpdateSessionNetworkPolicyStatus200
-	| UpdateSessionNetworkPolicyStatus400
-	| UpdateSessionNetworkPolicyStatus401
-	| UpdateSessionNetworkPolicyStatus402
-	| UpdateSessionNetworkPolicyStatus403
-	| UpdateSessionNetworkPolicyStatus404
-	| UpdateSessionNetworkPolicyStatus410
-	| UpdateSessionNetworkPolicyStatus422
-	| UpdateSessionNetworkPolicyStatus500;
+export type CreateSandboxesSessionsBySessionIdNetworkPolicyResponse =
+	| CreateSandboxesSessionsBySessionIdNetworkPolicyStatus200
+	| CreateSandboxesSessionsBySessionIdNetworkPolicyStatus400
+	| CreateSandboxesSessionsBySessionIdNetworkPolicyStatus401
+	| CreateSandboxesSessionsBySessionIdNetworkPolicyStatus402
+	| CreateSandboxesSessionsBySessionIdNetworkPolicyStatus403
+	| CreateSandboxesSessionsBySessionIdNetworkPolicyStatus404
+	| CreateSandboxesSessionsBySessionIdNetworkPolicyStatus410
+	| CreateSandboxesSessionsBySessionIdNetworkPolicyStatus422
+	| CreateSandboxesSessionsBySessionIdNetworkPolicyStatus429
+	| CreateSandboxesSessionsBySessionIdNetworkPolicyStatus500;
 
 /**
  * @description The unique identifier of the session to read the file from.
  * @example sbx_abc123
  * @type string
  */
-export type ReadSessionFilePathSessionId = string;
-
-/**
- * @description The Team identifier to perform the request on behalf of.
- * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
- * @type string | undefined
- */
-export type ReadSessionFileQueryTeamId = string | undefined;
-
-/**
- * @description The Team slug to perform the request on behalf of.
- * @example my-team-url-slug
- * @type string | undefined
- */
-export type ReadSessionFileQuerySlug = string | undefined;
+export type CreateSandboxesSessionsBySessionIdFsReadPathSessionId = string;
 
 /**
  * @type unknown
  */
-export type ReadSessionFileStatus200 = unknown;
+export type CreateSandboxesSessionsBySessionIdFsReadStatus200 = unknown;
 
 /**
  * @type unknown
  */
-export type ReadSessionFileStatus400 = unknown;
+export type CreateSandboxesSessionsBySessionIdFsReadStatus400 = unknown;
 
 /**
  * @type unknown
  */
-export type ReadSessionFileStatus401 = unknown;
+export type CreateSandboxesSessionsBySessionIdFsReadStatus401 = unknown;
 
 /**
  * @type unknown
  */
-export type ReadSessionFileStatus403 = unknown;
+export type CreateSandboxesSessionsBySessionIdFsReadStatus403 = unknown;
 
 /**
  * @type unknown
  */
-export type ReadSessionFileStatus404 = unknown;
+export type CreateSandboxesSessionsBySessionIdFsReadStatus404 = unknown;
 
 /**
  * @type unknown
  */
-export type ReadSessionFileStatus410 = unknown;
+export type CreateSandboxesSessionsBySessionIdFsReadStatus410 = unknown;
 
 /**
  * @type unknown
  */
-export type ReadSessionFileStatus422 = unknown;
+export type CreateSandboxesSessionsBySessionIdFsReadStatus422 = unknown;
 
 /**
  * @type unknown
  */
-export type ReadSessionFileStatus500 = unknown;
+export type CreateSandboxesSessionsBySessionIdFsReadStatus429 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesSessionsBySessionIdFsReadStatus500 = unknown;
 
 /**
  * @type object
  */
-export type ReadSessionFileRequestConfig = {
+export type CreateSandboxesSessionsBySessionIdFsReadRequestConfig = {
 	data?: never | undefined;
 	/**
 	 * @type object
 	 */
 	pathParams: {
-		sessionId: ReadSessionFilePathSessionId;
+		sessionId: CreateSandboxesSessionsBySessionIdFsReadPathSessionId;
 	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				teamId?: ReadSessionFileQueryTeamId | undefined;
-				slug?: ReadSessionFileQuerySlug | undefined;
-		  }
-		| undefined;
+	queryParams?: never | undefined;
 	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	url: `/v2/sandboxes/sessions/${string}/fs/read`;
+	url: `/sandboxes/sessions/${string}/fs/read`;
 };
 
 /**
  * @type object
  */
-export type ReadSessionFileResponses = {
-	"200": ReadSessionFileStatus200;
-	"400": ReadSessionFileStatus400;
-	"401": ReadSessionFileStatus401;
-	"403": ReadSessionFileStatus403;
-	"404": ReadSessionFileStatus404;
-	"410": ReadSessionFileStatus410;
-	"422": ReadSessionFileStatus422;
-	"500": ReadSessionFileStatus500;
+export type CreateSandboxesSessionsBySessionIdFsReadResponses = {
+	"200": CreateSandboxesSessionsBySessionIdFsReadStatus200;
+	"400": CreateSandboxesSessionsBySessionIdFsReadStatus400;
+	"401": CreateSandboxesSessionsBySessionIdFsReadStatus401;
+	"403": CreateSandboxesSessionsBySessionIdFsReadStatus403;
+	"404": CreateSandboxesSessionsBySessionIdFsReadStatus404;
+	"410": CreateSandboxesSessionsBySessionIdFsReadStatus410;
+	"422": CreateSandboxesSessionsBySessionIdFsReadStatus422;
+	"429": CreateSandboxesSessionsBySessionIdFsReadStatus429;
+	"500": CreateSandboxesSessionsBySessionIdFsReadStatus500;
 };
 
 /**
  * @description Union of all possible responses
  */
-export type ReadSessionFileResponse =
-	| ReadSessionFileStatus200
-	| ReadSessionFileStatus400
-	| ReadSessionFileStatus401
-	| ReadSessionFileStatus403
-	| ReadSessionFileStatus404
-	| ReadSessionFileStatus410
-	| ReadSessionFileStatus422
-	| ReadSessionFileStatus500;
+export type CreateSandboxesSessionsBySessionIdFsReadResponse =
+	| CreateSandboxesSessionsBySessionIdFsReadStatus200
+	| CreateSandboxesSessionsBySessionIdFsReadStatus400
+	| CreateSandboxesSessionsBySessionIdFsReadStatus401
+	| CreateSandboxesSessionsBySessionIdFsReadStatus403
+	| CreateSandboxesSessionsBySessionIdFsReadStatus404
+	| CreateSandboxesSessionsBySessionIdFsReadStatus410
+	| CreateSandboxesSessionsBySessionIdFsReadStatus422
+	| CreateSandboxesSessionsBySessionIdFsReadStatus429
+	| CreateSandboxesSessionsBySessionIdFsReadStatus500;
 
 /**
  * @description The unique identifier of the session to create the directory in.
  * @example sbx_abc123
  * @type string
  */
-export type CreateSessionDirectoryPathSessionId = string;
-
-/**
- * @description The Team identifier to perform the request on behalf of.
- * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
- * @type string | undefined
- */
-export type CreateSessionDirectoryQueryTeamId = string | undefined;
-
-/**
- * @description The Team slug to perform the request on behalf of.
- * @example my-team-url-slug
- * @type string | undefined
- */
-export type CreateSessionDirectoryQuerySlug = string | undefined;
+export type CreateSandboxesSessionsBySessionIdFsMkdirPathSessionId = string;
 
 /**
  * @type unknown
  */
-export type CreateSessionDirectoryStatus200 = unknown;
+export type CreateSandboxesSessionsBySessionIdFsMkdirStatus200 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSessionDirectoryStatus400 = unknown;
+export type CreateSandboxesSessionsBySessionIdFsMkdirStatus400 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSessionDirectoryStatus401 = unknown;
+export type CreateSandboxesSessionsBySessionIdFsMkdirStatus401 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSessionDirectoryStatus403 = unknown;
+export type CreateSandboxesSessionsBySessionIdFsMkdirStatus403 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSessionDirectoryStatus404 = unknown;
+export type CreateSandboxesSessionsBySessionIdFsMkdirStatus404 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSessionDirectoryStatus410 = unknown;
+export type CreateSandboxesSessionsBySessionIdFsMkdirStatus410 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSessionDirectoryStatus422 = unknown;
+export type CreateSandboxesSessionsBySessionIdFsMkdirStatus422 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSessionDirectoryStatus500 = unknown;
+export type CreateSandboxesSessionsBySessionIdFsMkdirStatus429 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesSessionsBySessionIdFsMkdirStatus500 = unknown;
 
 /**
  * @type object
  */
-export type CreateSessionDirectoryRequestConfig = {
+export type CreateSandboxesSessionsBySessionIdFsMkdirRequestConfig = {
 	data?: never | undefined;
 	/**
 	 * @type object
 	 */
 	pathParams: {
-		sessionId: CreateSessionDirectoryPathSessionId;
+		sessionId: CreateSandboxesSessionsBySessionIdFsMkdirPathSessionId;
 	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				teamId?: CreateSessionDirectoryQueryTeamId | undefined;
-				slug?: CreateSessionDirectoryQuerySlug | undefined;
-		  }
-		| undefined;
+	queryParams?: never | undefined;
 	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	url: `/v2/sandboxes/sessions/${string}/fs/mkdir`;
+	url: `/sandboxes/sessions/${string}/fs/mkdir`;
 };
 
 /**
  * @type object
  */
-export type CreateSessionDirectoryResponses = {
-	"200": CreateSessionDirectoryStatus200;
-	"400": CreateSessionDirectoryStatus400;
-	"401": CreateSessionDirectoryStatus401;
-	"403": CreateSessionDirectoryStatus403;
-	"404": CreateSessionDirectoryStatus404;
-	"410": CreateSessionDirectoryStatus410;
-	"422": CreateSessionDirectoryStatus422;
-	"500": CreateSessionDirectoryStatus500;
+export type CreateSandboxesSessionsBySessionIdFsMkdirResponses = {
+	"200": CreateSandboxesSessionsBySessionIdFsMkdirStatus200;
+	"400": CreateSandboxesSessionsBySessionIdFsMkdirStatus400;
+	"401": CreateSandboxesSessionsBySessionIdFsMkdirStatus401;
+	"403": CreateSandboxesSessionsBySessionIdFsMkdirStatus403;
+	"404": CreateSandboxesSessionsBySessionIdFsMkdirStatus404;
+	"410": CreateSandboxesSessionsBySessionIdFsMkdirStatus410;
+	"422": CreateSandboxesSessionsBySessionIdFsMkdirStatus422;
+	"429": CreateSandboxesSessionsBySessionIdFsMkdirStatus429;
+	"500": CreateSandboxesSessionsBySessionIdFsMkdirStatus500;
 };
 
 /**
  * @description Union of all possible responses
  */
-export type CreateSessionDirectoryResponse =
-	| CreateSessionDirectoryStatus200
-	| CreateSessionDirectoryStatus400
-	| CreateSessionDirectoryStatus401
-	| CreateSessionDirectoryStatus403
-	| CreateSessionDirectoryStatus404
-	| CreateSessionDirectoryStatus410
-	| CreateSessionDirectoryStatus422
-	| CreateSessionDirectoryStatus500;
+export type CreateSandboxesSessionsBySessionIdFsMkdirResponse =
+	| CreateSandboxesSessionsBySessionIdFsMkdirStatus200
+	| CreateSandboxesSessionsBySessionIdFsMkdirStatus400
+	| CreateSandboxesSessionsBySessionIdFsMkdirStatus401
+	| CreateSandboxesSessionsBySessionIdFsMkdirStatus403
+	| CreateSandboxesSessionsBySessionIdFsMkdirStatus404
+	| CreateSandboxesSessionsBySessionIdFsMkdirStatus410
+	| CreateSandboxesSessionsBySessionIdFsMkdirStatus422
+	| CreateSandboxesSessionsBySessionIdFsMkdirStatus429
+	| CreateSandboxesSessionsBySessionIdFsMkdirStatus500;
 
 /**
  * @description The target directory where the tarball contents will be extracted. If not specified, files are extracted to the sandbox home directory.
  * @example /home/vercel-sandbox
  * @type string | undefined
  */
-export type WriteSessionFilesHeaderxCwd = string | undefined;
+export type CreateSandboxesSessionsBySessionIdFsWriteHeaderxCwd = string | undefined;
 
 /**
  * @description The unique identifier of the session to write files to.
  * @example sbx_abc123
  * @type string
  */
-export type WriteSessionFilesPathSessionId = string;
-
-/**
- * @description The Team identifier to perform the request on behalf of.
- * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
- * @type string | undefined
- */
-export type WriteSessionFilesQueryTeamId = string | undefined;
-
-/**
- * @description The Team slug to perform the request on behalf of.
- * @example my-team-url-slug
- * @type string | undefined
- */
-export type WriteSessionFilesQuerySlug = string | undefined;
+export type CreateSandboxesSessionsBySessionIdFsWritePathSessionId = string;
 
 /**
  * @type unknown
  */
-export type WriteSessionFilesStatus200 = unknown;
+export type CreateSandboxesSessionsBySessionIdFsWriteStatus200 = unknown;
 
 /**
  * @type unknown
  */
-export type WriteSessionFilesStatus400 = unknown;
+export type CreateSandboxesSessionsBySessionIdFsWriteStatus400 = unknown;
 
 /**
  * @type unknown
  */
-export type WriteSessionFilesStatus401 = unknown;
+export type CreateSandboxesSessionsBySessionIdFsWriteStatus401 = unknown;
 
 /**
  * @type unknown
  */
-export type WriteSessionFilesStatus403 = unknown;
+export type CreateSandboxesSessionsBySessionIdFsWriteStatus403 = unknown;
 
 /**
  * @type unknown
  */
-export type WriteSessionFilesStatus404 = unknown;
+export type CreateSandboxesSessionsBySessionIdFsWriteStatus404 = unknown;
 
 /**
  * @type unknown
  */
-export type WriteSessionFilesStatus410 = unknown;
+export type CreateSandboxesSessionsBySessionIdFsWriteStatus410 = unknown;
 
 /**
  * @type unknown
  */
-export type WriteSessionFilesStatus422 = unknown;
+export type CreateSandboxesSessionsBySessionIdFsWriteStatus422 = unknown;
 
 /**
  * @type unknown
  */
-export type WriteSessionFilesStatus500 = unknown;
+export type CreateSandboxesSessionsBySessionIdFsWriteStatus429 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesSessionsBySessionIdFsWriteStatus500 = unknown;
 
 /**
  * @type object
  */
-export type WriteSessionFilesRequestConfig = {
+export type CreateSandboxesSessionsBySessionIdFsWriteRequestConfig = {
 	data?: never | undefined;
 	/**
 	 * @type object
 	 */
 	pathParams: {
-		sessionId: WriteSessionFilesPathSessionId;
+		sessionId: CreateSandboxesSessionsBySessionIdFsWritePathSessionId;
 	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				teamId?: WriteSessionFilesQueryTeamId | undefined;
-				slug?: WriteSessionFilesQuerySlug | undefined;
-		  }
-		| undefined;
+	queryParams?: never | undefined;
 	/**
 	 * @type object | undefined
 	 */
 	headerParams?:
 		| {
-				"'x-Cwd'"?: WriteSessionFilesHeaderxCwd | undefined;
+				"'x-Cwd'"?: CreateSandboxesSessionsBySessionIdFsWriteHeaderxCwd | undefined;
 		  }
 		| undefined;
 	/**
 	 * @type string
 	 */
-	url: `/v2/sandboxes/sessions/${string}/fs/write`;
+	url: `/sandboxes/sessions/${string}/fs/write`;
 };
 
 /**
  * @type object
  */
-export type WriteSessionFilesResponses = {
-	"200": WriteSessionFilesStatus200;
-	"400": WriteSessionFilesStatus400;
-	"401": WriteSessionFilesStatus401;
-	"403": WriteSessionFilesStatus403;
-	"404": WriteSessionFilesStatus404;
-	"410": WriteSessionFilesStatus410;
-	"422": WriteSessionFilesStatus422;
-	"500": WriteSessionFilesStatus500;
+export type CreateSandboxesSessionsBySessionIdFsWriteResponses = {
+	"200": CreateSandboxesSessionsBySessionIdFsWriteStatus200;
+	"400": CreateSandboxesSessionsBySessionIdFsWriteStatus400;
+	"401": CreateSandboxesSessionsBySessionIdFsWriteStatus401;
+	"403": CreateSandboxesSessionsBySessionIdFsWriteStatus403;
+	"404": CreateSandboxesSessionsBySessionIdFsWriteStatus404;
+	"410": CreateSandboxesSessionsBySessionIdFsWriteStatus410;
+	"422": CreateSandboxesSessionsBySessionIdFsWriteStatus422;
+	"429": CreateSandboxesSessionsBySessionIdFsWriteStatus429;
+	"500": CreateSandboxesSessionsBySessionIdFsWriteStatus500;
 };
 
 /**
  * @description Union of all possible responses
  */
-export type WriteSessionFilesResponse =
-	| WriteSessionFilesStatus200
-	| WriteSessionFilesStatus400
-	| WriteSessionFilesStatus401
-	| WriteSessionFilesStatus403
-	| WriteSessionFilesStatus404
-	| WriteSessionFilesStatus410
-	| WriteSessionFilesStatus422
-	| WriteSessionFilesStatus500;
+export type CreateSandboxesSessionsBySessionIdFsWriteResponse =
+	| CreateSandboxesSessionsBySessionIdFsWriteStatus200
+	| CreateSandboxesSessionsBySessionIdFsWriteStatus400
+	| CreateSandboxesSessionsBySessionIdFsWriteStatus401
+	| CreateSandboxesSessionsBySessionIdFsWriteStatus403
+	| CreateSandboxesSessionsBySessionIdFsWriteStatus404
+	| CreateSandboxesSessionsBySessionIdFsWriteStatus410
+	| CreateSandboxesSessionsBySessionIdFsWriteStatus422
+	| CreateSandboxesSessionsBySessionIdFsWriteStatus429
+	| CreateSandboxesSessionsBySessionIdFsWriteStatus500;
 
 /**
  * @description The unique identifier of the session to snapshot.
  * @example sbx_abc123
  * @type string
  */
-export type CreateSessionSnapshotPathSessionId = string;
-
-/**
- * @description The Team identifier to perform the request on behalf of.
- * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
- * @type string | undefined
- */
-export type CreateSessionSnapshotQueryTeamId = string | undefined;
-
-/**
- * @description The Team slug to perform the request on behalf of.
- * @example my-team-url-slug
- * @type string | undefined
- */
-export type CreateSessionSnapshotQuerySlug = string | undefined;
+export type CreateSandboxesSessionsBySessionIdSnapshotPathSessionId = string;
 
 /**
  * @type unknown
  */
-export type CreateSessionSnapshotStatus201 = unknown;
+export type CreateSandboxesSessionsBySessionIdSnapshotStatus201 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSessionSnapshotStatus400 = unknown;
+export type CreateSandboxesSessionsBySessionIdSnapshotStatus400 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSessionSnapshotStatus401 = unknown;
+export type CreateSandboxesSessionsBySessionIdSnapshotStatus401 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSessionSnapshotStatus402 = unknown;
+export type CreateSandboxesSessionsBySessionIdSnapshotStatus402 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSessionSnapshotStatus403 = unknown;
+export type CreateSandboxesSessionsBySessionIdSnapshotStatus403 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSessionSnapshotStatus404 = unknown;
+export type CreateSandboxesSessionsBySessionIdSnapshotStatus404 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSessionSnapshotStatus410 = unknown;
+export type CreateSandboxesSessionsBySessionIdSnapshotStatus410 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSessionSnapshotStatus422 = unknown;
+export type CreateSandboxesSessionsBySessionIdSnapshotStatus422 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSessionSnapshotStatus500 = unknown;
+export type CreateSandboxesSessionsBySessionIdSnapshotStatus429 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesSessionsBySessionIdSnapshotStatus500 = unknown;
 
 /**
  * @type object
  */
-export type CreateSessionSnapshotRequestConfig = {
+export type CreateSandboxesSessionsBySessionIdSnapshotRequestConfig = {
 	data?: never | undefined;
 	/**
 	 * @type object
 	 */
 	pathParams: {
-		sessionId: CreateSessionSnapshotPathSessionId;
+		sessionId: CreateSandboxesSessionsBySessionIdSnapshotPathSessionId;
 	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				teamId?: CreateSessionSnapshotQueryTeamId | undefined;
-				slug?: CreateSessionSnapshotQuerySlug | undefined;
-		  }
-		| undefined;
+	queryParams?: never | undefined;
 	headerParams?: never | undefined;
 	/**
 	 * @type string
 	 */
-	url: `/v2/sandboxes/sessions/${string}/snapshot`;
+	url: `/sandboxes/sessions/${string}/snapshot`;
 };
 
 /**
  * @type object
  */
-export type CreateSessionSnapshotResponses = {
-	"201": CreateSessionSnapshotStatus201;
-	"400": CreateSessionSnapshotStatus400;
-	"401": CreateSessionSnapshotStatus401;
-	"402": CreateSessionSnapshotStatus402;
-	"403": CreateSessionSnapshotStatus403;
-	"404": CreateSessionSnapshotStatus404;
-	"410": CreateSessionSnapshotStatus410;
-	"422": CreateSessionSnapshotStatus422;
-	"500": CreateSessionSnapshotStatus500;
+export type CreateSandboxesSessionsBySessionIdSnapshotResponses = {
+	"201": CreateSandboxesSessionsBySessionIdSnapshotStatus201;
+	"400": CreateSandboxesSessionsBySessionIdSnapshotStatus400;
+	"401": CreateSandboxesSessionsBySessionIdSnapshotStatus401;
+	"402": CreateSandboxesSessionsBySessionIdSnapshotStatus402;
+	"403": CreateSandboxesSessionsBySessionIdSnapshotStatus403;
+	"404": CreateSandboxesSessionsBySessionIdSnapshotStatus404;
+	"410": CreateSandboxesSessionsBySessionIdSnapshotStatus410;
+	"422": CreateSandboxesSessionsBySessionIdSnapshotStatus422;
+	"429": CreateSandboxesSessionsBySessionIdSnapshotStatus429;
+	"500": CreateSandboxesSessionsBySessionIdSnapshotStatus500;
 };
 
 /**
  * @description Union of all possible responses
  */
-export type CreateSessionSnapshotResponse =
-	| CreateSessionSnapshotStatus201
-	| CreateSessionSnapshotStatus400
-	| CreateSessionSnapshotStatus401
-	| CreateSessionSnapshotStatus402
-	| CreateSessionSnapshotStatus403
-	| CreateSessionSnapshotStatus404
-	| CreateSessionSnapshotStatus410
-	| CreateSessionSnapshotStatus422
-	| CreateSessionSnapshotStatus500;
+export type CreateSandboxesSessionsBySessionIdSnapshotResponse =
+	| CreateSandboxesSessionsBySessionIdSnapshotStatus201
+	| CreateSandboxesSessionsBySessionIdSnapshotStatus400
+	| CreateSandboxesSessionsBySessionIdSnapshotStatus401
+	| CreateSandboxesSessionsBySessionIdSnapshotStatus402
+	| CreateSandboxesSessionsBySessionIdSnapshotStatus403
+	| CreateSandboxesSessionsBySessionIdSnapshotStatus404
+	| CreateSandboxesSessionsBySessionIdSnapshotStatus410
+	| CreateSandboxesSessionsBySessionIdSnapshotStatus422
+	| CreateSandboxesSessionsBySessionIdSnapshotStatus429
+	| CreateSandboxesSessionsBySessionIdSnapshotStatus500;
 
 /**
  * @description The Team identifier to perform the request on behalf of.

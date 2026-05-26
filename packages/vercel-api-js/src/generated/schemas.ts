@@ -19082,12 +19082,12 @@ export const unpauseProjectResponseSchema = z.union([
 	unpauseProjectStatus500Schema,
 ]);
 
-export const listSandboxesQueryProjectSchema = z
+export const getSandboxesQueryProjectSchema = z
 	.string()
 	.optional()
 	.describe("The unique identifier or name of the project to list named sandboxes for.");
 
-export const listSandboxesQueryLimitSchema = z
+export const getSandboxesQueryLimitSchema = z
 	.number()
 	.min(1)
 	.max(50)
@@ -19095,74 +19095,57 @@ export const listSandboxesQueryLimitSchema = z
 	.default(20)
 	.describe("Maximum number of named sandboxes to return in the response. Used for pagination.");
 
-export const listSandboxesQuerySortBySchema = z
+export const getSandboxesQuerySortBySchema = z
 	.enum(["createdAt", "name", "statusUpdatedAt", "currentSnapshotId"])
 	.optional()
 	.default("createdAt")
 	.describe("Field to sort by.");
 
-export const listSandboxesQueryNamePrefixSchema = z
+export const getSandboxesQueryNamePrefixSchema = z
 	.string()
 	.optional()
 	.describe(
 		"Filter named sandboxes whose name starts with this prefix. Only valid when sortBy=name.",
 	);
 
-export const listSandboxesQueryCursorSchema = z
+export const getSandboxesQueryCursorSchema = z
 	.string()
 	.optional()
 	.describe("Opaque pagination cursor from a previous response.");
 
-export const listSandboxesQuerySortOrderSchema = z
+export const getSandboxesQuerySortOrderSchema = z
 	.enum(["asc", "desc"])
 	.optional()
 	.default("desc")
 	.describe("Sort direction. Defaults to desc.");
 
-export const listSandboxesQueryTagsSchema = z
+export const getSandboxesQueryTagsSchema = z
 	.union([z.string(), z.array(z.string())])
 	.optional()
 	.describe(
 		'Filter sandboxes by tag. Format: \\"key:value\\". Only one tag filter is supported at a time.',
 	);
 
-export const listSandboxesQueryTeamIdSchema = z
-	.string()
-	.optional()
-	.describe("The Team identifier to perform the request on behalf of.");
+export const getSandboxesStatus200Schema = z.unknown();
 
-export const listSandboxesQuerySlugSchema = z
-	.string()
-	.optional()
-	.describe("The Team slug to perform the request on behalf of.");
+export const getSandboxesStatus400Schema = z.unknown();
 
-export const listSandboxesStatus200Schema = z.unknown();
+export const getSandboxesStatus401Schema = z.unknown();
 
-export const listSandboxesStatus400Schema = z.unknown();
+export const getSandboxesStatus403Schema = z.unknown();
 
-export const listSandboxesStatus401Schema = z.unknown();
+export const getSandboxesStatus404Schema = z.unknown();
 
-export const listSandboxesStatus403Schema = z.unknown();
+export const getSandboxesStatus429Schema = z.unknown();
 
-export const listSandboxesStatus404Schema = z.unknown();
-
-export const listSandboxesResponseSchema = z.union([
-	listSandboxesStatus200Schema,
-	listSandboxesStatus400Schema,
-	listSandboxesStatus401Schema,
-	listSandboxesStatus403Schema,
-	listSandboxesStatus404Schema,
+export const getSandboxesResponseSchema = z.union([
+	getSandboxesStatus200Schema,
+	getSandboxesStatus400Schema,
+	getSandboxesStatus401Schema,
+	getSandboxesStatus403Schema,
+	getSandboxesStatus404Schema,
+	getSandboxesStatus429Schema,
 ]);
-
-export const createSandboxesQueryTeamIdSchema = z
-	.string()
-	.optional()
-	.describe("The Team identifier to perform the request on behalf of.");
-
-export const createSandboxesQuerySlugSchema = z
-	.string()
-	.optional()
-	.describe("The Team slug to perform the request on behalf of.");
 
 export const createSandboxesStatus200Schema = z.unknown();
 
@@ -19200,12 +19183,12 @@ export const createSandboxesResponseSchema = z.union([
 	createSandboxesStatus500Schema,
 ]);
 
-export const listSessionSnapshotsQueryProjectSchema = z
+export const getSandboxesSnapshotsQueryProjectSchema = z
 	.string()
 	.optional()
 	.describe("The unique identifier or name of the project to list snapshots for.");
 
-export const listSessionSnapshotsQueryNameSchema = z
+export const getSandboxesSnapshotsQueryNameSchema = z
 	.string()
 	.max(128)
 	.regex(/^[a-zA-Z0-9_-]+$/)
@@ -19214,7 +19197,7 @@ export const listSessionSnapshotsQueryNameSchema = z
 		"Name for the sandbox. Must be unique per project and URL-safe (alphanumeric, hyphens, underscores).",
 	);
 
-export const listSessionSnapshotsQueryLimitSchema = z
+export const getSandboxesSnapshotsQueryLimitSchema = z
 	.number()
 	.min(1)
 	.max(50)
@@ -19222,115 +19205,94 @@ export const listSessionSnapshotsQueryLimitSchema = z
 	.default(20)
 	.describe("Maximum number of snapshots to return in the response. Used for pagination.");
 
-export const listSessionSnapshotsQueryCursorSchema = z
+export const getSandboxesSnapshotsQueryCursorSchema = z
 	.string()
 	.optional()
 	.describe("Opaque pagination cursor from a previous response.");
 
-export const listSessionSnapshotsQuerySortOrderSchema = z
+export const getSandboxesSnapshotsQuerySortOrderSchema = z
 	.enum(["asc", "desc"])
 	.optional()
 	.default("desc")
 	.describe("Sort direction for results by creation time.");
 
-export const listSessionSnapshotsQueryTeamIdSchema = z
-	.string()
-	.optional()
-	.describe("The Team identifier to perform the request on behalf of.");
+export const getSandboxesSnapshotsStatus200Schema = z.unknown();
 
-export const listSessionSnapshotsQuerySlugSchema = z
-	.string()
-	.optional()
-	.describe("The Team slug to perform the request on behalf of.");
+export const getSandboxesSnapshotsStatus400Schema = z.unknown();
 
-export const listSessionSnapshotsStatus200Schema = z.unknown();
+export const getSandboxesSnapshotsStatus401Schema = z.unknown();
 
-export const listSessionSnapshotsStatus400Schema = z.unknown();
+export const getSandboxesSnapshotsStatus403Schema = z.unknown();
 
-export const listSessionSnapshotsStatus401Schema = z.unknown();
+export const getSandboxesSnapshotsStatus404Schema = z.unknown();
 
-export const listSessionSnapshotsStatus403Schema = z.unknown();
+export const getSandboxesSnapshotsStatus429Schema = z.unknown();
 
-export const listSessionSnapshotsStatus404Schema = z.unknown();
-
-export const listSessionSnapshotsResponseSchema = z.union([
-	listSessionSnapshotsStatus200Schema,
-	listSessionSnapshotsStatus400Schema,
-	listSessionSnapshotsStatus401Schema,
-	listSessionSnapshotsStatus403Schema,
-	listSessionSnapshotsStatus404Schema,
+export const getSandboxesSnapshotsResponseSchema = z.union([
+	getSandboxesSnapshotsStatus200Schema,
+	getSandboxesSnapshotsStatus400Schema,
+	getSandboxesSnapshotsStatus401Schema,
+	getSandboxesSnapshotsStatus403Schema,
+	getSandboxesSnapshotsStatus404Schema,
+	getSandboxesSnapshotsStatus429Schema,
 ]);
 
-export const getSessionSnapshotPathSnapshotIdSchema = z
+export const getSandboxesSnapshotsBySnapshotIdPathSnapshotIdSchema = z
 	.string()
 	.describe("The unique identifier of the snapshot to retrieve.");
 
-export const getSessionSnapshotQueryTeamIdSchema = z
-	.string()
-	.optional()
-	.describe("The Team identifier to perform the request on behalf of.");
+export const getSandboxesSnapshotsBySnapshotIdStatus200Schema = z.unknown();
 
-export const getSessionSnapshotQuerySlugSchema = z
-	.string()
-	.optional()
-	.describe("The Team slug to perform the request on behalf of.");
+export const getSandboxesSnapshotsBySnapshotIdStatus400Schema = z.unknown();
 
-export const getSessionSnapshotStatus200Schema = z.unknown();
+export const getSandboxesSnapshotsBySnapshotIdStatus401Schema = z.unknown();
 
-export const getSessionSnapshotStatus400Schema = z.unknown();
+export const getSandboxesSnapshotsBySnapshotIdStatus403Schema = z.unknown();
 
-export const getSessionSnapshotStatus401Schema = z.unknown();
+export const getSandboxesSnapshotsBySnapshotIdStatus404Schema = z.unknown();
 
-export const getSessionSnapshotStatus403Schema = z.unknown();
+export const getSandboxesSnapshotsBySnapshotIdStatus429Schema = z.unknown();
 
-export const getSessionSnapshotStatus404Schema = z.unknown();
-
-export const getSessionSnapshotResponseSchema = z.union([
-	getSessionSnapshotStatus200Schema,
-	getSessionSnapshotStatus400Schema,
-	getSessionSnapshotStatus401Schema,
-	getSessionSnapshotStatus403Schema,
-	getSessionSnapshotStatus404Schema,
+export const getSandboxesSnapshotsBySnapshotIdResponseSchema = z.union([
+	getSandboxesSnapshotsBySnapshotIdStatus200Schema,
+	getSandboxesSnapshotsBySnapshotIdStatus400Schema,
+	getSandboxesSnapshotsBySnapshotIdStatus401Schema,
+	getSandboxesSnapshotsBySnapshotIdStatus403Schema,
+	getSandboxesSnapshotsBySnapshotIdStatus404Schema,
+	getSandboxesSnapshotsBySnapshotIdStatus429Schema,
 ]);
 
-export const deleteSessionSnapshotPathSnapshotIdSchema = z
+export const deleteSandboxesSnapshotsBySnapshotIdPathSnapshotIdSchema = z
 	.string()
 	.describe("The unique identifier of the snapshot to delete.");
 
-export const deleteSessionSnapshotQueryTeamIdSchema = z
-	.string()
-	.optional()
-	.describe("The Team identifier to perform the request on behalf of.");
+export const deleteSandboxesSnapshotsBySnapshotIdStatus200Schema = z.unknown();
 
-export const deleteSessionSnapshotQuerySlugSchema = z
-	.string()
-	.optional()
-	.describe("The Team slug to perform the request on behalf of.");
+export const deleteSandboxesSnapshotsBySnapshotIdStatus400Schema = z.unknown();
 
-export const deleteSessionSnapshotStatus200Schema = z.unknown();
+export const deleteSandboxesSnapshotsBySnapshotIdStatus401Schema = z.unknown();
 
-export const deleteSessionSnapshotStatus400Schema = z.unknown();
+export const deleteSandboxesSnapshotsBySnapshotIdStatus403Schema = z.unknown();
 
-export const deleteSessionSnapshotStatus401Schema = z.unknown();
+export const deleteSandboxesSnapshotsBySnapshotIdStatus404Schema = z.unknown();
 
-export const deleteSessionSnapshotStatus403Schema = z.unknown();
+export const deleteSandboxesSnapshotsBySnapshotIdStatus429Schema = z.unknown();
 
-export const deleteSessionSnapshotStatus404Schema = z.unknown();
-
-export const deleteSessionSnapshotResponseSchema = z.union([
-	deleteSessionSnapshotStatus200Schema,
-	deleteSessionSnapshotStatus400Schema,
-	deleteSessionSnapshotStatus401Schema,
-	deleteSessionSnapshotStatus403Schema,
-	deleteSessionSnapshotStatus404Schema,
+export const deleteSandboxesSnapshotsBySnapshotIdResponseSchema = z.union([
+	deleteSandboxesSnapshotsBySnapshotIdStatus200Schema,
+	deleteSandboxesSnapshotsBySnapshotIdStatus400Schema,
+	deleteSandboxesSnapshotsBySnapshotIdStatus401Schema,
+	deleteSandboxesSnapshotsBySnapshotIdStatus403Schema,
+	deleteSandboxesSnapshotsBySnapshotIdStatus404Schema,
+	deleteSandboxesSnapshotsBySnapshotIdStatus429Schema,
 ]);
 
-export const listSessionsQueryProjectSchema = z
+export const getSandboxesSessionsQueryProjectSchema = z
 	.string()
 	.optional()
 	.describe("The unique identifier or name of the project to list sessions for.");
 
-export const listSessionsQueryNameSchema = z
+export const getSandboxesSessionsQueryNameSchema = z
 	.string()
 	.max(128)
 	.regex(/^[a-zA-Z0-9_-]+$/)
@@ -19339,7 +19301,7 @@ export const listSessionsQueryNameSchema = z
 		"Filter sessions by sandbox name. Only sessions belonging to the specified sandbox are returned.",
 	);
 
-export const listSessionsQueryLimitSchema = z
+export const getSandboxesSessionsQueryLimitSchema = z
 	.number()
 	.min(1)
 	.max(50)
@@ -19347,84 +19309,70 @@ export const listSessionsQueryLimitSchema = z
 	.default(20)
 	.describe("Maximum number of sessions to return in the response. Used for pagination.");
 
-export const listSessionsQueryCursorSchema = z
+export const getSandboxesSessionsQueryCursorSchema = z
 	.string()
 	.optional()
 	.describe("Opaque pagination cursor from a previous response.");
 
-export const listSessionsQuerySortOrderSchema = z
+export const getSandboxesSessionsQuerySortOrderSchema = z
 	.enum(["asc", "desc"])
 	.optional()
 	.default("desc")
 	.describe("Sort direction for results by creation time.");
 
-export const listSessionsQueryTeamIdSchema = z
-	.string()
-	.optional()
-	.describe("The Team identifier to perform the request on behalf of.");
+export const getSandboxesSessionsStatus200Schema = z.unknown();
 
-export const listSessionsQuerySlugSchema = z
-	.string()
-	.optional()
-	.describe("The Team slug to perform the request on behalf of.");
+export const getSandboxesSessionsStatus400Schema = z.unknown();
 
-export const listSessionsStatus200Schema = z.unknown();
+export const getSandboxesSessionsStatus401Schema = z.unknown();
 
-export const listSessionsStatus400Schema = z.unknown();
+export const getSandboxesSessionsStatus403Schema = z.unknown();
 
-export const listSessionsStatus401Schema = z.unknown();
+export const getSandboxesSessionsStatus404Schema = z.unknown();
 
-export const listSessionsStatus403Schema = z.unknown();
+export const getSandboxesSessionsStatus429Schema = z.unknown();
 
-export const listSessionsStatus404Schema = z.unknown();
+export const getSandboxesSessionsStatus500Schema = z.unknown();
 
-export const listSessionsStatus500Schema = z.unknown();
-
-export const listSessionsResponseSchema = z.union([
-	listSessionsStatus200Schema,
-	listSessionsStatus400Schema,
-	listSessionsStatus401Schema,
-	listSessionsStatus403Schema,
-	listSessionsStatus404Schema,
-	listSessionsStatus500Schema,
+export const getSandboxesSessionsResponseSchema = z.union([
+	getSandboxesSessionsStatus200Schema,
+	getSandboxesSessionsStatus400Schema,
+	getSandboxesSessionsStatus401Schema,
+	getSandboxesSessionsStatus403Schema,
+	getSandboxesSessionsStatus404Schema,
+	getSandboxesSessionsStatus429Schema,
+	getSandboxesSessionsStatus500Schema,
 ]);
 
-export const getSessionPathSessionIdSchema = z
+export const getSandboxesSessionsBySessionIdPathSessionIdSchema = z
 	.string()
 	.describe("The unique identifier of the session to retrieve.");
 
-export const getSessionQueryTeamIdSchema = z
-	.string()
-	.optional()
-	.describe("The Team identifier to perform the request on behalf of.");
+export const getSandboxesSessionsBySessionIdStatus200Schema = z.unknown();
 
-export const getSessionQuerySlugSchema = z
-	.string()
-	.optional()
-	.describe("The Team slug to perform the request on behalf of.");
+export const getSandboxesSessionsBySessionIdStatus400Schema = z.unknown();
 
-export const getSessionStatus200Schema = z.unknown();
+export const getSandboxesSessionsBySessionIdStatus401Schema = z.unknown();
 
-export const getSessionStatus400Schema = z.unknown();
+export const getSandboxesSessionsBySessionIdStatus403Schema = z.unknown();
 
-export const getSessionStatus401Schema = z.unknown();
+export const getSandboxesSessionsBySessionIdStatus404Schema = z.unknown();
 
-export const getSessionStatus403Schema = z.unknown();
+export const getSandboxesSessionsBySessionIdStatus429Schema = z.unknown();
 
-export const getSessionStatus404Schema = z.unknown();
+export const getSandboxesSessionsBySessionIdStatus500Schema = z.unknown();
 
-export const getSessionStatus500Schema = z.unknown();
-
-export const getSessionResponseSchema = z.union([
-	getSessionStatus200Schema,
-	getSessionStatus400Schema,
-	getSessionStatus401Schema,
-	getSessionStatus403Schema,
-	getSessionStatus404Schema,
-	getSessionStatus500Schema,
+export const getSandboxesSessionsBySessionIdResponseSchema = z.union([
+	getSandboxesSessionsBySessionIdStatus200Schema,
+	getSandboxesSessionsBySessionIdStatus400Schema,
+	getSandboxesSessionsBySessionIdStatus401Schema,
+	getSandboxesSessionsBySessionIdStatus403Schema,
+	getSandboxesSessionsBySessionIdStatus404Schema,
+	getSandboxesSessionsBySessionIdStatus429Schema,
+	getSandboxesSessionsBySessionIdStatus500Schema,
 ]);
 
-export const getNamedSandboxPathNameSchema = z
+export const getSandboxesByNamePathNameSchema = z
 	.string()
 	.max(128)
 	.regex(/^[a-zA-Z0-9_-]+$/)
@@ -19432,12 +19380,12 @@ export const getNamedSandboxPathNameSchema = z
 		"Name for the sandbox. Must be unique per project and URL-safe (alphanumeric, hyphens, underscores).",
 	);
 
-export const getNamedSandboxQueryProjectIdSchema = z
+export const getSandboxesByNameQueryProjectIdSchema = z
 	.string()
 	.optional()
 	.describe("The project ID or name (required when not using OIDC token).");
 
-export const getNamedSandboxQueryResumeSchema = z
+export const getSandboxesByNameQueryResumeSchema = z
 	.boolean()
 	.optional()
 	.default(false)
@@ -19445,56 +19393,46 @@ export const getNamedSandboxQueryResumeSchema = z
 		"Whether to automatically resume a stopped named sandbox by creating a new instance from its snapshot. Defaults to false.",
 	);
 
-export const getNamedSandboxQueryTeamIdSchema = z
-	.string()
-	.optional()
-	.describe("The Team identifier to perform the request on behalf of.");
+export const getSandboxesByNameStatus200Schema = z.unknown();
 
-export const getNamedSandboxQuerySlugSchema = z
-	.string()
-	.optional()
-	.describe("The Team slug to perform the request on behalf of.");
+export const getSandboxesByNameStatus400Schema = z.unknown();
 
-export const getNamedSandboxStatus200Schema = z.unknown();
+export const getSandboxesByNameStatus401Schema = z.unknown();
 
-export const getNamedSandboxStatus400Schema = z.unknown();
+export const getSandboxesByNameStatus402Schema = z.unknown();
 
-export const getNamedSandboxStatus401Schema = z.unknown();
+export const getSandboxesByNameStatus403Schema = z.unknown();
 
-export const getNamedSandboxStatus402Schema = z.unknown();
+export const getSandboxesByNameStatus404Schema = z.unknown();
 
-export const getNamedSandboxStatus403Schema = z.unknown();
+export const getSandboxesByNameStatus409Schema = z.unknown();
 
-export const getNamedSandboxStatus404Schema = z.unknown();
+export const getSandboxesByNameStatus410Schema = z.unknown();
 
-export const getNamedSandboxStatus409Schema = z.unknown();
+export const getSandboxesByNameStatus429Schema = z.unknown();
 
-export const getNamedSandboxStatus410Schema = z.unknown();
+export const getSandboxesByNameStatus500Schema = z.unknown();
 
-export const getNamedSandboxStatus429Schema = z.unknown();
-
-export const getNamedSandboxStatus500Schema = z.unknown();
-
-export const getNamedSandboxResponseSchema = z.union([
-	getNamedSandboxStatus200Schema,
-	getNamedSandboxStatus400Schema,
-	getNamedSandboxStatus401Schema,
-	getNamedSandboxStatus402Schema,
-	getNamedSandboxStatus403Schema,
-	getNamedSandboxStatus404Schema,
-	getNamedSandboxStatus409Schema,
-	getNamedSandboxStatus410Schema,
-	getNamedSandboxStatus429Schema,
-	getNamedSandboxStatus500Schema,
+export const getSandboxesByNameResponseSchema = z.union([
+	getSandboxesByNameStatus200Schema,
+	getSandboxesByNameStatus400Schema,
+	getSandboxesByNameStatus401Schema,
+	getSandboxesByNameStatus402Schema,
+	getSandboxesByNameStatus403Schema,
+	getSandboxesByNameStatus404Schema,
+	getSandboxesByNameStatus409Schema,
+	getSandboxesByNameStatus410Schema,
+	getSandboxesByNameStatus429Schema,
+	getSandboxesByNameStatus500Schema,
 ]);
 
-export const updateSandboxPathNameSchema = z
+export const updateSandboxesByNamePathNameSchema = z
 	.string()
 	.max(128)
 	.regex(/^[a-zA-Z0-9_-]+$/)
 	.describe("The sandbox to update.");
 
-export const updateSandboxQueryProjectIdSchema = z
+export const updateSandboxesByNameQueryProjectIdSchema = z
 	.string()
 	.max(128)
 	.optional()
@@ -19502,7 +19440,7 @@ export const updateSandboxQueryProjectIdSchema = z
 		"The project ID that owns the named sandbox. When provided, takes precedence over OIDC project context.",
 	);
 
-export const updateSandboxQueryResumeSchema = z
+export const updateSandboxesByNameQueryResumeSchema = z
 	.boolean()
 	.optional()
 	.default(false)
@@ -19510,59 +19448,49 @@ export const updateSandboxQueryResumeSchema = z
 		"Whether to automatically resume a stopped named sandbox by creating a new instance from its snapshot. Defaults to false.",
 	);
 
-export const updateSandboxQueryTeamIdSchema = z
-	.string()
-	.optional()
-	.describe("The Team identifier to perform the request on behalf of.");
+export const updateSandboxesByNameStatus200Schema = z.unknown();
 
-export const updateSandboxQuerySlugSchema = z
-	.string()
-	.optional()
-	.describe("The Team slug to perform the request on behalf of.");
+export const updateSandboxesByNameStatus400Schema = z.unknown();
 
-export const updateSandboxStatus200Schema = z.unknown();
+export const updateSandboxesByNameStatus401Schema = z.unknown();
 
-export const updateSandboxStatus400Schema = z.unknown();
+export const updateSandboxesByNameStatus402Schema = z.unknown();
 
-export const updateSandboxStatus401Schema = z.unknown();
+export const updateSandboxesByNameStatus403Schema = z.unknown();
 
-export const updateSandboxStatus402Schema = z.unknown();
+export const updateSandboxesByNameStatus404Schema = z.unknown();
 
-export const updateSandboxStatus403Schema = z.unknown();
+export const updateSandboxesByNameStatus409Schema = z.unknown();
 
-export const updateSandboxStatus404Schema = z.unknown();
+export const updateSandboxesByNameStatus410Schema = z.unknown();
 
-export const updateSandboxStatus409Schema = z.unknown();
+export const updateSandboxesByNameStatus422Schema = z.unknown();
 
-export const updateSandboxStatus410Schema = z.unknown();
+export const updateSandboxesByNameStatus429Schema = z.unknown();
 
-export const updateSandboxStatus422Schema = z.unknown();
+export const updateSandboxesByNameStatus500Schema = z.unknown();
 
-export const updateSandboxStatus429Schema = z.unknown();
-
-export const updateSandboxStatus500Schema = z.unknown();
-
-export const updateSandboxResponseSchema = z.union([
-	updateSandboxStatus200Schema,
-	updateSandboxStatus400Schema,
-	updateSandboxStatus401Schema,
-	updateSandboxStatus402Schema,
-	updateSandboxStatus403Schema,
-	updateSandboxStatus404Schema,
-	updateSandboxStatus409Schema,
-	updateSandboxStatus410Schema,
-	updateSandboxStatus422Schema,
-	updateSandboxStatus429Schema,
-	updateSandboxStatus500Schema,
+export const updateSandboxesByNameResponseSchema = z.union([
+	updateSandboxesByNameStatus200Schema,
+	updateSandboxesByNameStatus400Schema,
+	updateSandboxesByNameStatus401Schema,
+	updateSandboxesByNameStatus402Schema,
+	updateSandboxesByNameStatus403Schema,
+	updateSandboxesByNameStatus404Schema,
+	updateSandboxesByNameStatus409Schema,
+	updateSandboxesByNameStatus410Schema,
+	updateSandboxesByNameStatus422Schema,
+	updateSandboxesByNameStatus429Schema,
+	updateSandboxesByNameStatus500Schema,
 ]);
 
-export const deleteSandboxPathNameSchema = z
+export const deleteSandboxesByNamePathNameSchema = z
 	.string()
 	.max(128)
 	.regex(/^[a-zA-Z0-9_-]+$/)
 	.describe("The sandbox name to delete.");
 
-export const deleteSandboxQueryProjectIdSchema = z
+export const deleteSandboxesByNameQueryProjectIdSchema = z
 	.string()
 	.max(128)
 	.optional()
@@ -19570,125 +19498,104 @@ export const deleteSandboxQueryProjectIdSchema = z
 		"The project ID that owns the named sandbox. When provided, takes precedence over OIDC project context.",
 	);
 
-export const deleteSandboxQueryTeamIdSchema = z
-	.string()
-	.optional()
-	.describe("The Team identifier to perform the request on behalf of.");
+export const deleteSandboxesByNameStatus200Schema = z.unknown();
 
-export const deleteSandboxQuerySlugSchema = z
-	.string()
-	.optional()
-	.describe("The Team slug to perform the request on behalf of.");
+export const deleteSandboxesByNameStatus400Schema = z.unknown();
 
-export const deleteSandboxStatus200Schema = z.unknown();
+export const deleteSandboxesByNameStatus401Schema = z.unknown();
 
-export const deleteSandboxStatus400Schema = z.unknown();
+export const deleteSandboxesByNameStatus403Schema = z.unknown();
 
-export const deleteSandboxStatus401Schema = z.unknown();
+export const deleteSandboxesByNameStatus404Schema = z.unknown();
 
-export const deleteSandboxStatus403Schema = z.unknown();
+export const deleteSandboxesByNameStatus410Schema = z.unknown();
 
-export const deleteSandboxStatus404Schema = z.unknown();
+export const deleteSandboxesByNameStatus422Schema = z.unknown();
 
-export const deleteSandboxStatus410Schema = z.unknown();
+export const deleteSandboxesByNameStatus429Schema = z.unknown();
 
-export const deleteSandboxStatus422Schema = z.unknown();
+export const deleteSandboxesByNameStatus500Schema = z.unknown();
 
-export const deleteSandboxStatus500Schema = z.unknown();
-
-export const deleteSandboxResponseSchema = z.union([
-	deleteSandboxStatus200Schema,
-	deleteSandboxStatus400Schema,
-	deleteSandboxStatus401Schema,
-	deleteSandboxStatus403Schema,
-	deleteSandboxStatus404Schema,
-	deleteSandboxStatus410Schema,
-	deleteSandboxStatus422Schema,
-	deleteSandboxStatus500Schema,
+export const deleteSandboxesByNameResponseSchema = z.union([
+	deleteSandboxesByNameStatus200Schema,
+	deleteSandboxesByNameStatus400Schema,
+	deleteSandboxesByNameStatus401Schema,
+	deleteSandboxesByNameStatus403Schema,
+	deleteSandboxesByNameStatus404Schema,
+	deleteSandboxesByNameStatus410Schema,
+	deleteSandboxesByNameStatus422Schema,
+	deleteSandboxesByNameStatus429Schema,
+	deleteSandboxesByNameStatus500Schema,
 ]);
 
-export const listSessionCommandsPathSessionIdSchema = z
+export const getSandboxesSessionsBySessionIdCmdPathSessionIdSchema = z
 	.string()
 	.describe("The unique identifier of the session to list commands for.");
 
-export const listSessionCommandsQueryTeamIdSchema = z
-	.string()
-	.optional()
-	.describe("The Team identifier to perform the request on behalf of.");
+export const getSandboxesSessionsBySessionIdCmdStatus200Schema = z.unknown();
 
-export const listSessionCommandsQuerySlugSchema = z
-	.string()
-	.optional()
-	.describe("The Team slug to perform the request on behalf of.");
+export const getSandboxesSessionsBySessionIdCmdStatus400Schema = z.unknown();
 
-export const listSessionCommandsStatus200Schema = z.unknown();
+export const getSandboxesSessionsBySessionIdCmdStatus401Schema = z.unknown();
 
-export const listSessionCommandsStatus400Schema = z.unknown();
+export const getSandboxesSessionsBySessionIdCmdStatus403Schema = z.unknown();
 
-export const listSessionCommandsStatus401Schema = z.unknown();
+export const getSandboxesSessionsBySessionIdCmdStatus404Schema = z.unknown();
 
-export const listSessionCommandsStatus403Schema = z.unknown();
+export const getSandboxesSessionsBySessionIdCmdStatus429Schema = z.unknown();
 
-export const listSessionCommandsStatus404Schema = z.unknown();
-
-export const listSessionCommandsResponseSchema = z.union([
-	listSessionCommandsStatus200Schema,
-	listSessionCommandsStatus400Schema,
-	listSessionCommandsStatus401Schema,
-	listSessionCommandsStatus403Schema,
-	listSessionCommandsStatus404Schema,
+export const getSandboxesSessionsBySessionIdCmdResponseSchema = z.union([
+	getSandboxesSessionsBySessionIdCmdStatus200Schema,
+	getSandboxesSessionsBySessionIdCmdStatus400Schema,
+	getSandboxesSessionsBySessionIdCmdStatus401Schema,
+	getSandboxesSessionsBySessionIdCmdStatus403Schema,
+	getSandboxesSessionsBySessionIdCmdStatus404Schema,
+	getSandboxesSessionsBySessionIdCmdStatus429Schema,
 ]);
 
-export const runSessionCommandPathSessionIdSchema = z
+export const createSandboxesSessionsBySessionIdCmdPathSessionIdSchema = z
 	.string()
 	.describe("The unique identifier of the session in which to execute the command.");
 
-export const runSessionCommandQueryTeamIdSchema = z
-	.string()
-	.optional()
-	.describe("The Team identifier to perform the request on behalf of.");
+export const createSandboxesSessionsBySessionIdCmdStatus200Schema = z.unknown();
 
-export const runSessionCommandQuerySlugSchema = z
-	.string()
-	.optional()
-	.describe("The Team slug to perform the request on behalf of.");
+export const createSandboxesSessionsBySessionIdCmdStatus400Schema = z.unknown();
 
-export const runSessionCommandStatus200Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdCmdStatus401Schema = z.unknown();
 
-export const runSessionCommandStatus400Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdCmdStatus403Schema = z.unknown();
 
-export const runSessionCommandStatus401Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdCmdStatus404Schema = z.unknown();
 
-export const runSessionCommandStatus403Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdCmdStatus410Schema = z.unknown();
 
-export const runSessionCommandStatus404Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdCmdStatus422Schema = z.unknown();
 
-export const runSessionCommandStatus410Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdCmdStatus429Schema = z.unknown();
 
-export const runSessionCommandStatus422Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdCmdStatus500Schema = z.unknown();
 
-export const runSessionCommandStatus500Schema = z.unknown();
-
-export const runSessionCommandResponseSchema = z.union([
-	runSessionCommandStatus200Schema,
-	runSessionCommandStatus400Schema,
-	runSessionCommandStatus401Schema,
-	runSessionCommandStatus403Schema,
-	runSessionCommandStatus404Schema,
-	runSessionCommandStatus410Schema,
-	runSessionCommandStatus422Schema,
-	runSessionCommandStatus500Schema,
+export const createSandboxesSessionsBySessionIdCmdResponseSchema = z.union([
+	createSandboxesSessionsBySessionIdCmdStatus200Schema,
+	createSandboxesSessionsBySessionIdCmdStatus400Schema,
+	createSandboxesSessionsBySessionIdCmdStatus401Schema,
+	createSandboxesSessionsBySessionIdCmdStatus403Schema,
+	createSandboxesSessionsBySessionIdCmdStatus404Schema,
+	createSandboxesSessionsBySessionIdCmdStatus410Schema,
+	createSandboxesSessionsBySessionIdCmdStatus422Schema,
+	createSandboxesSessionsBySessionIdCmdStatus429Schema,
+	createSandboxesSessionsBySessionIdCmdStatus500Schema,
 ]);
 
-export const getSessionCommandPathSessionIdSchema = z
+export const getSandboxesSessionsBySessionIdCmdByCmdIdPathSessionIdSchema = z
 	.string()
 	.describe("The unique identifier of the session containing the command.");
 
-export const getSessionCommandPathCmdIdSchema = z
+export const getSandboxesSessionsBySessionIdCmdByCmdIdPathCmdIdSchema = z
 	.string()
 	.describe("The unique identifier of the command to retrieve.");
 
-export const getSessionCommandQueryWaitSchema = z
+export const getSandboxesSessionsBySessionIdCmdByCmdIdQueryWaitSchema = z
 	.enum(["true", "false"])
 	.optional()
 	.default("false")
@@ -19696,431 +19603,361 @@ export const getSessionCommandQueryWaitSchema = z
 		'If set to "true", the request will block until the command finishes execution. Useful for synchronously waiting for command completion.',
 	);
 
-export const getSessionCommandQueryTeamIdSchema = z
-	.string()
-	.optional()
-	.describe("The Team identifier to perform the request on behalf of.");
+export const getSandboxesSessionsBySessionIdCmdByCmdIdStatus200Schema = z.unknown();
 
-export const getSessionCommandQuerySlugSchema = z
-	.string()
-	.optional()
-	.describe("The Team slug to perform the request on behalf of.");
+export const getSandboxesSessionsBySessionIdCmdByCmdIdStatus400Schema = z.unknown();
 
-export const getSessionCommandStatus200Schema = z.unknown();
+export const getSandboxesSessionsBySessionIdCmdByCmdIdStatus401Schema = z.unknown();
 
-export const getSessionCommandStatus400Schema = z.unknown();
+export const getSandboxesSessionsBySessionIdCmdByCmdIdStatus403Schema = z.unknown();
 
-export const getSessionCommandStatus401Schema = z.unknown();
+export const getSandboxesSessionsBySessionIdCmdByCmdIdStatus404Schema = z.unknown();
 
-export const getSessionCommandStatus403Schema = z.unknown();
+export const getSandboxesSessionsBySessionIdCmdByCmdIdStatus410Schema = z.unknown();
 
-export const getSessionCommandStatus404Schema = z.unknown();
+export const getSandboxesSessionsBySessionIdCmdByCmdIdStatus422Schema = z.unknown();
 
-export const getSessionCommandStatus410Schema = z.unknown();
+export const getSandboxesSessionsBySessionIdCmdByCmdIdStatus429Schema = z.unknown();
 
-export const getSessionCommandStatus422Schema = z.unknown();
+export const getSandboxesSessionsBySessionIdCmdByCmdIdStatus500Schema = z.unknown();
 
-export const getSessionCommandStatus500Schema = z.unknown();
-
-export const getSessionCommandResponseSchema = z.union([
-	getSessionCommandStatus200Schema,
-	getSessionCommandStatus400Schema,
-	getSessionCommandStatus401Schema,
-	getSessionCommandStatus403Schema,
-	getSessionCommandStatus404Schema,
-	getSessionCommandStatus410Schema,
-	getSessionCommandStatus422Schema,
-	getSessionCommandStatus500Schema,
+export const getSandboxesSessionsBySessionIdCmdByCmdIdResponseSchema = z.union([
+	getSandboxesSessionsBySessionIdCmdByCmdIdStatus200Schema,
+	getSandboxesSessionsBySessionIdCmdByCmdIdStatus400Schema,
+	getSandboxesSessionsBySessionIdCmdByCmdIdStatus401Schema,
+	getSandboxesSessionsBySessionIdCmdByCmdIdStatus403Schema,
+	getSandboxesSessionsBySessionIdCmdByCmdIdStatus404Schema,
+	getSandboxesSessionsBySessionIdCmdByCmdIdStatus410Schema,
+	getSandboxesSessionsBySessionIdCmdByCmdIdStatus422Schema,
+	getSandboxesSessionsBySessionIdCmdByCmdIdStatus429Schema,
+	getSandboxesSessionsBySessionIdCmdByCmdIdStatus500Schema,
 ]);
 
-export const killSessionCommandPathCmdIdSchema = z
+export const createSandboxesSessionsBySessionIdCmdByCmdIdKillPathCmdIdSchema = z
 	.string()
 	.describe("The unique identifier of the command to terminate.");
 
-export const killSessionCommandPathSessionIdSchema = z
+export const createSandboxesSessionsBySessionIdCmdByCmdIdKillPathSessionIdSchema = z
 	.string()
 	.describe("The unique identifier of the session containing the command.");
 
-export const killSessionCommandQueryTeamIdSchema = z
-	.string()
-	.optional()
-	.describe("The Team identifier to perform the request on behalf of.");
+export const createSandboxesSessionsBySessionIdCmdByCmdIdKillStatus200Schema = z.unknown();
 
-export const killSessionCommandQuerySlugSchema = z
-	.string()
-	.optional()
-	.describe("The Team slug to perform the request on behalf of.");
+export const createSandboxesSessionsBySessionIdCmdByCmdIdKillStatus400Schema = z.unknown();
 
-export const killSessionCommandStatus200Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdCmdByCmdIdKillStatus401Schema = z.unknown();
 
-export const killSessionCommandStatus400Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdCmdByCmdIdKillStatus403Schema = z.unknown();
 
-export const killSessionCommandStatus401Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdCmdByCmdIdKillStatus404Schema = z.unknown();
 
-export const killSessionCommandStatus403Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdCmdByCmdIdKillStatus410Schema = z.unknown();
 
-export const killSessionCommandStatus404Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdCmdByCmdIdKillStatus422Schema = z.unknown();
 
-export const killSessionCommandStatus410Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdCmdByCmdIdKillStatus429Schema = z.unknown();
 
-export const killSessionCommandStatus422Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdCmdByCmdIdKillStatus500Schema = z.unknown();
 
-export const killSessionCommandStatus500Schema = z.unknown();
-
-export const killSessionCommandResponseSchema = z.union([
-	killSessionCommandStatus200Schema,
-	killSessionCommandStatus400Schema,
-	killSessionCommandStatus401Schema,
-	killSessionCommandStatus403Schema,
-	killSessionCommandStatus404Schema,
-	killSessionCommandStatus410Schema,
-	killSessionCommandStatus422Schema,
-	killSessionCommandStatus500Schema,
+export const createSandboxesSessionsBySessionIdCmdByCmdIdKillResponseSchema = z.union([
+	createSandboxesSessionsBySessionIdCmdByCmdIdKillStatus200Schema,
+	createSandboxesSessionsBySessionIdCmdByCmdIdKillStatus400Schema,
+	createSandboxesSessionsBySessionIdCmdByCmdIdKillStatus401Schema,
+	createSandboxesSessionsBySessionIdCmdByCmdIdKillStatus403Schema,
+	createSandboxesSessionsBySessionIdCmdByCmdIdKillStatus404Schema,
+	createSandboxesSessionsBySessionIdCmdByCmdIdKillStatus410Schema,
+	createSandboxesSessionsBySessionIdCmdByCmdIdKillStatus422Schema,
+	createSandboxesSessionsBySessionIdCmdByCmdIdKillStatus429Schema,
+	createSandboxesSessionsBySessionIdCmdByCmdIdKillStatus500Schema,
 ]);
 
-export const getSessionCommandLogsPathSessionIdSchema = z
+export const getSandboxesSessionsBySessionIdCmdByCmdIdLogsPathSessionIdSchema = z
 	.string()
 	.describe("The unique identifier of the session containing the command.");
 
-export const getSessionCommandLogsPathCmdIdSchema = z
+export const getSandboxesSessionsBySessionIdCmdByCmdIdLogsPathCmdIdSchema = z
 	.string()
 	.describe("The unique identifier of the command to stream logs for.");
 
-export const getSessionCommandLogsQueryTeamIdSchema = z
-	.string()
-	.optional()
-	.describe("The Team identifier to perform the request on behalf of.");
+export const getSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus200Schema = z.unknown();
 
-export const getSessionCommandLogsQuerySlugSchema = z
-	.string()
-	.optional()
-	.describe("The Team slug to perform the request on behalf of.");
+export const getSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus400Schema = z.unknown();
 
-export const getSessionCommandLogsStatus200Schema = z.unknown();
+export const getSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus401Schema = z.unknown();
 
-export const getSessionCommandLogsStatus400Schema = z.unknown();
+export const getSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus403Schema = z.unknown();
 
-export const getSessionCommandLogsStatus401Schema = z.unknown();
+export const getSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus404Schema = z.unknown();
 
-export const getSessionCommandLogsStatus403Schema = z.unknown();
+export const getSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus410Schema = z.unknown();
 
-export const getSessionCommandLogsStatus404Schema = z.unknown();
+export const getSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus422Schema = z.unknown();
 
-export const getSessionCommandLogsStatus410Schema = z.unknown();
+export const getSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus429Schema = z.unknown();
 
-export const getSessionCommandLogsStatus422Schema = z.unknown();
+export const getSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus500Schema = z.unknown();
 
-export const getSessionCommandLogsStatus500Schema = z.unknown();
-
-export const getSessionCommandLogsResponseSchema = z.union([
-	getSessionCommandLogsStatus200Schema,
-	getSessionCommandLogsStatus400Schema,
-	getSessionCommandLogsStatus401Schema,
-	getSessionCommandLogsStatus403Schema,
-	getSessionCommandLogsStatus404Schema,
-	getSessionCommandLogsStatus410Schema,
-	getSessionCommandLogsStatus422Schema,
-	getSessionCommandLogsStatus500Schema,
+export const getSandboxesSessionsBySessionIdCmdByCmdIdLogsResponseSchema = z.union([
+	getSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus200Schema,
+	getSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus400Schema,
+	getSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus401Schema,
+	getSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus403Schema,
+	getSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus404Schema,
+	getSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus410Schema,
+	getSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus422Schema,
+	getSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus429Schema,
+	getSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus500Schema,
 ]);
 
-export const stopSessionPathSessionIdSchema = z
+export const createSandboxesSessionsBySessionIdStopPathSessionIdSchema = z
 	.string()
 	.describe("The unique identifier of the session to stop.");
 
-export const stopSessionQueryTeamIdSchema = z
-	.string()
-	.optional()
-	.describe("The Team identifier to perform the request on behalf of.");
+export const createSandboxesSessionsBySessionIdStopStatus200Schema = z.unknown();
 
-export const stopSessionQuerySlugSchema = z
-	.string()
-	.optional()
-	.describe("The Team slug to perform the request on behalf of.");
+export const createSandboxesSessionsBySessionIdStopStatus400Schema = z.unknown();
 
-export const stopSessionStatus200Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdStopStatus401Schema = z.unknown();
 
-export const stopSessionStatus400Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdStopStatus403Schema = z.unknown();
 
-export const stopSessionStatus401Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdStopStatus404Schema = z.unknown();
 
-export const stopSessionStatus403Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdStopStatus410Schema = z.unknown();
 
-export const stopSessionStatus404Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdStopStatus422Schema = z.unknown();
 
-export const stopSessionStatus410Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdStopStatus429Schema = z.unknown();
 
-export const stopSessionStatus422Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdStopStatus500Schema = z.unknown();
 
-export const stopSessionStatus500Schema = z.unknown();
-
-export const stopSessionResponseSchema = z.union([
-	stopSessionStatus200Schema,
-	stopSessionStatus400Schema,
-	stopSessionStatus401Schema,
-	stopSessionStatus403Schema,
-	stopSessionStatus404Schema,
-	stopSessionStatus410Schema,
-	stopSessionStatus422Schema,
-	stopSessionStatus500Schema,
+export const createSandboxesSessionsBySessionIdStopResponseSchema = z.union([
+	createSandboxesSessionsBySessionIdStopStatus200Schema,
+	createSandboxesSessionsBySessionIdStopStatus400Schema,
+	createSandboxesSessionsBySessionIdStopStatus401Schema,
+	createSandboxesSessionsBySessionIdStopStatus403Schema,
+	createSandboxesSessionsBySessionIdStopStatus404Schema,
+	createSandboxesSessionsBySessionIdStopStatus410Schema,
+	createSandboxesSessionsBySessionIdStopStatus422Schema,
+	createSandboxesSessionsBySessionIdStopStatus429Schema,
+	createSandboxesSessionsBySessionIdStopStatus500Schema,
 ]);
 
-export const extendSessionTimeoutPathSessionIdSchema = z
+export const createSandboxesSessionsBySessionIdExtendTimeoutPathSessionIdSchema = z
 	.string()
 	.describe("The unique identifier of the session to extend the timeout for.");
 
-export const extendSessionTimeoutQueryTeamIdSchema = z
-	.string()
-	.optional()
-	.describe("The Team identifier to perform the request on behalf of.");
+export const createSandboxesSessionsBySessionIdExtendTimeoutStatus200Schema = z.unknown();
 
-export const extendSessionTimeoutQuerySlugSchema = z
-	.string()
-	.optional()
-	.describe("The Team slug to perform the request on behalf of.");
+export const createSandboxesSessionsBySessionIdExtendTimeoutStatus400Schema = z.unknown();
 
-export const extendSessionTimeoutStatus200Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdExtendTimeoutStatus401Schema = z.unknown();
 
-export const extendSessionTimeoutStatus400Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdExtendTimeoutStatus403Schema = z.unknown();
 
-export const extendSessionTimeoutStatus401Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdExtendTimeoutStatus404Schema = z.unknown();
 
-export const extendSessionTimeoutStatus403Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdExtendTimeoutStatus410Schema = z.unknown();
 
-export const extendSessionTimeoutStatus404Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdExtendTimeoutStatus422Schema = z.unknown();
 
-export const extendSessionTimeoutStatus410Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdExtendTimeoutStatus429Schema = z.unknown();
 
-export const extendSessionTimeoutStatus422Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdExtendTimeoutStatus500Schema = z.unknown();
 
-export const extendSessionTimeoutStatus500Schema = z.unknown();
-
-export const extendSessionTimeoutResponseSchema = z.union([
-	extendSessionTimeoutStatus200Schema,
-	extendSessionTimeoutStatus400Schema,
-	extendSessionTimeoutStatus401Schema,
-	extendSessionTimeoutStatus403Schema,
-	extendSessionTimeoutStatus404Schema,
-	extendSessionTimeoutStatus410Schema,
-	extendSessionTimeoutStatus422Schema,
-	extendSessionTimeoutStatus500Schema,
+export const createSandboxesSessionsBySessionIdExtendTimeoutResponseSchema = z.union([
+	createSandboxesSessionsBySessionIdExtendTimeoutStatus200Schema,
+	createSandboxesSessionsBySessionIdExtendTimeoutStatus400Schema,
+	createSandboxesSessionsBySessionIdExtendTimeoutStatus401Schema,
+	createSandboxesSessionsBySessionIdExtendTimeoutStatus403Schema,
+	createSandboxesSessionsBySessionIdExtendTimeoutStatus404Schema,
+	createSandboxesSessionsBySessionIdExtendTimeoutStatus410Schema,
+	createSandboxesSessionsBySessionIdExtendTimeoutStatus422Schema,
+	createSandboxesSessionsBySessionIdExtendTimeoutStatus429Schema,
+	createSandboxesSessionsBySessionIdExtendTimeoutStatus500Schema,
 ]);
 
-export const updateSessionNetworkPolicyPathSessionIdSchema = z
+export const createSandboxesSessionsBySessionIdNetworkPolicyPathSessionIdSchema = z
 	.string()
 	.describe("The unique identifier of the session to update the network policy for.");
 
-export const updateSessionNetworkPolicyQueryTeamIdSchema = z
-	.string()
-	.optional()
-	.describe("The Team identifier to perform the request on behalf of.");
+export const createSandboxesSessionsBySessionIdNetworkPolicyStatus200Schema = z.unknown();
 
-export const updateSessionNetworkPolicyQuerySlugSchema = z
-	.string()
-	.optional()
-	.describe("The Team slug to perform the request on behalf of.");
+export const createSandboxesSessionsBySessionIdNetworkPolicyStatus400Schema = z.unknown();
 
-export const updateSessionNetworkPolicyStatus200Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdNetworkPolicyStatus401Schema = z.unknown();
 
-export const updateSessionNetworkPolicyStatus400Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdNetworkPolicyStatus402Schema = z.unknown();
 
-export const updateSessionNetworkPolicyStatus401Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdNetworkPolicyStatus403Schema = z.unknown();
 
-export const updateSessionNetworkPolicyStatus402Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdNetworkPolicyStatus404Schema = z.unknown();
 
-export const updateSessionNetworkPolicyStatus403Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdNetworkPolicyStatus410Schema = z.unknown();
 
-export const updateSessionNetworkPolicyStatus404Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdNetworkPolicyStatus422Schema = z.unknown();
 
-export const updateSessionNetworkPolicyStatus410Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdNetworkPolicyStatus429Schema = z.unknown();
 
-export const updateSessionNetworkPolicyStatus422Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdNetworkPolicyStatus500Schema = z.unknown();
 
-export const updateSessionNetworkPolicyStatus500Schema = z.unknown();
-
-export const updateSessionNetworkPolicyResponseSchema = z.union([
-	updateSessionNetworkPolicyStatus200Schema,
-	updateSessionNetworkPolicyStatus400Schema,
-	updateSessionNetworkPolicyStatus401Schema,
-	updateSessionNetworkPolicyStatus402Schema,
-	updateSessionNetworkPolicyStatus403Schema,
-	updateSessionNetworkPolicyStatus404Schema,
-	updateSessionNetworkPolicyStatus410Schema,
-	updateSessionNetworkPolicyStatus422Schema,
-	updateSessionNetworkPolicyStatus500Schema,
+export const createSandboxesSessionsBySessionIdNetworkPolicyResponseSchema = z.union([
+	createSandboxesSessionsBySessionIdNetworkPolicyStatus200Schema,
+	createSandboxesSessionsBySessionIdNetworkPolicyStatus400Schema,
+	createSandboxesSessionsBySessionIdNetworkPolicyStatus401Schema,
+	createSandboxesSessionsBySessionIdNetworkPolicyStatus402Schema,
+	createSandboxesSessionsBySessionIdNetworkPolicyStatus403Schema,
+	createSandboxesSessionsBySessionIdNetworkPolicyStatus404Schema,
+	createSandboxesSessionsBySessionIdNetworkPolicyStatus410Schema,
+	createSandboxesSessionsBySessionIdNetworkPolicyStatus422Schema,
+	createSandboxesSessionsBySessionIdNetworkPolicyStatus429Schema,
+	createSandboxesSessionsBySessionIdNetworkPolicyStatus500Schema,
 ]);
 
-export const readSessionFilePathSessionIdSchema = z
+export const createSandboxesSessionsBySessionIdFsReadPathSessionIdSchema = z
 	.string()
 	.describe("The unique identifier of the session to read the file from.");
 
-export const readSessionFileQueryTeamIdSchema = z
-	.string()
-	.optional()
-	.describe("The Team identifier to perform the request on behalf of.");
+export const createSandboxesSessionsBySessionIdFsReadStatus200Schema = z.unknown();
 
-export const readSessionFileQuerySlugSchema = z
-	.string()
-	.optional()
-	.describe("The Team slug to perform the request on behalf of.");
+export const createSandboxesSessionsBySessionIdFsReadStatus400Schema = z.unknown();
 
-export const readSessionFileStatus200Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdFsReadStatus401Schema = z.unknown();
 
-export const readSessionFileStatus400Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdFsReadStatus403Schema = z.unknown();
 
-export const readSessionFileStatus401Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdFsReadStatus404Schema = z.unknown();
 
-export const readSessionFileStatus403Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdFsReadStatus410Schema = z.unknown();
 
-export const readSessionFileStatus404Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdFsReadStatus422Schema = z.unknown();
 
-export const readSessionFileStatus410Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdFsReadStatus429Schema = z.unknown();
 
-export const readSessionFileStatus422Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdFsReadStatus500Schema = z.unknown();
 
-export const readSessionFileStatus500Schema = z.unknown();
-
-export const readSessionFileResponseSchema = z.union([
-	readSessionFileStatus200Schema,
-	readSessionFileStatus400Schema,
-	readSessionFileStatus401Schema,
-	readSessionFileStatus403Schema,
-	readSessionFileStatus404Schema,
-	readSessionFileStatus410Schema,
-	readSessionFileStatus422Schema,
-	readSessionFileStatus500Schema,
+export const createSandboxesSessionsBySessionIdFsReadResponseSchema = z.union([
+	createSandboxesSessionsBySessionIdFsReadStatus200Schema,
+	createSandboxesSessionsBySessionIdFsReadStatus400Schema,
+	createSandboxesSessionsBySessionIdFsReadStatus401Schema,
+	createSandboxesSessionsBySessionIdFsReadStatus403Schema,
+	createSandboxesSessionsBySessionIdFsReadStatus404Schema,
+	createSandboxesSessionsBySessionIdFsReadStatus410Schema,
+	createSandboxesSessionsBySessionIdFsReadStatus422Schema,
+	createSandboxesSessionsBySessionIdFsReadStatus429Schema,
+	createSandboxesSessionsBySessionIdFsReadStatus500Schema,
 ]);
 
-export const createSessionDirectoryPathSessionIdSchema = z
+export const createSandboxesSessionsBySessionIdFsMkdirPathSessionIdSchema = z
 	.string()
 	.describe("The unique identifier of the session to create the directory in.");
 
-export const createSessionDirectoryQueryTeamIdSchema = z
-	.string()
-	.optional()
-	.describe("The Team identifier to perform the request on behalf of.");
+export const createSandboxesSessionsBySessionIdFsMkdirStatus200Schema = z.unknown();
 
-export const createSessionDirectoryQuerySlugSchema = z
-	.string()
-	.optional()
-	.describe("The Team slug to perform the request on behalf of.");
+export const createSandboxesSessionsBySessionIdFsMkdirStatus400Schema = z.unknown();
 
-export const createSessionDirectoryStatus200Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdFsMkdirStatus401Schema = z.unknown();
 
-export const createSessionDirectoryStatus400Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdFsMkdirStatus403Schema = z.unknown();
 
-export const createSessionDirectoryStatus401Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdFsMkdirStatus404Schema = z.unknown();
 
-export const createSessionDirectoryStatus403Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdFsMkdirStatus410Schema = z.unknown();
 
-export const createSessionDirectoryStatus404Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdFsMkdirStatus422Schema = z.unknown();
 
-export const createSessionDirectoryStatus410Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdFsMkdirStatus429Schema = z.unknown();
 
-export const createSessionDirectoryStatus422Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdFsMkdirStatus500Schema = z.unknown();
 
-export const createSessionDirectoryStatus500Schema = z.unknown();
-
-export const createSessionDirectoryResponseSchema = z.union([
-	createSessionDirectoryStatus200Schema,
-	createSessionDirectoryStatus400Schema,
-	createSessionDirectoryStatus401Schema,
-	createSessionDirectoryStatus403Schema,
-	createSessionDirectoryStatus404Schema,
-	createSessionDirectoryStatus410Schema,
-	createSessionDirectoryStatus422Schema,
-	createSessionDirectoryStatus500Schema,
+export const createSandboxesSessionsBySessionIdFsMkdirResponseSchema = z.union([
+	createSandboxesSessionsBySessionIdFsMkdirStatus200Schema,
+	createSandboxesSessionsBySessionIdFsMkdirStatus400Schema,
+	createSandboxesSessionsBySessionIdFsMkdirStatus401Schema,
+	createSandboxesSessionsBySessionIdFsMkdirStatus403Schema,
+	createSandboxesSessionsBySessionIdFsMkdirStatus404Schema,
+	createSandboxesSessionsBySessionIdFsMkdirStatus410Schema,
+	createSandboxesSessionsBySessionIdFsMkdirStatus422Schema,
+	createSandboxesSessionsBySessionIdFsMkdirStatus429Schema,
+	createSandboxesSessionsBySessionIdFsMkdirStatus500Schema,
 ]);
 
-export const writeSessionFilesHeaderxCwdSchema = z
+export const createSandboxesSessionsBySessionIdFsWriteHeaderxCwdSchema = z
 	.string()
 	.optional()
 	.describe(
 		"The target directory where the tarball contents will be extracted. If not specified, files are extracted to the sandbox home directory.",
 	);
 
-export const writeSessionFilesPathSessionIdSchema = z
+export const createSandboxesSessionsBySessionIdFsWritePathSessionIdSchema = z
 	.string()
 	.describe("The unique identifier of the session to write files to.");
 
-export const writeSessionFilesQueryTeamIdSchema = z
-	.string()
-	.optional()
-	.describe("The Team identifier to perform the request on behalf of.");
+export const createSandboxesSessionsBySessionIdFsWriteStatus200Schema = z.unknown();
 
-export const writeSessionFilesQuerySlugSchema = z
-	.string()
-	.optional()
-	.describe("The Team slug to perform the request on behalf of.");
+export const createSandboxesSessionsBySessionIdFsWriteStatus400Schema = z.unknown();
 
-export const writeSessionFilesStatus200Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdFsWriteStatus401Schema = z.unknown();
 
-export const writeSessionFilesStatus400Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdFsWriteStatus403Schema = z.unknown();
 
-export const writeSessionFilesStatus401Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdFsWriteStatus404Schema = z.unknown();
 
-export const writeSessionFilesStatus403Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdFsWriteStatus410Schema = z.unknown();
 
-export const writeSessionFilesStatus404Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdFsWriteStatus422Schema = z.unknown();
 
-export const writeSessionFilesStatus410Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdFsWriteStatus429Schema = z.unknown();
 
-export const writeSessionFilesStatus422Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdFsWriteStatus500Schema = z.unknown();
 
-export const writeSessionFilesStatus500Schema = z.unknown();
-
-export const writeSessionFilesResponseSchema = z.union([
-	writeSessionFilesStatus200Schema,
-	writeSessionFilesStatus400Schema,
-	writeSessionFilesStatus401Schema,
-	writeSessionFilesStatus403Schema,
-	writeSessionFilesStatus404Schema,
-	writeSessionFilesStatus410Schema,
-	writeSessionFilesStatus422Schema,
-	writeSessionFilesStatus500Schema,
+export const createSandboxesSessionsBySessionIdFsWriteResponseSchema = z.union([
+	createSandboxesSessionsBySessionIdFsWriteStatus200Schema,
+	createSandboxesSessionsBySessionIdFsWriteStatus400Schema,
+	createSandboxesSessionsBySessionIdFsWriteStatus401Schema,
+	createSandboxesSessionsBySessionIdFsWriteStatus403Schema,
+	createSandboxesSessionsBySessionIdFsWriteStatus404Schema,
+	createSandboxesSessionsBySessionIdFsWriteStatus410Schema,
+	createSandboxesSessionsBySessionIdFsWriteStatus422Schema,
+	createSandboxesSessionsBySessionIdFsWriteStatus429Schema,
+	createSandboxesSessionsBySessionIdFsWriteStatus500Schema,
 ]);
 
-export const createSessionSnapshotPathSessionIdSchema = z
+export const createSandboxesSessionsBySessionIdSnapshotPathSessionIdSchema = z
 	.string()
 	.describe("The unique identifier of the session to snapshot.");
 
-export const createSessionSnapshotQueryTeamIdSchema = z
-	.string()
-	.optional()
-	.describe("The Team identifier to perform the request on behalf of.");
+export const createSandboxesSessionsBySessionIdSnapshotStatus201Schema = z.unknown();
 
-export const createSessionSnapshotQuerySlugSchema = z
-	.string()
-	.optional()
-	.describe("The Team slug to perform the request on behalf of.");
+export const createSandboxesSessionsBySessionIdSnapshotStatus400Schema = z.unknown();
 
-export const createSessionSnapshotStatus201Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdSnapshotStatus401Schema = z.unknown();
 
-export const createSessionSnapshotStatus400Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdSnapshotStatus402Schema = z.unknown();
 
-export const createSessionSnapshotStatus401Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdSnapshotStatus403Schema = z.unknown();
 
-export const createSessionSnapshotStatus402Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdSnapshotStatus404Schema = z.unknown();
 
-export const createSessionSnapshotStatus403Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdSnapshotStatus410Schema = z.unknown();
 
-export const createSessionSnapshotStatus404Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdSnapshotStatus422Schema = z.unknown();
 
-export const createSessionSnapshotStatus410Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdSnapshotStatus429Schema = z.unknown();
 
-export const createSessionSnapshotStatus422Schema = z.unknown();
+export const createSandboxesSessionsBySessionIdSnapshotStatus500Schema = z.unknown();
 
-export const createSessionSnapshotStatus500Schema = z.unknown();
-
-export const createSessionSnapshotResponseSchema = z.union([
-	createSessionSnapshotStatus201Schema,
-	createSessionSnapshotStatus400Schema,
-	createSessionSnapshotStatus401Schema,
-	createSessionSnapshotStatus402Schema,
-	createSessionSnapshotStatus403Schema,
-	createSessionSnapshotStatus404Schema,
-	createSessionSnapshotStatus410Schema,
-	createSessionSnapshotStatus422Schema,
-	createSessionSnapshotStatus500Schema,
+export const createSandboxesSessionsBySessionIdSnapshotResponseSchema = z.union([
+	createSandboxesSessionsBySessionIdSnapshotStatus201Schema,
+	createSandboxesSessionsBySessionIdSnapshotStatus400Schema,
+	createSandboxesSessionsBySessionIdSnapshotStatus401Schema,
+	createSandboxesSessionsBySessionIdSnapshotStatus402Schema,
+	createSandboxesSessionsBySessionIdSnapshotStatus403Schema,
+	createSandboxesSessionsBySessionIdSnapshotStatus404Schema,
+	createSandboxesSessionsBySessionIdSnapshotStatus410Schema,
+	createSandboxesSessionsBySessionIdSnapshotStatus422Schema,
+	createSandboxesSessionsBySessionIdSnapshotStatus429Schema,
+	createSandboxesSessionsBySessionIdSnapshotStatus500Schema,
 ]);
 
 export const updateAttackChallengeModeQueryTeamIdSchema = z
