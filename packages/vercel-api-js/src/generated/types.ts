@@ -1986,12 +1986,12 @@ export const planEnum = {
 export type PlanEnumKey = (typeof planEnum)[keyof typeof planEnum];
 
 export const importFlowGitProviderEnum = {
-	vercel: "vercel",
 	github: "github",
 	"github-limited": "github-limited",
 	"github-custom-host": "github-custom-host",
 	gitlab: "gitlab",
 	bitbucket: "bitbucket",
+	vercel: "vercel",
 } as const;
 
 export type ImportFlowGitProviderEnumKey =
@@ -2274,12 +2274,12 @@ export type OldBuildQueueConfigurationEnumKey =
 	(typeof oldBuildQueueConfigurationEnum)[keyof typeof oldBuildQueueConfigurationEnum];
 
 export const gitProviderEnum = {
-	vercel: "vercel",
 	github: "github",
 	"github-limited": "github-limited",
 	"github-custom-host": "github-custom-host",
 	gitlab: "gitlab",
 	bitbucket: "bitbucket",
+	vercel: "vercel",
 } as const;
 
 export type GitProviderEnumKey = (typeof gitProviderEnum)[keyof typeof gitProviderEnum];
@@ -2343,21 +2343,21 @@ export type April2026SecurityIncidentMigrationAppliedFromEnumKey =
 	(typeof april2026SecurityIncidentMigrationAppliedFromEnum)[keyof typeof april2026SecurityIncidentMigrationAppliedFromEnum];
 
 export const trustedIpsEnum = {
-	production: "production",
 	all: "all",
 	preview: "preview",
 	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
 	all_except_custom_domains: "all_except_custom_domains",
+	production: "production",
 } as const;
 
 export type TrustedIpsEnumKey = (typeof trustedIpsEnum)[keyof typeof trustedIpsEnum];
 
 export const oldTrustedIpsEnum = {
-	production: "production",
 	all: "all",
 	preview: "preview",
 	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
 	all_except_custom_domains: "all_except_custom_domains",
+	production: "production",
 } as const;
 
 export type OldTrustedIpsEnumKey = (typeof oldTrustedIpsEnum)[keyof typeof oldTrustedIpsEnum];
@@ -2412,8 +2412,8 @@ export const nextEnum = {
 export type NextEnumKey = (typeof nextEnum)[keyof typeof nextEnum];
 
 export const environmentEnum = {
-	production: "production",
 	preview: "preview",
+	production: "production",
 } as const;
 
 export type EnvironmentEnumKey = (typeof environmentEnum)[keyof typeof environmentEnum];
@@ -2444,13 +2444,13 @@ export type NewPlanEnumKey = (typeof newPlanEnum)[keyof typeof newPlanEnum];
 
 export const sourceEnum = {
 	link: "link",
-	import: "import",
 	teams: "teams",
 	saml: "saml",
 	github: "github",
 	gitlab: "gitlab",
 	bitbucket: "bitbucket",
 	mail: "mail",
+	import: "import",
 	dsync: "dsync",
 	feedback: "feedback",
 	"organization-teams": "organization-teams",
@@ -3386,6 +3386,8 @@ export type UserEvent = {
 									| "read-write:blob"
 									| "read:event"
 									| "read-write:remote-cache"
+									| "read:kms"
+									| "read-write:kms"
 									| "read:project"
 									| "read-write:project"
 									| "read:deployment"
@@ -3451,6 +3453,8 @@ export type UserEvent = {
 									| "read-write:blob"
 									| "read:event"
 									| "read-write:remote-cache"
+									| "read:kms"
+									| "read-write:kms"
 									| "read:project"
 									| "read-write:project"
 									| "read:deployment"
@@ -3540,6 +3544,8 @@ export type UserEvent = {
 												| "read-write:blob"
 												| "read:event"
 												| "read-write:remote-cache"
+												| "read:kms"
+												| "read-write:kms"
 												| "read:project"
 												| "read-write:project"
 												| "read:deployment"
@@ -3617,6 +3623,8 @@ export type UserEvent = {
 												| "read-write:blob"
 												| "read:event"
 												| "read-write:remote-cache"
+												| "read:kms"
+												| "read-write:kms"
 												| "read:project"
 												| "read-write:project"
 												| "read:deployment"
@@ -3699,6 +3707,8 @@ export type UserEvent = {
 									| "read-write:blob"
 									| "read:event"
 									| "read-write:remote-cache"
+									| "read:kms"
+									| "read-write:kms"
 									| "read:project"
 									| "read-write:project"
 									| "read:deployment"
