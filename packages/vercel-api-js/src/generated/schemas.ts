@@ -9485,12 +9485,12 @@ export const namedSandboxSchema = z
 			.object({})
 			.catchall(
 				z.object({
-					volume: z.string(),
+					drive: z.string(),
 					mode: z.enum(["read-only", "read-write"]).optional(),
 				}),
 			)
 			.optional()
-			.describe("Key-value pairs of mount path and volume."),
+			.describe("Key-value pairs of mount path and drive."),
 		createdAt: z
 			.number()
 			.describe("The time when the named sandbox was created, in milliseconds since the epoch."),
@@ -15060,7 +15060,9 @@ export const listFlagsQueryStateSchema = z
 export const listFlagsQueryWithMetadataSchema = z
 	.boolean()
 	.optional()
-	.describe("Whether to include metadata in the response");
+	.describe(
+		"Deprecated. Whether to include creator metadata in each flag in the response. Resolve creator identity client-side (e.g. via the team members endpoint) instead; this parameter will be removed in a future release. Use `GET /v1/projects/:id/feature-flags/flags/:flagIdOrSlug?withMetadata=true` for single-flag lookups that need creator metadata.",
+	);
 
 export const listFlagsQueryLimitSchema = z
 	.int()
@@ -15491,7 +15493,9 @@ export const listTeamFlagsQueryStateSchema = z
 export const listTeamFlagsQueryWithMetadataSchema = z
 	.boolean()
 	.optional()
-	.describe("Whether to include metadata in the response");
+	.describe(
+		"Deprecated. Whether to include creator metadata in each flag in the response. Resolve creator identity client-side (e.g. via the team members endpoint) instead; this parameter will be removed in a future release.",
+	);
 
 export const listTeamFlagsQueryLimitSchema = z
 	.int()
