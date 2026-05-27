@@ -10126,7 +10126,26 @@ export const teamSchema = z
 									.strict(),
 							]),
 						),
+						id: z.string().optional(),
 						enabled: z.union([z.literal(false), z.literal(true)]),
+						environments: z
+							.array(
+								z.union([
+									z
+										.object({
+											type: z.enum(["system"]),
+											target: z.enum(["production", "preview"]),
+										})
+										.strict(),
+									z
+										.object({
+											type: z.enum(["custom"]),
+											environmentId: z.string(),
+										})
+										.strict(),
+								]),
+							)
+							.optional(),
 					})
 					.optional()
 					.describe(
@@ -10135,7 +10154,26 @@ export const teamSchema = z
 				deploymentSources: z
 					.object({
 						sources: z.array(z.enum(["cli", "deploy-hook", "git", "integration", "rest-api"])),
+						id: z.string().optional(),
 						enabled: z.union([z.literal(false), z.literal(true)]),
+						environments: z
+							.array(
+								z.union([
+									z
+										.object({
+											type: z.enum(["system"]),
+											target: z.enum(["production", "preview"]),
+										})
+										.strict(),
+									z
+										.object({
+											type: z.enum(["custom"]),
+											environmentId: z.string(),
+										})
+										.strict(),
+								]),
+							)
+							.optional(),
 					})
 					.optional()
 					.describe(
