@@ -17825,7 +17825,7 @@ export type NamedSandbox = {
 		  }
 		| undefined;
 	/**
-	 * @description Key-value pairs of mount path and volume.
+	 * @description Key-value pairs of mount path and drive.
 	 * @type object | undefined
 	 */
 	mounts?:
@@ -17834,7 +17834,7 @@ export type NamedSandbox = {
 					/**
 					 * @type string
 					 */
-					volume: string;
+					drive: string;
 					/**
 					 * @type string | undefined
 					 */
@@ -32046,7 +32046,8 @@ export type ListFlagsPathProjectIdOrName = string;
 export type ListFlagsQueryState = ("active" | "archived") | undefined;
 
 /**
- * @description Whether to include metadata in the response
+ * @description Deprecated. Whether to include creator metadata in each flag in the response. Resolve creator identity client-side (e.g. via the team members endpoint) instead; this parameter will be removed in a future release. Use `GET /v1/projects/:id/feature-flags/flags/:flagIdOrSlug?withMetadata=true` for single-flag lookups that need creator metadata.
+ * @deprecated
  * @type boolean | undefined
  */
 export type ListFlagsQueryWithMetadata = boolean | undefined;
@@ -33171,7 +33172,8 @@ export type ListTeamFlagSettingsResponse =
 export type ListTeamFlagsQueryState = ("active" | "archived") | undefined;
 
 /**
- * @description Whether to include metadata in the response
+ * @description Deprecated. Whether to include creator metadata in each flag in the response. Resolve creator identity client-side (e.g. via the team members endpoint) instead; this parameter will be removed in a future release.
+ * @deprecated
  * @type boolean | undefined
  */
 export type ListTeamFlagsQueryWithMetadata = boolean | undefined;
