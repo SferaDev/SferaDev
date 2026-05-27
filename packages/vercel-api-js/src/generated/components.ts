@@ -15313,7 +15313,7 @@ export async function getDeploymentFileContents(
 /**
  * @summary List deployments
  * @description List deployments under the authenticated user or team. If a deployment hasn't finished uploading (is incomplete), the `url` property will have a value of `null`.
- * @link /v6/deployments
+ * @link /v7/deployments
  */
 export async function getDeployments(
 	{
@@ -15375,7 +15375,7 @@ export async function getDeployments(
 		Record<string, string>
 	>({
 		method: "GET",
-		url: `/v6/deployments`,
+		url: `/v7/deployments`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -15756,7 +15756,7 @@ export const operationsByPath = {
 	"PUT /v8/certs": uploadCert,
 	"GET /v6/deployments/{id}/files": listDeploymentFiles,
 	"GET /v8/deployments/{id}/files/{fileId}": getDeploymentFileContents,
-	"GET /v6/deployments": getDeployments,
+	"GET /v7/deployments": getDeployments,
 	"DELETE /v13/deployments/{id}": deleteDeployment,
 };
 
