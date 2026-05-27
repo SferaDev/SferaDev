@@ -32297,6 +32297,145 @@ export type CreateFlagResponse =
  * @description The project id or name
  * @type string
  */
+export type ListFlagsV2PathProjectIdOrName = string;
+
+/**
+ * @description The state of the flags to retrieve. Defaults to `active`.
+ * @type string | undefined
+ */
+export type ListFlagsV2QueryState = ("active" | "archived") | undefined;
+
+/**
+ * @description Maximum number of flags to return.
+ * @minLength 1
+ * @maxLength 100
+ * @default 25
+ * @type integer | undefined
+ */
+export type ListFlagsV2QueryLimit = number | undefined;
+
+/**
+ * @description Pagination cursor to continue from.
+ * @type string | undefined
+ */
+export type ListFlagsV2QueryCursor = string | undefined;
+
+/**
+ * @description Search flags by their slug or description. Case-insensitive.
+ * @maxLength 256
+ * @type string | undefined
+ */
+export type ListFlagsV2QuerySearch = string | undefined;
+
+/**
+ * @description Filter flags by tag. Repeat the parameter for multiple tags (all must match).
+ * @type array | undefined
+ */
+export type ListFlagsV2QueryTags = string[] | undefined;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type ListFlagsV2QueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type ListFlagsV2QuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type ListFlagsV2Status200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListFlagsV2Status400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListFlagsV2Status401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListFlagsV2Status402 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListFlagsV2Status403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListFlagsV2Status404 = unknown;
+
+/**
+ * @type object
+ */
+export type ListFlagsV2RequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		projectIdOrName: ListFlagsV2PathProjectIdOrName;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				state?: ListFlagsV2QueryState | undefined;
+				limit?: ListFlagsV2QueryLimit | undefined;
+				cursor?: ListFlagsV2QueryCursor | undefined;
+				search?: ListFlagsV2QuerySearch | undefined;
+				tags?: ListFlagsV2QueryTags | undefined;
+				teamId?: ListFlagsV2QueryTeamId | undefined;
+				slug?: ListFlagsV2QuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v2/projects/${string}/feature-flags/flags`;
+};
+
+/**
+ * @type object
+ */
+export type ListFlagsV2Responses = {
+	"200": ListFlagsV2Status200;
+	"400": ListFlagsV2Status400;
+	"401": ListFlagsV2Status401;
+	"402": ListFlagsV2Status402;
+	"403": ListFlagsV2Status403;
+	"404": ListFlagsV2Status404;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListFlagsV2Response =
+	| ListFlagsV2Status200
+	| ListFlagsV2Status400
+	| ListFlagsV2Status401
+	| ListFlagsV2Status402
+	| ListFlagsV2Status403
+	| ListFlagsV2Status404;
+
+/**
+ * @description The project id or name
+ * @type string
+ */
 export type GetFlagPathProjectIdOrName = string;
 
 /**
@@ -33297,6 +33436,131 @@ export type ListTeamFlagsResponse =
 	| ListTeamFlagsStatus400
 	| ListTeamFlagsStatus401
 	| ListTeamFlagsStatus403;
+
+/**
+ * @description The state of the flags to retrieve. Defaults to `active`.
+ * @type string | undefined
+ */
+export type ListTeamFlagsV2QueryState = ("active" | "archived") | undefined;
+
+/**
+ * @description Maximum number of flags to return.
+ * @minLength 1
+ * @maxLength 100
+ * @default 25
+ * @type integer | undefined
+ */
+export type ListTeamFlagsV2QueryLimit = number | undefined;
+
+/**
+ * @description Pagination cursor to continue from.
+ * @type string | undefined
+ */
+export type ListTeamFlagsV2QueryCursor = string | undefined;
+
+/**
+ * @description Search flags by their slug or description. Case-insensitive.
+ * @maxLength 256
+ * @type string | undefined
+ */
+export type ListTeamFlagsV2QuerySearch = string | undefined;
+
+/**
+ * @description The kind of flags to retrieve.
+ * @type string | undefined
+ */
+export type ListTeamFlagsV2QueryKind = ("boolean" | "string" | "number" | "json") | undefined;
+
+/**
+ * @description Filter flags by tag. Repeat the parameter for multiple tags (all must match).
+ * @type array | undefined
+ */
+export type ListTeamFlagsV2QueryTags = string[] | undefined;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string
+ */
+export type ListTeamFlagsV2PathTeamId = string;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type ListTeamFlagsV2QuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type ListTeamFlagsV2Status200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListTeamFlagsV2Status400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListTeamFlagsV2Status401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListTeamFlagsV2Status403 = unknown;
+
+/**
+ * @type object
+ */
+export type ListTeamFlagsV2RequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		teamId: ListTeamFlagsV2PathTeamId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				state?: ListTeamFlagsV2QueryState | undefined;
+				limit?: ListTeamFlagsV2QueryLimit | undefined;
+				cursor?: ListTeamFlagsV2QueryCursor | undefined;
+				search?: ListTeamFlagsV2QuerySearch | undefined;
+				kind?: ListTeamFlagsV2QueryKind | undefined;
+				tags?: ListTeamFlagsV2QueryTags | undefined;
+				slug?: ListTeamFlagsV2QuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v2/teams/${string}/feature-flags/flags`;
+};
+
+/**
+ * @type object
+ */
+export type ListTeamFlagsV2Responses = {
+	"200": ListTeamFlagsV2Status200;
+	"400": ListTeamFlagsV2Status400;
+	"401": ListTeamFlagsV2Status401;
+	"403": ListTeamFlagsV2Status403;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListTeamFlagsV2Response =
+	| ListTeamFlagsV2Status200
+	| ListTeamFlagsV2Status400
+	| ListTeamFlagsV2Status401
+	| ListTeamFlagsV2Status403;
 
 /**
  * @description The project id or name
@@ -44637,22 +44901,7 @@ export type DeleteSandboxStatus404 = unknown;
 /**
  * @type unknown
  */
-export type DeleteSandboxStatus410 = unknown;
-
-/**
- * @type unknown
- */
-export type DeleteSandboxStatus422 = unknown;
-
-/**
- * @type unknown
- */
 export type DeleteSandboxStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type DeleteSandboxStatus500 = unknown;
 
 /**
  * @type object
@@ -44691,10 +44940,7 @@ export type DeleteSandboxResponses = {
 	"401": DeleteSandboxStatus401;
 	"403": DeleteSandboxStatus403;
 	"404": DeleteSandboxStatus404;
-	"410": DeleteSandboxStatus410;
-	"422": DeleteSandboxStatus422;
 	"429": DeleteSandboxStatus429;
-	"500": DeleteSandboxStatus500;
 };
 
 /**
@@ -44706,10 +44952,7 @@ export type DeleteSandboxResponse =
 	| DeleteSandboxStatus401
 	| DeleteSandboxStatus403
 	| DeleteSandboxStatus404
-	| DeleteSandboxStatus410
-	| DeleteSandboxStatus422
-	| DeleteSandboxStatus429
-	| DeleteSandboxStatus500;
+	| DeleteSandboxStatus429;
 
 /**
  * @description The unique identifier of the session to list commands for.
