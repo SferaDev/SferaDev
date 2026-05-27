@@ -800,6 +800,7 @@ export const userEventSchema = z
 				"project-analytics-enabled",
 				"project-auto-assign-custom-production-domains-updated",
 				"project-automation-bypass",
+				"project-avatar-update",
 				"project-build-command-updated",
 				"project-build-logs-and-source-protection-updated",
 				"project-build-machine-updated",
@@ -5520,6 +5521,13 @@ export const userEventSchema = z
 					.object({
 						projectId: z.string(),
 						projectName: z.string(),
+						avatar: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+						projectName: z.string(),
 						enableAffectedProjectsDeployments: z.union([z.literal(false), z.literal(true)]),
 					})
 					.strict(),
@@ -8153,6 +8161,7 @@ export const listEventTypeSchema = z
 				"project-analytics-enabled",
 				"project-auto-assign-custom-production-domains-updated",
 				"project-automation-bypass",
+				"project-avatar-update",
 				"project-build-command-updated",
 				"project-build-logs-and-source-protection-updated",
 				"project-build-machine-updated",
@@ -8681,6 +8690,7 @@ export const listEventTypeSchema = z
 					"project-analytics-enabled",
 					"project-auto-assign-custom-production-domains-updated",
 					"project-automation-bypass",
+					"project-avatar-update",
 					"project-build-command-updated",
 					"project-build-logs-and-source-protection-updated",
 					"project-build-machine-updated",
@@ -8958,8 +8968,8 @@ export const flagSchema = z.object({
 	tags: z.array(z.string()).optional(),
 	experiment: z
 		.object({
-			name: z.string().optional(),
 			id: z.string().optional(),
+			name: z.string().optional(),
 			numVariants: z.number().optional(),
 			surfaceArea: z.string().optional(),
 			stickyRequirement: z.union([z.literal(false), z.literal(true)]).optional(),
@@ -15050,6 +15060,68 @@ export const listEventTypesStatus401Schema = z.unknown();
 
 export const listEventTypesStatus403Schema = z.unknown();
 
+export const listFlagsV2PathProjectIdOrNameSchema = z.string().describe("The project id or name");
+
+export const listFlagsV2QueryStateSchema = z
+	.enum(["active", "archived"])
+	.optional()
+	.describe("The state of the flags to retrieve. Defaults to `active`.");
+
+export const listFlagsV2QueryLimitSchema = z
+	.int()
+	.min(1)
+	.max(100)
+	.optional()
+	.default(25)
+	.describe("Maximum number of flags to return.");
+
+export const listFlagsV2QueryCursorSchema = z
+	.string()
+	.optional()
+	.describe("Pagination cursor to continue from.");
+
+export const listFlagsV2QuerySearchSchema = z
+	.string()
+	.max(256)
+	.optional()
+	.describe("Search flags by their slug or description. Case-insensitive.");
+
+export const listFlagsV2QueryTagsSchema = z
+	.array(z.string())
+	.optional()
+	.describe("Filter flags by tag. Repeat the parameter for multiple tags (all must match).");
+
+export const listFlagsV2QueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const listFlagsV2QuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const listFlagsV2Status200Schema = z.unknown();
+
+export const listFlagsV2Status400Schema = z.unknown();
+
+export const listFlagsV2Status401Schema = z.unknown();
+
+export const listFlagsV2Status402Schema = z.unknown();
+
+export const listFlagsV2Status403Schema = z.unknown();
+
+export const listFlagsV2Status404Schema = z.unknown();
+
+export const listFlagsV2ResponseSchema = z.union([
+	listFlagsV2Status200Schema,
+	listFlagsV2Status400Schema,
+	listFlagsV2Status401Schema,
+	listFlagsV2Status402Schema,
+	listFlagsV2Status403Schema,
+	listFlagsV2Status404Schema,
+]);
+
 export const listFlagsPathProjectIdOrNameSchema = z.string().describe("The project id or name");
 
 export const listFlagsQueryStateSchema = z
@@ -15155,68 +15227,6 @@ export const createFlagResponseSchema = z.union([
 	createFlagStatus404Schema,
 	createFlagStatus409Schema,
 	createFlagStatus412Schema,
-]);
-
-export const listFlagsV2PathProjectIdOrNameSchema = z.string().describe("The project id or name");
-
-export const listFlagsV2QueryStateSchema = z
-	.enum(["active", "archived"])
-	.optional()
-	.describe("The state of the flags to retrieve. Defaults to `active`.");
-
-export const listFlagsV2QueryLimitSchema = z
-	.int()
-	.min(1)
-	.max(100)
-	.optional()
-	.default(25)
-	.describe("Maximum number of flags to return.");
-
-export const listFlagsV2QueryCursorSchema = z
-	.string()
-	.optional()
-	.describe("Pagination cursor to continue from.");
-
-export const listFlagsV2QuerySearchSchema = z
-	.string()
-	.max(256)
-	.optional()
-	.describe("Search flags by their slug or description. Case-insensitive.");
-
-export const listFlagsV2QueryTagsSchema = z
-	.array(z.string())
-	.optional()
-	.describe("Filter flags by tag. Repeat the parameter for multiple tags (all must match).");
-
-export const listFlagsV2QueryTeamIdSchema = z
-	.string()
-	.optional()
-	.describe("The Team identifier to perform the request on behalf of.");
-
-export const listFlagsV2QuerySlugSchema = z
-	.string()
-	.optional()
-	.describe("The Team slug to perform the request on behalf of.");
-
-export const listFlagsV2Status200Schema = z.unknown();
-
-export const listFlagsV2Status400Schema = z.unknown();
-
-export const listFlagsV2Status401Schema = z.unknown();
-
-export const listFlagsV2Status402Schema = z.unknown();
-
-export const listFlagsV2Status403Schema = z.unknown();
-
-export const listFlagsV2Status404Schema = z.unknown();
-
-export const listFlagsV2ResponseSchema = z.union([
-	listFlagsV2Status200Schema,
-	listFlagsV2Status400Schema,
-	listFlagsV2Status401Schema,
-	listFlagsV2Status402Schema,
-	listFlagsV2Status403Schema,
-	listFlagsV2Status404Schema,
 ]);
 
 export const getFlagPathProjectIdOrNameSchema = z.string().describe("The project id or name");
@@ -15547,6 +15557,64 @@ export const listTeamFlagSettingsResponseSchema = z.union([
 	listTeamFlagSettingsStatus403Schema,
 ]);
 
+export const listTeamFlagsV2QueryStateSchema = z
+	.enum(["active", "archived"])
+	.optional()
+	.describe("The state of the flags to retrieve. Defaults to `active`.");
+
+export const listTeamFlagsV2QueryLimitSchema = z
+	.int()
+	.min(1)
+	.max(100)
+	.optional()
+	.default(25)
+	.describe("Maximum number of flags to return.");
+
+export const listTeamFlagsV2QueryCursorSchema = z
+	.string()
+	.optional()
+	.describe("Pagination cursor to continue from.");
+
+export const listTeamFlagsV2QuerySearchSchema = z
+	.string()
+	.max(256)
+	.optional()
+	.describe("Search flags by their slug or description. Case-insensitive.");
+
+export const listTeamFlagsV2QueryKindSchema = z
+	.enum(["boolean", "string", "number", "json"])
+	.optional()
+	.describe("The kind of flags to retrieve.");
+
+export const listTeamFlagsV2QueryTagsSchema = z
+	.array(z.string())
+	.optional()
+	.describe("Filter flags by tag. Repeat the parameter for multiple tags (all must match).");
+
+export const listTeamFlagsV2PathTeamIdSchema = z
+	.string()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const listTeamFlagsV2QuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const listTeamFlagsV2Status200Schema = z.unknown();
+
+export const listTeamFlagsV2Status400Schema = z.unknown();
+
+export const listTeamFlagsV2Status401Schema = z.unknown();
+
+export const listTeamFlagsV2Status403Schema = z.unknown();
+
+export const listTeamFlagsV2ResponseSchema = z.union([
+	listTeamFlagsV2Status200Schema,
+	listTeamFlagsV2Status400Schema,
+	listTeamFlagsV2Status401Schema,
+	listTeamFlagsV2Status403Schema,
+]);
+
 export const listTeamFlagsQueryStateSchema = z
 	.enum(["active", "archived"])
 	.optional()
@@ -15610,64 +15678,6 @@ export const listTeamFlagsResponseSchema = z.union([
 	listTeamFlagsStatus400Schema,
 	listTeamFlagsStatus401Schema,
 	listTeamFlagsStatus403Schema,
-]);
-
-export const listTeamFlagsV2QueryStateSchema = z
-	.enum(["active", "archived"])
-	.optional()
-	.describe("The state of the flags to retrieve. Defaults to `active`.");
-
-export const listTeamFlagsV2QueryLimitSchema = z
-	.int()
-	.min(1)
-	.max(100)
-	.optional()
-	.default(25)
-	.describe("Maximum number of flags to return.");
-
-export const listTeamFlagsV2QueryCursorSchema = z
-	.string()
-	.optional()
-	.describe("Pagination cursor to continue from.");
-
-export const listTeamFlagsV2QuerySearchSchema = z
-	.string()
-	.max(256)
-	.optional()
-	.describe("Search flags by their slug or description. Case-insensitive.");
-
-export const listTeamFlagsV2QueryKindSchema = z
-	.enum(["boolean", "string", "number", "json"])
-	.optional()
-	.describe("The kind of flags to retrieve.");
-
-export const listTeamFlagsV2QueryTagsSchema = z
-	.array(z.string())
-	.optional()
-	.describe("Filter flags by tag. Repeat the parameter for multiple tags (all must match).");
-
-export const listTeamFlagsV2PathTeamIdSchema = z
-	.string()
-	.describe("The Team identifier to perform the request on behalf of.");
-
-export const listTeamFlagsV2QuerySlugSchema = z
-	.string()
-	.optional()
-	.describe("The Team slug to perform the request on behalf of.");
-
-export const listTeamFlagsV2Status200Schema = z.unknown();
-
-export const listTeamFlagsV2Status400Schema = z.unknown();
-
-export const listTeamFlagsV2Status401Schema = z.unknown();
-
-export const listTeamFlagsV2Status403Schema = z.unknown();
-
-export const listTeamFlagsV2ResponseSchema = z.union([
-	listTeamFlagsV2Status200Schema,
-	listTeamFlagsV2Status400Schema,
-	listTeamFlagsV2Status401Schema,
-	listTeamFlagsV2Status403Schema,
 ]);
 
 export const createFlagSegmentPathProjectIdOrNameSchema = z
