@@ -6979,6 +6979,67 @@ export async function listEventTypes(
 
 /**
  * @summary List flags
+ * @description Retrieve feature flags for a project. Returns an opaque cursor for pagination.
+ * @link /v2/projects/{projectIdOrName}/feature-flags/flags
+ */
+export async function listFlagsV2(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectIdOrName: string };
+		queryParams?: {
+			state?: "active" | "archived";
+			limit?: number;
+			cursor?: string;
+			search?: string;
+			tags?: Array<string>;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.projectIdOrName) {
+		throw new Error(`Missing required path parameter: projectIdOrName`);
+	}
+	const data = await request<
+		ListFlagsV2Response,
+		ErrorWrapper<
+			| ListFlagsV2Status400
+			| ListFlagsV2Status401
+			| ListFlagsV2Status402
+			| ListFlagsV2Status403
+			| ListFlagsV2Status404
+		>,
+		null,
+		Record<string, string>,
+		{
+			state?: "active" | "archived";
+			limit?: number;
+			cursor?: string;
+			search?: string;
+			tags?: Array<string>;
+			teamId?: string;
+			slug?: string;
+		},
+		{ projectIdOrName: string }
+	>({
+		method: "GET",
+		url: `/v2/projects/${pathParams.projectIdOrName}/feature-flags/flags`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary List flags
  * @description Retrieve feature flags for a project. The list can be filtered by state and supports pagination.
  * @link /v1/projects/{projectIdOrName}/feature-flags/flags
  */
@@ -7079,67 +7140,6 @@ export async function createFlag(
 	>({
 		method: "PUT",
 		url: `/v1/projects/${pathParams.projectIdOrName}/feature-flags/flags`,
-		queryParams,
-		...requestConfig,
-		headers: { ...requestConfig.headers },
-	});
-
-	return data;
-}
-
-/**
- * @summary List flags
- * @description Retrieve feature flags for a project. Returns an opaque cursor for pagination.
- * @link /v2/projects/{projectIdOrName}/feature-flags/flags
- */
-export async function listFlagsV2(
-	{
-		pathParams,
-		queryParams,
-		config,
-	}: {
-		pathParams: { projectIdOrName: string };
-		queryParams?: {
-			state?: "active" | "archived";
-			limit?: number;
-			cursor?: string;
-			search?: string;
-			tags?: Array<string>;
-			teamId?: string;
-			slug?: string;
-		};
-		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-	} = {} as any,
-) {
-	const { client: request = defaultClient, ...requestConfig } = config ?? {};
-
-	if (!pathParams.projectIdOrName) {
-		throw new Error(`Missing required path parameter: projectIdOrName`);
-	}
-	const data = await request<
-		ListFlagsV2Response,
-		ErrorWrapper<
-			| ListFlagsV2Status400
-			| ListFlagsV2Status401
-			| ListFlagsV2Status402
-			| ListFlagsV2Status403
-			| ListFlagsV2Status404
-		>,
-		null,
-		Record<string, string>,
-		{
-			state?: "active" | "archived";
-			limit?: number;
-			cursor?: string;
-			search?: string;
-			tags?: Array<string>;
-			teamId?: string;
-			slug?: string;
-		},
-		{ projectIdOrName: string }
-	>({
-		method: "GET",
-		url: `/v2/projects/${pathParams.projectIdOrName}/feature-flags/flags`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -7493,6 +7493,61 @@ export async function listTeamFlagSettings(
 
 /**
  * @summary List all flags for a team
+ * @description Retrieve all feature flags for a team across all projects. Returns an opaque cursor for pagination.
+ * @link /v2/teams/{teamId}/feature-flags/flags
+ */
+export async function listTeamFlagsV2(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { teamId: string };
+		queryParams?: {
+			state?: "active" | "archived";
+			limit?: number;
+			cursor?: string;
+			search?: string;
+			kind?: "boolean" | "string" | "number" | "json";
+			tags?: Array<string>;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.teamId) {
+		throw new Error(`Missing required path parameter: teamId`);
+	}
+	const data = await request<
+		ListTeamFlagsV2Response,
+		ErrorWrapper<ListTeamFlagsV2Status400 | ListTeamFlagsV2Status401 | ListTeamFlagsV2Status403>,
+		null,
+		Record<string, string>,
+		{
+			state?: "active" | "archived";
+			limit?: number;
+			cursor?: string;
+			search?: string;
+			kind?: "boolean" | "string" | "number" | "json";
+			tags?: Array<string>;
+			slug?: string;
+		},
+		{ teamId: string }
+	>({
+		method: "GET",
+		url: `/v2/teams/${pathParams.teamId}/feature-flags/flags`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary List all flags for a team
  * @description Retrieve all feature flags for a team across all projects. The list can be filtered by state and supports pagination.
  * @link /v1/teams/{teamId}/feature-flags/flags
  */
@@ -7540,61 +7595,6 @@ export async function listTeamFlags(
 	>({
 		method: "GET",
 		url: `/v1/teams/${pathParams.teamId}/feature-flags/flags`,
-		queryParams,
-		...requestConfig,
-		headers: { ...requestConfig.headers },
-	});
-
-	return data;
-}
-
-/**
- * @summary List all flags for a team
- * @description Retrieve all feature flags for a team across all projects. Returns an opaque cursor for pagination.
- * @link /v2/teams/{teamId}/feature-flags/flags
- */
-export async function listTeamFlagsV2(
-	{
-		pathParams,
-		queryParams,
-		config,
-	}: {
-		pathParams: { teamId: string };
-		queryParams?: {
-			state?: "active" | "archived";
-			limit?: number;
-			cursor?: string;
-			search?: string;
-			kind?: "boolean" | "string" | "number" | "json";
-			tags?: Array<string>;
-			slug?: string;
-		};
-		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-	} = {} as any,
-) {
-	const { client: request = defaultClient, ...requestConfig } = config ?? {};
-
-	if (!pathParams.teamId) {
-		throw new Error(`Missing required path parameter: teamId`);
-	}
-	const data = await request<
-		ListTeamFlagsV2Response,
-		ErrorWrapper<ListTeamFlagsV2Status400 | ListTeamFlagsV2Status401 | ListTeamFlagsV2Status403>,
-		null,
-		Record<string, string>,
-		{
-			state?: "active" | "archived";
-			limit?: number;
-			cursor?: string;
-			search?: string;
-			kind?: "boolean" | "string" | "number" | "json";
-			tags?: Array<string>;
-			slug?: string;
-		},
-		{ teamId: string }
-	>({
-		method: "GET",
-		url: `/v2/teams/${pathParams.teamId}/feature-flags/flags`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -15773,9 +15773,9 @@ export const operationsByPath = {
 	"PATCH /v1/env/{id}/unlink/{projectId}": unlinkSharedEnvVariable,
 	"GET /v3/events": listUserEvents,
 	"GET /v1/events/types": listEventTypes,
+	"GET /v2/projects/{projectIdOrName}/feature-flags/flags": listFlagsV2,
 	"GET /v1/projects/{projectIdOrName}/feature-flags/flags": listFlags,
 	"PUT /v1/projects/{projectIdOrName}/feature-flags/flags": createFlag,
-	"GET /v2/projects/{projectIdOrName}/feature-flags/flags": listFlagsV2,
 	"GET /v1/projects/{projectIdOrName}/feature-flags/flags/{flagIdOrSlug}": getFlag,
 	"PATCH /v1/projects/{projectIdOrName}/feature-flags/flags/{flagIdOrSlug}": updateFlag,
 	"DELETE /v1/projects/{projectIdOrName}/feature-flags/flags/{flagIdOrSlug}": deleteFlag,
@@ -15784,8 +15784,8 @@ export const operationsByPath = {
 	"GET /v1/projects/{projectIdOrName}/feature-flags/settings": getFlagSettings,
 	"PATCH /v1/projects/{projectIdOrName}/feature-flags/settings": updateFlagSettings,
 	"GET /v1/teams/{teamId}/feature-flags/settings": listTeamFlagSettings,
-	"GET /v1/teams/{teamId}/feature-flags/flags": listTeamFlags,
 	"GET /v2/teams/{teamId}/feature-flags/flags": listTeamFlagsV2,
+	"GET /v1/teams/{teamId}/feature-flags/flags": listTeamFlags,
 	"PUT /v1/projects/{projectIdOrName}/feature-flags/segments": createFlagSegment,
 	"GET /v1/projects/{projectIdOrName}/feature-flags/segments": listFlagSegments,
 	"GET /v1/projects/{projectIdOrName}/feature-flags/segments/{segmentIdOrSlug}": getFlagSegment,
@@ -16165,9 +16165,9 @@ export const operationsByTag = {
 		requestDelete,
 	},
 	featureFlags: {
+		listFlagsV2,
 		listFlags,
 		createFlag,
-		listFlagsV2,
 		getFlag,
 		updateFlag,
 		deleteFlag,
@@ -16175,8 +16175,8 @@ export const operationsByTag = {
 		getFlagSettings,
 		updateFlagSettings,
 		listTeamFlagSettings,
-		listTeamFlags,
 		listTeamFlagsV2,
+		listTeamFlags,
 		createFlagSegment,
 		listFlagSegments,
 		getFlagSegment,
@@ -16528,14 +16528,14 @@ export const tagDictionary = {
 	},
 	featureFlags: {
 		GET: [
-			"listFlags",
 			"listFlagsV2",
+			"listFlags",
 			"getFlag",
 			"listFlagVersions",
 			"getFlagSettings",
 			"listTeamFlagSettings",
-			"listTeamFlags",
 			"listTeamFlagsV2",
+			"listTeamFlags",
 			"listFlagSegments",
 			"getFlagSegment",
 			"getDeploymentFeatureFlags",
