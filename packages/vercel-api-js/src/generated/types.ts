@@ -50416,7 +50416,7 @@ export type GetDeploymentsQuerySince = number | undefined;
 export type GetDeploymentsQueryUntil = number | undefined;
 
 /**
- * @description Filter deployments based on their state (`BUILDING`, `ERROR`, `INITIALIZING`, `QUEUED`, `READY`, `CANCELED`)
+ * @description Filter deployments based on their state (`BUILDING`, `ERROR`, `INITIALIZING`, `QUEUED`, `READY`, `CANCELED`, `BLOCKED`)
  * @example BUILDING,READY
  * @type string | undefined
  */
@@ -50517,7 +50517,7 @@ export type GetDeploymentsRequestConfig = {
 	/**
 	 * @type string
 	 */
-	url: "/v6/deployments";
+	url: "/v7/deployments";
 };
 
 /**

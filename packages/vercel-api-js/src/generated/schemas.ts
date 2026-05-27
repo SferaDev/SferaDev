@@ -21649,7 +21649,7 @@ export const getDeploymentsQueryStateSchema = z
 	.string()
 	.optional()
 	.describe(
-		"Filter deployments based on their state (`BUILDING`, `ERROR`, `INITIALIZING`, `QUEUED`, `READY`, `CANCELED`)",
+		"Filter deployments based on their state (`BUILDING`, `ERROR`, `INITIALIZING`, `QUEUED`, `READY`, `CANCELED`, `BLOCKED`)",
 	);
 
 export const getDeploymentsQueryRollbackCandidateSchema = z
