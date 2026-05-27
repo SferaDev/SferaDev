@@ -18460,6 +18460,13 @@ export const teamNsnbConfigPreferenceEnum = {
 export type TeamNsnbConfigPreferenceEnumKey =
 	(typeof teamNsnbConfigPreferenceEnum)[keyof typeof teamNsnbConfigPreferenceEnum];
 
+export const targetEnum = {
+	production: "production",
+	preview: "preview",
+} as const;
+
+export type TargetEnumKey = (typeof targetEnum)[keyof typeof targetEnum];
+
 export const teamDeploymentPolicyDeploymentSourcesSourcesEnum = {
 	cli: "cli",
 	"deploy-hook": "deploy-hook",
@@ -19070,9 +19077,40 @@ export type Team = {
 								  }
 							)[];
 							/**
+							 * @type string | undefined
+							 */
+							id?: string | undefined;
+							/**
 							 * @type boolean
 							 */
 							enabled: false | true;
+							/**
+							 * @type array | undefined
+							 */
+							environments?:
+								| (
+										| {
+												/**
+												 * @type string
+												 */
+												type: TypeEnumKey;
+												/**
+												 * @type string
+												 */
+												target: TargetEnumKey;
+										  }
+										| {
+												/**
+												 * @type string
+												 */
+												type: TypeEnumKey;
+												/**
+												 * @type string
+												 */
+												environmentId: string;
+										  }
+								  )[]
+								| undefined;
 					  }
 					| undefined;
 				/**
@@ -19086,9 +19124,40 @@ export type Team = {
 							 */
 							sources: TeamDeploymentPolicyDeploymentSourcesSourcesEnumKey[];
 							/**
+							 * @type string | undefined
+							 */
+							id?: string | undefined;
+							/**
 							 * @type boolean
 							 */
 							enabled: false | true;
+							/**
+							 * @type array | undefined
+							 */
+							environments?:
+								| (
+										| {
+												/**
+												 * @type string
+												 */
+												type: TypeEnumKey;
+												/**
+												 * @type string
+												 */
+												target: TargetEnumKey;
+										  }
+										| {
+												/**
+												 * @type string
+												 */
+												type: TypeEnumKey;
+												/**
+												 * @type string
+												 */
+												environmentId: string;
+										  }
+								  )[]
+								| undefined;
 					  }
 					| undefined;
 		  }
