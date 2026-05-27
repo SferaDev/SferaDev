@@ -252,89 +252,6 @@ import type {
 	CreateRecordStatus404,
 	CreateRecordStatus409,
 	CreateSandboxesResponse,
-	CreateSandboxesSessionsBySessionIdCmdByCmdIdKillResponse,
-	CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus400,
-	CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus401,
-	CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus403,
-	CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus404,
-	CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus410,
-	CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus422,
-	CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus429,
-	CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus500,
-	CreateSandboxesSessionsBySessionIdCmdResponse,
-	CreateSandboxesSessionsBySessionIdCmdStatus400,
-	CreateSandboxesSessionsBySessionIdCmdStatus401,
-	CreateSandboxesSessionsBySessionIdCmdStatus403,
-	CreateSandboxesSessionsBySessionIdCmdStatus404,
-	CreateSandboxesSessionsBySessionIdCmdStatus410,
-	CreateSandboxesSessionsBySessionIdCmdStatus422,
-	CreateSandboxesSessionsBySessionIdCmdStatus429,
-	CreateSandboxesSessionsBySessionIdCmdStatus500,
-	CreateSandboxesSessionsBySessionIdExtendTimeoutResponse,
-	CreateSandboxesSessionsBySessionIdExtendTimeoutStatus400,
-	CreateSandboxesSessionsBySessionIdExtendTimeoutStatus401,
-	CreateSandboxesSessionsBySessionIdExtendTimeoutStatus403,
-	CreateSandboxesSessionsBySessionIdExtendTimeoutStatus404,
-	CreateSandboxesSessionsBySessionIdExtendTimeoutStatus410,
-	CreateSandboxesSessionsBySessionIdExtendTimeoutStatus422,
-	CreateSandboxesSessionsBySessionIdExtendTimeoutStatus429,
-	CreateSandboxesSessionsBySessionIdExtendTimeoutStatus500,
-	CreateSandboxesSessionsBySessionIdFsMkdirResponse,
-	CreateSandboxesSessionsBySessionIdFsMkdirStatus400,
-	CreateSandboxesSessionsBySessionIdFsMkdirStatus401,
-	CreateSandboxesSessionsBySessionIdFsMkdirStatus403,
-	CreateSandboxesSessionsBySessionIdFsMkdirStatus404,
-	CreateSandboxesSessionsBySessionIdFsMkdirStatus410,
-	CreateSandboxesSessionsBySessionIdFsMkdirStatus422,
-	CreateSandboxesSessionsBySessionIdFsMkdirStatus429,
-	CreateSandboxesSessionsBySessionIdFsMkdirStatus500,
-	CreateSandboxesSessionsBySessionIdFsReadResponse,
-	CreateSandboxesSessionsBySessionIdFsReadStatus400,
-	CreateSandboxesSessionsBySessionIdFsReadStatus401,
-	CreateSandboxesSessionsBySessionIdFsReadStatus403,
-	CreateSandboxesSessionsBySessionIdFsReadStatus404,
-	CreateSandboxesSessionsBySessionIdFsReadStatus410,
-	CreateSandboxesSessionsBySessionIdFsReadStatus422,
-	CreateSandboxesSessionsBySessionIdFsReadStatus429,
-	CreateSandboxesSessionsBySessionIdFsReadStatus500,
-	CreateSandboxesSessionsBySessionIdFsWriteResponse,
-	CreateSandboxesSessionsBySessionIdFsWriteStatus400,
-	CreateSandboxesSessionsBySessionIdFsWriteStatus401,
-	CreateSandboxesSessionsBySessionIdFsWriteStatus403,
-	CreateSandboxesSessionsBySessionIdFsWriteStatus404,
-	CreateSandboxesSessionsBySessionIdFsWriteStatus410,
-	CreateSandboxesSessionsBySessionIdFsWriteStatus422,
-	CreateSandboxesSessionsBySessionIdFsWriteStatus429,
-	CreateSandboxesSessionsBySessionIdFsWriteStatus500,
-	CreateSandboxesSessionsBySessionIdNetworkPolicyResponse,
-	CreateSandboxesSessionsBySessionIdNetworkPolicyStatus400,
-	CreateSandboxesSessionsBySessionIdNetworkPolicyStatus401,
-	CreateSandboxesSessionsBySessionIdNetworkPolicyStatus402,
-	CreateSandboxesSessionsBySessionIdNetworkPolicyStatus403,
-	CreateSandboxesSessionsBySessionIdNetworkPolicyStatus404,
-	CreateSandboxesSessionsBySessionIdNetworkPolicyStatus410,
-	CreateSandboxesSessionsBySessionIdNetworkPolicyStatus422,
-	CreateSandboxesSessionsBySessionIdNetworkPolicyStatus429,
-	CreateSandboxesSessionsBySessionIdNetworkPolicyStatus500,
-	CreateSandboxesSessionsBySessionIdSnapshotResponse,
-	CreateSandboxesSessionsBySessionIdSnapshotStatus400,
-	CreateSandboxesSessionsBySessionIdSnapshotStatus401,
-	CreateSandboxesSessionsBySessionIdSnapshotStatus402,
-	CreateSandboxesSessionsBySessionIdSnapshotStatus403,
-	CreateSandboxesSessionsBySessionIdSnapshotStatus404,
-	CreateSandboxesSessionsBySessionIdSnapshotStatus410,
-	CreateSandboxesSessionsBySessionIdSnapshotStatus422,
-	CreateSandboxesSessionsBySessionIdSnapshotStatus429,
-	CreateSandboxesSessionsBySessionIdSnapshotStatus500,
-	CreateSandboxesSessionsBySessionIdStopResponse,
-	CreateSandboxesSessionsBySessionIdStopStatus400,
-	CreateSandboxesSessionsBySessionIdStopStatus401,
-	CreateSandboxesSessionsBySessionIdStopStatus403,
-	CreateSandboxesSessionsBySessionIdStopStatus404,
-	CreateSandboxesSessionsBySessionIdStopStatus410,
-	CreateSandboxesSessionsBySessionIdStopStatus422,
-	CreateSandboxesSessionsBySessionIdStopStatus429,
-	CreateSandboxesSessionsBySessionIdStopStatus500,
 	CreateSandboxesStatus400,
 	CreateSandboxesStatus401,
 	CreateSandboxesStatus402,
@@ -352,6 +269,25 @@ import type {
 	CreateSdkKeyStatus403,
 	CreateSdkKeyStatus404,
 	CreateSdkKeyStatus409,
+	CreateSessionDirectoryResponse,
+	CreateSessionDirectoryStatus400,
+	CreateSessionDirectoryStatus401,
+	CreateSessionDirectoryStatus403,
+	CreateSessionDirectoryStatus404,
+	CreateSessionDirectoryStatus410,
+	CreateSessionDirectoryStatus422,
+	CreateSessionDirectoryStatus429,
+	CreateSessionDirectoryStatus500,
+	CreateSessionSnapshotResponse,
+	CreateSessionSnapshotStatus400,
+	CreateSessionSnapshotStatus401,
+	CreateSessionSnapshotStatus402,
+	CreateSessionSnapshotStatus403,
+	CreateSessionSnapshotStatus404,
+	CreateSessionSnapshotStatus410,
+	CreateSessionSnapshotStatus422,
+	CreateSessionSnapshotStatus429,
+	CreateSessionSnapshotStatus500,
 	CreateSharedEnvVariableResponse,
 	CreateSharedEnvVariableStatus400,
 	CreateSharedEnvVariableStatus401,
@@ -514,21 +450,15 @@ import type {
 	DeleteRoutesStatus404,
 	DeleteRoutesStatus409,
 	DeleteRoutesStatus500,
-	DeleteSandboxesByNameResponse,
-	DeleteSandboxesByNameStatus400,
-	DeleteSandboxesByNameStatus401,
-	DeleteSandboxesByNameStatus403,
-	DeleteSandboxesByNameStatus404,
-	DeleteSandboxesByNameStatus410,
-	DeleteSandboxesByNameStatus422,
-	DeleteSandboxesByNameStatus429,
-	DeleteSandboxesByNameStatus500,
-	DeleteSandboxesSnapshotsBySnapshotIdResponse,
-	DeleteSandboxesSnapshotsBySnapshotIdStatus400,
-	DeleteSandboxesSnapshotsBySnapshotIdStatus401,
-	DeleteSandboxesSnapshotsBySnapshotIdStatus403,
-	DeleteSandboxesSnapshotsBySnapshotIdStatus404,
-	DeleteSandboxesSnapshotsBySnapshotIdStatus429,
+	DeleteSandboxResponse,
+	DeleteSandboxStatus400,
+	DeleteSandboxStatus401,
+	DeleteSandboxStatus403,
+	DeleteSandboxStatus404,
+	DeleteSandboxStatus410,
+	DeleteSandboxStatus422,
+	DeleteSandboxStatus429,
+	DeleteSandboxStatus500,
 	DeleteSdkKeyResponse,
 	DeleteSdkKeyStatus400,
 	DeleteSdkKeyStatus401,
@@ -536,6 +466,12 @@ import type {
 	DeleteSdkKeyStatus403,
 	DeleteSdkKeyStatus404,
 	DeleteSdkKeyStatus409,
+	DeleteSessionSnapshotResponse,
+	DeleteSessionSnapshotStatus400,
+	DeleteSessionSnapshotStatus401,
+	DeleteSessionSnapshotStatus403,
+	DeleteSessionSnapshotStatus404,
+	DeleteSessionSnapshotStatus429,
 	DeleteSharedEnvVariableResponse,
 	DeleteSharedEnvVariableStatus400,
 	DeleteSharedEnvVariableStatus401,
@@ -587,6 +523,15 @@ import type {
 	ExchangeSsoTokenStatus400,
 	ExchangeSsoTokenStatus403,
 	ExchangeSsoTokenStatus500,
+	ExtendSessionTimeoutResponse,
+	ExtendSessionTimeoutStatus400,
+	ExtendSessionTimeoutStatus401,
+	ExtendSessionTimeoutStatus403,
+	ExtendSessionTimeoutStatus404,
+	ExtendSessionTimeoutStatus410,
+	ExtendSessionTimeoutStatus422,
+	ExtendSessionTimeoutStatus429,
+	ExtendSessionTimeoutStatus500,
 	FilterProjectEnvsResponse,
 	FilterProjectEnvsStatus400,
 	FilterProjectEnvsStatus401,
@@ -902,6 +847,16 @@ import type {
 	GetMicrofrontendsInGroupStatus400,
 	GetMicrofrontendsInGroupStatus401,
 	GetMicrofrontendsInGroupStatus403,
+	GetNamedSandboxResponse,
+	GetNamedSandboxStatus400,
+	GetNamedSandboxStatus401,
+	GetNamedSandboxStatus402,
+	GetNamedSandboxStatus403,
+	GetNamedSandboxStatus404,
+	GetNamedSandboxStatus409,
+	GetNamedSandboxStatus410,
+	GetNamedSandboxStatus429,
+	GetNamedSandboxStatus500,
 	GetObservabilityConfigurationProjectsResponse,
 	GetObservabilityConfigurationProjectsStatus400,
 	GetObservabilityConfigurationProjectsStatus401,
@@ -985,72 +940,6 @@ import type {
 	GetRuntimeLogsStatus400,
 	GetRuntimeLogsStatus401,
 	GetRuntimeLogsStatus403,
-	GetSandboxesByNameResponse,
-	GetSandboxesByNameStatus400,
-	GetSandboxesByNameStatus401,
-	GetSandboxesByNameStatus402,
-	GetSandboxesByNameStatus403,
-	GetSandboxesByNameStatus404,
-	GetSandboxesByNameStatus409,
-	GetSandboxesByNameStatus410,
-	GetSandboxesByNameStatus429,
-	GetSandboxesByNameStatus500,
-	GetSandboxesResponse,
-	GetSandboxesSessionsBySessionIdCmdByCmdIdLogsResponse,
-	GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus400,
-	GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus401,
-	GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus403,
-	GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus404,
-	GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus410,
-	GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus422,
-	GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus429,
-	GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus500,
-	GetSandboxesSessionsBySessionIdCmdByCmdIdResponse,
-	GetSandboxesSessionsBySessionIdCmdByCmdIdStatus400,
-	GetSandboxesSessionsBySessionIdCmdByCmdIdStatus401,
-	GetSandboxesSessionsBySessionIdCmdByCmdIdStatus403,
-	GetSandboxesSessionsBySessionIdCmdByCmdIdStatus404,
-	GetSandboxesSessionsBySessionIdCmdByCmdIdStatus410,
-	GetSandboxesSessionsBySessionIdCmdByCmdIdStatus422,
-	GetSandboxesSessionsBySessionIdCmdByCmdIdStatus429,
-	GetSandboxesSessionsBySessionIdCmdByCmdIdStatus500,
-	GetSandboxesSessionsBySessionIdCmdResponse,
-	GetSandboxesSessionsBySessionIdCmdStatus400,
-	GetSandboxesSessionsBySessionIdCmdStatus401,
-	GetSandboxesSessionsBySessionIdCmdStatus403,
-	GetSandboxesSessionsBySessionIdCmdStatus404,
-	GetSandboxesSessionsBySessionIdCmdStatus429,
-	GetSandboxesSessionsBySessionIdResponse,
-	GetSandboxesSessionsBySessionIdStatus400,
-	GetSandboxesSessionsBySessionIdStatus401,
-	GetSandboxesSessionsBySessionIdStatus403,
-	GetSandboxesSessionsBySessionIdStatus404,
-	GetSandboxesSessionsBySessionIdStatus429,
-	GetSandboxesSessionsBySessionIdStatus500,
-	GetSandboxesSessionsResponse,
-	GetSandboxesSessionsStatus400,
-	GetSandboxesSessionsStatus401,
-	GetSandboxesSessionsStatus403,
-	GetSandboxesSessionsStatus404,
-	GetSandboxesSessionsStatus429,
-	GetSandboxesSessionsStatus500,
-	GetSandboxesSnapshotsBySnapshotIdResponse,
-	GetSandboxesSnapshotsBySnapshotIdStatus400,
-	GetSandboxesSnapshotsBySnapshotIdStatus401,
-	GetSandboxesSnapshotsBySnapshotIdStatus403,
-	GetSandboxesSnapshotsBySnapshotIdStatus404,
-	GetSandboxesSnapshotsBySnapshotIdStatus429,
-	GetSandboxesSnapshotsResponse,
-	GetSandboxesSnapshotsStatus400,
-	GetSandboxesSnapshotsStatus401,
-	GetSandboxesSnapshotsStatus403,
-	GetSandboxesSnapshotsStatus404,
-	GetSandboxesSnapshotsStatus429,
-	GetSandboxesStatus400,
-	GetSandboxesStatus401,
-	GetSandboxesStatus403,
-	GetSandboxesStatus404,
-	GetSandboxesStatus429,
 	GetSdkKeysResponse,
 	GetSdkKeysStatus400,
 	GetSdkKeysStatus401,
@@ -1063,6 +952,37 @@ import type {
 	GetSecurityFirewallEventsStatus403,
 	GetSecurityFirewallEventsStatus404,
 	GetSecurityFirewallEventsStatus500,
+	GetSessionCommandLogsResponse,
+	GetSessionCommandLogsStatus400,
+	GetSessionCommandLogsStatus401,
+	GetSessionCommandLogsStatus403,
+	GetSessionCommandLogsStatus404,
+	GetSessionCommandLogsStatus410,
+	GetSessionCommandLogsStatus422,
+	GetSessionCommandLogsStatus429,
+	GetSessionCommandLogsStatus500,
+	GetSessionCommandResponse,
+	GetSessionCommandStatus400,
+	GetSessionCommandStatus401,
+	GetSessionCommandStatus403,
+	GetSessionCommandStatus404,
+	GetSessionCommandStatus410,
+	GetSessionCommandStatus422,
+	GetSessionCommandStatus429,
+	GetSessionCommandStatus500,
+	GetSessionResponse,
+	GetSessionSnapshotResponse,
+	GetSessionSnapshotStatus400,
+	GetSessionSnapshotStatus401,
+	GetSessionSnapshotStatus403,
+	GetSessionSnapshotStatus404,
+	GetSessionSnapshotStatus429,
+	GetSessionStatus400,
+	GetSessionStatus401,
+	GetSessionStatus403,
+	GetSessionStatus404,
+	GetSessionStatus429,
+	GetSessionStatus500,
 	GetSharedEnvVarResponse,
 	GetSharedEnvVarStatus400,
 	GetSharedEnvVarStatus401,
@@ -1163,6 +1083,15 @@ import type {
 	JoinTeamStatus403,
 	JoinTeamStatus404,
 	JoinTeamStatus503,
+	KillSessionCommandResponse,
+	KillSessionCommandStatus400,
+	KillSessionCommandStatus401,
+	KillSessionCommandStatus403,
+	KillSessionCommandStatus404,
+	KillSessionCommandStatus410,
+	KillSessionCommandStatus422,
+	KillSessionCommandStatus429,
+	KillSessionCommandStatus500,
 	ListAccessGroupMembersResponse,
 	ListAccessGroupMembersStatus400,
 	ListAccessGroupMembersStatus401,
@@ -1252,6 +1181,31 @@ import type {
 	ListPromoteAliasesStatus401,
 	ListPromoteAliasesStatus403,
 	ListPromoteAliasesStatus404,
+	ListSandboxesResponse,
+	ListSandboxesStatus400,
+	ListSandboxesStatus401,
+	ListSandboxesStatus403,
+	ListSandboxesStatus404,
+	ListSandboxesStatus429,
+	ListSessionCommandsResponse,
+	ListSessionCommandsStatus400,
+	ListSessionCommandsStatus401,
+	ListSessionCommandsStatus403,
+	ListSessionCommandsStatus404,
+	ListSessionCommandsStatus429,
+	ListSessionSnapshotsResponse,
+	ListSessionSnapshotsStatus400,
+	ListSessionSnapshotsStatus401,
+	ListSessionSnapshotsStatus403,
+	ListSessionSnapshotsStatus404,
+	ListSessionSnapshotsStatus429,
+	ListSessionsResponse,
+	ListSessionsStatus400,
+	ListSessionsStatus401,
+	ListSessionsStatus403,
+	ListSessionsStatus404,
+	ListSessionsStatus429,
+	ListSessionsStatus500,
 	ListSharedEnvVariableResponse,
 	ListSharedEnvVariableStatus400,
 	ListSharedEnvVariableStatus401,
@@ -1337,6 +1291,15 @@ import type {
 	ReadNetworkStatus400,
 	ReadNetworkStatus401,
 	ReadNetworkStatus403,
+	ReadSessionFileResponse,
+	ReadSessionFileStatus400,
+	ReadSessionFileStatus401,
+	ReadSessionFileStatus403,
+	ReadSessionFileStatus404,
+	ReadSessionFileStatus410,
+	ReadSessionFileStatus422,
+	ReadSessionFileStatus429,
+	ReadSessionFileStatus500,
 	RecordEventsResponse,
 	RecordEventsStatus400,
 	RecordEventsStatus401,
@@ -1433,6 +1396,15 @@ import type {
 	RestoreRedirectsStatus403,
 	RestoreRedirectsStatus404,
 	RestoreRedirectsStatus500,
+	RunSessionCommandResponse,
+	RunSessionCommandStatus400,
+	RunSessionCommandStatus401,
+	RunSessionCommandStatus403,
+	RunSessionCommandStatus404,
+	RunSessionCommandStatus410,
+	RunSessionCommandStatus422,
+	RunSessionCommandStatus429,
+	RunSessionCommandStatus500,
 	SearchRepoResponse,
 	SearchRepoStatus400,
 	SearchRepoStatus401,
@@ -1456,6 +1428,15 @@ import type {
 	StatusStatus401,
 	StatusStatus402,
 	StatusStatus403,
+	StopSessionResponse,
+	StopSessionStatus400,
+	StopSessionStatus401,
+	StopSessionStatus403,
+	StopSessionStatus404,
+	StopSessionStatus410,
+	StopSessionStatus422,
+	StopSessionStatus429,
+	StopSessionStatus500,
 	SubmitBillingDataResponse,
 	SubmitBillingDataStatus400,
 	SubmitBillingDataStatus401,
@@ -1691,17 +1672,27 @@ import type {
 	UpdateRouteVersionsStatus404,
 	UpdateRouteVersionsStatus409,
 	UpdateRouteVersionsStatus500,
-	UpdateSandboxesByNameResponse,
-	UpdateSandboxesByNameStatus400,
-	UpdateSandboxesByNameStatus401,
-	UpdateSandboxesByNameStatus402,
-	UpdateSandboxesByNameStatus403,
-	UpdateSandboxesByNameStatus404,
-	UpdateSandboxesByNameStatus409,
-	UpdateSandboxesByNameStatus410,
-	UpdateSandboxesByNameStatus422,
-	UpdateSandboxesByNameStatus429,
-	UpdateSandboxesByNameStatus500,
+	UpdateSandboxResponse,
+	UpdateSandboxStatus400,
+	UpdateSandboxStatus401,
+	UpdateSandboxStatus402,
+	UpdateSandboxStatus403,
+	UpdateSandboxStatus404,
+	UpdateSandboxStatus409,
+	UpdateSandboxStatus410,
+	UpdateSandboxStatus422,
+	UpdateSandboxStatus429,
+	UpdateSandboxStatus500,
+	UpdateSessionNetworkPolicyResponse,
+	UpdateSessionNetworkPolicyStatus400,
+	UpdateSessionNetworkPolicyStatus401,
+	UpdateSessionNetworkPolicyStatus402,
+	UpdateSessionNetworkPolicyStatus403,
+	UpdateSessionNetworkPolicyStatus404,
+	UpdateSessionNetworkPolicyStatus410,
+	UpdateSessionNetworkPolicyStatus422,
+	UpdateSessionNetworkPolicyStatus429,
+	UpdateSessionNetworkPolicyStatus500,
 	UpdateSharedEnvVariableResponse,
 	UpdateSharedEnvVariableStatus400,
 	UpdateSharedEnvVariableStatus401,
@@ -1748,6 +1739,15 @@ import type {
 	VerifyProjectDomainStatus400,
 	VerifyProjectDomainStatus401,
 	VerifyProjectDomainStatus403,
+	WriteSessionFilesResponse,
+	WriteSessionFilesStatus400,
+	WriteSessionFilesStatus401,
+	WriteSessionFilesStatus403,
+	WriteSessionFilesStatus404,
+	WriteSessionFilesStatus410,
+	WriteSessionFilesStatus422,
+	WriteSessionFilesStatus429,
+	WriteSessionFilesStatus500,
 } from "./types";
 
 /**
@@ -12228,9 +12228,11 @@ export async function unpauseProject(
 }
 
 /**
- * @link /sandboxes
+ * @summary List sandboxes
+ * @description Retrieves a paginated list of named sandboxes belonging to a specific project. Results can be sorted by creation time or name, and optionally filtered by name prefix.
+ * @link /v2/sandboxes
  */
-export async function getSandboxes(
+export async function listSandboxes(
 	{
 		queryParams,
 		config,
@@ -12243,6 +12245,8 @@ export async function getSandboxes(
 			cursor?: string;
 			sortOrder?: "asc" | "desc";
 			tags?: unknown;
+			teamId?: string;
+			slug?: string;
 		};
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
@@ -12250,13 +12254,13 @@ export async function getSandboxes(
 	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetSandboxesResponse,
+		ListSandboxesResponse,
 		ErrorWrapper<
-			| GetSandboxesStatus400
-			| GetSandboxesStatus401
-			| GetSandboxesStatus403
-			| GetSandboxesStatus404
-			| GetSandboxesStatus429
+			| ListSandboxesStatus400
+			| ListSandboxesStatus401
+			| ListSandboxesStatus403
+			| ListSandboxesStatus404
+			| ListSandboxesStatus429
 		>,
 		null,
 		Record<string, string>,
@@ -12268,11 +12272,13 @@ export async function getSandboxes(
 			cursor?: string;
 			sortOrder?: "asc" | "desc";
 			tags?: unknown;
+			teamId?: string;
+			slug?: string;
 		},
 		Record<string, string>
 	>({
 		method: "GET",
-		url: `/sandboxes`,
+		url: `/v2/sandboxes`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -12282,10 +12288,18 @@ export async function getSandboxes(
 }
 
 /**
- * @link /sandboxes
+ * @summary Create a named sandbox
+ * @description Creates a named sandbox environment. Named sandboxes have a unique name within a project and support automatic snapshotting on shutdown.
+ * @link /v2/sandboxes
  */
 export async function createSandboxes(
-	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
 ) {
 	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
@@ -12305,11 +12319,12 @@ export async function createSandboxes(
 		>,
 		null,
 		Record<string, string>,
-		Record<string, string>,
+		{ teamId?: string; slug?: string },
 		Record<string, string>
 	>({
 		method: "POST",
-		url: `/sandboxes`,
+		url: `/v2/sandboxes`,
+		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
 	});
@@ -12318,9 +12333,11 @@ export async function createSandboxes(
 }
 
 /**
- * @link /sandboxes/snapshots
+ * @summary List snapshots
+ * @description Retrieves a paginated list of snapshots for a specific project.
+ * @link /v2/sandboxes/snapshots
  */
-export async function getSandboxesSnapshots(
+export async function listSessionSnapshots(
 	{
 		queryParams,
 		config,
@@ -12331,6 +12348,8 @@ export async function getSandboxesSnapshots(
 			limit?: number;
 			cursor?: string;
 			sortOrder?: "asc" | "desc";
+			teamId?: string;
+			slug?: string;
 		};
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
@@ -12338,13 +12357,13 @@ export async function getSandboxesSnapshots(
 	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetSandboxesSnapshotsResponse,
+		ListSessionSnapshotsResponse,
 		ErrorWrapper<
-			| GetSandboxesSnapshotsStatus400
-			| GetSandboxesSnapshotsStatus401
-			| GetSandboxesSnapshotsStatus403
-			| GetSandboxesSnapshotsStatus404
-			| GetSandboxesSnapshotsStatus429
+			| ListSessionSnapshotsStatus400
+			| ListSessionSnapshotsStatus401
+			| ListSessionSnapshotsStatus403
+			| ListSessionSnapshotsStatus404
+			| ListSessionSnapshotsStatus429
 		>,
 		null,
 		Record<string, string>,
@@ -12354,11 +12373,13 @@ export async function getSandboxesSnapshots(
 			limit?: number;
 			cursor?: string;
 			sortOrder?: "asc" | "desc";
+			teamId?: string;
+			slug?: string;
 		},
 		Record<string, string>
 	>({
 		method: "GET",
-		url: `/sandboxes/snapshots`,
+		url: `/v2/sandboxes/snapshots`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -12368,14 +12389,18 @@ export async function getSandboxesSnapshots(
 }
 
 /**
- * @link /sandboxes/snapshots/{snapshotId}
+ * @summary Get a snapshot
+ * @description Retrieves detailed information about a specific snapshot, including its creation time, size, expiration date, and the source session it was created from.
+ * @link /v2/sandboxes/snapshots/{snapshotId}
  */
-export async function getSandboxesSnapshotsBySnapshotId(
+export async function getSessionSnapshot(
 	{
 		pathParams,
+		queryParams,
 		config,
 	}: {
 		pathParams: { snapshotId: string };
+		queryParams?: { teamId?: string; slug?: string };
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -12385,21 +12410,22 @@ export async function getSandboxesSnapshotsBySnapshotId(
 		throw new Error(`Missing required path parameter: snapshotId`);
 	}
 	const data = await request<
-		GetSandboxesSnapshotsBySnapshotIdResponse,
+		GetSessionSnapshotResponse,
 		ErrorWrapper<
-			| GetSandboxesSnapshotsBySnapshotIdStatus400
-			| GetSandboxesSnapshotsBySnapshotIdStatus401
-			| GetSandboxesSnapshotsBySnapshotIdStatus403
-			| GetSandboxesSnapshotsBySnapshotIdStatus404
-			| GetSandboxesSnapshotsBySnapshotIdStatus429
+			| GetSessionSnapshotStatus400
+			| GetSessionSnapshotStatus401
+			| GetSessionSnapshotStatus403
+			| GetSessionSnapshotStatus404
+			| GetSessionSnapshotStatus429
 		>,
 		null,
 		Record<string, string>,
-		Record<string, string>,
+		{ teamId?: string; slug?: string },
 		{ snapshotId: string }
 	>({
 		method: "GET",
-		url: `/sandboxes/snapshots/${pathParams.snapshotId}`,
+		url: `/v2/sandboxes/snapshots/${pathParams.snapshotId}`,
+		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
 	});
@@ -12408,14 +12434,18 @@ export async function getSandboxesSnapshotsBySnapshotId(
 }
 
 /**
- * @link /sandboxes/snapshots/{snapshotId}
+ * @summary Delete a snapshot
+ * @description Permanently deletes a snapshot and frees its associated storage. This action cannot be undone. After deletion, the snapshot can no longer be used to create new sessions.
+ * @link /v2/sandboxes/snapshots/{snapshotId}
  */
-export async function deleteSandboxesSnapshotsBySnapshotId(
+export async function deleteSessionSnapshot(
 	{
 		pathParams,
+		queryParams,
 		config,
 	}: {
 		pathParams: { snapshotId: string };
+		queryParams?: { teamId?: string; slug?: string };
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -12425,21 +12455,22 @@ export async function deleteSandboxesSnapshotsBySnapshotId(
 		throw new Error(`Missing required path parameter: snapshotId`);
 	}
 	const data = await request<
-		DeleteSandboxesSnapshotsBySnapshotIdResponse,
+		DeleteSessionSnapshotResponse,
 		ErrorWrapper<
-			| DeleteSandboxesSnapshotsBySnapshotIdStatus400
-			| DeleteSandboxesSnapshotsBySnapshotIdStatus401
-			| DeleteSandboxesSnapshotsBySnapshotIdStatus403
-			| DeleteSandboxesSnapshotsBySnapshotIdStatus404
-			| DeleteSandboxesSnapshotsBySnapshotIdStatus429
+			| DeleteSessionSnapshotStatus400
+			| DeleteSessionSnapshotStatus401
+			| DeleteSessionSnapshotStatus403
+			| DeleteSessionSnapshotStatus404
+			| DeleteSessionSnapshotStatus429
 		>,
 		null,
 		Record<string, string>,
-		Record<string, string>,
+		{ teamId?: string; slug?: string },
 		{ snapshotId: string }
 	>({
 		method: "DELETE",
-		url: `/sandboxes/snapshots/${pathParams.snapshotId}`,
+		url: `/v2/sandboxes/snapshots/${pathParams.snapshotId}`,
+		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
 	});
@@ -12448,9 +12479,11 @@ export async function deleteSandboxesSnapshotsBySnapshotId(
 }
 
 /**
- * @link /sandboxes/sessions
+ * @summary List sessions
+ * @description Retrieves a paginated list of sessions belonging to a specific sandbox. Results are sorted by creation time and paginated using an opaque cursor.
+ * @link /v2/sandboxes/sessions
  */
-export async function getSandboxesSessions(
+export async function listSessions(
 	{
 		queryParams,
 		config,
@@ -12461,6 +12494,8 @@ export async function getSandboxesSessions(
 			limit?: number;
 			cursor?: string;
 			sortOrder?: "asc" | "desc";
+			teamId?: string;
+			slug?: string;
 		};
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
@@ -12468,14 +12503,14 @@ export async function getSandboxesSessions(
 	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetSandboxesSessionsResponse,
+		ListSessionsResponse,
 		ErrorWrapper<
-			| GetSandboxesSessionsStatus400
-			| GetSandboxesSessionsStatus401
-			| GetSandboxesSessionsStatus403
-			| GetSandboxesSessionsStatus404
-			| GetSandboxesSessionsStatus429
-			| GetSandboxesSessionsStatus500
+			| ListSessionsStatus400
+			| ListSessionsStatus401
+			| ListSessionsStatus403
+			| ListSessionsStatus404
+			| ListSessionsStatus429
+			| ListSessionsStatus500
 		>,
 		null,
 		Record<string, string>,
@@ -12485,11 +12520,13 @@ export async function getSandboxesSessions(
 			limit?: number;
 			cursor?: string;
 			sortOrder?: "asc" | "desc";
+			teamId?: string;
+			slug?: string;
 		},
 		Record<string, string>
 	>({
 		method: "GET",
-		url: `/sandboxes/sessions`,
+		url: `/v2/sandboxes/sessions`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -12499,14 +12536,18 @@ export async function getSandboxesSessions(
 }
 
 /**
- * @link /sandboxes/sessions/{sessionId}
+ * @summary Get a session
+ * @description Retrieves detailed information about a specific session, including its current status, resource configuration, and exposed routes.
+ * @link /v2/sandboxes/sessions/{sessionId}
  */
-export async function getSandboxesSessionsBySessionId(
+export async function getSession(
 	{
 		pathParams,
+		queryParams,
 		config,
 	}: {
 		pathParams: { sessionId: string };
+		queryParams?: { teamId?: string; slug?: string };
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -12516,22 +12557,23 @@ export async function getSandboxesSessionsBySessionId(
 		throw new Error(`Missing required path parameter: sessionId`);
 	}
 	const data = await request<
-		GetSandboxesSessionsBySessionIdResponse,
+		GetSessionResponse,
 		ErrorWrapper<
-			| GetSandboxesSessionsBySessionIdStatus400
-			| GetSandboxesSessionsBySessionIdStatus401
-			| GetSandboxesSessionsBySessionIdStatus403
-			| GetSandboxesSessionsBySessionIdStatus404
-			| GetSandboxesSessionsBySessionIdStatus429
-			| GetSandboxesSessionsBySessionIdStatus500
+			| GetSessionStatus400
+			| GetSessionStatus401
+			| GetSessionStatus403
+			| GetSessionStatus404
+			| GetSessionStatus429
+			| GetSessionStatus500
 		>,
 		null,
 		Record<string, string>,
-		Record<string, string>,
+		{ teamId?: string; slug?: string },
 		{ sessionId: string }
 	>({
 		method: "GET",
-		url: `/sandboxes/sessions/${pathParams.sessionId}`,
+		url: `/v2/sandboxes/sessions/${pathParams.sessionId}`,
+		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
 	});
@@ -12540,16 +12582,18 @@ export async function getSandboxesSessionsBySessionId(
 }
 
 /**
- * @link /sandboxes/{name}
+ * @summary Get a named sandbox
+ * @description Retrieves a named sandbox by name, including its current sandbox and routes. If the sandbox is stopped and resume is true, a new sandbox will be created from the most recent snapshot.
+ * @link /v2/sandboxes/{name}
  */
-export async function getSandboxesByName(
+export async function getNamedSandbox(
 	{
 		pathParams,
 		queryParams,
 		config,
 	}: {
 		pathParams: { name: string };
-		queryParams?: { projectId?: string; resume?: boolean };
+		queryParams?: { projectId?: string; resume?: boolean; teamId?: string; slug?: string };
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -12559,25 +12603,25 @@ export async function getSandboxesByName(
 		throw new Error(`Missing required path parameter: name`);
 	}
 	const data = await request<
-		GetSandboxesByNameResponse,
+		GetNamedSandboxResponse,
 		ErrorWrapper<
-			| GetSandboxesByNameStatus400
-			| GetSandboxesByNameStatus401
-			| GetSandboxesByNameStatus402
-			| GetSandboxesByNameStatus403
-			| GetSandboxesByNameStatus404
-			| GetSandboxesByNameStatus409
-			| GetSandboxesByNameStatus410
-			| GetSandboxesByNameStatus429
-			| GetSandboxesByNameStatus500
+			| GetNamedSandboxStatus400
+			| GetNamedSandboxStatus401
+			| GetNamedSandboxStatus402
+			| GetNamedSandboxStatus403
+			| GetNamedSandboxStatus404
+			| GetNamedSandboxStatus409
+			| GetNamedSandboxStatus410
+			| GetNamedSandboxStatus429
+			| GetNamedSandboxStatus500
 		>,
 		null,
 		Record<string, string>,
-		{ projectId?: string; resume?: boolean },
+		{ projectId?: string; resume?: boolean; teamId?: string; slug?: string },
 		{ name: string }
 	>({
 		method: "GET",
-		url: `/sandboxes/${pathParams.name}`,
+		url: `/v2/sandboxes/${pathParams.name}`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -12587,16 +12631,18 @@ export async function getSandboxesByName(
 }
 
 /**
- * @link /sandboxes/{name}
+ * @summary Update a sandbox
+ * @description Updates the configuration of a sandbox. Only the provided fields will be modified; omitted fields remain unchanged.
+ * @link /v2/sandboxes/{name}
  */
-export async function updateSandboxesByName(
+export async function updateSandbox(
 	{
 		pathParams,
 		queryParams,
 		config,
 	}: {
 		pathParams: { name: string };
-		queryParams?: { projectId?: string; resume?: boolean };
+		queryParams?: { projectId?: string; resume?: boolean; teamId?: string; slug?: string };
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -12606,26 +12652,26 @@ export async function updateSandboxesByName(
 		throw new Error(`Missing required path parameter: name`);
 	}
 	const data = await request<
-		UpdateSandboxesByNameResponse,
+		UpdateSandboxResponse,
 		ErrorWrapper<
-			| UpdateSandboxesByNameStatus400
-			| UpdateSandboxesByNameStatus401
-			| UpdateSandboxesByNameStatus402
-			| UpdateSandboxesByNameStatus403
-			| UpdateSandboxesByNameStatus404
-			| UpdateSandboxesByNameStatus409
-			| UpdateSandboxesByNameStatus410
-			| UpdateSandboxesByNameStatus422
-			| UpdateSandboxesByNameStatus429
-			| UpdateSandboxesByNameStatus500
+			| UpdateSandboxStatus400
+			| UpdateSandboxStatus401
+			| UpdateSandboxStatus402
+			| UpdateSandboxStatus403
+			| UpdateSandboxStatus404
+			| UpdateSandboxStatus409
+			| UpdateSandboxStatus410
+			| UpdateSandboxStatus422
+			| UpdateSandboxStatus429
+			| UpdateSandboxStatus500
 		>,
 		null,
 		Record<string, string>,
-		{ projectId?: string; resume?: boolean },
+		{ projectId?: string; resume?: boolean; teamId?: string; slug?: string },
 		{ name: string }
 	>({
 		method: "PATCH",
-		url: `/sandboxes/${pathParams.name}`,
+		url: `/v2/sandboxes/${pathParams.name}`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -12635,16 +12681,18 @@ export async function updateSandboxesByName(
 }
 
 /**
- * @link /sandboxes/{name}
+ * @summary Delete a sandbox
+ * @description Deletes a sandbox by name. If sandboxes are currently running, they will be stopped first. This operation deletes all sandbox entities with the given name and the named sandbox metadata.
+ * @link /v2/sandboxes/{name}
  */
-export async function deleteSandboxesByName(
+export async function deleteSandbox(
 	{
 		pathParams,
 		queryParams,
 		config,
 	}: {
 		pathParams: { name: string };
-		queryParams?: { projectId?: string };
+		queryParams?: { projectId?: string; teamId?: string; slug?: string };
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -12654,24 +12702,24 @@ export async function deleteSandboxesByName(
 		throw new Error(`Missing required path parameter: name`);
 	}
 	const data = await request<
-		DeleteSandboxesByNameResponse,
+		DeleteSandboxResponse,
 		ErrorWrapper<
-			| DeleteSandboxesByNameStatus400
-			| DeleteSandboxesByNameStatus401
-			| DeleteSandboxesByNameStatus403
-			| DeleteSandboxesByNameStatus404
-			| DeleteSandboxesByNameStatus410
-			| DeleteSandboxesByNameStatus422
-			| DeleteSandboxesByNameStatus429
-			| DeleteSandboxesByNameStatus500
+			| DeleteSandboxStatus400
+			| DeleteSandboxStatus401
+			| DeleteSandboxStatus403
+			| DeleteSandboxStatus404
+			| DeleteSandboxStatus410
+			| DeleteSandboxStatus422
+			| DeleteSandboxStatus429
+			| DeleteSandboxStatus500
 		>,
 		null,
 		Record<string, string>,
-		{ projectId?: string },
+		{ projectId?: string; teamId?: string; slug?: string },
 		{ name: string }
 	>({
 		method: "DELETE",
-		url: `/sandboxes/${pathParams.name}`,
+		url: `/v2/sandboxes/${pathParams.name}`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -12681,14 +12729,18 @@ export async function deleteSandboxesByName(
 }
 
 /**
- * @link /sandboxes/sessions/{sessionId}/cmd
+ * @summary List commands
+ * @description Retrieves a list of all commands that have been executed in a session, including their current status, exit codes, and execution times, ordered from the most recent to the oldest.
+ * @link /v2/sandboxes/sessions/{sessionId}/cmd
  */
-export async function getSandboxesSessionsBySessionIdCmd(
+export async function listSessionCommands(
 	{
 		pathParams,
+		queryParams,
 		config,
 	}: {
 		pathParams: { sessionId: string };
+		queryParams?: { teamId?: string; slug?: string };
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -12698,21 +12750,22 @@ export async function getSandboxesSessionsBySessionIdCmd(
 		throw new Error(`Missing required path parameter: sessionId`);
 	}
 	const data = await request<
-		GetSandboxesSessionsBySessionIdCmdResponse,
+		ListSessionCommandsResponse,
 		ErrorWrapper<
-			| GetSandboxesSessionsBySessionIdCmdStatus400
-			| GetSandboxesSessionsBySessionIdCmdStatus401
-			| GetSandboxesSessionsBySessionIdCmdStatus403
-			| GetSandboxesSessionsBySessionIdCmdStatus404
-			| GetSandboxesSessionsBySessionIdCmdStatus429
+			| ListSessionCommandsStatus400
+			| ListSessionCommandsStatus401
+			| ListSessionCommandsStatus403
+			| ListSessionCommandsStatus404
+			| ListSessionCommandsStatus429
 		>,
 		null,
 		Record<string, string>,
-		Record<string, string>,
+		{ teamId?: string; slug?: string },
 		{ sessionId: string }
 	>({
 		method: "GET",
-		url: `/sandboxes/sessions/${pathParams.sessionId}/cmd`,
+		url: `/v2/sandboxes/sessions/${pathParams.sessionId}/cmd`,
+		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
 	});
@@ -12721,14 +12774,18 @@ export async function getSandboxesSessionsBySessionIdCmd(
 }
 
 /**
- * @link /sandboxes/sessions/{sessionId}/cmd
+ * @summary Execute a command
+ * @description Executes a shell command inside a running session. The command runs asynchronously and returns immediately with a command ID that can be used to track its progress and retrieve its output. Optionally, use the `wait` parameter to stream the command status until completion.
+ * @link /v2/sandboxes/sessions/{sessionId}/cmd
  */
-export async function createSandboxesSessionsBySessionIdCmd(
+export async function runSessionCommand(
 	{
 		pathParams,
+		queryParams,
 		config,
 	}: {
 		pathParams: { sessionId: string };
+		queryParams?: { teamId?: string; slug?: string };
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -12738,24 +12795,25 @@ export async function createSandboxesSessionsBySessionIdCmd(
 		throw new Error(`Missing required path parameter: sessionId`);
 	}
 	const data = await request<
-		CreateSandboxesSessionsBySessionIdCmdResponse,
+		RunSessionCommandResponse,
 		ErrorWrapper<
-			| CreateSandboxesSessionsBySessionIdCmdStatus400
-			| CreateSandboxesSessionsBySessionIdCmdStatus401
-			| CreateSandboxesSessionsBySessionIdCmdStatus403
-			| CreateSandboxesSessionsBySessionIdCmdStatus404
-			| CreateSandboxesSessionsBySessionIdCmdStatus410
-			| CreateSandboxesSessionsBySessionIdCmdStatus422
-			| CreateSandboxesSessionsBySessionIdCmdStatus429
-			| CreateSandboxesSessionsBySessionIdCmdStatus500
+			| RunSessionCommandStatus400
+			| RunSessionCommandStatus401
+			| RunSessionCommandStatus403
+			| RunSessionCommandStatus404
+			| RunSessionCommandStatus410
+			| RunSessionCommandStatus422
+			| RunSessionCommandStatus429
+			| RunSessionCommandStatus500
 		>,
 		null,
 		Record<string, string>,
-		Record<string, string>,
+		{ teamId?: string; slug?: string },
 		{ sessionId: string }
 	>({
 		method: "POST",
-		url: `/sandboxes/sessions/${pathParams.sessionId}/cmd`,
+		url: `/v2/sandboxes/sessions/${pathParams.sessionId}/cmd`,
+		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
 	});
@@ -12764,16 +12822,18 @@ export async function createSandboxesSessionsBySessionIdCmd(
 }
 
 /**
- * @link /sandboxes/sessions/{sessionId}/cmd/{cmdId}
+ * @summary Get a command
+ * @description Retrieves the current status and details of a command executed in a session. Use the `wait` parameter to block until the command finishes execution.
+ * @link /v2/sandboxes/sessions/{sessionId}/cmd/{cmdId}
  */
-export async function getSandboxesSessionsBySessionIdCmdByCmdId(
+export async function getSessionCommand(
 	{
 		pathParams,
 		queryParams,
 		config,
 	}: {
 		pathParams: { sessionId: string; cmdId: string };
-		queryParams?: { wait?: "true" | "false" };
+		queryParams?: { wait?: "true" | "false"; teamId?: string; slug?: string };
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -12787,24 +12847,24 @@ export async function getSandboxesSessionsBySessionIdCmdByCmdId(
 		throw new Error(`Missing required path parameter: cmdId`);
 	}
 	const data = await request<
-		GetSandboxesSessionsBySessionIdCmdByCmdIdResponse,
+		GetSessionCommandResponse,
 		ErrorWrapper<
-			| GetSandboxesSessionsBySessionIdCmdByCmdIdStatus400
-			| GetSandboxesSessionsBySessionIdCmdByCmdIdStatus401
-			| GetSandboxesSessionsBySessionIdCmdByCmdIdStatus403
-			| GetSandboxesSessionsBySessionIdCmdByCmdIdStatus404
-			| GetSandboxesSessionsBySessionIdCmdByCmdIdStatus410
-			| GetSandboxesSessionsBySessionIdCmdByCmdIdStatus422
-			| GetSandboxesSessionsBySessionIdCmdByCmdIdStatus429
-			| GetSandboxesSessionsBySessionIdCmdByCmdIdStatus500
+			| GetSessionCommandStatus400
+			| GetSessionCommandStatus401
+			| GetSessionCommandStatus403
+			| GetSessionCommandStatus404
+			| GetSessionCommandStatus410
+			| GetSessionCommandStatus422
+			| GetSessionCommandStatus429
+			| GetSessionCommandStatus500
 		>,
 		null,
 		Record<string, string>,
-		{ wait?: "true" | "false" },
+		{ wait?: "true" | "false"; teamId?: string; slug?: string },
 		{ sessionId: string; cmdId: string }
 	>({
 		method: "GET",
-		url: `/sandboxes/sessions/${pathParams.sessionId}/cmd/${pathParams.cmdId}`,
+		url: `/v2/sandboxes/sessions/${pathParams.sessionId}/cmd/${pathParams.cmdId}`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -12814,14 +12874,18 @@ export async function getSandboxesSessionsBySessionIdCmdByCmdId(
 }
 
 /**
- * @link /sandboxes/sessions/{sessionId}/cmd/{cmdId}/kill
+ * @summary Kill a command
+ * @description Sends a signal to terminate a running command in a session. The signal can be used to gracefully stop (SIGTERM) or forcefully kill (SIGKILL) the process. The command must still be running for this operation to succeed.
+ * @link /v2/sandboxes/sessions/{sessionId}/cmd/{cmdId}/kill
  */
-export async function createSandboxesSessionsBySessionIdCmdByCmdIdKill(
+export async function killSessionCommand(
 	{
 		pathParams,
+		queryParams,
 		config,
 	}: {
 		pathParams: { cmdId: string; sessionId: string };
+		queryParams?: { teamId?: string; slug?: string };
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -12835,24 +12899,25 @@ export async function createSandboxesSessionsBySessionIdCmdByCmdIdKill(
 		throw new Error(`Missing required path parameter: sessionId`);
 	}
 	const data = await request<
-		CreateSandboxesSessionsBySessionIdCmdByCmdIdKillResponse,
+		KillSessionCommandResponse,
 		ErrorWrapper<
-			| CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus400
-			| CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus401
-			| CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus403
-			| CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus404
-			| CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus410
-			| CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus422
-			| CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus429
-			| CreateSandboxesSessionsBySessionIdCmdByCmdIdKillStatus500
+			| KillSessionCommandStatus400
+			| KillSessionCommandStatus401
+			| KillSessionCommandStatus403
+			| KillSessionCommandStatus404
+			| KillSessionCommandStatus410
+			| KillSessionCommandStatus422
+			| KillSessionCommandStatus429
+			| KillSessionCommandStatus500
 		>,
 		null,
 		Record<string, string>,
-		Record<string, string>,
+		{ teamId?: string; slug?: string },
 		{ cmdId: string; sessionId: string }
 	>({
 		method: "POST",
-		url: `/sandboxes/sessions/${pathParams.sessionId}/cmd/${pathParams.cmdId}/kill`,
+		url: `/v2/sandboxes/sessions/${pathParams.sessionId}/cmd/${pathParams.cmdId}/kill`,
+		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
 	});
@@ -12861,14 +12926,18 @@ export async function createSandboxesSessionsBySessionIdCmdByCmdIdKill(
 }
 
 /**
- * @link /sandboxes/sessions/{sessionId}/cmd/{cmdId}/logs
+ * @summary Stream command logs
+ * @description Streams the output of a command in real-time using newline-delimited JSON (ND-JSON). Each entry includes the output data and stream type. Stream types include `stdout`, `stderr`, and `error` (for stream failures).
+ * @link /v2/sandboxes/sessions/{sessionId}/cmd/{cmdId}/logs
  */
-export async function getSandboxesSessionsBySessionIdCmdByCmdIdLogs(
+export async function getSessionCommandLogs(
 	{
 		pathParams,
+		queryParams,
 		config,
 	}: {
 		pathParams: { sessionId: string; cmdId: string };
+		queryParams?: { teamId?: string; slug?: string };
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -12882,24 +12951,25 @@ export async function getSandboxesSessionsBySessionIdCmdByCmdIdLogs(
 		throw new Error(`Missing required path parameter: cmdId`);
 	}
 	const data = await request<
-		GetSandboxesSessionsBySessionIdCmdByCmdIdLogsResponse,
+		GetSessionCommandLogsResponse,
 		ErrorWrapper<
-			| GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus400
-			| GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus401
-			| GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus403
-			| GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus404
-			| GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus410
-			| GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus422
-			| GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus429
-			| GetSandboxesSessionsBySessionIdCmdByCmdIdLogsStatus500
+			| GetSessionCommandLogsStatus400
+			| GetSessionCommandLogsStatus401
+			| GetSessionCommandLogsStatus403
+			| GetSessionCommandLogsStatus404
+			| GetSessionCommandLogsStatus410
+			| GetSessionCommandLogsStatus422
+			| GetSessionCommandLogsStatus429
+			| GetSessionCommandLogsStatus500
 		>,
 		null,
 		Record<string, string>,
-		Record<string, string>,
+		{ teamId?: string; slug?: string },
 		{ sessionId: string; cmdId: string }
 	>({
 		method: "GET",
-		url: `/sandboxes/sessions/${pathParams.sessionId}/cmd/${pathParams.cmdId}/logs`,
+		url: `/v2/sandboxes/sessions/${pathParams.sessionId}/cmd/${pathParams.cmdId}/logs`,
+		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
 	});
@@ -12908,14 +12978,18 @@ export async function getSandboxesSessionsBySessionIdCmdByCmdIdLogs(
 }
 
 /**
- * @link /sandboxes/sessions/{sessionId}/stop
+ * @summary Stop a session
+ * @description Stops a running session and releases its allocated resources. All running processes within the session will be terminated. This action cannot be undone. A stopped session cannot be restarted.
+ * @link /v2/sandboxes/sessions/{sessionId}/stop
  */
-export async function createSandboxesSessionsBySessionIdStop(
+export async function stopSession(
 	{
 		pathParams,
+		queryParams,
 		config,
 	}: {
 		pathParams: { sessionId: string };
+		queryParams?: { teamId?: string; slug?: string };
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -12925,24 +12999,25 @@ export async function createSandboxesSessionsBySessionIdStop(
 		throw new Error(`Missing required path parameter: sessionId`);
 	}
 	const data = await request<
-		CreateSandboxesSessionsBySessionIdStopResponse,
+		StopSessionResponse,
 		ErrorWrapper<
-			| CreateSandboxesSessionsBySessionIdStopStatus400
-			| CreateSandboxesSessionsBySessionIdStopStatus401
-			| CreateSandboxesSessionsBySessionIdStopStatus403
-			| CreateSandboxesSessionsBySessionIdStopStatus404
-			| CreateSandboxesSessionsBySessionIdStopStatus410
-			| CreateSandboxesSessionsBySessionIdStopStatus422
-			| CreateSandboxesSessionsBySessionIdStopStatus429
-			| CreateSandboxesSessionsBySessionIdStopStatus500
+			| StopSessionStatus400
+			| StopSessionStatus401
+			| StopSessionStatus403
+			| StopSessionStatus404
+			| StopSessionStatus410
+			| StopSessionStatus422
+			| StopSessionStatus429
+			| StopSessionStatus500
 		>,
 		null,
 		Record<string, string>,
-		Record<string, string>,
+		{ teamId?: string; slug?: string },
 		{ sessionId: string }
 	>({
 		method: "POST",
-		url: `/sandboxes/sessions/${pathParams.sessionId}/stop`,
+		url: `/v2/sandboxes/sessions/${pathParams.sessionId}/stop`,
+		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
 	});
@@ -12951,14 +13026,18 @@ export async function createSandboxesSessionsBySessionIdStop(
 }
 
 /**
- * @link /sandboxes/sessions/{sessionId}/extend-timeout
+ * @summary Extend session timeout
+ * @description Extends the maximum execution time of a running session. The session must be active and able to accept commands. The total timeout cannot exceed the maximum allowed limit for your account.
+ * @link /v2/sandboxes/sessions/{sessionId}/extend-timeout
  */
-export async function createSandboxesSessionsBySessionIdExtendTimeout(
+export async function extendSessionTimeout(
 	{
 		pathParams,
+		queryParams,
 		config,
 	}: {
 		pathParams: { sessionId: string };
+		queryParams?: { teamId?: string; slug?: string };
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -12968,24 +13047,25 @@ export async function createSandboxesSessionsBySessionIdExtendTimeout(
 		throw new Error(`Missing required path parameter: sessionId`);
 	}
 	const data = await request<
-		CreateSandboxesSessionsBySessionIdExtendTimeoutResponse,
+		ExtendSessionTimeoutResponse,
 		ErrorWrapper<
-			| CreateSandboxesSessionsBySessionIdExtendTimeoutStatus400
-			| CreateSandboxesSessionsBySessionIdExtendTimeoutStatus401
-			| CreateSandboxesSessionsBySessionIdExtendTimeoutStatus403
-			| CreateSandboxesSessionsBySessionIdExtendTimeoutStatus404
-			| CreateSandboxesSessionsBySessionIdExtendTimeoutStatus410
-			| CreateSandboxesSessionsBySessionIdExtendTimeoutStatus422
-			| CreateSandboxesSessionsBySessionIdExtendTimeoutStatus429
-			| CreateSandboxesSessionsBySessionIdExtendTimeoutStatus500
+			| ExtendSessionTimeoutStatus400
+			| ExtendSessionTimeoutStatus401
+			| ExtendSessionTimeoutStatus403
+			| ExtendSessionTimeoutStatus404
+			| ExtendSessionTimeoutStatus410
+			| ExtendSessionTimeoutStatus422
+			| ExtendSessionTimeoutStatus429
+			| ExtendSessionTimeoutStatus500
 		>,
 		null,
 		Record<string, string>,
-		Record<string, string>,
+		{ teamId?: string; slug?: string },
 		{ sessionId: string }
 	>({
 		method: "POST",
-		url: `/sandboxes/sessions/${pathParams.sessionId}/extend-timeout`,
+		url: `/v2/sandboxes/sessions/${pathParams.sessionId}/extend-timeout`,
+		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
 	});
@@ -12994,14 +13074,18 @@ export async function createSandboxesSessionsBySessionIdExtendTimeout(
 }
 
 /**
- * @link /sandboxes/sessions/{sessionId}/network-policy
+ * @summary Update network policy
+ * @description Replaces the network access policy of a running session. Use this to control which external hosts the session can communicate with. This is a full replacement. Any previously configured network rules will be overwritten.
+ * @link /v2/sandboxes/sessions/{sessionId}/network-policy
  */
-export async function createSandboxesSessionsBySessionIdNetworkPolicy(
+export async function updateSessionNetworkPolicy(
 	{
 		pathParams,
+		queryParams,
 		config,
 	}: {
 		pathParams: { sessionId: string };
+		queryParams?: { teamId?: string; slug?: string };
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -13011,25 +13095,26 @@ export async function createSandboxesSessionsBySessionIdNetworkPolicy(
 		throw new Error(`Missing required path parameter: sessionId`);
 	}
 	const data = await request<
-		CreateSandboxesSessionsBySessionIdNetworkPolicyResponse,
+		UpdateSessionNetworkPolicyResponse,
 		ErrorWrapper<
-			| CreateSandboxesSessionsBySessionIdNetworkPolicyStatus400
-			| CreateSandboxesSessionsBySessionIdNetworkPolicyStatus401
-			| CreateSandboxesSessionsBySessionIdNetworkPolicyStatus402
-			| CreateSandboxesSessionsBySessionIdNetworkPolicyStatus403
-			| CreateSandboxesSessionsBySessionIdNetworkPolicyStatus404
-			| CreateSandboxesSessionsBySessionIdNetworkPolicyStatus410
-			| CreateSandboxesSessionsBySessionIdNetworkPolicyStatus422
-			| CreateSandboxesSessionsBySessionIdNetworkPolicyStatus429
-			| CreateSandboxesSessionsBySessionIdNetworkPolicyStatus500
+			| UpdateSessionNetworkPolicyStatus400
+			| UpdateSessionNetworkPolicyStatus401
+			| UpdateSessionNetworkPolicyStatus402
+			| UpdateSessionNetworkPolicyStatus403
+			| UpdateSessionNetworkPolicyStatus404
+			| UpdateSessionNetworkPolicyStatus410
+			| UpdateSessionNetworkPolicyStatus422
+			| UpdateSessionNetworkPolicyStatus429
+			| UpdateSessionNetworkPolicyStatus500
 		>,
 		null,
 		Record<string, string>,
-		Record<string, string>,
+		{ teamId?: string; slug?: string },
 		{ sessionId: string }
 	>({
 		method: "POST",
-		url: `/sandboxes/sessions/${pathParams.sessionId}/network-policy`,
+		url: `/v2/sandboxes/sessions/${pathParams.sessionId}/network-policy`,
+		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
 	});
@@ -13038,14 +13123,18 @@ export async function createSandboxesSessionsBySessionIdNetworkPolicy(
 }
 
 /**
- * @link /sandboxes/sessions/{sessionId}/fs/read
+ * @summary Read a file
+ * @description Downloads the contents of a file from a session's filesystem. The file content is returned as a binary stream with appropriate Content-Disposition headers for file download.
+ * @link /v2/sandboxes/sessions/{sessionId}/fs/read
  */
-export async function createSandboxesSessionsBySessionIdFsRead(
+export async function readSessionFile(
 	{
 		pathParams,
+		queryParams,
 		config,
 	}: {
 		pathParams: { sessionId: string };
+		queryParams?: { teamId?: string; slug?: string };
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -13055,24 +13144,25 @@ export async function createSandboxesSessionsBySessionIdFsRead(
 		throw new Error(`Missing required path parameter: sessionId`);
 	}
 	const data = await request<
-		CreateSandboxesSessionsBySessionIdFsReadResponse,
+		ReadSessionFileResponse,
 		ErrorWrapper<
-			| CreateSandboxesSessionsBySessionIdFsReadStatus400
-			| CreateSandboxesSessionsBySessionIdFsReadStatus401
-			| CreateSandboxesSessionsBySessionIdFsReadStatus403
-			| CreateSandboxesSessionsBySessionIdFsReadStatus404
-			| CreateSandboxesSessionsBySessionIdFsReadStatus410
-			| CreateSandboxesSessionsBySessionIdFsReadStatus422
-			| CreateSandboxesSessionsBySessionIdFsReadStatus429
-			| CreateSandboxesSessionsBySessionIdFsReadStatus500
+			| ReadSessionFileStatus400
+			| ReadSessionFileStatus401
+			| ReadSessionFileStatus403
+			| ReadSessionFileStatus404
+			| ReadSessionFileStatus410
+			| ReadSessionFileStatus422
+			| ReadSessionFileStatus429
+			| ReadSessionFileStatus500
 		>,
 		null,
 		Record<string, string>,
-		Record<string, string>,
+		{ teamId?: string; slug?: string },
 		{ sessionId: string }
 	>({
 		method: "POST",
-		url: `/sandboxes/sessions/${pathParams.sessionId}/fs/read`,
+		url: `/v2/sandboxes/sessions/${pathParams.sessionId}/fs/read`,
+		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
 	});
@@ -13081,14 +13171,18 @@ export async function createSandboxesSessionsBySessionIdFsRead(
 }
 
 /**
- * @link /sandboxes/sessions/{sessionId}/fs/mkdir
+ * @summary Create a directory
+ * @description Creates a new directory in a session's filesystem. By default, parent directories are created recursively if they don't exist (similar to `mkdir -p`).
+ * @link /v2/sandboxes/sessions/{sessionId}/fs/mkdir
  */
-export async function createSandboxesSessionsBySessionIdFsMkdir(
+export async function createSessionDirectory(
 	{
 		pathParams,
+		queryParams,
 		config,
 	}: {
 		pathParams: { sessionId: string };
+		queryParams?: { teamId?: string; slug?: string };
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -13098,24 +13192,25 @@ export async function createSandboxesSessionsBySessionIdFsMkdir(
 		throw new Error(`Missing required path parameter: sessionId`);
 	}
 	const data = await request<
-		CreateSandboxesSessionsBySessionIdFsMkdirResponse,
+		CreateSessionDirectoryResponse,
 		ErrorWrapper<
-			| CreateSandboxesSessionsBySessionIdFsMkdirStatus400
-			| CreateSandboxesSessionsBySessionIdFsMkdirStatus401
-			| CreateSandboxesSessionsBySessionIdFsMkdirStatus403
-			| CreateSandboxesSessionsBySessionIdFsMkdirStatus404
-			| CreateSandboxesSessionsBySessionIdFsMkdirStatus410
-			| CreateSandboxesSessionsBySessionIdFsMkdirStatus422
-			| CreateSandboxesSessionsBySessionIdFsMkdirStatus429
-			| CreateSandboxesSessionsBySessionIdFsMkdirStatus500
+			| CreateSessionDirectoryStatus400
+			| CreateSessionDirectoryStatus401
+			| CreateSessionDirectoryStatus403
+			| CreateSessionDirectoryStatus404
+			| CreateSessionDirectoryStatus410
+			| CreateSessionDirectoryStatus422
+			| CreateSessionDirectoryStatus429
+			| CreateSessionDirectoryStatus500
 		>,
 		null,
 		Record<string, string>,
-		Record<string, string>,
+		{ teamId?: string; slug?: string },
 		{ sessionId: string }
 	>({
 		method: "POST",
-		url: `/sandboxes/sessions/${pathParams.sessionId}/fs/mkdir`,
+		url: `/v2/sandboxes/sessions/${pathParams.sessionId}/fs/mkdir`,
+		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
 	});
@@ -13124,15 +13219,19 @@ export async function createSandboxesSessionsBySessionIdFsMkdir(
 }
 
 /**
- * @link /sandboxes/sessions/{sessionId}/fs/write
+ * @summary Write files
+ * @description Uploads and extracts files to a session's filesystem. Files must be uploaded as a gzipped tarball (`.tar.gz`) with the `Content-Type` header set to `application/gzip`. The tarball contents are extracted to the session's working directory, or to a custom directory specified via the `x-cwd` header.
+ * @link /v2/sandboxes/sessions/{sessionId}/fs/write
  */
-export async function createSandboxesSessionsBySessionIdFsWrite(
+export async function writeSessionFiles(
 	{
 		pathParams,
+		queryParams,
 		headers,
 		config,
 	}: {
 		pathParams: { sessionId: string };
+		queryParams?: { teamId?: string; slug?: string };
 		headers?: { "'x-Cwd'"?: string };
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
@@ -13143,24 +13242,25 @@ export async function createSandboxesSessionsBySessionIdFsWrite(
 		throw new Error(`Missing required path parameter: sessionId`);
 	}
 	const data = await request<
-		CreateSandboxesSessionsBySessionIdFsWriteResponse,
+		WriteSessionFilesResponse,
 		ErrorWrapper<
-			| CreateSandboxesSessionsBySessionIdFsWriteStatus400
-			| CreateSandboxesSessionsBySessionIdFsWriteStatus401
-			| CreateSandboxesSessionsBySessionIdFsWriteStatus403
-			| CreateSandboxesSessionsBySessionIdFsWriteStatus404
-			| CreateSandboxesSessionsBySessionIdFsWriteStatus410
-			| CreateSandboxesSessionsBySessionIdFsWriteStatus422
-			| CreateSandboxesSessionsBySessionIdFsWriteStatus429
-			| CreateSandboxesSessionsBySessionIdFsWriteStatus500
+			| WriteSessionFilesStatus400
+			| WriteSessionFilesStatus401
+			| WriteSessionFilesStatus403
+			| WriteSessionFilesStatus404
+			| WriteSessionFilesStatus410
+			| WriteSessionFilesStatus422
+			| WriteSessionFilesStatus429
+			| WriteSessionFilesStatus500
 		>,
 		null,
 		{ "'x-Cwd'"?: string },
-		Record<string, string>,
+		{ teamId?: string; slug?: string },
 		{ sessionId: string }
 	>({
 		method: "POST",
-		url: `/sandboxes/sessions/${pathParams.sessionId}/fs/write`,
+		url: `/v2/sandboxes/sessions/${pathParams.sessionId}/fs/write`,
+		queryParams,
 		...requestConfig,
 		headers: { ...headers, ...requestConfig.headers },
 	});
@@ -13169,14 +13269,18 @@ export async function createSandboxesSessionsBySessionIdFsWrite(
 }
 
 /**
- * @link /sandboxes/sessions/{sessionId}/snapshot
+ * @summary Create a snapshot
+ * @description Creates a point-in-time snapshot of a running session's filesystem. Snapshots can be used to quickly restore a session to a previous state or to create new sessions with pre-configured environments. The session must be running and able to accept commands for a snapshot to be created. The session will be terminated after the snapshot is created.
+ * @link /v2/sandboxes/sessions/{sessionId}/snapshot
  */
-export async function createSandboxesSessionsBySessionIdSnapshot(
+export async function createSessionSnapshot(
 	{
 		pathParams,
+		queryParams,
 		config,
 	}: {
 		pathParams: { sessionId: string };
+		queryParams?: { teamId?: string; slug?: string };
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -13186,25 +13290,26 @@ export async function createSandboxesSessionsBySessionIdSnapshot(
 		throw new Error(`Missing required path parameter: sessionId`);
 	}
 	const data = await request<
-		CreateSandboxesSessionsBySessionIdSnapshotResponse,
+		CreateSessionSnapshotResponse,
 		ErrorWrapper<
-			| CreateSandboxesSessionsBySessionIdSnapshotStatus400
-			| CreateSandboxesSessionsBySessionIdSnapshotStatus401
-			| CreateSandboxesSessionsBySessionIdSnapshotStatus402
-			| CreateSandboxesSessionsBySessionIdSnapshotStatus403
-			| CreateSandboxesSessionsBySessionIdSnapshotStatus404
-			| CreateSandboxesSessionsBySessionIdSnapshotStatus410
-			| CreateSandboxesSessionsBySessionIdSnapshotStatus422
-			| CreateSandboxesSessionsBySessionIdSnapshotStatus429
-			| CreateSandboxesSessionsBySessionIdSnapshotStatus500
+			| CreateSessionSnapshotStatus400
+			| CreateSessionSnapshotStatus401
+			| CreateSessionSnapshotStatus402
+			| CreateSessionSnapshotStatus403
+			| CreateSessionSnapshotStatus404
+			| CreateSessionSnapshotStatus410
+			| CreateSessionSnapshotStatus422
+			| CreateSessionSnapshotStatus429
+			| CreateSessionSnapshotStatus500
 		>,
 		null,
 		Record<string, string>,
-		Record<string, string>,
+		{ teamId?: string; slug?: string },
 		{ sessionId: string }
 	>({
 		method: "POST",
-		url: `/sandboxes/sessions/${pathParams.sessionId}/snapshot`,
+		url: `/v2/sandboxes/sessions/${pathParams.sessionId}/snapshot`,
+		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
 	});
@@ -15681,32 +15786,28 @@ export const operationsByPath = {
 	"GET /v1/projects/{projectId}/promote/aliases": listPromoteAliases,
 	"POST /v1/projects/{projectId}/pause": pauseProject,
 	"POST /v1/projects/{projectId}/unpause": unpauseProject,
-	"GET /sandboxes": getSandboxes,
-	"POST /sandboxes": createSandboxes,
-	"GET /sandboxes/snapshots": getSandboxesSnapshots,
-	"GET /sandboxes/snapshots/{snapshotId}": getSandboxesSnapshotsBySnapshotId,
-	"DELETE /sandboxes/snapshots/{snapshotId}": deleteSandboxesSnapshotsBySnapshotId,
-	"GET /sandboxes/sessions": getSandboxesSessions,
-	"GET /sandboxes/sessions/{sessionId}": getSandboxesSessionsBySessionId,
-	"GET /sandboxes/{name}": getSandboxesByName,
-	"PATCH /sandboxes/{name}": updateSandboxesByName,
-	"DELETE /sandboxes/{name}": deleteSandboxesByName,
-	"GET /sandboxes/sessions/{sessionId}/cmd": getSandboxesSessionsBySessionIdCmd,
-	"POST /sandboxes/sessions/{sessionId}/cmd": createSandboxesSessionsBySessionIdCmd,
-	"GET /sandboxes/sessions/{sessionId}/cmd/{cmdId}": getSandboxesSessionsBySessionIdCmdByCmdId,
-	"POST /sandboxes/sessions/{sessionId}/cmd/{cmdId}/kill":
-		createSandboxesSessionsBySessionIdCmdByCmdIdKill,
-	"GET /sandboxes/sessions/{sessionId}/cmd/{cmdId}/logs":
-		getSandboxesSessionsBySessionIdCmdByCmdIdLogs,
-	"POST /sandboxes/sessions/{sessionId}/stop": createSandboxesSessionsBySessionIdStop,
-	"POST /sandboxes/sessions/{sessionId}/extend-timeout":
-		createSandboxesSessionsBySessionIdExtendTimeout,
-	"POST /sandboxes/sessions/{sessionId}/network-policy":
-		createSandboxesSessionsBySessionIdNetworkPolicy,
-	"POST /sandboxes/sessions/{sessionId}/fs/read": createSandboxesSessionsBySessionIdFsRead,
-	"POST /sandboxes/sessions/{sessionId}/fs/mkdir": createSandboxesSessionsBySessionIdFsMkdir,
-	"POST /sandboxes/sessions/{sessionId}/fs/write": createSandboxesSessionsBySessionIdFsWrite,
-	"POST /sandboxes/sessions/{sessionId}/snapshot": createSandboxesSessionsBySessionIdSnapshot,
+	"GET /v2/sandboxes": listSandboxes,
+	"POST /v2/sandboxes": createSandboxes,
+	"GET /v2/sandboxes/snapshots": listSessionSnapshots,
+	"GET /v2/sandboxes/snapshots/{snapshotId}": getSessionSnapshot,
+	"DELETE /v2/sandboxes/snapshots/{snapshotId}": deleteSessionSnapshot,
+	"GET /v2/sandboxes/sessions": listSessions,
+	"GET /v2/sandboxes/sessions/{sessionId}": getSession,
+	"GET /v2/sandboxes/{name}": getNamedSandbox,
+	"PATCH /v2/sandboxes/{name}": updateSandbox,
+	"DELETE /v2/sandboxes/{name}": deleteSandbox,
+	"GET /v2/sandboxes/sessions/{sessionId}/cmd": listSessionCommands,
+	"POST /v2/sandboxes/sessions/{sessionId}/cmd": runSessionCommand,
+	"GET /v2/sandboxes/sessions/{sessionId}/cmd/{cmdId}": getSessionCommand,
+	"POST /v2/sandboxes/sessions/{sessionId}/cmd/{cmdId}/kill": killSessionCommand,
+	"GET /v2/sandboxes/sessions/{sessionId}/cmd/{cmdId}/logs": getSessionCommandLogs,
+	"POST /v2/sandboxes/sessions/{sessionId}/stop": stopSession,
+	"POST /v2/sandboxes/sessions/{sessionId}/extend-timeout": extendSessionTimeout,
+	"POST /v2/sandboxes/sessions/{sessionId}/network-policy": updateSessionNetworkPolicy,
+	"POST /v2/sandboxes/sessions/{sessionId}/fs/read": readSessionFile,
+	"POST /v2/sandboxes/sessions/{sessionId}/fs/mkdir": createSessionDirectory,
+	"POST /v2/sandboxes/sessions/{sessionId}/fs/write": writeSessionFiles,
+	"POST /v2/sandboxes/sessions/{sessionId}/snapshot": createSessionSnapshot,
 	"POST /v1/security/attack-mode": updateAttackChallengeMode,
 	"PUT /v1/security/firewall/config": putFirewallConfig,
 	"PATCH /v1/security/firewall/config": updateFirewallConfig,
@@ -16065,6 +16166,30 @@ export const operationsByTag = {
 		approveRollingReleaseStage,
 		completeRollingRelease,
 	},
+	sandboxes: {
+		listSandboxes,
+		createSandboxes,
+		listSessionSnapshots,
+		getSessionSnapshot,
+		deleteSessionSnapshot,
+		listSessions,
+		getSession,
+		getNamedSandbox,
+		updateSandbox,
+		deleteSandbox,
+		listSessionCommands,
+		runSessionCommand,
+		getSessionCommand,
+		killSessionCommand,
+		getSessionCommandLogs,
+		stopSession,
+		extendSessionTimeout,
+		updateSessionNetworkPolicy,
+		readSessionFile,
+		createSessionDirectory,
+		writeSessionFiles,
+		createSessionSnapshot,
+	},
 	security: {
 		updateAttackChallengeMode,
 		putFirewallConfig,
@@ -16403,6 +16528,33 @@ export const tagDictionary = {
 		DELETE: ["deleteRollingReleaseConfig"],
 		PATCH: ["updateRollingReleaseConfig"],
 		POST: ["approveRollingReleaseStage", "completeRollingRelease"],
+	},
+	sandboxes: {
+		GET: [
+			"listSandboxes",
+			"listSessionSnapshots",
+			"getSessionSnapshot",
+			"listSessions",
+			"getSession",
+			"getNamedSandbox",
+			"listSessionCommands",
+			"getSessionCommand",
+			"getSessionCommandLogs",
+		],
+		POST: [
+			"createSandboxes",
+			"runSessionCommand",
+			"killSessionCommand",
+			"stopSession",
+			"extendSessionTimeout",
+			"updateSessionNetworkPolicy",
+			"readSessionFile",
+			"createSessionDirectory",
+			"writeSessionFiles",
+			"createSessionSnapshot",
+		],
+		DELETE: ["deleteSessionSnapshot", "deleteSandbox"],
+		PATCH: ["updateSandbox"],
 	},
 	security: {
 		POST: ["updateAttackChallengeMode", "addBypassIp"],
