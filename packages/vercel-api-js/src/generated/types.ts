@@ -12508,57 +12508,11 @@ export type UserEvent = {
 						/**
 						 * @type object
 						 */
-						previous: {
-							/**
-							 * @type object
-							 */
-							gitSources?:
-								| ({
-										/**
-										 * @type boolean
-										 */
-										enabled: false | true;
-								  } | null)
-								| undefined;
-							/**
-							 * @type object
-							 */
-							deploymentSources?:
-								| ({
-										/**
-										 * @type boolean
-										 */
-										enabled: false | true;
-								  } | null)
-								| undefined;
-						} | null;
+						previous: object | null;
 						/**
 						 * @type object
 						 */
-						next: {
-							/**
-							 * @type object
-							 */
-							gitSources?:
-								| ({
-										/**
-										 * @type boolean
-										 */
-										enabled: false | true;
-								  } | null)
-								| undefined;
-							/**
-							 * @type object
-							 */
-							deploymentSources?:
-								| ({
-										/**
-										 * @type boolean
-										 */
-										enabled: false | true;
-								  } | null)
-								| undefined;
-						} | null;
+						next: object | null;
 				  }
 				| {
 						/**
@@ -14000,57 +13954,11 @@ export type UserEvent = {
 						/**
 						 * @type object
 						 */
-						previous: {
-							/**
-							 * @type object
-							 */
-							gitSources?:
-								| ({
-										/**
-										 * @type boolean
-										 */
-										enabled: false | true;
-								  } | null)
-								| undefined;
-							/**
-							 * @type object
-							 */
-							deploymentSources?:
-								| ({
-										/**
-										 * @type boolean
-										 */
-										enabled: false | true;
-								  } | null)
-								| undefined;
-						} | null;
+						previous: object | null;
 						/**
 						 * @type object
 						 */
-						next: {
-							/**
-							 * @type object
-							 */
-							gitSources?:
-								| ({
-										/**
-										 * @type boolean
-										 */
-										enabled: false | true;
-								  } | null)
-								| undefined;
-							/**
-							 * @type object
-							 */
-							deploymentSources?:
-								| ({
-										/**
-										 * @type boolean
-										 */
-										enabled: false | true;
-								  } | null)
-								| undefined;
-						} | null;
+						next: object | null;
 				  }
 				| {
 						/**
@@ -18508,17 +18416,6 @@ export const targetEnum = {
 
 export type TargetEnumKey = (typeof targetEnum)[keyof typeof targetEnum];
 
-export const teamDeploymentPolicyDeploymentSourcesSourcesEnum = {
-	cli: "cli",
-	"deploy-hook": "deploy-hook",
-	git: "git",
-	integration: "integration",
-	"rest-api": "rest-api",
-} as const;
-
-export type TeamDeploymentPolicyDeploymentSourcesSourcesEnumKey =
-	(typeof teamDeploymentPolicyDeploymentSourcesSourcesEnum)[keyof typeof teamDeploymentPolicyDeploymentSourcesSourcesEnum];
-
 export const teamMembershipRoleEnum = {
 	BILLING: "BILLING",
 	CONTRIBUTOR: "CONTRIBUTOR",
@@ -19088,8 +18985,7 @@ export type Team = {
 	deploymentPolicy?:
 		| {
 				/**
-				 * @description Restricts inbound Git deployments to an allowlist of orgs and/or repos. `enabled: true` with an empty `sources` list is treated as deny-all.
-				 * @type object | undefined
+				 * @type array | undefined
 				 */
 				gitSources?:
 					| {
@@ -19123,88 +19019,75 @@ export type Team = {
 								  }
 							)[];
 							/**
-							 * @type string | undefined
-							 */
-							id?: string | undefined;
-							/**
 							 * @type boolean
 							 */
 							enabled: false | true;
 							/**
-							 * @type array | undefined
+							 * @type array
 							 */
-							environments?:
-								| (
-										| {
-												/**
-												 * @type string
-												 */
-												type: TypeEnumKey;
-												/**
-												 * @type string
-												 */
-												target: TargetEnumKey;
-										  }
-										| {
-												/**
-												 * @type string
-												 */
-												type: TypeEnumKey;
-												/**
-												 * @type string
-												 */
-												environmentId: string;
-										  }
-								  )[]
-								| undefined;
-					  }
+							environments: (
+								| {
+										/**
+										 * @type string
+										 */
+										type: TypeEnumKey;
+										/**
+										 * @type string
+										 */
+										target: TargetEnumKey;
+								  }
+								| {
+										/**
+										 * @type string
+										 */
+										type: TypeEnumKey;
+										/**
+										 * @type string
+										 */
+										environmentId: string;
+								  }
+							)[];
+					  }[]
 					| undefined;
 				/**
-				 * @description Restricts which deployment sources are allowed. A deployment passes if its source is in `sources`. Multiple entries are evaluated as OR. `enabled: true` with an empty `sources` list is treated as deny-all.
-				 * @type object | undefined
+				 * @type array | undefined
 				 */
 				deploymentSources?:
 					| {
 							/**
 							 * @type array
 							 */
-							sources: TeamDeploymentPolicyDeploymentSourcesSourcesEnumKey[];
-							/**
-							 * @type string | undefined
-							 */
-							id?: string | undefined;
+							sources: ("cli" | "deploy-hook" | "git" | "integration" | "rest-api")[];
 							/**
 							 * @type boolean
 							 */
 							enabled: false | true;
 							/**
-							 * @type array | undefined
+							 * @type array
 							 */
-							environments?:
-								| (
-										| {
-												/**
-												 * @type string
-												 */
-												type: TypeEnumKey;
-												/**
-												 * @type string
-												 */
-												target: TargetEnumKey;
-										  }
-										| {
-												/**
-												 * @type string
-												 */
-												type: TypeEnumKey;
-												/**
-												 * @type string
-												 */
-												environmentId: string;
-										  }
-								  )[]
-								| undefined;
-					  }
+							environments: (
+								| {
+										/**
+										 * @type string
+										 */
+										type: TypeEnumKey;
+										/**
+										 * @type string
+										 */
+										target: TargetEnumKey;
+								  }
+								| {
+										/**
+										 * @type string
+										 */
+										type: TypeEnumKey;
+										/**
+										 * @type string
+										 */
+										environmentId: string;
+								  }
+							)[];
+					  }[]
 					| undefined;
 		  }
 		| undefined;
