@@ -1812,6 +1812,7 @@ export const userEventTypeEnum = {
 	"user-mfa-configuration-updated": "user-mfa-configuration-updated",
 	"user-mfa-recovery-codes-regenerated": "user-mfa-recovery-codes-regenerated",
 	"user-mfa-removed": "user-mfa-removed",
+	"user-mfa-setup-skipped": "user-mfa-setup-skipped",
 	"user-mfa-totp-verification-started": "user-mfa-totp-verification-started",
 	"user-mfa-totp-verified": "user-mfa-totp-verified",
 	"user-primary-email-updated": "user-primary-email-updated",
@@ -14767,6 +14768,21 @@ export type UserEvent = {
 				  }
 				| {
 						/**
+						 * @type object
+						 */
+						mfa: {
+							/**
+							 * @type boolean
+							 */
+							enabled: false | true;
+							/**
+							 * @type boolean
+							 */
+							totpVerified: false | true;
+						};
+				  }
+				| {
+						/**
 						 * @type boolean
 						 */
 						enabled: false | true;
@@ -15986,6 +16002,7 @@ export const listEventTypeNameEnum = {
 	"user-mfa-configuration-updated": "user-mfa-configuration-updated",
 	"user-mfa-recovery-codes-regenerated": "user-mfa-recovery-codes-regenerated",
 	"user-mfa-removed": "user-mfa-removed",
+	"user-mfa-setup-skipped": "user-mfa-setup-skipped",
 	"user-mfa-totp-verification-started": "user-mfa-totp-verification-started",
 	"user-mfa-totp-verified": "user-mfa-totp-verified",
 	"user-primary-email-updated": "user-primary-email-updated",
@@ -16520,6 +16537,7 @@ export const listEventTypeReplacedByEnum = {
 	"user-mfa-configuration-updated": "user-mfa-configuration-updated",
 	"user-mfa-recovery-codes-regenerated": "user-mfa-recovery-codes-regenerated",
 	"user-mfa-removed": "user-mfa-removed",
+	"user-mfa-setup-skipped": "user-mfa-setup-skipped",
 	"user-mfa-totp-verification-started": "user-mfa-totp-verification-started",
 	"user-mfa-totp-verified": "user-mfa-totp-verified",
 	"user-primary-email-updated": "user-primary-email-updated",
