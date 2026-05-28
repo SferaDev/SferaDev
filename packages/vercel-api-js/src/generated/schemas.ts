@@ -1001,6 +1001,7 @@ export const userEventSchema = z
 				"user-mfa-configuration-updated",
 				"user-mfa-recovery-codes-regenerated",
 				"user-mfa-removed",
+				"user-mfa-setup-skipped",
 				"user-mfa-totp-verification-started",
 				"user-mfa-totp-verified",
 				"user-primary-email-updated",
@@ -7478,6 +7479,14 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						mfa: z.object({
+							enabled: z.union([z.literal(false), z.literal(true)]),
+							totpVerified: z.union([z.literal(false), z.literal(true)]),
+						}),
+					})
+					.strict(),
+				z
+					.object({
 						enabled: z.union([z.literal(false), z.literal(true)]),
 						totpVerified: z.union([z.literal(false), z.literal(true)]),
 					})
@@ -8369,6 +8378,7 @@ export const listEventTypeSchema = z
 				"user-mfa-configuration-updated",
 				"user-mfa-recovery-codes-regenerated",
 				"user-mfa-removed",
+				"user-mfa-setup-skipped",
 				"user-mfa-totp-verification-started",
 				"user-mfa-totp-verified",
 				"user-primary-email-updated",
@@ -8898,6 +8908,7 @@ export const listEventTypeSchema = z
 					"user-mfa-configuration-updated",
 					"user-mfa-recovery-codes-regenerated",
 					"user-mfa-removed",
+					"user-mfa-setup-skipped",
 					"user-mfa-totp-verification-started",
 					"user-mfa-totp-verified",
 					"user-primary-email-updated",
