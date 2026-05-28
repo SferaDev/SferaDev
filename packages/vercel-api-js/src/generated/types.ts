@@ -6442,6 +6442,20 @@ export type UserEvent = {
 						 */
 						drainUrl: string | null;
 						/**
+						 * @type string
+						 */
+						drainName: string | null;
+						/**
+						 * @type string | undefined
+						 */
+						integrationName?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						drainUrl: string | null;
+						/**
 						 * @type string | undefined
 						 */
 						integrationName?: string | undefined;

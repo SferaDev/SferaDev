@@ -3069,6 +3069,13 @@ export const userEventSchema = z
 				z
 					.object({
 						drainUrl: z.string().nullable(),
+						drainName: z.string().nullable(),
+						integrationName: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						drainUrl: z.string().nullable(),
 						integrationName: z.string().optional(),
 					})
 					.strict(),
