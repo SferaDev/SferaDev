@@ -10062,6 +10062,10 @@ export const teamSchema = z
 			.union([z.literal(false), z.literal(true)])
 			.nullish()
 			.describe("Indicates if IP addresses should be accessible in log drains"),
+		dpAccessRequestsMode: z
+			.enum(["all", "email-domain", "none"])
+			.optional()
+			.describe("Controls who can request access to protected deployments."),
 		ipBuckets: z
 			.array(
 				z.object({
