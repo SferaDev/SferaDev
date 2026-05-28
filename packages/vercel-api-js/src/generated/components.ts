@@ -1742,6 +1742,12 @@ import type {
 	UploadFileStatus401,
 	UploadFileStatus403,
 	UploadFileStatus426,
+	UploadProjectAvatarResponse,
+	UploadProjectAvatarStatus400,
+	UploadProjectAvatarStatus401,
+	UploadProjectAvatarStatus403,
+	UploadProjectAvatarStatus413,
+	UploadProjectAvatarStatus415,
 	VerifyProjectDomainResponse,
 	VerifyProjectDomainStatus400,
 	VerifyProjectDomainStatus401,
@@ -10658,6 +10664,51 @@ export async function deleteProject(
 }
 
 /**
+ * @summary Upload a project avatar
+ * @description Upload an image as the avatar of the project identified by `idOrName`. The request body is the raw bytes of a JPG, PNG, or SVG image; the `Content-Type` header must declare which. SVG payloads are sanitized and optimized server-side before storage. The final SHA-1 of the stored bytes becomes the project's `avatar` value.
+ * @link /v1/projects/{idOrName}/avatar
+ */
+export async function uploadProjectAvatar(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.idOrName) {
+		throw new Error(`Missing required path parameter: idOrName`);
+	}
+	const data = await request<
+		UploadProjectAvatarResponse,
+		ErrorWrapper<
+			| UploadProjectAvatarStatus400
+			| UploadProjectAvatarStatus401
+			| UploadProjectAvatarStatus403
+			| UploadProjectAvatarStatus413
+			| UploadProjectAvatarStatus415
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ idOrName: string }
+	>({
+		method: "POST",
+		url: `/v1/projects/${pathParams.idOrName}/avatar`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
  * @summary Configures Static IPs for a project
  * @description Allows configuring Static IPs for a project
  * @link /v1/projects/{idOrName}/shared-connect-links
@@ -15869,6 +15920,7 @@ export const operationsByPath = {
 	"GET /v9/projects/{idOrName}": getProject,
 	"PATCH /v9/projects/{idOrName}": updateProject,
 	"DELETE /v9/projects/{idOrName}": deleteProject,
+	"POST /v1/projects/{idOrName}/avatar": uploadProjectAvatar,
 	"PATCH /v1/projects/{idOrName}/shared-connect-links": updateStaticIps,
 	"POST /v9/projects/{idOrName}/custom-environments": createCustomEnvironment,
 	"GET /v9/projects/{idOrName}/custom-environments": getProjectsByIdOrNameCustomEnvironments,
@@ -16254,6 +16306,7 @@ export const operationsByTag = {
 		getProject,
 		updateProject,
 		deleteProject,
+		uploadProjectAvatar,
 		getProjectDomains,
 		getProjectDomain,
 		updateProjectDomain,
@@ -16625,6 +16678,7 @@ export const tagDictionary = {
 		],
 		POST: [
 			"createProject",
+			"uploadProjectAvatar",
 			"addProjectDomain",
 			"moveProjectDomain",
 			"verifyProjectDomain",

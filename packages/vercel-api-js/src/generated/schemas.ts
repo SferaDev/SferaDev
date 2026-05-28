@@ -17945,6 +17945,41 @@ export const deleteProjectResponseSchema = z.union([
 	deleteProjectStatus409Schema,
 ]);
 
+export const uploadProjectAvatarPathIdOrNameSchema = z
+	.string()
+	.describe("The unique project identifier or the project name.");
+
+export const uploadProjectAvatarQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const uploadProjectAvatarQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const uploadProjectAvatarStatus200Schema = z.unknown();
+
+export const uploadProjectAvatarStatus400Schema = z.unknown();
+
+export const uploadProjectAvatarStatus401Schema = z.unknown();
+
+export const uploadProjectAvatarStatus403Schema = z.unknown();
+
+export const uploadProjectAvatarStatus413Schema = z.unknown();
+
+export const uploadProjectAvatarStatus415Schema = z.unknown();
+
+export const uploadProjectAvatarResponseSchema = z.union([
+	uploadProjectAvatarStatus200Schema,
+	uploadProjectAvatarStatus400Schema,
+	uploadProjectAvatarStatus401Schema,
+	uploadProjectAvatarStatus403Schema,
+	uploadProjectAvatarStatus413Schema,
+	uploadProjectAvatarStatus415Schema,
+]);
+
 export const updateStaticIpsPathIdOrNameSchema = z
 	.string()
 	.describe("The unique project identifier or the project name");
