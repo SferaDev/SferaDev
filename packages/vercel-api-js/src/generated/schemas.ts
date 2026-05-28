@@ -6244,34 +6244,8 @@ export const userEventSchema = z
 					.object({
 						projectId: z.string(),
 						projectName: z.string(),
-						previous: z
-							.object({
-								gitSources: z
-									.object({
-										enabled: z.union([z.literal(false), z.literal(true)]),
-									})
-									.nullish(),
-								deploymentSources: z
-									.object({
-										enabled: z.union([z.literal(false), z.literal(true)]),
-									})
-									.nullish(),
-							})
-							.nullable(),
-						next: z
-							.object({
-								gitSources: z
-									.object({
-										enabled: z.union([z.literal(false), z.literal(true)]),
-									})
-									.nullish(),
-								deploymentSources: z
-									.object({
-										enabled: z.union([z.literal(false), z.literal(true)]),
-									})
-									.nullish(),
-							})
-							.nullable(),
+						previous: z.object({}).nullable(),
+						next: z.object({}).nullable(),
 					})
 					.strict(),
 				z
@@ -7039,34 +7013,8 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
-						previous: z
-							.object({
-								gitSources: z
-									.object({
-										enabled: z.union([z.literal(false), z.literal(true)]),
-									})
-									.nullish(),
-								deploymentSources: z
-									.object({
-										enabled: z.union([z.literal(false), z.literal(true)]),
-									})
-									.nullish(),
-							})
-							.nullable(),
-						next: z
-							.object({
-								gitSources: z
-									.object({
-										enabled: z.union([z.literal(false), z.literal(true)]),
-									})
-									.nullish(),
-								deploymentSources: z
-									.object({
-										enabled: z.union([z.literal(false), z.literal(true)]),
-									})
-									.nullish(),
-							})
-							.nullable(),
+						previous: z.object({}).nullable(),
+						next: z.object({}).nullable(),
 					})
 					.strict(),
 				z
@@ -10130,28 +10078,27 @@ export const teamSchema = z
 		deploymentPolicy: z
 			.object({
 				gitSources: z
-					.object({
-						sources: z.array(
-							z.union([
-								z
-									.object({
-										provider: z.enum(["github", "gitlab", "bitbucket"]),
-										org: z.string(),
-									})
-									.strict(),
-								z
-									.object({
-										provider: z.enum(["github", "gitlab", "bitbucket"]),
-										org: z.string(),
-										repo: z.string(),
-									})
-									.strict(),
-							]),
-						),
-						id: z.string().optional(),
-						enabled: z.union([z.literal(false), z.literal(true)]),
-						environments: z
-							.array(
+					.array(
+						z.object({
+							sources: z.array(
+								z.union([
+									z
+										.object({
+											provider: z.enum(["github", "gitlab", "bitbucket"]),
+											org: z.string(),
+										})
+										.strict(),
+									z
+										.object({
+											provider: z.enum(["github", "gitlab", "bitbucket"]),
+											org: z.string(),
+											repo: z.string(),
+										})
+										.strict(),
+								]),
+							),
+							enabled: z.union([z.literal(false), z.literal(true)]),
+							environments: z.array(
 								z.union([
 									z
 										.object({
@@ -10166,20 +10113,16 @@ export const teamSchema = z
 										})
 										.strict(),
 								]),
-							)
-							.optional(),
-					})
-					.optional()
-					.describe(
-						"Restricts inbound Git deployments to an allowlist of orgs and/or repos. `enabled: true` with an empty `sources` list is treated as deny-all.",
-					),
+							),
+						}),
+					)
+					.optional(),
 				deploymentSources: z
-					.object({
-						sources: z.array(z.enum(["cli", "deploy-hook", "git", "integration", "rest-api"])),
-						id: z.string().optional(),
-						enabled: z.union([z.literal(false), z.literal(true)]),
-						environments: z
-							.array(
+					.array(
+						z.object({
+							sources: z.array(z.enum(["cli", "deploy-hook", "git", "integration", "rest-api"])),
+							enabled: z.union([z.literal(false), z.literal(true)]),
+							environments: z.array(
 								z.union([
 									z
 										.object({
@@ -10194,13 +10137,10 @@ export const teamSchema = z
 										})
 										.strict(),
 								]),
-							)
-							.optional(),
-					})
-					.optional()
-					.describe(
-						"Restricts which deployment sources are allowed. A deployment passes if its source is in `sources`. Multiple entries are evaluated as OR. `enabled: true` with an empty `sources` list is treated as deny-all.",
-					),
+							),
+						}),
+					)
+					.optional(),
 			})
 			.optional()
 			.describe(
