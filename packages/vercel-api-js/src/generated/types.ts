@@ -18451,6 +18451,15 @@ export const teamSensitiveEnvironmentVariablePolicyEnum = {
 export type TeamSensitiveEnvironmentVariablePolicyEnumKey =
 	(typeof teamSensitiveEnvironmentVariablePolicyEnum)[keyof typeof teamSensitiveEnvironmentVariablePolicyEnum];
 
+export const teamDpAccessRequestsModeEnum = {
+	all: "all",
+	"email-domain": "email-domain",
+	none: "none",
+} as const;
+
+export type TeamDpAccessRequestsModeEnumKey =
+	(typeof teamDpAccessRequestsModeEnum)[keyof typeof teamDpAccessRequestsModeEnum];
+
 export const teamNsnbConfigPreferenceEnum = {
 	"auto-approval": "auto-approval",
 	block: "block",
@@ -18962,6 +18971,11 @@ export type Team = {
 	 * @type boolean
 	 */
 	hideIpAddressesInLogDrains?: ((false | true) | null) | undefined;
+	/**
+	 * @description Controls who can request access to protected deployments.
+	 * @type string | undefined
+	 */
+	dpAccessRequestsMode?: TeamDpAccessRequestsModeEnumKey | undefined;
 	/**
 	 * @type array | undefined
 	 */
