@@ -40081,6 +40081,106 @@ export type DeleteProjectResponse =
 	| DeleteProjectStatus409;
 
 /**
+ * @description The unique project identifier or the project name.
+ * @type string
+ */
+export type UploadProjectAvatarPathIdOrName = string;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type UploadProjectAvatarQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type UploadProjectAvatarQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type UploadProjectAvatarStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type UploadProjectAvatarStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type UploadProjectAvatarStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type UploadProjectAvatarStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type UploadProjectAvatarStatus413 = unknown;
+
+/**
+ * @type unknown
+ */
+export type UploadProjectAvatarStatus415 = unknown;
+
+/**
+ * @type object
+ */
+export type UploadProjectAvatarRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		idOrName: UploadProjectAvatarPathIdOrName;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				teamId?: UploadProjectAvatarQueryTeamId | undefined;
+				slug?: UploadProjectAvatarQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v1/projects/${string}/avatar`;
+};
+
+/**
+ * @type object
+ */
+export type UploadProjectAvatarResponses = {
+	"200": UploadProjectAvatarStatus200;
+	"400": UploadProjectAvatarStatus400;
+	"401": UploadProjectAvatarStatus401;
+	"403": UploadProjectAvatarStatus403;
+	"413": UploadProjectAvatarStatus413;
+	"415": UploadProjectAvatarStatus415;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type UploadProjectAvatarResponse =
+	| UploadProjectAvatarStatus200
+	| UploadProjectAvatarStatus400
+	| UploadProjectAvatarStatus401
+	| UploadProjectAvatarStatus403
+	| UploadProjectAvatarStatus413
+	| UploadProjectAvatarStatus415;
+
+/**
  * @description The unique project identifier or the project name
  * @type string
  */
