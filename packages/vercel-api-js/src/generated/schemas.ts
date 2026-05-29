@@ -815,9 +815,6 @@ export const userEventSchema = z
 				"project-custom-environment-deleted",
 				"project-custom-environment-updated",
 				"project-customer-success-code-visibility-updated",
-				"project-delegated-protection-disabled",
-				"project-delegated-protection-enabled",
-				"project-delegated-protection-updated",
 				"project-delete",
 				"project-deployment-policy-updated",
 				"project-deployment-retention-updated",
@@ -5675,34 +5672,6 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
-						clientId: z.string(),
-						projectId: z.string(),
-						projectName: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						next: z.object({
-							clientId: z.string(),
-							cookieName: z.string().optional(),
-							deploymentType: z.string(),
-							issuer: z.string(),
-						}),
-						previous: z.object({
-							clientId: z.string(),
-							cookieName: z.string().optional(),
-							deploymentType: z.string(),
-							issuer: z.string(),
-						}),
-						projectId: z.string(),
-						projectName: z.string(),
-						updates: z.array(
-							z.enum(["clientId", "clientSecret", "cookieName", "deploymentType", "issuer"]),
-						),
-					})
-					.strict(),
-				z
-					.object({
 						name: z.string(),
 						ownerId: z.string(),
 					})
@@ -8155,9 +8124,6 @@ export const listEventTypeSchema = z
 				"project-custom-environment-deleted",
 				"project-custom-environment-updated",
 				"project-customer-success-code-visibility-updated",
-				"project-delegated-protection-disabled",
-				"project-delegated-protection-enabled",
-				"project-delegated-protection-updated",
 				"project-delete",
 				"project-deployment-policy-updated",
 				"project-deployment-retention-updated",
@@ -8686,9 +8652,6 @@ export const listEventTypeSchema = z
 					"project-custom-environment-deleted",
 					"project-custom-environment-updated",
 					"project-customer-success-code-visibility-updated",
-					"project-delegated-protection-disabled",
-					"project-delegated-protection-enabled",
-					"project-delegated-protection-updated",
 					"project-delete",
 					"project-deployment-policy-updated",
 					"project-deployment-retention-updated",
