@@ -1621,9 +1621,6 @@ export const userEventTypeEnum = {
 	"project-custom-environment-updated": "project-custom-environment-updated",
 	"project-customer-success-code-visibility-updated":
 		"project-customer-success-code-visibility-updated",
-	"project-delegated-protection-disabled": "project-delegated-protection-disabled",
-	"project-delegated-protection-enabled": "project-delegated-protection-enabled",
-	"project-delegated-protection-updated": "project-delegated-protection-updated",
 	"project-delete": "project-delete",
 	"project-deployment-policy-updated": "project-deployment-policy-updated",
 	"project-deployment-retention-updated": "project-deployment-retention-updated",
@@ -11373,76 +11370,6 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
-						clientId: string;
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-				  }
-				| {
-						/**
-						 * @type object
-						 */
-						next: {
-							/**
-							 * @type string
-							 */
-							clientId: string;
-							/**
-							 * @type string | undefined
-							 */
-							cookieName?: string | undefined;
-							/**
-							 * @type string
-							 */
-							deploymentType: string;
-							/**
-							 * @type string
-							 */
-							issuer: string;
-						};
-						/**
-						 * @type object
-						 */
-						previous: {
-							/**
-							 * @type string
-							 */
-							clientId: string;
-							/**
-							 * @type string | undefined
-							 */
-							cookieName?: string | undefined;
-							/**
-							 * @type string
-							 */
-							deploymentType: string;
-							/**
-							 * @type string
-							 */
-							issuer: string;
-						};
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type array
-						 */
-						updates: ("clientId" | "clientSecret" | "cookieName" | "deploymentType" | "issuer")[];
-				  }
-				| {
-						/**
-						 * @type string
-						 */
 						name: string;
 						/**
 						 * @type string
@@ -15756,9 +15683,6 @@ export const listEventTypeNameEnum = {
 	"project-custom-environment-updated": "project-custom-environment-updated",
 	"project-customer-success-code-visibility-updated":
 		"project-customer-success-code-visibility-updated",
-	"project-delegated-protection-disabled": "project-delegated-protection-disabled",
-	"project-delegated-protection-enabled": "project-delegated-protection-enabled",
-	"project-delegated-protection-updated": "project-delegated-protection-updated",
 	"project-delete": "project-delete",
 	"project-deployment-policy-updated": "project-deployment-policy-updated",
 	"project-deployment-retention-updated": "project-deployment-retention-updated",
@@ -16292,9 +16216,6 @@ export const listEventTypeReplacedByEnum = {
 	"project-custom-environment-updated": "project-custom-environment-updated",
 	"project-customer-success-code-visibility-updated":
 		"project-customer-success-code-visibility-updated",
-	"project-delegated-protection-disabled": "project-delegated-protection-disabled",
-	"project-delegated-protection-enabled": "project-delegated-protection-enabled",
-	"project-delegated-protection-updated": "project-delegated-protection-updated",
 	"project-delete": "project-delete",
 	"project-deployment-policy-updated": "project-deployment-policy-updated",
 	"project-deployment-retention-updated": "project-deployment-retention-updated",
