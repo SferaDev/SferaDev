@@ -1440,6 +1440,7 @@ export const userEventTypeEnum = {
 	"deployment-chown": "deployment-chown",
 	"deployment-creation-blocked": "deployment-creation-blocked",
 	"deployment-delete": "deployment-delete",
+	"deployment-policy-blocked": "deployment-policy-blocked",
 	"disabled-integration-installation-removed": "disabled-integration-installation-removed",
 	"disconnect-bitbucket-app": "disconnect-bitbucket-app",
 	"disconnect-github": "disconnect-github",
@@ -1979,6 +1980,21 @@ export const providerEnum = {
 } as const;
 
 export type ProviderEnumKey = (typeof providerEnum)[keyof typeof providerEnum];
+
+export const ruleNameEnum = {
+	deploymentSources: "deploymentSources",
+	gitSources: "gitSources",
+} as const;
+
+export type RuleNameEnumKey = (typeof ruleNameEnum)[keyof typeof ruleNameEnum];
+
+export const ruleProvenanceEnum = {
+	team: "team",
+	default: "default",
+	project: "project",
+} as const;
+
+export type RuleProvenanceEnumKey = (typeof ruleProvenanceEnum)[keyof typeof ruleProvenanceEnum];
 
 export const planEnum = {
 	pro: "pro",
@@ -6158,6 +6174,27 @@ export type UserEvent = {
 						 * @type string
 						 */
 						url: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @description Classified deploy source, e.g. \'cli\', \'git\', \'integration\'.
+						 * @type string
+						 */
+						source: string;
+						/**
+						 * @description Which rule blocked the deploy.
+						 * @type string
+						 */
+						ruleName: RuleNameEnumKey;
+						/**
+						 * @description Team-level or project-level rule.
+						 * @type string
+						 */
+						ruleProvenance: RuleProvenanceEnumKey;
 				  }
 				| {
 						/**
@@ -15538,6 +15575,7 @@ export const listEventTypeNameEnum = {
 	"deployment-chown": "deployment-chown",
 	"deployment-creation-blocked": "deployment-creation-blocked",
 	"deployment-delete": "deployment-delete",
+	"deployment-policy-blocked": "deployment-policy-blocked",
 	"disabled-integration-installation-removed": "disabled-integration-installation-removed",
 	"disconnect-bitbucket-app": "disconnect-bitbucket-app",
 	"disconnect-github": "disconnect-github",
@@ -16073,6 +16111,7 @@ export const listEventTypeReplacedByEnum = {
 	"deployment-chown": "deployment-chown",
 	"deployment-creation-blocked": "deployment-creation-blocked",
 	"deployment-delete": "deployment-delete",
+	"deployment-policy-blocked": "deployment-policy-blocked",
 	"disabled-integration-installation-removed": "disabled-integration-installation-removed",
 	"disconnect-bitbucket-app": "disconnect-bitbucket-app",
 	"disconnect-github": "disconnect-github",
