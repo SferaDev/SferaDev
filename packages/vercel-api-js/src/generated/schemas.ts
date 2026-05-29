@@ -640,6 +640,7 @@ export const userEventSchema = z
 				"deployment-chown",
 				"deployment-creation-blocked",
 				"deployment-delete",
+				"deployment-policy-blocked",
 				"disabled-integration-installation-removed",
 				"disconnect-bitbucket-app",
 				"disconnect-github",
@@ -2928,6 +2929,20 @@ export const userEventSchema = z
 						}),
 						deploymentId: z.string(),
 						url: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						projectName: z.string(),
+						source: z
+							.string()
+							.describe("Classified deploy source, e.g. 'cli', 'git', 'integration'."),
+						ruleName: z
+							.enum(["deploymentSources", "gitSources"])
+							.describe("Which rule blocked the deploy."),
+						ruleProvenance: z
+							.enum(["team", "default", "project"])
+							.describe("Team-level or project-level rule."),
 					})
 					.strict(),
 				z
@@ -7965,6 +7980,7 @@ export const listEventTypeSchema = z
 				"deployment-chown",
 				"deployment-creation-blocked",
 				"deployment-delete",
+				"deployment-policy-blocked",
 				"disabled-integration-installation-removed",
 				"disconnect-bitbucket-app",
 				"disconnect-github",
@@ -8495,6 +8511,7 @@ export const listEventTypeSchema = z
 					"deployment-chown",
 					"deployment-creation-blocked",
 					"deployment-delete",
+					"deployment-policy-blocked",
 					"disabled-integration-installation-removed",
 					"disconnect-bitbucket-app",
 					"disconnect-github",
