@@ -1632,6 +1632,7 @@ import type {
 	UpdateProjectStatus403,
 	UpdateProjectStatus404,
 	UpdateProjectStatus409,
+	UpdateProjectStatus422,
 	UpdateProjectStatus428,
 	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionResponse,
 	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus400,
@@ -10602,6 +10603,7 @@ export async function updateProject(
 			| UpdateProjectStatus403
 			| UpdateProjectStatus404
 			| UpdateProjectStatus409
+			| UpdateProjectStatus422
 			| UpdateProjectStatus428
 		>,
 		null,

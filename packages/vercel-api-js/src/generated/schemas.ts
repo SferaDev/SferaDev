@@ -865,6 +865,7 @@ export const userEventSchema = z
 				"project-oidc-token-created",
 				"project-options-allowlist",
 				"project-output-directory-updated",
+				"project-passport-updated",
 				"project-password-protection",
 				"project-paused",
 				"project-preview-deployment-suffix",
@@ -3810,16 +3811,6 @@ export const userEventSchema = z
 											.union([z.literal(false), z.literal(true)])
 											.optional(),
 										customEnvironmentsPerProject: z.number().optional(),
-										buildMachine: z
-											.object({
-												default: z.enum(["enhanced", "turbo", "standard", "elastic"]).optional(),
-												purchaseType: z.enum(["enhanced", "turbo", "standard"]).optional(),
-												defaultPurchaseType: z.enum(["enhanced", "turbo", "standard"]).optional(),
-												cores: z.number().optional(),
-												memory: z.number().optional(),
-												machineSelectionType: z.enum(["fixed", "elastic"]).optional(),
-											})
-											.optional(),
 										security: z
 											.object({
 												customRules: z.number().optional(),
@@ -3829,6 +3820,19 @@ export const userEventSchema = z
 											})
 											.optional(),
 										bulkRedirectsFreeLimitOverride: z.number().optional(),
+										buildMachine: z
+											.object({
+												default: z
+													.enum(["enhanced", "turbo", "standard", "elastic"])
+													.optional()
+													.describe(
+														'Default build machine type for new deployments. This must be used in combination with the buildEntitlements field. It is respected over Vercel\'s notion of the default build machine, and was originally implemented to allow Teams to "downgrade". - Hobby customers cannot set this, because they only have access to one machine type - Pro customers get Turbo machines by default, so this field is effectively for downgrading - ENT customers cannot set this (yet), because their default is based on their contract. https://linear.app/vercel/project/self-serve-build-machines-for-enterprise-customers-0cbc357e26d2/overview',
+													),
+											})
+											.optional()
+											.describe(
+												"Build machine configuration recorded on a team or user `resourceConfig`. This is deliberately separate from the build machine config recorded on a deployment (`DeploymentBuildMachine` in `@api/deployments-types`). A team/user only expresses its default machine for new deployments; the per-build fields (`purchaseType`, `defaultPurchaseType`, `machineSelectionType`, `cores`, `memory`) are recorded on the deployment record when a build actually runs and never belong on a team/user document.",
+											),
 									})
 									.optional(),
 								resourceLimits: z
@@ -6294,6 +6298,28 @@ export const userEventSchema = z
 					.object({
 						projectId: z.string(),
 						projectName: z.string(),
+						previous: z.object({
+							passport: z
+								.object({
+									connectorId: z.string(),
+									deploymentType: z.string(),
+								})
+								.nullish(),
+						}),
+						next: z.object({
+							passport: z
+								.object({
+									connectorId: z.string(),
+									deploymentType: z.string(),
+								})
+								.nullish(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+						projectName: z.string(),
 						next: z.object({
 							skewProtectionBoundaryAt: z.number(),
 						}),
@@ -8174,6 +8200,7 @@ export const listEventTypeSchema = z
 				"project-oidc-token-created",
 				"project-options-allowlist",
 				"project-output-directory-updated",
+				"project-passport-updated",
 				"project-password-protection",
 				"project-paused",
 				"project-preview-deployment-suffix",
@@ -8702,6 +8729,7 @@ export const listEventTypeSchema = z
 					"project-oidc-token-created",
 					"project-options-allowlist",
 					"project-output-directory-updated",
+					"project-passport-updated",
 					"project-password-protection",
 					"project-paused",
 					"project-preview-deployment-suffix",
@@ -10772,49 +10800,6 @@ export const authUserSchema = z
 					),
 				customEnvironmentsPerProject: z
 					.number()
-					.optional()
-					.describe(
-						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-					),
-				buildMachine: z
-					.object({
-						default: z
-							.enum(["elastic", "enhanced", "standard", "turbo"])
-							.optional()
-							.describe(
-								"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-							),
-						purchaseType: z
-							.enum(["enhanced", "standard", "turbo"])
-							.optional()
-							.describe(
-								"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-							),
-						defaultPurchaseType: z
-							.enum(["enhanced", "standard", "turbo"])
-							.optional()
-							.describe(
-								"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-							),
-						cores: z
-							.number()
-							.optional()
-							.describe(
-								"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-							),
-						memory: z
-							.number()
-							.optional()
-							.describe(
-								"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-							),
-						machineSelectionType: z
-							.enum(["elastic", "fixed"])
-							.optional()
-							.describe(
-								"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-							),
-					})
 					.optional()
 					.describe(
 						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
@@ -17820,6 +17805,8 @@ export const updateProjectStatus404Schema = z.unknown();
 
 export const updateProjectStatus409Schema = z.unknown();
 
+export const updateProjectStatus422Schema = z.unknown();
+
 export const updateProjectStatus428Schema = z.unknown();
 
 export const updateProjectResponseSchema = z.union([
@@ -17830,6 +17817,7 @@ export const updateProjectResponseSchema = z.union([
 	updateProjectStatus403Schema,
 	updateProjectStatus404Schema,
 	updateProjectStatus409Schema,
+	updateProjectStatus422Schema,
 	updateProjectStatus428Schema,
 ]);
 

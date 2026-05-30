@@ -1672,6 +1672,7 @@ export const userEventTypeEnum = {
 	"project-oidc-token-created": "project-oidc-token-created",
 	"project-options-allowlist": "project-options-allowlist",
 	"project-output-directory-updated": "project-output-directory-updated",
+	"project-passport-updated": "project-passport-updated",
 	"project-password-protection": "project-password-protection",
 	"project-paused": "project-paused",
 	"project-preview-deployment-suffix": "project-preview-deployment-suffix",
@@ -2028,31 +2029,6 @@ export const defaultEnum = {
 } as const;
 
 export type DefaultEnumKey = (typeof defaultEnum)[keyof typeof defaultEnum];
-
-export const purchaseTypeEnum = {
-	enhanced: "enhanced",
-	turbo: "turbo",
-	standard: "standard",
-} as const;
-
-export type PurchaseTypeEnumKey = (typeof purchaseTypeEnum)[keyof typeof purchaseTypeEnum];
-
-export const defaultPurchaseTypeEnum = {
-	enhanced: "enhanced",
-	turbo: "turbo",
-	standard: "standard",
-} as const;
-
-export type DefaultPurchaseTypeEnumKey =
-	(typeof defaultPurchaseTypeEnum)[keyof typeof defaultPurchaseTypeEnum];
-
-export const machineSelectionTypeEnum = {
-	fixed: "fixed",
-	elastic: "elastic",
-} as const;
-
-export type MachineSelectionTypeEnumKey =
-	(typeof machineSelectionTypeEnum)[keyof typeof machineSelectionTypeEnum];
 
 export const viewPreferenceEnum = {
 	list: "list",
@@ -7911,37 +7887,6 @@ export type UserEvent = {
 										/**
 										 * @type object | undefined
 										 */
-										buildMachine?:
-											| {
-													/**
-													 * @type string | undefined
-													 */
-													default?: DefaultEnumKey | undefined;
-													/**
-													 * @type string | undefined
-													 */
-													purchaseType?: PurchaseTypeEnumKey | undefined;
-													/**
-													 * @type string | undefined
-													 */
-													defaultPurchaseType?: DefaultPurchaseTypeEnumKey | undefined;
-													/**
-													 * @type number | undefined
-													 */
-													cores?: number | undefined;
-													/**
-													 * @type number | undefined
-													 */
-													memory?: number | undefined;
-													/**
-													 * @type string | undefined
-													 */
-													machineSelectionType?: MachineSelectionTypeEnumKey | undefined;
-											  }
-											| undefined;
-										/**
-										 * @type object | undefined
-										 */
 										security?:
 											| {
 													/**
@@ -7966,6 +7911,19 @@ export type UserEvent = {
 										 * @type number | undefined
 										 */
 										bulkRedirectsFreeLimitOverride?: number | undefined;
+										/**
+										 * @description Build machine configuration recorded on a team or user `resourceConfig`. This is deliberately separate from the build machine config recorded on a deployment (`DeploymentBuildMachine` in `@api/deployments-types`). A team/user only expresses its default machine for new deployments; the per-build fields (`purchaseType`, `defaultPurchaseType`, `machineSelectionType`, `cores`, `memory`) are recorded on the deployment record when a build actually runs and never belong on a team/user document.
+										 * @type object | undefined
+										 */
+										buildMachine?:
+											| {
+													/**
+													 * @description Default build machine type for new deployments. This must be used in combination with the buildEntitlements field. It is respected over Vercel\'s notion of the default build machine, and was originally implemented to allow Teams to \"downgrade\". - Hobby customers cannot set this, because they only have access to one machine type - Pro customers get Turbo machines by default, so this field is effectively for downgrading - ENT customers cannot set this (yet), because their default is based on their contract. https://linear.app/vercel/project/self-serve-build-machines-for-enterprise-customers-0cbc357e26d2/overview
+													 * @type string | undefined
+													 */
+													default?: DefaultEnumKey | undefined;
+											  }
+											| undefined;
 								  }
 								| undefined;
 							/**
@@ -12626,6 +12584,56 @@ export type UserEvent = {
 						/**
 						 * @type object
 						 */
+						previous: {
+							/**
+							 * @type object
+							 */
+							passport?:
+								| ({
+										/**
+										 * @type string
+										 */
+										connectorId: string;
+										/**
+										 * @type string
+										 */
+										deploymentType: string;
+								  } | null)
+								| undefined;
+						};
+						/**
+						 * @type object
+						 */
+						next: {
+							/**
+							 * @type object
+							 */
+							passport?:
+								| ({
+										/**
+										 * @type string
+										 */
+										connectorId: string;
+										/**
+										 * @type string
+										 */
+										deploymentType: string;
+								  } | null)
+								| undefined;
+						};
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type object
+						 */
 						next: {
 							/**
 							 * @type number
@@ -15734,6 +15742,7 @@ export const listEventTypeNameEnum = {
 	"project-oidc-token-created": "project-oidc-token-created",
 	"project-options-allowlist": "project-options-allowlist",
 	"project-output-directory-updated": "project-output-directory-updated",
+	"project-passport-updated": "project-passport-updated",
 	"project-password-protection": "project-password-protection",
 	"project-paused": "project-paused",
 	"project-preview-deployment-suffix": "project-preview-deployment-suffix",
@@ -16267,6 +16276,7 @@ export const listEventTypeReplacedByEnum = {
 	"project-oidc-token-created": "project-oidc-token-created",
 	"project-options-allowlist": "project-options-allowlist",
 	"project-output-directory-updated": "project-output-directory-updated",
+	"project-passport-updated": "project-passport-updated",
 	"project-password-protection": "project-password-protection",
 	"project-paused": "project-paused",
 	"project-preview-deployment-suffix": "project-preview-deployment-suffix",
@@ -19777,42 +19787,6 @@ export const authUserResourceConfigBuildQueueConfigurationEnum = {
 export type AuthUserResourceConfigBuildQueueConfigurationEnumKey =
 	(typeof authUserResourceConfigBuildQueueConfigurationEnum)[keyof typeof authUserResourceConfigBuildQueueConfigurationEnum];
 
-export const authUserResourceConfigBuildMachineDefaultEnum = {
-	elastic: "elastic",
-	enhanced: "enhanced",
-	standard: "standard",
-	turbo: "turbo",
-} as const;
-
-export type AuthUserResourceConfigBuildMachineDefaultEnumKey =
-	(typeof authUserResourceConfigBuildMachineDefaultEnum)[keyof typeof authUserResourceConfigBuildMachineDefaultEnum];
-
-export const authUserResourceConfigBuildMachinePurchaseTypeEnum = {
-	enhanced: "enhanced",
-	standard: "standard",
-	turbo: "turbo",
-} as const;
-
-export type AuthUserResourceConfigBuildMachinePurchaseTypeEnumKey =
-	(typeof authUserResourceConfigBuildMachinePurchaseTypeEnum)[keyof typeof authUserResourceConfigBuildMachinePurchaseTypeEnum];
-
-export const authUserResourceConfigBuildMachineDefaultPurchaseTypeEnum = {
-	enhanced: "enhanced",
-	standard: "standard",
-	turbo: "turbo",
-} as const;
-
-export type AuthUserResourceConfigBuildMachineDefaultPurchaseTypeEnumKey =
-	(typeof authUserResourceConfigBuildMachineDefaultPurchaseTypeEnum)[keyof typeof authUserResourceConfigBuildMachineDefaultPurchaseTypeEnum];
-
-export const authUserResourceConfigBuildMachineMachineSelectionTypeEnum = {
-	elastic: "elastic",
-	fixed: "fixed",
-} as const;
-
-export type AuthUserResourceConfigBuildMachineMachineSelectionTypeEnumKey =
-	(typeof authUserResourceConfigBuildMachineMachineSelectionTypeEnum)[keyof typeof authUserResourceConfigBuildMachineMachineSelectionTypeEnum];
-
 export const authUserImportFlowGitProviderEnum = {
 	bitbucket: "bitbucket",
 	github: "github",
@@ -20000,48 +19974,6 @@ export type AuthUser = {
 		 * @type number | undefined
 		 */
 		customEnvironmentsPerProject?: number | undefined;
-		/**
-		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
-		 * @type object | undefined
-		 */
-		buildMachine?:
-			| {
-					/**
-					 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
-					 * @type string | undefined
-					 */
-					default?: AuthUserResourceConfigBuildMachineDefaultEnumKey | undefined;
-					/**
-					 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
-					 * @type string | undefined
-					 */
-					purchaseType?: AuthUserResourceConfigBuildMachinePurchaseTypeEnumKey | undefined;
-					/**
-					 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
-					 * @type string | undefined
-					 */
-					defaultPurchaseType?:
-						| AuthUserResourceConfigBuildMachineDefaultPurchaseTypeEnumKey
-						| undefined;
-					/**
-					 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
-					 * @type number | undefined
-					 */
-					cores?: number | undefined;
-					/**
-					 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
-					 * @type number | undefined
-					 */
-					memory?: number | undefined;
-					/**
-					 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
-					 * @type string | undefined
-					 */
-					machineSelectionType?:
-						| AuthUserResourceConfigBuildMachineMachineSelectionTypeEnumKey
-						| undefined;
-			  }
-			| undefined;
 		/**
 		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
 		 * @type object | undefined
@@ -39773,6 +39705,11 @@ export type UpdateProjectStatus409 = unknown;
 /**
  * @type unknown
  */
+export type UpdateProjectStatus422 = unknown;
+
+/**
+ * @type unknown
+ */
 export type UpdateProjectStatus428 = unknown;
 
 /**
@@ -39813,6 +39750,7 @@ export type UpdateProjectResponses = {
 	"403": UpdateProjectStatus403;
 	"404": UpdateProjectStatus404;
 	"409": UpdateProjectStatus409;
+	"422": UpdateProjectStatus422;
 	"428": UpdateProjectStatus428;
 };
 
@@ -39827,6 +39765,7 @@ export type UpdateProjectResponse =
 	| UpdateProjectStatus403
 	| UpdateProjectStatus404
 	| UpdateProjectStatus409
+	| UpdateProjectStatus422
 	| UpdateProjectStatus428;
 
 /**
