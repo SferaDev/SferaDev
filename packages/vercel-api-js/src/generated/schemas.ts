@@ -10924,6 +10924,20 @@ export const authUserSchema = z
 			})
 			.optional()
 			.describe("Feature blocks for the user"),
+		isAccountUpdateRequired: z
+			.union([z.literal(false), z.literal(true)])
+			.optional()
+			.describe(
+				"When `true`, the user must complete the EMU Update Account flow before they can use the dashboard.",
+			),
+		accountUpdateContext: z
+			.object({
+				managedTeamNames: z.array(z.string()),
+			})
+			.optional()
+			.describe(
+				"Context for the Update Account screen. Present only when `isAccountUpdateRequired` is true. `managedTeamNames` is empty for orphan mode (user matches an EMU domain but is not on the team).",
+			),
 		id: z.string().describe("The User's unique identifier."),
 		email: z.string().describe("Email address associated with the User account."),
 		name: z
