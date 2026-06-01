@@ -1357,6 +1357,7 @@ export const userEventTypeEnum = {
 	"ai-code-review": "ai-code-review",
 	"ai-gateway-api-key-created": "ai-gateway-api-key-created",
 	"ai-gateway-api-key-deleted": "ai-gateway-api-key-deleted",
+	"ai-gateway-api-key-quota-updated": "ai-gateway-api-key-quota-updated",
 	"ai-gateway-byok-credential-created": "ai-gateway-byok-credential-created",
 	"ai-gateway-byok-credential-deleted": "ai-gateway-byok-credential-deleted",
 	"ai-gateway-byok-credential-updated": "ai-gateway-byok-credential-updated",
@@ -1892,6 +1893,24 @@ export const toPlanEnum = {
 } as const;
 
 export type ToPlanEnumKey = (typeof toPlanEnum)[keyof typeof toPlanEnum];
+
+export const refreshPeriodEnum = {
+	none: "none",
+	daily: "daily",
+	weekly: "weekly",
+	monthly: "monthly",
+} as const;
+
+export type RefreshPeriodEnumKey = (typeof refreshPeriodEnum)[keyof typeof refreshPeriodEnum];
+
+export const changeEnum = {
+	set: "set",
+	enable: "enable",
+	disable: "disable",
+	remove: "remove",
+} as const;
+
+export type ChangeEnumKey = (typeof changeEnum)[keyof typeof changeEnum];
 
 export const nextRoleEnum = {
 	ADMIN: "ADMIN",
@@ -2881,6 +2900,74 @@ export type UserEvent = {
 							 */
 							name: string;
 						};
+						/**
+						 * @description Spend budget on an AI Gateway API key, as surfaced in activity messages. Defined locally (rather than imported from `@api/pubsub-types`) because `@api/pubsub-types` already depends on `@api/events`; importing it here would create a circular dependency. Must stay structurally aligned with `APIKeyBudget` in `@api/pubsub-types/event-payloads/api-keys`.
+						 * @type object
+						 */
+						budget?:
+							| ({
+									/**
+									 * @description Spend cap, in dollars.
+									 * @type number
+									 */
+									limitAmount: number;
+									/**
+									 * @type string
+									 */
+									refreshPeriod: RefreshPeriodEnumKey;
+							  } | null)
+							| undefined;
+				  }
+				| {
+						/**
+						 * @type object
+						 */
+						apiKey: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string
+							 */
+							name: string;
+						};
+				  }
+				| {
+						/**
+						 * @type object
+						 */
+						apiKey: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string
+							 */
+							name: string;
+						};
+						/**
+						 * @description Spend budget on an AI Gateway API key, as surfaced in activity messages. Defined locally (rather than imported from `@api/pubsub-types`) because `@api/pubsub-types` already depends on `@api/events`; importing it here would create a circular dependency. Must stay structurally aligned with `APIKeyBudget` in `@api/pubsub-types/event-payloads/api-keys`.
+						 * @type object
+						 */
+						budget?:
+							| ({
+									/**
+									 * @description Spend cap, in dollars.
+									 * @type number
+									 */
+									limitAmount: number;
+									/**
+									 * @type string
+									 */
+									refreshPeriod: RefreshPeriodEnumKey;
+							  } | null)
+							| undefined;
+						/**
+						 * @type string
+						 */
+						change: ChangeEnumKey;
 				  }
 				| {
 						/**
@@ -15427,6 +15514,7 @@ export const listEventTypeNameEnum = {
 	"ai-code-review": "ai-code-review",
 	"ai-gateway-api-key-created": "ai-gateway-api-key-created",
 	"ai-gateway-api-key-deleted": "ai-gateway-api-key-deleted",
+	"ai-gateway-api-key-quota-updated": "ai-gateway-api-key-quota-updated",
 	"ai-gateway-byok-credential-created": "ai-gateway-byok-credential-created",
 	"ai-gateway-byok-credential-deleted": "ai-gateway-byok-credential-deleted",
 	"ai-gateway-byok-credential-updated": "ai-gateway-byok-credential-updated",
@@ -15961,6 +16049,7 @@ export const listEventTypeReplacedByEnum = {
 	"ai-code-review": "ai-code-review",
 	"ai-gateway-api-key-created": "ai-gateway-api-key-created",
 	"ai-gateway-api-key-deleted": "ai-gateway-api-key-deleted",
+	"ai-gateway-api-key-quota-updated": "ai-gateway-api-key-quota-updated",
 	"ai-gateway-byok-credential-created": "ai-gateway-byok-credential-created",
 	"ai-gateway-byok-credential-deleted": "ai-gateway-byok-credential-deleted",
 	"ai-gateway-byok-credential-updated": "ai-gateway-byok-credential-updated",
