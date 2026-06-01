@@ -1330,7 +1330,7 @@ export async function chatsDeleteVersionFiles(
 
 /**
  * @summary Resume Message
- * @description Resumes processing of a previously interrupted or incomplete message in a chat. Useful for continuing generation when a message was paused or stopped.
+ * @description Reconnects to an active assistant message stream and returns it as Server-Sent Events. This does not restart or continue a stopped generation.
  * @link /chats/{chatId}/messages/{messageId}/resume
  */
 export async function chatsResume(
