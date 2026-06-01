@@ -1262,6 +1262,7 @@ import type {
 	PatchTeamStatus401,
 	PatchTeamStatus402,
 	PatchTeamStatus403,
+	PatchTeamStatus422,
 	PatchTeamStatus428,
 	PatchUrlProtectionBypassResponse,
 	PatchUrlProtectionBypassStatus400,
@@ -14337,6 +14338,7 @@ export async function patchTeam(
 			| PatchTeamStatus401
 			| PatchTeamStatus402
 			| PatchTeamStatus403
+			| PatchTeamStatus422
 			| PatchTeamStatus428
 		>,
 		null,
