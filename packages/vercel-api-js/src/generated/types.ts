@@ -20153,6 +20153,23 @@ export type AuthUser = {
 		  }
 		| undefined;
 	/**
+	 * @description When `true`, the user must complete the EMU Update Account flow before they can use the dashboard.
+	 * @type boolean | undefined
+	 */
+	isAccountUpdateRequired?: (false | true) | undefined;
+	/**
+	 * @description Context for the Update Account screen. Present only when `isAccountUpdateRequired` is true. `managedTeamNames` is empty for orphan mode (user matches an EMU domain but is not on the team).
+	 * @type object | undefined
+	 */
+	accountUpdateContext?:
+		| {
+				/**
+				 * @type array
+				 */
+				managedTeamNames: string[];
+		  }
+		| undefined;
+	/**
 	 * @description The User\'s unique identifier.
 	 * @example AEIIDYVk59zbFF2Sxfyxxmua
 	 * @type string
