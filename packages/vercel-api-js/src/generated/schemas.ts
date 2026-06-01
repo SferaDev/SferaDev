@@ -557,6 +557,7 @@ export const userEventSchema = z
 				"ai-code-review",
 				"ai-gateway-api-key-created",
 				"ai-gateway-api-key-deleted",
+				"ai-gateway-api-key-quota-updated",
 				"ai-gateway-byok-credential-created",
 				"ai-gateway-byok-credential-deleted",
 				"ai-gateway-byok-credential-updated",
@@ -1222,6 +1223,41 @@ export const userEventSchema = z
 							id: z.string(),
 							name: z.string(),
 						}),
+						budget: z
+							.object({
+								limitAmount: z.number().describe("Spend cap, in dollars."),
+								refreshPeriod: z.enum(["none", "daily", "weekly", "monthly"]),
+							})
+							.nullish()
+							.describe(
+								"Spend budget on an AI Gateway API key, as surfaced in activity messages. Defined locally (rather than imported from `@api/pubsub-types`) because `@api/pubsub-types` already depends on `@api/events`; importing it here would create a circular dependency. Must stay structurally aligned with `APIKeyBudget` in `@api/pubsub-types/event-payloads/api-keys`.",
+							),
+					})
+					.strict(),
+				z
+					.object({
+						apiKey: z.object({
+							id: z.string(),
+							name: z.string(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						apiKey: z.object({
+							id: z.string(),
+							name: z.string(),
+						}),
+						budget: z
+							.object({
+								limitAmount: z.number().describe("Spend cap, in dollars."),
+								refreshPeriod: z.enum(["none", "daily", "weekly", "monthly"]),
+							})
+							.nullish()
+							.describe(
+								"Spend budget on an AI Gateway API key, as surfaced in activity messages. Defined locally (rather than imported from `@api/pubsub-types`) because `@api/pubsub-types` already depends on `@api/events`; importing it here would create a circular dependency. Must stay structurally aligned with `APIKeyBudget` in `@api/pubsub-types/event-payloads/api-keys`.",
+							),
+						change: z.enum(["set", "enable", "disable", "remove"]),
 					})
 					.strict(),
 				z
@@ -7892,6 +7928,7 @@ export const listEventTypeSchema = z
 				"ai-code-review",
 				"ai-gateway-api-key-created",
 				"ai-gateway-api-key-deleted",
+				"ai-gateway-api-key-quota-updated",
 				"ai-gateway-byok-credential-created",
 				"ai-gateway-byok-credential-deleted",
 				"ai-gateway-byok-credential-updated",
@@ -8421,6 +8458,7 @@ export const listEventTypeSchema = z
 					"ai-code-review",
 					"ai-gateway-api-key-created",
 					"ai-gateway-api-key-deleted",
+					"ai-gateway-api-key-quota-updated",
 					"ai-gateway-byok-credential-created",
 					"ai-gateway-byok-credential-deleted",
 					"ai-gateway-byok-credential-updated",
