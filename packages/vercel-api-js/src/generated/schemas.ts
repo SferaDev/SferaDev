@@ -958,6 +958,7 @@ export const userEventSchema = z
 				"team",
 				"team-avatar-update",
 				"team-default-build-machine-updated",
+				"team-default-passport-updated",
 				"team-delete",
 				"team-deployment-policy-updated",
 				"team-domain-verification-created",
@@ -5373,6 +5374,68 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						projectId: z.string(),
+						projectName: z.string(),
+						previous: z.object({
+							passport: z
+								.object({
+									connectorId: z.string(),
+									deploymentType: z.enum([
+										"all",
+										"preview",
+										"prod_deployment_urls_and_all_previews",
+										"all_except_custom_domains",
+									]),
+								})
+								.nullish(),
+						}),
+						next: z.object({
+							passport: z
+								.object({
+									connectorId: z.string(),
+									deploymentType: z.enum([
+										"all",
+										"preview",
+										"prod_deployment_urls_and_all_previews",
+										"all_except_custom_domains",
+									]),
+								})
+								.nullish(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						previous: z.object({
+							passport: z
+								.object({
+									connectorId: z.string(),
+									deploymentType: z.enum([
+										"all",
+										"preview",
+										"prod_deployment_urls_and_all_previews",
+										"all_except_custom_domains",
+									]),
+								})
+								.nullish(),
+						}),
+						next: z.object({
+							passport: z
+								.object({
+									connectorId: z.string(),
+									deploymentType: z.enum([
+										"all",
+										"preview",
+										"prod_deployment_urls_and_all_previews",
+										"all_except_custom_domains",
+									]),
+								})
+								.nullish(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
 						plan: z.string(),
 						removedUsers: z
 							.object({})
@@ -6327,28 +6390,6 @@ export const userEventSchema = z
 							expirationProduction: z.string().optional(),
 							expirationCanceled: z.string().optional(),
 							expirationErrored: z.string().optional(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						previous: z.object({
-							passport: z
-								.object({
-									connectorId: z.string(),
-									deploymentType: z.string(),
-								})
-								.nullish(),
-						}),
-						next: z.object({
-							passport: z
-								.object({
-									connectorId: z.string(),
-									deploymentType: z.string(),
-								})
-								.nullish(),
 						}),
 					})
 					.strict(),
@@ -8329,6 +8370,7 @@ export const listEventTypeSchema = z
 				"team",
 				"team-avatar-update",
 				"team-default-build-machine-updated",
+				"team-default-passport-updated",
 				"team-delete",
 				"team-deployment-policy-updated",
 				"team-domain-verification-created",
@@ -8859,6 +8901,7 @@ export const listEventTypeSchema = z
 					"team",
 					"team-avatar-update",
 					"team-default-build-machine-updated",
+					"team-default-passport-updated",
 					"team-delete",
 					"team-deployment-policy-updated",
 					"team-domain-verification-created",
@@ -10004,6 +10047,22 @@ export const teamSchema = z
 			.describe(
 				"Default deployment protection for this team null indicates protection is disabled",
 			),
+		defaultPassport: z
+			.object({
+				connectorId: z
+					.string()
+					.describe("Default Passport configuration for new projects in this team."),
+				deploymentType: z
+					.enum([
+						"all",
+						"all_except_custom_domains",
+						"preview",
+						"prod_deployment_urls_and_all_previews",
+					])
+					.describe("Default Passport configuration for new projects in this team."),
+			})
+			.nullish()
+			.describe("Default Passport configuration for new projects in this team."),
 		defaultExpirationSettings: z
 			.object({
 				expirationDays: z
@@ -10130,15 +10189,16 @@ export const teamSchema = z
 								z.union([
 									z
 										.object({
-											provider: z.enum(["github", "gitlab", "bitbucket"]),
+											provider: z.enum(["github", "bitbucket"]),
 											org: z.string(),
+											repo: z.string().optional(),
 										})
 										.strict(),
 									z
 										.object({
-											provider: z.enum(["github", "gitlab", "bitbucket"]),
-											org: z.string(),
-											repo: z.string(),
+											provider: z.enum(["gitlab"]),
+											namespace: z.string(),
+											project: z.string().optional(),
 										})
 										.strict(),
 								]),
@@ -10149,7 +10209,7 @@ export const teamSchema = z
 									z
 										.object({
 											type: z.enum(["system"]),
-											target: z.enum(["production", "preview"]),
+											target: z.enum(["preview", "production"]),
 										})
 										.strict(),
 									z
@@ -10173,7 +10233,7 @@ export const teamSchema = z
 									z
 										.object({
 											type: z.enum(["system"]),
-											target: z.enum(["production", "preview"]),
+											target: z.enum(["preview", "production"]),
 										})
 										.strict(),
 									z
@@ -21039,6 +21099,8 @@ export const patchTeamStatus402Schema = z.unknown();
 
 export const patchTeamStatus403Schema = z.unknown();
 
+export const patchTeamStatus422Schema = z.unknown();
+
 export const patchTeamStatus428Schema = z.unknown();
 
 export const patchTeamResponseSchema = z.union([
@@ -21047,6 +21109,7 @@ export const patchTeamResponseSchema = z.union([
 	patchTeamStatus401Schema,
 	patchTeamStatus402Schema,
 	patchTeamStatus403Schema,
+	patchTeamStatus422Schema,
 	patchTeamStatus428Schema,
 ]);
 

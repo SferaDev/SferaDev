@@ -1769,6 +1769,7 @@ export const userEventTypeEnum = {
 	team: "team",
 	"team-avatar-update": "team-avatar-update",
 	"team-default-build-machine-updated": "team-default-build-machine-updated",
+	"team-default-passport-updated": "team-default-passport-updated",
 	"team-delete": "team-delete",
 	"team-deployment-policy-updated": "team-deployment-policy-updated",
 	"team-domain-verification-created": "team-domain-verification-created",
@@ -2277,6 +2278,15 @@ export const kindEnum = {
 
 export type KindEnumKey = (typeof kindEnum)[keyof typeof kindEnum];
 
+export const deploymentTypeEnum = {
+	all: "all",
+	preview: "preview",
+	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
+	all_except_custom_domains: "all_except_custom_domains",
+} as const;
+
+export type DeploymentTypeEnumKey = (typeof deploymentTypeEnum)[keyof typeof deploymentTypeEnum];
+
 export const buildQueueConfigurationEnum = {
 	SKIP_NAMESPACE_QUEUE: "SKIP_NAMESPACE_QUEUE",
 	WAIT_FOR_NAMESPACE_QUEUE: "WAIT_FOR_NAMESPACE_QUEUE",
@@ -2311,15 +2321,6 @@ export const createDeploymentsEnum = {
 
 export type CreateDeploymentsEnumKey =
 	(typeof createDeploymentsEnum)[keyof typeof createDeploymentsEnum];
-
-export const deploymentTypeEnum = {
-	all: "all",
-	preview: "preview",
-	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
-	all_except_custom_domains: "all_except_custom_domains",
-} as const;
-
-export type DeploymentTypeEnumKey = (typeof deploymentTypeEnum)[keyof typeof deploymentTypeEnum];
 
 export const reasonCodeEnum = {
 	PUBLIC_API: "PUBLIC_API",
@@ -10672,6 +10673,98 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type object
+						 */
+						previous: {
+							/**
+							 * @type object
+							 */
+							passport?:
+								| ({
+										/**
+										 * @type string
+										 */
+										connectorId: string;
+										/**
+										 * @type string
+										 */
+										deploymentType: DeploymentTypeEnumKey;
+								  } | null)
+								| undefined;
+						};
+						/**
+						 * @type object
+						 */
+						next: {
+							/**
+							 * @type object
+							 */
+							passport?:
+								| ({
+										/**
+										 * @type string
+										 */
+										connectorId: string;
+										/**
+										 * @type string
+										 */
+										deploymentType: DeploymentTypeEnumKey;
+								  } | null)
+								| undefined;
+						};
+				  }
+				| {
+						/**
+						 * @type object
+						 */
+						previous: {
+							/**
+							 * @type object
+							 */
+							passport?:
+								| ({
+										/**
+										 * @type string
+										 */
+										connectorId: string;
+										/**
+										 * @type string
+										 */
+										deploymentType: DeploymentTypeEnumKey;
+								  } | null)
+								| undefined;
+						};
+						/**
+						 * @type object
+						 */
+						next: {
+							/**
+							 * @type object
+							 */
+							passport?:
+								| ({
+										/**
+										 * @type string
+										 */
+										connectorId: string;
+										/**
+										 * @type string
+										 */
+										deploymentType: DeploymentTypeEnumKey;
+								  } | null)
+								| undefined;
+						};
+				  }
+				| {
+						/**
+						 * @type string
+						 */
 						plan: string;
 						/**
 						 * @type object | undefined
@@ -12657,56 +12750,6 @@ export type UserEvent = {
 							 * @type string | undefined
 							 */
 							expirationErrored?: string | undefined;
-						};
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						projectId: string;
-						/**
-						 * @type string
-						 */
-						projectName: string;
-						/**
-						 * @type object
-						 */
-						previous: {
-							/**
-							 * @type object
-							 */
-							passport?:
-								| ({
-										/**
-										 * @type string
-										 */
-										connectorId: string;
-										/**
-										 * @type string
-										 */
-										deploymentType: string;
-								  } | null)
-								| undefined;
-						};
-						/**
-						 * @type object
-						 */
-						next: {
-							/**
-							 * @type object
-							 */
-							passport?:
-								| ({
-										/**
-										 * @type string
-										 */
-										connectorId: string;
-										/**
-										 * @type string
-										 */
-										deploymentType: string;
-								  } | null)
-								| undefined;
 						};
 				  }
 				| {
@@ -15926,6 +15969,7 @@ export const listEventTypeNameEnum = {
 	team: "team",
 	"team-avatar-update": "team-avatar-update",
 	"team-default-build-machine-updated": "team-default-build-machine-updated",
+	"team-default-passport-updated": "team-default-passport-updated",
 	"team-delete": "team-delete",
 	"team-deployment-policy-updated": "team-deployment-policy-updated",
 	"team-domain-verification-created": "team-domain-verification-created",
@@ -16461,6 +16505,7 @@ export const listEventTypeReplacedByEnum = {
 	team: "team",
 	"team-avatar-update": "team-avatar-update",
 	"team-default-build-machine-updated": "team-default-build-machine-updated",
+	"team-default-passport-updated": "team-default-passport-updated",
 	"team-delete": "team-delete",
 	"team-deployment-policy-updated": "team-deployment-policy-updated",
 	"team-domain-verification-created": "team-domain-verification-created",
@@ -18417,6 +18462,16 @@ export const teamResourceConfigBuildMachineDefaultEnum = {
 export type TeamResourceConfigBuildMachineDefaultEnumKey =
 	(typeof teamResourceConfigBuildMachineDefaultEnum)[keyof typeof teamResourceConfigBuildMachineDefaultEnum];
 
+export const teamDefaultPassportDeploymentTypeEnum = {
+	all: "all",
+	all_except_custom_domains: "all_except_custom_domains",
+	preview: "preview",
+	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
+} as const;
+
+export type TeamDefaultPassportDeploymentTypeEnumKey =
+	(typeof teamDefaultPassportDeploymentTypeEnum)[keyof typeof teamDefaultPassportDeploymentTypeEnum];
+
 export const teamEnablePreviewFeedbackEnum = {
 	default: "default",
 	"default-force": "default-force",
@@ -18469,8 +18524,8 @@ export type TeamNsnbConfigPreferenceEnumKey =
 	(typeof teamNsnbConfigPreferenceEnum)[keyof typeof teamNsnbConfigPreferenceEnum];
 
 export const targetEnum = {
-	production: "production",
 	preview: "preview",
+	production: "production",
 } as const;
 
 export type TargetEnumKey = (typeof targetEnum)[keyof typeof targetEnum];
@@ -18866,6 +18921,24 @@ export type Team = {
 		  }
 		| undefined;
 	/**
+	 * @description Default Passport configuration for new projects in this team.
+	 * @type object
+	 */
+	defaultPassport?:
+		| ({
+				/**
+				 * @description Default Passport configuration for new projects in this team.
+				 * @type string
+				 */
+				connectorId: string;
+				/**
+				 * @description Default Passport configuration for new projects in this team.
+				 * @type string
+				 */
+				deploymentType: TeamDefaultPassportDeploymentTypeEnumKey;
+		  } | null)
+		| undefined;
+	/**
 	 * @description Default deployment expiration settings for this team
 	 * @type object | undefined
 	 */
@@ -19061,6 +19134,10 @@ export type Team = {
 										 * @type string
 										 */
 										org: string;
+										/**
+										 * @type string | undefined
+										 */
+										repo?: string | undefined;
 								  }
 								| {
 										/**
@@ -19070,11 +19147,11 @@ export type Team = {
 										/**
 										 * @type string
 										 */
-										org: string;
+										namespace: string;
 										/**
-										 * @type string
+										 * @type string | undefined
 										 */
-										repo: string;
+										project?: string | undefined;
 								  }
 							)[];
 							/**
@@ -48406,6 +48483,11 @@ export type PatchTeamStatus403 = unknown;
 /**
  * @type unknown
  */
+export type PatchTeamStatus422 = unknown;
+
+/**
+ * @type unknown
+ */
 export type PatchTeamStatus428 = unknown;
 
 /**
@@ -48443,6 +48525,7 @@ export type PatchTeamResponses = {
 	"401": PatchTeamStatus401;
 	"402": PatchTeamStatus402;
 	"403": PatchTeamStatus403;
+	"422": PatchTeamStatus422;
 	"428": PatchTeamStatus428;
 };
 
@@ -48455,6 +48538,7 @@ export type PatchTeamResponse =
 	| PatchTeamStatus401
 	| PatchTeamStatus402
 	| PatchTeamStatus403
+	| PatchTeamStatus422
 	| PatchTeamStatus428;
 
 /**
