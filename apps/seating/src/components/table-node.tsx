@@ -579,7 +579,9 @@ function TableNodeComponent({ data }: TableNodeProps) {
 								onDoubleClick={() => setIsEditing(true)}
 								title="Double-click to edit name"
 							>
-								<span className="font-semibold text-foreground text-base">{table.name}</span>
+								<span className="font-semibold text-foreground text-base whitespace-nowrap">
+									{table.name}
+								</span>
 								{hasEmptySeats && (
 									<p className="text-xs text-muted-foreground mt-0.5">
 										{guests.length}/{table.seats}
@@ -620,7 +622,9 @@ function TableNodeComponent({ data }: TableNodeProps) {
 								onDoubleClick={() => setIsEditing(true)}
 								title="Double-click to edit name"
 							>
-								<span className="font-semibold text-foreground text-base">{table.name}</span>
+								<span className="font-semibold text-foreground text-base whitespace-nowrap">
+									{table.name}
+								</span>
 								{hasEmptySeats && (
 									<p className="text-xs text-muted-foreground mt-0.5">
 										{guests.length}/{table.seats}

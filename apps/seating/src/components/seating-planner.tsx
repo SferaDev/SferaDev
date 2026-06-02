@@ -545,19 +545,8 @@ function SeatingPlannerInner() {
 		const bounds = getNodesBounds(currentNodes);
 		const padding = 80;
 
-		let maxNodeWidth = 0;
-		let maxNodeHeight = 0;
-		currentNodes.forEach((node) => {
-			const table = tables.find((t) => t.id === node.id);
-			if (table) {
-				const estimatedSize = Math.max(200, table.seats * 30);
-				maxNodeWidth = Math.max(maxNodeWidth, estimatedSize + 150);
-				maxNodeHeight = Math.max(maxNodeHeight, estimatedSize + 150);
-			}
-		});
-
-		const contentWidth = bounds.width + maxNodeWidth + padding * 2;
-		const contentHeight = bounds.height + maxNodeHeight + padding * 2;
+		const contentWidth = bounds.width + padding * 2;
+		const contentHeight = bounds.height + padding * 2;
 
 		const elementsToHide = document.querySelectorAll(
 			".export-hide, .react-flow__controls, .react-flow__background, .react-flow__minimap",
@@ -627,7 +616,7 @@ function SeatingPlannerInner() {
 			});
 			flowElement.style.backgroundColor = originalBg;
 		}
-	}, [getNodes, tables, fitView, resolvedTheme]);
+	}, [getNodes, fitView, resolvedTheme]);
 
 	const handleExportJSON = useCallback(() => {
 		const data: SeatingData = { guests, tables };
