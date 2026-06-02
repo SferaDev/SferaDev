@@ -736,7 +736,7 @@ function TableNodeComponent({ data }: TableNodeProps) {
 								transform: "translate(-50%, -50%)",
 							}}
 						>
-							<span className="text-sm font-medium text-foreground bg-card/95 px-2 py-1 rounded-full shadow-sm border border-border/50">
+							<span className="text-base font-medium text-foreground bg-card/95 px-3 py-1 rounded-full shadow-sm border border-border/50">
 								{seat.guest.name}
 							</span>
 						</div>
