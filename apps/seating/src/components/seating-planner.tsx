@@ -10,6 +10,7 @@ import {
 	ReactFlow,
 	ReactFlowProvider,
 	useReactFlow,
+	useViewport,
 } from "@xyflow/react";
 import type React from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -83,6 +84,33 @@ interface AlignmentLine {
 	position: number;
 	start: number;
 	end: number;
+}
+
+function AlignmentLinesOverlay({ lines }: { lines: AlignmentLine[] }) {
+	const { x, y, zoom } = useViewport();
+	return (
+		<svg
+			className="absolute inset-0 pointer-events-none z-50"
+			style={{ overflow: "visible" }}
+			aria-hidden="true"
+		>
+			<g transform={`translate(${x} ${y}) scale(${zoom})`}>
+				{lines.map((line, index) => (
+					<line
+						key={index}
+						x1={line.type === "vertical" ? line.position : line.start}
+						y1={line.type === "horizontal" ? line.position : line.start}
+						x2={line.type === "vertical" ? line.position : line.end}
+						y2={line.type === "horizontal" ? line.position : line.end}
+						stroke="#c4a484"
+						strokeWidth="1"
+						strokeDasharray="4 2"
+						vectorEffect="non-scaling-stroke"
+					/>
+				))}
+			</g>
+		</svg>
+	);
 }
 
 function SeatingPlannerInner() {
@@ -1111,24 +1139,7 @@ function SeatingPlannerInner() {
 						</Controls>
 
 						{isDragging && alignmentLines.length > 0 && (
-							<svg
-								className="absolute inset-0 pointer-events-none z-50"
-								style={{ overflow: "visible" }}
-								aria-hidden="true"
-							>
-								{alignmentLines.map((line, index) => (
-									<line
-										key={index}
-										x1={line.type === "vertical" ? line.position : line.start}
-										y1={line.type === "horizontal" ? line.position : line.start}
-										x2={line.type === "vertical" ? line.position : line.end}
-										y2={line.type === "horizontal" ? line.position : line.end}
-										stroke="#c4a484"
-										strokeWidth="1"
-										strokeDasharray="4 2"
-									/>
-								))}
-							</svg>
+							<AlignmentLinesOverlay lines={alignmentLines} />
 						)}
 					</ReactFlow>
 				</div>
