@@ -5,7 +5,6 @@ import {
 	Background,
 	ControlButton,
 	Controls,
-	getNodesBounds,
 	type Node,
 	type NodeChange,
 	ReactFlow,
@@ -541,12 +540,7 @@ function SeatingPlannerInner() {
 		if (currentNodes.length === 0) return;
 
 		const exportBg = resolvedTheme === "dark" ? "#1f1c18" : "#faf8f5";
-
-		const bounds = getNodesBounds(currentNodes);
 		const padding = 80;
-
-		const contentWidth = bounds.width + padding * 2;
-		const contentHeight = bounds.height + padding * 2;
 
 		const elementsToHide = document.querySelectorAll(
 			".export-hide, .react-flow__controls, .react-flow__background, .react-flow__minimap",
@@ -561,36 +555,49 @@ function SeatingPlannerInner() {
 		const originalBg = flowElement.style.backgroundColor;
 		flowElement.style.backgroundColor = exportBg;
 
-		fitView();
+		let tempContainer: HTMLElement | null = null;
 
 		try {
-			const viewport = document.querySelector(".react-flow__viewport") as HTMLElement;
-			if (!viewport) return;
+			const nodesContainer = document.querySelector(".react-flow__nodes") as HTMLElement;
+			if (!nodesContainer) return;
 
-			const tempContainer = document.createElement("div");
+			tempContainer = document.createElement("div");
 			tempContainer.style.position = "fixed";
 			tempContainer.style.left = "0";
 			tempContainer.style.top = "0";
-			tempContainer.style.width = `${contentWidth}px`;
-			tempContainer.style.height = `${contentHeight}px`;
 			tempContainer.style.backgroundColor = exportBg;
 			tempContainer.style.zIndex = "-9999";
 			tempContainer.style.overflow = "visible";
 			document.body.appendChild(tempContainer);
 
-			const nodesContainer = document.querySelector(".react-flow__nodes") as HTMLElement;
-			if (!nodesContainer) {
-				document.body.removeChild(tempContainer);
-				return;
-			}
-
 			const clonedNodes = nodesContainer.cloneNode(true) as HTMLElement;
-			clonedNodes.style.transform = `translate(${-bounds.x + padding}px, ${-bounds.y + padding}px)`;
+			clonedNodes.style.transform = "translate(0, 0)";
 			for (const el of clonedNodes.querySelectorAll(".export-hide")) {
 				el.remove();
 			}
 
 			tempContainer.appendChild(clonedNodes);
+
+			const containerRect = tempContainer.getBoundingClientRect();
+			let minX = Number.POSITIVE_INFINITY;
+			let minY = Number.POSITIVE_INFINITY;
+			let maxX = Number.NEGATIVE_INFINITY;
+			let maxY = Number.NEGATIVE_INFINITY;
+			for (const el of clonedNodes.querySelectorAll<HTMLElement>("*")) {
+				const r = el.getBoundingClientRect();
+				if (r.width === 0 || r.height === 0) continue;
+				minX = Math.min(minX, r.left - containerRect.left);
+				minY = Math.min(minY, r.top - containerRect.top);
+				maxX = Math.max(maxX, r.right - containerRect.left);
+				maxY = Math.max(maxY, r.bottom - containerRect.top);
+			}
+
+			const contentWidth = Math.ceil(maxX - minX) + padding * 2;
+			const contentHeight = Math.ceil(maxY - minY) + padding * 2;
+
+			clonedNodes.style.transform = `translate(${-minX + padding}px, ${-minY + padding}px)`;
+			tempContainer.style.width = `${contentWidth}px`;
+			tempContainer.style.height = `${contentHeight}px`;
 
 			const dataUrl = await toPng(tempContainer, {
 				backgroundColor: exportBg,
@@ -606,17 +613,16 @@ function SeatingPlannerInner() {
 			link.download = "wedding-seating-plan.png";
 			link.href = dataUrl;
 			link.click();
-
-			document.body.removeChild(tempContainer);
 		} catch (error) {
 			console.error("Failed to export image:", error);
 		} finally {
+			tempContainer?.parentNode?.removeChild(tempContainer);
 			elementsToHide.forEach((el) => {
 				(el as HTMLElement).style.visibility = "visible";
 			});
 			flowElement.style.backgroundColor = originalBg;
 		}
-	}, [getNodes, fitView, resolvedTheme]);
+	}, [getNodes, resolvedTheme]);
 
 	const handleExportJSON = useCallback(() => {
 		const data: SeatingData = { guests, tables };
