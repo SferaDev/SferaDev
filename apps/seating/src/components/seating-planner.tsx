@@ -32,6 +32,16 @@ import {
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { loadData, saveData } from "@/lib/storage";
 import type { Guest, GuestGroup, SeatingData, Table } from "@/lib/types";
@@ -56,6 +66,18 @@ if (typeof window !== "undefined") {
 
 const SNAP_THRESHOLD = 8;
 
+const EXPORT_PRESETS = {
+	tight: { label: "Tight crop", ratio: undefined },
+	a4Landscape: { label: "A4 landscape (297 × 210 mm)", ratio: 297 / 210 },
+	a4Portrait: { label: "A4 portrait (210 × 297 mm)", ratio: 210 / 297 },
+	letterLandscape: { label: "US Letter landscape (11 × 8.5 in)", ratio: 11 / 8.5 },
+	letterPortrait: { label: "US Letter portrait (8.5 × 11 in)", ratio: 8.5 / 11 },
+	square: { label: "Square (1:1)", ratio: 1 },
+	custom: { label: "Custom…", ratio: undefined },
+} as const;
+
+type ExportPreset = keyof typeof EXPORT_PRESETS;
+
 interface AlignmentLine {
 	type: "vertical" | "horizontal";
 	position: number;
@@ -75,6 +97,10 @@ function SeatingPlannerInner() {
 	const { resolvedTheme, setTheme } = useTheme();
 	const [themeMounted, setThemeMounted] = useState(false);
 	const [linkCopied, setLinkCopied] = useState(false);
+	const [exportPopoverOpen, setExportPopoverOpen] = useState(false);
+	const [exportPreset, setExportPreset] = useState<ExportPreset>("tight");
+	const [customRatioW, setCustomRatioW] = useState("297");
+	const [customRatioH, setCustomRatioH] = useState("210");
 
 	useEffect(() => {
 		setThemeMounted(true);
@@ -535,94 +561,108 @@ function SeatingPlannerInner() {
 		return () => document.removeEventListener("fullscreenchange", handleFullscreenChange);
 	}, []);
 
-	const handleExportImage = useCallback(async () => {
-		const currentNodes = getNodes();
-		if (currentNodes.length === 0) return;
+	const handleExportImage = useCallback(
+		async (aspectRatio?: number) => {
+			const currentNodes = getNodes();
+			if (currentNodes.length === 0) return;
 
-		const exportBg = resolvedTheme === "dark" ? "#1f1c18" : "#faf8f5";
-		const padding = 80;
+			const exportBg = resolvedTheme === "dark" ? "#1f1c18" : "#faf8f5";
+			const padding = 80;
 
-		const elementsToHide = document.querySelectorAll(
-			".export-hide, .react-flow__controls, .react-flow__background, .react-flow__minimap",
-		);
-		elementsToHide.forEach((el) => {
-			(el as HTMLElement).style.visibility = "hidden";
-		});
-
-		const flowElement = document.querySelector(".react-flow") as HTMLElement;
-		if (!flowElement) return;
-
-		const originalBg = flowElement.style.backgroundColor;
-		flowElement.style.backgroundColor = exportBg;
-
-		let tempContainer: HTMLElement | null = null;
-
-		try {
-			const nodesContainer = document.querySelector(".react-flow__nodes") as HTMLElement;
-			if (!nodesContainer) return;
-
-			tempContainer = document.createElement("div");
-			tempContainer.style.position = "fixed";
-			tempContainer.style.left = "0";
-			tempContainer.style.top = "0";
-			tempContainer.style.backgroundColor = exportBg;
-			tempContainer.style.zIndex = "-9999";
-			tempContainer.style.overflow = "visible";
-			document.body.appendChild(tempContainer);
-
-			const clonedNodes = nodesContainer.cloneNode(true) as HTMLElement;
-			clonedNodes.style.transform = "translate(0, 0)";
-			for (const el of clonedNodes.querySelectorAll(".export-hide")) {
-				el.remove();
-			}
-
-			tempContainer.appendChild(clonedNodes);
-
-			const containerRect = tempContainer.getBoundingClientRect();
-			let minX = Number.POSITIVE_INFINITY;
-			let minY = Number.POSITIVE_INFINITY;
-			let maxX = Number.NEGATIVE_INFINITY;
-			let maxY = Number.NEGATIVE_INFINITY;
-			for (const el of clonedNodes.querySelectorAll<HTMLElement>("*")) {
-				const r = el.getBoundingClientRect();
-				if (r.width === 0 || r.height === 0) continue;
-				minX = Math.min(minX, r.left - containerRect.left);
-				minY = Math.min(minY, r.top - containerRect.top);
-				maxX = Math.max(maxX, r.right - containerRect.left);
-				maxY = Math.max(maxY, r.bottom - containerRect.top);
-			}
-
-			const contentWidth = Math.ceil(maxX - minX) + padding * 2;
-			const contentHeight = Math.ceil(maxY - minY) + padding * 2;
-
-			clonedNodes.style.transform = `translate(${-minX + padding}px, ${-minY + padding}px)`;
-			tempContainer.style.width = `${contentWidth}px`;
-			tempContainer.style.height = `${contentHeight}px`;
-
-			const dataUrl = await toPng(tempContainer, {
-				backgroundColor: exportBg,
-				quality: 1,
-				pixelRatio: 3,
-				skipFonts: true,
-				cacheBust: true,
-				width: contentWidth,
-				height: contentHeight,
-			});
-
-			const link = document.createElement("a");
-			link.download = "wedding-seating-plan.png";
-			link.href = dataUrl;
-			link.click();
-		} catch (error) {
-			console.error("Failed to export image:", error);
-		} finally {
-			tempContainer?.parentNode?.removeChild(tempContainer);
+			const elementsToHide = document.querySelectorAll(
+				".export-hide, .react-flow__controls, .react-flow__background, .react-flow__minimap",
+			);
 			elementsToHide.forEach((el) => {
-				(el as HTMLElement).style.visibility = "visible";
+				(el as HTMLElement).style.visibility = "hidden";
 			});
-			flowElement.style.backgroundColor = originalBg;
-		}
-	}, [getNodes, resolvedTheme]);
+
+			const flowElement = document.querySelector(".react-flow") as HTMLElement;
+			if (!flowElement) return;
+
+			const originalBg = flowElement.style.backgroundColor;
+			flowElement.style.backgroundColor = exportBg;
+
+			let tempContainer: HTMLElement | null = null;
+
+			try {
+				const nodesContainer = document.querySelector(".react-flow__nodes") as HTMLElement;
+				if (!nodesContainer) return;
+
+				tempContainer = document.createElement("div");
+				tempContainer.style.position = "fixed";
+				tempContainer.style.left = "0";
+				tempContainer.style.top = "0";
+				tempContainer.style.backgroundColor = exportBg;
+				tempContainer.style.zIndex = "-9999";
+				tempContainer.style.overflow = "visible";
+				document.body.appendChild(tempContainer);
+
+				const clonedNodes = nodesContainer.cloneNode(true) as HTMLElement;
+				clonedNodes.style.transform = "translate(0, 0)";
+				for (const el of clonedNodes.querySelectorAll(".export-hide")) {
+					el.remove();
+				}
+
+				tempContainer.appendChild(clonedNodes);
+
+				const containerRect = tempContainer.getBoundingClientRect();
+				let minX = Number.POSITIVE_INFINITY;
+				let minY = Number.POSITIVE_INFINITY;
+				let maxX = Number.NEGATIVE_INFINITY;
+				let maxY = Number.NEGATIVE_INFINITY;
+				for (const el of clonedNodes.querySelectorAll<HTMLElement>("*")) {
+					const r = el.getBoundingClientRect();
+					if (r.width === 0 || r.height === 0) continue;
+					minX = Math.min(minX, r.left - containerRect.left);
+					minY = Math.min(minY, r.top - containerRect.top);
+					maxX = Math.max(maxX, r.right - containerRect.left);
+					maxY = Math.max(maxY, r.bottom - containerRect.top);
+				}
+
+				let contentWidth = Math.ceil(maxX - minX) + padding * 2;
+				let contentHeight = Math.ceil(maxY - minY) + padding * 2;
+
+				if (aspectRatio && aspectRatio > 0) {
+					const currentRatio = contentWidth / contentHeight;
+					if (currentRatio < aspectRatio) {
+						contentWidth = Math.ceil(contentHeight * aspectRatio);
+					} else if (currentRatio > aspectRatio) {
+						contentHeight = Math.ceil(contentWidth / aspectRatio);
+					}
+				}
+
+				const offsetX = (contentWidth - (maxX - minX)) / 2;
+				const offsetY = (contentHeight - (maxY - minY)) / 2;
+				clonedNodes.style.transform = `translate(${-minX + offsetX}px, ${-minY + offsetY}px)`;
+				tempContainer.style.width = `${contentWidth}px`;
+				tempContainer.style.height = `${contentHeight}px`;
+
+				const dataUrl = await toPng(tempContainer, {
+					backgroundColor: exportBg,
+					quality: 1,
+					pixelRatio: 3,
+					skipFonts: true,
+					cacheBust: true,
+					width: contentWidth,
+					height: contentHeight,
+				});
+
+				const link = document.createElement("a");
+				link.download = "wedding-seating-plan.png";
+				link.href = dataUrl;
+				link.click();
+			} catch (error) {
+				console.error("Failed to export image:", error);
+			} finally {
+				tempContainer?.parentNode?.removeChild(tempContainer);
+				elementsToHide.forEach((el) => {
+					(el as HTMLElement).style.visibility = "visible";
+				});
+				flowElement.style.backgroundColor = originalBg;
+			}
+		},
+		[getNodes, resolvedTheme],
+	);
 
 	const handleExportJSON = useCallback(() => {
 		const data: SeatingData = { guests, tables };
@@ -921,14 +961,80 @@ function SeatingPlannerInner() {
 							showInteractive={false}
 						>
 							<TooltipProvider>
-								<Tooltip>
-									<TooltipTrigger asChild>
-										<ControlButton onClick={handleExportImage}>
-											<ImageIcon className="w-4 h-4" />
-										</ControlButton>
-									</TooltipTrigger>
-									<TooltipContent side="left">Export as Image</TooltipContent>
-								</Tooltip>
+								<Popover open={exportPopoverOpen} onOpenChange={setExportPopoverOpen}>
+									<Tooltip>
+										<TooltipTrigger asChild>
+											<PopoverTrigger asChild>
+												<ControlButton>
+													<ImageIcon className="w-4 h-4" />
+												</ControlButton>
+											</PopoverTrigger>
+										</TooltipTrigger>
+										<TooltipContent side="left">Export as Image</TooltipContent>
+									</Tooltip>
+									<PopoverContent side="left" align="start" className="w-72 p-4 space-y-3">
+										<div className="space-y-2">
+											<Label className="text-sm font-medium">Canvas size</Label>
+											<Select
+												value={exportPreset}
+												onValueChange={(v) => setExportPreset(v as ExportPreset)}
+											>
+												<SelectTrigger>
+													<SelectValue />
+												</SelectTrigger>
+												<SelectContent>
+													{(Object.keys(EXPORT_PRESETS) as ExportPreset[]).map((key) => (
+														<SelectItem key={key} value={key}>
+															{EXPORT_PRESETS[key].label}
+														</SelectItem>
+													))}
+												</SelectContent>
+											</Select>
+										</div>
+										{exportPreset === "custom" && (
+											<div className="space-y-2">
+												<Label className="text-sm font-medium">Aspect ratio</Label>
+												<div className="flex items-center gap-2">
+													<Input
+														type="number"
+														min="1"
+														value={customRatioW}
+														onChange={(e) => setCustomRatioW(e.target.value)}
+														className="w-20"
+													/>
+													<span className="text-muted-foreground">×</span>
+													<Input
+														type="number"
+														min="1"
+														value={customRatioH}
+														onChange={(e) => setCustomRatioH(e.target.value)}
+														className="w-20"
+													/>
+												</div>
+												<p className="text-xs text-muted-foreground">
+													Width × height units (e.g. mm or in). Only the ratio is used.
+												</p>
+											</div>
+										)}
+										<Button
+											className="w-full"
+											onClick={() => {
+												let ratio: number | undefined;
+												if (exportPreset === "custom") {
+													const w = Number.parseFloat(customRatioW);
+													const h = Number.parseFloat(customRatioH);
+													if (w > 0 && h > 0) ratio = w / h;
+												} else {
+													ratio = EXPORT_PRESETS[exportPreset].ratio;
+												}
+												setExportPopoverOpen(false);
+												handleExportImage(ratio);
+											}}
+										>
+											Export PNG
+										</Button>
+									</PopoverContent>
+								</Popover>
 								<Tooltip>
 									<TooltipTrigger asChild>
 										<ControlButton onClick={handleExportJSON}>
