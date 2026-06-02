@@ -642,7 +642,6 @@ function SeatingPlannerInner() {
 					backgroundColor: exportBg,
 					quality: 1,
 					pixelRatio: 3,
-					skipFonts: true,
 					cacheBust: true,
 					width: contentWidth,
 					height: contentHeight,
