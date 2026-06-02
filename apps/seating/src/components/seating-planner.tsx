@@ -611,6 +611,7 @@ function SeatingPlannerInner() {
 				let maxX = Number.NEGATIVE_INFINITY;
 				let maxY = Number.NEGATIVE_INFINITY;
 				for (const el of clonedNodes.querySelectorAll<HTMLElement>("*")) {
+					if (el.children.length > 0) continue;
 					const r = el.getBoundingClientRect();
 					if (r.width === 0 || r.height === 0) continue;
 					minX = Math.min(minX, r.left - containerRect.left);
