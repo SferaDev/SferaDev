@@ -567,7 +567,7 @@ function SeatingPlannerInner() {
 			if (currentNodes.length === 0) return;
 
 			const exportBg = resolvedTheme === "dark" ? "#1f1c18" : "#faf8f5";
-			const padding = 80;
+			const padding = 24;
 
 			const elementsToHide = document.querySelectorAll(
 				".export-hide, .react-flow__controls, .react-flow__background, .react-flow__minimap",

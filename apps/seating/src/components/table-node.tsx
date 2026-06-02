@@ -579,11 +579,11 @@ function TableNodeComponent({ data }: TableNodeProps) {
 								onDoubleClick={() => setIsEditing(true)}
 								title="Double-click to edit name"
 							>
-								<span className="font-semibold text-foreground text-base whitespace-nowrap">
+								<span className="font-semibold text-foreground text-xl whitespace-nowrap">
 									{table.name}
 								</span>
 								{hasEmptySeats && (
-									<p className="text-xs text-muted-foreground mt-0.5">
+									<p className="text-sm text-muted-foreground mt-0.5">
 										{guests.length}/{table.seats}
 									</p>
 								)}
@@ -622,11 +622,11 @@ function TableNodeComponent({ data }: TableNodeProps) {
 								onDoubleClick={() => setIsEditing(true)}
 								title="Double-click to edit name"
 							>
-								<span className="font-semibold text-foreground text-base whitespace-nowrap">
+								<span className="font-semibold text-foreground text-xl whitespace-nowrap">
 									{table.name}
 								</span>
 								{hasEmptySeats && (
-									<p className="text-xs text-muted-foreground mt-0.5">
+									<p className="text-sm text-muted-foreground mt-0.5">
 										{guests.length}/{table.seats}
 									</p>
 								)}
@@ -671,7 +671,7 @@ function TableNodeComponent({ data }: TableNodeProps) {
 											style={{ width: seatSize, height: seatSize }}
 										>
 											<AvatarImage src={guest.photo || undefined} className="object-cover" />
-											<AvatarFallback className="bg-linear-to-br from-primary/30 to-primary/20 text-primary text-sm font-semibold">
+											<AvatarFallback className="bg-linear-to-br from-primary/30 to-primary/20 text-primary text-base font-semibold">
 												{getInitials(guest.name)}
 											</AvatarFallback>
 										</Avatar>
@@ -722,7 +722,7 @@ function TableNodeComponent({ data }: TableNodeProps) {
 								}`}
 								onPointerDown={(e) => e.stopPropagation()}
 							>
-								<span className="text-xs text-muted-foreground/60">{seat.index + 1}</span>
+								<span className="text-sm text-muted-foreground/60">{seat.index + 1}</span>
 							</div>
 						)}
 					</div>
@@ -736,7 +736,7 @@ function TableNodeComponent({ data }: TableNodeProps) {
 								transform: "translate(-50%, -50%)",
 							}}
 						>
-							<span className="text-xs font-medium text-foreground bg-card/95 px-2 py-1 rounded-full shadow-sm border border-border/50">
+							<span className="text-sm font-medium text-foreground bg-card/95 px-2 py-1 rounded-full shadow-sm border border-border/50">
 								{seat.guest.name}
 							</span>
 						</div>
