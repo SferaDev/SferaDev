@@ -66,10 +66,16 @@ function TableNodeComponent({ data }: TableNodeProps) {
 	};
 
 	const seatSize = 52;
-	const seatSpacing = 18;
 	const labelOffset = 48;
+	const baseSeatSpacing = 18;
+	const labelGap = 12;
 
 	const calculateLayout = useCallback(() => {
+		const longestNameLen = guests.reduce((m, g) => Math.max(m, g.name.length), 0);
+		// Cormorant Garamond at text-base (16px) ≈ 7px/char + px-3 (24px) + border (2px)
+		const estimatedPillWidth = Math.max(48, Math.ceil(longestNameLen * 7) + 26);
+		const seatSpacing = Math.max(baseSeatSpacing, estimatedPillWidth - seatSize + labelGap);
+
 		const seats: Array<{
 			index: number;
 			x: number;
@@ -83,7 +89,15 @@ function TableNodeComponent({ data }: TableNodeProps) {
 		if (table.shape === "round") {
 			const minTableRadius = 70;
 			const circumferenceNeeded = table.seats * (seatSize + seatSpacing * 0.5);
-			const tableRadius = Math.max(minTableRadius, circumferenceNeeded / (2 * Math.PI));
+			// Ensure the label-radius arc per seat fits a full pill plus gap, so
+			// adjacent names don't collide around the circle.
+			const minLabelRadius = ((estimatedPillWidth + labelGap) * table.seats) / (2 * Math.PI);
+			const minTableRadiusForLabels = minLabelRadius - (seatSize / 2 + 16) - (seatSize / 2 + 18);
+			const tableRadius = Math.max(
+				minTableRadius,
+				circumferenceNeeded / (2 * Math.PI),
+				minTableRadiusForLabels,
+			);
 			const seatRadius = tableRadius + seatSize / 2 + 16;
 			const totalSize = seatRadius * 2 + labelOffset * 2 + seatSize + 50;
 			const center = totalSize / 2;
@@ -579,9 +593,11 @@ function TableNodeComponent({ data }: TableNodeProps) {
 								onDoubleClick={() => setIsEditing(true)}
 								title="Double-click to edit name"
 							>
-								<span className="font-semibold text-foreground text-base">{table.name}</span>
+								<span className="font-semibold text-foreground text-xl whitespace-nowrap">
+									{table.name}
+								</span>
 								{hasEmptySeats && (
-									<p className="text-xs text-muted-foreground mt-0.5">
+									<p className="text-sm text-muted-foreground mt-0.5">
 										{guests.length}/{table.seats}
 									</p>
 								)}
@@ -620,9 +636,11 @@ function TableNodeComponent({ data }: TableNodeProps) {
 								onDoubleClick={() => setIsEditing(true)}
 								title="Double-click to edit name"
 							>
-								<span className="font-semibold text-foreground text-base">{table.name}</span>
+								<span className="font-semibold text-foreground text-xl whitespace-nowrap">
+									{table.name}
+								</span>
 								{hasEmptySeats && (
-									<p className="text-xs text-muted-foreground mt-0.5">
+									<p className="text-sm text-muted-foreground mt-0.5">
 										{guests.length}/{table.seats}
 									</p>
 								)}
@@ -667,7 +685,7 @@ function TableNodeComponent({ data }: TableNodeProps) {
 											style={{ width: seatSize, height: seatSize }}
 										>
 											<AvatarImage src={guest.photo || undefined} className="object-cover" />
-											<AvatarFallback className="bg-linear-to-br from-primary/30 to-primary/20 text-primary text-sm font-semibold">
+											<AvatarFallback className="bg-linear-to-br from-primary/30 to-primary/20 text-primary text-base font-semibold">
 												{getInitials(guest.name)}
 											</AvatarFallback>
 										</Avatar>
@@ -718,7 +736,7 @@ function TableNodeComponent({ data }: TableNodeProps) {
 								}`}
 								onPointerDown={(e) => e.stopPropagation()}
 							>
-								<span className="text-xs text-muted-foreground/60">{seat.index + 1}</span>
+								<span className="text-sm text-muted-foreground/60">{seat.index + 1}</span>
 							</div>
 						)}
 					</div>
@@ -732,7 +750,7 @@ function TableNodeComponent({ data }: TableNodeProps) {
 								transform: "translate(-50%, -50%)",
 							}}
 						>
-							<span className="text-xs font-medium text-foreground bg-card/95 px-2 py-1 rounded-full shadow-sm border border-border/50">
+							<span className="text-base font-medium text-foreground bg-card/95 px-3 py-1 rounded-full shadow-sm border border-border/50">
 								{seat.guest.name}
 							</span>
 						</div>
