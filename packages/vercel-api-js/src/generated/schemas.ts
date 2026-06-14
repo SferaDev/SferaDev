@@ -508,6 +508,7 @@ export const userEventSchema = z
 							"bitbucket_login",
 							"bold",
 							"deployment_host",
+							"deployment_inspector",
 							"dns_record",
 							"edge-config",
 							"env_var_name",
@@ -561,6 +562,15 @@ export const userEventSchema = z
 				"ai-gateway-byok-credential-created",
 				"ai-gateway-byok-credential-deleted",
 				"ai-gateway-byok-credential-updated",
+				"ai-gateway-provider-allowlist-providers-updated",
+				"ai-gateway-provider-allowlist-toggled",
+				"ai-gateway-rule-created",
+				"ai-gateway-rule-deleted",
+				"ai-gateway-rule-updated",
+				"ai-gateway-virtual-model-config-archived",
+				"ai-gateway-virtual-model-config-created",
+				"ai-gateway-virtual-model-config-restored",
+				"ai-gateway-virtual-model-config-updated",
 				"ai-omniagent",
 				"alert-rule-created",
 				"alert-rule-deleted",
@@ -642,6 +652,7 @@ export const userEventSchema = z
 				"deployment-creation-blocked",
 				"deployment-delete",
 				"deployment-policy-blocked",
+				"deployment-undeleted",
 				"disabled-integration-installation-removed",
 				"disconnect-bitbucket-app",
 				"disconnect-github",
@@ -650,6 +661,7 @@ export const userEventSchema = z
 				"disconnect-gitlab-app",
 				"dns-add",
 				"dns-delete",
+				"dns-record-internal",
 				"dns-update",
 				"dns-zonefile-import",
 				"domain",
@@ -754,6 +766,7 @@ export const userEventSchema = z
 				"microfrontend-project-added-to-group",
 				"microfrontend-project-removed-from-group",
 				"microfrontend-project-updated",
+				"monitoring-alert-updated",
 				"monitoring-disabled",
 				"monitoring-enabled",
 				"oauth-app-connection-created",
@@ -769,12 +782,14 @@ export const userEventSchema = z
 				"observability-enabled",
 				"observability-plus-project-disabled",
 				"observability-plus-project-enabled",
+				"organization-team-add",
 				"owner-blocked",
 				"owner-soft-blocked",
 				"owner-soft-unblocked",
 				"owner-unblocked",
 				"page-integrity-config-updated",
 				"page-integrity-header-approved",
+				"page-integrity-inventory-cleared",
 				"page-integrity-resource-approved",
 				"page-integrity-resource-deleted",
 				"page-integrity-resource-rejected",
@@ -874,6 +889,7 @@ export const userEventSchema = z
 				"project-prioritize-production-builds-updated",
 				"project-program-enrollment-changed",
 				"project-protected-sourcemaps-updated",
+				"project-rollback-description-updated",
 				"project-rolling-release-aborted",
 				"project-rolling-release-approved",
 				"project-rolling-release-completed",
@@ -888,6 +904,7 @@ export const userEventSchema = z
 				"project-root-directory-updated",
 				"project-routes-version-promoted",
 				"project-routes-version-restored",
+				"project-sandbox-url-protection-updated",
 				"project-skew-protection-allowed-domains-updated",
 				"project-skew-protection-max-age-updated",
 				"project-skew-protection-threshold-updated",
@@ -1153,7 +1170,7 @@ export const userEventSchema = z
 				z.object({}).strict(),
 				z
 					.object({
-						action: z.enum(["deleted", "created", "updated", "archived", "unarchived"]),
+						action: z.enum(["archived", "created", "deleted", "unarchived", "updated"]),
 						id: z.string(),
 						slug: z.string(),
 						projectId: z.string(),
@@ -1162,7 +1179,7 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
-						action: z.enum(["deleted", "added", "rotated"]),
+						action: z.enum(["added", "deleted", "rotated"]),
 						label: z.string().optional(),
 						projectName: z.string().optional(),
 						projectId: z.string().optional(),
@@ -1179,43 +1196,131 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						provider: z
+							.enum(["chatgpt", "stripe"])
+							.optional()
+							.describe('Present on new events only. Equivalent to "stripe" when absent.'),
+						providerAccount: z
+							.string()
+							.optional()
+							.describe("Present on new events only. Equivalent to `stripeAccount` when absent."),
+						stripeAccount: z
+							.string()
+							.optional()
+							.describe('Present when `provider` is "stripe". Equivalent to `providerAccount`.'),
+						stripeOrganisation: z
+							.string()
+							.optional()
+							.describe('Present when `provider` is "stripe".'),
 						teamId: z.string(),
-						stripeAccount: z.string(),
-						stripeOrganisation: z.string(),
 						accountRequestId: z.string(),
 					})
 					.strict(),
 				z
 					.object({
+						provider: z
+							.enum(["chatgpt", "stripe"])
+							.optional()
+							.describe('Present on new events only. Equivalent to "stripe" when absent.'),
+						providerAccount: z
+							.string()
+							.optional()
+							.describe("Present on new events only. Equivalent to `stripeAccount` when absent."),
+						stripeAccount: z
+							.string()
+							.optional()
+							.describe('Present when `provider` is "stripe". Equivalent to `providerAccount`.'),
+						stripeOrganisation: z
+							.string()
+							.optional()
+							.describe('Present when `provider` is "stripe".'),
 						teamId: z.string(),
-						stripeAccount: z.string(),
 					})
 					.strict(),
 				z
 					.object({
+						provider: z
+							.enum(["chatgpt", "stripe"])
+							.optional()
+							.describe('Present on new events only. Equivalent to "stripe" when absent.'),
+						providerAccount: z
+							.string()
+							.optional()
+							.describe("Present on new events only. Equivalent to `stripeAccount` when absent."),
+						stripeAccount: z
+							.string()
+							.optional()
+							.describe('Present when `provider` is "stripe". Equivalent to `providerAccount`.'),
+						stripeOrganisation: z
+							.string()
+							.optional()
+							.describe('Present when `provider` is "stripe".'),
 						teamId: z.string(),
 						teamSlug: z.string(),
-						stripeAccount: z.string(),
 					})
 					.strict(),
 				z
 					.object({
+						provider: z
+							.enum(["chatgpt", "stripe"])
+							.optional()
+							.describe('Present on new events only. Equivalent to "stripe" when absent.'),
+						providerAccount: z
+							.string()
+							.optional()
+							.describe("Present on new events only. Equivalent to `stripeAccount` when absent."),
+						stripeAccount: z
+							.string()
+							.optional()
+							.describe('Present when `provider` is "stripe". Equivalent to `providerAccount`.'),
+						stripeOrganisation: z
+							.string()
+							.optional()
+							.describe('Present when `provider` is "stripe".'),
 						reason: z.string(),
 						blockCode: z.string(),
 					})
 					.strict(),
 				z
 					.object({
+						provider: z
+							.enum(["chatgpt", "stripe"])
+							.optional()
+							.describe('Present on new events only. Equivalent to "stripe" when absent.'),
+						providerAccount: z
+							.string()
+							.optional()
+							.describe("Present on new events only. Equivalent to `stripeAccount` when absent."),
+						stripeAccount: z
+							.string()
+							.optional()
+							.describe('Present when `provider` is "stripe". Equivalent to `providerAccount`.'),
 						resourceId: z.string(),
 						projectName: z.string(),
 					})
 					.strict(),
 				z
 					.object({
+						provider: z
+							.enum(["chatgpt", "stripe"])
+							.optional()
+							.describe('Present on new events only. Equivalent to "stripe" when absent.'),
+						providerAccount: z
+							.string()
+							.optional()
+							.describe("Present on new events only. Equivalent to `stripeAccount` when absent."),
+						stripeAccount: z
+							.string()
+							.optional()
+							.describe('Present when `provider` is "stripe". Equivalent to `providerAccount`.'),
+						stripeOrganisation: z
+							.string()
+							.optional()
+							.describe('Present when `provider` is "stripe".'),
 						teamId: z.string(),
 						resourceId: z.string(),
-						fromPlan: z.enum(["pro", "hobby"]),
-						toPlan: z.enum(["pro", "hobby"]),
+						fromPlan: z.enum(["hobby", "pro"]),
+						toPlan: z.enum(["hobby", "pro"]),
 					})
 					.strict(),
 				z
@@ -1227,7 +1332,7 @@ export const userEventSchema = z
 						budget: z
 							.object({
 								limitAmount: z.number().describe("Spend cap, in dollars."),
-								refreshPeriod: z.enum(["none", "daily", "weekly", "monthly"]),
+								refreshPeriod: z.enum(["daily", "monthly", "none", "weekly"]),
 							})
 							.nullish()
 							.describe(
@@ -1252,13 +1357,13 @@ export const userEventSchema = z
 						budget: z
 							.object({
 								limitAmount: z.number().describe("Spend cap, in dollars."),
-								refreshPeriod: z.enum(["none", "daily", "weekly", "monthly"]),
+								refreshPeriod: z.enum(["daily", "monthly", "none", "weekly"]),
 							})
 							.nullish()
 							.describe(
 								"Spend budget on an AI Gateway API key, as surfaced in activity messages. Defined locally (rather than imported from `@api/pubsub-types`) because `@api/pubsub-types` already depends on `@api/events`; importing it here would create a circular dependency. Must stay structurally aligned with `APIKeyBudget` in `@api/pubsub-types/event-payloads/api-keys`.",
 							),
-						change: z.enum(["set", "enable", "disable", "remove"]),
+						change: z.enum(["disable", "enable", "remove", "set"]),
 					})
 					.strict(),
 				z
@@ -1267,6 +1372,55 @@ export const userEventSchema = z
 							id: z.string(),
 							name: z.string(),
 							providerSlug: z.string(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						enabled: z.union([z.literal(false), z.literal(true)]),
+					})
+					.strict(),
+				z
+					.object({
+						added: z.array(z.string()),
+						removed: z.array(z.string()),
+					})
+					.strict(),
+				z
+					.object({
+						rule: z.object({
+							id: z.string(),
+							type: z.string(),
+							model: z.string().optional(),
+							rewriteModel: z.string().optional(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						rule: z.object({
+							id: z.string(),
+							type: z.string(),
+							model: z.string().optional(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						rule: z.object({
+							id: z.string(),
+							type: z.string(),
+							model: z.string().optional(),
+						}),
+						enabled: z.union([z.literal(false), z.literal(true)]).optional(),
+					})
+					.strict(),
+				z
+					.object({
+						virtualModelConfig: z.object({
+							id: z.string(),
+							displayName: z.string().optional(),
+							modelSlug: z.string(),
 						}),
 					})
 					.strict(),
@@ -1301,10 +1455,10 @@ export const userEventSchema = z
 							name: z.string().optional(),
 						}),
 						nextRole: z
-							.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_VIEWER", "PROJECT_GUEST"])
+							.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_GUEST", "PROJECT_VIEWER"])
 							.nullish(),
 						previousRole: z
-							.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_VIEWER", "PROJECT_GUEST"])
+							.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_GUEST", "PROJECT_VIEWER"])
 							.optional(),
 					})
 					.strict(),
@@ -1452,11 +1606,13 @@ export const userEventSchema = z
 					.object({
 						aliasId: z.string().optional(),
 						alias: z.string().optional(),
+						projectId: z.string().optional(),
 						projectName: z.string().optional(),
 					})
 					.strict(),
 				z
 					.object({
+						projectId: z.string().optional(),
 						projectName: z.string(),
 						alias: z.string(),
 						action: z.enum(["created", "removed"]),
@@ -1487,46 +1643,50 @@ export const userEventSchema = z
 					.object({
 						appName: z.string(),
 						appId: z.string().optional(),
-						scopes: z.array(z.enum(["openid", "email", "profile", "offline_access"])),
+						scopes: z.array(z.enum(["email", "offline_access", "openid", "profile"])),
 						permissions: z
 							.array(
 								z.enum([
-									"read:user",
-									"read:domain",
-									"read-write:domain",
-									"read:team",
-									"read:billing",
-									"read-write:billing",
 									"read-write:ai-gateway-api-key",
-									"use:ai-gateway",
-									"read-write:project-env-vars",
+									"read-write:ai-gateway-rules",
+									"read-write:alerts",
+									"read-write:billing",
+									"read-write:blob",
+									"read-write:deployment",
+									"read-write:domain",
+									"read-write:domain-registrar",
 									"read-write:drains",
+									"read-write:edge-cache",
 									"read-write:edge-config",
-									"read:monitoring",
-									"read:access-group",
-									"read:integration-configuration",
 									"read-write:integration-configuration",
 									"read-write:integration-resource",
-									"read-write:blob",
-									"read:event",
-									"read-write:remote-cache",
-									"read:kms",
 									"read-write:kms",
-									"read:project",
 									"read-write:project",
-									"read:deployment",
-									"read-write:deployment",
-									"read-write:edge-cache",
-									"read-write:project-protection-bypass",
-									"read:project-env-vars-non-production",
+									"read-write:project-env-vars",
 									"read-write:project-env-vars-non-production",
-									"read:project-env-vars-production",
 									"read-write:project-env-vars-production",
 									"read-write:project-flags-non-production",
 									"read-write:project-flags-production",
-									"read-write:domain-registrar",
-									"read:sandbox",
+									"read-write:project-protection-bypass",
+									"read-write:remote-cache",
 									"read-write:sandbox",
+									"read:access-group",
+									"read:ai-gateway-rules",
+									"read:alerts",
+									"read:billing",
+									"read:deployment",
+									"read:domain",
+									"read:event",
+									"read:integration-configuration",
+									"read:kms",
+									"read:monitoring",
+									"read:project",
+									"read:project-env-vars-non-production",
+									"read:project-env-vars-production",
+									"read:sandbox",
+									"read:team",
+									"read:user",
+									"use:ai-gateway",
 								]),
 							)
 							.optional(),
@@ -1542,46 +1702,50 @@ export const userEventSchema = z
 					.object({
 						appName: z.string(),
 						appId: z.string().optional(),
-						nextScopes: z.array(z.enum(["openid", "email", "profile", "offline_access"])),
+						nextScopes: z.array(z.enum(["email", "offline_access", "openid", "profile"])),
 						nextPermissions: z
 							.array(
 								z.enum([
-									"read:user",
-									"read:domain",
-									"read-write:domain",
-									"read:team",
-									"read:billing",
-									"read-write:billing",
 									"read-write:ai-gateway-api-key",
-									"use:ai-gateway",
-									"read-write:project-env-vars",
+									"read-write:ai-gateway-rules",
+									"read-write:alerts",
+									"read-write:billing",
+									"read-write:blob",
+									"read-write:deployment",
+									"read-write:domain",
+									"read-write:domain-registrar",
 									"read-write:drains",
+									"read-write:edge-cache",
 									"read-write:edge-config",
-									"read:monitoring",
-									"read:access-group",
-									"read:integration-configuration",
 									"read-write:integration-configuration",
 									"read-write:integration-resource",
-									"read-write:blob",
-									"read:event",
-									"read-write:remote-cache",
-									"read:kms",
 									"read-write:kms",
-									"read:project",
 									"read-write:project",
-									"read:deployment",
-									"read-write:deployment",
-									"read-write:edge-cache",
-									"read-write:project-protection-bypass",
-									"read:project-env-vars-non-production",
+									"read-write:project-env-vars",
 									"read-write:project-env-vars-non-production",
-									"read:project-env-vars-production",
 									"read-write:project-env-vars-production",
 									"read-write:project-flags-non-production",
 									"read-write:project-flags-production",
-									"read-write:domain-registrar",
-									"read:sandbox",
+									"read-write:project-protection-bypass",
+									"read-write:remote-cache",
 									"read-write:sandbox",
+									"read:access-group",
+									"read:ai-gateway-rules",
+									"read:alerts",
+									"read:billing",
+									"read:deployment",
+									"read:domain",
+									"read:event",
+									"read:integration-configuration",
+									"read:kms",
+									"read:monitoring",
+									"read:project",
+									"read:project-env-vars-non-production",
+									"read:project-env-vars-production",
+									"read:sandbox",
+									"read:team",
+									"read:user",
+									"use:ai-gateway",
 								]),
 							)
 							.optional(),
@@ -1610,41 +1774,45 @@ export const userEventSchema = z
 								permissions: z
 									.array(
 										z.enum([
-											"read:domain",
-											"read-write:domain",
-											"read:team",
-											"read:billing",
-											"read-write:billing",
 											"read-write:ai-gateway-api-key",
-											"use:ai-gateway",
-											"read-write:project-env-vars",
+											"read-write:ai-gateway-rules",
+											"read-write:alerts",
+											"read-write:billing",
+											"read-write:blob",
+											"read-write:deployment",
+											"read-write:domain",
+											"read-write:domain-registrar",
 											"read-write:drains",
+											"read-write:edge-cache",
 											"read-write:edge-config",
-											"read:monitoring",
-											"read:access-group",
-											"read:integration-configuration",
 											"read-write:integration-configuration",
 											"read-write:integration-resource",
-											"read-write:blob",
-											"read:event",
-											"read-write:remote-cache",
-											"read:kms",
 											"read-write:kms",
-											"read:project",
 											"read-write:project",
-											"read:deployment",
-											"read-write:deployment",
-											"read-write:edge-cache",
-											"read-write:project-protection-bypass",
-											"read:project-env-vars-non-production",
+											"read-write:project-env-vars",
 											"read-write:project-env-vars-non-production",
-											"read:project-env-vars-production",
 											"read-write:project-env-vars-production",
 											"read-write:project-flags-non-production",
 											"read-write:project-flags-production",
-											"read-write:domain-registrar",
-											"read:sandbox",
+											"read-write:project-protection-bypass",
+											"read-write:remote-cache",
 											"read-write:sandbox",
+											"read:access-group",
+											"read:ai-gateway-rules",
+											"read:alerts",
+											"read:billing",
+											"read:deployment",
+											"read:domain",
+											"read:event",
+											"read:integration-configuration",
+											"read:kms",
+											"read:monitoring",
+											"read:project",
+											"read:project-env-vars-non-production",
+											"read:project-env-vars-production",
+											"read:sandbox",
+											"read:team",
+											"use:ai-gateway",
 										]),
 									)
 									.optional(),
@@ -1668,41 +1836,45 @@ export const userEventSchema = z
 								permissions: z
 									.array(
 										z.enum([
-											"read:domain",
-											"read-write:domain",
-											"read:team",
-											"read:billing",
-											"read-write:billing",
 											"read-write:ai-gateway-api-key",
-											"use:ai-gateway",
-											"read-write:project-env-vars",
+											"read-write:ai-gateway-rules",
+											"read-write:alerts",
+											"read-write:billing",
+											"read-write:blob",
+											"read-write:deployment",
+											"read-write:domain",
+											"read-write:domain-registrar",
 											"read-write:drains",
+											"read-write:edge-cache",
 											"read-write:edge-config",
-											"read:monitoring",
-											"read:access-group",
-											"read:integration-configuration",
 											"read-write:integration-configuration",
 											"read-write:integration-resource",
-											"read-write:blob",
-											"read:event",
-											"read-write:remote-cache",
-											"read:kms",
 											"read-write:kms",
-											"read:project",
 											"read-write:project",
-											"read:deployment",
-											"read-write:deployment",
-											"read-write:edge-cache",
-											"read-write:project-protection-bypass",
-											"read:project-env-vars-non-production",
+											"read-write:project-env-vars",
 											"read-write:project-env-vars-non-production",
-											"read:project-env-vars-production",
 											"read-write:project-env-vars-production",
 											"read-write:project-flags-non-production",
 											"read-write:project-flags-production",
-											"read-write:domain-registrar",
-											"read:sandbox",
+											"read-write:project-protection-bypass",
+											"read-write:remote-cache",
 											"read-write:sandbox",
+											"read:access-group",
+											"read:ai-gateway-rules",
+											"read:alerts",
+											"read:billing",
+											"read:deployment",
+											"read:domain",
+											"read:event",
+											"read:integration-configuration",
+											"read:kms",
+											"read:monitoring",
+											"read:project",
+											"read:project-env-vars-non-production",
+											"read:project-env-vars-production",
+											"read:sandbox",
+											"read:team",
+											"use:ai-gateway",
 										]),
 									)
 									.optional(),
@@ -1730,41 +1902,45 @@ export const userEventSchema = z
 						permissions: z
 							.array(
 								z.enum([
-									"read:domain",
-									"read-write:domain",
-									"read:team",
-									"read:billing",
-									"read-write:billing",
 									"read-write:ai-gateway-api-key",
-									"use:ai-gateway",
-									"read-write:project-env-vars",
+									"read-write:ai-gateway-rules",
+									"read-write:alerts",
+									"read-write:billing",
+									"read-write:blob",
+									"read-write:deployment",
+									"read-write:domain",
+									"read-write:domain-registrar",
 									"read-write:drains",
+									"read-write:edge-cache",
 									"read-write:edge-config",
-									"read:monitoring",
-									"read:access-group",
-									"read:integration-configuration",
 									"read-write:integration-configuration",
 									"read-write:integration-resource",
-									"read-write:blob",
-									"read:event",
-									"read-write:remote-cache",
-									"read:kms",
 									"read-write:kms",
-									"read:project",
 									"read-write:project",
-									"read:deployment",
-									"read-write:deployment",
-									"read-write:edge-cache",
-									"read-write:project-protection-bypass",
-									"read:project-env-vars-non-production",
+									"read-write:project-env-vars",
 									"read-write:project-env-vars-non-production",
-									"read:project-env-vars-production",
 									"read-write:project-env-vars-production",
 									"read-write:project-flags-non-production",
 									"read-write:project-flags-production",
-									"read-write:domain-registrar",
-									"read:sandbox",
+									"read-write:project-protection-bypass",
+									"read-write:remote-cache",
 									"read-write:sandbox",
+									"read:access-group",
+									"read:ai-gateway-rules",
+									"read:alerts",
+									"read:billing",
+									"read:deployment",
+									"read:domain",
+									"read:event",
+									"read:integration-configuration",
+									"read:kms",
+									"read:monitoring",
+									"read:project",
+									"read:project-env-vars-non-production",
+									"read:project-env-vars-production",
+									"read:sandbox",
+									"read:team",
+									"use:ai-gateway",
 								]),
 							)
 							.optional(),
@@ -1818,6 +1994,7 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						projectId: z.string().optional(),
 						projectName: z.string(),
 						autoExposeSystemEnvs: z.union([z.literal(false), z.literal(true)]),
 					})
@@ -1839,7 +2016,12 @@ export const userEventSchema = z
 					.object({
 						invoiceId: z.string(),
 						newInvoiceId: z.string(),
-						settlementMethod: z.enum(["refunded-paid", "credited-paid"]),
+						settlementMethod: z.enum([
+							"credited-paid",
+							"credited-payment-pending",
+							"refunded-paid",
+							"refunded-payment-pending",
+						]),
 						amount: z.number(),
 					})
 					.strict(),
@@ -1861,7 +2043,7 @@ export const userEventSchema = z
 						subscriptionId: z.string().optional(),
 						action: z.enum(["cancel_plan"]),
 						data: z.object({
-							planSlug: z.enum(["v0_teams", "v0_business"]),
+							planSlug: z.enum(["v0_business", "v0_teams"]),
 							reason: z.enum(["non-payment"]).optional(),
 						}),
 					})
@@ -1871,7 +2053,7 @@ export const userEventSchema = z
 						subscriptionId: z.string().optional(),
 						action: z.enum(["resume_plan"]),
 						data: z.object({
-							planSlug: z.enum(["v0_teams", "v0_business"]),
+							planSlug: z.enum(["v0_business", "v0_teams"]),
 						}),
 					})
 					.strict(),
@@ -2081,7 +2263,7 @@ export const userEventSchema = z
 						clientName: z.string().optional(),
 						projectId: z.string().optional(),
 						installationId: z.string().optional(),
-						subjectType: z.enum(["user", "app"]).optional(),
+						subjectType: z.enum(["app", "user"]).optional(),
 						fields: z.array(z.string()).optional(),
 						triggerDestinationCount: z.number().optional(),
 						tokensDeleted: z.number().optional(),
@@ -2242,7 +2424,7 @@ export const userEventSchema = z
 											"Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment",
 										),
 									commitVerification: z
-										.enum(["verified", "unverified", "unknown"])
+										.enum(["unknown", "unverified", "verified"])
 										.optional()
 										.describe(
 											"Since 6 Nov 2025 The verification status of the commit. - 'verified' if the commit is verified - 'unverified' if the commit is not verified - 'unknown' if the commit verification status is unknown or not supported",
@@ -2394,7 +2576,7 @@ export const userEventSchema = z
 											"Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment",
 										),
 									commitVerification: z
-										.enum(["verified", "unverified", "unknown"])
+										.enum(["unknown", "unverified", "verified"])
 										.optional()
 										.describe(
 											"Since 6 Nov 2025 The verification status of the commit. - 'verified' if the commit is verified - 'unverified' if the commit is not verified - 'unknown' if the commit verification status is unknown or not supported",
@@ -2455,7 +2637,7 @@ export const userEventSchema = z
 									target: z.string().nullish(),
 									url: z.string().optional(),
 									withCache: z.union([z.literal(false), z.literal(true)]).optional(),
-									provider: z.enum(["github", "github-limited", "github-custom-host"]),
+									provider: z.enum(["github", "github-custom-host", "github-limited"]),
 									customHost: z.string().optional(),
 								})
 								.strict(),
@@ -2534,7 +2716,7 @@ export const userEventSchema = z
 											"Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment",
 										),
 									commitVerification: z
-										.enum(["verified", "unverified", "unknown"])
+										.enum(["unknown", "unverified", "verified"])
 										.optional()
 										.describe(
 											"Since 6 Nov 2025 The verification status of the commit. - 'verified' if the commit is verified - 'unverified' if the commit is not verified - 'unknown' if the commit verification status is unknown or not supported",
@@ -2596,7 +2778,7 @@ export const userEventSchema = z
 									target: z.string().nullish(),
 									url: z.string().optional(),
 									withCache: z.union([z.literal(false), z.literal(true)]).optional(),
-									provider: z.enum(["github", "github-limited", "github-custom-host"]),
+									provider: z.enum(["github", "github-custom-host", "github-limited"]),
 									customHost: z.string().optional(),
 								})
 								.strict(),
@@ -2630,7 +2812,7 @@ export const userEventSchema = z
 											onCommit: z.union([z.literal(false), z.literal(true)]),
 										})
 										.optional(),
-									provider: z.enum(["github", "github-limited", "github-custom-host"]),
+									provider: z.enum(["github", "github-custom-host", "github-limited"]),
 									customHost: z.string().optional(),
 								})
 								.strict(),
@@ -2701,7 +2883,7 @@ export const userEventSchema = z
 											"Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment",
 										),
 									commitVerification: z
-										.enum(["verified", "unverified", "unknown"])
+										.enum(["unknown", "unverified", "verified"])
 										.optional()
 										.describe(
 											"Since 6 Nov 2025 The verification status of the commit. - 'verified' if the commit is verified - 'unverified' if the commit is not verified - 'unknown' if the commit verification status is unknown or not supported",
@@ -2899,7 +3081,7 @@ export const userEventSchema = z
 											"Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment",
 										),
 									commitVerification: z
-										.enum(["verified", "unverified", "unknown"])
+										.enum(["unknown", "unverified", "verified"])
 										.optional()
 										.describe(
 											"Since 6 Nov 2025 The verification status of the commit. - 'verified' if the commit is verified - 'unverified' if the commit is not verified - 'unknown' if the commit verification status is unknown or not supported",
@@ -2949,6 +3131,7 @@ export const userEventSchema = z
 					.object({
 						sha: z.string(),
 						gitUserPlatform: z.string(),
+						projectId: z.string().optional(),
 						projectName: z.string(),
 						gitCommitterName: z.string(),
 						source: z.string(),
@@ -2968,7 +3151,14 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						projectId: z.string().optional(),
 						projectName: z.string(),
+						deploymentId: z
+							.string()
+							.optional()
+							.describe(
+								"The blocked deployment's id (e.g. `dpl_…`). When present, the message links it to the deployment details (inspector) page. Optional so events emitted before this field was added still render.",
+							),
 						source: z
 							.string()
 							.describe("Classified deploy source, e.g. 'cli', 'git', 'integration'."),
@@ -2976,8 +3166,17 @@ export const userEventSchema = z
 							.enum(["deploymentSources", "gitSources"])
 							.describe("Which rule blocked the deploy."),
 						ruleProvenance: z
-							.enum(["team", "default", "project"])
+							.enum(["default", "project", "team"])
 							.describe("Team-level or project-level rule."),
+					})
+					.strict(),
+				z
+					.object({
+						deploymentId: z.string(),
+						deploymentUrl: z.string().nullable(),
+						deploymentName: z.string().nullable(),
+						projectId: z.string(),
+						projectName: z.string(),
 					})
 					.strict(),
 				z
@@ -2998,6 +3197,20 @@ export const userEventSchema = z
 						domain: z.string(),
 						type: z.string(),
 						mxPriority: z.number().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						action: z.enum(["add", "delete", "update"]),
+						initiator: z.enum(["system", "user"]),
+						id: z.string(),
+						domain: z.string(),
+						name: z.string(),
+						type: z.string(),
+						value: z.string(),
+						mxPriority: z.number().optional(),
+						previousValue: z.string().optional(),
+						source: z.string().optional(),
 					})
 					.strict(),
 				z
@@ -3180,13 +3393,13 @@ export const userEventSchema = z
 						}),
 						fromAccount: z.object({
 							id: z.string(),
-							type: z.enum(["user", "team"]),
+							type: z.enum(["team", "user"]),
 							slug: z.string().optional(),
 							username: z.string().optional(),
 						}),
 						toAccount: z.object({
 							id: z.string(),
-							type: z.enum(["user", "team"]),
+							type: z.enum(["team", "user"]),
 							slug: z.string().optional(),
 							username: z.string().optional(),
 						}),
@@ -3320,11 +3533,11 @@ export const userEventSchema = z
 								"The unique identifiers of the projects which the Shared Env Var is linked to.",
 							),
 						type: z
-							.enum(["system", "encrypted", "plain", "sensitive"])
+							.enum(["encrypted", "plain", "sensitive", "system"])
 							.optional()
 							.describe("The type of this cosmos doc instance, if blank, assume secret."),
 						target: z
-							.array(z.enum(["production", "preview", "development"]))
+							.array(z.enum(["development", "preview", "production"]))
 							.optional()
 							.describe("environments this env variable targets"),
 						applyToAllCustomEnvironments: z
@@ -3401,11 +3614,11 @@ export const userEventSchema = z
 										"The unique identifiers of the projects which the Shared Env Var is linked to.",
 									),
 								type: z
-									.enum(["system", "encrypted", "plain", "sensitive"])
+									.enum(["encrypted", "plain", "sensitive", "system"])
 									.optional()
 									.describe("The type of this cosmos doc instance, if blank, assume secret."),
 								target: z
-									.array(z.enum(["production", "preview", "development"]))
+									.array(z.enum(["development", "preview", "production"]))
 									.optional()
 									.describe("environments this env variable targets"),
 								applyToAllCustomEnvironments: z
@@ -3480,11 +3693,11 @@ export const userEventSchema = z
 										"The unique identifiers of the projects which the Shared Env Var is linked to.",
 									),
 								type: z
-									.enum(["system", "encrypted", "plain", "sensitive"])
+									.enum(["encrypted", "plain", "sensitive", "system"])
 									.optional()
 									.describe("The type of this cosmos doc instance, if blank, assume secret."),
 								target: z
-									.array(z.enum(["production", "preview", "development"]))
+									.array(z.enum(["development", "preview", "production"]))
 									.optional()
 									.describe("environments this env variable targets"),
 								applyToAllCustomEnvironments: z
@@ -3516,8 +3729,8 @@ export const userEventSchema = z
 								id: z.string(),
 								key: z.string().optional(),
 								newKey: z.string().optional(),
-								oldTarget: z.array(z.enum(["production", "preview", "development"])).optional(),
-								newTarget: z.array(z.enum(["production", "preview", "development"])).optional(),
+								oldTarget: z.array(z.enum(["development", "preview", "production"])).optional(),
+								newTarget: z.array(z.enum(["development", "preview", "production"])).optional(),
 								oldType: z.string().optional(),
 								newType: z.string().optional(),
 								oldProjects: z
@@ -3582,7 +3795,7 @@ export const userEventSchema = z
 						ruleGroups: z.object({}).catchall(
 							z.object({
 								active: z.union([z.literal(false), z.literal(true)]),
-								action: z.enum(["log", "challenge", "deny"]).optional(),
+								action: z.enum(["challenge", "deny", "log"]).optional(),
 							}),
 						),
 					})
@@ -3592,12 +3805,12 @@ export const userEventSchema = z
 						projectId: z.string(),
 						rulesetName: z.string(),
 						active: z.union([z.literal(false), z.literal(true)]),
-						action: z.enum(["log", "challenge", "deny"]).optional(),
+						action: z.enum(["challenge", "deny", "log"]).optional(),
 					})
 					.strict(),
 				z
 					.object({
-						action: z.enum(["enable", "disable"]),
+						action: z.enum(["disable", "enable"]),
 					})
 					.strict(),
 				z
@@ -3679,6 +3892,39 @@ export const userEventSchema = z
 											.describe(
 												'Since December 2025. UTC timestamp string of when an auto-unblock is scheduled. Format: "Wed, 03 Dec 2025 20:32:13 GMT"',
 											),
+										scheduledBlock: z
+											.object({
+												executeAt: z
+													.number()
+													.describe("Unix ms timestamp of the scheduled EventBridge execution."),
+												reason: z
+													.string()
+													.describe("Violation reason (string value of the `Violation` enum)."),
+												source: z
+													.string()
+													.describe(
+														"What triggered the scheduled block (string value of `TeamBlockSource`).",
+													),
+												createdAt: z
+													.number()
+													.describe("Unix ms timestamp of when the marker was written."),
+												caseId: z
+													.string()
+													.optional()
+													.describe(
+														"Absent from the automated evaluation path, which has no case.",
+													),
+												scheduleName: z
+													.string()
+													.optional()
+													.describe(
+														"EventBridge schedule name, persisted so the pending event can be cancelled.",
+													),
+											})
+											.optional()
+											.describe(
+												'Since June 2026. A hard block that is scheduled (the delay varies by source; see `executeAt`) but not yet executed. Powers admin visibility, scheduler dedup, and cancellation. Cleared on execution or when the team is unblocked/reviewed before `executeAt`; the executor treats its absence as "block cancelled".',
+											),
 										updatedAt: z.number().describe("Since November 2021"),
 										creationUserAgent: z.string().optional(),
 										creationIp: z.string().optional(),
@@ -3689,7 +3935,7 @@ export const userEventSchema = z
 								acceptedAt: z.number().optional(),
 								avatar: z.string().optional(),
 								billing: z.object({
-									plan: z.enum(["pro", "enterprise", "hobby"]),
+									plan: z.enum(["enterprise", "hobby", "pro"]),
 								}),
 								blocked: z.number().nullable(),
 								blockReason: z.string().optional(),
@@ -3701,14 +3947,14 @@ export const userEventSchema = z
 											z
 												.object({
 													type: z.enum([
-														"gitlab",
-														"bitbucket",
-														"vercel",
-														"google",
 														"apple",
+														"bitbucket",
 														"chatgpt",
 														"github-oauth",
 														"github-oauth-limited",
+														"gitlab",
+														"google",
+														"vercel",
 													]),
 													id: z.string(),
 												})
@@ -3760,11 +4006,11 @@ export const userEventSchema = z
 								importFlowGitNamespaceId: z.union([z.string(), z.number()]).nullish(),
 								importFlowGitProvider: z
 									.enum([
-										"github",
-										"github-limited",
-										"github-custom-host",
-										"gitlab",
 										"bitbucket",
+										"github",
+										"github-custom-host",
+										"github-limited",
+										"gitlab",
 										"vercel",
 									])
 									.nullish(),
@@ -3860,7 +4106,7 @@ export const userEventSchema = z
 										buildMachine: z
 											.object({
 												default: z
-													.enum(["enhanced", "turbo", "standard", "elastic"])
+													.enum(["elastic", "enhanced", "standard", "turbo"])
 													.optional()
 													.describe(
 														'Default build machine type for new deployments. This must be used in combination with the buildEntitlements field. It is respected over Vercel\'s notion of the default build machine, and was originally implemented to allow Teams to "downgrade". - Hobby customers cannot set this, because they only have access to one machine type - Pro customers get Turbo machines by default, so this field is effectively for downgrading - ENT customers cannot set this (yet), because their default is based on their contract. https://linear.app/vercel/project/self-serve-build-machines-for-enterprise-customers-0cbc357e26d2/overview',
@@ -3886,9 +4132,9 @@ export const userEventSchema = z
 									.array(
 										z.object({
 											scopeId: z.string(),
-											viewPreference: z.enum(["list", "cards"]).nullish(),
-											favoritesViewPreference: z.enum(["open", "closed"]).nullish(),
-											recentsViewPreference: z.enum(["open", "closed"]).nullish(),
+											viewPreference: z.enum(["cards", "list"]).nullish(),
+											favoritesViewPreference: z.enum(["closed", "open"]).nullish(),
+											recentsViewPreference: z.enum(["closed", "open"]).nullish(),
 										}),
 									)
 									.optional(),
@@ -3938,20 +4184,21 @@ export const userEventSchema = z
 									.object({
 										blockedAt: z.number(),
 										reason: z.enum([
+											"BLOCKED_FOR_PLATFORM_ABUSE",
+											"ENTERPRISE_TRIAL_ENDED",
 											"ENTERPRISE_UNPAID_INVOICE",
 											"EXPOSURE_CAP_EXCEEDED",
+											"FAIR_USE_LIMITS_EXCEEDED",
 											"SUBSCRIPTION_CANCELED",
 											"SUBSCRIPTION_EXPIRED",
 											"UNPAID_INVOICE",
-											"ENTERPRISE_TRIAL_ENDED",
-											"FAIR_USE_LIMITS_EXCEEDED",
-											"BLOCKED_FOR_PLATFORM_ABUSE",
 										]),
 										blockedDueToOverageType: z
 											.enum([
 												"analyticsUsage",
 												"artifacts",
 												"bandwidth",
+												"blobDataTransfer",
 												"blobTotalAdvancedRequests",
 												"blobTotalAvgSizeInBytes",
 												"blobTotalGetResponseObjectSizeInBytes",
@@ -3963,8 +4210,8 @@ export const userEventSchema = z
 												"edgeConfigWrite",
 												"edgeFunctionExecutionUnits",
 												"edgeMiddlewareInvocations",
-												"edgeRequestAdditionalCpuDuration",
 												"edgeRequest",
+												"edgeRequestAdditionalCpuDuration",
 												"elasticConcurrencyBuildSlots",
 												"fastDataTransfer",
 												"fastOriginTransfer",
@@ -3977,7 +4224,6 @@ export const userEventSchema = z
 												"imageOptimizationTransformation",
 												"logDrainsVolume",
 												"monitoringMetric",
-												"blobDataTransfer",
 												"observabilityEvent",
 												"onDemandConcurrencyMinutes",
 												"runtimeCacheRead",
@@ -4000,14 +4246,14 @@ export const userEventSchema = z
 											teamId: z.string(),
 											createdAt: z.number(),
 											role: z.enum([
-												"OWNER",
-												"MEMBER",
-												"DEVELOPER",
-												"SECURITY",
 												"BILLING",
+												"CONTRIBUTOR",
+												"DEVELOPER",
+												"MEMBER",
+												"OWNER",
+												"SECURITY",
 												"VIEWER",
 												"VIEWER_FOR_PLUS",
-												"CONTRIBUTOR",
 											]),
 											confirmed: z.literal(true),
 											confirmedAt: z.number(),
@@ -4015,26 +4261,28 @@ export const userEventSchema = z
 											teamRoles: z
 												.array(
 													z.enum([
-														"OWNER",
-														"MEMBER",
-														"DEVELOPER",
-														"SECURITY",
 														"BILLING",
+														"CONTRIBUTOR",
+														"DEVELOPER",
+														"MEMBER",
+														"OWNER",
+														"SECURITY",
 														"VIEWER",
 														"VIEWER_FOR_PLUS",
-														"CONTRIBUTOR",
 													]),
 												)
 												.optional(),
 											teamPermissions: z
 												.array(
 													z.enum([
-														"IntegrationManager",
 														"CreateProject",
-														"FullProductionDeployment",
-														"UsageViewer",
 														"EnvVariableManager",
 														"EnvironmentManager",
+														"FullProductionDeployment",
+														"IntegrationManager",
+														"OrgAdmin",
+														"OrgViewer",
+														"UsageViewer",
 														"V0Builder",
 														"V0Chatter",
 														"V0Viewer",
@@ -4045,24 +4293,25 @@ export const userEventSchema = z
 											joinedFrom: z
 												.object({
 													origin: z.enum([
-														"link",
-														"teams",
-														"saml",
-														"github",
-														"gitlab",
+														"account-update",
 														"bitbucket",
-														"mail",
-														"import",
 														"dsync",
 														"feedback",
-														"organization-teams",
+														"github",
+														"gitlab",
+														"import",
+														"link",
+														"mail",
 														"nsnb-auto-approve",
 														"nsnb-hobby-upgrade",
-														"nsnb-request-access",
-														"nsnb-viewer-upgrade",
 														"nsnb-invite",
 														"nsnb-redeploy",
 														"nsnb-redeploy-attribution-card",
+														"nsnb-request-access",
+														"nsnb-viewer-upgrade",
+														"organization-teams",
+														"saml",
+														"teams",
 													]),
 													commitId: z.string().optional(),
 													repoId: z.string().optional(),
@@ -4421,7 +4670,7 @@ export const userEventSchema = z
 								username: z.string(),
 								updatedAt: z.number(),
 								enablePreviewFeedback: z
-									.enum(["default", "on", "off", "on-force", "off-force", "default-force"])
+									.enum(["default", "default-force", "off", "off-force", "on", "on-force"])
 									.optional()
 									.describe("Whether the Vercel Toolbar is enabled for preview deployments."),
 								featureBlocks: z
@@ -4431,7 +4680,7 @@ export const userEventSchema = z
 												updatedAt: z.number(),
 												blockedFrom: z.number().optional(),
 												blockedUntil: z.number().optional(),
-												blockReason: z.enum(["admin_override", "limits_exceeded", "hard_blocked"]),
+												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
 												graceEmailSentAt: z.number().optional(),
 											})
 											.optional(),
@@ -4440,8 +4689,8 @@ export const userEventSchema = z
 												updatedAt: z.number(),
 												blockedFrom: z.number().optional(),
 												blockedUntil: z.number().optional(),
-												blockReason: z.enum(["admin_override", "limits_exceeded", "hard_blocked"]),
-												blockType: z.enum(["soft", "hard"]),
+												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
+												blockType: z.enum(["hard", "soft"]),
 											})
 											.optional()
 											.describe(
@@ -4452,8 +4701,8 @@ export const userEventSchema = z
 												updatedAt: z.number(),
 												blockedFrom: z.number().optional(),
 												blockedUntil: z.number().optional(),
-												blockReason: z.enum(["admin_override", "limits_exceeded", "hard_blocked"]),
-												blockType: z.enum(["soft", "hard"]),
+												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
+												blockType: z.enum(["hard", "soft"]),
 											})
 											.optional(),
 										dataCache: z
@@ -4461,7 +4710,7 @@ export const userEventSchema = z
 												updatedAt: z.number(),
 												blockedFrom: z.number().optional(),
 												blockedUntil: z.number().optional(),
-												blockReason: z.enum(["admin_override", "limits_exceeded", "hard_blocked"]),
+												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
 											})
 											.optional(),
 										imageOptimizationTransformation: z
@@ -4469,7 +4718,7 @@ export const userEventSchema = z
 												updatedAt: z.number(),
 												blockedFrom: z.number().optional(),
 												blockedUntil: z.number().optional(),
-												blockReason: z.enum(["admin_override", "limits_exceeded", "hard_blocked"]),
+												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
 											})
 											.optional(),
 										sourceImages: z
@@ -4477,7 +4726,7 @@ export const userEventSchema = z
 												updatedAt: z.number(),
 												blockedFrom: z.number().optional(),
 												blockedUntil: z.number().optional(),
-												blockReason: z.enum(["admin_override", "limits_exceeded", "hard_blocked"]),
+												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
 											})
 											.optional(),
 										blob: z
@@ -4492,6 +4741,7 @@ export const userEventSchema = z
 															"analyticsUsage",
 															"artifacts",
 															"bandwidth",
+															"blobDataTransfer",
 															"blobTotalAdvancedRequests",
 															"blobTotalAvgSizeInBytes",
 															"blobTotalGetResponseObjectSizeInBytes",
@@ -4503,8 +4753,8 @@ export const userEventSchema = z
 															"edgeConfigWrite",
 															"edgeFunctionExecutionUnits",
 															"edgeMiddlewareInvocations",
-															"edgeRequestAdditionalCpuDuration",
 															"edgeRequest",
+															"edgeRequestAdditionalCpuDuration",
 															"elasticConcurrencyBuildSlots",
 															"fastDataTransfer",
 															"fastOriginTransfer",
@@ -4517,7 +4767,6 @@ export const userEventSchema = z
 															"imageOptimizationTransformation",
 															"logDrainsVolume",
 															"monitoringMetric",
-															"blobDataTransfer",
 															"observabilityEvent",
 															"onDemandConcurrencyMinutes",
 															"runtimeCacheRead",
@@ -4553,6 +4802,7 @@ export const userEventSchema = z
 															"analyticsUsage",
 															"artifacts",
 															"bandwidth",
+															"blobDataTransfer",
 															"blobTotalAdvancedRequests",
 															"blobTotalAvgSizeInBytes",
 															"blobTotalGetResponseObjectSizeInBytes",
@@ -4564,8 +4814,8 @@ export const userEventSchema = z
 															"edgeConfigWrite",
 															"edgeFunctionExecutionUnits",
 															"edgeMiddlewareInvocations",
-															"edgeRequestAdditionalCpuDuration",
 															"edgeRequest",
+															"edgeRequestAdditionalCpuDuration",
 															"elasticConcurrencyBuildSlots",
 															"fastDataTransfer",
 															"fastOriginTransfer",
@@ -4578,7 +4828,6 @@ export const userEventSchema = z
 															"imageOptimizationTransformation",
 															"logDrainsVolume",
 															"monitoringMetric",
-															"blobDataTransfer",
 															"observabilityEvent",
 															"onDemandConcurrencyMinutes",
 															"runtimeCacheRead",
@@ -4614,6 +4863,7 @@ export const userEventSchema = z
 															"analyticsUsage",
 															"artifacts",
 															"bandwidth",
+															"blobDataTransfer",
 															"blobTotalAdvancedRequests",
 															"blobTotalAvgSizeInBytes",
 															"blobTotalGetResponseObjectSizeInBytes",
@@ -4625,8 +4875,8 @@ export const userEventSchema = z
 															"edgeConfigWrite",
 															"edgeFunctionExecutionUnits",
 															"edgeMiddlewareInvocations",
-															"edgeRequestAdditionalCpuDuration",
 															"edgeRequest",
+															"edgeRequestAdditionalCpuDuration",
 															"elasticConcurrencyBuildSlots",
 															"fastDataTransfer",
 															"fastOriginTransfer",
@@ -4639,7 +4889,6 @@ export const userEventSchema = z
 															"imageOptimizationTransformation",
 															"logDrainsVolume",
 															"monitoringMetric",
-															"blobDataTransfer",
 															"observabilityEvent",
 															"onDemandConcurrencyMinutes",
 															"runtimeCacheRead",
@@ -4668,7 +4917,7 @@ export const userEventSchema = z
 												updatedAt: z.number(),
 												blockedFrom: z.number().optional(),
 												blockedUntil: z.number().optional(),
-												blockReason: z.enum(["admin_override", "limits_exceeded", "hard_blocked"]),
+												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
 											})
 											.optional(),
 										workflowStorage: z
@@ -4676,7 +4925,7 @@ export const userEventSchema = z
 												updatedAt: z.number(),
 												blockedFrom: z.number().optional(),
 												blockedUntil: z.number().optional(),
-												blockReason: z.enum(["admin_override", "limits_exceeded", "hard_blocked"]),
+												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
 											})
 											.optional(),
 										workflowStep: z
@@ -4684,7 +4933,15 @@ export const userEventSchema = z
 												updatedAt: z.number(),
 												blockedFrom: z.number().optional(),
 												blockedUntil: z.number().optional(),
-												blockReason: z.enum(["admin_override", "limits_exceeded", "hard_blocked"]),
+												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
+											})
+											.optional(),
+										connexTokenRequests: z
+											.object({
+												updatedAt: z.number(),
+												blockedFrom: z.number().optional(),
+												blockedUntil: z.number().optional(),
+												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
 											})
 											.optional(),
 									})
@@ -4741,7 +4998,7 @@ export const userEventSchema = z
 											.array(
 												z.object({
 													action: z
-														.enum(["enabled", "disabled"])
+														.enum(["disabled", "enabled"])
 														.describe("The action that occurred"),
 													timestamp: z
 														.number()
@@ -4750,7 +5007,7 @@ export const userEventSchema = z
 															"Unix timestamp (milliseconds) when the change occurred. May be null for events that occurred before history tracking was implemented.",
 														),
 													method: z
-														.enum(["totp", "passkey", "unknown", "user_disabled", "admin_removal"])
+														.enum(["admin_removal", "passkey", "totp", "unknown", "user_disabled"])
 														.describe(
 															"Method used for the state change - 'totp': User set up TOTP authenticator - 'passkey': User registered a passkey - 'user_disabled': User disabled their own MFA - 'admin_removal': Admin removed MFA via backoffice - 'unknown': Method unknown (for pre-tracking events)",
 														),
@@ -4759,7 +5016,7 @@ export const userEventSchema = z
 														.describe(
 															"ID of the actor who made the change - For user actions: the user's own ID - For admin actions: the admin's user ID",
 														),
-													actorType: z.enum(["user", "admin"]).describe("Type of actor"),
+													actorType: z.enum(["admin", "user"]).describe("Type of actor"),
 													reason: z
 														.string()
 														.optional()
@@ -4864,7 +5121,7 @@ export const userEventSchema = z
 						integrationProductSlug: z.string(),
 						configurationId: z.string(),
 						databaseName: z.string(),
-						queryType: z.enum(["user", "schema", "data-view", "data-edit"]),
+						queryType: z.enum(["data-edit", "data-view", "schema", "user"]),
 						readonly: z.union([z.literal(false), z.literal(true)]),
 						rolledBack: z.union([z.literal(false), z.literal(true)]),
 						failedQueryIndex: z.number().nullable(),
@@ -4944,19 +5201,19 @@ export const userEventSchema = z
 										z
 											.object({
 												origin: z.enum([
+													"apple",
+													"bitbucket",
+													"chatgpt",
 													"email",
-													"saml",
 													"github",
 													"gitlab",
-													"bitbucket",
 													"google",
-													"apple",
-													"chatgpt",
-													"webauthn",
-													"otp",
 													"invite",
-													"otp-link",
 													"magic-link",
+													"otp",
+													"otp-link",
+													"saml",
+													"webauthn",
 												]),
 												username: z.string().optional(),
 												teamId: z.string().optional(),
@@ -4973,19 +5230,19 @@ export const userEventSchema = z
 											z
 												.object({
 													origin: z.enum([
+														"apple",
+														"bitbucket",
+														"chatgpt",
 														"email",
-														"saml",
 														"github",
 														"gitlab",
-														"bitbucket",
 														"google",
-														"apple",
-														"chatgpt",
-														"webauthn",
-														"otp",
 														"invite",
-														"otp-link",
 														"magic-link",
+														"otp",
+														"otp-link",
+														"saml",
+														"webauthn",
 													]),
 													username: z.string().optional(),
 													teamId: z.string().optional(),
@@ -4995,7 +5252,7 @@ export const userEventSchema = z
 												.strict(),
 											z
 												.object({
-													origin: z.enum(["totp", "webauthn", "recovery-code"]),
+													origin: z.enum(["recovery-code", "totp", "webauthn"]),
 												})
 												.strict(),
 										]),
@@ -5258,7 +5515,21 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						alertId: z.string(),
+						alertName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string().optional(),
 						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						organizationId: z.string(),
+						teamId: z.string(),
+						billingPlan: z.enum(["enterprise", "platform"]),
 					})
 					.strict(),
 				z
@@ -5305,7 +5576,7 @@ export const userEventSchema = z
 								enabled: z.union([z.literal(false), z.literal(true)]),
 								mode: z.string(),
 								enforcePercentage: z.number(),
-								newResourceBlockingPolicy: z.enum(["block", "allow"]),
+								newResourceBlockingPolicy: z.enum(["allow", "block"]),
 								allowUnsafeScriptSrcKeywords: z.union([z.literal(false), z.literal(true)]),
 							})
 							.nullable(),
@@ -5313,7 +5584,7 @@ export const userEventSchema = z
 							enabled: z.union([z.literal(false), z.literal(true)]),
 							mode: z.string(),
 							enforcePercentage: z.number(),
-							newResourceBlockingPolicy: z.enum(["block", "allow"]),
+							newResourceBlockingPolicy: z.enum(["allow", "block"]),
 							allowUnsafeScriptSrcKeywords: z.union([z.literal(false), z.literal(true)]),
 						}),
 					})
@@ -5329,10 +5600,21 @@ export const userEventSchema = z
 				z
 					.object({
 						projectId: z.string(),
+						projectName: z.string(),
+						deletedCount: z.number(),
+						scriptCount: z.number(),
+						connectSrcCount: z.number(),
+						connectSrcOriginCount: z.number(),
+						headerCount: z.number(),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
 						url: z.string(),
 						previousStatus: z.string(),
 						justification: z.string(),
-						kind: z.enum(["script", "connectSrc"]).optional(),
+						kind: z.enum(["connectSrc", "script"]).optional(),
 					})
 					.strict(),
 				z
@@ -5363,7 +5645,7 @@ export const userEventSchema = z
 						headerName: z.string().optional(),
 						previousStatus: z.string(),
 						justification: z.string().nullable(),
-						kind: z.enum(["script", "connectSrc"]).optional(),
+						kind: z.enum(["connectSrc", "script"]).optional(),
 					})
 					.strict(),
 				z
@@ -5382,9 +5664,9 @@ export const userEventSchema = z
 									connectorId: z.string(),
 									deploymentType: z.enum([
 										"all",
+										"all_except_custom_domains",
 										"preview",
 										"prod_deployment_urls_and_all_previews",
-										"all_except_custom_domains",
 									]),
 								})
 								.nullish(),
@@ -5395,9 +5677,9 @@ export const userEventSchema = z
 									connectorId: z.string(),
 									deploymentType: z.enum([
 										"all",
+										"all_except_custom_domains",
 										"preview",
 										"prod_deployment_urls_and_all_previews",
-										"all_except_custom_domains",
 									]),
 								})
 								.nullish(),
@@ -5412,9 +5694,9 @@ export const userEventSchema = z
 									connectorId: z.string(),
 									deploymentType: z.enum([
 										"all",
+										"all_except_custom_domains",
 										"preview",
 										"prod_deployment_urls_and_all_previews",
-										"all_except_custom_domains",
 									]),
 								})
 								.nullish(),
@@ -5425,9 +5707,9 @@ export const userEventSchema = z
 									connectorId: z.string(),
 									deploymentType: z.enum([
 										"all",
+										"all_except_custom_domains",
 										"preview",
 										"prod_deployment_urls_and_all_previews",
-										"all_except_custom_domains",
 									]),
 								})
 								.nullish(),
@@ -5442,38 +5724,39 @@ export const userEventSchema = z
 							.catchall(
 								z.object({
 									role: z.enum([
-										"OWNER",
-										"MEMBER",
-										"DEVELOPER",
-										"SECURITY",
 										"BILLING",
+										"CONTRIBUTOR",
+										"DEVELOPER",
+										"MEMBER",
+										"OWNER",
+										"SECURITY",
 										"VIEWER",
 										"VIEWER_FOR_PLUS",
-										"CONTRIBUTOR",
 									]),
 									confirmed: z.union([z.literal(false), z.literal(true)]),
 									confirmedAt: z.number().optional(),
 									joinedFrom: z
 										.object({
 											origin: z.enum([
-												"link",
-												"teams",
-												"saml",
-												"github",
-												"gitlab",
+												"account-update",
 												"bitbucket",
-												"mail",
-												"import",
 												"dsync",
 												"feedback",
-												"organization-teams",
+												"github",
+												"gitlab",
+												"import",
+												"link",
+												"mail",
 												"nsnb-auto-approve",
 												"nsnb-hobby-upgrade",
-												"nsnb-request-access",
-												"nsnb-viewer-upgrade",
 												"nsnb-invite",
 												"nsnb-redeploy",
 												"nsnb-redeploy-attribution-card",
+												"nsnb-request-access",
+												"nsnb-viewer-upgrade",
+												"organization-teams",
+												"saml",
+												"teams",
 											]),
 											commitId: z.string().optional(),
 											repoId: z.string().optional(),
@@ -5584,6 +5867,7 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						projectId: z.string().optional(),
 						projectName: z.string(),
 						branch: z.string(),
 					})
@@ -5635,7 +5919,7 @@ export const userEventSchema = z
 					.object({
 						projectId: z.string(),
 						projectName: z.string(),
-						action: z.enum(["updated", "enabled", "disabled", "regenerated"]),
+						action: z.enum(["disabled", "enabled", "regenerated", "updated"]),
 						isEnvVar: z.union([z.literal(false), z.literal(true)]).optional(),
 						note: z.string().optional(),
 					})
@@ -5644,7 +5928,7 @@ export const userEventSchema = z
 					.object({
 						projectId: z.string(),
 						projectName: z.string(),
-						avatar: z.string().optional(),
+						avatar: z.string().nullish(),
 					})
 					.strict(),
 				z
@@ -5770,7 +6054,7 @@ export const userEventSchema = z
 					.object({
 						projectId: z.string(),
 						projectName: z.string(),
-						action: z.enum(["enabled", "disabled"]),
+						action: z.enum(["disabled", "enabled"]),
 					})
 					.strict(),
 				z
@@ -5817,7 +6101,7 @@ export const userEventSchema = z
 							branchMatcher: z
 								.object({
 									type: z
-										.enum(["endsWith", "startsWith", "equals"])
+										.enum(["endsWith", "equals", "startsWith"])
 										.describe("The type of matching to perform"),
 									pattern: z.string().describe("The pattern to match against branch names"),
 								})
@@ -5827,7 +6111,7 @@ export const userEventSchema = z
 							branchMatcher: z
 								.object({
 									type: z
-										.enum(["endsWith", "startsWith", "equals"])
+										.enum(["endsWith", "equals", "startsWith"])
 										.describe("The type of matching to perform"),
 									pattern: z.string().describe("The pattern to match against branch names"),
 								})
@@ -5919,11 +6203,11 @@ export const userEventSchema = z
 						previous: z
 							.object({
 								gitProvider: z.enum([
-									"github",
-									"github-limited",
-									"github-custom-host",
-									"gitlab",
 									"bitbucket",
+									"github",
+									"github-custom-host",
+									"github-limited",
+									"gitlab",
 									"vercel",
 								]),
 								gitRepoId: z.string(),
@@ -5932,11 +6216,11 @@ export const userEventSchema = z
 							.optional(),
 						next: z.object({
 							gitProvider: z.enum([
-								"github",
-								"github-limited",
-								"github-custom-host",
-								"gitlab",
 								"bitbucket",
+								"github",
+								"github-custom-host",
+								"github-limited",
+								"gitlab",
 								"vercel",
 							]),
 							gitRepoId: z.string(),
@@ -5949,11 +6233,11 @@ export const userEventSchema = z
 						projectId: z.string(),
 						projectName: z.string(),
 						gitProvider: z.enum([
-							"github",
-							"github-limited",
-							"github-custom-host",
-							"gitlab",
 							"bitbucket",
+							"github",
+							"github-custom-host",
+							"github-limited",
+							"gitlab",
 							"vercel",
 						]),
 						gitRepoId: z.string(),
@@ -5985,7 +6269,7 @@ export const userEventSchema = z
 					.object({
 						projectId: z.string(),
 						projectName: z.string(),
-						createDeployments: z.enum(["enabled", "disabled"]),
+						createDeployments: z.enum(["disabled", "enabled"]),
 					})
 					.strict(),
 				z
@@ -6088,7 +6372,7 @@ export const userEventSchema = z
 						projects: z.array(
 							z.object({
 								projectId: z.string(),
-								role: z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_VIEWER", "PROJECT_GUEST"]),
+								role: z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_GUEST", "PROJECT_VIEWER"]),
 								membershipCreatedAt: z.number(),
 							}),
 						),
@@ -6119,7 +6403,7 @@ export const userEventSchema = z
 						}),
 						projectMembership: z
 							.object({
-								role: z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_VIEWER", "PROJECT_GUEST"]),
+								role: z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_GUEST", "PROJECT_VIEWER"]),
 								uid: z.string(),
 								createdAt: z.number(),
 								username: z.string().optional(),
@@ -6131,7 +6415,7 @@ export const userEventSchema = z
 					.object({
 						project: z.object({
 							name: z.string(),
-							role: z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_VIEWER", "PROJECT_GUEST"]),
+							role: z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_GUEST", "PROJECT_VIEWER"]),
 							invitedUserName: z.string(),
 							id: z.string().optional(),
 							invitedUserId: z.string().optional(),
@@ -6145,7 +6429,7 @@ export const userEventSchema = z
 							id: z.string().optional(),
 						}),
 						removedMembership: z.object({
-							role: z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_VIEWER", "PROJECT_GUEST"]),
+							role: z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_GUEST", "PROJECT_VIEWER"]),
 							uid: z.string(),
 							createdAt: z.number(),
 							username: z.string().optional(),
@@ -6160,19 +6444,21 @@ export const userEventSchema = z
 						}),
 						projectMembership: z.object({
 							role: z
-								.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_VIEWER", "PROJECT_GUEST"])
+								.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_GUEST", "PROJECT_VIEWER"])
 								.optional(),
 							uid: z.string().optional(),
 							createdAt: z.number().optional(),
 							username: z.string().optional(),
 							previousRole: z
-								.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_VIEWER", "PROJECT_GUEST"])
+								.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_GUEST", "PROJECT_VIEWER"])
 								.optional(),
 						}),
 					})
 					.strict(),
 				z
 					.object({
+						previousProjectId: z.string().optional(),
+						newProjectId: z.string().optional(),
 						previousProjectName: z.string(),
 						newProjectName: z.string(),
 						originAccountName: z.string(),
@@ -6181,6 +6467,7 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						previousProjectId: z.string().optional(),
 						projectName: z.string(),
 						destinationAccountName: z.string().nullable(),
 						transferId: z.string().optional(),
@@ -6198,6 +6485,8 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						previousProjectId: z.string().optional(),
+						newProjectId: z.string().optional(),
 						previousProjectName: z.string(),
 						newProjectName: z.string(),
 						destinationAccountName: z.string(),
@@ -6245,17 +6534,17 @@ export const userEventSchema = z
 									.object({
 										deploymentType: z.enum([
 											"all",
+											"all_except_custom_domains",
 											"preview",
 											"prod_deployment_urls_and_all_previews",
-											"all_except_custom_domains",
 										]),
 									})
 									.strict(),
 								z.enum([
 									"all",
+									"all_except_custom_domains",
 									"preview",
 									"prod_deployment_urls_and_all_previews",
-									"all_except_custom_domains",
 								]),
 							])
 							.nullable(),
@@ -6265,17 +6554,17 @@ export const userEventSchema = z
 									.object({
 										deploymentType: z.enum([
 											"all",
+											"all_except_custom_domains",
 											"preview",
 											"prod_deployment_urls_and_all_previews",
-											"all_except_custom_domains",
 										]),
 									})
 									.strict(),
 								z.enum([
 									"all",
+									"all_except_custom_domains",
 									"preview",
 									"prod_deployment_urls_and_all_previews",
-									"all_except_custom_domains",
 								]),
 							])
 							.nullable(),
@@ -6295,13 +6584,39 @@ export const userEventSchema = z
 				z
 					.object({
 						projectId: z.string(),
-						reasonCode: z.enum(["BUDGET_REACHED", "PUBLIC_API", "BACKOFFICE"]).optional(),
+						reasonCode: z.enum(["BACKOFFICE", "BUDGET_REACHED", "PUBLIC_API"]).optional(),
 					})
 					.strict(),
 				z
 					.object({
+						projectId: z.string().optional(),
 						projectName: z.string(),
 						consent: z.enum(["granted", "refused"]),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+						projectName: z.string(),
+						projectAccountId: z.string(),
+						deploymentId: z.string(),
+						rollbackDescription: z
+							.object({
+								userId: z.string().describe("The user who rolled back the project."),
+								username: z
+									.string()
+									.describe("The username of the user who rolled back the project."),
+								description: z
+									.string()
+									.describe(
+										"User-supplied explanation of why they rolled back the project. Limited to 250 characters.",
+									),
+								createdAt: z.number().describe("Timestamp of when the rollback was requested."),
+							})
+							.optional()
+							.describe(
+								"Description of why a project was rolled back, and by whom. Note that lastAliasRequest contains the from/to details of the rollback.",
+							),
 					})
 					.strict(),
 				z
@@ -6340,10 +6655,10 @@ export const userEventSchema = z
 						projectId: z.string(),
 						projectName: z.string(),
 						previous: z.object({
-							issuerMode: z.enum(["team", "global"]).optional(),
+							issuerMode: z.enum(["global", "team"]).optional(),
 						}),
 						next: z.object({
-							issuerMode: z.enum(["team", "global"]),
+							issuerMode: z.enum(["global", "team"]),
 						}),
 					})
 					.strict(),
@@ -6366,6 +6681,13 @@ export const userEventSchema = z
 						projectId: z.string(),
 						projectName: z.string(),
 						protectedSourcemaps: z.union([z.literal(false), z.literal(true)]),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+						projectName: z.string(),
+						inheritDeploymentProtection: z.union([z.literal(false), z.literal(true)]),
 					})
 					.strict(),
 				z
@@ -6439,33 +6761,33 @@ export const userEventSchema = z
 									.object({
 										deploymentType: z.enum([
 											"all",
+											"all_except_custom_domains",
 											"preview",
 											"prod_deployment_urls_and_all_previews",
-											"all_except_custom_domains",
 										]),
 										cve55182MigrationAppliedFrom: z
 											.enum([
 												"all",
+												"all_except_custom_domains",
 												"preview",
 												"prod_deployment_urls_and_all_previews",
-												"all_except_custom_domains",
 											])
 											.nullish(),
 										april2026SecurityIncidentMigrationAppliedFrom: z
 											.enum([
 												"all",
+												"all_except_custom_domains",
 												"preview",
 												"prod_deployment_urls_and_all_previews",
-												"all_except_custom_domains",
 											])
 											.nullish(),
 									})
 									.strict(),
 								z.enum([
 									"all",
+									"all_except_custom_domains",
 									"preview",
 									"prod_deployment_urls_and_all_previews",
-									"all_except_custom_domains",
 								]),
 							])
 							.nullable(),
@@ -6475,33 +6797,33 @@ export const userEventSchema = z
 									.object({
 										deploymentType: z.enum([
 											"all",
+											"all_except_custom_domains",
 											"preview",
 											"prod_deployment_urls_and_all_previews",
-											"all_except_custom_domains",
 										]),
 										cve55182MigrationAppliedFrom: z
 											.enum([
 												"all",
+												"all_except_custom_domains",
 												"preview",
 												"prod_deployment_urls_and_all_previews",
-												"all_except_custom_domains",
 											])
 											.nullish(),
 										april2026SecurityIncidentMigrationAppliedFrom: z
 											.enum([
 												"all",
+												"all_except_custom_domains",
 												"preview",
 												"prod_deployment_urls_and_all_previews",
-												"all_except_custom_domains",
 											])
 											.nullish(),
 									})
 									.strict(),
 								z.enum([
 									"all",
+									"all_except_custom_domains",
 									"preview",
 									"prod_deployment_urls_and_all_previews",
-									"all_except_custom_domains",
 								]),
 							])
 							.nullable(),
@@ -6540,18 +6862,18 @@ export const userEventSchema = z
 						trustedIps: z
 							.enum([
 								"all",
+								"all_except_custom_domains",
 								"preview",
 								"prod_deployment_urls_and_all_previews",
-								"all_except_custom_domains",
 								"production",
 							])
 							.nullish(),
 						oldTrustedIps: z
 							.enum([
 								"all",
+								"all_except_custom_domains",
 								"preview",
 								"prod_deployment_urls_and_all_previews",
-								"all_except_custom_domains",
 								"production",
 							])
 							.nullish(),
@@ -6582,7 +6904,7 @@ export const userEventSchema = z
 				z
 					.object({
 						projectId: z.string(),
-						reasonCode: z.enum(["PUBLIC_API", "BACKOFFICE"]).optional(),
+						reasonCode: z.enum(["BACKOFFICE", "PUBLIC_API"]).optional(),
 					})
 					.strict(),
 				z
@@ -6716,15 +7038,15 @@ export const userEventSchema = z
 								z
 									.object({
 										origin: z.enum([
+											"apple",
+											"bitbucket",
+											"chatgpt",
 											"email",
-											"saml",
 											"github",
 											"gitlab",
-											"bitbucket",
 											"google",
-											"apple",
-											"chatgpt",
 											"otp",
+											"saml",
 										]),
 										username: z.string().optional(),
 										teamId: z.string().optional(),
@@ -6823,7 +7145,7 @@ export const userEventSchema = z
 										.optional()
 										.describe("Should all projects be paused if budget is exceeded"),
 									pricingPlan: z
-										.enum(["platform", "plus", "legacy", "unbundled"])
+										.enum(["legacy", "platform", "plus", "unbundled"])
 										.optional()
 										.describe("The acive pricing plan the team is billed with"),
 									teamId: z.string().describe("Partition key"),
@@ -6867,7 +7189,7 @@ export const userEventSchema = z
 									.optional()
 									.describe("Should all projects be paused if budget is exceeded"),
 								pricingPlan: z
-									.enum(["platform", "plus", "legacy", "unbundled"])
+									.enum(["legacy", "platform", "plus", "unbundled"])
 									.optional()
 									.describe("The acive pricing plan the team is billed with"),
 								teamId: z.string().describe("Partition key"),
@@ -6908,7 +7230,7 @@ export const userEventSchema = z
 									.optional()
 									.describe("Should all projects be paused if budget is exceeded"),
 								pricingPlan: z
-									.enum(["platform", "plus", "legacy", "unbundled"])
+									.enum(["legacy", "platform", "plus", "unbundled"])
 									.optional()
 									.describe("The acive pricing plan the team is billed with"),
 								teamId: z.string().describe("Partition key"),
@@ -6925,7 +7247,7 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
-						storeType: z.enum(["redis", "postgres"]),
+						storeType: z.enum(["postgres", "redis"]),
 					})
 					.strict(),
 				z
@@ -6934,7 +7256,7 @@ export const userEventSchema = z
 						store: z.object({
 							id: z.string(),
 							name: z.string().optional(),
-							type: z.enum(["integration", "redis", "postgres", "edge-config", "blob"]),
+							type: z.enum(["blob", "edge-config", "integration", "postgres", "redis"]),
 						}),
 					})
 					.strict(),
@@ -6944,7 +7266,7 @@ export const userEventSchema = z
 						store: z.object({
 							id: z.string(),
 							name: z.string().optional(),
-							type: z.enum(["integration", "redis", "postgres", "edge-config", "blob"]),
+							type: z.enum(["blob", "edge-config", "integration", "postgres", "redis"]),
 						}),
 						destinationTeamId: z.string(),
 						destinationTeamName: z.string(),
@@ -6956,7 +7278,7 @@ export const userEventSchema = z
 						store: z.object({
 							id: z.string(),
 							name: z.string().optional(),
-							type: z.enum(["integration", "redis", "postgres", "edge-config", "blob"]),
+							type: z.enum(["blob", "edge-config", "integration", "postgres", "redis"]),
 						}),
 						originTeamId: z.string(),
 						originTeamName: z.string(),
@@ -6969,8 +7291,8 @@ export const userEventSchema = z
 						computeUnitsMax: z.number().optional(),
 						computeUnitsMin: z.number().optional(),
 						suspendTimeoutSeconds: z.number().optional(),
-						type: z.enum(["integration", "redis", "postgres", "edge-config", "blob"]),
-						access: z.enum(["public", "private"]).optional(),
+						type: z.enum(["blob", "edge-config", "integration", "postgres", "redis"]),
+						access: z.enum(["private", "public"]).optional(),
 					})
 					.strict(),
 				z
@@ -6989,8 +7311,8 @@ export const userEventSchema = z
 						computeUnitsMax: z.number().optional(),
 						computeUnitsMin: z.number().optional(),
 						suspendTimeoutSeconds: z.number().optional(),
-						type: z.enum(["integration", "redis", "postgres", "edge-config", "blob"]),
-						access: z.enum(["public", "private"]).optional(),
+						type: z.enum(["blob", "edge-config", "integration", "postgres", "redis"]),
+						access: z.enum(["private", "public"]).optional(),
 						locked: z.union([z.literal(false), z.literal(true)]),
 					})
 					.strict(),
@@ -7007,7 +7329,7 @@ export const userEventSchema = z
 									.union([z.literal(false), z.literal(true)])
 									.describe("Whether automatic code reviews are enabled"),
 								scope: z
-									.enum(["public", "private", "all", "selected_repos"])
+									.enum(["all", "private", "public", "selected_repos"])
 									.describe("Which repository visibilities get automatic reviews"),
 								includeDrafts: z
 									.union([z.literal(false), z.literal(true)])
@@ -7027,7 +7349,7 @@ export const userEventSchema = z
 									.union([z.literal(false), z.literal(true)])
 									.describe("Whether automatic code reviews are enabled"),
 								scope: z
-									.enum(["public", "private", "all", "selected_repos"])
+									.enum(["all", "private", "public", "selected_repos"])
 									.describe("Which repository visibilities get automatic reviews"),
 								includeDrafts: z
 									.union([z.literal(false), z.literal(true)])
@@ -7044,11 +7366,6 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
-						enabled: z.union([z.literal(false), z.literal(true)]),
-					})
-					.strict(),
-				z
-					.object({
 						trialCreditsIssuedAt: z.number(),
 						expiresAt: z.string(),
 						amount: z.string(),
@@ -7057,8 +7374,8 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
-						previous: z.enum(["enhanced", "turbo", "standard", "elastic"]).optional(),
-						next: z.enum(["enhanced", "turbo", "standard", "elastic"]).optional(),
+						previous: z.enum(["elastic", "enhanced", "standard", "turbo"]).optional(),
+						next: z.enum(["elastic", "enhanced", "standard", "turbo"]).optional(),
 					})
 					.strict(),
 				z
@@ -7080,14 +7397,14 @@ export const userEventSchema = z
 							.catchall(
 								z.object({
 									role: z.enum([
-										"OWNER",
-										"MEMBER",
-										"DEVELOPER",
-										"SECURITY",
 										"BILLING",
+										"CONTRIBUTOR",
+										"DEVELOPER",
+										"MEMBER",
+										"OWNER",
+										"SECURITY",
 										"VIEWER",
 										"VIEWER_FOR_PLUS",
-										"CONTRIBUTOR",
 									]),
 									confirmed: z.union([z.literal(false), z.literal(true)]),
 									confirmedAt: z.number().optional(),
@@ -7121,7 +7438,7 @@ export const userEventSchema = z
 				z
 					.object({
 						environment: z.enum(["preview", "production"]),
-						enabled: z.enum(["default", "on", "off", "on-force", "off-force", "default-force"]),
+						enabled: z.enum(["default", "default-force", "off", "off-force", "on", "on-force"]),
 					})
 					.strict(),
 				z
@@ -7190,14 +7507,14 @@ export const userEventSchema = z
 						directoryType: z.string().optional(),
 						role: z
 							.enum([
-								"OWNER",
-								"MEMBER",
-								"DEVELOPER",
-								"SECURITY",
 								"BILLING",
+								"CONTRIBUTOR",
+								"DEVELOPER",
+								"MEMBER",
+								"OWNER",
+								"SECURITY",
 								"VIEWER",
 								"VIEWER_FOR_PLUS",
-								"CONTRIBUTOR",
 							])
 							.optional(),
 						reason: z
@@ -7206,8 +7523,8 @@ export const userEventSchema = z
 							.describe(
 								"Why the member was removed. When removed due to a plan downgrade, this is a {@link DowngradeReason} from `@api/pubsub-types` (e.g. `trial_expired`, `user_downgrade`).",
 							),
-						previousPlan: z.enum(["pro", "enterprise", "hobby"]).optional(),
-						newPlan: z.enum(["pro", "enterprise", "hobby"]).optional(),
+						previousPlan: z.enum(["enterprise", "hobby", "pro"]).optional(),
+						newPlan: z.enum(["enterprise", "hobby", "pro"]).optional(),
 						automated: z
 							.union([z.literal(false), z.literal(true)])
 							.optional()
@@ -7269,24 +7586,25 @@ export const userEventSchema = z
 						bitbucketUsername: z.string().optional(),
 						source: z
 							.enum([
-								"link",
-								"teams",
-								"saml",
-								"github",
-								"gitlab",
+								"account-update",
 								"bitbucket",
-								"mail",
-								"import",
 								"dsync",
 								"feedback",
-								"organization-teams",
+								"github",
+								"gitlab",
+								"import",
+								"link",
+								"mail",
 								"nsnb-auto-approve",
 								"nsnb-hobby-upgrade",
-								"nsnb-request-access",
-								"nsnb-viewer-upgrade",
 								"nsnb-invite",
 								"nsnb-redeploy",
 								"nsnb-redeploy-attribution-card",
+								"nsnb-request-access",
+								"nsnb-viewer-upgrade",
+								"organization-teams",
+								"saml",
+								"teams",
 							])
 							.optional(),
 					})
@@ -7336,7 +7654,7 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
-						plan: z.enum(["pro", "enterprise", "hobby"]),
+						plan: z.enum(["enterprise", "hobby", "pro"]),
 						trial: z
 							.object({
 								start: z.number(),
@@ -7349,7 +7667,7 @@ export const userEventSchema = z
 					.object({
 						invoiceId: z.string(),
 						convertedFromTrial: z.union([z.literal(false), z.literal(true)]),
-						plan: z.enum(["pro", "enterprise", "hobby"]),
+						plan: z.enum(["enterprise", "hobby", "pro"]),
 					})
 					.strict(),
 				z
@@ -7379,7 +7697,7 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
-						enabled: z.enum(["default", "on", "off"]),
+						enabled: z.enum(["default", "off", "on"]),
 					})
 					.strict(),
 				z
@@ -7400,14 +7718,14 @@ export const userEventSchema = z
 										})
 										.strict(),
 									z.enum([
-										"OWNER",
-										"MEMBER",
-										"DEVELOPER",
-										"SECURITY",
 										"BILLING",
+										"CONTRIBUTOR",
+										"DEVELOPER",
+										"MEMBER",
+										"OWNER",
+										"SECURITY",
 										"VIEWER",
 										"VIEWER_FOR_PLUS",
-										"CONTRIBUTOR",
 									]),
 								]),
 							)
@@ -7422,14 +7740,14 @@ export const userEventSchema = z
 										})
 										.strict(),
 									z.enum([
-										"OWNER",
-										"MEMBER",
-										"DEVELOPER",
-										"SECURITY",
 										"BILLING",
+										"CONTRIBUTOR",
+										"DEVELOPER",
+										"MEMBER",
+										"OWNER",
+										"SECURITY",
 										"VIEWER",
 										"VIEWER_FOR_PLUS",
-										"CONTRIBUTOR",
 									]),
 								]),
 							)
@@ -7468,14 +7786,14 @@ export const userEventSchema = z
 				z
 					.object({
 						provider: z.enum([
-							"github",
-							"github-limited",
-							"github-custom-host",
-							"gitlab",
-							"bitbucket",
-							"google",
 							"apple",
+							"bitbucket",
 							"chatgpt",
+							"github",
+							"github-custom-host",
+							"github-limited",
+							"gitlab",
+							"google",
 						]),
 						login: z.string(),
 					})
@@ -7485,7 +7803,7 @@ export const userEventSchema = z
 						totp: z.union([z.literal(false), z.literal(true)]),
 						recoveryCodes: z.number(),
 						actorId: z.string().optional(),
-						actorType: z.enum(["user", "admin"]).optional(),
+						actorType: z.enum(["admin", "user"]).optional(),
 						reason: z.string().optional(),
 					})
 					.strict(),
@@ -7607,7 +7925,7 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
-						tier: z.enum(["pro", "plus"]),
+						tier: z.enum(["plus", "pro"]),
 					})
 					.strict(),
 				z
@@ -7657,23 +7975,23 @@ export const userEventSchema = z
 						rtTTL: z.number().optional().describe("refresh_token TTL"),
 						scope: z.string(),
 						authMethod: z.enum([
-							"email",
-							"saml",
 							"app",
-							"github",
-							"gitlab",
-							"bitbucket",
-							"google",
 							"apple",
+							"bitbucket",
 							"chatgpt",
-							"github-webhook",
-							"manual",
-							"passkey",
-							"otp",
-							"sms",
-							"invite",
-							"token-exchange-oidc",
+							"email",
 							"emu",
+							"github",
+							"github-webhook",
+							"gitlab",
+							"google",
+							"invite",
+							"manual",
+							"otp",
+							"passkey",
+							"saml",
+							"sms",
+							"token-exchange-oidc",
 						]),
 						app: z
 							.object({
@@ -7685,12 +8003,12 @@ export const userEventSchema = z
 									),
 								clientAuthenticationUsed: z.object({
 									method: z.enum([
-										"none",
 										"client_secret_basic",
-										"client_secret_post",
 										"client_secret_jwt",
-										"private_key_jwt",
+										"client_secret_post",
+										"none",
 										"oidc_token",
+										"private_key_jwt",
 									]),
 									secretId: z.string().optional(),
 								}),
@@ -7777,27 +8095,27 @@ export const userEventSchema = z
 						tokenName: z.string().describe("User-supplied name of the token."),
 						origin: z
 							.enum([
-								"email",
-								"saml",
 								"app",
-								"github",
-								"gitlab",
-								"bitbucket",
-								"google",
 								"apple",
+								"bitbucket",
 								"chatgpt",
-								"github-webhook",
-								"manual",
-								"passkey",
-								"otp",
-								"sms",
-								"invite",
-								"token-exchange-oidc",
+								"email",
 								"emu",
+								"github",
+								"github-webhook",
+								"gitlab",
+								"google",
+								"invite",
+								"manual",
+								"otp",
+								"passkey",
+								"saml",
+								"sms",
+								"token-exchange-oidc",
 							])
 							.describe("How the token was issued. Always `'manual'` for explicit PAT creation."),
 						scope: z
-							.enum(["user", "team", "project"])
+							.enum(["project", "team", "user"])
 							.describe(
 								"Scope of the token: - `'user'`: full-account token (not tied to any team). - `'team'`: scoped to a single team. - `'project'`: scoped to a single project within a team.",
 							),
@@ -7856,23 +8174,23 @@ export const userEventSchema = z
 						actorTokenId: z.string().describe("The token's public ID."),
 						origin: z
 							.enum([
-								"email",
-								"saml",
 								"app",
-								"github",
-								"gitlab",
-								"bitbucket",
-								"google",
 								"apple",
+								"bitbucket",
 								"chatgpt",
-								"github-webhook",
-								"manual",
-								"passkey",
-								"otp",
-								"sms",
-								"invite",
-								"token-exchange-oidc",
+								"email",
 								"emu",
+								"github",
+								"github-webhook",
+								"gitlab",
+								"google",
+								"invite",
+								"manual",
+								"otp",
+								"passkey",
+								"saml",
+								"sms",
+								"token-exchange-oidc",
 							])
 							.optional(),
 						teamId: z.string().optional(),
@@ -7973,6 +8291,15 @@ export const listEventTypeSchema = z
 				"ai-gateway-byok-credential-created",
 				"ai-gateway-byok-credential-deleted",
 				"ai-gateway-byok-credential-updated",
+				"ai-gateway-provider-allowlist-providers-updated",
+				"ai-gateway-provider-allowlist-toggled",
+				"ai-gateway-rule-created",
+				"ai-gateway-rule-deleted",
+				"ai-gateway-rule-updated",
+				"ai-gateway-virtual-model-config-archived",
+				"ai-gateway-virtual-model-config-created",
+				"ai-gateway-virtual-model-config-restored",
+				"ai-gateway-virtual-model-config-updated",
 				"ai-omniagent",
 				"alert-rule-created",
 				"alert-rule-deleted",
@@ -8054,6 +8381,7 @@ export const listEventTypeSchema = z
 				"deployment-creation-blocked",
 				"deployment-delete",
 				"deployment-policy-blocked",
+				"deployment-undeleted",
 				"disabled-integration-installation-removed",
 				"disconnect-bitbucket-app",
 				"disconnect-github",
@@ -8062,6 +8390,7 @@ export const listEventTypeSchema = z
 				"disconnect-gitlab-app",
 				"dns-add",
 				"dns-delete",
+				"dns-record-internal",
 				"dns-update",
 				"dns-zonefile-import",
 				"domain",
@@ -8166,6 +8495,7 @@ export const listEventTypeSchema = z
 				"microfrontend-project-added-to-group",
 				"microfrontend-project-removed-from-group",
 				"microfrontend-project-updated",
+				"monitoring-alert-updated",
 				"monitoring-disabled",
 				"monitoring-enabled",
 				"oauth-app-connection-created",
@@ -8181,12 +8511,14 @@ export const listEventTypeSchema = z
 				"observability-enabled",
 				"observability-plus-project-disabled",
 				"observability-plus-project-enabled",
+				"organization-team-add",
 				"owner-blocked",
 				"owner-soft-blocked",
 				"owner-soft-unblocked",
 				"owner-unblocked",
 				"page-integrity-config-updated",
 				"page-integrity-header-approved",
+				"page-integrity-inventory-cleared",
 				"page-integrity-resource-approved",
 				"page-integrity-resource-deleted",
 				"page-integrity-resource-rejected",
@@ -8286,6 +8618,7 @@ export const listEventTypeSchema = z
 				"project-prioritize-production-builds-updated",
 				"project-program-enrollment-changed",
 				"project-protected-sourcemaps-updated",
+				"project-rollback-description-updated",
 				"project-rolling-release-aborted",
 				"project-rolling-release-approved",
 				"project-rolling-release-completed",
@@ -8300,6 +8633,7 @@ export const listEventTypeSchema = z
 				"project-root-directory-updated",
 				"project-routes-version-promoted",
 				"project-routes-version-restored",
+				"project-sandbox-url-protection-updated",
 				"project-skew-protection-allowed-domains-updated",
 				"project-skew-protection-max-age-updated",
 				"project-skew-protection-threshold-updated",
@@ -8504,6 +8838,15 @@ export const listEventTypeSchema = z
 					"ai-gateway-byok-credential-created",
 					"ai-gateway-byok-credential-deleted",
 					"ai-gateway-byok-credential-updated",
+					"ai-gateway-provider-allowlist-providers-updated",
+					"ai-gateway-provider-allowlist-toggled",
+					"ai-gateway-rule-created",
+					"ai-gateway-rule-deleted",
+					"ai-gateway-rule-updated",
+					"ai-gateway-virtual-model-config-archived",
+					"ai-gateway-virtual-model-config-created",
+					"ai-gateway-virtual-model-config-restored",
+					"ai-gateway-virtual-model-config-updated",
 					"ai-omniagent",
 					"alert-rule-created",
 					"alert-rule-deleted",
@@ -8585,6 +8928,7 @@ export const listEventTypeSchema = z
 					"deployment-creation-blocked",
 					"deployment-delete",
 					"deployment-policy-blocked",
+					"deployment-undeleted",
 					"disabled-integration-installation-removed",
 					"disconnect-bitbucket-app",
 					"disconnect-github",
@@ -8593,6 +8937,7 @@ export const listEventTypeSchema = z
 					"disconnect-gitlab-app",
 					"dns-add",
 					"dns-delete",
+					"dns-record-internal",
 					"dns-update",
 					"dns-zonefile-import",
 					"domain",
@@ -8697,6 +9042,7 @@ export const listEventTypeSchema = z
 					"microfrontend-project-added-to-group",
 					"microfrontend-project-removed-from-group",
 					"microfrontend-project-updated",
+					"monitoring-alert-updated",
 					"monitoring-disabled",
 					"monitoring-enabled",
 					"oauth-app-connection-created",
@@ -8712,12 +9058,14 @@ export const listEventTypeSchema = z
 					"observability-enabled",
 					"observability-plus-project-disabled",
 					"observability-plus-project-enabled",
+					"organization-team-add",
 					"owner-blocked",
 					"owner-soft-blocked",
 					"owner-soft-unblocked",
 					"owner-unblocked",
 					"page-integrity-config-updated",
 					"page-integrity-header-approved",
+					"page-integrity-inventory-cleared",
 					"page-integrity-resource-approved",
 					"page-integrity-resource-deleted",
 					"page-integrity-resource-rejected",
@@ -8817,6 +9165,7 @@ export const listEventTypeSchema = z
 					"project-prioritize-production-builds-updated",
 					"project-program-enrollment-changed",
 					"project-protected-sourcemaps-updated",
+					"project-rollback-description-updated",
 					"project-rolling-release-aborted",
 					"project-rolling-release-approved",
 					"project-rolling-release-completed",
@@ -8831,6 +9180,7 @@ export const listEventTypeSchema = z
 					"project-root-directory-updated",
 					"project-routes-version-promoted",
 					"project-routes-version-restored",
+					"project-sandbox-url-protection-updated",
 					"project-skew-protection-allowed-domains-updated",
 					"project-skew-protection-max-age-updated",
 					"project-skew-protection-threshold-updated",
@@ -9187,7 +9537,7 @@ export const flagSchema = z.object({
 									z.number(),
 									z
 										.object({
-											type: z.enum(["list/inline", "list"]),
+											type: z.enum(["list", "list/inline"]),
 											items: z.array(
 												z.union([
 													z
@@ -9284,18 +9634,29 @@ export const flagSchema = z.object({
 		.optional(),
 });
 
+export const marketplaceFlagSchema = z.object({
+	typeName: z.enum(["marketplaceFlag"]),
+	id: z.string(),
+	externalId: z.string(),
+	slug: z.string(),
+	origin: z.string(),
+	ownerId: z.string(),
+	projectId: z.string(),
+	resourceId: z.string(),
+	integrationConfigurationId: z.string(),
+	state: z.enum(["active", "archived"]),
+	name: z.string().optional(),
+	description: z.string().optional(),
+	category: z.enum(["experiment", "flag"]).optional(),
+	createdAt: z.number().optional(),
+	updatedAt: z.number().optional(),
+});
+
 export const segmentSchema = z.object({
 	description: z.string().optional(),
 	createdBy: z.string().optional(),
 	usedByFlags: z.array(z.string()).optional(),
 	usedBySegments: z.array(z.string()).optional(),
-	id: z.string(),
-	label: z.string(),
-	slug: z.string(),
-	createdAt: z.number(),
-	updatedAt: z.number(),
-	projectId: z.string(),
-	typeName: z.enum(["segment"]),
 	data: z.object({
 		rules: z
 			.array(
@@ -9327,7 +9688,7 @@ export const segmentSchema = z.object({
 									z.number(),
 									z
 										.object({
-											type: z.enum(["list/inline", "list"]),
+											type: z.enum(["list", "list/inline"]),
 											items: z.array(
 												z.union([
 													z
@@ -9427,6 +9788,13 @@ export const segmentSchema = z.object({
 			)
 			.optional(),
 	}),
+	id: z.string(),
+	label: z.string(),
+	slug: z.string(),
+	createdAt: z.number(),
+	updatedAt: z.number(),
+	projectId: z.string(),
+	typeName: z.enum(["segment"]),
 	hint: z.string(),
 	metadata: z
 		.object({
@@ -9702,6 +10070,28 @@ export const sandboxPublicRouteSchema = z
 	})
 	.describe("This object represents a public route in a Vercel Sandbox.");
 
+export const driveSchema = z
+	.object({
+		name: z.string().describe("The unique drive name within the project."),
+		projectId: z.string().describe("The project that owns the drive."),
+		maxSizeBytes: z.number().describe("The maximum drive size in bytes."),
+		currentSessionId: z
+			.string()
+			.optional()
+			.describe("Current session ID the drive is attached to, if any."),
+		currentSandboxName: z
+			.string()
+			.optional()
+			.describe("Current sandbox name the drive is attached to, if any."),
+		createdAt: z
+			.number()
+			.describe("The time when the drive was created, in milliseconds since the epoch."),
+		updatedAt: z
+			.number()
+			.describe("The last time the drive was updated, in milliseconds since the epoch."),
+	})
+	.describe("This object contains information related to a Vercel Sandbox Drive.");
+
 export const snapshotSchema = z
 	.object({
 		id: z.string().describe("The unique identifier of the snapshot."),
@@ -9797,6 +10187,8 @@ export const invitedTeamMemberSchema = z
 					"EnvironmentManager",
 					"FullProductionDeployment",
 					"IntegrationManager",
+					"OrgAdmin",
+					"OrgViewer",
 					"UsageViewer",
 					"V0Builder",
 					"V0Chatter",
@@ -9829,8 +10221,8 @@ export const teamSchema = z
 			.object({
 				connection: z
 					.object({
-						type: z.string().describe('The Identity Provider "type", for example Okta.'),
 						status: z.string().describe("Current status of the connection."),
+						type: z.string().describe('The Identity Provider "type", for example Okta.'),
 						state: z.string().describe("Current state of the connection."),
 						connectedAt: z
 							.number()
@@ -9903,14 +10295,14 @@ export const teamSchema = z
 								})
 								.strict(),
 							z.enum([
-								"OWNER",
-								"MEMBER",
-								"DEVELOPER",
-								"SECURITY",
 								"BILLING",
+								"CONTRIBUTOR",
+								"DEVELOPER",
+								"MEMBER",
+								"OWNER",
+								"SECURITY",
 								"VIEWER",
 								"VIEWER_FOR_PLUS",
-								"CONTRIBUTOR",
 							]),
 						]),
 					)
@@ -9952,6 +10344,8 @@ export const teamSchema = z
 							"EnvironmentManager",
 							"FullProductionDeployment",
 							"IntegrationManager",
+							"OrgAdmin",
+							"OrgViewer",
 							"UsageViewer",
 							"V0Builder",
 							"V0Chatter",
@@ -9997,6 +10391,10 @@ export const teamSchema = z
 					.number()
 					.optional()
 					.describe("The maximum number of postgres databases an account can create."),
+				customEnvironmentsPerProject: z
+					.number()
+					.optional()
+					.describe("The maximum number of custom environments allowed per project."),
 				buildEntitlements: z
 					.object({
 						enhancedBuilds: z.union([z.literal(false), z.literal(true)]).optional(),
@@ -10110,6 +10508,14 @@ export const teamSchema = z
 					})
 					.optional()
 					.describe("Default job configuration applied to new projects created in this team."),
+				mfeConfigPresent: z
+					.object({
+						targets: z
+							.array(z.string())
+							.describe("Default job configuration applied to new projects created in this team."),
+					})
+					.optional()
+					.describe("Default job configuration applied to new projects created in this team."),
 			})
 			.optional()
 			.describe("Default job configuration applied to new projects created in this team."),
@@ -10189,7 +10595,7 @@ export const teamSchema = z
 								z.union([
 									z
 										.object({
-											provider: z.enum(["github", "bitbucket"]),
+											provider: z.enum(["bitbucket", "github"]),
 											org: z.string(),
 											repo: z.string().optional(),
 										})
@@ -10226,7 +10632,9 @@ export const teamSchema = z
 				deploymentSources: z
 					.array(
 						z.object({
-							sources: z.array(z.enum(["cli", "deploy-hook", "git", "integration", "rest-api"])),
+							sources: z.array(
+								z.enum(["cli", "deploy-hook", "git", "integration", "rest-api", "v0"]),
+							),
 							enabled: z.union([z.literal(false), z.literal(true)]),
 							environments: z.array(
 								z.union([
@@ -10328,6 +10736,8 @@ export const teamSchema = z
 							"EnvironmentManager",
 							"FullProductionDeployment",
 							"IntegrationManager",
+							"OrgAdmin",
+							"OrgViewer",
 							"UsageViewer",
 							"V0Builder",
 							"V0Chatter",
@@ -10340,6 +10750,7 @@ export const teamSchema = z
 				joinedFrom: z
 					.object({
 						origin: z.enum([
+							"account-update",
 							"bitbucket",
 							"dsync",
 							"feedback",
@@ -10395,8 +10806,8 @@ export const teamLimitedSchema = z
 			.object({
 				connection: z
 					.object({
-						type: z.string().describe('The Identity Provider "type", for example Okta.'),
 						status: z.string().describe("Current status of the connection."),
+						type: z.string().describe('The Identity Provider "type", for example Okta.'),
 						state: z.string().describe("Current state of the connection."),
 						connectedAt: z
 							.number()
@@ -10512,6 +10923,8 @@ export const teamLimitedSchema = z
 							"EnvironmentManager",
 							"FullProductionDeployment",
 							"IntegrationManager",
+							"OrgAdmin",
+							"OrgViewer",
 							"UsageViewer",
 							"V0Builder",
 							"V0Chatter",
@@ -10524,6 +10937,7 @@ export const teamLimitedSchema = z
 				joinedFrom: z
 					.object({
 						origin: z.enum([
+							"account-update",
 							"bitbucket",
 							"dsync",
 							"feedback",
@@ -10588,7 +11002,7 @@ export const authTokenSchema = z
 							sudo: z
 								.object({
 									origin: z
-										.enum(["otp", "totp", "webauthn", "recovery-code", "email-otp"])
+										.enum(["email-otp", "otp", "recovery-code", "totp", "webauthn"])
 										.describe("Possible step-up auth origins"),
 									verifiedAt: z.number().optional(),
 									expiresAt: z.number(),
@@ -10597,22 +11011,22 @@ export const authTokenSchema = z
 							origin: z
 								.enum([
 									"app",
-									"saml",
+									"apple",
+									"bitbucket",
+									"chatgpt",
+									"email",
+									"emu",
 									"github",
 									"github-webhook",
 									"gitlab",
-									"bitbucket",
-									"email",
-									"manual",
-									"passkey",
-									"otp",
-									"sms",
-									"invite",
 									"google",
-									"apple",
-									"chatgpt",
+									"invite",
+									"manual",
+									"otp",
+									"passkey",
+									"saml",
+									"sms",
 									"token-exchange-oidc",
-									"emu",
 								])
 								.optional(),
 							createdAt: z.number(),
@@ -10626,22 +11040,22 @@ export const authTokenSchema = z
 							origin: z
 								.enum([
 									"app",
-									"saml",
+									"apple",
+									"bitbucket",
+									"chatgpt",
+									"email",
+									"emu",
 									"github",
 									"github-webhook",
 									"gitlab",
-									"bitbucket",
-									"email",
-									"manual",
-									"passkey",
-									"otp",
-									"sms",
-									"invite",
 									"google",
-									"apple",
-									"chatgpt",
+									"invite",
+									"manual",
+									"otp",
+									"passkey",
+									"saml",
+									"sms",
 									"token-exchange-oidc",
-									"emu",
 								])
 								.optional(),
 							createdAt: z.number(),
@@ -11030,11 +11444,16 @@ export const authUserSchema = z
 			),
 		accountUpdateContext: z
 			.object({
-				managedTeamNames: z.array(z.string()),
+				managedTeams: z.array(
+					z.object({
+						name: z.string(),
+						avatar: z.string().nullable(),
+					}),
+				),
 			})
 			.optional()
 			.describe(
-				"Context for the Update Account screen. Present only when `isAccountUpdateRequired` is true. `managedTeamNames` is empty for orphan mode (user matches an EMU domain but is not on the team).",
+				"Context for the Update Account screen. Present only when `isAccountUpdateRequired` is true. `managedTeams` is empty for orphan mode (user matches an EMU domain but is not on the team).",
 			),
 		id: z.string().describe("The User's unique identifier."),
 		email: z.string().describe("Email address associated with the User account."),
@@ -12777,6 +13196,76 @@ export const readNetworkResponseSchema = z.union([
 	readNetworkStatus400Schema,
 	readNetworkStatus401Schema,
 	readNetworkStatus403Schema,
+]);
+
+export const createConnectorStatus201Schema = z.unknown();
+
+export const createConnectorStatus400Schema = z.unknown();
+
+export const createConnectorStatus401Schema = z.unknown();
+
+export const createConnectorStatus403Schema = z.unknown();
+
+export const createConnectorStatus404Schema = z.unknown();
+
+export const createConnectorStatus409Schema = z.unknown();
+
+export const createConnectorResponseSchema = z.union([
+	createConnectorStatus201Schema,
+	createConnectorStatus400Schema,
+	createConnectorStatus401Schema,
+	createConnectorStatus403Schema,
+	createConnectorStatus404Schema,
+	createConnectorStatus409Schema,
+]);
+
+export const getConnectorTokenPathConnectorSchema = z.string();
+
+export const getConnectorTokenStatus200Schema = z.unknown();
+
+export const getConnectorTokenStatus400Schema = z.unknown();
+
+export const getConnectorTokenStatus401Schema = z.unknown();
+
+export const getConnectorTokenStatus403Schema = z.unknown();
+
+export const getConnectorTokenStatus404Schema = z.unknown();
+
+export const getConnectorTokenStatus422Schema = z.unknown();
+
+export const getConnectorTokenStatus429Schema = z.unknown();
+
+export const getConnectorTokenStatus504Schema = z.unknown();
+
+export const getConnectorTokenResponseSchema = z.union([
+	getConnectorTokenStatus200Schema,
+	getConnectorTokenStatus400Schema,
+	getConnectorTokenStatus401Schema,
+	getConnectorTokenStatus403Schema,
+	getConnectorTokenStatus404Schema,
+	getConnectorTokenStatus422Schema,
+	getConnectorTokenStatus429Schema,
+	getConnectorTokenStatus504Schema,
+]);
+
+export const createConnectorAuthorizationRequestPathConnectorSchema = z.string();
+
+export const createConnectorAuthorizationRequestStatus200Schema = z.unknown();
+
+export const createConnectorAuthorizationRequestStatus400Schema = z.unknown();
+
+export const createConnectorAuthorizationRequestStatus401Schema = z.unknown();
+
+export const createConnectorAuthorizationRequestStatus403Schema = z.unknown();
+
+export const createConnectorAuthorizationRequestStatus404Schema = z.unknown();
+
+export const createConnectorAuthorizationRequestResponseSchema = z.union([
+	createConnectorAuthorizationRequestStatus200Schema,
+	createConnectorAuthorizationRequestStatus400Schema,
+	createConnectorAuthorizationRequestStatus401Schema,
+	createConnectorAuthorizationRequestStatus403Schema,
+	createConnectorAuthorizationRequestStatus404Schema,
 ]);
 
 export const getDeploymentEventsPathIdOrUrlSchema = z
@@ -15168,6 +15657,13 @@ export const listFlagsV2QueryTagsSchema = z
 	.optional()
 	.describe("Filter flags by tag. Repeat the parameter for multiple tags (all must match).");
 
+export const listFlagsV2QueryIncludeMarketplaceFlagsSchema = z
+	.boolean()
+	.optional()
+	.describe(
+		"Whether to include Marketplace experimentation items in the paginated response. Defaults to false.",
+	);
+
 export const listFlagsV2QueryTeamIdSchema = z
 	.string()
 	.optional()
@@ -15667,6 +16163,13 @@ export const listTeamFlagsV2QueryTagsSchema = z
 	.array(z.string())
 	.optional()
 	.describe("Filter flags by tag. Repeat the parameter for multiple tags (all must match).");
+
+export const listTeamFlagsV2QueryIncludeMarketplaceFlagsSchema = z
+	.boolean()
+	.optional()
+	.describe(
+		"Whether to include Marketplace experimentation items in the paginated response. Defaults to false.",
+	);
 
 export const listTeamFlagsV2PathTeamIdSchema = z
 	.string()
@@ -17917,8 +18420,6 @@ export const updateProjectStatus404Schema = z.unknown();
 
 export const updateProjectStatus409Schema = z.unknown();
 
-export const updateProjectStatus422Schema = z.unknown();
-
 export const updateProjectStatus428Schema = z.unknown();
 
 export const updateProjectResponseSchema = z.union([
@@ -17929,7 +18430,6 @@ export const updateProjectResponseSchema = z.union([
 	updateProjectStatus403Schema,
 	updateProjectStatus404Schema,
 	updateProjectStatus409Schema,
-	updateProjectStatus422Schema,
 	updateProjectStatus428Schema,
 ]);
 
@@ -19488,6 +19988,177 @@ export const createSandboxesResponseSchema = z.union([
 	createSandboxesStatus500Schema,
 ]);
 
+export const listDrivesQueryProjectIdSchema = z
+	.string()
+	.optional()
+	.describe(
+		"The project ID or name associated with the drives. Required unless using a Vercel OIDC token scoped to a project.",
+	);
+
+export const listDrivesQueryLimitSchema = z
+	.number()
+	.min(1)
+	.max(50)
+	.optional()
+	.default(20)
+	.describe("Maximum number of drives to return in the response. Used for pagination.");
+
+export const listDrivesQueryCursorSchema = z
+	.string()
+	.optional()
+	.describe("Opaque pagination cursor from a previous response.");
+
+export const listDrivesQuerySortBySchema = z
+	.enum(["createdAt", "updatedAt", "name"])
+	.optional()
+	.default("createdAt")
+	.describe("Field to sort drives by.");
+
+export const listDrivesQueryNamePrefixSchema = z
+	.string()
+	.optional()
+	.describe("Filter drives whose name starts with this prefix. Only valid when sortBy=name.");
+
+export const listDrivesQuerySortOrderSchema = z
+	.enum(["asc", "desc"])
+	.optional()
+	.default("desc")
+	.describe("Sort direction for results.");
+
+export const listDrivesQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const listDrivesQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const listDrivesStatus200Schema = z.unknown();
+
+export const listDrivesStatus400Schema = z.unknown();
+
+export const listDrivesStatus401Schema = z.unknown();
+
+export const listDrivesStatus402Schema = z.unknown();
+
+export const listDrivesStatus403Schema = z.unknown();
+
+export const listDrivesStatus404Schema = z.unknown();
+
+export const listDrivesStatus429Schema = z.unknown();
+
+export const listDrivesResponseSchema = z.union([
+	listDrivesStatus200Schema,
+	listDrivesStatus400Schema,
+	listDrivesStatus401Schema,
+	listDrivesStatus402Schema,
+	listDrivesStatus403Schema,
+	listDrivesStatus404Schema,
+	listDrivesStatus429Schema,
+]);
+
+export const getOrCreateDrivePathNameSchema = z
+	.string()
+	.max(64)
+	.regex(/^[a-zA-Z0-9_-]+$/)
+	.describe(
+		"Name for the drive. Must be unique per project and URL-safe (alphanumeric, hyphens, underscores).",
+	);
+
+export const getOrCreateDriveQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const getOrCreateDriveQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const getOrCreateDriveStatus200Schema = z.unknown();
+
+export const getOrCreateDriveStatus201Schema = z.unknown();
+
+export const getOrCreateDriveStatus400Schema = z.unknown();
+
+export const getOrCreateDriveStatus401Schema = z.unknown();
+
+export const getOrCreateDriveStatus402Schema = z.unknown();
+
+export const getOrCreateDriveStatus403Schema = z.unknown();
+
+export const getOrCreateDriveStatus404Schema = z.unknown();
+
+export const getOrCreateDriveStatus409Schema = z.unknown();
+
+export const getOrCreateDriveStatus429Schema = z.unknown();
+
+export const getOrCreateDriveResponseSchema = z.union([
+	getOrCreateDriveStatus200Schema,
+	getOrCreateDriveStatus201Schema,
+	getOrCreateDriveStatus400Schema,
+	getOrCreateDriveStatus401Schema,
+	getOrCreateDriveStatus402Schema,
+	getOrCreateDriveStatus403Schema,
+	getOrCreateDriveStatus404Schema,
+	getOrCreateDriveStatus409Schema,
+	getOrCreateDriveStatus429Schema,
+]);
+
+export const deleteDrivePathNameSchema = z
+	.string()
+	.max(64)
+	.regex(/^[a-zA-Z0-9_-]+$/)
+	.describe(
+		"Name for the drive. Must be unique per project and URL-safe (alphanumeric, hyphens, underscores).",
+	);
+
+export const deleteDriveQueryProjectIdSchema = z
+	.string()
+	.optional()
+	.describe(
+		"The project ID or name associated with the drive. Required unless using a Vercel OIDC token scoped to a project.",
+	);
+
+export const deleteDriveQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const deleteDriveQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const deleteDriveStatus200Schema = z.unknown();
+
+export const deleteDriveStatus400Schema = z.unknown();
+
+export const deleteDriveStatus401Schema = z.unknown();
+
+export const deleteDriveStatus402Schema = z.unknown();
+
+export const deleteDriveStatus403Schema = z.unknown();
+
+export const deleteDriveStatus404Schema = z.unknown();
+
+export const deleteDriveStatus409Schema = z.unknown();
+
+export const deleteDriveStatus429Schema = z.unknown();
+
+export const deleteDriveResponseSchema = z.union([
+	deleteDriveStatus200Schema,
+	deleteDriveStatus400Schema,
+	deleteDriveStatus401Schema,
+	deleteDriveStatus402Schema,
+	deleteDriveStatus403Schema,
+	deleteDriveStatus404Schema,
+	deleteDriveStatus409Schema,
+	deleteDriveStatus429Schema,
+]);
+
 export const listSessionSnapshotsQueryProjectSchema = z
 	.string()
 	.optional()
@@ -19942,6 +20613,10 @@ export const listSessionCommandsResponseSchema = z.union([
 export const runSessionCommandPathSessionIdSchema = z
 	.string()
 	.describe("The unique identifier of the session in which to execute the command.");
+
+export const runSessionCommandQueryCmdIdSchema = z
+	.string()
+	.describe("The unique identifier of the command to stream logs for.");
 
 export const runSessionCommandQueryTeamIdSchema = z
 	.string()
@@ -21099,8 +21774,6 @@ export const patchTeamStatus402Schema = z.unknown();
 
 export const patchTeamStatus403Schema = z.unknown();
 
-export const patchTeamStatus422Schema = z.unknown();
-
 export const patchTeamStatus428Schema = z.unknown();
 
 export const patchTeamResponseSchema = z.union([
@@ -21109,7 +21782,6 @@ export const patchTeamResponseSchema = z.union([
 	patchTeamStatus401Schema,
 	patchTeamStatus402Schema,
 	patchTeamStatus403Schema,
-	patchTeamStatus422Schema,
 	patchTeamStatus428Schema,
 ]);
 
