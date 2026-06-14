@@ -120,6 +120,17 @@ import type {
 	CreateConfigurableLogDrainStatus400,
 	CreateConfigurableLogDrainStatus401,
 	CreateConfigurableLogDrainStatus403,
+	CreateConnectorAuthorizationRequestResponse,
+	CreateConnectorAuthorizationRequestStatus400,
+	CreateConnectorAuthorizationRequestStatus401,
+	CreateConnectorAuthorizationRequestStatus403,
+	CreateConnectorAuthorizationRequestStatus404,
+	CreateConnectorResponse,
+	CreateConnectorStatus400,
+	CreateConnectorStatus401,
+	CreateConnectorStatus403,
+	CreateConnectorStatus404,
+	CreateConnectorStatus409,
 	CreateCustomEnvironmentResponse,
 	CreateCustomEnvironmentStatus400,
 	CreateCustomEnvironmentStatus401,
@@ -358,6 +369,14 @@ import type {
 	DeleteDrainStatus401,
 	DeleteDrainStatus403,
 	DeleteDrainStatus404,
+	DeleteDriveResponse,
+	DeleteDriveStatus400,
+	DeleteDriveStatus401,
+	DeleteDriveStatus402,
+	DeleteDriveStatus403,
+	DeleteDriveStatus404,
+	DeleteDriveStatus409,
+	DeleteDriveStatus429,
 	DeleteEdgeConfigResponse,
 	DeleteEdgeConfigSchemaResponse,
 	DeleteEdgeConfigSchemaStatus400,
@@ -626,6 +645,14 @@ import type {
 	GetConfigurationsStatus400,
 	GetConfigurationsStatus401,
 	GetConfigurationsStatus403,
+	GetConnectorTokenResponse,
+	GetConnectorTokenStatus400,
+	GetConnectorTokenStatus401,
+	GetConnectorTokenStatus403,
+	GetConnectorTokenStatus404,
+	GetConnectorTokenStatus422,
+	GetConnectorTokenStatus429,
+	GetConnectorTokenStatus504,
 	GetContactInfoSchemaResponse,
 	GetContactInfoSchemaStatus400,
 	GetContactInfoSchemaStatus401,
@@ -859,6 +886,14 @@ import type {
 	GetObservabilityConfigurationProjectsStatus401,
 	GetObservabilityConfigurationProjectsStatus403,
 	GetObservabilityConfigurationProjectsStatus404,
+	GetOrCreateDriveResponse,
+	GetOrCreateDriveStatus400,
+	GetOrCreateDriveStatus401,
+	GetOrCreateDriveStatus402,
+	GetOrCreateDriveStatus403,
+	GetOrCreateDriveStatus404,
+	GetOrCreateDriveStatus409,
+	GetOrCreateDriveStatus429,
 	GetOrderResponse,
 	GetOrderStatus400,
 	GetOrderStatus401,
@@ -1142,6 +1177,13 @@ import type {
 	ListDeploymentFilesStatus401,
 	ListDeploymentFilesStatus403,
 	ListDeploymentFilesStatus404,
+	ListDrivesResponse,
+	ListDrivesStatus400,
+	ListDrivesStatus401,
+	ListDrivesStatus402,
+	ListDrivesStatus403,
+	ListDrivesStatus404,
+	ListDrivesStatus429,
 	ListEventTypesResponse,
 	ListEventTypesStatus400,
 	ListEventTypesStatus401,
@@ -1262,7 +1304,6 @@ import type {
 	PatchTeamStatus401,
 	PatchTeamStatus402,
 	PatchTeamStatus403,
-	PatchTeamStatus422,
 	PatchTeamStatus428,
 	PatchUrlProtectionBypassResponse,
 	PatchUrlProtectionBypassStatus400,
@@ -1633,7 +1674,6 @@ import type {
 	UpdateProjectStatus403,
 	UpdateProjectStatus404,
 	UpdateProjectStatus409,
-	UpdateProjectStatus422,
 	UpdateProjectStatus428,
 	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionResponse,
 	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus400,
@@ -3802,6 +3842,124 @@ export async function readNetwork(
 		method: "GET",
 		url: `/v1/connect/networks/${pathParams.networkId}`,
 		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Create a connector
+ * @description Create a connector from type-specific configuration and optionally link it to a project during creation.
+ * @link /v1/connect/connectors
+ */
+export async function createConnector(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		CreateConnectorResponse,
+		ErrorWrapper<
+			| CreateConnectorStatus400
+			| CreateConnectorStatus401
+			| CreateConnectorStatus403
+			| CreateConnectorStatus404
+			| CreateConnectorStatus409
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		Record<string, string>
+	>({
+		method: "POST",
+		url: `/v1/connect/connectors`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Get a Connect token
+ * @description Get an access token for a connector identified by the path parameter and scoped to the requester.
+ * @link /v1/connect/token/{connector}
+ */
+export async function getConnectorToken(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { connector: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.connector) {
+		throw new Error(`Missing required path parameter: connector`);
+	}
+	const data = await request<
+		GetConnectorTokenResponse,
+		ErrorWrapper<
+			| GetConnectorTokenStatus400
+			| GetConnectorTokenStatus401
+			| GetConnectorTokenStatus403
+			| GetConnectorTokenStatus404
+			| GetConnectorTokenStatus422
+			| GetConnectorTokenStatus429
+			| GetConnectorTokenStatus504
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ connector: string }
+	>({
+		method: "POST",
+		url: `/v1/connect/token/${pathParams.connector}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Create a Connect authorization request
+ * @description Create an authorization request for a connector and return the URL and verifier details needed to complete the flow.
+ * @link /v1/connect/authorize/{connector}
+ */
+export async function createConnectorAuthorizationRequest(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { connector: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.connector) {
+		throw new Error(`Missing required path parameter: connector`);
+	}
+	const data = await request<
+		CreateConnectorAuthorizationRequestResponse,
+		ErrorWrapper<
+			| CreateConnectorAuthorizationRequestStatus400
+			| CreateConnectorAuthorizationRequestStatus401
+			| CreateConnectorAuthorizationRequestStatus403
+			| CreateConnectorAuthorizationRequestStatus404
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ connector: string }
+	>({
+		method: "POST",
+		url: `/v1/connect/authorize/${pathParams.connector}`,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
 	});
@@ -7003,6 +7161,7 @@ export async function listFlagsV2(
 			cursor?: string;
 			search?: string;
 			tags?: Array<string>;
+			includeMarketplaceFlags?: boolean;
 			teamId?: string;
 			slug?: string;
 		};
@@ -7031,6 +7190,7 @@ export async function listFlagsV2(
 			cursor?: string;
 			search?: string;
 			tags?: Array<string>;
+			includeMarketplaceFlags?: boolean;
 			teamId?: string;
 			slug?: string;
 		},
@@ -7518,6 +7678,7 @@ export async function listTeamFlagsV2(
 			search?: string;
 			kind?: "boolean" | "string" | "number" | "json";
 			tags?: Array<string>;
+			includeMarketplaceFlags?: boolean;
 			slug?: string;
 		};
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
@@ -7540,6 +7701,7 @@ export async function listTeamFlagsV2(
 			search?: string;
 			kind?: "boolean" | "string" | "number" | "json";
 			tags?: Array<string>;
+			includeMarketplaceFlags?: boolean;
 			slug?: string;
 		},
 		{ teamId: string }
@@ -8562,7 +8724,7 @@ export async function deleteIntegrationResource(
 
 /**
  * @summary Import Resource
- * @description This endpoint imports (upserts) a resource to Vercel's installation. This may be needed if resources can be independently created on the partner's side and need to be synchronized to Vercel.
+ * @description This endpoint imports (upserts) a resource to Vercel's installation. This may be needed if resources can be independently created on the partner's side and need to be synchronized to Vercel. When importing as part of the user-initiated import flow, call this endpoint before redirecting the user back to Vercel. See the [Import existing resources flow](https://vercel.com/docs/integrations/create-integration/marketplace-flows#import-existing-resources-flow) for the full contract.
  * @link /v1/installations/{integrationConfigurationId}/resources/{resourceId}
  */
 export async function importResource(
@@ -8698,7 +8860,7 @@ export async function submitBillingData(
 
 /**
  * @summary Submit Invoice
- * @description This endpoint allows the partner to submit an invoice to Vercel. The invoice is created in Vercel's billing system and sent to the customer. Depending on the type of billing plan, the invoice can be sent at a time of signup, at the start of the billing period, or at the end of the billing period.<br/> <br/> Use the `credentials.access_token` we provided in the [Upsert Installation](#upsert-installation) body to authorize this request. <br/> There are several limitations to the invoice submission:<br/> <br/> 1. A resource can only be billed once per the billing period and the billing plan.<br/> 2. The billing plan used to bill the resource must have been active for this resource during the billing period.<br/> 3. The billing plan used must be a subscription plan.<br/> 4. The interim usage data must be sent hourly for all types of subscriptions. See [Send subscription billing and usage data](#send-subscription-billing-and-usage-data) API on how to send interim billing and usage data.<br/>
+ * @description This endpoint allows the partner to submit an invoice to Vercel. The invoice is created in Vercel's billing system and sent to the customer. Depending on the type of billing plan, the invoice can be sent at a time of signup, at the start of the billing period, or at the end of the billing period.<br/> <br/> Use the `credentials.access_token` we provided in the [Upsert Installation](#upsert-installation) body to authorize this request. <br/> There are several limitations to the invoice submission:<br/> <br/> 1. A resource can only be billed once per the billing period and the billing plan.<br/> 2. The billing plan used to bill the resource must have been active for this resource during the billing period.<br/> 3. The billing plan used must be a subscription plan.<br/> 4. The interim usage data must be sent hourly for all types of subscriptions. See [Send subscription billing and usage data](#send-subscription-billing-and-usage-data) API on how to send interim billing and usage data.<br/> 5. If provided, `externalId` must be unique for the installation.<br/>
  * @link /v1/installations/{integrationConfigurationId}/billing/invoices
  */
 export async function submitInvoice(
@@ -10604,7 +10766,6 @@ export async function updateProject(
 			| UpdateProjectStatus403
 			| UpdateProjectStatus404
 			| UpdateProjectStatus409
-			| UpdateProjectStatus422
 			| UpdateProjectStatus428
 		>,
 		null,
@@ -10668,7 +10829,7 @@ export async function deleteProject(
 
 /**
  * @summary Upload a project avatar
- * @description Upload an image as the avatar of the project identified by `idOrName`. The request body is the raw bytes of a JPG, PNG, or SVG image; the `Content-Type` header must declare which. SVG payloads are sanitized and optimized server-side before storage. The final SHA-1 of the stored bytes becomes the project's `avatar` value.
+ * @description Upload an image as the avatar of the project identified by `idOrName`. The request body is the raw bytes of a JPG, PNG, or SVG image; the `Content-Type` header must declare which. SVG payloads are sanitized and optimized server-side before storage. The final SHA-1 of the stored bytes becomes the project's `avatar` value. The actual upload pipeline (validation, sanitization, S3 write, conditional `updateProject`, and event emission) lives in the shared `@api/project-avatar-upload` helper so it can be reused by background workers.
  * @link /v1/projects/{idOrName}/avatar
  */
 export async function uploadProjectAvatar(
@@ -12073,7 +12234,7 @@ export async function updateProjectProtectionBypass(
 }
 
 /**
- * @summary Points all production domains for a project to the given deploy
+ * @summary Point production traffic to a previous production deployment by ID
  * @description Allows users to rollback to a deployment.
  * @link /v1/projects/{projectId}/rollback/{deploymentId}
  */
@@ -12214,7 +12375,7 @@ export async function updateMicrofrontends(
 }
 
 /**
- * @summary Points all production domains for a project to the given deploy
+ * @summary Point production traffic to a given deployment
  * @description Allows users to promote a deployment to production. Note: This does NOT rebuild the deployment. If you need that, then call create-deployments endpoint.
  * @link /v10/projects/{projectId}/promote/{deploymentId}
  */
@@ -12501,6 +12662,159 @@ export async function createSandboxes(
 	>({
 		method: "POST",
 		url: `/v2/sandboxes`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary List drives
+ * @description Retrieves a paginated list of drives belonging to a specific project. Drives are in private beta. Register your interest to get access: https://vercel.com/changelog/drives-for-vercel-sandbox-in-private-beta
+ * @link /v2/sandboxes/drives
+ */
+export async function listDrives(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			projectId?: string;
+			limit?: number;
+			cursor?: string;
+			sortBy?: "createdAt" | "updatedAt" | "name";
+			namePrefix?: string;
+			sortOrder?: "asc" | "desc";
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		ListDrivesResponse,
+		ErrorWrapper<
+			| ListDrivesStatus400
+			| ListDrivesStatus401
+			| ListDrivesStatus402
+			| ListDrivesStatus403
+			| ListDrivesStatus404
+			| ListDrivesStatus429
+		>,
+		null,
+		Record<string, string>,
+		{
+			projectId?: string;
+			limit?: number;
+			cursor?: string;
+			sortBy?: "createdAt" | "updatedAt" | "name";
+			namePrefix?: string;
+			sortOrder?: "asc" | "desc";
+			teamId?: string;
+			slug?: string;
+		},
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/v2/sandboxes/drives`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Get or create a drive
+ * @description Gets an existing drive by project and name, or creates it when it does not exist. Drives are in private beta. Register your interest to get access: https://vercel.com/changelog/drives-for-vercel-sandbox-in-private-beta
+ * @link /v2/sandboxes/drives/{name}
+ */
+export async function getOrCreateDrive(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { name: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.name) {
+		throw new Error(`Missing required path parameter: name`);
+	}
+	const data = await request<
+		GetOrCreateDriveResponse,
+		ErrorWrapper<
+			| GetOrCreateDriveStatus400
+			| GetOrCreateDriveStatus401
+			| GetOrCreateDriveStatus402
+			| GetOrCreateDriveStatus403
+			| GetOrCreateDriveStatus404
+			| GetOrCreateDriveStatus409
+			| GetOrCreateDriveStatus429
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ name: string }
+	>({
+		method: "POST",
+		url: `/v2/sandboxes/drives/${pathParams.name}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Delete a drive
+ * @description Deletes a drive by project and name. Attached drives cannot be deleted. Stop or replace the session currently using the drive before retrying deletion. Drives are in private beta. Register your interest to get access: https://vercel.com/changelog/drives-for-vercel-sandbox-in-private-beta
+ * @link /v2/sandboxes/drives/{name}
+ */
+export async function deleteDrive(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { name: string };
+		queryParams?: { projectId?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.name) {
+		throw new Error(`Missing required path parameter: name`);
+	}
+	const data = await request<
+		DeleteDriveResponse,
+		ErrorWrapper<
+			| DeleteDriveStatus400
+			| DeleteDriveStatus401
+			| DeleteDriveStatus402
+			| DeleteDriveStatus403
+			| DeleteDriveStatus404
+			| DeleteDriveStatus409
+			| DeleteDriveStatus429
+		>,
+		null,
+		Record<string, string>,
+		{ projectId?: string; teamId?: string; slug?: string },
+		{ name: string }
+	>({
+		method: "DELETE",
+		url: `/v2/sandboxes/drives/${pathParams.name}`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -12959,7 +13273,7 @@ export async function runSessionCommand(
 		config,
 	}: {
 		pathParams: { sessionId: string };
-		queryParams?: { teamId?: string; slug?: string };
+		queryParams?: { cmdId?: string; teamId?: string; slug?: string };
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -12982,7 +13296,7 @@ export async function runSessionCommand(
 		>,
 		null,
 		Record<string, string>,
-		{ teamId?: string; slug?: string },
+		{ cmdId?: string; teamId?: string; slug?: string },
 		{ sessionId: string }
 	>({
 		method: "POST",
@@ -14338,7 +14652,6 @@ export async function patchTeam(
 			| PatchTeamStatus401
 			| PatchTeamStatus402
 			| PatchTeamStatus403
-			| PatchTeamStatus422
 			| PatchTeamStatus428
 		>,
 		null,
@@ -15755,6 +16068,9 @@ export const operationsByPath = {
 	"DELETE /v1/connect/networks/{networkId}": deleteNetwork,
 	"PATCH /v1/connect/networks/{networkId}": updateNetwork,
 	"GET /v1/connect/networks/{networkId}": readNetwork,
+	"POST /v1/connect/connectors": createConnector,
+	"POST /v1/connect/token/{connector}": getConnectorToken,
+	"POST /v1/connect/authorize/{connector}": createConnectorAuthorizationRequest,
 	"GET /v3/deployments/{idOrUrl}/events": getDeploymentEvents,
 	"PATCH /v1/deployments/{deploymentId}/integrations/{integrationConfigurationId}/resources/{resourceId}/actions/{action}":
 		updateIntegrationDeploymentAction,
@@ -15966,6 +16282,9 @@ export const operationsByPath = {
 	"POST /v1/projects/{projectId}/unpause": unpauseProject,
 	"GET /v2/sandboxes": listSandboxes,
 	"POST /v2/sandboxes": createSandboxes,
+	"GET /v2/sandboxes/drives": listDrives,
+	"POST /v2/sandboxes/drives/{name}": getOrCreateDrive,
+	"DELETE /v2/sandboxes/drives/{name}": deleteDrive,
 	"GET /v2/sandboxes/snapshots": listSessionSnapshots,
 	"GET /v2/sandboxes/snapshots/{snapshotId}": getSessionSnapshot,
 	"DELETE /v2/sandboxes/snapshots/{snapshotId}": deleteSessionSnapshot,
@@ -16100,6 +16419,11 @@ export const operationsByTag = {
 		updateNetwork,
 		readNetwork,
 		updateStaticIps,
+	},
+	connect: {
+		createConnector,
+		getConnectorToken,
+		createConnectorAuthorizationRequest,
 	},
 	deployments: {
 		getDeploymentEvents,
@@ -16350,6 +16674,9 @@ export const operationsByTag = {
 	sandboxes: {
 		listSandboxes,
 		createSandboxes,
+		listDrives,
+		getOrCreateDrive,
+		deleteDrive,
 		listSessionSnapshots,
 		getSessionSnapshot,
 		deleteSessionSnapshot,
@@ -16473,6 +16800,9 @@ export const tagDictionary = {
 		POST: ["createNetwork"],
 		DELETE: ["deleteNetwork"],
 		PATCH: ["updateNetwork", "updateStaticIps"],
+	},
+	connect: {
+		POST: ["createConnector", "getConnectorToken", "createConnectorAuthorizationRequest"],
 	},
 	deployments: {
 		GET: [
@@ -16716,6 +17046,7 @@ export const tagDictionary = {
 	sandboxes: {
 		GET: [
 			"listSandboxes",
+			"listDrives",
 			"listSessionSnapshots",
 			"getSessionSnapshot",
 			"listSessions",
@@ -16727,6 +17058,7 @@ export const tagDictionary = {
 		],
 		POST: [
 			"createSandboxes",
+			"getOrCreateDrive",
 			"runSessionCommand",
 			"killSessionCommand",
 			"stopSession",
@@ -16737,7 +17069,7 @@ export const tagDictionary = {
 			"writeSessionFiles",
 			"createSessionSnapshot",
 		],
-		DELETE: ["deleteSessionSnapshot", "deleteSandbox"],
+		DELETE: ["deleteDrive", "deleteSessionSnapshot", "deleteSandbox"],
 		PATCH: ["updateSandbox"],
 	},
 	security: {
