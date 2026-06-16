@@ -141,6 +141,20 @@ export async function updateEvent(
 		showQrCode?: boolean;
 		retentionDays?: number;
 		deleteAfterDate?: Date;
+		// Photobooth personalization + capture + print settings
+		coupleNames?: string;
+		captureWhoChoosesFilter?: "guest" | "host";
+		captureDefaultCountdown?: number;
+		captureAutoShoot?: boolean;
+		printMethod?: "none" | "bridge" | "manual";
+		printPrinterId?: string;
+		printPaperSize?: string;
+		printMediaType?: string;
+		printBorderless?: boolean;
+		printCopies?: number;
+		printOrientation?: "portrait" | "landscape";
+		printAutoPrint?: boolean;
+		printBridgeUrl?: string;
 	},
 ) {
 	await requireEventAccess(id, ["owner", "admin"]);
@@ -298,6 +312,11 @@ export async function duplicateEvent(id: string) {
 			order: template.order,
 			captionPositionJson: template.captionPositionJson,
 			safeAreaJson: template.safeAreaJson,
+			layoutJson: template.layoutJson,
+			kind: template.kind,
+			shotCount: template.shotCount,
+			presetId: template.presetId,
+			allowedFilters: template.allowedFilters,
 			createdAt: now,
 			updatedAt: now,
 		});
@@ -377,5 +396,9 @@ export async function getPublicEvent(organizationSlug: string, eventSlug: string
 		allowPrint: event.allowPrint,
 		showQrCode: event.showQrCode,
 		retentionDays: event.retentionDays,
+		coupleNames: event.coupleNames,
+		captureDefaultCountdown: event.captureDefaultCountdown,
+		captureAutoShoot: event.captureAutoShoot,
+		captureWhoChoosesFilter: event.captureWhoChoosesFilter,
 	};
 }

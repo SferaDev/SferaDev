@@ -77,6 +77,51 @@ export async function saveCapture(sessionId: string, capturedImageUrl: string) {
 		.where(eq(schema.kioskSessions.id, sessionId));
 }
 
+export async function updateShotIndex(sessionId: string, shotIndex: number) {
+	const session = await db
+		.select()
+		.from(schema.kioskSessions)
+		.where(eq(schema.kioskSessions.id, sessionId))
+		.then((rows) => rows[0]);
+
+	if (!session) {
+		throw new Error("Session not found");
+	}
+
+	await db
+		.update(schema.kioskSessions)
+		.set({ shotIndex })
+		.where(eq(schema.kioskSessions.id, sessionId));
+}
+
+export async function saveMultiCapture(
+	sessionId: string,
+	capturedImageUrls: string[],
+	selectedFilter?: string,
+) {
+	const session = await db
+		.select()
+		.from(schema.kioskSessions)
+		.where(eq(schema.kioskSessions.id, sessionId))
+		.then((rows) => rows[0]);
+
+	if (!session) {
+		throw new Error("Session not found");
+	}
+
+	await db
+		.update(schema.kioskSessions)
+		.set({
+			status: "captured",
+			capturedImageUrls: JSON.stringify(capturedImageUrls),
+			// Clear any legacy single-capture value so it can't be read as a stale fallback.
+			capturedImageUrl: null,
+			shotIndex: capturedImageUrls.length,
+			selectedFilter,
+		})
+		.where(eq(schema.kioskSessions.id, sessionId));
+}
+
 export async function personalizeSession(sessionId: string, caption?: string, mirrored?: boolean) {
 	const session = await db
 		.select()
