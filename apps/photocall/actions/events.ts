@@ -129,6 +129,8 @@ export async function updateEvent(
 		slideshowSafeMode?: boolean;
 		idleTimeoutSeconds?: number;
 		defaultCamera?: "user" | "environment";
+		cameraDeviceId?: string | null;
+		cameraDeviceLabel?: string | null;
 		photoQuality?: number;
 		maxPhotoDimension?: number;
 		primaryColor?: string;
@@ -390,6 +392,9 @@ export async function getPublicEvent(organizationSlug: string, eventSlug: string
 		slideshowSafeMode: event.slideshowSafeMode,
 		idleTimeoutSeconds: event.idleTimeoutSeconds,
 		defaultCamera: event.defaultCamera,
+		cameraDeviceId: event.cameraDeviceId,
+		cameraDeviceLabel: event.cameraDeviceLabel,
+		startDate: event.startDate,
 		photoQuality: event.photoQuality,
 		maxPhotoDimension: event.maxPhotoDimension,
 		allowDownload: event.allowDownload,

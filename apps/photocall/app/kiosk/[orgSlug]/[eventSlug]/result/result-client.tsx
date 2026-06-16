@@ -3,7 +3,7 @@
 import { ArrowLeft, Camera, Check, Download, Loader2, Printer, RotateCcw } from "lucide-react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import QRCode from "qrcode";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import { getPublicEvent } from "@/actions/events";
 import { createPhoto, generatePhotoUploadUrl } from "@/actions/photos";
@@ -13,11 +13,29 @@ import { Button } from "@/components/ui/button";
 import { useIdleTimeout } from "@/hooks/use-idle-timeout";
 import { useOfflineSync } from "@/hooks/use-offline-sync";
 import { compositePhoto, downloadBlob, printImage } from "@/lib/canvas-utils";
+import { composeStrip, loadLayoutFonts } from "@/lib/compose";
+import { parseCapturedImageUrls } from "@/lib/db/schema";
+import { parseLayoutJson } from "@/lib/layout/parse";
+import type { FilterKind } from "@/lib/layout/types";
+import { printPixelSize } from "@/lib/layout/types";
 import { enqueuePhoto } from "@/lib/offline-queue";
+import { clearPhotoboothSession, readPhotoboothSession } from "@/lib/photobooth-session";
 
 /** ServiceWorkerRegistration with the optional Background Sync extension. */
 interface SyncCapableRegistration extends ServiceWorkerRegistration {
 	sync?: { register(tag: string): Promise<void> };
+}
+
+function isFilterKind(value: string | null | undefined): value is FilterKind {
+	return (
+		value === "none" ||
+		value === "bw" ||
+		value === "warm" ||
+		value === "cool" ||
+		value === "faded" ||
+		value === "vivid" ||
+		value === "noir"
+	);
 }
 
 export default function KioskResultPage() {
@@ -28,6 +46,7 @@ export default function KioskResultPage() {
 	const eventSlug = params.eventSlug as string;
 	const sessionId = searchParams.get("session");
 	const templateId = searchParams.get("template");
+	const filterParam = searchParams.get("filter");
 
 	const { data: event, isLoading: eventLoading } = useSWR(
 		["public-event", orgSlug, eventSlug],
@@ -46,6 +65,7 @@ export default function KioskResultPage() {
 	);
 
 	const template = templates?.find((t) => t.id === templateId) ?? null;
+	const layout = template ? parseLayoutJson(template.layoutJson) : null;
 
 	const [isProcessing, setIsProcessing] = useState(true);
 	const [finalImageUrl, setFinalImageUrl] = useState<string | null>(null);
@@ -54,6 +74,11 @@ export default function KioskResultPage() {
 	const [humanCode, setHumanCode] = useState<string | null>(null);
 	const [savedOffline, setSavedOffline] = useState(false);
 	const [error, setError] = useState<string | null>(null);
+
+	// Guards against processPhoto running twice (it is in the effect deps and
+	// isProcessing stays true for the whole async run), which would otherwise
+	// cause a double upload + double createPhoto + double completeSession.
+	const processingStartedRef = useRef(false);
 
 	// Drains the offline outbox when connectivity returns.
 	const { sync } = useOfflineSync();
@@ -65,42 +90,112 @@ export default function KioskResultPage() {
 		enabled: !!event,
 	});
 
-	// Process and upload photo
+	/** Compose a multi-shot strip from the captured shots into a JPEG blob. */
+	const composeStripBlob = useCallback(async (): Promise<{
+		blob: Blob;
+		width: number;
+		height: number;
+		shots: string[];
+	} | null> => {
+		if (!event || !layout || !sessionId) return null;
+
+		// Source of truth is sessionStorage; fall back to the server-stored URLs.
+		const stored = readPhotoboothSession(sessionId);
+		const shots =
+			stored && stored.shots.length > 0
+				? stored.shots
+				: parseCapturedImageUrls(session?.capturedImageUrls ?? null);
+
+		if (shots.length === 0) return null;
+
+		// The guest's chosen filter (from sessionStorage, falling back to the URL
+		// param) overrides the template's default filter when it is a valid kind.
+		const guestFilter: FilterKind | null = isFilterKind(stored?.filter)
+			? stored.filter
+			: isFilterKind(filterParam)
+				? filterParam
+				: null;
+		const composeLayout = guestFilter ? { ...layout, filter: guestFilter } : layout;
+
+		await loadLayoutFonts(layout);
+
+		const date = event.startDate
+			? new Date(event.startDate).toLocaleDateString(undefined, {
+					year: "numeric",
+					month: "long",
+					day: "numeric",
+				})
+			: undefined;
+
+		const result = await composeStrip({
+			layout: composeLayout,
+			photos: shots,
+			tokens: {
+				coupleNames: event.coupleNames ?? event.name,
+				date,
+				eventName: event.name,
+			},
+			targetWidth: printPixelSize(layout.print).width,
+			quality: event.photoQuality,
+		});
+
+		return { blob: result.blob, width: result.width, height: result.height, shots };
+	}, [event, layout, sessionId, session?.capturedImageUrls, filterParam]);
+
+	/** Legacy single-photo composite (templates without a layout). */
+	const composeSingleBlob = useCallback(async (): Promise<{
+		blob: Blob;
+		width: number;
+		height: number;
+	} | null> => {
+		if (!event || !session?.capturedImageUrl) return null;
+
+		const outputWidth = event.maxPhotoDimension;
+		const outputHeight = Math.round(event.maxPhotoDimension * (4 / 3));
+
+		const blob = await compositePhoto({
+			photo: session.capturedImageUrl,
+			template: template?.url
+				? { url: template.url, safeArea: template.safeArea ?? undefined }
+				: undefined,
+			caption:
+				session.caption && template?.captionPosition
+					? { text: session.caption, position: template.captionPosition }
+					: undefined,
+			mirrored: session.mirrored ?? false,
+			quality: event.photoQuality,
+			outputWidth,
+			outputHeight,
+		});
+
+		return { blob, width: outputWidth, height: outputHeight };
+	}, [event, session, template]);
+
+	// Process and upload the final image (strip or single).
 	const processPhoto = useCallback(async () => {
-		if (!event || !session?.capturedImageUrl || isProcessing === false) return;
+		if (!event || !session || !isProcessing) return;
+		if (processingStartedRef.current) return;
+		processingStartedRef.current = true;
 
 		try {
-			// Composite the photo with template
-			const blob = await compositePhoto({
-				photo: session.capturedImageUrl,
-				template: template?.url
-					? {
-							url: template.url,
-							safeArea: template.safeArea ?? undefined,
-						}
-					: undefined,
-				caption:
-					session.caption && template?.captionPosition
-						? {
-								text: session.caption,
-								position: template.captionPosition,
-							}
-						: undefined,
-				mirrored: session.mirrored ?? false,
-				quality: event.photoQuality,
-				outputWidth: event.maxPhotoDimension,
-				outputHeight: Math.round(event.maxPhotoDimension * (4 / 3)),
-			});
+			const isStrip = layout != null;
+			const composed = isStrip ? await composeStripBlob() : await composeSingleBlob();
 
-			// Create object URL for preview
+			if (!composed) {
+				setError("We couldn't find your photos. Please try again.");
+				setIsProcessing(false);
+				return;
+			}
+
+			const { blob, width, height } = composed;
+			const rawShotsJson =
+				isStrip && "shots" in composed ? JSON.stringify(composed.shots) : undefined;
+			const kind = isStrip ? "strip" : "single";
+
 			const previewUrl = URL.createObjectURL(blob);
 			setFinalImageUrl(previewUrl);
 
-			const outputWidth = event.maxPhotoDimension;
-			const outputHeight = Math.round(event.maxPhotoDimension * (4 / 3));
-
 			try {
-				// Upload to S3 storage
 				const { uploadUrl, key } = await generatePhotoUploadUrl(event.id);
 
 				await fetch(uploadUrl, {
@@ -109,22 +204,22 @@ export default function KioskResultPage() {
 					body: blob,
 				});
 
-				// Create photo record
 				const result = await createPhoto({
 					eventId: event.id,
 					sessionId: sessionId!,
 					storageKey: key,
 					caption: session.caption ?? undefined,
 					templateId: templateId ?? undefined,
-					width: outputWidth,
-					height: outputHeight,
+					kind,
+					rawShotsJson,
+					width,
+					height,
 					sizeBytes: blob.size,
 				});
 
-				// Complete session
 				await completeSession(sessionId!);
+				if (isStrip) clearPhotoboothSession(sessionId!);
 
-				// Generate share URL and QR code
 				const shareBaseUrl = typeof window !== "undefined" ? window.location.origin : "";
 				const shareLink = `${shareBaseUrl}/share/${result.shareToken}`;
 				setShareUrl(shareLink);
@@ -139,9 +234,9 @@ export default function KioskResultPage() {
 					setQrCodeUrl(qr);
 				}
 			} catch (uploadErr) {
-				// Offline, or the upload failed: hold the composited photo in the
-				// outbox so it is never lost, and let the background sync finish it
-				// when the connection returns. The guest can still download/print now.
+				// Offline / upload failure: hold the composited image in the outbox so
+				// it is never lost; background sync finishes it on reconnect. The guest
+				// can still download/print now.
 				console.warn("Deferring photo upload to offline outbox:", uploadErr);
 				await enqueuePhoto({
 					id: crypto.randomUUID(),
@@ -150,8 +245,11 @@ export default function KioskResultPage() {
 					blob,
 					caption: session.caption ?? undefined,
 					templateId: templateId ?? undefined,
-					width: outputWidth,
-					height: outputHeight,
+					kind,
+					rawShotsJson,
+					selectedFilter: session.selectedFilter ?? undefined,
+					width,
+					height,
 					queuedAt: Date.now(),
 				});
 
@@ -164,6 +262,7 @@ export default function KioskResultPage() {
 					// Background Sync unsupported — the `online` event still triggers a flush.
 				}
 
+				if (isStrip) clearPhotoboothSession(sessionId!);
 				setSavedOffline(true);
 				void sync();
 			}
@@ -174,7 +273,17 @@ export default function KioskResultPage() {
 			setError("Failed to process your photo. Please try again.");
 			setIsProcessing(false);
 		}
-	}, [event, session, template, templateId, sessionId, isProcessing, sync]);
+	}, [
+		event,
+		session,
+		isProcessing,
+		layout,
+		composeStripBlob,
+		composeSingleBlob,
+		sessionId,
+		templateId,
+		sync,
+	]);
 
 	useEffect(() => {
 		if (event && session && isProcessing) {
@@ -208,6 +317,7 @@ export default function KioskResultPage() {
 		setQrCodeUrl(null);
 		setShareUrl(null);
 		setHumanCode(null);
+		processingStartedRef.current = false;
 		setIsProcessing(true);
 	};
 
@@ -274,12 +384,12 @@ export default function KioskResultPage() {
 
 						<div className="grid md:grid-cols-2 gap-8">
 							{/* Photo Preview */}
-							<div className="aspect-3/4 bg-muted rounded-lg overflow-hidden">
+							<div className="rounded-lg overflow-hidden bg-muted flex items-center justify-center">
 								{finalImageUrl && (
 									<img
 										src={finalImageUrl}
 										alt="Final result"
-										className="w-full h-full object-cover"
+										className="w-full h-full object-contain max-h-[70vh]"
 									/>
 								)}
 							</div>

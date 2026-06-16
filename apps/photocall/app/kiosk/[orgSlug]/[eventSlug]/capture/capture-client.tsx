@@ -1,13 +1,34 @@
 "use client";
 
-import { AlertCircle, ArrowLeft, Camera, Loader2, RefreshCw, RotateCcw } from "lucide-react";
+import { AlertCircle, ArrowLeft, Camera, Loader2, RotateCcw } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import { getPublicEvent } from "@/actions/events";
-import { saveCapture } from "@/actions/sessions";
+import { saveCapture, updateShotIndex } from "@/actions/sessions";
+import { listPublicTemplates } from "@/actions/templates";
 import { Button } from "@/components/ui/button";
 import { type CameraFacing, useCamera } from "@/hooks/use-camera";
+import { cssFilterFor } from "@/lib/compose/css-filters";
+import { parseLayoutJson } from "@/lib/layout/parse";
+import type { FilterKind } from "@/lib/layout/types";
+import { writePhotoboothSession } from "@/lib/photobooth-session";
+
+/** Pause (ms) between auto-chained shots so guests can re-pose. */
+const AUTO_SHOOT_GAP_MS = 1400;
+
+function isFilterKind(value: string | null): value is FilterKind {
+	return (
+		value === "none" ||
+		value === "bw" ||
+		value === "warm" ||
+		value === "cool" ||
+		value === "faded" ||
+		value === "vivid" ||
+		value === "noir"
+	);
+}
 
 export default function KioskCapturePage() {
 	const router = useRouter();
@@ -17,20 +38,38 @@ export default function KioskCapturePage() {
 	const eventSlug = params.eventSlug as string;
 	const sessionId = searchParams.get("session");
 	const templateId = searchParams.get("template");
+	const filterParam = searchParams.get("filter");
+	const filter: FilterKind = isFilterKind(filterParam) ? filterParam : "none";
 
 	const { data: event, isLoading: eventLoading } = useSWR(
 		["public-event", orgSlug, eventSlug],
 		() => getPublicEvent(orgSlug, eventSlug),
 	);
 
-	const { videoRef, canvasRef, isReady, error, start, switchCamera, capture } = useCamera({
+	const { data: templates } = useSWR(
+		event && templateId ? ["public-templates", event.id] : null,
+		() => listPublicTemplates(event!.id),
+	);
+
+	const template = templates?.find((t) => t.id === templateId) ?? null;
+	const layout = template ? parseLayoutJson(template.layoutJson) : null;
+	const shotTotal = layout ? layout.photoSlots.length : 1;
+	// The preview filter is the template/guest filter (overrides only matter at compose time).
+	const previewFilter: FilterKind = layout ? filter : "none";
+
+	const { videoRef, canvasRef, isReady, error, start, capture } = useCamera({
 		defaultFacing: (event?.defaultCamera as CameraFacing) || "user",
+		deviceId: event?.cameraDeviceId ?? null,
+		deviceLabel: event?.cameraDeviceLabel ?? null,
 	});
 
+	const [shots, setShots] = useState<string[]>([]);
 	const [countdown, setCountdown] = useState<number | null>(null);
-	const [isCapturing, setIsCapturing] = useState(false);
 	const [flash, setFlash] = useState(false);
+	const [busy, setBusy] = useState(false);
 	const [captureError, setCaptureError] = useState<string | null>(null);
+	const [finishing, setFinishing] = useState(false);
+	const flashTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
 	useEffect(() => {
 		if (event && !isReady) {
@@ -38,46 +77,143 @@ export default function KioskCapturePage() {
 		}
 	}, [event, isReady, start]);
 
-	const handleCapture = useCallback(async () => {
-		if (countdown !== null || isCapturing) return;
-
-		// Start countdown
-		setCountdown(3);
-		const countdownInterval = setInterval(() => {
-			setCountdown((prev) => {
-				if (prev === null || prev <= 1) {
-					clearInterval(countdownInterval);
-					return null;
-				}
-				return prev - 1;
-			});
-		}, 1000);
-
-		// Wait for countdown
-		await new Promise((resolve) => setTimeout(resolve, 3000));
-
-		setIsCapturing(true);
-		setFlash(true);
-		setTimeout(() => setFlash(false), 200);
-
-		try {
-			const imageUrl = capture();
-			if (!imageUrl) {
-				throw new Error("Could not read a frame from the camera.");
+	// Clear any pending timers on unmount to avoid setting state after teardown.
+	useEffect(() => {
+		return () => {
+			if (flashTimerRef.current) {
+				clearTimeout(flashTimerRef.current);
 			}
-			if (sessionId) {
-				await saveCapture(sessionId, imageUrl);
-				router.push(
-					`/kiosk/${orgSlug}/${eventSlug}/personalize?session=${sessionId}${templateId ? `&template=${templateId}` : ""}`,
-				);
-			}
-		} catch (err) {
-			console.error("Capture failed:", err);
-			setCaptureError("Failed to capture photo. Please try again.");
-		} finally {
-			setIsCapturing(false);
+		};
+	}, []);
+
+	/** Run the animated countdown, then flash + grab a frame. Returns the dataURL. */
+	const runCountdownAndCapture = useCallback(async (): Promise<string | null> => {
+		const seconds = event?.captureDefaultCountdown ?? 3;
+		for (let n = seconds; n > 0; n--) {
+			setCountdown(n);
+			await new Promise((resolve) => setTimeout(resolve, 1000));
 		}
-	}, [countdown, isCapturing, capture, sessionId, router, orgSlug, eventSlug, templateId]);
+		setCountdown(null);
+		setFlash(true);
+		if (flashTimerRef.current) clearTimeout(flashTimerRef.current);
+		flashTimerRef.current = setTimeout(() => setFlash(false), 220);
+		return capture();
+	}, [event?.captureDefaultCountdown, capture]);
+
+	/** Persist shots locally. sessionStorage is the source of truth; the result
+	 * page composes from it. We deliberately do NOT ship the raw data-URL shots
+	 * to a server action — each shot is 1–2 MB and would blow past Next.js's
+	 * server-action body limit. */
+	const persist = useCallback(
+		(next: string[]) => {
+			if (!sessionId) return;
+			if (layout) {
+				writePhotoboothSession(sessionId, { shots: next, filter });
+			}
+		},
+		[sessionId, layout, filter],
+	);
+
+	const finishSingle = useCallback(
+		async (dataUrl: string) => {
+			if (!sessionId) return;
+			await saveCapture(sessionId, dataUrl);
+			router.push(
+				`/kiosk/${orgSlug}/${eventSlug}/personalize?session=${sessionId}${templateId ? `&template=${templateId}` : ""}`,
+			);
+		},
+		[sessionId, router, orgSlug, eventSlug, templateId],
+	);
+
+	const goToResult = useCallback(() => {
+		if (!sessionId) return;
+		const query = new URLSearchParams({ session: sessionId });
+		if (templateId) query.set("template", templateId);
+		query.set("filter", filter);
+		router.push(`/kiosk/${orgSlug}/${eventSlug}/result?${query.toString()}`);
+	}, [sessionId, templateId, filter, router, orgSlug, eventSlug]);
+
+	/** Capture a single shot for slot `index`, replacing it on a retake. */
+	const captureShot = useCallback(
+		async (index: number) => {
+			if (busy || countdown !== null || !isReady) return;
+			setBusy(true);
+			setCaptureError(null);
+			try {
+				const dataUrl = await runCountdownAndCapture();
+				if (!dataUrl) throw new Error("Could not read a frame from the camera.");
+
+				// Legacy single-photo template (no layout): keep the existing flow.
+				if (!layout) {
+					await finishSingle(dataUrl);
+					return;
+				}
+
+				const next = [...shots];
+				next[index] = dataUrl;
+				setShots(next);
+				persist(next);
+				if (sessionId) {
+					void updateShotIndex(sessionId, next.filter(Boolean).length).catch(() => {});
+				}
+			} catch (err) {
+				console.error("Capture failed:", err);
+				setCaptureError("Failed to capture photo. Please try again.");
+			} finally {
+				setBusy(false);
+			}
+		},
+		[
+			busy,
+			countdown,
+			isReady,
+			runCountdownAndCapture,
+			layout,
+			finishSingle,
+			shots,
+			persist,
+			sessionId,
+		],
+	);
+
+	// Keep a stable reference to the latest captureShot so the auto-shoot effect
+	// doesn't tear down/re-run (and risk double-firing) whenever captureShot's
+	// closure changes (shots/busy/etc.).
+	const captureRef = useRef(captureShot);
+	useEffect(() => {
+		captureRef.current = captureShot;
+	}, [captureShot]);
+
+	const filledCount = shots.filter(Boolean).length;
+	const allShotsTaken = layout != null && filledCount >= shotTotal;
+
+	// Auto-shoot: chain the remaining shots automatically with a short pause.
+	const autoShoot = event?.captureAutoShoot ?? false;
+	const autoRunningRef = useRef(false);
+	useEffect(() => {
+		if (!layout || !autoShoot || !isReady) return;
+		if (autoRunningRef.current) return;
+		if (busy || countdown !== null) return;
+		if (filledCount >= shotTotal) return;
+
+		autoRunningRef.current = true;
+		const nextIndex = filledCount;
+		const timer = setTimeout(() => {
+			void captureRef.current(nextIndex).finally(() => {
+				autoRunningRef.current = false;
+			});
+		}, AUTO_SHOOT_GAP_MS);
+
+		return () => {
+			clearTimeout(timer);
+			autoRunningRef.current = false;
+		};
+	}, [layout, autoShoot, isReady, busy, countdown, filledCount, shotTotal]);
+
+	const handleFinish = useCallback(() => {
+		setFinishing(true);
+		goToResult();
+	}, [goToResult]);
 
 	if (eventLoading) {
 		return (
@@ -93,9 +229,12 @@ export default function KioskCapturePage() {
 	}
 
 	const primaryColor = event.primaryColor || "#e11d48";
+	const nextSlot = filledCount;
+	const mirrorTransform =
+		event.defaultCamera === "user" && !event.cameraDeviceId ? "scaleX(-1)" : "none";
 
 	return (
-		<div className="min-h-screen bg-black text-white relative">
+		<div className="min-h-screen bg-black text-white relative overflow-hidden">
 			{/* Camera View */}
 			<div className="absolute inset-0">
 				<video
@@ -104,7 +243,7 @@ export default function KioskCapturePage() {
 					playsInline
 					muted
 					className="w-full h-full object-cover"
-					style={{ transform: event.defaultCamera === "user" ? "scaleX(-1)" : "none" }}
+					style={{ transform: mirrorTransform, filter: cssFilterFor(previewFilter) }}
 				/>
 			</div>
 
@@ -112,14 +251,92 @@ export default function KioskCapturePage() {
 			<canvas ref={canvasRef} className="hidden" />
 
 			{/* Flash Effect */}
-			{flash && <div className="absolute inset-0 bg-white z-50" />}
+			<AnimatePresence>
+				{flash && (
+					<motion.div
+						className="absolute inset-0 bg-white z-50"
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 0.9 }}
+						exit={{ opacity: 0 }}
+						transition={{ duration: 0.18 }}
+					/>
+				)}
+			</AnimatePresence>
+
+			{/* Prompt / progress */}
+			{layout && (
+				<div className="absolute top-0 inset-x-0 p-6 z-30 flex justify-center">
+					<motion.div
+						key={`${filledCount}-${countdown}`}
+						initial={{ opacity: 0, y: -8 }}
+						animate={{ opacity: 1, y: 0 }}
+						className="px-5 py-2 rounded-full bg-black/40 backdrop-blur text-lg font-semibold"
+					>
+						{allShotsTaken
+							? "All shots captured!"
+							: countdown !== null
+								? "Pose!"
+								: `Shot ${nextSlot + 1} of ${shotTotal}`}
+					</motion.div>
+				</div>
+			)}
 
 			{/* Countdown Overlay */}
-			{countdown !== null && (
-				<div className="absolute inset-0 flex items-center justify-center z-40">
-					<span className="text-[200px] font-bold text-white drop-shadow-lg animate-pulse">
-						{countdown}
-					</span>
+			<AnimatePresence mode="wait">
+				{countdown !== null && (
+					<motion.div
+						key={countdown}
+						className="absolute inset-0 flex items-center justify-center z-40 pointer-events-none"
+						initial={{ scale: 0.4, opacity: 0 }}
+						animate={{ scale: 1, opacity: 1 }}
+						exit={{ scale: 1.6, opacity: 0 }}
+						transition={{ type: "spring", stiffness: 320, damping: 18 }}
+					>
+						<span className="text-[200px] font-bold text-white drop-shadow-lg leading-none">
+							{countdown}
+						</span>
+					</motion.div>
+				)}
+			</AnimatePresence>
+
+			{/* Filmstrip of captured thumbnails with retake */}
+			{layout && (
+				<div className="absolute left-1/2 -translate-x-1/2 bottom-32 z-30 flex gap-3">
+					{Array.from({ length: shotTotal }).map((_, index) => {
+						const shot = shots[index];
+						return (
+							<div key={index} className="flex flex-col items-center gap-1">
+								<motion.div
+									layout
+									className="h-20 w-16 rounded-md overflow-hidden border-2 bg-white/10"
+									style={{ borderColor: shot ? primaryColor : "rgba(255,255,255,0.3)" }}
+								>
+									{shot ? (
+										<img
+											src={shot}
+											alt={`Shot ${index + 1}`}
+											className="w-full h-full object-cover"
+											style={{ filter: cssFilterFor(previewFilter) }}
+										/>
+									) : (
+										<div className="w-full h-full flex items-center justify-center text-white/50 text-sm">
+											{index + 1}
+										</div>
+									)}
+								</motion.div>
+								{shot && (
+									<button
+										type="button"
+										onClick={() => captureShot(index)}
+										disabled={busy || countdown !== null}
+										className="text-xs text-white/80 underline disabled:opacity-40"
+									>
+										Retake
+									</button>
+								)}
+							</div>
+						);
+					})}
 				</div>
 			)}
 
@@ -133,31 +350,44 @@ export default function KioskCapturePage() {
 							router.push(`/kiosk/${orgSlug}/${eventSlug}/select?session=${sessionId}`)
 						}
 						className="text-white"
-						disabled={countdown !== null}
+						disabled={busy || countdown !== null}
 					>
 						<ArrowLeft className="h-6 w-6" />
 					</Button>
 
-					<Button
-						size="lg"
-						onClick={handleCapture}
-						disabled={countdown !== null || isCapturing || !isReady}
-						className="h-20 w-20 rounded-full"
-						style={{ backgroundColor: primaryColor }}
-					>
-						<Camera className="h-10 w-10" />
-					</Button>
+					{allShotsTaken ? (
+						<Button
+							size="lg"
+							onClick={handleFinish}
+							disabled={finishing}
+							className="h-16 px-10 rounded-full text-lg"
+							style={{ backgroundColor: primaryColor }}
+						>
+							{finishing ? (
+								<Loader2 className="h-5 w-5 mr-2 animate-spin" />
+							) : (
+								<Camera className="h-5 w-5 mr-2" />
+							)}
+							Looks good
+						</Button>
+					) : (
+						<Button
+							size="lg"
+							onClick={() => captureShot(nextSlot)}
+							disabled={busy || countdown !== null || !isReady || (layout != null && autoShoot)}
+							className="h-20 w-20 rounded-full"
+							style={{ backgroundColor: primaryColor }}
+						>
+							<Camera className="h-10 w-10" />
+						</Button>
+					)}
 
-					<Button
-						variant="ghost"
-						size="lg"
-						onClick={switchCamera}
-						className="text-white"
-						disabled={countdown !== null}
-					>
-						<RefreshCw className="h-6 w-6" />
-					</Button>
+					{/* Spacer to keep the shutter centered */}
+					<div className="w-12" />
 				</div>
+				{layout && autoShoot && !allShotsTaken && (
+					<p className="text-center text-sm text-white/70 mt-4">Auto-shooting…</p>
+				)}
 			</div>
 
 			{/* Camera Error Overlay */}
