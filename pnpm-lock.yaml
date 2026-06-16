@@ -102,6 +102,9 @@ catalogs:
     '@testing-library/jest-dom':
       specifier: 6.9.1
       version: 6.9.1
+    '@types/ipp':
+      specifier: ^2.0.4
+      version: 2.0.5
     '@types/json-schema':
       specifier: 7.0.15
       version: 7.0.15
@@ -144,6 +147,9 @@ catalogs:
     better-auth:
       specifier: 1.6.14
       version: 1.6.14
+    bonjour-service:
+      specifier: ^1.4.1
+      version: 1.4.1
     bunchee:
       specifier: 6.11.0
       version: 6.11.0
@@ -186,6 +192,9 @@ catalogs:
     html-to-image:
       specifier: 1.11.13
       version: 1.11.13
+    ipp:
+      specifier: ^2.0.1
+      version: 2.0.1
     is-tree-shakable:
       specifier: 0.5.0
       version: 0.5.0
@@ -641,6 +650,46 @@ importers:
       vitest:
         specifier: 'catalog:'
         version: 4.1.8(@opentelemetry/api@1.9.1)(@types/node@25.9.2)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@7.3.1(@types/node@25.9.2)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.22.4)(yaml@2.9.0))
+
+  apps/print-bridge:
+    dependencies:
+      '@hono/node-server':
+        specifier: 'catalog:'
+        version: 2.0.4(hono@4.12.23)
+      bonjour-service:
+        specifier: 'catalog:'
+        version: 1.4.1
+      hono:
+        specifier: 'catalog:'
+        version: 4.12.23
+      ipp:
+        specifier: 'catalog:'
+        version: 2.0.1
+      qrcode:
+        specifier: 'catalog:'
+        version: 1.5.4
+      zod:
+        specifier: 'catalog:'
+        version: 4.4.3
+    devDependencies:
+      '@sferadev/tsconfig':
+        specifier: workspace:*
+        version: link:../../configs/tsconfig
+      '@types/ipp':
+        specifier: 'catalog:'
+        version: 2.0.5
+      '@types/node':
+        specifier: 'catalog:'
+        version: 25.9.2
+      '@types/qrcode':
+        specifier: 'catalog:'
+        version: 1.5.6
+      tsx:
+        specifier: 'catalog:'
+        version: 4.22.4
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
 
   apps/seating:
     dependencies:
@@ -4766,6 +4815,9 @@ packages:
   '@types/http-cache-semantics@4.2.0':
     resolution: {integrity: sha512-L3LgimLHXtGkWikKnsPg0/VFx9OGZaC+eN1u4r+OB1XRqH3meBIAVC2zr1WdMH+RHmnRkqliQAOHNJ/E0j/e0Q==}
 
+  '@types/ipp@2.0.5':
+    resolution: {integrity: sha512-urVWEq8xGZyj9ddEXWaGotJ6uu2Jnn8qvUmsf2nWvQmOO5fw0ErUJGQE8nVHaIpe1fRsZ3ylSigySKT4xXvuwg==}
+
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
 
@@ -5405,6 +5457,9 @@ packages:
   body-parser@1.20.5:
     resolution: {integrity: sha512-3grm+/2tUOvu2cjJkvsIxrv/wVpfXQW4PsQHYm7yk4vfpu7Ekl6nEsYBoJUL6qDwZUx8wUhQ8tR2qz+ad9c9OA==}
     engines: {node: '>= 0.8', npm: 1.2.8000 || >= 1.4.16}
+
+  bonjour-service@1.4.1:
+    resolution: {integrity: sha512-9KM4QMPKnaJqaja1v7gYO/+TXZGLtzPA05NmUTqDAJjcsWeVoOXKMvU9g0gfuuoYTQqJZ924hivICd5R/bCJbA==}
 
   boolbase@1.0.0:
     resolution: {integrity: sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww==}
@@ -6992,6 +7047,10 @@ packages:
     resolution: {integrity: sha512-0KI/607xoxSToH7GjN1FfSbLoU0+btTicjsQSWQlh/hZykN8KpmMf7uYwPW3R+akZ6R/w18ZlXSHBYXiYUPO3g==}
     engines: {node: '>= 0.10'}
 
+  ipp@2.0.1:
+    resolution: {integrity: sha512-p5dO2BXAVDnkv6IhUBupwydkq5/uw+DE+MGXnYzziNK1AtuLgbT9dFfJ3f8pA+J21n43TYipm6et/hTDEFJU/A==}
+    engines: {node: <4.0.0}
+
   is-alphabetical@2.0.1:
     resolution: {integrity: sha512-FWyyY60MeTNyeSRpkM2Iry0G9hpr7/9kD40mD/cGQEuilcZYS4okz8SN2Q6rLCJ8gbCt6fN+rC+6tMGS99LaxQ==}
 
@@ -7951,6 +8010,10 @@ packages:
 
   ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
+
+  multicast-dns@7.2.5:
+    resolution: {integrity: sha512-2eznPJP8z2BFLX50tf0LuODrpINqP1RVIm/CObbTcBRITQgmC/TjcREF1NeTBzIcR5XO/ukWo+YHOjBbFwIupg==}
+    hasBin: true
 
   mustache@4.2.0:
     resolution: {integrity: sha512-71ippSywq5Yb7/tVYyGbkBggbU8H3u5Rz56fH60jGFgr8uHwxs+aSKeqmluIVzM0m0kB7xQjKS6qPfd0b2ZoqQ==}
@@ -9556,6 +9619,9 @@ packages:
 
   through@2.3.8:
     resolution: {integrity: sha512-w89qg7PI8wAdvX60bMDP+bFoD5Dvhm9oLheFp5O4a2QF0cSBGsBX4qZmadPMvVqlLJBBci+WqGGOAPvcDeNSVg==}
+
+  thunky@1.1.0:
+    resolution: {integrity: sha512-eHY7nBftgThBqOyHGVN+l8gF0BucP09fMo0oO/Lb0w1OF80dJv+lDVpXG60WMQvkcxAkNybKsrEIE3ZtKGmPrA==}
 
   timers-ext@0.1.8:
     resolution: {integrity: sha512-wFH7+SEAcKfJpfLPkrgMPvvwnEtj8W4IurvEyrKsDleXnKLCDw71w8jltvfLa8Rm4qQxxT4jmDBYbJG/z7qoww==}
@@ -14235,6 +14301,10 @@ snapshots:
 
   '@types/http-cache-semantics@4.2.0': {}
 
+  '@types/ipp@2.0.5':
+    dependencies:
+      '@types/node': 25.9.2
+
   '@types/json-schema@7.0.15': {}
 
   '@types/katex@0.16.8': {}
@@ -14849,6 +14919,11 @@ snapshots:
       unpipe: 1.0.0
     transitivePeerDependencies:
       - supports-color
+
+  bonjour-service@1.4.1:
+    dependencies:
+      fast-deep-equal: 3.1.3
+      multicast-dns: 7.2.5
 
   boolbase@1.0.0: {}
 
@@ -16760,6 +16835,8 @@ snapshots:
 
   ipaddr.js@1.9.1: {}
 
+  ipp@2.0.1: {}
+
   is-alphabetical@2.0.1: {}
 
   is-alphanumerical@2.0.1:
@@ -18003,6 +18080,11 @@ snapshots:
   ms@2.0.0: {}
 
   ms@2.1.3: {}
+
+  multicast-dns@7.2.5:
+    dependencies:
+      dns-packet: 5.6.1
+      thunky: 1.1.0
 
   mustache@4.2.0: {}
 
@@ -20154,6 +20236,8 @@ snapshots:
   third-party-capital@1.0.20: {}
 
   through@2.3.8: {}
+
+  thunky@1.1.0: {}
 
   timers-ext@0.1.8:
     dependencies:

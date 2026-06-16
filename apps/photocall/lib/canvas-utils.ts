@@ -175,11 +175,19 @@ export function downloadBlob(blob: Blob, filename: string) {
 	URL.revokeObjectURL(url);
 }
 
-export async function printImage(imageUrl: string) {
+/**
+ * Open the browser print dialog for a single image (AirPrint "manual" path).
+ *
+ * `pageSize` is an optional CSS `@page size` hint (e.g. `"100mm 148mm"`) so the
+ * OS print dialog defaults to the right paper; it is advisory only.
+ */
+export async function printImage(imageUrl: string, pageSize?: string) {
 	const printWindow = window.open("", "_blank");
 	if (!printWindow) {
 		throw new Error("Could not open print window. Please allow popups.");
 	}
+
+	const pageRule = pageSize ? `@page { size: ${pageSize}; margin: 0; }` : "@page { margin: 0; }";
 
 	printWindow.document.write(`
 		<!DOCTYPE html>
@@ -187,7 +195,7 @@ export async function printImage(imageUrl: string) {
 		<head>
 			<title>Print Photo</title>
 			<style>
-				@page { margin: 0; }
+				${pageRule}
 				body { margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
 				img { max-width: 100%; max-height: 100vh; object-fit: contain; }
 			</style>

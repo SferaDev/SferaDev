@@ -5,6 +5,7 @@ import {
 	ChevronLeft,
 	Loader2,
 	Palette,
+	Printer,
 	Save,
 	Settings,
 	Share,
@@ -16,6 +17,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import { deleteEvent, getEventBySlug, setKioskPin, updateEvent } from "@/actions/events";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -30,6 +32,10 @@ import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { enumerateCameras } from "@/hooks/use-camera";
 import { useSession } from "@/lib/auth-client";
+import type { Orientation, PaperSize } from "@/lib/layout/types";
+import { type BridgePrinter, listBridgePrinters } from "@/lib/print/bridge-client";
+import { executePrint } from "@/lib/print/index";
+import type { EventPrintConfig, PrintMethod } from "@/lib/print/types";
 
 export default function EventSettingsPage() {
 	const { data: session, isPending: authLoading } = useSession();
@@ -71,7 +77,22 @@ export default function EventSettingsPage() {
 		showQrCode: true,
 		shareExpirationDays: undefined as number | undefined,
 		retentionDays: undefined as number | undefined,
+		printMethod: "none" as PrintMethod,
+		printBridgeUrl: "",
+		printPrinterId: "",
+		printPaperSize: "selphy_postcard" as PaperSize,
+		printMediaType: "photo_glossy",
+		printBorderless: true,
+		printCopies: 1,
+		printOrientation: "portrait" as Orientation,
+		printAutoPrint: false,
 	});
+
+	// Print bridge "Test connection" state.
+	const [bridgePrinters, setBridgePrinters] = useState<BridgePrinter[]>([]);
+	const [bridgeTesting, setBridgeTesting] = useState(false);
+	const [bridgeError, setBridgeError] = useState<string | null>(null);
+	const [testPrinting, setTestPrinting] = useState(false);
 
 	useEffect(() => {
 		if (event) {
@@ -98,6 +119,15 @@ export default function EventSettingsPage() {
 				showQrCode: event.showQrCode,
 				shareExpirationDays: event.shareExpirationDays ?? undefined,
 				retentionDays: event.retentionDays ?? undefined,
+				printMethod: (event.printMethod as PrintMethod) ?? "none",
+				printBridgeUrl: event.printBridgeUrl ?? "",
+				printPrinterId: event.printPrinterId ?? "",
+				printPaperSize: (event.printPaperSize as PaperSize | null) ?? "selphy_postcard",
+				printMediaType: event.printMediaType ?? "photo_glossy",
+				printBorderless: event.printBorderless,
+				printCopies: event.printCopies,
+				printOrientation: (event.printOrientation as Orientation) ?? "portrait",
+				printAutoPrint: event.printAutoPrint,
 			});
 		}
 	}, [event]);
@@ -135,6 +165,67 @@ export default function EventSettingsPage() {
 			setIsSaving(false);
 		}
 	};
+
+	const printConfig: EventPrintConfig = {
+		printMethod: formData.printMethod,
+		printBridgeUrl: formData.printBridgeUrl || null,
+		printPrinterId: formData.printPrinterId || null,
+		printPaperSize: formData.printPaperSize,
+		printMediaType: formData.printMediaType || null,
+		printBorderless: formData.printBorderless,
+		printCopies: formData.printCopies,
+		printOrientation: formData.printOrientation,
+		printAutoPrint: formData.printAutoPrint,
+	};
+
+	const handleTestBridge = async () => {
+		if (!formData.printBridgeUrl) return;
+		setBridgeTesting(true);
+		setBridgeError(null);
+		try {
+			const result = await listBridgePrinters(formData.printBridgeUrl);
+			if (result.ok) {
+				setBridgePrinters(result.printers);
+				if (result.printers.length === 0) {
+					setBridgeError("Bridge reachable, but no printers were discovered yet.");
+				}
+			} else {
+				setBridgePrinters([]);
+				setBridgeError(result.error);
+			}
+		} finally {
+			setBridgeTesting(false);
+		}
+	};
+
+	const handleTestPrint = async () => {
+		setTestPrinting(true);
+		try {
+			// A small solid-color JPEG so operators can validate the full path.
+			const canvas = document.createElement("canvas");
+			canvas.width = 600;
+			canvas.height = 900;
+			const context = canvas.getContext("2d");
+			if (context) {
+				context.fillStyle = formData.primaryColor || "#e11d48";
+				context.fillRect(0, 0, canvas.width, canvas.height);
+				context.fillStyle = "#ffffff";
+				context.font = "bold 48px system-ui, sans-serif";
+				context.textAlign = "center";
+				context.fillText("Test Print", canvas.width / 2, canvas.height / 2);
+			}
+			const blob = await new Promise<Blob | null>((resolve) =>
+				canvas.toBlob(resolve, "image/jpeg", 0.9),
+			);
+			if (blob) await executePrint(blob, printConfig);
+		} catch (error) {
+			console.error("Test print failed:", error);
+		} finally {
+			setTestPrinting(false);
+		}
+	};
+
+	const selectedPrinter = bridgePrinters.find((p) => p.id === formData.printPrinterId);
 
 	const handleSetPin = async () => {
 		if (!event || newPin.length < 4) return;
@@ -214,7 +305,7 @@ export default function EventSettingsPage() {
 
 			<main className="container mx-auto px-4 py-8 max-w-4xl">
 				<Tabs defaultValue="general" className="space-y-6">
-					<TabsList className="grid grid-cols-5 w-full">
+					<TabsList className="grid grid-cols-6 w-full">
 						<TabsTrigger value="general">
 							<Settings className="h-4 w-4 mr-2" />
 							General
@@ -230,6 +321,10 @@ export default function EventSettingsPage() {
 						<TabsTrigger value="sharing">
 							<Share className="h-4 w-4 mr-2" />
 							Sharing
+						</TabsTrigger>
+						<TabsTrigger value="print">
+							<Printer className="h-4 w-4 mr-2" />
+							Print
 						</TabsTrigger>
 						<TabsTrigger value="security">
 							<Shield className="h-4 w-4 mr-2" />
@@ -566,6 +661,232 @@ export default function EventSettingsPage() {
 									min={1}
 								/>
 							</div>
+						</div>
+					</TabsContent>
+
+					<TabsContent value="print" className="space-y-6">
+						<div className="space-y-4">
+							<div>
+								<Label>Print Method</Label>
+								<p className="text-sm text-muted-foreground mb-2">
+									How composited strips are printed at the booth.
+								</p>
+								<Select
+									value={formData.printMethod}
+									onValueChange={(value: PrintMethod) =>
+										setFormData({ ...formData, printMethod: value })
+									}
+								>
+									<SelectTrigger>
+										<SelectValue />
+									</SelectTrigger>
+									<SelectContent>
+										<SelectItem value="none">None (no printing)</SelectItem>
+										<SelectItem value="manual">AirPrint (manual print dialog)</SelectItem>
+										<SelectItem value="bridge">Auto bridge (silent network printing)</SelectItem>
+									</SelectContent>
+								</Select>
+							</div>
+
+							{formData.printMethod === "bridge" && (
+								<div className="border-t pt-4 space-y-4">
+									<div>
+										<Label htmlFor="bridgeUrl">Print Bridge URL</Label>
+										<p className="text-sm text-muted-foreground mb-2">
+											Base URL of the print bridge on your network, e.g.
+											http://raspberrypi.local:3200
+										</p>
+										<div className="flex gap-2">
+											<Input
+												id="bridgeUrl"
+												value={formData.printBridgeUrl}
+												onChange={(e) =>
+													setFormData({ ...formData, printBridgeUrl: e.target.value })
+												}
+												placeholder="http://raspberrypi.local:3200"
+												className="flex-1"
+											/>
+											<Button
+												type="button"
+												variant="outline"
+												onClick={handleTestBridge}
+												disabled={bridgeTesting || !formData.printBridgeUrl}
+											>
+												{bridgeTesting ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
+												Test connection
+											</Button>
+										</div>
+										{bridgeError && <p className="text-sm text-amber-600 mt-2">{bridgeError}</p>}
+									</div>
+
+									<div>
+										<Label>Printer</Label>
+										<Select
+											value={formData.printPrinterId || "none"}
+											onValueChange={(value) =>
+												setFormData({
+													...formData,
+													printPrinterId: value === "none" ? "" : value,
+												})
+											}
+										>
+											<SelectTrigger className="mt-2">
+												<SelectValue placeholder="Select a printer" />
+											</SelectTrigger>
+											<SelectContent>
+												<SelectItem value="none">No printer selected</SelectItem>
+												{formData.printPrinterId &&
+													!bridgePrinters.some((p) => p.id === formData.printPrinterId) && (
+														<SelectItem value={formData.printPrinterId}>
+															{formData.printPrinterId} (saved)
+														</SelectItem>
+													)}
+												{bridgePrinters.map((printer) => (
+													<SelectItem key={printer.id} value={printer.id}>
+														{printer.name}
+													</SelectItem>
+												))}
+											</SelectContent>
+										</Select>
+										{selectedPrinter && (
+											<div className="mt-2 flex flex-wrap items-center gap-2">
+												<Badge variant={selectedPrinter.reachable ? "default" : "destructive"}>
+													{selectedPrinter.reachable ? selectedPrinter.state : "unreachable"}
+												</Badge>
+												{selectedPrinter.markerNames.map((name, index) => (
+													<Badge key={name} variant="outline">
+														{name}: {selectedPrinter.markerLevels[index] ?? "?"}%
+													</Badge>
+												))}
+											</div>
+										)}
+									</div>
+								</div>
+							)}
+
+							{formData.printMethod !== "none" && (
+								<div className="border-t pt-4 space-y-4">
+									<div>
+										<Label>Paper Size</Label>
+										<Select
+											value={formData.printPaperSize}
+											onValueChange={(value: PaperSize) =>
+												setFormData({ ...formData, printPaperSize: value })
+											}
+										>
+											<SelectTrigger className="mt-2">
+												<SelectValue />
+											</SelectTrigger>
+											<SelectContent>
+												<SelectItem value="selphy_postcard">SELPHY Postcard (100×148mm)</SelectItem>
+												<SelectItem value="4x6">4×6 in</SelectItem>
+												<SelectItem value="5x7">5×7 in</SelectItem>
+												<SelectItem value="2x6_strip">2×6 in strip</SelectItem>
+												<SelectItem value="6x8">6×8 in</SelectItem>
+												<SelectItem value="a4">A4</SelectItem>
+												<SelectItem value="letter">Letter</SelectItem>
+											</SelectContent>
+										</Select>
+									</div>
+
+									<div>
+										<Label>Media Type</Label>
+										<Select
+											value={formData.printMediaType}
+											onValueChange={(value) => setFormData({ ...formData, printMediaType: value })}
+										>
+											<SelectTrigger className="mt-2">
+												<SelectValue />
+											</SelectTrigger>
+											<SelectContent>
+												<SelectItem value="photo_glossy">Glossy photo</SelectItem>
+												<SelectItem value="photo_matte">Matte photo</SelectItem>
+												<SelectItem value="photo_satin">Satin photo</SelectItem>
+												<SelectItem value="photographic">Photographic</SelectItem>
+											</SelectContent>
+										</Select>
+									</div>
+
+									<div className="flex items-center justify-between">
+										<div>
+											<Label>Borderless</Label>
+											<p className="text-sm text-muted-foreground">
+												Print edge-to-edge with no white margin
+											</p>
+										</div>
+										<Switch
+											checked={formData.printBorderless}
+											onCheckedChange={(checked) =>
+												setFormData({ ...formData, printBorderless: checked })
+											}
+										/>
+									</div>
+
+									<div>
+										<Label htmlFor="copies">Copies</Label>
+										<Input
+											id="copies"
+											type="number"
+											value={formData.printCopies}
+											onChange={(e) =>
+												setFormData({
+													...formData,
+													printCopies: Math.max(
+														1,
+														Math.min(99, Number.parseInt(e.target.value, 10) || 1),
+													),
+												})
+											}
+											className="mt-2"
+											min={1}
+											max={99}
+										/>
+									</div>
+
+									<div>
+										<Label>Orientation</Label>
+										<Select
+											value={formData.printOrientation}
+											onValueChange={(value: Orientation) =>
+												setFormData({ ...formData, printOrientation: value })
+											}
+										>
+											<SelectTrigger className="mt-2">
+												<SelectValue />
+											</SelectTrigger>
+											<SelectContent>
+												<SelectItem value="portrait">Portrait</SelectItem>
+												<SelectItem value="landscape">Landscape</SelectItem>
+											</SelectContent>
+										</Select>
+									</div>
+
+									<div className="flex items-center justify-between">
+										<div>
+											<Label>Auto-print</Label>
+											<p className="text-sm text-muted-foreground">
+												Print automatically once the photo is composed
+											</p>
+										</div>
+										<Switch
+											checked={formData.printAutoPrint}
+											onCheckedChange={(checked) =>
+												setFormData({ ...formData, printAutoPrint: checked })
+											}
+										/>
+									</div>
+
+									<Button
+										type="button"
+										variant="outline"
+										onClick={handleTestPrint}
+										disabled={testPrinting}
+									>
+										{testPrinting ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
+										Test print
+									</Button>
+								</div>
+							)}
 						</div>
 					</TabsContent>
 

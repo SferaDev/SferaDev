@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, Camera, Check, Download, Loader2, Printer, RotateCcw } from "lucide-react";
+import { ArrowLeft, Camera, Check, Download, Loader2, Printer, RotateCcw, X } from "lucide-react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import QRCode from "qrcode";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -12,14 +12,17 @@ import { listPublicTemplates, resolveAssetUrls } from "@/actions/templates";
 import { Button } from "@/components/ui/button";
 import { useIdleTimeout } from "@/hooks/use-idle-timeout";
 import { useOfflineSync } from "@/hooks/use-offline-sync";
-import { compositePhoto, downloadBlob, printImage } from "@/lib/canvas-utils";
+import { usePrintSync } from "@/hooks/use-print-sync";
+import { compositePhoto, downloadBlob } from "@/lib/canvas-utils";
 import { composeStrip, loadLayoutFonts } from "@/lib/compose";
 import { parseCapturedImageUrls } from "@/lib/db/schema";
 import { parseLayoutJson } from "@/lib/layout/parse";
-import type { FilterKind } from "@/lib/layout/types";
+import type { FilterKind, Orientation, PaperSize } from "@/lib/layout/types";
 import { printPixelSize } from "@/lib/layout/types";
 import { enqueuePhoto } from "@/lib/offline-queue";
 import { clearPhotoboothSession, readPhotoboothSession } from "@/lib/photobooth-session";
+import { executePrint } from "@/lib/print/index";
+import type { EventPrintConfig, PrintJobStatus, PrintMethod } from "@/lib/print/types";
 
 /** ServiceWorkerRegistration with the optional Background Sync extension. */
 interface SyncCapableRegistration extends ServiceWorkerRegistration {
@@ -74,6 +77,13 @@ export default function KioskResultPage() {
 	const [humanCode, setHumanCode] = useState<string | null>(null);
 	const [savedOffline, setSavedOffline] = useState(false);
 	const [error, setError] = useState<string | null>(null);
+	const [printStatus, setPrintStatus] = useState<PrintJobStatus>("idle");
+	const [printMessage, setPrintMessage] = useState<string | null>(null);
+
+	// Hold the composited strip so we can (re)print without re-fetching it.
+	const printBlobRef = useRef<Blob | null>(null);
+	// Guards a single auto-print per composed photo.
+	const autoPrintDoneRef = useRef(false);
 
 	// Guards against processPhoto running twice (it is in the effect deps and
 	// isProcessing stays true for the whole async run), which would otherwise
@@ -82,6 +92,25 @@ export default function KioskResultPage() {
 
 	// Drains the offline outbox when connectivity returns.
 	const { sync } = useOfflineSync();
+
+	// Print configuration resolved from the event (null until the event loads).
+	const printConfig: EventPrintConfig | null = event
+		? {
+				printMethod: (event.printMethod as PrintMethod | null) ?? "none",
+				printBridgeUrl: event.printBridgeUrl,
+				printPrinterId: event.printPrinterId,
+				printPaperSize: (event.printPaperSize as PaperSize | null) ?? null,
+				printMediaType: event.printMediaType,
+				printBorderless: event.printBorderless,
+				printCopies: event.printCopies,
+				printOrientation: (event.printOrientation as Orientation | null) ?? "portrait",
+				printAutoPrint: event.printAutoPrint,
+			}
+		: null;
+	const printMethod = printConfig?.printMethod ?? "none";
+
+	// Drains the print outbox when the bridge becomes reachable again.
+	usePrintSync(event?.printBridgeUrl);
 
 	// Auto-return to attract screen after idle
 	useIdleTimeout({
@@ -204,6 +233,9 @@ export default function KioskResultPage() {
 				isStrip && "shots" in composed ? JSON.stringify(composed.shots) : undefined;
 			const kind = isStrip ? "strip" : "single";
 
+			// Keep the composited strip available for (auto/manual) printing.
+			printBlobRef.current = blob;
+
 			const previewUrl = URL.createObjectURL(blob);
 			setFinalImageUrl(previewUrl);
 
@@ -313,11 +345,31 @@ export default function KioskResultPage() {
 		}
 	};
 
-	const handlePrint = () => {
-		if (finalImageUrl) {
-			printImage(finalImageUrl);
+	const handlePrint = useCallback(async () => {
+		const blob = printBlobRef.current;
+		if (!blob || !printConfig || printConfig.printMethod === "none") return;
+
+		setPrintStatus("printing");
+		setPrintMessage(null);
+		try {
+			const result = await executePrint(blob, printConfig);
+			setPrintStatus(result.status);
+			setPrintMessage(result.message ?? null);
+		} catch (err) {
+			console.error("Print failed:", err);
+			setPrintStatus("failed");
+			setPrintMessage("Printing failed. Please try again.");
 		}
-	};
+	}, [printConfig]);
+
+	// Auto-print once the photo is composed, if the event opts in.
+	useEffect(() => {
+		if (isProcessing || !printConfig) return;
+		if (!printConfig.printAutoPrint || printConfig.printMethod === "none") return;
+		if (autoPrintDoneRef.current || !printBlobRef.current) return;
+		autoPrintDoneRef.current = true;
+		void handlePrint();
+	}, [isProcessing, printConfig, handlePrint]);
 
 	const handleNewPhoto = () => {
 		router.push(`/kiosk/${orgSlug}/${eventSlug}`);
@@ -330,6 +382,10 @@ export default function KioskResultPage() {
 		setShareUrl(null);
 		setHumanCode(null);
 		processingStartedRef.current = false;
+		printBlobRef.current = null;
+		autoPrintDoneRef.current = false;
+		setPrintStatus("idle");
+		setPrintMessage(null);
 		setIsProcessing(true);
 	};
 
@@ -449,18 +505,58 @@ export default function KioskResultPage() {
 											Download
 										</Button>
 									)}
-									{event.allowPrint && (
+									{event.allowPrint && printMethod !== "none" && (
 										<Button
 											size="lg"
 											variant="outline"
-											onClick={handlePrint}
+											onClick={() => void handlePrint()}
+											disabled={printStatus === "printing"}
 											className="border-white/20 text-white hover:bg-white/10"
 										>
-											<Printer className="h-5 w-5 mr-2" />
+											{printStatus === "printing" ? (
+												<Loader2 className="h-5 w-5 mr-2 animate-spin" />
+											) : (
+												<Printer className="h-5 w-5 mr-2" />
+											)}
 											Print
 										</Button>
 									)}
 								</div>
+
+								{/* Print status feedback */}
+								{printMethod !== "none" && printStatus !== "idle" && (
+									<div className="text-center text-sm">
+										{printStatus === "printing" && (
+											<p className="text-white/70">Sending to printer…</p>
+										)}
+										{printStatus === "done" && (
+											<p className="inline-flex items-center gap-1 text-green-400">
+												<Check className="h-4 w-4" /> Sent to printer
+											</p>
+										)}
+										{printStatus === "queued" && (
+											<p className="text-amber-300">
+												{printMessage ?? "Printer offline — will print when it reconnects."}
+											</p>
+										)}
+										{printStatus === "failed" && (
+											<div className="flex flex-col items-center gap-2">
+												<p className="inline-flex items-center gap-1 text-red-400">
+													<X className="h-4 w-4" /> {printMessage ?? "Printing failed."}
+												</p>
+												<Button
+													size="sm"
+													variant="outline"
+													onClick={() => void handlePrint()}
+													className="border-white/20 text-white hover:bg-white/10"
+												>
+													<RotateCcw className="h-4 w-4 mr-2" />
+													Retry print
+												</Button>
+											</div>
+										)}
+									</div>
+								)}
 
 								<Button
 									size="lg"

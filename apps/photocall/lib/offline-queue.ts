@@ -8,13 +8,11 @@
  * background sync — triggered when the browser comes back online — replays the
  * upload (presigned S3 PUT) and creates the photo record server-side.
  *
- * IndexedDB is used directly (no dependency) to keep the kiosk bundle small and
- * avoid pulling a wrapper for the handful of operations we need.
+ * The IndexedDB schema (shared with the print outbox) lives in lib/db/idb.ts so
+ * both outboxes open the same database at the same version.
  */
 
-const DB_NAME = "photocall-offline";
-const DB_VERSION = 1;
-const STORE = "pending-photos";
+import { tx as _tx, PHOTOS_STORE as STORE } from "@/lib/db/idb";
 
 /** A photo captured offline, awaiting upload + record creation. */
 export interface QueuedPhoto {
@@ -38,54 +36,24 @@ export interface QueuedPhoto {
 	queuedAt: number;
 }
 
-function openDb(): Promise<IDBDatabase> {
-	return new Promise((resolve, reject) => {
-		const request = indexedDB.open(DB_NAME, DB_VERSION);
-		request.onupgradeneeded = () => {
-			const db = request.result;
-			if (!db.objectStoreNames.contains(STORE)) {
-				db.createObjectStore(STORE, { keyPath: "id" });
-			}
-		};
-		request.onsuccess = () => resolve(request.result);
-		request.onerror = () => reject(request.error);
-	});
-}
-
-function tx<T>(
-	mode: IDBTransactionMode,
-	run: (store: IDBObjectStore) => IDBRequest<T>,
-): Promise<T> {
-	return openDb().then(
-		(db) =>
-			new Promise<T>((resolve, reject) => {
-				const transaction = db.transaction(STORE, mode);
-				const request = run(transaction.objectStore(STORE));
-				request.onsuccess = () => resolve(request.result);
-				request.onerror = () => reject(request.error);
-				transaction.oncomplete = () => db.close();
-			}),
-	);
-}
-
 /** Add a photo to the outbox. */
 export async function enqueuePhoto(photo: QueuedPhoto): Promise<void> {
-	await tx("readwrite", (store) => store.put(photo));
+	await _tx(STORE, "readwrite", (store) => store.put(photo));
 }
 
 /** All queued photos, oldest first. */
 export async function getQueuedPhotos(): Promise<QueuedPhoto[]> {
-	const all = await tx<QueuedPhoto[]>("readonly", (store) => store.getAll());
+	const all = await _tx<QueuedPhoto[]>(STORE, "readonly", (store) => store.getAll());
 	return all.sort((a, b) => a.queuedAt - b.queuedAt);
 }
 
 /** Remove a photo from the outbox once it has been synced. */
 export async function removeQueuedPhoto(id: string): Promise<void> {
-	await tx("readwrite", (store) => store.delete(id));
+	await _tx(STORE, "readwrite", (store) => store.delete(id));
 }
 
 /** Number of photos still awaiting sync. */
 export async function countQueuedPhotos(): Promise<number> {
 	if (typeof indexedDB === "undefined") return 0;
-	return tx<number>("readonly", (store) => store.count());
+	return _tx<number>(STORE, "readonly", (store) => store.count());
 }

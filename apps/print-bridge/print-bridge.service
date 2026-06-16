@@ -1,0 +1,23 @@
+[Unit]
+Description=Photocall Print Bridge (IPP/AirPrint network printing)
+Documentation=https://github.com/SferaDev/photocall
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+# Adjust to wherever you cloned/built the bridge.
+WorkingDirectory=/opt/print-bridge
+ExecStart=/usr/bin/node dist/server.js
+Restart=on-failure
+RestartSec=5
+# mDNS needs the host network; run as a non-root user that can open the port.
+User=pi
+Environment=NODE_ENV=production
+Environment=PORT=3200
+Environment=BRIDGE_IPP_VERSION=2.0
+# Uncomment to require a shared secret on /api/* requests.
+# Environment=BRIDGE_API_KEY=change-me
+
+[Install]
+WantedBy=multi-user.target
