@@ -8,7 +8,7 @@ import useSWR from "swr";
 import { getPublicEvent } from "@/actions/events";
 import { createPhoto, generatePhotoUploadUrl } from "@/actions/photos";
 import { completeSession, getKioskSession } from "@/actions/sessions";
-import { listPublicTemplates } from "@/actions/templates";
+import { listPublicTemplates, resolveAssetUrls } from "@/actions/templates";
 import { Button } from "@/components/ui/button";
 import { useIdleTimeout } from "@/hooks/use-idle-timeout";
 import { useOfflineSync } from "@/hooks/use-offline-sync";
@@ -119,6 +119,17 @@ export default function KioskResultPage() {
 
 		await loadLayoutFonts(layout);
 
+		// Graphic/sticker layers and image backgrounds are stored as S3 storage
+		// keys; resolve them to readable URLs so the compositor can draw them.
+		const assetKeys: string[] = [];
+		if (layout.background.type === "image" && layout.background.src) {
+			assetKeys.push(layout.background.src);
+		}
+		for (const graphic of layout.graphicLayers) {
+			if (graphic.src) assetKeys.push(graphic.src);
+		}
+		const assetUrls = assetKeys.length > 0 ? await resolveAssetUrls(event.id, assetKeys) : {};
+
 		const date = event.startDate
 			? new Date(event.startDate).toLocaleDateString(undefined, {
 					year: "numeric",
@@ -137,6 +148,7 @@ export default function KioskResultPage() {
 			},
 			targetWidth: printPixelSize(layout.print).width,
 			quality: event.photoQuality,
+			resolveAssetUrl: (key) => assetUrls[key] ?? key,
 		});
 
 		return { blob: result.blob, width: result.width, height: result.height, shots };

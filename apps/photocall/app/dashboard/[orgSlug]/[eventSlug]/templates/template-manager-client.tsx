@@ -7,7 +7,9 @@ import {
 	Eye,
 	EyeOff,
 	GripVertical,
+	LayoutTemplate,
 	Loader2,
+	Pencil,
 	Plus,
 	Trash2,
 	Upload,
@@ -138,31 +140,39 @@ export default function TemplateManager() {
 								<p className="text-sm text-muted-foreground">{event.name}</p>
 							</div>
 						</div>
-						<Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
-							<DialogTrigger asChild>
-								<Button>
-									<Plus className="h-4 w-4 mr-2" />
-									Add Template
-								</Button>
-							</DialogTrigger>
-							<DialogContent className="sm:max-w-lg">
-								<DialogHeader>
-									<DialogTitle>Add Template</DialogTitle>
-									<DialogDescription>
-										Upload a PNG overlay for your photo booth frames.
-									</DialogDescription>
-								</DialogHeader>
-								<UploadForm
-									eventId={event.id}
-									isUploading={isUploading}
-									setIsUploading={setIsUploading}
-									onComplete={() => {
-										setShowAddDialog(false);
-										mutate((key) => Array.isArray(key) && key[0] === "templates");
-									}}
-								/>
-							</DialogContent>
-						</Dialog>
+						<div className="flex items-center gap-2">
+							<Button variant="outline" asChild>
+								<Link href={`/dashboard/${orgSlug}/${eventSlug}/templates/editor`}>
+									<LayoutTemplate className="h-4 w-4 mr-2" />
+									New Layout
+								</Link>
+							</Button>
+							<Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
+								<DialogTrigger asChild>
+									<Button>
+										<Plus className="h-4 w-4 mr-2" />
+										Add Template
+									</Button>
+								</DialogTrigger>
+								<DialogContent className="sm:max-w-lg">
+									<DialogHeader>
+										<DialogTitle>Add Template</DialogTitle>
+										<DialogDescription>
+											Upload a PNG overlay for your photo booth frames.
+										</DialogDescription>
+									</DialogHeader>
+									<UploadForm
+										eventId={event.id}
+										isUploading={isUploading}
+										setIsUploading={setIsUploading}
+										onComplete={() => {
+											setShowAddDialog(false);
+											mutate((key) => Array.isArray(key) && key[0] === "templates");
+										}}
+									/>
+								</DialogContent>
+							</Dialog>
+						</div>
 					</div>
 				</div>
 			</header>
@@ -232,6 +242,15 @@ export default function TemplateManager() {
 
 								{/* Actions */}
 								<div className="flex items-center gap-1 shrink-0">
+									{template.layoutJson ? (
+										<Button variant="ghost" size="icon" asChild title="Edit layout">
+											<Link
+												href={`/dashboard/${orgSlug}/${eventSlug}/templates/editor?templateId=${template.id}`}
+											>
+												<Pencil className="h-4 w-4" />
+											</Link>
+										</Button>
+									) : null}
 									<Button
 										variant="ghost"
 										size="icon"
