@@ -134,7 +134,7 @@ export async function updateEvent(
 		photoQuality?: number;
 		maxPhotoDimension?: number;
 		primaryColor?: string;
-		logoStorageKey?: string;
+		logoStorageKey?: string | null;
 		welcomeMessage?: string;
 		thankYouMessage?: string;
 		// Kiosk chrome overrides (null clears the override → kiosk i18n default).

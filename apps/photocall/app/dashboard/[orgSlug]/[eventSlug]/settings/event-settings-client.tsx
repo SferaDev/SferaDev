@@ -188,6 +188,7 @@ export default function EventSettingsPage() {
 				...formData,
 				cameraDeviceId: formData.cameraDeviceId || null,
 				cameraDeviceLabel: formData.cameraDeviceLabel || null,
+				logoStorageKey: formData.logoStorageKey || null,
 				// Empty kiosk overrides are stored as null so the kiosk falls back to
 				// its i18n default rather than rendering an empty string.
 				attractTitle: formData.attractTitle || null,
@@ -584,7 +585,7 @@ export default function EventSettingsPage() {
 										disabled={logoUploading}
 										onClick={async () => {
 											setFormData((prev) => ({ ...prev, logoStorageKey: "" }));
-											await updateEvent(event.id, { logoStorageKey: "" });
+											await updateEvent(event.id, { logoStorageKey: null });
 											mutate((key) => Array.isArray(key) && key[0] === "events");
 										}}
 									>
