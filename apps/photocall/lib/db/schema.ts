@@ -38,6 +38,9 @@ export const events = pgTable(
 		slideshowSafeMode: boolean("slideshow_safe_mode").notNull().default(false),
 		idleTimeoutSeconds: integer("idle_timeout_seconds").notNull().default(120),
 		defaultCamera: text("default_camera").notNull().default("user"), // user | environment
+		// Selected capture device (USB webcam, etc.); null falls back to defaultCamera facingMode.
+		cameraDeviceId: text("camera_device_id"),
+		cameraDeviceLabel: text("camera_device_label"),
 		// Photo settings
 		photoQuality: real("photo_quality").notNull().default(0.9),
 		maxPhotoDimension: integer("max_photo_dimension").notNull().default(1920),

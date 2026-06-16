@@ -31,6 +31,8 @@ async function syncPhoto(photo: QueuedPhoto): Promise<void> {
 		storageKey: key,
 		caption: photo.caption,
 		templateId: photo.templateId,
+		kind: photo.kind,
+		rawShotsJson: photo.rawShotsJson,
 		width: photo.width,
 		height: photo.height,
 		sizeBytes: photo.blob.size,

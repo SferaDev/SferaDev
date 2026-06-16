@@ -8,6 +8,10 @@ interface UseCameraOptions {
 	defaultFacing?: CameraFacing;
 	maxWidth?: number;
 	maxHeight?: number;
+	/** Preferred capture device id (e.g. a USB webcam selected in admin). */
+	deviceId?: string | null;
+	/** Label of the preferred device — used to re-match if the id has changed. */
+	deviceLabel?: string | null;
 }
 
 interface UseCameraReturn {
@@ -25,8 +29,36 @@ interface UseCameraReturn {
 	captureBlob: () => Promise<Blob | null>;
 }
 
+/**
+ * Enumerate available video input devices. Calls getUserMedia once first so the
+ * browser populates device labels (they are blank until permission is granted).
+ */
+export async function enumerateCameras(): Promise<MediaDeviceInfo[]> {
+	if (typeof navigator === "undefined" || !navigator.mediaDevices?.enumerateDevices) {
+		return [];
+	}
+
+	try {
+		// Prime labels: without an active/prior permission grant, enumerateDevices
+		// returns devices with empty labels.
+		const probe = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+		for (const track of probe.getTracks()) track.stop();
+	} catch {
+		// Permission denied or no camera — still return whatever we can enumerate.
+	}
+
+	const devices = await navigator.mediaDevices.enumerateDevices();
+	return devices.filter((device) => device.kind === "videoinput");
+}
+
 export function useCamera(options: UseCameraOptions = {}): UseCameraReturn {
-	const { defaultFacing = "user", maxWidth = 1920, maxHeight = 1080 } = options;
+	const {
+		defaultFacing = "user",
+		maxWidth = 1920,
+		maxHeight = 1080,
+		deviceId = null,
+		deviceLabel = null,
+	} = options;
 
 	const videoRef = useRef<HTMLVideoElement | null>(null);
 	const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -58,12 +90,39 @@ export function useCamera(options: UseCameraOptions = {}): UseCameraReturn {
 				}
 			}
 
+			// Resolve the preferred capture device. If a stored deviceId is gone,
+			// fall back to matching by label, otherwise to facingMode.
+			let resolvedDeviceId: string | null = null;
+			if (deviceId || deviceLabel) {
+				try {
+					const cameras = await enumerateCameras();
+					const byId = deviceId
+						? cameras.find((camera) => camera.deviceId === deviceId)
+						: undefined;
+					const byLabel =
+						!byId && deviceLabel
+							? cameras.find((camera) => camera.label === deviceLabel)
+							: undefined;
+					resolvedDeviceId = (byId ?? byLabel)?.deviceId ?? null;
+				} catch {
+					// Enumeration failed — fall back to facingMode below.
+				}
+			}
+
+			const videoConstraints: MediaTrackConstraints = resolvedDeviceId
+				? {
+						deviceId: { ideal: resolvedDeviceId },
+						width: { ideal: maxWidth },
+						height: { ideal: maxHeight },
+					}
+				: {
+						facingMode: facing,
+						width: { ideal: maxWidth },
+						height: { ideal: maxHeight },
+					};
+
 			const constraints: MediaStreamConstraints = {
-				video: {
-					facingMode: facing,
-					width: { ideal: maxWidth },
-					height: { ideal: maxHeight },
-				},
+				video: videoConstraints,
 				audio: false,
 			};
 
@@ -100,7 +159,7 @@ export function useCamera(options: UseCameraOptions = {}): UseCameraReturn {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [facing, maxWidth, maxHeight, stream]);
+	}, [facing, maxWidth, maxHeight, stream, deviceId, deviceLabel]);
 
 	const switchCamera = useCallback(async () => {
 		const newFacing = facing === "user" ? "environment" : "user";

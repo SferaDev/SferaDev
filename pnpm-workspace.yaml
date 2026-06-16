@@ -76,6 +76,7 @@ catalog:
   lru-cache: ^11.5.1
   lucide-react: 1.17.0
   mintlify: 4.2.599
+  motion: 12.40.0
   next: 16.2.7
   next-auth: 5.0.0-beta.29
   next-intl: 4.13.0

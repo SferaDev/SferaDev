@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import { deleteEvent, getEventBySlug, setKioskPin, updateEvent } from "@/actions/events";
 import { Button } from "@/components/ui/button";
@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { enumerateCameras } from "@/hooks/use-camera";
 import { useSession } from "@/lib/auth-client";
 
 export default function EventSettingsPage() {
@@ -45,9 +46,12 @@ export default function EventSettingsPage() {
 
 	const [isSaving, setIsSaving] = useState(false);
 	const [newPin, setNewPin] = useState("");
+	const [cameras, setCameras] = useState<MediaDeviceInfo[]>([]);
+	const [camerasLoading, setCamerasLoading] = useState(false);
 	const [formData, setFormData] = useState({
 		name: "",
 		description: "",
+		coupleNames: "",
 		welcomeMessage: "",
 		thankYouMessage: "",
 		primaryColor: "",
@@ -55,6 +59,11 @@ export default function EventSettingsPage() {
 		slideshowSafeMode: false,
 		idleTimeoutSeconds: 120,
 		defaultCamera: "user" as "user" | "environment",
+		cameraDeviceId: "" as string,
+		cameraDeviceLabel: "" as string,
+		captureDefaultCountdown: 3,
+		captureAutoShoot: false,
+		captureWhoChoosesFilter: "guest" as "guest" | "host",
 		photoQuality: 0.9,
 		maxPhotoDimension: 1920,
 		allowDownload: true,
@@ -69,6 +78,7 @@ export default function EventSettingsPage() {
 			setFormData({
 				name: event.name,
 				description: event.description ?? "",
+				coupleNames: event.coupleNames ?? "",
 				welcomeMessage: event.welcomeMessage ?? "",
 				thankYouMessage: event.thankYouMessage ?? "",
 				primaryColor: event.primaryColor ?? "",
@@ -76,6 +86,11 @@ export default function EventSettingsPage() {
 				slideshowSafeMode: event.slideshowSafeMode,
 				idleTimeoutSeconds: event.idleTimeoutSeconds,
 				defaultCamera: (event.defaultCamera as "user" | "environment") ?? "user",
+				cameraDeviceId: event.cameraDeviceId ?? "",
+				cameraDeviceLabel: event.cameraDeviceLabel ?? "",
+				captureDefaultCountdown: event.captureDefaultCountdown,
+				captureAutoShoot: event.captureAutoShoot,
+				captureWhoChoosesFilter: (event.captureWhoChoosesFilter as "guest" | "host") ?? "guest",
 				photoQuality: event.photoQuality,
 				maxPhotoDimension: event.maxPhotoDimension,
 				allowDownload: event.allowDownload,
@@ -87,6 +102,17 @@ export default function EventSettingsPage() {
 		}
 	}, [event]);
 
+	const refreshCameras = useCallback(async () => {
+		setCamerasLoading(true);
+		try {
+			setCameras(await enumerateCameras());
+		} catch (error) {
+			console.error("Failed to enumerate cameras:", error);
+		} finally {
+			setCamerasLoading(false);
+		}
+	}, []);
+
 	useEffect(() => {
 		if (!authLoading && !isAuthenticated) {
 			router.push("/sign-in");
@@ -97,7 +123,11 @@ export default function EventSettingsPage() {
 		if (!event) return;
 		setIsSaving(true);
 		try {
-			await updateEvent(event.id, formData);
+			await updateEvent(event.id, {
+				...formData,
+				cameraDeviceId: formData.cameraDeviceId || null,
+				cameraDeviceLabel: formData.cameraDeviceLabel || null,
+			});
 			mutate((key) => Array.isArray(key) && key[0] === "events");
 		} catch (error) {
 			console.error("Failed to save:", error);
@@ -228,6 +258,19 @@ export default function EventSettingsPage() {
 									className="mt-2"
 								/>
 							</div>
+							<div>
+								<Label htmlFor="coupleNames">Couple / Hosts</Label>
+								<p className="text-sm text-muted-foreground">
+									Shown on photobooth strips via the {"{coupleNames}"} token
+								</p>
+								<Input
+									id="coupleNames"
+									value={formData.coupleNames}
+									onChange={(e) => setFormData({ ...formData, coupleNames: e.target.value })}
+									placeholder="e.g. Alex & Sam"
+									className="mt-2"
+								/>
+							</div>
 							<div className="flex items-center justify-between">
 								<div>
 									<Label>Slideshow on Idle</Label>
@@ -323,6 +366,60 @@ export default function EventSettingsPage() {
 										<SelectItem value="environment">Back Camera</SelectItem>
 									</SelectContent>
 								</Select>
+								<p className="text-sm text-muted-foreground mt-2">
+									Used when no specific capture device is selected below.
+								</p>
+							</div>
+							<div>
+								<div className="flex items-center justify-between">
+									<Label>Capture Device</Label>
+									<Button
+										type="button"
+										variant="outline"
+										size="sm"
+										onClick={refreshCameras}
+										disabled={camerasLoading}
+									>
+										{camerasLoading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
+										Detect cameras
+									</Button>
+								</div>
+								<p className="text-sm text-muted-foreground mt-1">
+									Pick a specific webcam (e.g. a USB DSLR/capture device) for this kiosk.
+								</p>
+								<Select
+									value={formData.cameraDeviceId || "default"}
+									onValueChange={(value) => {
+										if (value === "default") {
+											setFormData({ ...formData, cameraDeviceId: "", cameraDeviceLabel: "" });
+											return;
+										}
+										const device = cameras.find((c) => c.deviceId === value);
+										setFormData({
+											...formData,
+											cameraDeviceId: value,
+											cameraDeviceLabel: device?.label ?? "",
+										});
+									}}
+								>
+									<SelectTrigger className="mt-2">
+										<SelectValue placeholder="System default" />
+									</SelectTrigger>
+									<SelectContent>
+										<SelectItem value="default">System default (use facing mode)</SelectItem>
+										{formData.cameraDeviceId &&
+											!cameras.some((c) => c.deviceId === formData.cameraDeviceId) && (
+												<SelectItem value={formData.cameraDeviceId}>
+													{formData.cameraDeviceLabel || "Saved device (not detected)"}
+												</SelectItem>
+											)}
+										{cameras.map((camera, index) => (
+											<SelectItem key={camera.deviceId} value={camera.deviceId}>
+												{camera.label || `Camera ${index + 1}`}
+											</SelectItem>
+										))}
+									</SelectContent>
+								</Select>
 							</div>
 							<div>
 								<Label htmlFor="quality">
@@ -359,6 +456,59 @@ export default function EventSettingsPage() {
 										<SelectItem value="3840">3840px (4K)</SelectItem>
 									</SelectContent>
 								</Select>
+							</div>
+
+							<div className="border-t pt-6 mt-2 space-y-4">
+								<h3 className="text-lg font-semibold">Photobooth Capture</h3>
+								<div>
+									<Label htmlFor="countdown">Countdown ({formData.captureDefaultCountdown}s)</Label>
+									<input
+										id="countdown"
+										type="range"
+										min="0"
+										max="10"
+										step="1"
+										value={formData.captureDefaultCountdown}
+										onChange={(e) =>
+											setFormData({
+												...formData,
+												captureDefaultCountdown: Number.parseInt(e.target.value, 10),
+											})
+										}
+										className="mt-2 w-full"
+									/>
+								</div>
+								<div className="flex items-center justify-between">
+									<div>
+										<Label>Auto-shoot</Label>
+										<p className="text-sm text-muted-foreground">
+											Automatically chain shots instead of tapping for each one
+										</p>
+									</div>
+									<Switch
+										checked={formData.captureAutoShoot}
+										onCheckedChange={(checked) =>
+											setFormData({ ...formData, captureAutoShoot: checked })
+										}
+									/>
+								</div>
+								<div>
+									<Label>Who chooses the filter</Label>
+									<Select
+										value={formData.captureWhoChoosesFilter}
+										onValueChange={(value: "guest" | "host") =>
+											setFormData({ ...formData, captureWhoChoosesFilter: value })
+										}
+									>
+										<SelectTrigger className="mt-2">
+											<SelectValue />
+										</SelectTrigger>
+										<SelectContent>
+											<SelectItem value="guest">Guest picks at the booth</SelectItem>
+											<SelectItem value="host">Host (use template filter only)</SelectItem>
+										</SelectContent>
+									</Select>
+								</div>
 							</div>
 						</div>
 					</TabsContent>
