@@ -1,12 +1,20 @@
 "use client";
 
-import { ChevronLeft, CreditCard, ImageIcon, Loader2 } from "lucide-react";
+import {
+	AlertCircle,
+	CheckCircle2,
+	ChevronLeft,
+	CreditCard,
+	ImageIcon,
+	Loader2,
+} from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 import { getBillingOverview, getInvoices, getPortalUrl, startCheckout } from "@/actions/billing";
 import { getOrganizationBySlug } from "@/actions/organizations";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { useSession } from "@/lib/auth-client";
 
@@ -113,14 +121,18 @@ export default function BillingPage() {
 
 			<main className="container mx-auto px-4 py-8 max-w-4xl">
 				{success && (
-					<div className="mb-8 p-4 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded-lg">
-						Checkout complete. Your subscription is active.
-					</div>
+					<Alert variant="success" className="mb-8">
+						<CheckCircle2 className="h-4 w-4" />
+						<AlertTitle>Checkout complete</AlertTitle>
+						<AlertDescription>Your subscription is active.</AlertDescription>
+					</Alert>
 				)}
 				{canceled && (
-					<div className="mb-8 p-4 bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300 rounded-lg">
-						Checkout was canceled. No changes were made.
-					</div>
+					<Alert variant="warning" className="mb-8">
+						<AlertCircle className="h-4 w-4" />
+						<AlertTitle>Checkout canceled</AlertTitle>
+						<AlertDescription>No changes were made.</AlertDescription>
+					</Alert>
 				)}
 
 				<section className="mb-12 p-6 border rounded-lg">

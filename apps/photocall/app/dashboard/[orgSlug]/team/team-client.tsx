@@ -15,6 +15,7 @@ import {
 	updateMemberRole,
 } from "@/actions/organizations";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -365,19 +366,17 @@ export default function TeamPage() {
 
 function RoleBadge({ role }: { role: string }) {
 	const config = {
-		owner: { icon: Crown, label: "Owner", className: "bg-yellow-100 text-yellow-700" },
-		admin: { icon: Shield, label: "Admin", className: "bg-blue-100 text-blue-700" },
-		member: { icon: User, label: "Member", className: "bg-gray-100 text-gray-700" },
+		owner: { icon: Crown, label: "Owner", variant: "warning" as const },
+		admin: { icon: Shield, label: "Admin", variant: "info" as const },
+		member: { icon: User, label: "Member", variant: "secondary" as const },
 	};
 
-	const { icon: Icon, label, className } = config[role as keyof typeof config] ?? config.member;
+	const { icon: Icon, label, variant } = config[role as keyof typeof config] ?? config.member;
 
 	return (
-		<span
-			className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium ${className}`}
-		>
-			<Icon className="h-3 w-3" />
+		<Badge variant={variant}>
+			<Icon />
 			{label}
-		</span>
+		</Badge>
 	);
 }

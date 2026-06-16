@@ -20,6 +20,7 @@ import { useEffect, useState } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import { createEvent, duplicateEvent, listEvents } from "@/actions/events";
 import { getOrganizationBySlug, getUsage } from "@/actions/organizations";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -360,19 +361,20 @@ export default function OrganizationDashboard() {
 }
 
 function StatusBadge({ status }: { status: string }) {
-	const styles = {
-		draft: "bg-muted text-muted-foreground",
-		active: "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300",
-		paused: "bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300",
-		archived: "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300",
-	};
+	const variants = {
+		draft: "secondary",
+		active: "success",
+		paused: "warning",
+		archived: "outline",
+	} as const;
 
 	return (
-		<span
-			className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${styles[status as keyof typeof styles] || styles.draft}`}
+		<Badge
+			variant={variants[status as keyof typeof variants] ?? "secondary"}
+			className="capitalize"
 		>
 			{status}
-		</span>
+		</Badge>
 	);
 }
 

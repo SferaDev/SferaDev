@@ -124,7 +124,7 @@ export default function KioskAttractPage() {
 		);
 	}
 
-	const primaryColor = event.primaryColor || "#6366f1";
+	const primaryColor = event.primaryColor || "#e11d48";
 
 	return (
 		<div

@@ -59,6 +59,11 @@ export function createPlatformClient(options: PlatformClientOptions): PlatformCl
 			try {
 				const reqHeaders: Record<string, string> = {
 					"Content-Type": "application/json",
+					// These are server-to-server calls and carry no browser Origin.
+					// better-auth's organization plugin enforces an origin check on
+					// state-changing requests, so present the platform's own origin
+					// (always trusted by better-auth as its configured baseURL).
+					Origin: baseUrl,
 				};
 
 				if (opts.userHeaders) {

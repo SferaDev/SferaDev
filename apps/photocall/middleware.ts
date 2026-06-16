@@ -99,7 +99,8 @@ export const config = {
 	matcher: [
 		// Auth proxy
 		"/api/auth/:path*",
-		// next-intl on marketing routes (excludes API, static, dashboard, kiosk, etc.)
-		"/((?!api|_next|_vercel|dashboard|kiosk|share|invite|sign-in|.*\\..*).*)",
+		// next-intl on marketing routes (excludes API, static, dashboard, kiosk,
+		// share, the /p short-link redirect, etc.)
+		"/((?!api|_next|_vercel|dashboard|kiosk|share|invite|p/|sign-in|.*\\..*).*)",
 	],
 };

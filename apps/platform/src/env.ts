@@ -12,6 +12,10 @@ const envSchema = z.object({
 	STRIPE_WEBHOOK_SECRET: z.string().startsWith("whsec_"),
 	PLATFORM_SERVICE_TOKEN: z.string().min(1),
 	PORT: z.coerce.number().default(3100),
+	// Comma-separated list of product origins allowed to use the auth endpoints
+	// (better-auth CSRF/origin allowlist). Products proxy `/api/auth/*` here, so
+	// their browser origin must be trusted.
+	TRUSTED_ORIGINS: z.string().optional(),
 });
 
 export const env = envSchema.parse(process.env);

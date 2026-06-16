@@ -57,7 +57,7 @@ export default function KioskSelectPage() {
 		return null;
 	}
 
-	const primaryColor = event.primaryColor || "#6366f1";
+	const primaryColor = event.primaryColor || "#e11d48";
 
 	return (
 		<div className="min-h-screen bg-black text-white p-8">

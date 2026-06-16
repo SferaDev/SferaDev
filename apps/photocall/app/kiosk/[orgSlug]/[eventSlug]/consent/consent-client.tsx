@@ -45,7 +45,7 @@ export default function KioskConsentPage() {
 		);
 	}
 
-	const primaryColor = event.primaryColor || "#6366f1";
+	const primaryColor = event.primaryColor || "#e11d48";
 
 	return (
 		<div className="min-h-screen flex flex-col items-center justify-center bg-black text-white p-8">

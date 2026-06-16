@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+		<title>Offline · Photocall</title>
+		<style>
+			:root {
+				color-scheme: dark;
+			}
+			body {
+				margin: 0;
+				min-height: 100vh;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				background: #000;
+				color: #fff;
+				font-family:
+					ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+				text-align: center;
+				padding: 2rem;
+			}
+			.card {
+				max-width: 28rem;
+			}
+			h1 {
+				font-size: 1.75rem;
+				margin: 0 0 0.5rem;
+			}
+			p {
+				color: rgba(255, 255, 255, 0.6);
+				line-height: 1.5;
+			}
+			.dot {
+				width: 0.6rem;
+				height: 0.6rem;
+				border-radius: 9999px;
+				background: #ef4444;
+				display: inline-block;
+				margin-right: 0.4rem;
+				vertical-align: middle;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="card">
+			<p><span class="dot"></span>Offline</p>
+			<h1>You're offline</h1>
+			<p>
+				The photo booth will reconnect automatically. Any photos taken while offline are
+				saved on this device and will upload as soon as the connection returns.
+			</p>
+		</div>
+		<script>
+			// Reload as soon as the network comes back so the kiosk resumes.
+			window.addEventListener("online", () => window.location.reload());
+		</script>
+	</body>
+</html>

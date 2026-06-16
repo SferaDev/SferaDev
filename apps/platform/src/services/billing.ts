@@ -3,7 +3,7 @@ import type Stripe from "stripe";
 import { db } from "../db/index.js";
 import { accountSubscriptions, meters, organizations, plans, users } from "../db/schema.js";
 import { env } from "../env.js";
-import { stripe } from "../stripe.js";
+import { stripe, stripeEnabled } from "../stripe.js";
 import { entitlements } from "./entitlements.js";
 
 export async function createStripeCustomer(
@@ -11,6 +11,10 @@ export async function createStripeCustomer(
 	email: string,
 	name: string,
 ): Promise<string> {
+	// When Stripe isn't configured (local/dev), skip customer provisioning so
+	// signup still succeeds. The user simply has no linked Stripe customer.
+	if (!stripeEnabled) return "";
+
 	const customer = await stripe.customers.create({
 		email,
 		name,
@@ -26,6 +30,10 @@ export async function createOrganizationStripeCustomer(
 	organizationId: string,
 	name: string,
 ): Promise<string> {
+	// See createStripeCustomer: no-op when Stripe is not configured so that
+	// organization creation works without a billing account.
+	if (!stripeEnabled) return "";
+
 	const customer = await stripe.customers.create({
 		name,
 		metadata: { platformOrganizationId: organizationId },

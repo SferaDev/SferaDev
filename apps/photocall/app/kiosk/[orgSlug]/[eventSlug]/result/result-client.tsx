@@ -11,7 +11,14 @@ import { completeSession, getKioskSession } from "@/actions/sessions";
 import { listPublicTemplates } from "@/actions/templates";
 import { Button } from "@/components/ui/button";
 import { useIdleTimeout } from "@/hooks/use-idle-timeout";
+import { useOfflineSync } from "@/hooks/use-offline-sync";
 import { compositePhoto, downloadBlob, printImage } from "@/lib/canvas-utils";
+import { enqueuePhoto } from "@/lib/offline-queue";
+
+/** ServiceWorkerRegistration with the optional Background Sync extension. */
+interface SyncCapableRegistration extends ServiceWorkerRegistration {
+	sync?: { register(tag: string): Promise<void> };
+}
 
 export default function KioskResultPage() {
 	const router = useRouter();
@@ -45,7 +52,11 @@ export default function KioskResultPage() {
 	const [qrCodeUrl, setQrCodeUrl] = useState<string | null>(null);
 	const [_shareUrl, setShareUrl] = useState<string | null>(null);
 	const [humanCode, setHumanCode] = useState<string | null>(null);
+	const [savedOffline, setSavedOffline] = useState(false);
 	const [error, setError] = useState<string | null>(null);
+
+	// Drains the offline outbox when connectivity returns.
+	const { sync } = useOfflineSync();
 
 	// Auto-return to attract screen after idle
 	useIdleTimeout({
@@ -85,43 +96,76 @@ export default function KioskResultPage() {
 			const previewUrl = URL.createObjectURL(blob);
 			setFinalImageUrl(previewUrl);
 
-			// Upload to S3 storage
-			const { uploadUrl, key } = await generatePhotoUploadUrl(event.id);
+			const outputWidth = event.maxPhotoDimension;
+			const outputHeight = Math.round(event.maxPhotoDimension * (4 / 3));
 
-			await fetch(uploadUrl, {
-				method: "PUT",
-				headers: { "Content-Type": blob.type },
-				body: blob,
-			});
+			try {
+				// Upload to S3 storage
+				const { uploadUrl, key } = await generatePhotoUploadUrl(event.id);
 
-			// Create photo record
-			const result = await createPhoto({
-				eventId: event.id,
-				sessionId: sessionId!,
-				storageKey: key,
-				caption: session.caption ?? undefined,
-				templateId: templateId ?? undefined,
-				width: event.maxPhotoDimension,
-				height: Math.round(event.maxPhotoDimension * (4 / 3)),
-				sizeBytes: blob.size,
-			});
-
-			// Complete session
-			await completeSession(sessionId!);
-
-			// Generate share URL and QR code
-			const shareBaseUrl = typeof window !== "undefined" ? window.location.origin : "";
-			const shareLink = `${shareBaseUrl}/share/${result.shareToken}`;
-			setShareUrl(shareLink);
-			setHumanCode(result.humanCode);
-
-			if (event.showQrCode) {
-				const qr = await QRCode.toDataURL(shareLink, {
-					width: 256,
-					margin: 2,
-					color: { dark: "#000000", light: "#ffffff" },
+				await fetch(uploadUrl, {
+					method: "PUT",
+					headers: { "Content-Type": blob.type },
+					body: blob,
 				});
-				setQrCodeUrl(qr);
+
+				// Create photo record
+				const result = await createPhoto({
+					eventId: event.id,
+					sessionId: sessionId!,
+					storageKey: key,
+					caption: session.caption ?? undefined,
+					templateId: templateId ?? undefined,
+					width: outputWidth,
+					height: outputHeight,
+					sizeBytes: blob.size,
+				});
+
+				// Complete session
+				await completeSession(sessionId!);
+
+				// Generate share URL and QR code
+				const shareBaseUrl = typeof window !== "undefined" ? window.location.origin : "";
+				const shareLink = `${shareBaseUrl}/share/${result.shareToken}`;
+				setShareUrl(shareLink);
+				setHumanCode(result.humanCode);
+
+				if (event.showQrCode) {
+					const qr = await QRCode.toDataURL(shareLink, {
+						width: 256,
+						margin: 2,
+						color: { dark: "#000000", light: "#ffffff" },
+					});
+					setQrCodeUrl(qr);
+				}
+			} catch (uploadErr) {
+				// Offline, or the upload failed: hold the composited photo in the
+				// outbox so it is never lost, and let the background sync finish it
+				// when the connection returns. The guest can still download/print now.
+				console.warn("Deferring photo upload to offline outbox:", uploadErr);
+				await enqueuePhoto({
+					id: crypto.randomUUID(),
+					eventId: event.id,
+					sessionId: sessionId!,
+					blob,
+					caption: session.caption ?? undefined,
+					templateId: templateId ?? undefined,
+					width: outputWidth,
+					height: outputHeight,
+					queuedAt: Date.now(),
+				});
+
+				try {
+					const registration = (await navigator.serviceWorker?.ready) as
+						| SyncCapableRegistration
+						| undefined;
+					await registration?.sync?.register("photocall-photo-sync");
+				} catch {
+					// Background Sync unsupported — the `online` event still triggers a flush.
+				}
+
+				setSavedOffline(true);
+				void sync();
 			}
 
 			setIsProcessing(false);
@@ -130,7 +174,7 @@ export default function KioskResultPage() {
 			setError("Failed to process your photo. Please try again.");
 			setIsProcessing(false);
 		}
-	}, [event, session, template, templateId, sessionId, isProcessing]);
+	}, [event, session, template, templateId, sessionId, isProcessing, sync]);
 
 	useEffect(() => {
 		if (event && session && isProcessing) {
@@ -180,7 +224,7 @@ export default function KioskResultPage() {
 		return null;
 	}
 
-	const primaryColor = event.primaryColor || "#6366f1";
+	const primaryColor = event.primaryColor || "#e11d48";
 
 	if (error) {
 		return (
@@ -242,6 +286,18 @@ export default function KioskResultPage() {
 
 							{/* Actions and QR */}
 							<div className="flex flex-col justify-center space-y-6">
+								{/* Offline notice — photo is queued and will upload on reconnect */}
+								{savedOffline && (
+									<div className="text-center p-4 bg-amber-500/15 border border-amber-500/30 rounded-lg">
+										<p className="text-sm font-medium text-amber-200">Saved on this device</p>
+										<p className="text-sm text-white/60 mt-1">
+											You're offline right now. Your photo will upload automatically and a shareable
+											link will be ready once the connection returns. You can still download or
+											print it below.
+										</p>
+									</div>
+								)}
+
 								{/* Human code */}
 								{humanCode && (
 									<div className="text-center p-4 bg-white/10 rounded-lg">

@@ -18,6 +18,7 @@
 	"dependencies": {
 		"@aws-sdk/client-s3": "catalog:",
 		"@aws-sdk/s3-request-presigner": "catalog:",
+		"@radix-ui/react-alert-dialog": "catalog:",
 		"@radix-ui/react-avatar": "catalog:",
 		"@radix-ui/react-dialog": "catalog:",
 		"@radix-ui/react-dropdown-menu": "catalog:",

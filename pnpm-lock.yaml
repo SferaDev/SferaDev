@@ -60,6 +60,9 @@ catalogs:
     '@next/third-parties':
       specifier: 16.2.7
       version: 16.2.7
+    '@radix-ui/react-alert-dialog':
+      specifier: 1.1.16
+      version: 1.1.16
     '@radix-ui/react-avatar':
       specifier: 1.1.12
       version: 1.1.12
@@ -444,6 +447,9 @@ importers:
       '@aws-sdk/s3-request-presigner':
         specifier: 'catalog:'
         version: 3.1063.0
+      '@radix-ui/react-alert-dialog':
+        specifier: 'catalog:'
+        version: 1.1.16(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@radix-ui/react-avatar':
         specifier: 'catalog:'
         version: 1.1.12(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
@@ -1022,7 +1028,7 @@ importers:
     dependencies:
       '@kubb/adapter-oas':
         specifier: 'catalog:'
-        version: 5.0.0-beta.10(@kubb/renderer-jsx@5.0.0-beta.35)
+        version: 5.0.0-beta.10(@kubb/renderer-jsx@5.0.0-beta.10)
       '@kubb/core':
         specifier: 'catalog:'
         version: 5.0.0-beta.10(@kubb/renderer-jsx@5.0.0-beta.10)
@@ -11616,9 +11622,20 @@ snapshots:
     dependencies:
       jsep: 1.4.0
 
-  '@kubb/adapter-oas@5.0.0-beta.10(@kubb/renderer-jsx@5.0.0-beta.35)':
+  '@kubb/adapter-oas@5.0.0-beta.10(@kubb/renderer-jsx@5.0.0-beta.10)':
     dependencies:
       '@kubb/core': 5.0.0-beta.10(@kubb/renderer-jsx@5.0.0-beta.10)
+      '@redocly/openapi-core': 2.31.6
+      oas: 32.1.18
+      oas-normalize: 16.0.5
+      swagger2openapi: 7.0.8
+    transitivePeerDependencies:
+      - '@kubb/renderer-jsx'
+      - encoding
+
+  '@kubb/adapter-oas@5.0.0-beta.10(@kubb/renderer-jsx@5.0.0-beta.35)':
+    dependencies:
+      '@kubb/core': 5.0.0-beta.10(@kubb/renderer-jsx@5.0.0-beta.35)
       '@redocly/openapi-core': 2.31.6
       oas: 32.1.18
       oas-normalize: 16.0.5

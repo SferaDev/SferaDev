@@ -23,6 +23,17 @@ if (env.GITHUB_CLIENT_ID && env.GITHUB_CLIENT_SECRET) {
 }
 
 export const auth = betterAuth({
+	baseURL: env.BETTER_AUTH_URL,
+	// The Hono app mounts this handler at `/auth/*` (see index.ts) and products
+	// proxy `/api/auth/*` to it, so better-auth must use `/auth` as its base
+	// path rather than its default of `/api/auth`.
+	basePath: "/auth",
+	// Products call auth through a first-party `/api/auth/*` proxy, so requests
+	// arrive with the product's browser origin. Allow those configured origins
+	// in addition to the platform's own.
+	trustedOrigins: env.TRUSTED_ORIGINS
+		? env.TRUSTED_ORIGINS.split(",").map((origin) => origin.trim())
+		: [],
 	database: drizzleAdapter(db, {
 		provider: "pg",
 		schema: {

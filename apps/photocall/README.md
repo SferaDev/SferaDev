@@ -5,7 +5,10 @@ A modern photo-booth kiosk SaaS for weddings, parties, corporate events, and cel
 ## Highlights
 
 - Touch-friendly kiosk flow: consent → template → camera + countdown → personalize → QR share + print
-- Slideshow attract screen with offline image caching (service worker)
+- Offline-first kiosk: once opened, the app shell, event data, and slideshow are
+  cached (service worker + persisted SWR cache) so the booth keeps running
+  through network drops. Photos captured while offline are held in an IndexedDB
+  outbox and uploaded automatically when connectivity returns
 - Multi-org dashboard with team management, role-based access, billing, and event analytics
 - Template manager with overlay positioning, safe-area, caption styling
 - Branded sharing pages with download / print / human-readable short code (`/p/ABCD-1234`)
@@ -38,6 +41,16 @@ pnpm install
 cp .env.example .env.local           # fill values; see "Environment" below
 pnpm db:push                          # apply Drizzle schema to your Postgres
 pnpm dev                              # http://localhost:3000
+```
+
+Photocall delegates auth/billing/entitlements to the **platform** service, so it
+must be running and seeded for the dashboard and kiosk to work. After the
+platform's database is migrated, register the Photocall product and its default
+free plan (without a default plan the platform denies `create_event` and the
+other quota-gated actions):
+
+```sh
+psql "$PLATFORM_DATABASE_URL" -f ../platform/scripts/seed-photocall.sql
 ```
 
 Useful scripts:

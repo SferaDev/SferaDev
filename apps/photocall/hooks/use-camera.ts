@@ -71,8 +71,20 @@ export function useCamera(options: UseCameraOptions = {}): UseCameraReturn {
 			setStream(newStream);
 
 			if (videoRef.current) {
-				videoRef.current.srcObject = newStream;
-				await videoRef.current.play();
+				const video = videoRef.current;
+				video.srcObject = newStream;
+				try {
+					await video.play();
+				} catch (playErr) {
+					// play() commonly rejects with an AbortError when a re-render or
+					// camera switch attaches a new stream mid-play, and some browsers
+					// reject until the element is muted/visible. Neither is fatal — the
+					// stream is attached and playback resumes — so only surface real
+					// errors here.
+					if (playErr instanceof Error && playErr.name !== "AbortError") {
+						throw playErr;
+					}
+				}
 				setIsReady(true);
 			}
 		} catch (err) {

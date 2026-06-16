@@ -23,7 +23,7 @@ export default function KioskCapturePage() {
 		() => getPublicEvent(orgSlug, eventSlug),
 	);
 
-	const { videoRef, isReady, error, start, switchCamera, capture } = useCamera({
+	const { videoRef, canvasRef, isReady, error, start, switchCamera, capture } = useCamera({
 		defaultFacing: (event?.defaultCamera as CameraFacing) || "user",
 	});
 
@@ -62,7 +62,10 @@ export default function KioskCapturePage() {
 
 		try {
 			const imageUrl = capture();
-			if (imageUrl && sessionId) {
+			if (!imageUrl) {
+				throw new Error("Could not read a frame from the camera.");
+			}
+			if (sessionId) {
 				await saveCapture(sessionId, imageUrl);
 				router.push(
 					`/kiosk/${orgSlug}/${eventSlug}/personalize?session=${sessionId}${templateId ? `&template=${templateId}` : ""}`,
@@ -89,7 +92,7 @@ export default function KioskCapturePage() {
 		return null;
 	}
 
-	const primaryColor = event.primaryColor || "#6366f1";
+	const primaryColor = event.primaryColor || "#e11d48";
 
 	return (
 		<div className="min-h-screen bg-black text-white relative">
@@ -104,6 +107,9 @@ export default function KioskCapturePage() {
 					style={{ transform: event.defaultCamera === "user" ? "scaleX(-1)" : "none" }}
 				/>
 			</div>
+
+			{/* Offscreen canvas used to grab the current video frame on capture */}
+			<canvas ref={canvasRef} className="hidden" />
 
 			{/* Flash Effect */}
 			{flash && <div className="absolute inset-0 bg-white z-50" />}

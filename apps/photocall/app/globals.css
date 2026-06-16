@@ -1,54 +1,102 @@
 @import "tailwindcss";
 
-@layer base {
-	:root {
-		--background: 0 0% 100%;
-		--foreground: 0 0% 9%;
-		--card: 0 0% 100%;
-		--card-foreground: 0 0% 9%;
-		--popover: 0 0% 100%;
-		--popover-foreground: 0 0% 9%;
-		--primary: 0 0% 9%;
-		--primary-foreground: 0 0% 98%;
-		--secondary: 0 0% 96%;
-		--secondary-foreground: 0 0% 9%;
-		--muted: 0 0% 96%;
-		--muted-foreground: 0 0% 45%;
-		--accent: 0 0% 96%;
-		--accent-foreground: 0 0% 9%;
-		--destructive: 0 84.2% 60.2%;
-		--destructive-foreground: 0 0% 98%;
-		--border: 0 0% 90%;
-		--input: 0 0% 90%;
-		--ring: 0 0% 9%;
-		--radius: 0.5rem;
-	}
+/* class-based dark mode (next-themes toggles a `.dark` class) */
+@custom-variant dark (&:is(.dark *));
 
-	.dark {
-		--background: 0 0% 3.9%;
-		--foreground: 0 0% 98%;
-		--card: 0 0% 7%;
-		--card-foreground: 0 0% 98%;
-		--popover: 0 0% 3.9%;
-		--popover-foreground: 0 0% 98%;
-		--primary: 0 0% 98%;
-		--primary-foreground: 0 0% 9%;
-		--secondary: 0 0% 14.9%;
-		--secondary-foreground: 0 0% 98%;
-		--muted: 0 0% 14.9%;
-		--muted-foreground: 0 0% 63.9%;
-		--accent: 0 0% 14.9%;
-		--accent-foreground: 0 0% 98%;
-		--destructive: 0 62.8% 30.6%;
-		--destructive-foreground: 0 0% 98%;
-		--border: 0 0% 14.9%;
-		--input: 0 0% 14.9%;
-		--ring: 0 0% 83.1%;
-	}
+/*
+ * "Rosa elegante" — on-brand palette for the photo-booth product: a warm rose
+ * primary with warm (stone-tinted) neutrals and rose focus/accent states.
+ * Values are full hsl() colors so the @theme inline mapping below resolves.
+ */
+:root {
+	--background: hsl(20 33% 99%);
+	--foreground: hsl(20 14% 8%);
+	--card: hsl(0 0% 100%);
+	--card-foreground: hsl(20 14% 8%);
+	--popover: hsl(0 0% 100%);
+	--popover-foreground: hsl(20 14% 8%);
+	--primary: hsl(346.8 77.2% 49.8%);
+	--primary-foreground: hsl(355.7 100% 97.3%);
+	--secondary: hsl(20 6% 95%);
+	--secondary-foreground: hsl(20 14% 12%);
+	--muted: hsl(20 6% 95%);
+	--muted-foreground: hsl(20 6% 45%);
+	--accent: hsl(346 53% 96%);
+	--accent-foreground: hsl(346.8 77% 30%);
+	--destructive: hsl(0 72% 51%);
+	--destructive-foreground: hsl(0 0% 98%);
+	--border: hsl(20 8% 91%);
+	--input: hsl(20 8% 91%);
+	--ring: hsl(346.8 77.2% 49.8%);
+	--radius: 0.625rem;
+}
+
+.dark {
+	--background: hsl(20 14% 5%);
+	--foreground: hsl(0 0% 95%);
+	--card: hsl(20 14% 8%);
+	--card-foreground: hsl(0 0% 95%);
+	--popover: hsl(20 14% 6%);
+	--popover-foreground: hsl(0 0% 95%);
+	--primary: hsl(346.8 77.2% 49.8%);
+	--primary-foreground: hsl(355.7 100% 97.3%);
+	--secondary: hsl(20 6% 15%);
+	--secondary-foreground: hsl(0 0% 95%);
+	--muted: hsl(20 6% 15%);
+	--muted-foreground: hsl(20 5% 65%);
+	--accent: hsl(346 30% 18%);
+	--accent-foreground: hsl(346 80% 88%);
+	--destructive: hsl(0 62.8% 48%);
+	--destructive-foreground: hsl(0 0% 98%);
+	--border: hsl(20 6% 17%);
+	--input: hsl(20 6% 17%);
+	--ring: hsl(346.8 77.2% 49.8%);
+}
+
+/*
+ * Map the design tokens above to Tailwind v4 theme colors so the shadcn
+ * utilities (bg-background, bg-card, text-muted-foreground, border, …) resolve.
+ */
+@theme inline {
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--color-card: var(--card);
+	--color-card-foreground: var(--card-foreground);
+	--color-popover: var(--popover);
+	--color-popover-foreground: var(--popover-foreground);
+	--color-primary: var(--primary);
+	--color-primary-foreground: var(--primary-foreground);
+	--color-secondary: var(--secondary);
+	--color-secondary-foreground: var(--secondary-foreground);
+	--color-muted: var(--muted);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-accent: var(--accent);
+	--color-accent-foreground: var(--accent-foreground);
+	--color-destructive: var(--destructive);
+	--color-destructive-foreground: var(--destructive-foreground);
+	--color-border: var(--border);
+	--color-input: var(--input);
+	--color-ring: var(--ring);
+
+	--radius-sm: calc(var(--radius) - 4px);
+	--radius-md: calc(var(--radius) - 2px);
+	--radius-lg: var(--radius);
+
+	--font-sans: var(--font-geist-sans);
+	--font-mono: var(--font-geist-mono);
 }
 
 @layer base {
+	* {
+		border-color: var(--border);
+	}
+
 	html {
 		scroll-behavior: smooth;
+	}
+
+	body {
+		background-color: var(--background);
+		color: var(--foreground);
 	}
 }
