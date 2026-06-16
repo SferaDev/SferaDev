@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { KioskI18nProvider } from "@/components/kiosk-i18n-provider";
+import { KioskReliability } from "@/components/kiosk-reliability";
 import { OfflineSync } from "@/components/offline-sync";
 
 /**
@@ -15,6 +16,7 @@ export default function KioskLayout({ children }: { children: ReactNode }) {
 		<KioskI18nProvider>
 			{children}
 			<OfflineSync />
+			<KioskReliability />
 		</KioskI18nProvider>
 	);
 }

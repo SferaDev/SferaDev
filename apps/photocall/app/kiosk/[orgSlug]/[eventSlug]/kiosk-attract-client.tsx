@@ -1,7 +1,6 @@
 "use client";
 
-import { Camera, Loader2, Lock, X } from "lucide-react";
-import Link from "next/link";
+import { Camera, Loader2, Lock, Maximize, X } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
@@ -10,6 +9,7 @@ import { getPublicEvent, validateKioskPin } from "@/actions/events";
 import { listRecentPublicPhotos } from "@/actions/photos";
 import { createKioskSession } from "@/actions/sessions";
 import { KioskLanguagePicker } from "@/components/kiosk-language-picker";
+import { KioskOperatorPanel } from "@/components/kiosk-operator-panel";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -22,6 +22,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAdminAuth } from "@/hooks/use-admin-auth";
+import { useFullscreen } from "@/hooks/use-fullscreen";
 
 export default function KioskAttractPage() {
 	const router = useRouter();
@@ -33,7 +34,9 @@ export default function KioskAttractPage() {
 	const tCommon = useTranslations("kiosk.common");
 
 	const { isAuthenticated: isAdmin, login: loginAdmin, logout: logoutAdmin } = useAdminAuth();
+	const { isFullscreen, supported: fullscreenSupported, enter: enterFullscreen } = useFullscreen();
 	const [adminDialogOpen, setAdminDialogOpen] = useState(false);
+	const [operatorPanelOpen, setOperatorPanelOpen] = useState(false);
 	const [pinInput, setPinInput] = useState("");
 	const [pinError, setPinError] = useState<string | null>(null);
 	const [pinSubmitting, setPinSubmitting] = useState(false);
@@ -193,6 +196,21 @@ export default function KioskAttractPage() {
 				{tCommon("poweredBy")}
 			</div>
 
+			{/* Subtle fullscreen affordance — fullscreen requires a user gesture, so
+			    it can't be entered automatically. Hidden once already fullscreen or
+			    where the API is unavailable (e.g. iOS Safari uses standalone PWA). */}
+			{fullscreenSupported && !isFullscreen ? (
+				<Button
+					variant="ghost"
+					size="sm"
+					onClick={() => void enterFullscreen()}
+					className="absolute bottom-3 right-4 z-20 text-white/40 hover:bg-white/10 hover:text-white"
+				>
+					<Maximize className="mr-2 h-4 w-4" aria-hidden="true" />
+					{t("enterFullscreen")}
+				</Button>
+			) : null}
+
 			{/* Admin escape: long-press top-left corner */}
 			<button
 				type="button"
@@ -207,11 +225,14 @@ export default function KioskAttractPage() {
 
 			{isAdmin ? (
 				<div className="absolute top-4 right-4 flex items-center gap-2 rounded-full bg-white/10 p-1.5 backdrop-blur">
-					<Button asChild size="sm" variant="ghost" className="text-white hover:bg-white/10">
-						<Link href={`/dashboard/${orgSlug}/${eventSlug}/settings`}>
-							<Lock className="mr-2 h-4 w-4" aria-hidden="true" />
-							{t("admin")}
-						</Link>
+					<Button
+						size="sm"
+						variant="ghost"
+						className="text-white hover:bg-white/10"
+						onClick={() => setOperatorPanelOpen(true)}
+					>
+						<Lock className="mr-2 h-4 w-4" aria-hidden="true" />
+						{t("admin")}
 					</Button>
 					<Button
 						size="icon"
@@ -274,6 +295,16 @@ export default function KioskAttractPage() {
 					</form>
 				</DialogContent>
 			</Dialog>
+
+			{isAdmin ? (
+				<KioskOperatorPanel
+					open={operatorPanelOpen}
+					onOpenChange={setOperatorPanelOpen}
+					event={event}
+					orgSlug={orgSlug}
+					eventSlug={eventSlug}
+				/>
+			) : null}
 		</div>
 	);
 }
