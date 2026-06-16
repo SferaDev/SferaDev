@@ -63,10 +63,18 @@ export function useCamera(options: UseCameraOptions = {}): UseCameraReturn {
 	const videoRef = useRef<HTMLVideoElement | null>(null);
 	const canvasRef = useRef<HTMLCanvasElement | null>(null);
 	const [stream, setStream] = useState<MediaStream | null>(null);
+	// Mirrors `stream` so concurrent start() calls and the unmount cleanup can
+	// always reach the currently active stream synchronously (state is stale
+	// inside an in-flight async start()), preventing leaked MediaStreams.
+	const streamRef = useRef<MediaStream | null>(null);
 	const [isReady, setIsReady] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const [facing, setFacing] = useState<CameraFacing>(defaultFacing);
+
+	useEffect(() => {
+		streamRef.current = stream;
+	}, [stream]);
 
 	const stop = useCallback(() => {
 		if (stream) {
@@ -83,11 +91,14 @@ export function useCamera(options: UseCameraOptions = {}): UseCameraReturn {
 		setError(null);
 
 		try {
-			// Stop any existing stream
-			if (stream) {
-				for (const track of stream.getTracks()) {
+			// Stop any existing stream. Use the ref (not the `stream` state, which
+			// is stale inside this async closure) so concurrent start() calls don't
+			// leak the previously-acquired MediaStream.
+			if (streamRef.current) {
+				for (const track of streamRef.current.getTracks()) {
 					track.stop();
 				}
+				streamRef.current = null;
 			}
 
 			// Resolve the preferred capture device. If a stored deviceId is gone,
@@ -127,6 +138,7 @@ export function useCamera(options: UseCameraOptions = {}): UseCameraReturn {
 			};
 
 			const newStream = await navigator.mediaDevices.getUserMedia(constraints);
+			streamRef.current = newStream;
 			setStream(newStream);
 
 			if (videoRef.current) {
@@ -159,7 +171,7 @@ export function useCamera(options: UseCameraOptions = {}): UseCameraReturn {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [facing, maxWidth, maxHeight, stream, deviceId, deviceLabel]);
+	}, [facing, maxWidth, maxHeight, deviceId, deviceLabel]);
 
 	const switchCamera = useCallback(async () => {
 		const newFacing = facing === "user" ? "environment" : "user";
@@ -226,16 +238,18 @@ export function useCamera(options: UseCameraOptions = {}): UseCameraReturn {
 		});
 	}, [isReady]);
 
-	// Cleanup on unmount
+	// Cleanup on unmount. Stops whatever stream is currently active via the ref
+	// so an in-flight start() that hasn't committed to state can't leak.
 	useEffect(() => {
 		return () => {
-			if (stream) {
-				for (const track of stream.getTracks()) {
+			if (streamRef.current) {
+				for (const track of streamRef.current.getTracks()) {
 					track.stop();
 				}
+				streamRef.current = null;
 			}
 		};
-	}, [stream]);
+	}, []);
 
 	return {
 		videoRef,

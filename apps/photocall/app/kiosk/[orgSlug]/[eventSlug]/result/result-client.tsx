@@ -3,7 +3,7 @@
 import { ArrowLeft, Camera, Check, Download, Loader2, Printer, RotateCcw } from "lucide-react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import QRCode from "qrcode";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import { getPublicEvent } from "@/actions/events";
 import { createPhoto, generatePhotoUploadUrl } from "@/actions/photos";
@@ -16,6 +16,7 @@ import { compositePhoto, downloadBlob, printImage } from "@/lib/canvas-utils";
 import { composeStrip, loadLayoutFonts } from "@/lib/compose";
 import { parseCapturedImageUrls } from "@/lib/db/schema";
 import { parseLayoutJson } from "@/lib/layout/parse";
+import type { FilterKind } from "@/lib/layout/types";
 import { printPixelSize } from "@/lib/layout/types";
 import { enqueuePhoto } from "@/lib/offline-queue";
 import { clearPhotoboothSession, readPhotoboothSession } from "@/lib/photobooth-session";
@@ -23,6 +24,18 @@ import { clearPhotoboothSession, readPhotoboothSession } from "@/lib/photobooth-
 /** ServiceWorkerRegistration with the optional Background Sync extension. */
 interface SyncCapableRegistration extends ServiceWorkerRegistration {
 	sync?: { register(tag: string): Promise<void> };
+}
+
+function isFilterKind(value: string | null | undefined): value is FilterKind {
+	return (
+		value === "none" ||
+		value === "bw" ||
+		value === "warm" ||
+		value === "cool" ||
+		value === "faded" ||
+		value === "vivid" ||
+		value === "noir"
+	);
 }
 
 export default function KioskResultPage() {
@@ -33,6 +46,7 @@ export default function KioskResultPage() {
 	const eventSlug = params.eventSlug as string;
 	const sessionId = searchParams.get("session");
 	const templateId = searchParams.get("template");
+	const filterParam = searchParams.get("filter");
 
 	const { data: event, isLoading: eventLoading } = useSWR(
 		["public-event", orgSlug, eventSlug],
@@ -60,6 +74,11 @@ export default function KioskResultPage() {
 	const [humanCode, setHumanCode] = useState<string | null>(null);
 	const [savedOffline, setSavedOffline] = useState(false);
 	const [error, setError] = useState<string | null>(null);
+
+	// Guards against processPhoto running twice (it is in the effect deps and
+	// isProcessing stays true for the whole async run), which would otherwise
+	// cause a double upload + double createPhoto + double completeSession.
+	const processingStartedRef = useRef(false);
 
 	// Drains the offline outbox when connectivity returns.
 	const { sync } = useOfflineSync();
@@ -89,6 +108,15 @@ export default function KioskResultPage() {
 
 		if (shots.length === 0) return null;
 
+		// The guest's chosen filter (from sessionStorage, falling back to the URL
+		// param) overrides the template's default filter when it is a valid kind.
+		const guestFilter: FilterKind | null = isFilterKind(stored?.filter)
+			? stored.filter
+			: isFilterKind(filterParam)
+				? filterParam
+				: null;
+		const composeLayout = guestFilter ? { ...layout, filter: guestFilter } : layout;
+
 		await loadLayoutFonts(layout);
 
 		const date = event.startDate
@@ -100,7 +128,7 @@ export default function KioskResultPage() {
 			: undefined;
 
 		const result = await composeStrip({
-			layout,
+			layout: composeLayout,
 			photos: shots,
 			tokens: {
 				coupleNames: event.coupleNames ?? event.name,
@@ -112,7 +140,7 @@ export default function KioskResultPage() {
 		});
 
 		return { blob: result.blob, width: result.width, height: result.height, shots };
-	}, [event, layout, sessionId, session?.capturedImageUrls]);
+	}, [event, layout, sessionId, session?.capturedImageUrls, filterParam]);
 
 	/** Legacy single-photo composite (templates without a layout). */
 	const composeSingleBlob = useCallback(async (): Promise<{
@@ -146,6 +174,8 @@ export default function KioskResultPage() {
 	// Process and upload the final image (strip or single).
 	const processPhoto = useCallback(async () => {
 		if (!event || !session || !isProcessing) return;
+		if (processingStartedRef.current) return;
+		processingStartedRef.current = true;
 
 		try {
 			const isStrip = layout != null;
@@ -287,6 +317,7 @@ export default function KioskResultPage() {
 		setQrCodeUrl(null);
 		setShareUrl(null);
 		setHumanCode(null);
+		processingStartedRef.current = false;
 		setIsProcessing(true);
 	};
 

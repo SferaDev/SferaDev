@@ -6,7 +6,7 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import { getPublicEvent } from "@/actions/events";
-import { saveCapture, saveMultiCapture, updateShotIndex } from "@/actions/sessions";
+import { saveCapture, updateShotIndex } from "@/actions/sessions";
 import { listPublicTemplates } from "@/actions/templates";
 import { Button } from "@/components/ui/button";
 import { type CameraFacing, useCamera } from "@/hooks/use-camera";
@@ -69,12 +69,22 @@ export default function KioskCapturePage() {
 	const [busy, setBusy] = useState(false);
 	const [captureError, setCaptureError] = useState<string | null>(null);
 	const [finishing, setFinishing] = useState(false);
+	const flashTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
 	useEffect(() => {
 		if (event && !isReady) {
 			start();
 		}
 	}, [event, isReady, start]);
+
+	// Clear any pending timers on unmount to avoid setting state after teardown.
+	useEffect(() => {
+		return () => {
+			if (flashTimerRef.current) {
+				clearTimeout(flashTimerRef.current);
+			}
+		};
+	}, []);
 
 	/** Run the animated countdown, then flash + grab a frame. Returns the dataURL. */
 	const runCountdownAndCapture = useCallback(async (): Promise<string | null> => {
@@ -85,19 +95,20 @@ export default function KioskCapturePage() {
 		}
 		setCountdown(null);
 		setFlash(true);
-		setTimeout(() => setFlash(false), 220);
+		if (flashTimerRef.current) clearTimeout(flashTimerRef.current);
+		flashTimerRef.current = setTimeout(() => setFlash(false), 220);
 		return capture();
 	}, [event?.captureDefaultCountdown, capture]);
 
-	/** Persist shots locally and best-effort to the server. */
+	/** Persist shots locally. sessionStorage is the source of truth; the result
+	 * page composes from it. We deliberately do NOT ship the raw data-URL shots
+	 * to a server action — each shot is 1–2 MB and would blow past Next.js's
+	 * server-action body limit. */
 	const persist = useCallback(
 		(next: string[]) => {
 			if (!sessionId) return;
 			if (layout) {
 				writePhotoboothSession(sessionId, { shots: next, filter });
-				void saveMultiCapture(sessionId, next, filter).catch(() => {
-					// Offline / server error — sessionStorage remains the source of truth.
-				});
 			}
 		},
 		[sessionId, layout, filter],
@@ -165,6 +176,14 @@ export default function KioskCapturePage() {
 		],
 	);
 
+	// Keep a stable reference to the latest captureShot so the auto-shoot effect
+	// doesn't tear down/re-run (and risk double-firing) whenever captureShot's
+	// closure changes (shots/busy/etc.).
+	const captureRef = useRef(captureShot);
+	useEffect(() => {
+		captureRef.current = captureShot;
+	}, [captureShot]);
+
 	const filledCount = shots.filter(Boolean).length;
 	const allShotsTaken = layout != null && filledCount >= shotTotal;
 
@@ -180,7 +199,7 @@ export default function KioskCapturePage() {
 		autoRunningRef.current = true;
 		const nextIndex = filledCount;
 		const timer = setTimeout(() => {
-			void captureShot(nextIndex).finally(() => {
+			void captureRef.current(nextIndex).finally(() => {
 				autoRunningRef.current = false;
 			});
 		}, AUTO_SHOOT_GAP_MS);
@@ -189,7 +208,7 @@ export default function KioskCapturePage() {
 			clearTimeout(timer);
 			autoRunningRef.current = false;
 		};
-	}, [layout, autoShoot, isReady, busy, countdown, filledCount, shotTotal, captureShot]);
+	}, [layout, autoShoot, isReady, busy, countdown, filledCount, shotTotal]);
 
 	const handleFinish = useCallback(() => {
 		setFinishing(true);
