@@ -23,6 +23,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAdminAuth } from "@/hooks/use-admin-auth";
 import { useFullscreen } from "@/hooks/use-fullscreen";
+import { useKioskFont } from "@/hooks/use-kiosk-font";
 
 export default function KioskAttractPage() {
 	const router = useRouter();
@@ -66,6 +67,10 @@ export default function KioskAttractPage() {
 	);
 
 	const [currentSlide, setCurrentSlide] = useState(0);
+
+	// Load the event's display font (when set) and resolve a CSS font-family for
+	// kiosk headings; falls back to the system font when no override is bundled.
+	const headingFontFamily = useKioskFont(event?.fontFamily);
 
 	// Slideshow effect
 	useEffect(() => {
@@ -138,6 +143,13 @@ export default function KioskAttractPage() {
 	}
 
 	const primaryColor = event.primaryColor || "#e11d48";
+	const accentColor = event.accentColor || primaryColor;
+
+	// Admin overrides take precedence; an empty override falls back to the i18n
+	// default (heading default is the couple names / event name).
+	const attractTitle = event.attractTitle || event.coupleNames || event.name;
+	const attractSubtitle = event.attractSubtitle || event.welcomeMessage || t("defaultWelcome");
+	const ctaLabel = event.ctaLabel || t("start");
 
 	return (
 		<div
@@ -174,20 +186,23 @@ export default function KioskAttractPage() {
 					<img src={event.logoUrl} alt="" className="h-24 mx-auto mb-8 object-contain" />
 				)}
 
-				<h1 className="text-4xl md:text-6xl font-bold mb-4">{event.name}</h1>
+				<h1
+					className="text-4xl md:text-6xl font-bold mb-4"
+					style={headingFontFamily ? { fontFamily: headingFontFamily } : undefined}
+				>
+					{attractTitle}
+				</h1>
 
-				<p className="text-xl md:text-2xl mb-8 opacity-80">
-					{event.welcomeMessage || t("defaultWelcome")}
-				</p>
+				<p className="text-xl md:text-2xl mb-8 opacity-80">{attractSubtitle}</p>
 
 				<Button
 					size="lg"
 					onClick={handleStart}
 					className="text-xl px-12 py-8 rounded-full"
-					style={{ backgroundColor: primaryColor }}
+					style={{ backgroundColor: primaryColor, boxShadow: `0 0 40px -8px ${accentColor}` }}
 				>
 					<Camera className="h-8 w-8 mr-3" />
-					{t("start")}
+					{ctaLabel}
 				</Button>
 			</div>
 
@@ -196,10 +211,12 @@ export default function KioskAttractPage() {
 				<KioskLanguagePicker className="gap-2 rounded-full bg-white/10 text-white backdrop-blur hover:bg-white/20 hover:text-white" />
 			</div>
 
-			{/* Organization branding */}
-			<div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/40 text-sm">
-				{tCommon("poweredBy")}
-			</div>
+			{/* Organization branding (admin can hide the "Powered by" footer) */}
+			{event.showPoweredBy ? (
+				<div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/40 text-sm">
+					{tCommon("poweredBy")}
+				</div>
+			) : null}
 
 			{/* Subtle fullscreen affordance — fullscreen requires a user gesture, so
 			    it can't be entered automatically. Hidden once already fullscreen or

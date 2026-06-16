@@ -233,6 +233,7 @@ export default function KioskCapturePage() {
 	}
 
 	const primaryColor = event.primaryColor || "#e11d48";
+	const accentColor = event.accentColor || primaryColor;
 	const nextSlot = filledCount;
 	const mirrorTransform =
 		event.defaultCamera === "user" && !event.cameraDeviceId ? "scaleX(-1)" : "none";
@@ -296,7 +297,10 @@ export default function KioskCapturePage() {
 						exit={{ scale: 1.6, opacity: 0 }}
 						transition={{ type: "spring", stiffness: 320, damping: 18 }}
 					>
-						<span className="text-[200px] font-bold text-white drop-shadow-lg leading-none">
+						<span
+							className="text-[200px] font-bold drop-shadow-lg leading-none"
+							style={{ color: accentColor }}
+						>
 							{countdown}
 						</span>
 					</motion.div>
