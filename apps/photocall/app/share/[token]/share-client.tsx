@@ -19,7 +19,8 @@ export default function SharePage({ params }: { params: Promise<{ token: string 
 		if (!photo?.url) return;
 		const response = await fetch(photo.url);
 		const blob = await response.blob();
-		downloadBlob(blob, `photocall_${photo.humanCode}.jpg`);
+		const ext = photo.kind === "boomerang" ? "gif" : "jpg";
+		downloadBlob(blob, `photocall_${photo.humanCode}.${ext}`);
 	};
 
 	const handlePrint = () => {
