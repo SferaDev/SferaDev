@@ -148,6 +148,7 @@ export async function updateEvent(
 		captureWhoChoosesFilter?: "guest" | "host";
 		captureDefaultCountdown?: number;
 		captureAutoShoot?: boolean;
+		boomerangEnabled?: boolean;
 		printMethod?: "none" | "bridge" | "manual";
 		printPrinterId?: string;
 		printPaperSize?: string;
@@ -291,6 +292,23 @@ export async function duplicateEvent(id: string) {
 			allowPrint: event.allowPrint,
 			showQrCode: event.showQrCode,
 			retentionDays: event.retentionDays,
+			// Photobooth config carries over to the duplicate.
+			coupleNames: event.coupleNames,
+			cameraDeviceId: event.cameraDeviceId,
+			cameraDeviceLabel: event.cameraDeviceLabel,
+			captureWhoChoosesFilter: event.captureWhoChoosesFilter,
+			captureDefaultCountdown: event.captureDefaultCountdown,
+			captureAutoShoot: event.captureAutoShoot,
+			boomerangEnabled: event.boomerangEnabled,
+			printMethod: event.printMethod,
+			printPrinterId: event.printPrinterId,
+			printPaperSize: event.printPaperSize,
+			printMediaType: event.printMediaType,
+			printBorderless: event.printBorderless,
+			printCopies: event.printCopies,
+			printOrientation: event.printOrientation,
+			printAutoPrint: event.printAutoPrint,
+			printBridgeUrl: event.printBridgeUrl,
 			photoCount: 0,
 			sessionCount: 0,
 			createdAt: now,
@@ -405,6 +423,7 @@ export async function getPublicEvent(organizationSlug: string, eventSlug: string
 		captureDefaultCountdown: event.captureDefaultCountdown,
 		captureAutoShoot: event.captureAutoShoot,
 		captureWhoChoosesFilter: event.captureWhoChoosesFilter,
+		boomerangEnabled: event.boomerangEnabled,
 		// Print settings (consumed by the kiosk result page).
 		printMethod: event.printMethod,
 		printPrinterId: event.printPrinterId,

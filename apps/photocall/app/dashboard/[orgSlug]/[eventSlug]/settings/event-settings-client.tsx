@@ -70,6 +70,7 @@ export default function EventSettingsPage() {
 		captureDefaultCountdown: 3,
 		captureAutoShoot: false,
 		captureWhoChoosesFilter: "guest" as "guest" | "host",
+		boomerangEnabled: false,
 		photoQuality: 0.9,
 		maxPhotoDimension: 1920,
 		allowDownload: true,
@@ -112,6 +113,7 @@ export default function EventSettingsPage() {
 				captureDefaultCountdown: event.captureDefaultCountdown,
 				captureAutoShoot: event.captureAutoShoot,
 				captureWhoChoosesFilter: (event.captureWhoChoosesFilter as "guest" | "host") ?? "guest",
+				boomerangEnabled: event.boomerangEnabled,
 				photoQuality: event.photoQuality,
 				maxPhotoDimension: event.maxPhotoDimension,
 				allowDownload: event.allowDownload,
@@ -603,6 +605,20 @@ export default function EventSettingsPage() {
 											<SelectItem value="host">Host (use template filter only)</SelectItem>
 										</SelectContent>
 									</Select>
+								</div>
+								<div className="flex items-center justify-between">
+									<div>
+										<Label>Boomerang / GIF mode</Label>
+										<p className="text-sm text-muted-foreground">
+											Let guests record a short looping GIF instead of a photo strip
+										</p>
+									</div>
+									<Switch
+										checked={formData.boomerangEnabled}
+										onCheckedChange={(checked) =>
+											setFormData({ ...formData, boomerangEnabled: checked })
+										}
+									/>
 								</div>
 							</div>
 						</div>

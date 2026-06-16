@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowLeft, Clapperboard, Images, Loader2 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
@@ -41,6 +41,10 @@ export default function KioskSelectPage() {
 	// filter, we stay on this screen to show the filter chooser before capture.
 	const [pendingTemplate, setPendingTemplate] = useState<PublicTemplate | null>(null);
 	const [navigating, setNavigating] = useState(false);
+	// When boomerang is enabled, the guest first picks a capture mode. `null`
+	// means "not chosen yet" (show the picker); "strip" continues to the frame
+	// chooser below.
+	const [mode, setMode] = useState<"strip" | "boomerang" | null>(null);
 
 	const eventDate = useMemo(() => {
 		if (!event?.startDate) return undefined;
@@ -96,6 +100,25 @@ export default function KioskSelectPage() {
 
 	const primaryColor = event.primaryColor || "#e11d48";
 
+	const goToBoomerang = () => {
+		setNavigating(true);
+		router.push(`/kiosk/${orgSlug}/${eventSlug}/boomerang?session=${sessionId}`);
+	};
+
+	// Capture-mode picker: shown first when the event offers boomerangs and the
+	// guest hasn't chosen a mode yet.
+	if (event.boomerangEnabled && mode === null) {
+		return (
+			<ModePicker
+				primaryColor={primaryColor}
+				busy={navigating}
+				onBack={() => router.push(`/kiosk/${orgSlug}/${eventSlug}`)}
+				onPickStrip={() => setMode("strip")}
+				onPickBoomerang={goToBoomerang}
+			/>
+		);
+	}
+
 	if (pendingTemplate) {
 		return (
 			<FilterChooser
@@ -117,7 +140,9 @@ export default function KioskSelectPage() {
 				<div className="flex items-center justify-between mb-8">
 					<Button
 						variant="ghost"
-						onClick={() => router.push(`/kiosk/${orgSlug}/${eventSlug}`)}
+						onClick={() =>
+							event.boomerangEnabled ? setMode(null) : router.push(`/kiosk/${orgSlug}/${eventSlug}`)
+						}
 						className="text-white"
 					>
 						<ArrowLeft className="h-5 w-5 mr-2" />
@@ -175,6 +200,86 @@ export default function KioskSelectPage() {
 						})}
 					</div>
 				)}
+			</div>
+		</div>
+	);
+}
+
+interface ModePickerProps {
+	primaryColor: string;
+	busy: boolean;
+	onBack: () => void;
+	onPickStrip: () => void;
+	onPickBoomerang: () => void;
+}
+
+/** Capture-mode chooser: classic photo strip vs animated boomerang. */
+function ModePicker({ primaryColor, busy, onBack, onPickStrip, onPickBoomerang }: ModePickerProps) {
+	const t = useTranslations("kiosk.boomerang");
+	const tCommon = useTranslations("kiosk.common");
+
+	const options = [
+		{
+			key: "strip" as const,
+			title: t("modeStripTitle"),
+			description: t("modeStripDescription"),
+			icon: Images,
+			onPick: onPickStrip,
+		},
+		{
+			key: "boomerang" as const,
+			title: t("modeBoomerangTitle"),
+			description: t("modeBoomerangDescription"),
+			icon: Clapperboard,
+			onPick: onPickBoomerang,
+		},
+	];
+
+	return (
+		<div className="min-h-screen bg-black text-white p-8 flex flex-col">
+			<div className="flex items-center justify-between mb-8">
+				<Button variant="ghost" onClick={onBack} className="text-white" disabled={busy}>
+					<ArrowLeft className="h-5 w-5 mr-2" />
+					{tCommon("back")}
+				</Button>
+				<h1 className="text-2xl font-bold">{t("modeTitle")}</h1>
+				<div className="w-20" />
+			</div>
+
+			<div className="flex-1 flex items-center justify-center">
+				<div className="grid w-full max-w-3xl gap-6 sm:grid-cols-2">
+					{options.map((option, index) => {
+						const Icon = option.icon;
+						return (
+							<motion.button
+								key={option.key}
+								type="button"
+								onClick={option.onPick}
+								disabled={busy}
+								initial={{ opacity: 0, y: 24 }}
+								animate={{ opacity: 1, y: 0 }}
+								transition={{
+									delay: index * 0.08,
+									type: "spring",
+									stiffness: 260,
+									damping: 24,
+								}}
+								whileHover={{ scale: 1.03 }}
+								whileTap={{ scale: 0.97 }}
+								className="flex flex-col items-center gap-4 rounded-2xl border border-white/15 bg-white/5 p-10 text-center transition-colors hover:border-white/40 disabled:opacity-50"
+							>
+								<span
+									className="flex h-20 w-20 items-center justify-center rounded-full"
+									style={{ backgroundColor: primaryColor }}
+								>
+									<Icon className="h-10 w-10" aria-hidden="true" />
+								</span>
+								<span className="text-2xl font-semibold">{option.title}</span>
+								<span className="text-sm text-white/70">{option.description}</span>
+							</motion.button>
+						);
+					})}
+				</div>
 			</div>
 		</div>
 	);

@@ -163,6 +163,24 @@
 			"captureFailed": "No se pudo capturar la foto. Inténtalo de nuevo.",
 			"couldNotReadFrame": "No se pudo leer un fotograma de la cámara."
 		},
+		"boomerang": {
+			"modeTitle": "Elige un modo",
+			"modeStripTitle": "Tira de fotos",
+			"modeStripDescription": "Haz varias fotos para una tira clásica",
+			"modeBoomerangTitle": "Boomerang",
+			"modeBoomerangDescription": "Graba un divertido GIF en bucle",
+			"ready": "Toca para grabar un boomerang",
+			"recording": "Grabando…",
+			"processing": "Procesando…",
+			"sharing": "Guardando…",
+			"previewHint": "¿Te gusta? Guárdalo o repítelo",
+			"redo": "Repetir",
+			"keep": "Guardar",
+			"resultAlt": "Tu boomerang",
+			"cameraErrorTitle": "Error de cámara",
+			"captureFailedTitle": "Error al grabar",
+			"captureFailed": "No se pudo crear el boomerang. Inténtalo de nuevo."
+		},
 		"personalize": {
 			"retake": "Repetir",
 			"title": "Añade un texto",

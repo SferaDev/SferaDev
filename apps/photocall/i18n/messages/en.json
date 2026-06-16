@@ -163,6 +163,24 @@
 			"captureFailed": "Failed to capture photo. Please try again.",
 			"couldNotReadFrame": "Could not read a frame from the camera."
 		},
+		"boomerang": {
+			"modeTitle": "Choose a mode",
+			"modeStripTitle": "Photo strip",
+			"modeStripDescription": "Snap a set of photos for a classic strip",
+			"modeBoomerangTitle": "Boomerang",
+			"modeBoomerangDescription": "Record a fun looping GIF",
+			"ready": "Tap to record a boomerang",
+			"recording": "Recording…",
+			"processing": "Processing…",
+			"sharing": "Saving…",
+			"previewHint": "Looking good? Keep it or redo",
+			"redo": "Redo",
+			"keep": "Keep it",
+			"resultAlt": "Your boomerang",
+			"cameraErrorTitle": "Camera Error",
+			"captureFailedTitle": "Recording Failed",
+			"captureFailed": "Could not create the boomerang. Please try again."
+		},
 		"personalize": {
 			"retake": "Retake",
 			"title": "Add a Caption",

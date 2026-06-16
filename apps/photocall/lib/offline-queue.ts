@@ -12,7 +12,9 @@
  * both outboxes open the same database at the same version.
  */
 
+import type { PhotoContentType } from "@/actions/photos";
 import { tx as _tx, PHOTOS_STORE as STORE } from "@/lib/db/idb";
+import type { PhotoKind } from "@/lib/db/schema";
 
 /** A photo captured offline, awaiting upload + record creation. */
 export interface QueuedPhoto {
@@ -20,14 +22,19 @@ export interface QueuedPhoto {
 	id: string;
 	eventId: string;
 	sessionId: string;
-	/** Composited JPEG, ready to PUT to S3 as-is. */
+	/** Composited JPEG (strip/single) or animated GIF (boomerang), ready to PUT. */
 	blob: Blob;
+	/**
+	 * MIME type to upload with. Drives the presigned PUT `Content-Type` and the
+	 * stored object's extension. Defaults to image/jpeg when absent (legacy items).
+	 */
+	contentType?: PhotoContentType;
 	caption?: string;
 	templateId?: string;
 	width: number;
 	height: number;
-	/** Photobooth: "single" or composited "strip". */
-	kind?: "single" | "strip";
+	/** Photobooth: "single", composited "strip", or "boomerang" GIF. */
+	kind?: PhotoKind;
 	/** JSON array of raw shot URLs backing a composited strip. */
 	rawShotsJson?: string;
 	/** Filter chosen by the guest/host for this capture. */
