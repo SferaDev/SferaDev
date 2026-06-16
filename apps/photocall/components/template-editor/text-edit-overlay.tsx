@@ -54,6 +54,8 @@ export function TextEditOverlay({ layer, stage, onChange, onClose }: TextEditOve
 				color: layer.color,
 				textAlign: layer.align,
 				lineHeight: layer.lineHeight,
+				transform: `rotate(${layer.rotation}deg)`,
+				transformOrigin: "0 0",
 			}}
 		/>
 	);

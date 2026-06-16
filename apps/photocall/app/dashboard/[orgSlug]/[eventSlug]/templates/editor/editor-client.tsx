@@ -7,7 +7,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
 import { getEventBySlug } from "@/actions/events";
 import { createTemplate, getTemplate, listPresets, updateTemplate } from "@/actions/templates";
-import { blankLayout } from "@/components/template-editor/factory";
+import { blankLayout, deriveKind } from "@/components/template-editor/factory";
 import { TemplateEditor } from "@/components/template-editor/template-editor";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -74,7 +74,10 @@ export default function TemplateEditorClient() {
 			if (!event) return;
 			setSaving(true);
 			try {
-				const layoutJson = serializeLayout(layout);
+				// Bake the derived kind so stored metadata matches the layout's slot
+				// count (e.g. a 4-slot layout must not persist as "single").
+				const finalLayout = { ...layout, kind: deriveKind(layout) };
+				const layoutJson = serializeLayout(finalLayout);
 				if (templateId) {
 					await updateTemplate(templateId, { name, layoutJson, allowedFilters });
 				} else {
