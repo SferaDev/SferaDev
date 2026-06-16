@@ -1,6 +1,7 @@
 "use client";
 
 import { CloudOff, RefreshCw } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useOfflineSync } from "@/hooks/use-offline-sync";
 
 /**
@@ -12,6 +13,7 @@ import { useOfflineSync } from "@/hooks/use-offline-sync";
  */
 export function OfflineSync() {
 	const { online, pending } = useOfflineSync();
+	const t = useTranslations("kiosk.offline");
 
 	if (online && pending === 0) return null;
 
@@ -20,15 +22,13 @@ export function OfflineSync() {
 			{!online && (
 				<>
 					<CloudOff className="h-4 w-4 text-red-400" />
-					<span>Offline</span>
+					<span>{t("offline")}</span>
 				</>
 			)}
 			{pending > 0 && (
 				<>
 					{online && <RefreshCw className="h-4 w-4 animate-spin text-amber-400" />}
-					<span>
-						{pending} photo{pending === 1 ? "" : "s"} waiting to sync
-					</span>
+					<span>{t("waiting", { count: pending })}</span>
 				</>
 			)}
 		</div>

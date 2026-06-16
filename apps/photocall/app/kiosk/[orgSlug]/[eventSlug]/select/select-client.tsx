@@ -3,6 +3,7 @@
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 import useSWR from "swr";
 import { getPublicEvent } from "@/actions/events";
@@ -10,7 +11,7 @@ import { selectTemplate } from "@/actions/sessions";
 import { listPublicTemplates } from "@/actions/templates";
 import { TemplatePreview } from "@/components/template-preview";
 import { Button } from "@/components/ui/button";
-import { ALL_FILTERS, cssFilterFor, FILTER_LABELS } from "@/lib/compose/css-filters";
+import { ALL_FILTERS, cssFilterFor } from "@/lib/compose/css-filters";
 import { parseLayoutJson } from "@/lib/layout/parse";
 import type { FilterKind } from "@/lib/layout/types";
 
@@ -23,6 +24,8 @@ export default function KioskSelectPage() {
 	const orgSlug = params.orgSlug as string;
 	const eventSlug = params.eventSlug as string;
 	const sessionId = searchParams.get("session");
+	const t = useTranslations("kiosk.select");
+	const tCommon = useTranslations("kiosk.common");
 
 	const { data: event, isLoading: eventLoading } = useSWR(
 		["public-event", orgSlug, eventSlug],
@@ -118,19 +121,19 @@ export default function KioskSelectPage() {
 						className="text-white"
 					>
 						<ArrowLeft className="h-5 w-5 mr-2" />
-						Back
+						{tCommon("back")}
 					</Button>
-					<h1 className="text-2xl font-bold">Choose a Frame</h1>
+					<h1 className="text-2xl font-bold">{t("chooseFrame")}</h1>
 					<Button variant="ghost" onClick={handleSkip} className="text-white">
-						Skip
+						{tCommon("skip")}
 					</Button>
 				</div>
 
 				{templates && templates.length === 0 ? (
 					<div className="text-center py-16">
-						<p className="text-xl mb-4">No templates available</p>
+						<p className="text-xl mb-4">{t("noTemplates")}</p>
 						<Button onClick={handleSkip} style={{ backgroundColor: primaryColor }}>
-							Continue without frame
+							{t("continueWithoutFrame")}
 						</Button>
 					</div>
 				) : (
@@ -198,11 +201,17 @@ function FilterChooser({
 	onConfirm,
 	busy,
 }: FilterChooserProps) {
+	const t = useTranslations("kiosk.select");
+	const tCommon = useTranslations("kiosk.common");
+	const tFilters = useTranslations("kiosk.filters");
 	const layout = parseLayoutJson(template.layoutJson);
-	const available =
+	const allowed =
 		template.allowedFilters.length > 0
 			? ALL_FILTERS.filter((f) => template.allowedFilters.includes(f))
 			: ALL_FILTERS;
+	// Guarantee a non-empty list so the default below is always a real filter,
+	// even if allowedFilters holds only unrecognized values.
+	const available = allowed.length > 0 ? allowed : ALL_FILTERS;
 	const [selected, setSelected] = useState<FilterKind>(
 		available.includes(layout?.filter ?? "none") ? (layout?.filter ?? "none") : available[0],
 	);
@@ -213,9 +222,9 @@ function FilterChooser({
 				<div className="flex items-center justify-between mb-8">
 					<Button variant="ghost" onClick={onBack} className="text-white" disabled={busy}>
 						<ArrowLeft className="h-5 w-5 mr-2" />
-						Back
+						{tCommon("back")}
 					</Button>
-					<h1 className="text-2xl font-bold">Pick a Look</h1>
+					<h1 className="text-2xl font-bold">{t("pickLook")}</h1>
 					<div className="w-20" />
 				</div>
 
@@ -259,7 +268,7 @@ function FilterChooser({
 									borderColor: selected === filter ? primaryColor : "transparent",
 								}}
 							/>
-							<span className="text-xs text-white/80">{FILTER_LABELS[filter]}</span>
+							<span className="text-xs text-white/80">{tFilters(filter)}</span>
 						</motion.button>
 					))}
 				</div>
@@ -273,7 +282,7 @@ function FilterChooser({
 						style={{ backgroundColor: primaryColor }}
 					>
 						{busy ? <Loader2 className="h-5 w-5 mr-2 animate-spin" /> : null}
-						Start
+						{tCommon("start")}
 					</Button>
 				</div>
 			</div>

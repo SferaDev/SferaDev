@@ -3,6 +3,7 @@
 import { AlertCircle, ArrowLeft, Camera, Loader2, RotateCcw } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import { getPublicEvent } from "@/actions/events";
@@ -40,6 +41,8 @@ export default function KioskCapturePage() {
 	const templateId = searchParams.get("template");
 	const filterParam = searchParams.get("filter");
 	const filter: FilterKind = isFilterKind(filterParam) ? filterParam : "none";
+	const t = useTranslations("kiosk.capture");
+	const tCommon = useTranslations("kiosk.common");
 
 	const { data: event, isLoading: eventLoading } = useSWR(
 		["public-event", orgSlug, eventSlug],
@@ -141,7 +144,7 @@ export default function KioskCapturePage() {
 			setCaptureError(null);
 			try {
 				const dataUrl = await runCountdownAndCapture();
-				if (!dataUrl) throw new Error("Could not read a frame from the camera.");
+				if (!dataUrl) throw new Error(t("couldNotReadFrame"));
 
 				// Legacy single-photo template (no layout): keep the existing flow.
 				if (!layout) {
@@ -158,7 +161,7 @@ export default function KioskCapturePage() {
 				}
 			} catch (err) {
 				console.error("Capture failed:", err);
-				setCaptureError("Failed to capture photo. Please try again.");
+				setCaptureError(t("captureFailed"));
 			} finally {
 				setBusy(false);
 			}
@@ -173,6 +176,7 @@ export default function KioskCapturePage() {
 			shots,
 			persist,
 			sessionId,
+			t,
 		],
 	);
 
@@ -273,10 +277,10 @@ export default function KioskCapturePage() {
 						className="px-5 py-2 rounded-full bg-black/40 backdrop-blur text-lg font-semibold"
 					>
 						{allShotsTaken
-							? "All shots captured!"
+							? t("allShotsCaptured")
 							: countdown !== null
-								? "Pose!"
-								: `Shot ${nextSlot + 1} of ${shotTotal}`}
+								? t("pose")
+								: t("shotProgress", { current: nextSlot + 1, total: shotTotal })}
 					</motion.div>
 				</div>
 			)}
@@ -314,7 +318,7 @@ export default function KioskCapturePage() {
 									{shot ? (
 										<img
 											src={shot}
-											alt={`Shot ${index + 1}`}
+											alt={t("shotAlt", { index: index + 1 })}
 											className="w-full h-full object-cover"
 											style={{ filter: cssFilterFor(previewFilter) }}
 										/>
@@ -331,7 +335,7 @@ export default function KioskCapturePage() {
 										disabled={busy || countdown !== null}
 										className="text-xs text-white/80 underline disabled:opacity-40"
 									>
-										Retake
+										{t("retake")}
 									</button>
 								)}
 							</div>
@@ -368,7 +372,7 @@ export default function KioskCapturePage() {
 							) : (
 								<Camera className="h-5 w-5 mr-2" />
 							)}
-							Looks good
+							{t("looksGood")}
 						</Button>
 					) : (
 						<Button
@@ -386,7 +390,7 @@ export default function KioskCapturePage() {
 					<div className="w-12" />
 				</div>
 				{layout && autoShoot && !allShotsTaken && (
-					<p className="text-center text-sm text-white/70 mt-4">Auto-shooting…</p>
+					<p className="text-center text-sm text-white/70 mt-4">{t("autoShooting")}</p>
 				)}
 			</div>
 
@@ -394,11 +398,11 @@ export default function KioskCapturePage() {
 			{error && (
 				<div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 z-40 p-8">
 					<AlertCircle className="h-16 w-16 text-destructive mb-4" />
-					<h2 className="text-2xl font-bold mb-2">Camera Error</h2>
+					<h2 className="text-2xl font-bold mb-2">{t("cameraErrorTitle")}</h2>
 					<p className="text-white/60 mb-8 text-center">{error}</p>
 					<Button size="lg" onClick={() => start()} style={{ backgroundColor: primaryColor }}>
 						<RotateCcw className="h-5 w-5 mr-2" />
-						Try Again
+						{tCommon("tryAgain")}
 					</Button>
 				</div>
 			)}
@@ -407,7 +411,7 @@ export default function KioskCapturePage() {
 			{captureError && (
 				<div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 z-40 p-8">
 					<AlertCircle className="h-16 w-16 text-destructive mb-4" />
-					<h2 className="text-2xl font-bold mb-2">Capture Failed</h2>
+					<h2 className="text-2xl font-bold mb-2">{t("captureFailedTitle")}</h2>
 					<p className="text-white/60 mb-8 text-center">{captureError}</p>
 					<Button
 						size="lg"
@@ -415,7 +419,7 @@ export default function KioskCapturePage() {
 						style={{ backgroundColor: primaryColor }}
 					>
 						<RotateCcw className="h-5 w-5 mr-2" />
-						Try Again
+						{tCommon("tryAgain")}
 					</Button>
 				</div>
 			)}

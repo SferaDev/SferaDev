@@ -95,5 +95,116 @@
 		"birthdays": "Aniversaris",
 		"graduations": "Graduacions",
 		"celebrations": "Celebracions"
+	},
+	"kiosk": {
+		"common": {
+			"back": "Enrere",
+			"skip": "Omet",
+			"start": "Comença",
+			"cancel": "Cancel·la",
+			"tryAgain": "Torna-ho a provar",
+			"poweredBy": "Amb la tecnologia de Photocall",
+			"changeLanguage": "Canvia l'idioma"
+		},
+		"loading": {
+			"preparing": "Ho estem preparant tot…",
+			"label": "S'està carregant el quiosc"
+		},
+		"error": {
+			"title": "Alguna cosa ha interromput el quiosc",
+			"description": "No pateixis, el teu esdeveniment està bé. Toca el botó de sota per començar de nou.",
+			"reference": "Referència: {digest}",
+			"startOver": "Comença de nou"
+		},
+		"offline": {
+			"offline": "Sense connexió",
+			"waiting": "{count, plural, one {# foto pendent de sincronitzar} other {# fotos pendents de sincronitzar}}"
+		},
+		"attract": {
+			"defaultWelcome": "Toca per capturar el teu moment",
+			"start": "Comença",
+			"eventNotFoundTitle": "Esdeveniment no trobat",
+			"eventNotFoundDescription": "Aquest esdeveniment no està actiu o no existeix.",
+			"couldNotStart": "No s'ha pogut iniciar la sessió. Torna-ho a provar.",
+			"admin": "Administració",
+			"openAdminControls": "Obre els controls d'administració",
+			"endAdminSession": "Finalitza la sessió d'administració",
+			"pinDialogTitle": "Introdueix el PIN d'administració",
+			"pinDialogDescription": "Desbloqueja els controls d'administració del quiosc. Configura el PIN des de la configuració de l'esdeveniment.",
+			"pinLabel": "PIN",
+			"invalidPin": "PIN incorrecte",
+			"unlock": "Desbloqueja"
+		},
+		"consent": {
+			"loading": "S'està carregant...",
+			"title": "Consentiment de la foto",
+			"description": "En continuar, acceptes que es faci i s'emmagatzemi la teva foto per a aquest esdeveniment. La teva foto es pot mostrar a la presentació de l'esdeveniment i estar disponible per descarregar mitjançant un enllaç únic.",
+			"retention": "Les fotos s'eliminaran automàticament després de {days} dies.",
+			"agree": "Hi estic d'acord",
+			"decline": "No, gràcies"
+		},
+		"select": {
+			"chooseFrame": "Tria un marc",
+			"noTemplates": "No hi ha plantilles disponibles",
+			"continueWithoutFrame": "Continua sense marc",
+			"pickLook": "Tria un estil"
+		},
+		"capture": {
+			"allShotsCaptured": "Totes les fotos capturades!",
+			"pose": "Posa!",
+			"shotProgress": "Foto {current} de {total}",
+			"retake": "Repeteix",
+			"looksGood": "Està perfecta",
+			"autoShooting": "Disparant automàticament…",
+			"shotAlt": "Foto {index}",
+			"cameraErrorTitle": "Error de càmera",
+			"captureFailedTitle": "Error en capturar",
+			"captureFailed": "No s'ha pogut capturar la foto. Torna-ho a provar.",
+			"couldNotReadFrame": "No s'ha pogut llegir un fotograma de la càmera."
+		},
+		"personalize": {
+			"retake": "Repeteix",
+			"title": "Afegeix un text",
+			"capturedPreviewAlt": "Previsualització capturada",
+			"captionLabel": "Text (opcional)",
+			"captionPlaceholder": "Afegeix un missatge...",
+			"captionCount": "{count}/100",
+			"mirrorImage": "Reflecteix la imatge",
+			"on": "Sí",
+			"off": "No",
+			"continue": "Continua"
+		},
+		"result": {
+			"processing": "S'està processant la teva foto...",
+			"photoSaved": "Foto desada!",
+			"defaultThankYou": "Gràcies per fer-te una foto!",
+			"finalResultAlt": "Resultat final",
+			"savedOfflineTitle": "Desada en aquest dispositiu",
+			"savedOfflineDescription": "Ara mateix estàs sense connexió. La teva foto es pujarà automàticament i tindràs un enllaç per compartir quan torni la connexió. Mentrestant pots descarregar-la o imprimir-la a sota.",
+			"photoCode": "El codi de la teva foto",
+			"scanToView": "Escaneja per veure i descarregar",
+			"download": "Descarrega",
+			"print": "Imprimeix",
+			"sendingToPrinter": "S'està enviant a la impressora…",
+			"sentToPrinter": "Enviada a la impressora",
+			"printerOffline": "Impressora sense connexió: s'imprimirà quan es torni a connectar.",
+			"printingFailed": "Error en imprimir. Torna-ho a provar.",
+			"retryPrint": "Reintenta la impressió",
+			"takeAnother": "Fes una altra foto",
+			"somethingWentWrong": "Alguna cosa ha anat malament",
+			"photosNotFound": "No hem pogut trobar les teves fotos. Torna-ho a provar.",
+			"processFailed": "No s'ha pogut processar la teva foto. Torna-ho a provar.",
+			"retry": "Reintenta",
+			"startOver": "Comença de nou"
+		},
+		"filters": {
+			"none": "Original",
+			"bw": "B/N",
+			"warm": "Càlid",
+			"cool": "Fred",
+			"faded": "Esvaït",
+			"vivid": "Viu",
+			"noir": "Noir"
+		}
 	}
 }

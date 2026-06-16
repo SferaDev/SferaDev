@@ -95,5 +95,116 @@
 		"birthdays": "Cumpleaños",
 		"graduations": "Graduaciones",
 		"celebrations": "Celebraciones"
+	},
+	"kiosk": {
+		"common": {
+			"back": "Atrás",
+			"skip": "Omitir",
+			"start": "Empezar",
+			"cancel": "Cancelar",
+			"tryAgain": "Reintentar",
+			"poweredBy": "Con la tecnología de Photocall",
+			"changeLanguage": "Cambiar idioma"
+		},
+		"loading": {
+			"preparing": "Preparándolo todo…",
+			"label": "Cargando el kiosko"
+		},
+		"error": {
+			"title": "Algo ha interrumpido el kiosko",
+			"description": "No te preocupes, tu evento está bien. Toca el botón de abajo para empezar de nuevo.",
+			"reference": "Referencia: {digest}",
+			"startOver": "Empezar de nuevo"
+		},
+		"offline": {
+			"offline": "Sin conexión",
+			"waiting": "{count, plural, one {# foto pendiente de sincronizar} other {# fotos pendientes de sincronizar}}"
+		},
+		"attract": {
+			"defaultWelcome": "Toca para capturar tu momento",
+			"start": "Empezar",
+			"eventNotFoundTitle": "Evento no encontrado",
+			"eventNotFoundDescription": "Este evento no está activo o no existe.",
+			"couldNotStart": "No se pudo iniciar la sesión. Inténtalo de nuevo.",
+			"admin": "Administración",
+			"openAdminControls": "Abrir controles de administración",
+			"endAdminSession": "Finalizar sesión de administración",
+			"pinDialogTitle": "Introduce el PIN de administración",
+			"pinDialogDescription": "Desbloquea los controles de administración del kiosko. Configura el PIN en los ajustes del evento.",
+			"pinLabel": "PIN",
+			"invalidPin": "PIN incorrecto",
+			"unlock": "Desbloquear"
+		},
+		"consent": {
+			"loading": "Cargando...",
+			"title": "Consentimiento de la foto",
+			"description": "Al continuar, aceptas que se tome y almacene tu foto para este evento. Tu foto puede mostrarse en la presentación del evento y estar disponible para descargar mediante un enlace único.",
+			"retention": "Las fotos se eliminarán automáticamente después de {days} días.",
+			"agree": "Acepto",
+			"decline": "No, gracias"
+		},
+		"select": {
+			"chooseFrame": "Elige un marco",
+			"noTemplates": "No hay plantillas disponibles",
+			"continueWithoutFrame": "Continuar sin marco",
+			"pickLook": "Elige un estilo"
+		},
+		"capture": {
+			"allShotsCaptured": "¡Todas las fotos capturadas!",
+			"pose": "¡Posa!",
+			"shotProgress": "Foto {current} de {total}",
+			"retake": "Repetir",
+			"looksGood": "Está perfecta",
+			"autoShooting": "Disparando automáticamente…",
+			"shotAlt": "Foto {index}",
+			"cameraErrorTitle": "Error de cámara",
+			"captureFailedTitle": "Error al capturar",
+			"captureFailed": "No se pudo capturar la foto. Inténtalo de nuevo.",
+			"couldNotReadFrame": "No se pudo leer un fotograma de la cámara."
+		},
+		"personalize": {
+			"retake": "Repetir",
+			"title": "Añade un texto",
+			"capturedPreviewAlt": "Vista previa capturada",
+			"captionLabel": "Texto (opcional)",
+			"captionPlaceholder": "Añade un mensaje...",
+			"captionCount": "{count}/100",
+			"mirrorImage": "Reflejar imagen",
+			"on": "Sí",
+			"off": "No",
+			"continue": "Continuar"
+		},
+		"result": {
+			"processing": "Procesando tu foto...",
+			"photoSaved": "¡Foto guardada!",
+			"defaultThankYou": "¡Gracias por hacerte una foto!",
+			"finalResultAlt": "Resultado final",
+			"savedOfflineTitle": "Guardada en este dispositivo",
+			"savedOfflineDescription": "Ahora mismo estás sin conexión. Tu foto se subirá automáticamente y tendrás un enlace para compartir en cuanto vuelva la conexión. Mientras tanto puedes descargarla o imprimirla abajo.",
+			"photoCode": "El código de tu foto",
+			"scanToView": "Escanea para ver y descargar",
+			"download": "Descargar",
+			"print": "Imprimir",
+			"sendingToPrinter": "Enviando a la impresora…",
+			"sentToPrinter": "Enviada a la impresora",
+			"printerOffline": "Impresora sin conexión: se imprimirá cuando se reconecte.",
+			"printingFailed": "Error al imprimir. Inténtalo de nuevo.",
+			"retryPrint": "Reintentar impresión",
+			"takeAnother": "Hacer otra foto",
+			"somethingWentWrong": "Algo ha salido mal",
+			"photosNotFound": "No hemos podido encontrar tus fotos. Inténtalo de nuevo.",
+			"processFailed": "No se pudo procesar tu foto. Inténtalo de nuevo.",
+			"retry": "Reintentar",
+			"startOver": "Empezar de nuevo"
+		},
+		"filters": {
+			"none": "Original",
+			"bw": "B/N",
+			"warm": "Cálido",
+			"cool": "Frío",
+			"faded": "Desvaído",
+			"vivid": "Vívido",
+			"noir": "Noir"
+		}
 	}
 }
