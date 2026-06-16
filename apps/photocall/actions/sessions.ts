@@ -114,6 +114,8 @@ export async function saveMultiCapture(
 		.set({
 			status: "captured",
 			capturedImageUrls: JSON.stringify(capturedImageUrls),
+			// Clear any legacy single-capture value so it can't be read as a stale fallback.
+			capturedImageUrl: null,
 			shotIndex: capturedImageUrls.length,
 			selectedFilter,
 		})

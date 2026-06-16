@@ -93,7 +93,9 @@ async function drawBackground(
 			break;
 		}
 		case "gradient": {
-			const radians = (background.angle * Math.PI) / 180;
+			// CSS/design-tool convention: 0deg = top->bottom, clockwise. Canvas
+			// angles are measured from the +x axis, so shift by -90deg.
+			const radians = ((background.angle - 90) * Math.PI) / 180;
 			const cx = width / 2;
 			const cy = height / 2;
 			const halfDiagonal = Math.sqrt(width * width + height * height) / 2;
@@ -304,10 +306,13 @@ function coverOrContainImage(
 	sw /= scale;
 	sh /= scale;
 
+	// Pan offsets are normalized to the AVAILABLE crop range (-0.5..0.5 spans
+	// the full pannable area), so panning behaves consistently across zoom
+	// levels and image aspect ratios.
 	const maxSx = img.width - sw;
 	const maxSy = img.height - sh;
-	const sx = clampRange(maxSx / 2 + (slot?.cropOffsetX ?? 0) * img.width, 0, maxSx);
-	const sy = clampRange(maxSy / 2 + (slot?.cropOffsetY ?? 0) * img.height, 0, maxSy);
+	const sx = clampRange(maxSx / 2 + (slot?.cropOffsetX ?? 0) * maxSx, 0, maxSx);
+	const sy = clampRange(maxSy / 2 + (slot?.cropOffsetY ?? 0) * maxSy, 0, maxSy);
 
 	ctx.drawImage(img, sx, sy, sw, sh, dx, dy, dWidth, dHeight);
 }
