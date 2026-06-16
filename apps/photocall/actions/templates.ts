@@ -11,12 +11,47 @@ import {
 	type SafeArea,
 } from "@/lib/db/schema";
 import { parseLayoutJson } from "@/lib/layout/parse";
-import type { FilterKind, LayoutKind } from "@/lib/layout/types";
+import { BUILTIN_PRESETS } from "@/lib/layout/presets";
+import type { BoothLayout, FilterKind, LayoutKind } from "@/lib/layout/types";
 import { deleteFile, generateUploadUrl, getFileUrl } from "@/lib/storage";
 
 export async function generateTemplateUploadUrl(eventId: string) {
 	await requireEventAccess(eventId, ["owner", "admin"]);
 	return await generateUploadUrl("templates", "image/png");
+}
+
+/**
+ * Presigned upload for an editor asset (graphic/sticker or background image).
+ * Returns the `storageKey` to persist in the layout's GraphicLayer.src /
+ * BackgroundImage.src; the compositor resolves it back to a URL via getFileUrl.
+ */
+export async function generateTemplateAssetUploadUrl(
+	eventId: string,
+	contentType: string,
+): Promise<{ uploadUrl: string; storageKey: string }> {
+	await requireEventAccess(eventId, ["owner", "admin"]);
+	const { uploadUrl, key } = await generateUploadUrl("template-assets", contentType);
+	return { uploadUrl, storageKey: key };
+}
+
+/**
+ * Resolve a batch of asset storage keys to readable URLs for editor/preview
+ * rendering. Unknown/empty keys are skipped. Keys that already look like a URL
+ * or data URI are returned unchanged so previews keep working before upload.
+ */
+export async function resolveAssetUrls(
+	eventId: string,
+	storageKeys: string[],
+): Promise<Record<string, string>> {
+	await requireEventAccess(eventId);
+	const unique = Array.from(new Set(storageKeys.filter((key) => key.length > 0)));
+	const entries = await Promise.all(
+		unique.map(async (key): Promise<[string, string]> => {
+			if (/^(https?:|data:|blob:)/.test(key)) return [key, key];
+			return [key, await getFileUrl(key)];
+		}),
+	);
+	return Object.fromEntries(entries);
 }
 
 export async function createTemplate(data: {
@@ -82,6 +117,11 @@ export async function updateTemplate(
 		order?: number;
 		captionPosition?: CaptionPosition;
 		safeArea?: SafeArea;
+		thumbnailStorageKey?: string;
+		/** Photobooth layout JSON (BoothLayout). When present, kind/shotCount derive from it. */
+		layoutJson?: string;
+		presetId?: string | null;
+		allowedFilters?: FilterKind[];
 	},
 ) {
 	const template = await db
@@ -96,7 +136,7 @@ export async function updateTemplate(
 
 	await requireEventAccess(template.eventId, ["owner", "admin"]);
 
-	const updates: Record<string, unknown> = { updatedAt: new Date() };
+	const updates: Partial<typeof schema.templates.$inferInsert> = { updatedAt: new Date() };
 	if (data.name !== undefined) updates.name = data.name;
 	if (data.enabled !== undefined) updates.enabled = data.enabled;
 	if (data.order !== undefined) updates.order = data.order;
@@ -106,8 +146,98 @@ export async function updateTemplate(
 	if (data.safeArea !== undefined) {
 		updates.safeAreaJson = JSON.stringify(data.safeArea);
 	}
+	if (data.thumbnailStorageKey !== undefined) {
+		updates.thumbnailStorageKey = data.thumbnailStorageKey;
+	}
+	if (data.presetId !== undefined) {
+		updates.presetId = data.presetId;
+	}
+	if (data.allowedFilters !== undefined) {
+		updates.allowedFilters = JSON.stringify(data.allowedFilters);
+	}
+	// When a layout is supplied, keep the stored kind/shotCount in sync with it.
+	if (data.layoutJson !== undefined) {
+		updates.layoutJson = data.layoutJson;
+		const layout = parseLayoutJson(data.layoutJson);
+		if (layout) {
+			updates.kind = layout.kind;
+			updates.shotCount = layout.photoSlots.length;
+		}
+	}
 
 	await db.update(schema.templates).set(updates).where(eq(schema.templates.id, templateId));
+}
+
+/**
+ * Fetch a single template (with its parsed layout) for editing in the WYSIWYG
+ * editor. Returns null when the template does not exist.
+ */
+export async function getTemplate(templateId: string) {
+	const template = await db
+		.select()
+		.from(schema.templates)
+		.where(eq(schema.templates.id, templateId))
+		.then((rows) => rows[0]);
+
+	if (!template) return null;
+
+	await requireEventAccess(template.eventId, ["owner", "admin"]);
+
+	return {
+		id: template.id,
+		eventId: template.eventId,
+		name: template.name,
+		enabled: template.enabled,
+		layoutJson: template.layoutJson,
+		layout: parseLayoutJson(template.layoutJson),
+		kind: template.kind,
+		shotCount: template.shotCount,
+		presetId: template.presetId,
+		allowedFilters: parseAllowedFilters(template.allowedFilters),
+		thumbnailStorageKey: template.thumbnailStorageKey,
+	};
+}
+
+export interface PresetSummary {
+	id: string;
+	name: string;
+	kind: LayoutKind;
+	shotCount: number;
+	/** Full BoothLayout to seed the editor (id assigned per-instance on save). */
+	layout: BoothLayout;
+}
+
+/**
+ * List the presets available to start a new layout from. Reads the DB `presets`
+ * table when seeded and falls back to the built-in presets so the editor always
+ * has starting points even on a fresh database.
+ */
+export async function listPresets(): Promise<PresetSummary[]> {
+	const rows = await db.select().from(schema.presets).orderBy(asc(schema.presets.name));
+
+	if (rows.length > 0) {
+		return rows.flatMap((row): PresetSummary[] => {
+			const layout = parseLayoutJson(row.layoutJson);
+			if (!layout) return [];
+			return [
+				{
+					id: row.id,
+					name: row.name,
+					kind: layout.kind,
+					shotCount: layout.photoSlots.length,
+					layout: { ...layout, id: row.id },
+				},
+			];
+		});
+	}
+
+	return BUILTIN_PRESETS.map((preset) => ({
+		id: preset.id,
+		name: preset.name,
+		kind: preset.layout.kind,
+		shotCount: preset.shotCount,
+		layout: { ...preset.layout, id: preset.id },
+	}));
 }
 
 export async function deleteTemplate(templateId: string) {
@@ -121,7 +251,10 @@ export async function deleteTemplate(templateId: string) {
 
 	await requireEventAccess(template.eventId, ["owner", "admin"]);
 
-	await deleteFile(template.storageKey);
+	// Layout-only templates store no PNG overlay (storageKey is empty).
+	if (template.storageKey) {
+		await deleteFile(template.storageKey);
+	}
 	if (template.thumbnailStorageKey) {
 		await deleteFile(template.thumbnailStorageKey);
 	}
@@ -144,7 +277,7 @@ export async function listTemplates(eventId: string, enabledOnly?: boolean) {
 
 	return await Promise.all(
 		filtered.map(async (template) => {
-			const url = await getFileUrl(template.storageKey);
+			const url = template.storageKey ? await getFileUrl(template.storageKey) : null;
 			const thumbnailUrl = template.thumbnailStorageKey
 				? await getFileUrl(template.thumbnailStorageKey)
 				: null;
@@ -180,7 +313,7 @@ export async function listPublicTemplates(eventId: string) {
 
 	return await Promise.all(
 		enabled.map(async (template) => {
-			const url = await getFileUrl(template.storageKey);
+			const url = template.storageKey ? await getFileUrl(template.storageKey) : null;
 			const thumbnailUrl = template.thumbnailStorageKey
 				? await getFileUrl(template.thumbnailStorageKey)
 				: url;

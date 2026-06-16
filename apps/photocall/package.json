@@ -36,6 +36,7 @@
 		"drizzle-orm": "catalog:",
 		"geist": "catalog:",
 		"jszip": "catalog:",
+		"konva": "catalog:",
 		"lucide-react": "catalog:",
 		"motion": "catalog:",
 		"next": "catalog:",
@@ -45,6 +46,7 @@
 		"qrcode": "catalog:",
 		"react": "catalog:",
 		"react-dom": "catalog:",
+		"react-konva": "catalog:",
 		"swr": "catalog:",
 		"tailwind-merge": "catalog:"
 	},
