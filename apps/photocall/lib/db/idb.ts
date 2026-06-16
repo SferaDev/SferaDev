@@ -60,6 +60,8 @@ export function tx<T>(
 				const request = run(transaction.objectStore(store));
 				request.onsuccess = () => resolve(request.result);
 				request.onerror = () => reject(request.error);
+				transaction.onabort = () =>
+					reject(transaction.error ?? new Error("IDBTransaction aborted"));
 				transaction.oncomplete = () => db.close();
 			}),
 	);

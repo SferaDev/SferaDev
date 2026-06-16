@@ -43,6 +43,8 @@ export function usePrintSync(bridgeUrl: string | null | undefined): UsePrintSync
 			await removeQueuedPrint(job.id);
 			return;
 		}
+		// Drop after MAX_ATTEMPTS failed deliveries: `attempts` counts deliveries
+		// already made, so the just-failed one is the (attempts + 1)-th.
 		const attempts = job.attempts + 1;
 		if (attempts >= MAX_ATTEMPTS) {
 			await removeQueuedPrint(job.id);
@@ -62,6 +64,9 @@ export function usePrintSync(bridgeUrl: string | null | undefined): UsePrintSync
 
 		const queued = await getQueuedPrints();
 		for (const job of queued) {
+			// Drop after MAX_ATTEMPTS failed deliveries: a job that already has
+			// MAX_ATTEMPTS recorded has exhausted its retries and is not delivered
+			// again. Mirrors the post-failure check in syncJob().
 			if (job.attempts >= MAX_ATTEMPTS) {
 				await removeQueuedPrint(job.id);
 				continue;

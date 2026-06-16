@@ -109,39 +109,44 @@ export class PrintQueue {
 		job.attempts += 1;
 		this.updateJob(job, { status: "printing" });
 
-		const printer = this.registry.get(job.printerId);
-		if (!printer) {
-			this.pending.shift();
-			this.updateJob(job, { status: "failed", error: "Printer not found" });
-			this.processing = false;
-			void this.processNext();
-			return;
-		}
-
 		try {
-			const result = await printJob(printer.uri, imageBuffer, params, this.ippVersion);
-			this.pending.shift();
-			this.updateJob(job, {
-				status: "done",
-				ippJobId: result.ippJobId,
-				note: result.note,
-				error: undefined,
-			});
-		} catch (error) {
-			const message = error instanceof Error ? error.message : String(error);
-			if (job.attempts >= MAX_ATTEMPTS) {
+			const printer = this.registry.get(job.printerId);
+			if (!printer) {
+				// Printer is gone — drop the job and fall through to the single tail
+				// call below. We must NOT recurse here: doing so while the tail call
+				// also fires would run two processNext() concurrently and
+				// double-dispatch the next job.
 				this.pending.shift();
-				this.updateJob(job, { status: "failed", error: message });
+				this.updateJob(job, { status: "failed", error: "Printer not found" });
 			} else {
-				// Leave it at the head of the queue and retry after backoff.
-				this.updateJob(job, { status: "pending", error: message });
-				this.scheduleRetry(backoffDelay(job.attempts));
+				try {
+					const result = await printJob(printer.uri, imageBuffer, params, this.ippVersion);
+					this.pending.shift();
+					this.updateJob(job, {
+						status: "done",
+						ippJobId: result.ippJobId,
+						note: result.note,
+						error: undefined,
+					});
+				} catch (error) {
+					const message = error instanceof Error ? error.message : String(error);
+					if (job.attempts >= MAX_ATTEMPTS) {
+						this.pending.shift();
+						this.updateJob(job, { status: "failed", error: message });
+					} else {
+						// Leave it at the head of the queue and retry after backoff.
+						this.updateJob(job, { status: "pending", error: message });
+						this.scheduleRetry(backoffDelay(job.attempts));
+					}
+				}
 			}
 		} finally {
+			// Reset `processing` in exactly one place so the tail call can proceed.
 			this.processing = false;
 		}
 
-		// Continue immediately when the previous job succeeded or was dropped.
+		// Single dispatch point: continue immediately when the previous job
+		// succeeded or was dropped. A scheduled retry will resume on its own timer.
 		if (!this.retryTimer) void this.processNext();
 	}
 }
