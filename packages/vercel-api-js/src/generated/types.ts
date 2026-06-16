@@ -1361,6 +1361,16 @@ export const userEventTypeEnum = {
 	"ai-gateway-byok-credential-created": "ai-gateway-byok-credential-created",
 	"ai-gateway-byok-credential-deleted": "ai-gateway-byok-credential-deleted",
 	"ai-gateway-byok-credential-updated": "ai-gateway-byok-credential-updated",
+	"ai-gateway-provider-allowlist-providers-updated":
+		"ai-gateway-provider-allowlist-providers-updated",
+	"ai-gateway-provider-allowlist-toggled": "ai-gateway-provider-allowlist-toggled",
+	"ai-gateway-rule-created": "ai-gateway-rule-created",
+	"ai-gateway-rule-deleted": "ai-gateway-rule-deleted",
+	"ai-gateway-rule-updated": "ai-gateway-rule-updated",
+	"ai-gateway-virtual-model-config-archived": "ai-gateway-virtual-model-config-archived",
+	"ai-gateway-virtual-model-config-created": "ai-gateway-virtual-model-config-created",
+	"ai-gateway-virtual-model-config-restored": "ai-gateway-virtual-model-config-restored",
+	"ai-gateway-virtual-model-config-updated": "ai-gateway-virtual-model-config-updated",
 	"ai-omniagent": "ai-omniagent",
 	"alert-rule-created": "alert-rule-created",
 	"alert-rule-deleted": "alert-rule-deleted",
@@ -1442,6 +1452,7 @@ export const userEventTypeEnum = {
 	"deployment-creation-blocked": "deployment-creation-blocked",
 	"deployment-delete": "deployment-delete",
 	"deployment-policy-blocked": "deployment-policy-blocked",
+	"deployment-undeleted": "deployment-undeleted",
 	"disabled-integration-installation-removed": "disabled-integration-installation-removed",
 	"disconnect-bitbucket-app": "disconnect-bitbucket-app",
 	"disconnect-github": "disconnect-github",
@@ -1450,6 +1461,7 @@ export const userEventTypeEnum = {
 	"disconnect-gitlab-app": "disconnect-gitlab-app",
 	"dns-add": "dns-add",
 	"dns-delete": "dns-delete",
+	"dns-record-internal": "dns-record-internal",
 	"dns-update": "dns-update",
 	"dns-zonefile-import": "dns-zonefile-import",
 	domain: "domain",
@@ -1527,6 +1539,7 @@ export const userEventTypeEnum = {
 	"flags-sdk-key-read": "flags-sdk-key-read",
 	"flags-segment": "flags-segment",
 	"flags-settings": "flags-settings",
+	git_account_integration_link_added: "git_account_integration_link_added",
 	"instant-rollback-created": "instant-rollback-created",
 	"integration-configuration-owner-changed": "integration-configuration-owner-changed",
 	"integration-configuration-scope-change-confirmed":
@@ -1556,6 +1569,7 @@ export const userEventTypeEnum = {
 	"microfrontend-project-added-to-group": "microfrontend-project-added-to-group",
 	"microfrontend-project-removed-from-group": "microfrontend-project-removed-from-group",
 	"microfrontend-project-updated": "microfrontend-project-updated",
+	"monitoring-alert-updated": "monitoring-alert-updated",
 	"monitoring-disabled": "monitoring-disabled",
 	"monitoring-enabled": "monitoring-enabled",
 	"oauth-app-connection-created": "oauth-app-connection-created",
@@ -1571,12 +1585,14 @@ export const userEventTypeEnum = {
 	"observability-enabled": "observability-enabled",
 	"observability-plus-project-disabled": "observability-plus-project-disabled",
 	"observability-plus-project-enabled": "observability-plus-project-enabled",
+	"organization-team-add": "organization-team-add",
 	"owner-blocked": "owner-blocked",
 	"owner-soft-blocked": "owner-soft-blocked",
 	"owner-soft-unblocked": "owner-soft-unblocked",
 	"owner-unblocked": "owner-unblocked",
 	"page-integrity-config-updated": "page-integrity-config-updated",
 	"page-integrity-header-approved": "page-integrity-header-approved",
+	"page-integrity-inventory-cleared": "page-integrity-inventory-cleared",
 	"page-integrity-resource-approved": "page-integrity-resource-approved",
 	"page-integrity-resource-deleted": "page-integrity-resource-deleted",
 	"page-integrity-resource-rejected": "page-integrity-resource-rejected",
@@ -1682,6 +1698,7 @@ export const userEventTypeEnum = {
 	"project-prioritize-production-builds-updated": "project-prioritize-production-builds-updated",
 	"project-program-enrollment-changed": "project-program-enrollment-changed",
 	"project-protected-sourcemaps-updated": "project-protected-sourcemaps-updated",
+	"project-rollback-description-updated": "project-rollback-description-updated",
 	"project-rolling-release-aborted": "project-rolling-release-aborted",
 	"project-rolling-release-approved": "project-rolling-release-approved",
 	"project-rolling-release-completed": "project-rolling-release-completed",
@@ -1697,6 +1714,7 @@ export const userEventTypeEnum = {
 	"project-root-directory-updated": "project-root-directory-updated",
 	"project-routes-version-promoted": "project-routes-version-promoted",
 	"project-routes-version-restored": "project-routes-version-restored",
+	"project-sandbox-url-protection-updated": "project-sandbox-url-protection-updated",
 	"project-skew-protection-allowed-domains-updated":
 		"project-skew-protection-allowed-domains-updated",
 	"project-skew-protection-max-age-updated": "project-skew-protection-max-age-updated",
@@ -1809,6 +1827,8 @@ export const userEventTypeEnum = {
 	"team-tokens-invalidated": "team-tokens-invalidated",
 	"unlink-login-connection": "unlink-login-connection",
 	"user-delete": "user-delete",
+	"user-emu-account-archived": "user-emu-account-archived",
+	"user-emu-account-recovered": "user-emu-account-recovered",
 	"user-mfa-challenge-verified": "user-mfa-challenge-verified",
 	"user-mfa-configuration-updated": "user-mfa-configuration-updated",
 	"user-mfa-recovery-codes-regenerated": "user-mfa-recovery-codes-regenerated",
@@ -1875,40 +1895,53 @@ export type UserEventCategoriesEnumKey =
 	(typeof userEventCategoriesEnum)[keyof typeof userEventCategoriesEnum];
 
 export const actionEnum = {
-	enabled: "enabled",
 	disabled: "disabled",
+	enabled: "enabled",
 } as const;
 
 export type ActionEnumKey = (typeof actionEnum)[keyof typeof actionEnum];
 
+export const providerEnum = {
+	apple: "apple",
+	bitbucket: "bitbucket",
+	chatgpt: "chatgpt",
+	github: "github",
+	"github-custom-host": "github-custom-host",
+	"github-limited": "github-limited",
+	gitlab: "gitlab",
+	google: "google",
+} as const;
+
+export type ProviderEnumKey = (typeof providerEnum)[keyof typeof providerEnum];
+
 export const fromPlanEnum = {
-	pro: "pro",
 	hobby: "hobby",
+	pro: "pro",
 } as const;
 
 export type FromPlanEnumKey = (typeof fromPlanEnum)[keyof typeof fromPlanEnum];
 
 export const toPlanEnum = {
-	pro: "pro",
 	hobby: "hobby",
+	pro: "pro",
 } as const;
 
 export type ToPlanEnumKey = (typeof toPlanEnum)[keyof typeof toPlanEnum];
 
 export const refreshPeriodEnum = {
-	none: "none",
 	daily: "daily",
-	weekly: "weekly",
 	monthly: "monthly",
+	none: "none",
+	weekly: "weekly",
 } as const;
 
 export type RefreshPeriodEnumKey = (typeof refreshPeriodEnum)[keyof typeof refreshPeriodEnum];
 
 export const changeEnum = {
-	set: "set",
-	enable: "enable",
 	disable: "disable",
+	enable: "enable",
 	remove: "remove",
+	set: "set",
 } as const;
 
 export type ChangeEnumKey = (typeof changeEnum)[keyof typeof changeEnum];
@@ -1916,8 +1949,8 @@ export type ChangeEnumKey = (typeof changeEnum)[keyof typeof changeEnum];
 export const nextRoleEnum = {
 	ADMIN: "ADMIN",
 	PROJECT_DEVELOPER: "PROJECT_DEVELOPER",
-	PROJECT_VIEWER: "PROJECT_VIEWER",
 	PROJECT_GUEST: "PROJECT_GUEST",
+	PROJECT_VIEWER: "PROJECT_VIEWER",
 } as const;
 
 export type NextRoleEnumKey = (typeof nextRoleEnum)[keyof typeof nextRoleEnum];
@@ -1925,8 +1958,8 @@ export type NextRoleEnumKey = (typeof nextRoleEnum)[keyof typeof nextRoleEnum];
 export const previousRoleEnum = {
 	ADMIN: "ADMIN",
 	PROJECT_DEVELOPER: "PROJECT_DEVELOPER",
-	PROJECT_VIEWER: "PROJECT_VIEWER",
 	PROJECT_GUEST: "PROJECT_GUEST",
+	PROJECT_VIEWER: "PROJECT_VIEWER",
 } as const;
 
 export type PreviousRoleEnumKey = (typeof previousRoleEnum)[keyof typeof previousRoleEnum];
@@ -1943,61 +1976,50 @@ export type AllowListedReadyStateReasonInternalEnumKey =
 	(typeof allowListedReadyStateReasonInternalEnum)[keyof typeof allowListedReadyStateReasonInternalEnum];
 
 export const settlementMethodEnum = {
-	"refunded-paid": "refunded-paid",
 	"credited-paid": "credited-paid",
+	"credited-payment-pending": "credited-payment-pending",
+	"refunded-paid": "refunded-paid",
+	"refunded-payment-pending": "refunded-payment-pending",
 } as const;
 
 export type SettlementMethodEnumKey =
 	(typeof settlementMethodEnum)[keyof typeof settlementMethodEnum];
 
 export const planSlugEnum = {
-	v0_teams: "v0_teams",
 	v0_business: "v0_business",
+	v0_teams: "v0_teams",
 } as const;
 
 export type PlanSlugEnumKey = (typeof planSlugEnum)[keyof typeof planSlugEnum];
 
 export const reasonEnum = {
+	BLOCKED_FOR_PLATFORM_ABUSE: "BLOCKED_FOR_PLATFORM_ABUSE",
+	ENTERPRISE_TRIAL_ENDED: "ENTERPRISE_TRIAL_ENDED",
 	ENTERPRISE_UNPAID_INVOICE: "ENTERPRISE_UNPAID_INVOICE",
 	EXPOSURE_CAP_EXCEEDED: "EXPOSURE_CAP_EXCEEDED",
+	FAIR_USE_LIMITS_EXCEEDED: "FAIR_USE_LIMITS_EXCEEDED",
 	SUBSCRIPTION_CANCELED: "SUBSCRIPTION_CANCELED",
 	SUBSCRIPTION_EXPIRED: "SUBSCRIPTION_EXPIRED",
 	UNPAID_INVOICE: "UNPAID_INVOICE",
-	ENTERPRISE_TRIAL_ENDED: "ENTERPRISE_TRIAL_ENDED",
-	FAIR_USE_LIMITS_EXCEEDED: "FAIR_USE_LIMITS_EXCEEDED",
-	BLOCKED_FOR_PLATFORM_ABUSE: "BLOCKED_FOR_PLATFORM_ABUSE",
 } as const;
 
 export type ReasonEnumKey = (typeof reasonEnum)[keyof typeof reasonEnum];
 
 export const subjectTypeEnum = {
-	user: "user",
 	app: "app",
+	user: "user",
 } as const;
 
 export type SubjectTypeEnumKey = (typeof subjectTypeEnum)[keyof typeof subjectTypeEnum];
 
 export const commitVerificationEnum = {
-	verified: "verified",
-	unverified: "unverified",
 	unknown: "unknown",
+	unverified: "unverified",
+	verified: "verified",
 } as const;
 
 export type CommitVerificationEnumKey =
 	(typeof commitVerificationEnum)[keyof typeof commitVerificationEnum];
-
-export const providerEnum = {
-	github: "github",
-	"github-limited": "github-limited",
-	"github-custom-host": "github-custom-host",
-	gitlab: "gitlab",
-	bitbucket: "bitbucket",
-	google: "google",
-	apple: "apple",
-	chatgpt: "chatgpt",
-} as const;
-
-export type ProviderEnumKey = (typeof providerEnum)[keyof typeof providerEnum];
 
 export const ruleNameEnum = {
 	deploymentSources: "deploymentSources",
@@ -2007,27 +2029,34 @@ export const ruleNameEnum = {
 export type RuleNameEnumKey = (typeof ruleNameEnum)[keyof typeof ruleNameEnum];
 
 export const ruleProvenanceEnum = {
-	team: "team",
 	default: "default",
 	project: "project",
+	team: "team",
 } as const;
 
 export type RuleProvenanceEnumKey = (typeof ruleProvenanceEnum)[keyof typeof ruleProvenanceEnum];
 
+export const initiatorEnum = {
+	system: "system",
+	user: "user",
+} as const;
+
+export type InitiatorEnumKey = (typeof initiatorEnum)[keyof typeof initiatorEnum];
+
 export const planEnum = {
-	pro: "pro",
 	enterprise: "enterprise",
 	hobby: "hobby",
+	pro: "pro",
 } as const;
 
 export type PlanEnumKey = (typeof planEnum)[keyof typeof planEnum];
 
 export const importFlowGitProviderEnum = {
-	github: "github",
-	"github-limited": "github-limited",
-	"github-custom-host": "github-custom-host",
-	gitlab: "gitlab",
 	bitbucket: "bitbucket",
+	github: "github",
+	"github-custom-host": "github-custom-host",
+	"github-limited": "github-limited",
+	gitlab: "gitlab",
 	vercel: "vercel",
 } as const;
 
@@ -2042,32 +2071,32 @@ export const configurationEnum = {
 export type ConfigurationEnumKey = (typeof configurationEnum)[keyof typeof configurationEnum];
 
 export const defaultEnum = {
-	enhanced: "enhanced",
-	turbo: "turbo",
-	standard: "standard",
 	elastic: "elastic",
+	enhanced: "enhanced",
+	standard: "standard",
+	turbo: "turbo",
 } as const;
 
 export type DefaultEnumKey = (typeof defaultEnum)[keyof typeof defaultEnum];
 
 export const viewPreferenceEnum = {
-	list: "list",
 	cards: "cards",
+	list: "list",
 } as const;
 
 export type ViewPreferenceEnumKey = (typeof viewPreferenceEnum)[keyof typeof viewPreferenceEnum];
 
 export const favoritesViewPreferenceEnum = {
-	open: "open",
 	closed: "closed",
+	open: "open",
 } as const;
 
 export type FavoritesViewPreferenceEnumKey =
 	(typeof favoritesViewPreferenceEnum)[keyof typeof favoritesViewPreferenceEnum];
 
 export const recentsViewPreferenceEnum = {
-	open: "open",
 	closed: "closed",
+	open: "open",
 } as const;
 
 export type RecentsViewPreferenceEnumKey =
@@ -2083,6 +2112,7 @@ export const blockedDueToOverageTypeEnum = {
 	analyticsUsage: "analyticsUsage",
 	artifacts: "artifacts",
 	bandwidth: "bandwidth",
+	blobDataTransfer: "blobDataTransfer",
 	blobTotalAdvancedRequests: "blobTotalAdvancedRequests",
 	blobTotalAvgSizeInBytes: "blobTotalAvgSizeInBytes",
 	blobTotalGetResponseObjectSizeInBytes: "blobTotalGetResponseObjectSizeInBytes",
@@ -2094,8 +2124,8 @@ export const blockedDueToOverageTypeEnum = {
 	edgeConfigWrite: "edgeConfigWrite",
 	edgeFunctionExecutionUnits: "edgeFunctionExecutionUnits",
 	edgeMiddlewareInvocations: "edgeMiddlewareInvocations",
-	edgeRequestAdditionalCpuDuration: "edgeRequestAdditionalCpuDuration",
 	edgeRequest: "edgeRequest",
+	edgeRequestAdditionalCpuDuration: "edgeRequestAdditionalCpuDuration",
 	elasticConcurrencyBuildSlots: "elasticConcurrencyBuildSlots",
 	fastDataTransfer: "fastDataTransfer",
 	fastOriginTransfer: "fastOriginTransfer",
@@ -2108,7 +2138,6 @@ export const blockedDueToOverageTypeEnum = {
 	imageOptimizationTransformation: "imageOptimizationTransformation",
 	logDrainsVolume: "logDrainsVolume",
 	monitoringMetric: "monitoringMetric",
-	blobDataTransfer: "blobDataTransfer",
 	observabilityEvent: "observabilityEvent",
 	onDemandConcurrencyMinutes: "onDemandConcurrencyMinutes",
 	runtimeCacheRead: "runtimeCacheRead",
@@ -2125,47 +2154,47 @@ export type BlockedDueToOverageTypeEnumKey =
 	(typeof blockedDueToOverageTypeEnum)[keyof typeof blockedDueToOverageTypeEnum];
 
 export const roleEnum = {
-	OWNER: "OWNER",
-	MEMBER: "MEMBER",
-	DEVELOPER: "DEVELOPER",
-	SECURITY: "SECURITY",
 	BILLING: "BILLING",
+	CONTRIBUTOR: "CONTRIBUTOR",
+	DEVELOPER: "DEVELOPER",
+	MEMBER: "MEMBER",
+	OWNER: "OWNER",
+	SECURITY: "SECURITY",
 	VIEWER: "VIEWER",
 	VIEWER_FOR_PLUS: "VIEWER_FOR_PLUS",
-	CONTRIBUTOR: "CONTRIBUTOR",
 } as const;
 
 export type RoleEnumKey = (typeof roleEnum)[keyof typeof roleEnum];
 
 export const originEnum = {
-	email: "email",
-	saml: "saml",
 	app: "app",
-	github: "github",
-	gitlab: "gitlab",
-	bitbucket: "bitbucket",
-	google: "google",
 	apple: "apple",
+	bitbucket: "bitbucket",
 	chatgpt: "chatgpt",
-	"github-webhook": "github-webhook",
-	manual: "manual",
-	passkey: "passkey",
-	otp: "otp",
-	sms: "sms",
-	invite: "invite",
-	"token-exchange-oidc": "token-exchange-oidc",
+	email: "email",
 	emu: "emu",
+	github: "github",
+	"github-webhook": "github-webhook",
+	gitlab: "gitlab",
+	google: "google",
+	invite: "invite",
+	manual: "manual",
+	otp: "otp",
+	passkey: "passkey",
+	saml: "saml",
+	sms: "sms",
+	"token-exchange-oidc": "token-exchange-oidc",
 } as const;
 
 export type OriginEnumKey = (typeof originEnum)[keyof typeof originEnum];
 
 export const enablePreviewFeedbackEnum = {
 	default: "default",
-	on: "on",
-	off: "off",
-	"on-force": "on-force",
-	"off-force": "off-force",
 	"default-force": "default-force",
+	off: "off",
+	"off-force": "off-force",
+	on: "on",
+	"on-force": "on-force",
 } as const;
 
 export type EnablePreviewFeedbackEnumKey =
@@ -2173,15 +2202,15 @@ export type EnablePreviewFeedbackEnumKey =
 
 export const blockReasonEnum = {
 	admin_override: "admin_override",
-	limits_exceeded: "limits_exceeded",
 	hard_blocked: "hard_blocked",
+	limits_exceeded: "limits_exceeded",
 } as const;
 
 export type BlockReasonEnumKey = (typeof blockReasonEnum)[keyof typeof blockReasonEnum];
 
 export const blockTypeEnum = {
-	soft: "soft",
 	hard: "hard",
+	soft: "soft",
 } as const;
 
 export type BlockTypeEnumKey = (typeof blockTypeEnum)[keyof typeof blockTypeEnum];
@@ -2190,6 +2219,7 @@ export const overageReasonEnum = {
 	analyticsUsage: "analyticsUsage",
 	artifacts: "artifacts",
 	bandwidth: "bandwidth",
+	blobDataTransfer: "blobDataTransfer",
 	blobTotalAdvancedRequests: "blobTotalAdvancedRequests",
 	blobTotalAvgSizeInBytes: "blobTotalAvgSizeInBytes",
 	blobTotalGetResponseObjectSizeInBytes: "blobTotalGetResponseObjectSizeInBytes",
@@ -2201,8 +2231,8 @@ export const overageReasonEnum = {
 	edgeConfigWrite: "edgeConfigWrite",
 	edgeFunctionExecutionUnits: "edgeFunctionExecutionUnits",
 	edgeMiddlewareInvocations: "edgeMiddlewareInvocations",
-	edgeRequestAdditionalCpuDuration: "edgeRequestAdditionalCpuDuration",
 	edgeRequest: "edgeRequest",
+	edgeRequestAdditionalCpuDuration: "edgeRequestAdditionalCpuDuration",
 	elasticConcurrencyBuildSlots: "elasticConcurrencyBuildSlots",
 	fastDataTransfer: "fastDataTransfer",
 	fastOriginTransfer: "fastOriginTransfer",
@@ -2215,7 +2245,6 @@ export const overageReasonEnum = {
 	imageOptimizationTransformation: "imageOptimizationTransformation",
 	logDrainsVolume: "logDrainsVolume",
 	monitoringMetric: "monitoringMetric",
-	blobDataTransfer: "blobDataTransfer",
 	observabilityEvent: "observabilityEvent",
 	onDemandConcurrencyMinutes: "onDemandConcurrencyMinutes",
 	runtimeCacheRead: "runtimeCacheRead",
@@ -2237,52 +2266,59 @@ export const versionEnum = {
 export type VersionEnumKey = (typeof versionEnum)[keyof typeof versionEnum];
 
 export const methodEnum = {
-	none: "none",
 	client_secret_basic: "client_secret_basic",
-	client_secret_post: "client_secret_post",
 	client_secret_jwt: "client_secret_jwt",
-	private_key_jwt: "private_key_jwt",
+	client_secret_post: "client_secret_post",
+	none: "none",
 	oidc_token: "oidc_token",
+	private_key_jwt: "private_key_jwt",
 } as const;
 
 export type MethodEnumKey = (typeof methodEnum)[keyof typeof methodEnum];
 
 export const actorTypeEnum = {
-	user: "user",
 	admin: "admin",
+	user: "user",
 } as const;
 
 export type ActorTypeEnumKey = (typeof actorTypeEnum)[keyof typeof actorTypeEnum];
 
 export const queryTypeEnum = {
-	user: "user",
-	schema: "schema",
-	"data-view": "data-view",
 	"data-edit": "data-edit",
+	"data-view": "data-view",
+	schema: "schema",
+	user: "user",
 } as const;
 
 export type QueryTypeEnumKey = (typeof queryTypeEnum)[keyof typeof queryTypeEnum];
 
+export const billingPlanEnum = {
+	enterprise: "enterprise",
+	platform: "platform",
+} as const;
+
+export type BillingPlanEnumKey = (typeof billingPlanEnum)[keyof typeof billingPlanEnum];
+
 export const newResourceBlockingPolicyEnum = {
-	block: "block",
 	allow: "allow",
+	block: "block",
 } as const;
 
 export type NewResourceBlockingPolicyEnumKey =
 	(typeof newResourceBlockingPolicyEnum)[keyof typeof newResourceBlockingPolicyEnum];
 
 export const kindEnum = {
-	script: "script",
 	connectSrc: "connectSrc",
+	script: "script",
 } as const;
 
 export type KindEnumKey = (typeof kindEnum)[keyof typeof kindEnum];
 
 export const deploymentTypeEnum = {
 	all: "all",
+	all_except_custom_domains: "all_except_custom_domains",
 	preview: "preview",
 	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
-	all_except_custom_domains: "all_except_custom_domains",
 } as const;
 
 export type DeploymentTypeEnumKey = (typeof deploymentTypeEnum)[keyof typeof deploymentTypeEnum];
@@ -2304,27 +2340,27 @@ export type OldBuildQueueConfigurationEnumKey =
 	(typeof oldBuildQueueConfigurationEnum)[keyof typeof oldBuildQueueConfigurationEnum];
 
 export const gitProviderEnum = {
-	github: "github",
-	"github-limited": "github-limited",
-	"github-custom-host": "github-custom-host",
-	gitlab: "gitlab",
 	bitbucket: "bitbucket",
+	github: "github",
+	"github-custom-host": "github-custom-host",
+	"github-limited": "github-limited",
+	gitlab: "gitlab",
 	vercel: "vercel",
 } as const;
 
 export type GitProviderEnumKey = (typeof gitProviderEnum)[keyof typeof gitProviderEnum];
 
 export const createDeploymentsEnum = {
-	enabled: "enabled",
 	disabled: "disabled",
+	enabled: "enabled",
 } as const;
 
 export type CreateDeploymentsEnumKey =
 	(typeof createDeploymentsEnum)[keyof typeof createDeploymentsEnum];
 
 export const reasonCodeEnum = {
-	PUBLIC_API: "PUBLIC_API",
 	BACKOFFICE: "BACKOFFICE",
+	PUBLIC_API: "PUBLIC_API",
 } as const;
 
 export type ReasonCodeEnumKey = (typeof reasonCodeEnum)[keyof typeof reasonCodeEnum];
@@ -2337,17 +2373,17 @@ export const consentEnum = {
 export type ConsentEnumKey = (typeof consentEnum)[keyof typeof consentEnum];
 
 export const issuerModeEnum = {
-	team: "team",
 	global: "global",
+	team: "team",
 } as const;
 
 export type IssuerModeEnumKey = (typeof issuerModeEnum)[keyof typeof issuerModeEnum];
 
 export const cve55182MigrationAppliedFromEnum = {
 	all: "all",
+	all_except_custom_domains: "all_except_custom_domains",
 	preview: "preview",
 	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
-	all_except_custom_domains: "all_except_custom_domains",
 } as const;
 
 export type Cve55182MigrationAppliedFromEnumKey =
@@ -2355,9 +2391,9 @@ export type Cve55182MigrationAppliedFromEnumKey =
 
 export const april2026SecurityIncidentMigrationAppliedFromEnum = {
 	all: "all",
+	all_except_custom_domains: "all_except_custom_domains",
 	preview: "preview",
 	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
-	all_except_custom_domains: "all_except_custom_domains",
 } as const;
 
 export type April2026SecurityIncidentMigrationAppliedFromEnumKey =
@@ -2365,9 +2401,9 @@ export type April2026SecurityIncidentMigrationAppliedFromEnumKey =
 
 export const trustedIpsEnum = {
 	all: "all",
+	all_except_custom_domains: "all_except_custom_domains",
 	preview: "preview",
 	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
-	all_except_custom_domains: "all_except_custom_domains",
 	production: "production",
 } as const;
 
@@ -2375,59 +2411,59 @@ export type TrustedIpsEnumKey = (typeof trustedIpsEnum)[keyof typeof trustedIpsE
 
 export const oldTrustedIpsEnum = {
 	all: "all",
+	all_except_custom_domains: "all_except_custom_domains",
 	preview: "preview",
 	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
-	all_except_custom_domains: "all_except_custom_domains",
 	production: "production",
 } as const;
 
 export type OldTrustedIpsEnumKey = (typeof oldTrustedIpsEnum)[keyof typeof oldTrustedIpsEnum];
 
 export const pricingPlanEnum = {
+	legacy: "legacy",
 	platform: "platform",
 	plus: "plus",
-	legacy: "legacy",
 	unbundled: "unbundled",
 } as const;
 
 export type PricingPlanEnumKey = (typeof pricingPlanEnum)[keyof typeof pricingPlanEnum];
 
 export const storeTypeEnum = {
-	redis: "redis",
 	postgres: "postgres",
+	redis: "redis",
 } as const;
 
 export type StoreTypeEnumKey = (typeof storeTypeEnum)[keyof typeof storeTypeEnum];
 
 export const accessEnum = {
-	public: "public",
 	private: "private",
+	public: "public",
 } as const;
 
 export type AccessEnumKey = (typeof accessEnum)[keyof typeof accessEnum];
 
 export const scopeEnum = {
-	user: "user",
-	team: "team",
 	project: "project",
+	team: "team",
+	user: "user",
 } as const;
 
 export type ScopeEnumKey = (typeof scopeEnum)[keyof typeof scopeEnum];
 
 export const previousEnum = {
-	enhanced: "enhanced",
-	turbo: "turbo",
-	standard: "standard",
 	elastic: "elastic",
+	enhanced: "enhanced",
+	standard: "standard",
+	turbo: "turbo",
 } as const;
 
 export type PreviousEnumKey = (typeof previousEnum)[keyof typeof previousEnum];
 
 export const nextEnum = {
-	enhanced: "enhanced",
-	turbo: "turbo",
-	standard: "standard",
 	elastic: "elastic",
+	enhanced: "enhanced",
+	standard: "standard",
+	turbo: "turbo",
 } as const;
 
 export type NextEnumKey = (typeof nextEnum)[keyof typeof nextEnum];
@@ -2441,54 +2477,55 @@ export type EnvironmentEnumKey = (typeof environmentEnum)[keyof typeof environme
 
 export const enabledEnum = {
 	default: "default",
-	on: "on",
 	off: "off",
+	on: "on",
 } as const;
 
 export type EnabledEnumKey = (typeof enabledEnum)[keyof typeof enabledEnum];
 
 export const previousPlanEnum = {
-	pro: "pro",
 	enterprise: "enterprise",
 	hobby: "hobby",
+	pro: "pro",
 } as const;
 
 export type PreviousPlanEnumKey = (typeof previousPlanEnum)[keyof typeof previousPlanEnum];
 
 export const newPlanEnum = {
-	pro: "pro",
 	enterprise: "enterprise",
 	hobby: "hobby",
+	pro: "pro",
 } as const;
 
 export type NewPlanEnumKey = (typeof newPlanEnum)[keyof typeof newPlanEnum];
 
 export const sourceEnum = {
-	link: "link",
-	teams: "teams",
-	saml: "saml",
-	github: "github",
-	gitlab: "gitlab",
+	"account-update": "account-update",
 	bitbucket: "bitbucket",
-	mail: "mail",
-	import: "import",
 	dsync: "dsync",
 	feedback: "feedback",
-	"organization-teams": "organization-teams",
+	github: "github",
+	gitlab: "gitlab",
+	import: "import",
+	link: "link",
+	mail: "mail",
 	"nsnb-auto-approve": "nsnb-auto-approve",
 	"nsnb-hobby-upgrade": "nsnb-hobby-upgrade",
-	"nsnb-request-access": "nsnb-request-access",
-	"nsnb-viewer-upgrade": "nsnb-viewer-upgrade",
 	"nsnb-invite": "nsnb-invite",
 	"nsnb-redeploy": "nsnb-redeploy",
 	"nsnb-redeploy-attribution-card": "nsnb-redeploy-attribution-card",
+	"nsnb-request-access": "nsnb-request-access",
+	"nsnb-viewer-upgrade": "nsnb-viewer-upgrade",
+	"organization-teams": "organization-teams",
+	saml: "saml",
+	teams: "teams",
 } as const;
 
 export type SourceEnumKey = (typeof sourceEnum)[keyof typeof sourceEnum];
 
 export const tierEnum = {
-	pro: "pro",
 	plus: "plus",
+	pro: "pro",
 } as const;
 
 export type TierEnumKey = (typeof tierEnum)[keyof typeof tierEnum];
@@ -2501,23 +2538,23 @@ export const grantTypeEnum = {
 export type GrantTypeEnumKey = (typeof grantTypeEnum)[keyof typeof grantTypeEnum];
 
 export const authMethodEnum = {
-	email: "email",
-	saml: "saml",
 	app: "app",
-	github: "github",
-	gitlab: "gitlab",
-	bitbucket: "bitbucket",
-	google: "google",
 	apple: "apple",
+	bitbucket: "bitbucket",
 	chatgpt: "chatgpt",
-	"github-webhook": "github-webhook",
-	manual: "manual",
-	passkey: "passkey",
-	otp: "otp",
-	sms: "sms",
-	invite: "invite",
-	"token-exchange-oidc": "token-exchange-oidc",
+	email: "email",
 	emu: "emu",
+	github: "github",
+	"github-webhook": "github-webhook",
+	gitlab: "gitlab",
+	google: "google",
+	invite: "invite",
+	manual: "manual",
+	otp: "otp",
+	passkey: "passkey",
+	saml: "saml",
+	sms: "sms",
+	"token-exchange-oidc": "token-exchange-oidc",
 } as const;
 
 export type AuthMethodEnumKey = (typeof authMethodEnum)[keyof typeof authMethodEnum];
@@ -2809,17 +2846,29 @@ export type UserEvent = {
 				  }
 				| {
 						/**
+						 * @description Present on new events only. Equivalent to \"stripe\" when absent.
+						 * @type string | undefined
+						 */
+						provider?: ProviderEnumKey | undefined;
+						/**
+						 * @description Present on new events only. Equivalent to `stripeAccount` when absent.
+						 * @type string | undefined
+						 */
+						providerAccount?: string | undefined;
+						/**
+						 * @description Present when `provider` is \"stripe\". Equivalent to `providerAccount`.
+						 * @type string | undefined
+						 */
+						stripeAccount?: string | undefined;
+						/**
+						 * @description Present when `provider` is \"stripe\".
+						 * @type string | undefined
+						 */
+						stripeOrganisation?: string | undefined;
+						/**
 						 * @type string
 						 */
 						teamId: string;
-						/**
-						 * @type string
-						 */
-						stripeAccount: string;
-						/**
-						 * @type string
-						 */
-						stripeOrganisation: string;
 						/**
 						 * @type string
 						 */
@@ -2827,15 +2876,51 @@ export type UserEvent = {
 				  }
 				| {
 						/**
-						 * @type string
+						 * @description Present on new events only. Equivalent to \"stripe\" when absent.
+						 * @type string | undefined
 						 */
-						teamId: string;
+						provider?: ProviderEnumKey | undefined;
+						/**
+						 * @description Present on new events only. Equivalent to `stripeAccount` when absent.
+						 * @type string | undefined
+						 */
+						providerAccount?: string | undefined;
+						/**
+						 * @description Present when `provider` is \"stripe\". Equivalent to `providerAccount`.
+						 * @type string | undefined
+						 */
+						stripeAccount?: string | undefined;
+						/**
+						 * @description Present when `provider` is \"stripe\".
+						 * @type string | undefined
+						 */
+						stripeOrganisation?: string | undefined;
 						/**
 						 * @type string
 						 */
-						stripeAccount: string;
+						teamId: string;
 				  }
 				| {
+						/**
+						 * @description Present on new events only. Equivalent to \"stripe\" when absent.
+						 * @type string | undefined
+						 */
+						provider?: ProviderEnumKey | undefined;
+						/**
+						 * @description Present on new events only. Equivalent to `stripeAccount` when absent.
+						 * @type string | undefined
+						 */
+						providerAccount?: string | undefined;
+						/**
+						 * @description Present when `provider` is \"stripe\". Equivalent to `providerAccount`.
+						 * @type string | undefined
+						 */
+						stripeAccount?: string | undefined;
+						/**
+						 * @description Present when `provider` is \"stripe\".
+						 * @type string | undefined
+						 */
+						stripeOrganisation?: string | undefined;
 						/**
 						 * @type string
 						 */
@@ -2844,12 +2929,28 @@ export type UserEvent = {
 						 * @type string
 						 */
 						teamSlug: string;
-						/**
-						 * @type string
-						 */
-						stripeAccount: string;
 				  }
 				| {
+						/**
+						 * @description Present on new events only. Equivalent to \"stripe\" when absent.
+						 * @type string | undefined
+						 */
+						provider?: ProviderEnumKey | undefined;
+						/**
+						 * @description Present on new events only. Equivalent to `stripeAccount` when absent.
+						 * @type string | undefined
+						 */
+						providerAccount?: string | undefined;
+						/**
+						 * @description Present when `provider` is \"stripe\". Equivalent to `providerAccount`.
+						 * @type string | undefined
+						 */
+						stripeAccount?: string | undefined;
+						/**
+						 * @description Present when `provider` is \"stripe\".
+						 * @type string | undefined
+						 */
+						stripeOrganisation?: string | undefined;
 						/**
 						 * @type string
 						 */
@@ -2861,6 +2962,21 @@ export type UserEvent = {
 				  }
 				| {
 						/**
+						 * @description Present on new events only. Equivalent to \"stripe\" when absent.
+						 * @type string | undefined
+						 */
+						provider?: ProviderEnumKey | undefined;
+						/**
+						 * @description Present on new events only. Equivalent to `stripeAccount` when absent.
+						 * @type string | undefined
+						 */
+						providerAccount?: string | undefined;
+						/**
+						 * @description Present when `provider` is \"stripe\". Equivalent to `providerAccount`.
+						 * @type string | undefined
+						 */
+						stripeAccount?: string | undefined;
+						/**
 						 * @type string
 						 */
 						resourceId: string;
@@ -2870,6 +2986,26 @@ export type UserEvent = {
 						projectName: string;
 				  }
 				| {
+						/**
+						 * @description Present on new events only. Equivalent to \"stripe\" when absent.
+						 * @type string | undefined
+						 */
+						provider?: ProviderEnumKey | undefined;
+						/**
+						 * @description Present on new events only. Equivalent to `stripeAccount` when absent.
+						 * @type string | undefined
+						 */
+						providerAccount?: string | undefined;
+						/**
+						 * @description Present when `provider` is \"stripe\". Equivalent to `providerAccount`.
+						 * @type string | undefined
+						 */
+						stripeAccount?: string | undefined;
+						/**
+						 * @description Present when `provider` is \"stripe\".
+						 * @type string | undefined
+						 */
+						stripeOrganisation?: string | undefined;
 						/**
 						 * @type string
 						 */
@@ -2987,6 +3123,106 @@ export type UserEvent = {
 							 * @type string
 							 */
 							providerSlug: string;
+						};
+				  }
+				| {
+						/**
+						 * @type boolean
+						 */
+						enabled: false | true;
+				  }
+				| {
+						/**
+						 * @type array
+						 */
+						added: string[];
+						/**
+						 * @type array
+						 */
+						removed: string[];
+				  }
+				| {
+						/**
+						 * @type object
+						 */
+						rule: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string
+							 */
+							type: string;
+							/**
+							 * @type string | undefined
+							 */
+							model?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							rewriteModel?: string | undefined;
+						};
+				  }
+				| {
+						/**
+						 * @type object
+						 */
+						rule: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string
+							 */
+							type: string;
+							/**
+							 * @type string | undefined
+							 */
+							model?: string | undefined;
+						};
+				  }
+				| {
+						/**
+						 * @type object
+						 */
+						rule: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string
+							 */
+							type: string;
+							/**
+							 * @type string | undefined
+							 */
+							model?: string | undefined;
+						};
+						/**
+						 * @type boolean | undefined
+						 */
+						enabled?: (false | true) | undefined;
+				  }
+				| {
+						/**
+						 * @type object
+						 */
+						virtualModelConfig: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string | undefined
+							 */
+							displayName?: string | undefined;
+							/**
+							 * @type string
+							 */
+							modelSlug: string;
 						};
 				  }
 				| {
@@ -3380,9 +3616,17 @@ export type UserEvent = {
 						/**
 						 * @type string | undefined
 						 */
+						projectId?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
 						projectName?: string | undefined;
 				  }
 				| {
+						/**
+						 * @type string | undefined
+						 */
+						projectId?: string | undefined;
 						/**
 						 * @type string
 						 */
@@ -3450,48 +3694,52 @@ export type UserEvent = {
 						/**
 						 * @type array
 						 */
-						scopes: ("openid" | "email" | "profile" | "offline_access")[];
+						scopes: ("email" | "offline_access" | "openid" | "profile")[];
 						/**
 						 * @type array | undefined
 						 */
 						permissions?:
 							| (
-									| "read:user"
-									| "read:domain"
-									| "read-write:domain"
-									| "read:team"
-									| "read:billing"
-									| "read-write:billing"
 									| "read-write:ai-gateway-api-key"
-									| "use:ai-gateway"
-									| "read-write:project-env-vars"
+									| "read-write:ai-gateway-rules"
+									| "read-write:alerts"
+									| "read-write:billing"
+									| "read-write:blob"
+									| "read-write:deployment"
+									| "read-write:domain"
+									| "read-write:domain-registrar"
 									| "read-write:drains"
+									| "read-write:edge-cache"
 									| "read-write:edge-config"
-									| "read:monitoring"
-									| "read:access-group"
-									| "read:integration-configuration"
 									| "read-write:integration-configuration"
 									| "read-write:integration-resource"
-									| "read-write:blob"
-									| "read:event"
-									| "read-write:remote-cache"
-									| "read:kms"
 									| "read-write:kms"
-									| "read:project"
 									| "read-write:project"
-									| "read:deployment"
-									| "read-write:deployment"
-									| "read-write:edge-cache"
-									| "read-write:project-protection-bypass"
-									| "read:project-env-vars-non-production"
+									| "read-write:project-env-vars"
 									| "read-write:project-env-vars-non-production"
-									| "read:project-env-vars-production"
 									| "read-write:project-env-vars-production"
 									| "read-write:project-flags-non-production"
 									| "read-write:project-flags-production"
-									| "read-write:domain-registrar"
-									| "read:sandbox"
+									| "read-write:project-protection-bypass"
+									| "read-write:remote-cache"
 									| "read-write:sandbox"
+									| "read:access-group"
+									| "read:ai-gateway-rules"
+									| "read:alerts"
+									| "read:billing"
+									| "read:deployment"
+									| "read:domain"
+									| "read:event"
+									| "read:integration-configuration"
+									| "read:kms"
+									| "read:monitoring"
+									| "read:project"
+									| "read:project-env-vars-non-production"
+									| "read:project-env-vars-production"
+									| "read:sandbox"
+									| "read:team"
+									| "read:user"
+									| "use:ai-gateway"
 							  )[]
 							| undefined;
 				  }
@@ -3517,48 +3765,52 @@ export type UserEvent = {
 						/**
 						 * @type array
 						 */
-						nextScopes: ("openid" | "email" | "profile" | "offline_access")[];
+						nextScopes: ("email" | "offline_access" | "openid" | "profile")[];
 						/**
 						 * @type array | undefined
 						 */
 						nextPermissions?:
 							| (
-									| "read:user"
-									| "read:domain"
-									| "read-write:domain"
-									| "read:team"
-									| "read:billing"
-									| "read-write:billing"
 									| "read-write:ai-gateway-api-key"
-									| "use:ai-gateway"
-									| "read-write:project-env-vars"
+									| "read-write:ai-gateway-rules"
+									| "read-write:alerts"
+									| "read-write:billing"
+									| "read-write:blob"
+									| "read-write:deployment"
+									| "read-write:domain"
+									| "read-write:domain-registrar"
 									| "read-write:drains"
+									| "read-write:edge-cache"
 									| "read-write:edge-config"
-									| "read:monitoring"
-									| "read:access-group"
-									| "read:integration-configuration"
 									| "read-write:integration-configuration"
 									| "read-write:integration-resource"
-									| "read-write:blob"
-									| "read:event"
-									| "read-write:remote-cache"
-									| "read:kms"
 									| "read-write:kms"
-									| "read:project"
 									| "read-write:project"
-									| "read:deployment"
-									| "read-write:deployment"
-									| "read-write:edge-cache"
-									| "read-write:project-protection-bypass"
-									| "read:project-env-vars-non-production"
+									| "read-write:project-env-vars"
 									| "read-write:project-env-vars-non-production"
-									| "read:project-env-vars-production"
 									| "read-write:project-env-vars-production"
 									| "read-write:project-flags-non-production"
 									| "read-write:project-flags-production"
-									| "read-write:domain-registrar"
-									| "read:sandbox"
+									| "read-write:project-protection-bypass"
+									| "read-write:remote-cache"
 									| "read-write:sandbox"
+									| "read:access-group"
+									| "read:ai-gateway-rules"
+									| "read:alerts"
+									| "read:billing"
+									| "read:deployment"
+									| "read:domain"
+									| "read:event"
+									| "read:integration-configuration"
+									| "read:kms"
+									| "read:monitoring"
+									| "read:project"
+									| "read:project-env-vars-non-production"
+									| "read:project-env-vars-production"
+									| "read:sandbox"
+									| "read:team"
+									| "read:user"
+									| "use:ai-gateway"
 							  )[]
 							| undefined;
 				  }
@@ -3615,41 +3867,45 @@ export type UserEvent = {
 									 */
 									permissions?:
 										| (
-												| "read:domain"
-												| "read-write:domain"
-												| "read:team"
-												| "read:billing"
-												| "read-write:billing"
 												| "read-write:ai-gateway-api-key"
-												| "use:ai-gateway"
-												| "read-write:project-env-vars"
+												| "read-write:ai-gateway-rules"
+												| "read-write:alerts"
+												| "read-write:billing"
+												| "read-write:blob"
+												| "read-write:deployment"
+												| "read-write:domain"
+												| "read-write:domain-registrar"
 												| "read-write:drains"
+												| "read-write:edge-cache"
 												| "read-write:edge-config"
-												| "read:monitoring"
-												| "read:access-group"
-												| "read:integration-configuration"
 												| "read-write:integration-configuration"
 												| "read-write:integration-resource"
-												| "read-write:blob"
-												| "read:event"
-												| "read-write:remote-cache"
-												| "read:kms"
 												| "read-write:kms"
-												| "read:project"
 												| "read-write:project"
-												| "read:deployment"
-												| "read-write:deployment"
-												| "read-write:edge-cache"
-												| "read-write:project-protection-bypass"
-												| "read:project-env-vars-non-production"
+												| "read-write:project-env-vars"
 												| "read-write:project-env-vars-non-production"
-												| "read:project-env-vars-production"
 												| "read-write:project-env-vars-production"
 												| "read-write:project-flags-non-production"
 												| "read-write:project-flags-production"
-												| "read-write:domain-registrar"
-												| "read:sandbox"
+												| "read-write:project-protection-bypass"
+												| "read-write:remote-cache"
 												| "read-write:sandbox"
+												| "read:access-group"
+												| "read:ai-gateway-rules"
+												| "read:alerts"
+												| "read:billing"
+												| "read:deployment"
+												| "read:domain"
+												| "read:event"
+												| "read:integration-configuration"
+												| "read:kms"
+												| "read:monitoring"
+												| "read:project"
+												| "read:project-env-vars-non-production"
+												| "read:project-env-vars-production"
+												| "read:sandbox"
+												| "read:team"
+												| "use:ai-gateway"
 										  )[]
 										| undefined;
 							  }
@@ -3694,41 +3950,45 @@ export type UserEvent = {
 									 */
 									permissions?:
 										| (
-												| "read:domain"
-												| "read-write:domain"
-												| "read:team"
-												| "read:billing"
-												| "read-write:billing"
 												| "read-write:ai-gateway-api-key"
-												| "use:ai-gateway"
-												| "read-write:project-env-vars"
+												| "read-write:ai-gateway-rules"
+												| "read-write:alerts"
+												| "read-write:billing"
+												| "read-write:blob"
+												| "read-write:deployment"
+												| "read-write:domain"
+												| "read-write:domain-registrar"
 												| "read-write:drains"
+												| "read-write:edge-cache"
 												| "read-write:edge-config"
-												| "read:monitoring"
-												| "read:access-group"
-												| "read:integration-configuration"
 												| "read-write:integration-configuration"
 												| "read-write:integration-resource"
-												| "read-write:blob"
-												| "read:event"
-												| "read-write:remote-cache"
-												| "read:kms"
 												| "read-write:kms"
-												| "read:project"
 												| "read-write:project"
-												| "read:deployment"
-												| "read-write:deployment"
-												| "read-write:edge-cache"
-												| "read-write:project-protection-bypass"
-												| "read:project-env-vars-non-production"
+												| "read-write:project-env-vars"
 												| "read-write:project-env-vars-non-production"
-												| "read:project-env-vars-production"
 												| "read-write:project-env-vars-production"
 												| "read-write:project-flags-non-production"
 												| "read-write:project-flags-production"
-												| "read-write:domain-registrar"
-												| "read:sandbox"
+												| "read-write:project-protection-bypass"
+												| "read-write:remote-cache"
 												| "read-write:sandbox"
+												| "read:access-group"
+												| "read:ai-gateway-rules"
+												| "read:alerts"
+												| "read:billing"
+												| "read:deployment"
+												| "read:domain"
+												| "read:event"
+												| "read:integration-configuration"
+												| "read:kms"
+												| "read:monitoring"
+												| "read:project"
+												| "read:project-env-vars-non-production"
+												| "read:project-env-vars-production"
+												| "read:sandbox"
+												| "read:team"
+												| "use:ai-gateway"
 										  )[]
 										| undefined;
 							  }
@@ -3778,41 +4038,45 @@ export type UserEvent = {
 						 */
 						permissions?:
 							| (
-									| "read:domain"
-									| "read-write:domain"
-									| "read:team"
-									| "read:billing"
-									| "read-write:billing"
 									| "read-write:ai-gateway-api-key"
-									| "use:ai-gateway"
-									| "read-write:project-env-vars"
+									| "read-write:ai-gateway-rules"
+									| "read-write:alerts"
+									| "read-write:billing"
+									| "read-write:blob"
+									| "read-write:deployment"
+									| "read-write:domain"
+									| "read-write:domain-registrar"
 									| "read-write:drains"
+									| "read-write:edge-cache"
 									| "read-write:edge-config"
-									| "read:monitoring"
-									| "read:access-group"
-									| "read:integration-configuration"
 									| "read-write:integration-configuration"
 									| "read-write:integration-resource"
-									| "read-write:blob"
-									| "read:event"
-									| "read-write:remote-cache"
-									| "read:kms"
 									| "read-write:kms"
-									| "read:project"
 									| "read-write:project"
-									| "read:deployment"
-									| "read-write:deployment"
-									| "read-write:edge-cache"
-									| "read-write:project-protection-bypass"
-									| "read:project-env-vars-non-production"
+									| "read-write:project-env-vars"
 									| "read-write:project-env-vars-non-production"
-									| "read:project-env-vars-production"
 									| "read-write:project-env-vars-production"
 									| "read-write:project-flags-non-production"
 									| "read-write:project-flags-production"
-									| "read-write:domain-registrar"
-									| "read:sandbox"
+									| "read-write:project-protection-bypass"
+									| "read-write:remote-cache"
 									| "read-write:sandbox"
+									| "read:access-group"
+									| "read:ai-gateway-rules"
+									| "read:alerts"
+									| "read:billing"
+									| "read:deployment"
+									| "read:domain"
+									| "read:event"
+									| "read:integration-configuration"
+									| "read:kms"
+									| "read:monitoring"
+									| "read:project"
+									| "read:project-env-vars-non-production"
+									| "read:project-env-vars-production"
+									| "read:sandbox"
+									| "read:team"
+									| "use:ai-gateway"
 							  )[]
 							| undefined;
 				  }
@@ -3888,6 +4152,10 @@ export type UserEvent = {
 						attackModeActiveUntil?: (number | null) | undefined;
 				  }
 				| {
+						/**
+						 * @type string | undefined
+						 */
+						projectId?: string | undefined;
 						/**
 						 * @type string
 						 */
@@ -4362,6 +4630,16 @@ export type UserEvent = {
 						 * @type string
 						 */
 						newName: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						githubLogin: string;
+						/**
+						 * @type string | undefined
+						 */
+						host?: string | undefined;
 				  }
 				| {
 						/**
@@ -6191,6 +6469,10 @@ export type UserEvent = {
 						 */
 						gitUserPlatform: string;
 						/**
+						 * @type string | undefined
+						 */
+						projectId?: string | undefined;
+						/**
 						 * @type string
 						 */
 						projectName: string;
@@ -6238,9 +6520,18 @@ export type UserEvent = {
 				  }
 				| {
 						/**
+						 * @type string | undefined
+						 */
+						projectId?: string | undefined;
+						/**
 						 * @type string
 						 */
 						projectName: string;
+						/**
+						 * @description The blocked deployment\'s id (e.g. `dpl_…`). When present, the message links it to the deployment details (inspector) page. Optional so events emitted before this field was added still render.
+						 * @type string | undefined
+						 */
+						deploymentId?: string | undefined;
 						/**
 						 * @description Classified deploy source, e.g. \'cli\', \'git\', \'integration\'.
 						 * @type string
@@ -6256,6 +6547,28 @@ export type UserEvent = {
 						 * @type string
 						 */
 						ruleProvenance: RuleProvenanceEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						deploymentId: string;
+						/**
+						 * @type string
+						 */
+						deploymentUrl: string | null;
+						/**
+						 * @type string
+						 */
+						deploymentName: string | null;
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
 				  }
 				| {
 						/**
@@ -6308,6 +6621,48 @@ export type UserEvent = {
 						 * @type number | undefined
 						 */
 						mxPriority?: number | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						action: ActionEnumKey;
+						/**
+						 * @type string
+						 */
+						initiator: InitiatorEnumKey;
+						/**
+						 * @type string
+						 */
+						id: string;
+						/**
+						 * @type string
+						 */
+						domain: string;
+						/**
+						 * @type string
+						 */
+						name: string;
+						/**
+						 * @type string
+						 */
+						type: string;
+						/**
+						 * @type string
+						 */
+						value: string;
+						/**
+						 * @type number | undefined
+						 */
+						mxPriority?: number | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						previousValue?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						source?: string | undefined;
 				  }
 				| {
 						/**
@@ -6981,7 +7336,7 @@ export type UserEvent = {
 						 * @example production
 						 * @type array | undefined
 						 */
-						target?: ("production" | "preview" | "development")[] | undefined;
+						target?: ("development" | "preview" | "production")[] | undefined;
 						/**
 						 * @description whether or not this env varible applies to custom environments
 						 * @type boolean | undefined
@@ -7104,7 +7459,7 @@ export type UserEvent = {
 									 * @example production
 									 * @type array | undefined
 									 */
-									target?: ("production" | "preview" | "development")[] | undefined;
+									target?: ("development" | "preview" | "production")[] | undefined;
 									/**
 									 * @description whether or not this env varible applies to custom environments
 									 * @type boolean | undefined
@@ -7219,7 +7574,7 @@ export type UserEvent = {
 									 * @example production
 									 * @type array | undefined
 									 */
-									target?: ("production" | "preview" | "development")[] | undefined;
+									target?: ("development" | "preview" | "production")[] | undefined;
 									/**
 									 * @description whether or not this env varible applies to custom environments
 									 * @type boolean | undefined
@@ -7267,11 +7622,11 @@ export type UserEvent = {
 									/**
 									 * @type array | undefined
 									 */
-									oldTarget?: ("production" | "preview" | "development")[] | undefined;
+									oldTarget?: ("development" | "preview" | "production")[] | undefined;
 									/**
 									 * @type array | undefined
 									 */
-									newTarget?: ("production" | "preview" | "development")[] | undefined;
+									newTarget?: ("development" | "preview" | "production")[] | undefined;
 									/**
 									 * @type string | undefined
 									 */
@@ -7588,6 +7943,44 @@ export type UserEvent = {
 										 * @type string | undefined
 										 */
 										scheduledUnblockAt?: string | undefined;
+										/**
+										 * @description Since June 2026. A hard block that is scheduled (the delay varies by source; see `executeAt`) but not yet executed. Powers admin visibility, scheduler dedup, and cancellation. Cleared on execution or when the team is unblocked/reviewed before `executeAt`; the executor treats its absence as \"block cancelled\".
+										 * @type object | undefined
+										 */
+										scheduledBlock?:
+											| {
+													/**
+													 * @description Unix ms timestamp of the scheduled EventBridge execution.
+													 * @type number
+													 */
+													executeAt: number;
+													/**
+													 * @description Violation reason (string value of the `Violation` enum).
+													 * @type string
+													 */
+													reason: string;
+													/**
+													 * @description What triggered the scheduled block (string value of `TeamBlockSource`).
+													 * @type string
+													 */
+													source: string;
+													/**
+													 * @description Unix ms timestamp of when the marker was written.
+													 * @type number
+													 */
+													createdAt: number;
+													/**
+													 * @description Absent from the automated evaluation path, which has no case.
+													 * @type string | undefined
+													 */
+													caseId?: string | undefined;
+													/**
+													 * @description EventBridge schedule name, persisted so the pending event can be cancelled.
+													 * @type string | undefined
+													 */
+													scheduleName?: string | undefined;
+											  }
+											| undefined;
 										/**
 										 * @description Since November 2021
 										 * @type number
@@ -8201,14 +8594,14 @@ export type UserEvent = {
 										 */
 										teamRoles?:
 											| (
-													| "OWNER"
-													| "MEMBER"
-													| "DEVELOPER"
-													| "SECURITY"
 													| "BILLING"
+													| "CONTRIBUTOR"
+													| "DEVELOPER"
+													| "MEMBER"
+													| "OWNER"
+													| "SECURITY"
 													| "VIEWER"
 													| "VIEWER_FOR_PLUS"
-													| "CONTRIBUTOR"
 											  )[]
 											| undefined;
 										/**
@@ -8216,12 +8609,14 @@ export type UserEvent = {
 										 */
 										teamPermissions?:
 											| (
-													| "IntegrationManager"
 													| "CreateProject"
-													| "FullProductionDeployment"
-													| "UsageViewer"
 													| "EnvVariableManager"
 													| "EnvironmentManager"
+													| "FullProductionDeployment"
+													| "IntegrationManager"
+													| "OrgAdmin"
+													| "OrgViewer"
+													| "UsageViewer"
 													| "V0Builder"
 													| "V0Chatter"
 													| "V0Viewer"
@@ -9473,6 +9868,29 @@ export type UserEvent = {
 													blockReason: BlockReasonEnumKey;
 											  }
 											| undefined;
+										/**
+										 * @type object | undefined
+										 */
+										connexTokenRequests?:
+											| {
+													/**
+													 * @type number
+													 */
+													updatedAt: number;
+													/**
+													 * @type number | undefined
+													 */
+													blockedFrom?: number | undefined;
+													/**
+													 * @type number | undefined
+													 */
+													blockedUntil?: number | undefined;
+													/**
+													 * @type string
+													 */
+													blockReason: BlockReasonEnumKey;
+											  }
+											| undefined;
 								  }
 								| undefined;
 							/**
@@ -10414,7 +10832,35 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
+						alertId: string;
+						/**
+						 * @type string
+						 */
+						alertName: string;
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						projectId?: string | undefined;
+						/**
+						 * @type string
+						 */
 						projectName: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						organizationId: string;
+						/**
+						 * @type string
+						 */
+						teamId: string;
+						/**
+						 * @type string
+						 */
+						billingPlan: BillingPlanEnumKey;
 				  }
 				| {
 						/**
@@ -10568,6 +11014,36 @@ export type UserEvent = {
 						 * @type string
 						 */
 						justification: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type number
+						 */
+						deletedCount: number;
+						/**
+						 * @type number
+						 */
+						scriptCount: number;
+						/**
+						 * @type number
+						 */
+						connectSrcCount: number;
+						/**
+						 * @type number
+						 */
+						connectSrcOriginCount: number;
+						/**
+						 * @type number
+						 */
+						headerCount: number;
 				  }
 				| {
 						/**
@@ -11058,6 +11534,10 @@ export type UserEvent = {
 				  }
 				| {
 						/**
+						 * @type string | undefined
+						 */
+						projectId?: string | undefined;
+						/**
 						 * @type string
 						 */
 						projectName: string;
@@ -11214,9 +11694,9 @@ export type UserEvent = {
 						 */
 						projectName: string;
 						/**
-						 * @type string | undefined
+						 * @type string
 						 */
-						avatar?: string | undefined;
+						avatar?: (string | null) | undefined;
 				  }
 				| {
 						/**
@@ -12340,6 +12820,14 @@ export type UserEvent = {
 				  }
 				| {
 						/**
+						 * @type string | undefined
+						 */
+						previousProjectId?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						newProjectId?: string | undefined;
+						/**
 						 * @type string
 						 */
 						previousProjectName: string;
@@ -12357,6 +12845,10 @@ export type UserEvent = {
 						transferId?: string | undefined;
 				  }
 				| {
+						/**
+						 * @type string | undefined
+						 */
+						previousProjectId?: string | undefined;
 						/**
 						 * @type string
 						 */
@@ -12397,6 +12889,14 @@ export type UserEvent = {
 						transferId?: string | undefined;
 				  }
 				| {
+						/**
+						 * @type string | undefined
+						 */
+						previousProjectId?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						newProjectId?: string | undefined;
 						/**
 						 * @type string
 						 */
@@ -12489,9 +12989,9 @@ export type UserEvent = {
 									  }
 									| (
 											| "all"
+											| "all_except_custom_domains"
 											| "preview"
 											| "prod_deployment_urls_and_all_previews"
-											| "all_except_custom_domains"
 									  )
 							  )
 							| null;
@@ -12505,9 +13005,9 @@ export type UserEvent = {
 									  }
 									| (
 											| "all"
+											| "all_except_custom_domains"
 											| "preview"
 											| "prod_deployment_urls_and_all_previews"
-											| "all_except_custom_domains"
 									  )
 							  )
 							| null;
@@ -12540,6 +13040,10 @@ export type UserEvent = {
 				  }
 				| {
 						/**
+						 * @type string | undefined
+						 */
+						projectId?: string | undefined;
+						/**
 						 * @type string
 						 */
 						projectName: string;
@@ -12547,6 +13051,52 @@ export type UserEvent = {
 						 * @type string
 						 */
 						consent: ConsentEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string
+						 */
+						projectAccountId: string;
+						/**
+						 * @type string
+						 */
+						deploymentId: string;
+						/**
+						 * @description Description of why a project was rolled back, and by whom. Note that lastAliasRequest contains the from/to details of the rollback.
+						 * @type object | undefined
+						 */
+						rollbackDescription?:
+							| {
+									/**
+									 * @description The user who rolled back the project.
+									 * @type string
+									 */
+									userId: string;
+									/**
+									 * @description The username of the user who rolled back the project.
+									 * @type string
+									 */
+									username: string;
+									/**
+									 * @description User-supplied explanation of why they rolled back the project. Limited to 250 characters.
+									 * @type string
+									 */
+									description: string;
+									/**
+									 * @description Timestamp of when the rollback was requested.
+									 * @type number
+									 */
+									createdAt: number;
+							  }
+							| undefined;
 				  }
 				| {
 						/**
@@ -12685,6 +13235,20 @@ export type UserEvent = {
 						 * @type boolean
 						 */
 						protectedSourcemaps: false | true;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type boolean
+						 */
+						inheritDeploymentProtection: false | true;
 				  }
 				| {
 						/**
@@ -12867,9 +13431,9 @@ export type UserEvent = {
 									  }
 									| (
 											| "all"
+											| "all_except_custom_domains"
 											| "preview"
 											| "prod_deployment_urls_and_all_previews"
-											| "all_except_custom_domains"
 									  )
 							  )
 							| null;
@@ -12895,9 +13459,9 @@ export type UserEvent = {
 									  }
 									| (
 											| "all"
+											| "all_except_custom_domains"
 											| "preview"
 											| "prod_deployment_urls_and_all_previews"
-											| "all_except_custom_domains"
 									  )
 							  )
 							| null;
@@ -13958,12 +14522,6 @@ export type UserEvent = {
 				  }
 				| {
 						/**
-						 * @type boolean
-						 */
-						enabled: false | true;
-				  }
-				| {
-						/**
 						 * @type number
 						 */
 						trialCreditsIssuedAt: number;
@@ -14618,14 +15176,14 @@ export type UserEvent = {
 												accessGroupId: string;
 										  }
 										| (
-												| "OWNER"
-												| "MEMBER"
-												| "DEVELOPER"
-												| "SECURITY"
 												| "BILLING"
+												| "CONTRIBUTOR"
+												| "DEVELOPER"
+												| "MEMBER"
+												| "OWNER"
+												| "SECURITY"
 												| "VIEWER"
 												| "VIEWER_FOR_PLUS"
-												| "CONTRIBUTOR"
 										  );
 							  }
 							| undefined;
@@ -14642,14 +15200,14 @@ export type UserEvent = {
 												accessGroupId: string;
 										  }
 										| (
-												| "OWNER"
-												| "MEMBER"
-												| "DEVELOPER"
-												| "SECURITY"
 												| "BILLING"
+												| "CONTRIBUTOR"
+												| "DEVELOPER"
+												| "MEMBER"
+												| "OWNER"
+												| "SECURITY"
 												| "VIEWER"
 												| "VIEWER_FOR_PLUS"
-												| "CONTRIBUTOR"
 										  );
 							  }
 							| undefined;
@@ -14744,6 +15302,12 @@ export type UserEvent = {
 				  }
 				| {
 						/**
+						 * @type string
+						 */
+						username: string;
+				  }
+				| {
+						/**
 						 * @type object
 						 */
 						previous: {
@@ -14810,12 +15374,6 @@ export type UserEvent = {
 						 * @type string
 						 */
 						prevEmail: string;
-				  }
-				| {
-						/**
-						 * @type string
-						 */
-						username: string;
 				  }
 				| {
 						/**
@@ -15561,6 +16119,16 @@ export const listEventTypeNameEnum = {
 	"ai-gateway-byok-credential-created": "ai-gateway-byok-credential-created",
 	"ai-gateway-byok-credential-deleted": "ai-gateway-byok-credential-deleted",
 	"ai-gateway-byok-credential-updated": "ai-gateway-byok-credential-updated",
+	"ai-gateway-provider-allowlist-providers-updated":
+		"ai-gateway-provider-allowlist-providers-updated",
+	"ai-gateway-provider-allowlist-toggled": "ai-gateway-provider-allowlist-toggled",
+	"ai-gateway-rule-created": "ai-gateway-rule-created",
+	"ai-gateway-rule-deleted": "ai-gateway-rule-deleted",
+	"ai-gateway-rule-updated": "ai-gateway-rule-updated",
+	"ai-gateway-virtual-model-config-archived": "ai-gateway-virtual-model-config-archived",
+	"ai-gateway-virtual-model-config-created": "ai-gateway-virtual-model-config-created",
+	"ai-gateway-virtual-model-config-restored": "ai-gateway-virtual-model-config-restored",
+	"ai-gateway-virtual-model-config-updated": "ai-gateway-virtual-model-config-updated",
 	"ai-omniagent": "ai-omniagent",
 	"alert-rule-created": "alert-rule-created",
 	"alert-rule-deleted": "alert-rule-deleted",
@@ -15642,6 +16210,7 @@ export const listEventTypeNameEnum = {
 	"deployment-creation-blocked": "deployment-creation-blocked",
 	"deployment-delete": "deployment-delete",
 	"deployment-policy-blocked": "deployment-policy-blocked",
+	"deployment-undeleted": "deployment-undeleted",
 	"disabled-integration-installation-removed": "disabled-integration-installation-removed",
 	"disconnect-bitbucket-app": "disconnect-bitbucket-app",
 	"disconnect-github": "disconnect-github",
@@ -15650,6 +16219,7 @@ export const listEventTypeNameEnum = {
 	"disconnect-gitlab-app": "disconnect-gitlab-app",
 	"dns-add": "dns-add",
 	"dns-delete": "dns-delete",
+	"dns-record-internal": "dns-record-internal",
 	"dns-update": "dns-update",
 	"dns-zonefile-import": "dns-zonefile-import",
 	domain: "domain",
@@ -15727,6 +16297,7 @@ export const listEventTypeNameEnum = {
 	"flags-sdk-key-read": "flags-sdk-key-read",
 	"flags-segment": "flags-segment",
 	"flags-settings": "flags-settings",
+	git_account_integration_link_added: "git_account_integration_link_added",
 	"instant-rollback-created": "instant-rollback-created",
 	"integration-configuration-owner-changed": "integration-configuration-owner-changed",
 	"integration-configuration-scope-change-confirmed":
@@ -15756,6 +16327,7 @@ export const listEventTypeNameEnum = {
 	"microfrontend-project-added-to-group": "microfrontend-project-added-to-group",
 	"microfrontend-project-removed-from-group": "microfrontend-project-removed-from-group",
 	"microfrontend-project-updated": "microfrontend-project-updated",
+	"monitoring-alert-updated": "monitoring-alert-updated",
 	"monitoring-disabled": "monitoring-disabled",
 	"monitoring-enabled": "monitoring-enabled",
 	"oauth-app-connection-created": "oauth-app-connection-created",
@@ -15771,12 +16343,14 @@ export const listEventTypeNameEnum = {
 	"observability-enabled": "observability-enabled",
 	"observability-plus-project-disabled": "observability-plus-project-disabled",
 	"observability-plus-project-enabled": "observability-plus-project-enabled",
+	"organization-team-add": "organization-team-add",
 	"owner-blocked": "owner-blocked",
 	"owner-soft-blocked": "owner-soft-blocked",
 	"owner-soft-unblocked": "owner-soft-unblocked",
 	"owner-unblocked": "owner-unblocked",
 	"page-integrity-config-updated": "page-integrity-config-updated",
 	"page-integrity-header-approved": "page-integrity-header-approved",
+	"page-integrity-inventory-cleared": "page-integrity-inventory-cleared",
 	"page-integrity-resource-approved": "page-integrity-resource-approved",
 	"page-integrity-resource-deleted": "page-integrity-resource-deleted",
 	"page-integrity-resource-rejected": "page-integrity-resource-rejected",
@@ -15882,6 +16456,7 @@ export const listEventTypeNameEnum = {
 	"project-prioritize-production-builds-updated": "project-prioritize-production-builds-updated",
 	"project-program-enrollment-changed": "project-program-enrollment-changed",
 	"project-protected-sourcemaps-updated": "project-protected-sourcemaps-updated",
+	"project-rollback-description-updated": "project-rollback-description-updated",
 	"project-rolling-release-aborted": "project-rolling-release-aborted",
 	"project-rolling-release-approved": "project-rolling-release-approved",
 	"project-rolling-release-completed": "project-rolling-release-completed",
@@ -15897,6 +16472,7 @@ export const listEventTypeNameEnum = {
 	"project-root-directory-updated": "project-root-directory-updated",
 	"project-routes-version-promoted": "project-routes-version-promoted",
 	"project-routes-version-restored": "project-routes-version-restored",
+	"project-sandbox-url-protection-updated": "project-sandbox-url-protection-updated",
 	"project-skew-protection-allowed-domains-updated":
 		"project-skew-protection-allowed-domains-updated",
 	"project-skew-protection-max-age-updated": "project-skew-protection-max-age-updated",
@@ -16009,6 +16585,8 @@ export const listEventTypeNameEnum = {
 	"team-tokens-invalidated": "team-tokens-invalidated",
 	"unlink-login-connection": "unlink-login-connection",
 	"user-delete": "user-delete",
+	"user-emu-account-archived": "user-emu-account-archived",
+	"user-emu-account-recovered": "user-emu-account-recovered",
 	"user-mfa-challenge-verified": "user-mfa-challenge-verified",
 	"user-mfa-configuration-updated": "user-mfa-configuration-updated",
 	"user-mfa-recovery-codes-regenerated": "user-mfa-recovery-codes-regenerated",
@@ -16097,6 +16675,16 @@ export const listEventTypeReplacedByEnum = {
 	"ai-gateway-byok-credential-created": "ai-gateway-byok-credential-created",
 	"ai-gateway-byok-credential-deleted": "ai-gateway-byok-credential-deleted",
 	"ai-gateway-byok-credential-updated": "ai-gateway-byok-credential-updated",
+	"ai-gateway-provider-allowlist-providers-updated":
+		"ai-gateway-provider-allowlist-providers-updated",
+	"ai-gateway-provider-allowlist-toggled": "ai-gateway-provider-allowlist-toggled",
+	"ai-gateway-rule-created": "ai-gateway-rule-created",
+	"ai-gateway-rule-deleted": "ai-gateway-rule-deleted",
+	"ai-gateway-rule-updated": "ai-gateway-rule-updated",
+	"ai-gateway-virtual-model-config-archived": "ai-gateway-virtual-model-config-archived",
+	"ai-gateway-virtual-model-config-created": "ai-gateway-virtual-model-config-created",
+	"ai-gateway-virtual-model-config-restored": "ai-gateway-virtual-model-config-restored",
+	"ai-gateway-virtual-model-config-updated": "ai-gateway-virtual-model-config-updated",
 	"ai-omniagent": "ai-omniagent",
 	"alert-rule-created": "alert-rule-created",
 	"alert-rule-deleted": "alert-rule-deleted",
@@ -16178,6 +16766,7 @@ export const listEventTypeReplacedByEnum = {
 	"deployment-creation-blocked": "deployment-creation-blocked",
 	"deployment-delete": "deployment-delete",
 	"deployment-policy-blocked": "deployment-policy-blocked",
+	"deployment-undeleted": "deployment-undeleted",
 	"disabled-integration-installation-removed": "disabled-integration-installation-removed",
 	"disconnect-bitbucket-app": "disconnect-bitbucket-app",
 	"disconnect-github": "disconnect-github",
@@ -16186,6 +16775,7 @@ export const listEventTypeReplacedByEnum = {
 	"disconnect-gitlab-app": "disconnect-gitlab-app",
 	"dns-add": "dns-add",
 	"dns-delete": "dns-delete",
+	"dns-record-internal": "dns-record-internal",
 	"dns-update": "dns-update",
 	"dns-zonefile-import": "dns-zonefile-import",
 	domain: "domain",
@@ -16263,6 +16853,7 @@ export const listEventTypeReplacedByEnum = {
 	"flags-sdk-key-read": "flags-sdk-key-read",
 	"flags-segment": "flags-segment",
 	"flags-settings": "flags-settings",
+	git_account_integration_link_added: "git_account_integration_link_added",
 	"instant-rollback-created": "instant-rollback-created",
 	"integration-configuration-owner-changed": "integration-configuration-owner-changed",
 	"integration-configuration-scope-change-confirmed":
@@ -16292,6 +16883,7 @@ export const listEventTypeReplacedByEnum = {
 	"microfrontend-project-added-to-group": "microfrontend-project-added-to-group",
 	"microfrontend-project-removed-from-group": "microfrontend-project-removed-from-group",
 	"microfrontend-project-updated": "microfrontend-project-updated",
+	"monitoring-alert-updated": "monitoring-alert-updated",
 	"monitoring-disabled": "monitoring-disabled",
 	"monitoring-enabled": "monitoring-enabled",
 	"oauth-app-connection-created": "oauth-app-connection-created",
@@ -16307,12 +16899,14 @@ export const listEventTypeReplacedByEnum = {
 	"observability-enabled": "observability-enabled",
 	"observability-plus-project-disabled": "observability-plus-project-disabled",
 	"observability-plus-project-enabled": "observability-plus-project-enabled",
+	"organization-team-add": "organization-team-add",
 	"owner-blocked": "owner-blocked",
 	"owner-soft-blocked": "owner-soft-blocked",
 	"owner-soft-unblocked": "owner-soft-unblocked",
 	"owner-unblocked": "owner-unblocked",
 	"page-integrity-config-updated": "page-integrity-config-updated",
 	"page-integrity-header-approved": "page-integrity-header-approved",
+	"page-integrity-inventory-cleared": "page-integrity-inventory-cleared",
 	"page-integrity-resource-approved": "page-integrity-resource-approved",
 	"page-integrity-resource-deleted": "page-integrity-resource-deleted",
 	"page-integrity-resource-rejected": "page-integrity-resource-rejected",
@@ -16418,6 +17012,7 @@ export const listEventTypeReplacedByEnum = {
 	"project-prioritize-production-builds-updated": "project-prioritize-production-builds-updated",
 	"project-program-enrollment-changed": "project-program-enrollment-changed",
 	"project-protected-sourcemaps-updated": "project-protected-sourcemaps-updated",
+	"project-rollback-description-updated": "project-rollback-description-updated",
 	"project-rolling-release-aborted": "project-rolling-release-aborted",
 	"project-rolling-release-approved": "project-rolling-release-approved",
 	"project-rolling-release-completed": "project-rolling-release-completed",
@@ -16433,6 +17028,7 @@ export const listEventTypeReplacedByEnum = {
 	"project-root-directory-updated": "project-root-directory-updated",
 	"project-routes-version-promoted": "project-routes-version-promoted",
 	"project-routes-version-restored": "project-routes-version-restored",
+	"project-sandbox-url-protection-updated": "project-sandbox-url-protection-updated",
 	"project-skew-protection-allowed-domains-updated":
 		"project-skew-protection-allowed-domains-updated",
 	"project-skew-protection-max-age-updated": "project-skew-protection-max-age-updated",
@@ -16545,6 +17141,8 @@ export const listEventTypeReplacedByEnum = {
 	"team-tokens-invalidated": "team-tokens-invalidated",
 	"unlink-login-connection": "unlink-login-connection",
 	"user-delete": "user-delete",
+	"user-emu-account-archived": "user-emu-account-archived",
+	"user-emu-account-recovered": "user-emu-account-recovered",
 	"user-mfa-challenge-verified": "user-mfa-challenge-verified",
 	"user-mfa-configuration-updated": "user-mfa-configuration-updated",
 	"user-mfa-recovery-codes-regenerated": "user-mfa-recovery-codes-regenerated",
@@ -17345,6 +17943,95 @@ export type Flag = {
 		| undefined;
 };
 
+export const marketplaceFlagTypeNameEnum = {
+	marketplaceFlag: "marketplaceFlag",
+} as const;
+
+export type MarketplaceFlagTypeNameEnumKey =
+	(typeof marketplaceFlagTypeNameEnum)[keyof typeof marketplaceFlagTypeNameEnum];
+
+export const marketplaceFlagStateEnum = {
+	active: "active",
+	archived: "archived",
+} as const;
+
+export type MarketplaceFlagStateEnumKey =
+	(typeof marketplaceFlagStateEnum)[keyof typeof marketplaceFlagStateEnum];
+
+export const marketplaceFlagCategoryEnum = {
+	experiment: "experiment",
+	flag: "flag",
+} as const;
+
+export type MarketplaceFlagCategoryEnumKey =
+	(typeof marketplaceFlagCategoryEnum)[keyof typeof marketplaceFlagCategoryEnum];
+
+/**
+ * @type object
+ */
+export type MarketplaceFlag = {
+	/**
+	 * @type string
+	 */
+	typeName: MarketplaceFlagTypeNameEnumKey;
+	/**
+	 * @type string
+	 */
+	id: string;
+	/**
+	 * @type string
+	 */
+	externalId: string;
+	/**
+	 * @type string
+	 */
+	slug: string;
+	/**
+	 * @type string
+	 */
+	origin: string;
+	/**
+	 * @type string
+	 */
+	ownerId: string;
+	/**
+	 * @type string
+	 */
+	projectId: string;
+	/**
+	 * @type string
+	 */
+	resourceId: string;
+	/**
+	 * @type string
+	 */
+	integrationConfigurationId: string;
+	/**
+	 * @type string
+	 */
+	state: MarketplaceFlagStateEnumKey;
+	/**
+	 * @type string | undefined
+	 */
+	name?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	description?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	category?: MarketplaceFlagCategoryEnumKey | undefined;
+	/**
+	 * @type number | undefined
+	 */
+	createdAt?: number | undefined;
+	/**
+	 * @type number | undefined
+	 */
+	updatedAt?: number | undefined;
+};
+
 export const segmentTypeNameEnum = {
 	segment: "segment",
 } as const;
@@ -17371,34 +18058,6 @@ export type Segment = {
 	 * @type array | undefined
 	 */
 	usedBySegments?: string[] | undefined;
-	/**
-	 * @type string
-	 */
-	id: string;
-	/**
-	 * @type string
-	 */
-	label: string;
-	/**
-	 * @type string
-	 */
-	slug: string;
-	/**
-	 * @type number
-	 */
-	createdAt: number;
-	/**
-	 * @type number
-	 */
-	updatedAt: number;
-	/**
-	 * @type string
-	 */
-	projectId: string;
-	/**
-	 * @type string
-	 */
-	typeName: SegmentTypeNameEnumKey;
 	/**
 	 * @type object
 	 */
@@ -17588,6 +18247,34 @@ export type Segment = {
 			  }
 			| undefined;
 	};
+	/**
+	 * @type string
+	 */
+	id: string;
+	/**
+	 * @type string
+	 */
+	label: string;
+	/**
+	 * @type string
+	 */
+	slug: string;
+	/**
+	 * @type number
+	 */
+	createdAt: number;
+	/**
+	 * @type number
+	 */
+	updatedAt: number;
+	/**
+	 * @type string
+	 */
+	projectId: string;
+	/**
+	 * @type string
+	 */
+	typeName: SegmentTypeNameEnumKey;
 	/**
 	 * @type string
 	 */
@@ -18174,6 +18861,55 @@ export type SandboxPublicRoute = {
 	system?: true | undefined;
 };
 
+/**
+ * @description This object contains information related to a Vercel Sandbox Drive.
+ * @type object
+ */
+export type Drive = {
+	/**
+	 * @description The unique drive name within the project.
+	 * @example workspace
+	 * @type string
+	 */
+	name: string;
+	/**
+	 * @description The project that owns the drive.
+	 * @example prj_abc123
+	 * @type string
+	 */
+	projectId: string;
+	/**
+	 * @description The maximum drive size in bytes.
+	 * @example 107374182400
+	 * @type number
+	 */
+	maxSizeBytes: number;
+	/**
+	 * @description Current session ID the drive is attached to, if any.
+	 * @example sbx_123
+	 * @type string | undefined
+	 */
+	currentSessionId?: string | undefined;
+	/**
+	 * @description Current sandbox name the drive is attached to, if any.
+	 * @example my-sandbox
+	 * @type string | undefined
+	 */
+	currentSandboxName?: string | undefined;
+	/**
+	 * @description The time when the drive was created, in milliseconds since the epoch.
+	 * @example 1750344501629
+	 * @type number
+	 */
+	createdAt: number;
+	/**
+	 * @description The last time the drive was updated, in milliseconds since the epoch.
+	 * @example 1750344501629
+	 * @type number
+	 */
+	updatedAt: number;
+};
+
 export const snapshotStatusEnum = {
 	created: "created",
 	deleted: "deleted",
@@ -18346,6 +19082,8 @@ export const invitedTeamMemberTeamPermissionsEnum = {
 	EnvironmentManager: "EnvironmentManager",
 	FullProductionDeployment: "FullProductionDeployment",
 	IntegrationManager: "IntegrationManager",
+	OrgAdmin: "OrgAdmin",
+	OrgViewer: "OrgViewer",
 	UsageViewer: "UsageViewer",
 	V0Builder: "V0Builder",
 	V0Chatter: "V0Chatter",
@@ -18443,6 +19181,8 @@ export const teamDefaultRolesTeamPermissionsEnum = {
 	EnvironmentManager: "EnvironmentManager",
 	FullProductionDeployment: "FullProductionDeployment",
 	IntegrationManager: "IntegrationManager",
+	OrgAdmin: "OrgAdmin",
+	OrgViewer: "OrgViewer",
 	UsageViewer: "UsageViewer",
 	V0Builder: "V0Builder",
 	V0Chatter: "V0Chatter",
@@ -18564,6 +19304,8 @@ export const teamMembershipTeamPermissionsEnum = {
 	EnvironmentManager: "EnvironmentManager",
 	FullProductionDeployment: "FullProductionDeployment",
 	IntegrationManager: "IntegrationManager",
+	OrgAdmin: "OrgAdmin",
+	OrgViewer: "OrgViewer",
 	UsageViewer: "UsageViewer",
 	V0Builder: "V0Builder",
 	V0Chatter: "V0Chatter",
@@ -18574,6 +19316,7 @@ export type TeamMembershipTeamPermissionsEnumKey =
 	(typeof teamMembershipTeamPermissionsEnum)[keyof typeof teamMembershipTeamPermissionsEnum];
 
 export const teamMembershipJoinedFromOriginEnum = {
+	"account-update": "account-update",
 	bitbucket: "bitbucket",
 	dsync: "dsync",
 	feedback: "feedback",
@@ -18644,17 +19387,17 @@ export type Team = {
 				connection?:
 					| {
 							/**
-							 * @description The Identity Provider \"type\", for example Okta.
-							 * @example OktaSAML
-							 * @type string
-							 */
-							type: string;
-							/**
 							 * @description Current status of the connection.
 							 * @example linked
 							 * @type string
 							 */
 							status: string;
+							/**
+							 * @description The Identity Provider \"type\", for example Okta.
+							 * @example OktaSAML
+							 * @type string
+							 */
+							type: string;
 							/**
 							 * @description Current state of the connection.
 							 * @example active
@@ -18753,14 +19496,14 @@ export type Team = {
 										accessGroupId: string;
 								  }
 								| (
-										| "OWNER"
-										| "MEMBER"
-										| "DEVELOPER"
-										| "SECURITY"
 										| "BILLING"
+										| "CONTRIBUTOR"
+										| "DEVELOPER"
+										| "MEMBER"
+										| "OWNER"
+										| "SECURITY"
 										| "VIEWER"
 										| "VIEWER_FOR_PLUS"
-										| "CONTRIBUTOR"
 								  );
 					  }
 					| undefined;
@@ -18839,6 +19582,11 @@ export type Team = {
 				 * @type number | undefined
 				 */
 				postgresDatabases?: number | undefined;
+				/**
+				 * @description The maximum number of custom environments allowed per project.
+				 * @type number | undefined
+				 */
+				customEnvironmentsPerProject?: number | undefined;
 				/**
 				 * @type object | undefined
 				 */
@@ -18995,6 +19743,19 @@ export type Team = {
 				 * @type object | undefined
 				 */
 				typecheck?:
+					| {
+							/**
+							 * @description Default job configuration applied to new projects created in this team.
+							 * @type array
+							 */
+							targets: string[];
+					  }
+					| undefined;
+				/**
+				 * @description Default job configuration applied to new projects created in this team.
+				 * @type object | undefined
+				 */
+				mfeConfigPresent?:
 					| {
 							/**
 							 * @description Default job configuration applied to new projects created in this team.
@@ -19193,7 +19954,7 @@ export type Team = {
 							/**
 							 * @type array
 							 */
-							sources: ("cli" | "deploy-hook" | "git" | "integration" | "rest-api")[];
+							sources: ("cli" | "deploy-hook" | "git" | "integration" | "rest-api" | "v0")[];
 							/**
 							 * @type boolean
 							 */
@@ -19448,6 +20209,8 @@ export const teamLimitedMembershipTeamPermissionsEnum = {
 	EnvironmentManager: "EnvironmentManager",
 	FullProductionDeployment: "FullProductionDeployment",
 	IntegrationManager: "IntegrationManager",
+	OrgAdmin: "OrgAdmin",
+	OrgViewer: "OrgViewer",
 	UsageViewer: "UsageViewer",
 	V0Builder: "V0Builder",
 	V0Chatter: "V0Chatter",
@@ -19458,6 +20221,7 @@ export type TeamLimitedMembershipTeamPermissionsEnumKey =
 	(typeof teamLimitedMembershipTeamPermissionsEnum)[keyof typeof teamLimitedMembershipTeamPermissionsEnum];
 
 export const teamLimitedMembershipJoinedFromOriginEnum = {
+	"account-update": "account-update",
 	bitbucket: "bitbucket",
 	dsync: "dsync",
 	feedback: "feedback",
@@ -19508,17 +20272,17 @@ export type TeamLimited = {
 				connection?:
 					| {
 							/**
-							 * @description The Identity Provider \"type\", for example Okta.
-							 * @example OktaSAML
-							 * @type string
-							 */
-							type: string;
-							/**
 							 * @description Current status of the connection.
 							 * @example linked
 							 * @type string
 							 */
 							status: string;
+							/**
+							 * @description The Identity Provider \"type\", for example Okta.
+							 * @example OktaSAML
+							 * @type string
+							 */
+							type: string;
 							/**
 							 * @description Current state of the connection.
 							 * @example active
@@ -20324,7 +21088,7 @@ export type AuthUser = {
 	 */
 	isAccountUpdateRequired?: (false | true) | undefined;
 	/**
-	 * @description Context for the Update Account screen. Present only when `isAccountUpdateRequired` is true. `managedTeamNames` is empty for orphan mode (user matches an EMU domain but is not on the team).
+	 * @description Context for the Update Account screen. Present only when `isAccountUpdateRequired` is true. `managedTeams` is empty for orphan mode (user matches an EMU domain but is not on the team).
 	 * @type object | undefined
 	 */
 	accountUpdateContext?:
@@ -20332,7 +21096,16 @@ export type AuthUser = {
 				/**
 				 * @type array
 				 */
-				managedTeamNames: string[];
+				managedTeams: {
+					/**
+					 * @type string
+					 */
+					name: string;
+					/**
+					 * @type string
+					 */
+					avatar: string | null;
+				}[];
 		  }
 		| undefined;
 	/**
@@ -25141,6 +25914,234 @@ export type ReadNetworkResponse =
 	| ReadNetworkStatus403;
 
 /**
+ * @type unknown
+ */
+export type CreateConnectorStatus201 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateConnectorStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateConnectorStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateConnectorStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateConnectorStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateConnectorStatus409 = unknown;
+
+/**
+ * @type object
+ */
+export type CreateConnectorRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/v1/connect/connectors";
+};
+
+/**
+ * @type object
+ */
+export type CreateConnectorResponses = {
+	"201": CreateConnectorStatus201;
+	"400": CreateConnectorStatus400;
+	"401": CreateConnectorStatus401;
+	"403": CreateConnectorStatus403;
+	"404": CreateConnectorStatus404;
+	"409": CreateConnectorStatus409;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateConnectorResponse =
+	| CreateConnectorStatus201
+	| CreateConnectorStatus400
+	| CreateConnectorStatus401
+	| CreateConnectorStatus403
+	| CreateConnectorStatus404
+	| CreateConnectorStatus409;
+
+/**
+ * @type string
+ */
+export type GetConnectorTokenPathConnector = string;
+
+/**
+ * @type unknown
+ */
+export type GetConnectorTokenStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetConnectorTokenStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetConnectorTokenStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetConnectorTokenStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetConnectorTokenStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetConnectorTokenStatus422 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetConnectorTokenStatus429 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetConnectorTokenStatus504 = unknown;
+
+/**
+ * @type object
+ */
+export type GetConnectorTokenRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		connector: GetConnectorTokenPathConnector;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v1/connect/token/${string}`;
+};
+
+/**
+ * @type object
+ */
+export type GetConnectorTokenResponses = {
+	"200": GetConnectorTokenStatus200;
+	"400": GetConnectorTokenStatus400;
+	"401": GetConnectorTokenStatus401;
+	"403": GetConnectorTokenStatus403;
+	"404": GetConnectorTokenStatus404;
+	"422": GetConnectorTokenStatus422;
+	"429": GetConnectorTokenStatus429;
+	"504": GetConnectorTokenStatus504;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetConnectorTokenResponse =
+	| GetConnectorTokenStatus200
+	| GetConnectorTokenStatus400
+	| GetConnectorTokenStatus401
+	| GetConnectorTokenStatus403
+	| GetConnectorTokenStatus404
+	| GetConnectorTokenStatus422
+	| GetConnectorTokenStatus429
+	| GetConnectorTokenStatus504;
+
+/**
+ * @type string
+ */
+export type CreateConnectorAuthorizationRequestPathConnector = string;
+
+/**
+ * @type unknown
+ */
+export type CreateConnectorAuthorizationRequestStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateConnectorAuthorizationRequestStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateConnectorAuthorizationRequestStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateConnectorAuthorizationRequestStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateConnectorAuthorizationRequestStatus404 = unknown;
+
+/**
+ * @type object
+ */
+export type CreateConnectorAuthorizationRequestRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		connector: CreateConnectorAuthorizationRequestPathConnector;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v1/connect/authorize/${string}`;
+};
+
+/**
+ * @type object
+ */
+export type CreateConnectorAuthorizationRequestResponses = {
+	"200": CreateConnectorAuthorizationRequestStatus200;
+	"400": CreateConnectorAuthorizationRequestStatus400;
+	"401": CreateConnectorAuthorizationRequestStatus401;
+	"403": CreateConnectorAuthorizationRequestStatus403;
+	"404": CreateConnectorAuthorizationRequestStatus404;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateConnectorAuthorizationRequestResponse =
+	| CreateConnectorAuthorizationRequestStatus200
+	| CreateConnectorAuthorizationRequestStatus400
+	| CreateConnectorAuthorizationRequestStatus401
+	| CreateConnectorAuthorizationRequestStatus403
+	| CreateConnectorAuthorizationRequestStatus404;
+
+/**
  * @description The unique identifier or hostname of the deployment.
  * @example dpl_5WJWYSyB7BpgTj3EuwF37WMRBXBtPQ2iTMJHJBJyRfd
  * @type string
@@ -27922,6 +28923,124 @@ export type ClaimDomainOwnershipResponse =
 	| ClaimDomainOwnershipStatus401
 	| ClaimDomainOwnershipStatus403
 	| ClaimDomainOwnershipStatus404;
+
+/**
+ * @description The apex domain name.
+ * @example example.com
+ * @type string
+ */
+export type GetDomainProjectDomainsPathDomain = string;
+
+/**
+ * @description Maximum number of project domains to list from a request.
+ * @example 20
+ * @type number | undefined
+ */
+export type GetDomainProjectDomainsQueryLimit = number | undefined;
+
+/**
+ * @description Get project domains created after this JavaScript timestamp.
+ * @example 1609499532000
+ * @type number | undefined
+ */
+export type GetDomainProjectDomainsQuerySince = number | undefined;
+
+/**
+ * @description Get project domains created before this JavaScript timestamp.
+ * @example 1612264332000
+ * @type number | undefined
+ */
+export type GetDomainProjectDomainsQueryUntil = number | undefined;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type GetDomainProjectDomainsQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type GetDomainProjectDomainsQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type GetDomainProjectDomainsStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetDomainProjectDomainsStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetDomainProjectDomainsStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetDomainProjectDomainsStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetDomainProjectDomainsStatus404 = unknown;
+
+/**
+ * @type object
+ */
+export type GetDomainProjectDomainsRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		domain: GetDomainProjectDomainsPathDomain;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				limit?: GetDomainProjectDomainsQueryLimit | undefined;
+				since?: GetDomainProjectDomainsQuerySince | undefined;
+				until?: GetDomainProjectDomainsQueryUntil | undefined;
+				teamId?: GetDomainProjectDomainsQueryTeamId | undefined;
+				slug?: GetDomainProjectDomainsQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v1/domains/${string}/project-domains`;
+};
+
+/**
+ * @type object
+ */
+export type GetDomainProjectDomainsResponses = {
+	"200": GetDomainProjectDomainsStatus200;
+	"400": GetDomainProjectDomainsStatus400;
+	"401": GetDomainProjectDomainsStatus401;
+	"403": GetDomainProjectDomainsStatus403;
+	"404": GetDomainProjectDomainsStatus404;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetDomainProjectDomainsResponse =
+	| GetDomainProjectDomainsStatus200
+	| GetDomainProjectDomainsStatus400
+	| GetDomainProjectDomainsStatus401
+	| GetDomainProjectDomainsStatus403
+	| GetDomainProjectDomainsStatus404;
 
 /**
  * @description The name of the domain.
@@ -32164,6 +33283,12 @@ export type ListFlagsV2QuerySearch = string | undefined;
 export type ListFlagsV2QueryTags = string[] | undefined;
 
 /**
+ * @description Whether to include Marketplace experimentation items in the paginated response. Defaults to false.
+ * @type boolean | undefined
+ */
+export type ListFlagsV2QueryIncludeMarketplaceFlags = boolean | undefined;
+
+/**
  * @description The Team identifier to perform the request on behalf of.
  * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
  * @type string | undefined
@@ -32228,6 +33353,7 @@ export type ListFlagsV2RequestConfig = {
 				cursor?: ListFlagsV2QueryCursor | undefined;
 				search?: ListFlagsV2QuerySearch | undefined;
 				tags?: ListFlagsV2QueryTags | undefined;
+				includeMarketplaceFlags?: ListFlagsV2QueryIncludeMarketplaceFlags | undefined;
 				teamId?: ListFlagsV2QueryTeamId | undefined;
 				slug?: ListFlagsV2QuerySlug | undefined;
 		  }
@@ -33435,6 +34561,12 @@ export type ListTeamFlagsV2QueryKind = ("boolean" | "string" | "number" | "json"
 export type ListTeamFlagsV2QueryTags = string[] | undefined;
 
 /**
+ * @description Whether to include Marketplace experimentation items in the paginated response. Defaults to false.
+ * @type boolean | undefined
+ */
+export type ListTeamFlagsV2QueryIncludeMarketplaceFlags = boolean | undefined;
+
+/**
  * @description The Team identifier to perform the request on behalf of.
  * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
  * @type string
@@ -33490,6 +34622,7 @@ export type ListTeamFlagsV2RequestConfig = {
 				search?: ListTeamFlagsV2QuerySearch | undefined;
 				kind?: ListTeamFlagsV2QueryKind | undefined;
 				tags?: ListTeamFlagsV2QueryTags | undefined;
+				includeMarketplaceFlags?: ListTeamFlagsV2QueryIncludeMarketplaceFlags | undefined;
 				slug?: ListTeamFlagsV2QuerySlug | undefined;
 		  }
 		| undefined;
@@ -39888,12 +41021,12 @@ export type UpdateProjectStatus409 = unknown;
 /**
  * @type unknown
  */
-export type UpdateProjectStatus422 = unknown;
+export type UpdateProjectStatus428 = unknown;
 
 /**
  * @type unknown
  */
-export type UpdateProjectStatus428 = unknown;
+export type UpdateProjectStatus500 = unknown;
 
 /**
  * @type object
@@ -39933,8 +41066,8 @@ export type UpdateProjectResponses = {
 	"403": UpdateProjectStatus403;
 	"404": UpdateProjectStatus404;
 	"409": UpdateProjectStatus409;
-	"422": UpdateProjectStatus422;
 	"428": UpdateProjectStatus428;
+	"500": UpdateProjectStatus500;
 };
 
 /**
@@ -39948,8 +41081,8 @@ export type UpdateProjectResponse =
 	| UpdateProjectStatus403
 	| UpdateProjectStatus404
 	| UpdateProjectStatus409
-	| UpdateProjectStatus422
-	| UpdateProjectStatus428;
+	| UpdateProjectStatus428
+	| UpdateProjectStatus500;
 
 /**
  * @description The unique project identifier or the project name
@@ -44157,6 +45290,400 @@ export type CreateSandboxesResponse =
 	| CreateSandboxesStatus500;
 
 /**
+ * @description The project ID or name associated with the drives. Required unless using a Vercel OIDC token scoped to a project.
+ * @example prj_abc123
+ * @type string | undefined
+ */
+export type ListDrivesQueryProjectId = string | undefined;
+
+/**
+ * @description Maximum number of drives to return in the response. Used for pagination.
+ * @minLength 1
+ * @maxLength 50
+ * @default 20
+ * @example 20
+ * @type number | undefined
+ */
+export type ListDrivesQueryLimit = number | undefined;
+
+/**
+ * @description Opaque pagination cursor from a previous response.
+ * @type string | undefined
+ */
+export type ListDrivesQueryCursor = string | undefined;
+
+/**
+ * @description Field to sort drives by.
+ * @default "createdAt"
+ * @type string | undefined
+ */
+export type ListDrivesQuerySortBy = ("createdAt" | "updatedAt" | "name") | undefined;
+
+/**
+ * @description Filter drives whose name starts with this prefix. Only valid when sortBy=name.
+ * @type string | undefined
+ */
+export type ListDrivesQueryNamePrefix = string | undefined;
+
+/**
+ * @description Sort direction for results.
+ * @default "desc"
+ * @type string | undefined
+ */
+export type ListDrivesQuerySortOrder = ("asc" | "desc") | undefined;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type ListDrivesQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type ListDrivesQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type ListDrivesStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListDrivesStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListDrivesStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListDrivesStatus402 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListDrivesStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListDrivesStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListDrivesStatus429 = unknown;
+
+/**
+ * @type object
+ */
+export type ListDrivesRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				projectId?: ListDrivesQueryProjectId | undefined;
+				limit?: ListDrivesQueryLimit | undefined;
+				cursor?: ListDrivesQueryCursor | undefined;
+				sortBy?: ListDrivesQuerySortBy | undefined;
+				namePrefix?: ListDrivesQueryNamePrefix | undefined;
+				sortOrder?: ListDrivesQuerySortOrder | undefined;
+				teamId?: ListDrivesQueryTeamId | undefined;
+				slug?: ListDrivesQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/v2/sandboxes/drives";
+};
+
+/**
+ * @type object
+ */
+export type ListDrivesResponses = {
+	"200": ListDrivesStatus200;
+	"400": ListDrivesStatus400;
+	"401": ListDrivesStatus401;
+	"402": ListDrivesStatus402;
+	"403": ListDrivesStatus403;
+	"404": ListDrivesStatus404;
+	"429": ListDrivesStatus429;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListDrivesResponse =
+	| ListDrivesStatus200
+	| ListDrivesStatus400
+	| ListDrivesStatus401
+	| ListDrivesStatus402
+	| ListDrivesStatus403
+	| ListDrivesStatus404
+	| ListDrivesStatus429;
+
+/**
+ * @description Name for the drive. Must be unique per project and URL-safe (alphanumeric, hyphens, underscores).
+ * @maxLength 64
+ * @pattern ^[a-zA-Z0-9_-]+$
+ * @example workspace
+ * @type string
+ */
+export type GetOrCreateDrivePathName = string;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type GetOrCreateDriveQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type GetOrCreateDriveQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type GetOrCreateDriveStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetOrCreateDriveStatus201 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetOrCreateDriveStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetOrCreateDriveStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetOrCreateDriveStatus402 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetOrCreateDriveStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetOrCreateDriveStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetOrCreateDriveStatus409 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetOrCreateDriveStatus429 = unknown;
+
+/**
+ * @type object
+ */
+export type GetOrCreateDriveRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		name: GetOrCreateDrivePathName;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				teamId?: GetOrCreateDriveQueryTeamId | undefined;
+				slug?: GetOrCreateDriveQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v2/sandboxes/drives/${string}`;
+};
+
+/**
+ * @type object
+ */
+export type GetOrCreateDriveResponses = {
+	"200": GetOrCreateDriveStatus200;
+	"201": GetOrCreateDriveStatus201;
+	"400": GetOrCreateDriveStatus400;
+	"401": GetOrCreateDriveStatus401;
+	"402": GetOrCreateDriveStatus402;
+	"403": GetOrCreateDriveStatus403;
+	"404": GetOrCreateDriveStatus404;
+	"409": GetOrCreateDriveStatus409;
+	"429": GetOrCreateDriveStatus429;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetOrCreateDriveResponse =
+	| GetOrCreateDriveStatus200
+	| GetOrCreateDriveStatus201
+	| GetOrCreateDriveStatus400
+	| GetOrCreateDriveStatus401
+	| GetOrCreateDriveStatus402
+	| GetOrCreateDriveStatus403
+	| GetOrCreateDriveStatus404
+	| GetOrCreateDriveStatus409
+	| GetOrCreateDriveStatus429;
+
+/**
+ * @description Name for the drive. Must be unique per project and URL-safe (alphanumeric, hyphens, underscores).
+ * @maxLength 64
+ * @pattern ^[a-zA-Z0-9_-]+$
+ * @example workspace
+ * @type string
+ */
+export type DeleteDrivePathName = string;
+
+/**
+ * @description The project ID or name associated with the drive. Required unless using a Vercel OIDC token scoped to a project.
+ * @example prj_abc123
+ * @type string | undefined
+ */
+export type DeleteDriveQueryProjectId = string | undefined;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type DeleteDriveQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type DeleteDriveQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type DeleteDriveStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteDriveStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteDriveStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteDriveStatus402 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteDriveStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteDriveStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteDriveStatus409 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteDriveStatus429 = unknown;
+
+/**
+ * @type object
+ */
+export type DeleteDriveRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		name: DeleteDrivePathName;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				projectId?: DeleteDriveQueryProjectId | undefined;
+				teamId?: DeleteDriveQueryTeamId | undefined;
+				slug?: DeleteDriveQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v2/sandboxes/drives/${string}`;
+};
+
+/**
+ * @type object
+ */
+export type DeleteDriveResponses = {
+	"200": DeleteDriveStatus200;
+	"400": DeleteDriveStatus400;
+	"401": DeleteDriveStatus401;
+	"402": DeleteDriveStatus402;
+	"403": DeleteDriveStatus403;
+	"404": DeleteDriveStatus404;
+	"409": DeleteDriveStatus409;
+	"429": DeleteDriveStatus429;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteDriveResponse =
+	| DeleteDriveStatus200
+	| DeleteDriveStatus400
+	| DeleteDriveStatus401
+	| DeleteDriveStatus402
+	| DeleteDriveStatus403
+	| DeleteDriveStatus404
+	| DeleteDriveStatus409
+	| DeleteDriveStatus429;
+
+/**
  * @description The unique identifier or name of the project to list snapshots for.
  * @example prj_abc123
  * @type string | undefined
@@ -45260,6 +46787,13 @@ export type ListSessionCommandsResponse =
 export type RunSessionCommandPathSessionId = string;
 
 /**
+ * @description The unique identifier of the command to stream logs for.
+ * @example cmd_abc123
+ * @type string
+ */
+export type RunSessionCommandQueryCmdId = string;
+
+/**
  * @description The Team identifier to perform the request on behalf of.
  * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
  * @type string | undefined
@@ -45334,6 +46868,7 @@ export type RunSessionCommandRequestConfig = {
 	 */
 	queryParams?:
 		| {
+				cmdId: RunSessionCommandQueryCmdId;
 				teamId?: RunSessionCommandQueryTeamId | undefined;
 				slug?: RunSessionCommandQuerySlug | undefined;
 		  }
@@ -48483,11 +50018,6 @@ export type PatchTeamStatus403 = unknown;
 /**
  * @type unknown
  */
-export type PatchTeamStatus422 = unknown;
-
-/**
- * @type unknown
- */
 export type PatchTeamStatus428 = unknown;
 
 /**
@@ -48525,7 +50055,6 @@ export type PatchTeamResponses = {
 	"401": PatchTeamStatus401;
 	"402": PatchTeamStatus402;
 	"403": PatchTeamStatus403;
-	"422": PatchTeamStatus422;
 	"428": PatchTeamStatus428;
 };
 
@@ -48538,7 +50067,6 @@ export type PatchTeamResponse =
 	| PatchTeamStatus401
 	| PatchTeamStatus402
 	| PatchTeamStatus403
-	| PatchTeamStatus422
 	| PatchTeamStatus428;
 
 /**
@@ -48583,6 +50111,11 @@ export type GetTeamsStatus401 = unknown;
 export type GetTeamsStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetTeamsStatus500 = unknown;
+
+/**
  * @type object
  */
 export type GetTeamsRequestConfig = {
@@ -48613,6 +50146,7 @@ export type GetTeamsResponses = {
 	"400": GetTeamsStatus400;
 	"401": GetTeamsStatus401;
 	"403": GetTeamsStatus403;
+	"500": GetTeamsStatus500;
 };
 
 /**
@@ -48622,7 +50156,8 @@ export type GetTeamsResponse =
 	| GetTeamsStatus200
 	| GetTeamsStatus400
 	| GetTeamsStatus401
-	| GetTeamsStatus403;
+	| GetTeamsStatus403
+	| GetTeamsStatus500;
 
 /**
  * @type unknown
