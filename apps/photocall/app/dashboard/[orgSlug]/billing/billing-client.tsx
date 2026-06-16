@@ -10,10 +10,12 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 import { getBillingOverview, getInvoices, getPortalUrl, startCheckout } from "@/actions/billing";
 import { getOrganizationBySlug } from "@/actions/organizations";
+import { DashboardLanguagePicker } from "@/components/dashboard-language-picker";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { useSession } from "@/lib/auth-client";
@@ -27,6 +29,9 @@ export default function BillingPage() {
 	const params = useParams();
 	const searchParams = useSearchParams();
 	const orgSlug = params.orgSlug as string;
+	const t = useTranslations("dashboard.billing");
+	const tc = useTranslations("dashboard.common");
+	const to = useTranslations("dashboard.orgs");
 
 	const { data: organization } = useSWR(["organizations", orgSlug], () =>
 		getOrganizationBySlug(orgSlug),
@@ -87,10 +92,10 @@ export default function BillingPage() {
 		return (
 			<div className="min-h-screen flex items-center justify-center">
 				<div className="text-center">
-					<h1 className="text-2xl font-bold mb-2">Organization not found</h1>
+					<h1 className="text-2xl font-bold mb-2">{to("notFoundTitle")}</h1>
 					<Button onClick={() => router.push("/dashboard")}>
 						<ChevronLeft className="h-4 w-4 mr-2" />
-						Back to Dashboard
+						{tc("backToDashboard")}
 					</Button>
 				</div>
 			</div>
@@ -111,10 +116,11 @@ export default function BillingPage() {
 						>
 							<ChevronLeft className="h-5 w-5" />
 						</Link>
-						<div>
-							<h1 className="font-bold text-xl">Billing</h1>
+						<div className="flex-1">
+							<h1 className="font-bold text-xl">{t("title")}</h1>
 							<p className="text-sm text-muted-foreground">{organization.name}</p>
 						</div>
+						<DashboardLanguagePicker />
 					</div>
 				</div>
 			</header>
@@ -123,37 +129,40 @@ export default function BillingPage() {
 				{success && (
 					<Alert variant="success" className="mb-8">
 						<CheckCircle2 className="h-4 w-4" />
-						<AlertTitle>Checkout complete</AlertTitle>
-						<AlertDescription>Your subscription is active.</AlertDescription>
+						<AlertTitle>{t("checkoutCompleteTitle")}</AlertTitle>
+						<AlertDescription>{t("checkoutCompleteDescription")}</AlertDescription>
 					</Alert>
 				)}
 				{canceled && (
 					<Alert variant="warning" className="mb-8">
 						<AlertCircle className="h-4 w-4" />
-						<AlertTitle>Checkout canceled</AlertTitle>
-						<AlertDescription>No changes were made.</AlertDescription>
+						<AlertTitle>{t("checkoutCanceledTitle")}</AlertTitle>
+						<AlertDescription>{t("checkoutCanceledDescription")}</AlertDescription>
 					</Alert>
 				)}
 
 				<section className="mb-12 p-6 border rounded-lg">
 					<div className="flex items-center justify-between mb-4">
 						<div>
-							<h2 className="text-lg font-semibold">Current plan</h2>
+							<h2 className="text-lg font-semibold">{t("currentPlan")}</h2>
 							<p className="text-sm text-muted-foreground">
 								{subscription
-									? `${subscription.planId} · ${subscription.status}`
-									: "Free tier (default plan)"}
+									? t("planSummary", {
+											planId: subscription.planId,
+											status: subscription.status,
+										})
+									: t("freeTier")}
 							</p>
 						</div>
 						{isPaid ? (
 							<Button variant="outline" onClick={handleManageBilling}>
 								<CreditCard className="h-4 w-4 mr-2" />
-								Manage billing
+								{t("manageBilling")}
 							</Button>
 						) : (
 							<Button onClick={handleUpgrade} disabled={isPurchasing}>
 								{isPurchasing && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-								Upgrade
+								{t("upgrade")}
 							</Button>
 						)}
 					</div>
@@ -161,18 +170,20 @@ export default function BillingPage() {
 
 				{overview && (
 					<section className="mb-12">
-						<h2 className="text-lg font-semibold mb-4">Usage this period</h2>
+						<h2 className="text-lg font-semibold mb-4">{t("usageThisPeriod")}</h2>
 						<div className="grid gap-4 md:grid-cols-3">
 							<div className="p-4 border rounded-lg">
-								<div className="text-sm text-muted-foreground mb-1">Photos captured</div>
+								<div className="text-sm text-muted-foreground mb-1">{t("photosCaptured")}</div>
 								<div className="text-2xl font-bold">{overview.usage.photosCaptured}</div>
 							</div>
 							<div className="p-4 border rounded-lg">
-								<div className="text-sm text-muted-foreground mb-1">Active events</div>
+								<div className="text-sm text-muted-foreground mb-1">{t("activeEvents")}</div>
 								<div className="text-2xl font-bold">{overview.events.length}</div>
 							</div>
 							<div className="p-4 border rounded-lg">
-								<div className="text-sm text-muted-foreground mb-1">Total photos across events</div>
+								<div className="text-sm text-muted-foreground mb-1">
+									{t("totalPhotosAcrossEvents")}
+								</div>
 								<div className="text-2xl font-bold">
 									{overview.events.reduce((sum, e) => sum + e.photoCount, 0)}
 								</div>
@@ -183,13 +194,13 @@ export default function BillingPage() {
 
 				{overview && overview.events.length > 0 && (
 					<section className="mb-12">
-						<h2 className="text-lg font-semibold mb-4">Photos by event</h2>
+						<h2 className="text-lg font-semibold mb-4">{t("photosByEvent")}</h2>
 						<div className="border rounded-lg overflow-hidden">
 							<table className="w-full">
 								<thead className="bg-muted/50">
 									<tr>
-										<th className="px-4 py-3 text-left text-sm font-medium">Event</th>
-										<th className="px-4 py-3 text-right text-sm font-medium">Photos</th>
+										<th className="px-4 py-3 text-left text-sm font-medium">{t("event")}</th>
+										<th className="px-4 py-3 text-right text-sm font-medium">{t("photos")}</th>
 									</tr>
 								</thead>
 								<tbody className="divide-y">
@@ -212,14 +223,14 @@ export default function BillingPage() {
 
 				{invoices && invoices.length > 0 && (
 					<section>
-						<h2 className="text-lg font-semibold mb-4">Invoices</h2>
+						<h2 className="text-lg font-semibold mb-4">{t("invoices")}</h2>
 						<div className="border rounded-lg overflow-hidden">
 							<table className="w-full">
 								<thead className="bg-muted/50">
 									<tr>
-										<th className="px-4 py-3 text-left text-sm font-medium">Date</th>
-										<th className="px-4 py-3 text-left text-sm font-medium">Status</th>
-										<th className="px-4 py-3 text-right text-sm font-medium">Amount</th>
+										<th className="px-4 py-3 text-left text-sm font-medium">{t("date")}</th>
+										<th className="px-4 py-3 text-left text-sm font-medium">{t("status")}</th>
+										<th className="px-4 py-3 text-right text-sm font-medium">{t("amount")}</th>
 									</tr>
 								</thead>
 								<tbody className="divide-y">

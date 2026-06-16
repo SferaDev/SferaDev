@@ -3,10 +3,12 @@
 import { ChevronLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
 import { getEventBySlug } from "@/actions/events";
 import { createTemplate, getTemplate, listPresets, updateTemplate } from "@/actions/templates";
+import { DashboardLanguagePicker } from "@/components/dashboard-language-picker";
 import { blankLayout, deriveKind } from "@/components/template-editor/factory";
 import { TemplateEditor } from "@/components/template-editor/template-editor";
 import { Button } from "@/components/ui/button";
@@ -31,6 +33,8 @@ export default function TemplateEditorClient() {
 	const orgSlug = params.orgSlug as string;
 	const eventSlug = params.eventSlug as string;
 	const templateId = searchParams.get("templateId");
+	const t = useTranslations("dashboard.editor");
+	const tc = useTranslations("dashboard.common");
 
 	const { data: event } = useSWR(["events", orgSlug, eventSlug], () =>
 		getEventBySlug(orgSlug, eventSlug),
@@ -40,7 +44,7 @@ export default function TemplateEditorClient() {
 		getTemplate(templateId!),
 	);
 
-	const [name, setName] = useState("New layout");
+	const [name, setName] = useState(() => t("newLayout"));
 	const [allowedFilters, setAllowedFilters] = useState<FilterKind[]>([]);
 	const [saving, setSaving] = useState(false);
 	const [initialLayout, setInitialLayout] = useState<BoothLayout | null>(null);
@@ -111,9 +115,9 @@ export default function TemplateEditorClient() {
 		return (
 			<div className="flex min-h-screen items-center justify-center">
 				<div className="text-center">
-					<h1 className="mb-2 text-2xl font-bold">Event not found</h1>
+					<h1 className="mb-2 text-2xl font-bold">{t("notFoundTitle")}</h1>
 					<Button onClick={() => router.push(`/dashboard/${orgSlug}`)}>
-						<ChevronLeft className="mr-2 h-4 w-4" /> Back
+						<ChevronLeft className="mr-2 h-4 w-4" /> {tc("back")}
 					</Button>
 				</div>
 			</div>
@@ -129,7 +133,7 @@ export default function TemplateEditorClient() {
 					</Link>
 					<div className="flex-1">
 						<Label htmlFor="layout-name" className="text-xs text-muted-foreground">
-							Template name
+							{t("templateName")}
 						</Label>
 						<Input
 							id="layout-name"
@@ -139,7 +143,7 @@ export default function TemplateEditorClient() {
 						/>
 					</div>
 					<div className="hidden md:block">
-						<Label className="text-xs text-muted-foreground">Guest filters</Label>
+						<Label className="text-xs text-muted-foreground">{t("guestFilters")}</Label>
 						<div className="flex flex-wrap gap-1">
 							{ALL_FILTERS.map((filter) => {
 								const active = allowedFilters.includes(filter);
@@ -162,6 +166,7 @@ export default function TemplateEditorClient() {
 							})}
 						</div>
 					</div>
+					<DashboardLanguagePicker />
 				</div>
 			</header>
 

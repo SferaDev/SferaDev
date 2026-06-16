@@ -2,9 +2,11 @@
 
 import { ArrowRight, Building2, Camera, Loader2, Plus, Users } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import { createOrganization, getOrganizations } from "@/actions/organizations";
+import { DashboardLanguagePicker } from "@/components/dashboard-language-picker";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -23,6 +25,8 @@ export default function DashboardClient() {
 	const { data: session, isPending: authLoading } = useSession();
 	const isAuthenticated = !!session;
 	const router = useRouter();
+	const t = useTranslations("dashboard.orgs");
+	const tc = useTranslations("dashboard.common");
 	const { mutate } = useSWRConfig();
 	const { data: organizations } = useSWR(isAuthenticated ? ["organizations"] : null, () =>
 		getOrganizations(),
@@ -70,50 +74,49 @@ export default function DashboardClient() {
 						<Camera className="h-6 w-6" />
 						<span className="font-bold text-xl">Photocall</span>
 					</div>
-					<UserMenu />
+					<div className="flex items-center gap-2">
+						<DashboardLanguagePicker />
+						<UserMenu />
+					</div>
 				</div>
 			</header>
 
 			<main className="container mx-auto px-4 py-8">
 				<div className="flex items-center justify-between mb-8">
 					<div>
-						<h1 className="text-3xl font-bold">Your Organizations</h1>
-						<p className="text-muted-foreground mt-1">
-							Manage your photo booth events across organizations
-						</p>
+						<h1 className="text-3xl font-bold">{t("title")}</h1>
+						<p className="text-muted-foreground mt-1">{t("subtitle")}</p>
 					</div>
 					<Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
 						<DialogTrigger asChild>
 							<Button>
 								<Plus className="h-4 w-4 mr-2" />
-								New Organization
+								{t("newOrganization")}
 							</Button>
 						</DialogTrigger>
 						<DialogContent>
 							<form onSubmit={handleCreateOrg}>
 								<DialogHeader>
-									<DialogTitle>Create Organization</DialogTitle>
-									<DialogDescription>
-										Organizations help you manage events and team members.
-									</DialogDescription>
+									<DialogTitle>{t("createOrganization")}</DialogTitle>
+									<DialogDescription>{t("createDialogDescription")}</DialogDescription>
 								</DialogHeader>
 								<div className="py-4">
-									<Label htmlFor="org-name">Organization Name</Label>
+									<Label htmlFor="org-name">{t("organizationName")}</Label>
 									<Input
 										id="org-name"
 										value={newOrgName}
 										onChange={(e) => setNewOrgName(e.target.value)}
-										placeholder="My Wedding Business"
+										placeholder={t("organizationNamePlaceholder")}
 										className="mt-2"
 									/>
 								</div>
 								<DialogFooter>
 									<Button type="button" variant="outline" onClick={() => setDialogOpen(false)}>
-										Cancel
+										{tc("cancel")}
 									</Button>
 									<Button type="submit" disabled={isCreating || !newOrgName.trim()}>
 										{isCreating && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-										Create
+										{tc("create")}
 									</Button>
 								</DialogFooter>
 							</form>
@@ -128,13 +131,11 @@ export default function DashboardClient() {
 				) : organizations.length === 0 ? (
 					<div className="text-center py-16 border rounded-lg bg-muted/50">
 						<Building2 className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-						<h2 className="text-xl font-semibold mb-2">No organizations yet</h2>
-						<p className="text-muted-foreground mb-4">
-							Create your first organization to start managing events
-						</p>
+						<h2 className="text-xl font-semibold mb-2">{t("emptyTitle")}</h2>
+						<p className="text-muted-foreground mb-4">{t("emptyDescription")}</p>
 						<Button onClick={() => setDialogOpen(true)}>
 							<Plus className="h-4 w-4 mr-2" />
-							Create Organization
+							{t("createOrganization")}
 						</Button>
 					</div>
 				) : (
@@ -162,7 +163,7 @@ export default function DashboardClient() {
 										<div>
 											<h3 className="font-semibold">{org.name}</h3>
 											<p className="text-sm text-muted-foreground capitalize">
-												{org.role ?? "member"}
+												{org.role ?? t("memberFallbackRole")}
 											</p>
 										</div>
 									</div>
@@ -186,6 +187,7 @@ export default function DashboardClient() {
 function UserMenu() {
 	const { data: session } = useSession();
 	const router = useRouter();
+	const tc = useTranslations("dashboard.common");
 
 	const handleSignOut = async () => {
 		await authClient.signOut();
@@ -194,9 +196,9 @@ function UserMenu() {
 
 	return (
 		<div className="flex items-center gap-4">
-			<span className="text-sm text-muted-foreground">{session?.user?.email ?? "Loading..."}</span>
+			<span className="text-sm text-muted-foreground">{session?.user?.email ?? tc("loading")}</span>
 			<Button variant="outline" size="sm" onClick={handleSignOut}>
-				Sign Out
+				{tc("signOut")}
 			</Button>
 		</div>
 	);

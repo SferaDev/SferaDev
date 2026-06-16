@@ -16,11 +16,13 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import { getEventBySlug, getEventStats, updateEvent } from "@/actions/events";
 import { deleteAllPhotos, deletePhoto, listPhotos } from "@/actions/photos";
 import { listTemplates } from "@/actions/templates";
+import { DashboardLanguagePicker } from "@/components/dashboard-language-picker";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useSession } from "@/lib/auth-client";
@@ -33,6 +35,9 @@ export default function EventDashboard() {
 	const orgSlug = params.orgSlug as string;
 	const eventSlug = params.eventSlug as string;
 	const { mutate } = useSWRConfig();
+	const t = useTranslations("dashboard.event");
+	const te = useTranslations("dashboard.events");
+	const tc = useTranslations("dashboard.common");
 
 	const { data: event } = useSWR(["events", orgSlug, eventSlug], () =>
 		getEventBySlug(orgSlug, eventSlug),
@@ -68,10 +73,10 @@ export default function EventDashboard() {
 		return (
 			<div className="min-h-screen flex items-center justify-center">
 				<div className="text-center">
-					<h1 className="text-2xl font-bold mb-2">Event not found</h1>
+					<h1 className="text-2xl font-bold mb-2">{te("notFoundTitle")}</h1>
 					<Button onClick={() => router.push(`/dashboard/${orgSlug}`)}>
 						<ChevronLeft className="h-4 w-4 mr-2" />
-						Back to Organization
+						{tc("backToOrganization")}
 					</Button>
 				</div>
 			</div>
@@ -122,29 +127,30 @@ export default function EventDashboard() {
 								{event.status === "active" ? (
 									<>
 										<Play className="h-4 w-4 mr-2" />
-										Active
+										{t("active")}
 									</>
 								) : (
 									<>
 										<Play className="h-4 w-4 mr-2" />
-										Activate
+										{t("activate")}
 									</>
 								)}
 							</Button>
 							<Button variant="outline" asChild>
 								<Link href={`/dashboard/${orgSlug}/${eventSlug}/check`}>
 									<ClipboardCheck className="h-4 w-4 mr-2" />
-									Pre-event check
+									{t("preEventCheck")}
 								</Link>
 							</Button>
 							{event.status === "active" && (
 								<Button variant="outline" asChild>
 									<Link href={`/kiosk/${orgSlug}/${eventSlug}`} target="_blank">
 										<ExternalLink className="h-4 w-4 mr-2" />
-										Open Kiosk
+										{t("openKiosk")}
 									</Link>
 								</Button>
 							)}
+							<DashboardLanguagePicker />
 							<Button variant="ghost" size="icon" asChild>
 								<Link href={`/dashboard/${orgSlug}/${eventSlug}/settings`}>
 									<Settings className="h-4 w-4" />
@@ -160,19 +166,19 @@ export default function EventDashboard() {
 				{stats && (
 					<div className="grid gap-4 md:grid-cols-4 mb-8">
 						<div className="p-4 border rounded-lg">
-							<div className="text-sm text-muted-foreground">Total Photos</div>
+							<div className="text-sm text-muted-foreground">{t("stats.totalPhotos")}</div>
 							<div className="text-2xl font-bold">{stats.photoCount}</div>
 						</div>
 						<div className="p-4 border rounded-lg">
-							<div className="text-sm text-muted-foreground">Total Sessions</div>
+							<div className="text-sm text-muted-foreground">{t("stats.totalSessions")}</div>
 							<div className="text-2xl font-bold">{stats.sessionCount}</div>
 						</div>
 						<div className="p-4 border rounded-lg">
-							<div className="text-sm text-muted-foreground">Completed</div>
+							<div className="text-sm text-muted-foreground">{t("stats.completed")}</div>
 							<div className="text-2xl font-bold">{stats.completedSessions}</div>
 						</div>
 						<div className="p-4 border rounded-lg">
-							<div className="text-sm text-muted-foreground">Conversion Rate</div>
+							<div className="text-sm text-muted-foreground">{t("stats.conversionRate")}</div>
 							<div className="text-2xl font-bold">{stats.conversionRate.toFixed(1)}%</div>
 						</div>
 					</div>
@@ -182,11 +188,11 @@ export default function EventDashboard() {
 					<TabsList>
 						<TabsTrigger value="gallery">
 							<Image className="h-4 w-4 mr-2" />
-							Gallery
+							{t("gallery")}
 						</TabsTrigger>
 						<TabsTrigger value="templates">
 							<Layout className="h-4 w-4 mr-2" />
-							Templates
+							{t("templates")}
 						</TabsTrigger>
 					</TabsList>
 
@@ -216,6 +222,7 @@ function GalleryTab({
 	onRemove: (id: string) => void;
 	onRemoveAll: () => void;
 }) {
+	const t = useTranslations("dashboard.event");
 	const [selectedPhotos, setSelectedPhotos] = useState<Set<string>>(new Set());
 	const [isExporting, setIsExporting] = useState(false);
 
@@ -263,8 +270,8 @@ function GalleryTab({
 		return (
 			<div className="text-center py-16 border rounded-lg bg-muted/50">
 				<Camera className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-				<h2 className="text-xl font-semibold mb-2">No photos yet</h2>
-				<p className="text-muted-foreground">Photos will appear here as guests capture them</p>
+				<h2 className="text-xl font-semibold mb-2">{t("galleryEmptyTitle")}</h2>
+				<p className="text-muted-foreground">{t("galleryEmptyDescription")}</p>
 			</div>
 		);
 	}
@@ -272,7 +279,7 @@ function GalleryTab({
 	return (
 		<div className="space-y-4">
 			<div className="flex items-center justify-between">
-				<p className="text-muted-foreground">{photos.length} photos</p>
+				<p className="text-muted-foreground">{t("photosCount", { count: photos.length })}</p>
 				<div className="flex gap-2">
 					<Button variant="outline" size="sm" onClick={handleExportAll} disabled={isExporting}>
 						{isExporting ? (
@@ -280,7 +287,7 @@ function GalleryTab({
 						) : (
 							<Download className="h-4 w-4 mr-2" />
 						)}
-						{isExporting ? "Exporting..." : "Export All"}
+						{isExporting ? t("exporting") : t("exportAll")}
 					</Button>
 					<Button
 						variant="outline"
@@ -289,7 +296,7 @@ function GalleryTab({
 						className="text-destructive hover:text-destructive"
 					>
 						<Trash2 className="h-4 w-4 mr-2" />
-						Delete All
+						{t("deleteAll")}
 					</Button>
 				</div>
 			</div>
@@ -303,7 +310,7 @@ function GalleryTab({
 						{photo.url && (
 							<img
 								src={photo.url}
-								alt={`Captured moment ${photo.humanCode}`}
+								alt={t("capturedMomentAlt", { code: photo.humanCode })}
 								className="w-full h-full object-cover"
 							/>
 						)}
@@ -338,14 +345,16 @@ function TemplatesTab({
 	orgSlug: string;
 	eventSlug: string;
 }) {
+	const t = useTranslations("dashboard.event");
+	const tc = useTranslations("dashboard.common");
 	if (templates.length === 0) {
 		return (
 			<div className="text-center py-16 border rounded-lg bg-muted/50">
 				<Layout className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-				<h2 className="text-xl font-semibold mb-2">No templates yet</h2>
-				<p className="text-muted-foreground mb-4">Add overlay templates for your photo booth</p>
+				<h2 className="text-xl font-semibold mb-2">{t("templatesEmptyTitle")}</h2>
+				<p className="text-muted-foreground mb-4">{t("templatesEmptyDescription")}</p>
 				<Button asChild>
-					<Link href={`/dashboard/${orgSlug}/${eventSlug}/templates`}>Add Template</Link>
+					<Link href={`/dashboard/${orgSlug}/${eventSlug}/templates`}>{t("addTemplate")}</Link>
 				</Button>
 			</div>
 		);
@@ -354,9 +363,9 @@ function TemplatesTab({
 	return (
 		<div className="space-y-4">
 			<div className="flex items-center justify-between">
-				<p className="text-muted-foreground">{templates.length} templates</p>
+				<p className="text-muted-foreground">{t("templatesCount", { count: templates.length })}</p>
 				<Button asChild>
-					<Link href={`/dashboard/${orgSlug}/${eventSlug}/templates`}>Manage Templates</Link>
+					<Link href={`/dashboard/${orgSlug}/${eventSlug}/templates`}>{t("manageTemplates")}</Link>
 				</Button>
 			</div>
 
@@ -375,12 +384,14 @@ function TemplatesTab({
 						)}
 						<div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
 							<Button size="sm" variant="secondary" asChild>
-								<Link href={`/dashboard/${orgSlug}/${eventSlug}/templates`}>Edit</Link>
+								<Link href={`/dashboard/${orgSlug}/${eventSlug}/templates`}>{tc("edit")}</Link>
 							</Button>
 						</div>
 						<div className="absolute bottom-0 inset-x-0 p-2 bg-linear-to-t from-black/80 to-transparent">
 							<p className="text-sm text-white font-medium truncate">{template.name}</p>
-							<p className="text-xs text-white/60">{template.enabled ? "Enabled" : "Disabled"}</p>
+							<p className="text-xs text-white/60">
+								{template.enabled ? tc("enabled") : tc("disabled")}
+							</p>
 						</div>
 					</div>
 				))}

@@ -16,10 +16,12 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import { createEvent, duplicateEvent, listEvents } from "@/actions/events";
 import { getOrganizationBySlug, getUsage } from "@/actions/organizations";
+import { DashboardLanguagePicker } from "@/components/dashboard-language-picker";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -49,6 +51,9 @@ export default function OrganizationDashboard() {
 	const params = useParams();
 	const orgSlug = params.orgSlug as string;
 	const { mutate } = useSWRConfig();
+	const t = useTranslations("dashboard.events");
+	const tc = useTranslations("dashboard.common");
+	const to = useTranslations("dashboard.orgs");
 
 	const { data: organization } = useSWR(["organizations", orgSlug], () =>
 		getOrganizationBySlug(orgSlug),
@@ -82,11 +87,11 @@ export default function OrganizationDashboard() {
 			mutate((key) => Array.isArray(key) && key[0] === "events");
 			setNewEventName("");
 			setDialogOpen(false);
-			toast({ title: "Event created", description: newEventName.trim() });
+			toast({ title: t("created"), description: newEventName.trim() });
 		} catch (error) {
 			toast({
-				title: "Could not create event",
-				description: error instanceof Error ? error.message : "Unknown error",
+				title: t("couldNotCreate"),
+				description: error instanceof Error ? error.message : tc("unknownError"),
 				variant: "destructive",
 			});
 		} finally {
@@ -99,11 +104,14 @@ export default function OrganizationDashboard() {
 		try {
 			await duplicateEvent(eventId);
 			mutate((key) => Array.isArray(key) && key[0] === "events");
-			toast({ title: "Event duplicated", description: `${eventName} (Copy) was created.` });
+			toast({
+				title: t("duplicated"),
+				description: t("duplicatedDescription", { name: eventName }),
+			});
 		} catch (error) {
 			toast({
-				title: "Could not duplicate event",
-				description: error instanceof Error ? error.message : "Unknown error",
+				title: t("couldNotDuplicate"),
+				description: error instanceof Error ? error.message : tc("unknownError"),
 				variant: "destructive",
 			});
 		} finally {
@@ -123,14 +131,11 @@ export default function OrganizationDashboard() {
 		return (
 			<div className="min-h-screen flex items-center justify-center">
 				<div className="text-center">
-					<h1 className="text-2xl font-bold mb-2">Organization not found</h1>
-					<p className="text-muted-foreground mb-4">
-						The organization you&apos;re looking for doesn&apos;t exist or you don&apos;t have
-						access.
-					</p>
+					<h1 className="text-2xl font-bold mb-2">{to("notFoundTitle")}</h1>
+					<p className="text-muted-foreground mb-4">{to("notFoundDescription")}</p>
 					<Button onClick={() => router.push("/dashboard")}>
 						<ChevronLeft className="h-4 w-4 mr-2" />
-						Back to Dashboard
+						{tc("backToDashboard")}
 					</Button>
 				</div>
 			</div>
@@ -155,21 +160,22 @@ export default function OrganizationDashboard() {
 							<Button variant="ghost" size="sm" asChild>
 								<Link href={`/dashboard/${orgSlug}/team`}>
 									<Users className="h-4 w-4 mr-2" />
-									Team
+									{tc("team")}
 								</Link>
 							</Button>
 							<Button variant="ghost" size="sm" asChild>
 								<Link href={`/dashboard/${orgSlug}/billing`}>
 									<CreditCard className="h-4 w-4 mr-2" />
-									Billing
+									{tc("billing")}
 								</Link>
 							</Button>
 							<Button variant="ghost" size="sm" asChild>
 								<Link href={`/dashboard/${orgSlug}/settings`}>
 									<Settings className="h-4 w-4 mr-2" />
-									Settings
+									{tc("settings")}
 								</Link>
 							</Button>
+							<DashboardLanguagePicker />
 						</nav>
 					</div>
 				</div>
@@ -180,7 +186,7 @@ export default function OrganizationDashboard() {
 				{usage && (
 					<div className="grid gap-4 md:grid-cols-4 mb-8">
 						<div className="p-4 border rounded-lg">
-							<div className="text-sm text-muted-foreground">Events</div>
+							<div className="text-sm text-muted-foreground">{t("stats.events")}</div>
 							<div className="text-2xl font-bold">
 								{usage.events.used}
 								{usage.events.limit !== -1 && (
@@ -191,15 +197,15 @@ export default function OrganizationDashboard() {
 							</div>
 						</div>
 						<div className="p-4 border rounded-lg">
-							<div className="text-sm text-muted-foreground">Total Photos</div>
+							<div className="text-sm text-muted-foreground">{t("stats.totalPhotos")}</div>
 							<div className="text-2xl font-bold">{usage.photos}</div>
 						</div>
 						<div className="p-4 border rounded-lg">
-							<div className="text-sm text-muted-foreground">Sessions</div>
+							<div className="text-sm text-muted-foreground">{t("stats.sessions")}</div>
 							<div className="text-2xl font-bold">{usage.sessions}</div>
 						</div>
 						<div className="p-4 border rounded-lg">
-							<div className="text-sm text-muted-foreground">Storage</div>
+							<div className="text-sm text-muted-foreground">{t("stats.storage")}</div>
 							<div className="text-2xl font-bold">
 								{formatBytes(usage.storage.used)}
 								{usage.storage.limit !== -1 && (
@@ -214,39 +220,37 @@ export default function OrganizationDashboard() {
 
 				{/* Events */}
 				<div className="flex items-center justify-between mb-6">
-					<h2 className="text-2xl font-bold">Events</h2>
+					<h2 className="text-2xl font-bold">{t("title")}</h2>
 					<Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
 						<DialogTrigger asChild>
 							<Button>
 								<Plus className="h-4 w-4 mr-2" />
-								New Event
+								{t("newEvent")}
 							</Button>
 						</DialogTrigger>
 						<DialogContent>
 							<form onSubmit={handleCreateEvent}>
 								<DialogHeader>
-									<DialogTitle>Create Event</DialogTitle>
-									<DialogDescription>
-										Create a new photo booth event for your organization.
-									</DialogDescription>
+									<DialogTitle>{t("createEvent")}</DialogTitle>
+									<DialogDescription>{t("createDialogDescription")}</DialogDescription>
 								</DialogHeader>
 								<div className="py-4">
-									<Label htmlFor="event-name">Event Name</Label>
+									<Label htmlFor="event-name">{t("eventName")}</Label>
 									<Input
 										id="event-name"
 										value={newEventName}
 										onChange={(e) => setNewEventName(e.target.value)}
-										placeholder="Sarah & John's Wedding"
+										placeholder={t("eventNamePlaceholder")}
 										className="mt-2"
 									/>
 								</div>
 								<DialogFooter>
 									<Button type="button" variant="outline" onClick={() => setDialogOpen(false)}>
-										Cancel
+										{tc("cancel")}
 									</Button>
 									<Button type="submit" disabled={isCreating || !newEventName.trim()}>
 										{isCreating && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-										Create
+										{tc("create")}
 									</Button>
 								</DialogFooter>
 							</form>
@@ -261,13 +265,11 @@ export default function OrganizationDashboard() {
 				) : events.length === 0 ? (
 					<div className="text-center py-16 border rounded-lg bg-muted/50">
 						<Calendar className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-						<h2 className="text-xl font-semibold mb-2">No events yet</h2>
-						<p className="text-muted-foreground mb-4">
-							Create your first event to start capturing memories
-						</p>
+						<h2 className="text-xl font-semibold mb-2">{t("emptyTitle")}</h2>
+						<p className="text-muted-foreground mb-4">{t("emptyDescription")}</p>
 						<Button onClick={() => setDialogOpen(true)}>
 							<Plus className="h-4 w-4 mr-2" />
-							Create Event
+							{t("createEvent")}
 						</Button>
 					</div>
 				) : (
@@ -287,7 +289,7 @@ export default function OrganizationDashboard() {
 											<Button
 												variant="ghost"
 												size="icon"
-												aria-label={`Actions for ${event.name}`}
+												aria-label={t("actionsFor", { name: event.name })}
 												disabled={duplicatingId === event.id}
 											>
 												{duplicatingId === event.id ? (
@@ -301,24 +303,24 @@ export default function OrganizationDashboard() {
 											<DropdownMenuItem asChild>
 												<Link href={`/dashboard/${orgSlug}/${event.slug}`}>
 													<BarChart3 className="mr-2 h-4 w-4" aria-hidden="true" />
-													Open dashboard
+													{t("openDashboard")}
 												</Link>
 											</DropdownMenuItem>
 											<DropdownMenuItem asChild>
 												<Link href={`/dashboard/${orgSlug}/${event.slug}/settings`}>
 													<Settings className="mr-2 h-4 w-4" aria-hidden="true" />
-													Settings
+													{tc("settings")}
 												</Link>
 											</DropdownMenuItem>
 											<DropdownMenuItem onClick={() => handleDuplicate(event.id, event.name)}>
 												<Copy className="mr-2 h-4 w-4" aria-hidden="true" />
-												Duplicate
+												{t("duplicate")}
 											</DropdownMenuItem>
 											{event.status === "active" ? (
 												<DropdownMenuItem asChild>
 													<Link href={`/kiosk/${orgSlug}/${event.slug}`} target="_blank">
 														<Play className="mr-2 h-4 w-4" aria-hidden="true" />
-														Open kiosk
+														{t("openKiosk")}
 													</Link>
 												</DropdownMenuItem>
 											) : null}
@@ -328,25 +330,25 @@ export default function OrganizationDashboard() {
 								<div className="grid grid-cols-2 gap-4 text-sm text-muted-foreground mb-4">
 									<div>
 										<div className="font-medium text-foreground">{event.photoCount}</div>
-										<div>Photos</div>
+										<div>{t("photos")}</div>
 									</div>
 									<div>
 										<div className="font-medium text-foreground">{event.sessionCount}</div>
-										<div>Sessions</div>
+										<div>{t("sessions")}</div>
 									</div>
 								</div>
 								<div className="flex gap-2">
 									<Button size="sm" variant="outline" className="flex-1" asChild>
 										<Link href={`/dashboard/${orgSlug}/${event.slug}`}>
 											<BarChart3 className="h-4 w-4 mr-2" />
-											Dashboard
+											{t("dashboard")}
 										</Link>
 									</Button>
 									{event.status === "active" && (
 										<Button size="sm" className="flex-1" asChild>
 											<Link href={`/kiosk/${orgSlug}/${event.slug}`} target="_blank">
 												<Play className="h-4 w-4 mr-2" />
-												Kiosk
+												{t("kiosk")}
 											</Link>
 										</Button>
 									)}
@@ -361,19 +363,21 @@ export default function OrganizationDashboard() {
 }
 
 function StatusBadge({ status }: { status: string }) {
+	const ts = useTranslations("dashboard.eventStatus");
 	const variants = {
 		draft: "secondary",
 		active: "success",
 		paused: "warning",
 		archived: "outline",
 	} as const;
+	const isKnown = status in variants;
 
 	return (
 		<Badge
 			variant={variants[status as keyof typeof variants] ?? "secondary"}
 			className="capitalize"
 		>
-			{status}
+			{isKnown ? ts(status as keyof typeof variants) : status}
 		</Badge>
 	);
 }

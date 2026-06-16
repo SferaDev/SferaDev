@@ -3,6 +3,7 @@
 import { ChevronLeft, Crown, Loader2, Mail, Plus, Shield, Trash2, User, X } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import {
@@ -14,6 +15,7 @@ import {
 	removeMember,
 	updateMemberRole,
 } from "@/actions/organizations";
+import { DashboardLanguagePicker } from "@/components/dashboard-language-picker";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -45,6 +47,10 @@ export default function TeamPage() {
 	const params = useParams();
 	const orgSlug = params.orgSlug as string;
 	const { mutate } = useSWRConfig();
+	const t = useTranslations("dashboard.team");
+	const tc = useTranslations("dashboard.common");
+	const to = useTranslations("dashboard.orgs");
+	const tr = useTranslations("dashboard.roles");
 
 	const { data: organization } = useSWR(["organizations", orgSlug], () =>
 		getOrganizationBySlug(orgSlug),
@@ -80,7 +86,7 @@ export default function TeamPage() {
 
 		const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 		if (!emailPattern.test(trimmed)) {
-			setInviteEmailError("Please enter a valid email address");
+			setInviteEmailError(t("invalidEmail"));
 			return;
 		}
 		setInviteEmailError(null);
@@ -91,11 +97,11 @@ export default function TeamPage() {
 			mutate((key) => Array.isArray(key) && key[0] === "invitations");
 			setInviteEmail("");
 			setDialogOpen(false);
-			toast({ title: "Invitation sent", description: trimmed });
+			toast({ title: t("invitationSent"), description: trimmed });
 		} catch (error) {
 			toast({
-				title: "Could not send invitation",
-				description: error instanceof Error ? error.message : "Unknown error",
+				title: t("couldNotInvite"),
+				description: error instanceof Error ? error.message : tc("unknownError"),
 				variant: "destructive",
 			});
 		} finally {
@@ -105,16 +111,16 @@ export default function TeamPage() {
 
 	const handleRemoveMember = async (memberId: string) => {
 		if (!organization) return;
-		if (!confirm("Are you sure you want to remove this member?")) return;
+		if (!confirm(t("confirmRemoveMember"))) return;
 
 		try {
 			await removeMember(organization.id, memberId);
 			mutate((key) => Array.isArray(key) && key[0] === "members");
-			toast({ title: "Member removed" });
+			toast({ title: t("memberRemoved") });
 		} catch (error) {
 			toast({
-				title: "Could not remove member",
-				description: error instanceof Error ? error.message : "Unknown error",
+				title: t("couldNotRemoveMember"),
+				description: error instanceof Error ? error.message : tc("unknownError"),
 				variant: "destructive",
 			});
 		}
@@ -124,11 +130,11 @@ export default function TeamPage() {
 		try {
 			await cancelInvitation(invitationId);
 			mutate((key) => Array.isArray(key) && key[0] === "invitations");
-			toast({ title: "Invitation cancelled" });
+			toast({ title: t("invitationCancelled") });
 		} catch (error) {
 			toast({
-				title: "Could not cancel invitation",
-				description: error instanceof Error ? error.message : "Unknown error",
+				title: t("couldNotCancelInvitation"),
+				description: error instanceof Error ? error.message : tc("unknownError"),
 				variant: "destructive",
 			});
 		}
@@ -140,11 +146,11 @@ export default function TeamPage() {
 		try {
 			await updateMemberRole(organization.id, memberId, role);
 			mutate((key) => Array.isArray(key) && key[0] === "members");
-			toast({ title: "Role updated", description: `Member is now ${role}.` });
+			toast({ title: t("roleUpdated"), description: t("roleUpdatedDescription", { role }) });
 		} catch (error) {
 			toast({
-				title: "Could not update role",
-				description: error instanceof Error ? error.message : "Unknown error",
+				title: t("couldNotUpdateRole"),
+				description: error instanceof Error ? error.message : tc("unknownError"),
 				variant: "destructive",
 			});
 		} finally {
@@ -164,10 +170,10 @@ export default function TeamPage() {
 		return (
 			<div className="min-h-screen flex items-center justify-center">
 				<div className="text-center">
-					<h1 className="text-2xl font-bold mb-2">Organization not found</h1>
+					<h1 className="text-2xl font-bold mb-2">{to("notFoundTitle")}</h1>
 					<Button onClick={() => router.push("/dashboard")}>
 						<ChevronLeft className="h-4 w-4 mr-2" />
-						Back to Dashboard
+						{tc("backToDashboard")}
 					</Button>
 				</div>
 			</div>
@@ -187,76 +193,77 @@ export default function TeamPage() {
 								<ChevronLeft className="h-5 w-5" />
 							</Link>
 							<div>
-								<h1 className="font-bold text-xl">Team</h1>
+								<h1 className="font-bold text-xl">{t("title")}</h1>
 								<p className="text-sm text-muted-foreground">{organization.name}</p>
 							</div>
 						</div>
-						<Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-							<DialogTrigger asChild>
-								<Button>
-									<Plus className="h-4 w-4 mr-2" />
-									Invite Member
-								</Button>
-							</DialogTrigger>
-							<DialogContent>
-								<form onSubmit={handleInvite}>
-									<DialogHeader>
-										<DialogTitle>Invite Team Member</DialogTitle>
-										<DialogDescription>
-											Send an invitation to join your organization.
-										</DialogDescription>
-									</DialogHeader>
-									<div className="py-4 space-y-4">
-										<div>
-											<Label htmlFor="email">Email Address</Label>
-											<Input
-												id="email"
-												type="email"
-												value={inviteEmail}
-												onChange={(e) => {
-													setInviteEmail(e.target.value);
-													if (inviteEmailError) setInviteEmailError(null);
-												}}
-												placeholder="colleague@example.com"
-												className="mt-2"
-												aria-invalid={inviteEmailError ? "true" : undefined}
-												aria-describedby={inviteEmailError ? "invite-email-error" : undefined}
-												required
-											/>
-											{inviteEmailError ? (
-												<p id="invite-email-error" className="mt-2 text-sm text-destructive">
-													{inviteEmailError}
-												</p>
-											) : null}
+						<div className="flex items-center gap-2">
+							<DashboardLanguagePicker />
+							<Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+								<DialogTrigger asChild>
+									<Button>
+										<Plus className="h-4 w-4 mr-2" />
+										{t("inviteMember")}
+									</Button>
+								</DialogTrigger>
+								<DialogContent>
+									<form onSubmit={handleInvite}>
+										<DialogHeader>
+											<DialogTitle>{t("inviteDialogTitle")}</DialogTitle>
+											<DialogDescription>{t("inviteDialogDescription")}</DialogDescription>
+										</DialogHeader>
+										<div className="py-4 space-y-4">
+											<div>
+												<Label htmlFor="email">{t("emailAddress")}</Label>
+												<Input
+													id="email"
+													type="email"
+													value={inviteEmail}
+													onChange={(e) => {
+														setInviteEmail(e.target.value);
+														if (inviteEmailError) setInviteEmailError(null);
+													}}
+													placeholder={t("emailPlaceholder")}
+													className="mt-2"
+													aria-invalid={inviteEmailError ? "true" : undefined}
+													aria-describedby={inviteEmailError ? "invite-email-error" : undefined}
+													required
+												/>
+												{inviteEmailError ? (
+													<p id="invite-email-error" className="mt-2 text-sm text-destructive">
+														{inviteEmailError}
+													</p>
+												) : null}
+											</div>
+											<div>
+												<Label htmlFor="role">{t("role")}</Label>
+												<Select
+													value={inviteRole}
+													onValueChange={(v: "admin" | "member") => setInviteRole(v)}
+												>
+													<SelectTrigger className="mt-2">
+														<SelectValue />
+													</SelectTrigger>
+													<SelectContent>
+														<SelectItem value="admin">{tr("admin")}</SelectItem>
+														<SelectItem value="member">{tr("member")}</SelectItem>
+													</SelectContent>
+												</Select>
+											</div>
 										</div>
-										<div>
-											<Label htmlFor="role">Role</Label>
-											<Select
-												value={inviteRole}
-												onValueChange={(v: "admin" | "member") => setInviteRole(v)}
-											>
-												<SelectTrigger className="mt-2">
-													<SelectValue />
-												</SelectTrigger>
-												<SelectContent>
-													<SelectItem value="admin">Admin</SelectItem>
-													<SelectItem value="member">Member</SelectItem>
-												</SelectContent>
-											</Select>
-										</div>
-									</div>
-									<DialogFooter>
-										<Button type="button" variant="outline" onClick={() => setDialogOpen(false)}>
-											Cancel
-										</Button>
-										<Button type="submit" disabled={isInviting || !inviteEmail.trim()}>
-											{isInviting && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-											Send Invitation
-										</Button>
-									</DialogFooter>
-								</form>
-							</DialogContent>
-						</Dialog>
+										<DialogFooter>
+											<Button type="button" variant="outline" onClick={() => setDialogOpen(false)}>
+												{tc("cancel")}
+											</Button>
+											<Button type="submit" disabled={isInviting || !inviteEmail.trim()}>
+												{isInviting && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+												{t("sendInvitation")}
+											</Button>
+										</DialogFooter>
+									</form>
+								</DialogContent>
+							</Dialog>
+						</div>
 					</div>
 				</div>
 			</header>
@@ -264,7 +271,9 @@ export default function TeamPage() {
 			<main className="container mx-auto px-4 py-8 max-w-4xl">
 				{/* Members */}
 				<div className="mb-8">
-					<h2 className="text-lg font-semibold mb-4">Members ({members?.length ?? 0})</h2>
+					<h2 className="text-lg font-semibold mb-4">
+						{t("membersHeading", { count: members?.length ?? 0 })}
+					</h2>
 					<div className="border rounded-lg divide-y">
 						{members?.map((member) => {
 							const fallback =
@@ -297,13 +306,15 @@ export default function TeamPage() {
 											>
 												<SelectTrigger
 													className="w-32"
-													aria-label={`Role for ${member.user?.email ?? "member"}`}
+													aria-label={t("roleFor", {
+														name: member.user?.email ?? t("memberFallback"),
+													})}
 												>
 													<SelectValue />
 												</SelectTrigger>
 												<SelectContent>
-													<SelectItem value="admin">Admin</SelectItem>
-													<SelectItem value="member">Member</SelectItem>
+													<SelectItem value="admin">{tr("admin")}</SelectItem>
+													<SelectItem value="member">{tr("member")}</SelectItem>
 												</SelectContent>
 											</Select>
 										) : null}
@@ -311,7 +322,9 @@ export default function TeamPage() {
 											<Button
 												variant="ghost"
 												size="icon"
-												aria-label={`Remove ${member.user?.email ?? "member"}`}
+												aria-label={t("removeName", {
+													name: member.user?.email ?? t("memberFallback"),
+												})}
 												onClick={() => handleRemoveMember(member.id)}
 											>
 												<Trash2 className="h-4 w-4 text-destructive" />
@@ -328,7 +341,7 @@ export default function TeamPage() {
 				{invitations && invitations.length > 0 && (
 					<div>
 						<h2 className="text-lg font-semibold mb-4">
-							Pending Invitations ({invitations.length})
+							{t("pendingInvitationsHeading", { count: invitations.length })}
 						</h2>
 						<div className="border rounded-lg divide-y">
 							{invitations.map((invitation) => (
@@ -343,7 +356,9 @@ export default function TeamPage() {
 												<RoleBadge role={invitation.role} />
 											</div>
 											<div className="text-sm text-muted-foreground">
-												Expires {new Date(invitation.expiresAt).toLocaleDateString()}
+												{t("expires", {
+													date: new Date(invitation.expiresAt).toLocaleDateString(),
+												})}
 											</div>
 										</div>
 									</div>
@@ -365,18 +380,19 @@ export default function TeamPage() {
 }
 
 function RoleBadge({ role }: { role: string }) {
+	const tr = useTranslations("dashboard.roles");
 	const config = {
-		owner: { icon: Crown, label: "Owner", variant: "warning" as const },
-		admin: { icon: Shield, label: "Admin", variant: "info" as const },
-		member: { icon: User, label: "Member", variant: "secondary" as const },
+		owner: { icon: Crown, key: "owner" as const, variant: "warning" as const },
+		admin: { icon: Shield, key: "admin" as const, variant: "info" as const },
+		member: { icon: User, key: "member" as const, variant: "secondary" as const },
 	};
 
-	const { icon: Icon, label, variant } = config[role as keyof typeof config] ?? config.member;
+	const { icon: Icon, key, variant } = config[role as keyof typeof config] ?? config.member;
 
 	return (
 		<Badge variant={variant}>
 			<Icon />
-			{label}
+			{tr(key)}
 		</Badge>
 	);
 }

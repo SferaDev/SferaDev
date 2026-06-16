@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useRef, useState } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import { getEventBySlug } from "@/actions/events";
@@ -27,6 +28,7 @@ import {
 	reorderTemplates,
 	updateTemplate,
 } from "@/actions/templates";
+import { DashboardLanguagePicker } from "@/components/dashboard-language-picker";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -55,6 +57,9 @@ export default function TemplateManager() {
 	const orgSlug = params.orgSlug as string;
 	const eventSlug = params.eventSlug as string;
 	const { mutate } = useSWRConfig();
+	const t = useTranslations("dashboard.templates");
+	const tc = useTranslations("dashboard.common");
+	const te = useTranslations("dashboard.events");
 
 	const { data: event } = useSWR(["events", orgSlug, eventSlug], () =>
 		getEventBySlug(orgSlug, eventSlug),
@@ -86,10 +91,10 @@ export default function TemplateManager() {
 		return (
 			<div className="min-h-screen flex items-center justify-center">
 				<div className="text-center">
-					<h1 className="text-2xl font-bold mb-2">Event not found</h1>
+					<h1 className="text-2xl font-bold mb-2">{te("notFoundTitle")}</h1>
 					<Button onClick={() => router.push(`/dashboard/${orgSlug}`)}>
 						<ChevronLeft className="h-4 w-4 mr-2" />
-						Back to Organization
+						{tc("backToOrganization")}
 					</Button>
 				</div>
 			</div>
@@ -118,7 +123,7 @@ export default function TemplateManager() {
 	};
 
 	const handleDelete = async (templateId: string) => {
-		if (!confirm("Delete this template? This cannot be undone.")) return;
+		if (!confirm(t("confirmDelete"))) return;
 		await deleteTemplate(templateId);
 		mutate((key) => Array.isArray(key) && key[0] === "templates");
 	};
@@ -136,30 +141,29 @@ export default function TemplateManager() {
 								<ChevronLeft className="h-5 w-5" />
 							</Link>
 							<div>
-								<h1 className="font-bold text-xl">Template Manager</h1>
+								<h1 className="font-bold text-xl">{t("title")}</h1>
 								<p className="text-sm text-muted-foreground">{event.name}</p>
 							</div>
 						</div>
 						<div className="flex items-center gap-2">
+							<DashboardLanguagePicker />
 							<Button variant="outline" asChild>
 								<Link href={`/dashboard/${orgSlug}/${eventSlug}/templates/editor`}>
 									<LayoutTemplate className="h-4 w-4 mr-2" />
-									New Layout
+									{t("newLayout")}
 								</Link>
 							</Button>
 							<Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
 								<DialogTrigger asChild>
 									<Button>
 										<Plus className="h-4 w-4 mr-2" />
-										Add Template
+										{t("addTemplate")}
 									</Button>
 								</DialogTrigger>
 								<DialogContent className="sm:max-w-lg">
 									<DialogHeader>
-										<DialogTitle>Add Template</DialogTitle>
-										<DialogDescription>
-											Upload a PNG overlay for your photo booth frames.
-										</DialogDescription>
+										<DialogTitle>{t("addTemplate")}</DialogTitle>
+										<DialogDescription>{t("addDialogDescription")}</DialogDescription>
 									</DialogHeader>
 									<UploadForm
 										eventId={event.id}
@@ -181,13 +185,11 @@ export default function TemplateManager() {
 				{templates.length === 0 ? (
 					<div className="text-center py-16 border rounded-lg bg-muted/50">
 						<Upload className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-						<h2 className="text-xl font-semibold mb-2">No templates yet</h2>
-						<p className="text-muted-foreground mb-4">
-							Upload PNG overlay images for your photo booth
-						</p>
+						<h2 className="text-xl font-semibold mb-2">{t("emptyTitle")}</h2>
+						<p className="text-muted-foreground mb-4">{t("emptyDescription")}</p>
 						<Button onClick={() => setShowAddDialog(true)}>
 							<Plus className="h-4 w-4 mr-2" />
-							Add Template
+							{t("addTemplate")}
 						</Button>
 					</div>
 				) : (
@@ -232,9 +234,9 @@ export default function TemplateManager() {
 												{template.name}
 											</button>
 											<p className="text-sm text-muted-foreground">
-												{template.enabled ? "Enabled" : "Disabled"}
-												{template.captionPosition && " · Caption configured"}
-												{template.safeArea && " · Safe area set"}
+												{template.enabled ? tc("enabled") : tc("disabled")}
+												{template.captionPosition && ` · ${t("captionConfigured")}`}
+												{template.safeArea && ` · ${t("safeAreaSet")}`}
 											</p>
 										</>
 									)}
@@ -243,7 +245,7 @@ export default function TemplateManager() {
 								{/* Actions */}
 								<div className="flex items-center gap-1 shrink-0">
 									{template.layoutJson ? (
-										<Button variant="ghost" size="icon" asChild title="Edit layout">
+										<Button variant="ghost" size="icon" asChild title={t("editLayout")}>
 											<Link
 												href={`/dashboard/${orgSlug}/${eventSlug}/templates/editor?templateId=${template.id}`}
 											>
@@ -307,6 +309,8 @@ function UploadForm({
 	setIsUploading: (v: boolean) => void;
 	onComplete: () => void;
 }) {
+	const t = useTranslations("dashboard.templates.upload");
+	const tc = useTranslations("dashboard.common");
 	const fileRef = useRef<HTMLInputElement>(null);
 	const [name, setName] = useState("");
 	const [file, setFile] = useState<File | null>(null);
@@ -378,7 +382,7 @@ function UploadForm({
 	return (
 		<form onSubmit={handleSubmit} className="space-y-4">
 			<div>
-				<Label htmlFor="file">Overlay Image (PNG)</Label>
+				<Label htmlFor="file">{t("overlayImage")}</Label>
 				<Input
 					ref={fileRef}
 					id="file"
@@ -391,37 +395,37 @@ function UploadForm({
 
 			{preview && (
 				<div className="aspect-3/4 max-h-48 mx-auto rounded overflow-hidden bg-muted">
-					<img src={preview} alt="Preview" className="w-full h-full object-contain" />
+					<img src={preview} alt={t("previewAlt")} className="w-full h-full object-contain" />
 				</div>
 			)}
 
 			<div>
-				<Label htmlFor="tpl-name">Template Name</Label>
+				<Label htmlFor="tpl-name">{t("templateName")}</Label>
 				<Input
 					id="tpl-name"
 					value={name}
 					onChange={(e) => setName(e.target.value)}
-					placeholder="e.g. Floral Frame"
+					placeholder={t("templateNamePlaceholder")}
 					className="mt-2"
 				/>
 			</div>
 
 			<div className="space-y-3 border-t pt-4">
 				<div className="flex items-center justify-between">
-					<Label>Caption Position</Label>
+					<Label>{t("captionPosition")}</Label>
 					<Button
 						type="button"
 						variant={captionEnabled ? "default" : "outline"}
 						size="sm"
 						onClick={() => setCaptionEnabled(!captionEnabled)}
 					>
-						{captionEnabled ? "Enabled" : "Disabled"}
+						{captionEnabled ? tc("enabled") : tc("disabled")}
 					</Button>
 				</div>
 				{captionEnabled && (
 					<div className="grid grid-cols-2 gap-3 text-sm">
 						<div>
-							<Label className="text-xs">X Position (%)</Label>
+							<Label className="text-xs">{t("xPosition")}</Label>
 							<Input
 								type="number"
 								min={0}
@@ -431,7 +435,7 @@ function UploadForm({
 							/>
 						</div>
 						<div>
-							<Label className="text-xs">Y Position (%)</Label>
+							<Label className="text-xs">{t("yPosition")}</Label>
 							<Input
 								type="number"
 								min={0}
@@ -441,7 +445,7 @@ function UploadForm({
 							/>
 						</div>
 						<div>
-							<Label className="text-xs">Max Width (%)</Label>
+							<Label className="text-xs">{t("maxWidth")}</Label>
 							<Input
 								type="number"
 								min={0}
@@ -453,7 +457,7 @@ function UploadForm({
 							/>
 						</div>
 						<div>
-							<Label className="text-xs">Font Size (px)</Label>
+							<Label className="text-xs">{t("fontSize")}</Label>
 							<Input
 								type="number"
 								min={8}
@@ -465,7 +469,7 @@ function UploadForm({
 							/>
 						</div>
 						<div>
-							<Label className="text-xs">Color</Label>
+							<Label className="text-xs">{t("color")}</Label>
 							<Input
 								type="color"
 								value={captionPosition.color}
@@ -474,7 +478,7 @@ function UploadForm({
 							/>
 						</div>
 						<div>
-							<Label className="text-xs">Align</Label>
+							<Label className="text-xs">{t("align")}</Label>
 							<Select
 								value={captionPosition.align}
 								onValueChange={(v: "left" | "center" | "right") =>
@@ -485,9 +489,9 @@ function UploadForm({
 									<SelectValue />
 								</SelectTrigger>
 								<SelectContent>
-									<SelectItem value="left">Left</SelectItem>
-									<SelectItem value="center">Center</SelectItem>
-									<SelectItem value="right">Right</SelectItem>
+									<SelectItem value="left">{t("alignLeft")}</SelectItem>
+									<SelectItem value="center">{t("alignCenter")}</SelectItem>
+									<SelectItem value="right">{t("alignRight")}</SelectItem>
 								</SelectContent>
 							</Select>
 						</div>
@@ -497,20 +501,20 @@ function UploadForm({
 
 			<div className="space-y-3 border-t pt-4">
 				<div className="flex items-center justify-between">
-					<Label>Safe Area (photo placement)</Label>
+					<Label>{t("safeArea")}</Label>
 					<Button
 						type="button"
 						variant={safeAreaEnabled ? "default" : "outline"}
 						size="sm"
 						onClick={() => setSafeAreaEnabled(!safeAreaEnabled)}
 					>
-						{safeAreaEnabled ? "Enabled" : "Disabled"}
+						{safeAreaEnabled ? tc("enabled") : tc("disabled")}
 					</Button>
 				</div>
 				{safeAreaEnabled && (
 					<div className="grid grid-cols-2 gap-3 text-sm">
 						<div>
-							<Label className="text-xs">X (%)</Label>
+							<Label className="text-xs">{t("x")}</Label>
 							<Input
 								type="number"
 								min={0}
@@ -520,7 +524,7 @@ function UploadForm({
 							/>
 						</div>
 						<div>
-							<Label className="text-xs">Y (%)</Label>
+							<Label className="text-xs">{t("y")}</Label>
 							<Input
 								type="number"
 								min={0}
@@ -530,7 +534,7 @@ function UploadForm({
 							/>
 						</div>
 						<div>
-							<Label className="text-xs">Width (%)</Label>
+							<Label className="text-xs">{t("width")}</Label>
 							<Input
 								type="number"
 								min={0}
@@ -540,7 +544,7 @@ function UploadForm({
 							/>
 						</div>
 						<div>
-							<Label className="text-xs">Height (%)</Label>
+							<Label className="text-xs">{t("height")}</Label>
 							<Input
 								type="number"
 								min={0}
@@ -557,12 +561,12 @@ function UploadForm({
 				{isUploading ? (
 					<>
 						<Loader2 className="h-4 w-4 mr-2 animate-spin" />
-						Uploading...
+						{t("uploading")}
 					</>
 				) : (
 					<>
 						<Upload className="h-4 w-4 mr-2" />
-						Upload Template
+						{t("uploadTemplate")}
 					</>
 				)}
 			</Button>
@@ -590,6 +594,7 @@ function EditForm({
 	onSave: (updates: { name: string }) => Promise<void>;
 	onCancel: () => void;
 }) {
+	const tc = useTranslations("dashboard.common");
 	const [name, setName] = useState(template.name);
 	const [saving, setSaving] = useState(false);
 
@@ -612,10 +617,10 @@ function EditForm({
 				}}
 			/>
 			<Button size="sm" onClick={handleSave} disabled={saving}>
-				{saving ? <Loader2 className="h-3 w-3 animate-spin" /> : "Save"}
+				{saving ? <Loader2 className="h-3 w-3 animate-spin" /> : tc("save")}
 			</Button>
 			<Button size="sm" variant="ghost" onClick={onCancel}>
-				Cancel
+				{tc("cancel")}
 			</Button>
 		</div>
 	);
