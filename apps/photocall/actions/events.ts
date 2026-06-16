@@ -405,5 +405,15 @@ export async function getPublicEvent(organizationSlug: string, eventSlug: string
 		captureDefaultCountdown: event.captureDefaultCountdown,
 		captureAutoShoot: event.captureAutoShoot,
 		captureWhoChoosesFilter: event.captureWhoChoosesFilter,
+		// Print settings (consumed by the kiosk result page).
+		printMethod: event.printMethod,
+		printPrinterId: event.printPrinterId,
+		printPaperSize: event.printPaperSize,
+		printMediaType: event.printMediaType,
+		printBorderless: event.printBorderless,
+		printCopies: event.printCopies,
+		printOrientation: event.printOrientation,
+		printAutoPrint: event.printAutoPrint,
+		printBridgeUrl: event.printBridgeUrl,
 	};
 }

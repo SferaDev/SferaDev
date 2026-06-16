@@ -1,0 +1,29 @@
+{
+	"name": "@sferadev/print-bridge",
+	"version": "0.0.1",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "tsx watch src/server.ts",
+		"build": "tsc",
+		"start": "node dist/server.js",
+		"tsc": "tsc --noEmit",
+		"clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+	},
+	"dependencies": {
+		"@hono/node-server": "catalog:",
+		"bonjour-service": "catalog:",
+		"hono": "catalog:",
+		"ipp": "catalog:",
+		"qrcode": "catalog:",
+		"zod": "catalog:"
+	},
+	"devDependencies": {
+		"@sferadev/tsconfig": "workspace:*",
+		"@types/ipp": "catalog:",
+		"@types/node": "catalog:",
+		"@types/qrcode": "catalog:",
+		"tsx": "catalog:",
+		"typescript": "catalog:"
+	}
+}
