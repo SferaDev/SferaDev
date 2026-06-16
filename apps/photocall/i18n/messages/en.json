@@ -90,5 +90,116 @@
 		"birthdays": "Birthdays",
 		"graduations": "Graduations",
 		"celebrations": "Celebrations"
+	},
+	"kiosk": {
+		"common": {
+			"back": "Back",
+			"skip": "Skip",
+			"start": "Start",
+			"cancel": "Cancel",
+			"tryAgain": "Try Again",
+			"poweredBy": "Powered by Photocall",
+			"changeLanguage": "Change language"
+		},
+		"loading": {
+			"preparing": "Getting things ready…",
+			"label": "Loading kiosk"
+		},
+		"error": {
+			"title": "Something interrupted the kiosk",
+			"description": "Don't worry, your event is fine. Tap the button below to start over.",
+			"reference": "Reference: {digest}",
+			"startOver": "Start over"
+		},
+		"offline": {
+			"offline": "Offline",
+			"waiting": "{count, plural, one {# photo waiting to sync} other {# photos waiting to sync}}"
+		},
+		"attract": {
+			"defaultWelcome": "Tap to capture your moment",
+			"start": "Start",
+			"eventNotFoundTitle": "Event Not Found",
+			"eventNotFoundDescription": "This event is not active or does not exist.",
+			"couldNotStart": "Could not start session. Please try again.",
+			"admin": "Admin",
+			"openAdminControls": "Open admin controls",
+			"endAdminSession": "End admin session",
+			"pinDialogTitle": "Enter admin PIN",
+			"pinDialogDescription": "Unlock kiosk admin controls. Configure the PIN from event settings.",
+			"pinLabel": "PIN",
+			"invalidPin": "Invalid PIN",
+			"unlock": "Unlock"
+		},
+		"consent": {
+			"loading": "Loading...",
+			"title": "Photo Consent",
+			"description": "By continuing, you agree to have your photo taken and stored for this event. Your photo may be displayed in the event slideshow and available for download via a unique link.",
+			"retention": "Photos will be automatically deleted after {days} days.",
+			"agree": "I Agree",
+			"decline": "No Thanks"
+		},
+		"select": {
+			"chooseFrame": "Choose a Frame",
+			"noTemplates": "No templates available",
+			"continueWithoutFrame": "Continue without frame",
+			"pickLook": "Pick a Look"
+		},
+		"capture": {
+			"allShotsCaptured": "All shots captured!",
+			"pose": "Pose!",
+			"shotProgress": "Shot {current} of {total}",
+			"retake": "Retake",
+			"looksGood": "Looks good",
+			"autoShooting": "Auto-shooting…",
+			"shotAlt": "Shot {index}",
+			"cameraErrorTitle": "Camera Error",
+			"captureFailedTitle": "Capture Failed",
+			"captureFailed": "Failed to capture photo. Please try again.",
+			"couldNotReadFrame": "Could not read a frame from the camera."
+		},
+		"personalize": {
+			"retake": "Retake",
+			"title": "Add a Caption",
+			"capturedPreviewAlt": "Captured preview",
+			"captionLabel": "Caption (optional)",
+			"captionPlaceholder": "Add a message...",
+			"captionCount": "{count}/100",
+			"mirrorImage": "Mirror image",
+			"on": "On",
+			"off": "Off",
+			"continue": "Continue"
+		},
+		"result": {
+			"processing": "Processing your photo...",
+			"photoSaved": "Photo saved!",
+			"defaultThankYou": "Thanks for taking a photo!",
+			"finalResultAlt": "Final result",
+			"savedOfflineTitle": "Saved on this device",
+			"savedOfflineDescription": "You're offline right now. Your photo will upload automatically and a shareable link will be ready once the connection returns. You can still download or print it below.",
+			"photoCode": "Your photo code",
+			"scanToView": "Scan to view and download",
+			"download": "Download",
+			"print": "Print",
+			"sendingToPrinter": "Sending to printer…",
+			"sentToPrinter": "Sent to printer",
+			"printerOffline": "Printer offline — will print when it reconnects.",
+			"printingFailed": "Printing failed. Please try again.",
+			"retryPrint": "Retry print",
+			"takeAnother": "Take Another Photo",
+			"somethingWentWrong": "Something went wrong",
+			"photosNotFound": "We couldn't find your photos. Please try again.",
+			"processFailed": "Failed to process your photo. Please try again.",
+			"retry": "Retry",
+			"startOver": "Start Over"
+		},
+		"filters": {
+			"none": "Original",
+			"bw": "B&W",
+			"warm": "Warm",
+			"cool": "Cool",
+			"faded": "Faded",
+			"vivid": "Vivid",
+			"noir": "Noir"
+		}
 	}
 }

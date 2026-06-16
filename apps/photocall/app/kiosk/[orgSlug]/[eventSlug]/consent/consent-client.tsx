@@ -2,6 +2,7 @@
 
 import { Shield } from "lucide-react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import useSWR from "swr";
 import { getPublicEvent } from "@/actions/events";
 import { abandonSession } from "@/actions/sessions";
@@ -14,6 +15,7 @@ export default function KioskConsentPage() {
 	const orgSlug = params.orgSlug as string;
 	const eventSlug = params.eventSlug as string;
 	const sessionId = searchParams.get("session");
+	const t = useTranslations("kiosk.consent");
 
 	const { data: event } = useSWR(["public-event", orgSlug, eventSlug], () =>
 		getPublicEvent(orgSlug, eventSlug),
@@ -39,7 +41,7 @@ export default function KioskConsentPage() {
 		return (
 			<div className="min-h-screen flex items-center justify-center bg-black text-white">
 				<div className="text-center">
-					<p className="text-muted-foreground">Loading...</p>
+					<p className="text-muted-foreground">{t("loading")}</p>
 				</div>
 			</div>
 		);
@@ -52,16 +54,13 @@ export default function KioskConsentPage() {
 			<div className="max-w-lg text-center">
 				<Shield className="h-16 w-16 mx-auto mb-6 opacity-80" />
 
-				<h1 className="text-3xl md:text-4xl font-bold mb-6">Photo Consent</h1>
+				<h1 className="text-3xl md:text-4xl font-bold mb-6">{t("title")}</h1>
 
-				<p className="text-lg md:text-xl mb-6 opacity-80 leading-relaxed">
-					By continuing, you agree to have your photo taken and stored for this event. Your photo
-					may be displayed in the event slideshow and available for download via a unique link.
-				</p>
+				<p className="text-lg md:text-xl mb-6 opacity-80 leading-relaxed">{t("description")}</p>
 
 				{event.retentionDays && (
 					<p className="text-base mb-8 opacity-60">
-						Photos will be automatically deleted after {event.retentionDays} days.
+						{t("retention", { days: event.retentionDays })}
 					</p>
 				)}
 
@@ -72,7 +71,7 @@ export default function KioskConsentPage() {
 						className="text-lg px-10 py-6 rounded-full"
 						style={{ backgroundColor: primaryColor }}
 					>
-						I Agree
+						{t("agree")}
 					</Button>
 					<Button
 						size="lg"
@@ -80,7 +79,7 @@ export default function KioskConsentPage() {
 						onClick={handleDecline}
 						className="text-lg px-10 py-6 rounded-full border-white/30 text-white hover:bg-white/10"
 					>
-						No Thanks
+						{t("decline")}
 					</Button>
 				</div>
 			</div>

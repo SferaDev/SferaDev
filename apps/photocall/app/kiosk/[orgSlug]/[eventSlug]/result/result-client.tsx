@@ -2,6 +2,7 @@
 
 import { ArrowLeft, Camera, Check, Download, Loader2, Printer, RotateCcw, X } from "lucide-react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import QRCode from "qrcode";
 import { useCallback, useEffect, useRef, useState } from "react";
 import useSWR from "swr";
@@ -50,6 +51,7 @@ export default function KioskResultPage() {
 	const sessionId = searchParams.get("session");
 	const templateId = searchParams.get("template");
 	const filterParam = searchParams.get("filter");
+	const t = useTranslations("kiosk.result");
 
 	const { data: event, isLoading: eventLoading } = useSWR(
 		["public-event", orgSlug, eventSlug],
@@ -223,7 +225,7 @@ export default function KioskResultPage() {
 			const composed = isStrip ? await composeStripBlob() : await composeSingleBlob();
 
 			if (!composed) {
-				setError("We couldn't find your photos. Please try again.");
+				setError(t("photosNotFound"));
 				setIsProcessing(false);
 				return;
 			}
@@ -314,7 +316,7 @@ export default function KioskResultPage() {
 			setIsProcessing(false);
 		} catch (err) {
 			console.error("Failed to process photo:", err);
-			setError("Failed to process your photo. Please try again.");
+			setError(t("processFailed"));
 			setIsProcessing(false);
 		}
 	}, [
@@ -327,6 +329,7 @@ export default function KioskResultPage() {
 		sessionId,
 		templateId,
 		sync,
+		t,
 	]);
 
 	useEffect(() => {
@@ -358,9 +361,9 @@ export default function KioskResultPage() {
 		} catch (err) {
 			console.error("Print failed:", err);
 			setPrintStatus("failed");
-			setPrintMessage("Printing failed. Please try again.");
+			setPrintMessage(t("printingFailed"));
 		}
-	}, [printConfig]);
+	}, [printConfig, t]);
 
 	// Auto-print once the photo is composed, if the event opts in.
 	useEffect(() => {
@@ -408,12 +411,12 @@ export default function KioskResultPage() {
 		return (
 			<div className="min-h-screen flex flex-col items-center justify-center bg-black text-white p-8">
 				<div className="text-center">
-					<h1 className="text-2xl font-bold mb-4">Something went wrong</h1>
+					<h1 className="text-2xl font-bold mb-4">{t("somethingWentWrong")}</h1>
 					<p className="text-white/60 mb-8">{error}</p>
 					<div className="flex flex-col gap-3">
 						<Button size="lg" onClick={handleRetry} style={{ backgroundColor: primaryColor }}>
 							<RotateCcw className="h-5 w-5 mr-2" />
-							Retry
+							{t("retry")}
 						</Button>
 						<Button
 							size="lg"
@@ -422,7 +425,7 @@ export default function KioskResultPage() {
 							className="border-white/20 text-white hover:bg-white/10"
 						>
 							<ArrowLeft className="h-5 w-5 mr-2" />
-							Start Over
+							{t("startOver")}
 						</Button>
 					</div>
 				</div>
@@ -436,17 +439,17 @@ export default function KioskResultPage() {
 				{isProcessing ? (
 					<div className="flex flex-col items-center justify-center min-h-[80vh]">
 						<Loader2 className="h-16 w-16 animate-spin mb-4" />
-						<p className="text-xl">Processing your photo...</p>
+						<p className="text-xl">{t("processing")}</p>
 					</div>
 				) : (
 					<>
 						<div className="text-center mb-8">
 							<div className="inline-flex items-center gap-2 bg-green-600 px-4 py-2 rounded-full mb-4">
 								<Check className="h-5 w-5" />
-								<span className="font-medium">Photo saved!</span>
+								<span className="font-medium">{t("photoSaved")}</span>
 							</div>
 							<h1 className="text-3xl font-bold">
-								{event.thankYouMessage || "Thanks for taking a photo!"}
+								{event.thankYouMessage || t("defaultThankYou")}
 							</h1>
 						</div>
 
@@ -456,7 +459,7 @@ export default function KioskResultPage() {
 								{finalImageUrl && (
 									<img
 										src={finalImageUrl}
-										alt="Final result"
+										alt={t("finalResultAlt")}
 										className="w-full h-full object-contain max-h-[70vh]"
 									/>
 								)}
@@ -467,19 +470,15 @@ export default function KioskResultPage() {
 								{/* Offline notice — photo is queued and will upload on reconnect */}
 								{savedOffline && (
 									<div className="text-center p-4 bg-amber-500/15 border border-amber-500/30 rounded-lg">
-										<p className="text-sm font-medium text-amber-200">Saved on this device</p>
-										<p className="text-sm text-white/60 mt-1">
-											You're offline right now. Your photo will upload automatically and a shareable
-											link will be ready once the connection returns. You can still download or
-											print it below.
-										</p>
+										<p className="text-sm font-medium text-amber-200">{t("savedOfflineTitle")}</p>
+										<p className="text-sm text-white/60 mt-1">{t("savedOfflineDescription")}</p>
 									</div>
 								)}
 
 								{/* Human code */}
 								{humanCode && (
 									<div className="text-center p-4 bg-white/10 rounded-lg">
-										<p className="text-sm text-white/60 mb-1">Your photo code</p>
+										<p className="text-sm text-white/60 mb-1">{t("photoCode")}</p>
 										<p className="text-3xl font-mono font-bold tracking-wider">{humanCode}</p>
 									</div>
 								)}
@@ -487,8 +486,8 @@ export default function KioskResultPage() {
 								{/* QR Code */}
 								{event.showQrCode && qrCodeUrl && (
 									<div className="flex flex-col items-center p-6 bg-white rounded-lg">
-										<img src={qrCodeUrl} alt="Scan to view and download" className="w-40 h-40" />
-										<p className="text-black text-sm mt-2">Scan to view and download</p>
+										<img src={qrCodeUrl} alt={t("scanToView")} className="w-40 h-40" />
+										<p className="text-black text-sm mt-2">{t("scanToView")}</p>
 									</div>
 								)}
 
@@ -502,7 +501,7 @@ export default function KioskResultPage() {
 											className="border-white/20 text-white hover:bg-white/10"
 										>
 											<Download className="h-5 w-5 mr-2" />
-											Download
+											{t("download")}
 										</Button>
 									)}
 									{event.allowPrint && printMethod !== "none" && (
@@ -518,7 +517,7 @@ export default function KioskResultPage() {
 											) : (
 												<Printer className="h-5 w-5 mr-2" />
 											)}
-											Print
+											{t("print")}
 										</Button>
 									)}
 								</div>
@@ -527,22 +526,20 @@ export default function KioskResultPage() {
 								{printMethod !== "none" && printStatus !== "idle" && (
 									<div className="text-center text-sm">
 										{printStatus === "printing" && (
-											<p className="text-white/70">Sending to printer…</p>
+											<p className="text-white/70">{t("sendingToPrinter")}</p>
 										)}
 										{printStatus === "done" && (
 											<p className="inline-flex items-center gap-1 text-green-400">
-												<Check className="h-4 w-4" /> Sent to printer
+												<Check className="h-4 w-4" /> {t("sentToPrinter")}
 											</p>
 										)}
 										{printStatus === "queued" && (
-											<p className="text-amber-300">
-												{printMessage ?? "Printer offline — will print when it reconnects."}
-											</p>
+											<p className="text-amber-300">{printMessage ?? t("printerOffline")}</p>
 										)}
 										{printStatus === "failed" && (
 											<div className="flex flex-col items-center gap-2">
 												<p className="inline-flex items-center gap-1 text-red-400">
-													<X className="h-4 w-4" /> {printMessage ?? "Printing failed."}
+													<X className="h-4 w-4" /> {printMessage ?? t("printingFailed")}
 												</p>
 												<Button
 													size="sm"
@@ -551,7 +548,7 @@ export default function KioskResultPage() {
 													className="border-white/20 text-white hover:bg-white/10"
 												>
 													<RotateCcw className="h-4 w-4 mr-2" />
-													Retry print
+													{t("retryPrint")}
 												</Button>
 											</div>
 										)}
@@ -565,7 +562,7 @@ export default function KioskResultPage() {
 									style={{ backgroundColor: primaryColor }}
 								>
 									<Camera className="h-5 w-5 mr-2" />
-									Take Another Photo
+									{t("takeAnother")}
 								</Button>
 							</div>
 						</div>

@@ -3,11 +3,13 @@
 import { Camera, Loader2, Lock, X } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import { getPublicEvent, validateKioskPin } from "@/actions/events";
 import { listRecentPublicPhotos } from "@/actions/photos";
 import { createKioskSession } from "@/actions/sessions";
+import { KioskLanguagePicker } from "@/components/kiosk-language-picker";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -26,6 +28,9 @@ export default function KioskAttractPage() {
 	const params = useParams();
 	const orgSlug = params.orgSlug as string;
 	const eventSlug = params.eventSlug as string;
+
+	const t = useTranslations("kiosk.attract");
+	const tCommon = useTranslations("kiosk.common");
 
 	const { isAuthenticated: isAdmin, login: loginAdmin, logout: logoutAdmin } = useAdminAuth();
 	const [adminDialogOpen, setAdminDialogOpen] = useState(false);
@@ -72,7 +77,7 @@ export default function KioskAttractPage() {
 			const sessionId = await createKioskSession(event.id);
 			router.push(`/kiosk/${orgSlug}/${eventSlug}/consent?session=${sessionId}`);
 		} catch (_error) {
-			setPinError("Could not start session. Please try again.");
+			setPinError(t("couldNotStart"));
 		}
 	};
 
@@ -99,7 +104,7 @@ export default function KioskAttractPage() {
 			setAdminDialogOpen(false);
 			setPinInput("");
 		} catch (error) {
-			setPinError(error instanceof Error ? error.message : "Invalid PIN");
+			setPinError(error instanceof Error ? error.message : t("invalidPin"));
 		} finally {
 			setPinSubmitting(false);
 		}
@@ -117,8 +122,8 @@ export default function KioskAttractPage() {
 		return (
 			<div className="min-h-screen flex items-center justify-center bg-black text-white">
 				<div className="text-center">
-					<h1 className="text-2xl font-bold mb-2">Event Not Found</h1>
-					<p className="text-muted-foreground">This event is not active or does not exist.</p>
+					<h1 className="text-2xl font-bold mb-2">{t("eventNotFoundTitle")}</h1>
+					<p className="text-muted-foreground">{t("eventNotFoundDescription")}</p>
 				</div>
 			</div>
 		);
@@ -164,7 +169,7 @@ export default function KioskAttractPage() {
 				<h1 className="text-4xl md:text-6xl font-bold mb-4">{event.name}</h1>
 
 				<p className="text-xl md:text-2xl mb-8 opacity-80">
-					{event.welcomeMessage || "Tap to capture your moment"}
+					{event.welcomeMessage || t("defaultWelcome")}
 				</p>
 
 				<Button
@@ -174,19 +179,24 @@ export default function KioskAttractPage() {
 					style={{ backgroundColor: primaryColor }}
 				>
 					<Camera className="h-8 w-8 mr-3" />
-					Start
+					{t("start")}
 				</Button>
+			</div>
+
+			{/* Guest language picker */}
+			<div className="absolute top-4 left-1/2 -translate-x-1/2 z-20">
+				<KioskLanguagePicker className="gap-2 rounded-full bg-white/10 text-white backdrop-blur hover:bg-white/20 hover:text-white" />
 			</div>
 
 			{/* Organization branding */}
 			<div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/40 text-sm">
-				Powered by Photocall
+				{tCommon("poweredBy")}
 			</div>
 
 			{/* Admin escape: long-press top-left corner */}
 			<button
 				type="button"
-				aria-label="Open admin controls"
+				aria-label={t("openAdminControls")}
 				className="absolute top-0 left-0 h-16 w-16 cursor-default opacity-0"
 				onMouseDown={handleCornerPressStart}
 				onMouseUp={handleCornerPressEnd}
@@ -200,14 +210,14 @@ export default function KioskAttractPage() {
 					<Button asChild size="sm" variant="ghost" className="text-white hover:bg-white/10">
 						<Link href={`/dashboard/${orgSlug}/${eventSlug}/settings`}>
 							<Lock className="mr-2 h-4 w-4" aria-hidden="true" />
-							Admin
+							{t("admin")}
 						</Link>
 					</Button>
 					<Button
 						size="icon"
 						variant="ghost"
 						className="text-white hover:bg-white/10"
-						aria-label="End admin session"
+						aria-label={t("endAdminSession")}
 						onClick={logoutAdmin}
 					>
 						<X className="h-4 w-4" aria-hidden="true" />
@@ -228,13 +238,11 @@ export default function KioskAttractPage() {
 				<DialogContent>
 					<form onSubmit={handlePinSubmit}>
 						<DialogHeader>
-							<DialogTitle>Enter admin PIN</DialogTitle>
-							<DialogDescription>
-								Unlock kiosk admin controls. Configure the PIN from event settings.
-							</DialogDescription>
+							<DialogTitle>{t("pinDialogTitle")}</DialogTitle>
+							<DialogDescription>{t("pinDialogDescription")}</DialogDescription>
 						</DialogHeader>
 						<div className="space-y-3 py-4">
-							<Label htmlFor="kiosk-admin-pin">PIN</Label>
+							<Label htmlFor="kiosk-admin-pin">{t("pinLabel")}</Label>
 							<Input
 								id="kiosk-admin-pin"
 								type="password"
@@ -256,11 +264,11 @@ export default function KioskAttractPage() {
 						</div>
 						<DialogFooter>
 							<Button type="button" variant="outline" onClick={() => setAdminDialogOpen(false)}>
-								Cancel
+								{tCommon("cancel")}
 							</Button>
 							<Button type="submit" disabled={pinSubmitting || pinInput.length < 4}>
 								{pinSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-								Unlock
+								{t("unlock")}
 							</Button>
 						</DialogFooter>
 					</form>

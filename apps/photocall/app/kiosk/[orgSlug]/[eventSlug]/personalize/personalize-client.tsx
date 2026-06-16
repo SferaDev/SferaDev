@@ -2,6 +2,7 @@
 
 import { ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import useSWR from "swr";
 import { getPublicEvent } from "@/actions/events";
@@ -17,6 +18,7 @@ export default function KioskPersonalizePage() {
 	const eventSlug = params.eventSlug as string;
 	const sessionId = searchParams.get("session");
 	const templateId = searchParams.get("template");
+	const t = useTranslations("kiosk.personalize");
 
 	const { data: event, isLoading: eventLoading } = useSWR(
 		["public-event", orgSlug, eventSlug],
@@ -77,9 +79,9 @@ export default function KioskPersonalizePage() {
 						className="text-white"
 					>
 						<ArrowLeft className="h-5 w-5 mr-2" />
-						Retake
+						{t("retake")}
 					</Button>
-					<h1 className="text-2xl font-bold">Add a Caption</h1>
+					<h1 className="text-2xl font-bold">{t("title")}</h1>
 					<div className="w-24" />
 				</div>
 
@@ -89,7 +91,7 @@ export default function KioskPersonalizePage() {
 						{session.capturedImageUrl && (
 							<img
 								src={session.capturedImageUrl}
-								alt="Captured preview"
+								alt={t("capturedPreviewAlt")}
 								className="w-full h-full object-cover"
 								style={{ transform: mirrored ? "scaleX(-1)" : "none" }}
 							/>
@@ -100,28 +102,30 @@ export default function KioskPersonalizePage() {
 					<div className="flex flex-col justify-center space-y-6">
 						<div>
 							<label htmlFor="caption" className="block text-sm font-medium mb-2">
-								Caption (optional)
+								{t("captionLabel")}
 							</label>
 							<Input
 								id="caption"
 								value={caption}
 								onChange={(e) => setCaption(e.target.value)}
-								placeholder="Add a message..."
+								placeholder={t("captionPlaceholder")}
 								className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
 								maxLength={100}
 							/>
-							<p className="text-sm text-white/50 mt-1">{caption.length}/100</p>
+							<p className="text-sm text-white/50 mt-1">
+								{t("captionCount", { count: caption.length })}
+							</p>
 						</div>
 
 						<div className="flex items-center justify-between">
-							<span className="text-sm font-medium">Mirror image</span>
+							<span className="text-sm font-medium">{t("mirrorImage")}</span>
 							<Button
 								variant={mirrored ? "default" : "outline"}
 								size="sm"
 								onClick={() => setMirrored(!mirrored)}
 								className={mirrored ? "" : "border-white/20 text-white"}
 							>
-								{mirrored ? "On" : "Off"}
+								{mirrored ? t("on") : t("off")}
 							</Button>
 						</div>
 
@@ -136,7 +140,7 @@ export default function KioskPersonalizePage() {
 								<Loader2 className="h-5 w-5 animate-spin" />
 							) : (
 								<>
-									Continue
+									{t("continue")}
 									<ArrowRight className="h-5 w-5 ml-2" />
 								</>
 							)}
