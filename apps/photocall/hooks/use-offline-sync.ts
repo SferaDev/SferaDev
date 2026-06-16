@@ -14,11 +14,12 @@ import {
  * Mirrors the online path in the result page.
  */
 async function syncPhoto(photo: QueuedPhoto): Promise<void> {
-	const { uploadUrl, key } = await generatePhotoUploadUrl(photo.eventId);
+	const contentType = photo.contentType ?? "image/jpeg";
+	const { uploadUrl, key } = await generatePhotoUploadUrl(photo.eventId, contentType);
 
 	const uploaded = await fetch(uploadUrl, {
 		method: "PUT",
-		headers: { "Content-Type": photo.blob.type || "image/jpeg" },
+		headers: { "Content-Type": photo.blob.type || contentType },
 		body: photo.blob,
 	});
 	if (!uploaded.ok) {

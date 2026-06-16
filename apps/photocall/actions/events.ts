@@ -148,6 +148,7 @@ export async function updateEvent(
 		captureWhoChoosesFilter?: "guest" | "host";
 		captureDefaultCountdown?: number;
 		captureAutoShoot?: boolean;
+		boomerangEnabled?: boolean;
 		printMethod?: "none" | "bridge" | "manual";
 		printPrinterId?: string;
 		printPaperSize?: string;
@@ -405,6 +406,7 @@ export async function getPublicEvent(organizationSlug: string, eventSlug: string
 		captureDefaultCountdown: event.captureDefaultCountdown,
 		captureAutoShoot: event.captureAutoShoot,
 		captureWhoChoosesFilter: event.captureWhoChoosesFilter,
+		boomerangEnabled: event.boomerangEnabled,
 		// Print settings (consumed by the kiosk result page).
 		printMethod: event.printMethod,
 		printPrinterId: event.printPrinterId,

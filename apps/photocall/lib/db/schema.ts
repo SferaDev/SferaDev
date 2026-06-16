@@ -63,6 +63,8 @@ export const events = pgTable(
 		captureWhoChoosesFilter: text("capture_who_chooses_filter").notNull().default("guest"), // guest | host
 		captureDefaultCountdown: integer("capture_default_countdown").notNull().default(3),
 		captureAutoShoot: boolean("capture_auto_shoot").notNull().default(false),
+		// Boomerang/GIF capture mode (guest-selectable when enabled).
+		boomerangEnabled: boolean("boomerang_enabled").notNull().default(false),
 		// Print settings (photobooth)
 		printMethod: text("print_method").notNull().default("none"), // none | bridge | manual
 		printPrinterId: text("print_printer_id"),
@@ -126,7 +128,8 @@ export const photos = pgTable(
 		humanCode: text("human_code").notNull(),
 		caption: text("caption"),
 		templateId: uuid("template_id"),
-		// Photobooth: "single" or "strip" (composited multi-shot)
+		// Photobooth: "single", "strip" (composited multi-shot) or "boomerang"
+		// (animated GIF). Stored as free text — no DB-level enum constraint.
 		kind: text("kind").notNull().default("single"),
 		// Raw individual shots backing a composited strip (JSON array of URLs)
 		rawShotsJson: text("raw_shots_json"),
@@ -211,6 +214,14 @@ export const orgSettings = pgTable("org_settings", {
 });
 
 // ── Helper types ──
+
+/**
+ * What a stored photo represents:
+ * - `single`: a legacy single-photo capture (optionally composited with a template)
+ * - `strip`: a composited multi-shot photobooth strip
+ * - `boomerang`: an animated GIF boomerang loop
+ */
+export type PhotoKind = "single" | "strip" | "boomerang";
 
 export type CaptionPosition = {
 	x: number;

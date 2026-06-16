@@ -3,10 +3,21 @@
 import { desc, eq } from "drizzle-orm";
 import { generateHumanCode, generateToken, requireEventAccess } from "@/lib/auth-helpers";
 import { db, schema } from "@/lib/db";
+import type { PhotoKind } from "@/lib/db/schema";
 import { getPlatformClient } from "@/lib/platform";
 import { deleteFile, generateUploadUrl, getFileUrl } from "@/lib/storage";
 
-export async function generatePhotoUploadUrl(eventId: string) {
+/**
+ * Image MIME types the kiosk uploads. Composited photos/strips are JPEG;
+ * boomerangs are animated GIFs. The content type also drives the stored
+ * object's extension (`.jpeg` / `.gif`) and presigned PUT `Content-Type`.
+ */
+export type PhotoContentType = "image/jpeg" | "image/gif";
+
+export async function generatePhotoUploadUrl(
+	eventId: string,
+	contentType: PhotoContentType = "image/jpeg",
+) {
 	const event = await db
 		.select()
 		.from(schema.events)
@@ -17,7 +28,7 @@ export async function generatePhotoUploadUrl(eventId: string) {
 		throw new Error("Event not found or not active");
 	}
 
-	return await generateUploadUrl("photos", "image/jpeg");
+	return await generateUploadUrl("photos", contentType);
 }
 
 export async function createPhoto(data: {
@@ -29,8 +40,8 @@ export async function createPhoto(data: {
 	width: number;
 	height: number;
 	sizeBytes: number;
-	/** Photobooth: "single" or composited "strip". */
-	kind?: "single" | "strip";
+	/** Photobooth: "single", composited "strip", or "boomerang" GIF. */
+	kind?: PhotoKind;
 	/** JSON array of raw shot URLs backing a composited strip. */
 	rawShotsJson?: string;
 }) {
