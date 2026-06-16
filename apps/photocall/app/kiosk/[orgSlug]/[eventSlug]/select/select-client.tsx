@@ -205,10 +205,13 @@ function FilterChooser({
 	const tCommon = useTranslations("kiosk.common");
 	const tFilters = useTranslations("kiosk.filters");
 	const layout = parseLayoutJson(template.layoutJson);
-	const available =
+	const allowed =
 		template.allowedFilters.length > 0
 			? ALL_FILTERS.filter((f) => template.allowedFilters.includes(f))
 			: ALL_FILTERS;
+	// Guarantee a non-empty list so the default below is always a real filter,
+	// even if allowedFilters holds only unrecognized values.
+	const available = allowed.length > 0 ? allowed : ALL_FILTERS;
 	const [selected, setSelected] = useState<FilterKind>(
 		available.includes(layout?.filter ?? "none") ? (layout?.filter ?? "none") : available[0],
 	);
