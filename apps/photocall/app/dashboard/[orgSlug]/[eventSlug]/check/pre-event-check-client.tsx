@@ -77,15 +77,29 @@ export default function PreEventCheck() {
 
 	const runTemplates = useCallback(
 		async (ev: Event): Promise<CheckRow> => {
-			const templates = await listTemplates(ev.id, true);
-			return templates.length > 0
-				? {
-						id: "templates",
-						label: tc("templates"),
-						status: "pass",
-						detail: tc("templatesOk", { count: templates.length }),
-					}
-				: { id: "templates", label: tc("templates"), status: "fail", detail: tc("templatesNone") };
+			try {
+				const templates = await listTemplates(ev.id, true);
+				return templates.length > 0
+					? {
+							id: "templates",
+							label: tc("templates"),
+							status: "pass",
+							detail: tc("templatesOk", { count: templates.length }),
+						}
+					: {
+							id: "templates",
+							label: tc("templates"),
+							status: "fail",
+							detail: tc("templatesNone"),
+						};
+			} catch (error) {
+				return {
+					id: "templates",
+					label: tc("templates"),
+					status: "fail",
+					detail: error instanceof Error ? error.message : tc("templatesNone"),
+				};
+			}
 		},
 		[tc],
 	);
@@ -204,6 +218,16 @@ export default function PreEventCheck() {
 						return;
 				}
 				setRow(result);
+			} catch (error) {
+				// Keep checks independent: a throwing check marks only its own row
+				// failed instead of leaving it stuck in "running" (and aborting the
+				// rest of the batch in `runAll`).
+				setRow({
+					id,
+					label: tc(id),
+					status: "fail",
+					detail: error instanceof Error ? error.message : t("someFailed"),
+				});
 			} finally {
 				setRunning(null);
 			}
@@ -230,7 +254,14 @@ export default function PreEventCheck() {
 	const runAll = useCallback(async () => {
 		if (!event) return;
 		for (const id of checkIds(event)) {
-			await runOne(id, event);
+			// Each check is independent: a failing check must not abort the rest of
+			// the batch. `runOne` already marks the row failed on throw, but we guard
+			// here too so the loop always advances to the next check.
+			try {
+				await runOne(id, event);
+			} catch {
+				// Swallow: the row state is owned by `runOne`.
+			}
 		}
 	}, [event, checkIds, runOne]);
 

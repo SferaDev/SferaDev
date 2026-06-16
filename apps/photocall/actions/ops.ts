@@ -1,7 +1,7 @@
 "use server";
 
 import { and, eq, gte } from "drizzle-orm";
-import { requireEventAccess } from "@/lib/auth-helpers";
+import { requireEventAccess, verifyPin } from "@/lib/auth-helpers";
 import { db, schema } from "@/lib/db";
 import { checkStorageRoundTrip } from "@/lib/storage";
 
@@ -59,19 +59,37 @@ export async function getEventOpsSnapshot(eventId: string): Promise<OpsSnapshot>
 }
 
 /**
- * Same snapshot exposed to the anonymous kiosk operator panel. The panel is
- * PIN-gated on the client (see {@link useAdminAuth}); this returns only
- * aggregate counts (no session payloads), and only for an active event.
+ * Same snapshot exposed to the anonymous kiosk operator panel. Because there is
+ * no user session here, access is gated by the event's kiosk PIN, which is
+ * verified SERVER-SIDE (the client `useAdminAuth` localStorage flag is trivially
+ * bypassable and must never be the only gate). Returns only aggregate counts
+ * (no session payloads), and only for an active event with a correct PIN.
  */
-export async function getPublicEventOpsSnapshot(eventId: string): Promise<OpsSnapshot> {
+export async function getPublicEventOpsSnapshot(
+	eventId: string,
+	pin: string,
+): Promise<OpsSnapshot> {
 	const event = await db
-		.select({ status: schema.events.status })
+		.select({
+			status: schema.events.status,
+			kioskPinHash: schema.events.kioskPinHash,
+			kioskPinSalt: schema.events.kioskPinSalt,
+		})
 		.from(schema.events)
 		.where(eq(schema.events.id, eventId))
 		.then((rows) => rows[0]);
 
-	if (!event || event.status !== "active") {
+	// Never return real data unless the event is active AND the supplied PIN
+	// matches the event's stored PIN hash. If no PIN is configured there is no
+	// way to authorize this anonymous call, so we refuse.
+	if (event?.status !== "active" || !event.kioskPinHash || !event.kioskPinSalt) {
 		return { sessionsToday: 0, completedToday: 0 };
 	}
+
+	const isValid = await verifyPin(pin, event.kioskPinHash, event.kioskPinSalt);
+	if (!isValid) {
+		return { sessionsToday: 0, completedToday: 0 };
+	}
+
 	return querySnapshot(eventId);
 }

@@ -28,6 +28,12 @@ interface KioskOperatorPanelProps {
 	event: PublicEvent;
 	orgSlug: string;
 	eventSlug: string;
+	/**
+	 * The kiosk PIN validated for this admin session. Forwarded to
+	 * {@link getPublicEventOpsSnapshot} so the snapshot is authorized
+	 * server-side (the anonymous panel has no user session).
+	 */
+	pin: string;
 }
 
 /** A single printer's readiness derived from its CUPS state/reasons. */
@@ -54,6 +60,7 @@ export function KioskOperatorPanel({
 	event,
 	orgSlug,
 	eventSlug,
+	pin,
 }: KioskOperatorPanelProps) {
 	const t = useTranslations("kiosk.ops");
 
@@ -76,7 +83,7 @@ export function KioskOperatorPanel({
 		setOnline(typeof navigator === "undefined" ? true : navigator.onLine);
 
 		const [snapshot, prints, uploads] = await Promise.all([
-			getPublicEventOpsSnapshot(event.id).catch(() => null),
+			getPublicEventOpsSnapshot(event.id, pin).catch(() => null),
 			countQueuedPrints().catch(() => null),
 			countQueuedPhotos().catch(() => null),
 		]);
@@ -105,7 +112,7 @@ export function KioskOperatorPanel({
 		}
 
 		setRefreshing(false);
-	}, [event.id, event.printPrinterId, isBridge, bridgeUrl]);
+	}, [event.id, event.printPrinterId, isBridge, bridgeUrl, pin]);
 
 	useEffect(() => {
 		if (open) void refresh();

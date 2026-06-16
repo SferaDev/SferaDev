@@ -13,6 +13,11 @@ interface AdminSession {
 export function useAdminAuth() {
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
+	// The validated PIN is kept only in memory (never persisted) so server
+	// actions that require server-side PIN verification can re-present it during
+	// this admin session. A reload clears it: the operator must re-enter the PIN,
+	// which is the intended behaviour for the bypassable localStorage flag below.
+	const [pin, setPin] = useState<string | null>(null);
 
 	// Check session on mount
 	useEffect(() => {
@@ -32,17 +37,19 @@ export function useAdminAuth() {
 		setIsLoading(false);
 	}, []);
 
-	const login = useCallback(() => {
+	const login = useCallback((validatedPin: string) => {
 		const session: AdminSession = {
 			authenticated: true,
 			expiresAt: Date.now() + SESSION_DURATION,
 		};
 		localStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify(session));
+		setPin(validatedPin);
 		setIsAuthenticated(true);
 	}, []);
 
 	const logout = useCallback(() => {
 		localStorage.removeItem(ADMIN_SESSION_KEY);
+		setPin(null);
 		setIsAuthenticated(false);
 	}, []);
 
@@ -59,6 +66,7 @@ export function useAdminAuth() {
 	return {
 		isAuthenticated,
 		isLoading,
+		pin,
 		login,
 		logout,
 		extendSession,

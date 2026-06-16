@@ -33,7 +33,12 @@ export default function KioskAttractPage() {
 	const t = useTranslations("kiosk.attract");
 	const tCommon = useTranslations("kiosk.common");
 
-	const { isAuthenticated: isAdmin, login: loginAdmin, logout: logoutAdmin } = useAdminAuth();
+	const {
+		isAuthenticated: isAdmin,
+		pin: adminPin,
+		login: loginAdmin,
+		logout: logoutAdmin,
+	} = useAdminAuth();
 	const { isFullscreen, supported: fullscreenSupported, enter: enterFullscreen } = useFullscreen();
 	const [adminDialogOpen, setAdminDialogOpen] = useState(false);
 	const [operatorPanelOpen, setOperatorPanelOpen] = useState(false);
@@ -103,7 +108,7 @@ export default function KioskAttractPage() {
 		setPinError(null);
 		try {
 			await validateKioskPin(event.id, pinInput);
-			loginAdmin();
+			loginAdmin(pinInput);
 			setAdminDialogOpen(false);
 			setPinInput("");
 		} catch (error) {
@@ -229,7 +234,16 @@ export default function KioskAttractPage() {
 						size="sm"
 						variant="ghost"
 						className="text-white hover:bg-white/10"
-						onClick={() => setOperatorPanelOpen(true)}
+						onClick={() => {
+							// The raw PIN lives only in memory, so a reload that restored the
+							// session flag has `isAdmin` but no PIN. The operator panel needs
+							// the PIN for server-side verification, so re-prompt in that case.
+							if (adminPin) {
+								setOperatorPanelOpen(true);
+							} else {
+								setAdminDialogOpen(true);
+							}
+						}}
 					>
 						<Lock className="mr-2 h-4 w-4" aria-hidden="true" />
 						{t("admin")}
@@ -296,13 +310,14 @@ export default function KioskAttractPage() {
 				</DialogContent>
 			</Dialog>
 
-			{isAdmin ? (
+			{isAdmin && adminPin ? (
 				<KioskOperatorPanel
 					open={operatorPanelOpen}
 					onOpenChange={setOperatorPanelOpen}
 					event={event}
 					orgSlug={orgSlug}
 					eventSlug={eventSlug}
+					pin={adminPin}
 				/>
 			) : null}
 		</div>
