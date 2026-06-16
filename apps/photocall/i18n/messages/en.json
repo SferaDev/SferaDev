@@ -67,7 +67,12 @@
 			"title": "Free",
 			"price": "$0",
 			"period": "forever",
-			"features": ["1 free event", "10 photos included", "Basic templates", "QR code sharing"]
+			"features": [
+				"1 free event",
+				"10 photos included",
+				"Basic templates",
+				"QR code sharing"
+			]
 		},
 		"paid": {
 			"title": "Pay Per Event",
@@ -128,7 +133,8 @@
 			"pinDialogDescription": "Unlock kiosk admin controls. Configure the PIN from event settings.",
 			"pinLabel": "PIN",
 			"invalidPin": "Invalid PIN",
-			"unlock": "Unlock"
+			"unlock": "Unlock",
+			"enterFullscreen": "Enter fullscreen"
 		},
 		"consent": {
 			"loading": "Loading...",
@@ -200,6 +206,70 @@
 			"faded": "Faded",
 			"vivid": "Vivid",
 			"noir": "Noir"
+		},
+		"checklist": {
+			"title": "Pre-event check",
+			"subtitle": "Run this before guests arrive to make sure the booth is ready.",
+			"runAll": "Run all checks",
+			"running": "Running…",
+			"rerun": "Re-run",
+			"pass": "Pass",
+			"fail": "Fail",
+			"warn": "Warning",
+			"pending": "Not run",
+			"checking": "Checking…",
+			"allGood": "Everything looks good. You're ready to go.",
+			"someFailed": "Some checks failed. Fix them before the event starts.",
+			"openKiosk": "Open kiosk",
+			"checks": {
+				"eventActive": "Event is active",
+				"eventActiveOkActive": "Event is live and accepting guests",
+				"eventActivePaused": "Event is paused — activate it from the dashboard",
+				"templates": "At least one template enabled",
+				"templatesOk": "{count} enabled template(s)",
+				"templatesNone": "No enabled templates — guests will have nothing to choose",
+				"camera": "Camera available",
+				"cameraOk": "{count} camera(s) detected",
+				"cameraNone": "No camera detected — check the connection and permissions",
+				"network": "Network online",
+				"networkOk": "Connected to the internet",
+				"networkOffline": "Offline — photos will queue until reconnected",
+				"storage": "Storage reachable",
+				"storageOk": "Storage read/write OK",
+				"bridge": "Print bridge reachable",
+				"bridgeOk": "Bridge responding",
+				"bridgeUnreachable": "Bridge not responding — check that it is running",
+				"bridgeNoUrl": "No bridge URL configured",
+				"printer": "Printer ready",
+				"printerOk": "Printer ready: {name}",
+				"printerOutOfPaper": "Out of paper: {name}",
+				"printerNotReady": "Printer not ready: {name} ({state})",
+				"printerNone": "No printer found on the bridge"
+			}
+		},
+		"ops": {
+			"title": "Operator panel",
+			"subtitle": "Live status for this booth.",
+			"sessionsToday": "Sessions today",
+			"completedToday": "Completed today",
+			"pendingPrints": "Pending prints",
+			"pendingUploads": "Pending uploads",
+			"connectivity": "Connectivity",
+			"online": "Online",
+			"offline": "Offline",
+			"bridge": "Print bridge",
+			"bridgeReachable": "Reachable",
+			"bridgeUnreachable": "Unreachable",
+			"bridgeNotConfigured": "Not configured",
+			"printer": "Printer",
+			"printerReady": "Ready",
+			"printerOutOfPaper": "Out of paper",
+			"printerUnknown": "Unknown",
+			"actions": "Actions",
+			"reloadKiosk": "Reload kiosk",
+			"exitToDashboard": "Exit to dashboard",
+			"runChecklist": "Run pre-event check",
+			"refresh": "Refresh"
 		}
 	}
 }

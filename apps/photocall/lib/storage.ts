@@ -65,3 +65,28 @@ export async function deleteFile(key: string): Promise<void> {
 
 	await s3.send(command);
 }
+
+/**
+ * Round-trips a tiny object through the bucket (PUT → GET → DELETE) to confirm
+ * storage is reachable and writable. Used by the pre-event self-test. Throws on
+ * any failure so the caller can surface the error message.
+ */
+export async function checkStorageRoundTrip(): Promise<void> {
+	const key = generateKey("healthcheck", "txt");
+	const body = `photocall-healthcheck-${Date.now()}`;
+
+	await s3.send(
+		new PutObjectCommand({ Bucket: BUCKET, Key: key, Body: body, ContentType: "text/plain" }),
+	);
+	try {
+		const result = await s3.send(new GetObjectCommand({ Bucket: BUCKET, Key: key }));
+		const readBack = await result.Body?.transformToString();
+		if (readBack !== body) {
+			throw new Error("Storage round-trip returned unexpected contents");
+		}
+	} finally {
+		await s3.send(new DeleteObjectCommand({ Bucket: BUCKET, Key: key })).catch(() => {
+			// Best-effort cleanup; the health object is tiny and short-lived.
+		});
+	}
+}

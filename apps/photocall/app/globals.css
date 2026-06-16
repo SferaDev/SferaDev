@@ -100,3 +100,26 @@
 		color: var(--foreground);
 	}
 }
+
+/*
+ * Kiosk lockdown styles, toggled by the `kiosk-locked` class that
+ * <KioskLockdown> adds to <html>. Suppresses pull-to-refresh/overscroll, text
+ * selection, the iOS tap-highlight and double-tap zoom so an unattended iPad
+ * can't be knocked out of the booth flow. Form fields opt back into selection
+ * so typing a caption still works.
+ */
+html.kiosk-locked,
+html.kiosk-locked body {
+	overscroll-behavior: none;
+	touch-action: manipulation;
+	-webkit-user-select: none;
+	user-select: none;
+	-webkit-tap-highlight-color: transparent;
+}
+
+html.kiosk-locked input,
+html.kiosk-locked textarea,
+html.kiosk-locked [contenteditable="true"] {
+	-webkit-user-select: text;
+	user-select: text;
+}
