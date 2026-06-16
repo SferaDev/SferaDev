@@ -9,6 +9,7 @@ import {
 	uniqueIndex,
 	uuid,
 } from "drizzle-orm/pg-core";
+import type { FilterKind } from "@/lib/layout/types";
 
 // ── Application tables ──
 //
@@ -53,6 +54,22 @@ export const events = pgTable(
 		// Retention
 		retentionDays: integer("retention_days"),
 		deleteAfterDate: timestamp("delete_after_date"),
+		// Couple / event personalization (photobooth)
+		coupleNames: text("couple_names"),
+		// Capture settings (photobooth)
+		captureWhoChoosesFilter: text("capture_who_chooses_filter").notNull().default("guest"), // guest | host
+		captureDefaultCountdown: integer("capture_default_countdown").notNull().default(3),
+		captureAutoShoot: boolean("capture_auto_shoot").notNull().default(false),
+		// Print settings (photobooth)
+		printMethod: text("print_method").notNull().default("none"), // none | bridge | manual
+		printPrinterId: text("print_printer_id"),
+		printPaperSize: text("print_paper_size"),
+		printMediaType: text("print_media_type").notNull().default("photo_glossy"),
+		printBorderless: boolean("print_borderless").notNull().default(true),
+		printCopies: integer("print_copies").notNull().default(1),
+		printOrientation: text("print_orientation").notNull().default("portrait"), // portrait | landscape
+		printAutoPrint: boolean("print_auto_print").notNull().default(false),
+		printBridgeUrl: text("print_bridge_url"),
 		// Stats (denormalized for performance)
 		photoCount: integer("photo_count").notNull().default(0),
 		sessionCount: integer("session_count").notNull().default(0),
@@ -76,6 +93,10 @@ export const kioskSessions = pgTable(
 		status: text("status").notNull().default("started"), // started | template_selected | captured | personalized | completed | abandoned
 		templateId: uuid("template_id"),
 		capturedImageUrl: text("captured_image_url"),
+		// Multi-shot photobooth captures (JSON array of image URLs)
+		capturedImageUrls: text("captured_image_urls"),
+		shotIndex: integer("shot_index").notNull().default(0),
+		selectedFilter: text("selected_filter"),
 		caption: text("caption"),
 		mirrored: boolean("mirrored"),
 		startedAt: timestamp("started_at").notNull().defaultNow(),
@@ -102,6 +123,10 @@ export const photos = pgTable(
 		humanCode: text("human_code").notNull(),
 		caption: text("caption"),
 		templateId: uuid("template_id"),
+		// Photobooth: "single" or "strip" (composited multi-shot)
+		kind: text("kind").notNull().default("single"),
+		// Raw individual shots backing a composited strip (JSON array of URLs)
+		rawShotsJson: text("raw_shots_json"),
 		width: integer("width").notNull(),
 		height: integer("height").notNull(),
 		sizeBytes: integer("size_bytes").notNull(),
@@ -126,11 +151,33 @@ export const templates = pgTable(
 		// JSON fields for caption position and safe area
 		captionPositionJson: text("caption_position_json"), // JSON string
 		safeAreaJson: text("safe_area_json"), // JSON string
+		// Photobooth layout (BoothLayout JSON) and metadata
+		layoutJson: text("layout_json"), // JSON string
+		kind: text("kind").notNull().default("single"),
+		shotCount: integer("shot_count").notNull().default(1),
+		presetId: text("preset_id"),
+		allowedFilters: text("allowed_filters"), // JSON string: FilterKind[]
 		createdAt: timestamp("created_at").notNull().defaultNow(),
 		updatedAt: timestamp("updated_at").notNull().defaultNow(),
 	},
 	(t) => [index("templates_event_idx").on(t.eventId)],
 );
+
+/**
+ * Built-in and custom photobooth presets. A preset is a reusable `BoothLayout`
+ * (stored as JSON) with display metadata; events instantiate templates from
+ * these. Keyed by a stable string id (e.g. "strip_3bw_vertical").
+ */
+export const presets = pgTable("presets", {
+	id: text("id").primaryKey(),
+	name: text("name").notNull(),
+	kind: text("kind").notNull(),
+	shotCount: integer("shot_count").notNull(),
+	layoutJson: text("layout_json").notNull(), // JSON string: BoothLayout
+	thumbnailStorageKey: text("thumbnail_storage_key"),
+	createdAt: timestamp("created_at").notNull().defaultNow(),
+	updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
 
 export const usageLogs = pgTable(
 	"usage_logs",
@@ -193,5 +240,42 @@ export function parseSafeArea(json: string | null): SafeArea | null {
 		return JSON.parse(json) as SafeArea;
 	} catch {
 		return null;
+	}
+}
+
+// ── Photobooth parse helpers ──
+
+export { parseLayoutJson } from "@/lib/layout/parse";
+
+/** Parse the stored `allowed_filters` JSON into a `FilterKind` array. */
+export function parseAllowedFilters(json: string | null): FilterKind[] {
+	if (!json) return [];
+	try {
+		const parsed = JSON.parse(json);
+		return Array.isArray(parsed) ? (parsed as FilterKind[]) : [];
+	} catch {
+		return [];
+	}
+}
+
+/** Parse a stored JSON array of captured image URLs. */
+export function parseCapturedImageUrls(json: string | null): string[] {
+	if (!json) return [];
+	try {
+		const parsed = JSON.parse(json);
+		return Array.isArray(parsed) ? (parsed as string[]) : [];
+	} catch {
+		return [];
+	}
+}
+
+/** Parse a stored JSON array of raw shot URLs backing a composited strip. */
+export function parseRawShotsJson(json: string | null): string[] {
+	if (!json) return [];
+	try {
+		const parsed = JSON.parse(json);
+		return Array.isArray(parsed) ? (parsed as string[]) : [];
+	} catch {
+		return [];
 	}
 }

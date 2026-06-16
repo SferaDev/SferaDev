@@ -28,6 +28,12 @@ export interface QueuedPhoto {
 	templateId?: string;
 	width: number;
 	height: number;
+	/** Photobooth: "single" or composited "strip". */
+	kind?: "single" | "strip";
+	/** JSON array of raw shot URLs backing a composited strip. */
+	rawShotsJson?: string;
+	/** Filter chosen by the guest/host for this capture. */
+	selectedFilter?: string;
 	/** Epoch millis when queued — used for display and ordering. */
 	queuedAt: number;
 }

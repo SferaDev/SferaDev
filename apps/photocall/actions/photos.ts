@@ -29,6 +29,10 @@ export async function createPhoto(data: {
 	width: number;
 	height: number;
 	sizeBytes: number;
+	/** Photobooth: "single" or composited "strip". */
+	kind?: "single" | "strip";
+	/** JSON array of raw shot URLs backing a composited strip. */
+	rawShotsJson?: string;
 }) {
 	const event = await db
 		.select()
@@ -63,6 +67,8 @@ export async function createPhoto(data: {
 			humanCode,
 			caption: data.caption,
 			templateId: data.templateId,
+			kind: data.kind ?? "single",
+			rawShotsJson: data.rawShotsJson,
 			width: data.width,
 			height: data.height,
 			sizeBytes: data.sizeBytes,

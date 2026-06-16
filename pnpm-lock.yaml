@@ -565,6 +565,9 @@ importers:
       tailwindcss-animate:
         specifier: 'catalog:'
         version: 1.0.7(tailwindcss@4.3.0)
+      tsx:
+        specifier: 'catalog:'
+        version: 4.22.4
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1028,7 +1031,7 @@ importers:
     dependencies:
       '@kubb/adapter-oas':
         specifier: 'catalog:'
-        version: 5.0.0-beta.10(@kubb/renderer-jsx@5.0.0-beta.10)
+        version: 5.0.0-beta.10(@kubb/renderer-jsx@5.0.0-beta.35)
       '@kubb/core':
         specifier: 'catalog:'
         version: 5.0.0-beta.10(@kubb/renderer-jsx@5.0.0-beta.10)
@@ -11622,20 +11625,9 @@ snapshots:
     dependencies:
       jsep: 1.4.0
 
-  '@kubb/adapter-oas@5.0.0-beta.10(@kubb/renderer-jsx@5.0.0-beta.10)':
-    dependencies:
-      '@kubb/core': 5.0.0-beta.10(@kubb/renderer-jsx@5.0.0-beta.10)
-      '@redocly/openapi-core': 2.31.6
-      oas: 32.1.18
-      oas-normalize: 16.0.5
-      swagger2openapi: 7.0.8
-    transitivePeerDependencies:
-      - '@kubb/renderer-jsx'
-      - encoding
-
   '@kubb/adapter-oas@5.0.0-beta.10(@kubb/renderer-jsx@5.0.0-beta.35)':
     dependencies:
-      '@kubb/core': 5.0.0-beta.10(@kubb/renderer-jsx@5.0.0-beta.35)
+      '@kubb/core': 5.0.0-beta.10(@kubb/renderer-jsx@5.0.0-beta.10)
       '@redocly/openapi-core': 2.31.6
       oas: 32.1.18
       oas-normalize: 16.0.5

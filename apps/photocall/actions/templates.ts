@@ -5,10 +5,13 @@ import { requireEventAccess } from "@/lib/auth-helpers";
 import { db, schema } from "@/lib/db";
 import {
 	type CaptionPosition,
+	parseAllowedFilters,
 	parseCaptionPosition,
 	parseSafeArea,
 	type SafeArea,
 } from "@/lib/db/schema";
+import { parseLayoutJson } from "@/lib/layout/parse";
+import type { FilterKind, LayoutKind } from "@/lib/layout/types";
 import { deleteFile, generateUploadUrl, getFileUrl } from "@/lib/storage";
 
 export async function generateTemplateUploadUrl(eventId: string) {
@@ -23,6 +26,12 @@ export async function createTemplate(data: {
 	thumbnailStorageKey?: string;
 	captionPosition?: CaptionPosition;
 	safeArea?: SafeArea;
+	/** Photobooth layout JSON (BoothLayout). When present, shotCount/kind derive from it. */
+	layoutJson?: string;
+	kind?: LayoutKind;
+	shotCount?: number;
+	presetId?: string;
+	allowedFilters?: FilterKind[];
 }) {
 	await requireEventAccess(data.eventId, ["owner", "admin"]);
 
@@ -35,6 +44,12 @@ export async function createTemplate(data: {
 
 	const now = new Date();
 
+	// When a photobooth layout is supplied, derive kind/shotCount from it so the
+	// stored metadata always matches the layout. Falls back to legacy "single".
+	const layout = data.layoutJson ? parseLayoutJson(data.layoutJson) : null;
+	const kind: LayoutKind = layout?.kind ?? data.kind ?? "single";
+	const shotCount = layout ? layout.photoSlots.length : (data.shotCount ?? 1);
+
 	const [template] = await db
 		.insert(schema.templates)
 		.values({
@@ -46,6 +61,11 @@ export async function createTemplate(data: {
 			order: maxOrder + 1,
 			captionPositionJson: data.captionPosition ? JSON.stringify(data.captionPosition) : null,
 			safeAreaJson: data.safeArea ? JSON.stringify(data.safeArea) : null,
+			layoutJson: data.layoutJson ?? null,
+			kind,
+			shotCount,
+			presetId: data.presetId ?? null,
+			allowedFilters: data.allowedFilters ? JSON.stringify(data.allowedFilters) : null,
 			createdAt: now,
 			updatedAt: now,
 		})
@@ -171,6 +191,10 @@ export async function listPublicTemplates(eventId: string) {
 				thumbnailUrl,
 				captionPosition: parseCaptionPosition(template.captionPositionJson),
 				safeArea: parseSafeArea(template.safeAreaJson),
+				layoutJson: template.layoutJson,
+				kind: template.kind,
+				shotCount: template.shotCount,
+				allowedFilters: parseAllowedFilters(template.allowedFilters),
 			};
 		}),
 	);

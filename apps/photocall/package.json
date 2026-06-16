@@ -13,6 +13,7 @@
 		"db:generate": "drizzle-kit generate",
 		"db:migrate": "drizzle-kit migrate",
 		"db:push": "drizzle-kit push",
+		"db:seed-presets": "tsx scripts/seed-presets.ts",
 		"db:studio": "drizzle-kit studio"
 	},
 	"dependencies": {
@@ -59,6 +60,7 @@
 		"postcss": "catalog:",
 		"tailwindcss": "catalog:",
 		"tailwindcss-animate": "catalog:",
+		"tsx": "catalog:",
 		"typescript": "catalog:",
 		"vitest": "catalog:"
 	}
