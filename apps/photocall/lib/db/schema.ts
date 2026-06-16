@@ -49,6 +49,17 @@ export const events = pgTable(
 		logoStorageKey: text("logo_storage_key"),
 		welcomeMessage: text("welcome_message"),
 		thankYouMessage: text("thank_you_message"),
+		// Kiosk chrome overrides (admin-editable). When null/empty the kiosk falls
+		// back to the existing i18n default text — these are data, not a replacement
+		// for i18n.
+		attractTitle: text("attract_title"),
+		attractSubtitle: text("attract_subtitle"),
+		ctaLabel: text("cta_label"),
+		consentText: text("consent_text"),
+		accentColor: text("accent_color"),
+		// Display font for kiosk headings, chosen from BUNDLED_FONTS (lib/compose/fonts.ts).
+		fontFamily: text("font_family"),
+		showPoweredBy: boolean("show_powered_by").notNull().default(true),
 		// Share settings
 		shareExpirationDays: integer("share_expiration_days"),
 		allowDownload: boolean("allow_download").notNull().default(true),

@@ -12,6 +12,7 @@ import { completeSession, getKioskSession } from "@/actions/sessions";
 import { listPublicTemplates, resolveAssetUrls } from "@/actions/templates";
 import { Button } from "@/components/ui/button";
 import { useIdleTimeout } from "@/hooks/use-idle-timeout";
+import { useKioskFont } from "@/hooks/use-kiosk-font";
 import { useOfflineSync } from "@/hooks/use-offline-sync";
 import { usePrintSync } from "@/hooks/use-print-sync";
 import { compositePhoto, downloadBlob } from "@/lib/canvas-utils";
@@ -57,6 +58,8 @@ export default function KioskResultPage() {
 		["public-event", orgSlug, eventSlug],
 		() => getPublicEvent(orgSlug, eventSlug),
 	);
+
+	const headingFontFamily = useKioskFont(event?.fontFamily);
 
 	const { data: session, isLoading: sessionLoading } = useSWR(
 		sessionId ? ["kiosk-session", sessionId] : null,
@@ -406,6 +409,7 @@ export default function KioskResultPage() {
 	}
 
 	const primaryColor = event.primaryColor || "#e11d48";
+	const accentColor = event.accentColor || primaryColor;
 
 	if (error) {
 		return (
@@ -448,7 +452,10 @@ export default function KioskResultPage() {
 								<Check className="h-5 w-5" />
 								<span className="font-medium">{t("photoSaved")}</span>
 							</div>
-							<h1 className="text-3xl font-bold">
+							<h1
+								className="text-3xl font-bold"
+								style={headingFontFamily ? { fontFamily: headingFontFamily } : undefined}
+							>
 								{event.thankYouMessage || t("defaultThankYou")}
 							</h1>
 						</div>
@@ -479,7 +486,12 @@ export default function KioskResultPage() {
 								{humanCode && (
 									<div className="text-center p-4 bg-white/10 rounded-lg">
 										<p className="text-sm text-white/60 mb-1">{t("photoCode")}</p>
-										<p className="text-3xl font-mono font-bold tracking-wider">{humanCode}</p>
+										<p
+											className="text-3xl font-mono font-bold tracking-wider"
+											style={{ color: accentColor }}
+										>
+											{humanCode}
+										</p>
 									</div>
 								)}
 

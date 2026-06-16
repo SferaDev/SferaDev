@@ -7,6 +7,7 @@ import useSWR from "swr";
 import { getPublicEvent } from "@/actions/events";
 import { abandonSession } from "@/actions/sessions";
 import { Button } from "@/components/ui/button";
+import { useKioskFont } from "@/hooks/use-kiosk-font";
 
 export default function KioskConsentPage() {
 	const router = useRouter();
@@ -20,6 +21,8 @@ export default function KioskConsentPage() {
 	const { data: event } = useSWR(["public-event", orgSlug, eventSlug], () =>
 		getPublicEvent(orgSlug, eventSlug),
 	);
+
+	const headingFontFamily = useKioskFont(event?.fontFamily);
 
 	const handleAgree = () => {
 		if (!sessionId) return;
@@ -48,15 +51,23 @@ export default function KioskConsentPage() {
 	}
 
 	const primaryColor = event.primaryColor || "#e11d48";
+	const accentColor = event.accentColor || primaryColor;
+	// Admin override falls back to the i18n consent body when empty.
+	const consentBody = event.consentText || t("description");
 
 	return (
 		<div className="min-h-screen flex flex-col items-center justify-center bg-black text-white p-8">
 			<div className="max-w-lg text-center">
-				<Shield className="h-16 w-16 mx-auto mb-6 opacity-80" />
+				<Shield className="h-16 w-16 mx-auto mb-6 opacity-80" style={{ color: accentColor }} />
 
-				<h1 className="text-3xl md:text-4xl font-bold mb-6">{t("title")}</h1>
+				<h1
+					className="text-3xl md:text-4xl font-bold mb-6"
+					style={headingFontFamily ? { fontFamily: headingFontFamily } : undefined}
+				>
+					{t("title")}
+				</h1>
 
-				<p className="text-lg md:text-xl mb-6 opacity-80 leading-relaxed">{t("description")}</p>
+				<p className="text-lg md:text-xl mb-6 opacity-80 leading-relaxed">{consentBody}</p>
 
 				{event.retentionDays && (
 					<p className="text-base mb-8 opacity-60">

@@ -16,7 +16,13 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import useSWR, { useSWRConfig } from "swr";
-import { deleteEvent, getEventBySlug, setKioskPin, updateEvent } from "@/actions/events";
+import {
+	deleteEvent,
+	generateEventLogoUploadUrl,
+	getEventBySlug,
+	setKioskPin,
+	updateEvent,
+} from "@/actions/events";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -30,8 +36,10 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
 import { enumerateCameras } from "@/hooks/use-camera";
 import { useSession } from "@/lib/auth-client";
+import { BUNDLED_FONTS } from "@/lib/compose/fonts";
 import type { Orientation, PaperSize } from "@/lib/layout/types";
 import { type BridgePrinter, listBridgePrinters } from "@/lib/print/bridge-client";
 import { executePrint } from "@/lib/print/index";
@@ -61,6 +69,15 @@ export default function EventSettingsPage() {
 		welcomeMessage: "",
 		thankYouMessage: "",
 		primaryColor: "",
+		// Kiosk chrome overrides (empty string → cleared → kiosk i18n default).
+		attractTitle: "",
+		attractSubtitle: "",
+		ctaLabel: "",
+		consentText: "",
+		accentColor: "",
+		fontFamily: "",
+		showPoweredBy: true,
+		logoStorageKey: "" as string,
 		slideshowEnabled: true,
 		slideshowSafeMode: false,
 		idleTimeoutSeconds: 120,
@@ -95,6 +112,10 @@ export default function EventSettingsPage() {
 	const [bridgeError, setBridgeError] = useState<string | null>(null);
 	const [testPrinting, setTestPrinting] = useState(false);
 
+	// Logo upload state.
+	const [logoUploading, setLogoUploading] = useState(false);
+	const [logoError, setLogoError] = useState<string | null>(null);
+
 	useEffect(() => {
 		if (event) {
 			setFormData({
@@ -104,6 +125,14 @@ export default function EventSettingsPage() {
 				welcomeMessage: event.welcomeMessage ?? "",
 				thankYouMessage: event.thankYouMessage ?? "",
 				primaryColor: event.primaryColor ?? "",
+				attractTitle: event.attractTitle ?? "",
+				attractSubtitle: event.attractSubtitle ?? "",
+				ctaLabel: event.ctaLabel ?? "",
+				consentText: event.consentText ?? "",
+				accentColor: event.accentColor ?? "",
+				fontFamily: event.fontFamily ?? "",
+				showPoweredBy: event.showPoweredBy,
+				logoStorageKey: event.logoStorageKey ?? "",
 				slideshowEnabled: event.slideshowEnabled,
 				slideshowSafeMode: event.slideshowSafeMode,
 				idleTimeoutSeconds: event.idleTimeoutSeconds,
@@ -159,12 +188,47 @@ export default function EventSettingsPage() {
 				...formData,
 				cameraDeviceId: formData.cameraDeviceId || null,
 				cameraDeviceLabel: formData.cameraDeviceLabel || null,
+				// Empty kiosk overrides are stored as null so the kiosk falls back to
+				// its i18n default rather than rendering an empty string.
+				attractTitle: formData.attractTitle || null,
+				attractSubtitle: formData.attractSubtitle || null,
+				ctaLabel: formData.ctaLabel || null,
+				consentText: formData.consentText || null,
+				accentColor: formData.accentColor || null,
+				fontFamily: formData.fontFamily || null,
 			});
 			mutate((key) => Array.isArray(key) && key[0] === "events");
 		} catch (error) {
 			console.error("Failed to save:", error);
 		} finally {
 			setIsSaving(false);
+		}
+	};
+
+	const handleLogoUpload = async (file: File) => {
+		if (!event) return;
+		setLogoUploading(true);
+		setLogoError(null);
+		try {
+			const { uploadUrl, storageKey } = await generateEventLogoUploadUrl(event.id, file.type);
+			const response = await fetch(uploadUrl, {
+				method: "PUT",
+				headers: { "Content-Type": file.type },
+				body: file,
+			});
+			if (!response.ok) {
+				throw new Error(`Upload failed (${response.status})`);
+			}
+			// Persist immediately so the kiosk picks up the new logo without waiting
+			// for the operator to also press "Save Changes".
+			await updateEvent(event.id, { logoStorageKey: storageKey });
+			setFormData((prev) => ({ ...prev, logoStorageKey: storageKey }));
+			mutate((key) => Array.isArray(key) && key[0] === "events");
+		} catch (error) {
+			console.error("Failed to upload logo:", error);
+			setLogoError(error instanceof Error ? error.message : "Failed to upload logo");
+		} finally {
+			setLogoUploading(false);
 		}
 	};
 
@@ -441,6 +505,185 @@ export default function EventSettingsPage() {
 										className="flex-1"
 									/>
 								</div>
+							</div>
+							<div>
+								<Label htmlFor="accentColor">Accent Color</Label>
+								<p className="text-sm text-muted-foreground">
+									Secondary highlight used on the kiosk (countdown, photo code). Falls back to the
+									primary color when empty.
+								</p>
+								<div className="flex gap-2 mt-2">
+									<Input
+										id="accentColor"
+										type="color"
+										value={formData.accentColor || "#000000"}
+										onChange={(e) => setFormData({ ...formData, accentColor: e.target.value })}
+										className="w-16 h-10 p-1"
+									/>
+									<Input
+										value={formData.accentColor}
+										onChange={(e) => setFormData({ ...formData, accentColor: e.target.value })}
+										placeholder="Same as primary"
+										className="flex-1"
+									/>
+									{formData.accentColor ? (
+										<Button
+											type="button"
+											variant="outline"
+											onClick={() => setFormData({ ...formData, accentColor: "" })}
+										>
+											Clear
+										</Button>
+									) : null}
+								</div>
+							</div>
+						</div>
+
+						<div className="border-t pt-6 space-y-4">
+							<div>
+								<h3 className="text-lg font-semibold">Kiosk Logo</h3>
+								<p className="text-sm text-muted-foreground">
+									Shown on the kiosk attract screen. PNG or SVG with a transparent background works
+									best.
+								</p>
+							</div>
+							{event.logoUrl ? (
+								<img
+									src={event.logoUrl}
+									alt="Event logo"
+									className="h-20 w-auto rounded border bg-muted object-contain p-2"
+								/>
+							) : (
+								<p className="text-sm text-muted-foreground">No logo uploaded yet.</p>
+							)}
+							<div className="flex flex-wrap items-center gap-2">
+								<input
+									id="logo-upload"
+									type="file"
+									accept="image/png,image/jpeg,image/svg+xml,image/webp"
+									className="hidden"
+									onChange={(e) => {
+										const file = e.target.files?.[0];
+										if (file) void handleLogoUpload(file);
+										e.target.value = "";
+									}}
+								/>
+								<Button
+									type="button"
+									variant="outline"
+									disabled={logoUploading}
+									onClick={() => document.getElementById("logo-upload")?.click()}
+								>
+									{logoUploading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
+									{event.logoUrl ? "Replace logo" : "Upload logo"}
+								</Button>
+								{event.logoUrl ? (
+									<Button
+										type="button"
+										variant="ghost"
+										disabled={logoUploading}
+										onClick={async () => {
+											setFormData((prev) => ({ ...prev, logoStorageKey: "" }));
+											await updateEvent(event.id, { logoStorageKey: "" });
+											mutate((key) => Array.isArray(key) && key[0] === "events");
+										}}
+									>
+										Remove
+									</Button>
+								) : null}
+							</div>
+							{logoError ? <p className="text-sm text-destructive">{logoError}</p> : null}
+						</div>
+
+						<div className="border-t pt-6 space-y-4">
+							<div>
+								<h3 className="text-lg font-semibold">Kiosk Text & Font</h3>
+								<p className="text-sm text-muted-foreground">
+									Override the kiosk's copy. Leave a field empty to use the built-in translated
+									default for the guest's language.
+								</p>
+							</div>
+							<div>
+								<Label>Display Font</Label>
+								<Select
+									value={formData.fontFamily || "system"}
+									onValueChange={(value) =>
+										setFormData({ ...formData, fontFamily: value === "system" ? "" : value })
+									}
+								>
+									<SelectTrigger className="mt-2">
+										<SelectValue />
+									</SelectTrigger>
+									<SelectContent>
+										<SelectItem value="system">System default</SelectItem>
+										{Object.keys(BUNDLED_FONTS).map((family) => (
+											<SelectItem key={family} value={family}>
+												{family}
+											</SelectItem>
+										))}
+									</SelectContent>
+								</Select>
+								<p className="text-sm text-muted-foreground mt-1">
+									Applied to kiosk headings (attract title, consent and thank-you).
+								</p>
+							</div>
+							<div>
+								<Label htmlFor="attractTitle">Attract Title</Label>
+								<p className="text-sm text-muted-foreground">
+									Default: couple/hosts name, otherwise the event name.
+								</p>
+								<Input
+									id="attractTitle"
+									value={formData.attractTitle}
+									onChange={(e) => setFormData({ ...formData, attractTitle: e.target.value })}
+									placeholder={formData.coupleNames || formData.name}
+									className="mt-2"
+								/>
+							</div>
+							<div>
+								<Label htmlFor="attractSubtitle">Attract Subtitle</Label>
+								<Input
+									id="attractSubtitle"
+									value={formData.attractSubtitle}
+									onChange={(e) => setFormData({ ...formData, attractSubtitle: e.target.value })}
+									placeholder="Tap to capture your moment"
+									className="mt-2"
+								/>
+							</div>
+							<div>
+								<Label htmlFor="ctaLabel">Start Button Label</Label>
+								<Input
+									id="ctaLabel"
+									value={formData.ctaLabel}
+									onChange={(e) => setFormData({ ...formData, ctaLabel: e.target.value })}
+									placeholder="Start"
+									className="mt-2"
+								/>
+							</div>
+							<div>
+								<Label htmlFor="consentText">Consent Text</Label>
+								<Textarea
+									id="consentText"
+									value={formData.consentText}
+									onChange={(e) => setFormData({ ...formData, consentText: e.target.value })}
+									placeholder="By continuing, you agree to have your photo taken…"
+									className="mt-2"
+									rows={4}
+								/>
+							</div>
+							<div className="flex items-center justify-between">
+								<div>
+									<Label>Show "Powered by Photocall"</Label>
+									<p className="text-sm text-muted-foreground">
+										Toggle the footer credit on the kiosk attract screen.
+									</p>
+								</div>
+								<Switch
+									checked={formData.showPoweredBy}
+									onCheckedChange={(checked) =>
+										setFormData({ ...formData, showPoweredBy: checked })
+									}
+								/>
 							</div>
 						</div>
 					</TabsContent>

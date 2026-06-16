@@ -11,7 +11,7 @@ import {
 } from "@/lib/auth-helpers";
 import { db, schema } from "@/lib/db";
 import { getPlatformClient } from "@/lib/platform";
-import { deleteFile, getFileUrl } from "@/lib/storage";
+import { deleteFile, generateUploadUrl, getFileUrl } from "@/lib/storage";
 
 export async function createEvent(
 	organizationId: string,
@@ -137,6 +137,14 @@ export async function updateEvent(
 		logoStorageKey?: string;
 		welcomeMessage?: string;
 		thankYouMessage?: string;
+		// Kiosk chrome overrides (null clears the override → kiosk i18n default).
+		attractTitle?: string | null;
+		attractSubtitle?: string | null;
+		ctaLabel?: string | null;
+		consentText?: string | null;
+		accentColor?: string | null;
+		fontFamily?: string | null;
+		showPoweredBy?: boolean;
 		shareExpirationDays?: number;
 		allowDownload?: boolean;
 		allowPrint?: boolean;
@@ -169,6 +177,20 @@ export async function updateEvent(
 			updatedAt: new Date(),
 		})
 		.where(eq(schema.events.id, id));
+}
+
+/**
+ * Presigned upload for an event logo. Returns the `storageKey` to persist on
+ * `event.logoStorageKey` (via {@link updateEvent}); the kiosk resolves it back
+ * to `logoUrl` through getFileUrl.
+ */
+export async function generateEventLogoUploadUrl(
+	id: string,
+	contentType: string,
+): Promise<{ uploadUrl: string; storageKey: string }> {
+	await requireEventAccess(id, ["owner", "admin"]);
+	const { uploadUrl, key } = await generateUploadUrl("event-logos", contentType);
+	return { uploadUrl, storageKey: key };
 }
 
 export async function setKioskPin(id: string, pin: string) {
@@ -285,8 +307,17 @@ export async function duplicateEvent(id: string) {
 			photoQuality: event.photoQuality,
 			maxPhotoDimension: event.maxPhotoDimension,
 			primaryColor: event.primaryColor,
+			logoStorageKey: event.logoStorageKey,
 			welcomeMessage: event.welcomeMessage,
 			thankYouMessage: event.thankYouMessage,
+			// Kiosk chrome overrides carry over to the duplicate.
+			attractTitle: event.attractTitle,
+			attractSubtitle: event.attractSubtitle,
+			ctaLabel: event.ctaLabel,
+			consentText: event.consentText,
+			accentColor: event.accentColor,
+			fontFamily: event.fontFamily,
+			showPoweredBy: event.showPoweredBy,
 			shareExpirationDays: event.shareExpirationDays,
 			allowDownload: event.allowDownload,
 			allowPrint: event.allowPrint,
@@ -405,6 +436,14 @@ export async function getPublicEvent(organizationSlug: string, eventSlug: string
 		welcomeMessage: event.welcomeMessage,
 		thankYouMessage: event.thankYouMessage,
 		primaryColor: event.primaryColor,
+		// Kiosk chrome overrides (null → kiosk falls back to its i18n default).
+		attractTitle: event.attractTitle,
+		attractSubtitle: event.attractSubtitle,
+		ctaLabel: event.ctaLabel,
+		consentText: event.consentText,
+		accentColor: event.accentColor,
+		fontFamily: event.fontFamily,
+		showPoweredBy: event.showPoweredBy,
 		logoUrl: event.logoStorageKey ? await getFileUrl(event.logoStorageKey) : null,
 		slideshowEnabled: event.slideshowEnabled,
 		slideshowSafeMode: event.slideshowSafeMode,
