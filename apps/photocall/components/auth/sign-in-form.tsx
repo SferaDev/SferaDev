@@ -2,6 +2,7 @@
 
 import { Loader2, Mail } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,6 +27,7 @@ function GithubIcon(props: React.SVGProps<SVGSVGElement>) {
 
 export function SignInForm() {
 	const router = useRouter();
+	const t = useTranslations("dashboard.auth");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [name, setName] = useState("");
@@ -46,7 +48,7 @@ export function SignInForm() {
 					name: name || email.split("@")[0],
 				});
 				if (result.error) {
-					setError(result.error.message || "Failed to sign up");
+					setError(result.error.message || t("failedToSignUp"));
 				} else {
 					router.push("/dashboard");
 				}
@@ -56,13 +58,13 @@ export function SignInForm() {
 					password,
 				});
 				if (result.error) {
-					setError(result.error.message || "Failed to sign in");
+					setError(result.error.message || t("failedToSignIn"));
 				} else {
 					router.push("/dashboard");
 				}
 			}
 		} catch (err) {
-			setError(err instanceof Error ? err.message : "An error occurred");
+			setError(err instanceof Error ? err.message : t("errorOccurred"));
 		} finally {
 			setIsLoading(false);
 		}
@@ -78,7 +80,7 @@ export function SignInForm() {
 				callbackURL: "/dashboard",
 			});
 		} catch (err) {
-			setError(err instanceof Error ? err.message : "An error occurred");
+			setError(err instanceof Error ? err.message : t("errorOccurred"));
 			setIsLoading(false);
 		}
 	};
@@ -87,12 +89,10 @@ export function SignInForm() {
 		<div className="space-y-6">
 			<div className="space-y-2 text-center">
 				<h1 className="text-2xl font-bold">
-					{mode === "signin" ? "Welcome back" : "Create an account"}
+					{mode === "signin" ? t("welcomeBack") : t("createAccount")}
 				</h1>
 				<p className="text-muted-foreground">
-					{mode === "signin"
-						? "Sign in to your account to continue"
-						: "Sign up to get started with Photocall"}
+					{mode === "signin" ? t("signInSubtitle") : t("signUpSubtitle")}
 				</p>
 			</div>
 
@@ -105,7 +105,7 @@ export function SignInForm() {
 					type="button"
 				>
 					<GithubIcon className="mr-2 h-4 w-4" />
-					Continue with GitHub
+					{t("continueWithGithub")}
 				</Button>
 				<Button
 					variant="outline"
@@ -115,7 +115,7 @@ export function SignInForm() {
 					type="button"
 				>
 					<Mail className="mr-2 h-4 w-4" />
-					Continue with Google
+					{t("continueWithGoogle")}
 				</Button>
 			</div>
 
@@ -124,18 +124,18 @@ export function SignInForm() {
 					<Separator />
 				</div>
 				<div className="relative flex justify-center text-xs uppercase">
-					<span className="bg-background px-2 text-muted-foreground">Or continue with</span>
+					<span className="bg-background px-2 text-muted-foreground">{t("orContinueWith")}</span>
 				</div>
 			</div>
 
 			<form onSubmit={handleSubmit} className="space-y-4">
 				{mode === "signup" && (
 					<div className="space-y-2">
-						<Label htmlFor="name">Name</Label>
+						<Label htmlFor="name">{t("name")}</Label>
 						<Input
 							id="name"
 							type="text"
-							placeholder="Your name"
+							placeholder={t("namePlaceholder")}
 							value={name}
 							onChange={(e) => setName(e.target.value)}
 							disabled={isLoading}
@@ -143,11 +143,11 @@ export function SignInForm() {
 					</div>
 				)}
 				<div className="space-y-2">
-					<Label htmlFor="email">Email</Label>
+					<Label htmlFor="email">{t("email")}</Label>
 					<Input
 						id="email"
 						type="email"
-						placeholder="you@example.com"
+						placeholder={t("emailPlaceholder")}
 						value={email}
 						onChange={(e) => setEmail(e.target.value)}
 						required
@@ -155,11 +155,11 @@ export function SignInForm() {
 					/>
 				</div>
 				<div className="space-y-2">
-					<Label htmlFor="password">Password</Label>
+					<Label htmlFor="password">{t("password")}</Label>
 					<Input
 						id="password"
 						type="password"
-						placeholder="Enter your password"
+						placeholder={t("passwordPlaceholder")}
 						value={password}
 						onChange={(e) => setPassword(e.target.value)}
 						required
@@ -172,31 +172,31 @@ export function SignInForm() {
 
 				<Button type="submit" className="w-full" disabled={isLoading}>
 					{isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-					{mode === "signin" ? "Sign In" : "Sign Up"}
+					{mode === "signin" ? t("signIn") : t("signUp")}
 				</Button>
 			</form>
 
 			<div className="text-center text-sm">
 				{mode === "signin" ? (
 					<p>
-						Don&apos;t have an account?{" "}
+						{t("noAccount")}{" "}
 						<button
 							type="button"
 							onClick={() => setMode("signup")}
 							className="underline hover:text-primary"
 						>
-							Sign up
+							{t("signUp")}
 						</button>
 					</p>
 				) : (
 					<p>
-						Already have an account?{" "}
+						{t("haveAccount")}{" "}
 						<button
 							type="button"
 							onClick={() => setMode("signin")}
 							className="underline hover:text-primary"
 						>
-							Sign in
+							{t("signIn")}
 						</button>
 					</p>
 				)}

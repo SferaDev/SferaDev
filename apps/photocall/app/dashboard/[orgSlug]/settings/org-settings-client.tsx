@@ -3,6 +3,7 @@
 import { Check, ChevronLeft, Copy, Crown, Loader2, Shield, Trash2, User } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import {
@@ -11,6 +12,7 @@ import {
 	getOrganizationBySlug,
 	updateOrganization,
 } from "@/actions/organizations";
+import { DashboardLanguagePicker } from "@/components/dashboard-language-picker";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -46,6 +48,9 @@ export default function OrgSettingsPage() {
 	const orgSlug = params.orgSlug as string;
 	const { mutate } = useSWRConfig();
 	const { toast } = useToast();
+	const t = useTranslations("dashboard.settings");
+	const tc = useTranslations("dashboard.common");
+	const to = useTranslations("dashboard.orgs");
 
 	const { data: organization } = useSWR(["organizations", orgSlug], () =>
 		getOrganizationBySlug(orgSlug),
@@ -83,11 +88,11 @@ export default function OrgSettingsPage() {
 		try {
 			await updateOrganization(organization.id, { name: trimmed });
 			mutate((key) => Array.isArray(key) && key[0] === "organizations");
-			toast({ title: "Settings saved", description: "Organization name updated." });
+			toast({ title: t("settingsSaved"), description: t("settingsSavedDescription") });
 		} catch (error) {
 			toast({
-				title: "Could not save",
-				description: error instanceof Error ? error.message : "Unknown error",
+				title: t("couldNotSave"),
+				description: error instanceof Error ? error.message : tc("unknownError"),
 				variant: "destructive",
 			});
 		} finally {
@@ -107,12 +112,12 @@ export default function OrgSettingsPage() {
 		setIsDeleting(true);
 		try {
 			await deleteOrganization(organization.id);
-			toast({ title: "Organization deleted" });
+			toast({ title: t("organizationDeleted") });
 			router.push("/dashboard");
 		} catch (error) {
 			toast({
-				title: "Could not delete organization",
-				description: error instanceof Error ? error.message : "Unknown error",
+				title: t("couldNotDeleteOrganization"),
+				description: error instanceof Error ? error.message : tc("unknownError"),
 				variant: "destructive",
 			});
 			setIsDeleting(false);
@@ -131,10 +136,10 @@ export default function OrgSettingsPage() {
 		return (
 			<div className="min-h-screen flex items-center justify-center">
 				<div className="text-center">
-					<h1 className="text-2xl font-bold mb-2">Organization not found</h1>
+					<h1 className="text-2xl font-bold mb-2">{to("notFoundTitle")}</h1>
 					<Button onClick={() => router.push("/dashboard")}>
 						<ChevronLeft className="h-4 w-4 mr-2" />
-						Back to Dashboard
+						{tc("backToDashboard")}
 					</Button>
 				</div>
 			</div>
@@ -151,7 +156,7 @@ export default function OrgSettingsPage() {
 						<Link
 							href={`/dashboard/${orgSlug}`}
 							className="text-muted-foreground hover:text-foreground"
-							aria-label="Back to organization"
+							aria-label={t("backToOrganization")}
 						>
 							<ChevronLeft className="h-5 w-5" />
 						</Link>
@@ -161,11 +166,12 @@ export default function OrgSettingsPage() {
 								<AvatarFallback>{organization.name.charAt(0).toUpperCase()}</AvatarFallback>
 							</Avatar>
 							<div>
-								<h1 className="font-bold text-xl">Settings</h1>
+								<h1 className="font-bold text-xl">{t("title")}</h1>
 								<p className="text-sm text-muted-foreground">{organization.name}</p>
 							</div>
 						</div>
-						<div className="ml-auto">
+						<div className="ml-auto flex items-center gap-2">
+							<DashboardLanguagePicker />
 							<RoleBadge role={role} />
 						</div>
 					</div>
@@ -177,12 +183,12 @@ export default function OrgSettingsPage() {
 				<Card>
 					<form onSubmit={handleSave}>
 						<CardHeader>
-							<CardTitle>General</CardTitle>
-							<CardDescription>Your organization's name and identifier.</CardDescription>
+							<CardTitle>{t("general")}</CardTitle>
+							<CardDescription>{t("generalDescription")}</CardDescription>
 						</CardHeader>
 						<CardContent className="space-y-4">
 							<div className="space-y-2">
-								<Label htmlFor="org-name">Organization name</Label>
+								<Label htmlFor="org-name">{t("organizationName")}</Label>
 								<Input
 									id="org-name"
 									value={name}
@@ -191,13 +197,11 @@ export default function OrgSettingsPage() {
 									required
 								/>
 								{!canEdit && (
-									<p className="text-sm text-muted-foreground">
-										Only owners and admins can change these settings.
-									</p>
+									<p className="text-sm text-muted-foreground">{t("onlyAdminsCanEdit")}</p>
 								)}
 							</div>
 							<div className="space-y-2">
-								<Label htmlFor="org-slug">Slug</Label>
+								<Label htmlFor="org-slug">{t("slug")}</Label>
 								<div className="flex items-center gap-2">
 									<Input
 										id="org-slug"
@@ -210,7 +214,7 @@ export default function OrgSettingsPage() {
 										variant="outline"
 										size="icon"
 										onClick={handleCopySlug}
-										aria-label="Copy slug"
+										aria-label={t("copySlug")}
 									>
 										{copied ? (
 											<Check className="h-4 w-4 text-emerald-600" />
@@ -219,16 +223,14 @@ export default function OrgSettingsPage() {
 										)}
 									</Button>
 								</div>
-								<p className="text-sm text-muted-foreground">
-									Used in dashboard and kiosk URLs. The slug can't be changed.
-								</p>
+								<p className="text-sm text-muted-foreground">{t("slugHelp")}</p>
 							</div>
 						</CardContent>
 						{canEdit && (
 							<CardFooter className="justify-end">
 								<Button type="submit" disabled={isSaving || nameUnchanged || !name.trim()}>
 									{isSaving && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-									Save changes
+									{tc("saveChanges")}
 								</Button>
 							</CardFooter>
 						)}
@@ -239,11 +241,8 @@ export default function OrgSettingsPage() {
 				{canDelete && (
 					<Card className="border-destructive/40">
 						<CardHeader>
-							<CardTitle className="text-destructive">Danger zone</CardTitle>
-							<CardDescription>
-								Deleting an organization permanently removes its events, photos, and templates. This
-								cannot be undone.
-							</CardDescription>
+							<CardTitle className="text-destructive">{t("dangerZone")}</CardTitle>
+							<CardDescription>{t("dangerZoneDescription")}</CardDescription>
 						</CardHeader>
 						<CardFooter className="justify-end">
 							<AlertDialog
@@ -254,29 +253,31 @@ export default function OrgSettingsPage() {
 								<AlertDialogTrigger asChild>
 									<Button variant="destructive">
 										<Trash2 className="h-4 w-4 mr-2" />
-										Delete organization
+										{t("deleteOrganization")}
 									</Button>
 								</AlertDialogTrigger>
 								<AlertDialogContent>
 									<AlertDialogHeader>
-										<AlertDialogTitle>Delete {organization.name}?</AlertDialogTitle>
+										<AlertDialogTitle>
+											{t("deleteConfirmTitle", { name: organization.name })}
+										</AlertDialogTitle>
 										<AlertDialogDescription>
-											This permanently deletes the organization and all of its events, photos, and
-											templates. Type{" "}
-											<span className="font-mono font-medium text-foreground">
-												{organization.name}
-											</span>{" "}
-											to confirm.
+											{t.rich("deleteConfirmDescription", {
+												name: organization.name,
+												strong: (chunks) => (
+													<span className="font-mono font-medium text-foreground">{chunks}</span>
+												),
+											})}
 										</AlertDialogDescription>
 									</AlertDialogHeader>
 									<Input
 										value={deleteConfirm}
 										onChange={(e) => setDeleteConfirm(e.target.value)}
 										placeholder={organization.name}
-										aria-label="Type the organization name to confirm"
+										aria-label={t("confirmNameLabel")}
 									/>
 									<AlertDialogFooter>
-										<AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
+										<AlertDialogCancel disabled={isDeleting}>{tc("cancel")}</AlertDialogCancel>
 										<AlertDialogAction
 											onClick={(e) => {
 												e.preventDefault();
@@ -286,7 +287,7 @@ export default function OrgSettingsPage() {
 											className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
 										>
 											{isDeleting && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-											Delete forever
+											{t("deleteForever")}
 										</AlertDialogAction>
 									</AlertDialogFooter>
 								</AlertDialogContent>
@@ -300,16 +301,17 @@ export default function OrgSettingsPage() {
 }
 
 function RoleBadge({ role }: { role: string }) {
+	const tr = useTranslations("dashboard.roles");
 	const config = {
-		owner: { icon: Crown, label: "Owner", variant: "warning" as const },
-		admin: { icon: Shield, label: "Admin", variant: "info" as const },
-		member: { icon: User, label: "Member", variant: "secondary" as const },
+		owner: { icon: Crown, key: "owner" as const, variant: "warning" as const },
+		admin: { icon: Shield, key: "admin" as const, variant: "info" as const },
+		member: { icon: User, key: "member" as const, variant: "secondary" as const },
 	};
-	const { icon: Icon, label, variant } = config[role as keyof typeof config] ?? config.member;
+	const { icon: Icon, key, variant } = config[role as keyof typeof config] ?? config.member;
 	return (
 		<Badge variant={variant}>
 			<Icon />
-			{label}
+			{tr(key)}
 		</Badge>
 	);
 }
