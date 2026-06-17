@@ -398,6 +398,16 @@ export default function KioskCapturePage() {
 				)}
 			</div>
 
+			{/* Camera Starting Overlay — shown while getUserMedia is initializing (or
+			    hanging on a flaky webcam) so the guest isn't left staring at a black
+			    screen with a dead shutter. The error overlay below takes precedence. */}
+			{!isReady && !error && (
+				<div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 z-40 p-8">
+					<Loader2 className="h-12 w-12 animate-spin mb-4" style={{ color: accentColor }} />
+					<p className="text-white/70 text-lg">{tCommon("startingCamera")}</p>
+				</div>
+			)}
+
 			{/* Camera Error Overlay */}
 			{error && (
 				<div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 z-40 p-8">

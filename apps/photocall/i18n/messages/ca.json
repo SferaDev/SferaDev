@@ -104,7 +104,8 @@
 			"cancel": "Cancel·la",
 			"tryAgain": "Torna-ho a provar",
 			"poweredBy": "Amb la tecnologia de Photocall",
-			"changeLanguage": "Canvia l'idioma"
+			"changeLanguage": "Canvia l'idioma",
+			"startingCamera": "Iniciant càmera…"
 		},
 		"loading": {
 			"preparing": "Ho estem preparant tot…",

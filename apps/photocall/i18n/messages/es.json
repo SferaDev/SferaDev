@@ -104,7 +104,8 @@
 			"cancel": "Cancelar",
 			"tryAgain": "Reintentar",
 			"poweredBy": "Con la tecnología de Photocall",
-			"changeLanguage": "Cambiar idioma"
+			"changeLanguage": "Cambiar idioma",
+			"startingCamera": "Iniciando cámara…"
 		},
 		"loading": {
 			"preparing": "Preparándolo todo…",
