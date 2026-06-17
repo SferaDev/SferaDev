@@ -24,7 +24,7 @@ export async function generatePhotoUploadUrl(
 		.where(eq(schema.events.id, eventId))
 		.then((rows) => rows[0]);
 
-	if (!event || event.status !== "active") {
+	if (event?.status !== "active") {
 		throw new Error("Event not found or not active");
 	}
 
@@ -51,7 +51,7 @@ export async function createPhoto(data: {
 		.where(eq(schema.events.id, data.eventId))
 		.then((rows) => rows[0]);
 
-	if (!event || event.status !== "active") {
+	if (event?.status !== "active") {
 		throw new Error("Event not found or not active");
 	}
 
@@ -216,7 +216,7 @@ export async function listRecentPublicPhotos(eventId: string, limit?: number) {
 		.where(eq(schema.events.id, eventId))
 		.then((rows) => rows[0]);
 
-	if (!event || event.status !== "active") {
+	if (event?.status !== "active") {
 		return [];
 	}
 

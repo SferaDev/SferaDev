@@ -299,7 +299,7 @@ export async function listPublicTemplates(eventId: string) {
 		.where(eq(schema.events.id, eventId))
 		.then((rows) => rows[0]);
 
-	if (!event || event.status !== "active") {
+	if (event?.status !== "active") {
 		return [];
 	}
 
