@@ -133,7 +133,7 @@ export async function updateEvent(
 		cameraDeviceLabel?: string | null;
 		photoQuality?: number;
 		maxPhotoDimension?: number;
-		primaryColor?: string;
+		primaryColor?: string | null;
 		logoStorageKey?: string | null;
 		welcomeMessage?: string;
 		thankYouMessage?: string;
@@ -145,11 +145,11 @@ export async function updateEvent(
 		accentColor?: string | null;
 		fontFamily?: string | null;
 		showPoweredBy?: boolean;
-		shareExpirationDays?: number;
+		shareExpirationDays?: number | null;
 		allowDownload?: boolean;
 		allowPrint?: boolean;
 		showQrCode?: boolean;
-		retentionDays?: number;
+		retentionDays?: number | null;
 		deleteAfterDate?: Date;
 		// Photobooth personalization + capture + print settings
 		coupleNames?: string;

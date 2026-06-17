@@ -472,6 +472,8 @@
 		},
 		"eventSettings": {
 			"title": "Event Settings",
+			"saved": "Settings saved",
+			"couldNotSave": "Couldn't save settings",
 			"tabs": {
 				"general": "General",
 				"branding": "Branding",

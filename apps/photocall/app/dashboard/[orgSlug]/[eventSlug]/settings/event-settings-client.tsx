@@ -40,6 +40,7 @@ import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { enumerateCameras } from "@/hooks/use-camera";
+import { useToast } from "@/hooks/use-toast";
 import { useSession } from "@/lib/auth-client";
 import { BUNDLED_FONTS } from "@/lib/compose/fonts";
 import type { Orientation, PaperSize } from "@/lib/layout/types";
@@ -58,6 +59,7 @@ export default function EventSettingsPage() {
 	const t = useTranslations("dashboard.eventSettings");
 	const tc = useTranslations("dashboard.common");
 	const te = useTranslations("dashboard.events");
+	const { toast } = useToast();
 
 	const { data: event } = useSWR(["events", orgSlug, eventSlug], () =>
 		getEventBySlug(orgSlug, eventSlug),
@@ -196,16 +198,26 @@ export default function EventSettingsPage() {
 				logoStorageKey: formData.logoStorageKey || null,
 				// Empty kiosk overrides are stored as null so the kiosk falls back to
 				// its i18n default rather than rendering an empty string.
+				primaryColor: formData.primaryColor || null,
 				attractTitle: formData.attractTitle || null,
 				attractSubtitle: formData.attractSubtitle || null,
 				ctaLabel: formData.ctaLabel || null,
 				consentText: formData.consentText || null,
 				accentColor: formData.accentColor || null,
 				fontFamily: formData.fontFamily || null,
+				// Cleared (undefined) means "no limit": persist null so the column is
+				// actually reset rather than left at its previous value.
+				shareExpirationDays: formData.shareExpirationDays ?? null,
+				retentionDays: formData.retentionDays ?? null,
 			});
 			mutate((key) => Array.isArray(key) && key[0] === "events");
+			toast({ title: t("saved") });
 		} catch (error) {
-			console.error("Failed to save:", error);
+			toast({
+				title: t("couldNotSave"),
+				description: error instanceof Error ? error.message : tc("unknownError"),
+				variant: "destructive",
+			});
 		} finally {
 			setIsSaving(false);
 		}
