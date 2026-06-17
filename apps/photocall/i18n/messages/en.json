@@ -61,6 +61,13 @@
 		"privacy": "Privacy Policy",
 		"terms": "Terms of Service"
 	},
+	"legal": {
+		"backToHome": "Back to home",
+		"lastUpdated": "Last updated {date}",
+		"disclaimer": "This is a standard template provided for convenience and does not constitute legal advice. It should be reviewed by a qualified professional before being relied upon.",
+		"privacyTitle": "Privacy Policy",
+		"termsTitle": "Terms of Service"
+	},
 	"pricing": {
 		"title": "Simple Pricing",
 		"free": {
