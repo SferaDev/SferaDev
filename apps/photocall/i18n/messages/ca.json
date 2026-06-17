@@ -477,6 +477,8 @@
 		},
 		"eventSettings": {
 			"title": "Configuració de l'esdeveniment",
+			"saved": "Configuració desada",
+			"couldNotSave": "No s'ha pogut desar la configuració",
 			"tabs": {
 				"general": "General",
 				"branding": "Marca",

@@ -477,6 +477,8 @@
 		},
 		"eventSettings": {
 			"title": "Ajustes del evento",
+			"saved": "Ajustes guardados",
+			"couldNotSave": "No se pudieron guardar los ajustes",
 			"tabs": {
 				"general": "General",
 				"branding": "Marca",
