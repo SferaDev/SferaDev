@@ -117,11 +117,14 @@ export default function KioskResultPage() {
 	// Drains the print outbox when the bridge becomes reachable again.
 	usePrintSync(event?.printBridgeUrl);
 
-	// Auto-return to attract screen after idle
+	// Auto-return to attract screen after idle. Stays disabled while the photo is
+	// still compositing/uploading: that phase shows a spinner with no touch input,
+	// so on a slow device a large strip could otherwise hit the idle timeout
+	// (min 30s) and redirect mid-process before the guest ever sees the result.
 	useIdleTimeout({
 		timeout: event?.idleTimeoutSeconds ?? 120,
 		onIdle: () => router.push(`/kiosk/${orgSlug}/${eventSlug}`),
-		enabled: !!event,
+		enabled: !!event && !isProcessing,
 	});
 
 	/** Compose a multi-shot strip from the captured shots into a JPEG blob. */
