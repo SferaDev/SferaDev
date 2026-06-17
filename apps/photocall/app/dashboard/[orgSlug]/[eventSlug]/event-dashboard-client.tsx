@@ -11,6 +11,7 @@ import {
 	Layout,
 	Loader2,
 	Play,
+	Printer,
 	Settings,
 	Trash2,
 } from "lucide-react";
@@ -140,6 +141,12 @@ export default function EventDashboard() {
 								<Link href={`/dashboard/${orgSlug}/${eventSlug}/check`}>
 									<ClipboardCheck className="h-4 w-4 mr-2" />
 									{t("preEventCheck")}
+								</Link>
+							</Button>
+							<Button variant="outline" asChild>
+								<Link href={`/dashboard/${orgSlug}/${eventSlug}/print`}>
+									<Printer className="h-4 w-4 mr-2" />
+									{t("printManagement")}
 								</Link>
 							</Button>
 							{event.status === "active" && (

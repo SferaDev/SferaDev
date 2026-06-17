@@ -165,6 +165,32 @@ export function isOutOfPaper(
 	return mediaBlocked && attributes.state === "stopped";
 }
 
+/**
+ * Wall-clock timeout for IPP requests. The underlying `ipp` library hands the
+ * request straight to `node:http` with no timeout, so an unreachable printer
+ * would otherwise hang until the OS TCP timeout (~75s) and block startup /
+ * auto-refresh. We bound every call and reject fast instead.
+ */
+const IPP_REQUEST_TIMEOUT_MS = 8_000;
+
+/** Reject if `promise` does not settle within `ms`. */
+function withTimeout<T>(promise: Promise<T>, ms: number, label: string): Promise<T> {
+	return new Promise<T>((resolve, reject) => {
+		const timer = setTimeout(() => reject(new Error(`${label} timed out after ${ms}ms`)), ms);
+		timer.unref?.();
+		promise.then(
+			(value) => {
+				clearTimeout(timer);
+				resolve(value);
+			},
+			(error) => {
+				clearTimeout(timer);
+				reject(error);
+			},
+		);
+	});
+}
+
 /** Query a printer's current attributes; throws if it is unreachable. */
 export async function getPrinterAttributes(
 	uri: string,
@@ -176,12 +202,16 @@ export async function getPrinterAttributes(
 		"Get-Printer-Attributes",
 	);
 
-	const response = await getAttributes({
-		"operation-attributes-tag": {
-			"requesting-user-name": "photocall-bridge",
-			"requested-attributes": [...REQUESTED_ATTRIBUTES],
-		},
-	});
+	const response = await withTimeout(
+		getAttributes({
+			"operation-attributes-tag": {
+				"requesting-user-name": "photocall-bridge",
+				"requested-attributes": [...REQUESTED_ATTRIBUTES],
+			},
+		}),
+		IPP_REQUEST_TIMEOUT_MS,
+		"Get-Printer-Attributes",
+	);
 
 	return parsePrinterAttributes(response);
 }

@@ -459,7 +459,8 @@
 			"templatesEmptyDescription": "Add overlay templates for your photo booth",
 			"addTemplate": "Add Template",
 			"templatesCount": "{count} templates",
-			"manageTemplates": "Manage Templates"
+			"manageTemplates": "Manage Templates",
+			"printManagement": "Print"
 		},
 		"eventSettings": {
 			"title": "Event Settings",
@@ -676,6 +677,45 @@
 			"reference": "Reference: {digest}",
 			"tryAgain": "Try again",
 			"dashboard": "Dashboard"
+		},
+		"print": {
+			"title": "Print Management",
+			"subtitle": "Monitor printers and the live print queue over your network",
+			"back": "Back to dashboard",
+			"eventNotFound": "Event not found",
+			"printSettings": "Print settings",
+			"configureInSettings": "Configure the print bridge URL in",
+			"refresh": "Refresh",
+			"bridgeConnection": "Print bridge",
+			"bridgeNoUrl": "No print bridge URL is configured for this event.",
+			"bridgeChecking": "Checking connection…",
+			"bridgeOnline": "Connected to {url}",
+			"bridgeUnreachable": "Could not reach the print bridge.",
+			"addPrinterTitle": "Add a printer by IP",
+			"addPrinterHelp": "Manual fallback when a printer is not discovered automatically. Enter an IPP URI or a host/IP.",
+			"addPrinterLabel": "Printer URI or IP",
+			"addPrinterPlaceholder": "ipp://192.168.1.50:631/ipp/print",
+			"addPrinter": "Add printer",
+			"printersTitle": "Printers",
+			"noPrinters": "No printers discovered yet. Add one by IP above.",
+			"stateUnknown": "unknown",
+			"unreachable": "Unreachable",
+			"outOfPaper": "Out of paper — refill the media to resume printing.",
+			"markerDefault": "Supply",
+			"testPrint": "Test print",
+			"reprint": "Reprint",
+			"testPrintSent": "Test print sent to the bridge.",
+			"reprintSent": "Reprint sent to the bridge.",
+			"testPrintFailed": "Could not generate the test image.",
+			"queueTitle": "Print queue",
+			"queueEmpty": "No print jobs yet.",
+			"jobAttempts": "{count} attempts",
+			"jobStatus": {
+				"pending": "Pending",
+				"printing": "Printing",
+				"done": "Done",
+				"failed": "Failed"
+			}
 		}
 	}
 }

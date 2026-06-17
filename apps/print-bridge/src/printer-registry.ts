@@ -12,6 +12,43 @@ export interface DiscoveredEndpoint {
 }
 
 /**
+ * Parse an IPP(S) printer URI (e.g. `ipp://192.168.1.50:631/ipp/print`) into a
+ * {@link DiscoveredEndpoint}. Used by the manual-printer fallback (the
+ * `BRIDGE_PRINTER_URIS` env and `POST /api/printers`) so a printer can be added
+ * without mDNS. A bare host (`192.168.1.50`) is accepted and defaults to
+ * `ipp://<host>:631/ipp/print`. Throws on anything that is not a usable IPP URI.
+ */
+export function parsePrinterUri(input: string, name?: string): DiscoveredEndpoint {
+	const trimmed = input.trim();
+	if (!trimmed) throw new Error("Empty printer URI");
+
+	// Allow a bare host/IP (or host:port) and normalize to a full IPP URI.
+	const normalized = /^ipps?:\/\//i.test(trimmed) ? trimmed : `ipp://${trimmed}`;
+
+	let parsed: URL;
+	try {
+		parsed = new URL(normalized);
+	} catch {
+		throw new Error(`Invalid printer URI: ${input}`);
+	}
+
+	const scheme = parsed.protocol.replace(/:$/, "").toLowerCase();
+	if (scheme !== "ipp" && scheme !== "ipps") {
+		throw new Error(`Unsupported scheme '${scheme}' (expected ipp or ipps)`);
+	}
+
+	const host = parsed.hostname;
+	if (!host) throw new Error(`Invalid printer URI (no host): ${input}`);
+
+	const port = parsed.port ? Number(parsed.port) : scheme === "ipps" ? 443 : 631;
+	const rawPath = parsed.pathname.replace(/^\/+/, "");
+	const rp = rawPath.length > 0 ? rawPath : "ipp/print";
+	const uri = `${scheme}://${host}:${port}/${rp}`;
+	const id = `${host}:${port}/${rp}`;
+	return { id, name: name ?? host, host, port, uri };
+}
+
+/**
  * In-memory registry of printers discovered over mDNS. Holds the last-known
  * live state for each, refreshed on a timer and on demand. A single SELPHY is
  * the common case, but the registry handles any number of IPP printers.
@@ -22,10 +59,13 @@ export class PrinterRegistry {
 
 	constructor(private readonly ippVersion: IPPVersion) {}
 
-	/** Add or update a discovered endpoint and immediately fetch its state. */
-	async upsert(endpoint: DiscoveredEndpoint): Promise<void> {
+	/**
+	 * Insert (or merge) an endpoint into the map without querying the network.
+	 * Returns the stored record so callers can decide whether to refresh.
+	 */
+	private register(endpoint: DiscoveredEndpoint): DiscoveredPrinter {
 		const existing = this.printers.get(endpoint.id);
-		this.printers.set(endpoint.id, {
+		const printer: DiscoveredPrinter = {
 			...endpoint,
 			state: existing?.state ?? "unknown",
 			stateReasons: existing?.stateReasons ?? [],
@@ -36,8 +76,57 @@ export class PrinterRegistry {
 			makeAndModel: existing?.makeAndModel,
 			reachable: existing?.reachable ?? false,
 			lastSeen: Date.now(),
-		});
+		};
+		this.printers.set(endpoint.id, printer);
+		return printer;
+	}
+
+	/** Add or update a discovered endpoint and immediately fetch its state. */
+	async upsert(endpoint: DiscoveredEndpoint): Promise<void> {
+		this.register(endpoint);
 		await this.refresh(endpoint.id);
+	}
+
+	/**
+	 * Add a printer by IPP(S) URI or bare host/IP (the manual fallback). Parses
+	 * the URI, upserts it, and returns the resulting printer record (with live
+	 * attributes already fetched by {@link upsert}).
+	 */
+	async addByUri(uri: string, name?: string): Promise<DiscoveredPrinter> {
+		const endpoint = parsePrinterUri(uri, name);
+		await this.upsert(endpoint);
+		const printer = this.printers.get(endpoint.id);
+		// `upsert` always inserts the endpoint, so this is defined; guard anyway.
+		if (!printer) throw new Error(`Failed to register printer ${endpoint.id}`);
+		return printer;
+	}
+
+	/**
+	 * Seed the registry from a comma-separated list of URIs (the
+	 * `BRIDGE_PRINTER_URIS` env). Registration is synchronous and never blocks on
+	 * the network: each printer is added immediately and its live attributes are
+	 * fetched in the background. This guarantees an unreachable or slow seed URI
+	 * cannot stall startup. Malformed URIs are logged and skipped.
+	 */
+	seedFromUris(list: string): void {
+		const uris = list
+			.split(",")
+			.map((value) => value.trim())
+			.filter((value) => value.length > 0);
+		for (const uri of uris) {
+			try {
+				const endpoint = parsePrinterUri(uri);
+				this.register(endpoint);
+				console.log(`[registry] seeded manual printer ${endpoint.id} (${endpoint.uri})`);
+				// Fetch live state in the background; failures just mark it unreachable.
+				void this.refresh(endpoint.id);
+			} catch (error) {
+				console.warn(
+					`[registry] could not seed printer '${uri}':`,
+					error instanceof Error ? error.message : error,
+				);
+			}
+		}
 	}
 
 	/** Drop a printer that went offline (mDNS `down`). */

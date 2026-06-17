@@ -29,6 +29,14 @@ const envSchema = z.object({
 	 * `Authorization: Bearer <key>` or an `x-api-key` header.
 	 */
 	BRIDGE_API_KEY: z.string().optional(),
+	/**
+	 * Comma-separated list of IPP(S) printer URIs to seed into the registry at
+	 * startup, e.g. `ipp://192.168.1.50:631/ipp/print`. This is the **manual
+	 * fallback** for environments where mDNS discovery does not work (notably
+	 * under Bun's `node:dgram` multicast — see the README). Printers added this
+	 * way behave exactly like discovered ones.
+	 */
+	BRIDGE_PRINTER_URIS: z.string().default(""),
 });
 
 export type Env = z.infer<typeof envSchema>;

@@ -464,7 +464,8 @@
 			"templatesEmptyDescription": "Añade plantillas de superposición para tu fotomatón",
 			"addTemplate": "Añadir plantilla",
 			"templatesCount": "{count} plantillas",
-			"manageTemplates": "Gestionar plantillas"
+			"manageTemplates": "Gestionar plantillas",
+			"printManagement": "Imprimir"
 		},
 		"eventSettings": {
 			"title": "Ajustes del evento",
@@ -681,6 +682,45 @@
 			"reference": "Referencia: {digest}",
 			"tryAgain": "Reintentar",
 			"dashboard": "Panel"
+		},
+		"print": {
+			"title": "Gestión de impresión",
+			"subtitle": "Supervisa las impresoras y la cola de impresión en tu red",
+			"back": "Volver al panel",
+			"eventNotFound": "Evento no encontrado",
+			"printSettings": "Ajustes de impresión",
+			"configureInSettings": "Configura la URL del puente de impresión en",
+			"refresh": "Actualizar",
+			"bridgeConnection": "Puente de impresión",
+			"bridgeNoUrl": "No hay ninguna URL de puente de impresión configurada para este evento.",
+			"bridgeChecking": "Comprobando conexión…",
+			"bridgeOnline": "Conectado a {url}",
+			"bridgeUnreachable": "No se pudo conectar con el puente de impresión.",
+			"addPrinterTitle": "Añadir impresora por IP",
+			"addPrinterHelp": "Alternativa manual cuando una impresora no se detecta automáticamente. Introduce una URI IPP o un host/IP.",
+			"addPrinterLabel": "URI o IP de la impresora",
+			"addPrinterPlaceholder": "ipp://192.168.1.50:631/ipp/print",
+			"addPrinter": "Añadir impresora",
+			"printersTitle": "Impresoras",
+			"noPrinters": "Aún no se ha detectado ninguna impresora. Añade una por IP arriba.",
+			"stateUnknown": "desconocido",
+			"unreachable": "Inaccesible",
+			"outOfPaper": "Sin papel: repón el material para reanudar la impresión.",
+			"markerDefault": "Suministro",
+			"testPrint": "Impresión de prueba",
+			"reprint": "Reimprimir",
+			"testPrintSent": "Impresión de prueba enviada al puente.",
+			"reprintSent": "Reimpresión enviada al puente.",
+			"testPrintFailed": "No se pudo generar la imagen de prueba.",
+			"queueTitle": "Cola de impresión",
+			"queueEmpty": "Aún no hay trabajos de impresión.",
+			"jobAttempts": "{count} intentos",
+			"jobStatus": {
+				"pending": "Pendiente",
+				"printing": "Imprimiendo",
+				"done": "Completado",
+				"failed": "Fallido"
+			}
 		}
 	}
 }

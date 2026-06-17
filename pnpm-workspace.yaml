@@ -38,6 +38,7 @@ catalog:
   '@tailwindcss/postcss': 4.3.0
   '@tailwindcss/typography': 0.5.19
   '@testing-library/jest-dom': 6.9.1
+  '@types/bun': 1.3.14
   '@types/ipp': ^2.0.4
   '@types/json-schema': 7.0.15
   '@types/node': 25.9.2

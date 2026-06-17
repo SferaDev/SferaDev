@@ -1,4 +1,3 @@
-import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { HTTPException } from "hono/http-exception";
@@ -96,21 +95,38 @@ app.get("/qr", async (c) => {
 	return c.body(body, 200, { "Content-Type": "image/png" });
 });
 
-// ─── Standalone Node server ─────────────────────────────────────────
-mdns.advertise(env.PORT);
-mdns.startDiscovery();
+// ─── Startup ────────────────────────────────────────────────────────
+// Seed manually-configured printers first (the mDNS-independent fallback) so
+// the bridge is usable even when discovery is unavailable.
+if (env.BRIDGE_PRINTER_URIS) {
+	registry.seedFromUris(env.BRIDGE_PRINTER_URIS);
+}
+
+// mDNS multicast (node:dgram) can be flaky under Bun's Node compatibility
+// layer, so guard advertise/discovery: a failure here must not take down the
+// HTTP server or the manual-printer fallback.
+try {
+	mdns.advertise(env.PORT);
+	mdns.startDiscovery();
+} catch (error) {
+	console.warn(
+		"[mdns] discovery/advertising unavailable — relying on manual printers (BRIDGE_PRINTER_URIS / POST /api/printers):",
+		error instanceof Error ? error.message : error,
+	);
+}
+
 registry.startAutoRefresh();
 
-const server = serve({ fetch: app.fetch, port: env.PORT }, (info) => {
-	console.log(`Photocall print bridge running on http://localhost:${info.port}`);
-	console.log("Discovering IPP printers over mDNS…");
-});
+// ─── Bun server ─────────────────────────────────────────────────────
+const server = Bun.serve({ fetch: app.fetch, port: env.PORT });
+console.log(`Photocall print bridge running on http://localhost:${server.port}`);
+console.log("Discovering IPP printers over mDNS…");
 
 function shutdown(): void {
 	console.log("Shutting down print bridge…");
 	registry.stopAutoRefresh();
 	mdns.destroy();
-	server.close();
+	void server.stop();
 }
 
 process.on("SIGTERM", shutdown);

@@ -6,16 +6,19 @@ Wants=network-online.target
 
 [Service]
 Type=simple
-# Adjust to wherever you cloned/built the bridge.
+# Adjust to wherever you copied the standalone binary.
 WorkingDirectory=/opt/print-bridge
-ExecStart=/usr/bin/node dist/server.js
+# Point at the cross-compiled single-file binary for this platform
+# (e.g. print-bridge-bun-linux-arm64 on a Raspberry Pi). No Bun/Node needed.
+ExecStart=/opt/print-bridge/print-bridge
 Restart=on-failure
 RestartSec=5
 # mDNS needs the host network; run as a non-root user that can open the port.
 User=pi
-Environment=NODE_ENV=production
 Environment=PORT=3200
 Environment=BRIDGE_IPP_VERSION=2.0
+# Manual-printer fallback if mDNS discovery is unavailable on this network:
+# Environment=BRIDGE_PRINTER_URIS=ipp://192.168.1.50:631/ipp/print
 # Uncomment to require a shared secret on /api/* requests.
 # Environment=BRIDGE_API_KEY=change-me
 

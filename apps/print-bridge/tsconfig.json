@@ -1,14 +1,14 @@
 {
 	"extends": "@sferadev/tsconfig/base.json",
 	"compilerOptions": {
-		"outDir": "dist",
-		"rootDir": "src",
+		"noEmit": true,
 		"module": "ESNext",
 		"moduleResolution": "bundler",
+		"types": ["bun", "node"],
 		"paths": {
 			"@/*": ["./src/*"]
 		}
 	},
-	"include": ["src"],
+	"include": ["src", "scripts"],
 	"exclude": ["dist", "node_modules"]
 }
