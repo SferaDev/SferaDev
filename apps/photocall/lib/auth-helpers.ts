@@ -105,13 +105,18 @@ export async function verifyPin(pin: string, hash: string, salt: string): Promis
 export function generateHumanCode(): string {
 	const letters = "ABCDEFGHJKLMNPQRSTUVWXYZ";
 	const digits = "0123456789";
+	// Use a CSPRNG (matching generateToken): the human code resolves to the photo's
+	// share token via /p/[code], so a predictable Math.random() sequence would let
+	// an observer guess other guests' codes and reach their photos.
+	const randomValues = new Uint8Array(8);
+	crypto.getRandomValues(randomValues);
 	let code = "";
 	for (let i = 0; i < 4; i++) {
-		code += letters.charAt(Math.floor(Math.random() * letters.length));
+		code += letters.charAt(randomValues[i] % letters.length);
 	}
 	code += "-";
 	for (let i = 0; i < 4; i++) {
-		code += digits.charAt(Math.floor(Math.random() * digits.length));
+		code += digits.charAt(randomValues[i + 4] % digits.length);
 	}
 	return code;
 }
