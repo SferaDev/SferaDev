@@ -354,6 +354,7 @@ export default function KioskCapturePage() {
 					<Button
 						variant="ghost"
 						size="lg"
+						aria-label={tCommon("back")}
 						onClick={() =>
 							router.push(`/kiosk/${orgSlug}/${eventSlug}/select?session=${sessionId}`)
 						}
@@ -381,6 +382,7 @@ export default function KioskCapturePage() {
 					) : (
 						<Button
 							size="lg"
+							aria-label={t("takePhoto")}
 							onClick={() => captureShot(nextSlot)}
 							disabled={busy || countdown !== null || !isReady || (layout != null && autoShoot)}
 							className="h-20 w-20 rounded-full"
