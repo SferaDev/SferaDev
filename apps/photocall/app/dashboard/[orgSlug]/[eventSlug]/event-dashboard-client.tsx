@@ -44,8 +44,10 @@ export default function EventDashboard() {
 		getEventBySlug(orgSlug, eventSlug),
 	);
 
-	const { data: photos } = useSWR(event ? ["photos", event.id] : null, () =>
-		listPhotos(event!.id, 50),
+	// Gallery shows `galleryLimit` photos; "Load more" grows it on demand.
+	const [galleryLimit, setGalleryLimit] = useState(50);
+	const { data: photos } = useSWR(event ? ["photos", event.id, galleryLimit] : null, () =>
+		listPhotos(event!.id, galleryLimit),
 	);
 
 	const { data: templates } = useSWR(event ? ["templates", event.id] : null, () =>
@@ -206,6 +208,8 @@ export default function EventDashboard() {
 					<TabsContent value="gallery">
 						<GalleryTab
 							photos={photos?.items ?? []}
+							hasMore={photos?.hasMore ?? false}
+							onLoadMore={() => setGalleryLimit((limit) => limit + 50)}
 							onRemove={handleRemovePhoto}
 							onRemoveAll={handleRemoveAllPhotos}
 						/>
@@ -222,10 +226,14 @@ export default function EventDashboard() {
 
 function GalleryTab({
 	photos,
+	hasMore,
+	onLoadMore,
 	onRemove,
 	onRemoveAll,
 }: {
 	photos: any[];
+	hasMore: boolean;
+	onLoadMore: () => void;
 	onRemove: (id: string) => void;
 	onRemoveAll: () => void;
 }) {
@@ -339,6 +347,14 @@ function GalleryTab({
 					</div>
 				))}
 			</div>
+
+			{hasMore && (
+				<div className="flex justify-center pt-2">
+					<Button variant="outline" onClick={onLoadMore}>
+						{t("loadMore")}
+					</Button>
+				</div>
+			)}
 		</div>
 	);
 }

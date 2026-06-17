@@ -469,6 +469,7 @@
 			"exportAll": "Exporta-ho tot",
 			"exporting": "S'està exportant...",
 			"deleteAll": "Elimina-ho tot",
+			"loadMore": "Carrega'n més",
 			"capturedMomentAlt": "Moment capturat {code}",
 			"templatesEmptyTitle": "Encara no hi ha plantilles",
 			"templatesEmptyDescription": "Afegeix plantilles de superposició per al teu fotomató",

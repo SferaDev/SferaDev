@@ -469,6 +469,7 @@
 			"exportAll": "Exportar todo",
 			"exporting": "Exportando...",
 			"deleteAll": "Eliminar todo",
+			"loadMore": "Cargar más",
 			"capturedMomentAlt": "Momento capturado {code}",
 			"templatesEmptyTitle": "Aún no hay plantillas",
 			"templatesEmptyDescription": "Añade plantillas de superposición para tu fotomatón",
