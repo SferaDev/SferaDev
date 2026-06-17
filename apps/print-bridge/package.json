@@ -4,14 +4,13 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"dev": "tsx watch src/server.ts",
-		"build": "tsc",
-		"start": "node dist/server.js",
+		"dev": "bun --watch src/server.ts",
+		"start": "bun src/server.ts",
 		"tsc": "tsc --noEmit",
+		"build:bin": "bun run scripts/build-bin.ts",
 		"clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
 	},
 	"dependencies": {
-		"@hono/node-server": "catalog:",
 		"bonjour-service": "catalog:",
 		"hono": "catalog:",
 		"ipp": "catalog:",
@@ -20,10 +19,10 @@
 	},
 	"devDependencies": {
 		"@sferadev/tsconfig": "workspace:*",
+		"@types/bun": "catalog:",
 		"@types/ipp": "catalog:",
 		"@types/node": "catalog:",
 		"@types/qrcode": "catalog:",
-		"tsx": "catalog:",
 		"typescript": "catalog:"
 	}
 }

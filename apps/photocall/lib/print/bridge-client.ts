@@ -43,7 +43,9 @@ export interface BridgeJob {
 
 export type SubmitResult = { ok: true; jobId: string } | { ok: false; error: string };
 export type PrintersResult = { ok: true; printers: BridgePrinter[] } | { ok: false; error: string };
+export type PrinterResult = { ok: true; printer: BridgePrinter } | { ok: false; error: string };
 export type JobResult = { ok: true; job: BridgeJob } | { ok: false; error: string };
+export type JobsResult = { ok: true; jobs: BridgeJob[] } | { ok: false; error: string };
 
 function trimBase(url: string): string {
 	return url.replace(/\/+$/, "");
@@ -146,4 +148,51 @@ export async function getJobStatus(url: string, jobId: string): Promise<JobResul
 	if (!response.ok) return { ok: false, error: `Bridge error (${response.status})` };
 	const job: BridgeJob = await response.json();
 	return { ok: true, job };
+}
+
+/** List the bridge's recent print queue (`GET /api/jobs`, most recent first). */
+export async function listBridgeJobs(url: string): Promise<JobsResult> {
+	const response = await fetchWithTimeout(`${trimBase(url)}/api/jobs`, { method: "GET" }, 5_000);
+	if (!response) return { ok: false, error: "Could not reach the print bridge" };
+	if (!response.ok) return { ok: false, error: `Bridge error (${response.status})` };
+	const jobs: BridgeJob[] = await response.json();
+	return { ok: true, jobs };
+}
+
+/** Live status of a single printer (`GET /api/printers/:id/status`). */
+export async function getPrinterStatus(url: string, printerId: string): Promise<PrinterResult> {
+	const response = await fetchWithTimeout(
+		`${trimBase(url)}/api/printers/${encodeURIComponent(printerId)}/status`,
+		{ method: "GET" },
+		8_000,
+	);
+	if (!response) return { ok: false, error: "Could not reach the print bridge" };
+	if (!response.ok) return { ok: false, error: `Bridge error (${response.status})` };
+	const printer: BridgePrinter = await response.json();
+	return { ok: true, printer };
+}
+
+/**
+ * Add a printer by IPP(S) URI or bare host/IP (`POST /api/printers`). This is
+ * the manual fallback for networks where the bridge's mDNS discovery does not
+ * surface the printer.
+ */
+export async function addBridgePrinter(
+	url: string,
+	uri: string,
+	name?: string,
+): Promise<PrinterResult> {
+	const response = await fetchWithTimeout(
+		`${trimBase(url)}/api/printers`,
+		{
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ uri, ...(name ? { name } : {}) }),
+		},
+		12_000,
+	);
+	if (!response) return { ok: false, error: "Could not reach the print bridge" };
+	if (!response.ok) return { ok: false, error: `Bridge rejected the printer (${response.status})` };
+	const printer: BridgePrinter = await response.json();
+	return { ok: true, printer };
 }
