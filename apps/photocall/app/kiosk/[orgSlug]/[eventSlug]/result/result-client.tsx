@@ -244,16 +244,23 @@ export default function KioskResultPage() {
 			const previewUrl = URL.createObjectURL(blob);
 			setFinalImageUrl(previewUrl);
 
+			let result: Awaited<ReturnType<typeof createPhoto>>;
 			try {
 				const { uploadUrl, key } = await generatePhotoUploadUrl(event.id);
 
-				await fetch(uploadUrl, {
+				const uploaded = await fetch(uploadUrl, {
 					method: "PUT",
 					headers: { "Content-Type": blob.type },
 					body: blob,
 				});
+				// fetch only rejects on network errors, so a non-2xx PUT would
+				// otherwise "succeed" and leave createPhoto pointing at a failed
+				// object — treat it as a failure so the offline outbox retries.
+				if (!uploaded.ok) {
+					throw new Error(`Upload failed with status ${uploaded.status}`);
+				}
 
-				const result = await createPhoto({
+				result = await createPhoto({
 					eventId: event.id,
 					sessionId: sessionId!,
 					storageKey: key,
@@ -265,23 +272,6 @@ export default function KioskResultPage() {
 					height,
 					sizeBytes: blob.size,
 				});
-
-				await completeSession(sessionId!);
-				if (isStrip) clearPhotoboothSession(sessionId!);
-
-				const shareBaseUrl = typeof window !== "undefined" ? window.location.origin : "";
-				const shareLink = `${shareBaseUrl}/share/${result.shareToken}`;
-				setShareUrl(shareLink);
-				setHumanCode(result.humanCode);
-
-				if (event.showQrCode) {
-					const qr = await QRCode.toDataURL(shareLink, {
-						width: 256,
-						margin: 2,
-						color: { dark: "#000000", light: "#ffffff" },
-					});
-					setQrCodeUrl(qr);
-				}
 			} catch (uploadErr) {
 				// Offline / upload failure: hold the composited image in the outbox so
 				// it is never lost; background sync finishes it on reconnect. The guest
@@ -314,6 +304,36 @@ export default function KioskResultPage() {
 				if (isStrip) clearPhotoboothSession(sessionId!);
 				setSavedOffline(true);
 				void sync();
+				setIsProcessing(false);
+				return;
+			}
+
+			// Upload + record succeeded. Everything below is best-effort follow-up;
+			// a failure here must NOT fall into the offline outbox, or the photo
+			// would be uploaded a second time (duplicate record + double metering).
+			try {
+				await completeSession(sessionId!);
+			} catch (sessionErr) {
+				console.warn("Failed to mark session complete:", sessionErr);
+			}
+			if (isStrip) clearPhotoboothSession(sessionId!);
+
+			const shareBaseUrl = typeof window !== "undefined" ? window.location.origin : "";
+			const shareLink = `${shareBaseUrl}/share/${result.shareToken}`;
+			setShareUrl(shareLink);
+			setHumanCode(result.humanCode);
+
+			if (event.showQrCode) {
+				try {
+					const qr = await QRCode.toDataURL(shareLink, {
+						width: 256,
+						margin: 2,
+						color: { dark: "#000000", light: "#ffffff" },
+					});
+					setQrCodeUrl(qr);
+				} catch (qrErr) {
+					console.warn("QR generation failed:", qrErr);
+				}
 			}
 
 			setIsProcessing(false);
