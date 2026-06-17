@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { createPhoto, generatePhotoUploadUrl } from "@/actions/photos";
 import {
 	countQueuedPhotos,
@@ -58,6 +58,11 @@ interface UseOfflineSyncReturn {
 export function useOfflineSync(): UseOfflineSyncReturn {
 	const [online, setOnline] = useState(true);
 	const [pending, setPending] = useState(0);
+	// Guards against concurrent drains. Mount, the `online` event, the service
+	// worker message, and manual retries can all fire close together; without
+	// this, two drains could read the same queued photo before either removes
+	// it and upload it twice (duplicate gallery entry + double usage metering).
+	const draining = useRef(false);
 
 	const refreshPending = useCallback(async () => {
 		try {
@@ -69,18 +74,24 @@ export function useOfflineSync(): UseOfflineSyncReturn {
 
 	const sync = useCallback(async () => {
 		if (typeof navigator !== "undefined" && !navigator.onLine) return;
+		if (draining.current) return;
+		draining.current = true;
 
-		const queued = await getQueuedPhotos();
-		for (const photo of queued) {
-			try {
-				await syncPhoto(photo);
-			} catch {
-				// Leave the item in the queue and stop; a later online event or
-				// manual retry will pick it back up.
-				break;
+		try {
+			const queued = await getQueuedPhotos();
+			for (const photo of queued) {
+				try {
+					await syncPhoto(photo);
+				} catch {
+					// Leave the item in the queue and stop; a later online event or
+					// manual retry will pick it back up.
+					break;
+				}
 			}
+			await refreshPending();
+		} finally {
+			draining.current = false;
 		}
-		await refreshPending();
 	}, [refreshPending]);
 
 	useEffect(() => {
