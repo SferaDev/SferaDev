@@ -63,6 +63,34 @@ export function useAdminAuth() {
 		}
 	}, [isAuthenticated]);
 
+	// Enforce the 30-minute timeout while the kiosk stays open. The mount check
+	// alone only validates expiry once; without this poll an admin session granted
+	// at setup would stay unlocked all night because `isAuthenticated` never
+	// re-evaluates. Re-read the stored expiry periodically and log out when it
+	// lapses (or the entry is cleared in another tab).
+	useEffect(() => {
+		if (!isAuthenticated) return;
+
+		const checkExpiry = () => {
+			const session = localStorage.getItem(ADMIN_SESSION_KEY);
+			if (!session) {
+				logout();
+				return;
+			}
+			try {
+				const parsed: AdminSession = JSON.parse(session);
+				if (!parsed.authenticated || parsed.expiresAt <= Date.now()) {
+					logout();
+				}
+			} catch {
+				logout();
+			}
+		};
+
+		const interval = setInterval(checkExpiry, 30 * 1000);
+		return () => clearInterval(interval);
+	}, [isAuthenticated, logout]);
+
 	return {
 		isAuthenticated,
 		isLoading,
