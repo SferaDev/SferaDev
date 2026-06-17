@@ -101,6 +101,11 @@ export class PrintQueue {
 	/** Process the next pending job, one at a time. */
 	private async processNext(): Promise<void> {
 		if (this.processing) return;
+		// A retry is already scheduled: the head job failed and is waiting out its
+		// backoff. Let that timer be the sole driver until it fires — otherwise a
+		// job enqueued mid-backoff would pick the failed head job up immediately,
+		// skipping the backoff and burning a retry attempt early.
+		if (this.retryTimer) return;
 		const work = this.pending[0];
 		if (!work) return;
 
