@@ -10,7 +10,7 @@ export async function createKioskSession(eventId: string) {
 		.where(eq(schema.events.id, eventId))
 		.then((rows) => rows[0]);
 
-	if (!event || event.status !== "active") {
+	if (event?.status !== "active") {
 		throw new Error("Event not found or not active");
 	}
 

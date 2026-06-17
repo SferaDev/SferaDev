@@ -427,7 +427,7 @@ export async function getPublicEvent(organizationSlug: string, eventSlug: string
 		.where(and(eq(schema.events.organizationId, org.id), eq(schema.events.slug, eventSlug)))
 		.then((rows) => rows[0]);
 
-	if (!event || event.status !== "active") return null;
+	if (event?.status !== "active") return null;
 
 	return {
 		id: event.id,
