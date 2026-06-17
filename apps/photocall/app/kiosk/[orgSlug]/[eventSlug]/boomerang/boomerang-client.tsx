@@ -514,6 +514,17 @@ export default function KioskBoomerangPage() {
 				</div>
 			</div>
 
+			{/* Camera starting overlay — keeps guests informed while getUserMedia
+			    initializes instead of showing a black screen with a dead button.
+			    Sits below the controls (z-30) so Back stays reachable if the camera
+			    never comes up; the error overlay (z-40) wins once it rejects. */}
+			{stage === "ready" && !isReady && !cameraError && (
+				<div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/80 p-8">
+					<Loader2 className="h-12 w-12 animate-spin mb-4" style={{ color: primaryColor }} />
+					<p className="text-white/70 text-lg">{tCommon("startingCamera")}</p>
+				</div>
+			)}
+
 			{/* Camera error overlay */}
 			{cameraError && (
 				<div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 z-40 p-8">

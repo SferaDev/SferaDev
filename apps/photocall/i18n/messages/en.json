@@ -99,7 +99,8 @@
 			"cancel": "Cancel",
 			"tryAgain": "Try Again",
 			"poweredBy": "Powered by Photocall",
-			"changeLanguage": "Change language"
+			"changeLanguage": "Change language",
+			"startingCamera": "Starting camera…"
 		},
 		"loading": {
 			"preparing": "Getting things ready…",
