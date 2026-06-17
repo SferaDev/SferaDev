@@ -63,10 +63,6 @@ const PAPER_SIZE_TO_MEDIA: Record<PaperSize, MediaSizeName> = {
 	letter: "na_letter_8.5x11in",
 };
 
-export function mediaKeywordForPaperSize(paperSize: PaperSize): MediaSizeName {
-	return PAPER_SIZE_TO_MEDIA[paperSize];
-}
-
 /** IPP `media-type` keywords we accept; everything else falls back to glossy photo. */
 const IPP_MEDIA_TYPES: readonly MediaType[] = [
 	"photographic",

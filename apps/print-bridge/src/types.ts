@@ -60,8 +60,6 @@ export const printJobRequestSchema = z.object({
 	mediaType: z.string().optional(),
 });
 
-export type PrintJobRequest = z.infer<typeof printJobRequestSchema>;
-
 export type JobStatus = "pending" | "printing" | "done" | "failed";
 
 /** A queued print job and its lifecycle metadata. */
