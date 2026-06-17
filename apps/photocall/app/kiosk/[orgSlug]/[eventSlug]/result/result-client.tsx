@@ -184,6 +184,7 @@ export default function KioskResultPage() {
 				eventName: event.name,
 			},
 			targetWidth: printPixelSize(layout.print).width,
+			targetHeight: printPixelSize(layout.print).height,
 			quality: event.photoQuality,
 			resolveAssetUrl: (key) => assetUrls[key] ?? key,
 		});

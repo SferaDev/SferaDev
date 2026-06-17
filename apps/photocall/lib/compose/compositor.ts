@@ -17,6 +17,14 @@ export interface ComposeOptions {
 	tokens: LayoutTokens;
 	/** Output canvas width in pixels; height derives from the layout aspect. */
 	targetWidth: number;
+	/**
+	 * Output canvas height in pixels. Defaults to `targetWidth * aspectRatio`.
+	 * Pass this explicitly for print output: with a bleed margin the print pixel
+	 * size adds bleed to both dimensions, so its height/width ratio no longer
+	 * equals the layout's bare-paper aspect ratio and the derived height would be
+	 * wrong. Percentage-based layers scale to whatever canvas size is used.
+	 */
+	targetHeight?: number;
 	/** JPEG quality 0..1. */
 	quality?: number;
 	/** Map a layer/background `src` to a loadable URL. */
@@ -31,10 +39,18 @@ export interface ComposeResult {
 
 /** Compose the full layout into a single JPEG blob. */
 export async function composeStrip(options: ComposeOptions): Promise<ComposeResult> {
-	const { layout, photos, tokens, targetWidth, quality = 0.92, resolveAssetUrl } = options;
+	const {
+		layout,
+		photos,
+		tokens,
+		targetWidth,
+		targetHeight,
+		quality = 0.92,
+		resolveAssetUrl,
+	} = options;
 
 	const width = Math.round(targetWidth);
-	const height = Math.round(targetWidth * layout.aspectRatio);
+	const height = Math.round(targetHeight ?? targetWidth * layout.aspectRatio);
 
 	const canvas = document.createElement("canvas");
 	canvas.width = width;
