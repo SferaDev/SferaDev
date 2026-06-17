@@ -289,7 +289,10 @@ async function sendPrintJob(
 ): Promise<PrintJobResponse> {
 	const printer = new ipp.Printer(uri, { version });
 	const printJob = executePrinter<PrintJobRequest, PrintJobResponse>(printer, "Print-Job");
-	return printJob(message);
+	// Bound the data transfer too (not just attribute pings): a printer that
+	// stalls mid-transfer would otherwise hold the queue worker until the OS TCP
+	// timeout (~75s) and leave the job stuck in "printing".
+	return withTimeout(printJob(message), IPP_REQUEST_TIMEOUT_MS, "Print-Job");
 }
 
 /**

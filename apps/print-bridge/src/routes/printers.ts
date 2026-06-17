@@ -15,9 +15,12 @@ const addPrinterSchema = z.object({
 export function printerRoutes(ctx: BridgeContext): Hono {
 	const app = new Hono();
 
-	// List all discovered printers, refreshing their live state first.
-	app.get("/", async (c) => {
-		await ctx.registry.refreshAll();
+	// List all discovered printers. Returns the cached state immediately and
+	// kicks off a background refresh — awaiting refreshAll() here could exceed
+	// the client's fetch timeout when a registered printer is unreachable, making
+	// a healthy bridge look offline.
+	app.get("/", (c) => {
+		void ctx.registry.refreshAll();
 		return c.json(ctx.registry.list());
 	});
 
