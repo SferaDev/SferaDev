@@ -14,25 +14,39 @@ export const BUNDLED_FONTS: Record<string, string> = {
 
 /** Families that have already been registered with the document. */
 const loaded = new Set<string>();
+/** In-flight loads, so concurrent callers for a family share one fetch. */
+const loading = new Map<string, Promise<void>>();
 
 /**
  * Register a font with the document (idempotent per family). Loading is
  * best-effort: a missing or failed font must never break compositing — the
  * canvas simply falls back to the next family in the text font stack (serif).
  */
-export async function loadFont(family: string, url: string): Promise<void> {
-	if (loaded.has(family)) return;
-	if (typeof document === "undefined" || typeof FontFace === "undefined") return;
+export function loadFont(family: string, url: string): Promise<void> {
+	if (loaded.has(family)) return Promise.resolve();
+	if (typeof document === "undefined" || typeof FontFace === "undefined") return Promise.resolve();
 
-	try {
-		const fontFace = new FontFace(family, `url(${url})`);
-		await fontFace.load();
-		document.fonts.add(fontFace);
-		loaded.add(family);
-	} catch {
-		// Font asset unavailable — leave it unregistered; the compositor's font
-		// stack falls back to a system serif so text still renders.
-	}
+	// Coalesce concurrent loads of the same family (e.g. preview + compose firing
+	// together) onto a single FontFace fetch.
+	const inFlight = loading.get(family);
+	if (inFlight) return inFlight;
+
+	const promise = (async () => {
+		try {
+			const fontFace = new FontFace(family, `url(${url})`);
+			await fontFace.load();
+			document.fonts.add(fontFace);
+			loaded.add(family);
+		} catch {
+			// Font asset unavailable — leave it unregistered; the compositor's font
+			// stack falls back to a system serif so text still renders.
+		} finally {
+			loading.delete(family);
+		}
+	})();
+
+	loading.set(family, promise);
+	return promise;
 }
 
 /** Load every bundled font family referenced by a layout's text layers. */
