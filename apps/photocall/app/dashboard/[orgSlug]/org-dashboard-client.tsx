@@ -84,7 +84,9 @@ export default function OrganizationDashboard() {
 		setIsCreating(true);
 		try {
 			await createEvent(organization.id, newEventName.trim());
-			mutate((key) => Array.isArray(key) && key[0] === "events");
+			// Revalidate both the event list and the usage stats (event count,
+			// storage) so the header counters don't go stale after a mutation.
+			mutate((key) => Array.isArray(key) && (key[0] === "events" || key[0] === "usage"));
 			setNewEventName("");
 			setDialogOpen(false);
 			toast({ title: t("created"), description: newEventName.trim() });
@@ -103,7 +105,9 @@ export default function OrganizationDashboard() {
 		setDuplicatingId(eventId);
 		try {
 			await duplicateEvent(eventId);
-			mutate((key) => Array.isArray(key) && key[0] === "events");
+			// Revalidate both the event list and the usage stats (event count,
+			// storage) so the header counters don't go stale after a mutation.
+			mutate((key) => Array.isArray(key) && (key[0] === "events" || key[0] === "usage"));
 			toast({
 				title: t("duplicated"),
 				description: t("duplicatedDescription", { name: eventName }),

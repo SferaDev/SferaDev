@@ -317,7 +317,8 @@ export default function EventSettingsPage() {
 		}
 		try {
 			await deleteEvent(event.id);
-			mutate((key) => Array.isArray(key) && key[0] === "events");
+			// Deleting changes the org event count, so refresh usage stats too.
+			mutate((key) => Array.isArray(key) && (key[0] === "events" || key[0] === "usage"));
 			router.push(`/dashboard/${orgSlug}`);
 		} catch (error) {
 			console.error("Failed to delete:", error);
