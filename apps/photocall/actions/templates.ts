@@ -1,6 +1,6 @@
 "use server";
 
-import { asc, eq } from "drizzle-orm";
+import { and, asc, eq } from "drizzle-orm";
 import { requireEventAccess } from "@/lib/auth-helpers";
 import { db, schema } from "@/lib/db";
 import {
@@ -344,6 +344,8 @@ export async function reorderTemplates(eventId: string, templateIds: string[]) {
 				order: i + 1,
 				updatedAt: now,
 			})
-			.where(eq(schema.templates.id, templateIds[i]));
+			// Scope to eventId too: requireEventAccess only authorizes this event,
+			// so a template id from another event must not be reorderable here.
+			.where(and(eq(schema.templates.id, templateIds[i]), eq(schema.templates.eventId, eventId)));
 	}
 }
