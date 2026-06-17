@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { pingBridge, submitPrintJob } from "@/lib/print/bridge-client";
 import {
 	countQueuedPrints,
@@ -28,6 +28,10 @@ interface UsePrintSyncReturn {
  */
 export function usePrintSync(bridgeUrl: string | null | undefined): UsePrintSyncReturn {
 	const [pending, setPending] = useState(0);
+	// Guards against concurrent drains. The 30s interval, the `online` event,
+	// and mount can overlap a slow in-flight drain; without this, two drains
+	// could submit the same queued job and the printer would print it twice.
+	const draining = useRef(false);
 
 	const refreshPending = useCallback(async () => {
 		try {
@@ -56,24 +60,30 @@ export function usePrintSync(bridgeUrl: string | null | undefined): UsePrintSync
 	const sync = useCallback(async () => {
 		if (!bridgeUrl) return;
 		if (typeof navigator !== "undefined" && !navigator.onLine) return;
+		if (draining.current) return;
+		draining.current = true;
 
-		// Only drain when the bridge actually answers — avoids burning attempts
-		// on a bridge that is simply offline.
-		const reachable = await pingBridge(bridgeUrl);
-		if (!reachable) return;
+		try {
+			// Only drain when the bridge actually answers — avoids burning attempts
+			// on a bridge that is simply offline.
+			const reachable = await pingBridge(bridgeUrl);
+			if (!reachable) return;
 
-		const queued = await getQueuedPrints();
-		for (const job of queued) {
-			// Drop after MAX_ATTEMPTS failed deliveries: a job that already has
-			// MAX_ATTEMPTS recorded has exhausted its retries and is not delivered
-			// again. Mirrors the post-failure check in syncJob().
-			if (job.attempts >= MAX_ATTEMPTS) {
-				await removeQueuedPrint(job.id);
-				continue;
+			const queued = await getQueuedPrints();
+			for (const job of queued) {
+				// Drop after MAX_ATTEMPTS failed deliveries: a job that already has
+				// MAX_ATTEMPTS recorded has exhausted its retries and is not delivered
+				// again. Mirrors the post-failure check in syncJob().
+				if (job.attempts >= MAX_ATTEMPTS) {
+					await removeQueuedPrint(job.id);
+					continue;
+				}
+				await syncJob(bridgeUrl, job);
 			}
-			await syncJob(bridgeUrl, job);
+			await refreshPending();
+		} finally {
+			draining.current = false;
 		}
-		await refreshPending();
 	}, [bridgeUrl, refreshPending, syncJob]);
 
 	useEffect(() => {
