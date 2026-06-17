@@ -97,18 +97,24 @@ export default function SharePage({ params }: { params: Promise<{ token: string 
 							<p className="mt-2 text-lg italic text-foreground">"{photo.caption}"</p>
 						)}
 					</CardHeader>
-					<CardContent>
-						<div className="flex flex-wrap gap-3">
-							<Button onClick={handleDownload} className="flex-1 gap-2">
-								<Download className="h-5 w-5" />
-								Download
-							</Button>
-							<Button variant="outline" onClick={handlePrint} className="flex-1 gap-2">
-								<Printer className="h-5 w-5" />
-								Print
-							</Button>
-						</div>
-					</CardContent>
+					{(photo.allowDownload || photo.allowPrint) && (
+						<CardContent>
+							<div className="flex flex-wrap gap-3">
+								{photo.allowDownload && (
+									<Button onClick={handleDownload} className="flex-1 gap-2">
+										<Download className="h-5 w-5" />
+										Download
+									</Button>
+								)}
+								{photo.allowPrint && (
+									<Button variant="outline" onClick={handlePrint} className="flex-1 gap-2">
+										<Printer className="h-5 w-5" />
+										Print
+									</Button>
+								)}
+							</div>
+						</CardContent>
+					)}
 				</Card>
 
 				{/* Share info */}
@@ -134,10 +140,11 @@ export default function SharePage({ params }: { params: Promise<{ token: string 
 					</CardContent>
 				</Card>
 
-				{/* CTA */}
+				{/* CTA — deep-link back to this event's kiosk when we could resolve the
+				    org slug, otherwise fall back to the marketing home page. */}
 				<div className="text-center">
 					<p className="mb-4 text-muted-foreground">Want to take your own photo?</p>
-					<Link href="/kiosk">
+					<Link href={photo.orgSlug ? `/kiosk/${photo.orgSlug}/${photo.eventSlug}` : "/"}>
 						<Button variant="outline" className="gap-2">
 							<Camera className="h-5 w-5" />
 							Start Photo Booth

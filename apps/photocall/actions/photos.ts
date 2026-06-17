@@ -140,6 +140,11 @@ export async function getPhotoByShareToken(shareToken: string) {
 
 	const url = await getFileUrl(photo.storageKey);
 
+	// Resolve the org slug so the share page can deep-link back to the event's
+	// kiosk ("take your own photo"). Best-effort: the page falls back gracefully
+	// when it's null.
+	const org = await getPlatformClient().lookupOrganization(event.organizationId);
+
 	return {
 		...photo,
 		url,
@@ -147,6 +152,8 @@ export async function getPhotoByShareToken(shareToken: string) {
 		allowDownload: event.allowDownload,
 		allowPrint: event.allowPrint,
 		showQrCode: event.showQrCode,
+		orgSlug: org?.slug ?? null,
+		eventSlug: event.slug,
 	};
 }
 
