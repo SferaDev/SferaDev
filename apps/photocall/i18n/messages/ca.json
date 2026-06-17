@@ -61,6 +61,13 @@
 		"privacy": "Política de Privacitat",
 		"terms": "Termes de Servei"
 	},
+	"legal": {
+		"backToHome": "Torna a l'inici",
+		"lastUpdated": "Última actualització: {date}",
+		"disclaimer": "Aquesta és una plantilla estàndard proporcionada per comoditat i no constitueix assessorament legal. Hauria de ser revisada per un professional qualificat abans d'utilitzar-la.",
+		"privacyTitle": "Política de Privacitat",
+		"termsTitle": "Termes de Servei"
+	},
 	"pricing": {
 		"title": "Preus Simples",
 		"free": {

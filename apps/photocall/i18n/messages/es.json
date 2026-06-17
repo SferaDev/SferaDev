@@ -61,6 +61,13 @@
 		"privacy": "Política de Privacidad",
 		"terms": "Términos de Servicio"
 	},
+	"legal": {
+		"backToHome": "Volver al inicio",
+		"lastUpdated": "Última actualización: {date}",
+		"disclaimer": "Esta es una plantilla estándar proporcionada por comodidad y no constituye asesoramiento legal. Debe ser revisada por un profesional cualificado antes de utilizarla.",
+		"privacyTitle": "Política de Privacidad",
+		"termsTitle": "Términos de Servicio"
+	},
 	"pricing": {
 		"title": "Precios Simples",
 		"free": {
