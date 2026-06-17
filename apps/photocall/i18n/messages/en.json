@@ -164,7 +164,8 @@
 			"cameraErrorTitle": "Camera Error",
 			"captureFailedTitle": "Capture Failed",
 			"captureFailed": "Failed to capture photo. Please try again.",
-			"couldNotReadFrame": "Could not read a frame from the camera."
+			"couldNotReadFrame": "Could not read a frame from the camera.",
+			"takePhoto": "Take photo"
 		},
 		"boomerang": {
 			"modeTitle": "Choose a mode",
@@ -182,7 +183,8 @@
 			"resultAlt": "Your boomerang",
 			"cameraErrorTitle": "Camera Error",
 			"captureFailedTitle": "Recording Failed",
-			"captureFailed": "Could not create the boomerang. Please try again."
+			"captureFailed": "Could not create the boomerang. Please try again.",
+			"recordBoomerang": "Record boomerang"
 		},
 		"personalize": {
 			"retake": "Retake",

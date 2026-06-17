@@ -468,6 +468,7 @@ export default function KioskBoomerangPage() {
 					<Button
 						variant="ghost"
 						size="lg"
+						aria-label={tCommon("back")}
 						onClick={() =>
 							router.push(`/kiosk/${orgSlug}/${eventSlug}/select?session=${sessionId}`)
 						}
@@ -501,6 +502,7 @@ export default function KioskBoomerangPage() {
 					) : (
 						<Button
 							size="lg"
+							aria-label={t("recordBoomerang")}
 							onClick={() => void record()}
 							disabled={!isReady || isBusy}
 							className="h-20 w-20 rounded-full"
