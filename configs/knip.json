@@ -5,8 +5,12 @@
 			"entry": ["turbo.json", ".github/workflows/scripts/*.ts"]
 		},
 		"apps/website": {
-			"entry": ["app/**/*.{ts,tsx}", "lib/**/*.ts", "components/**/*.tsx", "vercel.ts"],
+			"entry": ["app/**/*.{ts,tsx}", "lib/**/*.ts", "components/**/*.tsx"],
 			"project": ["**/*.{ts,tsx}"]
+		},
+		"apps/print-bridge": {
+			"project": ["src/**/*.ts"],
+			"includeEntryExports": false
 		},
 		"apps/photocall": {
 			"entry": [
