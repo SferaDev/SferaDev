@@ -42,6 +42,7 @@ interface GuestPanelProps {
 		seatArrangement?: "around" | "one-side" | "single-row",
 	) => void;
 	onAssignGuest: (guestId: string, tableId: string) => void;
+	onUpdateGuestName: (guestId: string, name: string) => void;
 	onClose?: () => void;
 }
 
@@ -53,6 +54,7 @@ export function GuestPanel({
 	onRemoveGuest,
 	onAddTable,
 	onAssignGuest,
+	onUpdateGuestName,
 	onClose,
 }: GuestPanelProps) {
 	const [guestName, setGuestName] = useState("");
@@ -68,6 +70,8 @@ export function GuestPanel({
 	const [cropperImage, setCropperImage] = useState<string | null>(null);
 	const [showCropper, setShowCropper] = useState(false);
 	const [showImportDialog, setShowImportDialog] = useState(false);
+	const [editingGuestId, setEditingGuestId] = useState<string | null>(null);
+	const [editGuestName, setEditGuestName] = useState("");
 
 	const handleAddGuest = () => {
 		if (guestName.trim()) {
@@ -123,6 +127,19 @@ export function GuestPanel({
 		for (const guest of importedGuests) {
 			onAddGuest(guest.name, guest.photo, undefined);
 		}
+	};
+
+	const handleStartEditGuest = (guestId: string, currentName: string) => {
+		setEditingGuestId(guestId);
+		setEditGuestName(currentName);
+	};
+
+	const handleSaveGuestName = (guestId: string) => {
+		const trimmed = editGuestName.trim();
+		if (trimmed) {
+			onUpdateGuestName(guestId, trimmed);
+		}
+		setEditingGuestId(null);
 	};
 
 	const getInitials = (name: string) => {
@@ -390,7 +407,30 @@ export function GuestPanel({
 											</Avatar>
 
 											<div className="flex-1 min-w-0">
-												<p className="text-sm font-medium truncate">{guest.name}</p>
+												{editingGuestId === guest.id ? (
+													<Input
+														value={editGuestName}
+														onChange={(e) => setEditGuestName(e.target.value)}
+														onBlur={() => handleSaveGuestName(guest.id)}
+														onKeyDown={(e) => {
+															if (e.key === "Enter") {
+																handleSaveGuestName(guest.id);
+															} else if (e.key === "Escape") {
+																setEditingGuestId(null);
+															}
+														}}
+														className="h-7 text-sm"
+														autoFocus
+													/>
+												) : (
+													<p
+														className="text-sm font-medium truncate cursor-pointer"
+														onDoubleClick={() => handleStartEditGuest(guest.id, guest.name)}
+														title="Double-click to edit name"
+													>
+														{guest.name}
+													</p>
+												)}
 												{guest.group && (
 													<span className="text-xs text-muted-foreground">{guest.group}</span>
 												)}
