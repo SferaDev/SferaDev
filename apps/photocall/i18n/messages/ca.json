@@ -735,5 +735,8 @@
 				"failed": "Fallit"
 			}
 		}
+	},
+	"guestAlbums": {
+		"yourAlbums": "Els teus àlbums"
 	}
 }

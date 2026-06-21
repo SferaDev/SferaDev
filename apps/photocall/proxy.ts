@@ -100,7 +100,7 @@ export const config = {
 		// Auth proxy
 		"/api/auth/:path*",
 		// next-intl on marketing routes (excludes API, static, dashboard, kiosk,
-		// share, the /p short-link redirect, etc.)
-		"/((?!api|_next|_vercel|dashboard|kiosk|share|invite|p/|sign-in|.*\\..*).*)",
+		// share, the guest album `/a/*` + `/albums`, the /p short-link redirect, etc.)
+		"/((?!api|_next|_vercel|dashboard|kiosk|share|invite|albums|a/|p/|sign-in|.*\\..*).*)",
 	],
 };

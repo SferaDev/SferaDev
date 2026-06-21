@@ -47,6 +47,7 @@ import type { Orientation, PaperSize } from "@/lib/layout/types";
 import { type BridgePrinter, listBridgePrinters } from "@/lib/print/bridge-client";
 import { executePrint } from "@/lib/print/index";
 import type { EventPrintConfig, PrintMethod } from "@/lib/print/types";
+import { AlbumSettingsCard } from "./album-settings-card";
 
 export default function EventSettingsPage() {
 	const { data: session, isPending: authLoading } = useSession();
@@ -928,6 +929,11 @@ export default function EventSettingsPage() {
 								/>
 							</div>
 						</div>
+
+						<AlbumSettingsCard
+							event={event}
+							onSaved={() => mutate(["events", orgSlug, eventSlug])}
+						/>
 					</TabsContent>
 
 					<TabsContent value="print" className="space-y-6">

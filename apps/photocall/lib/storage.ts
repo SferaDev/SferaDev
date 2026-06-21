@@ -1,6 +1,7 @@
 import {
 	DeleteObjectCommand,
 	GetObjectCommand,
+	HeadObjectCommand,
 	PutObjectCommand,
 	S3Client,
 } from "@aws-sdk/client-s3";
@@ -39,6 +40,42 @@ export async function generateUploadUrl(
 
 	const uploadUrl = await getSignedUrl(s3, command, { expiresIn: 600 });
 	return { uploadUrl, key };
+}
+
+/**
+ * Generate a presigned PUT URL for a guest album upload.
+ *
+ * Hardened vs {@link generateUploadUrl}: both the `Content-Type` and the exact
+ * `Content-Length` are baked into the signature, so the client cannot upload a
+ * different type or a larger object than declared. Callers must validate the
+ * declared size against a maximum *before* requesting the URL.
+ */
+export async function generateGuestUploadUrl(
+	contentType: string,
+	contentLength: number,
+): Promise<{ uploadUrl: string; key: string }> {
+	const ext = contentType.split("/")[1] ?? "bin";
+	const key = generateKey("guest", ext);
+
+	const command = new PutObjectCommand({
+		Bucket: BUCKET,
+		Key: key,
+		ContentType: contentType,
+		ContentLength: contentLength,
+	});
+
+	const uploadUrl = await getSignedUrl(s3, command, { expiresIn: 300 });
+	return { uploadUrl, key };
+}
+
+/** Returns the byte size of a stored object (used to confirm guest uploads). */
+export async function getObjectSize(key: string): Promise<number | null> {
+	try {
+		const result = await s3.send(new HeadObjectCommand({ Bucket: BUCKET, Key: key }));
+		return result.ContentLength ?? null;
+	} catch {
+		return null;
+	}
 }
 
 /** Generate a presigned GET URL for reading a file */
