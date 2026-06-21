@@ -730,5 +730,8 @@
 				"failed": "Failed"
 			}
 		}
+	},
+	"guestAlbums": {
+		"yourAlbums": "Your albums"
 	}
 }

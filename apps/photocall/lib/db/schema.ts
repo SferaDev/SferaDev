@@ -65,6 +65,25 @@ export const events = pgTable(
 		allowDownload: boolean("allow_download").notNull().default(true),
 		allowPrint: boolean("allow_print").notNull().default(true),
 		showQrCode: boolean("show_qr_code").notNull().default(true),
+		// Guest album — a public, per-event gallery guests reach by URL/QR where
+		// they can view photobooth photos and contribute their own. Disabled by
+		// default; the host turns it on from event settings.
+		albumEnabled: boolean("album_enabled").notNull().default(false),
+		// CSPRNG token that addresses the album at /a/[albumToken]. Unguessable and
+		// rotatable (regenerating revokes previously shared links).
+		albumToken: text("album_token").unique(),
+		// How guests gain access: "link" (anyone with the URL), "link_pin" (URL +
+		// shared PIN), "link_identity" (URL + a name before entering).
+		albumAccessMode: text("album_access_mode").notNull().default("link"), // link | link_pin | link_identity
+		// Optional album PIN (used when albumAccessMode = "link_pin"). Hashed like
+		// the kiosk PIN — never stored in plaintext.
+		albumPinHash: text("album_pin_hash"),
+		albumPinSalt: text("album_pin_salt"),
+		// Whether guests may upload their own photos to the album.
+		allowGuestUpload: boolean("allow_guest_upload").notNull().default(true),
+		// Moderation policy for guest uploads: "instant" (visible immediately) or
+		// "approval" (held as `pending` until a host approves).
+		albumModeration: text("album_moderation").notNull().default("instant"), // instant | approval
 		// Retention
 		retentionDays: integer("retention_days"),
 		deleteAfterDate: timestamp("delete_after_date"),
@@ -131,9 +150,20 @@ export const photos = pgTable(
 		eventId: uuid("event_id")
 			.notNull()
 			.references(() => events.id, { onDelete: "cascade" }),
-		sessionId: uuid("session_id")
-			.notNull()
-			.references(() => kioskSessions.id),
+		// Nullable: kiosk captures belong to a kiosk session, but guest-album
+		// uploads have no session (source = "guest").
+		sessionId: uuid("session_id").references(() => kioskSessions.id),
+		// Where the photo came from: "kiosk" (photobooth capture) or "guest"
+		// (uploaded by an attendee through the guest album).
+		source: text("source").notNull().default("kiosk"), // kiosk | guest
+		// For guest uploads: the anonymous guest identifier (from the signed album
+		// cookie) and their optional display name. Lets a guest manage their own
+		// uploads and lets the album attribute contributions.
+		uploaderId: text("uploader_id"),
+		uploaderName: text("uploader_name"),
+		// Moderation state. Kiosk photos are always "visible"; guest uploads may be
+		// "pending" (awaiting host approval) or "hidden" (removed by a host).
+		status: text("status").notNull().default("visible"), // visible | pending | hidden
 		storageKey: text("storage_key").notNull(),
 		shareToken: text("share_token").notNull().unique(),
 		humanCode: text("human_code").notNull(),
@@ -150,7 +180,14 @@ export const photos = pgTable(
 		expiresAt: timestamp("expires_at"),
 		createdAt: timestamp("created_at").notNull().defaultNow(),
 	},
-	(t) => [index("photos_event_idx").on(t.eventId), index("photos_created_at_idx").on(t.createdAt)],
+	(t) => [
+		index("photos_event_idx").on(t.eventId),
+		index("photos_created_at_idx").on(t.createdAt),
+		// Guest-album queries filter by event + visibility, and a guest manages
+		// their own uploads by uploaderId.
+		index("photos_event_status_idx").on(t.eventId, t.status),
+		index("photos_uploader_idx").on(t.uploaderId),
+	],
 );
 
 export const templates = pgTable(
@@ -233,6 +270,18 @@ export const orgSettings = pgTable("org_settings", {
  * - `boomerang`: an animated GIF boomerang loop
  */
 export type PhotoKind = "single" | "strip" | "boomerang";
+
+/** Where a stored photo originated. */
+export type PhotoSource = "kiosk" | "guest";
+
+/** Moderation state of a photo in the guest album. */
+export type PhotoStatus = "visible" | "pending" | "hidden";
+
+/** How guests gain access to an event's album. */
+export type AlbumAccessMode = "link" | "link_pin" | "link_identity";
+
+/** Moderation policy applied to guest uploads. */
+export type AlbumModeration = "instant" | "approval";
 
 export type CaptionPosition = {
 	x: number;

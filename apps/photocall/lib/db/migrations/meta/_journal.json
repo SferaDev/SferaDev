@@ -8,6 +8,13 @@
 			"when": 1779004516720,
 			"tag": "0000_fine_ben_parker",
 			"breakpoints": true
+		},
+		{
+			"idx": 1,
+			"version": "7",
+			"when": 1782077354016,
+			"tag": "0001_smart_leper_queen",
+			"breakpoints": true
 		}
 	]
 }

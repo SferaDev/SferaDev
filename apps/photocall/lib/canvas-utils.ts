@@ -164,6 +164,45 @@ export async function compositePhoto(options: CompositeOptions): Promise<Blob> {
 	});
 }
 
+/**
+ * Downscales and re-encodes an image file to JPEG for guest-album uploads.
+ *
+ * Re-drawing through a canvas strips all EXIF metadata (notably GPS), and the
+ * long-edge cap keeps uploads fast and within storage limits. Returns the
+ * encoded blob plus its final pixel dimensions.
+ */
+export async function resizeImageFile(
+	file: File,
+	maxDimension = 2048,
+	quality = 0.85,
+): Promise<{ blob: Blob; width: number; height: number }> {
+	const objectUrl = URL.createObjectURL(file);
+	try {
+		const img = await loadImage(objectUrl);
+		const scale = Math.min(1, maxDimension / Math.max(img.width, img.height));
+		const width = Math.round(img.width * scale);
+		const height = Math.round(img.height * scale);
+
+		const canvas = document.createElement("canvas");
+		canvas.width = width;
+		canvas.height = height;
+		const ctx = canvas.getContext("2d");
+		if (!ctx) throw new Error("Could not get canvas context");
+		ctx.drawImage(img, 0, 0, width, height);
+
+		const blob = await new Promise<Blob>((resolve, reject) => {
+			canvas.toBlob(
+				(result) => (result ? resolve(result) : reject(new Error("Failed to encode image"))),
+				"image/jpeg",
+				quality,
+			);
+		});
+		return { blob, width, height };
+	} finally {
+		URL.revokeObjectURL(objectUrl);
+	}
+}
+
 export function downloadBlob(blob: Blob, filename: string) {
 	const url = URL.createObjectURL(blob);
 	const a = document.createElement("a");

@@ -2,6 +2,7 @@ import { Camera, Check, Download, QrCode, Settings, Sparkles } from "lucide-reac
 import Link from "next/link";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { LocaleSwitcher } from "@/components/locale-switcher";
+import { MyAlbums } from "@/components/my-albums";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -64,6 +65,9 @@ export default async function LandingPage({ params }: Props) {
 						</div>
 					</div>
 				</section>
+
+				{/* Returning guests: albums they've already joined */}
+				<MyAlbums heading={t("guestAlbums.yourAlbums")} />
 
 				{/* Event Types */}
 				<section className="container mx-auto px-4 py-8">
