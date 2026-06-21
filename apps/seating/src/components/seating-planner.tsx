@@ -200,6 +200,10 @@ function SeatingPlannerInner() {
 		setGuests((prev) => prev.map((g) => (g.id === guestId ? { ...g, photo } : g)));
 	}, []);
 
+	const handleUpdateGuestName = useCallback((guestId: string, name: string) => {
+		setGuests((prev) => prev.map((g) => (g.id === guestId ? { ...g, name } : g)));
+	}, []);
+
 	useEffect(() => {
 		// Check for shared data in URL
 		const params = new URLSearchParams(window.location.search);
@@ -259,6 +263,7 @@ function SeatingPlannerInner() {
 					});
 				},
 				onUpdateGuestPhoto: handleUpdateGuestPhoto,
+				onUpdateGuestName: handleUpdateGuestName,
 			},
 			draggable: true,
 		}));
@@ -272,6 +277,7 @@ function SeatingPlannerInner() {
 		handleSwapGuests,
 		handleUpdateTable,
 		handleUpdateGuestPhoto,
+		handleUpdateGuestName,
 	]);
 
 	const getNodeBounds = useCallback(
@@ -627,7 +633,12 @@ function SeatingPlannerInner() {
 
 				const clonedNodes = nodesContainer.cloneNode(true) as HTMLElement;
 				clonedNodes.style.transform = "translate(0, 0)";
-				for (const el of clonedNodes.querySelectorAll(".export-hide")) {
+				// Remove elements that should not appear in the export and that would
+				// otherwise distort the measured content bounds. Connection handles are
+				// invisible (opacity-0) but sit on the node's outer edges, so for tables
+				// whose content doesn't fill the node box they inflate the bounding box
+				// (e.g. an oversized bottom margin).
+				for (const el of clonedNodes.querySelectorAll(".export-hide, .react-flow__handle")) {
 					el.remove();
 				}
 
@@ -950,6 +961,7 @@ function SeatingPlannerInner() {
 						onRemoveGuest={handleRemoveGuest}
 						onAddTable={handleAddTable}
 						onAssignGuest={handleAssignGuest}
+						onUpdateGuestName={handleUpdateGuestName}
 						onClose={() => setIsPanelOpen(false)}
 					/>
 				</div>

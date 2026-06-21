@@ -30,6 +30,7 @@ interface TableNodeProps {
 		onUpdateTable: (tableId: string, updates: Partial<Table>) => void;
 		onAssignGuest: (guestId: string) => void;
 		onUpdateGuestPhoto: (guestId: string, photo: string) => void;
+		onUpdateGuestName: (guestId: string, name: string) => void;
 	};
 }
 
@@ -45,6 +46,7 @@ function TableNodeComponent({ data }: TableNodeProps) {
 		onUpdateTable,
 		onAssignGuest,
 		onUpdateGuestPhoto,
+		onUpdateGuestName,
 	} = data;
 	const [isEditing, setIsEditing] = useState(false);
 	const [editName, setEditName] = useState(table.name);
@@ -55,6 +57,8 @@ function TableNodeComponent({ data }: TableNodeProps) {
 	const [cropperOpen, setCropperOpen] = useState(false);
 	const [cropperImage, setCropperImage] = useState<string | null>(null);
 	const [editingGuestId, setEditingGuestId] = useState<string | null>(null);
+	const [editingNameGuestId, setEditingNameGuestId] = useState<string | null>(null);
+	const [editGuestName, setEditGuestName] = useState("");
 
 	const getInitials = (name: string) => {
 		return name
@@ -331,6 +335,19 @@ function TableNodeComponent({ data }: TableNodeProps) {
 			setEditName(table.name);
 		}
 		setIsEditing(false);
+	};
+
+	const handleStartEditGuestName = (guestId: string, currentName: string) => {
+		setEditGuestName(currentName);
+		setEditingNameGuestId(guestId);
+	};
+
+	const handleSaveGuestName = (guestId: string) => {
+		const trimmed = editGuestName.trim();
+		if (trimmed) {
+			onUpdateGuestName(guestId, trimmed);
+		}
+		setEditingNameGuestId(null);
 	};
 
 	const handleDragStart = (e: React.DragEvent, guestId: string) => {
@@ -741,20 +758,50 @@ function TableNodeComponent({ data }: TableNodeProps) {
 						)}
 					</div>
 
-					{seat.guest && (
-						<div
-							className="absolute pointer-events-none whitespace-nowrap"
-							style={{
-								left: seat.labelX,
-								top: seat.labelY,
-								transform: "translate(-50%, -50%)",
-							}}
-						>
-							<span className="text-base font-medium text-foreground bg-card/95 px-3 py-1 rounded-full shadow-sm border border-border/50">
-								{seat.guest.name}
-							</span>
-						</div>
-					)}
+					{seat.guest &&
+						(() => {
+							const guest = seat.guest;
+							const isEditingName = editingNameGuestId === guest.id;
+							return (
+								<div
+									className={`absolute whitespace-nowrap ${isEditingName ? "" : "pointer-events-none"}`}
+									style={{
+										left: seat.labelX,
+										top: seat.labelY,
+										transform: "translate(-50%, -50%)",
+									}}
+								>
+									{isEditingName ? (
+										<Input
+											value={editGuestName}
+											onChange={(e) => setEditGuestName(e.target.value)}
+											onBlur={() => handleSaveGuestName(guest.id)}
+											onKeyDown={(e) => {
+												if (e.key === "Enter") {
+													handleSaveGuestName(guest.id);
+												} else if (e.key === "Escape") {
+													setEditingNameGuestId(null);
+												}
+											}}
+											onPointerDown={(e) => e.stopPropagation()}
+											onMouseDown={(e) => e.stopPropagation()}
+											className="h-7 w-32 text-center text-base bg-background nodrag nopan"
+											autoFocus
+										/>
+									) : (
+										<span
+											className="text-base font-medium text-foreground bg-card/95 px-3 py-1 rounded-full shadow-sm border border-border/50 cursor-pointer nodrag nopan"
+											onDoubleClick={() => handleStartEditGuestName(guest.id, guest.name)}
+											onPointerDown={(e) => e.stopPropagation()}
+											onMouseDown={(e) => e.stopPropagation()}
+											title="Double-click to edit name"
+										>
+											{guest.name}
+										</span>
+									)}
+								</div>
+							);
+						})()}
 				</div>
 			))}
 
