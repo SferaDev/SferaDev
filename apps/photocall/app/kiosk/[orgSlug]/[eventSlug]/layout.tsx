@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { getPublicEvent } from "@/actions/events";
+import { KioskCameraCleanup } from "@/components/kiosk-camera-cleanup";
 import { KioskI18nProvider } from "@/components/kiosk-i18n-provider";
 import { KioskReliability } from "@/components/kiosk-reliability";
 import { OfflineSync } from "@/components/offline-sync";
@@ -45,6 +46,7 @@ export default function KioskLayout({ children }: { children: ReactNode }) {
 			{children}
 			<OfflineSync />
 			<KioskReliability />
+			<KioskCameraCleanup />
 		</KioskI18nProvider>
 	);
 }
