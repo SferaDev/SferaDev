@@ -379,7 +379,10 @@ export default function KioskResultPage() {
 			if (tileTwoUp) {
 				const tiled = await tileStripTwoUp(strip.blob, strip.width, strip.height, layout.print.dpi);
 				printBlob = tiled.blob;
-				printJobConfig = { ...printConfig, printPaperSize: "4x6" };
+				// The tiled sheet is 4×6 LANDSCAPE (two portrait strips side by side),
+				// so override both paper size and orientation for this job only — the
+				// manual @page hint and the bridge both need the landscape orientation.
+				printJobConfig = { ...printConfig, printPaperSize: "4x6", printOrientation: "landscape" };
 			}
 
 			const result = await executePrint(printBlob, printJobConfig);

@@ -13,16 +13,24 @@
  */
 
 import { printImage } from "@/lib/canvas-utils";
-import { PAPER_SIZE_MM, type PaperSize } from "@/lib/layout/types";
+import { type Orientation, PAPER_SIZE_MM, type PaperSize } from "@/lib/layout/types";
 import { resolveBridgeUrl, submitPrintJob } from "@/lib/print/bridge-client";
 import { enqueuePrint } from "@/lib/print/print-queue";
 import type { EventPrintConfig, PrintDispatchResult } from "@/lib/print/types";
 
-/** CSS `@page size` hint (mm) for the manual print dialog, by paper size. */
-function pageSizeHint(paperSize: PaperSize | null): string | undefined {
+/**
+ * CSS `@page size` hint (mm) for the manual print dialog. PAPER_SIZE_MM stores
+ * portrait dimensions (width ≤ height); for a landscape job (e.g. the 2-up
+ * tiled strip sheet) we swap so the page matches the rendered image — otherwise
+ * a landscape image gets contained into a portrait page and prints shrunk.
+ */
+function pageSizeHint(paperSize: PaperSize | null, orientation?: Orientation): string | undefined {
 	if (!paperSize) return undefined;
 	const { widthMm, heightMm } = PAPER_SIZE_MM[paperSize];
-	return `${widthMm}mm ${heightMm}mm`;
+	const shortMm = Math.min(widthMm, heightMm);
+	const longMm = Math.max(widthMm, heightMm);
+	const [w, h] = orientation === "landscape" ? [longMm, shortMm] : [shortMm, longMm];
+	return `${w}mm ${h}mm`;
 }
 
 /** Park a job in the offline outbox for later retry, returning a queued result. */
@@ -49,7 +57,7 @@ export async function executePrint(
 		case "manual": {
 			const url = URL.createObjectURL(blob);
 			try {
-				await printImage(url, pageSizeHint(config.printPaperSize));
+				await printImage(url, pageSizeHint(config.printPaperSize, config.printOrientation));
 				return { status: "done" };
 			} finally {
 				// The print window reads the URL on load; revoke shortly after so we
