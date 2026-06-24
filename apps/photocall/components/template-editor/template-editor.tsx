@@ -8,12 +8,13 @@ import {
 	resolveAssetUrls,
 } from "@/actions/templates";
 import { Card, CardContent } from "@/components/ui/card";
-import type {
-	Background,
-	BoothLayout,
-	GraphicLayer,
-	PhotoSlot,
-	TextLayer,
+import {
+	type Background,
+	type BoothLayout,
+	type GraphicLayer,
+	type PhotoSlot,
+	printPixelSize,
+	type TextLayer,
 } from "@/lib/layout/types";
 import { EditorInspector } from "./editor-inspector";
 import { EditorPreview } from "./editor-preview";
@@ -47,6 +48,22 @@ const TemplateEditorCanvas = dynamic(
 	},
 );
 
+/**
+ * Lock the canvas aspect ratio to the REAL print geometry (paper size +
+ * orientation + bleed), so the editor is truly WYSIWYG. The compositor always
+ * renders the final image at `printPixelSize(layout.print)`, so the editing
+ * canvas must use the same shape — otherwise changing orientation does nothing
+ * visible and centered elements land off in the printed result. Stored
+ * `aspectRatio` is kept equal to this derived value so the kiosk preview (which
+ * reads `aspectRatio`) matches too.
+ */
+function withPrintAspect(layout: BoothLayout): BoothLayout {
+	const { width, height } = printPixelSize(layout.print);
+	if (width <= 0) return layout;
+	const aspectRatio = height / width;
+	return aspectRatio === layout.aspectRatio ? layout : { ...layout, aspectRatio };
+}
+
 interface TemplateEditorProps {
 	eventId: string;
 	initialLayout: BoothLayout;
@@ -76,7 +93,9 @@ export function TemplateEditor({
 	previewTokens,
 }: TemplateEditorProps) {
 	const tokens = previewTokens ?? SAMPLE_TOKENS;
-	const [layout, setLayout] = useState<BoothLayout>(initialLayout);
+	// Normalize the canvas aspect to the print geometry on load so existing
+	// templates whose stored aspect diverged from their paper render truthfully.
+	const [layout, setLayout] = useState<BoothLayout>(() => withPrintAspect(initialLayout));
 	const [selection, setSelection] = useState<Selection | null>(null);
 	const [assetUrls, setAssetUrls] = useState<Record<string, string>>({});
 	const fileInputRef = useRef<HTMLInputElement>(null);
@@ -175,12 +194,16 @@ export function TemplateEditor({
 
 	const onUpdatePrint = useCallback(
 		(patch: Partial<BoothLayout["print"]>) =>
-			setLayout((current) => ({ ...current, print: { ...current.print, ...patch } })),
+			// Re-derive the canvas aspect whenever paper size / orientation / bleed
+			// change, so the editor reshapes to the true print geometry.
+			setLayout((current) =>
+				withPrintAspect({ ...current, print: { ...current.print, ...patch } }),
+			),
 		[],
 	);
 
 	const onUpdateLayout = useCallback(
-		(patch: Partial<Pick<BoothLayout, "filter" | "aspectRatio">>) =>
+		(patch: Partial<Pick<BoothLayout, "filter">>) =>
 			setLayout((current) => ({ ...current, ...patch })),
 		[],
 	);
@@ -191,8 +214,9 @@ export function TemplateEditor({
 	);
 
 	const onApplyPreset = useCallback((preset: PresetSummary) => {
-		// Keep a fresh id; adopt the preset's slots/layers/print wholesale.
-		setLayout((current) => ({ ...preset.layout, id: current.id }));
+		// Keep a fresh id; adopt the preset's slots/layers/print wholesale, with the
+		// canvas aspect locked to its print geometry.
+		setLayout((current) => withPrintAspect({ ...preset.layout, id: current.id }));
 		setSelection(null);
 	}, []);
 

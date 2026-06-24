@@ -27,7 +27,7 @@ interface EditorToolbarProps {
 	onAddGraphic: () => void;
 	onApplyPreset: (preset: PresetSummary) => void;
 	onUpdatePrint: (patch: Partial<BoothLayout["print"]>) => void;
-	onUpdateLayout: (patch: Partial<Pick<BoothLayout, "filter" | "aspectRatio">>) => void;
+	onUpdateLayout: (patch: Partial<Pick<BoothLayout, "filter">>) => void;
 	onSave: () => void;
 }
 
@@ -156,19 +156,6 @@ export function EditorToolbar({
 					</Label>
 				</div>
 			) : null}
-
-			<div className="w-24">
-				<Label className="text-xs text-muted-foreground">Aspect (h/w)</Label>
-				<Input
-					type="number"
-					min={0.2}
-					max={5}
-					step={0.05}
-					value={Number(layout.aspectRatio.toFixed(2))}
-					onChange={(event) => onUpdateLayout({ aspectRatio: Number(event.target.value) })}
-					className="h-8"
-				/>
-			</div>
 
 			<div className="w-32">
 				<Label className="text-xs text-muted-foreground">Layout filter</Label>
