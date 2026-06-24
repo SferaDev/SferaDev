@@ -480,6 +480,7 @@
 			"templatesCount": "{count} plantilles",
 			"manageTemplates": "Gestiona les plantilles",
 			"printManagement": "Imprimeix",
+			"kioskSettings": "Configuració del quiosc",
 			"recycleBin": "Paperera"
 		},
 		"trash": {
@@ -496,6 +497,7 @@
 		},
 		"eventSettings": {
 			"title": "Configuració de l'esdeveniment",
+			"kioskTitle": "Configuració del quiosc",
 			"saved": "Configuració desada",
 			"couldNotSave": "No s'ha pogut desar la configuració",
 			"tabs": {

@@ -475,6 +475,7 @@
 			"templatesCount": "{count} templates",
 			"manageTemplates": "Manage Templates",
 			"printManagement": "Print",
+			"kioskSettings": "Kiosk settings",
 			"recycleBin": "Recycling bin"
 		},
 		"trash": {
@@ -491,6 +492,7 @@
 		},
 		"eventSettings": {
 			"title": "Event Settings",
+			"kioskTitle": "Kiosk settings",
 			"saved": "Settings saved",
 			"couldNotSave": "Couldn't save settings",
 			"tabs": {

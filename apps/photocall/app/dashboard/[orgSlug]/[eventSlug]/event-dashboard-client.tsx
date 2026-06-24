@@ -13,6 +13,7 @@ import {
 	Play,
 	Printer,
 	Settings,
+	Sliders,
 	Trash2,
 } from "lucide-react";
 import Link from "next/link";
@@ -149,6 +150,12 @@ export default function EventDashboard() {
 								<Link href={`/dashboard/${orgSlug}/${eventSlug}/print`}>
 									<Printer className="h-4 w-4 mr-2" />
 									{t("printManagement")}
+								</Link>
+							</Button>
+							<Button variant="outline" asChild>
+								<Link href={`/dashboard/${orgSlug}/${eventSlug}/kiosk`}>
+									<Sliders className="h-4 w-4 mr-2" />
+									{t("kioskSettings")}
 								</Link>
 							</Button>
 							<Button variant="outline" asChild>
