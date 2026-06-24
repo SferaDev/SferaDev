@@ -8,6 +8,7 @@ import useSWR from "swr";
 import { getPublicEvent, validateKioskPin } from "@/actions/events";
 import { listRecentPublicPhotos } from "@/actions/photos";
 import { createKioskSession } from "@/actions/sessions";
+import { KioskAttractCollage } from "@/components/kiosk-attract-collage";
 import { KioskLanguagePicker } from "@/components/kiosk-language-picker";
 import { KioskOperatorPanel } from "@/components/kiosk-operator-panel";
 import { Button } from "@/components/ui/button";
@@ -62,26 +63,18 @@ export default function KioskAttractPage() {
 		() => getPublicEvent(orgSlug, eventSlug),
 	);
 
-	const { data: recentPhotos } = useSWR(event ? ["recent-public-photos", event.id, 10] : null, () =>
-		listRecentPublicPhotos(event!.id, 10),
+	// Pull a generous window of recent photos so the collage background has
+	// enough material, and revalidate periodically (and on focus) so freshly
+	// captured photos rotate into the showcase without a manual reload.
+	const { data: recentPhotos } = useSWR(
+		event ? ["recent-public-photos", event.id, 16] : null,
+		() => listRecentPublicPhotos(event!.id, 16),
+		{ refreshInterval: 30000, revalidateOnFocus: true },
 	);
-
-	const [currentSlide, setCurrentSlide] = useState(0);
 
 	// Load the event's display font (when set) and resolve a CSS font-family for
 	// kiosk headings; falls back to the system font when no override is bundled.
 	const headingFontFamily = useKioskFont(event?.fontFamily);
-
-	// Slideshow effect
-	useEffect(() => {
-		if (!event?.slideshowEnabled || !recentPhotos?.length) return;
-
-		const interval = setInterval(() => {
-			setCurrentSlide((prev) => (prev + 1) % recentPhotos.length);
-		}, 5000);
-
-		return () => clearInterval(interval);
-	}, [event?.slideshowEnabled, recentPhotos?.length]);
 
 	const handleStart = async () => {
 		if (!event) return;
@@ -159,28 +152,9 @@ export default function KioskAttractPage() {
 			className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden"
 			style={{ backgroundColor: "#000" }}
 		>
-			{/* Slideshow Background */}
+			{/* Animated collage background */}
 			{event.slideshowEnabled && recentPhotos && recentPhotos.length > 0 && (
-				<div className="absolute inset-0">
-					{recentPhotos.map((photo, index) => (
-						<div
-							key={photo.id}
-							className={`absolute inset-0 transition-opacity duration-1000 ${
-								index === currentSlide ? "opacity-50" : "opacity-0"
-							}`}
-						>
-							{photo.url && (
-								<img
-									src={photo.url}
-									alt=""
-									className={`w-full h-full object-cover ${
-										event.slideshowSafeMode ? "blur-xl" : ""
-									}`}
-								/>
-							)}
-						</div>
-					))}
-				</div>
+				<KioskAttractCollage photos={recentPhotos} safeMode={event.slideshowSafeMode} />
 			)}
 
 			{/* Content */}
