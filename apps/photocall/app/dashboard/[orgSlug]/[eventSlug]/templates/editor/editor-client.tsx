@@ -33,6 +33,7 @@ export default function TemplateEditorClient() {
 	const orgSlug = params.orgSlug as string;
 	const eventSlug = params.eventSlug as string;
 	const templateId = searchParams.get("templateId");
+	const presetId = searchParams.get("preset");
 	const t = useTranslations("dashboard.editor");
 	const tc = useTranslations("dashboard.common");
 
@@ -63,10 +64,22 @@ export default function TemplateEditorClient() {
 				setName(template.name);
 				setAllowedFilters(template.allowedFilters);
 			}
+		} else if (presetId) {
+			// Create mode seeded from a preset (e.g. the manager's presets gallery).
+			// Wait for the preset list, then start the canvas from the preset's
+			// layout and default the name to the preset's name.
+			if (presets === undefined) return;
+			const preset = presets.find((p) => p.id === presetId);
+			if (preset) {
+				setInitialLayout({ ...preset.layout, id: crypto.randomUUID() });
+				setName(preset.name);
+			} else {
+				setInitialLayout(blankLayout());
+			}
 		} else {
 			setInitialLayout(blankLayout());
 		}
-	}, [templateId, template, initialLayout]);
+	}, [templateId, template, presetId, presets, initialLayout]);
 
 	const backHref = useMemo(
 		() => `/dashboard/${orgSlug}/${eventSlug}/templates`,

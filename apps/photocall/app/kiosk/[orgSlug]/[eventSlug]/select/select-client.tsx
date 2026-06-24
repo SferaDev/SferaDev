@@ -156,8 +156,14 @@ export default function KioskSelectPage() {
 
 				{templates && templates.length === 0 ? (
 					<div className="text-center py-16">
-						<p className="text-xl mb-4">{t("noTemplates")}</p>
-						<Button onClick={handleSkip} style={{ backgroundColor: primaryColor }}>
+						<p className="text-2xl font-semibold mb-2">{t("noTemplatesTitle")}</p>
+						<p className="text-white/70 mb-6">{t("noTemplatesSubtitle")}</p>
+						<Button
+							size="lg"
+							onClick={handleSkip}
+							className="text-lg px-10 py-6 rounded-full"
+							style={{ backgroundColor: primaryColor }}
+						>
 							{t("continueWithoutFrame")}
 						</Button>
 					</div>
