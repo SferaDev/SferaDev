@@ -110,8 +110,8 @@ function TableNodeComponent({ data }: TableNodeProps) {
 			// that radial reach (plus a clearance gap) so the pill always sits clear of
 			// the picture instead of covering it.
 			const pillHalfWidth = estimatedPillWidth / 2;
-			const pillHalfHeight = 16;
-			const labelClearance = 14;
+			const pillHalfHeight = 12;
+			const labelClearance = 8;
 
 			const labelRadii: number[] = [];
 			let maxLabelReach = 0;
@@ -124,7 +124,7 @@ function TableNodeComponent({ data }: TableNodeProps) {
 				maxLabelReach = Math.max(maxLabelReach, labelRadius + radialPillExtent);
 			}
 
-			const totalSize = maxLabelReach * 2 + 40;
+			const totalSize = maxLabelReach * 2 + 24;
 			const center = totalSize / 2;
 
 			for (let i = 0; i < table.seats; i++) {
@@ -249,9 +249,9 @@ function TableNodeComponent({ data }: TableNodeProps) {
 				// Left/right seats place the name pill horizontally beside the avatar, so
 				// a long name would reach back over the picture. Offset by half the pill
 				// width (plus clearance) so the pill always clears the avatar.
-				const sideLabelOffset = seatSize / 2 + 14 + estimatedPillWidth / 2;
+				const sideLabelOffset = seatSize / 2 + 8 + estimatedPillWidth / 2;
 
-				const totalWidth = tableWidth + seatSize * 2 + estimatedPillWidth * 2 + 80;
+				const totalWidth = tableWidth + seatSize * 2 + estimatedPillWidth * 2 + 60;
 				const totalHeight = tableHeight + seatSize * 2 + labelOffset * 2 + 50;
 				const centerX = totalWidth / 2;
 				const centerY = totalHeight / 2;
