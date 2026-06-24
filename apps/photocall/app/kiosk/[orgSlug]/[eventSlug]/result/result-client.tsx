@@ -15,6 +15,7 @@ import { useIdleTimeout } from "@/hooks/use-idle-timeout";
 import { useKioskFont } from "@/hooks/use-kiosk-font";
 import { useOfflineSync } from "@/hooks/use-offline-sync";
 import { usePrintSync } from "@/hooks/use-print-sync";
+import { BRANDED_CTA_FEEDBACK, DEFAULT_BRAND_COLOR, PRIMARY_CTA_CLASS } from "@/lib/branding";
 import { compositePhoto } from "@/lib/canvas-utils";
 import { composeStrip, loadLayoutFonts, tileStripTwoUp } from "@/lib/compose";
 import { parseCapturedImageUrls } from "@/lib/db/schema";
@@ -26,6 +27,7 @@ import { clearPhotoboothSession, readPhotoboothSession } from "@/lib/photobooth-
 import { resolveBridgeUrl } from "@/lib/print/bridge-client";
 import { executePrint } from "@/lib/print/index";
 import type { EventPrintConfig, PrintJobStatus, PrintMethod } from "@/lib/print/types";
+import { cn } from "@/lib/utils";
 
 /** ServiceWorkerRegistration with the optional Background Sync extension. */
 interface SyncCapableRegistration extends ServiceWorkerRegistration {
@@ -54,6 +56,7 @@ export default function KioskResultPage() {
 	const templateId = searchParams.get("template");
 	const filterParam = searchParams.get("filter");
 	const t = useTranslations("kiosk.result");
+	const tLoading = useTranslations("kiosk.loading");
 
 	const { data: event, isLoading: eventLoading } = useSWR(
 		["public-event", orgSlug, eventSlug],
@@ -422,7 +425,11 @@ export default function KioskResultPage() {
 
 	if (eventLoading || sessionLoading) {
 		return (
-			<div className="min-h-screen flex items-center justify-center bg-black text-white">
+			<div
+				className="min-h-screen flex items-center justify-center bg-black text-white"
+				role="status"
+				aria-label={tLoading("label")}
+			>
 				<Loader2 className="h-12 w-12 animate-spin" />
 			</div>
 		);
@@ -433,7 +440,7 @@ export default function KioskResultPage() {
 		return null;
 	}
 
-	const primaryColor = event.primaryColor || "#e11d48";
+	const primaryColor = event.primaryColor || DEFAULT_BRAND_COLOR;
 
 	// A manual "Send to printer" action is offered only when printing is
 	// configured, the event allows it, and auto-print is OFF. When auto-print is
@@ -448,7 +455,12 @@ export default function KioskResultPage() {
 					<h1 className="text-2xl font-bold mb-4">{t("somethingWentWrong")}</h1>
 					<p className="text-white/60 mb-8">{error}</p>
 					<div className="flex flex-col gap-3">
-						<Button size="lg" onClick={handleRetry} style={{ backgroundColor: primaryColor }}>
+						<Button
+							size="lg"
+							onClick={handleRetry}
+							className={BRANDED_CTA_FEEDBACK}
+							style={{ backgroundColor: primaryColor }}
+						>
 							<RotateCcw className="h-5 w-5 mr-2" />
 							{t("retry")}
 						</Button>
@@ -456,7 +468,7 @@ export default function KioskResultPage() {
 							size="lg"
 							variant="outline"
 							onClick={handleNewPhoto}
-							className="border-white/20 text-white hover:bg-white/10"
+							className="bg-transparent border-white/20 text-white hover:bg-white/10"
 						>
 							<ArrowLeft className="h-5 w-5 mr-2" />
 							{t("startOver")}
@@ -471,8 +483,12 @@ export default function KioskResultPage() {
 		<div className="min-h-screen bg-black text-white p-8">
 			<div className="max-w-4xl mx-auto">
 				{isProcessing ? (
-					<div className="flex flex-col items-center justify-center min-h-[80vh]">
-						<Loader2 className="h-16 w-16 animate-spin mb-4" />
+					<div
+						className="flex flex-col items-center justify-center min-h-[80vh]"
+						role="status"
+						aria-label={t("processing")}
+					>
+						<Loader2 className="h-16 w-16 animate-spin mb-4" style={{ color: primaryColor }} />
 						<p className="text-xl">{t("processing")}</p>
 					</div>
 				) : (
@@ -487,7 +503,7 @@ export default function KioskResultPage() {
 
 						{/* Final composed photo preview */}
 						{finalImageUrl && (
-							<div className="rounded-2xl overflow-hidden bg-muted mb-8 max-w-md w-full">
+							<div className="rounded-2xl overflow-hidden bg-white/5 mb-8 max-w-md w-full">
 								<img
 									src={finalImageUrl}
 									alt={t("finalResultAlt")}
@@ -521,7 +537,7 @@ export default function KioskResultPage() {
 									variant="outline"
 									onClick={() => void handlePrint()}
 									disabled={printStatus === "printing"}
-									className="border-white/20 text-white hover:bg-white/10 rounded-full px-8"
+									className="bg-transparent border-white/20 text-white hover:bg-white/10 rounded-full px-8"
 								>
 									{printStatus === "printing" ? (
 										<Loader2 className="h-5 w-5 mr-2 animate-spin" />
@@ -542,18 +558,18 @@ export default function KioskResultPage() {
 											</p>
 										)}
 										{printStatus === "queued" && (
-											<p className="text-amber-300">{printMessage ?? t("printerOffline")}</p>
+											<p className="text-amber-200">{printMessage ?? t("printerOffline")}</p>
 										)}
 										{printStatus === "failed" && (
 											<div className="flex flex-col items-center gap-2">
-												<p className="inline-flex items-center gap-1 text-red-400">
+												<p className="inline-flex items-center gap-1 text-destructive">
 													<X className="h-4 w-4" /> {printMessage ?? t("printingFailed")}
 												</p>
 												<Button
 													size="sm"
 													variant="outline"
 													onClick={() => void handlePrint()}
-													className="border-white/20 text-white hover:bg-white/10"
+													className="bg-transparent border-white/20 text-white hover:bg-white/10"
 												>
 													<RotateCcw className="h-4 w-4 mr-2" />
 													{t("retryPrint")}
@@ -567,11 +583,12 @@ export default function KioskResultPage() {
 
 						{/* (b) Prominent "Take another photo" call to action */}
 						<Button
+							size="xl"
 							onClick={handleNewPhoto}
-							className="h-20 px-12 rounded-full text-xl font-semibold shadow-lg w-full max-w-md"
+							className={cn(PRIMARY_CTA_CLASS, BRANDED_CTA_FEEDBACK, "w-full max-w-md shadow-lg")}
 							style={{ backgroundColor: primaryColor }}
 						>
-							<Camera className="h-7 w-7 mr-3" />
+							<Camera className="h-6 w-6 mr-3" />
 							{t("takeAnother")}
 						</Button>
 					</div>

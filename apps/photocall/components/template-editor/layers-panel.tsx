@@ -64,13 +64,13 @@ export function LayersPanel({
 				return (
 					<div
 						key={`${entry.type}-${entry.id}`}
-						className={`flex items-center gap-1 rounded px-2 py-1 text-sm ${
-							active ? "bg-accent" : "hover:bg-muted"
+						className={`flex items-center gap-1 rounded-md px-2 py-1 text-sm ${
+							active ? "bg-accent" : "hover:bg-accent/50"
 						}`}
 					>
 						<button
 							type="button"
-							className="flex flex-1 items-center gap-2 truncate text-left"
+							className="flex flex-1 items-center gap-2 truncate rounded-sm text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-card"
 							onClick={() => onSelect({ type: entry.type, id: entry.id })}
 						>
 							<LayerIcon type={entry.type} />

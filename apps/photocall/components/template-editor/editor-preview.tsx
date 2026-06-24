@@ -70,7 +70,12 @@ export function EditorPreview({ layout, tokens, assetUrls }: EditorPreviewProps)
 				{src ? (
 					<img src={src} alt="Live preview" className="max-h-[60vh] rounded shadow-sm" />
 				) : (
-					<div className="h-48 w-32 animate-pulse rounded bg-muted" />
+					// Match the layout's aspect ratio (height / width) so the skeleton
+					// occupies the same footprint as the rendered preview and doesn't jump.
+					<div
+						className="w-32 animate-pulse rounded bg-muted"
+						style={{ aspectRatio: `1 / ${layout.aspectRatio}` }}
+					/>
 				)}
 			</div>
 		</div>

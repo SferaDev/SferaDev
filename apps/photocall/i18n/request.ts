@@ -47,5 +47,8 @@ export default getRequestConfig(async ({ requestLocale }) => {
 					(await import(`./messages/${locale}.json`)).default as Messages,
 				);
 
-	return { locale, messages };
+	// A default timeZone keeps next-intl date/time formatting deterministic
+	// between server and client (otherwise it warns ENVIRONMENT_FALLBACK and
+	// risks a hydration mismatch).
+	return { locale, messages, timeZone: "Europe/Madrid" };
 });
