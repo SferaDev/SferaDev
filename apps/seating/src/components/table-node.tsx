@@ -54,6 +54,7 @@ function TableNodeComponent({ data }: TableNodeProps) {
 	const [isHovered, setIsHovered] = useState(false);
 	const [draggingGuestId, setDraggingGuestId] = useState<string | null>(null);
 	const [settingsOpen, setSettingsOpen] = useState(false);
+	const [seatError, setSeatError] = useState<string | null>(null);
 	const [cropperOpen, setCropperOpen] = useState(false);
 	const [cropperImage, setCropperImage] = useState<string | null>(null);
 	const [editingGuestId, setEditingGuestId] = useState<string | null>(null);
@@ -103,7 +104,27 @@ function TableNodeComponent({ data }: TableNodeProps) {
 				minTableRadiusForLabels,
 			);
 			const seatRadius = tableRadius + seatSize / 2 + 16;
-			const totalSize = seatRadius * 2 + labelOffset * 2 + seatSize + 50;
+
+			// A name pill is centered on its label point, so a long name reaches back
+			// toward its own avatar along the radial direction. Push each label out by
+			// that radial reach (plus a clearance gap) so the pill always sits clear of
+			// the picture instead of covering it.
+			const pillHalfWidth = estimatedPillWidth / 2;
+			const pillHalfHeight = 12;
+			const labelClearance = 8;
+
+			const labelRadii: number[] = [];
+			let maxLabelReach = 0;
+			for (let i = 0; i < table.seats; i++) {
+				const angle = (i * 2 * Math.PI) / table.seats - Math.PI / 2;
+				const radialPillExtent =
+					Math.abs(Math.cos(angle)) * pillHalfWidth + Math.abs(Math.sin(angle)) * pillHalfHeight;
+				const labelRadius = seatRadius + seatSize / 2 + labelClearance + radialPillExtent;
+				labelRadii.push(labelRadius);
+				maxLabelReach = Math.max(maxLabelReach, labelRadius + radialPillExtent);
+			}
+
+			const totalSize = maxLabelReach * 2 + 24;
 			const center = totalSize / 2;
 
 			for (let i = 0; i < table.seats; i++) {
@@ -112,7 +133,7 @@ function TableNodeComponent({ data }: TableNodeProps) {
 				const y = center + seatRadius * Math.sin(angle);
 				const guest = guests.find((g) => g.seatIndex === i);
 
-				const labelRadius = seatRadius + seatSize / 2 + 18;
+				const labelRadius = labelRadii[i];
 				const labelX = center + labelRadius * Math.cos(angle);
 				const labelY = center + labelRadius * Math.sin(angle);
 
@@ -225,7 +246,12 @@ function TableNodeComponent({ data }: TableNodeProps) {
 				const tableWidth = minWidth;
 				const tableHeight = 90;
 
-				const totalWidth = tableWidth + seatSize * 2 + labelOffset * 2 + 50;
+				// Left/right seats place the name pill horizontally beside the avatar, so
+				// a long name would reach back over the picture. Offset by half the pill
+				// width (plus clearance) so the pill always clears the avatar.
+				const sideLabelOffset = seatSize / 2 + 8 + estimatedPillWidth / 2;
+
+				const totalWidth = tableWidth + seatSize * 2 + estimatedPillWidth * 2 + 60;
 				const totalHeight = tableHeight + seatSize * 2 + labelOffset * 2 + 50;
 				const centerX = totalWidth / 2;
 				const centerY = totalHeight / 2;
@@ -267,7 +293,7 @@ function TableNodeComponent({ data }: TableNodeProps) {
 						index: seatIndex,
 						x,
 						y,
-						labelX: x + labelOffset,
+						labelX: x + sideLabelOffset,
 						labelY: y,
 						labelAnchor: "middle",
 						guest,
@@ -305,7 +331,7 @@ function TableNodeComponent({ data }: TableNodeProps) {
 						index: seatIndex,
 						x,
 						y,
-						labelX: x - labelOffset,
+						labelX: x - sideLabelOffset,
 						labelY: y,
 						labelAnchor: "middle",
 						guest,
@@ -444,7 +470,13 @@ function TableNodeComponent({ data }: TableNodeProps) {
 		>
 			<Handle type="target" position={Position.Top} className="opacity-0" />
 
-			<Popover open={settingsOpen} onOpenChange={setSettingsOpen}>
+			<Popover
+				open={settingsOpen}
+				onOpenChange={(open) => {
+					setSettingsOpen(open);
+					if (!open) setSeatError(null);
+				}}
+			>
 				<PopoverTrigger asChild>
 					<Button
 						variant="secondary"
@@ -483,7 +515,17 @@ function TableNodeComponent({ data }: TableNodeProps) {
 							<label className="text-sm font-medium">Number of Seats</label>
 							<Select
 								value={table.seats.toString()}
-								onValueChange={(v) => onUpdateTable(table.id, { seats: Number.parseInt(v, 10) })}
+								onValueChange={(v) => {
+									const newSeats = Number.parseInt(v, 10);
+									if (newSeats < table.seats && guests.length > newSeats) {
+										setSeatError(
+											`${guests.length} guests are seated here. Remove ${guests.length - newSeats} before shrinking to ${newSeats} seats.`,
+										);
+										return;
+									}
+									setSeatError(null);
+									onUpdateTable(table.id, { seats: newSeats });
+								}}
 							>
 								<SelectTrigger>
 									<SelectValue />
@@ -496,6 +538,7 @@ function TableNodeComponent({ data }: TableNodeProps) {
 									))}
 								</SelectContent>
 							</Select>
+							{seatError && <p className="text-xs text-destructive">{seatError}</p>}
 						</div>
 						{table.shape === "rectangle" && (
 							<div className="space-y-2">
