@@ -169,25 +169,30 @@ export default function KioskSelectPage() {
 						onClick={() =>
 							event.boomerangEnabled ? setMode(null) : router.push(`/kiosk/${orgSlug}/${eventSlug}`)
 						}
-						className="text-white"
+						className="text-white text-lg [&_svg]:size-6"
 					>
-						<ArrowLeft className="h-5 w-5 mr-2" />
+						<ArrowLeft className="h-6 w-6 mr-2" />
 						{tCommon("back")}
 					</Button>
-					<h1 className="text-2xl font-bold">{t("chooseFrame")}</h1>
-					<Button variant="ghost" disabled={navigating} onClick={handleSkip} className="text-white">
+					<h1 className="text-4xl font-bold">{t("chooseFrame")}</h1>
+					<Button
+						variant="ghost"
+						disabled={navigating}
+						onClick={handleSkip}
+						className="text-white text-lg"
+					>
 						{tCommon("skip")}
 					</Button>
 				</div>
 
 				{templates && templates.length === 0 ? (
 					<div className="text-center py-16">
-						<p className="text-2xl font-semibold mb-2">{t("noTemplatesTitle")}</p>
-						<p className="text-white/70 mb-6">{t("noTemplatesSubtitle")}</p>
+						<p className="text-3xl font-semibold mb-3">{t("noTemplatesTitle")}</p>
+						<p className="text-xl text-white/70 mb-6">{t("noTemplatesSubtitle")}</p>
 						<Button
 							size="xl"
 							onClick={handleSkip}
-							className={cn(PRIMARY_CTA_CLASS, BRANDED_CTA_FEEDBACK)}
+							className={cn(PRIMARY_CTA_CLASS, BRANDED_CTA_FEEDBACK, "h-16 px-12 text-2xl")}
 							style={{ backgroundColor: primaryColor }}
 						>
 							{t("continueWithoutFrame")}
@@ -229,7 +234,7 @@ export default function KioskSelectPage() {
 											className="w-full h-full object-cover"
 										/>
 									) : (
-										<span className="text-base text-white/80">{template.name}</span>
+										<span className="text-xl text-white/80">{template.name}</span>
 									)}
 								</motion.button>
 							);
@@ -274,12 +279,17 @@ function ModePicker({ primaryColor, busy, onBack, onPickStrip, onPickBoomerang }
 	return (
 		<div className="min-h-screen bg-black text-white p-8 flex flex-col">
 			<div className="flex items-center justify-between mb-8">
-				<Button variant="ghost" onClick={onBack} className="text-white" disabled={busy}>
-					<ArrowLeft className="h-5 w-5 mr-2" />
+				<Button
+					variant="ghost"
+					onClick={onBack}
+					className="text-white text-lg [&_svg]:size-6"
+					disabled={busy}
+				>
+					<ArrowLeft className="h-6 w-6 mr-2" />
 					{tCommon("back")}
 				</Button>
-				<h1 className="text-2xl font-bold">{t("modeTitle")}</h1>
-				<div className="w-20" />
+				<h1 className="text-4xl font-bold">{t("modeTitle")}</h1>
+				<div className="w-32" />
 			</div>
 
 			<div className="flex-1 flex items-center justify-center">
@@ -305,13 +315,13 @@ function ModePicker({ primaryColor, busy, onBack, onPickStrip, onPickBoomerang }
 								className="flex flex-col items-center gap-4 rounded-2xl border border-white/15 bg-white/5 p-10 text-center transition-colors hover:border-white/40 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
 							>
 								<span
-									className="flex h-20 w-20 items-center justify-center rounded-full"
+									className="flex h-24 w-24 items-center justify-center rounded-full"
 									style={{ backgroundColor: primaryColor }}
 								>
-									<Icon className="h-10 w-10" aria-hidden="true" />
+									<Icon className="h-12 w-12" aria-hidden="true" />
 								</span>
-								<span className="text-2xl font-semibold">{option.title}</span>
-								<span className="text-sm text-white/70">{option.description}</span>
+								<span className="text-3xl font-semibold">{option.title}</span>
+								<span className="text-lg text-white/70">{option.description}</span>
 							</motion.button>
 						);
 					})}
@@ -367,12 +377,17 @@ function FilterChooser({
 		<div className="min-h-screen bg-black text-white p-8">
 			<div className="max-w-3xl mx-auto">
 				<div className="flex items-center justify-between mb-8">
-					<Button variant="ghost" onClick={onBack} className="text-white" disabled={busy}>
-						<ArrowLeft className="h-5 w-5 mr-2" />
+					<Button
+						variant="ghost"
+						onClick={onBack}
+						className="text-white text-lg [&_svg]:size-6"
+						disabled={busy}
+					>
+						<ArrowLeft className="h-6 w-6 mr-2" />
 						{tCommon("back")}
 					</Button>
-					<h1 className="text-2xl font-bold">{t("pickLook")}</h1>
-					<div className="w-20" />
+					<h1 className="text-4xl font-bold">{t("pickLook")}</h1>
+					<div className="w-32" />
 				</div>
 
 				<div className="flex justify-center mb-8">
@@ -405,14 +420,14 @@ function FilterChooser({
 							className="flex flex-col items-center gap-2 rounded-xl p-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
 						>
 							<span
-								className="block h-16 w-16 rounded-full border-2"
+								className="block h-20 w-20 rounded-full border-2"
 								style={{
 									backgroundImage: "linear-gradient(135deg, #f472b6, #60a5fa, #34d399)",
 									filter: cssFilterFor(filter),
 									borderColor: selected === filter ? primaryColor : "transparent",
 								}}
 							/>
-							<span className="text-xs text-white/80">{tFilters(filter)}</span>
+							<span className="text-base text-white/80">{tFilters(filter)}</span>
 						</motion.button>
 					))}
 				</div>
@@ -422,7 +437,7 @@ function FilterChooser({
 						size="xl"
 						onClick={() => onConfirm(selected)}
 						disabled={busy}
-						className={cn(PRIMARY_CTA_CLASS, BRANDED_CTA_FEEDBACK)}
+						className={cn(PRIMARY_CTA_CLASS, BRANDED_CTA_FEEDBACK, "h-16 px-12 text-2xl")}
 						style={{ backgroundColor: primaryColor }}
 					>
 						{busy ? <Loader2 className="h-5 w-5 mr-2 animate-spin" /> : null}
