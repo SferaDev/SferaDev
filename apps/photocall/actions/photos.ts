@@ -8,6 +8,19 @@ import { getPlatformClient } from "@/lib/platform";
 import { deleteFile, generateUploadUrl, getFileUrl } from "@/lib/storage";
 
 /**
+ * Reads an optional `language` value off the event row. The events table does
+ * not (yet) have a `language` column — the main agent owns the schema and will
+ * add `events.language` plus a settings selector. Until then this safely returns
+ * `null` so the share page falls back to its default locale behaviour. Written
+ * defensively (no cast of the whole row) so it keeps working once the column is
+ * added and starts returning a real value.
+ */
+function readEventLanguage(event: Record<string, unknown>): string | null {
+	const value = event.language;
+	return typeof value === "string" && value.length > 0 ? value : null;
+}
+
+/**
  * Image MIME types the kiosk uploads. Composited photos/strips are JPEG;
  * boomerangs are animated GIFs. The content type also drives the stored
  * object's extension (`.jpeg` / `.gif`) and presigned PUT `Content-Type`.
@@ -140,17 +153,9 @@ export async function getPhotoByShareToken(shareToken: string) {
 
 	const url = await getFileUrl(photo.storageKey);
 
-	// Resolve the org slug so the share page can deep-link back to the event's
-	// kiosk ("take your own photo"). Best-effort: the share page is otherwise
-	// platform-independent, so a platform hiccup must not break it — swallow any
-	// error and let the page fall back to the home CTA.
-	let orgSlug: string | null = null;
-	try {
-		const org = await getPlatformClient().lookupOrganization(event.organizationId);
-		orgSlug = org?.slug ?? null;
-	} catch {
-		orgSlug = null;
-	}
+	// Event branding so the public share page can present the event's identity
+	// (name, logo, colours) instead of generic Photocall chrome.
+	const logoUrl = event.logoStorageKey ? await getFileUrl(event.logoStorageKey) : null;
 
 	return {
 		...photo,
@@ -159,8 +164,13 @@ export async function getPhotoByShareToken(shareToken: string) {
 		allowDownload: event.allowDownload,
 		allowPrint: event.allowPrint,
 		showQrCode: event.showQrCode,
-		orgSlug,
-		eventSlug: event.slug,
+		// Branding
+		primaryColor: event.primaryColor,
+		accentColor: event.accentColor,
+		logoUrl,
+		// Event language drives the share page's locale. `null` until the schema
+		// gains an `events.language` column (see readEventLanguage).
+		language: readEventLanguage(event),
 	};
 }
 
