@@ -151,7 +151,7 @@ export default function KioskAttractPage() {
 	// Admin overrides take precedence; an empty override falls back to the i18n
 	// default (heading default is the couple names / event name).
 	const attractTitle = event.attractTitle || event.coupleNames || event.name;
-	const attractSubtitle = event.attractSubtitle || event.welcomeMessage || t("defaultWelcome");
+	const attractSubtitle = event.attractSubtitle || event.welcomeMessage;
 	const ctaLabel = event.ctaLabel || t("start");
 
 	return (
@@ -196,7 +196,7 @@ export default function KioskAttractPage() {
 					{attractTitle}
 				</h1>
 
-				<p className="text-xl md:text-2xl mb-8 opacity-80">{attractSubtitle}</p>
+				{attractSubtitle && <p className="text-xl md:text-2xl mb-8 opacity-80">{attractSubtitle}</p>}
 
 				<Button
 					size="lg"
@@ -204,7 +204,6 @@ export default function KioskAttractPage() {
 					className="text-xl px-12 py-8 rounded-full"
 					style={{ backgroundColor: primaryColor, boxShadow: `0 0 40px -8px ${accentColor}` }}
 				>
-					<Camera className="h-8 w-8 mr-3" />
 					{ctaLabel}
 				</Button>
 			</div>
