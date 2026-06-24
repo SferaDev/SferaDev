@@ -10,7 +10,7 @@ import {
 	LayoutTemplate,
 	Loader2,
 	Pencil,
-	Plus,
+	Sparkles,
 	Trash2,
 	Upload,
 } from "lucide-react";
@@ -24,11 +24,13 @@ import {
 	createTemplate,
 	deleteTemplate,
 	generateTemplateUploadUrl,
+	listPresets,
 	listTemplates,
 	reorderTemplates,
 	updateTemplate,
 } from "@/actions/templates";
 import { DashboardLanguagePicker } from "@/components/dashboard-language-picker";
+import { PresetsGallery } from "@/components/template-editor/presets-gallery";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -67,6 +69,14 @@ export default function TemplateManager() {
 
 	const { data: templates } = useSWR(event ? ["templates", event.id] : null, () =>
 		listTemplates(event!.id),
+	);
+
+	const { data: presets } = useSWR("presets", () => listPresets());
+
+	const editorHref = useCallback(
+		(query?: string) =>
+			`/dashboard/${orgSlug}/${eventSlug}/templates/editor${query ? `?${query}` : ""}`,
+		[orgSlug, eventSlug],
 	);
 
 	const [isUploading, setIsUploading] = useState(false);
@@ -147,17 +157,11 @@ export default function TemplateManager() {
 						</div>
 						<div className="flex items-center gap-2">
 							<DashboardLanguagePicker />
-							<Button variant="outline" asChild>
-								<Link href={`/dashboard/${orgSlug}/${eventSlug}/templates/editor`}>
-									<LayoutTemplate className="h-4 w-4 mr-2" />
-									{t("newLayout")}
-								</Link>
-							</Button>
 							<Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
 								<DialogTrigger asChild>
-									<Button>
-										<Plus className="h-4 w-4 mr-2" />
-										{t("addTemplate")}
+									<Button variant="ghost" className="text-muted-foreground">
+										<Upload className="h-4 w-4 mr-2" />
+										{t("advancedUpload")}
 									</Button>
 								</DialogTrigger>
 								<DialogContent className="sm:max-w-lg">
@@ -176,21 +180,39 @@ export default function TemplateManager() {
 									/>
 								</DialogContent>
 							</Dialog>
+							<Button asChild>
+								<Link href={editorHref()}>
+									<LayoutTemplate className="h-4 w-4 mr-2" />
+									{t("designTemplate")}
+								</Link>
+							</Button>
 						</div>
 					</div>
 				</div>
 			</header>
 
-			<main className="container mx-auto px-4 py-8 max-w-4xl">
+			<main className="container mx-auto px-4 py-8 max-w-4xl space-y-10">
 				{templates.length === 0 ? (
 					<div className="text-center py-16 border rounded-lg bg-muted/50">
-						<Upload className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+						<LayoutTemplate className="h-12 w-12 mx-auto text-primary mb-4" />
 						<h2 className="text-xl font-semibold mb-2">{t("emptyTitle")}</h2>
-						<p className="text-muted-foreground mb-4">{t("emptyDescription")}</p>
-						<Button onClick={() => setShowAddDialog(true)}>
-							<Plus className="h-4 w-4 mr-2" />
-							{t("addTemplate")}
-						</Button>
+						<p className="text-muted-foreground mb-6 max-w-md mx-auto">{t("emptyDescription")}</p>
+						<div className="flex flex-wrap items-center justify-center gap-3">
+							<Button asChild>
+								<Link href={editorHref()}>
+									<LayoutTemplate className="h-4 w-4 mr-2" />
+									{t("designFirstTemplate")}
+								</Link>
+							</Button>
+							<Button
+								variant="ghost"
+								className="text-muted-foreground"
+								onClick={() => setShowAddDialog(true)}
+							>
+								<Upload className="h-4 w-4 mr-2" />
+								{t("advancedUpload")}
+							</Button>
+						</div>
 					</div>
 				) : (
 					<div className="space-y-3">
@@ -293,6 +315,23 @@ export default function TemplateManager() {
 						))}
 					</div>
 				)}
+
+				{presets && presets.length > 0 ? (
+					<section className="space-y-4">
+						<div>
+							<h2 className="flex items-center gap-2 text-lg font-semibold">
+								<Sparkles className="h-5 w-5 text-primary" />
+								{t("presetsTitle")}
+							</h2>
+							<p className="text-sm text-muted-foreground">{t("presetsDescription")}</p>
+						</div>
+						<PresetsGallery
+							presets={presets}
+							editorHref={(presetId) => editorHref(`preset=${presetId}`)}
+							shotCountLabel={(shotCount) => t("presetShotCount", { count: shotCount })}
+						/>
+					</section>
+				) : null}
 			</main>
 		</div>
 	);
