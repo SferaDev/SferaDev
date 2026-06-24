@@ -474,7 +474,20 @@
 			"addTemplate": "Add Template",
 			"templatesCount": "{count} templates",
 			"manageTemplates": "Manage Templates",
-			"printManagement": "Print"
+			"printManagement": "Print",
+			"recycleBin": "Recycling bin"
+		},
+		"trash": {
+			"title": "Recycling bin",
+			"subtitle": "Restore deleted photos or remove them permanently",
+			"emptyTitle": "Recycling bin is empty",
+			"emptyDescription": "Deleted photos appear here and are removed permanently after 30 days",
+			"count": "{count, plural, =1 {# deleted photo} other {# deleted photos}}",
+			"deletedOn": "Deleted {date}",
+			"purgesIn": "Deletes permanently in {days, plural, =0 {less than a day} =1 {1 day} other {# days}}",
+			"restore": "Restore",
+			"deleteNow": "Delete permanently",
+			"confirmPurge": "Permanently delete this photo? This cannot be undone."
 		},
 		"eventSettings": {
 			"title": "Event Settings",

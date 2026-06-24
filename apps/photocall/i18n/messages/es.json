@@ -479,7 +479,20 @@
 			"addTemplate": "Añadir plantilla",
 			"templatesCount": "{count} plantillas",
 			"manageTemplates": "Gestionar plantillas",
-			"printManagement": "Imprimir"
+			"printManagement": "Imprimir",
+			"recycleBin": "Papelera"
+		},
+		"trash": {
+			"title": "Papelera de reciclaje",
+			"subtitle": "Restaura fotos eliminadas o elimínalas permanentemente",
+			"emptyTitle": "La papelera está vacía",
+			"emptyDescription": "Las fotos eliminadas aparecen aquí y se borran permanentemente tras 30 días",
+			"count": "{count, plural, =1 {# foto eliminada} other {# fotos eliminadas}}",
+			"deletedOn": "Eliminada el {date}",
+			"purgesIn": "Se borra permanentemente en {days, plural, =0 {menos de un día} =1 {1 día} other {# días}}",
+			"restore": "Restaurar",
+			"deleteNow": "Eliminar permanentemente",
+			"confirmPurge": "¿Eliminar esta foto permanentemente? No se puede deshacer."
 		},
 		"eventSettings": {
 			"title": "Ajustes del evento",
