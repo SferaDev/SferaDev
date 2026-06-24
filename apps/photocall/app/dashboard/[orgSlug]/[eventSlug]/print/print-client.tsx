@@ -30,6 +30,7 @@ import {
 	listBridgeJobs,
 	listBridgePrinters,
 	pingBridge,
+	resolveBridgeUrl,
 	submitPrintJob,
 } from "@/lib/print/bridge-client";
 import type { EventPrintConfig } from "@/lib/print/types";
@@ -76,7 +77,11 @@ export default function PrintManagement() {
 		getEventBySlug(orgSlug, eventSlug),
 	);
 
-	const bridgeUrl = event?.printBridgeUrl ?? null;
+	// Resolve a blank operator setting to the mDNS default the bridge advertises,
+	// so this live dashboard still polls bridge/printer status when the kiosk is
+	// relying on auto-discovery rather than a typed-in URL. Null only before the
+	// event has loaded.
+	const bridgeUrl = event ? resolveBridgeUrl(event.printBridgeUrl) : null;
 
 	const [online, setOnline] = useState<boolean | null>(null);
 	const [printers, setPrinters] = useState<BridgePrinter[]>([]);
@@ -465,13 +470,17 @@ function PrinterCard({
 					{busy ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
 					{t("testPrint")}
 				</Button>
+				{/* NB: this sends a fresh TEST CARD, not the guest's last photo — the
+				    bridge does not retain submitted images. Labelled accordingly so a
+				    host isn't misled into thinking it re-prints the previous job. */}
 				<Button
 					size="sm"
 					variant="ghost"
 					onClick={onReprint}
 					disabled={busy || disabled || !printer.reachable}
+					title={t("reprintTestCardHint")}
 				>
-					{t("reprint")}
+					{t("reprintTestCard")}
 				</Button>
 			</div>
 		</div>

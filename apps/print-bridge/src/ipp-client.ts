@@ -221,6 +221,61 @@ export async function getPrinterAttributes(
 	return parsePrinterAttributes(response);
 }
 
+/**
+ * A print failure tagged with whether the queue should keep retrying it.
+ *
+ * The product rule is no-loss: running out of paper/ink or losing the printer
+ * on the LAN is COMMON and slow to fix, so those jobs must retry forever until
+ * they actually print. Only a genuinely permanent fault (a malformed job the
+ * printer will never accept no matter how long we wait) is non-retryable and may
+ * be dropped. Almost everything an IPP printer throws — out-of-paper, asleep,
+ * unreachable, transient reject — is therefore retryable by default.
+ */
+export class PrintJobError extends Error {
+	constructor(
+		message: string,
+		/** When false, the queue may stop retrying and mark the job failed. */
+		readonly retryable: boolean,
+		options?: ErrorOptions,
+	) {
+		super(message, options);
+		this.name = "PrintJobError";
+	}
+}
+
+/**
+ * The printer ran out of paper/ink. The single most common event-day outage and
+ * the one the product owner explicitly wants to ride out: keep the job queued
+ * and retrying until the operator refills, then it drains on its own.
+ */
+export class OutOfPaperError extends PrintJobError {
+	constructor() {
+		super("Printer is out of paper (media-empty)", true);
+		this.name = "OutOfPaperError";
+	}
+}
+
+/**
+ * Classify an arbitrary thrown value into a {@link PrintJobError}. We retry by
+ * DEFAULT (no-loss): a failure we cannot positively identify as permanent is
+ * treated as a transient outage worth waiting out. Only a `document-format` /
+ * unsupported-media-type style rejection — the printer telling us the JOB ITSELF
+ * is malformed, which will never succeed on retry — is marked non-retryable.
+ */
+export function classifyPrintError(error: unknown): PrintJobError {
+	if (error instanceof PrintJobError) return error;
+	const message = error instanceof Error ? error.message : String(error);
+	// A document-format / unsupported-media-type rejection means the printer will
+	// never accept this exact job — retrying would loop forever to no effect, so
+	// drop it. Everything else (unreachable, timeout, busy, generic reject) is a
+	// transient condition we keep retrying through.
+	const permanent =
+		/document-format-not-supported|client-error-document-format|unsupported-media-type|client-error-attributes-or-values-not-supported/i.test(
+			message,
+		);
+	return new PrintJobError(message, !permanent, { cause: error });
+}
+
 function orientationKeyword(orientation: PrintParams["orientation"]): OrientationRequested {
 	return orientation === "landscape" ? "landscape" : "portrait";
 }
@@ -330,7 +385,9 @@ export async function printJob(
 		try {
 			const attributes = await getPrinterAttributes(uri, version);
 			if (isOutOfPaper(attributes)) {
-				throw new Error("Printer is out of paper (media-empty)");
+				// Retryable on purpose: the queue must hold this job and keep retrying
+				// until the operator refills the media (see PrintQueue / no-loss rule).
+				throw new OutOfPaperError();
 			}
 		} catch (error) {
 			if (isVersionRejected(error)) {
@@ -361,5 +418,8 @@ export async function printJob(
 		}
 	}
 
-	throw lastError instanceof Error ? lastError : new Error("Print failed across all IPP versions");
+	// Surface a classified error so the queue knows whether to keep retrying
+	// (out-of-paper, unreachable, transient reject) or drop a permanently
+	// malformed job. Default is retryable — see classifyPrintError.
+	throw classifyPrintError(lastError ?? new Error("Print failed across all IPP versions"));
 }

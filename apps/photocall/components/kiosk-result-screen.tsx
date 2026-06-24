@@ -1,6 +1,6 @@
 "use client";
 
-import { Camera, Check, Loader2, Printer, RotateCcw } from "lucide-react";
+import { Camera, Check, Clock, Loader2, Printer, RotateCcw } from "lucide-react";
 import { motion } from "motion/react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
@@ -49,12 +49,22 @@ export function KioskResultScreen({
 }: KioskResultScreenProps) {
 	const t = useTranslations("kiosk.result");
 
-	// "queued" (bridge offline, will print on reconnect) and "done" both count as
-	// a successful hand-off to the print queue — surface positive feedback on the
-	// button itself rather than a separate status line.
-	const printQueued = print?.status === "done" || print?.status === "queued";
+	// Distinguish the print states clearly — a queued print has NOT printed yet and
+	// must not masquerade as a green "done":
+	//  - done     → actually printed (manual/AirPrint) OR handed to the bridge for
+	//               immediate printing → GREEN success.
+	//  - queued   → bridge was unreachable/printer busy; held in the no-loss outbox
+	//               and will print when the bridge recovers → AMBER "pending", not
+	//               success. The <PendingPrints> pill tracks it until it drains.
+	//  - printing → in flight (spinner).
+	//  - failed   → unexpected error; offer a retry.
+	const printDone = print?.status === "done";
+	const printPending = print?.status === "queued";
 	const printing = print?.status === "printing";
 	const printFailed = print?.status === "failed";
+	// Disable further taps once the job is in flight, printed, or safely queued —
+	// re-tapping a pending job would just enqueue a duplicate.
+	const printLocked = printing || printDone || printPending;
 
 	return (
 		<div className="flex min-h-screen items-center justify-center bg-black p-4 text-white">
@@ -91,19 +101,25 @@ export function KioskResultScreen({
 						<Button
 							size="xl"
 							onClick={print.onPrint}
-							disabled={printing || printQueued}
+							disabled={printLocked}
 							className={cn(
 								"w-full rounded-full border-2 bg-transparent py-7 text-2xl font-semibold",
 								BRANDED_CTA_FEEDBACK,
-								printQueued
-									? "border-green-500 bg-green-600 text-white hover:bg-green-600 disabled:opacity-100"
-									: "border-white/25 text-white hover:bg-white/10",
+								printDone
+									? // Actually printed → green success.
+										"border-green-500 bg-green-600 text-white hover:bg-green-600 disabled:opacity-100"
+									: printPending
+										? // Queued, not yet printed → amber "pending", clearly NOT success.
+											"border-amber-500 bg-amber-500/15 text-amber-100 hover:bg-amber-500/15 disabled:opacity-100"
+										: "border-white/25 text-white hover:bg-white/10",
 							)}
 						>
 							{printing ? (
 								<Loader2 className="mr-3 h-7 w-7 animate-spin" />
-							) : printQueued ? (
+							) : printDone ? (
 								<Check className="mr-3 h-7 w-7" />
+							) : printPending ? (
+								<Clock className="mr-3 h-7 w-7" />
 							) : printFailed ? (
 								<RotateCcw className="mr-3 h-7 w-7" />
 							) : (
@@ -111,11 +127,13 @@ export function KioskResultScreen({
 							)}
 							{printing
 								? t("sendingToPrinter")
-								: printQueued
+								: printDone
 									? t("addedToQueue")
-									: printFailed
-										? t("retryPrint")
-										: t("print")}
+									: printPending
+										? t("printerOffline")
+										: printFailed
+											? t("retryPrint")
+											: t("print")}
 						</Button>
 					)}
 

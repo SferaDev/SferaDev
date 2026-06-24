@@ -123,6 +123,10 @@
 			"offline": "Offline",
 			"waiting": "{count, plural, one {# photo waiting to sync} other {# photos waiting to sync}}"
 		},
+		"print": {
+			"pending": "{count, plural, one {# print waiting} other {# prints waiting}}",
+			"pendingWithReason": "{count, plural, one {# print waiting} other {# prints waiting}} — {reason}"
+		},
 		"attract": {
 			"defaultWelcome": "Tap to capture your moment",
 			"start": "Start",
@@ -590,7 +594,9 @@
 				"autoPrint": "Auto-print",
 				"autoPrintHelp": "Print automatically once the photo is composed",
 				"testPrint": "Test print",
-				"testPrintLabel": "Test Print"
+				"testPrintLabel": "Test Print",
+				"bridgeUrlBlankHint": "Leave blank to auto-discover the bridge on your network ({url}).",
+				"copiesTwoUpHint": "On a 2-up template (two strips per sheet), each copy prints 2 strips — so copies × 2 strips per sheet."
 			},
 			"security": {
 				"kioskAdminPin": "Kiosk Admin PIN",
@@ -709,7 +715,7 @@
 			"testPrint": "Test print",
 			"reprint": "Reprint",
 			"testPrintSent": "Test print sent to the bridge.",
-			"reprintSent": "Reprint sent to the bridge.",
+			"reprintSent": "Test card sent to the bridge.",
 			"testPrintFailed": "Could not generate the test image.",
 			"queueTitle": "Print queue",
 			"queueEmpty": "No print jobs yet.",
@@ -719,7 +725,9 @@
 				"printing": "Printing",
 				"done": "Done",
 				"failed": "Failed"
-			}
+			},
+			"reprintTestCard": "Reprint test card",
+			"reprintTestCardHint": "Sends a fresh test card (a solid-color page), NOT the guest's last photo — the bridge does not keep submitted images."
 		}
 	},
 	"guestAlbums": {

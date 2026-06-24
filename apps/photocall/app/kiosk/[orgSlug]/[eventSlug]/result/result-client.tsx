@@ -11,10 +11,10 @@ import { createPhoto, generatePhotoUploadUrl, type PhotoContentType } from "@/ac
 import { completeSession, getKioskSession } from "@/actions/sessions";
 import { listPublicTemplates, resolveAssetUrls } from "@/actions/templates";
 import { KioskResultScreen } from "@/components/kiosk-result-screen";
+import { PendingPrints } from "@/components/pending-prints";
 import { Button } from "@/components/ui/button";
 import { useIdleTimeout } from "@/hooks/use-idle-timeout";
 import { useOfflineSync } from "@/hooks/use-offline-sync";
-import { usePrintSync } from "@/hooks/use-print-sync";
 import { BRANDED_CTA_FEEDBACK, DEFAULT_BRAND_COLOR } from "@/lib/branding";
 import { compositePhoto, loadImage } from "@/lib/canvas-utils";
 import { composeStrip, loadLayoutFonts, tileStripTwoUp } from "@/lib/compose";
@@ -137,6 +137,11 @@ export default function KioskResultPage() {
 	const printBlobRef = useRef<{ blob: Blob; width: number; height: number } | null>(null);
 	// Guards a single auto-print per composed photo.
 	const autoPrintDoneRef = useRef(false);
+	// Synchronous lock against a double-tap on the print button submitting twice.
+	// A ref (not state) so the SECOND tap is rejected in the same tick, before any
+	// re-render — the `disabled` prop and `printStatus` update a frame too late to
+	// stop a fast double-tap on a touchscreen kiosk. Mirrors processingStartedRef.
+	const printingRef = useRef(false);
 
 	// Guards against processPhoto running twice (it is in the effect deps and
 	// isProcessing stays true for the whole async run), which would otherwise
@@ -163,10 +168,11 @@ export default function KioskResultPage() {
 		: null;
 	const printMethod = printConfig?.printMethod ?? "none";
 
-	// Drains the print outbox when the bridge becomes reachable again. Only run
-	// when bridge printing is configured; the URL falls back to the mDNS default
-	// so a blank operator setting still reaches a LAN bridge.
-	usePrintSync(printMethod === "bridge" ? resolveBridgeUrl(event?.printBridgeUrl) : null);
+	// Bridge URL for the print outbox drain + pending notice. Only set when bridge
+	// printing is configured; the URL falls back to the mDNS default so a blank
+	// operator setting still reaches a LAN bridge. The <PendingPrints> mount below
+	// both drains the outbox when the bridge recovers and surfaces the notice.
+	const printBridgeUrl = printMethod === "bridge" ? resolveBridgeUrl(event?.printBridgeUrl) : null;
 
 	// Auto-return to attract screen after idle. Stays disabled while the photo is
 	// still compositing/uploading: that phase shows a spinner with no touch input,
@@ -456,6 +462,10 @@ export default function KioskResultPage() {
 	const handlePrint = useCallback(async () => {
 		const strip = printBlobRef.current;
 		if (!strip || !printConfig || printConfig.printMethod === "none") return;
+		// Reject a concurrent/double-tap submit synchronously, before any await, so
+		// the same photo can't be sent to the printer twice.
+		if (printingRef.current) return;
+		printingRef.current = true;
 
 		setPrintStatus("printing");
 		try {
@@ -479,6 +489,11 @@ export default function KioskResultPage() {
 		} catch (err) {
 			console.error("Print failed:", err);
 			setPrintStatus("failed");
+		} finally {
+			// Release the lock so the guest can retry after a failure. A successful or
+			// queued print disables the button via `printStatus`, so releasing here
+			// does not re-open a duplicate submit for a print that already went out.
+			printingRef.current = false;
 		}
 	}, [printConfig, layout]);
 
@@ -502,6 +517,7 @@ export default function KioskResultPage() {
 		processingStartedRef.current = false;
 		printBlobRef.current = null;
 		autoPrintDoneRef.current = false;
+		printingRef.current = false;
 		setPrintStatus("idle");
 		setIsProcessing(true);
 	};
@@ -576,17 +592,23 @@ export default function KioskResultPage() {
 	}
 
 	return (
-		<KioskResultScreen
-			mediaUrl={finalImageUrl}
-			mediaAlt={t("finalResultAlt")}
-			qrCodeUrl={qrCodeUrl}
-			showQr={event.showQrCode}
-			savedOffline={savedOffline}
-			primaryColor={primaryColor}
-			onNewPhoto={handleNewPhoto}
-			print={
-				showManualPrint ? { status: printStatus, onPrint: () => void handlePrint() } : undefined
-			}
-		/>
+		<>
+			<KioskResultScreen
+				mediaUrl={finalImageUrl}
+				mediaAlt={t("finalResultAlt")}
+				qrCodeUrl={qrCodeUrl}
+				showQr={event.showQrCode}
+				savedOffline={savedOffline}
+				primaryColor={primaryColor}
+				onNewPhoto={handleNewPhoto}
+				print={
+					showManualPrint ? { status: printStatus, onPrint: () => void handlePrint() } : undefined
+				}
+			/>
+			{/* Persistent "prints waiting" notice (mounts the outbox drain too). Shown
+			    on the result screen so the operator sees prints stacking up behind an
+			    out-of-paper / offline bridge — the no-loss queue retries them forever. */}
+			<PendingPrints bridgeUrl={printBridgeUrl} />
+		</>
 	);
 }

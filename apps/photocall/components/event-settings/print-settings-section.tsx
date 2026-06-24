@@ -17,7 +17,12 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { DEFAULT_BRAND_COLOR } from "@/lib/branding";
 import type { Orientation, PaperSize } from "@/lib/layout/types";
-import { type BridgePrinter, listBridgePrinters } from "@/lib/print/bridge-client";
+import {
+	type BridgePrinter,
+	DEFAULT_BRIDGE_URL,
+	listBridgePrinters,
+	resolveBridgeUrl,
+} from "@/lib/print/bridge-client";
 import { executePrint } from "@/lib/print/index";
 import type { EventPrintConfig, PrintMethod } from "@/lib/print/types";
 
@@ -65,11 +70,14 @@ export function PrintSettingsSection({ data, onChange, primaryColor }: PrintSett
 	};
 
 	const handleTestBridge = async () => {
-		if (!data.printBridgeUrl) return;
 		setBridgeTesting(true);
 		setBridgeError(null);
 		try {
-			const result = await listBridgePrinters(data.printBridgeUrl);
+			// A blank URL is valid: it means "use the mDNS default the bridge
+			// advertises". Test that resolved default so an operator relying on
+			// auto-discovery can still verify the bridge instead of being stuck with a
+			// disabled button and no idea whether anything is reachable.
+			const result = await listBridgePrinters(resolveBridgeUrl(data.printBridgeUrl));
 			if (result.ok) {
 				setBridgePrinters(result.printers);
 				if (result.printers.length === 0) {
@@ -150,12 +158,17 @@ export function PrintSettingsSection({ data, onChange, primaryColor }: PrintSett
 								type="button"
 								variant="outline"
 								onClick={handleTestBridge}
-								disabled={bridgeTesting || !data.printBridgeUrl}
+								disabled={bridgeTesting}
 							>
 								{bridgeTesting ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
 								{t("print.testConnection")}
 							</Button>
 						</div>
+						{!data.printBridgeUrl && (
+							<p className="text-sm text-muted-foreground mt-2">
+								{t("print.bridgeUrlBlankHint", { url: DEFAULT_BRIDGE_URL })}
+							</p>
+						)}
 						{bridgeError && <p className="text-sm text-amber-600 mt-2">{bridgeError}</p>}
 					</div>
 
@@ -269,6 +282,7 @@ export function PrintSettingsSection({ data, onChange, primaryColor }: PrintSett
 							min={1}
 							max={99}
 						/>
+						<p className="text-sm text-muted-foreground mt-2">{t("print.copiesTwoUpHint")}</p>
 					</div>
 
 					<div>

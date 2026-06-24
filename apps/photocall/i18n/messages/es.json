@@ -128,6 +128,10 @@
 			"offline": "Sin conexión",
 			"waiting": "{count, plural, one {# foto pendiente de sincronizar} other {# fotos pendientes de sincronizar}}"
 		},
+		"print": {
+			"pending": "{count, plural, one {# impresión en espera} other {# impresiones en espera}}",
+			"pendingWithReason": "{count, plural, one {# impresión en espera} other {# impresiones en espera}} — {reason}"
+		},
 		"attract": {
 			"defaultWelcome": "Toca para capturar tu momento",
 			"start": "Empezar",
@@ -595,7 +599,9 @@
 				"autoPrint": "Impresión automática",
 				"autoPrintHelp": "Imprime automáticamente cuando la foto está compuesta",
 				"testPrint": "Imprimir prueba",
-				"testPrintLabel": "Impresión de prueba"
+				"testPrintLabel": "Impresión de prueba",
+				"bridgeUrlBlankHint": "Déjalo en blanco para detectar el puente automáticamente en tu red ({url}).",
+				"copiesTwoUpHint": "En una plantilla 2-up (dos tiras por hoja), cada copia imprime 2 tiras, es decir, copias × 2 tiras por hoja."
 			},
 			"security": {
 				"kioskAdminPin": "PIN de administración del kiosco",
@@ -714,7 +720,7 @@
 			"testPrint": "Impresión de prueba",
 			"reprint": "Reimprimir",
 			"testPrintSent": "Impresión de prueba enviada al puente.",
-			"reprintSent": "Reimpresión enviada al puente.",
+			"reprintSent": "Tarjeta de prueba enviada al puente.",
 			"testPrintFailed": "No se pudo generar la imagen de prueba.",
 			"queueTitle": "Cola de impresión",
 			"queueEmpty": "Aún no hay trabajos de impresión.",
@@ -724,7 +730,9 @@
 				"printing": "Imprimiendo",
 				"done": "Completado",
 				"failed": "Fallido"
-			}
+			},
+			"reprintTestCard": "Reimprimir tarjeta de prueba",
+			"reprintTestCardHint": "Envía una nueva tarjeta de prueba (una página de color sólido), NO la última foto del invitado: el puente no conserva las imágenes enviadas."
 		}
 	},
 	"guestAlbums": {
