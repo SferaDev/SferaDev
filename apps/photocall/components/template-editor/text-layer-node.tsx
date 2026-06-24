@@ -1,6 +1,7 @@
 import type Konva from "konva";
 import { useEffect, useRef } from "react";
 import { Text as KonvaText } from "react-konva";
+import { BUNDLED_FONTS, loadFont } from "@/lib/compose/fonts";
 import { resolveTokens } from "@/lib/compose/tokens";
 import type { TextLayer } from "@/lib/layout/types";
 import { clamp, type PixelRect, type SnapGuide, snapRect } from "./geometry";
@@ -45,6 +46,22 @@ export function TextLayerNode({
 		registerNode(layer.id, textRef.current);
 		return () => registerNode(layer.id, null);
 	}, [layer.id, registerNode]);
+
+	// Load the selected web font so the canvas previews it. Konva measures glyphs
+	// synchronously from document.fonts, so without this the node renders the
+	// serif fallback and font-family changes don't preview. Once the FontFace
+	// resolves we force the layer to redraw so it re-measures with the real font.
+	useEffect(() => {
+		const url = BUNDLED_FONTS[layer.fontFamily];
+		if (!url) return;
+		let cancelled = false;
+		void loadFont(layer.fontFamily, url).then(() => {
+			if (!cancelled) textRef.current?.getLayer()?.batchDraw();
+		});
+		return () => {
+			cancelled = true;
+		};
+	}, [layer.fontFamily]);
 
 	return (
 		<KonvaText

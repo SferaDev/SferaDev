@@ -30,7 +30,7 @@ import {
 	updatePhotoSlot,
 	updateTextLayer,
 } from "./layout-ops";
-import { SAMPLE_TOKENS } from "./preview-tokens";
+import { type PreviewTokens, SAMPLE_TOKENS } from "./preview-tokens";
 import { resolveSelection, type Selection } from "./selection";
 
 // react-konva must never run during SSR (it needs the DOM canvas). Loading the
@@ -53,6 +53,12 @@ interface TemplateEditorProps {
 	presets: PresetSummary[];
 	saving: boolean;
 	onSave: (layout: BoothLayout) => void;
+	/**
+	 * Token values used to render `{coupleNames}` `{date}` `{eventName}` in the
+	 * canvas + live preview. Defaults to generic sample copy; the editor page
+	 * passes the current event's values so the preview matches the real event.
+	 */
+	previewTokens?: PreviewTokens;
 }
 
 /**
@@ -67,7 +73,9 @@ export function TemplateEditor({
 	presets,
 	saving,
 	onSave,
+	previewTokens,
 }: TemplateEditorProps) {
+	const tokens = previewTokens ?? SAMPLE_TOKENS;
 	const [layout, setLayout] = useState<BoothLayout>(initialLayout);
 	const [selection, setSelection] = useState<Selection | null>(null);
 	const [assetUrls, setAssetUrls] = useState<Record<string, string>>({});
@@ -239,14 +247,14 @@ export function TemplateEditor({
 					<TemplateEditorCanvas
 						layout={layout}
 						selection={selection}
-						tokens={SAMPLE_TOKENS}
+						tokens={tokens}
 						assetUrls={assetUrls}
 						onSelect={setSelection}
 						onUpdatePhotoSlot={onUpdatePhotoSlot}
 						onUpdateTextLayer={onUpdateTextLayer}
 						onUpdateGraphicLayer={onUpdateGraphicLayer}
 					/>
-					<EditorPreview layout={layout} tokens={SAMPLE_TOKENS} assetUrls={assetUrls} />
+					<EditorPreview layout={layout} tokens={tokens} assetUrls={assetUrls} />
 				</div>
 
 				<Card className="order-3">
