@@ -138,8 +138,8 @@ export default function KioskAttractPage() {
 		return (
 			<div className="min-h-screen flex items-center justify-center bg-black text-white">
 				<div className="text-center">
-					<h1 className="text-2xl font-bold mb-2">{t("eventNotFoundTitle")}</h1>
-					<p className="text-muted-foreground">{t("eventNotFoundDescription")}</p>
+					<h1 className="text-4xl font-bold mb-3">{t("eventNotFoundTitle")}</h1>
+					<p className="text-xl text-muted-foreground">{t("eventNotFoundDescription")}</p>
 				</div>
 			</div>
 		);
@@ -171,20 +171,20 @@ export default function KioskAttractPage() {
 				)}
 
 				<h1
-					className="text-4xl md:text-6xl font-bold mb-4"
+					className="text-5xl md:text-7xl font-bold mb-4"
 					style={headingFontFamily ? { fontFamily: headingFontFamily } : undefined}
 				>
 					{attractTitle}
 				</h1>
 
 				{attractSubtitle && (
-					<p className="text-xl md:text-2xl mb-8 opacity-80">{attractSubtitle}</p>
+					<p className="text-2xl md:text-3xl mb-8 opacity-80">{attractSubtitle}</p>
 				)}
 
 				<Button
 					size="xl"
 					onClick={handleStart}
-					className={cn(PRIMARY_CTA_CLASS, BRANDED_CTA_FEEDBACK)}
+					className={cn(PRIMARY_CTA_CLASS, BRANDED_CTA_FEEDBACK, "h-16 px-12 text-2xl")}
 					style={{ backgroundColor: primaryColor, boxShadow: `0 0 40px -8px ${accentColor}` }}
 				>
 					{ctaLabel}
@@ -198,7 +198,7 @@ export default function KioskAttractPage() {
 
 			{/* Organization branding (admin can hide the "Powered by" footer) */}
 			{event.showPoweredBy ? (
-				<div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/40 text-sm">
+				<div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/40 text-base">
 					{tCommon("poweredBy")}
 				</div>
 			) : null}

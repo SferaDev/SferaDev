@@ -59,29 +59,27 @@ export default function KioskConsentPage() {
 
 	return (
 		<div className="min-h-screen flex flex-col items-center justify-center bg-black text-white p-8">
-			<div className="max-w-lg text-center">
-				<Shield className="h-16 w-16 mx-auto mb-6 opacity-80" style={{ color: accentColor }} />
+			<div className="max-w-2xl text-center">
+				<Shield className="h-20 w-20 mx-auto mb-6 opacity-80" style={{ color: accentColor }} />
 
 				<h1
-					className="text-3xl md:text-4xl font-bold mb-6"
+					className="text-4xl md:text-5xl font-bold mb-6"
 					style={headingFontFamily ? { fontFamily: headingFontFamily } : undefined}
 				>
 					{t("title")}
 				</h1>
 
-				<p className="text-lg md:text-xl mb-6 opacity-80 leading-relaxed">{consentBody}</p>
+				<p className="text-2xl md:text-3xl mb-6 opacity-80 leading-relaxed">{consentBody}</p>
 
 				{event.retentionDays && (
-					<p className="text-base mb-8 opacity-60">
-						{t("retention", { days: event.retentionDays })}
-					</p>
+					<p className="text-xl mb-8 opacity-60">{t("retention", { days: event.retentionDays })}</p>
 				)}
 
 				<div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
 					<Button
 						size="xl"
 						onClick={handleAgree}
-						className={cn(PRIMARY_CTA_CLASS, BRANDED_CTA_FEEDBACK)}
+						className={cn(PRIMARY_CTA_CLASS, BRANDED_CTA_FEEDBACK, "h-16 px-12 text-2xl")}
 						style={{ backgroundColor: primaryColor }}
 					>
 						{t("agree")}
@@ -92,6 +90,7 @@ export default function KioskConsentPage() {
 						onClick={handleDecline}
 						className={cn(
 							PRIMARY_CTA_CLASS,
+							"h-16 px-12 text-2xl",
 							"bg-transparent border-white/30 text-white hover:bg-white/10",
 						)}
 					>
