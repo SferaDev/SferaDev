@@ -438,6 +438,7 @@
 			"templatesCount": "{count} plantillas",
 			"manageTemplates": "Gestionar plantillas",
 			"printManagement": "Imprimir",
+			"kioskSettings": "Configuración del quiosco",
 			"recycleBin": "Papelera"
 		},
 		"trash": {
@@ -454,6 +455,7 @@
 		},
 		"eventSettings": {
 			"title": "Ajustes del evento",
+			"kioskTitle": "Configuración del quiosco",
 			"saved": "Ajustes guardados",
 			"couldNotSave": "No se pudieron guardar los ajustes",
 			"tabs": {
