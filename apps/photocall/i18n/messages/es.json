@@ -156,7 +156,9 @@
 			"chooseFrame": "Elige un marco",
 			"noTemplates": "No hay plantillas disponibles",
 			"continueWithoutFrame": "Continuar sin marco",
-			"pickLook": "Elige un estilo"
+			"pickLook": "Elige un estilo",
+			"noTemplatesTitle": "¡Cuando quieras!",
+			"noTemplatesSubtitle": "Aún no hay marcos para este evento, pero igual puedes hacerte las fotos."
 		},
 		"capture": {
 			"allShotsCaptured": "¡Todas las fotos capturadas!",
@@ -224,7 +226,8 @@
 			"photosNotFound": "No hemos podido encontrar tus fotos. Inténtalo de nuevo.",
 			"processFailed": "No se pudo procesar tu foto. Inténtalo de nuevo.",
 			"retry": "Reintentar",
-			"startOver": "Empezar de nuevo"
+			"startOver": "Empezar de nuevo",
+			"sendToPrinter": "Enviar a la impresora"
 		},
 		"filters": {
 			"none": "Original",
@@ -633,7 +636,13 @@
 			"addTemplate": "Añadir plantilla",
 			"addDialogDescription": "Sube una superposición PNG para los marcos de tu fotomatón.",
 			"emptyTitle": "Aún no hay plantillas",
-			"emptyDescription": "Sube imágenes de superposición PNG para tu fotomatón",
+			"emptyDescription": "Diseña una plantilla desde cero en el editor o empieza con una de las plantillas de abajo.",
+			"designTemplate": "Diseñar plantilla",
+			"designFirstTemplate": "Diseña tu primera plantilla",
+			"advancedUpload": "Avanzado: subir PNG",
+			"presetsTitle": "Empieza con una plantilla predefinida",
+			"presetsDescription": "Elige un diseño listo y personalízalo en el editor.",
+			"presetShotCount": "{count} fotos",
 			"captionConfigured": "Pie configurado",
 			"safeAreaSet": "Área segura definida",
 			"editLayout": "Editar composición",
@@ -742,5 +751,18 @@
 	},
 	"guestAlbums": {
 		"yourAlbums": "Tus álbumes"
+	},
+	"share": {
+		"defaultTitle": "Photocall",
+		"share": "Compartir",
+		"download": "Descargar",
+		"shareText": "¡Mira esta foto de {event}!",
+		"linkCopied": "Enlace copiado",
+		"photoTitle": "Foto {code}",
+		"photoAlt": "Momento capturado {code}",
+		"takenOn": "Tomada el {date}",
+		"notFoundTitle": "Foto no encontrada",
+		"notFoundDescription": "Esta foto puede haber caducado o haber sido eliminada.",
+		"visitPhotocall": "Visitar Photocall"
 	}
 }

@@ -156,7 +156,9 @@
 			"chooseFrame": "Tria un marc",
 			"noTemplates": "No hi ha plantilles disponibles",
 			"continueWithoutFrame": "Continua sense marc",
-			"pickLook": "Tria un estil"
+			"pickLook": "Tria un estil",
+			"noTemplatesTitle": "Quan vulguis!",
+			"noTemplatesSubtitle": "Encara no hi ha marcs per a aquest esdeveniment, però igualment pots fer-te les fotos."
 		},
 		"capture": {
 			"allShotsCaptured": "Totes les fotos capturades!",
@@ -224,7 +226,8 @@
 			"photosNotFound": "No hem pogut trobar les teves fotos. Torna-ho a provar.",
 			"processFailed": "No s'ha pogut processar la teva foto. Torna-ho a provar.",
 			"retry": "Reintenta",
-			"startOver": "Comença de nou"
+			"startOver": "Comença de nou",
+			"sendToPrinter": "Envia a la impressora"
 		},
 		"filters": {
 			"none": "Original",
@@ -633,7 +636,13 @@
 			"addTemplate": "Afegeix una plantilla",
 			"addDialogDescription": "Puja una superposició PNG per als marcs del teu fotomató.",
 			"emptyTitle": "Encara no hi ha plantilles",
-			"emptyDescription": "Puja imatges de superposició PNG per al teu fotomató",
+			"emptyDescription": "Dissenya una plantilla des de zero a l'editor o comença amb una de les plantilles de sota.",
+			"designTemplate": "Dissenya una plantilla",
+			"designFirstTemplate": "Dissenya la teva primera plantilla",
+			"advancedUpload": "Avançat: puja un PNG",
+			"presetsTitle": "Comença amb una plantilla predefinida",
+			"presetsDescription": "Tria un disseny preparat i personalitza'l a l'editor.",
+			"presetShotCount": "{count} fotos",
 			"captionConfigured": "Peu configurat",
 			"safeAreaSet": "Àrea segura definida",
 			"editLayout": "Edita la composició",
@@ -742,5 +751,18 @@
 	},
 	"guestAlbums": {
 		"yourAlbums": "Els teus àlbums"
+	},
+	"share": {
+		"defaultTitle": "Photocall",
+		"share": "Comparteix",
+		"download": "Descarrega",
+		"shareText": "Mira aquesta foto de {event}!",
+		"linkCopied": "Enllaç copiat",
+		"photoTitle": "Foto {code}",
+		"photoAlt": "Moment capturat {code}",
+		"takenOn": "Feta el {date}",
+		"notFoundTitle": "Foto no trobada",
+		"notFoundDescription": "Aquesta foto pot haver caducat o haver estat eliminada.",
+		"visitPhotocall": "Visita Photocall"
 	}
 }
