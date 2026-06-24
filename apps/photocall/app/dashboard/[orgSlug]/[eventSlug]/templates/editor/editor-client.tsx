@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useSession } from "@/lib/auth-client";
-import { ALL_FILTERS } from "@/lib/compose/css-filters";
+import { ALL_FILTERS, FILTER_LABELS } from "@/lib/compose/css-filters";
 import { serializeLayout } from "@/lib/layout/parse";
 import type { BoothLayout, FilterKind } from "@/lib/layout/types";
 
@@ -191,7 +191,7 @@ export default function TemplateEditorClient() {
 											)
 										}
 									>
-										{filter}
+										{FILTER_LABELS[filter]}
 									</Button>
 								);
 							})}

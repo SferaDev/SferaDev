@@ -42,7 +42,7 @@ export function TextEditOverlay({ layer, stage, onChange, onClose }: TextEditOve
 					onClose();
 				}
 			}}
-			className="absolute z-10 resize-none overflow-hidden rounded border border-blue-500 bg-white/95 p-1 shadow"
+			className="absolute z-10 resize-none overflow-hidden rounded border border-rose-500 bg-white/95 p-1 shadow"
 			style={{
 				left,
 				top,

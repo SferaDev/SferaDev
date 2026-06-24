@@ -21,6 +21,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { DEFAULT_BRAND_COLOR } from "@/lib/branding";
 import { type Orientation, PAPER_SIZE_MM, type PaperSize } from "@/lib/layout/types";
 import {
 	addBridgePrinter,
@@ -137,7 +138,7 @@ export default function PrintManagement() {
 		canvas.height = 900;
 		const context = canvas.getContext("2d");
 		if (context) {
-			context.fillStyle = event?.primaryColor || "#e11d48";
+			context.fillStyle = event?.primaryColor || DEFAULT_BRAND_COLOR;
 			context.fillRect(0, 0, canvas.width, canvas.height);
 			context.fillStyle = "#ffffff";
 			context.font = "bold 48px system-ui, sans-serif";

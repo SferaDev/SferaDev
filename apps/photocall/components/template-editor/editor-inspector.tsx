@@ -53,7 +53,7 @@ function PercentField({
 	step?: number;
 }) {
 	return (
-		<div>
+		<div className="space-y-1">
 			<Label className="text-xs text-muted-foreground">{label}</Label>
 			<Input
 				type="number"
@@ -84,7 +84,7 @@ function NumberField({
 	step?: number;
 }) {
 	return (
-		<div>
+		<div className="space-y-1">
 			<Label className="text-xs text-muted-foreground">{label}</Label>
 			<Input
 				type="number"
@@ -109,13 +109,13 @@ function ColorField({
 	onChange: (value: string) => void;
 }) {
 	return (
-		<div>
+		<div className="space-y-1">
 			<Label className="text-xs text-muted-foreground">{label}</Label>
 			<Input
 				type="color"
 				value={value}
 				onChange={(event) => onChange(event.target.value)}
-				className="h-8 p-1"
+				className="h-8 p-1 [&::-webkit-color-swatch]:rounded-sm [&::-webkit-color-swatch]:border-0 [&::-webkit-color-swatch-wrapper]:p-0"
 			/>
 		</div>
 	);

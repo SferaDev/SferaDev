@@ -114,7 +114,7 @@ export function GraphicLayerNode({
 				<Rect
 					width={rect.width}
 					height={rect.height}
-					stroke="#3b82f6"
+					stroke="#e11d48"
 					strokeWidth={1.5}
 					dash={[4, 4]}
 					listening={false}

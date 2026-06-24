@@ -167,8 +167,8 @@ export function TemplateEditorCanvas({
 						rotateEnabled
 						keepRatio={false}
 						ignoreStroke
-						borderStroke="#3b82f6"
-						anchorStroke="#3b82f6"
+						borderStroke="#e11d48"
+						anchorStroke="#e11d48"
 						anchorFill="#ffffff"
 						anchorSize={8}
 						boundBoxFunc={(oldBox, newBox) =>

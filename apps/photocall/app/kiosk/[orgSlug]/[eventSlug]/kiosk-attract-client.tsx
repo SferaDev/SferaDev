@@ -25,6 +25,8 @@ import { Label } from "@/components/ui/label";
 import { useAdminAuth } from "@/hooks/use-admin-auth";
 import { useFullscreen } from "@/hooks/use-fullscreen";
 import { useKioskFont } from "@/hooks/use-kiosk-font";
+import { BRANDED_CTA_FEEDBACK, DEFAULT_BRAND_COLOR, PRIMARY_CTA_CLASS } from "@/lib/branding";
+import { cn } from "@/lib/utils";
 
 export default function KioskAttractPage() {
 	const router = useRouter();
@@ -34,6 +36,7 @@ export default function KioskAttractPage() {
 
 	const t = useTranslations("kiosk.attract");
 	const tCommon = useTranslations("kiosk.common");
+	const tLoading = useTranslations("kiosk.loading");
 
 	const {
 		isAuthenticated: isAdmin,
@@ -121,7 +124,11 @@ export default function KioskAttractPage() {
 
 	if (eventLoading) {
 		return (
-			<div className="min-h-screen flex items-center justify-center bg-black text-white">
+			<div
+				className="min-h-screen flex items-center justify-center bg-black text-white"
+				role="status"
+				aria-label={tLoading("label")}
+			>
 				<Loader2 className="h-12 w-12 animate-spin" />
 			</div>
 		);
@@ -138,7 +145,7 @@ export default function KioskAttractPage() {
 		);
 	}
 
-	const primaryColor = event.primaryColor || "#e11d48";
+	const primaryColor = event.primaryColor || DEFAULT_BRAND_COLOR;
 	const accentColor = event.accentColor || primaryColor;
 
 	// Admin overrides take precedence; an empty override falls back to the i18n
@@ -175,9 +182,9 @@ export default function KioskAttractPage() {
 				)}
 
 				<Button
-					size="lg"
+					size="xl"
 					onClick={handleStart}
-					className="text-xl px-12 py-8 rounded-full"
+					className={cn(PRIMARY_CTA_CLASS, BRANDED_CTA_FEEDBACK)}
 					style={{ backgroundColor: primaryColor, boxShadow: `0 0 40px -8px ${accentColor}` }}
 				>
 					{ctaLabel}
@@ -204,7 +211,7 @@ export default function KioskAttractPage() {
 					variant="ghost"
 					size="sm"
 					onClick={() => void enterFullscreen()}
-					className="absolute bottom-3 right-4 z-20 text-white/40 hover:bg-white/10 hover:text-white"
+					className="absolute bottom-4 right-4 z-20 text-white/40 hover:bg-white/10 hover:text-white"
 				>
 					<Maximize className="mr-2 h-4 w-4" aria-hidden="true" />
 					{t("enterFullscreen")}

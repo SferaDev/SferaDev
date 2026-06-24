@@ -28,8 +28,10 @@ import {
 	recordBoomerangFrames,
 	toPalindrome,
 } from "@/lib/boomerang/encode";
+import { BRANDED_CTA_FEEDBACK, DEFAULT_BRAND_COLOR, PRIMARY_CTA_CLASS } from "@/lib/branding";
 import { downloadBlob } from "@/lib/canvas-utils";
 import { enqueuePhoto } from "@/lib/offline-queue";
+import { cn } from "@/lib/utils";
 
 /** ServiceWorkerRegistration with the optional Background Sync extension. */
 interface SyncCapableRegistration extends ServiceWorkerRegistration {
@@ -53,6 +55,7 @@ export default function KioskBoomerangPage() {
 	const t = useTranslations("kiosk.boomerang");
 	const tCommon = useTranslations("kiosk.common");
 	const tResult = useTranslations("kiosk.result");
+	const tLoading = useTranslations("kiosk.loading");
 
 	const { data: event, isLoading: eventLoading } = useSWR(
 		["public-event", orgSlug, eventSlug],
@@ -241,7 +244,11 @@ export default function KioskBoomerangPage() {
 
 	if (eventLoading) {
 		return (
-			<div className="min-h-screen flex items-center justify-center bg-black text-white">
+			<div
+				className="min-h-screen flex items-center justify-center bg-black text-white"
+				role="status"
+				aria-label={tLoading("label")}
+			>
 				<Loader2 className="h-12 w-12 animate-spin" />
 			</div>
 		);
@@ -257,7 +264,7 @@ export default function KioskBoomerangPage() {
 		return null;
 	}
 
-	const primaryColor = event.primaryColor || "#e11d48";
+	const primaryColor = event.primaryColor || DEFAULT_BRAND_COLOR;
 
 	// ── Result screen (shared GIF + QR + download, no print) ──
 	if (stage === "done") {
@@ -283,7 +290,7 @@ export default function KioskBoomerangPage() {
 							initial={{ opacity: 0, scale: 0.96 }}
 							animate={{ opacity: 1, scale: 1 }}
 							transition={{ type: "spring", stiffness: 220, damping: 22 }}
-							className="rounded-lg overflow-hidden bg-muted flex items-center justify-center"
+							className="rounded-lg overflow-hidden bg-white/5 flex items-center justify-center"
 						>
 							{gifUrl && (
 								<img
@@ -323,7 +330,7 @@ export default function KioskBoomerangPage() {
 									size="lg"
 									variant="outline"
 									onClick={handleDownload}
-									className="border-white/20 text-white hover:bg-white/10"
+									className="bg-transparent border-white/20 text-white hover:bg-white/10"
 								>
 									<Download className="h-5 w-5 mr-2" />
 									{tResult("download")}
@@ -331,9 +338,9 @@ export default function KioskBoomerangPage() {
 							)}
 
 							<Button
-								size="lg"
+								size="xl"
 								onClick={handleNew}
-								className="w-full"
+								className={cn(PRIMARY_CTA_CLASS, BRANDED_CTA_FEEDBACK, "w-full")}
 								style={{ backgroundColor: primaryColor }}
 							>
 								<Clapperboard className="h-5 w-5 mr-2" />
@@ -482,17 +489,20 @@ export default function KioskBoomerangPage() {
 						<div className="flex items-center gap-4">
 							<Button
 								variant="outline"
-								size="lg"
+								size="xl"
 								onClick={redo}
-								className="h-16 px-8 rounded-full text-lg border-white/30 text-white hover:bg-white/10"
+								className={cn(
+									PRIMARY_CTA_CLASS,
+									"bg-transparent border-white/30 text-white hover:bg-white/10",
+								)}
 							>
 								<RotateCcw className="h-5 w-5 mr-2" />
 								{t("redo")}
 							</Button>
 							<Button
-								size="lg"
+								size="xl"
 								onClick={() => void share()}
-								className="h-16 px-10 rounded-full text-lg"
+								className={cn(PRIMARY_CTA_CLASS, BRANDED_CTA_FEEDBACK)}
 								style={{ backgroundColor: primaryColor }}
 							>
 								<Check className="h-5 w-5 mr-2" />
@@ -505,7 +515,7 @@ export default function KioskBoomerangPage() {
 							aria-label={t("recordBoomerang")}
 							onClick={() => void record()}
 							disabled={!isReady || isBusy}
-							className="h-20 w-20 rounded-full"
+							className={cn("h-20 w-20 rounded-full", BRANDED_CTA_FEEDBACK)}
 							style={{ backgroundColor: primaryColor }}
 						>
 							<Clapperboard className="h-10 w-10" />
@@ -533,7 +543,12 @@ export default function KioskBoomerangPage() {
 					<AlertCircle className="h-16 w-16 text-destructive mb-4" />
 					<h2 className="text-2xl font-bold mb-2">{t("cameraErrorTitle")}</h2>
 					<p className="text-white/60 mb-8 text-center">{cameraError}</p>
-					<Button size="lg" onClick={() => start()} style={{ backgroundColor: primaryColor }}>
+					<Button
+						size="lg"
+						onClick={() => start()}
+						className={BRANDED_CTA_FEEDBACK}
+						style={{ backgroundColor: primaryColor }}
+					>
 						<RotateCcw className="h-5 w-5 mr-2" />
 						{tCommon("tryAgain")}
 					</Button>
@@ -549,6 +564,7 @@ export default function KioskBoomerangPage() {
 					<Button
 						size="lg"
 						onClick={() => setError(null)}
+						className={BRANDED_CTA_FEEDBACK}
 						style={{ backgroundColor: primaryColor }}
 					>
 						<RotateCcw className="h-5 w-5 mr-2" />

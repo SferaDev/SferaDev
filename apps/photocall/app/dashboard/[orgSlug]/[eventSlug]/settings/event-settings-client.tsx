@@ -42,6 +42,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { enumerateCameras } from "@/hooks/use-camera";
 import { useToast } from "@/hooks/use-toast";
 import { useSession } from "@/lib/auth-client";
+import { DEFAULT_BRAND_COLOR } from "@/lib/branding";
 import { BUNDLED_FONTS } from "@/lib/compose/fonts";
 import type { Orientation, PaperSize } from "@/lib/layout/types";
 import { type BridgePrinter, listBridgePrinters } from "@/lib/print/bridge-client";
@@ -296,7 +297,7 @@ export default function EventSettingsPage() {
 			canvas.height = 900;
 			const context = canvas.getContext("2d");
 			if (context) {
-				context.fillStyle = formData.primaryColor || "#e11d48";
+				context.fillStyle = formData.primaryColor || DEFAULT_BRAND_COLOR;
 				context.fillRect(0, 0, canvas.width, canvas.height);
 				context.fillStyle = "#ffffff";
 				context.font = "bold 48px system-ui, sans-serif";

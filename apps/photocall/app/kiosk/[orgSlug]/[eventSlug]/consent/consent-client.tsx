@@ -8,6 +8,8 @@ import { getPublicEvent } from "@/actions/events";
 import { abandonSession } from "@/actions/sessions";
 import { Button } from "@/components/ui/button";
 import { useKioskFont } from "@/hooks/use-kiosk-font";
+import { BRANDED_CTA_FEEDBACK, DEFAULT_BRAND_COLOR, PRIMARY_CTA_CLASS } from "@/lib/branding";
+import { cn } from "@/lib/utils";
 
 export default function KioskConsentPage() {
 	const router = useRouter();
@@ -50,7 +52,7 @@ export default function KioskConsentPage() {
 		);
 	}
 
-	const primaryColor = event.primaryColor || "#e11d48";
+	const primaryColor = event.primaryColor || DEFAULT_BRAND_COLOR;
 	const accentColor = event.accentColor || primaryColor;
 	// Admin override falls back to the i18n consent body when empty.
 	const consentBody = event.consentText || t("description");
@@ -77,18 +79,21 @@ export default function KioskConsentPage() {
 
 				<div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
 					<Button
-						size="lg"
+						size="xl"
 						onClick={handleAgree}
-						className="text-lg px-10 py-6 rounded-full"
+						className={cn(PRIMARY_CTA_CLASS, BRANDED_CTA_FEEDBACK)}
 						style={{ backgroundColor: primaryColor }}
 					>
 						{t("agree")}
 					</Button>
 					<Button
-						size="lg"
+						size="xl"
 						variant="outline"
 						onClick={handleDecline}
-						className="text-lg px-10 py-6 rounded-full border-white/30 text-white hover:bg-white/10"
+						className={cn(
+							PRIMARY_CTA_CLASS,
+							"bg-transparent border-white/30 text-white hover:bg-white/10",
+						)}
 					>
 						{t("decline")}
 					</Button>

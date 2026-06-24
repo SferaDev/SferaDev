@@ -12,9 +12,11 @@ import { listPublicTemplates } from "@/actions/templates";
 import { TemplateLivePreview } from "@/components/template-live-preview";
 import { Button } from "@/components/ui/button";
 import { useKioskPreviewCamera } from "@/hooks/use-kiosk-preview-camera";
+import { BRANDED_CTA_FEEDBACK, DEFAULT_BRAND_COLOR, PRIMARY_CTA_CLASS } from "@/lib/branding";
 import { ALL_FILTERS, cssFilterFor } from "@/lib/compose/css-filters";
 import { parseLayoutJson } from "@/lib/layout/parse";
 import type { FilterKind } from "@/lib/layout/types";
+import { cn } from "@/lib/utils";
 
 type PublicTemplate = Awaited<ReturnType<typeof listPublicTemplates>>[number];
 
@@ -33,6 +35,7 @@ export default function KioskSelectPage() {
 	const sessionId = searchParams.get("session");
 	const t = useTranslations("kiosk.select");
 	const tCommon = useTranslations("kiosk.common");
+	const tLoading = useTranslations("kiosk.loading");
 
 	const { data: event, isLoading: eventLoading } = useSWR(
 		["public-event", orgSlug, eventSlug],
@@ -100,7 +103,11 @@ export default function KioskSelectPage() {
 
 	if (eventLoading || templatesLoading) {
 		return (
-			<div className="min-h-screen flex items-center justify-center bg-black text-white">
+			<div
+				className="min-h-screen flex items-center justify-center bg-black text-white"
+				role="status"
+				aria-label={tLoading("label")}
+			>
 				<Loader2 className="h-12 w-12 animate-spin" />
 			</div>
 		);
@@ -111,7 +118,7 @@ export default function KioskSelectPage() {
 		return null;
 	}
 
-	const primaryColor = event.primaryColor || "#e11d48";
+	const primaryColor = event.primaryColor || DEFAULT_BRAND_COLOR;
 
 	const goToBoomerang = () => {
 		setNavigating(true);
@@ -155,6 +162,7 @@ export default function KioskSelectPage() {
 				<div className="flex items-center justify-between mb-8">
 					<Button
 						variant="ghost"
+						disabled={navigating}
 						onClick={() =>
 							event.boomerangEnabled ? setMode(null) : router.push(`/kiosk/${orgSlug}/${eventSlug}`)
 						}
@@ -164,7 +172,7 @@ export default function KioskSelectPage() {
 						{tCommon("back")}
 					</Button>
 					<h1 className="text-2xl font-bold">{t("chooseFrame")}</h1>
-					<Button variant="ghost" onClick={handleSkip} className="text-white">
+					<Button variant="ghost" disabled={navigating} onClick={handleSkip} className="text-white">
 						{tCommon("skip")}
 					</Button>
 				</div>
@@ -174,9 +182,9 @@ export default function KioskSelectPage() {
 						<p className="text-2xl font-semibold mb-2">{t("noTemplatesTitle")}</p>
 						<p className="text-white/70 mb-6">{t("noTemplatesSubtitle")}</p>
 						<Button
-							size="lg"
+							size="xl"
 							onClick={handleSkip}
-							className="text-lg px-10 py-6 rounded-full"
+							className={cn(PRIMARY_CTA_CLASS, BRANDED_CTA_FEEDBACK)}
 							style={{ backgroundColor: primaryColor }}
 						>
 							{t("continueWithoutFrame")}
@@ -190,6 +198,7 @@ export default function KioskSelectPage() {
 								<motion.button
 									key={template.id}
 									type="button"
+									aria-label={template.name}
 									onClick={() => handleSelectTemplate(template)}
 									disabled={navigating}
 									initial={{ opacity: 0, y: 16 }}
@@ -197,7 +206,7 @@ export default function KioskSelectPage() {
 									transition={{ delay: index * 0.04, type: "spring", stiffness: 260, damping: 24 }}
 									whileHover={{ scale: 1.04 }}
 									whileTap={{ scale: 0.97 }}
-									className="aspect-3/4 rounded-lg overflow-hidden border-2 border-transparent hover:border-white transition-colors bg-white/5 flex items-center justify-center"
+									className="aspect-3/4 rounded-lg overflow-hidden border-2 border-transparent hover:border-white transition-colors bg-white/5 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black disabled:opacity-50"
 								>
 									{layout ? (
 										<TemplateLivePreview
@@ -216,7 +225,7 @@ export default function KioskSelectPage() {
 											className="w-full h-full object-cover"
 										/>
 									) : (
-										<span className="text-sm text-white/60">{template.name}</span>
+										<span className="text-base text-white/80">{template.name}</span>
 									)}
 								</motion.button>
 							);
@@ -289,7 +298,7 @@ function ModePicker({ primaryColor, busy, onBack, onPickStrip, onPickBoomerang }
 								}}
 								whileHover={{ scale: 1.03 }}
 								whileTap={{ scale: 0.97 }}
-								className="flex flex-col items-center gap-4 rounded-2xl border border-white/15 bg-white/5 p-10 text-center transition-colors hover:border-white/40 disabled:opacity-50"
+								className="flex flex-col items-center gap-4 rounded-2xl border border-white/15 bg-white/5 p-10 text-center transition-colors hover:border-white/40 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
 							>
 								<span
 									className="flex h-20 w-20 items-center justify-center rounded-full"
@@ -382,9 +391,11 @@ function FilterChooser({
 						<motion.button
 							key={filter}
 							type="button"
+							aria-label={tFilters(filter)}
+							aria-pressed={selected === filter}
 							onClick={() => setSelected(filter)}
 							whileTap={{ scale: 0.95 }}
-							className="flex flex-col items-center gap-2"
+							className="flex flex-col items-center gap-2 rounded-xl p-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
 						>
 							<span
 								className="block h-16 w-16 rounded-full border-2"
@@ -401,10 +412,10 @@ function FilterChooser({
 
 				<div className="flex justify-center">
 					<Button
-						size="lg"
+						size="xl"
 						onClick={() => onConfirm(selected)}
 						disabled={busy}
-						className="text-lg px-12 py-6 rounded-full"
+						className={cn(PRIMARY_CTA_CLASS, BRANDED_CTA_FEEDBACK)}
 						style={{ backgroundColor: primaryColor }}
 					>
 						{busy ? <Loader2 className="h-5 w-5 mr-2 animate-spin" /> : null}

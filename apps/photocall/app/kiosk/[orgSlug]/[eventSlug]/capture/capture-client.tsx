@@ -11,11 +11,13 @@ import { saveCapture, updateShotIndex } from "@/actions/sessions";
 import { listPublicTemplates } from "@/actions/templates";
 import { Button } from "@/components/ui/button";
 import { type CameraFacing, useCamera } from "@/hooks/use-camera";
+import { BRANDED_CTA_FEEDBACK, DEFAULT_BRAND_COLOR, PRIMARY_CTA_CLASS } from "@/lib/branding";
 import { cssFilterFor } from "@/lib/compose/css-filters";
 import { requiredCaptureCount } from "@/lib/layout/captures";
 import { parseLayoutJson } from "@/lib/layout/parse";
 import type { FilterKind } from "@/lib/layout/types";
 import { writePhotoboothSession } from "@/lib/photobooth-session";
+import { cn } from "@/lib/utils";
 
 /** Pause (ms) between auto-chained shots so guests can re-pose. */
 const AUTO_SHOOT_GAP_MS = 1400;
@@ -47,6 +49,7 @@ export default function KioskCapturePage() {
 	const filter: FilterKind = isFilterKind(filterParam) ? filterParam : "none";
 	const t = useTranslations("kiosk.capture");
 	const tCommon = useTranslations("kiosk.common");
+	const tLoading = useTranslations("kiosk.loading");
 
 	const { data: event, isLoading: eventLoading } = useSWR(
 		["public-event", orgSlug, eventSlug],
@@ -247,7 +250,11 @@ export default function KioskCapturePage() {
 
 	if (eventLoading) {
 		return (
-			<div className="min-h-screen flex items-center justify-center bg-black text-white">
+			<div
+				className="min-h-screen flex items-center justify-center bg-black text-white"
+				role="status"
+				aria-label={tLoading("label")}
+			>
 				<Loader2 className="h-12 w-12 animate-spin" />
 			</div>
 		);
@@ -258,7 +265,7 @@ export default function KioskCapturePage() {
 		return null;
 	}
 
-	const primaryColor = event.primaryColor || "#e11d48";
+	const primaryColor = event.primaryColor || DEFAULT_BRAND_COLOR;
 	const accentColor = event.accentColor || primaryColor;
 	const nextSlot = filledCount;
 	const mirrorTransform =
@@ -363,7 +370,7 @@ export default function KioskCapturePage() {
 										type="button"
 										onClick={() => captureShot(index)}
 										disabled={busy || countdown !== null}
-										className="text-xs text-white/80 underline disabled:opacity-40"
+										className="rounded px-2 py-1 text-sm text-white/90 underline transition-colors hover:text-white disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
 									>
 										{t("retake")}
 									</button>
@@ -392,10 +399,10 @@ export default function KioskCapturePage() {
 
 					{allShotsTaken ? (
 						<Button
-							size="lg"
+							size="xl"
 							onClick={handleFinish}
 							disabled={finishing}
-							className="h-16 px-10 rounded-full text-lg"
+							className={cn(PRIMARY_CTA_CLASS, BRANDED_CTA_FEEDBACK)}
 							style={{ backgroundColor: primaryColor }}
 						>
 							{finishing ? (
@@ -411,7 +418,7 @@ export default function KioskCapturePage() {
 							aria-label={t("takePhoto")}
 							onClick={() => captureShot(nextSlot)}
 							disabled={busy || countdown !== null || !isReady || (layout != null && autoShoot)}
-							className="h-20 w-20 rounded-full"
+							className={cn("h-20 w-20 rounded-full", BRANDED_CTA_FEEDBACK)}
 							style={{ backgroundColor: primaryColor }}
 						>
 							<Camera className="h-10 w-10" />
@@ -444,7 +451,12 @@ export default function KioskCapturePage() {
 					<AlertCircle className="h-16 w-16 text-destructive mb-4" />
 					<h2 className="text-2xl font-bold mb-2">{t("cameraErrorTitle")}</h2>
 					<p className="text-white/60 mb-8 text-center">{error}</p>
-					<Button size="lg" onClick={() => start()} style={{ backgroundColor: primaryColor }}>
+					<Button
+						size="lg"
+						onClick={() => start()}
+						className={BRANDED_CTA_FEEDBACK}
+						style={{ backgroundColor: primaryColor }}
+					>
 						<RotateCcw className="h-5 w-5 mr-2" />
 						{tCommon("tryAgain")}
 					</Button>
@@ -460,6 +472,7 @@ export default function KioskCapturePage() {
 					<Button
 						size="lg"
 						onClick={() => setCaptureError(null)}
+						className={BRANDED_CTA_FEEDBACK}
 						style={{ backgroundColor: primaryColor }}
 					>
 						<RotateCcw className="h-5 w-5 mr-2" />

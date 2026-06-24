@@ -10,6 +10,7 @@ import { EventI18nProvider } from "@/components/event-i18n-provider";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import { DEFAULT_BRAND_COLOR } from "@/lib/branding";
 import { downloadBlob } from "@/lib/canvas-utils";
 
 type SharedPhoto = NonNullable<Awaited<ReturnType<typeof getPhotoByShareToken>>>;
@@ -115,7 +116,7 @@ function SharePageContent({ photo }: { photo: SharedPhoto | null }) {
 		);
 	}
 
-	const primaryColor = photo.primaryColor || "#e11d48";
+	const primaryColor = photo.primaryColor || DEFAULT_BRAND_COLOR;
 
 	return (
 		<div className="min-h-screen bg-linear-to-b from-rose-50 to-white dark:from-rose-950 dark:to-background">
