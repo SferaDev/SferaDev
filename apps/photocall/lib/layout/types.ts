@@ -21,6 +21,14 @@ export type FitMode = "cover" | "contain";
 /** A rectangular region that receives one captured photo. */
 export interface PhotoSlot {
 	id: string;
+	/**
+	 * 1-based index of the capture that fills this slot, letting a slot REUSE an
+	 * earlier capture instead of consuming a fresh one. When undefined the slot
+	 * consumes the next new sequential capture (the default 1:1 mapping). This
+	 * lets e.g. a 4-slot strip be shot from only 2–3 distinct poses.
+	 * See {@link ./captures} for the resolution rules.
+	 */
+	captureIndex?: number;
 	/** Normalized 0..1 of canvas width. */
 	x: number;
 	/** Normalized 0..1 of canvas height. */
@@ -158,6 +166,13 @@ export interface PrintMetadata {
 	/** Bleed margin in millimeters added on every side. */
 	bleedMm: number;
 	copies: number;
+	/**
+	 * When true and the layout is a vertical strip, the print output duplicates
+	 * the composed strip side-by-side onto a single 4×6 sheet (cut into two
+	 * identical strips). Undefined/false prints a single strip as today.
+	 * See {@link ../compose/print-layout}.
+	 */
+	tileTwoUp?: boolean;
 }
 
 export type LayoutKind = "single" | "strip_vertical" | "strip_2col" | "grid_2x2" | "postcard";

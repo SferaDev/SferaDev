@@ -2,8 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { composeStrip, loadLayoutFonts } from "@/lib/compose";
+import { requiredCaptureCount } from "@/lib/layout/captures";
 import type { BoothLayout } from "@/lib/layout/types";
-import { shotCount } from "@/lib/layout/types";
 
 /** A neutral gray placeholder "photo" data URL used to preview empty slots. */
 function placeholderPhoto(): string {
@@ -55,7 +55,9 @@ export function TemplatePreview({
 
 		const render = async () => {
 			const placeholder = placeholderPhoto();
-			const photos = Array.from({ length: shotCount(layout) }, () => placeholder);
+			// One placeholder per DISTINCT capture; slots reusing a capture draw the
+			// same placeholder, so the count matches what the kiosk will shoot.
+			const photos = Array.from({ length: requiredCaptureCount(layout) }, () => placeholder);
 			await loadLayoutFonts(layout);
 			const result = await composeStrip({
 				layout,

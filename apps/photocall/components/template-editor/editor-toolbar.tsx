@@ -13,6 +13,7 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
+import { Switch } from "@/components/ui/switch";
 import { ALL_FILTERS, FILTER_LABELS } from "@/lib/compose/css-filters";
 import type { BoothLayout, FilterKind, Orientation, PaperSize } from "@/lib/layout/types";
 import { PAPER_SIZE_MM } from "@/lib/layout/types";
@@ -140,6 +141,21 @@ export function EditorToolbar({
 					className="h-8"
 				/>
 			</div>
+
+			{/* 2-up tiling only makes sense for a vertical strip (two portrait
+			    strips fit side-by-side on one 4×6 sheet). */}
+			{layout.kind === "strip_vertical" ? (
+				<div className="flex items-center gap-2 pb-1.5">
+					<Switch
+						id="tile-two-up"
+						checked={layout.print.tileTwoUp === true}
+						onCheckedChange={(checked) => onUpdatePrint({ tileTwoUp: checked })}
+					/>
+					<Label htmlFor="tile-two-up" className="text-xs text-muted-foreground">
+						Print 2 strips per sheet (2-up)
+					</Label>
+				</div>
+			) : null}
 
 			<div className="w-24">
 				<Label className="text-xs text-muted-foreground">Aspect (h/w)</Label>

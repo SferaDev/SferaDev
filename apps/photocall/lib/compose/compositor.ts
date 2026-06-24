@@ -1,3 +1,4 @@
+import { slotCaptureIndices } from "@/lib/layout/captures";
 import type {
 	Background,
 	BoothLayout,
@@ -12,7 +13,12 @@ import { type LayoutTokens, resolveTokens } from "./tokens";
 /** Options for composing a finished strip/postcard from captured photos. */
 export interface ComposeOptions {
 	layout: BoothLayout;
-	/** Captured photos in slot order (Blob or URL). */
+	/**
+	 * The DISTINCT captures (Blob or URL), in capture order. Its length is the
+	 * layout's `requiredCaptureCount`, NOT necessarily its slot count: each slot
+	 * is filled from `photos[slotCaptureIndex - 1]`, so a slot with a reused
+	 * `captureIndex` draws an earlier capture rather than consuming a new one.
+	 */
 	photos: Array<Blob | string>;
 	tokens: LayoutTokens;
 	/** Output canvas width in pixels; height derives from the layout aspect. */
@@ -72,9 +78,13 @@ export async function composeStrip(options: ComposeOptions): Promise<ComposeResu
 	try {
 		await drawBackground(ctx, layout.background, width, height, resolveSrc);
 
+		// Each slot draws its effective capture: a slot may reuse an earlier
+		// capture via `captureIndex`, so we map slot i → photos[captureIndex - 1]
+		// rather than photos[i]. With no captureIndex this is the 1:1 default.
+		const captureIndices = slotCaptureIndices(layout);
 		for (let i = 0; i < layout.photoSlots.length; i++) {
 			const slot = layout.photoSlots[i];
-			const photoUrl = photoUrls[i];
+			const photoUrl = photoUrls[captureIndices[i] - 1];
 			if (!photoUrl) continue;
 			const img = await loadImageCached(photoUrl);
 			drawPhotoSlot(ctx, slot, img, layout.filter, width, height);

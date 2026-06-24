@@ -12,6 +12,7 @@ import { listPublicTemplates } from "@/actions/templates";
 import { Button } from "@/components/ui/button";
 import { type CameraFacing, useCamera } from "@/hooks/use-camera";
 import { cssFilterFor } from "@/lib/compose/css-filters";
+import { requiredCaptureCount } from "@/lib/layout/captures";
 import { parseLayoutJson } from "@/lib/layout/parse";
 import type { FilterKind } from "@/lib/layout/types";
 import { writePhotoboothSession } from "@/lib/photobooth-session";
@@ -59,7 +60,9 @@ export default function KioskCapturePage() {
 
 	const template = templates?.find((t) => t.id === templateId) ?? null;
 	const layout = template ? parseLayoutJson(template.layoutJson) : null;
-	const shotTotal = layout ? layout.photoSlots.length : 1;
+	// Number of DISTINCT captures to take: slots that reuse an earlier capture
+	// (captureIndex) don't add a shot, so this can be fewer than photoSlots.length.
+	const shotTotal = layout ? requiredCaptureCount(layout) : 1;
 	// The preview filter is the template/guest filter (overrides only matter at compose time).
 	const previewFilter: FilterKind = layout ? filter : "none";
 
