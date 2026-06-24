@@ -73,6 +73,11 @@ export default function KioskSelectPage() {
 		});
 	}, [event?.startDate]);
 
+	// Where the template + filter choice leads: the photo-capture screen for
+	// strips, or the boomerang recorder for boomerangs. Both screens read the
+	// same `session` / `template` / `filter` params.
+	const captureRoute = mode === "boomerang" ? "boomerang" : "capture";
+
 	const goToCapture = async (template: PublicTemplate | null, filter: FilterKind) => {
 		if (!sessionId) return;
 		setNavigating(true);
@@ -84,7 +89,7 @@ export default function KioskSelectPage() {
 		const query = new URLSearchParams({ session: sessionId });
 		if (template) query.set("template", template.id);
 		query.set("filter", filter);
-		router.push(`/kiosk/${orgSlug}/${eventSlug}/capture?${query.toString()}`);
+		router.push(`/kiosk/${orgSlug}/${eventSlug}/${captureRoute}?${query.toString()}`);
 	};
 
 	const handleSelectTemplate = (template: PublicTemplate) => {
@@ -122,13 +127,11 @@ export default function KioskSelectPage() {
 
 	const primaryColor = event.primaryColor || DEFAULT_BRAND_COLOR;
 
-	const goToBoomerang = () => {
-		setNavigating(true);
-		router.push(`/kiosk/${orgSlug}/${eventSlug}/boomerang?session=${sessionId}`);
-	};
-
 	// Capture-mode picker: shown first when the event offers boomerangs and the
-	// guest hasn't chosen a mode yet.
+	// guest hasn't chosen a mode yet. Boomerang now flows through the SAME
+	// template grid + filter chooser as strips (only the final navigation target
+	// differs); with no templates the grid offers a "continue without frame"
+	// path that lands on a plain, undecorated boomerang.
 	if (event.boomerangEnabled && mode === null) {
 		return (
 			<ModePicker
@@ -136,7 +139,7 @@ export default function KioskSelectPage() {
 				busy={navigating}
 				onBack={() => router.push(`/kiosk/${orgSlug}/${eventSlug}`)}
 				onPickStrip={() => setMode("strip")}
-				onPickBoomerang={goToBoomerang}
+				onPickBoomerang={() => setMode("boomerang")}
 			/>
 		);
 	}
