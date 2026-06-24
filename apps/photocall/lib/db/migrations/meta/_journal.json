@@ -1,34 +1,34 @@
 {
-  "version": "7",
-  "dialect": "postgresql",
-  "entries": [
-    {
-      "idx": 0,
-      "version": "7",
-      "when": 1779004516720,
-      "tag": "0000_fine_ben_parker",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1782077354016,
-      "tag": "0001_smart_leper_queen",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1782278622250,
-      "tag": "0002_skip_consent_auto_start",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1782279299580,
-      "tag": "0003_event_language_mirror",
-      "breakpoints": true
-    }
-  ]
+	"version": "7",
+	"dialect": "postgresql",
+	"entries": [
+		{
+			"idx": 0,
+			"version": "7",
+			"when": 1779004516720,
+			"tag": "0000_fine_ben_parker",
+			"breakpoints": true
+		},
+		{
+			"idx": 1,
+			"version": "7",
+			"when": 1782077354016,
+			"tag": "0001_smart_leper_queen",
+			"breakpoints": true
+		},
+		{
+			"idx": 2,
+			"version": "7",
+			"when": 1782278622250,
+			"tag": "0002_skip_consent_auto_start",
+			"breakpoints": true
+		},
+		{
+			"idx": 3,
+			"version": "7",
+			"when": 1782279299580,
+			"tag": "0003_event_language_mirror",
+			"breakpoints": true
+		}
+	]
 }

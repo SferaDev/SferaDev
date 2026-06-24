@@ -1,6 +1,6 @@
 "use client";
 
-import { Camera, Loader2, Lock, Maximize, X } from "lucide-react";
+import { Loader2, Lock, Maximize, X } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
@@ -196,7 +196,9 @@ export default function KioskAttractPage() {
 					{attractTitle}
 				</h1>
 
-				{attractSubtitle && <p className="text-xl md:text-2xl mb-8 opacity-80">{attractSubtitle}</p>}
+				{attractSubtitle && (
+					<p className="text-xl md:text-2xl mb-8 opacity-80">{attractSubtitle}</p>
+				)}
 
 				<Button
 					size="lg"
