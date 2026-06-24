@@ -58,28 +58,39 @@ export default function KioskConsentPage() {
 	const consentBody = event.consentText || t("description");
 
 	return (
-		<div className="min-h-screen flex flex-col items-center justify-center bg-black text-white p-8">
-			<div className="max-w-2xl text-center">
-				<Shield className="h-20 w-20 mx-auto mb-6 opacity-80" style={{ color: accentColor }} />
+		<div className="h-[100svh] flex flex-col items-center justify-center bg-black text-white p-6 sm:p-8">
+			<div className="flex max-h-full max-w-2xl flex-col overflow-y-auto text-center">
+				<Shield
+					className="h-12 w-12 sm:h-16 sm:w-16 lg:h-20 lg:w-20 mx-auto mb-4 sm:mb-6 shrink-0 opacity-80"
+					style={{ color: accentColor }}
+				/>
 
 				<h1
-					className="text-4xl md:text-5xl font-bold mb-6"
+					className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6"
 					style={headingFontFamily ? { fontFamily: headingFontFamily } : undefined}
 				>
 					{t("title")}
 				</h1>
 
-				<p className="text-2xl md:text-3xl mb-6 opacity-80 leading-relaxed">{consentBody}</p>
+				<p className="text-xl sm:text-2xl md:text-3xl mb-4 sm:mb-6 opacity-80 leading-relaxed">
+					{consentBody}
+				</p>
 
 				{event.retentionDays && (
-					<p className="text-xl mb-8 opacity-60">{t("retention", { days: event.retentionDays })}</p>
+					<p className="text-lg sm:text-xl mb-6 sm:mb-8 opacity-60">
+						{t("retention", { days: event.retentionDays })}
+					</p>
 				)}
 
-				<div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
+				<div className="flex flex-col gap-3 sm:flex-row sm:justify-center sm:gap-4">
 					<Button
 						size="xl"
 						onClick={handleAgree}
-						className={cn(PRIMARY_CTA_CLASS, BRANDED_CTA_FEEDBACK, "h-16 px-12 text-2xl")}
+						className={cn(
+							PRIMARY_CTA_CLASS,
+							BRANDED_CTA_FEEDBACK,
+							"h-14 px-10 text-xl sm:h-16 sm:px-12 sm:text-2xl",
+						)}
 						style={{ backgroundColor: primaryColor }}
 					>
 						{t("agree")}
@@ -90,7 +101,7 @@ export default function KioskConsentPage() {
 						onClick={handleDecline}
 						className={cn(
 							PRIMARY_CTA_CLASS,
-							"h-16 px-12 text-2xl",
+							"h-14 px-10 text-xl sm:h-16 sm:px-12 sm:text-2xl",
 							"bg-transparent border-white/30 text-white hover:bg-white/10",
 						)}
 					>

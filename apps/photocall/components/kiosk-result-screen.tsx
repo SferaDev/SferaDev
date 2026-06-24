@@ -67,33 +67,43 @@ export function KioskResultScreen({
 	const printLocked = printing || printDone || printPending;
 
 	return (
-		<div className="flex min-h-screen items-center justify-center bg-black p-4 text-white">
-			<div className="grid w-full max-w-6xl items-center gap-6 md:grid-cols-2">
+		<div className="flex h-[100svh] items-center justify-center overflow-hidden bg-black p-3 text-white sm:p-4">
+			<div className="grid max-h-full w-full max-w-6xl items-center gap-4 md:grid-cols-2 md:gap-6">
 				{/* Captured media */}
 				<motion.div
 					initial={{ opacity: 0, scale: 0.96 }}
 					animate={{ opacity: 1, scale: 1 }}
 					transition={{ type: "spring", stiffness: 220, damping: 22 }}
-					className="flex items-center justify-center overflow-hidden rounded-3xl bg-white/5"
+					className="flex min-h-0 items-center justify-center overflow-hidden rounded-3xl bg-white/5"
 				>
 					{mediaUrl && (
-						<img src={mediaUrl} alt={mediaAlt} className="max-h-[88vh] w-full object-contain" />
+						<img src={mediaUrl} alt={mediaAlt} className="max-h-[88svh] w-full object-contain" />
 					)}
 				</motion.div>
 
 				{/* Actions */}
-				<div className="flex flex-col gap-5">
+				<div className="flex min-h-0 flex-col gap-3 overflow-y-auto sm:gap-5">
 					{savedOffline && (
-						<div className="rounded-2xl border border-amber-500/30 bg-amber-500/15 p-5">
-							<p className="text-lg font-semibold text-amber-200">{t("savedOfflineTitle")}</p>
-							<p className="mt-1 text-base text-white/60">{t("savedOfflineDescription")}</p>
+						<div className="rounded-2xl border border-amber-500/30 bg-amber-500/15 p-4 sm:p-5">
+							<p className="text-base font-semibold text-amber-200 sm:text-lg">
+								{t("savedOfflineTitle")}
+							</p>
+							<p className="mt-1 text-sm text-white/60 sm:text-base">
+								{t("savedOfflineDescription")}
+							</p>
 						</div>
 					)}
 
 					{showQr && qrCodeUrl && (
-						<div className="flex flex-col items-center rounded-3xl bg-white p-6">
-							<img src={qrCodeUrl} alt={t("scanToView")} className="h-60 w-60" />
-							<p className="mt-3 text-center text-xl font-medium text-black">{t("scanToView")}</p>
+						<div className="flex flex-col items-center rounded-3xl bg-white p-4 sm:p-6">
+							<img
+								src={qrCodeUrl}
+								alt={t("scanToView")}
+								className="h-40 w-40 sm:h-52 sm:w-52 lg:h-60 lg:w-60"
+							/>
+							<p className="mt-2 text-center text-lg font-medium text-black sm:mt-3 sm:text-xl">
+								{t("scanToView")}
+							</p>
 						</div>
 					)}
 
@@ -103,7 +113,7 @@ export function KioskResultScreen({
 							onClick={print.onPrint}
 							disabled={printLocked}
 							className={cn(
-								"w-full rounded-full border-2 bg-transparent py-7 text-2xl font-semibold",
+								"h-auto w-full rounded-full border-2 bg-transparent py-5 text-xl font-semibold sm:py-7 sm:text-2xl",
 								BRANDED_CTA_FEEDBACK,
 								printDone
 									? // Actually printed → green success.
@@ -141,7 +151,7 @@ export function KioskResultScreen({
 						size="xl"
 						onClick={onNewPhoto}
 						className={cn(
-							"w-full rounded-full py-7 text-2xl font-semibold shadow-lg",
+							"h-auto w-full rounded-full py-5 text-xl font-semibold shadow-lg sm:py-7 sm:text-2xl",
 							BRANDED_CTA_FEEDBACK,
 						)}
 						style={{ backgroundColor: primaryColor }}
