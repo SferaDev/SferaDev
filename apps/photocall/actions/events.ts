@@ -1,6 +1,6 @@
 "use server";
 
-import { and, desc, eq } from "drizzle-orm";
+import { and, desc, eq, isNull } from "drizzle-orm";
 import {
 	generateSlug,
 	hashPin,
@@ -11,7 +11,7 @@ import {
 } from "@/lib/auth-helpers";
 import { db, schema } from "@/lib/db";
 import { getPlatformClient } from "@/lib/platform";
-import { deleteFile, generateUploadUrl, getFileUrl } from "@/lib/storage";
+import { generateUploadUrl, getFileUrl } from "@/lib/storage";
 
 export async function createEvent(
 	organizationId: string,
@@ -80,7 +80,7 @@ export async function listEvents(organizationId: string) {
 	const events = await db
 		.select()
 		.from(schema.events)
-		.where(eq(schema.events.organizationId, organizationId));
+		.where(and(eq(schema.events.organizationId, organizationId), isNull(schema.events.deletedAt)));
 
 	return Promise.all(
 		events.map(async (event) => ({
@@ -105,7 +105,13 @@ export async function getEventBySlug(organizationSlug: string, eventSlug: string
 	const event = await db
 		.select()
 		.from(schema.events)
-		.where(and(eq(schema.events.organizationId, org.id), eq(schema.events.slug, eventSlug)))
+		.where(
+			and(
+				eq(schema.events.organizationId, org.id),
+				eq(schema.events.slug, eventSlug),
+				isNull(schema.events.deletedAt),
+			),
+		)
 		.then((rows) => rows[0]);
 
 	if (!event) return null;
@@ -237,27 +243,31 @@ export async function validateKioskPin(id: string, pin: string) {
 	return true;
 }
 
+/**
+ * Soft-deletes an event: stamps `deletedAt` on the event AND all its photos so
+ * the event vanishes from listings and its photos drop out of every album/share
+ * lookup, while staying recoverable from the recycling bin. Nothing is removed
+ * from R2 here — the cleanup cron purges events (and their photos' objects)
+ * whose `deletedAt` is older than RECYCLE_BIN_RETENTION_DAYS.
+ */
 export async function deleteEvent(id: string) {
 	const { event } = await requireEventAccess(id, ["owner", "admin"]);
 
-	const photos = await db.select().from(schema.photos).where(eq(schema.photos.eventId, id));
-	for (const photo of photos) await deleteFile(photo.storageKey);
-	await db.delete(schema.photos).where(eq(schema.photos.eventId, id));
+	const now = new Date();
 
-	const templates = await db
-		.select()
-		.from(schema.templates)
-		.where(eq(schema.templates.eventId, id));
-	for (const template of templates) {
-		await deleteFile(template.storageKey);
-		if (template.thumbnailStorageKey) await deleteFile(template.thumbnailStorageKey);
-	}
-	await db.delete(schema.templates).where(eq(schema.templates.eventId, id));
-	await db.delete(schema.kioskSessions).where(eq(schema.kioskSessions.eventId, id));
-	await db.delete(schema.events).where(eq(schema.events.id, id));
+	// Cascade the soft delete to the event's not-already-deleted photos so they
+	// disappear from share/album lookups (which query photos directly by token).
+	await db
+		.update(schema.photos)
+		.set({ deletedAt: now })
+		.where(and(eq(schema.photos.eventId, id), isNull(schema.photos.deletedAt)));
+
+	await db
+		.update(schema.events)
+		.set({ deletedAt: now, photoCount: 0, updatedAt: now })
+		.where(eq(schema.events.id, id));
 
 	// Reference event in a log so we keep usage history even after delete.
-	const now = new Date();
 	await db.insert(schema.usageLogs).values({
 		organizationId: event.organizationId,
 		eventId: id,
@@ -430,7 +440,13 @@ export async function getPublicEvent(organizationSlug: string, eventSlug: string
 	const event = await db
 		.select()
 		.from(schema.events)
-		.where(and(eq(schema.events.organizationId, org.id), eq(schema.events.slug, eventSlug)))
+		.where(
+			and(
+				eq(schema.events.organizationId, org.id),
+				eq(schema.events.slug, eventSlug),
+				isNull(schema.events.deletedAt),
+			),
+		)
 		.then((rows) => rows[0]);
 
 	if (event?.status !== "active") return null;

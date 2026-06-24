@@ -151,6 +151,12 @@ export default function EventDashboard() {
 									{t("printManagement")}
 								</Link>
 							</Button>
+							<Button variant="outline" asChild>
+								<Link href={`/dashboard/${orgSlug}/${eventSlug}/trash`}>
+									<Trash2 className="h-4 w-4 mr-2" />
+									{t("recycleBin")}
+								</Link>
+							</Button>
 							{event.status === "active" && (
 								<Button variant="outline" asChild>
 									<Link href={`/kiosk/${orgSlug}/${eventSlug}`} target="_blank">

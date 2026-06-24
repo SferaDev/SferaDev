@@ -124,6 +124,11 @@ export const events = pgTable(
 		// Stats (denormalized for performance)
 		photoCount: integer("photo_count").notNull().default(0),
 		sessionCount: integer("session_count").notNull().default(0),
+		// Soft delete: when set, the event is in the recycling bin and hidden from
+		// all normal listings. The cleanup cron permanently removes events (and
+		// their photos' R2 objects) once `deletedAt` is older than
+		// RECYCLE_BIN_RETENTION_DAYS.
+		deletedAt: timestamp("deleted_at"),
 		createdAt: timestamp("created_at").notNull().defaultNow(),
 		updatedAt: timestamp("updated_at").notNull().defaultNow(),
 	},
@@ -131,6 +136,7 @@ export const events = pgTable(
 		index("events_org_idx").on(t.organizationId),
 		uniqueIndex("events_org_slug_idx").on(t.organizationId, t.slug),
 		index("events_status_idx").on(t.status),
+		index("events_deleted_at_idx").on(t.deletedAt),
 	],
 );
 
@@ -194,6 +200,11 @@ export const photos = pgTable(
 		height: integer("height").notNull(),
 		sizeBytes: integer("size_bytes").notNull(),
 		expiresAt: timestamp("expires_at"),
+		// Soft delete: when set, the photo is in the recycling bin — hidden from
+		// galleries, albums and share lookups but still recoverable. The cleanup
+		// cron deletes the R2 object and the row once `deletedAt` is older than
+		// RECYCLE_BIN_RETENTION_DAYS.
+		deletedAt: timestamp("deleted_at"),
 		createdAt: timestamp("created_at").notNull().defaultNow(),
 	},
 	(t) => [
@@ -203,6 +214,7 @@ export const photos = pgTable(
 		// their own uploads by uploaderId.
 		index("photos_event_status_idx").on(t.eventId, t.status),
 		index("photos_uploader_idx").on(t.uploaderId),
+		index("photos_deleted_at_idx").on(t.deletedAt),
 	],
 );
 
