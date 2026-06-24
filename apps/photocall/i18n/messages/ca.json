@@ -238,46 +238,6 @@
 			"vivid": "Viu",
 			"noir": "Noir"
 		},
-		"checklist": {
-			"title": "Comprovació prèvia a l'esdeveniment",
-			"subtitle": "Executa-la abans que arribin els convidats per assegurar-te que el photocall està a punt.",
-			"runAll": "Executa totes les comprovacions",
-			"running": "Executant…",
-			"rerun": "Repeteix",
-			"pass": "Correcte",
-			"fail": "Error",
-			"warn": "Avís",
-			"pending": "Sense executar",
-			"checking": "Comprovant…",
-			"allGood": "Tot correcte. Ja pots començar.",
-			"someFailed": "Algunes comprovacions han fallat. Soluciona-les abans de començar l'esdeveniment.",
-			"openKiosk": "Obre el photocall",
-			"checks": {
-				"eventActive": "L'esdeveniment està actiu",
-				"eventActiveOkActive": "L'esdeveniment està actiu i admet convidats",
-				"eventActivePaused": "L'esdeveniment està en pausa: activa'l des del tauler",
-				"templates": "Almenys una plantilla activada",
-				"templatesOk": "{count} plantilla(es) activada(es)",
-				"templatesNone": "No hi ha plantilles activades: els convidats no podran triar",
-				"camera": "Càmera disponible",
-				"cameraOk": "{count} càmera(es) detectada(es)",
-				"cameraNone": "No s'ha detectat cap càmera: revisa la connexió i els permisos",
-				"network": "Connexió a internet",
-				"networkOk": "Connectat a internet",
-				"networkOffline": "Sense connexió: les fotos s'encuaran fins a tornar a connectar",
-				"storage": "Emmagatzematge accessible",
-				"storageOk": "Lectura/escriptura d'emmagatzematge correcta",
-				"bridge": "Pont d'impressió accessible",
-				"bridgeOk": "El pont respon",
-				"bridgeUnreachable": "El pont no respon: comprova que estigui en marxa",
-				"bridgeNoUrl": "No hi ha cap URL del pont configurada",
-				"printer": "Impressora a punt",
-				"printerOk": "Impressora a punt: {name}",
-				"printerOutOfPaper": "Sense paper: {name}",
-				"printerNotReady": "Impressora no a punt: {name} ({state})",
-				"printerNone": "No s'ha trobat cap impressora al pont"
-			}
-		},
 		"ops": {
 			"title": "Tauler de l'operador",
 			"subtitle": "Estat en directe d'aquest photocall.",
@@ -299,7 +259,6 @@
 			"actions": "Accions",
 			"reloadKiosk": "Torna a carregar el photocall",
 			"exitToDashboard": "Surt al tauler",
-			"runChecklist": "Comprovació prèvia a l'esdeveniment",
 			"refresh": "Actualitza"
 		}
 	},
@@ -456,7 +415,6 @@
 		"event": {
 			"active": "Actiu",
 			"activate": "Activa",
-			"preEventCheck": "Comprovació prèvia a l'esdeveniment",
 			"openKiosk": "Obre el quiosc",
 			"stats": {
 				"totalPhotos": "Fotos totals",
