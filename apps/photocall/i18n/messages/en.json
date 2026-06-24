@@ -527,7 +527,9 @@
 				"consentText": "Consent Text",
 				"consentTextPlaceholder": "By continuing, you agree to have your photo taken…",
 				"showPoweredBy": "Show \"Powered by Photocall\"",
-				"showPoweredByHelp": "Toggle the footer credit on the kiosk attract screen."
+				"showPoweredByHelp": "Toggle the footer credit on the kiosk attract screen.",
+				"skipConsent": "Skip consent screen",
+				"skipConsentHelp": "Go straight to the photo booth without showing the consent step. Only enable this if you obtain guests' consent another way."
 			},
 			"camera": {
 				"defaultCamera": "Default Camera",
@@ -549,6 +551,8 @@
 				"dimension4k": "3840px (4K)",
 				"photoboothCapture": "Photobooth Capture",
 				"countdown": "Countdown ({seconds}s)",
+				"autoStart": "Auto-start countdown",
+				"autoStartHelp": "Begin the countdown automatically once the camera is ready, so guests don't have to tap to start the first shot",
 				"autoShoot": "Auto-shoot",
 				"autoShootHelp": "Automatically chain shots instead of tapping for each one",
 				"whoChoosesFilter": "Who chooses the filter",

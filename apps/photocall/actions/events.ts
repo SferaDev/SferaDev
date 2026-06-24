@@ -142,6 +142,7 @@ export async function updateEvent(
 		attractSubtitle?: string | null;
 		ctaLabel?: string | null;
 		consentText?: string | null;
+		skipConsent?: boolean;
 		accentColor?: string | null;
 		fontFamily?: string | null;
 		showPoweredBy?: boolean;
@@ -156,6 +157,7 @@ export async function updateEvent(
 		captureWhoChoosesFilter?: "guest" | "host";
 		captureDefaultCountdown?: number;
 		captureAutoShoot?: boolean;
+		captureAutoStart?: boolean;
 		boomerangEnabled?: boolean;
 		printMethod?: "none" | "bridge" | "manual";
 		printPrinterId?: string;
@@ -315,6 +317,7 @@ export async function duplicateEvent(id: string) {
 			attractSubtitle: event.attractSubtitle,
 			ctaLabel: event.ctaLabel,
 			consentText: event.consentText,
+			skipConsent: event.skipConsent,
 			accentColor: event.accentColor,
 			fontFamily: event.fontFamily,
 			showPoweredBy: event.showPoweredBy,
@@ -330,6 +333,7 @@ export async function duplicateEvent(id: string) {
 			captureWhoChoosesFilter: event.captureWhoChoosesFilter,
 			captureDefaultCountdown: event.captureDefaultCountdown,
 			captureAutoShoot: event.captureAutoShoot,
+			captureAutoStart: event.captureAutoStart,
 			boomerangEnabled: event.boomerangEnabled,
 			printMethod: event.printMethod,
 			printPrinterId: event.printPrinterId,
@@ -441,6 +445,7 @@ export async function getPublicEvent(organizationSlug: string, eventSlug: string
 		attractSubtitle: event.attractSubtitle,
 		ctaLabel: event.ctaLabel,
 		consentText: event.consentText,
+		skipConsent: event.skipConsent,
 		accentColor: event.accentColor,
 		fontFamily: event.fontFamily,
 		showPoweredBy: event.showPoweredBy,
@@ -461,6 +466,7 @@ export async function getPublicEvent(organizationSlug: string, eventSlug: string
 		coupleNames: event.coupleNames,
 		captureDefaultCountdown: event.captureDefaultCountdown,
 		captureAutoShoot: event.captureAutoShoot,
+		captureAutoStart: event.captureAutoStart,
 		captureWhoChoosesFilter: event.captureWhoChoosesFilter,
 		boomerangEnabled: event.boomerangEnabled,
 		// Print settings (consumed by the kiosk result page).

@@ -88,7 +88,10 @@ export default function KioskAttractPage() {
 
 		try {
 			const sessionId = await createKioskSession(event.id);
-			router.push(`/kiosk/${orgSlug}/${eventSlug}/consent?session=${sessionId}`);
+			// When the host opts to skip the consent screen, jump straight to
+			// template selection.
+			const nextStep = event.skipConsent ? "select" : "consent";
+			router.push(`/kiosk/${orgSlug}/${eventSlug}/${nextStep}?session=${sessionId}`);
 		} catch (_error) {
 			setPinError(t("couldNotStart"));
 		}

@@ -82,6 +82,7 @@ export default function EventSettingsPage() {
 		attractSubtitle: "",
 		ctaLabel: "",
 		consentText: "",
+		skipConsent: false,
 		accentColor: "",
 		fontFamily: "",
 		showPoweredBy: true,
@@ -94,6 +95,7 @@ export default function EventSettingsPage() {
 		cameraDeviceLabel: "" as string,
 		captureDefaultCountdown: 3,
 		captureAutoShoot: false,
+		captureAutoStart: true,
 		captureWhoChoosesFilter: "guest" as "guest" | "host",
 		boomerangEnabled: false,
 		photoQuality: 0.9,
@@ -137,6 +139,7 @@ export default function EventSettingsPage() {
 				attractSubtitle: event.attractSubtitle ?? "",
 				ctaLabel: event.ctaLabel ?? "",
 				consentText: event.consentText ?? "",
+				skipConsent: event.skipConsent,
 				accentColor: event.accentColor ?? "",
 				fontFamily: event.fontFamily ?? "",
 				showPoweredBy: event.showPoweredBy,
@@ -149,6 +152,7 @@ export default function EventSettingsPage() {
 				cameraDeviceLabel: event.cameraDeviceLabel ?? "",
 				captureDefaultCountdown: event.captureDefaultCountdown,
 				captureAutoShoot: event.captureAutoShoot,
+				captureAutoStart: event.captureAutoStart,
 				captureWhoChoosesFilter: (event.captureWhoChoosesFilter as "guest" | "host") ?? "guest",
 				boomerangEnabled: event.boomerangEnabled,
 				photoQuality: event.photoQuality,
@@ -681,6 +685,17 @@ export default function EventSettingsPage() {
 									placeholder={t("branding.consentTextPlaceholder")}
 									className="mt-2"
 									rows={4}
+									disabled={formData.skipConsent}
+								/>
+							</div>
+							<div className="flex items-center justify-between">
+								<div>
+									<Label>{t("branding.skipConsent")}</Label>
+									<p className="text-sm text-muted-foreground">{t("branding.skipConsentHelp")}</p>
+								</div>
+								<Switch
+									checked={formData.skipConsent}
+									onCheckedChange={(checked) => setFormData({ ...formData, skipConsent: checked })}
 								/>
 							</div>
 							<div className="flex items-center justify-between">
@@ -828,6 +843,18 @@ export default function EventSettingsPage() {
 											})
 										}
 										className="mt-2 w-full"
+									/>
+								</div>
+								<div className="flex items-center justify-between">
+									<div>
+										<Label>{t("camera.autoStart")}</Label>
+										<p className="text-sm text-muted-foreground">{t("camera.autoStartHelp")}</p>
+									</div>
+									<Switch
+										checked={formData.captureAutoStart}
+										onCheckedChange={(checked) =>
+											setFormData({ ...formData, captureAutoStart: checked })
+										}
 									/>
 								</div>
 								<div className="flex items-center justify-between">

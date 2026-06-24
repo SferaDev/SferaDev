@@ -56,6 +56,10 @@ export const events = pgTable(
 		attractSubtitle: text("attract_subtitle"),
 		ctaLabel: text("cta_label"),
 		consentText: text("consent_text"),
+		// Skip the kiosk consent screen entirely (host accepts responsibility for
+		// obtaining consent another way). When true, attract goes straight to the
+		// template picker.
+		skipConsent: boolean("skip_consent").notNull().default(false),
 		accentColor: text("accent_color"),
 		// Display font for kiosk headings, chosen from BUNDLED_FONTS (lib/compose/fonts.ts).
 		fontFamily: text("font_family"),
@@ -93,6 +97,10 @@ export const events = pgTable(
 		captureWhoChoosesFilter: text("capture_who_chooses_filter").notNull().default("guest"), // guest | host
 		captureDefaultCountdown: integer("capture_default_countdown").notNull().default(3),
 		captureAutoShoot: boolean("capture_auto_shoot").notNull().default(false),
+		// Begin the first shot's countdown automatically once the camera is ready,
+		// so guests don't have to press the shutter to start. Subsequent shots in a
+		// strip still wait for a tap unless captureAutoShoot is also on.
+		captureAutoStart: boolean("capture_auto_start").notNull().default(true),
 		// Boomerang/GIF capture mode (guest-selectable when enabled).
 		boomerangEnabled: boolean("boomerang_enabled").notNull().default(false),
 		// Print settings (photobooth)

@@ -6,10 +6,22 @@ import type { BoothLayout } from "@/lib/layout/types";
  * to load.
  */
 export const BUNDLED_FONTS: Record<string, string> = {
+	// Script & handwriting
 	"Dancing Script": "/fonts/dancing-script.woff2",
 	"Great Vibes": "/fonts/great-vibes.woff2",
+	Sacramento: "/fonts/sacramento.woff2",
+	Parisienne: "/fonts/parisienne.woff2",
+	Pacifico: "/fonts/pacifico.woff2",
+	Caveat: "/fonts/caveat.woff2",
+	// Serif
 	"Playfair Display": "/fonts/playfair-display.woff2",
 	"Noto Serif": "/fonts/noto-serif.woff2",
+	"Cormorant Garamond": "/fonts/cormorant-garamond.woff2",
+	// Sans-serif & display
+	Montserrat: "/fonts/montserrat.woff2",
+	Poppins: "/fonts/poppins.woff2",
+	Oswald: "/fonts/oswald.woff2",
+	"Bebas Neue": "/fonts/bebas-neue.woff2",
 };
 
 /** Families that have already been registered with the document. */
