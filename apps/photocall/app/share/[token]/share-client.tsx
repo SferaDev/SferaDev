@@ -1,19 +1,47 @@
 "use client";
 
-import { Camera, Download, ExternalLink, Printer } from "lucide-react";
+import { Camera, Download, Share2 } from "lucide-react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { use } from "react";
 import useSWR from "swr";
 import { getPhotoByShareToken } from "@/actions/photos";
+import { EventI18nProvider } from "@/components/event-i18n-provider";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { downloadBlob, printImage } from "@/lib/canvas-utils";
+import { useToast } from "@/hooks/use-toast";
+import { downloadBlob } from "@/lib/canvas-utils";
+
+type SharedPhoto = NonNullable<Awaited<ReturnType<typeof getPhotoByShareToken>>>;
 
 export default function SharePage({ params }: { params: Promise<{ token: string }> }) {
 	const { token } = use(params);
 	const { data: photo, isLoading } = useSWR(["share-photo", token], () =>
 		getPhotoByShareToken(token),
 	);
+
+	// Loading state — kept locale-agnostic (no translations needed) so it can
+	// render before the event (and its language) has resolved.
+	if (isLoading) {
+		return (
+			<div className="flex min-h-screen items-center justify-center bg-linear-to-b from-rose-50 to-white dark:from-rose-950 dark:to-background">
+				<div className="h-12 w-12 animate-spin rounded-full border-4 border-rose-500 border-t-transparent" />
+			</div>
+		);
+	}
+
+	// Once the photo (and therefore the event language) is known, render the rest
+	// of the page in the event's language.
+	return (
+		<EventI18nProvider eventLanguage={photo?.language}>
+			<SharePageContent photo={photo ?? null} />
+		</EventI18nProvider>
+	);
+}
+
+function SharePageContent({ photo }: { photo: SharedPhoto | null }) {
+	const t = useTranslations("share");
+	const { toast } = useToast();
 
 	const handleDownload = async () => {
 		if (!photo?.url) return;
@@ -23,19 +51,50 @@ export default function SharePage({ params }: { params: Promise<{ token: string 
 		downloadBlob(blob, `photocall_${photo.humanCode}.${ext}`);
 	};
 
-	const handlePrint = () => {
+	const handleShare = async () => {
 		if (!photo?.url) return;
-		printImage(photo.url);
-	};
 
-	// Loading state
-	if (isLoading) {
-		return (
-			<div className="flex min-h-screen items-center justify-center bg-linear-to-b from-rose-50 to-white dark:from-rose-950 dark:to-background">
-				<div className="h-12 w-12 animate-spin rounded-full border-4 border-rose-500 border-t-transparent" />
-			</div>
-		);
-	}
+		const shareUrl = window.location.href;
+		const title = photo.eventName || t("defaultTitle");
+		const text = t("shareText", { event: title });
+
+		// Web Share API. Prefer sharing the actual image file (so the recipient
+		// gets the photo, not just a link) when the platform supports file shares;
+		// otherwise share the URL. Fall back to copying the link when Web Share is
+		// unavailable (most desktop browsers).
+		if (typeof navigator !== "undefined" && typeof navigator.share === "function") {
+			try {
+				const ext = photo.kind === "boomerang" ? "gif" : "jpg";
+				const type = photo.kind === "boomerang" ? "image/gif" : "image/jpeg";
+				let file: File | null = null;
+				try {
+					const response = await fetch(photo.url);
+					const blob = await response.blob();
+					file = new File([blob], `photocall_${photo.humanCode}.${ext}`, { type });
+				} catch {
+					file = null;
+				}
+
+				if (file && navigator.canShare?.({ files: [file] })) {
+					await navigator.share({ title, text, url: shareUrl, files: [file] });
+				} else {
+					await navigator.share({ title, text, url: shareUrl });
+				}
+				return;
+			} catch (error) {
+				// The user dismissed the share sheet — that's not an error.
+				if (error instanceof DOMException && error.name === "AbortError") return;
+				// Otherwise fall through to the copy-link fallback below.
+			}
+		}
+
+		try {
+			await navigator.clipboard.writeText(shareUrl);
+			toast({ title: t("linkCopied") });
+		} catch {
+			window.open(photo.url, "_blank", "noopener,noreferrer");
+		}
+	};
 
 	// Not found state
 	if (!photo) {
@@ -43,28 +102,35 @@ export default function SharePage({ params }: { params: Promise<{ token: string 
 			<div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-linear-to-b from-rose-50 to-white p-8 dark:from-rose-950 dark:to-background">
 				<Camera className="h-20 w-20 text-muted-foreground" />
 				<div className="text-center">
-					<h1 className="mb-2 text-2xl font-bold">Photo Not Found</h1>
-					<p className="mb-6 text-muted-foreground">This photo may have expired or been deleted.</p>
+					<h1 className="mb-2 text-2xl font-bold">{t("notFoundTitle")}</h1>
+					<p className="mb-6 text-muted-foreground">{t("notFoundDescription")}</p>
 				</div>
 				<Link href="/">
 					<Button>
 						<Camera className="mr-2 h-5 w-5" />
-						Visit Photocall
+						{t("visitPhotocall")}
 					</Button>
 				</Link>
 			</div>
 		);
 	}
 
+	const primaryColor = photo.primaryColor || "#e11d48";
+
 	return (
 		<div className="min-h-screen bg-linear-to-b from-rose-50 to-white dark:from-rose-950 dark:to-background">
-			{/* Header */}
+			{/* Header — branded with the event's identity (name, logo, colour). */}
 			<header className="border-b bg-background/80 backdrop-blur-sm">
 				<div className="container mx-auto flex items-center justify-between px-4 py-4">
-					<Link href="/" className="flex items-center gap-2">
-						<Camera className="h-6 w-6 text-rose-500" />
-						<span className="text-xl font-bold">Photocall</span>
-					</Link>
+					<div className="flex items-center gap-2">
+						{photo.logoUrl ? (
+							// eslint-disable-next-line @next/next/no-img-element
+							<img src={photo.logoUrl} alt="" className="h-8 w-8 rounded-full object-cover" />
+						) : (
+							<Camera className="h-6 w-6" style={{ color: primaryColor }} />
+						)}
+						<span className="text-xl font-bold">{photo.eventName || t("defaultTitle")}</span>
+					</div>
 				</div>
 			</header>
 
@@ -75,82 +141,48 @@ export default function SharePage({ params }: { params: Promise<{ token: string 
 						{/* eslint-disable-next-line @next/next/no-img-element */}
 						<img
 							src={photo.url ?? ""}
-							alt={`Captured moment ${photo.humanCode}`}
+							alt={t("photoAlt", { code: photo.humanCode })}
 							className="h-full w-full object-contain"
 						/>
 					</div>
 					<CardHeader>
 						<CardTitle className="flex items-center gap-2">
-							<Camera className="h-5 w-5 text-rose-500" />
-							Photo {photo.humanCode}
+							<Camera className="h-5 w-5" style={{ color: primaryColor }} />
+							{t("photoTitle", { code: photo.humanCode })}
 						</CardTitle>
 						<CardDescription>
-							Taken on{" "}
-							{new Date(photo.createdAt).toLocaleDateString(undefined, {
-								weekday: "long",
-								year: "numeric",
-								month: "long",
-								day: "numeric",
+							{t("takenOn", {
+								date: new Date(photo.createdAt).toLocaleDateString(undefined, {
+									weekday: "long",
+									year: "numeric",
+									month: "long",
+									day: "numeric",
+								}),
 							})}
 						</CardDescription>
 						{photo.caption && (
 							<p className="mt-2 text-lg italic text-foreground">"{photo.caption}"</p>
 						)}
 					</CardHeader>
-					{(photo.allowDownload || photo.allowPrint) && (
-						<CardContent>
-							<div className="flex flex-wrap gap-3">
-								{photo.allowDownload && (
-									<Button onClick={handleDownload} className="flex-1 gap-2">
-										<Download className="h-5 w-5" />
-										Download
-									</Button>
-								)}
-								{photo.allowPrint && (
-									<Button variant="outline" onClick={handlePrint} className="flex-1 gap-2">
-										<Printer className="h-5 w-5" />
-										Print
-									</Button>
-								)}
-							</div>
-						</CardContent>
-					)}
-				</Card>
-
-				{/* Share info */}
-				<Card className="w-full max-w-2xl">
-					<CardContent className="py-6">
-						<div className="flex items-center gap-4">
-							<ExternalLink className="h-8 w-8 text-muted-foreground" />
-							<div className="flex-1">
-								<p className="font-medium">Share this photo</p>
-								<p className="text-sm text-muted-foreground">
-									Copy the link or share directly with friends and family
-								</p>
-							</div>
-							<Button
-								variant="outline"
-								onClick={() => {
-									navigator.clipboard.writeText(window.location.href);
-								}}
-							>
-								Copy Link
+					<CardContent>
+						<div className="flex flex-wrap gap-3">
+							{photo.allowDownload && (
+								<Button
+									onClick={handleDownload}
+									className="flex-1 gap-2"
+									style={{ backgroundColor: primaryColor }}
+								>
+									<Download className="h-5 w-5" />
+									{t("download")}
+								</Button>
+							)}
+							<Button variant="outline" onClick={handleShare} className="flex-1 gap-2">
+								<Share2 className="h-5 w-5" />
+								{t("share")}
 							</Button>
 						</div>
 					</CardContent>
 				</Card>
-
-				{/* CTA — deep-link back to this event's kiosk when we could resolve the
-				    org slug, otherwise fall back to the marketing home page. */}
-				<div className="text-center">
-					<p className="mb-4 text-muted-foreground">Want to take your own photo?</p>
-					<Link href={photo.orgSlug ? `/kiosk/${photo.orgSlug}/${photo.eventSlug}` : "/"}>
-						<Button variant="outline" className="gap-2">
-							<Camera className="h-5 w-5" />
-							Start Photo Booth
-						</Button>
-					</Link>
-				</div>
 			</main>
 		</div>
 	);
