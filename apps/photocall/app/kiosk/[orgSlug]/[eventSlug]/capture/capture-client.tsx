@@ -10,12 +10,12 @@ import { getPublicEvent } from "@/actions/events";
 import { saveCapture, updateShotIndex } from "@/actions/sessions";
 import { listPublicTemplates } from "@/actions/templates";
 import { Button } from "@/components/ui/button";
-import { type CameraFacing, useCamera } from "@/hooks/use-camera";
+import { useKioskCamera } from "@/hooks/use-kiosk-camera";
 import { BRANDED_CTA_FEEDBACK, DEFAULT_BRAND_COLOR, PRIMARY_CTA_CLASS } from "@/lib/branding";
 import { cssFilterFor } from "@/lib/compose/css-filters";
-import { requiredCaptureCount } from "@/lib/layout/captures";
+import { requiredCaptureCount, slotCaptureIndices } from "@/lib/layout/captures";
 import { parseLayoutJson } from "@/lib/layout/parse";
-import type { FilterKind } from "@/lib/layout/types";
+import { type BoothLayout, type FilterKind, printPixelSize } from "@/lib/layout/types";
 import { writePhotoboothSession } from "@/lib/photobooth-session";
 import { cn } from "@/lib/utils";
 
@@ -24,6 +24,13 @@ const AUTO_SHOOT_GAP_MS = 1400;
 /** Grace period (ms) after the camera is ready before the first shot's
  * countdown auto-starts, so guests can settle into frame. */
 const AUTO_START_DELAY_MS = 800;
+
+/**
+ * Output aspect ratio (width / height) of the legacy single-photo composite.
+ * `compositePhoto` renders at `maxPhotoDimension × maxPhotoDimension·(4/3)`, so
+ * the processed photo is always 3:4 regardless of the configured dimension.
+ */
+const SINGLE_PHOTO_ASPECT = 3 / 4;
 
 function isFilterKind(value: string | null): value is FilterKind {
 	return (
@@ -35,6 +42,30 @@ function isFilterKind(value: string | null): value is FilterKind {
 		value === "vivid" ||
 		value === "noir"
 	);
+}
+
+/**
+ * The aspect ratio (width / height) the compositor will cover-crop the NEXT
+ * capture to, so the preview can frame the exact same crop (WYSIWYG).
+ *
+ * For a layout: find the slot that consumes the next NEW capture (`nextNewShot`
+ * is 1-based) and return its output aspect — the slot's normalized size scaled
+ * by the print pixel size, since the compositor draws slot i into a rect of
+ * `slot.width·outW × slot.height·outH` and cover-crops the full frame into it.
+ * Reuse slots (those with an explicit `captureIndex`) don't consume a new shot,
+ * so they're skipped. Falls back to the first slot's aspect if none is found.
+ */
+function nextSlotAspect(layout: BoothLayout, nextNewShot: number): number {
+	const captureIndices = slotCaptureIndices(layout);
+	const { width: outW, height: outH } = printPixelSize(layout.print);
+
+	const slotIndex = captureIndices.findIndex(
+		(captureIndex, i) =>
+			captureIndex === nextNewShot && layout.photoSlots[i].captureIndex === undefined,
+	);
+	const slot = layout.photoSlots[slotIndex] ?? layout.photoSlots[0];
+	if (!slot || slot.height <= 0 || outH <= 0) return 1;
+	return (slot.width * outW) / (slot.height * outH);
 }
 
 export default function KioskCapturePage() {
@@ -69,11 +100,18 @@ export default function KioskCapturePage() {
 	// The preview filter is the template/guest filter (overrides only matter at compose time).
 	const previewFilter: FilterKind = layout ? filter : "none";
 
-	const { videoRef, canvasRef, isReady, error, start, capture } = useCamera({
-		defaultFacing: (event?.defaultCamera as CameraFacing) || "user",
-		deviceId: event?.cameraDeviceId ?? null,
-		deviceLabel: event?.cameraDeviceLabel ?? null,
-	});
+	// One shared kiosk stream for the whole session — the same stream the select
+	// screen used, so getUserMedia is not called again here.
+	const { stream, error, mirror, retry } = useKioskCamera(event ?? undefined);
+	// Digital zoom (center crop) applied identically to the live preview and the
+	// captured frame, so guests don't have to stand far back. 1 = no zoom.
+	const zoom = Math.max(1, event?.captureZoom ?? 1);
+
+	const videoRef = useRef<HTMLVideoElement | null>(null);
+	const canvasRef = useRef<HTMLCanvasElement | null>(null);
+	// True once the shared stream is attached to <video> AND the element has real
+	// frame dimensions, so capture() can read pixels and auto-start can fire.
+	const [videoReady, setVideoReady] = useState(false);
 
 	const [shots, setShots] = useState<string[]>([]);
 	const [countdown, setCountdown] = useState<number | null>(null);
@@ -83,11 +121,47 @@ export default function KioskCapturePage() {
 	const [finishing, setFinishing] = useState(false);
 	const flashTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+	// Bind the shared stream to the <video> element and track readiness. Mirrors
+	// useCamera's behavior (srcObject + play() ignoring the benign AbortError) but
+	// without owning the stream — the shared module does that.
 	useEffect(() => {
-		if (event && !isReady) {
-			start();
+		const video = videoRef.current;
+		if (!video || !stream) {
+			setVideoReady(false);
+			return;
 		}
-	}, [event, isReady, start]);
+
+		if (video.srcObject !== stream) {
+			video.srcObject = stream;
+		}
+
+		const markReady = () => {
+			if (video.videoWidth > 0 && video.videoHeight > 0) {
+				setVideoReady(true);
+			}
+		};
+
+		video.addEventListener("loadedmetadata", markReady);
+		video.addEventListener("playing", markReady);
+		// Already have frames (stream reused from a prior screen): mark immediately.
+		markReady();
+
+		void video.play().catch((err: unknown) => {
+			// play() commonly rejects with AbortError when a re-render re-attaches the
+			// stream mid-play; the stream is wired up regardless, so it is safe to
+			// ignore. Surface only real errors.
+			if (err instanceof Error && err.name !== "AbortError") {
+				console.error("Capture preview playback failed:", err);
+			}
+		});
+
+		return () => {
+			video.removeEventListener("loadedmetadata", markReady);
+			video.removeEventListener("playing", markReady);
+		};
+	}, [stream]);
+
+	const isReady = videoReady && error === null;
 
 	// Clear any pending timers on unmount to avoid setting state after teardown.
 	useEffect(() => {
@@ -97,6 +171,40 @@ export default function KioskCapturePage() {
 			}
 		};
 	}, []);
+
+	/** Grab the current video frame and return it as a JPEG data URL. Bakes in the
+	 * same digital zoom (center crop) and mirror the live preview shows, so what
+	 * the guest saw is exactly what's saved; the compositor then cover-crops each
+	 * slot from this frame (the preview box previews that crop). */
+	const capture = useCallback((): string | null => {
+		const video = videoRef.current;
+		const canvas = canvasRef.current;
+		if (!video || !canvas || !videoReady) return null;
+
+		const ctx = canvas.getContext("2d");
+		if (!ctx) return null;
+
+		// Keep the output at full sensor resolution; zoom is a center crop scaled
+		// back up to fill the canvas (matching the preview's CSS scale).
+		canvas.width = video.videoWidth;
+		canvas.height = video.videoHeight;
+
+		const srcWidth = video.videoWidth / zoom;
+		const srcHeight = video.videoHeight / zoom;
+		const srcX = (video.videoWidth - srcWidth) / 2;
+		const srcY = (video.videoHeight - srcHeight) / 2;
+
+		ctx.save();
+		if (mirror) {
+			// Flip horizontally so the saved frame matches the mirrored preview.
+			ctx.translate(canvas.width, 0);
+			ctx.scale(-1, 1);
+		}
+		ctx.drawImage(video, srcX, srcY, srcWidth, srcHeight, 0, 0, canvas.width, canvas.height);
+		ctx.restore();
+
+		return canvas.toDataURL("image/jpeg", 0.95);
+	}, [videoReady, mirror, zoom]);
 
 	/** Run the animated countdown, then flash + grab a frame. Returns the dataURL. */
 	const runCountdownAndCapture = useCallback(async (): Promise<string | null> => {
@@ -268,21 +376,41 @@ export default function KioskCapturePage() {
 	const primaryColor = event.primaryColor || DEFAULT_BRAND_COLOR;
 	const accentColor = event.accentColor || primaryColor;
 	const nextSlot = filledCount;
-	const mirrorTransform =
-		event.defaultCamera === "user" && !event.cameraDeviceId ? "scaleX(-1)" : "none";
+	// Combine mirror (horizontal flip) and zoom (uniform scale) into one transform
+	// so the framed preview matches the captured frame 1:1.
+	const previewTransform = `scale(${mirror ? -zoom : zoom}, ${zoom})`;
+	// WYSIWYG: frame the live feed to the exact aspect the compositor will
+	// cover-crop the next capture to. For a layout this is the next slot's output
+	// aspect; for single-photo it's the fixed composite aspect. The <video> uses
+	// object-cover + the same mirror, so the box previews the processed crop 1:1.
+	const previewAspect = layout ? nextSlotAspect(layout, nextSlot + 1) : SINGLE_PHOTO_ASPECT;
 
 	return (
 		<div className="min-h-screen bg-black text-white relative overflow-hidden">
-			{/* Camera View */}
-			<div className="absolute inset-0">
-				<video
-					ref={videoRef}
-					autoPlay
-					playsInline
-					muted
-					className="w-full h-full object-cover"
-					style={{ transform: mirrorTransform, filter: cssFilterFor(previewFilter) }}
-				/>
+			{/* Dimmed backdrop outside the framed preview box, so the area that WON'T
+			    be captured reads as out-of-frame. */}
+			<div className="absolute inset-0 bg-black" />
+
+			{/* WYSIWYG camera view: centered box whose aspect matches the processed
+			    photo's crop. The <video> cover-fills this box with the same mirror,
+			    so what the guest sees is exactly what gets composited. The box fits
+			    inside the screen (letterboxed against the dimmed backdrop) while
+			    keeping `previewAspect` exactly: both max constraints + aspect-ratio
+			    let the browser shrink whichever dimension is binding. */}
+			<div className="absolute inset-0 flex items-center justify-center p-4">
+				<div
+					className="relative max-h-full max-w-full overflow-hidden rounded-lg"
+					style={{ aspectRatio: `${previewAspect}`, height: "100%", width: "auto" }}
+				>
+					<video
+						ref={videoRef}
+						autoPlay
+						playsInline
+						muted
+						className="h-full w-full object-cover"
+						style={{ transform: previewTransform, filter: cssFilterFor(previewFilter) }}
+					/>
+				</div>
 			</div>
 
 			{/* Offscreen canvas used to grab the current video frame on capture */}
@@ -453,7 +581,7 @@ export default function KioskCapturePage() {
 					<p className="text-white/60 mb-8 text-center">{error}</p>
 					<Button
 						size="lg"
-						onClick={() => start()}
+						onClick={() => retry()}
 						className={BRANDED_CTA_FEEDBACK}
 						style={{ backgroundColor: primaryColor }}
 					>

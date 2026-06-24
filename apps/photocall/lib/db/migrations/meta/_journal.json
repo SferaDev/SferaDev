@@ -36,6 +36,13 @@
 			"when": 1782282755352,
 			"tag": "0004_soft_delete",
 			"breakpoints": true
+		},
+		{
+			"idx": 5,
+			"version": "7",
+			"when": 1782296440745,
+			"tag": "0005_capture_zoom",
+			"breakpoints": true
 		}
 	]
 }

@@ -45,6 +45,11 @@ export const events = pgTable(
 		// Selected capture device (USB webcam, etc.); null falls back to defaultCamera facingMode.
 		cameraDeviceId: text("camera_device_id"),
 		cameraDeviceLabel: text("camera_device_label"),
+		// Digital zoom applied to the live feed and the captured frame (center crop).
+		// 1 = no zoom; higher values crop tighter so guests don't have to stand far
+		// back. Applied consistently to the kiosk preview, photo capture and
+		// boomerang frames so what's framed is what's captured.
+		captureZoom: real("capture_zoom").notNull().default(1),
 		// Photo settings
 		photoQuality: real("photo_quality").notNull().default(0.9),
 		maxPhotoDimension: integer("max_photo_dimension").notNull().default(1920),

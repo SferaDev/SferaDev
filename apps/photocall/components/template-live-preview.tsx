@@ -20,6 +20,8 @@ interface TemplateLivePreviewProps {
 	stream: MediaStream | null;
 	/** Whether the live feed should be mirrored, matching the kiosk capture rule. */
 	mirror: boolean;
+	/** Digital zoom (center crop) applied to the live feed. 1 = no zoom. */
+	zoom?: number;
 	/**
 	 * Filter to preview inside the slots. Falls back to the layout filter; a
 	 * guest-chosen filter (in the picker) overrides it so the look updates live.
@@ -46,6 +48,7 @@ export function TemplateLivePreview({
 	className,
 	stream,
 	mirror,
+	zoom = 1,
 	filter,
 }: TemplateLivePreviewProps) {
 	const previewFilter = filter ?? layout.filter;
@@ -75,6 +78,7 @@ export function TemplateLivePreview({
 							slot={slot}
 							stream={stream}
 							mirror={mirror}
+							zoom={zoom}
 							filter={previewFilter}
 						/>
 					))}
@@ -87,6 +91,7 @@ interface SlotVideoProps {
 	slot: PhotoSlot;
 	stream: MediaStream;
 	mirror: boolean;
+	zoom: number;
 	filter: FilterKind;
 }
 
@@ -95,7 +100,7 @@ interface SlotVideoProps {
  * shares the same upstream `MediaStream` via `srcObject`, so attaching N of them
  * costs almost nothing beyond the single decode the browser already performs.
  */
-function SlotVideo({ slot, stream, mirror, filter }: SlotVideoProps) {
+function SlotVideo({ slot, stream, mirror, zoom, filter }: SlotVideoProps) {
 	const videoRef = useRef<HTMLVideoElement | null>(null);
 
 	useEffect(() => {
@@ -143,7 +148,7 @@ function SlotVideo({ slot, stream, mirror, filter }: SlotVideoProps) {
 				muted
 				className="h-full w-full object-cover"
 				style={{
-					transform: mirror ? "scaleX(-1)" : undefined,
+					transform: `scale(${mirror ? -zoom : zoom}, ${zoom})`,
 					filter: cssFilterFor(filter),
 				}}
 			/>

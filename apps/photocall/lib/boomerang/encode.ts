@@ -35,6 +35,8 @@ export interface RecordFramesOptions {
 	video: HTMLVideoElement;
 	/** Mirror frames horizontally (front camera, matching the preview). */
 	mirrored: boolean;
+	/** Digital zoom (center crop) matching the live preview. 1 = no zoom. */
+	zoom?: number;
 	/** Number of frames to grab. Defaults to {@link BOOMERANG_FRAME_COUNT}. */
 	frameCount?: number;
 	/** Total burst duration in ms. Defaults to {@link BOOMERANG_RECORD_MS}. */
@@ -72,6 +74,7 @@ export async function recordBoomerangFrames(
 	const {
 		video,
 		mirrored,
+		zoom = 1,
 		frameCount = BOOMERANG_FRAME_COUNT,
 		durationMs = BOOMERANG_RECORD_MS,
 		maxDimension = BOOMERANG_MAX_DIMENSION,
@@ -85,6 +88,13 @@ export async function recordBoomerangFrames(
 	}
 
 	const { width, height } = targetSize(videoWidth, videoHeight, maxDimension);
+
+	// Center-crop source rect for the requested zoom (1 = full frame).
+	const safeZoom = Math.max(1, zoom);
+	const srcWidth = videoWidth / safeZoom;
+	const srcHeight = videoHeight / safeZoom;
+	const srcX = (videoWidth - srcWidth) / 2;
+	const srcY = (videoHeight - srcHeight) / 2;
 
 	const canvas = document.createElement("canvas");
 	canvas.width = width;
@@ -103,7 +113,7 @@ export async function recordBoomerangFrames(
 			context.translate(width, 0);
 			context.scale(-1, 1);
 		}
-		context.drawImage(video, 0, 0, width, height);
+		context.drawImage(video, srcX, srcY, srcWidth, srcHeight, 0, 0, width, height);
 		context.restore();
 
 		frames.push({ data: context.getImageData(0, 0, width, height), width, height });

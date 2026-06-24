@@ -94,6 +94,8 @@ export default function EventSettingsPage() {
 		defaultCamera: "user" as "user" | "environment",
 		cameraDeviceId: "" as string,
 		cameraDeviceLabel: "" as string,
+		captureZoom: 1,
+		mirrorPhotos: true,
 		captureDefaultCountdown: 3,
 		captureAutoShoot: false,
 		captureAutoStart: true,
@@ -151,6 +153,8 @@ export default function EventSettingsPage() {
 				defaultCamera: (event.defaultCamera as "user" | "environment") ?? "user",
 				cameraDeviceId: event.cameraDeviceId ?? "",
 				cameraDeviceLabel: event.cameraDeviceLabel ?? "",
+				captureZoom: event.captureZoom,
+				mirrorPhotos: event.mirrorPhotos,
 				captureDefaultCountdown: event.captureDefaultCountdown,
 				captureAutoShoot: event.captureAutoShoot,
 				captureAutoStart: event.captureAutoStart,
@@ -822,6 +826,34 @@ export default function EventSettingsPage() {
 										<SelectItem value="3840">{t("camera.dimension4k")}</SelectItem>
 									</SelectContent>
 								</Select>
+							</div>
+							<div>
+								<Label htmlFor="zoom">
+									{t("camera.zoom", { zoom: formData.captureZoom.toFixed(1) })}
+								</Label>
+								<input
+									id="zoom"
+									type="range"
+									min="1"
+									max="3"
+									step="0.1"
+									value={formData.captureZoom}
+									onChange={(e) =>
+										setFormData({ ...formData, captureZoom: Number.parseFloat(e.target.value) })
+									}
+									className="mt-2 w-full"
+								/>
+								<p className="text-sm text-muted-foreground">{t("camera.zoomHelp")}</p>
+							</div>
+							<div className="flex items-center justify-between">
+								<div>
+									<Label>{t("camera.mirror")}</Label>
+									<p className="text-sm text-muted-foreground">{t("camera.mirrorHelp")}</p>
+								</div>
+								<Switch
+									checked={formData.mirrorPhotos}
+									onCheckedChange={(checked) => setFormData({ ...formData, mirrorPhotos: checked })}
+								/>
 							</div>
 
 							<div className="border-t pt-6 mt-2 space-y-4">

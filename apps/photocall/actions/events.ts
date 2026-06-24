@@ -137,6 +137,8 @@ export async function updateEvent(
 		defaultCamera?: "user" | "environment";
 		cameraDeviceId?: string | null;
 		cameraDeviceLabel?: string | null;
+		captureZoom?: number;
+		mirrorPhotos?: boolean;
 		photoQuality?: number;
 		maxPhotoDimension?: number;
 		primaryColor?: string | null;
@@ -341,6 +343,7 @@ export async function duplicateEvent(id: string) {
 			coupleNames: event.coupleNames,
 			cameraDeviceId: event.cameraDeviceId,
 			cameraDeviceLabel: event.cameraDeviceLabel,
+			captureZoom: event.captureZoom,
 			captureWhoChoosesFilter: event.captureWhoChoosesFilter,
 			captureDefaultCountdown: event.captureDefaultCountdown,
 			captureAutoShoot: event.captureAutoShoot,
@@ -474,6 +477,7 @@ export async function getPublicEvent(organizationSlug: string, eventSlug: string
 		defaultCamera: event.defaultCamera,
 		cameraDeviceId: event.cameraDeviceId,
 		cameraDeviceLabel: event.cameraDeviceLabel,
+		captureZoom: event.captureZoom,
 		startDate: event.startDate,
 		photoQuality: event.photoQuality,
 		maxPhotoDimension: event.maxPhotoDimension,
