@@ -73,6 +73,10 @@ const HOP_BY_HOP_HEADERS = new Set([
 	"transfer-encoding",
 	"upgrade",
 	"content-length",
+	// `fetch` transparently decompresses the upstream body, so forwarding the
+	// original encoding header would make the browser try to decode plain bytes
+	// (→ ERR_CONTENT_DECODING_FAILED). Drop it and let the body go through as-is.
+	"content-encoding",
 	// Next/edge fetch sets these and they can confuse downstream parsers.
 	"host",
 ]);
