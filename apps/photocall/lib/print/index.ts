@@ -14,7 +14,7 @@
 
 import { printImage } from "@/lib/canvas-utils";
 import { PAPER_SIZE_MM, type PaperSize } from "@/lib/layout/types";
-import { submitPrintJob } from "@/lib/print/bridge-client";
+import { resolveBridgeUrl, submitPrintJob } from "@/lib/print/bridge-client";
 import { enqueuePrint } from "@/lib/print/print-queue";
 import type { EventPrintConfig, PrintDispatchResult } from "@/lib/print/types";
 
@@ -59,10 +59,10 @@ export async function executePrint(
 		}
 
 		case "bridge": {
-			if (!config.printBridgeUrl) {
-				return { status: "failed", message: "No print bridge URL configured" };
-			}
-			const result = await submitPrintJob(config.printBridgeUrl, blob, config);
+			// A blank bridge URL falls back to the mDNS hostname the bridge
+			// advertises, so an unconfigured kiosk still reaches a LAN bridge.
+			const bridgeUrl = resolveBridgeUrl(config.printBridgeUrl);
+			const result = await submitPrintJob(bridgeUrl, blob, config);
 			if (result.ok) return { status: "printing", jobId: result.jobId };
 			// Network/bridge failure → keep the job for background retry.
 			return queueForRetry(blob, config);

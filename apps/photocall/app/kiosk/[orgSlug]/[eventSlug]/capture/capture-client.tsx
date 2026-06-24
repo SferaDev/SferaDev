@@ -120,17 +120,6 @@ export default function KioskCapturePage() {
 		[sessionId, layout, filter],
 	);
 
-	const finishSingle = useCallback(
-		async (dataUrl: string) => {
-			if (!sessionId) return;
-			await saveCapture(sessionId, dataUrl);
-			router.push(
-				`/kiosk/${orgSlug}/${eventSlug}/personalize?session=${sessionId}${templateId ? `&template=${templateId}` : ""}`,
-			);
-		},
-		[sessionId, router, orgSlug, eventSlug, templateId],
-	);
-
 	const goToResult = useCallback(() => {
 		if (!sessionId) return;
 		const query = new URLSearchParams({ session: sessionId });
@@ -138,6 +127,18 @@ export default function KioskCapturePage() {
 		query.set("filter", filter);
 		router.push(`/kiosk/${orgSlug}/${eventSlug}/result?${query.toString()}`);
 	}, [sessionId, templateId, filter, router, orgSlug, eventSlug]);
+
+	// Single-photo path: persist the frame, then go straight to the result. The
+	// personalize step (guest caption + mirror toggle) was removed; mirroring is
+	// now an admin setting (event.mirrorPhotos) applied at compose time.
+	const finishSingle = useCallback(
+		async (dataUrl: string) => {
+			if (!sessionId) return;
+			await saveCapture(sessionId, dataUrl);
+			goToResult();
+		},
+		[sessionId, goToResult],
+	);
 
 	/** Capture a single shot for slot `index`, replacing it on a retake. */
 	const captureShot = useCallback(

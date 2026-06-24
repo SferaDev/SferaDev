@@ -122,27 +122,6 @@ export async function saveMultiCapture(
 		.where(eq(schema.kioskSessions.id, sessionId));
 }
 
-export async function personalizeSession(sessionId: string, caption?: string, mirrored?: boolean) {
-	const session = await db
-		.select()
-		.from(schema.kioskSessions)
-		.where(eq(schema.kioskSessions.id, sessionId))
-		.then((rows) => rows[0]);
-
-	if (!session) {
-		throw new Error("Session not found");
-	}
-
-	await db
-		.update(schema.kioskSessions)
-		.set({
-			status: "personalized",
-			caption,
-			mirrored,
-		})
-		.where(eq(schema.kioskSessions.id, sessionId));
-}
-
 export async function completeSession(sessionId: string) {
 	const session = await db
 		.select()
