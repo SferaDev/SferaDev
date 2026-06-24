@@ -151,7 +151,9 @@
 			"chooseFrame": "Choose a Frame",
 			"noTemplates": "No templates available",
 			"continueWithoutFrame": "Continue without frame",
-			"pickLook": "Pick a Look"
+			"pickLook": "Pick a Look",
+			"noTemplatesTitle": "Ready when you are!",
+			"noTemplatesSubtitle": "There are no frames for this event yet — you can still take your photos."
 		},
 		"capture": {
 			"allShotsCaptured": "All shots captured!",
@@ -219,7 +221,8 @@
 			"photosNotFound": "We couldn't find your photos. Please try again.",
 			"processFailed": "Failed to process your photo. Please try again.",
 			"retry": "Retry",
-			"startOver": "Start Over"
+			"startOver": "Start Over",
+			"sendToPrinter": "Send to printer"
 		},
 		"filters": {
 			"none": "Original",
@@ -628,7 +631,13 @@
 			"addTemplate": "Add Template",
 			"addDialogDescription": "Upload a PNG overlay for your photo booth frames.",
 			"emptyTitle": "No templates yet",
-			"emptyDescription": "Upload PNG overlay images for your photo booth",
+			"emptyDescription": "Design a template from scratch in the editor, or start from one of the presets below.",
+			"designTemplate": "Design template",
+			"designFirstTemplate": "Design your first template",
+			"advancedUpload": "Advanced: upload PNG",
+			"presetsTitle": "Start from a preset",
+			"presetsDescription": "Pick a ready-made design and customize it in the editor.",
+			"presetShotCount": "{count} photos",
 			"captionConfigured": "Caption configured",
 			"safeAreaSet": "Safe area set",
 			"editLayout": "Edit layout",
@@ -737,5 +746,18 @@
 	},
 	"guestAlbums": {
 		"yourAlbums": "Your albums"
+	},
+	"share": {
+		"defaultTitle": "Photocall",
+		"share": "Share",
+		"download": "Download",
+		"shareText": "Check out this photo from {event}!",
+		"linkCopied": "Link copied",
+		"photoTitle": "Photo {code}",
+		"photoAlt": "Captured moment {code}",
+		"takenOn": "Taken on {date}",
+		"notFoundTitle": "Photo Not Found",
+		"notFoundDescription": "This photo may have expired or been deleted.",
+		"visitPhotocall": "Visit Photocall"
 	}
 }
