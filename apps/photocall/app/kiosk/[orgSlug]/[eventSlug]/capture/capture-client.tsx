@@ -572,7 +572,7 @@ export default function KioskCapturePage() {
 	const previewAspect = layout ? nextSlotAspect(layout, nextSlot + 1) : SINGLE_PHOTO_ASPECT;
 
 	return (
-		<div className="min-h-screen bg-black text-white relative overflow-hidden">
+		<div className="h-[100svh] bg-black text-white relative overflow-hidden">
 			{/* Dimmed backdrop outside the framed preview box, so the area that WON'T
 			    be captured reads as out-of-frame. */}
 			<div className="absolute inset-0 bg-black" />

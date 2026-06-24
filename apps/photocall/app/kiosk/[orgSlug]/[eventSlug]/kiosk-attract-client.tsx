@@ -155,7 +155,7 @@ export default function KioskAttractPage() {
 
 	return (
 		<div
-			className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden"
+			className="h-[100svh] flex flex-col items-center justify-center relative overflow-hidden"
 			style={{ backgroundColor: "#000" }}
 		>
 			{/* Animated collage background */}
@@ -164,26 +164,36 @@ export default function KioskAttractPage() {
 			)}
 
 			{/* Content */}
-			<div className="relative z-10 text-center text-white p-8">
+			<div className="relative z-10 flex max-h-full flex-col items-center text-center text-white p-6 sm:p-8">
 				{event.logoUrl && (
-					<img src={event.logoUrl} alt="" className="h-24 mx-auto mb-8 object-contain" />
+					<img
+						src={event.logoUrl}
+						alt=""
+						className="h-16 sm:h-20 lg:h-24 mx-auto mb-4 sm:mb-8 object-contain"
+					/>
 				)}
 
 				<h1
-					className="text-5xl md:text-7xl font-bold mb-4"
+					className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-3 sm:mb-4"
 					style={headingFontFamily ? { fontFamily: headingFontFamily } : undefined}
 				>
 					{attractTitle}
 				</h1>
 
 				{attractSubtitle && (
-					<p className="text-2xl md:text-3xl mb-8 opacity-80">{attractSubtitle}</p>
+					<p className="text-xl sm:text-2xl md:text-3xl mb-6 sm:mb-8 opacity-80">
+						{attractSubtitle}
+					</p>
 				)}
 
 				<Button
 					size="xl"
 					onClick={handleStart}
-					className={cn(PRIMARY_CTA_CLASS, BRANDED_CTA_FEEDBACK, "h-16 px-12 text-2xl")}
+					className={cn(
+						PRIMARY_CTA_CLASS,
+						BRANDED_CTA_FEEDBACK,
+						"h-14 px-10 text-xl sm:h-16 sm:px-12 sm:text-2xl",
+					)}
 					style={{ backgroundColor: primaryColor, boxShadow: `0 0 40px -8px ${accentColor}` }}
 				>
 					{ctaLabel}
