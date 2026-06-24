@@ -1071,6 +1071,75 @@ export type DomainAlreadyRenewing = {
  */
 export type Nameserver = string;
 
+/**
+ * @description The registrant contact has been verified.
+ * @type object
+ */
+export type ContactVerified = {
+	/**
+	 * @type boolean
+	 */
+	verified: true;
+};
+
+/**
+ * @description The registrant contact has not yet been verified. The contact must be verified by `verifyBy`, and a verification email is sent to `email`.
+ * @type object
+ */
+export type ContactPendingVerification = {
+	/**
+	 * @type boolean
+	 */
+	verified: false;
+	/**
+	 * @type unknown
+	 */
+	verifyBy: unknown;
+	/**
+	 * @type string
+	 */
+	email: string;
+};
+
+/**
+ * @description a string to be decoded into a Date
+ * @type string
+ */
+export type DateFromString = string;
+
+export const boughtTooRecentlyStatusEnum = {
+	"400": 400,
+} as const;
+
+export type BoughtTooRecentlyStatusEnumKey =
+	(typeof boughtTooRecentlyStatusEnum)[keyof typeof boughtTooRecentlyStatusEnum];
+
+export const boughtTooRecentlyCodeEnum = {
+	bought_too_recently: "bought_too_recently",
+} as const;
+
+export type BoughtTooRecentlyCodeEnumKey =
+	(typeof boughtTooRecentlyCodeEnum)[keyof typeof boughtTooRecentlyCodeEnum];
+
+/**
+ * @description The domain was bought too recently to determine verification status.
+ * @type object
+ */
+export type BoughtTooRecently = {
+	/**
+	 * @type number
+	 */
+	status: BoughtTooRecentlyStatusEnumKey;
+	/**
+	 * @type string
+	 */
+	code: BoughtTooRecentlyCodeEnumKey;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
 export const typeEnum = {
 	notice: "notice",
 } as const;
@@ -1428,6 +1497,7 @@ export const userEventTypeEnum = {
 	"connect-github-limited": "connect-github-limited",
 	"connect-gitlab": "connect-gitlab",
 	"connect-gitlab-app": "connect-gitlab-app",
+	"connect-import-tokens": "connect-import-tokens",
 	"connect-revoke-all-tokens": "connect-revoke-all-tokens",
 	"connect-update-connector": "connect-update-connector",
 	"connect-update-trigger-destinations": "connect-update-trigger-destinations",
@@ -1491,6 +1561,7 @@ export const userEventTypeEnum = {
 	"edge-cache-invalidate-by-tags": "edge-cache-invalidate-by-tags",
 	"edge-cache-purge-all": "edge-cache-purge-all",
 	"edge-cache-rollback-purge": "edge-cache-rollback-purge",
+	"edge-config-backup-restored": "edge-config-backup-restored",
 	"edge-config-created": "edge-config-created",
 	"edge-config-deleted": "edge-config-deleted",
 	"edge-config-items-updated": "edge-config-items-updated",
@@ -1539,6 +1610,7 @@ export const userEventTypeEnum = {
 	"flags-sdk-key-read": "flags-sdk-key-read",
 	"flags-segment": "flags-segment",
 	"flags-settings": "flags-settings",
+	"flags-transferred": "flags-transferred",
 	git_account_integration_link_added: "git_account_integration_link_added",
 	"instant-rollback-created": "instant-rollback-created",
 	"integration-configuration-owner-changed": "integration-configuration-owner-changed",
@@ -1592,6 +1664,7 @@ export const userEventTypeEnum = {
 	"owner-unblocked": "owner-unblocked",
 	"page-integrity-config-updated": "page-integrity-config-updated",
 	"page-integrity-header-approved": "page-integrity-header-approved",
+	"page-integrity-header-rejected": "page-integrity-header-rejected",
 	"page-integrity-inventory-cleared": "page-integrity-inventory-cleared",
 	"page-integrity-resource-approved": "page-integrity-resource-approved",
 	"page-integrity-resource-deleted": "page-integrity-resource-deleted",
@@ -1733,6 +1806,8 @@ export const userEventTypeEnum = {
 	"protected-git-scope-added": "protected-git-scope-added",
 	"protected-git-scope-removed": "protected-git-scope-removed",
 	"runtime-cache-purge-all": "runtime-cache-purge-all",
+	"sandbox-alias-assigned": "sandbox-alias-assigned",
+	"sandbox-alias-delete": "sandbox-alias-delete",
 	scale: "scale",
 	"scale-auto": "scale-auto",
 	"secondary-email-added": "secondary-email-added",
@@ -1794,6 +1869,7 @@ export const userEventTypeEnum = {
 	"team-domain-verification-deleted": "team-domain-verification-deleted",
 	"team-domain-verification-verified": "team-domain-verification-verified",
 	"team-email-domain-update": "team-email-domain-update",
+	"team-emu-account-split": "team-emu-account-split",
 	"team-emu-updated": "team-emu-updated",
 	"team-ended-trial": "team-ended-trial",
 	"team-git-repository-dispatch-events-toggled": "team-git-repository-dispatch-events-toggled",
@@ -1816,6 +1892,7 @@ export const userEventTypeEnum = {
 	"team-member-leave": "team-member-leave",
 	"team-member-request-access": "team-member-request-access",
 	"team-member-role-update": "team-member-role-update",
+	"team-member-sso-authorization-attempt": "team-member-sso-authorization-attempt",
 	"team-mfa-enforcement-updated": "team-mfa-enforcement-updated",
 	"team-name-update": "team-name-update",
 	"team-paid-invoice": "team-paid-invoice",
@@ -1844,6 +1921,9 @@ export const userEventTypeEnum = {
 	"v0-chat-ai-usage": "v0-chat-ai-usage",
 	"v0-chat-created": "v0-chat-created",
 	"v0-chat-message-sent": "v0-chat-message-sent",
+	"vercel-agent-elevated-permissions-approved": "vercel-agent-elevated-permissions-approved",
+	"vercel-agent-elevated-permissions-requested": "vercel-agent-elevated-permissions-requested",
+	"vercel-agent-session-created": "vercel-agent-session-created",
 	"vercel-agent-team-trial-credits-applied": "vercel-agent-team-trial-credits-applied",
 	"vercel-app-installation-request-dismissed": "vercel-app-installation-request-dismissed",
 	"vercel-app-installation-requested": "vercel-app-installation-requested",
@@ -4749,6 +4829,18 @@ export type UserEvent = {
 						/**
 						 * @type number | undefined
 						 */
+						tokenCount?: number | undefined;
+						/**
+						 * @type number | undefined
+						 */
+						acceptedTokenCount?: number | undefined;
+						/**
+						 * @type number | undefined
+						 */
+						importedTokenCount?: number | undefined;
+						/**
+						 * @type number | undefined
+						 */
 						tokensDeleted?: number | undefined;
 				  }
 				| {
@@ -6980,6 +7072,24 @@ export type UserEvent = {
 						 */
 						edgeConfigSlug: string;
 						/**
+						 * @type string
+						 */
+						edgeConfigDigest: string;
+						/**
+						 * @type string
+						 */
+						edgeConfigBackupVersionId: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						edgeConfigId: string;
+						/**
+						 * @type string
+						 */
+						edgeConfigSlug: string;
+						/**
 						 * @type object | undefined
 						 */
 						edgeConfigSchema?: object | undefined;
@@ -7791,6 +7901,20 @@ export type UserEvent = {
 						 * @type string | undefined
 						 */
 						action?: ActionEnumKey | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						previousOwnerId: string;
+						/**
+						 * @type string
+						 */
+						newOwnerId: string;
 				  }
 				| {
 						/**
@@ -11023,6 +11147,24 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
+						headerName: string;
+						/**
+						 * @type string
+						 */
+						previousStatus: string;
+						/**
+						 * @type string
+						 */
+						justification: string | null;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
 						projectName: string;
 						/**
 						 * @type number
@@ -11044,6 +11186,14 @@ export type UserEvent = {
 						 * @type number
 						 */
 						headerCount: number;
+						/**
+						 * @type number | undefined
+						 */
+						connectSrcUserNormalizationRuleCount?: number | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						connectSrcNormalizationRulesCleared?: (false | true) | undefined;
 				  }
 				| {
 						/**
@@ -13698,6 +13848,24 @@ export type UserEvent = {
 				  }
 				| {
 						/**
+						 * @type string
+						 */
+						alias: string;
+						/**
+						 * @type string
+						 */
+						sandboxName: string;
+						/**
+						 * @type string | undefined
+						 */
+						sandboxId?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						projectId?: string | undefined;
+				  }
+				| {
+						/**
 						 * @type number
 						 */
 						instances: number;
@@ -14540,6 +14708,94 @@ export type UserEvent = {
 				  }
 				| {
 						/**
+						 * @type string
+						 */
+						eventId: string;
+						/**
+						 * @type string
+						 */
+						sessionId: string;
+						/**
+						 * @description Currently emitted session kinds: chat, investigation.
+						 * @type string
+						 */
+						sessionKind: string;
+						/**
+						 * @description Currently emitted surfaces: dashboard, internal, slack, automation, github.
+						 * @type string
+						 */
+						surface: string;
+						/**
+						 * @type number
+						 */
+						occurredAt: number;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						eventId: string;
+						/**
+						 * @type string
+						 */
+						sessionId: string;
+						/**
+						 * @description Currently emitted session kinds: chat, investigation.
+						 * @type string
+						 */
+						sessionKind: string;
+						/**
+						 * @description Currently emitted surfaces: dashboard, internal, slack, automation, github.
+						 * @type string
+						 */
+						surface: string;
+						/**
+						 * @type number
+						 */
+						occurredAt: number;
+						/**
+						 * @type string
+						 */
+						planId: string;
+						/**
+						 * @description Scopes requested by the model-authored plan.
+						 * @type array
+						 */
+						requestedScopes: string[];
+						/**
+						 * @description Requested Vercel scopes that are not included in the baseline token.
+						 * @type array
+						 */
+						elevatedScopes: string[];
+						/**
+						 * @description Baseline plus elevated Vercel scopes used when minting scoped tokens.
+						 * @type array
+						 */
+						mergedScopes: string[];
+						/**
+						 * @description External GitHub scopes requested by the plan; these are not Vercel token scopes.
+						 * @type array
+						 */
+						githubScopes: string[];
+						/**
+						 * @type number
+						 */
+						requestedScopeCount: number;
+						/**
+						 * @type number
+						 */
+						elevatedScopeCount: number;
+						/**
+						 * @type number
+						 */
+						mergedScopeCount: number;
+						/**
+						 * @type number
+						 */
+						githubScopeCount: number;
+				  }
+				| {
+						/**
 						 * @type string | undefined
 						 */
 						previous?: PreviousEnumKey | undefined;
@@ -14619,6 +14875,16 @@ export type UserEvent = {
 						 * @type object
 						 */
 						next: object | null;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						personalAccountId: string;
+						/**
+						 * @type string
+						 */
+						managedAccountId: string;
 				  }
 				| {
 						/**
@@ -15030,6 +15296,20 @@ export type UserEvent = {
 						 * @type string | undefined
 						 */
 						teamSlug?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						email?: string | undefined;
+						/**
+						 * @type boolean
+						 */
+						authorized: false | true;
+						/**
+						 * @type string | undefined
+						 */
+						reason?: string | undefined;
 				  }
 				| {
 						/**
@@ -16186,6 +16466,7 @@ export const listEventTypeNameEnum = {
 	"connect-github-limited": "connect-github-limited",
 	"connect-gitlab": "connect-gitlab",
 	"connect-gitlab-app": "connect-gitlab-app",
+	"connect-import-tokens": "connect-import-tokens",
 	"connect-revoke-all-tokens": "connect-revoke-all-tokens",
 	"connect-update-connector": "connect-update-connector",
 	"connect-update-trigger-destinations": "connect-update-trigger-destinations",
@@ -16249,6 +16530,7 @@ export const listEventTypeNameEnum = {
 	"edge-cache-invalidate-by-tags": "edge-cache-invalidate-by-tags",
 	"edge-cache-purge-all": "edge-cache-purge-all",
 	"edge-cache-rollback-purge": "edge-cache-rollback-purge",
+	"edge-config-backup-restored": "edge-config-backup-restored",
 	"edge-config-created": "edge-config-created",
 	"edge-config-deleted": "edge-config-deleted",
 	"edge-config-items-updated": "edge-config-items-updated",
@@ -16297,6 +16579,7 @@ export const listEventTypeNameEnum = {
 	"flags-sdk-key-read": "flags-sdk-key-read",
 	"flags-segment": "flags-segment",
 	"flags-settings": "flags-settings",
+	"flags-transferred": "flags-transferred",
 	git_account_integration_link_added: "git_account_integration_link_added",
 	"instant-rollback-created": "instant-rollback-created",
 	"integration-configuration-owner-changed": "integration-configuration-owner-changed",
@@ -16350,6 +16633,7 @@ export const listEventTypeNameEnum = {
 	"owner-unblocked": "owner-unblocked",
 	"page-integrity-config-updated": "page-integrity-config-updated",
 	"page-integrity-header-approved": "page-integrity-header-approved",
+	"page-integrity-header-rejected": "page-integrity-header-rejected",
 	"page-integrity-inventory-cleared": "page-integrity-inventory-cleared",
 	"page-integrity-resource-approved": "page-integrity-resource-approved",
 	"page-integrity-resource-deleted": "page-integrity-resource-deleted",
@@ -16491,6 +16775,8 @@ export const listEventTypeNameEnum = {
 	"protected-git-scope-added": "protected-git-scope-added",
 	"protected-git-scope-removed": "protected-git-scope-removed",
 	"runtime-cache-purge-all": "runtime-cache-purge-all",
+	"sandbox-alias-assigned": "sandbox-alias-assigned",
+	"sandbox-alias-delete": "sandbox-alias-delete",
 	scale: "scale",
 	"scale-auto": "scale-auto",
 	"secondary-email-added": "secondary-email-added",
@@ -16552,6 +16838,7 @@ export const listEventTypeNameEnum = {
 	"team-domain-verification-deleted": "team-domain-verification-deleted",
 	"team-domain-verification-verified": "team-domain-verification-verified",
 	"team-email-domain-update": "team-email-domain-update",
+	"team-emu-account-split": "team-emu-account-split",
 	"team-emu-updated": "team-emu-updated",
 	"team-ended-trial": "team-ended-trial",
 	"team-git-repository-dispatch-events-toggled": "team-git-repository-dispatch-events-toggled",
@@ -16574,6 +16861,7 @@ export const listEventTypeNameEnum = {
 	"team-member-leave": "team-member-leave",
 	"team-member-request-access": "team-member-request-access",
 	"team-member-role-update": "team-member-role-update",
+	"team-member-sso-authorization-attempt": "team-member-sso-authorization-attempt",
 	"team-mfa-enforcement-updated": "team-mfa-enforcement-updated",
 	"team-name-update": "team-name-update",
 	"team-paid-invoice": "team-paid-invoice",
@@ -16602,6 +16890,9 @@ export const listEventTypeNameEnum = {
 	"v0-chat-ai-usage": "v0-chat-ai-usage",
 	"v0-chat-created": "v0-chat-created",
 	"v0-chat-message-sent": "v0-chat-message-sent",
+	"vercel-agent-elevated-permissions-approved": "vercel-agent-elevated-permissions-approved",
+	"vercel-agent-elevated-permissions-requested": "vercel-agent-elevated-permissions-requested",
+	"vercel-agent-session-created": "vercel-agent-session-created",
 	"vercel-agent-team-trial-credits-applied": "vercel-agent-team-trial-credits-applied",
 	"vercel-app-installation-request-dismissed": "vercel-app-installation-request-dismissed",
 	"vercel-app-installation-requested": "vercel-app-installation-requested",
@@ -16742,6 +17033,7 @@ export const listEventTypeReplacedByEnum = {
 	"connect-github-limited": "connect-github-limited",
 	"connect-gitlab": "connect-gitlab",
 	"connect-gitlab-app": "connect-gitlab-app",
+	"connect-import-tokens": "connect-import-tokens",
 	"connect-revoke-all-tokens": "connect-revoke-all-tokens",
 	"connect-update-connector": "connect-update-connector",
 	"connect-update-trigger-destinations": "connect-update-trigger-destinations",
@@ -16805,6 +17097,7 @@ export const listEventTypeReplacedByEnum = {
 	"edge-cache-invalidate-by-tags": "edge-cache-invalidate-by-tags",
 	"edge-cache-purge-all": "edge-cache-purge-all",
 	"edge-cache-rollback-purge": "edge-cache-rollback-purge",
+	"edge-config-backup-restored": "edge-config-backup-restored",
 	"edge-config-created": "edge-config-created",
 	"edge-config-deleted": "edge-config-deleted",
 	"edge-config-items-updated": "edge-config-items-updated",
@@ -16853,6 +17146,7 @@ export const listEventTypeReplacedByEnum = {
 	"flags-sdk-key-read": "flags-sdk-key-read",
 	"flags-segment": "flags-segment",
 	"flags-settings": "flags-settings",
+	"flags-transferred": "flags-transferred",
 	git_account_integration_link_added: "git_account_integration_link_added",
 	"instant-rollback-created": "instant-rollback-created",
 	"integration-configuration-owner-changed": "integration-configuration-owner-changed",
@@ -16906,6 +17200,7 @@ export const listEventTypeReplacedByEnum = {
 	"owner-unblocked": "owner-unblocked",
 	"page-integrity-config-updated": "page-integrity-config-updated",
 	"page-integrity-header-approved": "page-integrity-header-approved",
+	"page-integrity-header-rejected": "page-integrity-header-rejected",
 	"page-integrity-inventory-cleared": "page-integrity-inventory-cleared",
 	"page-integrity-resource-approved": "page-integrity-resource-approved",
 	"page-integrity-resource-deleted": "page-integrity-resource-deleted",
@@ -17047,6 +17342,8 @@ export const listEventTypeReplacedByEnum = {
 	"protected-git-scope-added": "protected-git-scope-added",
 	"protected-git-scope-removed": "protected-git-scope-removed",
 	"runtime-cache-purge-all": "runtime-cache-purge-all",
+	"sandbox-alias-assigned": "sandbox-alias-assigned",
+	"sandbox-alias-delete": "sandbox-alias-delete",
 	scale: "scale",
 	"scale-auto": "scale-auto",
 	"secondary-email-added": "secondary-email-added",
@@ -17108,6 +17405,7 @@ export const listEventTypeReplacedByEnum = {
 	"team-domain-verification-deleted": "team-domain-verification-deleted",
 	"team-domain-verification-verified": "team-domain-verification-verified",
 	"team-email-domain-update": "team-email-domain-update",
+	"team-emu-account-split": "team-emu-account-split",
 	"team-emu-updated": "team-emu-updated",
 	"team-ended-trial": "team-ended-trial",
 	"team-git-repository-dispatch-events-toggled": "team-git-repository-dispatch-events-toggled",
@@ -17130,6 +17428,7 @@ export const listEventTypeReplacedByEnum = {
 	"team-member-leave": "team-member-leave",
 	"team-member-request-access": "team-member-request-access",
 	"team-member-role-update": "team-member-role-update",
+	"team-member-sso-authorization-attempt": "team-member-sso-authorization-attempt",
 	"team-mfa-enforcement-updated": "team-mfa-enforcement-updated",
 	"team-name-update": "team-name-update",
 	"team-paid-invoice": "team-paid-invoice",
@@ -17158,6 +17457,9 @@ export const listEventTypeReplacedByEnum = {
 	"v0-chat-ai-usage": "v0-chat-ai-usage",
 	"v0-chat-created": "v0-chat-created",
 	"v0-chat-message-sent": "v0-chat-message-sent",
+	"vercel-agent-elevated-permissions-approved": "vercel-agent-elevated-permissions-approved",
+	"vercel-agent-elevated-permissions-requested": "vercel-agent-elevated-permissions-requested",
+	"vercel-agent-session-created": "vercel-agent-session-created",
 	"vercel-agent-team-trial-credits-applied": "vercel-agent-team-trial-credits-applied",
 	"vercel-app-installation-request-dismissed": "vercel-app-installation-request-dismissed",
 	"vercel-app-installation-requested": "vercel-app-installation-requested",
@@ -19587,6 +19889,11 @@ export type Team = {
 				 * @type number | undefined
 				 */
 				customEnvironmentsPerProject?: number | undefined;
+				/**
+				 * @description The maximum memory size (in MB) for a serverless function. Only specified if a custom limit is set.
+				 * @type number | undefined
+				 */
+				serverlessFunctionMaxMemorySize?: number | undefined;
 				/**
 				 * @type object | undefined
 				 */
@@ -26074,6 +26381,90 @@ export type GetConnectorTokenResponse =
 /**
  * @type string
  */
+export type ImportConnectorTokensPathConnector = string;
+
+/**
+ * @type unknown
+ */
+export type ImportConnectorTokensStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ImportConnectorTokensStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ImportConnectorTokensStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ImportConnectorTokensStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ImportConnectorTokensStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ImportConnectorTokensStatus422 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ImportConnectorTokensStatus504 = unknown;
+
+/**
+ * @type object
+ */
+export type ImportConnectorTokensRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		connector: ImportConnectorTokensPathConnector;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v1/connect/token/${string}/import`;
+};
+
+/**
+ * @type object
+ */
+export type ImportConnectorTokensResponses = {
+	"200": ImportConnectorTokensStatus200;
+	"400": ImportConnectorTokensStatus400;
+	"401": ImportConnectorTokensStatus401;
+	"403": ImportConnectorTokensStatus403;
+	"404": ImportConnectorTokensStatus404;
+	"422": ImportConnectorTokensStatus422;
+	"504": ImportConnectorTokensStatus504;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ImportConnectorTokensResponse =
+	| ImportConnectorTokensStatus200
+	| ImportConnectorTokensStatus400
+	| ImportConnectorTokensStatus401
+	| ImportConnectorTokensStatus403
+	| ImportConnectorTokensStatus404
+	| ImportConnectorTokensStatus422
+	| ImportConnectorTokensStatus504;
+
+/**
+ * @type string
+ */
 export type CreateConnectorAuthorizationRequestPathConnector = string;
 
 /**
@@ -28447,6 +28838,103 @@ export type UpdateDomainNameserversResponse =
 	| UpdateDomainNameserversStatus404
 	| UpdateDomainNameserversStatus429
 	| UpdateDomainNameserversStatus500;
+
+/**
+ * @type unknown
+ */
+export type GetDomainContactVerificationPathDomain = unknown;
+
+/**
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type GetDomainContactVerificationQueryTeamId = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type GetDomainContactVerificationStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetDomainContactVerificationStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetDomainContactVerificationStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetDomainContactVerificationStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetDomainContactVerificationStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetDomainContactVerificationStatus429 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetDomainContactVerificationStatus500 = unknown;
+
+/**
+ * @type object
+ */
+export type GetDomainContactVerificationRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		domain: GetDomainContactVerificationPathDomain;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				teamId?: GetDomainContactVerificationQueryTeamId | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v1/registrar/domains/${string}/contact-verification`;
+};
+
+/**
+ * @type object
+ */
+export type GetDomainContactVerificationResponses = {
+	"200": GetDomainContactVerificationStatus200;
+	"400": GetDomainContactVerificationStatus400;
+	"401": GetDomainContactVerificationStatus401;
+	"403": GetDomainContactVerificationStatus403;
+	"404": GetDomainContactVerificationStatus404;
+	"429": GetDomainContactVerificationStatus429;
+	"500": GetDomainContactVerificationStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetDomainContactVerificationResponse =
+	| GetDomainContactVerificationStatus200
+	| GetDomainContactVerificationStatus400
+	| GetDomainContactVerificationStatus401
+	| GetDomainContactVerificationStatus403
+	| GetDomainContactVerificationStatus404
+	| GetDomainContactVerificationStatus429
+	| GetDomainContactVerificationStatus500;
 
 /**
  * @type unknown
@@ -32366,6 +32854,126 @@ export type GetEdgeConfigBackupResponse =
 	| GetEdgeConfigBackupStatus404;
 
 /**
+ * @pattern ^ecfg_
+ * @type string
+ */
+export type RestoreEdgeConfigBackupPathEdgeConfigId = string;
+
+/**
+ * @type string
+ */
+export type RestoreEdgeConfigBackupPathEdgeConfigBackupVersionId = string;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type RestoreEdgeConfigBackupQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type RestoreEdgeConfigBackupQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type RestoreEdgeConfigBackupStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type RestoreEdgeConfigBackupStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type RestoreEdgeConfigBackupStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type RestoreEdgeConfigBackupStatus402 = unknown;
+
+/**
+ * @type unknown
+ */
+export type RestoreEdgeConfigBackupStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type RestoreEdgeConfigBackupStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type RestoreEdgeConfigBackupStatus409 = unknown;
+
+/**
+ * @type unknown
+ */
+export type RestoreEdgeConfigBackupStatus412 = unknown;
+
+/**
+ * @type object
+ */
+export type RestoreEdgeConfigBackupRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		edgeConfigId: RestoreEdgeConfigBackupPathEdgeConfigId;
+		edgeConfigBackupVersionId: RestoreEdgeConfigBackupPathEdgeConfigBackupVersionId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				teamId?: RestoreEdgeConfigBackupQueryTeamId | undefined;
+				slug?: RestoreEdgeConfigBackupQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v1/edge-config/${string}/backups/${string}/restore`;
+};
+
+/**
+ * @type object
+ */
+export type RestoreEdgeConfigBackupResponses = {
+	"200": RestoreEdgeConfigBackupStatus200;
+	"400": RestoreEdgeConfigBackupStatus400;
+	"401": RestoreEdgeConfigBackupStatus401;
+	"402": RestoreEdgeConfigBackupStatus402;
+	"403": RestoreEdgeConfigBackupStatus403;
+	"404": RestoreEdgeConfigBackupStatus404;
+	"409": RestoreEdgeConfigBackupStatus409;
+	"412": RestoreEdgeConfigBackupStatus412;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type RestoreEdgeConfigBackupResponse =
+	| RestoreEdgeConfigBackupStatus200
+	| RestoreEdgeConfigBackupStatus400
+	| RestoreEdgeConfigBackupStatus401
+	| RestoreEdgeConfigBackupStatus402
+	| RestoreEdgeConfigBackupStatus403
+	| RestoreEdgeConfigBackupStatus404
+	| RestoreEdgeConfigBackupStatus409
+	| RestoreEdgeConfigBackupStatus412;
+
+/**
  * @type string
  */
 export type GetEdgeConfigBackupsPathEdgeConfigId = string;
@@ -33283,6 +33891,19 @@ export type ListFlagsV2QuerySearch = string | undefined;
 export type ListFlagsV2QueryTags = string[] | undefined;
 
 /**
+ * @description Filter flags by the id of the entity that created them (a user or team id).
+ * @maxLength 256
+ * @type string | undefined
+ */
+export type ListFlagsV2QueryCreatedBy = string | undefined;
+
+/**
+ * @description Filter flags by maintainer user id. Repeat the parameter for multiple maintainers (any may match).
+ * @type array | undefined
+ */
+export type ListFlagsV2QueryMaintainerIds = string[] | undefined;
+
+/**
  * @description Whether to include Marketplace experimentation items in the paginated response. Defaults to false.
  * @type boolean | undefined
  */
@@ -33353,6 +33974,8 @@ export type ListFlagsV2RequestConfig = {
 				cursor?: ListFlagsV2QueryCursor | undefined;
 				search?: ListFlagsV2QuerySearch | undefined;
 				tags?: ListFlagsV2QueryTags | undefined;
+				createdBy?: ListFlagsV2QueryCreatedBy | undefined;
+				maintainerIds?: ListFlagsV2QueryMaintainerIds | undefined;
 				includeMarketplaceFlags?: ListFlagsV2QueryIncludeMarketplaceFlags | undefined;
 				teamId?: ListFlagsV2QueryTeamId | undefined;
 				slug?: ListFlagsV2QuerySlug | undefined;
@@ -34561,6 +35184,19 @@ export type ListTeamFlagsV2QueryKind = ("boolean" | "string" | "number" | "json"
 export type ListTeamFlagsV2QueryTags = string[] | undefined;
 
 /**
+ * @description Filter flags by the id of the entity that created them (a user or team id).
+ * @maxLength 256
+ * @type string | undefined
+ */
+export type ListTeamFlagsV2QueryCreatedBy = string | undefined;
+
+/**
+ * @description Filter flags by maintainer user id. Repeat the parameter for multiple maintainers (any may match).
+ * @type array | undefined
+ */
+export type ListTeamFlagsV2QueryMaintainerIds = string[] | undefined;
+
+/**
  * @description Whether to include Marketplace experimentation items in the paginated response. Defaults to false.
  * @type boolean | undefined
  */
@@ -34622,6 +35258,8 @@ export type ListTeamFlagsV2RequestConfig = {
 				search?: ListTeamFlagsV2QuerySearch | undefined;
 				kind?: ListTeamFlagsV2QueryKind | undefined;
 				tags?: ListTeamFlagsV2QueryTags | undefined;
+				createdBy?: ListTeamFlagsV2QueryCreatedBy | undefined;
+				maintainerIds?: ListTeamFlagsV2QueryMaintainerIds | undefined;
 				includeMarketplaceFlags?: ListTeamFlagsV2QueryIncludeMarketplaceFlags | undefined;
 				slug?: ListTeamFlagsV2QuerySlug | undefined;
 		  }
@@ -35163,6 +35801,11 @@ export type DeleteFlagSegmentStatus204 = unknown;
 /**
  * @type unknown
  */
+export type DeleteFlagSegmentStatus304 = unknown;
+
+/**
+ * @type unknown
+ */
 export type DeleteFlagSegmentStatus400 = unknown;
 
 /**
@@ -35229,6 +35872,7 @@ export type DeleteFlagSegmentRequestConfig = {
  */
 export type DeleteFlagSegmentResponses = {
 	"204": DeleteFlagSegmentStatus204;
+	"304": DeleteFlagSegmentStatus304;
 	"400": DeleteFlagSegmentStatus400;
 	"401": DeleteFlagSegmentStatus401;
 	"402": DeleteFlagSegmentStatus402;
@@ -35243,6 +35887,7 @@ export type DeleteFlagSegmentResponses = {
  */
 export type DeleteFlagSegmentResponse =
 	| DeleteFlagSegmentStatus204
+	| DeleteFlagSegmentStatus304
 	| DeleteFlagSegmentStatus400
 	| DeleteFlagSegmentStatus401
 	| DeleteFlagSegmentStatus402
