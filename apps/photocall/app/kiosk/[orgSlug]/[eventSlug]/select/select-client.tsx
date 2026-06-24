@@ -73,11 +73,6 @@ export default function KioskSelectPage() {
 		});
 	}, [event?.startDate]);
 
-	// Where the template + filter choice leads: the photo-capture screen for
-	// strips, or the boomerang recorder for boomerangs. Both screens read the
-	// same `session` / `template` / `filter` params.
-	const captureRoute = mode === "boomerang" ? "boomerang" : "capture";
-
 	const goToCapture = async (template: PublicTemplate | null, filter: FilterKind) => {
 		if (!sessionId) return;
 		setNavigating(true);
@@ -86,10 +81,13 @@ export default function KioskSelectPage() {
 		} catch (error) {
 			console.error("Failed to select template:", error);
 		}
+		// Both modes use the same capture screen; boomerang just records a burst
+		// instead of N stills. The `mode` param is what flips that branch on.
 		const query = new URLSearchParams({ session: sessionId });
 		if (template) query.set("template", template.id);
 		query.set("filter", filter);
-		router.push(`/kiosk/${orgSlug}/${eventSlug}/${captureRoute}?${query.toString()}`);
+		if (mode === "boomerang") query.set("mode", "boomerang");
+		router.push(`/kiosk/${orgSlug}/${eventSlug}/capture?${query.toString()}`);
 	};
 
 	const handleSelectTemplate = (template: PublicTemplate) => {

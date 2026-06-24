@@ -182,13 +182,7 @@
 			"ready": "Tap to record a boomerang",
 			"recording": "Recording…",
 			"processing": "Processing…",
-			"sharing": "Saving…",
-			"previewHint": "Looking good? Keep it or redo",
-			"redo": "Redo",
-			"keep": "Keep it",
 			"resultAlt": "Your boomerang",
-			"cameraErrorTitle": "Camera Error",
-			"captureFailedTitle": "Recording Failed",
 			"captureFailed": "Could not create the boomerang. Please try again.",
 			"recordBoomerang": "Record boomerang"
 		},

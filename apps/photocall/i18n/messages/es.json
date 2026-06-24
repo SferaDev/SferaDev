@@ -187,13 +187,7 @@
 			"ready": "Toca para grabar un boomerang",
 			"recording": "Grabando…",
 			"processing": "Procesando…",
-			"sharing": "Guardando…",
-			"previewHint": "¿Te gusta? Guárdalo o repítelo",
-			"redo": "Repetir",
-			"keep": "Guardar",
 			"resultAlt": "Tu boomerang",
-			"cameraErrorTitle": "Error de cámara",
-			"captureFailedTitle": "Error al grabar",
 			"captureFailed": "No se pudo crear el boomerang. Inténtalo de nuevo.",
 			"recordBoomerang": "Grabar boomerang"
 		},

@@ -187,13 +187,7 @@
 			"ready": "Toca per gravar un boomerang",
 			"recording": "Gravant…",
 			"processing": "Processant…",
-			"sharing": "Desant…",
-			"previewHint": "T'agrada? Desa'l o repeteix-lo",
-			"redo": "Repeteix",
-			"keep": "Desa",
 			"resultAlt": "El teu boomerang",
-			"cameraErrorTitle": "Error de càmera",
-			"captureFailedTitle": "Error en gravar",
 			"captureFailed": "No s'ha pogut crear el boomerang. Torna-ho a provar.",
 			"recordBoomerang": "Grava un boomerang"
 		},
