@@ -83,7 +83,11 @@ export async function executePrint(
 			// advertises, so an unconfigured kiosk still reaches a LAN bridge.
 			const bridgeUrl = resolveBridgeUrl(config.printBridgeUrl);
 			const result = await submitPrintJob(bridgeUrl, blob, config);
-			if (result.ok) return { status: "printing", jobId: result.jobId };
+			// The bridge accepted the job into its (no-loss) print queue. That hand-off
+			// is the success the kiosk can confirm — it can't track the physical print
+			// to completion — so report it as "done" (green positive feedback) rather
+			// than an indefinite "printing" spinner that never resolves.
+			if (result.ok) return { status: "done", jobId: result.jobId };
 			// EITHER a network failure (bridge unreachable) OR a bridge rejection
 			// (printer out of paper, unknown printer id, …). Both are queued — never
 			// lost — but we keep `result.error` so the pending notice can say WHY the
