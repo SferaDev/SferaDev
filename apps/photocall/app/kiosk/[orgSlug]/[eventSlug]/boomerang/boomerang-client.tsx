@@ -1,14 +1,6 @@
 "use client";
 
-import {
-	AlertCircle,
-	ArrowLeft,
-	Check,
-	Clapperboard,
-	Download,
-	Loader2,
-	RotateCcw,
-} from "lucide-react";
+import { AlertCircle, ArrowLeft, Check, Clapperboard, Loader2, RotateCcw } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
@@ -18,6 +10,7 @@ import useSWR from "swr";
 import { getPublicEvent } from "@/actions/events";
 import { createPhoto, generatePhotoUploadUrl } from "@/actions/photos";
 import { completeSession } from "@/actions/sessions";
+import { KioskResultScreen } from "@/components/kiosk-result-screen";
 import { Button } from "@/components/ui/button";
 import { type CameraFacing, useCamera } from "@/hooks/use-camera";
 import { useIdleTimeout } from "@/hooks/use-idle-timeout";
@@ -29,7 +22,6 @@ import {
 	toPalindrome,
 } from "@/lib/boomerang/encode";
 import { BRANDED_CTA_FEEDBACK, DEFAULT_BRAND_COLOR, PRIMARY_CTA_CLASS } from "@/lib/branding";
-import { downloadBlob } from "@/lib/canvas-utils";
 import { enqueuePhoto } from "@/lib/offline-queue";
 import { cn } from "@/lib/utils";
 
@@ -58,7 +50,6 @@ export default function KioskBoomerangPage() {
 	const sessionId = searchParams.get("session");
 	const t = useTranslations("kiosk.boomerang");
 	const tCommon = useTranslations("kiosk.common");
-	const tResult = useTranslations("kiosk.result");
 	const tLoading = useTranslations("kiosk.loading");
 
 	const { data: event, isLoading: eventLoading } = useSWR(
@@ -83,7 +74,6 @@ export default function KioskBoomerangPage() {
 	const [encodeProgress, setEncodeProgress] = useState(0);
 	const [gifUrl, setGifUrl] = useState<string | null>(null);
 	const [qrCodeUrl, setQrCodeUrl] = useState<string | null>(null);
-	const [humanCode, setHumanCode] = useState<string | null>(null);
 	const [savedOffline, setSavedOffline] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 
@@ -217,7 +207,6 @@ export default function KioskBoomerangPage() {
 
 			const shareBaseUrl = typeof window !== "undefined" ? window.location.origin : "";
 			const shareLink = `${shareBaseUrl}/share/${result.shareToken}`;
-			setHumanCode(result.humanCode);
 
 			if (event.showQrCode) {
 				const qr = await QRCode.toDataURL(shareLink, {
@@ -260,12 +249,6 @@ export default function KioskBoomerangPage() {
 		setStage("done");
 	}, [event, sessionId, sync]);
 
-	const handleDownload = useCallback(() => {
-		const captured = gifRef.current;
-		if (!captured) return;
-		downloadBlob(captured.blob, `photocall-${humanCode || "boomerang"}.gif`);
-	}, [humanCode]);
-
 	const handleNew = useCallback(() => {
 		router.push(`/kiosk/${orgSlug}/${eventSlug}`);
 	}, [router, orgSlug, eventSlug]);
@@ -294,90 +277,19 @@ export default function KioskBoomerangPage() {
 
 	const primaryColor = event.primaryColor || DEFAULT_BRAND_COLOR;
 
-	// ── Result screen (shared GIF + QR + download, no print) ──
+	// ── Result screen — the shared kiosk end-of-session layout (no print for
+	// boomerangs). Identical to the photo-strip/single result for consistency. ──
 	if (stage === "done") {
 		return (
-			<div className="min-h-screen bg-black text-white p-8">
-				<div className="max-w-4xl mx-auto">
-					<motion.div
-						initial={{ opacity: 0, y: 12 }}
-						animate={{ opacity: 1, y: 0 }}
-						className="text-center mb-8"
-					>
-						<div className="inline-flex items-center gap-2 bg-green-600 px-4 py-2 rounded-full mb-4">
-							<Check className="h-5 w-5" />
-							<span className="font-medium">{tResult("photoSaved")}</span>
-						</div>
-						<h1 className="text-3xl font-bold">
-							{event.thankYouMessage || tResult("defaultThankYou")}
-						</h1>
-					</motion.div>
-
-					<div className="grid md:grid-cols-2 gap-8">
-						<motion.div
-							initial={{ opacity: 0, scale: 0.96 }}
-							animate={{ opacity: 1, scale: 1 }}
-							transition={{ type: "spring", stiffness: 220, damping: 22 }}
-							className="rounded-lg overflow-hidden bg-white/5 flex items-center justify-center"
-						>
-							{gifUrl && (
-								<img
-									src={gifUrl}
-									alt={t("resultAlt")}
-									className="w-full h-full object-contain max-h-[70vh]"
-								/>
-							)}
-						</motion.div>
-
-						<div className="flex flex-col justify-center space-y-6">
-							{savedOffline && (
-								<div className="text-center p-4 bg-amber-500/15 border border-amber-500/30 rounded-lg">
-									<p className="text-sm font-medium text-amber-200">
-										{tResult("savedOfflineTitle")}
-									</p>
-									<p className="text-sm text-white/60 mt-1">{tResult("savedOfflineDescription")}</p>
-								</div>
-							)}
-
-							{humanCode && (
-								<div className="text-center p-4 bg-white/10 rounded-lg">
-									<p className="text-sm text-white/60 mb-1">{tResult("photoCode")}</p>
-									<p className="text-3xl font-mono font-bold tracking-wider">{humanCode}</p>
-								</div>
-							)}
-
-							{event.showQrCode && qrCodeUrl && (
-								<div className="flex flex-col items-center p-6 bg-white rounded-lg">
-									<img src={qrCodeUrl} alt={tResult("scanToView")} className="w-40 h-40" />
-									<p className="text-black text-sm mt-2">{tResult("scanToView")}</p>
-								</div>
-							)}
-
-							{event.allowDownload && (
-								<Button
-									size="lg"
-									variant="outline"
-									onClick={handleDownload}
-									className="bg-transparent border-white/20 text-white hover:bg-white/10"
-								>
-									<Download className="h-5 w-5 mr-2" />
-									{tResult("download")}
-								</Button>
-							)}
-
-							<Button
-								size="xl"
-								onClick={handleNew}
-								className={cn(PRIMARY_CTA_CLASS, BRANDED_CTA_FEEDBACK, "w-full")}
-								style={{ backgroundColor: primaryColor }}
-							>
-								<Clapperboard className="h-5 w-5 mr-2" />
-								{tResult("takeAnother")}
-							</Button>
-						</div>
-					</div>
-				</div>
-			</div>
+			<KioskResultScreen
+				mediaUrl={gifUrl}
+				mediaAlt={t("resultAlt")}
+				qrCodeUrl={qrCodeUrl}
+				showQr={event.showQrCode}
+				savedOffline={savedOffline}
+				primaryColor={primaryColor}
+				onNewPhoto={handleNew}
+			/>
 		);
 	}
 

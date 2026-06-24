@@ -356,6 +356,16 @@ export default function KioskCapturePage() {
 		goToResult();
 	}, [goToResult]);
 
+	// Auto-advance: once every shot is captured, go straight to the result screen
+	// instead of waiting on a "looks good" confirmation. Keeps the booth fast so
+	// guests can quickly take the next photo; a redo is a fresh capture.
+	const finishedRef = useRef(false);
+	useEffect(() => {
+		if (!layout || !allShotsTaken || finishedRef.current) return;
+		finishedRef.current = true;
+		handleFinish();
+	}, [layout, allShotsTaken, handleFinish]);
+
 	if (eventLoading) {
 		return (
 			<div
