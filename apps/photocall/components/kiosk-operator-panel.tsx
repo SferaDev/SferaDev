@@ -1,6 +1,6 @@
 "use client";
 
-import { ClipboardCheck, Loader2, Printer, RefreshCw, RotateCw, Wifi, WifiOff } from "lucide-react";
+import { Loader2, Printer, RefreshCw, RotateCw, Wifi, WifiOff } from "lucide-react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useState } from "react";
@@ -210,12 +210,6 @@ export function KioskOperatorPanel({
 					<Button variant="outline" onClick={() => window.location.reload()}>
 						<RotateCw className="mr-2 h-4 w-4" aria-hidden="true" />
 						{t("reloadKiosk")}
-					</Button>
-					<Button variant="outline" asChild>
-						<Link href={`/dashboard/${orgSlug}/${eventSlug}/check`}>
-							<ClipboardCheck className="mr-2 h-4 w-4" aria-hidden="true" />
-							{t("runChecklist")}
-						</Link>
 					</Button>
 					<Button variant="outline" asChild>
 						<Link href={`/dashboard/${orgSlug}/${eventSlug}`}>{t("exitToDashboard")}</Link>

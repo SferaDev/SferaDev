@@ -233,46 +233,6 @@
 			"vivid": "Vivid",
 			"noir": "Noir"
 		},
-		"checklist": {
-			"title": "Pre-event check",
-			"subtitle": "Run this before guests arrive to make sure the booth is ready.",
-			"runAll": "Run all checks",
-			"running": "Running…",
-			"rerun": "Re-run",
-			"pass": "Pass",
-			"fail": "Fail",
-			"warn": "Warning",
-			"pending": "Not run",
-			"checking": "Checking…",
-			"allGood": "Everything looks good. You're ready to go.",
-			"someFailed": "Some checks failed. Fix them before the event starts.",
-			"openKiosk": "Open kiosk",
-			"checks": {
-				"eventActive": "Event is active",
-				"eventActiveOkActive": "Event is live and accepting guests",
-				"eventActivePaused": "Event is paused — activate it from the dashboard",
-				"templates": "At least one template enabled",
-				"templatesOk": "{count} enabled template(s)",
-				"templatesNone": "No enabled templates — guests will have nothing to choose",
-				"camera": "Camera available",
-				"cameraOk": "{count} camera(s) detected",
-				"cameraNone": "No camera detected — check the connection and permissions",
-				"network": "Network online",
-				"networkOk": "Connected to the internet",
-				"networkOffline": "Offline — photos will queue until reconnected",
-				"storage": "Storage reachable",
-				"storageOk": "Storage read/write OK",
-				"bridge": "Print bridge reachable",
-				"bridgeOk": "Bridge responding",
-				"bridgeUnreachable": "Bridge not responding — check that it is running",
-				"bridgeNoUrl": "No bridge URL configured",
-				"printer": "Printer ready",
-				"printerOk": "Printer ready: {name}",
-				"printerOutOfPaper": "Out of paper: {name}",
-				"printerNotReady": "Printer not ready: {name} ({state})",
-				"printerNone": "No printer found on the bridge"
-			}
-		},
 		"ops": {
 			"title": "Operator panel",
 			"subtitle": "Live status for this booth.",
@@ -294,7 +254,6 @@
 			"actions": "Actions",
 			"reloadKiosk": "Reload kiosk",
 			"exitToDashboard": "Exit to dashboard",
-			"runChecklist": "Run pre-event check",
 			"refresh": "Refresh"
 		}
 	},
@@ -451,7 +410,6 @@
 		"event": {
 			"active": "Active",
 			"activate": "Activate",
-			"preEventCheck": "Pre-event check",
 			"openKiosk": "Open Kiosk",
 			"stats": {
 				"totalPhotos": "Total Photos",

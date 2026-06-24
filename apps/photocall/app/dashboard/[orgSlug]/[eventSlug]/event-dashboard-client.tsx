@@ -4,7 +4,6 @@ import JSZip from "jszip";
 import {
 	Camera,
 	ChevronLeft,
-	ClipboardCheck,
 	Download,
 	ExternalLink,
 	Image,
@@ -138,12 +137,6 @@ export default function EventDashboard() {
 										{t("activate")}
 									</>
 								)}
-							</Button>
-							<Button variant="outline" asChild>
-								<Link href={`/dashboard/${orgSlug}/${eventSlug}/check`}>
-									<ClipboardCheck className="h-4 w-4 mr-2" />
-									{t("preEventCheck")}
-								</Link>
 							</Button>
 							<Button variant="outline" asChild>
 								<Link href={`/dashboard/${orgSlug}/${eventSlug}/print`}>
