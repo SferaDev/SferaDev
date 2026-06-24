@@ -469,6 +469,7 @@ export async function getPublicEvent(organizationSlug: string, eventSlug: string
 		captureDefaultCountdown: event.captureDefaultCountdown,
 		captureAutoShoot: event.captureAutoShoot,
 		captureAutoStart: event.captureAutoStart,
+		mirrorPhotos: event.mirrorPhotos,
 		captureWhoChoosesFilter: event.captureWhoChoosesFilter,
 		boomerangEnabled: event.boomerangEnabled,
 		// Print settings (consumed by the kiosk result page).
