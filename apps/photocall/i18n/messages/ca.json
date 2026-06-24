@@ -532,7 +532,9 @@
 				"consentText": "Text de consentiment",
 				"consentTextPlaceholder": "En continuar, acceptes que se't faci una foto…",
 				"showPoweredBy": "Mostra \"Amb la tecnologia de Photocall\"",
-				"showPoweredByHelp": "Activa o desactiva el crèdit del peu a la pantalla d'inici del quiosc."
+				"showPoweredByHelp": "Activa o desactiva el crèdit del peu a la pantalla d'inici del quiosc.",
+				"skipConsent": "Omet la pantalla de consentiment",
+				"skipConsentHelp": "Ves directament al fotomató sense mostrar el pas de consentiment. Activa-ho només si obtens el consentiment dels convidats d'una altra manera."
 			},
 			"camera": {
 				"defaultCamera": "Càmera predeterminada",
@@ -554,6 +556,8 @@
 				"dimension4k": "3840px (4K)",
 				"photoboothCapture": "Captura del fotomató",
 				"countdown": "Compte enrere ({seconds}s)",
+				"autoStart": "Inicia el compte enrere automàticament",
+				"autoStartHelp": "Inicia el compte enrere automàticament quan la càmera està a punt, perquè els convidats no hagin de tocar per començar la primera foto",
 				"autoShoot": "Disparada automàtica",
 				"autoShootHelp": "Encadena les preses automàticament en lloc de tocar per a cadascuna",
 				"whoChoosesFilter": "Qui tria el filtre",

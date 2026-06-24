@@ -532,7 +532,9 @@
 				"consentText": "Texto de consentimiento",
 				"consentTextPlaceholder": "Al continuar, aceptas que se te haga una foto…",
 				"showPoweredBy": "Mostrar \"Con la tecnología de Photocall\"",
-				"showPoweredByHelp": "Activa o desactiva el crédito del pie en la pantalla de inicio del kiosco."
+				"showPoweredByHelp": "Activa o desactiva el crédito del pie en la pantalla de inicio del kiosco.",
+				"skipConsent": "Omitir pantalla de consentimiento",
+				"skipConsentHelp": "Ir directamente al fotomatón sin mostrar el paso de consentimiento. Actívalo solo si obtienes el consentimiento de los invitados de otra forma."
 			},
 			"camera": {
 				"defaultCamera": "Cámara predeterminada",
@@ -554,6 +556,8 @@
 				"dimension4k": "3840px (4K)",
 				"photoboothCapture": "Captura del fotomatón",
 				"countdown": "Cuenta atrás ({seconds}s)",
+				"autoStart": "Iniciar cuenta atrás automáticamente",
+				"autoStartHelp": "Inicia la cuenta atrás automáticamente cuando la cámara está lista, para que los invitados no tengan que tocar para empezar la primera foto",
 				"autoShoot": "Disparo automático",
 				"autoShootHelp": "Encadena las tomas automáticamente en lugar de tocar para cada una",
 				"whoChoosesFilter": "Quién elige el filtro",

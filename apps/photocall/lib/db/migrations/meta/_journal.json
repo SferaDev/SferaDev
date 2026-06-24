@@ -15,6 +15,13 @@
 			"when": 1782077354016,
 			"tag": "0001_smart_leper_queen",
 			"breakpoints": true
+		},
+		{
+			"idx": 2,
+			"version": "7",
+			"when": 1782278622250,
+			"tag": "0002_skip_consent_auto_start",
+			"breakpoints": true
 		}
 	]
 }

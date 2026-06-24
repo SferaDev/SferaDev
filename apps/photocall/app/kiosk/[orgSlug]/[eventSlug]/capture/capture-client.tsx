@@ -18,6 +18,9 @@ import { writePhotoboothSession } from "@/lib/photobooth-session";
 
 /** Pause (ms) between auto-chained shots so guests can re-pose. */
 const AUTO_SHOOT_GAP_MS = 1400;
+/** Grace period (ms) after the camera is ready before the first shot's
+ * countdown auto-starts, so guests can settle into frame. */
+const AUTO_START_DELAY_MS = 800;
 
 function isFilterKind(value: string | null): value is FilterKind {
 	return (
@@ -213,6 +216,25 @@ export default function KioskCapturePage() {
 			autoRunningRef.current = false;
 		};
 	}, [layout, autoShoot, isReady, busy, countdown, filledCount, shotTotal]);
+
+	// Auto-start: begin the opening shot's countdown automatically once the camera
+	// is ready, so guests don't have to tap the shutter to get going. Fires once,
+	// only for the first shot; autoShoot already drives every shot when enabled, so
+	// this stays out of its way.
+	const autoStart = event?.captureAutoStart ?? true;
+	const autoStartedRef = useRef(false);
+	useEffect(() => {
+		if (!autoStart || autoShoot || !isReady) return;
+		if (autoStartedRef.current) return;
+		if (busy || countdown !== null || filledCount > 0) return;
+
+		autoStartedRef.current = true;
+		const timer = setTimeout(() => {
+			void captureRef.current(0);
+		}, AUTO_START_DELAY_MS);
+
+		return () => clearTimeout(timer);
+	}, [autoStart, autoShoot, isReady, busy, countdown, filledCount]);
 
 	const handleFinish = useCallback(() => {
 		setFinishing(true);
