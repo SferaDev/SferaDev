@@ -479,7 +479,20 @@
 			"addTemplate": "Afegeix una plantilla",
 			"templatesCount": "{count} plantilles",
 			"manageTemplates": "Gestiona les plantilles",
-			"printManagement": "Imprimeix"
+			"printManagement": "Imprimeix",
+			"recycleBin": "Paperera"
+		},
+		"trash": {
+			"title": "Paperera de reciclatge",
+			"subtitle": "Restaura fotos eliminades o elimina-les permanentment",
+			"emptyTitle": "La paperera és buida",
+			"emptyDescription": "Les fotos eliminades apareixen aquí i s'esborren permanentment al cap de 30 dies",
+			"count": "{count, plural, =1 {# foto eliminada} other {# fotos eliminades}}",
+			"deletedOn": "Eliminada el {date}",
+			"purgesIn": "S'esborra permanentment en {days, plural, =0 {menys d'un dia} =1 {1 dia} other {# dies}}",
+			"restore": "Restaura",
+			"deleteNow": "Elimina permanentment",
+			"confirmPurge": "Vols eliminar aquesta foto permanentment? No es pot desfer."
 		},
 		"eventSettings": {
 			"title": "Configuració de l'esdeveniment",
