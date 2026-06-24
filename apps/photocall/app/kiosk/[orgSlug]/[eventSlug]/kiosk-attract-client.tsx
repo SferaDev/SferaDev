@@ -9,7 +9,6 @@ import { getPublicEvent, validateKioskPin } from "@/actions/events";
 import { listRecentPublicPhotos } from "@/actions/photos";
 import { createKioskSession } from "@/actions/sessions";
 import { KioskAttractCollage } from "@/components/kiosk-attract-collage";
-import { KioskLanguagePicker } from "@/components/kiosk-language-picker";
 import { KioskOperatorPanel } from "@/components/kiosk-operator-panel";
 import { Button } from "@/components/ui/button";
 import {
@@ -189,11 +188,6 @@ export default function KioskAttractPage() {
 				>
 					{ctaLabel}
 				</Button>
-			</div>
-
-			{/* Guest language picker */}
-			<div className="absolute top-4 left-1/2 -translate-x-1/2 z-20">
-				<KioskLanguagePicker className="gap-2 rounded-full bg-white/10 text-white backdrop-blur hover:bg-white/20 hover:text-white" />
 			</div>
 
 			{/* Organization branding (admin can hide the "Powered by" footer) */}
