@@ -10,11 +10,13 @@ import useSWR from "swr";
 import { getPublicEvent } from "@/actions/events";
 import { createPhoto, generatePhotoUploadUrl } from "@/actions/photos";
 import { completeSession } from "@/actions/sessions";
+import { listPublicTemplates, resolveAssetUrls } from "@/actions/templates";
 import { KioskResultScreen } from "@/components/kiosk-result-screen";
 import { Button } from "@/components/ui/button";
 import { type CameraFacing, useCamera } from "@/hooks/use-camera";
 import { useIdleTimeout } from "@/hooks/use-idle-timeout";
 import { useOfflineSync } from "@/hooks/use-offline-sync";
+import { composeBoomerangFrames } from "@/lib/boomerang/compose";
 import {
 	BOOMERANG_FRAME_DELAY_MS,
 	encodeBoomerangGif,
@@ -22,8 +24,44 @@ import {
 	toPalindrome,
 } from "@/lib/boomerang/encode";
 import { BRANDED_CTA_FEEDBACK, DEFAULT_BRAND_COLOR, PRIMARY_CTA_CLASS } from "@/lib/branding";
+import { loadLayoutFonts } from "@/lib/compose";
+import { parseLayoutJson } from "@/lib/layout/parse";
+import type { BoothLayout, FilterKind } from "@/lib/layout/types";
 import { enqueuePhoto } from "@/lib/offline-queue";
 import { cn } from "@/lib/utils";
+
+function isFilterKind(value: string | null): value is FilterKind {
+	return (
+		value === "none" ||
+		value === "bw" ||
+		value === "warm" ||
+		value === "cool" ||
+		value === "faded" ||
+		value === "vivid" ||
+		value === "noir"
+	);
+}
+
+/**
+ * Resolve a layout's background-image + graphic-layer storage keys to readable
+ * URLs and return a lookup the boomerang compositor can call per asset. Keys are
+ * resolved once per record (resolution + image decode are both cached), so this
+ * stays cheap; layouts with no assets skip the round-trip entirely.
+ */
+async function buildAssetResolver(
+	eventId: string,
+	layout: BoothLayout,
+): Promise<(src: string) => string> {
+	const assetKeys: string[] = [];
+	if (layout.background.type === "image" && layout.background.src) {
+		assetKeys.push(layout.background.src);
+	}
+	for (const graphic of layout.graphicLayers) {
+		if (graphic.src) assetKeys.push(graphic.src);
+	}
+	const urls = assetKeys.length > 0 ? await resolveAssetUrls(eventId, assetKeys) : {};
+	return (src: string) => urls[src] ?? src;
+}
 
 /** ServiceWorkerRegistration with the optional Background Sync extension. */
 interface SyncCapableRegistration extends ServiceWorkerRegistration {
@@ -48,6 +86,9 @@ export default function KioskBoomerangPage() {
 	const orgSlug = params.orgSlug as string;
 	const eventSlug = params.eventSlug as string;
 	const sessionId = searchParams.get("session");
+	const templateId = searchParams.get("template");
+	const filterParam = searchParams.get("filter");
+	const filter: FilterKind = isFilterKind(filterParam) ? filterParam : "none";
 	const t = useTranslations("kiosk.boomerang");
 	const tCommon = useTranslations("kiosk.common");
 	const tLoading = useTranslations("kiosk.loading");
@@ -56,6 +97,16 @@ export default function KioskBoomerangPage() {
 		["public-event", orgSlug, eventSlug],
 		() => getPublicEvent(orgSlug, eventSlug),
 	);
+
+	// When a template was chosen the boomerang is decorated like a photo strip:
+	// the clip fills the template's first photo slot and the template's frame is
+	// baked around it. With no template param we keep the plain-boomerang path.
+	const { data: templates } = useSWR(
+		event && templateId ? ["public-templates", event.id] : null,
+		() => listPublicTemplates(event!.id),
+	);
+	const template = templates?.find((tpl) => tpl.id === templateId) ?? null;
+	const layout = template ? parseLayoutJson(template.layoutJson) : null;
 
 	const {
 		videoRef,
@@ -80,6 +131,14 @@ export default function KioskBoomerangPage() {
 	// The encoded GIF blob + its dimensions, held for upload/download/redo.
 	const gifRef = useRef<{ blob: Blob; width: number; height: number } | null>(null);
 	const { sync } = useOfflineSync();
+
+	// Preload the template's fonts once the layout is known, so the post-record
+	// compositing draws text in the right faces. The (cheap, cached) asset-URL
+	// resolution happens at compose time inside `record`, so a slow round-trip
+	// never leaves a frame referencing an unresolved storage key.
+	useEffect(() => {
+		if (layout) void loadLayoutFonts(layout);
+	}, [layout]);
 
 	useEffect(() => {
 		if (event && !isReady) {
@@ -132,13 +191,38 @@ export default function KioskBoomerangPage() {
 			});
 
 			setStage("processing");
+			// Palindrome (forward + reverse) so the loop bounces seamlessly. When a
+			// template was chosen we decorate each frame with it (background + frame
+			// graphics + text, baked AROUND the clip) and bake in the chosen filter;
+			// otherwise we encode the plain frames as before.
 			const looped = toPalindrome(frames);
-			const blob = await encodeBoomerangGif(looped, {
+			const decorated = layout
+				? await composeBoomerangFrames({
+						frames: looped,
+						layout,
+						filter,
+						tokens: {
+							coupleNames: event.coupleNames ?? event.name,
+							date: event.startDate
+								? new Date(event.startDate).toLocaleDateString(undefined, {
+										year: "numeric",
+										month: "long",
+										day: "numeric",
+									})
+								: undefined,
+							eventName: event.name,
+						},
+						resolveAssetUrl: await buildAssetResolver(event.id, layout),
+					})
+				: looped;
+
+			const blob = await encodeBoomerangGif(decorated, {
 				frameDelayMs: BOOMERANG_FRAME_DELAY_MS,
 				onProgress: setEncodeProgress,
 			});
 
-			const result = { blob, width: frames[0].width, height: frames[0].height };
+			const first = decorated[0];
+			const result = { blob, width: first.width, height: first.height };
 			gifRef.current = result;
 			const url = URL.createObjectURL(result.blob);
 			setGifUrl(url);
@@ -148,7 +232,7 @@ export default function KioskBoomerangPage() {
 			setError(t("captureFailed"));
 			setStage("ready");
 		}
-	}, [event, videoRef, isReady, mirrored, zoom, t]);
+	}, [event, videoRef, isReady, mirrored, zoom, t, layout, filter]);
 
 	// Auto-start: begin recording automatically once the camera is ready, so
 	// guests don't have to tap to start (governed by the same captureAutoStart

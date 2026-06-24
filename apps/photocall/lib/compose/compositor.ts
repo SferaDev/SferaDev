@@ -87,7 +87,7 @@ export async function composeStrip(options: ComposeOptions): Promise<ComposeResu
 			const photoUrl = photoUrls[captureIndices[i] - 1];
 			if (!photoUrl) continue;
 			const img = await loadImageCached(photoUrl);
-			drawPhotoSlot(ctx, slot, img, layout.filter, width, height);
+			drawPhotoSlot(ctx, slot, img, img.width, img.height, layout.filter, width, height);
 		}
 
 		for (const graphic of layout.graphicLayers) {
@@ -105,7 +105,12 @@ export async function composeStrip(options: ComposeOptions): Promise<ComposeResu
 	}
 }
 
-async function drawBackground(
+/**
+ * Paint the layout background (color, gradient, or cover/contain image) across
+ * the whole canvas. Exported so other compositors (e.g. the animated boomerang
+ * compositor) can reuse the exact same background drawing.
+ */
+export async function drawBackground(
 	ctx: CanvasRenderingContext2D,
 	background: Background,
 	width: number,
@@ -137,16 +142,25 @@ async function drawBackground(
 		}
 		case "image": {
 			const img = await loadImageCached(resolveSrc(background.src));
-			coverOrContainImage(ctx, img, 0, 0, width, height, background.fit);
+			coverOrContainImage(ctx, img, img.width, img.height, 0, 0, width, height, background.fit);
 			break;
 		}
 	}
 }
 
-function drawPhotoSlot(
+/**
+ * Draw one source image into a layout photo slot: cover/contain fit, per-slot
+ * filter, rounded-corner clip, rotation, and optional border. The source is any
+ * `CanvasImageSource` (an `HTMLImageElement` for strips, or a frame canvas for
+ * the animated boomerang compositor) plus its intrinsic pixel size, which the
+ * cover-crop needs to compute the source rectangle. Exported for reuse.
+ */
+export function drawPhotoSlot(
 	ctx: CanvasRenderingContext2D,
 	slot: PhotoSlot,
-	img: HTMLImageElement,
+	source: CanvasImageSource,
+	sourceWidth: number,
+	sourceHeight: number,
 	layoutFilter: BoothLayout["filter"],
 	canvasWidth: number,
 	canvasHeight: number,
@@ -167,7 +181,18 @@ function drawPhotoSlot(
 	const offCtx = offscreen.getContext("2d");
 	if (!offCtx) return;
 
-	coverOrContainImage(offCtx, img, 0, 0, offscreen.width, offscreen.height, slot.fit, slot);
+	coverOrContainImage(
+		offCtx,
+		source,
+		sourceWidth,
+		sourceHeight,
+		0,
+		0,
+		offscreen.width,
+		offscreen.height,
+		slot.fit,
+		slot,
+	);
 	applyFilter(offCtx, filter, offscreen.width, offscreen.height);
 
 	ctx.save();
@@ -192,7 +217,8 @@ function drawPhotoSlot(
 	ctx.restore();
 }
 
-async function drawGraphicLayer(
+/** Draw a decorative graphic layer (logo/sticker/frame). Exported for reuse. */
+export async function drawGraphicLayer(
 	ctx: CanvasRenderingContext2D,
 	graphic: GraphicLayer,
 	canvasWidth: number,
@@ -214,7 +240,8 @@ async function drawGraphicLayer(
 	ctx.restore();
 }
 
-function drawTextLayer(
+/** Draw a token-resolved, word-wrapped text layer. Exported for reuse. */
+export function drawTextLayer(
 	ctx: CanvasRenderingContext2D,
 	text: TextLayer,
 	tokens: LayoutTokens,
@@ -297,11 +324,16 @@ function roundRect(
 
 /**
  * Draw an image into a destination rect using cover/contain fit, applying the
- * optional per-slot crop pan/zoom for "cover".
+ * optional per-slot crop pan/zoom for "cover". The source is any
+ * `CanvasImageSource` plus its intrinsic pixel size (passed explicitly because a
+ * canvas/ImageBitmap source exposes its size differently than an
+ * `HTMLImageElement`, and the cover-crop needs it to size the source rect).
  */
 function coverOrContainImage(
 	ctx: CanvasRenderingContext2D,
-	img: HTMLImageElement,
+	source: CanvasImageSource,
+	sourceWidth: number,
+	sourceHeight: number,
 	dx: number,
 	dy: number,
 	dWidth: number,
@@ -309,7 +341,7 @@ function coverOrContainImage(
 	fit: PhotoSlot["fit"],
 	slot?: PhotoSlot,
 ): void {
-	const imgAspect = img.width / img.height;
+	const imgAspect = sourceWidth / sourceHeight;
 	const dstAspect = dWidth / dHeight;
 
 	if (fit === "contain") {
@@ -319,28 +351,28 @@ function coverOrContainImage(
 		else drawW = dHeight * imgAspect;
 		const offsetX = dx + (dWidth - drawW) / 2;
 		const offsetY = dy + (dHeight - drawH) / 2;
-		ctx.drawImage(img, offsetX, offsetY, drawW, drawH);
+		ctx.drawImage(source, offsetX, offsetY, drawW, drawH);
 		return;
 	}
 
 	// cover: crop the source so the destination is fully filled.
 	const scale = slot?.cropScale && slot.cropScale > 0 ? slot.cropScale : 1;
-	let sw = img.width;
-	let sh = img.height;
-	if (imgAspect > dstAspect) sw = img.height * dstAspect;
-	else sh = img.width / dstAspect;
+	let sw = sourceWidth;
+	let sh = sourceHeight;
+	if (imgAspect > dstAspect) sw = sourceHeight * dstAspect;
+	else sh = sourceWidth / dstAspect;
 	sw /= scale;
 	sh /= scale;
 
 	// Pan offsets are normalized to the AVAILABLE crop range (-0.5..0.5 spans
 	// the full pannable area), so panning behaves consistently across zoom
 	// levels and image aspect ratios.
-	const maxSx = img.width - sw;
-	const maxSy = img.height - sh;
+	const maxSx = sourceWidth - sw;
+	const maxSy = sourceHeight - sh;
 	const sx = clampRange(maxSx / 2 + (slot?.cropOffsetX ?? 0) * maxSx, 0, maxSx);
 	const sy = clampRange(maxSy / 2 + (slot?.cropOffsetY ?? 0) * maxSy, 0, maxSy);
 
-	ctx.drawImage(img, sx, sy, sw, sh, dx, dy, dWidth, dHeight);
+	ctx.drawImage(source, sx, sy, sw, sh, dx, dy, dWidth, dHeight);
 }
 
 function clampRange(value: number, min: number, max: number): number {
