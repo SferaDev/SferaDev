@@ -1,3 +1,4 @@
+import { resolve } from "node:path";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { HTTPException } from "hono/http-exception";
@@ -100,6 +101,12 @@ app.get("/qr", async (c) => {
 // the bridge is usable even when discovery is unavailable.
 if (env.BRIDGE_PRINTER_URIS) {
 	registry.seedFromUris(env.BRIDGE_PRINTER_URIS);
+}
+
+// Optional virtual printer that writes jobs to a folder (no real printer / no
+// media consumed) for end-to-end flow testing.
+if (env.BRIDGE_DEBUG_PRINTER_DIR) {
+	registry.registerDebugPrinter(resolve(env.BRIDGE_DEBUG_PRINTER_DIR));
 }
 
 // mDNS multicast (node:dgram) can be flaky under Bun's Node compatibility

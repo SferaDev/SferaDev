@@ -37,6 +37,13 @@ const envSchema = z.object({
 	 * way behave exactly like discovered ones.
 	 */
 	BRIDGE_PRINTER_URIS: z.string().default(""),
+	/**
+	 * When set to a folder path, the bridge publishes a virtual "Debug (file
+	 * output)" printer that writes each job's image into that folder instead of
+	 * sending it to a real printer. Lets the whole print flow be tested end to end
+	 * without consuming dye-sub media. Leave unset in production.
+	 */
+	BRIDGE_DEBUG_PRINTER_DIR: z.string().optional(),
 });
 
 export type Env = z.infer<typeof envSchema>;
