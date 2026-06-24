@@ -736,6 +736,10 @@
 		"takenOn": "Taken on {date}",
 		"notFoundTitle": "Photo Not Found",
 		"notFoundDescription": "This photo may have expired or been deleted.",
-		"visitPhotocall": "Visit Photocall"
+		"visitPhotocall": "Visit Photocall",
+		"downloadPrint": "Download print version",
+		"individualShots": "Individual photos",
+		"downloadShot": "Download photo {index}",
+		"shotAlt": "Photo {index}"
 	}
 }

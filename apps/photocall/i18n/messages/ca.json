@@ -741,6 +741,10 @@
 		"takenOn": "Feta el {date}",
 		"notFoundTitle": "Foto no trobada",
 		"notFoundDescription": "Aquesta foto pot haver caducat o haver estat eliminada.",
-		"visitPhotocall": "Visita Photocall"
+		"visitPhotocall": "Visita Photocall",
+		"downloadPrint": "Descarrega la versió per imprimir",
+		"individualShots": "Fotos individuals",
+		"downloadShot": "Descarrega la foto {index}",
+		"shotAlt": "Foto {index}"
 	}
 }

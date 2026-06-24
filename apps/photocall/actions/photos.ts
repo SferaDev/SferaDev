@@ -3,7 +3,7 @@
 import { and, desc, eq, isNotNull, isNull } from "drizzle-orm";
 import { generateHumanCode, generateToken, requireEventAccess } from "@/lib/auth-helpers";
 import { db, schema } from "@/lib/db";
-import type { PhotoKind } from "@/lib/db/schema";
+import { type PhotoKind, parseRawShotKeys } from "@/lib/db/schema";
 import { getPlatformClient } from "@/lib/platform";
 import { daysUntilPurge } from "@/lib/recycle-bin";
 import { deleteFile, generateUploadUrl, getFileUrl } from "@/lib/storage";
@@ -48,7 +48,15 @@ export async function generatePhotoUploadUrl(
 export async function createPhoto(data: {
 	eventId: string;
 	sessionId: string;
+	/** The unprocessed ORIGINAL — the preview image everywhere. */
 	storageKey: string;
+	/**
+	 * The decorated/processed composite, used for printing and offered as a
+	 * separate "print version" download. Omitted for boomerangs and legacy rows.
+	 */
+	printStorageKey?: string;
+	/** JSON array of the individual raw shot storage KEYS (not URLs/base64). */
+	rawShotKeys?: string;
 	caption?: string;
 	templateId?: string;
 	width: number;
@@ -88,6 +96,8 @@ export async function createPhoto(data: {
 			eventId: data.eventId,
 			sessionId: data.sessionId,
 			storageKey: data.storageKey,
+			printStorageKey: data.printStorageKey,
+			rawShotKeys: data.rawShotKeys,
 			shareToken,
 			humanCode,
 			caption: data.caption,
@@ -152,7 +162,15 @@ export async function getPhotoByShareToken(shareToken: string) {
 
 	if (!event) return null;
 
+	// The preview/main image is always the unprocessed ORIGINAL (storageKey).
 	const url = await getFileUrl(photo.storageKey);
+	// The decorated/processed composite, downloadable as the "print version".
+	// Null for boomerangs and legacy rows that predate the split.
+	const printUrl = photo.printStorageKey ? await getFileUrl(photo.printStorageKey) : null;
+	// Each individual raw shot, resolved so guests can view/download them.
+	const rawShotUrls = await Promise.all(
+		parseRawShotKeys(photo.rawShotKeys).map((key) => getFileUrl(key)),
+	);
 
 	// Event branding so the public share page can present the event's identity
 	// (name, logo, colours) instead of generic Photocall chrome.
@@ -161,6 +179,8 @@ export async function getPhotoByShareToken(shareToken: string) {
 	return {
 		...photo,
 		url,
+		printUrl,
+		rawShotUrls,
 		eventName: event.name,
 		allowDownload: event.allowDownload,
 		allowPrint: event.allowPrint,

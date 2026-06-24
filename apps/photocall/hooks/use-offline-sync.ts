@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { createPhoto, generatePhotoUploadUrl } from "@/actions/photos";
+import { createPhoto, generatePhotoUploadUrl, type PhotoContentType } from "@/actions/photos";
 import {
 	countQueuedPhotos,
 	getQueuedPhotos,
@@ -10,26 +10,69 @@ import {
 } from "@/lib/offline-queue";
 
 /**
- * Uploads one queued photo: presigned S3 PUT, then create the photo record.
- * Mirrors the online path in the result page.
+ * Upload a single blob to R2 via a freshly-minted presigned PUT and return its
+ * storage key. Throws on any network/HTTP failure so the caller can abort the
+ * whole sync and leave the item queued for a later retry.
  */
-async function syncPhoto(photo: QueuedPhoto): Promise<void> {
-	const contentType = photo.contentType ?? "image/jpeg";
-	const { uploadUrl, key } = await generatePhotoUploadUrl(photo.eventId, contentType);
-
+async function uploadBlob(
+	eventId: string,
+	blob: Blob,
+	contentType: PhotoContentType,
+): Promise<string> {
+	const { uploadUrl, key } = await generatePhotoUploadUrl(eventId, contentType);
 	const uploaded = await fetch(uploadUrl, {
 		method: "PUT",
-		headers: { "Content-Type": photo.blob.type || contentType },
-		body: photo.blob,
+		headers: { "Content-Type": blob.type || contentType },
+		body: blob,
 	});
 	if (!uploaded.ok) {
 		throw new Error(`Upload failed with status ${uploaded.status}`);
+	}
+	return key;
+}
+
+/**
+ * Uploads one queued photo and creates its record. Mirrors the online path in
+ * the result page: original → `storageKey`, processed → `printStorageKey`, and
+ * each raw shot → an entry in `rawShotKeys`.
+ *
+ * No-loss guarantee on partial failure: every blob is uploaded FIRST; only once
+ * all uploads (and `createPhoto`) succeed is the item removed from the outbox.
+ * If any upload or the record creation throws, this function rethrows WITHOUT
+ * removing the item, so the next sync retries the entire capture. A retry may
+ * re-upload blobs (orphaning the earlier objects), but it never drops a photo or
+ * leaves a record pointing at a half-uploaded asset.
+ */
+async function syncPhoto(photo: QueuedPhoto): Promise<void> {
+	const contentType = photo.contentType ?? "image/jpeg";
+
+	// 1. Original (preview image).
+	const storageKey = await uploadBlob(photo.eventId, photo.blob, contentType);
+
+	// 2. Processed/print composite. Legacy items have no `printBlob` — reuse the
+	//    original so those captures still print. Boomerangs explicitly set it null.
+	const printContentType = photo.printContentType ?? contentType;
+	let printStorageKey: string | undefined;
+	if (photo.printBlob === undefined) {
+		// Legacy single-blob item: the original doubles as the processed image.
+		printStorageKey = storageKey;
+	} else if (photo.printBlob !== null) {
+		printStorageKey = await uploadBlob(photo.eventId, photo.printBlob, printContentType);
+	}
+
+	// 3. Individual raw shots.
+	const rawShotContentType = photo.rawShotContentType ?? "image/jpeg";
+	const rawShotKeys: string[] = [];
+	for (const shot of photo.rawShotBlobs ?? []) {
+		rawShotKeys.push(await uploadBlob(photo.eventId, shot, rawShotContentType));
 	}
 
 	await createPhoto({
 		eventId: photo.eventId,
 		sessionId: photo.sessionId,
-		storageKey: key,
+		storageKey,
+		printStorageKey,
+		rawShotKeys: rawShotKeys.length > 0 ? JSON.stringify(rawShotKeys) : undefined,
 		caption: photo.caption,
 		templateId: photo.templateId,
 		kind: photo.kind,

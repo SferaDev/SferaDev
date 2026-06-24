@@ -741,6 +741,10 @@
 		"takenOn": "Tomada el {date}",
 		"notFoundTitle": "Foto no encontrada",
 		"notFoundDescription": "Esta foto puede haber caducado o haber sido eliminada.",
-		"visitPhotocall": "Visitar Photocall"
+		"visitPhotocall": "Visitar Photocall",
+		"downloadPrint": "Descargar versión para imprimir",
+		"individualShots": "Fotos individuales",
+		"downloadShot": "Descargar foto {index}",
+		"shotAlt": "Foto {index}"
 	}
 }
