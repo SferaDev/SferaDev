@@ -103,6 +103,9 @@ export default function KioskCapturePage() {
 	// One shared kiosk stream for the whole session — the same stream the select
 	// screen used, so getUserMedia is not called again here.
 	const { stream, error, mirror, retry } = useKioskCamera(event ?? undefined);
+	// Digital zoom (center crop) applied identically to the live preview and the
+	// captured frame, so guests don't have to stand far back. 1 = no zoom.
+	const zoom = Math.max(1, event?.captureZoom ?? 1);
 
 	const videoRef = useRef<HTMLVideoElement | null>(null);
 	const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -169,9 +172,10 @@ export default function KioskCapturePage() {
 		};
 	}, []);
 
-	/** Grab the current video frame and return it as a JPEG data URL. Copied from
-	 * use-camera.ts capture() — draws the FULL frame; the compositor cover-crops
-	 * each slot from it (the preview box previews that crop). */
+	/** Grab the current video frame and return it as a JPEG data URL. Bakes in the
+	 * same digital zoom (center crop) and mirror the live preview shows, so what
+	 * the guest saw is exactly what's saved; the compositor then cover-crops each
+	 * slot from this frame (the preview box previews that crop). */
 	const capture = useCallback((): string | null => {
 		const video = videoRef.current;
 		const canvas = canvasRef.current;
@@ -180,16 +184,27 @@ export default function KioskCapturePage() {
 		const ctx = canvas.getContext("2d");
 		if (!ctx) return null;
 
-		// Set canvas size to match video
+		// Keep the output at full sensor resolution; zoom is a center crop scaled
+		// back up to fill the canvas (matching the preview's CSS scale).
 		canvas.width = video.videoWidth;
 		canvas.height = video.videoHeight;
 
-		// Draw the video frame
-		ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+		const srcWidth = video.videoWidth / zoom;
+		const srcHeight = video.videoHeight / zoom;
+		const srcX = (video.videoWidth - srcWidth) / 2;
+		const srcY = (video.videoHeight - srcHeight) / 2;
 
-		// Return as data URL
+		ctx.save();
+		if (mirror) {
+			// Flip horizontally so the saved frame matches the mirrored preview.
+			ctx.translate(canvas.width, 0);
+			ctx.scale(-1, 1);
+		}
+		ctx.drawImage(video, srcX, srcY, srcWidth, srcHeight, 0, 0, canvas.width, canvas.height);
+		ctx.restore();
+
 		return canvas.toDataURL("image/jpeg", 0.95);
-	}, [videoReady]);
+	}, [videoReady, mirror, zoom]);
 
 	/** Run the animated countdown, then flash + grab a frame. Returns the dataURL. */
 	const runCountdownAndCapture = useCallback(async (): Promise<string | null> => {
@@ -361,7 +376,9 @@ export default function KioskCapturePage() {
 	const primaryColor = event.primaryColor || DEFAULT_BRAND_COLOR;
 	const accentColor = event.accentColor || primaryColor;
 	const nextSlot = filledCount;
-	const mirrorTransform = mirror ? "scaleX(-1)" : "none";
+	// Combine mirror (horizontal flip) and zoom (uniform scale) into one transform
+	// so the framed preview matches the captured frame 1:1.
+	const previewTransform = `scale(${mirror ? -zoom : zoom}, ${zoom})`;
 	// WYSIWYG: frame the live feed to the exact aspect the compositor will
 	// cover-crop the next capture to. For a layout this is the next slot's output
 	// aspect; for single-photo it's the fixed composite aspect. The <video> uses
@@ -391,7 +408,7 @@ export default function KioskCapturePage() {
 						playsInline
 						muted
 						className="h-full w-full object-cover"
-						style={{ transform: mirrorTransform, filter: cssFilterFor(previewFilter) }}
+						style={{ transform: previewTransform, filter: cssFilterFor(previewFilter) }}
 					/>
 				</div>
 			</div>

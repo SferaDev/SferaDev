@@ -60,12 +60,13 @@ export function kioskCameraConstraints(event: PublicEvent): MediaStreamConstrain
 }
 
 /**
- * Whether the kiosk feed should be mirrored for this event. Only the built-in
- * front ("user") camera is mirrored, matching how guests expect to see
- * themselves; an explicitly selected device (USB webcam) is shown as-is.
+ * Whether the kiosk feed should be mirrored for this event. Governed by the
+ * host's `mirrorPhotos` setting (defaults on, matching how guests expect to see
+ * themselves in a selfie). Applied identically to the live preview and the
+ * captured frame so what the guest sees is what gets saved.
  */
 export function kioskCameraMirror(event: PublicEvent): boolean {
-	return event.defaultCamera === "user" && !event.cameraDeviceId;
+	return event.mirrorPhotos;
 }
 
 /**

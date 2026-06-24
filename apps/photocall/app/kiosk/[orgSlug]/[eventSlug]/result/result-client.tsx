@@ -215,9 +215,10 @@ export default function KioskResultPage() {
 				? { url: template.url, safeArea: template.safeArea ?? undefined }
 				: undefined,
 			// The guest caption step was removed; no guest-entered caption is applied.
-			// Mirroring is now an admin setting (event.mirrorPhotos) rather than a
-			// per-session guest toggle.
-			mirrored: event.mirrorPhotos,
+			// Mirror (and zoom) are baked into the captured frame at capture time —
+			// per the admin `mirrorPhotos` setting — so the compositor must not flip
+			// again here or it would double-mirror.
+			mirrored: false,
 			quality: event.photoQuality,
 			outputWidth,
 			outputHeight,

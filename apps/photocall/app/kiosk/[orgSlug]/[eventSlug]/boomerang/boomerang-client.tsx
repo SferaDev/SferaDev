@@ -45,6 +45,10 @@ interface SyncCapableRegistration extends ServiceWorkerRegistration {
  */
 type Stage = "ready" | "countdown" | "recording" | "processing" | "preview" | "uploading" | "done";
 
+/** Grace period (ms) after the camera is ready before the boomerang auto-starts,
+ * so guests can settle into frame. Mirrors the photo capture screen. */
+const AUTO_START_DELAY_MS = 800;
+
 export default function KioskBoomerangPage() {
 	const router = useRouter();
 	const params = useParams();
@@ -107,8 +111,11 @@ export default function KioskBoomerangPage() {
 		};
 	}, [gifUrl]);
 
-	const mirrored = event?.defaultCamera === "user" && !event?.cameraDeviceId;
-	const mirrorTransform = mirrored ? "scaleX(-1)" : "none";
+	// Mirror is governed by the host's `mirrorPhotos` setting (matching the photo
+	// capture screen); zoom is the same digital center-crop applied there.
+	const mirrored = event?.mirrorPhotos ?? true;
+	const zoom = Math.max(1, event?.captureZoom ?? 1);
+	const mirrorTransform = `scale(${mirrored ? -zoom : zoom}, ${zoom})`;
 
 	const record = useCallback(async () => {
 		if (!event || !videoRef.current || !isReady) return;
@@ -130,6 +137,7 @@ export default function KioskBoomerangPage() {
 			const frames = await recordBoomerangFrames({
 				video: videoRef.current,
 				mirrored,
+				zoom,
 				onProgress: setRecordProgress,
 			});
 
@@ -150,7 +158,27 @@ export default function KioskBoomerangPage() {
 			setError(t("captureFailed"));
 			setStage("ready");
 		}
-	}, [event, videoRef, isReady, mirrored, t]);
+	}, [event, videoRef, isReady, mirrored, zoom, t]);
+
+	// Auto-start: begin recording automatically once the camera is ready, so
+	// guests don't have to tap to start (governed by the same captureAutoStart
+	// setting as the photo screen). Fires once; a redo afterwards is a manual tap,
+	// so a flaky camera never loops the guest into endless auto-records.
+	const autoStart = event?.captureAutoStart ?? true;
+	const recordRef = useRef(record);
+	useEffect(() => {
+		recordRef.current = record;
+	}, [record]);
+	const autoStartedRef = useRef(false);
+	useEffect(() => {
+		if (!autoStart || !isReady || stage !== "ready") return;
+		if (autoStartedRef.current) return;
+		autoStartedRef.current = true;
+		const timer = setTimeout(() => {
+			void recordRef.current();
+		}, AUTO_START_DELAY_MS);
+		return () => clearTimeout(timer);
+	}, [autoStart, isReady, stage]);
 
 	const redo = useCallback(() => {
 		if (gifUrl) URL.revokeObjectURL(gifUrl);

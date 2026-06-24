@@ -52,6 +52,8 @@ export default function KioskSelectPage() {
 	// camera isn't available `stream` stays null and previews fall back to the
 	// static placeholder.
 	const { stream: previewStream, mirror: previewMirror } = useKioskPreviewCamera(event);
+	// Digital zoom for the live previews, matching what the capture screen applies.
+	const previewZoom = Math.max(1, event?.captureZoom ?? 1);
 
 	// When the guest picks a layout template and the event lets guests choose the
 	// filter, we stay on this screen to show the filter chooser before capture.
@@ -149,6 +151,7 @@ export default function KioskSelectPage() {
 				eventDate={eventDate}
 				stream={previewStream}
 				mirror={previewMirror}
+				zoom={previewZoom}
 				onBack={() => setPendingTemplate(null)}
 				onConfirm={(filter) => goToCapture(pendingTemplate, filter)}
 				busy={navigating}
@@ -216,6 +219,7 @@ export default function KioskSelectPage() {
 											date={eventDate}
 											stream={index < MAX_LIVE_PREVIEW_CARDS ? previewStream : null}
 											mirror={previewMirror}
+											zoom={previewZoom}
 											className="flex h-full w-full items-center justify-center"
 										/>
 									) : template.thumbnailUrl ? (
@@ -325,6 +329,7 @@ interface FilterChooserProps {
 	eventDate: string | undefined;
 	stream: MediaStream | null;
 	mirror: boolean;
+	zoom: number;
 	onBack: () => void;
 	onConfirm: (filter: FilterKind) => void;
 	busy: boolean;
@@ -338,6 +343,7 @@ function FilterChooser({
 	eventDate,
 	stream,
 	mirror,
+	zoom,
 	onBack,
 	onConfirm,
 	busy,
@@ -379,6 +385,7 @@ function FilterChooser({
 								date={eventDate}
 								stream={stream}
 								mirror={mirror}
+								zoom={zoom}
 								filter={selected}
 								className="flex h-full items-center justify-center"
 							/>
