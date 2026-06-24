@@ -1,4 +1,5 @@
 import type { IPPVersion } from "ipp";
+import { buildDebugPrinter } from "./debug-printer.js";
 import { getPrinterAttributes } from "./ipp-client.js";
 import type { DiscoveredPrinter } from "./types.js";
 
@@ -127,6 +128,18 @@ export class PrinterRegistry {
 				);
 			}
 		}
+	}
+
+	/**
+	 * Publish the virtual debug file printer (see {@link buildDebugPrinter}). It
+	 * is inserted already "idle/reachable"; the auto-refresh keeps it that way via
+	 * the `file://` branch in {@link getPrinterAttributes}, so it never needs a
+	 * real IPP query.
+	 */
+	registerDebugPrinter(dir: string): void {
+		const printer = buildDebugPrinter(dir);
+		this.printers.set(printer.id, printer);
+		console.log(`[registry] debug file printer writing to ${dir} (id "${printer.id}")`);
 	}
 
 	/** Drop a printer that went offline (mDNS `down`). */

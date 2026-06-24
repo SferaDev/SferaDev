@@ -12,6 +12,12 @@ import type {
 	PrintJobResponse,
 } from "ipp";
 import ipp from "ipp";
+import {
+	debugDirFromUri,
+	debugPrinterAttributes,
+	isDebugPrinterUri,
+	writeDebugPrint,
+} from "./debug-printer.js";
 import type { PaperSize, PrintParams, PrintResult } from "./types.js";
 
 /**
@@ -192,6 +198,9 @@ export async function getPrinterAttributes(
 	uri: string,
 	version: IPPVersion,
 ): Promise<PrinterAttributes> {
+	// The debug file printer has no IPP endpoint — it is always idle and ready.
+	if (isDebugPrinterUri(uri)) return debugPrinterAttributes();
+
 	const printer = new ipp.Printer(uri, { version });
 	const getAttributes = executePrinter<GetPrinterAttributesRequest, GetPrinterAttributesResponse>(
 		printer,
@@ -305,6 +314,11 @@ export async function printJob(
 	params: PrintParams,
 	preferredVersion: IPPVersion,
 ): Promise<PrintResult> {
+	// The debug file printer "prints" by writing the image to its folder.
+	if (isDebugPrinterUri(uri)) {
+		return writeDebugPrint(debugDirFromUri(uri), imageBuffer, params);
+	}
+
 	const versions = IPP_VERSIONS.includes(preferredVersion)
 		? [preferredVersion, ...IPP_VERSIONS.filter((version) => version !== preferredVersion)]
 		: IPP_VERSIONS;

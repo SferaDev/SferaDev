@@ -144,6 +144,22 @@ Returns `201` with the registered printer (live attributes already fetched), or
 | `BRIDGE_IPP_VERSION`     | `2.0`   | IPP version to negotiate first (auto-falls back to `1.1`).                                    |
 | `BRIDGE_API_KEY`         | —       | Optional shared secret; required on `/api/*` as Bearer or `x-api-key`.                        |
 | `BRIDGE_PRINTER_URIS`    | —       | Comma-separated IPP(S) URIs / hosts to seed as manual printers at startup (mDNS fallback).    |
+| `BRIDGE_DEBUG_PRINTER_DIR` | —     | When set to a folder, publishes a virtual **Debug (file output)** printer that writes each job's JPEG into that folder instead of printing — test the full flow without consuming media. |
+
+### Debug (file output) printer
+
+Set `BRIDGE_DEBUG_PRINTER_DIR` to test the end-to-end print flow without a real
+printer or any dye-sub media:
+
+```sh
+BRIDGE_DEBUG_PRINTER_DIR=./debug-prints bun src/server.ts
+```
+
+A printer named **"Debug (file output)"** (id `debug`) then shows up in
+`GET /api/printers`, so the photocall kiosk discovers and selects it like any
+other. Each submitted job is written to the folder as
+`photocall-<timestamp>-<id>.jpg` (one file per job; the folder is created on
+first use). Leave it unset in production.
 
 ## REST API
 
