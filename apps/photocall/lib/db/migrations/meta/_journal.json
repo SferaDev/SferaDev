@@ -43,6 +43,13 @@
 			"when": 1782296440745,
 			"tag": "0005_capture_zoom",
 			"breakpoints": true
+		},
+		{
+			"idx": 6,
+			"version": "7",
+			"when": 1782301620531,
+			"tag": "0006_photo_original_processed",
+			"breakpoints": true
 		}
 	]
 }

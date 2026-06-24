@@ -7,7 +7,7 @@ import QRCode from "qrcode";
 import { useCallback, useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import { getPublicEvent } from "@/actions/events";
-import { createPhoto, generatePhotoUploadUrl } from "@/actions/photos";
+import { createPhoto, generatePhotoUploadUrl, type PhotoContentType } from "@/actions/photos";
 import { completeSession, getKioskSession } from "@/actions/sessions";
 import { listPublicTemplates, resolveAssetUrls } from "@/actions/templates";
 import { KioskResultScreen } from "@/components/kiosk-result-screen";
@@ -16,7 +16,7 @@ import { useIdleTimeout } from "@/hooks/use-idle-timeout";
 import { useOfflineSync } from "@/hooks/use-offline-sync";
 import { usePrintSync } from "@/hooks/use-print-sync";
 import { BRANDED_CTA_FEEDBACK, DEFAULT_BRAND_COLOR } from "@/lib/branding";
-import { compositePhoto } from "@/lib/canvas-utils";
+import { compositePhoto, loadImage } from "@/lib/canvas-utils";
 import { composeStrip, loadLayoutFonts, tileStripTwoUp } from "@/lib/compose";
 import { parseCapturedImageUrls } from "@/lib/db/schema";
 import { parseLayoutJson } from "@/lib/layout/parse";
@@ -43,6 +43,55 @@ function isFilterKind(value: string | null | undefined): value is FilterKind {
 		value === "vivid" ||
 		value === "noir"
 	);
+}
+
+/** A finished blob plus its pixel dimensions. */
+interface CaptureBlob {
+	blob: Blob;
+	width: number;
+	height: number;
+}
+
+/**
+ * The three assets produced for a capture:
+ *  - `original`: the unprocessed/clean image shown as the preview and offered as
+ *    the default download (single = raw capture; strip = clean composite).
+ *  - `processed`: the decorated composite used for printing and the separate
+ *    "print version" download. Null when there is nothing to decorate.
+ *  - `rawShots`: the individual capture blobs, each downloadable.
+ */
+interface ComposedCapture {
+	original: CaptureBlob;
+	processed: CaptureBlob | null;
+	rawShots: Blob[];
+}
+
+/** Decode a data URL (or any fetchable URL) into a Blob. */
+async function dataUrlToBlob(dataUrl: string): Promise<Blob> {
+	const response = await fetch(dataUrl);
+	return response.blob();
+}
+
+/**
+ * Upload one capture blob to R2 via a freshly-minted presigned PUT and return
+ * its storage key. Throws on any network/HTTP failure so the caller can fall
+ * back to the offline outbox with the full set of blobs.
+ */
+async function uploadCaptureBlob(eventId: string, blob: Blob): Promise<string> {
+	const contentType: PhotoContentType = blob.type === "image/gif" ? "image/gif" : "image/jpeg";
+	const { uploadUrl, key } = await generatePhotoUploadUrl(eventId, contentType);
+	const uploaded = await fetch(uploadUrl, {
+		method: "PUT",
+		headers: { "Content-Type": blob.type || contentType },
+		body: blob,
+	});
+	// fetch only rejects on network errors, so a non-2xx PUT would otherwise
+	// "succeed" and leave the record pointing at a failed object — treat it as a
+	// failure so the offline outbox retries.
+	if (!uploaded.ok) {
+		throw new Error(`Upload failed with status ${uploaded.status}`);
+	}
+	return key;
 }
 
 export default function KioskResultPage() {
@@ -129,13 +178,14 @@ export default function KioskResultPage() {
 		enabled: !!event && !isProcessing,
 	});
 
-	/** Compose a multi-shot strip from the captured shots into a JPEG blob. */
-	const composeStripBlob = useCallback(async (): Promise<{
-		blob: Blob;
-		width: number;
-		height: number;
-		shots: string[];
-	} | null> => {
+	/**
+	 * Compose a multi-shot strip. Produces BOTH the decorated PROCESSED composite
+	 * (all graphic + text layers — used for printing) and a CLEAN ORIGINAL (the
+	 * same photos in their slots, on the same background, but with the graphic and
+	 * text overlays stripped — the preview/download image). The raw shots are
+	 * returned as their JPEG data URLs so the caller can upload each individually.
+	 */
+	const composeStripBlobs = useCallback(async (): Promise<ComposedCapture | null> => {
 		if (!event || !layout || !sessionId) return null;
 
 		// Source of truth is sessionStorage; fall back to the server-stored URLs.
@@ -155,6 +205,9 @@ export default function KioskResultPage() {
 				? filterParam
 				: null;
 		const composeLayout = guestFilter ? { ...layout, filter: guestFilter } : layout;
+		// The clean original keeps the photos, slots, filter and BACKGROUND but
+		// drops every decoration so the preview/download is undecorated.
+		const cleanLayout = { ...composeLayout, graphicLayers: [], textLayers: [] };
 
 		await loadLayoutFonts(layout);
 
@@ -177,35 +230,62 @@ export default function KioskResultPage() {
 				})
 			: undefined;
 
-		const result = await composeStrip({
+		const tokens = {
+			coupleNames: event.coupleNames ?? event.name,
+			date,
+			eventName: event.name,
+		};
+		const targetWidth = printPixelSize(layout.print).width;
+		const targetHeight = printPixelSize(layout.print).height;
+		const resolveAssetUrl = (key: string) => assetUrls[key] ?? key;
+
+		const processed = await composeStrip({
 			layout: composeLayout,
 			photos: shots,
-			tokens: {
-				coupleNames: event.coupleNames ?? event.name,
-				date,
-				eventName: event.name,
-			},
-			targetWidth: printPixelSize(layout.print).width,
-			targetHeight: printPixelSize(layout.print).height,
+			tokens,
+			targetWidth,
+			targetHeight,
 			quality: event.photoQuality,
-			resolveAssetUrl: (key) => assetUrls[key] ?? key,
+			resolveAssetUrl,
+		});
+		const clean = await composeStrip({
+			layout: cleanLayout,
+			photos: shots,
+			tokens,
+			targetWidth,
+			targetHeight,
+			quality: event.photoQuality,
+			resolveAssetUrl,
 		});
 
-		return { blob: result.blob, width: result.width, height: result.height, shots };
+		// Raw shots are JPEG data URLs from sessionStorage; convert to blobs so the
+		// caller can upload each via presigned PUT (keys, never base64 in actions).
+		const rawShots = await Promise.all(shots.map((shot) => dataUrlToBlob(shot)));
+
+		return {
+			original: { blob: clean.blob, width: clean.width, height: clean.height },
+			processed: { blob: processed.blob, width: processed.width, height: processed.height },
+			rawShots,
+		};
 	}, [event, layout, sessionId, session?.capturedImageUrls, filterParam]);
 
-	/** Legacy single-photo composite (templates without a layout). */
-	const composeSingleBlob = useCallback(async (): Promise<{
-		blob: Blob;
-		width: number;
-		height: number;
-	} | null> => {
+	/**
+	 * Legacy single-photo capture. The ORIGINAL is the raw capture itself; the
+	 * PROCESSED image is the template composite (used for printing). No separate
+	 * raw shots — the single capture already IS the original.
+	 */
+	const composeSingleBlobs = useCallback(async (): Promise<ComposedCapture | null> => {
 		if (!event || !session?.capturedImageUrl) return null;
 
 		const outputWidth = event.maxPhotoDimension;
 		const outputHeight = Math.round(event.maxPhotoDimension * (4 / 3));
 
-		const blob = await compositePhoto({
+		// Original = the raw capture, uploaded as-is. Decode it to record its
+		// natural dimensions for the stored preview image.
+		const originalBlob = await dataUrlToBlob(session.capturedImageUrl);
+		const rawImage = await loadImage(session.capturedImageUrl);
+
+		const processedBlob = await compositePhoto({
 			photo: session.capturedImageUrl,
 			template: template?.url
 				? { url: template.url, safeArea: template.safeArea ?? undefined }
@@ -220,10 +300,18 @@ export default function KioskResultPage() {
 			outputHeight,
 		});
 
-		return { blob, width: outputWidth, height: outputHeight };
+		return {
+			original: {
+				blob: originalBlob,
+				width: rawImage.naturalWidth,
+				height: rawImage.naturalHeight,
+			},
+			processed: { blob: processedBlob, width: outputWidth, height: outputHeight },
+			rawShots: [],
+		};
 	}, [event, session, template]);
 
-	// Process and upload the final image (strip or single).
+	// Process and upload the final capture (strip or single).
 	const processPhoto = useCallback(async () => {
 		if (!event || !session || !isProcessing) return;
 		if (processingStartedRef.current) return;
@@ -231,7 +319,7 @@ export default function KioskResultPage() {
 
 		try {
 			const isStrip = layout != null;
-			const composed = isStrip ? await composeStripBlob() : await composeSingleBlob();
+			const composed = isStrip ? await composeStripBlobs() : await composeSingleBlobs();
 
 			if (!composed) {
 				setError(t("photosNotFound"));
@@ -239,56 +327,62 @@ export default function KioskResultPage() {
 				return;
 			}
 
-			const { blob, width, height } = composed;
+			const { original, processed, rawShots } = composed;
 			const kind = isStrip ? "strip" : "single";
 
-			// Keep the composited strip available for (auto/manual) printing.
-			printBlobRef.current = { blob, width, height };
+			// Printing uses the PROCESSED (decorated) image; the preview shows the
+			// clean ORIGINAL. Hold the processed blob for (auto/manual) printing.
+			printBlobRef.current = processed
+				? { blob: processed.blob, width: processed.width, height: processed.height }
+				: { blob: original.blob, width: original.width, height: original.height };
 
-			const previewUrl = URL.createObjectURL(blob);
+			// Preview is always the unprocessed original.
+			const previewUrl = URL.createObjectURL(original.blob);
 			setFinalImageUrl(previewUrl);
 
 			let result: Awaited<ReturnType<typeof createPhoto>>;
 			try {
-				const { uploadUrl, key } = await generatePhotoUploadUrl(event.id);
-
-				const uploaded = await fetch(uploadUrl, {
-					method: "PUT",
-					headers: { "Content-Type": blob.type },
-					body: blob,
-				});
-				// fetch only rejects on network errors, so a non-2xx PUT would
-				// otherwise "succeed" and leave createPhoto pointing at a failed
-				// object — treat it as a failure so the offline outbox retries.
-				if (!uploaded.ok) {
-					throw new Error(`Upload failed with status ${uploaded.status}`);
+				// Upload every asset via presigned PUT (one key per blob) BEFORE
+				// creating the record, so a failure mid-way falls into the offline
+				// outbox with the complete set rather than a half-created record.
+				const storageKey = await uploadCaptureBlob(event.id, original.blob);
+				const printStorageKey = processed
+					? await uploadCaptureBlob(event.id, processed.blob)
+					: undefined;
+				const rawShotKeys: string[] = [];
+				for (const shot of rawShots) {
+					rawShotKeys.push(await uploadCaptureBlob(event.id, shot));
 				}
 
 				result = await createPhoto({
 					eventId: event.id,
 					sessionId: sessionId!,
-					storageKey: key,
+					storageKey,
+					printStorageKey,
+					rawShotKeys: rawShotKeys.length > 0 ? JSON.stringify(rawShotKeys) : undefined,
 					templateId: templateId ?? undefined,
 					kind,
-					width,
-					height,
-					sizeBytes: blob.size,
+					width: original.width,
+					height: original.height,
+					sizeBytes: original.blob.size,
 				});
 			} catch (uploadErr) {
-				// Offline / upload failure: hold the composited image in the outbox so
-				// it is never lost; background sync finishes it on reconnect. The guest
-				// can still download/print now.
+				// Offline / upload failure: hold ALL blobs in the outbox so nothing is
+				// lost; background sync re-uploads them and creates the record on
+				// reconnect. The guest can still download/print now.
 				console.warn("Deferring photo upload to offline outbox:", uploadErr);
 				await enqueuePhoto({
 					id: crypto.randomUUID(),
 					eventId: event.id,
 					sessionId: sessionId!,
-					blob,
+					blob: original.blob,
+					printBlob: processed ? processed.blob : null,
+					rawShotBlobs: rawShots,
 					templateId: templateId ?? undefined,
 					kind,
 					selectedFilter: session.selectedFilter ?? undefined,
-					width,
-					height,
+					width: original.width,
+					height: original.height,
 					queuedAt: Date.now(),
 				});
 
@@ -345,8 +439,8 @@ export default function KioskResultPage() {
 		session,
 		isProcessing,
 		layout,
-		composeStripBlob,
-		composeSingleBlob,
+		composeStripBlobs,
+		composeSingleBlobs,
 		sessionId,
 		templateId,
 		sync,

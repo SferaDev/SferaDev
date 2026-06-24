@@ -227,6 +227,11 @@ export default function KioskBoomerangPage() {
 				sessionId,
 				blob,
 				contentType: "image/gif",
+				// Boomerangs have no decorated/print version and no separate raw shots —
+				// pin printBlob to null so the sync stores a NULL printStorageKey rather
+				// than falling back to the GIF (the legacy single-blob behaviour).
+				printBlob: null,
+				rawShotBlobs: [],
 				kind: "boomerang",
 				width,
 				height,

@@ -1,6 +1,6 @@
 "use client";
 
-import { Camera, Download, Share2 } from "lucide-react";
+import { Camera, Download, Printer, Share2 } from "lucide-react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { use } from "react";
@@ -44,12 +44,22 @@ function SharePageContent({ photo }: { photo: SharedPhoto | null }) {
 	const t = useTranslations("share");
 	const { toast } = useToast();
 
+	/** Fetch an asset URL and trigger a download with the given filename. */
+	const downloadFrom = async (url: string, filename: string) => {
+		const response = await fetch(url);
+		const blob = await response.blob();
+		downloadBlob(blob, filename);
+	};
+
 	const handleDownload = async () => {
 		if (!photo?.url) return;
-		const response = await fetch(photo.url);
-		const blob = await response.blob();
 		const ext = photo.kind === "boomerang" ? "gif" : "jpg";
-		downloadBlob(blob, `photocall_${photo.humanCode}.${ext}`);
+		await downloadFrom(photo.url, `photocall_${photo.humanCode}.${ext}`);
+	};
+
+	const handleDownloadPrint = async () => {
+		if (!photo?.printUrl) return;
+		await downloadFrom(photo.printUrl, `photocall_${photo.humanCode}_print.jpg`);
 	};
 
 	const handleShare = async () => {
@@ -182,8 +192,51 @@ function SharePageContent({ photo }: { photo: SharedPhoto | null }) {
 								{t("share")}
 							</Button>
 						</div>
+						{/* The decorated/print version is a separate, optional download — the
+						    main image above is always the clean original. */}
+						{photo.allowDownload && photo.printUrl && (
+							<Button variant="outline" onClick={handleDownloadPrint} className="mt-3 w-full gap-2">
+								<Printer className="h-5 w-5" />
+								{t("downloadPrint")}
+							</Button>
+						)}
 					</CardContent>
 				</Card>
+
+				{/* Individual shots backing a strip — each viewable/downloadable on its
+				    own. Absent for single photos and boomerangs. */}
+				{photo.allowDownload && photo.rawShotUrls.length > 0 && (
+					<Card className="w-full max-w-2xl">
+						<CardHeader>
+							<CardTitle className="text-lg">{t("individualShots")}</CardTitle>
+						</CardHeader>
+						<CardContent>
+							<div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+								{photo.rawShotUrls.map((shotUrl, index) => (
+									<button
+										key={shotUrl}
+										type="button"
+										onClick={() =>
+											downloadFrom(shotUrl, `photocall_${photo.humanCode}_${index + 1}.jpg`)
+										}
+										className="group relative aspect-3/4 overflow-hidden rounded-lg bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+										aria-label={t("downloadShot", { index: index + 1 })}
+									>
+										{/* eslint-disable-next-line @next/next/no-img-element */}
+										<img
+											src={shotUrl}
+											alt={t("shotAlt", { index: index + 1 })}
+											className="h-full w-full object-cover transition-transform group-hover:scale-105"
+										/>
+										<span className="absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition-opacity group-hover:bg-black/40 group-hover:opacity-100">
+											<Download className="h-6 w-6 text-white" />
+										</span>
+									</button>
+								))}
+							</div>
+						</CardContent>
+					</Card>
+				)}
 			</main>
 		</div>
 	);

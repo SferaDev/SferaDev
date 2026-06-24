@@ -14,8 +14,18 @@
  */
 
 export const DB_NAME = "photocall-offline";
-/** Bumped 1 → 2 to add the `pending-prints` store alongside `pending-photos`. */
-export const DB_VERSION = 2;
+/**
+ * Versions:
+ *  - 1 → 2: added the `pending-prints` store alongside `pending-photos`.
+ *  - 2 → 3: `pending-photos` items gained the original/processed/raw-shot blob
+ *    fields (see lib/offline-queue.ts). No structural migration is needed — the
+ *    new fields are optional and legacy single-blob items still sync (their
+ *    `blob` is reused as both the original and the processed image) — but the
+ *    version is bumped so the stored-shape change is explicit and any future
+ *    migration has a hook. The existing object stores are preserved as-is so
+ *    items queued under v2 survive the upgrade.
+ */
+export const DB_VERSION = 3;
 
 export const PHOTOS_STORE = "pending-photos";
 export const PRINTS_STORE = "pending-prints";

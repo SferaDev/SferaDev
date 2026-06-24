@@ -191,7 +191,18 @@ export const photos = pgTable(
 		// Moderation state. Kiosk photos are always "visible"; guest uploads may be
 		// "pending" (awaiting host approval) or "hidden" (removed by a host).
 		status: text("status").notNull().default("visible"), // visible | pending | hidden
+		// The unprocessed ORIGINAL — used as the preview image everywhere (gallery,
+		// album, share). Single = the raw capture; strip = a CLEAN composite (photos
+		// in their slots, no graphic/text overlays); boomerang = the GIF.
 		storageKey: text("storage_key").notNull(),
+		// The decorated/processed composite (all graphic + text layers), used ONLY
+		// for printing and offered as a separate "print version" download. Null for
+		// boomerangs and legacy rows (which predate the original/processed split).
+		printStorageKey: text("print_storage_key"),
+		// The individual raw shots backing a capture, as a JSON array of R2 storage
+		// keys (NOT URLs/base64). Lets guests view/download each shot. Null for
+		// boomerangs and legacy rows.
+		rawShotKeys: text("raw_shot_keys"),
 		shareToken: text("share_token").notNull().unique(),
 		humanCode: text("human_code").notNull(),
 		caption: text("caption"),
@@ -378,6 +389,21 @@ export function parseCapturedImageUrls(json: string | null): string[] {
 
 /** Parse a stored JSON array of raw shot URLs backing a composited strip. */
 export function parseRawShotsJson(json: string | null): string[] {
+	if (!json) return [];
+	try {
+		const parsed = JSON.parse(json);
+		return Array.isArray(parsed) ? (parsed as string[]) : [];
+	} catch {
+		return [];
+	}
+}
+
+/**
+ * Parse the stored `raw_shot_keys` JSON into an array of R2 storage keys. Unlike
+ * {@link parseRawShotsJson} (legacy, which held URLs), these are storage keys
+ * the consumer resolves to URLs via `getFileUrl` when needed.
+ */
+export function parseRawShotKeys(json: string | null): string[] {
 	if (!json) return [];
 	try {
 		const parsed = JSON.parse(json);
