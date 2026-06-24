@@ -22,6 +22,13 @@
 			"when": 1782278622250,
 			"tag": "0002_skip_consent_auto_start",
 			"breakpoints": true
+		},
+		{
+			"idx": 3,
+			"version": "7",
+			"when": 1782279299580,
+			"tag": "0003_event_language_mirror",
+			"breakpoints": true
 		}
 	]
 }

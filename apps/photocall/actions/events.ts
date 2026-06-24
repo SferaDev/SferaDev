@@ -326,6 +326,7 @@ export async function duplicateEvent(id: string) {
 			allowPrint: event.allowPrint,
 			showQrCode: event.showQrCode,
 			retentionDays: event.retentionDays,
+			language: event.language,
 			// Photobooth config carries over to the duplicate.
 			coupleNames: event.coupleNames,
 			cameraDeviceId: event.cameraDeviceId,
@@ -334,6 +335,7 @@ export async function duplicateEvent(id: string) {
 			captureDefaultCountdown: event.captureDefaultCountdown,
 			captureAutoShoot: event.captureAutoShoot,
 			captureAutoStart: event.captureAutoStart,
+			mirrorPhotos: event.mirrorPhotos,
 			boomerangEnabled: event.boomerangEnabled,
 			printMethod: event.printMethod,
 			printPrinterId: event.printPrinterId,

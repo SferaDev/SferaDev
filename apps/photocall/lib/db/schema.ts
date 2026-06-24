@@ -30,6 +30,10 @@ export const events = pgTable(
 		startDate: timestamp("start_date"),
 		endDate: timestamp("end_date"),
 		status: text("status").notNull().default("draft"), // draft | active | paused | archived
+		// Default language for guest-facing surfaces that aren't behind the kiosk's
+		// own locale switcher (e.g. the public share page). Null → fall back to the
+		// app default. One of the supported locales: en | es | ca.
+		language: text("language"),
 		// Kiosk PIN
 		kioskPinHash: text("kiosk_pin_hash"),
 		kioskPinSalt: text("kiosk_pin_salt"),
@@ -101,6 +105,10 @@ export const events = pgTable(
 		// so guests don't have to press the shutter to start. Subsequent shots in a
 		// strip still wait for a tap unless captureAutoShoot is also on.
 		captureAutoStart: boolean("capture_auto_start").notNull().default(true),
+		// Mirror (horizontally flip) the final photo. Moved from a per-guest toggle
+		// to a host setting so every photo at the booth looks consistent. Defaults
+		// on to match the familiar selfie/front-camera preview.
+		mirrorPhotos: boolean("mirror_photos").notNull().default(true),
 		// Boomerang/GIF capture mode (guest-selectable when enabled).
 		boomerangEnabled: boolean("boomerang_enabled").notNull().default(false),
 		// Print settings (photobooth)
