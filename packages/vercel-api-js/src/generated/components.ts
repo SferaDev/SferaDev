@@ -716,6 +716,13 @@ import type {
 	GetDomainConfigStatus400,
 	GetDomainConfigStatus401,
 	GetDomainConfigStatus403,
+	GetDomainContactVerificationResponse,
+	GetDomainContactVerificationStatus400,
+	GetDomainContactVerificationStatus401,
+	GetDomainContactVerificationStatus403,
+	GetDomainContactVerificationStatus404,
+	GetDomainContactVerificationStatus429,
+	GetDomainContactVerificationStatus500,
 	GetDomainPriceResponse,
 	GetDomainPriceStatus400,
 	GetDomainPriceStatus401,
@@ -1082,6 +1089,13 @@ import type {
 	GitNamespacesStatus404,
 	GitNamespacesStatus429,
 	GitNamespacesStatus500,
+	ImportConnectorTokensResponse,
+	ImportConnectorTokensStatus400,
+	ImportConnectorTokensStatus401,
+	ImportConnectorTokensStatus403,
+	ImportConnectorTokensStatus404,
+	ImportConnectorTokensStatus422,
+	ImportConnectorTokensStatus504,
 	ImportResourceResponse,
 	ImportResourceStatus400,
 	ImportResourceStatus401,
@@ -1445,6 +1459,14 @@ import type {
 	RerequestCheckStatus401,
 	RerequestCheckStatus403,
 	RerequestCheckStatus404,
+	RestoreEdgeConfigBackupResponse,
+	RestoreEdgeConfigBackupStatus400,
+	RestoreEdgeConfigBackupStatus401,
+	RestoreEdgeConfigBackupStatus402,
+	RestoreEdgeConfigBackupStatus403,
+	RestoreEdgeConfigBackupStatus404,
+	RestoreEdgeConfigBackupStatus409,
+	RestoreEdgeConfigBackupStatus412,
 	RestoreRedirectsResponse,
 	RestoreRedirectsStatus400,
 	RestoreRedirectsStatus401,
@@ -3934,6 +3956,49 @@ export async function getConnectorToken(
 }
 
 /**
+ * @summary Import Connect tokens
+ * @description Import access and refresh tokens for a connector identified by the path parameter.
+ * @link /v1/connect/token/{connector}/import
+ */
+export async function importConnectorTokens(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { connector: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.connector) {
+		throw new Error(`Missing required path parameter: connector`);
+	}
+	const data = await request<
+		ImportConnectorTokensResponse,
+		ErrorWrapper<
+			| ImportConnectorTokensStatus400
+			| ImportConnectorTokensStatus401
+			| ImportConnectorTokensStatus403
+			| ImportConnectorTokensStatus404
+			| ImportConnectorTokensStatus422
+			| ImportConnectorTokensStatus504
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ connector: string }
+	>({
+		method: "POST",
+		url: `/v1/connect/token/${pathParams.connector}/import`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
  * @summary Create a Connect authorization request
  * @description Create an authorization request for a connector and return the URL and verifier details needed to complete the flow.
  * @link /v1/connect/authorize/{connector}
@@ -5031,6 +5096,52 @@ export async function updateDomainNameservers(
 	>({
 		method: "PATCH",
 		url: `/v1/registrar/domains/${pathParams.domain}/nameservers`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Get contact verification status for a domain
+ * @description Get the registrant contact verification status for a domain. Use this after purchasing a domain to determine whether the contact has been verified. Note that a bought_too_recently error will be returned if the domain was bought less than 30 minutes before the request.
+ * @link /v1/registrar/domains/{domain}/contact-verification
+ */
+export async function getDomainContactVerification(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { domain: unknown };
+		queryParams?: { teamId?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.domain) {
+		throw new Error(`Missing required path parameter: domain`);
+	}
+	const data = await request<
+		GetDomainContactVerificationResponse,
+		ErrorWrapper<
+			| GetDomainContactVerificationStatus400
+			| GetDomainContactVerificationStatus401
+			| GetDomainContactVerificationStatus403
+			| GetDomainContactVerificationStatus404
+			| GetDomainContactVerificationStatus429
+			| GetDomainContactVerificationStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string },
+		{ domain: unknown }
+	>({
+		method: "GET",
+		url: `/v1/registrar/domains/${pathParams.domain}/contact-verification`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -6799,6 +6910,57 @@ export async function getEdgeConfigBackup(
 }
 
 /**
+ * @summary Restore Edge Config backup
+ * @description Restores an Edge Config backup.
+ * @link /v1/edge-config/{edgeConfigId}/backups/{edgeConfigBackupVersionId}/restore
+ */
+export async function restoreEdgeConfigBackup(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { edgeConfigId: string; edgeConfigBackupVersionId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.edgeConfigId) {
+		throw new Error(`Missing required path parameter: edgeConfigId`);
+	}
+
+	if (!pathParams.edgeConfigBackupVersionId) {
+		throw new Error(`Missing required path parameter: edgeConfigBackupVersionId`);
+	}
+	const data = await request<
+		RestoreEdgeConfigBackupResponse,
+		ErrorWrapper<
+			| RestoreEdgeConfigBackupStatus400
+			| RestoreEdgeConfigBackupStatus401
+			| RestoreEdgeConfigBackupStatus402
+			| RestoreEdgeConfigBackupStatus403
+			| RestoreEdgeConfigBackupStatus404
+			| RestoreEdgeConfigBackupStatus409
+			| RestoreEdgeConfigBackupStatus412
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ edgeConfigId: string; edgeConfigBackupVersionId: string }
+	>({
+		method: "POST",
+		url: `/v1/edge-config/${pathParams.edgeConfigId}/backups/${pathParams.edgeConfigBackupVersionId}/restore`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
  * @summary Get Edge Config backups
  * @description Returns backups of an Edge Config.
  * @link /v1/edge-config/{edgeConfigId}/backups
@@ -7218,6 +7380,8 @@ export async function listFlagsV2(
 			cursor?: string;
 			search?: string;
 			tags?: Array<string>;
+			createdBy?: string;
+			maintainerIds?: Array<string>;
 			includeMarketplaceFlags?: boolean;
 			teamId?: string;
 			slug?: string;
@@ -7247,6 +7411,8 @@ export async function listFlagsV2(
 			cursor?: string;
 			search?: string;
 			tags?: Array<string>;
+			createdBy?: string;
+			maintainerIds?: Array<string>;
 			includeMarketplaceFlags?: boolean;
 			teamId?: string;
 			slug?: string;
@@ -7735,6 +7901,8 @@ export async function listTeamFlagsV2(
 			search?: string;
 			kind?: "boolean" | "string" | "number" | "json";
 			tags?: Array<string>;
+			createdBy?: string;
+			maintainerIds?: Array<string>;
 			includeMarketplaceFlags?: boolean;
 			slug?: string;
 		};
@@ -7758,6 +7926,8 @@ export async function listTeamFlagsV2(
 			search?: string;
 			kind?: "boolean" | "string" | "number" | "json";
 			tags?: Array<string>;
+			createdBy?: string;
+			maintainerIds?: Array<string>;
 			includeMarketplaceFlags?: boolean;
 			slug?: string;
 		},
@@ -16128,6 +16298,7 @@ export const operationsByPath = {
 	"GET /v1/connect/networks/{networkId}": readNetwork,
 	"POST /v1/connect/connectors": createConnector,
 	"POST /v1/connect/token/{connector}": getConnectorToken,
+	"POST /v1/connect/token/{connector}/import": importConnectorTokens,
 	"POST /v1/connect/authorize/{connector}": createConnectorAuthorizationRequest,
 	"GET /v3/deployments/{idOrUrl}/events": getDeploymentEvents,
 	"PATCH /v1/deployments/{deploymentId}/integrations/{integrationConfigurationId}/resources/{resourceId}/actions/{action}":
@@ -16153,6 +16324,7 @@ export const operationsByPath = {
 	"POST /v1/registrar/domains/{domain}/renew": renewDomain,
 	"PATCH /v1/registrar/domains/{domain}/auto-renew": updateDomainAutoRenew,
 	"PATCH /v1/registrar/domains/{domain}/nameservers": updateDomainNameservers,
+	"GET /v1/registrar/domains/{domain}/contact-verification": getDomainContactVerification,
 	"GET /v1/registrar/domains/{domain}/contact-info/schema": getContactInfoSchema,
 	"GET /v1/registrar/orders/{orderId}": getOrder,
 	"GET /v6/domains/{domain}/config": getDomainConfig,
@@ -16194,6 +16366,8 @@ export const operationsByPath = {
 	"GET /v1/edge-config/{edgeConfigId}/token/{token}": getEdgeConfigToken,
 	"POST /v1/edge-config/{edgeConfigId}/token": createEdgeConfigToken,
 	"GET /v1/edge-config/{edgeConfigId}/backups/{edgeConfigBackupVersionId}": getEdgeConfigBackup,
+	"POST /v1/edge-config/{edgeConfigId}/backups/{edgeConfigBackupVersionId}/restore":
+		restoreEdgeConfigBackup,
 	"GET /v1/edge-config/{edgeConfigId}/backups": getEdgeConfigBackups,
 	"POST /v1/env": createSharedEnvVariable,
 	"GET /v1/env": listSharedEnvVariable,
@@ -16482,6 +16656,7 @@ export const operationsByTag = {
 	connect: {
 		createConnector,
 		getConnectorToken,
+		importConnectorTokens,
 		createConnectorAuthorizationRequest,
 	},
 	deployments: {
@@ -16529,6 +16704,7 @@ export const operationsByTag = {
 		renewDomain,
 		updateDomainAutoRenew,
 		updateDomainNameservers,
+		getDomainContactVerification,
 		getContactInfoSchema,
 		getOrder,
 	},
@@ -16583,6 +16759,7 @@ export const operationsByTag = {
 		getEdgeConfigToken,
 		createEdgeConfigToken,
 		getEdgeConfigBackup,
+		restoreEdgeConfigBackup,
 		getEdgeConfigBackups,
 	},
 	environment: {
@@ -16862,7 +17039,12 @@ export const tagDictionary = {
 		PATCH: ["updateNetwork", "updateStaticIps"],
 	},
 	connect: {
-		POST: ["createConnector", "getConnectorToken", "createConnectorAuthorizationRequest"],
+		POST: [
+			"createConnector",
+			"getConnectorToken",
+			"importConnectorTokens",
+			"createConnectorAuthorizationRequest",
+		],
 	},
 	deployments: {
 		GET: [
@@ -16904,6 +17086,7 @@ export const tagDictionary = {
 			"getDomainPrice",
 			"getDomainAuthCode",
 			"getDomainTransferIn",
+			"getDomainContactVerification",
 			"getContactInfoSchema",
 			"getOrder",
 		],
@@ -16959,7 +17142,12 @@ export const tagDictionary = {
 			"getEdgeConfigBackup",
 			"getEdgeConfigBackups",
 		],
-		POST: ["createEdgeConfig", "patchEdgeConfigSchema", "createEdgeConfigToken"],
+		POST: [
+			"createEdgeConfig",
+			"patchEdgeConfigSchema",
+			"createEdgeConfigToken",
+			"restoreEdgeConfigBackup",
+		],
 		PUT: ["updateEdgeConfig"],
 		DELETE: ["deleteEdgeConfig", "deleteEdgeConfigSchema", "deleteEdgeConfigTokens"],
 		PATCH: ["patchEdgeConfigItems"],

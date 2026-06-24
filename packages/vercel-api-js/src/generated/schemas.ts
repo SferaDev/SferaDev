@@ -347,6 +347,35 @@ export const domainAlreadyRenewingSchema = z
 
 export const nameserverSchema = z.string().describe("A valid nameserver");
 
+export const contactVerifiedSchema = z
+	.object({
+		verified: z.literal(true),
+	})
+	.strict()
+	.describe("The registrant contact has been verified.");
+
+export const contactPendingVerificationSchema = z
+	.object({
+		verified: z.literal(false),
+		verifyBy: z.unknown(),
+		email: z.string(),
+	})
+	.strict()
+	.describe(
+		"The registrant contact has not yet been verified. The contact must be verified by `verifyBy`, and a verification email is sent to `email`.",
+	);
+
+export const dateFromStringSchema = z.string().describe("a string to be decoded into a Date");
+
+export const boughtTooRecentlySchema = z
+	.object({
+		status: z.literal(400),
+		code: z.enum(["bought_too_recently"]),
+		message: z.string(),
+	})
+	.strict()
+	.describe("The domain was bought too recently to determine verification status.");
+
 export const registrantFieldSchema = z
 	.union([
 		z
@@ -628,6 +657,7 @@ export const userEventSchema = z
 				"connect-github-limited",
 				"connect-gitlab",
 				"connect-gitlab-app",
+				"connect-import-tokens",
 				"connect-revoke-all-tokens",
 				"connect-update-connector",
 				"connect-update-trigger-destinations",
@@ -691,6 +721,7 @@ export const userEventSchema = z
 				"edge-cache-invalidate-by-tags",
 				"edge-cache-purge-all",
 				"edge-cache-rollback-purge",
+				"edge-config-backup-restored",
 				"edge-config-created",
 				"edge-config-deleted",
 				"edge-config-items-updated",
@@ -739,6 +770,7 @@ export const userEventSchema = z
 				"flags-sdk-key-read",
 				"flags-segment",
 				"flags-settings",
+				"flags-transferred",
 				"git_account_integration_link_added",
 				"instant-rollback-created",
 				"integration-configuration-owner-changed",
@@ -790,6 +822,7 @@ export const userEventSchema = z
 				"owner-unblocked",
 				"page-integrity-config-updated",
 				"page-integrity-header-approved",
+				"page-integrity-header-rejected",
 				"page-integrity-inventory-cleared",
 				"page-integrity-resource-approved",
 				"page-integrity-resource-deleted",
@@ -922,6 +955,8 @@ export const userEventSchema = z
 				"protected-git-scope-added",
 				"protected-git-scope-removed",
 				"runtime-cache-purge-all",
+				"sandbox-alias-assigned",
+				"sandbox-alias-delete",
 				"scale",
 				"scale-auto",
 				"secondary-email-added",
@@ -983,6 +1018,7 @@ export const userEventSchema = z
 				"team-domain-verification-deleted",
 				"team-domain-verification-verified",
 				"team-email-domain-update",
+				"team-emu-account-split",
 				"team-emu-updated",
 				"team-ended-trial",
 				"team-git-repository-dispatch-events-toggled",
@@ -1005,6 +1041,7 @@ export const userEventSchema = z
 				"team-member-leave",
 				"team-member-request-access",
 				"team-member-role-update",
+				"team-member-sso-authorization-attempt",
 				"team-mfa-enforcement-updated",
 				"team-name-update",
 				"team-paid-invoice",
@@ -1033,6 +1070,9 @@ export const userEventSchema = z
 				"v0-chat-ai-usage",
 				"v0-chat-created",
 				"v0-chat-message-sent",
+				"vercel-agent-elevated-permissions-approved",
+				"vercel-agent-elevated-permissions-requested",
+				"vercel-agent-session-created",
 				"vercel-agent-team-trial-credits-applied",
 				"vercel-app-installation-request-dismissed",
 				"vercel-app-installation-requested",
@@ -2275,6 +2315,9 @@ export const userEventSchema = z
 						subjectType: z.enum(["app", "user"]).optional(),
 						fields: z.array(z.string()).optional(),
 						triggerDestinationCount: z.number().optional(),
+						tokenCount: z.number().optional(),
+						acceptedTokenCount: z.number().optional(),
+						importedTokenCount: z.number().optional(),
 						tokensDeleted: z.number().optional(),
 					})
 					.strict(),
@@ -3384,6 +3427,14 @@ export const userEventSchema = z
 					.object({
 						edgeConfigId: z.string(),
 						edgeConfigSlug: z.string(),
+						edgeConfigDigest: z.string(),
+						edgeConfigBackupVersionId: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						edgeConfigId: z.string(),
+						edgeConfigSlug: z.string(),
 						edgeConfigSchema: z.object({}).optional(),
 					})
 					.strict(),
@@ -3815,6 +3866,13 @@ export const userEventSchema = z
 						rulesetName: z.string(),
 						active: z.union([z.literal(false), z.literal(true)]),
 						action: z.enum(["challenge", "deny", "log"]).optional(),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+						previousOwnerId: z.string(),
+						newOwnerId: z.string(),
 					})
 					.strict(),
 				z
@@ -5609,12 +5667,24 @@ export const userEventSchema = z
 				z
 					.object({
 						projectId: z.string(),
+						headerName: z.string(),
+						previousStatus: z.string(),
+						justification: z.string().nullable(),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
 						projectName: z.string(),
 						deletedCount: z.number(),
 						scriptCount: z.number(),
 						connectSrcCount: z.number(),
 						connectSrcOriginCount: z.number(),
 						headerCount: z.number(),
+						connectSrcUserNormalizationRuleCount: z.number().optional(),
+						connectSrcNormalizationRulesCleared: z
+							.union([z.literal(false), z.literal(true)])
+							.optional(),
 					})
 					.strict(),
 				z
@@ -6949,6 +7019,14 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						alias: z.string(),
+						sandboxName: z.string(),
+						sandboxId: z.string().optional(),
+						projectId: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
 						instances: z.number(),
 						url: z.string(),
 					})
@@ -7383,6 +7461,55 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						eventId: z.string(),
+						sessionId: z.string(),
+						sessionKind: z
+							.string()
+							.describe("Currently emitted session kinds: chat, investigation."),
+						surface: z
+							.string()
+							.describe(
+								"Currently emitted surfaces: dashboard, internal, slack, automation, github.",
+							),
+						occurredAt: z.number(),
+					})
+					.strict(),
+				z
+					.object({
+						eventId: z.string(),
+						sessionId: z.string(),
+						sessionKind: z
+							.string()
+							.describe("Currently emitted session kinds: chat, investigation."),
+						surface: z
+							.string()
+							.describe(
+								"Currently emitted surfaces: dashboard, internal, slack, automation, github.",
+							),
+						occurredAt: z.number(),
+						planId: z.string(),
+						requestedScopes: z
+							.array(z.string())
+							.describe("Scopes requested by the model-authored plan."),
+						elevatedScopes: z
+							.array(z.string())
+							.describe("Requested Vercel scopes that are not included in the baseline token."),
+						mergedScopes: z
+							.array(z.string())
+							.describe("Baseline plus elevated Vercel scopes used when minting scoped tokens."),
+						githubScopes: z
+							.array(z.string())
+							.describe(
+								"External GitHub scopes requested by the plan; these are not Vercel token scopes.",
+							),
+						requestedScopeCount: z.number(),
+						elevatedScopeCount: z.number(),
+						mergedScopeCount: z.number(),
+						githubScopeCount: z.number(),
+					})
+					.strict(),
+				z
+					.object({
 						previous: z.enum(["elastic", "enhanced", "standard", "turbo"]).optional(),
 						next: z.enum(["elastic", "enhanced", "standard", "turbo"]).optional(),
 					})
@@ -7428,6 +7555,12 @@ export const userEventSchema = z
 					.object({
 						previous: z.object({}).nullable(),
 						next: z.object({}).nullable(),
+					})
+					.strict(),
+				z
+					.object({
+						personalAccountId: z.string(),
+						managedAccountId: z.string(),
 					})
 					.strict(),
 				z
@@ -7633,6 +7766,13 @@ export const userEventSchema = z
 						updatedUid: z.string().optional(),
 						origin: z.string().optional(),
 						teamSlug: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						email: z.string().optional(),
+						authorized: z.union([z.literal(false), z.literal(true)]),
+						reason: z.string().optional(),
 					})
 					.strict(),
 				z
@@ -8366,6 +8506,7 @@ export const listEventTypeSchema = z
 				"connect-github-limited",
 				"connect-gitlab",
 				"connect-gitlab-app",
+				"connect-import-tokens",
 				"connect-revoke-all-tokens",
 				"connect-update-connector",
 				"connect-update-trigger-destinations",
@@ -8429,6 +8570,7 @@ export const listEventTypeSchema = z
 				"edge-cache-invalidate-by-tags",
 				"edge-cache-purge-all",
 				"edge-cache-rollback-purge",
+				"edge-config-backup-restored",
 				"edge-config-created",
 				"edge-config-deleted",
 				"edge-config-items-updated",
@@ -8477,6 +8619,7 @@ export const listEventTypeSchema = z
 				"flags-sdk-key-read",
 				"flags-segment",
 				"flags-settings",
+				"flags-transferred",
 				"git_account_integration_link_added",
 				"instant-rollback-created",
 				"integration-configuration-owner-changed",
@@ -8528,6 +8671,7 @@ export const listEventTypeSchema = z
 				"owner-unblocked",
 				"page-integrity-config-updated",
 				"page-integrity-header-approved",
+				"page-integrity-header-rejected",
 				"page-integrity-inventory-cleared",
 				"page-integrity-resource-approved",
 				"page-integrity-resource-deleted",
@@ -8660,6 +8804,8 @@ export const listEventTypeSchema = z
 				"protected-git-scope-added",
 				"protected-git-scope-removed",
 				"runtime-cache-purge-all",
+				"sandbox-alias-assigned",
+				"sandbox-alias-delete",
 				"scale",
 				"scale-auto",
 				"secondary-email-added",
@@ -8721,6 +8867,7 @@ export const listEventTypeSchema = z
 				"team-domain-verification-deleted",
 				"team-domain-verification-verified",
 				"team-email-domain-update",
+				"team-emu-account-split",
 				"team-emu-updated",
 				"team-ended-trial",
 				"team-git-repository-dispatch-events-toggled",
@@ -8743,6 +8890,7 @@ export const listEventTypeSchema = z
 				"team-member-leave",
 				"team-member-request-access",
 				"team-member-role-update",
+				"team-member-sso-authorization-attempt",
 				"team-mfa-enforcement-updated",
 				"team-name-update",
 				"team-paid-invoice",
@@ -8771,6 +8919,9 @@ export const listEventTypeSchema = z
 				"v0-chat-ai-usage",
 				"v0-chat-created",
 				"v0-chat-message-sent",
+				"vercel-agent-elevated-permissions-approved",
+				"vercel-agent-elevated-permissions-requested",
+				"vercel-agent-session-created",
 				"vercel-agent-team-trial-credits-applied",
 				"vercel-app-installation-request-dismissed",
 				"vercel-app-installation-requested",
@@ -8916,6 +9067,7 @@ export const listEventTypeSchema = z
 					"connect-github-limited",
 					"connect-gitlab",
 					"connect-gitlab-app",
+					"connect-import-tokens",
 					"connect-revoke-all-tokens",
 					"connect-update-connector",
 					"connect-update-trigger-destinations",
@@ -8979,6 +9131,7 @@ export const listEventTypeSchema = z
 					"edge-cache-invalidate-by-tags",
 					"edge-cache-purge-all",
 					"edge-cache-rollback-purge",
+					"edge-config-backup-restored",
 					"edge-config-created",
 					"edge-config-deleted",
 					"edge-config-items-updated",
@@ -9027,6 +9180,7 @@ export const listEventTypeSchema = z
 					"flags-sdk-key-read",
 					"flags-segment",
 					"flags-settings",
+					"flags-transferred",
 					"git_account_integration_link_added",
 					"instant-rollback-created",
 					"integration-configuration-owner-changed",
@@ -9078,6 +9232,7 @@ export const listEventTypeSchema = z
 					"owner-unblocked",
 					"page-integrity-config-updated",
 					"page-integrity-header-approved",
+					"page-integrity-header-rejected",
 					"page-integrity-inventory-cleared",
 					"page-integrity-resource-approved",
 					"page-integrity-resource-deleted",
@@ -9210,6 +9365,8 @@ export const listEventTypeSchema = z
 					"protected-git-scope-added",
 					"protected-git-scope-removed",
 					"runtime-cache-purge-all",
+					"sandbox-alias-assigned",
+					"sandbox-alias-delete",
 					"scale",
 					"scale-auto",
 					"secondary-email-added",
@@ -9271,6 +9428,7 @@ export const listEventTypeSchema = z
 					"team-domain-verification-deleted",
 					"team-domain-verification-verified",
 					"team-email-domain-update",
+					"team-emu-account-split",
 					"team-emu-updated",
 					"team-ended-trial",
 					"team-git-repository-dispatch-events-toggled",
@@ -9293,6 +9451,7 @@ export const listEventTypeSchema = z
 					"team-member-leave",
 					"team-member-request-access",
 					"team-member-role-update",
+					"team-member-sso-authorization-attempt",
 					"team-mfa-enforcement-updated",
 					"team-name-update",
 					"team-paid-invoice",
@@ -9321,6 +9480,9 @@ export const listEventTypeSchema = z
 					"v0-chat-ai-usage",
 					"v0-chat-created",
 					"v0-chat-message-sent",
+					"vercel-agent-elevated-permissions-approved",
+					"vercel-agent-elevated-permissions-requested",
+					"vercel-agent-session-created",
 					"vercel-agent-team-trial-credits-applied",
 					"vercel-app-installation-request-dismissed",
 					"vercel-app-installation-requested",
@@ -10410,6 +10572,12 @@ export const teamSchema = z
 					.number()
 					.optional()
 					.describe("The maximum number of custom environments allowed per project."),
+				serverlessFunctionMaxMemorySize: z
+					.number()
+					.optional()
+					.describe(
+						"The maximum memory size (in MB) for a serverless function. Only specified if a custom limit is set.",
+					),
 				buildEntitlements: z
 					.object({
 						enhancedBuilds: z.union([z.literal(false), z.literal(true)]).optional(),
@@ -13263,6 +13431,32 @@ export const getConnectorTokenResponseSchema = z.union([
 	getConnectorTokenStatus504Schema,
 ]);
 
+export const importConnectorTokensPathConnectorSchema = z.string();
+
+export const importConnectorTokensStatus200Schema = z.unknown();
+
+export const importConnectorTokensStatus400Schema = z.unknown();
+
+export const importConnectorTokensStatus401Schema = z.unknown();
+
+export const importConnectorTokensStatus403Schema = z.unknown();
+
+export const importConnectorTokensStatus404Schema = z.unknown();
+
+export const importConnectorTokensStatus422Schema = z.unknown();
+
+export const importConnectorTokensStatus504Schema = z.unknown();
+
+export const importConnectorTokensResponseSchema = z.union([
+	importConnectorTokensStatus200Schema,
+	importConnectorTokensStatus400Schema,
+	importConnectorTokensStatus401Schema,
+	importConnectorTokensStatus403Schema,
+	importConnectorTokensStatus404Schema,
+	importConnectorTokensStatus422Schema,
+	importConnectorTokensStatus504Schema,
+]);
+
 export const createConnectorAuthorizationRequestPathConnectorSchema = z.string();
 
 export const createConnectorAuthorizationRequestStatus200Schema = z.unknown();
@@ -14035,6 +14229,34 @@ export const updateDomainNameserversResponseSchema = z.union([
 	updateDomainNameserversStatus404Schema,
 	updateDomainNameserversStatus429Schema,
 	updateDomainNameserversStatus500Schema,
+]);
+
+export const getDomainContactVerificationPathDomainSchema = z.unknown();
+
+export const getDomainContactVerificationQueryTeamIdSchema = z.string().optional();
+
+export const getDomainContactVerificationStatus200Schema = z.unknown();
+
+export const getDomainContactVerificationStatus400Schema = z.unknown();
+
+export const getDomainContactVerificationStatus401Schema = z.unknown();
+
+export const getDomainContactVerificationStatus403Schema = z.unknown();
+
+export const getDomainContactVerificationStatus404Schema = z.unknown();
+
+export const getDomainContactVerificationStatus429Schema = z.unknown();
+
+export const getDomainContactVerificationStatus500Schema = z.unknown();
+
+export const getDomainContactVerificationResponseSchema = z.union([
+	getDomainContactVerificationStatus200Schema,
+	getDomainContactVerificationStatus400Schema,
+	getDomainContactVerificationStatus401Schema,
+	getDomainContactVerificationStatus403Schema,
+	getDomainContactVerificationStatus404Schema,
+	getDomainContactVerificationStatus429Schema,
+	getDomainContactVerificationStatus500Schema,
 ]);
 
 export const getContactInfoSchemaPathDomainSchema = z.unknown();
@@ -15359,6 +15581,47 @@ export const getEdgeConfigBackupResponseSchema = z.union([
 	getEdgeConfigBackupStatus404Schema,
 ]);
 
+export const restoreEdgeConfigBackupPathEdgeConfigIdSchema = z.string().regex(/^ecfg_/);
+
+export const restoreEdgeConfigBackupPathEdgeConfigBackupVersionIdSchema = z.string();
+
+export const restoreEdgeConfigBackupQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const restoreEdgeConfigBackupQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const restoreEdgeConfigBackupStatus200Schema = z.unknown();
+
+export const restoreEdgeConfigBackupStatus400Schema = z.unknown();
+
+export const restoreEdgeConfigBackupStatus401Schema = z.unknown();
+
+export const restoreEdgeConfigBackupStatus402Schema = z.unknown();
+
+export const restoreEdgeConfigBackupStatus403Schema = z.unknown();
+
+export const restoreEdgeConfigBackupStatus404Schema = z.unknown();
+
+export const restoreEdgeConfigBackupStatus409Schema = z.unknown();
+
+export const restoreEdgeConfigBackupStatus412Schema = z.unknown();
+
+export const restoreEdgeConfigBackupResponseSchema = z.union([
+	restoreEdgeConfigBackupStatus200Schema,
+	restoreEdgeConfigBackupStatus400Schema,
+	restoreEdgeConfigBackupStatus401Schema,
+	restoreEdgeConfigBackupStatus402Schema,
+	restoreEdgeConfigBackupStatus403Schema,
+	restoreEdgeConfigBackupStatus404Schema,
+	restoreEdgeConfigBackupStatus409Schema,
+	restoreEdgeConfigBackupStatus412Schema,
+]);
+
 export const getEdgeConfigBackupsPathEdgeConfigIdSchema = z.string();
 
 export const getEdgeConfigBackupsQueryNextSchema = z.string().optional();
@@ -15716,6 +15979,20 @@ export const listFlagsV2QueryTagsSchema = z
 	.array(z.string())
 	.optional()
 	.describe("Filter flags by tag. Repeat the parameter for multiple tags (all must match).");
+
+export const listFlagsV2QueryCreatedBySchema = z
+	.string()
+	.max(256)
+	.optional()
+	.describe("Filter flags by the id of the entity that created them (a user or team id).");
+
+export const listFlagsV2QueryMaintainerIdsSchema = z
+	.array(z.string().max(24))
+	.max(25)
+	.optional()
+	.describe(
+		"Filter flags by maintainer user id. Repeat the parameter for multiple maintainers (any may match).",
+	);
 
 export const listFlagsV2QueryIncludeMarketplaceFlagsSchema = z
 	.boolean()
@@ -16224,6 +16501,20 @@ export const listTeamFlagsV2QueryTagsSchema = z
 	.optional()
 	.describe("Filter flags by tag. Repeat the parameter for multiple tags (all must match).");
 
+export const listTeamFlagsV2QueryCreatedBySchema = z
+	.string()
+	.max(256)
+	.optional()
+	.describe("Filter flags by the id of the entity that created them (a user or team id).");
+
+export const listTeamFlagsV2QueryMaintainerIdsSchema = z
+	.array(z.string().max(24))
+	.max(25)
+	.optional()
+	.describe(
+		"Filter flags by maintainer user id. Repeat the parameter for multiple maintainers (any may match).",
+	);
+
 export const listTeamFlagsV2QueryIncludeMarketplaceFlagsSchema = z
 	.boolean()
 	.optional()
@@ -16469,6 +16760,8 @@ export const deleteFlagSegmentQuerySlugSchema = z
 
 export const deleteFlagSegmentStatus204Schema = z.unknown();
 
+export const deleteFlagSegmentStatus304Schema = z.unknown();
+
 export const deleteFlagSegmentStatus400Schema = z.unknown();
 
 export const deleteFlagSegmentStatus401Schema = z.unknown();
@@ -16485,6 +16778,7 @@ export const deleteFlagSegmentStatus412Schema = z.unknown();
 
 export const deleteFlagSegmentResponseSchema = z.union([
 	deleteFlagSegmentStatus204Schema,
+	deleteFlagSegmentStatus304Schema,
 	deleteFlagSegmentStatus400Schema,
 	deleteFlagSegmentStatus401Schema,
 	deleteFlagSegmentStatus402Schema,
