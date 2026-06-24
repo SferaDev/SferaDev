@@ -1,5 +1,22 @@
 # cloudflare-api-js
 
+## 1.0.0
+
+### Major Changes
+
+- 05e1980: Migrate from openapi-codegen to kubb for code generation.
+
+  Breaking changes:
+
+  - Generated code is now in `./src/generated/` instead of `./src/api/` or other locations
+  - Export structure changed: now exports `Fetchers`, `Helpers`, `Schemas`, `Types` instead of previous structure
+  - `FetcherExtraProps` renamed to `FetcherConfig`
+  - Added new type exports: `ApiClient`, `ApiOperation`, `ApiOperationParams`, `ApiOperationResult`, `ApiOperationByMethod`
+
+### Minor Changes
+
+- 74ad091: Migrate OpenAPI clients to SferaDev monorepo with improved build configuration, updated dependencies, and enhanced TypeScript support.
+
 ## 0.18.1
 
 ### Patch Changes
