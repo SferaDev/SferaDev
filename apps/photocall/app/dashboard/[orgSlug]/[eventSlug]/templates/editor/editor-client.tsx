@@ -10,6 +10,7 @@ import { getEventBySlug } from "@/actions/events";
 import { createTemplate, getTemplate, listPresets, updateTemplate } from "@/actions/templates";
 import { DashboardLanguagePicker } from "@/components/dashboard-language-picker";
 import { blankLayout, deriveKind } from "@/components/template-editor/factory";
+import { type PreviewTokens, SAMPLE_TOKENS } from "@/components/template-editor/preview-tokens";
 import { TemplateEditor } from "@/components/template-editor/template-editor";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -43,6 +44,23 @@ export default function TemplateEditorClient() {
 	const { data: presets } = useSWR("presets", () => listPresets());
 	const { data: template } = useSWR(templateId ? ["template", templateId] : null, () =>
 		getTemplate(templateId!),
+	);
+
+	// Resolve `{coupleNames}` `{date}` `{eventName}` in the preview using THIS
+	// event's real values (falling back to sample copy for anything not set), so
+	// the editor preview matches what guests will actually see.
+	const previewTokens = useMemo<PreviewTokens | undefined>(
+		() =>
+			event
+				? {
+						coupleNames: event.coupleNames || event.name || SAMPLE_TOKENS.coupleNames,
+						date: event.startDate
+							? new Date(event.startDate).toLocaleDateString()
+							: SAMPLE_TOKENS.date,
+						eventName: event.name || SAMPLE_TOKENS.eventName,
+					}
+				: undefined,
+		[event],
 	);
 
 	const [name, setName] = useState(() => t("newLayout"));
@@ -189,6 +207,7 @@ export default function TemplateEditorClient() {
 				presets={presets}
 				saving={saving}
 				onSave={handleSave}
+				previewTokens={previewTokens}
 			/>
 		</div>
 	);
