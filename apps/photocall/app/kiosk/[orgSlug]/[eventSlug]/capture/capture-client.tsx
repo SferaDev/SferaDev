@@ -412,14 +412,22 @@ export default function KioskCapturePage() {
 					className="relative max-h-full max-w-full overflow-hidden rounded-lg"
 					style={{ aspectRatio: `${previewAspect}`, height: "100%", width: "auto" }}
 				>
-					<video
-						ref={videoRef}
-						autoPlay
-						playsInline
-						muted
-						className="h-full w-full object-cover"
-						style={{ transform: previewTransform, filter: cssFilterFor(previewFilter) }}
-					/>
+					{/* The filter lives on this wrapper, NOT on the <video>: iOS Safari
+					    gives a transformed <video> its own GPU layer and drops a CSS
+					    filter applied to it, so the filtered preview never showed on
+					    iPad. Filtering an ancestor (with no transform of its own) forces
+					    the video to composite into the filtered pass. The transform
+					    (mirror + zoom) stays on the <video>. */}
+					<div className="h-full w-full" style={{ filter: cssFilterFor(previewFilter) }}>
+						<video
+							ref={videoRef}
+							autoPlay
+							playsInline
+							muted
+							className="h-full w-full object-cover"
+							style={{ transform: previewTransform }}
+						/>
+					</div>
 				</div>
 			</div>
 

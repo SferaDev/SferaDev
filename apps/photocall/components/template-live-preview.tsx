@@ -141,17 +141,21 @@ function SlotVideo({ slot, stream, mirror, zoom, filter }: SlotVideoProps) {
 					: undefined,
 			}}
 		>
-			<video
-				ref={videoRef}
-				autoPlay
-				playsInline
-				muted
-				className="h-full w-full object-cover"
-				style={{
-					transform: `scale(${mirror ? -zoom : zoom}, ${zoom})`,
-					filter: cssFilterFor(filter),
-				}}
-			/>
+			{/* Filter on this wrapper, not the <video>: iOS Safari drops a CSS filter
+			    applied directly to a transformed <video> (separate GPU layer), so the
+			    filtered preview was blank on iPad. Filtering an ancestor with no
+			    transform forces the video to composite into the filtered pass; the
+			    mirror + zoom transform stays on the <video>. */}
+			<div className="h-full w-full" style={{ filter: cssFilterFor(filter) }}>
+				<video
+					ref={videoRef}
+					autoPlay
+					playsInline
+					muted
+					className="h-full w-full object-cover"
+					style={{ transform: `scale(${mirror ? -zoom : zoom}, ${zoom})` }}
+				/>
+			</div>
 		</div>
 	);
 }
