@@ -1,13 +1,13 @@
 "use server";
 
-import { eq } from "drizzle-orm";
+import { and, eq, isNull } from "drizzle-orm";
 import { db, schema } from "@/lib/db";
 
 export async function createKioskSession(eventId: string) {
 	const event = await db
 		.select()
 		.from(schema.events)
-		.where(eq(schema.events.id, eventId))
+		.where(and(eq(schema.events.id, eventId), isNull(schema.events.deletedAt)))
 		.then((rows) => rows[0]);
 
 	if (event?.status !== "active") {

@@ -1,7 +1,7 @@
 "use server";
 
 import type { Invitation, Member, Organization, OrganizationRole } from "@sferadev/platform-sdk";
-import { eq, sql } from "drizzle-orm";
+import { and, eq, isNull, sql } from "drizzle-orm";
 import { headers as nextHeaders } from "next/headers";
 import { generateSlug, requireOrgMembership, requireSession } from "@/lib/auth-helpers";
 import { db, schema } from "@/lib/db";
@@ -222,15 +222,23 @@ export async function getUsage(organizationId: string) {
 	const events = await db
 		.select()
 		.from(schema.events)
-		.where(eq(schema.events.organizationId, organizationId));
+		.where(and(eq(schema.events.organizationId, organizationId), isNull(schema.events.deletedAt)));
 
 	const totalPhotos = events.reduce((sum, e) => sum + e.photoCount, 0);
 	const totalSessions = events.reduce((sum, e) => sum + e.sessionCount, 0);
+	// Storage usage reflects only live objects: skip soft-deleted photos and
+	// photos under soft-deleted events (their R2 objects are purged by the cron).
 	const totalStorageBytes = await db
 		.select({ sum: sql<number>`coalesce(sum(${schema.photos.sizeBytes}), 0)` })
 		.from(schema.photos)
 		.innerJoin(schema.events, eq(schema.photos.eventId, schema.events.id))
-		.where(eq(schema.events.organizationId, organizationId))
+		.where(
+			and(
+				eq(schema.events.organizationId, organizationId),
+				isNull(schema.events.deletedAt),
+				isNull(schema.photos.deletedAt),
+			),
+		)
 		.then((rows) => Number(rows[0]?.sum ?? 0));
 
 	const members = await platform.listMembers(organizationId, headers);

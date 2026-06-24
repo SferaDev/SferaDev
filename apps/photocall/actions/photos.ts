@@ -1,10 +1,11 @@
 "use server";
 
-import { desc, eq } from "drizzle-orm";
+import { and, desc, eq, isNotNull, isNull } from "drizzle-orm";
 import { generateHumanCode, generateToken, requireEventAccess } from "@/lib/auth-helpers";
 import { db, schema } from "@/lib/db";
 import type { PhotoKind } from "@/lib/db/schema";
 import { getPlatformClient } from "@/lib/platform";
+import { daysUntilPurge } from "@/lib/recycle-bin";
 import { deleteFile, generateUploadUrl, getFileUrl } from "@/lib/storage";
 
 /**
@@ -34,7 +35,7 @@ export async function generatePhotoUploadUrl(
 	const event = await db
 		.select()
 		.from(schema.events)
-		.where(eq(schema.events.id, eventId))
+		.where(and(eq(schema.events.id, eventId), isNull(schema.events.deletedAt)))
 		.then((rows) => rows[0]);
 
 	if (event?.status !== "active") {
@@ -61,7 +62,7 @@ export async function createPhoto(data: {
 	const event = await db
 		.select()
 		.from(schema.events)
-		.where(eq(schema.events.id, data.eventId))
+		.where(and(eq(schema.events.id, data.eventId), isNull(schema.events.deletedAt)))
 		.then((rows) => rows[0]);
 
 	if (event?.status !== "active") {
@@ -134,7 +135,7 @@ export async function getPhotoByShareToken(shareToken: string) {
 	const photo = await db
 		.select()
 		.from(schema.photos)
-		.where(eq(schema.photos.shareToken, shareToken))
+		.where(and(eq(schema.photos.shareToken, shareToken), isNull(schema.photos.deletedAt)))
 		.then((rows) => rows[0]);
 
 	if (!photo) return null;
@@ -146,7 +147,7 @@ export async function getPhotoByShareToken(shareToken: string) {
 	const event = await db
 		.select()
 		.from(schema.events)
-		.where(eq(schema.events.id, photo.eventId))
+		.where(and(eq(schema.events.id, photo.eventId), isNull(schema.events.deletedAt)))
 		.then((rows) => rows[0]);
 
 	if (!event) return null;
@@ -178,7 +179,9 @@ export async function getPhotoByHumanCode(humanCode: string) {
 	const photo = await db
 		.select({ shareToken: schema.photos.shareToken, expiresAt: schema.photos.expiresAt })
 		.from(schema.photos)
-		.where(eq(schema.photos.humanCode, humanCode.toUpperCase()))
+		.where(
+			and(eq(schema.photos.humanCode, humanCode.toUpperCase()), isNull(schema.photos.deletedAt)),
+		)
 		.then((rows) => rows[0]);
 
 	if (!photo) return null;
@@ -198,7 +201,7 @@ export async function listPhotos(eventId: string, limit?: number) {
 	const photos = await db
 		.select()
 		.from(schema.photos)
-		.where(eq(schema.photos.eventId, eventId))
+		.where(and(eq(schema.photos.eventId, eventId), isNull(schema.photos.deletedAt)))
 		.orderBy(desc(schema.photos.createdAt))
 		.limit(take + 1);
 
@@ -223,7 +226,7 @@ export async function listRecentPublicPhotos(eventId: string, limit?: number) {
 	const event = await db
 		.select()
 		.from(schema.events)
-		.where(eq(schema.events.id, eventId))
+		.where(and(eq(schema.events.id, eventId), isNull(schema.events.deletedAt)))
 		.then((rows) => rows[0]);
 
 	if (event?.status !== "active") {
@@ -240,7 +243,7 @@ export async function listRecentPublicPhotos(eventId: string, limit?: number) {
 			createdAt: schema.photos.createdAt,
 		})
 		.from(schema.photos)
-		.where(eq(schema.photos.eventId, eventId))
+		.where(and(eq(schema.photos.eventId, eventId), isNull(schema.photos.deletedAt)))
 		.orderBy(desc(schema.photos.createdAt))
 		.limit(take);
 
@@ -257,52 +260,51 @@ export async function listRecentPublicPhotos(eventId: string, limit?: number) {
 	);
 }
 
+/**
+ * Soft-deletes a photo: stamps `deletedAt` so it moves to the recycling bin and
+ * disappears from every gallery/album/share. The R2 object and the row survive
+ * until the cleanup cron purges items older than RECYCLE_BIN_RETENTION_DAYS (or
+ * a host calls {@link purgePhotoNow}). The denormalized photoCount drops now so
+ * stats match what's visible; {@link restorePhoto} re-increments it.
+ */
 export async function deletePhoto(photoId: string) {
 	const photo = await db
 		.select()
 		.from(schema.photos)
-		.where(eq(schema.photos.id, photoId))
+		.where(and(eq(schema.photos.id, photoId), isNull(schema.photos.deletedAt)))
 		.then((rows) => rows[0]);
 
 	if (!photo) return;
 
 	const { event } = await requireEventAccess(photo.eventId, ["owner", "admin"]);
 
-	await deleteFile(photo.storageKey);
-	await db.delete(schema.photos).where(eq(schema.photos.id, photoId));
-
 	const now = new Date();
-	await db
-		.update(schema.events)
-		.set({
-			photoCount: Math.max(0, event.photoCount - 1),
-			updatedAt: now,
-		})
-		.where(eq(schema.events.id, photo.eventId));
+	await db.update(schema.photos).set({ deletedAt: now }).where(eq(schema.photos.id, photoId));
 
-	await db.insert(schema.usageLogs).values({
-		organizationId: event.organizationId,
-		eventId: photo.eventId,
-		type: "storage_removed",
-		bytes: photo.sizeBytes,
-		createdAt: now,
-	});
+	// Only visible photos count toward the event total; pending/hidden guest
+	// uploads were never tallied, so don't double-subtract them.
+	if (photo.status === "visible") {
+		await db
+			.update(schema.events)
+			.set({
+				photoCount: Math.max(0, event.photoCount - 1),
+				updatedAt: now,
+			})
+			.where(eq(schema.events.id, photo.eventId));
+	}
 }
 
+/** Soft-deletes every (not-already-deleted) photo in an event. */
 export async function deleteAllPhotos(eventId: string) {
-	const { event } = await requireEventAccess(eventId, ["owner", "admin"]);
-
-	const photos = await db.select().from(schema.photos).where(eq(schema.photos.eventId, eventId));
-
-	let totalStorageFreed = 0;
-	for (const photo of photos) {
-		await deleteFile(photo.storageKey);
-		totalStorageFreed += photo.sizeBytes;
-	}
-
-	await db.delete(schema.photos).where(eq(schema.photos.eventId, eventId));
+	await requireEventAccess(eventId, ["owner", "admin"]);
 
 	const now = new Date();
+	const deleted = await db
+		.update(schema.photos)
+		.set({ deletedAt: now })
+		.where(and(eq(schema.photos.eventId, eventId), isNull(schema.photos.deletedAt)))
+		.returning({ id: schema.photos.id });
+
 	await db
 		.update(schema.events)
 		.set({
@@ -311,13 +313,102 @@ export async function deleteAllPhotos(eventId: string) {
 		})
 		.where(eq(schema.events.id, eventId));
 
+	return { deleted: deleted.length };
+}
+
+// ── Recycling bin ────────────────────────────────────────────────────────────
+
+export type DeletedPhoto = {
+	id: string;
+	url: string;
+	humanCode: string;
+	source: string;
+	kind: string;
+	deletedAt: Date;
+	/** Whole days left before the cron permanently purges this photo. */
+	daysUntilPurge: number;
+};
+
+/** Soft-deleted photos for an event, newest deletions first (recycling bin). */
+export async function listDeletedPhotos(eventId: string): Promise<DeletedPhoto[]> {
+	await requireEventAccess(eventId, ["owner", "admin"]);
+
+	const rows = await db
+		.select()
+		.from(schema.photos)
+		.where(and(eq(schema.photos.eventId, eventId), isNotNull(schema.photos.deletedAt)))
+		.orderBy(desc(schema.photos.deletedAt));
+
+	return Promise.all(
+		rows
+			.filter((photo): photo is typeof photo & { deletedAt: Date } => photo.deletedAt !== null)
+			.map(async (photo) => ({
+				id: photo.id,
+				url: await getFileUrl(photo.storageKey),
+				humanCode: photo.humanCode,
+				source: photo.source,
+				kind: photo.kind,
+				deletedAt: photo.deletedAt,
+				daysUntilPurge: daysUntilPurge(photo.deletedAt),
+			})),
+	);
+}
+
+/** Restores a soft-deleted photo (clears `deletedAt`) back into the event. */
+export async function restorePhoto(photoId: string): Promise<{ ok: boolean }> {
+	const photo = await db
+		.select()
+		.from(schema.photos)
+		.where(and(eq(schema.photos.id, photoId), isNotNull(schema.photos.deletedAt)))
+		.then((rows) => rows[0]);
+
+	if (!photo) return { ok: false };
+
+	const { event } = await requireEventAccess(photo.eventId, ["owner", "admin"]);
+
+	const now = new Date();
+	await db.update(schema.photos).set({ deletedAt: null }).where(eq(schema.photos.id, photoId));
+
+	// Mirror the decrement applied at soft-delete time.
+	if (photo.status === "visible") {
+		await db
+			.update(schema.events)
+			.set({ photoCount: event.photoCount + 1, updatedAt: now })
+			.where(eq(schema.events.id, photo.eventId));
+	}
+
+	return { ok: true };
+}
+
+/**
+ * Permanently removes a soft-deleted photo now, skipping the retention wait:
+ * deletes the R2 object and the row, and records the storage as freed. Only
+ * operates on photos already in the recycling bin.
+ */
+export async function purgePhotoNow(photoId: string): Promise<{ ok: boolean }> {
+	const photo = await db
+		.select()
+		.from(schema.photos)
+		.where(and(eq(schema.photos.id, photoId), isNotNull(schema.photos.deletedAt)))
+		.then((rows) => rows[0]);
+
+	if (!photo) return { ok: false };
+
+	const { event } = await requireEventAccess(photo.eventId, ["owner", "admin"]);
+
+	// Best-effort R2 delete: a missing object must not block removing the row.
+	await deleteFile(photo.storageKey).catch((err: unknown) => {
+		console.error("purgePhotoNow: deleteFile failed:", err);
+	});
+	await db.delete(schema.photos).where(eq(schema.photos.id, photoId));
+
 	await db.insert(schema.usageLogs).values({
 		organizationId: event.organizationId,
-		eventId,
+		eventId: photo.eventId,
 		type: "storage_removed",
-		bytes: totalStorageFreed,
-		createdAt: now,
+		bytes: photo.sizeBytes,
+		createdAt: new Date(),
 	});
 
-	return { deleted: photos.length };
+	return { ok: true };
 }

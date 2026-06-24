@@ -1,7 +1,7 @@
 "use server";
 
 import type { Invoice, Subscription } from "@sferadev/platform-sdk";
-import { eq } from "drizzle-orm";
+import { and, eq, isNull } from "drizzle-orm";
 import { requireOrgMembership } from "@/lib/auth-helpers";
 import { db, schema } from "@/lib/db";
 import { getPlatformClient } from "@/lib/platform";
@@ -59,7 +59,7 @@ export async function getBillingOverview(organizationId: string): Promise<Billin
 			photoCount: schema.events.photoCount,
 		})
 		.from(schema.events)
-		.where(eq(schema.events.organizationId, organizationId));
+		.where(and(eq(schema.events.organizationId, organizationId), isNull(schema.events.deletedAt)));
 
 	return {
 		subscription,

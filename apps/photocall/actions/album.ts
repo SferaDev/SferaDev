@@ -1,6 +1,6 @@
 "use server";
 
-import { and, desc, eq, gt, inArray, or } from "drizzle-orm";
+import { and, desc, eq, gt, inArray, isNull, or } from "drizzle-orm";
 import {
 	generateHumanCode,
 	generateToken,
@@ -81,7 +81,7 @@ async function findAlbumEvent(token: string) {
 	const event = await db
 		.select()
 		.from(schema.events)
-		.where(eq(schema.events.albumToken, token))
+		.where(and(eq(schema.events.albumToken, token), isNull(schema.events.deletedAt)))
 		.then((rows) => rows[0]);
 	if (!event?.albumEnabled) return null;
 	return event;
@@ -119,6 +119,7 @@ export async function getAlbumView(token: string): Promise<AlbumViewResult> {
 		.where(
 			and(
 				eq(schema.photos.eventId, event.id),
+				isNull(schema.photos.deletedAt),
 				// Everyone sees visible photos; a guest additionally sees their own
 				// pending uploads so they get immediate feedback under moderation.
 				guestId
@@ -251,6 +252,7 @@ async function assertUploadRateLimit(eventId: string, guestId: string): Promise<
 			and(
 				eq(schema.photos.eventId, eventId),
 				eq(schema.photos.uploaderId, guestId),
+				isNull(schema.photos.deletedAt),
 				gt(schema.photos.createdAt, new Date(Date.now() - UPLOAD_WINDOW_MS)),
 			),
 		);
@@ -261,7 +263,13 @@ async function assertUploadRateLimit(eventId: string, guestId: string): Promise<
 	const total = await db
 		.select({ id: schema.photos.id })
 		.from(schema.photos)
-		.where(and(eq(schema.photos.eventId, eventId), eq(schema.photos.uploaderId, guestId)));
+		.where(
+			and(
+				eq(schema.photos.eventId, eventId),
+				eq(schema.photos.uploaderId, guestId),
+				isNull(schema.photos.deletedAt),
+			),
+		);
 	if (total.length >= MAX_UPLOADS_PER_GUEST_PER_EVENT) {
 		throw new Error("You have reached the upload limit for this album.");
 	}
@@ -374,15 +382,19 @@ export async function deleteOwnGuestPhoto(
 	const photo = await db
 		.select()
 		.from(schema.photos)
-		.where(eq(schema.photos.id, photoId))
+		.where(and(eq(schema.photos.id, photoId), isNull(schema.photos.deletedAt)))
 		.then((rows) => rows[0]);
 
 	if (!photo || photo.eventId !== event.id || photo.uploaderId !== guestId) {
 		return { ok: false };
 	}
 
-	await deleteFile(photo.storageKey);
-	await db.delete(schema.photos).where(eq(schema.photos.id, photoId));
+	// Soft delete so the guest can be un-deleted from the host's recycling bin;
+	// the R2 object is removed by the cleanup cron after the retention window.
+	await db
+		.update(schema.photos)
+		.set({ deletedAt: new Date() })
+		.where(eq(schema.photos.id, photoId));
 
 	if (photo.status === "visible") {
 		await db
@@ -410,7 +422,13 @@ export async function listMyAlbums(): Promise<
 			coupleNames: schema.events.coupleNames,
 		})
 		.from(schema.events)
-		.where(and(inArray(schema.events.albumToken, tokens), eq(schema.events.albumEnabled, true)));
+		.where(
+			and(
+				inArray(schema.events.albumToken, tokens),
+				eq(schema.events.albumEnabled, true),
+				isNull(schema.events.deletedAt),
+			),
+		);
 
 	return events
 		.filter((event): event is typeof event & { albumToken: string } => Boolean(event.albumToken))
@@ -493,7 +511,13 @@ export async function listPendingGuestPhotos(eventId: string): Promise<PendingGu
 	const rows = await db
 		.select()
 		.from(schema.photos)
-		.where(and(eq(schema.photos.eventId, eventId), eq(schema.photos.status, "pending")))
+		.where(
+			and(
+				eq(schema.photos.eventId, eventId),
+				eq(schema.photos.status, "pending"),
+				isNull(schema.photos.deletedAt),
+			),
+		)
 		.orderBy(desc(schema.photos.createdAt));
 
 	return Promise.all(
@@ -513,7 +537,7 @@ export async function moderateGuestPhoto(
 	const photo = await db
 		.select()
 		.from(schema.photos)
-		.where(eq(schema.photos.id, photoId))
+		.where(and(eq(schema.photos.id, photoId), isNull(schema.photos.deletedAt)))
 		.then((rows) => rows[0]);
 	if (!photo) return { ok: false };
 

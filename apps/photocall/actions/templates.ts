@@ -1,6 +1,6 @@
 "use server";
 
-import { and, asc, eq } from "drizzle-orm";
+import { and, asc, eq, isNull } from "drizzle-orm";
 import { requireEventAccess } from "@/lib/auth-helpers";
 import { db, schema } from "@/lib/db";
 import {
@@ -296,7 +296,7 @@ export async function listPublicTemplates(eventId: string) {
 	const event = await db
 		.select()
 		.from(schema.events)
-		.where(eq(schema.events.id, eventId))
+		.where(and(eq(schema.events.id, eventId), isNull(schema.events.deletedAt)))
 		.then((rows) => rows[0]);
 
 	if (event?.status !== "active") {

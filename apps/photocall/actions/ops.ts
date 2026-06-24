@@ -1,6 +1,6 @@
 "use server";
 
-import { and, eq, gte } from "drizzle-orm";
+import { and, eq, gte, isNull } from "drizzle-orm";
 import { requireEventAccess, verifyPin } from "@/lib/auth-helpers";
 import { db, schema } from "@/lib/db";
 import { checkStorageRoundTrip } from "@/lib/storage";
@@ -76,7 +76,7 @@ export async function getPublicEventOpsSnapshot(
 			kioskPinSalt: schema.events.kioskPinSalt,
 		})
 		.from(schema.events)
-		.where(eq(schema.events.id, eventId))
+		.where(and(eq(schema.events.id, eventId), isNull(schema.events.deletedAt)))
 		.then((rows) => rows[0]);
 
 	// Never return real data unless the event is active AND the supplied PIN
