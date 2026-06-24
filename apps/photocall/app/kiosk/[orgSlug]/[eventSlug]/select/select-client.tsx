@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowLeft, Clapperboard, Images, Loader2 } from "lucide-react";
-import { AnimatePresence, motion } from "motion/react";
+import { motion } from "motion/react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
@@ -9,13 +9,20 @@ import useSWR from "swr";
 import { getPublicEvent } from "@/actions/events";
 import { selectTemplate } from "@/actions/sessions";
 import { listPublicTemplates } from "@/actions/templates";
-import { TemplatePreview } from "@/components/template-preview";
+import { TemplateLivePreview } from "@/components/template-live-preview";
 import { Button } from "@/components/ui/button";
+import { useKioskPreviewCamera } from "@/hooks/use-kiosk-preview-camera";
 import { ALL_FILTERS, cssFilterFor } from "@/lib/compose/css-filters";
 import { parseLayoutJson } from "@/lib/layout/parse";
 import type { FilterKind } from "@/lib/layout/types";
 
 type PublicTemplate = Awaited<ReturnType<typeof listPublicTemplates>>[number];
+
+// Cap how many template cards get the live camera feed. All slot videos share a
+// single stream (cheap), but each `<video>` still decodes frames, so we limit
+// the live previews to roughly the first screenful of cards; the rest fall back
+// to the static placeholder. The full-size FilterChooser preview always goes live.
+const MAX_LIVE_PREVIEW_CARDS = 8;
 
 export default function KioskSelectPage() {
 	const router = useRouter();
@@ -36,6 +43,12 @@ export default function KioskSelectPage() {
 		event ? ["public-templates", event.id] : null,
 		() => listPublicTemplates(event!.id),
 	);
+
+	// One shared camera stream for the whole screen, configured like capture.
+	// Every template's live slot previews reuse this single stream; when the
+	// camera isn't available `stream` stays null and previews fall back to the
+	// static placeholder.
+	const { stream: previewStream, mirror: previewMirror } = useKioskPreviewCamera(event);
 
 	// When the guest picks a layout template and the event lets guests choose the
 	// filter, we stay on this screen to show the filter chooser before capture.
@@ -127,6 +140,8 @@ export default function KioskSelectPage() {
 				coupleNames={event.coupleNames ?? event.name}
 				eventName={event.name}
 				eventDate={eventDate}
+				stream={previewStream}
+				mirror={previewMirror}
 				onBack={() => setPendingTemplate(null)}
 				onConfirm={(filter) => goToCapture(pendingTemplate, filter)}
 				busy={navigating}
@@ -185,12 +200,14 @@ export default function KioskSelectPage() {
 									className="aspect-3/4 rounded-lg overflow-hidden border-2 border-transparent hover:border-white transition-colors bg-white/5 flex items-center justify-center"
 								>
 									{layout ? (
-										<TemplatePreview
+										<TemplateLivePreview
 											layout={layout}
 											coupleNames={event.coupleNames ?? event.name}
 											eventName={event.name}
 											date={eventDate}
-											className="w-full h-full object-contain"
+											stream={index < MAX_LIVE_PREVIEW_CARDS ? previewStream : null}
+											mirror={previewMirror}
+											className="flex h-full w-full items-center justify-center"
 										/>
 									) : template.thumbnailUrl ? (
 										<img
@@ -297,6 +314,8 @@ interface FilterChooserProps {
 	coupleNames: string;
 	eventName: string;
 	eventDate: string | undefined;
+	stream: MediaStream | null;
+	mirror: boolean;
 	onBack: () => void;
 	onConfirm: (filter: FilterKind) => void;
 	busy: boolean;
@@ -308,6 +327,8 @@ function FilterChooser({
 	coupleNames,
 	eventName,
 	eventDate,
+	stream,
+	mirror,
 	onBack,
 	onConfirm,
 	busy,
@@ -340,26 +361,20 @@ function FilterChooser({
 				</div>
 
 				<div className="flex justify-center mb-8">
-					<AnimatePresence mode="wait">
-						<motion.div
-							key={selected}
-							initial={{ opacity: 0, scale: 0.95 }}
-							animate={{ opacity: 1, scale: 1 }}
-							exit={{ opacity: 0, scale: 0.95 }}
-							transition={{ duration: 0.18 }}
-							className="rounded-xl overflow-hidden bg-white/5 max-h-[55vh]"
-						>
-							{layout ? (
-								<TemplatePreview
-									layout={layout}
-									coupleNames={coupleNames}
-									eventName={eventName}
-									date={eventDate}
-									className="max-h-[55vh] w-auto"
-								/>
-							) : null}
-						</motion.div>
-					</AnimatePresence>
+					<div className="rounded-xl overflow-hidden bg-white/5 h-[55vh] w-fit">
+						{layout ? (
+							<TemplateLivePreview
+								layout={layout}
+								coupleNames={coupleNames}
+								eventName={eventName}
+								date={eventDate}
+								stream={stream}
+								mirror={mirror}
+								filter={selected}
+								className="flex h-full items-center justify-center"
+							/>
+						) : null}
+					</div>
 				</div>
 
 				<div className="flex flex-wrap justify-center gap-3 mb-10">
