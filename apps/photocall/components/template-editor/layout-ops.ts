@@ -1,3 +1,4 @@
+import { normalizeCaptureIndices } from "@/lib/layout/captures";
 import type { BoothLayout, GraphicLayer, PhotoSlot, TextLayer } from "@/lib/layout/types";
 import type { NodeType } from "./selection";
 
@@ -12,10 +13,12 @@ export function updatePhotoSlot(
 	id: string,
 	patch: Partial<PhotoSlot>,
 ): BoothLayout {
-	return {
+	// Normalize after editing a slot: changing/clearing a captureIndex (or a
+	// reuse target) must never leave a dangling reference that renders blank.
+	return normalizeCaptureIndices({
 		...layout,
 		photoSlots: layout.photoSlots.map((slot) => (slot.id === id ? { ...slot, ...patch } : slot)),
-	};
+	});
 }
 
 export function updateTextLayer(
@@ -59,7 +62,10 @@ export function addGraphicLayer(layout: BoothLayout, layer: GraphicLayer): Booth
 export function removeNode(layout: BoothLayout, type: NodeType, id: string): BoothLayout {
 	switch (type) {
 		case "photo":
-			return { ...layout, photoSlots: layout.photoSlots.filter((slot) => slot.id !== id) };
+			return normalizeCaptureIndices({
+				...layout,
+				photoSlots: layout.photoSlots.filter((slot) => slot.id !== id),
+			});
 		case "text":
 			return { ...layout, textLayers: layout.textLayers.filter((layer) => layer.id !== id) };
 		case "graphic":
@@ -86,7 +92,7 @@ export function reorderNode(
 
 	switch (type) {
 		case "photo":
-			return { ...layout, photoSlots: move(layout.photoSlots) };
+			return normalizeCaptureIndices({ ...layout, photoSlots: move(layout.photoSlots) });
 		case "text":
 			return { ...layout, textLayers: move(layout.textLayers) };
 		case "graphic":

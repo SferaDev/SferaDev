@@ -150,12 +150,11 @@ export function EditorInspector({
 		const update = (patch: Partial<PhotoSlot>) => onUpdatePhotoSlot(slot.id, patch);
 		// "Repeat photo N" may only point at a NEW capture defined by an EARLIER
 		// slot (one without its own captureIndex). That count bounds the options.
-		// Include the slot's own value if it sits beyond that range (e.g. earlier
-		// slots were since edited) so the Select still shows a valid selection.
-		const reusableCaptureCount = layout.photoSlots
+		// Mutations re-run normalizeCaptureIndices, so a slot's captureIndex is
+		// always within this range — no need to surface an out-of-range value.
+		const repeatOptionCount = layout.photoSlots
 			.slice(0, selected.index)
 			.filter((earlier) => earlier.captureIndex === undefined).length;
-		const repeatOptionCount = Math.max(reusableCaptureCount, slot.captureIndex ?? 0);
 		return (
 			<div className="space-y-4">
 				<h3 className="text-sm font-semibold">Photo slot {selected.index + 1}</h3>

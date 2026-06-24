@@ -47,6 +47,35 @@ export function requiredCaptureCount(layout: BoothLayout): number {
 }
 
 /**
+ * Heal a layout whose slots carry an out-of-range `captureIndex`. Editing,
+ * deleting or reordering photo slots can leave a reuse slot pointing at a
+ * capture that no longer exists (e.g. delete an earlier new slot), which would
+ * make the compositor render that slot BLANK. Walking in order, any slot whose
+ * `captureIndex` doesn't reference an already-taken earlier capture is reset to
+ * a fresh capture. A clean layout is returned unchanged (referentially) so this
+ * is cheap to call on every mutation and on load.
+ */
+export function normalizeCaptureIndices(layout: BoothLayout): BoothLayout {
+	let newCaptures = 0;
+	let changed = false;
+	const photoSlots = layout.photoSlots.map((slot) => {
+		if (slot.captureIndex === undefined) {
+			newCaptures += 1;
+			return slot;
+		}
+		if (slot.captureIndex >= 1 && slot.captureIndex <= newCaptures) {
+			return slot;
+		}
+		// Out-of-range reuse → make it consume a fresh capture instead of mapping
+		// to a non-existent one (which renders blank at the kiosk).
+		changed = true;
+		newCaptures += 1;
+		return { ...slot, captureIndex: undefined };
+	});
+	return changed ? { ...layout, photoSlots } : layout;
+}
+
+/**
  * The 1-based capture index that fills the slot at `slotIndex`. Throws for an
  * out-of-range slot index so callers fail loudly rather than silently mapping
  * to capture 0.

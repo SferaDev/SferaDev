@@ -1,6 +1,11 @@
 import { describe, expect, it } from "vitest";
 import { createPhotoSlot } from "@/components/template-editor/factory";
-import { requiredCaptureCount, slotCaptureIndex, slotCaptureIndices } from "@/lib/layout/captures";
+import {
+	normalizeCaptureIndices,
+	requiredCaptureCount,
+	slotCaptureIndex,
+	slotCaptureIndices,
+} from "@/lib/layout/captures";
 import { BUILTIN_PRESETS } from "@/lib/layout/presets";
 import type { BoothLayout, PhotoSlot } from "@/lib/layout/types";
 
@@ -56,5 +61,37 @@ describe("captures (reuse via captureIndex)", () => {
 	it("throws for an out-of-range slot index", () => {
 		const layout = layoutWith([undefined, undefined]);
 		expect(() => slotCaptureIndex(layout, 5)).toThrow(RangeError);
+	});
+});
+
+describe("normalizeCaptureIndices (heals dangling reuse)", () => {
+	it("leaves a valid layout referentially unchanged", () => {
+		const layout = layoutWith([undefined, undefined, 1, 2]);
+		expect(normalizeCaptureIndices(layout)).toBe(layout);
+	});
+
+	it("clears a reuse that points beyond the captures taken so far", () => {
+		// e.g. an earlier new slot was deleted, leaving [new, repeat-2] → repeat-2
+		// references a capture that no longer exists.
+		const layout = layoutWith([undefined, 2]);
+		const fixed = normalizeCaptureIndices(layout);
+		expect(fixed.photoSlots[1].captureIndex).toBeUndefined();
+		expect(requiredCaptureCount(fixed)).toBe(2);
+		expect(slotCaptureIndices(fixed)).toEqual([1, 2]);
+	});
+
+	it("clears a reuse pointing at a not-yet-taken later capture", () => {
+		// [repeat-1, new] → the first slot reuses a capture before any exists.
+		const layout = layoutWith([1, undefined]);
+		const fixed = normalizeCaptureIndices(layout);
+		expect(fixed.photoSlots[0].captureIndex).toBeUndefined();
+		expect(slotCaptureIndices(fixed)).toEqual([1, 2]);
+	});
+
+	it("keeps valid reuses while clearing only the invalid one", () => {
+		const layout = layoutWith([undefined, 1, 3]);
+		const fixed = normalizeCaptureIndices(layout);
+		expect(fixed.photoSlots[1].captureIndex).toBe(1);
+		expect(fixed.photoSlots[2].captureIndex).toBeUndefined();
 	});
 });
