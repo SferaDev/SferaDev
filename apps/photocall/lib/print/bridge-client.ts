@@ -14,6 +14,16 @@ import type { EventPrintConfig } from "@/lib/print/types";
  * mDNS hostname the print bridge advertises by default. When the operator
  * leaves the bridge URL blank, the kiosk falls back to this so a bridge on the
  * same LAN is reached automatically without any configuration.
+ *
+ * ⚠️ MIXED CONTENT (production): this default — and any plain `http://` bridge
+ * URL — is BLOCKED by the browser when the kiosk page itself is served over
+ * HTTPS (an HTTPS page may not fetch an insecure HTTP origin). This cannot be
+ * worked around in JS; the browser enforces it. For a production kiosk on HTTPS
+ * you must either reach the bridge over a browser-trusted TLS transport
+ * (`https://`/`ipps`, e.g. a local reverse proxy with a trusted cert) or serve
+ * the kiosk itself over plain HTTP on the LAN so both sides are HTTP. Locally
+ * everything is HTTP, so the bridge (and the debug file printer) work as-is over
+ * HTTP for end-to-end testing. See apps/print-bridge/README.md → "Mixed content".
  */
 export const DEFAULT_BRIDGE_URL = "http://photocall-bridge.local:3200";
 
@@ -143,7 +153,12 @@ export async function submitPrintJob(
 				mediaType: config.printMediaType ?? undefined,
 			}),
 		},
-		10_000,
+		// A 300-DPI strip is multiple MB, and base64 inflates it ~33% on top — on a
+		// congested event Wi-Fi the upload alone can take tens of seconds. A 10s
+		// timeout aborted those mid-transfer and (needlessly) queued the job for
+		// retry; 60s lets a slow-but-working upload finish. A genuinely unreachable
+		// bridge still fails fast at the TCP layer, well before this ceiling.
+		60_000,
 	);
 
 	if (!response) return { ok: false, error: "Could not reach the print bridge" };

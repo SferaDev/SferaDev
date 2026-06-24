@@ -17,7 +17,12 @@ import {
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { countQueuedPhotos } from "@/lib/offline-queue";
-import { type BridgePrinter, listBridgePrinters, pingBridge } from "@/lib/print/bridge-client";
+import {
+	type BridgePrinter,
+	listBridgePrinters,
+	pingBridge,
+	resolveBridgeUrl,
+} from "@/lib/print/bridge-client";
 import { countQueuedPrints } from "@/lib/print/print-queue";
 
 type PublicEvent = NonNullable<Awaited<ReturnType<typeof getPublicEvent>>>;
@@ -65,7 +70,9 @@ export function KioskOperatorPanel({
 	const t = useTranslations("kiosk.ops");
 
 	const isBridge = event.printMethod === "bridge";
-	const bridgeUrl = event.printBridgeUrl;
+	// Resolve a blank operator setting to the mDNS default so the panel still
+	// surfaces bridge/printer status when the kiosk relies on auto-discovery.
+	const bridgeUrl = isBridge ? resolveBridgeUrl(event.printBridgeUrl) : null;
 
 	const [online, setOnline] = useState(true);
 	const [sessionsToday, setSessionsToday] = useState<number | null>(null);

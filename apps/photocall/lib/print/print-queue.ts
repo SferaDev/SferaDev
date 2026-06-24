@@ -12,7 +12,16 @@
 import { PRINTS_STORE as STORE, tx } from "@/lib/db/idb";
 import type { EventPrintConfig } from "@/lib/print/types";
 
-/** A print job captured while the bridge was unreachable. */
+/**
+ * A print job held in the offline outbox.
+ *
+ * No-loss rule: a job stays here, retried indefinitely (see use-print-sync),
+ * until the bridge actually accepts it — running out of paper/ink is common and
+ * slow to fix, and a guest's print must never be silently dropped. The only job
+ * ever removed without printing is one the bridge permanently rejects as
+ * malformed; `attempts` is kept purely for backoff/telemetry, NOT as a give-up
+ * threshold.
+ */
 export interface QueuedPrintJob {
 	/** Client-generated id; also the IndexedDB key. */
 	id: string;
@@ -22,8 +31,15 @@ export interface QueuedPrintJob {
 	config: EventPrintConfig;
 	/** Epoch millis when queued — used for ordering and display. */
 	queuedAt: number;
-	/** Delivery attempts so far; jobs are dropped after 5 (see use-print-sync). */
+	/** Delivery attempts so far; drives retry backoff only — jobs are NOT dropped on a cap. */
 	attempts: number;
+	/**
+	 * Why the last delivery attempt failed (e.g. "Could not reach the print
+	 * bridge", "Bridge rejected the job (409)"). Surfaced on the kiosk
+	 * pending-prints notice so the operator knows WHY prints are waiting.
+	 * Undefined before the first failed attempt.
+	 */
+	lastError?: string;
 }
 
 /** Add a print job to the outbox. */
@@ -48,9 +64,32 @@ export async function countQueuedPrints(): Promise<number> {
 	return tx<number>(STORE, "readonly", (store) => store.count());
 }
 
-/** Increment the attempt counter for a queued job (after a failed sync). */
-export async function updatePrintAttempts(id: string, attempts: number): Promise<void> {
+/**
+ * Record a failed delivery attempt: bump the attempt counter (for backoff) and
+ * capture the reason so the pending-prints notice can explain why prints are
+ * waiting. The job stays in the outbox — failures never remove it (no-loss).
+ */
+export async function recordPrintAttempt(
+	id: string,
+	attempts: number,
+	lastError: string,
+): Promise<void> {
 	const job = await tx<QueuedPrintJob | undefined>(STORE, "readonly", (store) => store.get(id));
 	if (!job) return;
-	await tx(STORE, "readwrite", (store) => store.put({ ...job, attempts }));
+	await tx(STORE, "readwrite", (store) => store.put({ ...job, attempts, lastError }));
+}
+
+/**
+ * The most recent failure reason across queued jobs, for the pending-prints
+ * notice. Returns the newest job's `lastError` (jobs are returned oldest-first,
+ * so the last one is the most recently queued). Null when nothing is queued or
+ * no attempt has failed yet.
+ */
+export async function getLatestPrintError(): Promise<string | null> {
+	const jobs = await getQueuedPrints();
+	for (let i = jobs.length - 1; i >= 0; i--) {
+		const reason = jobs[i]?.lastError;
+		if (reason) return reason;
+	}
+	return null;
 }

@@ -23,6 +23,31 @@ The photocall kiosk talks to this bridge over HTTP. The bridge:
 > IPP and mDNS are link-local; a bridge on a different network/VLAN cannot reach
 > the printer.
 
+## ⚠️ Mixed content (production HTTPS kiosk → HTTP bridge)
+
+The bridge speaks plain **HTTP** by default (`http://…:3200`). Browsers **block**
+a page served over **HTTPS** from fetching an insecure **HTTP** origin
+("mixed content"). So a kiosk hosted at `https://photocall.example.com` **cannot**
+talk to `http://photocall-bridge.local:3200` — the browser refuses the request
+before it leaves the page, and **this cannot be fixed in JavaScript** (it is a
+hard browser security policy, not a CORS/config issue).
+
+For a **production** kiosk on HTTPS you must do **one** of:
+
+1. **Reach the bridge over a browser-trusted TLS transport.** Put a reverse proxy
+   (Caddy/nginx) in front of the bridge with a certificate the kiosk device
+   trusts, and point the bridge URL at the `https://` address. (A self-signed cert
+   only works if it's installed/trusted on the kiosk device.)
+2. **Serve the kiosk itself over plain HTTP on the LAN**, so the page and the
+   bridge are both HTTP and the browser allows the request. Acceptable on a
+   closed booth network; not recommended on the public internet.
+
+**Local development is unaffected:** everything runs over HTTP
+(`http://localhost`), so the kiosk reaches the bridge directly. Use the
+**[Debug (file output) printer](#debug-file-output-printer)** to exercise the
+**entire** submit → queue → "print" flow over HTTP locally without a real printer
+or any dye-sub media.
+
 ## Why a separate service?
 
 Browsers can only print through the OS print dialog (`window.print()`). To print

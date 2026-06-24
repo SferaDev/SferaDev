@@ -33,16 +33,28 @@ function pageSizeHint(paperSize: PaperSize | null, orientation?: Orientation): s
 	return `${w}mm ${h}mm`;
 }
 
-/** Park a job in the offline outbox for later retry, returning a queued result. */
-async function queueForRetry(blob: Blob, config: EventPrintConfig): Promise<PrintDispatchResult> {
+/**
+ * Park a job in the offline outbox for later retry, returning a queued result.
+ *
+ * `reason` records WHY the immediate attempt didn't print — whether the bridge
+ * was unreachable or it answered with a rejection (out of paper, bad printer
+ * id, …). The job is queued either way (no-loss); the reason is surfaced on the
+ * kiosk pending-prints notice and replaced by use-print-sync on each retry.
+ */
+async function queueForRetry(
+	blob: Blob,
+	config: EventPrintConfig,
+	reason: string,
+): Promise<PrintDispatchResult> {
 	await enqueuePrint({
 		id: crypto.randomUUID(),
 		blob,
 		config,
 		queuedAt: Date.now(),
 		attempts: 0,
+		lastError: reason,
 	});
-	return { status: "queued", message: "Print bridge unavailable — will retry automatically" };
+	return { status: "queued", message: reason };
 }
 
 /** Dispatch a print for the composited strip according to the event config. */
@@ -72,8 +84,11 @@ export async function executePrint(
 			const bridgeUrl = resolveBridgeUrl(config.printBridgeUrl);
 			const result = await submitPrintJob(bridgeUrl, blob, config);
 			if (result.ok) return { status: "printing", jobId: result.jobId };
-			// Network/bridge failure → keep the job for background retry.
-			return queueForRetry(blob, config);
+			// EITHER a network failure (bridge unreachable) OR a bridge rejection
+			// (printer out of paper, unknown printer id, …). Both are queued — never
+			// lost — but we keep `result.error` so the pending notice can say WHY the
+			// print is waiting instead of treating a reject like an unreachable host.
+			return queueForRetry(blob, config, result.error);
 		}
 	}
 }

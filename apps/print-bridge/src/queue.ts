@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import type { IPPVersion } from "ipp";
-import { printJob } from "./ipp-client.js";
+import { classifyPrintError, printJob } from "./ipp-client.js";
 import type { PrinterRegistry } from "./printer-registry.js";
 import type { PrintParams, QueuedJob } from "./types.js";
 
@@ -10,20 +10,33 @@ interface PendingWork {
 	params: PrintParams;
 }
 
-const MAX_ATTEMPTS = 5;
 const BACKOFF_MIN_MS = 5_000;
 const BACKOFF_MAX_MS = 60_000;
 const HISTORY_LIMIT = 50;
 
-/** Exponential backoff: 5s, 10s, 20s, 40s, capped at 60s. */
+/**
+ * Exponential backoff capped at 60s: 5s, 10s, 20s, 40s, 60s, 60s, … Because
+ * retryable jobs are NEVER dropped (see below), the cap matters — without it the
+ * delay would grow unbounded over a long outage and a refilled printer could sit
+ * idle for minutes before the next attempt. Capped at 60s, a job resumes within
+ * a minute of the printer coming back.
+ */
 function backoffDelay(attempt: number): number {
 	return Math.min(BACKOFF_MIN_MS * 2 ** (attempt - 1), BACKOFF_MAX_MS);
 }
 
 /**
  * In-memory print queue. Dye-sublimation printers cannot interleave jobs, so
- * exactly one job is sent at a time. Failed jobs are retried with exponential
- * backoff up to {@link MAX_ATTEMPTS} attempts before being marked `failed`.
+ * exactly one job is sent at a time.
+ *
+ * No-loss guarantee: a retryable failure (printer out of paper/ink, unreachable,
+ * asleep, transient reject — see {@link classifyPrintError}) is NEVER dropped. It
+ * stays at the head of the queue and is retried with capped exponential backoff
+ * indefinitely, so an out-of-paper outage of any length is ridden out and the
+ * queue drains by itself the moment the printer is refilled. Only a genuinely
+ * permanent fault — a malformed job the printer will never accept (e.g.
+ * unsupported document format) — is marked `failed` and removed; everything else
+ * waits for the printer to recover.
  */
 export class PrintQueue {
 	private readonly pending: PendingWork[] = [];
@@ -117,12 +130,18 @@ export class PrintQueue {
 		try {
 			const printer = this.registry.get(job.printerId);
 			if (!printer) {
-				// Printer is gone — drop the job and fall through to the single tail
-				// call below. We must NOT recurse here: doing so while the tail call
-				// also fires would run two processNext() concurrently and
-				// double-dispatch the next job.
-				this.pending.shift();
-				this.updateJob(job, { status: "failed", error: "Printer not found" });
+				// The printer isn't in the registry right now. This is usually
+				// TRANSIENT — an mDNS-discovered printer can briefly drop off during a
+				// re-discovery, or a manual printer may not have been re-seeded yet
+				// after a bridge restart. No-loss rule: keep the job at the head and
+				// retry rather than dropping it, so it prints once the printer is back.
+				// We must NOT recurse here: doing so while the tail call also fires
+				// would run two processNext() concurrently and double-dispatch.
+				this.updateJob(job, {
+					status: "pending",
+					error: "Printer not found (waiting for it to reappear)",
+				});
+				this.scheduleRetry(backoffDelay(job.attempts));
 			} else {
 				try {
 					const result = await printJob(printer.uri, imageBuffer, params, this.ippVersion);
@@ -134,13 +153,20 @@ export class PrintQueue {
 						error: undefined,
 					});
 				} catch (error) {
-					const message = error instanceof Error ? error.message : String(error);
-					if (job.attempts >= MAX_ATTEMPTS) {
+					const classified = classifyPrintError(error);
+					if (!classified.retryable) {
+						// Genuinely permanent (e.g. unsupported document format): the
+						// printer will never accept this exact job, so retrying forever is
+						// pointless. Drop it — the ONLY case where a job leaves the queue
+						// without printing.
 						this.pending.shift();
-						this.updateJob(job, { status: "failed", error: message });
+						this.updateJob(job, { status: "failed", error: classified.message });
 					} else {
-						// Leave it at the head of the queue and retry after backoff.
-						this.updateJob(job, { status: "pending", error: message });
+						// Retryable outage (out of paper/ink, unreachable, asleep,
+						// transient reject). No-loss: leave the job at the HEAD of the
+						// queue and retry after capped backoff — indefinitely, however
+						// long the outage lasts. It drains automatically on recovery.
+						this.updateJob(job, { status: "pending", error: classified.message });
 						this.scheduleRetry(backoffDelay(job.attempts));
 					}
 				}
