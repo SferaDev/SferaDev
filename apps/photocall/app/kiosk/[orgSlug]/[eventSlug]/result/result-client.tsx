@@ -244,8 +244,6 @@ export default function KioskResultPage() {
 			}
 
 			const { blob, width, height } = composed;
-			const rawShotsJson =
-				isStrip && "shots" in composed ? JSON.stringify(composed.shots) : undefined;
 			const kind = isStrip ? "strip" : "single";
 
 			// Keep the composited strip available for (auto/manual) printing.
@@ -276,7 +274,6 @@ export default function KioskResultPage() {
 					storageKey: key,
 					templateId: templateId ?? undefined,
 					kind,
-					rawShotsJson,
 					width,
 					height,
 					sizeBytes: blob.size,
@@ -293,7 +290,6 @@ export default function KioskResultPage() {
 					blob,
 					templateId: templateId ?? undefined,
 					kind,
-					rawShotsJson,
 					selectedFilter: session.selectedFilter ?? undefined,
 					width,
 					height,
