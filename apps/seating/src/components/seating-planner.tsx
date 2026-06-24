@@ -182,19 +182,45 @@ function SeatingPlannerInner() {
 		[],
 	);
 
-	const handleUpdateTable = useCallback((tableId: string, updates: Partial<Table>) => {
-		setTables((prev) => prev.map((t) => (t.id === tableId ? { ...t, ...updates } : t)));
-		if (updates.seats !== undefined) {
-			setGuests((prev) =>
-				prev.map((g) => {
-					if (g.tableId === tableId && g.seatIndex !== null && g.seatIndex >= updates.seats!) {
-						return { ...g, tableId: null, seatIndex: null };
-					}
-					return g;
-				}),
-			);
-		}
-	}, []);
+	const handleUpdateTable = useCallback(
+		(tableId: string, updates: Partial<Table>) => {
+			if (updates.seats !== undefined) {
+				const newSeats = updates.seats;
+				const seated = guests.filter((g) => g.tableId === tableId && g.seatIndex !== null);
+
+				// Shrinking can only remove empty seats. If every remaining seat would
+				// be occupied and guests still wouldn't fit, the table is full: refuse
+				// the resize and keep everyone where they are.
+				if (seated.length > newSeats) return;
+
+				// Relocate guests sitting in seats that no longer exist into the empty
+				// seats that remain, so shrinking drops the empty seats rather than the
+				// guests.
+				const occupiedSeats = new Set(
+					seated.filter((g) => g.seatIndex! < newSeats).map((g) => g.seatIndex!),
+				);
+				const freeSeats: number[] = [];
+				for (let i = 0; i < newSeats; i++) {
+					if (!occupiedSeats.has(i)) freeSeats.push(i);
+				}
+				const displaced = seated
+					.filter((g) => g.seatIndex! >= newSeats)
+					.sort((a, b) => a.seatIndex! - b.seatIndex!);
+				const reassignedSeats = new Map(displaced.map((g, index) => [g.id, freeSeats[index]]));
+
+				if (reassignedSeats.size > 0) {
+					setGuests((prev) =>
+						prev.map((g) =>
+							reassignedSeats.has(g.id) ? { ...g, seatIndex: reassignedSeats.get(g.id)! } : g,
+						),
+					);
+				}
+			}
+
+			setTables((prev) => prev.map((t) => (t.id === tableId ? { ...t, ...updates } : t)));
+		},
+		[guests],
+	);
 
 	const handleUpdateGuestPhoto = useCallback((guestId: string, photo: string) => {
 		setGuests((prev) => prev.map((g) => (g.id === guestId ? { ...g, photo } : g)));
