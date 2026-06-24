@@ -10,6 +10,21 @@
 
 import type { EventPrintConfig } from "@/lib/print/types";
 
+/**
+ * mDNS hostname the print bridge advertises by default. When the operator
+ * leaves the bridge URL blank, the kiosk falls back to this so a bridge on the
+ * same LAN is reached automatically without any configuration.
+ */
+export const DEFAULT_BRIDGE_URL = "http://photocall-bridge.local:3200";
+
+/**
+ * Resolve the bridge base URL to use: the operator-configured value when set,
+ * otherwise the advertised mDNS default.
+ */
+export function resolveBridgeUrl(configured?: string | null): string {
+	return configured?.trim() || DEFAULT_BRIDGE_URL;
+}
+
 /** A printer as reported by `GET /api/printers`. */
 export interface BridgePrinter {
 	id: string;

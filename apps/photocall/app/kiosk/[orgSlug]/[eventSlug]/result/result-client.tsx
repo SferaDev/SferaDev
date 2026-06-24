@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, Camera, Check, Download, Loader2, Printer, RotateCcw, X } from "lucide-react";
+import { ArrowLeft, Camera, Check, Loader2, Printer, RotateCcw, X } from "lucide-react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import QRCode from "qrcode";
@@ -15,7 +15,7 @@ import { useIdleTimeout } from "@/hooks/use-idle-timeout";
 import { useKioskFont } from "@/hooks/use-kiosk-font";
 import { useOfflineSync } from "@/hooks/use-offline-sync";
 import { usePrintSync } from "@/hooks/use-print-sync";
-import { compositePhoto, downloadBlob } from "@/lib/canvas-utils";
+import { compositePhoto } from "@/lib/canvas-utils";
 import { composeStrip, loadLayoutFonts } from "@/lib/compose";
 import { parseCapturedImageUrls } from "@/lib/db/schema";
 import { parseLayoutJson } from "@/lib/layout/parse";
@@ -23,6 +23,7 @@ import type { FilterKind, Orientation, PaperSize } from "@/lib/layout/types";
 import { printPixelSize } from "@/lib/layout/types";
 import { enqueuePhoto } from "@/lib/offline-queue";
 import { clearPhotoboothSession, readPhotoboothSession } from "@/lib/photobooth-session";
+import { resolveBridgeUrl } from "@/lib/print/bridge-client";
 import { executePrint } from "@/lib/print/index";
 import type { EventPrintConfig, PrintJobStatus, PrintMethod } from "@/lib/print/types";
 
@@ -78,8 +79,6 @@ export default function KioskResultPage() {
 	const [isProcessing, setIsProcessing] = useState(true);
 	const [finalImageUrl, setFinalImageUrl] = useState<string | null>(null);
 	const [qrCodeUrl, setQrCodeUrl] = useState<string | null>(null);
-	const [_shareUrl, setShareUrl] = useState<string | null>(null);
-	const [humanCode, setHumanCode] = useState<string | null>(null);
 	const [savedOffline, setSavedOffline] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const [printStatus, setPrintStatus] = useState<PrintJobStatus>("idle");
@@ -102,7 +101,8 @@ export default function KioskResultPage() {
 	const printConfig: EventPrintConfig | null = event
 		? {
 				printMethod: (event.printMethod as PrintMethod | null) ?? "none",
-				printBridgeUrl: event.printBridgeUrl,
+				// Blank bridge URL → fall back to the bridge's advertised mDNS hostname.
+				printBridgeUrl: resolveBridgeUrl(event.printBridgeUrl),
 				printPrinterId: event.printPrinterId,
 				printPaperSize: (event.printPaperSize as PaperSize | null) ?? null,
 				printMediaType: event.printMediaType,
@@ -114,8 +114,10 @@ export default function KioskResultPage() {
 		: null;
 	const printMethod = printConfig?.printMethod ?? "none";
 
-	// Drains the print outbox when the bridge becomes reachable again.
-	usePrintSync(event?.printBridgeUrl);
+	// Drains the print outbox when the bridge becomes reachable again. Only run
+	// when bridge printing is configured; the URL falls back to the mDNS default
+	// so a blank operator setting still reaches a LAN bridge.
+	usePrintSync(printMethod === "bridge" ? resolveBridgeUrl(event?.printBridgeUrl) : null);
 
 	// Auto-return to attract screen after idle. Stays disabled while the photo is
 	// still compositing/uploading: that phase shows a spinner with no touch input,
@@ -208,11 +210,10 @@ export default function KioskResultPage() {
 			template: template?.url
 				? { url: template.url, safeArea: template.safeArea ?? undefined }
 				: undefined,
-			caption:
-				session.caption && template?.captionPosition
-					? { text: session.caption, position: template.captionPosition }
-					: undefined,
-			mirrored: session.mirrored ?? false,
+			// The guest caption step was removed; no guest-entered caption is applied.
+			// Mirroring is now an admin setting (event.mirrorPhotos) rather than a
+			// per-session guest toggle.
+			mirrored: event.mirrorPhotos,
 			quality: event.photoQuality,
 			outputWidth,
 			outputHeight,
@@ -268,7 +269,6 @@ export default function KioskResultPage() {
 					eventId: event.id,
 					sessionId: sessionId!,
 					storageKey: key,
-					caption: session.caption ?? undefined,
 					templateId: templateId ?? undefined,
 					kind,
 					rawShotsJson,
@@ -286,7 +286,6 @@ export default function KioskResultPage() {
 					eventId: event.id,
 					sessionId: sessionId!,
 					blob,
-					caption: session.caption ?? undefined,
 					templateId: templateId ?? undefined,
 					kind,
 					rawShotsJson,
@@ -324,8 +323,6 @@ export default function KioskResultPage() {
 
 			const shareBaseUrl = typeof window !== "undefined" ? window.location.origin : "";
 			const shareLink = `${shareBaseUrl}/share/${result.shareToken}`;
-			setShareUrl(shareLink);
-			setHumanCode(result.humanCode);
 
 			if (event.showQrCode) {
 				try {
@@ -365,16 +362,6 @@ export default function KioskResultPage() {
 		}
 	}, [event, session, isProcessing, processPhoto]);
 
-	const handleDownload = () => {
-		if (finalImageUrl) {
-			fetch(finalImageUrl)
-				.then((res) => res.blob())
-				.then((blob) => {
-					downloadBlob(blob, `photocall-${humanCode || "photo"}.jpg`);
-				});
-		}
-	};
-
 	const handlePrint = useCallback(async () => {
 		const blob = printBlobRef.current;
 		if (!blob || !printConfig || printConfig.printMethod === "none") return;
@@ -409,8 +396,6 @@ export default function KioskResultPage() {
 		setError(null);
 		setFinalImageUrl(null);
 		setQrCodeUrl(null);
-		setShareUrl(null);
-		setHumanCode(null);
 		processingStartedRef.current = false;
 		printBlobRef.current = null;
 		autoPrintDoneRef.current = false;
@@ -433,7 +418,12 @@ export default function KioskResultPage() {
 	}
 
 	const primaryColor = event.primaryColor || "#e11d48";
-	const accentColor = event.accentColor || primaryColor;
+
+	// A manual "Send to printer" action is offered only when printing is
+	// configured, the event allows it, and auto-print is OFF. When auto-print is
+	// on, the photo prints automatically and no button is shown.
+	const showManualPrint =
+		printMethod !== "none" && event.allowPrint && printConfig?.printAutoPrint === false;
 
 	if (error) {
 		return (
@@ -470,97 +460,63 @@ export default function KioskResultPage() {
 						<p className="text-xl">{t("processing")}</p>
 					</div>
 				) : (
-					<>
-						<div className="text-center mb-8">
-							<div className="inline-flex items-center gap-2 bg-green-600 px-4 py-2 rounded-full mb-4">
-								<Check className="h-5 w-5" />
-								<span className="font-medium">{t("photoSaved")}</span>
+					<div className="flex flex-col items-center text-center">
+						{/* Thank-you heading */}
+						<h1
+							className="text-3xl font-bold mb-8"
+							style={headingFontFamily ? { fontFamily: headingFontFamily } : undefined}
+						>
+							{event.thankYouMessage || t("defaultThankYou")}
+						</h1>
+
+						{/* Final composed photo preview */}
+						{finalImageUrl && (
+							<div className="rounded-2xl overflow-hidden bg-muted mb-8 max-w-md w-full">
+								<img
+									src={finalImageUrl}
+									alt={t("finalResultAlt")}
+									className="w-full h-full object-contain max-h-[55vh] mx-auto"
+								/>
 							</div>
-							<h1
-								className="text-3xl font-bold"
-								style={headingFontFamily ? { fontFamily: headingFontFamily } : undefined}
-							>
-								{event.thankYouMessage || t("defaultThankYou")}
-							</h1>
-						</div>
+						)}
 
-						<div className="grid md:grid-cols-2 gap-8">
-							{/* Photo Preview */}
-							<div className="rounded-lg overflow-hidden bg-muted flex items-center justify-center">
-								{finalImageUrl && (
-									<img
-										src={finalImageUrl}
-										alt={t("finalResultAlt")}
-										className="w-full h-full object-contain max-h-[70vh]"
-									/>
-								)}
+						{/* Offline notice — photo is queued and will upload on reconnect */}
+						{savedOffline && (
+							<div className="p-4 bg-amber-500/15 border border-amber-500/30 rounded-lg mb-8 max-w-md w-full">
+								<p className="text-sm font-medium text-amber-200">{t("savedOfflineTitle")}</p>
+								<p className="text-sm text-white/60 mt-1">{t("savedOfflineDescription")}</p>
 							</div>
+						)}
 
-							{/* Actions and QR */}
-							<div className="flex flex-col justify-center space-y-6">
-								{/* Offline notice — photo is queued and will upload on reconnect */}
-								{savedOffline && (
-									<div className="text-center p-4 bg-amber-500/15 border border-amber-500/30 rounded-lg">
-										<p className="text-sm font-medium text-amber-200">{t("savedOfflineTitle")}</p>
-										<p className="text-sm text-white/60 mt-1">{t("savedOfflineDescription")}</p>
-									</div>
-								)}
+						{/* (a) QR code */}
+						{event.showQrCode && qrCodeUrl && (
+							<div className="flex flex-col items-center p-6 bg-white rounded-2xl mb-8">
+								<img src={qrCodeUrl} alt={t("scanToView")} className="w-44 h-44" />
+								<p className="text-black text-sm mt-3">{t("scanToView")}</p>
+							</div>
+						)}
 
-								{/* Human code */}
-								{humanCode && (
-									<div className="text-center p-4 bg-white/10 rounded-lg">
-										<p className="text-sm text-white/60 mb-1">{t("photoCode")}</p>
-										<p
-											className="text-3xl font-mono font-bold tracking-wider"
-											style={{ color: accentColor }}
-										>
-											{humanCode}
-										</p>
-									</div>
-								)}
-
-								{/* QR Code */}
-								{event.showQrCode && qrCodeUrl && (
-									<div className="flex flex-col items-center p-6 bg-white rounded-lg">
-										<img src={qrCodeUrl} alt={t("scanToView")} className="w-40 h-40" />
-										<p className="text-black text-sm mt-2">{t("scanToView")}</p>
-									</div>
-								)}
-
-								{/* Action buttons */}
-								<div className="grid grid-cols-2 gap-4">
-									{event.allowDownload && (
-										<Button
-											size="lg"
-											variant="outline"
-											onClick={handleDownload}
-											className="border-white/20 text-white hover:bg-white/10"
-										>
-											<Download className="h-5 w-5 mr-2" />
-											{t("download")}
-										</Button>
+						{/* Manual print action + lightweight queue feedback (only when
+						    printing is configured and auto-print is off) */}
+						{showManualPrint && (
+							<div className="flex flex-col items-center gap-3 mb-8">
+								<Button
+									size="lg"
+									variant="outline"
+									onClick={() => void handlePrint()}
+									disabled={printStatus === "printing"}
+									className="border-white/20 text-white hover:bg-white/10 rounded-full px-8"
+								>
+									{printStatus === "printing" ? (
+										<Loader2 className="h-5 w-5 mr-2 animate-spin" />
+									) : (
+										<Printer className="h-5 w-5 mr-2" />
 									)}
-									{event.allowPrint && printMethod !== "none" && (
-										<Button
-											size="lg"
-											variant="outline"
-											onClick={() => void handlePrint()}
-											disabled={printStatus === "printing"}
-											className="border-white/20 text-white hover:bg-white/10"
-										>
-											{printStatus === "printing" ? (
-												<Loader2 className="h-5 w-5 mr-2 animate-spin" />
-											) : (
-												<Printer className="h-5 w-5 mr-2" />
-											)}
-											{t("print")}
-										</Button>
-									)}
-								</div>
+									{t("sendToPrinter")}
+								</Button>
 
-								{/* Print status feedback */}
-								{printMethod !== "none" && printStatus !== "idle" && (
-									<div className="text-center text-sm">
+								{printStatus !== "idle" && (
+									<div className="text-sm">
 										{printStatus === "printing" && (
 											<p className="text-white/70">{t("sendingToPrinter")}</p>
 										)}
@@ -590,19 +546,19 @@ export default function KioskResultPage() {
 										)}
 									</div>
 								)}
-
-								<Button
-									size="lg"
-									onClick={handleNewPhoto}
-									className="w-full"
-									style={{ backgroundColor: primaryColor }}
-								>
-									<Camera className="h-5 w-5 mr-2" />
-									{t("takeAnother")}
-								</Button>
 							</div>
-						</div>
-					</>
+						)}
+
+						{/* (b) Prominent "Take another photo" call to action */}
+						<Button
+							onClick={handleNewPhoto}
+							className="h-20 px-12 rounded-full text-xl font-semibold shadow-lg w-full max-w-md"
+							style={{ backgroundColor: primaryColor }}
+						>
+							<Camera className="h-7 w-7 mr-3" />
+							{t("takeAnother")}
+						</Button>
+					</div>
 				)}
 			</div>
 		</div>
