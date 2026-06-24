@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, Camera, Check, Loader2, Printer, RotateCcw, X } from "lucide-react";
+import { ArrowLeft, Loader2, RotateCcw } from "lucide-react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import QRCode from "qrcode";
@@ -10,12 +10,12 @@ import { getPublicEvent } from "@/actions/events";
 import { createPhoto, generatePhotoUploadUrl } from "@/actions/photos";
 import { completeSession, getKioskSession } from "@/actions/sessions";
 import { listPublicTemplates, resolveAssetUrls } from "@/actions/templates";
+import { KioskResultScreen } from "@/components/kiosk-result-screen";
 import { Button } from "@/components/ui/button";
 import { useIdleTimeout } from "@/hooks/use-idle-timeout";
-import { useKioskFont } from "@/hooks/use-kiosk-font";
 import { useOfflineSync } from "@/hooks/use-offline-sync";
 import { usePrintSync } from "@/hooks/use-print-sync";
-import { BRANDED_CTA_FEEDBACK, DEFAULT_BRAND_COLOR, PRIMARY_CTA_CLASS } from "@/lib/branding";
+import { BRANDED_CTA_FEEDBACK, DEFAULT_BRAND_COLOR } from "@/lib/branding";
 import { compositePhoto } from "@/lib/canvas-utils";
 import { composeStrip, loadLayoutFonts, tileStripTwoUp } from "@/lib/compose";
 import { parseCapturedImageUrls } from "@/lib/db/schema";
@@ -27,7 +27,6 @@ import { clearPhotoboothSession, readPhotoboothSession } from "@/lib/photobooth-
 import { resolveBridgeUrl } from "@/lib/print/bridge-client";
 import { executePrint } from "@/lib/print/index";
 import type { EventPrintConfig, PrintJobStatus, PrintMethod } from "@/lib/print/types";
-import { cn } from "@/lib/utils";
 
 /** ServiceWorkerRegistration with the optional Background Sync extension. */
 interface SyncCapableRegistration extends ServiceWorkerRegistration {
@@ -63,8 +62,6 @@ export default function KioskResultPage() {
 		() => getPublicEvent(orgSlug, eventSlug),
 	);
 
-	const headingFontFamily = useKioskFont(event?.fontFamily);
-
 	const { data: session, isLoading: sessionLoading } = useSWR(
 		sessionId ? ["kiosk-session", sessionId] : null,
 		() => getKioskSession(sessionId!),
@@ -85,7 +82,6 @@ export default function KioskResultPage() {
 	const [savedOffline, setSavedOffline] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const [printStatus, setPrintStatus] = useState<PrintJobStatus>("idle");
-	const [printMessage, setPrintMessage] = useState<string | null>(null);
 
 	// Hold the composited strip (and its pixel dims, needed for 2-up tiling) so we
 	// can (re)print without re-fetching it.
@@ -372,7 +368,6 @@ export default function KioskResultPage() {
 		if (!strip || !printConfig || printConfig.printMethod === "none") return;
 
 		setPrintStatus("printing");
-		setPrintMessage(null);
 		try {
 			// 2-up: duplicate a vertical strip onto a single 4×6 sheet (cut into two
 			// identical strips). The tiled image IS 4×6 regardless of the event's
@@ -391,13 +386,11 @@ export default function KioskResultPage() {
 
 			const result = await executePrint(printBlob, printJobConfig);
 			setPrintStatus(result.status);
-			setPrintMessage(result.message ?? null);
 		} catch (err) {
 			console.error("Print failed:", err);
 			setPrintStatus("failed");
-			setPrintMessage(t("printingFailed"));
 		}
-	}, [printConfig, layout, t]);
+	}, [printConfig, layout]);
 
 	// Auto-print once the photo is composed, if the event opts in.
 	useEffect(() => {
@@ -420,7 +413,6 @@ export default function KioskResultPage() {
 		printBlobRef.current = null;
 		autoPrintDoneRef.current = false;
 		setPrintStatus("idle");
-		setPrintMessage(null);
 		setIsProcessing(true);
 	};
 
@@ -480,121 +472,31 @@ export default function KioskResultPage() {
 		);
 	}
 
-	return (
-		<div className="min-h-screen bg-black text-white p-8">
-			<div className="max-w-4xl mx-auto">
-				{isProcessing ? (
-					<div
-						className="flex flex-col items-center justify-center min-h-[80vh]"
-						role="status"
-						aria-label={t("processing")}
-					>
-						<Loader2 className="h-16 w-16 animate-spin mb-4" style={{ color: primaryColor }} />
-						<p className="text-xl">{t("processing")}</p>
-					</div>
-				) : (
-					<div className="flex flex-col items-center text-center">
-						{/* Thank-you heading */}
-						<h1
-							className="text-3xl font-bold mb-8"
-							style={headingFontFamily ? { fontFamily: headingFontFamily } : undefined}
-						>
-							{event.thankYouMessage || t("defaultThankYou")}
-						</h1>
-
-						{/* Final composed photo preview */}
-						{finalImageUrl && (
-							<div className="rounded-2xl overflow-hidden bg-white/5 mb-8 max-w-md w-full">
-								<img
-									src={finalImageUrl}
-									alt={t("finalResultAlt")}
-									className="w-full h-full object-contain max-h-[55vh] mx-auto"
-								/>
-							</div>
-						)}
-
-						{/* Offline notice — photo is queued and will upload on reconnect */}
-						{savedOffline && (
-							<div className="p-4 bg-amber-500/15 border border-amber-500/30 rounded-lg mb-8 max-w-md w-full">
-								<p className="text-sm font-medium text-amber-200">{t("savedOfflineTitle")}</p>
-								<p className="text-sm text-white/60 mt-1">{t("savedOfflineDescription")}</p>
-							</div>
-						)}
-
-						{/* (a) QR code */}
-						{event.showQrCode && qrCodeUrl && (
-							<div className="flex flex-col items-center p-6 bg-white rounded-2xl mb-8">
-								<img src={qrCodeUrl} alt={t("scanToView")} className="w-44 h-44" />
-								<p className="text-black text-sm mt-3">{t("scanToView")}</p>
-							</div>
-						)}
-
-						{/* Manual print action + lightweight queue feedback (only when
-						    printing is configured and auto-print is off) */}
-						{showManualPrint && (
-							<div className="flex flex-col items-center gap-3 mb-8">
-								<Button
-									size="lg"
-									variant="outline"
-									onClick={() => void handlePrint()}
-									disabled={printStatus === "printing"}
-									className="bg-transparent border-white/20 text-white hover:bg-white/10 rounded-full px-8"
-								>
-									{printStatus === "printing" ? (
-										<Loader2 className="h-5 w-5 mr-2 animate-spin" />
-									) : (
-										<Printer className="h-5 w-5 mr-2" />
-									)}
-									{t("sendToPrinter")}
-								</Button>
-
-								{printStatus !== "idle" && (
-									<div className="text-sm">
-										{printStatus === "printing" && (
-											<p className="text-white/70">{t("sendingToPrinter")}</p>
-										)}
-										{printStatus === "done" && (
-											<p className="inline-flex items-center gap-1 text-green-400">
-												<Check className="h-4 w-4" /> {t("sentToPrinter")}
-											</p>
-										)}
-										{printStatus === "queued" && (
-											<p className="text-amber-200">{printMessage ?? t("printerOffline")}</p>
-										)}
-										{printStatus === "failed" && (
-											<div className="flex flex-col items-center gap-2">
-												<p className="inline-flex items-center gap-1 text-destructive">
-													<X className="h-4 w-4" /> {printMessage ?? t("printingFailed")}
-												</p>
-												<Button
-													size="sm"
-													variant="outline"
-													onClick={() => void handlePrint()}
-													className="bg-transparent border-white/20 text-white hover:bg-white/10"
-												>
-													<RotateCcw className="h-4 w-4 mr-2" />
-													{t("retryPrint")}
-												</Button>
-											</div>
-										)}
-									</div>
-								)}
-							</div>
-						)}
-
-						{/* (b) Prominent "Take another photo" call to action */}
-						<Button
-							size="xl"
-							onClick={handleNewPhoto}
-							className={cn(PRIMARY_CTA_CLASS, BRANDED_CTA_FEEDBACK, "w-full max-w-md shadow-lg")}
-							style={{ backgroundColor: primaryColor }}
-						>
-							<Camera className="h-6 w-6 mr-3" />
-							{t("takeAnother")}
-						</Button>
-					</div>
-				)}
+	if (isProcessing) {
+		return (
+			<div
+				className="flex min-h-screen flex-col items-center justify-center bg-black text-white"
+				role="status"
+				aria-label={t("processing")}
+			>
+				<Loader2 className="mb-4 h-16 w-16 animate-spin" style={{ color: primaryColor }} />
+				<p className="text-2xl">{t("processing")}</p>
 			</div>
-		</div>
+		);
+	}
+
+	return (
+		<KioskResultScreen
+			mediaUrl={finalImageUrl}
+			mediaAlt={t("finalResultAlt")}
+			qrCodeUrl={qrCodeUrl}
+			showQr={event.showQrCode}
+			savedOffline={savedOffline}
+			primaryColor={primaryColor}
+			onNewPhoto={handleNewPhoto}
+			print={
+				showManualPrint ? { status: printStatus, onPrint: () => void handlePrint() } : undefined
+			}
+		/>
 	);
 }
