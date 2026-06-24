@@ -148,9 +148,40 @@ export function EditorInspector({
 	if (selected.type === "photo") {
 		const slot = selected.node;
 		const update = (patch: Partial<PhotoSlot>) => onUpdatePhotoSlot(slot.id, patch);
+		// "Repeat photo N" may only point at a NEW capture defined by an EARLIER
+		// slot (one without its own captureIndex). That count bounds the options.
+		// Include the slot's own value if it sits beyond that range (e.g. earlier
+		// slots were since edited) so the Select still shows a valid selection.
+		const reusableCaptureCount = layout.photoSlots
+			.slice(0, selected.index)
+			.filter((earlier) => earlier.captureIndex === undefined).length;
+		const repeatOptionCount = Math.max(reusableCaptureCount, slot.captureIndex ?? 0);
 		return (
 			<div className="space-y-4">
 				<h3 className="text-sm font-semibold">Photo slot {selected.index + 1}</h3>
+				<div>
+					<Label className="text-xs text-muted-foreground">Photo source</Label>
+					<Select
+						value={slot.captureIndex === undefined ? "new" : String(slot.captureIndex)}
+						onValueChange={(value) =>
+							update({ captureIndex: value === "new" ? undefined : Number(value) })
+						}
+					>
+						<SelectTrigger className="h-8">
+							<SelectValue />
+						</SelectTrigger>
+						<SelectContent>
+							<SelectItem value="new">New photo</SelectItem>
+							{Array.from({ length: repeatOptionCount }, (_, index) => index + 1).map(
+								(captureNumber) => (
+									<SelectItem key={captureNumber} value={String(captureNumber)}>
+										Repeat photo {captureNumber}
+									</SelectItem>
+								),
+							)}
+						</SelectContent>
+					</Select>
+				</div>
 				<div className="grid grid-cols-2 gap-2">
 					<PercentField label="X %" value={slot.x} onChange={(v) => update({ x: v })} />
 					<PercentField label="Y %" value={slot.y} onChange={(v) => update({ y: v })} />

@@ -16,7 +16,7 @@ import { useKioskFont } from "@/hooks/use-kiosk-font";
 import { useOfflineSync } from "@/hooks/use-offline-sync";
 import { usePrintSync } from "@/hooks/use-print-sync";
 import { compositePhoto } from "@/lib/canvas-utils";
-import { composeStrip, loadLayoutFonts } from "@/lib/compose";
+import { composeStrip, loadLayoutFonts, tileStripTwoUp } from "@/lib/compose";
 import { parseCapturedImageUrls } from "@/lib/db/schema";
 import { parseLayoutJson } from "@/lib/layout/parse";
 import type { FilterKind, Orientation, PaperSize } from "@/lib/layout/types";
@@ -84,8 +84,9 @@ export default function KioskResultPage() {
 	const [printStatus, setPrintStatus] = useState<PrintJobStatus>("idle");
 	const [printMessage, setPrintMessage] = useState<string | null>(null);
 
-	// Hold the composited strip so we can (re)print without re-fetching it.
-	const printBlobRef = useRef<Blob | null>(null);
+	// Hold the composited strip (and its pixel dims, needed for 2-up tiling) so we
+	// can (re)print without re-fetching it.
+	const printBlobRef = useRef<{ blob: Blob; width: number; height: number } | null>(null);
 	// Guards a single auto-print per composed photo.
 	const autoPrintDoneRef = useRef(false);
 
@@ -244,7 +245,7 @@ export default function KioskResultPage() {
 			const kind = isStrip ? "strip" : "single";
 
 			// Keep the composited strip available for (auto/manual) printing.
-			printBlobRef.current = blob;
+			printBlobRef.current = { blob, width, height };
 
 			const previewUrl = URL.createObjectURL(blob);
 			setFinalImageUrl(previewUrl);
@@ -363,13 +364,25 @@ export default function KioskResultPage() {
 	}, [event, session, isProcessing, processPhoto]);
 
 	const handlePrint = useCallback(async () => {
-		const blob = printBlobRef.current;
-		if (!blob || !printConfig || printConfig.printMethod === "none") return;
+		const strip = printBlobRef.current;
+		if (!strip || !printConfig || printConfig.printMethod === "none") return;
 
 		setPrintStatus("printing");
 		setPrintMessage(null);
 		try {
-			const result = await executePrint(blob, printConfig);
+			// 2-up: duplicate a vertical strip onto a single 4×6 sheet (cut into two
+			// identical strips). The tiled image IS 4×6 regardless of the event's
+			// configured paper size, so override printPaperSize for this job only.
+			const tileTwoUp = layout?.print.tileTwoUp === true && layout.kind === "strip_vertical";
+			let printBlob = strip.blob;
+			let printJobConfig = printConfig;
+			if (tileTwoUp) {
+				const tiled = await tileStripTwoUp(strip.blob, strip.width, strip.height, layout.print.dpi);
+				printBlob = tiled.blob;
+				printJobConfig = { ...printConfig, printPaperSize: "4x6" };
+			}
+
+			const result = await executePrint(printBlob, printJobConfig);
 			setPrintStatus(result.status);
 			setPrintMessage(result.message ?? null);
 		} catch (err) {
@@ -377,7 +390,7 @@ export default function KioskResultPage() {
 			setPrintStatus("failed");
 			setPrintMessage(t("printingFailed"));
 		}
-	}, [printConfig, t]);
+	}, [printConfig, layout, t]);
 
 	// Auto-print once the photo is composed, if the event opts in.
 	useEffect(() => {

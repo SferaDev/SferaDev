@@ -2,8 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { composeStrip, loadLayoutFonts } from "@/lib/compose";
+import { requiredCaptureCount } from "@/lib/layout/captures";
 import type { BoothLayout } from "@/lib/layout/types";
-import { shotCount } from "@/lib/layout/types";
 import type { PreviewTokens } from "./preview-tokens";
 import { makePlaceholderImage } from "./use-image";
 
@@ -28,9 +28,12 @@ export function EditorPreview({ layout, tokens, assetUrls }: EditorPreviewProps)
 
 		const timer = setTimeout(() => {
 			const render = async () => {
-				const placeholder = makePlaceholderImage("Photo");
-				const photoSrc = placeholder?.src ?? "";
-				const photos = Array.from({ length: shotCount(layout) }, () => photoSrc);
+				// One placeholder per DISTINCT capture (slots that reuse an earlier
+				// capture draw the same placeholder), each labeled so reuse is visible.
+				const photos = Array.from({ length: requiredCaptureCount(layout) }, (_, index) => {
+					const placeholder = makePlaceholderImage(`Photo ${index + 1}`);
+					return placeholder?.src ?? "";
+				});
 				await loadLayoutFonts(layout);
 				const result = await composeStrip({
 					layout,
