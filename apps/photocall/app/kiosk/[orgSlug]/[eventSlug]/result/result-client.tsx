@@ -103,7 +103,12 @@ export default function KioskResultPage() {
 	const sessionId = searchParams.get("session");
 	const templateId = searchParams.get("template");
 	const filterParam = searchParams.get("filter");
+	// Boomerang results render a pre-encoded GIF (held in the session by the
+	// capture screen) instead of compositing a strip/single here; boomerangs can't
+	// print, so the result screen drops the print affordance for them.
+	const isBoomerang = searchParams.get("mode") === "boomerang";
 	const t = useTranslations("kiosk.result");
+	const tBoomerang = useTranslations("kiosk.boomerang");
 	const tLoading = useTranslations("kiosk.loading");
 
 	const { data: event, isLoading: eventLoading } = useSWR(
@@ -317,6 +322,110 @@ export default function KioskResultPage() {
 		};
 	}, [event, session, template]);
 
+	/**
+	 * Boomerang result: the GIF was already recorded, decorated, filtered and
+	 * encoded on the capture screen and stashed in the session. Here we just read
+	 * it back, show it, and upload it (presigned R2 PUT of the GIF → a
+	 * `kind: "boomerang"` photo record with NO printStorageKey/rawShotKeys). On an
+	 * upload failure it falls into the offline outbox with the GIF blob, exactly
+	 * like the old boomerang screen's share().
+	 */
+	const processBoomerang = useCallback(async () => {
+		if (!event || !session || !sessionId || !isProcessing) return;
+		if (processingStartedRef.current) return;
+		processingStartedRef.current = true;
+
+		try {
+			const stored = readPhotoboothSession(sessionId);
+			if (!stored?.boomerangGif) {
+				setError(t("photosNotFound"));
+				setIsProcessing(false);
+				return;
+			}
+
+			const blob = await dataUrlToBlob(stored.boomerangGif);
+			const width = stored.boomerangWidth ?? 0;
+			const height = stored.boomerangHeight ?? 0;
+
+			// Preview the GIF immediately (the result screen renders it as-is).
+			const previewUrl = URL.createObjectURL(blob);
+			setFinalImageUrl(previewUrl);
+
+			try {
+				const storageKey = await uploadCaptureBlob(event.id, blob);
+				const result = await createPhoto({
+					eventId: event.id,
+					sessionId,
+					storageKey,
+					kind: "boomerang",
+					width,
+					height,
+					sizeBytes: blob.size,
+				});
+
+				try {
+					await completeSession(sessionId);
+				} catch (sessionErr) {
+					console.warn("Failed to mark session complete:", sessionErr);
+				}
+				clearPhotoboothSession(sessionId);
+
+				const shareBaseUrl = typeof window !== "undefined" ? window.location.origin : "";
+				const shareLink = `${shareBaseUrl}/share/${result.shareToken}`;
+				if (event.showQrCode) {
+					try {
+						const qr = await QRCode.toDataURL(shareLink, {
+							width: 256,
+							margin: 2,
+							color: { dark: "#000000", light: "#ffffff" },
+						});
+						setQrCodeUrl(qr);
+					} catch (qrErr) {
+						console.warn("QR generation failed:", qrErr);
+					}
+				}
+			} catch (uploadErr) {
+				// Offline / upload failure: hold the GIF in the outbox so it is never
+				// lost; background sync finishes it on reconnect. Boomerangs have no
+				// decorated/print version and no separate raw shots — pin printBlob to
+				// null and rawShotBlobs to [] so the sync stores a NULL printStorageKey.
+				console.warn("Deferring boomerang upload to offline outbox:", uploadErr);
+				await enqueuePhoto({
+					id: crypto.randomUUID(),
+					eventId: event.id,
+					sessionId,
+					blob,
+					contentType: "image/gif",
+					printBlob: null,
+					rawShotBlobs: [],
+					kind: "boomerang",
+					width,
+					height,
+					queuedAt: Date.now(),
+				});
+
+				try {
+					const registration = (await navigator.serviceWorker?.ready) as
+						| SyncCapableRegistration
+						| undefined;
+					await registration?.sync?.register("photocall-photo-sync");
+				} catch {
+					// Background Sync unsupported — the `online` event still triggers a flush.
+				}
+
+				clearPhotoboothSession(sessionId);
+				setSavedOffline(true);
+				void sync();
+			}
+
+			setIsProcessing(false);
+		} catch (err) {
+			console.error("Failed to process boomerang:", err);
+			setError(t("processFailed"));
+			setIsProcessing(false);
+		}
+	}, [event, session, sessionId, isProcessing, sync, t]);
+
 	// Process and upload the final capture (strip or single).
 	const processPhoto = useCallback(async () => {
 		if (!event || !session || !isProcessing) return;
@@ -454,10 +563,13 @@ export default function KioskResultPage() {
 	]);
 
 	useEffect(() => {
-		if (event && session && isProcessing) {
-			processPhoto();
+		if (!event || !session || !isProcessing) return;
+		if (isBoomerang) {
+			void processBoomerang();
+		} else {
+			void processPhoto();
 		}
-	}, [event, session, isProcessing, processPhoto]);
+	}, [event, session, isProcessing, isBoomerang, processBoomerang, processPhoto]);
 
 	const handlePrint = useCallback(async () => {
 		const strip = printBlobRef.current;
@@ -543,9 +655,13 @@ export default function KioskResultPage() {
 
 	// A manual "Send to printer" action is offered only when printing is
 	// configured, the event allows it, and auto-print is OFF. When auto-print is
-	// on, the photo prints automatically and no button is shown.
+	// on, the photo prints automatically and no button is shown. Boomerangs can't
+	// be printed, so they never show the affordance.
 	const showManualPrint =
-		printMethod !== "none" && event.allowPrint && printConfig?.printAutoPrint === false;
+		!isBoomerang &&
+		printMethod !== "none" &&
+		event.allowPrint &&
+		printConfig?.printAutoPrint === false;
 
 	if (error) {
 		return (
@@ -595,7 +711,7 @@ export default function KioskResultPage() {
 		<>
 			<KioskResultScreen
 				mediaUrl={finalImageUrl}
-				mediaAlt={t("finalResultAlt")}
+				mediaAlt={isBoomerang ? tBoomerang("resultAlt") : t("finalResultAlt")}
 				qrCodeUrl={qrCodeUrl}
 				showQr={event.showQrCode}
 				savedOffline={savedOffline}

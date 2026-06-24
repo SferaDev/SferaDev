@@ -1,6 +1,6 @@
 "use client";
 
-import { AlertCircle, ArrowLeft, Camera, Loader2, RotateCcw } from "lucide-react";
+import { AlertCircle, ArrowLeft, Camera, Clapperboard, Loader2, RotateCcw } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
@@ -8,10 +8,18 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import { getPublicEvent } from "@/actions/events";
 import { saveCapture, updateShotIndex } from "@/actions/sessions";
-import { listPublicTemplates } from "@/actions/templates";
+import { listPublicTemplates, resolveAssetUrls } from "@/actions/templates";
 import { Button } from "@/components/ui/button";
 import { useKioskCamera } from "@/hooks/use-kiosk-camera";
+import { composeBoomerangFrames } from "@/lib/boomerang/compose";
+import {
+	BOOMERANG_FRAME_DELAY_MS,
+	encodeBoomerangGif,
+	recordBoomerangFrames,
+	toPalindrome,
+} from "@/lib/boomerang/encode";
 import { BRANDED_CTA_FEEDBACK, DEFAULT_BRAND_COLOR, PRIMARY_CTA_CLASS } from "@/lib/branding";
+import { loadLayoutFonts } from "@/lib/compose";
 import { cssFilterFor } from "@/lib/compose/css-filters";
 import { requiredCaptureCount, slotCaptureIndices } from "@/lib/layout/captures";
 import { parseLayoutJson } from "@/lib/layout/parse";
@@ -68,6 +76,37 @@ function nextSlotAspect(layout: BoothLayout, nextNewShot: number): number {
 	return (slot.width * outW) / (slot.height * outH);
 }
 
+/**
+ * Resolve a layout's background-image + graphic-layer storage keys to readable
+ * URLs and return a lookup the boomerang compositor can call per asset. Layouts
+ * with no assets skip the round-trip entirely.
+ */
+async function buildBoomerangAssetResolver(
+	eventId: string,
+	layout: BoothLayout,
+): Promise<(src: string) => string> {
+	const assetKeys: string[] = [];
+	if (layout.background.type === "image" && layout.background.src) {
+		assetKeys.push(layout.background.src);
+	}
+	for (const graphic of layout.graphicLayers) {
+		if (graphic.src) assetKeys.push(graphic.src);
+	}
+	const urls = assetKeys.length > 0 ? await resolveAssetUrls(eventId, assetKeys) : {};
+	return (src: string) => urls[src] ?? src;
+}
+
+/** Read a Blob as a base64 `data:` URL, so the encoded GIF can ride through
+ * sessionStorage to the result screen without a server round-trip. */
+function blobToDataUrl(blob: Blob): Promise<string> {
+	return new Promise((resolve, reject) => {
+		const reader = new FileReader();
+		reader.onload = () => resolve(reader.result as string);
+		reader.onerror = () => reject(reader.error ?? new Error("Failed to read blob"));
+		reader.readAsDataURL(blob);
+	});
+}
+
 export default function KioskCapturePage() {
 	const router = useRouter();
 	const params = useParams();
@@ -78,7 +117,12 @@ export default function KioskCapturePage() {
 	const templateId = searchParams.get("template");
 	const filterParam = searchParams.get("filter");
 	const filter: FilterKind = isFilterKind(filterParam) ? filterParam : "none";
+	// Boomerang mode records a burst → GIF instead of N still frames. Everything
+	// else (shared camera, framed preview, auto-start + countdown, auto-advance to
+	// the result) is shared with the photo-strip path.
+	const isBoomerang = searchParams.get("mode") === "boomerang";
 	const t = useTranslations("kiosk.capture");
+	const tBoomerang = useTranslations("kiosk.boomerang");
 	const tCommon = useTranslations("kiosk.common");
 	const tLoading = useTranslations("kiosk.loading");
 
@@ -120,6 +164,20 @@ export default function KioskCapturePage() {
 	const [captureError, setCaptureError] = useState<string | null>(null);
 	const [finishing, setFinishing] = useState(false);
 	const flashTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+	// Boomerang-only progress: the burst record (0..1) drives the recording ring;
+	// `recording`/`encoding` drive the overlays during the single capture. The
+	// strip path never sets these.
+	const [recordProgress, setRecordProgress] = useState(0);
+	const [recording, setRecording] = useState(false);
+	const [encoding, setEncoding] = useState(false);
+
+	// Preload the template's fonts for the boomerang compositor, so the per-frame
+	// text layers draw in the right faces. Cheap + cached; strips load fonts at
+	// compose time on the result screen instead.
+	useEffect(() => {
+		if (isBoomerang && layout) void loadLayoutFonts(layout);
+	}, [isBoomerang, layout]);
 
 	// Bind the shared stream to the <video> element and track readiness. Mirrors
 	// useCamera's behavior (srcObject + play() ignoring the benign AbortError) but
@@ -239,8 +297,102 @@ export default function KioskCapturePage() {
 		const query = new URLSearchParams({ session: sessionId });
 		if (templateId) query.set("template", templateId);
 		query.set("filter", filter);
+		if (isBoomerang) query.set("mode", "boomerang");
 		router.push(`/kiosk/${orgSlug}/${eventSlug}/result?${query.toString()}`);
-	}, [sessionId, templateId, filter, router, orgSlug, eventSlug]);
+	}, [sessionId, templateId, filter, isBoomerang, router, orgSlug, eventSlug]);
+
+	/**
+	 * Boomerang capture: run the SAME countdown, then record a burst from the
+	 * bound <video> instead of grabbing a single still. The frames are made into a
+	 * seamless palindrome, decorated with the chosen template + filter (when a
+	 * layout was picked), encoded to a GIF, stashed in the session, and the screen
+	 * auto-advances to the result — no filmstrip, no retake, no preview/redo.
+	 */
+	const recordBoomerang = useCallback(async () => {
+		if (!event || !sessionId || !videoRef.current || !isReady) return;
+		if (busy || countdown !== null) return;
+		setBusy(true);
+		setCaptureError(null);
+		setRecordProgress(0);
+
+		// Animated countdown, identical to the still path.
+		const seconds = event.captureDefaultCountdown ?? 3;
+		for (let n = seconds; n > 0; n--) {
+			setCountdown(n);
+			await new Promise((resolve) => setTimeout(resolve, 1000));
+		}
+		setCountdown(null);
+
+		try {
+			setRecording(true);
+			const frames = await recordBoomerangFrames({
+				video: videoRef.current,
+				mirrored: mirror,
+				zoom,
+				onProgress: setRecordProgress,
+			});
+			setRecording(false);
+
+			setEncoding(true);
+			// Palindrome (forward + reverse) so the loop bounces seamlessly. When a
+			// template was chosen we decorate every frame with it (background + frame
+			// graphics + text, baked AROUND the clip) and bake in the chosen filter;
+			// otherwise we encode the plain frames.
+			const looped = toPalindrome(frames);
+			const decorated = layout
+				? await composeBoomerangFrames({
+						frames: looped,
+						layout,
+						filter,
+						tokens: {
+							coupleNames: event.coupleNames ?? event.name,
+							date: event.startDate
+								? new Date(event.startDate).toLocaleDateString(undefined, {
+										year: "numeric",
+										month: "long",
+										day: "numeric",
+									})
+								: undefined,
+							eventName: event.name,
+						},
+						resolveAssetUrl: await buildBoomerangAssetResolver(event.id, layout),
+					})
+				: looped;
+
+			const blob = await encodeBoomerangGif(decorated, { frameDelayMs: BOOMERANG_FRAME_DELAY_MS });
+			const { width, height } = decorated[0];
+
+			// Stash the encoded GIF in the session (the result screen uploads it).
+			const gifDataUrl = await blobToDataUrl(blob);
+			writePhotoboothSession(sessionId, {
+				shots: [],
+				filter,
+				boomerangGif: gifDataUrl,
+				boomerangWidth: width,
+				boomerangHeight: height,
+			});
+
+			goToResult();
+		} catch (err) {
+			console.error("Boomerang capture failed:", err);
+			setRecording(false);
+			setEncoding(false);
+			setBusy(false);
+			setCaptureError(tBoomerang("captureFailed"));
+		}
+	}, [
+		event,
+		sessionId,
+		isReady,
+		busy,
+		countdown,
+		mirror,
+		zoom,
+		layout,
+		filter,
+		goToResult,
+		tBoomerang,
+	]);
 
 	// Single-photo path: persist the frame, then go straight to the result. The
 	// personalize step (guest caption + mirror toggle) was removed; mirroring is
@@ -313,6 +465,7 @@ export default function KioskCapturePage() {
 	const autoShoot = event?.captureAutoShoot ?? false;
 	const autoRunningRef = useRef(false);
 	useEffect(() => {
+		if (isBoomerang) return; // Boomerang is one capture; never chains shots.
 		if (!layout || !autoShoot || !isReady) return;
 		if (autoRunningRef.current) return;
 		if (busy || countdown !== null) return;
@@ -330,7 +483,7 @@ export default function KioskCapturePage() {
 			clearTimeout(timer);
 			autoRunningRef.current = false;
 		};
-	}, [layout, autoShoot, isReady, busy, countdown, filledCount, shotTotal]);
+	}, [isBoomerang, layout, autoShoot, isReady, busy, countdown, filledCount, shotTotal]);
 
 	// Auto-start: begin the opening shot's countdown automatically once the camera
 	// is ready, so guests don't have to tap the shutter to get going. Fires once,
@@ -339,6 +492,7 @@ export default function KioskCapturePage() {
 	const autoStart = event?.captureAutoStart ?? true;
 	const autoStartedRef = useRef(false);
 	useEffect(() => {
+		if (isBoomerang) return; // Boomerang has its own single-capture auto-start below.
 		if (!autoStart || autoShoot || !isReady) return;
 		if (autoStartedRef.current) return;
 		if (busy || countdown !== null || filledCount > 0) return;
@@ -349,7 +503,29 @@ export default function KioskCapturePage() {
 		}, AUTO_START_DELAY_MS);
 
 		return () => clearTimeout(timer);
-	}, [autoStart, autoShoot, isReady, busy, countdown, filledCount]);
+	}, [isBoomerang, autoStart, autoShoot, isReady, busy, countdown, filledCount]);
+
+	// Boomerang auto-start: once the camera is ready, kick off the single burst
+	// recording automatically (governed by the same captureAutoStart setting).
+	// Fires once via a stable ref so a re-render mid-record can't double-trigger;
+	// a manual tap of the record button covers the auto-start-off case.
+	const recordBoomerangRef = useRef(recordBoomerang);
+	useEffect(() => {
+		recordBoomerangRef.current = recordBoomerang;
+	}, [recordBoomerang]);
+	const boomerangStartedRef = useRef(false);
+	useEffect(() => {
+		if (!isBoomerang || !autoStart || !isReady) return;
+		if (boomerangStartedRef.current) return;
+		if (busy || countdown !== null) return;
+
+		boomerangStartedRef.current = true;
+		const timer = setTimeout(() => {
+			void recordBoomerangRef.current();
+		}, AUTO_START_DELAY_MS);
+
+		return () => clearTimeout(timer);
+	}, [isBoomerang, autoStart, isReady, busy, countdown]);
 
 	const handleFinish = useCallback(() => {
 		setFinishing(true);
@@ -447,8 +623,8 @@ export default function KioskCapturePage() {
 				)}
 			</AnimatePresence>
 
-			{/* Prompt / progress */}
-			{layout && (
+			{/* Prompt / progress — strip path */}
+			{layout && !isBoomerang && (
 				<div className="absolute top-0 inset-x-0 p-6 z-30 flex justify-center">
 					<motion.div
 						key={`${filledCount}-${countdown}`}
@@ -461,6 +637,26 @@ export default function KioskCapturePage() {
 							: countdown !== null
 								? t("pose")
 								: t("shotProgress", { current: nextSlot + 1, total: shotTotal })}
+					</motion.div>
+				</div>
+			)}
+
+			{/* Prompt — boomerang path */}
+			{isBoomerang && (
+				<div className="absolute top-0 inset-x-0 p-6 z-30 flex justify-center">
+					<motion.div
+						key={recording ? "recording" : encoding ? "encoding" : "ready"}
+						initial={{ opacity: 0, y: -8 }}
+						animate={{ opacity: 1, y: 0 }}
+						className="px-5 py-2 rounded-full bg-black/40 backdrop-blur text-lg font-semibold"
+					>
+						{recording
+							? tBoomerang("recording")
+							: encoding
+								? tBoomerang("processing")
+								: countdown !== null
+									? t("pose")
+									: tBoomerang("ready")}
 					</motion.div>
 				</div>
 			)}
@@ -486,8 +682,52 @@ export default function KioskCapturePage() {
 				)}
 			</AnimatePresence>
 
-			{/* Filmstrip of captured thumbnails with retake */}
-			{layout && (
+			{/* Recording ring — boomerang burst progress */}
+			<AnimatePresence>
+				{isBoomerang && recording && (
+					<motion.div
+						className="absolute inset-0 flex items-center justify-center z-30 pointer-events-none"
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						exit={{ opacity: 0 }}
+					>
+						<svg width="220" height="220" viewBox="0 0 220 220" aria-hidden="true">
+							<title>{tBoomerang("recording")}</title>
+							<circle
+								cx="110"
+								cy="110"
+								r="100"
+								fill="none"
+								stroke="rgba(255,255,255,0.2)"
+								strokeWidth="8"
+							/>
+							<motion.circle
+								cx="110"
+								cy="110"
+								r="100"
+								fill="none"
+								stroke={primaryColor}
+								strokeWidth="8"
+								strokeLinecap="round"
+								strokeDasharray={2 * Math.PI * 100}
+								strokeDashoffset={2 * Math.PI * 100 * (1 - recordProgress)}
+								transform="rotate(-90 110 110)"
+							/>
+						</svg>
+					</motion.div>
+				)}
+			</AnimatePresence>
+
+			{/* Processing overlay — boomerang GIF encode */}
+			{isBoomerang && encoding && (
+				<div className="absolute inset-0 z-40 flex flex-col items-center justify-center bg-black/70">
+					<Loader2 className="h-16 w-16 animate-spin mb-4" style={{ color: primaryColor }} />
+					<p className="text-xl">{tBoomerang("processing")}</p>
+				</div>
+			)}
+
+			{/* Filmstrip of captured thumbnails with retake — strip path only */}
+			{layout && !isBoomerang && (
 				<div className="absolute left-1/2 -translate-x-1/2 bottom-32 z-30 flex gap-3">
 					{Array.from({ length: shotTotal }).map((_, index) => {
 						const shot = shots[index];
@@ -543,7 +783,18 @@ export default function KioskCapturePage() {
 						<ArrowLeft className="h-6 w-6" />
 					</Button>
 
-					{allShotsTaken ? (
+					{isBoomerang ? (
+						<Button
+							size="lg"
+							aria-label={tBoomerang("recordBoomerang")}
+							onClick={() => void recordBoomerang()}
+							disabled={busy || countdown !== null || !isReady}
+							className={cn("h-20 w-20 rounded-full", BRANDED_CTA_FEEDBACK)}
+							style={{ backgroundColor: primaryColor }}
+						>
+							<Clapperboard className="h-10 w-10" />
+						</Button>
+					) : allShotsTaken ? (
 						<Button
 							size="xl"
 							onClick={handleFinish}
@@ -574,7 +825,7 @@ export default function KioskCapturePage() {
 					{/* Spacer to keep the shutter centered */}
 					<div className="w-12" />
 				</div>
-				{layout && autoShoot && !allShotsTaken && (
+				{!isBoomerang && layout && autoShoot && !allShotsTaken && (
 					<p className="text-center text-sm text-white/70 mt-4">{t("autoShooting")}</p>
 				)}
 			</div>

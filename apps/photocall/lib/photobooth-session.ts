@@ -11,10 +11,20 @@ import type { FilterKind } from "@/lib/layout/types";
  */
 
 export interface PhotoboothSession {
-	/** Captured frames as JPEG data URLs, in slot order. */
+	/** Captured frames as JPEG data URLs, in slot order. Empty for boomerangs,
+	 * whose single "shot" is the encoded GIF held in {@link boomerangGif}. */
 	shots: string[];
 	/** Filter chosen by the guest/host for the whole strip. */
 	filter: FilterKind;
+	/**
+	 * The fully decorated + filtered boomerang as an `image/gif` data URL, written
+	 * by the capture screen so the result screen can upload it without re-encoding.
+	 * Present only for the boomerang capture path; absent for photo strips.
+	 */
+	boomerangGif?: string;
+	/** Pixel dimensions of {@link boomerangGif}, needed for the photo record. */
+	boomerangWidth?: number;
+	boomerangHeight?: number;
 }
 
 function storageKey(sessionId: string): string {
