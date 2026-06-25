@@ -1636,6 +1636,38 @@ export const agentRunnerUserSchema = z.object({
 	avatar_url: z.string().optional(),
 });
 
+export const agentRunnerHookSchema = z.object({
+	id: z.string().optional(),
+	site_id: z.string().optional(),
+	title: z.string().optional(),
+	branch: z.string().optional(),
+	prompt: z.string().optional(),
+	agent: z.string().optional(),
+	url: z.string().optional(),
+	msg: z.string().optional(),
+	created_at: z.string().optional(),
+});
+
+export const agentRunnerHookSetupSchema = z.object({
+	title: z.string().optional(),
+	branch: z.string().optional(),
+	prompt: z.string().optional(),
+	agent: z.string().optional(),
+});
+
+export const agentRunnerHookCreatedSchema = z.object({
+	id: z.string().optional(),
+	site_id: z.string().optional(),
+	title: z.string().optional(),
+	branch: z.string().optional(),
+	prompt: z.string().optional(),
+	agent: z.string().optional(),
+	url: z.string().optional(),
+	msg: z.string().optional(),
+	created_at: z.string().optional(),
+	secret: z.string().optional(),
+});
+
 export const accountUsageCapabilitySchema = z.object({
 	included: z.int().optional(),
 	used: z.int().optional(),
@@ -2237,6 +2269,13 @@ export const createSiteDevServerHookDevserverhookSchema = z.object({
 	title: z.string().optional(),
 	branch: z.string().optional(),
 	type: z.enum(["new_dev_server", "content_refresh"]).optional(),
+});
+
+export const createSiteAgentRunnerHookAgentrunnerhookSchema = z.object({
+	title: z.string().optional(),
+	branch: z.string().optional(),
+	prompt: z.string().optional(),
+	agent: z.string().optional(),
 });
 
 export const listSitesQueryNameSchema = z.string().optional();
@@ -9061,6 +9100,133 @@ export const deleteSiteDevServerHookStatusDefaultSchema = z.object({
 export const deleteSiteDevServerHookResponseSchema = z.union([
 	deleteSiteDevServerHookStatus204Schema,
 	deleteSiteDevServerHookStatusDefaultSchema,
+]);
+
+export const listSiteAgentRunnerHooksPathSiteIdSchema = z.string();
+
+export const listSiteAgentRunnerHooksStatus200Schema = z.array(
+	z.object({
+		id: z.string().optional(),
+		site_id: z.string().optional(),
+		title: z.string().optional(),
+		branch: z.string().optional(),
+		prompt: z.string().optional(),
+		agent: z.string().optional(),
+		url: z.string().optional(),
+		msg: z.string().optional(),
+		created_at: z.string().optional(),
+	}),
+);
+
+export const listSiteAgentRunnerHooksStatusDefaultSchema = z.object({
+	code: z.bigint().optional(),
+	message: z.string(),
+});
+
+export const listSiteAgentRunnerHooksResponseSchema = z.union([
+	listSiteAgentRunnerHooksStatus200Schema,
+	listSiteAgentRunnerHooksStatusDefaultSchema,
+]);
+
+export const createSiteAgentRunnerHookPathSiteIdSchema = z.string();
+
+export const createSiteAgentRunnerHookStatus201Schema = z.object({
+	id: z.string().optional(),
+	site_id: z.string().optional(),
+	title: z.string().optional(),
+	branch: z.string().optional(),
+	prompt: z.string().optional(),
+	agent: z.string().optional(),
+	url: z.string().optional(),
+	msg: z.string().optional(),
+	created_at: z.string().optional(),
+	secret: z.string().optional(),
+});
+
+export const createSiteAgentRunnerHookStatusDefaultSchema = z.object({
+	code: z.bigint().optional(),
+	message: z.string(),
+});
+
+export const createSiteAgentRunnerHookResponseSchema = z.union([
+	createSiteAgentRunnerHookStatus201Schema,
+	createSiteAgentRunnerHookStatusDefaultSchema,
+]);
+
+export const createSiteAgentRunnerHookDataSchema = z
+	.object({
+		title: z.string().optional(),
+		branch: z.string().optional(),
+		prompt: z.string().optional(),
+		agent: z.string().optional(),
+	})
+	.optional();
+
+export const getSiteAgentRunnerHookPathSiteIdSchema = z.string();
+
+export const getSiteAgentRunnerHookPathIdSchema = z.string();
+
+export const getSiteAgentRunnerHookStatus200Schema = z.object({
+	id: z.string().optional(),
+	site_id: z.string().optional(),
+	title: z.string().optional(),
+	branch: z.string().optional(),
+	prompt: z.string().optional(),
+	agent: z.string().optional(),
+	url: z.string().optional(),
+	msg: z.string().optional(),
+	created_at: z.string().optional(),
+});
+
+export const getSiteAgentRunnerHookStatusDefaultSchema = z.object({
+	code: z.bigint().optional(),
+	message: z.string(),
+});
+
+export const getSiteAgentRunnerHookResponseSchema = z.union([
+	getSiteAgentRunnerHookStatus200Schema,
+	getSiteAgentRunnerHookStatusDefaultSchema,
+]);
+
+export const updateSiteAgentRunnerHookPathSiteIdSchema = z.string();
+
+export const updateSiteAgentRunnerHookPathIdSchema = z.string();
+
+export const updateSiteAgentRunnerHookStatus204Schema = z.unknown();
+
+export const updateSiteAgentRunnerHookStatusDefaultSchema = z.object({
+	code: z.bigint().optional(),
+	message: z.string(),
+});
+
+export const updateSiteAgentRunnerHookResponseSchema = z.union([
+	updateSiteAgentRunnerHookStatus204Schema,
+	updateSiteAgentRunnerHookStatusDefaultSchema,
+]);
+
+export const updateSiteAgentRunnerHookDataSchema = z
+	.object({
+		title: z.string().optional(),
+		branch: z.string().optional(),
+		prompt: z.string().optional(),
+		agent: z.string().optional(),
+	})
+	.optional();
+
+export const deleteSiteAgentRunnerHookPathSiteIdSchema = z.string();
+
+export const deleteSiteAgentRunnerHookPathIdSchema = z.string();
+
+export const deleteSiteAgentRunnerHookStatus204Schema = z.unknown();
+
+export const deleteSiteAgentRunnerHookStatusDefaultSchema = z.object({
+	code: z.bigint().optional(),
+	message: z.string(),
+});
+
+export const deleteSiteAgentRunnerHookResponseSchema = z.union([
+	deleteSiteAgentRunnerHookStatus204Schema,
+	deleteSiteAgentRunnerHookStatusDefaultSchema,
 ]);
 
 export const getAIGatewayProvidersStatus200Schema = z.object({

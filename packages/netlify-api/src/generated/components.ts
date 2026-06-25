@@ -48,6 +48,8 @@ import type {
 	CreatePluginRunResponse,
 	CreateServiceInstanceData,
 	CreateServiceInstanceResponse,
+	CreateSiteAgentRunnerHookData,
+	CreateSiteAgentRunnerHookResponse,
 	CreateSiteAssetResponse,
 	CreateSiteBuildHookData,
 	CreateSiteBuildHookResponse,
@@ -88,6 +90,7 @@ import type {
 	DeleteEnvVarValueResponse,
 	DeleteHookResponse,
 	DeleteServiceInstanceResponse,
+	DeleteSiteAgentRunnerHookResponse,
 	DeleteSiteAssetResponse,
 	DeleteSiteBuildHookResponse,
 	DeleteSiteDatabaseBranchResponse,
@@ -133,6 +136,7 @@ import type {
 	GetIndividualDnsRecordResponse,
 	GetLatestPluginRunsResponse,
 	GetServicesResponse,
+	GetSiteAgentRunnerHookResponse,
 	GetSiteAssetInfoResponse,
 	GetSiteAssetPublicSignatureResponse,
 	GetSiteBuildHookResponse,
@@ -168,6 +172,7 @@ import type {
 	ListMembersForAccountResponse,
 	ListPaymentMethodsForUserResponse,
 	ListServiceInstancesForSiteResponse,
+	ListSiteAgentRunnerHooksResponse,
 	ListSiteAssetsResponse,
 	ListSiteBuildHooksResponse,
 	ListSiteBuildsResponse,
@@ -245,6 +250,8 @@ import type {
 	UpdatePluginResponse,
 	UpdateServiceInstanceData,
 	UpdateServiceInstanceResponse,
+	UpdateSiteAgentRunnerHookData,
+	UpdateSiteAgentRunnerHookResponse,
 	UpdateSiteAssetResponse,
 	UpdateSiteBuildHookData,
 	UpdateSiteBuildHookResponse,
@@ -5962,6 +5969,194 @@ export async function deleteSiteDevServerHook(
 }
 
 /**
+ * @link /sites/{site_id}/agent_runner_hooks
+ */
+export async function listSiteAgentRunnerHooks(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+	const data = await request<
+		ListSiteAgentRunnerHooksResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ site_id: string }
+	>({
+		method: "GET",
+		url: `/sites/${pathParams.site_id}/agent_runner_hooks`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /sites/{site_id}/agent_runner_hooks
+ */
+export async function createSiteAgentRunnerHook(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { site_id: string };
+		body?: CreateSiteAgentRunnerHookData;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+	const data = await request<
+		CreateSiteAgentRunnerHookResponse,
+		ErrorWrapper<Error>,
+		CreateSiteAgentRunnerHookData,
+		Record<string, string>,
+		Record<string, string>,
+		{ site_id: string }
+	>({
+		method: "POST",
+		url: `/sites/${pathParams.site_id}/agent_runner_hooks`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /sites/{site_id}/agent_runner_hooks/{id}
+ */
+export async function getSiteAgentRunnerHook(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string; id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+
+	if (!pathParams.id) {
+		throw new Error(`Missing required path parameter: id`);
+	}
+	const data = await request<
+		GetSiteAgentRunnerHookResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ site_id: string; id: string }
+	>({
+		method: "GET",
+		url: `/sites/${pathParams.site_id}/agent_runner_hooks/${pathParams.id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /sites/{site_id}/agent_runner_hooks/{id}
+ */
+export async function updateSiteAgentRunnerHook(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { site_id: string; id: string };
+		body?: UpdateSiteAgentRunnerHookData;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+
+	if (!pathParams.id) {
+		throw new Error(`Missing required path parameter: id`);
+	}
+	const data = await request<
+		UpdateSiteAgentRunnerHookResponse,
+		ErrorWrapper<Error>,
+		UpdateSiteAgentRunnerHookData,
+		Record<string, string>,
+		Record<string, string>,
+		{ site_id: string; id: string }
+	>({
+		method: "PUT",
+		url: `/sites/${pathParams.site_id}/agent_runner_hooks/${pathParams.id}`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /sites/{site_id}/agent_runner_hooks/{id}
+ */
+export async function deleteSiteAgentRunnerHook(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { site_id: string; id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.site_id) {
+		throw new Error(`Missing required path parameter: site_id`);
+	}
+
+	if (!pathParams.id) {
+		throw new Error(`Missing required path parameter: id`);
+	}
+	const data = await request<
+		DeleteSiteAgentRunnerHookResponse,
+		ErrorWrapper<Error>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ site_id: string; id: string }
+	>({
+		method: "DELETE",
+		url: `/sites/${pathParams.site_id}/agent_runner_hooks/${pathParams.id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
  * @link /ai-gateway/providers
  */
 export async function getAIGatewayProviders(
@@ -6988,6 +7183,11 @@ export const operationsByPath = {
 	"GET /sites/{site_id}/dev_server_hooks/{id}": getSiteDevServerHook,
 	"PUT /sites/{site_id}/dev_server_hooks/{id}": updateSiteDevServerHook,
 	"DELETE /sites/{site_id}/dev_server_hooks/{id}": deleteSiteDevServerHook,
+	"GET /sites/{site_id}/agent_runner_hooks": listSiteAgentRunnerHooks,
+	"POST /sites/{site_id}/agent_runner_hooks": createSiteAgentRunnerHook,
+	"GET /sites/{site_id}/agent_runner_hooks/{id}": getSiteAgentRunnerHook,
+	"PUT /sites/{site_id}/agent_runner_hooks/{id}": updateSiteAgentRunnerHook,
+	"DELETE /sites/{site_id}/agent_runner_hooks/{id}": deleteSiteAgentRunnerHook,
 	"GET /ai-gateway/providers": getAIGatewayProviders,
 	"GET /sites/{site_id}/ai-gateway/token": getAIGatewayToken,
 	"GET /accounts/{account_id}/ai-gateway/token": getAccountAIGatewayToken,
@@ -7241,6 +7441,13 @@ export const operationsByTag = {
 		updateSiteDevServerHook,
 		deleteSiteDevServerHook,
 	},
+	agentrunnerhook: {
+		listSiteAgentRunnerHooks,
+		createSiteAgentRunnerHook,
+		getSiteAgentRunnerHook,
+		updateSiteAgentRunnerHook,
+		deleteSiteAgentRunnerHook,
+	},
 	aigateway: {
 		getAIGatewayProviders,
 		getAIGatewayToken,
@@ -7453,6 +7660,12 @@ export const tagDictionary = {
 		POST: ["createSiteDevServerHook"],
 		PUT: ["updateSiteDevServerHook"],
 		DELETE: ["deleteSiteDevServerHook"],
+	},
+	agentrunnerhook: {
+		GET: ["listSiteAgentRunnerHooks", "getSiteAgentRunnerHook"],
+		POST: ["createSiteAgentRunnerHook"],
+		PUT: ["updateSiteAgentRunnerHook"],
+		DELETE: ["deleteSiteAgentRunnerHook"],
 	},
 	aigateway: {
 		GET: ["getAIGatewayProviders", "getAIGatewayToken", "getAccountAIGatewayToken"],

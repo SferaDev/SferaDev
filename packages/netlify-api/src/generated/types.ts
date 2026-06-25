@@ -4368,6 +4368,113 @@ export type AgentRunnerUser = {
 /**
  * @type object
  */
+export type AgentRunnerHook = {
+	/**
+	 * @type string | undefined
+	 */
+	id?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	site_id?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	title?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	branch?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	prompt?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	agent?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	url?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	msg?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	created_at?: string | undefined;
+};
+
+/**
+ * @type object
+ */
+export type AgentRunnerHookSetup = {
+	/**
+	 * @type string | undefined
+	 */
+	title?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	branch?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	prompt?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	agent?: string | undefined;
+};
+
+export type AgentRunnerHookCreated = {
+	/**
+	 * @type string | undefined
+	 */
+	id?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	site_id?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	title?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	branch?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	prompt?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	agent?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	url?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	msg?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	created_at?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	secret?: string | undefined;
+};
+
+/**
+ * @type object
+ */
 export type AccountUsageCapability = {
 	/**
 	 * @type integer | undefined
@@ -5953,6 +6060,28 @@ export type CreateSiteDevServerHookDevserverhook = {
 	 * @type string | undefined
 	 */
 	type?: CreateSiteDevServerHookDevserverhookTypeEnumKey | undefined;
+};
+
+/**
+ * @type object
+ */
+export type CreateSiteAgentRunnerHookAgentrunnerhook = {
+	/**
+	 * @type string | undefined
+	 */
+	title?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	branch?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	prompt?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	agent?: string | undefined;
 };
 
 /**
@@ -27532,6 +27661,474 @@ export type DeleteSiteDevServerHookResponses = {
 export type DeleteSiteDevServerHookResponse =
 	| DeleteSiteDevServerHookStatus204
 	| DeleteSiteDevServerHookStatusDefault;
+
+/**
+ * @type string
+ */
+export type ListSiteAgentRunnerHooksPathSiteId = string;
+
+/**
+ * @type array
+ */
+export type ListSiteAgentRunnerHooksStatus200 = {
+	/**
+	 * @type string | undefined
+	 */
+	id?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	site_id?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	title?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	branch?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	prompt?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	agent?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	url?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	msg?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	created_at?: string | undefined;
+}[];
+
+/**
+ * @type object
+ */
+export type ListSiteAgentRunnerHooksStatusDefault = {
+	/**
+	 * @type integer | undefined
+	 */
+	code?: bigint | undefined;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
+/**
+ * @type object
+ */
+export type ListSiteAgentRunnerHooksRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: ListSiteAgentRunnerHooksPathSiteId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/sites/${string}/agent_runner_hooks`;
+};
+
+/**
+ * @type object
+ */
+export type ListSiteAgentRunnerHooksResponses = {
+	"200": ListSiteAgentRunnerHooksStatus200;
+	default: ListSiteAgentRunnerHooksStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListSiteAgentRunnerHooksResponse =
+	| ListSiteAgentRunnerHooksStatus200
+	| ListSiteAgentRunnerHooksStatusDefault;
+
+/**
+ * @type string
+ */
+export type CreateSiteAgentRunnerHookPathSiteId = string;
+
+export type CreateSiteAgentRunnerHookStatus201 = {
+	/**
+	 * @type string | undefined
+	 */
+	id?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	site_id?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	title?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	branch?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	prompt?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	agent?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	url?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	msg?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	created_at?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	secret?: string | undefined;
+};
+
+/**
+ * @type object
+ */
+export type CreateSiteAgentRunnerHookStatusDefault = {
+	/**
+	 * @type integer | undefined
+	 */
+	code?: bigint | undefined;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
+/**
+ * @type object | undefined
+ */
+export type CreateSiteAgentRunnerHookData =
+	| {
+			/**
+			 * @type string | undefined
+			 */
+			title?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			branch?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			prompt?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			agent?: string | undefined;
+	  }
+	| undefined;
+
+/**
+ * @type object
+ */
+export type CreateSiteAgentRunnerHookRequestConfig = {
+	data?: CreateSiteAgentRunnerHookData | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: CreateSiteAgentRunnerHookPathSiteId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/sites/${string}/agent_runner_hooks`;
+};
+
+/**
+ * @type object
+ */
+export type CreateSiteAgentRunnerHookResponses = {
+	"201": CreateSiteAgentRunnerHookStatus201;
+	default: CreateSiteAgentRunnerHookStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateSiteAgentRunnerHookResponse =
+	| CreateSiteAgentRunnerHookStatus201
+	| CreateSiteAgentRunnerHookStatusDefault;
+
+/**
+ * @type string
+ */
+export type GetSiteAgentRunnerHookPathSiteId = string;
+
+/**
+ * @type string
+ */
+export type GetSiteAgentRunnerHookPathId = string;
+
+/**
+ * @type object
+ */
+export type GetSiteAgentRunnerHookStatus200 = {
+	/**
+	 * @type string | undefined
+	 */
+	id?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	site_id?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	title?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	branch?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	prompt?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	agent?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	url?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	msg?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	created_at?: string | undefined;
+};
+
+/**
+ * @type object
+ */
+export type GetSiteAgentRunnerHookStatusDefault = {
+	/**
+	 * @type integer | undefined
+	 */
+	code?: bigint | undefined;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
+/**
+ * @type object
+ */
+export type GetSiteAgentRunnerHookRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: GetSiteAgentRunnerHookPathSiteId;
+		id: GetSiteAgentRunnerHookPathId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/sites/${string}/agent_runner_hooks/${string}`;
+};
+
+/**
+ * @type object
+ */
+export type GetSiteAgentRunnerHookResponses = {
+	"200": GetSiteAgentRunnerHookStatus200;
+	default: GetSiteAgentRunnerHookStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetSiteAgentRunnerHookResponse =
+	| GetSiteAgentRunnerHookStatus200
+	| GetSiteAgentRunnerHookStatusDefault;
+
+/**
+ * @type string
+ */
+export type UpdateSiteAgentRunnerHookPathSiteId = string;
+
+/**
+ * @type string
+ */
+export type UpdateSiteAgentRunnerHookPathId = string;
+
+/**
+ * @type unknown
+ */
+export type UpdateSiteAgentRunnerHookStatus204 = unknown;
+
+/**
+ * @type object
+ */
+export type UpdateSiteAgentRunnerHookStatusDefault = {
+	/**
+	 * @type integer | undefined
+	 */
+	code?: bigint | undefined;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
+/**
+ * @type object | undefined
+ */
+export type UpdateSiteAgentRunnerHookData =
+	| {
+			/**
+			 * @type string | undefined
+			 */
+			title?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			branch?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			prompt?: string | undefined;
+			/**
+			 * @type string | undefined
+			 */
+			agent?: string | undefined;
+	  }
+	| undefined;
+
+/**
+ * @type object
+ */
+export type UpdateSiteAgentRunnerHookRequestConfig = {
+	data?: UpdateSiteAgentRunnerHookData | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: UpdateSiteAgentRunnerHookPathSiteId;
+		id: UpdateSiteAgentRunnerHookPathId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/sites/${string}/agent_runner_hooks/${string}`;
+};
+
+/**
+ * @type object
+ */
+export type UpdateSiteAgentRunnerHookResponses = {
+	"204": UpdateSiteAgentRunnerHookStatus204;
+	default: UpdateSiteAgentRunnerHookStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type UpdateSiteAgentRunnerHookResponse =
+	| UpdateSiteAgentRunnerHookStatus204
+	| UpdateSiteAgentRunnerHookStatusDefault;
+
+/**
+ * @type string
+ */
+export type DeleteSiteAgentRunnerHookPathSiteId = string;
+
+/**
+ * @type string
+ */
+export type DeleteSiteAgentRunnerHookPathId = string;
+
+/**
+ * @type unknown
+ */
+export type DeleteSiteAgentRunnerHookStatus204 = unknown;
+
+/**
+ * @type object
+ */
+export type DeleteSiteAgentRunnerHookStatusDefault = {
+	/**
+	 * @type integer | undefined
+	 */
+	code?: bigint | undefined;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
+/**
+ * @type object
+ */
+export type DeleteSiteAgentRunnerHookRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		site_id: DeleteSiteAgentRunnerHookPathSiteId;
+		id: DeleteSiteAgentRunnerHookPathId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/sites/${string}/agent_runner_hooks/${string}`;
+};
+
+/**
+ * @type object
+ */
+export type DeleteSiteAgentRunnerHookResponses = {
+	"204": DeleteSiteAgentRunnerHookStatus204;
+	default: DeleteSiteAgentRunnerHookStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteSiteAgentRunnerHookResponse =
+	| DeleteSiteAgentRunnerHookStatus204
+	| DeleteSiteAgentRunnerHookStatusDefault;
 
 /**
  * @type object
