@@ -1575,6 +1575,7 @@ export const userEventTypeEnum = {
 	email: "email",
 	"email-notification-rule-removed": "email-notification-rule-removed",
 	"email-notification-rule-updated": "email-notification-rule-updated",
+	"emu-member-removed-unverified-domain": "emu-member-removed-unverified-domain",
 	"enforce-sensitive-environment-variables": "enforce-sensitive-environment-variables",
 	"env-variable-add": "env-variable-add",
 	"env-variable-delete": "env-variable-delete",
@@ -7268,6 +7269,31 @@ export type UserEvent = {
 									email: string;
 							  }
 							| undefined;
+				  }
+				| {
+						/**
+						 * @type object | undefined
+						 */
+						deletedUser?:
+							| {
+									/**
+									 * @type string
+									 */
+									username: string;
+									/**
+									 * @type string
+									 */
+									email: string;
+							  }
+							| undefined;
+						/**
+						 * @type string | undefined
+						 */
+						deletedUid?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						emailDomain?: string | undefined;
 				  }
 				| {
 						/**
@@ -16544,6 +16570,7 @@ export const listEventTypeNameEnum = {
 	email: "email",
 	"email-notification-rule-removed": "email-notification-rule-removed",
 	"email-notification-rule-updated": "email-notification-rule-updated",
+	"emu-member-removed-unverified-domain": "emu-member-removed-unverified-domain",
 	"enforce-sensitive-environment-variables": "enforce-sensitive-environment-variables",
 	"env-variable-add": "env-variable-add",
 	"env-variable-delete": "env-variable-delete",
@@ -17111,6 +17138,7 @@ export const listEventTypeReplacedByEnum = {
 	email: "email",
 	"email-notification-rule-removed": "email-notification-rule-removed",
 	"email-notification-rule-updated": "email-notification-rule-updated",
+	"emu-member-removed-unverified-domain": "emu-member-removed-unverified-domain",
 	"enforce-sensitive-environment-variables": "enforce-sensitive-environment-variables",
 	"env-variable-add": "env-variable-add",
 	"env-variable-delete": "env-variable-delete",
@@ -30426,6 +30454,11 @@ export type CreateDrainStatus401 = unknown;
 /**
  * @type unknown
  */
+export type CreateDrainStatus402 = unknown;
+
+/**
+ * @type unknown
+ */
 export type CreateDrainStatus403 = unknown;
 
 /**
@@ -30457,6 +30490,7 @@ export type CreateDrainResponses = {
 	"200": CreateDrainStatus200;
 	"400": CreateDrainStatus400;
 	"401": CreateDrainStatus401;
+	"402": CreateDrainStatus402;
 	"403": CreateDrainStatus403;
 };
 
@@ -30467,6 +30501,7 @@ export type CreateDrainResponse =
 	| CreateDrainStatus200
 	| CreateDrainStatus400
 	| CreateDrainStatus401
+	| CreateDrainStatus402
 	| CreateDrainStatus403;
 
 /**
@@ -30785,6 +30820,11 @@ export type UpdateDrainStatus401 = unknown;
 /**
  * @type unknown
  */
+export type UpdateDrainStatus402 = unknown;
+
+/**
+ * @type unknown
+ */
 export type UpdateDrainStatus403 = unknown;
 
 /**
@@ -30826,6 +30866,7 @@ export type UpdateDrainResponses = {
 	"200": UpdateDrainStatus200;
 	"400": UpdateDrainStatus400;
 	"401": UpdateDrainStatus401;
+	"402": UpdateDrainStatus402;
 	"403": UpdateDrainStatus403;
 	"404": UpdateDrainStatus404;
 };
@@ -30837,6 +30878,7 @@ export type UpdateDrainResponse =
 	| UpdateDrainStatus200
 	| UpdateDrainStatus400
 	| UpdateDrainStatus401
+	| UpdateDrainStatus402
 	| UpdateDrainStatus403
 	| UpdateDrainStatus404;
 
@@ -30872,6 +30914,11 @@ export type TestDrainStatus401 = unknown;
 /**
  * @type unknown
  */
+export type TestDrainStatus402 = unknown;
+
+/**
+ * @type unknown
+ */
 export type TestDrainStatus403 = unknown;
 
 /**
@@ -30903,6 +30950,7 @@ export type TestDrainResponses = {
 	"200": TestDrainStatus200;
 	"400": TestDrainStatus400;
 	"401": TestDrainStatus401;
+	"402": TestDrainStatus402;
 	"403": TestDrainStatus403;
 };
 
@@ -30913,6 +30961,7 @@ export type TestDrainResponse =
 	| TestDrainStatus200
 	| TestDrainStatus400
 	| TestDrainStatus401
+	| TestDrainStatus402
 	| TestDrainStatus403;
 
 /**

@@ -735,6 +735,7 @@ export const userEventSchema = z
 				"email",
 				"email-notification-rule-removed",
 				"email-notification-rule-updated",
+				"emu-member-removed-unverified-domain",
 				"enforce-sensitive-environment-variables",
 				"env-variable-add",
 				"env-variable-delete",
@@ -3513,6 +3514,18 @@ export const userEventSchema = z
 								email: z.string(),
 							})
 							.optional(),
+					})
+					.strict(),
+				z
+					.object({
+						deletedUser: z
+							.object({
+								username: z.string(),
+								email: z.string(),
+							})
+							.optional(),
+						deletedUid: z.string().optional(),
+						emailDomain: z.string().optional(),
 					})
 					.strict(),
 				z
@@ -8584,6 +8597,7 @@ export const listEventTypeSchema = z
 				"email",
 				"email-notification-rule-removed",
 				"email-notification-rule-updated",
+				"emu-member-removed-unverified-domain",
 				"enforce-sensitive-environment-variables",
 				"env-variable-add",
 				"env-variable-delete",
@@ -9145,6 +9159,7 @@ export const listEventTypeSchema = z
 					"email",
 					"email-notification-rule-removed",
 					"email-notification-rule-updated",
+					"emu-member-removed-unverified-domain",
 					"enforce-sensitive-environment-variables",
 					"env-variable-add",
 					"env-variable-delete",
@@ -14776,12 +14791,15 @@ export const createDrainStatus400Schema = z.unknown();
 
 export const createDrainStatus401Schema = z.unknown();
 
+export const createDrainStatus402Schema = z.unknown();
+
 export const createDrainStatus403Schema = z.unknown();
 
 export const createDrainResponseSchema = z.union([
 	createDrainStatus200Schema,
 	createDrainStatus400Schema,
 	createDrainStatus401Schema,
+	createDrainStatus402Schema,
 	createDrainStatus403Schema,
 ]);
 
@@ -14895,6 +14913,8 @@ export const updateDrainStatus400Schema = z.unknown();
 
 export const updateDrainStatus401Schema = z.unknown();
 
+export const updateDrainStatus402Schema = z.unknown();
+
 export const updateDrainStatus403Schema = z.unknown();
 
 export const updateDrainStatus404Schema = z.unknown();
@@ -14903,6 +14923,7 @@ export const updateDrainResponseSchema = z.union([
 	updateDrainStatus200Schema,
 	updateDrainStatus400Schema,
 	updateDrainStatus401Schema,
+	updateDrainStatus402Schema,
 	updateDrainStatus403Schema,
 	updateDrainStatus404Schema,
 ]);
@@ -14923,12 +14944,15 @@ export const testDrainStatus400Schema = z.unknown();
 
 export const testDrainStatus401Schema = z.unknown();
 
+export const testDrainStatus402Schema = z.unknown();
+
 export const testDrainStatus403Schema = z.unknown();
 
 export const testDrainResponseSchema = z.union([
 	testDrainStatus200Schema,
 	testDrainStatus400Schema,
 	testDrainStatus401Schema,
+	testDrainStatus402Schema,
 	testDrainStatus403Schema,
 ]);
 

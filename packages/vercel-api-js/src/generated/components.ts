@@ -157,6 +157,7 @@ import type {
 	CreateDrainResponse,
 	CreateDrainStatus400,
 	CreateDrainStatus401,
+	CreateDrainStatus402,
 	CreateDrainStatus403,
 	CreateEdgeConfigResponse,
 	CreateEdgeConfigStatus400,
@@ -1533,6 +1534,7 @@ import type {
 	TestDrainResponse,
 	TestDrainStatus400,
 	TestDrainStatus401,
+	TestDrainStatus402,
 	TestDrainStatus403,
 	TransferInDomainResponse,
 	TransferInDomainStatus400,
@@ -1597,6 +1599,7 @@ import type {
 	UpdateDrainResponse,
 	UpdateDrainStatus400,
 	UpdateDrainStatus401,
+	UpdateDrainStatus402,
 	UpdateDrainStatus403,
 	UpdateDrainStatus404,
 	UpdateEdgeConfigResponse,
@@ -5831,7 +5834,9 @@ export async function createDrain(
 
 	const data = await request<
 		CreateDrainResponse,
-		ErrorWrapper<CreateDrainStatus400 | CreateDrainStatus401 | CreateDrainStatus403>,
+		ErrorWrapper<
+			CreateDrainStatus400 | CreateDrainStatus401 | CreateDrainStatus402 | CreateDrainStatus403
+		>,
 		null,
 		Record<string, string>,
 		{ teamId?: string; slug?: string },
@@ -5985,7 +5990,11 @@ export async function updateDrain(
 	const data = await request<
 		UpdateDrainResponse,
 		ErrorWrapper<
-			UpdateDrainStatus400 | UpdateDrainStatus401 | UpdateDrainStatus403 | UpdateDrainStatus404
+			| UpdateDrainStatus400
+			| UpdateDrainStatus401
+			| UpdateDrainStatus402
+			| UpdateDrainStatus403
+			| UpdateDrainStatus404
 		>,
 		null,
 		Record<string, string>,
@@ -6020,7 +6029,7 @@ export async function testDrain(
 
 	const data = await request<
 		TestDrainResponse,
-		ErrorWrapper<TestDrainStatus400 | TestDrainStatus401 | TestDrainStatus403>,
+		ErrorWrapper<TestDrainStatus400 | TestDrainStatus401 | TestDrainStatus402 | TestDrainStatus403>,
 		null,
 		Record<string, string>,
 		{ teamId?: string; slug?: string },
