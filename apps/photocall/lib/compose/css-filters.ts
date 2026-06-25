@@ -1,3 +1,13 @@
+import {
+	Contrast,
+	Haze,
+	ImageIcon,
+	type LucideIcon,
+	Moon,
+	Snowflake,
+	Sparkles,
+	Sun,
+} from "lucide-react";
 import type { FilterKind } from "@/lib/layout/types";
 
 /**
@@ -25,6 +35,20 @@ export const FILTER_LABELS: Record<FilterKind, string> = {
 	faded: "Faded",
 	vivid: "Vivid",
 	noir: "Noir",
+};
+
+/**
+ * A distinctive icon for each filter, so guests can tell them apart at a glance
+ * even when the small swatches look similar (Original/Faded/Cool, etc.).
+ */
+export const FILTER_ICONS: Record<FilterKind, LucideIcon> = {
+	none: ImageIcon,
+	bw: Contrast,
+	warm: Sun,
+	cool: Snowflake,
+	faded: Haze,
+	vivid: Sparkles,
+	noir: Moon,
 };
 
 /** All selectable filters in display order. */

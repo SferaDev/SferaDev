@@ -13,7 +13,7 @@ import { TemplateLivePreview } from "@/components/template-live-preview";
 import { Button } from "@/components/ui/button";
 import { useKioskPreviewCamera } from "@/hooks/use-kiosk-preview-camera";
 import { BRANDED_CTA_FEEDBACK, DEFAULT_BRAND_COLOR, PRIMARY_CTA_CLASS } from "@/lib/branding";
-import { ALL_FILTERS, cssFilterFor } from "@/lib/compose/css-filters";
+import { ALL_FILTERS, cssFilterFor, FILTER_ICONS } from "@/lib/compose/css-filters";
 import { parseLayoutJson } from "@/lib/layout/parse";
 import type { FilterKind } from "@/lib/layout/types";
 import { cn } from "@/lib/utils";
@@ -430,27 +430,40 @@ function FilterChooser({
 				</div>
 
 				<div className="flex shrink-0 flex-wrap justify-center gap-2 my-4 sm:gap-3 sm:my-6">
-					{available.map((filter) => (
-						<motion.button
-							key={filter}
-							type="button"
-							aria-label={tFilters(filter)}
-							aria-pressed={selected === filter}
-							onClick={() => setSelected(filter)}
-							whileTap={{ scale: 0.95 }}
-							className="flex flex-col items-center gap-1 rounded-xl p-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black sm:gap-2"
-						>
-							<span
-								className="block h-12 w-12 rounded-full border-2 sm:h-16 sm:w-16 lg:h-20 lg:w-20"
-								style={{
-									backgroundImage: "linear-gradient(135deg, #f472b6, #60a5fa, #34d399)",
-									filter: cssFilterFor(filter),
-									borderColor: selected === filter ? primaryColor : "transparent",
-								}}
-							/>
-							<span className="text-sm text-white/80 sm:text-base">{tFilters(filter)}</span>
-						</motion.button>
-					))}
+					{available.map((filter) => {
+						const FilterIcon = FILTER_ICONS[filter];
+						return (
+							<motion.button
+								key={filter}
+								type="button"
+								aria-label={tFilters(filter)}
+								aria-pressed={selected === filter}
+								onClick={() => setSelected(filter)}
+								whileTap={{ scale: 0.95 }}
+								className="flex flex-col items-center gap-1 rounded-xl p-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black sm:gap-2"
+							>
+								<span className="relative block h-12 w-12 sm:h-16 sm:w-16 lg:h-20 lg:w-20">
+									{/* Filtered gradient swatch conveys the color treatment. */}
+									<span
+										className="absolute inset-0 rounded-full border-2"
+										style={{
+											backgroundImage: "linear-gradient(135deg, #f472b6, #60a5fa, #34d399)",
+											filter: cssFilterFor(filter),
+											borderColor: selected === filter ? primaryColor : "transparent",
+										}}
+									/>
+									{/* Icon sits above the swatch (unfiltered) so it stays legible. */}
+									<span className="absolute inset-0 flex items-center justify-center">
+										<FilterIcon
+											aria-hidden
+											className="size-6 text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)] sm:size-7 lg:size-9"
+										/>
+									</span>
+								</span>
+								<span className="text-sm text-white/80 sm:text-base">{tFilters(filter)}</span>
+							</motion.button>
+						);
+					})}
 				</div>
 
 				<div className="flex shrink-0 justify-center">
