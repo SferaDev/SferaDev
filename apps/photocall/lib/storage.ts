@@ -78,16 +78,34 @@ export async function getObjectSize(key: string): Promise<number | null> {
 	}
 }
 
-/** Generate a presigned GET URL for reading a file */
-export async function getFileUrl(key: string): Promise<string> {
-	// If a public URL base is configured, use it directly
+/**
+ * Generate a presigned GET URL for reading a file.
+ *
+ * Pass `downloadFilename` to force a browser download: the URL carries a
+ * `Content-Disposition: attachment; filename="..."` header, so clicking it
+ * downloads the object directly from storage (cross-origin, no `fetch`, no CORS)
+ * under the given name. Omit it for the default inline behaviour (e.g. `<img>`).
+ */
+export async function getFileUrl(
+	key: string,
+	opts?: { downloadFilename?: string },
+): Promise<string> {
+	// If a public URL base is configured, use it directly. Public URLs can't
+	// carry a presigned Content-Disposition, so fall back to a `download` query
+	// param that R2/most CDNs honour to suggest the filename.
 	if (process.env.S3_PUBLIC_URL) {
-		return `${process.env.S3_PUBLIC_URL}/${key}`;
+		const base = `${process.env.S3_PUBLIC_URL}/${key}`;
+		return opts?.downloadFilename
+			? `${base}?response-content-disposition=${encodeURIComponent(`attachment; filename="${opts.downloadFilename}"`)}`
+			: base;
 	}
 
 	const command = new GetObjectCommand({
 		Bucket: BUCKET,
 		Key: key,
+		...(opts?.downloadFilename && {
+			ResponseContentDisposition: `attachment; filename="${opts.downloadFilename}"`,
+		}),
 	});
 
 	return getSignedUrl(s3, command, { expiresIn: 3600 });
