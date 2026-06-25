@@ -103,6 +103,23 @@ export default function KioskSettingsPage() {
 		setFormData((prev) => ({ ...prev, ...patch }));
 	}, []);
 
+	/**
+	 * Persist a printer selection to `event.printPrinterId` immediately, separate
+	 * from the page-level "Save changes" button. Awaited so the picker reflects
+	 * only a value that actually landed, and the SWR cache is re-validated so a
+	 * reload shows the saved printer. Used both for an explicit operator pick and
+	 * for auto-selecting the sole reachable printer, keeping the choice sticky so
+	 * dispatched jobs always carry a `printerId`.
+	 */
+	const persistPrinter = useCallback(
+		async (printerId: string) => {
+			if (!event) return;
+			await updateEvent(event.id, { printPrinterId: printerId });
+			mutate((key) => Array.isArray(key) && key[0] === "events");
+		},
+		[event, mutate],
+	);
+
 	const refreshCameras = useCallback(async () => {
 		setCamerasLoading(true);
 		try {
@@ -224,6 +241,7 @@ export default function KioskSettingsPage() {
 							data={formData}
 							onChange={updateForm}
 							primaryColor={event.primaryColor ?? ""}
+							onPersistPrinter={persistPrinter}
 						/>
 					</TabsContent>
 				</Tabs>

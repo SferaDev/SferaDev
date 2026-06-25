@@ -1,8 +1,8 @@
 "use client";
 
-import { Loader2 } from "lucide-react";
+import { Loader2, RefreshCw } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,6 +26,9 @@ import {
 import { executePrint } from "@/lib/print/index";
 import type { EventPrintConfig, PrintMethod } from "@/lib/print/types";
 
+/** How often the printer picker re-polls the bridge for reachable printers (ms). */
+const PRINTER_POLL_INTERVAL_MS = 5_000;
+
 /** Print fields the print section reads and writes. */
 export interface PrintSettingsData {
 	printMethod: PrintMethod;
@@ -45,17 +48,40 @@ interface PrintSettingsSectionProps {
 	onChange: (patch: Partial<PrintSettingsData>) => void;
 	/** Brand color used to render the test-print swatch (falls back to default). */
 	primaryColor: string;
+	/**
+	 * Persists a printer selection to `event.printPrinterId` immediately (the
+	 * parent awaits its `updateEvent` and re-validates), without waiting for the
+	 * page-level "Save changes" button. Used both when the operator picks a
+	 * printer and when the sole reachable printer is auto-selected, so the choice
+	 * is sticky and jobs always carry a `printerId`. Optional: when omitted the
+	 * picker still updates the form (saved on the next page-level save) and
+	 * auto-select is disabled.
+	 */
+	onPersistPrinter?: (printerId: string) => Promise<void>;
 }
 
-export function PrintSettingsSection({ data, onChange, primaryColor }: PrintSettingsSectionProps) {
+export function PrintSettingsSection({
+	data,
+	onChange,
+	primaryColor,
+	onPersistPrinter,
+}: PrintSettingsSectionProps) {
 	const t = useTranslations("dashboard.eventSettings");
 
-	// Print bridge "Test connection" + "Test print" state. Scoped here because it
-	// is only meaningful while the print section is mounted.
+	// Reachable-printer discovery for the picker. Polled automatically while the
+	// bridge print method is active so the dropdown is populated without the
+	// operator having to remember to click "Test connection".
 	const [bridgePrinters, setBridgePrinters] = useState<BridgePrinter[]>([]);
-	const [bridgeTesting, setBridgeTesting] = useState(false);
+	// `null` = not polled yet (initial). Distinguishing this from "polled, found
+	// none" is what lets us show a real empty/offline message instead of a
+	// spinner that never resolves.
+	const [bridgePolled, setBridgePolled] = useState(false);
+	const [bridgeLoading, setBridgeLoading] = useState(false);
 	const [bridgeError, setBridgeError] = useState<string | null>(null);
 	const [testPrinting, setTestPrinting] = useState(false);
+	// Set true once we auto-select the sole printer for THIS event load, so we
+	// never repeatedly clobber an operator who deliberately picks "No printer".
+	const autoSelectedRef = useRef(false);
 
 	const printConfig: EventPrintConfig = {
 		printMethod: data.printMethod,
@@ -69,15 +95,21 @@ export function PrintSettingsSection({ data, onChange, primaryColor }: PrintSett
 		printAutoPrint: data.printAutoPrint,
 	};
 
-	const handleTestBridge = async () => {
-		setBridgeTesting(true);
+	const isBridge = data.printMethod === "bridge";
+	const bridgeUrl = data.printBridgeUrl;
+
+	/**
+	 * Poll the bridge for printers and reflect the outcome in the picker. A blank
+	 * URL is valid — it means "use the mDNS default the bridge advertises" — so we
+	 * always resolve it before calling out. Never throws (listBridgePrinters
+	 * resolves to a typed failure), so the loading state always clears: the picker
+	 * can't get stuck on a spinner when the bridge is offline.
+	 */
+	const refreshPrinters = useCallback(async () => {
+		setBridgeLoading(true);
 		setBridgeError(null);
 		try {
-			// A blank URL is valid: it means "use the mDNS default the bridge
-			// advertises". Test that resolved default so an operator relying on
-			// auto-discovery can still verify the bridge instead of being stuck with a
-			// disabled button and no idea whether anything is reachable.
-			const result = await listBridgePrinters(resolveBridgeUrl(data.printBridgeUrl));
+			const result = await listBridgePrinters(resolveBridgeUrl(bridgeUrl));
 			if (result.ok) {
 				setBridgePrinters(result.printers);
 				if (result.printers.length === 0) {
@@ -88,9 +120,73 @@ export function PrintSettingsSection({ data, onChange, primaryColor }: PrintSett
 				setBridgeError(result.error);
 			}
 		} finally {
-			setBridgeTesting(false);
+			setBridgeLoading(false);
+			setBridgePolled(true);
 		}
-	};
+	}, [bridgeUrl, t]);
+
+	// Auto-poll the bridge while the bridge print method is active, so the picker
+	// is populated without the operator clicking anything, and keeps up if the
+	// bridge comes online (or a printer is plugged in) after the page loads. The
+	// poll stops when the method isn't `bridge`. Re-arms when the URL changes.
+	const refreshRef = useRef(refreshPrinters);
+	refreshRef.current = refreshPrinters;
+	useEffect(() => {
+		if (!isBridge) return;
+		void refreshRef.current();
+		const timer = setInterval(() => void refreshRef.current(), PRINTER_POLL_INTERVAL_MS);
+		return () => clearInterval(timer);
+	}, [isBridge, bridgeUrl]);
+
+	const reachablePrinters = bridgePrinters.filter((printer) => printer.reachable);
+	const savedPrinterIsReachable =
+		!!data.printPrinterId && reachablePrinters.some((p) => p.id === data.printPrinterId);
+
+	/**
+	 * Auto-select the sole reachable printer so jobs always carry a `printerId`
+	 * and "No printer selected" can't happen in the common one-printer setup.
+	 *
+	 * Fires only when: bridge mode is active, exactly one printer is reachable,
+	 * and no still-reachable printer is already saved. It runs at most once per
+	 * mount (autoSelectedRef) so it never clobbers an operator who then clears the
+	 * selection back to "No printer". Persisted immediately when the parent wired
+	 * `onPersistPrinter`, so the choice is sticky without a manual save.
+	 */
+	useEffect(() => {
+		if (!isBridge || !onPersistPrinter || autoSelectedRef.current) return;
+		if (savedPrinterIsReachable) return;
+		if (reachablePrinters.length !== 1) return;
+		const sole = reachablePrinters[0];
+		if (!sole || sole.id === data.printPrinterId) return;
+		autoSelectedRef.current = true;
+		onChange({ printPrinterId: sole.id });
+		void onPersistPrinter(sole.id);
+	}, [
+		isBridge,
+		onPersistPrinter,
+		onChange,
+		savedPrinterIsReachable,
+		reachablePrinters,
+		data.printPrinterId,
+	]);
+
+	/**
+	 * Persist an explicit operator pick straight to `event.printPrinterId` (await
+	 * the parent's update) so the selection sticks even if the operator navigates
+	 * away before pressing the page-level save. A bare form patch is kept as the
+	 * fallback when no persist callback is wired.
+	 */
+	const handlePickPrinter = useCallback(
+		(printerId: string) => {
+			const next = printerId === "none" ? "" : printerId;
+			// An explicit pick is the operator's decision — don't let auto-select
+			// override it later this mount.
+			autoSelectedRef.current = true;
+			onChange({ printPrinterId: next });
+			if (onPersistPrinter) void onPersistPrinter(next);
+		},
+		[onChange, onPersistPrinter],
+	);
 
 	const handleTestPrint = async () => {
 		setTestPrinting(true);
@@ -157,10 +253,14 @@ export function PrintSettingsSection({ data, onChange, primaryColor }: PrintSett
 							<Button
 								type="button"
 								variant="outline"
-								onClick={handleTestBridge}
-								disabled={bridgeTesting}
+								onClick={() => void refreshPrinters()}
+								disabled={bridgeLoading}
 							>
-								{bridgeTesting ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
+								{bridgeLoading ? (
+									<Loader2 className="h-4 w-4 mr-2 animate-spin" />
+								) : (
+									<RefreshCw className="h-4 w-4 mr-2" />
+								)}
 								{t("print.testConnection")}
 							</Button>
 						</div>
@@ -174,15 +274,14 @@ export function PrintSettingsSection({ data, onChange, primaryColor }: PrintSett
 
 					<div>
 						<Label>{t("print.printer")}</Label>
-						<Select
-							value={data.printPrinterId || "none"}
-							onValueChange={(value) => onChange({ printPrinterId: value === "none" ? "" : value })}
-						>
+						<Select value={data.printPrinterId || "none"} onValueChange={handlePickPrinter}>
 							<SelectTrigger className="mt-2">
 								<SelectValue placeholder={t("print.selectPrinter")} />
 							</SelectTrigger>
 							<SelectContent>
 								<SelectItem value="none">{t("print.noPrinterSelected")}</SelectItem>
+								{/* Keep a stale saved printer selectable so the operator can still
+								    see/keep it; it's flagged as "(saved)" and called out below. */}
 								{data.printPrinterId &&
 									!bridgePrinters.some((p) => p.id === data.printPrinterId) && (
 										<SelectItem value={data.printPrinterId}>
@@ -190,12 +289,35 @@ export function PrintSettingsSection({ data, onChange, primaryColor }: PrintSett
 										</SelectItem>
 									)}
 								{bridgePrinters.map((printer) => (
-									<SelectItem key={printer.id} value={printer.id}>
-										{printer.name}
+									<SelectItem key={printer.id} value={printer.id} disabled={!printer.reachable}>
+										{printer.reachable
+											? printer.name
+											: `${printer.name} (${t("print.unreachable")})`}
 									</SelectItem>
 								))}
 							</SelectContent>
 						</Select>
+
+						{/* Picker status: a real message instead of a perpetual spinner.
+						    `bridgePolled` gates these so we don't flash "no printers" before
+						    the first poll resolves. */}
+						{bridgeLoading && bridgePrinters.length === 0 ? (
+							<p className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
+								<Loader2 className="h-3.5 w-3.5 animate-spin" />
+								{t("print.discoveringPrinters")}
+							</p>
+						) : bridgePolled && reachablePrinters.length === 0 && !bridgeError ? (
+							<p className="mt-2 text-sm text-amber-600">{t("print.noPrintersFound")}</p>
+						) : null}
+
+						{/* Stale selection: a printer is saved but no longer reachable on the
+						    bridge — surface it rather than silently dispatching to nothing. */}
+						{data.printPrinterId && bridgePolled && !savedPrinterIsReachable ? (
+							<p className="mt-2 text-sm text-amber-600">
+								{t("print.printerStale", { id: data.printPrinterId })}
+							</p>
+						) : null}
+
 						{selectedPrinter && (
 							<div className="mt-2 flex flex-wrap items-center gap-2">
 								<Badge variant={selectedPrinter.reachable ? "default" : "destructive"}>
