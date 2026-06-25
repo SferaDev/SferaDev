@@ -28,9 +28,17 @@ export class MdnsManager {
 		});
 	}
 
-	/** Start discovering IPP and IPPS printers. */
+	/**
+	 * Start discovering printers over mDNS. We always browse plain IPP
+	 * (`_ipp._tcp`, port 631), and browse IPPS (`_ipps._tcp`, port 443) ONLY when
+	 * {@link MdnsManager.useTls} is enabled. Without TLS the bridge cannot accept a
+	 * printer's self-signed IPPS certificate, so registering its `_ipps._tcp`
+	 * endpoint would just log endless "unreachable" errors for a printer we already
+	 * reach over plain IPP (AirPrint printers advertise both).
+	 */
 	startDiscovery(): void {
-		for (const type of ["ipp", "ipps"] as const) {
+		const types: readonly ("ipp" | "ipps")[] = this.useTls ? ["ipp", "ipps"] : ["ipp"];
+		for (const type of types) {
 			const browser = this.bonjour.find({ type });
 			browser.on("up", (service) => this.handleUp(service, type));
 			browser.on("down", (service) => this.handleDown(service, type));
