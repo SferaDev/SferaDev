@@ -74,7 +74,10 @@ export default function ShareClient() {
 		QRCode.toDataURL(albumUrl, {
 			width: 512,
 			margin: 2,
-			color: { dark: "#000000", light: "#ffffff" },
+			// Transparent background (alpha 0) so the downloaded PNG drops onto any
+			// surface; modules stay solid black. On the page it renders fine over the
+			// light card. `#0000` = transparent in qrcode's 4-digit hex form.
+			color: { dark: "#000000ff", light: "#00000000" },
 		})
 			.then((url) => {
 				if (active) setQrDataUrl(url);
