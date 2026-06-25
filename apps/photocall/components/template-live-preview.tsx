@@ -102,7 +102,9 @@ interface SlotVideoProps {
  */
 function SlotVideo({ slot, stream, mirror, zoom, filter }: SlotVideoProps) {
 	const videoRef = useRef<HTMLVideoElement | null>(null);
+	const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
+	// Attach + play the shared stream into the (hidden) source video.
 	useEffect(() => {
 		const video = videoRef.current;
 		if (!video) return;
@@ -117,6 +119,73 @@ function SlotVideo({ slot, stream, mirror, zoom, filter }: SlotVideoProps) {
 			}
 		});
 	}, [stream]);
+
+	// Continuously paint the mirrored, zoom-cropped camera frames into the canvas.
+	// The CSS filter is applied to the CANVAS (in the markup below), NOT the
+	// <video>: iOS Safari composites a transformed <video> onto its own GPU layer
+	// that escapes any CSS-filter pass (whether on the video or an ancestor), so
+	// the filtered preview was blank on iPad. A <canvas> is filtered reliably, so
+	// drawing the frames here — with the mirror/zoom baked into the draw — makes
+	// the live filter preview work on iPad Safari while matching the capture's
+	// cover-crop framing. Throttled + resolution-capped to stay light when several
+	// previews run at once (up to MAX_LIVE_PREVIEW_CARDS).
+	useEffect(() => {
+		const video = videoRef.current;
+		const canvas = canvasRef.current;
+		const ctx = canvas?.getContext("2d");
+		if (!video || !canvas || !ctx) return;
+
+		const MAX_BACKING_PX = 720;
+		const sizeCanvas = () => {
+			const dpr = Math.min(window.devicePixelRatio || 1, 2);
+			const w = canvas.clientWidth * dpr;
+			const h = canvas.clientHeight * dpr;
+			const fit = Math.min(1, MAX_BACKING_PX / Math.max(w, h, 1));
+			const cw = Math.max(1, Math.round(w * fit));
+			const ch = Math.max(1, Math.round(h * fit));
+			if (canvas.width !== cw || canvas.height !== ch) {
+				canvas.width = cw;
+				canvas.height = ch;
+			}
+		};
+		sizeCanvas();
+		const observer = new ResizeObserver(sizeCanvas);
+		observer.observe(canvas);
+
+		let raf = 0;
+		let last = 0;
+		const FRAME_MS = 1000 / 20; // ~20fps — smooth enough for a preview, light on the iPad.
+		const draw = (now: number) => {
+			raf = requestAnimationFrame(draw);
+			if (now - last < FRAME_MS) return;
+			last = now;
+			const vw = video.videoWidth;
+			const vh = video.videoHeight;
+			const cw = canvas.width;
+			const ch = canvas.height;
+			if (!vw || !vh || !cw || !ch) return;
+			// Cover-crop to fill the slot (matches the old object-cover + the
+			// compositor), with the digital zoom as a tighter center crop.
+			const scale = Math.max(cw / vw, ch / vh) * Math.max(1, zoom);
+			const dw = vw * scale;
+			const dh = vh * scale;
+			const dx = (cw - dw) / 2;
+			const dy = (ch - dh) / 2;
+			ctx.save();
+			if (mirror) {
+				ctx.translate(cw, 0);
+				ctx.scale(-1, 1);
+			}
+			ctx.drawImage(video, dx, dy, dw, dh);
+			ctx.restore();
+		};
+		raf = requestAnimationFrame(draw);
+
+		return () => {
+			cancelAnimationFrame(raf);
+			observer.disconnect();
+		};
+	}, [mirror, zoom]);
 
 	// cornerRadius and borderWidth are normalized to the frame WIDTH (compositor
 	// convention). Re-expressing them relative to the slot width lets a `cqw`
@@ -141,21 +210,21 @@ function SlotVideo({ slot, stream, mirror, zoom, filter }: SlotVideoProps) {
 					: undefined,
 			}}
 		>
-			{/* Filter on this wrapper, not the <video>: iOS Safari drops a CSS filter
-			    applied directly to a transformed <video> (separate GPU layer), so the
-			    filtered preview was blank on iPad. Filtering an ancestor with no
-			    transform forces the video to composite into the filtered pass; the
-			    mirror + zoom transform stays on the <video>. */}
-			<div className="h-full w-full" style={{ filter: cssFilterFor(filter) }}>
-				<video
-					ref={videoRef}
-					autoPlay
-					playsInline
-					muted
-					className="h-full w-full object-cover"
-					style={{ transform: `scale(${mirror ? -zoom : zoom}, ${zoom})` }}
-				/>
-			</div>
+			{/* Hidden source video — kept rendered (opacity-0, NOT display:none, which
+			    would let iOS pause decoding) so it keeps delivering frames. The visible
+			    <canvas> shows the mirrored + FILTERED result (see the effect above). */}
+			<video
+				ref={videoRef}
+				autoPlay
+				playsInline
+				muted
+				className="absolute inset-0 h-full w-full opacity-0"
+			/>
+			<canvas
+				ref={canvasRef}
+				className="absolute inset-0 h-full w-full"
+				style={{ filter: cssFilterFor(filter) }}
+			/>
 		</div>
 	);
 }
