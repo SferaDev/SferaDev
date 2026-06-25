@@ -112,6 +112,11 @@ export function KioskResultScreen({
 							size="xl"
 							onClick={print.onPrint}
 							disabled={printLocked}
+							// Keep the BUTTON label short so it never overflows the pill. The full
+							// "will print when it reconnects" explanation lives in the global
+							// <PendingPrints> notice; here we keep it as the accessible label/tooltip.
+							aria-label={printPending ? t("printerOffline") : undefined}
+							title={printPending ? t("printerOffline") : undefined}
 							className={cn(
 								"h-auto w-full rounded-full border-2 bg-transparent py-5 text-xl font-semibold sm:py-7 sm:text-2xl",
 								BRANDED_CTA_FEEDBACK,
@@ -140,7 +145,7 @@ export function KioskResultScreen({
 								: printDone
 									? t("addedToQueue")
 									: printPending
-										? t("printerOffline")
+										? t("printQueued")
 										: printFailed
 											? t("retryPrint")
 											: t("print")}
