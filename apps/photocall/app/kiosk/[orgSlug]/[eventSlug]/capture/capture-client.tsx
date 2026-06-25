@@ -24,7 +24,11 @@ import { cssFilterFor } from "@/lib/compose/css-filters";
 import { requiredCaptureCount, slotCaptureIndices } from "@/lib/layout/captures";
 import { parseLayoutJson } from "@/lib/layout/parse";
 import { type BoothLayout, type FilterKind, printPixelSize } from "@/lib/layout/types";
-import { putBoomerangBlob, writePhotoboothSession } from "@/lib/photobooth-session";
+import {
+	putBoomerangBlob,
+	putCaptureShots,
+	writePhotoboothSession,
+} from "@/lib/photobooth-session";
 import { cn } from "@/lib/utils";
 
 /** Pause (ms) between auto-chained shots so guests can re-pose. */
@@ -267,16 +271,18 @@ export default function KioskCapturePage() {
 		return capture();
 	}, [event?.captureDefaultCountdown, capture]);
 
-	/** Persist shots locally. sessionStorage is the source of truth; the result
-	 * page composes from it. We deliberately do NOT ship the raw data-URL shots
-	 * to a server action — each shot is 1–2 MB and would blow past Next.js's
-	 * server-action body limit. */
+	/** Persist shots locally; the result page composes from this. The bulky
+	 * data-URL frames go to IndexedDB (a 4–6 shot high-res strip overflows
+	 * sessionStorage's ~5MB quota), while the tiny `filter` stays in the
+	 * sessionStorage session. The IDB write is awaited so the caller can ensure
+	 * the FINAL shot is durable before navigating to the result screen. We
+	 * deliberately do NOT ship the raw data-URL shots to a server action — each
+	 * shot is 1–2 MB and would blow past Next.js's server-action body limit. */
 	const persist = useCallback(
-		(next: string[]) => {
-			if (!sessionId) return;
-			if (layout) {
-				writePhotoboothSession(sessionId, { shots: next, filter });
-			}
+		async (next: string[]): Promise<void> => {
+			if (!sessionId || !layout) return;
+			writePhotoboothSession(sessionId, { filter });
+			await putCaptureShots(sessionId, next);
 		},
 		[sessionId, layout, filter],
 	);
@@ -355,7 +361,6 @@ export default function KioskCapturePage() {
 			// resolution — too big for sessionStorage); the result screen reads it back.
 			await putBoomerangBlob(sessionId, blob);
 			writePhotoboothSession(sessionId, {
-				shots: [],
 				filter,
 				boomerangWidth: width,
 				boomerangHeight: height,
@@ -414,7 +419,12 @@ export default function KioskCapturePage() {
 				const next = [...shots];
 				next[index] = dataUrl;
 				setShots(next);
-				persist(next);
+				// Await the local persist so the just-taken frame is durably in
+				// IndexedDB before this returns. `busy` only clears in the finally
+				// below, and the auto-advance to the result screen waits on that, so
+				// the FINAL shot is guaranteed written before navigation — mirroring
+				// how the boomerang path awaits putBoomerangBlob before goToResult.
+				await persist(next);
 				if (sessionId) {
 					void updateShotIndex(sessionId, next.filter(Boolean).length).catch(() => {});
 				}
@@ -516,10 +526,19 @@ export default function KioskCapturePage() {
 		return () => clearTimeout(timer);
 	}, [isBoomerang, autoStart, isReady, busy, countdown]);
 
-	const handleFinish = useCallback(() => {
+	const handleFinish = useCallback(async () => {
 		setFinishing(true);
+		// Re-assert the durable write of the COMPLETE strip before navigating. The
+		// per-shot persist awaits its own write, but React may flush the
+		// allShotsTaken re-render (and this finish) before that microtask settles,
+		// so writing the full `shots` here — idempotent — guarantees every frame is
+		// in IndexedDB before the result screen reads it back. Mirrors how the
+		// boomerang path awaits putBoomerangBlob before goToResult.
+		if (sessionId && layout) {
+			await putCaptureShots(sessionId, shots);
+		}
 		goToResult();
-	}, [goToResult]);
+	}, [goToResult, sessionId, layout, shots]);
 
 	// Auto-advance: once every shot is captured, go straight to the result screen
 	// instead of waiting on a "looks good" confirmation. Keeps the booth fast so
@@ -528,7 +547,7 @@ export default function KioskCapturePage() {
 	useEffect(() => {
 		if (!layout || !allShotsTaken || finishedRef.current) return;
 		finishedRef.current = true;
-		handleFinish();
+		void handleFinish();
 	}, [layout, allShotsTaken, handleFinish]);
 
 	if (eventLoading) {
@@ -786,7 +805,7 @@ export default function KioskCapturePage() {
 					) : allShotsTaken ? (
 						<Button
 							size="xl"
-							onClick={handleFinish}
+							onClick={() => void handleFinish()}
 							disabled={finishing}
 							className={cn(PRIMARY_CTA_CLASS, BRANDED_CTA_FEEDBACK)}
 							style={{ backgroundColor: primaryColor }}

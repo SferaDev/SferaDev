@@ -1,25 +1,32 @@
 "use client";
 
-import { BOOMERANG_STORE, tx } from "@/lib/db/idb";
+import { BOOMERANG_STORE, CAPTURE_SHOTS_STORE, tx } from "@/lib/db/idb";
 import type { FilterKind } from "@/lib/layout/types";
 
 /**
- * Client-side, per-session store for the multi-shot capture in progress. Shots
- * are persisted in `sessionStorage` (keyed by the kiosk session id) so they
- * survive navigation between the capture and result screens and work fully
- * offline — this is the source of truth, with the server `saveMultiCapture`
- * call being best-effort.
+ * Client-side, per-session store for the multi-shot capture in progress. The
+ * session JSON (filter, optional boomerang dimensions) is small, so it stays in
+ * `sessionStorage` keyed by the kiosk session id — synchronous reads/writes are
+ * convenient and it survives navigation between the capture and result screens.
  *
- * The boomerang GIF is the exception: at high resolution it is several MB, which
- * overflows sessionStorage's ~5MB string quota, so it travels as a Blob in
- * IndexedDB (see {@link putBoomerangBlob}) rather than inlined here. The session
- * JSON only records that a boomerang exists, via its pixel dimensions.
+ * The bulky pixel data does NOT live in sessionStorage, which has a ~5MB string
+ * quota that a high-resolution capture blows past:
+ *  - the photo-strip's captured frames (4–6 JPEG data URLs) travel in IndexedDB
+ *    via {@link putCaptureShots} / {@link getCaptureShots};
+ *  - the boomerang GIF (several MB) travels in IndexedDB via {@link putBoomerangBlob}.
+ *
+ * Both are keyed by the kiosk session id and read back on the result screen.
+ *
+ * We store the strip shots as their existing JPEG **data-URL strings** (not as
+ * Blobs) deliberately: it keeps the capture filmstrip thumbnails (`<img src>`),
+ * the in-memory `shots` state, and the result's `composeStrip` + raw-shot upload
+ * paths byte-for-byte unchanged, while still escaping the sessionStorage quota
+ * (IndexedDB's quota is far larger). `composeStrip` accepts both data URLs and
+ * Blobs, so a future move to Blobs stays an option, but strings are the
+ * lower-risk choice that preserves the working compose behavior.
  */
 
 export interface PhotoboothSession {
-	/** Captured frames as JPEG data URLs, in slot order. Empty for boomerangs,
-	 * whose single "shot" is the encoded GIF stored as a Blob in IndexedDB. */
-	shots: string[];
 	/** Filter chosen by the guest/host for the whole strip. */
 	filter: FilterKind;
 	/**
@@ -34,6 +41,41 @@ export interface PhotoboothSession {
 interface BoomerangBlobRow {
 	id: string;
 	blob: Blob;
+}
+
+interface CaptureShotsRow {
+	id: string;
+	/** Captured frames as JPEG data URLs, in slot order. */
+	shots: string[];
+}
+
+/**
+ * Stash the photo-strip's captured frames (JPEG data URLs) in IndexedDB, keyed
+ * by the kiosk session id, so the result screen can read them back after
+ * navigation. Used instead of sessionStorage because a 4–6 shot high-resolution
+ * strip exceeds its ~5MB quota. Replaces any prior set for the session (so an
+ * incremental save after each shot, or a retake, overwrites cleanly). No-op when
+ * IndexedDB is unavailable. */
+export async function putCaptureShots(sessionId: string, shots: string[]): Promise<void> {
+	if (typeof indexedDB === "undefined") return;
+	await tx(CAPTURE_SHOTS_STORE, "readwrite", (store) =>
+		store.put({ id: sessionId, shots } satisfies CaptureShotsRow),
+	);
+}
+
+/** Read back the photo-strip's captured frames for a session, or null if absent. */
+export async function getCaptureShots(sessionId: string): Promise<string[] | null> {
+	if (typeof indexedDB === "undefined") return null;
+	const row = await tx<CaptureShotsRow | undefined>(CAPTURE_SHOTS_STORE, "readonly", (store) =>
+		store.get(sessionId),
+	);
+	return row?.shots ?? null;
+}
+
+/** Remove a session's stored photo-strip frames. */
+export async function deleteCaptureShots(sessionId: string): Promise<void> {
+	if (typeof indexedDB === "undefined") return;
+	await tx(CAPTURE_SHOTS_STORE, "readwrite", (store) => store.delete(sessionId));
 }
 
 /**
@@ -78,8 +120,8 @@ export function readPhotoboothSession(sessionId: string): PhotoboothSession | nu
 		if (
 			typeof parsed === "object" &&
 			parsed !== null &&
-			"shots" in parsed &&
-			Array.isArray((parsed as { shots: unknown }).shots)
+			"filter" in parsed &&
+			typeof (parsed as { filter: unknown }).filter === "string"
 		) {
 			return parsed as PhotoboothSession;
 		}
@@ -100,9 +142,11 @@ export function writePhotoboothSession(sessionId: string, value: PhotoboothSessi
 }
 
 /** Remove the stored session (called once the capture is finalized). Also drops
- * any boomerang GIF Blob held in IndexedDB for this session (fire-and-forget). */
+ * the bulky pixel data held in IndexedDB for this session — the boomerang GIF
+ * Blob and the photo-strip frames (both fire-and-forget). */
 export function clearPhotoboothSession(sessionId: string): void {
 	void deleteBoomerangBlob(sessionId);
+	void deleteCaptureShots(sessionId);
 	if (typeof window === "undefined") return;
 	try {
 		window.sessionStorage.removeItem(storageKey(sessionId));

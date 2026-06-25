@@ -3,13 +3,18 @@
 /**
  * Shared IndexedDB plumbing for the kiosk's offline outboxes.
  *
- * Three stores live in the same `photocall-offline` database:
+ * Four stores live in the same `photocall-offline` database:
  *  - `pending-photos`   — composited photos awaiting upload (lib/offline-queue.ts)
  *  - `pending-prints`   — print jobs awaiting a reachable print bridge (lib/print)
  *  - `boomerang-blobs`  — the encoded boomerang GIF handed from the capture screen
  *    to the result screen (lib/photobooth-session.ts). A high-res GIF is several
  *    MB — far past sessionStorage's ~5MB string quota — so it travels as a Blob
  *    here, keyed by the kiosk session id, instead of inlined into the session JSON.
+ *  - `capture-shots`    — the photo-strip's captured frames handed from the capture
+ *    screen to the result screen (lib/photobooth-session.ts). A 4–6 shot high-res
+ *    strip overflows the same sessionStorage quota the boomerang GIF did, so the
+ *    shots travel here keyed by the kiosk session id, leaving only the tiny
+ *    `filter` field in the session JSON.
  *
  * All stores MUST be created in the same `onupgradeneeded` handler and behind a
  * single DB version. If two modules opened the database at different versions
@@ -31,12 +36,17 @@ export const DB_NAME = "photocall-offline";
  *  - 3 → 4: added the `boomerang-blobs` store so the (now high-resolution, multi-MB)
  *    boomerang GIF can be carried from capture to result as a Blob — it no longer
  *    fits in sessionStorage. Existing stores are preserved.
+ *  - 4 → 5: added the `capture-shots` store so a multi-shot photo strip (4–6 high-res
+ *    frames) can be carried from capture to result without overflowing sessionStorage's
+ *    ~5MB quota, the same reason the boomerang GIF moved here. Existing stores are
+ *    preserved.
  */
-export const DB_VERSION = 4;
+export const DB_VERSION = 5;
 
 export const PHOTOS_STORE = "pending-photos";
 export const PRINTS_STORE = "pending-prints";
 export const BOOMERANG_STORE = "boomerang-blobs";
+export const CAPTURE_SHOTS_STORE = "capture-shots";
 
 /**
  * Open (and, if needed, upgrade) the shared offline database. Idempotent —
@@ -58,6 +68,9 @@ export function openDb(): Promise<IDBDatabase> {
 			}
 			if (!db.objectStoreNames.contains(BOOMERANG_STORE)) {
 				db.createObjectStore(BOOMERANG_STORE, { keyPath: "id" });
+			}
+			if (!db.objectStoreNames.contains(CAPTURE_SHOTS_STORE)) {
+				db.createObjectStore(CAPTURE_SHOTS_STORE, { keyPath: "id" });
 			}
 		};
 		request.onsuccess = () => resolve(request.result);
