@@ -58,16 +58,20 @@ interface CaptureBlob {
 }
 
 /**
- * The three assets produced for a capture:
- *  - `original`: the unprocessed/clean image shown as the preview and offered as
- *    the default download (single = raw capture; strip = clean composite).
- *  - `processed`: the decorated composite used for printing and the separate
- *    "print version" download. Null when there is nothing to decorate.
- *  - `rawShots`: the individual capture blobs, each downloadable.
+ * The assets produced for a capture under the "decorated main image + raw shots"
+ * model:
+ *  - `image`: the DECORATED composite (all graphic + text layers). It is the main
+ *    image — shown as the result preview, stored as `storageKey`, used for the
+ *    dashboard gallery / public share main image, AND what prints.
+ *  - `rawShots`: the individual full-frame capture blobs (NOT cropped into the
+ *    template), each viewable and downloadable. Empty when there is nothing to
+ *    keep separately (e.g. an undecorated single capture).
+ *
+ * There is no separate clean/undecorated composite and no separate print image —
+ * the main `image` already IS the print version.
  */
 interface ComposedCapture {
-	original: CaptureBlob;
-	processed: CaptureBlob | null;
+	image: CaptureBlob;
 	rawShots: Blob[];
 }
 
@@ -195,11 +199,11 @@ export default function KioskResultPage() {
 	});
 
 	/**
-	 * Compose a multi-shot strip. Produces BOTH the decorated PROCESSED composite
-	 * (all graphic + text layers — used for printing) and a CLEAN ORIGINAL (the
-	 * same photos in their slots, on the same background, but with the graphic and
-	 * text overlays stripped — the preview/download image). The raw shots are
-	 * returned as their JPEG data URLs so the caller can upload each individually.
+	 * Compose a multi-shot strip. Produces the DECORATED composite (all graphic +
+	 * text layers) as the main `image` — it is the preview, the stored main image
+	 * and what prints. The individual raw shots (the full-frame captures, NOT
+	 * cropped into the template) are returned alongside as their JPEG data URLs so
+	 * the caller can upload each one individually.
 	 */
 	const composeStripBlobs = useCallback(async (): Promise<ComposedCapture | null> => {
 		if (!event || !layout || !sessionId) return null;
@@ -225,9 +229,6 @@ export default function KioskResultPage() {
 				? filterParam
 				: null;
 		const composeLayout = guestFilter ? { ...layout, filter: guestFilter } : layout;
-		// The clean original keeps the photos, slots, filter and BACKGROUND but
-		// drops every decoration so the preview/download is undecorated.
-		const cleanLayout = { ...composeLayout, graphicLayers: [], textLayers: [] };
 
 		await loadLayoutFonts(layout);
 
@@ -259,17 +260,8 @@ export default function KioskResultPage() {
 		const targetHeight = printPixelSize(layout.print).height;
 		const resolveAssetUrl = (key: string) => assetUrls[key] ?? key;
 
-		const processed = await composeStrip({
+		const decorated = await composeStrip({
 			layout: composeLayout,
-			photos: shots,
-			tokens,
-			targetWidth,
-			targetHeight,
-			quality: event.photoQuality,
-			resolveAssetUrl,
-		});
-		const clean = await composeStrip({
-			layout: cleanLayout,
 			photos: shots,
 			tokens,
 			targetWidth,
@@ -284,16 +276,17 @@ export default function KioskResultPage() {
 		const rawShots = await Promise.all(shots.map((shot) => dataUrlToBlob(shot)));
 
 		return {
-			original: { blob: clean.blob, width: clean.width, height: clean.height },
-			processed: { blob: processed.blob, width: processed.width, height: processed.height },
+			image: { blob: decorated.blob, width: decorated.width, height: decorated.height },
 			rawShots,
 		};
 	}, [event, layout, sessionId, session?.capturedImageUrls, filterParam]);
 
 	/**
-	 * Legacy single-photo capture. The ORIGINAL is the raw capture itself; the
-	 * PROCESSED image is the template composite (used for printing). No separate
-	 * raw shots — the single capture already IS the original.
+	 * Legacy single-photo capture. The DECORATED template composite is the main
+	 * `image` (preview + stored main + print). The raw capture (the full,
+	 * uncropped frame) is kept as a single raw shot. When there is no template
+	 * overlay to decorate, the raw capture itself becomes the main image and there
+	 * is nothing to keep separately (`rawShots` is empty).
 	 */
 	const composeSingleBlobs = useCallback(async (): Promise<ComposedCapture | null> => {
 		if (!event || !session?.capturedImageUrl) return null;
@@ -301,16 +294,27 @@ export default function KioskResultPage() {
 		const outputWidth = event.maxPhotoDimension;
 		const outputHeight = Math.round(event.maxPhotoDimension * (4 / 3));
 
-		// Original = the raw capture, uploaded as-is. Decode it to record its
-		// natural dimensions for the stored preview image.
-		const originalBlob = await dataUrlToBlob(session.capturedImageUrl);
+		// The raw capture, uploaded as-is. Decode it to record its natural
+		// dimensions in case it becomes the main image (no template overlay).
+		const rawBlob = await dataUrlToBlob(session.capturedImageUrl);
 		const rawImage = await loadImage(session.capturedImageUrl);
 
-		const processedBlob = await compositePhoto({
+		// No template overlay → nothing to decorate. Store the raw capture as the
+		// main image and keep no separate raw shots.
+		if (!template?.url) {
+			return {
+				image: {
+					blob: rawBlob,
+					width: rawImage.naturalWidth,
+					height: rawImage.naturalHeight,
+				},
+				rawShots: [],
+			};
+		}
+
+		const decoratedBlob = await compositePhoto({
 			photo: session.capturedImageUrl,
-			template: template?.url
-				? { url: template.url, safeArea: template.safeArea ?? undefined }
-				: undefined,
+			template: { url: template.url, safeArea: template.safeArea ?? undefined },
 			// The guest caption step was removed; no guest-entered caption is applied.
 			// Mirror (and zoom) are baked into the captured frame at capture time —
 			// per the admin `mirrorPhotos` setting — so the compositor must not flip
@@ -322,13 +326,8 @@ export default function KioskResultPage() {
 		});
 
 		return {
-			original: {
-				blob: originalBlob,
-				width: rawImage.naturalWidth,
-				height: rawImage.naturalHeight,
-			},
-			processed: { blob: processedBlob, width: outputWidth, height: outputHeight },
-			rawShots: [],
+			image: { blob: decoratedBlob, width: outputWidth, height: outputHeight },
+			rawShots: [rawBlob],
 		};
 	}, [event, session, template]);
 
@@ -455,28 +454,26 @@ export default function KioskResultPage() {
 				return;
 			}
 
-			const { original, processed, rawShots } = composed;
+			const { image, rawShots } = composed;
 			const kind = isStrip ? "strip" : "single";
 
-			// Printing uses the PROCESSED (decorated) image; the preview shows the
-			// clean ORIGINAL. Hold the processed blob for (auto/manual) printing.
-			printBlobRef.current = processed
-				? { blob: processed.blob, width: processed.width, height: processed.height }
-				: { blob: original.blob, width: original.width, height: original.height };
+			// The decorated main image is what prints. Hold it for (auto/manual)
+			// printing.
+			printBlobRef.current = { blob: image.blob, width: image.width, height: image.height };
 
-			// Preview is always the unprocessed original.
-			const previewUrl = URL.createObjectURL(original.blob);
+			// The preview shows the decorated main image — what you see is what prints.
+			const previewUrl = URL.createObjectURL(image.blob);
 			setFinalImageUrl(previewUrl);
 
 			let result: Awaited<ReturnType<typeof createPhoto>>;
 			try {
 				// Upload every asset via presigned PUT (one key per blob) BEFORE
 				// creating the record, so a failure mid-way falls into the offline
-				// outbox with the complete set rather than a half-created record.
-				const storageKey = await uploadCaptureBlob(event.id, original.blob);
-				const printStorageKey = processed
-					? await uploadCaptureBlob(event.id, processed.blob)
-					: undefined;
+				// outbox with the complete set rather than a half-created record. The
+				// decorated main image is `storageKey`; the raw shots are `rawShotKeys`.
+				// There is no separate print image — the main image already IS the print
+				// version — so `printStorageKey` is omitted.
+				const storageKey = await uploadCaptureBlob(event.id, image.blob);
 				const rawShotKeys: string[] = [];
 				for (const shot of rawShots) {
 					rawShotKeys.push(await uploadCaptureBlob(event.id, shot));
@@ -486,31 +483,33 @@ export default function KioskResultPage() {
 					eventId: event.id,
 					sessionId: sessionId!,
 					storageKey,
-					printStorageKey,
 					rawShotKeys: rawShotKeys.length > 0 ? JSON.stringify(rawShotKeys) : undefined,
 					templateId: templateId ?? undefined,
 					kind,
-					width: original.width,
-					height: original.height,
-					sizeBytes: original.blob.size,
+					width: image.width,
+					height: image.height,
+					sizeBytes: image.blob.size,
 				});
 			} catch (uploadErr) {
 				// Offline / upload failure: hold ALL blobs in the outbox so nothing is
 				// lost; background sync re-uploads them and creates the record on
-				// reconnect. The guest can still download/print now.
+				// reconnect. The guest can still download/print now. The decorated main
+				// image is the outbox `blob` (→ storageKey); the raw shots are
+				// `rawShotBlobs` (→ rawShotKeys). No print blob — the main image is the
+				// print version.
 				console.warn("Deferring photo upload to offline outbox:", uploadErr);
 				await enqueuePhoto({
 					id: crypto.randomUUID(),
 					eventId: event.id,
 					sessionId: sessionId!,
-					blob: original.blob,
-					printBlob: processed ? processed.blob : null,
+					blob: image.blob,
+					printBlob: null,
 					rawShotBlobs: rawShots,
 					templateId: templateId ?? undefined,
 					kind,
 					selectedFilter: session.selectedFilter ?? undefined,
-					width: original.width,
-					height: original.height,
+					width: image.width,
+					height: image.height,
 					queuedAt: Date.now(),
 				});
 
