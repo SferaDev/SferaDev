@@ -1,15 +1,17 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
 import type { getPublicEvent } from "@/actions/events";
 import {
 	acquireSharedStream,
 	getSharedStream,
+	getSharedStreamSnapshot,
 	KioskCameraError,
 	type KioskCameraErrorKind,
 	kioskCameraConstraintsChain,
 	kioskCameraMirror,
+	subscribeSharedStream,
 } from "@/lib/kiosk-camera-stream";
 
 type PublicEvent = NonNullable<Awaited<ReturnType<typeof getPublicEvent>>>;
@@ -43,48 +45,31 @@ export interface KioskCamera {
  */
 export function useKioskCamera(event: PublicEvent | undefined): KioskCamera {
 	const t = useTranslations("kiosk.camera");
-	const [stream, setStream] = useState<MediaStream | null>(() => getSharedStream());
+	// The shared stream lives in a module-level store; subscribe to it so this
+	// screen re-renders the instant the camera is acquired (or released) by ANY
+	// screen. Reading it through a store — rather than a one-shot `setState` in
+	// the acquiring screen — is what makes the FIRST screen in the flow (the
+	// template picker) reliably show the live preview: previously its own update
+	// could be dropped, leaving the preview black while later screens worked.
+	const stream = useSyncExternalStore(subscribeSharedStream, getSharedStreamSnapshot, () => null);
 	const [errorKind, setErrorKind] = useState<KioskCameraErrorKind | null>(null);
-	// Guards against a stale in-flight acquisition committing its result after a
-	// newer retry (or an unmount) has superseded it — and against React 18
-	// StrictMode double-invoking the effect from kicking off two acquisitions.
-	const acquireTokenRef = useRef(0);
 
 	const acquire = useCallback(() => {
 		if (!event) return;
-		const token = acquireTokenRef.current + 1;
-		acquireTokenRef.current = token;
+		// A live shared stream already exists (acquired by this or another screen):
+		// the subscription above already reflects it, so there is nothing to do.
+		if (getSharedStream()) return;
 		setErrorKind(null);
-
-		acquireSharedStream(kioskCameraConstraintsChain(event))
-			.then((acquired) => {
-				// Ignore a result that a newer acquire()/unmount has superseded.
-				if (acquireTokenRef.current !== token) return;
-				setStream(acquired);
-			})
-			.catch((err: unknown) => {
-				if (acquireTokenRef.current !== token) return;
-				const kind = err instanceof KioskCameraError ? err.kind : "unknown";
-				setErrorKind(kind);
-				setStream(null);
-			});
+		// On success the store notifies subscribers (including this hook), so no
+		// `setState` for the stream is needed here — only error handling is local.
+		void acquireSharedStream(kioskCameraConstraintsChain(event)).catch((err: unknown) => {
+			setErrorKind(err instanceof KioskCameraError ? err.kind : "unknown");
+		});
 	}, [event]);
 
 	useEffect(() => {
-		if (!event) return;
-		// Reuse the cached stream if one is already live; otherwise acquire it.
-		const existing = getSharedStream();
-		if (existing) {
-			setStream(existing);
-			return;
-		}
 		acquire();
-		return () => {
-			// Invalidate any in-flight acquisition so its late result can't land on a
-			// screen that has since unmounted or changed events.
-			acquireTokenRef.current += 1;
-		};
-	}, [event, acquire]);
+	}, [acquire]);
 
 	const mirror = event ? kioskCameraMirror(event) : false;
 	const error = errorKind === null ? null : t(ERROR_MESSAGE_KEYS[errorKind]);

@@ -70,6 +70,39 @@ let activeStream: MediaStream | null = null;
 let pendingAcquire: Promise<MediaStream> | null = null;
 
 /**
+ * Subscribers notified whenever the shared stream is set or cleared. This makes
+ * the stream a proper external store: a screen using `useSyncExternalStore`
+ * re-renders the moment the camera becomes available — no matter which screen
+ * acquired it. Without this, the FIRST screen in the flow (the template picker)
+ * acquired and cached the stream but its own `setState` could be missed, leaving
+ * its live preview permanently black while later screens (reading the cache
+ * synchronously on mount) worked fine.
+ */
+const streamListeners = new Set<() => void>();
+
+function emitStreamChange(): void {
+	for (const listener of streamListeners) listener();
+}
+
+/** Subscribe to shared-stream changes. Returns an unsubscribe function. */
+export function subscribeSharedStream(listener: () => void): () => void {
+	streamListeners.add(listener);
+	return () => {
+		streamListeners.delete(listener);
+	};
+}
+
+/**
+ * Pure snapshot of the current shared stream for `useSyncExternalStore`. Unlike
+ * {@link getSharedStream} it has NO side effects (it never releases a dead
+ * stream), so it is safe to call during render and returns a stable reference
+ * between emitted changes.
+ */
+export function getSharedStreamSnapshot(): MediaStream | null {
+	return activeStream;
+}
+
+/**
  * Whether a `MediaStream` still has at least one live track. A stream whose
  * track has ended (camera unplugged, OS reclaimed it) must not be reused — we
  * re-acquire a fresh one instead.
@@ -255,6 +288,8 @@ export async function acquireSharedStream(chain: MediaStreamConstraints[]): Prom
 	pendingAcquire = acquireWithFallback(chain)
 		.then((stream) => {
 			activeStream = stream;
+			// Notify every subscribed screen so their preview goes live immediately.
+			emitStreamChange();
 			return stream;
 		})
 		.finally(() => {
@@ -283,5 +318,7 @@ export function releaseSharedStream(): void {
 			track.stop();
 		}
 		activeStream = null;
+		// Notify subscribers so screens drop the now-stopped stream.
+		emitStreamChange();
 	}
 }
