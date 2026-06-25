@@ -3,11 +3,15 @@
 /**
  * Shared IndexedDB plumbing for the kiosk's offline outboxes.
  *
- * Two independent outboxes live in the same `photocall-offline` database:
- *  - `pending-photos`  — composited photos awaiting upload (lib/offline-queue.ts)
- *  - `pending-prints`  — print jobs awaiting a reachable print bridge (lib/print)
+ * Three stores live in the same `photocall-offline` database:
+ *  - `pending-photos`   — composited photos awaiting upload (lib/offline-queue.ts)
+ *  - `pending-prints`   — print jobs awaiting a reachable print bridge (lib/print)
+ *  - `boomerang-blobs`  — the encoded boomerang GIF handed from the capture screen
+ *    to the result screen (lib/photobooth-session.ts). A high-res GIF is several
+ *    MB — far past sessionStorage's ~5MB string quota — so it travels as a Blob
+ *    here, keyed by the kiosk session id, instead of inlined into the session JSON.
  *
- * Both stores MUST be created in the same `onupgradeneeded` handler and behind a
+ * All stores MUST be created in the same `onupgradeneeded` handler and behind a
  * single DB version. If two modules opened the database at different versions
  * they would race and one would fail to open, so all schema lives here and both
  * features import {@link openDb}.
@@ -24,11 +28,15 @@ export const DB_NAME = "photocall-offline";
  *    version is bumped so the stored-shape change is explicit and any future
  *    migration has a hook. The existing object stores are preserved as-is so
  *    items queued under v2 survive the upgrade.
+ *  - 3 → 4: added the `boomerang-blobs` store so the (now high-resolution, multi-MB)
+ *    boomerang GIF can be carried from capture to result as a Blob — it no longer
+ *    fits in sessionStorage. Existing stores are preserved.
  */
-export const DB_VERSION = 3;
+export const DB_VERSION = 4;
 
 export const PHOTOS_STORE = "pending-photos";
 export const PRINTS_STORE = "pending-prints";
+export const BOOMERANG_STORE = "boomerang-blobs";
 
 /**
  * Open (and, if needed, upgrade) the shared offline database. Idempotent —
@@ -47,6 +55,9 @@ export function openDb(): Promise<IDBDatabase> {
 			}
 			if (!db.objectStoreNames.contains(PRINTS_STORE)) {
 				db.createObjectStore(PRINTS_STORE, { keyPath: "id" });
+			}
+			if (!db.objectStoreNames.contains(BOOMERANG_STORE)) {
+				db.createObjectStore(BOOMERANG_STORE, { keyPath: "id" });
 			}
 		};
 		request.onsuccess = () => resolve(request.result);
