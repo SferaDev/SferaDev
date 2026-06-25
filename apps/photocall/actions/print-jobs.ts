@@ -1,8 +1,9 @@
 "use server";
 
-import { and, desc, eq, isNull } from "drizzle-orm";
+import { and, desc, eq, inArray, isNull } from "drizzle-orm";
 import { generateToken, requireEventAccess } from "@/lib/auth-helpers";
 import { db, schema } from "@/lib/db";
+import { CANCELABLE_PRINT_JOB_STATUSES } from "@/lib/db/schema";
 import { getFileUrl, getObjectSize } from "@/lib/storage";
 
 /**
@@ -85,6 +86,57 @@ export async function listPrintJobs(eventId: string): Promise<PrintJob[]> {
 		.where(eq(schema.printJobs.eventId, eventId))
 		.orderBy(desc(schema.printJobs.createdAt))
 		.limit(50);
+}
+
+/**
+ * Cancel a non-terminal print job (`queued`, `claimed` or `printing`), setting it
+ * to the terminal `canceled` status. Only a member of the event's owning org may
+ * cancel — we look the job up first, then authorize against its `eventId` (mirrors
+ * {@link listPrintJobs}).
+ *
+ * Effect by current status:
+ *  - `queued`: fully prevents printing — the claim route only ever selects
+ *    `queued` rows, so a canceled job is never picked up.
+ *  - `claimed`/`printing`: best-effort. A page already physically sent to the
+ *    printer can't be recalled, but the terminal status stops further
+ *    attempts/retries: the bridge's next status heartbeat no longer matches the
+ *    guarded UPDATE in the status route (which only accepts `claimed`/`printing`),
+ *    so it gets a 409 and the cloud-poller untracks the job. We do NOT send an IPP
+ *    Cancel-Job to the printer.
+ *
+ * The guarded UPDATE (status still in the cancelable set) makes this a no-op if
+ * the job has meanwhile reached a terminal state, so a `done`/`failed`/`canceled`
+ * job can't be resurrected. Returns whether a row was actually canceled.
+ */
+export async function cancelPrintJob(jobId: string): Promise<{ canceled: boolean }> {
+	const job = await db
+		.select({ eventId: schema.printJobs.eventId })
+		.from(schema.printJobs)
+		.where(eq(schema.printJobs.id, jobId))
+		.then((rows) => rows[0]);
+
+	if (!job) throw new Error("Print job not found");
+
+	await requireEventAccess(job.eventId);
+
+	const [updated] = await db
+		.update(schema.printJobs)
+		.set({
+			status: "canceled",
+			lastError: "Canceled by host",
+			claimedAt: null,
+			claimedBy: null,
+			updatedAt: new Date(),
+		})
+		.where(
+			and(
+				eq(schema.printJobs.id, jobId),
+				inArray(schema.printJobs.status, CANCELABLE_PRINT_JOB_STATUSES),
+			),
+		)
+		.returning({ id: schema.printJobs.id });
+
+	return { canceled: updated !== undefined };
 }
 
 /**

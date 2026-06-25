@@ -775,11 +775,13 @@
 				"pending": "Pendiente",
 				"printing": "Imprimiendo",
 				"done": "Completado",
-				"failed": "Fallido"
+				"failed": "Fallido",
+				"canceled": "Cancelado"
 			},
 			"reprintTestCard": "Reimprimir tarjeta de prueba",
 			"reprintTestCardHint": "Envía una nueva tarjeta de prueba (una página de color sólido), NO la última foto del invitado: el puente no conserva las imágenes enviadas.",
-			"removeJob": "Quitar"
+			"removeJob": "Quitar",
+			"cancelJob": "Cancelar"
 		}
 	},
 	"guestAlbums": {

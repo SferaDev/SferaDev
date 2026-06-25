@@ -775,11 +775,13 @@
 				"pending": "Pendent",
 				"printing": "Imprimint",
 				"done": "Completat",
-				"failed": "Fallit"
+				"failed": "Fallit",
+				"canceled": "Cancel·lat"
 			},
 			"reprintTestCard": "Reimprimeix la targeta de prova",
 			"reprintTestCardHint": "Envia una nova targeta de prova (una pàgina de color sòlid), NO l'última foto del convidat: el pont no conserva les imatges enviades.",
-			"removeJob": "Treu"
+			"removeJob": "Treu",
+			"cancelJob": "Cancel·la"
 		}
 	},
 	"guestAlbums": {

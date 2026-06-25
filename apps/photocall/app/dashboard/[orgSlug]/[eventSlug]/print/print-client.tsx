@@ -2,6 +2,7 @@
 
 import {
 	AlertTriangle,
+	Ban,
 	CheckCircle2,
 	ChevronLeft,
 	Loader2,
@@ -18,7 +19,7 @@ import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import { getEventBySlug } from "@/actions/events";
-import { listPrintJobs, type PrintJob } from "@/actions/print-jobs";
+import { cancelPrintJob, listPrintJobs, type PrintJob } from "@/actions/print-jobs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -425,7 +426,7 @@ export default function PrintManagement() {
 								<OfflineJobRow key={job.id} job={job} onRemoved={() => void refreshOfflineJobs()} />
 							))}
 							{serverJobs.map((job) => (
-								<ServerJobRow key={job.id} job={job} />
+								<ServerJobRow key={job.id} job={job} onCanceled={() => void refresh()} />
 							))}
 							{jobs.map((job) => (
 								<JobRow key={job.id} job={job} />
@@ -560,23 +561,51 @@ function ServerJobStatusIcon({ status }: { status: PrintJob["status"] }) {
 			return <CheckCircle2 className="h-5 w-5 text-green-600" aria-hidden="true" />;
 		case "failed":
 			return <XCircle className="h-5 w-5 text-destructive" aria-hidden="true" />;
+		case "canceled":
+			return <Ban className="h-5 w-5 text-muted-foreground" aria-hidden="true" />;
 		default:
 			return <div className="h-5 w-5 rounded-full border-2 border-muted" aria-hidden="true" />;
 	}
 }
 
 /**
+ * Non-terminal statuses a host may still cancel. Kept in sync with the server's
+ * `CANCELABLE_PRINT_JOB_STATUSES` (not imported here so the Drizzle schema never
+ * gets pulled into the client bundle).
+ */
+function isCancelable(status: PrintJob["status"]): boolean {
+	return status === "queued" || status === "claimed" || status === "printing";
+}
+
+/**
  * A row in the SERVER-side print queue (a printJobs row). Source of truth, shown
  * on every device. Surfaces the target printer, the lifecycle status
- * (queued/claimed/printing/done/failed) and the last error when it failed.
+ * (queued/claimed/printing/done/failed/canceled) and the last error when it failed.
+ *
+ * Non-terminal jobs (queued/claimed/printing) get a Cancel control: canceling a
+ * queued job prevents it from ever printing; for a claimed/printing job it's
+ * best-effort — it stops further attempts and the bridge untracks it on its next
+ * heartbeat — but a page already sent to the printer can't be recalled.
  */
-function ServerJobRow({ job }: { job: PrintJob }) {
+function ServerJobRow({ job, onCanceled }: { job: PrintJob; onCanceled: () => void }) {
 	const t = useTranslations("dashboard.print");
+	const [canceling, setCanceling] = useState(false);
 	// printJobs distinguishes "queued" (not yet claimed) from "claimed"; the
-	// existing labels only cover pending/printing/done/failed, so fold both
+	// existing labels only cover pending/printing/done/failed/canceled, so fold both
 	// pre-print states onto the "pending" label and map "claimed" onto "printing".
 	const labelKey =
 		job.status === "queued" ? "pending" : job.status === "claimed" ? "printing" : job.status;
+
+	const handleCancel = useCallback(async () => {
+		setCanceling(true);
+		try {
+			await cancelPrintJob(job.id);
+			onCanceled();
+		} finally {
+			setCanceling(false);
+		}
+	}, [job.id, onCanceled]);
+
 	return (
 		<div className="flex items-center gap-3 p-3">
 			<ServerJobStatusIcon status={job.status} />
@@ -587,9 +616,30 @@ function ServerJobRow({ job }: { job: PrintJob }) {
 					{job.attempts > 1 ? ` · ${t("jobAttempts", { count: job.attempts })}` : ""}
 				</div>
 			</div>
-			<Badge variant={job.status === "failed" ? "destructive" : "secondary"}>
+			<Badge
+				variant={
+					job.status === "failed"
+						? "destructive"
+						: job.status === "canceled"
+							? "outline"
+							: "secondary"
+				}
+			>
 				{t(`jobStatus.${labelKey}`)}
 			</Badge>
+			{isCancelable(job.status) ? (
+				<Button
+					variant="ghost"
+					size="icon"
+					className="text-muted-foreground hover:text-destructive shrink-0"
+					onClick={() => void handleCancel()}
+					disabled={canceling}
+					aria-label={t("cancelJob")}
+					title={t("cancelJob")}
+				>
+					{canceling ? <Loader2 className="h-4 w-4 animate-spin" /> : <Ban className="h-4 w-4" />}
+				</Button>
+			) : null}
 		</div>
 	);
 }
