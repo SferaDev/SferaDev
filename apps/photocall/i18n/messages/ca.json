@@ -104,6 +104,15 @@
 		"celebrations": "Celebracions"
 	},
 	"kiosk": {
+		"camera": {
+			"errorPermissionDenied": "S'ha bloquejat l'accés a la càmera. Permet l'accés a la càmera i torna-ho a provar.",
+			"errorNoCamera": "No s'ha trobat cap càmera. Connecta una càmera i torna-ho a provar.",
+			"errorInUse": "La càmera l'està fent servir una altra aplicació. Tanca-la i torna-ho a provar.",
+			"errorTimeout": "La càmera no s'ha iniciat a temps. Torna-ho a provar.",
+			"errorUnsupported": "Aquest dispositiu o navegador no pot accedir a la càmera.",
+			"errorUnknown": "Hi ha hagut un problema en iniciar la càmera. Torna-ho a provar.",
+			"errorStuck": "La càmera no s'ha iniciat a temps. Torna-ho a provar."
+		},
 		"common": {
 			"back": "Enrere",
 			"skip": "Omet",

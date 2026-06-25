@@ -99,6 +99,15 @@
 		"celebrations": "Celebrations"
 	},
 	"kiosk": {
+		"camera": {
+			"errorPermissionDenied": "Camera access was blocked. Please allow camera access, then try again.",
+			"errorNoCamera": "No camera was found. Connect a camera and try again.",
+			"errorInUse": "The camera is in use by another app. Close it, then try again.",
+			"errorTimeout": "The camera didn't start in time. Please try again.",
+			"errorUnsupported": "This device or browser cannot access the camera.",
+			"errorUnknown": "Something went wrong starting the camera. Please try again.",
+			"errorStuck": "The camera didn't start in time. Please try again."
+		},
 		"common": {
 			"back": "Back",
 			"skip": "Skip",

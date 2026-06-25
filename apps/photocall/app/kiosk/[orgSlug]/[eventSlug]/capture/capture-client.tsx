@@ -21,6 +21,7 @@ import {
 import { BRANDED_CTA_FEEDBACK, DEFAULT_BRAND_COLOR, PRIMARY_CTA_CLASS } from "@/lib/branding";
 import { loadLayoutFonts } from "@/lib/compose";
 import { cssFilterFor } from "@/lib/compose/css-filters";
+import { releaseSharedStream } from "@/lib/kiosk-camera-stream";
 import { requiredCaptureCount, slotCaptureIndices } from "@/lib/layout/captures";
 import { parseLayoutJson } from "@/lib/layout/parse";
 import { type BoothLayout, type FilterKind, printPixelSize } from "@/lib/layout/types";
@@ -36,6 +37,14 @@ const AUTO_SHOOT_GAP_MS = 1400;
 /** Grace period (ms) after the camera is ready before the first shot's
  * countdown auto-starts, so guests can settle into frame. */
 const AUTO_START_DELAY_MS = 800;
+/**
+ * How long the bound <video> may sit with a stream attached but no real frame
+ * dimensions before we treat it as a stuck/black feed. The shared stream is
+ * already acquired (so getUserMedia succeeded), but a flaky device can hand back
+ * a track that never paints; without this watchdog the guest stares at the
+ * "Starting camera…" spinner forever. On timeout we surface a retryable error.
+ */
+const VIDEO_READY_TIMEOUT_MS = 8_000;
 
 /**
  * Output aspect ratio (width / height) of the legacy single-photo composite.
@@ -116,6 +125,7 @@ export default function KioskCapturePage() {
 	const isBoomerang = searchParams.get("mode") === "boomerang";
 	const t = useTranslations("kiosk.capture");
 	const tBoomerang = useTranslations("kiosk.boomerang");
+	const tCamera = useTranslations("kiosk.camera");
 	const tCommon = useTranslations("kiosk.common");
 	const tLoading = useTranslations("kiosk.loading");
 
@@ -149,6 +159,19 @@ export default function KioskCapturePage() {
 	// True once the shared stream is attached to <video> AND the element has real
 	// frame dimensions, so capture() can read pixels and auto-start can fire.
 	const [videoReady, setVideoReady] = useState(false);
+	// Set when a stream is attached but never paints real frames within the
+	// watchdog window (a "live but black" feed). Surfaces the retryable error
+	// overlay instead of an endless spinner.
+	const [videoStuck, setVideoStuck] = useState(false);
+
+	// Force a fresh camera stream. Used by the error overlay's retry: it drops the
+	// cached shared stream (so a hung / black-but-live track isn't handed back
+	// unchanged) before re-acquiring, then clears the stuck flag.
+	const forceRetry = useCallback(() => {
+		setVideoStuck(false);
+		releaseSharedStream();
+		retry();
+	}, [retry]);
 
 	const [shots, setShots] = useState<string[]>([]);
 	const [countdown, setCountdown] = useState<number | null>(null);
@@ -189,6 +212,7 @@ export default function KioskCapturePage() {
 		const markReady = () => {
 			if (video.videoWidth > 0 && video.videoHeight > 0) {
 				setVideoReady(true);
+				setVideoStuck(false);
 			}
 		};
 
@@ -213,6 +237,19 @@ export default function KioskCapturePage() {
 	}, [stream]);
 
 	const isReady = videoReady && error === null;
+
+	// Watchdog: a stream is attached but no frames have painted. If it stays that
+	// way past the timeout the feed is stuck (black screen); flag it so the error
+	// overlay offers a retry. Cleared as soon as frames arrive (markReady) or the
+	// stream goes away.
+	useEffect(() => {
+		if (!stream || videoReady || error !== null) {
+			setVideoStuck(false);
+			return;
+		}
+		const timer = setTimeout(() => setVideoStuck(true), VIDEO_READY_TIMEOUT_MS);
+		return () => clearTimeout(timer);
+	}, [stream, videoReady, error]);
 
 	// Clear any pending timers on unmount to avoid setting state after teardown.
 	useEffect(() => {
@@ -839,26 +876,30 @@ export default function KioskCapturePage() {
 			</div>
 
 			{/* Camera Starting Overlay — shown while getUserMedia is initializing (or
-			    hanging on a flaky webcam) so the guest isn't left staring at a black
-			    screen with a dead shutter. Sits below the controls (z-30) so the Back
-			    button stays reachable if the camera never comes up; the error overlay
-			    below (z-40) takes precedence once getUserMedia rejects. */}
-			{!isReady && !error && (
+			    the bound feed hasn't painted its first frame yet) so the guest isn't
+			    left staring at a black screen with a dead shutter. Sits below the
+			    controls (z-30) so the Back button stays reachable if the camera never
+			    comes up; the error overlay below (z-40) takes precedence once
+			    getUserMedia rejects or the feed is declared stuck. */}
+			{!isReady && !error && !videoStuck && (
 				<div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 z-20 p-8">
 					<Loader2 className="h-12 w-12 animate-spin mb-4" style={{ color: accentColor }} />
 					<p className="text-white/70 text-lg">{tCommon("startingCamera")}</p>
 				</div>
 			)}
 
-			{/* Camera Error Overlay */}
-			{error && (
+			{/* Camera Error Overlay — either getUserMedia rejected (`error`) or the
+			    stream attached but never painted a frame (`videoStuck`, a black feed).
+			    Both are recoverable: forceRetry drops the cached stream and
+			    re-acquires from scratch. */}
+			{(error || videoStuck) && (
 				<div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 z-40 p-8">
 					<AlertCircle className="h-16 w-16 text-destructive mb-4" />
 					<h2 className="text-2xl font-bold mb-2">{t("cameraErrorTitle")}</h2>
-					<p className="text-white/60 mb-8 text-center">{error}</p>
+					<p className="text-white/60 mb-8 text-center">{error ?? tCamera("errorStuck")}</p>
 					<Button
 						size="lg"
-						onClick={() => retry()}
+						onClick={forceRetry}
 						className={BRANDED_CTA_FEEDBACK}
 						style={{ backgroundColor: primaryColor }}
 					>

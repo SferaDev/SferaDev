@@ -104,6 +104,15 @@
 		"celebrations": "Celebraciones"
 	},
 	"kiosk": {
+		"camera": {
+			"errorPermissionDenied": "Se bloqueó el acceso a la cámara. Permite el acceso a la cámara e inténtalo de nuevo.",
+			"errorNoCamera": "No se encontró ninguna cámara. Conecta una cámara e inténtalo de nuevo.",
+			"errorInUse": "La cámara está siendo usada por otra aplicación. Ciérrala e inténtalo de nuevo.",
+			"errorTimeout": "La cámara no se inició a tiempo. Inténtalo de nuevo.",
+			"errorUnsupported": "Este dispositivo o navegador no puede acceder a la cámara.",
+			"errorUnknown": "Algo salió mal al iniciar la cámara. Inténtalo de nuevo.",
+			"errorStuck": "La cámara no se inició a tiempo. Inténtalo de nuevo."
+		},
 		"common": {
 			"back": "Atrás",
 			"skip": "Omitir",
