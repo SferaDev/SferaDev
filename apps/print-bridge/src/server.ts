@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { resolve } from "node:path";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
@@ -5,6 +6,7 @@ import { HTTPException } from "hono/http-exception";
 import { logger } from "hono/logger";
 import QRCode from "qrcode";
 import { ZodError } from "zod";
+import { CloudPoller } from "./cloud-poller.js";
 import { env } from "./env.js";
 import { MdnsManager } from "./mdns.js";
 import { PrinterRegistry } from "./printer-registry.js";
@@ -124,6 +126,26 @@ try {
 
 registry.startAutoRefresh();
 
+// ─── Cloud-pull mode (optional) ─────────────────────────────────────
+// When a cloud URL + pairing token are configured, additionally poll the
+// photocall server for print jobs and print them through the SAME local queue,
+// reporting status back with heartbeats. This runs ALONGSIDE the LAN REST API
+// above — it does not replace it. A fresh per-process bridgeId is fine: after a
+// restart the server's stale-claim window lets us re-claim any stranded jobs.
+let cloudPoller: CloudPoller | undefined;
+if (env.BRIDGE_CLOUD_URL && env.BRIDGE_PAIRING_TOKEN) {
+	cloudPoller = new CloudPoller({
+		cloudUrl: env.BRIDGE_CLOUD_URL,
+		pairingToken: env.BRIDGE_PAIRING_TOKEN,
+		bridgeId: randomUUID(),
+		pollIntervalMs: env.BRIDGE_POLL_INTERVAL_MS,
+		heartbeatIntervalMs: env.BRIDGE_HEARTBEAT_INTERVAL_MS,
+		queue,
+		registry,
+	});
+	cloudPoller.start();
+}
+
 // ─── Bun server ─────────────────────────────────────────────────────
 const server = Bun.serve({ fetch: app.fetch, port: env.PORT });
 console.log(`Photocall print bridge running on http://localhost:${server.port}`);
@@ -132,6 +154,7 @@ console.log("Discovering IPP printers over mDNS…");
 function shutdown(): void {
 	console.log("Shutting down print bridge…");
 	registry.stopAutoRefresh();
+	cloudPoller?.stop();
 	mdns.destroy();
 	void server.stop();
 }

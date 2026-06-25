@@ -48,6 +48,11 @@ For a **production** kiosk on HTTPS you must do **one** of:
 **entire** submit → queue → "print" flow over HTTP locally without a real printer
 or any dye-sub media.
 
+> **Or skip mixed content entirely with [cloud-pull mode](#cloud-pull-mode-outbound-polling).**
+> Instead of the kiosk reaching the bridge over the LAN, the bridge polls the
+> photocall server **outbound** for jobs. No inbound connectivity, no HTTPS→HTTP
+> request, no reverse proxy — the bridge only makes outgoing HTTPS calls.
+
 ## Why a separate service?
 
 Browsers can only print through the OS print dialog (`window.print()`). To print
@@ -170,6 +175,10 @@ Returns `201` with the registered printer (live attributes already fetched), or
 | `BRIDGE_API_KEY`         | —       | Optional shared secret; required on `/api/*` as Bearer or `x-api-key`.                        |
 | `BRIDGE_PRINTER_URIS`    | —       | Comma-separated IPP(S) URIs / hosts to seed as manual printers at startup (mDNS fallback).    |
 | `BRIDGE_DEBUG_PRINTER_DIR` | —     | When set to a folder, publishes a virtual **Debug (file output)** printer that writes each job's JPEG into that folder instead of printing — test the full flow without consuming media. |
+| `BRIDGE_CLOUD_URL`       | —       | Base URL of the photocall server's bridge-facing API. Set together with `BRIDGE_PAIRING_TOKEN` to enable [cloud-pull mode](#cloud-pull-mode-outbound-polling). Unset = LAN-only (today's behaviour). |
+| `BRIDGE_PAIRING_TOKEN`   | —       | Per-event pairing token sent as `Authorization: Bearer <token>` on every cloud-pull request. Required to enable cloud-pull mode.                  |
+| `BRIDGE_POLL_INTERVAL_MS` | `3000` | Cloud-pull only: how often to poll the cloud for new print jobs.                                                                                  |
+| `BRIDGE_HEARTBEAT_INTERVAL_MS` | `30000` | Cloud-pull only: how often to report tracked-job status + printer inventory. The `printing` reports double as the claim heartbeat — keep well under the server's 5-minute stale window. |
 
 ### Debug (file output) printer
 
@@ -185,6 +194,48 @@ A printer named **"Debug (file output)"** (id `debug`) then shows up in
 other. Each submitted job is written to the folder as
 `photocall-<timestamp>-<id>.jpg` (one file per job; the folder is created on
 first use). Leave it unset in production.
+
+## Cloud-pull mode (outbound polling)
+
+By default the kiosk reaches the bridge over the LAN (`POST /api/jobs`), which on
+an HTTPS kiosk runs into [mixed content](#️-mixed-content-production-https-kiosk--http-bridge).
+**Cloud-pull mode** flips the direction: the bridge **polls the photocall server
+outbound** for print jobs and prints them through the same local queue. The
+server never connects _in_ to the bridge, so there's nothing to expose, no
+reverse proxy, and no HTTPS→HTTP request — the bridge only makes outgoing HTTPS
+calls.
+
+Enable it by setting **both** `BRIDGE_CLOUD_URL` and `BRIDGE_PAIRING_TOKEN`
+(a per-event token paired from the photocall dashboard):
+
+```bash
+BRIDGE_CLOUD_URL="https://photocall.example.com" \
+BRIDGE_PAIRING_TOKEN="<per-event pairing token>" \
+  ./print-bridge-bun-linux-arm64
+```
+
+This runs **alongside** the LAN REST API — both work at once; leave the env unset
+to run LAN-only exactly as before. While enabled, the bridge:
+
+- **claims** jobs every `BRIDGE_POLL_INTERVAL_MS` (`POST /api/bridge/jobs/claim`),
+  downloads each job's image from its presigned URL, and enqueues it into the
+  existing no-loss print queue;
+- **reports status** every `BRIDGE_HEARTBEAT_INTERVAL_MS`
+  (`POST /api/bridge/jobs/:id/status`): a local job that is still pending or
+  printing (including while the queue rides out an out-of-paper outage) reports
+  `printing`, which **doubles as a heartbeat** keeping the server's claim alive;
+  `done`/`failed` are reported once and then the job is dropped from tracking. The
+  server re-queues a job to another bridge if it hears **no heartbeat for >5
+  minutes**, so the heartbeat interval is kept well under that;
+- **registers its printers** every heartbeat (`POST /api/bridge/printers`) so the
+  dashboard can list them without any direct access to the bridge.
+
+A fresh, ephemeral `bridgeId` is generated per process — after a restart the
+server's stale-claim window lets the bridge re-claim any jobs that were stranded.
+Every cloud call is bounded by a timeout and never throws: a failed poll or
+report just logs and is retried on the next tick. If the server reports a `409`
+on a status post (the job was re-queued/reassigned), the bridge simply stops
+tracking that job.
 
 ## REST API
 
