@@ -14,7 +14,8 @@
 		"db:migrate": "drizzle-kit migrate",
 		"db:push": "drizzle-kit push",
 		"db:seed-presets": "tsx scripts/seed-presets.ts",
-		"db:studio": "drizzle-kit studio"
+		"db:studio": "drizzle-kit studio",
+		"publish:bridge-bin": "tsx scripts/publish-bridge-binaries.ts"
 	},
 	"dependencies": {
 		"@aws-sdk/client-s3": "catalog:",

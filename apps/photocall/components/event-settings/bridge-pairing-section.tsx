@@ -1,13 +1,56 @@
 "use client";
 
-import { Check, Copy, Eye, EyeOff, KeyRound, Loader2, RefreshCw } from "lucide-react";
+import {
+	Check,
+	ChevronDown,
+	Copy,
+	Download,
+	Eye,
+	EyeOff,
+	KeyRound,
+	Loader2,
+	RefreshCw,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useSWR from "swr";
-import { getBridgePairingToken, rotateBridgePairingToken } from "@/actions/print-jobs";
+import {
+	getBridgePairingToken,
+	listBridgeDownloads,
+	rotateBridgePairingToken,
+} from "@/actions/print-jobs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+
+/** Operating systems we can map to a preferred bridge build target. */
+type DetectedOs = "mac" | "windows" | "linux" | "unknown";
+
+/**
+ * Best-effort OS sniff from the browser. We can't tell Apple Silicon from Intel
+ * from JS, so macOS defaults to Apple Silicon (the common case) and lists Intel
+ * as an alternative under "Other platforms".
+ */
+function detectOs(): DetectedOs {
+	if (typeof navigator === "undefined") return "unknown";
+	const haystack = `${navigator.userAgent} ${navigator.platform}`.toLowerCase();
+	if (/mac|iphone|ipad|ipod/.test(haystack)) return "mac";
+	if (/win/.test(haystack)) return "windows";
+	if (/linux|android/.test(haystack)) return "linux";
+	return "unknown";
+}
+
+/** The build target each detected OS should download by default. */
+const PREFERRED_TARGET: Record<DetectedOs, string | null> = {
+	mac: "bun-darwin-arm64",
+	windows: "bun-windows-x64",
+	linux: "bun-linux-x64",
+	unknown: null,
+};
+
+function formatBytes(bytes: number): string {
+	return `${(bytes / 1_000_000).toFixed(1)} MB`;
+}
 
 interface BridgePairingSectionProps {
 	eventId: string;
@@ -160,6 +203,106 @@ export function BridgePairingSection({ eventId, origin }: BridgePairingSectionPr
 					</div>
 				</div>
 			) : null}
+
+			<BridgeDownloads eventId={eventId} />
+		</div>
+	);
+}
+
+/**
+ * "Download the bridge app" subsection: lists the published bridge binaries with
+ * a primary button for the operator's detected OS and the rest under an "Other
+ * platforms" expander. Shows a subtle note (not an error) when nothing has been
+ * published yet — the host must run `scripts/publish-bridge-binaries.ts`.
+ */
+function BridgeDownloads({ eventId }: { eventId: string }) {
+	const t = useTranslations("dashboard.eventSettings.pairing");
+
+	const { data: downloads, isLoading } = useSWR(["bridge-downloads", eventId], () =>
+		listBridgeDownloads(eventId),
+	);
+
+	// Detect the OS on the client only, to avoid a server/client hydration mismatch.
+	const [detectedOs, setDetectedOs] = useState<DetectedOs>("unknown");
+	useEffect(() => setDetectedOs(detectOs()), []);
+
+	const [showOthers, setShowOthers] = useState(false);
+
+	if (isLoading) {
+		return (
+			<div className="flex items-center gap-2 text-sm text-muted-foreground">
+				<Loader2 className="h-4 w-4 animate-spin" />
+				{t("loading")}
+			</div>
+		);
+	}
+
+	const items = downloads ?? [];
+	const preferredTarget = PREFERRED_TARGET[detectedOs];
+	const primary = items.find((item) => item.target === preferredTarget) ?? items[0] ?? null;
+	const others = items.filter((item) => item !== primary);
+
+	return (
+		<div className="space-y-3 border-t pt-4">
+			<div className="flex items-start gap-3">
+				<Download className="h-5 w-5 mt-0.5 text-muted-foreground shrink-0" aria-hidden="true" />
+				<div>
+					<h3 className="font-medium">{t("downloadTitle")}</h3>
+					<p className="text-sm text-muted-foreground">{t("downloadHelp")}</p>
+				</div>
+			</div>
+
+			{primary === null ? (
+				<p className="text-sm text-muted-foreground">{t("notPublished")}</p>
+			) : (
+				<div className="space-y-2">
+					<Button asChild className="w-full sm:w-auto">
+						<a href={primary.url} download={primary.filename}>
+							<Download className="h-4 w-4 mr-2" />
+							{t("downloadButton", { platform: primary.label })}
+							<span className="ml-2 text-xs opacity-80">{formatBytes(primary.sizeBytes)}</span>
+						</a>
+					</Button>
+
+					{others.length > 0 ? (
+						<div className="space-y-2">
+							<Button
+								type="button"
+								variant="ghost"
+								size="sm"
+								className="text-muted-foreground"
+								onClick={() => setShowOthers((v) => !v)}
+								aria-expanded={showOthers}
+							>
+								<ChevronDown
+									className={`h-4 w-4 mr-1 transition-transform ${showOthers ? "rotate-180" : ""}`}
+								/>
+								{t("otherPlatforms")}
+							</Button>
+
+							{showOthers ? (
+								<ul className="space-y-1">
+									{others.map((item) => (
+										<li key={item.target}>
+											<a
+												href={item.url}
+												download={item.filename}
+												className="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-muted/50"
+											>
+												<Download className="h-4 w-4 shrink-0 text-muted-foreground" />
+												<span className="grow">{item.label}</span>
+												<span className="text-xs text-muted-foreground">
+													{formatBytes(item.sizeBytes)}
+												</span>
+											</a>
+										</li>
+									))}
+								</ul>
+							) : null}
+						</div>
+					) : null}
+				</div>
+			)}
 		</div>
 	);
 }

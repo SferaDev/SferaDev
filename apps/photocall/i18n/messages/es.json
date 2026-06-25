@@ -651,7 +651,12 @@
 				"copyCommand": "Copiar comando",
 				"generate": "Generar token",
 				"regenerate": "Regenerar token",
-				"instructions": "Ejecuta el puente local con este comando:"
+				"instructions": "Ejecuta el puente local con este comando:",
+				"downloadTitle": "Descarga la aplicación del puente",
+				"downloadHelp": "Descarga el puente de impresión para tu ordenador y luego ejecútalo con el comando de arriba.",
+				"downloadButton": "Descargar para {platform}",
+				"otherPlatforms": "Otras plataformas",
+				"notPublished": "Aún no se han publicado los binarios."
 			}
 		},
 		"templates": {
