@@ -323,6 +323,16 @@ function buildPrintJob(
 		"print-color-mode": "color",
 	};
 
+	// When NOT borderless, FIT the whole composite onto the media instead of
+	// letting the printer scale-to-FILL and clip the edges. The SELPHY's media is
+	// hagaki 100×148mm; a 4×6 composite (101.6×152.4) is slightly larger and a
+	// slightly different aspect, so a fill crops the bottom (e.g. the date). `fit`
+	// scales-to-fit (letterbox) so the entire composite lands on the sheet, nothing
+	// cut. Borderless keeps fill (media-col margins 0) for an intentional bleed.
+	if (!params.borderless) {
+		job["print-scaling"] = "fit";
+	}
+
 	if (useMediaCol) {
 		// Borderless: drop every margin to zero so the dye-sub bleeds to the edge.
 		job["media-col"] = params.borderless
