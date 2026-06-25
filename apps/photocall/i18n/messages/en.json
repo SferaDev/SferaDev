@@ -633,6 +633,20 @@
 				"dangerZoneHelp": "Permanently delete this event and all its data.",
 				"deleteEvent": "Delete Event",
 				"confirmDeleteEvent": "Are you sure you want to delete this event? This action cannot be undone."
+			},
+			"pairing": {
+				"title": "Print bridge pairing",
+				"help": "Pair an on-site print bridge so this event's prints reach your printer over the cloud — no kiosk-to-printer network needed.",
+				"tokenLabel": "Pairing token",
+				"loading": "Loading…",
+				"noToken": "No token yet — generate one to pair a bridge.",
+				"reveal": "Reveal token",
+				"hide": "Hide token",
+				"copy": "Copy token",
+				"copyUrl": "Copy URL",
+				"generate": "Generate token",
+				"regenerate": "Regenerate token",
+				"instructions": "Configure the on-site bridge with these environment variables, then restart it:"
 			}
 		},
 		"templates": {

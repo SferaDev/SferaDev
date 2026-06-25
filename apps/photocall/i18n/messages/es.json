@@ -638,6 +638,20 @@
 				"dangerZoneHelp": "Elimina de forma permanente este evento y todos sus datos.",
 				"deleteEvent": "Eliminar evento",
 				"confirmDeleteEvent": "¿Seguro que quieres eliminar este evento? Esta acción no se puede deshacer."
+			},
+			"pairing": {
+				"title": "Vinculación del puente de impresión",
+				"help": "Vincula un puente de impresión local para que las impresiones de este evento lleguen a tu impresora a través de la nube, sin necesidad de una red entre el quiosco y la impresora.",
+				"tokenLabel": "Token de vinculación",
+				"loading": "Cargando…",
+				"noToken": "Aún no hay token: genera uno para vincular un puente.",
+				"reveal": "Mostrar token",
+				"hide": "Ocultar token",
+				"copy": "Copiar token",
+				"copyUrl": "Copiar URL",
+				"generate": "Generar token",
+				"regenerate": "Regenerar token",
+				"instructions": "Configura el puente local con estas variables de entorno y luego reinícialo:"
 			}
 		},
 		"templates": {

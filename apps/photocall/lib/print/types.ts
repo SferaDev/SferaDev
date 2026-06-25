@@ -9,6 +9,13 @@ export type PrintMethod = "none" | "bridge" | "manual";
  * {@link executePrint}.
  */
 export interface EventPrintConfig {
+	/**
+	 * The event this print belongs to. Required for `bridge` mode: the kiosk
+	 * uploads the image to R2 and enqueues a server-side print job scoped to this
+	 * event (see {@link import("./index").executePrint}). Empty for the
+	 * `manual`/`none` paths and the dashboard test-print, which never enqueue.
+	 */
+	eventId: string;
 	/** `none` (no printing), `bridge` (auto network), `manual` (AirPrint dialog). */
 	printMethod: PrintMethod;
 	/** Base URL of the print bridge, e.g. `http://pi.local:3200` (bridge mode). */

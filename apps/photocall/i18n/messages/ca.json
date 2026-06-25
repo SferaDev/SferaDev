@@ -638,6 +638,20 @@
 				"dangerZoneHelp": "Elimina de manera permanent aquest esdeveniment i totes les seves dades.",
 				"deleteEvent": "Elimina l'esdeveniment",
 				"confirmDeleteEvent": "Segur que vols eliminar aquest esdeveniment? Aquesta acció no es pot desfer."
+			},
+			"pairing": {
+				"title": "Vinculació del pont d'impressió",
+				"help": "Vincula un pont d'impressió local perquè les impressions d'aquest esdeveniment arribin a la teva impressora a través del núvol, sense necessitat d'una xarxa entre el quiosc i la impressora.",
+				"tokenLabel": "Token de vinculació",
+				"loading": "Carregant…",
+				"noToken": "Encara no hi ha cap token: genera'n un per vincular un pont.",
+				"reveal": "Mostra el token",
+				"hide": "Amaga el token",
+				"copy": "Copia el token",
+				"copyUrl": "Copia l'URL",
+				"generate": "Genera el token",
+				"regenerate": "Regenera el token",
+				"instructions": "Configura el pont local amb aquestes variables d'entorn i reinicia'l:"
 			}
 		},
 		"templates": {

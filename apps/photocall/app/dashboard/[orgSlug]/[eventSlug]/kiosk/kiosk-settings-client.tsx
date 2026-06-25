@@ -8,6 +8,7 @@ import { useCallback, useEffect, useState } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import { getEventBySlug, updateEvent } from "@/actions/events";
 import { DashboardLanguagePicker } from "@/components/dashboard-language-picker";
+import { BridgePairingSection } from "@/components/event-settings/bridge-pairing-section";
 import {
 	type CameraSettingsData,
 	CameraSettingsSection,
@@ -243,6 +244,12 @@ export default function KioskSettingsPage() {
 							primaryColor={event.primaryColor ?? ""}
 							onPersistPrinter={persistPrinter}
 						/>
+						{formData.printMethod === "bridge" ? (
+							<BridgePairingSection
+								eventId={event.id}
+								origin={typeof window !== "undefined" ? window.location.origin : ""}
+							/>
+						) : null}
 					</TabsContent>
 				</Tabs>
 			</main>

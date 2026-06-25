@@ -7,14 +7,19 @@
  *  - `none`   — no-op.
  *  - `manual` — open the browser/AirPrint print dialog (`printImage`). Used on
  *               iPads paired directly to an AirPrint printer, no bridge needed.
- *  - `bridge` — POST the job to the print bridge for silent IPP printing. On a
- *               network failure the job is parked in the offline outbox and
- *               retried by use-print-sync.
+ *  - `bridge` — upload the image to R2 and enqueue a SERVER-side print job. The
+ *               on-site bridge polls the server outbound, claims the job and
+ *               prints it — so this works even on an HTTPS kiosk that can't reach
+ *               a plain-HTTP LAN bridge (mixed content). On a network/server
+ *               failure the job is parked in the offline outbox (carrying the
+ *               blob + config so the retry can re-run upload→enqueue) and drained
+ *               by use-print-sync.
  */
 
+import { generatePhotoUploadUrl } from "@/actions/photos";
+import { enqueuePrintJob } from "@/actions/print-jobs";
 import { printImage } from "@/lib/canvas-utils";
 import { type Orientation, PAPER_SIZE_MM, type PaperSize } from "@/lib/layout/types";
-import { resolveBridgeUrl, submitPrintJob } from "@/lib/print/bridge-client";
 import { enqueuePrint } from "@/lib/print/print-queue";
 import type { EventPrintConfig, PrintDispatchResult } from "@/lib/print/types";
 
@@ -36,20 +41,23 @@ function pageSizeHint(paperSize: PaperSize | null, orientation?: Orientation): s
 /**
  * Park a job in the offline outbox for later retry, returning a queued result.
  *
- * `reason` records WHY the immediate attempt didn't print — whether the bridge
- * was unreachable or it answered with a rejection (out of paper, bad printer
- * id, …). The job is queued either way (no-loss); the reason is surfaced on the
- * kiosk pending-prints notice and replaced by use-print-sync on each retry.
+ * `reason` records WHY the immediate attempt didn't enqueue — typically the
+ * upload or the server action failed (offline, server down). The blob + config
+ * are stored so use-print-sync can re-run the full upload→enqueue on each retry.
+ * The job is queued (no-loss) and the reason is surfaced on the kiosk
+ * pending-prints notice, replaced on each retry.
  */
 async function queueForRetry(
 	blob: Blob,
 	config: EventPrintConfig,
 	reason: string,
+	photoId?: string,
 ): Promise<PrintDispatchResult> {
 	await enqueuePrint({
 		id: crypto.randomUUID(),
 		blob,
 		config,
+		photoId,
 		queuedAt: Date.now(),
 		attempts: 0,
 		lastError: reason,
@@ -57,10 +65,56 @@ async function queueForRetry(
 	return { status: "queued", message: reason };
 }
 
-/** Dispatch a print for the composited strip according to the event config. */
+/**
+ * Upload a print-ready blob to R2 (presigned PUT) and enqueue a server-side
+ * print job for the on-site bridge to claim. Shared by the live kiosk dispatch
+ * and the offline-outbox drain so both go through the exact same path.
+ *
+ * Throws on any failure (no usable printer, upload rejected, enqueue failed) so
+ * the caller can park the job for retry. The image bytes go straight to R2 via
+ * the presigned PUT — never through the Server Action body.
+ */
+export async function uploadAndEnqueuePrintJob(
+	blob: Blob,
+	config: EventPrintConfig,
+	photoId?: string,
+): Promise<{ jobId: string }> {
+	if (!config.printPrinterId) throw new Error("No printer selected");
+	if (!config.printPaperSize) throw new Error("No paper size configured");
+
+	const { uploadUrl, key } = await generatePhotoUploadUrl(config.eventId, "image/jpeg");
+	const uploaded = await fetch(uploadUrl, {
+		method: "PUT",
+		headers: { "Content-Type": "image/jpeg" },
+		body: blob,
+	});
+	// fetch only rejects on network errors, so a non-2xx PUT would otherwise
+	// "succeed" and enqueue a job pointing at a failed object — treat it as a
+	// failure so the offline outbox retries the whole upload→enqueue.
+	if (!uploaded.ok) throw new Error(`Upload failed with status ${uploaded.status}`);
+
+	return enqueuePrintJob({
+		eventId: config.eventId,
+		imageStorageKey: key,
+		printerId: config.printPrinterId,
+		paperSize: config.printPaperSize,
+		mediaType: config.printMediaType ?? undefined,
+		borderless: config.printBorderless,
+		copies: config.printCopies,
+		orientation: config.printOrientation,
+		photoId,
+	});
+}
+
+/**
+ * Dispatch a print for the composited strip according to the event config.
+ * `photoId` associates a `bridge` job with its originating photo when known
+ * (optional — auto-print can fire before the photo record is created).
+ */
 export async function executePrint(
 	blob: Blob,
 	config: EventPrintConfig,
+	photoId?: string,
 ): Promise<PrintDispatchResult> {
 	switch (config.printMethod) {
 		case "none":
@@ -79,20 +133,30 @@ export async function executePrint(
 		}
 
 		case "bridge": {
-			// A blank bridge URL falls back to the mDNS hostname the bridge
-			// advertises, so an unconfigured kiosk still reaches a LAN bridge.
-			const bridgeUrl = resolveBridgeUrl(config.printBridgeUrl);
-			const result = await submitPrintJob(bridgeUrl, blob, config);
-			// The bridge accepted the job into its (no-loss) print queue. That hand-off
-			// is the success the kiosk can confirm — it can't track the physical print
-			// to completion — so report it as "done" (green positive feedback) rather
-			// than an indefinite "printing" spinner that never resolves.
-			if (result.ok) return { status: "done", jobId: result.jobId };
-			// EITHER a network failure (bridge unreachable) OR a bridge rejection
-			// (printer out of paper, unknown printer id, …). Both are queued — never
-			// lost — but we keep `result.error` so the pending notice can say WHY the
-			// print is waiting instead of treating a reject like an unreachable host.
-			return queueForRetry(blob, config, result.error);
+			// Without a target printer we can't enqueue (the schema requires a
+			// printerId). Park the job so it's never lost rather than enqueue a job
+			// with no printer; the picker auto-selects the sole reachable printer, so
+			// this is the rare "no printer configured at capture time" case.
+			if (!config.printPrinterId) {
+				return queueForRetry(blob, config, "No printer selected", photoId);
+			}
+			try {
+				// Upload the image to R2 and enqueue a server-side job. The on-site
+				// bridge claims it from the server outbound and prints — so this works
+				// on an HTTPS kiosk that can't reach a plain-HTTP LAN bridge.
+				const { jobId } = await uploadAndEnqueuePrintJob(blob, config, photoId);
+				// The job is durably queued server-side. That hand-off is the success
+				// the kiosk can confirm (it can't track the physical print), so report
+				// "done" (green positive feedback) rather than a spinner that never
+				// resolves — the dashboard queue tracks the rest of the lifecycle.
+				return { status: "done", jobId };
+			} catch (error) {
+				// Offline or server failure: park the blob + config in the outbox
+				// (no-loss) so use-print-sync can re-run upload→enqueue on the next
+				// cycle. The reason is surfaced on the pending-prints notice.
+				const reason = error instanceof Error ? error.message : "Could not enqueue the print";
+				return queueForRetry(blob, config, reason, photoId);
+			}
 		}
 	}
 }

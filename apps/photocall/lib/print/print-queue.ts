@@ -29,6 +29,13 @@ export interface QueuedPrintJob {
 	blob: Blob;
 	/** Print configuration resolved from the event at capture time. */
 	config: EventPrintConfig;
+	/**
+	 * The originating photo, when known at capture time. Threaded through to the
+	 * server-side print job on retry so the dashboard queue can associate the
+	 * print with its photo. Undefined when auto-print fired before the photo
+	 * record was created.
+	 */
+	photoId?: string;
 	/** Epoch millis when queued — used for ordering and display. */
 	queuedAt: number;
 	/** Delivery attempts so far; drives retry backoff only — jobs are NOT dropped on a cap. */
