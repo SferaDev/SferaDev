@@ -218,6 +218,7 @@
 			"sendingToPrinter": "Enviando a la impresora…",
 			"sentToPrinter": "Enviada a la impresora",
 			"printerOffline": "Impresora sin conexión: se imprimirá cuando se reconecte.",
+			"printQueued": "En cola",
 			"printingFailed": "Error al imprimir. Inténtalo de nuevo.",
 			"retryPrint": "Reintentar impresión",
 			"takeAnother": "Hacer otra foto",
@@ -719,6 +720,7 @@
 			"queueTitle": "Cola de impresión",
 			"queueEmpty": "Aún no hay trabajos de impresión.",
 			"jobAttempts": "{count} intentos",
+			"queuedOfflineNote": "En espera en este dispositivo: se imprimirá cuando el puente se reconecte.",
 			"jobStatus": {
 				"pending": "Pendiente",
 				"printing": "Imprimiendo",

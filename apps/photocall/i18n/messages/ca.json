@@ -218,6 +218,7 @@
 			"sendingToPrinter": "S'està enviant a la impressora…",
 			"sentToPrinter": "Enviada a la impressora",
 			"printerOffline": "Impressora sense connexió: s'imprimirà quan es torni a connectar.",
+			"printQueued": "A la cua",
 			"printingFailed": "Error en imprimir. Torna-ho a provar.",
 			"retryPrint": "Reintenta la impressió",
 			"takeAnother": "Fes una altra foto",
@@ -719,6 +720,7 @@
 			"queueTitle": "Cua d'impressió",
 			"queueEmpty": "Encara no hi ha treballs d'impressió.",
 			"jobAttempts": "{count} intents",
+			"queuedOfflineNote": "En espera en aquest dispositiu: s'imprimirà quan el pont es torni a connectar.",
 			"jobStatus": {
 				"pending": "Pendent",
 				"printing": "Imprimint",

@@ -213,6 +213,7 @@
 			"sendingToPrinter": "Sending to printer…",
 			"sentToPrinter": "Sent to printer",
 			"printerOffline": "Printer offline — will print when it reconnects.",
+			"printQueued": "Queued",
 			"printingFailed": "Printing failed. Please try again.",
 			"retryPrint": "Retry print",
 			"takeAnother": "Take Another Photo",
@@ -714,6 +715,7 @@
 			"queueTitle": "Print queue",
 			"queueEmpty": "No print jobs yet.",
 			"jobAttempts": "{count} attempts",
+			"queuedOfflineNote": "Waiting on this device — will print when the bridge reconnects.",
 			"jobStatus": {
 				"pending": "Pending",
 				"printing": "Printing",

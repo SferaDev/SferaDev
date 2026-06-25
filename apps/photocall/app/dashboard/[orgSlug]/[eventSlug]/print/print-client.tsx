@@ -33,6 +33,7 @@ import {
 	resolveBridgeUrl,
 	submitPrintJob,
 } from "@/lib/print/bridge-client";
+import { getQueuedPrints, type QueuedPrintJob } from "@/lib/print/print-queue";
 import type { EventPrintConfig } from "@/lib/print/types";
 
 /** How often the live print queue + printer list is polled (ms). */
@@ -86,8 +87,19 @@ export default function PrintManagement() {
 	const [online, setOnline] = useState<boolean | null>(null);
 	const [printers, setPrinters] = useState<BridgePrinter[]>([]);
 	const [jobs, setJobs] = useState<BridgeJob[]>([]);
+	// Locally-queued prints parked in the offline outbox (IndexedDB) when the
+	// bridge was unreachable. NOTE: this is per-device — it reflects only the jobs
+	// queued on THIS browser/kiosk, not a server-side queue, so a different device
+	// won't see another device's pending prints here.
+	const [offlineJobs, setOfflineJobs] = useState<QueuedPrintJob[]>([]);
 	const [loadError, setLoadError] = useState<string | null>(null);
 	const [refreshing, setRefreshing] = useState(false);
+
+	/** Load the offline print outbox so locally-queued jobs are never invisible. */
+	const refreshOfflineJobs = useCallback(async () => {
+		if (typeof indexedDB === "undefined") return;
+		setOfflineJobs(await getQueuedPrints());
+	}, []);
 
 	const [newPrinterUri, setNewPrinterUri] = useState("");
 	const [addingPrinter, setAddingPrinter] = useState(false);
@@ -98,6 +110,9 @@ export default function PrintManagement() {
 
 	/** Poll the bridge for connection, printers and the job queue. */
 	const refresh = useCallback(async () => {
+		// Always refresh the offline outbox too: queued prints exist regardless of
+		// whether the bridge is reachable (in fact, especially when it isn't).
+		await refreshOfflineJobs();
 		if (!bridgeUrl) {
 			setOnline(null);
 			return;
@@ -124,7 +139,7 @@ export default function PrintManagement() {
 		} finally {
 			setRefreshing(false);
 		}
-	}, [bridgeUrl, t]);
+	}, [bridgeUrl, t, refreshOfflineJobs]);
 
 	// Poll on an interval while the bridge URL is configured.
 	const refreshRef = useRef(refresh);
@@ -372,15 +387,21 @@ export default function PrintManagement() {
 							) : null}
 						</section>
 
-						{/* Live print queue */}
+						{/* Print queue: locally-queued offline jobs first (they haven't reached
+						    the bridge yet), then the bridge's live jobs. The empty state shows
+						    only when BOTH are empty, so a parked offline job is never mistaken
+						    for a lost one. */}
 						<section className="space-y-3">
 							<h2 className="font-medium">{t("queueTitle")}</h2>
-							{jobs.length === 0 ? (
+							{jobs.length === 0 && offlineJobs.length === 0 ? (
 								<div className="rounded-lg border p-4 text-sm text-muted-foreground">
 									{t("queueEmpty")}
 								</div>
 							) : (
 								<div className="divide-y rounded-lg border">
+									{offlineJobs.map((job) => (
+										<OfflineJobRow key={job.id} job={job} />
+									))}
 									{jobs.map((job) => (
 										<JobRow key={job.id} job={job} />
 									))}
@@ -502,6 +523,30 @@ function JobRow({ job }: { job: BridgeJob }) {
 			<Badge variant={job.status === "failed" ? "destructive" : "secondary"}>
 				{t(`jobStatus.${job.status}`)}
 			</Badge>
+		</div>
+	);
+}
+
+/**
+ * A print job parked in this device's offline outbox (IndexedDB), shown in the
+ * same queue as the bridge's live jobs so a host can see it's waiting, not lost.
+ * Mirrors {@link JobRow}'s layout but always renders the "pending" state — these
+ * jobs have not reached the bridge yet — and surfaces `lastError` as the reason
+ * it's waiting (falling back to a generic "waiting on this device" note).
+ */
+function OfflineJobRow({ job }: { job: QueuedPrintJob }) {
+	const t = useTranslations("dashboard.print");
+	return (
+		<div className="flex items-center gap-3 p-3">
+			<JobStatusIcon status="pending" />
+			<div className="flex-1 min-w-0">
+				<div className="font-medium text-sm truncate">{t("jobStatus.pending")}</div>
+				<div className="text-xs text-muted-foreground truncate">
+					{job.lastError ?? t("queuedOfflineNote")}
+					{job.attempts > 1 ? ` · ${t("jobAttempts", { count: job.attempts })}` : ""}
+				</div>
+			</div>
+			<Badge variant="secondary">{t("jobStatus.pending")}</Badge>
 		</div>
 	);
 }
