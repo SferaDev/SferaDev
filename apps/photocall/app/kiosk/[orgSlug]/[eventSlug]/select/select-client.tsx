@@ -106,6 +106,22 @@ export default function KioskSelectPage() {
 		void goToCapture(null, "none");
 	};
 
+	// Boomerangs fill the WHOLE frame with the animated clip, so only single-slot
+	// templates make sense — a multi-slot strip would leave the clip stuck in one
+	// strip cell with the other cells empty. In boomerang mode we therefore offer
+	// only templates whose parsed layout has exactly one photo slot; strip mode
+	// shows every template as before. When the host has no single-slot template the
+	// filtered list is empty and the empty-state ("continue without frame") lets a
+	// plain, undecorated boomerang still happen.
+	const visibleTemplates = useMemo(() => {
+		if (!templates) return templates;
+		if (mode !== "boomerang") return templates;
+		return templates.filter((template) => {
+			const layout = parseLayoutJson(template.layoutJson);
+			return layout != null && layout.photoSlots.length === 1;
+		});
+	}, [templates, mode]);
+
 	if (eventLoading || templatesLoading) {
 		return (
 			<div
@@ -186,7 +202,7 @@ export default function KioskSelectPage() {
 					</Button>
 				</div>
 
-				{templates && templates.length === 0 ? (
+				{visibleTemplates && visibleTemplates.length === 0 ? (
 					<div className="flex flex-1 flex-col items-center justify-center text-center">
 						<p className="text-2xl sm:text-3xl font-semibold mb-3">{t("noTemplatesTitle")}</p>
 						<p className="text-lg sm:text-xl text-white/70 mb-6">{t("noTemplatesSubtitle")}</p>
@@ -205,7 +221,7 @@ export default function KioskSelectPage() {
 					</div>
 				) : (
 					<div className="grid min-h-0 flex-1 auto-rows-max grid-cols-2 gap-4 overflow-y-auto sm:gap-6 md:grid-cols-3 lg:grid-cols-4">
-						{templates?.map((template, index) => {
+						{visibleTemplates?.map((template, index) => {
 							const layout = parseLayoutJson(template.layoutJson);
 							return (
 								<motion.button
