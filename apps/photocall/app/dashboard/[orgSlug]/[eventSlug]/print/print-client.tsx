@@ -18,6 +18,7 @@ import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import { getEventBySlug } from "@/actions/events";
+import { listPrintJobs, type PrintJob } from "@/actions/print-jobs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -88,6 +89,10 @@ export default function PrintManagement() {
 	const [online, setOnline] = useState<boolean | null>(null);
 	const [printers, setPrinters] = useState<BridgePrinter[]>([]);
 	const [jobs, setJobs] = useState<BridgeJob[]>([]);
+	// The SERVER-side print queue (printJobs rows). This is the source of truth and
+	// is visible on every device — unlike the bridge's direct live-jobs list (which
+	// needs a reachable LAN bridge) and the per-device offline outbox below.
+	const [serverJobs, setServerJobs] = useState<PrintJob[]>([]);
 	// Locally-queued prints parked in the offline outbox (IndexedDB) when the
 	// bridge was unreachable. NOTE: this is per-device — it reflects only the jobs
 	// queued on THIS browser/kiosk, not a server-side queue, so a different device
@@ -114,6 +119,15 @@ export default function PrintManagement() {
 		// Always refresh the offline outbox too: queued prints exist regardless of
 		// whether the bridge is reachable (in fact, especially when it isn't).
 		await refreshOfflineJobs();
+		// The server-side queue is the source of truth and works on every device,
+		// independent of any reachable LAN bridge — fetch it on every poll.
+		if (event) {
+			try {
+				setServerJobs(await listPrintJobs(event.id));
+			} catch {
+				// Transient: keep the last-known queue rather than flashing empty.
+			}
+		}
 		if (!bridgeUrl) {
 			setOnline(null);
 			return;
@@ -140,17 +154,20 @@ export default function PrintManagement() {
 		} finally {
 			setRefreshing(false);
 		}
-	}, [bridgeUrl, t, refreshOfflineJobs]);
+	}, [event, bridgeUrl, t, refreshOfflineJobs]);
 
-	// Poll on an interval while the bridge URL is configured.
+	// Poll on an interval once the event has loaded. The server-side queue + the
+	// offline outbox are polled regardless of any bridge URL (they don't depend on
+	// a reachable LAN bridge); the bridge-specific calls inside `refresh` no-op
+	// when no bridge URL is configured.
 	const refreshRef = useRef(refresh);
 	refreshRef.current = refresh;
 	useEffect(() => {
-		if (!bridgeUrl) return;
+		if (!event) return;
 		void refreshRef.current();
 		const timer = setInterval(() => void refreshRef.current(), POLL_INTERVAL_MS);
 		return () => clearInterval(timer);
-	}, [bridgeUrl]);
+	}, [event]);
 
 	/** Build a small solid-color test JPEG so operators can validate the path. */
 	const buildTestImage = useCallback(async (): Promise<Blob | null> => {
@@ -186,6 +203,7 @@ export default function PrintManagement() {
 					return;
 				}
 				const config: EventPrintConfig = {
+					eventId: event.id,
 					printMethod: "bridge",
 					printBridgeUrl: bridgeUrl,
 					printPrinterId: printerId,
@@ -387,34 +405,34 @@ export default function PrintManagement() {
 								<p className="text-sm text-muted-foreground">{actionMessage}</p>
 							) : null}
 						</section>
-
-						{/* Print queue: locally-queued offline jobs first (they haven't reached
-						    the bridge yet), then the bridge's live jobs. The empty state shows
-						    only when BOTH are empty, so a parked offline job is never mistaken
-						    for a lost one. */}
-						<section className="space-y-3">
-							<h2 className="font-medium">{t("queueTitle")}</h2>
-							{jobs.length === 0 && offlineJobs.length === 0 ? (
-								<div className="rounded-lg border p-4 text-sm text-muted-foreground">
-									{t("queueEmpty")}
-								</div>
-							) : (
-								<div className="divide-y rounded-lg border">
-									{offlineJobs.map((job) => (
-										<OfflineJobRow
-											key={job.id}
-											job={job}
-											onRemoved={() => void refreshOfflineJobs()}
-										/>
-									))}
-									{jobs.map((job) => (
-										<JobRow key={job.id} job={job} />
-									))}
-								</div>
-							)}
-						</section>
 					</>
 				) : null}
+
+				{/* Print queue (source of truth): the SERVER-side queue, visible on every
+				    device. Locally-queued offline jobs (this device's IndexedDB outbox,
+				    not yet enqueued) are shown ABOVE it. The empty state shows only when
+				    all of them are empty, so a parked job is never mistaken for a lost
+				    one. The bridge's direct live-jobs list is appended when reachable. */}
+				<section className="space-y-3">
+					<h2 className="font-medium">{t("queueTitle")}</h2>
+					{serverJobs.length === 0 && jobs.length === 0 && offlineJobs.length === 0 ? (
+						<div className="rounded-lg border p-4 text-sm text-muted-foreground">
+							{t("queueEmpty")}
+						</div>
+					) : (
+						<div className="divide-y rounded-lg border">
+							{offlineJobs.map((job) => (
+								<OfflineJobRow key={job.id} job={job} onRemoved={() => void refreshOfflineJobs()} />
+							))}
+							{serverJobs.map((job) => (
+								<ServerJobRow key={job.id} job={job} />
+							))}
+							{jobs.map((job) => (
+								<JobRow key={job.id} job={job} />
+							))}
+						</div>
+					)}
+				</section>
 			</main>
 		</div>
 	);
@@ -527,6 +545,50 @@ function JobRow({ job }: { job: BridgeJob }) {
 			</div>
 			<Badge variant={job.status === "failed" ? "destructive" : "secondary"}>
 				{t(`jobStatus.${job.status}`)}
+			</Badge>
+		</div>
+	);
+}
+
+/** Map a server-side printJobs status to a queue status icon. */
+function ServerJobStatusIcon({ status }: { status: PrintJob["status"] }) {
+	switch (status) {
+		case "claimed":
+		case "printing":
+			return <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" aria-hidden="true" />;
+		case "done":
+			return <CheckCircle2 className="h-5 w-5 text-green-600" aria-hidden="true" />;
+		case "failed":
+			return <XCircle className="h-5 w-5 text-destructive" aria-hidden="true" />;
+		default:
+			return <div className="h-5 w-5 rounded-full border-2 border-muted" aria-hidden="true" />;
+	}
+}
+
+/**
+ * A row in the SERVER-side print queue (a printJobs row). Source of truth, shown
+ * on every device. Surfaces the target printer, the lifecycle status
+ * (queued/claimed/printing/done/failed) and the last error when it failed.
+ */
+function ServerJobRow({ job }: { job: PrintJob }) {
+	const t = useTranslations("dashboard.print");
+	// printJobs distinguishes "queued" (not yet claimed) from "claimed"; the
+	// existing labels only cover pending/printing/done/failed, so fold both
+	// pre-print states onto the "pending" label and map "claimed" onto "printing".
+	const labelKey =
+		job.status === "queued" ? "pending" : job.status === "claimed" ? "printing" : job.status;
+	return (
+		<div className="flex items-center gap-3 p-3">
+			<ServerJobStatusIcon status={job.status} />
+			<div className="flex-1 min-w-0">
+				<div className="font-medium text-sm truncate">{job.printerId}</div>
+				<div className="text-xs text-muted-foreground truncate">
+					{job.lastError ?? t(`jobStatus.${labelKey}`)}
+					{job.attempts > 1 ? ` · ${t("jobAttempts", { count: job.attempts })}` : ""}
+				</div>
+			</div>
+			<Badge variant={job.status === "failed" ? "destructive" : "secondary"}>
+				{t(`jobStatus.${labelKey}`)}
 			</Badge>
 		</div>
 	);

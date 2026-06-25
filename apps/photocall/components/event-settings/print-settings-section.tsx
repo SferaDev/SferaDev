@@ -16,18 +16,26 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { DEFAULT_BRAND_COLOR } from "@/lib/branding";
+import { printImage } from "@/lib/canvas-utils";
 import type { Orientation, PaperSize } from "@/lib/layout/types";
+import { PAPER_SIZE_MM } from "@/lib/layout/types";
 import {
 	type BridgePrinter,
 	DEFAULT_BRIDGE_URL,
 	listBridgePrinters,
 	resolveBridgeUrl,
+	submitPrintJob,
 } from "@/lib/print/bridge-client";
-import { executePrint } from "@/lib/print/index";
 import type { EventPrintConfig, PrintMethod } from "@/lib/print/types";
 
 /** How often the printer picker re-polls the bridge for reachable printers (ms). */
 const PRINTER_POLL_INTERVAL_MS = 5_000;
+
+/** CSS `@page size` hint (mm) for the manual (AirPrint) test-print dialog. */
+function pageSizeHint(paperSize: PaperSize): string {
+	const { widthMm, heightMm } = PAPER_SIZE_MM[paperSize];
+	return `${widthMm}mm ${heightMm}mm`;
+}
 
 /** Print fields the print section reads and writes. */
 export interface PrintSettingsData {
@@ -84,6 +92,9 @@ export function PrintSettingsSection({
 	const autoSelectedRef = useRef(false);
 
 	const printConfig: EventPrintConfig = {
+		// The settings test-print never enqueues a server-side job (it validates the
+		// configured LAN bridge / AirPrint dialog directly), so it has no eventId.
+		eventId: "",
 		printMethod: data.printMethod,
 		printBridgeUrl: data.printBridgeUrl || null,
 		printPrinterId: data.printPrinterId || null,
@@ -207,7 +218,20 @@ export function PrintSettingsSection({
 			const blob = await new Promise<Blob | null>((resolve) =>
 				canvas.toBlob(resolve, "image/jpeg", 0.9),
 			);
-			if (blob) await executePrint(blob, printConfig);
+			if (!blob) return;
+			// The settings test validates the LAN bridge / AirPrint path directly,
+			// NOT the server-side print queue: it proves the configured bridge URL +
+			// printer (or the AirPrint dialog) work before an event goes live.
+			if (data.printMethod === "manual") {
+				const url = URL.createObjectURL(blob);
+				try {
+					await printImage(url, pageSizeHint(data.printPaperSize));
+				} finally {
+					setTimeout(() => URL.revokeObjectURL(url), 60_000);
+				}
+			} else if (data.printMethod === "bridge") {
+				await submitPrintJob(resolveBridgeUrl(data.printBridgeUrl), blob, printConfig);
+			}
 		} catch (error) {
 			console.error("Test print failed:", error);
 		} finally {

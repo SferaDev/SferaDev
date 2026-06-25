@@ -149,6 +149,10 @@ export default function KioskResultPage() {
 	// Hold the composited strip (and its pixel dims, needed for 2-up tiling) so we
 	// can (re)print without re-fetching it.
 	const printBlobRef = useRef<{ blob: Blob; width: number; height: number } | null>(null);
+	// The created photo's id, once the record exists, so a (bridge) print can be
+	// associated with its photo. Null until createPhoto succeeds — auto-print may
+	// fire before then, in which case the job simply carries no photoId.
+	const photoIdRef = useRef<string | null>(null);
 	// Guards a single auto-print per composed photo.
 	const autoPrintDoneRef = useRef(false);
 	// Synchronous lock against a double-tap on the print button submitting twice.
@@ -168,6 +172,7 @@ export default function KioskResultPage() {
 	// Print configuration resolved from the event (null until the event loads).
 	const printConfig: EventPrintConfig | null = event
 		? {
+				eventId: event.id,
 				printMethod: (event.printMethod as PrintMethod | null) ?? "none",
 				// Blank bridge URL → fall back to the bridge's advertised mDNS hostname.
 				printBridgeUrl: resolveBridgeUrl(event.printBridgeUrl),
@@ -490,6 +495,8 @@ export default function KioskResultPage() {
 					height: image.height,
 					sizeBytes: image.blob.size,
 				});
+				// Associate any (subsequent or in-flight) print with this photo.
+				photoIdRef.current = result.photoId;
 			} catch (uploadErr) {
 				// Offline / upload failure: hold ALL blobs in the outbox so nothing is
 				// lost; background sync re-uploads them and creates the record on
@@ -608,7 +615,7 @@ export default function KioskResultPage() {
 				printJobConfig = { ...printConfig, printPaperSize: "4x6", printOrientation: "landscape" };
 			}
 
-			const result = await executePrint(printBlob, printJobConfig);
+			const result = await executePrint(printBlob, printJobConfig, photoIdRef.current ?? undefined);
 			setPrintStatus(result.status);
 		} catch (err) {
 			console.error("Print failed:", err);
@@ -640,6 +647,7 @@ export default function KioskResultPage() {
 		setQrCodeUrl(null);
 		processingStartedRef.current = false;
 		printBlobRef.current = null;
+		photoIdRef.current = null;
 		autoPrintDoneRef.current = false;
 		printingRef.current = false;
 		setPrintStatus("idle");
