@@ -31,6 +31,39 @@ import type { PaperSize, PrintParams, PrintResult } from "./types.js";
 const IPP_VERSIONS: readonly IPPVersion[] = ["2.0", "1.1"];
 
 /**
+ * Teach the bundled `ipp` v2 serializer about `print-scaling`.
+ *
+ * The library's attribute table omits `print-scaling`, so its serializer THROWS
+ * `Unknown attribute: print-scaling` — which aborts the ENTIRE Print-Job before
+ * it is sent. We set `print-scaling: "fit"` on non-borderless jobs (so the
+ * SELPHY letterboxes a 4x6 composite onto its slightly-smaller hagaki media
+ * instead of scaling-to-fill and cropping the edges), so without this every
+ * non-borderless print fails. The SELPHY advertises
+ * `print-scaling-supported = auto,auto-fit,fill,fit,none`, so the value is valid;
+ * the library is merely missing the definition.
+ *
+ * Register it as a keyword on every attribute group that already defines the
+ * analogous `print-color-mode`, reusing that attribute's exact syntax descriptor,
+ * on the shared table the serializer reads (`ipp.serialize` and `ipp.Printer`
+ * both go through it). `@types/ipp` types `attributes` as opaque `object`, hence
+ * the single localized cast. Runs once at module load.
+ */
+function registerPrintScalingAttribute(): void {
+	const table = ipp.attributes as Record<string, Record<string, unknown> | undefined>;
+	for (const group of Object.values(table)) {
+		if (
+			group &&
+			typeof group === "object" &&
+			"print-color-mode" in group &&
+			!("print-scaling" in group)
+		) {
+			group["print-scaling"] = group["print-color-mode"];
+		}
+	}
+}
+registerPrintScalingAttribute();
+
+/**
  * Attributes we ask for in every Get-Printer-Attributes call. We name the
  * SPECIFIC attributes we parse instead of requesting the whole
  * `printer-description` group. The Canon SELPHY answers a group request with
