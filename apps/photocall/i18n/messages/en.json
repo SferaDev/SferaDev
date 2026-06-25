@@ -646,7 +646,12 @@
 				"copyCommand": "Copy command",
 				"generate": "Generate token",
 				"regenerate": "Regenerate token",
-				"instructions": "Run the on-site bridge with this command:"
+				"instructions": "Run the on-site bridge with this command:",
+				"downloadTitle": "Download the bridge app",
+				"downloadHelp": "Download the print bridge for your computer, then run it with the command above.",
+				"downloadButton": "Download for {platform}",
+				"otherPlatforms": "Other platforms",
+				"notPublished": "Binaries haven't been published yet."
 			}
 		},
 		"templates": {

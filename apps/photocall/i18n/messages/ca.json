@@ -651,7 +651,12 @@
 				"copyCommand": "Copia l'ordre",
 				"generate": "Genera el token",
 				"regenerate": "Regenera el token",
-				"instructions": "Executa el pont local amb aquesta ordre:"
+				"instructions": "Executa el pont local amb aquesta ordre:",
+				"downloadTitle": "Descarrega l'aplicació del pont",
+				"downloadHelp": "Descarrega el pont d'impressió per al teu ordinador i després executa'l amb l'ordre de dalt.",
+				"downloadButton": "Descarrega per a {platform}",
+				"otherPlatforms": "Altres plataformes",
+				"notPublished": "Encara no s'han publicat els binaris."
 			}
 		},
 		"templates": {

@@ -3,6 +3,7 @@
 import { and, desc, eq, isNull } from "drizzle-orm";
 import { generateToken, requireEventAccess } from "@/lib/auth-helpers";
 import { db, schema } from "@/lib/db";
+import { getFileUrl, getObjectSize } from "@/lib/storage";
 
 /**
  * Server-side print queue.
@@ -160,4 +161,74 @@ export async function listReportedPrinters(eventId: string): Promise<ReportedPri
 		reachable: row.reachable,
 		lastSeenAt: row.lastSeenAt,
 	}));
+}
+
+/** A compiled bridge binary available for download from the pairing page. */
+export interface BridgeDownload {
+	/** Bun compile target the binary was built for (stable id for OS matching). */
+	target: string;
+	/** Human-readable platform label, e.g. "macOS (Apple Silicon)". */
+	label: string;
+	/** Clean filename the browser saves the download as. */
+	filename: string;
+	/** Presigned/public download URL carrying a Content-Disposition attachment. */
+	url: string;
+	sizeBytes: number;
+}
+
+/**
+ * The publishable bridge targets, in the order the dashboard lists them. `target`
+ * matches `apps/print-bridge/scripts/build-bin.ts` and the R2 key suffix; the
+ * `windows` flag adds the `.exe` extension on both the key and the filename.
+ */
+const BRIDGE_TARGETS: ReadonlyArray<{
+	target: string;
+	label: string;
+	/** Clean download filename (without the `.exe`, which is appended for Windows). */
+	filename: string;
+	windows?: boolean;
+}> = [
+	{
+		target: "bun-darwin-arm64",
+		label: "macOS (Apple Silicon)",
+		filename: "print-bridge-macos-arm64",
+	},
+	{ target: "bun-darwin-x64", label: "macOS (Intel)", filename: "print-bridge-macos-intel" },
+	{ target: "bun-linux-x64", label: "Linux (x64)", filename: "print-bridge-linux-x64" },
+	{ target: "bun-linux-arm64", label: "Linux (ARM64)", filename: "print-bridge-linux-arm64" },
+	{
+		target: "bun-windows-x64",
+		label: "Windows (x64)",
+		filename: "print-bridge-windows",
+		windows: true,
+	},
+];
+
+/**
+ * The bridge binaries available for download for this event's operator.
+ *
+ * Binaries are published out-of-band to R2 under `bridge-binaries/` by
+ * `scripts/publish-bridge-binaries.ts` (they're ~59 MB each, so they never ship
+ * in the repo/deploy). We probe each expected key with {@link getObjectSize} and
+ * only return the targets that have actually been uploaded — so the UI shows a
+ * "not published yet" hint instead of dead links when the host hasn't run the
+ * publish script. Returns `[]` when none exist.
+ */
+export async function listBridgeDownloads(eventId: string): Promise<BridgeDownload[]> {
+	await requireEventAccess(eventId);
+
+	const downloads = await Promise.all(
+		BRIDGE_TARGETS.map(async ({ target, label, filename, windows }) => {
+			const downloadFilename = windows ? `${filename}.exe` : filename;
+			const key = `bridge-binaries/print-bridge-${target}${windows ? ".exe" : ""}`;
+
+			const sizeBytes = await getObjectSize(key);
+			if (sizeBytes === null) return null;
+
+			const url = await getFileUrl(key, { downloadFilename });
+			return { target, label, filename: downloadFilename, url, sizeBytes };
+		}),
+	);
+
+	return downloads.filter((download): download is BridgeDownload => download !== null);
 }
