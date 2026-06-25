@@ -23,7 +23,11 @@ import { parseLayoutJson } from "@/lib/layout/parse";
 import type { FilterKind, Orientation, PaperSize } from "@/lib/layout/types";
 import { printPixelSize } from "@/lib/layout/types";
 import { enqueuePhoto } from "@/lib/offline-queue";
-import { clearPhotoboothSession, readPhotoboothSession } from "@/lib/photobooth-session";
+import {
+	clearPhotoboothSession,
+	getBoomerangBlob,
+	readPhotoboothSession,
+} from "@/lib/photobooth-session";
 import { resolveBridgeUrl } from "@/lib/print/bridge-client";
 import { executePrint } from "@/lib/print/index";
 import type { EventPrintConfig, PrintJobStatus, PrintMethod } from "@/lib/print/types";
@@ -336,16 +340,19 @@ export default function KioskResultPage() {
 		processingStartedRef.current = true;
 
 		try {
-			const stored = readPhotoboothSession(sessionId);
-			if (!stored?.boomerangGif) {
+			// The GIF was stashed as a Blob in IndexedDB by the capture screen (too big
+			// for sessionStorage); read it back here. Its dimensions ride in the
+			// session JSON, which is tiny.
+			const blob = await getBoomerangBlob(sessionId);
+			if (!blob) {
 				setError(t("photosNotFound"));
 				setIsProcessing(false);
 				return;
 			}
 
-			const blob = await dataUrlToBlob(stored.boomerangGif);
-			const width = stored.boomerangWidth ?? 0;
-			const height = stored.boomerangHeight ?? 0;
+			const stored = readPhotoboothSession(sessionId);
+			const width = stored?.boomerangWidth ?? 0;
+			const height = stored?.boomerangHeight ?? 0;
 
 			// Preview the GIF immediately (the result screen renders it as-is).
 			const previewUrl = URL.createObjectURL(blob);

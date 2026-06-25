@@ -24,7 +24,7 @@ import { cssFilterFor } from "@/lib/compose/css-filters";
 import { requiredCaptureCount, slotCaptureIndices } from "@/lib/layout/captures";
 import { parseLayoutJson } from "@/lib/layout/parse";
 import { type BoothLayout, type FilterKind, printPixelSize } from "@/lib/layout/types";
-import { writePhotoboothSession } from "@/lib/photobooth-session";
+import { putBoomerangBlob, writePhotoboothSession } from "@/lib/photobooth-session";
 import { cn } from "@/lib/utils";
 
 /** Pause (ms) between auto-chained shots so guests can re-pose. */
@@ -94,17 +94,6 @@ async function buildBoomerangAssetResolver(
 	}
 	const urls = assetKeys.length > 0 ? await resolveAssetUrls(eventId, assetKeys) : {};
 	return (src: string) => urls[src] ?? src;
-}
-
-/** Read a Blob as a base64 `data:` URL, so the encoded GIF can ride through
- * sessionStorage to the result screen without a server round-trip. */
-function blobToDataUrl(blob: Blob): Promise<string> {
-	return new Promise((resolve, reject) => {
-		const reader = new FileReader();
-		reader.onload = () => resolve(reader.result as string);
-		reader.onerror = () => reject(reader.error ?? new Error("Failed to read blob"));
-		reader.readAsDataURL(blob);
-	});
 }
 
 export default function KioskCapturePage() {
@@ -362,12 +351,12 @@ export default function KioskCapturePage() {
 			const blob = await encodeBoomerangGif(decorated, { frameDelayMs: BOOMERANG_FRAME_DELAY_MS });
 			const { width, height } = decorated[0];
 
-			// Stash the encoded GIF in the session (the result screen uploads it).
-			const gifDataUrl = await blobToDataUrl(blob);
+			// Stash the encoded GIF as a Blob in IndexedDB (it's multiple MB at high
+			// resolution — too big for sessionStorage); the result screen reads it back.
+			await putBoomerangBlob(sessionId, blob);
 			writePhotoboothSession(sessionId, {
 				shots: [],
 				filter,
-				boomerangGif: gifDataUrl,
 				boomerangWidth: width,
 				boomerangHeight: height,
 			});
