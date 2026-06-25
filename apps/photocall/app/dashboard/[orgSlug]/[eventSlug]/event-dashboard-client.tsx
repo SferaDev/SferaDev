@@ -6,12 +6,16 @@ import {
 	ChevronLeft,
 	Download,
 	ExternalLink,
+	Globe,
 	Image,
+	Images,
 	Layout,
 	Loader2,
+	Pause,
 	Play,
 	Printer,
 	Settings,
+	Share2,
 	Sliders,
 	Trash2,
 } from "lucide-react";
@@ -23,9 +27,23 @@ import useSWR, { useSWRConfig } from "swr";
 import { getEventBySlug, getEventStats, updateEvent } from "@/actions/events";
 import { deleteAllPhotos, deletePhoto, listPhotos } from "@/actions/photos";
 import { listTemplates } from "@/actions/templates";
-import { DashboardLanguagePicker } from "@/components/dashboard-language-picker";
+import { useDashboardLocale } from "@/components/dashboard-i18n-provider";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuSub,
+	DropdownMenuSubContent,
+	DropdownMenuSubTrigger,
+	DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { localeNames } from "@/i18n/config";
+import { dashboardLocales } from "@/i18n/dashboard-messages";
 import { useSession } from "@/lib/auth-client";
 
 export default function EventDashboard() {
@@ -39,6 +57,8 @@ export default function EventDashboard() {
 	const t = useTranslations("dashboard.event");
 	const te = useTranslations("dashboard.events");
 	const tc = useTranslations("dashboard.common");
+	const tStatus = useTranslations("dashboard.eventStatus");
+	const { locale, setLocale } = useDashboardLocale();
 
 	const { data: event } = useSWR(["events", orgSlug, eventSlug], () =>
 		getEventBySlug(orgSlug, eventSlug),
@@ -118,59 +138,109 @@ export default function EventDashboard() {
 								<ChevronLeft className="h-5 w-5" />
 							</Link>
 							<div>
-								<h1 className="font-bold text-xl">{event.name}</h1>
+								<div className="flex items-center gap-2">
+									<h1 className="font-bold text-xl">{event.name}</h1>
+									<Badge variant={event.status === "active" ? "success" : "secondary"}>
+										{tStatus(event.status)}
+									</Badge>
+								</div>
 								<p className="text-sm text-muted-foreground">{event.organization?.name}</p>
 							</div>
 						</div>
 						<div className="flex items-center gap-2">
-							<Button
-								variant={event.status === "active" ? "default" : "outline"}
-								onClick={toggleStatus}
-							>
-								{event.status === "active" ? (
-									<>
-										<Play className="h-4 w-4 mr-2" />
-										{t("active")}
-									</>
-								) : (
-									<>
-										<Play className="h-4 w-4 mr-2" />
-										{t("activate")}
-									</>
-								)}
-							</Button>
-							<Button variant="outline" asChild>
-								<Link href={`/dashboard/${orgSlug}/${eventSlug}/print`}>
-									<Printer className="h-4 w-4 mr-2" />
-									{t("printManagement")}
-								</Link>
-							</Button>
-							<Button variant="outline" asChild>
-								<Link href={`/dashboard/${orgSlug}/${eventSlug}/kiosk`}>
-									<Sliders className="h-4 w-4 mr-2" />
-									{t("kioskSettings")}
-								</Link>
-							</Button>
-							<Button variant="outline" asChild>
-								<Link href={`/dashboard/${orgSlug}/${eventSlug}/trash`}>
-									<Trash2 className="h-4 w-4 mr-2" />
-									{t("recycleBin")}
-								</Link>
-							</Button>
 							{event.status === "active" && (
-								<Button variant="outline" asChild>
+								<Button asChild>
 									<Link href={`/kiosk/${orgSlug}/${eventSlug}`} target="_blank">
 										<ExternalLink className="h-4 w-4 mr-2" />
-										{t("openKiosk")}
+										{t("kiosk")}
 									</Link>
 								</Button>
 							)}
-							<DashboardLanguagePicker />
-							<Button variant="ghost" size="icon" asChild>
-								<Link href={`/dashboard/${orgSlug}/${eventSlug}/settings`}>
-									<Settings className="h-4 w-4" />
+							<Button variant="outline" asChild>
+								{event.albumEnabled && event.albumToken ? (
+									<Link href={`/a/${event.albumToken}`} target="_blank">
+										<Images className="h-4 w-4 mr-2" />
+										{t("album")}
+									</Link>
+								) : (
+									<Link href={`/dashboard/${orgSlug}/${eventSlug}/settings`}>
+										<Images className="h-4 w-4 mr-2" />
+										{t("album")}
+									</Link>
+								)}
+							</Button>
+							<Button variant="outline" asChild>
+								<Link href={`/dashboard/${orgSlug}/${eventSlug}/share`}>
+									<Share2 className="h-4 w-4 mr-2" />
+									{t("share")}
 								</Link>
 							</Button>
+							<DropdownMenu>
+								<DropdownMenuTrigger asChild>
+									<Button variant="ghost" size="icon" aria-label={t("settings")}>
+										<Settings className="h-4 w-4" />
+									</Button>
+								</DropdownMenuTrigger>
+								<DropdownMenuContent align="end" className="w-56">
+									<DropdownMenuItem onClick={toggleStatus}>
+										{event.status === "active" ? (
+											<>
+												<Pause className="h-4 w-4" />
+												{t("pause")}
+											</>
+										) : (
+											<>
+												<Play className="h-4 w-4" />
+												{t("activate")}
+											</>
+										)}
+									</DropdownMenuItem>
+									<DropdownMenuSeparator />
+									<DropdownMenuItem asChild>
+										<Link href={`/dashboard/${orgSlug}/${eventSlug}/settings`}>
+											<Settings className="h-4 w-4" />
+											{t("settings")}
+										</Link>
+									</DropdownMenuItem>
+									<DropdownMenuItem asChild>
+										<Link href={`/dashboard/${orgSlug}/${eventSlug}/kiosk`}>
+											<Sliders className="h-4 w-4" />
+											{t("kioskSettings")}
+										</Link>
+									</DropdownMenuItem>
+									<DropdownMenuItem asChild>
+										<Link href={`/dashboard/${orgSlug}/${eventSlug}/print`}>
+											<Printer className="h-4 w-4" />
+											{t("printManagement")}
+										</Link>
+									</DropdownMenuItem>
+									<DropdownMenuItem asChild>
+										<Link href={`/dashboard/${orgSlug}/${eventSlug}/trash`}>
+											<Trash2 className="h-4 w-4" />
+											{t("recycleBin")}
+										</Link>
+									</DropdownMenuItem>
+									<DropdownMenuSeparator />
+									<DropdownMenuSub>
+										<DropdownMenuSubTrigger>
+											<Globe className="h-4 w-4" />
+											{t("language")}
+										</DropdownMenuSubTrigger>
+										<DropdownMenuSubContent>
+											<DropdownMenuLabel>{tc("changeLanguage")}</DropdownMenuLabel>
+											{dashboardLocales.map((loc) => (
+												<DropdownMenuItem
+													key={loc}
+													onClick={() => setLocale(loc)}
+													className={locale === loc ? "bg-accent" : ""}
+												>
+													{localeNames[loc]}
+												</DropdownMenuItem>
+											))}
+										</DropdownMenuSubContent>
+									</DropdownMenuSub>
+								</DropdownMenuContent>
+							</DropdownMenu>
 						</div>
 					</div>
 				</div>

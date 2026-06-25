@@ -415,6 +415,12 @@
 		"event": {
 			"active": "Activo",
 			"activate": "Activar",
+			"pause": "Pausar",
+			"kiosk": "Kiosco",
+			"album": "Álbum",
+			"share": "Compartir",
+			"settings": "Configuración",
+			"language": "Idioma",
 			"openKiosk": "Abrir kiosco",
 			"stats": {
 				"totalPhotos": "Fotos totales",
@@ -440,6 +446,19 @@
 			"printManagement": "Imprimir",
 			"kioskSettings": "Configuración del quiosco",
 			"recycleBin": "Papelera"
+		},
+		"share": {
+			"title": "Compartir álbum",
+			"subtitle": "Comparte el álbum de invitados con un código QR",
+			"scanToView": "Escanea para ver el álbum",
+			"downloadPng": "Descargar PNG",
+			"share": "Compartir",
+			"copyLink": "Copiar enlace",
+			"linkCopied": "Enlace copiado",
+			"shareText": "Mira las fotos de {name}",
+			"albumDisabledTitle": "El álbum no está habilitado",
+			"albumDisabledBody": "Habilita el álbum de invitados en la configuración del evento para obtener un enlace y un código QR para compartir.",
+			"enableInSettings": "Ir a la configuración"
 		},
 		"trash": {
 			"title": "Papelera de reciclaje",
