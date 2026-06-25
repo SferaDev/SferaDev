@@ -267,8 +267,9 @@ export const printJobs = pgTable(
 		borderless: boolean("borderless").notNull().default(true),
 		copies: integer("copies").notNull().default(1),
 		orientation: text("orientation").notNull().default("portrait"), // portrait | landscape
-		// Lifecycle of the job as it moves through the bridge.
-		status: text("status").notNull().default("queued"), // queued | claimed | printing | done | failed
+		// Lifecycle of the job as it moves through the bridge. Plain text (no DB-level
+		// enum/CHECK), narrowed by the PrintJobStatus union below.
+		status: text("status").notNull().default("queued"), // queued | claimed | printing | done | failed | canceled
 		attempts: integer("attempts").notNull().default(0),
 		lastError: text("last_error"),
 		// Bridge coordination: who claimed the job and when, so stale claims from a
@@ -413,8 +414,15 @@ export type AlbumModeration = "instant" | "approval";
  * - `printing`: actively sent to the printer
  * - `done`: printed successfully
  * - `failed`: printing failed (see `lastError`)
+ * - `canceled`: a host canceled the job before it finished (terminal). For an
+ *   in-flight job this is best-effort — a page already sent to the printer can't
+ *   be recalled — but it stops further attempts/retries and the bridge untracks
+ *   it on its next heartbeat (the status route's guard rejects it with a 409).
  */
-export type PrintJobStatus = "queued" | "claimed" | "printing" | "done" | "failed";
+export type PrintJobStatus = "queued" | "claimed" | "printing" | "done" | "failed" | "canceled";
+
+/** Statuses a print job can still be canceled from (non-terminal). */
+export const CANCELABLE_PRINT_JOB_STATUSES = ["queued", "claimed", "printing"] as const;
 
 export type CaptionPosition = {
 	x: number;
