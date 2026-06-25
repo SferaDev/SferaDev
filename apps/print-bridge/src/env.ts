@@ -44,6 +44,30 @@ const envSchema = z.object({
 	 * without consuming dye-sub media. Leave unset in production.
 	 */
 	BRIDGE_DEBUG_PRINTER_DIR: z.string().optional(),
+	/**
+	 * Base URL of the photocall server's bridge-facing API (e.g.
+	 * `https://photocall.example.com`). When set together with
+	 * {@link BRIDGE_PAIRING_TOKEN}, the bridge additionally runs in **cloud-pull**
+	 * mode: it polls the cloud for print jobs, prints them through the same local
+	 * queue, and reports status back with heartbeats. Leave unset to run LAN-only
+	 * (the existing `/api/*` REST API is always available regardless).
+	 */
+	BRIDGE_CLOUD_URL: z.string().url().optional(),
+	/**
+	 * Per-event pairing token sent as `Authorization: Bearer <token>` on every
+	 * cloud-pull request. Required (alongside {@link BRIDGE_CLOUD_URL}) to enable
+	 * cloud-pull mode.
+	 */
+	BRIDGE_PAIRING_TOKEN: z.string().optional(),
+	/** How often (ms) to poll the cloud for new print jobs in cloud-pull mode. */
+	BRIDGE_POLL_INTERVAL_MS: z.coerce.number().int().positive().default(3_000),
+	/**
+	 * How often (ms) to report tracked-job status / printer inventory to the
+	 * cloud. The `printing` status reports double as the claim heartbeat: the
+	 * server re-queues a job to another bridge if it hears no heartbeat for >5
+	 * minutes, so keep this comfortably below that window (default 30s).
+	 */
+	BRIDGE_HEARTBEAT_INTERVAL_MS: z.coerce.number().int().positive().default(30_000),
 });
 
 export type Env = z.infer<typeof envSchema>;
