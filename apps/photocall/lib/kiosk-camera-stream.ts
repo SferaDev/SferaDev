@@ -23,6 +23,43 @@ import type { getPublicEvent } from "@/actions/events";
 
 type PublicEvent = NonNullable<Awaited<ReturnType<typeof getPublicEvent>>>;
 
+/**
+ * How long a single `getUserMedia` attempt may run before we treat it as hung
+ * and reject it. A flaky USB webcam (or an OS that is still releasing the device
+ * from another app) can leave `getUserMedia` pending forever; without this bound
+ * the kiosk would sit on an infinite spinner / black screen with no way out. On
+ * timeout we surface an error + retry instead.
+ */
+const GET_USER_MEDIA_TIMEOUT_MS = 12_000;
+
+/**
+ * How a camera acquisition failed, in a form the UI can map to a localized
+ * message. `permission-denied` means the guest must grant access; the rest mean
+ * the device side is the problem (missing, in use, or hung).
+ */
+export type KioskCameraErrorKind =
+	| "permission-denied"
+	| "no-camera"
+	| "in-use"
+	| "timeout"
+	| "unsupported"
+	| "unknown";
+
+/**
+ * A camera acquisition failure carrying a {@link KioskCameraErrorKind} so the
+ * hook can pick the right localized message without re-parsing browser error
+ * strings (which vary across engines).
+ */
+export class KioskCameraError extends Error {
+	readonly kind: KioskCameraErrorKind;
+
+	constructor(kind: KioskCameraErrorKind, message: string) {
+		super(message);
+		this.name = "KioskCameraError";
+		this.kind = kind;
+	}
+}
+
 /** The currently cached live stream, or null when none is active. */
 let activeStream: MediaStream | null = null;
 /**
@@ -42,21 +79,41 @@ function isStreamLive(stream: MediaStream): boolean {
 }
 
 /**
- * Build the `getUserMedia` constraints for an event. Prefers an explicitly
- * selected capture device (USB webcam chosen in admin) via `deviceId`, otherwise
- * falls back to the configured front/back facing mode. Width/height are
- * requested at 1080p but kept as `ideal` so the browser can downscale rather
- * than reject when the device can't deliver it.
+ * Build the ordered list of `getUserMedia` constraints to try for an event,
+ * most-specific first. We attempt them in order and fall through to the next
+ * when one rejects with a "this device can't satisfy the request" error
+ * (`OverconstrainedError` / `NotFoundError`) — which is exactly what happens when
+ * the kiosk moves to a machine that lacks the saved capture device:
+ *
+ *  1. The explicitly selected capture device (USB webcam chosen in admin), by
+ *     `deviceId`. Using `exact` here means a missing device rejects rather than
+ *     silently picking a random camera, so we can deliberately fall back.
+ *  2. The configured front/back `facingMode` (or "user" by default).
+ *  3. A bare `{ video: true }` — accept whatever camera exists, so the booth
+ *     still works on a laptop/tablet that has a camera but not the saved one.
+ *
+ * Width/height are requested at 1080p but kept as `ideal` so the browser can
+ * downscale rather than reject when the device can't deliver it.
  */
-export function kioskCameraConstraints(event: PublicEvent): MediaStreamConstraints {
-	const video: MediaTrackConstraints = event.cameraDeviceId
-		? { deviceId: { ideal: event.cameraDeviceId } }
-		: { facingMode: event.defaultCamera ?? "user" };
+export function kioskCameraConstraintsChain(event: PublicEvent): MediaStreamConstraints[] {
+	const dimensions: Pick<MediaTrackConstraints, "width" | "height"> = {
+		width: { ideal: 1920 },
+		height: { ideal: 1080 },
+	};
 
-	video.width = { ideal: 1920 };
-	video.height = { ideal: 1080 };
+	const facingMode = event.defaultCamera ?? "user";
+	const chain: MediaStreamConstraints[] = [];
 
-	return { video, audio: false };
+	if (event.cameraDeviceId) {
+		chain.push({
+			video: { deviceId: { exact: event.cameraDeviceId }, ...dimensions },
+			audio: false,
+		});
+	}
+	chain.push({ video: { facingMode, ...dimensions }, audio: false });
+	chain.push({ video: true, audio: false });
+
+	return chain;
 }
 
 /**
@@ -70,14 +127,116 @@ export function kioskCameraMirror(event: PublicEvent): boolean {
 }
 
 /**
+ * Whether a `getUserMedia` rejection means "this specific device/constraint
+ * can't be satisfied" (so we should try the next fallback) rather than a hard
+ * stop like a denied permission. `OverconstrainedError` is raised when an
+ * `exact` constraint (our pinned `deviceId`) has no match; `NotFoundError` when
+ * there is no device at all for the requested kind.
+ */
+function isConstraintFallbackError(error: unknown): boolean {
+	if (!(error instanceof DOMException)) return false;
+	return (
+		error.name === "OverconstrainedError" ||
+		error.name === "NotFoundError" ||
+		error.name === "DevicesNotFoundError"
+	);
+}
+
+/** Translate a raw `getUserMedia` rejection into a typed {@link KioskCameraError}. */
+function toKioskCameraError(error: unknown): KioskCameraError {
+	if (error instanceof KioskCameraError) return error;
+	if (error instanceof DOMException) {
+		switch (error.name) {
+			case "NotAllowedError":
+			case "SecurityError":
+				return new KioskCameraError("permission-denied", error.message);
+			case "NotFoundError":
+			case "DevicesNotFoundError":
+			case "OverconstrainedError":
+				return new KioskCameraError("no-camera", error.message);
+			case "NotReadableError":
+			case "TrackStartError":
+			case "AbortError":
+				return new KioskCameraError("in-use", error.message);
+			default:
+				return new KioskCameraError("unknown", error.message);
+		}
+	}
+	const message = error instanceof Error ? error.message : "Failed to access camera";
+	return new KioskCameraError("unknown", message);
+}
+
+/**
+ * Run a single `getUserMedia` call with a bounded timeout. If the browser never
+ * settles within {@link GET_USER_MEDIA_TIMEOUT_MS} we reject with a `timeout`
+ * error AND stop any stream that arrives late, so a hung device can't leak a
+ * track or resolve after we've moved on.
+ */
+function getUserMediaWithTimeout(constraints: MediaStreamConstraints): Promise<MediaStream> {
+	return new Promise<MediaStream>((resolve, reject) => {
+		let settled = false;
+		const timer = setTimeout(() => {
+			if (settled) return;
+			settled = true;
+			reject(new KioskCameraError("timeout", "Camera timed out while starting."));
+		}, GET_USER_MEDIA_TIMEOUT_MS);
+
+		navigator.mediaDevices.getUserMedia(constraints).then(
+			(stream) => {
+				if (settled) {
+					// We already timed out and gave up on this attempt; don't leak it.
+					for (const track of stream.getTracks()) track.stop();
+					return;
+				}
+				settled = true;
+				clearTimeout(timer);
+				resolve(stream);
+			},
+			(error: unknown) => {
+				if (settled) return;
+				settled = true;
+				clearTimeout(timer);
+				reject(error);
+			},
+		);
+	});
+}
+
+/**
+ * Try each constraint set in {@link kioskCameraConstraintsChain} order, falling
+ * through to the next only on a "device unavailable" error so a missing pinned
+ * webcam degrades to the default camera instead of getting stuck. A
+ * permission-denied (or any non-fallback error) stops immediately — retrying
+ * other constraints won't help and would re-prompt. The last fallback's error is
+ * what surfaces if every attempt fails.
+ */
+async function acquireWithFallback(chain: MediaStreamConstraints[]): Promise<MediaStream> {
+	let lastError: unknown;
+	for (let i = 0; i < chain.length; i++) {
+		try {
+			return await getUserMediaWithTimeout(chain[i]);
+		} catch (error) {
+			lastError = error;
+			const isLast = i === chain.length - 1;
+			if (isLast || !isConstraintFallbackError(error)) {
+				throw toKioskCameraError(error);
+			}
+			// Otherwise fall through and try the next, less-specific constraint.
+		}
+	}
+	throw toKioskCameraError(lastError);
+}
+
+/**
  * Return the shared kiosk stream, acquiring it via `getUserMedia` on first call
  * and reusing the cached live stream on every subsequent call. Concurrent calls
  * coalesce onto a single acquisition. Re-acquires automatically if the cached
- * stream's track has ended.
+ * stream's track has ended. Tries the event's preferred device first and falls
+ * back to the default facing mode / any camera when it is unavailable, and bounds
+ * each attempt with a timeout so a hung device surfaces an error rather than
+ * hanging forever.
  */
-export async function acquireSharedStream(
-	constraints: MediaStreamConstraints,
-): Promise<MediaStream> {
+export async function acquireSharedStream(chain: MediaStreamConstraints[]): Promise<MediaStream> {
 	if (activeStream && isStreamLive(activeStream)) {
 		return activeStream;
 	}
@@ -90,11 +249,10 @@ export async function acquireSharedStream(
 	}
 
 	if (typeof navigator === "undefined" || !navigator.mediaDevices?.getUserMedia) {
-		throw new Error("Camera is not available in this environment.");
+		throw new KioskCameraError("unsupported", "Camera is not available in this environment.");
 	}
 
-	pendingAcquire = navigator.mediaDevices
-		.getUserMedia(constraints)
+	pendingAcquire = acquireWithFallback(chain)
 		.then((stream) => {
 			activeStream = stream;
 			return stream;
