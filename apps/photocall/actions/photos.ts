@@ -259,6 +259,7 @@ export async function listRecentPublicPhotos(eventId: string, limit?: number) {
 		.select({
 			id: schema.photos.id,
 			storageKey: schema.photos.storageKey,
+			rawShotKeys: schema.photos.rawShotKeys,
 			humanCode: schema.photos.humanCode,
 			createdAt: schema.photos.createdAt,
 		})
@@ -267,17 +268,27 @@ export async function listRecentPublicPhotos(eventId: string, limit?: number) {
 		.orderBy(desc(schema.photos.createdAt))
 		.limit(take);
 
-	return await Promise.all(
+	// The attract showcase looks best with the RAW, uncropped captures rather than
+	// the template composite — a strip's "clean" image still crops each photo into
+	// its slot. For captures that kept their individual shots, surface each raw shot
+	// as its own tile; otherwise fall back to the stored preview image (a single
+	// capture is already the raw frame; a boomerang is its GIF).
+	const tiles = await Promise.all(
 		photos.map(async (photo) => {
-			const url = await getFileUrl(photo.storageKey);
-			return {
-				id: photo.id,
-				url,
-				humanCode: photo.humanCode,
-				createdAt: photo.createdAt,
-			};
+			const rawKeys = parseRawShotKeys(photo.rawShotKeys);
+			const keys = rawKeys.length > 0 ? rawKeys : [photo.storageKey];
+			return Promise.all(
+				keys.map(async (key, index) => ({
+					id: rawKeys.length > 0 ? `${photo.id}-${index}` : photo.id,
+					url: await getFileUrl(key),
+					humanCode: photo.humanCode,
+					createdAt: photo.createdAt,
+				})),
+			);
 		}),
 	);
+
+	return tiles.flat();
 }
 
 /**
