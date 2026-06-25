@@ -31,9 +31,10 @@ import { BOOMERANG_MAX_DIMENSION, type BoomerangFrame } from "./encode";
 
 /**
  * Output pixel size of the composited boomerang: the layout's aspect ratio
- * (`height / width`), scaled so the longest edge is capped at `maxDimension` to
- * keep the encoded GIF small enough to upload. Snapped to even numbers (some
- * GIF encoders prefer it). Pure + canvas-free so it can be unit-tested.
+ * (`height / width`), scaled so the longest edge is capped at `maxDimension`
+ * (defaults to {@link BOOMERANG_MAX_DIMENSION} = 1080 for a crisp, share-worthy
+ * clip). Snapped to even numbers (some GIF encoders prefer it). Pure +
+ * canvas-free so it can be unit-tested.
  */
 export function boomerangCompositeSize(
 	layout: BoothLayout,

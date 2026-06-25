@@ -20,8 +20,14 @@ export const BOOMERANG_FRAME_COUNT = 20;
 export const BOOMERANG_RECORD_MS = 2000;
 /** Per-frame delay in the output GIF (ms). ~70ms ≈ 14fps, a lively loop. */
 export const BOOMERANG_FRAME_DELAY_MS = 70;
-/** Longest edge of the encoded GIF (px). Caps file size on slow connections. */
-export const BOOMERANG_MAX_DIMENSION = 480;
+/**
+ * Longest edge of the encoded GIF (px). At 1080p a single-slot boomerang is a
+ * crisp, share-worthy clip; a ~38-frame loop lands around 3–6 MB, which the
+ * presigned R2 upload accepts (no Content-Length cap on that path). The encode
+ * runs behind a "processing" overlay and yields to the event loop per frame, so
+ * the extra pixels never freeze the UI.
+ */
+export const BOOMERANG_MAX_DIMENSION = 1080;
 
 /** A single captured frame, already downscaled to the target GIF size. */
 export interface BoomerangFrame {
@@ -145,9 +151,138 @@ export interface EncodeGifOptions {
 	onProgress?: (progress: number) => void;
 }
 
+/** Pixel layout passed to gifenc's quantize/applyPalette. rgb565 keeps far more
+ * color fidelity than rgb444 (5–6–5 vs 4–4–4 bits per channel). */
+const GIF_FORMAT = "rgb565";
+
+/**
+ * Find the index of the palette color nearest to (r, g, b) by squared Euclidean
+ * distance in RGB space. gifenc's `applyPalette` does this same nearest match
+ * internally, but we need it here to know the quantization error each pixel
+ * incurs so {@link ditherToPalette} can diffuse it (Floyd–Steinberg).
+ *
+ * The 8-bit channels are first snapped to rgb565 (5–6–5 bits, ≤65536 distinct
+ * keys) and the resulting index is memoized in `cache` — the exact strategy
+ * gifenc uses so smooth regions (which dominate a boomerang) cost one lookup
+ * instead of a 256-entry scan. That keeps a 1080p × ~38-frame encode responsive.
+ */
+function nearestPaletteIndex(
+	palette: GifPalette,
+	cache: Int16Array,
+	r: number,
+	g: number,
+	b: number,
+): number {
+	// Clamp the error-diffused channels back into 0..255 before snapping to 565.
+	const r8 = r < 0 ? 0 : r > 255 ? 255 : r;
+	const g8 = g < 0 ? 0 : g > 255 ? 255 : g;
+	const b8 = b < 0 ? 0 : b > 255 ? 255 : b;
+	const key = ((r8 >> 3) << 11) | ((g8 >> 2) << 5) | (b8 >> 3);
+
+	const cached = cache[key];
+	if (cached !== -1) return cached;
+
+	let best = 0;
+	let bestDistance = Number.POSITIVE_INFINITY;
+	for (let p = 0; p < palette.length; p++) {
+		const color = palette[p];
+		const dr = r8 - color[0];
+		const dg = g8 - color[1];
+		const db = b8 - color[2];
+		const distance = dr * dr + dg * dg + db * db;
+		if (distance < bestDistance) {
+			bestDistance = distance;
+			best = p;
+		}
+	}
+	cache[key] = best;
+	return best;
+}
+
+/**
+ * Floyd–Steinberg dither an RGBA buffer toward `palette`, in place.
+ *
+ * gifenc has no dithering of its own — `applyPalette` only does a flat
+ * nearest-color match, which leaves visible banding on the gradients common in
+ * boomerangs (skin tones, skies, soft backgrounds). We instead snap each pixel
+ * to its nearest palette color and push the rounding error onto the
+ * not-yet-processed neighbors with the classic FS weights (7/16 right, 3/16
+ * down-left, 5/16 down, 1/16 down-right), which trades banding for fine noise
+ * the eye reads as smooth shading.
+ *
+ * Mutating the RGBA in place means the subsequent `applyPalette` call lands on
+ * the exact same nearest colors we picked here, so the GIF matches the dither.
+ * The error is carried in a Float32 row pair (current + next) to avoid
+ * re-reading already-quantized bytes, and stays per-frame so frames don't smear
+ * into each other.
+ */
+function ditherToPalette(
+	rgba: Uint8ClampedArray,
+	width: number,
+	height: number,
+	palette: GifPalette,
+): void {
+	// Two rolling rows of accumulated error (RGB), so we never allocate the whole
+	// image worth of floats. `current` feeds the row being processed; `next` is
+	// filled as we diffuse downward, then swapped in.
+	let current = new Float32Array(width * 3);
+	let next = new Float32Array(width * 3);
+	// rgb565 → palette-index memo (one slot per possible 565 key). -1 = unseen.
+	const cache = new Int16Array(65536).fill(-1);
+
+	for (let y = 0; y < height; y++) {
+		next.fill(0);
+		for (let x = 0; x < width; x++) {
+			const pixel = (y * width + x) * 4;
+			const errIndex = x * 3;
+
+			const r = rgba[pixel] + current[errIndex];
+			const g = rgba[pixel + 1] + current[errIndex + 1];
+			const b = rgba[pixel + 2] + current[errIndex + 2];
+
+			const color = palette[nearestPaletteIndex(palette, cache, r, g, b)];
+			rgba[pixel] = color[0];
+			rgba[pixel + 1] = color[1];
+			rgba[pixel + 2] = color[2];
+			// Alpha is left untouched; boomerang frames are fully opaque.
+
+			const errR = r - color[0];
+			const errG = g - color[1];
+			const errB = b - color[2];
+
+			// 7/16 → pixel to the right (same row).
+			if (x + 1 < width) {
+				const right = errIndex + 3;
+				current[right] += (errR * 7) / 16;
+				current[right + 1] += (errG * 7) / 16;
+				current[right + 2] += (errB * 7) / 16;
+			}
+			// 3/16 → down-left, 5/16 → down, 1/16 → down-right (next row).
+			if (x - 1 >= 0) {
+				const downLeft = errIndex - 3;
+				next[downLeft] += (errR * 3) / 16;
+				next[downLeft + 1] += (errG * 3) / 16;
+				next[downLeft + 2] += (errB * 3) / 16;
+			}
+			next[errIndex] += (errR * 5) / 16;
+			next[errIndex + 1] += (errG * 5) / 16;
+			next[errIndex + 2] += (errB * 5) / 16;
+			if (x + 1 < width) {
+				const downRight = errIndex + 3;
+				next[downRight] += (errR * 1) / 16;
+				next[downRight + 1] += (errG * 1) / 16;
+				next[downRight + 2] += (errB * 1) / 16;
+			}
+		}
+		// Roll the rows: next becomes current, reuse the old buffer for the row after.
+		[current, next] = [next, current];
+	}
+}
+
 /**
  * Encode a sequence of frames into an animated, infinitely-looping GIF blob.
- * Quantizes each frame to its own 256-color palette for good color fidelity,
+ * Quantizes each frame to its own 256-color rgb565 palette and Floyd–Steinberg
+ * dithers toward it (to kill banding) before mapping pixels to palette indices,
  * yielding to the event loop between frames so the main thread stays free.
  */
 export async function encodeBoomerangGif(
@@ -160,13 +295,15 @@ export async function encodeBoomerangGif(
 	}
 
 	const encoder = GIFEncoder();
-	const format = "rgb444";
 
 	for (let i = 0; i < frames.length; i++) {
 		const frame = frames[i];
 		const rgba = frame.data.data;
-		const palette: GifPalette = quantize(rgba, 256, { format });
-		const index = applyPalette(rgba, palette, format);
+		const palette: GifPalette = quantize(rgba, 256, { format: GIF_FORMAT });
+		// Dither in place first, then map: applyPalette re-runs the same
+		// nearest-color match, so it reproduces exactly the dithered result.
+		ditherToPalette(rgba, frame.width, frame.height, palette);
+		const index = applyPalette(rgba, palette, GIF_FORMAT);
 
 		encoder.writeFrame(index, frame.width, frame.height, {
 			palette,
