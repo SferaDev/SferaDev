@@ -126,6 +126,11 @@ export const events = pgTable(
 		printOrientation: text("print_orientation").notNull().default("portrait"), // portrait | landscape
 		printAutoPrint: boolean("print_auto_print").notNull().default(false),
 		printBridgeUrl: text("print_bridge_url"),
+		// CSPRNG token the on-site print bridge authenticates with when it polls
+		// this server for jobs (cloud-pull printing — the bridge reaches out, the
+		// HTTPS kiosk never talks to the LAN bridge directly). Null until the event
+		// is paired with a bridge; rotatable to revoke a bridge's access.
+		bridgePairingToken: text("bridge_pairing_token").unique(),
 		// Stats (denormalized for performance)
 		photoCount: integer("photo_count").notNull().default(0),
 		sessionCount: integer("session_count").notNull().default(0),
@@ -234,6 +239,80 @@ export const photos = pgTable(
 	],
 );
 
+/**
+ * Print jobs the kiosk enqueues server-side for the on-site print bridge to
+ * pull. A venue's HTTPS kiosk can't reach a LAN bridge directly (mixed
+ * content), so jobs land here; the bridge polls this server outbound, claims
+ * queued rows, downloads the print-ready image via a presigned R2 GET (bytes
+ * never pass through the DB), prints and reports status back.
+ */
+export const printJobs = pgTable(
+	"print_jobs",
+	{
+		id: uuid("id").defaultRandom().primaryKey(),
+		eventId: uuid("event_id")
+			.notNull()
+			.references(() => events.id, { onDelete: "cascade" }),
+		// The originating photo, if any. Nullable so a job survives the photo being
+		// deleted (and to allow ad-hoc/test prints that aren't tied to a photo).
+		photoId: uuid("photo_id").references(() => photos.id, { onDelete: "set null" }),
+		// R2 key of the PRINT-READY image. The bridge downloads the bytes via a
+		// presigned GET — the image itself never passes through the database.
+		imageStorageKey: text("image_storage_key").notNull(),
+		// Bridge-side printer id (e.g. "debug" or a discovered IPP printer id).
+		printerId: text("printer_id").notNull(),
+		// Print parameters, snapshotted at enqueue time from the event settings.
+		paperSize: text("paper_size").notNull(),
+		mediaType: text("media_type"),
+		borderless: boolean("borderless").notNull().default(true),
+		copies: integer("copies").notNull().default(1),
+		orientation: text("orientation").notNull().default("portrait"), // portrait | landscape
+		// Lifecycle of the job as it moves through the bridge.
+		status: text("status").notNull().default("queued"), // queued | claimed | printing | done | failed
+		attempts: integer("attempts").notNull().default(0),
+		lastError: text("last_error"),
+		// Bridge coordination: who claimed the job and when, so stale claims from a
+		// crashed bridge can be re-queued and never strand a job mid-print.
+		claimedAt: timestamp("claimed_at"),
+		claimedBy: text("claimed_by"), // bridge instance id
+		printedAt: timestamp("printed_at"),
+		createdAt: timestamp("created_at").notNull().defaultNow(),
+		updatedAt: timestamp("updated_at").notNull().defaultNow(),
+	},
+	(t) => [
+		index("print_jobs_event_idx").on(t.eventId),
+		// The bridge claims by (event, status='queued'); the dashboard lists by
+		// (event, status). One composite index serves both.
+		index("print_jobs_event_status_idx").on(t.eventId, t.status),
+	],
+);
+
+/**
+ * Printers the on-site bridge has discovered, heartbeated here so the dashboard
+ * can list an event's printers (state, media, marker/ink levels) without any
+ * direct access to the LAN bridge. The bridge upserts each printer it sees,
+ * keyed by (eventId, printerId).
+ */
+export const bridgePrinters = pgTable(
+	"bridge_printers",
+	{
+		id: uuid("id").defaultRandom().primaryKey(),
+		eventId: uuid("event_id")
+			.notNull()
+			.references(() => events.id, { onDelete: "cascade" }),
+		printerId: text("printer_id").notNull(),
+		name: text("name").notNull(),
+		makeAndModel: text("make_and_model"),
+		state: text("state"),
+		stateReasons: text("state_reasons"), // JSON string[]
+		markerLevels: text("marker_levels"), // JSON number[]
+		mediaSupported: text("media_supported"), // JSON string[]
+		reachable: boolean("reachable").notNull().default(true),
+		lastSeenAt: timestamp("last_seen_at").notNull().defaultNow(),
+	},
+	(t) => [uniqueIndex("bridge_printers_event_printer_idx").on(t.eventId, t.printerId)],
+);
+
 export const templates = pgTable(
 	"templates",
 	{
@@ -326,6 +405,16 @@ export type AlbumAccessMode = "link" | "link_pin" | "link_identity";
 
 /** Moderation policy applied to guest uploads. */
 export type AlbumModeration = "instant" | "approval";
+
+/**
+ * Lifecycle of a {@link printJobs} row as it moves through the bridge:
+ * - `queued`: waiting to be claimed
+ * - `claimed`: a bridge has reserved it and is about to print
+ * - `printing`: actively sent to the printer
+ * - `done`: printed successfully
+ * - `failed`: printing failed (see `lastError`)
+ */
+export type PrintJobStatus = "queued" | "claimed" | "printing" | "done" | "failed";
 
 export type CaptionPosition = {
 	x: number;
