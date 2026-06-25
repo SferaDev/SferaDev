@@ -175,6 +175,17 @@ export function isOutOfPaper(
  */
 const IPP_REQUEST_TIMEOUT_MS = 8_000;
 
+/**
+ * Print-Job needs a MUCH longer bound than a quick attribute ping: it transfers
+ * the full multi-MB JPEG and waits for the printer to ACCEPT the job, which on a
+ * real SELPHY over congested event Wi-Fi can take far longer than 8s. With the
+ * old 8s bound, a slow-but-SUCCESSFUL accept timed out → the no-loss queue
+ * retried → the SELPHY printed the same photo TWICE. Two minutes comfortably
+ * covers a slow accept while still bounding a genuinely dead transfer (a truly
+ * unreachable printer still fails fast at the TCP layer well before this).
+ */
+const PRINT_JOB_TIMEOUT_MS = 120_000;
+
 /** Reject if `promise` does not settle within `ms`. */
 function withTimeout<T>(promise: Promise<T>, ms: number, label: string): Promise<T> {
 	return new Promise<T>((resolve, reject) => {
@@ -349,10 +360,10 @@ async function sendPrintJob(
 ): Promise<PrintJobResponse> {
 	const printer = new ipp.Printer(uri, { version });
 	const printJob = executePrinter<PrintJobRequest, PrintJobResponse>(printer, "Print-Job");
-	// Bound the data transfer too (not just attribute pings): a printer that
-	// stalls mid-transfer would otherwise hold the queue worker until the OS TCP
-	// timeout (~75s) and leave the job stuck in "printing".
-	return withTimeout(printJob(message), IPP_REQUEST_TIMEOUT_MS, "Print-Job");
+	// Bound the data transfer with the generous Print-Job timeout (NOT the short
+	// attribute-ping one): a successful-but-slow accept must not time out, or the
+	// no-loss queue would retry and the SELPHY would print the photo twice.
+	return withTimeout(printJob(message), PRINT_JOB_TIMEOUT_MS, "Print-Job");
 }
 
 /**
