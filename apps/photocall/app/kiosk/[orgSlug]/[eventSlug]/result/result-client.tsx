@@ -26,6 +26,7 @@ import { enqueuePhoto } from "@/lib/offline-queue";
 import {
 	clearPhotoboothSession,
 	getBoomerangBlob,
+	getCaptureShots,
 	readPhotoboothSession,
 } from "@/lib/photobooth-session";
 import { resolveBridgeUrl } from "@/lib/print/bridge-client";
@@ -203,11 +204,15 @@ export default function KioskResultPage() {
 	const composeStripBlobs = useCallback(async (): Promise<ComposedCapture | null> => {
 		if (!event || !layout || !sessionId) return null;
 
-		// Source of truth is sessionStorage; fall back to the server-stored URLs.
+		// Source of truth for the bulky frames is IndexedDB (they overflow
+		// sessionStorage); the tiny session JSON (filter) still rides in
+		// sessionStorage. Fall back to the server-stored URLs when nothing is
+		// stored locally (e.g. a different device or a cleared cache).
 		const stored = readPhotoboothSession(sessionId);
+		const localShots = await getCaptureShots(sessionId);
 		const shots =
-			stored && stored.shots.length > 0
-				? stored.shots
+			localShots && localShots.length > 0
+				? localShots
 				: parseCapturedImageUrls(session?.capturedImageUrls ?? null);
 
 		if (shots.length === 0) return null;
@@ -273,8 +278,9 @@ export default function KioskResultPage() {
 			resolveAssetUrl,
 		});
 
-		// Raw shots are JPEG data URLs from sessionStorage; convert to blobs so the
-		// caller can upload each via presigned PUT (keys, never base64 in actions).
+		// Raw shots are JPEG data URLs (from IndexedDB, or the server fallback);
+		// convert to blobs so the caller can upload each via presigned PUT (keys,
+		// never base64 in actions).
 		const rawShots = await Promise.all(shots.map((shot) => dataUrlToBlob(shot)));
 
 		return {
