@@ -651,7 +651,11 @@
 				"downloadHelp": "Download the print bridge for your computer, then run it with the command above.",
 				"downloadButton": "Download for {platform}",
 				"otherPlatforms": "Other platforms",
-				"notPublished": "Binaries haven't been published yet."
+				"notPublished": "Binaries haven't been published yet.",
+				"setupTitle": "After downloading:",
+				"setupMacHelp": "macOS quarantines unsigned downloads (“damaged and can’t be opened”) — this clears the flag and restores the executable bit:",
+				"setupLinuxHelp": "Make the binary executable before running it (use the arm64 file on ARM machines):",
+				"copySetup": "Copy setup command"
 			}
 		},
 		"templates": {

@@ -656,7 +656,11 @@
 				"downloadHelp": "Descarga el puente de impresión para tu ordenador y luego ejecútalo con el comando de arriba.",
 				"downloadButton": "Descargar para {platform}",
 				"otherPlatforms": "Otras plataformas",
-				"notPublished": "Aún no se han publicado los binarios."
+				"notPublished": "Aún no se han publicado los binarios.",
+				"setupTitle": "Después de descargar:",
+				"setupMacHelp": "macOS pone en cuarentena las descargas sin firmar («dañado y no se puede abrir»): esto borra la marca y restaura el bit de ejecución:",
+				"setupLinuxHelp": "Haz que el binario sea ejecutable antes de ejecutarlo (en máquinas ARM usa el archivo arm64):",
+				"copySetup": "Copiar comando de configuración"
 			}
 		},
 		"templates": {
