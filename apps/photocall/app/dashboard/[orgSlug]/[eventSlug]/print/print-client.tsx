@@ -5,6 +5,7 @@ import {
 	Ban,
 	CheckCircle2,
 	ChevronLeft,
+	ImagePlus,
 	Loader2,
 	Plus,
 	Printer,
@@ -26,6 +27,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { DEFAULT_BRAND_COLOR } from "@/lib/branding";
 import { type Orientation, PAPER_SIZE_MM, type PaperSize } from "@/lib/layout/types";
+import { uploadAndEnqueuePrintJob } from "@/lib/print";
 import {
 	addBridgePrinter,
 	type BridgeJob,
@@ -114,6 +116,19 @@ export default function PrintManagement() {
 
 	const [busyPrinterId, setBusyPrinterId] = useState<string | null>(null);
 	const [actionMessage, setActionMessage] = useState<string | null>(null);
+
+	// Operator-driven "add picture(s) to the queue": a hidden file input triggered
+	// by a button, plus a per-batch copies count seeded from the event default.
+	const pictureInputRef = useRef<HTMLInputElement>(null);
+	const [pictureCopies, setPictureCopies] = useState(1);
+	const [addingPictures, setAddingPictures] = useState(false);
+	const [pictureMessage, setPictureMessage] = useState<string | null>(null);
+
+	// Seed the copies input from the event's configured default once it loads,
+	// while still letting the operator override it for a given batch.
+	useEffect(() => {
+		if (event) setPictureCopies(event.printCopies);
+	}, [event?.printCopies]);
 
 	/** Poll the bridge for connection, printers and the job queue. */
 	const refresh = useCallback(async () => {
@@ -242,6 +257,51 @@ export default function PrintManagement() {
 		}
 	}, [bridgeUrl, newPrinterUri, refresh]);
 
+	/**
+	 * Enqueue one or more operator-picked images straight to the print queue,
+	 * reusing the kiosk's exact upload→enqueue path (presigned R2 PUT + server-side
+	 * job, never image bytes through a Server Action). Each file is enqueued
+	 * independently so one bad upload never aborts the rest; afterwards we refresh
+	 * the live queue so the new jobs appear alongside guest prints.
+	 */
+	const handleAddPictures = useCallback(
+		async (files: FileList | null) => {
+			if (!event?.printPrinterId || !files || files.length === 0) return;
+			setAddingPictures(true);
+			setPictureMessage(null);
+			const config: EventPrintConfig = {
+				eventId: event.id,
+				printMethod: "bridge",
+				printBridgeUrl: bridgeUrl,
+				printPrinterId: event.printPrinterId,
+				printPaperSize: toPaperSize(event.printPaperSize),
+				printMediaType: event.printMediaType,
+				printBorderless: event.printBorderless,
+				printCopies: Math.max(1, pictureCopies),
+				printOrientation: toOrientation(event.printOrientation),
+				printAutoPrint: event.printAutoPrint,
+			};
+			let succeeded = 0;
+			let failed = 0;
+			for (const file of Array.from(files)) {
+				try {
+					await uploadAndEnqueuePrintJob(file, config);
+					succeeded += 1;
+				} catch {
+					failed += 1;
+				}
+			}
+			setPictureMessage(
+				failed === 0
+					? t("picturesQueued", { count: succeeded })
+					: t("picturesQueuedPartial", { succeeded, failed }),
+			);
+			setAddingPictures(false);
+			await refresh();
+		},
+		[event, bridgeUrl, pictureCopies, refresh, t],
+	);
+
 	if (event === undefined) {
 		return (
 			<div className="min-h-screen flex items-center justify-center">
@@ -265,6 +325,18 @@ export default function PrintManagement() {
 			</div>
 		);
 	}
+
+	// "Add picture(s)" needs a configured target printer that the bridge currently
+	// reports as reachable — mirror how the rest of the page gates on `reachable`.
+	const targetPrinterReachable = printers.some(
+		(printer) => printer.id === event.printPrinterId && printer.reachable,
+	);
+	const pictureHint = !event.printPrinterId
+		? t("selectPrinterFirst")
+		: !targetPrinterReachable
+			? t("noPrinterConnected")
+			: null;
+	const canAddPictures = !!event.printPrinterId && targetPrinterReachable && !addingPictures;
 
 	return (
 		<div className="min-h-screen bg-background">
@@ -408,6 +480,53 @@ export default function PrintManagement() {
 						</section>
 					</>
 				) : null}
+
+				{/* Add picture(s) to the queue: upload arbitrary images and enqueue them
+				    for the configured printer via the same R2 upload→enqueue path the
+				    kiosk uses. Sent as-is — the bridge + print-scaling fit them to paper. */}
+				<section className="rounded-lg border p-4 space-y-3">
+					<div>
+						<h2 className="font-medium">{t("addPicturesTitle")}</h2>
+						<p className="text-sm text-muted-foreground">{t("addPicturesHelp")}</p>
+					</div>
+					<div className="flex flex-wrap items-end gap-2">
+						<div className="w-24">
+							<Label htmlFor="picture-copies">{t("copiesLabel")}</Label>
+							<Input
+								id="picture-copies"
+								type="number"
+								min={1}
+								value={pictureCopies}
+								onChange={(e) => setPictureCopies(Math.max(1, Number(e.target.value) || 1))}
+								disabled={addingPictures}
+							/>
+						</div>
+						<Button onClick={() => pictureInputRef.current?.click()} disabled={!canAddPictures}>
+							{addingPictures ? (
+								<Loader2 className="h-4 w-4 mr-2 animate-spin" />
+							) : (
+								<ImagePlus className="h-4 w-4 mr-2" />
+							)}
+							{t("addPictures")}
+						</Button>
+						<input
+							ref={pictureInputRef}
+							type="file"
+							accept="image/*"
+							multiple
+							className="hidden"
+							onChange={(e) => {
+								void handleAddPictures(e.target.files);
+								// Reset so picking the same files again re-triggers onChange.
+								e.target.value = "";
+							}}
+						/>
+					</div>
+					{pictureHint ? <p className="text-sm text-muted-foreground">{pictureHint}</p> : null}
+					{pictureMessage ? (
+						<p className="text-sm text-muted-foreground">{pictureMessage}</p>
+					) : null}
+				</section>
 
 				{/* Print queue (source of truth): the SERVER-side queue, visible on every
 				    device. Locally-queued offline jobs (this device's IndexedDB outbox,
