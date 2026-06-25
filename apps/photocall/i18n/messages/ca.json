@@ -656,7 +656,11 @@
 				"downloadHelp": "Descarrega el pont d'impressió per al teu ordinador i després executa'l amb l'ordre de dalt.",
 				"downloadButton": "Descarrega per a {platform}",
 				"otherPlatforms": "Altres plataformes",
-				"notPublished": "Encara no s'han publicat els binaris."
+				"notPublished": "Encara no s'han publicat els binaris.",
+				"setupTitle": "Després de descarregar:",
+				"setupMacHelp": "macOS posa en quarantena les descàrregues sense signar («malmès i no es pot obrir»): això esborra la marca i restaura el bit d’execució:",
+				"setupLinuxHelp": "Fes que el binari sigui executable abans d’executar-lo (a màquines ARM fes servir el fitxer arm64):",
+				"copySetup": "Copia l’ordre de configuració"
 			}
 		},
 		"templates": {

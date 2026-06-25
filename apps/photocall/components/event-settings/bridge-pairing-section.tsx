@@ -52,6 +52,34 @@ function formatBytes(bytes: number): string {
 	return `${(bytes / 1_000_000).toFixed(1)} MB`;
 }
 
+/** Post-download shell setup a downloaded binary needs before it will run. */
+interface SetupGuide {
+	/** Shell command(s) to prepare the downloaded binary. */
+	command: string;
+	/** i18n key for the one-line explanation shown above the command. */
+	helpKey: "setupMacHelp" | "setupLinuxHelp";
+}
+
+/**
+ * The shell setup a freshly downloaded binary needs, by build target. The
+ * binaries are unsigned, so macOS quarantines them ("damaged and can't be
+ * opened") and browsers drop the executable bit. We surface a copyable fix keyed
+ * off the *actual* downloaded filename so it pastes-and-runs. Windows builds need
+ * no shell step, so they return `null`.
+ */
+function getSetupGuide(target: string, filename: string): SetupGuide | null {
+	if (target.startsWith("bun-darwin")) {
+		return {
+			command: `xattr -c ./${filename} && chmod +x ./${filename}`,
+			helpKey: "setupMacHelp",
+		};
+	}
+	if (target.startsWith("bun-linux")) {
+		return { command: `chmod +x ./${filename}`, helpKey: "setupLinuxHelp" };
+	}
+	return null;
+}
+
 interface BridgePairingSectionProps {
 	eventId: string;
 	/** This site's origin, set as BRIDGE_CLOUD_URL on the on-site bridge. */
@@ -227,6 +255,18 @@ function BridgeDownloads({ eventId }: { eventId: string }) {
 	useEffect(() => setDetectedOs(detectOs()), []);
 
 	const [showOthers, setShowOthers] = useState(false);
+	const [copiedSetup, setCopiedSetup] = useState(false);
+
+	const handleCopySetup = useCallback(async (value: string) => {
+		try {
+			await navigator.clipboard.writeText(value);
+			setCopiedSetup(true);
+			setTimeout(() => setCopiedSetup(false), 2_000);
+		} catch {
+			// Clipboard blocked (insecure context / permissions) — no-op; the command
+			// is selectable so the operator can copy it manually.
+		}
+	}, []);
 
 	if (isLoading) {
 		return (
@@ -241,6 +281,7 @@ function BridgeDownloads({ eventId }: { eventId: string }) {
 	const preferredTarget = PREFERRED_TARGET[detectedOs];
 	const primary = items.find((item) => item.target === preferredTarget) ?? items[0] ?? null;
 	const others = items.filter((item) => item !== primary);
+	const setupGuide = primary ? getSetupGuide(primary.target, primary.filename) : null;
 
 	return (
 		<div className="space-y-3 border-t pt-4">
@@ -263,6 +304,35 @@ function BridgeDownloads({ eventId }: { eventId: string }) {
 							<span className="ml-2 text-xs opacity-80">{formatBytes(primary.sizeBytes)}</span>
 						</a>
 					</Button>
+
+					{setupGuide ? (
+						<div className="space-y-2 rounded-md bg-muted/50 p-3 text-sm">
+							<p className="text-muted-foreground">
+								<span className="font-medium text-foreground">{t("setupTitle")}</span>{" "}
+								{t(setupGuide.helpKey)}
+							</p>
+							<div className="flex items-start justify-between gap-2">
+								<code className="block min-w-0 grow break-all font-mono text-xs leading-relaxed">
+									{setupGuide.command}
+								</code>
+								<Button
+									type="button"
+									variant="ghost"
+									size="icon"
+									className="h-6 w-6 shrink-0"
+									onClick={() => void handleCopySetup(setupGuide.command)}
+									aria-label={t("copySetup")}
+									title={t("copySetup")}
+								>
+									{copiedSetup ? (
+										<Check className="h-3.5 w-3.5" />
+									) : (
+										<Copy className="h-3.5 w-3.5" />
+									)}
+								</Button>
+							</div>
+						</div>
+					) : null}
 
 					{others.length > 0 ? (
 						<div className="space-y-2">
