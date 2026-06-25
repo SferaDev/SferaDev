@@ -785,7 +785,15 @@
 			"reprintTestCard": "Reimprimir tarjeta de prueba",
 			"reprintTestCardHint": "Envía una nueva tarjeta de prueba (una página de color sólido), NO la última foto del invitado: el puente no conserva las imágenes enviadas.",
 			"removeJob": "Quitar",
-			"cancelJob": "Cancelar"
+			"cancelJob": "Cancelar",
+			"addPicturesTitle": "Añadir imágenes a la cola",
+			"addPicturesHelp": "Sube una o varias imágenes para imprimirlas en la impresora configurada. Se envían tal cual y se ajustan al papel.",
+			"addPictures": "Añadir imagen(es)",
+			"copiesLabel": "Copias",
+			"selectPrinterFirst": "Selecciona primero una impresora en los ajustes de impresión.",
+			"noPrinterConnected": "No hay ninguna impresora conectada.",
+			"picturesQueued": "Se añadieron {count} imagen(es) a la cola.",
+			"picturesQueuedPartial": "Se añadieron {succeeded} imagen(es); {failed} fallaron."
 		}
 	},
 	"guestAlbums": {

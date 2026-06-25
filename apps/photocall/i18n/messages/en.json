@@ -780,7 +780,15 @@
 			"reprintTestCard": "Reprint test card",
 			"reprintTestCardHint": "Sends a fresh test card (a solid-color page), NOT the guest's last photo — the bridge does not keep submitted images.",
 			"removeJob": "Remove",
-			"cancelJob": "Cancel"
+			"cancelJob": "Cancel",
+			"addPicturesTitle": "Add pictures to the queue",
+			"addPicturesHelp": "Upload one or more images to print on the configured printer. They are sent as-is and fitted to the paper.",
+			"addPictures": "Add picture(s)",
+			"copiesLabel": "Copies",
+			"selectPrinterFirst": "Select a printer first in the print settings.",
+			"noPrinterConnected": "No printer connected.",
+			"picturesQueued": "Added {count} picture(s) to the queue.",
+			"picturesQueuedPartial": "Added {succeeded} picture(s); {failed} failed."
 		}
 	},
 	"guestAlbums": {

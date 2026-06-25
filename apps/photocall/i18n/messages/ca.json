@@ -785,7 +785,15 @@
 			"reprintTestCard": "Reimprimeix la targeta de prova",
 			"reprintTestCardHint": "Envia una nova targeta de prova (una pàgina de color sòlid), NO l'última foto del convidat: el pont no conserva les imatges enviades.",
 			"removeJob": "Treu",
-			"cancelJob": "Cancel·la"
+			"cancelJob": "Cancel·la",
+			"addPicturesTitle": "Afegeix imatges a la cua",
+			"addPicturesHelp": "Puja una o més imatges per imprimir-les a la impressora configurada. S'envien tal com són i s'ajusten al paper.",
+			"addPictures": "Afegeix imatge(s)",
+			"copiesLabel": "Còpies",
+			"selectPrinterFirst": "Selecciona primer una impressora a la configuració d'impressió.",
+			"noPrinterConnected": "No hi ha cap impressora connectada.",
+			"picturesQueued": "S'han afegit {count} imatge(s) a la cua.",
+			"picturesQueuedPartial": "S'han afegit {succeeded} imatge(s); {failed} han fallat."
 		}
 	},
 	"guestAlbums": {
