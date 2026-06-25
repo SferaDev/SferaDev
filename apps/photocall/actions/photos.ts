@@ -167,9 +167,27 @@ export async function getPhotoByShareToken(shareToken: string) {
 	// The decorated/processed composite, downloadable as the "print version".
 	// Null for boomerangs and legacy rows that predate the split.
 	const printUrl = photo.printStorageKey ? await getFileUrl(photo.printStorageKey) : null;
+	const rawShotKeys = parseRawShotKeys(photo.rawShotKeys);
 	// Each individual raw shot, resolved so guests can view/download them.
-	const rawShotUrls = await Promise.all(
-		parseRawShotKeys(photo.rawShotKeys).map((key) => getFileUrl(key)),
+	const rawShotUrls = await Promise.all(rawShotKeys.map((key) => getFileUrl(key)));
+
+	// Download counterparts of the URLs above. These carry a
+	// `Content-Disposition: attachment; filename="..."` header so a plain link
+	// click downloads the file directly from storage (cross-origin, no CORS).
+	// Boomerangs are GIFs; everything else is JPEG.
+	const ext = photo.kind === "boomerang" ? "gif" : "jpg";
+	const downloadUrl = await getFileUrl(photo.storageKey, {
+		downloadFilename: `photocall_${photo.humanCode}.${ext}`,
+	});
+	const printDownloadUrl = photo.printStorageKey
+		? await getFileUrl(photo.printStorageKey, {
+				downloadFilename: `photocall_${photo.humanCode}_print.jpg`,
+			})
+		: null;
+	const rawShotDownloadUrls = await Promise.all(
+		rawShotKeys.map((key, index) =>
+			getFileUrl(key, { downloadFilename: `photocall_${photo.humanCode}_${index + 1}.jpg` }),
+		),
 	);
 
 	// Event branding so the public share page can present the event's identity
@@ -181,6 +199,9 @@ export async function getPhotoByShareToken(shareToken: string) {
 		url,
 		printUrl,
 		rawShotUrls,
+		downloadUrl,
+		printDownloadUrl,
+		rawShotDownloadUrls,
 		eventName: event.name,
 		allowDownload: event.allowDownload,
 		allowPrint: event.allowPrint,

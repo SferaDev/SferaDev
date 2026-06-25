@@ -11,7 +11,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { DEFAULT_BRAND_COLOR } from "@/lib/branding";
-import { downloadBlob } from "@/lib/canvas-utils";
 
 type SharedPhoto = NonNullable<Awaited<ReturnType<typeof getPhotoByShareToken>>>;
 
@@ -44,22 +43,29 @@ function SharePageContent({ photo }: { photo: SharedPhoto | null }) {
 	const t = useTranslations("share");
 	const { toast } = useToast();
 
-	/** Fetch an asset URL and trigger a download with the given filename. */
-	const downloadFrom = async (url: string, filename: string) => {
-		const response = await fetch(url);
-		const blob = await response.blob();
-		downloadBlob(blob, filename);
+	/**
+	 * Trigger a download via a plain anchor click. The URL is a presigned link
+	 * carrying `Content-Disposition: attachment`, so the browser downloads it
+	 * directly from storage — cross-origin, no `fetch`, no CORS. (A cross-origin
+	 * `download` attribute is ignored, hence relying on the header for the name.)
+	 */
+	const downloadFromUrl = (url: string) => {
+		const anchor = document.createElement("a");
+		anchor.href = url;
+		anchor.rel = "noopener";
+		document.body.appendChild(anchor);
+		anchor.click();
+		anchor.remove();
 	};
 
-	const handleDownload = async () => {
-		if (!photo?.url) return;
-		const ext = photo.kind === "boomerang" ? "gif" : "jpg";
-		await downloadFrom(photo.url, `photocall_${photo.humanCode}.${ext}`);
+	const handleDownload = () => {
+		if (!photo?.downloadUrl) return;
+		downloadFromUrl(photo.downloadUrl);
 	};
 
-	const handleDownloadPrint = async () => {
-		if (!photo?.printUrl) return;
-		await downloadFrom(photo.printUrl, `photocall_${photo.humanCode}_print.jpg`);
+	const handleDownloadPrint = () => {
+		if (!photo?.printDownloadUrl) return;
+		downloadFromUrl(photo.printDownloadUrl);
 	};
 
 	const handleShare = async () => {
@@ -216,9 +222,10 @@ function SharePageContent({ photo }: { photo: SharedPhoto | null }) {
 									<button
 										key={shotUrl}
 										type="button"
-										onClick={() =>
-											downloadFrom(shotUrl, `photocall_${photo.humanCode}_${index + 1}.jpg`)
-										}
+										onClick={() => {
+											const downloadUrl = photo.rawShotDownloadUrls[index];
+											if (downloadUrl) downloadFromUrl(downloadUrl);
+										}}
 										className="group relative aspect-3/4 overflow-hidden rounded-lg bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
 										aria-label={t("downloadShot", { index: index + 1 })}
 									>
