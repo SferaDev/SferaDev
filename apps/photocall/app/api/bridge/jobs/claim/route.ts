@@ -1,4 +1,4 @@
-import { and, asc, eq, inArray, lt, or, sql } from "drizzle-orm";
+import { and, asc, eq, gte, inArray, lt, or, sql } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { authenticateBridge } from "@/lib/bridge-auth";
@@ -11,9 +11,18 @@ import { getFileUrl } from "@/lib/storage";
 const DEFAULT_LIMIT = 5;
 const MAX_LIMIT = 10;
 
-// How long a `claimed`/`printing` job may sit before another claim re-queues
-// it. A bridge that crashed mid-print must not strand jobs forever.
-const STALE_CLAIM_INTERVAL = sql`interval '2 minutes'`;
+// How long a `claimed`/`printing` job may go WITHOUT a heartbeat before another
+// claim re-queues it. A live bridge refreshes `claimedAt` via status reports
+// while it prints (see the status route), so this window only trips for a bridge
+// that has genuinely gone silent (crashed / lost network) — never a slow-but-
+// healthy print. Kept well above worst-case print time so a busy printer is
+// never re-queued out from under itself.
+const STALE_CLAIM_INTERVAL = sql`interval '5 minutes'`;
+
+// A job that keeps getting stranded (claimed then never finished) is dead-lettered
+// after this many claim attempts instead of being reprinted forever. `attempts` is
+// bumped once per claim below.
+const MAX_ATTEMPTS = 5;
 
 const claimSchema = z.object({
 	bridgeId: z.string().min(1),
@@ -49,17 +58,34 @@ export async function POST(request: Request) {
 	// (b) lock + claim the oldest queued rows, skipping any rows another claim is
 	// already holding (`FOR UPDATE SKIP LOCKED`).
 	const claimedIds = await db.transaction(async (tx) => {
-		// (a) Re-queue stale claims for this event.
+		// A claim is "stale" when its bridge stopped heartbeating for the window
+		// above. Such jobs belong to a bridge that has gone silent.
+		const isStaleClaim = and(
+			eq(schema.printJobs.eventId, event.id),
+			or(eq(schema.printJobs.status, "claimed"), eq(schema.printJobs.status, "printing")),
+			lt(schema.printJobs.claimedAt, sql`now() - ${STALE_CLAIM_INTERVAL}`),
+		);
+
+		// (a1) Dead-letter stale jobs that have already been claimed MAX_ATTEMPTS
+		// times — a job that keeps stranding must not be reprinted endlessly.
+		await tx
+			.update(schema.printJobs)
+			.set({
+				status: "failed",
+				lastError: "Stranded by the print bridge too many times",
+				claimedAt: null,
+				claimedBy: null,
+				updatedAt: new Date(),
+			})
+			.where(and(isStaleClaim, gte(schema.printJobs.attempts, MAX_ATTEMPTS)));
+
+		// (a2) Re-queue the remaining stale claims so a crashed/restarted bridge
+		// doesn't strand them. `attempts` is NOT bumped here — it's bumped once per
+		// claim in (b), so a job stranded N times has been claimed N times.
 		await tx
 			.update(schema.printJobs)
 			.set({ status: "queued", claimedAt: null, claimedBy: null, updatedAt: new Date() })
-			.where(
-				and(
-					eq(schema.printJobs.eventId, event.id),
-					or(eq(schema.printJobs.status, "claimed"), eq(schema.printJobs.status, "printing")),
-					lt(schema.printJobs.claimedAt, sql`now() - ${STALE_CLAIM_INTERVAL}`),
-				),
-			);
+			.where(and(isStaleClaim, lt(schema.printJobs.attempts, MAX_ATTEMPTS)));
 
 		// (b) Lock the oldest queued jobs for this event, skipping rows another
 		// concurrent claim already holds.
@@ -80,6 +106,8 @@ export async function POST(request: Request) {
 				status: "claimed",
 				claimedAt: new Date(),
 				claimedBy: bridgeId,
+				// Count this hand-out; (a1) dead-letters once it crosses MAX_ATTEMPTS.
+				attempts: sql`${schema.printJobs.attempts} + 1`,
 				updatedAt: new Date(),
 			})
 			.where(inArray(schema.printJobs.id, ids));
