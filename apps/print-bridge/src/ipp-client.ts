@@ -1,4 +1,3 @@
-import { parse as parseUrl, type UrlWithStringQuery } from "node:url";
 import { promisify } from "node:util";
 import type {
 	GetPrinterAttributesRequest,
@@ -219,48 +218,6 @@ function withTimeout<T>(promise: Promise<T>, ms: number, label: string): Promise
 	});
 }
 
-/**
- * Parsed-URL shape `williamkapke/ipp` actually hands to the transport, widened
- * with the TLS field we need. The `ipp` `Printer` constructor stores its first
- * arg as `this.url` and `request()` passes that object STRAIGHT to
- * `https.request`, so any extra key here (e.g. `rejectUnauthorized`) is read by
- * Node's TLS layer. `@types/ipp` models the constructor as `(url: string)`
- * only, so we describe the real runtime shape ourselves.
- */
-interface IppPrinterUrl extends UrlWithStringQuery {
-	rejectUnauthorized?: boolean;
-}
-
-/**
- * Construct an `ipp.Printer`, accepting the printer's self-signed TLS cert on
- * `ipps://` (IPP-over-TLS) connections.
- *
- * LAN AirPrint printers — including the Canon SELPHY CP-1500, advertised over
- * mDNS as `_ipps._tcp` on :443 — ship a SELF-SIGNED certificate by design.
- * Strict verification therefore rejects every connection with "unknown
- * certificate verification error" and the printer looks unreachable. We relax
- * verification ONLY for this printer link (the parsed-URL object below); the
- * cloud-pull HTTPS connection to the photocall server is a separate request and
- * keeps full TLS verification.
- *
- * Setting `rejectUnauthorized` on the parsed-URL object is the ONLY injection
- * point the library exposes: the constructor does not forward its options to
- * the request, but it does pass the URL object through to `https.request`.
- */
-function createPrinter(uri: string, version: IPPVersion): Printer {
-	const parsed: IppPrinterUrl = parseUrl(uri);
-	// Only TLS (`ipps://`) needs the self-signed cert accepted; leave plain
-	// `ipp://` (http) connections untouched.
-	if (parsed.protocol === "ipps:") {
-		parsed.rejectUnauthorized = false;
-	}
-	// Single, localized boundary: `@types/ipp` types the constructor as
-	// `(url: string)`, but the library accepts a parsed-URL object at runtime
-	// and forwards it directly to `https.request`. Passing the object is what
-	// lets `rejectUnauthorized` reach the TLS layer.
-	return new ipp.Printer(parsed as unknown as string, { version });
-}
-
 /** Query a printer's current attributes; throws if it is unreachable. */
 export async function getPrinterAttributes(
 	uri: string,
@@ -269,7 +226,7 @@ export async function getPrinterAttributes(
 	// The debug file printer has no IPP endpoint — it is always idle and ready.
 	if (isDebugPrinterUri(uri)) return debugPrinterAttributes();
 
-	const printer = createPrinter(uri, version);
+	const printer = new ipp.Printer(uri, { version });
 	const getAttributes = executePrinter<GetPrinterAttributesRequest, GetPrinterAttributesResponse>(
 		printer,
 		"Get-Printer-Attributes",
@@ -431,7 +388,7 @@ async function sendPrintJob(
 	version: IPPVersion,
 	message: PrintJobRequest,
 ): Promise<PrintJobResponse> {
-	const printer = createPrinter(uri, version);
+	const printer = new ipp.Printer(uri, { version });
 	const printJob = executePrinter<PrintJobRequest, PrintJobResponse>(printer, "Print-Job");
 	// Bound the data transfer with the generous Print-Job timeout (NOT the short
 	// attribute-ping one): a successful-but-slow accept must not time out, or the
