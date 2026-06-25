@@ -33,8 +33,18 @@ async function uploadBlob(
 
 /**
  * Uploads one queued photo and creates its record. Mirrors the online path in
- * the result page: original → `storageKey`, processed → `printStorageKey`, and
- * each raw shot → an entry in `rawShotKeys`.
+ * the result page: the DECORATED main image → `storageKey`, each raw shot → an
+ * entry in `rawShotKeys`, and (for new items) no `printStorageKey` — the main
+ * image already IS the print version.
+ *
+ * Two back-compat cases are preserved so in-flight items from older models still
+ * sync after a reconnect:
+ *  - `printBlob === undefined` (very old single-blob item): the main `blob`
+ *    doubles as the print image (`printStorageKey = storageKey`).
+ *  - `printBlob` is a Blob (old original/processed split): it is uploaded to
+ *    `printStorageKey`.
+ * New items (and boomerangs) set `printBlob` to `null`, so no `printStorageKey`
+ * is stored.
  *
  * No-loss guarantee on partial failure: every blob is uploaded FIRST; only once
  * all uploads (and `createPhoto`) succeed is the item removed from the outbox.
@@ -46,15 +56,17 @@ async function uploadBlob(
 async function syncPhoto(photo: QueuedPhoto): Promise<void> {
 	const contentType = photo.contentType ?? "image/jpeg";
 
-	// 1. Original (preview image).
+	// 1. The decorated main image (preview + print + stored main image).
 	const storageKey = await uploadBlob(photo.eventId, photo.blob, contentType);
 
-	// 2. Processed/print composite. Legacy items have no `printBlob` — reuse the
-	//    original so those captures still print. Boomerangs explicitly set it null.
+	// 2. Print composite — back-compat only. New items set `printBlob` to null,
+	//    so no `printStorageKey` is stored (the main image IS the print version).
+	//    Very old legacy items have no `printBlob` — reuse the main image so they
+	//    still print. Old split items carry a print blob — upload it.
 	const printContentType = photo.printContentType ?? contentType;
 	let printStorageKey: string | undefined;
 	if (photo.printBlob === undefined) {
-		// Legacy single-blob item: the original doubles as the processed image.
+		// Very old single-blob item: the main image doubles as the print image.
 		printStorageKey = storageKey;
 	} else if (photo.printBlob !== null) {
 		printStorageKey = await uploadBlob(photo.eventId, photo.printBlob, printContentType);

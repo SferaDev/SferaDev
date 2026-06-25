@@ -8,12 +8,16 @@
  * sync — triggered when the browser comes back online — replays the uploads
  * (presigned S3 PUT for each blob) and creates the photo record server-side.
  *
- * Each capture now holds up to three kinds of asset (see the feature spec):
- *  - the unprocessed ORIGINAL ({@link QueuedPhoto.blob}) — the preview image;
- *  - the decorated PROCESSED composite ({@link QueuedPhoto.printBlob}) — used for
- *    printing and offered as a separate download; null for boomerangs/legacy;
- *  - the individual RAW shots ({@link QueuedPhoto.rawShotBlobs}) — viewable and
- *    downloadable individually; empty for boomerangs/legacy.
+ * Each capture holds (see the feature spec):
+ *  - the DECORATED main composite ({@link QueuedPhoto.blob}) — the preview image,
+ *    the stored main image (`storageKey`) and what prints;
+ *  - the individual RAW shots ({@link QueuedPhoto.rawShotBlobs}) — the full,
+ *    uncropped capture frames, viewable and downloadable individually; empty for
+ *    boomerangs and undecorated single captures;
+ *  - {@link QueuedPhoto.printBlob} is `null` for new items — the main `blob`
+ *    already IS the print version, so no separate print object is stored. It is
+ *    kept for back-compat: legacy items queued under the old model still carry a
+ *    decorated print blob here, and the sync uploads it to `printStorageKey`.
  *
  * No-loss guarantee: the sync uploads every blob and only calls `createPhoto`
  * (and then removes the item) once all uploads succeed. Any failure leaves the
@@ -35,12 +39,13 @@ export interface QueuedPhoto {
 	eventId: string;
 	sessionId: string;
 	/**
-	 * The unprocessed ORIGINAL blob (the preview image): a JPEG for single/strip
-	 * captures or an animated GIF for boomerangs. This becomes `storageKey`.
+	 * The DECORATED main composite blob (the preview/print image): a JPEG for
+	 * single/strip captures or an animated GIF for boomerangs. This becomes
+	 * `storageKey`.
 	 *
-	 * Legacy items (queued before the original/processed split) only have this
-	 * field; the sync treats it as BOTH the original and the processed image so
-	 * those captures still print correctly after a reconnect.
+	 * Very old legacy items (queued before the original/processed split) only have
+	 * this field; the sync treats it as BOTH the main and the print image so those
+	 * captures still print correctly after a reconnect.
 	 */
 	blob: Blob;
 	/**
@@ -49,17 +54,20 @@ export interface QueuedPhoto {
 	 */
 	contentType?: PhotoContentType;
 	/**
-	 * The decorated/PROCESSED composite blob (all graphic + text layers), uploaded
-	 * to `printStorageKey` and used for printing. Null for boomerangs; absent on
-	 * legacy items (the sync falls back to {@link blob}).
+	 * Back-compat only. `null` for new items — the main {@link blob} already IS the
+	 * print version, so no separate print object is stored (no `printStorageKey`).
+	 * Legacy items queued under the old model carry a decorated print composite
+	 * here; the sync uploads it to `printStorageKey` so in-flight old items still
+	 * sync. (Boomerangs have always set this null.)
 	 */
 	printBlob?: Blob | null;
 	/** MIME type for {@link printBlob}. Defaults to image/jpeg when absent. */
 	printContentType?: PhotoContentType;
 	/**
-	 * The individual RAW shot blobs backing this capture, in capture order. Each
-	 * is uploaded separately; the resulting keys become `rawShotKeys`. Empty for
-	 * boomerangs and legacy items.
+	 * The individual RAW shot blobs backing this capture (the full, uncropped
+	 * frames), in capture order. Each is uploaded separately; the resulting keys
+	 * become `rawShotKeys`. Empty for boomerangs, undecorated single captures, and
+	 * legacy items.
 	 */
 	rawShotBlobs?: Blob[];
 	/** MIME type shared by every {@link rawShotBlobs} entry. Defaults to image/jpeg. */
