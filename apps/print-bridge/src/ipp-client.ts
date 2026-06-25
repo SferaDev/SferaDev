@@ -32,12 +32,26 @@ import type { PaperSize, PrintParams, PrintResult } from "./types.js";
 const IPP_VERSIONS: readonly IPPVersion[] = ["2.0", "1.1"];
 
 /**
- * Attributes we ask for in every Get-Printer-Attributes call. We request the
- * full `printer-description` group: it includes printer-state, state-reasons,
- * media-supported, copies-supported and the marker (ink/supply) attributes the
- * SELPHY reports, which are not individually keyed in the `ipp` typings.
+ * Attributes we ask for in every Get-Printer-Attributes call. We name the
+ * SPECIFIC attributes we parse instead of requesting the whole
+ * `printer-description` group. The Canon SELPHY answers a group request with
+ * vendor attributes whose value syntax the `ipp` parser cannot decode
+ * (`media-overprint-supported` / `media-overprint-type-supported`, tag 0x12),
+ * which corrupts the parse: `media-supported` comes back `undefined` even though
+ * the printer plainly supports it (`ipptool` sees all 5 sizes). Naming the
+ * attributes explicitly keeps those vendor attributes out of the response, so
+ * media / state / markers all parse correctly — and it silences the repeated
+ * "The spec is not clear on how to handle tag 18…" parser warnings.
  */
-const REQUESTED_ATTRIBUTES: ["printer-description"] = ["printer-description"];
+const REQUESTED_ATTRIBUTES = [
+	"printer-state",
+	"printer-state-reasons",
+	"media-supported",
+	"copies-supported",
+	"marker-levels",
+	"marker-names",
+	"printer-make-and-model",
+] as const;
 
 /**
  * Parsed subset of the printer-attributes-tag. The `ipp` library types this
@@ -265,7 +279,13 @@ export async function getPrinterAttributes(
 		getAttributes({
 			"operation-attributes-tag": {
 				"requesting-user-name": "photocall-bridge",
-				"requested-attributes": [...REQUESTED_ATTRIBUTES],
+				// `@types/ipp`'s `PrinterDescription` does not key several standard IPP
+				// attributes we request (e.g. `printer-state`), so widen to the request's
+				// own attribute-list type. They are valid IPP keywords the printer
+				// accepts — verified against the real SELPHY.
+				"requested-attributes": [
+					...REQUESTED_ATTRIBUTES,
+				] as GetPrinterAttributesRequest["operation-attributes-tag"]["requested-attributes"],
 			},
 		}),
 		IPP_REQUEST_TIMEOUT_MS,
