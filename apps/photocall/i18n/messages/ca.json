@@ -415,6 +415,12 @@
 		"event": {
 			"active": "Actiu",
 			"activate": "Activa",
+			"pause": "Pausa",
+			"kiosk": "Quiosc",
+			"album": "Àlbum",
+			"share": "Comparteix",
+			"settings": "Configuració",
+			"language": "Idioma",
 			"openKiosk": "Obre el quiosc",
 			"stats": {
 				"totalPhotos": "Fotos totals",
@@ -440,6 +446,19 @@
 			"printManagement": "Imprimeix",
 			"kioskSettings": "Configuració del quiosc",
 			"recycleBin": "Paperera"
+		},
+		"share": {
+			"title": "Comparteix l'àlbum",
+			"subtitle": "Comparteix l'àlbum de convidats amb un codi QR",
+			"scanToView": "Escaneja per veure l'àlbum",
+			"downloadPng": "Descarrega PNG",
+			"share": "Comparteix",
+			"copyLink": "Copia l'enllaç",
+			"linkCopied": "Enllaç copiat",
+			"shareText": "Mira les fotos de {name}",
+			"albumDisabledTitle": "L'àlbum no està activat",
+			"albumDisabledBody": "Activa l'àlbum de convidats a la configuració de l'esdeveniment per obtenir un enllaç i un codi QR per compartir.",
+			"enableInSettings": "Ves a la configuració"
 		},
 		"trash": {
 			"title": "Paperera de reciclatge",

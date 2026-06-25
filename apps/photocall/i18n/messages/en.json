@@ -410,6 +410,12 @@
 		"event": {
 			"active": "Active",
 			"activate": "Activate",
+			"pause": "Pause",
+			"kiosk": "Kiosk",
+			"album": "Album",
+			"share": "Share",
+			"settings": "Settings",
+			"language": "Language",
 			"openKiosk": "Open Kiosk",
 			"stats": {
 				"totalPhotos": "Total Photos",
@@ -435,6 +441,19 @@
 			"printManagement": "Print",
 			"kioskSettings": "Kiosk settings",
 			"recycleBin": "Recycling bin"
+		},
+		"share": {
+			"title": "Share album",
+			"subtitle": "Share the guest album with a QR code",
+			"scanToView": "Scan to view the album",
+			"downloadPng": "Download PNG",
+			"share": "Share",
+			"copyLink": "Copy link",
+			"linkCopied": "Link copied",
+			"shareText": "View the photos from {name}",
+			"albumDisabledTitle": "Album is not enabled",
+			"albumDisabledBody": "Enable the guest album in the event settings to get a shareable link and QR code.",
+			"enableInSettings": "Go to settings"
 		},
 		"trash": {
 			"title": "Recycling bin",
