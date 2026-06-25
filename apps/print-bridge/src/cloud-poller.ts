@@ -227,9 +227,18 @@ export class CloudPoller {
 	private async acceptJob(job: CloudJob): Promise<void> {
 		const imageBuffer = await this.downloadImage(job.imageUrl);
 		if (!imageBuffer) {
-			// Couldn't fetch the bytes. Report `failed` so the cloud can re-queue it
-			// to another bridge rather than leaving it claimed-but-stuck on us.
-			await this.report(job.id, "failed", "Failed to download job image");
+			// Couldn't fetch the image bytes — usually a transient R2/network blip or
+			// an object that isn't readable yet. Do NOT report `failed`: that is a
+			// TERMINAL state on the server and would permanently lose the print on a
+			// momentary glitch. Instead leave the job claimed-but-untracked and send
+			// no heartbeat for it: the server's stale-claim sweep re-queues it after
+			// the heartbeat window, a later claim retries the download, and the
+			// server-side attempts cap eventually dead-letters a genuinely unreadable
+			// image. (We deliberately don't report `queued` for an immediate re-claim,
+			// which would let a hard failure spin claim→download-fail→claim every poll.)
+			console.warn(
+				`[cloud] job ${job.id}: image download failed; leaving for stale re-queue + retry`,
+			);
 			return;
 		}
 
