@@ -1,5 +1,11 @@
 # netlify-api
 
+## 1.1.0
+
+### Minor Changes
+
+- 1df64e3: Add CRUD API endpoints and type definitions for Site Agent Runner Hooks.
+
 ## 1.0.0
 
 ### Major Changes

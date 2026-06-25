@@ -1,5 +1,12 @@
 # vercel-api-js
 
+## 1.1.1
+
+### Patch Changes
+
+- 0551aea: Added 'emu-member-removed-unverified-domain' to user event types and schemas.
+- 0551aea: Added CreateDrainStatus402, UpdateDrainStatus402, and TestDrainStatus402 error responses and schemas for drain-related API endpoints.
+
 ## 1.1.0
 
 ### Minor Changes
