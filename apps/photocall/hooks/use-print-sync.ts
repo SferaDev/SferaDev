@@ -1,7 +1,13 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { pingBridge, type SubmitResult, submitPrintJob } from "@/lib/print/bridge-client";
+import {
+	type BridgePrinter,
+	listBridgePrinters,
+	pingBridge,
+	type SubmitResult,
+	submitPrintJob,
+} from "@/lib/print/bridge-client";
 import {
 	countQueuedPrints,
 	getLatestPrintError,
@@ -29,6 +35,31 @@ const delay = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve,
  */
 function isUnreachable(result: Extract<SubmitResult, { ok: false }>): boolean {
 	return result.error === "Could not reach the print bridge";
+}
+
+/**
+ * Pick the printerId to actually submit a queued job with.
+ *
+ * A job can be parked with an empty `printPrinterId` (the event had no default
+ * printer at capture time) or one that no longer exists on the bridge (the
+ * printer was swapped/removed). Submitting it verbatim makes `submitPrintJob`
+ * return "No printer selected" forever, so the job stalls in the outbox even
+ * when a perfectly good printer is now online.
+ *
+ * To break that stall we keep the job's own printer when it's still present on
+ * the bridge, and otherwise fall back to the first reachable bridge printer.
+ * Returns null only when NO printer is reachable — the caller then leaves the
+ * job queued (no-loss) for a later cycle.
+ */
+function resolvePrinterId(
+	config: QueuedPrintJob["config"],
+	reachablePrinters: BridgePrinter[],
+): string | null {
+	const stillPresent =
+		config.printPrinterId &&
+		reachablePrinters.some((printer) => printer.id === config.printPrinterId);
+	if (stillPresent) return config.printPrinterId;
+	return reachablePrinters[0]?.id ?? null;
 }
 
 interface UsePrintSyncReturn {
@@ -79,18 +110,42 @@ export function usePrintSync(bridgeUrl: string | null | undefined): UsePrintSync
 	 * caller can decide whether to keep draining. On success the job is removed;
 	 * on failure it STAYS queued (no-loss) with its attempt count and error
 	 * recorded for backoff/telemetry and the pending notice.
+	 *
+	 * The job is re-targeted to a currently-reachable printer before submitting
+	 * (see {@link resolvePrinterId}) so a job parked without a valid printer still
+	 * drains once any printer is online. We shallow-clone the config with the
+	 * resolved id — the stored job is never mutated, so if delivery fails it stays
+	 * queued exactly as captured.
 	 */
-	const syncJob = useCallback(async (url: string, job: QueuedPrintJob): Promise<SubmitResult> => {
-		const result = await submitPrintJob(url, job.blob, job.config);
-		if (result.ok) {
-			await removeQueuedPrint(job.id);
+	const syncJob = useCallback(
+		async (
+			url: string,
+			job: QueuedPrintJob,
+			reachablePrinters: BridgePrinter[],
+		): Promise<SubmitResult> => {
+			const printerId = resolvePrinterId(job.config, reachablePrinters);
+			// No printer reachable at all: keep the job queued, retry next cycle.
+			if (!printerId) {
+				const result: SubmitResult = { ok: false, error: "No printer selected" };
+				await recordPrintAttempt(job.id, job.attempts + 1, result.error);
+				return result;
+			}
+			const config =
+				printerId === job.config.printPrinterId
+					? job.config
+					: { ...job.config, printPrinterId: printerId };
+			const result = await submitPrintJob(url, job.blob, config);
+			if (result.ok) {
+				await removeQueuedPrint(job.id);
+				return result;
+			}
+			// Record the failed attempt but KEEP the job: `attempts` counts the
+			// deliveries already made, so the just-failed one is the (attempts + 1)-th.
+			await recordPrintAttempt(job.id, job.attempts + 1, result.error);
 			return result;
-		}
-		// Record the failed attempt but KEEP the job: `attempts` counts the
-		// deliveries already made, so the just-failed one is the (attempts + 1)-th.
-		await recordPrintAttempt(job.id, job.attempts + 1, result.error);
-		return result;
-	}, []);
+		},
+		[],
+	);
 
 	const sync = useCallback(async () => {
 		if (!bridgeUrl) return;
@@ -104,13 +159,22 @@ export function usePrintSync(bridgeUrl: string | null | undefined): UsePrintSync
 			const reachable = await pingBridge(bridgeUrl);
 			if (!reachable) return;
 
+			// Fetch the bridge's current printers once per cycle so a job parked
+			// without a valid printer can be re-targeted to a reachable one (see
+			// resolvePrinterId). A list failure leaves us with no printers, which just
+			// means jobs without a usable printer stay queued for the next cycle.
+			const printersResult = await listBridgePrinters(bridgeUrl);
+			const reachablePrinters = printersResult.ok
+				? printersResult.printers.filter((printer) => printer.reachable)
+				: [];
+
 			// Snapshot the queue once and process each job AT MOST ONCE this cycle, so
 			// a job can never be submitted twice within a single drain.
 			const queued = await getQueuedPrints();
 			for (let i = 0; i < queued.length; i++) {
 				const job = queued[i];
 				if (!job) continue;
-				const result = await syncJob(bridgeUrl, job);
+				const result = await syncJob(bridgeUrl, job, reachablePrinters);
 				// Bridge vanished mid-drain: stop now and let the next ping resume.
 				// (Jobs are untouched and remain queued — nothing is lost.)
 				if (!result.ok && isUnreachable(result)) break;

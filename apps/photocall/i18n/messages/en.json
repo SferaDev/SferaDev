@@ -723,7 +723,8 @@
 				"failed": "Failed"
 			},
 			"reprintTestCard": "Reprint test card",
-			"reprintTestCardHint": "Sends a fresh test card (a solid-color page), NOT the guest's last photo — the bridge does not keep submitted images."
+			"reprintTestCardHint": "Sends a fresh test card (a solid-color page), NOT the guest's last photo — the bridge does not keep submitted images.",
+			"removeJob": "Remove"
 		}
 	},
 	"guestAlbums": {

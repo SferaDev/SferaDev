@@ -9,6 +9,7 @@ import {
 	Printer,
 	RefreshCw,
 	Settings,
+	Trash2,
 	XCircle,
 } from "lucide-react";
 import Link from "next/link";
@@ -33,7 +34,7 @@ import {
 	resolveBridgeUrl,
 	submitPrintJob,
 } from "@/lib/print/bridge-client";
-import { getQueuedPrints, type QueuedPrintJob } from "@/lib/print/print-queue";
+import { getQueuedPrints, type QueuedPrintJob, removeQueuedPrint } from "@/lib/print/print-queue";
 import type { EventPrintConfig } from "@/lib/print/types";
 
 /** How often the live print queue + printer list is polled (ms). */
@@ -400,7 +401,11 @@ export default function PrintManagement() {
 							) : (
 								<div className="divide-y rounded-lg border">
 									{offlineJobs.map((job) => (
-										<OfflineJobRow key={job.id} job={job} />
+										<OfflineJobRow
+											key={job.id}
+											job={job}
+											onRemoved={() => void refreshOfflineJobs()}
+										/>
 									))}
 									{jobs.map((job) => (
 										<JobRow key={job.id} job={job} />
@@ -528,17 +533,49 @@ function JobRow({ job }: { job: BridgeJob }) {
 }
 
 /**
+ * Create a temporary object URL for a blob and revoke it on unmount or when the
+ * blob changes, so previewing many queued strips never leaks object URLs.
+ */
+function useObjectUrl(blob: Blob): string {
+	const [url, setUrl] = useState(() => URL.createObjectURL(blob));
+	useEffect(() => {
+		const objectUrl = URL.createObjectURL(blob);
+		setUrl(objectUrl);
+		return () => URL.revokeObjectURL(objectUrl);
+	}, [blob]);
+	return url;
+}
+
+/**
  * A print job parked in this device's offline outbox (IndexedDB), shown in the
  * same queue as the bridge's live jobs so a host can see it's waiting, not lost.
  * Mirrors {@link JobRow}'s layout but always renders the "pending" state — these
  * jobs have not reached the bridge yet — and surfaces `lastError` as the reason
  * it's waiting (falling back to a generic "waiting on this device" note).
+ *
+ * Shows a thumbnail of the queued strip so the operator can tell the jobs apart,
+ * and a destructive "remove" control to clear a stuck job from this device's
+ * outbox (calling `onRemoved` to refresh the list afterwards).
  */
-function OfflineJobRow({ job }: { job: QueuedPrintJob }) {
+function OfflineJobRow({ job, onRemoved }: { job: QueuedPrintJob; onRemoved: () => void }) {
 	const t = useTranslations("dashboard.print");
+	const previewUrl = useObjectUrl(job.blob);
+	const [removing, setRemoving] = useState(false);
+
+	const handleRemove = useCallback(async () => {
+		setRemoving(true);
+		try {
+			await removeQueuedPrint(job.id);
+			onRemoved();
+		} finally {
+			setRemoving(false);
+		}
+	}, [job.id, onRemoved]);
+
 	return (
 		<div className="flex items-center gap-3 p-3">
 			<JobStatusIcon status="pending" />
+			<img src={previewUrl} alt="" className="h-10 w-10 shrink-0 rounded-md border object-cover" />
 			<div className="flex-1 min-w-0">
 				<div className="font-medium text-sm truncate">{t("jobStatus.pending")}</div>
 				<div className="text-xs text-muted-foreground truncate">
@@ -547,6 +584,17 @@ function OfflineJobRow({ job }: { job: QueuedPrintJob }) {
 				</div>
 			</div>
 			<Badge variant="secondary">{t("jobStatus.pending")}</Badge>
+			<Button
+				variant="ghost"
+				size="icon"
+				className="text-muted-foreground hover:text-destructive shrink-0"
+				onClick={() => void handleRemove()}
+				disabled={removing}
+				aria-label={t("removeJob")}
+				title={t("removeJob")}
+			>
+				{removing ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
+			</Button>
 		</div>
 	);
 }

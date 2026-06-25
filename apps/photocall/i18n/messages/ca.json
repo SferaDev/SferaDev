@@ -728,7 +728,8 @@
 				"failed": "Fallit"
 			},
 			"reprintTestCard": "Reimprimeix la targeta de prova",
-			"reprintTestCardHint": "Envia una nova targeta de prova (una pàgina de color sòlid), NO l'última foto del convidat: el pont no conserva les imatges enviades."
+			"reprintTestCardHint": "Envia una nova targeta de prova (una pàgina de color sòlid), NO l'última foto del convidat: el pont no conserva les imatges enviades.",
+			"removeJob": "Treu"
 		}
 	},
 	"guestAlbums": {
