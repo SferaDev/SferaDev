@@ -113,10 +113,9 @@ function isStreamLive(stream: MediaStream): boolean {
 
 /**
  * Build the ordered list of `getUserMedia` constraints to try for an event,
- * most-specific first. We attempt them in order and fall through to the next
- * when one rejects with a "this device can't satisfy the request" error
- * (`OverconstrainedError` / `NotFoundError`) — which is exactly what happens when
- * the kiosk moves to a machine that lacks the saved capture device:
+ * most-specific first. {@link acquireWithFallback} attempts them in order and
+ * falls through to the next on any non-permission failure — which is exactly what
+ * happens when the kiosk moves to a machine that lacks the saved capture device:
  *
  *  1. The explicitly selected capture device (USB webcam chosen in admin), by
  *     `deviceId`. Using `exact` here means a missing device rejects rather than
@@ -157,22 +156,6 @@ export function kioskCameraConstraintsChain(event: PublicEvent): MediaStreamCons
  */
 export function kioskCameraMirror(event: PublicEvent): boolean {
 	return event.mirrorPhotos;
-}
-
-/**
- * Whether a `getUserMedia` rejection means "this specific device/constraint
- * can't be satisfied" (so we should try the next fallback) rather than a hard
- * stop like a denied permission. `OverconstrainedError` is raised when an
- * `exact` constraint (our pinned `deviceId`) has no match; `NotFoundError` when
- * there is no device at all for the requested kind.
- */
-function isConstraintFallbackError(error: unknown): boolean {
-	if (!(error instanceof DOMException)) return false;
-	return (
-		error.name === "OverconstrainedError" ||
-		error.name === "NotFoundError" ||
-		error.name === "DevicesNotFoundError"
-	);
 }
 
 /** Translate a raw `getUserMedia` rejection into a typed {@link KioskCameraError}. */
@@ -237,11 +220,12 @@ function getUserMediaWithTimeout(constraints: MediaStreamConstraints): Promise<M
 
 /**
  * Try each constraint set in {@link kioskCameraConstraintsChain} order, falling
- * through to the next only on a "device unavailable" error so a missing pinned
- * webcam degrades to the default camera instead of getting stuck. A
- * permission-denied (or any non-fallback error) stops immediately — retrying
- * other constraints won't help and would re-prompt. The last fallback's error is
- * what surfaces if every attempt fails.
+ * through to the next on ANY failure except a hard permission denial, so a
+ * missing pinned webcam (or a busy/hung device, or an engine quirk on an
+ * `exact`/`facingMode` constraint) degrades to the universal `{ video: true }`
+ * instead of getting stuck. Only a permission-denied stops early — it fails every
+ * constraint identically, so retrying can't help and would re-prompt. The last
+ * attempt's error is what surfaces if every attempt fails.
  */
 async function acquireWithFallback(chain: MediaStreamConstraints[]): Promise<MediaStream> {
 	let lastError: unknown;
@@ -250,11 +234,22 @@ async function acquireWithFallback(chain: MediaStreamConstraints[]): Promise<Med
 			return await getUserMediaWithTimeout(chain[i]);
 		} catch (error) {
 			lastError = error;
-			const isLast = i === chain.length - 1;
-			if (isLast || !isConstraintFallbackError(error)) {
-				throw toKioskCameraError(error);
-			}
-			// Otherwise fall through and try the next, less-specific constraint.
+			const kioskError = toKioskCameraError(error);
+			// A hard permission denial fails EVERY constraint identically, so stop and
+			// surface it now — retrying other constraints can't help and only risks a
+			// re-prompt.
+			if (kioskError.kind === "permission-denied") throw kioskError;
+			// Any OTHER failure may be specific to THIS constraint, not the next. The
+			// most common case: the event pins a `deviceId: { exact }` saved on a
+			// DIFFERENT machine (the booth was configured on another device), so the
+			// first attempt fails here — but a busy/hung device or an engine-specific
+			// quirk on an `exact`/`facingMode` constraint also lands here. Fall through
+			// to the next, less-specific constraint; the final `{ video: true }`
+			// accepts any camera, so we only give up once even THAT fails. (Previously
+			// only OverconstrainedError/NotFoundError fell through, so any other error
+			// on an earlier attempt aborted the chain before the working
+			// `{ video: true }` was ever tried — the live preview went silently black.)
+			if (i === chain.length - 1) throw kioskError;
 		}
 	}
 	throw toKioskCameraError(lastError);
