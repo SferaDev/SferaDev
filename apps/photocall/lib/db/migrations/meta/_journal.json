@@ -50,6 +50,13 @@
 			"when": 1782301620531,
 			"tag": "0006_photo_original_processed",
 			"breakpoints": true
+		},
+		{
+			"idx": 7,
+			"version": "7",
+			"when": 1782395803392,
+			"tag": "0007_empty_rogue",
+			"breakpoints": true
 		}
 	]
 }
