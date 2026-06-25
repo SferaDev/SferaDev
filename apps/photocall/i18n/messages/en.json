@@ -643,10 +643,10 @@
 				"reveal": "Reveal token",
 				"hide": "Hide token",
 				"copy": "Copy token",
-				"copyUrl": "Copy URL",
+				"copyCommand": "Copy command",
 				"generate": "Generate token",
 				"regenerate": "Regenerate token",
-				"instructions": "Configure the on-site bridge with these environment variables, then restart it:"
+				"instructions": "Run the on-site bridge with this command:"
 			}
 		},
 		"templates": {

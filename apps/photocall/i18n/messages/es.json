@@ -648,10 +648,10 @@
 				"reveal": "Mostrar token",
 				"hide": "Ocultar token",
 				"copy": "Copiar token",
-				"copyUrl": "Copiar URL",
+				"copyCommand": "Copiar comando",
 				"generate": "Generar token",
 				"regenerate": "Regenerar token",
-				"instructions": "Configura el puente local con estas variables de entorno y luego reinícialo:"
+				"instructions": "Ejecuta el puente local con este comando:"
 			}
 		},
 		"templates": {

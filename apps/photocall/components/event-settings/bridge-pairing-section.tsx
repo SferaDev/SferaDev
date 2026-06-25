@@ -34,7 +34,7 @@ export function BridgePairingSection({ eventId, origin }: BridgePairingSectionPr
 
 	const [revealed, setRevealed] = useState(false);
 	const [rotating, setRotating] = useState(false);
-	const [copied, setCopied] = useState<"token" | "url" | null>(null);
+	const [copied, setCopied] = useState<"token" | "command" | null>(null);
 
 	const handleRotate = useCallback(async () => {
 		setRotating(true);
@@ -47,7 +47,7 @@ export function BridgePairingSection({ eventId, origin }: BridgePairingSectionPr
 		}
 	}, [eventId, mutate]);
 
-	const handleCopy = useCallback(async (value: string, which: "token" | "url") => {
+	const handleCopy = useCallback(async (value: string, which: "token" | "command") => {
 		try {
 			await navigator.clipboard.writeText(value);
 			setCopied(which);
@@ -130,28 +130,33 @@ export function BridgePairingSection({ eventId, origin }: BridgePairingSectionPr
 			{token ? (
 				<div className="space-y-2 rounded-md bg-muted/50 p-3 text-sm">
 					<p className="text-muted-foreground">{t("instructions")}</p>
-					<div className="space-y-1 font-mono text-xs">
-						<div className="flex items-center justify-between gap-2">
-							<span className="truncate">BRIDGE_CLOUD_URL={origin}</span>
-							<Button
-								type="button"
-								variant="ghost"
-								size="icon"
-								className="h-6 w-6 shrink-0"
-								onClick={() => void handleCopy(origin, "url")}
-								aria-label={t("copyUrl")}
-								title={t("copyUrl")}
-							>
-								{copied === "url" ? (
-									<Check className="h-3.5 w-3.5" />
-								) : (
-									<Copy className="h-3.5 w-3.5" />
-								)}
-							</Button>
-						</div>
-						<div className="truncate">
-							BRIDGE_PAIRING_TOKEN={revealed ? token : "•".repeat(token.length)}
-						</div>
+					<div className="flex items-start justify-between gap-2">
+						{/* Full one-line command to run the on-site bridge. The displayed
+						    token is masked unless revealed, but copy always yields the real
+						    command so the operator can paste-and-run. */}
+						<code className="block min-w-0 grow break-all font-mono text-xs leading-relaxed">
+							{`BRIDGE_CLOUD_URL=${origin} BRIDGE_PAIRING_TOKEN=${revealed ? token : "•".repeat(token.length)} ./print-bridge`}
+						</code>
+						<Button
+							type="button"
+							variant="ghost"
+							size="icon"
+							className="h-6 w-6 shrink-0"
+							onClick={() =>
+								void handleCopy(
+									`BRIDGE_CLOUD_URL=${origin} BRIDGE_PAIRING_TOKEN=${token} ./print-bridge`,
+									"command",
+								)
+							}
+							aria-label={t("copyCommand")}
+							title={t("copyCommand")}
+						>
+							{copied === "command" ? (
+								<Check className="h-3.5 w-3.5" />
+							) : (
+								<Copy className="h-3.5 w-3.5" />
+							)}
+						</Button>
 					</div>
 				</div>
 			) : null}

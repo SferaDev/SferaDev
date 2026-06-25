@@ -648,10 +648,10 @@
 				"reveal": "Mostra el token",
 				"hide": "Amaga el token",
 				"copy": "Copia el token",
-				"copyUrl": "Copia l'URL",
+				"copyCommand": "Copia l'ordre",
 				"generate": "Genera el token",
 				"regenerate": "Regenera el token",
-				"instructions": "Configura el pont local amb aquestes variables d'entorn i reinicia'l:"
+				"instructions": "Executa el pont local amb aquesta ordre:"
 			}
 		},
 		"templates": {
