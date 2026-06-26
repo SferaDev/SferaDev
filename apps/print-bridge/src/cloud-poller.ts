@@ -60,6 +60,8 @@ const STATUS_TIMEOUT_MS = 8_000;
 const PRINTERS_TIMEOUT_MS = 8_000;
 /** How many jobs to claim per poll. One dye-sub printer prints serially anyway. */
 const CLAIM_LIMIT = 5;
+/** Wait this long after a registry change before reporting, to coalesce a burst. */
+const REPORT_ON_CHANGE_DEBOUNCE_MS = 750;
 
 /** A job we've claimed and enqueued locally, awaiting its terminal state. */
 interface TrackedJob {
@@ -129,9 +131,30 @@ export class CloudPoller {
 	/** Guards against overlapping poll ticks if a tick runs long. */
 	private polling = false;
 	private reporting = false;
+	/**
+	 * Debounce timer for discovery-triggered printer reports. Coalesces the burst
+	 * of registry changes when several printers (or both IPP/IPPS transports of one
+	 * printer) resolve within a moment of each other into a single report.
+	 */
+	private reportDebounce: NodeJS.Timeout | undefined;
 
 	constructor(options: CloudPollerOptions) {
 		this.opts = options;
+	}
+
+	/**
+	 * Report printers shortly after the registry changes (a printer is discovered,
+	 * refreshed or removed), debounced. Without this, a printer discovered just
+	 * after startup waits up to a full heartbeat interval before the dashboard sees
+	 * it (the initial report fires before mDNS discovery has resolved anything).
+	 */
+	private scheduleReportPrinters(): void {
+		if (this.reportDebounce) clearTimeout(this.reportDebounce);
+		this.reportDebounce = setTimeout(() => {
+			this.reportDebounce = undefined;
+			void this.reportPrinters();
+		}, REPORT_ON_CHANGE_DEBOUNCE_MS);
+		this.reportDebounce.unref?.();
 	}
 
 	/** Start the poll + heartbeat loops. Both run on `unref`'d timers. */
@@ -155,6 +178,11 @@ export class CloudPoller {
 		// Announce printers promptly so the dashboard sees them without waiting a
 		// full heartbeat interval.
 		void this.reportPrinters();
+
+		// Re-report (debounced) whenever discovery changes the registry, so a
+		// printer found a few seconds after startup shows up within ~1s instead of
+		// at the next heartbeat.
+		this.opts.registry.setOnChange(() => this.scheduleReportPrinters());
 	}
 
 	/** Stop both loops. Safe to call multiple times. */
@@ -166,6 +194,11 @@ export class CloudPoller {
 		if (this.heartbeatTimer) {
 			clearInterval(this.heartbeatTimer);
 			this.heartbeatTimer = undefined;
+		}
+		this.opts.registry.setOnChange(undefined);
+		if (this.reportDebounce) {
+			clearTimeout(this.reportDebounce);
+			this.reportDebounce = undefined;
 		}
 	}
 

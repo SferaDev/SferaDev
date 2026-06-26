@@ -61,6 +61,22 @@ export class PrinterRegistry {
 	constructor(private readonly ippVersion: IPPVersion) {}
 
 	/**
+	 * Notified after any change to the printer set or a printer's live state, so a
+	 * consumer (the cloud poller) can report promptly on discovery instead of
+	 * waiting for its next heartbeat. Optional — the registry works without it.
+	 */
+	private onChange: (() => void) | undefined;
+
+	/** Register (or clear, with `undefined`) the change listener. */
+	setOnChange(listener: (() => void) | undefined): void {
+		this.onChange = listener;
+	}
+
+	private notifyChange(): void {
+		this.onChange?.();
+	}
+
+	/**
 	 * Insert (or merge) an endpoint into the map without querying the network.
 	 * Returns the stored record so callers can decide whether to refresh.
 	 */
@@ -79,6 +95,7 @@ export class PrinterRegistry {
 			lastSeen: Date.now(),
 		};
 		this.printers.set(endpoint.id, printer);
+		this.notifyChange();
 		return printer;
 	}
 
@@ -140,11 +157,12 @@ export class PrinterRegistry {
 		const printer = buildDebugPrinter(dir);
 		this.printers.set(printer.id, printer);
 		console.log(`[registry] debug file printer writing to ${dir} (id "${printer.id}")`);
+		this.notifyChange();
 	}
 
 	/** Drop a printer that went offline (mDNS `down`). */
 	remove(id: string): void {
-		this.printers.delete(id);
+		if (this.printers.delete(id)) this.notifyChange();
 	}
 
 	get(id: string): DiscoveredPrinter | undefined {
@@ -175,6 +193,7 @@ export class PrinterRegistry {
 				lastSeen: Date.now(),
 			};
 			this.printers.set(id, updated);
+			this.notifyChange();
 			return updated;
 		} catch (error) {
 			console.warn(
@@ -183,6 +202,7 @@ export class PrinterRegistry {
 			);
 			const updated: DiscoveredPrinter = { ...printer, reachable: false, lastSeen: Date.now() };
 			this.printers.set(id, updated);
+			this.notifyChange();
 			return updated;
 		}
 	}
