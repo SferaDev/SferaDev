@@ -1430,6 +1430,12 @@ export const userEventTypeEnum = {
 	"ai-gateway-byok-credential-created": "ai-gateway-byok-credential-created",
 	"ai-gateway-byok-credential-deleted": "ai-gateway-byok-credential-deleted",
 	"ai-gateway-byok-credential-updated": "ai-gateway-byok-credential-updated",
+	"ai-gateway-private-model-created": "ai-gateway-private-model-created",
+	"ai-gateway-private-model-deleted": "ai-gateway-private-model-deleted",
+	"ai-gateway-private-model-updated": "ai-gateway-private-model-updated",
+	"ai-gateway-private-provider-created": "ai-gateway-private-provider-created",
+	"ai-gateway-private-provider-deleted": "ai-gateway-private-provider-deleted",
+	"ai-gateway-private-provider-updated": "ai-gateway-private-provider-updated",
 	"ai-gateway-provider-allowlist-providers-updated":
 		"ai-gateway-provider-allowlist-providers-updated",
 	"ai-gateway-provider-allowlist-toggled": "ai-gateway-provider-allowlist-toggled",
@@ -3208,6 +3214,43 @@ export type UserEvent = {
 				  }
 				| {
 						/**
+						 * @type object
+						 */
+						privateModel: {
+							/**
+							 * @type string
+							 */
+							slug: string;
+							/**
+							 * @type string
+							 */
+							providerSlug: string;
+						};
+				  }
+				| {
+						/**
+						 * @type object
+						 */
+						privateModel: {
+							/**
+							 * @type string
+							 */
+							slug: string;
+						};
+				  }
+				| {
+						/**
+						 * @type object
+						 */
+						privateProvider: {
+							/**
+							 * @type string
+							 */
+							slug: string;
+						};
+				  }
+				| {
+						/**
 						 * @type boolean
 						 */
 						enabled: false | true;
@@ -3782,6 +3825,7 @@ export type UserEvent = {
 						permissions?:
 							| (
 									| "read-write:ai-gateway-api-key"
+									| "read-write:ai-gateway-private-models"
 									| "read-write:ai-gateway-rules"
 									| "read-write:alerts"
 									| "read-write:billing"
@@ -3805,6 +3849,7 @@ export type UserEvent = {
 									| "read-write:remote-cache"
 									| "read-write:sandbox"
 									| "read:access-group"
+									| "read:ai-gateway-private-models"
 									| "read:ai-gateway-rules"
 									| "read:alerts"
 									| "read:billing"
@@ -3853,6 +3898,7 @@ export type UserEvent = {
 						nextPermissions?:
 							| (
 									| "read-write:ai-gateway-api-key"
+									| "read-write:ai-gateway-private-models"
 									| "read-write:ai-gateway-rules"
 									| "read-write:alerts"
 									| "read-write:billing"
@@ -3876,6 +3922,7 @@ export type UserEvent = {
 									| "read-write:remote-cache"
 									| "read-write:sandbox"
 									| "read:access-group"
+									| "read:ai-gateway-private-models"
 									| "read:ai-gateway-rules"
 									| "read:alerts"
 									| "read:billing"
@@ -3949,6 +3996,7 @@ export type UserEvent = {
 									permissions?:
 										| (
 												| "read-write:ai-gateway-api-key"
+												| "read-write:ai-gateway-private-models"
 												| "read-write:ai-gateway-rules"
 												| "read-write:alerts"
 												| "read-write:billing"
@@ -3972,6 +4020,7 @@ export type UserEvent = {
 												| "read-write:remote-cache"
 												| "read-write:sandbox"
 												| "read:access-group"
+												| "read:ai-gateway-private-models"
 												| "read:ai-gateway-rules"
 												| "read:alerts"
 												| "read:billing"
@@ -4032,6 +4081,7 @@ export type UserEvent = {
 									permissions?:
 										| (
 												| "read-write:ai-gateway-api-key"
+												| "read-write:ai-gateway-private-models"
 												| "read-write:ai-gateway-rules"
 												| "read-write:alerts"
 												| "read-write:billing"
@@ -4055,6 +4105,7 @@ export type UserEvent = {
 												| "read-write:remote-cache"
 												| "read-write:sandbox"
 												| "read:access-group"
+												| "read:ai-gateway-private-models"
 												| "read:ai-gateway-rules"
 												| "read:alerts"
 												| "read:billing"
@@ -4120,6 +4171,7 @@ export type UserEvent = {
 						permissions?:
 							| (
 									| "read-write:ai-gateway-api-key"
+									| "read-write:ai-gateway-private-models"
 									| "read-write:ai-gateway-rules"
 									| "read-write:alerts"
 									| "read-write:billing"
@@ -4143,6 +4195,7 @@ export type UserEvent = {
 									| "read-write:remote-cache"
 									| "read-write:sandbox"
 									| "read:access-group"
+									| "read:ai-gateway-private-models"
 									| "read:ai-gateway-rules"
 									| "read:alerts"
 									| "read:billing"
@@ -16425,6 +16478,12 @@ export const listEventTypeNameEnum = {
 	"ai-gateway-byok-credential-created": "ai-gateway-byok-credential-created",
 	"ai-gateway-byok-credential-deleted": "ai-gateway-byok-credential-deleted",
 	"ai-gateway-byok-credential-updated": "ai-gateway-byok-credential-updated",
+	"ai-gateway-private-model-created": "ai-gateway-private-model-created",
+	"ai-gateway-private-model-deleted": "ai-gateway-private-model-deleted",
+	"ai-gateway-private-model-updated": "ai-gateway-private-model-updated",
+	"ai-gateway-private-provider-created": "ai-gateway-private-provider-created",
+	"ai-gateway-private-provider-deleted": "ai-gateway-private-provider-deleted",
+	"ai-gateway-private-provider-updated": "ai-gateway-private-provider-updated",
 	"ai-gateway-provider-allowlist-providers-updated":
 		"ai-gateway-provider-allowlist-providers-updated",
 	"ai-gateway-provider-allowlist-toggled": "ai-gateway-provider-allowlist-toggled",
@@ -16993,6 +17052,12 @@ export const listEventTypeReplacedByEnum = {
 	"ai-gateway-byok-credential-created": "ai-gateway-byok-credential-created",
 	"ai-gateway-byok-credential-deleted": "ai-gateway-byok-credential-deleted",
 	"ai-gateway-byok-credential-updated": "ai-gateway-byok-credential-updated",
+	"ai-gateway-private-model-created": "ai-gateway-private-model-created",
+	"ai-gateway-private-model-deleted": "ai-gateway-private-model-deleted",
+	"ai-gateway-private-model-updated": "ai-gateway-private-model-updated",
+	"ai-gateway-private-provider-created": "ai-gateway-private-provider-created",
+	"ai-gateway-private-provider-deleted": "ai-gateway-private-provider-deleted",
+	"ai-gateway-private-provider-updated": "ai-gateway-private-provider-updated",
 	"ai-gateway-provider-allowlist-providers-updated":
 		"ai-gateway-provider-allowlist-providers-updated",
 	"ai-gateway-provider-allowlist-toggled": "ai-gateway-provider-allowlist-toggled",
