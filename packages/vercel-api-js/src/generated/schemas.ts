@@ -591,6 +591,12 @@ export const userEventSchema = z
 				"ai-gateway-byok-credential-created",
 				"ai-gateway-byok-credential-deleted",
 				"ai-gateway-byok-credential-updated",
+				"ai-gateway-private-model-created",
+				"ai-gateway-private-model-deleted",
+				"ai-gateway-private-model-updated",
+				"ai-gateway-private-provider-created",
+				"ai-gateway-private-provider-deleted",
+				"ai-gateway-private-provider-updated",
 				"ai-gateway-provider-allowlist-providers-updated",
 				"ai-gateway-provider-allowlist-toggled",
 				"ai-gateway-rule-created",
@@ -1421,6 +1427,28 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						privateModel: z.object({
+							slug: z.string(),
+							providerSlug: z.string(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						privateModel: z.object({
+							slug: z.string(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						privateProvider: z.object({
+							slug: z.string(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
 						enabled: z.union([z.literal(false), z.literal(true)]),
 					})
 					.strict(),
@@ -1692,6 +1720,7 @@ export const userEventSchema = z
 							.array(
 								z.enum([
 									"read-write:ai-gateway-api-key",
+									"read-write:ai-gateway-private-models",
 									"read-write:ai-gateway-rules",
 									"read-write:alerts",
 									"read-write:billing",
@@ -1715,6 +1744,7 @@ export const userEventSchema = z
 									"read-write:remote-cache",
 									"read-write:sandbox",
 									"read:access-group",
+									"read:ai-gateway-private-models",
 									"read:ai-gateway-rules",
 									"read:alerts",
 									"read:billing",
@@ -1751,6 +1781,7 @@ export const userEventSchema = z
 							.array(
 								z.enum([
 									"read-write:ai-gateway-api-key",
+									"read-write:ai-gateway-private-models",
 									"read-write:ai-gateway-rules",
 									"read-write:alerts",
 									"read-write:billing",
@@ -1774,6 +1805,7 @@ export const userEventSchema = z
 									"read-write:remote-cache",
 									"read-write:sandbox",
 									"read:access-group",
+									"read:ai-gateway-private-models",
 									"read:ai-gateway-rules",
 									"read:alerts",
 									"read:billing",
@@ -1819,6 +1851,7 @@ export const userEventSchema = z
 									.array(
 										z.enum([
 											"read-write:ai-gateway-api-key",
+											"read-write:ai-gateway-private-models",
 											"read-write:ai-gateway-rules",
 											"read-write:alerts",
 											"read-write:billing",
@@ -1842,6 +1875,7 @@ export const userEventSchema = z
 											"read-write:remote-cache",
 											"read-write:sandbox",
 											"read:access-group",
+											"read:ai-gateway-private-models",
 											"read:ai-gateway-rules",
 											"read:alerts",
 											"read:billing",
@@ -1881,6 +1915,7 @@ export const userEventSchema = z
 									.array(
 										z.enum([
 											"read-write:ai-gateway-api-key",
+											"read-write:ai-gateway-private-models",
 											"read-write:ai-gateway-rules",
 											"read-write:alerts",
 											"read-write:billing",
@@ -1904,6 +1939,7 @@ export const userEventSchema = z
 											"read-write:remote-cache",
 											"read-write:sandbox",
 											"read:access-group",
+											"read:ai-gateway-private-models",
 											"read:ai-gateway-rules",
 											"read:alerts",
 											"read:billing",
@@ -1947,6 +1983,7 @@ export const userEventSchema = z
 							.array(
 								z.enum([
 									"read-write:ai-gateway-api-key",
+									"read-write:ai-gateway-private-models",
 									"read-write:ai-gateway-rules",
 									"read-write:alerts",
 									"read-write:billing",
@@ -1970,6 +2007,7 @@ export const userEventSchema = z
 									"read-write:remote-cache",
 									"read-write:sandbox",
 									"read:access-group",
+									"read:ai-gateway-private-models",
 									"read:ai-gateway-rules",
 									"read:alerts",
 									"read:billing",
@@ -8453,6 +8491,12 @@ export const listEventTypeSchema = z
 				"ai-gateway-byok-credential-created",
 				"ai-gateway-byok-credential-deleted",
 				"ai-gateway-byok-credential-updated",
+				"ai-gateway-private-model-created",
+				"ai-gateway-private-model-deleted",
+				"ai-gateway-private-model-updated",
+				"ai-gateway-private-provider-created",
+				"ai-gateway-private-provider-deleted",
+				"ai-gateway-private-provider-updated",
 				"ai-gateway-provider-allowlist-providers-updated",
 				"ai-gateway-provider-allowlist-toggled",
 				"ai-gateway-rule-created",
@@ -9015,6 +9059,12 @@ export const listEventTypeSchema = z
 					"ai-gateway-byok-credential-created",
 					"ai-gateway-byok-credential-deleted",
 					"ai-gateway-byok-credential-updated",
+					"ai-gateway-private-model-created",
+					"ai-gateway-private-model-deleted",
+					"ai-gateway-private-model-updated",
+					"ai-gateway-private-provider-created",
+					"ai-gateway-private-provider-deleted",
+					"ai-gateway-private-provider-updated",
 					"ai-gateway-provider-allowlist-providers-updated",
 					"ai-gateway-provider-allowlist-toggled",
 					"ai-gateway-rule-created",
