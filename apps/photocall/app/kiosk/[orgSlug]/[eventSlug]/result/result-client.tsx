@@ -29,7 +29,6 @@ import {
 	getCaptureShots,
 	readPhotoboothSession,
 } from "@/lib/photobooth-session";
-import { resolveBridgeUrl } from "@/lib/print/bridge-client";
 import { executePrint } from "@/lib/print/index";
 import type { EventPrintConfig, PrintJobStatus, PrintMethod } from "@/lib/print/types";
 
@@ -174,8 +173,6 @@ export default function KioskResultPage() {
 		? {
 				eventId: event.id,
 				printMethod: (event.printMethod as PrintMethod | null) ?? "none",
-				// Blank bridge URL → fall back to the bridge's advertised mDNS hostname.
-				printBridgeUrl: resolveBridgeUrl(event.printBridgeUrl),
 				printPrinterId: event.printPrinterId,
 				printPaperSize: (event.printPaperSize as PaperSize | null) ?? null,
 				printMediaType: event.printMediaType,
@@ -187,11 +184,11 @@ export default function KioskResultPage() {
 		: null;
 	const printMethod = printConfig?.printMethod ?? "none";
 
-	// Bridge URL for the print outbox drain + pending notice. Only set when bridge
-	// printing is configured; the URL falls back to the mDNS default so a blank
-	// operator setting still reaches a LAN bridge. The <PendingPrints> mount below
-	// both drains the outbox when the bridge recovers and surfaces the notice.
-	const printBridgeUrl = printMethod === "bridge" ? resolveBridgeUrl(event?.printBridgeUrl) : null;
+	// Whether cloud-pull bridge printing is configured for this event. Gates the
+	// print outbox drain + pending notice: the <PendingPrints> mount below both
+	// drains the outbox (re-enqueuing to the server-side queue) when connectivity
+	// returns and surfaces the "prints waiting" notice.
+	const isBridgePrinting = printMethod === "bridge";
 
 	// Auto-return to attract screen after idle. Stays disabled while the photo is
 	// still compositing/uploading: that phase shows a spinner with no touch input,
@@ -744,7 +741,7 @@ export default function KioskResultPage() {
 			{/* Persistent "prints waiting" notice (mounts the outbox drain too). Shown
 			    on the result screen so the operator sees prints stacking up behind an
 			    out-of-paper / offline bridge — the no-loss queue retries them forever. */}
-			<PendingPrints bridgeUrl={printBridgeUrl} />
+			<PendingPrints enabled={isBridgePrinting} />
 		</>
 	);
 }

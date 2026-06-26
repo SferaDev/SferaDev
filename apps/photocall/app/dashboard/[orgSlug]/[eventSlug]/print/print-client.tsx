@@ -7,7 +7,6 @@ import {
 	ChevronLeft,
 	ImagePlus,
 	Loader2,
-	Plus,
 	Printer,
 	RefreshCw,
 	Settings,
@@ -20,7 +19,13 @@ import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import { getEventBySlug } from "@/actions/events";
-import { cancelPrintJob, listPrintJobs, type PrintJob } from "@/actions/print-jobs";
+import {
+	cancelPrintJob,
+	listPrintJobs,
+	listReportedPrinters,
+	type PrintJob,
+	type ReportedPrinter,
+} from "@/actions/print-jobs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,27 +33,12 @@ import { Label } from "@/components/ui/label";
 import { DEFAULT_BRAND_COLOR } from "@/lib/branding";
 import { type Orientation, PAPER_SIZE_MM, type PaperSize } from "@/lib/layout/types";
 import { uploadAndEnqueuePrintJob } from "@/lib/print";
-import {
-	addBridgePrinter,
-	type BridgeJob,
-	type BridgePrinter,
-	listBridgeJobs,
-	listBridgePrinters,
-	pingBridge,
-	resolveBridgeUrl,
-	submitPrintJob,
-} from "@/lib/print/bridge-client";
 import { getQueuedPrints, type QueuedPrintJob, removeQueuedPrint } from "@/lib/print/print-queue";
+import { isOutOfPaper, isPrinterOnline } from "@/lib/print/printer-status";
 import type { EventPrintConfig } from "@/lib/print/types";
 
-/** How often the live print queue + printer list is polled (ms). */
+/** How often the live print queue + reported-printer list is polled (ms). */
 const POLL_INTERVAL_MS = 4_000;
-
-/** True when a printer's state reasons indicate it ran out of paper. */
-function isOutOfPaper(printer: BridgePrinter): boolean {
-	const reasons = printer.stateReasons.join(" ").toLowerCase();
-	return reasons.includes("media-empty") || reasons.includes("media-needed");
-}
 
 const PAPER_SIZES = Object.keys(PAPER_SIZE_MM) as PaperSize[];
 
@@ -63,13 +53,15 @@ function toOrientation(value: string): Orientation {
 }
 
 /**
- * Admin print-management page. Drives the local print bridge over the LAN:
- * shows the bridge connection, discovered + manually-added printers (with
- * paper/marker levels and out-of-paper warnings), a live print queue, and
- * controls to test-print, reprint, and add a printer by IP.
+ * Admin print-management page. Drives the CLOUD-PULL print model end to end: the
+ * on-site bridge polls this server for jobs and heartbeats its printers up, and
+ * this dashboard reads that reported state. It shows the printers the bridge has
+ * reported (with paper/marker levels, online state and out-of-paper warnings),
+ * the server-side print queue (with cancel), this device's offline outbox, and
+ * controls to test-print and to add arbitrary pictures to the queue.
  *
- * It complements the Print settings tab (which configures the bridge URL and
- * default printer) — this page is the live operational dashboard.
+ * It no longer talks to the LAN bridge directly (that legacy path was blocked by
+ * mixed content on an HTTPS kiosk); everything goes through the cloud queue.
  */
 export default function PrintManagement() {
 	const params = useParams();
@@ -83,36 +75,18 @@ export default function PrintManagement() {
 		getEventBySlug(orgSlug, eventSlug),
 	);
 
-	// Resolve a blank operator setting to the mDNS default the bridge advertises,
-	// so this live dashboard still polls bridge/printer status when the kiosk is
-	// relying on auto-discovery rather than a typed-in URL. Null only before the
-	// event has loaded.
-	const bridgeUrl = event ? resolveBridgeUrl(event.printBridgeUrl) : null;
-
-	const [online, setOnline] = useState<boolean | null>(null);
-	const [printers, setPrinters] = useState<BridgePrinter[]>([]);
-	const [jobs, setJobs] = useState<BridgeJob[]>([]);
-	// The SERVER-side print queue (printJobs rows). This is the source of truth and
-	// is visible on every device — unlike the bridge's direct live-jobs list (which
-	// needs a reachable LAN bridge) and the per-device offline outbox below.
+	// Printers the on-site bridge has reported (heartbeated to the cloud). This is
+	// the source of truth for printer presence — derived from heartbeat recency,
+	// never a direct LAN ping.
+	const [printers, setPrinters] = useState<ReportedPrinter[]>([]);
+	// The SERVER-side print queue (printJobs rows). Source of truth, visible on
+	// every device regardless of which kiosk enqueued a job.
 	const [serverJobs, setServerJobs] = useState<PrintJob[]>([]);
 	// Locally-queued prints parked in the offline outbox (IndexedDB) when the
-	// bridge was unreachable. NOTE: this is per-device — it reflects only the jobs
-	// queued on THIS browser/kiosk, not a server-side queue, so a different device
-	// won't see another device's pending prints here.
+	// enqueue couldn't reach the server. Per-device: it reflects only the jobs
+	// queued on THIS browser/kiosk, not a server-side queue.
 	const [offlineJobs, setOfflineJobs] = useState<QueuedPrintJob[]>([]);
-	const [loadError, setLoadError] = useState<string | null>(null);
 	const [refreshing, setRefreshing] = useState(false);
-
-	/** Load the offline print outbox so locally-queued jobs are never invisible. */
-	const refreshOfflineJobs = useCallback(async () => {
-		if (typeof indexedDB === "undefined") return;
-		setOfflineJobs(await getQueuedPrints());
-	}, []);
-
-	const [newPrinterUri, setNewPrinterUri] = useState("");
-	const [addingPrinter, setAddingPrinter] = useState(false);
-	const [addError, setAddError] = useState<string | null>(null);
 
 	const [busyPrinterId, setBusyPrinterId] = useState<string | null>(null);
 	const [actionMessage, setActionMessage] = useState<string | null>(null);
@@ -124,58 +98,38 @@ export default function PrintManagement() {
 	const [addingPictures, setAddingPictures] = useState(false);
 	const [pictureMessage, setPictureMessage] = useState<string | null>(null);
 
+	/** Load the offline print outbox so locally-queued jobs are never invisible. */
+	const refreshOfflineJobs = useCallback(async () => {
+		if (typeof indexedDB === "undefined") return;
+		setOfflineJobs(await getQueuedPrints());
+	}, []);
+
 	// Seed the copies input from the event's configured default once it loads,
 	// while still letting the operator override it for a given batch.
 	useEffect(() => {
 		if (event) setPictureCopies(event.printCopies);
 	}, [event?.printCopies]);
 
-	/** Poll the bridge for connection, printers and the job queue. */
+	/** Refresh the reported printers, the server-side queue and the offline outbox. */
 	const refresh = useCallback(async () => {
-		// Always refresh the offline outbox too: queued prints exist regardless of
-		// whether the bridge is reachable (in fact, especially when it isn't).
 		await refreshOfflineJobs();
-		// The server-side queue is the source of truth and works on every device,
-		// independent of any reachable LAN bridge — fetch it on every poll.
-		if (event) {
-			try {
-				setServerJobs(await listPrintJobs(event.id));
-			} catch {
-				// Transient: keep the last-known queue rather than flashing empty.
-			}
-		}
-		if (!bridgeUrl) {
-			setOnline(null);
-			return;
-		}
+		if (!event) return;
 		setRefreshing(true);
 		try {
-			const reachable = await pingBridge(bridgeUrl);
-			setOnline(reachable);
-			if (!reachable) {
-				setLoadError(t("bridgeUnreachable"));
-				return;
-			}
-			const [printersResult, jobsResult] = await Promise.all([
-				listBridgePrinters(bridgeUrl),
-				listBridgeJobs(bridgeUrl),
+			const [reportedPrinters, jobs] = await Promise.all([
+				listReportedPrinters(event.id).catch(() => null),
+				listPrintJobs(event.id).catch(() => null),
 			]);
-			if (printersResult.ok) {
-				setPrinters(printersResult.printers);
-				setLoadError(null);
-			} else {
-				setLoadError(printersResult.error);
-			}
-			if (jobsResult.ok) setJobs(jobsResult.jobs);
+			// Keep the last-known values on a transient failure rather than flashing
+			// empty lists.
+			if (reportedPrinters) setPrinters(reportedPrinters);
+			if (jobs) setServerJobs(jobs);
 		} finally {
 			setRefreshing(false);
 		}
-	}, [event, bridgeUrl, t, refreshOfflineJobs]);
+	}, [event, refreshOfflineJobs]);
 
-	// Poll on an interval once the event has loaded. The server-side queue + the
-	// offline outbox are polled regardless of any bridge URL (they don't depend on
-	// a reachable LAN bridge); the bridge-specific calls inside `refresh` no-op
-	// when no bridge URL is configured.
+	// Poll on an interval once the event has loaded.
 	const refreshRef = useRef(refresh);
 	refreshRef.current = refresh;
 	useEffect(() => {
@@ -203,13 +157,13 @@ export default function PrintManagement() {
 	}, [event?.primaryColor, ts]);
 
 	/**
-	 * Send a test print to a specific printer. Reused for both "test print" and
-	 * "reprint": the bridge does not retain the original image, so a reprint
-	 * re-issues a fresh test page to the same printer.
+	 * Test-print to a specific printer by enqueuing a server-side job (the same
+	 * upload→enqueue path guest prints use). The on-site bridge claims it from the
+	 * cloud and prints — no direct LAN call. The job then appears in the queue.
 	 */
 	const printTo = useCallback(
-		async (printerId: string, successKey: "testPrintSent" | "reprintSent") => {
-			if (!event || !bridgeUrl) return;
+		async (printerId: string) => {
+			if (!event) return;
 			setBusyPrinterId(printerId);
 			setActionMessage(null);
 			try {
@@ -221,7 +175,6 @@ export default function PrintManagement() {
 				const config: EventPrintConfig = {
 					eventId: event.id,
 					printMethod: "bridge",
-					printBridgeUrl: bridgeUrl,
 					printPrinterId: printerId,
 					printPaperSize: toPaperSize(event.printPaperSize),
 					printMediaType: event.printMediaType,
@@ -230,32 +183,19 @@ export default function PrintManagement() {
 					printOrientation: toOrientation(event.printOrientation),
 					printAutoPrint: event.printAutoPrint,
 				};
-				const result = await submitPrintJob(bridgeUrl, blob, config);
-				setActionMessage(result.ok ? t(successKey) : result.error);
+				try {
+					await uploadAndEnqueuePrintJob(blob, config);
+					setActionMessage(t("testPrintSent"));
+				} catch {
+					setActionMessage(t("testPrintFailed"));
+				}
 				await refresh();
 			} finally {
 				setBusyPrinterId(null);
 			}
 		},
-		[event, bridgeUrl, buildTestImage, refresh, t],
+		[event, buildTestImage, refresh, t],
 	);
-
-	const handleAddPrinter = useCallback(async () => {
-		if (!bridgeUrl || newPrinterUri.trim().length === 0) return;
-		setAddingPrinter(true);
-		setAddError(null);
-		try {
-			const result = await addBridgePrinter(bridgeUrl, newPrinterUri.trim());
-			if (result.ok) {
-				setNewPrinterUri("");
-				await refresh();
-			} else {
-				setAddError(result.error);
-			}
-		} finally {
-			setAddingPrinter(false);
-		}
-	}, [bridgeUrl, newPrinterUri, refresh]);
 
 	/**
 	 * Enqueue one or more operator-picked images straight to the print queue,
@@ -272,7 +212,6 @@ export default function PrintManagement() {
 			const config: EventPrintConfig = {
 				eventId: event.id,
 				printMethod: "bridge",
-				printBridgeUrl: bridgeUrl,
 				printPrinterId: event.printPrinterId,
 				printPaperSize: toPaperSize(event.printPaperSize),
 				printMediaType: event.printMediaType,
@@ -299,7 +238,7 @@ export default function PrintManagement() {
 			setAddingPictures(false);
 			await refresh();
 		},
-		[event, bridgeUrl, pictureCopies, refresh, t],
+		[event, pictureCopies, refresh, t],
 	);
 
 	if (event === undefined) {
@@ -326,17 +265,17 @@ export default function PrintManagement() {
 		);
 	}
 
-	// "Add picture(s)" needs a configured target printer that the bridge currently
-	// reports as reachable — mirror how the rest of the page gates on `reachable`.
-	const targetPrinterReachable = printers.some(
-		(printer) => printer.id === event.printPrinterId && printer.reachable,
+	// "Add picture(s)" needs a configured target printer the bridge currently
+	// reports as online (heartbeated recently + reachable).
+	const targetPrinterOnline = printers.some(
+		(printer) => printer.printerId === event.printPrinterId && isPrinterOnline(printer),
 	);
 	const pictureHint = !event.printPrinterId
 		? t("selectPrinterFirst")
-		: !targetPrinterReachable
+		: !targetPrinterOnline
 			? t("noPrinterConnected")
 			: null;
-	const canAddPictures = !!event.printPrinterId && targetPrinterReachable && !addingPictures;
+	const canAddPictures = !!event.printPrinterId && targetPrinterOnline && !addingPictures;
 
 	return (
 		<div className="min-h-screen bg-background">
@@ -352,6 +291,14 @@ export default function PrintManagement() {
 						<h1 className="font-bold text-xl">{t("title")}</h1>
 						<p className="text-sm text-muted-foreground">{t("subtitle")}</p>
 					</div>
+					<Button variant="ghost" size="sm" onClick={() => void refresh()} disabled={refreshing}>
+						{refreshing ? (
+							<Loader2 className="h-4 w-4 mr-2 animate-spin" />
+						) : (
+							<RefreshCw className="h-4 w-4 mr-2" />
+						)}
+						{t("refresh")}
+					</Button>
 					<Button variant="outline" asChild>
 						<Link href={`/dashboard/${orgSlug}/${eventSlug}/settings`}>
 							<Settings className="h-4 w-4 mr-2" />
@@ -362,124 +309,27 @@ export default function PrintManagement() {
 			</header>
 
 			<main className="container mx-auto max-w-3xl px-4 py-8 space-y-6">
-				{/* Bridge connection */}
-				<section className="rounded-lg border p-4">
-					<div className="flex items-center justify-between gap-4">
-						<div className="flex items-center gap-3">
-							{online === null ? (
-								<AlertTriangle className="h-5 w-5 text-amber-500" aria-hidden="true" />
-							) : online ? (
-								<CheckCircle2 className="h-5 w-5 text-green-600" aria-hidden="true" />
-							) : (
-								<XCircle className="h-5 w-5 text-destructive" aria-hidden="true" />
-							)}
-							<div>
-								<div className="font-medium">{t("bridgeConnection")}</div>
-								<div className="text-sm text-muted-foreground">
-									{!bridgeUrl
-										? t("bridgeNoUrl")
-										: online === null
-											? t("bridgeChecking")
-											: online
-												? t("bridgeOnline", { url: bridgeUrl })
-												: t("bridgeUnreachable")}
-								</div>
-							</div>
+				{/* Printers reported by the on-site bridge */}
+				<section className="space-y-3">
+					<h2 className="font-medium">{t("printersTitle")}</h2>
+					{printers.length === 0 ? (
+						<div className="rounded-lg border p-4 text-sm text-muted-foreground">
+							{t("noPrinters")}
 						</div>
-						<Button
-							variant="ghost"
-							size="sm"
-							onClick={() => void refresh()}
-							disabled={!bridgeUrl || refreshing}
-						>
-							{refreshing ? (
-								<Loader2 className="h-4 w-4 mr-2 animate-spin" />
-							) : (
-								<RefreshCw className="h-4 w-4 mr-2" />
-							)}
-							{t("refresh")}
-						</Button>
-					</div>
-					{!bridgeUrl ? (
-						<div className="mt-3 text-sm text-muted-foreground">
-							{t("configureInSettings")}{" "}
-							<Link
-								href={`/dashboard/${orgSlug}/${eventSlug}/settings`}
-								className="underline hover:text-foreground"
-							>
-								{t("printSettings")}
-							</Link>
+					) : (
+						<div className="space-y-3">
+							{printers.map((printer) => (
+								<PrinterCard
+									key={printer.id}
+									printer={printer}
+									busy={busyPrinterId === printer.printerId}
+									onTestPrint={() => void printTo(printer.printerId)}
+								/>
+							))}
 						</div>
-					) : null}
+					)}
+					{actionMessage ? <p className="text-sm text-muted-foreground">{actionMessage}</p> : null}
 				</section>
-
-				{bridgeUrl ? (
-					<>
-						{/* Add printer by IP (manual fallback) */}
-						<section className="rounded-lg border p-4 space-y-3">
-							<div>
-								<h2 className="font-medium">{t("addPrinterTitle")}</h2>
-								<p className="text-sm text-muted-foreground">{t("addPrinterHelp")}</p>
-							</div>
-							<div className="flex items-start gap-2">
-								<div className="flex-1">
-									<Label htmlFor="printer-uri" className="sr-only">
-										{t("addPrinterLabel")}
-									</Label>
-									<Input
-										id="printer-uri"
-										value={newPrinterUri}
-										onChange={(e) => setNewPrinterUri(e.target.value)}
-										placeholder={t("addPrinterPlaceholder")}
-										disabled={addingPrinter || online === false}
-									/>
-								</div>
-								<Button
-									onClick={() => void handleAddPrinter()}
-									disabled={addingPrinter || online === false || newPrinterUri.trim().length === 0}
-								>
-									{addingPrinter ? (
-										<Loader2 className="h-4 w-4 mr-2 animate-spin" />
-									) : (
-										<Plus className="h-4 w-4 mr-2" />
-									)}
-									{t("addPrinter")}
-								</Button>
-							</div>
-							{addError ? <p className="text-sm text-destructive">{addError}</p> : null}
-						</section>
-
-						{/* Printers */}
-						<section className="space-y-3">
-							<h2 className="font-medium">{t("printersTitle")}</h2>
-							{loadError ? (
-								<div className="rounded-lg border border-destructive/50 p-4 text-sm text-destructive">
-									{loadError}
-								</div>
-							) : printers.length === 0 ? (
-								<div className="rounded-lg border p-4 text-sm text-muted-foreground">
-									{t("noPrinters")}
-								</div>
-							) : (
-								<div className="space-y-3">
-									{printers.map((printer) => (
-										<PrinterCard
-											key={printer.id}
-											printer={printer}
-											busy={busyPrinterId === printer.id}
-											disabled={online === false}
-											onTestPrint={() => void printTo(printer.id, "testPrintSent")}
-											onReprint={() => void printTo(printer.id, "reprintSent")}
-										/>
-									))}
-								</div>
-							)}
-							{actionMessage ? (
-								<p className="text-sm text-muted-foreground">{actionMessage}</p>
-							) : null}
-						</section>
-					</>
-				) : null}
 
 				{/* Add picture(s) to the queue: upload arbitrary images and enqueue them
 				    for the configured printer via the same R2 upload→enqueue path the
@@ -531,11 +381,10 @@ export default function PrintManagement() {
 				{/* Print queue (source of truth): the SERVER-side queue, visible on every
 				    device. Locally-queued offline jobs (this device's IndexedDB outbox,
 				    not yet enqueued) are shown ABOVE it. The empty state shows only when
-				    all of them are empty, so a parked job is never mistaken for a lost
-				    one. The bridge's direct live-jobs list is appended when reachable. */}
+				    both are empty, so a parked job is never mistaken for a lost one. */}
 				<section className="space-y-3">
 					<h2 className="font-medium">{t("queueTitle")}</h2>
-					{serverJobs.length === 0 && jobs.length === 0 && offlineJobs.length === 0 ? (
+					{serverJobs.length === 0 && offlineJobs.length === 0 ? (
 						<div className="rounded-lg border p-4 text-sm text-muted-foreground">
 							{t("queueEmpty")}
 						</div>
@@ -546,9 +395,6 @@ export default function PrintManagement() {
 							))}
 							{serverJobs.map((job) => (
 								<ServerJobRow key={job.id} job={job} onCanceled={() => void refresh()} />
-							))}
-							{jobs.map((job) => (
-								<JobRow key={job.id} job={job} />
 							))}
 						</div>
 					)}
@@ -561,17 +407,14 @@ export default function PrintManagement() {
 function PrinterCard({
 	printer,
 	busy,
-	disabled,
 	onTestPrint,
-	onReprint,
 }: {
-	printer: BridgePrinter;
+	printer: ReportedPrinter;
 	busy: boolean;
-	disabled: boolean;
 	onTestPrint: () => void;
-	onReprint: () => void;
 }) {
 	const t = useTranslations("dashboard.print");
+	const online = isPrinterOnline(printer);
 	const outOfPaper = isOutOfPaper(printer);
 
 	return (
@@ -582,12 +425,12 @@ function PrinterCard({
 					<div className="min-w-0">
 						<div className="font-medium truncate">{printer.name}</div>
 						<div className="text-sm text-muted-foreground truncate">
-							{printer.makeAndModel ?? printer.uri}
+							{printer.makeAndModel ?? printer.printerId}
 						</div>
 					</div>
 				</div>
 				<div className="flex items-center gap-2 shrink-0">
-					{printer.reachable ? (
+					{online ? (
 						<Badge variant="secondary">{printer.state || t("stateUnknown")}</Badge>
 					) : (
 						<Badge variant="destructive">{t("unreachable")}</Badge>
@@ -604,68 +447,29 @@ function PrinterCard({
 
 			{printer.markerLevels.length > 0 ? (
 				<div className="space-y-1">
-					{printer.markerLevels.map((level, index) => {
-						const name = printer.markerNames[index] ?? t("markerDefault");
-						return (
-							<div key={`${printer.id}-marker-${index}`} className="text-sm">
-								<div className="flex justify-between text-muted-foreground">
-									<span>{name}</span>
-									<span>{level}%</span>
-								</div>
-								<div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-muted">
-									<div
-										className={`h-full rounded-full ${level <= 15 ? "bg-destructive" : "bg-primary"}`}
-										style={{ width: `${Math.max(0, Math.min(100, level))}%` }}
-									/>
-								</div>
+					{printer.markerLevels.map((level, index) => (
+						<div key={`${printer.id}-marker-${index}`} className="text-sm">
+							<div className="flex justify-between text-muted-foreground">
+								<span>{t("markerDefault")}</span>
+								<span>{level}%</span>
 							</div>
-						);
-					})}
+							<div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-muted">
+								<div
+									className={`h-full rounded-full ${level <= 15 ? "bg-destructive" : "bg-primary"}`}
+									style={{ width: `${Math.max(0, Math.min(100, level))}%` }}
+								/>
+							</div>
+						</div>
+					))}
 				</div>
 			) : null}
 
 			<div className="flex items-center gap-2">
-				<Button
-					size="sm"
-					variant="outline"
-					onClick={onTestPrint}
-					disabled={busy || disabled || !printer.reachable}
-				>
+				<Button size="sm" variant="outline" onClick={onTestPrint} disabled={busy || !online}>
 					{busy ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
 					{t("testPrint")}
 				</Button>
-				{/* NB: this sends a fresh TEST CARD, not the guest's last photo — the
-				    bridge does not retain submitted images. Labelled accordingly so a
-				    host isn't misled into thinking it re-prints the previous job. */}
-				<Button
-					size="sm"
-					variant="ghost"
-					onClick={onReprint}
-					disabled={busy || disabled || !printer.reachable}
-					title={t("reprintTestCardHint")}
-				>
-					{t("reprintTestCard")}
-				</Button>
 			</div>
-		</div>
-	);
-}
-
-function JobRow({ job }: { job: BridgeJob }) {
-	const t = useTranslations("dashboard.print");
-	return (
-		<div className="flex items-center gap-3 p-3">
-			<JobStatusIcon status={job.status} />
-			<div className="flex-1 min-w-0">
-				<div className="font-medium text-sm truncate">{job.printerId}</div>
-				<div className="text-xs text-muted-foreground truncate">
-					{job.error ?? job.note ?? t(`jobStatus.${job.status}`)}
-					{job.attempts > 1 ? ` · ${t("jobAttempts", { count: job.attempts })}` : ""}
-				</div>
-			</div>
-			<Badge variant={job.status === "failed" ? "destructive" : "secondary"}>
-				{t(`jobStatus.${job.status}`)}
-			</Badge>
 		</div>
 	);
 }
@@ -779,10 +583,10 @@ function useObjectUrl(blob: Blob): string {
 
 /**
  * A print job parked in this device's offline outbox (IndexedDB), shown in the
- * same queue as the bridge's live jobs so a host can see it's waiting, not lost.
- * Mirrors {@link JobRow}'s layout but always renders the "pending" state — these
- * jobs have not reached the bridge yet — and surfaces `lastError` as the reason
- * it's waiting (falling back to a generic "waiting on this device" note).
+ * same queue as the server-side jobs so a host can see it's waiting, not lost.
+ * Always renders the "pending" state — these jobs have not been enqueued yet —
+ * and surfaces `lastError` as the reason it's waiting (falling back to a generic
+ * "waiting on this device" note).
  *
  * Shows a thumbnail of the queued strip so the operator can tell the jobs apart,
  * and a destructive "remove" control to clear a stuck job from this device's
@@ -805,7 +609,7 @@ function OfflineJobRow({ job, onRemoved }: { job: QueuedPrintJob; onRemoved: () 
 
 	return (
 		<div className="flex items-center gap-3 p-3">
-			<JobStatusIcon status="pending" />
+			<div className="h-5 w-5 rounded-full border-2 border-muted" aria-hidden="true" />
 			<img src={previewUrl} alt="" className="h-10 w-10 shrink-0 rounded-md border object-cover" />
 			<div className="flex-1 min-w-0">
 				<div className="font-medium text-sm truncate">{t("jobStatus.pending")}</div>
@@ -828,17 +632,4 @@ function OfflineJobRow({ job, onRemoved }: { job: QueuedPrintJob; onRemoved: () 
 			</Button>
 		</div>
 	);
-}
-
-function JobStatusIcon({ status }: { status: BridgeJob["status"] }) {
-	switch (status) {
-		case "printing":
-			return <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" aria-hidden="true" />;
-		case "done":
-			return <CheckCircle2 className="h-5 w-5 text-green-600" aria-hidden="true" />;
-		case "failed":
-			return <XCircle className="h-5 w-5 text-destructive" aria-hidden="true" />;
-		default:
-			return <div className="h-5 w-5 rounded-full border-2 border-muted" aria-hidden="true" />;
-	}
 }
