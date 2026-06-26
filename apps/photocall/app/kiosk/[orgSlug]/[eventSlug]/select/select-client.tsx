@@ -4,7 +4,7 @@ import { ArrowLeft, Clapperboard, Images, Loader2 } from "lucide-react";
 import { motion } from "motion/react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import useSWR from "swr";
 import { getPublicEvent } from "@/actions/events";
 import { selectTemplate } from "@/actions/sessions";
@@ -163,9 +163,6 @@ export default function KioskSelectPage() {
 			<FilterChooser
 				template={pendingTemplate}
 				primaryColor={primaryColor}
-				coupleNames={event.coupleNames ?? event.name}
-				eventName={event.name}
-				eventDate={eventDate}
 				stream={previewStream}
 				mirror={previewMirror}
 				zoom={previewZoom}
@@ -355,9 +352,6 @@ function ModePicker({ primaryColor, busy, onBack, onPickStrip, onPickBoomerang }
 interface FilterChooserProps {
 	template: PublicTemplate;
 	primaryColor: string;
-	coupleNames: string;
-	eventName: string;
-	eventDate: string | undefined;
 	stream: MediaStream | null;
 	mirror: boolean;
 	zoom: number;
@@ -369,9 +363,6 @@ interface FilterChooserProps {
 function FilterChooser({
 	template,
 	primaryColor,
-	coupleNames,
-	eventName,
-	eventDate,
 	stream,
 	mirror,
 	zoom,
@@ -394,6 +385,27 @@ function FilterChooser({
 		available.includes(layout?.filter ?? "none") ? (layout?.filter ?? "none") : available[0],
 	);
 
+	// Live camera preview shown filtered. We render the camera straight into a
+	// single <video> (no template overlay, no canvas) — the proven, iOS-safe path
+	// the capture screen uses: the filter lives on a NON-transformed wrapper while
+	// the mirror+zoom transform stays on the <video> (iOS Safari drops a CSS filter
+	// applied directly to a transformed video, which is why the canvas approach
+	// never showed the filter on iPad).
+	const videoRef = useRef<HTMLVideoElement | null>(null);
+	useEffect(() => {
+		const video = videoRef.current;
+		if (!video || !stream) return;
+		if (video.srcObject !== stream) video.srcObject = stream;
+		// play() can reject with AbortError when the element re-attaches mid-play;
+		// the stream is already wired up in that case, so it is safe to ignore.
+		void video.play().catch((err: unknown) => {
+			if (err instanceof Error && err.name !== "AbortError") {
+				console.error("Filter preview playback failed:", err);
+			}
+		});
+	}, [stream]);
+	const previewTransform = `scale(${mirror ? -zoom : zoom}, ${zoom})`;
+
 	return (
 		<div className="flex h-[100svh] flex-col overflow-hidden bg-black text-white p-4 sm:p-6 lg:p-8">
 			<div className="mx-auto flex min-h-0 w-full max-w-3xl flex-1 flex-col">
@@ -411,22 +423,36 @@ function FilterChooser({
 					<div className="w-16 sm:w-32" />
 				</div>
 
-				<div className="flex min-h-0 flex-1 justify-center">
-					<div className="h-full overflow-hidden rounded-xl bg-white/5">
-						{layout ? (
-							<TemplateLivePreview
-								layout={layout}
-								coupleNames={coupleNames}
-								eventName={eventName}
-								date={eventDate}
-								stream={stream}
-								mirror={mirror}
-								zoom={zoom}
-								filter={selected}
-								className="flex h-full items-center justify-center"
-							/>
-						) : null}
-					</div>
+				<div className="flex min-h-0 flex-1 items-center justify-center">
+					{stream ? (
+						<div
+							className="relative max-h-full max-w-full overflow-hidden rounded-xl bg-white/5"
+							style={{
+								aspectRatio: `1 / ${layout?.aspectRatio ?? 1}`,
+								height: "100%",
+								width: "auto",
+							}}
+						>
+							{/* Filter on this NON-transformed wrapper; mirror+zoom transform on the
+							    <video>. iOS Safari gives a transformed <video> its own GPU layer and
+							    drops a CSS filter applied to it, so filtering an ancestor is what
+							    actually shows the look on iPad (same structure as the capture screen). */}
+							<div className="h-full w-full" style={{ filter: cssFilterFor(selected) }}>
+								<video
+									ref={videoRef}
+									autoPlay
+									playsInline
+									muted
+									className="h-full w-full object-cover"
+									style={{ transform: previewTransform }}
+								/>
+							</div>
+						</div>
+					) : (
+						<div className="flex h-full items-center justify-center rounded-xl bg-white/5 px-8 text-center text-white/60">
+							{t("cameraPreviewUnavailable")}
+						</div>
+					)}
 				</div>
 
 				<div className="flex shrink-0 flex-wrap justify-center gap-2 my-4 sm:gap-3 sm:my-6">

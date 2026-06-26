@@ -165,6 +165,7 @@
 			"noTemplates": "No templates available",
 			"continueWithoutFrame": "Continue without frame",
 			"pickLook": "Pick a Look",
+			"cameraPreviewUnavailable": "Camera preview unavailable",
 			"noTemplatesTitle": "Ready when you are!",
 			"noTemplatesSubtitle": "There are no frames for this event yet — you can still take your photos."
 		},

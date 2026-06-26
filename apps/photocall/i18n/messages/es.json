@@ -170,6 +170,7 @@
 			"noTemplates": "No hay plantillas disponibles",
 			"continueWithoutFrame": "Continuar sin marco",
 			"pickLook": "Elige un estilo",
+			"cameraPreviewUnavailable": "Vista previa de cámara no disponible",
 			"noTemplatesTitle": "¡Cuando quieras!",
 			"noTemplatesSubtitle": "Aún no hay marcos para este evento, pero igual puedes hacerte las fotos."
 		},
