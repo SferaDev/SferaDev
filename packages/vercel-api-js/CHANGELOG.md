@@ -1,5 +1,12 @@
 # vercel-api-js
 
+## 1.2.0
+
+### Minor Changes
+
+- 613bb12: Added new event types for ai-gateway private models and private providers to user and event schemas.
+- 613bb12: Added new permissions for ai-gateway private models to user and event types.
+
 ## 1.1.1
 
 ### Patch Changes
