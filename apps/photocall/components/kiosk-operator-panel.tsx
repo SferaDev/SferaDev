@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useState } from "react";
 import type { getPublicEvent } from "@/actions/events";
 import { getPublicEventOpsSnapshot } from "@/actions/ops";
+import { listReportedPrinters, type ReportedPrinter } from "@/actions/print-jobs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,13 +18,8 @@ import {
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { countQueuedPhotos } from "@/lib/offline-queue";
-import {
-	type BridgePrinter,
-	listBridgePrinters,
-	pingBridge,
-	resolveBridgeUrl,
-} from "@/lib/print/bridge-client";
 import { countQueuedPrints } from "@/lib/print/print-queue";
+import { isOutOfPaper, isPrinterOnline, PRINTER_PRESENCE_TTL_MS } from "@/lib/print/printer-status";
 
 type PublicEvent = NonNullable<Awaited<ReturnType<typeof getPublicEvent>>>;
 
@@ -41,15 +37,12 @@ interface KioskOperatorPanelProps {
 	pin: string;
 }
 
-/** A single printer's readiness derived from its CUPS state/reasons. */
+/** A single printer's readiness derived from its reported state/reasons. */
 type PrinterReadiness = "ready" | "out-of-paper" | "not-ready";
 
-function readPrinterReadiness(printer: BridgePrinter): PrinterReadiness {
-	const reasons = printer.stateReasons.join(" ").toLowerCase();
-	if (reasons.includes("media-empty") || reasons.includes("media-needed")) {
-		return "out-of-paper";
-	}
-	return printer.state.toLowerCase() === "idle" || printer.reachable ? "ready" : "not-ready";
+function readPrinterReadiness(printer: ReportedPrinter): PrinterReadiness {
+	if (isOutOfPaper(printer)) return "out-of-paper";
+	return isPrinterOnline(printer) ? "ready" : "not-ready";
 }
 
 /**
@@ -70,9 +63,6 @@ export function KioskOperatorPanel({
 	const t = useTranslations("kiosk.ops");
 
 	const isBridge = event.printMethod === "bridge";
-	// Resolve a blank operator setting to the mDNS default so the panel still
-	// surfaces bridge/printer status when the kiosk relies on auto-discovery.
-	const bridgeUrl = isBridge ? resolveBridgeUrl(event.printBridgeUrl) : null;
 
 	const [online, setOnline] = useState(true);
 	const [sessionsToday, setSessionsToday] = useState<number | null>(null);
@@ -99,27 +89,27 @@ export function KioskOperatorPanel({
 		setPendingPrints(prints);
 		setPendingUploads(uploads);
 
-		if (isBridge && bridgeUrl) {
-			const reachable = await pingBridge(bridgeUrl);
-			setBridgeReachable(reachable);
-			if (reachable) {
-				const result = await listBridgePrinters(bridgeUrl);
-				if (result.ok) {
-					const target =
-						result.printers.find((p) => p.id === event.printPrinterId) ?? result.printers[0];
-					setPrinter(
-						target ? { name: target.name, readiness: readPrinterReadiness(target) } : null,
-					);
-				} else {
-					setPrinter(null);
-				}
+		if (isBridge) {
+			// Cloud-pull: read the printers the on-site bridge reports to the cloud.
+			// The bridge is "reachable" when it has heartbeated any printer recently
+			// (it never talks to this page directly).
+			const reportedPrinters = await listReportedPrinters(event.id).catch(() => null);
+			if (reportedPrinters) {
+				const bridgeAlive = reportedPrinters.some(
+					(p) => Date.now() - p.lastSeenAt.getTime() < PRINTER_PRESENCE_TTL_MS,
+				);
+				setBridgeReachable(bridgeAlive);
+				const target =
+					reportedPrinters.find((p) => p.printerId === event.printPrinterId) ?? reportedPrinters[0];
+				setPrinter(target ? { name: target.name, readiness: readPrinterReadiness(target) } : null);
 			} else {
+				setBridgeReachable(null);
 				setPrinter(null);
 			}
 		}
 
 		setRefreshing(false);
-	}, [event.id, event.printPrinterId, isBridge, bridgeUrl, pin]);
+	}, [event.id, event.printPrinterId, isBridge, pin]);
 
 	useEffect(() => {
 		if (open) void refresh();

@@ -175,7 +175,6 @@ export async function updateEvent(
 		printCopies?: number;
 		printOrientation?: "portrait" | "landscape";
 		printAutoPrint?: boolean;
-		printBridgeUrl?: string;
 	},
 ) {
 	await requireEventAccess(id, ["owner", "admin"]);
@@ -358,7 +357,6 @@ export async function duplicateEvent(id: string) {
 			printCopies: event.printCopies,
 			printOrientation: event.printOrientation,
 			printAutoPrint: event.printAutoPrint,
-			printBridgeUrl: event.printBridgeUrl,
 			photoCount: 0,
 			sessionCount: 0,
 			createdAt: now,
@@ -501,6 +499,5 @@ export async function getPublicEvent(organizationSlug: string, eventSlug: string
 		printCopies: event.printCopies,
 		printOrientation: event.printOrientation,
 		printAutoPrint: event.printAutoPrint,
-		printBridgeUrl: event.printBridgeUrl,
 	};
 }

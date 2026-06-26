@@ -18,8 +18,6 @@ export interface EventPrintConfig {
 	eventId: string;
 	/** `none` (no printing), `bridge` (auto network), `manual` (AirPrint dialog). */
 	printMethod: PrintMethod;
-	/** Base URL of the print bridge, e.g. `http://pi.local:3200` (bridge mode). */
-	printBridgeUrl: string | null;
 	/** Discovered printer id to target on the bridge. */
 	printPrinterId: string | null;
 	printPaperSize: PaperSize | null;

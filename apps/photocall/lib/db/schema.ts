@@ -125,6 +125,10 @@ export const events = pgTable(
 		printCopies: integer("print_copies").notNull().default(1),
 		printOrientation: text("print_orientation").notNull().default("portrait"), // portrait | landscape
 		printAutoPrint: boolean("print_auto_print").notNull().default(false),
+		// @deprecated Legacy direct-LAN bridge URL. Unused since printing moved to the
+		// cloud-pull model (the bridge polls this server; the kiosk never talks to the
+		// LAN bridge directly). Kept only to avoid a destructive migration — no code
+		// reads or writes it. Do not reintroduce; safe to drop in a future migration.
 		printBridgeUrl: text("print_bridge_url"),
 		// CSPRNG token the on-site print bridge authenticates with when it polls
 		// this server for jobs (cloud-pull printing — the bridge reaches out, the

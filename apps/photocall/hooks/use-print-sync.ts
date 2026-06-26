@@ -48,11 +48,11 @@ interface UsePrintSyncReturn {
  * therefore ridden out and the queue drains automatically once connectivity
  * returns. Safe to mount once on the result page.
  *
- * `enabled` (the resolved bridge URL, or null) only gates whether bridge
- * printing is configured for this event — when null there is no outbox to drain
- * and the notice stays hidden, matching {@link PendingPrints}'s contract.
+ * `enabled` only gates whether (cloud-pull) bridge printing is configured for
+ * this event — when false there is no outbox to drain and the notice stays
+ * hidden, matching {@link PendingPrints}'s contract.
  */
-export function usePrintSync(enabled: string | null | undefined): UsePrintSyncReturn {
+export function usePrintSync(enabled: boolean): UsePrintSyncReturn {
 	const [pending, setPending] = useState(0);
 	const [reason, setReason] = useState<string | null>(null);
 	// Guards against concurrent drains. The 30s interval, the `online` event,

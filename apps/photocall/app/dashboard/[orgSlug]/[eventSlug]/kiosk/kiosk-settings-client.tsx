@@ -62,7 +62,6 @@ export default function KioskSettingsPage() {
 		photoQuality: 0.9,
 		maxPhotoDimension: 1920,
 		printMethod: "none",
-		printBridgeUrl: "",
 		printPrinterId: "",
 		printPaperSize: "selphy_postcard",
 		printMediaType: "photo_glossy",
@@ -88,7 +87,6 @@ export default function KioskSettingsPage() {
 				photoQuality: event.photoQuality,
 				maxPhotoDimension: event.maxPhotoDimension,
 				printMethod: (event.printMethod as PrintMethod) ?? "none",
-				printBridgeUrl: event.printBridgeUrl ?? "",
 				printPrinterId: event.printPrinterId ?? "",
 				printPaperSize: (event.printPaperSize as PaperSize | null) ?? "selphy_postcard",
 				printMediaType: event.printMediaType ?? "photo_glossy",
@@ -239,6 +237,7 @@ export default function KioskSettingsPage() {
 
 					<TabsContent value="print" className="space-y-6">
 						<PrintSettingsSection
+							eventId={event.id}
 							data={formData}
 							onChange={updateForm}
 							primaryColor={event.primaryColor ?? ""}

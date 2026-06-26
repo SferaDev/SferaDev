@@ -1,8 +1,9 @@
 "use client";
 
-import { Loader2, RefreshCw } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { listReportedPrinters, type ReportedPrinter } from "@/actions/print-jobs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,16 +20,11 @@ import { DEFAULT_BRAND_COLOR } from "@/lib/branding";
 import { printImage } from "@/lib/canvas-utils";
 import type { Orientation, PaperSize } from "@/lib/layout/types";
 import { PAPER_SIZE_MM } from "@/lib/layout/types";
-import {
-	type BridgePrinter,
-	DEFAULT_BRIDGE_URL,
-	listBridgePrinters,
-	resolveBridgeUrl,
-	submitPrintJob,
-} from "@/lib/print/bridge-client";
+import { uploadAndEnqueuePrintJob } from "@/lib/print";
+import { isPrinterOnline } from "@/lib/print/printer-status";
 import type { EventPrintConfig, PrintMethod } from "@/lib/print/types";
 
-/** How often the printer picker re-polls the bridge for reachable printers (ms). */
+/** How often the printer picker re-polls the cloud for reported printers (ms). */
 const PRINTER_POLL_INTERVAL_MS = 5_000;
 
 /** CSS `@page size` hint (mm) for the manual (AirPrint) test-print dialog. */
@@ -40,7 +36,6 @@ function pageSizeHint(paperSize: PaperSize): string {
 /** Print fields the print section reads and writes. */
 export interface PrintSettingsData {
 	printMethod: PrintMethod;
-	printBridgeUrl: string;
 	printPrinterId: string;
 	printPaperSize: PaperSize;
 	printMediaType: string;
@@ -51,6 +46,12 @@ export interface PrintSettingsData {
 }
 
 interface PrintSettingsSectionProps {
+	/**
+	 * The event being configured. Drives the cloud-pull printer picker
+	 * ({@link listReportedPrinters}) and the server-side test print
+	 * ({@link uploadAndEnqueuePrintJob}). Null before the event has loaded.
+	 */
+	eventId: string | null;
 	data: PrintSettingsData;
 	/** Applies a partial patch to the parent form state. */
 	onChange: (patch: Partial<PrintSettingsData>) => void;
@@ -69,6 +70,7 @@ interface PrintSettingsSectionProps {
 }
 
 export function PrintSettingsSection({
+	eventId,
 	data,
 	onChange,
 	primaryColor,
@@ -76,27 +78,23 @@ export function PrintSettingsSection({
 }: PrintSettingsSectionProps) {
 	const t = useTranslations("dashboard.eventSettings");
 
-	// Reachable-printer discovery for the picker. Polled automatically while the
-	// bridge print method is active so the dropdown is populated without the
-	// operator having to remember to click "Test connection".
-	const [bridgePrinters, setBridgePrinters] = useState<BridgePrinter[]>([]);
-	// `null` = not polled yet (initial). Distinguishing this from "polled, found
+	// Printers the on-site bridge has reported to the cloud. Polled automatically
+	// while the bridge print method is active so the dropdown is populated without
+	// the operator having to do anything.
+	const [reportedPrinters, setReportedPrinters] = useState<ReportedPrinter[]>([]);
+	// `false` = not polled yet (initial). Distinguishing this from "polled, found
 	// none" is what lets us show a real empty/offline message instead of a
 	// spinner that never resolves.
 	const [bridgePolled, setBridgePolled] = useState(false);
 	const [bridgeLoading, setBridgeLoading] = useState(false);
-	const [bridgeError, setBridgeError] = useState<string | null>(null);
 	const [testPrinting, setTestPrinting] = useState(false);
 	// Set true once we auto-select the sole printer for THIS event load, so we
 	// never repeatedly clobber an operator who deliberately picks "No printer".
 	const autoSelectedRef = useRef(false);
 
 	const printConfig: EventPrintConfig = {
-		// The settings test-print never enqueues a server-side job (it validates the
-		// configured LAN bridge / AirPrint dialog directly), so it has no eventId.
-		eventId: "",
+		eventId: eventId ?? "",
 		printMethod: data.printMethod,
-		printBridgeUrl: data.printBridgeUrl || null,
 		printPrinterId: data.printPrinterId || null,
 		printPaperSize: data.printPaperSize,
 		printMediaType: data.printMediaType || null,
@@ -107,39 +105,29 @@ export function PrintSettingsSection({
 	};
 
 	const isBridge = data.printMethod === "bridge";
-	const bridgeUrl = data.printBridgeUrl;
 
 	/**
-	 * Poll the bridge for printers and reflect the outcome in the picker. A blank
-	 * URL is valid — it means "use the mDNS default the bridge advertises" — so we
-	 * always resolve it before calling out. Never throws (listBridgePrinters
-	 * resolves to a typed failure), so the loading state always clears: the picker
-	 * can't get stuck on a spinner when the bridge is offline.
+	 * Load the printers the on-site bridge has reported to the cloud and reflect
+	 * the outcome in the picker. Never throws (failures are swallowed), so the
+	 * loading state always clears: the picker can't get stuck on a spinner.
 	 */
 	const refreshPrinters = useCallback(async () => {
+		if (!eventId) return;
 		setBridgeLoading(true);
-		setBridgeError(null);
 		try {
-			const result = await listBridgePrinters(resolveBridgeUrl(bridgeUrl));
-			if (result.ok) {
-				setBridgePrinters(result.printers);
-				if (result.printers.length === 0) {
-					setBridgeError(t("print.bridgeReachableNoPrinters"));
-				}
-			} else {
-				setBridgePrinters([]);
-				setBridgeError(result.error);
-			}
+			setReportedPrinters(await listReportedPrinters(eventId));
+		} catch {
+			// Transient: keep the last-known list rather than flashing empty.
 		} finally {
 			setBridgeLoading(false);
 			setBridgePolled(true);
 		}
-	}, [bridgeUrl, t]);
+	}, [eventId]);
 
-	// Auto-poll the bridge while the bridge print method is active, so the picker
-	// is populated without the operator clicking anything, and keeps up if the
+	// Auto-poll while the bridge print method is active, so the picker is
+	// populated without the operator clicking anything, and keeps up if the
 	// bridge comes online (or a printer is plugged in) after the page loads. The
-	// poll stops when the method isn't `bridge`. Re-arms when the URL changes.
+	// poll stops when the method isn't `bridge`.
 	const refreshRef = useRef(refreshPrinters);
 	refreshRef.current = refreshPrinters;
 	useEffect(() => {
@@ -147,11 +135,11 @@ export function PrintSettingsSection({
 		void refreshRef.current();
 		const timer = setInterval(() => void refreshRef.current(), PRINTER_POLL_INTERVAL_MS);
 		return () => clearInterval(timer);
-	}, [isBridge, bridgeUrl]);
+	}, [isBridge]);
 
-	const reachablePrinters = bridgePrinters.filter((printer) => printer.reachable);
+	const reachablePrinters = reportedPrinters.filter(isPrinterOnline);
 	const savedPrinterIsReachable =
-		!!data.printPrinterId && reachablePrinters.some((p) => p.id === data.printPrinterId);
+		!!data.printPrinterId && reachablePrinters.some((p) => p.printerId === data.printPrinterId);
 
 	/**
 	 * Auto-select the sole reachable printer so jobs always carry a `printerId`
@@ -168,10 +156,10 @@ export function PrintSettingsSection({
 		if (savedPrinterIsReachable) return;
 		if (reachablePrinters.length !== 1) return;
 		const sole = reachablePrinters[0];
-		if (!sole || sole.id === data.printPrinterId) return;
+		if (!sole || sole.printerId === data.printPrinterId) return;
 		autoSelectedRef.current = true;
-		onChange({ printPrinterId: sole.id });
-		void onPersistPrinter(sole.id);
+		onChange({ printPrinterId: sole.printerId });
+		void onPersistPrinter(sole.printerId);
 	}, [
 		isBridge,
 		onPersistPrinter,
@@ -219,9 +207,10 @@ export function PrintSettingsSection({
 				canvas.toBlob(resolve, "image/jpeg", 0.9),
 			);
 			if (!blob) return;
-			// The settings test validates the LAN bridge / AirPrint path directly,
-			// NOT the server-side print queue: it proves the configured bridge URL +
-			// printer (or the AirPrint dialog) work before an event goes live.
+			// The settings test proves the print path works before an event goes
+			// live: `manual` opens the AirPrint dialog directly, while `bridge`
+			// enqueues a server-side job the on-site bridge claims from the cloud
+			// (the same upload→enqueue path guest prints use).
 			if (data.printMethod === "manual") {
 				const url = URL.createObjectURL(blob);
 				try {
@@ -229,8 +218,8 @@ export function PrintSettingsSection({
 				} finally {
 					setTimeout(() => URL.revokeObjectURL(url), 60_000);
 				}
-			} else if (data.printMethod === "bridge") {
-				await submitPrintJob(resolveBridgeUrl(data.printBridgeUrl), blob, printConfig);
+			} else if (data.printMethod === "bridge" && eventId) {
+				await uploadAndEnqueuePrintJob(blob, printConfig);
 			}
 		} catch (error) {
 			console.error("Test print failed:", error);
@@ -239,7 +228,7 @@ export function PrintSettingsSection({
 		}
 	};
 
-	const selectedPrinter = bridgePrinters.find((p) => p.id === data.printPrinterId);
+	const selectedPrinter = reportedPrinters.find((p) => p.printerId === data.printPrinterId);
 
 	return (
 		<div className="space-y-4">
@@ -264,39 +253,6 @@ export function PrintSettingsSection({
 			{data.printMethod === "bridge" && (
 				<div className="border-t pt-4 space-y-4">
 					<div>
-						<Label htmlFor="bridgeUrl">{t("print.printBridgeUrl")}</Label>
-						<p className="text-sm text-muted-foreground mb-2">{t("print.printBridgeUrlHelp")}</p>
-						<div className="flex gap-2">
-							<Input
-								id="bridgeUrl"
-								value={data.printBridgeUrl}
-								onChange={(e) => onChange({ printBridgeUrl: e.target.value })}
-								placeholder="http://raspberrypi.local:3200"
-								className="flex-1"
-							/>
-							<Button
-								type="button"
-								variant="outline"
-								onClick={() => void refreshPrinters()}
-								disabled={bridgeLoading}
-							>
-								{bridgeLoading ? (
-									<Loader2 className="h-4 w-4 mr-2 animate-spin" />
-								) : (
-									<RefreshCw className="h-4 w-4 mr-2" />
-								)}
-								{t("print.testConnection")}
-							</Button>
-						</div>
-						{!data.printBridgeUrl && (
-							<p className="text-sm text-muted-foreground mt-2">
-								{t("print.bridgeUrlBlankHint", { url: DEFAULT_BRIDGE_URL })}
-							</p>
-						)}
-						{bridgeError && <p className="text-sm text-amber-600 mt-2">{bridgeError}</p>}
-					</div>
-
-					<div>
 						<Label>{t("print.printer")}</Label>
 						<Select value={data.printPrinterId || "none"} onValueChange={handlePickPrinter}>
 							<SelectTrigger className="mt-2">
@@ -307,35 +263,37 @@ export function PrintSettingsSection({
 								{/* Keep a stale saved printer selectable so the operator can still
 								    see/keep it; it's flagged as "(saved)" and called out below. */}
 								{data.printPrinterId &&
-									!bridgePrinters.some((p) => p.id === data.printPrinterId) && (
+									!reportedPrinters.some((p) => p.printerId === data.printPrinterId) && (
 										<SelectItem value={data.printPrinterId}>
 											{t("print.printerSaved", { id: data.printPrinterId })}
 										</SelectItem>
 									)}
-								{bridgePrinters.map((printer) => (
-									<SelectItem key={printer.id} value={printer.id} disabled={!printer.reachable}>
-										{printer.reachable
-											? printer.name
-											: `${printer.name} (${t("print.unreachable")})`}
-									</SelectItem>
-								))}
+								{reportedPrinters.map((printer) => {
+									const online = isPrinterOnline(printer);
+									return (
+										<SelectItem key={printer.id} value={printer.printerId} disabled={!online}>
+											{online ? printer.name : `${printer.name} (${t("print.unreachable")})`}
+										</SelectItem>
+									);
+								})}
 							</SelectContent>
 						</Select>
 
 						{/* Picker status: a real message instead of a perpetual spinner.
 						    `bridgePolled` gates these so we don't flash "no printers" before
 						    the first poll resolves. */}
-						{bridgeLoading && bridgePrinters.length === 0 ? (
+						{bridgeLoading && reportedPrinters.length === 0 ? (
 							<p className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
 								<Loader2 className="h-3.5 w-3.5 animate-spin" />
 								{t("print.discoveringPrinters")}
 							</p>
-						) : bridgePolled && reachablePrinters.length === 0 && !bridgeError ? (
+						) : bridgePolled && reachablePrinters.length === 0 ? (
 							<p className="mt-2 text-sm text-amber-600">{t("print.noPrintersFound")}</p>
 						) : null}
 
-						{/* Stale selection: a printer is saved but no longer reachable on the
-						    bridge — surface it rather than silently dispatching to nothing. */}
+						{/* Stale selection: a printer is saved but the bridge isn't currently
+						    reporting it as online — surface it rather than silently
+						    dispatching to nothing. */}
 						{data.printPrinterId && bridgePolled && !savedPrinterIsReachable ? (
 							<p className="mt-2 text-sm text-amber-600">
 								{t("print.printerStale", { id: data.printPrinterId })}
@@ -344,15 +302,14 @@ export function PrintSettingsSection({
 
 						{selectedPrinter && (
 							<div className="mt-2 flex flex-wrap items-center gap-2">
-								<Badge variant={selectedPrinter.reachable ? "default" : "destructive"}>
-									{selectedPrinter.reachable ? selectedPrinter.state : t("print.unreachable")}
+								<Badge variant={isPrinterOnline(selectedPrinter) ? "default" : "destructive"}>
+									{isPrinterOnline(selectedPrinter)
+										? (selectedPrinter.state ?? t("print.unreachable"))
+										: t("print.unreachable")}
 								</Badge>
-								{selectedPrinter.markerNames.map((name, index) => (
-									<Badge key={name} variant="outline">
-										{t("print.markerLevel", {
-											name,
-											level: selectedPrinter.markerLevels[index] ?? "?",
-										})}
+								{selectedPrinter.markerLevels.map((level, index) => (
+									<Badge key={`${selectedPrinter.id}-marker-${index}`} variant="outline">
+										{`${level}%`}
 									</Badge>
 								))}
 							</div>

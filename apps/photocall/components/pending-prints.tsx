@@ -6,10 +6,10 @@ import { usePrintSync } from "@/hooks/use-print-sync";
 
 interface PendingPrintsProps {
 	/**
-	 * Resolved bridge base URL when bridge printing is configured, else null. Null
+	 * Whether cloud-pull bridge printing is configured for this event. `false`
 	 * disables the drain and hides the notice (manual/no printing has no outbox).
 	 */
-	bridgeUrl: string | null;
+	enabled: boolean;
 }
 
 /**
@@ -29,8 +29,8 @@ interface PendingPrintsProps {
  * but is offset to the RIGHT so it never overlaps the offline-sync pill when a
  * booth is both offline AND has prints queued.
  */
-export function PendingPrints({ bridgeUrl }: PendingPrintsProps) {
-	const { pending, reason } = usePrintSync(bridgeUrl);
+export function PendingPrints({ enabled }: PendingPrintsProps) {
+	const { pending, reason } = usePrintSync(enabled);
 	const t = useTranslations("kiosk.print");
 
 	if (pending === 0) return null;
