@@ -4,7 +4,7 @@ import { ArrowLeft, Clapperboard, Images, Loader2 } from "lucide-react";
 import { motion } from "motion/react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { type ReactNode, useCallback, useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import useSWR from "swr";
 import { getPublicEvent } from "@/actions/events";
 import { selectTemplate } from "@/actions/sessions";
@@ -20,11 +20,10 @@ import { cn } from "@/lib/utils";
 
 type PublicTemplate = Awaited<ReturnType<typeof listPublicTemplates>>[number];
 
-// Cap how many template cards get the live camera feed. All slot canvases draw
-// from ONE shared `<video>` (a single decode — see `sharedVideoEl` below), but
-// each canvas still runs its own draw loop, so we limit the live previews to
-// roughly the first screenful of cards; the rest fall back to the static
-// placeholder. The full-size FilterChooser preview always goes live.
+// Cap how many template cards get the live camera feed. All slot videos share a
+// single stream (cheap), but each `<video>` still decodes frames, so we limit
+// the live previews to roughly the first screenful of cards; the rest fall back
+// to the static placeholder. The full-size FilterChooser preview always goes live.
 const MAX_LIVE_PREVIEW_CARDS = 8;
 
 export default function KioskSelectPage() {
@@ -55,36 +54,6 @@ export default function KioskSelectPage() {
 	const { stream: previewStream, mirror: previewMirror } = useKioskPreviewCamera(event);
 	// Digital zoom for the live previews, matching what the capture screen applies.
 	const previewZoom = Math.max(1, event?.captureZoom ?? 1);
-
-	// ONE shared, hidden `<video>` decodes the camera for the WHOLE select screen.
-	// iOS Safari only lets a single `<video>` play a given camera MediaStream at a
-	// time, so every slot/card draws from this one element (via `<canvas>`) instead
-	// of mounting its own video — otherwise the extra videos render black on iPad.
-	// It is kept mounted across both the template grid and the FilterChooser step
-	// (rendered at the component root below) so it never stops decoding mid-flow.
-	// Tracked in state via a callback ref so the previews re-render once it exists.
-	const [sharedVideoEl, setSharedVideoEl] = useState<HTMLVideoElement | null>(null);
-	const setSharedVideo = useCallback((el: HTMLVideoElement | null) => {
-		setSharedVideoEl(el);
-	}, []);
-
-	useEffect(() => {
-		if (!sharedVideoEl) return;
-		if (!previewStream) {
-			if (sharedVideoEl.srcObject) sharedVideoEl.srcObject = null;
-			return;
-		}
-		if (sharedVideoEl.srcObject !== previewStream) {
-			sharedVideoEl.srcObject = previewStream;
-		}
-		// play() can reject with AbortError when the element re-attaches mid-play;
-		// the stream is already wired up in that case, so it is safe to ignore.
-		void sharedVideoEl.play().catch((err: unknown) => {
-			if (err instanceof Error && err.name !== "AbortError") {
-				console.error("Shared preview playback failed:", err);
-			}
-		});
-	}, [sharedVideoEl, previewStream]);
 
 	// When the guest picks a layout template and the event lets guests choose the
 	// filter, we stay on this screen to show the filter chooser before capture.
@@ -177,12 +146,8 @@ export default function KioskSelectPage() {
 	// template grid + filter chooser as strips (only the final navigation target
 	// differs); with no templates the grid offers a "continue without frame"
 	// path that lands on a plain, undecorated boomerang.
-	// Each step is computed into `content` (rather than early-returned) so the one
-	// shared hidden <video> can sit alongside it in a single root fragment and stay
-	// mounted — and decoding — across the grid AND the FilterChooser step.
-	let content: ReactNode;
 	if (event.boomerangEnabled && mode === null) {
-		content = (
+		return (
 			<ModePicker
 				primaryColor={primaryColor}
 				busy={navigating}
@@ -191,8 +156,10 @@ export default function KioskSelectPage() {
 				onPickBoomerang={() => setMode("boomerang")}
 			/>
 		);
-	} else if (pendingTemplate) {
-		content = (
+	}
+
+	if (pendingTemplate) {
+		return (
 			<FilterChooser
 				template={pendingTemplate}
 				primaryColor={primaryColor}
@@ -200,7 +167,6 @@ export default function KioskSelectPage() {
 				eventName={event.name}
 				eventDate={eventDate}
 				stream={previewStream}
-				sharedVideo={sharedVideoEl}
 				mirror={previewMirror}
 				zoom={previewZoom}
 				onBack={() => setPendingTemplate(null)}
@@ -208,120 +174,96 @@ export default function KioskSelectPage() {
 				busy={navigating}
 			/>
 		);
-	} else {
-		content = (
-			<div className="flex h-[100svh] flex-col bg-black text-white p-4 sm:p-6 lg:p-8">
-				<div className="mx-auto flex min-h-0 w-full max-w-6xl flex-1 flex-col">
-					<div className="flex shrink-0 items-center justify-between mb-4 sm:mb-6 lg:mb-8">
-						<Button
-							variant="ghost"
-							disabled={navigating}
-							onClick={() =>
-								event.boomerangEnabled
-									? setMode(null)
-									: router.push(`/kiosk/${orgSlug}/${eventSlug}`)
-							}
-							className="text-white text-base sm:text-lg [&_svg]:size-6"
-						>
-							<ArrowLeft className="h-6 w-6 mr-2" />
-							{tCommon("back")}
-						</Button>
-						<h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold">{t("chooseFrame")}</h1>
-						<Button
-							variant="ghost"
-							disabled={navigating}
-							onClick={handleSkip}
-							className="text-white text-base sm:text-lg"
-						>
-							{tCommon("skip")}
-						</Button>
-					</div>
-
-					{visibleTemplates && visibleTemplates.length === 0 ? (
-						<div className="flex flex-1 flex-col items-center justify-center text-center">
-							<p className="text-2xl sm:text-3xl font-semibold mb-3">{t("noTemplatesTitle")}</p>
-							<p className="text-lg sm:text-xl text-white/70 mb-6">{t("noTemplatesSubtitle")}</p>
-							<Button
-								size="xl"
-								onClick={handleSkip}
-								className={cn(
-									PRIMARY_CTA_CLASS,
-									BRANDED_CTA_FEEDBACK,
-									"h-14 px-10 text-xl sm:h-16 sm:px-12 sm:text-2xl",
-								)}
-								style={{ backgroundColor: primaryColor }}
-							>
-								{t("continueWithoutFrame")}
-							</Button>
-						</div>
-					) : (
-						<div className="grid min-h-0 flex-1 auto-rows-max grid-cols-2 gap-4 overflow-y-auto sm:gap-6 md:grid-cols-3 lg:grid-cols-4">
-							{visibleTemplates?.map((template, index) => {
-								const layout = parseLayoutJson(template.layoutJson);
-								return (
-									<motion.button
-										key={template.id}
-										type="button"
-										aria-label={template.name}
-										onClick={() => handleSelectTemplate(template)}
-										disabled={navigating}
-										initial={{ opacity: 0, y: 16 }}
-										animate={{ opacity: 1, y: 0 }}
-										transition={{
-											delay: index * 0.04,
-											type: "spring",
-											stiffness: 260,
-											damping: 24,
-										}}
-										whileHover={{ scale: 1.04 }}
-										whileTap={{ scale: 0.97 }}
-										className="aspect-3/4 rounded-lg overflow-hidden border-2 border-transparent hover:border-white transition-colors bg-white/5 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black disabled:opacity-50"
-									>
-										{layout ? (
-											<TemplateLivePreview
-												layout={layout}
-												coupleNames={event.coupleNames ?? event.name}
-												eventName={event.name}
-												date={eventDate}
-												stream={index < MAX_LIVE_PREVIEW_CARDS ? previewStream : null}
-												sharedVideo={sharedVideoEl}
-												mirror={previewMirror}
-												zoom={previewZoom}
-												className="flex h-full w-full items-center justify-center"
-											/>
-										) : template.thumbnailUrl ? (
-											<img
-												src={template.thumbnailUrl}
-												alt={template.name}
-												className="w-full h-full object-cover"
-											/>
-										) : (
-											<span className="text-xl text-white/80">{template.name}</span>
-										)}
-									</motion.button>
-								);
-							})}
-						</div>
-					)}
-				</div>
-			</div>
-		);
 	}
 
 	return (
-		<>
-			{/* The ONE shared hidden video for the whole select screen — see
-			    `sharedVideoEl` above. A 1px, opacity-0 element is enough: it only needs
-			    to decode the camera; the slot canvases handle the mirror + filter. */}
-			<video
-				ref={setSharedVideo}
-				autoPlay
-				playsInline
-				muted
-				className="pointer-events-none fixed h-px w-px opacity-0"
-			/>
-			{content}
-		</>
+		<div className="flex h-[100svh] flex-col bg-black text-white p-4 sm:p-6 lg:p-8">
+			<div className="mx-auto flex min-h-0 w-full max-w-6xl flex-1 flex-col">
+				<div className="flex shrink-0 items-center justify-between mb-4 sm:mb-6 lg:mb-8">
+					<Button
+						variant="ghost"
+						disabled={navigating}
+						onClick={() =>
+							event.boomerangEnabled ? setMode(null) : router.push(`/kiosk/${orgSlug}/${eventSlug}`)
+						}
+						className="text-white text-base sm:text-lg [&_svg]:size-6"
+					>
+						<ArrowLeft className="h-6 w-6 mr-2" />
+						{tCommon("back")}
+					</Button>
+					<h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold">{t("chooseFrame")}</h1>
+					<Button
+						variant="ghost"
+						disabled={navigating}
+						onClick={handleSkip}
+						className="text-white text-base sm:text-lg"
+					>
+						{tCommon("skip")}
+					</Button>
+				</div>
+
+				{visibleTemplates && visibleTemplates.length === 0 ? (
+					<div className="flex flex-1 flex-col items-center justify-center text-center">
+						<p className="text-2xl sm:text-3xl font-semibold mb-3">{t("noTemplatesTitle")}</p>
+						<p className="text-lg sm:text-xl text-white/70 mb-6">{t("noTemplatesSubtitle")}</p>
+						<Button
+							size="xl"
+							onClick={handleSkip}
+							className={cn(
+								PRIMARY_CTA_CLASS,
+								BRANDED_CTA_FEEDBACK,
+								"h-14 px-10 text-xl sm:h-16 sm:px-12 sm:text-2xl",
+							)}
+							style={{ backgroundColor: primaryColor }}
+						>
+							{t("continueWithoutFrame")}
+						</Button>
+					</div>
+				) : (
+					<div className="grid min-h-0 flex-1 auto-rows-max grid-cols-2 gap-4 overflow-y-auto sm:gap-6 md:grid-cols-3 lg:grid-cols-4">
+						{visibleTemplates?.map((template, index) => {
+							const layout = parseLayoutJson(template.layoutJson);
+							return (
+								<motion.button
+									key={template.id}
+									type="button"
+									aria-label={template.name}
+									onClick={() => handleSelectTemplate(template)}
+									disabled={navigating}
+									initial={{ opacity: 0, y: 16 }}
+									animate={{ opacity: 1, y: 0 }}
+									transition={{ delay: index * 0.04, type: "spring", stiffness: 260, damping: 24 }}
+									whileHover={{ scale: 1.04 }}
+									whileTap={{ scale: 0.97 }}
+									className="aspect-3/4 rounded-lg overflow-hidden border-2 border-transparent hover:border-white transition-colors bg-white/5 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black disabled:opacity-50"
+								>
+									{layout ? (
+										<TemplateLivePreview
+											layout={layout}
+											coupleNames={event.coupleNames ?? event.name}
+											eventName={event.name}
+											date={eventDate}
+											stream={index < MAX_LIVE_PREVIEW_CARDS ? previewStream : null}
+											mirror={previewMirror}
+											zoom={previewZoom}
+											className="flex h-full w-full items-center justify-center"
+										/>
+									) : template.thumbnailUrl ? (
+										<img
+											src={template.thumbnailUrl}
+											alt={template.name}
+											className="w-full h-full object-cover"
+										/>
+									) : (
+										<span className="text-xl text-white/80">{template.name}</span>
+									)}
+								</motion.button>
+							);
+						})}
+					</div>
+				)}
+			</div>
+		</div>
 	);
 }
 
@@ -417,7 +359,6 @@ interface FilterChooserProps {
 	eventName: string;
 	eventDate: string | undefined;
 	stream: MediaStream | null;
-	sharedVideo: HTMLVideoElement | null;
 	mirror: boolean;
 	zoom: number;
 	onBack: () => void;
@@ -432,7 +373,6 @@ function FilterChooser({
 	eventName,
 	eventDate,
 	stream,
-	sharedVideo,
 	mirror,
 	zoom,
 	onBack,
@@ -480,7 +420,6 @@ function FilterChooser({
 								eventName={eventName}
 								date={eventDate}
 								stream={stream}
-								sharedVideo={sharedVideo}
 								mirror={mirror}
 								zoom={zoom}
 								filter={selected}
