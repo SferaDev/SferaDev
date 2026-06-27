@@ -14,7 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { downloadBlob, resizeImageFile } from "@/lib/canvas-utils";
+import { resizeImageFile } from "@/lib/canvas-utils";
 
 export function AlbumView({
 	token,
@@ -33,7 +33,6 @@ export function AlbumView({
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const [uploading, setUploading] = useState<{ done: number; total: number } | null>(null);
 	const [active, setActive] = useState<AlbumPhoto | null>(null);
-	const [exporting, setExporting] = useState(false);
 
 	const title = album.coupleNames || album.eventName;
 
@@ -94,43 +93,33 @@ export function AlbumView({
 	};
 
 	/**
-	 * Trigger a download via a plain anchor click. The URL is a presigned link
-	 * carrying `Content-Disposition: attachment`, so the browser downloads it
-	 * directly from storage — cross-origin, no `fetch`, no CORS, and no lost
-	 * user-gesture. (A cross-origin `download` attribute is ignored, hence relying
-	 * on the header for the name, which is why the previous fetch+blob approach
-	 * silently failed on mobile.)
+	 * Trigger a browser download by navigating a transient anchor to `url`.
+	 *
+	 * The URLs carry `Content-Disposition: attachment`, so the browser downloads
+	 * directly — no `fetch`, no CORS, and no lost user-gesture. (A cross-origin
+	 * `download` attribute is ignored, hence relying on the header for the name;
+	 * the previous fetch+blob approach silently failed on mobile for exactly this
+	 * reason.)
 	 */
-	const handleDownload = (photo: AlbumPhoto) => {
-		if (!photo.downloadUrl) return;
+	const triggerDownload = (url: string) => {
 		const anchor = document.createElement("a");
-		anchor.href = photo.downloadUrl;
+		anchor.href = url;
 		anchor.rel = "noopener";
 		document.body.appendChild(anchor);
 		anchor.click();
 		anchor.remove();
 	};
 
-	const handleExportAll = async () => {
-		setExporting(true);
-		try {
-			const { default: JSZip } = await import("jszip");
-			const zip = new JSZip();
-			await Promise.all(
-				initialPhotos.map(async (photo, index) => {
-					const response = await fetch(photo.url);
-					const blob = await response.blob();
-					const ext = blob.type.split("/")[1] ?? "jpg";
-					zip.file(`${String(index + 1).padStart(3, "0")}.${ext}`, blob);
-				}),
-			);
-			const content = await zip.generateAsync({ type: "blob" });
-			downloadBlob(content, `${album.eventName}-album.zip`);
-		} catch {
-			toast({ title: "Download failed", variant: "destructive" });
-		} finally {
-			setExporting(false);
-		}
+	const handleDownload = (photo: AlbumPhoto) => {
+		if (photo.downloadUrl) triggerDownload(photo.downloadUrl);
+	};
+
+	// The album ZIP is built server-side: the storage bucket has no CORS, so the
+	// browser can't fetch the photos to zip them itself (which is why the old
+	// client-side zip failed). The route streams it back as an attachment.
+	const handleExportAll = () => {
+		toast({ title: "Preparing your download…" });
+		triggerDownload(`/a/${token}/download`);
 	};
 
 	const handleDelete = async (photo: AlbumPhoto) => {
@@ -179,17 +168,8 @@ export function AlbumView({
 					</p>
 					<div className="flex flex-wrap gap-2">
 						{album.allowDownload && initialPhotos.length > 0 && (
-							<Button
-								variant="outline"
-								onClick={handleExportAll}
-								disabled={exporting}
-								className="gap-2"
-							>
-								{exporting ? (
-									<Loader2 className="h-4 w-4 animate-spin" />
-								) : (
-									<Download className="h-4 w-4" />
-								)}
+							<Button variant="outline" onClick={handleExportAll} className="gap-2">
+								<Download className="h-4 w-4" />
 								Download all
 							</Button>
 						)}

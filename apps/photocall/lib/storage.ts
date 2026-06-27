@@ -111,6 +111,17 @@ export async function getFileUrl(
 	return getSignedUrl(s3, command, { expiresIn: 3600 });
 }
 
+/**
+ * Reads a stored object's raw bytes. Used to assemble server-side ZIP archives,
+ * where reading directly from storage avoids the browser CORS restriction that
+ * blocks fetching the objects client-side.
+ */
+export async function getFileBytes(key: string): Promise<Uint8Array> {
+	const result = await s3.send(new GetObjectCommand({ Bucket: BUCKET, Key: key }));
+	if (!result.Body) throw new Error(`Object ${key} has no body`);
+	return result.Body.transformToByteArray();
+}
+
 /** Delete a file from storage */
 export async function deleteFile(key: string): Promise<void> {
 	const command = new DeleteObjectCommand({

@@ -105,22 +105,43 @@ async function findAlbumEvent(token: string) {
 }
 
 /**
+ * Applies the per-event album access gate without mutating cookies. Returns the
+ * event plus whether the caller has cleared the gate, so read-only callers (the
+ * public view, the download archive) can share one source of truth. Returns null
+ * only when the album itself is missing/disabled.
+ */
+async function resolveAlbumAccess(token: string) {
+	const event = await findAlbumEvent(token);
+	if (!event) return null;
+
+	const cookie = await readGuestCookie();
+	const grant = findGrant(cookie, token);
+	const mode = event.albumAccessMode as AlbumAccessMode;
+	const unlocked = mode === "link" || (grant?.unlocked ?? false);
+	const hasIdentity = mode !== "link_identity" || Boolean(grant?.name);
+
+	return {
+		event,
+		grant,
+		mode,
+		guestId: cookie?.gid ?? null,
+		/** True when the caller has cleared the album's access gate. */
+		cleared: unlocked && hasIdentity,
+	};
+}
+
+/**
  * Resolves an album for public viewing, applying the per-event access gate.
  * Read-only: cookies are persisted by the unlock/visit server actions, since
  * Server Components cannot set cookies during render.
  */
 export async function getAlbumView(token: string): Promise<AlbumViewResult> {
-	const event = await findAlbumEvent(token);
-	if (!event) return { status: "not_found" };
+	const access = await resolveAlbumAccess(token);
+	if (!access) return { status: "not_found" };
 
-	const cookie = await readGuestCookie();
-	const grant = findGrant(cookie, token);
+	const { event, grant, mode, guestId, cleared } = access;
 
-	const mode = event.albumAccessMode as AlbumAccessMode;
-	const unlocked = mode === "link" || (grant?.unlocked ?? false);
-	const hasIdentity = mode !== "link_identity" || Boolean(grant?.name);
-
-	if (!unlocked || !hasIdentity) {
+	if (!cleared) {
 		return {
 			status: "locked",
 			mode,
@@ -129,7 +150,6 @@ export async function getAlbumView(token: string): Promise<AlbumViewResult> {
 		};
 	}
 
-	const guestId = cookie?.gid ?? null;
 	const rows = await db
 		.select()
 		.from(schema.photos)
@@ -184,6 +204,37 @@ export async function getAlbumView(token: string): Promise<AlbumViewResult> {
 		canUpload: event.allowGuestUpload,
 		guestName: grant?.name ?? null,
 	};
+}
+
+/**
+ * Resolves the visible photos of an album for a server-side ZIP download,
+ * applying the same access gate as the public view. Returns null when the album
+ * is missing, locked, or has downloads disabled.
+ *
+ * Returns storage keys (not URLs) so the download route can stream the bytes
+ * directly from storage — the bucket has no CORS, which is exactly why the album
+ * cannot build the ZIP in the browser.
+ */
+export async function getAlbumArchive(
+	token: string,
+): Promise<{ eventName: string; keys: string[] } | null> {
+	const access = await resolveAlbumAccess(token);
+	if (!access) return null;
+	if (!access.cleared || !access.event.allowDownload) return null;
+
+	const rows = await db
+		.select({ storageKey: schema.photos.storageKey })
+		.from(schema.photos)
+		.where(
+			and(
+				eq(schema.photos.eventId, access.event.id),
+				eq(schema.photos.status, "visible"),
+				isNull(schema.photos.deletedAt),
+			),
+		)
+		.orderBy(desc(schema.photos.createdAt));
+
+	return { eventName: access.event.name, keys: rows.map((row) => row.storageKey) };
 }
 
 // ── Access gates (write cookies) ───────────────────────────────────────────
