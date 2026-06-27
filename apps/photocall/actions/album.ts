@@ -40,6 +40,12 @@ const MAX_UPLOADS_PER_GUEST_PER_EVENT = 200;
 export type AlbumPhoto = {
 	id: string;
 	url: string;
+	/**
+	 * Presigned link carrying `Content-Disposition: attachment`, so a plain anchor
+	 * click downloads the file directly from storage (cross-origin, no `fetch`, no
+	 * CORS). Null when the album disallows downloads.
+	 */
+	downloadUrl: string | null;
 	kind: string;
 	caption: string | null;
 	source: string;
@@ -75,6 +81,17 @@ type AlbumViewResult =
 			canUpload: boolean;
 			guestName: string | null;
 	  };
+
+/**
+ * Builds a friendly, header-safe download filename for an album photo. The event
+ * name is sanitised because it lands in a `Content-Disposition` header, where
+ * quotes, backslashes and line breaks would corrupt the value.
+ */
+function albumDownloadFilename(eventName: string, storageKey: string, photoId: string): string {
+	const ext = storageKey.split(".").pop() || "jpg";
+	const safeName = eventName.replace(/["\\\r\n]/g, "").trim() || "album";
+	return `${safeName}-${photoId.slice(0, 8)}.${ext}`;
+}
 
 async function findAlbumEvent(token: string) {
 	if (!token) return null;
@@ -135,6 +152,11 @@ export async function getAlbumView(token: string): Promise<AlbumViewResult> {
 			.map(async (photo) => ({
 				id: photo.id,
 				url: await getFileUrl(photo.storageKey),
+				downloadUrl: event.allowDownload
+					? await getFileUrl(photo.storageKey, {
+							downloadFilename: albumDownloadFilename(event.name, photo.storageKey, photo.id),
+						})
+					: null,
 				kind: photo.kind,
 				caption: photo.caption,
 				source: photo.source,

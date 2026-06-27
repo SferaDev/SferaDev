@@ -93,11 +93,22 @@ export function AlbumView({
 		}
 	};
 
-	const handleDownload = async (photo: AlbumPhoto) => {
-		const response = await fetch(photo.url);
-		const blob = await response.blob();
-		const ext = blob.type.split("/")[1] ?? "jpg";
-		downloadBlob(blob, `${album.eventName}-${photo.id.slice(0, 8)}.${ext}`);
+	/**
+	 * Trigger a download via a plain anchor click. The URL is a presigned link
+	 * carrying `Content-Disposition: attachment`, so the browser downloads it
+	 * directly from storage — cross-origin, no `fetch`, no CORS, and no lost
+	 * user-gesture. (A cross-origin `download` attribute is ignored, hence relying
+	 * on the header for the name, which is why the previous fetch+blob approach
+	 * silently failed on mobile.)
+	 */
+	const handleDownload = (photo: AlbumPhoto) => {
+		if (!photo.downloadUrl) return;
+		const anchor = document.createElement("a");
+		anchor.href = photo.downloadUrl;
+		anchor.rel = "noopener";
+		document.body.appendChild(anchor);
+		anchor.click();
+		anchor.remove();
 	};
 
 	const handleExportAll = async () => {
