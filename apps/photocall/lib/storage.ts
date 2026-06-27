@@ -79,6 +79,23 @@ export async function getObjectSize(key: string): Promise<number | null> {
 }
 
 /**
+ * Returns the size and stored `Content-Type` of an object, or null when it's
+ * absent. The content type is read from storage (not the client) so guest-upload
+ * confirmation can decide image-vs-video limits from what actually landed.
+ */
+export async function getObjectMetadata(
+	key: string,
+): Promise<{ sizeBytes: number; contentType: string | null } | null> {
+	try {
+		const result = await s3.send(new HeadObjectCommand({ Bucket: BUCKET, Key: key }));
+		if (result.ContentLength === undefined) return null;
+		return { sizeBytes: result.ContentLength, contentType: result.ContentType ?? null };
+	} catch {
+		return null;
+	}
+}
+
+/**
  * Generate a presigned GET URL for reading a file.
  *
  * Pass `downloadFilename` to force a browser download: the URL carries a

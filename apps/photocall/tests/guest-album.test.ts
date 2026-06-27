@@ -3,7 +3,10 @@ import {
 	ensureGuestCookie,
 	findGrant,
 	isAllowedUploadType,
+	isAllowedVideoType,
 	MAX_GUEST_UPLOAD_BYTES,
+	MAX_GUEST_VIDEO_UPLOAD_BYTES,
+	maxUploadBytesFor,
 	upsertGrant,
 } from "@/lib/guest-album";
 
@@ -14,15 +17,29 @@ describe("isAllowedUploadType", () => {
 		}
 	});
 
-	it("rejects SVG (stored-XSS vector) and non-images", () => {
+	it("accepts browser-playable video types", () => {
+		for (const type of ["video/mp4", "video/webm", "video/quicktime"]) {
+			expect(isAllowedUploadType(type)).toBe(true);
+			expect(isAllowedVideoType(type)).toBe(true);
+		}
+	});
+
+	it("rejects SVG (stored-XSS vector) and non-media", () => {
 		expect(isAllowedUploadType("image/svg+xml")).toBe(false);
 		expect(isAllowedUploadType("application/pdf")).toBe(false);
 		expect(isAllowedUploadType("text/html")).toBe(false);
+		expect(isAllowedVideoType("image/jpeg")).toBe(false);
 	});
 
-	it("caps upload size at a sane maximum", () => {
+	it("caps image upload size at a sane maximum", () => {
 		expect(MAX_GUEST_UPLOAD_BYTES).toBeGreaterThan(0);
 		expect(MAX_GUEST_UPLOAD_BYTES).toBeLessThanOrEqual(50 * 1024 * 1024);
+	});
+
+	it("allows videos a larger cap than images", () => {
+		expect(MAX_GUEST_VIDEO_UPLOAD_BYTES).toBeGreaterThan(MAX_GUEST_UPLOAD_BYTES);
+		expect(maxUploadBytesFor("image/jpeg")).toBe(MAX_GUEST_UPLOAD_BYTES);
+		expect(maxUploadBytesFor("video/mp4")).toBe(MAX_GUEST_VIDEO_UPLOAD_BYTES);
 	});
 });
 

@@ -33,28 +33,20 @@ type GuestCookie = {
 	albums: AlbumGrant[];
 };
 
-// ── Upload validation ────────────────────────────────────────────────────
-
-/**
- * Image MIME types a guest may upload. SVG is intentionally excluded — it can
- * carry script and would be a stored-XSS vector when served from storage.
- */
-const ALLOWED_UPLOAD_TYPES = [
-	"image/jpeg",
-	"image/png",
-	"image/webp",
-	"image/heic",
-	"image/heif",
-] as const;
-
-export type GuestUploadContentType = (typeof ALLOWED_UPLOAD_TYPES)[number];
-
-/** Hard cap on a single guest upload (enforced in the presigned PUT and on confirm). */
-export const MAX_GUEST_UPLOAD_BYTES = 25 * 1024 * 1024; // 25 MB
-
-export function isAllowedUploadType(contentType: string): contentType is GuestUploadContentType {
-	return (ALLOWED_UPLOAD_TYPES as readonly string[]).includes(contentType);
-}
+// Pure upload-validation primitives (MIME types, size caps) live in a
+// server/client-shared module. Re-exported here for the album server actions,
+// which import their guest helpers from this file.
+export {
+	type GuestImageUploadContentType,
+	type GuestUploadContentType,
+	type GuestVideoUploadContentType,
+	isAllowedImageType,
+	isAllowedUploadType,
+	isAllowedVideoType,
+	MAX_GUEST_UPLOAD_BYTES,
+	MAX_GUEST_VIDEO_UPLOAD_BYTES,
+	maxUploadBytesFor,
+} from "./upload-types";
 
 // ── Cookie signing (HMAC-SHA256) ─────────────────────────────────────────
 

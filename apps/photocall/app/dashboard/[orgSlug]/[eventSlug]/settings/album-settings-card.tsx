@@ -246,8 +246,19 @@ function PendingUploads({ eventId }: { eventId: string }) {
 				{pending.map((photo) => (
 					<div key={photo.id} className="space-y-1">
 						<div className="aspect-square overflow-hidden rounded-lg bg-muted">
-							{/* eslint-disable-next-line @next/next/no-img-element */}
-							<img src={photo.url} alt="" className="h-full w-full object-cover" />
+							{photo.kind === "video" ? (
+								<video
+									src={photo.url}
+									muted
+									playsInline
+									controls
+									preload="metadata"
+									className="h-full w-full object-cover"
+								/>
+							) : (
+								// eslint-disable-next-line @next/next/no-img-element
+								<img src={photo.url} alt="" className="h-full w-full object-cover" />
+							)}
 						</div>
 						<div className="flex gap-1">
 							<Button

@@ -81,12 +81,14 @@ function SharePageContent({ photo }: { photo: SharedPhoto | null }) {
 		// unavailable (most desktop browsers).
 		if (typeof navigator !== "undefined" && typeof navigator.share === "function") {
 			try {
-				const ext = photo.kind === "boomerang" ? "gif" : "jpg";
-				const type = photo.kind === "boomerang" ? "image/gif" : "image/jpeg";
 				let file: File | null = null;
 				try {
 					const response = await fetch(photo.url);
 					const blob = await response.blob();
+					// Use the fetched blob's own MIME type and a matching extension so
+					// images, boomerang GIFs and videos all share with the right type.
+					const type = blob.type || "application/octet-stream";
+					const ext = type.split("/")[1] || "bin";
 					file = new File([blob], `photocall_${photo.humanCode}.${ext}`, { type });
 				} catch {
 					file = null;
@@ -155,12 +157,23 @@ function SharePageContent({ photo }: { photo: SharedPhoto | null }) {
 				{/* Photo Card */}
 				<Card className="w-full max-w-2xl overflow-hidden">
 					<div className="relative aspect-3/4 w-full bg-muted">
-						{/* eslint-disable-next-line @next/next/no-img-element */}
-						<img
-							src={photo.url ?? ""}
-							alt={t("photoAlt", { code: photo.humanCode })}
-							className="h-full w-full object-contain"
-						/>
+						{photo.kind === "video" ? (
+							<video
+								src={photo.url ?? ""}
+								controls
+								playsInline
+								className="h-full w-full object-contain"
+							>
+								<track kind="captions" />
+							</video>
+						) : (
+							// eslint-disable-next-line @next/next/no-img-element
+							<img
+								src={photo.url ?? ""}
+								alt={t("photoAlt", { code: photo.humanCode })}
+								className="h-full w-full object-contain"
+							/>
+						)}
 					</div>
 					<CardHeader>
 						<CardTitle className="flex items-center gap-2">
