@@ -1,6 +1,6 @@
 "use client";
 
-import { Camera, Download, ImagePlus, Link2, Loader2, Trash2, X } from "lucide-react";
+import { Camera, Download, ImagePlus, Link2, Loader2, Play, Trash2, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -14,7 +14,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { downloadBlob, resizeImageFile } from "@/lib/canvas-utils";
+import { downloadBlob, readVideoDimensions, resizeImageFile } from "@/lib/canvas-utils";
+import { isAllowedVideoType, MAX_GUEST_VIDEO_UPLOAD_BYTES } from "@/lib/upload-types";
 
 export function AlbumView({
 	token,
@@ -42,52 +43,88 @@ export function AlbumView({
 		recordAlbumVisit(token).catch(() => {});
 	}, [token]);
 
+	/**
+	 * Uploads a single image: re-encodes to JPEG through a canvas (stripping EXIF
+	 * and downscaling) before presigning and PUTting the bytes.
+	 */
+	const uploadImage = async (file: File) => {
+		const { blob, width, height } = await resizeImageFile(file);
+		const { uploadUrl, key } = await generateGuestUploadUrl(token, "image/jpeg", blob.size);
+
+		const put = await fetch(uploadUrl, {
+			method: "PUT",
+			body: blob,
+			headers: { "Content-Type": "image/jpeg" },
+		});
+		if (!put.ok) throw new Error("Upload failed");
+
+		await confirmGuestUpload(token, { key, width, height });
+	};
+
+	/**
+	 * Uploads a single video untouched (no canvas re-encode — videos can't go
+	 * through a 2D canvas). Reads the frame size for the record and PUTs the
+	 * original bytes with their own content type.
+	 */
+	const uploadVideo = async (file: File) => {
+		if (file.size > MAX_GUEST_VIDEO_UPLOAD_BYTES) {
+			throw new Error("Video is too large");
+		}
+		const { width, height } = await readVideoDimensions(file);
+		const { uploadUrl, key } = await generateGuestUploadUrl(token, file.type, file.size);
+
+		const put = await fetch(uploadUrl, {
+			method: "PUT",
+			body: file,
+			headers: { "Content-Type": file.type },
+		});
+		if (!put.ok) throw new Error("Upload failed");
+
+		await confirmGuestUpload(token, { key, width, height });
+	};
+
 	const handleFiles = async (files: FileList | null) => {
 		if (!files || files.length === 0) return;
-		const images = Array.from(files).filter((file) => file.type.startsWith("image/"));
-		if (images.length === 0) return;
+		const media = Array.from(files).filter(
+			(file) => file.type.startsWith("image/") || isAllowedVideoType(file.type),
+		);
+		if (media.length === 0) return;
 
-		setUploading({ done: 0, total: images.length });
+		setUploading({ done: 0, total: media.length });
 		let failures = 0;
 
-		for (const [index, file] of images.entries()) {
+		for (const [index, file] of media.entries()) {
 			try {
-				const { blob, width, height } = await resizeImageFile(file);
-				const { uploadUrl, key } = await generateGuestUploadUrl(token, "image/jpeg", blob.size);
-
-				const put = await fetch(uploadUrl, {
-					method: "PUT",
-					body: blob,
-					headers: { "Content-Type": "image/jpeg" },
-				});
-				if (!put.ok) throw new Error("Upload failed");
-
-				await confirmGuestUpload(token, { key, width, height });
+				if (isAllowedVideoType(file.type)) {
+					await uploadVideo(file);
+				} else {
+					await uploadImage(file);
+				}
 			} catch (error) {
 				failures += 1;
 				console.error("guest upload failed:", error);
 			} finally {
-				setUploading({ done: index + 1, total: images.length });
+				setUploading({ done: index + 1, total: media.length });
 			}
 		}
 
 		setUploading(null);
 		if (fileInputRef.current) fileInputRef.current.value = "";
 
-		const uploaded = images.length - failures;
+		const uploaded = media.length - failures;
 		if (uploaded > 0) {
 			toast({
-				title: "Photos added",
+				title: "Uploads added",
 				description:
 					failures > 0
 						? `${uploaded} added, ${failures} failed.`
-						: `Thanks! ${uploaded} ${uploaded === 1 ? "photo" : "photos"} added to the album.`,
+						: `Thanks! ${uploaded} ${uploaded === 1 ? "item" : "items"} added to the album.`,
 			});
 			router.refresh();
 		} else {
 			toast({
 				title: "Upload failed",
-				description: "We couldn't add those photos. Please try again.",
+				description: "We couldn't add those files. Please try again.",
 				variant: "destructive",
 			});
 		}
@@ -204,7 +241,9 @@ export function AlbumView({
 								) : (
 									<ImagePlus className="h-4 w-4" />
 								)}
-								{uploading ? `Uploading ${uploading.done}/${uploading.total}` : "Add your photos"}
+								{uploading
+									? `Uploading ${uploading.done}/${uploading.total}`
+									: "Add photos & videos"}
 							</Button>
 						)}
 					</div>
@@ -213,7 +252,7 @@ export function AlbumView({
 				<input
 					ref={fileInputRef}
 					type="file"
-					accept="image/*"
+					accept="image/*,video/mp4,video/webm,video/quicktime"
 					multiple
 					className="hidden"
 					onChange={(e) => handleFiles(e.target.files)}
@@ -238,13 +277,33 @@ export function AlbumView({
 								onClick={() => setActive(photo)}
 								className="group relative aspect-square overflow-hidden rounded-lg bg-muted"
 							>
-								{/* eslint-disable-next-line @next/next/no-img-element */}
-								<img
-									src={photo.url}
-									alt={photo.caption ?? "Album photo"}
-									loading="lazy"
-									className="h-full w-full object-cover transition-transform group-hover:scale-105"
-								/>
+								{photo.kind === "video" ? (
+									// Muted, metadata-only so the browser paints the first frame as a
+									// poster without downloading the whole clip; playback happens in
+									// the dialog.
+									<video
+										src={photo.url}
+										muted
+										playsInline
+										preload="metadata"
+										className="h-full w-full object-cover transition-transform group-hover:scale-105"
+									/>
+								) : (
+									// eslint-disable-next-line @next/next/no-img-element
+									<img
+										src={photo.url}
+										alt={photo.caption ?? "Album photo"}
+										loading="lazy"
+										className="h-full w-full object-cover transition-transform group-hover:scale-105"
+									/>
+								)}
+								{photo.kind === "video" && (
+									<span className="pointer-events-none absolute inset-0 flex items-center justify-center">
+										<span className="rounded-full bg-black/50 p-2">
+											<Play className="h-5 w-5 fill-white text-white" />
+										</span>
+									</span>
+								)}
 								{photo.status === "pending" && (
 									<span className="absolute left-1 top-1 rounded bg-amber-500/90 px-1.5 py-0.5 text-xs font-medium text-white">
 										Pending
@@ -262,12 +321,24 @@ export function AlbumView({
 					{active && (
 						<>
 							<div className="flex max-h-[70vh] items-center justify-center bg-muted">
-								{/* eslint-disable-next-line @next/next/no-img-element */}
-								<img
-									src={active.url}
-									alt={active.caption ?? "Album photo"}
-									className="max-h-[70vh] w-auto object-contain"
-								/>
+								{active.kind === "video" ? (
+									<video
+										src={active.url}
+										controls
+										autoPlay
+										playsInline
+										className="max-h-[70vh] w-auto object-contain"
+									>
+										<track kind="captions" />
+									</video>
+								) : (
+									// eslint-disable-next-line @next/next/no-img-element
+									<img
+										src={active.url}
+										alt={active.caption ?? "Album photo"}
+										className="max-h-[70vh] w-auto object-contain"
+									/>
+								)}
 							</div>
 							<div className="flex flex-wrap items-center justify-between gap-2 px-1">
 								<div className="text-sm text-muted-foreground">

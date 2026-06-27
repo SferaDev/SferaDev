@@ -398,13 +398,23 @@ function GalleryTab({
 						key={photo.id}
 						className="relative group aspect-square rounded-lg overflow-hidden bg-muted"
 					>
-						{photo.url && (
-							<img
-								src={photo.url}
-								alt={t("capturedMomentAlt", { code: photo.humanCode })}
-								className="w-full h-full object-cover"
-							/>
-						)}
+						{photo.url &&
+							(photo.kind === "video" ? (
+								<video
+									src={photo.url}
+									muted
+									playsInline
+									controls
+									preload="metadata"
+									className="w-full h-full object-cover"
+								/>
+							) : (
+								<img
+									src={photo.url}
+									alt={t("capturedMomentAlt", { code: photo.humanCode })}
+									className="w-full h-full object-cover"
+								/>
+							))}
 						<div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
 							<Button
 								size="icon"

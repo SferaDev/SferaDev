@@ -203,6 +203,28 @@ export async function resizeImageFile(
 	}
 }
 
+/**
+ * Reads the intrinsic pixel dimensions of a video file by loading just its
+ * metadata into a detached `<video>` element. Unlike images, guest videos are
+ * uploaded untouched (no canvas re-encode), so this is only used to record the
+ * frame size alongside the upload.
+ */
+export async function readVideoDimensions(file: File): Promise<{ width: number; height: number }> {
+	const objectUrl = URL.createObjectURL(file);
+	try {
+		return await new Promise<{ width: number; height: number }>((resolve, reject) => {
+			const video = document.createElement("video");
+			video.preload = "metadata";
+			video.onloadedmetadata = () =>
+				resolve({ width: video.videoWidth, height: video.videoHeight });
+			video.onerror = () => reject(new Error("Could not read video metadata"));
+			video.src = objectUrl;
+		});
+	} finally {
+		URL.revokeObjectURL(objectUrl);
+	}
+}
+
 export function downloadBlob(blob: Blob, filename: string) {
 	const url = URL.createObjectURL(blob);
 	const a = document.createElement("a");

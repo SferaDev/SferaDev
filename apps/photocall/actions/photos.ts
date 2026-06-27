@@ -174,8 +174,13 @@ export async function getPhotoByShareToken(shareToken: string) {
 	// Download counterparts of the URLs above. These carry a
 	// `Content-Disposition: attachment; filename="..."` header so a plain link
 	// click downloads the file directly from storage (cross-origin, no CORS).
-	// Boomerangs are GIFs; everything else is JPEG.
-	const ext = photo.kind === "boomerang" ? "gif" : "jpg";
+	// Boomerangs are GIFs; videos keep their uploaded container; everything else is JPEG.
+	const ext =
+		photo.kind === "boomerang"
+			? "gif"
+			: photo.kind === "video"
+				? photo.storageKey.split(".").pop() || "mp4"
+				: "jpg";
 	const downloadUrl = await getFileUrl(photo.storageKey, {
 		downloadFilename: `photocall_${photo.humanCode}.${ext}`,
 	});

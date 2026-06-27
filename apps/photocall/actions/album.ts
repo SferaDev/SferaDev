@@ -16,7 +16,10 @@ import {
 	findGrant,
 	type GuestUploadContentType,
 	isAllowedUploadType,
+	isAllowedVideoType,
 	MAX_GUEST_UPLOAD_BYTES,
+	MAX_GUEST_VIDEO_UPLOAD_BYTES,
+	maxUploadBytesFor,
 	readGuestCookie,
 	upsertGrant,
 	writeGuestCookie,
@@ -25,7 +28,7 @@ import { getPlatformClient } from "@/lib/platform";
 import {
 	deleteFile,
 	getFileUrl,
-	getObjectSize,
+	getObjectMetadata,
 	generateGuestUploadUrl as presignGuestUpload,
 } from "@/lib/storage";
 
@@ -307,7 +310,7 @@ export async function generateGuestUploadUrl(
 	if (!event.allowGuestUpload) throw new Error("Uploads are disabled for this album");
 	if (!isAllowedUploadType(contentType)) throw new Error("Unsupported file type");
 	if (!Number.isFinite(contentLength) || contentLength <= 0) throw new Error("Invalid file size");
-	if (contentLength > MAX_GUEST_UPLOAD_BYTES) throw new Error("File is too large");
+	if (contentLength > maxUploadBytesFor(contentType)) throw new Error("File is too large");
 
 	await assertUploadRateLimit(event.id, guestId);
 
@@ -330,11 +333,15 @@ export async function confirmGuestUpload(
 	if (!event.allowGuestUpload) throw new Error("Uploads are disabled for this album");
 
 	// Confirm the object really landed and is within the size cap. The PUT was
-	// presigned with a pinned Content-Length, but re-check defensively.
+	// presigned with a pinned Content-Length and Content-Type, but re-check
+	// defensively — and read the kind from the *stored* content type rather than
+	// trusting the client, so the image/video size cap can't be bypassed.
 	if (!data.key.startsWith("guest/")) throw new Error("Invalid upload key");
-	const sizeBytes = await getObjectSize(data.key);
-	if (sizeBytes === null) throw new Error("Upload not found");
-	if (sizeBytes > MAX_GUEST_UPLOAD_BYTES) {
+	const object = await getObjectMetadata(data.key);
+	if (object === null) throw new Error("Upload not found");
+	const { sizeBytes, contentType } = object;
+	const isVideo = contentType !== null && isAllowedVideoType(contentType);
+	if (sizeBytes > (isVideo ? MAX_GUEST_VIDEO_UPLOAD_BYTES : MAX_GUEST_UPLOAD_BYTES)) {
 		await deleteFile(data.key);
 		throw new Error("File is too large");
 	}
@@ -358,7 +365,7 @@ export async function confirmGuestUpload(
 			shareToken: generateToken(16),
 			humanCode: generateHumanCode(),
 			caption: data.caption?.slice(0, 200),
-			kind: "single",
+			kind: isVideo ? "video" : "single",
 			width: data.width,
 			height: data.height,
 			sizeBytes,
@@ -522,6 +529,7 @@ export async function regenerateAlbumToken(eventId: string): Promise<{ albumToke
 type PendingGuestPhoto = {
 	id: string;
 	url: string;
+	kind: string;
 	uploaderName: string | null;
 	createdAt: Date;
 };
@@ -546,6 +554,7 @@ export async function listPendingGuestPhotos(eventId: string): Promise<PendingGu
 		rows.map(async (photo) => ({
 			id: photo.id,
 			url: await getFileUrl(photo.storageKey),
+			kind: photo.kind,
 			uploaderName: photo.uploaderName,
 			createdAt: photo.createdAt,
 		})),
