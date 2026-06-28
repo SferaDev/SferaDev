@@ -716,6 +716,7 @@ export const userEventSchema = z
 				"domain-transfer-in-canceled",
 				"domain-transfer-in-completed",
 				"domain-zone-change",
+				"domain-zone-change-internal",
 				"drain-created",
 				"drain-deleted",
 				"drain-disabled",
@@ -1077,6 +1078,9 @@ export const userEventSchema = z
 				"v0-chat-ai-usage",
 				"v0-chat-created",
 				"v0-chat-message-sent",
+				"vcr-image-deleted",
+				"vcr-image-pushed",
+				"vcr-repository-created",
 				"vercel-agent-elevated-permissions-approved",
 				"vercel-agent-elevated-permissions-requested",
 				"vercel-agent-session-created",
@@ -3316,6 +3320,7 @@ export const userEventSchema = z
 				z
 					.object({
 						name: z.string(),
+						zone: z.union([z.literal(false), z.literal(true)]).optional(),
 					})
 					.strict(),
 				z
@@ -3389,6 +3394,15 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						domain: z.string(),
+						zone: z.union([z.literal(false), z.literal(true)]),
+						initiator: z.enum(["system", "user"]),
+						source: z.string().optional(),
+						previousZone: z.union([z.literal(false), z.literal(true)]).optional(),
+					})
+					.strict(),
+				z
+					.object({
 						name: z.string(),
 						fromId: z.string().nullable(),
 						fromName: z.string().nullable(),
@@ -3419,6 +3433,11 @@ export const userEventSchema = z
 						name: z.string(),
 						price: z.number().optional(),
 						currency: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						name: z.string(),
 					})
 					.strict(),
 				z
@@ -4393,6 +4412,9 @@ export const userEventSchema = z
 											teamPermissions: z
 												.array(
 													z.enum([
+														"AiGatewayApiKeyOwnedBySelf",
+														"AiGatewayCredits",
+														"AiGatewaySettings",
 														"CreateProject",
 														"EnvVariableManager",
 														"EnvironmentManager",
@@ -8057,6 +8079,30 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						projectId: z.string(),
+						projectName: z.string(),
+						repositoryName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+						projectName: z.string(),
+						repositoryName: z.string(),
+						reference: z.string(),
+						digest: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+						projectName: z.string(),
+						repositoryName: z.string(),
+						reference: z.string(),
+					})
+					.strict(),
+				z
+					.object({
 						ruleName: z.string(),
 					})
 					.strict(),
@@ -8616,6 +8662,7 @@ export const listEventTypeSchema = z
 				"domain-transfer-in-canceled",
 				"domain-transfer-in-completed",
 				"domain-zone-change",
+				"domain-zone-change-internal",
 				"drain-created",
 				"drain-deleted",
 				"drain-disabled",
@@ -8977,6 +9024,9 @@ export const listEventTypeSchema = z
 				"v0-chat-ai-usage",
 				"v0-chat-created",
 				"v0-chat-message-sent",
+				"vcr-image-deleted",
+				"vcr-image-pushed",
+				"vcr-repository-created",
 				"vercel-agent-elevated-permissions-approved",
 				"vercel-agent-elevated-permissions-requested",
 				"vercel-agent-session-created",
@@ -9184,6 +9234,7 @@ export const listEventTypeSchema = z
 					"domain-transfer-in-canceled",
 					"domain-transfer-in-completed",
 					"domain-zone-change",
+					"domain-zone-change-internal",
 					"drain-created",
 					"drain-deleted",
 					"drain-disabled",
@@ -9545,6 +9596,9 @@ export const listEventTypeSchema = z
 					"v0-chat-ai-usage",
 					"v0-chat-created",
 					"v0-chat-message-sent",
+					"vcr-image-deleted",
+					"vcr-image-pushed",
+					"vcr-repository-created",
 					"vercel-agent-elevated-permissions-approved",
 					"vercel-agent-elevated-permissions-requested",
 					"vercel-agent-session-created",
@@ -10424,6 +10478,9 @@ export const invitedTeamMemberSchema = z
 		teamPermissions: z
 			.array(
 				z.enum([
+					"AiGatewayApiKeyOwnedBySelf",
+					"AiGatewayCredits",
+					"AiGatewaySettings",
 					"CreateProject",
 					"EnvVariableManager",
 					"EnvironmentManager",
@@ -10581,6 +10638,9 @@ export const teamSchema = z
 				teamPermissions: z
 					.array(
 						z.enum([
+							"AiGatewayApiKeyOwnedBySelf",
+							"AiGatewayCredits",
+							"AiGatewaySettings",
 							"CreateProject",
 							"EnvVariableManager",
 							"EnvironmentManager",
@@ -10979,6 +11039,9 @@ export const teamSchema = z
 				teamPermissions: z
 					.array(
 						z.enum([
+							"AiGatewayApiKeyOwnedBySelf",
+							"AiGatewayCredits",
+							"AiGatewaySettings",
 							"CreateProject",
 							"EnvVariableManager",
 							"EnvironmentManager",
@@ -11166,6 +11229,9 @@ export const teamLimitedSchema = z
 				teamPermissions: z
 					.array(
 						z.enum([
+							"AiGatewayApiKeyOwnedBySelf",
+							"AiGatewayCredits",
+							"AiGatewaySettings",
 							"CreateProject",
 							"EnvVariableManager",
 							"EnvironmentManager",
@@ -22596,6 +22662,256 @@ export const requestDeleteResponseSchema = z.union([
 	requestDeleteStatus401Schema,
 	requestDeleteStatus402Schema,
 	requestDeleteStatus403Schema,
+]);
+
+export const aggregatePageviewsQueryProjectIdSchema = z
+	.string()
+	.describe("The project identifier or the project name");
+
+export const aggregatePageviewsQueryBySchema = z
+	.array(z.string().regex(/^(flags)(\/([0-9A-Za-z_]+|'([^']|'')*'))+$/))
+	.min(1)
+	.max(2)
+	.refine((items) => new Set(items).size === items.length, {
+		message: "Array entries must be unique",
+	})
+	.describe(
+		"Up to two dimensions used to break down results.\n\nAt most one time granularity is allowed: hour, day, week, month, year.\n\nOther dimensions: country, deviceType, environment, requestPath, referrerHostname, osName, browserName, route, utmSource, utmMedium, utmCampaign, utmContent, utmTerm.\n\nJSON dimensions: flags. Used bare, it breaks down results by key, for example flags returns one group per flag name. With a key, it breaks down results by that key's value, for example flags/beta_banner. Wrap keys containing characters other than letters, digits, and underscores in single quotes, for example flags/'my-flag'.",
+	);
+
+export const aggregatePageviewsQuerySinceSchema = z
+	.union([z.number(), z.string()])
+	.describe(
+		"Timestamp in milliseconds, or a valid Date string.\n\nSelects data from (including) this date and time.\nWill be adjusted according to the desired time granularity.",
+	);
+
+export const aggregatePageviewsQueryUntilSchema = z
+	.union([z.number(), z.string()])
+	.describe(
+		"Timestamp in milliseconds, or a valid Date string.\n\nSelects data until (including) this date.\nWill be adjusted according to the desired time granularity.",
+	);
+
+export const aggregatePageviewsQueryLimitSchema = z
+	.int()
+	.min(1)
+	.max(100)
+	.optional()
+	.default(10)
+	.describe(
+		'Number of distinct results, default to 10. Other results are grouped into "Others" group.',
+	);
+
+export const aggregatePageviewsQueryFilterSchema = z
+	.string()
+	.optional()
+	.describe(
+		"OData-compliant filter. Encode the value when sending it in a URL.\n\nAllows filtering on one or multiple dimensions. By default, filters for production environment only.\n\nSupported dimensions: country, deviceType, environment, requestPath, referrerHostname, osName, browserName, route, utmSource, utmMedium, utmCampaign, utmContent, utmTerm.\n\nJSON dimensions filtered by key: flags/<name>, for example flags/beta_banner eq 'true'. Wrap keys containing characters other than letters, digits, and underscores in single quotes, for example flags/'my-flag' eq 'true'.\n\nSupported operations include eq, ne, in, and logical operators and, or, not with parentheses. Functions such as startswith are supported by the OData parser.",
+	);
+
+export const aggregatePageviewsQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const aggregatePageviewsQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const aggregatePageviewsStatus200Schema = z.unknown();
+
+export const aggregatePageviewsStatus400Schema = z.unknown();
+
+export const aggregatePageviewsStatus401Schema = z.unknown();
+
+export const aggregatePageviewsStatus402Schema = z.unknown();
+
+export const aggregatePageviewsStatus403Schema = z.unknown();
+
+export const aggregatePageviewsResponseSchema = z.union([
+	aggregatePageviewsStatus200Schema,
+	aggregatePageviewsStatus400Schema,
+	aggregatePageviewsStatus401Schema,
+	aggregatePageviewsStatus402Schema,
+	aggregatePageviewsStatus403Schema,
+]);
+
+export const aggregateEventsQueryProjectIdSchema = z
+	.string()
+	.describe("The project identifier or the project name");
+
+export const aggregateEventsQueryBySchema = z
+	.array(z.string().regex(/^(flags|eventData)(\/([0-9A-Za-z_]+|'([^']|'')*'))+$/))
+	.min(1)
+	.max(2)
+	.refine((items) => new Set(items).size === items.length, {
+		message: "Array entries must be unique",
+	})
+	.describe(
+		"Up to two dimensions used to break down results.\n\nAt most one time granularity is allowed: hour, day, week, month, year.\n\nOther dimensions: country, deviceType, environment, requestPath, referrerHostname, osName, browserName, route, utmSource, utmMedium, utmCampaign, utmContent, utmTerm, eventName.\n\nJSON dimensions: flags, eventData. Used bare, they break down results by key, for example flags returns one group per flag name. With a key, they break down results by that key's value, for example eventData/plan. Wrap keys containing characters other than letters, digits, and underscores in single quotes, for example flags/'my-flag'.",
+	);
+
+export const aggregateEventsQuerySinceSchema = z
+	.union([z.number(), z.string()])
+	.describe(
+		"Timestamp in milliseconds, or a valid Date string.\n\nSelects data from (including) this date and time.\nWill be adjusted according to the desired time granularity.",
+	);
+
+export const aggregateEventsQueryUntilSchema = z
+	.union([z.number(), z.string()])
+	.describe(
+		"Timestamp in milliseconds, or a valid Date string.\n\nSelects data until (including) this date.\nWill be adjusted according to the desired time granularity.",
+	);
+
+export const aggregateEventsQueryLimitSchema = z
+	.int()
+	.min(1)
+	.max(100)
+	.optional()
+	.default(10)
+	.describe(
+		'Number of distinct results, default to 10. Other results are grouped into "Others" group.',
+	);
+
+export const aggregateEventsQueryFilterSchema = z
+	.string()
+	.optional()
+	.describe(
+		"OData-compliant filter. Encode the value when sending it in a URL.\n\nAllows filtering on one or multiple dimensions. By default, filters for production environment only.\n\nSupported dimensions: country, deviceType, environment, requestPath, referrerHostname, osName, browserName, route, utmSource, utmMedium, utmCampaign, utmContent, utmTerm, eventName.\n\nJSON dimensions filtered by key: flags/<name>, eventData/<property>, for example eventData/plan eq 'pro'. Wrap keys containing characters other than letters, digits, and underscores in single quotes, for example flags/'my-flag' eq 'true'.\n\nSupported operations include eq, ne, in, and logical operators and, or, not with parentheses. Functions such as startswith are supported by the OData parser.",
+	);
+
+export const aggregateEventsQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const aggregateEventsQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const aggregateEventsStatus200Schema = z.unknown();
+
+export const aggregateEventsStatus400Schema = z.unknown();
+
+export const aggregateEventsStatus401Schema = z.unknown();
+
+export const aggregateEventsStatus402Schema = z.unknown();
+
+export const aggregateEventsStatus403Schema = z.unknown();
+
+export const aggregateEventsResponseSchema = z.union([
+	aggregateEventsStatus200Schema,
+	aggregateEventsStatus400Schema,
+	aggregateEventsStatus401Schema,
+	aggregateEventsStatus402Schema,
+	aggregateEventsStatus403Schema,
+]);
+
+export const countPageviewsQueryProjectIdSchema = z
+	.string()
+	.describe("The project identifier or the project name");
+
+export const countPageviewsQuerySinceSchema = z
+	.union([z.number(), z.string()])
+	.optional()
+	.describe(
+		"Timestamp in milliseconds, or a valid Date string.\n\nSelects data from (including) this date and time.\nWill be adjusted according to the desired time granularity.",
+	);
+
+export const countPageviewsQueryUntilSchema = z
+	.union([z.number(), z.string()])
+	.optional()
+	.describe(
+		"Timestamp in milliseconds, or a valid Date string.\n\nSelects data until (including) this date.\nWill be adjusted according to the desired time granularity.",
+	);
+
+export const countPageviewsQueryFilterSchema = z
+	.string()
+	.optional()
+	.describe(
+		"OData-compliant filter. Encode the value when sending it in a URL.\n\nAllows filtering on one or multiple dimensions.\n\nSupported dimensions: country, deviceType, environment, requestPath, referrerHostname, osName, browserName, route, utmSource, utmMedium, utmCampaign, utmContent, utmTerm.\n\nJSON dimensions filtered by key: flags/<name>, for example flags/beta_banner eq 'true'. Wrap keys containing characters other than letters, digits, and underscores in single quotes, for example flags/'my-flag' eq 'true'.\n\nSupported operations include eq, ne, in, and logical operators and, or, not with parentheses. Functions such as startswith are supported by the OData parser.",
+	);
+
+export const countPageviewsQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const countPageviewsQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const countPageviewsStatus200Schema = z.unknown();
+
+export const countPageviewsStatus400Schema = z.unknown();
+
+export const countPageviewsStatus401Schema = z.unknown();
+
+export const countPageviewsStatus402Schema = z.unknown();
+
+export const countPageviewsStatus403Schema = z.unknown();
+
+export const countPageviewsResponseSchema = z.union([
+	countPageviewsStatus200Schema,
+	countPageviewsStatus400Schema,
+	countPageviewsStatus401Schema,
+	countPageviewsStatus402Schema,
+	countPageviewsStatus403Schema,
+]);
+
+export const countEventsQueryProjectIdSchema = z
+	.string()
+	.describe("The project identifier or the project name");
+
+export const countEventsQuerySinceSchema = z
+	.union([z.number(), z.string()])
+	.optional()
+	.describe(
+		"Timestamp in milliseconds, or a valid Date string.\n\nSelects data from (including) this date and time.\nWill be adjusted according to the desired time granularity.",
+	);
+
+export const countEventsQueryUntilSchema = z
+	.union([z.number(), z.string()])
+	.optional()
+	.describe(
+		"Timestamp in milliseconds, or a valid Date string.\n\nSelects data until (including) this date.\nWill be adjusted according to the desired time granularity.",
+	);
+
+export const countEventsQueryFilterSchema = z
+	.string()
+	.optional()
+	.describe(
+		"OData-compliant filter. Encode the value when sending it in a URL.\n\nAllows filtering on one or multiple dimensions.\n\nSupported dimensions: country, deviceType, environment, requestPath, referrerHostname, osName, browserName, route, utmSource, utmMedium, utmCampaign, utmContent, utmTerm, eventName.\n\nJSON dimensions filtered by key: flags/<name>, eventData/<property>, for example eventData/plan eq 'pro'. Wrap keys containing characters other than letters, digits, and underscores in single quotes, for example flags/'my-flag' eq 'true'.\n\nSupported operations include eq, ne, in, and logical operators and, or, not with parentheses. Functions such as startswith are supported by the OData parser.",
+	);
+
+export const countEventsQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const countEventsQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const countEventsStatus200Schema = z.unknown();
+
+export const countEventsStatus400Schema = z.unknown();
+
+export const countEventsStatus401Schema = z.unknown();
+
+export const countEventsStatus402Schema = z.unknown();
+
+export const countEventsStatus403Schema = z.unknown();
+
+export const countEventsResponseSchema = z.union([
+	countEventsStatus200Schema,
+	countEventsStatus400Schema,
+	countEventsStatus401Schema,
+	countEventsStatus402Schema,
+	countEventsStatus403Schema,
 ]);
 
 export const createWebhookQueryTeamIdSchema = z

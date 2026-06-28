@@ -35,6 +35,16 @@ import type {
 	AddRouteStatus403,
 	AddRouteStatus409,
 	AddRouteStatus500,
+	AggregateEventsResponse,
+	AggregateEventsStatus400,
+	AggregateEventsStatus401,
+	AggregateEventsStatus402,
+	AggregateEventsStatus403,
+	AggregatePageviewsResponse,
+	AggregatePageviewsStatus400,
+	AggregatePageviewsStatus401,
+	AggregatePageviewsStatus402,
+	AggregatePageviewsStatus403,
 	ApproveRollingReleaseStageResponse,
 	ApproveRollingReleaseStageStatus400,
 	ApproveRollingReleaseStageStatus401,
@@ -98,6 +108,16 @@ import type {
 	ConnectIntegrationResourceToProjectStatus401,
 	ConnectIntegrationResourceToProjectStatus403,
 	ConnectIntegrationResourceToProjectStatus404,
+	CountEventsResponse,
+	CountEventsStatus400,
+	CountEventsStatus401,
+	CountEventsStatus402,
+	CountEventsStatus403,
+	CountPageviewsResponse,
+	CountPageviewsStatus400,
+	CountPageviewsStatus401,
+	CountPageviewsStatus402,
+	CountPageviewsStatus403,
 	CreateAccessGroupProjectResponse,
 	CreateAccessGroupProjectStatus400,
 	CreateAccessGroupProjectStatus401,
@@ -15456,6 +15476,223 @@ export async function requestDelete(
 }
 
 /**
+ * @summary Aggregates page views
+ * @description Counts pageviews on a project, within the requested date range. Results are either aggregated or broken down over time. Results can additionally be broken down by one dimension, and filtered by multiple dimensions.
+ * @link /v1/query/web-analytics/visits/aggregate
+ */
+export async function aggregatePageviews(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			projectId?: string;
+			by?: Array<unknown>;
+			since?: unknown;
+			until?: unknown;
+			limit?: number;
+			filter?: string;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		AggregatePageviewsResponse,
+		ErrorWrapper<
+			| AggregatePageviewsStatus400
+			| AggregatePageviewsStatus401
+			| AggregatePageviewsStatus402
+			| AggregatePageviewsStatus403
+		>,
+		null,
+		Record<string, string>,
+		{
+			projectId?: string;
+			by?: Array<unknown>;
+			since?: unknown;
+			until?: unknown;
+			limit?: number;
+			filter?: string;
+			teamId?: string;
+			slug?: string;
+		},
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/v1/query/web-analytics/visits/aggregate`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Aggregates custom events
+ * @description Counts custom events on a project, within the requested date range. Results are either aggregated or broken down over time. Results can additionally be broken down by one dimension, and filtered by multiple dimensions.
+ * @link /v1/query/web-analytics/events/aggregate
+ */
+export async function aggregateEvents(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			projectId?: string;
+			by?: Array<unknown>;
+			since?: unknown;
+			until?: unknown;
+			limit?: number;
+			filter?: string;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		AggregateEventsResponse,
+		ErrorWrapper<
+			| AggregateEventsStatus400
+			| AggregateEventsStatus401
+			| AggregateEventsStatus402
+			| AggregateEventsStatus403
+		>,
+		null,
+		Record<string, string>,
+		{
+			projectId?: string;
+			by?: Array<unknown>;
+			since?: unknown;
+			until?: unknown;
+			limit?: number;
+			filter?: string;
+			teamId?: string;
+			slug?: string;
+		},
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/v1/query/web-analytics/events/aggregate`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Counts page views
+ * @description Counts the number of page views on a project (production only), since Web Analytics was enabled. Results can be filtered on supported dimensions.
+ * @link /v1/query/web-analytics/visits/count
+ */
+export async function countPageviews(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			projectId?: string;
+			since?: unknown;
+			until?: unknown;
+			filter?: string;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		CountPageviewsResponse,
+		ErrorWrapper<
+			| CountPageviewsStatus400
+			| CountPageviewsStatus401
+			| CountPageviewsStatus402
+			| CountPageviewsStatus403
+		>,
+		null,
+		Record<string, string>,
+		{
+			projectId?: string;
+			since?: unknown;
+			until?: unknown;
+			filter?: string;
+			teamId?: string;
+			slug?: string;
+		},
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/v1/query/web-analytics/visits/count`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Counts custom events
+ * @description Counts the number of custom events on a project (production only), since Web Analytics was enabled. Results can be filtered on supported dimensions.
+ * @link /v1/query/web-analytics/events/count
+ */
+export async function countEvents(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			projectId?: string;
+			since?: unknown;
+			until?: unknown;
+			filter?: string;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		CountEventsResponse,
+		ErrorWrapper<
+			CountEventsStatus400 | CountEventsStatus401 | CountEventsStatus402 | CountEventsStatus403
+		>,
+		null,
+		Record<string, string>,
+		{
+			projectId?: string;
+			since?: unknown;
+			until?: unknown;
+			filter?: string;
+			teamId?: string;
+			slug?: string;
+		},
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/v1/query/web-analytics/events/count`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
  * @summary Creates a webhook
  * @description Creates a webhook
  * @link /v1/webhooks
@@ -16580,6 +16817,10 @@ export const operationsByPath = {
 	"DELETE /v3/user/tokens/{tokenId}": deleteAuthToken,
 	"GET /v2/user": getAuthUser,
 	"DELETE /v1/user": requestDelete,
+	"GET /v1/query/web-analytics/visits/aggregate": aggregatePageviews,
+	"GET /v1/query/web-analytics/events/aggregate": aggregateEvents,
+	"GET /v1/query/web-analytics/visits/count": countPageviews,
+	"GET /v1/query/web-analytics/events/count": countEvents,
 	"POST /v1/webhooks": createWebhook,
 	"GET /v1/webhooks": getWebhooks,
 	"GET /v1/webhooks/{id}": getWebhook,
@@ -16973,6 +17214,12 @@ export const operationsByTag = {
 		updateMicrofrontendsGroup,
 		deleteMicrofrontendsGroup,
 	},
+	webAnalytics: {
+		aggregatePageviews,
+		aggregateEvents,
+		countPageviews,
+		countEvents,
+	},
 	webhooks: {
 		createWebhook,
 		getWebhooks,
@@ -17353,6 +17600,9 @@ export const tagDictionary = {
 		],
 		PATCH: ["updateTeamMember", "patchTeam", "updateMicrofrontendsGroup"],
 		DELETE: ["removeTeamMember", "deleteTeam", "deleteTeamInviteCode", "deleteMicrofrontendsGroup"],
+	},
+	webAnalytics: {
+		GET: ["aggregatePageviews", "aggregateEvents", "countPageviews", "countEvents"],
 	},
 	webhooks: {
 		POST: ["createWebhook"],
