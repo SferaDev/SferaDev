@@ -1556,6 +1556,7 @@ export const userEventTypeEnum = {
 	"domain-transfer-in-canceled": "domain-transfer-in-canceled",
 	"domain-transfer-in-completed": "domain-transfer-in-completed",
 	"domain-zone-change": "domain-zone-change",
+	"domain-zone-change-internal": "domain-zone-change-internal",
 	"drain-created": "drain-created",
 	"drain-deleted": "drain-deleted",
 	"drain-disabled": "drain-disabled",
@@ -1928,6 +1929,9 @@ export const userEventTypeEnum = {
 	"v0-chat-ai-usage": "v0-chat-ai-usage",
 	"v0-chat-created": "v0-chat-created",
 	"v0-chat-message-sent": "v0-chat-message-sent",
+	"vcr-image-deleted": "vcr-image-deleted",
+	"vcr-image-pushed": "vcr-image-pushed",
+	"vcr-repository-created": "vcr-repository-created",
 	"vercel-agent-elevated-permissions-approved": "vercel-agent-elevated-permissions-approved",
 	"vercel-agent-elevated-permissions-requested": "vercel-agent-elevated-permissions-requested",
 	"vercel-agent-session-created": "vercel-agent-session-created",
@@ -6837,6 +6841,10 @@ export type UserEvent = {
 						 * @type string
 						 */
 						name: string;
+						/**
+						 * @type boolean | undefined
+						 */
+						zone?: (false | true) | undefined;
 				  }
 				| {
 						/**
@@ -6974,6 +6982,28 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
+						domain: string;
+						/**
+						 * @type boolean
+						 */
+						zone: false | true;
+						/**
+						 * @type string
+						 */
+						initiator: InitiatorEnumKey;
+						/**
+						 * @type string | undefined
+						 */
+						source?: string | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						previousZone?: (false | true) | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
 						name: string;
 						/**
 						 * @type string
@@ -7035,6 +7065,12 @@ export type UserEvent = {
 						 * @type string | undefined
 						 */
 						currency?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						name: string;
 				  }
 				| {
 						/**
@@ -8812,6 +8848,9 @@ export type UserEvent = {
 										 */
 										teamPermissions?:
 											| (
+													| "AiGatewayApiKeyOwnedBySelf"
+													| "AiGatewayCredits"
+													| "AiGatewaySettings"
 													| "CreateProject"
 													| "EnvVariableManager"
 													| "EnvironmentManager"
@@ -15738,6 +15777,60 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string
+						 */
+						repositoryName: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string
+						 */
+						repositoryName: string;
+						/**
+						 * @type string
+						 */
+						reference: string;
+						/**
+						 * @type string
+						 */
+						digest: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string
+						 */
+						repositoryName: string;
+						/**
+						 * @type string
+						 */
+						reference: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
 						ruleName: string;
 				  }
 				| {
@@ -16604,6 +16697,7 @@ export const listEventTypeNameEnum = {
 	"domain-transfer-in-canceled": "domain-transfer-in-canceled",
 	"domain-transfer-in-completed": "domain-transfer-in-completed",
 	"domain-zone-change": "domain-zone-change",
+	"domain-zone-change-internal": "domain-zone-change-internal",
 	"drain-created": "drain-created",
 	"drain-deleted": "drain-deleted",
 	"drain-disabled": "drain-disabled",
@@ -16976,6 +17070,9 @@ export const listEventTypeNameEnum = {
 	"v0-chat-ai-usage": "v0-chat-ai-usage",
 	"v0-chat-created": "v0-chat-created",
 	"v0-chat-message-sent": "v0-chat-message-sent",
+	"vcr-image-deleted": "vcr-image-deleted",
+	"vcr-image-pushed": "vcr-image-pushed",
+	"vcr-repository-created": "vcr-repository-created",
 	"vercel-agent-elevated-permissions-approved": "vercel-agent-elevated-permissions-approved",
 	"vercel-agent-elevated-permissions-requested": "vercel-agent-elevated-permissions-requested",
 	"vercel-agent-session-created": "vercel-agent-session-created",
@@ -17178,6 +17275,7 @@ export const listEventTypeReplacedByEnum = {
 	"domain-transfer-in-canceled": "domain-transfer-in-canceled",
 	"domain-transfer-in-completed": "domain-transfer-in-completed",
 	"domain-zone-change": "domain-zone-change",
+	"domain-zone-change-internal": "domain-zone-change-internal",
 	"drain-created": "drain-created",
 	"drain-deleted": "drain-deleted",
 	"drain-disabled": "drain-disabled",
@@ -17550,6 +17648,9 @@ export const listEventTypeReplacedByEnum = {
 	"v0-chat-ai-usage": "v0-chat-ai-usage",
 	"v0-chat-created": "v0-chat-created",
 	"v0-chat-message-sent": "v0-chat-message-sent",
+	"vcr-image-deleted": "vcr-image-deleted",
+	"vcr-image-pushed": "vcr-image-pushed",
+	"vcr-repository-created": "vcr-repository-created",
 	"vercel-agent-elevated-permissions-approved": "vercel-agent-elevated-permissions-approved",
 	"vercel-agent-elevated-permissions-requested": "vercel-agent-elevated-permissions-requested",
 	"vercel-agent-session-created": "vercel-agent-session-created",
@@ -19472,6 +19573,9 @@ export type InvitedTeamMemberTeamRolesEnumKey =
 	(typeof invitedTeamMemberTeamRolesEnum)[keyof typeof invitedTeamMemberTeamRolesEnum];
 
 export const invitedTeamMemberTeamPermissionsEnum = {
+	AiGatewayApiKeyOwnedBySelf: "AiGatewayApiKeyOwnedBySelf",
+	AiGatewayCredits: "AiGatewayCredits",
+	AiGatewaySettings: "AiGatewaySettings",
 	CreateProject: "CreateProject",
 	EnvVariableManager: "EnvVariableManager",
 	EnvironmentManager: "EnvironmentManager",
@@ -19571,6 +19675,9 @@ export type TeamDefaultRolesTeamRolesEnumKey =
 	(typeof teamDefaultRolesTeamRolesEnum)[keyof typeof teamDefaultRolesTeamRolesEnum];
 
 export const teamDefaultRolesTeamPermissionsEnum = {
+	AiGatewayApiKeyOwnedBySelf: "AiGatewayApiKeyOwnedBySelf",
+	AiGatewayCredits: "AiGatewayCredits",
+	AiGatewaySettings: "AiGatewaySettings",
 	CreateProject: "CreateProject",
 	EnvVariableManager: "EnvVariableManager",
 	EnvironmentManager: "EnvironmentManager",
@@ -19694,6 +19801,9 @@ export type TeamMembershipTeamRolesEnumKey =
 	(typeof teamMembershipTeamRolesEnum)[keyof typeof teamMembershipTeamRolesEnum];
 
 export const teamMembershipTeamPermissionsEnum = {
+	AiGatewayApiKeyOwnedBySelf: "AiGatewayApiKeyOwnedBySelf",
+	AiGatewayCredits: "AiGatewayCredits",
+	AiGatewaySettings: "AiGatewaySettings",
 	CreateProject: "CreateProject",
 	EnvVariableManager: "EnvVariableManager",
 	EnvironmentManager: "EnvironmentManager",
@@ -20604,6 +20714,9 @@ export type TeamLimitedMembershipTeamRolesEnumKey =
 	(typeof teamLimitedMembershipTeamRolesEnum)[keyof typeof teamLimitedMembershipTeamRolesEnum];
 
 export const teamLimitedMembershipTeamPermissionsEnum = {
+	AiGatewayApiKeyOwnedBySelf: "AiGatewayApiKeyOwnedBySelf",
+	AiGatewayCredits: "AiGatewayCredits",
+	AiGatewaySettings: "AiGatewaySettings",
 	CreateProject: "CreateProject",
 	EnvVariableManager: "EnvVariableManager",
 	EnvironmentManager: "EnvironmentManager",
@@ -51963,6 +52076,492 @@ export type RequestDeleteResponse =
 	| RequestDeleteStatus401
 	| RequestDeleteStatus402
 	| RequestDeleteStatus403;
+
+/**
+ * @description The project identifier or the project name
+ * @example prj_XLKmu1DyR1eY7zq8UgeRKbA7yVLA
+ * @type string
+ */
+export type AggregatePageviewsQueryProjectId = string;
+
+/**
+ * @description Up to two dimensions used to break down results.\n\nAt most one time granularity is allowed: hour, day, week, month, year.\n\nOther dimensions: country, deviceType, environment, requestPath, referrerHostname, osName, browserName, route, utmSource, utmMedium, utmCampaign, utmContent, utmTerm.\n\nJSON dimensions: flags. Used bare, it breaks down results by key, for example flags returns one group per flag name. With a key, it breaks down results by that key\'s value, for example flags/beta_banner. Wrap keys containing characters other than letters, digits, and underscores in single quotes, for example flags/\'my-flag\'.
+ * @example day,country
+ * @type array
+ */
+export type AggregatePageviewsQueryBy = string[];
+
+/**
+ * @description Timestamp in milliseconds, or a valid Date string.\n\nSelects data from (including) this date and time.\nWill be adjusted according to the desired time granularity.
+ * @example 2024-09-01T00:00:00.000Z
+ */
+export type AggregatePageviewsQuerySince = number | string;
+
+/**
+ * @description Timestamp in milliseconds, or a valid Date string.\n\nSelects data until (including) this date.\nWill be adjusted according to the desired time granularity.
+ * @example 2024-09-08T00:00:00.000Z
+ */
+export type AggregatePageviewsQueryUntil = number | string;
+
+/**
+ * @description Number of distinct results, default to 10. Other results are grouped into \"Others\" group.
+ * @minLength 1
+ * @maxLength 100
+ * @default 10
+ * @example 3
+ * @type integer | undefined
+ */
+export type AggregatePageviewsQueryLimit = number | undefined;
+
+/**
+ * @description OData-compliant filter. Encode the value when sending it in a URL.\n\nAllows filtering on one or multiple dimensions. By default, filters for production environment only.\n\nSupported dimensions: country, deviceType, environment, requestPath, referrerHostname, osName, browserName, route, utmSource, utmMedium, utmCampaign, utmContent, utmTerm.\n\nJSON dimensions filtered by key: flags/<name>, for example flags/beta_banner eq \'true\'. Wrap keys containing characters other than letters, digits, and underscores in single quotes, for example flags/\'my-flag\' eq \'true\'.\n\nSupported operations include eq, ne, in, and logical operators and, or, not with parentheses. Functions such as startswith are supported by the OData parser.
+ * @example requestPath eq '/docs'
+ * @type string | undefined
+ */
+export type AggregatePageviewsQueryFilter = string | undefined;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type AggregatePageviewsQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type AggregatePageviewsQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type AggregatePageviewsStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type AggregatePageviewsStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type AggregatePageviewsStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type AggregatePageviewsStatus402 = unknown;
+
+/**
+ * @type unknown
+ */
+export type AggregatePageviewsStatus403 = unknown;
+
+/**
+ * @type object
+ */
+export type AggregatePageviewsRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				projectId: AggregatePageviewsQueryProjectId;
+				by: AggregatePageviewsQueryBy;
+				since: AggregatePageviewsQuerySince;
+				until: AggregatePageviewsQueryUntil;
+				limit?: AggregatePageviewsQueryLimit | undefined;
+				filter?: AggregatePageviewsQueryFilter | undefined;
+				teamId?: AggregatePageviewsQueryTeamId | undefined;
+				slug?: AggregatePageviewsQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/v1/query/web-analytics/visits/aggregate";
+};
+
+/**
+ * @type object
+ */
+export type AggregatePageviewsResponses = {
+	"200": AggregatePageviewsStatus200;
+	"400": AggregatePageviewsStatus400;
+	"401": AggregatePageviewsStatus401;
+	"402": AggregatePageviewsStatus402;
+	"403": AggregatePageviewsStatus403;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type AggregatePageviewsResponse =
+	| AggregatePageviewsStatus200
+	| AggregatePageviewsStatus400
+	| AggregatePageviewsStatus401
+	| AggregatePageviewsStatus402
+	| AggregatePageviewsStatus403;
+
+/**
+ * @description The project identifier or the project name
+ * @example prj_XLKmu1DyR1eY7zq8UgeRKbA7yVLA
+ * @type string
+ */
+export type AggregateEventsQueryProjectId = string;
+
+/**
+ * @description Up to two dimensions used to break down results.\n\nAt most one time granularity is allowed: hour, day, week, month, year.\n\nOther dimensions: country, deviceType, environment, requestPath, referrerHostname, osName, browserName, route, utmSource, utmMedium, utmCampaign, utmContent, utmTerm, eventName.\n\nJSON dimensions: flags, eventData. Used bare, they break down results by key, for example flags returns one group per flag name. With a key, they break down results by that key\'s value, for example eventData/plan. Wrap keys containing characters other than letters, digits, and underscores in single quotes, for example flags/\'my-flag\'.
+ * @example day,eventName
+ * @type array
+ */
+export type AggregateEventsQueryBy = string[];
+
+/**
+ * @description Timestamp in milliseconds, or a valid Date string.\n\nSelects data from (including) this date and time.\nWill be adjusted according to the desired time granularity.
+ * @example 2024-09-01T00:00:00.000Z
+ */
+export type AggregateEventsQuerySince = number | string;
+
+/**
+ * @description Timestamp in milliseconds, or a valid Date string.\n\nSelects data until (including) this date.\nWill be adjusted according to the desired time granularity.
+ * @example 2024-09-08T00:00:00.000Z
+ */
+export type AggregateEventsQueryUntil = number | string;
+
+/**
+ * @description Number of distinct results, default to 10. Other results are grouped into \"Others\" group.
+ * @minLength 1
+ * @maxLength 100
+ * @default 10
+ * @example 3
+ * @type integer | undefined
+ */
+export type AggregateEventsQueryLimit = number | undefined;
+
+/**
+ * @description OData-compliant filter. Encode the value when sending it in a URL.\n\nAllows filtering on one or multiple dimensions. By default, filters for production environment only.\n\nSupported dimensions: country, deviceType, environment, requestPath, referrerHostname, osName, browserName, route, utmSource, utmMedium, utmCampaign, utmContent, utmTerm, eventName.\n\nJSON dimensions filtered by key: flags/<name>, eventData/<property>, for example eventData/plan eq \'pro\'. Wrap keys containing characters other than letters, digits, and underscores in single quotes, for example flags/\'my-flag\' eq \'true\'.\n\nSupported operations include eq, ne, in, and logical operators and, or, not with parentheses. Functions such as startswith are supported by the OData parser.
+ * @example eventData/plan eq 'pro'
+ * @type string | undefined
+ */
+export type AggregateEventsQueryFilter = string | undefined;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type AggregateEventsQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type AggregateEventsQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type AggregateEventsStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type AggregateEventsStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type AggregateEventsStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type AggregateEventsStatus402 = unknown;
+
+/**
+ * @type unknown
+ */
+export type AggregateEventsStatus403 = unknown;
+
+/**
+ * @type object
+ */
+export type AggregateEventsRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				projectId: AggregateEventsQueryProjectId;
+				by: AggregateEventsQueryBy;
+				since: AggregateEventsQuerySince;
+				until: AggregateEventsQueryUntil;
+				limit?: AggregateEventsQueryLimit | undefined;
+				filter?: AggregateEventsQueryFilter | undefined;
+				teamId?: AggregateEventsQueryTeamId | undefined;
+				slug?: AggregateEventsQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/v1/query/web-analytics/events/aggregate";
+};
+
+/**
+ * @type object
+ */
+export type AggregateEventsResponses = {
+	"200": AggregateEventsStatus200;
+	"400": AggregateEventsStatus400;
+	"401": AggregateEventsStatus401;
+	"402": AggregateEventsStatus402;
+	"403": AggregateEventsStatus403;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type AggregateEventsResponse =
+	| AggregateEventsStatus200
+	| AggregateEventsStatus400
+	| AggregateEventsStatus401
+	| AggregateEventsStatus402
+	| AggregateEventsStatus403;
+
+/**
+ * @description The project identifier or the project name
+ * @example prj_XLKmu1DyR1eY7zq8UgeRKbA7yVLA
+ * @type string
+ */
+export type CountPageviewsQueryProjectId = string;
+
+/**
+ * @description Timestamp in milliseconds, or a valid Date string.\n\nSelects data from (including) this date and time.\nWill be adjusted according to the desired time granularity.
+ * @example 2024-09-01T00:00:00.000Z
+ */
+export type CountPageviewsQuerySince = (number | string) | undefined;
+
+/**
+ * @description Timestamp in milliseconds, or a valid Date string.\n\nSelects data until (including) this date.\nWill be adjusted according to the desired time granularity.
+ * @example 2024-09-08T00:00:00.000Z
+ */
+export type CountPageviewsQueryUntil = (number | string) | undefined;
+
+/**
+ * @description OData-compliant filter. Encode the value when sending it in a URL.\n\nAllows filtering on one or multiple dimensions.\n\nSupported dimensions: country, deviceType, environment, requestPath, referrerHostname, osName, browserName, route, utmSource, utmMedium, utmCampaign, utmContent, utmTerm.\n\nJSON dimensions filtered by key: flags/<name>, for example flags/beta_banner eq \'true\'. Wrap keys containing characters other than letters, digits, and underscores in single quotes, for example flags/\'my-flag\' eq \'true\'.\n\nSupported operations include eq, ne, in, and logical operators and, or, not with parentheses. Functions such as startswith are supported by the OData parser.
+ * @example route eq '/home'
+ * @type string | undefined
+ */
+export type CountPageviewsQueryFilter = string | undefined;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type CountPageviewsQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type CountPageviewsQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type CountPageviewsStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CountPageviewsStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CountPageviewsStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CountPageviewsStatus402 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CountPageviewsStatus403 = unknown;
+
+/**
+ * @type object
+ */
+export type CountPageviewsRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				projectId: CountPageviewsQueryProjectId;
+				since?: CountPageviewsQuerySince | undefined;
+				until?: CountPageviewsQueryUntil | undefined;
+				filter?: CountPageviewsQueryFilter | undefined;
+				teamId?: CountPageviewsQueryTeamId | undefined;
+				slug?: CountPageviewsQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/v1/query/web-analytics/visits/count";
+};
+
+/**
+ * @type object
+ */
+export type CountPageviewsResponses = {
+	"200": CountPageviewsStatus200;
+	"400": CountPageviewsStatus400;
+	"401": CountPageviewsStatus401;
+	"402": CountPageviewsStatus402;
+	"403": CountPageviewsStatus403;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CountPageviewsResponse =
+	| CountPageviewsStatus200
+	| CountPageviewsStatus400
+	| CountPageviewsStatus401
+	| CountPageviewsStatus402
+	| CountPageviewsStatus403;
+
+/**
+ * @description The project identifier or the project name
+ * @example prj_XLKmu1DyR1eY7zq8UgeRKbA7yVLA
+ * @type string
+ */
+export type CountEventsQueryProjectId = string;
+
+/**
+ * @description Timestamp in milliseconds, or a valid Date string.\n\nSelects data from (including) this date and time.\nWill be adjusted according to the desired time granularity.
+ * @example 2024-09-01T00:00:00.000Z
+ */
+export type CountEventsQuerySince = (number | string) | undefined;
+
+/**
+ * @description Timestamp in milliseconds, or a valid Date string.\n\nSelects data until (including) this date.\nWill be adjusted according to the desired time granularity.
+ * @example 2024-09-08T00:00:00.000Z
+ */
+export type CountEventsQueryUntil = (number | string) | undefined;
+
+/**
+ * @description OData-compliant filter. Encode the value when sending it in a URL.\n\nAllows filtering on one or multiple dimensions.\n\nSupported dimensions: country, deviceType, environment, requestPath, referrerHostname, osName, browserName, route, utmSource, utmMedium, utmCampaign, utmContent, utmTerm, eventName.\n\nJSON dimensions filtered by key: flags/<name>, eventData/<property>, for example eventData/plan eq \'pro\'. Wrap keys containing characters other than letters, digits, and underscores in single quotes, for example flags/\'my-flag\' eq \'true\'.\n\nSupported operations include eq, ne, in, and logical operators and, or, not with parentheses. Functions such as startswith are supported by the OData parser.
+ * @example eventName eq 'signup'
+ * @type string | undefined
+ */
+export type CountEventsQueryFilter = string | undefined;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type CountEventsQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type CountEventsQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type CountEventsStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CountEventsStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CountEventsStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CountEventsStatus402 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CountEventsStatus403 = unknown;
+
+/**
+ * @type object
+ */
+export type CountEventsRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				projectId: CountEventsQueryProjectId;
+				since?: CountEventsQuerySince | undefined;
+				until?: CountEventsQueryUntil | undefined;
+				filter?: CountEventsQueryFilter | undefined;
+				teamId?: CountEventsQueryTeamId | undefined;
+				slug?: CountEventsQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/v1/query/web-analytics/events/count";
+};
+
+/**
+ * @type object
+ */
+export type CountEventsResponses = {
+	"200": CountEventsStatus200;
+	"400": CountEventsStatus400;
+	"401": CountEventsStatus401;
+	"402": CountEventsStatus402;
+	"403": CountEventsStatus403;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CountEventsResponse =
+	| CountEventsStatus200
+	| CountEventsStatus400
+	| CountEventsStatus401
+	| CountEventsStatus402
+	| CountEventsStatus403;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
