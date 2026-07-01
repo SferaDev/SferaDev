@@ -591,6 +591,8 @@ export const userEventSchema = z
 				"ai-gateway-byok-credential-created",
 				"ai-gateway-byok-credential-deleted",
 				"ai-gateway-byok-credential-updated",
+				"ai-gateway-model-allowlist-models-updated",
+				"ai-gateway-model-allowlist-toggled",
 				"ai-gateway-private-model-created",
 				"ai-gateway-private-model-deleted",
 				"ai-gateway-private-model-updated",
@@ -716,6 +718,7 @@ export const userEventSchema = z
 				"domain-transfer-in-canceled",
 				"domain-transfer-in-completed",
 				"domain-zone-change",
+				"domain-zone-change-internal",
 				"drain-created",
 				"drain-deleted",
 				"drain-disabled",
@@ -972,6 +975,9 @@ export const userEventSchema = z
 				"secret-add",
 				"secret-delete",
 				"secret-rename",
+				"security-list-created",
+				"security-list-deleted",
+				"security-list-updated",
 				"security-plus-updated",
 				"set-bio",
 				"set-name",
@@ -1028,6 +1034,8 @@ export const userEventSchema = z
 				"team-emu-account-split",
 				"team-emu-updated",
 				"team-ended-trial",
+				"team-firewall-config-modified",
+				"team-firewall-config-promoted",
 				"team-git-repository-dispatch-events-toggled",
 				"team-git-require-verified-commits-toggled",
 				"team-invite-bulk-delete",
@@ -1077,6 +1085,10 @@ export const userEventSchema = z
 				"v0-chat-ai-usage",
 				"v0-chat-created",
 				"v0-chat-message-sent",
+				"vcr-image-deleted",
+				"vcr-image-pushed",
+				"vcr-repository-created",
+				"vcr-repository-deleted",
 				"vercel-agent-elevated-permissions-approved",
 				"vercel-agent-elevated-permissions-requested",
 				"vercel-agent-session-created",
@@ -1427,6 +1439,17 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						enabled: z.union([z.literal(false), z.literal(true)]),
+					})
+					.strict(),
+				z
+					.object({
+						added: z.array(z.string()),
+						removed: z.array(z.string()),
+					})
+					.strict(),
+				z
+					.object({
 						privateModel: z.object({
 							slug: z.string(),
 							providerSlug: z.string(),
@@ -1445,17 +1468,6 @@ export const userEventSchema = z
 						privateProvider: z.object({
 							slug: z.string(),
 						}),
-					})
-					.strict(),
-				z
-					.object({
-						enabled: z.union([z.literal(false), z.literal(true)]),
-					})
-					.strict(),
-				z
-					.object({
-						added: z.array(z.string()),
-						removed: z.array(z.string()),
 					})
 					.strict(),
 				z
@@ -1757,6 +1769,7 @@ export const userEventSchema = z
 									"read:project",
 									"read:project-env-vars-non-production",
 									"read:project-env-vars-production",
+									"read:project-flags",
 									"read:sandbox",
 									"read:team",
 									"read:user",
@@ -1818,6 +1831,7 @@ export const userEventSchema = z
 									"read:project",
 									"read:project-env-vars-non-production",
 									"read:project-env-vars-production",
+									"read:project-flags",
 									"read:sandbox",
 									"read:team",
 									"read:user",
@@ -1888,6 +1902,7 @@ export const userEventSchema = z
 											"read:project",
 											"read:project-env-vars-non-production",
 											"read:project-env-vars-production",
+											"read:project-flags",
 											"read:sandbox",
 											"read:team",
 											"use:ai-gateway",
@@ -1952,6 +1967,7 @@ export const userEventSchema = z
 											"read:project",
 											"read:project-env-vars-non-production",
 											"read:project-env-vars-production",
+											"read:project-flags",
 											"read:sandbox",
 											"read:team",
 											"use:ai-gateway",
@@ -2020,6 +2036,7 @@ export const userEventSchema = z
 									"read:project",
 									"read:project-env-vars-non-production",
 									"read:project-env-vars-production",
+									"read:project-flags",
 									"read:sandbox",
 									"read:team",
 									"use:ai-gateway",
@@ -3316,6 +3333,7 @@ export const userEventSchema = z
 				z
 					.object({
 						name: z.string(),
+						zone: z.union([z.literal(false), z.literal(true)]).optional(),
 					})
 					.strict(),
 				z
@@ -3389,6 +3407,15 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						domain: z.string(),
+						zone: z.union([z.literal(false), z.literal(true)]),
+						initiator: z.enum(["system", "user"]),
+						source: z.string().optional(),
+						previousZone: z.union([z.literal(false), z.literal(true)]).optional(),
+					})
+					.strict(),
+				z
+					.object({
 						name: z.string(),
 						fromId: z.string().nullable(),
 						fromName: z.string().nullable(),
@@ -3419,6 +3446,11 @@ export const userEventSchema = z
 						name: z.string(),
 						price: z.number().optional(),
 						currency: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						name: z.string(),
 					})
 					.strict(),
 				z
@@ -3891,6 +3923,11 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						configVersion: z.union([z.string(), z.number()]),
+					})
+					.strict(),
+				z
+					.object({
 						projectId: z.string(),
 						projectName: z.string().optional(),
 						restore: z.union([z.literal(false), z.literal(true)]),
@@ -4303,6 +4340,7 @@ export const userEventSchema = z
 										blockedAt: z.number(),
 										reason: z.enum([
 											"BLOCKED_FOR_PLATFORM_ABUSE",
+											"DOMAIN_OWNER_DELETION_REQUEST",
 											"ENTERPRISE_TRIAL_ENDED",
 											"ENTERPRISE_UNPAID_INVOICE",
 											"EXPOSURE_CAP_EXCEEDED",
@@ -4393,6 +4431,9 @@ export const userEventSchema = z
 											teamPermissions: z
 												.array(
 													z.enum([
+														"AiGatewayApiKeyOwnedBySelf",
+														"AiGatewayCredits",
+														"AiGatewaySettings",
 														"CreateProject",
 														"EnvVariableManager",
 														"EnvironmentManager",
@@ -5038,7 +5079,7 @@ export const userEventSchema = z
 												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
 											})
 											.optional(),
-										workflowStorage: z
+										workflowStorageWrite: z
 											.object({
 												updatedAt: z.number(),
 												blockedFrom: z.number().optional(),
@@ -5046,7 +5087,7 @@ export const userEventSchema = z
 												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
 											})
 											.optional(),
-										workflowStep: z
+										workflowEvents: z
 											.object({
 												updatedAt: z.number(),
 												blockedFrom: z.number().optional(),
@@ -6106,6 +6147,12 @@ export const userEventSchema = z
 						previousBuildMachineSelection: z.string(),
 						nextBuildMachineSelection: z.string(),
 						isSystemInitiated: z.union([z.literal(false), z.literal(true)]).optional(),
+						reason: z
+							.string()
+							.optional()
+							.describe(
+								"For system-initiated (elastic) changes, why the build machine was upgraded/downgraded. Stored as the raw reason code (see `ElasticChangeReason` in `@api/build-machines-types`) and rendered as a human-readable clause in the activity/audit log.",
+							),
 					})
 					.strict(),
 				z
@@ -8057,6 +8104,30 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						projectId: z.string(),
+						projectName: z.string(),
+						repositoryName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+						projectName: z.string(),
+						repositoryName: z.string(),
+						reference: z.string(),
+						digest: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+						projectName: z.string(),
+						repositoryName: z.string(),
+						reference: z.string(),
+					})
+					.strict(),
+				z
+					.object({
 						ruleName: z.string(),
 					})
 					.strict(),
@@ -8144,6 +8215,23 @@ export const userEventSchema = z
 					.object({
 						model: z.string(),
 						useCase: z.string(),
+						chatId: z.string(),
+						messageId: z.string(),
+						inputTokens: z.number(),
+						outputTokens: z.number(),
+						timestamp: z.number(),
+						events: z.array(
+							z.object({
+								eventId: z.string(),
+								modelId: z.string(),
+								inputTokens: z.number(),
+								outputTokens: z.number(),
+								totalTokens: z.number(),
+								cacheCreationInputTokens: z.number(),
+								cacheReadInputTokens: z.number(),
+								timestamp: z.string(),
+							}),
+						),
 					})
 					.strict(),
 				z
@@ -8491,6 +8579,8 @@ export const listEventTypeSchema = z
 				"ai-gateway-byok-credential-created",
 				"ai-gateway-byok-credential-deleted",
 				"ai-gateway-byok-credential-updated",
+				"ai-gateway-model-allowlist-models-updated",
+				"ai-gateway-model-allowlist-toggled",
 				"ai-gateway-private-model-created",
 				"ai-gateway-private-model-deleted",
 				"ai-gateway-private-model-updated",
@@ -8616,6 +8706,7 @@ export const listEventTypeSchema = z
 				"domain-transfer-in-canceled",
 				"domain-transfer-in-completed",
 				"domain-zone-change",
+				"domain-zone-change-internal",
 				"drain-created",
 				"drain-deleted",
 				"drain-disabled",
@@ -8872,6 +8963,9 @@ export const listEventTypeSchema = z
 				"secret-add",
 				"secret-delete",
 				"secret-rename",
+				"security-list-created",
+				"security-list-deleted",
+				"security-list-updated",
 				"security-plus-updated",
 				"set-bio",
 				"set-name",
@@ -8928,6 +9022,8 @@ export const listEventTypeSchema = z
 				"team-emu-account-split",
 				"team-emu-updated",
 				"team-ended-trial",
+				"team-firewall-config-modified",
+				"team-firewall-config-promoted",
 				"team-git-repository-dispatch-events-toggled",
 				"team-git-require-verified-commits-toggled",
 				"team-invite-bulk-delete",
@@ -8977,6 +9073,10 @@ export const listEventTypeSchema = z
 				"v0-chat-ai-usage",
 				"v0-chat-created",
 				"v0-chat-message-sent",
+				"vcr-image-deleted",
+				"vcr-image-pushed",
+				"vcr-repository-created",
+				"vcr-repository-deleted",
 				"vercel-agent-elevated-permissions-approved",
 				"vercel-agent-elevated-permissions-requested",
 				"vercel-agent-session-created",
@@ -9059,6 +9159,8 @@ export const listEventTypeSchema = z
 					"ai-gateway-byok-credential-created",
 					"ai-gateway-byok-credential-deleted",
 					"ai-gateway-byok-credential-updated",
+					"ai-gateway-model-allowlist-models-updated",
+					"ai-gateway-model-allowlist-toggled",
 					"ai-gateway-private-model-created",
 					"ai-gateway-private-model-deleted",
 					"ai-gateway-private-model-updated",
@@ -9184,6 +9286,7 @@ export const listEventTypeSchema = z
 					"domain-transfer-in-canceled",
 					"domain-transfer-in-completed",
 					"domain-zone-change",
+					"domain-zone-change-internal",
 					"drain-created",
 					"drain-deleted",
 					"drain-disabled",
@@ -9440,6 +9543,9 @@ export const listEventTypeSchema = z
 					"secret-add",
 					"secret-delete",
 					"secret-rename",
+					"security-list-created",
+					"security-list-deleted",
+					"security-list-updated",
 					"security-plus-updated",
 					"set-bio",
 					"set-name",
@@ -9496,6 +9602,8 @@ export const listEventTypeSchema = z
 					"team-emu-account-split",
 					"team-emu-updated",
 					"team-ended-trial",
+					"team-firewall-config-modified",
+					"team-firewall-config-promoted",
 					"team-git-repository-dispatch-events-toggled",
 					"team-git-require-verified-commits-toggled",
 					"team-invite-bulk-delete",
@@ -9545,6 +9653,10 @@ export const listEventTypeSchema = z
 					"v0-chat-ai-usage",
 					"v0-chat-created",
 					"v0-chat-message-sent",
+					"vcr-image-deleted",
+					"vcr-image-pushed",
+					"vcr-repository-created",
+					"vcr-repository-deleted",
 					"vercel-agent-elevated-permissions-approved",
 					"vercel-agent-elevated-permissions-requested",
 					"vercel-agent-session-created",
@@ -10424,6 +10536,9 @@ export const invitedTeamMemberSchema = z
 		teamPermissions: z
 			.array(
 				z.enum([
+					"AiGatewayApiKeyOwnedBySelf",
+					"AiGatewayCredits",
+					"AiGatewaySettings",
 					"CreateProject",
 					"EnvVariableManager",
 					"EnvironmentManager",
@@ -10581,6 +10696,9 @@ export const teamSchema = z
 				teamPermissions: z
 					.array(
 						z.enum([
+							"AiGatewayApiKeyOwnedBySelf",
+							"AiGatewayCredits",
+							"AiGatewaySettings",
 							"CreateProject",
 							"EnvVariableManager",
 							"EnvironmentManager",
@@ -10979,6 +11097,9 @@ export const teamSchema = z
 				teamPermissions: z
 					.array(
 						z.enum([
+							"AiGatewayApiKeyOwnedBySelf",
+							"AiGatewayCredits",
+							"AiGatewaySettings",
 							"CreateProject",
 							"EnvVariableManager",
 							"EnvironmentManager",
@@ -11166,6 +11287,9 @@ export const teamLimitedSchema = z
 				teamPermissions: z
 					.array(
 						z.enum([
+							"AiGatewayApiKeyOwnedBySelf",
+							"AiGatewayCredits",
+							"AiGatewaySettings",
 							"CreateProject",
 							"EnvVariableManager",
 							"EnvironmentManager",
@@ -11344,6 +11468,7 @@ export const authUserSchema = z
 				blockedAt: z.number(),
 				reason: z.enum([
 					"BLOCKED_FOR_PLATFORM_ABUSE",
+					"DOMAIN_OWNER_DELETION_REQUEST",
 					"ENTERPRISE_TRIAL_ENDED",
 					"ENTERPRISE_UNPAID_INVOICE",
 					"EXPOSURE_CAP_EXCEEDED",
@@ -11694,6 +11819,8 @@ export const authUserSchema = z
 			.object({
 				managedTeams: z.array(
 					z.object({
+						teamId: z.string(),
+						slug: z.string(),
 						name: z.string(),
 						avatar: z.string().nullable(),
 					}),
@@ -11753,6 +11880,292 @@ export const authUserLimitedSchema = z
 	.describe(
 		"A limited form of data for the currently authenticated User, due to the authentication token missing privileges to read the full User data.",
 	);
+
+export const vcrRepositorySchema = z
+	.object({
+		id: z.string().describe("Unique identifier of the repository."),
+		projectId: z.string().describe("Identifier of the project the repository belongs to."),
+		name: z.string().describe("Name of the repository."),
+		createdAt: z.string().describe("ISO 8601 timestamp of when the repository was created."),
+		updatedAt: z.string().describe("ISO 8601 timestamp of when the repository was last updated."),
+	})
+	.describe("A Vercel Container Registry repository.");
+
+export const vcrRepositoryListSchema = z
+	.object({
+		repositories: z.array(z.unknown()),
+		nextCursor: z
+			.string()
+			.optional()
+			.describe("Cursor to fetch the next page of results, when more are available."),
+	})
+	.describe("A paginated list of Vercel Container Registry repositories.");
+
+export const vcrImageListItemSchema = z
+	.object({
+		status: z
+			.enum(["preparing", "ready", "unoptimized"])
+			.nullable()
+			.describe("VHS-readiness status, or `null` for a multi-platform index."),
+		tags: z.array(z.string()).describe("Tags pointing at this image's manifest."),
+		id: z.string().describe("Internal identifier of the image."),
+		repositoryId: z.string().describe("Identifier of the repository the image belongs to."),
+		manifestDigest: z.string().describe("SHA-256 digest of the image manifest."),
+		kind: z
+			.enum(["index", "manifest"])
+			.describe(
+				"Whether the manifest is a multi-platform image index or a single-platform image manifest.",
+			),
+		platform: z
+			.string()
+			.optional()
+			.describe(
+				"Operating system the manifest targets. Only present for single-platform manifests.",
+			),
+		arch: z
+			.string()
+			.optional()
+			.describe(
+				"CPU architecture the manifest targets. Only present for single-platform manifests.",
+			),
+		pushedBy: z.string().optional().describe("Identifier of the actor that pushed the image."),
+		sizeInBytes: z
+			.number()
+			.describe(
+				"Total size in bytes of the image's resources (manifest, config and layer blobs) stored by the registry.",
+			),
+		vhs: z
+			.object({
+				path: z.string(),
+				digest: z.string(),
+				config: z
+					.object({
+						command: z.array(z.string()).optional(),
+						entrypoint: z.array(z.string()).optional(),
+						workingDir: z.string().optional(),
+					})
+					.optional()
+					.describe("Optional VHS drive configuration captured for an optimized image."),
+			})
+			.optional()
+			.describe(
+				"Converted VHS drive data, present once an image has been optimized for sandbox launch.",
+			),
+		createdAt: z.string().describe("ISO 8601 timestamp of when the image was created."),
+	})
+	.describe(
+		"An image enriched with its tags and VHS-readiness status, as returned when listing a repository's images.",
+	);
+
+export const vcrImageListSchema = z
+	.object({
+		images: z.array(z.unknown()),
+		nextCursor: z
+			.string()
+			.optional()
+			.describe("Cursor to fetch the next page of results, when more are available."),
+	})
+	.describe("A paginated list of images for a repository.");
+
+export const vcrImageLayerSchema = z.union([
+	z
+		.object({
+			createdBy: z.string().nullable(),
+			digest: z.string().nullable(),
+			operation: z
+				.enum([
+					"ADD",
+					"ARG",
+					"CMD",
+					"COPY",
+					"ENTRYPOINT",
+					"ENV",
+					"EXPOSE",
+					"FROM",
+					"HEALTHCHECK",
+					"LABEL",
+					"ONBUILD",
+					"RUN",
+					"SHELL",
+					"STOPSIGNAL",
+					"UNKNOWN",
+					"USER",
+					"VOLUME",
+					"WORKDIR",
+				])
+				.describe("Docker/OCI build instruction associated with an image layer."),
+			sizeBytes: z.number().nullable(),
+			type: z.enum(["FROM"]),
+			baseImage: z.string().nullable(),
+			collapsedDigests: z.array(z.string()),
+			collapsedLayerCount: z.number(),
+		})
+		.strict(),
+	z
+		.object({
+			createdBy: z.string().nullable(),
+			digest: z.string().nullable(),
+			operation: z
+				.enum([
+					"ADD",
+					"ARG",
+					"CMD",
+					"COPY",
+					"ENTRYPOINT",
+					"ENV",
+					"EXPOSE",
+					"FROM",
+					"HEALTHCHECK",
+					"LABEL",
+					"ONBUILD",
+					"RUN",
+					"SHELL",
+					"STOPSIGNAL",
+					"UNKNOWN",
+					"USER",
+					"VOLUME",
+					"WORKDIR",
+				])
+				.describe("Docker/OCI build instruction associated with an image layer."),
+			sizeBytes: z.number().nullable(),
+			type: z.enum(["RUN"]),
+			command: z.string().nullable(),
+		})
+		.strict(),
+	z
+		.object({
+			createdBy: z.string().nullable(),
+			digest: z.string().nullable(),
+			operation: z
+				.enum([
+					"ADD",
+					"ARG",
+					"CMD",
+					"COPY",
+					"ENTRYPOINT",
+					"ENV",
+					"EXPOSE",
+					"FROM",
+					"HEALTHCHECK",
+					"LABEL",
+					"ONBUILD",
+					"RUN",
+					"SHELL",
+					"STOPSIGNAL",
+					"UNKNOWN",
+					"USER",
+					"VOLUME",
+					"WORKDIR",
+				])
+				.describe("Docker/OCI build instruction associated with an image layer."),
+			sizeBytes: z.number().nullable(),
+			type: z.enum(["ENV"]),
+			env: z.string().nullable(),
+		})
+		.strict(),
+	z
+		.object({
+			createdBy: z.string().nullable(),
+			digest: z.string().nullable(),
+			operation: z
+				.enum([
+					"ADD",
+					"ARG",
+					"CMD",
+					"COPY",
+					"ENTRYPOINT",
+					"ENV",
+					"EXPOSE",
+					"FROM",
+					"HEALTHCHECK",
+					"LABEL",
+					"ONBUILD",
+					"RUN",
+					"SHELL",
+					"STOPSIGNAL",
+					"UNKNOWN",
+					"USER",
+					"VOLUME",
+					"WORKDIR",
+				])
+				.describe("Docker/OCI build instruction associated with an image layer."),
+			sizeBytes: z.number().nullable(),
+			type: z.enum([
+				"ADD",
+				"ARG",
+				"CMD",
+				"COPY",
+				"ENTRYPOINT",
+				"EXPOSE",
+				"HEALTHCHECK",
+				"LABEL",
+				"ONBUILD",
+				"SHELL",
+				"STOPSIGNAL",
+				"UNKNOWN",
+				"USER",
+				"VOLUME",
+				"WORKDIR",
+			]),
+			value: z.string().nullable(),
+		})
+		.strict(),
+]);
+
+export const vcrImageDetailSchema = z
+	.object({
+		layers: z.array(z.unknown()),
+		status: z
+			.enum(["preparing", "ready", "unoptimized"])
+			.nullable()
+			.describe("VHS-readiness status, or `null` for a multi-platform index."),
+		tags: z.array(z.string()).describe("Tags pointing at this image's manifest."),
+		id: z.string().describe("Internal identifier of the image."),
+		repositoryId: z.string().describe("Identifier of the repository the image belongs to."),
+		manifestDigest: z.string().describe("SHA-256 digest of the image manifest."),
+		kind: z
+			.enum(["index", "manifest"])
+			.describe(
+				"Whether the manifest is a multi-platform image index or a single-platform image manifest.",
+			),
+		platform: z
+			.string()
+			.optional()
+			.describe(
+				"Operating system the manifest targets. Only present for single-platform manifests.",
+			),
+		arch: z
+			.string()
+			.optional()
+			.describe(
+				"CPU architecture the manifest targets. Only present for single-platform manifests.",
+			),
+		pushedBy: z.string().optional().describe("Identifier of the actor that pushed the image."),
+		sizeInBytes: z
+			.number()
+			.describe(
+				"Total size in bytes of the image's resources (manifest, config and layer blobs) stored by the registry.",
+			),
+		vhs: z
+			.object({
+				path: z.string(),
+				digest: z.string(),
+				config: z
+					.object({
+						command: z.array(z.string()).optional(),
+						entrypoint: z.array(z.string()).optional(),
+						workingDir: z.string().optional(),
+					})
+					.optional()
+					.describe("Optional VHS drive configuration captured for an optimized image."),
+			})
+			.optional()
+			.describe(
+				"Converted VHS drive data, present once an image has been optimized for sandbox launch.",
+			),
+		createdAt: z.string().describe("ISO 8601 timestamp of when the image was created."),
+	})
+	.describe("A single image with its tags, status and resolved Dockerfile layer history.");
 
 export const fileTreeSchema = z
 	.object({
@@ -13648,7 +14061,9 @@ export const getDeploymentPathIdOrUrlSchema = z
 export const getDeploymentQueryWithGitRepoInfoSchema = z
 	.string()
 	.optional()
-	.describe("Whether to add in gitRepo information.");
+	.describe(
+		"When `true`, the response includes the `gitSource` object with the commit SHA, branch name, and connected repository metadata. Defaults to `false`.",
+	);
 
 export const getDeploymentQueryTeamIdSchema = z
 	.string()
@@ -13681,12 +14096,16 @@ export const getDeploymentResponseSchema = z.union([
 export const createDeploymentQueryForceNewSchema = z
 	.unknown()
 	.optional()
-	.describe("Forces a new deployment even if there is a previous similar deployment");
+	.describe(
+		"Forces a new deployment even if there is a previous similar deployment. Set to `1` to bypass deployment deduplication and always trigger a fresh build.",
+	);
 
 export const createDeploymentQuerySkipAutoDetectionConfirmationSchema = z
 	.unknown()
 	.optional()
-	.describe("Allows to skip framework detection so the API would not fail to ask for confirmation");
+	.describe(
+		"Set to `1` to skip framework auto-detection and proceed without confirmation. By default, if Vercel detects a framework that differs from the project setting, the API returns a `400` asking you to confirm. Use this to suppress that check in automated pipelines.",
+	);
 
 export const createDeploymentQueryTeamIdSchema = z
 	.string()
@@ -18792,7 +19211,7 @@ export const createProjectResponseSchema = z.union([
 ]);
 
 export const getProjectPathIdOrNameSchema = z
-	.union([z.string(), z.boolean()])
+	.string()
 	.describe("The unique project identifier or the project name");
 
 export const getProjectQueryTeamIdSchema = z
@@ -19903,6 +20322,44 @@ export const approveRollingReleaseStageResponseSchema = z.union([
 	approveRollingReleaseStageStatus403Schema,
 	approveRollingReleaseStageStatus404Schema,
 	approveRollingReleaseStageStatus500Schema,
+]);
+
+export const startRollingReleasePathIdOrNameSchema = z
+	.string()
+	.describe("Project ID or project name (URL-encoded)");
+
+export const startRollingReleaseQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const startRollingReleaseQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const startRollingReleaseStatus200Schema = z.unknown();
+
+export const startRollingReleaseStatus400Schema = z.unknown();
+
+export const startRollingReleaseStatus401Schema = z.unknown();
+
+export const startRollingReleaseStatus403Schema = z.unknown();
+
+export const startRollingReleaseStatus404Schema = z.unknown();
+
+export const startRollingReleaseStatus409Schema = z.unknown();
+
+export const startRollingReleaseStatus422Schema = z.unknown();
+
+export const startRollingReleaseResponseSchema = z.union([
+	startRollingReleaseStatus200Schema,
+	startRollingReleaseStatus400Schema,
+	startRollingReleaseStatus401Schema,
+	startRollingReleaseStatus403Schema,
+	startRollingReleaseStatus404Schema,
+	startRollingReleaseStatus409Schema,
+	startRollingReleaseStatus422Schema,
 ]);
 
 export const completeRollingReleasePathIdOrNameSchema = z
@@ -22596,6 +23053,550 @@ export const requestDeleteResponseSchema = z.union([
 	requestDeleteStatus401Schema,
 	requestDeleteStatus402Schema,
 	requestDeleteStatus403Schema,
+]);
+
+export const createRepositoryQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const createRepositoryQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const createRepositoryStatus200Schema = z.unknown();
+
+export const createRepositoryStatus400Schema = z.unknown();
+
+export const createRepositoryStatus401Schema = z.unknown();
+
+export const createRepositoryStatus402Schema = z.unknown();
+
+export const createRepositoryStatus403Schema = z.unknown();
+
+export const createRepositoryStatus404Schema = z.unknown();
+
+export const createRepositoryStatus409Schema = z.unknown();
+
+export const createRepositoryResponseSchema = z.union([
+	createRepositoryStatus200Schema,
+	createRepositoryStatus400Schema,
+	createRepositoryStatus401Schema,
+	createRepositoryStatus402Schema,
+	createRepositoryStatus403Schema,
+	createRepositoryStatus404Schema,
+	createRepositoryStatus409Schema,
+]);
+
+export const listRepositoriesQueryProjectIdSchema = z.string();
+
+export const listRepositoriesQueryLimitSchema = z.int().min(1).max(1000).optional();
+
+export const listRepositoriesQueryCursorSchema = z
+	.string()
+	.max(1024)
+	.optional()
+	.describe("Opaque pagination cursor returned by a previous list response.");
+
+export const listRepositoriesQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const listRepositoriesQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const listRepositoriesStatus200Schema = z.unknown();
+
+export const listRepositoriesStatus400Schema = z.unknown();
+
+export const listRepositoriesStatus401Schema = z.unknown();
+
+export const listRepositoriesStatus403Schema = z.unknown();
+
+export const listRepositoriesStatus404Schema = z.unknown();
+
+export const listRepositoriesResponseSchema = z.union([
+	listRepositoriesStatus200Schema,
+	listRepositoriesStatus400Schema,
+	listRepositoriesStatus401Schema,
+	listRepositoriesStatus403Schema,
+	listRepositoriesStatus404Schema,
+]);
+
+export const getRepositoryQueryProjectIdSchema = z.string();
+
+export const getRepositoryPathIdOrNameSchema = z.string().max(255);
+
+export const getRepositoryQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const getRepositoryQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const getRepositoryStatus200Schema = z.unknown();
+
+export const getRepositoryStatus400Schema = z.unknown();
+
+export const getRepositoryStatus401Schema = z.unknown();
+
+export const getRepositoryStatus403Schema = z.unknown();
+
+export const getRepositoryStatus404Schema = z.unknown();
+
+export const getRepositoryResponseSchema = z.union([
+	getRepositoryStatus200Schema,
+	getRepositoryStatus400Schema,
+	getRepositoryStatus401Schema,
+	getRepositoryStatus403Schema,
+	getRepositoryStatus404Schema,
+]);
+
+export const deleteRepositoryQueryProjectIdSchema = z.string();
+
+export const deleteRepositoryPathIdOrNameSchema = z.string().max(255);
+
+export const deleteRepositoryQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const deleteRepositoryQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const deleteRepositoryStatus202Schema = z.unknown();
+
+export const deleteRepositoryStatus400Schema = z.unknown();
+
+export const deleteRepositoryStatus401Schema = z.unknown();
+
+export const deleteRepositoryStatus403Schema = z.unknown();
+
+export const deleteRepositoryStatus404Schema = z.unknown();
+
+export const deleteRepositoryResponseSchema = z.union([
+	deleteRepositoryStatus202Schema,
+	deleteRepositoryStatus400Schema,
+	deleteRepositoryStatus401Schema,
+	deleteRepositoryStatus403Schema,
+	deleteRepositoryStatus404Schema,
+]);
+
+export const listRepositoryImagesQueryProjectIdSchema = z.string();
+
+export const listRepositoryImagesPathIdOrNameSchema = z.string().max(255);
+
+export const listRepositoryImagesQueryLimitSchema = z.int().min(1).max(100).optional();
+
+export const listRepositoryImagesQueryCursorSchema = z
+	.string()
+	.max(1024)
+	.optional()
+	.describe("Opaque pagination cursor returned by a previous list response.");
+
+export const listRepositoryImagesQueryUntaggedSchema = z.boolean().optional();
+
+export const listRepositoryImagesQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const listRepositoryImagesQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const listRepositoryImagesStatus200Schema = z.unknown();
+
+export const listRepositoryImagesStatus400Schema = z.unknown();
+
+export const listRepositoryImagesStatus401Schema = z.unknown();
+
+export const listRepositoryImagesStatus403Schema = z.unknown();
+
+export const listRepositoryImagesStatus404Schema = z.unknown();
+
+export const listRepositoryImagesResponseSchema = z.union([
+	listRepositoryImagesStatus200Schema,
+	listRepositoryImagesStatus400Schema,
+	listRepositoryImagesStatus401Schema,
+	listRepositoryImagesStatus403Schema,
+	listRepositoryImagesStatus404Schema,
+]);
+
+export const listRepositoryTagsQueryProjectIdSchema = z.string();
+
+export const listRepositoryTagsPathIdOrNameSchema = z.string().max(255);
+
+export const listRepositoryTagsQueryLimitSchema = z.int().min(1).max(100).optional();
+
+export const listRepositoryTagsQueryCursorSchema = z.string().optional();
+
+export const listRepositoryTagsQuerySortBySchema = z
+	.enum(["updatedAt", "tag"])
+	.optional()
+	.default("updatedAt")
+	.describe("Field to sort the non-pinned tags by.");
+
+export const listRepositoryTagsQuerySortOrderSchema = z
+	.enum(["asc", "desc"])
+	.optional()
+	.default("desc")
+	.describe("Sort direction. Defaults to desc.");
+
+export const listRepositoryTagsQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const listRepositoryTagsQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const listRepositoryTagsStatus200Schema = z.unknown();
+
+export const listRepositoryTagsStatus400Schema = z.unknown();
+
+export const listRepositoryTagsStatus401Schema = z.unknown();
+
+export const listRepositoryTagsStatus403Schema = z.unknown();
+
+export const listRepositoryTagsStatus404Schema = z.unknown();
+
+export const listRepositoryTagsResponseSchema = z.union([
+	listRepositoryTagsStatus200Schema,
+	listRepositoryTagsStatus400Schema,
+	listRepositoryTagsStatus401Schema,
+	listRepositoryTagsStatus403Schema,
+	listRepositoryTagsStatus404Schema,
+]);
+
+export const getRepositoryImageQueryProjectIdSchema = z.string();
+
+export const getRepositoryImagePathIdOrNameSchema = z.string().max(255);
+
+export const getRepositoryImagePathImageIdSchema = z.string().max(255);
+
+export const getRepositoryImageQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const getRepositoryImageQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const getRepositoryImageStatus200Schema = z.unknown();
+
+export const getRepositoryImageStatus400Schema = z.unknown();
+
+export const getRepositoryImageStatus401Schema = z.unknown();
+
+export const getRepositoryImageStatus403Schema = z.unknown();
+
+export const getRepositoryImageStatus404Schema = z.unknown();
+
+export const getRepositoryImageResponseSchema = z.union([
+	getRepositoryImageStatus200Schema,
+	getRepositoryImageStatus400Schema,
+	getRepositoryImageStatus401Schema,
+	getRepositoryImageStatus403Schema,
+	getRepositoryImageStatus404Schema,
+]);
+
+export const deleteRepositoryImageQueryProjectIdSchema = z.string();
+
+export const deleteRepositoryImagePathIdOrNameSchema = z.string().max(255);
+
+export const deleteRepositoryImagePathImageIdSchema = z.string().max(255);
+
+export const deleteRepositoryImageQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const deleteRepositoryImageQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const deleteRepositoryImageStatus202Schema = z.unknown();
+
+export const deleteRepositoryImageStatus400Schema = z.unknown();
+
+export const deleteRepositoryImageStatus401Schema = z.unknown();
+
+export const deleteRepositoryImageStatus403Schema = z.unknown();
+
+export const deleteRepositoryImageStatus404Schema = z.unknown();
+
+export const deleteRepositoryImageResponseSchema = z.union([
+	deleteRepositoryImageStatus202Schema,
+	deleteRepositoryImageStatus400Schema,
+	deleteRepositoryImageStatus401Schema,
+	deleteRepositoryImageStatus403Schema,
+	deleteRepositoryImageStatus404Schema,
+]);
+
+export const aggregatePageviewsQueryProjectIdSchema = z
+	.string()
+	.describe("The project identifier or the project name");
+
+export const aggregatePageviewsQueryBySchema = z
+	.array(z.string().regex(/^(flags)(\/([0-9A-Za-z_]+|'([^']|'')*'))+$/))
+	.min(1)
+	.max(2)
+	.refine((items) => new Set(items).size === items.length, {
+		message: "Array entries must be unique",
+	})
+	.describe(
+		"Up to two dimensions used to break down results.\n\nAt most one time granularity is allowed: hour, day, week, month, year.\n\nOther dimensions: country, deviceType, environment, requestPath, referrerHostname, osName, browserName, route, utmSource, utmMedium, utmCampaign, utmContent, utmTerm.\n\nJSON dimensions: flags. Used bare, it breaks down results by key, for example flags returns one group per flag name. With a key, it breaks down results by that key's value, for example flags/beta_banner. Wrap keys containing characters other than letters, digits, and underscores in single quotes, for example flags/'my-flag'.",
+	);
+
+export const aggregatePageviewsQuerySinceSchema = z
+	.union([z.number(), z.string()])
+	.describe(
+		"Timestamp in milliseconds, or a valid Date string.\n\nSelects data from (including) this date and time.\nWill be adjusted according to the desired time granularity.",
+	);
+
+export const aggregatePageviewsQueryUntilSchema = z
+	.union([z.number(), z.string()])
+	.describe(
+		"Timestamp in milliseconds, or a valid Date string.\n\nSelects data until (including) this date.\nWill be adjusted according to the desired time granularity.",
+	);
+
+export const aggregatePageviewsQueryLimitSchema = z
+	.int()
+	.min(1)
+	.max(100)
+	.optional()
+	.default(10)
+	.describe(
+		'Number of distinct results, default to 10. Other results are grouped into "Others" group.',
+	);
+
+export const aggregatePageviewsQueryFilterSchema = z
+	.string()
+	.optional()
+	.describe(
+		"OData-compliant filter. Encode the value when sending it in a URL.\n\nAllows filtering on one or multiple dimensions. By default, filters for production environment only.\n\nSupported dimensions: country, deviceType, environment, requestPath, referrerHostname, osName, browserName, route, utmSource, utmMedium, utmCampaign, utmContent, utmTerm.\n\nJSON dimensions filtered by key: flags/<name>, for example flags/beta_banner eq 'true'. Wrap keys containing characters other than letters, digits, and underscores in single quotes, for example flags/'my-flag' eq 'true'.\n\nSupported operations include eq, ne, in, and logical operators and, or, not with parentheses. Functions such as startswith are supported by the OData parser.",
+	);
+
+export const aggregatePageviewsQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const aggregatePageviewsQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const aggregatePageviewsStatus200Schema = z.unknown();
+
+export const aggregatePageviewsStatus400Schema = z.unknown();
+
+export const aggregatePageviewsStatus401Schema = z.unknown();
+
+export const aggregatePageviewsStatus402Schema = z.unknown();
+
+export const aggregatePageviewsStatus403Schema = z.unknown();
+
+export const aggregatePageviewsResponseSchema = z.union([
+	aggregatePageviewsStatus200Schema,
+	aggregatePageviewsStatus400Schema,
+	aggregatePageviewsStatus401Schema,
+	aggregatePageviewsStatus402Schema,
+	aggregatePageviewsStatus403Schema,
+]);
+
+export const aggregateEventsQueryProjectIdSchema = z
+	.string()
+	.describe("The project identifier or the project name");
+
+export const aggregateEventsQueryBySchema = z
+	.array(z.string().regex(/^(flags|eventData)(\/([0-9A-Za-z_]+|'([^']|'')*'))+$/))
+	.min(1)
+	.max(2)
+	.refine((items) => new Set(items).size === items.length, {
+		message: "Array entries must be unique",
+	})
+	.describe(
+		"Up to two dimensions used to break down results.\n\nAt most one time granularity is allowed: hour, day, week, month, year.\n\nOther dimensions: country, deviceType, environment, requestPath, referrerHostname, osName, browserName, route, utmSource, utmMedium, utmCampaign, utmContent, utmTerm, eventName.\n\nJSON dimensions: flags, eventData. Used bare, they break down results by key, for example flags returns one group per flag name. With a key, they break down results by that key's value, for example eventData/plan. Wrap keys containing characters other than letters, digits, and underscores in single quotes, for example flags/'my-flag'.",
+	);
+
+export const aggregateEventsQuerySinceSchema = z
+	.union([z.number(), z.string()])
+	.describe(
+		"Timestamp in milliseconds, or a valid Date string.\n\nSelects data from (including) this date and time.\nWill be adjusted according to the desired time granularity.",
+	);
+
+export const aggregateEventsQueryUntilSchema = z
+	.union([z.number(), z.string()])
+	.describe(
+		"Timestamp in milliseconds, or a valid Date string.\n\nSelects data until (including) this date.\nWill be adjusted according to the desired time granularity.",
+	);
+
+export const aggregateEventsQueryLimitSchema = z
+	.int()
+	.min(1)
+	.max(100)
+	.optional()
+	.default(10)
+	.describe(
+		'Number of distinct results, default to 10. Other results are grouped into "Others" group.',
+	);
+
+export const aggregateEventsQueryFilterSchema = z
+	.string()
+	.optional()
+	.describe(
+		"OData-compliant filter. Encode the value when sending it in a URL.\n\nAllows filtering on one or multiple dimensions. By default, filters for production environment only.\n\nSupported dimensions: country, deviceType, environment, requestPath, referrerHostname, osName, browserName, route, utmSource, utmMedium, utmCampaign, utmContent, utmTerm, eventName.\n\nJSON dimensions filtered by key: flags/<name>, eventData/<property>, for example eventData/plan eq 'pro'. Wrap keys containing characters other than letters, digits, and underscores in single quotes, for example flags/'my-flag' eq 'true'.\n\nSupported operations include eq, ne, in, and logical operators and, or, not with parentheses. Functions such as startswith are supported by the OData parser.",
+	);
+
+export const aggregateEventsQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const aggregateEventsQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const aggregateEventsStatus200Schema = z.unknown();
+
+export const aggregateEventsStatus400Schema = z.unknown();
+
+export const aggregateEventsStatus401Schema = z.unknown();
+
+export const aggregateEventsStatus402Schema = z.unknown();
+
+export const aggregateEventsStatus403Schema = z.unknown();
+
+export const aggregateEventsResponseSchema = z.union([
+	aggregateEventsStatus200Schema,
+	aggregateEventsStatus400Schema,
+	aggregateEventsStatus401Schema,
+	aggregateEventsStatus402Schema,
+	aggregateEventsStatus403Schema,
+]);
+
+export const countPageviewsQueryProjectIdSchema = z
+	.string()
+	.describe("The project identifier or the project name");
+
+export const countPageviewsQuerySinceSchema = z
+	.union([z.number(), z.string()])
+	.optional()
+	.describe(
+		"Timestamp in milliseconds, or a valid Date string.\n\nSelects data from (including) this date and time.\nWill be adjusted according to the desired time granularity.",
+	);
+
+export const countPageviewsQueryUntilSchema = z
+	.union([z.number(), z.string()])
+	.optional()
+	.describe(
+		"Timestamp in milliseconds, or a valid Date string.\n\nSelects data until (including) this date.\nWill be adjusted according to the desired time granularity.",
+	);
+
+export const countPageviewsQueryFilterSchema = z
+	.string()
+	.optional()
+	.describe(
+		"OData-compliant filter. Encode the value when sending it in a URL.\n\nAllows filtering on one or multiple dimensions.\n\nSupported dimensions: country, deviceType, environment, requestPath, referrerHostname, osName, browserName, route, utmSource, utmMedium, utmCampaign, utmContent, utmTerm.\n\nJSON dimensions filtered by key: flags/<name>, for example flags/beta_banner eq 'true'. Wrap keys containing characters other than letters, digits, and underscores in single quotes, for example flags/'my-flag' eq 'true'.\n\nSupported operations include eq, ne, in, and logical operators and, or, not with parentheses. Functions such as startswith are supported by the OData parser.",
+	);
+
+export const countPageviewsQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const countPageviewsQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const countPageviewsStatus200Schema = z.unknown();
+
+export const countPageviewsStatus400Schema = z.unknown();
+
+export const countPageviewsStatus401Schema = z.unknown();
+
+export const countPageviewsStatus402Schema = z.unknown();
+
+export const countPageviewsStatus403Schema = z.unknown();
+
+export const countPageviewsResponseSchema = z.union([
+	countPageviewsStatus200Schema,
+	countPageviewsStatus400Schema,
+	countPageviewsStatus401Schema,
+	countPageviewsStatus402Schema,
+	countPageviewsStatus403Schema,
+]);
+
+export const countEventsQueryProjectIdSchema = z
+	.string()
+	.describe("The project identifier or the project name");
+
+export const countEventsQuerySinceSchema = z
+	.union([z.number(), z.string()])
+	.optional()
+	.describe(
+		"Timestamp in milliseconds, or a valid Date string.\n\nSelects data from (including) this date and time.\nWill be adjusted according to the desired time granularity.",
+	);
+
+export const countEventsQueryUntilSchema = z
+	.union([z.number(), z.string()])
+	.optional()
+	.describe(
+		"Timestamp in milliseconds, or a valid Date string.\n\nSelects data until (including) this date.\nWill be adjusted according to the desired time granularity.",
+	);
+
+export const countEventsQueryFilterSchema = z
+	.string()
+	.optional()
+	.describe(
+		"OData-compliant filter. Encode the value when sending it in a URL.\n\nAllows filtering on one or multiple dimensions.\n\nSupported dimensions: country, deviceType, environment, requestPath, referrerHostname, osName, browserName, route, utmSource, utmMedium, utmCampaign, utmContent, utmTerm, eventName.\n\nJSON dimensions filtered by key: flags/<name>, eventData/<property>, for example eventData/plan eq 'pro'. Wrap keys containing characters other than letters, digits, and underscores in single quotes, for example flags/'my-flag' eq 'true'.\n\nSupported operations include eq, ne, in, and logical operators and, or, not with parentheses. Functions such as startswith are supported by the OData parser.",
+	);
+
+export const countEventsQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const countEventsQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const countEventsStatus200Schema = z.unknown();
+
+export const countEventsStatus400Schema = z.unknown();
+
+export const countEventsStatus401Schema = z.unknown();
+
+export const countEventsStatus402Schema = z.unknown();
+
+export const countEventsStatus403Schema = z.unknown();
+
+export const countEventsResponseSchema = z.union([
+	countEventsStatus200Schema,
+	countEventsStatus400Schema,
+	countEventsStatus401Schema,
+	countEventsStatus402Schema,
+	countEventsStatus403Schema,
 ]);
 
 export const createWebhookQueryTeamIdSchema = z

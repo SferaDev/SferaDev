@@ -35,6 +35,16 @@ import type {
 	AddRouteStatus403,
 	AddRouteStatus409,
 	AddRouteStatus500,
+	AggregateEventsResponse,
+	AggregateEventsStatus400,
+	AggregateEventsStatus401,
+	AggregateEventsStatus402,
+	AggregateEventsStatus403,
+	AggregatePageviewsResponse,
+	AggregatePageviewsStatus400,
+	AggregatePageviewsStatus401,
+	AggregatePageviewsStatus402,
+	AggregatePageviewsStatus403,
 	ApproveRollingReleaseStageResponse,
 	ApproveRollingReleaseStageStatus400,
 	ApproveRollingReleaseStageStatus401,
@@ -98,6 +108,16 @@ import type {
 	ConnectIntegrationResourceToProjectStatus401,
 	ConnectIntegrationResourceToProjectStatus403,
 	ConnectIntegrationResourceToProjectStatus404,
+	CountEventsResponse,
+	CountEventsStatus400,
+	CountEventsStatus401,
+	CountEventsStatus402,
+	CountEventsStatus403,
+	CountPageviewsResponse,
+	CountPageviewsStatus400,
+	CountPageviewsStatus401,
+	CountPageviewsStatus402,
+	CountPageviewsStatus403,
 	CreateAccessGroupProjectResponse,
 	CreateAccessGroupProjectStatus400,
 	CreateAccessGroupProjectStatus401,
@@ -263,6 +283,13 @@ import type {
 	CreateRecordStatus403,
 	CreateRecordStatus404,
 	CreateRecordStatus409,
+	CreateRepositoryResponse,
+	CreateRepositoryStatus400,
+	CreateRepositoryStatus401,
+	CreateRepositoryStatus402,
+	CreateRepositoryStatus403,
+	CreateRepositoryStatus404,
+	CreateRepositoryStatus409,
 	CreateSandboxesResponse,
 	CreateSandboxesStatus400,
 	CreateSandboxesStatus401,
@@ -458,6 +485,16 @@ import type {
 	DeleteRedirectsStatus403,
 	DeleteRedirectsStatus404,
 	DeleteRedirectsStatus500,
+	DeleteRepositoryImageResponse,
+	DeleteRepositoryImageStatus400,
+	DeleteRepositoryImageStatus401,
+	DeleteRepositoryImageStatus403,
+	DeleteRepositoryImageStatus404,
+	DeleteRepositoryResponse,
+	DeleteRepositoryStatus400,
+	DeleteRepositoryStatus401,
+	DeleteRepositoryStatus403,
+	DeleteRepositoryStatus404,
 	DeleteRollingReleaseConfigResponse,
 	DeleteRollingReleaseConfigStatus400,
 	DeleteRollingReleaseConfigStatus401,
@@ -957,6 +994,16 @@ import type {
 	GetRedirectsStatus401,
 	GetRedirectsStatus403,
 	GetRedirectsStatus404,
+	GetRepositoryImageResponse,
+	GetRepositoryImageStatus400,
+	GetRepositoryImageStatus401,
+	GetRepositoryImageStatus403,
+	GetRepositoryImageStatus404,
+	GetRepositoryResponse,
+	GetRepositoryStatus400,
+	GetRepositoryStatus401,
+	GetRepositoryStatus403,
+	GetRepositoryStatus404,
 	GetRollingReleaseBillingStatusResponse,
 	GetRollingReleaseBillingStatusStatus400,
 	GetRollingReleaseBillingStatusStatus401,
@@ -1247,6 +1294,21 @@ import type {
 	ListPromoteAliasesStatus401,
 	ListPromoteAliasesStatus403,
 	ListPromoteAliasesStatus404,
+	ListRepositoriesResponse,
+	ListRepositoriesStatus400,
+	ListRepositoriesStatus401,
+	ListRepositoriesStatus403,
+	ListRepositoriesStatus404,
+	ListRepositoryImagesResponse,
+	ListRepositoryImagesStatus400,
+	ListRepositoryImagesStatus401,
+	ListRepositoryImagesStatus403,
+	ListRepositoryImagesStatus404,
+	ListRepositoryTagsResponse,
+	ListRepositoryTagsStatus400,
+	ListRepositoryTagsStatus401,
+	ListRepositoryTagsStatus403,
+	ListRepositoryTagsStatus404,
 	ListSandboxesResponse,
 	ListSandboxesStatus400,
 	ListSandboxesStatus401,
@@ -1501,6 +1563,13 @@ import type {
 	StageRoutesStatus403,
 	StageRoutesStatus409,
 	StageRoutesStatus500,
+	StartRollingReleaseResponse,
+	StartRollingReleaseStatus400,
+	StartRollingReleaseStatus401,
+	StartRollingReleaseStatus403,
+	StartRollingReleaseStatus404,
+	StartRollingReleaseStatus409,
+	StartRollingReleaseStatus422,
 	StatusResponse,
 	StatusStatus400,
 	StatusStatus401,
@@ -4213,7 +4282,7 @@ export async function getDeployment(
 
 /**
  * @summary Create a new deployment
- * @description Create a new deployment with all the required and intended data. If the deployment is not a git deployment, all files must be provided with the request, either referenced or inlined. Additionally, a deployment id can be specified to redeploy a previous deployment.
+ * @description Creates a new deployment for the authenticated team or user. For non-git deployments, upload files first via the file upload API, then reference them here by SHA — or inline small files directly in the request body. To redeploy an existing deployment, provide its `deploymentId`; all settings are inherited unless explicitly overridden. The deployment begins building immediately and transitions through `QUEUED` → `INITIALIZING` → `BUILDING` before reaching `READY` or `ERROR`.
  * @link /v13/deployments
  */
 export async function createDeployment(
@@ -4263,7 +4332,7 @@ export async function createDeployment(
 
 /**
  * @summary Cancel a deployment
- * @description This endpoint allows you to cancel a deployment which is currently building, by supplying its `id` in the URL.
+ * @description Cancels a deployment that is currently in progress, stopping the build before it completes. Use this to recover quickly from accidental deploys, wrong-branch pushes, or builds with known errors — without waiting for them to finish. Returns 400 if the deployment is no longer cancelable (already `READY`, `ERROR`, or `CANCELED`). Returns the updated deployment object with `readyState: 'CANCELED'` on success.
  * @link /v12/deployments/{id}/cancel
  */
 export async function cancelDeployment(
@@ -10944,7 +11013,7 @@ export async function getProject(
 		queryParams,
 		config,
 	}: {
-		pathParams: { idOrName: unknown };
+		pathParams: { idOrName: string };
 		queryParams?: { teamId?: string; slug?: string };
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
@@ -10960,7 +11029,7 @@ export async function getProject(
 		null,
 		Record<string, string>,
 		{ teamId?: string; slug?: string },
-		{ idOrName: unknown }
+		{ idOrName: string }
 	>({
 		method: "GET",
 		url: `/v9/projects/${pathParams.idOrName}`,
@@ -12285,6 +12354,52 @@ export async function approveRollingReleaseStage(
 	>({
 		method: "POST",
 		url: `/v1/projects/${pathParams.idOrName}/rolling-release/approve-stage`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Start a rolling release for the project
+ * @description Start a rolling release for a deployment. If a rolling release is already active for the same canary deployment, returns the current state without side effects.
+ * @link /v1/projects/{idOrName}/rolling-release/start
+ */
+export async function startRollingRelease(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.idOrName) {
+		throw new Error(`Missing required path parameter: idOrName`);
+	}
+	const data = await request<
+		StartRollingReleaseResponse,
+		ErrorWrapper<
+			| StartRollingReleaseStatus400
+			| StartRollingReleaseStatus401
+			| StartRollingReleaseStatus403
+			| StartRollingReleaseStatus404
+			| StartRollingReleaseStatus409
+			| StartRollingReleaseStatus422
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ idOrName: string }
+	>({
+		method: "POST",
+		url: `/v1/projects/${pathParams.idOrName}/rolling-release/start`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -15456,6 +15571,611 @@ export async function requestDelete(
 }
 
 /**
+ * @summary Create a repository
+ * @description Create a container registry repository for a project.
+ * @link /v1/vcr/repository
+ */
+export async function createRepository(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		CreateRepositoryResponse,
+		ErrorWrapper<
+			| CreateRepositoryStatus400
+			| CreateRepositoryStatus401
+			| CreateRepositoryStatus402
+			| CreateRepositoryStatus403
+			| CreateRepositoryStatus404
+			| CreateRepositoryStatus409
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		Record<string, string>
+	>({
+		method: "POST",
+		url: `/v1/vcr/repository`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary List repositories
+ * @description List container registry repositories for a project.
+ * @link /v1/vcr/repository
+ */
+export async function listRepositories(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			projectId?: string;
+			limit?: number;
+			cursor?: string;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		ListRepositoriesResponse,
+		ErrorWrapper<
+			| ListRepositoriesStatus400
+			| ListRepositoriesStatus401
+			| ListRepositoriesStatus403
+			| ListRepositoriesStatus404
+		>,
+		null,
+		Record<string, string>,
+		{ projectId?: string; limit?: number; cursor?: string; teamId?: string; slug?: string },
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/v1/vcr/repository`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Get a repository
+ * @description Fetch a container registry repository for a project by ID or name.
+ * @link /v1/vcr/repository/{idOrName}
+ */
+export async function getRepository(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string };
+		queryParams?: { projectId?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.idOrName) {
+		throw new Error(`Missing required path parameter: idOrName`);
+	}
+	const data = await request<
+		GetRepositoryResponse,
+		ErrorWrapper<
+			| GetRepositoryStatus400
+			| GetRepositoryStatus401
+			| GetRepositoryStatus403
+			| GetRepositoryStatus404
+		>,
+		null,
+		Record<string, string>,
+		{ projectId?: string; teamId?: string; slug?: string },
+		{ idOrName: string }
+	>({
+		method: "GET",
+		url: `/v1/vcr/repository/${pathParams.idOrName}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Delete a repository
+ * @description Schedule a repository for deletion. The repository is marked so it disappears from list/get immediately; subscriber-vcr reclaims every image (manifests, blobs, tags and rows) and finally deletes the repository row asynchronously via the VcrRepositoryRemoved event.
+ * @link /v1/vcr/repository/{idOrName}
+ */
+export async function deleteRepository(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string };
+		queryParams?: { projectId?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.idOrName) {
+		throw new Error(`Missing required path parameter: idOrName`);
+	}
+	const data = await request<
+		DeleteRepositoryResponse,
+		ErrorWrapper<
+			| DeleteRepositoryStatus400
+			| DeleteRepositoryStatus401
+			| DeleteRepositoryStatus403
+			| DeleteRepositoryStatus404
+		>,
+		null,
+		Record<string, string>,
+		{ projectId?: string; teamId?: string; slug?: string },
+		{ idOrName: string }
+	>({
+		method: "DELETE",
+		url: `/v1/vcr/repository/${pathParams.idOrName}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary List repository images
+ * @description List images for a container registry repository, including their tags.
+ * @link /v1/vcr/repository/{idOrName}/images
+ */
+export async function listRepositoryImages(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string };
+		queryParams?: {
+			projectId?: string;
+			limit?: number;
+			cursor?: string;
+			untagged?: boolean;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.idOrName) {
+		throw new Error(`Missing required path parameter: idOrName`);
+	}
+	const data = await request<
+		ListRepositoryImagesResponse,
+		ErrorWrapper<
+			| ListRepositoryImagesStatus400
+			| ListRepositoryImagesStatus401
+			| ListRepositoryImagesStatus403
+			| ListRepositoryImagesStatus404
+		>,
+		null,
+		Record<string, string>,
+		{
+			projectId?: string;
+			limit?: number;
+			cursor?: string;
+			untagged?: boolean;
+			teamId?: string;
+			slug?: string;
+		},
+		{ idOrName: string }
+	>({
+		method: "GET",
+		url: `/v1/vcr/repository/${pathParams.idOrName}/images`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary List repository tags
+ * @description List a repository's tags.
+ * @link /v1/vcr/repository/{idOrName}/tags
+ */
+export async function listRepositoryTags(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string };
+		queryParams?: {
+			projectId?: string;
+			limit?: number;
+			cursor?: string;
+			sortBy?: "updatedAt" | "tag";
+			sortOrder?: "asc" | "desc";
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.idOrName) {
+		throw new Error(`Missing required path parameter: idOrName`);
+	}
+	const data = await request<
+		ListRepositoryTagsResponse,
+		ErrorWrapper<
+			| ListRepositoryTagsStatus400
+			| ListRepositoryTagsStatus401
+			| ListRepositoryTagsStatus403
+			| ListRepositoryTagsStatus404
+		>,
+		null,
+		Record<string, string>,
+		{
+			projectId?: string;
+			limit?: number;
+			cursor?: string;
+			sortBy?: "updatedAt" | "tag";
+			sortOrder?: "asc" | "desc";
+			teamId?: string;
+			slug?: string;
+		},
+		{ idOrName: string }
+	>({
+		method: "GET",
+		url: `/v1/vcr/repository/${pathParams.idOrName}/tags`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Get a repository image
+ * @description Fetch an individual image from a repository, including its tags and Dockerfile history entries with discriminated layer details for UI rendering.
+ * @link /v1/vcr/repository/{idOrName}/images/{imageId}
+ */
+export async function getRepositoryImage(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string; imageId: string };
+		queryParams?: { projectId?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.idOrName) {
+		throw new Error(`Missing required path parameter: idOrName`);
+	}
+
+	if (!pathParams.imageId) {
+		throw new Error(`Missing required path parameter: imageId`);
+	}
+	const data = await request<
+		GetRepositoryImageResponse,
+		ErrorWrapper<
+			| GetRepositoryImageStatus400
+			| GetRepositoryImageStatus401
+			| GetRepositoryImageStatus403
+			| GetRepositoryImageStatus404
+		>,
+		null,
+		Record<string, string>,
+		{ projectId?: string; teamId?: string; slug?: string },
+		{ idOrName: string; imageId: string }
+	>({
+		method: "GET",
+		url: `/v1/vcr/repository/${pathParams.idOrName}/images/${pathParams.imageId}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Delete a repository image
+ * @description Schedule an image for deletion. The image is marked so it disappears from list/get immediately; subscriber-vcr reclaims the manifest, blobs, tags and row asynchronously via the VcrManifestRemoved event.
+ * @link /v1/vcr/repository/{idOrName}/images/{imageId}
+ */
+export async function deleteRepositoryImage(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string; imageId: string };
+		queryParams?: { projectId?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.idOrName) {
+		throw new Error(`Missing required path parameter: idOrName`);
+	}
+
+	if (!pathParams.imageId) {
+		throw new Error(`Missing required path parameter: imageId`);
+	}
+	const data = await request<
+		DeleteRepositoryImageResponse,
+		ErrorWrapper<
+			| DeleteRepositoryImageStatus400
+			| DeleteRepositoryImageStatus401
+			| DeleteRepositoryImageStatus403
+			| DeleteRepositoryImageStatus404
+		>,
+		null,
+		Record<string, string>,
+		{ projectId?: string; teamId?: string; slug?: string },
+		{ idOrName: string; imageId: string }
+	>({
+		method: "DELETE",
+		url: `/v1/vcr/repository/${pathParams.idOrName}/images/${pathParams.imageId}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Aggregates page views
+ * @description Counts pageviews on a project, within the requested date range. Results are either aggregated or broken down over time. Results can additionally be broken down by one dimension, and filtered by multiple dimensions.
+ * @link /v1/query/web-analytics/visits/aggregate
+ */
+export async function aggregatePageviews(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			projectId?: string;
+			by?: Array<unknown>;
+			since?: unknown;
+			until?: unknown;
+			limit?: number;
+			filter?: string;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		AggregatePageviewsResponse,
+		ErrorWrapper<
+			| AggregatePageviewsStatus400
+			| AggregatePageviewsStatus401
+			| AggregatePageviewsStatus402
+			| AggregatePageviewsStatus403
+		>,
+		null,
+		Record<string, string>,
+		{
+			projectId?: string;
+			by?: Array<unknown>;
+			since?: unknown;
+			until?: unknown;
+			limit?: number;
+			filter?: string;
+			teamId?: string;
+			slug?: string;
+		},
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/v1/query/web-analytics/visits/aggregate`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Aggregates custom events
+ * @description Counts custom events on a project, within the requested date range. Results are either aggregated or broken down over time. Results can additionally be broken down by one dimension, and filtered by multiple dimensions.
+ * @link /v1/query/web-analytics/events/aggregate
+ */
+export async function aggregateEvents(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			projectId?: string;
+			by?: Array<unknown>;
+			since?: unknown;
+			until?: unknown;
+			limit?: number;
+			filter?: string;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		AggregateEventsResponse,
+		ErrorWrapper<
+			| AggregateEventsStatus400
+			| AggregateEventsStatus401
+			| AggregateEventsStatus402
+			| AggregateEventsStatus403
+		>,
+		null,
+		Record<string, string>,
+		{
+			projectId?: string;
+			by?: Array<unknown>;
+			since?: unknown;
+			until?: unknown;
+			limit?: number;
+			filter?: string;
+			teamId?: string;
+			slug?: string;
+		},
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/v1/query/web-analytics/events/aggregate`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Counts page views
+ * @description Counts the number of page views on a project (production only), since Web Analytics was enabled. Results can be filtered on supported dimensions.
+ * @link /v1/query/web-analytics/visits/count
+ */
+export async function countPageviews(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			projectId?: string;
+			since?: unknown;
+			until?: unknown;
+			filter?: string;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		CountPageviewsResponse,
+		ErrorWrapper<
+			| CountPageviewsStatus400
+			| CountPageviewsStatus401
+			| CountPageviewsStatus402
+			| CountPageviewsStatus403
+		>,
+		null,
+		Record<string, string>,
+		{
+			projectId?: string;
+			since?: unknown;
+			until?: unknown;
+			filter?: string;
+			teamId?: string;
+			slug?: string;
+		},
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/v1/query/web-analytics/visits/count`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Counts custom events
+ * @description Counts the number of custom events on a project (production only), since Web Analytics was enabled. Results can be filtered on supported dimensions.
+ * @link /v1/query/web-analytics/events/count
+ */
+export async function countEvents(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			projectId?: string;
+			since?: unknown;
+			until?: unknown;
+			filter?: string;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		CountEventsResponse,
+		ErrorWrapper<
+			CountEventsStatus400 | CountEventsStatus401 | CountEventsStatus402 | CountEventsStatus403
+		>,
+		null,
+		Record<string, string>,
+		{
+			projectId?: string;
+			since?: unknown;
+			until?: unknown;
+			filter?: string;
+			teamId?: string;
+			slug?: string;
+		},
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/v1/query/web-analytics/events/count`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
  * @summary Creates a webhook
  * @description Creates a webhook
  * @link /v1/webhooks
@@ -16510,6 +17230,7 @@ export const operationsByPath = {
 	"PATCH /v1/projects/{idOrName}/rolling-release/config": updateRollingReleaseConfig,
 	"GET /v1/projects/{idOrName}/rolling-release": getRollingRelease,
 	"POST /v1/projects/{idOrName}/rolling-release/approve-stage": approveRollingReleaseStage,
+	"POST /v1/projects/{idOrName}/rolling-release/start": startRollingRelease,
 	"POST /v1/projects/{idOrName}/rolling-release/complete": completeRollingRelease,
 	"POST /projects/{idOrName}/transfer-request": createProjectTransferRequest,
 	"PUT /projects/transfer-request/{code}": acceptProjectTransferRequest,
@@ -16580,6 +17301,18 @@ export const operationsByPath = {
 	"DELETE /v3/user/tokens/{tokenId}": deleteAuthToken,
 	"GET /v2/user": getAuthUser,
 	"DELETE /v1/user": requestDelete,
+	"POST /v1/vcr/repository": createRepository,
+	"GET /v1/vcr/repository": listRepositories,
+	"GET /v1/vcr/repository/{idOrName}": getRepository,
+	"DELETE /v1/vcr/repository/{idOrName}": deleteRepository,
+	"GET /v1/vcr/repository/{idOrName}/images": listRepositoryImages,
+	"GET /v1/vcr/repository/{idOrName}/tags": listRepositoryTags,
+	"GET /v1/vcr/repository/{idOrName}/images/{imageId}": getRepositoryImage,
+	"DELETE /v1/vcr/repository/{idOrName}/images/{imageId}": deleteRepositoryImage,
+	"GET /v1/query/web-analytics/visits/aggregate": aggregatePageviews,
+	"GET /v1/query/web-analytics/events/aggregate": aggregateEvents,
+	"GET /v1/query/web-analytics/visits/count": countPageviews,
+	"GET /v1/query/web-analytics/events/count": countEvents,
 	"POST /v1/webhooks": createWebhook,
 	"GET /v1/webhooks": getWebhooks,
 	"GET /v1/webhooks/{id}": getWebhook,
@@ -16915,6 +17648,7 @@ export const operationsByTag = {
 		updateRollingReleaseConfig,
 		getRollingRelease,
 		approveRollingReleaseStage,
+		startRollingRelease,
 		completeRollingRelease,
 	},
 	sandboxes: {
@@ -16972,6 +17706,22 @@ export const operationsByTag = {
 		deleteTeamInviteCode,
 		updateMicrofrontendsGroup,
 		deleteMicrofrontendsGroup,
+	},
+	vcr: {
+		createRepository,
+		listRepositories,
+		getRepository,
+		deleteRepository,
+		listRepositoryImages,
+		listRepositoryTags,
+		getRepositoryImage,
+		deleteRepositoryImage,
+	},
+	webAnalytics: {
+		aggregatePageviews,
+		aggregateEvents,
+		countPageviews,
+		countEvents,
 	},
 	webhooks: {
 		createWebhook,
@@ -17304,7 +18054,7 @@ export const tagDictionary = {
 		GET: ["getRollingReleaseBillingStatus", "getRollingReleaseConfig", "getRollingRelease"],
 		DELETE: ["deleteRollingReleaseConfig"],
 		PATCH: ["updateRollingReleaseConfig"],
-		POST: ["approveRollingReleaseStage", "completeRollingRelease"],
+		POST: ["approveRollingReleaseStage", "startRollingRelease", "completeRollingRelease"],
 	},
 	sandboxes: {
 		GET: [
@@ -17353,6 +18103,20 @@ export const tagDictionary = {
 		],
 		PATCH: ["updateTeamMember", "patchTeam", "updateMicrofrontendsGroup"],
 		DELETE: ["removeTeamMember", "deleteTeam", "deleteTeamInviteCode", "deleteMicrofrontendsGroup"],
+	},
+	vcr: {
+		POST: ["createRepository"],
+		GET: [
+			"listRepositories",
+			"getRepository",
+			"listRepositoryImages",
+			"listRepositoryTags",
+			"getRepositoryImage",
+		],
+		DELETE: ["deleteRepository", "deleteRepositoryImage"],
+	},
+	webAnalytics: {
+		GET: ["aggregatePageviews", "aggregateEvents", "countPageviews", "countEvents"],
 	},
 	webhooks: {
 		POST: ["createWebhook"],
