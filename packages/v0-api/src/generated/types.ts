@@ -9114,7 +9114,7 @@ export type ReportsGetUsageQueryMessageId = string | undefined;
 export type ReportsGetUsageQueryUserId = string | undefined;
 
 /**
- * @description Query parameter \"limit\"
+ * @description Bounds the raw billing transactions scanned per ledger group and page. A page can contain more events than this value (large teams are scanned in parallel ledger groups), and a filtered page (chatId, userId, or messageId) can contain fewer or zero events while more data remains. Events are sorted newest-first within a page but not across pages on large teams. Always paginate with `pagination.hasMore` and `pagination.nextCursor` rather than stopping on an empty page.
  * @minLength 1
  * @maxLength 150
  * @default 20
@@ -9355,13 +9355,13 @@ export type ReportsGetAIUsageResponse =
 	| ReportsGetAIUsageStatus500;
 
 /**
- * @description Query parameter \"startDate\"
+ * @description Inclusive ISO timestamp lower bound for activity.
  * @type string | undefined
  */
 export type ReportsGetUserActivityQueryStartDate = string | undefined;
 
 /**
- * @description Query parameter \"endDate\"
+ * @description Exclusive ISO timestamp upper bound for activity. Pass the end of the last day (e.g. 23:59:59.999) to include it.
  * @type string | undefined
  */
 export type ReportsGetUserActivityQueryEndDate = string | undefined;

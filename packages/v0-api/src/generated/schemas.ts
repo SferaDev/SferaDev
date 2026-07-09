@@ -3553,7 +3553,9 @@ export const reportsGetUsageQueryLimitSchema = z
 	.max(150)
 	.optional()
 	.default(20)
-	.describe('Query parameter "limit"');
+	.describe(
+		"Bounds the raw billing transactions scanned per ledger group and page. A page can contain more events than this value (large teams are scanned in parallel ledger groups), and a filtered page (chatId, userId, or messageId) can contain fewer or zero events while more data remains. Events are sorted newest-first within a page but not across pages on large teams. Always paginate with `pagination.hasMore` and `pagination.nextCursor` rather than stopping on an empty page.",
+	);
 
 export const reportsGetUsageQueryCursorSchema = z
 	.string()
@@ -3646,12 +3648,14 @@ export const reportsGetAIUsageResponseSchema = z.union([
 export const reportsGetUserActivityQueryStartDateSchema = z.iso
 	.datetime()
 	.optional()
-	.describe('Query parameter "startDate"');
+	.describe("Inclusive ISO timestamp lower bound for activity.");
 
 export const reportsGetUserActivityQueryEndDateSchema = z.iso
 	.datetime()
 	.optional()
-	.describe('Query parameter "endDate"');
+	.describe(
+		"Exclusive ISO timestamp upper bound for activity. Pass the end of the last day (e.g. 23:59:59.999) to include it.",
+	);
 
 export const reportsGetUserActivityStatus200Schema = z.unknown();
 
