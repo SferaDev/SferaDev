@@ -506,6 +506,12 @@ export const siteSchema = z.object({
 			draft: z.boolean().optional(),
 			required: z.array(z.string()).optional(),
 			required_functions: z.array(z.string()).optional(),
+			required_edge_functions: z
+				.array(z.string())
+				.optional()
+				.describe(
+					"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
+				),
 			error_message: z.string().optional(),
 			branch: z.string().optional(),
 			commit_ref: z.string().optional(),
@@ -647,6 +653,12 @@ export const siteSetupSchema = z.object({
 			draft: z.boolean().optional(),
 			required: z.array(z.string()).optional(),
 			required_functions: z.array(z.string()).optional(),
+			required_edge_functions: z
+				.array(z.string())
+				.optional()
+				.describe(
+					"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
+				),
 			error_message: z.string().optional(),
 			branch: z.string().optional(),
 			commit_ref: z.string().optional(),
@@ -993,6 +1005,12 @@ export const deploySchema = z.object({
 	draft: z.boolean().optional(),
 	required: z.array(z.string()).optional(),
 	required_functions: z.array(z.string()).optional(),
+	required_edge_functions: z
+		.array(z.string())
+		.optional()
+		.describe(
+			"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
+		),
 	error_message: z.string().optional(),
 	branch: z.string().optional(),
 	commit_ref: z.string().optional(),
@@ -1054,6 +1072,12 @@ export const deployFilesSchema = z
 		draft: z.boolean().optional(),
 		async: z.boolean().optional(),
 		functions: z.object({}).optional(),
+		edge_functions: z
+			.object({})
+			.optional()
+			.describe(
+				"A hash mapping edge-function bundle formats to the code_sha of each bundle. The\nresponse's required_edge_functions lists which of these still need to be uploaded.\n",
+			),
 		function_schedules: z
 			.array(
 				z.object({
@@ -1916,6 +1940,8 @@ export const aiGatewayTokenSchema = z.object({
 	expires_at: z.bigint().optional().describe("Unix timestamp when the token expires"),
 });
 
+export const updateSiteMetadataMetadataSchema = z.object({});
+
 export const createSiteSiteSchema = z.object({
 	id: z.string().optional(),
 	state: z.string().optional(),
@@ -1957,6 +1983,12 @@ export const createSiteSiteSchema = z.object({
 			draft: z.boolean().optional(),
 			required: z.array(z.string()).optional(),
 			required_functions: z.array(z.string()).optional(),
+			required_edge_functions: z
+				.array(z.string())
+				.optional()
+				.describe(
+					"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
+				),
 			error_message: z.string().optional(),
 			branch: z.string().optional(),
 			commit_ref: z.string().optional(),
@@ -2091,8 +2123,6 @@ export const createSiteSiteSchema = z.object({
 		.optional(),
 });
 
-export const updateSiteMetadataMetadataSchema = z.object({});
-
 export const createHookBySiteIdHookSchema = z.object({
 	id: z.string().optional(),
 	site_id: z.string().optional(),
@@ -2114,6 +2144,34 @@ export const createSiteSnippetSnippetSchema = z.object({
 	goal_position: z.string().optional(),
 });
 
+export const setSiteDatabaseBranchComputeSettingsComputesettingsSchema = z
+	.object({
+		min_cu: z
+			.number()
+			.nullish()
+			.describe("Minimum compute units (0.25 to 16.0). Must be less than or equal to max_cu."),
+		max_cu: z
+			.number()
+			.nullish()
+			.describe(
+				"Maximum compute units (0.25 to 16.0). Must be greater than or equal to min_cu. max_cu - min_cu must not exceed 8.0.",
+			),
+		sleep_timeout_seconds: z
+			.bigint()
+			.nullish()
+			.describe(
+				"Seconds of inactivity before the compute endpoint is suspended. Use -1 for always on, or a non-negative value.",
+			),
+	})
+	.describe(
+		"Request body for setting compute settings. All fields are optional; only provided fields are updated.",
+	);
+
+export const createSiteBuildHookBuildhookSchema = z.object({
+	title: z.string().optional(),
+	branch: z.string().optional(),
+});
+
 export const createSiteDeployDeploySchema = z
 	.object({
 		files: z
@@ -2129,6 +2187,12 @@ export const createSiteDeployDeploySchema = z
 		draft: z.boolean().optional(),
 		async: z.boolean().optional(),
 		functions: z.object({}).optional(),
+		edge_functions: z
+			.object({})
+			.optional()
+			.describe(
+				"A hash mapping edge-function bundle formats to the code_sha of each bundle. The\nresponse's required_edge_functions lists which of these still need to be uploaded.\n",
+			),
 		function_schedules: z
 			.array(
 				z.object({
@@ -2233,34 +2297,6 @@ export const createSiteDeployDeploySchema = z
 		"Deploy files can be provided in two ways:\n1. As a JSON object using 'files' (a hash mapping file paths to SHA1 digests), OR\n2. As a zip file using one of these methods:\n   - Set Content-Type to 'application/zip' and send the zip file as the raw request body\n   - Include the zip file content in the 'zip' field of this JSON object with Content-Type 'application/json'\n",
 	);
 
-export const setSiteDatabaseBranchComputeSettingsComputesettingsSchema = z
-	.object({
-		min_cu: z
-			.number()
-			.nullish()
-			.describe("Minimum compute units (0.25 to 16.0). Must be less than or equal to max_cu."),
-		max_cu: z
-			.number()
-			.nullish()
-			.describe(
-				"Maximum compute units (0.25 to 16.0). Must be greater than or equal to min_cu. max_cu - min_cu must not exceed 8.0.",
-			),
-		sleep_timeout_seconds: z
-			.bigint()
-			.nullish()
-			.describe(
-				"Seconds of inactivity before the compute endpoint is suspended. Use -1 for always on, or a non-negative value.",
-			),
-	})
-	.describe(
-		"Request body for setting compute settings. All fields are optional; only provided fields are updated.",
-	);
-
-export const createSiteBuildHookBuildhookSchema = z.object({
-	title: z.string().optional(),
-	branch: z.string().optional(),
-});
-
 export const createSplitTestBranchTestsSchema = z.object({
 	branch_tests: z.object({}).optional(),
 });
@@ -2328,6 +2364,12 @@ export const listSitesStatus200Schema = z.array(
 				draft: z.boolean().optional(),
 				required: z.array(z.string()).optional(),
 				required_functions: z.array(z.string()).optional(),
+				required_edge_functions: z
+					.array(z.string())
+					.optional()
+					.describe(
+						"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
+					),
 				error_message: z.string().optional(),
 				branch: z.string().optional(),
 				commit_ref: z.string().optional(),
@@ -2482,6 +2524,12 @@ export const createSiteStatus201Schema = z.object({
 			draft: z.boolean().optional(),
 			required: z.array(z.string()).optional(),
 			required_functions: z.array(z.string()).optional(),
+			required_edge_functions: z
+				.array(z.string())
+				.optional()
+				.describe(
+					"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
+				),
 			error_message: z.string().optional(),
 			branch: z.string().optional(),
 			commit_ref: z.string().optional(),
@@ -2634,6 +2682,12 @@ export const createSiteDataSchema = z
 				draft: z.boolean().optional(),
 				required: z.array(z.string()).optional(),
 				required_functions: z.array(z.string()).optional(),
+				required_edge_functions: z
+					.array(z.string())
+					.optional()
+					.describe(
+						"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
+					),
 				error_message: z.string().optional(),
 				branch: z.string().optional(),
 				commit_ref: z.string().optional(),
@@ -2814,6 +2868,12 @@ export const getSiteStatus200Schema = z.object({
 			draft: z.boolean().optional(),
 			required: z.array(z.string()).optional(),
 			required_functions: z.array(z.string()).optional(),
+			required_edge_functions: z
+				.array(z.string())
+				.optional()
+				.describe(
+					"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
+				),
 			error_message: z.string().optional(),
 			branch: z.string().optional(),
 			commit_ref: z.string().optional(),
@@ -2964,6 +3024,12 @@ export const updateSiteStatus200Schema = z.object({
 			draft: z.boolean().optional(),
 			required: z.array(z.string()).optional(),
 			required_functions: z.array(z.string()).optional(),
+			required_edge_functions: z
+				.array(z.string())
+				.optional()
+				.describe(
+					"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
+				),
 			error_message: z.string().optional(),
 			branch: z.string().optional(),
 			commit_ref: z.string().optional(),
@@ -3116,6 +3182,12 @@ export const updateSiteDataSchema = z
 				draft: z.boolean().optional(),
 				required: z.array(z.string()).optional(),
 				required_functions: z.array(z.string()).optional(),
+				required_edge_functions: z
+					.array(z.string())
+					.optional()
+					.describe(
+						"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
+					),
 				error_message: z.string().optional(),
 				branch: z.string().optional(),
 				commit_ref: z.string().optional(),
@@ -4679,6 +4751,12 @@ export const listSiteDeploysStatus200Schema = z.array(
 		draft: z.boolean().optional(),
 		required: z.array(z.string()).optional(),
 		required_functions: z.array(z.string()).optional(),
+		required_edge_functions: z
+			.array(z.string())
+			.optional()
+			.describe(
+				"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
+			),
 		error_message: z.string().optional(),
 		branch: z.string().optional(),
 		commit_ref: z.string().optional(),
@@ -4778,6 +4856,12 @@ export const createSiteDeployStatus200Schema = z.object({
 	draft: z.boolean().optional(),
 	required: z.array(z.string()).optional(),
 	required_functions: z.array(z.string()).optional(),
+	required_edge_functions: z
+		.array(z.string())
+		.optional()
+		.describe(
+			"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
+		),
 	error_message: z.string().optional(),
 	branch: z.string().optional(),
 	commit_ref: z.string().optional(),
@@ -4842,6 +4926,12 @@ export const createSiteDeployDataSchema = z
 		draft: z.boolean().optional(),
 		async: z.boolean().optional(),
 		functions: z.object({}).optional(),
+		edge_functions: z
+			.object({})
+			.optional()
+			.describe(
+				"A hash mapping edge-function bundle formats to the code_sha of each bundle. The\nresponse's required_edge_functions lists which of these still need to be uploaded.\n",
+			),
 		function_schedules: z
 			.array(
 				z.object({
@@ -4968,6 +5058,12 @@ export const getSiteDeployStatus200Schema = z.object({
 	draft: z.boolean().optional(),
 	required: z.array(z.string()).optional(),
 	required_functions: z.array(z.string()).optional(),
+	required_edge_functions: z
+		.array(z.string())
+		.optional()
+		.describe(
+			"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
+		),
 	error_message: z.string().optional(),
 	branch: z.string().optional(),
 	commit_ref: z.string().optional(),
@@ -5040,6 +5136,12 @@ export const updateSiteDeployStatus200Schema = z.object({
 	draft: z.boolean().optional(),
 	required: z.array(z.string()).optional(),
 	required_functions: z.array(z.string()).optional(),
+	required_edge_functions: z
+		.array(z.string())
+		.optional()
+		.describe(
+			"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
+		),
 	error_message: z.string().optional(),
 	branch: z.string().optional(),
 	commit_ref: z.string().optional(),
@@ -5104,6 +5206,12 @@ export const updateSiteDeployDataSchema = z
 		draft: z.boolean().optional(),
 		async: z.boolean().optional(),
 		functions: z.object({}).optional(),
+		edge_functions: z
+			.object({})
+			.optional()
+			.describe(
+				"A hash mapping edge-function bundle formats to the code_sha of each bundle. The\nresponse's required_edge_functions lists which of these still need to be uploaded.\n",
+			),
 		function_schedules: z
 			.array(
 				z.object({
@@ -5244,6 +5352,12 @@ export const cancelSiteDeployStatus201Schema = z.object({
 	draft: z.boolean().optional(),
 	required: z.array(z.string()).optional(),
 	required_functions: z.array(z.string()).optional(),
+	required_edge_functions: z
+		.array(z.string())
+		.optional()
+		.describe(
+			"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
+		),
 	error_message: z.string().optional(),
 	branch: z.string().optional(),
 	commit_ref: z.string().optional(),
@@ -5314,6 +5428,12 @@ export const restoreSiteDeployStatus201Schema = z.object({
 	draft: z.boolean().optional(),
 	required: z.array(z.string()).optional(),
 	required_functions: z.array(z.string()).optional(),
+	required_edge_functions: z
+		.array(z.string())
+		.optional()
+		.describe(
+			"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
+		),
 	error_message: z.string().optional(),
 	branch: z.string().optional(),
 	commit_ref: z.string().optional(),
@@ -5513,6 +5633,12 @@ export const unlinkSiteRepoStatus200Schema = z.object({
 			draft: z.boolean().optional(),
 			required: z.array(z.string()).optional(),
 			required_functions: z.array(z.string()).optional(),
+			required_edge_functions: z
+				.array(z.string())
+				.optional()
+				.describe(
+					"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
+				),
 			error_message: z.string().optional(),
 			branch: z.string().optional(),
 			commit_ref: z.string().optional(),
@@ -5875,6 +6001,12 @@ export const getDeployStatus200Schema = z.object({
 	draft: z.boolean().optional(),
 	required: z.array(z.string()).optional(),
 	required_functions: z.array(z.string()).optional(),
+	required_edge_functions: z
+		.array(z.string())
+		.optional()
+		.describe(
+			"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
+		),
 	error_message: z.string().optional(),
 	branch: z.string().optional(),
 	commit_ref: z.string().optional(),
@@ -5981,6 +6113,12 @@ export const lockDeployStatus200Schema = z.object({
 	draft: z.boolean().optional(),
 	required: z.array(z.string()).optional(),
 	required_functions: z.array(z.string()).optional(),
+	required_edge_functions: z
+		.array(z.string())
+		.optional()
+		.describe(
+			"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
+		),
 	error_message: z.string().optional(),
 	branch: z.string().optional(),
 	commit_ref: z.string().optional(),
@@ -6049,6 +6187,12 @@ export const unlockDeployStatus200Schema = z.object({
 	draft: z.boolean().optional(),
 	required: z.array(z.string()).optional(),
 	required_functions: z.array(z.string()).optional(),
+	required_edge_functions: z
+		.array(z.string())
+		.optional()
+		.describe(
+			"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
+		),
 	error_message: z.string().optional(),
 	branch: z.string().optional(),
 	commit_ref: z.string().optional(),
@@ -6151,6 +6295,24 @@ export const uploadDeployFunctionStatusDefaultSchema = z.object({
 export const uploadDeployFunctionResponseSchema = z.union([
 	uploadDeployFunctionStatus200Schema,
 	uploadDeployFunctionStatusDefaultSchema,
+]);
+
+export const uploadDeployEdgeFunctionPathDeployIdSchema = z.string();
+
+export const uploadDeployEdgeFunctionPathCodeShaSchema = z.string();
+
+export const uploadDeployEdgeFunctionHeaderXNfRetryCountSchema = z.int().optional();
+
+export const uploadDeployEdgeFunctionStatus200Schema = z.unknown();
+
+export const uploadDeployEdgeFunctionStatusDefaultSchema = z.object({
+	code: z.bigint().optional(),
+	message: z.string(),
+});
+
+export const uploadDeployEdgeFunctionResponseSchema = z.union([
+	uploadDeployEdgeFunctionStatus200Schema,
+	uploadDeployEdgeFunctionStatusDefaultSchema,
 ]);
 
 export const getLatestPluginRunsPathSiteIdSchema = z.string();
@@ -6601,6 +6763,12 @@ export const createSiteInTeamStatus201Schema = z.object({
 			draft: z.boolean().optional(),
 			required: z.array(z.string()).optional(),
 			required_functions: z.array(z.string()).optional(),
+			required_edge_functions: z
+				.array(z.string())
+				.optional()
+				.describe(
+					"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
+				),
 			error_message: z.string().optional(),
 			branch: z.string().optional(),
 			commit_ref: z.string().optional(),
@@ -6753,6 +6921,12 @@ export const createSiteInTeamDataSchema = z
 				draft: z.boolean().optional(),
 				required: z.array(z.string()).optional(),
 				required_functions: z.array(z.string()).optional(),
+				required_edge_functions: z
+					.array(z.string())
+					.optional()
+					.describe(
+						"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
+					),
 				error_message: z.string().optional(),
 				branch: z.string().optional(),
 				commit_ref: z.string().optional(),
@@ -6938,6 +7112,12 @@ export const listSitesForAccountStatus200Schema = z.array(
 				draft: z.boolean().optional(),
 				required: z.array(z.string()).optional(),
 				required_functions: z.array(z.string()).optional(),
+				required_edge_functions: z
+					.array(z.string())
+					.optional()
+					.describe(
+						"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
+					),
 				error_message: z.string().optional(),
 				branch: z.string().optional(),
 				commit_ref: z.string().optional(),

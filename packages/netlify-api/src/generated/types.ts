@@ -1135,6 +1135,11 @@ export type Site = {
 				 */
 				required_functions?: string[] | undefined;
 				/**
+				 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
+				 * @type array | undefined
+				 */
+				required_edge_functions?: string[] | undefined;
+				/**
 				 * @type string | undefined
 				 */
 				error_message?: string | undefined;
@@ -1540,6 +1545,11 @@ export type SiteSetup = {
 				 * @type array | undefined
 				 */
 				required_functions?: string[] | undefined;
+				/**
+				 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
+				 * @type array | undefined
+				 */
+				required_edge_functions?: string[] | undefined;
 				/**
 				 * @type string | undefined
 				 */
@@ -2417,6 +2427,11 @@ export type Deploy = {
 	 */
 	required_functions?: string[] | undefined;
 	/**
+	 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
+	 * @type array | undefined
+	 */
+	required_edge_functions?: string[] | undefined;
+	/**
 	 * @type string | undefined
 	 */
 	error_message?: string | undefined;
@@ -2582,6 +2597,11 @@ export type DeployFiles = {
 	 * @type object | undefined
 	 */
 	functions?: object | undefined;
+	/**
+	 * @description A hash mapping edge-function bundle formats to the code_sha of each bundle. The\nresponse\'s required_edge_functions lists which of these still need to be uploaded.\n
+	 * @type object | undefined
+	 */
+	edge_functions?: object | undefined;
 	/**
 	 * @type array | undefined
 	 */
@@ -5197,6 +5217,11 @@ export type AiGatewayToken = {
 	expires_at?: bigint | undefined;
 };
 
+/**
+ * @type object
+ */
+export type UpdateSiteMetadataMetadata = object;
+
 export type CreateSiteSite = {
 	/**
 	 * @type string | undefined
@@ -5355,6 +5380,11 @@ export type CreateSiteSite = {
 				 * @type array | undefined
 				 */
 				required_functions?: string[] | undefined;
+				/**
+				 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
+				 * @type array | undefined
+				 */
+				required_edge_functions?: string[] | undefined;
 				/**
 				 * @type string | undefined
 				 */
@@ -5680,11 +5710,6 @@ export type CreateSiteSite = {
 /**
  * @type object
  */
-export type UpdateSiteMetadataMetadata = object;
-
-/**
- * @type object
- */
 export type CreateHookBySiteIdHook = {
 	/**
 	 * @type string | undefined
@@ -5755,6 +5780,43 @@ export type CreateSiteSnippetSnippet = {
 };
 
 /**
+ * @description Request body for setting compute settings. All fields are optional; only provided fields are updated.
+ * @type object
+ */
+export type SetSiteDatabaseBranchComputeSettingsComputesettings = {
+	/**
+	 * @description Minimum compute units (0.25 to 16.0). Must be less than or equal to max_cu.
+	 * @type number
+	 */
+	min_cu?: (number | null) | undefined;
+	/**
+	 * @description Maximum compute units (0.25 to 16.0). Must be greater than or equal to min_cu. max_cu - min_cu must not exceed 8.0.
+	 * @type number
+	 */
+	max_cu?: (number | null) | undefined;
+	/**
+	 * @description Seconds of inactivity before the compute endpoint is suspended. Use -1 for always on, or a non-negative value.
+	 * @minLength -1
+	 * @type integer
+	 */
+	sleep_timeout_seconds?: (bigint | null) | undefined;
+};
+
+/**
+ * @type object
+ */
+export type CreateSiteBuildHookBuildhook = {
+	/**
+	 * @type string | undefined
+	 */
+	title?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	branch?: string | undefined;
+};
+
+/**
  * @description Deploy files can be provided in two ways:\n1. As a JSON object using \'files\' (a hash mapping file paths to SHA1 digests), OR\n2. As a zip file using one of these methods:\n   - Set Content-Type to \'application/zip\' and send the zip file as the raw request body\n   - Include the zip file content in the \'zip\' field of this JSON object with Content-Type \'application/json\'\n
  * @type object
  */
@@ -5781,6 +5843,11 @@ export type CreateSiteDeployDeploy = {
 	 * @type object | undefined
 	 */
 	functions?: object | undefined;
+	/**
+	 * @description A hash mapping edge-function bundle formats to the code_sha of each bundle. The\nresponse\'s required_edge_functions lists which of these still need to be uploaded.\n
+	 * @type object | undefined
+	 */
+	edge_functions?: object | undefined;
 	/**
 	 * @type array | undefined
 	 */
@@ -5987,43 +6054,6 @@ export type CreateSiteDeployDeploy = {
 				scopes: ("builds" | "functions" | "runtime" | "post-processing")[];
 		  }[]
 		| undefined;
-};
-
-/**
- * @description Request body for setting compute settings. All fields are optional; only provided fields are updated.
- * @type object
- */
-export type SetSiteDatabaseBranchComputeSettingsComputesettings = {
-	/**
-	 * @description Minimum compute units (0.25 to 16.0). Must be less than or equal to max_cu.
-	 * @type number
-	 */
-	min_cu?: (number | null) | undefined;
-	/**
-	 * @description Maximum compute units (0.25 to 16.0). Must be greater than or equal to min_cu. max_cu - min_cu must not exceed 8.0.
-	 * @type number
-	 */
-	max_cu?: (number | null) | undefined;
-	/**
-	 * @description Seconds of inactivity before the compute endpoint is suspended. Use -1 for always on, or a non-negative value.
-	 * @minLength -1
-	 * @type integer
-	 */
-	sleep_timeout_seconds?: (bigint | null) | undefined;
-};
-
-/**
- * @type object
- */
-export type CreateSiteBuildHookBuildhook = {
-	/**
-	 * @type string | undefined
-	 */
-	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	branch?: string | undefined;
 };
 
 /**
@@ -6265,6 +6295,11 @@ export type ListSitesStatus200 = {
 				 * @type array | undefined
 				 */
 				required_functions?: string[] | undefined;
+				/**
+				 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
+				 * @type array | undefined
+				 */
+				required_edge_functions?: string[] | undefined;
 				/**
 				 * @type string | undefined
 				 */
@@ -6731,6 +6766,11 @@ export type CreateSiteStatus201 = {
 				 */
 				required_functions?: string[] | undefined;
 				/**
+				 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
+				 * @type array | undefined
+				 */
+				required_edge_functions?: string[] | undefined;
+				/**
 				 * @type string | undefined
 				 */
 				error_message?: string | undefined;
@@ -7151,6 +7191,11 @@ export type CreateSiteData =
 						 * @type array | undefined
 						 */
 						required_functions?: string[] | undefined;
+						/**
+						 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
+						 * @type array | undefined
+						 */
+						required_edge_functions?: string[] | undefined;
 						/**
 						 * @type string | undefined
 						 */
@@ -7680,6 +7725,11 @@ export type GetSiteStatus200 = {
 				 */
 				required_functions?: string[] | undefined;
 				/**
+				 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
+				 * @type array | undefined
+				 */
+				required_edge_functions?: string[] | undefined;
+				/**
 				 * @type string | undefined
 				 */
 				error_message?: string | undefined;
@@ -8147,6 +8197,11 @@ export type UpdateSiteStatus200 = {
 				 */
 				required_functions?: string[] | undefined;
 				/**
+				 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
+				 * @type array | undefined
+				 */
+				required_edge_functions?: string[] | undefined;
+				/**
 				 * @type string | undefined
 				 */
 				error_message?: string | undefined;
@@ -8567,6 +8622,11 @@ export type UpdateSiteData =
 						 * @type array | undefined
 						 */
 						required_functions?: string[] | undefined;
+						/**
+						 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
+						 * @type array | undefined
+						 */
+						required_edge_functions?: string[] | undefined;
 						/**
 						 * @type string | undefined
 						 */
@@ -12809,6 +12869,11 @@ export type ListSiteDeploysStatus200 = {
 	 */
 	required_functions?: string[] | undefined;
 	/**
+	 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
+	 * @type array | undefined
+	 */
+	required_edge_functions?: string[] | undefined;
+	/**
 	 * @type string | undefined
 	 */
 	error_message?: string | undefined;
@@ -13083,6 +13148,11 @@ export type CreateSiteDeployStatus200 = {
 	 */
 	required_functions?: string[] | undefined;
 	/**
+	 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
+	 * @type array | undefined
+	 */
+	required_edge_functions?: string[] | undefined;
+	/**
 	 * @type string | undefined
 	 */
 	error_message?: string | undefined;
@@ -13218,6 +13288,11 @@ export type CreateSiteDeployData =
 			 * @type object | undefined
 			 */
 			functions?: object | undefined;
+			/**
+			 * @description A hash mapping edge-function bundle formats to the code_sha of each bundle. The\nresponse\'s required_edge_functions lists which of these still need to be uploaded.\n
+			 * @type object | undefined
+			 */
+			edge_functions?: object | undefined;
 			/**
 			 * @type array | undefined
 			 */
@@ -13552,6 +13627,11 @@ export type GetSiteDeployStatus200 = {
 	 */
 	required_functions?: string[] | undefined;
 	/**
+	 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
+	 * @type array | undefined
+	 */
+	required_edge_functions?: string[] | undefined;
+	/**
 	 * @type string | undefined
 	 */
 	error_message?: string | undefined;
@@ -13776,6 +13856,11 @@ export type UpdateSiteDeployStatus200 = {
 	 */
 	required_functions?: string[] | undefined;
 	/**
+	 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
+	 * @type array | undefined
+	 */
+	required_edge_functions?: string[] | undefined;
+	/**
 	 * @type string | undefined
 	 */
 	error_message?: string | undefined;
@@ -13911,6 +13996,11 @@ export type UpdateSiteDeployData =
 			 * @type object | undefined
 			 */
 			functions?: object | undefined;
+			/**
+			 * @description A hash mapping edge-function bundle formats to the code_sha of each bundle. The\nresponse\'s required_edge_functions lists which of these still need to be uploaded.\n
+			 * @type object | undefined
+			 */
+			edge_functions?: object | undefined;
 			/**
 			 * @type array | undefined
 			 */
@@ -14298,6 +14388,11 @@ export type CancelSiteDeployStatus201 = {
 	 */
 	required_functions?: string[] | undefined;
 	/**
+	 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
+	 * @type array | undefined
+	 */
+	required_edge_functions?: string[] | undefined;
+	/**
 	 * @type string | undefined
 	 */
 	error_message?: string | undefined;
@@ -14515,6 +14610,11 @@ export type RestoreSiteDeployStatus201 = {
 	 * @type array | undefined
 	 */
 	required_functions?: string[] | undefined;
+	/**
+	 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
+	 * @type array | undefined
+	 */
+	required_edge_functions?: string[] | undefined;
 	/**
 	 * @type string | undefined
 	 */
@@ -15149,6 +15249,11 @@ export type UnlinkSiteRepoStatus200 = {
 				 * @type array | undefined
 				 */
 				required_functions?: string[] | undefined;
+				/**
+				 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
+				 * @type array | undefined
+				 */
+				required_edge_functions?: string[] | undefined;
 				/**
 				 * @type string | undefined
 				 */
@@ -16380,6 +16485,11 @@ export type GetDeployStatus200 = {
 	 */
 	required_functions?: string[] | undefined;
 	/**
+	 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
+	 * @type array | undefined
+	 */
+	required_edge_functions?: string[] | undefined;
+	/**
 	 * @type string | undefined
 	 */
 	error_message?: string | undefined;
@@ -16729,6 +16839,11 @@ export type LockDeployStatus200 = {
 	 */
 	required_functions?: string[] | undefined;
 	/**
+	 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
+	 * @type array | undefined
+	 */
+	required_edge_functions?: string[] | undefined;
+	/**
 	 * @type string | undefined
 	 */
 	error_message?: string | undefined;
@@ -16941,6 +17056,11 @@ export type UnlockDeployStatus200 = {
 	 * @type array | undefined
 	 */
 	required_functions?: string[] | undefined;
+	/**
+	 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
+	 * @type array | undefined
+	 */
+	required_edge_functions?: string[] | undefined;
 	/**
 	 * @type string | undefined
 	 */
@@ -17298,6 +17418,82 @@ export type UploadDeployFunctionResponses = {
 export type UploadDeployFunctionResponse =
 	| UploadDeployFunctionStatus200
 	| UploadDeployFunctionStatusDefault;
+
+/**
+ * @type string
+ */
+export type UploadDeployEdgeFunctionPathDeployId = string;
+
+/**
+ * @type string
+ */
+export type UploadDeployEdgeFunctionPathCodeSha = string;
+
+/**
+ * @type integer | undefined
+ */
+export type UploadDeployEdgeFunctionHeaderXNfRetryCount = number | undefined;
+
+/**
+ * @type unknown
+ */
+export type UploadDeployEdgeFunctionStatus200 = unknown;
+
+/**
+ * @type object
+ */
+export type UploadDeployEdgeFunctionStatusDefault = {
+	/**
+	 * @type integer | undefined
+	 */
+	code?: bigint | undefined;
+	/**
+	 * @type string
+	 */
+	message: string;
+};
+
+/**
+ * @type object
+ */
+export type UploadDeployEdgeFunctionRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		deploy_id: UploadDeployEdgeFunctionPathDeployId;
+		code_sha: UploadDeployEdgeFunctionPathCodeSha;
+	};
+	queryParams?: never | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	headerParams?:
+		| {
+				"X-Nf-Retry-Count"?: UploadDeployEdgeFunctionHeaderXNfRetryCount | undefined;
+		  }
+		| undefined;
+	/**
+	 * @type string
+	 */
+	url: `/deploys/${string}/edge_functions/${string}`;
+};
+
+/**
+ * @type object
+ */
+export type UploadDeployEdgeFunctionResponses = {
+	"200": UploadDeployEdgeFunctionStatus200;
+	default: UploadDeployEdgeFunctionStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type UploadDeployEdgeFunctionResponse =
+	| UploadDeployEdgeFunctionStatus200
+	| UploadDeployEdgeFunctionStatusDefault;
 
 /**
  * @type string
@@ -18972,6 +19168,11 @@ export type CreateSiteInTeamStatus201 = {
 				 */
 				required_functions?: string[] | undefined;
 				/**
+				 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
+				 * @type array | undefined
+				 */
+				required_edge_functions?: string[] | undefined;
+				/**
 				 * @type string | undefined
 				 */
 				error_message?: string | undefined;
@@ -19392,6 +19593,11 @@ export type CreateSiteInTeamData =
 						 * @type array | undefined
 						 */
 						required_functions?: string[] | undefined;
+						/**
+						 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
+						 * @type array | undefined
+						 */
+						required_edge_functions?: string[] | undefined;
 						/**
 						 * @type string | undefined
 						 */
@@ -19935,6 +20141,11 @@ export type ListSitesForAccountStatus200 = {
 				 * @type array | undefined
 				 */
 				required_functions?: string[] | undefined;
+				/**
+				 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
+				 * @type array | undefined
+				 */
+				required_edge_functions?: string[] | undefined;
 				/**
 				 * @type string | undefined
 				 */
