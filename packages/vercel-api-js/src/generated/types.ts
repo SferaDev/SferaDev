@@ -1430,6 +1430,9 @@ export const userEventTypeEnum = {
 	"ai-gateway-byok-credential-created": "ai-gateway-byok-credential-created",
 	"ai-gateway-byok-credential-deleted": "ai-gateway-byok-credential-deleted",
 	"ai-gateway-byok-credential-updated": "ai-gateway-byok-credential-updated",
+	"ai-gateway-guardrails-updated": "ai-gateway-guardrails-updated",
+	"ai-gateway-model-allowlist-models-updated": "ai-gateway-model-allowlist-models-updated",
+	"ai-gateway-model-allowlist-toggled": "ai-gateway-model-allowlist-toggled",
 	"ai-gateway-private-model-created": "ai-gateway-private-model-created",
 	"ai-gateway-private-model-deleted": "ai-gateway-private-model-deleted",
 	"ai-gateway-private-model-updated": "ai-gateway-private-model-updated",
@@ -1447,6 +1450,7 @@ export const userEventTypeEnum = {
 	"ai-gateway-virtual-model-config-restored": "ai-gateway-virtual-model-config-restored",
 	"ai-gateway-virtual-model-config-updated": "ai-gateway-virtual-model-config-updated",
 	"ai-omniagent": "ai-omniagent",
+	"alert-investigation-project-allowlist-updated": "alert-investigation-project-allowlist-updated",
 	"alert-rule-created": "alert-rule-created",
 	"alert-rule-deleted": "alert-rule-deleted",
 	"alert-rule-updated": "alert-rule-updated",
@@ -1556,6 +1560,7 @@ export const userEventTypeEnum = {
 	"domain-transfer-in-canceled": "domain-transfer-in-canceled",
 	"domain-transfer-in-completed": "domain-transfer-in-completed",
 	"domain-zone-change": "domain-zone-change",
+	"domain-zone-change-internal": "domain-zone-change-internal",
 	"drain-created": "drain-created",
 	"drain-deleted": "drain-deleted",
 	"drain-disabled": "drain-disabled",
@@ -1664,6 +1669,8 @@ export const userEventTypeEnum = {
 	"observability-enabled": "observability-enabled",
 	"observability-plus-project-disabled": "observability-plus-project-disabled",
 	"observability-plus-project-enabled": "observability-plus-project-enabled",
+	"organization-create": "organization-create",
+	"organization-slug-update": "organization-slug-update",
 	"organization-team-add": "organization-team-add",
 	"owner-blocked": "owner-blocked",
 	"owner-soft-blocked": "owner-soft-blocked",
@@ -1823,6 +1830,9 @@ export const userEventTypeEnum = {
 	"secret-add": "secret-add",
 	"secret-delete": "secret-delete",
 	"secret-rename": "secret-rename",
+	"security-list-created": "security-list-created",
+	"security-list-deleted": "security-list-deleted",
+	"security-list-updated": "security-list-updated",
 	"security-plus-updated": "security-plus-updated",
 	"set-bio": "set-bio",
 	"set-name": "set-name",
@@ -1861,6 +1871,7 @@ export const userEventTypeEnum = {
 	"storage-upgrade-project-connection-to-oidc": "storage-upgrade-project-connection-to-oidc",
 	"storage-view-secret": "storage-view-secret",
 	"strict-deployment-protection-settings": "strict-deployment-protection-settings",
+	"strict-password-protection-settings": "strict-password-protection-settings",
 	"strict-shareable-links": "strict-shareable-links",
 	"subscription-created": "subscription-created",
 	"subscription-product-added": "subscription-product-added",
@@ -1879,6 +1890,8 @@ export const userEventTypeEnum = {
 	"team-emu-account-split": "team-emu-account-split",
 	"team-emu-updated": "team-emu-updated",
 	"team-ended-trial": "team-ended-trial",
+	"team-firewall-config-modified": "team-firewall-config-modified",
+	"team-firewall-config-promoted": "team-firewall-config-promoted",
 	"team-git-repository-dispatch-events-toggled": "team-git-repository-dispatch-events-toggled",
 	"team-git-require-verified-commits-toggled": "team-git-require-verified-commits-toggled",
 	"team-invite-bulk-delete": "team-invite-bulk-delete",
@@ -1904,6 +1917,7 @@ export const userEventTypeEnum = {
 	"team-name-update": "team-name-update",
 	"team-paid-invoice": "team-paid-invoice",
 	"team-program-enrollment-changed": "team-program-enrollment-changed",
+	"team-remote-caching-purge": "team-remote-caching-purge",
 	"team-remote-caching-update": "team-remote-caching-update",
 	"team-saml-enforced": "team-saml-enforced",
 	"team-saml-roles": "team-saml-roles",
@@ -1928,6 +1942,10 @@ export const userEventTypeEnum = {
 	"v0-chat-ai-usage": "v0-chat-ai-usage",
 	"v0-chat-created": "v0-chat-created",
 	"v0-chat-message-sent": "v0-chat-message-sent",
+	"vcr-image-deleted": "vcr-image-deleted",
+	"vcr-image-pushed": "vcr-image-pushed",
+	"vcr-repository-created": "vcr-repository-created",
+	"vcr-repository-deleted": "vcr-repository-deleted",
 	"vercel-agent-elevated-permissions-approved": "vercel-agent-elevated-permissions-approved",
 	"vercel-agent-elevated-permissions-requested": "vercel-agent-elevated-permissions-requested",
 	"vercel-agent-session-created": "vercel-agent-session-created",
@@ -2081,6 +2099,7 @@ export type PlanSlugEnumKey = (typeof planSlugEnum)[keyof typeof planSlugEnum];
 
 export const reasonEnum = {
 	BLOCKED_FOR_PLATFORM_ABUSE: "BLOCKED_FOR_PLATFORM_ABUSE",
+	DOMAIN_OWNER_DELETION_REQUEST: "DOMAIN_OWNER_DELETION_REQUEST",
 	ENTERPRISE_TRIAL_ENDED: "ENTERPRISE_TRIAL_ENDED",
 	ENTERPRISE_UNPAID_INVOICE: "ENTERPRISE_UNPAID_INVOICE",
 	EXPOSURE_CAP_EXCEEDED: "EXPOSURE_CAP_EXCEEDED",
@@ -2620,6 +2639,8 @@ export type TierEnumKey = (typeof tierEnum)[keyof typeof tierEnum];
 export const grantTypeEnum = {
 	authorization_code: "authorization_code",
 	"urn:ietf:params:oauth:grant-type:device_code": "urn:ietf:params:oauth:grant-type:device_code",
+	"urn:ietf:params:oauth:grant-type:token-exchange":
+		"urn:ietf:params:oauth:grant-type:token-exchange",
 } as const;
 
 export type GrantTypeEnumKey = (typeof grantTypeEnum)[keyof typeof grantTypeEnum];
@@ -3214,6 +3235,22 @@ export type UserEvent = {
 				  }
 				| {
 						/**
+						 * @type boolean
+						 */
+						enabled: false | true;
+				  }
+				| {
+						/**
+						 * @type array
+						 */
+						added: string[];
+						/**
+						 * @type array
+						 */
+						removed: string[];
+				  }
+				| {
+						/**
 						 * @type object
 						 */
 						privateModel: {
@@ -3251,19 +3288,34 @@ export type UserEvent = {
 				  }
 				| {
 						/**
-						 * @type boolean
+						 * @type object
 						 */
-						enabled: false | true;
-				  }
-				| {
+						piiRedaction: {
+							/**
+							 * @type boolean
+							 */
+							from: false | true;
+							/**
+							 * @type boolean
+							 */
+							to: false | true;
+						};
+						/**
+						 * @type number
+						 */
+						moderationPolicyCount: number;
 						/**
 						 * @type array
 						 */
-						added: string[];
+						policiesAdded: string[];
 						/**
 						 * @type array
 						 */
-						removed: string[];
+						policiesRemoved: string[];
+						/**
+						 * @type array
+						 */
+						policiesModified: string[];
 				  }
 				| {
 						/**
@@ -3824,7 +3876,10 @@ export type UserEvent = {
 						 */
 						permissions?:
 							| (
+									| "manage:speed-insights"
+									| "manage:web-analytics"
 									| "read-write:ai-gateway-api-key"
+									| "read-write:ai-gateway-guardrails"
 									| "read-write:ai-gateway-private-models"
 									| "read-write:ai-gateway-rules"
 									| "read-write:alerts"
@@ -3848,7 +3903,9 @@ export type UserEvent = {
 									| "read-write:project-protection-bypass"
 									| "read-write:remote-cache"
 									| "read-write:sandbox"
+									| "read-write:team-members"
 									| "read:access-group"
+									| "read:ai-gateway-guardrails"
 									| "read:ai-gateway-private-models"
 									| "read:ai-gateway-rules"
 									| "read:alerts"
@@ -3862,9 +3919,13 @@ export type UserEvent = {
 									| "read:project"
 									| "read:project-env-vars-non-production"
 									| "read:project-env-vars-production"
+									| "read:project-flags"
+									| "read:remote-cache"
 									| "read:sandbox"
+									| "read:speed-insights"
 									| "read:team"
 									| "read:user"
+									| "read:web-analytics"
 									| "use:ai-gateway"
 							  )[]
 							| undefined;
@@ -3897,7 +3958,10 @@ export type UserEvent = {
 						 */
 						nextPermissions?:
 							| (
+									| "manage:speed-insights"
+									| "manage:web-analytics"
 									| "read-write:ai-gateway-api-key"
+									| "read-write:ai-gateway-guardrails"
 									| "read-write:ai-gateway-private-models"
 									| "read-write:ai-gateway-rules"
 									| "read-write:alerts"
@@ -3921,7 +3985,9 @@ export type UserEvent = {
 									| "read-write:project-protection-bypass"
 									| "read-write:remote-cache"
 									| "read-write:sandbox"
+									| "read-write:team-members"
 									| "read:access-group"
+									| "read:ai-gateway-guardrails"
 									| "read:ai-gateway-private-models"
 									| "read:ai-gateway-rules"
 									| "read:alerts"
@@ -3935,9 +4001,13 @@ export type UserEvent = {
 									| "read:project"
 									| "read:project-env-vars-non-production"
 									| "read:project-env-vars-production"
+									| "read:project-flags"
+									| "read:remote-cache"
 									| "read:sandbox"
+									| "read:speed-insights"
 									| "read:team"
 									| "read:user"
+									| "read:web-analytics"
 									| "use:ai-gateway"
 							  )[]
 							| undefined;
@@ -3995,7 +4065,10 @@ export type UserEvent = {
 									 */
 									permissions?:
 										| (
+												| "manage:speed-insights"
+												| "manage:web-analytics"
 												| "read-write:ai-gateway-api-key"
+												| "read-write:ai-gateway-guardrails"
 												| "read-write:ai-gateway-private-models"
 												| "read-write:ai-gateway-rules"
 												| "read-write:alerts"
@@ -4019,7 +4092,9 @@ export type UserEvent = {
 												| "read-write:project-protection-bypass"
 												| "read-write:remote-cache"
 												| "read-write:sandbox"
+												| "read-write:team-members"
 												| "read:access-group"
+												| "read:ai-gateway-guardrails"
 												| "read:ai-gateway-private-models"
 												| "read:ai-gateway-rules"
 												| "read:alerts"
@@ -4033,8 +4108,12 @@ export type UserEvent = {
 												| "read:project"
 												| "read:project-env-vars-non-production"
 												| "read:project-env-vars-production"
+												| "read:project-flags"
+												| "read:remote-cache"
 												| "read:sandbox"
+												| "read:speed-insights"
 												| "read:team"
+												| "read:web-analytics"
 												| "use:ai-gateway"
 										  )[]
 										| undefined;
@@ -4080,7 +4159,10 @@ export type UserEvent = {
 									 */
 									permissions?:
 										| (
+												| "manage:speed-insights"
+												| "manage:web-analytics"
 												| "read-write:ai-gateway-api-key"
+												| "read-write:ai-gateway-guardrails"
 												| "read-write:ai-gateway-private-models"
 												| "read-write:ai-gateway-rules"
 												| "read-write:alerts"
@@ -4104,7 +4186,9 @@ export type UserEvent = {
 												| "read-write:project-protection-bypass"
 												| "read-write:remote-cache"
 												| "read-write:sandbox"
+												| "read-write:team-members"
 												| "read:access-group"
+												| "read:ai-gateway-guardrails"
 												| "read:ai-gateway-private-models"
 												| "read:ai-gateway-rules"
 												| "read:alerts"
@@ -4118,8 +4202,12 @@ export type UserEvent = {
 												| "read:project"
 												| "read:project-env-vars-non-production"
 												| "read:project-env-vars-production"
+												| "read:project-flags"
+												| "read:remote-cache"
 												| "read:sandbox"
+												| "read:speed-insights"
 												| "read:team"
+												| "read:web-analytics"
 												| "use:ai-gateway"
 										  )[]
 										| undefined;
@@ -4170,7 +4258,10 @@ export type UserEvent = {
 						 */
 						permissions?:
 							| (
+									| "manage:speed-insights"
+									| "manage:web-analytics"
 									| "read-write:ai-gateway-api-key"
+									| "read-write:ai-gateway-guardrails"
 									| "read-write:ai-gateway-private-models"
 									| "read-write:ai-gateway-rules"
 									| "read-write:alerts"
@@ -4194,7 +4285,9 @@ export type UserEvent = {
 									| "read-write:project-protection-bypass"
 									| "read-write:remote-cache"
 									| "read-write:sandbox"
+									| "read-write:team-members"
 									| "read:access-group"
+									| "read:ai-gateway-guardrails"
 									| "read:ai-gateway-private-models"
 									| "read:ai-gateway-rules"
 									| "read:alerts"
@@ -4208,8 +4301,12 @@ export type UserEvent = {
 									| "read:project"
 									| "read:project-env-vars-non-production"
 									| "read:project-env-vars-production"
+									| "read:project-flags"
+									| "read:remote-cache"
 									| "read:sandbox"
+									| "read:speed-insights"
 									| "read:team"
+									| "read:web-analytics"
 									| "use:ai-gateway"
 							  )[]
 							| undefined;
@@ -6837,6 +6934,10 @@ export type UserEvent = {
 						 * @type string
 						 */
 						name: string;
+						/**
+						 * @type boolean | undefined
+						 */
+						zone?: (false | true) | undefined;
 				  }
 				| {
 						/**
@@ -6974,6 +7075,28 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
+						domain: string;
+						/**
+						 * @type boolean
+						 */
+						zone: false | true;
+						/**
+						 * @type string
+						 */
+						initiator: InitiatorEnumKey;
+						/**
+						 * @type string | undefined
+						 */
+						source?: string | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						previousZone?: (false | true) | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
 						name: string;
 						/**
 						 * @type string
@@ -7035,6 +7158,12 @@ export type UserEvent = {
 						 * @type string | undefined
 						 */
 						currency?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						name: string;
 				  }
 				| {
 						/**
@@ -7910,6 +8039,9 @@ export type UserEvent = {
 						 * @type string
 						 */
 						projectName: string;
+						configVersion: string | number;
+				  }
+				| {
 						configVersion: string | number;
 				  }
 				| {
@@ -8812,6 +8944,9 @@ export type UserEvent = {
 										 */
 										teamPermissions?:
 											| (
+													| "AiGatewayApiKeyOwnedBySelf"
+													| "AiGatewayCredits"
+													| "AiGatewaySettings"
 													| "CreateProject"
 													| "EnvVariableManager"
 													| "EnvironmentManager"
@@ -10028,7 +10163,7 @@ export type UserEvent = {
 										/**
 										 * @type object | undefined
 										 */
-										workflowStorage?:
+										workflowStorageWrite?:
 											| {
 													/**
 													 * @type number
@@ -10051,7 +10186,7 @@ export type UserEvent = {
 										/**
 										 * @type object | undefined
 										 */
-										workflowStep?:
+										workflowEvents?:
 											| {
 													/**
 													 * @type number
@@ -10075,6 +10210,29 @@ export type UserEvent = {
 										 * @type object | undefined
 										 */
 										connexTokenRequests?:
+											| {
+													/**
+													 * @type number
+													 */
+													updatedAt: number;
+													/**
+													 * @type number | undefined
+													 */
+													blockedFrom?: number | undefined;
+													/**
+													 * @type number | undefined
+													 */
+													blockedUntil?: number | undefined;
+													/**
+													 * @type string
+													 */
+													blockReason: BlockReasonEnumKey;
+											  }
+											| undefined;
+										/**
+										 * @type object | undefined
+										 */
+										vcr?:
 											| {
 													/**
 													 * @type number
@@ -11059,6 +11217,34 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
+						rootTeamId: string;
+						/**
+						 * @type string
+						 */
+						slug: string;
+						/**
+						 * @type string
+						 */
+						name: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						organizationId: string;
+						/**
+						 * @type string
+						 */
+						slug: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						organizationId: string;
+						/**
+						 * @type string
+						 */
 						teamId: string;
 						/**
 						 * @type string
@@ -11173,6 +11359,10 @@ export type UserEvent = {
 							 * @type boolean
 							 */
 							allowUnsafeScriptSrcKeywords: false | true;
+							/**
+							 * @type boolean | undefined
+							 */
+							omitScriptNonce?: (false | true) | undefined;
 						} | null;
 						/**
 						 * @type object
@@ -11198,6 +11388,10 @@ export type UserEvent = {
 							 * @type boolean
 							 */
 							allowUnsafeScriptSrcKeywords: false | true;
+							/**
+							 * @type boolean | undefined
+							 */
+							omitScriptNonce?: (false | true) | undefined;
 						};
 				  }
 				| {
@@ -12030,6 +12224,11 @@ export type UserEvent = {
 						 * @type boolean | undefined
 						 */
 						isSystemInitiated?: (false | true) | undefined;
+						/**
+						 * @description For system-initiated (elastic) changes, why the build machine was upgraded/downgraded. Stored as the raw reason code (see `ElasticChangeReason` in `@api/build-machines-types`) and rendered as a human-readable clause in the activity/audit log.
+						 * @type string | undefined
+						 */
+						reason?: string | undefined;
 				  }
 				| {
 						/**
@@ -15507,6 +15706,12 @@ export type UserEvent = {
 				  }
 				| {
 						/**
+						 * @type number
+						 */
+						deletedCount: number;
+				  }
+				| {
+						/**
 						 * @type string
 						 */
 						enabled: EnabledEnumKey;
@@ -15738,7 +15943,71 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string
+						 */
+						repositoryName: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string
+						 */
+						repositoryName: string;
+						/**
+						 * @type string
+						 */
+						reference: string;
+						/**
+						 * @type string
+						 */
+						digest: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string
+						 */
+						repositoryName: string;
+						/**
+						 * @type string
+						 */
+						reference: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
 						ruleName: string;
+				  }
+				| {
+						/**
+						 * @type number
+						 */
+						previousProjectCount: number | null;
+						/**
+						 * @type number
+						 */
+						nextProjectCount: number | null;
 				  }
 				| {
 						/**
@@ -15930,6 +16199,63 @@ export type UserEvent = {
 						 * @type string
 						 */
 						useCase: string;
+						/**
+						 * @type string
+						 */
+						chatId: string;
+						/**
+						 * @type string
+						 */
+						messageId: string;
+						/**
+						 * @type number
+						 */
+						inputTokens: number;
+						/**
+						 * @type number
+						 */
+						outputTokens: number;
+						/**
+						 * @type number
+						 */
+						timestamp: number;
+						/**
+						 * @type array
+						 */
+						events: {
+							/**
+							 * @type string
+							 */
+							eventId: string;
+							/**
+							 * @type string
+							 */
+							modelId: string;
+							/**
+							 * @type number
+							 */
+							inputTokens: number;
+							/**
+							 * @type number
+							 */
+							outputTokens: number;
+							/**
+							 * @type number
+							 */
+							totalTokens: number;
+							/**
+							 * @type number
+							 */
+							cacheCreationInputTokens: number;
+							/**
+							 * @type number
+							 */
+							cacheReadInputTokens: number;
+							/**
+							 * @type string
+							 */
+							timestamp: string;
+						}[];
 				  }
 				| {
 						/**
@@ -16125,6 +16451,21 @@ export type UserEvent = {
 						 * @type string | undefined
 						 */
 						userAgent?: string | undefined;
+						/**
+						 * @description OIDC issuer (`iss`) of the token that authenticated the request. Present for OIDC-authenticated flows: the token-exchange grant, or `client_credentials` with the `oidc_token` client-authentication method.
+						 * @type string | undefined
+						 */
+						issuerUrl?: string | undefined;
+						/**
+						 * @description ID of the OIDC-exchange policy that authorized a token-exchange grant. Absent for the `client_credentials` + `oidc_token` flow, which matches an app `oidcProviders` entry rather than a policy.
+						 * @type string | undefined
+						 */
+						policyId?: string | undefined;
+						/**
+						 * @description `sub` claim of the OIDC token. Present for OIDC-authenticated flows (see {@link issuerUrl}).
+						 * @type string | undefined
+						 */
+						oidcSubject?: string | undefined;
 				  }
 				| {
 						/**
@@ -16478,6 +16819,9 @@ export const listEventTypeNameEnum = {
 	"ai-gateway-byok-credential-created": "ai-gateway-byok-credential-created",
 	"ai-gateway-byok-credential-deleted": "ai-gateway-byok-credential-deleted",
 	"ai-gateway-byok-credential-updated": "ai-gateway-byok-credential-updated",
+	"ai-gateway-guardrails-updated": "ai-gateway-guardrails-updated",
+	"ai-gateway-model-allowlist-models-updated": "ai-gateway-model-allowlist-models-updated",
+	"ai-gateway-model-allowlist-toggled": "ai-gateway-model-allowlist-toggled",
 	"ai-gateway-private-model-created": "ai-gateway-private-model-created",
 	"ai-gateway-private-model-deleted": "ai-gateway-private-model-deleted",
 	"ai-gateway-private-model-updated": "ai-gateway-private-model-updated",
@@ -16495,6 +16839,7 @@ export const listEventTypeNameEnum = {
 	"ai-gateway-virtual-model-config-restored": "ai-gateway-virtual-model-config-restored",
 	"ai-gateway-virtual-model-config-updated": "ai-gateway-virtual-model-config-updated",
 	"ai-omniagent": "ai-omniagent",
+	"alert-investigation-project-allowlist-updated": "alert-investigation-project-allowlist-updated",
 	"alert-rule-created": "alert-rule-created",
 	"alert-rule-deleted": "alert-rule-deleted",
 	"alert-rule-updated": "alert-rule-updated",
@@ -16604,6 +16949,7 @@ export const listEventTypeNameEnum = {
 	"domain-transfer-in-canceled": "domain-transfer-in-canceled",
 	"domain-transfer-in-completed": "domain-transfer-in-completed",
 	"domain-zone-change": "domain-zone-change",
+	"domain-zone-change-internal": "domain-zone-change-internal",
 	"drain-created": "drain-created",
 	"drain-deleted": "drain-deleted",
 	"drain-disabled": "drain-disabled",
@@ -16712,6 +17058,8 @@ export const listEventTypeNameEnum = {
 	"observability-enabled": "observability-enabled",
 	"observability-plus-project-disabled": "observability-plus-project-disabled",
 	"observability-plus-project-enabled": "observability-plus-project-enabled",
+	"organization-create": "organization-create",
+	"organization-slug-update": "organization-slug-update",
 	"organization-team-add": "organization-team-add",
 	"owner-blocked": "owner-blocked",
 	"owner-soft-blocked": "owner-soft-blocked",
@@ -16871,6 +17219,9 @@ export const listEventTypeNameEnum = {
 	"secret-add": "secret-add",
 	"secret-delete": "secret-delete",
 	"secret-rename": "secret-rename",
+	"security-list-created": "security-list-created",
+	"security-list-deleted": "security-list-deleted",
+	"security-list-updated": "security-list-updated",
 	"security-plus-updated": "security-plus-updated",
 	"set-bio": "set-bio",
 	"set-name": "set-name",
@@ -16909,6 +17260,7 @@ export const listEventTypeNameEnum = {
 	"storage-upgrade-project-connection-to-oidc": "storage-upgrade-project-connection-to-oidc",
 	"storage-view-secret": "storage-view-secret",
 	"strict-deployment-protection-settings": "strict-deployment-protection-settings",
+	"strict-password-protection-settings": "strict-password-protection-settings",
 	"strict-shareable-links": "strict-shareable-links",
 	"subscription-created": "subscription-created",
 	"subscription-product-added": "subscription-product-added",
@@ -16927,6 +17279,8 @@ export const listEventTypeNameEnum = {
 	"team-emu-account-split": "team-emu-account-split",
 	"team-emu-updated": "team-emu-updated",
 	"team-ended-trial": "team-ended-trial",
+	"team-firewall-config-modified": "team-firewall-config-modified",
+	"team-firewall-config-promoted": "team-firewall-config-promoted",
 	"team-git-repository-dispatch-events-toggled": "team-git-repository-dispatch-events-toggled",
 	"team-git-require-verified-commits-toggled": "team-git-require-verified-commits-toggled",
 	"team-invite-bulk-delete": "team-invite-bulk-delete",
@@ -16952,6 +17306,7 @@ export const listEventTypeNameEnum = {
 	"team-name-update": "team-name-update",
 	"team-paid-invoice": "team-paid-invoice",
 	"team-program-enrollment-changed": "team-program-enrollment-changed",
+	"team-remote-caching-purge": "team-remote-caching-purge",
 	"team-remote-caching-update": "team-remote-caching-update",
 	"team-saml-enforced": "team-saml-enforced",
 	"team-saml-roles": "team-saml-roles",
@@ -16976,6 +17331,10 @@ export const listEventTypeNameEnum = {
 	"v0-chat-ai-usage": "v0-chat-ai-usage",
 	"v0-chat-created": "v0-chat-created",
 	"v0-chat-message-sent": "v0-chat-message-sent",
+	"vcr-image-deleted": "vcr-image-deleted",
+	"vcr-image-pushed": "vcr-image-pushed",
+	"vcr-repository-created": "vcr-repository-created",
+	"vcr-repository-deleted": "vcr-repository-deleted",
 	"vercel-agent-elevated-permissions-approved": "vercel-agent-elevated-permissions-approved",
 	"vercel-agent-elevated-permissions-requested": "vercel-agent-elevated-permissions-requested",
 	"vercel-agent-session-created": "vercel-agent-session-created",
@@ -17052,6 +17411,9 @@ export const listEventTypeReplacedByEnum = {
 	"ai-gateway-byok-credential-created": "ai-gateway-byok-credential-created",
 	"ai-gateway-byok-credential-deleted": "ai-gateway-byok-credential-deleted",
 	"ai-gateway-byok-credential-updated": "ai-gateway-byok-credential-updated",
+	"ai-gateway-guardrails-updated": "ai-gateway-guardrails-updated",
+	"ai-gateway-model-allowlist-models-updated": "ai-gateway-model-allowlist-models-updated",
+	"ai-gateway-model-allowlist-toggled": "ai-gateway-model-allowlist-toggled",
 	"ai-gateway-private-model-created": "ai-gateway-private-model-created",
 	"ai-gateway-private-model-deleted": "ai-gateway-private-model-deleted",
 	"ai-gateway-private-model-updated": "ai-gateway-private-model-updated",
@@ -17069,6 +17431,7 @@ export const listEventTypeReplacedByEnum = {
 	"ai-gateway-virtual-model-config-restored": "ai-gateway-virtual-model-config-restored",
 	"ai-gateway-virtual-model-config-updated": "ai-gateway-virtual-model-config-updated",
 	"ai-omniagent": "ai-omniagent",
+	"alert-investigation-project-allowlist-updated": "alert-investigation-project-allowlist-updated",
 	"alert-rule-created": "alert-rule-created",
 	"alert-rule-deleted": "alert-rule-deleted",
 	"alert-rule-updated": "alert-rule-updated",
@@ -17178,6 +17541,7 @@ export const listEventTypeReplacedByEnum = {
 	"domain-transfer-in-canceled": "domain-transfer-in-canceled",
 	"domain-transfer-in-completed": "domain-transfer-in-completed",
 	"domain-zone-change": "domain-zone-change",
+	"domain-zone-change-internal": "domain-zone-change-internal",
 	"drain-created": "drain-created",
 	"drain-deleted": "drain-deleted",
 	"drain-disabled": "drain-disabled",
@@ -17286,6 +17650,8 @@ export const listEventTypeReplacedByEnum = {
 	"observability-enabled": "observability-enabled",
 	"observability-plus-project-disabled": "observability-plus-project-disabled",
 	"observability-plus-project-enabled": "observability-plus-project-enabled",
+	"organization-create": "organization-create",
+	"organization-slug-update": "organization-slug-update",
 	"organization-team-add": "organization-team-add",
 	"owner-blocked": "owner-blocked",
 	"owner-soft-blocked": "owner-soft-blocked",
@@ -17445,6 +17811,9 @@ export const listEventTypeReplacedByEnum = {
 	"secret-add": "secret-add",
 	"secret-delete": "secret-delete",
 	"secret-rename": "secret-rename",
+	"security-list-created": "security-list-created",
+	"security-list-deleted": "security-list-deleted",
+	"security-list-updated": "security-list-updated",
 	"security-plus-updated": "security-plus-updated",
 	"set-bio": "set-bio",
 	"set-name": "set-name",
@@ -17483,6 +17852,7 @@ export const listEventTypeReplacedByEnum = {
 	"storage-upgrade-project-connection-to-oidc": "storage-upgrade-project-connection-to-oidc",
 	"storage-view-secret": "storage-view-secret",
 	"strict-deployment-protection-settings": "strict-deployment-protection-settings",
+	"strict-password-protection-settings": "strict-password-protection-settings",
 	"strict-shareable-links": "strict-shareable-links",
 	"subscription-created": "subscription-created",
 	"subscription-product-added": "subscription-product-added",
@@ -17501,6 +17871,8 @@ export const listEventTypeReplacedByEnum = {
 	"team-emu-account-split": "team-emu-account-split",
 	"team-emu-updated": "team-emu-updated",
 	"team-ended-trial": "team-ended-trial",
+	"team-firewall-config-modified": "team-firewall-config-modified",
+	"team-firewall-config-promoted": "team-firewall-config-promoted",
 	"team-git-repository-dispatch-events-toggled": "team-git-repository-dispatch-events-toggled",
 	"team-git-require-verified-commits-toggled": "team-git-require-verified-commits-toggled",
 	"team-invite-bulk-delete": "team-invite-bulk-delete",
@@ -17526,6 +17898,7 @@ export const listEventTypeReplacedByEnum = {
 	"team-name-update": "team-name-update",
 	"team-paid-invoice": "team-paid-invoice",
 	"team-program-enrollment-changed": "team-program-enrollment-changed",
+	"team-remote-caching-purge": "team-remote-caching-purge",
 	"team-remote-caching-update": "team-remote-caching-update",
 	"team-saml-enforced": "team-saml-enforced",
 	"team-saml-roles": "team-saml-roles",
@@ -17550,6 +17923,10 @@ export const listEventTypeReplacedByEnum = {
 	"v0-chat-ai-usage": "v0-chat-ai-usage",
 	"v0-chat-created": "v0-chat-created",
 	"v0-chat-message-sent": "v0-chat-message-sent",
+	"vcr-image-deleted": "vcr-image-deleted",
+	"vcr-image-pushed": "vcr-image-pushed",
+	"vcr-repository-created": "vcr-repository-created",
+	"vcr-repository-deleted": "vcr-repository-deleted",
 	"vercel-agent-elevated-permissions-approved": "vercel-agent-elevated-permissions-approved",
 	"vercel-agent-elevated-permissions-requested": "vercel-agent-elevated-permissions-requested",
 	"vercel-agent-session-created": "vercel-agent-session-created",
@@ -18997,6 +19374,12 @@ export type NamedSandbox = {
 	 * @type number
 	 */
 	updatedAt: number;
+	/**
+	 * @description The time at which the currently running sandbox will time out, in milliseconds since the epoch. Only present while a session is running.
+	 * @example 1750344801629
+	 * @type number | undefined
+	 */
+	expiresAt?: number | undefined;
 };
 
 /**
@@ -19441,6 +19824,12 @@ export type SessionCommand = {
 	 * @type number
 	 */
 	startedAt: number;
+	/**
+	 * @description Duration of the command execution in milliseconds.
+	 * @example 1234
+	 * @type number | undefined
+	 */
+	durationMs?: number | undefined;
 };
 
 export const invitedTeamMemberRoleEnum = {
@@ -19472,6 +19861,9 @@ export type InvitedTeamMemberTeamRolesEnumKey =
 	(typeof invitedTeamMemberTeamRolesEnum)[keyof typeof invitedTeamMemberTeamRolesEnum];
 
 export const invitedTeamMemberTeamPermissionsEnum = {
+	AiGatewayApiKeyOwnedBySelf: "AiGatewayApiKeyOwnedBySelf",
+	AiGatewayCredits: "AiGatewayCredits",
+	AiGatewaySettings: "AiGatewaySettings",
 	CreateProject: "CreateProject",
 	EnvVariableManager: "EnvVariableManager",
 	EnvironmentManager: "EnvironmentManager",
@@ -19571,6 +19963,9 @@ export type TeamDefaultRolesTeamRolesEnumKey =
 	(typeof teamDefaultRolesTeamRolesEnum)[keyof typeof teamDefaultRolesTeamRolesEnum];
 
 export const teamDefaultRolesTeamPermissionsEnum = {
+	AiGatewayApiKeyOwnedBySelf: "AiGatewayApiKeyOwnedBySelf",
+	AiGatewayCredits: "AiGatewayCredits",
+	AiGatewaySettings: "AiGatewaySettings",
 	CreateProject: "CreateProject",
 	EnvVariableManager: "EnvVariableManager",
 	EnvironmentManager: "EnvironmentManager",
@@ -19694,6 +20089,9 @@ export type TeamMembershipTeamRolesEnumKey =
 	(typeof teamMembershipTeamRolesEnum)[keyof typeof teamMembershipTeamRolesEnum];
 
 export const teamMembershipTeamPermissionsEnum = {
+	AiGatewayApiKeyOwnedBySelf: "AiGatewayApiKeyOwnedBySelf",
+	AiGatewayCredits: "AiGatewayCredits",
+	AiGatewaySettings: "AiGatewaySettings",
 	CreateProject: "CreateProject",
 	EnvVariableManager: "EnvVariableManager",
 	EnvironmentManager: "EnvironmentManager",
@@ -20260,6 +20658,22 @@ export type Team = {
 		  }
 		| undefined;
 	/**
+	 * @description When enabled, adding, changing, or removing project password protection requires Owner role.
+	 * @type object | undefined
+	 */
+	strictPasswordProtectionSettings?:
+		| {
+				/**
+				 * @type boolean
+				 */
+				enabled: false | true;
+				/**
+				 * @type number
+				 */
+				updatedAt: number;
+		  }
+		| undefined;
+	/**
 	 * @description NSNB configuration for the team.
 	 * @type object | undefined
 	 */
@@ -20604,6 +21018,9 @@ export type TeamLimitedMembershipTeamRolesEnumKey =
 	(typeof teamLimitedMembershipTeamRolesEnum)[keyof typeof teamLimitedMembershipTeamRolesEnum];
 
 export const teamLimitedMembershipTeamPermissionsEnum = {
+	AiGatewayApiKeyOwnedBySelf: "AiGatewayApiKeyOwnedBySelf",
+	AiGatewayCredits: "AiGatewayCredits",
+	AiGatewaySettings: "AiGatewaySettings",
 	CreateProject: "CreateProject",
 	EnvVariableManager: "EnvVariableManager",
 	EnvironmentManager: "EnvironmentManager",
@@ -21052,6 +21469,7 @@ export type AuthToken = {
 
 export const authUserSoftBlockReasonEnum = {
 	BLOCKED_FOR_PLATFORM_ABUSE: "BLOCKED_FOR_PLATFORM_ABUSE",
+	DOMAIN_OWNER_DELETION_REQUEST: "DOMAIN_OWNER_DELETION_REQUEST",
 	ENTERPRISE_TRIAL_ENDED: "ENTERPRISE_TRIAL_ENDED",
 	ENTERPRISE_UNPAID_INVOICE: "ENTERPRISE_UNPAID_INVOICE",
 	EXPOSURE_CAP_EXCEEDED: "EXPOSURE_CAP_EXCEEDED",
@@ -21500,6 +21918,14 @@ export type AuthUser = {
 					/**
 					 * @type string
 					 */
+					teamId: string;
+					/**
+					 * @type string
+					 */
+					slug: string;
+					/**
+					 * @type string
+					 */
 					name: string;
 					/**
 					 * @type string
@@ -21600,6 +22026,549 @@ export type AuthUserLimited = {
 	 * @type boolean | undefined
 	 */
 	isEnterpriseManaged?: (false | true) | undefined;
+};
+
+/**
+ * @description A Vercel Container Registry repository.
+ * @type object
+ */
+export type VcrRepository = {
+	/**
+	 * @description Unique identifier of the repository.
+	 * @example repo_a1b2c3d4e5f6
+	 * @type string
+	 */
+	id: string;
+	/**
+	 * @description Identifier of the project the repository belongs to.
+	 * @example prj_a1b2c3d4e5f6
+	 * @type string
+	 */
+	projectId: string;
+	/**
+	 * @description Name of the repository.
+	 * @example my-app
+	 * @type string
+	 */
+	name: string;
+	/**
+	 * @description ISO 8601 timestamp of when the repository was created.
+	 * @example 2026-06-30T10:00:00.000Z
+	 * @type string
+	 */
+	createdAt: string;
+	/**
+	 * @description ISO 8601 timestamp of when the repository was last updated.
+	 * @example 2026-06-30T10:00:00.000Z
+	 * @type string
+	 */
+	updatedAt: string;
+};
+
+/**
+ * @description A paginated list of Vercel Container Registry repositories.
+ * @type object
+ */
+export type VcrRepositoryList = {
+	/**
+	 * @type array
+	 */
+	repositories: unknown[];
+	/**
+	 * @description Cursor to fetch the next page of results, when more are available.
+	 * @type string | undefined
+	 */
+	nextCursor?: string | undefined;
+};
+
+export const vcrImageListItemStatusEnum = {
+	preparing: "preparing",
+	ready: "ready",
+	unoptimized: "unoptimized",
+} as const;
+
+export type VcrImageListItemStatusEnumKey =
+	(typeof vcrImageListItemStatusEnum)[keyof typeof vcrImageListItemStatusEnum];
+
+export const vcrImageListItemKindEnum = {
+	attestation: "attestation",
+	index: "index",
+	manifest: "manifest",
+} as const;
+
+export type VcrImageListItemKindEnumKey =
+	(typeof vcrImageListItemKindEnum)[keyof typeof vcrImageListItemKindEnum];
+
+/**
+ * @description An image enriched with its tags and VHS-readiness status, as returned when listing a repository\'s images.
+ * @type object
+ */
+export type VcrImageListItem = {
+	/**
+	 * @description VHS-readiness status, or `null` for a multi-platform index.
+	 * @type string
+	 */
+	status: VcrImageListItemStatusEnumKey | null;
+	/**
+	 * @description Tags pointing at this image\'s manifest.
+	 * @type array
+	 */
+	tags: string[];
+	/**
+	 * @description Internal identifier of the image.
+	 * @example img_a1b2c3d4e5f6
+	 * @type string
+	 */
+	id: string;
+	/**
+	 * @description Identifier of the repository the image belongs to.
+	 * @example repo_a1b2c3d4e5f6
+	 * @type string
+	 */
+	repositoryId: string;
+	/**
+	 * @description SHA-256 digest of the image manifest.
+	 * @example sha256:2c4e8f3a1b9d0e5c7a6f4b2d8e1c9a0b3d5f7e9c1a2b4d6f8e0c2a4b6d8f0e2c
+	 * @type string
+	 */
+	manifestDigest: string;
+	/**
+	 * @description Whether the manifest is a multi-platform image index, a single-platform image manifest or an attestation.
+	 * @type string
+	 */
+	kind: VcrImageListItemKindEnumKey;
+	/**
+	 * @description Operating system the manifest targets. Only present for single-platform manifests.
+	 * @example linux
+	 * @type string | undefined
+	 */
+	platform?: string | undefined;
+	/**
+	 * @description CPU architecture the manifest targets. Only present for single-platform manifests.
+	 * @example amd64
+	 * @type string | undefined
+	 */
+	arch?: string | undefined;
+	/**
+	 * @description Identifier of the actor that pushed the image.
+	 * @type string | undefined
+	 */
+	pushedBy?: string | undefined;
+	/**
+	 * @description Total size in bytes of the image\'s resources (manifest, config and layer blobs) stored by the registry.
+	 * @type number
+	 */
+	sizeInBytes: number;
+	/**
+	 * @description Converted VHS drive data, present once an image has been optimized for sandbox launch.
+	 * @type object | undefined
+	 */
+	vhs?:
+		| {
+				/**
+				 * @type string
+				 */
+				path: string;
+				/**
+				 * @type string
+				 */
+				digest: string;
+				/**
+				 * @description Optional VHS drive configuration captured for an optimized image.
+				 * @type object | undefined
+				 */
+				config?:
+					| {
+							/**
+							 * @type array | undefined
+							 */
+							command?: string[] | undefined;
+							/**
+							 * @type array | undefined
+							 */
+							entrypoint?: string[] | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							workingDir?: string | undefined;
+					  }
+					| undefined;
+		  }
+		| undefined;
+	/**
+	 * @description ISO 8601 timestamp of when the image was created.
+	 * @example 2026-06-30T10:00:00.000Z
+	 * @type string
+	 */
+	createdAt: string;
+};
+
+/**
+ * @description A paginated list of images for a repository.
+ * @type object
+ */
+export type VcrImageList = {
+	/**
+	 * @type array
+	 */
+	images: unknown[];
+	/**
+	 * @description Cursor to fetch the next page of results, when more are available.
+	 * @type string | undefined
+	 */
+	nextCursor?: string | undefined;
+};
+
+export const vcrTagKindEnum = {
+	attestation: "attestation",
+	index: "index",
+	manifest: "manifest",
+} as const;
+
+export type VcrTagKindEnumKey = (typeof vcrTagKindEnum)[keyof typeof vcrTagKindEnum];
+
+export const vcrTagStatusEnum = {
+	preparing: "preparing",
+	ready: "ready",
+	unoptimized: "unoptimized",
+} as const;
+
+export type VcrTagStatusEnumKey = (typeof vcrTagStatusEnum)[keyof typeof vcrTagStatusEnum];
+
+/**
+ * @description A tag pointing at an image in a Vercel Container Registry repository, enriched with the backing image\'s metadata and VHS-readiness status.
+ * @type object
+ */
+export type VcrTag = {
+	/**
+	 * @description The tag name.
+	 * @example latest
+	 * @type string
+	 */
+	tag: string;
+	/**
+	 * @description SHA-256 digest of the image manifest the tag points at.
+	 * @example sha256:2c4e8f3a1b9d0e5c7a6f4b2d8e1c9a0b3d5f7e9c1a2b4d6f8e0c2a4b6d8f0e2c
+	 * @type string
+	 */
+	manifestDigest: string;
+	/**
+	 * @description Internal identifier of the image the tag points at.
+	 * @example img_a1b2c3d4e5f6
+	 * @type string
+	 */
+	imageId: string;
+	/**
+	 * @description Whether the manifest is a multi-platform image index, a single-platform image manifest or an attestation.
+	 * @type string
+	 */
+	kind: VcrTagKindEnumKey;
+	/**
+	 * @description Operating system the manifest targets. Only present for single-platform manifests.
+	 * @example linux
+	 * @type string | undefined
+	 */
+	platform?: string | undefined;
+	/**
+	 * @description CPU architecture the manifest targets. Only present for single-platform manifests.
+	 * @example amd64
+	 * @type string | undefined
+	 */
+	arch?: string | undefined;
+	/**
+	 * @description Identifier of the actor that pushed the image.
+	 * @type string | undefined
+	 */
+	pushedBy?: string | undefined;
+	/**
+	 * @description VHS-readiness status, or `null` for a multi-platform index.
+	 * @type string
+	 */
+	status: VcrTagStatusEnumKey | null;
+	/**
+	 * @description Total size in bytes of the image\'s resources (manifest, config and layer blobs) stored by the registry.
+	 * @type number
+	 */
+	sizeInBytes: number;
+	/**
+	 * @description ISO 8601 timestamp of when the tag was created.
+	 * @example 2026-06-30T10:00:00.000Z
+	 * @type string
+	 */
+	createdAt: string;
+	/**
+	 * @description ISO 8601 timestamp of when the tag was last updated.
+	 * @example 2026-06-30T10:00:00.000Z
+	 * @type string
+	 */
+	updatedAt: string;
+};
+
+export const operationEnum = {
+	ADD: "ADD",
+	ARG: "ARG",
+	CMD: "CMD",
+	COPY: "COPY",
+	ENTRYPOINT: "ENTRYPOINT",
+	ENV: "ENV",
+	EXPOSE: "EXPOSE",
+	FROM: "FROM",
+	HEALTHCHECK: "HEALTHCHECK",
+	LABEL: "LABEL",
+	ONBUILD: "ONBUILD",
+	RUN: "RUN",
+	SHELL: "SHELL",
+	STOPSIGNAL: "STOPSIGNAL",
+	UNKNOWN: "UNKNOWN",
+	USER: "USER",
+	VOLUME: "VOLUME",
+	WORKDIR: "WORKDIR",
+} as const;
+
+export type OperationEnumKey = (typeof operationEnum)[keyof typeof operationEnum];
+
+export type VcrImageLayer =
+	| {
+			/**
+			 * @type string
+			 */
+			createdBy: string | null;
+			/**
+			 * @type string
+			 */
+			digest: string | null;
+			/**
+			 * @description Docker/OCI build instruction associated with an image layer.
+			 * @type string
+			 */
+			operation: OperationEnumKey;
+			/**
+			 * @type number
+			 */
+			sizeBytes: number | null;
+			/**
+			 * @type string
+			 */
+			type: TypeEnumKey;
+			/**
+			 * @type string
+			 */
+			baseImage: string | null;
+			/**
+			 * @type array
+			 */
+			collapsedDigests: string[];
+			/**
+			 * @type number
+			 */
+			collapsedLayerCount: number;
+	  }
+	| {
+			/**
+			 * @type string
+			 */
+			createdBy: string | null;
+			/**
+			 * @type string
+			 */
+			digest: string | null;
+			/**
+			 * @description Docker/OCI build instruction associated with an image layer.
+			 * @type string
+			 */
+			operation: OperationEnumKey;
+			/**
+			 * @type number
+			 */
+			sizeBytes: number | null;
+			/**
+			 * @type string
+			 */
+			type: TypeEnumKey;
+			/**
+			 * @type string
+			 */
+			command: string | null;
+	  }
+	| {
+			/**
+			 * @type string
+			 */
+			createdBy: string | null;
+			/**
+			 * @type string
+			 */
+			digest: string | null;
+			/**
+			 * @description Docker/OCI build instruction associated with an image layer.
+			 * @type string
+			 */
+			operation: OperationEnumKey;
+			/**
+			 * @type number
+			 */
+			sizeBytes: number | null;
+			/**
+			 * @type string
+			 */
+			type: TypeEnumKey;
+			/**
+			 * @type string
+			 */
+			env: string | null;
+	  }
+	| {
+			/**
+			 * @type string
+			 */
+			createdBy: string | null;
+			/**
+			 * @type string
+			 */
+			digest: string | null;
+			/**
+			 * @description Docker/OCI build instruction associated with an image layer.
+			 * @type string
+			 */
+			operation: OperationEnumKey;
+			/**
+			 * @type number
+			 */
+			sizeBytes: number | null;
+			/**
+			 * @type string
+			 */
+			type: TypeEnumKey;
+			/**
+			 * @type string
+			 */
+			value: string | null;
+	  };
+
+export const vcrImageDetailStatusEnum = {
+	preparing: "preparing",
+	ready: "ready",
+	unoptimized: "unoptimized",
+} as const;
+
+export type VcrImageDetailStatusEnumKey =
+	(typeof vcrImageDetailStatusEnum)[keyof typeof vcrImageDetailStatusEnum];
+
+export const vcrImageDetailKindEnum = {
+	attestation: "attestation",
+	index: "index",
+	manifest: "manifest",
+} as const;
+
+export type VcrImageDetailKindEnumKey =
+	(typeof vcrImageDetailKindEnum)[keyof typeof vcrImageDetailKindEnum];
+
+/**
+ * @description A single image with its tags, status and resolved Dockerfile layer history.
+ * @type object
+ */
+export type VcrImageDetail = {
+	/**
+	 * @type array
+	 */
+	layers: unknown[];
+	/**
+	 * @description VHS-readiness status, or `null` for a multi-platform index.
+	 * @type string
+	 */
+	status: VcrImageDetailStatusEnumKey | null;
+	/**
+	 * @description Tags pointing at this image\'s manifest.
+	 * @type array
+	 */
+	tags: string[];
+	/**
+	 * @description Internal identifier of the image.
+	 * @example img_a1b2c3d4e5f6
+	 * @type string
+	 */
+	id: string;
+	/**
+	 * @description Identifier of the repository the image belongs to.
+	 * @example repo_a1b2c3d4e5f6
+	 * @type string
+	 */
+	repositoryId: string;
+	/**
+	 * @description SHA-256 digest of the image manifest.
+	 * @example sha256:2c4e8f3a1b9d0e5c7a6f4b2d8e1c9a0b3d5f7e9c1a2b4d6f8e0c2a4b6d8f0e2c
+	 * @type string
+	 */
+	manifestDigest: string;
+	/**
+	 * @description Whether the manifest is a multi-platform image index, a single-platform image manifest or an attestation.
+	 * @type string
+	 */
+	kind: VcrImageDetailKindEnumKey;
+	/**
+	 * @description Operating system the manifest targets. Only present for single-platform manifests.
+	 * @example linux
+	 * @type string | undefined
+	 */
+	platform?: string | undefined;
+	/**
+	 * @description CPU architecture the manifest targets. Only present for single-platform manifests.
+	 * @example amd64
+	 * @type string | undefined
+	 */
+	arch?: string | undefined;
+	/**
+	 * @description Identifier of the actor that pushed the image.
+	 * @type string | undefined
+	 */
+	pushedBy?: string | undefined;
+	/**
+	 * @description Total size in bytes of the image\'s resources (manifest, config and layer blobs) stored by the registry.
+	 * @type number
+	 */
+	sizeInBytes: number;
+	/**
+	 * @description Converted VHS drive data, present once an image has been optimized for sandbox launch.
+	 * @type object | undefined
+	 */
+	vhs?:
+		| {
+				/**
+				 * @type string
+				 */
+				path: string;
+				/**
+				 * @type string
+				 */
+				digest: string;
+				/**
+				 * @description Optional VHS drive configuration captured for an optimized image.
+				 * @type object | undefined
+				 */
+				config?:
+					| {
+							/**
+							 * @type array | undefined
+							 */
+							command?: string[] | undefined;
+							/**
+							 * @type array | undefined
+							 */
+							entrypoint?: string[] | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							workingDir?: string | undefined;
+					  }
+					| undefined;
+		  }
+		| undefined;
+	/**
+	 * @description ISO 8601 timestamp of when the image was created.
+	 * @example 2026-06-30T10:00:00.000Z
+	 * @type string
+	 */
+	createdAt: string;
 };
 
 export const fileTreeTypeEnum = {
@@ -23346,6 +24315,81 @@ export type ArtifactQueryResponse =
 	| ArtifactQueryStatus401
 	| ArtifactQueryStatus402
 	| ArtifactQueryStatus403;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type DeleteAllArtifactsQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type DeleteAllArtifactsQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type DeleteAllArtifactsStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteAllArtifactsStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteAllArtifactsStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteAllArtifactsStatus403 = unknown;
+
+/**
+ * @type object
+ */
+export type DeleteAllArtifactsRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				teamId?: DeleteAllArtifactsQueryTeamId | undefined;
+				slug?: DeleteAllArtifactsQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/v8/artifacts";
+};
+
+/**
+ * @type object
+ */
+export type DeleteAllArtifactsResponses = {
+	"200": DeleteAllArtifactsStatus200;
+	"400": DeleteAllArtifactsStatus400;
+	"401": DeleteAllArtifactsStatus401;
+	"403": DeleteAllArtifactsStatus403;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteAllArtifactsResponse =
+	| DeleteAllArtifactsStatus200
+	| DeleteAllArtifactsStatus400
+	| DeleteAllArtifactsStatus401
+	| DeleteAllArtifactsStatus403;
 
 /**
  * @description Inclusive start of the date range as an ISO 8601 date-time string in UTC.
@@ -26878,7 +27922,7 @@ export type UpdateIntegrationDeploymentActionResponse =
 export type GetDeploymentPathIdOrUrl = string;
 
 /**
- * @description Whether to add in gitRepo information.
+ * @description When `true`, the response includes the `gitSource` object with the commit SHA, branch name, and connected repository metadata. Defaults to `false`.
  * @example true
  * @type string | undefined
  */
@@ -26973,13 +28017,13 @@ export type GetDeploymentResponse =
 	| GetDeploymentStatus429;
 
 /**
- * @description Forces a new deployment even if there is a previous similar deployment
+ * @description Forces a new deployment even if there is a previous similar deployment. Set to `1` to bypass deployment deduplication and always trigger a fresh build.
  * @type unknown | undefined
  */
 export type CreateDeploymentQueryForceNew = unknown | undefined;
 
 /**
- * @description Allows to skip framework detection so the API would not fail to ask for confirmation
+ * @description Set to `1` to skip framework auto-detection and proceed without confirmation. By default, if Vercel detects a framework that differs from the project setting, the API returns a `400` asking you to confirm. Use this to suppress that check in automated pipelines.
  * @type unknown | undefined
  */
 export type CreateDeploymentQuerySkipAutoDetectionConfirmation = unknown | undefined;
@@ -41638,8 +42682,10 @@ export type CreateProjectResponse =
 
 /**
  * @description The unique project identifier or the project name
+ * @example prj_12HKQaOmR5t5Uy6vdcQsNIiZgHGB
+ * @type string
  */
-export type GetProjectPathIdOrName = string | boolean;
+export type GetProjectPathIdOrName = string;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
@@ -44678,6 +45724,113 @@ export type ApproveRollingReleaseStageResponse =
 	| ApproveRollingReleaseStageStatus403
 	| ApproveRollingReleaseStageStatus404
 	| ApproveRollingReleaseStageStatus500;
+
+/**
+ * @description Project ID or project name (URL-encoded)
+ * @type string
+ */
+export type StartRollingReleasePathIdOrName = string;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type StartRollingReleaseQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type StartRollingReleaseQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type StartRollingReleaseStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type StartRollingReleaseStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type StartRollingReleaseStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type StartRollingReleaseStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type StartRollingReleaseStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type StartRollingReleaseStatus409 = unknown;
+
+/**
+ * @type unknown
+ */
+export type StartRollingReleaseStatus422 = unknown;
+
+/**
+ * @type object
+ */
+export type StartRollingReleaseRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		idOrName: StartRollingReleasePathIdOrName;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				teamId?: StartRollingReleaseQueryTeamId | undefined;
+				slug?: StartRollingReleaseQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v1/projects/${string}/rolling-release/start`;
+};
+
+/**
+ * @type object
+ */
+export type StartRollingReleaseResponses = {
+	"200": StartRollingReleaseStatus200;
+	"400": StartRollingReleaseStatus400;
+	"401": StartRollingReleaseStatus401;
+	"403": StartRollingReleaseStatus403;
+	"404": StartRollingReleaseStatus404;
+	"409": StartRollingReleaseStatus409;
+	"422": StartRollingReleaseStatus422;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type StartRollingReleaseResponse =
+	| StartRollingReleaseStatus200
+	| StartRollingReleaseStatus400
+	| StartRollingReleaseStatus401
+	| StartRollingReleaseStatus403
+	| StartRollingReleaseStatus404
+	| StartRollingReleaseStatus409
+	| StartRollingReleaseStatus422;
 
 /**
  * @description Project ID or project name (URL-encoded)
@@ -51963,6 +53116,1458 @@ export type RequestDeleteResponse =
 	| RequestDeleteStatus401
 	| RequestDeleteStatus402
 	| RequestDeleteStatus403;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type CreateRepositoryQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type CreateRepositoryQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type CreateRepositoryStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateRepositoryStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateRepositoryStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateRepositoryStatus402 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateRepositoryStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateRepositoryStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateRepositoryStatus409 = unknown;
+
+/**
+ * @type object
+ */
+export type CreateRepositoryRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				teamId?: CreateRepositoryQueryTeamId | undefined;
+				slug?: CreateRepositoryQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/v1/vcr/repository";
+};
+
+/**
+ * @type object
+ */
+export type CreateRepositoryResponses = {
+	"200": CreateRepositoryStatus200;
+	"400": CreateRepositoryStatus400;
+	"401": CreateRepositoryStatus401;
+	"402": CreateRepositoryStatus402;
+	"403": CreateRepositoryStatus403;
+	"404": CreateRepositoryStatus404;
+	"409": CreateRepositoryStatus409;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateRepositoryResponse =
+	| CreateRepositoryStatus200
+	| CreateRepositoryStatus400
+	| CreateRepositoryStatus401
+	| CreateRepositoryStatus402
+	| CreateRepositoryStatus403
+	| CreateRepositoryStatus404
+	| CreateRepositoryStatus409;
+
+/**
+ * @type string
+ */
+export type ListRepositoriesQueryProjectId = string;
+
+/**
+ * @minLength 1
+ * @maxLength 1000
+ * @type integer | undefined
+ */
+export type ListRepositoriesQueryLimit = number | undefined;
+
+/**
+ * @description Opaque pagination cursor returned by a previous list response.
+ * @maxLength 1024
+ * @type string | undefined
+ */
+export type ListRepositoriesQueryCursor = string | undefined;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type ListRepositoriesQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type ListRepositoriesQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type ListRepositoriesStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListRepositoriesStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListRepositoriesStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListRepositoriesStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListRepositoriesStatus404 = unknown;
+
+/**
+ * @type object
+ */
+export type ListRepositoriesRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				projectId: ListRepositoriesQueryProjectId;
+				limit?: ListRepositoriesQueryLimit | undefined;
+				cursor?: ListRepositoriesQueryCursor | undefined;
+				teamId?: ListRepositoriesQueryTeamId | undefined;
+				slug?: ListRepositoriesQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/v1/vcr/repository";
+};
+
+/**
+ * @type object
+ */
+export type ListRepositoriesResponses = {
+	"200": ListRepositoriesStatus200;
+	"400": ListRepositoriesStatus400;
+	"401": ListRepositoriesStatus401;
+	"403": ListRepositoriesStatus403;
+	"404": ListRepositoriesStatus404;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListRepositoriesResponse =
+	| ListRepositoriesStatus200
+	| ListRepositoriesStatus400
+	| ListRepositoriesStatus401
+	| ListRepositoriesStatus403
+	| ListRepositoriesStatus404;
+
+/**
+ * @type string
+ */
+export type GetRepositoryQueryProjectId = string;
+
+/**
+ * @maxLength 255
+ * @type string
+ */
+export type GetRepositoryPathIdOrName = string;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type GetRepositoryQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type GetRepositoryQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type GetRepositoryStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetRepositoryStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetRepositoryStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetRepositoryStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetRepositoryStatus404 = unknown;
+
+/**
+ * @type object
+ */
+export type GetRepositoryRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		idOrName: GetRepositoryPathIdOrName;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				projectId: GetRepositoryQueryProjectId;
+				teamId?: GetRepositoryQueryTeamId | undefined;
+				slug?: GetRepositoryQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v1/vcr/repository/${string}`;
+};
+
+/**
+ * @type object
+ */
+export type GetRepositoryResponses = {
+	"200": GetRepositoryStatus200;
+	"400": GetRepositoryStatus400;
+	"401": GetRepositoryStatus401;
+	"403": GetRepositoryStatus403;
+	"404": GetRepositoryStatus404;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetRepositoryResponse =
+	| GetRepositoryStatus200
+	| GetRepositoryStatus400
+	| GetRepositoryStatus401
+	| GetRepositoryStatus403
+	| GetRepositoryStatus404;
+
+/**
+ * @type string
+ */
+export type DeleteRepositoryQueryProjectId = string;
+
+/**
+ * @maxLength 255
+ * @type string
+ */
+export type DeleteRepositoryPathIdOrName = string;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type DeleteRepositoryQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type DeleteRepositoryQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type DeleteRepositoryStatus202 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteRepositoryStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteRepositoryStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteRepositoryStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteRepositoryStatus404 = unknown;
+
+/**
+ * @type object
+ */
+export type DeleteRepositoryRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		idOrName: DeleteRepositoryPathIdOrName;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				projectId: DeleteRepositoryQueryProjectId;
+				teamId?: DeleteRepositoryQueryTeamId | undefined;
+				slug?: DeleteRepositoryQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v1/vcr/repository/${string}`;
+};
+
+/**
+ * @type object
+ */
+export type DeleteRepositoryResponses = {
+	"202": DeleteRepositoryStatus202;
+	"400": DeleteRepositoryStatus400;
+	"401": DeleteRepositoryStatus401;
+	"403": DeleteRepositoryStatus403;
+	"404": DeleteRepositoryStatus404;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteRepositoryResponse =
+	| DeleteRepositoryStatus202
+	| DeleteRepositoryStatus400
+	| DeleteRepositoryStatus401
+	| DeleteRepositoryStatus403
+	| DeleteRepositoryStatus404;
+
+/**
+ * @type string
+ */
+export type ListRepositoryImagesQueryProjectId = string;
+
+/**
+ * @maxLength 255
+ * @type string
+ */
+export type ListRepositoryImagesPathIdOrName = string;
+
+/**
+ * @minLength 1
+ * @maxLength 100
+ * @type integer | undefined
+ */
+export type ListRepositoryImagesQueryLimit = number | undefined;
+
+/**
+ * @description Opaque pagination cursor returned by a previous list response.
+ * @maxLength 1024
+ * @type string | undefined
+ */
+export type ListRepositoryImagesQueryCursor = string | undefined;
+
+/**
+ * @type boolean | undefined
+ */
+export type ListRepositoryImagesQueryUntagged = boolean | undefined;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type ListRepositoryImagesQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type ListRepositoryImagesQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type ListRepositoryImagesStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListRepositoryImagesStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListRepositoryImagesStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListRepositoryImagesStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListRepositoryImagesStatus404 = unknown;
+
+/**
+ * @type object
+ */
+export type ListRepositoryImagesRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		idOrName: ListRepositoryImagesPathIdOrName;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				projectId: ListRepositoryImagesQueryProjectId;
+				limit?: ListRepositoryImagesQueryLimit | undefined;
+				cursor?: ListRepositoryImagesQueryCursor | undefined;
+				untagged?: ListRepositoryImagesQueryUntagged | undefined;
+				teamId?: ListRepositoryImagesQueryTeamId | undefined;
+				slug?: ListRepositoryImagesQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v1/vcr/repository/${string}/images`;
+};
+
+/**
+ * @type object
+ */
+export type ListRepositoryImagesResponses = {
+	"200": ListRepositoryImagesStatus200;
+	"400": ListRepositoryImagesStatus400;
+	"401": ListRepositoryImagesStatus401;
+	"403": ListRepositoryImagesStatus403;
+	"404": ListRepositoryImagesStatus404;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListRepositoryImagesResponse =
+	| ListRepositoryImagesStatus200
+	| ListRepositoryImagesStatus400
+	| ListRepositoryImagesStatus401
+	| ListRepositoryImagesStatus403
+	| ListRepositoryImagesStatus404;
+
+/**
+ * @type string
+ */
+export type ListRepositoryTagsQueryProjectId = string;
+
+/**
+ * @maxLength 255
+ * @type string
+ */
+export type ListRepositoryTagsPathIdOrName = string;
+
+/**
+ * @minLength 1
+ * @maxLength 100
+ * @type integer | undefined
+ */
+export type ListRepositoryTagsQueryLimit = number | undefined;
+
+/**
+ * @type string | undefined
+ */
+export type ListRepositoryTagsQueryCursor = string | undefined;
+
+/**
+ * @description Field to sort the non-pinned tags by.
+ * @default "updatedAt"
+ * @type string | undefined
+ */
+export type ListRepositoryTagsQuerySortBy = ("updatedAt" | "tag") | undefined;
+
+/**
+ * @description Sort direction. Defaults to desc.
+ * @default "desc"
+ * @type string | undefined
+ */
+export type ListRepositoryTagsQuerySortOrder = ("asc" | "desc") | undefined;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type ListRepositoryTagsQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type ListRepositoryTagsQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type ListRepositoryTagsStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListRepositoryTagsStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListRepositoryTagsStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListRepositoryTagsStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListRepositoryTagsStatus404 = unknown;
+
+/**
+ * @type object
+ */
+export type ListRepositoryTagsRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		idOrName: ListRepositoryTagsPathIdOrName;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				projectId: ListRepositoryTagsQueryProjectId;
+				limit?: ListRepositoryTagsQueryLimit | undefined;
+				cursor?: ListRepositoryTagsQueryCursor | undefined;
+				sortBy?: ListRepositoryTagsQuerySortBy | undefined;
+				sortOrder?: ListRepositoryTagsQuerySortOrder | undefined;
+				teamId?: ListRepositoryTagsQueryTeamId | undefined;
+				slug?: ListRepositoryTagsQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v1/vcr/repository/${string}/tags`;
+};
+
+/**
+ * @type object
+ */
+export type ListRepositoryTagsResponses = {
+	"200": ListRepositoryTagsStatus200;
+	"400": ListRepositoryTagsStatus400;
+	"401": ListRepositoryTagsStatus401;
+	"403": ListRepositoryTagsStatus403;
+	"404": ListRepositoryTagsStatus404;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListRepositoryTagsResponse =
+	| ListRepositoryTagsStatus200
+	| ListRepositoryTagsStatus400
+	| ListRepositoryTagsStatus401
+	| ListRepositoryTagsStatus403
+	| ListRepositoryTagsStatus404;
+
+/**
+ * @type string
+ */
+export type GetRepositoryTagQueryProjectId = string;
+
+/**
+ * @maxLength 255
+ * @type string
+ */
+export type GetRepositoryTagPathIdOrName = string;
+
+/**
+ * @maxLength 255
+ * @type string
+ */
+export type GetRepositoryTagPathTag = string;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type GetRepositoryTagQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type GetRepositoryTagQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type GetRepositoryTagStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetRepositoryTagStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetRepositoryTagStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetRepositoryTagStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetRepositoryTagStatus404 = unknown;
+
+/**
+ * @type object
+ */
+export type GetRepositoryTagRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		idOrName: GetRepositoryTagPathIdOrName;
+		tag: GetRepositoryTagPathTag;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				projectId: GetRepositoryTagQueryProjectId;
+				teamId?: GetRepositoryTagQueryTeamId | undefined;
+				slug?: GetRepositoryTagQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v1/vcr/repository/${string}/tags/${string}`;
+};
+
+/**
+ * @type object
+ */
+export type GetRepositoryTagResponses = {
+	"200": GetRepositoryTagStatus200;
+	"400": GetRepositoryTagStatus400;
+	"401": GetRepositoryTagStatus401;
+	"403": GetRepositoryTagStatus403;
+	"404": GetRepositoryTagStatus404;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetRepositoryTagResponse =
+	| GetRepositoryTagStatus200
+	| GetRepositoryTagStatus400
+	| GetRepositoryTagStatus401
+	| GetRepositoryTagStatus403
+	| GetRepositoryTagStatus404;
+
+/**
+ * @type string
+ */
+export type GetRepositoryImageQueryProjectId = string;
+
+/**
+ * @maxLength 255
+ * @type string
+ */
+export type GetRepositoryImagePathIdOrName = string;
+
+/**
+ * @maxLength 255
+ * @type string
+ */
+export type GetRepositoryImagePathImageId = string;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type GetRepositoryImageQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type GetRepositoryImageQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type GetRepositoryImageStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetRepositoryImageStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetRepositoryImageStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetRepositoryImageStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetRepositoryImageStatus404 = unknown;
+
+/**
+ * @type object
+ */
+export type GetRepositoryImageRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		idOrName: GetRepositoryImagePathIdOrName;
+		imageId: GetRepositoryImagePathImageId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				projectId: GetRepositoryImageQueryProjectId;
+				teamId?: GetRepositoryImageQueryTeamId | undefined;
+				slug?: GetRepositoryImageQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v1/vcr/repository/${string}/images/${string}`;
+};
+
+/**
+ * @type object
+ */
+export type GetRepositoryImageResponses = {
+	"200": GetRepositoryImageStatus200;
+	"400": GetRepositoryImageStatus400;
+	"401": GetRepositoryImageStatus401;
+	"403": GetRepositoryImageStatus403;
+	"404": GetRepositoryImageStatus404;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetRepositoryImageResponse =
+	| GetRepositoryImageStatus200
+	| GetRepositoryImageStatus400
+	| GetRepositoryImageStatus401
+	| GetRepositoryImageStatus403
+	| GetRepositoryImageStatus404;
+
+/**
+ * @type string
+ */
+export type DeleteRepositoryImageQueryProjectId = string;
+
+/**
+ * @maxLength 255
+ * @type string
+ */
+export type DeleteRepositoryImagePathIdOrName = string;
+
+/**
+ * @maxLength 255
+ * @type string
+ */
+export type DeleteRepositoryImagePathImageId = string;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type DeleteRepositoryImageQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type DeleteRepositoryImageQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type DeleteRepositoryImageStatus202 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteRepositoryImageStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteRepositoryImageStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteRepositoryImageStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteRepositoryImageStatus404 = unknown;
+
+/**
+ * @type object
+ */
+export type DeleteRepositoryImageRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		idOrName: DeleteRepositoryImagePathIdOrName;
+		imageId: DeleteRepositoryImagePathImageId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				projectId: DeleteRepositoryImageQueryProjectId;
+				teamId?: DeleteRepositoryImageQueryTeamId | undefined;
+				slug?: DeleteRepositoryImageQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v1/vcr/repository/${string}/images/${string}`;
+};
+
+/**
+ * @type object
+ */
+export type DeleteRepositoryImageResponses = {
+	"202": DeleteRepositoryImageStatus202;
+	"400": DeleteRepositoryImageStatus400;
+	"401": DeleteRepositoryImageStatus401;
+	"403": DeleteRepositoryImageStatus403;
+	"404": DeleteRepositoryImageStatus404;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteRepositoryImageResponse =
+	| DeleteRepositoryImageStatus202
+	| DeleteRepositoryImageStatus400
+	| DeleteRepositoryImageStatus401
+	| DeleteRepositoryImageStatus403
+	| DeleteRepositoryImageStatus404;
+
+/**
+ * @description The project identifier or the project name
+ * @example prj_XLKmu1DyR1eY7zq8UgeRKbA7yVLA
+ * @type string
+ */
+export type AggregatePageviewsQueryProjectId = string;
+
+/**
+ * @description Up to two dimensions used to break down results.\n\nAt most one time granularity is allowed: hour, day, week, month, year.\n\nOther dimensions: country, deviceType, environment, requestPath, referrerHostname, osName, browserName, route, utmSource, utmMedium, utmCampaign, utmContent, utmTerm.\n\nJSON dimensions: flags. Used bare, it breaks down results by key, for example flags returns one group per flag name. With a key, it breaks down results by that key\'s value, for example flags/beta_banner. Wrap keys containing characters other than letters, digits, and underscores in single quotes, for example flags/\'my-flag\'.
+ * @example day,country
+ * @type array
+ */
+export type AggregatePageviewsQueryBy = string[];
+
+/**
+ * @description Timestamp in milliseconds, or a valid Date string.\n\nSelects data from (including) this date and time.\nWill be adjusted according to the desired time granularity.
+ * @example 2024-09-01T00:00:00.000Z
+ */
+export type AggregatePageviewsQuerySince = number | string;
+
+/**
+ * @description Timestamp in milliseconds, or a valid Date string.\n\nSelects data until (including) this date.\nWill be adjusted according to the desired time granularity.
+ * @example 2024-09-08T00:00:00.000Z
+ */
+export type AggregatePageviewsQueryUntil = number | string;
+
+/**
+ * @description Number of distinct results, default to 10. Other results are grouped into \"Others\" group.
+ * @minLength 1
+ * @maxLength 100
+ * @default 10
+ * @example 3
+ * @type integer | undefined
+ */
+export type AggregatePageviewsQueryLimit = number | undefined;
+
+/**
+ * @description OData-compliant filter. Encode the value when sending it in a URL.\n\nAllows filtering on one or multiple dimensions. By default, filters for production environment only.\n\nSupported dimensions: country, deviceType, environment, requestPath, referrerHostname, osName, browserName, route, utmSource, utmMedium, utmCampaign, utmContent, utmTerm.\n\nJSON dimensions filtered by key: flags/<name>, for example flags/beta_banner eq \'true\'. Wrap keys containing characters other than letters, digits, and underscores in single quotes, for example flags/\'my-flag\' eq \'true\'.\n\nSupported operations include eq, ne, in, and logical operators and, or, not with parentheses. Functions such as startswith are supported by the OData parser.
+ * @example requestPath eq '/docs'
+ * @type string | undefined
+ */
+export type AggregatePageviewsQueryFilter = string | undefined;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type AggregatePageviewsQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type AggregatePageviewsQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type AggregatePageviewsStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type AggregatePageviewsStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type AggregatePageviewsStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type AggregatePageviewsStatus402 = unknown;
+
+/**
+ * @type unknown
+ */
+export type AggregatePageviewsStatus403 = unknown;
+
+/**
+ * @type object
+ */
+export type AggregatePageviewsRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				projectId: AggregatePageviewsQueryProjectId;
+				by: AggregatePageviewsQueryBy;
+				since: AggregatePageviewsQuerySince;
+				until: AggregatePageviewsQueryUntil;
+				limit?: AggregatePageviewsQueryLimit | undefined;
+				filter?: AggregatePageviewsQueryFilter | undefined;
+				teamId?: AggregatePageviewsQueryTeamId | undefined;
+				slug?: AggregatePageviewsQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/v1/query/web-analytics/visits/aggregate";
+};
+
+/**
+ * @type object
+ */
+export type AggregatePageviewsResponses = {
+	"200": AggregatePageviewsStatus200;
+	"400": AggregatePageviewsStatus400;
+	"401": AggregatePageviewsStatus401;
+	"402": AggregatePageviewsStatus402;
+	"403": AggregatePageviewsStatus403;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type AggregatePageviewsResponse =
+	| AggregatePageviewsStatus200
+	| AggregatePageviewsStatus400
+	| AggregatePageviewsStatus401
+	| AggregatePageviewsStatus402
+	| AggregatePageviewsStatus403;
+
+/**
+ * @description The project identifier or the project name
+ * @example prj_XLKmu1DyR1eY7zq8UgeRKbA7yVLA
+ * @type string
+ */
+export type AggregateEventsQueryProjectId = string;
+
+/**
+ * @description Up to two dimensions used to break down results.\n\nAt most one time granularity is allowed: hour, day, week, month, year.\n\nOther dimensions: country, deviceType, environment, requestPath, referrerHostname, osName, browserName, route, utmSource, utmMedium, utmCampaign, utmContent, utmTerm, eventName.\n\nJSON dimensions: flags, eventData. Used bare, they break down results by key, for example flags returns one group per flag name. With a key, they break down results by that key\'s value, for example eventData/plan. Wrap keys containing characters other than letters, digits, and underscores in single quotes, for example flags/\'my-flag\'.
+ * @example day,eventName
+ * @type array
+ */
+export type AggregateEventsQueryBy = string[];
+
+/**
+ * @description Timestamp in milliseconds, or a valid Date string.\n\nSelects data from (including) this date and time.\nWill be adjusted according to the desired time granularity.
+ * @example 2024-09-01T00:00:00.000Z
+ */
+export type AggregateEventsQuerySince = number | string;
+
+/**
+ * @description Timestamp in milliseconds, or a valid Date string.\n\nSelects data until (including) this date.\nWill be adjusted according to the desired time granularity.
+ * @example 2024-09-08T00:00:00.000Z
+ */
+export type AggregateEventsQueryUntil = number | string;
+
+/**
+ * @description Number of distinct results, default to 10. Other results are grouped into \"Others\" group.
+ * @minLength 1
+ * @maxLength 100
+ * @default 10
+ * @example 3
+ * @type integer | undefined
+ */
+export type AggregateEventsQueryLimit = number | undefined;
+
+/**
+ * @description OData-compliant filter. Encode the value when sending it in a URL.\n\nAllows filtering on one or multiple dimensions. By default, filters for production environment only.\n\nSupported dimensions: country, deviceType, environment, requestPath, referrerHostname, osName, browserName, route, utmSource, utmMedium, utmCampaign, utmContent, utmTerm, eventName.\n\nJSON dimensions filtered by key: flags/<name>, eventData/<property>, for example eventData/plan eq \'pro\'. Wrap keys containing characters other than letters, digits, and underscores in single quotes, for example flags/\'my-flag\' eq \'true\'.\n\nSupported operations include eq, ne, in, and logical operators and, or, not with parentheses. Functions such as startswith are supported by the OData parser.
+ * @example eventData/plan eq 'pro'
+ * @type string | undefined
+ */
+export type AggregateEventsQueryFilter = string | undefined;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type AggregateEventsQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type AggregateEventsQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type AggregateEventsStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type AggregateEventsStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type AggregateEventsStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type AggregateEventsStatus402 = unknown;
+
+/**
+ * @type unknown
+ */
+export type AggregateEventsStatus403 = unknown;
+
+/**
+ * @type object
+ */
+export type AggregateEventsRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				projectId: AggregateEventsQueryProjectId;
+				by: AggregateEventsQueryBy;
+				since: AggregateEventsQuerySince;
+				until: AggregateEventsQueryUntil;
+				limit?: AggregateEventsQueryLimit | undefined;
+				filter?: AggregateEventsQueryFilter | undefined;
+				teamId?: AggregateEventsQueryTeamId | undefined;
+				slug?: AggregateEventsQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/v1/query/web-analytics/events/aggregate";
+};
+
+/**
+ * @type object
+ */
+export type AggregateEventsResponses = {
+	"200": AggregateEventsStatus200;
+	"400": AggregateEventsStatus400;
+	"401": AggregateEventsStatus401;
+	"402": AggregateEventsStatus402;
+	"403": AggregateEventsStatus403;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type AggregateEventsResponse =
+	| AggregateEventsStatus200
+	| AggregateEventsStatus400
+	| AggregateEventsStatus401
+	| AggregateEventsStatus402
+	| AggregateEventsStatus403;
+
+/**
+ * @description The project identifier or the project name
+ * @example prj_XLKmu1DyR1eY7zq8UgeRKbA7yVLA
+ * @type string
+ */
+export type CountPageviewsQueryProjectId = string;
+
+/**
+ * @description Timestamp in milliseconds, or a valid Date string.\n\nSelects data from (including) this date and time.\nWill be adjusted according to the desired time granularity.
+ * @example 2024-09-01T00:00:00.000Z
+ */
+export type CountPageviewsQuerySince = (number | string) | undefined;
+
+/**
+ * @description Timestamp in milliseconds, or a valid Date string.\n\nSelects data until (including) this date.\nWill be adjusted according to the desired time granularity.
+ * @example 2024-09-08T00:00:00.000Z
+ */
+export type CountPageviewsQueryUntil = (number | string) | undefined;
+
+/**
+ * @description OData-compliant filter. Encode the value when sending it in a URL.\n\nAllows filtering on one or multiple dimensions.\n\nSupported dimensions: country, deviceType, environment, requestPath, referrerHostname, osName, browserName, route, utmSource, utmMedium, utmCampaign, utmContent, utmTerm.\n\nJSON dimensions filtered by key: flags/<name>, for example flags/beta_banner eq \'true\'. Wrap keys containing characters other than letters, digits, and underscores in single quotes, for example flags/\'my-flag\' eq \'true\'.\n\nSupported operations include eq, ne, in, and logical operators and, or, not with parentheses. Functions such as startswith are supported by the OData parser.
+ * @example route eq '/home'
+ * @type string | undefined
+ */
+export type CountPageviewsQueryFilter = string | undefined;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type CountPageviewsQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type CountPageviewsQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type CountPageviewsStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CountPageviewsStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CountPageviewsStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CountPageviewsStatus402 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CountPageviewsStatus403 = unknown;
+
+/**
+ * @type object
+ */
+export type CountPageviewsRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				projectId: CountPageviewsQueryProjectId;
+				since?: CountPageviewsQuerySince | undefined;
+				until?: CountPageviewsQueryUntil | undefined;
+				filter?: CountPageviewsQueryFilter | undefined;
+				teamId?: CountPageviewsQueryTeamId | undefined;
+				slug?: CountPageviewsQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/v1/query/web-analytics/visits/count";
+};
+
+/**
+ * @type object
+ */
+export type CountPageviewsResponses = {
+	"200": CountPageviewsStatus200;
+	"400": CountPageviewsStatus400;
+	"401": CountPageviewsStatus401;
+	"402": CountPageviewsStatus402;
+	"403": CountPageviewsStatus403;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CountPageviewsResponse =
+	| CountPageviewsStatus200
+	| CountPageviewsStatus400
+	| CountPageviewsStatus401
+	| CountPageviewsStatus402
+	| CountPageviewsStatus403;
+
+/**
+ * @description The project identifier or the project name
+ * @example prj_XLKmu1DyR1eY7zq8UgeRKbA7yVLA
+ * @type string
+ */
+export type CountEventsQueryProjectId = string;
+
+/**
+ * @description Timestamp in milliseconds, or a valid Date string.\n\nSelects data from (including) this date and time.\nWill be adjusted according to the desired time granularity.
+ * @example 2024-09-01T00:00:00.000Z
+ */
+export type CountEventsQuerySince = (number | string) | undefined;
+
+/**
+ * @description Timestamp in milliseconds, or a valid Date string.\n\nSelects data until (including) this date.\nWill be adjusted according to the desired time granularity.
+ * @example 2024-09-08T00:00:00.000Z
+ */
+export type CountEventsQueryUntil = (number | string) | undefined;
+
+/**
+ * @description OData-compliant filter. Encode the value when sending it in a URL.\n\nAllows filtering on one or multiple dimensions.\n\nSupported dimensions: country, deviceType, environment, requestPath, referrerHostname, osName, browserName, route, utmSource, utmMedium, utmCampaign, utmContent, utmTerm, eventName.\n\nJSON dimensions filtered by key: flags/<name>, eventData/<property>, for example eventData/plan eq \'pro\'. Wrap keys containing characters other than letters, digits, and underscores in single quotes, for example flags/\'my-flag\' eq \'true\'.\n\nSupported operations include eq, ne, in, and logical operators and, or, not with parentheses. Functions such as startswith are supported by the OData parser.
+ * @example eventName eq 'signup'
+ * @type string | undefined
+ */
+export type CountEventsQueryFilter = string | undefined;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type CountEventsQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type CountEventsQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type CountEventsStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CountEventsStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CountEventsStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CountEventsStatus402 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CountEventsStatus403 = unknown;
+
+/**
+ * @type object
+ */
+export type CountEventsRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				projectId: CountEventsQueryProjectId;
+				since?: CountEventsQuerySince | undefined;
+				until?: CountEventsQueryUntil | undefined;
+				filter?: CountEventsQueryFilter | undefined;
+				teamId?: CountEventsQueryTeamId | undefined;
+				slug?: CountEventsQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/v1/query/web-analytics/events/count";
+};
+
+/**
+ * @type object
+ */
+export type CountEventsResponses = {
+	"200": CountEventsStatus200;
+	"400": CountEventsStatus400;
+	"401": CountEventsStatus401;
+	"402": CountEventsStatus402;
+	"403": CountEventsStatus403;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CountEventsResponse =
+	| CountEventsStatus200
+	| CountEventsStatus400
+	| CountEventsStatus401
+	| CountEventsStatus402
+	| CountEventsStatus403;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
