@@ -268,6 +268,7 @@ import type {
 	UpdateSiteSnippetResponse,
 	UpdateSplitTestData,
 	UpdateSplitTestResponse,
+	UploadDeployEdgeFunctionResponse,
 	UploadDeployFileResponse,
 	UploadDeployFunctionResponse,
 } from "./types";
@@ -2957,6 +2958,46 @@ export async function uploadDeployFunction(
 		method: "PUT",
 		url: `/deploys/${pathParams.deploy_id}/functions/${pathParams.name}`,
 		queryParams,
+		...requestConfig,
+		headers: { ...headers, ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /deploys/{deploy_id}/edge_functions/{code_sha}
+ */
+export async function uploadDeployEdgeFunction(
+	{
+		pathParams,
+		headers,
+		config,
+	}: {
+		pathParams: { deploy_id: string; code_sha: string };
+		headers?: { "X-Nf-Retry-Count"?: number };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.deploy_id) {
+		throw new Error(`Missing required path parameter: deploy_id`);
+	}
+
+	if (!pathParams.code_sha) {
+		throw new Error(`Missing required path parameter: code_sha`);
+	}
+	const data = await request<
+		UploadDeployEdgeFunctionResponse,
+		ErrorWrapper<Error>,
+		null,
+		{ "X-Nf-Retry-Count"?: number },
+		Record<string, string>,
+		{ deploy_id: string; code_sha: string }
+	>({
+		method: "PUT",
+		url: `/deploys/${pathParams.deploy_id}/edge_functions/${pathParams.code_sha}`,
 		...requestConfig,
 		headers: { ...headers, ...requestConfig.headers },
 	});
@@ -7098,6 +7139,7 @@ export const operationsByPath = {
 	"POST /deploys/{deploy_id}/unlock": unlockDeploy,
 	"PUT /deploys/{deploy_id}/files/{path}": uploadDeployFile,
 	"PUT /deploys/{deploy_id}/functions/{name}": uploadDeployFunction,
+	"PUT /deploys/{deploy_id}/edge_functions/{code_sha}": uploadDeployEdgeFunction,
 	"GET /sites/{site_id}/plugin_runs/latest": getLatestPluginRuns,
 	"POST /deploys/{deploy_id}/plugin_runs": createPluginRun,
 	"GET /forms/{form_id}/submissions": listFormSubmissions,
@@ -7333,6 +7375,9 @@ export const operationsByTag = {
 		getIndividualDnsRecord,
 		deleteDnsRecord,
 	},
+	edgefunction: {
+		uploadDeployEdgeFunction,
+	},
 	xInternal: {
 		getLatestPluginRuns,
 		createPluginRun,
@@ -7567,6 +7612,9 @@ export const tagDictionary = {
 		PUT: ["configureDNSForSite", "transferDnsZone"],
 		POST: ["createDnsZone", "createDnsRecord"],
 		DELETE: ["deleteDnsZone", "deleteDnsRecord"],
+	},
+	edgefunction: {
+		PUT: ["uploadDeployEdgeFunction"],
 	},
 	xInternal: {
 		GET: ["getLatestPluginRuns"],
