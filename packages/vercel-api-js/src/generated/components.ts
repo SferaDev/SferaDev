@@ -404,7 +404,6 @@ import type {
 	DeleteDriveResponse,
 	DeleteDriveStatus400,
 	DeleteDriveStatus401,
-	DeleteDriveStatus402,
 	DeleteDriveStatus403,
 	DeleteDriveStatus404,
 	DeleteDriveStatus409,
@@ -509,8 +508,6 @@ import type {
 	DeleteRoutesStatus401,
 	DeleteRoutesStatus403,
 	DeleteRoutesStatus404,
-	DeleteRoutesStatus409,
-	DeleteRoutesStatus500,
 	DeleteSandboxResponse,
 	DeleteSandboxStatus400,
 	DeleteSandboxStatus401,
@@ -1257,7 +1254,6 @@ import type {
 	ListDrivesResponse,
 	ListDrivesStatus400,
 	ListDrivesStatus401,
-	ListDrivesStatus402,
 	ListDrivesStatus403,
 	ListDrivesStatus404,
 	ListDrivesStatus429,
@@ -10731,12 +10727,7 @@ export async function deleteRoutes(
 	const data = await request<
 		DeleteRoutesResponse,
 		ErrorWrapper<
-			| DeleteRoutesStatus400
-			| DeleteRoutesStatus401
-			| DeleteRoutesStatus403
-			| DeleteRoutesStatus404
-			| DeleteRoutesStatus409
-			| DeleteRoutesStatus500
+			DeleteRoutesStatus400 | DeleteRoutesStatus401 | DeleteRoutesStatus403 | DeleteRoutesStatus404
 		>,
 		null,
 		Record<string, string>,
@@ -13097,7 +13088,6 @@ export async function listDrives(
 		ErrorWrapper<
 			| ListDrivesStatus400
 			| ListDrivesStatus401
-			| ListDrivesStatus402
 			| ListDrivesStatus403
 			| ListDrivesStatus404
 			| ListDrivesStatus429
@@ -13199,7 +13189,6 @@ export async function deleteDrive(
 		ErrorWrapper<
 			| DeleteDriveStatus400
 			| DeleteDriveStatus401
-			| DeleteDriveStatus402
 			| DeleteDriveStatus403
 			| DeleteDriveStatus404
 			| DeleteDriveStatus409
