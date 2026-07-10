@@ -1926,6 +1926,7 @@ export const userEventTypeEnum = {
 	"unlink-login-connection": "unlink-login-connection",
 	"user-delete": "user-delete",
 	"user-emu-account-archived": "user-emu-account-archived",
+	"user-emu-account-deleted": "user-emu-account-deleted",
 	"user-emu-account-recovered": "user-emu-account-recovered",
 	"user-mfa-challenge-verified": "user-mfa-challenge-verified",
 	"user-mfa-configuration-updated": "user-mfa-configuration-updated",
@@ -2404,6 +2405,14 @@ export const billingPlanEnum = {
 } as const;
 
 export type BillingPlanEnumKey = (typeof billingPlanEnum)[keyof typeof billingPlanEnum];
+
+export const enforcementScopeEnum = {
+	all: "all",
+	preview: "preview",
+} as const;
+
+export type EnforcementScopeEnumKey =
+	(typeof enforcementScopeEnum)[keyof typeof enforcementScopeEnum];
 
 export const newResourceBlockingPolicyEnum = {
 	allow: "allow",
@@ -11348,6 +11357,10 @@ export type UserEvent = {
 							 */
 							mode: string;
 							/**
+							 * @type string | undefined
+							 */
+							enforcementScope?: EnforcementScopeEnumKey | undefined;
+							/**
 							 * @type number
 							 */
 							enforcePercentage: number;
@@ -11376,6 +11389,10 @@ export type UserEvent = {
 							 * @type string
 							 */
 							mode: string;
+							/**
+							 * @type string | undefined
+							 */
+							enforcementScope?: EnforcementScopeEnumKey | undefined;
 							/**
 							 * @type number
 							 */
@@ -17315,6 +17332,7 @@ export const listEventTypeNameEnum = {
 	"unlink-login-connection": "unlink-login-connection",
 	"user-delete": "user-delete",
 	"user-emu-account-archived": "user-emu-account-archived",
+	"user-emu-account-deleted": "user-emu-account-deleted",
 	"user-emu-account-recovered": "user-emu-account-recovered",
 	"user-mfa-challenge-verified": "user-mfa-challenge-verified",
 	"user-mfa-configuration-updated": "user-mfa-configuration-updated",
@@ -17907,6 +17925,7 @@ export const listEventTypeReplacedByEnum = {
 	"unlink-login-connection": "unlink-login-connection",
 	"user-delete": "user-delete",
 	"user-emu-account-archived": "user-emu-account-archived",
+	"user-emu-account-deleted": "user-emu-account-deleted",
 	"user-emu-account-recovered": "user-emu-account-recovered",
 	"user-mfa-challenge-verified": "user-mfa-challenge-verified",
 	"user-mfa-configuration-updated": "user-mfa-configuration-updated",
@@ -41912,16 +41931,6 @@ export type DeleteRoutesStatus403 = unknown;
 export type DeleteRoutesStatus404 = unknown;
 
 /**
- * @type unknown
- */
-export type DeleteRoutesStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type DeleteRoutesStatus500 = unknown;
-
-/**
  * @type object
  */
 export type DeleteRoutesRequestConfig = {
@@ -41957,8 +41966,6 @@ export type DeleteRoutesResponses = {
 	"401": DeleteRoutesStatus401;
 	"403": DeleteRoutesStatus403;
 	"404": DeleteRoutesStatus404;
-	"409": DeleteRoutesStatus409;
-	"500": DeleteRoutesStatus500;
 };
 
 /**
@@ -41969,9 +41976,7 @@ export type DeleteRoutesResponse =
 	| DeleteRoutesStatus400
 	| DeleteRoutesStatus401
 	| DeleteRoutesStatus403
-	| DeleteRoutesStatus404
-	| DeleteRoutesStatus409
-	| DeleteRoutesStatus500;
+	| DeleteRoutesStatus404;
 
 /**
  * @type string
@@ -47276,11 +47281,6 @@ export type ListDrivesStatus401 = unknown;
 /**
  * @type unknown
  */
-export type ListDrivesStatus402 = unknown;
-
-/**
- * @type unknown
- */
 export type ListDrivesStatus403 = unknown;
 
 /**
@@ -47328,7 +47328,6 @@ export type ListDrivesResponses = {
 	"200": ListDrivesStatus200;
 	"400": ListDrivesStatus400;
 	"401": ListDrivesStatus401;
-	"402": ListDrivesStatus402;
 	"403": ListDrivesStatus403;
 	"404": ListDrivesStatus404;
 	"429": ListDrivesStatus429;
@@ -47341,7 +47340,6 @@ export type ListDrivesResponse =
 	| ListDrivesStatus200
 	| ListDrivesStatus400
 	| ListDrivesStatus401
-	| ListDrivesStatus402
 	| ListDrivesStatus403
 	| ListDrivesStatus404
 	| ListDrivesStatus429;
@@ -47518,11 +47516,6 @@ export type DeleteDriveStatus401 = unknown;
 /**
  * @type unknown
  */
-export type DeleteDriveStatus402 = unknown;
-
-/**
- * @type unknown
- */
 export type DeleteDriveStatus403 = unknown;
 
 /**
@@ -47575,7 +47568,6 @@ export type DeleteDriveResponses = {
 	"200": DeleteDriveStatus200;
 	"400": DeleteDriveStatus400;
 	"401": DeleteDriveStatus401;
-	"402": DeleteDriveStatus402;
 	"403": DeleteDriveStatus403;
 	"404": DeleteDriveStatus404;
 	"409": DeleteDriveStatus409;
@@ -47589,7 +47581,6 @@ export type DeleteDriveResponse =
 	| DeleteDriveStatus200
 	| DeleteDriveStatus400
 	| DeleteDriveStatus401
-	| DeleteDriveStatus402
 	| DeleteDriveStatus403
 	| DeleteDriveStatus404
 	| DeleteDriveStatus409

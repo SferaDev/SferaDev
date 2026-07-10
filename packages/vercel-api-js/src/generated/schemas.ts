@@ -1075,6 +1075,7 @@ export const userEventSchema = z
 				"unlink-login-connection",
 				"user-delete",
 				"user-emu-account-archived",
+				"user-emu-account-deleted",
 				"user-emu-account-recovered",
 				"user-mfa-challenge-verified",
 				"user-mfa-configuration-updated",
@@ -5814,6 +5815,7 @@ export const userEventSchema = z
 							.object({
 								enabled: z.union([z.literal(false), z.literal(true)]),
 								mode: z.string(),
+								enforcementScope: z.enum(["all", "preview"]).optional(),
 								enforcePercentage: z.number(),
 								newResourceBlockingPolicy: z.enum(["allow", "block"]),
 								allowUnsafeScriptSrcKeywords: z.union([z.literal(false), z.literal(true)]),
@@ -5823,6 +5825,7 @@ export const userEventSchema = z
 						next: z.object({
 							enabled: z.union([z.literal(false), z.literal(true)]),
 							mode: z.string(),
+							enforcementScope: z.enum(["all", "preview"]).optional(),
 							enforcePercentage: z.number(),
 							newResourceBlockingPolicy: z.enum(["allow", "block"]),
 							allowUnsafeScriptSrcKeywords: z.union([z.literal(false), z.literal(true)]),
@@ -9175,6 +9178,7 @@ export const listEventTypeSchema = z
 				"unlink-login-connection",
 				"user-delete",
 				"user-emu-account-archived",
+				"user-emu-account-deleted",
 				"user-emu-account-recovered",
 				"user-mfa-challenge-verified",
 				"user-mfa-configuration-updated",
@@ -9761,6 +9765,7 @@ export const listEventTypeSchema = z
 					"unlink-login-connection",
 					"user-delete",
 					"user-emu-account-archived",
+					"user-emu-account-deleted",
 					"user-emu-account-recovered",
 					"user-mfa-challenge-verified",
 					"user-mfa-configuration-updated",
@@ -19122,18 +19127,12 @@ export const deleteRoutesStatus403Schema = z.unknown();
 
 export const deleteRoutesStatus404Schema = z.unknown();
 
-export const deleteRoutesStatus409Schema = z.unknown();
-
-export const deleteRoutesStatus500Schema = z.unknown();
-
 export const deleteRoutesResponseSchema = z.union([
 	deleteRoutesStatus200Schema,
 	deleteRoutesStatus400Schema,
 	deleteRoutesStatus401Schema,
 	deleteRoutesStatus403Schema,
 	deleteRoutesStatus404Schema,
-	deleteRoutesStatus409Schema,
-	deleteRoutesStatus500Schema,
 ]);
 
 export const editRoutePathProjectIdSchema = z.string();
@@ -21136,8 +21135,6 @@ export const listDrivesStatus400Schema = z.unknown();
 
 export const listDrivesStatus401Schema = z.unknown();
 
-export const listDrivesStatus402Schema = z.unknown();
-
 export const listDrivesStatus403Schema = z.unknown();
 
 export const listDrivesStatus404Schema = z.unknown();
@@ -21148,7 +21145,6 @@ export const listDrivesResponseSchema = z.union([
 	listDrivesStatus200Schema,
 	listDrivesStatus400Schema,
 	listDrivesStatus401Schema,
-	listDrivesStatus402Schema,
 	listDrivesStatus403Schema,
 	listDrivesStatus404Schema,
 	listDrivesStatus429Schema,
@@ -21233,8 +21229,6 @@ export const deleteDriveStatus400Schema = z.unknown();
 
 export const deleteDriveStatus401Schema = z.unknown();
 
-export const deleteDriveStatus402Schema = z.unknown();
-
 export const deleteDriveStatus403Schema = z.unknown();
 
 export const deleteDriveStatus404Schema = z.unknown();
@@ -21247,7 +21241,6 @@ export const deleteDriveResponseSchema = z.union([
 	deleteDriveStatus200Schema,
 	deleteDriveStatus400Schema,
 	deleteDriveStatus401Schema,
-	deleteDriveStatus402Schema,
 	deleteDriveStatus403Schema,
 	deleteDriveStatus404Schema,
 	deleteDriveStatus409Schema,
