@@ -1687,6 +1687,7 @@ export const userEventTypeEnum = {
 	"passkey-created": "passkey-created",
 	"passkey-deleted": "passkey-deleted",
 	"passkey-updated": "passkey-updated",
+	"passport-access-granted": "passport-access-granted",
 	"password-protection-disabled": "password-protection-disabled",
 	"password-protection-enabled": "password-protection-enabled",
 	"payment-method-added": "payment-method-added",
@@ -2824,6 +2825,24 @@ export type UserEvent = {
 						 * @type string
 						 */
 						type: TypeEnumKey;
+						/**
+						 * @type string
+						 */
+						id: string;
+						/**
+						 * @type string
+						 */
+						name: string;
+						/**
+						 * @type string | undefined
+						 */
+						email?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						type: TypeEnumKey;
 				  }
 		  )
 		| undefined;
@@ -2872,6 +2891,24 @@ export type UserEvent = {
 						 * @type string
 						 */
 						name: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						type: TypeEnumKey;
+						/**
+						 * @type string
+						 */
+						id: string;
+						/**
+						 * @type string
+						 */
+						name: string;
+						/**
+						 * @type string | undefined
+						 */
+						email?: string | undefined;
 				  }
 				| {
 						/**
@@ -3901,6 +3938,7 @@ export type UserEvent = {
 									| "read-write:drains"
 									| "read-write:edge-cache"
 									| "read-write:edge-config"
+									| "read-write:firewall"
 									| "read-write:integration-configuration"
 									| "read-write:integration-resource"
 									| "read-write:kms"
@@ -3923,6 +3961,7 @@ export type UserEvent = {
 									| "read:deployment"
 									| "read:domain"
 									| "read:event"
+									| "read:firewall"
 									| "read:integration-configuration"
 									| "read:kms"
 									| "read:monitoring"
@@ -3983,6 +4022,7 @@ export type UserEvent = {
 									| "read-write:drains"
 									| "read-write:edge-cache"
 									| "read-write:edge-config"
+									| "read-write:firewall"
 									| "read-write:integration-configuration"
 									| "read-write:integration-resource"
 									| "read-write:kms"
@@ -4005,6 +4045,7 @@ export type UserEvent = {
 									| "read:deployment"
 									| "read:domain"
 									| "read:event"
+									| "read:firewall"
 									| "read:integration-configuration"
 									| "read:kms"
 									| "read:monitoring"
@@ -4090,6 +4131,7 @@ export type UserEvent = {
 												| "read-write:drains"
 												| "read-write:edge-cache"
 												| "read-write:edge-config"
+												| "read-write:firewall"
 												| "read-write:integration-configuration"
 												| "read-write:integration-resource"
 												| "read-write:kms"
@@ -4112,6 +4154,7 @@ export type UserEvent = {
 												| "read:deployment"
 												| "read:domain"
 												| "read:event"
+												| "read:firewall"
 												| "read:integration-configuration"
 												| "read:kms"
 												| "read:monitoring"
@@ -4184,6 +4227,7 @@ export type UserEvent = {
 												| "read-write:drains"
 												| "read-write:edge-cache"
 												| "read-write:edge-config"
+												| "read-write:firewall"
 												| "read-write:integration-configuration"
 												| "read-write:integration-resource"
 												| "read-write:kms"
@@ -4206,6 +4250,7 @@ export type UserEvent = {
 												| "read:deployment"
 												| "read:domain"
 												| "read:event"
+												| "read:firewall"
 												| "read:integration-configuration"
 												| "read:kms"
 												| "read:monitoring"
@@ -4283,6 +4328,7 @@ export type UserEvent = {
 									| "read-write:drains"
 									| "read-write:edge-cache"
 									| "read-write:edge-config"
+									| "read-write:firewall"
 									| "read-write:integration-configuration"
 									| "read-write:integration-resource"
 									| "read-write:kms"
@@ -4305,6 +4351,7 @@ export type UserEvent = {
 									| "read:deployment"
 									| "read:domain"
 									| "read:event"
+									| "read:firewall"
 									| "read:integration-configuration"
 									| "read:kms"
 									| "read:monitoring"
@@ -11594,6 +11641,56 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
+						environment: string;
+						/**
+						 * @type string
+						 */
+						host: string;
+						/**
+						 * @type string
+						 */
+						connectorId: string;
+						/**
+						 * @type string
+						 */
+						connectorType: string;
+						/**
+						 * @type string
+						 */
+						connectorService: string;
+						/**
+						 * @type string
+						 */
+						externalIssuer: string;
+						/**
+						 * @type string
+						 */
+						externalSubject: string;
+						/**
+						 * @type string
+						 */
+						sessionId: string;
+						/**
+						 * @type boolean | undefined
+						 */
+						emailVerified?: (false | true) | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						tenantId?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						installationId?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
 						projectName: string;
 						/**
 						 * @type object
@@ -17094,6 +17191,7 @@ export const listEventTypeNameEnum = {
 	"passkey-created": "passkey-created",
 	"passkey-deleted": "passkey-deleted",
 	"passkey-updated": "passkey-updated",
+	"passport-access-granted": "passport-access-granted",
 	"password-protection-disabled": "password-protection-disabled",
 	"password-protection-enabled": "password-protection-enabled",
 	"payment-method-added": "payment-method-added",
@@ -17688,6 +17786,7 @@ export const listEventTypeReplacedByEnum = {
 	"passkey-created": "passkey-created",
 	"passkey-deleted": "passkey-deleted",
 	"passkey-updated": "passkey-updated",
+	"passport-access-granted": "passport-access-granted",
 	"password-protection-disabled": "password-protection-disabled",
 	"password-protection-enabled": "password-protection-enabled",
 	"payment-method-added": "payment-method-added",
