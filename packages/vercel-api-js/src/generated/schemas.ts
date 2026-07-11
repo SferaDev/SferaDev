@@ -845,6 +845,7 @@ export const userEventSchema = z
 				"passkey-created",
 				"passkey-deleted",
 				"passkey-updated",
+				"passport-access-granted",
 				"password-protection-disabled",
 				"password-protection-enabled",
 				"payment-method-added",
@@ -1184,6 +1185,14 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						type: z.enum(["external"]),
+						id: z.string(),
+						name: z.string(),
+						email: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
 						type: z.enum(["system"]),
 					})
 					.strict(),
@@ -1207,6 +1216,14 @@ export const userEventSchema = z
 							type: z.enum(["app"]),
 							clientId: z.string(),
 							name: z.string(),
+						})
+						.strict(),
+					z
+						.object({
+							type: z.enum(["external"]),
+							id: z.string(),
+							name: z.string(),
+							email: z.string().optional(),
 						})
 						.strict(),
 					z
@@ -1766,6 +1783,7 @@ export const userEventSchema = z
 									"read-write:drains",
 									"read-write:edge-cache",
 									"read-write:edge-config",
+									"read-write:firewall",
 									"read-write:integration-configuration",
 									"read-write:integration-resource",
 									"read-write:kms",
@@ -1788,6 +1806,7 @@ export const userEventSchema = z
 									"read:deployment",
 									"read:domain",
 									"read:event",
+									"read:firewall",
 									"read:integration-configuration",
 									"read:kms",
 									"read:monitoring",
@@ -1836,6 +1855,7 @@ export const userEventSchema = z
 									"read-write:drains",
 									"read-write:edge-cache",
 									"read-write:edge-config",
+									"read-write:firewall",
 									"read-write:integration-configuration",
 									"read-write:integration-resource",
 									"read-write:kms",
@@ -1858,6 +1878,7 @@ export const userEventSchema = z
 									"read:deployment",
 									"read:domain",
 									"read:event",
+									"read:firewall",
 									"read:integration-configuration",
 									"read:kms",
 									"read:monitoring",
@@ -1915,6 +1936,7 @@ export const userEventSchema = z
 											"read-write:drains",
 											"read-write:edge-cache",
 											"read-write:edge-config",
+											"read-write:firewall",
 											"read-write:integration-configuration",
 											"read-write:integration-resource",
 											"read-write:kms",
@@ -1937,6 +1959,7 @@ export const userEventSchema = z
 											"read:deployment",
 											"read:domain",
 											"read:event",
+											"read:firewall",
 											"read:integration-configuration",
 											"read:kms",
 											"read:monitoring",
@@ -1988,6 +2011,7 @@ export const userEventSchema = z
 											"read-write:drains",
 											"read-write:edge-cache",
 											"read-write:edge-config",
+											"read-write:firewall",
 											"read-write:integration-configuration",
 											"read-write:integration-resource",
 											"read-write:kms",
@@ -2010,6 +2034,7 @@ export const userEventSchema = z
 											"read:deployment",
 											"read:domain",
 											"read:event",
+											"read:firewall",
 											"read:integration-configuration",
 											"read:kms",
 											"read:monitoring",
@@ -2065,6 +2090,7 @@ export const userEventSchema = z
 									"read-write:drains",
 									"read-write:edge-cache",
 									"read-write:edge-config",
+									"read-write:firewall",
 									"read-write:integration-configuration",
 									"read-write:integration-resource",
 									"read-write:kms",
@@ -2087,6 +2113,7 @@ export const userEventSchema = z
 									"read:deployment",
 									"read:domain",
 									"read:event",
+									"read:firewall",
 									"read:integration-configuration",
 									"read:kms",
 									"read:monitoring",
@@ -5914,6 +5941,22 @@ export const userEventSchema = z
 				z
 					.object({
 						projectId: z.string(),
+						environment: z.string(),
+						host: z.string(),
+						connectorId: z.string(),
+						connectorType: z.string(),
+						connectorService: z.string(),
+						externalIssuer: z.string(),
+						externalSubject: z.string(),
+						sessionId: z.string(),
+						emailVerified: z.union([z.literal(false), z.literal(true)]).optional(),
+						tenantId: z.string().optional(),
+						installationId: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
 						projectName: z.string(),
 						previous: z.object({
 							passport: z
@@ -8949,6 +8992,7 @@ export const listEventTypeSchema = z
 				"passkey-created",
 				"passkey-deleted",
 				"passkey-updated",
+				"passport-access-granted",
 				"password-protection-disabled",
 				"password-protection-enabled",
 				"payment-method-added",
@@ -9537,6 +9581,7 @@ export const listEventTypeSchema = z
 					"passkey-created",
 					"passkey-deleted",
 					"passkey-updated",
+					"passport-access-granted",
 					"password-protection-disabled",
 					"password-protection-enabled",
 					"payment-method-added",
