@@ -3,6 +3,97 @@
  * Do not edit manually.
  */
 
+export const aiGatewayRuleTypeEnum = {
+	deny: "deny",
+	rewrite: "rewrite",
+} as const;
+
+export type AiGatewayRuleTypeEnumKey =
+	(typeof aiGatewayRuleTypeEnum)[keyof typeof aiGatewayRuleTypeEnum];
+
+/**
+ * @description Public response shape for AI Gateway routing rules. Used so OpenAPI generation can avoid ElectroDB\'s recursive EntityItem types.
+ * @type object
+ */
+export type AiGatewayRule = {
+	/**
+	 * @type string
+	 */
+	ownerId: string;
+	/**
+	 * @type string
+	 */
+	ruleId: string;
+	/**
+	 * @type string
+	 */
+	type: AiGatewayRuleTypeEnumKey;
+	/**
+	 * @type object | undefined
+	 */
+	match?:
+		| {
+				/**
+				 * @type string | undefined
+				 */
+				model?: string | undefined;
+		  }
+		| undefined;
+	/**
+	 * @type object | undefined
+	 */
+	action?:
+		| {
+				/**
+				 * @type string | undefined
+				 */
+				rewriteModel?: string | undefined;
+				/**
+				 * @type string | undefined
+				 */
+				reason?: string | undefined;
+		  }
+		| undefined;
+	/**
+	 * @type boolean
+	 */
+	enabled: false | true;
+	/**
+	 * @type boolean | undefined
+	 */
+	deleted?: (false | true) | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	description?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	createdBy?: string | undefined;
+	/**
+	 * @type string | undefined
+	 */
+	updatedBy?: string | undefined;
+	/**
+	 * @type number
+	 */
+	createdAt: number;
+	/**
+	 * @type number
+	 */
+	updatedAt: number;
+};
+
+/**
+ * @type object
+ */
+export type AiGatewayRuleList = {
+	/**
+	 * @type array
+	 */
+	rules: unknown[];
+};
+
 export const networkStatusEnum = {
 	create_in_progress: "create_in_progress",
 	delete_in_progress: "delete_in_progress",
@@ -3963,6 +4054,7 @@ export type UserEvent = {
 									| "read:event"
 									| "read:firewall"
 									| "read:integration-configuration"
+									| "read:integration-resource"
 									| "read:kms"
 									| "read:monitoring"
 									| "read:project"
@@ -4047,6 +4139,7 @@ export type UserEvent = {
 									| "read:event"
 									| "read:firewall"
 									| "read:integration-configuration"
+									| "read:integration-resource"
 									| "read:kms"
 									| "read:monitoring"
 									| "read:project"
@@ -4156,6 +4249,7 @@ export type UserEvent = {
 												| "read:event"
 												| "read:firewall"
 												| "read:integration-configuration"
+												| "read:integration-resource"
 												| "read:kms"
 												| "read:monitoring"
 												| "read:project"
@@ -4252,6 +4346,7 @@ export type UserEvent = {
 												| "read:event"
 												| "read:firewall"
 												| "read:integration-configuration"
+												| "read:integration-resource"
 												| "read:kms"
 												| "read:monitoring"
 												| "read:project"
@@ -4353,6 +4448,7 @@ export type UserEvent = {
 									| "read:event"
 									| "read:firewall"
 									| "read:integration-configuration"
+									| "read:integration-resource"
 									| "read:kms"
 									| "read:monitoring"
 									| "read:project"
@@ -9002,6 +9098,7 @@ export type UserEvent = {
 										teamPermissions?:
 											| (
 													| "AiGatewayApiKeyOwnedBySelf"
+													| "AiGatewayBudgetManager"
 													| "AiGatewayCredits"
 													| "AiGatewaySettings"
 													| "CreateProject"
@@ -19991,6 +20088,7 @@ export type InvitedTeamMemberTeamRolesEnumKey =
 
 export const invitedTeamMemberTeamPermissionsEnum = {
 	AiGatewayApiKeyOwnedBySelf: "AiGatewayApiKeyOwnedBySelf",
+	AiGatewayBudgetManager: "AiGatewayBudgetManager",
 	AiGatewayCredits: "AiGatewayCredits",
 	AiGatewaySettings: "AiGatewaySettings",
 	CreateProject: "CreateProject",
@@ -20093,6 +20191,7 @@ export type TeamDefaultRolesTeamRolesEnumKey =
 
 export const teamDefaultRolesTeamPermissionsEnum = {
 	AiGatewayApiKeyOwnedBySelf: "AiGatewayApiKeyOwnedBySelf",
+	AiGatewayBudgetManager: "AiGatewayBudgetManager",
 	AiGatewayCredits: "AiGatewayCredits",
 	AiGatewaySettings: "AiGatewaySettings",
 	CreateProject: "CreateProject",
@@ -20219,6 +20318,7 @@ export type TeamMembershipTeamRolesEnumKey =
 
 export const teamMembershipTeamPermissionsEnum = {
 	AiGatewayApiKeyOwnedBySelf: "AiGatewayApiKeyOwnedBySelf",
+	AiGatewayBudgetManager: "AiGatewayBudgetManager",
 	AiGatewayCredits: "AiGatewayCredits",
 	AiGatewaySettings: "AiGatewaySettings",
 	CreateProject: "CreateProject",
@@ -21148,6 +21248,7 @@ export type TeamLimitedMembershipTeamRolesEnumKey =
 
 export const teamLimitedMembershipTeamPermissionsEnum = {
 	AiGatewayApiKeyOwnedBySelf: "AiGatewayApiKeyOwnedBySelf",
+	AiGatewayBudgetManager: "AiGatewayBudgetManager",
 	AiGatewayCredits: "AiGatewayCredits",
 	AiGatewaySettings: "AiGatewaySettings",
 	CreateProject: "CreateProject",
@@ -23892,6 +23993,367 @@ export type DeleteAccessGroupProjectResponse =
 	| DeleteAccessGroupProjectStatus400
 	| DeleteAccessGroupProjectStatus401
 	| DeleteAccessGroupProjectStatus403;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type CreateAiGatewayRuleQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type CreateAiGatewayRuleQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type CreateAiGatewayRuleStatus201 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateAiGatewayRuleStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateAiGatewayRuleStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateAiGatewayRuleStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateAiGatewayRuleStatus409 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateAiGatewayRuleStatus500 = unknown;
+
+/**
+ * @type object
+ */
+export type CreateAiGatewayRuleRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				teamId?: CreateAiGatewayRuleQueryTeamId | undefined;
+				slug?: CreateAiGatewayRuleQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/v1/ai-gateway/rules";
+};
+
+/**
+ * @type object
+ */
+export type CreateAiGatewayRuleResponses = {
+	"201": CreateAiGatewayRuleStatus201;
+	"400": CreateAiGatewayRuleStatus400;
+	"401": CreateAiGatewayRuleStatus401;
+	"403": CreateAiGatewayRuleStatus403;
+	"409": CreateAiGatewayRuleStatus409;
+	"500": CreateAiGatewayRuleStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateAiGatewayRuleResponse =
+	| CreateAiGatewayRuleStatus201
+	| CreateAiGatewayRuleStatus400
+	| CreateAiGatewayRuleStatus401
+	| CreateAiGatewayRuleStatus403
+	| CreateAiGatewayRuleStatus409
+	| CreateAiGatewayRuleStatus500;
+
+/**
+ * @type string | undefined
+ */
+export type ListAiGatewayRulesQueryIncludeDisabled = ("true" | "false") | undefined;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type ListAiGatewayRulesQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type ListAiGatewayRulesQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type ListAiGatewayRulesStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListAiGatewayRulesStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListAiGatewayRulesStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListAiGatewayRulesStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListAiGatewayRulesStatus500 = unknown;
+
+/**
+ * @type object
+ */
+export type ListAiGatewayRulesRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				includeDisabled?: ListAiGatewayRulesQueryIncludeDisabled | undefined;
+				teamId?: ListAiGatewayRulesQueryTeamId | undefined;
+				slug?: ListAiGatewayRulesQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/v1/ai-gateway/rules";
+};
+
+/**
+ * @type object
+ */
+export type ListAiGatewayRulesResponses = {
+	"200": ListAiGatewayRulesStatus200;
+	"400": ListAiGatewayRulesStatus400;
+	"401": ListAiGatewayRulesStatus401;
+	"403": ListAiGatewayRulesStatus403;
+	"500": ListAiGatewayRulesStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListAiGatewayRulesResponse =
+	| ListAiGatewayRulesStatus200
+	| ListAiGatewayRulesStatus400
+	| ListAiGatewayRulesStatus401
+	| ListAiGatewayRulesStatus403
+	| ListAiGatewayRulesStatus500;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type UpdateAiGatewayRuleQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type UpdateAiGatewayRuleQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type UpdateAiGatewayRuleStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type UpdateAiGatewayRuleStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type UpdateAiGatewayRuleStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type UpdateAiGatewayRuleStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type UpdateAiGatewayRuleStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type UpdateAiGatewayRuleStatus500 = unknown;
+
+/**
+ * @type object
+ */
+export type UpdateAiGatewayRuleRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				teamId?: UpdateAiGatewayRuleQueryTeamId | undefined;
+				slug?: UpdateAiGatewayRuleQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/v1/ai-gateway/rules";
+};
+
+/**
+ * @type object
+ */
+export type UpdateAiGatewayRuleResponses = {
+	"200": UpdateAiGatewayRuleStatus200;
+	"400": UpdateAiGatewayRuleStatus400;
+	"401": UpdateAiGatewayRuleStatus401;
+	"403": UpdateAiGatewayRuleStatus403;
+	"404": UpdateAiGatewayRuleStatus404;
+	"500": UpdateAiGatewayRuleStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type UpdateAiGatewayRuleResponse =
+	| UpdateAiGatewayRuleStatus200
+	| UpdateAiGatewayRuleStatus400
+	| UpdateAiGatewayRuleStatus401
+	| UpdateAiGatewayRuleStatus403
+	| UpdateAiGatewayRuleStatus404
+	| UpdateAiGatewayRuleStatus500;
+
+/**
+ * @type string
+ */
+export type DeleteAiGatewayRuleQueryRuleId = string;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type DeleteAiGatewayRuleQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type DeleteAiGatewayRuleQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type DeleteAiGatewayRuleStatus204 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteAiGatewayRuleStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteAiGatewayRuleStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteAiGatewayRuleStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteAiGatewayRuleStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteAiGatewayRuleStatus500 = unknown;
+
+/**
+ * @type object
+ */
+export type DeleteAiGatewayRuleRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				ruleId: DeleteAiGatewayRuleQueryRuleId;
+				teamId?: DeleteAiGatewayRuleQueryTeamId | undefined;
+				slug?: DeleteAiGatewayRuleQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/v1/ai-gateway/rules";
+};
+
+/**
+ * @type object
+ */
+export type DeleteAiGatewayRuleResponses = {
+	"204": DeleteAiGatewayRuleStatus204;
+	"400": DeleteAiGatewayRuleStatus400;
+	"401": DeleteAiGatewayRuleStatus401;
+	"403": DeleteAiGatewayRuleStatus403;
+	"404": DeleteAiGatewayRuleStatus404;
+	"500": DeleteAiGatewayRuleStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteAiGatewayRuleResponse =
+	| DeleteAiGatewayRuleStatus204
+	| DeleteAiGatewayRuleStatus400
+	| DeleteAiGatewayRuleStatus401
+	| DeleteAiGatewayRuleStatus403
+	| DeleteAiGatewayRuleStatus404
+	| DeleteAiGatewayRuleStatus500;
 
 /**
  * @description The continuous integration or delivery environment where this artifact is downloaded.

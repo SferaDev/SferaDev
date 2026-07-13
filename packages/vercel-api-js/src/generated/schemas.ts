@@ -2,6 +2,38 @@
 
 import * as z from "zod";
 
+export const aiGatewayRuleSchema = z
+	.object({
+		ownerId: z.string(),
+		ruleId: z.string(),
+		type: z.enum(["deny", "rewrite"]),
+		match: z
+			.object({
+				model: z.string().optional(),
+			})
+			.optional(),
+		action: z
+			.object({
+				rewriteModel: z.string().optional(),
+				reason: z.string().optional(),
+			})
+			.optional(),
+		enabled: z.union([z.literal(false), z.literal(true)]),
+		deleted: z.union([z.literal(false), z.literal(true)]).optional(),
+		description: z.string().optional(),
+		createdBy: z.string().optional(),
+		updatedBy: z.string().optional(),
+		createdAt: z.number(),
+		updatedAt: z.number(),
+	})
+	.describe(
+		"Public response shape for AI Gateway routing rules. Used so OpenAPI generation can avoid ElectroDB's recursive EntityItem types.",
+	);
+
+export const aiGatewayRuleListSchema = z.object({
+	rules: z.array(z.unknown()),
+});
+
 export const networkSchema = z.object({
 	awsAccountId: z.string().describe("The ID of the AWS Account in which the network exists."),
 	awsAvailabilityZoneIds: z
@@ -1808,6 +1840,7 @@ export const userEventSchema = z
 									"read:event",
 									"read:firewall",
 									"read:integration-configuration",
+									"read:integration-resource",
 									"read:kms",
 									"read:monitoring",
 									"read:project",
@@ -1880,6 +1913,7 @@ export const userEventSchema = z
 									"read:event",
 									"read:firewall",
 									"read:integration-configuration",
+									"read:integration-resource",
 									"read:kms",
 									"read:monitoring",
 									"read:project",
@@ -1961,6 +1995,7 @@ export const userEventSchema = z
 											"read:event",
 											"read:firewall",
 											"read:integration-configuration",
+											"read:integration-resource",
 											"read:kms",
 											"read:monitoring",
 											"read:project",
@@ -2036,6 +2071,7 @@ export const userEventSchema = z
 											"read:event",
 											"read:firewall",
 											"read:integration-configuration",
+											"read:integration-resource",
 											"read:kms",
 											"read:monitoring",
 											"read:project",
@@ -2115,6 +2151,7 @@ export const userEventSchema = z
 									"read:event",
 									"read:firewall",
 									"read:integration-configuration",
+									"read:integration-resource",
 									"read:kms",
 									"read:monitoring",
 									"read:project",
@@ -4519,6 +4556,7 @@ export const userEventSchema = z
 												.array(
 													z.enum([
 														"AiGatewayApiKeyOwnedBySelf",
+														"AiGatewayBudgetManager",
 														"AiGatewayCredits",
 														"AiGatewaySettings",
 														"CreateProject",
@@ -10726,6 +10764,7 @@ export const invitedTeamMemberSchema = z
 			.array(
 				z.enum([
 					"AiGatewayApiKeyOwnedBySelf",
+					"AiGatewayBudgetManager",
 					"AiGatewayCredits",
 					"AiGatewaySettings",
 					"CreateProject",
@@ -10886,6 +10925,7 @@ export const teamSchema = z
 					.array(
 						z.enum([
 							"AiGatewayApiKeyOwnedBySelf",
+							"AiGatewayBudgetManager",
 							"AiGatewayCredits",
 							"AiGatewaySettings",
 							"CreateProject",
@@ -11296,6 +11336,7 @@ export const teamSchema = z
 					.array(
 						z.enum([
 							"AiGatewayApiKeyOwnedBySelf",
+							"AiGatewayBudgetManager",
 							"AiGatewayCredits",
 							"AiGatewaySettings",
 							"CreateProject",
@@ -11486,6 +11527,7 @@ export const teamLimitedSchema = z
 					.array(
 						z.enum([
 							"AiGatewayApiKeyOwnedBySelf",
+							"AiGatewayBudgetManager",
 							"AiGatewayCredits",
 							"AiGatewaySettings",
 							"CreateProject",
@@ -12853,6 +12895,131 @@ export const deleteAccessGroupProjectResponseSchema = z.union([
 	deleteAccessGroupProjectStatus400Schema,
 	deleteAccessGroupProjectStatus401Schema,
 	deleteAccessGroupProjectStatus403Schema,
+]);
+
+export const createAiGatewayRuleQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const createAiGatewayRuleQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const createAiGatewayRuleStatus201Schema = z.unknown();
+
+export const createAiGatewayRuleStatus400Schema = z.unknown();
+
+export const createAiGatewayRuleStatus401Schema = z.unknown();
+
+export const createAiGatewayRuleStatus403Schema = z.unknown();
+
+export const createAiGatewayRuleStatus409Schema = z.unknown();
+
+export const createAiGatewayRuleStatus500Schema = z.unknown();
+
+export const createAiGatewayRuleResponseSchema = z.union([
+	createAiGatewayRuleStatus201Schema,
+	createAiGatewayRuleStatus400Schema,
+	createAiGatewayRuleStatus401Schema,
+	createAiGatewayRuleStatus403Schema,
+	createAiGatewayRuleStatus409Schema,
+	createAiGatewayRuleStatus500Schema,
+]);
+
+export const listAiGatewayRulesQueryIncludeDisabledSchema = z.enum(["true", "false"]).optional();
+
+export const listAiGatewayRulesQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const listAiGatewayRulesQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const listAiGatewayRulesStatus200Schema = z.unknown();
+
+export const listAiGatewayRulesStatus400Schema = z.unknown();
+
+export const listAiGatewayRulesStatus401Schema = z.unknown();
+
+export const listAiGatewayRulesStatus403Schema = z.unknown();
+
+export const listAiGatewayRulesStatus500Schema = z.unknown();
+
+export const listAiGatewayRulesResponseSchema = z.union([
+	listAiGatewayRulesStatus200Schema,
+	listAiGatewayRulesStatus400Schema,
+	listAiGatewayRulesStatus401Schema,
+	listAiGatewayRulesStatus403Schema,
+	listAiGatewayRulesStatus500Schema,
+]);
+
+export const updateAiGatewayRuleQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const updateAiGatewayRuleQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const updateAiGatewayRuleStatus200Schema = z.unknown();
+
+export const updateAiGatewayRuleStatus400Schema = z.unknown();
+
+export const updateAiGatewayRuleStatus401Schema = z.unknown();
+
+export const updateAiGatewayRuleStatus403Schema = z.unknown();
+
+export const updateAiGatewayRuleStatus404Schema = z.unknown();
+
+export const updateAiGatewayRuleStatus500Schema = z.unknown();
+
+export const updateAiGatewayRuleResponseSchema = z.union([
+	updateAiGatewayRuleStatus200Schema,
+	updateAiGatewayRuleStatus400Schema,
+	updateAiGatewayRuleStatus401Schema,
+	updateAiGatewayRuleStatus403Schema,
+	updateAiGatewayRuleStatus404Schema,
+	updateAiGatewayRuleStatus500Schema,
+]);
+
+export const deleteAiGatewayRuleQueryRuleIdSchema = z.string();
+
+export const deleteAiGatewayRuleQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const deleteAiGatewayRuleQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const deleteAiGatewayRuleStatus204Schema = z.unknown();
+
+export const deleteAiGatewayRuleStatus400Schema = z.unknown();
+
+export const deleteAiGatewayRuleStatus401Schema = z.unknown();
+
+export const deleteAiGatewayRuleStatus403Schema = z.unknown();
+
+export const deleteAiGatewayRuleStatus404Schema = z.unknown();
+
+export const deleteAiGatewayRuleStatus500Schema = z.unknown();
+
+export const deleteAiGatewayRuleResponseSchema = z.union([
+	deleteAiGatewayRuleStatus204Schema,
+	deleteAiGatewayRuleStatus400Schema,
+	deleteAiGatewayRuleStatus401Schema,
+	deleteAiGatewayRuleStatus403Schema,
+	deleteAiGatewayRuleStatus404Schema,
+	deleteAiGatewayRuleStatus500Schema,
 ]);
 
 export const recordEventsHeaderxArtifactClientCiSchema = z
