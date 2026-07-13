@@ -21046,6 +21046,11 @@ export const listSandboxesQuerySortOrderSchema = z
 	.default("desc")
 	.describe("Sort direction. Defaults to desc.");
 
+export const listSandboxesQueryStatusSchema = z
+	.enum(["running", "stopping", "stopped"])
+	.optional()
+	.describe("Filter named sandboxes by status. Only valid when sortBy is createdAt.");
+
 export const listSandboxesQueryTagsSchema = z
 	.union([z.string(), z.array(z.string())])
 	.optional()
