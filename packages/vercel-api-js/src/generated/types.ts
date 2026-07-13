@@ -15024,6 +15024,14 @@ export type UserEvent = {
 						 * @type string
 						 */
 						slug: string;
+						/**
+						 * @type string | undefined
+						 */
+						organizationId?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						organizationSlug?: string | undefined;
 				  }
 				| {
 						/**
@@ -22095,6 +22103,11 @@ export type AuthUser = {
 	 * @type boolean | undefined
 	 */
 	isEnterpriseManaged?: (false | true) | undefined;
+	/**
+	 * @description Whether the Enterprise Managed User joined the current team through the Update Account flow and should see its welcome experience.
+	 * @type boolean | undefined
+	 */
+	shouldShowEnterpriseManagedWelcome?: (false | true) | undefined;
 };
 
 /**
@@ -22147,6 +22160,11 @@ export type AuthUserLimited = {
 	 * @type boolean | undefined
 	 */
 	isEnterpriseManaged?: (false | true) | undefined;
+	/**
+	 * @description Whether the Enterprise Managed User joined the current team through the Update Account flow and should see its welcome experience.
+	 * @type boolean | undefined
+	 */
+	shouldShowEnterpriseManagedWelcome?: (false | true) | undefined;
 };
 
 /**
