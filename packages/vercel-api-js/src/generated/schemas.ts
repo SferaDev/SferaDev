@@ -161,6 +161,7 @@ export const unauthorizedSchema = z
 		status: z.literal(401),
 		code: z.enum(["unauthorized"]),
 		message: z.string(),
+		reason: z.string().optional(),
 	})
 	.strict();
 

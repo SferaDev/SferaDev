@@ -397,6 +397,10 @@ export type Unauthorized = {
 	 * @type string
 	 */
 	message: string;
+	/**
+	 * @type string | undefined
+	 */
+	reason?: string | undefined;
 };
 
 export const notAuthorizedForScopeStatusEnum = {
