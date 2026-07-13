@@ -7633,6 +7633,8 @@ export const userEventSchema = z
 				z
 					.object({
 						slug: z.string(),
+						organizationId: z.string().optional(),
+						organizationSlug: z.string().optional(),
 					})
 					.strict(),
 				z
@@ -12044,6 +12046,12 @@ export const authUserSchema = z
 			.union([z.literal(false), z.literal(true)])
 			.optional()
 			.describe("Indicates whether the user is managed by an enterprise."),
+		shouldShowEnterpriseManagedWelcome: z
+			.union([z.literal(false), z.literal(true)])
+			.optional()
+			.describe(
+				"Whether the Enterprise Managed User joined the current team through the Update Account flow and should see its welcome experience.",
+			),
 	})
 	.describe("Data for the currently authenticated User.");
 
@@ -12072,6 +12080,12 @@ export const authUserLimitedSchema = z
 			.union([z.literal(false), z.literal(true)])
 			.optional()
 			.describe("Indicates whether the user is managed by an enterprise."),
+		shouldShowEnterpriseManagedWelcome: z
+			.union([z.literal(false), z.literal(true)])
+			.optional()
+			.describe(
+				"Whether the Enterprise Managed User joined the current team through the Update Account flow and should see its welcome experience.",
+			),
 	})
 	.describe(
 		"A limited form of data for the currently authenticated User, due to the authentication token missing privileges to read the full User data.",
