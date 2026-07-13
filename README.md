@@ -9,5 +9,3 @@ I work with TypeScript and Go to create type-safe APIs, SDKs, and developer expe
 - 🔧 Building database infrastructure and developer tooling
 - 📦 Maintaining [open source packages](https://www.npmjs.com/~sferadev)
 - 🌐 [sferadev.com](https://sferadev.com)
-
-[![pkg.pr.new](https://pkg.pr.new/badge/SferaDev/SferaDev)](https://pkg.pr.new/~/SferaDev/SferaDev)
