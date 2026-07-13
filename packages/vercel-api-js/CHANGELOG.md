@@ -1,5 +1,12 @@
 # vercel-api-js
 
+## 1.3.1
+
+### Patch Changes
+
+- 0f049ed: Added shouldShowEnterpriseManagedWelcome optional field to AuthUser and AuthUserLimited types and schemas.
+- 0f049ed: Added optional organizationId and organizationSlug fields to UserEvent type and schema.
+
 ## 1.3.0
 
 ### Minor Changes
