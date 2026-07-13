@@ -126,6 +126,12 @@ import type {
 	CreateAccessGroupStatus400,
 	CreateAccessGroupStatus401,
 	CreateAccessGroupStatus403,
+	CreateAiGatewayRuleResponse,
+	CreateAiGatewayRuleStatus400,
+	CreateAiGatewayRuleStatus401,
+	CreateAiGatewayRuleStatus403,
+	CreateAiGatewayRuleStatus409,
+	CreateAiGatewayRuleStatus500,
 	CreateAuthTokenResponse,
 	CreateAuthTokenStatus400,
 	CreateAuthTokenStatus401,
@@ -361,6 +367,12 @@ import type {
 	DeleteAccessGroupStatus400,
 	DeleteAccessGroupStatus401,
 	DeleteAccessGroupStatus403,
+	DeleteAiGatewayRuleResponse,
+	DeleteAiGatewayRuleStatus400,
+	DeleteAiGatewayRuleStatus401,
+	DeleteAiGatewayRuleStatus403,
+	DeleteAiGatewayRuleStatus404,
+	DeleteAiGatewayRuleStatus500,
 	DeleteAliasResponse,
 	DeleteAliasStatus400,
 	DeleteAliasStatus401,
@@ -1210,6 +1222,11 @@ import type {
 	ListAccessGroupsStatus400,
 	ListAccessGroupsStatus401,
 	ListAccessGroupsStatus403,
+	ListAiGatewayRulesResponse,
+	ListAiGatewayRulesStatus400,
+	ListAiGatewayRulesStatus401,
+	ListAiGatewayRulesStatus403,
+	ListAiGatewayRulesStatus500,
 	ListAliasesResponse,
 	ListAliasesStatus400,
 	ListAliasesStatus401,
@@ -1633,6 +1650,12 @@ import type {
 	UpdateAccessGroupStatus400,
 	UpdateAccessGroupStatus401,
 	UpdateAccessGroupStatus403,
+	UpdateAiGatewayRuleResponse,
+	UpdateAiGatewayRuleStatus400,
+	UpdateAiGatewayRuleStatus401,
+	UpdateAiGatewayRuleStatus403,
+	UpdateAiGatewayRuleStatus404,
+	UpdateAiGatewayRuleStatus500,
 	UpdateAttackChallengeModeResponse,
 	UpdateAttackChallengeModeStatus400,
 	UpdateAttackChallengeModeStatus401,
@@ -2388,6 +2411,165 @@ export async function deleteAccessGroupProject(
 	>({
 		method: "DELETE",
 		url: `/v1/access-groups/${pathParams.accessGroupIdOrName}/projects/${pathParams.projectId}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Create rule
+ * @description Create a routing rule
+ * @link /v1/ai-gateway/rules
+ */
+export async function createAiGatewayRule(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		CreateAiGatewayRuleResponse,
+		ErrorWrapper<
+			| CreateAiGatewayRuleStatus400
+			| CreateAiGatewayRuleStatus401
+			| CreateAiGatewayRuleStatus403
+			| CreateAiGatewayRuleStatus409
+			| CreateAiGatewayRuleStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		Record<string, string>
+	>({
+		method: "POST",
+		url: `/v1/ai-gateway/rules`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary List rules
+ * @description List the authenticated team's routing rules
+ * @link /v1/ai-gateway/rules
+ */
+export async function listAiGatewayRules(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { includeDisabled?: "true" | "false"; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		ListAiGatewayRulesResponse,
+		ErrorWrapper<
+			| ListAiGatewayRulesStatus400
+			| ListAiGatewayRulesStatus401
+			| ListAiGatewayRulesStatus403
+			| ListAiGatewayRulesStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ includeDisabled?: "true" | "false"; teamId?: string; slug?: string },
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/v1/ai-gateway/rules`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Update rule
+ * @description Update a routing rule (enabled, action, or description)
+ * @link /v1/ai-gateway/rules
+ */
+export async function updateAiGatewayRule(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		UpdateAiGatewayRuleResponse,
+		ErrorWrapper<
+			| UpdateAiGatewayRuleStatus400
+			| UpdateAiGatewayRuleStatus401
+			| UpdateAiGatewayRuleStatus403
+			| UpdateAiGatewayRuleStatus404
+			| UpdateAiGatewayRuleStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		Record<string, string>
+	>({
+		method: "PATCH",
+		url: `/v1/ai-gateway/rules`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Delete rule
+ * @description Delete a routing rule (soft delete)
+ * @link /v1/ai-gateway/rules
+ */
+export async function deleteAiGatewayRule(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { ruleId?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		DeleteAiGatewayRuleResponse,
+		ErrorWrapper<
+			| DeleteAiGatewayRuleStatus400
+			| DeleteAiGatewayRuleStatus401
+			| DeleteAiGatewayRuleStatus403
+			| DeleteAiGatewayRuleStatus404
+			| DeleteAiGatewayRuleStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ ruleId?: string; teamId?: string; slug?: string },
+		Record<string, string>
+	>({
+		method: "DELETE",
+		url: `/v1/ai-gateway/rules`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -17074,6 +17256,10 @@ export const operationsByPath = {
 	"GET /v1/access-groups/{accessGroupIdOrName}/projects/{projectId}": readAccessGroupProject,
 	"PATCH /v1/access-groups/{accessGroupIdOrName}/projects/{projectId}": updateAccessGroupProject,
 	"DELETE /v1/access-groups/{accessGroupIdOrName}/projects/{projectId}": deleteAccessGroupProject,
+	"POST /v1/ai-gateway/rules": createAiGatewayRule,
+	"GET /v1/ai-gateway/rules": listAiGatewayRules,
+	"PATCH /v1/ai-gateway/rules": updateAiGatewayRule,
+	"DELETE /v1/ai-gateway/rules": deleteAiGatewayRule,
 	"POST /v8/artifacts/events": recordEvents,
 	"GET /v8/artifacts/status": status,
 	"PUT /v8/artifacts/{hash}": uploadArtifact,
@@ -17432,6 +17618,12 @@ export const operationsByTag = {
 		readAccessGroupProject,
 		updateAccessGroupProject,
 		deleteAccessGroupProject,
+	},
+	apiAiGateway: {
+		createAiGatewayRule,
+		listAiGatewayRules,
+		updateAiGatewayRule,
+		deleteAiGatewayRule,
 	},
 	artifacts: {
 		recordEvents,
@@ -17845,6 +18037,12 @@ export const tagDictionary = {
 		POST: ["updateAccessGroup", "createAccessGroup", "createAccessGroupProject"],
 		DELETE: ["deleteAccessGroup", "deleteAccessGroupProject"],
 		PATCH: ["updateAccessGroupProject"],
+	},
+	apiAiGateway: {
+		POST: ["createAiGatewayRule"],
+		GET: ["listAiGatewayRules"],
+		PATCH: ["updateAiGatewayRule"],
+		DELETE: ["deleteAiGatewayRule"],
 	},
 	artifacts: {
 		POST: ["recordEvents", "artifactQuery"],
