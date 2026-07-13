@@ -1,5 +1,12 @@
 # v0-api
 
+## 0.1.1
+
+### Patch Changes
+
+- de0bcad: Expanded and clarified description for the 'limit' query parameter in reportsGetUsage.
+- de0bcad: Added more detailed description to 'startDate' and 'endDate' in reportsGetUserActivity query parameters.
+
 ## 0.1.0
 
 ### Minor Changes
