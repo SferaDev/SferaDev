@@ -1,5 +1,31 @@
 # vercel-api-js
 
+## 1.3.0
+
+### Minor Changes
+
+- 3e3d531: Add new API endpoints for managing Vercel Container Registry (VCR) repositories, images, and tags, including create, list, get, and delete operations.
+- b36dc5b: Added optional status filter to listSandboxes API to allow filtering sandboxes by status (running, stopping, stopped).
+- 3e3d531: Add API endpoint to delete all cache artifacts for a user or team.
+- a61978e: Added enforcementScopeEnum and EnforcementScopeEnumKey types.
+- 3e3d531: Add endpoint to start a rolling release for a deployment.
+- a61978e: Added user-emu-account-deleted to user event types.
+- a61978e: Added enforcementScope to policies in user event schema.
+- 3e3d531: Add new API endpoints for web analytics including aggregate and count for pageviews and custom events.
+
+### Patch Changes
+
+- a61978e: Removed support for 402 error status from deleteDrive and listDrives endpoints.
+- 3e3d531: Correct the type of getProject path parameter to always be a string.
+- 3e3d531: Update descriptions and documentation for several API route parameters and responses for clarity.
+- a61978e: Removed support for 409 and 500 error statuses from deleteRoutes endpoint.
+- ea9c485: Added new 'external' type to user event actors with optional email field.
+- ea9c485: Added new object to UserEvent type for passport access grant details including project, environment, and connector information.
+- 3e3d531: Add new user event types, permissions, reason enums, and additional fields to schemas related to user events, team memberships, and commands.
+- e21aaad: Added support for the 'organization-delete' event type to schemas and types.
+- ea9c485: Added 'read:firewall' and 'read-write:firewall' permissions to user event schemas.
+- ea9c485: Added support for the 'passport-access-granted' event type in user and event schemas.
+
 ## 1.2.0
 
 ### Minor Changes

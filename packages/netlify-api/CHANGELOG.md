@@ -1,5 +1,12 @@
 # netlify-api
 
+## 1.2.0
+
+### Minor Changes
+
+- 85d8e5e: Added required_edge_functions and edge_functions fields to Deploy, Site, and related types, as well as to schemas to track edge-function bundles for deploys.
+- 85d8e5e: Added support for the uploadDeployEdgeFunction API endpoint and related types, schemas, and exports.
+
 ## 1.1.0
 
 ### Minor Changes
