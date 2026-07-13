@@ -12955,7 +12955,7 @@ export async function unpauseProject(
 
 /**
  * @summary List sandboxes
- * @description Retrieves a paginated list of named sandboxes belonging to a specific project. Results can be sorted by creation time or name, and optionally filtered by name prefix.
+ * @description Retrieves a paginated list of named sandboxes belonging to a specific project. Results can be sorted by creation time or name, and optionally filtered by name prefix or status.
  * @link /v2/sandboxes
  */
 export async function listSandboxes(
@@ -12970,6 +12970,7 @@ export async function listSandboxes(
 			namePrefix?: string;
 			cursor?: string;
 			sortOrder?: "asc" | "desc";
+			status?: "running" | "stopping" | "stopped";
 			tags?: unknown;
 			teamId?: string;
 			slug?: string;
@@ -12997,6 +12998,7 @@ export async function listSandboxes(
 			namePrefix?: string;
 			cursor?: string;
 			sortOrder?: "asc" | "desc";
+			status?: "running" | "stopping" | "stopped";
 			tags?: unknown;
 			teamId?: string;
 			slug?: string;

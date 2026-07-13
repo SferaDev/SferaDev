@@ -47084,6 +47084,12 @@ export type ListSandboxesQueryCursor = string | undefined;
 export type ListSandboxesQuerySortOrder = ("asc" | "desc") | undefined;
 
 /**
+ * @description Filter named sandboxes by status. Only valid when sortBy is createdAt.
+ * @type string | undefined
+ */
+export type ListSandboxesQueryStatus = ("running" | "stopping" | "stopped") | undefined;
+
+/**
  * @description Filter sandboxes by tag. Format: \\\"key:value\\\". Only one tag filter is supported at a time.
  */
 export type ListSandboxesQueryTags = (string | string[]) | undefined;
@@ -47149,6 +47155,7 @@ export type ListSandboxesRequestConfig = {
 				namePrefix?: ListSandboxesQueryNamePrefix | undefined;
 				cursor?: ListSandboxesQueryCursor | undefined;
 				sortOrder?: ListSandboxesQuerySortOrder | undefined;
+				status?: ListSandboxesQueryStatus | undefined;
 				tags?: ListSandboxesQueryTags | undefined;
 				teamId?: ListSandboxesQueryTeamId | undefined;
 				slug?: ListSandboxesQuerySlug | undefined;
