@@ -708,6 +708,7 @@ export const userEventSchema = z
 				"custom-alert-created",
 				"custom-alert-deleted",
 				"custom-alert-updated",
+				"custom-environments-settings-updated",
 				"custom-suffix-clear",
 				"custom-suffix-disable",
 				"custom-suffix-enable",
@@ -864,6 +865,7 @@ export const userEventSchema = z
 				"organization-delete",
 				"organization-slug-update",
 				"organization-team-add",
+				"organization-team-create",
 				"owner-blocked",
 				"owner-soft-blocked",
 				"owner-soft-unblocked",
@@ -2500,6 +2502,16 @@ export const userEventSchema = z
 						acceptedTokenCount: z.number().optional(),
 						importedTokenCount: z.number().optional(),
 						tokensDeleted: z.number().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						project: z.object({
+							id: z.string(),
+							name: z.string(),
+						}),
+						packs: z.number(),
+						prevPacks: z.number(),
 					})
 					.strict(),
 				z
@@ -7672,8 +7684,6 @@ export const userEventSchema = z
 				z
 					.object({
 						slug: z.string(),
-						organizationId: z.string().optional(),
-						organizationSlug: z.string().optional(),
 					})
 					.strict(),
 				z
@@ -8863,6 +8873,7 @@ export const listEventTypeSchema = z
 				"custom-alert-created",
 				"custom-alert-deleted",
 				"custom-alert-updated",
+				"custom-environments-settings-updated",
 				"custom-suffix-clear",
 				"custom-suffix-disable",
 				"custom-suffix-enable",
@@ -9019,6 +9030,7 @@ export const listEventTypeSchema = z
 				"organization-delete",
 				"organization-slug-update",
 				"organization-team-add",
+				"organization-team-create",
 				"owner-blocked",
 				"owner-soft-blocked",
 				"owner-soft-unblocked",
@@ -9452,6 +9464,7 @@ export const listEventTypeSchema = z
 					"custom-alert-created",
 					"custom-alert-deleted",
 					"custom-alert-updated",
+					"custom-environments-settings-updated",
 					"custom-suffix-clear",
 					"custom-suffix-disable",
 					"custom-suffix-enable",
@@ -9608,6 +9621,7 @@ export const listEventTypeSchema = z
 					"organization-delete",
 					"organization-slug-update",
 					"organization-team-add",
+					"organization-team-create",
 					"owner-blocked",
 					"owner-soft-blocked",
 					"owner-soft-unblocked",
