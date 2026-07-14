@@ -12072,6 +12072,13 @@ export const authUserSchema = z
 			),
 		accountUpdateContext: z
 			.object({
+				organization: z
+					.object({
+						id: z.string(),
+						name: z.string(),
+						slug: z.string(),
+					})
+					.optional(),
 				managedTeams: z.array(
 					z.object({
 						teamId: z.string(),
