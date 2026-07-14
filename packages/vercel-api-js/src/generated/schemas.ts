@@ -10451,6 +10451,12 @@ export const namedSandboxSchema = z
 		vcpus: z.number().optional().describe("Number of virtual CPUs allocated."),
 		memory: z.number().optional().describe("Memory allocated in MB."),
 		runtime: z.string().optional().describe("Runtime identifier."),
+		image: z
+			.string()
+			.optional()
+			.describe(
+				'Digest-pinned reference of the container image the sandbox was created from, when it was created from an image ("{repository}@{manifestDigest}").',
+			),
 		timeout: z.number().optional().describe("Timeout in milliseconds."),
 		snapshotExpiration: z
 			.number()
