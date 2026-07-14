@@ -1610,6 +1610,7 @@ export const userEventTypeEnum = {
 	"custom-alert-created": "custom-alert-created",
 	"custom-alert-deleted": "custom-alert-deleted",
 	"custom-alert-updated": "custom-alert-updated",
+	"custom-environments-settings-updated": "custom-environments-settings-updated",
 	"custom-suffix-clear": "custom-suffix-clear",
 	"custom-suffix-disable": "custom-suffix-disable",
 	"custom-suffix-enable": "custom-suffix-enable",
@@ -1768,6 +1769,7 @@ export const userEventTypeEnum = {
 	"organization-delete": "organization-delete",
 	"organization-slug-update": "organization-slug-update",
 	"organization-team-add": "organization-team-add",
+	"organization-team-create": "organization-team-create",
 	"owner-blocked": "owner-blocked",
 	"owner-soft-blocked": "owner-soft-blocked",
 	"owner-soft-unblocked": "owner-soft-unblocked",
@@ -5150,6 +5152,29 @@ export type UserEvent = {
 						 * @type number | undefined
 						 */
 						tokensDeleted?: number | undefined;
+				  }
+				| {
+						/**
+						 * @type object
+						 */
+						project: {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string
+							 */
+							name: string;
+						};
+						/**
+						 * @type number
+						 */
+						packs: number;
+						/**
+						 * @type number
+						 */
+						prevPacks: number;
 				  }
 				| {
 						/**
@@ -15125,14 +15150,6 @@ export type UserEvent = {
 						 * @type string
 						 */
 						slug: string;
-						/**
-						 * @type string | undefined
-						 */
-						organizationId?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						organizationSlug?: string | undefined;
 				  }
 				| {
 						/**
@@ -17128,6 +17145,7 @@ export const listEventTypeNameEnum = {
 	"custom-alert-created": "custom-alert-created",
 	"custom-alert-deleted": "custom-alert-deleted",
 	"custom-alert-updated": "custom-alert-updated",
+	"custom-environments-settings-updated": "custom-environments-settings-updated",
 	"custom-suffix-clear": "custom-suffix-clear",
 	"custom-suffix-disable": "custom-suffix-disable",
 	"custom-suffix-enable": "custom-suffix-enable",
@@ -17286,6 +17304,7 @@ export const listEventTypeNameEnum = {
 	"organization-delete": "organization-delete",
 	"organization-slug-update": "organization-slug-update",
 	"organization-team-add": "organization-team-add",
+	"organization-team-create": "organization-team-create",
 	"owner-blocked": "owner-blocked",
 	"owner-soft-blocked": "owner-soft-blocked",
 	"owner-soft-unblocked": "owner-soft-unblocked",
@@ -17723,6 +17742,7 @@ export const listEventTypeReplacedByEnum = {
 	"custom-alert-created": "custom-alert-created",
 	"custom-alert-deleted": "custom-alert-deleted",
 	"custom-alert-updated": "custom-alert-updated",
+	"custom-environments-settings-updated": "custom-environments-settings-updated",
 	"custom-suffix-clear": "custom-suffix-clear",
 	"custom-suffix-disable": "custom-suffix-disable",
 	"custom-suffix-enable": "custom-suffix-enable",
@@ -17881,6 +17901,7 @@ export const listEventTypeReplacedByEnum = {
 	"organization-delete": "organization-delete",
 	"organization-slug-update": "organization-slug-update",
 	"organization-team-add": "organization-team-add",
+	"organization-team-create": "organization-team-create",
 	"owner-blocked": "owner-blocked",
 	"owner-soft-blocked": "owner-soft-blocked",
 	"owner-soft-unblocked": "owner-soft-unblocked",
