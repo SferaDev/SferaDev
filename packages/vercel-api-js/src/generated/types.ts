@@ -22167,6 +22167,25 @@ export type AuthUser = {
 	accountUpdateContext?:
 		| {
 				/**
+				 * @type object | undefined
+				 */
+				organization?:
+					| {
+							/**
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @type string
+							 */
+							name: string;
+							/**
+							 * @type string
+							 */
+							slug: string;
+					  }
+					| undefined;
+				/**
 				 * @type array
 				 */
 				managedTeams: {
