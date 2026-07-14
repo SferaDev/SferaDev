@@ -1,5 +1,21 @@
 # vercel-api-js
 
+## 1.4.0
+
+### Minor Changes
+
+- 58de52d: Add types and schemas for AI Gateway rule management, including AiGatewayRule and AiGatewayRuleList.
+- 58de52d: Add API methods for creating, listing, updating, and deleting AI Gateway routing rules.
+
+### Patch Changes
+
+- 8981f4d: Added detailed project and packs fields to UserEvent data payloads.
+- 8981f4d: Added new event type 'custom-environments-settings-updated' to user and event type schemas.
+- 1a8105d: Added optional 'reason' field to Unauthorized schema and type.
+- 58de52d: Add AiGatewayBudgetManager to team permissions enums.
+- 8981f4d: Removed optional 'organizationId' and 'organizationSlug' fields from the event payload schema for slugs.
+- 8981f4d: Added new event type 'organization-team-create' to user and event type schemas.
+
 ## 1.3.1
 
 ### Patch Changes
