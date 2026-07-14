@@ -1770,6 +1770,7 @@ export const userEventTypeEnum = {
 	"organization-slug-update": "organization-slug-update",
 	"organization-team-add": "organization-team-add",
 	"organization-team-create": "organization-team-create",
+	"organization-team-delete": "organization-team-delete",
 	"owner-blocked": "owner-blocked",
 	"owner-soft-blocked": "owner-soft-blocked",
 	"owner-soft-unblocked": "owner-soft-unblocked",
@@ -17305,6 +17306,7 @@ export const listEventTypeNameEnum = {
 	"organization-slug-update": "organization-slug-update",
 	"organization-team-add": "organization-team-add",
 	"organization-team-create": "organization-team-create",
+	"organization-team-delete": "organization-team-delete",
 	"owner-blocked": "owner-blocked",
 	"owner-soft-blocked": "owner-soft-blocked",
 	"owner-soft-unblocked": "owner-soft-unblocked",
@@ -17902,6 +17904,7 @@ export const listEventTypeReplacedByEnum = {
 	"organization-slug-update": "organization-slug-update",
 	"organization-team-add": "organization-team-add",
 	"organization-team-create": "organization-team-create",
+	"organization-team-delete": "organization-team-delete",
 	"owner-blocked": "owner-blocked",
 	"owner-soft-blocked": "owner-soft-blocked",
 	"owner-soft-unblocked": "owner-soft-unblocked",
@@ -19391,6 +19394,154 @@ export type FlagsSdkKeyWithSecrets = {
 	 * @type string | undefined
 	 */
 	tokenValue?: string | undefined;
+};
+
+/**
+ * @description Information about the newly created API key.
+ * @type object
+ */
+export type APIKey = {
+	/**
+	 * @description The unique identifier of the API key.
+	 * @example 5d9f2ebd38ddca62e5d51e9c1704c72530bdc8bfdd41e782a6687c48399e8391
+	 * @type string
+	 */
+	id: string;
+	/**
+	 * @description The human-readable name of the API key.
+	 * @example API Key for AI Gateway
+	 * @type string
+	 */
+	name: string;
+	/**
+	 * @description The last few characters of the API key string, for helping identify the API key.
+	 * @example t7V
+	 * @type string
+	 */
+	partialKey: string;
+	/**
+	 * @description The ID of the team that the API key grants access to.
+	 * @example team_123a6c5209bc3778245d011443644c8d27dc2c50
+	 * @type string
+	 */
+	teamId: string;
+	/**
+	 * @description The API key\'s purpose, i.e. what resources it can be used with.
+	 * @example ai-gateway
+	 * @type string
+	 */
+	purpose: string;
+	/**
+	 * @description The ID of the project that this API key grants access to.\n\nWhen this is unset, the API key grants access to all projects in the team.
+	 * @example prj_12HKQaOmR5t5Uy6vdcQsNIiZgHGB
+	 * @type string
+	 */
+	projectId: string | null;
+	/**
+	 * @description Timestamp (in milliseconds) of when the API key expires.
+	 * @example 1632816536002
+	 * @type number
+	 */
+	expiresAt: number | null;
+	/**
+	 * @description Timestamp (in milliseconds) of when the API key was most recently used.
+	 * @example 1632816536002
+	 * @type number
+	 */
+	activeAt: number;
+	/**
+	 * @description Timestamp (in milliseconds) of when the API key was created.
+	 * @example 1632816536002
+	 * @type number
+	 */
+	createdAt: number;
+	/**
+	 * @description The ID of the user who created the API key.
+	 * @example ZspSRT4ljIEEmMHgoDwKWDei
+	 * @type string
+	 */
+	createdBy: string;
+	/**
+	 * @description Timestamp (in milliseconds) of when the API key was marked as leaked.
+	 * @example 1632816536002
+	 * @type number
+	 */
+	leakedAt: number | null;
+	/**
+	 * @description URL where the API key was discovered as leaked.
+	 * @type string
+	 */
+	leakedUrl: string | null;
+	/**
+	 * @description The ID of the app that created the API key, if any
+	 * @type string
+	 */
+	createdByAppId: string | null;
+	/**
+	 * @type unknown | undefined
+	 */
+	quota?: unknown | undefined;
+};
+
+/**
+ * @description AI Gateway quota associated with an API key.
+ * @type object
+ */
+export type APIKeyQuota = {
+	/**
+	 * @description The unique identifier for the quota.
+	 * @type string
+	 */
+	quotaEntityId: string;
+	/**
+	 * @description The quota limit amount.
+	 * @type number
+	 */
+	limitAmount: number;
+	/**
+	 * @description The current amount spent against the quota.
+	 * @type number
+	 */
+	currentSpend: number;
+	/**
+	 * @description The current BYOK spend (tracked separately).
+	 * @type number
+	 */
+	currentByokSpend: number;
+	/**
+	 * @description Whether BYOK (Bring Your Own Key) spend counts against the quota.
+	 * @type boolean
+	 */
+	includeByokInQuota: boolean;
+	/**
+	 * @description How often the quota refreshes.
+	 */
+	refreshPeriod: string | string | string | string;
+	/**
+	 * @description Whether the quota is currently active.
+	 * @type boolean
+	 */
+	active: boolean;
+	/**
+	 * @description Whether the quota has been archived.
+	 * @type boolean
+	 */
+	archived: boolean;
+	/**
+	 * @description Spend percentages (a subset of [50, 75, 100]) at which to send a spend alert. Empty or undefined disables alerts.
+	 * @type array | undefined
+	 */
+	alertThresholds?: number[] | undefined;
+	/**
+	 * @description Timestamp (in milliseconds) of when the quota was created.
+	 * @type number
+	 */
+	createdAt: number;
+	/**
+	 * @description Timestamp (in milliseconds) of when the quota was last updated.
+	 * @type number
+	 */
+	updatedAt: number;
 };
 
 export const aCLAction = {
@@ -40712,6 +40863,80 @@ export type DeleteIntegrationLogDrainResponse =
 	| DeleteIntegrationLogDrainStatus404;
 
 /**
+ * @type unknown
+ */
+export type CreateApiKeysStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateApiKeysStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateApiKeysStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateApiKeysStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateApiKeysStatus409 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateApiKeysStatus429 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateApiKeysStatus500 = unknown;
+
+/**
+ * @type object
+ */
+export type CreateApiKeysRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/api-keys";
+};
+
+/**
+ * @type object
+ */
+export type CreateApiKeysResponses = {
+	"200": CreateApiKeysStatus200;
+	"400": CreateApiKeysStatus400;
+	"401": CreateApiKeysStatus401;
+	"403": CreateApiKeysStatus403;
+	"409": CreateApiKeysStatus409;
+	"429": CreateApiKeysStatus429;
+	"500": CreateApiKeysStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateApiKeysResponse =
+	| CreateApiKeysStatus200
+	| CreateApiKeysStatus400
+	| CreateApiKeysStatus401
+	| CreateApiKeysStatus403
+	| CreateApiKeysStatus409
+	| CreateApiKeysStatus429
+	| CreateApiKeysStatus500;
+
+/**
  * @type string
  */
 export type GetRuntimeLogsPathProjectId = string;
@@ -43201,6 +43426,99 @@ export type GetProjectsResponse =
 	| GetProjectsStatus403;
 
 /**
+ * @description The project ID
+ * @maxLength 150
+ * @example prj_123
+ * @type string
+ */
+export type GetProjectTraceQueryProjectId = string;
+
+/**
+ * @description The Vercel CLI request ID associated with the trace
+ * @maxLength 256
+ * @example cli-req-abc
+ * @type string
+ */
+export type GetProjectTraceQueryRequestId = string;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type GetProjectTraceQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type GetProjectTraceQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type GetProjectTraceStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetProjectTraceStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetProjectTraceStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetProjectTraceStatus403 = unknown;
+
+/**
+ * @type object
+ */
+export type GetProjectTraceRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				projectId: GetProjectTraceQueryProjectId;
+				requestId: GetProjectTraceQueryRequestId;
+				teamId?: GetProjectTraceQueryTeamId | undefined;
+				slug?: GetProjectTraceQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/v1/projects/traces";
+};
+
+/**
+ * @type object
+ */
+export type GetProjectTraceResponses = {
+	"200": GetProjectTraceStatus200;
+	"400": GetProjectTraceStatus400;
+	"401": GetProjectTraceStatus401;
+	"403": GetProjectTraceStatus403;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetProjectTraceResponse =
+	| GetProjectTraceStatus200
+	| GetProjectTraceStatus400
+	| GetProjectTraceStatus401
+	| GetProjectTraceStatus403;
+
+/**
  * @description The Team identifier to perform the request on behalf of.
  * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
  * @type string | undefined
@@ -43316,6 +43634,88 @@ export type CreateProjectResponse =
 	| CreateProjectStatus428
 	| CreateProjectStatus429
 	| CreateProjectStatus500;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type CreateTraceSessionQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type CreateTraceSessionQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type CreateTraceSessionStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateTraceSessionStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateTraceSessionStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateTraceSessionStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateTraceSessionStatus422 = unknown;
+
+/**
+ * @type object
+ */
+export type CreateTraceSessionRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				teamId?: CreateTraceSessionQueryTeamId | undefined;
+				slug?: CreateTraceSessionQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/v1/projects/traces/session";
+};
+
+/**
+ * @type object
+ */
+export type CreateTraceSessionResponses = {
+	"200": CreateTraceSessionStatus200;
+	"400": CreateTraceSessionStatus400;
+	"401": CreateTraceSessionStatus401;
+	"403": CreateTraceSessionStatus403;
+	"422": CreateTraceSessionStatus422;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateTraceSessionResponse =
+	| CreateTraceSessionStatus200
+	| CreateTraceSessionStatus400
+	| CreateTraceSessionStatus401
+	| CreateTraceSessionStatus403
+	| CreateTraceSessionStatus422;
 
 /**
  * @description The unique project identifier or the project name
@@ -51632,6 +52032,252 @@ export type GetSecurityFirewallEventsResponse =
 	| GetSecurityFirewallEventsStatus403
 	| GetSecurityFirewallEventsStatus404
 	| GetSecurityFirewallEventsStatus500;
+
+/**
+ * @type string
+ */
+export type GetStorageStoresByIdPathId = string;
+
+/**
+ * @type boolean | undefined
+ */
+export type GetStorageStoresByIdQueryskipMetadata = boolean | undefined;
+
+/**
+ * @type boolean | undefined
+ */
+export type GetStorageStoresByIdQueryincludeGuides = boolean | undefined;
+
+/**
+ * @type unknown
+ */
+export type GetStorageStoresByIdStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetStorageStoresByIdStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetStorageStoresByIdStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetStorageStoresByIdStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetStorageStoresByIdStatus404 = unknown;
+
+/**
+ * @type object
+ */
+export type GetStorageStoresByIdRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		id: GetStorageStoresByIdPathId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				"'skip-metadata'"?: GetStorageStoresByIdQueryskipMetadata | undefined;
+				"'include-guides'"?: GetStorageStoresByIdQueryincludeGuides | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/storage/stores/${string}`;
+};
+
+/**
+ * @type object
+ */
+export type GetStorageStoresByIdResponses = {
+	"200": GetStorageStoresByIdStatus200;
+	"400": GetStorageStoresByIdStatus400;
+	"401": GetStorageStoresByIdStatus401;
+	"403": GetStorageStoresByIdStatus403;
+	"404": GetStorageStoresByIdStatus404;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetStorageStoresByIdResponse =
+	| GetStorageStoresByIdStatus200
+	| GetStorageStoresByIdStatus400
+	| GetStorageStoresByIdStatus401
+	| GetStorageStoresByIdStatus403
+	| GetStorageStoresByIdStatus404;
+
+/**
+ * @type unknown
+ */
+export type CreateStorageStoresBlobStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateStorageStoresBlobStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateStorageStoresBlobStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateStorageStoresBlobStatus402 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateStorageStoresBlobStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateStorageStoresBlobStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateStorageStoresBlobStatus409 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateStorageStoresBlobStatus429 = unknown;
+
+/**
+ * @type object
+ */
+export type CreateStorageStoresBlobRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/storage/stores/blob";
+};
+
+/**
+ * @type object
+ */
+export type CreateStorageStoresBlobResponses = {
+	"200": CreateStorageStoresBlobStatus200;
+	"400": CreateStorageStoresBlobStatus400;
+	"401": CreateStorageStoresBlobStatus401;
+	"402": CreateStorageStoresBlobStatus402;
+	"403": CreateStorageStoresBlobStatus403;
+	"404": CreateStorageStoresBlobStatus404;
+	"409": CreateStorageStoresBlobStatus409;
+	"429": CreateStorageStoresBlobStatus429;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateStorageStoresBlobResponse =
+	| CreateStorageStoresBlobStatus200
+	| CreateStorageStoresBlobStatus400
+	| CreateStorageStoresBlobStatus401
+	| CreateStorageStoresBlobStatus402
+	| CreateStorageStoresBlobStatus403
+	| CreateStorageStoresBlobStatus404
+	| CreateStorageStoresBlobStatus409
+	| CreateStorageStoresBlobStatus429;
+
+/**
+ * @type string
+ */
+export type DeleteStorageStoresBlobByIdPathId = string;
+
+/**
+ * @type unknown
+ */
+export type DeleteStorageStoresBlobByIdStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteStorageStoresBlobByIdStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteStorageStoresBlobByIdStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteStorageStoresBlobByIdStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteStorageStoresBlobByIdStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteStorageStoresBlobByIdStatus409 = unknown;
+
+/**
+ * @type object
+ */
+export type DeleteStorageStoresBlobByIdRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		id: DeleteStorageStoresBlobByIdPathId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/storage/stores/blob/${string}`;
+};
+
+/**
+ * @type object
+ */
+export type DeleteStorageStoresBlobByIdResponses = {
+	"200": DeleteStorageStoresBlobByIdStatus200;
+	"400": DeleteStorageStoresBlobByIdStatus400;
+	"401": DeleteStorageStoresBlobByIdStatus401;
+	"403": DeleteStorageStoresBlobByIdStatus403;
+	"404": DeleteStorageStoresBlobByIdStatus404;
+	"409": DeleteStorageStoresBlobByIdStatus409;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteStorageStoresBlobByIdResponse =
+	| DeleteStorageStoresBlobByIdStatus200
+	| DeleteStorageStoresBlobByIdStatus400
+	| DeleteStorageStoresBlobByIdStatus401
+	| DeleteStorageStoresBlobByIdStatus403
+	| DeleteStorageStoresBlobByIdStatus404
+	| DeleteStorageStoresBlobByIdStatus409;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
