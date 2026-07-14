@@ -19494,6 +19494,12 @@ export type NamedSandbox = {
 	 */
 	runtime?: string | undefined;
 	/**
+	 * @description Digest-pinned reference of the container image the sandbox was created from, when it was created from an image (\"{repository}@{manifestDigest}\").
+	 * @example my-repo@sha256:2c4e8f9a1b3d5e7f091a2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d5e6f708
+	 * @type string | undefined
+	 */
+	image?: string | undefined;
+	/**
 	 * @description Timeout in milliseconds.
 	 * @example 300000
 	 * @type number | undefined
