@@ -132,6 +132,13 @@ import type {
 	CreateAiGatewayRuleStatus403,
 	CreateAiGatewayRuleStatus409,
 	CreateAiGatewayRuleStatus500,
+	CreateApiKeysResponse,
+	CreateApiKeysStatus400,
+	CreateApiKeysStatus401,
+	CreateApiKeysStatus403,
+	CreateApiKeysStatus409,
+	CreateApiKeysStatus429,
+	CreateApiKeysStatus500,
 	CreateAuthTokenResponse,
 	CreateAuthTokenStatus400,
 	CreateAuthTokenStatus401,
@@ -338,12 +345,25 @@ import type {
 	CreateSharedEnvVariableStatus401,
 	CreateSharedEnvVariableStatus402,
 	CreateSharedEnvVariableStatus403,
+	CreateStorageStoresBlobResponse,
+	CreateStorageStoresBlobStatus400,
+	CreateStorageStoresBlobStatus401,
+	CreateStorageStoresBlobStatus402,
+	CreateStorageStoresBlobStatus403,
+	CreateStorageStoresBlobStatus404,
+	CreateStorageStoresBlobStatus409,
+	CreateStorageStoresBlobStatus429,
 	CreateTeamResponse,
 	CreateTeamStatus400,
 	CreateTeamStatus401,
 	CreateTeamStatus403,
 	CreateTeamStatus404,
 	CreateTeamStatus409,
+	CreateTraceSessionResponse,
+	CreateTraceSessionStatus400,
+	CreateTraceSessionStatus401,
+	CreateTraceSessionStatus403,
+	CreateTraceSessionStatus422,
 	CreateWebhookResponse,
 	CreateWebhookStatus400,
 	CreateWebhookStatus401,
@@ -544,6 +564,12 @@ import type {
 	DeleteSharedEnvVariableStatus401,
 	DeleteSharedEnvVariableStatus402,
 	DeleteSharedEnvVariableStatus403,
+	DeleteStorageStoresBlobByIdResponse,
+	DeleteStorageStoresBlobByIdStatus400,
+	DeleteStorageStoresBlobByIdStatus401,
+	DeleteStorageStoresBlobByIdStatus403,
+	DeleteStorageStoresBlobByIdStatus404,
+	DeleteStorageStoresBlobByIdStatus409,
 	DeleteTeamInviteCodeResponse,
 	DeleteTeamInviteCodeStatus400,
 	DeleteTeamInviteCodeStatus401,
@@ -997,6 +1023,10 @@ import type {
 	GetProjectsStatus400,
 	GetProjectsStatus401,
 	GetProjectsStatus403,
+	GetProjectTraceResponse,
+	GetProjectTraceStatus400,
+	GetProjectTraceStatus401,
+	GetProjectTraceStatus403,
 	GetRecordsResponse,
 	GetRecordsStatus400,
 	GetRecordsStatus401,
@@ -1097,6 +1127,11 @@ import type {
 	GetSharedEnvVarStatus400,
 	GetSharedEnvVarStatus401,
 	GetSharedEnvVarStatus403,
+	GetStorageStoresByIdResponse,
+	GetStorageStoresByIdStatus400,
+	GetStorageStoresByIdStatus401,
+	GetStorageStoresByIdStatus403,
+	GetStorageStoresByIdStatus404,
 	GetSupportedTldsResponse,
 	GetSupportedTldsStatus400,
 	GetSupportedTldsStatus401,
@@ -10026,6 +10061,38 @@ export async function deleteIntegrationLogDrain(
 }
 
 /**
+ * @link /api-keys
+ */
+export async function createApiKeys(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		CreateApiKeysResponse,
+		ErrorWrapper<
+			| CreateApiKeysStatus400
+			| CreateApiKeysStatus401
+			| CreateApiKeysStatus403
+			| CreateApiKeysStatus409
+			| CreateApiKeysStatus429
+			| CreateApiKeysStatus500
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		Record<string, string>
+	>({
+		method: "POST",
+		url: `/api-keys`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
  * @summary Get logs for a deployment
  * @description Returns a stream of logs for a given deployment.
  * @link /v1/projects/{projectId}/deployments/{deploymentId}/runtime-logs
@@ -11177,6 +11244,40 @@ export async function getProjects(
 }
 
 /**
+ * @summary Get a project trace by request ID
+ * @description Returns the OTEL trace for a given Vercel CLI request.
+ * @link /v1/projects/traces
+ */
+export async function getProjectTrace(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { projectId?: string; requestId?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		GetProjectTraceResponse,
+		ErrorWrapper<GetProjectTraceStatus400 | GetProjectTraceStatus401 | GetProjectTraceStatus403>,
+		null,
+		Record<string, string>,
+		{ projectId?: string; requestId?: string; teamId?: string; slug?: string },
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/v1/projects/traces`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
  * @summary Create a new project
  * @description Allows to create a new project with the provided configuration. It only requires the project `name` but more configuration can be provided to override the defaults.
  * @link /v11/projects
@@ -11212,6 +11313,45 @@ export async function createProject(
 	>({
 		method: "POST",
 		url: `/v11/projects`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Create a trace session token for a deployment
+ * @description Mints a short-lived HS256 JWT scoped to a deployment hostname. The Vercel CLI presents this JWT to the Vercel proxy on requests it wants traced.
+ * @link /v1/projects/traces/session
+ */
+export async function createTraceSession(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		CreateTraceSessionResponse,
+		ErrorWrapper<
+			| CreateTraceSessionStatus400
+			| CreateTraceSessionStatus401
+			| CreateTraceSessionStatus403
+			| CreateTraceSessionStatus422
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		Record<string, string>
+	>({
+		method: "POST",
+		url: `/v1/projects/traces/session`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -14763,6 +14903,121 @@ export async function getSecurityFirewallEvents(
 }
 
 /**
+ * @link /storage/stores/{id}
+ */
+export async function getStorageStoresById(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { id: string };
+		queryParams?: { "'skip-metadata'"?: boolean; "'include-guides'"?: boolean };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.id) {
+		throw new Error(`Missing required path parameter: id`);
+	}
+	const data = await request<
+		GetStorageStoresByIdResponse,
+		ErrorWrapper<
+			| GetStorageStoresByIdStatus400
+			| GetStorageStoresByIdStatus401
+			| GetStorageStoresByIdStatus403
+			| GetStorageStoresByIdStatus404
+		>,
+		null,
+		Record<string, string>,
+		{ "'skip-metadata'"?: boolean; "'include-guides'"?: boolean },
+		{ id: string }
+	>({
+		method: "GET",
+		url: `/storage/stores/${pathParams.id}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /storage/stores/blob
+ */
+export async function createStorageStoresBlob(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		CreateStorageStoresBlobResponse,
+		ErrorWrapper<
+			| CreateStorageStoresBlobStatus400
+			| CreateStorageStoresBlobStatus401
+			| CreateStorageStoresBlobStatus402
+			| CreateStorageStoresBlobStatus403
+			| CreateStorageStoresBlobStatus404
+			| CreateStorageStoresBlobStatus409
+			| CreateStorageStoresBlobStatus429
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		Record<string, string>
+	>({
+		method: "POST",
+		url: `/storage/stores/blob`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /storage/stores/blob/{id}
+ */
+export async function deleteStorageStoresBlobById(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.id) {
+		throw new Error(`Missing required path parameter: id`);
+	}
+	const data = await request<
+		DeleteStorageStoresBlobByIdResponse,
+		ErrorWrapper<
+			| DeleteStorageStoresBlobByIdStatus400
+			| DeleteStorageStoresBlobByIdStatus401
+			| DeleteStorageStoresBlobByIdStatus403
+			| DeleteStorageStoresBlobByIdStatus404
+			| DeleteStorageStoresBlobByIdStatus409
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ id: string }
+	>({
+		method: "DELETE",
+		url: `/storage/stores/blob/${pathParams.id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
  * @summary Create integration store (free and paid plans)
  * @description Creates an integration store with automatic billing plan handling. For free resources, omit `billingPlanId` to auto-discover free plans. For paid resources, provide a `billingPlanId` from the billing plans endpoint.
  * @link /v1/storage/stores/integration/direct
@@ -17437,6 +17692,7 @@ export const operationsByPath = {
 	"GET /v2/integrations/log-drains": getIntegrationLogDrains,
 	"POST /v2/integrations/log-drains": createLogDrain,
 	"DELETE /v1/integrations/log-drains/{id}": deleteIntegrationLogDrain,
+	"POST /api-keys": createApiKeys,
 	"GET /v1/projects/{projectId}/deployments/{deploymentId}/runtime-logs": getRuntimeLogs,
 	"POST /v1/installations/{integrationConfigurationId}/resources/{resourceId}/experimentation/items":
 		createInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems,
@@ -17469,7 +17725,9 @@ export const operationsByPath = {
 	"GET /v1/projects/{projectId}/routes/versions": getRouteVersions,
 	"POST /v1/projects/{projectId}/routes/versions": updateRouteVersions,
 	"GET /v10/projects": getProjects,
+	"GET /v1/projects/traces": getProjectTrace,
 	"POST /v11/projects": createProject,
+	"POST /v1/projects/traces/session": createTraceSession,
 	"GET /v9/projects/{idOrName}": getProject,
 	"PATCH /v9/projects/{idOrName}": updateProject,
 	"DELETE /v9/projects/{idOrName}": deleteProject,
@@ -17548,6 +17806,9 @@ export const operationsByPath = {
 	"POST /v1/security/firewall/bypass": addBypassIp,
 	"DELETE /v1/security/firewall/bypass": removeBypassIp,
 	"GET /v1/security/firewall/events": getSecurityFirewallEvents,
+	"GET /storage/stores/{id}": getStorageStoresById,
+	"POST /storage/stores/blob": createStorageStoresBlob,
+	"DELETE /storage/stores/blob/{id}": deleteStorageStoresBlobById,
 	"POST /v1/storage/stores/integration/direct": createIntegrationStoreDirect,
 	"GET /v3/teams/{teamId}/members": getTeamMembers,
 	"POST /v2/teams/{teamId}/members": inviteUserToTeam,
@@ -17888,7 +18149,9 @@ export const operationsByTag = {
 	},
 	projects: {
 		getProjects,
+		getProjectTrace,
 		createProject,
+		createTraceSession,
 		getProject,
 		updateProject,
 		deleteProject,
@@ -18303,6 +18566,7 @@ export const tagDictionary = {
 	projects: {
 		GET: [
 			"getProjects",
+			"getProjectTrace",
 			"getProject",
 			"getProjectDomains",
 			"getProjectDomain",
@@ -18312,6 +18576,7 @@ export const tagDictionary = {
 		],
 		POST: [
 			"createProject",
+			"createTraceSession",
 			"uploadProjectAvatar",
 			"addProjectDomain",
 			"moveProjectDomain",

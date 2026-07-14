@@ -866,6 +866,7 @@ export const userEventSchema = z
 				"organization-slug-update",
 				"organization-team-add",
 				"organization-team-create",
+				"organization-team-delete",
 				"owner-blocked",
 				"owner-soft-blocked",
 				"owner-soft-unblocked",
@@ -9031,6 +9032,7 @@ export const listEventTypeSchema = z
 				"organization-slug-update",
 				"organization-team-add",
 				"organization-team-create",
+				"organization-team-delete",
 				"owner-blocked",
 				"owner-soft-blocked",
 				"owner-soft-unblocked",
@@ -9622,6 +9624,7 @@ export const listEventTypeSchema = z
 					"organization-slug-update",
 					"organization-team-add",
 					"organization-team-create",
+					"organization-team-delete",
 					"owner-blocked",
 					"owner-soft-blocked",
 					"owner-soft-unblocked",
@@ -10421,6 +10424,70 @@ export const flagsSdkKeyWithSecretsSchema = z
 	.describe(
 		"Representation of a Flags SDK key returned by CREATE. Includes cleartext secrets (`keyValue`, `tokenValue`, `connectionString`) which are only ever disclosed once, on creation.",
 	);
+
+export const aPIKeySchema = z
+	.object({
+		id: z.string().describe("The unique identifier of the API key."),
+		name: z.string().describe("The human-readable name of the API key."),
+		partialKey: z
+			.string()
+			.describe("The last few characters of the API key string, for helping identify the API key."),
+		teamId: z.string().describe("The ID of the team that the API key grants access to."),
+		purpose: z.string().describe("The API key's purpose, i.e. what resources it can be used with."),
+		projectId: z
+			.string()
+			.nullable()
+			.describe(
+				"The ID of the project that this API key grants access to.\n\nWhen this is unset, the API key grants access to all projects in the team.",
+			),
+		expiresAt: z
+			.number()
+			.nullable()
+			.describe("Timestamp (in milliseconds) of when the API key expires."),
+		activeAt: z
+			.number()
+			.describe("Timestamp (in milliseconds) of when the API key was most recently used."),
+		createdAt: z.number().describe("Timestamp (in milliseconds) of when the API key was created."),
+		createdBy: z.string().describe("The ID of the user who created the API key."),
+		leakedAt: z
+			.number()
+			.nullable()
+			.describe("Timestamp (in milliseconds) of when the API key was marked as leaked."),
+		leakedUrl: z.string().nullable().describe("URL where the API key was discovered as leaked."),
+		createdByAppId: z
+			.string()
+			.nullable()
+			.describe("The ID of the app that created the API key, if any"),
+		quota: z.unknown().optional(),
+	})
+	.describe("Information about the newly created API key.");
+
+export const aPIKeyQuotaSchema = z
+	.object({
+		quotaEntityId: z.string().describe("The unique identifier for the quota."),
+		limitAmount: z.number().describe("The quota limit amount."),
+		currentSpend: z.number().describe("The current amount spent against the quota."),
+		currentByokSpend: z.number().describe("The current BYOK spend (tracked separately)."),
+		includeByokInQuota: z
+			.boolean()
+			.describe("Whether BYOK (Bring Your Own Key) spend counts against the quota."),
+		refreshPeriod: z
+			.union([z.string(), z.string(), z.string(), z.string()])
+			.describe("How often the quota refreshes."),
+		active: z.boolean().describe("Whether the quota is currently active."),
+		archived: z.boolean().describe("Whether the quota has been archived."),
+		alertThresholds: z
+			.array(z.number())
+			.optional()
+			.describe(
+				"Spend percentages (a subset of [50, 75, 100]) at which to send a spend alert. Empty or undefined disables alerts.",
+			),
+		createdAt: z.number().describe("Timestamp (in milliseconds) of when the quota was created."),
+		updatedAt: z
+			.number()
+			.describe("Timestamp (in milliseconds) of when the quota was last updated."),
+	})
+	.describe("AI Gateway quota associated with an API key.");
 
 export const aCLActionSchema = z
 	.enum(["create", "delete", "list", "read", "update"])
@@ -18729,6 +18796,30 @@ export const deleteIntegrationLogDrainResponseSchema = z.union([
 	deleteIntegrationLogDrainStatus404Schema,
 ]);
 
+export const createApiKeysStatus200Schema = z.unknown();
+
+export const createApiKeysStatus400Schema = z.unknown();
+
+export const createApiKeysStatus401Schema = z.unknown();
+
+export const createApiKeysStatus403Schema = z.unknown();
+
+export const createApiKeysStatus409Schema = z.unknown();
+
+export const createApiKeysStatus429Schema = z.unknown();
+
+export const createApiKeysStatus500Schema = z.unknown();
+
+export const createApiKeysResponseSchema = z.union([
+	createApiKeysStatus200Schema,
+	createApiKeysStatus400Schema,
+	createApiKeysStatus401Schema,
+	createApiKeysStatus403Schema,
+	createApiKeysStatus409Schema,
+	createApiKeysStatus429Schema,
+	createApiKeysStatus500Schema,
+]);
+
 export const getRuntimeLogsPathProjectIdSchema = z.string();
 
 export const getRuntimeLogsPathDeploymentIdSchema = z.string();
@@ -19630,6 +19721,38 @@ export const getProjectsResponseSchema = z.union([
 	getProjectsStatus403Schema,
 ]);
 
+export const getProjectTraceQueryProjectIdSchema = z.string().max(150).describe("The project ID");
+
+export const getProjectTraceQueryRequestIdSchema = z
+	.string()
+	.max(256)
+	.describe("The Vercel CLI request ID associated with the trace");
+
+export const getProjectTraceQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const getProjectTraceQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const getProjectTraceStatus200Schema = z.unknown();
+
+export const getProjectTraceStatus400Schema = z.unknown();
+
+export const getProjectTraceStatus401Schema = z.unknown();
+
+export const getProjectTraceStatus403Schema = z.unknown();
+
+export const getProjectTraceResponseSchema = z.union([
+	getProjectTraceStatus200Schema,
+	getProjectTraceStatus400Schema,
+	getProjectTraceStatus401Schema,
+	getProjectTraceStatus403Schema,
+]);
+
 export const createProjectQueryTeamIdSchema = z
 	.string()
 	.optional()
@@ -19671,6 +19794,34 @@ export const createProjectResponseSchema = z.union([
 	createProjectStatus428Schema,
 	createProjectStatus429Schema,
 	createProjectStatus500Schema,
+]);
+
+export const createTraceSessionQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const createTraceSessionQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const createTraceSessionStatus200Schema = z.unknown();
+
+export const createTraceSessionStatus400Schema = z.unknown();
+
+export const createTraceSessionStatus401Schema = z.unknown();
+
+export const createTraceSessionStatus403Schema = z.unknown();
+
+export const createTraceSessionStatus422Schema = z.unknown();
+
+export const createTraceSessionResponseSchema = z.union([
+	createTraceSessionStatus200Schema,
+	createTraceSessionStatus400Schema,
+	createTraceSessionStatus401Schema,
+	createTraceSessionStatus403Schema,
+	createTraceSessionStatus422Schema,
 ]);
 
 export const getProjectPathIdOrNameSchema = z
@@ -22799,6 +22950,80 @@ export const getSecurityFirewallEventsResponseSchema = z.union([
 	getSecurityFirewallEventsStatus403Schema,
 	getSecurityFirewallEventsStatus404Schema,
 	getSecurityFirewallEventsStatus500Schema,
+]);
+
+export const getStorageStoresByIdPathIdSchema = z.string();
+
+export const getStorageStoresByIdQueryskipMetadataSchema = z.boolean().optional();
+
+export const getStorageStoresByIdQueryincludeGuidesSchema = z.boolean().optional();
+
+export const getStorageStoresByIdStatus200Schema = z.unknown();
+
+export const getStorageStoresByIdStatus400Schema = z.unknown();
+
+export const getStorageStoresByIdStatus401Schema = z.unknown();
+
+export const getStorageStoresByIdStatus403Schema = z.unknown();
+
+export const getStorageStoresByIdStatus404Schema = z.unknown();
+
+export const getStorageStoresByIdResponseSchema = z.union([
+	getStorageStoresByIdStatus200Schema,
+	getStorageStoresByIdStatus400Schema,
+	getStorageStoresByIdStatus401Schema,
+	getStorageStoresByIdStatus403Schema,
+	getStorageStoresByIdStatus404Schema,
+]);
+
+export const createStorageStoresBlobStatus200Schema = z.unknown();
+
+export const createStorageStoresBlobStatus400Schema = z.unknown();
+
+export const createStorageStoresBlobStatus401Schema = z.unknown();
+
+export const createStorageStoresBlobStatus402Schema = z.unknown();
+
+export const createStorageStoresBlobStatus403Schema = z.unknown();
+
+export const createStorageStoresBlobStatus404Schema = z.unknown();
+
+export const createStorageStoresBlobStatus409Schema = z.unknown();
+
+export const createStorageStoresBlobStatus429Schema = z.unknown();
+
+export const createStorageStoresBlobResponseSchema = z.union([
+	createStorageStoresBlobStatus200Schema,
+	createStorageStoresBlobStatus400Schema,
+	createStorageStoresBlobStatus401Schema,
+	createStorageStoresBlobStatus402Schema,
+	createStorageStoresBlobStatus403Schema,
+	createStorageStoresBlobStatus404Schema,
+	createStorageStoresBlobStatus409Schema,
+	createStorageStoresBlobStatus429Schema,
+]);
+
+export const deleteStorageStoresBlobByIdPathIdSchema = z.string();
+
+export const deleteStorageStoresBlobByIdStatus200Schema = z.unknown();
+
+export const deleteStorageStoresBlobByIdStatus400Schema = z.unknown();
+
+export const deleteStorageStoresBlobByIdStatus401Schema = z.unknown();
+
+export const deleteStorageStoresBlobByIdStatus403Schema = z.unknown();
+
+export const deleteStorageStoresBlobByIdStatus404Schema = z.unknown();
+
+export const deleteStorageStoresBlobByIdStatus409Schema = z.unknown();
+
+export const deleteStorageStoresBlobByIdResponseSchema = z.union([
+	deleteStorageStoresBlobByIdStatus200Schema,
+	deleteStorageStoresBlobByIdStatus400Schema,
+	deleteStorageStoresBlobByIdStatus401Schema,
+	deleteStorageStoresBlobByIdStatus403Schema,
+	deleteStorageStoresBlobByIdStatus404Schema,
+	deleteStorageStoresBlobByIdStatus409Schema,
 ]);
 
 export const createIntegrationStoreDirectQueryTeamIdSchema = z
