@@ -22952,6 +22952,26 @@ export const getSecurityFirewallEventsResponseSchema = z.union([
 	getSecurityFirewallEventsStatus500Schema,
 ]);
 
+export const createSpeedInsightsToggleQueryProjectIdSchema = z.string();
+
+export const createSpeedInsightsToggleStatus200Schema = z.unknown();
+
+export const createSpeedInsightsToggleStatus400Schema = z.unknown();
+
+export const createSpeedInsightsToggleStatus401Schema = z.unknown();
+
+export const createSpeedInsightsToggleStatus402Schema = z.unknown();
+
+export const createSpeedInsightsToggleStatus403Schema = z.unknown();
+
+export const createSpeedInsightsToggleResponseSchema = z.union([
+	createSpeedInsightsToggleStatus200Schema,
+	createSpeedInsightsToggleStatus400Schema,
+	createSpeedInsightsToggleStatus401Schema,
+	createSpeedInsightsToggleStatus402Schema,
+	createSpeedInsightsToggleStatus403Schema,
+]);
+
 export const getStorageStoresByIdPathIdSchema = z.string();
 
 export const getStorageStoresByIdQueryskipMetadataSchema = z.boolean().optional();
@@ -24068,6 +24088,23 @@ export const deleteRepositoryImageResponseSchema = z.union([
 	deleteRepositoryImageStatus401Schema,
 	deleteRepositoryImageStatus403Schema,
 	deleteRepositoryImageStatus404Schema,
+]);
+
+export const createWebInsightsToggleQueryProjectIdSchema = z.string();
+
+export const createWebInsightsToggleStatus200Schema = z.unknown();
+
+export const createWebInsightsToggleStatus400Schema = z.unknown();
+
+export const createWebInsightsToggleStatus401Schema = z.unknown();
+
+export const createWebInsightsToggleStatus403Schema = z.unknown();
+
+export const createWebInsightsToggleResponseSchema = z.union([
+	createWebInsightsToggleStatus200Schema,
+	createWebInsightsToggleStatus400Schema,
+	createWebInsightsToggleStatus401Schema,
+	createWebInsightsToggleStatus403Schema,
 ]);
 
 export const aggregatePageviewsQueryProjectIdSchema = z

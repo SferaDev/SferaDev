@@ -345,6 +345,11 @@ import type {
 	CreateSharedEnvVariableStatus401,
 	CreateSharedEnvVariableStatus402,
 	CreateSharedEnvVariableStatus403,
+	CreateSpeedInsightsToggleResponse,
+	CreateSpeedInsightsToggleStatus400,
+	CreateSpeedInsightsToggleStatus401,
+	CreateSpeedInsightsToggleStatus402,
+	CreateSpeedInsightsToggleStatus403,
 	CreateStorageStoresBlobResponse,
 	CreateStorageStoresBlobStatus400,
 	CreateStorageStoresBlobStatus401,
@@ -368,6 +373,10 @@ import type {
 	CreateWebhookStatus400,
 	CreateWebhookStatus401,
 	CreateWebhookStatus403,
+	CreateWebInsightsToggleResponse,
+	CreateWebInsightsToggleStatus400,
+	CreateWebInsightsToggleStatus401,
+	CreateWebInsightsToggleStatus403,
 	DangerouslyDeleteBySrcImagesResponse,
 	DangerouslyDeleteBySrcImagesStatus400,
 	DangerouslyDeleteBySrcImagesStatus401,
@@ -14903,6 +14912,43 @@ export async function getSecurityFirewallEvents(
 }
 
 /**
+ * @link /speed-insights/toggle
+ */
+export async function createSpeedInsightsToggle(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { projectId?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		CreateSpeedInsightsToggleResponse,
+		ErrorWrapper<
+			| CreateSpeedInsightsToggleStatus400
+			| CreateSpeedInsightsToggleStatus401
+			| CreateSpeedInsightsToggleStatus402
+			| CreateSpeedInsightsToggleStatus403
+		>,
+		null,
+		Record<string, string>,
+		{ projectId?: string },
+		Record<string, string>
+	>({
+		method: "POST",
+		url: `/speed-insights/toggle`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
  * @link /storage/stores/{id}
  */
 export async function getStorageStoresById(
@@ -16480,6 +16526,42 @@ export async function deleteRepositoryImage(
 }
 
 /**
+ * @link /web/insights/toggle
+ */
+export async function createWebInsightsToggle(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { projectId?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		CreateWebInsightsToggleResponse,
+		ErrorWrapper<
+			| CreateWebInsightsToggleStatus400
+			| CreateWebInsightsToggleStatus401
+			| CreateWebInsightsToggleStatus403
+		>,
+		null,
+		Record<string, string>,
+		{ projectId?: string },
+		Record<string, string>
+	>({
+		method: "POST",
+		url: `/web/insights/toggle`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
  * @summary Aggregates page views
  * @description Counts pageviews on a project, within the requested date range. Results are either aggregated or broken down over time. Results can additionally be broken down by one dimension, and filtered by multiple dimensions.
  * @link /v1/query/web-analytics/visits/aggregate
@@ -17806,6 +17888,7 @@ export const operationsByPath = {
 	"POST /v1/security/firewall/bypass": addBypassIp,
 	"DELETE /v1/security/firewall/bypass": removeBypassIp,
 	"GET /v1/security/firewall/events": getSecurityFirewallEvents,
+	"POST /speed-insights/toggle": createSpeedInsightsToggle,
 	"GET /storage/stores/{id}": getStorageStoresById,
 	"POST /storage/stores/blob": createStorageStoresBlob,
 	"DELETE /storage/stores/blob/{id}": deleteStorageStoresBlobById,
@@ -17842,6 +17925,7 @@ export const operationsByPath = {
 	"GET /v1/vcr/repository/{idOrName}/tags/{tag}": getRepositoryTag,
 	"GET /v1/vcr/repository/{idOrName}/images/{imageId}": getRepositoryImage,
 	"DELETE /v1/vcr/repository/{idOrName}/images/{imageId}": deleteRepositoryImage,
+	"POST /web/insights/toggle": createWebInsightsToggle,
 	"GET /v1/query/web-analytics/visits/aggregate": aggregatePageviews,
 	"GET /v1/query/web-analytics/events/aggregate": aggregateEvents,
 	"GET /v1/query/web-analytics/visits/count": countPageviews,
