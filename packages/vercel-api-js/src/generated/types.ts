@@ -52036,6 +52036,78 @@ export type GetSecurityFirewallEventsResponse =
 /**
  * @type string
  */
+export type CreateSpeedInsightsToggleQueryProjectId = string;
+
+/**
+ * @type unknown
+ */
+export type CreateSpeedInsightsToggleStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSpeedInsightsToggleStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSpeedInsightsToggleStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSpeedInsightsToggleStatus402 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSpeedInsightsToggleStatus403 = unknown;
+
+/**
+ * @type object
+ */
+export type CreateSpeedInsightsToggleRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				projectId: CreateSpeedInsightsToggleQueryProjectId;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/speed-insights/toggle";
+};
+
+/**
+ * @type object
+ */
+export type CreateSpeedInsightsToggleResponses = {
+	"200": CreateSpeedInsightsToggleStatus200;
+	"400": CreateSpeedInsightsToggleStatus400;
+	"401": CreateSpeedInsightsToggleStatus401;
+	"402": CreateSpeedInsightsToggleStatus402;
+	"403": CreateSpeedInsightsToggleStatus403;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateSpeedInsightsToggleResponse =
+	| CreateSpeedInsightsToggleStatus200
+	| CreateSpeedInsightsToggleStatus400
+	| CreateSpeedInsightsToggleStatus401
+	| CreateSpeedInsightsToggleStatus402
+	| CreateSpeedInsightsToggleStatus403;
+
+/**
+ * @type string
+ */
 export type GetStorageStoresByIdPathId = string;
 
 /**
@@ -55358,6 +55430,71 @@ export type DeleteRepositoryImageResponse =
 	| DeleteRepositoryImageStatus401
 	| DeleteRepositoryImageStatus403
 	| DeleteRepositoryImageStatus404;
+
+/**
+ * @type string
+ */
+export type CreateWebInsightsToggleQueryProjectId = string;
+
+/**
+ * @type unknown
+ */
+export type CreateWebInsightsToggleStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateWebInsightsToggleStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateWebInsightsToggleStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateWebInsightsToggleStatus403 = unknown;
+
+/**
+ * @type object
+ */
+export type CreateWebInsightsToggleRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				projectId: CreateWebInsightsToggleQueryProjectId;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/web/insights/toggle";
+};
+
+/**
+ * @type object
+ */
+export type CreateWebInsightsToggleResponses = {
+	"200": CreateWebInsightsToggleStatus200;
+	"400": CreateWebInsightsToggleStatus400;
+	"401": CreateWebInsightsToggleStatus401;
+	"403": CreateWebInsightsToggleStatus403;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateWebInsightsToggleResponse =
+	| CreateWebInsightsToggleStatus200
+	| CreateWebInsightsToggleStatus400
+	| CreateWebInsightsToggleStatus401
+	| CreateWebInsightsToggleStatus403;
 
 /**
  * @description The project identifier or the project name
