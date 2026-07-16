@@ -1,0 +1,56 @@
+name: "Setup and install"
+description: "Install the mise toolchain (node, pnpm, …) and workspace dependencies"
+
+inputs:
+  install-deps:
+    description: >-
+      Run `pnpm install` after the toolchain is set up. "true" installs the
+      workspace (frozen lockfile); "false" installs only the mise tools, for
+      jobs that manage their own install (e.g. the dependency-update bot).
+    required: false
+    default: "true"
+
+runs:
+  using: composite
+  steps:
+    - name: Install tools (node, pnpm, yq, pinact)
+      uses: jdx/mise-action@e6a8b3978addb5a52f2b4cd9d91eafa7f0ab959d # v4.2.0
+      with:
+        github_token: ${{ github.token }}
+
+    # Fast path: an exact node_modules cache (keyed on the lockfile + tool versions)
+    # lets `pnpm install` skip both downloading and linking entirely.
+    - name: Cache node_modules
+      if: inputs.install-deps == 'true'
+      id: node-modules
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: |
+          node_modules
+          apps/*/node_modules
+          packages/*/node_modules
+          configs/*/node_modules
+          content/node_modules
+        key: mise-node-modules-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml', 'mise.lock') }}
+
+    # Cold path only: when node_modules misses (lockfile changed), a warm pnpm
+    # store avoids re-downloading every package.
+    - name: Get pnpm store directory
+      if: inputs.install-deps == 'true' && steps.node-modules.outputs.cache-hit != 'true'
+      id: pnpm-store
+      shell: bash
+      run: echo "path=$(pnpm store path --silent)" >> "$GITHUB_OUTPUT"
+
+    - name: Cache pnpm store
+      if: inputs.install-deps == 'true' && steps.node-modules.outputs.cache-hit != 'true'
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: ${{ steps.pnpm-store.outputs.path }}
+        key: mise-pnpm-store-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+        restore-keys: |
+          mise-pnpm-store-${{ runner.os }}-
+
+    - name: Install dependencies
+      if: inputs.install-deps == 'true'
+      shell: bash
+      run: pnpm install --frozen-lockfile --prefer-offline
