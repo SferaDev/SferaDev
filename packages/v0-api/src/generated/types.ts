@@ -2800,6 +2800,14 @@ export const productDetailSchemaObjectEnum = {
 export type ProductDetailSchemaObjectEnumKey =
 	(typeof productDetailSchemaObjectEnum)[keyof typeof productDetailSchemaObjectEnum];
 
+export const productDetailSchemaV0AvailabilityEnum = {
+	"in-review": "in-review",
+	published: "published",
+} as const;
+
+export type ProductDetailSchemaV0AvailabilityEnumKey =
+	(typeof productDetailSchemaV0AvailabilityEnum)[keyof typeof productDetailSchemaV0AvailabilityEnum];
+
 /**
  * @description Detailed information about a marketplace or store product.
  * @type object
@@ -2836,6 +2844,11 @@ export type ProductDetailSchema = {
 	 */
 	iconUrl: string;
 	/**
+	 * @description The product\'s availability in v0. \'in-review\' products only appear for teams with the review view and should be rendered as such.
+	 * @type string | undefined
+	 */
+	v0Availability?: ProductDetailSchemaV0AvailabilityEnumKey | undefined;
+	/**
 	 * @description Background color for the product icon.
 	 * @type string | undefined
 	 */
@@ -2848,6 +2861,13 @@ export const productListSchemaObjectEnum = {
 
 export type ProductListSchemaObjectEnumKey =
 	(typeof productListSchemaObjectEnum)[keyof typeof productListSchemaObjectEnum];
+
+export const V0AvailabilityEnum = {
+	"in-review": "in-review",
+	published: "published",
+} as const;
+
+export type V0AvailabilityEnumKey = (typeof V0AvailabilityEnum)[keyof typeof V0AvailabilityEnum];
 
 /**
  * @description List of available marketplace and store products.
@@ -2894,6 +2914,11 @@ export type ProductListSchema = {
 		 * @type string
 		 */
 		iconUrl: string;
+		/**
+		 * @description The product\'s availability in v0. \'in-review\' products only appear for teams with the review view and should be rendered as such.
+		 * @type string | undefined
+		 */
+		v0Availability?: V0AvailabilityEnumKey | undefined;
 	}[];
 };
 
@@ -2903,6 +2928,14 @@ export const productSummarySchemaObjectEnum = {
 
 export type ProductSummarySchemaObjectEnumKey =
 	(typeof productSummarySchemaObjectEnum)[keyof typeof productSummarySchemaObjectEnum];
+
+export const productSummarySchemaV0AvailabilityEnum = {
+	"in-review": "in-review",
+	published: "published",
+} as const;
+
+export type ProductSummarySchemaV0AvailabilityEnumKey =
+	(typeof productSummarySchemaV0AvailabilityEnum)[keyof typeof productSummarySchemaV0AvailabilityEnum];
 
 /**
  * @description Summary information about a marketplace or store product.
@@ -2939,6 +2972,11 @@ export type ProductSummarySchema = {
 	 * @type string
 	 */
 	iconUrl: string;
+	/**
+	 * @description The product\'s availability in v0. \'in-review\' products only appear for teams with the review view and should be rendered as such.
+	 * @type string | undefined
+	 */
+	v0Availability?: ProductSummarySchemaV0AvailabilityEnumKey | undefined;
 };
 
 export const projectDetailObjectEnum = {

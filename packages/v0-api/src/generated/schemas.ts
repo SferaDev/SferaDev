@@ -1156,6 +1156,12 @@ export const productDetailSchemaSchema = z
 		name: z.string().describe("The name of the product."),
 		description: z.string().describe("A short description of the product."),
 		iconUrl: z.string().describe("URL to the product icon."),
+		v0Availability: z
+			.enum(["in-review", "published"])
+			.optional()
+			.describe(
+				"The product's availability in v0. 'in-review' products only appear for teams with the review view and should be rendered as such.",
+			),
 		iconBackgroundColor: z.string().optional().describe("Background color for the product icon."),
 	})
 	.strict()
@@ -1174,6 +1180,12 @@ export const productListSchemaSchema = z
 						name: z.string().describe("The name of the product."),
 						description: z.string().describe("A short description of the product."),
 						iconUrl: z.string().describe("URL to the product icon."),
+						v0Availability: z
+							.enum(["in-review", "published"])
+							.optional()
+							.describe(
+								"The product's availability in v0. 'in-review' products only appear for teams with the review view and should be rendered as such.",
+							),
 					})
 					.strict(),
 			)
@@ -1190,6 +1202,12 @@ export const productSummarySchemaSchema = z
 		name: z.string().describe("The name of the product."),
 		description: z.string().describe("A short description of the product."),
 		iconUrl: z.string().describe("URL to the product icon."),
+		v0Availability: z
+			.enum(["in-review", "published"])
+			.optional()
+			.describe(
+				"The product's availability in v0. 'in-review' products only appear for teams with the review view and should be rendered as such.",
+			),
 	})
 	.strict()
 	.describe("Summary information about a marketplace or store product.");
