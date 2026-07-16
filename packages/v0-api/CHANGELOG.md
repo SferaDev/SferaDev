@@ -1,5 +1,12 @@
 # v0-api
 
+## 0.1.2
+
+### Patch Changes
+
+- 89915c1: Added 'v0Availability' field to product detail, list, and summary schemas to indicate product availability status.
+- 89915c1: Added supporting enums for product 'v0Availability' values in the API types and exports.
+
 ## 0.1.1
 
 ### Patch Changes
