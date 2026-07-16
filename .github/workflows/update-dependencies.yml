@@ -15,15 +15,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
-          node-version: 22
+          node-version: 24
 
       - name: Install new versions
         run: |
@@ -32,8 +32,16 @@ jobs:
           jq '.pnpm.overrides = {}' package.json > package.tmp && mv package.tmp package.json
           pnpm install --no-frozen-lockfile
 
-          # Update dependencies
+          # Update dependencies.
+          # `catalogMode: strict` (pnpm-workspace.yaml) makes `pnpm update --latest` abort with
+          # ERR_PNPM_CATALOG_VERSION_MISMATCH: our published API-client packages declare broad
+          # peer ranges (e.g. `effect: ^3.0.0`) that intentionally differ from the exact catalog
+          # pin, and strict mode refuses to reconcile them while resolving "latest". Relax the mode
+          # to `manual` just for the bump — catalog entries still update to latest and the literal
+          # peer ranges are left untouched — then restore `strict`.
+          sed -i 's/^catalogMode: strict/catalogMode: manual/' pnpm-workspace.yaml
           pnpm update --recursive --latest
+          sed -i 's/^catalogMode: manual/catalogMode: strict/' pnpm-workspace.yaml
 
           # Patch vulnerabilities
           # adds package.json pnpm.overrides section to avoid package versions with security vulnerabilities
@@ -50,7 +58,7 @@ jobs:
           git add .
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8
         with:
           token: ${{ secrets.GIT_TOKEN }}
           commit-message: "Update dependencies"
