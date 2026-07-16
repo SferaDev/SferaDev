@@ -28,19 +28,10 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v7
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v6
-
-      - name: Use Node.js 22
-        uses: actions/setup-node@v7
-        with:
-          node-version: 24
-          cache: "pnpm"
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      - name: Setup and install
+        uses: ./.github/actions/setup
 
       - name: Build OpenAPI spec from PR
         run: pnpm generate --filter=${{ matrix.package }}
@@ -56,7 +47,7 @@ jobs:
       - run: git add .
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v8
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
         with:
           token: ${{ secrets.GIT_TOKEN }}
           commit-message: "Update OpenAPI Spec"

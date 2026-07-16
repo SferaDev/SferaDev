@@ -1,0 +1,12 @@
+# Toolchain pinned for CI and local development. Bumped automatically each week by
+# the "Update Dependencies" workflow (`mise up --bump`) so upgrades land in a
+# reviewed PR. pnpm is held at the version in package.json `packageManager`; keep
+# the two in sync (the update workflow mirrors it).
+[tools]
+node = "24.18.0"
+pnpm = "10.26.2"
+yq = "4.53.3"
+"aqua:suzuki-shunsuke/pinact" = "4.1.0"
+
+[settings]
+lockfile = true
