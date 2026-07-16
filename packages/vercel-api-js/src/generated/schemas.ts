@@ -681,6 +681,7 @@ export const userEventSchema = z
 				"cert-renew",
 				"cert-replace",
 				"cert-system-create",
+				"compliance-document-downloaded",
 				"concurrent-builds-update",
 				"connect-attach-project",
 				"connect-bitbucket",
@@ -832,6 +833,13 @@ export const userEventSchema = z
 				"integration-scope-changed",
 				"invoice-modified",
 				"invoice-refunded",
+				"kms-issuer-created",
+				"kms-issuer-deleted",
+				"kms-issuer-key-rotated",
+				"kms-issuer-policy-created",
+				"kms-issuer-policy-deleted",
+				"kms-issuer-policy-updated",
+				"kms-issuer-updated",
 				"log-drain-created",
 				"log-drain-deleted",
 				"log-drain-disabled",
@@ -2370,6 +2378,14 @@ export const userEventSchema = z
 					.object({
 						cn: z.string().optional(),
 						cns: z.array(z.string()).optional(),
+					})
+					.strict(),
+				z
+					.object({
+						slug: z.string(),
+						documentId: z.string(),
+						title: z.string(),
+						fingerprint: z.string(),
 					})
 					.strict(),
 				z
@@ -5455,6 +5471,47 @@ export const userEventSchema = z
 						integrationId: z.string(),
 						integrationSlug: z.string(),
 						integrationName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						issuerId: z.string(),
+						issuerName: z.string(),
+						algorithm: z.string(),
+						origin: z.string(),
+						managedBy: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						issuerId: z.string(),
+						issuerName: z.string(),
+						managedBy: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						issuerId: z.string(),
+						issuerName: z.string(),
+						keyId: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						issuerId: z.string(),
+						issuerName: z.string(),
+						kind: z.string(),
+						projectId: z.string().optional(),
+						clientId: z.string().optional(),
+						environments: z.array(z.string()).optional(),
+					})
+					.strict(),
+				z
+					.object({
+						issuerId: z.string(),
+						issuerName: z.string(),
+						kind: z.string(),
+						policyKey: z.string(),
 					})
 					.strict(),
 				z
@@ -8847,6 +8904,7 @@ export const listEventTypeSchema = z
 				"cert-renew",
 				"cert-replace",
 				"cert-system-create",
+				"compliance-document-downloaded",
 				"concurrent-builds-update",
 				"connect-attach-project",
 				"connect-bitbucket",
@@ -8998,6 +9056,13 @@ export const listEventTypeSchema = z
 				"integration-scope-changed",
 				"invoice-modified",
 				"invoice-refunded",
+				"kms-issuer-created",
+				"kms-issuer-deleted",
+				"kms-issuer-key-rotated",
+				"kms-issuer-policy-created",
+				"kms-issuer-policy-deleted",
+				"kms-issuer-policy-updated",
+				"kms-issuer-updated",
 				"log-drain-created",
 				"log-drain-deleted",
 				"log-drain-disabled",
@@ -9439,6 +9504,7 @@ export const listEventTypeSchema = z
 					"cert-renew",
 					"cert-replace",
 					"cert-system-create",
+					"compliance-document-downloaded",
 					"concurrent-builds-update",
 					"connect-attach-project",
 					"connect-bitbucket",
@@ -9590,6 +9656,13 @@ export const listEventTypeSchema = z
 					"integration-scope-changed",
 					"invoice-modified",
 					"invoice-refunded",
+					"kms-issuer-created",
+					"kms-issuer-deleted",
+					"kms-issuer-key-rotated",
+					"kms-issuer-policy-created",
+					"kms-issuer-policy-deleted",
+					"kms-issuer-policy-updated",
+					"kms-issuer-updated",
 					"log-drain-created",
 					"log-drain-deleted",
 					"log-drain-disabled",
@@ -14840,6 +14913,52 @@ export const updateRecordResponseSchema = z.union([
 	updateRecordStatus409Schema,
 ]);
 
+export const replaceDomainsByDomainRecordsPathDomainSchema = z.string();
+
+export const replaceDomainsByDomainRecordsStatus200Schema = z.unknown();
+
+export const replaceDomainsByDomainRecordsStatus400Schema = z.unknown();
+
+export const replaceDomainsByDomainRecordsStatus401Schema = z.unknown();
+
+export const replaceDomainsByDomainRecordsStatus403Schema = z.unknown();
+
+export const replaceDomainsByDomainRecordsStatus404Schema = z.unknown();
+
+export const replaceDomainsByDomainRecordsStatus409Schema = z.unknown();
+
+export const replaceDomainsByDomainRecordsStatus415Schema = z.unknown();
+
+export const replaceDomainsByDomainRecordsResponseSchema = z.union([
+	replaceDomainsByDomainRecordsStatus200Schema,
+	replaceDomainsByDomainRecordsStatus400Schema,
+	replaceDomainsByDomainRecordsStatus401Schema,
+	replaceDomainsByDomainRecordsStatus403Schema,
+	replaceDomainsByDomainRecordsStatus404Schema,
+	replaceDomainsByDomainRecordsStatus409Schema,
+	replaceDomainsByDomainRecordsStatus415Schema,
+]);
+
+export const getDomainsRecordsByRecordIdPathRecordIdSchema = z.string();
+
+export const getDomainsRecordsByRecordIdStatus200Schema = z.unknown();
+
+export const getDomainsRecordsByRecordIdStatus400Schema = z.unknown();
+
+export const getDomainsRecordsByRecordIdStatus401Schema = z.unknown();
+
+export const getDomainsRecordsByRecordIdStatus403Schema = z.unknown();
+
+export const getDomainsRecordsByRecordIdStatus404Schema = z.unknown();
+
+export const getDomainsRecordsByRecordIdResponseSchema = z.union([
+	getDomainsRecordsByRecordIdStatus200Schema,
+	getDomainsRecordsByRecordIdStatus400Schema,
+	getDomainsRecordsByRecordIdStatus401Schema,
+	getDomainsRecordsByRecordIdStatus403Schema,
+	getDomainsRecordsByRecordIdStatus404Schema,
+]);
+
 export const removeRecordPathDomainSchema = z.string();
 
 export const removeRecordPathRecordIdSchema = z.string();
@@ -19233,6 +19352,59 @@ export const updateObservabilityConfigurationProjectResponseSchema = z.union([
 	updateObservabilityConfigurationProjectStatus429Schema,
 ]);
 
+export const createObservabilityQueryStatus200Schema = z.unknown();
+
+export const createObservabilityQueryStatus400Schema = z.unknown();
+
+export const createObservabilityQueryStatus401Schema = z.unknown();
+
+export const createObservabilityQueryStatus402Schema = z.unknown();
+
+export const createObservabilityQueryStatus403Schema = z.unknown();
+
+export const createObservabilityQueryStatus408Schema = z.unknown();
+
+export const createObservabilityQueryResponseSchema = z.union([
+	createObservabilityQueryStatus200Schema,
+	createObservabilityQueryStatus400Schema,
+	createObservabilityQueryStatus401Schema,
+	createObservabilityQueryStatus402Schema,
+	createObservabilityQueryStatus403Schema,
+	createObservabilityQueryStatus408Schema,
+]);
+
+export const getObservabilitySchemaStatus200Schema = z.unknown();
+
+export const getObservabilitySchemaStatus400Schema = z.unknown();
+
+export const getObservabilitySchemaStatus401Schema = z.unknown();
+
+export const getObservabilitySchemaStatus403Schema = z.unknown();
+
+export const getObservabilitySchemaResponseSchema = z.union([
+	getObservabilitySchemaStatus200Schema,
+	getObservabilitySchemaStatus400Schema,
+	getObservabilitySchemaStatus401Schema,
+	getObservabilitySchemaStatus403Schema,
+]);
+
+export const getObservabilitySchemaByMetricIdPathMetricIdSchema = z.string();
+
+export const getObservabilitySchemaByMetricIdStatus200Schema = z.unknown();
+
+export const getObservabilitySchemaByMetricIdStatus400Schema = z.unknown();
+
+export const getObservabilitySchemaByMetricIdStatus401Schema = z.unknown();
+
+export const getObservabilitySchemaByMetricIdStatus403Schema = z.unknown();
+
+export const getObservabilitySchemaByMetricIdResponseSchema = z.union([
+	getObservabilitySchemaByMetricIdStatus200Schema,
+	getObservabilitySchemaByMetricIdStatus400Schema,
+	getObservabilitySchemaByMetricIdStatus401Schema,
+	getObservabilitySchemaByMetricIdStatus403Schema,
+]);
+
 export const getProjectMembersPathIdOrNameSchema = z
 	.string()
 	.describe("The ID or name of the Project.");
@@ -19794,6 +19966,39 @@ export const createProjectResponseSchema = z.union([
 	createProjectStatus428Schema,
 	createProjectStatus429Schema,
 	createProjectStatus500Schema,
+]);
+
+export const getProjectTokenPathIdOrNameSchema = z
+	.string()
+	.max(150)
+	.describe("The project ID or name");
+
+export const getProjectTokenQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const getProjectTokenQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const getProjectTokenStatus200Schema = z.unknown();
+
+export const getProjectTokenStatus400Schema = z.unknown();
+
+export const getProjectTokenStatus401Schema = z.unknown();
+
+export const getProjectTokenStatus403Schema = z.unknown();
+
+export const getProjectTokenStatus404Schema = z.unknown();
+
+export const getProjectTokenResponseSchema = z.union([
+	getProjectTokenStatus200Schema,
+	getProjectTokenStatus400Schema,
+	getProjectTokenStatus401Schema,
+	getProjectTokenStatus403Schema,
+	getProjectTokenStatus404Schema,
 ]);
 
 export const createTraceSessionQueryTeamIdSchema = z
@@ -22660,6 +22865,24 @@ export const updateAttackChallengeModeResponseSchema = z.union([
 	updateAttackChallengeModeStatus404Schema,
 ]);
 
+export const getSecurityFirewallConfigStatus200Schema = z.unknown();
+
+export const getSecurityFirewallConfigStatus400Schema = z.unknown();
+
+export const getSecurityFirewallConfigStatus401Schema = z.unknown();
+
+export const getSecurityFirewallConfigStatus403Schema = z.unknown();
+
+export const getSecurityFirewallConfigStatus404Schema = z.unknown();
+
+export const getSecurityFirewallConfigResponseSchema = z.union([
+	getSecurityFirewallConfigStatus200Schema,
+	getSecurityFirewallConfigStatus400Schema,
+	getSecurityFirewallConfigStatus401Schema,
+	getSecurityFirewallConfigStatus403Schema,
+	getSecurityFirewallConfigStatus404Schema,
+]);
+
 export const putFirewallConfigQueryProjectIdSchema = z.string();
 
 export const putFirewallConfigQueryTeamIdSchema = z
@@ -22764,6 +22987,56 @@ export const getFirewallConfigResponseSchema = z.union([
 	getFirewallConfigStatus401Schema,
 	getFirewallConfigStatus403Schema,
 	getFirewallConfigStatus404Schema,
+]);
+
+export const deleteSecurityFirewallConfigByConfigVersionPathConfigVersionSchema = z.string();
+
+export const deleteSecurityFirewallConfigByConfigVersionStatus204Schema = z.unknown();
+
+export const deleteSecurityFirewallConfigByConfigVersionStatus400Schema = z.unknown();
+
+export const deleteSecurityFirewallConfigByConfigVersionStatus401Schema = z.unknown();
+
+export const deleteSecurityFirewallConfigByConfigVersionStatus403Schema = z.unknown();
+
+export const deleteSecurityFirewallConfigByConfigVersionStatus404Schema = z.unknown();
+
+export const deleteSecurityFirewallConfigByConfigVersionStatus500Schema = z.unknown();
+
+export const deleteSecurityFirewallConfigByConfigVersionResponseSchema = z.union([
+	deleteSecurityFirewallConfigByConfigVersionStatus204Schema,
+	deleteSecurityFirewallConfigByConfigVersionStatus400Schema,
+	deleteSecurityFirewallConfigByConfigVersionStatus401Schema,
+	deleteSecurityFirewallConfigByConfigVersionStatus403Schema,
+	deleteSecurityFirewallConfigByConfigVersionStatus404Schema,
+	deleteSecurityFirewallConfigByConfigVersionStatus500Schema,
+]);
+
+export const createSecurityFirewallConfigByConfigVersionActivatePathConfigVersionSchema =
+	z.string();
+
+export const createSecurityFirewallConfigByConfigVersionActivateStatus200Schema = z.unknown();
+
+export const createSecurityFirewallConfigByConfigVersionActivateStatus400Schema = z.unknown();
+
+export const createSecurityFirewallConfigByConfigVersionActivateStatus401Schema = z.unknown();
+
+export const createSecurityFirewallConfigByConfigVersionActivateStatus402Schema = z.unknown();
+
+export const createSecurityFirewallConfigByConfigVersionActivateStatus403Schema = z.unknown();
+
+export const createSecurityFirewallConfigByConfigVersionActivateStatus404Schema = z.unknown();
+
+export const createSecurityFirewallConfigByConfigVersionActivateStatus500Schema = z.unknown();
+
+export const createSecurityFirewallConfigByConfigVersionActivateResponseSchema = z.union([
+	createSecurityFirewallConfigByConfigVersionActivateStatus200Schema,
+	createSecurityFirewallConfigByConfigVersionActivateStatus400Schema,
+	createSecurityFirewallConfigByConfigVersionActivateStatus401Schema,
+	createSecurityFirewallConfigByConfigVersionActivateStatus402Schema,
+	createSecurityFirewallConfigByConfigVersionActivateStatus403Schema,
+	createSecurityFirewallConfigByConfigVersionActivateStatus404Schema,
+	createSecurityFirewallConfigByConfigVersionActivateStatus500Schema,
 ]);
 
 export const getActiveAttackStatusQueryProjectIdSchema = z.string();
@@ -22950,6 +23223,42 @@ export const getSecurityFirewallEventsResponseSchema = z.union([
 	getSecurityFirewallEventsStatus403Schema,
 	getSecurityFirewallEventsStatus404Schema,
 	getSecurityFirewallEventsStatus500Schema,
+]);
+
+export const generateFirewallRuleQueryProjectIdSchema = z.string();
+
+export const generateFirewallRuleQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const generateFirewallRuleQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const generateFirewallRuleStatus200Schema = z.unknown();
+
+export const generateFirewallRuleStatus400Schema = z.unknown();
+
+export const generateFirewallRuleStatus401Schema = z.unknown();
+
+export const generateFirewallRuleStatus403Schema = z.unknown();
+
+export const generateFirewallRuleStatus404Schema = z.unknown();
+
+export const generateFirewallRuleStatus408Schema = z.unknown();
+
+export const generateFirewallRuleStatus500Schema = z.unknown();
+
+export const generateFirewallRuleResponseSchema = z.union([
+	generateFirewallRuleStatus200Schema,
+	generateFirewallRuleStatus400Schema,
+	generateFirewallRuleStatus401Schema,
+	generateFirewallRuleStatus403Schema,
+	generateFirewallRuleStatus404Schema,
+	generateFirewallRuleStatus408Schema,
+	generateFirewallRuleStatus500Schema,
 ]);
 
 export const createSpeedInsightsToggleQueryProjectIdSchema = z.string();
@@ -24779,6 +25088,31 @@ export const removeCertResponseSchema = z.union([
 	removeCertStatus401Schema,
 	removeCertStatus403Schema,
 	removeCertStatus404Schema,
+]);
+
+export const getCertsQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const getCertsQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const getCertsStatus200Schema = z.unknown();
+
+export const getCertsStatus400Schema = z.unknown();
+
+export const getCertsStatus401Schema = z.unknown();
+
+export const getCertsStatus403Schema = z.unknown();
+
+export const getCertsResponseSchema = z.union([
+	getCertsStatus200Schema,
+	getCertsStatus400Schema,
+	getCertsStatus401Schema,
+	getCertsStatus403Schema,
 ]);
 
 export const issueCertQueryTeamIdSchema = z

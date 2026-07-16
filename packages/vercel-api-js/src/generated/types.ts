@@ -1583,6 +1583,7 @@ export const userEventTypeEnum = {
 	"cert-renew": "cert-renew",
 	"cert-replace": "cert-replace",
 	"cert-system-create": "cert-system-create",
+	"compliance-document-downloaded": "compliance-document-downloaded",
 	"concurrent-builds-update": "concurrent-builds-update",
 	"connect-attach-project": "connect-attach-project",
 	"connect-bitbucket": "connect-bitbucket",
@@ -1736,6 +1737,13 @@ export const userEventTypeEnum = {
 	"integration-scope-changed": "integration-scope-changed",
 	"invoice-modified": "invoice-modified",
 	"invoice-refunded": "invoice-refunded",
+	"kms-issuer-created": "kms-issuer-created",
+	"kms-issuer-deleted": "kms-issuer-deleted",
+	"kms-issuer-key-rotated": "kms-issuer-key-rotated",
+	"kms-issuer-policy-created": "kms-issuer-policy-created",
+	"kms-issuer-policy-deleted": "kms-issuer-policy-deleted",
+	"kms-issuer-policy-updated": "kms-issuer-policy-updated",
+	"kms-issuer-updated": "kms-issuer-updated",
 	"log-drain-created": "log-drain-created",
 	"log-drain-deleted": "log-drain-deleted",
 	"log-drain-disabled": "log-drain-disabled",
@@ -4839,6 +4847,24 @@ export type UserEvent = {
 						 * @type array | undefined
 						 */
 						cns?: string[] | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						slug: string;
+						/**
+						 * @type string
+						 */
+						documentId: string;
+						/**
+						 * @type string
+						 */
+						title: string;
+						/**
+						 * @type string
+						 */
+						fingerprint: string;
 				  }
 				| {
 						/**
@@ -10846,6 +10872,100 @@ export type UserEvent = {
 						 * @type string
 						 */
 						integrationName: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						issuerId: string;
+						/**
+						 * @type string
+						 */
+						issuerName: string;
+						/**
+						 * @type string
+						 */
+						algorithm: string;
+						/**
+						 * @type string
+						 */
+						origin: string;
+						/**
+						 * @type string | undefined
+						 */
+						managedBy?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						issuerId: string;
+						/**
+						 * @type string
+						 */
+						issuerName: string;
+						/**
+						 * @type string | undefined
+						 */
+						managedBy?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						issuerId: string;
+						/**
+						 * @type string
+						 */
+						issuerName: string;
+						/**
+						 * @type string | undefined
+						 */
+						keyId?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						issuerId: string;
+						/**
+						 * @type string
+						 */
+						issuerName: string;
+						/**
+						 * @type string
+						 */
+						kind: string;
+						/**
+						 * @type string | undefined
+						 */
+						projectId?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						clientId?: string | undefined;
+						/**
+						 * @type array | undefined
+						 */
+						environments?: string[] | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						issuerId: string;
+						/**
+						 * @type string
+						 */
+						issuerName: string;
+						/**
+						 * @type string
+						 */
+						kind: string;
+						/**
+						 * @type string
+						 */
+						policyKey: string;
 				  }
 				| {
 						/**
@@ -17119,6 +17239,7 @@ export const listEventTypeNameEnum = {
 	"cert-renew": "cert-renew",
 	"cert-replace": "cert-replace",
 	"cert-system-create": "cert-system-create",
+	"compliance-document-downloaded": "compliance-document-downloaded",
 	"concurrent-builds-update": "concurrent-builds-update",
 	"connect-attach-project": "connect-attach-project",
 	"connect-bitbucket": "connect-bitbucket",
@@ -17272,6 +17393,13 @@ export const listEventTypeNameEnum = {
 	"integration-scope-changed": "integration-scope-changed",
 	"invoice-modified": "invoice-modified",
 	"invoice-refunded": "invoice-refunded",
+	"kms-issuer-created": "kms-issuer-created",
+	"kms-issuer-deleted": "kms-issuer-deleted",
+	"kms-issuer-key-rotated": "kms-issuer-key-rotated",
+	"kms-issuer-policy-created": "kms-issuer-policy-created",
+	"kms-issuer-policy-deleted": "kms-issuer-policy-deleted",
+	"kms-issuer-policy-updated": "kms-issuer-policy-updated",
+	"kms-issuer-updated": "kms-issuer-updated",
 	"log-drain-created": "log-drain-created",
 	"log-drain-deleted": "log-drain-deleted",
 	"log-drain-disabled": "log-drain-disabled",
@@ -17717,6 +17845,7 @@ export const listEventTypeReplacedByEnum = {
 	"cert-renew": "cert-renew",
 	"cert-replace": "cert-replace",
 	"cert-system-create": "cert-system-create",
+	"compliance-document-downloaded": "compliance-document-downloaded",
 	"concurrent-builds-update": "concurrent-builds-update",
 	"connect-attach-project": "connect-attach-project",
 	"connect-bitbucket": "connect-bitbucket",
@@ -17870,6 +17999,13 @@ export const listEventTypeReplacedByEnum = {
 	"integration-scope-changed": "integration-scope-changed",
 	"invoice-modified": "invoice-modified",
 	"invoice-refunded": "invoice-refunded",
+	"kms-issuer-created": "kms-issuer-created",
+	"kms-issuer-deleted": "kms-issuer-deleted",
+	"kms-issuer-key-rotated": "kms-issuer-key-rotated",
+	"kms-issuer-policy-created": "kms-issuer-policy-created",
+	"kms-issuer-policy-deleted": "kms-issuer-policy-deleted",
+	"kms-issuer-policy-updated": "kms-issuer-policy-updated",
+	"kms-issuer-updated": "kms-issuer-updated",
 	"log-drain-created": "log-drain-created",
 	"log-drain-deleted": "log-drain-deleted",
 	"log-drain-disabled": "log-drain-disabled",
@@ -29384,6 +29520,160 @@ export type UpdateRecordResponse =
 	| UpdateRecordStatus403
 	| UpdateRecordStatus404
 	| UpdateRecordStatus409;
+
+/**
+ * @type string
+ */
+export type ReplaceDomainsByDomainRecordsPathDomain = string;
+
+/**
+ * @type unknown
+ */
+export type ReplaceDomainsByDomainRecordsStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ReplaceDomainsByDomainRecordsStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ReplaceDomainsByDomainRecordsStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ReplaceDomainsByDomainRecordsStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ReplaceDomainsByDomainRecordsStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ReplaceDomainsByDomainRecordsStatus409 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ReplaceDomainsByDomainRecordsStatus415 = unknown;
+
+/**
+ * @type object
+ */
+export type ReplaceDomainsByDomainRecordsRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		domain: ReplaceDomainsByDomainRecordsPathDomain;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/domains/${string}/records`;
+};
+
+/**
+ * @type object
+ */
+export type ReplaceDomainsByDomainRecordsResponses = {
+	"200": ReplaceDomainsByDomainRecordsStatus200;
+	"400": ReplaceDomainsByDomainRecordsStatus400;
+	"401": ReplaceDomainsByDomainRecordsStatus401;
+	"403": ReplaceDomainsByDomainRecordsStatus403;
+	"404": ReplaceDomainsByDomainRecordsStatus404;
+	"409": ReplaceDomainsByDomainRecordsStatus409;
+	"415": ReplaceDomainsByDomainRecordsStatus415;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ReplaceDomainsByDomainRecordsResponse =
+	| ReplaceDomainsByDomainRecordsStatus200
+	| ReplaceDomainsByDomainRecordsStatus400
+	| ReplaceDomainsByDomainRecordsStatus401
+	| ReplaceDomainsByDomainRecordsStatus403
+	| ReplaceDomainsByDomainRecordsStatus404
+	| ReplaceDomainsByDomainRecordsStatus409
+	| ReplaceDomainsByDomainRecordsStatus415;
+
+/**
+ * @type string
+ */
+export type GetDomainsRecordsByRecordIdPathRecordId = string;
+
+/**
+ * @type unknown
+ */
+export type GetDomainsRecordsByRecordIdStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetDomainsRecordsByRecordIdStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetDomainsRecordsByRecordIdStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetDomainsRecordsByRecordIdStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetDomainsRecordsByRecordIdStatus404 = unknown;
+
+/**
+ * @type object
+ */
+export type GetDomainsRecordsByRecordIdRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		recordId: GetDomainsRecordsByRecordIdPathRecordId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/domains/records/${string}`;
+};
+
+/**
+ * @type object
+ */
+export type GetDomainsRecordsByRecordIdResponses = {
+	"200": GetDomainsRecordsByRecordIdStatus200;
+	"400": GetDomainsRecordsByRecordIdStatus400;
+	"401": GetDomainsRecordsByRecordIdStatus401;
+	"403": GetDomainsRecordsByRecordIdStatus403;
+	"404": GetDomainsRecordsByRecordIdStatus404;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetDomainsRecordsByRecordIdResponse =
+	| GetDomainsRecordsByRecordIdStatus200
+	| GetDomainsRecordsByRecordIdStatus400
+	| GetDomainsRecordsByRecordIdStatus401
+	| GetDomainsRecordsByRecordIdStatus403
+	| GetDomainsRecordsByRecordIdStatus404;
 
 /**
  * @example example.com
@@ -42122,6 +42412,189 @@ export type UpdateObservabilityConfigurationProjectResponse =
 	| UpdateObservabilityConfigurationProjectStatus429;
 
 /**
+ * @type unknown
+ */
+export type CreateObservabilityQueryStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateObservabilityQueryStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateObservabilityQueryStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateObservabilityQueryStatus402 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateObservabilityQueryStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateObservabilityQueryStatus408 = unknown;
+
+/**
+ * @type object
+ */
+export type CreateObservabilityQueryRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/v2/observability/query";
+};
+
+/**
+ * @type object
+ */
+export type CreateObservabilityQueryResponses = {
+	"200": CreateObservabilityQueryStatus200;
+	"400": CreateObservabilityQueryStatus400;
+	"401": CreateObservabilityQueryStatus401;
+	"402": CreateObservabilityQueryStatus402;
+	"403": CreateObservabilityQueryStatus403;
+	"408": CreateObservabilityQueryStatus408;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateObservabilityQueryResponse =
+	| CreateObservabilityQueryStatus200
+	| CreateObservabilityQueryStatus400
+	| CreateObservabilityQueryStatus401
+	| CreateObservabilityQueryStatus402
+	| CreateObservabilityQueryStatus403
+	| CreateObservabilityQueryStatus408;
+
+/**
+ * @type unknown
+ */
+export type GetObservabilitySchemaStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetObservabilitySchemaStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetObservabilitySchemaStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetObservabilitySchemaStatus403 = unknown;
+
+/**
+ * @type object
+ */
+export type GetObservabilitySchemaRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/v2/observability/schema";
+};
+
+/**
+ * @type object
+ */
+export type GetObservabilitySchemaResponses = {
+	"200": GetObservabilitySchemaStatus200;
+	"400": GetObservabilitySchemaStatus400;
+	"401": GetObservabilitySchemaStatus401;
+	"403": GetObservabilitySchemaStatus403;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetObservabilitySchemaResponse =
+	| GetObservabilitySchemaStatus200
+	| GetObservabilitySchemaStatus400
+	| GetObservabilitySchemaStatus401
+	| GetObservabilitySchemaStatus403;
+
+/**
+ * @type string
+ */
+export type GetObservabilitySchemaByMetricIdPathMetricId = string;
+
+/**
+ * @type unknown
+ */
+export type GetObservabilitySchemaByMetricIdStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetObservabilitySchemaByMetricIdStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetObservabilitySchemaByMetricIdStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetObservabilitySchemaByMetricIdStatus403 = unknown;
+
+/**
+ * @type object
+ */
+export type GetObservabilitySchemaByMetricIdRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		metricId: GetObservabilitySchemaByMetricIdPathMetricId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v2/observability/schema/${string}`;
+};
+
+/**
+ * @type object
+ */
+export type GetObservabilitySchemaByMetricIdResponses = {
+	"200": GetObservabilitySchemaByMetricIdStatus200;
+	"400": GetObservabilitySchemaByMetricIdStatus400;
+	"401": GetObservabilitySchemaByMetricIdStatus401;
+	"403": GetObservabilitySchemaByMetricIdStatus403;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetObservabilitySchemaByMetricIdResponse =
+	| GetObservabilitySchemaByMetricIdStatus200
+	| GetObservabilitySchemaByMetricIdStatus400
+	| GetObservabilitySchemaByMetricIdStatus401
+	| GetObservabilitySchemaByMetricIdStatus403;
+
+/**
  * @description The ID or name of the Project.
  * @example prj_pavWOn1iLObbXLRiwVvzmPrTWyTf
  * @type string
@@ -43634,6 +44107,101 @@ export type CreateProjectResponse =
 	| CreateProjectStatus428
 	| CreateProjectStatus429
 	| CreateProjectStatus500;
+
+/**
+ * @description The project ID or name
+ * @maxLength 150
+ * @example my-project, <prj_id>
+ * @type string
+ */
+export type GetProjectTokenPathIdOrName = string;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type GetProjectTokenQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type GetProjectTokenQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type GetProjectTokenStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetProjectTokenStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetProjectTokenStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetProjectTokenStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetProjectTokenStatus404 = unknown;
+
+/**
+ * @type object
+ */
+export type GetProjectTokenRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		idOrName: GetProjectTokenPathIdOrName;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				teamId?: GetProjectTokenQueryTeamId | undefined;
+				slug?: GetProjectTokenQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v1/projects/${string}/token`;
+};
+
+/**
+ * @type object
+ */
+export type GetProjectTokenResponses = {
+	"200": GetProjectTokenStatus200;
+	"400": GetProjectTokenStatus400;
+	"401": GetProjectTokenStatus401;
+	"403": GetProjectTokenStatus403;
+	"404": GetProjectTokenStatus404;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetProjectTokenResponse =
+	| GetProjectTokenStatus200
+	| GetProjectTokenStatus400
+	| GetProjectTokenStatus401
+	| GetProjectTokenStatus403
+	| GetProjectTokenStatus404;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
@@ -51214,6 +51782,66 @@ export type UpdateAttackChallengeModeResponse =
 	| UpdateAttackChallengeModeStatus404;
 
 /**
+ * @type unknown
+ */
+export type GetSecurityFirewallConfigStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetSecurityFirewallConfigStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetSecurityFirewallConfigStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetSecurityFirewallConfigStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetSecurityFirewallConfigStatus404 = unknown;
+
+/**
+ * @type object
+ */
+export type GetSecurityFirewallConfigRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/v1/security/firewall/config";
+};
+
+/**
+ * @type object
+ */
+export type GetSecurityFirewallConfigResponses = {
+	"200": GetSecurityFirewallConfigStatus200;
+	"400": GetSecurityFirewallConfigStatus400;
+	"401": GetSecurityFirewallConfigStatus401;
+	"403": GetSecurityFirewallConfigStatus403;
+	"404": GetSecurityFirewallConfigStatus404;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetSecurityFirewallConfigResponse =
+	| GetSecurityFirewallConfigStatus200
+	| GetSecurityFirewallConfigStatus400
+	| GetSecurityFirewallConfigStatus401
+	| GetSecurityFirewallConfigStatus403
+	| GetSecurityFirewallConfigStatus404;
+
+/**
  * @type string
  */
 export type PutFirewallConfigQueryProjectId = string;
@@ -51515,6 +52143,167 @@ export type GetFirewallConfigResponse =
 	| GetFirewallConfigStatus401
 	| GetFirewallConfigStatus403
 	| GetFirewallConfigStatus404;
+
+/**
+ * @type string
+ */
+export type DeleteSecurityFirewallConfigByConfigVersionPathConfigVersion = string;
+
+/**
+ * @type unknown
+ */
+export type DeleteSecurityFirewallConfigByConfigVersionStatus204 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteSecurityFirewallConfigByConfigVersionStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteSecurityFirewallConfigByConfigVersionStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteSecurityFirewallConfigByConfigVersionStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteSecurityFirewallConfigByConfigVersionStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteSecurityFirewallConfigByConfigVersionStatus500 = unknown;
+
+/**
+ * @type object
+ */
+export type DeleteSecurityFirewallConfigByConfigVersionRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		configVersion: DeleteSecurityFirewallConfigByConfigVersionPathConfigVersion;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v1/security/firewall/config/${string}`;
+};
+
+/**
+ * @type object
+ */
+export type DeleteSecurityFirewallConfigByConfigVersionResponses = {
+	"204": DeleteSecurityFirewallConfigByConfigVersionStatus204;
+	"400": DeleteSecurityFirewallConfigByConfigVersionStatus400;
+	"401": DeleteSecurityFirewallConfigByConfigVersionStatus401;
+	"403": DeleteSecurityFirewallConfigByConfigVersionStatus403;
+	"404": DeleteSecurityFirewallConfigByConfigVersionStatus404;
+	"500": DeleteSecurityFirewallConfigByConfigVersionStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteSecurityFirewallConfigByConfigVersionResponse =
+	| DeleteSecurityFirewallConfigByConfigVersionStatus204
+	| DeleteSecurityFirewallConfigByConfigVersionStatus400
+	| DeleteSecurityFirewallConfigByConfigVersionStatus401
+	| DeleteSecurityFirewallConfigByConfigVersionStatus403
+	| DeleteSecurityFirewallConfigByConfigVersionStatus404
+	| DeleteSecurityFirewallConfigByConfigVersionStatus500;
+
+/**
+ * @type string
+ */
+export type CreateSecurityFirewallConfigByConfigVersionActivatePathConfigVersion = string;
+
+/**
+ * @type unknown
+ */
+export type CreateSecurityFirewallConfigByConfigVersionActivateStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSecurityFirewallConfigByConfigVersionActivateStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSecurityFirewallConfigByConfigVersionActivateStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSecurityFirewallConfigByConfigVersionActivateStatus402 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSecurityFirewallConfigByConfigVersionActivateStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSecurityFirewallConfigByConfigVersionActivateStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSecurityFirewallConfigByConfigVersionActivateStatus500 = unknown;
+
+/**
+ * @type object
+ */
+export type CreateSecurityFirewallConfigByConfigVersionActivateRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		configVersion: CreateSecurityFirewallConfigByConfigVersionActivatePathConfigVersion;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v1/security/firewall/config/${string}/activate`;
+};
+
+/**
+ * @type object
+ */
+export type CreateSecurityFirewallConfigByConfigVersionActivateResponses = {
+	"200": CreateSecurityFirewallConfigByConfigVersionActivateStatus200;
+	"400": CreateSecurityFirewallConfigByConfigVersionActivateStatus400;
+	"401": CreateSecurityFirewallConfigByConfigVersionActivateStatus401;
+	"402": CreateSecurityFirewallConfigByConfigVersionActivateStatus402;
+	"403": CreateSecurityFirewallConfigByConfigVersionActivateStatus403;
+	"404": CreateSecurityFirewallConfigByConfigVersionActivateStatus404;
+	"500": CreateSecurityFirewallConfigByConfigVersionActivateStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateSecurityFirewallConfigByConfigVersionActivateResponse =
+	| CreateSecurityFirewallConfigByConfigVersionActivateStatus200
+	| CreateSecurityFirewallConfigByConfigVersionActivateStatus400
+	| CreateSecurityFirewallConfigByConfigVersionActivateStatus401
+	| CreateSecurityFirewallConfigByConfigVersionActivateStatus402
+	| CreateSecurityFirewallConfigByConfigVersionActivateStatus403
+	| CreateSecurityFirewallConfigByConfigVersionActivateStatus404
+	| CreateSecurityFirewallConfigByConfigVersionActivateStatus500;
 
 /**
  * @type string
@@ -52032,6 +52821,108 @@ export type GetSecurityFirewallEventsResponse =
 	| GetSecurityFirewallEventsStatus403
 	| GetSecurityFirewallEventsStatus404
 	| GetSecurityFirewallEventsStatus500;
+
+/**
+ * @type string
+ */
+export type GenerateFirewallRuleQueryProjectId = string;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type GenerateFirewallRuleQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type GenerateFirewallRuleQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type GenerateFirewallRuleStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GenerateFirewallRuleStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GenerateFirewallRuleStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GenerateFirewallRuleStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GenerateFirewallRuleStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GenerateFirewallRuleStatus408 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GenerateFirewallRuleStatus500 = unknown;
+
+/**
+ * @type object
+ */
+export type GenerateFirewallRuleRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				projectId: GenerateFirewallRuleQueryProjectId;
+				teamId?: GenerateFirewallRuleQueryTeamId | undefined;
+				slug?: GenerateFirewallRuleQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/v1/security/firewall/config/generate-rule";
+};
+
+/**
+ * @type object
+ */
+export type GenerateFirewallRuleResponses = {
+	"200": GenerateFirewallRuleStatus200;
+	"400": GenerateFirewallRuleStatus400;
+	"401": GenerateFirewallRuleStatus401;
+	"403": GenerateFirewallRuleStatus403;
+	"404": GenerateFirewallRuleStatus404;
+	"408": GenerateFirewallRuleStatus408;
+	"500": GenerateFirewallRuleStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GenerateFirewallRuleResponse =
+	| GenerateFirewallRuleStatus200
+	| GenerateFirewallRuleStatus400
+	| GenerateFirewallRuleStatus401
+	| GenerateFirewallRuleStatus403
+	| GenerateFirewallRuleStatus404
+	| GenerateFirewallRuleStatus408
+	| GenerateFirewallRuleStatus500;
 
 /**
  * @type string
@@ -57160,6 +58051,81 @@ export type RemoveCertResponse =
 	| RemoveCertStatus401
 	| RemoveCertStatus403
 	| RemoveCertStatus404;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type GetCertsQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type GetCertsQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type GetCertsStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetCertsStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetCertsStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetCertsStatus403 = unknown;
+
+/**
+ * @type object
+ */
+export type GetCertsRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				teamId?: GetCertsQueryTeamId | undefined;
+				slug?: GetCertsQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/v8/certs";
+};
+
+/**
+ * @type object
+ */
+export type GetCertsResponses = {
+	"200": GetCertsStatus200;
+	"400": GetCertsStatus400;
+	"401": GetCertsStatus401;
+	"403": GetCertsStatus403;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetCertsResponse =
+	| GetCertsStatus200
+	| GetCertsStatus400
+	| GetCertsStatus401
+	| GetCertsStatus403;
 
 /**
  * @description The Team identifier to perform the request on behalf of.

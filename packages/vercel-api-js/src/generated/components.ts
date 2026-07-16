@@ -254,6 +254,12 @@ import type {
 	CreateNetworkStatus402,
 	CreateNetworkStatus403,
 	CreateNetworkStatus409,
+	CreateObservabilityQueryResponse,
+	CreateObservabilityQueryStatus400,
+	CreateObservabilityQueryStatus401,
+	CreateObservabilityQueryStatus402,
+	CreateObservabilityQueryStatus403,
+	CreateObservabilityQueryStatus408,
 	CreateOrTransferDomainResponse,
 	CreateOrTransferDomainStatus400,
 	CreateOrTransferDomainStatus401,
@@ -321,6 +327,13 @@ import type {
 	CreateSdkKeyStatus403,
 	CreateSdkKeyStatus404,
 	CreateSdkKeyStatus409,
+	CreateSecurityFirewallConfigByConfigVersionActivateResponse,
+	CreateSecurityFirewallConfigByConfigVersionActivateStatus400,
+	CreateSecurityFirewallConfigByConfigVersionActivateStatus401,
+	CreateSecurityFirewallConfigByConfigVersionActivateStatus402,
+	CreateSecurityFirewallConfigByConfigVersionActivateStatus403,
+	CreateSecurityFirewallConfigByConfigVersionActivateStatus404,
+	CreateSecurityFirewallConfigByConfigVersionActivateStatus500,
 	CreateSessionDirectoryResponse,
 	CreateSessionDirectoryStatus400,
 	CreateSessionDirectoryStatus401,
@@ -562,6 +575,12 @@ import type {
 	DeleteSdkKeyStatus403,
 	DeleteSdkKeyStatus404,
 	DeleteSdkKeyStatus409,
+	DeleteSecurityFirewallConfigByConfigVersionResponse,
+	DeleteSecurityFirewallConfigByConfigVersionStatus400,
+	DeleteSecurityFirewallConfigByConfigVersionStatus401,
+	DeleteSecurityFirewallConfigByConfigVersionStatus403,
+	DeleteSecurityFirewallConfigByConfigVersionStatus404,
+	DeleteSecurityFirewallConfigByConfigVersionStatus500,
 	DeleteSessionSnapshotResponse,
 	DeleteSessionSnapshotStatus400,
 	DeleteSessionSnapshotStatus401,
@@ -643,6 +662,13 @@ import type {
 	FinalizeInstallationStatus401,
 	FinalizeInstallationStatus403,
 	FinalizeInstallationStatus404,
+	GenerateFirewallRuleResponse,
+	GenerateFirewallRuleStatus400,
+	GenerateFirewallRuleStatus401,
+	GenerateFirewallRuleStatus403,
+	GenerateFirewallRuleStatus404,
+	GenerateFirewallRuleStatus408,
+	GenerateFirewallRuleStatus500,
 	GenerateRouteResponse,
 	GenerateRouteStatus400,
 	GenerateRouteStatus401,
@@ -706,6 +732,10 @@ import type {
 	GetCertByIdStatus401,
 	GetCertByIdStatus403,
 	GetCertByIdStatus404,
+	GetCertsResponse,
+	GetCertsStatus400,
+	GetCertsStatus401,
+	GetCertsStatus403,
 	GetCheckResponse,
 	GetCheckStatus400,
 	GetCheckStatus401,
@@ -825,6 +855,11 @@ import type {
 	GetDomainStatus401,
 	GetDomainStatus403,
 	GetDomainStatus404,
+	GetDomainsRecordsByRecordIdResponse,
+	GetDomainsRecordsByRecordIdStatus400,
+	GetDomainsRecordsByRecordIdStatus401,
+	GetDomainsRecordsByRecordIdStatus403,
+	GetDomainsRecordsByRecordIdStatus404,
 	GetDomainsResponse,
 	GetDomainsStatus400,
 	GetDomainsStatus401,
@@ -984,6 +1019,14 @@ import type {
 	GetObservabilityConfigurationProjectsStatus401,
 	GetObservabilityConfigurationProjectsStatus403,
 	GetObservabilityConfigurationProjectsStatus404,
+	GetObservabilitySchemaByMetricIdResponse,
+	GetObservabilitySchemaByMetricIdStatus400,
+	GetObservabilitySchemaByMetricIdStatus401,
+	GetObservabilitySchemaByMetricIdStatus403,
+	GetObservabilitySchemaResponse,
+	GetObservabilitySchemaStatus400,
+	GetObservabilitySchemaStatus401,
+	GetObservabilitySchemaStatus403,
 	GetOrCreateDriveResponse,
 	GetOrCreateDriveStatus400,
 	GetOrCreateDriveStatus401,
@@ -1032,6 +1075,11 @@ import type {
 	GetProjectsStatus400,
 	GetProjectsStatus401,
 	GetProjectsStatus403,
+	GetProjectTokenResponse,
+	GetProjectTokenStatus400,
+	GetProjectTokenStatus401,
+	GetProjectTokenStatus403,
+	GetProjectTokenStatus404,
 	GetProjectTraceResponse,
 	GetProjectTraceStatus400,
 	GetProjectTraceStatus401,
@@ -1095,6 +1143,11 @@ import type {
 	GetSdkKeysStatus402,
 	GetSdkKeysStatus403,
 	GetSdkKeysStatus404,
+	GetSecurityFirewallConfigResponse,
+	GetSecurityFirewallConfigStatus400,
+	GetSecurityFirewallConfigStatus401,
+	GetSecurityFirewallConfigStatus403,
+	GetSecurityFirewallConfigStatus404,
 	GetSecurityFirewallEventsResponse,
 	GetSecurityFirewallEventsStatus400,
 	GetSecurityFirewallEventsStatus401,
@@ -1552,6 +1605,13 @@ import type {
 	RenewDomainStatus404,
 	RenewDomainStatus429,
 	RenewDomainStatus500,
+	ReplaceDomainsByDomainRecordsResponse,
+	ReplaceDomainsByDomainRecordsStatus400,
+	ReplaceDomainsByDomainRecordsStatus401,
+	ReplaceDomainsByDomainRecordsStatus403,
+	ReplaceDomainsByDomainRecordsStatus404,
+	ReplaceDomainsByDomainRecordsStatus409,
+	ReplaceDomainsByDomainRecordsStatus415,
 	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigResponse,
 	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus400,
 	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus401,
@@ -4773,6 +4833,86 @@ export async function updateRecord(
 		method: "PATCH",
 		url: `/v1/domains/records/${pathParams.recordId}`,
 		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /domains/{domain}/records
+ */
+export async function replaceDomainsByDomainRecords(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { domain: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.domain) {
+		throw new Error(`Missing required path parameter: domain`);
+	}
+	const data = await request<
+		ReplaceDomainsByDomainRecordsResponse,
+		ErrorWrapper<
+			| ReplaceDomainsByDomainRecordsStatus400
+			| ReplaceDomainsByDomainRecordsStatus401
+			| ReplaceDomainsByDomainRecordsStatus403
+			| ReplaceDomainsByDomainRecordsStatus404
+			| ReplaceDomainsByDomainRecordsStatus409
+			| ReplaceDomainsByDomainRecordsStatus415
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ domain: string }
+	>({
+		method: "PUT",
+		url: `/domains/${pathParams.domain}/records`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /domains/records/{recordId}
+ */
+export async function getDomainsRecordsByRecordId(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { recordId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.recordId) {
+		throw new Error(`Missing required path parameter: recordId`);
+	}
+	const data = await request<
+		GetDomainsRecordsByRecordIdResponse,
+		ErrorWrapper<
+			| GetDomainsRecordsByRecordIdStatus400
+			| GetDomainsRecordsByRecordIdStatus401
+			| GetDomainsRecordsByRecordIdStatus403
+			| GetDomainsRecordsByRecordIdStatus404
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ recordId: string }
+	>({
+		method: "GET",
+		url: `/domains/records/${pathParams.recordId}`,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
 	});
@@ -10675,6 +10815,104 @@ export async function updateObservabilityConfigurationProject(
 }
 
 /**
+ * @link /v2/observability/query
+ */
+export async function createObservabilityQuery(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		CreateObservabilityQueryResponse,
+		ErrorWrapper<
+			| CreateObservabilityQueryStatus400
+			| CreateObservabilityQueryStatus401
+			| CreateObservabilityQueryStatus402
+			| CreateObservabilityQueryStatus403
+			| CreateObservabilityQueryStatus408
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		Record<string, string>
+	>({
+		method: "POST",
+		url: `/v2/observability/query`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /v2/observability/schema
+ */
+export async function getObservabilitySchema(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		GetObservabilitySchemaResponse,
+		ErrorWrapper<
+			| GetObservabilitySchemaStatus400
+			| GetObservabilitySchemaStatus401
+			| GetObservabilitySchemaStatus403
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/v2/observability/schema`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @link /v2/observability/schema/{metricId}
+ */
+export async function getObservabilitySchemaByMetricId(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { metricId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.metricId) {
+		throw new Error(`Missing required path parameter: metricId`);
+	}
+	const data = await request<
+		GetObservabilitySchemaByMetricIdResponse,
+		ErrorWrapper<
+			| GetObservabilitySchemaByMetricIdStatus400
+			| GetObservabilitySchemaByMetricIdStatus401
+			| GetObservabilitySchemaByMetricIdStatus403
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ metricId: string }
+	>({
+		method: "GET",
+		url: `/v2/observability/schema/${pathParams.metricId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
  * @summary List project members
  * @description Lists all members of a project.
  * @link /v1/projects/{idOrName}/members
@@ -11322,6 +11560,50 @@ export async function createProject(
 	>({
 		method: "POST",
 		url: `/v11/projects`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Generate a project OIDC token
+ * @description Generates an OIDC token for the project and returns it.
+ * @link /v1/projects/{idOrName}/token
+ */
+export async function getProjectToken(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.idOrName) {
+		throw new Error(`Missing required path parameter: idOrName`);
+	}
+	const data = await request<
+		GetProjectTokenResponse,
+		ErrorWrapper<
+			| GetProjectTokenStatus400
+			| GetProjectTokenStatus401
+			| GetProjectTokenStatus403
+			| GetProjectTokenStatus404
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ idOrName: string }
+	>({
+		method: "POST",
+		url: `/v1/projects/${pathParams.idOrName}/token`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -14564,6 +14846,38 @@ export async function updateAttackChallengeMode(
 }
 
 /**
+ * @summary Returns activated WAF config
+ * @description Lists WAF configs for a project
+ * @link /v1/security/firewall/config
+ */
+export async function getSecurityFirewallConfig(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		GetSecurityFirewallConfigResponse,
+		ErrorWrapper<
+			| GetSecurityFirewallConfigStatus400
+			| GetSecurityFirewallConfigStatus401
+			| GetSecurityFirewallConfigStatus403
+			| GetSecurityFirewallConfigStatus404
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/v1/security/firewall/config`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
  * @summary Put Firewall Configuration
  * @description Set the firewall configuration to provided rules and settings. Creates or overwrite the existing firewall configuration.
  * @link /v1/security/firewall/config
@@ -14682,6 +14996,91 @@ export async function getFirewallConfig(
 		method: "GET",
 		url: `/v1/security/firewall/config/${pathParams.configVersion}`,
 		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Returns activated WAF config
+ * @description Promotes a draft WAF config to an active config
+ * @link /v1/security/firewall/config/{configVersion}
+ */
+export async function deleteSecurityFirewallConfigByConfigVersion(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { configVersion: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.configVersion) {
+		throw new Error(`Missing required path parameter: configVersion`);
+	}
+	const data = await request<
+		DeleteSecurityFirewallConfigByConfigVersionResponse,
+		ErrorWrapper<
+			| DeleteSecurityFirewallConfigByConfigVersionStatus400
+			| DeleteSecurityFirewallConfigByConfigVersionStatus401
+			| DeleteSecurityFirewallConfigByConfigVersionStatus403
+			| DeleteSecurityFirewallConfigByConfigVersionStatus404
+			| DeleteSecurityFirewallConfigByConfigVersionStatus500
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ configVersion: string }
+	>({
+		method: "DELETE",
+		url: `/v1/security/firewall/config/${pathParams.configVersion}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Returns activated WAF config
+ * @description Promotes a draft WAF config to an active config
+ * @link /v1/security/firewall/config/{configVersion}/activate
+ */
+export async function createSecurityFirewallConfigByConfigVersionActivate(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { configVersion: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.configVersion) {
+		throw new Error(`Missing required path parameter: configVersion`);
+	}
+	const data = await request<
+		CreateSecurityFirewallConfigByConfigVersionActivateResponse,
+		ErrorWrapper<
+			| CreateSecurityFirewallConfigByConfigVersionActivateStatus400
+			| CreateSecurityFirewallConfigByConfigVersionActivateStatus401
+			| CreateSecurityFirewallConfigByConfigVersionActivateStatus402
+			| CreateSecurityFirewallConfigByConfigVersionActivateStatus403
+			| CreateSecurityFirewallConfigByConfigVersionActivateStatus404
+			| CreateSecurityFirewallConfigByConfigVersionActivateStatus500
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ configVersion: string }
+	>({
+		method: "POST",
+		url: `/v1/security/firewall/config/${pathParams.configVersion}/activate`,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
 	});
@@ -14903,6 +15302,47 @@ export async function getSecurityFirewallEvents(
 	>({
 		method: "GET",
 		url: `/v1/security/firewall/events`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Generate a firewall rule from natural language
+ * @description Generate a firewall rule from a natural language description.
+ * @link /v1/security/firewall/config/generate-rule
+ */
+export async function generateFirewallRule(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { projectId?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		GenerateFirewallRuleResponse,
+		ErrorWrapper<
+			| GenerateFirewallRuleStatus400
+			| GenerateFirewallRuleStatus401
+			| GenerateFirewallRuleStatus403
+			| GenerateFirewallRuleStatus404
+			| GenerateFirewallRuleStatus408
+			| GenerateFirewallRuleStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ projectId?: string; teamId?: string; slug?: string },
+		Record<string, string>
+	>({
+		method: "POST",
+		url: `/v1/security/firewall/config/generate-rule`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -17293,6 +17733,40 @@ export async function removeCert(
 }
 
 /**
+ * @summary Get certs
+ * @description Get certs
+ * @link /v8/certs
+ */
+export async function getCerts(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		GetCertsResponse,
+		ErrorWrapper<GetCertsStatus400 | GetCertsStatus401 | GetCertsStatus403>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/v8/certs`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
  * @summary Issue a new cert
  * @description Issue a new cert
  * @link /v8/certs
@@ -17646,6 +18120,8 @@ export const operationsByPath = {
 	"GET /v5/domains/{domain}/records": getRecords,
 	"POST /v2/domains/{domain}/records": createRecord,
 	"PATCH /v1/domains/records/{recordId}": updateRecord,
+	"PUT /domains/{domain}/records": replaceDomainsByDomainRecords,
+	"GET /domains/records/{recordId}": getDomainsRecordsByRecordId,
 	"DELETE /v2/domains/{domain}/records/{recordId}": removeRecord,
 	"GET /v1/registrar/tlds/supported": getSupportedTlds,
 	"GET /v1/registrar/tlds/{tld}": getTld,
@@ -17795,6 +18271,9 @@ export const operationsByPath = {
 	"GET /v1/observability/manage/configuration/projects": getObservabilityConfigurationProjects,
 	"PUT /v1/observability/manage/configuration/projects/{projectIdOrName}":
 		updateObservabilityConfigurationProject,
+	"POST /v2/observability/query": createObservabilityQuery,
+	"GET /v2/observability/schema": getObservabilitySchema,
+	"GET /v2/observability/schema/{metricId}": getObservabilitySchemaByMetricId,
 	"GET /v1/projects/{idOrName}/members": getProjectMembers,
 	"POST /v1/projects/{idOrName}/members": addProjectMember,
 	"DELETE /v1/projects/{idOrName}/members/{uid}": removeProjectMember,
@@ -17809,6 +18288,7 @@ export const operationsByPath = {
 	"GET /v10/projects": getProjects,
 	"GET /v1/projects/traces": getProjectTrace,
 	"POST /v11/projects": createProject,
+	"POST /v1/projects/{idOrName}/token": getProjectToken,
 	"POST /v1/projects/traces/session": createTraceSession,
 	"GET /v9/projects/{idOrName}": getProject,
 	"PATCH /v9/projects/{idOrName}": updateProject,
@@ -17880,14 +18360,20 @@ export const operationsByPath = {
 	"POST /v2/sandboxes/sessions/{sessionId}/fs/write": writeSessionFiles,
 	"POST /v2/sandboxes/sessions/{sessionId}/snapshot": createSessionSnapshot,
 	"POST /v1/security/attack-mode": updateAttackChallengeMode,
+	"GET /v1/security/firewall/config": getSecurityFirewallConfig,
 	"PUT /v1/security/firewall/config": putFirewallConfig,
 	"PATCH /v1/security/firewall/config": updateFirewallConfig,
 	"GET /v1/security/firewall/config/{configVersion}": getFirewallConfig,
+	"DELETE /v1/security/firewall/config/{configVersion}":
+		deleteSecurityFirewallConfigByConfigVersion,
+	"POST /v1/security/firewall/config/{configVersion}/activate":
+		createSecurityFirewallConfigByConfigVersionActivate,
 	"GET /v1/security/firewall/attack-status": getActiveAttackStatus,
 	"GET /v1/security/firewall/bypass": getBypassIp,
 	"POST /v1/security/firewall/bypass": addBypassIp,
 	"DELETE /v1/security/firewall/bypass": removeBypassIp,
 	"GET /v1/security/firewall/events": getSecurityFirewallEvents,
+	"POST /v1/security/firewall/config/generate-rule": generateFirewallRule,
 	"POST /speed-insights/toggle": createSpeedInsightsToggle,
 	"GET /storage/stores/{id}": getStorageStoresById,
 	"POST /storage/stores/blob": createStorageStoresBlob,
@@ -17942,6 +18428,7 @@ export const operationsByPath = {
 	"PATCH /aliases/{id}/protection-bypass": patchUrlProtectionBypass,
 	"GET /v8/certs/{id}": getCertById,
 	"DELETE /v8/certs/{id}": removeCert,
+	"GET /v8/certs": getCerts,
 	"POST /v8/certs": issueCert,
 	"PUT /v8/certs": uploadCert,
 	"GET /v6/deployments/{id}/files": listDeploymentFiles,
@@ -18235,6 +18722,7 @@ export const operationsByTag = {
 		getProjects,
 		getProjectTrace,
 		createProject,
+		getProjectToken,
 		createTraceSession,
 		getProject,
 		updateProject,
@@ -18315,6 +18803,14 @@ export const operationsByTag = {
 		removeBypassIp,
 		getSecurityFirewallEvents,
 	},
+	apiSecurity: {
+		getSecurityFirewallConfig,
+		deleteSecurityFirewallConfigByConfigVersion,
+		createSecurityFirewallConfigByConfigVersionActivate,
+	},
+	firewall: {
+		generateFirewallRule,
+	},
 	teams: {
 		getTeamMembers,
 		inviteUserToTeam,
@@ -18367,6 +18863,7 @@ export const operationsByTag = {
 	certs: {
 		getCertById,
 		removeCert,
+		getCerts,
 		issueCert,
 		uploadCert,
 	},
@@ -18660,6 +19157,7 @@ export const tagDictionary = {
 		],
 		POST: [
 			"createProject",
+			"getProjectToken",
 			"createTraceSession",
 			"uploadProjectAvatar",
 			"addProjectDomain",
@@ -18728,6 +19226,14 @@ export const tagDictionary = {
 		GET: ["getFirewallConfig", "getActiveAttackStatus", "getBypassIp", "getSecurityFirewallEvents"],
 		DELETE: ["removeBypassIp"],
 	},
+	apiSecurity: {
+		GET: ["getSecurityFirewallConfig"],
+		DELETE: ["deleteSecurityFirewallConfigByConfigVersion"],
+		POST: ["createSecurityFirewallConfigByConfigVersionActivate"],
+	},
+	firewall: {
+		POST: ["generateFirewallRule"],
+	},
 	teams: {
 		GET: ["getTeamMembers", "getTeamAccessRequest", "getTeam", "getTeams"],
 		POST: [
@@ -18767,7 +19273,7 @@ export const tagDictionary = {
 		PATCH: ["patchUrlProtectionBypass"],
 	},
 	certs: {
-		GET: ["getCertById"],
+		GET: ["getCertById", "getCerts"],
 		DELETE: ["removeCert"],
 		POST: ["issueCert"],
 		PUT: ["uploadCert"],
