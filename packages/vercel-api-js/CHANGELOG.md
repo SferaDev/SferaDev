@@ -1,5 +1,30 @@
 # vercel-api-js
 
+## 1.5.0
+
+### Minor Changes
+
+- 97371ea: Added createTraceSession endpoint to mint session JWT tokens for trace sessions.
+- 6acb651: Added generateFirewallRule endpoint to generate firewall rules from natural language.
+- 97371ea: Added createApiKeys endpoint for API key creation.
+- 6acb651: Added getProjectToken endpoint to generate project OIDC tokens.
+- 97371ea: Added getProjectTrace endpoint to fetch OTEL traces for Vercel CLI requests.
+- 6acb651: Added replaceDomainsByDomainRecords and getDomainsRecordsByRecordId endpoints for domain records management.
+- 6acb651: Added getCerts endpoint to retrieve certificates.
+- 6acb651: Added createObservabilityQuery, getObservabilitySchema, and getObservabilitySchemaByMetricId endpoints for observability features.
+- 6acb651: Added getSecurityFirewallConfig, deleteSecurityFirewallConfigByConfigVersion, and createSecurityFirewallConfigByConfigVersionActivate endpoints for firewall config management.
+- 8de7f34: Added createWebInsightsToggle API endpoint for toggling Web Insights.
+- 97371ea: Added endpoints getStorageStoresById, createStorageStoresBlob, and deleteStorageStoresBlobById for storage store and blob management.
+- 8de7f34: Added createSpeedInsightsToggle API endpoint for toggling Speed Insights.
+
+### Patch Changes
+
+- 97371ea: Added APIKey and APIKeyQuota types for API key metadata and quota information.
+- 21a5534: Added optional 'image' field to NamedSandbox schema and type with digest-pinned container image reference.
+- 03d6dde: Added optional 'organization' object to 'accountUpdateContext' in AuthUser schema and type.
+- 6acb651: Extended user event and event type schemas to support new compliance and KMS issuer related events.
+- 97371ea: Added new 'organization-team-delete' event type to event schemas and enums.
+
 ## 1.4.0
 
 ### Minor Changes
