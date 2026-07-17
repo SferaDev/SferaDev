@@ -886,6 +886,8 @@ export const userEventSchema = z
 				"page-integrity-resource-approved",
 				"page-integrity-resource-deleted",
 				"page-integrity-resource-rejected",
+				"page-integrity-script-approval-rule-created",
+				"page-integrity-script-approval-rule-deleted",
 				"passkey-created",
 				"passkey-deleted",
 				"passkey-updated",
@@ -6043,6 +6045,14 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						projectId: z.string(),
+						projectName: z.string(),
+						pattern: z.string(),
+						justification: z.string(),
+					})
+					.catchall(z.unknown()),
+				z
+					.object({
 						oldName: z.string(),
 						newName: z.string(),
 					})
@@ -9109,6 +9119,8 @@ export const listEventTypeSchema = z
 				"page-integrity-resource-approved",
 				"page-integrity-resource-deleted",
 				"page-integrity-resource-rejected",
+				"page-integrity-script-approval-rule-created",
+				"page-integrity-script-approval-rule-deleted",
 				"passkey-created",
 				"passkey-deleted",
 				"passkey-updated",
@@ -9709,6 +9721,8 @@ export const listEventTypeSchema = z
 					"page-integrity-resource-approved",
 					"page-integrity-resource-deleted",
 					"page-integrity-resource-rejected",
+					"page-integrity-script-approval-rule-created",
+					"page-integrity-script-approval-rule-deleted",
 					"passkey-created",
 					"passkey-deleted",
 					"passkey-updated",
