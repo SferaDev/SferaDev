@@ -2057,6 +2057,7 @@ export const userEventTypeEnum = {
 	"vcr-image-pushed": "vcr-image-pushed",
 	"vcr-repository-created": "vcr-repository-created",
 	"vcr-repository-deleted": "vcr-repository-deleted",
+	"vcr-repository-permission-added": "vcr-repository-permission-added",
 	"vercel-agent-elevated-permissions-approved": "vercel-agent-elevated-permissions-approved",
 	"vercel-agent-elevated-permissions-requested": "vercel-agent-elevated-permissions-requested",
 	"vercel-agent-session-created": "vercel-agent-session-created",
@@ -16380,6 +16381,28 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string
+						 */
+						repositoryName: string;
+						/**
+						 * @type string
+						 */
+						sharedWithTeamId: string;
+						/**
+						 * @type string
+						 */
+						sharedWithTeamSlug: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
 						ruleName: string;
 				  }
 				| {
@@ -17734,6 +17757,7 @@ export const listEventTypeNameEnum = {
 	"vcr-image-pushed": "vcr-image-pushed",
 	"vcr-repository-created": "vcr-repository-created",
 	"vcr-repository-deleted": "vcr-repository-deleted",
+	"vcr-repository-permission-added": "vcr-repository-permission-added",
 	"vercel-agent-elevated-permissions-approved": "vercel-agent-elevated-permissions-approved",
 	"vercel-agent-elevated-permissions-requested": "vercel-agent-elevated-permissions-requested",
 	"vercel-agent-session-created": "vercel-agent-session-created",
@@ -18342,6 +18366,7 @@ export const listEventTypeReplacedByEnum = {
 	"vcr-image-pushed": "vcr-image-pushed",
 	"vcr-repository-created": "vcr-repository-created",
 	"vcr-repository-deleted": "vcr-repository-deleted",
+	"vcr-repository-permission-added": "vcr-repository-permission-added",
 	"vercel-agent-elevated-permissions-approved": "vercel-agent-elevated-permissions-approved",
 	"vercel-agent-elevated-permissions-requested": "vercel-agent-elevated-permissions-requested",
 	"vercel-agent-session-created": "vercel-agent-session-created",
