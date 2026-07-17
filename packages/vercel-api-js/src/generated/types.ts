@@ -1790,6 +1790,8 @@ export const userEventTypeEnum = {
 	"page-integrity-resource-approved": "page-integrity-resource-approved",
 	"page-integrity-resource-deleted": "page-integrity-resource-deleted",
 	"page-integrity-resource-rejected": "page-integrity-resource-rejected",
+	"page-integrity-script-approval-rule-created": "page-integrity-script-approval-rule-created",
+	"page-integrity-script-approval-rule-deleted": "page-integrity-script-approval-rule-deleted",
 	"passkey-created": "passkey-created",
 	"passkey-deleted": "passkey-deleted",
 	"passkey-updated": "passkey-updated",
@@ -11874,6 +11876,25 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string
+						 */
+						pattern: string;
+						/**
+						 * @type string
+						 */
+						justification: string;
+						[key: string]: unknown;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
 						oldName: string;
 						/**
 						 * @type string
@@ -17446,6 +17467,8 @@ export const listEventTypeNameEnum = {
 	"page-integrity-resource-approved": "page-integrity-resource-approved",
 	"page-integrity-resource-deleted": "page-integrity-resource-deleted",
 	"page-integrity-resource-rejected": "page-integrity-resource-rejected",
+	"page-integrity-script-approval-rule-created": "page-integrity-script-approval-rule-created",
+	"page-integrity-script-approval-rule-deleted": "page-integrity-script-approval-rule-deleted",
 	"passkey-created": "passkey-created",
 	"passkey-deleted": "passkey-deleted",
 	"passkey-updated": "passkey-updated",
@@ -18052,6 +18075,8 @@ export const listEventTypeReplacedByEnum = {
 	"page-integrity-resource-approved": "page-integrity-resource-approved",
 	"page-integrity-resource-deleted": "page-integrity-resource-deleted",
 	"page-integrity-resource-rejected": "page-integrity-resource-rejected",
+	"page-integrity-script-approval-rule-created": "page-integrity-script-approval-rule-created",
+	"page-integrity-script-approval-rule-deleted": "page-integrity-script-approval-rule-deleted",
 	"passkey-created": "passkey-created",
 	"passkey-deleted": "passkey-deleted",
 	"passkey-updated": "passkey-updated",
