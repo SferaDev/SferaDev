@@ -16871,8 +16871,8 @@ export async function getRepositoryTag(
 
 /**
  * @summary Get a repository image
- * @description Fetch an individual image from a repository, including its tags and Dockerfile history entries with discriminated layer details for UI rendering.
- * @link /v1/vcr/repository/{idOrName}/images/{imageId}
+ * @description Fetch an individual image from a repository, including its tags and Dockerfile history entries with discriminated layer details for UI rendering. The image may be addressed by its internal id (`image_...`) or by its manifest digest (`sha256:...`).
+ * @link /v1/vcr/repository/{idOrName}/images/{imageIdOrDigest}
  */
 export async function getRepositoryImage(
 	{
@@ -16880,7 +16880,7 @@ export async function getRepositoryImage(
 		queryParams,
 		config,
 	}: {
-		pathParams: { idOrName: string; imageId: string };
+		pathParams: { idOrName: string; imageIdOrDigest: string };
 		queryParams?: { projectId?: string; teamId?: string; slug?: string };
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
@@ -16891,8 +16891,8 @@ export async function getRepositoryImage(
 		throw new Error(`Missing required path parameter: idOrName`);
 	}
 
-	if (!pathParams.imageId) {
-		throw new Error(`Missing required path parameter: imageId`);
+	if (!pathParams.imageIdOrDigest) {
+		throw new Error(`Missing required path parameter: imageIdOrDigest`);
 	}
 	const data = await request<
 		GetRepositoryImageResponse,
@@ -16905,10 +16905,10 @@ export async function getRepositoryImage(
 		null,
 		Record<string, string>,
 		{ projectId?: string; teamId?: string; slug?: string },
-		{ idOrName: string; imageId: string }
+		{ idOrName: string; imageIdOrDigest: string }
 	>({
 		method: "GET",
-		url: `/v1/vcr/repository/${pathParams.idOrName}/images/${pathParams.imageId}`,
+		url: `/v1/vcr/repository/${pathParams.idOrName}/images/${pathParams.imageIdOrDigest}`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -18409,7 +18409,7 @@ export const operationsByPath = {
 	"GET /v1/vcr/repository/{idOrName}/images": listRepositoryImages,
 	"GET /v1/vcr/repository/{idOrName}/tags": listRepositoryTags,
 	"GET /v1/vcr/repository/{idOrName}/tags/{tag}": getRepositoryTag,
-	"GET /v1/vcr/repository/{idOrName}/images/{imageId}": getRepositoryImage,
+	"GET /v1/vcr/repository/{idOrName}/images/{imageIdOrDigest}": getRepositoryImage,
 	"DELETE /v1/vcr/repository/{idOrName}/images/{imageId}": deleteRepositoryImage,
 	"POST /web/insights/toggle": createWebInsightsToggle,
 	"GET /v1/query/web-analytics/visits/aggregate": aggregatePageviews,

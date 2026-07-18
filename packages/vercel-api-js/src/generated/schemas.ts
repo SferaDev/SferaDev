@@ -1145,6 +1145,7 @@ export const userEventSchema = z
 				"vcr-repository-created",
 				"vcr-repository-deleted",
 				"vcr-repository-permission-added",
+				"vcr-repository-permission-removed",
 				"vercel-agent-elevated-permissions-approved",
 				"vercel-agent-elevated-permissions-requested",
 				"vercel-agent-session-created",
@@ -8391,6 +8392,14 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						projectId: z.string(),
+						projectName: z.string(),
+						repositoryName: z.string(),
+						sharedWithTeamId: z.string(),
+					})
+					.strict(),
+				z
+					.object({
 						ruleName: z.string(),
 					})
 					.strict(),
@@ -9388,6 +9397,7 @@ export const listEventTypeSchema = z
 				"vcr-repository-created",
 				"vcr-repository-deleted",
 				"vcr-repository-permission-added",
+				"vcr-repository-permission-removed",
 				"vercel-agent-elevated-permissions-approved",
 				"vercel-agent-elevated-permissions-requested",
 				"vercel-agent-session-created",
@@ -9991,6 +10001,7 @@ export const listEventTypeSchema = z
 					"vcr-repository-created",
 					"vcr-repository-deleted",
 					"vcr-repository-permission-added",
+					"vcr-repository-permission-removed",
 					"vercel-agent-elevated-permissions-approved",
 					"vercel-agent-elevated-permissions-requested",
 					"vercel-agent-session-created",
@@ -24361,7 +24372,10 @@ export const getRepositoryImageQueryProjectIdSchema = z.string();
 
 export const getRepositoryImagePathIdOrNameSchema = z.string().max(255);
 
-export const getRepositoryImagePathImageIdSchema = z.string().max(255);
+export const getRepositoryImagePathImageIdOrDigestSchema = z
+	.string()
+	.max(255)
+	.describe("The internal image id (`image_...`) or the image manifest digest (`sha256:...`).");
 
 export const getRepositoryImageQueryTeamIdSchema = z
 	.string()
