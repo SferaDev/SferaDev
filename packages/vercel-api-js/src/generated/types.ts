@@ -2058,6 +2058,7 @@ export const userEventTypeEnum = {
 	"vcr-repository-created": "vcr-repository-created",
 	"vcr-repository-deleted": "vcr-repository-deleted",
 	"vcr-repository-permission-added": "vcr-repository-permission-added",
+	"vcr-repository-permission-removed": "vcr-repository-permission-removed",
 	"vercel-agent-elevated-permissions-approved": "vercel-agent-elevated-permissions-approved",
 	"vercel-agent-elevated-permissions-requested": "vercel-agent-elevated-permissions-requested",
 	"vercel-agent-session-created": "vercel-agent-session-created",
@@ -16403,6 +16404,24 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string
+						 */
+						repositoryName: string;
+						/**
+						 * @type string
+						 */
+						sharedWithTeamId: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
 						ruleName: string;
 				  }
 				| {
@@ -17758,6 +17777,7 @@ export const listEventTypeNameEnum = {
 	"vcr-repository-created": "vcr-repository-created",
 	"vcr-repository-deleted": "vcr-repository-deleted",
 	"vcr-repository-permission-added": "vcr-repository-permission-added",
+	"vcr-repository-permission-removed": "vcr-repository-permission-removed",
 	"vercel-agent-elevated-permissions-approved": "vercel-agent-elevated-permissions-approved",
 	"vercel-agent-elevated-permissions-requested": "vercel-agent-elevated-permissions-requested",
 	"vercel-agent-session-created": "vercel-agent-session-created",
@@ -18367,6 +18387,7 @@ export const listEventTypeReplacedByEnum = {
 	"vcr-repository-created": "vcr-repository-created",
 	"vcr-repository-deleted": "vcr-repository-deleted",
 	"vcr-repository-permission-added": "vcr-repository-permission-added",
+	"vcr-repository-permission-removed": "vcr-repository-permission-removed",
 	"vercel-agent-elevated-permissions-approved": "vercel-agent-elevated-permissions-approved",
 	"vercel-agent-elevated-permissions-requested": "vercel-agent-elevated-permissions-requested",
 	"vercel-agent-session-created": "vercel-agent-session-created",
@@ -56172,10 +56193,11 @@ export type GetRepositoryImageQueryProjectId = string;
 export type GetRepositoryImagePathIdOrName = string;
 
 /**
+ * @description The internal image id (`image_...`) or the image manifest digest (`sha256:...`).
  * @maxLength 255
  * @type string
  */
-export type GetRepositoryImagePathImageId = string;
+export type GetRepositoryImagePathImageIdOrDigest = string;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
@@ -56226,7 +56248,7 @@ export type GetRepositoryImageRequestConfig = {
 	 */
 	pathParams: {
 		idOrName: GetRepositoryImagePathIdOrName;
-		imageId: GetRepositoryImagePathImageId;
+		imageIdOrDigest: GetRepositoryImagePathImageIdOrDigest;
 	};
 	/**
 	 * @type object | undefined
