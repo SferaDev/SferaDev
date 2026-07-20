@@ -1146,6 +1146,7 @@ export const userEventSchema = z
 				"vcr-repository-deleted",
 				"vcr-repository-permission-added",
 				"vcr-repository-permission-removed",
+				"vcr-repository-permissions-cleared",
 				"vercel-agent-elevated-permissions-approved",
 				"vercel-agent-elevated-permissions-requested",
 				"vercel-agent-session-created",
@@ -8400,6 +8401,14 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						projectId: z.string(),
+						projectName: z.string(),
+						repositoryName: z.string(),
+						removedTeamIds: z.array(z.string()),
+					})
+					.strict(),
+				z
+					.object({
 						ruleName: z.string(),
 					})
 					.strict(),
@@ -9398,6 +9407,7 @@ export const listEventTypeSchema = z
 				"vcr-repository-deleted",
 				"vcr-repository-permission-added",
 				"vcr-repository-permission-removed",
+				"vcr-repository-permissions-cleared",
 				"vercel-agent-elevated-permissions-approved",
 				"vercel-agent-elevated-permissions-requested",
 				"vercel-agent-session-created",
@@ -10002,6 +10012,7 @@ export const listEventTypeSchema = z
 					"vcr-repository-deleted",
 					"vcr-repository-permission-added",
 					"vcr-repository-permission-removed",
+					"vcr-repository-permissions-cleared",
 					"vercel-agent-elevated-permissions-approved",
 					"vercel-agent-elevated-permissions-requested",
 					"vercel-agent-session-created",
