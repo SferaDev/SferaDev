@@ -273,7 +273,9 @@ export const chatDetailSchema = z
 					])
 					.optional()
 					.default("v0-pro")
-					.describe("Model to use for the generation."),
+					.describe(
+						"Model to use for the generation. `v0-auto` is deprecated and falls back to `v0-pro`.",
+					),
 				imageGenerations: z
 					.boolean()
 					.optional()

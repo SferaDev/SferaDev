@@ -613,7 +613,7 @@ export type ChatDetail = {
 	modelConfiguration?:
 		| {
 				/**
-				 * @description Model to use for the generation.
+				 * @description Model to use for the generation. `v0-auto` is deprecated and falls back to `v0-pro`.
 				 * @default "v0-pro"
 				 * @type string | undefined
 				 */
