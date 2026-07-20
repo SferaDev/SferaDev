@@ -11,12 +11,14 @@ import type {
 	AcceptProjectTransferRequestStatus401,
 	AcceptProjectTransferRequestStatus403,
 	AcceptProjectTransferRequestStatus404,
+	AcceptProjectTransferRequestStatus410,
 	AcceptProjectTransferRequestStatus422,
 	AddBypassIpResponse,
 	AddBypassIpStatus400,
 	AddBypassIpStatus401,
 	AddBypassIpStatus403,
 	AddBypassIpStatus404,
+	AddBypassIpStatus410,
 	AddBypassIpStatus500,
 	AddProjectDomainResponse,
 	AddProjectDomainStatus400,
@@ -24,38 +26,45 @@ import type {
 	AddProjectDomainStatus402,
 	AddProjectDomainStatus403,
 	AddProjectDomainStatus409,
+	AddProjectDomainStatus410,
 	AddProjectMemberResponse,
 	AddProjectMemberStatus400,
 	AddProjectMemberStatus401,
 	AddProjectMemberStatus403,
+	AddProjectMemberStatus410,
 	AddProjectMemberStatus500,
 	AddRouteResponse,
 	AddRouteStatus400,
 	AddRouteStatus401,
 	AddRouteStatus403,
 	AddRouteStatus409,
+	AddRouteStatus410,
 	AddRouteStatus500,
 	AggregateEventsResponse,
 	AggregateEventsStatus400,
 	AggregateEventsStatus401,
 	AggregateEventsStatus402,
 	AggregateEventsStatus403,
+	AggregateEventsStatus410,
 	AggregatePageviewsResponse,
 	AggregatePageviewsStatus400,
 	AggregatePageviewsStatus401,
 	AggregatePageviewsStatus402,
 	AggregatePageviewsStatus403,
+	AggregatePageviewsStatus410,
 	ApproveRollingReleaseStageResponse,
 	ApproveRollingReleaseStageStatus400,
 	ApproveRollingReleaseStageStatus401,
 	ApproveRollingReleaseStageStatus403,
 	ApproveRollingReleaseStageStatus404,
+	ApproveRollingReleaseStageStatus410,
 	ApproveRollingReleaseStageStatus500,
 	ArtifactQueryResponse,
 	ArtifactQueryStatus400,
 	ArtifactQueryStatus401,
 	ArtifactQueryStatus402,
 	ArtifactQueryStatus403,
+	ArtifactQueryStatus410,
 	AssignAliasResponse,
 	AssignAliasStatus400,
 	AssignAliasStatus401,
@@ -63,18 +72,21 @@ import type {
 	AssignAliasStatus403,
 	AssignAliasStatus404,
 	AssignAliasStatus409,
+	AssignAliasStatus410,
 	BatchRemoveProjectEnvResponse,
 	BatchRemoveProjectEnvStatus400,
 	BatchRemoveProjectEnvStatus401,
 	BatchRemoveProjectEnvStatus403,
 	BatchRemoveProjectEnvStatus404,
 	BatchRemoveProjectEnvStatus409,
+	BatchRemoveProjectEnvStatus410,
 	BuyCreditsResponse,
 	BuyCreditsStatus400,
 	BuyCreditsStatus401,
 	BuyCreditsStatus402,
 	BuyCreditsStatus403,
 	BuyCreditsStatus404,
+	BuyCreditsStatus410,
 	BuyCreditsStatus500,
 	BuyDomainsResponse,
 	BuyDomainsStatus400,
@@ -93,50 +105,60 @@ import type {
 	CancelDeploymentStatus401,
 	CancelDeploymentStatus403,
 	CancelDeploymentStatus404,
+	CancelDeploymentStatus410,
 	ClaimDomainOwnershipResponse,
 	ClaimDomainOwnershipStatus400,
 	ClaimDomainOwnershipStatus401,
 	ClaimDomainOwnershipStatus403,
 	ClaimDomainOwnershipStatus404,
+	ClaimDomainOwnershipStatus410,
 	CompleteRollingReleaseResponse,
 	CompleteRollingReleaseStatus400,
 	CompleteRollingReleaseStatus401,
 	CompleteRollingReleaseStatus403,
 	CompleteRollingReleaseStatus404,
+	CompleteRollingReleaseStatus410,
 	ConnectIntegrationResourceToProjectResponse,
 	ConnectIntegrationResourceToProjectStatus400,
 	ConnectIntegrationResourceToProjectStatus401,
 	ConnectIntegrationResourceToProjectStatus403,
 	ConnectIntegrationResourceToProjectStatus404,
+	ConnectIntegrationResourceToProjectStatus410,
 	CountEventsResponse,
 	CountEventsStatus400,
 	CountEventsStatus401,
 	CountEventsStatus402,
 	CountEventsStatus403,
+	CountEventsStatus410,
 	CountPageviewsResponse,
 	CountPageviewsStatus400,
 	CountPageviewsStatus401,
 	CountPageviewsStatus402,
 	CountPageviewsStatus403,
+	CountPageviewsStatus410,
 	CreateAccessGroupProjectResponse,
 	CreateAccessGroupProjectStatus400,
 	CreateAccessGroupProjectStatus401,
 	CreateAccessGroupProjectStatus403,
+	CreateAccessGroupProjectStatus410,
 	CreateAccessGroupResponse,
 	CreateAccessGroupStatus400,
 	CreateAccessGroupStatus401,
 	CreateAccessGroupStatus403,
+	CreateAccessGroupStatus410,
 	CreateAiGatewayRuleResponse,
 	CreateAiGatewayRuleStatus400,
 	CreateAiGatewayRuleStatus401,
 	CreateAiGatewayRuleStatus403,
 	CreateAiGatewayRuleStatus409,
+	CreateAiGatewayRuleStatus410,
 	CreateAiGatewayRuleStatus500,
 	CreateApiKeysResponse,
 	CreateApiKeysStatus400,
 	CreateApiKeysStatus401,
 	CreateApiKeysStatus403,
 	CreateApiKeysStatus409,
+	CreateApiKeysStatus410,
 	CreateApiKeysStatus429,
 	CreateApiKeysStatus500,
 	CreateAuthTokenResponse,
@@ -144,37 +166,44 @@ import type {
 	CreateAuthTokenStatus401,
 	CreateAuthTokenStatus403,
 	CreateAuthTokenStatus404,
+	CreateAuthTokenStatus410,
 	CreateCheckResponse,
 	CreateCheckStatus400,
 	CreateCheckStatus401,
 	CreateCheckStatus403,
 	CreateCheckStatus404,
+	CreateCheckStatus410,
 	CreateConfigurableLogDrainResponse,
 	CreateConfigurableLogDrainStatus400,
 	CreateConfigurableLogDrainStatus401,
 	CreateConfigurableLogDrainStatus403,
+	CreateConfigurableLogDrainStatus410,
 	CreateConnectorAuthorizationRequestResponse,
 	CreateConnectorAuthorizationRequestStatus400,
 	CreateConnectorAuthorizationRequestStatus401,
 	CreateConnectorAuthorizationRequestStatus403,
 	CreateConnectorAuthorizationRequestStatus404,
+	CreateConnectorAuthorizationRequestStatus410,
 	CreateConnectorResponse,
 	CreateConnectorStatus400,
 	CreateConnectorStatus401,
 	CreateConnectorStatus403,
 	CreateConnectorStatus404,
 	CreateConnectorStatus409,
+	CreateConnectorStatus410,
 	CreateCustomEnvironmentResponse,
 	CreateCustomEnvironmentStatus400,
 	CreateCustomEnvironmentStatus401,
 	CreateCustomEnvironmentStatus402,
 	CreateCustomEnvironmentStatus403,
+	CreateCustomEnvironmentStatus410,
 	CreateCustomEnvironmentStatus500,
 	CreateDeploymentCheckRunResponse,
 	CreateDeploymentCheckRunStatus400,
 	CreateDeploymentCheckRunStatus401,
 	CreateDeploymentCheckRunStatus403,
 	CreateDeploymentCheckRunStatus404,
+	CreateDeploymentCheckRunStatus410,
 	CreateDeploymentCheckRunStatus500,
 	CreateDeploymentResponse,
 	CreateDeploymentStatus400,
@@ -183,6 +212,7 @@ import type {
 	CreateDeploymentStatus403,
 	CreateDeploymentStatus404,
 	CreateDeploymentStatus409,
+	CreateDeploymentStatus410,
 	CreateDeploymentStatus426,
 	CreateDeploymentStatus429,
 	CreateDeploymentStatus500,
@@ -192,11 +222,13 @@ import type {
 	CreateDrainStatus401,
 	CreateDrainStatus402,
 	CreateDrainStatus403,
+	CreateDrainStatus410,
 	CreateEdgeConfigResponse,
 	CreateEdgeConfigStatus400,
 	CreateEdgeConfigStatus401,
 	CreateEdgeConfigStatus402,
 	CreateEdgeConfigStatus403,
+	CreateEdgeConfigStatus410,
 	CreateEdgeConfigTokenResponse,
 	CreateEdgeConfigTokenStatus400,
 	CreateEdgeConfigTokenStatus401,
@@ -204,11 +236,13 @@ import type {
 	CreateEdgeConfigTokenStatus403,
 	CreateEdgeConfigTokenStatus404,
 	CreateEdgeConfigTokenStatus409,
+	CreateEdgeConfigTokenStatus410,
 	CreateEventResponse,
 	CreateEventStatus400,
 	CreateEventStatus401,
 	CreateEventStatus403,
 	CreateEventStatus404,
+	CreateEventStatus410,
 	CreateFlagResponse,
 	CreateFlagSegmentResponse,
 	CreateFlagSegmentStatus400,
@@ -217,6 +251,7 @@ import type {
 	CreateFlagSegmentStatus403,
 	CreateFlagSegmentStatus404,
 	CreateFlagSegmentStatus409,
+	CreateFlagSegmentStatus410,
 	CreateFlagSegmentStatus412,
 	CreateFlagStatus400,
 	CreateFlagStatus401,
@@ -224,12 +259,14 @@ import type {
 	CreateFlagStatus403,
 	CreateFlagStatus404,
 	CreateFlagStatus409,
+	CreateFlagStatus410,
 	CreateFlagStatus412,
 	CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsResponse,
 	CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsStatus400,
 	CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsStatus401,
 	CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsStatus403,
 	CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsStatus404,
+	CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsStatus410,
 	CreateIntegrationStoreDirectResponse,
 	CreateIntegrationStoreDirectStatus400,
 	CreateIntegrationStoreDirectStatus401,
@@ -237,16 +274,19 @@ import type {
 	CreateIntegrationStoreDirectStatus403,
 	CreateIntegrationStoreDirectStatus404,
 	CreateIntegrationStoreDirectStatus409,
+	CreateIntegrationStoreDirectStatus410,
 	CreateIntegrationStoreDirectStatus429,
 	CreateIntegrationStoreDirectStatus500,
 	CreateLogDrainResponse,
 	CreateLogDrainStatus400,
 	CreateLogDrainStatus401,
 	CreateLogDrainStatus403,
+	CreateLogDrainStatus410,
 	CreateMicrofrontendsGroupWithApplicationsResponse,
 	CreateMicrofrontendsGroupWithApplicationsStatus400,
 	CreateMicrofrontendsGroupWithApplicationsStatus401,
 	CreateMicrofrontendsGroupWithApplicationsStatus403,
+	CreateMicrofrontendsGroupWithApplicationsStatus410,
 	CreateMicrofrontendsGroupWithApplicationsStatus500,
 	CreateNetworkResponse,
 	CreateNetworkStatus400,
@@ -254,12 +294,14 @@ import type {
 	CreateNetworkStatus402,
 	CreateNetworkStatus403,
 	CreateNetworkStatus409,
+	CreateNetworkStatus410,
 	CreateObservabilityQueryResponse,
 	CreateObservabilityQueryStatus400,
 	CreateObservabilityQueryStatus401,
 	CreateObservabilityQueryStatus402,
 	CreateObservabilityQueryStatus403,
 	CreateObservabilityQueryStatus408,
+	CreateObservabilityQueryStatus410,
 	CreateOrTransferDomainResponse,
 	CreateOrTransferDomainStatus400,
 	CreateOrTransferDomainStatus401,
@@ -267,10 +309,12 @@ import type {
 	CreateOrTransferDomainStatus403,
 	CreateOrTransferDomainStatus404,
 	CreateOrTransferDomainStatus409,
+	CreateOrTransferDomainStatus410,
 	CreateProjectCheckResponse,
 	CreateProjectCheckStatus400,
 	CreateProjectCheckStatus401,
 	CreateProjectCheckStatus403,
+	CreateProjectCheckStatus410,
 	CreateProjectCheckStatus500,
 	CreateProjectEnvResponse,
 	CreateProjectEnvStatus400,
@@ -279,6 +323,7 @@ import type {
 	CreateProjectEnvStatus403,
 	CreateProjectEnvStatus404,
 	CreateProjectEnvStatus409,
+	CreateProjectEnvStatus410,
 	CreateProjectEnvStatus429,
 	CreateProjectEnvStatus500,
 	CreateProjectResponse,
@@ -288,6 +333,7 @@ import type {
 	CreateProjectStatus403,
 	CreateProjectStatus404,
 	CreateProjectStatus409,
+	CreateProjectStatus410,
 	CreateProjectStatus428,
 	CreateProjectStatus429,
 	CreateProjectStatus500,
@@ -295,6 +341,7 @@ import type {
 	CreateProjectTransferRequestStatus400,
 	CreateProjectTransferRequestStatus401,
 	CreateProjectTransferRequestStatus403,
+	CreateProjectTransferRequestStatus410,
 	CreateRecordResponse,
 	CreateRecordStatus400,
 	CreateRecordStatus401,
@@ -302,6 +349,7 @@ import type {
 	CreateRecordStatus403,
 	CreateRecordStatus404,
 	CreateRecordStatus409,
+	CreateRecordStatus410,
 	CreateRepositoryResponse,
 	CreateRepositoryStatus400,
 	CreateRepositoryStatus401,
@@ -309,6 +357,7 @@ import type {
 	CreateRepositoryStatus403,
 	CreateRepositoryStatus404,
 	CreateRepositoryStatus409,
+	CreateRepositoryStatus410,
 	CreateSandboxesResponse,
 	CreateSandboxesStatus400,
 	CreateSandboxesStatus401,
@@ -327,12 +376,14 @@ import type {
 	CreateSdkKeyStatus403,
 	CreateSdkKeyStatus404,
 	CreateSdkKeyStatus409,
+	CreateSdkKeyStatus410,
 	CreateSecurityFirewallConfigByConfigVersionActivateResponse,
 	CreateSecurityFirewallConfigByConfigVersionActivateStatus400,
 	CreateSecurityFirewallConfigByConfigVersionActivateStatus401,
 	CreateSecurityFirewallConfigByConfigVersionActivateStatus402,
 	CreateSecurityFirewallConfigByConfigVersionActivateStatus403,
 	CreateSecurityFirewallConfigByConfigVersionActivateStatus404,
+	CreateSecurityFirewallConfigByConfigVersionActivateStatus410,
 	CreateSecurityFirewallConfigByConfigVersionActivateStatus500,
 	CreateSessionDirectoryResponse,
 	CreateSessionDirectoryStatus400,
@@ -358,11 +409,13 @@ import type {
 	CreateSharedEnvVariableStatus401,
 	CreateSharedEnvVariableStatus402,
 	CreateSharedEnvVariableStatus403,
+	CreateSharedEnvVariableStatus410,
 	CreateSpeedInsightsToggleResponse,
 	CreateSpeedInsightsToggleStatus400,
 	CreateSpeedInsightsToggleStatus401,
 	CreateSpeedInsightsToggleStatus402,
 	CreateSpeedInsightsToggleStatus403,
+	CreateSpeedInsightsToggleStatus410,
 	CreateStorageStoresBlobResponse,
 	CreateStorageStoresBlobStatus400,
 	CreateStorageStoresBlobStatus401,
@@ -370,6 +423,7 @@ import type {
 	CreateStorageStoresBlobStatus403,
 	CreateStorageStoresBlobStatus404,
 	CreateStorageStoresBlobStatus409,
+	CreateStorageStoresBlobStatus410,
 	CreateStorageStoresBlobStatus429,
 	CreateTeamResponse,
 	CreateTeamStatus400,
@@ -377,90 +431,108 @@ import type {
 	CreateTeamStatus403,
 	CreateTeamStatus404,
 	CreateTeamStatus409,
+	CreateTeamStatus410,
 	CreateTraceSessionResponse,
 	CreateTraceSessionStatus400,
 	CreateTraceSessionStatus401,
 	CreateTraceSessionStatus403,
+	CreateTraceSessionStatus410,
 	CreateTraceSessionStatus422,
 	CreateWebhookResponse,
 	CreateWebhookStatus400,
 	CreateWebhookStatus401,
 	CreateWebhookStatus403,
+	CreateWebhookStatus410,
 	CreateWebInsightsToggleResponse,
 	CreateWebInsightsToggleStatus400,
 	CreateWebInsightsToggleStatus401,
 	CreateWebInsightsToggleStatus403,
+	CreateWebInsightsToggleStatus410,
 	DangerouslyDeleteBySrcImagesResponse,
 	DangerouslyDeleteBySrcImagesStatus400,
 	DangerouslyDeleteBySrcImagesStatus401,
 	DangerouslyDeleteBySrcImagesStatus402,
 	DangerouslyDeleteBySrcImagesStatus403,
 	DangerouslyDeleteBySrcImagesStatus404,
+	DangerouslyDeleteBySrcImagesStatus410,
 	DangerouslyDeleteByTagsResponse,
 	DangerouslyDeleteByTagsStatus400,
 	DangerouslyDeleteByTagsStatus401,
 	DangerouslyDeleteByTagsStatus403,
 	DangerouslyDeleteByTagsStatus404,
+	DangerouslyDeleteByTagsStatus410,
 	DeleteAccessGroupProjectResponse,
 	DeleteAccessGroupProjectStatus400,
 	DeleteAccessGroupProjectStatus401,
 	DeleteAccessGroupProjectStatus403,
+	DeleteAccessGroupProjectStatus410,
 	DeleteAccessGroupResponse,
 	DeleteAccessGroupStatus400,
 	DeleteAccessGroupStatus401,
 	DeleteAccessGroupStatus403,
+	DeleteAccessGroupStatus410,
 	DeleteAiGatewayRuleResponse,
 	DeleteAiGatewayRuleStatus400,
 	DeleteAiGatewayRuleStatus401,
 	DeleteAiGatewayRuleStatus403,
 	DeleteAiGatewayRuleStatus404,
+	DeleteAiGatewayRuleStatus410,
 	DeleteAiGatewayRuleStatus500,
 	DeleteAliasResponse,
 	DeleteAliasStatus400,
 	DeleteAliasStatus401,
 	DeleteAliasStatus403,
 	DeleteAliasStatus404,
+	DeleteAliasStatus410,
 	DeleteAllArtifactsResponse,
 	DeleteAllArtifactsStatus400,
 	DeleteAllArtifactsStatus401,
 	DeleteAllArtifactsStatus403,
+	DeleteAllArtifactsStatus410,
 	DeleteAuthTokenResponse,
 	DeleteAuthTokenStatus400,
 	DeleteAuthTokenStatus401,
 	DeleteAuthTokenStatus403,
 	DeleteAuthTokenStatus404,
+	DeleteAuthTokenStatus410,
 	DeleteConfigurableLogDrainResponse,
 	DeleteConfigurableLogDrainStatus400,
 	DeleteConfigurableLogDrainStatus401,
 	DeleteConfigurableLogDrainStatus403,
 	DeleteConfigurableLogDrainStatus404,
+	DeleteConfigurableLogDrainStatus410,
 	DeleteConfigurationResponse,
 	DeleteConfigurationStatus400,
 	DeleteConfigurationStatus401,
 	DeleteConfigurationStatus403,
 	DeleteConfigurationStatus404,
+	DeleteConfigurationStatus410,
 	DeleteDeploymentResponse,
 	DeleteDeploymentStatus400,
 	DeleteDeploymentStatus401,
 	DeleteDeploymentStatus403,
 	DeleteDeploymentStatus404,
+	DeleteDeploymentStatus410,
 	DeleteDomainResponse,
 	DeleteDomainStatus400,
 	DeleteDomainStatus401,
 	DeleteDomainStatus403,
 	DeleteDomainStatus404,
 	DeleteDomainStatus409,
+	DeleteDomainStatus410,
 	DeleteDrainResponse,
 	DeleteDrainStatus400,
 	DeleteDrainStatus401,
 	DeleteDrainStatus403,
 	DeleteDrainStatus404,
+	DeleteDrainStatus410,
 	DeleteDriveResponse,
 	DeleteDriveStatus400,
 	DeleteDriveStatus401,
 	DeleteDriveStatus403,
 	DeleteDriveStatus404,
 	DeleteDriveStatus409,
+	DeleteDriveStatus410,
 	DeleteDriveStatus429,
 	DeleteEdgeConfigResponse,
 	DeleteEdgeConfigSchemaResponse,
@@ -470,11 +542,13 @@ import type {
 	DeleteEdgeConfigSchemaStatus403,
 	DeleteEdgeConfigSchemaStatus404,
 	DeleteEdgeConfigSchemaStatus409,
+	DeleteEdgeConfigSchemaStatus410,
 	DeleteEdgeConfigStatus400,
 	DeleteEdgeConfigStatus401,
 	DeleteEdgeConfigStatus403,
 	DeleteEdgeConfigStatus404,
 	DeleteEdgeConfigStatus409,
+	DeleteEdgeConfigStatus410,
 	DeleteEdgeConfigTokensResponse,
 	DeleteEdgeConfigTokensStatus400,
 	DeleteEdgeConfigTokensStatus401,
@@ -482,6 +556,7 @@ import type {
 	DeleteEdgeConfigTokensStatus403,
 	DeleteEdgeConfigTokensStatus404,
 	DeleteEdgeConfigTokensStatus409,
+	DeleteEdgeConfigTokensStatus410,
 	DeleteFlagResponse,
 	DeleteFlagSegmentResponse,
 	DeleteFlagSegmentStatus400,
@@ -490,6 +565,7 @@ import type {
 	DeleteFlagSegmentStatus403,
 	DeleteFlagSegmentStatus404,
 	DeleteFlagSegmentStatus409,
+	DeleteFlagSegmentStatus410,
 	DeleteFlagSegmentStatus412,
 	DeleteFlagStatus400,
 	DeleteFlagStatus401,
@@ -497,27 +573,32 @@ import type {
 	DeleteFlagStatus403,
 	DeleteFlagStatus404,
 	DeleteFlagStatus409,
+	DeleteFlagStatus410,
 	DeleteFlagStatus412,
 	DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdResponse,
 	DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus400,
 	DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus401,
 	DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus403,
 	DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus404,
+	DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus410,
 	DeleteIntegrationLogDrainResponse,
 	DeleteIntegrationLogDrainStatus400,
 	DeleteIntegrationLogDrainStatus401,
 	DeleteIntegrationLogDrainStatus403,
 	DeleteIntegrationLogDrainStatus404,
+	DeleteIntegrationLogDrainStatus410,
 	DeleteIntegrationResourceResponse,
 	DeleteIntegrationResourceStatus400,
 	DeleteIntegrationResourceStatus401,
 	DeleteIntegrationResourceStatus403,
 	DeleteIntegrationResourceStatus404,
+	DeleteIntegrationResourceStatus410,
 	DeleteMicrofrontendsGroupResponse,
 	DeleteMicrofrontendsGroupStatus400,
 	DeleteMicrofrontendsGroupStatus401,
 	DeleteMicrofrontendsGroupStatus403,
 	DeleteMicrofrontendsGroupStatus404,
+	DeleteMicrofrontendsGroupStatus410,
 	DeleteMicrofrontendsGroupStatus500,
 	DeleteNetworkResponse,
 	DeleteNetworkStatus400,
@@ -525,48 +606,57 @@ import type {
 	DeleteNetworkStatus402,
 	DeleteNetworkStatus403,
 	DeleteNetworkStatus409,
+	DeleteNetworkStatus410,
 	DeleteProjectCheckResponse,
 	DeleteProjectCheckStatus400,
 	DeleteProjectCheckStatus401,
 	DeleteProjectCheckStatus403,
 	DeleteProjectCheckStatus404,
+	DeleteProjectCheckStatus410,
 	DeleteProjectCheckStatus500,
 	DeleteProjectResponse,
 	DeleteProjectStatus400,
 	DeleteProjectStatus401,
 	DeleteProjectStatus403,
 	DeleteProjectStatus409,
+	DeleteProjectStatus410,
 	DeleteRedirectsResponse,
 	DeleteRedirectsStatus400,
 	DeleteRedirectsStatus401,
 	DeleteRedirectsStatus403,
 	DeleteRedirectsStatus404,
+	DeleteRedirectsStatus410,
 	DeleteRedirectsStatus500,
 	DeleteRepositoryImageResponse,
 	DeleteRepositoryImageStatus400,
 	DeleteRepositoryImageStatus401,
 	DeleteRepositoryImageStatus403,
 	DeleteRepositoryImageStatus404,
+	DeleteRepositoryImageStatus410,
 	DeleteRepositoryResponse,
 	DeleteRepositoryStatus400,
 	DeleteRepositoryStatus401,
 	DeleteRepositoryStatus403,
 	DeleteRepositoryStatus404,
+	DeleteRepositoryStatus410,
 	DeleteRollingReleaseConfigResponse,
 	DeleteRollingReleaseConfigStatus400,
 	DeleteRollingReleaseConfigStatus401,
 	DeleteRollingReleaseConfigStatus403,
 	DeleteRollingReleaseConfigStatus404,
+	DeleteRollingReleaseConfigStatus410,
 	DeleteRoutesResponse,
 	DeleteRoutesStatus400,
 	DeleteRoutesStatus401,
 	DeleteRoutesStatus403,
 	DeleteRoutesStatus404,
+	DeleteRoutesStatus410,
 	DeleteSandboxResponse,
 	DeleteSandboxStatus400,
 	DeleteSandboxStatus401,
 	DeleteSandboxStatus403,
 	DeleteSandboxStatus404,
+	DeleteSandboxStatus410,
 	DeleteSandboxStatus429,
 	DeleteSdkKeyResponse,
 	DeleteSdkKeyStatus400,
@@ -575,56 +665,66 @@ import type {
 	DeleteSdkKeyStatus403,
 	DeleteSdkKeyStatus404,
 	DeleteSdkKeyStatus409,
+	DeleteSdkKeyStatus410,
 	DeleteSecurityFirewallConfigByConfigVersionResponse,
 	DeleteSecurityFirewallConfigByConfigVersionStatus400,
 	DeleteSecurityFirewallConfigByConfigVersionStatus401,
 	DeleteSecurityFirewallConfigByConfigVersionStatus403,
 	DeleteSecurityFirewallConfigByConfigVersionStatus404,
+	DeleteSecurityFirewallConfigByConfigVersionStatus410,
 	DeleteSecurityFirewallConfigByConfigVersionStatus500,
 	DeleteSessionSnapshotResponse,
 	DeleteSessionSnapshotStatus400,
 	DeleteSessionSnapshotStatus401,
 	DeleteSessionSnapshotStatus403,
 	DeleteSessionSnapshotStatus404,
+	DeleteSessionSnapshotStatus410,
 	DeleteSessionSnapshotStatus429,
 	DeleteSharedEnvVariableResponse,
 	DeleteSharedEnvVariableStatus400,
 	DeleteSharedEnvVariableStatus401,
 	DeleteSharedEnvVariableStatus402,
 	DeleteSharedEnvVariableStatus403,
+	DeleteSharedEnvVariableStatus410,
 	DeleteStorageStoresBlobByIdResponse,
 	DeleteStorageStoresBlobByIdStatus400,
 	DeleteStorageStoresBlobByIdStatus401,
 	DeleteStorageStoresBlobByIdStatus403,
 	DeleteStorageStoresBlobByIdStatus404,
 	DeleteStorageStoresBlobByIdStatus409,
+	DeleteStorageStoresBlobByIdStatus410,
 	DeleteTeamInviteCodeResponse,
 	DeleteTeamInviteCodeStatus400,
 	DeleteTeamInviteCodeStatus401,
 	DeleteTeamInviteCodeStatus403,
 	DeleteTeamInviteCodeStatus404,
+	DeleteTeamInviteCodeStatus410,
 	DeleteTeamResponse,
 	DeleteTeamStatus400,
 	DeleteTeamStatus401,
 	DeleteTeamStatus402,
 	DeleteTeamStatus403,
 	DeleteTeamStatus409,
+	DeleteTeamStatus410,
 	DeleteWebhookResponse,
 	DeleteWebhookStatus400,
 	DeleteWebhookStatus401,
 	DeleteWebhookStatus403,
+	DeleteWebhookStatus410,
 	DownloadArtifactResponse,
 	DownloadArtifactStatus400,
 	DownloadArtifactStatus401,
 	DownloadArtifactStatus402,
 	DownloadArtifactStatus403,
 	DownloadArtifactStatus404,
+	DownloadArtifactStatus410,
 	EditProjectEnvResponse,
 	EditProjectEnvStatus400,
 	EditProjectEnvStatus401,
 	EditProjectEnvStatus403,
 	EditProjectEnvStatus404,
 	EditProjectEnvStatus409,
+	EditProjectEnvStatus410,
 	EditProjectEnvStatus429,
 	EditProjectEnvStatus500,
 	EditRedirectResponse,
@@ -632,6 +732,7 @@ import type {
 	EditRedirectStatus401,
 	EditRedirectStatus403,
 	EditRedirectStatus404,
+	EditRedirectStatus410,
 	EditRedirectStatus500,
 	EditRouteResponse,
 	EditRouteStatus400,
@@ -639,6 +740,7 @@ import type {
 	EditRouteStatus403,
 	EditRouteStatus404,
 	EditRouteStatus409,
+	EditRouteStatus410,
 	EditRouteStatus500,
 	ExchangeSsoTokenResponse,
 	ExchangeSsoTokenStatus400,
@@ -657,64 +759,76 @@ import type {
 	FilterProjectEnvsStatus400,
 	FilterProjectEnvsStatus401,
 	FilterProjectEnvsStatus403,
+	FilterProjectEnvsStatus410,
 	FinalizeInstallationResponse,
 	FinalizeInstallationStatus400,
 	FinalizeInstallationStatus401,
 	FinalizeInstallationStatus403,
 	FinalizeInstallationStatus404,
+	FinalizeInstallationStatus410,
 	GenerateFirewallRuleResponse,
 	GenerateFirewallRuleStatus400,
 	GenerateFirewallRuleStatus401,
 	GenerateFirewallRuleStatus403,
 	GenerateFirewallRuleStatus404,
 	GenerateFirewallRuleStatus408,
+	GenerateFirewallRuleStatus410,
 	GenerateFirewallRuleStatus500,
 	GenerateRouteResponse,
 	GenerateRouteStatus400,
 	GenerateRouteStatus401,
 	GenerateRouteStatus403,
 	GenerateRouteStatus408,
+	GenerateRouteStatus410,
 	GenerateRouteStatus500,
 	GetAccountInfoResponse,
 	GetAccountInfoStatus400,
 	GetAccountInfoStatus401,
 	GetAccountInfoStatus403,
 	GetAccountInfoStatus404,
+	GetAccountInfoStatus410,
 	GetActiveAttackStatusResponse,
 	GetActiveAttackStatusStatus400,
 	GetActiveAttackStatusStatus401,
 	GetActiveAttackStatusStatus403,
 	GetActiveAttackStatusStatus404,
+	GetActiveAttackStatusStatus410,
 	GetAliasResponse,
 	GetAliasStatus400,
 	GetAliasStatus401,
 	GetAliasStatus403,
 	GetAliasStatus404,
+	GetAliasStatus410,
 	GetAllChecksResponse,
 	GetAllChecksStatus400,
 	GetAllChecksStatus401,
 	GetAllChecksStatus403,
 	GetAllChecksStatus404,
+	GetAllChecksStatus410,
 	GetAllLogDrainsResponse,
 	GetAllLogDrainsStatus400,
 	GetAllLogDrainsStatus401,
 	GetAllLogDrainsStatus403,
 	GetAllLogDrainsStatus404,
+	GetAllLogDrainsStatus410,
 	GetAuthTokenResponse,
 	GetAuthTokenStatus400,
 	GetAuthTokenStatus401,
 	GetAuthTokenStatus403,
 	GetAuthTokenStatus404,
+	GetAuthTokenStatus410,
 	GetAuthUserResponse,
 	GetAuthUserStatus400,
 	GetAuthUserStatus401,
 	GetAuthUserStatus403,
 	GetAuthUserStatus409,
+	GetAuthUserStatus410,
 	GetBillingPlansResponse,
 	GetBillingPlansStatus400,
 	GetBillingPlansStatus401,
 	GetBillingPlansStatus403,
 	GetBillingPlansStatus404,
+	GetBillingPlansStatus410,
 	GetBulkAvailabilityResponse,
 	GetBulkAvailabilityStatus400,
 	GetBulkAvailabilityStatus401,
@@ -726,49 +840,57 @@ import type {
 	GetBypassIpStatus401,
 	GetBypassIpStatus403,
 	GetBypassIpStatus404,
+	GetBypassIpStatus410,
 	GetBypassIpStatus500,
 	GetCertByIdResponse,
 	GetCertByIdStatus400,
 	GetCertByIdStatus401,
 	GetCertByIdStatus403,
 	GetCertByIdStatus404,
+	GetCertByIdStatus410,
 	GetCertsResponse,
 	GetCertsStatus400,
 	GetCertsStatus401,
 	GetCertsStatus403,
+	GetCertsStatus410,
 	GetCheckResponse,
 	GetCheckStatus400,
 	GetCheckStatus401,
 	GetCheckStatus403,
 	GetCheckStatus404,
+	GetCheckStatus410,
 	GetConfigurableLogDrainResponse,
 	GetConfigurableLogDrainStatus400,
 	GetConfigurableLogDrainStatus401,
 	GetConfigurableLogDrainStatus403,
 	GetConfigurableLogDrainStatus404,
+	GetConfigurableLogDrainStatus410,
 	GetConfigurationProductsResponse,
 	GetConfigurationProductsStatus400,
 	GetConfigurationProductsStatus401,
 	GetConfigurationProductsStatus403,
 	GetConfigurationProductsStatus404,
+	GetConfigurationProductsStatus410,
 	GetConfigurationProductsStatus500,
 	GetConfigurationResponse,
 	GetConfigurationStatus400,
 	GetConfigurationStatus401,
 	GetConfigurationStatus403,
 	GetConfigurationStatus404,
+	GetConfigurationStatus410,
 	GetConfigurationsResponse,
 	GetConfigurationsStatus400,
 	GetConfigurationsStatus401,
 	GetConfigurationsStatus403,
+	GetConfigurationsStatus410,
 	GetConnectorTokenResponse,
 	GetConnectorTokenStatus400,
 	GetConnectorTokenStatus401,
 	GetConnectorTokenStatus403,
 	GetConnectorTokenStatus404,
+	GetConnectorTokenStatus410,
 	GetConnectorTokenStatus422,
 	GetConnectorTokenStatus429,
-	GetConnectorTokenStatus504,
 	GetContactInfoSchemaResponse,
 	GetContactInfoSchemaStatus400,
 	GetContactInfoSchemaStatus401,
@@ -780,22 +902,26 @@ import type {
 	GetCustomEnvironmentStatus401,
 	GetCustomEnvironmentStatus403,
 	GetCustomEnvironmentStatus404,
+	GetCustomEnvironmentStatus410,
 	GetDeploymentCheckRunResponse,
 	GetDeploymentCheckRunStatus400,
 	GetDeploymentCheckRunStatus401,
 	GetDeploymentCheckRunStatus403,
 	GetDeploymentCheckRunStatus404,
+	GetDeploymentCheckRunStatus410,
 	GetDeploymentCheckRunStatus500,
 	GetDeploymentEventsResponse,
 	GetDeploymentEventsStatus400,
 	GetDeploymentEventsStatus401,
 	GetDeploymentEventsStatus403,
+	GetDeploymentEventsStatus410,
 	GetDeploymentEventsStatus500,
 	GetDeploymentFeatureFlagsResponse,
 	GetDeploymentFeatureFlagsStatus400,
 	GetDeploymentFeatureFlagsStatus401,
 	GetDeploymentFeatureFlagsStatus403,
 	GetDeploymentFeatureFlagsStatus404,
+	GetDeploymentFeatureFlagsStatus410,
 	GetDeploymentFileContentsResponse,
 	GetDeploymentFileContentsStatus400,
 	GetDeploymentFileContentsStatus401,
@@ -806,12 +932,14 @@ import type {
 	GetDeploymentStatus400,
 	GetDeploymentStatus403,
 	GetDeploymentStatus404,
+	GetDeploymentStatus410,
 	GetDeploymentStatus429,
 	GetDeploymentsResponse,
 	GetDeploymentsStatus400,
 	GetDeploymentsStatus401,
 	GetDeploymentsStatus403,
 	GetDeploymentsStatus404,
+	GetDeploymentsStatus410,
 	GetDeploymentsStatus422,
 	GetDomainAuthCodeResponse,
 	GetDomainAuthCodeStatus400,
@@ -832,6 +960,7 @@ import type {
 	GetDomainConfigStatus400,
 	GetDomainConfigStatus401,
 	GetDomainConfigStatus403,
+	GetDomainConfigStatus410,
 	GetDomainContactVerificationResponse,
 	GetDomainContactVerificationStatus400,
 	GetDomainContactVerificationStatus401,
@@ -850,21 +979,25 @@ import type {
 	GetDomainProjectDomainsStatus401,
 	GetDomainProjectDomainsStatus403,
 	GetDomainProjectDomainsStatus404,
+	GetDomainProjectDomainsStatus410,
 	GetDomainResponse,
 	GetDomainStatus400,
 	GetDomainStatus401,
 	GetDomainStatus403,
 	GetDomainStatus404,
+	GetDomainStatus410,
 	GetDomainsRecordsByRecordIdResponse,
 	GetDomainsRecordsByRecordIdStatus400,
 	GetDomainsRecordsByRecordIdStatus401,
 	GetDomainsRecordsByRecordIdStatus403,
 	GetDomainsRecordsByRecordIdStatus404,
+	GetDomainsRecordsByRecordIdStatus410,
 	GetDomainsResponse,
 	GetDomainsStatus400,
 	GetDomainsStatus401,
 	GetDomainsStatus403,
 	GetDomainsStatus409,
+	GetDomainsStatus410,
 	GetDomainTransferInResponse,
 	GetDomainTransferInStatus400,
 	GetDomainTransferInStatus401,
@@ -877,65 +1010,78 @@ import type {
 	GetDomainVerificationRecordStatus401,
 	GetDomainVerificationRecordStatus403,
 	GetDomainVerificationRecordStatus404,
+	GetDomainVerificationRecordStatus410,
 	GetDrainResponse,
 	GetDrainStatus400,
 	GetDrainStatus401,
 	GetDrainStatus403,
 	GetDrainStatus404,
+	GetDrainStatus410,
 	GetDrainsResponse,
 	GetDrainsStatus400,
 	GetDrainsStatus401,
 	GetDrainsStatus403,
 	GetDrainsStatus404,
+	GetDrainsStatus410,
 	GetEdgeConfigBackupResponse,
 	GetEdgeConfigBackupStatus400,
 	GetEdgeConfigBackupStatus401,
 	GetEdgeConfigBackupStatus403,
 	GetEdgeConfigBackupStatus404,
+	GetEdgeConfigBackupStatus410,
 	GetEdgeConfigBackupsResponse,
 	GetEdgeConfigBackupsStatus400,
 	GetEdgeConfigBackupsStatus401,
 	GetEdgeConfigBackupsStatus403,
 	GetEdgeConfigBackupsStatus404,
+	GetEdgeConfigBackupsStatus410,
 	GetEdgeConfigItemResponse,
 	GetEdgeConfigItemStatus400,
 	GetEdgeConfigItemStatus401,
 	GetEdgeConfigItemStatus403,
 	GetEdgeConfigItemStatus404,
+	GetEdgeConfigItemStatus410,
 	GetEdgeConfigItemsResponse,
 	GetEdgeConfigItemsStatus400,
 	GetEdgeConfigItemsStatus401,
 	GetEdgeConfigItemsStatus403,
 	GetEdgeConfigItemsStatus404,
+	GetEdgeConfigItemsStatus410,
 	GetEdgeConfigResponse,
 	GetEdgeConfigSchemaResponse,
 	GetEdgeConfigSchemaStatus400,
 	GetEdgeConfigSchemaStatus401,
 	GetEdgeConfigSchemaStatus403,
 	GetEdgeConfigSchemaStatus404,
+	GetEdgeConfigSchemaStatus410,
 	GetEdgeConfigStatus400,
 	GetEdgeConfigStatus401,
 	GetEdgeConfigStatus403,
 	GetEdgeConfigStatus404,
+	GetEdgeConfigStatus410,
 	GetEdgeConfigsResponse,
 	GetEdgeConfigsStatus400,
 	GetEdgeConfigsStatus401,
 	GetEdgeConfigsStatus403,
+	GetEdgeConfigsStatus410,
 	GetEdgeConfigTokenResponse,
 	GetEdgeConfigTokenStatus400,
 	GetEdgeConfigTokenStatus401,
 	GetEdgeConfigTokenStatus403,
 	GetEdgeConfigTokenStatus404,
+	GetEdgeConfigTokenStatus410,
 	GetEdgeConfigTokensResponse,
 	GetEdgeConfigTokensStatus400,
 	GetEdgeConfigTokensStatus401,
 	GetEdgeConfigTokensStatus403,
 	GetEdgeConfigTokensStatus404,
+	GetEdgeConfigTokensStatus410,
 	GetFirewallConfigResponse,
 	GetFirewallConfigStatus400,
 	GetFirewallConfigStatus401,
 	GetFirewallConfigStatus403,
 	GetFirewallConfigStatus404,
+	GetFirewallConfigStatus410,
 	GetFlagResponse,
 	GetFlagSegmentResponse,
 	GetFlagSegmentStatus400,
@@ -943,67 +1089,80 @@ import type {
 	GetFlagSegmentStatus402,
 	GetFlagSegmentStatus403,
 	GetFlagSegmentStatus404,
+	GetFlagSegmentStatus410,
 	GetFlagSettingsResponse,
 	GetFlagSettingsStatus400,
 	GetFlagSettingsStatus401,
 	GetFlagSettingsStatus402,
 	GetFlagSettingsStatus403,
 	GetFlagSettingsStatus404,
+	GetFlagSettingsStatus410,
 	GetFlagStatus400,
 	GetFlagStatus401,
 	GetFlagStatus402,
 	GetFlagStatus403,
 	GetFlagStatus404,
+	GetFlagStatus410,
 	GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigResponse,
 	GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus400,
 	GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus401,
 	GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus403,
 	GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus404,
+	GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus410,
 	GetIntegrationLogDrainsResponse,
 	GetIntegrationLogDrainsStatus400,
 	GetIntegrationLogDrainsStatus401,
 	GetIntegrationLogDrainsStatus403,
+	GetIntegrationLogDrainsStatus410,
 	GetIntegrationResourceResponse,
 	GetIntegrationResourceStatus400,
 	GetIntegrationResourceStatus401,
 	GetIntegrationResourceStatus403,
 	GetIntegrationResourceStatus404,
+	GetIntegrationResourceStatus410,
 	GetIntegrationResourcesResponse,
 	GetIntegrationResourcesStatus400,
 	GetIntegrationResourcesStatus401,
 	GetIntegrationResourcesStatus403,
 	GetIntegrationResourcesStatus404,
+	GetIntegrationResourcesStatus410,
 	GetInvoiceResponse,
 	GetInvoiceStatus400,
 	GetInvoiceStatus401,
 	GetInvoiceStatus403,
 	GetInvoiceStatus404,
+	GetInvoiceStatus410,
 	GetMemberResponse,
 	GetMemberStatus400,
 	GetMemberStatus401,
 	GetMemberStatus403,
 	GetMemberStatus404,
+	GetMemberStatus410,
 	GetMicrofrontendsConfigForProjectResponse,
 	GetMicrofrontendsConfigForProjectStatus400,
 	GetMicrofrontendsConfigForProjectStatus401,
 	GetMicrofrontendsConfigForProjectStatus403,
 	GetMicrofrontendsConfigForProjectStatus404,
+	GetMicrofrontendsConfigForProjectStatus410,
 	GetMicrofrontendsConfigForProjectStatus500,
 	GetMicrofrontendsConfigResponse,
 	GetMicrofrontendsConfigStatus400,
 	GetMicrofrontendsConfigStatus401,
 	GetMicrofrontendsConfigStatus403,
 	GetMicrofrontendsConfigStatus404,
+	GetMicrofrontendsConfigStatus410,
 	GetMicrofrontendsConfigStatus500,
 	GetMicrofrontendsGroupsResponse,
 	GetMicrofrontendsGroupsStatus400,
 	GetMicrofrontendsGroupsStatus401,
 	GetMicrofrontendsGroupsStatus403,
+	GetMicrofrontendsGroupsStatus410,
 	GetMicrofrontendsGroupsStatus500,
 	GetMicrofrontendsInGroupResponse,
 	GetMicrofrontendsInGroupStatus400,
 	GetMicrofrontendsInGroupStatus401,
 	GetMicrofrontendsInGroupStatus403,
+	GetMicrofrontendsInGroupStatus410,
 	GetNamedSandboxResponse,
 	GetNamedSandboxStatus400,
 	GetNamedSandboxStatus401,
@@ -1019,14 +1178,17 @@ import type {
 	GetObservabilityConfigurationProjectsStatus401,
 	GetObservabilityConfigurationProjectsStatus403,
 	GetObservabilityConfigurationProjectsStatus404,
+	GetObservabilityConfigurationProjectsStatus410,
 	GetObservabilitySchemaByMetricIdResponse,
 	GetObservabilitySchemaByMetricIdStatus400,
 	GetObservabilitySchemaByMetricIdStatus401,
 	GetObservabilitySchemaByMetricIdStatus403,
+	GetObservabilitySchemaByMetricIdStatus410,
 	GetObservabilitySchemaResponse,
 	GetObservabilitySchemaStatus400,
 	GetObservabilitySchemaStatus401,
 	GetObservabilitySchemaStatus403,
+	GetObservabilitySchemaStatus410,
 	GetOrCreateDriveResponse,
 	GetOrCreateDriveStatus400,
 	GetOrCreateDriveStatus401,
@@ -1034,6 +1196,7 @@ import type {
 	GetOrCreateDriveStatus403,
 	GetOrCreateDriveStatus404,
 	GetOrCreateDriveStatus409,
+	GetOrCreateDriveStatus410,
 	GetOrCreateDriveStatus429,
 	GetOrderResponse,
 	GetOrderStatus400,
@@ -1046,113 +1209,137 @@ import type {
 	GetProjectCheckStatus400,
 	GetProjectCheckStatus401,
 	GetProjectCheckStatus403,
+	GetProjectCheckStatus410,
 	GetProjectCheckStatus500,
 	GetProjectDomainResponse,
 	GetProjectDomainStatus400,
 	GetProjectDomainStatus401,
 	GetProjectDomainStatus403,
+	GetProjectDomainStatus410,
 	GetProjectDomainsResponse,
 	GetProjectDomainsStatus400,
 	GetProjectDomainsStatus401,
 	GetProjectDomainsStatus403,
+	GetProjectDomainsStatus410,
 	GetProjectEnvResponse,
 	GetProjectEnvStatus400,
 	GetProjectEnvStatus401,
 	GetProjectEnvStatus403,
+	GetProjectEnvStatus410,
 	GetProjectMembersResponse,
 	GetProjectMembersStatus400,
 	GetProjectMembersStatus401,
 	GetProjectMembersStatus403,
+	GetProjectMembersStatus410,
 	GetProjectResponse,
 	GetProjectStatus400,
 	GetProjectStatus401,
 	GetProjectStatus403,
+	GetProjectStatus410,
 	GetProjectsByIdOrNameCustomEnvironmentsResponse,
 	GetProjectsByIdOrNameCustomEnvironmentsStatus400,
 	GetProjectsByIdOrNameCustomEnvironmentsStatus401,
 	GetProjectsByIdOrNameCustomEnvironmentsStatus403,
+	GetProjectsByIdOrNameCustomEnvironmentsStatus410,
 	GetProjectsResponse,
 	GetProjectsStatus400,
 	GetProjectsStatus401,
 	GetProjectsStatus403,
+	GetProjectsStatus410,
 	GetProjectTokenResponse,
 	GetProjectTokenStatus400,
 	GetProjectTokenStatus401,
 	GetProjectTokenStatus403,
 	GetProjectTokenStatus404,
+	GetProjectTokenStatus410,
 	GetProjectTraceResponse,
 	GetProjectTraceStatus400,
 	GetProjectTraceStatus401,
 	GetProjectTraceStatus403,
+	GetProjectTraceStatus410,
 	GetRecordsResponse,
 	GetRecordsStatus400,
 	GetRecordsStatus401,
 	GetRecordsStatus403,
 	GetRecordsStatus404,
+	GetRecordsStatus410,
 	GetRedirectsResponse,
 	GetRedirectsStatus400,
 	GetRedirectsStatus401,
 	GetRedirectsStatus403,
 	GetRedirectsStatus404,
+	GetRedirectsStatus410,
 	GetRepositoryImageResponse,
 	GetRepositoryImageStatus400,
 	GetRepositoryImageStatus401,
 	GetRepositoryImageStatus403,
 	GetRepositoryImageStatus404,
+	GetRepositoryImageStatus410,
 	GetRepositoryResponse,
 	GetRepositoryStatus400,
 	GetRepositoryStatus401,
 	GetRepositoryStatus403,
 	GetRepositoryStatus404,
+	GetRepositoryStatus410,
 	GetRepositoryTagResponse,
 	GetRepositoryTagStatus400,
 	GetRepositoryTagStatus401,
 	GetRepositoryTagStatus403,
 	GetRepositoryTagStatus404,
+	GetRepositoryTagStatus410,
 	GetRollingReleaseBillingStatusResponse,
 	GetRollingReleaseBillingStatusStatus400,
 	GetRollingReleaseBillingStatusStatus401,
 	GetRollingReleaseBillingStatusStatus403,
 	GetRollingReleaseBillingStatusStatus404,
+	GetRollingReleaseBillingStatusStatus410,
 	GetRollingReleaseConfigResponse,
 	GetRollingReleaseConfigStatus400,
 	GetRollingReleaseConfigStatus401,
 	GetRollingReleaseConfigStatus403,
 	GetRollingReleaseConfigStatus404,
+	GetRollingReleaseConfigStatus410,
 	GetRollingReleaseResponse,
 	GetRollingReleaseStatus400,
 	GetRollingReleaseStatus401,
 	GetRollingReleaseStatus403,
 	GetRollingReleaseStatus404,
+	GetRollingReleaseStatus410,
 	GetRoutesResponse,
 	GetRoutesStatus400,
 	GetRoutesStatus401,
 	GetRoutesStatus403,
 	GetRoutesStatus404,
+	GetRoutesStatus410,
 	GetRouteVersionsResponse,
 	GetRouteVersionsStatus400,
 	GetRouteVersionsStatus401,
 	GetRouteVersionsStatus403,
+	GetRouteVersionsStatus410,
 	GetRuntimeLogsResponse,
 	GetRuntimeLogsStatus400,
 	GetRuntimeLogsStatus401,
 	GetRuntimeLogsStatus403,
+	GetRuntimeLogsStatus410,
 	GetSdkKeysResponse,
 	GetSdkKeysStatus400,
 	GetSdkKeysStatus401,
 	GetSdkKeysStatus402,
 	GetSdkKeysStatus403,
 	GetSdkKeysStatus404,
+	GetSdkKeysStatus410,
 	GetSecurityFirewallConfigResponse,
 	GetSecurityFirewallConfigStatus400,
 	GetSecurityFirewallConfigStatus401,
 	GetSecurityFirewallConfigStatus403,
 	GetSecurityFirewallConfigStatus404,
+	GetSecurityFirewallConfigStatus410,
 	GetSecurityFirewallEventsResponse,
 	GetSecurityFirewallEventsStatus400,
 	GetSecurityFirewallEventsStatus401,
 	GetSecurityFirewallEventsStatus403,
 	GetSecurityFirewallEventsStatus404,
+	GetSecurityFirewallEventsStatus410,
 	GetSecurityFirewallEventsStatus500,
 	GetSessionCommandLogsResponse,
 	GetSessionCommandLogsStatus400,
@@ -1178,22 +1365,26 @@ import type {
 	GetSessionSnapshotStatus401,
 	GetSessionSnapshotStatus403,
 	GetSessionSnapshotStatus404,
+	GetSessionSnapshotStatus410,
 	GetSessionSnapshotStatus429,
 	GetSessionStatus400,
 	GetSessionStatus401,
 	GetSessionStatus403,
 	GetSessionStatus404,
+	GetSessionStatus410,
 	GetSessionStatus429,
 	GetSessionStatus500,
 	GetSharedEnvVarResponse,
 	GetSharedEnvVarStatus400,
 	GetSharedEnvVarStatus401,
 	GetSharedEnvVarStatus403,
+	GetSharedEnvVarStatus410,
 	GetStorageStoresByIdResponse,
 	GetStorageStoresByIdStatus400,
 	GetStorageStoresByIdStatus401,
 	GetStorageStoresByIdStatus403,
 	GetStorageStoresByIdStatus404,
+	GetStorageStoresByIdStatus410,
 	GetSupportedTldsResponse,
 	GetSupportedTldsStatus400,
 	GetSupportedTldsStatus401,
@@ -1205,20 +1396,24 @@ import type {
 	GetTeamAccessRequestStatus401,
 	GetTeamAccessRequestStatus403,
 	GetTeamAccessRequestStatus404,
+	GetTeamAccessRequestStatus410,
 	GetTeamMembersResponse,
 	GetTeamMembersStatus400,
 	GetTeamMembersStatus401,
 	GetTeamMembersStatus403,
 	GetTeamMembersStatus404,
+	GetTeamMembersStatus410,
 	GetTeamResponse,
 	GetTeamStatus400,
 	GetTeamStatus401,
 	GetTeamStatus403,
 	GetTeamStatus404,
+	GetTeamStatus410,
 	GetTeamsResponse,
 	GetTeamsStatus400,
 	GetTeamsStatus401,
 	GetTeamsStatus403,
+	GetTeamsStatus410,
 	GetTeamsStatus500,
 	GetTldPriceResponse,
 	GetTldPriceStatus400,
@@ -1236,20 +1431,24 @@ import type {
 	GetVersionsStatus400,
 	GetVersionsStatus401,
 	GetVersionsStatus403,
+	GetVersionsStatus410,
 	GetVersionsStatus500,
 	GetWebhookResponse,
 	GetWebhookStatus400,
 	GetWebhookStatus401,
 	GetWebhookStatus403,
+	GetWebhookStatus410,
 	GetWebhooksResponse,
 	GetWebhooksStatus400,
 	GetWebhooksStatus401,
 	GetWebhooksStatus403,
+	GetWebhooksStatus410,
 	GitNamespacesResponse,
 	GitNamespacesStatus400,
 	GitNamespacesStatus401,
 	GitNamespacesStatus403,
 	GitNamespacesStatus404,
+	GitNamespacesStatus410,
 	GitNamespacesStatus429,
 	GitNamespacesStatus500,
 	ImportConnectorTokensResponse,
@@ -1257,14 +1456,15 @@ import type {
 	ImportConnectorTokensStatus401,
 	ImportConnectorTokensStatus403,
 	ImportConnectorTokensStatus404,
+	ImportConnectorTokensStatus410,
 	ImportConnectorTokensStatus422,
-	ImportConnectorTokensStatus504,
 	ImportResourceResponse,
 	ImportResourceStatus400,
 	ImportResourceStatus401,
 	ImportResourceStatus403,
 	ImportResourceStatus404,
 	ImportResourceStatus409,
+	ImportResourceStatus410,
 	ImportResourceStatus422,
 	ImportResourceStatus429,
 	InvalidateBySrcImagesResponse,
@@ -1273,15 +1473,18 @@ import type {
 	InvalidateBySrcImagesStatus402,
 	InvalidateBySrcImagesStatus403,
 	InvalidateBySrcImagesStatus404,
+	InvalidateBySrcImagesStatus410,
 	InvalidateByTagsResponse,
 	InvalidateByTagsStatus400,
 	InvalidateByTagsStatus401,
 	InvalidateByTagsStatus403,
 	InvalidateByTagsStatus404,
+	InvalidateByTagsStatus410,
 	InviteUserToTeamResponse,
 	InviteUserToTeamStatus400,
 	InviteUserToTeamStatus401,
 	InviteUserToTeamStatus403,
+	InviteUserToTeamStatus410,
 	InviteUserToTeamStatus503,
 	IssueCertResponse,
 	IssueCertStatus400,
@@ -1289,6 +1492,7 @@ import type {
 	IssueCertStatus402,
 	IssueCertStatus403,
 	IssueCertStatus404,
+	IssueCertStatus410,
 	IssueCertStatus449,
 	IssueCertStatus500,
 	JoinTeamResponse,
@@ -1297,6 +1501,7 @@ import type {
 	JoinTeamStatus402,
 	JoinTeamStatus403,
 	JoinTeamStatus404,
+	JoinTeamStatus410,
 	JoinTeamStatus503,
 	KillSessionCommandResponse,
 	KillSessionCommandStatus400,
@@ -1311,146 +1516,174 @@ import type {
 	ListAccessGroupMembersStatus400,
 	ListAccessGroupMembersStatus401,
 	ListAccessGroupMembersStatus403,
+	ListAccessGroupMembersStatus410,
 	ListAccessGroupProjectsResponse,
 	ListAccessGroupProjectsStatus400,
 	ListAccessGroupProjectsStatus401,
 	ListAccessGroupProjectsStatus403,
+	ListAccessGroupProjectsStatus410,
 	ListAccessGroupsResponse,
 	ListAccessGroupsStatus400,
 	ListAccessGroupsStatus401,
 	ListAccessGroupsStatus403,
+	ListAccessGroupsStatus410,
 	ListAiGatewayRulesResponse,
 	ListAiGatewayRulesStatus400,
 	ListAiGatewayRulesStatus401,
 	ListAiGatewayRulesStatus403,
+	ListAiGatewayRulesStatus410,
 	ListAiGatewayRulesStatus500,
 	ListAliasesResponse,
 	ListAliasesStatus400,
 	ListAliasesStatus401,
 	ListAliasesStatus403,
 	ListAliasesStatus404,
+	ListAliasesStatus410,
 	ListAuthTokensResponse,
 	ListAuthTokensStatus400,
 	ListAuthTokensStatus401,
 	ListAuthTokensStatus403,
+	ListAuthTokensStatus410,
 	ListBillingChargesResponse,
 	ListBillingChargesStatus400,
 	ListBillingChargesStatus401,
 	ListBillingChargesStatus403,
 	ListBillingChargesStatus404,
+	ListBillingChargesStatus410,
 	ListBillingChargesStatus500,
 	ListBillingChargesStatus503,
 	ListCheckRunsResponse,
 	ListCheckRunsStatus400,
 	ListCheckRunsStatus401,
 	ListCheckRunsStatus403,
+	ListCheckRunsStatus410,
 	ListCheckRunsStatus500,
 	ListContractCommitmentsResponse,
 	ListContractCommitmentsStatus400,
 	ListContractCommitmentsStatus401,
 	ListContractCommitmentsStatus403,
 	ListContractCommitmentsStatus404,
+	ListContractCommitmentsStatus410,
 	ListDeploymentAliasesResponse,
 	ListDeploymentAliasesStatus400,
 	ListDeploymentAliasesStatus401,
 	ListDeploymentAliasesStatus403,
 	ListDeploymentAliasesStatus404,
+	ListDeploymentAliasesStatus410,
 	ListDeploymentCheckRunsResponse,
 	ListDeploymentCheckRunsStatus400,
 	ListDeploymentCheckRunsStatus401,
 	ListDeploymentCheckRunsStatus403,
+	ListDeploymentCheckRunsStatus410,
 	ListDeploymentCheckRunsStatus500,
 	ListDeploymentFilesResponse,
 	ListDeploymentFilesStatus400,
 	ListDeploymentFilesStatus401,
 	ListDeploymentFilesStatus403,
 	ListDeploymentFilesStatus404,
+	ListDeploymentFilesStatus410,
 	ListDrivesResponse,
 	ListDrivesStatus400,
 	ListDrivesStatus401,
 	ListDrivesStatus403,
 	ListDrivesStatus404,
+	ListDrivesStatus410,
 	ListDrivesStatus429,
 	ListEventTypesResponse,
 	ListEventTypesStatus400,
 	ListEventTypesStatus401,
 	ListEventTypesStatus403,
+	ListEventTypesStatus410,
 	ListFlagSegmentsResponse,
 	ListFlagSegmentsStatus400,
 	ListFlagSegmentsStatus401,
 	ListFlagSegmentsStatus402,
 	ListFlagSegmentsStatus403,
 	ListFlagSegmentsStatus404,
+	ListFlagSegmentsStatus410,
 	ListFlagsResponse,
 	ListFlagsStatus400,
 	ListFlagsStatus401,
 	ListFlagsStatus402,
 	ListFlagsStatus403,
 	ListFlagsStatus404,
+	ListFlagsStatus410,
 	ListFlagsV2Response,
 	ListFlagsV2Status400,
 	ListFlagsV2Status401,
 	ListFlagsV2Status402,
 	ListFlagsV2Status403,
 	ListFlagsV2Status404,
+	ListFlagsV2Status410,
 	ListFlagVersionsResponse,
 	ListFlagVersionsStatus400,
 	ListFlagVersionsStatus401,
 	ListFlagVersionsStatus402,
 	ListFlagVersionsStatus403,
 	ListFlagVersionsStatus404,
+	ListFlagVersionsStatus410,
 	ListNetworksResponse,
 	ListNetworksStatus400,
 	ListNetworksStatus401,
 	ListNetworksStatus403,
+	ListNetworksStatus410,
 	ListProjectChecksResponse,
 	ListProjectChecksStatus400,
 	ListProjectChecksStatus401,
 	ListProjectChecksStatus403,
+	ListProjectChecksStatus410,
 	ListProjectChecksStatus500,
 	ListPromoteAliasesResponse,
 	ListPromoteAliasesStatus400,
 	ListPromoteAliasesStatus401,
 	ListPromoteAliasesStatus403,
 	ListPromoteAliasesStatus404,
+	ListPromoteAliasesStatus410,
 	ListRepositoriesResponse,
 	ListRepositoriesStatus400,
 	ListRepositoriesStatus401,
 	ListRepositoriesStatus403,
 	ListRepositoriesStatus404,
+	ListRepositoriesStatus410,
 	ListRepositoryImagesResponse,
 	ListRepositoryImagesStatus400,
 	ListRepositoryImagesStatus401,
 	ListRepositoryImagesStatus403,
 	ListRepositoryImagesStatus404,
+	ListRepositoryImagesStatus410,
 	ListRepositoryTagsResponse,
 	ListRepositoryTagsStatus400,
 	ListRepositoryTagsStatus401,
 	ListRepositoryTagsStatus403,
 	ListRepositoryTagsStatus404,
+	ListRepositoryTagsStatus410,
 	ListSandboxesResponse,
 	ListSandboxesStatus400,
 	ListSandboxesStatus401,
 	ListSandboxesStatus403,
 	ListSandboxesStatus404,
+	ListSandboxesStatus410,
 	ListSandboxesStatus429,
 	ListSessionCommandsResponse,
 	ListSessionCommandsStatus400,
 	ListSessionCommandsStatus401,
 	ListSessionCommandsStatus403,
 	ListSessionCommandsStatus404,
+	ListSessionCommandsStatus410,
 	ListSessionCommandsStatus429,
 	ListSessionSnapshotsResponse,
 	ListSessionSnapshotsStatus400,
 	ListSessionSnapshotsStatus401,
 	ListSessionSnapshotsStatus403,
 	ListSessionSnapshotsStatus404,
+	ListSessionSnapshotsStatus410,
 	ListSessionSnapshotsStatus429,
 	ListSessionsResponse,
 	ListSessionsStatus400,
 	ListSessionsStatus401,
 	ListSessionsStatus403,
 	ListSessionsStatus404,
+	ListSessionsStatus410,
 	ListSessionsStatus429,
 	ListSessionsStatus500,
 	ListSharedEnvVariableResponse,
@@ -1458,33 +1691,40 @@ import type {
 	ListSharedEnvVariableStatus401,
 	ListSharedEnvVariableStatus403,
 	ListSharedEnvVariableStatus404,
+	ListSharedEnvVariableStatus410,
 	ListTeamFlagSettingsResponse,
 	ListTeamFlagSettingsStatus400,
 	ListTeamFlagSettingsStatus401,
 	ListTeamFlagSettingsStatus403,
+	ListTeamFlagSettingsStatus410,
 	ListTeamFlagsResponse,
 	ListTeamFlagsStatus400,
 	ListTeamFlagsStatus401,
 	ListTeamFlagsStatus403,
+	ListTeamFlagsStatus410,
 	ListTeamFlagsV2Response,
 	ListTeamFlagsV2Status400,
 	ListTeamFlagsV2Status401,
 	ListTeamFlagsV2Status403,
+	ListTeamFlagsV2Status410,
 	ListUserEventsResponse,
 	ListUserEventsStatus400,
 	ListUserEventsStatus401,
 	ListUserEventsStatus403,
+	ListUserEventsStatus410,
 	MoveProjectDomainResponse,
 	MoveProjectDomainStatus400,
 	MoveProjectDomainStatus401,
 	MoveProjectDomainStatus403,
 	MoveProjectDomainStatus409,
+	MoveProjectDomainStatus410,
 	PatchDomainResponse,
 	PatchDomainStatus400,
 	PatchDomainStatus401,
 	PatchDomainStatus403,
 	PatchDomainStatus404,
 	PatchDomainStatus409,
+	PatchDomainStatus410,
 	PatchDomainStatus500,
 	PatchEdgeConfigItemsResponse,
 	PatchEdgeConfigItemsStatus400,
@@ -1493,6 +1733,7 @@ import type {
 	PatchEdgeConfigItemsStatus403,
 	PatchEdgeConfigItemsStatus404,
 	PatchEdgeConfigItemsStatus409,
+	PatchEdgeConfigItemsStatus410,
 	PatchEdgeConfigItemsStatus412,
 	PatchEdgeConfigSchemaResponse,
 	PatchEdgeConfigSchemaStatus400,
@@ -1501,11 +1742,13 @@ import type {
 	PatchEdgeConfigSchemaStatus403,
 	PatchEdgeConfigSchemaStatus404,
 	PatchEdgeConfigSchemaStatus409,
+	PatchEdgeConfigSchemaStatus410,
 	PatchTeamResponse,
 	PatchTeamStatus400,
 	PatchTeamStatus401,
 	PatchTeamStatus402,
 	PatchTeamStatus403,
+	PatchTeamStatus410,
 	PatchTeamStatus428,
 	PatchUrlProtectionBypassResponse,
 	PatchUrlProtectionBypassStatus400,
@@ -1513,35 +1756,42 @@ import type {
 	PatchUrlProtectionBypassStatus403,
 	PatchUrlProtectionBypassStatus404,
 	PatchUrlProtectionBypassStatus409,
+	PatchUrlProtectionBypassStatus410,
 	PatchUrlProtectionBypassStatus428,
 	PauseProjectResponse,
 	PauseProjectStatus400,
 	PauseProjectStatus401,
 	PauseProjectStatus403,
+	PauseProjectStatus410,
 	PauseProjectStatus500,
 	PostTeamDsyncRolesResponse,
 	PostTeamDsyncRolesStatus400,
 	PostTeamDsyncRolesStatus401,
 	PostTeamDsyncRolesStatus403,
+	PostTeamDsyncRolesStatus410,
 	PutFirewallConfigResponse,
 	PutFirewallConfigStatus400,
 	PutFirewallConfigStatus401,
 	PutFirewallConfigStatus402,
 	PutFirewallConfigStatus403,
 	PutFirewallConfigStatus404,
+	PutFirewallConfigStatus410,
 	PutFirewallConfigStatus500,
 	ReadAccessGroupProjectResponse,
 	ReadAccessGroupProjectStatus400,
 	ReadAccessGroupProjectStatus401,
 	ReadAccessGroupProjectStatus403,
+	ReadAccessGroupProjectStatus410,
 	ReadAccessGroupResponse,
 	ReadAccessGroupStatus400,
 	ReadAccessGroupStatus401,
 	ReadAccessGroupStatus403,
+	ReadAccessGroupStatus410,
 	ReadNetworkResponse,
 	ReadNetworkStatus400,
 	ReadNetworkStatus401,
 	ReadNetworkStatus403,
+	ReadNetworkStatus410,
 	ReadSessionFileResponse,
 	ReadSessionFileStatus400,
 	ReadSessionFileStatus401,
@@ -1556,47 +1806,56 @@ import type {
 	RecordEventsStatus401,
 	RecordEventsStatus402,
 	RecordEventsStatus403,
+	RecordEventsStatus410,
 	RemoveBypassIpResponse,
 	RemoveBypassIpStatus400,
 	RemoveBypassIpStatus401,
 	RemoveBypassIpStatus403,
 	RemoveBypassIpStatus404,
+	RemoveBypassIpStatus410,
 	RemoveBypassIpStatus500,
 	RemoveCertResponse,
 	RemoveCertStatus400,
 	RemoveCertStatus401,
 	RemoveCertStatus403,
 	RemoveCertStatus404,
+	RemoveCertStatus410,
 	RemoveCustomEnvironmentResponse,
 	RemoveCustomEnvironmentStatus400,
 	RemoveCustomEnvironmentStatus401,
 	RemoveCustomEnvironmentStatus403,
+	RemoveCustomEnvironmentStatus410,
 	RemoveProjectDomainResponse,
 	RemoveProjectDomainStatus400,
 	RemoveProjectDomainStatus401,
 	RemoveProjectDomainStatus403,
 	RemoveProjectDomainStatus404,
 	RemoveProjectDomainStatus409,
+	RemoveProjectDomainStatus410,
 	RemoveProjectEnvResponse,
 	RemoveProjectEnvStatus400,
 	RemoveProjectEnvStatus401,
 	RemoveProjectEnvStatus403,
 	RemoveProjectEnvStatus404,
 	RemoveProjectEnvStatus409,
+	RemoveProjectEnvStatus410,
 	RemoveProjectMemberResponse,
 	RemoveProjectMemberStatus400,
 	RemoveProjectMemberStatus401,
 	RemoveProjectMemberStatus403,
+	RemoveProjectMemberStatus410,
 	RemoveRecordResponse,
 	RemoveRecordStatus400,
 	RemoveRecordStatus401,
 	RemoveRecordStatus403,
 	RemoveRecordStatus404,
+	RemoveRecordStatus410,
 	RemoveTeamMemberResponse,
 	RemoveTeamMemberStatus400,
 	RemoveTeamMemberStatus401,
 	RemoveTeamMemberStatus403,
 	RemoveTeamMemberStatus404,
+	RemoveTeamMemberStatus410,
 	RemoveTeamMemberStatus503,
 	RenewDomainResponse,
 	RenewDomainStatus400,
@@ -1611,6 +1870,7 @@ import type {
 	ReplaceDomainsByDomainRecordsStatus403,
 	ReplaceDomainsByDomainRecordsStatus404,
 	ReplaceDomainsByDomainRecordsStatus409,
+	ReplaceDomainsByDomainRecordsStatus410,
 	ReplaceDomainsByDomainRecordsStatus415,
 	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigResponse,
 	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus400,
@@ -1618,12 +1878,14 @@ import type {
 	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus403,
 	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus404,
 	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus409,
+	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus410,
 	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus412,
 	RequestAccessToTeamResponse,
 	RequestAccessToTeamStatus400,
 	RequestAccessToTeamStatus401,
 	RequestAccessToTeamStatus403,
 	RequestAccessToTeamStatus404,
+	RequestAccessToTeamStatus410,
 	RequestAccessToTeamStatus429,
 	RequestAccessToTeamStatus503,
 	RequestDeleteResponse,
@@ -1631,23 +1893,27 @@ import type {
 	RequestDeleteStatus401,
 	RequestDeleteStatus402,
 	RequestDeleteStatus403,
+	RequestDeleteStatus410,
 	RequestPromoteResponse,
 	RequestPromoteStatus400,
 	RequestPromoteStatus401,
 	RequestPromoteStatus403,
 	RequestPromoteStatus409,
+	RequestPromoteStatus410,
 	RequestRollbackResponse,
 	RequestRollbackStatus400,
 	RequestRollbackStatus401,
 	RequestRollbackStatus402,
 	RequestRollbackStatus403,
 	RequestRollbackStatus409,
+	RequestRollbackStatus410,
 	RequestRollbackStatus422,
 	RerequestCheckResponse,
 	RerequestCheckStatus400,
 	RerequestCheckStatus401,
 	RerequestCheckStatus403,
 	RerequestCheckStatus404,
+	RerequestCheckStatus410,
 	RestoreEdgeConfigBackupResponse,
 	RestoreEdgeConfigBackupStatus400,
 	RestoreEdgeConfigBackupStatus401,
@@ -1655,12 +1921,14 @@ import type {
 	RestoreEdgeConfigBackupStatus403,
 	RestoreEdgeConfigBackupStatus404,
 	RestoreEdgeConfigBackupStatus409,
+	RestoreEdgeConfigBackupStatus410,
 	RestoreEdgeConfigBackupStatus412,
 	RestoreRedirectsResponse,
 	RestoreRedirectsStatus400,
 	RestoreRedirectsStatus401,
 	RestoreRedirectsStatus403,
 	RestoreRedirectsStatus404,
+	RestoreRedirectsStatus410,
 	RestoreRedirectsStatus500,
 	RunSessionCommandResponse,
 	RunSessionCommandStatus400,
@@ -1676,18 +1944,21 @@ import type {
 	SearchRepoStatus401,
 	SearchRepoStatus403,
 	SearchRepoStatus404,
+	SearchRepoStatus410,
 	SearchRepoStatus429,
 	SearchRepoStatus500,
 	StageRedirectsResponse,
 	StageRedirectsStatus400,
 	StageRedirectsStatus401,
 	StageRedirectsStatus403,
+	StageRedirectsStatus410,
 	StageRedirectsStatus500,
 	StageRoutesResponse,
 	StageRoutesStatus400,
 	StageRoutesStatus401,
 	StageRoutesStatus403,
 	StageRoutesStatus409,
+	StageRoutesStatus410,
 	StageRoutesStatus500,
 	StartRollingReleaseResponse,
 	StartRollingReleaseStatus400,
@@ -1695,12 +1966,14 @@ import type {
 	StartRollingReleaseStatus403,
 	StartRollingReleaseStatus404,
 	StartRollingReleaseStatus409,
+	StartRollingReleaseStatus410,
 	StartRollingReleaseStatus422,
 	StatusResponse,
 	StatusStatus400,
 	StatusStatus401,
 	StatusStatus402,
 	StatusStatus403,
+	StatusStatus410,
 	StopSessionResponse,
 	StopSessionStatus400,
 	StopSessionStatus401,
@@ -1715,22 +1988,26 @@ import type {
 	SubmitBillingDataStatus401,
 	SubmitBillingDataStatus403,
 	SubmitBillingDataStatus404,
+	SubmitBillingDataStatus410,
 	SubmitInvoiceResponse,
 	SubmitInvoiceStatus400,
 	SubmitInvoiceStatus401,
 	SubmitInvoiceStatus403,
 	SubmitInvoiceStatus404,
 	SubmitInvoiceStatus409,
+	SubmitInvoiceStatus410,
 	SubmitPrepaymentBalancesResponse,
 	SubmitPrepaymentBalancesStatus400,
 	SubmitPrepaymentBalancesStatus401,
 	SubmitPrepaymentBalancesStatus403,
 	SubmitPrepaymentBalancesStatus404,
+	SubmitPrepaymentBalancesStatus410,
 	TestDrainResponse,
 	TestDrainStatus400,
 	TestDrainStatus401,
 	TestDrainStatus402,
 	TestDrainStatus403,
+	TestDrainStatus410,
 	TransferInDomainResponse,
 	TransferInDomainStatus400,
 	TransferInDomainStatus401,
@@ -1741,46 +2018,55 @@ import type {
 	UnlinkSharedEnvVariableStatus400,
 	UnlinkSharedEnvVariableStatus401,
 	UnlinkSharedEnvVariableStatus403,
+	UnlinkSharedEnvVariableStatus410,
 	UnpauseProjectResponse,
 	UnpauseProjectStatus400,
 	UnpauseProjectStatus401,
 	UnpauseProjectStatus403,
+	UnpauseProjectStatus410,
 	UnpauseProjectStatus500,
 	UpdateAccessGroupProjectResponse,
 	UpdateAccessGroupProjectStatus400,
 	UpdateAccessGroupProjectStatus401,
 	UpdateAccessGroupProjectStatus403,
+	UpdateAccessGroupProjectStatus410,
 	UpdateAccessGroupResponse,
 	UpdateAccessGroupStatus400,
 	UpdateAccessGroupStatus401,
 	UpdateAccessGroupStatus403,
+	UpdateAccessGroupStatus410,
 	UpdateAiGatewayRuleResponse,
 	UpdateAiGatewayRuleStatus400,
 	UpdateAiGatewayRuleStatus401,
 	UpdateAiGatewayRuleStatus403,
 	UpdateAiGatewayRuleStatus404,
+	UpdateAiGatewayRuleStatus410,
 	UpdateAiGatewayRuleStatus500,
 	UpdateAttackChallengeModeResponse,
 	UpdateAttackChallengeModeStatus400,
 	UpdateAttackChallengeModeStatus401,
 	UpdateAttackChallengeModeStatus403,
 	UpdateAttackChallengeModeStatus404,
+	UpdateAttackChallengeModeStatus410,
 	UpdateCheckResponse,
 	UpdateCheckStatus400,
 	UpdateCheckStatus401,
 	UpdateCheckStatus403,
 	UpdateCheckStatus404,
+	UpdateCheckStatus410,
 	UpdateCheckStatus413,
 	UpdateCustomEnvironmentResponse,
 	UpdateCustomEnvironmentStatus400,
 	UpdateCustomEnvironmentStatus401,
 	UpdateCustomEnvironmentStatus402,
 	UpdateCustomEnvironmentStatus403,
+	UpdateCustomEnvironmentStatus410,
 	UpdateCustomEnvironmentStatus500,
 	UpdateDeploymentCheckRunResponse,
 	UpdateDeploymentCheckRunStatus400,
 	UpdateDeploymentCheckRunStatus401,
 	UpdateDeploymentCheckRunStatus403,
+	UpdateDeploymentCheckRunStatus410,
 	UpdateDeploymentCheckRunStatus413,
 	UpdateDeploymentCheckRunStatus500,
 	UpdateDomainAutoRenewResponse,
@@ -1803,6 +2089,7 @@ import type {
 	UpdateDrainStatus402,
 	UpdateDrainStatus403,
 	UpdateDrainStatus404,
+	UpdateDrainStatus410,
 	UpdateEdgeConfigResponse,
 	UpdateEdgeConfigStatus400,
 	UpdateEdgeConfigStatus401,
@@ -1810,12 +2097,14 @@ import type {
 	UpdateEdgeConfigStatus403,
 	UpdateEdgeConfigStatus404,
 	UpdateEdgeConfigStatus409,
+	UpdateEdgeConfigStatus410,
 	UpdateFirewallConfigResponse,
 	UpdateFirewallConfigStatus400,
 	UpdateFirewallConfigStatus401,
 	UpdateFirewallConfigStatus402,
 	UpdateFirewallConfigStatus403,
 	UpdateFirewallConfigStatus404,
+	UpdateFirewallConfigStatus410,
 	UpdateFirewallConfigStatus500,
 	UpdateFlagResponse,
 	UpdateFlagSegmentResponse,
@@ -1825,6 +2114,7 @@ import type {
 	UpdateFlagSegmentStatus403,
 	UpdateFlagSegmentStatus404,
 	UpdateFlagSegmentStatus409,
+	UpdateFlagSegmentStatus410,
 	UpdateFlagSegmentStatus412,
 	UpdateFlagSettingsResponse,
 	UpdateFlagSettingsStatus400,
@@ -1833,6 +2123,7 @@ import type {
 	UpdateFlagSettingsStatus403,
 	UpdateFlagSettingsStatus404,
 	UpdateFlagSettingsStatus409,
+	UpdateFlagSettingsStatus410,
 	UpdateFlagSettingsStatus412,
 	UpdateFlagStatus400,
 	UpdateFlagStatus401,
@@ -1840,65 +2131,77 @@ import type {
 	UpdateFlagStatus403,
 	UpdateFlagStatus404,
 	UpdateFlagStatus409,
+	UpdateFlagStatus410,
 	UpdateFlagStatus412,
 	UpdateInstallationResponse,
 	UpdateInstallationStatus400,
 	UpdateInstallationStatus401,
 	UpdateInstallationStatus403,
 	UpdateInstallationStatus404,
+	UpdateInstallationStatus410,
 	UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdResponse,
 	UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus400,
 	UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus401,
 	UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus403,
 	UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus404,
+	UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus410,
 	UpdateIntegrationDeploymentActionResponse,
 	UpdateIntegrationDeploymentActionStatus400,
 	UpdateIntegrationDeploymentActionStatus401,
 	UpdateIntegrationDeploymentActionStatus403,
+	UpdateIntegrationDeploymentActionStatus410,
 	UpdateInvoiceResponse,
 	UpdateInvoiceStatus400,
 	UpdateInvoiceStatus401,
 	UpdateInvoiceStatus403,
 	UpdateInvoiceStatus404,
 	UpdateInvoiceStatus409,
+	UpdateInvoiceStatus410,
 	UpdateMicrofrontendsGroupResponse,
 	UpdateMicrofrontendsGroupStatus400,
 	UpdateMicrofrontendsGroupStatus401,
 	UpdateMicrofrontendsGroupStatus403,
 	UpdateMicrofrontendsGroupStatus404,
+	UpdateMicrofrontendsGroupStatus410,
 	UpdateMicrofrontendsResponse,
 	UpdateMicrofrontendsStatus400,
 	UpdateMicrofrontendsStatus401,
 	UpdateMicrofrontendsStatus403,
 	UpdateMicrofrontendsStatus409,
+	UpdateMicrofrontendsStatus410,
 	UpdateMicrofrontendsStatus500,
 	UpdateNetworkResponse,
 	UpdateNetworkStatus400,
 	UpdateNetworkStatus401,
 	UpdateNetworkStatus403,
+	UpdateNetworkStatus410,
 	UpdateObservabilityConfigurationProjectResponse,
 	UpdateObservabilityConfigurationProjectStatus400,
 	UpdateObservabilityConfigurationProjectStatus401,
 	UpdateObservabilityConfigurationProjectStatus403,
 	UpdateObservabilityConfigurationProjectStatus404,
+	UpdateObservabilityConfigurationProjectStatus410,
 	UpdateObservabilityConfigurationProjectStatus429,
 	UpdateProjectCheckResponse,
 	UpdateProjectCheckStatus400,
 	UpdateProjectCheckStatus401,
 	UpdateProjectCheckStatus403,
 	UpdateProjectCheckStatus404,
+	UpdateProjectCheckStatus410,
 	UpdateProjectCheckStatus500,
 	UpdateProjectDomainResponse,
 	UpdateProjectDomainStatus400,
 	UpdateProjectDomainStatus401,
 	UpdateProjectDomainStatus403,
 	UpdateProjectDomainStatus409,
+	UpdateProjectDomainStatus410,
 	UpdateProjectProtectionBypassResponse,
 	UpdateProjectProtectionBypassStatus400,
 	UpdateProjectProtectionBypassStatus401,
 	UpdateProjectProtectionBypassStatus403,
 	UpdateProjectProtectionBypassStatus404,
 	UpdateProjectProtectionBypassStatus409,
+	UpdateProjectProtectionBypassStatus410,
 	UpdateProjectResponse,
 	UpdateProjectStatus400,
 	UpdateProjectStatus401,
@@ -1906,6 +2209,7 @@ import type {
 	UpdateProjectStatus403,
 	UpdateProjectStatus404,
 	UpdateProjectStatus409,
+	UpdateProjectStatus410,
 	UpdateProjectStatus428,
 	UpdateProjectStatus500,
 	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionResponse,
@@ -1913,6 +2217,7 @@ import type {
 	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus401,
 	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus403,
 	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus409,
+	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus410,
 	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus422,
 	UpdateRecordResponse,
 	UpdateRecordStatus400,
@@ -1921,6 +2226,7 @@ import type {
 	UpdateRecordStatus403,
 	UpdateRecordStatus404,
 	UpdateRecordStatus409,
+	UpdateRecordStatus410,
 	UpdateResourceResponse,
 	UpdateResourceSecretsByIdResponse,
 	UpdateResourceSecretsByIdStatus400,
@@ -1928,6 +2234,7 @@ import type {
 	UpdateResourceSecretsByIdStatus403,
 	UpdateResourceSecretsByIdStatus404,
 	UpdateResourceSecretsByIdStatus409,
+	UpdateResourceSecretsByIdStatus410,
 	UpdateResourceSecretsByIdStatus422,
 	UpdateResourceSecretsResponse,
 	UpdateResourceSecretsStatus400,
@@ -1935,24 +2242,28 @@ import type {
 	UpdateResourceSecretsStatus403,
 	UpdateResourceSecretsStatus404,
 	UpdateResourceSecretsStatus409,
+	UpdateResourceSecretsStatus410,
 	UpdateResourceSecretsStatus422,
 	UpdateResourceStatus400,
 	UpdateResourceStatus401,
 	UpdateResourceStatus403,
 	UpdateResourceStatus404,
 	UpdateResourceStatus409,
+	UpdateResourceStatus410,
 	UpdateResourceStatus422,
 	UpdateRollingReleaseConfigResponse,
 	UpdateRollingReleaseConfigStatus400,
 	UpdateRollingReleaseConfigStatus401,
 	UpdateRollingReleaseConfigStatus403,
 	UpdateRollingReleaseConfigStatus404,
+	UpdateRollingReleaseConfigStatus410,
 	UpdateRouteVersionsResponse,
 	UpdateRouteVersionsStatus400,
 	UpdateRouteVersionsStatus401,
 	UpdateRouteVersionsStatus403,
 	UpdateRouteVersionsStatus404,
 	UpdateRouteVersionsStatus409,
+	UpdateRouteVersionsStatus410,
 	UpdateRouteVersionsStatus500,
 	UpdateSandboxResponse,
 	UpdateSandboxStatus400,
@@ -1980,6 +2291,7 @@ import type {
 	UpdateSharedEnvVariableStatus401,
 	UpdateSharedEnvVariableStatus402,
 	UpdateSharedEnvVariableStatus403,
+	UpdateSharedEnvVariableStatus410,
 	UpdateStaticIpsResponse,
 	UpdateStaticIpsStatus400,
 	UpdateStaticIpsStatus401,
@@ -1987,6 +2299,7 @@ import type {
 	UpdateStaticIpsStatus403,
 	UpdateStaticIpsStatus404,
 	UpdateStaticIpsStatus409,
+	UpdateStaticIpsStatus410,
 	UpdateStaticIpsStatus500,
 	UpdateTeamMemberResponse,
 	UpdateTeamMemberStatus400,
@@ -1995,38 +2308,45 @@ import type {
 	UpdateTeamMemberStatus403,
 	UpdateTeamMemberStatus404,
 	UpdateTeamMemberStatus409,
+	UpdateTeamMemberStatus410,
 	UpdateTeamMemberStatus500,
 	UpdateVersionResponse,
 	UpdateVersionStatus400,
 	UpdateVersionStatus401,
 	UpdateVersionStatus403,
 	UpdateVersionStatus404,
+	UpdateVersionStatus410,
 	UpdateVersionStatus500,
 	UploadArtifactResponse,
 	UploadArtifactStatus400,
 	UploadArtifactStatus401,
 	UploadArtifactStatus402,
 	UploadArtifactStatus403,
+	UploadArtifactStatus410,
 	UploadCertResponse,
 	UploadCertStatus400,
 	UploadCertStatus401,
 	UploadCertStatus402,
 	UploadCertStatus403,
+	UploadCertStatus410,
 	UploadFileResponse,
 	UploadFileStatus400,
 	UploadFileStatus401,
 	UploadFileStatus403,
+	UploadFileStatus410,
 	UploadFileStatus426,
 	UploadProjectAvatarResponse,
 	UploadProjectAvatarStatus400,
 	UploadProjectAvatarStatus401,
 	UploadProjectAvatarStatus403,
+	UploadProjectAvatarStatus410,
 	UploadProjectAvatarStatus413,
 	UploadProjectAvatarStatus415,
 	VerifyProjectDomainResponse,
 	VerifyProjectDomainStatus400,
 	VerifyProjectDomainStatus401,
 	VerifyProjectDomainStatus403,
+	VerifyProjectDomainStatus410,
 	WriteSessionFilesResponse,
 	WriteSessionFilesStatus400,
 	WriteSessionFilesStatus401,
@@ -2061,7 +2381,12 @@ export async function readAccessGroup(
 	}
 	const data = await request<
 		ReadAccessGroupResponse,
-		ErrorWrapper<ReadAccessGroupStatus400 | ReadAccessGroupStatus401 | ReadAccessGroupStatus403>,
+		ErrorWrapper<
+			| ReadAccessGroupStatus400
+			| ReadAccessGroupStatus401
+			| ReadAccessGroupStatus403
+			| ReadAccessGroupStatus410
+		>,
 		null,
 		Record<string, string>,
 		{ teamId?: string; slug?: string },
@@ -2101,7 +2426,10 @@ export async function updateAccessGroup(
 	const data = await request<
 		UpdateAccessGroupResponse,
 		ErrorWrapper<
-			UpdateAccessGroupStatus400 | UpdateAccessGroupStatus401 | UpdateAccessGroupStatus403
+			| UpdateAccessGroupStatus400
+			| UpdateAccessGroupStatus401
+			| UpdateAccessGroupStatus403
+			| UpdateAccessGroupStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -2142,7 +2470,10 @@ export async function deleteAccessGroup(
 	const data = await request<
 		DeleteAccessGroupResponse,
 		ErrorWrapper<
-			DeleteAccessGroupStatus400 | DeleteAccessGroupStatus401 | DeleteAccessGroupStatus403
+			| DeleteAccessGroupStatus400
+			| DeleteAccessGroupStatus401
+			| DeleteAccessGroupStatus403
+			| DeleteAccessGroupStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -2192,6 +2523,7 @@ export async function listAccessGroupMembers(
 			| ListAccessGroupMembersStatus400
 			| ListAccessGroupMembersStatus401
 			| ListAccessGroupMembersStatus403
+			| ListAccessGroupMembersStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -2235,7 +2567,12 @@ export async function listAccessGroups(
 
 	const data = await request<
 		ListAccessGroupsResponse,
-		ErrorWrapper<ListAccessGroupsStatus400 | ListAccessGroupsStatus401 | ListAccessGroupsStatus403>,
+		ErrorWrapper<
+			| ListAccessGroupsStatus400
+			| ListAccessGroupsStatus401
+			| ListAccessGroupsStatus403
+			| ListAccessGroupsStatus410
+		>,
 		null,
 		Record<string, string>,
 		{
@@ -2279,7 +2616,10 @@ export async function createAccessGroup(
 	const data = await request<
 		CreateAccessGroupResponse,
 		ErrorWrapper<
-			CreateAccessGroupStatus400 | CreateAccessGroupStatus401 | CreateAccessGroupStatus403
+			| CreateAccessGroupStatus400
+			| CreateAccessGroupStatus401
+			| CreateAccessGroupStatus403
+			| CreateAccessGroupStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -2323,6 +2663,7 @@ export async function listAccessGroupProjects(
 			| ListAccessGroupProjectsStatus400
 			| ListAccessGroupProjectsStatus401
 			| ListAccessGroupProjectsStatus403
+			| ListAccessGroupProjectsStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -2366,6 +2707,7 @@ export async function createAccessGroupProject(
 			| CreateAccessGroupProjectStatus400
 			| CreateAccessGroupProjectStatus401
 			| CreateAccessGroupProjectStatus403
+			| CreateAccessGroupProjectStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -2413,6 +2755,7 @@ export async function readAccessGroupProject(
 			| ReadAccessGroupProjectStatus400
 			| ReadAccessGroupProjectStatus401
 			| ReadAccessGroupProjectStatus403
+			| ReadAccessGroupProjectStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -2460,6 +2803,7 @@ export async function updateAccessGroupProject(
 			| UpdateAccessGroupProjectStatus400
 			| UpdateAccessGroupProjectStatus401
 			| UpdateAccessGroupProjectStatus403
+			| UpdateAccessGroupProjectStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -2507,6 +2851,7 @@ export async function deleteAccessGroupProject(
 			| DeleteAccessGroupProjectStatus400
 			| DeleteAccessGroupProjectStatus401
 			| DeleteAccessGroupProjectStatus403
+			| DeleteAccessGroupProjectStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -2546,6 +2891,7 @@ export async function createAiGatewayRule(
 			| CreateAiGatewayRuleStatus401
 			| CreateAiGatewayRuleStatus403
 			| CreateAiGatewayRuleStatus409
+			| CreateAiGatewayRuleStatus410
 			| CreateAiGatewayRuleStatus500
 		>,
 		null,
@@ -2585,6 +2931,7 @@ export async function listAiGatewayRules(
 			| ListAiGatewayRulesStatus400
 			| ListAiGatewayRulesStatus401
 			| ListAiGatewayRulesStatus403
+			| ListAiGatewayRulesStatus410
 			| ListAiGatewayRulesStatus500
 		>,
 		null,
@@ -2625,6 +2972,7 @@ export async function updateAiGatewayRule(
 			| UpdateAiGatewayRuleStatus401
 			| UpdateAiGatewayRuleStatus403
 			| UpdateAiGatewayRuleStatus404
+			| UpdateAiGatewayRuleStatus410
 			| UpdateAiGatewayRuleStatus500
 		>,
 		null,
@@ -2665,6 +3013,7 @@ export async function deleteAiGatewayRule(
 			| DeleteAiGatewayRuleStatus401
 			| DeleteAiGatewayRuleStatus403
 			| DeleteAiGatewayRuleStatus404
+			| DeleteAiGatewayRuleStatus410
 			| DeleteAiGatewayRuleStatus500
 		>,
 		null,
@@ -2703,7 +3052,11 @@ export async function recordEvents(
 	const data = await request<
 		RecordEventsResponse,
 		ErrorWrapper<
-			RecordEventsStatus400 | RecordEventsStatus401 | RecordEventsStatus402 | RecordEventsStatus403
+			| RecordEventsStatus400
+			| RecordEventsStatus401
+			| RecordEventsStatus402
+			| RecordEventsStatus403
+			| RecordEventsStatus410
 		>,
 		null,
 		{ "'x-Artifact-Client-Ci'"?: string; "'x-Artifact-Client-Interactive'"?: number },
@@ -2738,7 +3091,9 @@ export async function status(
 
 	const data = await request<
 		StatusResponse,
-		ErrorWrapper<StatusStatus400 | StatusStatus401 | StatusStatus402 | StatusStatus403>,
+		ErrorWrapper<
+			StatusStatus400 | StatusStatus401 | StatusStatus402 | StatusStatus403 | StatusStatus410
+		>,
 		null,
 		Record<string, string>,
 		{ teamId?: string; slug?: string },
@@ -2792,6 +3147,7 @@ export async function uploadArtifact(
 			| UploadArtifactStatus401
 			| UploadArtifactStatus402
 			| UploadArtifactStatus403
+			| UploadArtifactStatus410
 		>,
 		null,
 		{
@@ -2847,6 +3203,7 @@ export async function downloadArtifact(
 			| DownloadArtifactStatus402
 			| DownloadArtifactStatus403
 			| DownloadArtifactStatus404
+			| DownloadArtifactStatus410
 		>,
 		null,
 		{ "'x-Artifact-Client-Ci'"?: string; "'x-Artifact-Client-Interactive'"?: number },
@@ -2886,6 +3243,7 @@ export async function artifactQuery(
 			| ArtifactQueryStatus401
 			| ArtifactQueryStatus402
 			| ArtifactQueryStatus403
+			| ArtifactQueryStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -2921,7 +3279,10 @@ export async function deleteAllArtifacts(
 	const data = await request<
 		DeleteAllArtifactsResponse,
 		ErrorWrapper<
-			DeleteAllArtifactsStatus400 | DeleteAllArtifactsStatus401 | DeleteAllArtifactsStatus403
+			| DeleteAllArtifactsStatus400
+			| DeleteAllArtifactsStatus401
+			| DeleteAllArtifactsStatus403
+			| DeleteAllArtifactsStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -2961,6 +3322,7 @@ export async function listBillingCharges(
 			| ListBillingChargesStatus401
 			| ListBillingChargesStatus403
 			| ListBillingChargesStatus404
+			| ListBillingChargesStatus410
 			| ListBillingChargesStatus500
 			| ListBillingChargesStatus503
 		>,
@@ -3002,6 +3364,7 @@ export async function listContractCommitments(
 			| ListContractCommitmentsStatus401
 			| ListContractCommitmentsStatus403
 			| ListContractCommitmentsStatus404
+			| ListContractCommitmentsStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -3042,6 +3405,7 @@ export async function buyCredits(
 			| BuyCreditsStatus402
 			| BuyCreditsStatus403
 			| BuyCreditsStatus404
+			| BuyCreditsStatus410
 			| BuyCreditsStatus500
 		>,
 		null,
@@ -3081,6 +3445,7 @@ export async function stageRedirects(
 			| StageRedirectsStatus400
 			| StageRedirectsStatus401
 			| StageRedirectsStatus403
+			| StageRedirectsStatus410
 			| StageRedirectsStatus500
 		>,
 		null,
@@ -3128,7 +3493,11 @@ export async function getRedirects(
 	const data = await request<
 		GetRedirectsResponse,
 		ErrorWrapper<
-			GetRedirectsStatus400 | GetRedirectsStatus401 | GetRedirectsStatus403 | GetRedirectsStatus404
+			| GetRedirectsStatus400
+			| GetRedirectsStatus401
+			| GetRedirectsStatus403
+			| GetRedirectsStatus404
+			| GetRedirectsStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -3179,6 +3548,7 @@ export async function deleteRedirects(
 			| DeleteRedirectsStatus401
 			| DeleteRedirectsStatus403
 			| DeleteRedirectsStatus404
+			| DeleteRedirectsStatus410
 			| DeleteRedirectsStatus500
 		>,
 		null,
@@ -3219,6 +3589,7 @@ export async function editRedirect(
 			| EditRedirectStatus401
 			| EditRedirectStatus403
 			| EditRedirectStatus404
+			| EditRedirectStatus410
 			| EditRedirectStatus500
 		>,
 		null,
@@ -3259,6 +3630,7 @@ export async function restoreRedirects(
 			| RestoreRedirectsStatus401
 			| RestoreRedirectsStatus403
 			| RestoreRedirectsStatus404
+			| RestoreRedirectsStatus410
 			| RestoreRedirectsStatus500
 		>,
 		null,
@@ -3295,7 +3667,11 @@ export async function getVersions(
 	const data = await request<
 		GetVersionsResponse,
 		ErrorWrapper<
-			GetVersionsStatus400 | GetVersionsStatus401 | GetVersionsStatus403 | GetVersionsStatus500
+			| GetVersionsStatus400
+			| GetVersionsStatus401
+			| GetVersionsStatus403
+			| GetVersionsStatus410
+			| GetVersionsStatus500
 		>,
 		null,
 		Record<string, string>,
@@ -3335,6 +3711,7 @@ export async function updateVersion(
 			| UpdateVersionStatus401
 			| UpdateVersionStatus403
 			| UpdateVersionStatus404
+			| UpdateVersionStatus410
 			| UpdateVersionStatus500
 		>,
 		null,
@@ -3388,6 +3765,7 @@ export async function listProjectChecks(
 			| ListProjectChecksStatus400
 			| ListProjectChecksStatus401
 			| ListProjectChecksStatus403
+			| ListProjectChecksStatus410
 			| ListProjectChecksStatus500
 		>,
 		null,
@@ -3441,6 +3819,7 @@ export async function createProjectCheck(
 			| CreateProjectCheckStatus400
 			| CreateProjectCheckStatus401
 			| CreateProjectCheckStatus403
+			| CreateProjectCheckStatus410
 			| CreateProjectCheckStatus500
 		>,
 		null,
@@ -3489,6 +3868,7 @@ export async function getProjectCheck(
 			| GetProjectCheckStatus400
 			| GetProjectCheckStatus401
 			| GetProjectCheckStatus403
+			| GetProjectCheckStatus410
 			| GetProjectCheckStatus500
 		>,
 		null,
@@ -3538,6 +3918,7 @@ export async function updateProjectCheck(
 			| UpdateProjectCheckStatus401
 			| UpdateProjectCheckStatus403
 			| UpdateProjectCheckStatus404
+			| UpdateProjectCheckStatus410
 			| UpdateProjectCheckStatus500
 		>,
 		null,
@@ -3587,6 +3968,7 @@ export async function deleteProjectCheck(
 			| DeleteProjectCheckStatus401
 			| DeleteProjectCheckStatus403
 			| DeleteProjectCheckStatus404
+			| DeleteProjectCheckStatus410
 			| DeleteProjectCheckStatus500
 		>,
 		null,
@@ -3635,6 +4017,7 @@ export async function listCheckRuns(
 			| ListCheckRunsStatus400
 			| ListCheckRunsStatus401
 			| ListCheckRunsStatus403
+			| ListCheckRunsStatus410
 			| ListCheckRunsStatus500
 		>,
 		null,
@@ -3679,6 +4062,7 @@ export async function listDeploymentCheckRuns(
 			| ListDeploymentCheckRunsStatus400
 			| ListDeploymentCheckRunsStatus401
 			| ListDeploymentCheckRunsStatus403
+			| ListDeploymentCheckRunsStatus410
 			| ListDeploymentCheckRunsStatus500
 		>,
 		null,
@@ -3724,6 +4108,7 @@ export async function createDeploymentCheckRun(
 			| CreateDeploymentCheckRunStatus401
 			| CreateDeploymentCheckRunStatus403
 			| CreateDeploymentCheckRunStatus404
+			| CreateDeploymentCheckRunStatus410
 			| CreateDeploymentCheckRunStatus500
 		>,
 		null,
@@ -3773,6 +4158,7 @@ export async function getDeploymentCheckRun(
 			| GetDeploymentCheckRunStatus401
 			| GetDeploymentCheckRunStatus403
 			| GetDeploymentCheckRunStatus404
+			| GetDeploymentCheckRunStatus410
 			| GetDeploymentCheckRunStatus500
 		>,
 		null,
@@ -3821,6 +4207,7 @@ export async function updateDeploymentCheckRun(
 			| UpdateDeploymentCheckRunStatus400
 			| UpdateDeploymentCheckRunStatus401
 			| UpdateDeploymentCheckRunStatus403
+			| UpdateDeploymentCheckRunStatus410
 			| UpdateDeploymentCheckRunStatus413
 			| UpdateDeploymentCheckRunStatus500
 		>,
@@ -3864,7 +4251,11 @@ export async function createCheck(
 	const data = await request<
 		CreateCheckResponse,
 		ErrorWrapper<
-			CreateCheckStatus400 | CreateCheckStatus401 | CreateCheckStatus403 | CreateCheckStatus404
+			| CreateCheckStatus400
+			| CreateCheckStatus401
+			| CreateCheckStatus403
+			| CreateCheckStatus404
+			| CreateCheckStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -3906,7 +4297,11 @@ export async function getAllChecks(
 	const data = await request<
 		GetAllChecksResponse,
 		ErrorWrapper<
-			GetAllChecksStatus400 | GetAllChecksStatus401 | GetAllChecksStatus403 | GetAllChecksStatus404
+			| GetAllChecksStatus400
+			| GetAllChecksStatus401
+			| GetAllChecksStatus403
+			| GetAllChecksStatus404
+			| GetAllChecksStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -3951,7 +4346,13 @@ export async function getCheck(
 	}
 	const data = await request<
 		GetCheckResponse,
-		ErrorWrapper<GetCheckStatus400 | GetCheckStatus401 | GetCheckStatus403 | GetCheckStatus404>,
+		ErrorWrapper<
+			| GetCheckStatus400
+			| GetCheckStatus401
+			| GetCheckStatus403
+			| GetCheckStatus404
+			| GetCheckStatus410
+		>,
 		null,
 		Record<string, string>,
 		{ teamId?: string; slug?: string },
@@ -4000,6 +4401,7 @@ export async function updateCheck(
 			| UpdateCheckStatus401
 			| UpdateCheckStatus403
 			| UpdateCheckStatus404
+			| UpdateCheckStatus410
 			| UpdateCheckStatus413
 		>,
 		null,
@@ -4050,6 +4452,7 @@ export async function rerequestCheck(
 			| RerequestCheckStatus401
 			| RerequestCheckStatus403
 			| RerequestCheckStatus404
+			| RerequestCheckStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -4091,7 +4494,9 @@ export async function listNetworks(
 
 	const data = await request<
 		ListNetworksResponse,
-		ErrorWrapper<ListNetworksStatus400 | ListNetworksStatus401 | ListNetworksStatus403>,
+		ErrorWrapper<
+			ListNetworksStatus400 | ListNetworksStatus401 | ListNetworksStatus403 | ListNetworksStatus410
+		>,
 		null,
 		Record<string, string>,
 		{
@@ -4138,6 +4543,7 @@ export async function createNetwork(
 			| CreateNetworkStatus402
 			| CreateNetworkStatus403
 			| CreateNetworkStatus409
+			| CreateNetworkStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -4183,6 +4589,7 @@ export async function deleteNetwork(
 			| DeleteNetworkStatus402
 			| DeleteNetworkStatus403
 			| DeleteNetworkStatus409
+			| DeleteNetworkStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -4222,7 +4629,12 @@ export async function updateNetwork(
 	}
 	const data = await request<
 		UpdateNetworkResponse,
-		ErrorWrapper<UpdateNetworkStatus400 | UpdateNetworkStatus401 | UpdateNetworkStatus403>,
+		ErrorWrapper<
+			| UpdateNetworkStatus400
+			| UpdateNetworkStatus401
+			| UpdateNetworkStatus403
+			| UpdateNetworkStatus410
+		>,
 		null,
 		Record<string, string>,
 		{ teamId?: string; slug?: string },
@@ -4261,7 +4673,9 @@ export async function readNetwork(
 	}
 	const data = await request<
 		ReadNetworkResponse,
-		ErrorWrapper<ReadNetworkStatus400 | ReadNetworkStatus401 | ReadNetworkStatus403>,
+		ErrorWrapper<
+			ReadNetworkStatus400 | ReadNetworkStatus401 | ReadNetworkStatus403 | ReadNetworkStatus410
+		>,
 		null,
 		Record<string, string>,
 		{ teamId?: string; slug?: string },
@@ -4295,6 +4709,7 @@ export async function createConnector(
 			| CreateConnectorStatus403
 			| CreateConnectorStatus404
 			| CreateConnectorStatus409
+			| CreateConnectorStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -4336,9 +4751,9 @@ export async function getConnectorToken(
 			| GetConnectorTokenStatus401
 			| GetConnectorTokenStatus403
 			| GetConnectorTokenStatus404
+			| GetConnectorTokenStatus410
 			| GetConnectorTokenStatus422
 			| GetConnectorTokenStatus429
-			| GetConnectorTokenStatus504
 		>,
 		null,
 		Record<string, string>,
@@ -4380,8 +4795,8 @@ export async function importConnectorTokens(
 			| ImportConnectorTokensStatus401
 			| ImportConnectorTokensStatus403
 			| ImportConnectorTokensStatus404
+			| ImportConnectorTokensStatus410
 			| ImportConnectorTokensStatus422
-			| ImportConnectorTokensStatus504
 		>,
 		null,
 		Record<string, string>,
@@ -4423,6 +4838,7 @@ export async function createConnectorAuthorizationRequest(
 			| CreateConnectorAuthorizationRequestStatus401
 			| CreateConnectorAuthorizationRequestStatus403
 			| CreateConnectorAuthorizationRequestStatus404
+			| CreateConnectorAuthorizationRequestStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -4477,6 +4893,7 @@ export async function getDeploymentEvents(
 			| GetDeploymentEventsStatus400
 			| GetDeploymentEventsStatus401
 			| GetDeploymentEventsStatus403
+			| GetDeploymentEventsStatus410
 			| GetDeploymentEventsStatus500
 		>,
 		null,
@@ -4548,6 +4965,7 @@ export async function updateIntegrationDeploymentAction(
 			| UpdateIntegrationDeploymentActionStatus400
 			| UpdateIntegrationDeploymentActionStatus401
 			| UpdateIntegrationDeploymentActionStatus403
+			| UpdateIntegrationDeploymentActionStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -4590,6 +5008,7 @@ export async function getDeployment(
 			| GetDeploymentStatus400
 			| GetDeploymentStatus403
 			| GetDeploymentStatus404
+			| GetDeploymentStatus410
 			| GetDeploymentStatus429
 		>,
 		null,
@@ -4637,6 +5056,7 @@ export async function createDeployment(
 			| CreateDeploymentStatus403
 			| CreateDeploymentStatus404
 			| CreateDeploymentStatus409
+			| CreateDeploymentStatus410
 			| CreateDeploymentStatus426
 			| CreateDeploymentStatus429
 			| CreateDeploymentStatus500
@@ -4685,6 +5105,7 @@ export async function cancelDeployment(
 			| CancelDeploymentStatus401
 			| CancelDeploymentStatus403
 			| CancelDeploymentStatus404
+			| CancelDeploymentStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -4731,7 +5152,11 @@ export async function getRecords(
 	const data = await request<
 		GetRecordsResponse,
 		ErrorWrapper<
-			GetRecordsStatus400 | GetRecordsStatus401 | GetRecordsStatus403 | GetRecordsStatus404
+			| GetRecordsStatus400
+			| GetRecordsStatus401
+			| GetRecordsStatus403
+			| GetRecordsStatus404
+			| GetRecordsStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -4778,6 +5203,7 @@ export async function createRecord(
 			| CreateRecordStatus403
 			| CreateRecordStatus404
 			| CreateRecordStatus409
+			| CreateRecordStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -4824,6 +5250,7 @@ export async function updateRecord(
 			| UpdateRecordStatus403
 			| UpdateRecordStatus404
 			| UpdateRecordStatus409
+			| UpdateRecordStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -4865,6 +5292,7 @@ export async function replaceDomainsByDomainRecords(
 			| ReplaceDomainsByDomainRecordsStatus403
 			| ReplaceDomainsByDomainRecordsStatus404
 			| ReplaceDomainsByDomainRecordsStatus409
+			| ReplaceDomainsByDomainRecordsStatus410
 			| ReplaceDomainsByDomainRecordsStatus415
 		>,
 		null,
@@ -4905,6 +5333,7 @@ export async function getDomainsRecordsByRecordId(
 			| GetDomainsRecordsByRecordIdStatus401
 			| GetDomainsRecordsByRecordIdStatus403
 			| GetDomainsRecordsByRecordIdStatus404
+			| GetDomainsRecordsByRecordIdStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -4948,7 +5377,11 @@ export async function removeRecord(
 	const data = await request<
 		RemoveRecordResponse,
 		ErrorWrapper<
-			RemoveRecordStatus400 | RemoveRecordStatus401 | RemoveRecordStatus403 | RemoveRecordStatus404
+			| RemoveRecordStatus400
+			| RemoveRecordStatus401
+			| RemoveRecordStatus403
+			| RemoveRecordStatus404
+			| RemoveRecordStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -5748,7 +6181,12 @@ export async function getDomainConfig(
 	}
 	const data = await request<
 		GetDomainConfigResponse,
-		ErrorWrapper<GetDomainConfigStatus400 | GetDomainConfigStatus401 | GetDomainConfigStatus403>,
+		ErrorWrapper<
+			| GetDomainConfigStatus400
+			| GetDomainConfigStatus401
+			| GetDomainConfigStatus403
+			| GetDomainConfigStatus410
+		>,
 		null,
 		Record<string, string>,
 		{ projectIdOrName?: string; strict?: "true" | "false"; teamId?: string; slug?: string },
@@ -5792,6 +6230,7 @@ export async function getDomainVerificationRecord(
 			| GetDomainVerificationRecordStatus401
 			| GetDomainVerificationRecordStatus403
 			| GetDomainVerificationRecordStatus404
+			| GetDomainVerificationRecordStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -5836,6 +6275,7 @@ export async function claimDomainOwnership(
 			| ClaimDomainOwnershipStatus401
 			| ClaimDomainOwnershipStatus403
 			| ClaimDomainOwnershipStatus404
+			| ClaimDomainOwnershipStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -5886,6 +6326,7 @@ export async function getDomainProjectDomains(
 			| GetDomainProjectDomainsStatus401
 			| GetDomainProjectDomainsStatus403
 			| GetDomainProjectDomainsStatus404
+			| GetDomainProjectDomainsStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -5925,7 +6366,13 @@ export async function getDomain(
 	}
 	const data = await request<
 		GetDomainResponse,
-		ErrorWrapper<GetDomainStatus400 | GetDomainStatus401 | GetDomainStatus403 | GetDomainStatus404>,
+		ErrorWrapper<
+			| GetDomainStatus400
+			| GetDomainStatus401
+			| GetDomainStatus403
+			| GetDomainStatus404
+			| GetDomainStatus410
+		>,
 		null,
 		Record<string, string>,
 		{ teamId?: string; slug?: string },
@@ -5966,7 +6413,11 @@ export async function getDomains(
 	const data = await request<
 		GetDomainsResponse,
 		ErrorWrapper<
-			GetDomainsStatus400 | GetDomainsStatus401 | GetDomainsStatus403 | GetDomainsStatus409
+			| GetDomainsStatus400
+			| GetDomainsStatus401
+			| GetDomainsStatus403
+			| GetDomainsStatus409
+			| GetDomainsStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -6008,6 +6459,7 @@ export async function createOrTransferDomain(
 			| CreateOrTransferDomainStatus403
 			| CreateOrTransferDomainStatus404
 			| CreateOrTransferDomainStatus409
+			| CreateOrTransferDomainStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -6053,6 +6505,7 @@ export async function patchDomain(
 			| PatchDomainStatus403
 			| PatchDomainStatus404
 			| PatchDomainStatus409
+			| PatchDomainStatus410
 			| PatchDomainStatus500
 		>,
 		null,
@@ -6099,6 +6552,7 @@ export async function deleteDomain(
 			| DeleteDomainStatus403
 			| DeleteDomainStatus404
 			| DeleteDomainStatus409
+			| DeleteDomainStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -6143,6 +6597,7 @@ export async function getConfigurableLogDrain(
 			| GetConfigurableLogDrainStatus401
 			| GetConfigurableLogDrainStatus403
 			| GetConfigurableLogDrainStatus404
+			| GetConfigurableLogDrainStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -6187,6 +6642,7 @@ export async function deleteConfigurableLogDrain(
 			| DeleteConfigurableLogDrainStatus401
 			| DeleteConfigurableLogDrainStatus403
 			| DeleteConfigurableLogDrainStatus404
+			| DeleteConfigurableLogDrainStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -6232,6 +6688,7 @@ export async function getAllLogDrains(
 			| GetAllLogDrainsStatus401
 			| GetAllLogDrainsStatus403
 			| GetAllLogDrainsStatus404
+			| GetAllLogDrainsStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -6276,6 +6733,7 @@ export async function createConfigurableLogDrain(
 			| CreateConfigurableLogDrainStatus400
 			| CreateConfigurableLogDrainStatus401
 			| CreateConfigurableLogDrainStatus403
+			| CreateConfigurableLogDrainStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -6311,7 +6769,11 @@ export async function createDrain(
 	const data = await request<
 		CreateDrainResponse,
 		ErrorWrapper<
-			CreateDrainStatus400 | CreateDrainStatus401 | CreateDrainStatus402 | CreateDrainStatus403
+			| CreateDrainStatus400
+			| CreateDrainStatus401
+			| CreateDrainStatus402
+			| CreateDrainStatus403
+			| CreateDrainStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -6346,7 +6808,13 @@ export async function getDrains(
 
 	const data = await request<
 		GetDrainsResponse,
-		ErrorWrapper<GetDrainsStatus400 | GetDrainsStatus401 | GetDrainsStatus403 | GetDrainsStatus404>,
+		ErrorWrapper<
+			| GetDrainsStatus400
+			| GetDrainsStatus401
+			| GetDrainsStatus403
+			| GetDrainsStatus404
+			| GetDrainsStatus410
+		>,
 		null,
 		Record<string, string>,
 		{ projectId?: string; includeMetadata?: boolean; teamId?: string; slug?: string },
@@ -6386,7 +6854,11 @@ export async function deleteDrain(
 	const data = await request<
 		DeleteDrainResponse,
 		ErrorWrapper<
-			DeleteDrainStatus400 | DeleteDrainStatus401 | DeleteDrainStatus403 | DeleteDrainStatus404
+			| DeleteDrainStatus400
+			| DeleteDrainStatus401
+			| DeleteDrainStatus403
+			| DeleteDrainStatus404
+			| DeleteDrainStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -6426,7 +6898,13 @@ export async function getDrain(
 	}
 	const data = await request<
 		GetDrainResponse,
-		ErrorWrapper<GetDrainStatus400 | GetDrainStatus401 | GetDrainStatus403 | GetDrainStatus404>,
+		ErrorWrapper<
+			| GetDrainStatus400
+			| GetDrainStatus401
+			| GetDrainStatus403
+			| GetDrainStatus404
+			| GetDrainStatus410
+		>,
 		null,
 		Record<string, string>,
 		{ teamId?: string; slug?: string },
@@ -6471,6 +6949,7 @@ export async function updateDrain(
 			| UpdateDrainStatus402
 			| UpdateDrainStatus403
 			| UpdateDrainStatus404
+			| UpdateDrainStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -6505,7 +6984,13 @@ export async function testDrain(
 
 	const data = await request<
 		TestDrainResponse,
-		ErrorWrapper<TestDrainStatus400 | TestDrainStatus401 | TestDrainStatus402 | TestDrainStatus403>,
+		ErrorWrapper<
+			| TestDrainStatus400
+			| TestDrainStatus401
+			| TestDrainStatus402
+			| TestDrainStatus403
+			| TestDrainStatus410
+		>,
 		null,
 		Record<string, string>,
 		{ teamId?: string; slug?: string },
@@ -6544,6 +7029,7 @@ export async function invalidateByTags(
 			| InvalidateByTagsStatus401
 			| InvalidateByTagsStatus403
 			| InvalidateByTagsStatus404
+			| InvalidateByTagsStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -6583,6 +7069,7 @@ export async function dangerouslyDeleteByTags(
 			| DangerouslyDeleteByTagsStatus401
 			| DangerouslyDeleteByTagsStatus403
 			| DangerouslyDeleteByTagsStatus404
+			| DangerouslyDeleteByTagsStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -6623,6 +7110,7 @@ export async function invalidateBySrcImages(
 			| InvalidateBySrcImagesStatus402
 			| InvalidateBySrcImagesStatus403
 			| InvalidateBySrcImagesStatus404
+			| InvalidateBySrcImagesStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -6663,6 +7151,7 @@ export async function dangerouslyDeleteBySrcImages(
 			| DangerouslyDeleteBySrcImagesStatus402
 			| DangerouslyDeleteBySrcImagesStatus403
 			| DangerouslyDeleteBySrcImagesStatus404
+			| DangerouslyDeleteBySrcImagesStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -6697,7 +7186,12 @@ export async function getEdgeConfigs(
 
 	const data = await request<
 		GetEdgeConfigsResponse,
-		ErrorWrapper<GetEdgeConfigsStatus400 | GetEdgeConfigsStatus401 | GetEdgeConfigsStatus403>,
+		ErrorWrapper<
+			| GetEdgeConfigsStatus400
+			| GetEdgeConfigsStatus401
+			| GetEdgeConfigsStatus403
+			| GetEdgeConfigsStatus410
+		>,
 		null,
 		Record<string, string>,
 		{ teamId?: string; slug?: string },
@@ -6736,6 +7230,7 @@ export async function createEdgeConfig(
 			| CreateEdgeConfigStatus401
 			| CreateEdgeConfigStatus402
 			| CreateEdgeConfigStatus403
+			| CreateEdgeConfigStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -6780,6 +7275,7 @@ export async function getEdgeConfig(
 			| GetEdgeConfigStatus401
 			| GetEdgeConfigStatus403
 			| GetEdgeConfigStatus404
+			| GetEdgeConfigStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -6826,6 +7322,7 @@ export async function updateEdgeConfig(
 			| UpdateEdgeConfigStatus403
 			| UpdateEdgeConfigStatus404
 			| UpdateEdgeConfigStatus409
+			| UpdateEdgeConfigStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -6871,6 +7368,7 @@ export async function deleteEdgeConfig(
 			| DeleteEdgeConfigStatus403
 			| DeleteEdgeConfigStatus404
 			| DeleteEdgeConfigStatus409
+			| DeleteEdgeConfigStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -6915,6 +7413,7 @@ export async function getEdgeConfigItems(
 			| GetEdgeConfigItemsStatus401
 			| GetEdgeConfigItemsStatus403
 			| GetEdgeConfigItemsStatus404
+			| GetEdgeConfigItemsStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -6961,6 +7460,7 @@ export async function patchEdgeConfigItems(
 			| PatchEdgeConfigItemsStatus403
 			| PatchEdgeConfigItemsStatus404
 			| PatchEdgeConfigItemsStatus409
+			| PatchEdgeConfigItemsStatus410
 			| PatchEdgeConfigItemsStatus412
 		>,
 		null,
@@ -7006,6 +7506,7 @@ export async function getEdgeConfigSchema(
 			| GetEdgeConfigSchemaStatus401
 			| GetEdgeConfigSchemaStatus403
 			| GetEdgeConfigSchemaStatus404
+			| GetEdgeConfigSchemaStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -7052,6 +7553,7 @@ export async function patchEdgeConfigSchema(
 			| PatchEdgeConfigSchemaStatus403
 			| PatchEdgeConfigSchemaStatus404
 			| PatchEdgeConfigSchemaStatus409
+			| PatchEdgeConfigSchemaStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -7098,6 +7600,7 @@ export async function deleteEdgeConfigSchema(
 			| DeleteEdgeConfigSchemaStatus403
 			| DeleteEdgeConfigSchemaStatus404
 			| DeleteEdgeConfigSchemaStatus409
+			| DeleteEdgeConfigSchemaStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -7146,6 +7649,7 @@ export async function getEdgeConfigItem(
 			| GetEdgeConfigItemStatus401
 			| GetEdgeConfigItemStatus403
 			| GetEdgeConfigItemStatus404
+			| GetEdgeConfigItemStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -7190,6 +7694,7 @@ export async function getEdgeConfigTokens(
 			| GetEdgeConfigTokensStatus401
 			| GetEdgeConfigTokensStatus403
 			| GetEdgeConfigTokensStatus404
+			| GetEdgeConfigTokensStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -7236,6 +7741,7 @@ export async function deleteEdgeConfigTokens(
 			| DeleteEdgeConfigTokensStatus403
 			| DeleteEdgeConfigTokensStatus404
 			| DeleteEdgeConfigTokensStatus409
+			| DeleteEdgeConfigTokensStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -7284,6 +7790,7 @@ export async function getEdgeConfigToken(
 			| GetEdgeConfigTokenStatus401
 			| GetEdgeConfigTokenStatus403
 			| GetEdgeConfigTokenStatus404
+			| GetEdgeConfigTokenStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -7330,6 +7837,7 @@ export async function createEdgeConfigToken(
 			| CreateEdgeConfigTokenStatus403
 			| CreateEdgeConfigTokenStatus404
 			| CreateEdgeConfigTokenStatus409
+			| CreateEdgeConfigTokenStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -7378,6 +7886,7 @@ export async function getEdgeConfigBackup(
 			| GetEdgeConfigBackupStatus401
 			| GetEdgeConfigBackupStatus403
 			| GetEdgeConfigBackupStatus404
+			| GetEdgeConfigBackupStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -7428,6 +7937,7 @@ export async function restoreEdgeConfigBackup(
 			| RestoreEdgeConfigBackupStatus403
 			| RestoreEdgeConfigBackupStatus404
 			| RestoreEdgeConfigBackupStatus409
+			| RestoreEdgeConfigBackupStatus410
 			| RestoreEdgeConfigBackupStatus412
 		>,
 		null,
@@ -7479,6 +7989,7 @@ export async function getEdgeConfigBackups(
 			| GetEdgeConfigBackupsStatus401
 			| GetEdgeConfigBackupsStatus403
 			| GetEdgeConfigBackupsStatus404
+			| GetEdgeConfigBackupsStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -7518,6 +8029,7 @@ export async function createSharedEnvVariable(
 			| CreateSharedEnvVariableStatus401
 			| CreateSharedEnvVariableStatus402
 			| CreateSharedEnvVariableStatus403
+			| CreateSharedEnvVariableStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -7567,6 +8079,7 @@ export async function listSharedEnvVariable(
 			| ListSharedEnvVariableStatus401
 			| ListSharedEnvVariableStatus403
 			| ListSharedEnvVariableStatus404
+			| ListSharedEnvVariableStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -7616,6 +8129,7 @@ export async function updateSharedEnvVariable(
 			| UpdateSharedEnvVariableStatus401
 			| UpdateSharedEnvVariableStatus402
 			| UpdateSharedEnvVariableStatus403
+			| UpdateSharedEnvVariableStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -7655,6 +8169,7 @@ export async function deleteSharedEnvVariable(
 			| DeleteSharedEnvVariableStatus401
 			| DeleteSharedEnvVariableStatus402
 			| DeleteSharedEnvVariableStatus403
+			| DeleteSharedEnvVariableStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -7694,7 +8209,12 @@ export async function getSharedEnvVar(
 	}
 	const data = await request<
 		GetSharedEnvVarResponse,
-		ErrorWrapper<GetSharedEnvVarStatus400 | GetSharedEnvVarStatus401 | GetSharedEnvVarStatus403>,
+		ErrorWrapper<
+			| GetSharedEnvVarStatus400
+			| GetSharedEnvVarStatus401
+			| GetSharedEnvVarStatus403
+			| GetSharedEnvVarStatus410
+		>,
 		null,
 		Record<string, string>,
 		{ teamId?: string; slug?: string },
@@ -7741,6 +8261,7 @@ export async function unlinkSharedEnvVariable(
 			| UnlinkSharedEnvVariableStatus400
 			| UnlinkSharedEnvVariableStatus401
 			| UnlinkSharedEnvVariableStatus403
+			| UnlinkSharedEnvVariableStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -7786,7 +8307,12 @@ export async function listUserEvents(
 
 	const data = await request<
 		ListUserEventsResponse,
-		ErrorWrapper<ListUserEventsStatus400 | ListUserEventsStatus401 | ListUserEventsStatus403>,
+		ErrorWrapper<
+			| ListUserEventsStatus400
+			| ListUserEventsStatus401
+			| ListUserEventsStatus403
+			| ListUserEventsStatus410
+		>,
 		null,
 		Record<string, string>,
 		{
@@ -7831,7 +8357,12 @@ export async function listEventTypes(
 
 	const data = await request<
 		ListEventTypesResponse,
-		ErrorWrapper<ListEventTypesStatus400 | ListEventTypesStatus401 | ListEventTypesStatus403>,
+		ErrorWrapper<
+			| ListEventTypesStatus400
+			| ListEventTypesStatus401
+			| ListEventTypesStatus403
+			| ListEventTypesStatus410
+		>,
 		null,
 		Record<string, string>,
 		{ teamId?: string; slug?: string },
@@ -7887,6 +8418,7 @@ export async function listFlagsV2(
 			| ListFlagsV2Status402
 			| ListFlagsV2Status403
 			| ListFlagsV2Status404
+			| ListFlagsV2Status410
 		>,
 		null,
 		Record<string, string>,
@@ -7952,6 +8484,7 @@ export async function listFlags(
 			| ListFlagsStatus402
 			| ListFlagsStatus403
 			| ListFlagsStatus404
+			| ListFlagsStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -8007,6 +8540,7 @@ export async function createFlag(
 			| CreateFlagStatus403
 			| CreateFlagStatus404
 			| CreateFlagStatus409
+			| CreateFlagStatus410
 			| CreateFlagStatus412
 		>,
 		null,
@@ -8052,7 +8586,12 @@ export async function getFlag(
 	const data = await request<
 		GetFlagResponse,
 		ErrorWrapper<
-			GetFlagStatus400 | GetFlagStatus401 | GetFlagStatus402 | GetFlagStatus403 | GetFlagStatus404
+			| GetFlagStatus400
+			| GetFlagStatus401
+			| GetFlagStatus402
+			| GetFlagStatus403
+			| GetFlagStatus404
+			| GetFlagStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -8103,6 +8642,7 @@ export async function updateFlag(
 			| UpdateFlagStatus403
 			| UpdateFlagStatus404
 			| UpdateFlagStatus409
+			| UpdateFlagStatus410
 			| UpdateFlagStatus412
 		>,
 		null,
@@ -8154,6 +8694,7 @@ export async function deleteFlag(
 			| DeleteFlagStatus403
 			| DeleteFlagStatus404
 			| DeleteFlagStatus409
+			| DeleteFlagStatus410
 			| DeleteFlagStatus412
 		>,
 		null,
@@ -8211,6 +8752,7 @@ export async function listFlagVersions(
 			| ListFlagVersionsStatus402
 			| ListFlagVersionsStatus403
 			| ListFlagVersionsStatus404
+			| ListFlagVersionsStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -8263,6 +8805,7 @@ export async function getFlagSettings(
 			| GetFlagSettingsStatus402
 			| GetFlagSettingsStatus403
 			| GetFlagSettingsStatus404
+			| GetFlagSettingsStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -8309,6 +8852,7 @@ export async function updateFlagSettings(
 			| UpdateFlagSettingsStatus403
 			| UpdateFlagSettingsStatus404
 			| UpdateFlagSettingsStatus409
+			| UpdateFlagSettingsStatus410
 			| UpdateFlagSettingsStatus412
 		>,
 		null,
@@ -8350,7 +8894,10 @@ export async function listTeamFlagSettings(
 	const data = await request<
 		ListTeamFlagSettingsResponse,
 		ErrorWrapper<
-			ListTeamFlagSettingsStatus400 | ListTeamFlagSettingsStatus401 | ListTeamFlagSettingsStatus403
+			| ListTeamFlagSettingsStatus400
+			| ListTeamFlagSettingsStatus401
+			| ListTeamFlagSettingsStatus403
+			| ListTeamFlagSettingsStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -8401,7 +8948,12 @@ export async function listTeamFlagsV2(
 	}
 	const data = await request<
 		ListTeamFlagsV2Response,
-		ErrorWrapper<ListTeamFlagsV2Status400 | ListTeamFlagsV2Status401 | ListTeamFlagsV2Status403>,
+		ErrorWrapper<
+			| ListTeamFlagsV2Status400
+			| ListTeamFlagsV2Status401
+			| ListTeamFlagsV2Status403
+			| ListTeamFlagsV2Status410
+		>,
 		null,
 		Record<string, string>,
 		{
@@ -8460,7 +9012,12 @@ export async function listTeamFlags(
 	}
 	const data = await request<
 		ListTeamFlagsResponse,
-		ErrorWrapper<ListTeamFlagsStatus400 | ListTeamFlagsStatus401 | ListTeamFlagsStatus403>,
+		ErrorWrapper<
+			| ListTeamFlagsStatus400
+			| ListTeamFlagsStatus401
+			| ListTeamFlagsStatus403
+			| ListTeamFlagsStatus410
+		>,
 		null,
 		Record<string, string>,
 		{
@@ -8515,6 +9072,7 @@ export async function createFlagSegment(
 			| CreateFlagSegmentStatus403
 			| CreateFlagSegmentStatus404
 			| CreateFlagSegmentStatus409
+			| CreateFlagSegmentStatus410
 			| CreateFlagSegmentStatus412
 		>,
 		null,
@@ -8561,6 +9119,7 @@ export async function listFlagSegments(
 			| ListFlagSegmentsStatus402
 			| ListFlagSegmentsStatus403
 			| ListFlagSegmentsStatus404
+			| ListFlagSegmentsStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -8610,6 +9169,7 @@ export async function getFlagSegment(
 			| GetFlagSegmentStatus402
 			| GetFlagSegmentStatus403
 			| GetFlagSegmentStatus404
+			| GetFlagSegmentStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -8660,6 +9220,7 @@ export async function deleteFlagSegment(
 			| DeleteFlagSegmentStatus403
 			| DeleteFlagSegmentStatus404
 			| DeleteFlagSegmentStatus409
+			| DeleteFlagSegmentStatus410
 			| DeleteFlagSegmentStatus412
 		>,
 		null,
@@ -8711,6 +9272,7 @@ export async function updateFlagSegment(
 			| UpdateFlagSegmentStatus403
 			| UpdateFlagSegmentStatus404
 			| UpdateFlagSegmentStatus409
+			| UpdateFlagSegmentStatus410
 			| UpdateFlagSegmentStatus412
 		>,
 		null,
@@ -8756,6 +9318,7 @@ export async function getDeploymentFeatureFlags(
 			| GetDeploymentFeatureFlagsStatus401
 			| GetDeploymentFeatureFlagsStatus403
 			| GetDeploymentFeatureFlagsStatus404
+			| GetDeploymentFeatureFlagsStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -8801,6 +9364,7 @@ export async function getSdkKeys(
 			| GetSdkKeysStatus402
 			| GetSdkKeysStatus403
 			| GetSdkKeysStatus404
+			| GetSdkKeysStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -8847,6 +9411,7 @@ export async function createSdkKey(
 			| CreateSdkKeyStatus403
 			| CreateSdkKeyStatus404
 			| CreateSdkKeyStatus409
+			| CreateSdkKeyStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -8897,6 +9462,7 @@ export async function deleteSdkKey(
 			| DeleteSdkKeyStatus403
 			| DeleteSdkKeyStatus404
 			| DeleteSdkKeyStatus409
+			| DeleteSdkKeyStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -8940,6 +9506,7 @@ export async function gitNamespaces(
 			| GitNamespacesStatus401
 			| GitNamespacesStatus403
 			| GitNamespacesStatus404
+			| GitNamespacesStatus410
 			| GitNamespacesStatus429
 			| GitNamespacesStatus500
 		>,
@@ -8993,6 +9560,7 @@ export async function searchRepo(
 			| SearchRepoStatus401
 			| SearchRepoStatus403
 			| SearchRepoStatus404
+			| SearchRepoStatus410
 			| SearchRepoStatus429
 			| SearchRepoStatus500
 		>,
@@ -9065,6 +9633,7 @@ export async function getBillingPlans(
 			| GetBillingPlansStatus401
 			| GetBillingPlansStatus403
 			| GetBillingPlansStatus404
+			| GetBillingPlansStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -9127,6 +9696,7 @@ export async function connectIntegrationResourceToProject(
 			| ConnectIntegrationResourceToProjectStatus401
 			| ConnectIntegrationResourceToProjectStatus403
 			| ConnectIntegrationResourceToProjectStatus404
+			| ConnectIntegrationResourceToProjectStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -9169,6 +9739,7 @@ export async function updateInstallation(
 			| UpdateInstallationStatus401
 			| UpdateInstallationStatus403
 			| UpdateInstallationStatus404
+			| UpdateInstallationStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -9210,6 +9781,7 @@ export async function getAccountInfo(
 			| GetAccountInfoStatus401
 			| GetAccountInfoStatus403
 			| GetAccountInfoStatus404
+			| GetAccountInfoStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -9250,7 +9822,13 @@ export async function getMember(
 	}
 	const data = await request<
 		GetMemberResponse,
-		ErrorWrapper<GetMemberStatus400 | GetMemberStatus401 | GetMemberStatus403 | GetMemberStatus404>,
+		ErrorWrapper<
+			| GetMemberStatus400
+			| GetMemberStatus401
+			| GetMemberStatus403
+			| GetMemberStatus404
+			| GetMemberStatus410
+		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
@@ -9287,7 +9865,11 @@ export async function createEvent(
 	const data = await request<
 		CreateEventResponse,
 		ErrorWrapper<
-			CreateEventStatus400 | CreateEventStatus401 | CreateEventStatus403 | CreateEventStatus404
+			| CreateEventStatus400
+			| CreateEventStatus401
+			| CreateEventStatus403
+			| CreateEventStatus404
+			| CreateEventStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -9329,6 +9911,7 @@ export async function getIntegrationResources(
 			| GetIntegrationResourcesStatus401
 			| GetIntegrationResourcesStatus403
 			| GetIntegrationResourcesStatus404
+			| GetIntegrationResourcesStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -9374,6 +9957,7 @@ export async function getIntegrationResource(
 			| GetIntegrationResourceStatus401
 			| GetIntegrationResourceStatus403
 			| GetIntegrationResourceStatus404
+			| GetIntegrationResourceStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -9419,6 +10003,7 @@ export async function deleteIntegrationResource(
 			| DeleteIntegrationResourceStatus401
 			| DeleteIntegrationResourceStatus403
 			| DeleteIntegrationResourceStatus404
+			| DeleteIntegrationResourceStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -9465,6 +10050,7 @@ export async function importResource(
 			| ImportResourceStatus403
 			| ImportResourceStatus404
 			| ImportResourceStatus409
+			| ImportResourceStatus410
 			| ImportResourceStatus422
 			| ImportResourceStatus429
 		>,
@@ -9513,6 +10099,7 @@ export async function updateResource(
 			| UpdateResourceStatus403
 			| UpdateResourceStatus404
 			| UpdateResourceStatus409
+			| UpdateResourceStatus410
 			| UpdateResourceStatus422
 		>,
 		null,
@@ -9555,6 +10142,7 @@ export async function submitBillingData(
 			| SubmitBillingDataStatus401
 			| SubmitBillingDataStatus403
 			| SubmitBillingDataStatus404
+			| SubmitBillingDataStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -9597,6 +10185,7 @@ export async function submitInvoice(
 			| SubmitInvoiceStatus403
 			| SubmitInvoiceStatus404
 			| SubmitInvoiceStatus409
+			| SubmitInvoiceStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -9638,6 +10227,7 @@ export async function finalizeInstallation(
 			| FinalizeInstallationStatus401
 			| FinalizeInstallationStatus403
 			| FinalizeInstallationStatus404
+			| FinalizeInstallationStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -9679,7 +10269,11 @@ export async function getInvoice(
 	const data = await request<
 		GetInvoiceResponse,
 		ErrorWrapper<
-			GetInvoiceStatus400 | GetInvoiceStatus401 | GetInvoiceStatus403 | GetInvoiceStatus404
+			| GetInvoiceStatus400
+			| GetInvoiceStatus401
+			| GetInvoiceStatus403
+			| GetInvoiceStatus404
+			| GetInvoiceStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -9726,6 +10320,7 @@ export async function updateInvoice(
 			| UpdateInvoiceStatus403
 			| UpdateInvoiceStatus404
 			| UpdateInvoiceStatus409
+			| UpdateInvoiceStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -9767,6 +10362,7 @@ export async function submitPrepaymentBalances(
 			| SubmitPrepaymentBalancesStatus401
 			| SubmitPrepaymentBalancesStatus403
 			| SubmitPrepaymentBalancesStatus404
+			| SubmitPrepaymentBalancesStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -9822,6 +10418,7 @@ export async function updateResourceSecrets(
 			| UpdateResourceSecretsStatus403
 			| UpdateResourceSecretsStatus404
 			| UpdateResourceSecretsStatus409
+			| UpdateResourceSecretsStatus410
 			| UpdateResourceSecretsStatus422
 		>,
 		null,
@@ -9869,6 +10466,7 @@ export async function updateResourceSecretsById(
 			| UpdateResourceSecretsByIdStatus403
 			| UpdateResourceSecretsByIdStatus404
 			| UpdateResourceSecretsByIdStatus409
+			| UpdateResourceSecretsByIdStatus410
 			| UpdateResourceSecretsByIdStatus422
 		>,
 		null,
@@ -9910,7 +10508,10 @@ export async function getConfigurations(
 	const data = await request<
 		GetConfigurationsResponse,
 		ErrorWrapper<
-			GetConfigurationsStatus400 | GetConfigurationsStatus401 | GetConfigurationsStatus403
+			| GetConfigurationsStatus400
+			| GetConfigurationsStatus401
+			| GetConfigurationsStatus403
+			| GetConfigurationsStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -9961,6 +10562,7 @@ export async function getConfiguration(
 			| GetConfigurationStatus401
 			| GetConfigurationStatus403
 			| GetConfigurationStatus404
+			| GetConfigurationStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -10005,6 +10607,7 @@ export async function deleteConfiguration(
 			| DeleteConfigurationStatus401
 			| DeleteConfigurationStatus403
 			| DeleteConfigurationStatus404
+			| DeleteConfigurationStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -10049,6 +10652,7 @@ export async function getConfigurationProducts(
 			| GetConfigurationProductsStatus401
 			| GetConfigurationProductsStatus403
 			| GetConfigurationProductsStatus404
+			| GetConfigurationProductsStatus410
 			| GetConfigurationProductsStatus500
 		>,
 		null,
@@ -10115,6 +10719,7 @@ export async function getIntegrationLogDrains(
 			| GetIntegrationLogDrainsStatus400
 			| GetIntegrationLogDrainsStatus401
 			| GetIntegrationLogDrainsStatus403
+			| GetIntegrationLogDrainsStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -10149,7 +10754,12 @@ export async function createLogDrain(
 
 	const data = await request<
 		CreateLogDrainResponse,
-		ErrorWrapper<CreateLogDrainStatus400 | CreateLogDrainStatus401 | CreateLogDrainStatus403>,
+		ErrorWrapper<
+			| CreateLogDrainStatus400
+			| CreateLogDrainStatus401
+			| CreateLogDrainStatus403
+			| CreateLogDrainStatus410
+		>,
 		null,
 		Record<string, string>,
 		{ teamId?: string; slug?: string },
@@ -10193,6 +10803,7 @@ export async function deleteIntegrationLogDrain(
 			| DeleteIntegrationLogDrainStatus401
 			| DeleteIntegrationLogDrainStatus403
 			| DeleteIntegrationLogDrainStatus404
+			| DeleteIntegrationLogDrainStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -10224,6 +10835,7 @@ export async function createApiKeys(
 			| CreateApiKeysStatus401
 			| CreateApiKeysStatus403
 			| CreateApiKeysStatus409
+			| CreateApiKeysStatus410
 			| CreateApiKeysStatus429
 			| CreateApiKeysStatus500
 		>,
@@ -10268,7 +10880,12 @@ export async function getRuntimeLogs(
 	}
 	const data = await request<
 		GetRuntimeLogsResponse,
-		ErrorWrapper<GetRuntimeLogsStatus400 | GetRuntimeLogsStatus401 | GetRuntimeLogsStatus403>,
+		ErrorWrapper<
+			| GetRuntimeLogsStatus400
+			| GetRuntimeLogsStatus401
+			| GetRuntimeLogsStatus403
+			| GetRuntimeLogsStatus410
+		>,
 		null,
 		Record<string, string>,
 		{ teamId?: string; slug?: string },
@@ -10314,6 +10931,7 @@ export async function createInstallationsByIntegrationConfigurationIdResourcesBy
 			| CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsStatus401
 			| CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsStatus403
 			| CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsStatus404
+			| CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -10363,6 +10981,7 @@ export async function updateInstallationsByIntegrationConfigurationIdResourcesBy
 			| UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus401
 			| UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus403
 			| UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus404
+			| UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -10412,6 +11031,7 @@ export async function deleteInstallationsByIntegrationConfigurationIdResourcesBy
 			| DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus401
 			| DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus403
 			| DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus404
+			| DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -10457,6 +11077,7 @@ export async function getInstallationsByIntegrationConfigurationIdResourcesByRes
 			| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus401
 			| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus403
 			| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus404
+			| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -10503,6 +11124,7 @@ export async function replaceInstallationsByIntegrationConfigurationIdResourcesB
 			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus403
 			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus404
 			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus409
+			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus410
 			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus412
 		>,
 		null,
@@ -10541,6 +11163,7 @@ export async function getMicrofrontendsGroups(
 			| GetMicrofrontendsGroupsStatus400
 			| GetMicrofrontendsGroupsStatus401
 			| GetMicrofrontendsGroupsStatus403
+			| GetMicrofrontendsGroupsStatus410
 			| GetMicrofrontendsGroupsStatus500
 		>,
 		null,
@@ -10585,6 +11208,7 @@ export async function getMicrofrontendsInGroup(
 			| GetMicrofrontendsInGroupStatus400
 			| GetMicrofrontendsInGroupStatus401
 			| GetMicrofrontendsInGroupStatus403
+			| GetMicrofrontendsInGroupStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -10629,6 +11253,7 @@ export async function getMicrofrontendsConfig(
 			| GetMicrofrontendsConfigStatus401
 			| GetMicrofrontendsConfigStatus403
 			| GetMicrofrontendsConfigStatus404
+			| GetMicrofrontendsConfigStatus410
 			| GetMicrofrontendsConfigStatus500
 		>,
 		null,
@@ -10674,6 +11299,7 @@ export async function getMicrofrontendsConfigForProject(
 			| GetMicrofrontendsConfigForProjectStatus401
 			| GetMicrofrontendsConfigForProjectStatus403
 			| GetMicrofrontendsConfigForProjectStatus404
+			| GetMicrofrontendsConfigForProjectStatus410
 			| GetMicrofrontendsConfigForProjectStatus500
 		>,
 		null,
@@ -10713,6 +11339,7 @@ export async function createMicrofrontendsGroupWithApplications(
 			| CreateMicrofrontendsGroupWithApplicationsStatus400
 			| CreateMicrofrontendsGroupWithApplicationsStatus401
 			| CreateMicrofrontendsGroupWithApplicationsStatus403
+			| CreateMicrofrontendsGroupWithApplicationsStatus410
 			| CreateMicrofrontendsGroupWithApplicationsStatus500
 		>,
 		null,
@@ -10753,6 +11380,7 @@ export async function getObservabilityConfigurationProjects(
 			| GetObservabilityConfigurationProjectsStatus401
 			| GetObservabilityConfigurationProjectsStatus403
 			| GetObservabilityConfigurationProjectsStatus404
+			| GetObservabilityConfigurationProjectsStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -10797,6 +11425,7 @@ export async function updateObservabilityConfigurationProject(
 			| UpdateObservabilityConfigurationProjectStatus401
 			| UpdateObservabilityConfigurationProjectStatus403
 			| UpdateObservabilityConfigurationProjectStatus404
+			| UpdateObservabilityConfigurationProjectStatus410
 			| UpdateObservabilityConfigurationProjectStatus429
 		>,
 		null,
@@ -10830,6 +11459,7 @@ export async function createObservabilityQuery(
 			| CreateObservabilityQueryStatus402
 			| CreateObservabilityQueryStatus403
 			| CreateObservabilityQueryStatus408
+			| CreateObservabilityQueryStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -10859,6 +11489,7 @@ export async function getObservabilitySchema(
 			| GetObservabilitySchemaStatus400
 			| GetObservabilitySchemaStatus401
 			| GetObservabilitySchemaStatus403
+			| GetObservabilitySchemaStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -10897,6 +11528,7 @@ export async function getObservabilitySchemaByMetricId(
 			| GetObservabilitySchemaByMetricIdStatus400
 			| GetObservabilitySchemaByMetricIdStatus401
 			| GetObservabilitySchemaByMetricIdStatus403
+			| GetObservabilitySchemaByMetricIdStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -10943,7 +11575,10 @@ export async function getProjectMembers(
 	const data = await request<
 		GetProjectMembersResponse,
 		ErrorWrapper<
-			GetProjectMembersStatus400 | GetProjectMembersStatus401 | GetProjectMembersStatus403
+			| GetProjectMembersStatus400
+			| GetProjectMembersStatus401
+			| GetProjectMembersStatus403
+			| GetProjectMembersStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -10994,6 +11629,7 @@ export async function addProjectMember(
 			| AddProjectMemberStatus400
 			| AddProjectMemberStatus401
 			| AddProjectMemberStatus403
+			| AddProjectMemberStatus410
 			| AddProjectMemberStatus500
 		>,
 		null,
@@ -11039,7 +11675,10 @@ export async function removeProjectMember(
 	const data = await request<
 		RemoveProjectMemberResponse,
 		ErrorWrapper<
-			RemoveProjectMemberStatus400 | RemoveProjectMemberStatus401 | RemoveProjectMemberStatus403
+			| RemoveProjectMemberStatus400
+			| RemoveProjectMemberStatus401
+			| RemoveProjectMemberStatus403
+			| RemoveProjectMemberStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -11086,7 +11725,13 @@ export async function getRoutes(
 	}
 	const data = await request<
 		GetRoutesResponse,
-		ErrorWrapper<GetRoutesStatus400 | GetRoutesStatus401 | GetRoutesStatus403 | GetRoutesStatus404>,
+		ErrorWrapper<
+			| GetRoutesStatus400
+			| GetRoutesStatus401
+			| GetRoutesStatus403
+			| GetRoutesStatus404
+			| GetRoutesStatus410
+		>,
 		null,
 		Record<string, string>,
 		{
@@ -11137,6 +11782,7 @@ export async function stageRoutes(
 			| StageRoutesStatus401
 			| StageRoutesStatus403
 			| StageRoutesStatus409
+			| StageRoutesStatus410
 			| StageRoutesStatus500
 		>,
 		null,
@@ -11182,6 +11828,7 @@ export async function addRoute(
 			| AddRouteStatus401
 			| AddRouteStatus403
 			| AddRouteStatus409
+			| AddRouteStatus410
 			| AddRouteStatus500
 		>,
 		null,
@@ -11223,7 +11870,11 @@ export async function deleteRoutes(
 	const data = await request<
 		DeleteRoutesResponse,
 		ErrorWrapper<
-			DeleteRoutesStatus400 | DeleteRoutesStatus401 | DeleteRoutesStatus403 | DeleteRoutesStatus404
+			| DeleteRoutesStatus400
+			| DeleteRoutesStatus401
+			| DeleteRoutesStatus403
+			| DeleteRoutesStatus404
+			| DeleteRoutesStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -11273,6 +11924,7 @@ export async function editRoute(
 			| EditRouteStatus403
 			| EditRouteStatus404
 			| EditRouteStatus409
+			| EditRouteStatus410
 			| EditRouteStatus500
 		>,
 		null,
@@ -11318,6 +11970,7 @@ export async function generateRoute(
 			| GenerateRouteStatus401
 			| GenerateRouteStatus403
 			| GenerateRouteStatus408
+			| GenerateRouteStatus410
 			| GenerateRouteStatus500
 		>,
 		null,
@@ -11358,7 +12011,12 @@ export async function getRouteVersions(
 	}
 	const data = await request<
 		GetRouteVersionsResponse,
-		ErrorWrapper<GetRouteVersionsStatus400 | GetRouteVersionsStatus401 | GetRouteVersionsStatus403>,
+		ErrorWrapper<
+			| GetRouteVersionsStatus400
+			| GetRouteVersionsStatus401
+			| GetRouteVersionsStatus403
+			| GetRouteVersionsStatus410
+		>,
 		null,
 		Record<string, string>,
 		{ teamId?: string; slug?: string },
@@ -11403,6 +12061,7 @@ export async function updateRouteVersions(
 			| UpdateRouteVersionsStatus403
 			| UpdateRouteVersionsStatus404
 			| UpdateRouteVersionsStatus409
+			| UpdateRouteVersionsStatus410
 			| UpdateRouteVersionsStatus500
 		>,
 		null,
@@ -11456,7 +12115,9 @@ export async function getProjects(
 
 	const data = await request<
 		GetProjectsResponse,
-		ErrorWrapper<GetProjectsStatus400 | GetProjectsStatus401 | GetProjectsStatus403>,
+		ErrorWrapper<
+			GetProjectsStatus400 | GetProjectsStatus401 | GetProjectsStatus403 | GetProjectsStatus410
+		>,
 		null,
 		Record<string, string>,
 		{
@@ -11508,7 +12169,12 @@ export async function getProjectTrace(
 
 	const data = await request<
 		GetProjectTraceResponse,
-		ErrorWrapper<GetProjectTraceStatus400 | GetProjectTraceStatus401 | GetProjectTraceStatus403>,
+		ErrorWrapper<
+			| GetProjectTraceStatus400
+			| GetProjectTraceStatus401
+			| GetProjectTraceStatus403
+			| GetProjectTraceStatus410
+		>,
 		null,
 		Record<string, string>,
 		{ projectId?: string; requestId?: string; teamId?: string; slug?: string },
@@ -11549,6 +12215,7 @@ export async function createProject(
 			| CreateProjectStatus403
 			| CreateProjectStatus404
 			| CreateProjectStatus409
+			| CreateProjectStatus410
 			| CreateProjectStatus428
 			| CreateProjectStatus429
 			| CreateProjectStatus500
@@ -11596,6 +12263,7 @@ export async function getProjectToken(
 			| GetProjectTokenStatus401
 			| GetProjectTokenStatus403
 			| GetProjectTokenStatus404
+			| GetProjectTokenStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -11634,6 +12302,7 @@ export async function createTraceSession(
 			| CreateTraceSessionStatus400
 			| CreateTraceSessionStatus401
 			| CreateTraceSessionStatus403
+			| CreateTraceSessionStatus410
 			| CreateTraceSessionStatus422
 		>,
 		null,
@@ -11674,7 +12343,9 @@ export async function getProject(
 	}
 	const data = await request<
 		GetProjectResponse,
-		ErrorWrapper<GetProjectStatus400 | GetProjectStatus401 | GetProjectStatus403>,
+		ErrorWrapper<
+			GetProjectStatus400 | GetProjectStatus401 | GetProjectStatus403 | GetProjectStatus410
+		>,
 		null,
 		Record<string, string>,
 		{ teamId?: string; slug?: string },
@@ -11720,6 +12391,7 @@ export async function updateProject(
 			| UpdateProjectStatus403
 			| UpdateProjectStatus404
 			| UpdateProjectStatus409
+			| UpdateProjectStatus410
 			| UpdateProjectStatus428
 			| UpdateProjectStatus500
 		>,
@@ -11766,6 +12438,7 @@ export async function deleteProject(
 			| DeleteProjectStatus401
 			| DeleteProjectStatus403
 			| DeleteProjectStatus409
+			| DeleteProjectStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -11809,6 +12482,7 @@ export async function uploadProjectAvatar(
 			| UploadProjectAvatarStatus400
 			| UploadProjectAvatarStatus401
 			| UploadProjectAvatarStatus403
+			| UploadProjectAvatarStatus410
 			| UploadProjectAvatarStatus413
 			| UploadProjectAvatarStatus415
 		>,
@@ -11857,6 +12531,7 @@ export async function updateStaticIps(
 			| UpdateStaticIpsStatus403
 			| UpdateStaticIpsStatus404
 			| UpdateStaticIpsStatus409
+			| UpdateStaticIpsStatus410
 			| UpdateStaticIpsStatus500
 		>,
 		null,
@@ -11902,6 +12577,7 @@ export async function createCustomEnvironment(
 			| CreateCustomEnvironmentStatus401
 			| CreateCustomEnvironmentStatus402
 			| CreateCustomEnvironmentStatus403
+			| CreateCustomEnvironmentStatus410
 			| CreateCustomEnvironmentStatus500
 		>,
 		null,
@@ -11946,6 +12622,7 @@ export async function getProjectsByIdOrNameCustomEnvironments(
 			| GetProjectsByIdOrNameCustomEnvironmentsStatus400
 			| GetProjectsByIdOrNameCustomEnvironmentsStatus401
 			| GetProjectsByIdOrNameCustomEnvironmentsStatus403
+			| GetProjectsByIdOrNameCustomEnvironmentsStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -11994,6 +12671,7 @@ export async function getCustomEnvironment(
 			| GetCustomEnvironmentStatus401
 			| GetCustomEnvironmentStatus403
 			| GetCustomEnvironmentStatus404
+			| GetCustomEnvironmentStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -12042,6 +12720,7 @@ export async function updateCustomEnvironment(
 			| UpdateCustomEnvironmentStatus401
 			| UpdateCustomEnvironmentStatus402
 			| UpdateCustomEnvironmentStatus403
+			| UpdateCustomEnvironmentStatus410
 			| UpdateCustomEnvironmentStatus500
 		>,
 		null,
@@ -12090,6 +12769,7 @@ export async function removeCustomEnvironment(
 			| RemoveCustomEnvironmentStatus400
 			| RemoveCustomEnvironmentStatus401
 			| RemoveCustomEnvironmentStatus403
+			| RemoveCustomEnvironmentStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -12144,7 +12824,10 @@ export async function getProjectDomains(
 	const data = await request<
 		GetProjectDomainsResponse,
 		ErrorWrapper<
-			GetProjectDomainsStatus400 | GetProjectDomainsStatus401 | GetProjectDomainsStatus403
+			| GetProjectDomainsStatus400
+			| GetProjectDomainsStatus401
+			| GetProjectDomainsStatus403
+			| GetProjectDomainsStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -12202,7 +12885,12 @@ export async function getProjectDomain(
 	}
 	const data = await request<
 		GetProjectDomainResponse,
-		ErrorWrapper<GetProjectDomainStatus400 | GetProjectDomainStatus401 | GetProjectDomainStatus403>,
+		ErrorWrapper<
+			| GetProjectDomainStatus400
+			| GetProjectDomainStatus401
+			| GetProjectDomainStatus403
+			| GetProjectDomainStatus410
+		>,
 		null,
 		Record<string, string>,
 		{ teamId?: string; slug?: string },
@@ -12250,6 +12938,7 @@ export async function updateProjectDomain(
 			| UpdateProjectDomainStatus401
 			| UpdateProjectDomainStatus403
 			| UpdateProjectDomainStatus409
+			| UpdateProjectDomainStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -12299,6 +12988,7 @@ export async function removeProjectDomain(
 			| RemoveProjectDomainStatus403
 			| RemoveProjectDomainStatus404
 			| RemoveProjectDomainStatus409
+			| RemoveProjectDomainStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -12344,6 +13034,7 @@ export async function addProjectDomain(
 			| AddProjectDomainStatus402
 			| AddProjectDomainStatus403
 			| AddProjectDomainStatus409
+			| AddProjectDomainStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -12392,6 +13083,7 @@ export async function moveProjectDomain(
 			| MoveProjectDomainStatus401
 			| MoveProjectDomainStatus403
 			| MoveProjectDomainStatus409
+			| MoveProjectDomainStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -12436,7 +13128,10 @@ export async function verifyProjectDomain(
 	const data = await request<
 		VerifyProjectDomainResponse,
 		ErrorWrapper<
-			VerifyProjectDomainStatus400 | VerifyProjectDomainStatus401 | VerifyProjectDomainStatus403
+			| VerifyProjectDomainStatus400
+			| VerifyProjectDomainStatus401
+			| VerifyProjectDomainStatus403
+			| VerifyProjectDomainStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -12485,7 +13180,10 @@ export async function filterProjectEnvs(
 	const data = await request<
 		FilterProjectEnvsResponse,
 		ErrorWrapper<
-			FilterProjectEnvsStatus400 | FilterProjectEnvsStatus401 | FilterProjectEnvsStatus403
+			| FilterProjectEnvsStatus400
+			| FilterProjectEnvsStatus401
+			| FilterProjectEnvsStatus403
+			| FilterProjectEnvsStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -12540,6 +13238,7 @@ export async function createProjectEnv(
 			| CreateProjectEnvStatus403
 			| CreateProjectEnvStatus404
 			| CreateProjectEnvStatus409
+			| CreateProjectEnvStatus410
 			| CreateProjectEnvStatus429
 			| CreateProjectEnvStatus500
 		>,
@@ -12585,7 +13284,12 @@ export async function getProjectEnv(
 	}
 	const data = await request<
 		GetProjectEnvResponse,
-		ErrorWrapper<GetProjectEnvStatus400 | GetProjectEnvStatus401 | GetProjectEnvStatus403>,
+		ErrorWrapper<
+			| GetProjectEnvStatus400
+			| GetProjectEnvStatus401
+			| GetProjectEnvStatus403
+			| GetProjectEnvStatus410
+		>,
 		null,
 		Record<string, string>,
 		{ teamId?: string; slug?: string },
@@ -12634,6 +13338,7 @@ export async function removeProjectEnv(
 			| RemoveProjectEnvStatus403
 			| RemoveProjectEnvStatus404
 			| RemoveProjectEnvStatus409
+			| RemoveProjectEnvStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -12683,6 +13388,7 @@ export async function editProjectEnv(
 			| EditProjectEnvStatus403
 			| EditProjectEnvStatus404
 			| EditProjectEnvStatus409
+			| EditProjectEnvStatus410
 			| EditProjectEnvStatus429
 			| EditProjectEnvStatus500
 		>,
@@ -12730,6 +13436,7 @@ export async function batchRemoveProjectEnv(
 			| BatchRemoveProjectEnvStatus403
 			| BatchRemoveProjectEnvStatus404
 			| BatchRemoveProjectEnvStatus409
+			| BatchRemoveProjectEnvStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -12774,6 +13481,7 @@ export async function getRollingReleaseBillingStatus(
 			| GetRollingReleaseBillingStatusStatus401
 			| GetRollingReleaseBillingStatusStatus403
 			| GetRollingReleaseBillingStatusStatus404
+			| GetRollingReleaseBillingStatusStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -12818,6 +13526,7 @@ export async function getRollingReleaseConfig(
 			| GetRollingReleaseConfigStatus401
 			| GetRollingReleaseConfigStatus403
 			| GetRollingReleaseConfigStatus404
+			| GetRollingReleaseConfigStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -12862,6 +13571,7 @@ export async function deleteRollingReleaseConfig(
 			| DeleteRollingReleaseConfigStatus401
 			| DeleteRollingReleaseConfigStatus403
 			| DeleteRollingReleaseConfigStatus404
+			| DeleteRollingReleaseConfigStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -12906,6 +13616,7 @@ export async function updateRollingReleaseConfig(
 			| UpdateRollingReleaseConfigStatus401
 			| UpdateRollingReleaseConfigStatus403
 			| UpdateRollingReleaseConfigStatus404
+			| UpdateRollingReleaseConfigStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -12950,6 +13661,7 @@ export async function getRollingRelease(
 			| GetRollingReleaseStatus401
 			| GetRollingReleaseStatus403
 			| GetRollingReleaseStatus404
+			| GetRollingReleaseStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -12994,6 +13706,7 @@ export async function approveRollingReleaseStage(
 			| ApproveRollingReleaseStageStatus401
 			| ApproveRollingReleaseStageStatus403
 			| ApproveRollingReleaseStageStatus404
+			| ApproveRollingReleaseStageStatus410
 			| ApproveRollingReleaseStageStatus500
 		>,
 		null,
@@ -13040,6 +13753,7 @@ export async function startRollingRelease(
 			| StartRollingReleaseStatus403
 			| StartRollingReleaseStatus404
 			| StartRollingReleaseStatus409
+			| StartRollingReleaseStatus410
 			| StartRollingReleaseStatus422
 		>,
 		null,
@@ -13085,6 +13799,7 @@ export async function completeRollingRelease(
 			| CompleteRollingReleaseStatus401
 			| CompleteRollingReleaseStatus403
 			| CompleteRollingReleaseStatus404
+			| CompleteRollingReleaseStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -13128,6 +13843,7 @@ export async function createProjectTransferRequest(
 			| CreateProjectTransferRequestStatus400
 			| CreateProjectTransferRequestStatus401
 			| CreateProjectTransferRequestStatus403
+			| CreateProjectTransferRequestStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -13172,6 +13888,7 @@ export async function acceptProjectTransferRequest(
 			| AcceptProjectTransferRequestStatus401
 			| AcceptProjectTransferRequestStatus403
 			| AcceptProjectTransferRequestStatus404
+			| AcceptProjectTransferRequestStatus410
 			| AcceptProjectTransferRequestStatus422
 		>,
 		null,
@@ -13218,6 +13935,7 @@ export async function updateProjectProtectionBypass(
 			| UpdateProjectProtectionBypassStatus403
 			| UpdateProjectProtectionBypassStatus404
 			| UpdateProjectProtectionBypassStatus409
+			| UpdateProjectProtectionBypassStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -13267,6 +13985,7 @@ export async function requestRollback(
 			| RequestRollbackStatus402
 			| RequestRollbackStatus403
 			| RequestRollbackStatus409
+			| RequestRollbackStatus410
 			| RequestRollbackStatus422
 		>,
 		null,
@@ -13314,6 +14033,7 @@ export async function updateProjectsByProjectIdRollbackByDeploymentIdUpdateDescr
 			| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus401
 			| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus403
 			| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus409
+			| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus410
 			| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus422
 		>,
 		null,
@@ -13358,6 +14078,7 @@ export async function updateMicrofrontends(
 			| UpdateMicrofrontendsStatus401
 			| UpdateMicrofrontendsStatus403
 			| UpdateMicrofrontendsStatus409
+			| UpdateMicrofrontendsStatus410
 			| UpdateMicrofrontendsStatus500
 		>,
 		null,
@@ -13407,6 +14128,7 @@ export async function requestPromote(
 			| RequestPromoteStatus401
 			| RequestPromoteStatus403
 			| RequestPromoteStatus409
+			| RequestPromoteStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -13458,6 +14180,7 @@ export async function listPromoteAliases(
 			| ListPromoteAliasesStatus401
 			| ListPromoteAliasesStatus403
 			| ListPromoteAliasesStatus404
+			| ListPromoteAliasesStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -13505,7 +14228,11 @@ export async function pauseProject(
 	const data = await request<
 		PauseProjectResponse,
 		ErrorWrapper<
-			PauseProjectStatus400 | PauseProjectStatus401 | PauseProjectStatus403 | PauseProjectStatus500
+			| PauseProjectStatus400
+			| PauseProjectStatus401
+			| PauseProjectStatus403
+			| PauseProjectStatus410
+			| PauseProjectStatus500
 		>,
 		null,
 		Record<string, string>,
@@ -13549,6 +14276,7 @@ export async function unpauseProject(
 			| UnpauseProjectStatus400
 			| UnpauseProjectStatus401
 			| UnpauseProjectStatus403
+			| UnpauseProjectStatus410
 			| UnpauseProjectStatus500
 		>,
 		null,
@@ -13600,6 +14328,7 @@ export async function listSandboxes(
 			| ListSandboxesStatus401
 			| ListSandboxesStatus403
 			| ListSandboxesStatus404
+			| ListSandboxesStatus410
 			| ListSandboxesStatus429
 		>,
 		null,
@@ -13705,6 +14434,7 @@ export async function listDrives(
 			| ListDrivesStatus401
 			| ListDrivesStatus403
 			| ListDrivesStatus404
+			| ListDrivesStatus410
 			| ListDrivesStatus429
 		>,
 		null,
@@ -13761,6 +14491,7 @@ export async function getOrCreateDrive(
 			| GetOrCreateDriveStatus403
 			| GetOrCreateDriveStatus404
 			| GetOrCreateDriveStatus409
+			| GetOrCreateDriveStatus410
 			| GetOrCreateDriveStatus429
 		>,
 		null,
@@ -13807,6 +14538,7 @@ export async function deleteDrive(
 			| DeleteDriveStatus403
 			| DeleteDriveStatus404
 			| DeleteDriveStatus409
+			| DeleteDriveStatus410
 			| DeleteDriveStatus429
 		>,
 		null,
@@ -13855,6 +14587,7 @@ export async function listSessionSnapshots(
 			| ListSessionSnapshotsStatus401
 			| ListSessionSnapshotsStatus403
 			| ListSessionSnapshotsStatus404
+			| ListSessionSnapshotsStatus410
 			| ListSessionSnapshotsStatus429
 		>,
 		null,
@@ -13908,6 +14641,7 @@ export async function getSessionSnapshot(
 			| GetSessionSnapshotStatus401
 			| GetSessionSnapshotStatus403
 			| GetSessionSnapshotStatus404
+			| GetSessionSnapshotStatus410
 			| GetSessionSnapshotStatus429
 		>,
 		null,
@@ -13953,6 +14687,7 @@ export async function deleteSessionSnapshot(
 			| DeleteSessionSnapshotStatus401
 			| DeleteSessionSnapshotStatus403
 			| DeleteSessionSnapshotStatus404
+			| DeleteSessionSnapshotStatus410
 			| DeleteSessionSnapshotStatus429
 		>,
 		null,
@@ -14001,6 +14736,7 @@ export async function listSessions(
 			| ListSessionsStatus401
 			| ListSessionsStatus403
 			| ListSessionsStatus404
+			| ListSessionsStatus410
 			| ListSessionsStatus429
 			| ListSessionsStatus500
 		>,
@@ -14055,6 +14791,7 @@ export async function getSession(
 			| GetSessionStatus401
 			| GetSessionStatus403
 			| GetSessionStatus404
+			| GetSessionStatus410
 			| GetSessionStatus429
 			| GetSessionStatus500
 		>,
@@ -14200,6 +14937,7 @@ export async function deleteSandbox(
 			| DeleteSandboxStatus401
 			| DeleteSandboxStatus403
 			| DeleteSandboxStatus404
+			| DeleteSandboxStatus410
 			| DeleteSandboxStatus429
 		>,
 		null,
@@ -14245,6 +14983,7 @@ export async function listSessionCommands(
 			| ListSessionCommandsStatus401
 			| ListSessionCommandsStatus403
 			| ListSessionCommandsStatus404
+			| ListSessionCommandsStatus410
 			| ListSessionCommandsStatus429
 		>,
 		null,
@@ -14829,6 +15568,7 @@ export async function updateAttackChallengeMode(
 			| UpdateAttackChallengeModeStatus401
 			| UpdateAttackChallengeModeStatus403
 			| UpdateAttackChallengeModeStatus404
+			| UpdateAttackChallengeModeStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -14862,6 +15602,7 @@ export async function getSecurityFirewallConfig(
 			| GetSecurityFirewallConfigStatus401
 			| GetSecurityFirewallConfigStatus403
 			| GetSecurityFirewallConfigStatus404
+			| GetSecurityFirewallConfigStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -14901,6 +15642,7 @@ export async function putFirewallConfig(
 			| PutFirewallConfigStatus402
 			| PutFirewallConfigStatus403
 			| PutFirewallConfigStatus404
+			| PutFirewallConfigStatus410
 			| PutFirewallConfigStatus500
 		>,
 		null,
@@ -14942,6 +15684,7 @@ export async function updateFirewallConfig(
 			| UpdateFirewallConfigStatus402
 			| UpdateFirewallConfigStatus403
 			| UpdateFirewallConfigStatus404
+			| UpdateFirewallConfigStatus410
 			| UpdateFirewallConfigStatus500
 		>,
 		null,
@@ -14987,6 +15730,7 @@ export async function getFirewallConfig(
 			| GetFirewallConfigStatus401
 			| GetFirewallConfigStatus403
 			| GetFirewallConfigStatus404
+			| GetFirewallConfigStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -15029,6 +15773,7 @@ export async function deleteSecurityFirewallConfigByConfigVersion(
 			| DeleteSecurityFirewallConfigByConfigVersionStatus401
 			| DeleteSecurityFirewallConfigByConfigVersionStatus403
 			| DeleteSecurityFirewallConfigByConfigVersionStatus404
+			| DeleteSecurityFirewallConfigByConfigVersionStatus410
 			| DeleteSecurityFirewallConfigByConfigVersionStatus500
 		>,
 		null,
@@ -15072,6 +15817,7 @@ export async function createSecurityFirewallConfigByConfigVersionActivate(
 			| CreateSecurityFirewallConfigByConfigVersionActivateStatus402
 			| CreateSecurityFirewallConfigByConfigVersionActivateStatus403
 			| CreateSecurityFirewallConfigByConfigVersionActivateStatus404
+			| CreateSecurityFirewallConfigByConfigVersionActivateStatus410
 			| CreateSecurityFirewallConfigByConfigVersionActivateStatus500
 		>,
 		null,
@@ -15111,6 +15857,7 @@ export async function getActiveAttackStatus(
 			| GetActiveAttackStatusStatus401
 			| GetActiveAttackStatusStatus403
 			| GetActiveAttackStatusStatus404
+			| GetActiveAttackStatusStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -15159,6 +15906,7 @@ export async function getBypassIp(
 			| GetBypassIpStatus401
 			| GetBypassIpStatus403
 			| GetBypassIpStatus404
+			| GetBypassIpStatus410
 			| GetBypassIpStatus500
 		>,
 		null,
@@ -15208,6 +15956,7 @@ export async function addBypassIp(
 			| AddBypassIpStatus401
 			| AddBypassIpStatus403
 			| AddBypassIpStatus404
+			| AddBypassIpStatus410
 			| AddBypassIpStatus500
 		>,
 		null,
@@ -15248,6 +15997,7 @@ export async function removeBypassIp(
 			| RemoveBypassIpStatus401
 			| RemoveBypassIpStatus403
 			| RemoveBypassIpStatus404
+			| RemoveBypassIpStatus410
 			| RemoveBypassIpStatus500
 		>,
 		null,
@@ -15293,6 +16043,7 @@ export async function getSecurityFirewallEvents(
 			| GetSecurityFirewallEventsStatus401
 			| GetSecurityFirewallEventsStatus403
 			| GetSecurityFirewallEventsStatus404
+			| GetSecurityFirewallEventsStatus410
 			| GetSecurityFirewallEventsStatus500
 		>,
 		null,
@@ -15334,6 +16085,7 @@ export async function generateFirewallRule(
 			| GenerateFirewallRuleStatus403
 			| GenerateFirewallRuleStatus404
 			| GenerateFirewallRuleStatus408
+			| GenerateFirewallRuleStatus410
 			| GenerateFirewallRuleStatus500
 		>,
 		null,
@@ -15372,6 +16124,7 @@ export async function createSpeedInsightsToggle(
 			| CreateSpeedInsightsToggleStatus401
 			| CreateSpeedInsightsToggleStatus402
 			| CreateSpeedInsightsToggleStatus403
+			| CreateSpeedInsightsToggleStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -15414,6 +16167,7 @@ export async function getStorageStoresById(
 			| GetStorageStoresByIdStatus401
 			| GetStorageStoresByIdStatus403
 			| GetStorageStoresByIdStatus404
+			| GetStorageStoresByIdStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -15447,6 +16201,7 @@ export async function createStorageStoresBlob(
 			| CreateStorageStoresBlobStatus403
 			| CreateStorageStoresBlobStatus404
 			| CreateStorageStoresBlobStatus409
+			| CreateStorageStoresBlobStatus410
 			| CreateStorageStoresBlobStatus429
 		>,
 		null,
@@ -15488,6 +16243,7 @@ export async function deleteStorageStoresBlobById(
 			| DeleteStorageStoresBlobByIdStatus403
 			| DeleteStorageStoresBlobByIdStatus404
 			| DeleteStorageStoresBlobByIdStatus409
+			| DeleteStorageStoresBlobByIdStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -15528,6 +16284,7 @@ export async function createIntegrationStoreDirect(
 			| CreateIntegrationStoreDirectStatus403
 			| CreateIntegrationStoreDirectStatus404
 			| CreateIntegrationStoreDirectStatus409
+			| CreateIntegrationStoreDirectStatus410
 			| CreateIntegrationStoreDirectStatus429
 			| CreateIntegrationStoreDirectStatus500
 		>,
@@ -15591,6 +16348,7 @@ export async function getTeamMembers(
 			| GetTeamMembersStatus401
 			| GetTeamMembersStatus403
 			| GetTeamMembersStatus404
+			| GetTeamMembersStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -15651,6 +16409,7 @@ export async function inviteUserToTeam(
 			| InviteUserToTeamStatus400
 			| InviteUserToTeamStatus401
 			| InviteUserToTeamStatus403
+			| InviteUserToTeamStatus410
 			| InviteUserToTeamStatus503
 		>,
 		null,
@@ -15694,6 +16453,7 @@ export async function requestAccessToTeam(
 			| RequestAccessToTeamStatus401
 			| RequestAccessToTeamStatus403
 			| RequestAccessToTeamStatus404
+			| RequestAccessToTeamStatus410
 			| RequestAccessToTeamStatus429
 			| RequestAccessToTeamStatus503
 		>,
@@ -15741,6 +16501,7 @@ export async function getTeamAccessRequest(
 			| GetTeamAccessRequestStatus401
 			| GetTeamAccessRequestStatus403
 			| GetTeamAccessRequestStatus404
+			| GetTeamAccessRequestStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -15783,6 +16544,7 @@ export async function joinTeam(
 			| JoinTeamStatus402
 			| JoinTeamStatus403
 			| JoinTeamStatus404
+			| JoinTeamStatus410
 			| JoinTeamStatus503
 		>,
 		null,
@@ -15831,6 +16593,7 @@ export async function updateTeamMember(
 			| UpdateTeamMemberStatus403
 			| UpdateTeamMemberStatus404
 			| UpdateTeamMemberStatus409
+			| UpdateTeamMemberStatus410
 			| UpdateTeamMemberStatus500
 		>,
 		null,
@@ -15879,6 +16642,7 @@ export async function removeTeamMember(
 			| RemoveTeamMemberStatus401
 			| RemoveTeamMemberStatus403
 			| RemoveTeamMemberStatus404
+			| RemoveTeamMemberStatus410
 			| RemoveTeamMemberStatus503
 		>,
 		null,
@@ -15919,7 +16683,9 @@ export async function getTeam(
 	}
 	const data = await request<
 		GetTeamResponse,
-		ErrorWrapper<GetTeamStatus400 | GetTeamStatus401 | GetTeamStatus403 | GetTeamStatus404>,
+		ErrorWrapper<
+			GetTeamStatus400 | GetTeamStatus401 | GetTeamStatus403 | GetTeamStatus404 | GetTeamStatus410
+		>,
 		null,
 		Record<string, string>,
 		{ slug?: string },
@@ -15963,6 +16729,7 @@ export async function patchTeam(
 			| PatchTeamStatus401
 			| PatchTeamStatus402
 			| PatchTeamStatus403
+			| PatchTeamStatus410
 			| PatchTeamStatus428
 		>,
 		null,
@@ -15998,7 +16765,13 @@ export async function getTeams(
 
 	const data = await request<
 		GetTeamsResponse,
-		ErrorWrapper<GetTeamsStatus400 | GetTeamsStatus401 | GetTeamsStatus403 | GetTeamsStatus500>,
+		ErrorWrapper<
+			| GetTeamsStatus400
+			| GetTeamsStatus401
+			| GetTeamsStatus403
+			| GetTeamsStatus410
+			| GetTeamsStatus500
+		>,
 		null,
 		Record<string, string>,
 		{ limit?: number; since?: number; until?: number },
@@ -16032,6 +16805,7 @@ export async function createTeam(
 			| CreateTeamStatus403
 			| CreateTeamStatus404
 			| CreateTeamStatus409
+			| CreateTeamStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -16071,7 +16845,10 @@ export async function postTeamDsyncRoles(
 	const data = await request<
 		PostTeamDsyncRolesResponse,
 		ErrorWrapper<
-			PostTeamDsyncRolesStatus400 | PostTeamDsyncRolesStatus401 | PostTeamDsyncRolesStatus403
+			| PostTeamDsyncRolesStatus400
+			| PostTeamDsyncRolesStatus401
+			| PostTeamDsyncRolesStatus403
+			| PostTeamDsyncRolesStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -16117,6 +16894,7 @@ export async function deleteTeam(
 			| DeleteTeamStatus402
 			| DeleteTeamStatus403
 			| DeleteTeamStatus409
+			| DeleteTeamStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -16163,6 +16941,7 @@ export async function deleteTeamInviteCode(
 			| DeleteTeamInviteCodeStatus401
 			| DeleteTeamInviteCodeStatus403
 			| DeleteTeamInviteCodeStatus404
+			| DeleteTeamInviteCodeStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -16210,6 +16989,7 @@ export async function updateMicrofrontendsGroup(
 			| UpdateMicrofrontendsGroupStatus401
 			| UpdateMicrofrontendsGroupStatus403
 			| UpdateMicrofrontendsGroupStatus404
+			| UpdateMicrofrontendsGroupStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -16258,6 +17038,7 @@ export async function deleteMicrofrontendsGroup(
 			| DeleteMicrofrontendsGroupStatus401
 			| DeleteMicrofrontendsGroupStatus403
 			| DeleteMicrofrontendsGroupStatus404
+			| DeleteMicrofrontendsGroupStatus410
 			| DeleteMicrofrontendsGroupStatus500
 		>,
 		null,
@@ -16301,7 +17082,11 @@ export async function uploadFile(
 	const data = await request<
 		UploadFileResponse,
 		ErrorWrapper<
-			UploadFileStatus400 | UploadFileStatus401 | UploadFileStatus403 | UploadFileStatus426
+			| UploadFileStatus400
+			| UploadFileStatus401
+			| UploadFileStatus403
+			| UploadFileStatus410
+			| UploadFileStatus426
 		>,
 		null,
 		{
@@ -16335,7 +17120,12 @@ export async function listAuthTokens(
 
 	const data = await request<
 		ListAuthTokensResponse,
-		ErrorWrapper<ListAuthTokensStatus400 | ListAuthTokensStatus401 | ListAuthTokensStatus403>,
+		ErrorWrapper<
+			| ListAuthTokensStatus400
+			| ListAuthTokensStatus401
+			| ListAuthTokensStatus403
+			| ListAuthTokensStatus410
+		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
@@ -16373,6 +17163,7 @@ export async function createAuthToken(
 			| CreateAuthTokenStatus401
 			| CreateAuthTokenStatus403
 			| CreateAuthTokenStatus404
+			| CreateAuthTokenStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -16411,7 +17202,11 @@ export async function getAuthToken(
 	const data = await request<
 		GetAuthTokenResponse,
 		ErrorWrapper<
-			GetAuthTokenStatus400 | GetAuthTokenStatus401 | GetAuthTokenStatus403 | GetAuthTokenStatus404
+			| GetAuthTokenStatus400
+			| GetAuthTokenStatus401
+			| GetAuthTokenStatus403
+			| GetAuthTokenStatus404
+			| GetAuthTokenStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -16453,6 +17248,7 @@ export async function deleteAuthToken(
 			| DeleteAuthTokenStatus401
 			| DeleteAuthTokenStatus403
 			| DeleteAuthTokenStatus404
+			| DeleteAuthTokenStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -16481,7 +17277,11 @@ export async function getAuthUser(
 	const data = await request<
 		GetAuthUserResponse,
 		ErrorWrapper<
-			GetAuthUserStatus400 | GetAuthUserStatus401 | GetAuthUserStatus403 | GetAuthUserStatus409
+			| GetAuthUserStatus400
+			| GetAuthUserStatus401
+			| GetAuthUserStatus403
+			| GetAuthUserStatus409
+			| GetAuthUserStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -16514,6 +17314,7 @@ export async function requestDelete(
 			| RequestDeleteStatus401
 			| RequestDeleteStatus402
 			| RequestDeleteStatus403
+			| RequestDeleteStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -16554,6 +17355,7 @@ export async function createRepository(
 			| CreateRepositoryStatus403
 			| CreateRepositoryStatus404
 			| CreateRepositoryStatus409
+			| CreateRepositoryStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -16599,6 +17401,7 @@ export async function listRepositories(
 			| ListRepositoriesStatus401
 			| ListRepositoriesStatus403
 			| ListRepositoriesStatus404
+			| ListRepositoriesStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -16643,6 +17446,7 @@ export async function getRepository(
 			| GetRepositoryStatus401
 			| GetRepositoryStatus403
 			| GetRepositoryStatus404
+			| GetRepositoryStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -16687,6 +17491,7 @@ export async function deleteRepository(
 			| DeleteRepositoryStatus401
 			| DeleteRepositoryStatus403
 			| DeleteRepositoryStatus404
+			| DeleteRepositoryStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -16738,6 +17543,7 @@ export async function listRepositoryImages(
 			| ListRepositoryImagesStatus401
 			| ListRepositoryImagesStatus403
 			| ListRepositoryImagesStatus404
+			| ListRepositoryImagesStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -16797,6 +17603,7 @@ export async function listRepositoryTags(
 			| ListRepositoryTagsStatus401
 			| ListRepositoryTagsStatus403
 			| ListRepositoryTagsStatus404
+			| ListRepositoryTagsStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -16853,6 +17660,7 @@ export async function getRepositoryTag(
 			| GetRepositoryTagStatus401
 			| GetRepositoryTagStatus403
 			| GetRepositoryTagStatus404
+			| GetRepositoryTagStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -16901,6 +17709,7 @@ export async function getRepositoryImage(
 			| GetRepositoryImageStatus401
 			| GetRepositoryImageStatus403
 			| GetRepositoryImageStatus404
+			| GetRepositoryImageStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -16949,6 +17758,7 @@ export async function deleteRepositoryImage(
 			| DeleteRepositoryImageStatus401
 			| DeleteRepositoryImageStatus403
 			| DeleteRepositoryImageStatus404
+			| DeleteRepositoryImageStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -16985,6 +17795,7 @@ export async function createWebInsightsToggle(
 			| CreateWebInsightsToggleStatus400
 			| CreateWebInsightsToggleStatus401
 			| CreateWebInsightsToggleStatus403
+			| CreateWebInsightsToggleStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -17033,6 +17844,7 @@ export async function aggregatePageviews(
 			| AggregatePageviewsStatus401
 			| AggregatePageviewsStatus402
 			| AggregatePageviewsStatus403
+			| AggregatePageviewsStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -17090,6 +17902,7 @@ export async function aggregateEvents(
 			| AggregateEventsStatus401
 			| AggregateEventsStatus402
 			| AggregateEventsStatus403
+			| AggregateEventsStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -17145,6 +17958,7 @@ export async function countPageviews(
 			| CountPageviewsStatus401
 			| CountPageviewsStatus402
 			| CountPageviewsStatus403
+			| CountPageviewsStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -17194,7 +18008,11 @@ export async function countEvents(
 	const data = await request<
 		CountEventsResponse,
 		ErrorWrapper<
-			CountEventsStatus400 | CountEventsStatus401 | CountEventsStatus402 | CountEventsStatus403
+			| CountEventsStatus400
+			| CountEventsStatus401
+			| CountEventsStatus402
+			| CountEventsStatus403
+			| CountEventsStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -17236,7 +18054,12 @@ export async function createWebhook(
 
 	const data = await request<
 		CreateWebhookResponse,
-		ErrorWrapper<CreateWebhookStatus400 | CreateWebhookStatus401 | CreateWebhookStatus403>,
+		ErrorWrapper<
+			| CreateWebhookStatus400
+			| CreateWebhookStatus401
+			| CreateWebhookStatus403
+			| CreateWebhookStatus410
+		>,
 		null,
 		Record<string, string>,
 		{ teamId?: string; slug?: string },
@@ -17270,7 +18093,9 @@ export async function getWebhooks(
 
 	const data = await request<
 		GetWebhooksResponse,
-		ErrorWrapper<GetWebhooksStatus400 | GetWebhooksStatus401 | GetWebhooksStatus403>,
+		ErrorWrapper<
+			GetWebhooksStatus400 | GetWebhooksStatus401 | GetWebhooksStatus403 | GetWebhooksStatus410
+		>,
 		null,
 		Record<string, string>,
 		{ projectId?: string; teamId?: string; slug?: string },
@@ -17309,7 +18134,9 @@ export async function getWebhook(
 	}
 	const data = await request<
 		GetWebhookResponse,
-		ErrorWrapper<GetWebhookStatus400 | GetWebhookStatus401 | GetWebhookStatus403>,
+		ErrorWrapper<
+			GetWebhookStatus400 | GetWebhookStatus401 | GetWebhookStatus403 | GetWebhookStatus410
+		>,
 		null,
 		Record<string, string>,
 		{ teamId?: string; slug?: string },
@@ -17348,7 +18175,12 @@ export async function deleteWebhook(
 	}
 	const data = await request<
 		DeleteWebhookResponse,
-		ErrorWrapper<DeleteWebhookStatus400 | DeleteWebhookStatus401 | DeleteWebhookStatus403>,
+		ErrorWrapper<
+			| DeleteWebhookStatus400
+			| DeleteWebhookStatus401
+			| DeleteWebhookStatus403
+			| DeleteWebhookStatus410
+		>,
 		null,
 		Record<string, string>,
 		{ teamId?: string; slug?: string },
@@ -17392,6 +18224,7 @@ export async function listDeploymentAliases(
 			| ListDeploymentAliasesStatus401
 			| ListDeploymentAliasesStatus403
 			| ListDeploymentAliasesStatus404
+			| ListDeploymentAliasesStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -17438,6 +18271,7 @@ export async function assignAlias(
 			| AssignAliasStatus403
 			| AssignAliasStatus404
 			| AssignAliasStatus409
+			| AssignAliasStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -17483,7 +18317,11 @@ export async function listAliases(
 	const data = await request<
 		ListAliasesResponse,
 		ErrorWrapper<
-			ListAliasesStatus400 | ListAliasesStatus401 | ListAliasesStatus403 | ListAliasesStatus404
+			| ListAliasesStatus400
+			| ListAliasesStatus401
+			| ListAliasesStatus403
+			| ListAliasesStatus404
+			| ListAliasesStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -17540,7 +18378,13 @@ export async function getAlias(
 	}
 	const data = await request<
 		GetAliasResponse,
-		ErrorWrapper<GetAliasStatus400 | GetAliasStatus401 | GetAliasStatus403 | GetAliasStatus404>,
+		ErrorWrapper<
+			| GetAliasStatus400
+			| GetAliasStatus401
+			| GetAliasStatus403
+			| GetAliasStatus404
+			| GetAliasStatus410
+		>,
 		null,
 		Record<string, string>,
 		{
@@ -17587,7 +18431,11 @@ export async function deleteAlias(
 	const data = await request<
 		DeleteAliasResponse,
 		ErrorWrapper<
-			DeleteAliasStatus400 | DeleteAliasStatus401 | DeleteAliasStatus403 | DeleteAliasStatus404
+			| DeleteAliasStatus400
+			| DeleteAliasStatus401
+			| DeleteAliasStatus403
+			| DeleteAliasStatus404
+			| DeleteAliasStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -17633,6 +18481,7 @@ export async function patchUrlProtectionBypass(
 			| PatchUrlProtectionBypassStatus403
 			| PatchUrlProtectionBypassStatus404
 			| PatchUrlProtectionBypassStatus409
+			| PatchUrlProtectionBypassStatus410
 			| PatchUrlProtectionBypassStatus428
 		>,
 		null,
@@ -17674,7 +18523,11 @@ export async function getCertById(
 	const data = await request<
 		GetCertByIdResponse,
 		ErrorWrapper<
-			GetCertByIdStatus400 | GetCertByIdStatus401 | GetCertByIdStatus403 | GetCertByIdStatus404
+			| GetCertByIdStatus400
+			| GetCertByIdStatus401
+			| GetCertByIdStatus403
+			| GetCertByIdStatus404
+			| GetCertByIdStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -17715,7 +18568,11 @@ export async function removeCert(
 	const data = await request<
 		RemoveCertResponse,
 		ErrorWrapper<
-			RemoveCertStatus400 | RemoveCertStatus401 | RemoveCertStatus403 | RemoveCertStatus404
+			| RemoveCertStatus400
+			| RemoveCertStatus401
+			| RemoveCertStatus403
+			| RemoveCertStatus404
+			| RemoveCertStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -17750,7 +18607,7 @@ export async function getCerts(
 
 	const data = await request<
 		GetCertsResponse,
-		ErrorWrapper<GetCertsStatus400 | GetCertsStatus401 | GetCertsStatus403>,
+		ErrorWrapper<GetCertsStatus400 | GetCertsStatus401 | GetCertsStatus403 | GetCertsStatus410>,
 		null,
 		Record<string, string>,
 		{ teamId?: string; slug?: string },
@@ -17790,6 +18647,7 @@ export async function issueCert(
 			| IssueCertStatus402
 			| IssueCertStatus403
 			| IssueCertStatus404
+			| IssueCertStatus410
 			| IssueCertStatus449
 			| IssueCertStatus500
 		>,
@@ -17827,7 +18685,11 @@ export async function uploadCert(
 	const data = await request<
 		UploadCertResponse,
 		ErrorWrapper<
-			UploadCertStatus400 | UploadCertStatus401 | UploadCertStatus402 | UploadCertStatus403
+			| UploadCertStatus400
+			| UploadCertStatus401
+			| UploadCertStatus402
+			| UploadCertStatus403
+			| UploadCertStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -17872,6 +18734,7 @@ export async function listDeploymentFiles(
 			| ListDeploymentFilesStatus401
 			| ListDeploymentFilesStatus403
 			| ListDeploymentFilesStatus404
+			| ListDeploymentFilesStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -17977,6 +18840,7 @@ export async function getDeployments(
 			| GetDeploymentsStatus401
 			| GetDeploymentsStatus403
 			| GetDeploymentsStatus404
+			| GetDeploymentsStatus410
 			| GetDeploymentsStatus422
 		>,
 		null,
@@ -18039,6 +18903,7 @@ export async function deleteDeployment(
 			| DeleteDeploymentStatus401
 			| DeleteDeploymentStatus403
 			| DeleteDeploymentStatus404
+			| DeleteDeploymentStatus410
 		>,
 		null,
 		Record<string, string>,
