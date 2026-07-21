@@ -1665,6 +1665,8 @@ export const userEventTypeEnum = {
 	"drain-updated": "drain-updated",
 	"edge-cache-dangerously-delete-by-src-images": "edge-cache-dangerously-delete-by-src-images",
 	"edge-cache-dangerously-delete-by-tags": "edge-cache-dangerously-delete-by-tags",
+	"edge-cache-dangerously-delete-immutable-static":
+		"edge-cache-dangerously-delete-immutable-static",
 	"edge-cache-invalidate-by-src-images": "edge-cache-invalidate-by-src-images",
 	"edge-cache-invalidate-by-tags": "edge-cache-invalidate-by-tags",
 	"edge-cache-purge-all": "edge-cache-purge-all",
@@ -7433,6 +7435,20 @@ export type UserEvent = {
 						 * @type string | undefined
 						 */
 						target?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string
+						 */
+						path: string;
 				  }
 				| {
 						/**
@@ -17392,6 +17408,8 @@ export const listEventTypeNameEnum = {
 	"drain-updated": "drain-updated",
 	"edge-cache-dangerously-delete-by-src-images": "edge-cache-dangerously-delete-by-src-images",
 	"edge-cache-dangerously-delete-by-tags": "edge-cache-dangerously-delete-by-tags",
+	"edge-cache-dangerously-delete-immutable-static":
+		"edge-cache-dangerously-delete-immutable-static",
 	"edge-cache-invalidate-by-src-images": "edge-cache-invalidate-by-src-images",
 	"edge-cache-invalidate-by-tags": "edge-cache-invalidate-by-tags",
 	"edge-cache-purge-all": "edge-cache-purge-all",
@@ -18002,6 +18020,8 @@ export const listEventTypeReplacedByEnum = {
 	"drain-updated": "drain-updated",
 	"edge-cache-dangerously-delete-by-src-images": "edge-cache-dangerously-delete-by-src-images",
 	"edge-cache-dangerously-delete-by-tags": "edge-cache-dangerously-delete-by-tags",
+	"edge-cache-dangerously-delete-immutable-static":
+		"edge-cache-dangerously-delete-immutable-static",
 	"edge-cache-invalidate-by-src-images": "edge-cache-invalidate-by-src-images",
 	"edge-cache-invalidate-by-tags": "edge-cache-invalidate-by-tags",
 	"edge-cache-purge-all": "edge-cache-purge-all",
