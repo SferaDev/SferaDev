@@ -5203,11 +5203,11 @@ export type UserEvent = {
 						/**
 						 * @type number
 						 */
-						packs: number;
+						purchasedAmount: number;
 						/**
 						 * @type number
 						 */
-						prevPacks: number;
+						prevPurchasedAmount: number;
 				  }
 				| {
 						/**
@@ -8272,6 +8272,17 @@ export type UserEvent = {
 				  }
 				| {
 						configVersion: string | number;
+				  }
+				| {
+						configVersion: string | number;
+						/**
+						 * @type number | undefined
+						 */
+						configChangeCount?: number | undefined;
+						/**
+						 * @type array | undefined
+						 */
+						configChanges?: object[] | undefined;
 				  }
 				| {
 						/**
@@ -41246,6 +41257,11 @@ export type GetInvoiceStatus404 = unknown;
 export type GetInvoiceStatus410 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetInvoiceStatus429 = unknown;
+
+/**
  * @type object
  */
 export type GetInvoiceRequestConfig = {
@@ -41275,6 +41291,7 @@ export type GetInvoiceResponses = {
 	"403": GetInvoiceStatus403;
 	"404": GetInvoiceStatus404;
 	"410": GetInvoiceStatus410;
+	"429": GetInvoiceStatus429;
 };
 
 /**
@@ -41286,7 +41303,8 @@ export type GetInvoiceResponse =
 	| GetInvoiceStatus401
 	| GetInvoiceStatus403
 	| GetInvoiceStatus404
-	| GetInvoiceStatus410;
+	| GetInvoiceStatus410
+	| GetInvoiceStatus429;
 
 /**
  * @type string
