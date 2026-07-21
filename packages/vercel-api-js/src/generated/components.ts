@@ -1132,6 +1132,7 @@ import type {
 	GetInvoiceStatus403,
 	GetInvoiceStatus404,
 	GetInvoiceStatus410,
+	GetInvoiceStatus429,
 	GetMemberResponse,
 	GetMemberStatus400,
 	GetMemberStatus401,
@@ -10274,6 +10275,7 @@ export async function getInvoice(
 			| GetInvoiceStatus403
 			| GetInvoiceStatus404
 			| GetInvoiceStatus410
+			| GetInvoiceStatus429
 		>,
 		null,
 		Record<string, string>,

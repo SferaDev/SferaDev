@@ -2532,8 +2532,8 @@ export const userEventSchema = z
 							id: z.string(),
 							name: z.string(),
 						}),
-						packs: z.number(),
-						prevPacks: z.number(),
+						purchasedAmount: z.number(),
+						prevPurchasedAmount: z.number(),
 					})
 					.strict(),
 				z
@@ -4090,6 +4090,13 @@ export const userEventSchema = z
 				z
 					.object({
 						configVersion: z.union([z.string(), z.number()]),
+					})
+					.strict(),
+				z
+					.object({
+						configVersion: z.union([z.string(), z.number()]),
+						configChangeCount: z.number().optional(),
+						configChanges: z.array(z.object({})).optional(),
 					})
 					.strict(),
 				z
@@ -19076,6 +19083,8 @@ export const getInvoiceStatus404Schema = z.unknown();
 
 export const getInvoiceStatus410Schema = z.unknown();
 
+export const getInvoiceStatus429Schema = z.unknown();
+
 export const getInvoiceResponseSchema = z.union([
 	getInvoiceStatus200Schema,
 	getInvoiceStatus400Schema,
@@ -19083,6 +19092,7 @@ export const getInvoiceResponseSchema = z.union([
 	getInvoiceStatus403Schema,
 	getInvoiceStatus404Schema,
 	getInvoiceStatus410Schema,
+	getInvoiceStatus429Schema,
 ]);
 
 export const updateInvoicePathIntegrationConfigurationIdSchema = z.string();
