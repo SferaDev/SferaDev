@@ -763,6 +763,7 @@ export const userEventSchema = z
 				"drain-updated",
 				"edge-cache-dangerously-delete-by-src-images",
 				"edge-cache-dangerously-delete-by-tags",
+				"edge-cache-dangerously-delete-immutable-static",
 				"edge-cache-invalidate-by-src-images",
 				"edge-cache-invalidate-by-tags",
 				"edge-cache-purge-all",
@@ -3637,6 +3638,13 @@ export const userEventSchema = z
 						projectName: z.string(),
 						tags: z.array(z.string()),
 						target: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+						projectName: z.string(),
+						path: z.string(),
 					})
 					.strict(),
 				z
@@ -9017,6 +9025,7 @@ export const listEventTypeSchema = z
 				"drain-updated",
 				"edge-cache-dangerously-delete-by-src-images",
 				"edge-cache-dangerously-delete-by-tags",
+				"edge-cache-dangerously-delete-immutable-static",
 				"edge-cache-invalidate-by-src-images",
 				"edge-cache-invalidate-by-tags",
 				"edge-cache-purge-all",
@@ -9621,6 +9630,7 @@ export const listEventTypeSchema = z
 					"drain-updated",
 					"edge-cache-dangerously-delete-by-src-images",
 					"edge-cache-dangerously-delete-by-tags",
+					"edge-cache-dangerously-delete-immutable-static",
 					"edge-cache-invalidate-by-src-images",
 					"edge-cache-invalidate-by-tags",
 					"edge-cache-purge-all",
